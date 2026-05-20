@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-250640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251530-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6P12FhT1DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-250640-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:24 +0200
+	id +GA4CsMbDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251530-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:38:27 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF7A8594D47
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C259599DDC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:38:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6BD1D31E4650
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:52:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 764ED33F8380
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:30:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C02836B05E;
-	Wed, 20 May 2026 16:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CBFA36B04E;
+	Wed, 20 May 2026 17:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s7tnzsnG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K5YDueh9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9CC031F9BE;
-	Wed, 20 May 2026 16:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D2F2D879E;
+	Wed, 20 May 2026 17:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295938; cv=none; b=Ntbz6s58mWP5oXInhOJbLR4dHqv82aR8ROH4WBCLR8HLcC7KF17wzKDlYXxYWk8ezcS7ppxzV4Cl+ZRNaZRzNNNcQRjMsgiCWMWgZgP0r8w0D9KpLAohkhxSxSUS2DscheHMYU2HbUvvbVstD9NuiPvYwnN32pshtHB46RH0HJg=
+	t=1779298219; cv=none; b=KACwlE8eLANi+2Isi4AO3O3zSW0+z2YYdSJ+HQntjdsY17eKMBL8HqGPMlD41Oh0wnJlSnsZM6+KC0iPX1LSFHxrTJ62f9JWR9vfumVkKFfaKc9NRXx21rSw9Nhu3vIE9mys/KQuntT1YjZYNV1S3zLUuA6SePWVI5NkuUOqt44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295938; c=relaxed/simple;
-	bh=onKFGNISb1vy2QMlBIXk22cPsOUUvqbCjq4l7fTsn18=;
+	s=arc-20240116; t=1779298219; c=relaxed/simple;
+	bh=PrUn9xm4/PvtA1+f/prF9DCsLLbzBnXmC1uk3Wm9Kdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dxe8drM/yOU0l3uoeP6qMZLZ2YImyRrZBMiN1rTwZPQlbzKFXuDK3XaRXo9JRIkMP1wdWWQeb3A0koCKHX0cB43hU/Ya1QCAgh3zH6Mm5o75DmuYIHH/cDcEZYTwEjF50wV9CySA9PwW2m+Is7qyY4iUFavqexwvrg2+S4z8Lcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s7tnzsnG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C44F1F000E9;
-	Wed, 20 May 2026 16:52:15 +0000 (UTC)
+	 MIME-Version; b=WcelpjNv+2aBUOaHcKbboMH07E8hFa3aBgI8NPwUAqHPGj7pDYsEO8QIt2/uighBEMiIaKPcOiORlsiJ8yot68NqQilAznkJ6kSZbwWkg9sf4gsZKLDObUlIvqzrE+2quATYurs2JVgFv25uFF4gN/9S1s7MZGEBqNifUuFSmik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K5YDueh9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD781F000E9;
+	Wed, 20 May 2026 17:30:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295936;
-	bh=pytLVnX54q2YidkE6szHaqLGjd5TY8+CX8cPZsBRO2c=;
+	s=korg; t=1779298217;
+	bh=Tnf8USmau1Gv0JbZJKBx7BgHfaRyT8vK7qc2ulNxeGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=s7tnzsnGChqKhrzxnA+/wbTsa0COJt7MFFCn3Nc4El5dlLS4jrKzAAMZaaXqThmx0
-	 Ey2dDZrVEX+dZxy+lvz6iW1xpOQHWX39RR9qVgLZIvBW+p/HRGppxYrq6/ciD68qiU
-	 +bvjuhG2zzoRmpv7PAqe785E/AqpnvUkf8PdN9H0=
+	b=K5YDueh94CVR1wVJyeqoptX7furcBDi3Y5cW+lamtH1AOTmae942G5HRpHYXibRdK
+	 e5NIPbIGMcRHBrv17d4C+5toRVlzq1AndAGVSCofX9/tswdpfq++l/BDdrJlV9eg+p
+	 8vGxoFH+Cypc2CkOWF/QYhpYDR/59VwDaPKRFFSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Vidya Sagar <vidyas@nvidia.com>,
+	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
 	Manivannan Sadhasivam <mani@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0559/1146] soc: qcom: llcc: fix v1 SB syndrome register offset
-Date: Wed, 20 May 2026 18:13:29 +0200
-Message-ID: <20260520162200.831588194@linuxfoundation.org>
+Subject: [PATCH 6.18 327/957] PCI: tegra194: Free up Endpoint resources during remove()
+Date: Wed, 20 May 2026 18:13:30 +0200
+Message-ID: <20260520162141.621648376@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,69 +76,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250640-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251530-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oracle.com:email,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: AF7A8594D47
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 7C259599DDC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Vidya Sagar <vidyas@nvidia.com>
 
-[ Upstream commit 24e7625df5ce065393249b78930781be593bc381 ]
+[ Upstream commit 8870f02f7868209eb9bdc5dc53540a6262cf9227 ]
 
-The llcc_v1_edac_reg_offset table uses 0x2304c for trp_ecc_sb_err_syn0,
-which is inconsistent with the surrounding TRP ECC registers (0x2034x)
-and with llcc_v2_1_edac_reg_offset, where trp_ecc_sb_err_syn0 is 0x2034c
-adjacent to trp_ecc_error_status0/1 at 0x20344/0x20348.
+Free up the resources during remove() that were acquired by the DesignWare
+driver for the Endpoint mode during probe().
 
-Use 0x2034c for llcc v1 so the SB syndrome register follows the expected
-+0x4 progression from trp_ecc_error_status1. This fixes EDAC reading the
-wrong register for SB syndrome reporting.
-
-Fixes: c13d7d261e36 ("soc: qcom: llcc: Pass LLCC version based register offsets to EDAC driver")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260330095118.2657362-1-alok.a.tiwari@oracle.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: bb617cbd8151 ("PCI: tegra194: Clean up the exit path for Endpoint mode")
+Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
+Link: https://patch.msgid.link/20260324190755.1094879-11-mmaddireddy@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/llcc-qcom.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-tegra194.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/soc/qcom/llcc-qcom.c b/drivers/soc/qcom/llcc-qcom.c
-index ad5899d083f3f..b80d3f9cff641 100644
---- a/drivers/soc/qcom/llcc-qcom.c
-+++ b/drivers/soc/qcom/llcc-qcom.c
-@@ -3943,7 +3943,7 @@ static const struct llcc_slice_config x1e80100_data[] = {
- static const struct llcc_edac_reg_offset llcc_v1_edac_reg_offset = {
- 	.trp_ecc_error_status0 = 0x20344,
- 	.trp_ecc_error_status1 = 0x20348,
--	.trp_ecc_sb_err_syn0 = 0x2304c,
-+	.trp_ecc_sb_err_syn0 = 0x2034c,
- 	.trp_ecc_db_err_syn0 = 0x20370,
- 	.trp_ecc_error_cntr_clear = 0x20440,
- 	.trp_interrupt_0_status = 0x20480,
+diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+index f4784945c04bb..eb6fecf2e6f42 100644
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -2285,6 +2285,7 @@ static int tegra_pcie_dw_probe(struct platform_device *pdev)
+ static void tegra_pcie_dw_remove(struct platform_device *pdev)
+ {
+ 	struct tegra_pcie_dw *pcie = platform_get_drvdata(pdev);
++	struct dw_pcie_ep *ep = &pcie->pci.ep;
+ 
+ 	if (pcie->of_data->mode == DW_PCIE_RC_TYPE) {
+ 		if (!pcie->link_state)
+@@ -2296,6 +2297,7 @@ static void tegra_pcie_dw_remove(struct platform_device *pdev)
+ 	} else {
+ 		disable_irq(pcie->pex_rst_irq);
+ 		pex_ep_event_pex_rst_assert(pcie);
++		dw_pcie_ep_deinit(ep);
+ 	}
+ 
+ 	pm_runtime_disable(pcie->dev);
 -- 
 2.53.0
 
