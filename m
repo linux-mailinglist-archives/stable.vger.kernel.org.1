@@ -1,67 +1,61 @@
-Return-Path: <stable+bounces-251636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252277-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eC5OBsYcDmro6AUAu9opvQ
-	(envelope-from <stable+bounces-251636-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:42:46 +0200
+	id 2EZfCan7DWoK5QUAu9opvQ
+	(envelope-from <stable+bounces-252277-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:21:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87BC6599FA5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:42:45 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5F33595E29
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:21:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9938534D7D1A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:34:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 76BC430FD0D2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:04:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AA7528DC4;
-	Wed, 20 May 2026 17:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D0373EAC82;
+	Wed, 20 May 2026 18:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nrX2eArG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ERvipp5d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1463D36405A;
-	Wed, 20 May 2026 17:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E5A3E832A;
+	Wed, 20 May 2026 18:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298498; cv=none; b=suVEDJQq0LtjB23/610CTo57pa1rJAiUqvaAvh6AW/Fnt0I5GM/G7CuHy8VipmU9FzY9taS4hzYJUUDECkPVVliHYGjWFNAIfJurlCG8BtwOA8IX1bH6fTBg0H58vm5ZTCJHm8wr5YxNPgu+6k3mu/SPI7qz8CqOV6kg7OSqCSQ=
+	t=1779300254; cv=none; b=VxJm3Dyd0r2rp9ufEAaprHxA04OhRrMcDIHADvq8UQiVtdqvh3JXjo4xv63ikh0y/ng+plK4gx8svw67ICWvDQbcTaYgad/AAE8PUf2+LvEwTC7r2S3AJ9z51AcjxJFRWcwtw5HGTSVM1ZtXTjBvOfXGwFHQhRckOhnS/P+USBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298498; c=relaxed/simple;
-	bh=z+Mib6AuvYl+rwe9awEVF/TjgEJ6o/ZEjeooucbRckU=;
+	s=arc-20240116; t=1779300254; c=relaxed/simple;
+	bh=8zwUGZ4gHJVQGRU6oa4wRtxovHm7jyHNpd8HgRt/wzw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hKXaUzG/sG62cXLqn1TrfSJQzjvC04Bkr/jsporlq2GLM2AIgC+a+rQMsrs2z/ND8AuFOvSJ/irNzECjEbD0kXwkl2wvbQGkyzI+qpXPm4dRWzX2zJ1bdDDldH/TY5rZQV2CfK8ZGj81zhA7ZH+YBMBBL/EsrWCeMUyCrA3F/xY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nrX2eArG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 819921F000E9;
-	Wed, 20 May 2026 17:34:56 +0000 (UTC)
+	 MIME-Version; b=LZjX7bZKWAQerCFauviD5VPGUkWxFGIz9KEnekNbvfi9rPLvifRMtp2mE8H/o1eIdr67akg9VJeqcHEPGvvaWrX2o+5WvUOHhMQTF8IxktNHNbahjl8n1/A1yq/AYkT0XkaIeSL3GgaUlAIUFnOtqxxPZz7ISLVhLc4zrtdcyUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ERvipp5d; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14E001F000E9;
+	Wed, 20 May 2026 18:04:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298497;
-	bh=iVHVB0mGx4rUHiiyGUxhCd/YAd6kxZYjbGuAzCbLZDE=;
+	s=korg; t=1779300253;
+	bh=Vsc1FMibY7zEGKu97kg7BBDCuoOfgJFen40Q4u8oxR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nrX2eArGO7pQcWQRScxu0ceJOE1usS8xTvfQXRG+M3GNDS5aPLKeKQpmwLfIlC/Y1
-	 +NB9A7OLgKT5iexE8siKWmszfz9myuoMJkrlu9qKgQjSOGEuPgJrvFgumOz89jgaJ1
-	 9kYUmejImVux2aoxax4F2d/JQchZ+807S9Z5Cek0=
+	b=ERvipp5dRBRWUYnMXUnm8JnB3t8/NnuvOLpa7rypFfVFraOWpY3kawKxVuT/xLr8J
+	 a72X1aSf6vrxGNxZP00+cYx0qB+M4wsIUm+iFnv40eM1fdSSGv4gVAR9CfjuMg6GSQ
+	 vBMc77tdnVrH2uOa2Os2Z9IvV5J8ryoUaKprTpdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Gal Pressman <gal@nvidia.com>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 432/957] ocfs2/dlm: fix off-by-one in dlm_match_regions() region comparison
+Subject: [PATCH 6.12 104/666] net/mlx5e: IPsec, fix ASO poll timeout with read_poll_timeout_atomic()
 Date: Wed, 20 May 2026 18:15:15 +0200
-Message-ID: <20260520162143.890535004@linuxfoundation.org>
+Message-ID: <20260520162113.475449539@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,80 +68,111 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251636-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,gmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252277-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 87BC6599FA5
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
+X-Rspamd-Queue-Id: E5F33595E29
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit 01b61e8dda9b0fdb0d4cda43de25f4e390554d7b ]
+[ Upstream commit edccdd1eb94712da97a6ce71123ec27890add754 ]
 
-The local-vs-remote region comparison loop uses '<=' instead of '<',
-causing it to read one entry past the valid range of qr_regions.  The
-other loops in the same function correctly use '<'.
+The do-while poll loop uses jiffies for its timeout:
+  expires = jiffies + msecs_to_jiffies(10);
 
-Fix the loop condition to use '<' for consistency and correctness.
+jiffies is sampled at an arbitrary point within the current tick, so the
+first partial tick contributes anywhere from a full tick down to nearly
+zero real time. For small msecs_to_jiffies() results this is
+significant, the effective poll window can be much shorter than the
+requested 10ms, and in the worst case the loop exits after a single
+iteration (e.g., when HZ=100), well before the device has delivered the
+CQE.
 
-Link: https://lkml.kernel.org/r/SYBPR01MB78813DA26B50EC5E01F00566AF7BA@SYBPR01MB7881.ausprd01.prod.outlook.com
-Fixes: ea2034416b54 ("ocfs2/dlm: Add message DLM_QUERY_REGION")
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Replace the loop with read_poll_timeout_atomic(), which counts elapsed
+time via udelay() accounting rather than jiffies, guaranteeing the full
+poll window regardless of HZ.
+
+Additionally, read_poll_timeout_atomic() executes the poll operation one
+more time after the timeout has expired, giving the CQE a final chance
+to be detected. The old do-while loop could exit without a final poll if
+the timeout expired during the udelay() between iterations.
+
+Fixes: 76e463f6508b ("net/mlx5e: Overcome slow response for first IPsec ASO WQE")
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Jianbo Liu <jianbol@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260409202852.158059-3-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/dlm/dlmdomain.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../mellanox/mlx5/core/en_accel/ipsec_offload.c      | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/fs/ocfs2/dlm/dlmdomain.c b/fs/ocfs2/dlm/dlmdomain.c
-index f159785a21116..09bee7b86815e 100644
---- a/fs/ocfs2/dlm/dlmdomain.c
-+++ b/fs/ocfs2/dlm/dlmdomain.c
-@@ -1002,7 +1002,7 @@ static int dlm_match_regions(struct dlm_ctxt *dlm,
- 	for (i = 0; i < localnr; ++i) {
- 		foundit = 0;
- 		r = remote;
--		for (j = 0; j <= qr->qr_numregions; ++j) {
-+		for (j = 0; j < qr->qr_numregions; ++j) {
- 			if (!memcmp(l, r, O2HB_MAX_REGION_NAME_LEN)) {
- 				foundit = 1;
- 				break;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
+index 40fe3d1e2342c..8f22559e373cd 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
+@@ -1,6 +1,8 @@
+ // SPDX-License-Identifier: GPL-2.0 OR Linux-OpenIB
+ /* Copyright (c) 2017, Mellanox Technologies inc. All rights reserved. */
+ 
++#include <linux/iopoll.h>
++
+ #include "mlx5_core.h"
+ #include "en.h"
+ #include "ipsec.h"
+@@ -593,7 +595,6 @@ int mlx5e_ipsec_aso_query(struct mlx5e_ipsec_sa_entry *sa_entry,
+ 	struct mlx5_wqe_aso_ctrl_seg *ctrl;
+ 	struct mlx5e_hw_objs *res;
+ 	struct mlx5_aso_wqe *wqe;
+-	unsigned long expires;
+ 	u8 ds_cnt;
+ 	int ret;
+ 
+@@ -615,13 +616,8 @@ int mlx5e_ipsec_aso_query(struct mlx5e_ipsec_sa_entry *sa_entry,
+ 	mlx5e_ipsec_aso_copy(ctrl, data);
+ 
+ 	mlx5_aso_post_wqe(aso->aso, false, &wqe->ctrl);
+-	expires = jiffies + msecs_to_jiffies(10);
+-	do {
+-		ret = mlx5_aso_poll_cq(aso->aso, false);
+-		if (ret)
+-			/* We are in atomic context */
+-			udelay(10);
+-	} while (ret && time_is_after_jiffies(expires));
++	read_poll_timeout_atomic(mlx5_aso_poll_cq, ret, !ret, 10,
++				 10 * USEC_PER_MSEC, false, aso->aso, false);
+ 	if (!ret)
+ 		memcpy(sa_entry->ctx, aso->ctx, MLX5_ST_SZ_BYTES(ipsec_aso));
+ 	spin_unlock_bh(&aso->lock);
 -- 
 2.53.0
 
