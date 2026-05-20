@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252611-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MBpFOZD9DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-251965-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:29:36 +0200
+	id WBOQBFb8DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-252611-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2550C59657D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:29:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ECC459607E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2126E32FF554
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:49:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A40C83019C9A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:18:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CC1D3F44F7;
-	Wed, 20 May 2026 17:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A9953E123F;
+	Wed, 20 May 2026 18:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L9t6mBSh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RSbF6vgW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20CBD233933;
-	Wed, 20 May 2026 17:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2126D348C55;
+	Wed, 20 May 2026 18:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299391; cv=none; b=sZXaApDbN2gaB+Q8QL4zMIQeDmI3qpAgvR/JKlVhoKBPOcujhCGwNgbc+5D/ZAbZNFIrCy3EH0JWKbw0iTXPdoI2plCFj2xnJgz04jdzwGxR2Kr2VgK4LDuUmXTuuYl2Wy2FuXMnQAsJ1OAWQvhxdoFCtQvUEJMiJCGRe43d3ns=
+	t=1779301129; cv=none; b=C2f6zQr9h2TEbHccdBCGkRr2XrouswqRhP7MO9k6rWiziQpJ8dHZMTxGdUtjcposFaDpKaneA6rmcHyK+UKZLlkQ2+EpJkpnsvfYuFen0M6IOhozbFL6cnWZqDD5ohYxojR4ElTXEOGYAd/sVc9og8O5Eg+RGgazP21uZDDCV7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299391; c=relaxed/simple;
-	bh=iF6vkfrlB+hkAjHibw73A19lZkRYGv/qeRCTjPpNRKQ=;
+	s=arc-20240116; t=1779301129; c=relaxed/simple;
+	bh=ch0yNvjSC2dUVw9jHwilYZp+leBFTVuzBfoLcXIAmDs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ddlk/tAV4bv2L33wBeSTjmHQDryoJJ3Xkha4cXJyEzuVbTGOKYPjAFFFeP5W4x/J1XJwPpN91VqWMHDyXHVh753JfrX6vX8fm9vZ4q+BWhn9qCDZoKA8IAFlr6jrpqDuQCnJffzU6J26Fk05efdsfnjaVERmtV+vX0bcT2wQ97A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L9t6mBSh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 883241F000E9;
-	Wed, 20 May 2026 17:49:49 +0000 (UTC)
+	 MIME-Version; b=af2Z9o4n97VOwSr3aFKAPjKppNlirvPuZECmfzla1E9ks7el0kOcTq4VGsrzjQkT6+V6TwNNTS1+J+Y/NCYzLtgnGbsmsctUgYqelh0wrPOmy2AfE/SHfdaJKm5XIWBYnPsP/AZG5ZMsgtbHZaRUTFGnetWSiq9V6TdmGnaCauY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RSbF6vgW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8815D1F000E9;
+	Wed, 20 May 2026 18:18:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299390;
-	bh=8m0izHOHDuXM3D9+pQ56KhHTAXVA2EPj2mW+9mqhb0s=;
+	s=korg; t=1779301128;
+	bh=gYg8swX4Rf8PyXjpL+N7v2gQRPboPUWTAlwEBH2dSe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=L9t6mBSh5+BUM0uwvK5tzB+/lS+YgiYcv/Jkz5UBQFVYaZbq2muKgB0comNlJuaAP
-	 4bUaav1eQvwocH6c4M+o07UcukuquR+yuG9DETzU4T+Z0FNeOqpw3WX4Sw1UWtFqQC
-	 kMAVmgCEKTYUCDNWOsgSqFKClc8mudkYyvIHMgx8=
+	b=RSbF6vgWTAho8bT3faoW3UxodzGIpAvOowBVQTA7fTl2scS7L49JcIwF2k+lCULV4
+	 +lbCSbVk+onfQqM8h6anmBn4z7ROv7aaWctG14ZuUoPf0thR0fjn72llpW/3rDv31b
+	 758WGTfMskk0zL/5RzHKZQZ0LMngHjfiYYNxm/4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Billy Tsai <billy_tsai@aspeedtech.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 712/957] nfp: fix swapped arguments in nfp_encode_basic_qdr() calls
-Date: Wed, 20 May 2026 18:19:55 +0200
-Message-ID: <20260520162149.987610557@linuxfoundation.org>
+Subject: [PATCH 6.12 385/666] i3c: mipi-i3c-hci: fix IBI payload length calculation for final status
+Date: Wed, 20 May 2026 18:19:56 +0200
+Message-ID: <20260520162119.597839679@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,136 +69,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252611-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251965-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 2550C59657D
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,msgid.link:url,bootlin.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,aspeedtech.com:email]
+X-Rspamd-Queue-Id: 7ECC459607E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+From: Billy Tsai <billy_tsai@aspeedtech.com>
 
-[ Upstream commit 4078c5611d7585548b249377ebd60c272e410490 ]
+[ Upstream commit d35a6db887eeae7c57b719521e39d64f929c6dc3 ]
 
-There is a mismatch between the passed arguments and the actual
-nfp_encode_basic_qdr() function parameter names:
+In DMA mode, the IBI status descriptor encodes the payload using
+CHUNKS (number of chunks) and DATA_LENGTH (valid bytes in the last
+chunk). All preceding chunks are implicitly full-sized.
 
-  static int nfp_encode_basic_qdr(u64 addr, int dest_island, int cpp_tgt,
-                                  int mode, bool addr40, int isld1,
-                                  int isld0)
-  {
-      ...
+The current code accumulates full chunk sizes for non-final status
+descriptors, but for the final status descriptor it only adds
+DATA_LENGTH. This ignores the contribution of the preceding full
+chunks described by the same final status entry.
 
-But "dest_island" and "cpp_tgt" are swapped at every call-site.
-For example:
+As a result, the computed IBI payload length is truncated whenever
+the final status spans multiple chunks. For example, with a chunk
+size of 4 bytes, CHUNKS=2 and DATA_LENGTH=1 should result in a total
+payload size of 5 bytes, but the current code reports only 1 byte.
 
-  return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
-                              mode, addr40, isld1, isld0);
+Fix the calculation by adding the size of (CHUNKS - 1) full chunks
+plus DATA_LENGTH for the last chunk.
 
-As a result, nfp_encode_basic_qdr() receives "dest_island" as CPP target
-type, which is always NFP_CPP_TARGET_QDR(2) for these calls, and "cpp_tgt"
-as the destination island ID, which can accidentally match or be outside
-the valid NFP_CPP_TARGET_* types (e.g. '-1' for any destination).
-
-Since code already worked for years, also add extra pr_warn() to error
-paths in nfp_encode_basic_qdr() to help identify any potential address
-verification failures.
-
-Detected using the static analysis tool - Svace.
-
-Fixes: 4cb584e0ee7d ("nfp: add CPP access core")
-Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
-Link: https://patch.msgid.link/20260422160536.61855-1-aleksei.kodanev@bell-sw.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 9ad9a52cce28 ("i3c/master: introduce the mipi-i3c-hci driver")
+Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20260407-i3c-hci-dma-v2-1-a583187b9d22@aspeedtech.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/netronome/nfp/nfpcore/nfp_target.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/i3c/master/mipi-i3c-hci/dma.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/netronome/nfp/nfpcore/nfp_target.c b/drivers/net/ethernet/netronome/nfp/nfpcore/nfp_target.c
-index 79470f198a62a..9cf19446657c6 100644
---- a/drivers/net/ethernet/netronome/nfp/nfpcore/nfp_target.c
-+++ b/drivers/net/ethernet/netronome/nfp/nfpcore/nfp_target.c
-@@ -435,12 +435,17 @@ static int nfp_encode_basic_qdr(u64 addr, int dest_island, int cpp_tgt,
- 
- 	/* Full Island ID and channel bits overlap? */
- 	ret = nfp_decode_basic(addr, &v, cpp_tgt, mode, addr40, isld1, isld0);
--	if (ret)
-+	if (ret) {
-+		pr_warn("%s: decode dest_island failed: %d\n", __func__, ret);
- 		return ret;
-+	}
- 
- 	/* The current address won't go where expected? */
--	if (dest_island != -1 && dest_island != v)
-+	if (dest_island != -1 && dest_island != v) {
-+		pr_warn("%s: dest_island mismatch: current (%d) != decoded (%d)\n",
-+			__func__, dest_island, v);
- 		return -EINVAL;
-+	}
- 
- 	/* If dest_island was -1, we don't care where it goes. */
- 	return 0;
-@@ -493,7 +498,7 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
- 			 * the address but we can verify if the existing
- 			 * contents will point to a valid island.
- 			 */
--			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
-+			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
- 						    mode, addr40, isld1, isld0);
- 
- 		iid_lsb = addr40 ? 34 : 26;
-@@ -504,7 +509,7 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
- 		return 0;
- 	case 1:
- 		if (cpp_tgt == NFP_CPP_TARGET_QDR && !addr40)
--			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
-+			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
- 						    mode, addr40, isld1, isld0);
- 
- 		idx_lsb = addr40 ? 39 : 31;
-@@ -530,7 +535,7 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
- 			 * be set before hand and with them select an island.
- 			 * So we need to confirm that it's at least plausible.
- 			 */
--			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
-+			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
- 						    mode, addr40, isld1, isld0);
- 
- 		/* Make sure we compare against isldN values
-@@ -551,7 +556,7 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
- 			 * iid<1> = addr<30> = channel<0>
- 			 * channel<1> = addr<31> = Index
- 			 */
--			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
-+			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
- 						    mode, addr40, isld1, isld0);
- 
- 		isld[0] &= ~3;
+diff --git a/drivers/i3c/master/mipi-i3c-hci/dma.c b/drivers/i3c/master/mipi-i3c-hci/dma.c
+index 36a4c13ab7578..b9496e8c4784d 100644
+--- a/drivers/i3c/master/mipi-i3c-hci/dma.c
++++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
+@@ -645,7 +645,10 @@ static void hci_dma_process_ibi(struct i3c_hci *hci, struct hci_rh_data *rh)
+ 		if (!(ibi_status & IBI_LAST_STATUS)) {
+ 			ibi_size += chunks * rh->ibi_chunk_sz;
+ 		} else {
+-			ibi_size += FIELD_GET(IBI_DATA_LENGTH, ibi_status);
++			if (chunks) {
++				ibi_size += (chunks - 1) * rh->ibi_chunk_sz;
++				ibi_size += FIELD_GET(IBI_DATA_LENGTH, ibi_status);
++			}
+ 			last_ptr = ptr;
+ 			break;
+ 		}
 -- 
 2.53.0
 
