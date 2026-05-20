@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-251056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253072-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uNGKDXn6DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-251056-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:16:25 +0200
+	id wPlzJ+cCDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-253072-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:52:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A8D3595B0C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:16:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E941597562
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:52:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2184C3158013
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:10:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3F09A31EC8F2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:42:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4897C3A3E9C;
-	Wed, 20 May 2026 17:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4FF8409615;
+	Wed, 20 May 2026 18:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yFsbkgPc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XcKD/bdg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06758331220;
-	Wed, 20 May 2026 17:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE37409115;
+	Wed, 20 May 2026 18:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296987; cv=none; b=huB5X85ZnTHNpRY4/l4wdkauBwUJkewc07+jMYWXowy7njBk2gVgGfj6vYeNEK5K86pMYgF6EQ4bGfZlu12AWrfssc8BN7vJY7DcgQ/GYGjzRqExAylFQQ1vQItK3aKcOyfU1vrqvUAag4Iz31Wc+ZqEBrXiC0kRfHxZTVPaHBA=
+	t=1779302331; cv=none; b=fZmwDSn/uHeeAFDtJ4aRu0XuIqXY17ocAF6Y6xLx0oyt+X5jC2Cm+uXyO21LGUvzp8TlubU0uK4x7mLocWaozR7v+KbVNqpKKMkjMlcDqS9Q8AnykSshkvUQx9ccrGOsSnjBLda8egfbpW7+Wv1vjbtBu4tUwS7NCV0ioAoSUmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296987; c=relaxed/simple;
-	bh=cJGKH663Aijsm2u+H+TgdKl8kCBnov/+Ew4vG7/0mHM=;
+	s=arc-20240116; t=1779302331; c=relaxed/simple;
+	bh=tF1XLe1cESm+YZ9q7qcZo+5+skX8oIyurQb8FhJIvGo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D3RInWkZ5S3+gs7NprBubh3DBmitgkHM+3QDglRdUOGw3h9YuTUDKX2/L0ipbcCLxs0JK51vztSoSG8LUAehBUfgg5CW16/4ph4NMJc0gwQNo5Gz0tHDrzWrkIBTGlaMQkDvSU6kHezYzeyN/ZJxZLP5B+5BGC/fsFRi3R4eDk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yFsbkgPc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A3E1F000E9;
-	Wed, 20 May 2026 17:09:45 +0000 (UTC)
+	 MIME-Version; b=Smw5h5GMr9e+ahTqgOBhmSVkG77xoXqzY+JaweovK9Wr95jnLFpGE2h01ZCi5ysW4KWmKyRvWNfr34H66YYtiVF/+kZLcZ1stj1y4+FNKXRD1lCfdTf2oaAYtGYGDJ5SMFL3Th5FJSzTtMWoGW26NsbbmNYuVKp6V87pMuYhmx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XcKD/bdg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D2721F00896;
+	Wed, 20 May 2026 18:38:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296985;
-	bh=Jp+TVt7Rvi+zuzvb5xtSgENMHTCEedYDboKfUcE6lR0=;
+	s=korg; t=1779302330;
+	bh=VxE5XmWmlkWOAtspSpkS2yqy1IZihWT2eMsT5WM1w5Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yFsbkgPcsGVsaOi4hVE1Mk0GoyrpQfQKvFq4cJTCqG+KS9Jw+ekR66qEYTks9tLWB
-	 +mVjTnPnX7BQa3PlfGLIu0n4vWGqynovvySRBttR32BqiAZj/xXJADQrD65vw6GaTW
-	 i0EaPwyuxuRDQM9xeCOkG6k7LAD8HvVO9OyzfodQ=
+	b=XcKD/bdgxrDCoF/4TSz5RiOgGmrVBCR0znVOsJ3Ja0ZLjlw8IcjXgeW2X2NQoTBKK
+	 yK2Ot+/oSQEuq8LFsPGhG5D5+Aku9cwVXuAXq9mjHVTVMZ1DRTIzqdidlTTp2wfLeu
+	 LZNAVmXUK2e6rqg11Nft1hFkGthxFsepaHv9hdIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shenghao Ding <shenghao-ding@ti.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 1000/1146] ALSA: hda/tas2781: Fix incorrect bit update for non-book-zero or book 0 pages >1
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Takahiro Kuwano <Takahiro.Kuwano@infineon.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>
+Subject: [PATCH 6.6 227/508] mtd: spi-nor: sfdp: introduce smpt_read_dummy fixup hook
 Date: Wed, 20 May 2026 18:20:50 +0200
-Message-ID: <20260520162210.865610811@linuxfoundation.org>
+Message-ID: <20260520162103.567723445@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,84 +66,127 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251056-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253072-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ti.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,suse.de:email]
-X-Rspamd-Queue-Id: 6A8D3595B0C
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mailbox.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email,infineon.com:email]
+X-Rspamd-Queue-Id: 1E941597562
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shenghao Ding <shenghao-ding@ti.com>
+From: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
 
-[ Upstream commit e052a1f7199260eda4d6ca08a59c3b98738f8491 ]
+[ Upstream commit 653f6def567c81f37302f9591ffd54df3e2a11eb ]
 
-In TAS2781 SPI mode, when accessing non-book-zero or page numbers greater
-than 1 in book 0, an additional byte must be read. The first byte in such
-cases is a dummy byte and should be ignored.
+SMPT contains config detection info that describes opcode, address, and
+dummy cycles to read sector map config. The dummy cycles parameter can
+be SMPT_CMD_READ_DUMMY_IS_VARIABLE and in that case nor->read_dummy
+(initialized as 0) is used. In Infineon flash chips, Read Any Register
+command with variable dummy cycle is defined in SMPT. S25Hx/S28Hx flash
+has 0 dummy cycle by default to read volatile regiters and
+nor->read_dummy can work. S25FS-S flash has 8 dummy cycles so we need a
+hook that can fix dummy cycles with actually used value.
 
-Fixes: 9fa6a693ad8d ("ALSA: hda/tas2781: Remove tas2781_spi_fwlib.c and leverage SND_SOC_TAS2781_FMWLIB")
-Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
-Link: https://patch.msgid.link/20260429054206.429-1-shenghao-ding@ti.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Inroduce smpt_read_dummy() in struct spi_nor_fixups. It is called when
+the dummy cycle field in SMPT config detection is 'varialble'.
+
+Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Tested-by: Marek Vasut <marek.vasut+renesas@mailbox.org> # S25FS512S
+Signed-off-by: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
+Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+Stable-dep-of: 3620d67b4849 ("mtd: spi-nor: update spi_nor_fixups::post_sfdp() documentation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/codecs/side-codecs/tas2781_hda_spi.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/mtd/spi-nor/core.h |  3 +++
+ drivers/mtd/spi-nor/sfdp.c | 18 ++++++++++++++++--
+ 2 files changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/sound/hda/codecs/side-codecs/tas2781_hda_spi.c b/sound/hda/codecs/side-codecs/tas2781_hda_spi.c
-index f860e0eb7602a..6c736b17c9831 100644
---- a/sound/hda/codecs/side-codecs/tas2781_hda_spi.c
-+++ b/sound/hda/codecs/side-codecs/tas2781_hda_spi.c
-@@ -132,10 +132,18 @@ static int tasdevice_spi_dev_update_bits(struct tasdevice_priv *tas_priv,
- 	int ret, val;
+diff --git a/drivers/mtd/spi-nor/core.h b/drivers/mtd/spi-nor/core.h
+index 9217379b9cfef..a68cf82498ed8 100644
+--- a/drivers/mtd/spi-nor/core.h
++++ b/drivers/mtd/spi-nor/core.h
+@@ -416,6 +416,8 @@ struct spi_nor_flash_parameter {
+  *                flash parameters when information provided by the flash_info
+  *                table is incomplete or wrong.
+  * @post_bfpt: called after the BFPT table has been parsed
++ * @smpt_read_dummy: called during SMPT table is being parsed. Used to fix the
++ *                   number of dummy cycles in read register ops.
+  * @post_sfdp: called after SFDP has been parsed (is also called for SPI NORs
+  *             that do not support RDSFDP). Typically used to tweak various
+  *             parameters that could not be extracted by other means (i.e.
+@@ -433,6 +435,7 @@ struct spi_nor_fixups {
+ 	int (*post_bfpt)(struct spi_nor *nor,
+ 			 const struct sfdp_parameter_header *bfpt_header,
+ 			 const struct sfdp_bfpt *bfpt);
++	void (*smpt_read_dummy)(const struct spi_nor *nor, u8 *read_dummy);
+ 	int (*post_sfdp)(struct spi_nor *nor);
+ 	int (*late_init)(struct spi_nor *nor);
+ };
+diff --git a/drivers/mtd/spi-nor/sfdp.c b/drivers/mtd/spi-nor/sfdp.c
+index b3b11dfed7893..f1ec785628bfb 100644
+--- a/drivers/mtd/spi-nor/sfdp.c
++++ b/drivers/mtd/spi-nor/sfdp.c
+@@ -674,6 +674,17 @@ static u8 spi_nor_smpt_addr_nbytes(const struct spi_nor *nor, const u32 settings
+ 	}
+ }
  
- 	/*
--	 * In our TAS2781 SPI mode, read/write was masked in last bit of
--	 * address, it cause regmap_update_bits() not work as expected.
-+	 * In TAS2781 SPI mode, when accessing non-book-zero or page numbers
-+	 * greater than 1 in book 0, an additional byte must be read. The
-+	 * first byte in such cases is a dummy byte and should be ignored.
- 	 */
--	ret = tasdevice_dev_read(tas_priv, chn, reg, &val);
-+	if ((TASDEVICE_BOOK_ID(reg) > 0) || (TASDEVICE_PAGE_ID(reg) > 1)) {
-+		unsigned char buf[2];
++static void spi_nor_smpt_read_dummy_fixups(const struct spi_nor *nor,
++					   u8 *read_dummy)
++{
++	if (nor->manufacturer && nor->manufacturer->fixups &&
++	    nor->manufacturer->fixups->smpt_read_dummy)
++		nor->manufacturer->fixups->smpt_read_dummy(nor, read_dummy);
 +
-+		ret = tasdevice_dev_bulk_read(tas_priv, chn, reg, buf, 2);
-+		val = buf[1];
-+	} else {
-+		ret = tasdevice_dev_read(tas_priv, chn, reg, &val);
++	if (nor->info->fixups && nor->info->fixups->smpt_read_dummy)
++		nor->info->fixups->smpt_read_dummy(nor, read_dummy);
++}
++
+ /**
+  * spi_nor_smpt_read_dummy() - return the configuration detection command read
+  *			       latency, in clock cycles.
+@@ -686,8 +697,11 @@ static u8 spi_nor_smpt_read_dummy(const struct spi_nor *nor, const u32 settings)
+ {
+ 	u8 read_dummy = SMPT_CMD_READ_DUMMY(settings);
+ 
+-	if (read_dummy == SMPT_CMD_READ_DUMMY_IS_VARIABLE)
+-		return nor->read_dummy;
++	if (read_dummy == SMPT_CMD_READ_DUMMY_IS_VARIABLE) {
++		read_dummy = nor->read_dummy;
++		spi_nor_smpt_read_dummy_fixups(nor, &read_dummy);
 +	}
- 	if (ret < 0) {
- 		dev_err(tas_priv->dev, "%s, E=%d\n", __func__, ret);
- 		return ret;
++
+ 	return read_dummy;
+ }
+ 
 -- 
 2.53.0
 
