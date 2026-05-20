@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-252908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252909-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +O8jDcr/DWqA5QUAu9opvQ
-	(envelope-from <stable+bounces-252908-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:06 +0200
+	id wJp/Odv/DWqA5QUAu9opvQ
+	(envelope-from <stable+bounces-252909-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF0AE596E3D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:05 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 898DD596E86
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8033930C5BFD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:31:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7FB9C30C7B96
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:31:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1295A368968;
-	Wed, 20 May 2026 18:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C732369D7A;
+	Wed, 20 May 2026 18:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dA88uSHL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NS6u5YM+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B840F343880;
-	Wed, 20 May 2026 18:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5CF318ED6;
+	Wed, 20 May 2026 18:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301904; cv=none; b=hjfm1ATIVa6t0WOOffwjQX1j97llOoKTUwZV3GO++PC4JEihTtvulNItfntPv7i7Ki/qpCBtxRPkstSl9GKEAXohBXs2jonQGuVQot82Omor5FuB4FYVmghRc4Y6ENRpYPKBxUdSWnezXVJCe92PvkS6BDetnCT8szxI22nfRJI=
+	t=1779301907; cv=none; b=PFrWyfrGEe6+6prKphUbAs4WHsQ05TjJD2CPuAKOwf5JDEpqLgI9h7m6ncmzvKEAjbMVFmH2HrKago23lYRGFz/kwAYQPXvZU+1MKeQIsW7RV+grz4DDPHjXPWWy7cNV5QQCoMnikkHMNGQY+1nKwLH21po5sgpKagymriOFMGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301904; c=relaxed/simple;
-	bh=MvcWL1jUkbziRQEo5bF48MwLumY9x3fhESAMUDhq75Y=;
+	s=arc-20240116; t=1779301907; c=relaxed/simple;
+	bh=x8ODrcFRJpPWW0AmntKyCE+GeYzTDuYA/Fum6IDYVw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y6ycHunxUA9pHbtS6Y7UvxLjtvRh8UyoMkOv46i6XFLra+vKyihsgDY2yz50vYWq3LwI4hgJzkZO66DHex5ckSdgtgfPe2cMtuAzPtwDcA3iwVp5eangoT8VaWDT5mxpzBR2C57rC6+aUKzRQ5BUbYzf9eXEjUu183dp45z7wUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dA88uSHL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2863B1F000E9;
-	Wed, 20 May 2026 18:31:43 +0000 (UTC)
+	 MIME-Version; b=SbOMBaSPWv5Q18IhEdncFAanTFAfBK3QgYKH0pw2UdtsexOjheVRY2aoxNgy8rBl/Zi6EtyEHcr47fDNcfDlZnSztqQAIgjBr+G4hIpcLbpKzbGGIyChYlMFGuhsTz0byxIrvjFzSYiWIZVeygfzkNNdwO095dM0ntIvKYvRTn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NS6u5YM+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F9191F00893;
+	Wed, 20 May 2026 18:31:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301903;
-	bh=op6UmuCrMwf4ZKeVdvWx1yeN+eBI0f93xpB7c0A03WE=;
+	s=korg; t=1779301906;
+	bh=QFtGyxI0PWu4tXwdxGZje4x8SNvM4OpJK5zwPtDxDrk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dA88uSHLIgBHmTtf7OcZk3TtUBI2iVfMnJ4WJGiniQovbDXtRkLBHxnfDBzW9RFw4
-	 zhNveJ8GIVXwMPmwmC1ZzigeqmAX7TBqU9q/L2h8n0+Qz+AR/y9YZGJKIlh+HVqWnt
-	 MUBPbFwW9OOIJsERFgxHDIxBz4ngOB9B8R789UMo=
+	b=NS6u5YM+z6HflPHgCAhmpBG/nkelf5VhIQQI8/CyS1xci4wwSUpGsWWWphTt9TJZj
+	 wq2DUjXYU7KubVnfwbF5MZRhexfaEbyJXy+o3FZps4pZnTGaudIYBy/AuUd5WWo7xM
+	 groKA2uUFbcqE1ET+NoxMxiHCTm2KKpkCgxywuXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sun Jian <sun.jian.kdev@gmail.com>,
-	Sechang Lim <rhkrqnwk98@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Andreas Koensgen <ajk@comnets.uni-bremen.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-hams@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Jeremy Kerr <jk@codeconstruct.com.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 063/508] bpf: Fix RCU stall in bpf_fd_array_map_clear()
-Date: Wed, 20 May 2026 18:18:06 +0200
-Message-ID: <20260520162059.966319637@linuxfoundation.org>
+Subject: [PATCH 6.6 064/508] 6pack: propagage new tty types
+Date: Wed, 20 May 2026 18:18:07 +0200
+Message-ID: <20260520162059.988640570@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
 References: <20260520162058.573354582@linuxfoundation.org>
@@ -65,36 +71,35 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-252908-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-252909-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: EF0AE596E3D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,davemloft.net:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,codeconstruct.com.au:email,uni-bremen.de:email]
+X-Rspamd-Queue-Id: 898DD596E86
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,60 +107,134 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Sechang Lim <rhkrqnwk98@gmail.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-[ Upstream commit 4406942e65ca128c56c67443832988873c21d2e9 ]
+[ Upstream commit 1241b384efa53f4b7a95fe2b34d69359bb3ae1b5 ]
 
-Add a missing cond_resched() in bpf_fd_array_map_clear() loop.
+In tty, u8 is now used for data, ssize_t for sizes (with possible
+negative error codes). Propagate these types to 6pack.
 
-For PROG_ARRAY maps with many entries this loop calls
-prog_array_map_poke_run() per entry which can be expensive, and
-without yielding this can cause RCU stalls under load:
-
-  rcu: Stack dump where RCU GP kthread last ran:
-  CPU: 0 UID: 0 PID: 30932 Comm: kworker/0:2 Not tainted 6.14.0-13195-g967e8def1100 #2 PREEMPT(undef)
-  Workqueue: events prog_array_map_clear_deferred
-  RIP: 0010:write_comp_data+0x38/0x90 kernel/kcov.c:246
-  Call Trace:
-   <TASK>
-   prog_array_map_poke_run+0x77/0x380 kernel/bpf/arraymap.c:1096
-   __fd_array_map_delete_elem+0x197/0x310 kernel/bpf/arraymap.c:925
-   bpf_fd_array_map_clear kernel/bpf/arraymap.c:1000 [inline]
-   prog_array_map_clear_deferred+0x119/0x1b0 kernel/bpf/arraymap.c:1141
-   process_one_work+0x898/0x19d0 kernel/workqueue.c:3238
-   process_scheduled_works kernel/workqueue.c:3319 [inline]
-   worker_thread+0x770/0x10b0 kernel/workqueue.c:3400
-   kthread+0x465/0x880 kernel/kthread.c:464
-   ret_from_fork+0x4d/0x80 arch/x86/kernel/process.c:153
-   ret_from_fork_asm+0x19/0x30 arch/x86/entry/entry_64.S:245
-   </TASK>
-
-Reviewed-by: Sun Jian <sun.jian.kdev@gmail.com>
-Fixes: da765a2f5993 ("bpf: Add poke dependency tracking for prog array maps")
-Signed-off-by: Sechang Lim <rhkrqnwk98@gmail.com>
-Link: https://lore.kernel.org/r/20260407103823.3942156-1-rhkrqnwk98@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Andreas Koensgen <ajk@comnets.uni-bremen.de>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: linux-hams@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Reviewed-by: Jeremy Kerr <jk@codeconstruct.com.au>
+Link: https://lore.kernel.org/r/20240808103549.429349-12-jirislaby@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: bf9a38803b26 ("net: hamradio: 6pack: fix uninit-value in sixpack_receive_buf")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/arraymap.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/hamradio/6pack.c | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/kernel/bpf/arraymap.c b/kernel/bpf/arraymap.c
-index 1811efcfbd6e3..ec5c489ed3131 100644
---- a/kernel/bpf/arraymap.c
-+++ b/kernel/bpf/arraymap.c
-@@ -938,8 +938,10 @@ static void bpf_fd_array_map_clear(struct bpf_map *map, bool need_defer)
- 	struct bpf_array *array = container_of(map, struct bpf_array, map);
- 	int i;
+diff --git a/drivers/net/hamradio/6pack.c b/drivers/net/hamradio/6pack.c
+index 6cecdfa8631d7..3145dadf99290 100644
+--- a/drivers/net/hamradio/6pack.c
++++ b/drivers/net/hamradio/6pack.c
+@@ -94,8 +94,8 @@ struct sixpack {
+ 	unsigned char		*xhead;         /* next byte to XMIT */
+ 	int			xleft;          /* bytes left in XMIT queue  */
  
--	for (i = 0; i < array->map.max_entries; i++)
-+	for (i = 0; i < array->map.max_entries; i++) {
- 		__fd_array_map_delete_elem(map, &i, need_defer);
-+		cond_resched();
-+	}
- }
+-	unsigned char		raw_buf[4];
+-	unsigned char		cooked_buf[400];
++	u8			raw_buf[4];
++	u8			cooked_buf[400];
  
- static void prog_array_map_seq_show_elem(struct bpf_map *map, void *key,
+ 	unsigned int		rx_count;
+ 	unsigned int		rx_count_cooked;
+@@ -113,8 +113,8 @@ struct sixpack {
+ 	unsigned char		slottime;
+ 	unsigned char		duplex;
+ 	unsigned char		led_state;
+-	unsigned char		status;
+-	unsigned char		status1;
++	u8			status;
++	u8			status1;
+ 	unsigned char		status2;
+ 	unsigned char		tx_enable;
+ 	unsigned char		tnc_state;
+@@ -126,7 +126,7 @@ struct sixpack {
+ 
+ #define AX25_6PACK_HEADER_LEN 0
+ 
+-static void sixpack_decode(struct sixpack *, const unsigned char[], int);
++static void sixpack_decode(struct sixpack *, const u8 *, size_t);
+ static int encode_sixpack(unsigned char *, unsigned char *, int, unsigned char);
+ 
+ /*
+@@ -331,7 +331,7 @@ static void sp_bump(struct sixpack *sp, char cmd)
+ {
+ 	struct sk_buff *skb;
+ 	int count;
+-	unsigned char *ptr;
++	u8 *ptr;
+ 
+ 	count = sp->rcount + 1;
+ 
+@@ -397,7 +397,7 @@ static void sixpack_receive_buf(struct tty_struct *tty, const u8 *cp,
+ 				const u8 *fp, size_t count)
+ {
+ 	struct sixpack *sp;
+-	int count1;
++	size_t count1;
+ 
+ 	if (!count)
+ 		return;
+@@ -773,9 +773,9 @@ static int encode_sixpack(unsigned char *tx_buf, unsigned char *tx_buf_raw,
+ 
+ /* decode 4 sixpack-encoded bytes into 3 data bytes */
+ 
+-static void decode_data(struct sixpack *sp, unsigned char inbyte)
++static void decode_data(struct sixpack *sp, u8 inbyte)
+ {
+-	unsigned char *buf;
++	u8 *buf;
+ 
+ 	if (sp->rx_count != 3) {
+ 		sp->raw_buf[sp->rx_count++] = inbyte;
+@@ -801,9 +801,9 @@ static void decode_data(struct sixpack *sp, unsigned char inbyte)
+ 
+ /* identify and execute a 6pack priority command byte */
+ 
+-static void decode_prio_command(struct sixpack *sp, unsigned char cmd)
++static void decode_prio_command(struct sixpack *sp, u8 cmd)
+ {
+-	int actual;
++	ssize_t actual;
+ 
+ 	if ((cmd & SIXP_PRIO_DATA_MASK) != 0) {     /* idle ? */
+ 
+@@ -851,9 +851,9 @@ static void decode_prio_command(struct sixpack *sp, unsigned char cmd)
+ 
+ /* identify and execute a standard 6pack command byte */
+ 
+-static void decode_std_command(struct sixpack *sp, unsigned char cmd)
++static void decode_std_command(struct sixpack *sp, u8 cmd)
+ {
+-	unsigned char checksum = 0, rest = 0;
++	u8 checksum = 0, rest = 0;
+ 	short i;
+ 
+ 	switch (cmd & SIXP_CMD_MASK) {     /* normal command */
+@@ -901,10 +901,10 @@ static void decode_std_command(struct sixpack *sp, unsigned char cmd)
+ /* decode a 6pack packet */
+ 
+ static void
+-sixpack_decode(struct sixpack *sp, const unsigned char *pre_rbuff, int count)
++sixpack_decode(struct sixpack *sp, const u8 *pre_rbuff, size_t count)
+ {
+-	unsigned char inbyte;
+-	int count1;
++	size_t count1;
++	u8 inbyte;
+ 
+ 	for (count1 = 0; count1 < count; count1++) {
+ 		inbyte = pre_rbuff[count1];
 -- 
 2.53.0
 
