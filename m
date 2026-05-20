@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250955-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MDWHDqL8DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-251879-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:25:38 +0200
+	id UED7AJTtDWpZ4wUAu9opvQ
+	(envelope-from <stable+bounces-250955-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:21:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F92459617C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:25:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AEE959369E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:21:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5C8F437931F1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:45:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2E6C43116E49
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:07:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5109F3F1AD9;
-	Wed, 20 May 2026 17:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A20A73ED5C8;
+	Wed, 20 May 2026 17:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IsMcxGIT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SOT4pCvq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037A33546C8;
-	Wed, 20 May 2026 17:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23734231842;
+	Wed, 20 May 2026 17:05:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299126; cv=none; b=hFJC63MQdfOHr8zBfUyDrqIBHHVlUGt+fMOYTaNj7d/svEpnS1LIuHQaPSDrrKtTQj8wuwdis0BogRthgFhFr+sNiItVARvC0nLxt2BDNzfDvW24iFqZ7mkP/gXDegmhgre64hMDkj9FqvM0MyqIfqz9GrQ2TFeYCGh/qLW5WBg=
+	t=1779296726; cv=none; b=VyG05W7nSI7sCYYNKrWy9CfnC6GepWi2y8e11XGTL3ReysLz8lQ26MzU3I8L4PsILdUCjTTuJQ5bCTIvu+rnFZ5jOlwc3K7bbUFldXViAQ3EaFG+/y/Dmt/5pc24/qNa44awYN/lvACaX5r2qDBPC2MSHY0U+nvTREVKTyH6BqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299126; c=relaxed/simple;
-	bh=213OWZrwTYKuUpR/aH2nG90Kp/4OV3Dmzt5zfg+FLfw=;
+	s=arc-20240116; t=1779296726; c=relaxed/simple;
+	bh=Ltv86XuFc/rB7P5DwXOhxk8tDVVm2Nsiytpm8KcyzGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O6gw+WPyTy1X3ZSHFZD/EDNj8uUmLgCclS8XuLWCV79rcyds+GS9y4Lrx7uZ1gcChxasjYnBKjEkG8DAXwUfGcZO/3aGs+bbBnG9TqKbExTCBZUXQx/C07CQZyPttAHiB2I7B1cCvAyd0Dya4HbtWfzHC0vysxrCfVBn9bK+WyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IsMcxGIT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A651F000E9;
-	Wed, 20 May 2026 17:45:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MuTwzFlkz8sFjtZKQV9KOix6lAHG7csCddvOxO3nnIMP11xKA2y8frRJGGFc7Ps6Nh3XFXCbTEKWcVk7udXn40AL1qv64fSsU5lYLZ3gIT6R9ZXeGB3X5KbPTYBKMPWBTdeyifhjkaTWmO7vHPIIOzmpZ7zdVGmOvnXKpwQGw9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SOT4pCvq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A9C71F000E9;
+	Wed, 20 May 2026 17:05:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299124;
-	bh=myE3IhbyglyX+kdOOJsf1wWrWx3QSv0ZGjmlhlg9ImA=;
+	s=korg; t=1779296725;
+	bh=3hxRkNQPBIcxDH37Z6ZuAjwKO8vpiHj0xNqELqXyW+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IsMcxGITx4tnGkLysBP2YSFyh+hmUafpu0X4jLqVHvh4zxz63/NJJ3U1otz9JbyJX
-	 hZ4/H/NkqjpSMzgYPWsI/6C/sbxBEPrLRbJdtPqq1F6LA7jezRSCeGQMSKjtMNMTfG
-	 i41gsccbwYJK2Xgpu8+rqiofp8O/rpwY5skgnCF4=
+	b=SOT4pCvqsZxz2wbdFahu2F1FN0eCblIlVJO+Bj7mhoBHEfpHs1olanJxrUXeMAvH0
+	 5g2o7wSzFqvR4mh3hgA5ezZHLiDlqOnyhnEfXLKJkQHYReQ+Kr0hWM0eY1ThW+Dwi7
+	 gdWTlgUGgCCl5rqJGj85hrOGEL6Qy/y+7oUc02tM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sangyun Kim <sangyun.kim@snu.ac.kr>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 673/957] pwm: atmel-tcb: Cache clock rates and mark chip as atomic
+Subject: [PATCH 7.0 0906/1146] drm/amdgpu/gfx6: Support harvested SI chips with disabled TCCs (v2)
 Date: Wed, 20 May 2026 18:19:16 +0200
-Message-ID: <20260520162149.133268252@linuxfoundation.org>
+Message-ID: <20260520162208.742774462@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,168 +66,177 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251879-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-250955-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 8F92459617C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,gitlab.freedesktop.org:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,amd.com:email,bugs.freedesktop.org:url]
+X-Rspamd-Queue-Id: 6AEE959369E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sangyun Kim <sangyun.kim@snu.ac.kr>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 68637b68afcc3cb4d56aca14a3a1d1b47b879369 ]
+[ Upstream commit fe2b84f9228e2a0903221a4d0d8c350b018e9c0c ]
 
-atmel_tcb_pwm_apply() holds tcbpwmc->lock as a spinlock via
-guard(spinlock)() and then calls atmel_tcb_pwm_config(), which calls
-clk_get_rate() twice. clk_get_rate() acquires clk_prepare_lock (a
-mutex), so this is a sleep-in-atomic-context violation.
+This commit fixes amdgpu to work on the Radeon HD 7870 XT
+which has never worked with the Linux open source drivers before.
 
-On CONFIG_DEBUG_ATOMIC_SLEEP kernels every pwm_apply_state() that
-enables or reconfigures the PWM triggers a "BUG: sleeping function
-called from invalid context" warning.
+Some boards have "harvested" chips, meaning that some parts of
+the chip are disabled and fused, and it's sold for cheaper and
+under a different marketing name.
+On a harvested chip, any of the following can be disabled:
+- CUs (Compute Units)
+- RBs (Render Backend, aka. ROP)
+- Memory channels (ie. the chip has a lower bandwidth)
+- TCCs (ie. less L2 cache)
 
-Acquire exclusive control over the clock rates with
-clk_rate_exclusive_get() at probe time and cache the rates in struct
-atmel_tcb_pwm_chip, then read the cached rates from
-atmel_tcb_pwm_config(). This keeps the spinlock-based mutual exclusion
-introduced in commit 37f7707077f5 ("pwm: atmel-tcb: Fix race condition
-and convert to guards") and removes the sleeping calls from the atomic
-section.
+Handle chips with harvested TCCs by patching the registers
+that configure how TCCs are mapped.
 
-With no sleeping calls left in .apply() and the regmap-mmio bus already
-running with fast_io=true, also mark the chip as atomic so consumers
-can use pwm_apply_atomic() from atomic context.
+If some TCCs are disabled, we need to make sure that
+the disabled TCCs are not used, and the remaining TCCs
+are used optimally.
 
-Fixes: 37f7707077f5 ("pwm: atmel-tcb: Fix race condition and convert to guards")
-Signed-off-by: Sangyun Kim <sangyun.kim@snu.ac.kr>
-Link: https://patch.msgid.link/20260419080838.3192357-1-sangyun.kim@snu.ac.kr
-[ukleinek: Ensure .clk is enabled before calling clk_get_rate on it.]
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+TCP_CHAN_STEER_LO/HI control which TCC is used by TCP channels.
+TCP_ADDR_CONFIG.NUM_TCC_BANKS controls how many channels are used.
+
+Note that the TCC configuration is highly relevant to performance.
+Suboptimal configuration (eg. CHAN_STEER=0) can significantly
+reduce gaming performance.
+
+For optimal performance:
+- Rely on the CHAN_STEER from the golden registers table,
+  only skip disabled TCCs but keep the mapping order.
+- Limit NUM_TCC_BANKS to number of active TCCs to avoid thrashing,
+  which performs better than using the same TCC twice.
+
+v2:
+- Also consider CGTS_USER_TCC_DISABLE for disabled TCCs.
+
+Link: https://bugs.freedesktop.org/show_bug.cgi?id=60879
+Closes: https://gitlab.freedesktop.org/drm/amd/-/work_items/2664
+Fixes: 2cd46ad22383 ("drm/amdgpu: add graphic pipeline implementation for si v8")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 00218d15528fab9f6b31241fe5904eea4fcaa30d)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-atmel-tcb.c | 38 +++++++++++++++++++++++++++++++++----
- 1 file changed, 34 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c | 66 +++++++++++++++++++++++++++
+ 1 file changed, 66 insertions(+)
 
-diff --git a/drivers/pwm/pwm-atmel-tcb.c b/drivers/pwm/pwm-atmel-tcb.c
-index f9ff78ba122d4..3d30aeab507e0 100644
---- a/drivers/pwm/pwm-atmel-tcb.c
-+++ b/drivers/pwm/pwm-atmel-tcb.c
-@@ -50,6 +50,8 @@ struct atmel_tcb_pwm_chip {
- 	spinlock_t lock;
- 	u8 channel;
- 	u8 width;
-+	unsigned long rate;
-+	unsigned long slow_rate;
- 	struct regmap *regmap;
- 	struct clk *clk;
- 	struct clk *gclk;
-@@ -266,7 +268,7 @@ static int atmel_tcb_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 	int slowclk = 0;
- 	unsigned period;
- 	unsigned duty;
--	unsigned rate = clk_get_rate(tcbpwmc->clk);
-+	unsigned long rate = tcbpwmc->rate;
- 	unsigned long long min;
- 	unsigned long long max;
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c
+index 73223d97a87f5..ac90d8e9d86a8 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c
+@@ -1571,6 +1571,71 @@ static void gfx_v6_0_setup_spi(struct amdgpu_device *adev)
+ 	mutex_unlock(&adev->grbm_idx_mutex);
+ }
  
-@@ -294,7 +296,7 @@ static int atmel_tcb_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 	 */
- 	if (i == ARRAY_SIZE(atmel_tcb_divisors)) {
- 		i = slowclk;
--		rate = clk_get_rate(tcbpwmc->slow_clk);
-+		rate = tcbpwmc->slow_rate;
- 		min = div_u64(NSEC_PER_SEC, rate);
- 		max = min << tcbpwmc->width;
- 
-@@ -431,24 +433,49 @@ static int atmel_tcb_pwm_probe(struct platform_device *pdev)
- 	}
- 
- 	chip->ops = &atmel_tcb_pwm_ops;
-+	chip->atomic = true;
- 	tcbpwmc->channel = channel;
- 	tcbpwmc->width = config->counter_width;
- 
--	err = clk_prepare_enable(tcbpwmc->slow_clk);
-+	err = clk_prepare_enable(tcbpwmc->clk);
- 	if (err)
- 		goto err_gclk;
- 
-+	err = clk_prepare_enable(tcbpwmc->slow_clk);
-+	if (err)
-+		goto err_disable_clk;;
++/**
++ * gfx_v6_0_setup_tcc() - setup which TCCs are used
++ *
++ * @adev: amdgpu_device pointer
++ *
++ * Verify whether the current GPU has any TCCs disabled,
++ * which can happen when the GPU is harvested and some
++ * memory channels are disabled, reducing the memory bus width.
++ * For example, on the Radeon HD 7870 XT (Tahiti LE).
++ *
++ * If some TCCs are disabled, we need to make sure that
++ * the disabled TCCs are not used, and the remaining TCCs
++ * are used optimally.
++ *
++ * TCP_CHAN_STEER_LO/HI control which TCC is used by TCP channels.
++ * TCP_ADDR_CONFIG.NUM_TCC_BANKS controls how many channels are used.
++ *
++ * For optimal performance:
++ * - Rely on the CHAN_STEER from the golden registers table,
++ *   only skip disabled TCCs but keep the mapping order.
++ * - Limit NUM_TCC_BANKS to number of active TCCs to avoid thrashing,
++ *   which performs better than using the same TCC twice.
++ */
++static void gfx_v6_0_setup_tcc(struct amdgpu_device *adev)
++{
++	u32 i, tcc, tcp_addr_config, num_active_tcc = 0;
++	u64 chan_steer, patched_chan_steer = 0;
++	const u32 num_max_tcc = adev->gfx.config.max_texture_channel_caches;
++	const u32 dis_tcc_mask =
++		amdgpu_gfx_create_bitmask(num_max_tcc) &
++		(REG_GET_FIELD(RREG32(mmCGTS_TCC_DISABLE),
++			       CGTS_TCC_DISABLE, TCC_DISABLE) |
++		 REG_GET_FIELD(RREG32(mmCGTS_USER_TCC_DISABLE),
++			       CGTS_USER_TCC_DISABLE, TCC_DISABLE));
 +
-+	err = clk_rate_exclusive_get(tcbpwmc->clk);
-+	if (err)
-+		goto err_disable_slow_clk;
++	/* When no TCC is disabled, the golden registers table already has optimal TCC setup */
++	if (!dis_tcc_mask)
++		return;
 +
-+	err = clk_rate_exclusive_get(tcbpwmc->slow_clk);
-+	if (err)
-+		goto err_clk_unlock;
++	/* Each 4-bit nibble contains the index of a TCC used by all TCPs */
++	chan_steer = RREG32(mmTCP_CHAN_STEER_LO) | ((u64)RREG32(mmTCP_CHAN_STEER_HI) << 32ull);
 +
-+	tcbpwmc->rate = clk_get_rate(tcbpwmc->clk);
-+	tcbpwmc->slow_rate = clk_get_rate(tcbpwmc->slow_clk);
++	/* Patch the TCP to TCC mapping to skip disabled TCCs */
++	for (i = 0; i < num_max_tcc; ++i) {
++		tcc = (chan_steer >> (u64)(4 * i)) & 0xf;
 +
- 	spin_lock_init(&tcbpwmc->lock);
- 
- 	err = pwmchip_add(chip);
- 	if (err < 0)
--		goto err_disable_clk;
-+		goto err_slow_clk_unlock;
- 
- 	platform_set_drvdata(pdev, chip);
- 
- 	return 0;
- 
-+err_slow_clk_unlock:
-+	clk_rate_exclusive_put(tcbpwmc->slow_clk);
++		if (!((1 << tcc) & dis_tcc_mask)) {
++			/* Copy enabled TCC indices to the patched register value. */
++			patched_chan_steer |= (u64)tcc << (u64)(4 * num_active_tcc);
++			++num_active_tcc;
++		}
++	}
 +
-+err_clk_unlock:
-+	clk_rate_exclusive_put(tcbpwmc->clk);
++	WARN_ON(num_active_tcc != num_max_tcc - hweight32(dis_tcc_mask));
 +
- err_disable_clk:
-+	clk_disable_unprepare(tcbpwmc->clk);
++	/* Patch number of TCCs used by TCPs */
++	tcp_addr_config = REG_SET_FIELD(RREG32(mmTCP_ADDR_CONFIG),
++					TCP_ADDR_CONFIG, NUM_TCC_BANKS,
++					num_active_tcc - 1);
 +
-+err_disable_slow_clk:
- 	clk_disable_unprepare(tcbpwmc->slow_clk);
++	WREG32(mmTCP_ADDR_CONFIG, tcp_addr_config);
++	WREG32(mmTCP_CHAN_STEER_HI, upper_32_bits(patched_chan_steer));
++	WREG32(mmTCP_CHAN_STEER_LO, lower_32_bits(patched_chan_steer));
++}
++
+ static void gfx_v6_0_config_init(struct amdgpu_device *adev)
+ {
+ 	adev->gfx.config.double_offchip_lds_buf = 0;
+@@ -1729,6 +1794,7 @@ static void gfx_v6_0_constants_init(struct amdgpu_device *adev)
+ 	gfx_v6_0_tiling_mode_table_init(adev);
  
- err_gclk:
-@@ -470,6 +497,9 @@ static void atmel_tcb_pwm_remove(struct platform_device *pdev)
+ 	gfx_v6_0_setup_rb(adev);
++	gfx_v6_0_setup_tcc(adev);
  
- 	pwmchip_remove(chip);
+ 	gfx_v6_0_setup_spi(adev);
  
-+	clk_rate_exclusive_put(tcbpwmc->slow_clk);
-+	clk_rate_exclusive_put(tcbpwmc->clk);
-+	clk_disable_unprepare(tcbpwmc->clk);
- 	clk_disable_unprepare(tcbpwmc->slow_clk);
- 	clk_put(tcbpwmc->gclk);
- 	clk_put(tcbpwmc->clk);
 -- 
 2.53.0
 
