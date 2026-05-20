@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-251825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250851-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yFe5MEj8DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-251825-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:08 +0200
+	id KCpNLm75DWq75AUAu9opvQ
+	(envelope-from <stable+bounces-250851-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:58 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EBD859605A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 329D859587E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5E9F836DDE34
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:43:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4E83B3327074
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:02:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFC583F1AD5;
-	Wed, 20 May 2026 17:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC85B3ED5C8;
+	Wed, 20 May 2026 17:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FXLFLsae"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NYZQ5SWX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B206C3EFD3D;
-	Wed, 20 May 2026 17:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D021D3EBF35;
+	Wed, 20 May 2026 17:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298986; cv=none; b=H4uc1I/p6zKwN8jH/PkvjagLh+1Dt0dya0nsGR1FE0FggqZcOWwSL+BjZMoyihpBugir8J/sK53cgXtOWOgnvw1VzktATQQDPdPoo3GQaVG4JO+ytZt00//fQKsM3fSFBoHVSxVw5uKU+ZpWWawcSbgCiJ6mSPQdrFRMQpw0NYg=
+	t=1779296473; cv=none; b=Y+nCMRyLtftmD2rY7sE8YZcuMDz+jFKEPye/mQm/DUHPO7ENfwrkhHuZjBaSVz4+LUeTae7L70E8aZjc38Q3OTzLsry/daAJnNBwRffe/DDl7gMcMnA1M/e1haThICHEFzlA8G2I4mnOqRcwemr57JU4zzUXrGsOVlStRmJngAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298986; c=relaxed/simple;
-	bh=bBCOaaKBA6ScOk3XZZmI0Z5hVmFGFTn68MQEUGmQ8YI=;
+	s=arc-20240116; t=1779296473; c=relaxed/simple;
+	bh=FSWk2sBvcfItKPVvd8l8XLOKVPOVXrtbyNHmbU/5Q5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Iy8aihMPmVo+VqH7vDlD2CfKie8fq5T6g93KESUscUQ9Mr8FUJBto34Q7RBRMWRWlKTgOvj9a/IYIW9RitcRgGuaMn8c3th6AUoPgZ4KNcKf0FFlRhOPB0o2gNFmMNquJJNSTXCzzb4XghkkE91EvcullNYDQ7geYpdAZEHACZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FXLFLsae; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 294351F000E9;
-	Wed, 20 May 2026 17:43:05 +0000 (UTC)
+	 MIME-Version; b=DQr3Gca0Fxm57u44N6FlnTSim3hb9/pV/ZZLqdLsJ90tKOXJ6wGTPQqWqjeCPuS5i0M62r7zfruOWXrz6Uan5XHxm36beQZk6ZIrzmS1KUW2b/jKFOqVCV0ZVq6uyV/PVVZu4Uvpyaoi20vv39a0R44v+wzZ0bYkQ7vO8nnrfMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NYZQ5SWX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4227B1F000E9;
+	Wed, 20 May 2026 17:01:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298985;
-	bh=kPop6bLMqOuRK+Z8wjTJPmmNCG+g2yXyfMfk2cnz9QM=;
+	s=korg; t=1779296471;
+	bh=N/NWkYxGRf9N4Gzbj+UltbBMzEA2klVhxJkLFXO+7J4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FXLFLsaexIu7pOLpAkr0gyox+UUzbnPXGv9LXWq8Qk0NT4KYbQafzBV354vKb7J7d
-	 4WMUEcw8WAsjmFj66Tt0mgCCgP0/RmgvZMTkZ41cMQKZWnfRtvwYbggn9MzXhnhYV5
-	 sK4tfYh5Hxd+hnFUXggESMupH3myKrAku9ifLhKw=
+	b=NYZQ5SWXPXRs0B0ZHvqJ19uAfUU3Vzl3LfVb6/XrgeWgVHc7DoYHA5NFOOHgB4tGN
+	 wV1uHI9/a7wCDxnSlewAQaz+MYe6z1IV8L/rsj5nnoINdxJ8qgbExBMMQr5VRMJP19
+	 GSKhp19sQIKvP0Z4+h49aUYSSTb8cBBz6i7vbDBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Taniya Das <taniya.das@oss.qualcomm.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Val Packett <val@packett.cool>
-Subject: [PATCH 6.18 578/957] dt-bindings: clock: qcom,dispcc-sc7180: Define MDSS resets
+	Florian Westphal <fw@strlen.de>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 0811/1146] netfilter: nft_osf: restrict it to ipv4
 Date: Wed, 20 May 2026 18:17:41 +0200
-Message-ID: <20260520162147.064871501@linuxfoundation.org>
+Message-ID: <20260520162206.579939921@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251825-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250851-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,62 +88,57 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[packett.cool:email,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 0EBD859605A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,strlen.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email]
+X-Rspamd-Queue-Id: 329D859587E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit fc6e29d42872680dca017f2e5169eefe971f8d89 ]
+[ Upstream commit b336fdbb7103fb1484e1dcb6741151d4b5a41e35 ]
 
-The MDSS resets have so far been left undescribed. Fix that.
+This expression only supports for ipv4, restrict it.
 
-Fixes: 75616da71291 ("dt-bindings: clock: Introduce QCOM sc7180 display clock bindings")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Tested-by: Val Packett <val@packett.cool> # sc7180-ecs-liva-qc710
-Link: https://lore.kernel.org/r/20260120-topic-7180_dispcc_bcr-v1-1-0b1b442156c3@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Stable-dep-of: b0bc6011c549 ("clk: qcom: dispcc-sc7180: Add missing MDSS resets")
+Fixes: b96af92d6eaf ("netfilter: nf_tables: implement Passive OS fingerprint module in nft_osf")
+Acked-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/dt-bindings/clock/qcom,dispcc-sc7180.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/netfilter/nft_osf.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/include/dt-bindings/clock/qcom,dispcc-sc7180.h b/include/dt-bindings/clock/qcom,dispcc-sc7180.h
-index b9b51617a335d..0705103060748 100644
---- a/include/dt-bindings/clock/qcom,dispcc-sc7180.h
-+++ b/include/dt-bindings/clock/qcom,dispcc-sc7180.h
-@@ -6,6 +6,7 @@
- #ifndef _DT_BINDINGS_CLK_QCOM_DISP_CC_SC7180_H
- #define _DT_BINDINGS_CLK_QCOM_DISP_CC_SC7180_H
+diff --git a/net/netfilter/nft_osf.c b/net/netfilter/nft_osf.c
+index 1c0b493ef0a99..bdc2f6c90e2f7 100644
+--- a/net/netfilter/nft_osf.c
++++ b/net/netfilter/nft_osf.c
+@@ -28,6 +28,11 @@ static void nft_osf_eval(const struct nft_expr *expr, struct nft_regs *regs,
+ 	struct nf_osf_data data;
+ 	struct tcphdr _tcph;
  
-+/* Clocks */
- #define DISP_CC_PLL0				0
- #define DISP_CC_PLL0_OUT_EVEN			1
- #define DISP_CC_MDSS_AHB_CLK			2
-@@ -40,7 +41,11 @@
- #define DISP_CC_MDSS_VSYNC_CLK_SRC		31
- #define DISP_CC_XO_CLK				32
- 
--/* DISP_CC GDSCR */
-+/* Resets */
-+#define DISP_CC_MDSS_CORE_BCR			0
-+#define DISP_CC_MDSS_RSCC_BCR			1
++	if (nft_pf(pkt) != NFPROTO_IPV4) {
++		regs->verdict.code = NFT_BREAK;
++		return;
++	}
 +
-+/* GDSCs */
- #define MDSS_GDSC				0
+ 	if (pkt->tprot != IPPROTO_TCP) {
+ 		regs->verdict.code = NFT_BREAK;
+ 		return;
+@@ -114,7 +119,6 @@ static int nft_osf_validate(const struct nft_ctx *ctx,
  
- #endif
+ 	switch (ctx->family) {
+ 	case NFPROTO_IPV4:
+-	case NFPROTO_IPV6:
+ 	case NFPROTO_INET:
+ 		hooks = (1 << NF_INET_LOCAL_IN) |
+ 			(1 << NF_INET_PRE_ROUTING) |
 -- 
 2.53.0
 
