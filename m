@@ -1,164 +1,173 @@
-Return-Path: <stable+bounces-250468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250638-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KFjnGgPzDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-250468-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:35 +0200
+	id MJ2BGofxDWp+4wUAu9opvQ
+	(envelope-from <stable+bounces-250638-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:38:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AEA5594746
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:34 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72E00594282
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:38:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C56E8378B9F6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:45:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 71F8F303CAA1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:52:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76BA831F9BE;
-	Wed, 20 May 2026 16:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D902A36D9EA;
+	Wed, 20 May 2026 16:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nsOtRvXL"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="bkzGvkgq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-43102.protonmail.ch (mail-43102.protonmail.ch [185.70.43.102])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF76A37D101
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 16:44:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72171369D6E
+	for <stable@vger.kernel.org>; Wed, 20 May 2026 16:52:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295490; cv=none; b=lPj16YE8zzM4JS/QIPVl+IKr00exfGdIsnYUIPXlCfO6oho9+lBeRwDf7M57h80LSU3uWEqAxXEieMhr+ei2va6xLmnVZ4HucblymLVJjdKWVQfBi5KE3MpWdBuv4E29Ob+rJrCAZ/Y8ISAqeahoYFPfm91rFifw2d64KsiIKM8=
+	t=1779295935; cv=none; b=cQ12JYbMziGUyEpVuuaDf/d1GR/6/f+lfDhyK+n+U1Wa/FiLAitSfo0Q4+oejo+VUmloVw6VehAQuVb/ErSHaHjWDRbjr6OrTiLC75vXUFFrDZDgdLouO9BEqLnwVs4YM6WHujlu3wuEeowmQGUBM7BZbc1EOB4FTZ/hD5ygKyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295490; c=relaxed/simple;
-	bh=5bD+8kQCvsBJwvio8J+ONYs68ydymK7KFx9Ur+b2V04=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=opv8og8ySE+89Zw+9lbug6WAFcl1R8MoDcQG6sjgC0J7FWIhvCmpvQZrpN1cydm1H9V5HQCpwvm+SHsk37ebax/5GW3WPssckzlHNBgFWs89gn2eyuz6qbg949GyTgK4Uwn8iGHB0FmO0AuoF0XDAmien8ujyY3YGLMzJyPCox4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nsOtRvXL; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-4585a116a4aso4272439f8f.3
-        for <stable@vger.kernel.org>; Wed, 20 May 2026 09:44:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779295487; x=1779900287; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=R0simBUITpJ94FD8/rlgEoQYzs3fEqZ4WjqfFO1n/CM=;
-        b=nsOtRvXLNTxhe8BXFAxzqNHrnXARmpZdxHa6x1S8RJ9bsmiXP32XigrwomA7eRGdeR
-         jLOHR1g3lKgGft+Qnwac7hL8pRR9u9h11SfXtFfOrEkxDb61lhBNn90KvrdpkDh/gQ7/
-         AL+wYm9EkNc2qMuVFFTIKa8TJn/dVB5YJDqRBU8FT9tc/e6IA3ePnPzqLXaSPDtOI4YZ
-         HyZKhbf5AlgIR6Nf9GjaWDqMHMhZn1vN2Hzb9uXYf60JJq65jpkRdIB3lrqZQI8d6DlT
-         7Eo+8D6/qp3w4PisYBMCLl8cJg+OEjVte6h0Jba8yF5PYjPOrQLmVXzaWIULEIecb6mD
-         6sEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779295487; x=1779900287;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=R0simBUITpJ94FD8/rlgEoQYzs3fEqZ4WjqfFO1n/CM=;
-        b=XD5nDDx3kTq8oNy/17j9bR0Ddw1Hhl0L+PmMfSwjqCYIxTV6NNIZ1kHXDOwglUFFCd
-         3RWKQXOOZEB9sEIN4b55xyQh4waihIl/Y/hCKv3pfJRuUtBpij5XNbYSikQLXTP6jDYT
-         uI7QFAPfy07OrB4svj+UAQUFdubKmfKjGSNLeEZSL45QpM4IF72RQjGHLPu4FnIKuJ8U
-         eG4VroBrkBrQ7eJzxO7BsJPnRFU9zAMk8+JHGCvA3anknm9R0vWIisAj6/SS48xpYly+
-         kU5nX+qy2ULzxxGyCibI55qCeotq93Y02Jw4XcSO5MZbu1yE02R1ERPxgG8jEA+WfWtl
-         dnpQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+C7yMrOQbQJYnigDvYVRfmDhXg6FUNjHcgb0gSUWtHbBAUzKnLdQRMxmQRApulLuocsX1S4CQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzvaVDrGjpHHyRsdYoCnN1baLlWps6kIwy/yMQc01SxGyVMypTh
-	K3Xo9o+6yyOukjJXRlfoieKw13Eoe/eWpby5pTq20f2k5bAqTsq49s9h
-X-Gm-Gg: Acq92OGuxkDAjDB9Ugf0XesToWs8q6t3v7pwRh5i2RW/X19AC4Odt7a8QWu/S9fYt/r
-	LQekWo5r3KS/rXFD/VG8s18dG/bOPNLYLzh93arevMSxMQV3HhF8mkozucYxD7sdupAc1PxiunP
-	JoN0QcGMMf/efZ784iYuestwlJNRBiL+zRmwKMI5oCYI38Q8wvaJOdf3xzUa1eAfzNfJ2GE/LGb
-	lsgCp71M/48czY62x6LiGXN5i1SllyFUwggeVowVRJJcCt6suyxLjRrS04uK8rw4XmW7apezY8t
-	PXP/yrr1cgcPFgnD5zUBxubow5bmLUBeItee2oYLSy/OoHcKOggw0Ib7lMLnUcsxKqwX9FXJ43F
-	S5TqrvJLzzqP3xqW+br9D54eIKntBgI1U9woCql29n8/VgZo7Q9spT4j7wvOkziClrS3XTPFYYz
-	3F9qNO6NH6jfVReA//KKkxY4ZIZReaxC10d1lJtSkMkoo2p/DiK1TW/t2e9jr5OCCf
-X-Received: by 2002:a05:6000:2383:b0:449:9aee:4575 with SMTP id ffacd0b85a97d-45e5c5ccbf6mr41532748f8f.30.1779295487009;
-        Wed, 20 May 2026 09:44:47 -0700 (PDT)
-Received: from [192.168.2.178] (109-252-156-195.dynamic.spd-mgts.ru. [109.252.156.195])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45d9ec3b18fsm50797773f8f.11.2026.05.20.09.44.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 May 2026 09:44:46 -0700 (PDT)
-Message-ID: <286ebc23-944a-4374-8128-3511c68cd1bf@gmail.com>
-Date: Wed, 20 May 2026 19:44:44 +0300
+	s=arc-20240116; t=1779295935; c=relaxed/simple;
+	bh=+Rr0ISzy0ssrmZl04gRbEuVRjYfX8LKr4q0WEoB66Dg=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tF1p8ANnt5EZSsV05aeiUSFcr8PHlVqDlQFHQ8+XLMz8j/faz/bhK+vmBFWZkwbREiRLurr3jAogJARi02oYuC/vCKs7gG/+SHU8XzBL/7/CsQh2Ew/OrrD1wCzzQqHLu8yTBntrlXaIEmQyZkiVOBQ/AxIZ+mU/Y0VLvN6BTZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=bkzGvkgq; arc=none smtp.client-ip=185.70.43.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1779295923; x=1779555123;
+	bh=P9sCHsSL31H/tsSPytPmPu0bk1prX7Ymi40wZ1txJcU=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=bkzGvkgqNyUM1mMJZkvLp5HnQqwhqEJcGyV2dRqWceRljkJKjt5TMcH4xm3SrACaP
+	 5lWCfjZdYeZAWAYbrYWPrclmOv2TXitc+hiG2m1pHOqi/dJKP6INtWhBHI7QTwPPzC
+	 q3EsN1w5pE/kMG2nEvVi0rIMYQsHpDNh78ggpOHZ/eMG/T5m7TQ2HuMEl3Z8XnnML8
+	 EYTsIZZqeiCPHZl1d42I2tVh0neVEvzyHs8eZNxc+DmtGOc+Jg5B/E7sBAzM1dY/8D
+	 3KGHWTglyTTbttEIQ28mtzS3TL3O42poAOzrLRcehZMSXcWWgpU70yHy0UQvKr1OsB
+	 wpEsmmuYlXw+g==
+Date: Wed, 20 May 2026 16:51:57 +0000
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+From: Tj <tj.iam.tj@proton.me>
+Cc: patches@lists.linux.dev, Chen Cheng <chencheng@fnnas.com>, Paul Menzel <pmenzel@molgen.mpg.de>, Yu Kuai <yukuai@fnnas.com>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 7.0 0002/1146] md: suppress spurious superblock update error message for dm-raid
+Message-ID: <e08a970e-777d-49af-9981-6dde0ced4738@proton.me>
+In-Reply-To: <20260520162148.451131860@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org> <20260520162148.451131860@linuxfoundation.org>
+Feedback-ID: 113488376:user:proton
+X-Pm-Message-ID: 171538a3e7a1fb733f50972d0ad093ebcbee26f2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mfd: max77620: Avoid regmap mutex deadlock in power-off
- handler
-To: Mark Brown <broonie@kernel.org>, Lee Jones <lee@kernel.org>
-Cc: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260520-max77620_poweroff-v1-1-9186a3bcbe9e@tecnico.ulisboa.pt>
- <c8d16352-63a3-4512-b90c-a79e7e96dd3c@gmail.com>
- <38f5201a-6b52-4f18-bbbe-775171a3f147@tecnico.ulisboa.pt>
- <20260520161900.GM2767592@google.com>
- <3b2b25f9-3ab5-4811-9945-f317b8788484@sirena.org.uk>
-Content-Language: en-US
-From: Dmitry Osipenko <digetx@gmail.com>
-In-Reply-To: <3b2b25f9-3ab5-4811-9945-f317b8788484@sirena.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[proton.me,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[proton.me:s=protonmail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-250468-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250638-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[3];
+	DKIM_TRACE(0.00)[proton.me:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[digetx@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[tj.iam.tj@proton.me,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 0AEA5594746
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mpg.de:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,fnnas.com:email,proton.me:email,proton.me:mid,proton.me:dkim]
+X-Rspamd-Queue-Id: 72E00594282
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-20.05.2026 19:23, Mark Brown пишет:
-> On Wed, May 20, 2026 at 05:19:00PM +0100, Lee Jones wrote:
->> On Wed, 20 May 2026, Diogo Ivo wrote:
-> 
->>> This patch was motivated by the Sashiko review I got in [1]. Its point
->>> here is that there is a possibility for a deadlock scenario in which
->>> a secondary CPU obtains the mutex for the regmap and then smp_send_stop()
->>> is called before this secondary CPU gets a chance to release the mutex,
->>> making it so that when the primary CPU tries to acquire it to issue the
->>> write it hangs. Is there something that I am misunderstanding here?
->>>
-> 
->> It's my understanding that using the Regmap wrappers _prevents_ locking
->> issues, rather than causes them.
-> 
-> In the case where the CPU is being powered off during a regmap write
-> there is a potential issue - as Diogo says if we're in the middle of
-> holding the lock and we power off the CPU that owns the lock then it
-> will never be able to release the lock.  I would expect the same issue
-> to apply to a bus like I2C or SPI though, they'll hold a lock while
-> they're in the middle of doing bus I/O unless you use some special API.
+Tested on v7.0.9 - looks good:
 
-Sounds bad
+$ journalctl --dmesg --grep md/raid1
+May 20 16:48:56 sunny kernel: md/raid1:mdX: active with 2 out of 2 mirrors
+May 20 16:48:56 sunny kernel: md/raid1:mdX: active with 2 out of 2 mirrors
+May 20 16:48:56 sunny kernel: md/raid1:mdX: active with 2 out of 2 mirrors
+May 20 16:48:56 sunny kernel: md/raid1:mdX: active with 2 out of 2 mirrors
+May 20 16:48:56 sunny kernel: md/raid1:mdX: active with 2 out of 2 mirrors
+May 20 16:48:56 sunny kernel: md/raid1:mdX: active with 2 out of 2 mirrors
+May 20 16:48:56 sunny kernel: md/raid1:mdX: active with 2 out of 2 mirrors
+May 20 16:48:56 sunny kernel: md/raid1:mdX: active with 2 out of 2 mirrors
+May 20 16:48:56 sunny kernel: md/raid1:mdX: active with 2 out of 2 mirrors
+May 20 16:48:56 sunny kernel: md/raid1:mdX: active with 2 out of 2 mirrors
+May 20 16:48:56 sunny kernel: md/raid1:mdX: active with 2 out of 2 mirrors
+May 20 16:48:56 sunny kernel: md/raid1:mdX: active with 2 out of 2 mirrors
+May 20 16:48:56 sunny kernel: md/raid1:mdX: active with 2 out of 2 mirrors
+May 20 16:48:56 sunny kernel: md/raid1:mdX: active with 2 out of 2 mirrors
 
-Diogo, check if shutdown works with added nosmp to kernel's cmdline.
+Tested-by: Tj <tj.iam.tj@proton.me>
 
-BTW, you can use i2c_smbus_read_byte_data+i2c_smbus_write_byte_data to
-keep the old regmap_update_bits behaviour.
+On 20/05/2026 16:04, Greg Kroah-Hartman wrote:
+> 7.0-stable review patch.  If anyone has any objections, please let me kno=
+w.
+>
+> ------------------
+>
+> From: Chen Cheng <chencheng@fnnas.com>
+>
+> [ Upstream commit eff0d74c6c8fd358bc9474c05002e51fa5aa56ad ]
+>
+> dm-raid has external metadata management (mddev->external =3D 1) and
+> no persistent superblock (mddev->persistent =3D 0). For these arrays,
+> there's no superblock to update, so the error message is spurious.
+>
+> The error appears as:
+> md_update_sb: can't update sb for read-only array md0
+>
+> Fixes: 8c9e376b9d1a ("md: warn about updating super block failure")
+> Reported-by: Tj <tj.iam.tj@proton.me>
+> Closes: https://lore.kernel.org/all/20260128082430.96788-1-tj.iam.tj@prot=
+on.me/
+> Signed-off-by: Chen Cheng <chencheng@fnnas.com>
+> Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+> Link: https://lore.kernel.org/linux-raid/20260210133847.269986-1-chenchen=
+g@fnnas.com
+> Signed-off-by: Yu Kuai <yukuai@fnnas.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>   drivers/md/md.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/md/md.c b/drivers/md/md.c
+> index 3ce6f9e9d38e6..c2cc2302d727d 100644
+> --- a/drivers/md/md.c
+> +++ b/drivers/md/md.c
+> @@ -2788,7 +2788,9 @@ void md_update_sb(struct mddev *mddev, int force_ch=
+ange)
+>   =09if (!md_is_rdwr(mddev)) {
+>   =09=09if (force_change)
+>   =09=09=09set_bit(MD_SB_CHANGE_DEVS, &mddev->sb_flags);
+> -=09=09pr_err("%s: can't update sb for read-only array %s\n", __func__, m=
+dname(mddev));
+> +=09=09if (!mddev_is_dm(mddev))
+> +=09=09=09pr_err_ratelimited("%s: can't update sb for read-only array %s\=
+n",
+> +=09=09=09=09=09   __func__, mdname(mddev));
+>   =09=09return;
+>   =09}
+>
+> --
+> 2.53.0
+>
+>
+>
+
 
 
