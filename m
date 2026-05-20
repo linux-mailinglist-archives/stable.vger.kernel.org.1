@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-250394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251375-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wC0BFgXyDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-250394-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:40:21 +0200
+	id MEqvJucZDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251375-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:30:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8E335943CE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:40:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF637599B47
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:30:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 11FF73034AB4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 682423347D9C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:23:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07FD3BA246;
-	Wed, 20 May 2026 16:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16C6D36CE19;
+	Wed, 20 May 2026 17:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xI10r99D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wHPydi3m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77AFE38F945;
-	Wed, 20 May 2026 16:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53D93546E6;
+	Wed, 20 May 2026 17:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295299; cv=none; b=VCVHyzGpySFCNuFcos/g5QrwEOtWCNM/+1fwKvNfNXkTnrscaMYIkpOf/HhYuS7HqTLPyTei6ZPIIsIHCQL3escctqeZCadaTPSUW6LYLj2ANdBiduKUYwEgKhBmmAUDxCF02MGqSucLmp8hg4R2tEHD3rwQbxhJvNSaJBxQNGY=
+	t=1779297815; cv=none; b=mwblF3SNy4UvfYjYEckco1OXBMKPyMa+0hXBn4tpPoHJOcyfXuxajs4jh/uCrg7L5WpGs7UT6GoZ6D74pxuHY8ynxj+eOeHIgX8KJiyDI3v9rm9vgrvhlhQpKoIGpY1Wakr/8H+m32165TyGzEEQO4R6oo4YCl47xYP7h0P+PX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295299; c=relaxed/simple;
-	bh=KlM0Jh5L7K0ijra5P9IedM2hZcOfVRYU0HVMfDXBsg0=;
+	s=arc-20240116; t=1779297815; c=relaxed/simple;
+	bh=sWovFjeFgKxADfx/WKPSsZ0yyu01xTdoXKJR8iRwwi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pnK5nSyL+JFn52O+E1Izx3HTZ5REf9mud0DjiXzN4E+D3T8WUa7deocYhjRvMcuP2C4SMKeDSEWsvI4TdjL9X3Afqba9wCD0NcrYSuOvWM6FyZUw6NnGk0yYzc8TzfJbNiBxogjXY3To0d3rkDfcqnrsqYG9AXBYP8KBUddCACE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xI10r99D; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD86B1F000E9;
-	Wed, 20 May 2026 16:41:37 +0000 (UTC)
+	 MIME-Version; b=WmosAUPZCfizNrHtio0hv5KhPTDT0Uj8vuwxHDvBch/CuLMyd1MimqLJolDTQ4XnPX1e/pTTfYH0iGn9mQi2eyx1TB1zR2B4WBm5C/RLI/11kMPxUD0xq4cUVnGCKIYF2xUdcaQRwEzcLlv00kMjCjrOA2G6oQjpy7R2wV6awy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wHPydi3m; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 468DD1F000E9;
+	Wed, 20 May 2026 17:23:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295298;
-	bh=77x4mLKG+AlFyPqk9LwppzlMLHooT2qOf+Nw9Ob0PFI=;
+	s=korg; t=1779297814;
+	bh=QEZaBYVZLKiulq5FKGdU8rBikIuS9aMg4zEjUuYn9sE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xI10r99DlasCvJD5v5EQas/etHIskBlkW9PRw8rj0GkLB+R/DyJL3GBehrhFvezD6
-	 fPtHd/RY5bB0fj2sGqqWXN1P7R183sEE6yT+hRD/0fOE26qNCJkwX+1I+irzqQPB62
-	 OMm1CXA4C9L/pGqqEHPbJ+P6SwQn32XSKL1Ydg/4=
+	b=wHPydi3m7Ec1mMbK6IaQiIEWdGLkCJ0o5dCkkXG/KAvr1TFrUh2wV85c+T/CH9r8P
+	 PKwKdPKBcRAFd7kax3XJC5XWGbIZm+Ru9T7Frt87MMtygJWgP0vfoMGwHVyUZ/g73c
+	 FDhamA9UybPuaG2iHgPRitUs5abHo0KPQ/ws8BNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
+	Haoyu Lu <hechushiguitu666@gmail.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0366/1146] pmdomain: imx: scu-pd: Fix device_node reference leak during ->probe()
+Subject: [PATCH 6.18 133/957] ACPI: AGDI: fix missing newline in error message
 Date: Wed, 20 May 2026 18:10:16 +0200
-Message-ID: <20260520162156.483082153@linuxfoundation.org>
+Message-ID: <20260520162137.440277352@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,72 +66,75 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-250394-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nxp.com,linaro.org,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251375-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,os.amperecomputing.com,gmail.com,huawei.com,arm.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linaro.org:email]
-X-Rspamd-Queue-Id: A8E335943CE
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amperecomputing.com:email,arm.com:email]
+X-Rspamd-Queue-Id: EF637599B47
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Haoyu Lu <hechushiguitu666@gmail.com>
 
-[ Upstream commit c8e9b6a55702be6c6d034e973d519c52c3848415 ]
+[ Upstream commit b178330b67abb7293b6de28b2a49d49c83962db5 ]
 
-When calling of_parse_phandle_with_args(), the caller is responsible
-to call of_node_put() to release the reference of device node.
-In imx_sc_pd_get_console_rsrc(), it does not release the reference.
+Add the missing trailing newline to the dev_err() message
+printed when SDEI event registration fails.
 
-Fixes: 893cfb99734f ("firmware: imx: scu-pd: do not power off console domain")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+This keeps the error output as a properly terminated log line.
+
+Fixes: a2a591fb76e6 ("ACPI: AGDI: Add driver for Arm Generic Diagnostic Dump and Reset device")
+Reviewed-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+Signed-off-by: Haoyu Lu <hechushiguitu666@gmail.com>
+Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pmdomain/imx/scu-pd.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/acpi/arm64/agdi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pmdomain/imx/scu-pd.c b/drivers/pmdomain/imx/scu-pd.c
-index 01d465d88f60d..3ec33667a308c 100644
---- a/drivers/pmdomain/imx/scu-pd.c
-+++ b/drivers/pmdomain/imx/scu-pd.c
-@@ -326,6 +326,7 @@ static void imx_sc_pd_get_console_rsrc(void)
- 		return;
+diff --git a/drivers/acpi/arm64/agdi.c b/drivers/acpi/arm64/agdi.c
+index e0df3daa4abf0..abe29705744e5 100644
+--- a/drivers/acpi/arm64/agdi.c
++++ b/drivers/acpi/arm64/agdi.c
+@@ -32,7 +32,7 @@ static int agdi_sdei_probe(struct platform_device *pdev,
  
- 	imx_con_rsrc = specs.args[0];
-+	of_node_put(specs.np);
- }
- 
- static int imx_sc_get_pd_power(struct device *dev, u32 rsrc)
+ 	err = sdei_event_register(adata->sdei_event, agdi_sdei_handler, pdev);
+ 	if (err) {
+-		dev_err(&pdev->dev, "Failed to register for SDEI event %d",
++		dev_err(&pdev->dev, "Failed to register for SDEI event %d\n",
+ 			adata->sdei_event);
+ 		return err;
+ 	}
 -- 
 2.53.0
 
