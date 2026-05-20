@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-253028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252568-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MPxnNO0ADmo95QUAu9opvQ
-	(envelope-from <stable+bounces-253028-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:57 +0200
+	id qJyjOvr7DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-252568-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:50 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88BFD5971BB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85728595F02
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 97B17313F910
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 08497313C0F5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:16:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC248342CB3;
-	Wed, 20 May 2026 18:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9C83F88B8;
+	Wed, 20 May 2026 18:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="01XA2CYI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B/uz0S6z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809C7272E56;
-	Wed, 20 May 2026 18:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4CE37DE8A;
+	Wed, 20 May 2026 18:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302215; cv=none; b=nt5ClpGePtiObUX/7w2UX7JUbnDrKff9Kf7wZtgo3/f+XyvvzxlWveNzTBiHURi7iNf31/9do7e2vDKsULtQCJUuQZb6CbMYhdPuOPjtuP+5sFkaSmnztShb+690m5rKF6clACGOSBHOWxqPvuz5SKeMSLUJIIF+cnEmEmGsrRM=
+	t=1779301016; cv=none; b=mok67FoIjcUtFzyL81nlecIVvuF12awpmHotzOItPqWOKFWI9NflhsSDxL6vijNeubsdPXFG8VqBNFnkGE9IcDCnPQhG3mIZOEDjCxq3dr9Q2c5o0beAzj2edZy4aFCYWh7gAT5dKljYka08Ucf9YtJ9mqY9WHTW0RKIPmaUQik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302215; c=relaxed/simple;
-	bh=5KrzZZbkc48k6rMDZAZh9S75W+JmXm+c3lMUqBjiZTk=;
+	s=arc-20240116; t=1779301016; c=relaxed/simple;
+	bh=SvVVxWDo2kH5kI5MRClKhot9a3VTEwW6ynOHtAOsuZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dI+R2vObIexOuBbu5LtoMXZU5SQhpwpSmIFzVg0znoutK3cMpv4eC1J1NTNP5Jb0Abrni7Av205X7wQKixD2ThgpjpWVeFPqTj+wN5j58vnbGXetKStrlxhAK2nqUlOy084WHP28JXrUA7SgHKLUHXdOiBbhzvYa4clSs0fBB/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=01XA2CYI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE94E1F000E9;
-	Wed, 20 May 2026 18:36:53 +0000 (UTC)
+	 MIME-Version; b=TBs4tb+ynE005GdoNEWjMvgwELukQjtU9BW5tuW1Ryi7j2G1fUAP42Yg/9PVCytfF9xRNSzSs2AsyYLDR5uy0gums2JmGk3ND+DjCzmppXo0udtXO8SmRL7M5tBejv3MYUDgifBixeou1atPSc5BzGybSfsVMzs7JC0g+L1iawQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B/uz0S6z; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B6301F00893;
+	Wed, 20 May 2026 18:16:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302214;
-	bh=+tjCosxDVb9oVkwQN9b3OkTCGtk6Q9jz3fhajfNu/68=;
+	s=korg; t=1779301014;
+	bh=phOWArra3esdRPNvnM25QsXxy9bazT75m7jz5I2+PvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=01XA2CYIlWFk+ivtszJd6HwtBRm5N/r3OLuHFAuG0ooVNKNzjzttNyj3Mr0Zd2zzf
-	 BVXztk8H3bfGDypJkCBTJ+xJMVYAqpCyM2M1ViUvZiDl3RhVTlPv8dlyu1zOcJCITQ
-	 2PAVxJMj4vh2/qf9Kt2pBPq/Go9fl0CKd93IVGLI=
+	b=B/uz0S6zuQT1xzKTGsZAynV0e2h+8i+a+TZ93JePIDayYHwSkqLxmt95ikf3BaSL5
+	 SadTx4arXkglJ6nlMkOqx7HruzDhqlO8IW6i5QplGlTykudVt8CyldA6P3HJ7Ubc64
+	 hf5vs4Q4vb0PgoiV7dXgN45fMIIfBBM8RARQ08aA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Thomas Bogendoerfer <tbogendoerfer@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 183/508] memory: tegra30-emc: Fix dll_change check
+Subject: [PATCH 6.12 395/666] tty: serial: ip22zilog: Fix section mispatch warning
 Date: Wed, 20 May 2026 18:20:06 +0200
-Message-ID: <20260520162102.601334203@linuxfoundation.org>
+Message-ID: <20260520162119.818659439@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,79 +66,70 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253028-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252568-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 88BFD5971BB
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 85728595F02
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikko Perttunen <mperttunen@nvidia.com>
+From: Thomas Bogendoerfer <tbogendoerfer@suse.de>
 
-[ Upstream commit 0a93f2355cf4922ad2399dbef5ea1049fef116d4 ]
+[ Upstream commit a1a81aef99e853dec84241d701fbf587d713eb5b ]
 
-The code checking whether the specified memory timing enables DLL
-in the EMRS register was reversed. DLL is enabled if bit A0 is low.
-Fix the check.
+ip22zilog_prepare() is now called by driver probe routine, so it
+shouldn't be in the __init section any longer.
 
-Fixes: e34212c75a68 ("memory: tegra: Introduce Tegra30 EMC driver")
-Signed-off-by: Mikko Perttunen <mperttunen@nvidia.com>
-Link: https://patch.msgid.link/20260126-fix-emc-dllchange-v1-2-47ad3bb63262@nvidia.com
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Fixes: 3fc36ae6abd2 ("tty: serial: ip22zilog: Use platform device for probing")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202604020945.c9jAvCPs-lkp@intel.com/
+Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+Link: https://patch.msgid.link/20260402102154.136620-1-tbogendoerfer@suse.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/memory/tegra/tegra30-emc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/tty/serial/ip22zilog.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/memory/tegra/tegra30-emc.c b/drivers/memory/tegra/tegra30-emc.c
-index 9eae25c57ec6e..b5cf2df6b1933 100644
---- a/drivers/memory/tegra/tegra30-emc.c
-+++ b/drivers/memory/tegra/tegra30-emc.c
-@@ -554,14 +554,14 @@ static int emc_prepare_timing_change(struct tegra_emc *emc, unsigned long rate)
- 	emc->emc_cfg = readl_relaxed(emc->regs + EMC_CFG);
- 	emc_dbg = readl_relaxed(emc->regs + EMC_DBG);
+diff --git a/drivers/tty/serial/ip22zilog.c b/drivers/tty/serial/ip22zilog.c
+index 6e19c6713849a..a12101dc05546 100644
+--- a/drivers/tty/serial/ip22zilog.c
++++ b/drivers/tty/serial/ip22zilog.c
+@@ -1025,7 +1025,7 @@ static struct uart_driver ip22zilog_reg = {
+ #endif
+ };
  
--	if (emc->dll_on == !!(timing->emc_mode_1 & 0x1))
-+	if (emc->dll_on == !(timing->emc_mode_1 & 0x1))
- 		dll_change = DLL_CHANGE_NONE;
--	else if (timing->emc_mode_1 & 0x1)
-+	else if (!(timing->emc_mode_1 & 0x1))
- 		dll_change = DLL_CHANGE_ON;
- 	else
- 		dll_change = DLL_CHANGE_OFF;
- 
--	emc->dll_on = !!(timing->emc_mode_1 & 0x1);
-+	emc->dll_on = !(timing->emc_mode_1 & 0x1);
- 
- 	if (timing->data[80] && !readl_relaxed(emc->regs + EMC_ZCAL_INTERVAL))
- 		emc->zcal_long = true;
+-static void __init ip22zilog_prepare(struct uart_ip22zilog_port *up)
++static void ip22zilog_prepare(struct uart_ip22zilog_port *up)
+ {
+ 	unsigned char sysrq_on = IS_ENABLED(CONFIG_SERIAL_IP22_ZILOG_CONSOLE);
+ 	int brg;
 -- 
 2.53.0
 
