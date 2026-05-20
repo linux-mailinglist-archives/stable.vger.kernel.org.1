@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-250255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250257-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wDWgHm3lDWqF4gUAu9opvQ
-	(envelope-from <stable+bounces-250255-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:46:37 +0200
+	id gD7tF4PtDWpZ4wUAu9opvQ
+	(envelope-from <stable+bounces-250257-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:21:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1166B5926A2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:46:36 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80387593688
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:21:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AB77A3092BF7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:36:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 92FD830C5566
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:37:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ADB13E9C0C;
-	Wed, 20 May 2026 16:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBDF23EEAED;
+	Wed, 20 May 2026 16:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z8nWlyMO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZoBDSAbl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A3B36D9E7;
-	Wed, 20 May 2026 16:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76FC53EE1C0;
+	Wed, 20 May 2026 16:35:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294933; cv=none; b=LKb51EDVz+2C+BuqBUzeAVt+7gfe46JiTiSKEGtJwp3sqQmLb8NP7MC6d38Roq08N7el03lPsUlEFUYxKUhYIbVuzDMa8X0rYOLxu3eTbR9aKU2iABl3sinhqasznDWynSBCu6gpHWA2Xt0dxPoKjToWH7PcidPMpQZuIP61g7k=
+	t=1779294938; cv=none; b=i9Pd0gJtJBGPHqfpyv1oFh9Nh8/nlTM6mqeDU6HintgIXPCQ4BIoTeLNJyfaov6ZzRDG2XrabxsFznmahE2DZFF+xxCh+1tTND8aF+6s5tOzWfK3xNwEdc0pKylG5D5b1/cZRvfVAywnu0PeTUIK2FfeuX+Ifi3u/Yb+ci/h33c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294933; c=relaxed/simple;
-	bh=6DXbqdQFng45Gzhyz3gzQaLrxlxGOoZZ5p8f+TpyJOw=;
+	s=arc-20240116; t=1779294938; c=relaxed/simple;
+	bh=Rjxo6B4ygyGIYvPk1tpKnt5VV//wuuBU5g+esHCCR4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=flXibOH98/9DNMXlUusagrEcIOJ7qS6z2CEKXz2UwGcdURC8VgHm8qwG8qV7l0sr6PU4rVXKM0DIfaCNm2sKr3NuZTiJHwLIsMfG8XYq3N1kSeJCEjIowBRREATPQLPD1HR9v//eWGM5rfBHVao3qx1LDpEU9GK/GUZQcqf/4fA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z8nWlyMO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99BF71F00893;
-	Wed, 20 May 2026 16:35:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hY9yyzvTqc2TeHnKCHTLm4kTXPYd6IFlApVZQ8UfoqqS6emqiOdnbnxdzfS8xmUPpYbUmXNooZMVJY7wTrQA2HJqiEj55JKHDwXDbwcwI1rwqp3Pc9CJT57jZdl56QXuuLSFQDQF3W88zzuSXdLGt+d1W+o/lZQGjJLloeW4i0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZoBDSAbl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB7F71F000E9;
+	Wed, 20 May 2026 16:35:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294932;
-	bh=aTaPl2S9Y/yr3O8GAWBg7DV2QdjozvHb60LJ0sBGWbE=;
+	s=korg; t=1779294937;
+	bh=HaW+jvcTD7s2BUPi0AY+dD/E1B0JwRR5h+tN69HXWOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Z8nWlyMO1rgpARCc+X7+zFwepfxxpCRnlGxn5CAEUfIdDdsWnWz83j4IWDS7NrPg3
-	 GG2XOjMFKdLO8HR5Oel1PS9jMIUTJ6JW+75lkzfEcGlaRnF1+/oRfoAN4IP05nH48j
-	 hFWfaDOApkpDBaHGJTQ/T9mBhpP9h5d8JyQG7+DA=
+	b=ZoBDSAblXGTXn+GvcuVEqNNkcuLvb9RN6M8DXOFoeKQKnEgT7UY0EJdVP7eiK/iOu
+	 KywLLLnTlD4yeS8g8GPyAxmEUt8o7RbyyH4EyDu7bPJF8JMFgikfBP+Vd/s+NFzcfB
+	 numTZZD/Zp5KjX4ni1AAdMtVaQttOafj4dk/Kxrs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	kernel test robot <lkp@intel.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Maciej Patelczyk <maciej.patelczyk@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0228/1146] dma-fence: Fix sparse warnings due __rcu annotations
-Date: Wed, 20 May 2026 18:07:58 +0200
-Message-ID: <20260520162153.413202679@linuxfoundation.org>
+Subject: [PATCH 7.0 0229/1146] drm/gpusvm: Fix unbalanced unlock in drm_gpusvm_scan_mm()
+Date: Wed, 20 May 2026 18:07:59 +0200
+Message-ID: <20260520162153.434646095@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -69,12 +69,12 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-250255-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250257-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -86,13 +86,13 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,intel.com:email]
-X-Rspamd-Queue-Id: 1166B5926A2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+X-Rspamd-Queue-Id: 80387593688
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,138 +100,59 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+From: Maciej Patelczyk <maciej.patelczyk@intel.com>
 
-[ Upstream commit 62918542b7bf08860a60ebbde7654486e0ac0776 ]
+[ Upstream commit d287dee565c3c32e1ed76ec1847af46809c29b90 ]
 
-__rcu annotations on the return types from dma_fence_driver_name() and
-dma_fence_timeline_name() cause sparse to complain because both the
-constant signaled strings, and the strings return by the dma_fence_ops are
-not __rcu annotated.
+There is a unbalanced lock/unlock to gpusvm notifier lock:
+[  931.045868] =====================================
+[  931.046509] WARNING: bad unlock balance detected!
+[  931.047149] 6.19.0-rc6+xe-**************** #9 Tainted: G     U
+[  931.048150] -------------------------------------
+[  931.048790] kworker/u5:0/51 is trying to release lock (&gpusvm->notifier_lock) at:
+[  931.049801] [<ffffffffa090c0d8>] drm_gpusvm_scan_mm+0x188/0x460 [drm_gpusvm_helper]
+[  931.050802] but there are no more locks to release!
+[  931.051463]
 
-For a simple fix it is easiest to cast them with __rcu added and undo the
-smarts from the tracpoints side of things. There is no functional change
-since the rest is left in place. Later we can consider changing the
-dma_fence_ops return types too, and handle all the individual drivers
-which define them.
+The drm_gpusvm_notifier_unlock() sits under err_free label and the
+first jump to err_free is just before calling the
+drm_gpusvm_notifier_lock() causing unbalanced unlock.
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Fixes: 506aa8b02a8d ("dma-fence: Add safe access helpers and document the rules")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202506162214.1eA69hLe-lkp@intel.com/
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Link: https://lore.kernel.org/r/20250616155952.24259-1-tvrtko.ursulin@igalia.com
-Signed-off-by: Christian König <christian.koenig@amd.com>
+Fixes: f1d08a586482 ("drm/gpusvm: Introduce a function to scan the current migration state")
+Signed-off-by: Maciej Patelczyk <maciej.patelczyk@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patch.msgid.link/20260209123433.1271053-1-maciej.patelczyk@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma-buf/dma-fence.c      |  8 ++++----
- include/trace/events/dma_fence.h | 35 +++++---------------------------
- 2 files changed, 9 insertions(+), 34 deletions(-)
+ drivers/gpu/drm/drm_gpusvm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/dma-buf/dma-fence.c b/drivers/dma-buf/dma-fence.c
-index 35afcfcac5910..abb6d8f8f95d2 100644
---- a/drivers/dma-buf/dma-fence.c
-+++ b/drivers/dma-buf/dma-fence.c
-@@ -1133,9 +1133,9 @@ const char __rcu *dma_fence_driver_name(struct dma_fence *fence)
- 			 "RCU protection is required for safe access to returned string");
+diff --git a/drivers/gpu/drm/drm_gpusvm.c b/drivers/gpu/drm/drm_gpusvm.c
+index 04bdc386c3fd8..35dd07297dd08 100644
+--- a/drivers/gpu/drm/drm_gpusvm.c
++++ b/drivers/gpu/drm/drm_gpusvm.c
+@@ -819,7 +819,7 @@ enum drm_gpusvm_scan_result drm_gpusvm_scan_mm(struct drm_gpusvm_range *range,
  
- 	if (!dma_fence_test_signaled_flag(fence))
--		return fence->ops->get_driver_name(fence);
-+		return (const char __rcu *)fence->ops->get_driver_name(fence);
- 	else
--		return "detached-driver";
-+		return (const char __rcu *)"detached-driver";
+ 		if (!(pfns[i] & HMM_PFN_VALID)) {
+ 			state = DRM_GPUSVM_SCAN_UNPOPULATED;
+-			goto err_free;
++			break;
+ 		}
+ 
+ 		page = hmm_pfn_to_page(pfns[i]);
+@@ -856,9 +856,9 @@ enum drm_gpusvm_scan_result drm_gpusvm_scan_mm(struct drm_gpusvm_range *range,
+ 		i += 1ul << drm_gpusvm_hmm_pfn_to_order(pfns[i], i, npages);
+ 	}
+ 
+-err_free:
+ 	drm_gpusvm_notifier_unlock(range->gpusvm);
+ 
++err_free:
+ 	kvfree(pfns);
+ 	return state;
  }
- EXPORT_SYMBOL(dma_fence_driver_name);
- 
-@@ -1165,8 +1165,8 @@ const char __rcu *dma_fence_timeline_name(struct dma_fence *fence)
- 			 "RCU protection is required for safe access to returned string");
- 
- 	if (!dma_fence_test_signaled_flag(fence))
--		return fence->ops->get_timeline_name(fence);
-+		return (const char __rcu *)fence->ops->get_driver_name(fence);
- 	else
--		return "signaled-timeline";
-+		return (const char __rcu *)"signaled-timeline";
- }
- EXPORT_SYMBOL(dma_fence_timeline_name);
-diff --git a/include/trace/events/dma_fence.h b/include/trace/events/dma_fence.h
-index 4814a65b68dcb..3abba45c0601a 100644
---- a/include/trace/events/dma_fence.h
-+++ b/include/trace/events/dma_fence.h
-@@ -9,37 +9,12 @@
- 
- struct dma_fence;
- 
--DECLARE_EVENT_CLASS(dma_fence,
--
--	TP_PROTO(struct dma_fence *fence),
--
--	TP_ARGS(fence),
--
--	TP_STRUCT__entry(
--		__string(driver, dma_fence_driver_name(fence))
--		__string(timeline, dma_fence_timeline_name(fence))
--		__field(unsigned int, context)
--		__field(unsigned int, seqno)
--	),
--
--	TP_fast_assign(
--		__assign_str(driver);
--		__assign_str(timeline);
--		__entry->context = fence->context;
--		__entry->seqno = fence->seqno;
--	),
--
--	TP_printk("driver=%s timeline=%s context=%u seqno=%u",
--		  __get_str(driver), __get_str(timeline), __entry->context,
--		  __entry->seqno)
--);
--
- /*
-  * Safe only for call sites which are guaranteed to not race with fence
-  * signaling,holding the fence->lock and having checked for not signaled, or the
-  * signaling path itself.
-  */
--DECLARE_EVENT_CLASS(dma_fence_unsignaled,
-+DECLARE_EVENT_CLASS(dma_fence,
- 
- 	TP_PROTO(struct dma_fence *fence),
- 
-@@ -64,14 +39,14 @@ DECLARE_EVENT_CLASS(dma_fence_unsignaled,
- 		  __entry->seqno)
- );
- 
--DEFINE_EVENT(dma_fence_unsignaled, dma_fence_emit,
-+DEFINE_EVENT(dma_fence, dma_fence_emit,
- 
- 	TP_PROTO(struct dma_fence *fence),
- 
- 	TP_ARGS(fence)
- );
- 
--DEFINE_EVENT(dma_fence_unsignaled, dma_fence_init,
-+DEFINE_EVENT(dma_fence, dma_fence_init,
- 
- 	TP_PROTO(struct dma_fence *fence),
- 
-@@ -85,14 +60,14 @@ DEFINE_EVENT(dma_fence, dma_fence_destroy,
- 	TP_ARGS(fence)
- );
- 
--DEFINE_EVENT(dma_fence_unsignaled, dma_fence_enable_signal,
-+DEFINE_EVENT(dma_fence, dma_fence_enable_signal,
- 
- 	TP_PROTO(struct dma_fence *fence),
- 
- 	TP_ARGS(fence)
- );
- 
--DEFINE_EVENT(dma_fence_unsignaled, dma_fence_signaled,
-+DEFINE_EVENT(dma_fence, dma_fence_signaled,
- 
- 	TP_PROTO(struct dma_fence *fence),
- 
 -- 
 2.53.0
 
