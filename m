@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-250664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252214-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eM9ZGFL1DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-250664-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:54:26 +0200
+	id 4FT3N3wADmp+5QUAu9opvQ
+	(envelope-from <stable+bounces-252214-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:42:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C392594E55
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:54:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40C8459705D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:42:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 31F9031D2256
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:53:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D96CA37FD3F6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:01:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8FBD372B31;
-	Wed, 20 May 2026 16:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 537313D75C7;
+	Wed, 20 May 2026 18:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2EsfIHmf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zd6qmOUp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82DBC371D13;
-	Wed, 20 May 2026 16:53:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B0C3F7ABC;
+	Wed, 20 May 2026 18:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295999; cv=none; b=FLVP33IE1BANnBloeORLxjeEYivJ5vzBVxFi8vZ9uO77zt4uOjQBu3Wp0KmYtDtNB93m/Ty7TkI86LBgSEcpSxm5mekokDPgjdCjHw3zSmhyoFKoaX8NgKxMH794cX5z7LTYkdzpru1DI7CmmEgGMGMrqZzv+4NF3oyTfeaej3o=
+	t=1779300093; cv=none; b=fxrsYWvRZSc66vPzN8rtexlRlPDwWqI7HavYQMNLxiE9SuVsXUE/P4JxbcvIQX4BmSDFimPeRRzibd8boY6zW9vaJBrSCn9duO70vWsJedE2kajoGx3ctI4eYlGzzzrV46bASs3jkCpMAlAg2Ven9RgZOKj3DeTCib/2waXXEPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295999; c=relaxed/simple;
-	bh=W14LPHuCEYQ4QSIk3bQqJRNSdWzJBGCtz3laHIqTSTU=;
+	s=arc-20240116; t=1779300093; c=relaxed/simple;
+	bh=MErqE/TxEj53v3N3g/8HJxHGS8Iy7aXbLGlEphUbc1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gf0Ae+UKFIjTCiusWMGAZ3KOotz3Jl9blbtkdzRTkAbrT3KC9R1bc6JCZvgv5vbB4kgxOh5+4QNuaiw+qz1T24BuEHQSvWMwKpKhg1f3T38N9TUYuvJTBXNu39Wf6y/6qGnPN6Q0llQ3Y+eGn3FSJFV5RbcK1cvUYyLQsvp8w1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2EsfIHmf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A101F00893;
-	Wed, 20 May 2026 16:53:16 +0000 (UTC)
+	 MIME-Version; b=Hv07lza4cx3Pk+eDuCMPhm++mIsPCQoOloAIR6pyiSRhQmP2GyjuOggTpgG4pycH3LsThfz/dm/4X0LyjZ2ig/90cJjE9n3YHDAZ/iC5aq/9Thrv0VVik4P034vbZThoyX1Y7gz6TLYRg8Evq5EXErqmKeH7j/pDm/CLUiyAfug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zd6qmOUp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C20E91F00893;
+	Wed, 20 May 2026 18:01:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295997;
-	bh=ibQ6d/RLnwByLdaKPkfcU8VoYvsEz3dPZ5iwQxDaeZM=;
+	s=korg; t=1779300090;
+	bh=4mS5EnVZqBrBWhxhydE/WgEm2oqj81aj23YpVJ7LZmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2EsfIHmfG+QAneFSQ4G+4W3Dx9iS4Cs1Y9pZLd7xBbNovVkcZlACN6ieqDFDAR+cw
-	 JIE9nQGb7QGyRDvyfRaKyiNXqm3zNX7tooqbNbMcgL4kPTnRDdpw0USjDf3KJkcPtL
-	 I+uOYtLSWA9fddwO2pLKhJL1XaYe39pnSUnjBwIU=
+	b=Zd6qmOUpVvP+IoQYSfkE9VDoPei920XHiZL8sBZakBUkVDEZN3SGmYxpv573hMjOe
+	 T3jMLWu5jcZP2tBl5mwwb3sQrzu4rGZy7kbv5rn6mjwOt58GuByvPG2OEE47QSR4pg
+	 O8N6GbisKTwZZYhBz8Lx2j0Iv7L5X4qeiP7YWiRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Ryder Lee <ryder.lee@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0605/1146] ext4: call deactivate_super() in extents_kunit_exit()
+Subject: [PATCH 6.12 044/666] wifi: mt76: mt7615: fix use_cts_prot support
 Date: Wed, 20 May 2026 18:14:15 +0200
-Message-ID: <20260520162201.871838712@linuxfoundation.org>
+Message-ID: <20260520162112.194409218@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,73 +64,207 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-250664-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,gmail.com,linux.ibm.com,mit.edu,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-252214-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,huawei.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 0C392594E55
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,mediatek.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nbd.name:email]
+X-Rspamd-Queue-Id: 40C8459705D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Ryder Lee <ryder.lee@mediatek.com>
 
-[ Upstream commit f9c1f7647ac8fb70bebb1615ac112d1568abe339 ]
+[ Upstream commit 1974a67d9b65c29a0a9426e32e8cd8c056de48b7 ]
 
-Call deactivate_super() is called in extents_kunit_exit() to cleanup
-the file system resource.
+Driver should not directly write WTBL to prevent overwritten issues.
 
-Fixes: cb1e0c1d1fad ("ext4: kunit tests for extent splitting and conversion")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://patch.msgid.link/20260330133035.287842-3-yebin@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+With this fix, when driver needs to adjust its behavior for compatibility,
+especially concerning older 11g/n devices, by enabling or disabling CTS
+protection frames, often for hidden SSIDs or to manage legacy clients.
+
+Fixes: e34235ccc5e3 ("wifi: mt76: mt7615: enable use_cts_prot support")
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Link: https://patch.msgid.link/edb87088b0111b32fafc6c4179f54a5286dd37d8.1768879119.git.ryder.lee@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents-test.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../net/wireless/mediatek/mt76/mt7615/mac.c   | 15 ------
+ .../net/wireless/mediatek/mt76/mt7615/main.c  |  7 +--
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 47 +++++++++++++++++++
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    |  5 +-
+ .../net/wireless/mediatek/mt76/mt7615/regs.h  |  2 -
+ 5 files changed, 53 insertions(+), 23 deletions(-)
 
-diff --git a/fs/ext4/extents-test.c b/fs/ext4/extents-test.c
-index 82c59291e0458..3d4663d99eb13 100644
---- a/fs/ext4/extents-test.c
-+++ b/fs/ext4/extents-test.c
-@@ -146,6 +146,7 @@ static void extents_kunit_exit(struct kunit *test)
- 	struct ext4_sb_info *sbi = sb->s_fs_info;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index 7ba789834e8df..1e473f490b4bd 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -1174,21 +1174,6 @@ void mt7615_mac_set_rates(struct mt7615_phy *phy, struct mt7615_sta *sta,
+ }
+ EXPORT_SYMBOL_GPL(mt7615_mac_set_rates);
  
- 	ext4_es_unregister_shrinker(sbi);
-+	deactivate_super(sbi->s_sb);
- 	kfree(sbi);
- 	kfree(k_ctx.k_ei);
- 	kfree(k_ctx.k_data);
+-void mt7615_mac_enable_rtscts(struct mt7615_dev *dev,
+-			      struct ieee80211_vif *vif, bool enable)
+-{
+-	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
+-	u32 addr;
+-
+-	addr = mt7615_mac_wtbl_addr(dev, mvif->sta.wcid.idx) + 3 * 4;
+-
+-	if (enable)
+-		mt76_set(dev, addr, MT_WTBL_W3_RTS);
+-	else
+-		mt76_clear(dev, addr, MT_WTBL_W3_RTS);
+-}
+-EXPORT_SYMBOL_GPL(mt7615_mac_enable_rtscts);
+-
+ static int
+ mt7615_mac_wtbl_update_key(struct mt7615_dev *dev, struct mt76_wcid *wcid,
+ 			   struct ieee80211_key_conf *key,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+index 4f0c840ef93de..f747285a1a5dd 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+@@ -584,9 +584,6 @@ static void mt7615_bss_info_changed(struct ieee80211_hw *hw,
+ 		}
+ 	}
+ 
+-	if (changed & BSS_CHANGED_ERP_CTS_PROT)
+-		mt7615_mac_enable_rtscts(dev, vif, info->use_cts_prot);
+-
+ 	if (changed & BSS_CHANGED_BEACON_ENABLED && info->enable_beacon) {
+ 		mt7615_mcu_add_bss_info(phy, vif, NULL, true);
+ 		mt7615_mcu_sta_add(phy, vif, NULL, true);
+@@ -599,6 +596,10 @@ static void mt7615_bss_info_changed(struct ieee80211_hw *hw,
+ 		       BSS_CHANGED_BEACON_ENABLED))
+ 		mt7615_mcu_add_beacon(dev, hw, vif, info->enable_beacon);
+ 
++	if (changed & BSS_CHANGED_HT || changed & BSS_CHANGED_ERP_CTS_PROT)
++		mt7615_mcu_set_protection(phy, vif, info->ht_operation_mode,
++					  info->use_cts_prot);
++
+ 	if (changed & BSS_CHANGED_PS)
+ 		mt76_connac_mcu_set_vif_ps(&dev->mt76, vif);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index 40e15a0ba95a9..ac831422d4c77 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -2564,3 +2564,50 @@ int mt7615_mcu_set_roc(struct mt7615_phy *phy, struct ieee80211_vif *vif,
+ 	return mt76_mcu_send_msg(&dev->mt76, MCU_CE_CMD(SET_ROC),
+ 				 &req, sizeof(req), false);
+ }
++
++int mt7615_mcu_set_protection(struct mt7615_phy *phy, struct ieee80211_vif *vif,
++			      u8 ht_mode, bool use_cts_prot)
++{
++	struct mt7615_dev *dev = phy->dev;
++	struct {
++		u8 prot_idx;
++		u8 band;
++		u8 rsv[2];
++
++		bool long_nav;
++		bool prot_mm;
++		bool prot_gf;
++		bool prot_bw40;
++		bool prot_rifs;
++		bool prot_bw80;
++		bool prot_bw160;
++		u8 prot_erp_mask;
++	} __packed req = {
++		.prot_idx = 0x2,
++		.band = phy != &dev->phy,
++	};
++
++	switch (ht_mode & IEEE80211_HT_OP_MODE_PROTECTION) {
++	case IEEE80211_HT_OP_MODE_PROTECTION_NONMEMBER:
++	case IEEE80211_HT_OP_MODE_PROTECTION_NONHT_MIXED:
++		req.prot_mm = true;
++		req.prot_gf = true;
++		fallthrough;
++	case IEEE80211_HT_OP_MODE_PROTECTION_20MHZ:
++		req.prot_bw40 = true;
++		break;
++	}
++
++	if (ht_mode & IEEE80211_HT_OP_MODE_NON_GF_STA_PRSNT)
++		req.prot_gf = true;
++
++	if (use_cts_prot) {
++		struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
++		u8 i = mvif->mt76.omac_idx > HW_BSSID_MAX ? HW_BSSID_0 : mvif->mt76.omac_idx;
++
++		req.prot_erp_mask = BIT(i);
++	}
++
++	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(PROTECT_CTRL), &req,
++				 sizeof(req), true);
++}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+index 530da48ce3ea9..aac748fee257f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+@@ -466,8 +466,6 @@ void mt7615_mac_reset_counters(struct mt7615_phy *phy);
+ void mt7615_mac_cca_stats_reset(struct mt7615_phy *phy);
+ void mt7615_mac_set_scs(struct mt7615_phy *phy, bool enable);
+ void mt7615_mac_enable_nf(struct mt7615_dev *dev, bool ext_phy);
+-void mt7615_mac_enable_rtscts(struct mt7615_dev *dev,
+-			      struct ieee80211_vif *vif, bool enable);
+ void mt7615_mac_sta_poll(struct mt7615_dev *dev);
+ int mt7615_mac_write_txwi(struct mt7615_dev *dev, __le32 *txwi,
+ 			  struct sk_buff *skb, struct mt76_wcid *wcid,
+@@ -522,7 +520,8 @@ int mt7615_mcu_set_sku_en(struct mt7615_phy *phy, bool enable);
+ int mt7615_mcu_apply_rx_dcoc(struct mt7615_phy *phy);
+ int mt7615_mcu_apply_tx_dpd(struct mt7615_phy *phy);
+ int mt7615_dfs_init_radar_detector(struct mt7615_phy *phy);
+-
++int mt7615_mcu_set_protection(struct mt7615_phy *phy, struct ieee80211_vif *vif,
++			      u8 ht_mode, bool use_cts_prot);
+ int mt7615_mcu_set_roc(struct mt7615_phy *phy, struct ieee80211_vif *vif,
+ 		       struct ieee80211_channel *chan, int duration);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
+index 806b3887c541c..9e6d55c91b269 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
+@@ -455,8 +455,6 @@ enum mt7615_reg_base {
+ #define MT_WTBL_RIUCR3_RATE6		GENMASK(19, 8)
+ #define MT_WTBL_RIUCR3_RATE7		GENMASK(31, 20)
+ 
+-#define MT_WTBL_W3_RTS			BIT(22)
+-
+ #define MT_WTBL_W5_CHANGE_BW_RATE	GENMASK(7, 5)
+ #define MT_WTBL_W5_SHORT_GI_20		BIT(8)
+ #define MT_WTBL_W5_SHORT_GI_40		BIT(9)
 -- 
 2.53.0
 
