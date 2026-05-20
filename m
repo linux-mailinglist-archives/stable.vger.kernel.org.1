@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-253166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251185-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wNWAESodDmro6AUAu9opvQ
-	(envelope-from <stable+bounces-253166-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:44:26 +0200
+	id ODHJNtsVDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251185-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:13:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 457AE59A06D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:44:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 489775994A5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:13:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id F3E6E31A5593
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 641E0322E4FA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C983FC5B1;
-	Wed, 20 May 2026 18:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B87D03F23A4;
+	Wed, 20 May 2026 17:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JQD8ccG0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VfRbRSKU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F028332F770;
-	Wed, 20 May 2026 18:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F09028DC4;
+	Wed, 20 May 2026 17:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302579; cv=none; b=OgtBsPSqZRap/y2Vl5rzdGoZmz0rwz3KF6UfDq0hP/45zNhF/63g/MmmGLkrcQgO1fWsicJfauoqGu2cpo4IN/2YwXLWZpuCmn8WWug4+2PvQACOMtQ4O8QMAeidhuL39p+G9OFRhn6qo12T2dcGur987U9ulZVVawkltaUeaRs=
+	t=1779297321; cv=none; b=SrcecTn3yhSOKCROEZW5UNpNZo4CfaCWJHyXCzJFNCDVwj/ka8LI4QneivCLQ4U+zK4jUVD84V1ZkWzm4tRCGyDbSVLXgz9bp1IuJg/Erofyauhy9fLXU92+1WAl4ri76zO9MMTgiBtSLAZ+JEewhySj0bLSrALUId2GLP0dTb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302579; c=relaxed/simple;
-	bh=W0x9qhxWQxkHHxjHjNGBrc801YZrA24VYK0HzltaCc0=;
+	s=arc-20240116; t=1779297321; c=relaxed/simple;
+	bh=ey7R/E12OIKzT7T5jhY1u3ZlITpxfODVKKCBTjis7IY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y61GKzltnsgfDDMU5e4DDDK7jXabeH5LbiGNA0J0jsNFXzxghy5CEjkFrHOcMVfwspdtH4vCQSNzdtckHahR2yemb7gyqbs85XD6+xErNRhvU+Xnch91IxXcgvLw7XKc+gBYnuRvnttj8KCfzbHhO2Ow7Dk7WAru+tAJk5FqC6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JQD8ccG0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62F171F000E9;
-	Wed, 20 May 2026 18:42:57 +0000 (UTC)
+	 MIME-Version; b=MZd2HGp76vq4XCVGUqvGWgKn2B3mZa+6yUad+0bJ9kVnLnt24vbe/Z2O+skVkhIyBo5wf7j7c4BmO2PIP3xd6uk0hPBX3YxNaXKjAtdI/xqetcXZZUtKjZQAQ+560hgihLoF7YyQUQaeBjyleyiIlIsUOWM1zOkImFLeigwz7kM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VfRbRSKU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4D281F000E9;
+	Wed, 20 May 2026 17:15:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302577;
-	bh=eHiaS1+bXM56pkE3CV8o5zEwb0QrYiVUIbEGyaks0FQ=;
+	s=korg; t=1779297320;
+	bh=6vJhqz8zq07VxkqjgyA47ZupviApOyagd5W2KpNVAvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JQD8ccG0WHJJEON2wlI+JkdiynaOvHqwjA0IDviKfIrXZkKsZ7gLyvP1496IR8Wm8
-	 FhLZzfe5CjMplzPf+xplVsh32O18/AL6wJ96pUrymSdej5VgpexgB+36hswHSYqMlj
-	 jksSu27Nz9kQpOmwaY+duFC+xngKvmYKIaMbjgWI=
+	b=VfRbRSKUX0HexuVhtmfyR7LLEIyW/uCO+Hp4ckko6zVt4CRtGCp+XULrFIyv57hHf
+	 Aw+bDZ/4bWUjZgMkZAnTmwp0YzFNiKFn1vqp2wHsTgjYz9k8fa6o5+rrF7HMxBYhiR
+	 gUknpYRL9qSR1trcHhmX6G2pcT3xmfmm3H38nTBQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 320/508] tcp: annotate data-races around tp->plb_rehash
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 7.0 1093/1146] btrfs: only release the dirty pages io tree after successful writes
 Date: Wed, 20 May 2026 18:22:23 +0200
-Message-ID: <20260520162105.571297522@linuxfoundation.org>
+Message-ID: <20260520162212.973942681@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,20 +68,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253166-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251185-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -91,62 +91,162 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 457AE59A06D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email]
+X-Rspamd-Queue-Id: 489775994A5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 9e89b9d03a2d2e30dcca166d5af52f9a8eceab25 ]
+commit 4066c55e109475a06d18a1f127c939d551211956 upstream.
 
-tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
-add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
+[WARNING]
+With extra warning on dirty extent buffers at umount (aka, the next
+patch in the series), test case generic/388 can trigger the following
+warning about dirty extent buffers at unmount time:
 
-Fixes: 29c1c44646ae ("tcp: add u32 counter in tcp_sock and an SNMP counter for PLB")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260416200319.3608680-15-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  BTRFS critical (device dm-2 state E): emergency shutdown
+  BTRFS error (device dm-2 state E): error while writing out transaction: -30
+  BTRFS warning (device dm-2 state E): Skipping commit of aborted transaction.
+  BTRFS error (device dm-2 state EA): Transaction 9 aborted (error -30)
+  BTRFS: error (device dm-2 state EA) in cleanup_transaction:2068: errno=-30 Readonly filesystem
+  BTRFS info (device dm-2 state EA): forced readonly
+  BTRFS info (device dm-2 state EA): last unmount of filesystem 4fbf2e15-f941-49a0-bc7c-716315d2777c
+  ------------[ cut here ]------------
+  WARNING: disk-io.c:3311 at invalidate_and_check_btree_folios+0xfd/0x1ca [btrfs], CPU#8: umount/914368
+  CPU: 8 UID: 0 PID: 914368 Comm: umount Tainted: G           OE       7.1.0-rc1-custom+ #372 PREEMPT(full)  2de38db8d1deae71fde295430a0ff3ab98ccf596
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 02/02/2022
+  RIP: 0010:invalidate_and_check_btree_folios+0xfd/0x1ca [btrfs]
+  Call Trace:
+   <TASK>
+   close_ctree+0x52e/0x574 [btrfs d2f0b1cd330d1287e7a9919d112eadfc0e914efd]
+   generic_shutdown_super+0x89/0x1a0
+   kill_anon_super+0x16/0x40
+   btrfs_kill_super+0x16/0x20 [btrfs d2f0b1cd330d1287e7a9919d112eadfc0e914efd]
+   deactivate_locked_super+0x2d/0xb0
+   cleanup_mnt+0xdc/0x140
+   task_work_run+0x5a/0xa0
+   exit_to_user_mode_loop+0x123/0x4b0
+   do_syscall_64+0x243/0x7c0
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+   </TASK>
+  ---[ end trace 0000000000000000 ]---
+  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30539776 owner 9 gen 9 refs 2 flags 0x7
+  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30621696 owner 257 gen 9 refs 2 flags 0x7
+  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30638080 owner 258 gen 9 refs 2 flags 0x7
+  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30654464 owner 7 gen 9 refs 2 flags 0x7
+  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30703616 owner 2 gen 9 refs 2 flags 0x7
+  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30720000 owner 10 gen 9 refs 2 flags 0x7
+  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30736384 owner 4 gen 9 refs 2 flags 0x7
+  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30752768 owner 11 gen 9 refs 2 flags 0x7
+
+I'm using a stripped down version, which seems to trigger the warning
+more reliably:
+
+  _fsstress_pid=""
+  workload()
+  {
+  	dmesg -C
+  	mkfs.btrfs -f -K $dev > /dev/null
+  	echo 1 > /sys/kernel/debug/clear_warn_once
+  	mount $dev $mnt
+  	$fsstress -w -n 1024 -p 4 -d $mnt &
+  	_fsstress_pid=$!
+  	sleep 0
+  	$godown $mnt
+  	pkill --echo -PIPE fsstress > /dev/null
+  	wait $_fsstress_pid
+  	unset _fsstress_pid
+  	umount $mnt
+
+  	if dmesg | grep -q "WARNING"; then
+  		fail
+  	fi
+  }
+
+  for (( i = 0; i < $runtime; i++ )); do
+  	echo "=== $i/$runtime ==="
+  	workload
+  done
+
+[CAUSE]
+Inside btrfs_write_and_wait_transaction(), we first try to write all
+dirty ebs, then wait for them to finish.
+
+After that we call btrfs_extent_io_tree_release() to free all
+extent states from dirty_pages io tree.
+
+However if we hit an error from btrfs_write_marked_extent(), then we
+still call btrfs_extent_io_tree_release() to clear that dirty_pages io
+tree, which may contain dirty records that we haven't yet submitted.
+
+Furthermore, the later transaction cleanup path will utilize that
+dirty_pages io tree to properly cleanup those dirty ebs, but since it's
+already empty, no dirty ebs are properly cleaned up, thus will later
+trigger the warnings inside invalidate_btree_folios().
+
+[FIX]
+Normally such dirty ebs won't cause problems, as when the iput() is
+called on the btree inode, the dirty ebs will be forcibly written back,
+and since the fs is already in an error status, such writeback will not
+reach disk and finish immediately.
+
+But it's still better to get rid of such dirty ebs, if we ended up with
+dirty ebs but the fs is not in an error status, then such writeback at
+iput() time will be too late, as all workers are already stopped but
+writeback will utilize workers, which will lead to NULL pointer
+dereferences.
+
+Instead of unconditionally calling btrfs_extent_io_tree_release(), only
+call it if btrfs_write_and_wait_transaction() finished successfully, so
+that @dirty_pages extent io tree is kept untouched for transaction
+cleanup.
+
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp.c     | 3 ++-
- net/ipv4/tcp_plb.c | 2 +-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ fs/btrfs/disk-io.c     |    1 +
+ fs/btrfs/transaction.c |    9 ++++-----
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index a8cba4dc7df5c..5b1fbb0ca2ff6 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -4003,7 +4003,8 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
- 		nla_put_u8(stats, TCP_NLA_TTL,
- 			   tcp_skb_ttl_or_hop_limit(ack_skb));
- 
--	nla_put_u32(stats, TCP_NLA_REHASH, tp->plb_rehash + tp->timeout_rehash);
-+	nla_put_u32(stats, TCP_NLA_REHASH,
-+		    READ_ONCE(tp->plb_rehash) + READ_ONCE(tp->timeout_rehash));
- 	return stats;
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -4709,6 +4709,7 @@ static void btrfs_destroy_marked_extents
+ 			free_extent_buffer_stale(eb);
+ 		}
+ 	}
++	btrfs_extent_io_tree_release(dirty_pages);
  }
  
-diff --git a/net/ipv4/tcp_plb.c b/net/ipv4/tcp_plb.c
-index 4bcf7eff95e39..b7f9b60d8991f 100644
---- a/net/ipv4/tcp_plb.c
-+++ b/net/ipv4/tcp_plb.c
-@@ -79,7 +79,7 @@ void tcp_plb_check_rehash(struct sock *sk, struct tcp_plb_state *plb)
+ static void btrfs_destroy_pinned_extent(struct btrfs_fs_info *fs_info,
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -1275,14 +1275,13 @@ static int btrfs_write_and_wait_transact
+ 	blk_finish_plug(&plug);
+ 	ret2 = btrfs_wait_extents(fs_info, dirty_pages);
  
- 	sk_rethink_txhash(sk);
- 	plb->consec_cong_rounds = 0;
--	tcp_sk(sk)->plb_rehash++;
-+	WRITE_ONCE(tcp_sk(sk)->plb_rehash, tcp_sk(sk)->plb_rehash + 1);
- 	NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPPLBREHASH);
+-	btrfs_extent_io_tree_release(&trans->transaction->dirty_pages);
+-
+ 	if (ret)
+ 		return ret;
+-	else if (ret2)
++	if (ret2)
+ 		return ret2;
+-	else
+-		return 0;
++
++	btrfs_extent_io_tree_release(&trans->transaction->dirty_pages);
++	return 0;
  }
- EXPORT_SYMBOL_GPL(tcp_plb_check_rehash);
--- 
-2.53.0
-
+ 
+ /*
 
 
 
