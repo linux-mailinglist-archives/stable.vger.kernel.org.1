@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-250462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251362-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EMM5B67oDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250462-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:00:30 +0200
+	id YBPrBZbxDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251362-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:38:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64E5E592C8D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:00:29 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CDDE5942AF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:38:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 689BE310AB87
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:45:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B3D56312CF13
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:23:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC13F342CBA;
-	Wed, 20 May 2026 16:44:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B95023D5642;
+	Wed, 20 May 2026 17:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fMpdVMaH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xOOJhCAp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64D83370AE5;
-	Wed, 20 May 2026 16:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8351B36C9D2;
+	Wed, 20 May 2026 17:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295475; cv=none; b=aAsurBpwKd97s/w880nv9zWNT5rNdgHOuyH1+UcBpZ7BCyMO6RrVnISsTKG0OOGLkwAL8WKYKLApl7GjixTKbngCJWaC0w+ulaj1b3YXqOGRLJajRbRJtidGEwdtZx+ePcCogS8NeNwGZMidAEkYU590x5QalXouDsl1gE+O5Xo=
+	t=1779297781; cv=none; b=nfW2x/FCPWHBB1CJT/72xlv45V0Wb85EUnd+BMbmr/K+esBqdWWurwZnLvReRXSdzCI5JYCKTJkjUsn1RwguTOFVuN6D19MIorYWqBnxPf9LCsv4czqNISPbvjf6ssZsC1k2savqSffXZRDAIxYsmjL7sbiunJQHRZKaiJGa7Ks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295475; c=relaxed/simple;
-	bh=ZM5+D/8DfVgBEEGAOQ2Pggf76laI8WoSp2T6QNDirjI=;
+	s=arc-20240116; t=1779297781; c=relaxed/simple;
+	bh=ONBrOlu26rfKAd6FltexNaFBojxIlo5nWR7s50zt6s4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ShHBhHfCY7R5gJhE/bBK37w0ouQyNbfHfy4lasf6/1bm0KDoBB8c5tUY1MnN6RN4wkPSPYH7r1z2n6cCTgUmQ8/LNpfiQVVBNCRr1QH6Ahb5EJCiR7J9Dz6eNnIFlUlmxF+wanvx/pkb7RoEiWziEr0Z+u0M/16jP11DZkZKWHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fMpdVMaH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB0111F000E9;
-	Wed, 20 May 2026 16:44:33 +0000 (UTC)
+	 MIME-Version; b=b6SR/5Yrcr+IeJmn09qg/Thv9cB97QSq10ne2aSp4ANv4uxxNOd+CivjN0SuvixjgvaqQPOIKOTTPTwnmmRFtpBEphZo64QjPehvp40xRQSTA0TcgPV/HVY7KEZmRXM3hDwrK0Sgi6E2rlXgbSmXtiUf5N4/+d59N4TGegdEYHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xOOJhCAp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA7A71F000E9;
+	Wed, 20 May 2026 17:22:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295474;
-	bh=LD8AtAAMItB8tw1CFP+vgGFTPiIwh1yE032oC9X0FhE=;
+	s=korg; t=1779297780;
+	bh=naJLJAv39kmYva0CT3tgxfqPPR+Zx4AgtWgdHfLDhNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fMpdVMaHjgJiCm9jHT2rDAc0Lx7Ob8rMJK8AP5uqlPaA1cwUnst7THhMCMECum0kB
-	 QHplNldGTsRkEmrQU56hKZe+ZnpIlNE3Q4tM6eEiaFBSpKxWVNF67jMkHL0r9wmS0P
-	 2y44bTe+S0YLGS3g/uU5AfbjM8sYUkT9UbgEp/K8=
+	b=xOOJhCApJTrZuz+nAM2TNFSLNRSHcSjWrqhfqQrYUhsExAmi4XcCzyTssFnfVyMPZ
+	 1tWaWzGWNueybxCM8NtHOBYT5NpOk49vjSP/ZrRnELCdaEk1m3MZMuVBZ3LbWRGBiC
+	 QevlAJ2WBkbgB0kaw2fkcOteZIG9kvTQTDNnjOSk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0393/1146] PCI: imx6: Keep Root Port MSI capability with iMSI-RX to work around hardware bug
+Subject: [PATCH 6.18 160/957] net: airoha: Add missing RX_CPU_IDX() configuration in airoha_qdma_cleanup_rx_queue()
 Date: Wed, 20 May 2026 18:10:43 +0200
-Message-ID: <20260520162157.093572938@linuxfoundation.org>
+Message-ID: <20260520162138.019766611@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,145 +68,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250462-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251362-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email]
-X-Rspamd-Queue-Id: 64E5E592C8D
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 9CDDE5942AF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 3a4e8302e72f83fd5cc8a916fc6f5c8fe5c8690e ]
+[ Upstream commit 656121b155030086b01cfce9bd31b0c925ee6860 ]
 
-On NXP i.MX7D, i.MX8MM, and i.MX8MQ chipsets, MSIs from the endpoints won't
-be received by the iMSI-RX MSI controller if the Root Port MSI capability
-is disabled.
+When the descriptor index written in REG_RX_CPU_IDX() is equal to the one
+stored in REG_RX_DMA_IDX(), the hw will stop since the QDMA RX ring is
+empty.
+Add missing REG_RX_CPU_IDX() configuration in airoha_qdma_cleanup_rx_queue
+routine during QDMA RX ring cleanup.
 
-Even though the Root Port MSIs won't be received by the iMSI-RX controller
-due to design, these chipsets have some weird hardware bug that prevents
-the endpoint MSIs from reaching when the Root Port MSI capability is
-disabled.
-
-Hence, introduce a new flag, 'dw_pcie_rp::keep_rp_msi_en', set it for the
-above mentioned SoCs, and always keep the Root Port MSI capability when
-this flag is set.
-
-Note that by keeping Root Port MSI capability, Root Port MSIs such as AER,
-PME and others won't be received by default. So users need to use
-workarounds such as passing 'pcie_pme=nomsi' cmdline param.
-
-Fixes: f5cd8a929c825 ("PCI: dwc: Remove MSI/MSIX capability for Root Port if iMSI-RX is used as MSI controller")
-Suggested-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-[mani: commit log]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-[bhelgaas: fix typos]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20260331085252.1243108-1-hongxing.zhu@nxp.com
+Fixes: 514aac359987 ("net: airoha: Add missing cleanup bits in airoha_qdma_cleanup_rx_queue()")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20260408-airoha-cpu-idx-airoha_qdma_cleanup_rx_queue-v1-1-8efa64844308@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-imx6.c             | 7 +++++++
- drivers/pci/controller/dwc/pcie-designware-host.c | 2 +-
- drivers/pci/controller/dwc/pcie-designware.h      | 1 +
- 3 files changed, 9 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/airoha/airoha_eth.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 2aa5467d5400a..0a494c9dd6aa1 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -117,6 +117,8 @@ enum imx_pcie_variants {
- #define IMX_PCIE_FLAG_HAS_LUT			BIT(10)
- #define IMX_PCIE_FLAG_8GT_ECN_ERR051586		BIT(11)
- #define IMX_PCIE_FLAG_SKIP_L23_READY		BIT(12)
-+/* Preserve MSI capability for platforms that require it */
-+#define IMX_PCIE_FLAG_KEEP_MSI_CAP		BIT(13)
- 
- #define imx_check_flag(pci, val)	(pci->drvdata->flags & val)
- 
-@@ -1830,6 +1832,8 @@ static int imx_pcie_probe(struct platform_device *pdev)
- 	} else {
- 		if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_SKIP_L23_READY))
- 			pci->pp.skip_l23_ready = true;
-+		if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_KEEP_MSI_CAP))
-+			pci->pp.keep_rp_msi_en = true;
- 		pci->pp.use_atu_msg = true;
- 		ret = dw_pcie_host_init(&pci->pp);
- 		if (ret < 0)
-@@ -1908,6 +1912,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
- 	[IMX7D] = {
- 		.variant = IMX7D,
- 		.flags = IMX_PCIE_FLAG_SUPPORTS_SUSPEND |
-+			 IMX_PCIE_FLAG_KEEP_MSI_CAP |
- 			 IMX_PCIE_FLAG_HAS_APP_RESET |
- 			 IMX_PCIE_FLAG_SKIP_L23_READY |
- 			 IMX_PCIE_FLAG_HAS_PHY_RESET,
-@@ -1920,6 +1925,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
- 	[IMX8MQ] = {
- 		.variant = IMX8MQ,
- 		.flags = IMX_PCIE_FLAG_HAS_APP_RESET |
-+			 IMX_PCIE_FLAG_KEEP_MSI_CAP |
- 			 IMX_PCIE_FLAG_HAS_PHY_RESET |
- 			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND,
- 		.gpr = "fsl,imx8mq-iomuxc-gpr",
-@@ -1934,6 +1940,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
- 	[IMX8MM] = {
- 		.variant = IMX8MM,
- 		.flags = IMX_PCIE_FLAG_SUPPORTS_SUSPEND |
-+			 IMX_PCIE_FLAG_KEEP_MSI_CAP |
- 			 IMX_PCIE_FLAG_HAS_PHYDRV |
- 			 IMX_PCIE_FLAG_HAS_APP_RESET,
- 		.gpr = "fsl,imx8mm-iomuxc-gpr",
-diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-index c3c2dec728eea..6adde3fc32be9 100644
---- a/drivers/pci/controller/dwc/pcie-designware-host.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-@@ -1171,7 +1171,7 @@ int dw_pcie_setup_rc(struct dw_pcie_rp *pp)
- 	 * the MSI and MSI-X capabilities of the Root Port to allow the drivers
- 	 * to fall back to INTx instead.
- 	 */
--	if (pp->use_imsi_rx) {
-+	if (pp->use_imsi_rx && !pp->keep_rp_msi_en) {
- 		dw_pcie_remove_capability(pci, PCI_CAP_ID_MSI);
- 		dw_pcie_remove_capability(pci, PCI_CAP_ID_MSIX);
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index 132a32e9e633a..cbf21e15df6dd 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -844,6 +844,11 @@ static void airoha_qdma_cleanup_rx_queue(struct airoha_queue *q)
  	}
-diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
-index ae6389dd9caa5..b12c5334552c7 100644
---- a/drivers/pci/controller/dwc/pcie-designware.h
-+++ b/drivers/pci/controller/dwc/pcie-designware.h
-@@ -421,6 +421,7 @@ struct dw_pcie_host_ops {
  
- struct dw_pcie_rp {
- 	bool			use_imsi_rx:1;
-+	bool			keep_rp_msi_en:1;
- 	bool			cfg0_io_shared:1;
- 	u64			cfg0_base;
- 	void __iomem		*va_cfg0_base;
+ 	q->head = q->tail;
++	/* Set RX_DMA_IDX to RX_CPU_IDX to notify the hw the QDMA RX ring is
++	 * empty.
++	 */
++	airoha_qdma_rmw(qdma, REG_RX_CPU_IDX(qid), RX_RING_CPU_IDX_MASK,
++			FIELD_PREP(RX_RING_CPU_IDX_MASK, q->head));
+ 	airoha_qdma_rmw(qdma, REG_RX_DMA_IDX(qid), RX_RING_DMA_IDX_MASK,
+ 			FIELD_PREP(RX_RING_DMA_IDX_MASK, q->tail));
+ }
 -- 
 2.53.0
 
