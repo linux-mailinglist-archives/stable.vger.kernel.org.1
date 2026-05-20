@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-250509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251440-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WIhsJqHzDWry4wUAu9opvQ
-	(envelope-from <stable+bounces-250509-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:13 +0200
+	id AH2rIi30DWoF5AUAu9opvQ
+	(envelope-from <stable+bounces-251440-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:49:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E486D5948EB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:12 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52965594AB4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:49:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8F42E339DE3A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:46:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2492730E1C66
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:27:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 689BC3368B6;
-	Wed, 20 May 2026 16:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27D5B3F2117;
+	Wed, 20 May 2026 17:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BjF2A/jP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gxxPCJ4e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9C0285061;
-	Wed, 20 May 2026 16:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A4D30BF68;
+	Wed, 20 May 2026 17:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295596; cv=none; b=Ar5WTHNWscAvZHGJDWYsx52NvJAsEukZOz05C02CZWHV1SgAV1AmqXWF5O/3BH3dvW1yQTfJ1ME9BQJHkApW84hzr5qKwZsMGFbnhyMQD8zNWqLFaXrFAI18eVl8iDFNTkRSRajq7H3keqcGbvWTLqEHSre1AIc5KEvN4MbHc1E=
+	t=1779297986; cv=none; b=HSLqp460muwd+W9+YUL5XdANJdSV8K4+4P8G1fBV3b91gFPOPWX9zZ1mr3w3KixVFQsUCMUnc41SdGcH/6WfhBzPdk1r0O25FcChvH17323Fey8L3P0Jrto/RfZSqPNypLknunTxOCr5mutwX0CJlW9HK2jVjwYj7NEBrcjDE1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295596; c=relaxed/simple;
-	bh=5KSmfXjSwSaZ6KeGFPkxjoZVomCjdKHMC6TIgSu5rO4=;
+	s=arc-20240116; t=1779297986; c=relaxed/simple;
+	bh=Oj4rTG3FNM6uSUt+JUrkW7rJWEL3FLD0WljjdSNICAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=atEYIQAJoGooIhOYPowzXX8g3qIUsYUnuGGIFWBm49jgpTENBzvXiA0tXS4csQvdE0v5lOSaFzgoR5r/GVb/1YNxtYRLSwJAjfEESm8Mb2yqm5jnWn8YYshMV2nYLCEMKd4cbm4q+D4CgDc6kjKL73MVkYPp2f23lNyZ/MgZviQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BjF2A/jP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 945E01F000E9;
-	Wed, 20 May 2026 16:46:34 +0000 (UTC)
+	 MIME-Version; b=E/2zHt9DM+b1Kr5kHQPSbDY9nIh1igL9YBTAgO//lwBhxS7rV2WrdR+l/Gn8zf1SEPkb+mwvffrMp7YvRcrdL7DpP0xaY/tSbYnaE7KVxsvDwclj2l6i+Dy+L01Gfp3JuyIN0vP6cBpwH8FSP1WzbTv46tzCeJQF+0yvyJLAA1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gxxPCJ4e; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B19C1F000E9;
+	Wed, 20 May 2026 17:26:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295595;
-	bh=fjteCvJiSnCsX2nkgJpyvlOo6ZhQI5xMEuFNXOiMJmA=;
+	s=korg; t=1779297985;
+	bh=TkEbeBwscXzIWoNvqweQZLmi3kqtZEOU1RT6i4/PGyo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BjF2A/jPNdnu8ohfzY8pjBu0R62TJs+MQh+XEDqn3oHYJRKplFG8A4SreiE12Cb4U
-	 W02ogYImxN/VV31quqqnP67aTKoHv1Aqhg6gnPE1DMyODvocNW8N1iQQXNVGz0QRij
-	 toa4UbmPQBumIahzdpASl5pknPyiRAH7+X3GhLg8=
+	b=gxxPCJ4e6GQP4t+Suf5w3JpTII7muxjdcvIALOQIjCP+QLgXctCYiuq8qP615lx98
+	 uHBd8E9DyhQGlHdhKPJjP/8EQkI7oh08MSaeWxJQdY8Ldg+I80JlMvlZKw59cpV/EV
+	 lE1eULhTeK1LF0k6EbQpKxlLKRkdNpM03XJN3iO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Conor Dooley <conor@kernel.org>,
-	Yixun Lan <dlan@kernel.org>,
+	Eric Auger <eric.auger@redhat.com>,
+	Shameer Kolothum <skolothumtho@nvidia.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0472/1146] riscv: dts: spacemit: pcie: fix missing power regulator
+Subject: [PATCH 6.18 239/957] iommu/tegra241-cmdqv: Set supports_cmd op in tegra241_vcmdq_hw_init()
 Date: Wed, 20 May 2026 18:12:02 +0200
-Message-ID: <20260520162158.874486591@linuxfoundation.org>
+Message-ID: <20260520162139.725193267@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,76 +70,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251440-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250509-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,ca400000:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,0.0.0.0:email,devicetree.org:url]
-X-Rspamd-Queue-Id: E486D5948EB
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 52965594AB4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yixun Lan <dlan@kernel.org>
+From: Nicolin Chen <nicolinc@nvidia.com>
 
-[ Upstream commit 8a9071299dec817a544c0fb48f7302396fafdc4b ]
+[ Upstream commit 803e41f36d227022ab9bbe780c82283fd4713b2e ]
 
-The PCIe port require 3.3v power regulator for device to work properly, So
-explicitly add it to fix the DT warning:
+vintf->hyp_own is finalized in tegra241_vintf_hw_init(). On the other hand,
+tegra241_vcmdq_alloc_smmu_cmdq() is called via an init_structures callback,
+which is earlier than tegra241_vintf_hw_init().
 
-arch/riscv/boot/dts/spacemit/k1-bananapi-f3.dtb: pcie@ca400000 (spacemit,k1-pcie): pcie@0: 'vpcie3v3-supply' is a required property
-        from schema $id: http://devicetree.org/schemas/pci/spacemit,k1-pcie-host.yaml
+This results in the supports_cmd op always being set to the guest function,
+although this doesn't break any functionality nor have some noticeable perf
+impact since non-invalidation commands are not issued in the perf sensitive
+context.
 
-Fixes: 0be016a4b5d1 ("riscv: dts: spacemit: PCIe and PHY-related updates")
-Reported-by: Conor Dooley <conor@kernel.org>
-Link: https://lore.kernel.org/r/20260226-k1-pcie-fix-pwr-v1-1-94b493cd27e5@kernel.org
-Signed-off-by: Yixun Lan <dlan@kernel.org>
+Fix this by moving supports_cmd to tegra241_vcmdq_hw_init().
+
+After this change,
+ - For a guest kernel, this will be a status quo
+ - For a host kernel, non-invalidation commands will be issued to VCMDQ(s)
+
+Fixes: a9d40285bdef ("iommu/tegra241-cmdqv: Limit CMDs for VCMDQs of a guest owned VINTF")
+Reported-by: Eric Auger <eric.auger@redhat.com>
+Reported-by: Shameer Kolothum <skolothumtho@nvidia.com>
+Closes: https://lore.kernel.org/qemu-devel/CH3PR12MB754836BEE54E39B30C7210C0AB44A@CH3PR12MB7548.namprd12.prod.outlook.com/
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Tested-by: Shameer Kolothum <skolothumtho@nvidia.com>
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/boot/dts/spacemit/k1-bananapi-f3.dts | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/riscv/boot/dts/spacemit/k1-bananapi-f3.dts b/arch/riscv/boot/dts/spacemit/k1-bananapi-f3.dts
-index 5971605754b35..51f6c6a774b0d 100644
---- a/arch/riscv/boot/dts/spacemit/k1-bananapi-f3.dts
-+++ b/arch/riscv/boot/dts/spacemit/k1-bananapi-f3.dts
-@@ -305,6 +305,7 @@ &pcie1_phy {
+diff --git a/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c b/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
+index 04cc7a9036e43..17591d8eb64b8 100644
+--- a/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
++++ b/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
+@@ -481,6 +481,10 @@ static int tegra241_vcmdq_hw_init(struct tegra241_vcmdq *vcmdq)
+ 	/* Reset VCMDQ */
+ 	tegra241_vcmdq_hw_deinit(vcmdq);
  
- &pcie1_port {
- 	phys = <&pcie1_phy>;
-+	vpcie3v3-supply = <&pcie_vcc_3v3>;
- };
++	/* vintf->hyp_own is a HW state finalized in tegra241_vintf_hw_init() */
++	if (!vcmdq->vintf->hyp_own)
++		vcmdq->cmdq.supports_cmd = tegra241_guest_vcmdq_supports_cmd;
++
+ 	/* Configure and enable VCMDQ */
+ 	writeq_relaxed(vcmdq->cmdq.q.q_base, REG_VCMDQ_PAGE1(vcmdq, BASE));
  
- &pcie1 {
-@@ -320,6 +321,7 @@ &pcie2_phy {
+@@ -641,9 +645,6 @@ static int tegra241_vcmdq_alloc_smmu_cmdq(struct tegra241_vcmdq *vcmdq)
+ 	q->q_base = q->base_dma & VCMDQ_ADDR;
+ 	q->q_base |= FIELD_PREP(VCMDQ_LOG2SIZE, q->llq.max_n_shift);
  
- &pcie2_port {
- 	phys = <&pcie2_phy>;
-+	vpcie3v3-supply = <&pcie_vcc_3v3>;
- };
+-	if (!vcmdq->vintf->hyp_own)
+-		cmdq->supports_cmd = tegra241_guest_vcmdq_supports_cmd;
+-
+ 	return arm_smmu_cmdq_init(smmu, cmdq);
+ }
  
- &pcie2 {
 -- 
 2.53.0
 
