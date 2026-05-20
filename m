@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-251102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252699-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kBWZMQvyDWrj4wUAu9opvQ
-	(envelope-from <stable+bounces-251102-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:40:27 +0200
+	id sHPHLTUoDmqk6gUAu9opvQ
+	(envelope-from <stable+bounces-252699-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:31:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E9AF5943F4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:40:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4935959AF98
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:31:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E4C753186F36
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:13:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3B209399138C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:22:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99CA33EDACC;
-	Wed, 20 May 2026 17:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0E6A3F23A4;
+	Wed, 20 May 2026 18:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E5iJXmxy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QpQj0SK6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A1934B40F;
-	Wed, 20 May 2026 17:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6420E3D1CC6;
+	Wed, 20 May 2026 18:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297103; cv=none; b=Ylp5Tqs1Llo49KgkMsWwWH0Vlt5D3pWprCiPxVO4UfIp2sgHccp1OQk0YUOJxG9EswLa6Ky/MlIjPrQd+gIzowAZoydygxCc+/+lT/HFNjObfsbKdUcoxBhOwfnyyKy7boEblWTY0Jhs/sa0LalodB8iQs+w6lfuyg3W4AL/LIQ=
+	t=1779301358; cv=none; b=HENaapORAt0/wp5B/a0Yi27zuAL67+BUS8krd5BX+Zf27WnN5HO08SLe97t+eVAIy/RU8TVIQN1XQ287hXYLwjOJ0jTil/+ITxXll1NxB5C9a1pZ4mQYxLglvf9A3/H0iNT3tYPpyosDTPH5eq3RS4/YeGkMZqWOxGetKn9Ngik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297103; c=relaxed/simple;
-	bh=7zrSTmbiY9UlO3yl0/z4qnsx77Ohlb/h61nz0KsGzrs=;
+	s=arc-20240116; t=1779301358; c=relaxed/simple;
+	bh=KzByY0IrFiIO5ZZo9BPCe/34KgGcajjb7NDj2dMxdKI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lrDz2aUd1ATG6O5p5cve9Vb8oR3ZA/OWBX/94rh6NsX9/t7uQ/juWZ6HjPt0trFlsPJI1O2pcFuDeCO7fkEy9Sd0IRlMpGFp31lgTEBBS2mKCnDScDPUZS5tJb3OlLRsdjVn10oT6dxuEP4dXSbtyNAXjvCTV3K1cilzMokiJfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E5iJXmxy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B9F01F000E9;
-	Wed, 20 May 2026 17:11:41 +0000 (UTC)
+	 MIME-Version; b=EQ7pzntvRpxSRn2gKB98BWS+/PcGcSj56uQCRuSNbU1HY8XriiGLOhe/vAEl31jhCOJJRr8qEpyvCj/6aPdevYFvCivlXW7+4z1NEGM4pngABGdw4DAKkg2DgBTKvNbAnWDI5NV3+FBNbkebR9C5Dmio3KZX+FEGHeKpxmRzBsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QpQj0SK6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 865C01F000E9;
+	Wed, 20 May 2026 18:22:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297101;
-	bh=ABpe9TkpdAuk7QqXYawYirF0A96GyaukpTissVtpQf0=;
+	s=korg; t=1779301357;
+	bh=1sI/AU8lC1EnNrxHRNQO8SlcoMPNszkkjvg9ANFcRP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=E5iJXmxyR747RS2SDnT2aG8w9kDWTu4mLtPNVqYnD/7sN8Abdr+d783k+F/Q3V+O4
-	 ArufY6/awIwmSSUkVcaApSYefXAFkCdJGWP8vwgmpsnSBC+ox+hYP2TMrQzUdrhtem
-	 NJKrzsPobjvr+wNmfpT/PWJQh/H+jBAZ0FpQtfqw=
+	b=QpQj0SK6bNolQ1MeSGJ5AquTb2yp2RCU1Uy/cY4xBvCa4S42CnLAEtwOSpZgdYbdK
+	 A8igLoLfWUBuf006ZLYH/mI99/6k4ivprtbiHZ0j33MdOK4pASbIYwr1Jx0pI09IzY
+	 sQvXLPcVb/3fsRNAZZU8LSVRyKgVE9B0vM1W8/+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arthur Kiyanovski <akiyano@amazon.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 7.0 1044/1146] net: ena: PHC: Fix potential use-after-free in get_timestamp
+	Grzegorz Nitka <grzegorz.nitka@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Petr Oros <poros@redhat.com>,
+	Sunitha Mekala <sunithax.d.mekala@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 483/666] ice: fix timestamp interrupt configuration for E825C
 Date: Wed, 20 May 2026 18:21:34 +0200
-Message-ID: <20260520162211.857844446@linuxfoundation.org>
+Message-ID: <20260520162121.734338770@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,93 +73,177 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252699-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251102-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 6E9AF5943F4
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+X-Rspamd-Queue-Id: 4935959AF98
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arthur Kiyanovski <akiyano@amazon.com>
+From: Grzegorz Nitka <grzegorz.nitka@intel.com>
 
-commit e42c755582f0960e684298762f0ab927b3778376 upstream.
+[ Upstream commit c0a575a801a2040eb1e0db54b488f8c548c8458a ]
 
-Move the phc->active check and resp pointer assignment to after
-acquiring the spinlock. Previously, phc->active was checked without
-holding the lock, and resp was cached from ena_dev->phc.virt_addr
-before the lock was acquired.
+The E825C ice_phy_cfg_intr_eth56g() function is responsible for programming
+the PHY interrupt for a given port. This function writes to the
+PHY_REG_TS_INT_CONFIG register of the port. The register is responsible for
+configuring whether the port interrupt logic is enabled, as well as
+programming the threshold of waiting timestamps that will trigger an
+interrupt from this port.
 
-If ena_com_phc_destroy() runs between the lockless active check and
-the lock acquisition, it sets active=false, releases the lock, frees
-the DMA memory, and sets virt_addr=NULL. The get_timestamp path would
-then read a NULL virt_addr and dereference it.
+This threshold value must not be programmed to zero while the interrupt is
+enabled. Doing so puts the port in a misconfigured state where the PHY
+timestamp interrupt for the quad of connected ports will become stuck.
 
-With both the active check and the pointer read under the lock,
-destroy cannot free the memory while get_timestamp is using it.
+This occurs, because a threshold of zero results in the timestamp interrupt
+status for the port becoming stuck high. The four ports in the connected
+quad have their timestamp status indicators muxed together. A new interrupt
+cannot be generated until the timestamp status indicators return low for
+all four ports.
 
-Fixes: e0ea34158ee8 ("net: ena: Add PHC support in the ENA driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Arthur Kiyanovski <akiyano@amazon.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20260508062126.7273-1-akiyano@amazon.com
+Normally, the timestamp status for a port will clear once there are fewer
+timestamps in that ports timestamp memory bank than the threshold. A
+threshold of zero makes this impossible, so the timestamp status for the
+port does not clear.
+
+The ice driver never intentionally programs the threshold to zero, indeed
+the driver always programs it to a value of 1, intending to get an
+interrupt immediately as soon as even a single packet is waiting for a
+timestamp.
+
+However, there is a subtle flaw in the programming logic in the
+ice_phy_cfg_intr_eth56g() function. Due to the way that the hardware
+handles enabling the PHY interrupt. If the threshold value is modified at
+the same time as the interrupt is enabled, the HW PHY state machine might
+enable the interrupt before the new threshold value is actually updated.
+This leaves a potential race condition caused by the hardware logic where
+a PHY timestamp interrupt might be triggered before the non-zero threshold
+is written, resulting in the PHY timestamp logic becoming stuck.
+
+Once the PHY timestamp status is stuck high, it will remain stuck even
+after attempting to reprogram the PHY block by changing its threshold or
+disabling the interrupt. Even a typical PF or CORE reset will not reset the
+particular block of the PHY that becomes stuck. Even a warm power cycle is
+not guaranteed to cause the PHY block to reset, and a cold power cycle is
+required.
+
+Prevent this by always writing the PHY_REG_TS_INT_CONFIG in two stages.
+First write the threshold value with the interrupt disabled, and only write
+the enable bit after the threshold has been programmed. When disabling the
+interrupt, leave the threshold unchanged. Additionally, re-read the
+register after writing it to guarantee that the write to the PHY has been
+flushed upon exit of the function.
+
+While we're modifying this function implementation, explicitly reject
+programming a threshold of 0 when enabling the interrupt. No caller does
+this today, but the consequences of doing so are significant. An explicit
+rejection in the code makes this clear.
+
+Fixes: 7cab44f1c35f ("ice: Introduce ETH56G PHY model for E825C products")
+Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Petr Oros <poros@redhat.com>
+Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260420-jk-iwl-net-2026-04-20-ptp-e825c-phy-interrupt-fixes-v1-1-bc2240f42251@intel.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amazon/ena/ena_com.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 36 ++++++++++++++++++---
+ 1 file changed, 32 insertions(+), 4 deletions(-)
 
---- a/drivers/net/ethernet/amazon/ena/ena_com.c
-+++ b/drivers/net/ethernet/amazon/ena/ena_com.c
-@@ -1782,20 +1782,23 @@ void ena_com_phc_destroy(struct ena_com_
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+index 7190fde16c868..dc97bee4fd2ea 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+@@ -2340,6 +2340,8 @@ static int ice_phy_cfg_mac_eth56g(struct ice_hw *hw, u8 port)
+  * @ena: enable or disable interrupt
+  * @threshold: interrupt threshold
+  *
++ * The threshold cannot be 0 while the interrupt is enabled.
++ *
+  * Configure TX timestamp interrupt for the specified port
+  *
+  * Return:
+@@ -2351,19 +2353,45 @@ int ice_phy_cfg_intr_eth56g(struct ice_hw *hw, u8 port, bool ena, u8 threshold)
+ 	int err;
+ 	u32 val;
  
- int ena_com_phc_get_timestamp(struct ena_com_dev *ena_dev, u64 *timestamp)
- {
--	volatile struct ena_admin_phc_resp *resp = ena_dev->phc.virt_addr;
- 	const ktime_t zero_system_time = ktime_set(0, 0);
- 	struct ena_com_phc_info *phc = &ena_dev->phc;
-+	volatile struct ena_admin_phc_resp *resp;
- 	ktime_t expire_time;
- 	ktime_t block_time;
- 	unsigned long flags = 0;
- 	int ret = 0;
- 
-+	spin_lock_irqsave(&phc->lock, flags);
++	if (ena && !threshold)
++		return -EINVAL;
 +
- 	if (!phc->active) {
-+		spin_unlock_irqrestore(&phc->lock, flags);
- 		netdev_err(ena_dev->net_device, "PHC feature is not active in the device\n");
- 		return -EOPNOTSUPP;
+ 	err = ice_read_ptp_reg_eth56g(hw, port, PHY_REG_TS_INT_CONFIG, &val);
+ 	if (err)
+ 		return err;
+ 
++	val &= ~PHY_TS_INT_CONFIG_ENA_M;
+ 	if (ena) {
+-		val |= PHY_TS_INT_CONFIG_ENA_M;
+ 		val &= ~PHY_TS_INT_CONFIG_THRESHOLD_M;
+ 		val |= FIELD_PREP(PHY_TS_INT_CONFIG_THRESHOLD_M, threshold);
+-	} else {
+-		val &= ~PHY_TS_INT_CONFIG_ENA_M;
++		err = ice_write_ptp_reg_eth56g(hw, port, PHY_REG_TS_INT_CONFIG,
++					       val);
++		if (err) {
++			ice_debug(hw, ICE_DBG_PTP,
++				  "Failed to update 'threshold' PHY_REG_TS_INT_CONFIG port=%u ena=%u threshold=%u\n",
++				  port, !!ena, threshold);
++			return err;
++		}
++		val |= PHY_TS_INT_CONFIG_ENA_M;
  	}
  
--	spin_lock_irqsave(&phc->lock, flags);
-+	resp = ena_dev->phc.virt_addr;
+-	return ice_write_ptp_reg_eth56g(hw, port, PHY_REG_TS_INT_CONFIG, val);
++	err = ice_write_ptp_reg_eth56g(hw, port, PHY_REG_TS_INT_CONFIG, val);
++	if (err) {
++		ice_debug(hw, ICE_DBG_PTP,
++			  "Failed to update 'ena' PHY_REG_TS_INT_CONFIG port=%u ena=%u threshold=%u\n",
++			  port, !!ena, threshold);
++		return err;
++	}
++
++	err = ice_read_ptp_reg_eth56g(hw, port, PHY_REG_TS_INT_CONFIG, &val);
++	if (err) {
++		ice_debug(hw, ICE_DBG_PTP,
++			  "Failed to read PHY_REG_TS_INT_CONFIG port=%u ena=%u threshold=%u\n",
++			  port, !!ena, threshold);
++		return err;
++	}
++
++	return 0;
+ }
  
- 	/* Check if PHC is in blocked state */
- 	if (unlikely(ktime_compare(phc->system_time, zero_system_time))) {
+ /**
+-- 
+2.53.0
+
 
 
 
