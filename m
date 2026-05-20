@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-250961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251847-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id INs9JsHwDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-250961-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:34:57 +0200
+	id 2E1JCXn8DWoK5QUAu9opvQ
+	(envelope-from <stable+bounces-251847-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5638659402E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:34:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AE80596100
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2E3D430E776B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:07:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 025A536F55AA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:44:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D12B3368B6;
-	Wed, 20 May 2026 17:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FC223EE1FA;
+	Wed, 20 May 2026 17:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lnWUgYwQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fWoZxhQi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB5637754D;
-	Wed, 20 May 2026 17:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72603F1661;
+	Wed, 20 May 2026 17:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296741; cv=none; b=GnL4mFrGOVcnZ2ZU+KgEWoAVB2LpyjcvpFcONwd9oG+yE00LwYhRgJXdGLFCs9heXb+KclA1u/4sUjKLNHsbJAP2Snqp/HFGGZf9YDj7rrymShza9fpbCNOxt/Ug+rVFy1pwWiq1UPgi6tX7JVYTIQflF7TZM/Zlv/VzHbsiaOc=
+	t=1779299042; cv=none; b=DjGG3BLEQ65N9xDvK+PUOm+KU/U1VTfoqeJxIyzWmF9DwW6fev3YyWuHMXBL+9N8w+4OAzqaJ21JAddY2QXXYlE7VM+gkyigHVj2IwxpiVJvrQ+I/u7Op+t8N/ToRJt1Z/XXwlbMi4P1VcEsEyx2ZD8PW22poD33nh6KDxbQ6gM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296741; c=relaxed/simple;
-	bh=+7r8DNPq3aE/dM9McyZotINHzo6I1B6cE3Z4IJ+4Bos=;
+	s=arc-20240116; t=1779299042; c=relaxed/simple;
+	bh=9Kh7dkfiXnyfpH5AC5TzWJsNdjlYzMcSIwCz3d0LrKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t5j2VTjdfJybefDytoi/11doSKRbIlPwCoQblvoXacdGrQRL7SV36mrau86Ak8aIAN9ZTyh9CnE6abWvnNiACfTFYofGPd4B9mlePXwVfhdNJ7nQL0N7mwct7ezmP4k2L/j92OIxB6lpfZf45MrMSNYZJTCE5Kb/nCMJkMoPPPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lnWUgYwQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4145F1F000E9;
-	Wed, 20 May 2026 17:05:40 +0000 (UTC)
+	 MIME-Version; b=qU2/0larZKqAaGXBQHQR14JrDupCLrT7ieQs7339ZCb+YxQvocK8An2JCYXOwO5DWjaC5wwlyqRNgfQ2VwJrWl6L9MQC6SeFmRI4Wf/DXTL9HnwplKWiCgyF/EKEsP/wfrEzydFkMM7ErzSRDGytJRGNPYS9uxkYn0tQX10k5yE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fWoZxhQi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD1F1F000E9;
+	Wed, 20 May 2026 17:44:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296740;
-	bh=gh58YGbBtreSyM5O9ZqebU0U+MZb10VFEGwysoPFJdE=;
+	s=korg; t=1779299040;
+	bh=Gp8GTA3hklJlcRXxT/lNQBWmKFo2N3TkFCOR6RoJbUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lnWUgYwQBz9AaBbiIGhAyoOCiqBfYUNE+1OMVfbdwxiJf3GDCjI6CG87VBCkP5r1Q
-	 CxxxEbSxSjEcaleqMo1ce4aVgL0fyYq+yGVphQBNbDc4XUNf0MSixuutLAoRt0hjvk
-	 Z1WhwbWS+ab39Om+tEWA+nEWrEU7Pu5SdUtGkqY4=
+	b=fWoZxhQipyiTbdr+g2i1ISufDbcq2e6SXqKjW4F8QwaVHWwCHdMVxX2vJ5GqPrFE1
+	 ctCjiHDnr2qR9T6ykCuVmeQN6zaiY7otmFbAycf1Zv57n+Q2mzwPz9hKkddVPif5vf
+	 GO7i9KRNFY7eZc1vYe36M7liJ9spuDsK34EODHJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Arcari <darcari@redhat.com>,
-	Len Brown <len.brown@intel.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0873/1146] tools/power turbostat: Fix unrecognized option -P
+Subject: [PATCH 6.18 640/957] tcp: annotate data-races around tp->reord_seen
 Date: Wed, 20 May 2026 18:18:43 +0200
-Message-ID: <20260520162207.994175582@linuxfoundation.org>
+Message-ID: <20260520162148.408051789@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250961-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251847-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,49 +89,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 5638659402E
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 5AE80596100
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Arcari <darcari@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit ce012c966b518c53475ba9a4e979242d7322d819 ]
+[ Upstream commit 62585690e6b2a112c408fe25f142b246ac833c42 ]
 
-The '-P' short option (shorthand for --no-perf) is not present in the
-optstring of the second call to getopt_long_only(). This results in
-the "unrecognized option" error when the tool reaches the main parsing
-loop.
+tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
+add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
 
-Add 'P' to the second getopt_long_only() call to ensure it is
-consistently recognized.
-
-Fixes: a0e86c90b83c ("tools/power turbostat: Add --no-perf option")
-Signed-off-by: David Arcari <darcari@redhat.com>
-Signed-off-by: Len Brown <len.brown@intel.com>
+Fixes: 7ec65372ca53 ("tcp: add stat of data packet reordering events")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260416200319.3608680-11-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/x86/turbostat/turbostat.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/tcp.c       | 2 +-
+ net/ipv4/tcp_input.c | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-index bea574d7aa68a..d6b4fd17c5f37 100644
---- a/tools/power/x86/turbostat/turbostat.c
-+++ b/tools/power/x86/turbostat/turbostat.c
-@@ -11449,7 +11449,7 @@ void cmdline(int argc, char **argv)
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 3a5801ba3df1a..03299c21e4d68 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -4418,7 +4418,7 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
+ 	nla_put_u64_64bit(stats, TCP_NLA_BYTES_RETRANS,
+ 			  READ_ONCE(tp->bytes_retrans), TCP_NLA_PAD);
+ 	nla_put_u32(stats, TCP_NLA_DSACK_DUPS, READ_ONCE(tp->dsack_dups));
+-	nla_put_u32(stats, TCP_NLA_REORD_SEEN, tp->reord_seen);
++	nla_put_u32(stats, TCP_NLA_REORD_SEEN, READ_ONCE(tp->reord_seen));
+ 	nla_put_u32(stats, TCP_NLA_SRTT, tp->srtt_us >> 3);
+ 	nla_put_u16(stats, TCP_NLA_TIMEOUT_REHASH, tp->timeout_rehash);
+ 	nla_put_u32(stats, TCP_NLA_BYTES_NOTSENT,
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 90727e1e581e4..5a944b1ec320c 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -1266,7 +1266,7 @@ static void tcp_check_sack_reordering(struct sock *sk, const u32 low_seq,
  	}
- 	optind = 0;
  
--	while ((opt = getopt_long_only(argc, argv, "+C:c:Dde:hi:Jn:N:o:qMST:v", long_options, &option_index)) != -1) {
-+	while ((opt = getopt_long_only(argc, argv, "+C:c:Dde:hi:Jn:N:o:qMPST:v", long_options, &option_index)) != -1) {
- 		switch (opt) {
- 		case 'a':
- 			parse_add_command(optarg);
+ 	/* This exciting event is worth to be remembered. 8) */
+-	tp->reord_seen++;
++	WRITE_ONCE(tp->reord_seen, tp->reord_seen + 1);
+ 	NET_INC_STATS(sock_net(sk),
+ 		      ts ? LINUX_MIB_TCPTSREORDER : LINUX_MIB_TCPSACKREORDER);
+ }
+@@ -2224,7 +2224,7 @@ static void tcp_check_reno_reordering(struct sock *sk, const int addend)
+ 	WRITE_ONCE(tp->reordering,
+ 		   min_t(u32, tp->packets_out + addend,
+ 			 READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_max_reordering)));
+-	tp->reord_seen++;
++	WRITE_ONCE(tp->reord_seen, tp->reord_seen + 1);
+ 	NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPRENOREORDER);
+ }
+ 
 -- 
 2.53.0
 
