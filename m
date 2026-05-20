@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-250318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251253-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ENYsGjPmDWqm4gUAu9opvQ
-	(envelope-from <stable+bounces-250318-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:55 +0200
+	id 2HSHCKLwDWqo4wUAu9opvQ
+	(envelope-from <stable+bounces-251253-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:34:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 173C4592843
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 954CA593FDE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:34:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8211F30EBC96
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:38:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6F10D316B86C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:18:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4EC532B123;
-	Wed, 20 May 2026 16:38:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CA833A3E9C;
+	Wed, 20 May 2026 17:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rNDY3dE6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MuzrsPv0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 838AD221F2F;
-	Wed, 20 May 2026 16:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE1335C1A0;
+	Wed, 20 May 2026 17:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295099; cv=none; b=egG25T6oTzXTPv6F9i1/OUy9tdUmPWhxVSIrMESJCKQ6AsG1H6gU4IsxqQ2bAHwbowiOuFTtIG15xtQCwdJGTMLIJeUIlH/8OSPHNV2tH7beXKLLAsdI+xEGSnDofIRS0DDF87fbX71/9Dv/sObLYyNojvyf5R+phV8f2FAiGKY=
+	t=1779297501; cv=none; b=nXNFzuTGEpEQ6Hzv2s8kyQVnU8n+FL9ZQ3G3utcwIHcb85EcjIfGTfceKnnUh8K4yQHA2i2Ek0iyXQe4uayY3uKU7fxfY3z0e26s/xZcnvNDwAAVFwcqiGaq16g347uvCG1ffroAShyf881ARhaAk/+GVe/wgxLaeRczmge2FiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295099; c=relaxed/simple;
-	bh=OQoi4+dW/57XcbHkAzuqf932CzvXVBEzecNX+jhLKws=;
+	s=arc-20240116; t=1779297501; c=relaxed/simple;
+	bh=SY3gxJIk9agpDARHeONTKSzOVvJt09E26uypu2AmDXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gaBEE+tzAWjknvJrRgcorkSvmZ37S/5Wx1Utn0ep62egbzi2OXLC4w5I9+wMAykUVkQTdDCC4TP4s0oUVgWwZBZ5MJfV35pYXpEY3Hl7AjfrrLx5AD14KA/JmEB0U63GHNf2vZ43iRQgdv9YMWp7zQeMQXnisWUZhmqW9pSEHH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rNDY3dE6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9481F1F00893;
-	Wed, 20 May 2026 16:38:17 +0000 (UTC)
+	 MIME-Version; b=R5+fkZht/6TO9dJkvxbO7uZGvq929xeyTIXQ6c1zok7LXD7YoCf63sbMhPDuHoZ8OZeNjLjL5icS74HRcagFEiD3+JrmLmjLzYw74UJkwpcJHAwm0TLECz9mSR2GOP87lHEETu6oVrp84E/VBIdoPk4pI/AVcLu9lwtqjmygk1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MuzrsPv0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63F131F00893;
+	Wed, 20 May 2026 17:18:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295098;
-	bh=cZLZwtuIt2gXdTtH7fAcwFdpu9gVltg/yd4ge5twYQ4=;
+	s=korg; t=1779297499;
+	bh=Z/17KTTEuPMEV8fxQ1u0y5W0djQJLsGgMamCO7lvjww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rNDY3dE61jBx+L0r0LrKtNqeCxyft+lLTqWuwHWOjWUk9+4BmrvbpSgU3tvDpXs/A
-	 Uyh0bjDGenFs3MoWYu8yyoXfgbUytpDArIjkojY0di9uC509hSW2GkTD7u9ZvT4+Yb
-	 xX4x4BU/c1ex62nphAShGaKXxUjteYb9v6asRZY0=
+	b=MuzrsPv0tM5s9OFyeHrmYFxu65XvBcxknlNP19qNV9dOCfqSYW4jBoF0UwNu210LZ
+	 OKoF4roU00KxYDDQtY7p/TlwMILeQk+A/VdBC7nYCx2glysBftVx9sbcO5LnbpY1Eq
+	 Vlu0CZTeDBqnwKc44A1XPzLqCNI2q2uBaF/Jt404=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fangyu Yu <fangyu.yu@linux.alibaba.com>,
-	Andrew Jones <andrew.jones@oss.qualcomm.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+	Yinhao Hu <dddddd@hust.edu.cn>,
+	Kaiyan Mei <M202472210@hust.edu.cn>,
+	Yun Lu <luyun@kylinos.cn>,
+	Feng Yang <yangfeng@kylinos.cn>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	syzbot@syzkaller.appspotmail.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0289/1146] iommu/riscv: Add IOTINVAL after updating DDT/PDT entries
+Subject: [PATCH 6.18 056/957] bpf: test_run: Fix the null pointer dereference issue in bpf_lwt_xmit_push_encap
 Date: Wed, 20 May 2026 18:08:59 +0200
-Message-ID: <20260520162154.757578122@linuxfoundation.org>
+Message-ID: <20260520162135.774474116@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +72,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250318-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251253-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,133 +89,111 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,alibaba.com:email,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 173C4592843
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,kylinos.cn:email,msgid.link:url,hust.edu.cn:email,appspotmail.com:email]
+X-Rspamd-Queue-Id: 954CA593FDE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+From: Feng Yang <yangfeng@kylinos.cn>
 
-[ Upstream commit f5c262b544975e067ea265fc7403aefbbea8563e ]
+[ Upstream commit 972787479ee73006fddb5e59ab5c8e733810ff42 ]
 
-Add riscv_iommu_iodir_iotinval() to perform required TLB and context cache
-invalidations after updating DDT or PDT entries, as mandated by the RISC-V
-IOMMU specification (Section 6.3.1 and 6.3.2).
+The bpf_lwt_xmit_push_encap helper needs to access skb_dst(skb)->dev to
+calculate the needed headroom:
 
-Fixes: 488ffbf18171 ("iommu/riscv: Paging domain support")
-Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
-Reviewed-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+	err = skb_cow_head(skb,
+			   len + LL_RESERVED_SPACE(skb_dst(skb)->dev));
+
+But skb->_skb_refdst may not be initialized when the skb is set up by
+bpf_prog_test_run_skb function. Executing bpf_lwt_push_ip_encap function
+in this scenario will trigger null pointer dereference, causing a kernel
+crash as Yinhao reported:
+
+[  105.186365] BUG: kernel NULL pointer dereference, address: 0000000000000000
+[  105.186382] #PF: supervisor read access in kernel mode
+[  105.186388] #PF: error_code(0x0000) - not-present page
+[  105.186393] PGD 121d3d067 P4D 121d3d067 PUD 106c83067 PMD 0
+[  105.186404] Oops: 0000 [#1] PREEMPT SMP NOPTI
+[  105.186412] CPU: 3 PID: 3250 Comm: poc Kdump: loaded Not tainted 6.19.0-rc5 #1
+[  105.186423] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[  105.186427] RIP: 0010:bpf_lwt_push_ip_encap+0x1eb/0x520
+[  105.186443] Code: 0f 84 de 01 00 00 0f b7 4a 04 66 85 c9 0f 85 47 01 00 00 31 c0 5b 5d 41 5c 41 5d 41 5e c3 cc cc cc cc 48 8b 73 58 48 83 e6 fe <48> 8b 36 0f b7 be ec 00 00 00 0f b7 b6 e6 00 00 00 01 fe 83 e6 f0
+[  105.186449] RSP: 0018:ffffbb0e0387bc50 EFLAGS: 00010246
+[  105.186455] RAX: 000000000000004e RBX: ffff94c74e036500 RCX: ffff94c74874da00
+[  105.186460] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff94c74e036500
+[  105.186463] RBP: 0000000000000001 R08: 0000000000000002 R09: 0000000000000000
+[  105.186467] R10: ffffbb0e0387bd50 R11: 0000000000000000 R12: ffffbb0e0387bc98
+[  105.186471] R13: 0000000000000014 R14: 0000000000000000 R15: 0000000000000002
+[  105.186484] FS:  00007f166aa4d680(0000) GS:ffff94c8b7780000(0000) knlGS:0000000000000000
+[  105.186490] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  105.186494] CR2: 0000000000000000 CR3: 000000015eade001 CR4: 0000000000770ee0
+[  105.186499] PKRU: 55555554
+[  105.186502] Call Trace:
+[  105.186507]  <TASK>
+[  105.186513]  bpf_lwt_xmit_push_encap+0x2b/0x40
+[  105.186522]  bpf_prog_a75eaad51e517912+0x41/0x49
+[  105.186536]  ? kvm_clock_get_cycles+0x18/0x30
+[  105.186547]  ? ktime_get+0x3c/0xa0
+[  105.186554]  bpf_test_run+0x195/0x320
+[  105.186563]  ? bpf_test_run+0x10f/0x320
+[  105.186579]  bpf_prog_test_run_skb+0x2f5/0x4f0
+[  105.186590]  __sys_bpf+0x69c/0xa40
+[  105.186603]  __x64_sys_bpf+0x1e/0x30
+[  105.186611]  do_syscall_64+0x59/0x110
+[  105.186620]  entry_SYSCALL_64_after_hwframe+0x76/0xe0
+[  105.186649] RIP: 0033:0x7f166a97455d
+
+Temporarily add the setting of skb->_skb_refdst before bpf_test_run to resolve the issue.
+
+Fixes: 52f278774e79 ("bpf: implement BPF_LWT_ENCAP_IP mode in bpf_lwt_push_encap")
+Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
+Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
+Closes: https://groups.google.com/g/hust-os-kernel-patches/c/8-a0kPpBW2s
+Signed-off-by: Yun Lu <luyun@kylinos.cn>
+Signed-off-by: Feng Yang <yangfeng@kylinos.cn>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Tested-by: syzbot@syzkaller.appspotmail.com
+Link: https://patch.msgid.link/20260304094429.168521-2-yangfeng59949@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/riscv/iommu.c | 70 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 70 insertions(+)
+ net/bpf/test_run.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/iommu/riscv/iommu.c b/drivers/iommu/riscv/iommu.c
-index fa2ebfd2f912e..aadfbc181138f 100644
---- a/drivers/iommu/riscv/iommu.c
-+++ b/drivers/iommu/riscv/iommu.c
-@@ -996,7 +996,67 @@ static void riscv_iommu_iotlb_inval(struct riscv_iommu_domain *domain,
- }
+diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
+index 6b04f47301c1e..65d7f8d51823e 100644
+--- a/net/bpf/test_run.c
++++ b/net/bpf/test_run.c
+@@ -1093,6 +1093,21 @@ int bpf_prog_test_run_skb(struct bpf_prog *prog, const union bpf_attr *kattr,
+ 		skb->ip_summed = CHECKSUM_COMPLETE;
+ 	}
  
- #define RISCV_IOMMU_FSC_BARE 0
-+/*
-+ * This function sends IOTINVAL commands as required by the RISC-V
-+ * IOMMU specification (Section 6.3.1 and 6.3.2 in 1.0 spec version)
-+ * after modifying DDT or PDT entries
-+ */
-+static void riscv_iommu_iodir_iotinval(struct riscv_iommu_device *iommu,
-+				       bool inval_pdt, unsigned long iohgatp,
-+				       struct riscv_iommu_dc *dc,
-+				       struct riscv_iommu_pc *pc)
-+{
-+	struct riscv_iommu_command cmd;
-+
-+	riscv_iommu_cmd_inval_vma(&cmd);
- 
-+	if (FIELD_GET(RISCV_IOMMU_DC_IOHGATP_MODE, iohgatp) ==
-+	    RISCV_IOMMU_DC_IOHGATP_MODE_BARE) {
-+		if (inval_pdt) {
-+			/*
-+			 * IOTINVAL.VMA with GV=AV=0, and PSCV=1, and
-+			 * PSCID=PC.PSCID
-+			 */
-+			riscv_iommu_cmd_inval_set_pscid(&cmd,
-+				FIELD_GET(RISCV_IOMMU_PC_TA_PSCID, pc->ta));
-+		} else {
-+			if (!FIELD_GET(RISCV_IOMMU_DC_TC_PDTV, dc->tc) &&
-+			    FIELD_GET(RISCV_IOMMU_DC_FSC_MODE, dc->fsc) !=
-+			    RISCV_IOMMU_DC_FSC_MODE_BARE) {
-+				/*
-+				 * DC.tc.PDTV == 0 && DC.fsc.MODE != Bare
-+				 * IOTINVAL.VMA with GV=AV=0, and PSCV=1, and
-+				 * PSCID=DC.ta.PSCID
-+				 */
-+				riscv_iommu_cmd_inval_set_pscid(&cmd,
-+					FIELD_GET(RISCV_IOMMU_DC_TA_PSCID, dc->ta));
-+			}
-+			/* else: IOTINVAL.VMA with GV=AV=PSCV=0 */
++	if (prog->type == BPF_PROG_TYPE_LWT_XMIT) {
++		if (!ipv6_bpf_stub) {
++			pr_warn_once("Please test this program with the IPv6 module loaded\n");
++			ret = -EOPNOTSUPP;
++			goto out;
 +		}
-+	} else {
-+		riscv_iommu_cmd_inval_set_gscid(&cmd,
-+			FIELD_GET(RISCV_IOMMU_DC_IOHGATP_GSCID, iohgatp));
-+
-+		if (inval_pdt) {
-+			/*
-+			 * IOTINVAL.VMA with GV=1, AV=0, and PSCV=1, and
-+			 * GSCID=DC.iohgatp.GSCID, PSCID=PC.PSCID
-+			 */
-+			riscv_iommu_cmd_inval_set_pscid(&cmd,
-+				FIELD_GET(RISCV_IOMMU_PC_TA_PSCID, pc->ta));
-+		}
-+		/*
-+		 * else: IOTINVAL.VMA with GV=1,AV=PSCV=0,and
-+		 * GSCID=DC.iohgatp.GSCID
-+		 *
-+		 * IOTINVAL.GVMA with GV=1,AV=0,and
-+		 * GSCID=DC.iohgatp.GSCID
-+		 * TODO: For now, the Second-Stage feature have not yet been merged,
-+		 * also issue IOTINVAL.GVMA once second-stage support is merged.
++#if IS_ENABLED(CONFIG_IPV6)
++		/* For CONFIG_IPV6=n, ipv6_bpf_stub is NULL which is
++		 * handled by the above if statement.
 +		 */
++		dst_hold(&net->ipv6.ip6_null_entry->dst);
++		skb_dst_set(skb, &net->ipv6.ip6_null_entry->dst);
++#endif
 +	}
-+	riscv_iommu_cmd_send(iommu, &cmd);
-+}
- /*
-  * Update IODIR for the device.
-  *
-@@ -1031,6 +1091,11 @@ static void riscv_iommu_iodir_update(struct riscv_iommu_device *iommu,
- 		riscv_iommu_cmd_iodir_inval_ddt(&cmd);
- 		riscv_iommu_cmd_iodir_set_did(&cmd, fwspec->ids[i]);
- 		riscv_iommu_cmd_send(iommu, &cmd);
-+		/*
-+		 * For now, the SVA and PASID features have not yet been merged, the
-+		 * default configuration is inval_pdt=false and pc=NULL.
-+		 */
-+		riscv_iommu_iodir_iotinval(iommu, false, dc->iohgatp, dc, NULL);
- 		sync_required = true;
- 	}
- 
-@@ -1056,6 +1121,11 @@ static void riscv_iommu_iodir_update(struct riscv_iommu_device *iommu,
- 		riscv_iommu_cmd_iodir_inval_ddt(&cmd);
- 		riscv_iommu_cmd_iodir_set_did(&cmd, fwspec->ids[i]);
- 		riscv_iommu_cmd_send(iommu, &cmd);
-+		/*
-+		 * For now, the SVA and PASID features have not yet been merged, the
-+		 * default configuration is inval_pdt=false and pc=NULL.
-+		 */
-+		riscv_iommu_iodir_iotinval(iommu, false, dc->iohgatp, dc, NULL);
- 	}
- 
- 	riscv_iommu_cmd_sync(iommu, RISCV_IOMMU_IOTINVAL_TIMEOUT);
++
+ 	ret = bpf_test_run(prog, skb, repeat, &retval, &duration, false);
+ 	if (ret)
+ 		goto out;
 -- 
 2.53.0
 
