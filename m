@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-253200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252747-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cDZuE+YuDmoK7wUAu9opvQ
-	(envelope-from <stable+bounces-253200-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:00:06 +0200
+	id KOPqJ+ooDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252747-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:34:34 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9002859B921
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:00:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E4BB59B092
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:34:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AD3163978A7D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 72E8539D3772
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F1140960D;
-	Wed, 20 May 2026 18:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D80903FC5AE;
+	Wed, 20 May 2026 18:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O6ULKfmC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kyrpt6z0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E85E3FD133;
-	Wed, 20 May 2026 18:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A3913FB05A;
+	Wed, 20 May 2026 18:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302663; cv=none; b=pLfGRX2jt3rZbjdjl8iugA8/hggCj/6Ynad64HQ/2hV3mqMWteETG2bRF8/Zpy3TjqV/WNPrt2vbV/I/FeyOawV8F/7hDUN1CWAfNnQqF3Xv4CHLSDXDuyKqGbO9w5zz58KdkbKIouVENW+7Nm+kuXqZ1UJ70VF+4fC3n0u3VEM=
+	t=1779301484; cv=none; b=JZSO6Hlk+zIciUWz0V9oeBPT9Use1yjbLszdwr1WQpRLV67nTgWrUNKDjIH/dNEQU/7AJbdmxIhdrNbdhP15E218aMpyvKJKOz9s/KI8y6T3r5NFcimVJcLu0wAEWhvPxudQsHWUSQ3JNzlOaisroQ7raPl8d+9lbvscATy/CkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302663; c=relaxed/simple;
-	bh=JhEJd7EkPEMdY8slBurffaT74xvBh9tqMMb3kyC+8PI=;
+	s=arc-20240116; t=1779301484; c=relaxed/simple;
+	bh=ikXV4+oKAwRz1hfmtzV8KyBoXCXU3+mXrqGlyITQwRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rrPSiFt8ijYz9eFtpkaXhT7rVJmQDKT0qDQ4fugoVTq19Whv2vf5b35KY5xjt1EM/9XIo1710Ncg5jkCN3uEXSSV83bd4W4npwa0XE3qo+nK9gTPEdWUcpgfMv8Z6qALqd9a5NMF0xLcvqM3wTxJxW6ltFL6phQBmi8FxKdcZhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O6ULKfmC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BFD61F000E9;
-	Wed, 20 May 2026 18:44:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=anm1pPZvF6Vv0BD12jEBw6luJyU5FCVAy3gzPWh+u4xQ9DAvFNsmXC7JVbvDqCq56wiC2FyGTE38P/aaEX+QsK/YFtIrtdKgsDnHzxfFyohZVsDPtz5BoTCYbwf5NtssXOe6HeIFox6Cr1RcrV6LMMgy+OLEr59uIfGEr1BvuAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kyrpt6z0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF9691F000E9;
+	Wed, 20 May 2026 18:24:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302661;
-	bh=aat2M74zt6fE+7I4lfBiSgv5qpBxTfmCdRCtuztoaW4=;
+	s=korg; t=1779301483;
+	bh=Q+HEZqZYvZDZ/PLYu20+LC2jX55Aj9ANho42YMJlsug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=O6ULKfmCZkQcssLZSK/S8naNDcS1MFgsdM3ZgsLpDC1Nu1FNoKfnItS9eVovw6eSU
-	 r0v6V2EDj+MU2/lPyruKSsB5vJbb5SB9ltv5fTCQJOb4zObt4HrpguKm/B0Bs3ZROj
-	 IaS51vltL0WIyvbqeYczBFmvSMFgdv87l/FRQd2A=
+	b=Kyrpt6z00+/R2hQwExnVoQDkahrEXl9N1AfylHvFBnffLFWGDCi5kv4Nt7GOUVxh8
+	 IUkCjQgVxlQIsdz46bNAWzPt3hbTxEf/42qh1lyAEqNQgIceqmqBwjNAesjaomQSgM
+	 zSzUV8wg/lQuNjWIYGxnOcD7jIHBvWJ3BFwC4gDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tung Nguyen <tung.quang.nguyen@est.tech>,
-	Lee Jones <lee@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Yinjie Yao <yinjie.yao@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 353/508] tipc: fix double-free in tipc_buf_append()
+Subject: [PATCH 6.12 565/666] drm/amdgpu/jpeg: set no_user_fence for JPEG v4.0.3 ring
 Date: Wed, 20 May 2026 18:22:56 +0200
-Message-ID: <20260520162106.283901990@linuxfoundation.org>
+Message-ID: <20260520162123.514013794@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +64,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-252747-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253200-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 9002859B921
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: 4E4BB59B092
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lee Jones <lee@kernel.org>
+From: Yinjie Yao <yinjie.yao@amd.com>
 
-[ Upstream commit d293ca716e7d5dffdaecaf6b9b2f857a33dc3d3a ]
+[ Upstream commit 83e37c0987ca92f9e87789b46dd311dcf5a4a6c8 ]
 
-tipc_msg_validate() can potentially reallocate the skb it is validating,
-freeing the old one.  In tipc_buf_append(), it was being called with a
-pointer to a local variable which was a copy of the caller's skb
-pointer.
+JPEG rings do not support 64-bit user fence writes, reject CS
+submissions with user fences.
 
-If the skb was reallocated and validation subsequently failed, the error
-handling path would free the original skb pointer, which had already
-been freed, leading to double-free.
-
-Fix this by checking if head now points to a newly allocated reassembled
-skb.  If it does, reassign *headbuf for later freeing operations.
-
-Fixes: d618d09a68e4 ("tipc: enforce valid ratio between skb truesize and contents")
-Suggested-by: Tung Nguyen <tung.quang.nguyen@est.tech>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e684e654eba9 ("drm/amdgpu/jpeg: add jpeg support for VCN4_0_3")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 2f6afc97d259d530f4f86c7743efbc573a8da927)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/msg.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/tipc/msg.c b/net/tipc/msg.c
-index 76284fc538ebd..b0bba0feef564 100644
---- a/net/tipc/msg.c
-+++ b/net/tipc/msg.c
-@@ -177,8 +177,20 @@ int tipc_buf_append(struct sk_buff **headbuf, struct sk_buff **buf)
- 
- 	if (fragid == LAST_FRAGMENT) {
- 		TIPC_SKB_CB(head)->validated = 0;
--		if (unlikely(!tipc_msg_validate(&head)))
-+
-+		/* If the reassembled skb has been freed in
-+		 * tipc_msg_validate() because of an invalid truesize,
-+		 * then head will point to a newly allocated reassembled
-+		 * skb, while *headbuf points to freed reassembled skb.
-+		 * In such cases, correct *headbuf for freeing the newly
-+		 * allocated reassembled skb later.
-+		 */
-+		if (unlikely(!tipc_msg_validate(&head))) {
-+			if (head != *headbuf)
-+				*headbuf = head;
- 			goto err;
-+		}
-+
- 		*buf = head;
- 		TIPC_SKB_CB(head)->tail = NULL;
- 		*headbuf = NULL;
+diff --git a/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c b/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c
+index fd0ba04a66045..c4f812939a85f 100644
+--- a/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c
++++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c
+@@ -1122,6 +1122,7 @@ static const struct amd_ip_funcs jpeg_v4_0_3_ip_funcs = {
+ static const struct amdgpu_ring_funcs jpeg_v4_0_3_dec_ring_vm_funcs = {
+ 	.type = AMDGPU_RING_TYPE_VCN_JPEG,
+ 	.align_mask = 0xf,
++	.no_user_fence = true,
+ 	.get_rptr = jpeg_v4_0_3_dec_ring_get_rptr,
+ 	.get_wptr = jpeg_v4_0_3_dec_ring_get_wptr,
+ 	.set_wptr = jpeg_v4_0_3_dec_ring_set_wptr,
 -- 
 2.53.0
 
