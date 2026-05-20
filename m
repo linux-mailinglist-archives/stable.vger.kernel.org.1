@@ -1,61 +1,69 @@
-Return-Path: <stable+bounces-252188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250609-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +C8UAGL6DWrO5AUAu9opvQ
-	(envelope-from <stable+bounces-252188-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:16:02 +0200
+	id iLonIkroDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250609-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:58:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 980FF595AFA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:16:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04D6C592BCC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:58:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 721E3317BD50
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:00:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CCFC230B5A20
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43373E95A4;
-	Wed, 20 May 2026 18:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37CB6371D13;
+	Wed, 20 May 2026 16:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KzKhY8+8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1swEWW71"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6436232861F;
-	Wed, 20 May 2026 18:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D6323B61B;
+	Wed, 20 May 2026 16:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300022; cv=none; b=uSXt35KcDyPeOBw1pOKC426T4rIEcshNLji1sziUnuPNqvaBecNjiClLsTZY6dn2O077c+6T+EtiG0b2MLXoYitDjEVD1+U7TCAwskBGTsL/qEcQ22JjAcxUlYo/yJWy4ZnP72gQ9LtlDSmpdaziAu1blkvDQtnhjC9DBnOVAFM=
+	t=1779295859; cv=none; b=YdY06b+47dblsojVwDqHb6z4oIujUrfEKXS5kv/9CrGCbs6awimIiBEWN2vMj4x760GD/If4ruE39ZfGQsk0U0u/JhE73xo47NAXKWKJbDwJE6yyx3g5G4MS6hN7Wt5UnjirIjCgIqMfFcQ/RYT0tfb+Qweatj32yQhFdUG8Pxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300022; c=relaxed/simple;
-	bh=YI46Iuy8r9q2mFIif6uDvjFkSHFtxc/pdpf1MybC2nk=;
+	s=arc-20240116; t=1779295859; c=relaxed/simple;
+	bh=nP48KTgNTzQ2M6nKMROfeEar5p6DNd4Gb6o6Me895lc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FX0u0gB1D2JEYQtE9gdJxks3hld3OAFexzM5aX5BmI+3Wm8ckwgPjRslwWZw4Uu/hdfXKPdh6LRgDoyWSQFS0kZfd7TYLLq9EqV8SML6c7VZpVzCkVG0Z7qSgSuDRmthSgIx4xCAgXoDp05vsXzY1hHKLtgZKrc4fXruruQ55+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KzKhY8+8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C971F000E9;
-	Wed, 20 May 2026 18:00:20 +0000 (UTC)
+	 MIME-Version; b=P1ApcPvAJWI3DPjBn4O/BWy9jax4xUl6dhP5/UM3D05+6yOGE6T6l92elIX+R+Nl+Tlw8X4OXTnsMOw0bLMAhNR9A2HQscYhE9/el77WIfvSexwRgtqtEWYm1gE1h8G0IslibTSyaod0yu8YcsBp1vm2xWVR4BtgBD7hl6c+qZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1swEWW71; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA6A1F000E9;
+	Wed, 20 May 2026 16:50:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300021;
-	bh=7i5KKuqvh5v4WhezRTEMTdvXuQXC4OUcfioN4EEjXyY=;
+	s=korg; t=1779295857;
+	bh=sR5rppxaYH3wWVd/HuF1iCFLZWT7x4/DJ/oTFoBCnmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KzKhY8+8pJu7Q2OqLPTr6G0XGaI02fQVt6g27ZHiCTprfFTLR2sW4XuNL9pyboC8R
-	 Y3DueikCdjmECZGHquk4l0L1pNIqX7yR6RcuCvRmdORaNCKnAbru0186bCC+sa2LzN
-	 VY2nwyLVSBJ8IUeHf8nTn51XALVjnfY4tWhw6Iwc=
+	b=1swEWW71x2nV/yKENzkm6Zh3scLxuMrU1wkVDW9ZHKZacqSefwgtdmxscos9SHzqJ
+	 A2qd8I0vcZDQu6j60OWTcGnAo9o0l04M5jEK3SFiGY31lcu8/XdKATXVKk85xaq0Po
+	 dLZqjNI8YE5cZeZJhQW3flbGH3nUMX0WEamF6vAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gopi Krishna Menon <krishnagopi487@gmail.com>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Lukasz Luba <lukasz.luba@arm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Simon Horman <horms@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Yury Norov <ynorov@nvidia.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 018/666] thermal/drivers/spear: Fix error condition for reading st,thermal-flags
+Subject: [PATCH 7.0 0579/1146] tracing: move __printf() attribute on __ftrace_vbprintk()
 Date: Wed, 20 May 2026 18:13:49 +0200
-Message-ID: <20260520162111.624220173@linuxfoundation.org>
+Message-ID: <20260520162201.285142273@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,71 +78,110 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,nxp.com,arm.com];
-	TAGGED_FROM(0.00)[bounces-252188-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-250609-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 980FF595AFA
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 04D6C592BCC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gopi Krishna Menon <krishnagopi487@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit da2c4f332a0504d9c284e7626a561d343c8d6f57 ]
+[ Upstream commit 473e470f16f98569d59adc11c4a318780fb68fe9 ]
 
-of_property_read_u32 returns 0 on success. The current check returns
--EINVAL if the property is read successfully.
+The sunrpc change to use trace_printk() for debugging caused
+a new warning for every instance of dprintk() in some configurations,
+when -Wformat-security is enabled:
 
-Fix the check by removing ! from of_property_read_u32
+fs/nfs/getroot.c: In function 'nfs_get_root':
+fs/nfs/getroot.c:90:17: error: format not a string literal and no format arguments [-Werror=format-security]
+   90 |                 nfs_errorf(fc, "NFS: Couldn't getattr on root");
 
-Fixes: b9c7aff481f1 ("drivers/thermal/spear_thermal.c: add Device Tree probing capability")
-Signed-off-by: Gopi Krishna Menon <krishnagopi487@gmail.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@kernel.org>
-Suggested-by: Daniel Baluta <daniel.baluta@nxp.com>
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-Link: https://patch.msgid.link/20260327090526.59330-1-krishnagopi487@gmail.com
+I've been slowly chipping away at those warnings over time with the
+intention of enabling them by default in the future. While I could not
+figure out why this only happens for this one instance, I see that the
+__trace_bprintk() function is always called with a local variable as
+the format string, rather than a literal.
+
+Move the __printf(2,3) annotation on this function from the declaration
+to the caller. As this is can only be validated for literals, the
+attribute on the declaration causes the warnings every time, but
+removing it entirely introduces a new warning on the __ftrace_vbprintk()
+definition.
+
+The format strings still get checked because the underlying literal keeps
+getting passed into __trace_printk() in the "else" branch, which is not
+taken but still evaluated for compile-time warnings.
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Anna Schumaker <anna.schumaker@oracle.com>
+Cc: Chuck Lever <chuck.lever@oracle.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Yury Norov <ynorov@nvidia.com>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Link: https://patch.msgid.link/20260203164545.3174910-1-arnd@kernel.org
+Fixes: ec7d8e68ef0e ("sunrpc: add a Kconfig option to redirect dfprintk() output to trace buffer")
+Acked-by: Jeff Layton <jlayton@kernel.org>
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/spear_thermal.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/trace_printk.h | 1 -
+ kernel/trace/trace_printk.c  | 1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/thermal/spear_thermal.c b/drivers/thermal/spear_thermal.c
-index 60a871998b07e..19b37f9b093f9 100644
---- a/drivers/thermal/spear_thermal.c
-+++ b/drivers/thermal/spear_thermal.c
-@@ -93,7 +93,7 @@ static int spear_thermal_probe(struct platform_device *pdev)
- 	struct device_node *np = pdev->dev.of_node;
- 	int ret = 0, val;
+diff --git a/include/linux/trace_printk.h b/include/linux/trace_printk.h
+index bb5874097f24e..2670ec7f42629 100644
+--- a/include/linux/trace_printk.h
++++ b/include/linux/trace_printk.h
+@@ -107,7 +107,6 @@ do {									\
+ 		__trace_printk(_THIS_IP_, fmt, ##args);			\
+ } while (0)
  
--	if (!np || !of_property_read_u32(np, "st,thermal-flags", &val)) {
-+	if (!np || of_property_read_u32(np, "st,thermal-flags", &val)) {
- 		dev_err(&pdev->dev, "Failed: DT Pdata not passed\n");
- 		return -EINVAL;
- 	}
+-extern __printf(2, 3)
+ int __trace_bprintk(unsigned long ip, const char *fmt, ...);
+ 
+ extern __printf(2, 3)
+diff --git a/kernel/trace/trace_printk.c b/kernel/trace/trace_printk.c
+index 5ea5e0d76f00b..3ea17af601695 100644
+--- a/kernel/trace/trace_printk.c
++++ b/kernel/trace/trace_printk.c
+@@ -197,6 +197,7 @@ struct notifier_block module_trace_bprintk_format_nb = {
+ 	.notifier_call = module_trace_bprintk_format_notify,
+ };
+ 
++__printf(2, 3)
+ int __trace_bprintk(unsigned long ip, const char *fmt, ...)
+ {
+ 	int ret;
 -- 
 2.53.0
 
