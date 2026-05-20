@@ -1,58 +1,70 @@
-Return-Path: <stable+bounces-252173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252782-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0AiJOTz4DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-252173-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:06:52 +0200
+	id SO88MYH+DWok5QUAu9opvQ
+	(envelope-from <stable+bounces-252782-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:33:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E81159551A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:06:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 612AC59690F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:33:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4F556311CBC0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:00:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B97AF30F95C0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:26:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 802A93F44F7;
-	Wed, 20 May 2026 17:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F0F03FA5EB;
+	Wed, 20 May 2026 18:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MzeXNZv2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gM+V8r/4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 188853F86F4;
-	Wed, 20 May 2026 17:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC0F3D1CC6;
+	Wed, 20 May 2026 18:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299985; cv=none; b=MoNVCsrHlmahHBpLH2LMJYyTXb+ZARpUN23AsyIE5SNY0XwuChhp48ivQoYp4uGZkK5dxhk6Sd3VbxFBphTQ67moidpBf4MYTWjYonboOYxz7+z+Ju1MsLpDlF3cxohdr8b8FKy3tdR1TEWfG6Bmxzh69EqRbsXcDC9SzJDq8nY=
+	t=1779301576; cv=none; b=DSqix7QSplZeLBs3uqobWnwMqQTuhhEgamRrbxv+ofPRyqMk56sKnlBdnx+PiDLSLk6Bx/83Vl/GjPaxMPWZ0Igev8goSREomBVkCY9FrFwMQOJzqxIl8LhyQzbXvEvv5yMebZF6dh6FnvbMWQsVtJAntTXW8CuNpWHUAfK+wNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299985; c=relaxed/simple;
-	bh=l1DGY0+EwoeYOhihH7+iDtQXaJYpbUplWC6G9Og1wPA=;
+	s=arc-20240116; t=1779301576; c=relaxed/simple;
+	bh=vKp9TwQ1s9U8z9MB0ud/lMgW3gom/0bAXVnLHJ9lpBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uCVTu2Ju9EwPUb9PNnW2UNUVvgRnp1b3GzWzQgrBEoVhS5/QbYtLtlxDpx9xTxuQnp+lcVHYnOLHBi/+NepNmwltIl41Kx/M8fax4ulvJR4egYPYpm1IADi2YzCbt1S5HrGUXem6qKIxS6Jo1qMxidVKEMAXf0uDqfRU1XE5TTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MzeXNZv2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B671F000E9;
-	Wed, 20 May 2026 17:59:40 +0000 (UTC)
+	 MIME-Version; b=UX2uTg99J2p5qgSdkgCl80DdhUWmV0Q8BDgFJ87RHt7Dk5z4FCvO43SCjXH/FFR4mWkcn3qFpjeZM8h+cwxxC1omZ4BVa3QSXYcLap0hgYpD9ktRX/ksrpA67BK1xEWgvQL+BP1QelESunaeWtNREEDdjLEf4tF03fIrcFfcqDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gM+V8r/4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 015711F000E9;
+	Wed, 20 May 2026 18:26:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299981;
-	bh=OTIMDUCL25zueZIflMrzOoqt/vmyy66AlqxphjVr0SU=;
+	s=korg; t=1779301575;
+	bh=cOy/BmYfWeJ52td+VqI8t+isT3Vian73HAW9w5HVRs4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MzeXNZv2ZoL0x9S/nFqYwMNBZmYFDM2ypBgIsWksfsF4slG91pJQ0dEVhUIPCT1kA
-	 FxpR0SnPU3tUWEsBfhNz4aYe2B9yDQbrsSFuj+EUEbXNdH7vqnJlwnkBZRGelYXYBZ
-	 xahrrE6R8CXLjxx3Z+545tjLj29eQC+fcB1eCfcQ=
+	b=gM+V8r/4sfnJu3EvqvR7TgvkDLrLkVN7w64/gSMjVanQkg8uue5WnHKQcKdZDaY2f
+	 hxJJn5d9tFQCLU94tB/jQfGLaqsSc47JQMXeWByE3TWaD3coQrd4zSJ+Cb+wtTh+og
+	 RM9IRR6da0TF5Pjw+9QbzcdW/S9wGAViQUNUxtcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.18 933/957] libceph: Fix potential out-of-bounds access in osdmap_decode()
+	Stephane Eranian <eranian@google.com>,
+	James Clark <james.clark@linaro.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 605/666] perf tool_pmu: Fix aggregation on duration_time
 Date: Wed, 20 May 2026 18:23:36 +0200
-Message-ID: <20260520162154.822992746@linuxfoundation.org>
+Message-ID: <20260520162124.382497099@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,76 +77,119 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252173-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252782-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,tu-ilmenau.de:email]
-X-Rspamd-Queue-Id: 8E81159551A
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,infradead.org:email,arm.com:email]
+X-Rspamd-Queue-Id: 612AC59690F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+From: Ian Rogers <irogers@google.com>
 
-commit 35d0ed82d03e5ee77ea4f31f20e29562a7721649 upstream.
+[ Upstream commit 68cb1567439fa325ba980f3b5b67f95d3953eafd ]
 
-When decoding osd_state and osd_weight from an incoming osdmap in
-osdmap_decode(), both are decoded for each osd, i.e., map->max_osd
-times. The ceph_decode_need() check only accounts for
-sizeof(*map->osd_weight) once. This can potentially result in an
-out-of-bounds memory access if the incoming message is corrupted such
-that the max_osd value exceeds the actual content of the osdmap message.
+evsel__count_has_error() fails counters when the enabled or running time
+are 0. The duration_time event reads 0 when the cpu_map_idx != 0 to
+avoid aggregating time over CPUs. Change the enable and running time
+to always have a ratio of 100% so that evsel__count_has_error won't
+fail.
 
-This patch fixes the issue by changing the corresponding part in the
-ceph_decode_need() check to account for
-map->max_osd*sizeof(*map->osd_weight).
+Before:
+```
+$ sudo /tmp/perf/perf stat --per-core -a -M UNCORE_FREQ sleep 1
 
-Cc: stable@vger.kernel.org
-Fixes: dcbc919a5dc8 ("libceph: switch osdmap decoding to use ceph_decode_entity_addr")
-Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
-Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ Performance counter stats for 'system wide':
+
+S0-D0-C0              1      2,615,819,485      UNC_CLOCK.SOCKET                 #     2.61 UNCORE_FREQ
+S0-D0-C0              2      <not counted>      duration_time
+
+       1.002111784 seconds time elapsed
+```
+
+After:
+```
+$ perf stat --per-core -a -M UNCORE_FREQ sleep 1
+
+ Performance counter stats for 'system wide':
+
+S0-D0-C0              1        758,160,296      UNC_CLOCK.SOCKET                 #     0.76 UNCORE_FREQ
+S0-D0-C0              2      1,003,438,246      duration_time
+
+       1.002486017 seconds time elapsed
+```
+
+Note: the metric reads the value a different way and isn't impacted.
+
+Fixes: 240505b2d0adcdc8 ("perf tool_pmu: Factor tool events into their own PMU")
+Reported-by: Stephane Eranian <eranian@google.com>
+Reviewed-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Richter <tmricht@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250423050358.94310-1-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ceph/osdmap.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/tool_pmu.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/net/ceph/osdmap.c
-+++ b/net/ceph/osdmap.c
-@@ -1703,7 +1703,7 @@ static int osdmap_decode(void **p, void
- 	ceph_decode_need(p, end, 3*sizeof(u32) +
- 			 map->max_osd*(struct_v >= 5 ? sizeof(u32) :
- 						       sizeof(u8)) +
--				       sizeof(*map->osd_weight), e_inval);
-+			 map->max_osd*sizeof(*map->osd_weight), e_inval);
- 	if (ceph_decode_32(p) != map->max_osd)
- 		goto e_inval;
+diff --git a/tools/perf/util/tool_pmu.c b/tools/perf/util/tool_pmu.c
+index f41fed39d70d8..3d1d6b3352ec7 100644
+--- a/tools/perf/util/tool_pmu.c
++++ b/tools/perf/util/tool_pmu.c
+@@ -392,8 +392,14 @@ int evsel__read_tool(struct evsel *evsel, int cpu_map_idx, int thread)
+ 		delta_start *= 1000000000 / ticks_per_sec;
+ 	}
+ 	count->val    = delta_start;
+-	count->ena    = count->run = delta_start;
+ 	count->lost   = 0;
++	/*
++	 * The values of enabled and running must make a ratio of 100%. The
++	 * exact values don't matter as long as they are non-zero to avoid
++	 * issues with evsel__count_has_error.
++	 */
++	count->ena++;
++	count->run++;
+ 	return 0;
+ }
  
+-- 
+2.53.0
+
 
 
 
