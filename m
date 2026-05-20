@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-252954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251856-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CKElCW8ZDmqA6AUAu9opvQ
-	(envelope-from <stable+bounces-252954-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:28:31 +0200
+	id GOA4GikCDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-251856-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:49:13 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D65B599A2A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:28:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B9DC597410
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:49:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8D0C230D4B12
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:33:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A8F6D319F798
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:44:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A65A34EEF7;
-	Wed, 20 May 2026 18:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5163D3F23A4;
+	Wed, 20 May 2026 17:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n8j8ms+W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8g/POAG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3513F4DD7;
-	Wed, 20 May 2026 18:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043C31C3BFC;
+	Wed, 20 May 2026 17:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302024; cv=none; b=RY1KghckrDV1HG/lsinQwx0UqiBZM6wiitYRU8d+o36+qv7nfnJg09Gad7WHmlaP+KO8UYfNIWThOcLOPD8Weqa5bV8EI7wIQ7ZQ5qj7JSHqvkelU34qmg3VjJrAjQbxkuYfns9Bi6rsWPIncryJozwOAyE2UrgffOoPGlF+zeU=
+	t=1779299066; cv=none; b=H1xv4DGTwujylN3Z7Z4vY2BUwQ8h/hT4XZdIk7kjxB/OnIDGgw330otaKdAf86xsZQts8seJ7EBy0UKj5VlUuQmc54jOeVFhLRo602iNcvgJTV3YW0kAPnoBSEoBDvxP96f1W54zyXcR59PZA5E102CFnXDnqCMxN4KjDojBe2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302024; c=relaxed/simple;
-	bh=1PZsXcyet17unVWk3Rj5/3Usq8uZ/j2RPHl9XK1wIWg=;
+	s=arc-20240116; t=1779299066; c=relaxed/simple;
+	bh=ROgacIQtwCaS80dFD+3vBfzkpIpM+kqV5S/LaKNx8Rw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pmnL6mvaM3yq1y5vZI7VXvwy4/S97igrT+lFbRYt730jYVGSqHD807S1na9jpz1BD/iMZOEPiOhMwttBlJ2Cgv0rhPjgMkmJ6HeQCLTemGBj5aLwkGHN+cdIKCwgi9Qq+3Yw97bkhlJO3xFi2a+0ej0DRsGcloEOo3SMSjnusNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n8j8ms+W; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5F471F00897;
-	Wed, 20 May 2026 18:33:41 +0000 (UTC)
+	 MIME-Version; b=inVIKF/sMDQ+OwO1PiPedeE0cmyYzkyd00V0EEWNOjhu39PgT70D7asHujnbBvB3dcVt7RzTUkerHkPDSlsHtYlWaf1N6vYUux73YOVdFdMhp7O/ZiTYl9TUv1qrl/GPAwAE0q77D/jdKebvpdW+I3s+M9Nq1EvnQ/Hdzx7k49g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8g/POAG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F26171F000E9;
+	Wed, 20 May 2026 17:44:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302022;
-	bh=F7klQ7sYY7n0dYQp4mEzqMq1otfWc+hqdZQmFCyztrQ=;
+	s=korg; t=1779299064;
+	bh=vYEgn7ij4I3UgUglpgYdJ0vyFFNVaGan6DgPTEQRtoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=n8j8ms+WaRpg9XbEUzZ1xjffjboMw19JZ9WosT+f/t+mqdMy818CvNiemrqr81cqy
-	 2YkxgMNlSPweTlVLcxp6xReZVwN6nBG+T4kL02iQ07pRiZDIQ1Xk1w3Bj6MEFSaN8f
-	 UVohwbq5lOuDsUYFkSL+WoyTh3yj960ADwPky/yE=
+	b=Y8g/POAGZrfbrmvaSd5l8mEUUnMKxhITVUSOct0iUjhQewnkPh5bVGdUmhLtJOVQ1
+	 g96GR51yqqIkDdaAO+IfjepmjqjoHeB9sJ7bifSdm5TRlKPzisgSIYnh+jphkZoDRq
+	 JLNaOMjvvE6/gtZhZ0NxHlIqCJaqo1KkGzoED+T0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jason Yan <yanaijie@huawei.com>,
-	Helge Deller <deller@gmx.de>,
+	Alice Mikityanska <alice@isovalent.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 108/508] fbdev: matroxfb: Mark variable with __maybe_unused to avoid W=1 build break
+Subject: [PATCH 6.18 648/957] ice: Remove jumbo_remove step from TX path
 Date: Wed, 20 May 2026 18:18:51 +0200
-Message-ID: <20260520162100.963131566@linuxfoundation.org>
+Message-ID: <20260520162148.582539866@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,95 +76,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252954-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251856-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.intel.com,huawei.com,gmx.de,kernel.org];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,gmx.de:email,intel.com:email,huawei.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 3D65B599A2A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,isovalent.com:email]
+X-Rspamd-Queue-Id: 6B9DC597410
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Alice Mikityanska <alice@isovalent.com>
 
-[ Upstream commit caf6144053b4e1c815aa56afb54745a176f999df ]
+[ Upstream commit 8b76102c5e00d1f090e0c31d17b060c76d8fa859 ]
 
-Clang is not happy about set but unused variable:
+Now that the kernel doesn't insert HBH for BIG TCP IPv6 packets, remove
+unnecessary steps from the ice TX path, that used to check and remove
+HBH.
 
-drivers/video/fbdev/matrox/g450_pll.c:412:18: error: variable 'mnp' set but not used
-   412 |         unsigned int mnp;
-       |                      ^
-1 error generated.
-
-Since the commit 7b987887f97b ("video: fbdev: matroxfb: remove dead code
-and set but not used variable") the 'mnp' became unused, but eliminating
-that code might have side-effects. The question here is what should we do
-with 'mnp'? The easiest way out is just mark it with __maybe_unused which
-will shut the compiler up and won't change any possible IO flow. So does
-this change.
-
-A dive into the history of the driver:
-
-The problem was revealed when the #if 0 guarded code along with unused
-pixel_vco variable was removed. That code was introduced in the original
-commit 213d22146d1f ("[PATCH] (1/3) matroxfb for 2.5.3"). And then guarded
-in the commit 705e41f82988 ("matroxfb DVI updates: Handle DVI output on
-G450/G550. Powerdown unused portions of G450/G550 DAC. Split G450/G550 DAC
-from older DAC1064 handling. Modify PLL setting when both CRTCs use same
-pixel clocks.").
-
-NOTE: The two commits mentioned above pre-date Git era and available in
-history.git repository for archaeological purposes.
-
-Even without that guard the modern compilers may see that the pixel_vco
-wasn't ever used and seems a leftover after some debug or review made
-25 years ago.
-
-The g450_mnp2vco() doesn't have any IO and as Jason said doesn't seem
-to have any side effects either than some unneeded CPU processing during
-runtime. I agree that's unlikely that timeout (or heating up the CPU) has
-any effect on the HW (GPU/display) functionality.
-
-Fixes: 7b987887f97b ("video: fbdev: matroxfb: remove dead code and set but not used variable")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Jason Yan <yanaijie@huawei.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Alice Mikityanska <alice@isovalent.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260205133925.526371-8-alice.kernel@fastmail.im
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 1a303baa715e ("ice: fix double-free of tx_buf skb")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/matrox/g450_pll.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_txrx.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/video/fbdev/matrox/g450_pll.c b/drivers/video/fbdev/matrox/g450_pll.c
-index ff8e321a22cef..b2d3f7328ea83 100644
---- a/drivers/video/fbdev/matrox/g450_pll.c
-+++ b/drivers/video/fbdev/matrox/g450_pll.c
-@@ -407,7 +407,7 @@ static int __g450_setclk(struct matrox_fb_info *minfo, unsigned int fout,
- 		case M_VIDEO_PLL:
- 			{
- 				u_int8_t tmp;
--				unsigned int mnp;
-+				unsigned int mnp __maybe_unused;
- 				unsigned long flags;
- 				
- 				matroxfb_DAC_lock_irqsave(flags);
+diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
+index 73f08d02f9c76..90dbe5266ce78 100644
+--- a/drivers/net/ethernet/intel/ice/ice_txrx.c
++++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
+@@ -2594,9 +2594,6 @@ ice_xmit_frame_ring(struct sk_buff *skb, struct ice_tx_ring *tx_ring)
+ 
+ 	ice_trace(xmit_frame_ring, tx_ring, skb);
+ 
+-	if (unlikely(ipv6_hopopt_jumbo_remove(skb)))
+-		goto out_drop;
+-
+ 	count = ice_xmit_desc_count(skb);
+ 	if (ice_chk_linearize(skb, count)) {
+ 		if (__skb_linearize(skb))
 -- 
 2.53.0
 
