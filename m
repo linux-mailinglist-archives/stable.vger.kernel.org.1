@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252709-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sPxUK7b+DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-252074-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:30 +0200
+	id YIc1LrwCDmra5QUAu9opvQ
+	(envelope-from <stable+bounces-252709-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:51:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55182596A26
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07AFE597528
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:51:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8C1E031EE71A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:54:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A2BCD399A522
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:23:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B9036A02E;
-	Wed, 20 May 2026 17:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AFAB3F88B8;
+	Wed, 20 May 2026 18:23:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uphp0pV4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vOMr92Ks"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9DB3F39C9;
-	Wed, 20 May 2026 17:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABBEB3F7ABC;
+	Wed, 20 May 2026 18:23:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299678; cv=none; b=OHp+9223yFMm/miqHwybO1XxbLty9qcrSDzdFFlxe4Ocqp9H0I/5S2wDvqNK7Qsqdur5iHapIYye0mDX0Vk4XoGAcAdN06c05WisMVrAg6Mset91iymv2TEe87l8UTvgSb6bv4vwsaGy/6LQHKhbO4oaeD5R3Y/DG35N6L65B0Y=
+	t=1779301384; cv=none; b=OcMDy0os+CHMLcQQQ//r4wTMjLNGz/AgAecEF4e+AmmlvJp9Dphur+hC7jPhYk67yNu9GMllZ0iIgWwU5cBZ25KDNTpz7BBaEwtUeaz/nD0SqB8KqW6BGJ80Vgi0iG+wZUsMvj6Nl+XsjFxeJuXYxQL63gt4RXrz8zbsaz+geMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299678; c=relaxed/simple;
-	bh=pgeBajgwko9YJ8aooNthGAARFu1trpbG4JC2IOtatvU=;
+	s=arc-20240116; t=1779301384; c=relaxed/simple;
+	bh=+B+9UTsvXuwXhwCwBL5hK6fmfbx2spUVzBy6Y3YqdkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aw0ZvAw3RDR4d37RlPjQdq6KssGNw1kqx7R9v0Yr4nT4tew5L3dTogK3oBtAqPj+Ku4qFI0y9EdWCv1kwk6pebIIPL2HfnH4jjfw8p4XxpAICQhOckf37hC7aj05NsR2QYnh/qsqnVxupEtqLdHJ4dRX+q0+3hsK6TL/oQDrVVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uphp0pV4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A311F000E9;
-	Wed, 20 May 2026 17:54:36 +0000 (UTC)
+	 MIME-Version; b=gU8AA8SqcnZCezb1IYxECupPfRYewyeHlU3MV/NSAErxGziITxKJ0h03hiW/CG0bFXojGCR+e23hgF6CohRv4nKyH4E4fIf5nwJSmyAbpkZZl49ArcXzVuaMzRoTuysKaRR063DVtU9BZWlSOcHqKXUwmvXoM6RbacXQwTMjLnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vOMr92Ks; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D47D71F000E9;
+	Wed, 20 May 2026 18:23:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299677;
-	bh=vczTOpyEeisYkzrPdiCPOmMm/e+0Xz/vZBMYR8O3cKo=;
+	s=korg; t=1779301383;
+	bh=eISfA8kVgIj04bvP413hGyGeAelFb97IRG/tko1lFmw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uphp0pV4dELq7x+NGE/D8h6PMDDrfcTzksqKcTUZa2txdM4KT/g/bwdSdmSKbcgmR
-	 ocMEt0pt/kJIfUik+RPjWCAR12xtY2rnZnAz0Rv/iP/psMe8LKr2CD/9GVAwXxpA0M
-	 1JtAOEE4uhPjaWUzo/6AAAzAt3uIUlyHdC2nIrME=
+	b=vOMr92KsX7kTaACGryjDVrPOf14muRP2Qi8cqU3rOUjDg+cDLsKLWhwI/YZENoXgu
+	 8GpUTJ4Z6e6Ap1EsPYwG2LSb0pnt8mz9JFFlurffGWPaxSAPyiPib2IcIss8N6Y35U
+	 iuAWAX7M1Wug48RNIxKkmSG2YZE1fpDYBBrXKlVg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 863/957] erofs: fix offset truncation when shifting pgoff on 32-bit platforms
+Subject: [PATCH 6.12 535/666] net/sched: netem: fix slot delay calculation overflow
 Date: Wed, 20 May 2026 18:22:26 +0200
-Message-ID: <20260520162153.281388122@linuxfoundation.org>
+Message-ID: <20260520162122.867717011@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,84 +69,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252709-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252074-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,alibaba.com:email]
-X-Rspamd-Queue-Id: 55182596A26
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 07AFE597528
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Stephen Hemminger <stephen@networkplumber.org>
 
-[ Upstream commit c99493ce409c3b98fec1616dbcf24c102e006deb ]
+[ Upstream commit 51e94e1e2fef351c74d69eb53666df808d26af95 ]
 
-On 32-bit platforms, pgoff_t is 32 bits wide, so left-shifting
-large arbitrary pgoff_t values by PAGE_SHIFT performs 32-bit arithmetic
-and silently truncates the result for pages beyond the 4 GiB boundary.
+get_slot_next() computes a random delay between min_delay and
+max_delay using:
 
-Cast the page index to loff_t before shifting to produce a correct
-64-bit byte offset.
+  get_random_u32() * (max_delay - min_delay) >> 32
 
-Fixes: 386292919c25 ("erofs: introduce readmore decompression strategy")
-Fixes: 307210c262a2 ("erofs: verify metadata accesses for file-backed mounts")
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+This overflows signed 64-bit arithmetic when the delay range exceeds
+approximately 2.1 seconds (2^31 nanoseconds), producing a negative
+result that effectively disables slot-based pacing. This is a
+realistic configuration for WAN emulation (e.g., slot 1s 5s).
+
+Use mul_u64_u32_shr() which handles the widening multiply without
+overflow.
+
+Fixes: 0a9fe5c375b5 ("netem: slotting with non-uniform distribution")
+Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260418032027.900913-6-stephen@networkplumber.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/data.c  | 2 +-
- fs/erofs/zdata.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ net/sched/sch_netem.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/fs/erofs/data.c b/fs/erofs/data.c
-index 58aea2b48580c..d685ee1d9c554 100644
---- a/fs/erofs/data.c
-+++ b/fs/erofs/data.c
-@@ -38,7 +38,7 @@ void *erofs_bread(struct erofs_buf *buf, erofs_off_t offset, bool need_kmap)
- 	 * However, the data access range must be verified here in advance.
- 	 */
- 	if (buf->file) {
--		fpos = index << PAGE_SHIFT;
-+		fpos = (loff_t)index << PAGE_SHIFT;
- 		err = rw_verify_area(READ, buf->file, &fpos, PAGE_SIZE);
- 		if (err < 0)
- 			return ERR_PTR(err);
-diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
-index 71f01f0a07435..0f09f3ba32149 100644
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -1869,7 +1869,7 @@ static void z_erofs_pcluster_readmore(struct z_erofs_frontend *f,
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index 330d4ff7324d1..543a043f84f41 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -657,9 +657,8 @@ static void get_slot_next(struct netem_sched_data *q, u64 now)
  
- 		if (cur < PAGE_SIZE)
- 			break;
--		cur = (index << PAGE_SHIFT) - 1;
-+		cur = ((loff_t)index << PAGE_SHIFT) - 1;
- 	}
- }
- 
+ 	if (!q->slot_dist)
+ 		next_delay = q->slot_config.min_delay +
+-				(get_random_u32() *
+-				 (q->slot_config.max_delay -
+-				  q->slot_config.min_delay) >> 32);
++			mul_u64_u32_shr(q->slot_config.max_delay - q->slot_config.min_delay,
++					get_random_u32(), 32);
+ 	else
+ 		next_delay = tabledist(q->slot_config.dist_delay,
+ 				       (s32)(q->slot_config.dist_jitter),
 -- 
 2.53.0
 
