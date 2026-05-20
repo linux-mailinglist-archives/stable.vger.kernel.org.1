@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-253220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251194-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aFEdGj4ODmqe5wUAu9opvQ
-	(envelope-from <stable+bounces-253220-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:40:46 +0200
+	id AEHANSEYDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251194-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:22:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E12C598968
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:40:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ED15599830
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:22:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 333863271F3D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 55ED2324CE18
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5788240912F;
-	Wed, 20 May 2026 18:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD24356748;
+	Wed, 20 May 2026 17:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EpelwN7k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2YrtCXxX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11F7369D42;
-	Wed, 20 May 2026 18:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091B4347512;
+	Wed, 20 May 2026 17:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302713; cv=none; b=NmxpQCZ30wAP48N/isBECy/378FLv0JEneZf/gRHA3nvmVj1dyIveZVJpkFpMErRCnNUQ+rr3HCcBSJ5qNF8mIZL2ATBE3qg49nGdkZfvRlhhhdpbEuC4Yu/RGVQOqIn1Z8vLre3fg1Ttrd387sAc4F20dYu+ZkV46VIsX8wQKg=
+	t=1779297345; cv=none; b=TI3qNh1pZ4oR51GwILuWvXDDsh8Ys2YacJTCs1TSqrByrts3xuooi+HbmOLQq8XLVUE+8frMfyXMnc0kPh1/euq+Tuq53K9qWR4EgbqrGfAOJso5WFyffXjC0yMkU2PJhTkCLCuyV3IebyRwmWMLMFITz5Hvv+p6obpLe3WZQ9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302713; c=relaxed/simple;
-	bh=uzzQazJ0JXJ951o3O00bxJ9wQzwEwkK1weIrBFhocyY=;
+	s=arc-20240116; t=1779297345; c=relaxed/simple;
+	bh=9nHmLMp5hnIxWopUXzv9ZHSgTvdmoSGimJoHFdSKmRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d5o/aghZAarWpCP17Mb7y2zM+KQ5XMV74z7tLdalYVlQn72kWwgyYoWu0TKqDEqOloQzMWC3mNvE7aByLsQUgLoA9/U5s9ld91GZFzdEc7YVBHaqRtmOdxMZZulDfybN/pgBnjQnxL6pLXPlQI+EVs3bhMi1DT/6F0Kd2dbsHnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EpelwN7k; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 636801F000E9;
-	Wed, 20 May 2026 18:45:11 +0000 (UTC)
+	 MIME-Version; b=UQ8um+4Bn24ZaELRlD4HjEMU5Ezd/LAEHktuNBPjDEfnJOUMcRaPlRe4RwyTSwWExa7hgf1YnO1uBlkDUrrP8WHspNHLRAa3iygXFU7/9i8DrHGT8baQklLT62rKU0l+JkBCuhXLMEEYDmARC4sXmq+4XusEnsc+kUZg8XjXXdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2YrtCXxX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E2F31F000E9;
+	Wed, 20 May 2026 17:15:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302711;
-	bh=fVx8qVHk4kUNGWzn0tXN+S6UomKLghns1Qsk2DmlRBw=;
+	s=korg; t=1779297343;
+	bh=VcjdsJs3UJ7FQoGLzJoAtVbzm8fRP/UUT/Y3KuBLkk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EpelwN7k0p01g/ATGBnln/9WzZOVvfpGsvjlTemUCkAp2iCdUhiywI6JU29g6MUWl
-	 DC/+z16ZnTZ7B1TZSNeGr4PkoPnizCydknHPKkXE1sgWsVF0uPoO1z5cT4DVMMMnkM
-	 idqJgNfFYmaWXa/pk457QkML62ApAaEYXwgXFE9k=
+	b=2YrtCXxXw1mqDHp31gMeyOcWlFdQhjixkPIzDsZv+ahj6iH+G8utpQITtfmJj4BYG
+	 X0VEB6gRQDBUShNKzA+M09pZ+4r/xWWgwTdEC9BJI7gUh3vkWPp92W+6zrwvmQfdH4
+	 shlfTPIJC7BbBrcTyO0hKAbvXTRYb7Zi8fHFpDI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Demers <alexandre.f.demers@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Bharath SM <bharathsm@microsoft.com>,
+	Piyush Sachdeva <psachdeva@microsoft.com>,
+	Piyush Sachdeva <s.piyush1024@gmail.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 371/508] drm/amdgpu: fix spelling typos
+Subject: [PATCH 7.0 1144/1146] smb: client: Use FullSessionKey for AES-256 encryption key derivation
 Date: Wed, 20 May 2026 18:23:14 +0200
-Message-ID: <20260520162106.663963757@linuxfoundation.org>
+Message-ID: <20260520162214.145248957@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,137 +71,184 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TAGGED_FROM(0.00)[bounces-253220-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,microsoft.com,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251194-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 8E12C598968
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 5ED15599830
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Demers <alexandre.f.demers@gmail.com>
+From: Piyush Sachdeva <s.piyush1024@gmail.com>
 
-[ Upstream commit ce43abd7ec9464cf954f90e1c69e11768b02fa0a ]
+[ Upstream commit 5be7a0cef3229fb3b63a07c0d289daf752545424 ]
 
-Found some typos while exploring amdgpu code.
+When Kerberos authentication is used with AES-256 encryption (AES-256-CCM
+or AES-256-GCM), the SMB3 encryption and decryption keys must be derived
+using the full session key (Session.FullSessionKey) rather than just the
+first 16 bytes (Session.SessionKey).
 
-Signed-off-by: Alexandre Demers <alexandre.f.demers@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 13e4cf116dbf ("drm/amdgpu/uvd3.1: Don't validate the firmware when already validated")
+Per MS-SMB2 section 3.2.5.3.1, when Connection.Dialect is "3.1.1" and
+Connection.CipherId is AES-256-CCM or AES-256-GCM, Session.FullSessionKey
+must be set to the full cryptographic key from the GSS authentication
+context. The encryption and decryption key derivation (SMBC2SCipherKey,
+SMBS2CCipherKey) must use this FullSessionKey as the KDF input. The
+signing key derivation continues to use Session.SessionKey (first 16
+bytes) in all cases.
+
+Previously, generate_key() hardcoded SMB2_NTLMV2_SESSKEY_SIZE (16) as the
+HMAC-SHA256 key input length for all derivations. When Kerberos with
+AES-256 provides a 32-byte session key, the KDF for encryption/decryption
+was using only the first 16 bytes, producing keys that did not match the
+server's, causing mount failures with sec=krb5 and require_gcm_256=1.
+
+Add a full_key_size parameter to generate_key() and pass the appropriate
+size from generate_smb3signingkey():
+ - Signing: always SMB2_NTLMV2_SESSKEY_SIZE (16 bytes)
+ - Encryption/Decryption: ses->auth_key.len when AES-256, otherwise 16
+
+Also fix cifs_dump_full_key() to report the actual session key length for
+AES-256 instead of hardcoded CIFS_SESS_KEY_SIZE, so that userspace tools
+like Wireshark receive the correct key for decryption.
+
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Bharath SM <bharathsm@microsoft.com>
+Signed-off-by: Piyush Sachdeva <psachdeva@microsoft.com>
+Signed-off-by: Piyush Sachdeva <s.piyush1024@gmail.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c | 2 +-
- drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c   | 6 +++---
- drivers/gpu/drm/amd/amdgpu/uvd_v4_2.c   | 3 ++-
- drivers/gpu/drm/amd/amdgpu/vce_v2_0.c   | 2 +-
- 4 files changed, 7 insertions(+), 6 deletions(-)
+ fs/smb/client/ioctl.c         |    2 +-
+ fs/smb/client/smb2transport.c |   32 +++++++++++++++++++++++++-------
+ 2 files changed, 26 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-index 8cb192636368f..1584936f29510 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-@@ -264,7 +264,7 @@ void amdgpu_gmc_sysvm_location(struct amdgpu_device *adev, struct amdgpu_gmc *mc
-  * @adev: amdgpu device structure holding all necessary information
-  * @mc: memory controller structure holding memory information
-  *
-- * Function will place try to place GART before or after VRAM.
-+ * Function will try to place GART before or after VRAM.
-  * If GART size is bigger than space left then we ajust GART size.
-  * Thus function will never fails.
-  */
-diff --git a/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c b/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
-index 1e0189f90fd6a..191057db58db3 100644
---- a/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
-+++ b/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
-@@ -98,7 +98,7 @@ static void uvd_v3_1_ring_emit_ib(struct amdgpu_ring *ring,
+--- a/fs/smb/client/ioctl.c
++++ b/fs/smb/client/ioctl.c
+@@ -296,7 +296,7 @@ search_end:
+ 		break;
+ 	case SMB2_ENCRYPTION_AES256_CCM:
+ 	case SMB2_ENCRYPTION_AES256_GCM:
+-		out.session_key_length = CIFS_SESS_KEY_SIZE;
++		out.session_key_length = ses->auth_key.len;
+ 		out.server_in_key_length = out.server_out_key_length = SMB3_GCM256_CRYPTKEY_SIZE;
+ 		break;
+ 	default:
+--- a/fs/smb/client/smb2transport.c
++++ b/fs/smb/client/smb2transport.c
+@@ -259,7 +259,8 @@ smb2_calc_signature(struct smb_rqst *rqs
  }
  
- /**
-- * uvd_v3_1_ring_emit_fence - emit an fence & trap command
-+ * uvd_v3_1_ring_emit_fence - emit a fence & trap command
-  *
-  * @ring: amdgpu_ring pointer
-  * @addr: address
-@@ -242,7 +242,7 @@ static void uvd_v3_1_mc_resume(struct amdgpu_device *adev)
- 	uint64_t addr;
- 	uint32_t size;
- 
--	/* programm the VCPU memory controller bits 0-27 */
-+	/* program the VCPU memory controller bits 0-27 */
- 	addr = (adev->uvd.inst->gpu_addr + AMDGPU_UVD_FIRMWARE_OFFSET) >> 3;
- 	size = AMDGPU_UVD_FIRMWARE_SIZE(adev) >> 3;
- 	WREG32(mmUVD_VCPU_CACHE_OFFSET0, addr);
-@@ -416,7 +416,7 @@ static int uvd_v3_1_start(struct amdgpu_device *adev)
- 	/* Set the write pointer delay */
- 	WREG32(mmUVD_RBC_RB_WPTR_CNTL, 0);
- 
--	/* programm the 4GB memory segment for rptr and ring buffer */
-+	/* Program the 4GB memory segment for rptr and ring buffer */
- 	WREG32(mmUVD_LMI_EXT40_ADDR, upper_32_bits(ring->gpu_addr) |
- 		   (0x7 << 16) | (0x1 << 31));
- 
-diff --git a/drivers/gpu/drm/amd/amdgpu/uvd_v4_2.c b/drivers/gpu/drm/amd/amdgpu/uvd_v4_2.c
-index c108b83817951..01d8e7d2caf97 100644
---- a/drivers/gpu/drm/amd/amdgpu/uvd_v4_2.c
-+++ b/drivers/gpu/drm/amd/amdgpu/uvd_v4_2.c
-@@ -298,7 +298,7 @@ static int uvd_v4_2_start(struct amdgpu_device *adev)
- 	/* enable VCPU clock */
- 	WREG32(mmUVD_VCPU_CNTL,  1 << 9);
- 
--	/* disable interupt */
-+	/* disable interrupt */
- 	WREG32_P(mmUVD_MASTINT_EN, 0, ~(1 << 1));
- 
- #ifdef __BIG_ENDIAN
-@@ -308,6 +308,7 @@ static int uvd_v4_2_start(struct amdgpu_device *adev)
- #endif
- 	WREG32(mmUVD_LMI_SWAP_CNTL, lmi_swap_cntl);
- 	WREG32(mmUVD_MP_SWAP_CNTL, mp_swap_cntl);
-+
- 	/* initialize UVD memory controller */
- 	WREG32(mmUVD_LMI_CTRL, 0x203108);
- 
-diff --git a/drivers/gpu/drm/amd/amdgpu/vce_v2_0.c b/drivers/gpu/drm/amd/amdgpu/vce_v2_0.c
-index 67eb01fef789b..479eb9382c77e 100644
---- a/drivers/gpu/drm/amd/amdgpu/vce_v2_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vce_v2_0.c
-@@ -278,7 +278,7 @@ static int vce_v2_0_stop(struct amdgpu_device *adev)
- 	int status;
- 
- 	if (vce_v2_0_lmi_clean(adev)) {
--		DRM_INFO("vce is not idle \n");
-+		DRM_INFO("VCE is not idle \n");
- 		return 0;
+ static int generate_key(struct cifs_ses *ses, struct kvec label,
+-			struct kvec context, __u8 *key, unsigned int key_size)
++			struct kvec context, __u8 *key, unsigned int key_size,
++			unsigned int full_key_size)
+ {
+ 	unsigned char zero = 0x0;
+ 	__u8 i[4] = {0, 0, 0, 1};
+@@ -280,7 +281,7 @@ static int generate_key(struct cifs_ses
  	}
  
--- 
-2.53.0
-
+ 	hmac_sha256_init_usingrawkey(&hmac_ctx, ses->auth_key.response,
+-				     SMB2_NTLMV2_SESSKEY_SIZE);
++				     full_key_size);
+ 	hmac_sha256_update(&hmac_ctx, i, 4);
+ 	hmac_sha256_update(&hmac_ctx, label.iov_base, label.iov_len);
+ 	hmac_sha256_update(&hmac_ctx, &zero, 1);
+@@ -314,6 +315,7 @@ generate_smb3signingkey(struct cifs_ses
+ 			struct TCP_Server_Info *server,
+ 			const struct derivation_triplet *ptriplet)
+ {
++	unsigned int full_key_size = SMB2_NTLMV2_SESSKEY_SIZE;
+ 	int rc;
+ 	bool is_binding = false;
+ 	int chan_index = 0;
+@@ -348,17 +350,31 @@ generate_smb3signingkey(struct cifs_ses
+ 		rc = generate_key(ses, ptriplet->signing.label,
+ 				  ptriplet->signing.context,
+ 				  ses->chans[chan_index].signkey,
+-				  SMB3_SIGN_KEY_SIZE);
++				  SMB3_SIGN_KEY_SIZE,
++				  SMB2_NTLMV2_SESSKEY_SIZE);
+ 		if (rc)
+ 			return rc;
+ 	} else {
+ 		rc = generate_key(ses, ptriplet->signing.label,
+ 				  ptriplet->signing.context,
+ 				  ses->smb3signingkey,
+-				  SMB3_SIGN_KEY_SIZE);
++				  SMB3_SIGN_KEY_SIZE,
++				  SMB2_NTLMV2_SESSKEY_SIZE);
+ 		if (rc)
+ 			return rc;
+ 
++		/*
++		 * Per MS-SMB2 3.2.5.3.1, signing key always uses Session.SessionKey
++		 * (first 16 bytes). Encryption/decryption keys use
++		 * Session.FullSessionKey when dialect is 3.1.1 and cipher is
++		 * AES-256-CCM or AES-256-GCM, otherwise Session.SessionKey.
++		 */
++
++		if (server->dialect == SMB311_PROT_ID &&
++		    (server->cipher_type == SMB2_ENCRYPTION_AES256_CCM ||
++		     server->cipher_type == SMB2_ENCRYPTION_AES256_GCM))
++			full_key_size = ses->auth_key.len;
++
+ 		/* safe to access primary channel, since it will never go away */
+ 		spin_lock(&ses->chan_lock);
+ 		memcpy(ses->chans[chan_index].signkey, ses->smb3signingkey,
+@@ -368,13 +384,15 @@ generate_smb3signingkey(struct cifs_ses
+ 		rc = generate_key(ses, ptriplet->encryption.label,
+ 				  ptriplet->encryption.context,
+ 				  ses->smb3encryptionkey,
+-				  SMB3_ENC_DEC_KEY_SIZE);
++				  SMB3_ENC_DEC_KEY_SIZE,
++				  full_key_size);
+ 		if (rc)
+ 			return rc;
+ 		rc = generate_key(ses, ptriplet->decryption.label,
+ 				  ptriplet->decryption.context,
+ 				  ses->smb3decryptionkey,
+-				  SMB3_ENC_DEC_KEY_SIZE);
++				  SMB3_ENC_DEC_KEY_SIZE,
++				  full_key_size);
+ 		if (rc)
+ 			return rc;
+ 	}
+@@ -389,7 +407,7 @@ generate_smb3signingkey(struct cifs_ses
+ 			&ses->Suid);
+ 	cifs_dbg(VFS, "Cipher type   %d\n", server->cipher_type);
+ 	cifs_dbg(VFS, "Session Key   %*ph\n",
+-		 SMB2_NTLMV2_SESSKEY_SIZE, ses->auth_key.response);
++		 (int)ses->auth_key.len, ses->auth_key.response);
+ 	cifs_dbg(VFS, "Signing Key   %*ph\n",
+ 		 SMB3_SIGN_KEY_SIZE, ses->smb3signingkey);
+ 	if ((server->cipher_type == SMB2_ENCRYPTION_AES256_CCM) ||
 
 
 
