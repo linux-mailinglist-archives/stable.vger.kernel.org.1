@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-250604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252184-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YHRDBv7nDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250604-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:57:34 +0200
+	id CNI+APf/DWqA5QUAu9opvQ
+	(envelope-from <stable+bounces-252184-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89F7A592B4A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:57:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BC06596EF8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2CA7430B3862
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:51:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E1F7D38DC336
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:00:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A660363C6F;
-	Wed, 20 May 2026 16:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E0413F54C7;
+	Wed, 20 May 2026 18:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fCsu6iXt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dzjsw2KD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C596722F01;
-	Wed, 20 May 2026 16:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5DC43F4DDB;
+	Wed, 20 May 2026 18:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295845; cv=none; b=cHNJ33+oJEqu0SqyPTTRgATsI1RFqnXLESz7zlsE34uUy2ZdbUk1JGDin0YOEuMdzyCcwyL+c6Bb6rZ7NPtih/yMCVpqeF3/nf3Mr3/Y4aUY0yY7qmKKS4X2OB1pS2BOFkZx1CKMiOlS4kB9NqLd/B3l1ZB8DcfE3m/Qj//5uOM=
+	t=1779300012; cv=none; b=OJ27aF+/fhBvVDV7ib1nxjbEY1IPm8s1hRsdEJbgE+zEuISbyvE2L9chd0xDlEagpw0ytG15RsLgUdC5cNgM4+mj0V6t+dai4tJBfq5dC6n6bLnxuCuVdADI5U3ietjIWqoRU1e3cPpxPwn/o7S6nO12l30nsrFW62bYHYPtUuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295845; c=relaxed/simple;
-	bh=3lXpzDhanay9VKbvItF5A0boy98jX/LfwUOOVqltkUQ=;
+	s=arc-20240116; t=1779300012; c=relaxed/simple;
+	bh=uUEx/OaSWjf+y7HuCl6S++ECP5DhJXGpDsmOD7e7I04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=myVVdCb22u/ydmYY/eMsCx3SIb3gnY4Xvlx+q5YaYET01YnmsiO6Cgzaue92wQvuMpTWokow4rcFKYkKtLLZpoeY+qEc4R579GHUtnm4IZhxkRUklXqm1uKhPkdSjWvqu2iYohXt/MMhAVUg2U/vekadtkVZdr9VlvJFT010Fr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fCsu6iXt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36DE91F000E9;
-	Wed, 20 May 2026 16:50:44 +0000 (UTC)
+	 MIME-Version; b=Mhn1Q2rTnaUXx0ZY+Qb7yq/9WXTCzYy4Zm2iQHx71b/1U2NnN8dkltF7YJ8YoWOu4cqfpw98L7KQj+EZceO5Rtt2jVQnjRO3mZXnZ7m2IU6UVbMkVJoGYTq/X/eLCj3CTGpnKnuGXmVMATpRSgUoSO3/jTIFuRuWfjHvuRJkB6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dzjsw2KD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 168281F00893;
+	Wed, 20 May 2026 18:00:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295844;
-	bh=o/U3+HV8aarztColwFJ30G5mfGuVEt66+1KXtTzIo8E=;
+	s=korg; t=1779300010;
+	bh=guCTFz1Mdsx61yT8dHFcbDazyqzXEW/JnZfQlkuzvNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fCsu6iXtc64dDxxJHLnaEOIWh9IEWrUyJfR8rjb/Ks9vStxEWKplS0qI4rkwxDuD8
-	 O4lfVLx8H5tGEzNz4o1fSjnSCR+62zY29cZAgPiDcscL07pFoLem9ipjMOOtf/jSxm
-	 ImkmH41XFsjgWllMwSzlLIyyXQyx5G7lrH6AHqUM=
+	b=Dzjsw2KDuzDPbgORe3+7dwhPxIqjsXcyEv+RHZG55J2N6ioByHyanzdBODZkoS6wS
+	 CuVYjePgGV0isd8mxC62IhAtbq374qmdf6QbAFpyNLGhSBQ6rAiq5eILjs8MZ/Gk13
+	 xh2cbVoMu/Z0B0+klF+yIEKbJ3iqJzjM1g02EvUQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cole Leavitt <cole@unwrap.rs>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	syzbot+63056bf627663701bbbf@syzkaller.appspotmail.com,
+	Boris Burkov <boris@bur.io>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0575/1146] soundwire: bus: demote UNATTACHED state warnings to dev_dbg()
+Subject: [PATCH 6.12 014/666] btrfs: fix deadlock between reflink and transaction commit when using flushoncommit
 Date: Wed, 20 May 2026 18:13:45 +0200
-Message-ID: <20260520162201.196008607@linuxfoundation.org>
+Message-ID: <20260520162111.541722771@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,95 +66,250 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250604-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-252184-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,cirrus.com:email,unwrap.rs:email]
-X-Rspamd-Queue-Id: 89F7A592B4A
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,63056bf627663701bbbf];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email]
+X-Rspamd-Queue-Id: 9BC06596EF8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cole Leavitt <cole@unwrap.rs>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 2c96956fe764f8224f9ec93b2a9160a578949a7a ]
+[ Upstream commit b48c980b6a7e409050bb3067165db31cc6205e3e ]
 
-The dev_warn() messages in sdw_handle_slave_status() for UNATTACHED
-transitions were added in commit d1b328557058 ("soundwire: bus: add
-dev_warn() messages to track UNATTACHED devices") to debug attachment
-failures with dynamic debug enabled.
+When using the flushoncommit mount option, we can have a deadlock between
+a transaction commit and a reflink operation that copied an inline extent
+to an offset beyond the current i_size of the destination node.
 
-These warnings fire during normal operation -- for example when a codec
-driver triggers a hardware reset after firmware download, causing the
-device to momentarily go UNATTACHED before re-attaching -- producing
-misleading noise on every boot.
+The deadlock happens like this:
 
-Demote the messages to dev_dbg() so they remain available via dynamic
-debug for diagnosing real attachment failures without alarming users
-during expected initialization sequences.
+1) Task A clones an inline extent from inode X to an offset of inode Y
+   that is beyond Y's current i_size. This means we copied the inline
+   extent's data to a folio of inode Y that is beyond its EOF, using a
+   call to copy_inline_to_page();
 
-Fixes: d1b328557058 ("soundwire: bus: add dev_warn() messages to track UNATTACHED devices")
-Signed-off-by: Cole Leavitt <cole@unwrap.rs>
-Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://patch.msgid.link/20260218180210.9263-1-cole@unwrap.rs
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+2) Task B starts a transaction commit and calls
+   btrfs_start_delalloc_flush() to flush delalloc;
+
+3) The delalloc flushing sees the new dirty folio of inode Y and when it
+   attempts to flush it, it ends up at extent_writepage() and sees that
+   the offset of the folio is beyond the i_size of inode Y, so it attempts
+   to invalidate the folio by calling folio_invalidate(), which ends up at
+   btrfs' folio invalidate callback - btrfs_invalidate_folio(). There it
+   tries to lock the folio's range in inode Y's extent io tree, but it
+   blocks since it's currently locked by task A - during a reflink we lock
+   the inodes and the source and destination ranges after flushing all
+   delalloc and waiting for ordered extent completion - after that we
+   don't expect to have dirty folios in the ranges, the exception is if
+   we have to copy an inline extent's data (because the destination offset
+   is not zero);
+
+4) Task A then attempts to start a transaction to update the inode item,
+   and then it's blocked since the current transaction is in the
+   TRANS_STATE_COMMIT_START state. Therefore task A has to wait for the
+   current transaction to become unblocked (its state >=
+   TRANS_STATE_UNBLOCKED).
+
+   So task A is waiting for the transaction commit done by task B, and
+   the later waiting on the extent lock of inode Y that is currently
+   held by task A.
+
+Syzbot recently reported this with the following stack traces:
+
+  INFO: task kworker/u8:7:1053 blocked for more than 143 seconds.
+        Not tainted syzkaller #0
+  "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+  task:kworker/u8:7    state:D stack:23520 pid:1053  tgid:1053  ppid:2      task_flags:0x4208060 flags:0x00080000
+  Workqueue: writeback wb_workfn (flush-btrfs-46)
+  Call Trace:
+   <TASK>
+   context_switch kernel/sched/core.c:5298 [inline]
+   __schedule+0x1553/0x5240 kernel/sched/core.c:6911
+   __schedule_loop kernel/sched/core.c:6993 [inline]
+   schedule+0x164/0x360 kernel/sched/core.c:7008
+   wait_extent_bit fs/btrfs/extent-io-tree.c:811 [inline]
+   btrfs_lock_extent_bits+0x59c/0x700 fs/btrfs/extent-io-tree.c:1914
+   btrfs_lock_extent fs/btrfs/extent-io-tree.h:152 [inline]
+   btrfs_invalidate_folio+0x43d/0xc40 fs/btrfs/inode.c:7704
+   extent_writepage fs/btrfs/extent_io.c:1852 [inline]
+   extent_write_cache_pages fs/btrfs/extent_io.c:2580 [inline]
+   btrfs_writepages+0x12ff/0x2440 fs/btrfs/extent_io.c:2713
+   do_writepages+0x32e/0x550 mm/page-writeback.c:2554
+   __writeback_single_inode+0x133/0x11a0 fs/fs-writeback.c:1750
+   writeback_sb_inodes+0x995/0x19d0 fs/fs-writeback.c:2042
+   wb_writeback+0x456/0xb70 fs/fs-writeback.c:2227
+   wb_do_writeback fs/fs-writeback.c:2374 [inline]
+   wb_workfn+0x41a/0xf60 fs/fs-writeback.c:2414
+   process_one_work kernel/workqueue.c:3276 [inline]
+   process_scheduled_works+0xb6e/0x18c0 kernel/workqueue.c:3359
+   worker_thread+0xa53/0xfc0 kernel/workqueue.c:3440
+   kthread+0x388/0x470 kernel/kthread.c:436
+   ret_from_fork+0x51e/0xb90 arch/x86/kernel/process.c:158
+   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+   </TASK>
+  INFO: task syz.4.64:6910 blocked for more than 143 seconds.
+        Not tainted syzkaller #0
+  "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+  task:syz.4.64        state:D stack:22752 pid:6910  tgid:6905  ppid:5944   task_flags:0x400140 flags:0x00080002
+  Call Trace:
+   <TASK>
+   context_switch kernel/sched/core.c:5298 [inline]
+   __schedule+0x1553/0x5240 kernel/sched/core.c:6911
+   __schedule_loop kernel/sched/core.c:6993 [inline]
+   schedule+0x164/0x360 kernel/sched/core.c:7008
+   wait_current_trans+0x39f/0x590 fs/btrfs/transaction.c:535
+   start_transaction+0x6a7/0x1650 fs/btrfs/transaction.c:705
+   clone_copy_inline_extent fs/btrfs/reflink.c:299 [inline]
+   btrfs_clone+0x128a/0x24d0 fs/btrfs/reflink.c:529
+   btrfs_clone_files+0x271/0x3f0 fs/btrfs/reflink.c:750
+   btrfs_remap_file_range+0x76b/0x1320 fs/btrfs/reflink.c:903
+   vfs_copy_file_range+0xda7/0x1390 fs/read_write.c:1600
+   __do_sys_copy_file_range fs/read_write.c:1683 [inline]
+   __se_sys_copy_file_range+0x2fb/0x480 fs/read_write.c:1650
+   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+  RIP: 0033:0x7f5f73afc799
+  RSP: 002b:00007f5f7315e028 EFLAGS: 00000246 ORIG_RAX: 0000000000000146
+  RAX: ffffffffffffffda RBX: 00007f5f73d75fa0 RCX: 00007f5f73afc799
+  RDX: 0000000000000005 RSI: 0000000000000000 RDI: 0000000000000005
+  RBP: 00007f5f73b92c99 R08: 0000000000000863 R09: 0000000000000000
+  R10: 00002000000000c0 R11: 0000000000000246 R12: 0000000000000000
+  R13: 00007f5f73d76038 R14: 00007f5f73d75fa0 R15: 00007fff138a5068
+   </TASK>
+  INFO: task syz.4.64:6975 blocked for more than 143 seconds.
+        Not tainted syzkaller #0
+  "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+  task:syz.4.64        state:D stack:24736 pid:6975  tgid:6905  ppid:5944   task_flags:0x400040 flags:0x00080002
+  Call Trace:
+   <TASK>
+   context_switch kernel/sched/core.c:5298 [inline]
+   __schedule+0x1553/0x5240 kernel/sched/core.c:6911
+   __schedule_loop kernel/sched/core.c:6993 [inline]
+   schedule+0x164/0x360 kernel/sched/core.c:7008
+   wb_wait_for_completion+0x3e8/0x790 fs/fs-writeback.c:227
+   __writeback_inodes_sb_nr+0x24c/0x2d0 fs/fs-writeback.c:2838
+   try_to_writeback_inodes_sb+0x9a/0xc0 fs/fs-writeback.c:2886
+   btrfs_start_delalloc_flush fs/btrfs/transaction.c:2175 [inline]
+   btrfs_commit_transaction+0x82e/0x31a0 fs/btrfs/transaction.c:2364
+   btrfs_ioctl+0xca7/0xd00 fs/btrfs/ioctl.c:5206
+   vfs_ioctl fs/ioctl.c:51 [inline]
+   __do_sys_ioctl fs/ioctl.c:597 [inline]
+   __se_sys_ioctl+0xff/0x170 fs/ioctl.c:583
+   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+  RIP: 0033:0x7f5f73afc799
+  RSP: 002b:00007f5f7313d028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+  RAX: ffffffffffffffda RBX: 00007f5f73d76090 RCX: 00007f5f73afc799
+  RDX: 0000000000000000 RSI: 0000000000009408 RDI: 0000000000000004
+  RBP: 00007f5f73b92c99 R08: 0000000000000000 R09: 0000000000000000
+  R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+  R13: 00007f5f73d76128 R14: 00007f5f73d76090 R15: 00007fff138a5068
+   </TASK>
+
+Fix this by updating the i_size of the destination inode of a reflink
+operation after we copy an inline extent's data to an offset beyond the
+i_size and before attempting to start a transaction to update the inode's
+item.
+
+Reported-by: syzbot+63056bf627663701bbbf@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/linux-btrfs/69bba3fe.050a0220.227207.002f.GAE@google.com/
+Fixes: 05a5a7621ce6 ("Btrfs: implement full reflink support for inline extents")
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/bus.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/btrfs/reflink.c | 45 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 45 insertions(+)
 
-diff --git a/drivers/soundwire/bus.c b/drivers/soundwire/bus.c
-index fb68738dfb9b8..fe5316d93fefe 100644
---- a/drivers/soundwire/bus.c
-+++ b/drivers/soundwire/bus.c
-@@ -1899,8 +1899,8 @@ int sdw_handle_slave_status(struct sdw_bus *bus,
+diff --git a/fs/btrfs/reflink.c b/fs/btrfs/reflink.c
+index 8640dbf1aefa4..e86df9c83aba5 100644
+--- a/fs/btrfs/reflink.c
++++ b/fs/btrfs/reflink.c
+@@ -320,6 +320,51 @@ static int clone_copy_inline_extent(struct btrfs_inode *inode,
  
- 		if (status[i] == SDW_SLAVE_UNATTACHED &&
- 		    slave->status != SDW_SLAVE_UNATTACHED) {
--			dev_warn(&slave->dev, "Slave %d state check1: UNATTACHED, status was %d\n",
--				 i, slave->status);
-+			dev_dbg(&slave->dev, "Slave %d state check1: UNATTACHED, status was %d\n",
-+			i, slave->status);
- 			sdw_modify_slave_status(slave, SDW_SLAVE_UNATTACHED);
+ 	ret = copy_inline_to_page(inode, new_key->offset,
+ 				  inline_data, size, datal, comp_type);
++
++	/*
++	 * If we copied the inline extent data to a page/folio beyond the i_size
++	 * of the destination inode, then we need to increase the i_size before
++	 * we start a transaction to update the inode item. This is to prevent a
++	 * deadlock when the flushoncommit mount option is used, which happens
++	 * like this:
++	 *
++	 * 1) Task A clones an inline extent from inode X to an offset of inode
++	 *    Y that is beyond Y's current i_size. This means we copied the
++	 *    inline extent's data to a folio of inode Y that is beyond its EOF,
++	 *    using the call above to copy_inline_to_page();
++	 *
++	 * 2) Task B starts a transaction commit and calls
++	 *    btrfs_start_delalloc_flush() to flush delalloc;
++	 *
++	 * 3) The delalloc flushing sees the new dirty folio of inode Y and when
++	 *    it attempts to flush it, it ends up at extent_writepage() and sees
++	 *    that the offset of the folio is beyond the i_size of inode Y, so
++	 *    it attempts to invalidate the folio by calling folio_invalidate(),
++	 *    which ends up at btrfs' folio invalidate callback -
++	 *    btrfs_invalidate_folio(). There it tries to lock the folio's range
++	 *    in inode Y's extent io tree, but it blocks since it's currently
++	 *    locked by task A - during reflink we lock the inodes and the
++	 *    source and destination ranges after flushing all delalloc and
++	 *    waiting for ordered extent completion - after that we don't expect
++	 *    to have dirty folios in the ranges, the exception is if we have to
++	 *    copy an inline extent's data (because the destination offset is
++	 *    not zero);
++	 *
++	 * 4) Task A then does the 'goto out' below and attempts to start a
++	 *    transaction to update the inode item, and then it's blocked since
++	 *    the current transaction is in the TRANS_STATE_COMMIT_START state.
++	 *    Therefore task A has to wait for the current transaction to become
++	 *    unblocked (its state >= TRANS_STATE_UNBLOCKED).
++	 *
++	 * This leads to a deadlock - the task committing the transaction
++	 * waiting for the delalloc flushing which is blocked during folio
++	 * invalidation on the inode's extent lock and the reflink task waiting
++	 * for the current transaction to be unblocked so that it can start a
++	 * a new one to update the inode item (while holding the extent lock).
++	 */
++	if (ret == 0 && new_key->offset + datal > i_size_read(&inode->vfs_inode))
++		i_size_write(&inode->vfs_inode, new_key->offset + datal);
++
+ 	goto out;
+ }
  
- 			/* Ensure driver knows that peripheral unattached */
-@@ -1951,8 +1951,8 @@ int sdw_handle_slave_status(struct sdw_bus *bus,
- 			if (slave->status == SDW_SLAVE_UNATTACHED)
- 				break;
- 
--			dev_warn(&slave->dev, "Slave %d state check2: UNATTACHED, status was %d\n",
--				 i, slave->status);
-+			dev_dbg(&slave->dev, "Slave %d state check2: UNATTACHED, status was %d\n",
-+			i, slave->status);
- 
- 			sdw_modify_slave_status(slave, SDW_SLAVE_UNATTACHED);
- 			break;
 -- 
 2.53.0
 
