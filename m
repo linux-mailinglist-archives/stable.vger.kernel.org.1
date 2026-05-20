@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-250766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252384-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +HydKZD3DWpd5AUAu9opvQ
-	(envelope-from <stable+bounces-250766-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:04:00 +0200
+	id 2Cz4OvEkDmpM6gUAu9opvQ
+	(envelope-from <stable+bounces-252384-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:17:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0FBA595347
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:03:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E40C59AAD8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:17:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 23038358D048
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:58:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9175032CD0D9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:08:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D010A3DC4DA;
-	Wed, 20 May 2026 16:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9406F3D75AB;
+	Wed, 20 May 2026 18:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M7cwZ8Ml"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZdprIBi0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9202127E045;
-	Wed, 20 May 2026 16:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D903D5647;
+	Wed, 20 May 2026 18:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296261; cv=none; b=tjwNnAKXuliyZsyiOOJjjE/a+1aVqiR46kpvx2M3b1drl7CH/CH/GXA+RZ7d0+3smrUj7fpoqZE/7CwSqplpKFCHdXcq3f9nZ81Ik3nGHVGHFlTpVHrp6QRpUOznsoPvIVn9W0gXJ7n/hFW9agK8tgbEy4f9CeEu+BGxoqo7W1g=
+	t=1779300534; cv=none; b=l+I7RxClk38NmxXWcgiLivAIRVyuCSf165Wytk9BQzWlACSoba/A1q1svoIL7C+gzjZE3pmh20YSBagBjogBu5RnPzdLggHlKFnszcxwAfFa54swIz0UzX4MvukmyhN49NgHRmnkvsvSoyE5HYAS9KMUSVzmpRVKn0fcn/jWmbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296261; c=relaxed/simple;
-	bh=YA/Q/MnB+BbtLl5EzWbFwbNBJs4qhmoDTc79qcZ9uYw=;
+	s=arc-20240116; t=1779300534; c=relaxed/simple;
+	bh=mCdXCsHsJOQJULQr5pdPFdGx1nTe0PwJe/t8QDNyt+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZszsW5Sl/XfBqu91xAoTZ9QMHD5kfpjfILg1LhEIw3nZYvgzMNCqA2neeXk8ynYJ7kYDsCq4im3eRDU2yEXbmOH3UkyhSmQ/36FM7bS+xK+rUerkuX2pe3w7xcERACeYOqN/qiUrqmz7kBsM8g8DO8gdZmvvgYdHrZyV5G4nEao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M7cwZ8Ml; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 043781F000E9;
-	Wed, 20 May 2026 16:57:39 +0000 (UTC)
+	 MIME-Version; b=gwz4eu6sbEknup8VpnEMq40L11A1tyFlgYSEQEm1vv+dVeAhfcCNIOpQDYkdY6eIK27IY0kcjLQuBKzU8tNmOL4tprNnQOrHG3aF8EqKLnC66Gng9lKUQMUvGdNQmU7lFQUed1qdZ17xwqjNwqydpti2IV7UVP5xDO+EJGDomis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZdprIBi0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4CD61F000E9;
+	Wed, 20 May 2026 18:08:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296260;
-	bh=NmWkiWeSrusF9ZDvoz0aEkpz1sW/OsFGdaawBTWIXck=;
+	s=korg; t=1779300533;
+	bh=LKzHm0TrqJPwpDsjGINN4NIK5wNvwP+KQjuB8Lw/v6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=M7cwZ8MliuUDLGM+CXm/6yfyNuxfDGQwDl69atiBwnjDDBgar85g6BueakF1MsTJi
-	 vt0EYTg2FzcS+FetfTGsXTOZfFI+901YHjw4skxIUQceTFSizPxtysO/bs7PM0pCdP
-	 t/uoZlT11blskOf1qH+GwTXp4VPkJT3jD2xqO6Pc=
+	b=ZdprIBi0SQdssSl1L73Eyrabf5i1zUC4ZfuGRJBLVjZ6yP1ZnIq8Mfn+Z0wFhJbQP
+	 0wLWDJGC66Cghek5wDNdvRxeFLrvFA6PfmiJ5dq0oCdWKZbxvxILgS2ggdUlHlGOyu
+	 qqw9Dg8E0Hq+ozcEYP9VrENEPvgSM1MnAFu4KnAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Pengyu Luo <mitltlatltl@gmail.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0730/1146] clk: qcom: gdsc: Fix error path on registration of multiple pm subdomains
+Subject: [PATCH 6.12 169/666] drm/msm/dsi: fix bits_per_pclk
 Date: Wed, 20 May 2026 18:16:20 +0200
-Message-ID: <20260520162204.727177293@linuxfoundation.org>
+Message-ID: <20260520162114.866875994@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,84 +66,72 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250766-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252384-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email,qualcomm.com:email]
-X-Rspamd-Queue-Id: E0FBA595347
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,patchwork.freedesktop.org:url,qualcomm.com:email]
+X-Rspamd-Queue-Id: 4E40C59AAD8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+From: Pengyu Luo <mitltlatltl@gmail.com>
 
-[ Upstream commit 16ba98dace9e7cfe25ad8a314e34befacd91f86f ]
+[ Upstream commit 2d51cfb77daa30b10bc68c403f8ace35783d2922 ]
 
-Some pm subdomains may be left in added to a parent domain state, if
-gdsc_add_subdomain_list() function fails in the middle and bails from
-a GDSC power domain controller registration out.
+mipi_dsi_pixel_format_to_bpp return dst bpp not src bpp, dst bpp may
+not be the uncompressed data size. use src bpc * 3 to get src bpp,
+this aligns with pclk rate calculation.
 
-Fixes: b489235b4dc0 ("clk: qcom: Support attaching GDSCs to multiple parents")
-Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Bryan O'Donoghue <bod@kernel.org>
-Link: https://lore.kernel.org/r/20260328012619.832770-1-vladimir.zapolskiy@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: ac47870fd795 ("drm/msm/dsi: fix hdisplay calculation when programming dsi registers")
+Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
+Patchwork: https://patchwork.freedesktop.org/patch/709916/
+Link: https://lore.kernel.org/r/20260307111250.105772-1-mitltlatltl@gmail.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gdsc.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/msm/dsi/dsi_host.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/gdsc.c b/drivers/clk/qcom/gdsc.c
-index 7deabf8400cf6..95aa071202455 100644
---- a/drivers/clk/qcom/gdsc.c
-+++ b/drivers/clk/qcom/gdsc.c
-@@ -518,10 +518,20 @@ static int gdsc_add_subdomain_list(struct dev_pm_domain_list *pd_list,
+diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
+index 1027434b72620..d0cc9ad58c140 100644
+--- a/drivers/gpu/drm/msm/dsi/dsi_host.c
++++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
+@@ -999,7 +999,7 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_bonded_dsi)
+ 		 */
+ 		h_total -= hdisplay;
+ 		if (wide_bus_enabled)
+-			bits_per_pclk = mipi_dsi_pixel_format_to_bpp(msm_host->format);
++			bits_per_pclk = dsc->bits_per_component * 3;
+ 		else
+ 			bits_per_pclk = 24;
  
- 		ret = pm_genpd_add_subdomain(genpd, subdomain);
- 		if (ret)
--			return ret;
-+			goto remove_added_subdomains;
- 	}
- 
- 	return 0;
-+
-+remove_added_subdomains:
-+	for (i--; i >= 0; i--) {
-+		struct device *dev = pd_list->pd_devs[i];
-+		struct generic_pm_domain *genpd = pd_to_genpd(dev->pm_domain);
-+
-+		pm_genpd_remove_subdomain(genpd, subdomain);
-+	}
-+
-+	return ret;
- }
- 
- static void gdsc_remove_subdomain_list(struct dev_pm_domain_list *pd_list,
 -- 
 2.53.0
 
