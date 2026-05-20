@@ -1,62 +1,68 @@
-Return-Path: <stable+bounces-252858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252401-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aIATCbQEDmpO5gUAu9opvQ
-	(envelope-from <stable+bounces-252858-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:00:04 +0200
+	id IBInEEL8DWoK5QUAu9opvQ
+	(envelope-from <stable+bounces-252401-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B6775978D1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:00:03 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBD7C596044
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 371EB376A24A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:29:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7CE7A3111B12
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:09:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 918F23FB060;
-	Wed, 20 May 2026 18:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 810913DC4DA;
+	Wed, 20 May 2026 18:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NHH0z0+R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjOAF+og"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A51C3EDAC6;
-	Wed, 20 May 2026 18:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB8F4F5E0;
+	Wed, 20 May 2026 18:09:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301772; cv=none; b=mZoc2LvF4eJvLq9jIl450F7r2Bs5TbSD+yHiaJ3yG0Xc5ZQqsIedkrDW1eeXXQVaURMy8q1TZMBRME32SWuvxFHQXR9aGELWLFCQIXhbfdM5qUblnq7jaA4EupGJePcicG5i3MwgSf6GkBm0m+7+B1BX+NdSLiEMpEOt60X8HCA=
+	t=1779300579; cv=none; b=Kd5mRhb6m/esZkhTyfcoKg8xDMIe2mSspFj3UT3M2YeLCw30ZTlLLqwWcxokpfdvF2gRHUwpGr2sGz6RyPDMwyge+s5DV4lYcUPJs8PGaGpmb0TvrcR3JJj6gXqwrV7ADo6tYRUZnMT5desmlaGXu7ZdRdU/JlV7sa6KAyiwJP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301772; c=relaxed/simple;
-	bh=IBcd3MJsb4mytmbM3kb8dmNVwyIM3JpWBXj78TBIvb8=;
+	s=arc-20240116; t=1779300579; c=relaxed/simple;
+	bh=nJlLQsHnczZUK7EK3um/T9/Ow6yr7efVyzxb75z3T7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ouJksht3+kNmGgN+dXdWWWpUfjtegQBaVAEcS4T8QjVkYjpidH+QPkH7GlI+dl84byv4wyFIBhzasbMn3vebU28r9+l7uG9V+9b28TotHgtD6efSH/qJSt2zgd8rLAIRkcs3SoTZFxADICdkzpOikykqDhNyWbVHvw6TS1aDkyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NHH0z0+R; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A79C11F000E9;
-	Wed, 20 May 2026 18:29:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AXXTu3MKprmWMYHO/56MSMO/hkFNcnPk61tJtfIoe4K/QFnuFjvfN37vaP41GUqdnrTw1QktFCR0PbmPiMPVOKEiU3h1rs1t9WbHkNu1+EGy7A4AXXg12DT2V7BSL02GyXBcmJ/ZNxDclvcfGZKpn1plc1aAOyaEdFg94UmFAzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjOAF+og; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 659F31F000E9;
+	Wed, 20 May 2026 18:09:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301771;
-	bh=61rB2SJTh0SmJLwM1tA45fSAsHYzFEatJ06WG0TYV0g=;
+	s=korg; t=1779300577;
+	bh=DlLrBk6IiP4BdbpSe3o2GYl36nrmnJJfQc2GPGAV3Jo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NHH0z0+R8VIVxoyUIxa3VldMaMKE3L6Cf1DnCTLMRpWk7pOsmkfZd7NtPQZVWt5ik
-	 zOPN6XmtO2f5vAzxncdFrh1VuC5PY1nXHWPJKdtCn8YlLuYQOPhCBjAQ93FfSjkZYV
-	 gvHobpeyLnn2z4qfSw4Ox1BSdhN20kQYdNSPqZEQ=
+	b=kjOAF+ogWFFE9lu9fUXuT5fpzr1yVkGttDYc0KQsEnZhWKGIW1eT1ByBpPn11BDqK
+	 x0XobFR2iztceuffIDL46i7ncKcWH+PnDpzwko22shZalUMyQF+ZYz7BMYR7S23oVP
+	 sdgcFy3gHz1WTTkj7UUXsMXnVS1cr3lt6bedzc8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vineeth Vijayan <vneethv@linux.ibm.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Li Zhijian <lizhijian@fujitsu.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Waiman Long <longman@redhat.com>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shuah Khan <shuah@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 015/508] s390/cio: convert sprintf()/snprintf() to sysfs_emit()
-Date: Wed, 20 May 2026 18:17:18 +0200
-Message-ID: <20260520162058.916180473@linuxfoundation.org>
+Subject: [PATCH 6.12 228/666] selftest: memcg: skip memcg_sock test if address family not supported
+Date: Wed, 20 May 2026 18:17:19 +0200
+Message-ID: <20260520162116.155009886@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,131 +72,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252858-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TAGGED_FROM(0.00)[bounces-252401-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 9B6775978D1
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: DBD7C596044
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Zhijian <lizhijian@fujitsu.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit aaebea959efb2cccd870990f1b6016ff324b0fb6 ]
+[ Upstream commit 2d028f3e4bbbfd448928a8d3d2814b0b04c214f4 ]
 
-Per filesystems/sysfs.rst, show() should only use sysfs_emit()
-or sysfs_emit_at() when formatting the value to be returned to user space.
+The test_memcg_sock test in memcontrol.c sets up an IPv6 socket and send
+data over it to consume memory and verify that memory.stat.sock and
+memory.current values are close.
 
-coccinelle complains that there are still a couple of functions that use
-snprintf(). Convert them to sysfs_emit().
+On systems where IPv6 isn't enabled or not configured to support
+SOCK_STREAM, the test_memcg_sock test always fails.  When the socket()
+call fails, there is no way we can test the memory consumption and verify
+the above claim.  I believe it is better to just skip the test in this
+case instead of reporting a test failure hinting that there may be
+something wrong with the memcg code.
 
-Generally, this patch is generated by
-make coccicheck M=<path/to/file> MODE=patch \
-COCCI=scripts/coccinelle/api/device_attr_show.cocci
-
-No functional change intended.
-
-Cc: Vineeth Vijayan <vneethv@linux.ibm.com>
-Cc: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Link: https://lore.kernel.org/r/20240314095209.1325229-1-lizhijian@fujitsu.com
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Stable-dep-of: ac4d8bb6e2e1 ("s390/cio: use generic driver_override infrastructure")
+Link: https://lkml.kernel.org/r/20260311200526.885899-1-longman@redhat.com
+Fixes: 5f8f019380b8 ("selftests: cgroup/memcontrol: add basic test for socket accounting")
+Signed-off-by: Waiman Long <longman@redhat.com>
+Acked-by: Michal Koutný <mkoutny@suse.com>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Michal Koutný <mkoutny@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Tejun Heo <tj@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/cio/css.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ tools/testing/selftests/cgroup/test_memcontrol.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/s390/cio/css.c b/drivers/s390/cio/css.c
-index 4e63e6d45e6e1..36c46c7f2fb80 100644
---- a/drivers/s390/cio/css.c
-+++ b/drivers/s390/cio/css.c
-@@ -309,7 +309,7 @@ static ssize_t type_show(struct device *dev, struct device_attribute *attr,
- {
- 	struct subchannel *sch = to_subchannel(dev);
+diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
+index 16f5d74ae762e..7a44d221b8c4b 100644
+--- a/tools/testing/selftests/cgroup/test_memcontrol.c
++++ b/tools/testing/selftests/cgroup/test_memcontrol.c
+@@ -1190,8 +1190,11 @@ static int tcp_server(const char *cgroup, void *arg)
+ 	saddr.sin6_port = htons(srv_args->port);
  
--	return sprintf(buf, "%01x\n", sch->st);
-+	return sysfs_emit(buf, "%01x\n", sch->st);
- }
+ 	sk = socket(AF_INET6, SOCK_STREAM, 0);
+-	if (sk < 0)
++	if (sk < 0) {
++		/* Pass back errno to the ctl_fd */
++		write(ctl_fd, &errno, sizeof(errno));
+ 		return ret;
++	}
  
- static DEVICE_ATTR_RO(type);
-@@ -319,7 +319,7 @@ static ssize_t modalias_show(struct device *dev, struct device_attribute *attr,
- {
- 	struct subchannel *sch = to_subchannel(dev);
+ 	if (setsockopt(sk, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) < 0)
+ 		goto cleanup;
+@@ -1321,6 +1324,12 @@ static int test_memcg_sock(const char *root)
+ 			goto cleanup;
+ 		close(args.ctl[0]);
  
--	return sprintf(buf, "css:t%01X\n", sch->st);
-+	return sysfs_emit(buf, "css:t%01X\n", sch->st);
- }
- 
- static DEVICE_ATTR_RO(modalias);
-@@ -345,7 +345,7 @@ static ssize_t driver_override_show(struct device *dev,
- 	ssize_t len;
- 
- 	device_lock(dev);
--	len = snprintf(buf, PAGE_SIZE, "%s\n", sch->driver_override);
-+	len = sysfs_emit(buf, "%s\n", sch->driver_override);
- 	device_unlock(dev);
- 	return len;
- }
-@@ -396,8 +396,8 @@ static ssize_t pimpampom_show(struct device *dev,
- 	struct subchannel *sch = to_subchannel(dev);
- 	struct pmcw *pmcw = &sch->schib.pmcw;
- 
--	return sprintf(buf, "%02x %02x %02x\n",
--		       pmcw->pim, pmcw->pam, pmcw->pom);
-+	return sysfs_emit(buf, "%02x %02x %02x\n",
-+			  pmcw->pim, pmcw->pam, pmcw->pom);
- }
- static DEVICE_ATTR_RO(pimpampom);
- 
-@@ -881,7 +881,7 @@ static ssize_t real_cssid_show(struct device *dev, struct device_attribute *a,
- 	if (!css->id_valid)
- 		return -EINVAL;
- 
--	return sprintf(buf, "%x\n", css->cssid);
-+	return sysfs_emit(buf, "%x\n", css->cssid);
- }
- static DEVICE_ATTR_RO(real_cssid);
- 
-@@ -904,7 +904,7 @@ static ssize_t cm_enable_show(struct device *dev, struct device_attribute *a,
- 	int ret;
- 
- 	mutex_lock(&css->mutex);
--	ret = sprintf(buf, "%x\n", css->cm_enabled);
-+	ret = sysfs_emit(buf, "%x\n", css->cm_enabled);
- 	mutex_unlock(&css->mutex);
- 	return ret;
- }
++		/* Skip if address family not supported by protocol */
++		if (err == EAFNOSUPPORT) {
++			ret = KSFT_SKIP;
++			goto cleanup;
++		}
++
+ 		if (!err)
+ 			break;
+ 		if (err != EADDRINUSE)
 -- 
 2.53.0
 
