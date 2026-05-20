@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-250341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251333-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yOzHLRnnDWqx4gUAu9opvQ
-	(envelope-from <stable+bounces-250341-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:53:45 +0200
+	id mG8zOO/zDWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251333-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:48:31 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 660AF59297B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:53:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA86D5949E1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:48:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7E29A30BED4F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:39:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1D43330DD7D8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:21:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50720367B69;
-	Wed, 20 May 2026 16:39:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32B6837754D;
+	Wed, 20 May 2026 17:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L2+Z+Fc6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ntqVr0iR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3CC03191D0;
-	Wed, 20 May 2026 16:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB8A9366075;
+	Wed, 20 May 2026 17:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295159; cv=none; b=tThMQsqyliC1UbOJh7787PZuxIJYFF5DnWfdunFQX2HkrSBuFUzIZN3qRl3p6DHtHLIFVrImuJPjhqv95HWZRHIETu4MwTF50wQzrbhUkN0ejPu8IU/kDU/yXGbIZBjYyBT3j1A0THuG1hYeYXw0SkqfHot9GE8eFZY3R5m+XoE=
+	t=1779297711; cv=none; b=uWi2N5W33HXytdrs4IfDY93s32Ji/jdwUFgiR8wmcdqqxzPbCbcMWwauD2Y1Hk27x6JtV+mG/gh2TS59mPpHEtlBjfcWQ/eTtWz+mZ5fVrCbpx5UFj4a53TfsoGODI4ZiiEL9dCh6/VdoMBii3WF45YevXO7ukxdocdf/VCX2oo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295159; c=relaxed/simple;
-	bh=YvsQVmzEDNMSdVVmub73nUAjLc5ambd66AQHlqcOYyg=;
+	s=arc-20240116; t=1779297711; c=relaxed/simple;
+	bh=xyY1lMVIRYgzGcolczlV5V7xNvMyA6AhcStYNNQhCqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eVg46jh77r/dOB7n0tgL85n5aB+PhG85JnINbHEExHI5e8NbQ7liyR1DDik+nzU2+v8yCjMlr3Jgrvzg5w+GqimX2SbWCJye/B2eiJlYDzbS/RzSkdLZO6qJwyvyptcSAOAoZ7YLLEScIrqWrP7YQZODlh7lbZBZK2qHWHvn21g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L2+Z+Fc6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12C911F00893;
-	Wed, 20 May 2026 16:39:17 +0000 (UTC)
+	 MIME-Version; b=F3vnPaQzqQH5x5+3/yL1KenB+BQzcklgZ+D8ghCyVQIe+40ieIy2Bgm6ppSHwQ0dbf6T8wxhvpUIfFTCEP8z3qta2q+fY1jTE8kOJ2tePhA40SHaJEgO131bERJJFI+GBpjPVADfZry4h5lYiazKBNN+8lcxv6bwFxzCrBqXsaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ntqVr0iR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AB081F000E9;
+	Wed, 20 May 2026 17:21:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295158;
-	bh=FZYs0pk+rdKOOyo9Xgh0EhskMkjd/PeVwR1eNc8wBD4=;
+	s=korg; t=1779297709;
+	bh=z0IFn4LH28Qz5RjxJuSyd0LIUM71ZwIp5LtJ65eCJgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=L2+Z+Fc6UF3EBxd2zh0dPr8Iu3sA1njaNZTwcDN1d26+gCHlnfu7gxpIdgyOPQt9G
-	 WpA/w2SiQOCTv9kNPVCZgr1hCobRs8HdkdFOYhXppXgtncIRfEyAQ37xo/U8g5etty
-	 PLrYgyxjOHpdnDuS34KYVdqQVsjbrumK5y18uk7g=
+	b=ntqVr0iRq3ejHNbcVnmOiGfwPtB8mWTbxEpqVCp+OHs5TATnbD9+MGZqVh6sMRs5j
+	 1FeUHJ1daUI6SQZqhMfRoLFOmsHLEesCZEjiet+vVhj8Ypak4KxniM5ACwIwstZPAX
+	 LiKnKysK+cauWie0X7MRIi3Aep8D/VNpsNL5Ovg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Hans Zhang <18255117159@163.com>,
+	Ryder Lee <ryder.lee@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0314/1146] PCI: sky1: Fix missing cleanup of ECAM config on probe failure
-Date: Wed, 20 May 2026 18:09:24 +0200
-Message-ID: <20260520162155.305591733@linuxfoundation.org>
+Subject: [PATCH 6.18 082/957] wifi: mt76: mt7615: fix use_cts_prot support
+Date: Wed, 20 May 2026 18:09:25 +0200
+Message-ID: <20260520162136.338342842@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,79 +64,206 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-250341-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,163.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251333-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 660AF59297B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mediatek.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,nbd.name:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: BA86D5949E1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Ryder Lee <ryder.lee@mediatek.com>
 
-[ Upstream commit 72e76b63d6ff6d1f96acccbfc6c118656f63e66a ]
+[ Upstream commit 1974a67d9b65c29a0a9426e32e8cd8c056de48b7 ]
 
-When devm_kzalloc() for reg_off fails, the code returns -ENOMEM without
-freeing pcie->cfg, which was allocated earlier by pci_ecam_create().
+Driver should not directly write WTBL to prevent overwritten issues.
 
-Add the missing pci_ecam_free() call to properly release the allocated ECAM
-configuration window on this error path.
+With this fix, when driver needs to adjust its behavior for compatibility,
+especially concerning older 11g/n devices, by enabling or disabling CTS
+protection frames, often for hidden SSIDs or to manage legacy clients.
 
-Fixes: a0d9f2c08f45 ("PCI: sky1: Add PCIe host support for CIX Sky1")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Hans Zhang <18255117159@163.com>
-Link: https://patch.msgid.link/20260324-sky1-v1-1-6a00cb2776b6@gmail.com
+Fixes: e34235ccc5e3 ("wifi: mt76: mt7615: enable use_cts_prot support")
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Link: https://patch.msgid.link/edb87088b0111b32fafc6c4179f54a5286dd37d8.1768879119.git.ryder.lee@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/cadence/pci-sky1.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ .../net/wireless/mediatek/mt76/mt7615/mac.c   | 15 ------
+ .../net/wireless/mediatek/mt76/mt7615/main.c  |  7 +--
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   | 47 +++++++++++++++++++
+ .../wireless/mediatek/mt76/mt7615/mt7615.h    |  5 +-
+ .../net/wireless/mediatek/mt76/mt7615/regs.h  |  2 -
+ 5 files changed, 53 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/pci/controller/cadence/pci-sky1.c b/drivers/pci/controller/cadence/pci-sky1.c
-index d8c216dc120d6..9853a9c82c0e6 100644
---- a/drivers/pci/controller/cadence/pci-sky1.c
-+++ b/drivers/pci/controller/cadence/pci-sky1.c
-@@ -176,8 +176,10 @@ static int sky1_pcie_probe(struct platform_device *pdev)
- 	cdns_pcie->is_rc = 1;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index f8d2cc94b742c..13c9dbeaee84e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -1167,21 +1167,6 @@ void mt7615_mac_set_rates(struct mt7615_phy *phy, struct mt7615_sta *sta,
+ }
+ EXPORT_SYMBOL_GPL(mt7615_mac_set_rates);
  
- 	reg_off = devm_kzalloc(dev, sizeof(*reg_off), GFP_KERNEL);
--	if (!reg_off)
-+	if (!reg_off) {
-+		pci_ecam_free(pcie->cfg);
- 		return -ENOMEM;
+-void mt7615_mac_enable_rtscts(struct mt7615_dev *dev,
+-			      struct ieee80211_vif *vif, bool enable)
+-{
+-	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
+-	u32 addr;
+-
+-	addr = mt7615_mac_wtbl_addr(dev, mvif->sta.wcid.idx) + 3 * 4;
+-
+-	if (enable)
+-		mt76_set(dev, addr, MT_WTBL_W3_RTS);
+-	else
+-		mt76_clear(dev, addr, MT_WTBL_W3_RTS);
+-}
+-EXPORT_SYMBOL_GPL(mt7615_mac_enable_rtscts);
+-
+ static int
+ mt7615_mac_wtbl_update_key(struct mt7615_dev *dev, struct mt76_wcid *wcid,
+ 			   struct ieee80211_key_conf *key,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+index 15fe155ac3f3b..87a2e5163699c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+@@ -583,9 +583,6 @@ static void mt7615_bss_info_changed(struct ieee80211_hw *hw,
+ 		}
+ 	}
+ 
+-	if (changed & BSS_CHANGED_ERP_CTS_PROT)
+-		mt7615_mac_enable_rtscts(dev, vif, info->use_cts_prot);
+-
+ 	if (changed & BSS_CHANGED_BEACON_ENABLED && info->enable_beacon) {
+ 		mt7615_mcu_add_bss_info(phy, vif, NULL, true);
+ 		mt7615_mcu_sta_add(phy, vif, NULL, true);
+@@ -598,6 +595,10 @@ static void mt7615_bss_info_changed(struct ieee80211_hw *hw,
+ 		       BSS_CHANGED_BEACON_ENABLED))
+ 		mt7615_mcu_add_beacon(dev, hw, vif, info->enable_beacon);
+ 
++	if (changed & BSS_CHANGED_HT || changed & BSS_CHANGED_ERP_CTS_PROT)
++		mt7615_mcu_set_protection(phy, vif, info->ht_operation_mode,
++					  info->use_cts_prot);
++
+ 	if (changed & BSS_CHANGED_PS)
+ 		mt76_connac_mcu_set_vif_ps(&dev->mt76, vif);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index 08ee2e861c4e2..91c9d787d553c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -2564,3 +2564,50 @@ int mt7615_mcu_set_roc(struct mt7615_phy *phy, struct ieee80211_vif *vif,
+ 	return mt76_mcu_send_msg(&dev->mt76, MCU_CE_CMD(SET_ROC),
+ 				 &req, sizeof(req), false);
+ }
++
++int mt7615_mcu_set_protection(struct mt7615_phy *phy, struct ieee80211_vif *vif,
++			      u8 ht_mode, bool use_cts_prot)
++{
++	struct mt7615_dev *dev = phy->dev;
++	struct {
++		u8 prot_idx;
++		u8 band;
++		u8 rsv[2];
++
++		bool long_nav;
++		bool prot_mm;
++		bool prot_gf;
++		bool prot_bw40;
++		bool prot_rifs;
++		bool prot_bw80;
++		bool prot_bw160;
++		u8 prot_erp_mask;
++	} __packed req = {
++		.prot_idx = 0x2,
++		.band = phy != &dev->phy,
++	};
++
++	switch (ht_mode & IEEE80211_HT_OP_MODE_PROTECTION) {
++	case IEEE80211_HT_OP_MODE_PROTECTION_NONMEMBER:
++	case IEEE80211_HT_OP_MODE_PROTECTION_NONHT_MIXED:
++		req.prot_mm = true;
++		req.prot_gf = true;
++		fallthrough;
++	case IEEE80211_HT_OP_MODE_PROTECTION_20MHZ:
++		req.prot_bw40 = true;
++		break;
 +	}
++
++	if (ht_mode & IEEE80211_HT_OP_MODE_NON_GF_STA_PRSNT)
++		req.prot_gf = true;
++
++	if (use_cts_prot) {
++		struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
++		u8 i = mvif->mt76.omac_idx > HW_BSSID_MAX ? HW_BSSID_0 : mvif->mt76.omac_idx;
++
++		req.prot_erp_mask = BIT(i);
++	}
++
++	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(PROTECT_CTRL), &req,
++				 sizeof(req), true);
++}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+index 9bdd29e8d25e9..c655f64772de2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h
+@@ -466,8 +466,6 @@ void mt7615_mac_reset_counters(struct mt7615_phy *phy);
+ void mt7615_mac_cca_stats_reset(struct mt7615_phy *phy);
+ void mt7615_mac_set_scs(struct mt7615_phy *phy, bool enable);
+ void mt7615_mac_enable_nf(struct mt7615_dev *dev, bool ext_phy);
+-void mt7615_mac_enable_rtscts(struct mt7615_dev *dev,
+-			      struct ieee80211_vif *vif, bool enable);
+ void mt7615_mac_sta_poll(struct mt7615_dev *dev);
+ int mt7615_mac_write_txwi(struct mt7615_dev *dev, __le32 *txwi,
+ 			  struct sk_buff *skb, struct mt76_wcid *wcid,
+@@ -522,7 +520,8 @@ int mt7615_mcu_set_sku_en(struct mt7615_phy *phy, bool enable);
+ int mt7615_mcu_apply_rx_dcoc(struct mt7615_phy *phy);
+ int mt7615_mcu_apply_tx_dpd(struct mt7615_phy *phy);
+ int mt7615_dfs_init_radar_detector(struct mt7615_phy *phy);
+-
++int mt7615_mcu_set_protection(struct mt7615_phy *phy, struct ieee80211_vif *vif,
++			      u8 ht_mode, bool use_cts_prot);
+ int mt7615_mcu_set_roc(struct mt7615_phy *phy, struct ieee80211_vif *vif,
+ 		       struct ieee80211_channel *chan, int duration);
  
- 	reg_off->ip_reg_bank_offset = SKY1_IP_REG_BANK;
- 	reg_off->ip_cfg_ctrl_reg_offset = SKY1_IP_CFG_CTRL_REG_BANK;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
+index 806b3887c541c..9e6d55c91b269 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/regs.h
+@@ -455,8 +455,6 @@ enum mt7615_reg_base {
+ #define MT_WTBL_RIUCR3_RATE6		GENMASK(19, 8)
+ #define MT_WTBL_RIUCR3_RATE7		GENMASK(31, 20)
+ 
+-#define MT_WTBL_W3_RTS			BIT(22)
+-
+ #define MT_WTBL_W5_CHANGE_BW_RATE	GENMASK(7, 5)
+ #define MT_WTBL_W5_SHORT_GI_20		BIT(8)
+ #define MT_WTBL_W5_SHORT_GI_40		BIT(9)
 -- 
 2.53.0
 
