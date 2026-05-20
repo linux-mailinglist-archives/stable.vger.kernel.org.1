@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-251682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250709-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wA2+KPjyDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-251682-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:24 +0200
+	id OGQYHjvsDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250709-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:15:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4154A59471A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:24 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21D4B5932D1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:15:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 32B963071862
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:37:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E63303181207
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:56:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61D73EF0DA;
-	Wed, 20 May 2026 17:37:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5ED13BED26;
+	Wed, 20 May 2026 16:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JVFJ5fVF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SGHRFfo8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9AF3F1AB8;
-	Wed, 20 May 2026 17:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A1B36CDF2;
+	Wed, 20 May 2026 16:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298620; cv=none; b=tvXUrrG9ZWUJ+pBLMAID6cyJ1H6kCHlHtsAJvvBDuOFqeGgWBC8D/iGRa1OA0iF2A7uIXDEQ94YvTgpXUDCmBmy+6FWQsgBR6xus1mCW/KjJ9ObtCOM8mnVx9hoKCz1gjf4+bDRG1sHAqHaChFgSV0x2Tgp4cBusk/Ve4btVcnY=
+	t=1779296111; cv=none; b=S9+TiGPkioKwOXpjW1Nsmof5/zgkTworxmrH8VeYP3Y6sZwpYiarUy/CnESbpQXdNqlQVbrxg0iSSd3Oebz8eTdQpou7Zw87r/4BabtFXBw+zo+6lzmcybfML8qop4my4Kl5XLQkvCiWTORcvr87GCV/qmdHBKiHX1Q22rOyJes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298620; c=relaxed/simple;
-	bh=XV4cBgjOjJiw5REQQRJ9krJOxkkbSbemYJ5Yq/GxrTo=;
+	s=arc-20240116; t=1779296111; c=relaxed/simple;
+	bh=HauQpVYE0SCAmr9R61boVW/FhBfvaXRcXDP7WWkYT/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eWB1VgCMQsNVTVz7TL3nwgXGR2tHXlG5l9iR6OgrB51hublmo3DMwv+9fQ4hZ4pQFb9PvVowafJxTMEzXZ4DEsjBGxQSPJvomP1w3whoyD9hmm9xdcYw1GXM+QwTjdOPZ3o7Kzo3CRp6Pi1YXgmUCahDf3clz9V8dBjwkFef++s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JVFJ5fVF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A1201F000E9;
-	Wed, 20 May 2026 17:36:56 +0000 (UTC)
+	 MIME-Version; b=McY0YxwQ03ZbH62RSQdhR64HN5e3fohSAl+fBUPv5XlucU7JN8uAbRN8xePxeECdIIHauOdhhLGVHlXdqRRl2ik1kHw1OmXSHSEYMQaDgdFCWDoV2liOSHFsFtuOcxSTPA01WiEOMkZdPvhu+mjUzE15L8KlZBMDnacQAEdICnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SGHRFfo8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D89181F000E9;
+	Wed, 20 May 2026 16:55:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298617;
-	bh=ct0C7fnC0wFOdxNGwH5KDwkO3rthh5PG43UD7Ef0GPw=;
+	s=korg; t=1779296110;
+	bh=lDHtNARbYUh8469Cp7CK2DIMqgTQfjrevNx+fUX9yvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JVFJ5fVFe0D2ZYj6EKq8IRQvswc7SIoEi+GbXqfsJc3kQCo+0NMLIx4L3ggQPivjn
-	 HjztJ/L0mEJoRaDGLrA+9wvfaWZkUWztlkUVuF3P6VcJkxYA77+F6f83EWk+eTo6RP
-	 JcKjPnU9ycSdw/JyRtBtr8yGeQP5N7Tp+Tui1bgo=
+	b=SGHRFfo8x8Gvk/xZskYl5+PG8FoMIhF6ymv2FkgGgbQSF3it86putWOU82MVdRSXQ
+	 frtYixc2UjWSIwOBJR20cy4qXoosmc7ZHwlF1Kg3arJ5roglDFqgc5nDvh2tDStFm4
+	 UKfYW7I2WPeD0ttR1Qt9ciVEq4UI39oLor1mHRpY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Cheng <icheng@nvidia.com>,
-	Kai-Heng Feng <kaihengf@nvidia.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 442/957] fwctl: Fix class init ordering to avoid NULL pointer dereference on device removal
+Subject: [PATCH 7.0 0675/1146] sunrpc: Kill RPC_IFDEBUG()
 Date: Wed, 20 May 2026 18:15:25 +0200
-Message-ID: <20260520162144.106252113@linuxfoundation.org>
+Message-ID: <20260520162203.464117047@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251682-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250709-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,58 +86,124 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,intel.com:email]
-X-Rspamd-Queue-Id: 4154A59471A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,oracle.com:email]
+X-Rspamd-Queue-Id: 21D4B5932D1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Cheng <icheng@nvidia.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit a55f80233f384dc89ef3425b2e1dd0e6d44bcf29 ]
+[ Upstream commit adcc59114ccd402259c089b0fea24da5e4974563 ]
 
-CXL is linked before fwctl in drivers/Makefile. Both use `module_init, so
-`cxl_pci_driver_init()` runs first. When `cxl_pci_probe()` calls
-`fwctl_register()` and then `device_add()`, fwctl_class is not yet
-registered because fwctl_init() hasn't run, causing `class_to_subsys()` to
-return NULL and skip knode_class initialization.
+RPC_IFDEBUG() is used in only two places. In one the user of
+the definition is guarded by ifdeffery, in the second one
+it's implied due to dprintk() usage. Kill the macro and move
+the ifdeffery to the regular condition with the variable defined
+inside, while in the second case add the same conditional and
+move the respective code there.
 
-On device removal, `class_to_subsys()` returns non-NULL, and
-`device_del()` calls `klist_del()` on the uninitialized knode, triggering
-a NULL pointer dereference.
-
-Fixes: 858ce2f56b52 ("cxl: Add FWCTL support to CXL")
-Link: https://patch.msgid.link/r/20260409051902.40218-1-icheng@nvidia.com
-Signed-off-by: Richard Cheng <icheng@nvidia.com>
-Reviewed-by: Kai-Heng Feng <kaihengf@nvidia.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Stable-dep-of: 6f57293abb8d ("sunrpc: Fix compilation error (`make W=1`) when dprintk() is no-op")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/fwctl/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/nfsfh.c                          |  9 +++++---
+ include/linux/sunrpc/debug.h             |  2 --
+ net/sunrpc/xprtrdma/svc_rdma_transport.c | 27 ++++++++++++------------
+ 3 files changed, 20 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/fwctl/main.c b/drivers/fwctl/main.c
-index bc6378506296c..098c3824ad751 100644
---- a/drivers/fwctl/main.c
-+++ b/drivers/fwctl/main.c
-@@ -415,7 +415,7 @@ static void __exit fwctl_exit(void)
- 	unregister_chrdev_region(fwctl_dev, FWCTL_MAX_DEVICES);
- }
+diff --git a/fs/nfsd/nfsfh.c b/fs/nfsd/nfsfh.c
+index ed85dd43da18e..68b629fbaaeb9 100644
+--- a/fs/nfsd/nfsfh.c
++++ b/fs/nfsd/nfsfh.c
+@@ -105,9 +105,12 @@ static __be32 nfsd_setuser_and_check_port(struct svc_rqst *rqstp,
+ {
+ 	/* Check if the request originated from a secure port. */
+ 	if (rqstp && !nfsd_originating_port_ok(rqstp, cred, exp)) {
+-		RPC_IFDEBUG(char buf[RPC_MAX_ADDRBUFLEN]);
+-		dprintk("nfsd: request from insecure port %s!\n",
+-		        svc_print_addr(rqstp, buf, sizeof(buf)));
++		if (IS_ENABLED(CONFIG_SUNRPC_DEBUG)) {
++			char buf[RPC_MAX_ADDRBUFLEN];
++
++			dprintk("nfsd: request from insecure port %s!\n",
++			        svc_print_addr(rqstp, buf, sizeof(buf)));
++		}
+ 		return nfserr_perm;
+ 	}
  
--module_init(fwctl_init);
-+subsys_initcall(fwctl_init);
- module_exit(fwctl_exit);
- MODULE_DESCRIPTION("fwctl device firmware access framework");
- MODULE_LICENSE("GPL");
+diff --git a/include/linux/sunrpc/debug.h b/include/linux/sunrpc/debug.h
+index eb4bd62df3190..93d1a11ffbfb3 100644
+--- a/include/linux/sunrpc/debug.h
++++ b/include/linux/sunrpc/debug.h
+@@ -49,12 +49,10 @@ do {									\
+ 	}								\
+ } while (0)
+ 
+-# define RPC_IFDEBUG(x)		x
+ #else
+ # define ifdebug(fac)		if (0)
+ # define dfprintk(fac, fmt, ...)	do {} while (0)
+ # define dfprintk_rcu(fac, fmt, ...)	do {} while (0)
+-# define RPC_IFDEBUG(x)
+ #endif
+ 
+ /*
+diff --git a/net/sunrpc/xprtrdma/svc_rdma_transport.c b/net/sunrpc/xprtrdma/svc_rdma_transport.c
+index 9b623849723ed..f2d72181a6fe8 100644
+--- a/net/sunrpc/xprtrdma/svc_rdma_transport.c
++++ b/net/sunrpc/xprtrdma/svc_rdma_transport.c
+@@ -414,7 +414,6 @@ static struct svc_xprt *svc_rdma_accept(struct svc_xprt *xprt)
+ 	struct ib_qp_init_attr qp_attr;
+ 	struct ib_device *dev;
+ 	int ret = 0;
+-	RPC_IFDEBUG(struct sockaddr *sap);
+ 
+ 	listen_rdma = container_of(xprt, struct svcxprt_rdma, sc_xprt);
+ 	clear_bit(XPT_CONN, &xprt->xpt_flags);
+@@ -560,18 +559,20 @@ static struct svc_xprt *svc_rdma_accept(struct svc_xprt *xprt)
+ 		goto errout;
+ 	}
+ 
+-#if IS_ENABLED(CONFIG_SUNRPC_DEBUG)
+-	dprintk("svcrdma: new connection accepted on device %s:\n", dev->name);
+-	sap = (struct sockaddr *)&newxprt->sc_cm_id->route.addr.src_addr;
+-	dprintk("    local address   : %pIS:%u\n", sap, rpc_get_port(sap));
+-	sap = (struct sockaddr *)&newxprt->sc_cm_id->route.addr.dst_addr;
+-	dprintk("    remote address  : %pIS:%u\n", sap, rpc_get_port(sap));
+-	dprintk("    max_sge         : %d\n", newxprt->sc_max_send_sges);
+-	dprintk("    sq_depth        : %d\n", newxprt->sc_sq_depth);
+-	dprintk("    rdma_rw_ctxs    : %d\n", ctxts);
+-	dprintk("    max_requests    : %d\n", newxprt->sc_max_requests);
+-	dprintk("    ord             : %d\n", conn_param.initiator_depth);
+-#endif
++	if (IS_ENABLED(CONFIG_SUNRPC_DEBUG)) {
++		struct sockaddr *sap;
++
++		dprintk("svcrdma: new connection accepted on device %s:\n", dev->name);
++		sap = (struct sockaddr *)&newxprt->sc_cm_id->route.addr.src_addr;
++		dprintk("    local address   : %pIS:%u\n", sap, rpc_get_port(sap));
++		sap = (struct sockaddr *)&newxprt->sc_cm_id->route.addr.dst_addr;
++		dprintk("    remote address  : %pIS:%u\n", sap, rpc_get_port(sap));
++		dprintk("    max_sge         : %d\n", newxprt->sc_max_send_sges);
++		dprintk("    sq_depth        : %d\n", newxprt->sc_sq_depth);
++		dprintk("    rdma_rw_ctxs    : %d\n", ctxts);
++		dprintk("    max_requests    : %d\n", newxprt->sc_max_requests);
++		dprintk("    ord             : %d\n", conn_param.initiator_depth);
++	}
+ 
+ 	return &newxprt->sc_xprt;
+ 
 -- 
 2.53.0
 
