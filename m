@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250867-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QAMDI5UYDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-252876-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:24:53 +0200
+	id 0LXdAO/vDWp+4wUAu9opvQ
+	(envelope-from <stable+bounces-250867-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:31:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A64A5998C2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:24:52 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D34FD593DD6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:31:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BEC583069D07
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:30:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9D03F319BA9A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:02:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4609733DEE5;
-	Wed, 20 May 2026 18:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 746EE3EE1C0;
+	Wed, 20 May 2026 17:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i3CqnIhq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E3S4a7Ud"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B4730DEAC;
-	Wed, 20 May 2026 18:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228F93EFD14;
+	Wed, 20 May 2026 17:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301820; cv=none; b=qgX/yAvCMcLIvlzpP6LjDPMJs6lxv+oAiGOqZcSbwvyMURayxqgIb+4JshCmi90DxrYUjgbU2t+wg9kEMBXJos2FEaJb8yDuqwsBqvLMw2nXsgjvj7i1Ox8h973UQ86UofJ7q6V/G9xDkZtI5XJtVsjxiqbcD/uPze6tNEwGoV4=
+	t=1779296515; cv=none; b=uCTSBwWZjLamgRpqTcbjxG3DAJo+daWRNDFp8gs2VFV4VpTXOYwb94PT8Q8UAxTvWE5XPkxLjhLLp6gqgjXQbOnKsqcX7DpAa8MmwK7OshiUDlr8zZzpeT9QrxIz8VBxNiAdUrPoQpH7LzldjRwKhUqHmD/7QmWJ2TBJDKEclbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301820; c=relaxed/simple;
-	bh=8sZIlb3R7j29WgIZLYB9N6n0+10OBfa+eCUQa6f9TM4=;
+	s=arc-20240116; t=1779296515; c=relaxed/simple;
+	bh=hNCZOnR0pYgqi4hmsB3+qxj2IzP572f3yNaEaksUogE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hV44EnmYspEE9aVe8Rlc/mQg4bIaHiO9klq/yULfArby9eBesZTWHoXcnNTI5o82wtapRo2FQZpnF7wtXhQl76B3STZNyv1IiWeAZ+/rEVtHjp09U0G2YT0WAt6TZ0v42eLGGZJWfbhucjBzehyfQwQ3M1H0AOcr38s7I3J+GzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i3CqnIhq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 436441F000E9;
-	Wed, 20 May 2026 18:30:18 +0000 (UTC)
+	 MIME-Version; b=TyKOxWP9VDIujpOKJqRf70zoVfK3ClU2j6WIgg1YoXiGReElFpGJJvGdUgvWZspZqMy5AWpYdvcYp1jDsTtRBCkQ9H+dVKsPzpVSJlGZoMRHu/KAmZqq6NGled9kNoK5G0cO8jDc8nxZsgmYZXu+beeADoKIKSoSb2P2SzWkTkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E3S4a7Ud; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B5B11F00896;
+	Wed, 20 May 2026 17:01:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301818;
-	bh=SYMuxEu4B6g6IVVgK4nunB+n8ZY8EKdSRXXnirEq2Jo=;
+	s=korg; t=1779296514;
+	bh=IPEqzashwUId1bw3vbb7PyxmvYRkZN2Fn5EB5NuU0No=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=i3CqnIhqa/hg2MeAJxvfuUKhVpZ0vKGX91QckPpoZ1kxFkU/nZkCq499F2xy3vBTd
-	 MX5Dyg44yAvbI0AA0m2VEom+J6juC5KDizuna8RsuYYzoZ+e/wU64q3Rs7WFLDgeIf
-	 ElgtfjiWzYK/F5ja5XDV81Y/CX4y9+mbX/g9bPzE=
+	b=E3S4a7UdH1GlWTKpb+PuwlbRBJu3S9RX1+cdoytTYIH3O0I/DpWwBt3hcVUuuW/yS
+	 kIwb1h6tVp4brBHnzobjRpaQ6dNNCYD1ix5SKKAhNbTmLXa1QPkjzMA31o8v76M8PR
+	 tbwjZ4+fZsnBOqnxRz6UOlUmA+oZ86l5tyw6XGHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daan De Meyer <daan@amutable.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	Akif <akif.sait111@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 004/508] loop: fix partition scan race between udev and loop_reread_partitions()
+Subject: [PATCH 7.0 0777/1146] ksmbd: fix use-after-free in smb2_open during durable reconnect
 Date: Wed, 20 May 2026 18:17:07 +0200
-Message-ID: <20260520162058.675460364@linuxfoundation.org>
+Message-ID: <20260520162205.800701618@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,119 +65,110 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252876-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250867-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,kernel.dk:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amutable.com:email]
-X-Rspamd-Queue-Id: 8A64A5998C2
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: D34FD593DD6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daan De Meyer <daan.j.demeyer@gmail.com>
+From: Akif <akif.sait111@gmail.com>
 
-[ Upstream commit 267ec4d7223a783f029a980f41b93c39b17996da ]
+[ Upstream commit 1baff47b81f94f9231c91236aa511420d0e266b9 ]
 
-When LOOP_CONFIGURE is called with LO_FLAGS_PARTSCAN, the following
-sequence occurs:
+In smb2_open, the call to ksmbd_put_durable_fd(fp) drops the reference
+to the durable file descriptor early during the durable reconnect
+process. If an error occurs subsequently (eg, ksmbd_iov_pin_rsp fails)
+or a scavenger accesses the file, it leads to a use-after-free when
+accessing fp properties (eg fp->create_time).
 
-  1. disk_force_media_change() sets GD_NEED_PART_SCAN
-  2. Uevent suppression is lifted and a KOBJ_CHANGE uevent is sent
-  3. loop_global_unlock() releases the lock
-  4. loop_reread_partitions() calls bdev_disk_changed() to scan
+Move the single put to the end of the function below err_out2 so fp
+stays valid until smb2_open returns.
 
-There is a race between steps 2 and 4: when udev receives the uevent
-and opens the device before loop_reread_partitions() runs,
-blkdev_get_whole() in bdev.c sees GD_NEED_PART_SCAN set and calls
-bdev_disk_changed() for a first scan. Then loop_reread_partitions()
-does a second scan. The open_mutex serializes these two scans, but
-does not prevent both from running.
-
-The second scan in bdev_disk_changed() drops all partition devices
-from the first scan (via blk_drop_partitions()) before re-adding
-them, causing partition block devices to briefly disappear. This
-breaks any systemd unit with BindsTo= on the partition device: systemd
-observes the device going dead, fails the dependent units, and does
-not retry them when the device reappears.
-
-Fix this by removing the GD_NEED_PART_SCAN set from
-disk_force_media_change() entirely. None of the current callers need
-the lazy on-open partition scan triggered by this flag:
-
-  - floppy: sets GENHD_FL_NO_PART, so disk_has_partscan() is always
-    false and GD_NEED_PART_SCAN has no effect.
-  - loop (loop_configure, loop_change_fd): when LO_FLAGS_PARTSCAN is
-    set, loop_reread_partitions() performs an explicit scan. When not
-    set, GD_SUPPRESS_PART_SCAN prevents the lazy scan path.
-  - loop (__loop_clr_fd): calls bdev_disk_changed() explicitly if
-    LO_FLAGS_PARTSCAN is set.
-  - nbd (nbd_clear_sock_ioctl): capacity is set to zero immediately
-    after; nbd manages GD_NEED_PART_SCAN explicitly elsewhere.
-
-With GD_NEED_PART_SCAN no longer set by disk_force_media_change(),
-udev opening the loop device after the uevent no longer triggers a
-redundant scan in blkdev_get_whole(), and only the single explicit
-scan from loop_reread_partitions() runs.
-
-A regression test for this bug has been submitted to blktests:
-https://github.com/linux-blktests/blktests/pull/240.
-
-Fixes: 9f65c489b68d ("loop: raise media_change event")
-Signed-off-by: Daan De Meyer <daan@amutable.com>
-Acked-by: Christian Brauner <brauner@kernel.org>
-Link: https://patch.msgid.link/20260331105130.1077599-1-daan@amutable.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
+Signed-off-by: Akif <akif.sait111@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/disk-events.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/smb/server/smb2pdu.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/block/disk-events.c b/block/disk-events.c
-index 13c3372c465a3..6987e4dd8d417 100644
---- a/block/disk-events.c
-+++ b/block/disk-events.c
-@@ -294,13 +294,14 @@ EXPORT_SYMBOL(disk_check_media_change);
-  * Should be called when the media changes for @disk.  Generates a uevent
-  * and attempts to free all dentries and inodes and invalidates all block
-  * device page cache entries in that case.
-+ *
-+ * Callers that need a partition re-scan should arrange for one explicitly.
-  */
- void disk_force_media_change(struct gendisk *disk)
- {
- 	disk_event_uevent(disk, DISK_EVENT_MEDIA_CHANGE);
- 	inc_diskseq(disk);
- 	bdev_mark_dead(disk->part0, true);
--	set_bit(GD_NEED_PART_SCAN, &disk->state);
- }
- EXPORT_SYMBOL_GPL(disk_force_media_change);
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 135c74e6c4be6..e3a120a2d0596 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -3015,29 +3015,23 @@ int smb2_open(struct ksmbd_work *work)
+ 		if (dh_info.reconnected == true) {
+ 			rc = smb2_check_durable_oplock(conn, share, dh_info.fp,
+ 					lc, sess->user, name);
+-			if (rc) {
+-				ksmbd_put_durable_fd(dh_info.fp);
++			if (rc)
+ 				goto err_out2;
+-			}
+ 
+ 			rc = ksmbd_reopen_durable_fd(work, dh_info.fp);
+-			if (rc) {
+-				ksmbd_put_durable_fd(dh_info.fp);
++			if (rc)
+ 				goto err_out2;
+-			}
+ 
+ 			fp = dh_info.fp;
+ 
+ 			if (ksmbd_override_fsids(work)) {
+ 				rc = -ENOMEM;
+-				ksmbd_put_durable_fd(dh_info.fp);
+ 				goto err_out2;
+ 			}
+ 
+ 			file_info = FILE_OPENED;
+ 
+ 			rc = ksmbd_vfs_getattr(&fp->filp->f_path, &stat);
+-			ksmbd_put_durable_fd(fp);
+ 			if (rc)
+ 				goto err_out2;
+ 
+@@ -3807,6 +3801,9 @@ int smb2_open(struct ksmbd_work *work)
+ 		ksmbd_debug(SMB, "Error response: %x\n", rsp->hdr.Status);
+ 	}
+ 
++	if (dh_info.reconnected)
++		ksmbd_put_durable_fd(dh_info.fp);
++
+ 	kfree(name);
+ 	kfree(lc);
  
 -- 
 2.53.0
