@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251613-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mC1LIaP5DWqR5AUAu9opvQ
-	(envelope-from <stable+bounces-252296-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:51 +0200
+	id QJj/IowcDmro6AUAu9opvQ
+	(envelope-from <stable+bounces-251613-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:41:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3961A595908
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9397599F21
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:41:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 47D0E30F41AB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:05:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 81C2233C32FA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:33:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F1563FB05D;
-	Wed, 20 May 2026 18:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0322A35AC17;
+	Wed, 20 May 2026 17:33:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Omrgk03u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NJ4SdXSg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67303F7ABC;
-	Wed, 20 May 2026 18:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B87343A3825;
+	Wed, 20 May 2026 17:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300305; cv=none; b=O+aWYTbly5ilKEK7sXXIKOcnP6YcBMXOG66tYh4hkmiyRhoUIHw7N2QhSUYau4YqWKTvgFKOiA2IztMBPjaex+XSZP/i9qh5V9pp88Oq2K1OdjLSBGg/OZ66izDWwKIYWjDm6D62xamRWj7WzKRvMxQIqBcxtEOE1CPUsY63NUg=
+	t=1779298437; cv=none; b=g1vnkxvXkaEMIArHbVZ8XCUwgG+gdsz1VxM3m7X6CiFA09MarAbWRojWKwpOKMa3p3wYO+a7qd/MAMrndjBRIXJ5c+xXGa+24PqIfqDYIQ6awp1JdXJVHe0Fa0mN/HUN4l73QQn7EghAU60XIdh1uLSCjnvuorNTiQ7z2F8EVsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300305; c=relaxed/simple;
-	bh=D116QIVzwNJ1R9qGzLgM9iVxiXfGIs71hHQ/GePZ7w0=;
+	s=arc-20240116; t=1779298437; c=relaxed/simple;
+	bh=90cjYoTV5qRLAGMw6Ceth+nW/ZA2IBQm5TM6YWXsYE8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B9Jr8W31Z28SIC/Zup41Lymq/L7E65gOrtjOm2z9uxcCrasBGxuU390Jgo07AV3jRPf52wGgb5T37QjTNu11B+RO6ULl/ikg7YECnqt407pj0SBu2Zv/OXvho8WI/VJzd2dOPPHVk8YSF1NH9JbQ/aOONIPMIGMl8BaJtjmiUEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Omrgk03u; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 313071F000E9;
-	Wed, 20 May 2026 18:05:03 +0000 (UTC)
+	 MIME-Version; b=BFzJRF3KonaM6Uo2Xed2vYISZuP442t4Rafql0LJsQ7nQpyAWsRFxA5d2m6cZY2zO8LbhToajmkiMNaMd3XGOZnUF5mpAacD3w5SRofvGZ9mJUIb3Nya9lBvZYfBPrC5uaJNyUlwqsaozps+NB5ZMf6ym2Bw7IoLSSNju/5CIWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NJ4SdXSg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A9171F000E9;
+	Wed, 20 May 2026 17:33:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300303;
-	bh=WCmpAbw8RvehdQEiEJoyeDsJp9vN2Bg9JgCUSEamg6g=;
+	s=korg; t=1779298436;
+	bh=Kpf0tFQPcOTYtT9IyI16Ci0gPB7HywtPglw8lLmLs9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Omrgk03urNEEk6QAlAL2TJPS/Ek0EBGA9Jp4aUuhWNZEQeFGZExt3e034W/LAwRx1
-	 O7eEQjudBU3RkapywlfYpgop1CsAG5Q8udrjEuAed6MArxNPuqBCK0C17cWFboX8sy
-	 mdLQVv0S0ctQbzjd771WV9WDC/CezyKtLGX91qSE=
+	b=NJ4SdXSgeihVUdzQl0FPE6AeXezq/EanYvNI2zmC9pwaD5fAaVTxSNWDzEs2SLO10
+	 2d2vAfAosnZb840SXwtx2T4c97DINcX1Nv99SUdjmqWo6sdsuobXzL540sd5G+ahHp
+	 p+3hr5PKezep9rHcWkQ/zvPov1fftTLlwQVvbfY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	David Heidelberg <david@ixit.cz>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 082/666] bpf: fix mm lifecycle in open-coded task_vma iterator
-Date: Wed, 20 May 2026 18:14:53 +0200
-Message-ID: <20260520162113.008301510@linuxfoundation.org>
+Subject: [PATCH 6.18 411/957] arm64: dts: qcom: sdm845-xiaomi-beryllium: Mark l1a regulator as powered during boot
+Date: Wed, 20 May 2026 18:14:54 +0200
+Message-ID: <20260520162143.437585784@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,177 +69,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251613-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252296-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 3961A595908
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,ixit.cz:email]
+X-Rspamd-Queue-Id: C9397599F21
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Puranjay Mohan <puranjay@kernel.org>
+From: David Heidelberg <david@ixit.cz>
 
-[ Upstream commit d8e27d2d22b6e2df3a0125b8c08e9aace38c954c ]
+[ Upstream commit 3b0dd81eea6b7a239fce456ce4545af76f1a9715 ]
 
-The open-coded task_vma iterator reads task->mm locklessly and acquires
-mmap_read_trylock() but never calls mmget(). If the task exits
-concurrently, the mm_struct can be freed as it is not
-SLAB_TYPESAFE_BY_RCU, resulting in a use-after-free.
+The regulator must be on, since it provides the display subsystem and
+therefore the bootloader had turned it on before Linux booted.
 
-Safely read task->mm with a trylock on alloc_lock and acquire an mm
-reference. Drop the reference via bpf_iter_mmput_async() in _destroy()
-and error paths. bpf_iter_mmput_async() is a local wrapper around
-mmput_async() with a fallback to mmput() on !CONFIG_MMU.
-
-Reject irqs-disabled contexts (including NMI) up front. Operations used
-by _next() and _destroy() (mmap_read_unlock, bpf_iter_mmput_async)
-take spinlocks with IRQs disabled (pool->lock, pi_lock). Running from
-NMI or from a tracepoint that fires with those locks held could
-deadlock.
-
-A trylock on alloc_lock is used instead of the blocking task_lock()
-(get_task_mm) to avoid a deadlock when a softirq BPF program iterates
-a task that already holds its alloc_lock on the same CPU.
-
-Fixes: 4ac454682158 ("bpf: Introduce task_vma open-coded iterator kfuncs")
-Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
-Link: https://lore.kernel.org/r/20260408154539.3832150-2-puranjay@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 77809cf74a8c ("arm64: dts: qcom: Add support for Xiaomi Poco F1 (Beryllium)")
+Signed-off-by: David Heidelberg <david@ixit.cz>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260320-beryllium-booton-v2-1-931d1be21eae@ixit.cz
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/task_iter.c | 54 +++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 51 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/bpf/task_iter.c b/kernel/bpf/task_iter.c
-index 5af9e130e500f..c37ae44bd0a53 100644
---- a/kernel/bpf/task_iter.c
-+++ b/kernel/bpf/task_iter.c
-@@ -10,6 +10,7 @@
- #include <linux/bpf_mem_alloc.h>
- #include <linux/btf_ids.h>
- #include <linux/mm_types.h>
-+#include <linux/sched/mm.h>
- #include "mmap_unlock_work.h"
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+index 7480c8d7ac5b7..dbd5f08b5cdd3 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+@@ -148,6 +148,7 @@ vreg_l1a_0p875: ldo1 {
+ 			regulator-min-microvolt = <880000>;
+ 			regulator-max-microvolt = <880000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++			regulator-boot-on;
+ 		};
  
- static const char * const iter_task_type_names[] = {
-@@ -798,6 +799,15 @@ const struct bpf_func_proto bpf_find_vma_proto = {
- 	.arg5_type	= ARG_ANYTHING,
- };
- 
-+static inline void bpf_iter_mmput_async(struct mm_struct *mm)
-+{
-+#ifdef CONFIG_MMU
-+	mmput_async(mm);
-+#else
-+	mmput(mm);
-+#endif
-+}
-+
- struct bpf_iter_task_vma_kern_data {
- 	struct task_struct *task;
- 	struct mm_struct *mm;
-@@ -829,6 +839,24 @@ __bpf_kfunc int bpf_iter_task_vma_new(struct bpf_iter_task_vma *it,
- 	BUILD_BUG_ON(sizeof(struct bpf_iter_task_vma_kern) != sizeof(struct bpf_iter_task_vma));
- 	BUILD_BUG_ON(__alignof__(struct bpf_iter_task_vma_kern) != __alignof__(struct bpf_iter_task_vma));
- 
-+	/* bpf_iter_mmput_async() needs mmput_async() which requires CONFIG_MMU */
-+	if (!IS_ENABLED(CONFIG_MMU)) {
-+		kit->data = NULL;
-+		return -EOPNOTSUPP;
-+	}
-+
-+	/*
-+	 * Reject irqs-disabled contexts including NMI. Operations used
-+	 * by _next() and _destroy() (mmap_read_unlock, bpf_iter_mmput_async)
-+	 * can take spinlocks with IRQs disabled (pi_lock, pool->lock).
-+	 * Running from NMI or from a tracepoint that fires with those
-+	 * locks held could deadlock.
-+	 */
-+	if (irqs_disabled()) {
-+		kit->data = NULL;
-+		return -EBUSY;
-+	}
-+
- 	/* is_iter_reg_valid_uninit guarantees that kit hasn't been initialized
- 	 * before, so non-NULL kit->data doesn't point to previously
- 	 * bpf_mem_alloc'd bpf_iter_task_vma_kern_data
-@@ -838,7 +866,25 @@ __bpf_kfunc int bpf_iter_task_vma_new(struct bpf_iter_task_vma *it,
- 		return -ENOMEM;
- 
- 	kit->data->task = get_task_struct(task);
-+	/*
-+	 * Safely read task->mm and acquire an mm reference.
-+	 *
-+	 * Cannot use get_task_mm() because its task_lock() is a
-+	 * blocking spin_lock that would deadlock if the target task
-+	 * already holds alloc_lock on this CPU (e.g. a softirq BPF
-+	 * program iterating a task interrupted while holding its
-+	 * alloc_lock).
-+	 */
-+	if (!spin_trylock(&task->alloc_lock)) {
-+		err = -EBUSY;
-+		goto err_cleanup_iter;
-+	}
- 	kit->data->mm = task->mm;
-+	if (kit->data->mm && !(task->flags & PF_KTHREAD))
-+		mmget(kit->data->mm);
-+	else
-+		kit->data->mm = NULL;
-+	spin_unlock(&task->alloc_lock);
- 	if (!kit->data->mm) {
- 		err = -ENOENT;
- 		goto err_cleanup_iter;
-@@ -848,15 +894,16 @@ __bpf_kfunc int bpf_iter_task_vma_new(struct bpf_iter_task_vma *it,
- 	irq_work_busy = bpf_mmap_unlock_get_irq_work(&kit->data->work);
- 	if (irq_work_busy || !mmap_read_trylock(kit->data->mm)) {
- 		err = -EBUSY;
--		goto err_cleanup_iter;
-+		goto err_cleanup_mmget;
- 	}
- 
- 	vma_iter_init(&kit->data->vmi, kit->data->mm, addr);
- 	return 0;
- 
-+err_cleanup_mmget:
-+	bpf_iter_mmput_async(kit->data->mm);
- err_cleanup_iter:
--	if (kit->data->task)
--		put_task_struct(kit->data->task);
-+	put_task_struct(kit->data->task);
- 	bpf_mem_free(&bpf_global_ma, kit->data);
- 	/* NULL kit->data signals failed bpf_iter_task_vma initialization */
- 	kit->data = NULL;
-@@ -879,6 +926,7 @@ __bpf_kfunc void bpf_iter_task_vma_destroy(struct bpf_iter_task_vma *it)
- 	if (kit->data) {
- 		bpf_mmap_unlock_mm(kit->data->work, kit->data->mm);
- 		put_task_struct(kit->data->task);
-+		bpf_iter_mmput_async(kit->data->mm);
- 		bpf_mem_free(&bpf_global_ma, kit->data);
- 	}
- }
+ 		vreg_l5a_0p8: ldo5 {
 -- 
 2.53.0
 
