@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-253171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251189-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kAlOO7QGDmqy5gUAu9opvQ
-	(envelope-from <stable+bounces-253171-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:08:36 +0200
+	id QABgHvTuDWpu4wUAu9opvQ
+	(envelope-from <stable+bounces-251189-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:27:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EB5F597D3C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:08:36 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19785593B36
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:27:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 52BD638569E6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AD8A5304A62A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5E62407CD9;
-	Wed, 20 May 2026 18:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C0013F44EA;
+	Wed, 20 May 2026 17:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Frw+NCHe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xu4ikFQA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B68342CB3;
-	Wed, 20 May 2026 18:43:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E423F4DCC;
+	Wed, 20 May 2026 17:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302589; cv=none; b=aGz+JCYfAxn6DhfyyWFDQOAv1ZNmXMulELSlLA1zX+R7VjpTaPUp4+F38t3KpMn6zb2RcsVbkAv2wmR86OqjykVuHPX9UizUUhGS8DfzB4FLgG2Y6jz7ceVgrlIaTe8as4F8BVoBdahAFgPqrz0zhxP2LzWe0vnn0lDDYONeJ2U=
+	t=1779297332; cv=none; b=MFbCsFQciujYXYm8UwntMhVXOn4uFWoKa+ftMy9zG7ByL4ksIrhveKedZM+KQPUfDaJfBweLeO3PzcPWqbRpbIqE668GIx+V9B95jZYbT8WV03KzbhP1AGYNP47sGKy8Q3N0046WqKkaHwQUK3qzH1zn0mOvm/UOpoKrKPwN99I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302589; c=relaxed/simple;
-	bh=9rp+DvA+vHaKWfSMviaU8W7ageYJXvaPCB9zga7hoaI=;
+	s=arc-20240116; t=1779297332; c=relaxed/simple;
+	bh=gk95xzrhW1HS+n3nui6aOvQRvfmCvenr8W60NHPsOvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uWDO3q2vC4Eo3Yqi8MGwoyzfEPN8kCwztJkqVgk7ZuqbUq2TCYYij+j0VOA8CJDGpkfC9Oz+/AWmO/jP3RDyX1FRbAMRWHboA/GqWt9En0pM3fF5AfwaC0EY6k1tnE7HtkG55yo8ISotJd4dLdN4aKyiBw1brIN+cFIIq1w7ayI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Frw+NCHe; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBE3B1F000E9;
-	Wed, 20 May 2026 18:43:07 +0000 (UTC)
+	 MIME-Version; b=FJRtPd7CyjtX5jiyTwqaxjwdbhPUFr7zQsAiK3eyOMO92ycsjdfj3PVwWnW0zLYx08nKdg9WydTX0Or6xw8sy4XDYY4guZQQnE01nqd/mZ/dW+JkVnrnfDIkvCvrfN/p4X9QmA8GHgcnhPX0SL5NtmBpPzsq9Oqz0ITz8Eg+lxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xu4ikFQA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 396811F000E9;
+	Wed, 20 May 2026 17:15:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302588;
-	bh=xp9DGhcjDyPOTNCq/X6fHg3dxc35iZoRZ3TE5l3FBDY=;
+	s=korg; t=1779297330;
+	bh=AL8J+QawhwppXMlPloe8fJNk4EBfUr6aai3Th4STYDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Frw+NCHe2T5Gq6S2CLPAIxkMw1lnyZYFYfmbICTOlUCFFTPoGeu/x1BpKe6mHQy01
-	 AmKLmZSUjwgcBnTCAEKadEd2Hiu3xpA7j/IgjBTSXrnAVJurBC5EY2DqfMsRgyvgtV
-	 6w38lghLGPpqevqT9cFkz3CWzmRfP1rswdcycsBw=
+	b=xu4ikFQAeRBwrUFnYG/v+SXYemeOC8boB+qTqgXcJ4boPZHEm/1bi9auaOBBsDMEQ
+	 FSr1uAoNlJcio+3zrNUeMzZLl3m69HhqcGJdILR/gRu50YQSn2J89ziILbEm+4/HQz
+	 0fsPXewMJCkaXekTQKQx/zRuZTyF+CVYP92sobS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Vollrath <tactii@gmail.com>,
-	Avigail Dahan <avigailx.dahan@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 324/508] e1000e: Unroll PTP in probe error handling
+	Nicholas Carlini <nicholas@carlini.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 7.0 1097/1146] io-wq: check that the predecessor is hashed in io_wq_remove_pending()
 Date: Wed, 20 May 2026 18:22:27 +0200
-Message-ID: <20260520162105.655376068@linuxfoundation.org>
+Message-ID: <20260520162213.069088714@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,75 +67,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253171-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251189-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email]
-X-Rspamd-Queue-Id: 7EB5F597D3C
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,kernel.dk:email]
+X-Rspamd-Queue-Id: 19785593B36
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Vollrath <tactii@gmail.com>
+From: Nicholas Carlini <nicholas@carlini.com>
 
-[ Upstream commit aa3f7fe409350857c25d050482a2eef2cfd69b58 ]
+commit d6a2d7b04b5a093021a7a0e2e69e9d5237dfa8cc upstream.
 
-If probe fails after registering the PTP clock and its delayed work,
-these resources must be released.
+io_wq_remove_pending() needs to fix up wq->hash_tail[] if the cancelled
+work was the tail of its hash bucket. When doing this, it checks whether
+the preceding entry in acct->work_list has the same hash value, but
+never checks that the predecessor is hashed at all. io_get_work_hash()
+is simply atomic_read(&work->flags) >> IO_WQ_HASH_SHIFT, and the hash
+bits are never set for non-hashed work, so it returns 0. Thus, when a
+hashed bucket-0 work is cancelled while a non-hashed work is its list
+predecessor, the check spuriously passes and a pointer to the non-hashed
+io_kiocb is stored in wq->hash_tail[0].
 
-This was not an issue until a 2016 fix moved the e1000e_ptp_init() call
-before the jump to err_register.
+Because non-hashed work is dequeued via the fast path in
+io_get_next_work(), which never touches hash_tail[], the stale pointer
+is never cleared. Therefore, after the non-hashed io_kiocb completes and
+is freed back to req_cachep, wq->hash_tail[0] is a dangling pointer. The
+io_wq is per-task (tctx->io_wq) and survives ring open/close, so the
+dangling pointer persists for the lifetime of the task; the next hashed
+bucket-0 enqueue dereferences it in io_wq_insert_work() and
+wq_list_add_after() writes through freed memory.
 
-Fixes: aa524b66c5ef ("e1000e: don't modify SYSTIM registers during SIOCSHWTSTAMP ioctl")
-Signed-off-by: Matt Vollrath <tactii@gmail.com>
-Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260416-iwl-net-submission-2026-04-14-v2-12-686c33c9828d@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add the missing io_wq_is_hashed() check so a non-hashed predecessor
+never inherits a hash_tail[] slot.
+
+Cc: stable@vger.kernel.org
+Fixes: 204361a77f40 ("io-wq: fix hang after cancelling pending hashed work")
+Signed-off-by: Nicholas Carlini <nicholas@carlini.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/e1000e/netdev.c | 1 +
- 1 file changed, 1 insertion(+)
+ io_uring/io-wq.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-index 9e9138ccac421..3b1d142ebf276 100644
---- a/drivers/net/ethernet/intel/e1000e/netdev.c
-+++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-@@ -7700,6 +7700,7 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- err_register:
- 	if (!(adapter->flags & FLAG_HAS_AMT))
- 		e1000e_release_hw_control(adapter);
-+	e1000e_ptp_remove(adapter);
- err_eeprom:
- 	if (hw->phy.ops.check_reset_block && !hw->phy.ops.check_reset_block(hw))
- 		e1000_phy_hw_reset(&adapter->hw);
--- 
-2.53.0
-
+--- a/io_uring/io-wq.c
++++ b/io_uring/io-wq.c
+@@ -1124,7 +1124,8 @@ static inline void io_wq_remove_pending(
+ 	if (io_wq_is_hashed(work) && work == wq->hash_tail[hash]) {
+ 		if (prev)
+ 			prev_work = container_of(prev, struct io_wq_work, list);
+-		if (prev_work && io_get_work_hash(prev_work) == hash)
++		if (prev_work && io_wq_is_hashed(prev_work) &&
++		    io_get_work_hash(prev_work) == hash)
+ 			wq->hash_tail[hash] = prev_work;
+ 		else
+ 			wq->hash_tail[hash] = NULL;
 
 
 
