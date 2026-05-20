@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-252623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251970-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mKAdInv8DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-252623-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:59 +0200
+	id eLS5KLsgDmqj6QUAu9opvQ
+	(envelope-from <stable+bounces-251970-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:59:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 046C059610E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3900859A5C3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:59:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7585B307C4F9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:19:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 47306355AECE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:50:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 289963FB7FC;
-	Wed, 20 May 2026 18:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E13523F1AB8;
+	Wed, 20 May 2026 17:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1YEVuK2R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b+yoinMQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA26D3E123F;
-	Wed, 20 May 2026 18:19:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA352F363F;
+	Wed, 20 May 2026 17:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301160; cv=none; b=NIAdoL7Q6jdbzkN9p0xzyDdX8WqNUy51cABeLmFpEe/cJuOCLXKdzrFfB8BL8qpYBtxp7XLcCalaTL5NAGWWTHS4e7D/et2WiNQhN6KL+kUoJM/C4ew3q1AHHHwsSrJAPewGCUgWkwn5cTggWFWCF/80UEJNcJ/Zz84Fho2AUvw=
+	t=1779299404; cv=none; b=kajd1KDMrB13CCGVmZO/n6z9EIM5KJgBUJxdXNyw3Spe5Gw3MOY6kEfURslX266QiZGMT6VjSKypqFWDVX/yRuUqSdOJTuVigXdb+aD+sZhyXs1NYiVfDDFV/qY/J6YA7gOD/IU6ruN9UPOeGm5s7EIcfVyYUkYUKoJzoyYyuj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301160; c=relaxed/simple;
-	bh=2+LjpUsJkjcNe2YX067Z+ofMOlyMeNF2z+qrd3GcSOM=;
+	s=arc-20240116; t=1779299404; c=relaxed/simple;
+	bh=SeRpk0Z4IPvnCd9bem2FMWBsAqvXsM1sZtw1PoYHv9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l1FwSEsDq8ucgwyuQqbmTtKiiBhchec4ZdwEHVi8EYn41xFVuzotFmK8w+zMt8QJpbMBjvvAIXIyZS+BaLN6z3D5AcbupnX9x5gqX0/B0kRPlyHlidiJeut09ps3ARyYUND/2mNiHcc4u731PPO5Q/tVempa1LwEWRfRKkghnio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1YEVuK2R; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3566B1F000E9;
-	Wed, 20 May 2026 18:19:19 +0000 (UTC)
+	 MIME-Version; b=rBfmbvrHRGWIguESByBlcISlyu0gSw2lypbTZwB6fT8Q6/wF3yIeQa0hw47ZU1BZ3muZ73SXlL8R9ZbeFoId/+3F2bvTf1Vfd6ptHea9oyHplYD0YrHknPhvfy5IabZt4cB3fLokQs3/1hoh2av6WhA+BRNJHmN0E+GlRucBClM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b+yoinMQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A873A1F000E9;
+	Wed, 20 May 2026 17:50:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301159;
-	bh=MixuNpONV3Z/Ayw+h64YLLvnDlHzkYnu1s3ojimKIw0=;
+	s=korg; t=1779299403;
+	bh=TKqEahbXYTAFFjYfAv06mjgDhbzGRHRQP5KO2qpcBhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1YEVuK2RJ3cpmt+ffYYU74Bk8hKYGECIoL0osqDd0GetwrU3fo9nUIyu0IaXgrV07
-	 L9vWU8aS2dTpJh9VOId3IORWJC656gFgipe/8yaz4hBZBvZk9FrPz4vTibWbqX/nst
-	 gBu8jhPHR9LRvFlwfpqUr9egu8FgHcfnGk/JiCAA=
+	b=b+yoinMQS/50OwM3K5e0W16SC8tblHCpkKcvTyZKboPcwXpOHylOMPpm9H7iVyf7s
+	 DWBRSP0s/DzYUex1JXLwoYsa6pjz+U3FUcFapbqGnKHUbGfgxpQwczUQAw7FwO1ESz
+	 BtIIUn/fMNjymhlW/Lyak9GteyZB/r7npdnR+0fQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Wentao Guan <guanwentao@uniontech.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 432/666] erofs: unify lcn as u64 for 32-bit platforms
+Subject: [PATCH 6.18 760/957] arm64/scs: Fix potential sign extension issue of advance_loc4
 Date: Wed, 20 May 2026 18:20:43 +0200
-Message-ID: <20260520162120.635142010@linuxfoundation.org>
+Message-ID: <20260520162151.045854520@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,146 +66,79 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251970-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252623-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,alibaba.com:email,sashiko.dev:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 046C059610E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,arm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,godbolt.org:url]
+X-Rspamd-Queue-Id: 3900859A5C3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Wentao Guan <guanwentao@uniontech.com>
 
-[ Upstream commit 2d8c7edcb661812249469f4a5b62e9339118846f ]
+[ Upstream commit 4023b7424ecd5d38cc75b650d6c1bf630ef8cb40 ]
 
-As sashiko reported [1], `lcn` was typed as `unsigned long` (or
-`unsigned int` sometimes), which is only 32 bits wide on 32-bit
-platforms, which causes `(lcn << lclusterbits)` to be truncated
-at 4 GiB.
+The expression (*opcode++ << 24) and exp * code_alignment_factor
+may overflow signed int and becomes negative.
 
-In order to consolidate the logic, just use `u64` consistently
-around the codebase.
+Fix this by casting each byte to u64 before shifting. Also fix
+the misaligned break statement while we are here.
 
-[1] https://sashiko.dev/r/20260420034612.1899973-1-hsiangkao%40linux.alibaba.com
+Example of the result can be seen here:
+Link: https://godbolt.org/z/zhY8d3595
 
-Fixes: 152a333a5895 ("staging: erofs: add compacted compression indexes support")
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+It maybe not a real problem, but could be a issue in future.
+
+Fixes: d499e9627d70 ("arm64/scs: Fix handling of advance_loc4")
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/zmap.c | 19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+ arch/arm64/kernel/pi/patch-scs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/erofs/zmap.c b/fs/erofs/zmap.c
-index d0371ca374ce2..af1046908c626 100644
---- a/fs/erofs/zmap.c
-+++ b/fs/erofs/zmap.c
-@@ -10,7 +10,7 @@
- struct z_erofs_maprecorder {
- 	struct inode *inode;
- 	struct erofs_map_blocks *map;
--	unsigned long lcn;
-+	u64 lcn;
- 	/* compression extent information gathered */
- 	u8  type, headtype;
- 	u16 clusterofs;
-@@ -20,8 +20,7 @@ struct z_erofs_maprecorder {
- 	bool partialref;
- };
+diff --git a/arch/arm64/kernel/pi/patch-scs.c b/arch/arm64/kernel/pi/patch-scs.c
+index dac568e4a54f2..3944ad899021c 100644
+--- a/arch/arm64/kernel/pi/patch-scs.c
++++ b/arch/arm64/kernel/pi/patch-scs.c
+@@ -196,9 +196,9 @@ static int scs_handle_fde_frame(const struct eh_frame *frame,
+ 			loc += *opcode++ * code_alignment_factor;
+ 			loc += (*opcode++ << 8) * code_alignment_factor;
+ 			loc += (*opcode++ << 16) * code_alignment_factor;
+-			loc += (*opcode++ << 24) * code_alignment_factor;
++			loc += ((u64)*opcode++ << 24) * code_alignment_factor;
+ 			size -= 4;
+-		break;
++			break;
  
--static int z_erofs_load_full_lcluster(struct z_erofs_maprecorder *m,
--				      unsigned long lcn)
-+static int z_erofs_load_full_lcluster(struct z_erofs_maprecorder *m, u64 lcn)
- {
- 	struct inode *const inode = m->inode;
- 	struct erofs_inode *const vi = EROFS_I(inode);
-@@ -94,7 +93,7 @@ static int get_compacted_la_distance(unsigned int lobits,
- }
- 
- static int z_erofs_load_compact_lcluster(struct z_erofs_maprecorder *m,
--					 unsigned long lcn, bool lookahead)
-+					 u64 lcn, bool lookahead)
- {
- 	struct inode *const inode = m->inode;
- 	struct erofs_inode *const vi = EROFS_I(inode);
-@@ -234,7 +233,7 @@ static int z_erofs_load_compact_lcluster(struct z_erofs_maprecorder *m,
- }
- 
- static int z_erofs_load_lcluster_from_disk(struct z_erofs_maprecorder *m,
--					   unsigned int lcn, bool lookahead)
-+					   u64 lcn, bool lookahead)
- {
- 	struct erofs_inode *vi = EROFS_I(m->inode);
- 	int err;
-@@ -249,7 +248,7 @@ static int z_erofs_load_lcluster_from_disk(struct z_erofs_maprecorder *m,
- 		return err;
- 
- 	if (m->type >= Z_EROFS_LCLUSTER_TYPE_MAX) {
--		erofs_err(m->inode->i_sb, "unknown type %u @ lcn %u of nid %llu",
-+		erofs_err(m->inode->i_sb, "unknown type %u @ lcn %llu of nid %llu",
- 			  m->type, lcn, EROFS_I(m->inode)->nid);
- 		DBG_BUGON(1);
- 		return -EOPNOTSUPP;
-@@ -269,7 +268,7 @@ static int z_erofs_extent_lookback(struct z_erofs_maprecorder *m,
- 	const unsigned int lclusterbits = vi->z_lclusterbits;
- 
- 	while (m->lcn >= lookback_distance) {
--		unsigned long lcn = m->lcn - lookback_distance;
-+		u64 lcn = m->lcn - lookback_distance;
- 		int err;
- 
- 		err = z_erofs_load_lcluster_from_disk(m, lcn, false);
-@@ -287,7 +286,7 @@ static int z_erofs_extent_lookback(struct z_erofs_maprecorder *m,
- 			return 0;
- 		}
- 	}
--	erofs_err(sb, "bogus lookback distance %u @ lcn %lu of nid %llu",
-+	erofs_err(sb, "bogus lookback distance %u @ lcn %llu of nid %llu",
- 		  lookback_distance, m->lcn, vi->nid);
- 	DBG_BUGON(1);
- 	return -EFSCORRUPTED;
-@@ -301,7 +300,7 @@ static int z_erofs_get_extent_compressedlen(struct z_erofs_maprecorder *m,
- 	struct erofs_inode *vi = EROFS_I(inode);
- 	bool bigpcl1 = vi->z_advise & Z_EROFS_ADVISE_BIG_PCLUSTER_1;
- 	bool bigpcl2 = vi->z_advise & Z_EROFS_ADVISE_BIG_PCLUSTER_2;
--	unsigned long lcn = m->lcn + 1;
-+	u64 lcn = m->lcn + 1;
- 	int err;
- 
- 	DBG_BUGON(m->type == Z_EROFS_LCLUSTER_TYPE_NONHEAD);
-@@ -332,7 +331,7 @@ static int z_erofs_get_extent_compressedlen(struct z_erofs_maprecorder *m,
- 		  m->type == Z_EROFS_LCLUSTER_TYPE_NONHEAD);
- 
- 	if (m->type == Z_EROFS_LCLUSTER_TYPE_NONHEAD && m->delta[0] != 1) {
--		erofs_err(sb, "bogus CBLKCNT @ lcn %lu of nid %llu", lcn, vi->nid);
-+		erofs_err(sb, "bogus CBLKCNT @ lcn %llu of nid %llu", lcn, vi->nid);
- 		DBG_BUGON(1);
- 		return -EFSCORRUPTED;
- 	}
+ 		case DW_CFA_def_cfa:
+ 		case DW_CFA_offset_extended:
 -- 
 2.53.0
 
