@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-251150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252715-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8CXeBmHyDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-251150-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:53 +0200
+	id 6BZZAmT9DWok5QUAu9opvQ
+	(envelope-from <stable+bounces-252715-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:28:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD9D959452B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89F2059647E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:28:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7E7553109468
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:14:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DDAB23133647
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:23:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 954B13FA5CC;
-	Wed, 20 May 2026 17:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB79E3FC5AC;
+	Wed, 20 May 2026 18:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1q3FVp4l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wrEPwbsA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470EF3EF0D7;
-	Wed, 20 May 2026 17:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E9A3F9280;
+	Wed, 20 May 2026 18:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297229; cv=none; b=Uf3uvLhZsIfqRIV1A8g7ZlKgcW1ZN0GYbxNIOpCmTvwE5IU6Ah63t15b3Zaz6xhvoUVBnnODwF5+eOuIlXXKDgTogDdHrXA9yfRGqT+jGXmBztco6WA8RzwbNXBqU8yjzpmIIF/6T6T/cZX6Ob+PmqRNc9f7LfVmAMcOGZrnaNc=
+	t=1779301400; cv=none; b=UiKZcBl2U43FouIOzuEsapQOARsN1kM78hK7cRdC/nbJ8DpavlG5G/IXrAnBK7EHuwXh1hjfETIzFqxoS1lpIQg7o9NlA1n9hIDo2AeVgfySEO0jgJlaFtspTkodgwy+vo/KZkA0Fb9q0Mc0KwjifofDfxSBOynUlFZBuVh9MMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297229; c=relaxed/simple;
-	bh=ZufGhK4s+kfTNjdx6FzUPujytNQY7cuWYisG2GACvW0=;
+	s=arc-20240116; t=1779301400; c=relaxed/simple;
+	bh=LkiwubjZBuWsuldSWwkY5lh/bquiQUa64feMgsMRxe4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aViugArZzkT+K5W+SBfHPpQSL2Bau+tCBYGROwJhjJHbM1uwUSTC7rZ8pQTQXgtpfM11EY6ZWy4YFeXp9AWwmRJVtgYLVDyQktju+sXaeI5F2JevyiL112R116Cc6J2aAumbqugsfuEvTdQNiGcXR/1ChZSj5r2jvUnxLwml37A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1q3FVp4l; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A771F000E9;
-	Wed, 20 May 2026 17:13:47 +0000 (UTC)
+	 MIME-Version; b=YlaRGQMuktC6G/oMxFzya6gAiuVFBLH+SQvVuPVtvmf8FxbyDA2Z9v6Af9c7xt2JUl51nGrFx1A8o6JasP+mmij/0FbreL5kkI3C8iUlllQRWh35myDo6iAI3eAdSQO3XZMjAHNB3tzoxeTPASjea+Mj8p2hLqO1+1v/e+o7rtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wrEPwbsA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A96451F00896;
+	Wed, 20 May 2026 18:23:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297228;
-	bh=rZZ0ku0+JX48NY5MSp0YOvJIDiYvFxpYwsCM+VqyV/k=;
+	s=korg; t=1779301399;
+	bh=lqIMXylv0RZljaWiPZpPppYFWARmDyfOG5UBU7OzWPc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1q3FVp4lKE4AMSuT8jw7HDbvkD4wDKgJuOdWJfItKJvstBuTK9Bxvn/hJlRkgDhrG
-	 cpLG3YpjrDbM5G6sfSrP43s+8eiBy35xIDFHGbuQsU4ROrb42pdXXAqFY9m7eADr/D
-	 /XMzUJpn1aP/09qzF0oxa89y42vE3K6aWrbU/Op4=
+	b=wrEPwbsATIm0jgIN6+lzXde5YkPtGh2bjDpRYgWxNCWXNgR+sG4irYgZu9Kfq2t/m
+	 Vpy/5iebPcDKNthIx8si6ie3oDon8lEOgsW5+bvgbDd/mR4+CY/Mt5zjJJfKw0DQpr
+	 U6ssQxWWmxLx4l9rqcLSGNndn6xr+YM68WDpq5W8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Carlos Maiolino <cmaiolino@redhat.com>,
-	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
-	Hans Holmberg <hans.holmberg@wdc.com>,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>
-Subject: [PATCH 7.0 1100/1146] xfs: fix memory leak on error in xfs_alloc_zone_info()
-Date: Wed, 20 May 2026 18:22:30 +0200
-Message-ID: <20260520162213.137431815@linuxfoundation.org>
+	syzbot+3f46c095ac0ca048cb71@syzkaller.appspotmail.com,
+	Andrew Lunn <andrew@lunn.ch>,
+	Zhan Jun <zhanjun@uniontech.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 540/666] net: usb: rtl8150: fix use-after-free in rtl8150_start_xmit()
+Date: Wed, 20 May 2026 18:22:31 +0200
+Message-ID: <20260520162122.974660155@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,75 +66,126 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-252715-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251150-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,lst.de:email]
-X-Rspamd-Queue-Id: BD9D959452B
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,3f46c095ac0ca048cb71];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,lunn.ch:email,syzkaller.appspot.com:url,appspotmail.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,uniontech.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 89F2059647E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+From: Zhan Jun <zhanjun@uniontech.com>
 
-commit 592975da8c3ca87b043077e6eafa37665eae7936 upstream.
+[ Upstream commit 23f0e34c64acba15cad4d23e50f41f533da195fa ]
 
-Currently, the 0th index of the zi_used_bucket_bitmap array is not freed
-on error due to the pre-decrement then evaluate semantic of the while
-loop used in xfs_alloc_zone_info(). Fix it by allowing for the i == 0
-case to be covered.
+syzbot reported a KASAN slab-use-after-free read in rtl8150_start_xmit()
+when accessing skb->len for tx statistics after usb_submit_urb() has
+been called:
 
-Fixes: 080d01c41d44 ("xfs: implement zoned garbage collection")
-Cc: stable@vger.kernel.org # v6.15
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
-Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
-Reviewed-by: Hans Holmberg <hans.holmberg@wdc.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  BUG: KASAN: slab-use-after-free in rtl8150_start_xmit+0x71f/0x760
+    drivers/net/usb/rtl8150.c:712
+  Read of size 4 at addr ffff88810eb7a930 by task kworker/0:4/5226
+
+The URB completion handler write_bulk_callback() frees the skb via
+dev_kfree_skb_irq(dev->tx_skb). The URB may complete on another CPU
+in softirq context before usb_submit_urb() returns in the submitter,
+so by the time the submitter reads skb->len the skb has already been
+queued to the per-CPU completion_queue and freed by net_tx_action():
+
+  CPU A (xmit)                      CPU B (USB completion softirq)
+  ------------                      ------------------------------
+  dev->tx_skb = skb;
+  usb_submit_urb()      --+
+                          |-------> write_bulk_callback()
+                          |           dev_kfree_skb_irq(dev->tx_skb)
+                          |         net_tx_action()
+                          |           napi_skb_cache_put()   <-- free
+  netdev->stats.tx_bytes  |
+    += skb->len;          <-- UAF read
+
+Fix it by caching skb->len before submitting the URB and using the
+cached value when updating the tx_bytes counter.
+
+The pre-existing tx_bytes semantics are preserved: the counter tracks
+the original frame length (skb->len), not the ETH_ZLEN/USB-alignment
+padded "count" value that is handed to the device.  Changing that
+would be a user-visible accounting change and is out of scope for
+this UAF fix.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+3f46c095ac0ca048cb71@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/69e69ee7.050a0220.24bfd3.002b.GAE@google.com/
+Closes: https://syzkaller.appspot.com/bug?extid=3f46c095ac0ca048cb71
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Zhan Jun <zhanjun@uniontech.com>
+Link: https://patch.msgid.link/809895186B866C10+20260423004913.136655-1-zhangdandan@uniontech.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_zone_alloc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/rtl8150.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/fs/xfs/xfs_zone_alloc.c
-+++ b/fs/xfs/xfs_zone_alloc.c
-@@ -1214,7 +1214,7 @@ xfs_alloc_zone_info(
- 	return zi;
+diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
+index e40b0669d9f4b..8700ae392b10a 100644
+--- a/drivers/net/usb/rtl8150.c
++++ b/drivers/net/usb/rtl8150.c
+@@ -685,6 +685,7 @@ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
+ 					    struct net_device *netdev)
+ {
+ 	rtl8150_t *dev = netdev_priv(netdev);
++	unsigned int skb_len;
+ 	int count, res;
  
- out_free_bitmaps:
--	while (--i > 0)
-+	while (--i >= 0)
- 		kvfree(zi->zi_used_bucket_bitmap[i]);
- 	kfree(zi);
- 	return NULL;
+ 	/* pad the frame and ensure terminating USB packet, datasheet 9.2.3 */
+@@ -696,6 +697,8 @@ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
+ 		return NETDEV_TX_OK;
+ 	}
+ 
++	skb_len = skb->len;
++
+ 	netif_stop_queue(netdev);
+ 	dev->tx_skb = skb;
+ 	usb_fill_bulk_urb(dev->tx_urb, dev->udev, usb_sndbulkpipe(dev->udev, 2),
+@@ -711,7 +714,7 @@ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
+ 		}
+ 	} else {
+ 		netdev->stats.tx_packets++;
+-		netdev->stats.tx_bytes += skb->len;
++		netdev->stats.tx_bytes += skb_len;
+ 		netif_trans_update(netdev);
+ 	}
+ 
+-- 
+2.53.0
+
 
 
 
