@@ -1,59 +1,77 @@
-Return-Path: <stable+bounces-250914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252521-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kBlxEoDqDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250914-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:08:16 +0200
+	id CHoJLn77DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-252521-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:20:46 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4E07592F7A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:08:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36FF1595D9F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:20:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 648673079D5C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:04:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 37FF03106943
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D68C63E277C;
-	Wed, 20 May 2026 17:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC5F3F789B;
+	Wed, 20 May 2026 18:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SzR+AvCS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IeR9gkii"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87BC034B40F;
-	Wed, 20 May 2026 17:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78023EAC82;
+	Wed, 20 May 2026 18:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296636; cv=none; b=VewKEAPx6dLEIfL52HJ0f7kHYZ5KMVBzk3G6gwG2u9XrGdrEYAOBUUvg7Hhq0LD9ZnW9RDI6T2uImQS4QLs35UKZPdc71HvSsrTDcUIDEpmjMFBA7YY6ziU9QNXvqNn4pvlGPf7X7oRg9eWDEyAKcVOhQTo+8/KfqjZ+H8Eazvw=
+	t=1779300891; cv=none; b=jNPvrwjF7aFr+fqawvmy/kK++CnYVB+rwpkAvMarbFNPI9+T8vsFHwqwHPJjK8DOiC8GpkAUALpABvvm50azo5UQF+BJq6/rttvEYBnuuKa1NzMavkY2k7D/CBm03UKFdZocv0+fwWrhnwuR8px4/CCfeKu2IsZpUW+2taL89XE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296636; c=relaxed/simple;
-	bh=ZXpfTtNtsh/PX4jDDMUQP/535Uh+97LQsJKx51JwhDg=;
+	s=arc-20240116; t=1779300891; c=relaxed/simple;
+	bh=UO4HBjaRzRF83C+l6Ehwn6p2G06IYbvbx4ydyw4ciAw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XbiNWpy/XxCs2+DZUmyxKc1HG904X3CmgMhsrzmO9AGPB36XqkEkvvqvf6C5gpiXSR7NIw89G2Yx0YFQCKaF0qz6iJCHSpZzoc5ZpCRVqBpT6YLxIXw+ZRefdu7KclSNJfCOoRBwP5WliipbuYTMldSusC6GGuGl0OG/13Sh9kE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SzR+AvCS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED7811F000E9;
-	Wed, 20 May 2026 17:03:54 +0000 (UTC)
+	 MIME-Version; b=eA0x6wQphOpQ24l8bBx5zSN/t/dp1x4izJqRs4LkWpN+23Q6wRCE+Xd/U2KzFkcovHPEH0btDXTfGrn3KiPbNT7wB1vGFaOXGVJiqJkmN2AlNdZJaVzt+4+fjxw/HznSYW4NOKkpaj/Rg1+kn0QUypiAhoFr4HFti/WmIA8+zOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IeR9gkii; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2A071F000E9;
+	Wed, 20 May 2026 18:14:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296635;
-	bh=4/Gyxp9fGQ+pkWYEpPqMFVhdwzqpDf8tjjt3iLUclns=;
+	s=korg; t=1779300890;
+	bh=vx3qJtWiWSYMRlrbtNi+jpgQ5lDyao/FJ6/mSaQNvV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SzR+AvCSgmBkqhQXIwWXUDIJNjez/9hkBp4xG6Ow5TBE4po5UBOsdcRWdllPjt+5t
-	 a8ipPKfelED4kjP6+I0jG/8GPJGL7MPR9yrJELLZNs/DCCE8gnLlBqsyLnYfa/2tCo
-	 TAQPW4xQbGLbNuOM0AbgVLGBLs+JTlioJY1OZg0c=
+	b=IeR9gkiiwMqA+LW4AZu85nnL6/Iid2Hj+Li7DdyGBJrm0sZ+LJkVf9LJriN/FyzxG
+	 lRyjdXsDDpwoupUrw46KE/GqxVjw/0QetdnXDIiTyhMY3fWVq3fZS7ZoaWPDr9Fp6k
+	 K7i4D5i0iMnA8yH4ya+fPNp4QKDPZBZW8hqRefTE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaeyoung Chung <jjy600901@snu.ac.kr>,
-	"Christian Brauner (Amutable)" <brauner@kernel.org>,
+	Michal Grzedzicki <mge@meta.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Alexey Gladkov (Intel)" <legion@kernel.org>,
+	Ben Segall <bsegall@google.com>,
+	David Hildenbrand <david@kernel.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Kees Cook <kees@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Mel Gorman <mgorman@suse.de>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0867/1146] eventpoll: fix ep_remove struct eventpoll / struct file UAF
+Subject: [PATCH 6.12 306/666] unshare: fix nsproxy leak in ksys_unshare() on set_cred_ucounts() failure
 Date: Wed, 20 May 2026 18:18:37 +0200
-Message-ID: <20260520162207.859517355@linuxfoundation.org>
+Message-ID: <20260520162117.853261730@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,8 +96,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250914-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252521-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[24];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -87,109 +105,100 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,snu.ac.kr:email,msgid.link:url]
-X-Rspamd-Queue-Id: B4E07592F7A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 36FF1595D9F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Michal Grzedzicki <mge@meta.com>
 
-[ Upstream commit a6dc643c69311677c574a0f17a3f4d66a5f3744b ]
+[ Upstream commit a98621a0f187a934c115dcfe79a49520ae892111 ]
 
-ep_remove() (via ep_remove_file()) cleared file->f_ep under
-file->f_lock but then kept using @file inside the critical section
-(is_file_epoll(), hlist_del_rcu() through the head, spin_unlock).
-A concurrent __fput() taking the eventpoll_release() fastpath in
-that window observed the transient NULL, skipped
-eventpoll_release_file() and ran to f_op->release / file_free().
+When set_cred_ucounts() fails in ksys_unshare() new_nsproxy is leaked.
 
-For the epoll-watches-epoll case, f_op->release is
-ep_eventpoll_release() -> ep_clear_and_put() -> ep_free(), which
-kfree()s the watched struct eventpoll. Its embedded ->refs
-hlist_head is exactly where epi->fllink.pprev points, so the
-subsequent hlist_del_rcu()'s "*pprev = next" scribbles into freed
-kmalloc-192 memory.
+Let's call put_nsproxy() if that happens.
 
-In addition, struct file is SLAB_TYPESAFE_BY_RCU, so the slot
-backing @file could be recycled by alloc_empty_file() --
-reinitializing f_lock and f_ep -- while ep_remove() is still
-nominally inside that lock. The upshot is an attacker-controllable
-kmem_cache_free() against the wrong slab cache.
-
-Pin @file via epi_fget() at the top of ep_remove() and gate the
-critical section on the pin succeeding. With the pin held @file
-cannot reach refcount zero, which holds __fput() off and
-transitively keeps the watched struct eventpoll alive across the
-hlist_del_rcu() and the f_lock use, closing both UAFs.
-
-If the pin fails @file has already reached refcount zero and its
-__fput() is in flight. Because we bailed before clearing f_ep,
-that path takes the eventpoll_release() slow path into
-eventpoll_release_file() and blocks on ep->mtx until the waiter
-side's ep_clear_and_put() drops it. The bailed epi's share of
-ep->refcount stays intact, so the trailing ep_refcount_dec_and_test()
-in ep_clear_and_put() cannot free the eventpoll out from under
-eventpoll_release_file(); the orphaned epi is then cleaned up
-there.
-
-A successful pin also proves we are not racing
-eventpoll_release_file() on this epi, so drop the now-redundant
-re-check of epi->dying under f_lock. The cheap lockless
-READ_ONCE(epi->dying) fast-path bailout stays.
-
-Fixes: 58c9b016e128 ("epoll: use refcount to reduce ep_mutex contention")
-Reported-by: Jaeyoung Chung <jjy600901@snu.ac.kr>
-Link: https://patch.msgid.link/20260423-work-epoll-uaf-v1-6-2470f9eec0f5@kernel.org
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Link: https://lkml.kernel.org/r/20260213193959.2556730-1-mge@meta.com
+Fixes: 905ae01c4ae2 ("Add a reference to ucounts for each cred")
+Signed-off-by: Michal Grzedzicki <mge@meta.com>
+Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: Alexey Gladkov (Intel) <legion@kernel.org>
+Cc: Ben Segall <bsegall@google.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Juri Lelli <juri.lelli@redhat.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Valentin Schneider <vschneid@redhat.com>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/eventpoll.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ kernel/fork.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-index 4971074ab476a..8c03de028c482 100644
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -912,22 +912,26 @@ static bool ep_remove_epi(struct eventpoll *ep, struct epitem *epi)
-  */
- static void ep_remove_safe(struct eventpoll *ep, struct epitem *epi)
- {
--	struct file *file = epi->ffd.file;
-+	struct file *file __free(fput) = NULL;
+diff --git a/kernel/fork.c b/kernel/fork.c
+index c6415bb0abf59..c4955cffcb6f4 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -3348,11 +3348,10 @@ int ksys_unshare(unsigned long unshare_flags)
+ 					 new_cred, new_fs);
+ 	if (err)
+ 		goto bad_unshare_cleanup_cred;
+-
+ 	if (new_cred) {
+ 		err = set_cred_ucounts(new_cred);
+ 		if (err)
+-			goto bad_unshare_cleanup_cred;
++			goto bad_unshare_cleanup_nsproxy;
+ 	}
  
- 	lockdep_assert_irqs_enabled();
- 	lockdep_assert_held(&ep->mtx);
+ 	if (new_fs || new_fd || do_sysvsem || new_cred || new_nsproxy) {
+@@ -3368,8 +3367,10 @@ int ksys_unshare(unsigned long unshare_flags)
+ 			shm_init_task(current);
+ 		}
  
- 	ep_unregister_pollwait(ep, epi);
+-		if (new_nsproxy)
++		if (new_nsproxy) {
+ 			switch_task_namespaces(current, new_nsproxy);
++			new_nsproxy = NULL;
++		}
  
--	/* sync with eventpoll_release_file() */
-+	/* cheap sync with eventpoll_release_file() */
- 	if (unlikely(READ_ONCE(epi->dying)))
- 		return;
+ 		task_lock(current);
  
--	spin_lock(&file->f_lock);
--	if (epi->dying) {
--		spin_unlock(&file->f_lock);
-+	/*
-+	 * If we manage to grab a reference it means we're not in
-+	 * eventpoll_release_file() and aren't going to be.
-+	 */
-+	file = epi_fget(epi);
-+	if (!file)
- 		return;
--	}
-+
-+	spin_lock(&file->f_lock);
- 	ep_remove_file(ep, epi, file);
+@@ -3398,13 +3399,15 @@ int ksys_unshare(unsigned long unshare_flags)
  
- 	if (ep_remove_epi(ep, epi))
+ 	perf_event_namespaces(current);
+ 
++bad_unshare_cleanup_nsproxy:
++	if (new_nsproxy)
++		put_nsproxy(new_nsproxy);
+ bad_unshare_cleanup_cred:
+ 	if (new_cred)
+ 		put_cred(new_cred);
+ bad_unshare_cleanup_fd:
+ 	if (new_fd)
+ 		put_files_struct(new_fd);
+-
+ bad_unshare_cleanup_fs:
+ 	if (new_fs)
+ 		free_fs_struct(new_fs);
 -- 
 2.53.0
 
