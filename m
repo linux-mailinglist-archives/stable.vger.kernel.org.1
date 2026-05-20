@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-250354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251290-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id s9MXHx4PDmrc5wUAu9opvQ
-	(envelope-from <stable+bounces-250354-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:44:30 +0200
+	id UMdcNmzzDWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251290-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:46:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0731A598AFB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:44:29 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6821259482C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:46:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 71EAE31D92D5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:39:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 44F8E316BECD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:20:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CCE32F0C62;
-	Wed, 20 May 2026 16:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E4A63D75DA;
+	Wed, 20 May 2026 17:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w3+IisQO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l6YjwE+s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 016BB221F2F;
-	Wed, 20 May 2026 16:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C42A3D6CB5;
+	Wed, 20 May 2026 17:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295194; cv=none; b=uf/eG0JaKMIEtl2elSQTP7PsjsSlp4YCdWCFnu+HdBV1yXJDsP4SauyWFQV/P9zwR59TfeNe82svJCVPptROEmCmMusslr5qb48sQ5aupNZMXN+fMOrcdRIEIkTh6RkjAyuKU6FdNAKZDkYaJQ4PmEpbO+Hs8ydlr+FgkCAN82w=
+	t=1779297599; cv=none; b=uBn2ywmN0R4P2/UyVf9PuyX0K+1l649PHLq7970hnTQfUa3PRyjT3QqvH117d4GK9LQfiLY2J7jbp9BGzo4E//ea2lF+xeo4yRe3NPL8PCFuNVm4k2QakTMJuKzZR+37lGw+9SvQ/W9/hhjAx/cKQEMo8Xd/J1zqvscR02ZvCwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295194; c=relaxed/simple;
-	bh=EsV8vczmsm7yK1wTYhxa7fXjoT3tz1R8uIq3LQGfY1w=;
+	s=arc-20240116; t=1779297599; c=relaxed/simple;
+	bh=chewGazq+j/jjiWXmRNj5UTrWCETkMM5WuJNHUAWH4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZKgQzBPqOSG71h5pofptWTl6X2MxOPoUtK+hIZzEuRGSTmZoTu35WBPR449g7iDxRb3EanC6T/+U+OYh3g81uYy8IT5TQF0yj76jYG0ej4o/oBahlZ01TQpen9IRKLZrUp9YqG0LKhpYXo3CwzHkdytvXnxavHpan6GzTkdhgrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w3+IisQO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58AFC1F000E9;
-	Wed, 20 May 2026 16:39:52 +0000 (UTC)
+	 MIME-Version; b=FplUwo+f7JtFWi5lxDvRabUlVy9rIRb7ftJDtX3td6LUug9oxZjNRyToiWOShwjUofjpcKk5i9JWazZHYmEWfvhKJTrOUZ/SWK2pyMQHehXIzutFbtTAKqSwlHBfBvxseuKk9Z8MN1t60xJKuNX/pOdstvAlLN5y1klOdAQhz28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l6YjwE+s; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B239B1F000E9;
+	Wed, 20 May 2026 17:19:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295192;
-	bh=XE6ybgrkHFGhxM5R642c+jyHTH5MMmTTf9JjVTZ5deM=;
+	s=korg; t=1779297598;
+	bh=oIvGX3udvmHje5zpZPCFcX5PaoEK3Ms5/0ALbpUMhsc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=w3+IisQOPr5Vj3jf/yJ0zhdxob7DxFk7J0N2E7/qk6lYcVeewofMEIqNHTg8d1Gmn
-	 HRwW+ps0WnCkA5xyzIQoavJdH2XuwbH0rFozYDLj72PJCRuXRP+y90qLooDeiX7bqm
-	 VyB6iuT+Kstnf+TiEooN6qVetPgHdvP1xO1tcaLs=
+	b=l6YjwE+s2oS8OfOY87jgqU+xs55mciOnjTMLPOTG5Q0oTmrlg82W5PcGDDVaU5cLB
+	 ZOiFfXEOGkN/T23Q/Hs1jZmC2kibT17yR8wLqIg6drWe029XrkWnV43MMLycoVvP10
+	 zN5rmPey7P+4ea6hKojNhRMQo5pOcme4Zei/n3nY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhao Mengmeng <zhaomengmeng@kylinos.cn>,
-	Tejun Heo <tj@kernel.org>,
+	Chad Monroe <chad@monroe.io>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0326/1146] tools/sched_ext: scx_pair: fix pair_ctx indexing for CPU pairs
+Subject: [PATCH 6.18 093/957] wifi: mt76: fix deadlock in remain-on-channel
 Date: Wed, 20 May 2026 18:09:36 +0200
-Message-ID: <20260520162155.575394216@linuxfoundation.org>
+Message-ID: <20260520162136.576551670@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,109 +66,99 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250354-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251290-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,kylinos.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 0731A598AFB
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nbd.name:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 6821259482C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
+From: Chad Monroe <chad@monroe.io>
 
-[ Upstream commit f546c77038ab898726e7344255217fbec382b97f ]
+[ Upstream commit 6939b97ddad3cf3dfbb3b5a0a12ef79cb886747e ]
 
-scx_pair sizes pair_ctx to nr_cpu_ids / 2, so valid pair_ctx keys are
-dense pair indexes in the range [0, nr_cpu_ids / 2).
+mt76_remain_on_channel() and mt76_roc_complete() call mt76_set_channel()
+while already holding dev->mutex. Since mt76_set_channel() also acquires
+dev->mutex, this results in a deadlock.
 
-However, the userspace setup code stores pair_id as the first CPU number
-in each pair. On an 8-CPU system with "-S 1", that produces pair IDs
-0, 2, 4 and 6 for pairs [0,1], [2,3], [4,5] and [6,7]. CPUs in the
-latter half then look up pair_ctx with out-of-range keys and the BPF
-scheduler aborts with:
+Use __mt76_set_channel() instead of mt76_set_channel().
+Add cancel_delayed_work_sync() for mac_work before acquiring the mutex
+in mt76_remain_on_channel() to prevent a secondary deadlock with the
+mac_work workqueue.
 
-EXIT: scx_bpf_error (scx_pair.bpf.c:328: failed to lookup pairc and
-in_pair_mask for cpu[5])
-
-Assign pair_id using a dense pair counter instead so that each CPU pair
-maps to a valid pair_ctx entry. Besides, reject odd CPU configuration, as
-scx_pair requires all CPUs to be paired.
-
-Fixes: f0262b102c7c ("tools/sched_ext: add scx_pair scheduler")
-Signed-off-by: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: a8f424c1287c ("wifi: mt76: add multi-radio remain_on_channel functions")
+Signed-off-by: Chad Monroe <chad@monroe.io>
+Link: https://patch.msgid.link/ace737e7b621af7c2adb33b0188011a5c1de2166.1765204256.git.chad@monroe.io
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/sched_ext/scx_pair.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/channel.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/tools/sched_ext/scx_pair.c b/tools/sched_ext/scx_pair.c
-index 2e509391f3dab..eb1bea2dd0ccc 100644
---- a/tools/sched_ext/scx_pair.c
-+++ b/tools/sched_ext/scx_pair.c
-@@ -48,6 +48,7 @@ int main(int argc, char **argv)
- 	struct bpf_link *link;
- 	__u64 seq = 0, ecode;
- 	__s32 stride, i, opt, outer_fd;
-+	__u32 pair_id = 0;
+diff --git a/drivers/net/wireless/mediatek/mt76/channel.c b/drivers/net/wireless/mediatek/mt76/channel.c
+index 130af1b254dbf..eccaee1fd434f 100644
+--- a/drivers/net/wireless/mediatek/mt76/channel.c
++++ b/drivers/net/wireless/mediatek/mt76/channel.c
+@@ -326,7 +326,7 @@ void mt76_roc_complete(struct mt76_phy *phy)
+ 		mlink->mvif->roc_phy = NULL;
+ 	if (phy->main_chandef.chan &&
+ 	    !test_bit(MT76_MCU_RESET, &dev->phy.state))
+-		mt76_set_channel(phy, &phy->main_chandef, false);
++		__mt76_set_channel(phy, &phy->main_chandef, false);
+ 	mt76_put_vif_phy_link(phy, phy->roc_vif, phy->roc_link);
+ 	phy->roc_vif = NULL;
+ 	phy->roc_link = NULL;
+@@ -370,6 +370,8 @@ int mt76_remain_on_channel(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	if (!phy)
+ 		return -EINVAL;
  
- 	libbpf_set_print(libbpf_print_fn);
- 	signal(SIGINT, sigint_handler);
-@@ -82,6 +83,14 @@ int main(int argc, char **argv)
- 		scx_pair__destroy(skel);
- 		return -1;
- 	}
++	cancel_delayed_work_sync(&phy->mac_work);
 +
-+	if (skel->rodata->nr_cpu_ids & 1) {
-+		fprintf(stderr, "scx_pair requires an even CPU count, got %u\n",
-+			skel->rodata->nr_cpu_ids);
-+		scx_pair__destroy(skel);
-+		return -1;
+ 	mutex_lock(&dev->mutex);
+ 
+ 	if (phy->roc_vif || dev->scan.phy == phy ||
+@@ -388,7 +390,14 @@ int mt76_remain_on_channel(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	phy->roc_vif = vif;
+ 	phy->roc_link = mlink;
+ 	cfg80211_chandef_create(&chandef, chan, NL80211_CHAN_HT20);
+-	mt76_set_channel(phy, &chandef, true);
++	ret = __mt76_set_channel(phy, &chandef, true);
++	if (ret) {
++		mlink->mvif->roc_phy = NULL;
++		phy->roc_vif = NULL;
++		phy->roc_link = NULL;
++		mt76_put_vif_phy_link(phy, vif, mlink);
++		goto out;
 +	}
-+
- 	bpf_map__set_max_entries(skel->maps.pair_ctx, skel->rodata->nr_cpu_ids / 2);
- 
- 	/* Resize arrays so their element count is equal to cpu count. */
-@@ -109,10 +118,11 @@ int main(int argc, char **argv)
- 
- 		skel->rodata_pair_cpu->pair_cpu[i] = j;
- 		skel->rodata_pair_cpu->pair_cpu[j] = i;
--		skel->rodata_pair_id->pair_id[i] = i;
--		skel->rodata_pair_id->pair_id[j] = i;
-+		skel->rodata_pair_id->pair_id[i] = pair_id;
-+		skel->rodata_pair_id->pair_id[j] = pair_id;
- 		skel->rodata_in_pair_idx->in_pair_idx[i] = 0;
- 		skel->rodata_in_pair_idx->in_pair_idx[j] = 1;
-+		pair_id++;
- 
- 		printf("[%d, %d] ", i, j);
- 	}
+ 	ieee80211_ready_on_channel(hw);
+ 	ieee80211_queue_delayed_work(phy->hw, &phy->roc_work,
+ 				     msecs_to_jiffies(duration));
 -- 
 2.53.0
 
