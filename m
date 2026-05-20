@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-252190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251534-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GPZwFzkjDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252190-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:10:17 +0200
+	id uBEuDdf4DWqR5AUAu9opvQ
+	(envelope-from <stable+bounces-251534-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:09:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3208159A82C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:10:16 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3692D5956A9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:09:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 80F4B341D47C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:00:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B037E30805D3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:30:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2E92370D54;
-	Wed, 20 May 2026 18:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4F4F3EF0D7;
+	Wed, 20 May 2026 17:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sau6Zfw7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h/KKFtgO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1874F5E0;
-	Wed, 20 May 2026 18:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672E32367DF;
+	Wed, 20 May 2026 17:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300027; cv=none; b=KpgXVs0HTR3SnH+xiRX1CJKNZm4FxHnRpvEd3cb8bAIYD/tfisa8OrZad+wNzCSJsZkucpeVgGKou35f643p/3BJn4vMQSwPZ+mCae0GGz8Pr8HG3blIuJNq7JLjwBqwALcaG+voC6Jpl+T2/vZCtVey2lEqELnMHMObhC/+GJU=
+	t=1779298229; cv=none; b=toPRsayDPNRh3Vpi2ll/zV0EOvwJOFqz4qvQZrO0UK4Z/rJI1M/dEtBd1AuatdFgusrm69SgIM9UE4CG6Vti1EEdCjgJCoA+/D3ljSg393vFnjXDHeXqEcv33GSVyT6Ep1J8KLwENB3LzqJDgGFmGVK1aJsjBATrhBvN76Myebs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300027; c=relaxed/simple;
-	bh=csyydmjjtfSMnTn3p1W0qdCvBI2G7RB3Lv1MPlmr5F8=;
+	s=arc-20240116; t=1779298229; c=relaxed/simple;
+	bh=stkKOk6qLv279aAEoTwkiOJqEMcORMbwtiVTAs/qFLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bZUb16S7pj9mumzRdWSnWiQa75hvbGAzchudYIril/AbdT3j0HjRZ/ZMeziFZwNnCxezb6HhNM92K7+E1vIUyFoeWK8i6DStMVQBNIouTNme+c6MZm5cGqB6rysP1u9MruHEHbUhJZLD6DKU2sWXvRZpaDSA7iQzIhn34U9u9ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sau6Zfw7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE9A11F000E9;
-	Wed, 20 May 2026 18:00:25 +0000 (UTC)
+	 MIME-Version; b=mjrlIzCw0v639+2/B3KX+d/Z4atPuTn6+JQnRT2ERLLsSFbF8c9Dbpd6KaqY/rnRWrGYKto1yBxxqbIvDe6K3gBzkPan4MNZLxeH+8L7OqDTeTF2RKyTQXf4MzPGiqhmzo8IYlIJzmeOZMdtR8lybQ1Tl+vzZ14OwA+ChCs5ehM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h/KKFtgO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB32A1F00894;
+	Wed, 20 May 2026 17:30:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300026;
-	bh=7Pbga9wODyUFuCVR4+s8UQBZU32Egy+IlUK7gXmz7UU=;
+	s=korg; t=1779298228;
+	bh=hsMSOAH/Pcz65yuwja7UsY+hgD3FTcqLDYci7SqZn4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sau6Zfw7u7NoLCdUy55CA/wUc/aqGZrd37FngiA8P0eH/NAyRMtYAJrMo7W3zWH+h
-	 zoqZ89pW7/2w1c/5rLFIhvxRUwhaje09lKW5x5HD5rg5oWmU5AYgq0ODOhi0A1KuH1
-	 EQc4IFeFaXL70VEIs2NvfA5cjwCyhiy2nxSYs6fU=
+	b=h/KKFtgOQLXiH7AxKnNiRTdB/HrZ0IlfvUxAh9OJwrR9Q5rpgQJYnveF3EZQVq0je
+	 +M4PTTwVmf49fj1llogXfakczfdN40uHfqAiLAtXX6yUHmh5j/+lTj5B2dZSfe9UxG
+	 BmuAu+M17TiJCUlwP+Sn9LS8erSf0I3E4OmWPqXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Zhang <yi.zhang@redhat.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	Vidya Sagar <vidyas@nvidia.com>,
+	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 002/666] blk-cgroup: wait for blkcg cleanup before initializing new disk
-Date: Wed, 20 May 2026 18:13:33 +0200
-Message-ID: <20260520162111.282367574@linuxfoundation.org>
+Subject: [PATCH 6.18 331/957] PCI: tegra194: Disable L1.2 capability of Tegra234 EP
+Date: Wed, 20 May 2026 18:13:34 +0200
+Message-ID: <20260520162141.708673606@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,105 +71,107 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252190-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251534-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,lst.de:email]
-X-Rspamd-Queue-Id: 3208159A82C
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 3692D5956A9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Vidya Sagar <vidyas@nvidia.com>
 
-[ Upstream commit 3dbaacf6ab68f81e3375fe769a2ecdbd3ce386fd ]
+[ Upstream commit f59df1d9e6bdb6bd7ef65fb5d200900ac40c20ba ]
 
-When a queue is shared across disk rebind (e.g., SCSI unbind/bind), the
-previous disk's blkcg state is cleaned up asynchronously via
-disk_release() -> blkcg_exit_disk(). If the new disk's blkcg_init_disk()
-runs before that cleanup finishes, we may overwrite q->root_blkg while
-the old one is still alive, and radix_tree_insert() in blkg_create()
-fails with -EEXIST because the old blkg entries still occupy the same
-queue id slot in blkcg->blkg_tree. This causes the sd probe to fail
-with -ENOMEM.
+When Tegra234 is operating in the Endpoint mode with L1.2 enabled, PCIe
+link goes down during L1.2 exit. This is because Tegra234 powers up UPHY
+PLL immediately without making sure that the REFCLK is stable.
 
-Fix it by waiting in blkcg_init_disk() for root_blkg to become NULL,
-which indicates the previous disk's blkcg cleanup has completed.
+This causes UPHY PLL to fail to lock to the correct frequency and leads to
+link going down. There is no hardware fix for this, hence do not advertise
+the L1.2 capability in the Endpoint mode.
 
-Fixes: 1059699f87eb ("block: move blkcg initialization/destroy into disk allocation/release handler")
-Cc: Yi Zhang <yi.zhang@redhat.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://patch.msgid.link/20260311032837.2368714-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: a54e19073718 ("PCI: tegra194: Add Tegra234 PCIe support")
+Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
+Link: https://patch.msgid.link/20260324190755.1094879-14-mmaddireddy@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-cgroup.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/pci/controller/dwc/pcie-tegra194.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
-index 3f7cb9d891aa3..9a198001cfa56 100644
---- a/block/blk-cgroup.c
-+++ b/block/blk-cgroup.c
-@@ -24,6 +24,7 @@
- #include <linux/backing-dev.h>
- #include <linux/slab.h>
- #include <linux/delay.h>
-+#include <linux/wait_bit.h>
- #include <linux/atomic.h>
- #include <linux/ctype.h>
- #include <linux/resume_user_mode.h>
-@@ -611,6 +612,8 @@ static void blkg_destroy_all(struct gendisk *disk)
- 
- 	q->root_blkg = NULL;
- 	spin_unlock_irq(&q->queue_lock);
-+
-+	wake_up_var(&q->root_blkg);
- }
- 
- static void blkg_iostat_set(struct blkg_iostat *dst, struct blkg_iostat *src)
-@@ -1451,6 +1454,18 @@ int blkcg_init_disk(struct gendisk *disk)
- 	struct blkcg_gq *new_blkg, *blkg;
- 	bool preloaded;
+diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+index 257965ada3bd0..c37be61f2b90a 100644
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -234,6 +234,7 @@ struct tegra_pcie_dw_of_data {
+ 	bool has_sbr_reset_fix;
+ 	bool has_l1ss_exit_fix;
+ 	bool has_ltr_req_fix;
++	bool disable_l1_2;
+ 	u32 cdm_chk_int_en_bit;
+ 	u32 gen4_preset_vec;
+ 	u8 n_fts[2];
+@@ -679,6 +680,23 @@ static void init_host_aspm(struct tegra_pcie_dw *pcie)
+ 	if (pcie->supports_clkreq)
+ 		pci->l1ss_support = true;
  
 +	/*
-+	 * If the queue is shared across disk rebind (e.g., SCSI), the
-+	 * previous disk's blkcg state is cleaned up asynchronously via
-+	 * disk_release() -> blkcg_exit_disk(). Wait for that cleanup to
-+	 * finish (indicated by root_blkg becoming NULL) before setting up
-+	 * new blkcg state. Otherwise, we may overwrite q->root_blkg while
-+	 * the old one is still alive, and radix_tree_insert() in
-+	 * blkg_create() will fail with -EEXIST because the old entries
-+	 * still occupy the same queue id slot in blkcg->blkg_tree.
++	 * Disable L1.2 capability advertisement for Tegra234 Endpoint mode.
++	 * Tegra234 has a hardware bug where during L1.2 exit, the UPHY PLL is
++	 * powered up immediately without waiting for REFCLK to stabilize. This
++	 * causes the PLL to fail to lock to the correct frequency, resulting in
++	 * PCIe link loss. Since there is no hardware fix available, we prevent
++	 * the Endpoint from advertising L1.2 support by clearing the L1.2 bits
++	 * in the L1 PM Substates Capabilities register. This ensures the host
++	 * will not attempt to enter L1.2 state with this Endpoint.
 +	 */
-+	wait_var_event(&q->root_blkg, !READ_ONCE(q->root_blkg));
++	if (pcie->of_data->disable_l1_2 &&
++	    pcie->of_data->mode == DW_PCIE_EP_TYPE) {
++		val = dw_pcie_readl_dbi(pci, l1ss + PCI_L1SS_CAP);
++		val &= ~(PCI_L1SS_CAP_PCIPM_L1_2 | PCI_L1SS_CAP_ASPM_L1_2);
++		dw_pcie_writel_dbi(pci, l1ss + PCI_L1SS_CAP, val);
++	}
 +
- 	new_blkg = blkg_alloc(&blkcg_root, disk, GFP_KERNEL);
- 	if (!new_blkg)
- 		return -ENOMEM;
+ 	/* Program L0s and L1 entrance latencies */
+ 	val = dw_pcie_readl_dbi(pci, PCIE_PORT_AFR);
+ 	val &= ~PORT_AFR_L0S_ENTRANCE_LAT_MASK;
+@@ -2443,6 +2461,7 @@ static const struct tegra_pcie_dw_of_data tegra234_pcie_dw_ep_of_data = {
+ 	.mode = DW_PCIE_EP_TYPE,
+ 	.has_l1ss_exit_fix = true,
+ 	.has_ltr_req_fix = true,
++	.disable_l1_2 = true,
+ 	.cdm_chk_int_en_bit = BIT(18),
+ 	/* Gen4 - 6, 8 and 9 presets enabled */
+ 	.gen4_preset_vec = 0x340,
 -- 
 2.53.0
 
