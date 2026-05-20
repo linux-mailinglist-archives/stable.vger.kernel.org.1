@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-250789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252365-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sL1vCU3vDWqa4wUAu9opvQ
-	(envelope-from <stable+bounces-250789-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:28:45 +0200
+	id sNCBAnn6DWrh5AUAu9opvQ
+	(envelope-from <stable+bounces-252365-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:16:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBB4F593C89
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:28:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78769595B08
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:16:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C464F30FDE7D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:59:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C667D313632D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:08:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B02F36A342;
-	Wed, 20 May 2026 16:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0E0B3F9296;
+	Wed, 20 May 2026 18:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A5qjXpXI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G/K3GGCi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 081C632BF24;
-	Wed, 20 May 2026 16:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B00A3FB060;
+	Wed, 20 May 2026 18:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296317; cv=none; b=A9d6mtNjfd/AyGSeGsn1VWyFvdzMWV2elrBLxxiYeeDvcWUKevXxVoKLvoxHsYiDpQDhy6yzHBMNxst3kBxzOAghHqrdlDHo/a6Tw3yUYCBGGvd7lG5S/8un8S27cVc2ciW/Ktq8HJvEspA3PTxmDlKqWCUUtSGmShxg4r2wW6Q=
+	t=1779300484; cv=none; b=kSPI/VfyRzTT6zVHnPWhhzSmfNX8rWJdUWvSsxltt9RY81E2lMSfPYNvbzn/KlO3dij6F0uE/2QRjSXTOt2C8vR++BVnEIXc5IFX9fnJVWy3uet2cwHLjCUZzpUw3jH9vntjJO2NS9WV9kLL7pG/U8DvR/tGZp/FemH8NEhv6T0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296317; c=relaxed/simple;
-	bh=h5v7JJD+TMVSjiImGSC8txyRILZb+sTzsASe/Fr7E5o=;
+	s=arc-20240116; t=1779300484; c=relaxed/simple;
+	bh=BqAlOKuyrjrwOm2g/cjMiAbpe2uF8PJlrATHQJafH6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gK/knNVnNGk/yX9gi2/mZIlasGwHKBnlGJ4B6h+z7k5wlG7npQW0QKndGxvjBr/SYI8VpA7OeLBMX8s39WaQHewr5yvzV36WPlRgESSB1dudkBq5tHK/Kqx+tMj1J+kYTfmmBtcFjDHFzGY7VoNztAgmhn6w+erGn79loz8TjAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A5qjXpXI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D9131F00896;
-	Wed, 20 May 2026 16:58:35 +0000 (UTC)
+	 MIME-Version; b=THqlPNH9xekD02n7VVEF72brTpj9dMZj02AC++raQnhNNIlzYQQGqsUyIE28UvDefqbi0tp1MYTLCNXv+kKfQ6cHF+t4PudiT5UwII8YqqOnzRwC4Awzqd+m290u0/O5ybZ/Zm25LIi0uHxGJTRbQ2kP3EIlqzrJTTnNiz+DP20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G/K3GGCi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B54301F000E9;
+	Wed, 20 May 2026 18:08:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296315;
-	bh=642JI0ZVqWDpQ0XNu+y+iW0cZ0vpnw027HOCCbng+G0=;
+	s=korg; t=1779300483;
+	bh=TC1oIZCyxhLVcJR1Eq8d4IlPY/oPKOWq7+GYtnOCS/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=A5qjXpXImnZ+XMjjOvvjlDmSge8X4PDtjkyajYEpIOs2oeCJCBrIvjXWRcCJuAPBA
-	 s4ZLmtFkd1gWfcxl7ts/MyzkDW+RA5Xv8gyB7aieLUjbywFUdLEyMNZrtli5QyveyX
-	 DOGrlSbanUCdPBveZaYHYQ1hW9mKlW4XwO7EMBD0=
+	b=G/K3GGCiikYN/kLUiSrfC//Jp38HAPRjuBVZCXmeRxyqGcG5DDECdy9xHhRe42cqT
+	 N0EVS94M3Zerps+/0Wj378+DYDlfxuAAMucfw/lE+r2iR1LCbP6HEoouXvMbL6VKGX
+	 vQwyEOjLHOpeGn3dqQlbPsXH1hXqyxpUCwn6dOEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0753/1146] arm64: dts: imx8mp-icore-mx8mp: Correct PAD settings for PMIC_nINT
+Subject: [PATCH 6.12 192/666] drm/msm/shrinker: Fix can_block() logic
 Date: Wed, 20 May 2026 18:16:43 +0200
-Message-ID: <20260520162205.253301709@linuxfoundation.org>
+Message-ID: <20260520162115.362087197@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250789-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252365-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,45 +89,52 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: BBB4F593C89
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,gitlab.freedesktop.org:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:email,patchwork.freedesktop.org:url]
+X-Rspamd-Queue-Id: 78769595B08
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Rob Clark <robin.clark@oss.qualcomm.com>
 
-[ Upstream commit ea8c90f5c7ceeb6657a8fe564aa7b190dce298a6 ]
+[ Upstream commit df0f439e3926817cf577ca6272aad68468ff7624 ]
 
-With commit 5d0efaf47ee90 ("regulator: pca9450: Correct interrupt type"),
-there might be interrupt storm for this board. Need to set PAD PUE and PU
-together to make pull up work properly.
+The intention here was to allow blocking if DIRECT_RECLAIM or if called
+from kswapd and KSWAPD_RECLAIM is set.
 
-Fixes: eefe06b295087 ("arm64: dts: imx8mp: Add Engicam i.Core MX8M Plus SoM")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Reported by Claude code review: https://lore.gitlab.freedesktop.org/drm-ai-reviews/review-patch9-20260309151119.290217-10-boris.brezillon@collabora.com/ on a panthor patch which had copied similar logic.
+
+Reported-by: Boris Brezillon <boris.brezillon@collabora.com>
+Fixes: 7860d720a84c ("drm/msm: Fix build break with recent mm tree")
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Patchwork: https://patchwork.freedesktop.org/patch/714238/
+Message-ID: <20260325184106.1259528-1-robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/msm_gem_shrinker.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp.dtsi
-index a6319824ea2eb..69558ffefa9a6 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-icore-mx8mp.dtsi
-@@ -132,7 +132,7 @@ MX8MP_IOMUXC_I2C1_SDA__I2C1_SDA		0x400001c3
+diff --git a/drivers/gpu/drm/msm/msm_gem_shrinker.c b/drivers/gpu/drm/msm/msm_gem_shrinker.c
+index 07ca4ddfe4e37..89c0ea8ddeaac 100644
+--- a/drivers/gpu/drm/msm/msm_gem_shrinker.c
++++ b/drivers/gpu/drm/msm/msm_gem_shrinker.c
+@@ -26,9 +26,8 @@ static bool can_swap(void)
  
- 	pinctrl_pmic: pmicgrp {
- 		fsl,pins = <
--			MX8MP_IOMUXC_NAND_CE0_B__GPIO3_IO01	  0x41
-+			MX8MP_IOMUXC_NAND_CE0_B__GPIO3_IO01	0x1c0
- 		>;
- 	};
+ static bool can_block(struct shrink_control *sc)
+ {
+-	if (!(sc->gfp_mask & __GFP_DIRECT_RECLAIM))
+-		return false;
+-	return current_is_kswapd() || (sc->gfp_mask & __GFP_RECLAIM);
++	return (sc->gfp_mask & __GFP_DIRECT_RECLAIM) ||
++	       (current_is_kswapd() && (sc->gfp_mask & __GFP_KSWAPD_RECLAIM));
+ }
  
+ static unsigned long
 -- 
 2.53.0
 
