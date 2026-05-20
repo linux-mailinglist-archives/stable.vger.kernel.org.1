@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-251627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250662-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ICFcJiIcDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251627-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:40:02 +0200
+	id CekhBaMSDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-250662-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:59:31 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34909599E74
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:40:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E0E8598F91
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:59:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4684D34A7C63
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:34:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A22A231CBEF4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:53:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FFF0359A6F;
-	Wed, 20 May 2026 17:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A99D36CDE9;
+	Wed, 20 May 2026 16:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OKWLHaGs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bJn+Qv78"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C5C29D26E;
-	Wed, 20 May 2026 17:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA385372691;
+	Wed, 20 May 2026 16:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298474; cv=none; b=BZc0xUTIQiJ1yBTjYy2fyINvXmgQEws2wilijX9qe0B90SKHXnW1z+Hq0HBGKyRONCDDGHL+E8s77EOLn3PVOePQGbr4SKYk/7YWBneCZlFNUR+zmzHGkDeM2U20DeZT8gPl0qdfgA5pL0DjcE8udbPlkybILpCPcwFpeMQMUSA=
+	t=1779295995; cv=none; b=k0kjg9TtZXfq3UG6YgBMA51ifiqeTG/4oLkr9PRQlgU0ZcQvP+Qaylm34mZfI0y2lnOveq4aggRt1wKCQ0+5HqgA1tiIFiwWsNBU2ti2Yf90nk3HA8bftz4hIJU9NGhi0nB5UyDajTzufRSStNyzWLlhuEHbALpu29TR7RcgKl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298474; c=relaxed/simple;
-	bh=X4x3skrMcaKXkXriZvATjQHIuAuYb1pcQwXEEMz6Yv8=;
+	s=arc-20240116; t=1779295995; c=relaxed/simple;
+	bh=xfXozIWhNxkGHj6No9mDDTHsjicfcTiiMLSyrZ4Q0c4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HrQNawSq5w4wzfTbDkzsvUNuhxYwwRQZqVEwrDHUNR8fpLEGVp5fPolNPhheNAsgcyvVAePeYn6TLf7zxjvWg5XYY6eVKA888kI9UMntUyPY33Jvj1hmdnIZcQyma/cYFA1i471WwadBYhlyjwBVHkEVfFC1GabQd8lf0asF/tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OKWLHaGs; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19E4A1F000E9;
-	Wed, 20 May 2026 17:34:32 +0000 (UTC)
+	 MIME-Version; b=BvQUnzfc1bSZH7FCB7h/Cq2Qx4njDpvZRjW5SygJcD1ZmLkKHUNG7aPLK0b3SFh23yYxCooJ1nH+fcl1ReGwIVc04LGB2pEWfd6eSm6OPJRIxAaA4wFEH2d4HMqyjgb4PvgbjR0QwFnGYPLVnCFB/OA0wnjmssi8OBY2mIERbQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bJn+Qv78; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D64A1F00893;
+	Wed, 20 May 2026 16:53:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298473;
-	bh=Pn4sNs4sgSQmastDVc3tTPiXkL5G+MFR8+LabGxtNkk=;
+	s=korg; t=1779295991;
+	bh=x5ebGrRrlDbkHjmJyvZQIH1lLXW1GeYN1OZqrG9e9AY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OKWLHaGsN2RWOrDk0NEQGiIYmE1BS3pb5JQQkB14sfqmpzdWKcpcohQ1hriFQO1Oi
-	 cHGHbY0Xv07UWFxcyuMYxQtzOsUANZ78Ryqe7S2KLrER2VIXFZRapyuMz37Xf2tNvo
-	 n/PxgETBFbNLpLZMg1rSQ981TUuihptfK28VhOGQ=
+	b=bJn+Qv78coQYBkwgs3fdfsSdr7Gn9LiwPl5rfUnFNS/XAOXF8ZEhdx/E6Qe2+nUe3
+	 Uen2LvYe7zLZu8P0jAQ1xeNOUGyUlovztf+pAKXQ7uHH5MJAZZMe/Ss/9OtFyeMhSv
+	 M/U8oRo3ftFKsPfAtaYzKRIAPbe1Ks2JGsqMylbw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 397/957] arm64: dts: qcom: monaco: correct Iris corners for the MXC rail
+Subject: [PATCH 7.0 0630/1146] pinctrl: cy8c95x0: Avoid returning positive values to user space
 Date: Wed, 20 May 2026 18:14:40 +0200
-Message-ID: <20260520162143.136420643@linuxfoundation.org>
+Message-ID: <20260520162202.444160759@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,84 +68,71 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251627-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250662-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email]
-X-Rspamd-Queue-Id: 34909599E74
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 5E0E8598F91
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit bba8d9ba7df8f6592552377049fc84958fd0575a ]
+[ Upstream commit 5ad32c3607cf241a1a2680cabd64cbcd757227aa ]
 
-The corners of the MVS0 / MVS0C clocks on the MMCX rail don't always
-match the PLL corners on the MXC rail. Correct the performance corners
-for the MXC rail following the PLL documentation.
+When probe fails due to unclear interrupt status register, it returns
+a positive number instead of the proper error code. Fix this accordingly.
 
-Fixes: bf6ec39c3f36 ("arm64: dts: qcom: qcs8300: add video node")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260313-iris-fix-corners-v1-3-32a393c25dda@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: e6cbbe42944d ("pinctrl: Add Cypress cy8c95x0 support")
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202602271847.vVWkqLBD-lkp@intel.com/
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/qcs8300.dtsi | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/pinctrl/pinctrl-cy8c95x0.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/qcs8300.dtsi b/arch/arm64/boot/dts/qcom/qcs8300.dtsi
-index 7a4c3e872d8ee..8580884a16e98 100644
---- a/arch/arm64/boot/dts/qcom/qcs8300.dtsi
-+++ b/arch/arm64/boot/dts/qcom/qcs8300.dtsi
-@@ -4743,19 +4743,19 @@ opp-366000000 {
+diff --git a/drivers/pinctrl/pinctrl-cy8c95x0.c b/drivers/pinctrl/pinctrl-cy8c95x0.c
+index 14d927035bc0f..54b117f32f0ea 100644
+--- a/drivers/pinctrl/pinctrl-cy8c95x0.c
++++ b/drivers/pinctrl/pinctrl-cy8c95x0.c
+@@ -1320,7 +1320,7 @@ static int cy8c95x0_irq_setup(struct cy8c95x0_pinctrl *chip, int irq)
+ 	/* Read IRQ status register to clear all pending interrupts */
+ 	ret = cy8c95x0_irq_pending(chip, pending_irqs);
+ 	if (ret)
+-		return dev_err_probe(dev, ret, "failed to clear irq status register\n");
++		return dev_err_probe(dev, -EBUSY, "failed to clear irq status register\n");
  
- 				opp-444000000 {
- 					opp-hz = /bits/ 64 <444000000>;
--					required-opps = <&rpmhpd_opp_nom>,
-+					required-opps = <&rpmhpd_opp_svs_l1>,
- 							<&rpmhpd_opp_nom>;
- 				};
- 
- 				opp-533000000 {
- 					opp-hz = /bits/ 64 <533000000>;
--					required-opps = <&rpmhpd_opp_turbo>,
-+					required-opps = <&rpmhpd_opp_nom>,
- 							<&rpmhpd_opp_turbo>;
- 				};
- 
- 				opp-560000000 {
- 					opp-hz = /bits/ 64 <560000000>;
--					required-opps = <&rpmhpd_opp_turbo_l1>,
-+					required-opps = <&rpmhpd_opp_nom>,
- 							<&rpmhpd_opp_turbo_l1>;
- 				};
- 			};
+ 	/* Mask all interrupts */
+ 	bitmap_fill(chip->irq_mask, MAX_LINE);
 -- 
 2.53.0
 
