@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-250981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253008-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wDc0KdXtDWpb4wUAu9opvQ
-	(envelope-from <stable+bounces-250981-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:22:29 +0200
+	id EI+TMb8ADmo95QUAu9opvQ
+	(envelope-from <stable+bounces-253008-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:11 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23DB6593758
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:22:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CAD559711A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 49C40307E8AF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:08:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 425B5312D631
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EFFA3BE165;
-	Wed, 20 May 2026 17:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 441A53F39EE;
+	Wed, 20 May 2026 18:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XIntqhG1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLpCb2Qc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E6C28DC4;
-	Wed, 20 May 2026 17:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E06713D6CB7;
+	Wed, 20 May 2026 18:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296791; cv=none; b=uu39E8J7KJ8/VViXwPKoFZdibmlbPshLloE7ejyu9lt1LgU/VmZHIYRSEcSUG/yVeRcxFGhNq2ROBJoIF3O8lV6TaekLPI8RrjONgZihrqHrWScLcokuGWNv+XoIhqhaAeWBdLUupHp/ltVAUu5ht8glc0RnibL/c1xaL1ApRP0=
+	t=1779302163; cv=none; b=hYAMTkir9CKXTNVO0TfwlPx7tnBtcxi6HYKAwgr6bF+2Bog/j0fTABNxjLSCuuUeAcWtzamwxeEpGExQTCHcuWPWZ1dmyZC+gBDW7en48G9VTGRwW3IWrpmJE835PEnBfgJwqkCJ3l0A5ezDM3FFEOqHFtsOdoWqACy7Tzyvj+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296791; c=relaxed/simple;
-	bh=lox6GWvndpyX5rDqYowcsWpEGjOy3x/OA/zFeybwBhY=;
+	s=arc-20240116; t=1779302163; c=relaxed/simple;
+	bh=05Bs9A703B6zB/q4EEtWMWtLzzmwJuEEIUfKkG695+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=azASW0OFLMfRkv+FUUZscyc3QbtJa8ZgEJ6nShk100Vv6nd0PNDD6m+pvKjiPKuoP8W/d2mm74JixAHO2le6NKAm8Cpfwq4ldtmrVO+NlleUSqmOAB78q7ZP8xnFgaMbQHKgsv6o+oog+ZYGYUvLPwKs8B7AYndH/wDVP6DDwdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XIntqhG1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4533F1F000E9;
-	Wed, 20 May 2026 17:06:30 +0000 (UTC)
+	 MIME-Version; b=oBr2mtJ2i9m6whymlUmUdHeujcyVTt8H+rPo6KR9fhdxnrl5RbRTLL2Dyn0YUGMedpa6oMQx9XvISD8WEyZRmXVYWmc5Hl0Aw9qtIfyFPO6zCxq2jJ7dqPJ4TJcqiuOFfdlnFgK0ptTfGaITh58OFNracBRLdLoh1Nh9ndVo4Fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xLpCb2Qc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51FE61F000E9;
+	Wed, 20 May 2026 18:36:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296790;
-	bh=a/cWamvj85eI6Oy2fJXerlXve4W/q3J5cRl4kn956Ww=;
+	s=korg; t=1779302161;
+	bh=9I+LiyZvr9gqcsPgFbdlGsSrlTMursxYP89IoSnMCfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XIntqhG1/wMsqz4dfW1nVheB0h/N6Htg89oFP/vFIkLAUiZTMxEIdTT21B/S3yEqI
-	 0KHw6Oma8M5k72EZOQQEd6/VhiowOw/88A+98k8YNhMVPOBZDwQc081CYVVoG4k/fq
-	 v7gNVkdj6iZ0mHQI98oYEAUaKdu+nySretGlu9eU=
+	b=xLpCb2QcJpm1w43GIrJSwqyftcu3lRS/RTpz1R9f+VmLdDz2JB2hoIIJ2G8ZZ1JBr
+	 3nfKxa4JhtkF8QuuHmvvcoYWjMaV3MHwl+bavBFzRa9XXq1Qg/cjiaq8edv1Va+WTb
+	 UQ/GiGT4hY4JA75FEbO8THFOv1axLKdEZAqmGSE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Vidya Sagar <vidyas@nvidia.com>,
+	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0933/1146] net/sched: netem: check for negative latency and jitter
+Subject: [PATCH 6.6 160/508] PCI: tegra194: Dont force the device into the D0 state before L2
 Date: Wed, 20 May 2026 18:19:43 +0200
-Message-ID: <20260520162209.349797160@linuxfoundation.org>
+Message-ID: <20260520162102.105893685@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,97 +76,136 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250981-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253008-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,networkplumber.org:email]
-X-Rspamd-Queue-Id: 23DB6593758
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 7CAD559711A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Hemminger <stephen@networkplumber.org>
+From: Vidya Sagar <vidyas@nvidia.com>
 
-[ Upstream commit 90be9fedb218ee95a1cf59050d1306fbfb0e8b87 ]
+[ Upstream commit 71d9f67701e1affc82d18ca88ae798c5361beddf ]
 
-Reject requests with negative latency or jitter.
-A negative value added to current timestamp (u64) wraps
-to an enormous time_to_send, disabling dequeue.
-The original UAPI used u32 for these values; the conversion to 64-bit
-time values via TCA_NETEM_LATENCY64 and TCA_NETEM_JITTER64
-allowed signed values to reach the kernel without validation.
+As per PCIe CEM r6.0, sec 2.3, the PCIe Endpoint device should be in D3cold
+to assert WAKE# pin. The previous workaround that forced downstream devices
+to D0 before taking the link to L2 cited PCIe r4.0, sec 5.2, "Link State
+Power Management"; however, that spec does not explicitly require putting
+the device into D0 and only indicates that power removal may be initiated
+without transitioning to D3hot.
 
-Jitter is already silently clamped by an abs() in netem_change();
-that abs() can be removed in a follow-up once this rejection is in
-place.
+Remove the D0 workaround so that Endpoint devices can use wake
+functionality (WAKE# from D3). With some Endpoints the link may not enter
+L2 when they remain in D3, but the Root Port continues with the usual flow
+after PME timeout, so there is no functional issue.
 
-Fixes: 99803171ef04 ("netem: add uapi to express delay and jitter in nanoseconds")
-Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260418032027.900913-7-stephen@networkplumber.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 56e15a238d92 ("PCI: tegra: Add Tegra194 PCIe support")
+Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://patch.msgid.link/20260324190755.1094879-5-mmaddireddy@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_netem.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ drivers/pci/controller/dwc/pcie-tegra194.c | 41 ----------------------
+ 1 file changed, 41 deletions(-)
 
-diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index 475c14b3dbdbf..bc18e1976b6e0 100644
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -826,6 +826,16 @@ static int get_dist_table(struct disttable **tbl, const struct nlattr *attr)
+diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+index 47421796cc147..23c7c6e691b26 100644
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -1288,44 +1288,6 @@ static int tegra_pcie_bpmp_set_pll_state(struct tegra_pcie_dw *pcie,
  	return 0;
  }
  
-+static int validate_time(const struct nlattr *attr, const char *name,
-+			 struct netlink_ext_ack *extack)
-+{
-+	if (nla_get_s64(attr) < 0) {
-+		NL_SET_ERR_MSG_ATTR_FMT(extack, attr, "negative %s", name);
-+		return -EINVAL;
-+	}
-+	return 0;
-+}
-+
- static int validate_slot(const struct nlattr *attr, struct netlink_ext_ack *extack)
+-static void tegra_pcie_downstream_dev_to_D0(struct tegra_pcie_dw *pcie)
+-{
+-	struct dw_pcie_rp *pp = &pcie->pci.pp;
+-	struct pci_bus *child, *root_port_bus = NULL;
+-	struct pci_dev *pdev;
+-
+-	/*
+-	 * link doesn't go into L2 state with some of the endpoints with Tegra
+-	 * if they are not in D0 state. So, need to make sure that immediate
+-	 * downstream devices are in D0 state before sending PME_TurnOff to put
+-	 * link into L2 state.
+-	 * This is as per PCI Express Base r4.0 v1.0 September 27-2017,
+-	 * 5.2 Link State Power Management (Page #428).
+-	 */
+-
+-	list_for_each_entry(child, &pp->bridge->bus->children, node) {
+-		if (child->parent == pp->bridge->bus) {
+-			root_port_bus = child;
+-			break;
+-		}
+-	}
+-
+-	if (!root_port_bus) {
+-		dev_err(pcie->dev, "Failed to find downstream bus of Root Port\n");
+-		return;
+-	}
+-
+-	/* Bring downstream devices to D0 if they are not already in */
+-	list_for_each_entry(pdev, &root_port_bus->devices, bus_list) {
+-		if (PCI_SLOT(pdev->devfn) == 0) {
+-			if (pci_set_power_state(pdev, PCI_D0))
+-				dev_err(pcie->dev,
+-					"Failed to transition %s to D0 state\n",
+-					dev_name(&pdev->dev));
+-		}
+-	}
+-}
+-
+ static int tegra_pcie_get_slot_regulators(struct tegra_pcie_dw *pcie)
  {
- 	const struct tc_netem_slot *c = nla_data(attr);
-@@ -1068,6 +1078,18 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
- 			goto table_free;
- 	}
+ 	pcie->slot_ctl_3v3 = devm_regulator_get_optional(pcie->dev, "vpcie3v3");
+@@ -1655,7 +1617,6 @@ static void tegra_pcie_dw_pme_turnoff(struct tegra_pcie_dw *pcie)
  
-+	if (tb[TCA_NETEM_LATENCY64]) {
-+		ret = validate_time(tb[TCA_NETEM_LATENCY64], "latency", extack);
-+		if (ret)
-+			goto table_free;
-+	}
-+
-+	if (tb[TCA_NETEM_JITTER64]) {
-+		ret = validate_time(tb[TCA_NETEM_JITTER64], "jitter", extack);
-+		if (ret)
-+			goto table_free;
-+	}
-+
- 	sch_tree_lock(sch);
- 	/* backup q->clg and q->loss_model */
- 	old_clg = q->clg;
+ static void tegra_pcie_deinit_controller(struct tegra_pcie_dw *pcie)
+ {
+-	tegra_pcie_downstream_dev_to_D0(pcie);
+ 	dw_pcie_host_deinit(&pcie->pci.pp);
+ 	tegra_pcie_dw_pme_turnoff(pcie);
+ 	tegra_pcie_unconfig_controller(pcie);
+@@ -2373,7 +2334,6 @@ static int tegra_pcie_dw_suspend_noirq(struct device *dev)
+ 	if (!pcie->link_state)
+ 		return 0;
+ 
+-	tegra_pcie_downstream_dev_to_D0(pcie);
+ 	tegra_pcie_dw_pme_turnoff(pcie);
+ 	tegra_pcie_unconfig_controller(pcie);
+ 
+@@ -2447,7 +2407,6 @@ static void tegra_pcie_dw_shutdown(struct platform_device *pdev)
+ 			return;
+ 
+ 		debugfs_remove_recursive(pcie->debugfs);
+-		tegra_pcie_downstream_dev_to_D0(pcie);
+ 
+ 		disable_irq(pcie->pci.pp.irq);
+ 		if (IS_ENABLED(CONFIG_PCI_MSI))
 -- 
 2.53.0
 
