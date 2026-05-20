@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-250926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252496-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WNBIKv3qDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250926-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:10:21 +0200
+	id UGUNOBImDmr26QUAu9opvQ
+	(envelope-from <stable+bounces-252496-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:22:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EAB059304B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:10:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 488A959AC2A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:22:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B5941302BCE5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:05:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1DB023861B84
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:13:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 739073F65E1;
-	Wed, 20 May 2026 17:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E813F54D1;
+	Wed, 20 May 2026 18:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rs/02Tlc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yqjPEYqa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94473F660B;
-	Wed, 20 May 2026 17:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C482F363F;
+	Wed, 20 May 2026 18:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296658; cv=none; b=Tigec/O06r1QtRHKhA+212lvlwn3y/2glZzma98NGKAQ3IJuEjI+jTA3sFpYjjG9D0tDNfr4y1be8hgS3sHTlxjAImOpn1bB/pqJ9qB1JgV+DqJizmgIrUnnPdeDKmcuEK3W39sQaoIl8L0TVKkCYiwtC1jY9QPhNvrsgLSHi2g=
+	t=1779300825; cv=none; b=DCsHwhbqhTbd30Cg5eetScZQoWMOY9Xpe443InLQ6fafyr1Zov8Q3wsm0ictqOTOIpmFyXXbPldhcliM0RAD/dSPrSj4eqsCd8FKQJlTz+fm/xoDjjOTwSM/e1C8j+vDkjkI+9SDmF3CHy7ROUcJe7h+820BRUasb9fQX0r3ZJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296658; c=relaxed/simple;
-	bh=OleFYEpppXabVZ/zr7Mn68p3Y5a2rXBjfyndeIWfaD0=;
+	s=arc-20240116; t=1779300825; c=relaxed/simple;
+	bh=9W9k85n0RcwBwwdcYfcCMQQjqJ1pxXUsRsFLTBYw428=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uHT95EfWToIOQHmbgEcuMxwNCZLAT/VJ4+qSYpy7hFSOlfWe+a8jGFpkKmtgfuXNTaEKFXO8pJnyLl/EX0LB2lvR4qy8l4cWVtjhQSU6nlRCfRbQlfrJC0IwEoBJ0bpFDfk9neio8Rqi/NaGb69nXAUwkM8UBL1ERxtUCVrw6Xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rs/02Tlc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 048851F000E9;
-	Wed, 20 May 2026 17:04:15 +0000 (UTC)
+	 MIME-Version; b=Cr+tzhght8GjHvddly1zc6FNMcmKMuawF5V4q3E57h+byNmUmUdOIis1VfDbNhC0zbTuEJf6B0n+gb1vKzVvFME2LUpj94jdw+XDMDT8GVaktClNAg0d6Mw1v7OQvAd0eWx4SFTSDC6qzcH7Xt0Ad+Ezi855g1YkPDMZS/w4WMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yqjPEYqa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0191F1F00894;
+	Wed, 20 May 2026 18:13:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296656;
-	bh=Wtag2Ti3XBrrwdeDa2+4XAX0GvsZgK/3KOtLs1lQjq0=;
+	s=korg; t=1779300824;
+	bh=YS6lWxSqjbdEROYjP1A+xyYRN7xR0OPoeHW/HAQ9d/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Rs/02TlcK56Fe1RwWRWN4J1UmiG63herx1qvJigj+jeQaGF2yEa3ihMmkX/oD4fml
-	 HxGFM+vm5+hQ6nWj624jquusdQ0o7Q4AOypo2GrRhoOBRZHXB2mrJGx8GcE/cYGPAx
-	 Speu6xEIVeNDXPQLETVFMmfXVJx6MvALxfXaMCKg=
+	b=yqjPEYqaIo/7+yzPUKaiw89cyL5FiLRQS/Vy8D2Ibilrk2rMkBXhXu5nUvtG4m8wn
+	 yvQne9w84n7oSCfHQzfxg/jBCeU1sBCsHSwRjYMySTSApiEGU0M6Um6oaBqJiiKr6N
+	 Jh+Z+ymTmR1Zdc8NYOvLbVs0OvND5yYwDS5e762w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Norman Bintang <normanbt@google.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0883/1146] mailbox: add sanity check for channel array
+Subject: [PATCH 6.12 322/666] soundwire: cadence: Clear message complete before signaling waiting thread
 Date: Wed, 20 May 2026 18:18:53 +0200
-Message-ID: <20260520162208.222230865@linuxfoundation.org>
+Message-ID: <20260520162118.201908180@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +66,122 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-250926-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sang-engineering.com,glider.be,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252496-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sang-engineering.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,glider.be:email]
-X-Rspamd-Queue-Id: 4EAB059304B
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,msgid.link:url]
+X-Rspamd-Queue-Id: 488A959AC2A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit c1aad75595fb67edc7fda8af249d3b886efa1be9 ]
+[ Upstream commit cbfea84f820962c3c5394ff06e7e9344c96bf761 ]
 
-Fail gracefully if there is no channel array attached to the mailbox
-controller. Otherwise the later dereference will cause an OOPS which
-might not be seen because mailbox controllers might instantiate very
-early. Remove the comment explaining the obvious while here.
+Clear the CDNS_MCP_INT_RX_WL interrupt before signaling completion.
 
-Fixes: 2b6d83e2b8b7 ("mailbox: Introduce framework for mailbox")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+This is to prevent the potential race where:
+- The main thread is scheduled immediately the completion is signaled,
+   and starts a new message
+- The RX_WL IRQ for this new message happens before sdw_cdns_irq() has
+  been re-scheduled.
+- When sdw_cdns_irq() is re-scheduled it clears the new RX_WL interrupt.
+
+MAIN THREAD                        |  IRQ THREAD
+                                   |
+  _cdns_xfer_msg()                 |
+  {                                |
+     write data to FIFO            |
+     wait_for_completion_timeout() |
+     <BLOCKED>                     |                       <---- RX_WL IRQ
+                                   | sdw_cdns_irq()
+                                   | {
+                                   |    signal completion
+                          <== RESCHEDULE <==
+  Handle message completion        |
+  }                                |
+                                   |
+Start new message                  |
+  _cdns_xfer_msg()                 |
+  {                                |
+     write data to FIFO            |
+     wait_for_completion_timeout() |
+     <BLOCKED>                     |                       <---- RX_WL IRQ
+                          ==> RESCHEDULE ==>
+                                   |    // New RX_WL IRQ is cleared before
+                                   |    // it has been handled.
+                                   |    clear CDNS_MCP_INTSTAT
+
+                                   |    return IRQ_HANDLED;
+                                   | }
+
+Before this change, this error message was sometimes seen on kernels
+that have large amounts of debugging enabled:
+
+   SCP Msg trf timed out
+
+This error indicates that the completion has not been signalled after
+500ms.
+
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Fixes: 956baa1992f9 ("soundwire: cdns: Add sdw_master_ops and IO transfer support")
+Reported-by: Norman Bintang <normanbt@google.com>
+Closes: https://issuetracker.google.com/issues/477099834
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
+Link: https://patch.msgid.link/20260310113133.1707288-1-rf@opensource.cirrus.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mailbox.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/soundwire/cadence_master.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
-index 617ba505691d3..b77162db509f2 100644
---- a/drivers/mailbox/mailbox.c
-+++ b/drivers/mailbox/mailbox.c
-@@ -505,8 +505,7 @@ int mbox_controller_register(struct mbox_controller *mbox)
- {
- 	int i, txdone;
+diff --git a/drivers/soundwire/cadence_master.c b/drivers/soundwire/cadence_master.c
+index 6f2b5ec5c87c6..a503ef606a62c 100644
+--- a/drivers/soundwire/cadence_master.c
++++ b/drivers/soundwire/cadence_master.c
+@@ -931,6 +931,14 @@ irqreturn_t sdw_cdns_irq(int irq, void *dev_id)
  
--	/* Sanity check */
--	if (!mbox || !mbox->dev || !mbox->ops || !mbox->num_chans)
-+	if (!mbox || !mbox->dev || !mbox->ops || !mbox->chans || !mbox->num_chans)
- 		return -EINVAL;
+ 		cdns_read_response(cdns);
  
- 	if (mbox->txdone_irq)
++		/*
++		 * Clear interrupt before signalling the completion to avoid
++		 * a race between this thread and the main thread starting
++		 * another TX.
++		 */
++		cdns_writel(cdns, CDNS_MCP_INTSTAT, CDNS_MCP_INT_RX_WL);
++		int_status &= ~CDNS_MCP_INT_RX_WL;
++
+ 		if (defer && defer->msg) {
+ 			cdns_fill_msg_resp(cdns, defer->msg,
+ 					   defer->length, 0);
 -- 
 2.53.0
 
