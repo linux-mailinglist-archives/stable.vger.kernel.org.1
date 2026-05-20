@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251088-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OL0RNZ3+DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-252055-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:05 +0200
+	id s6WFDR33DWpd5AUAu9opvQ
+	(envelope-from <stable+bounces-251088-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:02:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77D3F59699A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:05 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47C6B595240
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:02:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 677EB37B7078
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:53:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 74F4B317321A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:11:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 457F53F20FA;
-	Wed, 20 May 2026 17:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA6823A3833;
+	Wed, 20 May 2026 17:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ymyXr8fs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="reDizxzn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3BC39B483;
-	Wed, 20 May 2026 17:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7712B3D75A0;
+	Wed, 20 May 2026 17:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299628; cv=none; b=NrYCqurvSegWAHyNo/vcdIRoBJBVElOfd7mLs1t/xBAfFlv1LuTzjTw7g4osKGCdctmXpE+675MHUhpUJQXwzrDBA1UHfgr0T38EmIRc+F4dZmnnNoGr2JPZ++vscnBGSVQ4FhnGeTkMrcy/++ofYPZBGtxTyKGU+daRxT3ayBE=
+	t=1779297068; cv=none; b=b+K1SRI2n5O9bAalyTRMQjVfLriKpgZxAFTQRng6Bi9whAAOnGDfOYfgHe9fbQ8V7kZgCt7M8ltUAQh20ixfu4CGprxH3vYhrc05hI8HBNF0QnjEC+Gm8szEwgxJmH37vDzUr8UAhuf+NHxSJwnspVfRj2LlqDVZnAayCzOieps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299628; c=relaxed/simple;
-	bh=DNEU0ialWssQ/M/562S/VziO4hoTRdAMMREapdrqKAU=;
+	s=arc-20240116; t=1779297068; c=relaxed/simple;
+	bh=wJz/hQ0HDrin4aAMsmJ96dvEPXhMrIRNTQZDkOlG7Pw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HPHXFmXXuCHBV48BitSp1YDRHPl9c232OO8rpW0oTFjykLb0yioBxurle9KSUy4BTiRP/gX2KjRt+kdJ/WHECjlk1mHYV+bYNEZREk03IeUuLJ0CnXI8mdyC8DgvQtSmlrQ+0BC6NhRS5ko8586RrN4I6T15jISgjrtB2IQCHPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ymyXr8fs; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 735501F000E9;
-	Wed, 20 May 2026 17:53:46 +0000 (UTC)
+	 MIME-Version; b=FRJAii0Ix54DkAy6AXSyX+l+CN39PCPPDr67i5N7nce5a90L5WsNhemLfZpFmJSy8+fNzbVbnmVnjf8vIREK+X9/eOblCNLYP3s5Fu8+9aHsTQU+gQTMXAdBqASQfP8uMfoxYNmxc4M6Of7rBtQ2yhfT2w38+HFkiFU9gR+8TM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=reDizxzn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCE931F00893;
+	Wed, 20 May 2026 17:11:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299627;
-	bh=eOc85r+QASQuPZNHOPVS4OJwhWlxSGQx/+qlCBzV/tU=;
+	s=korg; t=1779297067;
+	bh=2MEPkC5ixNCPOdg3sUb2qBnZp4XKf3swtjisIExehGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ymyXr8fshenzkWgEhCGg5a7mxe2Jo2J+tCm1WCeVrU12am9P/n1v3xBV8pbyhezzL
-	 wLSJSyTXCm1DMl8/gCN0GOHA4JAEej9PpMdipyO4mTuzqb1ghinD5EQQq5R0+iK5LS
-	 FMidc8eXR3varLD7fpUodR4zEQWPPT3L+gTdrAGk=
+	b=reDizxznZTlrCJAq3a8lQMINDIFi2zSazbfPG+kcuD6TPe2y8LUWTXObhkZMKPkKJ
+	 QxhklvUPdb/mW4b1MKQaq6yiT58lujzk89oR71zgpYJtx/bLP2ShvOT0+TdVh51f4v
+	 IHJb1liXOZ1i/H+w1pMdij/znGs6OyEsIGuZy7B0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Yinjie Yao <yinjie.yao@amd.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 803/957] drm/amdgpu/vcn: set no_user_fence for VCN v4.0.5 enc ring
-Date: Wed, 20 May 2026 18:21:26 +0200
-Message-ID: <20260520162151.983079405@linuxfoundation.org>
+Subject: [PATCH 7.0 1037/1146] PCI: Initialize temporary device in new_id_store()
+Date: Wed, 20 May 2026 18:21:27 +0200
+Message-ID: <20260520162211.700677294@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +64,124 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252055-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251088-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
-X-Rspamd-Queue-Id: 77D3F59699A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,qemu.org:url]
+X-Rspamd-Queue-Id: 47C6B595240
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yinjie Yao <yinjie.yao@amd.com>
+From: Samiullah Khawaja <skhawaja@google.com>
 
-[ Upstream commit 589a254bf3e88204c8402b9cbccd5e23a0af990f ]
+[ Upstream commit f45a49a2380a47332817b7248c61a0ebbc6f0d00 ]
 
-VCN encoder and decoder rings do not support 64-bit user fence writes,
-reject CS submissions with user fences.
+When setting new_id of a PCI device driver using sysfs a lockdep splat
+occurs. This is because new_id_store() builds a temporary pci_dev for
+pci_match_device(), which calls device_match_driver_override().  That
+depends on the driver_override.lock added by cb3d1049f4ea ("driver core:
+generalize driver_override in struct device").
 
-Fixes: 547aad32edac ("drm/amdgpu: add VCN4 ip block support")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 084d94ac93707bdda07efb5cee786f632de4219b)
+The new driver_override.lock was not initialized in the temporary pci_dev,
+resulting in this lockdep splat.
+
+Initialize the temporary pci_dev to fix this.
+
+Repro:
+
+  Build with CONFIG_LOCKDEP=y, boot with QEMU, and add a new ID:
+
+  # echo "8086 10f5" > /sys/bus/pci/drivers/e1000e/new_id
+
+  INFO: trying to register non-static key.
+  The code is fine but needs lockdep annotation, or maybe
+  you didn't initialize this object before use?
+  turning off the locking correctness validator.
+  CPU: 2 UID: 0 PID: 177 Comm: liveupdate-iomm Not tainted 7.0.0+ #9 PREEMPT(full)
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x5d/0x80
+   register_lock_class+0x77e/0x790
+   lock_acquire+0xbf/0x2e0
+   pci_match_device+0x24/0x180
+   new_id_store+0x189/0x1d0
+   kernfs_fop_write_iter+0x14f/0x210
+   vfs_write+0x263/0x5e0
+   ksys_write+0x79/0xf0
+   do_syscall_64+0x117/0xf80
+
+Fixes: 10a4206a2401 ("PCI: use generic driver_override infrastructure")
+Fixes: 8895d3bcb8ba ("PCI: Fail new_id for vendor/device values already built into driver")
+Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+[bhelgaas: add commit log details and repro, trim backtrace]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patch.msgid.link/20260505234327.716630-1-skhawaja@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pci/pci-driver.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
-index 1f6a22983c0dd..1571cc5a148c8 100644
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
-@@ -1483,6 +1483,7 @@ static struct amdgpu_ring_funcs vcn_v4_0_5_unified_ring_vm_funcs = {
- 	.type = AMDGPU_RING_TYPE_VCN_ENC,
- 	.align_mask = 0x3f,
- 	.nop = VCN_ENC_CMD_NO_OP,
-+	.no_user_fence = true,
- 	.get_rptr = vcn_v4_0_5_unified_ring_get_rptr,
- 	.get_wptr = vcn_v4_0_5_unified_ring_get_wptr,
- 	.set_wptr = vcn_v4_0_5_unified_ring_set_wptr,
+diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+index d10ece0889f0f..e3f59001785a1 100644
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -179,6 +179,11 @@ static const struct pci_device_id *pci_match_device(struct pci_driver *drv,
+ 	return NULL;
+ }
+ 
++static void _pci_free_device(struct device *dev)
++{
++	kfree(to_pci_dev(dev));
++}
++
+ /**
+  * new_id_store - sysfs frontend to pci_add_dynid()
+  * @driver: target device driver
+@@ -214,11 +219,13 @@ static ssize_t new_id_store(struct device_driver *driver, const char *buf,
+ 		pdev->subsystem_vendor = subvendor;
+ 		pdev->subsystem_device = subdevice;
+ 		pdev->class = class;
++		pdev->dev.release = _pci_free_device;
+ 
++		device_initialize(&pdev->dev);
+ 		if (pci_match_device(pdrv, pdev))
+ 			retval = -EEXIST;
+ 
+-		kfree(pdev);
++		put_device(&pdev->dev);
+ 
+ 		if (retval)
+ 			return retval;
 -- 
 2.53.0
 
