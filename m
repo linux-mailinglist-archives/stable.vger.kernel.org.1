@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-250971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251900-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KFrOLOP5DWrO5AUAu9opvQ
-	(envelope-from <stable+bounces-250971-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:13:55 +0200
+	id 8McoC8YfDmpd6QUAu9opvQ
+	(envelope-from <stable+bounces-251900-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:55:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6E0D5959A9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:13:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C33B59A510
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:55:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id F32DC31308BB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:07:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7C77433F21D2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:46:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B38793F1ADC;
-	Wed, 20 May 2026 17:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13BF13F1ADC;
+	Wed, 20 May 2026 17:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lgPuEB9C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0SqKWCCL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C313403F4;
-	Wed, 20 May 2026 17:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B0136405A;
+	Wed, 20 May 2026 17:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296768; cv=none; b=JjVlb3OoiVQi7EGkPT13ffaKYqq8VzY6gIRtmp+qaDatBcZV4RBuQLYGXHuy/YebbFO/lenWutI6rMmI9KSiJLQsIv1Bp3MfB/emSzfczm381Q1CddU6SF2ekNSP56Ahh1x9sg/RUPMKU3SnZcQsYTMuTaFojGPyrLzod0EIUg8=
+	t=1779299181; cv=none; b=H8Ot4AZCsBjN/kgNf53Us2T+cbq4sLCdLTxHMIrLw/UehrRDXEXVXWse4YrrWTxOpq0vislTS+iNHKHm5EkYWzR3Ryw4qkGahh/ehUhWEpptNCzs3ry9o8OZWHXzb3NxHqsfVpWsRaIi1NLwHvnMnCK/N+eOeXDFeFawYxHHvxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296768; c=relaxed/simple;
-	bh=zY5yDgMtG2r+Nr8u3cRRjN8BqlSIvu+0+OEjJIVuhOQ=;
+	s=arc-20240116; t=1779299181; c=relaxed/simple;
+	bh=vA9vzqHxUWjIovGY2t92UcmY2m4FpM7NvOTP9nymTqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DLzqycrh5aDBmYsMY/HYeXvgeuUZiG0pxDvOjlhw5ywNyZVV7RLApJfNBf+J/rxAmTVnKLZA3rNsBBW3DAmc3S2b+wpTyIV/TgROVZddEjOUgc8RNGMAE2TD3+e2WIx/+0Ok3sd4VnlHzlSM1BbVM8MXzNCCYF9Mfn8VcJdUKmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lgPuEB9C; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 887851F000E9;
-	Wed, 20 May 2026 17:06:06 +0000 (UTC)
+	 MIME-Version; b=YVbOBfuJRUzhumEzhzIv9Y1hpJx7QobKn8dfED/vwNumqqbc1HUUl7ZV4H46I1aKprTua9p3hdHqimah+k0MzvnjNbRuVmYWeMSU5V5dywF1wt1512uGzLeR48V61yV8AK6dLR9jyGFGMZEUIITUQQYJKrutX8wErtM/92cAry0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0SqKWCCL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8E501F000E9;
+	Wed, 20 May 2026 17:46:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296767;
-	bh=Z8c4g72CmvobtkKsjaLCZCqzJzJHp/g7bpEHzrRe3qA=;
+	s=korg; t=1779299180;
+	bh=1jqWgB2zcmadOyhUvIolOBi3Pt0LvIS+Y95PPhN+nKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lgPuEB9CkOEvFy5U1IhGH4s/eXsiQznL4PpPUEf4qJh5FGaKnAdPAWr4YIzGukmh2
-	 Z1hOhx2ztqwU9KrnKfIVV9d6/RxpjhjQI4FEyEllujRym6sXJPc3Ge0gvg/hefGRhx
-	 HL1CdERlyuoewRw0fZqTYioCu/E9LCvcTRO3TS+w=
+	b=0SqKWCCLsaIQXqJTxZ2TJbbRwOfUEaVEWa+KCS7eXNnMYAGPwAroAxDGudbFA0JY1
+	 5XlsL/MEwH7Ob80X3BD1jDRKj5g1fuxPUfKIgIrgjWvcPpouI1qeQ2OCh0CaoMARq+
+	 k6WaCewwhendrfFPkFyrEh4qCK6DWh+5JzPKvhFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daan De Meyer <daan@amutable.com>,
-	Phillip Potter <phil@philpotter.co.uk>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Simon Horman <horms@kernel.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0925/1146] cdrom, scsi: sr: propagate read-only status to block layer via set_disk_ro()
+Subject: [PATCH 6.18 692/957] net: airoha: ppe: Move PPE memory info in airoha_eth_soc_data struct
 Date: Wed, 20 May 2026 18:19:35 +0200
-Message-ID: <20260520162209.172719594@linuxfoundation.org>
+Message-ID: <20260520162149.547373532@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,265 +69,403 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250971-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251900-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,kernel.dk:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email,amutable.com:email,philpotter.co.uk:email]
-X-Rspamd-Queue-Id: B6E0D5959A9
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 6C33B59A510
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daan De Meyer <daan@amutable.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 0898a817621a2f0cddca8122d9b974003fe5036d ]
+[ Upstream commit 5bd1d1fd48ea9f8300b211540d946899c7f96480 ]
 
-The cdrom core never calls set_disk_ro() for a registered device, so
-BLKROGET on a CD-ROM device always returns 0 (writable), even when the
-drive has no write capabilities and writes will inevitably fail. This
-causes problems for userspace that relies on BLKROGET to determine
-whether a block device is read-only. For example, systemd's loop device
-setup uses BLKROGET to decide whether to create a loop device with
-LO_FLAGS_READ_ONLY. Without the read-only flag, writes pass through the
-loop device to the CD-ROM and fail with I/O errors. systemd-fsck
-similarly checks BLKROGET to decide whether to run fsck in no-repair
-mode (-n).
+AN7583 SoC runs a single PPE device while EN7581 runs two of them.
+Moreover PPE SRAM in AN7583 SoC is reduced to 8K (while SRAM is 16K on
+EN7581). Take into account PPE memory layout during PPE configuration.
 
-The write-capability bits in cdi->mask come from two different sources:
-CDC_DVD_RAM and CDC_CD_RW are populated by the driver from the MODE
-SENSE capabilities page (page 0x2A) before register_cdrom() is called,
-while CDC_MRW_W and CDC_RAM require the MMC GET CONFIGURATION command
-and were only probed by cdrom_open_write() at device open time. This
-meant that any attempt to compute the writable state from the full
-mask at probe time was incorrect, because the GET CONFIGURATION bits
-were still unset (and cdi->mask is initialized such that capabilities
-are assumed present).
-
-Fix this by factoring the GET CONFIGURATION probing out of
-cdrom_open_write() into a new exported helper,
-cdrom_probe_write_features(), and having sr call it from sr_probe()
-right after get_capabilities() has populated the MODE SENSE bits.
-register_cdrom() then calls set_disk_ro() based on the full
-write-capability mask (CDC_DVD_RAM | CDC_MRW_W | CDC_RAM | CDC_CD_RW)
-so the block layer reflects the drive's actual write support. The
-feature queries used (CDF_MRW and CDF_RWRT via GET CONFIGURATION with
-RT=00) report drive-level capabilities that are persistent across
-media, so a single probe before register_cdrom() is sufficient and the
-redundant probe at open time is dropped.
-
-With set_disk_ro() now accurate, the long-vestigial cd->writeable flag
-in sr can go: get_capabilities() used to set cd->writeable based on
-the same four mask bits, but because CDC_MRW_W and CDC_RAM default to
-"capability present" in cdi->mask and aren't touched by MODE SENSE,
-the condition that gated cd->writeable was always true, making it
-unconditionally 1. Replace the corresponding gate in sr_init_command()
-with get_disk_ro(cd->disk), which turns a previously no-op check into
-a real one and also catches kernel-internal bio writers that bypass
-blkdev_write_iter()'s bdev_read_only() check.
-
-The sd driver (SCSI disks) does not have this problem because it
-checks the MODE SENSE Write Protect bit and calls set_disk_ro()
-accordingly. The sr driver cannot use the same approach because the
-MMC specification does not define the WP bit in the MODE SENSE
-device-specific parameter byte for CD-ROM devices.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Daan De Meyer <daan@amutable.com>
-Reviewed-by: Phillip Potter <phil@philpotter.co.uk>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Phillip Potter <phil@philpotter.co.uk>
-Link: https://patch.msgid.link/20260427210139.1400-2-phil@philpotter.co.uk
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20251017-an7583-eth-support-v3-6-f28319666667@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 3309965fe44c ("net: airoha: Add missing bits in airoha_qdma_cleanup_tx_queue()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cdrom/cdrom.c | 73 ++++++++++++++++++++++++++++---------------
- drivers/scsi/sr.c     | 11 ++-----
- drivers/scsi/sr.h     |  1 -
- include/linux/cdrom.h |  1 +
- 4 files changed, 51 insertions(+), 35 deletions(-)
+ drivers/net/ethernet/airoha/airoha_eth.h      |  10 +-
+ drivers/net/ethernet/airoha/airoha_ppe.c      | 133 +++++++++---------
+ .../net/ethernet/airoha/airoha_ppe_debugfs.c  |   3 +-
+ 3 files changed, 70 insertions(+), 76 deletions(-)
 
-diff --git a/drivers/cdrom/cdrom.c b/drivers/cdrom/cdrom.c
-index fc049612d6dc1..62934cf4b10de 100644
---- a/drivers/cdrom/cdrom.c
-+++ b/drivers/cdrom/cdrom.c
-@@ -631,6 +631,16 @@ int register_cdrom(struct gendisk *disk, struct cdrom_device_info *cdi)
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
+index 9929c44d84702..8d121d12dc120 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.h
++++ b/drivers/net/ethernet/airoha/airoha_eth.h
+@@ -47,14 +47,9 @@
+ #define QDMA_METER_IDX(_n)		((_n) & 0xff)
+ #define QDMA_METER_GROUP(_n)		(((_n) >> 8) & 0x3)
  
- 	WARN_ON(!cdo->generic_packet);
+-#define PPE_NUM				2
+-#define PPE1_SRAM_NUM_ENTRIES		(8 * 1024)
+-#define PPE_SRAM_NUM_ENTRIES		(PPE_NUM * PPE1_SRAM_NUM_ENTRIES)
+-#define PPE1_STATS_NUM_ENTRIES		(4 * 1024)
+-#define PPE_STATS_NUM_ENTRIES		(PPE_NUM * PPE1_STATS_NUM_ENTRIES)
++#define PPE_SRAM_NUM_ENTRIES		(8 * 1024)
++#define PPE_STATS_NUM_ENTRIES		(4 * 1024)
+ #define PPE_DRAM_NUM_ENTRIES		(16 * 1024)
+-#define PPE_NUM_ENTRIES			(PPE_SRAM_NUM_ENTRIES + PPE_DRAM_NUM_ENTRIES)
+-#define PPE_HASH_MASK			(PPE_NUM_ENTRIES - 1)
+ #define PPE_ENTRY_SIZE			80
+ #define PPE_RAM_NUM_ENTRIES_SHIFT(_n)	(__ffs((_n) >> 10))
  
-+	/*
-+	 * Propagate the drive's write support to the block layer so BLKROGET
-+	 * reflects actual write capability. Drivers that use GET CONFIGURATION
-+	 * features (CDC_MRW_W, CDC_RAM) must have called
-+	 * cdrom_probe_write_features() before register_cdrom() so the mask is
-+	 * complete here.
-+	 */
-+	set_disk_ro(disk, !CDROM_CAN(CDC_DVD_RAM | CDC_MRW_W | CDC_RAM |
-+				     CDC_CD_RW));
-+
- 	cd_dbg(CD_REG_UNREG, "drive \"/dev/%s\" registered\n", cdi->name);
- 	mutex_lock(&cdrom_mutex);
- 	list_add(&cdi->list, &cdrom_list);
-@@ -742,6 +752,44 @@ static int cdrom_is_random_writable(struct cdrom_device_info *cdi, int *write)
- 	return 0;
+@@ -635,6 +630,7 @@ int airoha_ppe_setup_tc_block_cb(struct airoha_ppe_dev *dev, void *type_data);
+ int airoha_ppe_init(struct airoha_eth *eth);
+ void airoha_ppe_deinit(struct airoha_eth *eth);
+ void airoha_ppe_init_upd_mem(struct airoha_gdm_port *port);
++u32 airoha_ppe_get_total_num_entries(struct airoha_ppe *ppe);
+ struct airoha_foe_entry *airoha_ppe_foe_get_entry(struct airoha_ppe *ppe,
+ 						  u32 hash);
+ void airoha_ppe_foe_entry_get_stats(struct airoha_ppe *ppe, u32 hash,
+diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
+index 072cc2dd50dda..239c43248b4f4 100644
+--- a/drivers/net/ethernet/airoha/airoha_ppe.c
++++ b/drivers/net/ethernet/airoha/airoha_ppe.c
+@@ -37,19 +37,36 @@ static int airoha_ppe_get_num_stats_entries(struct airoha_ppe *ppe)
+ 	if (!IS_ENABLED(CONFIG_NET_AIROHA_FLOW_STATS))
+ 		return -EOPNOTSUPP;
+ 
+-	return PPE1_STATS_NUM_ENTRIES;
++	return PPE_STATS_NUM_ENTRIES;
  }
  
-+/*
-+ * Probe write-related MMC features via GET CONFIGURATION and update
-+ * cdi->mask accordingly. Drivers that populate cdi->mask from the MODE SENSE
-+ * capabilities page (e.g. sr) should call this after those MODE SENSE bits
-+ * have been set but before register_cdrom(), so that the full set of
-+ * write-capability bits is known by the time register_cdrom() decides on the
-+ * initial read-only state of the disk.
-+ */
-+void cdrom_probe_write_features(struct cdrom_device_info *cdi)
+ static int airoha_ppe_get_total_num_stats_entries(struct airoha_ppe *ppe)
+ {
+ 	int num_stats = airoha_ppe_get_num_stats_entries(ppe);
+ 
+-	if (num_stats > 0)
+-		num_stats = num_stats * PPE_NUM;
++	if (num_stats > 0) {
++		struct airoha_eth *eth = ppe->eth;
++
++		num_stats = num_stats * eth->soc->num_ppe;
++	}
+ 
+ 	return num_stats;
+ }
+ 
++static u32 airoha_ppe_get_total_sram_num_entries(struct airoha_ppe *ppe)
 +{
-+	int mrw, mrw_write, ram_write;
++	struct airoha_eth *eth = ppe->eth;
 +
-+	mrw = 0;
-+	if (!cdrom_is_mrw(cdi, &mrw_write))
-+		mrw = 1;
-+
-+	if (CDROM_CAN(CDC_MO_DRIVE))
-+		ram_write = 1;
-+	else
-+		(void) cdrom_is_random_writable(cdi, &ram_write);
-+
-+	if (mrw)
-+		cdi->mask &= ~CDC_MRW;
-+	else
-+		cdi->mask |= CDC_MRW;
-+
-+	if (mrw_write)
-+		cdi->mask &= ~CDC_MRW_W;
-+	else
-+		cdi->mask |= CDC_MRW_W;
-+
-+	if (ram_write)
-+		cdi->mask &= ~CDC_RAM;
-+	else
-+		cdi->mask |= CDC_RAM;
++	return PPE_SRAM_NUM_ENTRIES * eth->soc->num_ppe;
 +}
-+EXPORT_SYMBOL(cdrom_probe_write_features);
 +
- static int cdrom_media_erasable(struct cdrom_device_info *cdi)
++u32 airoha_ppe_get_total_num_entries(struct airoha_ppe *ppe)
++{
++	u32 sram_num_entries = airoha_ppe_get_total_sram_num_entries(ppe);
++
++	return sram_num_entries + PPE_DRAM_NUM_ENTRIES;
++}
++
+ bool airoha_ppe_is_enabled(struct airoha_eth *eth, int index)
  {
- 	disc_information di;
-@@ -894,33 +942,8 @@ static int cdrom_is_dvd_rw(struct cdrom_device_info *cdi)
-  */
- static int cdrom_open_write(struct cdrom_device_info *cdi)
+ 	if (index >= eth->soc->num_ppe)
+@@ -67,14 +84,22 @@ static u32 airoha_ppe_get_timestamp(struct airoha_ppe *ppe)
+ 
+ static void airoha_ppe_hw_init(struct airoha_ppe *ppe)
  {
--	int mrw, mrw_write, ram_write;
- 	int ret = 1;
+-	u32 sram_tb_size, sram_num_entries, dram_num_entries;
++	u32 sram_ppe_num_data_entries = PPE_SRAM_NUM_ENTRIES, sram_num_entries;
++	u32 sram_tb_size, dram_num_entries;
+ 	struct airoha_eth *eth = ppe->eth;
+ 	int i, sram_num_stats_entries;
  
--	mrw = 0;
--	if (!cdrom_is_mrw(cdi, &mrw_write))
--		mrw = 1;
--
--	if (CDROM_CAN(CDC_MO_DRIVE))
--		ram_write = 1;
--	else
--		(void) cdrom_is_random_writable(cdi, &ram_write);
--	
--	if (mrw)
--		cdi->mask &= ~CDC_MRW;
--	else
--		cdi->mask |= CDC_MRW;
--
--	if (mrw_write)
--		cdi->mask &= ~CDC_MRW_W;
--	else
--		cdi->mask |= CDC_MRW_W;
--
--	if (ram_write)
--		cdi->mask &= ~CDC_RAM;
--	else
--		cdi->mask |= CDC_RAM;
--
- 	if (CDROM_CAN(CDC_MRW_W))
- 		ret = cdrom_mrw_open_write(cdi);
- 	else if (CDROM_CAN(CDC_DVD_RAM))
-diff --git a/drivers/scsi/sr.c b/drivers/scsi/sr.c
-index 7adb2573f50d4..c36c54ecd354b 100644
---- a/drivers/scsi/sr.c
-+++ b/drivers/scsi/sr.c
-@@ -395,7 +395,7 @@ static blk_status_t sr_init_command(struct scsi_cmnd *SCpnt)
+-	sram_tb_size = PPE_SRAM_NUM_ENTRIES * sizeof(struct airoha_foe_entry);
++	sram_num_entries = airoha_ppe_get_total_sram_num_entries(ppe);
++	sram_tb_size = sram_num_entries * sizeof(struct airoha_foe_entry);
+ 	dram_num_entries = PPE_RAM_NUM_ENTRIES_SHIFT(PPE_DRAM_NUM_ENTRIES);
  
- 	switch (req_op(rq)) {
- 	case REQ_OP_WRITE:
--		if (!cd->writeable)
-+		if (get_disk_ro(cd->disk))
- 			goto out;
- 		SCpnt->cmnd[0] = WRITE_10;
- 		cd->cdi.media_written = 1;
-@@ -681,6 +681,7 @@ static int sr_probe(struct scsi_device *sdev)
- 	error = -ENOMEM;
- 	if (get_capabilities(cd))
- 		goto fail_minor;
-+	cdrom_probe_write_features(&cd->cdi);
- 	sr_vendor_init(cd);
+-	for (i = 0; i < PPE_NUM; i++) {
++	sram_num_stats_entries = airoha_ppe_get_num_stats_entries(ppe);
++	if (sram_num_stats_entries > 0)
++		sram_ppe_num_data_entries -= sram_num_stats_entries;
++	sram_ppe_num_data_entries =
++		PPE_RAM_NUM_ENTRIES_SHIFT(sram_ppe_num_data_entries);
++
++	for (i = 0; i < eth->soc->num_ppe; i++) {
+ 		int p;
  
- 	set_capacity(disk, cd->capacity);
-@@ -899,14 +900,6 @@ static int get_capabilities(struct scsi_cd *cd)
- 	/*else    I don't think it can close its tray
- 		cd->cdi.mask |= CDC_CLOSE_TRAY; */
+ 		airoha_fe_wr(eth, REG_PPE_TB_BASE(i),
+@@ -106,10 +131,16 @@ static void airoha_ppe_hw_init(struct airoha_ppe *ppe)
  
--	/*
--	 * if DVD-RAM, MRW-W or CD-RW, we are randomly writable
--	 */
--	if ((cd->cdi.mask & (CDC_DVD_RAM | CDC_MRW_W | CDC_RAM | CDC_CD_RW)) !=
--			(CDC_DVD_RAM | CDC_MRW_W | CDC_RAM | CDC_CD_RW)) {
--		cd->writeable = 1;
+ 		airoha_fe_rmw(eth, REG_PPE_TB_CFG(i),
+ 			      PPE_TB_CFG_SEARCH_MISS_MASK |
++			      PPE_SRAM_TB_NUM_ENTRY_MASK |
++			      PPE_DRAM_TB_NUM_ENTRY_MASK |
+ 			      PPE_TB_CFG_KEEPALIVE_MASK |
+ 			      PPE_TB_ENTRY_SIZE_MASK,
+ 			      FIELD_PREP(PPE_TB_CFG_SEARCH_MISS_MASK, 3) |
+-			      FIELD_PREP(PPE_TB_ENTRY_SIZE_MASK, 0));
++			      FIELD_PREP(PPE_TB_ENTRY_SIZE_MASK, 0) |
++			      FIELD_PREP(PPE_SRAM_TB_NUM_ENTRY_MASK,
++					 sram_ppe_num_data_entries) |
++			      FIELD_PREP(PPE_DRAM_TB_NUM_ENTRY_MASK,
++					 dram_num_entries));
+ 
+ 		airoha_fe_rmw(eth, REG_PPE_BIND_RATE(i),
+ 			      PPE_BIND_RATE_L2B_BIND_MASK |
+@@ -130,45 +161,6 @@ static void airoha_ppe_hw_init(struct airoha_ppe *ppe)
+ 				      FIELD_PREP(FP1_EGRESS_MTU_MASK,
+ 						 AIROHA_MAX_MTU));
+ 	}
+-
+-	if (airoha_ppe_is_enabled(eth, 1)) {
+-		sram_num_entries = PPE1_SRAM_NUM_ENTRIES;
+-		sram_num_stats_entries =
+-			airoha_ppe_get_num_stats_entries(ppe);
+-		if (sram_num_stats_entries > 0)
+-			sram_num_entries -= sram_num_stats_entries;
+-		sram_num_entries = PPE_RAM_NUM_ENTRIES_SHIFT(sram_num_entries);
+-
+-		airoha_fe_rmw(eth, REG_PPE_TB_CFG(0),
+-			      PPE_SRAM_TB_NUM_ENTRY_MASK |
+-			      PPE_DRAM_TB_NUM_ENTRY_MASK,
+-			      FIELD_PREP(PPE_SRAM_TB_NUM_ENTRY_MASK,
+-					 sram_num_entries) |
+-			      FIELD_PREP(PPE_DRAM_TB_NUM_ENTRY_MASK,
+-					 dram_num_entries));
+-		airoha_fe_rmw(eth, REG_PPE_TB_CFG(1),
+-			      PPE_SRAM_TB_NUM_ENTRY_MASK |
+-			      PPE_DRAM_TB_NUM_ENTRY_MASK,
+-			      FIELD_PREP(PPE_SRAM_TB_NUM_ENTRY_MASK,
+-					 sram_num_entries) |
+-			      FIELD_PREP(PPE_DRAM_TB_NUM_ENTRY_MASK,
+-					 dram_num_entries));
+-	} else {
+-		sram_num_entries = PPE_SRAM_NUM_ENTRIES;
+-		sram_num_stats_entries =
+-			airoha_ppe_get_total_num_stats_entries(ppe);
+-		if (sram_num_stats_entries > 0)
+-			sram_num_entries -= sram_num_stats_entries;
+-		sram_num_entries = PPE_RAM_NUM_ENTRIES_SHIFT(sram_num_entries);
+-
+-		airoha_fe_rmw(eth, REG_PPE_TB_CFG(0),
+-			      PPE_SRAM_TB_NUM_ENTRY_MASK |
+-			      PPE_DRAM_TB_NUM_ENTRY_MASK,
+-			      FIELD_PREP(PPE_SRAM_TB_NUM_ENTRY_MASK,
+-					 sram_num_entries) |
+-			      FIELD_PREP(PPE_DRAM_TB_NUM_ENTRY_MASK,
+-					 dram_num_entries));
 -	}
--
- 	kfree(buffer);
+ }
+ 
+ static void airoha_ppe_flow_mangle_eth(const struct flow_action_entry *act, void *eth)
+@@ -469,9 +461,11 @@ static int airoha_ppe_foe_entry_set_ipv6_tuple(struct airoha_foe_entry *hwe,
  	return 0;
  }
-diff --git a/drivers/scsi/sr.h b/drivers/scsi/sr.h
-index dc899277b3a44..2d92f9cb6fec7 100644
---- a/drivers/scsi/sr.h
-+++ b/drivers/scsi/sr.h
-@@ -35,7 +35,6 @@ typedef struct scsi_cd {
- 	struct scsi_device *device;
- 	unsigned int vendor;	/* vendor code, see sr_vendor.c         */
- 	unsigned long ms_offset;	/* for reading multisession-CD's        */
--	unsigned writeable : 1;
- 	unsigned use:1;		/* is this device still supportable     */
- 	unsigned xa_flag:1;	/* CD has XA sectors ? */
- 	unsigned readcd_known:1;	/* drive supports READ_CD (0xbe) */
-diff --git a/include/linux/cdrom.h b/include/linux/cdrom.h
-index b907e6c2307d8..260d7968cf720 100644
---- a/include/linux/cdrom.h
-+++ b/include/linux/cdrom.h
-@@ -108,6 +108,7 @@ int cdrom_ioctl(struct cdrom_device_info *cdi, struct block_device *bdev,
- extern unsigned int cdrom_check_events(struct cdrom_device_info *cdi,
- 				       unsigned int clearing);
  
-+extern void cdrom_probe_write_features(struct cdrom_device_info *cdi);
- extern int register_cdrom(struct gendisk *disk, struct cdrom_device_info *cdi);
- extern void unregister_cdrom(struct cdrom_device_info *cdi);
+-static u32 airoha_ppe_foe_get_entry_hash(struct airoha_foe_entry *hwe)
++static u32 airoha_ppe_foe_get_entry_hash(struct airoha_ppe *ppe,
++					 struct airoha_foe_entry *hwe)
+ {
+ 	int type = FIELD_GET(AIROHA_FOE_IB1_BIND_PACKET_TYPE, hwe->ib1);
++	u32 ppe_hash_mask = airoha_ppe_get_total_num_entries(ppe) - 1;
+ 	u32 hash, hv1, hv2, hv3;
  
+ 	switch (type) {
+@@ -509,14 +503,14 @@ static u32 airoha_ppe_foe_get_entry_hash(struct airoha_foe_entry *hwe)
+ 	case PPE_PKT_TYPE_IPV6_6RD:
+ 	default:
+ 		WARN_ON_ONCE(1);
+-		return PPE_HASH_MASK;
++		return ppe_hash_mask;
+ 	}
+ 
+ 	hash = (hv1 & hv2) | ((~hv1) & hv3);
+ 	hash = (hash >> 24) | ((hash & 0xffffff) << 8);
+ 	hash ^= hv1 ^ hv2 ^ hv3;
+ 	hash ^= hash >> 16;
+-	hash &= PPE_NUM_ENTRIES - 1;
++	hash &= ppe_hash_mask;
+ 
+ 	return hash;
+ }
+@@ -617,9 +611,11 @@ static void airoha_ppe_foe_flow_stats_update(struct airoha_ppe *ppe,
+ static struct airoha_foe_entry *
+ airoha_ppe_foe_get_entry_locked(struct airoha_ppe *ppe, u32 hash)
+ {
++	u32 sram_num_entries = airoha_ppe_get_total_sram_num_entries(ppe);
++
+ 	lockdep_assert_held(&ppe_lock);
+ 
+-	if (hash < PPE_SRAM_NUM_ENTRIES) {
++	if (hash < sram_num_entries) {
+ 		u32 *hwe = ppe->foe + hash * sizeof(struct airoha_foe_entry);
+ 		struct airoha_eth *eth = ppe->eth;
+ 		bool ppe2;
+@@ -627,7 +623,7 @@ airoha_ppe_foe_get_entry_locked(struct airoha_ppe *ppe, u32 hash)
+ 		int i;
+ 
+ 		ppe2 = airoha_ppe_is_enabled(ppe->eth, 1) &&
+-		       hash >= PPE1_SRAM_NUM_ENTRIES;
++		       hash >= PPE_SRAM_NUM_ENTRIES;
+ 		airoha_fe_wr(ppe->eth, REG_PPE_RAM_CTRL(ppe2),
+ 			     FIELD_PREP(PPE_SRAM_CTRL_ENTRY_MASK, hash) |
+ 			     PPE_SRAM_CTRL_REQ_MASK);
+@@ -678,6 +674,7 @@ static int airoha_ppe_foe_commit_entry(struct airoha_ppe *ppe,
+ 				       struct airoha_foe_entry *e,
+ 				       u32 hash, bool rx_wlan)
+ {
++	u32 sram_num_entries = airoha_ppe_get_total_sram_num_entries(ppe);
+ 	struct airoha_foe_entry *hwe = ppe->foe + hash * sizeof(*hwe);
+ 	u32 ts = airoha_ppe_get_timestamp(ppe);
+ 	struct airoha_eth *eth = ppe->eth;
+@@ -702,10 +699,10 @@ static int airoha_ppe_foe_commit_entry(struct airoha_ppe *ppe,
+ 	if (!rx_wlan)
+ 		airoha_ppe_foe_flow_stats_update(ppe, npu, hwe, hash);
+ 
+-	if (hash < PPE_SRAM_NUM_ENTRIES) {
++	if (hash < sram_num_entries) {
+ 		dma_addr_t addr = ppe->foe_dma + hash * sizeof(*hwe);
+ 		bool ppe2 = airoha_ppe_is_enabled(eth, 1) &&
+-			    hash >= PPE1_SRAM_NUM_ENTRIES;
++			    hash >= PPE_SRAM_NUM_ENTRIES;
+ 
+ 		err = npu->ops.ppe_foe_commit_entry(npu, addr, sizeof(*hwe),
+ 						    hash, ppe2);
+@@ -832,7 +829,7 @@ static void airoha_ppe_foe_insert_entry(struct airoha_ppe *ppe,
+ 	if (state == AIROHA_FOE_STATE_BIND)
+ 		goto unlock;
+ 
+-	index = airoha_ppe_foe_get_entry_hash(hwe);
++	index = airoha_ppe_foe_get_entry_hash(ppe, hwe);
+ 	hlist_for_each_entry_safe(e, n, &ppe->foe_flow[index], list) {
+ 		if (e->type == FLOW_TYPE_L2_SUBFLOW) {
+ 			state = FIELD_GET(AIROHA_FOE_IB1_BIND_STATE, hwe->ib1);
+@@ -892,7 +889,7 @@ static int airoha_ppe_foe_flow_commit_entry(struct airoha_ppe *ppe,
+ 	if (type == PPE_PKT_TYPE_BRIDGE)
+ 		return airoha_ppe_foe_l2_flow_commit_entry(ppe, e);
+ 
+-	hash = airoha_ppe_foe_get_entry_hash(&e->data);
++	hash = airoha_ppe_foe_get_entry_hash(ppe, &e->data);
+ 	e->type = FLOW_TYPE_L4;
+ 	e->hash = 0xffff;
+ 
+@@ -1296,17 +1293,15 @@ static int airoha_ppe_flow_offload_cmd(struct airoha_eth *eth,
+ static int airoha_ppe_flush_sram_entries(struct airoha_ppe *ppe,
+ 					 struct airoha_npu *npu)
+ {
+-	int i, sram_num_entries = PPE_SRAM_NUM_ENTRIES;
++	u32 sram_num_entries = airoha_ppe_get_total_sram_num_entries(ppe);
+ 	struct airoha_foe_entry *hwe = ppe->foe;
++	int i;
+ 
+-	if (airoha_ppe_is_enabled(ppe->eth, 1))
+-		sram_num_entries = sram_num_entries / 2;
+-
+-	for (i = 0; i < sram_num_entries; i++)
++	for (i = 0; i < PPE_SRAM_NUM_ENTRIES; i++)
+ 		memset(&hwe[i], 0, sizeof(*hwe));
+ 
+ 	return npu->ops.ppe_flush_sram_entries(npu, ppe->foe_dma,
+-					       PPE_SRAM_NUM_ENTRIES);
++					       sram_num_entries);
+ }
+ 
+ static struct airoha_npu *airoha_ppe_npu_get(struct airoha_eth *eth)
+@@ -1410,9 +1405,10 @@ void airoha_ppe_check_skb(struct airoha_ppe_dev *dev, struct sk_buff *skb,
+ 			  u16 hash, bool rx_wlan)
+ {
+ 	struct airoha_ppe *ppe = dev->priv;
++	u32 ppe_hash_mask = airoha_ppe_get_total_num_entries(ppe) - 1;
+ 	u16 now, diff;
+ 
+-	if (hash > PPE_HASH_MASK)
++	if (hash > ppe_hash_mask)
+ 		return;
+ 
+ 	now = (u16)jiffies;
+@@ -1503,6 +1499,7 @@ EXPORT_SYMBOL_GPL(airoha_ppe_put_dev);
+ int airoha_ppe_init(struct airoha_eth *eth)
+ {
+ 	int foe_size, err, ppe_num_stats_entries;
++	u32 ppe_num_entries;
+ 	struct airoha_ppe *ppe;
+ 
+ 	ppe = devm_kzalloc(eth->dev, sizeof(*ppe), GFP_KERNEL);
+@@ -1512,18 +1509,18 @@ int airoha_ppe_init(struct airoha_eth *eth)
+ 	ppe->dev.ops.setup_tc_block_cb = airoha_ppe_setup_tc_block_cb;
+ 	ppe->dev.ops.check_skb = airoha_ppe_check_skb;
+ 	ppe->dev.priv = ppe;
++	ppe->eth = eth;
++	eth->ppe = ppe;
+ 
+-	foe_size = PPE_NUM_ENTRIES * sizeof(struct airoha_foe_entry);
++	ppe_num_entries = airoha_ppe_get_total_num_entries(ppe);
++	foe_size = ppe_num_entries * sizeof(struct airoha_foe_entry);
+ 	ppe->foe = dmam_alloc_coherent(eth->dev, foe_size, &ppe->foe_dma,
+ 				       GFP_KERNEL);
+ 	if (!ppe->foe)
+ 		return -ENOMEM;
+ 
+-	ppe->eth = eth;
+-	eth->ppe = ppe;
+-
+ 	ppe->foe_flow = devm_kzalloc(eth->dev,
+-				     PPE_NUM_ENTRIES * sizeof(*ppe->foe_flow),
++				     ppe_num_entries * sizeof(*ppe->foe_flow),
+ 				     GFP_KERNEL);
+ 	if (!ppe->foe_flow)
+ 		return -ENOMEM;
+@@ -1538,7 +1535,7 @@ int airoha_ppe_init(struct airoha_eth *eth)
+ 			return -ENOMEM;
+ 	}
+ 
+-	ppe->foe_check_time = devm_kzalloc(eth->dev, PPE_NUM_ENTRIES,
++	ppe->foe_check_time = devm_kzalloc(eth->dev, ppe_num_entries,
+ 					   GFP_KERNEL);
+ 	if (!ppe->foe_check_time)
+ 		return -ENOMEM;
+diff --git a/drivers/net/ethernet/airoha/airoha_ppe_debugfs.c b/drivers/net/ethernet/airoha/airoha_ppe_debugfs.c
+index 05a756233f6a4..0112c41150bb0 100644
+--- a/drivers/net/ethernet/airoha/airoha_ppe_debugfs.c
++++ b/drivers/net/ethernet/airoha/airoha_ppe_debugfs.c
+@@ -53,9 +53,10 @@ static int airoha_ppe_debugfs_foe_show(struct seq_file *m, void *private,
+ 		[AIROHA_FOE_STATE_FIN] = "FIN",
+ 	};
+ 	struct airoha_ppe *ppe = m->private;
++	u32 ppe_num_entries = airoha_ppe_get_total_num_entries(ppe);
+ 	int i;
+ 
+-	for (i = 0; i < PPE_NUM_ENTRIES; i++) {
++	for (i = 0; i < ppe_num_entries; i++) {
+ 		const char *state_str, *type_str = "UNKNOWN";
+ 		void *src_addr = NULL, *dest_addr = NULL;
+ 		u16 *src_port = NULL, *dest_port = NULL;
 -- 
 2.53.0
 
