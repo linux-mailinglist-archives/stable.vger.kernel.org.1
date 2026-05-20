@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-251219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250289-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6DgcJzwWDmpb6AUAu9opvQ
-	(envelope-from <stable+bounces-251219-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:14:52 +0200
+	id qC3LLJEODmo35wUAu9opvQ
+	(envelope-from <stable+bounces-250289-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:42:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01D0A59954C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:14:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 429E75989E2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:42:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 56C27329E317
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B701333867BB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:37:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8587335F619;
-	Wed, 20 May 2026 17:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847CC362143;
+	Wed, 20 May 2026 16:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PkehaRDD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OegbdoGi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D3A33BBAF;
-	Wed, 20 May 2026 17:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92EA63D7D7B;
+	Wed, 20 May 2026 16:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297411; cv=none; b=ctGWRKbOQf07ISB3wtX/0SujbJ2Ma8gBW9MFZMrJCtntSAGJwKP8XYCIgINRABVri+c9xQEy0SEeL4FQWiiht7wshIoofKN6UA6NO+w8FA68KOeEUtK6QlIuWdpoV6c+QnDqGYwSA+G419aiKC9gR0cLRuhRLd8XQEBqXuqTsMI=
+	t=1779295024; cv=none; b=nNkBoH4d8q83ySKMT/gcEr8PzhXregbEuBcILJ8cPdxIWdB5SrffwL6C/Rd2iVV0S83r1Qx1DuegHXgAprbEbdibizV9ae/jHt7dk2kkk71FUIZEDE/PWqcLyTrNn/aD5eSihSvZrkcaSdVPyGzLLXlKgPMMnT/RvPSAd5HtNxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297411; c=relaxed/simple;
-	bh=CZOkBlEZ+t83UzAjJZ+4p6xdPxM1yxccaFWoIgq5K6Y=;
+	s=arc-20240116; t=1779295024; c=relaxed/simple;
+	bh=kAGGXYVkfrMATosd0Ou910uP0Hh3qTzuo1rA31Hx2g4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fnq5Ig7COS3NB05bzrpyWv73+ll+Wr1+RDry1iHqseghlQo16zGs5ldnzjoQQN2o0aaZXITRilvFnLtbp2NwNy+GTgO6mAWuPimcqTRSb0SEKZtWd3AMAjV2xnus64yX6FW4eC9uAAQOyaWJz/02gUuWAqPhrI8+U/+VjBwJdSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PkehaRDD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BF161F000E9;
-	Wed, 20 May 2026 17:16:49 +0000 (UTC)
+	 MIME-Version; b=bP8L3NphtO4E99D5dE+CdlV//6vq4uEZyTxci3klrs6BODvMhiX+MfxDuvXPpEcOq8QPvm8k7LZ7BtyyV/IeTsxGXh7othoppVAYOPI85h6WgYkUXcnDA3B9ahmeJr5vyxxGcrSirFK7/xRbYOrHWcj/Dj767JpOJ+jqc0gylHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OegbdoGi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 160101F000E9;
+	Wed, 20 May 2026 16:37:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297409;
-	bh=iM5ibgReYXZMqFscwiAhRZw50BRWLZcFr1qE3E8ojeg=;
+	s=korg; t=1779295021;
+	bh=PPYNlIQs1yqxXiIvdJMJgM6CkODEVAUJEj7/VNea/Fs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PkehaRDDMhqiGz0wE5zAyxNxSA+SparI5MMjAzQ1PcL6kGulJmMj3wltXf8fc1wht
-	 LUscggj5M9lWm68cOM744sNdtshbToLqS4Z0dbNeZHY8RG9Fu5kvnUw8Dmh06tZvWa
-	 37AcmH61IZRbWsMCKffeamvtgqA7tpsDnuN9Ow4g=
+	b=OegbdoGilVHohW48rOaCXziRyUns3aCiF4v0/3OSURSrpfgmj231aTY0LgeecLPCO
+	 DVM51ty92M7A5qCh08ZK+KMqCEAHxqON698cPn0EeItcdo2XeTyMIzh1EFTLfsBCxC
+	 8sPcnl433POhucuJy+pHSh89t28gtGvoXYBEJ3N8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 021/957] ACPI: x86: cmos_rtc: Improve coordination with ACPI TAD driver
+Subject: [PATCH 7.0 0254/1146] dm cache: fix concurrent write failure in passthrough mode
 Date: Wed, 20 May 2026 18:08:24 +0200
-Message-ID: <20260520162135.020433195@linuxfoundation.org>
+Message-ID: <20260520162153.982315559@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,21 +68,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251219-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250289-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -90,93 +91,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 01D0A59954C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 429E75989E2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-[ Upstream commit 6cee29ad9d7e400d39ae0b1a54447fedcb62eecd ]
+[ Upstream commit e4f66341779d0cf4c83c74793753a84094286d9e ]
 
-If a CMOS RTC (PNP0B00/PNP0B01/PNP0B02) device coexists with an ACPI
-TAD (timer and event alarm device, ACPI000E), the ACPI TAD driver will
-attempt to install the CMOS RTC address space hanlder that has been
-installed already and the TAD probing will fail.
+When bio prison cell lock acquisition fails due to concurrent writes to
+the same block in passthrough mode, dm-cache incorrectly returns an I/O
+error instead of properly handling the concurrency. This can occur in
+both process and workqueue contexts when invalidate_lock() is called for
+exclusive access to a data block. Fix this by deferring the write bios
+to ensure proper block device behavior.
 
-Avoid that by changing acpi_install_cmos_rtc_space_handler() to return
-zero and acpi_remove_cmos_rtc_space_handler() to do nothing if the CMOS
-RTC address space handler has been installed already.
+Reproduce steps:
 
-Fixes: 596ca52a56da ("ACPI: TAD: Install SystemCMOS address space handler for ACPI000E")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/2415111.ElGaqSPkdT@rafael.j.wysocki
+1. Create a cache device
+
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
+dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
+dmsetup create cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+
+2. Promote the first data block into cache
+
+fio --filename=/dev/mapper/cache --name=populate --rw=write --bs=4k \
+--direct=1 --size=64k
+
+3. Reload the cache into passthrough mode
+
+dmsetup suspend cache
+dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 passthrough smq 0"
+dmsetup resume cache
+
+4. Write to the first cached block concurrently. Sometimes one of the
+   processes will receive I/O errors.
+
+fio --filename=/dev/mapper/cache --name test --rw=randwrite --bs=4k \
+--randrepeat=0 --direct=1 --numjobs=2 --size 64k
+
+ <snip>
+ fio-3.41
+ fio: io_u error on file /dev/mapper/cache: Input/output error: write offset=4096, buflen=4096
+ fio: pid=106, err=5/file:io_u.c:2008, func=io_u error, error=Input/output error
+ test: (groupid=0, jobs=1): err= 0: pid=105
+ test: (groupid=0, jobs=1): err= 5 (file:io_u.c:2008, func=io_u error, error=Input/output error): pid=106
+ <snip>
+
+Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/x86/cmos_rtc.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ drivers/md/dm-cache-target.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/acpi/x86/cmos_rtc.c b/drivers/acpi/x86/cmos_rtc.c
-index 977234da9fc11..45db7e51cbe60 100644
---- a/drivers/acpi/x86/cmos_rtc.c
-+++ b/drivers/acpi/x86/cmos_rtc.c
-@@ -24,6 +24,8 @@ static const struct acpi_device_id acpi_cmos_rtc_ids[] = {
- 	{}
- };
- 
-+static bool cmos_rtc_space_handler_present __read_mostly;
+diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
+index d3ef88b859ab3..32d22c7b9a07d 100644
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -1561,6 +1561,15 @@ static int invalidate_lock(struct dm_cache_migration *mg)
+ 			    READ_WRITE_LOCK_LEVEL, prealloc, &mg->cell);
+ 	if (r < 0) {
+ 		free_prison_cell(cache, prealloc);
 +
- static acpi_status acpi_cmos_rtc_space_handler(u32 function,
- 					       acpi_physical_address address,
- 					       u32 bits, u64 *value64,
-@@ -59,6 +61,9 @@ int acpi_install_cmos_rtc_space_handler(acpi_handle handle)
- {
- 	acpi_status status;
- 
-+	if (cmos_rtc_space_handler_present)
-+		return 0;
++		/* Defer the bio for retrying the cell lock */
++		if (mg->overwrite_bio) {
++			struct bio *bio = mg->overwrite_bio;
 +
- 	status = acpi_install_address_space_handler(handle,
- 						    ACPI_ADR_SPACE_CMOS,
- 						    acpi_cmos_rtc_space_handler,
-@@ -68,6 +73,8 @@ int acpi_install_cmos_rtc_space_handler(acpi_handle handle)
- 		return -ENODEV;
++			mg->overwrite_bio = NULL;
++			defer_bio(cache, bio);
++		}
++
+ 		invalidate_complete(mg, false);
+ 		return r;
  	}
- 
-+	cmos_rtc_space_handler_present = true;
-+
- 	return 1;
- }
- EXPORT_SYMBOL_GPL(acpi_install_cmos_rtc_space_handler);
-@@ -76,6 +83,9 @@ void acpi_remove_cmos_rtc_space_handler(acpi_handle handle)
- {
- 	acpi_status status;
- 
-+	if (cmos_rtc_space_handler_present)
-+		return;
-+
- 	status = acpi_remove_address_space_handler(handle,
- 						   ACPI_ADR_SPACE_CMOS,
- 						   acpi_cmos_rtc_space_handler);
-@@ -87,7 +97,13 @@ EXPORT_SYMBOL_GPL(acpi_remove_cmos_rtc_space_handler);
- static int acpi_cmos_rtc_attach(struct acpi_device *adev,
- 				const struct acpi_device_id *id)
- {
--	return acpi_install_cmos_rtc_space_handler(adev->handle);
-+	int ret;
-+
-+	ret = acpi_install_cmos_rtc_space_handler(adev->handle);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 1;
- }
- 
- static struct acpi_scan_handler cmos_rtc_handler = {
 -- 
 2.53.0
 
