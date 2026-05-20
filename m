@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-250892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252465-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QE4qEFX0DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-250892-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:50:13 +0200
+	id 2OTlEUL9DWok5QUAu9opvQ
+	(envelope-from <stable+bounces-252465-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:28:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4525D594B19
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:50:12 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19B765963D9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:28:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6AFAE3130BFC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:04:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8496230E1037
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:12:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31E733F9A11;
-	Wed, 20 May 2026 17:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 004FD3F88BE;
+	Wed, 20 May 2026 18:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ECb5OEVl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xZfrBDWG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B873F871A;
-	Wed, 20 May 2026 17:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB8E93F787E;
+	Wed, 20 May 2026 18:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296581; cv=none; b=eCmj8ZCm8f/b22GR4kIyczfNq097JAaMZpFskP+zWE1DOjLpmcT1Okt3dEZP/n1C9bKcV8V9U3QD5uPFEiWE/OrL1w0eqx5vzXdxDLjSbY8e+yWGyd5uDSfIHH7xRfSTUmo1nzLx8zH/lcjMzABFFelIQ5OLpknzI2Q0qxiCYUQ=
+	t=1779300744; cv=none; b=qvob5y2zaO6oXG+Hw6Zl0/U57BZ3QXtkC8952OCacdr4C25VTwXmVmlyW6bT+f+lKRS0TT3p+a41O8NzpvK3Kx1XG9s7WMwRQrZqO7NU6Z7iib4sQobVRgBf3WjDI72I7lJtGg1m8qMx/ad+VFYFt0HkDhBozqIm0iRhkKuWwB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296581; c=relaxed/simple;
-	bh=5f7xRQi1tX5q9BEGGHi5pdHNNbnY5UxqNPvVxOSDi3E=;
+	s=arc-20240116; t=1779300744; c=relaxed/simple;
+	bh=T+P+szrvytwq4+NEKGsK7zGP5e2vUJrr5w5rrTs8ObA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CGEXgbQw2o62rvNnhtgF+e6ayXOPcgC+RoqhOfVIC2DHZ50f0WZfuydQNeYXqBhHMmPk1/u5TdG17FpVl/ImAq2uK1k0hB+M4JkwVbFLRGVVe9eZvqGnH9GimRwU+xjNjLZ1GDCumQBqOz8R+bjw1TlMXu7KYZgXrEfjQXTtedo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ECb5OEVl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FF371F000E9;
-	Wed, 20 May 2026 17:02:56 +0000 (UTC)
+	 MIME-Version; b=Ji2vYcfa3fxC1n1EOll5SREQ+PQp4tCajubE+eSCtV4XmWlyJSerAwbmhHgGg1gfZYGLgbT4O8noCWODCci3l6/MyE8QybCqH+JG0Dxr5JBkGd/WzYZ5ElWcf4a6oWcPfQhPwRKekxujg3wuMZBseXBrO9zuN8gbT4LYoL0rBNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xZfrBDWG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E5851F000E9;
+	Wed, 20 May 2026 18:12:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296577;
-	bh=UBRm0Y1aZRmAN3zLXC2XNUDms9+GkAE4EGdm/tT8Blk=;
+	s=korg; t=1779300743;
+	bh=m9p0AfIJPbJoVuDRXPFTEVWPo9dSilw7SYDouFUU7/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ECb5OEVlyi9Jy7DMVbxnVSJEdgBab4JXLOmJD49ux34dWvcaw0RO6DxHwKfglgLXZ
-	 HqCRTWe7Hgsu8Van+IPGsTVxSyT028QdDahER671fjOvD4ENS+LYl060uhxiS50TUO
-	 l9vpTHw7RQlYKOMIXRWMeOhAD2MuEiJIwUOxuR9s=
+	b=xZfrBDWGIfJ/txzIAi1irohwM9d0D7Im1E5uOT7/lPHw89e/Qbuero6GSWRD75zpZ
+	 OXFziuMRLcYXNDfLSJ3kN40fLjHqcyWNCPAVjJdwr8rqhZl4bh8P3ll1RLYHiMYCp1
+	 BbEY01iZ6E9wTRVBrSUzArCAfj03B5ur3D9mmuP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0851/1146] net: mana: Init gf_stats_work before potential error paths in probe
+Subject: [PATCH 6.12 290/666] arm64: dts: qcom: sm8650: Enable UHS-I SDR50 and SDR104 SD card modes
 Date: Wed, 20 May 2026 18:18:21 +0200
-Message-ID: <20260520162207.497601563@linuxfoundation.org>
+Message-ID: <20260520162117.501424710@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250892-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252465-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,64 +87,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 4525D594B19
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linaro.org:email]
+X-Rspamd-Queue-Id: 19B765963D9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-[ Upstream commit 6e8bc03349fe4f09567fa76235abf52bdaf83082 ]
+[ Upstream commit 93f823e7d48232e62fb8fb74481696609c90244a ]
 
-Move INIT_DELAYED_WORK(gf_stats_work) to before mana_create_eq(),
-while keeping schedule_delayed_work() at its original location.
+The restriction on UHS-I speed modes was added to all SM8650 platforms
+by copying it from SM8450 and SM8550 dtsi files, and it was an actually
+reproducible problem due to the overclocking of SD cards. Since the latter
+issue has been fixed in the SM8650 GCC driver, UHS-I speed modes are
+working fine on SM8650 boards, below is the test performed on SM8650-HDK:
 
-Previously, if any function between mana_create_eq() and the
-INIT_DELAYED_WORK call failed, mana_probe() would call mana_remove()
-which unconditionally calls cancel_delayed_work_sync(gf_stats_work)
-in __flush_work() or debug object warnings with
-CONFIG_DEBUG_OBJECTS_WORK enabled.
+SDR50 speed mode:
 
-Fixes: be4f1d67ec56 ("net: mana: Add standard counter rx_missed_errors")
-Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-Link: https://patch.msgid.link/20260420124741.1056179-3-ernis@linux.microsoft.com
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+    mmc0: new UHS-I speed SDR50 SDHC card at address 0001
+    mmcblk0: mmc0:0001 00000 14.6 GiB
+     mmcblk0: p1
+
+    % dd if=/dev/mmcblk0p1 of=/dev/null bs=1M count=1024
+    1024+0 records in
+    1024+0 records out
+    1073741824 bytes (1.1 GB, 1.0 GiB) copied, 24.8086 s, 43.3 MB/s
+
+SDR104 speed mode:
+
+    mmc0: new UHS-I speed SDR104 SDHC card at address 59b4
+    mmcblk0: mmc0:59b4 USDU1 28.3 GiB
+     mmcblk0: p1
+
+    % dd if=/dev/mmcblk0p1 of=/dev/null bs=1M count=1024
+    1024+0 records in
+    1024+0 records out
+    1073741824 bytes (1.1 GB, 1.0 GiB) copied, 12.9448 s, 82.9 MB/s
+
+Unset the UHS-I speed mode restrictions from the SM8550 platform dtsi
+file, there is no indication that the SDHC controller is broken.
+
+Fixes: 10e024671295 ("arm64: dts: qcom: sm8650: add interconnect dependent device nodes")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Link: https://lore.kernel.org/r/20260314023715.357512-7-vladimir.zapolskiy@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microsoft/mana/mana_en.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sm8650.dtsi | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 2b3dd326a8e15..974df81855d23 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -3598,6 +3598,8 @@ int mana_probe(struct gdma_dev *gd, bool resuming)
- 		INIT_WORK(&ac->link_change_work, mana_link_state_handle);
- 	}
+diff --git a/arch/arm64/boot/dts/qcom/sm8650.dtsi b/arch/arm64/boot/dts/qcom/sm8650.dtsi
+index 72a75dec13c73..6098206350f90 100644
+--- a/arch/arm64/boot/dts/qcom/sm8650.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8650.dtsi
+@@ -3442,9 +3442,6 @@ &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
  
-+	INIT_DELAYED_WORK(&ac->gf_stats_work, mana_gf_stats_work_handler);
-+
- 	err = mana_create_eq(ac);
- 	if (err) {
- 		dev_err(dev, "Failed to create EQs: %d\n", err);
-@@ -3672,7 +3674,6 @@ int mana_probe(struct gdma_dev *gd, bool resuming)
+ 			bus-width = <4>;
  
- 	err = add_adev(gd, "eth");
+-			/* Forbid SDR104/SDR50 - broken hw! */
+-			sdhci-caps-mask = <0x3 0>;
+-
+ 			qcom,dll-config = <0x0007642c>;
+ 			qcom,ddr-config = <0x80040868>;
  
--	INIT_DELAYED_WORK(&ac->gf_stats_work, mana_gf_stats_work_handler);
- 	schedule_delayed_work(&ac->gf_stats_work, MANA_GF_STATS_PERIOD);
- 
- out:
 -- 
 2.53.0
 
