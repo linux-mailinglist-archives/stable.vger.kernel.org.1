@@ -1,62 +1,77 @@
-Return-Path: <stable+bounces-251524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250588-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oMEcJ8/1DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251524-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:56:31 +0200
+	id WPTLKGn0DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-250588-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:50:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43D4C594F23
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:56:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 951B6594B5A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:50:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EA1C5318FAFB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:30:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EF26F3324742
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:50:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33D5535AC17;
-	Wed, 20 May 2026 17:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AE383164C3;
+	Wed, 20 May 2026 16:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0oAw6mJa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KJV4fBSd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97CB36F421;
-	Wed, 20 May 2026 17:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9FD73A3833;
+	Wed, 20 May 2026 16:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298206; cv=none; b=Mw/FSrE3IVARCHrftint+LfyysFOwWMy9CrrL/R3D3Q1hvQq4OEK2hLPwyxZeOwESVyyzH1z9UrGAfCU5saZzVQZnOLMrsw84M1QLx37o8wz/RgG/H0Gu/29z7AordpbhDLSiLqJRVR/JSQjVRyx1q0zJ9yg2jdjyyuvSGW5wSU=
+	t=1779295805; cv=none; b=L4GqXcjXreKKbW8ZXZIZTRKS3I70UADnMv7j6bpKbMb+KRdk3Lm2Dw3lGZKCcVncqhI0TODICboPYIHfzcS/5X5AbotcFfNMhWRbSF1/9GtQGNzBLLkA1Sb+uZ+EeKb8HIHg+qbqpq9C4pY0d+glvYNO63VlOquDynv3Ou50PIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298206; c=relaxed/simple;
-	bh=afpQjnZ5XEYefO6ve042vhBfjOB1gArJMaA2UL/Pyoc=;
+	s=arc-20240116; t=1779295805; c=relaxed/simple;
+	bh=p3XqMivfBu2QuUrw7EXqMhoEcJH5Mo3/wFtk+iD3cBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kKqQnu58aF3BHyQ0ibWkFAktWVyX6FGNoYaRXdAM4Th49OymBmpt7w7I4nhIRJmxKiz3iIc6FWvrC0FT1/Ld3548qlru/xec+ZBZ2sVwAuSadsSQcrbFmEm59asU/pYV31U2YFbAdz8/ooKJiSIoggIKLe890Ex5cA3AFeWXMa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0oAw6mJa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC4C1F000E9;
-	Wed, 20 May 2026 17:30:04 +0000 (UTC)
+	 MIME-Version; b=YO5g6UMCNuhhqnhFvyYEJgoyUAE1yZmtQQ7Y60o/G5BC0pBqfKpn0hrmdSpzl0IQ5WaybGDkozaKOYCsTuOVAFkS3rryHRu4NIyrN9Epjqlr2Ydti7H0PCG6mwPfDdlvI0e/wDNORzr88noRyn1iJukuN+pEM9BtI/oYkkV9Lds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KJV4fBSd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFCC01F000E9;
+	Wed, 20 May 2026 16:50:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298204;
-	bh=CTFoPeoslrjBbmUCadJwOHADjQH5oYXWKFSj64O5cbQ=;
+	s=korg; t=1779295803;
+	bh=5MIKsYncANgWrjed1fZJKKde4Y8owVSNfSdmE0mlBwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0oAw6mJacNvTlVnmchX6PNLj0gTGnMiZTN+TpXtEVmT06kZzPxT55s6+OCmYLtY1U
-	 4RZY/q3Vf3u+FqBKB5dOMPVRtF9m4Ee2rr3mK9nIAxENXLViobyexr0IDE2J03wvQ9
-	 7KB+baIuXGcqM/YFdSbXbzLhGA1J7ljpM/mXF20M=
+	b=KJV4fBSdJC2Iaj8cx259jFZQyQrzBoDeQm5+KKvql729RnQMI9mXn7BuZ/yZEO0nt
+	 4aomke0V+UPRqpp+Ntpmgtf7YaqiLa0Kieapfsmbm8hbM7eJyap5SuBrineGD4iR8r
+	 PfJEtef6Qz9d0lGmnwMAKPg1bk0RAm0ZPYn6gFUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vidya Sagar <vidyas@nvidia.com>,
-	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
+	Michal Grzedzicki <mge@meta.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Alexey Gladkov (Intel)" <legion@kernel.org>,
+	Ben Segall <bsegall@google.com>,
+	David Hildenbrand <david@kernel.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Kees Cook <kees@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Mel Gorman <mgorman@suse.de>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 323/957] PCI: tegra194: Use devm_gpiod_get_optional() to parse "nvidia,refclk-select"
+Subject: [PATCH 7.0 0556/1146] unshare: fix nsproxy leak in ksys_unshare() on set_cred_ucounts() failure
 Date: Wed, 20 May 2026 18:13:26 +0200
-Message-ID: <20260520162141.535909226@linuxfoundation.org>
+Message-ID: <20260520162200.763446686@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,77 +84,120 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251524-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250588-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[24];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 43D4C594F23
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 951B6594B5A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vidya Sagar <vidyas@nvidia.com>
+From: Michal Grzedzicki <mge@meta.com>
 
-[ Upstream commit f62bc7917de1374dce86a852ffba8baf9cb7a56a ]
+[ Upstream commit a98621a0f187a934c115dcfe79a49520ae892111 ]
 
-The GPIO DT property "nvidia,refclk-select", to select the PCIe reference
-clock is optional. Use devm_gpiod_get_optional() to get it.
+When set_cred_ucounts() fails in ksys_unshare() new_nsproxy is leaked.
 
-Fixes: c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint mode in Tegra194")
-Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
-Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
-Link: https://patch.msgid.link/20260324190755.1094879-7-mmaddireddy@nvidia.com
+Let's call put_nsproxy() if that happens.
+
+Link: https://lkml.kernel.org/r/20260213193959.2556730-1-mge@meta.com
+Fixes: 905ae01c4ae2 ("Add a reference to ucounts for each cred")
+Signed-off-by: Michal Grzedzicki <mge@meta.com>
+Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: Alexey Gladkov (Intel) <legion@kernel.org>
+Cc: Ben Segall <bsegall@google.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Juri Lelli <juri.lelli@redhat.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Valentin Schneider <vschneid@redhat.com>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ kernel/fork.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index 68920c6263a41..2557217f9df16 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -1196,9 +1196,9 @@ static int tegra_pcie_dw_parse_dt(struct tegra_pcie_dw *pcie)
- 		return err;
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 2383c25b9fd49..87f3b8d48c0db 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -3176,11 +3176,10 @@ int ksys_unshare(unsigned long unshare_flags)
+ 					 new_cred, new_fs);
+ 	if (err)
+ 		goto bad_unshare_cleanup_cred;
+-
+ 	if (new_cred) {
+ 		err = set_cred_ucounts(new_cred);
+ 		if (err)
+-			goto bad_unshare_cleanup_cred;
++			goto bad_unshare_cleanup_nsproxy;
  	}
  
--	pcie->pex_refclk_sel_gpiod = devm_gpiod_get(pcie->dev,
--						    "nvidia,refclk-select",
--						    GPIOD_OUT_HIGH);
-+	pcie->pex_refclk_sel_gpiod = devm_gpiod_get_optional(pcie->dev,
-+							     "nvidia,refclk-select",
-+							     GPIOD_OUT_HIGH);
- 	if (IS_ERR(pcie->pex_refclk_sel_gpiod)) {
- 		int err = PTR_ERR(pcie->pex_refclk_sel_gpiod);
- 		const char *level = KERN_ERR;
+ 	if (new_fs || new_fd || do_sysvsem || new_cred || new_nsproxy) {
+@@ -3196,8 +3195,10 @@ int ksys_unshare(unsigned long unshare_flags)
+ 			shm_init_task(current);
+ 		}
+ 
+-		if (new_nsproxy)
++		if (new_nsproxy) {
+ 			switch_task_namespaces(current, new_nsproxy);
++			new_nsproxy = NULL;
++		}
+ 
+ 		task_lock(current);
+ 
+@@ -3226,13 +3227,15 @@ int ksys_unshare(unsigned long unshare_flags)
+ 
+ 	perf_event_namespaces(current);
+ 
++bad_unshare_cleanup_nsproxy:
++	if (new_nsproxy)
++		put_nsproxy(new_nsproxy);
+ bad_unshare_cleanup_cred:
+ 	if (new_cred)
+ 		put_cred(new_cred);
+ bad_unshare_cleanup_fd:
+ 	if (new_fd)
+ 		put_files_struct(new_fd);
+-
+ bad_unshare_cleanup_fs:
+ 	if (new_fs)
+ 		free_fs_struct(new_fs);
 -- 
 2.53.0
 
