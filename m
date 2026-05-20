@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253105-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iEBZJEnxDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-251040-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:37:13 +0200
+	id MPEOFkguDmoK7wUAu9opvQ
+	(envelope-from <stable+bounces-253105-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:57:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBB25594206
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:37:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C304659B85C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:57:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EFF4530E7B29
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3F9D3395C8A0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:47:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F5113F1ACA;
-	Wed, 20 May 2026 17:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 726F3401A1F;
+	Wed, 20 May 2026 18:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kBMgmQox"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kWgW10oF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFCA63F1AB9;
-	Wed, 20 May 2026 17:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26FC9401A0B;
+	Wed, 20 May 2026 18:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296945; cv=none; b=qmsTwygUjHuqyRlUvjolIv1kPkLs2mn0hHTKzVAlbb9sWdA+6T/1Z/kPPPB/4veP1EO4MhccP1uS6EXl7SKbqRedraPjp4zQ0REZlcSVdIAq+OiTpgqVLj0WDyqrlS47i/BlZ5QLdFTmkYM6APPFc5gfvhw/fPeA0QgBYSP4XUM=
+	t=1779302418; cv=none; b=X8ecRCmkT00cRe9Q+wDWTPrR0aCwLwyIkO5vgjnoHhmPY4z/XTwnpb/bhAk0BuZ7XfjhQjltgJRsFmqLaUTV4hGDDgKlCauStn2dxhwmzr1PDlnj6jQGBoCpk0y3uE7Lw8BTR6+sN1erlij6ESZUOa59ZWmkmNHrnSpCxHqo1Vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296945; c=relaxed/simple;
-	bh=srTXkIcB76AHnl9BdoN35MZgSOYe1UCOGwIKhbyHrng=;
+	s=arc-20240116; t=1779302418; c=relaxed/simple;
+	bh=YVQOk2puGMPA3K5rrgzQKXjPTG4AAYFmM/o9Owbce6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VMR0Uyw8oW/7IPmzu+sg7ihC/ieYbP7hP+B3XKYyqRR3HRkv1D9Gqze3LQGWXXDmp0rDnfyFDdjeqIM+ZsUaG63Jt46Aq8ouK/NKDmtFF4py6c2IZYmrTHtnDyF2dtsK/LCI45XbcU0rt2WUUgwoKb8JOMEJK8hJBNCFLXQ8w6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kBMgmQox; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 304551F000E9;
-	Wed, 20 May 2026 17:09:03 +0000 (UTC)
+	 MIME-Version; b=u4hQx+CoPe/K0cgU3mrs0ThNbTjeKJGJsrqxrrpBPA5w7aNNusGVX1MtEI9tMpZpCXOnoXEOMPUVhh942w5y6vwQaSN029/TtngWUQyvq0NQU0k/3fs8CAlC1lTRzCTCxZTBEF42pMYcaQZfKWifVmeMdlrYBXArp+/9nGZaDhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kWgW10oF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BF3A1F000E9;
+	Wed, 20 May 2026 18:40:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296943;
-	bh=zU9PzC43CSf+XGJGZctXc+HLrsVMNl0ZY7fy6GrpwI4=;
+	s=korg; t=1779302417;
+	bh=X+UqHr3NRWYawGIAOfvQAh/llKnlGrLa0w2Cb10wT/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kBMgmQox55Nuq+5ZX6oQZwPf0SLZuov2pJjEWUocb+mNi1g+3nLRjLd4u8TzgyJGr
-	 S+fJbtskT1uw75qNlyuzt6yTSq5Ebssa3+rpoFh+iLnJSj6ncJ5cUAHnum79RcbVBk
-	 R9TzFPWYmsUwsn42X9koY0N2JnoQzCEatBWKIHbA=
+	b=kWgW10oFlRLBiO21u1o7nF/govd5C7O59taEa704EmxBp4HDE6sd+se77wG92k1je
+	 ZAHKFsbRFAVJTqFxdPSEPRjihaXMfEF8ZOATXSI5te+/pnfDSdL8XWa+BqPpi+19DN
+	 xF9+58K/u2me/IFjXisXzSuSuarOO4LjtBsDXIrg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Cole Leavitt <cole@unwrap.rs>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0990/1146] net/sched: sch_cake: annotate data-races in cake_dump_stats() (II)
+Subject: [PATCH 6.6 217/508] soundwire: bus: demote UNATTACHED state warnings to dev_dbg()
 Date: Wed, 20 May 2026 18:20:40 +0200
-Message-ID: <20260520162210.637699443@linuxfoundation.org>
+Message-ID: <20260520162103.341961254@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,178 +64,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251040-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253105-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,toke.dk:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: EBB25594206
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,unwrap.rs:email,cirrus.com:email]
+X-Rspamd-Queue-Id: C304659B85C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Cole Leavitt <cole@unwrap.rs>
 
-[ Upstream commit 91a96427b93b9ba27413077b7e825d2fefbfa134 ]
+[ Upstream commit 2c96956fe764f8224f9ec93b2a9160a578949a7a ]
 
-cake_dump_stats() runs without qdisc spinlock being held.
+The dev_warn() messages in sdw_handle_slave_status() for UNATTACHED
+transitions were added in commit d1b328557058 ("soundwire: bus: add
+dev_warn() messages to track UNATTACHED devices") to debug attachment
+failures with dynamic debug enabled.
 
-In this second patch, I add READ_ONCE()/WRITE_ONCE() annotations
-for the following fields:
+These warnings fire during normal operation -- for example when a codec
+driver triggers a hardware reset after firmware download, causing the
+device to momentarily go UNATTACHED before re-attaching -- producing
+misleading noise on every boot.
 
-- bulk_flow_count
-- unresponsive_flow_count
-- max_skblen
-- flow_quantum
+Demote the messages to dev_dbg() so they remain available via dynamic
+debug for diagnosing real attachment failures without alarming users
+during expected initialization sequences.
 
-Other annotations are added in following patches, to ease code review.
-
-Fixes: 046f6fd5daef ("sched: Add Common Applications Kept Enhanced (cake) qdisc")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: "Toke Høiland-Jørgensen" <toke@toke.dk>
-Link: https://patch.msgid.link/20260427083606.459355-3-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d1b328557058 ("soundwire: bus: add dev_warn() messages to track UNATTACHED devices")
+Signed-off-by: Cole Leavitt <cole@unwrap.rs>
+Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://patch.msgid.link/20260218180210.9263-1-cole@unwrap.rs
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_cake.c | 34 +++++++++++++++++++---------------
- 1 file changed, 19 insertions(+), 15 deletions(-)
+ drivers/soundwire/bus.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index ac82fe7aafcb3..a164464f63d18 100644
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -1590,7 +1590,8 @@ static unsigned int cake_drop(struct Qdisc *sch, struct sk_buff **to_free)
- 	}
+diff --git a/drivers/soundwire/bus.c b/drivers/soundwire/bus.c
+index e7397fd8e9ad9..50448a4dd0b38 100644
+--- a/drivers/soundwire/bus.c
++++ b/drivers/soundwire/bus.c
+@@ -1864,8 +1864,8 @@ int sdw_handle_slave_status(struct sdw_bus *bus,
  
- 	if (cobalt_queue_full(&flow->cvars, &b->cparams, now))
--		b->unresponsive_flow_count++;
-+		WRITE_ONCE(b->unresponsive_flow_count,
-+			   b->unresponsive_flow_count + 1);
+ 		if (status[i] == SDW_SLAVE_UNATTACHED &&
+ 		    slave->status != SDW_SLAVE_UNATTACHED) {
+-			dev_warn(&slave->dev, "Slave %d state check1: UNATTACHED, status was %d\n",
+-				 i, slave->status);
++			dev_dbg(&slave->dev, "Slave %d state check1: UNATTACHED, status was %d\n",
++			i, slave->status);
+ 			sdw_modify_slave_status(slave, SDW_SLAVE_UNATTACHED);
  
- 	len = qdisc_pkt_len(skb);
- 	q->buffer_used      -= skb->truesize;
-@@ -1795,7 +1796,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	}
+ 			/* Ensure driver knows that peripheral unattached */
+@@ -1916,8 +1916,8 @@ int sdw_handle_slave_status(struct sdw_bus *bus,
+ 			if (slave->status == SDW_SLAVE_UNATTACHED)
+ 				break;
  
- 	if (unlikely(len > b->max_skblen))
--		b->max_skblen = len;
-+		WRITE_ONCE(b->max_skblen, len);
+-			dev_warn(&slave->dev, "Slave %d state check2: UNATTACHED, status was %d\n",
+-				 i, slave->status);
++			dev_dbg(&slave->dev, "Slave %d state check2: UNATTACHED, status was %d\n",
++			i, slave->status);
  
- 	if (qdisc_pkt_segs(skb) > 1 && q->config->rate_flags & CAKE_FLAG_SPLIT_GSO) {
- 		struct sk_buff *segs, *nskb;
-@@ -1930,7 +1931,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		 */
- 		flow->set = CAKE_SET_BULK;
- 		WRITE_ONCE(b->sparse_flow_count, b->sparse_flow_count - 1);
--		b->bulk_flow_count++;
-+		WRITE_ONCE(b->bulk_flow_count, b->bulk_flow_count + 1);
- 
- 		cake_inc_srchost_bulk_flow_count(b, flow, q->config->flow_mode);
- 		cake_inc_dsthost_bulk_flow_count(b, flow, q->config->flow_mode);
-@@ -2150,7 +2151,7 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
- 		if (flow->set == CAKE_SET_SPARSE) {
- 			if (flow->head) {
- 				WRITE_ONCE(b->sparse_flow_count, b->sparse_flow_count - 1);
--				b->bulk_flow_count++;
-+				WRITE_ONCE(b->bulk_flow_count, b->bulk_flow_count + 1);
- 
- 				cake_inc_srchost_bulk_flow_count(b, flow, q->config->flow_mode);
- 				cake_inc_dsthost_bulk_flow_count(b, flow, q->config->flow_mode);
-@@ -2177,7 +2178,8 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
- 		if (!skb) {
- 			/* this queue was actually empty */
- 			if (cobalt_queue_empty(&flow->cvars, &b->cparams, now))
--				b->unresponsive_flow_count--;
-+				WRITE_ONCE(b->unresponsive_flow_count,
-+					   b->unresponsive_flow_count - 1);
- 
- 			if (flow->cvars.p_drop || flow->cvars.count ||
- 			    ktime_before(now, flow->cvars.drop_next)) {
-@@ -2187,7 +2189,7 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
- 				list_move_tail(&flow->flowchain,
- 					       &b->decaying_flows);
- 				if (flow->set == CAKE_SET_BULK) {
--					b->bulk_flow_count--;
-+					WRITE_ONCE(b->bulk_flow_count, b->bulk_flow_count - 1);
- 
- 					cake_dec_srchost_bulk_flow_count(b, flow, q->config->flow_mode);
- 					cake_dec_dsthost_bulk_flow_count(b, flow, q->config->flow_mode);
-@@ -2206,7 +2208,7 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
- 				    flow->set == CAKE_SET_SPARSE_WAIT) {
- 					WRITE_ONCE(b->sparse_flow_count, b->sparse_flow_count - 1);
- 				} else if (flow->set == CAKE_SET_BULK) {
--					b->bulk_flow_count--;
-+					WRITE_ONCE(b->bulk_flow_count, b->bulk_flow_count - 1);
- 
- 					cake_dec_srchost_bulk_flow_count(b, flow, q->config->flow_mode);
- 					cake_dec_dsthost_bulk_flow_count(b, flow, q->config->flow_mode);
-@@ -2329,9 +2331,9 @@ static void cake_set_rate(struct cake_tin_data *b, u64 rate, u32 mtu,
- 	u8  rate_shft = 0;
- 	u64 rate_ns = 0;
- 
--	b->flow_quantum = 1514;
- 	if (rate) {
--		b->flow_quantum = max(min(rate >> 12, 1514ULL), 300ULL);
-+		WRITE_ONCE(b->flow_quantum,
-+			   max(min(rate >> 12, 1514ULL), 300ULL));
- 		rate_shft = 34;
- 		rate_ns = ((u64)NSEC_PER_SEC) << rate_shft;
- 		rate_ns = div64_u64(rate_ns, max(MIN_RATE, rate));
-@@ -2339,8 +2341,10 @@ static void cake_set_rate(struct cake_tin_data *b, u64 rate, u32 mtu,
- 			rate_ns >>= 1;
- 			rate_shft--;
- 		}
--	} /* else unlimited, ie. zero delay */
--
-+	} else {
-+		/* else unlimited, ie. zero delay */
-+		WRITE_ONCE(b->flow_quantum, 1514);
-+	}
- 	b->tin_rate_bps  = rate;
- 	b->tin_rate_ns   = rate_ns;
- 	b->tin_rate_shft = rate_shft;
-@@ -3056,11 +3060,11 @@ static int cake_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- 
- 		PUT_TSTAT_U32(SPARSE_FLOWS, READ_ONCE(b->sparse_flow_count) +
- 					    READ_ONCE(b->decaying_flow_count));
--		PUT_TSTAT_U32(BULK_FLOWS, b->bulk_flow_count);
--		PUT_TSTAT_U32(UNRESPONSIVE_FLOWS, b->unresponsive_flow_count);
--		PUT_TSTAT_U32(MAX_SKBLEN, b->max_skblen);
-+		PUT_TSTAT_U32(BULK_FLOWS, READ_ONCE(b->bulk_flow_count));
-+		PUT_TSTAT_U32(UNRESPONSIVE_FLOWS, READ_ONCE(b->unresponsive_flow_count));
-+		PUT_TSTAT_U32(MAX_SKBLEN, READ_ONCE(b->max_skblen));
- 
--		PUT_TSTAT_U32(FLOW_QUANTUM, b->flow_quantum);
-+		PUT_TSTAT_U32(FLOW_QUANTUM, READ_ONCE(b->flow_quantum));
- 		nla_nest_end(d->skb, ts);
- 	}
- 
+ 			sdw_modify_slave_status(slave, SDW_SLAVE_UNATTACHED);
+ 			break;
 -- 
 2.53.0
 
