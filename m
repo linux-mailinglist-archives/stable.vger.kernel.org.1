@@ -1,69 +1,59 @@
-Return-Path: <stable+bounces-251655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252338-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YGeCKQkdDmro6AUAu9opvQ
-	(envelope-from <stable+bounces-251655-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:43:53 +0200
+	id wFHRHDX8DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-252338-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 054A159A041
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:43:51 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43A3D596021
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AA5BB3724246
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:35:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DB175315E1FA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:07:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 627C3370AC3;
-	Wed, 20 May 2026 17:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336F23F6C5F;
+	Wed, 20 May 2026 18:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ct6gkvQa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LefGUzn2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2D529D26E;
-	Wed, 20 May 2026 17:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88973F8EC0;
+	Wed, 20 May 2026 18:06:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298548; cv=none; b=Kt/WsQcA8FrYXPJ91EeKTe3lJdOWVwrKjy1gf3Bwoc2srRax4TfX40uLxsHz8wUkxqWE5HhKfl0gDBZAatIh3WoiYDSh8DR7ugEK+mdqAoD8z/PWmS5t11wjk7U6UweS6cqCFtXtz8Z86XvWSWF//+9dPrM0YwrJ5FHMf/mnMoM=
+	t=1779300416; cv=none; b=soNB49g3FkqOv+hfj8RY051sLkCoUgFiNVb3r96bb87e+e1Hv3q/Ie3nhtE5J7Zi0ah1NDVwBdzTwct27jlcMd/pOOFsXoYjSsealiXssoAflNZct1tDPt5mu+vo9hM0OV8toLYT4oQGkIZBrv8HEFRra1KkRc724hTRpN7IX5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298548; c=relaxed/simple;
-	bh=0h1a5w366f6WlhCgeDrLvZGX3V8XcLgqX4/O2cKaNmI=;
+	s=arc-20240116; t=1779300416; c=relaxed/simple;
+	bh=5V7pSkC9Uamhic0P4AnIls4w9Zc4ie50/53KRvpkIjw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DRcA6xBLw8x5spFsCoYediZWMS7So5TR4alzjPiguE+WW7GVS8lgHhL6RW6RZ23/AshhLHWjm+6RtDr1IP8s/m87cE0E5/bsFQ6QlUKuYjpjCO0wAALd/m7rcH/M8+i4RTxcWUYLFPa3mvewcId+fCVjgf9we6CkpgJt9U9Z1ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ct6gkvQa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB27A1F00893;
-	Wed, 20 May 2026 17:35:45 +0000 (UTC)
+	 MIME-Version; b=k4dSGjU54WyKVB+I+MccnreIEiW3gzBADRgzKUZzyowYUaHp8XDiTbTi+IUPMkEP5UufoKUaC/5oqbxsyjhwlLdhme/P7YyhROHZQHkJtWuri9QNr3oVxepJ5njlc5CPHTV6StDLfU+96uG77VNQol68RWq/qM6FvVzoVGkFARY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LefGUzn2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3A511F000E9;
+	Wed, 20 May 2026 18:06:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298546;
-	bh=ejqpwc8nNyWSVB5zI0yGf9AuSHVHfp2M+iA31LMV1r4=;
+	s=korg; t=1779300414;
+	bh=zPh66RBQc91IsJkU7eSygsRySK8tlmdivruiLRA2Cm0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ct6gkvQa5gRPSjSTXZ1DLEq5BR1UFYxfp5CRbI0NWAgxXAuvWV49wiyuMrhSAYfQJ
-	 Qj5GmXjtyS6dUVKHM+6dqhEZhuzcFAIrNhsAUhvTFeuWfG1w54N1IErJQ6v4e3oNQw
-	 vVO6iZCx38n29SdOwVPo5mkV/pQKGb0f+BNpi/lM=
+	b=LefGUzn2ryjEwGIjW3GBsyUsq42O3N9IrUmqZ0Z+QYCJNUtvYBrIEZrCfpOMTCN1P
+	 AnazlUDtfs4E6IRy1L38GwYv2ZINIXPzWOR4a5sKAcGwBnfPLMDuzWOOB2c6T79Vup
+	 /ifP/f8Zf6Osd0o+K4fOeNo4LDDY8Ymg3XA6kgT0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Simon Horman <horms@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Yury Norov <ynorov@nvidia.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 453/957] tracing: move __printf() attribute on __ftrace_vbprintk()
+Subject: [PATCH 6.12 125/666] dm cache: fix null-deref with concurrent writes in passthrough mode
 Date: Wed, 20 May 2026 18:15:36 +0200
-Message-ID: <20260520162144.345455475@linuxfoundation.org>
+Message-ID: <20260520162113.925778665@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,113 +66,117 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251655-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252338-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 054A159A041
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 43A3D596021
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-[ Upstream commit 473e470f16f98569d59adc11c4a318780fb68fe9 ]
+[ Upstream commit 7d1f98d668ee34c1d15bdc0420fdd062f24a27c0 ]
 
-The sunrpc change to use trace_printk() for debugging caused
-a new warning for every instance of dprintk() in some configurations,
-when -Wformat-security is enabled:
+In passthrough mode, when dm-cache starts to invalidate a cache
+entry and bio prison cell lock fails due to concurrent write to
+the same cached block, mg->cell remains NULL. The error path in
+invalidate_complete() attempts to unlock and free the cell
+unconditionally, causing a NULL pointer dereference:
 
-fs/nfs/getroot.c: In function 'nfs_get_root':
-fs/nfs/getroot.c:90:17: error: format not a string literal and no format arguments [-Werror=format-security]
-   90 |                 nfs_errorf(fc, "NFS: Couldn't getattr on root");
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+CPU: 0 UID: 0 PID: 134 Comm: fio Not tainted 6.19.0-rc7 #3 PREEMPT
+RIP: 0010:dm_cell_unlock_v2+0x3f/0x210
+<snip>
+Call Trace:
+ invalidate_complete+0xef/0x430
+ map_bio+0x130f/0x1a10
+ cache_map+0x320/0x6b0
+ __map_bio+0x458/0x510
+ dm_submit_bio+0x40e/0x16d0
+ __submit_bio+0x419/0x870
+<snip>
 
-I've been slowly chipping away at those warnings over time with the
-intention of enabling them by default in the future. While I could not
-figure out why this only happens for this one instance, I see that the
-__trace_bprintk() function is always called with a local variable as
-the format string, rather than a literal.
+Reproduce steps:
 
-Move the __printf(2,3) annotation on this function from the declaration
-to the caller. As this is can only be validated for literals, the
-attribute on the declaration causes the warnings every time, but
-removing it entirely introduces a new warning on the __ftrace_vbprintk()
-definition.
+1. Create a cache device
 
-The format strings still get checked because the underlying literal keeps
-getting passed into __trace_printk() in the "else" branch, which is not
-taken but still evaluated for compile-time warnings.
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
+dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
+dmsetup create cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
 
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Anna Schumaker <anna.schumaker@oracle.com>
-Cc: Chuck Lever <chuck.lever@oracle.com>
-Cc: Simon Horman <horms@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Yury Norov <ynorov@nvidia.com>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Link: https://patch.msgid.link/20260203164545.3174910-1-arnd@kernel.org
-Fixes: ec7d8e68ef0e ("sunrpc: add a Kconfig option to redirect dfprintk() output to trace buffer")
-Acked-by: Jeff Layton <jlayton@kernel.org>
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+2. Promote the first data block into cache
+
+fio --filename=/dev/mapper/cache --name=populate --rw=write --bs=4k \
+--direct=1 --size=64k
+
+3. Reload the cache into passthrough mode
+
+dmsetup suspend cache
+dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 passthrough smq 0"
+dmsetup resume cache
+
+4. Write to the first cached block concurrently
+
+fio --filename=/dev/mapper/cache --name test --rw=randwrite --bs=4k \
+--randrepeat=0 --direct=1 --numjobs=2 --size 64k
+
+Fix by checking if mg->cell is valid before attempting to unlock it.
+
+Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/trace_printk.h | 1 -
- kernel/trace/trace_printk.c  | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-cache-target.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/trace_printk.h b/include/linux/trace_printk.h
-index bb5874097f24e..2670ec7f42629 100644
---- a/include/linux/trace_printk.h
-+++ b/include/linux/trace_printk.h
-@@ -107,7 +107,6 @@ do {									\
- 		__trace_printk(_THIS_IP_, fmt, ##args);			\
- } while (0)
+diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
+index 6aa4095dc5876..c1e94ffc9b3d6 100644
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -1456,8 +1456,10 @@ static void invalidate_complete(struct dm_cache_migration *mg, bool success)
+ 	struct cache *cache = mg->cache;
  
--extern __printf(2, 3)
- int __trace_bprintk(unsigned long ip, const char *fmt, ...);
+ 	bio_list_init(&bios);
+-	if (dm_cell_unlock_v2(cache->prison, mg->cell, &bios))
+-		free_prison_cell(cache, mg->cell);
++	if (mg->cell) {
++		if (dm_cell_unlock_v2(cache->prison, mg->cell, &bios))
++			free_prison_cell(cache, mg->cell);
++	}
  
- extern __printf(2, 3)
-diff --git a/kernel/trace/trace_printk.c b/kernel/trace/trace_printk.c
-index 29f6e95439b67..48c085fcae7aa 100644
---- a/kernel/trace/trace_printk.c
-+++ b/kernel/trace/trace_printk.c
-@@ -197,6 +197,7 @@ struct notifier_block module_trace_bprintk_format_nb = {
- 	.notifier_call = module_trace_bprintk_format_notify,
- };
- 
-+__printf(2, 3)
- int __trace_bprintk(unsigned long ip, const char *fmt, ...)
- {
- 	int ret;
+ 	if (!success && mg->overwrite_bio)
+ 		bio_io_error(mg->overwrite_bio);
 -- 
 2.53.0
 
