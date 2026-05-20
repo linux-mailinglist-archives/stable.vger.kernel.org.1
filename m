@@ -1,62 +1,65 @@
-Return-Path: <stable+bounces-252562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250957-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WP5CB6AmDmpZ6gUAu9opvQ
-	(envelope-from <stable+bounces-252562-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:24:48 +0200
+	id +I/MMgHsDWo04wUAu9opvQ
+	(envelope-from <stable+bounces-250957-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:14:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 707CE59ACE6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:24:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53DE159324E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:14:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 97CF032EE5FF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:16:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 26BA13117624
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:07:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C6B3F9F2D;
-	Wed, 20 May 2026 18:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6FB93F1AC1;
+	Wed, 20 May 2026 17:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CkjZ/6bM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UqHSmlR/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 907A03F9F2A;
-	Wed, 20 May 2026 18:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E87C367B76;
+	Wed, 20 May 2026 17:05:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301001; cv=none; b=PIAegM+ul+ZAQY5ybRDJaG3Le2qzQAoBkA4mJMCfyAlNAilmYwUmZ1j+INbnoJ5iQN4KtG/x5/4aqvqrc71d84BZeFYfldD0Nny3jZst1f2Qrv4riuv7Z6ZPeDN2pOurx8guVooUT6Bw/fpBKsYvLuZkc2/knDUwsWooFIXjH68=
+	t=1779296731; cv=none; b=RAHaLpTP5rLIgNE+ruFscfWPWs94Go4EijoVceKXUu16jkl0aPUVeaFjtK6ohLITxmsHfbjim+LZ+S/0GYo60AOunlzyUGsqfXfpGk2lPDDw40aqPgODhqyKJLSaEPaxGJMcQBqABC1AOzPU/OiqstuIZ0v7AZnnoK+qs7ZV76s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301001; c=relaxed/simple;
-	bh=0Y32xDc9QAOC0ZfLm683jMvl+qfruTcrqUBBY4nq9e4=;
+	s=arc-20240116; t=1779296731; c=relaxed/simple;
+	bh=bJhMktQYNI8mZ1AoXhzBBLSeKKveBWFDB6qLyz2zuBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DB/fBanlf3FW/CsC4fPVR8iIszG8EQ9T72avKFn5/OW+YPC90W7c8OdZmQqQHpvSHtDcQAXSy2koFJoSCGpe6S08NzDrInmxBC/D33OJ9zoDB5C8/rk47/CEqYNfNsqxI8/arSDhr+S4hdzQRokmLK91BEKIwGROlkY1Y2mHY+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CkjZ/6bM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F3A91F00893;
-	Wed, 20 May 2026 18:16:38 +0000 (UTC)
+	 MIME-Version; b=fwznRjcgB4tFtxhhPc/a7qR3GfDGXlCttK32pumuW1CaLbzppxj2GyrTJtMsM38hxnOvMm8FiefB1hOd6dlQlmHjBGiD1z+IfLPlWIdpEoI1E7ARNz30jVe3Edtx6sYYqg2YIB3mlMFI+SJdsOJaAfCSKrQkyJqG4HTLrnWAQRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UqHSmlR/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CACDA1F000E9;
+	Wed, 20 May 2026 17:05:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300999;
-	bh=dQKOTmYXomD1LmLXQA7HQhL+WsxG0tXLfAKtMa51goU=;
+	s=korg; t=1779296730;
+	bh=N7ruRI3Vf1ORvIParAqtn4VIT/cnU3l7bpec6Q2NzKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CkjZ/6bM2L0qWJXtnqMoTMemrau7q6S3m2W3+vFO2NWXp+xWEcodVV00R3L8kIghr
-	 6G8ypACXbSVHTBwHCfA30y8mFTBkG4Q0CqK+OCggf/FqQyMZk49JHNmW5QauZ/yEQy
-	 uHdy1fH7oY0f5aDp2ZugTCemjdO5KSQzwWij8kx4=
+	b=UqHSmlR/h+0998OX0kLJesm4nbRXwVZv1RI4DgcAEsqIGtC6AnNb9LBWqR2Dus3mC
+	 aZSt/hqydE+NFCj6VGB19mgoXOLpNoRJRz1+Pz5yCzMTowBMoIEvFci4anPysEW4gI
+	 9MMSYRlmExDWj4dKy/ESskgsFBKa1GMOZVDQULVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Michal Luczaj <mhal@rbox.co>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Jiexun Wang <wangjiexun2025@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 347/666] bpf, sockmap: Fix af_unix iter deadlock
+Subject: [PATCH 7.0 0908/1146] netfilter: xt_policy: fix strict mode inbound policy matching
 Date: Wed, 20 May 2026 18:19:18 +0200
-Message-ID: <20260520162118.750705247@linuxfoundation.org>
+Message-ID: <20260520162208.788938393@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,133 +72,79 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252562-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250957-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,strlen.de,netfilter.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linux.dev:email]
-X-Rspamd-Queue-Id: 707CE59ACE6
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,netfilter.org:email,strlen.de:email]
+X-Rspamd-Queue-Id: 53DE159324E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Jiexun Wang <wangjiexun2025@gmail.com>
 
-[ Upstream commit 4d328dd695383224aa750ddee6b4ad40c0f8d205 ]
+[ Upstream commit 4b2b4d7d4e203c92db8966b163edfacb1f0e1e29 ]
 
-bpf_iter_unix_seq_show() may deadlock when lock_sock_fast() takes the fast
-path and the iter prog attempts to update a sockmap. Which ends up spinning
-at sock_map_update_elem()'s bh_lock_sock():
+match_policy_in() walks sec_path entries from the last transform to the
+first one, but strict policy matching needs to consume info->pol[] in
+the same forward order as the rule layout.
 
-WARNING: possible recursive locking detected
-test_progs/1393 is trying to acquire lock:
-ffff88811ec25f58 (slock-AF_UNIX){+...}-{3:3}, at: sock_map_update_elem+0xdb/0x1f0
+Derive the strict-match policy position from the number of transforms
+already consumed so that multi-element inbound rules are matched
+consistently.
 
-but task is already holding lock:
-ffff88811ec25f58 (slock-AF_UNIX){+...}-{3:3}, at: __lock_sock_fast+0x37/0xe0
-
-other info that might help us debug this:
- Possible unsafe locking scenario:
-
-       CPU0
-       ----
-  lock(slock-AF_UNIX);
-  lock(slock-AF_UNIX);
-
- *** DEADLOCK ***
-
- May be due to missing lock nesting notation
-
-4 locks held by test_progs/1393:
- #0: ffff88814b59c790 (&p->lock){+.+.}-{4:4}, at: bpf_seq_read+0x59/0x10d0
- #1: ffff88811ec25fd8 (sk_lock-AF_UNIX){+.+.}-{0:0}, at: bpf_seq_read+0x42c/0x10d0
- #2: ffff88811ec25f58 (slock-AF_UNIX){+...}-{3:3}, at: __lock_sock_fast+0x37/0xe0
- #3: ffffffff85a6a7c0 (rcu_read_lock){....}-{1:3}, at: bpf_iter_run_prog+0x51d/0xb00
-
-Call Trace:
- dump_stack_lvl+0x5d/0x80
- print_deadlock_bug.cold+0xc0/0xce
- __lock_acquire+0x130f/0x2590
- lock_acquire+0x14e/0x2b0
- _raw_spin_lock+0x30/0x40
- sock_map_update_elem+0xdb/0x1f0
- bpf_prog_2d0075e5d9b721cd_dump_unix+0x55/0x4f4
- bpf_iter_run_prog+0x5b9/0xb00
- bpf_iter_unix_seq_show+0x1f7/0x2e0
- bpf_seq_read+0x42c/0x10d0
- vfs_read+0x171/0xb20
- ksys_read+0xff/0x200
- do_syscall_64+0x6b/0x3a0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Fixes: 2c860a43dd77 ("bpf: af_unix: Implement BPF iterator for UNIX domain socket.")
-Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
-Suggested-by: Martin KaFai Lau <martin.lau@linux.dev>
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260414-unix-proto-update-null-ptr-deref-v4-2-2af6fe97918e@rbox.co
+Fixes: c4b885139203 ("[NETFILTER]: x_tables: replace IPv4/IPv6 policy match by address family independant version")
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Acked-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ net/netfilter/xt_policy.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index fd7f161e6e396..a796cd648f446 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -3621,15 +3621,14 @@ static int bpf_iter_unix_seq_show(struct seq_file *seq, void *v)
- 	struct bpf_prog *prog;
- 	struct sock *sk = v;
- 	uid_t uid;
--	bool slow;
- 	int ret;
- 
- 	if (v == SEQ_START_TOKEN)
+diff --git a/net/netfilter/xt_policy.c b/net/netfilter/xt_policy.c
+index cb6e8279010a4..b5fa65558318f 100644
+--- a/net/netfilter/xt_policy.c
++++ b/net/netfilter/xt_policy.c
+@@ -63,7 +63,7 @@ match_policy_in(const struct sk_buff *skb, const struct xt_policy_info *info,
  		return 0;
  
--	slow = lock_sock_fast(sk);
-+	lock_sock(sk);
- 
--	if (unlikely(sk_unhashed(sk))) {
-+	if (unlikely(sock_flag(sk, SOCK_DEAD))) {
- 		ret = SEQ_SKIP;
- 		goto unlock;
- 	}
-@@ -3639,7 +3638,7 @@ static int bpf_iter_unix_seq_show(struct seq_file *seq, void *v)
- 	prog = bpf_iter_get_info(&meta, false);
- 	ret = unix_prog_seq_show(prog, &meta, v, uid);
- unlock:
--	unlock_sock_fast(sk, slow);
-+	release_sock(sk);
- 	return ret;
- }
- 
+ 	for (i = sp->len - 1; i >= 0; i--) {
+-		pos = strict ? i - sp->len + 1 : 0;
++		pos = strict ? sp->len - i - 1 : 0;
+ 		if (pos >= info->len)
+ 			return 0;
+ 		e = &info->pol[pos];
 -- 
 2.53.0
 
