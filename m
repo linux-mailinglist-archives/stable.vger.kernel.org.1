@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250361-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GEE3KR8XDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251297-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:18:39 +0200
+	id OCs2JRsPDmrB5wUAu9opvQ
+	(envelope-from <stable+bounces-250361-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:44:27 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1190B5996AF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:18:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3AA7598AEA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:44:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 844E5354EB9E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:20:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 01E9434CA734
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:40:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E763DA7C6;
-	Wed, 20 May 2026 17:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB22033509B;
+	Wed, 20 May 2026 16:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="prPOSykb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YlSX5YHo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266A93A4526;
-	Wed, 20 May 2026 17:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 638002F0C62;
+	Wed, 20 May 2026 16:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297615; cv=none; b=HYCS1hY9ctqYlc+KWctpaAux+0RTi4DGjrSuuVQsYuieVpCxzEVwIBOuGL+CaKTUGna5sgHe1OhsmJs2SdCtSHv83c/5jZgidGUWDJ1xuTjciZ+p9dnIr44H9Vn235PnFG41tFUyDMCHeR+N0VCR0Y0OQVgHfPIams+GYsvD4k0=
+	t=1779295212; cv=none; b=uFKSeYUTiwW/Bvo9pgTycYUIKzkuicBOy4oGfUTUs2/KxjF9tEoOHe7lgsN5dXdi8haqfTFRPvWGYMdAR/sOAQL2riPPl/PR6OWhv60nciHPfBuY7Q56w0qM9K24cIgyV9rsjgDbN6DvnuEiODYTHsiaydSrji6DFDrrgSkNHIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297615; c=relaxed/simple;
-	bh=vhDM5JIVsghPIZe3p0K6gIIgzRttWwUvCsnDS41dyiU=;
+	s=arc-20240116; t=1779295212; c=relaxed/simple;
+	bh=kM6rYfdD9PMrKRMx7WhBH27Uz+vLwXwWQwPLL2xgEas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cgFn3Yi4gmgCkTToZ9WkUvbqttjjojF6sjbwk/+XXQkIYpOByf0E9Mkts8mi8H45yFnMXn9x1lRcalYt1AUtiwizw8at3At5a+93falew6B2joZFeor97/CN1PvatQLDYZ5Pn3IMjlXCGryuWLwZGsu5HKb2Sc+bfwsnZcNFZkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=prPOSykb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 651261F00894;
-	Wed, 20 May 2026 17:20:13 +0000 (UTC)
+	 MIME-Version; b=u4KygodqxolsAkRm2IbF9Z5DDaktDXkPenoZNMXOR0jceo1zNG9yX8QBRjBCy8ODWWpoClVpvj2lvxGLbZpEtLJNn94DPOzzwR5z9fMdqkYAK09/lF5gidQbXitNmt/0Gr3xReImxuJXfkfQShZuCFOWdQtYZMVnuusHYlL8SEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YlSX5YHo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8F121F000E9;
+	Wed, 20 May 2026 16:40:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297613;
-	bh=Yb16QcmcDUt7OzpLjEnvm0keN5Wwu6bok+pgXw3nip0=;
+	s=korg; t=1779295211;
+	bh=a523uwVaIQ964yC1SFXX8lOk/xqr2Sn3NvZYD6J3b1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=prPOSykbyZVvO6nHfMsrgPvg7sUgek3WknaHMEv5L6KIyNwY8etHZ0LDlsVa7GTNT
-	 XA/RqdX3wBK2R8728WCSPKm2EvbC2jyergHd7j9e9GnxnPTA6Rab0kUZpbvbuFp3PX
-	 fPfaG450HRxH36MsUvLmHm0AvlYkRBvju6KMfGuQ=
+	b=YlSX5YHoOAru3fmlBj/xs7MU6WYHjZiP5f5U6tEPhbDut4b6K8XWcDsuivaoWNjTQ
+	 McPHlFySnJEGvJvL2iNQZZfDFQT5P0OYg/W9TS6qPO2dSiYpvzwlB2gI6q2wjVOb0e
+	 d5CAxzG1287fpsI8pegqhyubyi/NxVordL6cJzgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Lo <michael.lo@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Wenkai Lin <linwenkai6@hisilicon.com>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 099/957] wifi: mt76: mt7921: fix 6GHz regulatory update on connection
+Subject: [PATCH 7.0 0332/1146] crypto: hisilicon/sec2 - prevent req used-after-free for sec
 Date: Wed, 20 May 2026 18:09:42 +0200
-Message-ID: <20260520162136.706779084@linuxfoundation.org>
+Message-ID: <20260520162155.712047498@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,71 +67,73 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251297-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250361-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mediatek.com:email,nbd.name:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 1190B5996AF
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,apana.org.au:email,huawei.com:email]
+X-Rspamd-Queue-Id: D3AA7598AEA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Lo <michael.lo@mediatek.com>
+From: Wenkai Lin <linwenkai6@hisilicon.com>
 
-[ Upstream commit 3dc0c40d7806c72cfe88cf4e1e2650c1673f9db4 ]
+[ Upstream commit 67b53a660e6bf0da2fa8d8872e897a14d8059eaf ]
 
-Call mt7921_regd_update() instead of mt7921_mcu_set_clc() when setting
-the 6GHz power type after connection, so that regulatory limits and SAR
-power are also applied.
+During packet transmission, if the system is under heavy load,
+the hardware might complete processing the packet and free the
+request memory (req) before the transmission function finishes.
+If the software subsequently accesses this req, a use-after-free
+error will occur. The qp_ctx memory exists throughout the packet
+sending process, so replace the req with the qp_ctx.
 
-Fixes: 51ba0e3a15eb ("wifi: mt76: mt7921: add 6GHz power type support for clc")
-Signed-off-by: Michael Lo <michael.lo@mediatek.com>
-Link: https://patch.msgid.link/20260211095025.2415624-1-leon.yen@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: f0ae287c5045 ("crypto: hisilicon/sec2 - implement full backlog mode for sec")
+Signed-off-by: Wenkai Lin <linwenkai6@hisilicon.com>
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/crypto/hisilicon/sec2/sec_crypto.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 07495c97f1c12..ce11666a32db9 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -800,7 +800,8 @@ mt7921_regd_set_6ghz_power_type(struct ieee80211_vif *vif, bool is_add)
- 	}
+diff --git a/drivers/crypto/hisilicon/sec2/sec_crypto.c b/drivers/crypto/hisilicon/sec2/sec_crypto.c
+index 15174216d8c41..2471a4dd0b508 100644
+--- a/drivers/crypto/hisilicon/sec2/sec_crypto.c
++++ b/drivers/crypto/hisilicon/sec2/sec_crypto.c
+@@ -230,7 +230,7 @@ static int qp_send_message(struct sec_req *req)
  
- out:
--	mt7921_mcu_set_clc(dev, dev->mt76.alpha2, dev->country_ie_env);
-+	if (vif->bss_conf.chanreq.oper.chan->band == NL80211_BAND_6GHZ)
-+		mt7921_regd_update(dev);
+ 	spin_unlock_bh(&qp_ctx->req_lock);
+ 
+-	atomic64_inc(&req->ctx->sec->debug.dfx.send_cnt);
++	atomic64_inc(&qp_ctx->ctx->sec->debug.dfx.send_cnt);
+ 	return -EINPROGRESS;
  }
  
- int mt7921_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
 -- 
 2.53.0
 
