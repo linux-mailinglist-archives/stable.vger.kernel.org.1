@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-250392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251369-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +NPOFADyDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-250392-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:40:16 +0200
+	id YFEVIJzxDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251369-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:38:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EFE95943BF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:40:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B2925942BE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:38:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DE574375A66A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3AAC5313630B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:23:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D62F3A3E73;
-	Wed, 20 May 2026 16:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA3C36A376;
+	Wed, 20 May 2026 17:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F80RcYWM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RFhwcLpc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D81438F945;
-	Wed, 20 May 2026 16:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F2D364E89;
+	Wed, 20 May 2026 17:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295294; cv=none; b=PKHL/eQ4/fSZamLVYrjMLKZVjCa0AVx9oZiWntLmMncUx4/DjdtIoqQGNvQa6TVzw1iRaAONeF9gkTdtPR5EulKJERxoJDEqKKYILuAMUTniI5MQ7NY3qhmFG+ODGYH9SYo4PF26v1GduXad5BkteP8rn0vzDVhyyxNbV7SWjPw=
+	t=1779297800; cv=none; b=RaONEVk4FSYFF9CQo2fmtcGwpz6B5Ihznys9wTQQ4n4v2fIt1gbBa25GPhxgeYZr8A09s4JMOVsukVy9FTPDhj0Q/UeWyNtF97o+nMNEQO91m6ak+bXKkNlqbhKpdSTn/gZcpObpCVVwAfh70jZYmxXwQAc8Z3LamevQPQ+2Mew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295294; c=relaxed/simple;
-	bh=sj7RGN20YV4iZ2an+xqT7B8FhDwfUjeujFEOvcIHjtc=;
+	s=arc-20240116; t=1779297800; c=relaxed/simple;
+	bh=2ABgCNNt0chc+sTfkjSKUGi/dQoZlbVHpLYKrh/KDms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vs8UOS8X/gguXRnG2ZRAcLa+ynuQvzuvEntHMajVwQOArctyySZiFVCbQDTdFEo40AaTdpXrFJPIdqCDUH4mRTKRF9UPTT1lLi7NupNHjQ2PJlyqCTkqBcbZq4ehZvIl0YzSqpEowCblYCWaJyVjpWLPCv1q0D9DlglFIrrTH50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F80RcYWM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F0881F000E9;
-	Wed, 20 May 2026 16:41:32 +0000 (UTC)
+	 MIME-Version; b=j8ZDduLJZlg1S4+WDhy1sSEbYo9lmPlRadcbmIK1BipV9t6ciLEqUBhSmK1GZlzDPFce+Lckej+/bOOWcSxzAhzq5Waay8yh6kNTMyV7tzaolD/F75AnG9AGHnQkE7Y+ljm4SJOkHnNvDmc9B84Iak4iOtel5bPr9BJjPDgqc3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RFhwcLpc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64DD21F000E9;
+	Wed, 20 May 2026 17:23:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295293;
-	bh=wondaJSp0vEHNhL9YKvv+VQpj4Uq+Hc3UFOdGEK1ccc=;
+	s=korg; t=1779297798;
+	bh=4Ma7YTrjCGqIyF8IK0VrrZtV6+1iwuN5sRFP/hjnWYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=F80RcYWMLHlWuD0BA+6OLJ7wM5+8CKtXm49IXbXqGiIPID0pw9bC1aTzaHV4nYRC7
-	 Pwko3PFqGaWH5kngt6KEngqp+DvG0SSKcQeVErWhRom5i9rOUV3J6GdFlTDZNo4GmH
-	 bm0os3RpAgsUYUjRZ36PkmW8iNG/W9m9YZ//YOh4=
+	b=RFhwcLpc0vLvBFDPapDr7rj0zET1Inw/SYHoSTRyikAB2E3s6BUQGpZJNZ3TM8LDm
+	 T4ZrM6JVY6X9RhqgsY3mKufWalEmmmcYSDfhiyod0wYEKfZ0MbHqb6oVQ+AOinmZfg
+	 6DICnBxpMtsVmqEdYOB2je9bUDOYqM9fIDK6eGko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wangdicheng <wangdicheng@kylinos.cn>,
-	Takashi Iwai <tiwai@suse.de>,
+	STAR Labs SG <info@starlabs.sg>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0364/1146] ALSA: hda/cmedia: Remove duplicate pin configuration parsing
+Subject: [PATCH 6.18 131/957] bpf: Fix linked reg delta tracking when src_reg == dst_reg
 Date: Wed, 20 May 2026 18:10:14 +0200
-Message-ID: <20260520162156.438041529@linuxfoundation.org>
+Message-ID: <20260520162137.396855889@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,72 +69,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251369-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250392-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 2EFE95943BF
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iogearbox.net:email,starlabs.sg:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 3B2925942BE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wangdicheng <wangdicheng@kylinos.cn>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit 579e7b820de5dd5124585413bb5e9c278d255436 ]
+[ Upstream commit d7f14173c0d5866c3cae759dee560ad1bed10d2e ]
 
-The cmedia_probe() function calls snd_hda_parse_pin_defcfg() and
-snd_hda_gen_parse_auto_config() twice unnecessarily. Remove The
-duplicate code.
+Consider the case of rX += rX where src_reg and dst_reg are pointers to
+the same bpf_reg_state in adjust_reg_min_max_vals(). The latter first
+modifies the dst_reg in-place, and later in the delta tracking, the
+subsequent is_reg_const(src_reg)/reg_const_value(src_reg) reads the
+post-{add,sub} value instead of the original source.
 
-Fixes: 0f1e8306dcbe ("ALSA: hda/cmedia: Rewrite to new probe method")
-Signed-off-by: wangdicheng <wangdicheng@kylinos.cn>
-Link: https://patch.msgid.link/20260401082625.157868-1-wangdich9700@163.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+This is problematic since it sets an incorrect delta, which sync_linked_regs()
+then propagates to linked registers, thus creating a verifier-vs-runtime
+mismatch. Fix it by just skipping this corner case.
+
+Fixes: 98d7ca374ba4 ("bpf: Track delta between "linked" registers.")
+Reported-by: STAR Labs SG <info@starlabs.sg>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/r/20260407192421.508817-1-daniel@iogearbox.net
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/codecs/cmedia.c | 7 -------
- 1 file changed, 7 deletions(-)
+ kernel/bpf/verifier.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/hda/codecs/cmedia.c b/sound/hda/codecs/cmedia.c
-index e6e12c01339f6..88dd80d987d41 100644
---- a/sound/hda/codecs/cmedia.c
-+++ b/sound/hda/codecs/cmedia.c
-@@ -39,13 +39,6 @@ static int cmedia_probe(struct hda_codec *codec, const struct hda_device_id *id)
- 		spec->out_vol_mask = (1ULL << 0x10);
- 	}
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 6cf8b13db301b..6d5fc1af7a1f6 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -15808,7 +15808,8 @@ static int adjust_reg_min_max_vals(struct bpf_verifier_env *env,
+ 	 */
+ 	if (env->bpf_capable &&
+ 	    (BPF_OP(insn->code) == BPF_ADD || BPF_OP(insn->code) == BPF_SUB) &&
+-	    dst_reg->id && is_reg_const(src_reg, alu32)) {
++	    dst_reg->id && is_reg_const(src_reg, alu32) &&
++	    !(BPF_SRC(insn->code) == BPF_X && insn->src_reg == insn->dst_reg)) {
+ 		u64 val = reg_const_value(src_reg, alu32);
+ 		s32 off;
  
--	err = snd_hda_parse_pin_defcfg(codec, cfg, NULL, 0);
--	if (err < 0)
--		goto error;
--	err = snd_hda_gen_parse_auto_config(codec, cfg);
--	if (err < 0)
--		goto error;
--
- 	err = snd_hda_parse_pin_defcfg(codec, cfg, NULL, 0);
- 	if (err < 0)
- 		goto error;
 -- 
 2.53.0
 
