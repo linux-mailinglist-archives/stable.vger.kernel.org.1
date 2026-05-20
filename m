@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-250842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252875-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wJ3oHVf5DWq75AUAu9opvQ
-	(envelope-from <stable+bounces-250842-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:35 +0200
+	id uCoCJZsYDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-252875-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:24:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F107A595827
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:34 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 936CF5998C9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:24:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 52A723855BDD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:02:02 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 985C73201382
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:30:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74ADD3F54AB;
-	Wed, 20 May 2026 17:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DAE2333441;
+	Wed, 20 May 2026 18:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wMnrCJaq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJC7TcDx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C7123F4DDB;
-	Wed, 20 May 2026 17:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39169270545;
+	Wed, 20 May 2026 18:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296449; cv=none; b=ue2MMbLcM5XWhvhAt7XMEbboXK1dGG8uXinF7DuzRObDmfh639HRAac/HPdKoZdJ+rYnLCjPphYJCHl/5vXIEUlaFZx5hbNgJkirgyj+lqDNN5ULVBZhBDGwRB/S7/XFFtsLUp/zuJy2IfGEKzB5VLRzy0a6n3KdVWqsDeMfi4I=
+	t=1779301817; cv=none; b=aDzkjchQ/2HCd9NJA1a5L9kAu98YBfEUn/a9/IGUDbaBF/JrgPiAKWoxOxDi/T7wBJt+FDxhP63SCkM/NVpnDSuDAGH4ZUzMe+V8jc1Xfe38N5i3xmpz6SwP8/SmPTZE5IeM2RAaSNEoUPrWEpWDqkCeiYluG2oil9JLVc0utbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296449; c=relaxed/simple;
-	bh=m5ynbNR5jAZZhe4ilD5FMNl++/E9SNCMTdxFQZ4H5DY=;
+	s=arc-20240116; t=1779301817; c=relaxed/simple;
+	bh=PY15ED9vfYOtezuY0gzkngrWhJFoU4S/CuJuwA1MAY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bQToDW/nTZXziptvJAJ8OpHsbCZDHjfVHLzXqy11/faXKfDGMngvDUOCIDErReUHGtZvwKdL/Xznl+ZOlrpj/L3wj/Z9ULgpBhcWq4G2fTEbHEs2WGhA/dvrHL76s07MJ1RI2jUYy18KJLxQMcoR0O7DN/wuP6G+rEuzQTVxqbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wMnrCJaq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A19231F000E9;
-	Wed, 20 May 2026 17:00:47 +0000 (UTC)
+	 MIME-Version; b=W6QDsiyr6+NrWmkpqBNS4MkIXihgrCnjD+QeNst77ViDhyqRYlke/PWGpI+IJ7qa4tR8jdfHOJysdUEOxvEYV39YVexGqUJXHdmEIxABFwyNbDN49Mx7kXXCi1gaTET+euyDHlPWg3+6Ungkp7GHAhDTscYz2EDl2WX8tcYcPy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJC7TcDx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F7111F000E9;
+	Wed, 20 May 2026 18:30:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296448;
-	bh=v2/IjBFSHN2Mh0cg2XG4DangyAldjuaUZNYL0OdG5k4=;
+	s=korg; t=1779301816;
+	bh=TpsBP09FHxnxZUyPQUCBB3pobk9XUryq+ak5kclhcDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wMnrCJaqHRI2tZEaQ6AOsw1vESldzFT5hy6u8+SavYm15tJyW3uRe543m650l9noq
-	 oQ8IQ+6NDrIU35Xv9klWXj4xxmqHExha6Afc4IQE8sRjAAw1ujHHluKTK3bKbbCJ88
-	 a7y9IsqOkcUqynkheQqUdbscl6XoYeGs3H3Qszdg=
+	b=vJC7TcDxUj9pwP/s9DdyHs85vR/mEzH30ngjSDMSzq4+BlF6ASaL2uBI0HsN5MOpK
+	 fvpahZdTwZvdvtXB+Tu3u79hMWFYgNaEvA/VYMlBpgqYJIzSN3q7gmugy46iFJgTVy
+	 r+IKdCDrcsEDQ/b8tokU4ZK7PPDoUkV8F+iZ6vsI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Vollrath <tactii@gmail.com>,
-	Avigail Dahan <avigailx.dahan@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0803/1146] e1000e: Unroll PTP in probe error handling
+Subject: [PATCH 6.6 030/508] params: Replace __modinit with __init_or_module
 Date: Wed, 20 May 2026 18:17:33 +0200
-Message-ID: <20260520162206.401103815@linuxfoundation.org>
+Message-ID: <20260520162059.243308244@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,71 +70,97 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-250842-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252875-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: F107A595827
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 936CF5998C9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Vollrath <tactii@gmail.com>
+From: Petr Pavlu <petr.pavlu@suse.com>
 
-[ Upstream commit aa3f7fe409350857c25d050482a2eef2cfd69b58 ]
+[ Upstream commit 3cb0c3bdea5388519bc1bf575dca6421b133302b ]
 
-If probe fails after registering the PTP clock and its delayed work,
-these resources must be released.
+Remove the custom __modinit macro from kernel/params.c and instead use the
+common __init_or_module macro from include/linux/module.h. Both provide the
+same functionality.
 
-This was not an issue until a 2016 fix moved the e1000e_ptp_init() call
-before the jump to err_register.
-
-Fixes: aa524b66c5ef ("e1000e: don't modify SYSTIM registers during SIOCSHWTSTAMP ioctl")
-Signed-off-by: Matt Vollrath <tactii@gmail.com>
-Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260416-iwl-net-submission-2026-04-14-v2-12-686c33c9828d@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Reviewed-by: Aaron Tomlin <atomlin@atomlin.com>
+Reviewed-by: Daniel Gomez <da.gomez@samsung.com>
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+Stable-dep-of: deffe1edba62 ("module: Fix freeing of charp module parameters when CONFIG_SYSFS=n")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/e1000e/netdev.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/params.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-index 9befdacd67301..7ce0cc8ab8f4c 100644
---- a/drivers/net/ethernet/intel/e1000e/netdev.c
-+++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-@@ -7706,6 +7706,7 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- err_register:
- 	if (!(adapter->flags & FLAG_HAS_AMT))
- 		e1000e_release_hw_control(adapter);
-+	e1000e_ptp_remove(adapter);
- err_eeprom:
- 	if (hw->phy.ops.check_reset_block && !hw->phy.ops.check_reset_block(hw))
- 		e1000_phy_hw_reset(&adapter->hw);
+diff --git a/kernel/params.c b/kernel/params.c
+index e39ac5420cd6d..2cfa12404ed0b 100644
+--- a/kernel/params.c
++++ b/kernel/params.c
+@@ -593,12 +593,6 @@ static ssize_t param_attr_store(struct module_attribute *mattr,
+ }
+ #endif
+ 
+-#ifdef CONFIG_MODULES
+-#define __modinit
+-#else
+-#define __modinit __init
+-#endif
+-
+ #ifdef CONFIG_SYSFS
+ void kernel_param_lock(struct module *mod)
+ {
+@@ -623,9 +617,9 @@ EXPORT_SYMBOL(kernel_param_unlock);
+  * create file in sysfs.  Returns an error on out of memory.  Always cleans up
+  * if there's an error.
+  */
+-static __modinit int add_sysfs_param(struct module_kobject *mk,
+-				     const struct kernel_param *kp,
+-				     const char *name)
++static __init_or_module int add_sysfs_param(struct module_kobject *mk,
++					    const struct kernel_param *kp,
++					    const char *name)
+ {
+ 	struct module_param_attrs *new_mp;
+ 	struct attribute **new_attrs;
+@@ -759,7 +753,8 @@ void destroy_params(const struct kernel_param *params, unsigned num)
+ 			params[i].ops->free(params[i].arg);
+ }
+ 
+-struct module_kobject __modinit * lookup_or_create_module_kobject(const char *name)
++struct module_kobject * __init_or_module
++lookup_or_create_module_kobject(const char *name)
+ {
+ 	struct module_kobject *mk;
+ 	struct kobject *kobj;
 -- 
 2.53.0
 
