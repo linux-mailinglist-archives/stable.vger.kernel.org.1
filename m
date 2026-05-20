@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-252001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252003-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QKK8H/n9DWok5QUAu9opvQ
-	(envelope-from <stable+bounces-252001-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:31:21 +0200
+	id OJHdMAP+DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252003-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:31:31 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB1BA5966DE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:31:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4941E5966FB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:31:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 769BB386F350
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:51:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9A2FE386FC50
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:51:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 712283F4DF4;
-	Wed, 20 May 2026 17:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68CB53F39F5;
+	Wed, 20 May 2026 17:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LRViFI2j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C55YBr39"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1862A3F44F7;
-	Wed, 20 May 2026 17:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3C93E5ECF;
+	Wed, 20 May 2026 17:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299486; cv=none; b=S+yX72ykDGfaKaXqc6aCduESOKVlIYiJQ2iG5va2ExCp1ET94lDdI3Je+0I6P17jNKfilMAMSebm2eqTKrDzTVr4oxlY0HxO+Xhz2ZvwH6tR2e9YedHnm1dNIuAJh+CEz0RDtDXqGohfnW9OE+UPnVJNJ6ctwPFkbR/sSQWNJWw=
+	t=1779299491; cv=none; b=VkeJDtlXcIgKegp6qnbPrWBOFZtPEQRwsPQe4ijSAHNO1VugR1ToNGSO55tV2QT+liMtpthBsgYI3BVlcUKTX1mvH/v+oIbXU3ePJeXxJcilCa+5HBLASYeynmOxflizecY0aElGHd+4EECl5qYByVi/+NK3z0rlp7W77J+7f9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299486; c=relaxed/simple;
-	bh=Msikoipmi+PvgcN0Y7bxLYAlc/yxBZ0b/Sb6YTz1HRw=;
+	s=arc-20240116; t=1779299491; c=relaxed/simple;
+	bh=HC6o49JxiNPBq2eeOOn7HXMeatFSlsCi1fKsQmrd44I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ibukTN4zvrxVeCKYNhdee7W4BEsOe/LE24uv1VGRt5Wt/Df1HeW8xtXCFtMbQzI9Y/nV50keHRPKgQ6MV5Se1M4fISrc61MwXnPIQId/O4ifLK2WpE4RGqbq6wdgCsxjIR8vMk/jrue5AaRnj90SBNZ/cP51J6EzL44bh6kLQzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LRViFI2j; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 493651F000E9;
-	Wed, 20 May 2026 17:51:24 +0000 (UTC)
+	 MIME-Version; b=WQwEsVa32sq/kNnMHGhMAphg69njXRqXKTP7foeLj/RRV1bJlyzzHgfXHWhmBDo3hwdiYTCuhoJtVxHOZ8s4bDk6Z3Jf0KwOqzNlKn7TPJ5cQ+bfHg4V9Mza0MDqm42aOpWFm6egGxjx6ARCdqC4Mrzv/JpbyhEOYf451RZi/Z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C55YBr39; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80A1F1F000E9;
+	Wed, 20 May 2026 17:51:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299484;
-	bh=IWl13lOK7Y6PkYy8+kn4wVgfyFg/vta59YlBaidXFYI=;
+	s=korg; t=1779299490;
+	bh=umk5thzYrsSBony+2UskavUop+hma790yDKQnJgQhDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LRViFI2jiE/lxQ1mup1gcn9+eMe8C9DeADsCaaqgsQ/4rw/Z0ndINVouicmFTSsJX
-	 jWkTc+VDqkmhmsrwhYD23yKENWH9e1LuZqwdH7SNJ7x3xIdGUOX+L5sQUrtKFVYM+2
-	 JNIxHtA7yqF1g1ASDThLS5h3i4FbSsktPoj1N+RA=
+	b=C55YBr39HPKvrojbULqo8lc7KwKu0LS7FPZP2ItlNa95KLU5eFs35cMt2WsRKf5nX
+	 2pFIELGgAm9qV9YD8yj4VYW6nAFgpGkf7GDQ6hoqayWCqslXCxZEhAihtyM9Q+29mx
+	 Si6klHOy5c36gsoUaHNUjbMLOwvMgdatHICplR6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zicheng Qu <quzicheng@huawei.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Hui Tang <tanghui20@huawei.com>,
-	Zhang Qiao <zhangqiao22@huawei.com>
-Subject: [PATCH 6.18 789/957] sched/fair: Clear rel_deadline when initializing forked entities
-Date: Wed, 20 May 2026 18:21:12 +0200
-Message-ID: <20260520162151.674770057@linuxfoundation.org>
+	"William A. Kennington III" <william@wkennington.com>,
+	Jeremy Kerr <jk@codeconstruct.com.au>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 790/957] net: mctp i2c: check length before marking flow active
+Date: Wed, 20 May 2026 18:21:13 +0200
+Message-ID: <20260520162151.697128076@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
 References: <20260520162134.554764788@linuxfoundation.org>
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252001-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252003-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,11 +88,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,huawei.com:email]
-X-Rspamd-Queue-Id: DB1BA5966DE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,wkennington.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 4941E5966FB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,85 +100,88 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Zicheng Qu <quzicheng@huawei.com>
+From: William A. Kennington III <william@wkennington.com>
 
-[ Upstream commit 3da56dc063cd77b9c0b40add930767fab4e389f3 ]
+[ Upstream commit 4ca07b9239bd0478ae586632a2ed72be37ed8407 ]
 
-A yield-triggered crash can happen when a newly forked sched_entity
-enters the fair class with se->rel_deadline unexpectedly set.
+Currently, mctp_i2c_get_tx_flow_state() is called before the packet length
+sanity check. This function marks a new flow as active in the MCTP core.
 
-The failing sequence is:
+If the sanity check fails, mctp_i2c_xmit() returns early without calling
+mctp_i2c_lock_nest(). This results in a mismatched locking state: the
+flow is active, but the I2C bus lock was never acquired for it.
 
-  1. A task is forked while se->rel_deadline is still set.
-  2. __sched_fork() initializes vruntime, vlag and other sched_entity
-     state, but does not clear rel_deadline.
-  3. On the first enqueue, enqueue_entity() calls place_entity().
-  4. Because se->rel_deadline is set, place_entity() treats se->deadline
-     as a relative deadline and converts it to an absolute deadline by
-     adding the current vruntime.
-  5. However, the forked entity's deadline is not a valid inherited
-     relative deadline for this new scheduling instance, so the conversion
-     produces an abnormally large deadline.
-  6. If the task later calls sched_yield(), yield_task_fair() advances
-     se->vruntime to se->deadline.
-  7. The inflated vruntime is then used by the following enqueue path,
-     where the vruntime-derived key can overflow when multiplied by the
-     entity weight.
-  8. This corrupts cfs_rq->sum_w_vruntime, breaks EEVDF eligibility
-     calculation, and can eventually make all entities appear ineligible.
-     pick_next_entity() may then return NULL unexpectedly, leading to a
-     later NULL dereference.
+When the flow is later released, mctp_i2c_release_flow() will see the
+active state and queue an unlock marker. The TX thread will then
+decrement midev->i2c_lock_count from 0, causing it to underflow to -1.
 
-A captured trace shows the effect clearly. Before yield, the entity's
-vruntime was around:
+This underflow permanently breaks the driver's locking logic, allowing
+future transmissions to occur without holding the I2C bus lock, leading
+to bus collisions and potential hardware hangs.
 
-  9834017729983308
+Move the mctp_i2c_get_tx_flow_state() call to after the length sanity
+check to ensure we only transition the flow state if we are actually
+going to proceed with the transmission and locking.
 
-After yield_task_fair() executed:
-
-  se->vruntime = se->deadline
-
-the vruntime jumped to:
-
-  19668035460670230
-
-and the deadline was later advanced further to:
-
-  19668035463470230
-
-This shows that the deadline had already become abnormally large before
-yield_task_fair() copied it into vruntime.
-
-rel_deadline is only meaningful when se->deadline really carries a
-relative deadline that still needs to be placed against vruntime. A
-freshly forked sched_entity should not inherit or retain this state.
-Clear se->rel_deadline in __sched_fork(), together with the other
-sched_entity runtime state, so that the first enqueue does not interpret
-the new entity's deadline as a stale relative deadline.
-
-Fixes: 82e9d0456e06 ("sched/fair: Avoid re-setting virtual deadline on 'migrations'")
-Analyzed-by: Hui Tang <tanghui20@huawei.com>
-Analyzed-by: Zhang Qiao <zhangqiao22@huawei.com>
-Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20260424071113.1199600-1-quzicheng@huawei.com
+Fixes: f5b8abf9fc3d ("mctp i2c: MCTP I2C binding driver")
+Signed-off-by: William A. Kennington III <william@wkennington.com>
+Acked-by: Jeremy Kerr <jk@codeconstruct.com.au>
+Link: https://patch.msgid.link/20260423074741.201460-1-william@wkennington.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/mctp/mctp-i2c.c | 4 ++--
+ net/sched/cls_flower.c      | 4 +++-
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 522d4bad56ad1..b42a65a79b701 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -4453,6 +4453,7 @@ static void __sched_fork(u64 clone_flags, struct task_struct *p)
- 	p->se.nr_migrations		= 0;
- 	p->se.vruntime			= 0;
- 	p->se.vlag			= 0;
-+	p->se.rel_deadline		= 0;
- 	INIT_LIST_HEAD(&p->se.group_node);
+diff --git a/drivers/net/mctp/mctp-i2c.c b/drivers/net/mctp/mctp-i2c.c
+index f138b0251313e..115494f15e87a 100644
+--- a/drivers/net/mctp/mctp-i2c.c
++++ b/drivers/net/mctp/mctp-i2c.c
+@@ -496,8 +496,6 @@ static void mctp_i2c_xmit(struct mctp_i2c_dev *midev, struct sk_buff *skb)
+ 	u8 *pecp;
+ 	int rc;
  
- 	/* A delayed task cannot be in clone(). */
+-	fs = mctp_i2c_get_tx_flow_state(midev, skb);
+-
+ 	hdr = (void *)skb_mac_header(skb);
+ 	/* Sanity check that packet contents matches skb length,
+ 	 * and can't exceed MCTP_I2C_BUFSZ
+@@ -509,6 +507,8 @@ static void mctp_i2c_xmit(struct mctp_i2c_dev *midev, struct sk_buff *skb)
+ 		return;
+ 	}
+ 
++	fs = mctp_i2c_get_tx_flow_state(midev, skb);
++
+ 	if (skb_tailroom(skb) >= 1) {
+ 		/* Linear case with space, we can just append the PEC */
+ 		skb_put(skb, 1);
+diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
+index 099ff6a3e1f51..f3af0ac892a86 100644
+--- a/net/sched/cls_flower.c
++++ b/net/sched/cls_flower.c
+@@ -560,6 +560,7 @@ static int __fl_delete(struct tcf_proto *tp, struct cls_fl_filter *f,
+ 		       struct netlink_ext_ack *extack)
+ {
+ 	struct cls_fl_head *head = fl_head_dereference(tp);
++	struct fl_flow_mask *mask;
+ 
+ 	*last = false;
+ 
+@@ -576,11 +577,12 @@ static int __fl_delete(struct tcf_proto *tp, struct cls_fl_filter *f,
+ 	list_del_rcu(&f->list);
+ 	spin_unlock(&tp->lock);
+ 
+-	*last = fl_mask_put(head, f->mask);
++	mask = f->mask;
+ 	if (!tc_skip_hw(f->flags))
+ 		fl_hw_destroy_filter(tp, f, rtnl_held, extack);
+ 	tcf_unbind_filter(tp, &f->res);
+ 	__fl_put(f);
++	*last = fl_mask_put(head, mask);
+ 
+ 	return 0;
+ }
 -- 
 2.53.0
 
