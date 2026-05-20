@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-250040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250051-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qAmKIzriDWop4gUAu9opvQ
-	(envelope-from <stable+bounces-250040-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:32:58 +0200
+	id 0OYXMXfrDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250051-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:12:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EBF4592114
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:32:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23657593125
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:12:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 688F3307D785
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:28:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E9C8834BDDA7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:28:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80DEE3A3E9C;
-	Wed, 20 May 2026 16:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DED0E3D6673;
+	Wed, 20 May 2026 16:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JPOS226z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="plU/27TT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E0436F418;
-	Wed, 20 May 2026 16:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F65936F42D;
+	Wed, 20 May 2026 16:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294386; cv=none; b=coSC/d29CKr9bgOgls6zV21kEgxD91MKqEJFrj435wg9nka05eIAN+pJKetHbUqkeI1+oD45oxgFtu6vKrV8Nb5mIkm4M75CZyGHgaeKxNBu0thaMDwu8F6ZIE/DLr6GkQ/PK5Sq7ZcqUpmzaN3n+wm5q23Rzw+sI+6bKEyQpm0=
+	t=1779294414; cv=none; b=tHLI/zUf7MafXLtpbTZPuLyJY/P6BrBcmuDAf0hqQFzj8vSRkTo4hM29DixERktr7KGhNFgrDnu9zTA5Pmt46/kMYC29KgMhQYP3zadeQlTCWf1zdY0YqScAp3YYpwo8n31I7uc775rDlu2OngsAR9sdpb10vDGpnVEIynN4Qms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294386; c=relaxed/simple;
-	bh=LwHK8fIEGuozMCKNUz6nu5xqngMCfPnZlcEZbnq3OKY=;
+	s=arc-20240116; t=1779294414; c=relaxed/simple;
+	bh=kmQ6nyMfA3xWoJCxoHNRfUmCiMXoVXr7JStyQ7ZyBzQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CW3ZYwVq7NKG1XfkBMEWoWXT4q63IszBXbxQoGI8OW7p4/Vjjs74+Y9IfRYVeB68R7dDx/PHPWHKiopKaSlAANNsEV45ZuVjDAKCYlZtGw7rSCCh8YmVuW9Piy+WfsKfDNLHOKoxYSJPTG9XbUSLCuLSydtL6iMuuyL1b1Z4aJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JPOS226z; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1CE41F00893;
-	Wed, 20 May 2026 16:26:23 +0000 (UTC)
+	 MIME-Version; b=UnVzmUWvG2OgLatGoow7EueEObbPOBrc8+rODcfNoObyNh1GvGW05xK1qEnv6/o/VyxEq7aSApJSEimyQMWD3wRUyIlhW/uB1h90eXUwk6q8UPPPS8OGya9FXEudPPL4Pv7TvjopNfzv0Xf9a52IeAWCYXxLTfANJA45Gs1cMIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=plU/27TT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D51921F000E9;
+	Wed, 20 May 2026 16:26:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294384;
-	bh=soBNOMBJqhTq3+7ATVyXyanyUW2w66gxgspM+8fReHQ=;
+	s=korg; t=1779294413;
+	bh=JqIO39fJH26gSfndJy0DEYA2ecpFHmFKlqZtG3kBcPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JPOS226z8lICpf17PoEQ8ACfuZFxR2KETbGgJI/0rcvaAj/iI3EcV7AG0crmKLHKP
-	 HVQmBhKcPbW7LtDbuS3c9qlxwiLu/MOZNszHkv33UvFZ677e0UGnJfCpNSP2GgvCY4
-	 W58hzDFiE5eiWFGhErXUfQrT1J8bGU4LPq3kcNUQ=
+	b=plU/27TT9+E/luErblo53BZ7UKIkHf2hYDHfV2EisBFa1RBfveIhPkDASkjQ5G6yn
+	 QOS+RjhykX9TmqT+pl55u3NCsyz6dU/K5qEM4uMpqCFRPR7XSD9tJrXrxH2PRI5HLK
+	 gQKxOxcJCxu/ygJNvGRavQoOL2An7hhCjyrm1Dbg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tj <tj.iam.tj@proton.me>,
-	Chen Cheng <chencheng@fnnas.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Yu Kuai <yukuai@fnnas.com>,
+	Hyungjung Joo <jhj140711@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0002/1146] md: suppress spurious superblock update error message for dm-raid
-Date: Wed, 20 May 2026 18:04:12 +0200
-Message-ID: <20260520162148.451131860@linuxfoundation.org>
+Subject: [PATCH 7.0 0003/1146] fs/omfs: reject s_sys_blocksize smaller than OMFS_DIR_START
+Date: Wed, 20 May 2026 18:04:13 +0200
+Message-ID: <20260520162148.472950418@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -68,31 +66,33 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250040-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250051-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 3EBF4592114
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 23657593125
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,44 +100,53 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Chen Cheng <chencheng@fnnas.com>
+From: HyungJung Joo <jhj140711@gmail.com>
 
-[ Upstream commit eff0d74c6c8fd358bc9474c05002e51fa5aa56ad ]
+[ Upstream commit 0621c385fda1376e967f37ccd534c26c3e511d14 ]
 
-dm-raid has external metadata management (mddev->external = 1) and
-no persistent superblock (mddev->persistent = 0). For these arrays,
-there's no superblock to update, so the error message is spurious.
+omfs_fill_super() rejects oversized s_sys_blocksize values (> PAGE_SIZE),
+but it does not reject values smaller than OMFS_DIR_START (0x1b8 = 440).
 
-The error appears as:
-md_update_sb: can't update sb for read-only array md0
+Later, omfs_make_empty() uses
 
-Fixes: 8c9e376b9d1a ("md: warn about updating super block failure")
-Reported-by: Tj <tj.iam.tj@proton.me>
-Closes: https://lore.kernel.org/all/20260128082430.96788-1-tj.iam.tj@proton.me/
-Signed-off-by: Chen Cheng <chencheng@fnnas.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Link: https://lore.kernel.org/linux-raid/20260210133847.269986-1-chencheng@fnnas.com
-Signed-off-by: Yu Kuai <yukuai@fnnas.com>
+    sbi->s_sys_blocksize - OMFS_DIR_START
+
+as the length argument to memset().  Since s_sys_blocksize is u32,
+a crafted filesystem image with s_sys_blocksize < OMFS_DIR_START causes
+an unsigned underflow there, wrapping to a value near 2^32.  That drives
+a ~4 GiB memset() from bh->b_data + OMFS_DIR_START and overwrites kernel
+memory far beyond the backing block buffer.
+
+Add the corresponding lower-bound check alongside the existing upper-bound
+check in omfs_fill_super(), so that malformed images are rejected during
+superblock validation before any filesystem data is processed.
+
+Fixes: a3ab7155ea21 ("omfs: add directory routines")
+Signed-off-by: Hyungjung Joo <jhj140711@gmail.com>
+Link: https://patch.msgid.link/20260317054827.1822061-1-jhj140711@gmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/omfs/inode.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 3ce6f9e9d38e6..c2cc2302d727d 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -2788,7 +2788,9 @@ void md_update_sb(struct mddev *mddev, int force_change)
- 	if (!md_is_rdwr(mddev)) {
- 		if (force_change)
- 			set_bit(MD_SB_CHANGE_DEVS, &mddev->sb_flags);
--		pr_err("%s: can't update sb for read-only array %s\n", __func__, mdname(mddev));
-+		if (!mddev_is_dm(mddev))
-+			pr_err_ratelimited("%s: can't update sb for read-only array %s\n",
-+					   __func__, mdname(mddev));
- 		return;
+diff --git a/fs/omfs/inode.c b/fs/omfs/inode.c
+index 90ae07c69349e..834cae1e62233 100644
+--- a/fs/omfs/inode.c
++++ b/fs/omfs/inode.c
+@@ -513,6 +513,12 @@ static int omfs_fill_super(struct super_block *sb, struct fs_context *fc)
+ 		goto out_brelse_bh;
  	}
  
++	if (sbi->s_sys_blocksize < OMFS_DIR_START) {
++		printk(KERN_ERR "omfs: sysblock size (%d) is too small\n",
++			sbi->s_sys_blocksize);
++		goto out_brelse_bh;
++	}
++
+ 	if (sbi->s_blocksize < sbi->s_sys_blocksize ||
+ 	    sbi->s_blocksize > OMFS_MAX_BLOCK_SIZE) {
+ 		printk(KERN_ERR "omfs: block size (%d) is out of range\n",
 -- 
 2.53.0
 
