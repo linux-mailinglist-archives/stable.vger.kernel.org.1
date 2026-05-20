@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253046-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IMmaF8gVDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-252585-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:12:56 +0200
+	id CJa+Fv4ADmo95QUAu9opvQ
+	(envelope-from <stable+bounces-253046-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A6EF599480
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:12:55 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 365CA597206
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B8247306A559
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:17:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5FE6E308B456
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:37:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D11E368968;
-	Wed, 20 May 2026 18:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42296DF59;
+	Wed, 20 May 2026 18:37:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jIXfuurj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ANQtVbkB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8EE137DE8A;
-	Wed, 20 May 2026 18:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0789A3CB2F8;
+	Wed, 20 May 2026 18:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301061; cv=none; b=qnPZ9i0Ul2Kynoshxub52mCzyq0uPtb/6r8+LSxtKWHKoY5FjJKa0MSAriaVY02iBQpZ9cHQJpNaIoXcaTDMS4QMsP22C+Q5KaoCNJFBk5C3C/BuOn/swIss9Xk0k2gJ5Ep8eHNTyZYcs2gHkopuptJmI5TZMaQ/Bp9FFVVAo0c=
+	t=1779302263; cv=none; b=eSkGxEhQUJz0P5/wM2nQkaq+zViq3dzMsNf2dod50LTD5K2MnyBTsiKoLn0uOiR9xa1lNzr4NNm//UoKnmvaeJWgwFQ6GrinBZckbMwG/yp9yB2hh5tV2JQHfe/UbmUbTA2Xz8n9/S1fgdmCdahKIfIEk2WsC9RfgSh1GrnuJvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301061; c=relaxed/simple;
-	bh=pajZXQaaEMQTBS79CbfaZuKSFBiI1zHEPVkvNBQV4AE=;
+	s=arc-20240116; t=1779302263; c=relaxed/simple;
+	bh=nOoioEbgA2DEY63LtTy3hjsTGpsiTMfqJNi528xOa2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jHz70Zgzo36N36KBUhyacShpcZ+Wn1094c1YNcGwaPuQsTTl0LOlSsXwyswzdVvvR3e2SNpTllIXHdqmZke1cfH624bR1lp3CKmvRmEVaVKhh4X7PF4ynzKxS5B8uMHdNnbaA1FEo5u1XCeSE+MtnCEv7BSto7ZBCtjnSybAXb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jIXfuurj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 021441F000E9;
-	Wed, 20 May 2026 18:17:38 +0000 (UTC)
+	 MIME-Version; b=qbZo1Me/giZ+uXXbyschrLAeN213K6VIF9lBKrY+V3QzJ1zICcmST/nVwPmMknb+NDPhuyInmgVzhDhqeMZGUxNUP9R4jLpi5fuY1NysR1SB3KE4rSBO67EDB+gftqC0rkYyTqQdHGQH3IEndH6X/US4RoGcnul8nnnNMBSbgm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ANQtVbkB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62F481F000E9;
+	Wed, 20 May 2026 18:37:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301059;
-	bh=YHw8ePuMlq67kX73aFOV3/Is3WVuUo7T3IkYF+ZNddc=;
+	s=korg; t=1779302261;
+	bh=ZeccV/AVFQ92IjmC24GAwCMb04psNGvkUTKFfSkT0lE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jIXfuurjvaCr48f2ZhT0oakw/kXUQE+tFYGKJgg5yOYzQ07Mt2/YLB8cbG+n17Vb3
-	 KdC57ePqpO8zvvd1ajzPAfIB6seHU1ylnqvCAgjnf/lV8tS4h/CzOIJC4Jrttc/mfl
-	 4urLwvFcHJnszMNgE/qDshqLVIZsQPXs1ywur2fM=
+	b=ANQtVbkBLq9fGDDmei2NQl4UXPy3xUd13TKlYSRVev5mJcwVQC1jMJhNaJnVj2CGH
+	 oJVMD084HmJ1uoUKspcIHzNsKrStqULRdBfsjIIS3eVQSby7jOaq5hHlxE6dOiiNiU
+	 jMtcW64Ms3rxM5SupTPZl6drVk/qhMDpQA4mubos=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Val Packett <val@packett.cool>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 411/666] clk: qcom: dispcc-sm8250: Enable parents for pixel clocks
+Subject: [PATCH 6.6 199/508] arm64: dts: qcom: sm8550: Enable UHS-I SDR50 and SDR104 SD card modes
 Date: Wed, 20 May 2026 18:20:22 +0200
-Message-ID: <20260520162120.170863991@linuxfoundation.org>
+Message-ID: <20260520162102.948005206@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,13 +69,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252585-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253046-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
@@ -83,7 +83,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -92,55 +92,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,packett.cool:email]
-X-Rspamd-Queue-Id: 7A6EF599480
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linaro.org:email,0.134.86.160:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 365CA597206
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Val Packett <val@packett.cool>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-[ Upstream commit acf7a91d0b0e9e3ef374944021de62062125b7e4 ]
+[ Upstream commit 66b0f024fba0728ddce6916dce173bb1bdd4eab0 ]
 
-Add CLK_OPS_PARENT_ENABLE to MDSS pixel clock sources to ensure parent
-clocks are enabled during clock operations, preventing potential
-stability issues during display configuration.
+The restriction on UHS-I speed modes was added to all SM8550 platforms
+by copying it from SM8450 dtsi file, and due to the overclocking of SD
+cards it was an actually reproducible problem. Since the latter issue
+has been fixed, UHS-I speed modes are working fine on SM8550 boards,
+below is the test performed on SM8550-HDK:
 
-Fixes: 80a18f4a8567 ("clk: qcom: Add display clock controller driver for SM8150 and SM8250")
-Signed-off-by: Val Packett <val@packett.cool>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260312112321.370983-9-val@packett.cool
+SDR50 speed mode:
+
+    mmc0: new UHS-I speed SDR50 SDHC card at address 0001
+    mmcblk0: mmc0:0001 00000 14.6 GiB
+     mmcblk0: p1
+
+    % dd if=/dev/mmcblk0p1 of=/dev/null bs=1M count=1024
+    1024+0 records in
+    1024+0 records out
+    1073741824 bytes (1.1 GB, 1.0 GiB) copied, 23.5468 s, 45.6 MB/s
+
+SDR104 speed mode:
+
+    mmc0: new UHS-I speed SDR104 SDHC card at address 59b4
+    mmcblk0: mmc0:59b4 USDU1 28.3 GiB
+     mmcblk0: p1
+
+    % dd if=/dev/mmcblk0p1 of=/dev/null bs=1M count=1024
+    1024+0 records in
+    1024+0 records out
+    1073741824 bytes (1.1 GB, 1.0 GiB) copied, 11.9819 s, 89.6 MB/s
+
+Unset the UHS-I speed mode restrictions from the SM8550 platform dtsi
+file, there is no indication that the SDHC controller is broken.
+
+Fixes: ffc50b2d3828 ("arm64: dts: qcom: Add base SM8550 dtsi")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Link: https://lore.kernel.org/r/20260314023715.357512-6-vladimir.zapolskiy@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-sm8250.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8550.dtsi | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/clk/qcom/dispcc-sm8250.c b/drivers/clk/qcom/dispcc-sm8250.c
-index b21d16b094667..ea79d48b9a256 100644
---- a/drivers/clk/qcom/dispcc-sm8250.c
-+++ b/drivers/clk/qcom/dispcc-sm8250.c
-@@ -578,7 +578,7 @@ static struct clk_rcg2 disp_cc_mdss_pclk0_clk_src = {
- 		.name = "disp_cc_mdss_pclk0_clk_src",
- 		.parent_data = disp_cc_parent_data_6,
- 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_6),
--		.flags = CLK_SET_RATE_PARENT,
-+		.flags = CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE,
- 		.ops = &clk_pixel_ops,
- 	},
- };
-@@ -592,7 +592,7 @@ static struct clk_rcg2 disp_cc_mdss_pclk1_clk_src = {
- 		.name = "disp_cc_mdss_pclk1_clk_src",
- 		.parent_data = disp_cc_parent_data_6,
- 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_6),
--		.flags = CLK_SET_RATE_PARENT,
-+		.flags = CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE,
- 		.ops = &clk_pixel_ops,
- 	},
- };
+diff --git a/arch/arm64/boot/dts/qcom/sm8550.dtsi b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+index 3d14575e5aace..5a79adbe8da12 100644
+--- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+@@ -2535,9 +2535,6 @@ sdhc_2: mmc@8804000 {
+ 			bus-width = <4>;
+ 			dma-coherent;
+ 
+-			/* Forbid SDR104/SDR50 - broken hw! */
+-			sdhci-caps-mask = <0x3 0>;
+-
+ 			status = "disabled";
+ 
+ 			sdhc2_opp_table: opp-table {
 -- 
 2.53.0
 
