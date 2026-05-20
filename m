@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-252621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251057-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QEJcCGMnDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252621-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:28:03 +0200
+	id mPk8CUDuDWpb4wUAu9opvQ
+	(envelope-from <stable+bounces-251057-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:24:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8166D59AE41
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:28:01 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4B66593902
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:24:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 15DEF3448EC7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:19:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 75232318176E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:10:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C36FD3E123F;
-	Wed, 20 May 2026 18:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E68C13E6385;
+	Wed, 20 May 2026 17:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JxW6xP9q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F2Qs0O8V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF1B348C55;
-	Wed, 20 May 2026 18:19:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C21D364E89;
+	Wed, 20 May 2026 17:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301155; cv=none; b=GAw+sSlOMR4vyJem6fdsSqxmnfq/ojgFoIuLxaiCbdfCIDRTwDfWmLEoql5ASVTCQQ3kmwUFY15374hmw01lLbS6BT8SngxIEIB57ergpa/bEiwxwFlJcco4PV6Zi0VgTiZy1YwS17myQVcfzdSJOVb1XChNEaoGPnWmKSglE2Y=
+	t=1779296989; cv=none; b=mZ7ZK/EAujZshuYxxEYkEwLUvHmybA5EPARv44P8nl6uMIBTuW417R75xH5CS/omZ23Nmq81SMWq60Wy9Em5oKHp/ObgUOI/IfgquB9jFK44v3XCjBLGd8oxGON/XkbtyyC1A36MdlHncafHD/Pud8P8y7yBuVLHarfEXUd9aK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301155; c=relaxed/simple;
-	bh=jGZiWMW3DNkpIYYFryY+pdimctF+4A1KQlQJlhJETBA=;
+	s=arc-20240116; t=1779296989; c=relaxed/simple;
+	bh=TXKYppm6K8OLgxHAhhnI+/QXmL2xNuYkWuBjBHF2AeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CfT+Nz/7hSDzNPTYh5BOK7a6W++3tizh1QAm/1wrPPKTgB6jASCwgCzFeGB/JPoNoV4o25cIIBKEE0N6LulnjI+0MzlErF4N+DFRVIPOd0Z5gmNZC48tLjYsZPjk4H8+s3g39yWMMJiS5XTuSXNn2mbI3iahvy2FVs88q6Zv1p0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JxW6xP9q; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3AF91F000E9;
-	Wed, 20 May 2026 18:19:13 +0000 (UTC)
+	 MIME-Version; b=s40pe+U6WEWE8rFfq335noHtsaDU+LwBjNORbRN7rUCaRDI92rYm7FAOGQ+PRxlLRVbsWM5v8llgirMjH/Xtnpjdc6stQ9Bf+f/BQ/m47w9N7Rlj43QOZEo5npvroERG14H3nVHMsgaDpt6nwr6WG/cTUz02zVPQ+vo1GzJqibw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F2Qs0O8V; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C1891F000E9;
+	Wed, 20 May 2026 17:09:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301154;
-	bh=OPnnePbhf69RHGTtSTVg3tzPk229FQp8KWxRteJySds=;
+	s=korg; t=1779296988;
+	bh=slC+UZKx09CAlM/HCDAAqldqeb57Wzck9eFjM/ji2BM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JxW6xP9qzfwSHVBvtCwW8qDq7DhHW5ufhIK+Bfl6e8IkxUHOskyN0OMur3+eA7a5C
-	 nQDtGvD3bD1O6yxtutsXlADXNwaA9ZcWwCqHe3CXiACYPYhmLztlZKJZNXYVMOA+f9
-	 Ss3kfACydbaJoLuA5ajITPSqQxMull4VZ8j6//Uk=
+	b=F2Qs0O8VrVLTXG8mZjf9fEOQf1hnJkItcVU9006TWn9XCeSh1bHno8JFDgx2/p7zM
+	 EI5oX74RDGaStGd+tP/fV8VWa/OEAN5/PDNwpdEEPRx2r9q/IojMscwLY0cdhQIY19
+	 9q1lr4T7c6foFzy924qziJlmslOqeHp7cV8FnMWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxi Qian <qjx1298677004@gmail.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 448/666] net/sched: taprio: fix use-after-free in advance_sched() on schedule switch
+Subject: [PATCH 7.0 1009/1146] drm/xe: Drop registration of guc_submit_wedged_fini from xe_guc_submit_wedge()
 Date: Wed, 20 May 2026 18:20:59 +0200
-Message-ID: <20260520162120.981237660@linuxfoundation.org>
+Message-ID: <20260520162211.067401941@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,90 +68,133 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252621-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251057-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 8166D59AE41
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+X-Rspamd-Queue-Id: E4B66593902
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+From: Matthew Brost <matthew.brost@intel.com>
 
-[ Upstream commit 105425b1969c5affe532713cfac1c0b320d7ac2b ]
+[ Upstream commit a0fc362f095330f7b3f68ac0c55ef8da18290c87 ]
 
-In advance_sched(), when should_change_schedules() returns true,
-switch_schedules() is called to promote the admin schedule to oper.
-switch_schedules() queues the old oper schedule for RCU freeing via
-call_rcu(), but 'next' still points into an entry of the old oper
-schedule. The subsequent 'next->end_time = end_time' and
-rcu_assign_pointer(q->current_entry, next) are use-after-free.
+xe_guc_submit_wedge() runs in the DMA-fence signaling path, where
+GFP_KERNEL memory allocations are not permitted. However, registering
+guc_submit_wedged_fini via drmm_add_action_or_reset() triggers such an
+allocation.
 
-Fix this by selecting 'next' from the new oper schedule immediately
-after switch_schedules(), and using its pre-calculated end_time.
-setup_first_end_time() sets the first entry's end_time to
-base_time + interval when the schedule is installed, so the value
-is already correct.
+Avoid this by moving the logic from guc_submit_wedged_fini() into
+guc_submit_fini(), where wedged exec queue references are dropped during
+normal teardown.
 
-The deleted 'end_time = sched_base_time(admin)' assignment was also
-harmful independently: it would overwrite the new first entry's
-pre-calculated end_time with just base_time.
-
-Fixes: a3d43c0d56f1 ("taprio: Add support adding an admin schedule")
-Reported-by: Junxi Qian <qjx1298677004@gmail.com>
-Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 8ed9aaae39f3 ("drm/xe: Force wedged state and block GT reset upon any GPU hang")
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://patch.msgid.link/20260326210116.202585-3-matthew.brost@intel.com
+(cherry picked from commit 4a706bd93c4fb156a13477e26ffdf2e633edeb10)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_taprio.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/xe/xe_guc_submit.c | 33 ++++++++----------------------
+ 1 file changed, 9 insertions(+), 24 deletions(-)
 
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index 1620f0fd78ce7..366eb7627b30d 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -971,11 +971,12 @@ static enum hrtimer_restart advance_sched(struct hrtimer *timer)
- 	}
+diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
+index 4867a97583903..82412c8dfd37d 100644
+--- a/drivers/gpu/drm/xe/xe_guc_submit.c
++++ b/drivers/gpu/drm/xe/xe_guc_submit.c
+@@ -260,24 +260,12 @@ static void guc_submit_sw_fini(struct drm_device *drm, void *arg)
+ }
  
- 	if (should_change_schedules(admin, oper, end_time)) {
--		/* Set things so the next time this runs, the new
--		 * schedule runs.
--		 */
--		end_time = sched_base_time(admin);
- 		switch_schedules(q, &admin, &oper);
-+		/* After changing schedules, the next entry is the first one
-+		 * in the new schedule, with a pre-calculated end_time.
-+		 */
-+		next = list_first_entry(&oper->entries, struct sched_entry, list);
-+		end_time = next->end_time;
- 	}
+ static void guc_submit_fini(void *arg)
+-{
+-	struct xe_guc *guc = arg;
+-
+-	/* Forcefully kill any remaining exec queues */
+-	xe_guc_ct_stop(&guc->ct);
+-	guc_submit_reset_prepare(guc);
+-	xe_guc_softreset(guc);
+-	xe_guc_submit_stop(guc);
+-	xe_uc_fw_sanitize(&guc->fw);
+-	xe_guc_submit_pause_abort(guc);
+-}
+-
+-static void guc_submit_wedged_fini(void *arg)
+ {
+ 	struct xe_guc *guc = arg;
+ 	struct xe_exec_queue *q;
+ 	unsigned long index;
  
- 	next->end_time = end_time;
++	/* Drop any wedged queue refs */
+ 	mutex_lock(&guc->submission_state.lock);
+ 	xa_for_each(&guc->submission_state.exec_queue_lookup, index, q) {
+ 		if (exec_queue_wedged(q)) {
+@@ -287,6 +275,14 @@ static void guc_submit_wedged_fini(void *arg)
+ 		}
+ 	}
+ 	mutex_unlock(&guc->submission_state.lock);
++
++	/* Forcefully kill any remaining exec queues */
++	xe_guc_ct_stop(&guc->ct);
++	guc_submit_reset_prepare(guc);
++	xe_guc_softreset(guc);
++	xe_guc_submit_stop(guc);
++	xe_uc_fw_sanitize(&guc->fw);
++	xe_guc_submit_pause_abort(guc);
+ }
+ 
+ static const struct xe_exec_queue_ops guc_exec_queue_ops;
+@@ -1272,10 +1268,8 @@ static void disable_scheduling_deregister(struct xe_guc *guc,
+ void xe_guc_submit_wedge(struct xe_guc *guc)
+ {
+ 	struct xe_device *xe = guc_to_xe(guc);
+-	struct xe_gt *gt = guc_to_gt(guc);
+ 	struct xe_exec_queue *q;
+ 	unsigned long index;
+-	int err;
+ 
+ 	xe_gt_assert(guc_to_gt(guc), guc_to_xe(guc)->wedged.mode);
+ 
+@@ -1287,15 +1281,6 @@ void xe_guc_submit_wedge(struct xe_guc *guc)
+ 		return;
+ 
+ 	if (xe->wedged.mode == XE_WEDGED_MODE_UPON_ANY_HANG_NO_RESET) {
+-		err = devm_add_action_or_reset(guc_to_xe(guc)->drm.dev,
+-					       guc_submit_wedged_fini, guc);
+-		if (err) {
+-			xe_gt_err(gt, "Failed to register clean-up on wedged.mode=%s; "
+-				  "Although device is wedged.\n",
+-				  xe_wedged_mode_to_string(XE_WEDGED_MODE_UPON_ANY_HANG_NO_RESET));
+-			return;
+-		}
+-
+ 		mutex_lock(&guc->submission_state.lock);
+ 		xa_for_each(&guc->submission_state.exec_queue_lookup, index, q)
+ 			if (xe_exec_queue_get_unless_zero(q))
 -- 
 2.53.0
 
