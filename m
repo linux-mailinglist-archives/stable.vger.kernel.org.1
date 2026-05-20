@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250882-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YOrPHLUlDmpZ6gUAu9opvQ
-	(envelope-from <stable+bounces-252455-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:20:53 +0200
+	id UKEQITn1DWoz5AUAu9opvQ
+	(envelope-from <stable+bounces-250882-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:54:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E564159ABAC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:20:52 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A88B2594E0B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:54:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3C8EA397923E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:12:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3C19530E0A8D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:03:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A70B3F8704;
-	Wed, 20 May 2026 18:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A213E6385;
+	Wed, 20 May 2026 17:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EmxgEDtF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BieEDwDD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5650E3F7884;
-	Wed, 20 May 2026 18:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346163DA7C6;
+	Wed, 20 May 2026 17:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300718; cv=none; b=XNDwM8l87tezk5DHXsRWJp1LUdPmXSJE5y9H5xx9KfbkIUUN2qHxZ64RYp/CJP5CrY8bXNjVKN81QR2AIfYAk6nDD84uVXJKTKrd07NMWFDUX6fU/3QJs2AhOGLf2kANnbZOuqNk7PY5BgynSG9JkN1MPz+ELT7qgDiKTlFRKVE=
+	t=1779296553; cv=none; b=EvQ7ZppInMyqWIiBGLPrWDQ+Z5WAHFuuKLeJEpNTHsvQl2ltf5nsOoQz66Bw4GHXqxybKL8uUXlfyK30VTyNXFTWoYoNbFIle8CUrcdpAaLFz54SqGw0ysmIKaGiySApZn6nGwUmLLIzSylarv2unrYOVWj5zw3xUWu/pWBP0aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300718; c=relaxed/simple;
-	bh=blefAHbzxWMQGWW5JtoVDpBED8qoUWr5xOH3Y8XM2co=;
+	s=arc-20240116; t=1779296553; c=relaxed/simple;
+	bh=r7RsjlJZTyHPBa7eZ8Z7TpciEWvBfPy/z5xmv4V8EAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pNBS76oZ6ahHETTgds+p4Z30aI2uZrgYe0ZkNTm0K7XysQL6NGl6JICaTXFRQmJ076Jio+LnS73IUr/7QEeeIkfqxyLnpQ+yti+ImbH16eERwPzwBXnB1PVklq5o4EtVtMo4L9eleJf6dmH9Xrz78nXaFBbLjGWDTBnBQTchv4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EmxgEDtF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB4911F000E9;
-	Wed, 20 May 2026 18:11:56 +0000 (UTC)
+	 MIME-Version; b=SD5TqdyNTdaLO9rKzS4skPrbh1Hem7ACoZUlDtMDiSj8dmuRM5IPSj9kmatZ9sswJRmUMCXFZJBcYc30mx5eAORYbGBWoASCrTrQWoxewtvgutLMhDhjk5CDrBvoDGShazI3Bdb3w+u1y7Z/3UfTi0x+Nh9Vb58L3VgkSTfkFWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BieEDwDD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 645621F00893;
+	Wed, 20 May 2026 17:02:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300717;
-	bh=D9yAgfvyUJQmGxPibCSzgqd9ffti4vy5eTinGleL+vg=;
+	s=korg; t=1779296550;
+	bh=yRn9t95SN8fHaMB8Kv2MYRTggMTYTYK8xgYY3U5MlR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EmxgEDtFibn5OAqaB2xxX2fgJPQ42Fu6YJOMvPygHSls99TdFD2zngrLemmp3KmMy
-	 HN1MtwyEHQTRBCtfVZVLwuGBideDInan+RZtNAxNTSJP68kw9phkvhfbD9RpueIM/s
-	 nVJhR0LESG9DP6T1NHoNhe8On5CqgWJYAwxgJ9p0=
+	b=BieEDwDDykn6igeu3APd5ZrNHUopIDyjvwZyQCKci3ytf9RmKj5L64EsA9uyM4v9M
+	 fX2SGmZyRDxADzS2OkM5wiYmawQgU5WxcdKmzzcby9NVVKYrQjy0tD1v5+CuaINuSH
+	 NqM3Wt4jeJV7XD5x1jvBgqJDJ5pfwuimomVrLkY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 281/666] soc: qcom: ocmem: return -EPROBE_DEFER is ocmem is not available
+Subject: [PATCH 7.0 0842/1146] net/sched: sch_red: annotate data-races in red_dump_stats()
 Date: Wed, 20 May 2026 18:18:12 +0200
-Message-ID: <20260520162117.304745996@linuxfoundation.org>
+Message-ID: <20260520162207.290245598@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,76 +69,141 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252455-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250882-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email]
-X-Rspamd-Queue-Id: E564159ABAC
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,mojatatu.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: A88B2594E0B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 91b59009c7d48b58dbc50fecb27f2ad20749a05a ]
+[ Upstream commit a8f5192809caf636d05ba47c144f282cfd0e3839 ]
 
-If OCMEM is declared in DT, it is expected that it is present and
-handled by the driver. The GPU driver will ignore -ENODEV error, which
-typically means that OCMEM isn't defined in DT. Let ocmem return
--EPROBE_DEFER if it supposed to be used, but it is not probed (yet).
+red_dump_stats() only runs with RTNL held,
+reading fields that can be changed in qdisc fast path.
 
-Fixes: 88c1e9404f1d ("soc: qcom: add OCMEM driver")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260323-ocmem-v1-3-ad9bcae44763@oss.qualcomm.com
-[bjorn: s/ERR_PTR(dev_err_probe)/dev_err_ptr_probe/
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Add READ_ONCE()/WRITE_ONCE() annotations.
+
+Alternative would be to acquire the qdisc spinlock, but our long-term
+goal is to make qdisc dump operations lockless as much as we can.
+
+tc_red_xstats fields don't need to be latched atomically,
+otherwise this bug would have been caught earlier.
+
+Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260421142309.3964322-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/ocmem.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ net/sched/sch_red.c | 31 +++++++++++++++++++++----------
+ 1 file changed, 21 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/soc/qcom/ocmem.c b/drivers/soc/qcom/ocmem.c
-index ed77fdc76c9b2..37ea6b86aebcb 100644
---- a/drivers/soc/qcom/ocmem.c
-+++ b/drivers/soc/qcom/ocmem.c
-@@ -203,10 +203,9 @@ struct ocmem *of_get_ocmem(struct device *dev)
+diff --git a/net/sched/sch_red.c b/net/sched/sch_red.c
+index 68ee41ce78c50..86651a68d4015 100644
+--- a/net/sched/sch_red.c
++++ b/net/sched/sch_red.c
+@@ -90,17 +90,20 @@ static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	case RED_PROB_MARK:
+ 		qdisc_qstats_overlimit(sch);
+ 		if (!red_use_ecn(q)) {
+-			q->stats.prob_drop++;
++			WRITE_ONCE(q->stats.prob_drop,
++				   q->stats.prob_drop + 1);
+ 			goto congestion_drop;
+ 		}
  
- 	ocmem = platform_get_drvdata(pdev);
- 	put_device(&pdev->dev);
--	if (!ocmem) {
--		dev_err(dev, "Cannot get ocmem\n");
--		return ERR_PTR(-ENODEV);
--	}
-+	if (!ocmem)
-+		return dev_err_ptr_probe(dev, -EPROBE_DEFER, "Cannot get ocmem\n");
+ 		if (INET_ECN_set_ce(skb)) {
+-			q->stats.prob_mark++;
++			WRITE_ONCE(q->stats.prob_mark,
++				   q->stats.prob_mark + 1);
+ 			skb = tcf_qevent_handle(&q->qe_mark, sch, skb, to_free, &ret);
+ 			if (!skb)
+ 				return NET_XMIT_CN | ret;
+ 		} else if (!red_use_nodrop(q)) {
+-			q->stats.prob_drop++;
++			WRITE_ONCE(q->stats.prob_drop,
++				   q->stats.prob_drop + 1);
+ 			goto congestion_drop;
+ 		}
+ 
+@@ -111,17 +114,20 @@ static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		reason = SKB_DROP_REASON_QDISC_OVERLIMIT;
+ 		qdisc_qstats_overlimit(sch);
+ 		if (red_use_harddrop(q) || !red_use_ecn(q)) {
+-			q->stats.forced_drop++;
++			WRITE_ONCE(q->stats.forced_drop,
++				   q->stats.forced_drop + 1);
+ 			goto congestion_drop;
+ 		}
+ 
+ 		if (INET_ECN_set_ce(skb)) {
+-			q->stats.forced_mark++;
++			WRITE_ONCE(q->stats.forced_mark,
++				   q->stats.forced_mark + 1);
+ 			skb = tcf_qevent_handle(&q->qe_mark, sch, skb, to_free, &ret);
+ 			if (!skb)
+ 				return NET_XMIT_CN | ret;
+ 		} else if (!red_use_nodrop(q)) {
+-			q->stats.forced_drop++;
++			WRITE_ONCE(q->stats.forced_drop,
++				   q->stats.forced_drop + 1);
+ 			goto congestion_drop;
+ 		}
+ 
+@@ -135,7 +141,8 @@ static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		sch->qstats.backlog += len;
+ 		sch->q.qlen++;
+ 	} else if (net_xmit_drop_count(ret)) {
+-		q->stats.pdrop++;
++		WRITE_ONCE(q->stats.pdrop,
++			   q->stats.pdrop + 1);
+ 		qdisc_qstats_drop(sch);
+ 	}
+ 	return ret;
+@@ -463,9 +470,13 @@ static int red_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ 		dev->netdev_ops->ndo_setup_tc(dev, TC_SETUP_QDISC_RED,
+ 					      &hw_stats_request);
+ 	}
+-	st.early = q->stats.prob_drop + q->stats.forced_drop;
+-	st.pdrop = q->stats.pdrop;
+-	st.marked = q->stats.prob_mark + q->stats.forced_mark;
++	st.early = READ_ONCE(q->stats.prob_drop) +
++		   READ_ONCE(q->stats.forced_drop);
 +
- 	return ocmem;
++	st.pdrop = READ_ONCE(q->stats.pdrop);
++
++	st.marked = READ_ONCE(q->stats.prob_mark) +
++		    READ_ONCE(q->stats.forced_mark);
+ 
+ 	return gnet_stats_copy_app(d, &st, sizeof(st));
  }
- EXPORT_SYMBOL_GPL(of_get_ocmem);
 -- 
 2.53.0
 
