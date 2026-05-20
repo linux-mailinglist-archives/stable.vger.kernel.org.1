@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-250327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251223-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8IIjLZXmDWqm4gUAu9opvQ
-	(envelope-from <stable+bounces-250327-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:51:33 +0200
+	id 8GkGNvP7DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-251223-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B4775928C9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:51:33 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09748595EE6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4A5943121C07
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:39:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 409E9301EAA3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:17:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E967036F421;
-	Wed, 20 May 2026 16:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4D4B364EB0;
+	Wed, 20 May 2026 17:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mlSgiZz6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bSkMwOUX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E31A372691;
-	Wed, 20 May 2026 16:38:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9295E347512;
+	Wed, 20 May 2026 17:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295125; cv=none; b=ZZZ//txpRskI/ZZnMV3A8FB9gpOLO/eiJn9HG8l8di9ga1GHkM6MHSFhqloJxEc9X0DhUBcCriCIhIlDii8cxcltxpOpmsAnOhrTY73TdDaZ/ggLyp6QD4hWM6NEyLlg0pk29KE1/aVhrmGC0j/drBc2VRBwt0D0QqMJvBXqewk=
+	t=1779297421; cv=none; b=GsFi3F31qTNbcmihWHBRx1MqTvIB8ORXAcClXWBYsMFqngu03rTYy0ZJ7KOHNCMpVCXBqemSqx1OvlIpoD7qkWzsnqD72l6v48Mc1HNgtihwYgpfuR5e/4q+sQuwr+A3DPmV4Fe+MX54qhJQ1cVxRru7G35KQVgAsR8clcUb5xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295125; c=relaxed/simple;
-	bh=2a+FkGN7Dt4Au0K7BzHrsc/hkeB8OnEOd38XclLmP9k=;
+	s=arc-20240116; t=1779297421; c=relaxed/simple;
+	bh=+Clh+3mq9bBX+HFglWyytg4i4VEeiJGCPLSHifec3FQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u3Bi4rlc/a7cXgLIdSJx4ahjw30KxkAY1Zgo5JGaPXPtSPdaPrijROBFXkHvfITCePKBPlbPv7CZnGxLhJVHZePf8xEGVezq7oN/VDcFmzUcFCFrgSUprgYECfdT8vNZf2rdiDE0DcizWHFeVQsOmhm+Zv/wcQYdTjFob5gaAc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mlSgiZz6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A331F00893;
-	Wed, 20 May 2026 16:38:41 +0000 (UTC)
+	 MIME-Version; b=IAqGpvI9uInmxHme/2/ZdvRy4ozYcxp6BY+7KPl3gSxfuyyZBcQtGNRlO+RMruRdvi/2iPeiKRmPHENJ1lRiNxw6kBKCFeK8UdwNu09UlkOMZIMMkFgRFP3hQwGHOYtbuxinop5iww+XGYzVrzrlVFF/59uOPrgrczNcEG1SoTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bSkMwOUX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF6C21F000E9;
+	Wed, 20 May 2026 17:16:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295121;
-	bh=EmH4vFswc4W7FWZOG55HBGUfIPcgHu+3UFX49beVOZg=;
+	s=korg; t=1779297420;
+	bh=eyg0IkLSEi2VeJvdbtB8jnd8xRTWZ2mthapPLCcTFfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mlSgiZz6yjQgmN6fpaEyxHv38HHPj6Zk5JIp2Imqu0oinyeIibBGx7opGwEo0Esiq
-	 i0XmDImzj6cFiNij1yWGK35k9TgrPCCVxiEOB0JJko4PmFNWyNSD4EYYWAcFEtSZ0N
-	 QRDNpG7bpOnCb6DnbPo3zOA+DvYulDu56wxiL1Ck=
+	b=bSkMwOUXhzNKKAlcKvPSA3zYU5DgaOe0U7TBNTw+aGU9TClmWv0WUeEZdHEXuNMtd
+	 mahTwwoxuNliXYjuH94fiSD34bLXFtcvqr55zW6TDbgcgRTrMBWNFp9mkPaffWh8wj
+	 /f5SNbaI3l38WdhQwsGva3j30SSWJ88KItuBRhUI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pritesh Patel <pritesh.patel@einfochips.com>,
-	Huan He <hehuan1@eswincomputing.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Gui-Dong Han <hanguidong02@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0258/1146] dt-bindings: mmc: dwcmshc-sdhci: Fix resets array validation
+Subject: [PATCH 6.18 025/957] debugfs: fix placement of EXPORT_SYMBOL_GPL for debugfs_create_str()
 Date: Wed, 20 May 2026 18:08:28 +0200
-Message-ID: <20260520162154.070522894@linuxfoundation.org>
+Message-ID: <20260520162135.104765652@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,88 +65,77 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-251223-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250327-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[microchip.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,eswincomputing.com:email]
-X-Rspamd-Queue-Id: 5B4775928C9
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 09748595EE6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huan He <hehuan1@eswincomputing.com>
+From: Gui-Dong Han <hanguidong02@gmail.com>
 
-[ Upstream commit 5f7ac24ba232180caf77e9ddd6ccad61b9948706 ]
+[ Upstream commit 4afc929c0f74c4f22b055a82b371d50586da58ca ]
 
-The binding defines tuple-style reset-names items for some
-compatibles, which implicitly enforces a fixed array length
-via JSON Schema.
+The EXPORT_SYMBOL_GPL() for debugfs_create_str was placed incorrectly
+away from the function definition. Move it immediately below the
+debugfs_create_str() function where it belongs.
 
-Defining global maxItems for resets and reset-names causes these
-constraints to be intersected via allOf, resulting in an effective
-minItems equal to the global maxItems. This leads to dtbs_check
-failures reporting reset arrays as too short, even when the DTS
-provides the correct number of entries.
-
-Fixes: 30009a21f257 ("dt-bindings: mmc: sdhci-of-dwcmshc: Add Eswin EIC7700")
-Co-developed-by: Pritesh Patel <pritesh.patel@einfochips.com>
-Signed-off-by: Pritesh Patel <pritesh.patel@einfochips.com>
-Signed-off-by: Huan He <hehuan1@eswincomputing.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: d60b59b96795 ("debugfs: Export debugfs_create_str symbol")
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Link: https://patch.msgid.link/20260323085930.88894-3-hanguidong02@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/mmc/snps,dwcmshc-sdhci.yaml | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/debugfs/file.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/mmc/snps,dwcmshc-sdhci.yaml b/Documentation/devicetree/bindings/mmc/snps,dwcmshc-sdhci.yaml
-index 7e7c55dc24403..5cebe5eb1efb8 100644
---- a/Documentation/devicetree/bindings/mmc/snps,dwcmshc-sdhci.yaml
-+++ b/Documentation/devicetree/bindings/mmc/snps,dwcmshc-sdhci.yaml
-@@ -50,9 +50,11 @@ properties:
-     maxItems: 1
+diff --git a/fs/debugfs/file.c b/fs/debugfs/file.c
+index 252fca572eb76..880a8a9deacfe 100644
+--- a/fs/debugfs/file.c
++++ b/fs/debugfs/file.c
+@@ -1047,7 +1047,6 @@ ssize_t debugfs_read_file_str(struct file *file, char __user *user_buf,
  
-   resets:
-+    minItems: 4
-     maxItems: 5
+ 	return ret;
+ }
+-EXPORT_SYMBOL_GPL(debugfs_create_str);
  
-   reset-names:
-+    minItems: 4
-     maxItems: 5
+ static ssize_t debugfs_write_file_str(struct file *file, const char __user *user_buf,
+ 				      size_t count, loff_t *ppos)
+@@ -1142,6 +1141,7 @@ void debugfs_create_str(const char *name, umode_t mode,
+ 	debugfs_create_mode_unsafe(name, mode, parent, value, &fops_str,
+ 				   &fops_str_ro, &fops_str_wo);
+ }
++EXPORT_SYMBOL_GPL(debugfs_create_str);
  
-   rockchip,txclk-tapnum:
-@@ -146,6 +148,7 @@ allOf:
-     else:
-       properties:
-         resets:
-+          minItems: 5
-           maxItems: 5
-         reset-names:
-           items:
+ static ssize_t read_file_blob(struct file *file, char __user *user_buf,
+ 			      size_t count, loff_t *ppos)
 -- 
 2.53.0
 
