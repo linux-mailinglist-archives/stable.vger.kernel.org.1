@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-251963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250992-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ADZVGov9DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-251963-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:29:31 +0200
+	id eJilOgHxDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-250992-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB654596558
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:29:30 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 821635940FA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EC3E1373ED5C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:49:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D3F6731F6E7F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:08:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2505C3D5647;
-	Wed, 20 May 2026 17:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5004F3F54DB;
+	Wed, 20 May 2026 17:07:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbSUZmoS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vkRTJvtf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23E43E5ECF;
-	Wed, 20 May 2026 17:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC7C3F1AC7;
+	Wed, 20 May 2026 17:06:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299385; cv=none; b=fG88+hqBESDf1YBBLuJHgpfKzbk2962IN3y3LtGXc1NSs6+hJ6dz/z5fKYtt7KcyhGbG8s8EOlYD0MX9n9Saoi/z9L7K71wK9RM3tXJDdELSrJdGG4aqIZ05KI/pnk0N2CxpGjp8KTsl5mFU5ZjVxBh+jNEZPyskldKnEYiJz2Q=
+	t=1779296821; cv=none; b=sNEDlzKjxFM3s7mt8PBeNfCL4KgLy7kIcOkgysFa5LRf64qTDLZK02qSO76iR6gBBLTae8/9C1CoXJFxTnrIBqsok6OwlR5/z3cW4hZRhJagQCgWR4iIhIBbagOC6YfyIPVlSThqvkGV5OKmREZ/+T7ggOP93Y27jWVzQ2jYcB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299385; c=relaxed/simple;
-	bh=orBYPG24Iqh4JN3hKwA5YPl4DJ0i0zHQEXRX1QZI5yo=;
+	s=arc-20240116; t=1779296821; c=relaxed/simple;
+	bh=/xiNtXD3cCXD1xvIpBLQztu3GB0xXPvBftWgqIF8zTU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LSZsUhAAi8R7NVGWw3tWduGv+1lFiUGCtfI8WWQwEMsSv59FsPExCnRu8+IKal9Fu+0m7QJSKu7g5OCB3fEfP9ZI0dQOc/DNvuzPkBU1BE7BZgA0COwYcwipTVJdFbxz6OS0l05j8UH4P1zd8TZ3WJ46n3spdqYXmJYNj+sO7AQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbSUZmoS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4320D1F000E9;
-	Wed, 20 May 2026 17:49:44 +0000 (UTC)
+	 MIME-Version; b=Qq4oGDUxx0AsFKCV6XKVAiAaORQZKC0/Y/4XJWhnQQgdTJ7XX74yVxhjvGJVeedMwRywYYqGauOQyP8EoStsO2QM7x198R1zbXEC8v3mlJzR+ky7EXknpN/w7Gi8ODffLQWYyGPhWj0h3J1rzHSwIyQ4gzID1eEINRELit5oz3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vkRTJvtf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E3E1F000E9;
+	Wed, 20 May 2026 17:06:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299384;
-	bh=BripImwmRU3xIvlG1cgTPie46pdB0q+Thu6LQCywMTE=;
+	s=korg; t=1779296819;
+	bh=DiReyHYyoJX75Ec++qgzg7Y1xdIzb7HtirjTaKUrdT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gbSUZmoSUyvvfPkA7zblSS9c9jFGU1h3HtV0aRnOWg8wVQL1ca1M1QfO+ZeLGKn7A
-	 ptSrvd/fBw5U8Mc/RsF221bGOQvB71wK2CM4d3aH9VO7EDo8Ckil6X9j2JdyVzQwI8
-	 H1W7K6Qt13IierIzxBxiYH/VuYTaSh8F1QF4QEf8=
+	b=vkRTJvtfyTHsL/uB+keCoW5XJj4qN9ubpxP+VYPogSCXufdkal1O3iG8d2hc7U4mY
+	 LNxyi39zibQCSCUBjZxlIP5nILzVub+tpwqgVcL8wtfqhju/MJuaekzMkRzU5K2KIi
+	 p1LbofSm85Rvt3MKiWhJn1uwQpviA910EZdTFh/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Bobby Eshleman <bobbyeshleman@meta.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Morduan Zang <zhangdandan@uniontech.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 710/957] vsock/virtio: fix MSG_ZEROCOPY pinned-pages accounting
+Subject: [PATCH 7.0 0943/1146] net: usb: rtl8150: free skb on usb_submit_urb() failure in xmit
 Date: Wed, 20 May 2026 18:19:53 +0200
-Message-ID: <20260520162149.942272646@linuxfoundation.org>
+Message-ID: <20260520162209.574987622@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,111 +69,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,meta.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-251963-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250992-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,meta.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: CB654596558
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,lunn.ch:email,uniontech.com:email]
+X-Rspamd-Queue-Id: 821635940FA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Morduan Zang <zhangdandan@uniontech.com>
 
-[ Upstream commit 1cb36e252211506f51095fe7ced8286cc77b4c80 ]
+[ Upstream commit adbe2cdf75461891e50dbe11896ac78e9af1f874 ]
 
-virtio_transport_init_zcopy_skb() uses iter->count as the size argument
-for msg_zerocopy_realloc(), which in turn passes it to
-mm_account_pinned_pages() for RLIMIT_MEMLOCK accounting. However, this
-function is called after virtio_transport_fill_skb() has already consumed
-the iterator via __zerocopy_sg_from_iter(), so on the last skb, iter->count
-will be 0, skipping the RLIMIT_MEMLOCK enforcement.
+When rtl8150_start_xmit() fails to submit the tx URB, the URB is never
+handed to the USB core and write_bulk_callback() will not run.  The
+driver returns NETDEV_TX_OK, which tells the networking stack that the
+skb has been consumed, but nothing actually frees the skb on this
+error path:
 
-Pass pkt_len (the total bytes being sent) as an explicit parameter to
-virtio_transport_init_zcopy_skb() instead of reading the already-consumed
-iter->count.
+  dev->tx_skb = skb;
+  ...
+  if ((res = usb_submit_urb(dev->tx_urb, GFP_ATOMIC))) {
+          ...
+          /* no kfree_skb here */
+  }
+  return NETDEV_TX_OK;
 
-This matches TCP and UDP, which both call msg_zerocopy_realloc() with
-the original message size.
+This leaks the skb on every submit failure and also leaves dev->tx_skb
+pointing at memory that the driver itself may later free, which is
+fragile.
 
-Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
-Link: https://patch.msgid.link/20260420132051.217589-1-sgarzare@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Free the skb with dev_kfree_skb_any() in the error path and clear
+dev->tx_skb so no stale pointer is left behind.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Morduan Zang <zhangdandan@uniontech.com>
+Link: https://patch.msgid.link/E7D3E1C013C5A859+20260424015517.9574-1-zhangdandan@uniontech.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/virtio_transport_common.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/net/usb/rtl8150.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 41be06c4bd7ff..495c93cddcdc0 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -75,6 +75,7 @@ static bool virtio_transport_can_zcopy(const struct virtio_transport *t_ops,
- static int virtio_transport_init_zcopy_skb(struct vsock_sock *vsk,
- 					   struct sk_buff *skb,
- 					   struct msghdr *msg,
-+					   size_t pkt_len,
- 					   bool zerocopy)
- {
- 	struct ubuf_info *uarg;
-@@ -83,12 +84,10 @@ static int virtio_transport_init_zcopy_skb(struct vsock_sock *vsk,
- 		uarg = msg->msg_ubuf;
- 		net_zcopy_get(uarg);
+diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
+index 1bbfdeab4d624..c880c95c41a5e 100644
+--- a/drivers/net/usb/rtl8150.c
++++ b/drivers/net/usb/rtl8150.c
+@@ -710,6 +710,13 @@ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
+ 			netdev->stats.tx_errors++;
+ 			netif_start_queue(netdev);
+ 		}
++		/*
++		 * The URB was not submitted, so write_bulk_callback() will
++		 * never run to free dev->tx_skb.  Drop the skb here and
++		 * clear tx_skb to avoid leaving a stale pointer.
++		 */
++		dev->tx_skb = NULL;
++		dev_kfree_skb_any(skb);
  	} else {
--		struct iov_iter *iter = &msg->msg_iter;
- 		struct ubuf_info_msgzc *uarg_zc;
- 
- 		uarg = msg_zerocopy_realloc(sk_vsock(vsk),
--					    iter->count,
--					    NULL, false);
-+					    pkt_len, NULL, false);
- 		if (!uarg)
- 			return -1;
- 
-@@ -385,11 +384,17 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
- 		 * each iteration. If this is last skb for this buffer
- 		 * and MSG_ZEROCOPY mode is in use - we must allocate
- 		 * completion for the current syscall.
-+		 *
-+		 * Pass pkt_len because msg iter is already consumed
-+		 * by virtio_transport_fill_skb(), so iter->count
-+		 * can not be used for RLIMIT_MEMLOCK pinned-pages
-+		 * accounting done by msg_zerocopy_realloc().
- 		 */
- 		if (info->msg && info->msg->msg_flags & MSG_ZEROCOPY &&
- 		    skb_len == rest_len && info->op == VIRTIO_VSOCK_OP_RW) {
- 			if (virtio_transport_init_zcopy_skb(vsk, skb,
- 							    info->msg,
-+							    pkt_len,
- 							    can_zcopy)) {
- 				kfree_skb(skb);
- 				ret = -ENOMEM;
+ 		netdev->stats.tx_packets++;
+ 		netdev->stats.tx_bytes += skb_len;
 -- 
 2.53.0
 
