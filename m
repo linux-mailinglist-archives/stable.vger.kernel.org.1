@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-251773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252871-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yN70GBgBDmqs5QUAu9opvQ
-	(envelope-from <stable+bounces-251773-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:40 +0200
+	id YPpCOiD/DWpV5QUAu9opvQ
+	(envelope-from <stable+bounces-252871-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6699759727F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B793596BB0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 213FF3229AE1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:40:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D1E9A312D30F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:30:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29956376A0C;
-	Wed, 20 May 2026 17:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ED623FC5AB;
+	Wed, 20 May 2026 18:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kU1ezhm3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xP4T09Pc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E472736D9EA;
-	Wed, 20 May 2026 17:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D17153D1CC6;
+	Wed, 20 May 2026 18:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298855; cv=none; b=pa3143g5n6SogiKeHdb2hCsGo14Ky1/mJ3lN8jgiWII3Hap79jFp7HOtYPvICRbo/K+g5dMslV92gtAp+rS4cGPPdgWzuWXr6G5+/9Jjq78whrlk+f21xWZs3sPUW3EU+H7EkacfHJmqBGKB+fM3jWIBIP7BhjrMLC4Y5Vs9coY=
+	t=1779301808; cv=none; b=AEg8Sctzk+s5JM+RPZ3xTdSqayKm7bs8O5ThtE9SStREJeh7h1Ggr49Zal8qeDcTCHyNryIAHAuwkFzETQFRe0E0Oav2fMfTwLzKFfygaM3mHSN8wgMhhmF8SxHL8fuVtygfqGon6tUxN0lQ7XEVNUlt0oFgS8bKhvMA+jDXT8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298855; c=relaxed/simple;
-	bh=sdfQXAWWM4iSyUODaXPfH/rTYbN/jfmJ7/IvAztQQ2A=;
+	s=arc-20240116; t=1779301808; c=relaxed/simple;
+	bh=GEVsloxNXueHkWkoxJw7qE/NvYsdPgcbk1J0KGfzekg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LapsfskxSCFfwoWu44k0mUlplMM7zTaOSQZLZrUo0uLhpe/k9uDdOzu12upASMd6vuIPIrsAHYVuneZzyC5yNNF2BSVDcGtcoqf1h5FV0SfG1z+ExbsoLllQomT9t/2BIfUp9UrDppj84PW2Wu36yPQeMcjk8z79cP3VFers8/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kU1ezhm3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56AB21F000E9;
-	Wed, 20 May 2026 17:40:53 +0000 (UTC)
+	 MIME-Version; b=li3bdvOHzO2ZBblohRz2MrUB93rXU8ic6SGNk2VcNL44RlGtMbeqP9Ic9s29Sbz2EwTYYgdR0kv2lN8xEaD+uddUzj5r5XjIVupF3v3238O+G/ur4SgHDKEgKD6FfinNwQYFrRZ/MzDCQqQU6hK94uxRNCnMk/igFjgCbr6GnyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xP4T09Pc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 248F91F000E9;
+	Wed, 20 May 2026 18:30:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298853;
-	bh=D4ju9tXMvdpmBibWu0f/EG6xHBOAAqlQdhSFjXmxh1Q=;
+	s=korg; t=1779301805;
+	bh=TX0StxXwg4i1uitL9RdxS75mRDr8+hbQUYnFw7jHXpI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kU1ezhm3CT2m2nq9dtpejpTn7bEllHJy3ujf4iXnuAGcVdgszQm4OMCPC8oL8gr59
-	 dpsYyQDJMpN2dqjbTpwt+DVpVjucOIBPBR5nXBd/mNqL1gDVeK+rgpCgJae6hhimQK
-	 FYqCBjAJC1EgNe7aEHsCnWtdzCEC8dIQ6UwdL0vM=
+	b=xP4T09Pc8MyMoKCsikH2acZR0qQE+7jnGCaeJ+Qxes+NT91k3BzkW+NWFpdJfY1jF
+	 Ps79A0FXEiWcdMFfmFGAhLVlHdrkHzKjSZQ1R7xoN1yus5XQ1tUd84WM8LK+XcD6t9
+	 /W/+xK7a2Qhal4a/oizbV37PvnQkOmWrSfscIQs0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Val Packett <val@packett.cool>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Cai Xinchen <caixinchen1@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 567/957] clk: qcom: gcc-sc8180x: Use retention for USB power domains
+Subject: [PATCH 6.6 027/508] dpaa2: add independent dependencies for FSL_DPAA2_SWITCH
 Date: Wed, 20 May 2026 18:17:30 +0200
-Message-ID: <20260520162146.825636722@linuxfoundation.org>
+Message-ID: <20260520162059.176748130@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,95 +69,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251773-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252871-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,packett.cool:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 6699759727F
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,huawei.com:email]
+X-Rspamd-Queue-Id: 6B793596BB0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Val Packett <val@packett.cool>
+From: Cai Xinchen <caixinchen1@huawei.com>
 
-[ Upstream commit 25bc96f26cd6c19dde13a0b9859183e531d6fbfc ]
+[ Upstream commit 12589892f41c4c645c80ef9f036f7451a6045624 ]
 
-The USB subsystem does not expect to lose its state on suspend:
+Since the commit 84cba72956fd ("dpaa2-switch: integrate
+the MAC endpoint support") included dpaa2-mac.o in the driver,
+but it didn't select PCS_LYNX, PHYLINK and FSL_XGMAC_MDIO. it
+will lead to link error, such as
+undefined reference to `phylink_ethtool_ksettings_set'
+undefined reference to `lynx_pcs_create_fwnode'
 
-    xhci-hcd xhci-hcd.0.auto: xHC error in resume, USBSTS 0x401, Reinit
-    usb usb1: root hub lost power or was reset
+And the same reason as the commit d2624e70a2f53 ("dpaa2-eth: select
+XGMAC_MDIO for MDIO bus support"), enable the FSL_XGMAC_MDIO Kconfig
+option in order to have MDIO access to internal and external PHYs.
 
-(The reinitialization usually succeeds, but it does slow down resume.)
+Because dpaa2-switch uses fsl_mc_driver APIs, add depends on FSL_MC_BUS
+&& FSL_MC_DPIO as FSL_DPAA2_SWITCH do.
 
-To maintain state during suspend, the relevant GDSCs need to stay in
-retention mode, like they do on other similar SoCs. Change the mode to
-PWRSTS_RET_ON to fix.
+FSL_XGMAC_MDIO and FSL_MC_BUS depend on OF, thus the dependence of
+FSL_MC_BUS can satisfy FSL_XGMAC_MDIO's OF requirement.
 
-Fixes: 4433594bbe5d ("clk: qcom: gcc: Add global clock controller driver for SC8180x")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Val Packett <val@packett.cool>
-Link: https://lore.kernel.org/r/20260312112321.370983-4-val@packett.cool
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 84cba72956fd ("dpaa2-switch: integrate the MAC endpoint support")
+Suggested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Signed-off-by: Cai Xinchen <caixinchen1@huawei.com>
+Link: https://patch.msgid.link/20260312065907.476663-2-caixinchen1@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sc8180x.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/freescale/dpaa2/Kconfig | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/clk/qcom/gcc-sc8180x.c b/drivers/clk/qcom/gcc-sc8180x.c
-index 55dabf6259b29..b116a9c0b2d94 100644
---- a/drivers/clk/qcom/gcc-sc8180x.c
-+++ b/drivers/clk/qcom/gcc-sc8180x.c
-@@ -4172,7 +4172,7 @@ static struct gdsc usb30_sec_gdsc = {
- 	.pd = {
- 		.name = "usb30_sec_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- 	.flags = POLL_CFG_GDSCR,
- };
- 
-@@ -4190,7 +4190,7 @@ static struct gdsc usb30_prim_gdsc = {
- 	.pd = {
- 		.name = "usb30_prim_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- 	.flags = POLL_CFG_GDSCR,
- };
- 
-@@ -4262,7 +4262,7 @@ static struct gdsc usb30_mp_gdsc = {
- 	.pd = {
- 		.name = "usb30_mp_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- 	.flags = POLL_CFG_GDSCR,
- };
- 
+diff --git a/drivers/net/ethernet/freescale/dpaa2/Kconfig b/drivers/net/ethernet/freescale/dpaa2/Kconfig
+index d029b69c3f183..36280e5d99e1f 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/Kconfig
++++ b/drivers/net/ethernet/freescale/dpaa2/Kconfig
+@@ -34,6 +34,10 @@ config FSL_DPAA2_SWITCH
+ 	tristate "Freescale DPAA2 Ethernet Switch"
+ 	depends on BRIDGE || BRIDGE=n
+ 	depends on NET_SWITCHDEV
++	depends on FSL_MC_BUS && FSL_MC_DPIO
++	select PHYLINK
++	select PCS_LYNX
++	select FSL_XGMAC_MDIO
+ 	help
+ 	  Driver for Freescale DPAA2 Ethernet Switch. This driver manages
+ 	  switch objects discovered on the Freeescale MC bus.
 -- 
 2.53.0
 
