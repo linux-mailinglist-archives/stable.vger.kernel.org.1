@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-250416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251314-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8DBmMjzyDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-250416-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:16 +0200
+	id 8AMpM9/yDWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251314-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4853C5944B2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:16 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8331C5946B6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2C6C033D61E6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 08CAF309C770
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 802B43E120E;
-	Wed, 20 May 2026 16:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E40237754D;
+	Wed, 20 May 2026 17:21:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sjOT+KTN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HmPQCYzf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487F83D8138;
-	Wed, 20 May 2026 16:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E854330BF68;
+	Wed, 20 May 2026 17:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295357; cv=none; b=J3v0alWMPnGrcefAy83xNs3FMnZSfH+M9EnHNu2pGT9GnUy0GPxKBgxb0fdoTdNnSd0fwBdD+38NSgDMKs4FUEquI6py0+AbMvzy4m0KuDz5oQtH35ct9r5CaGzp5NFD83mV/xjzAMQCK35B2L0/TwklyOb8tb810Z/QDeKEmmk=
+	t=1779297660; cv=none; b=TeqXS/bpZ3i3ZMpDYrbfjMNDFWIdTtb0p3G/KwG09UeSxbl6LPOSw6lk4QfjExy/qF2DnyLHq2mOD6Ow6vXLcNJFXNjwjViN0HTqHRwGPA0WclrpjjNN8GfGk49bjSARrh+mXwhIsJuJQimBjQ9F9bBA3ldZVbw6u2/lILaxxLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295357; c=relaxed/simple;
-	bh=HUu1BniarOmVnoquqi0k0tvuq0weD/KdKtKZcFD4Ung=;
+	s=arc-20240116; t=1779297660; c=relaxed/simple;
+	bh=FfT13X6vl+Okr1N8Y+OpKlHoKZ67fnTzW3tBGLUfUxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xxv3BbQjXB6yTzJe49mTP25RlRHDi0/te+DipgTfMf+VtJpoosP/KolTA/obs/Dn/1G66wSVdvjn9YsqWJuGgGdkVbGvm9O7GYicIWXwbdQaywBZHH5xPlpMNCHpdIjtXteTnJ5cRHA/1QQTlL1pvQY68fCV0crrd+Sk693OB1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sjOT+KTN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD5F1F000E9;
-	Wed, 20 May 2026 16:42:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KOTreYU4UQzbR1GB3yRr5laa6+T7o8f5GXQuVNZq9WRgMAH9dghhjn/z7XzE07S3yK91rKfC9FCbZcZCRviLIaqmcxwUQ/6zXUb9CiRGGah35xwFwsKM5+WAYmDn6XrxB+JzsgafzMNk6gBRbLe4z2TZRvxUsDhIAJ6Vdc0oE3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HmPQCYzf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F6E01F000E9;
+	Wed, 20 May 2026 17:20:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295356;
-	bh=SvBoTLinesxSRd3b2z6ONPalBwM55IAjQaUdykyABTg=;
+	s=korg; t=1779297658;
+	bh=n7cuOknYAquYaKLUeXcQZTUVHtL7FdLET9hsMcoNHIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sjOT+KTNlf+tUrnQ22VFy0Jpn0dgehotiJO6qUfR6pfYRBboTn4M/PmK0pXdgdL3a
-	 6TXJxPwqDqT/+M3j9bGom0dEXmTvZvOndU4Kg+DgFu2YYyVelrCliFiTUb4AGyXqlA
-	 18Fkqs3OxxLYETpBiPP1eW4e5+DRa+25HlIKUGUM=
+	b=HmPQCYzf3RpqPV8hcsFWZ33GohvBAeiiAONgmnTS+irZXnXlHejbLebropQXOPfUC
+	 uKc7byoO5Q0vwkJwl/rd5O5SETaEdYqXt4m2XxjfycZu60YgHCNBEn/o6SMPf7Xhiu
+	 2AdIIQdZIUqhlaDfcihMUwfRCb4+zdX1UVHrWlS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Billy Tsai <billy_tsai@aspeedtech.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Alex Williamson <alex@shazbot.org>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0347/1146] hwmon: (aspeed-g6-pwm-tach): remove redundant driver remove callback
+Subject: [PATCH 6.18 114/957] drivers/vfio_pci_core: Change PXD_ORDER check from switch case to if/else block
 Date: Wed, 20 May 2026 18:09:57 +0200
-Message-ID: <20260520162156.053625675@linuxfoundation.org>
+Message-ID: <20260520162137.031673993@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +66,125 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.ibm.com,shazbot.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-251314-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250416-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,roeck-us.net:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,aspeedtech.com:email]
-X-Rspamd-Queue-Id: 4853C5944B2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,shazbot.org:email]
+X-Rspamd-Queue-Id: 8331C5946B6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Billy Tsai <billy_tsai@aspeedtech.com>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-[ Upstream commit 46fef8583daa1bf78fda7eaa523c64d4440322ac ]
+[ Upstream commit 948b71aa81cd89b222942db6055e8d9c51c54e78 ]
 
-Drops the remove callback as it only asserts reset and the probe already
-registers a devres action (devm_add_action_or_reset()) to call
-aspeed_pwm_tach_reset_assert().
+Architectures like PowerPC uses runtime defined values for
+PMD_ORDER/PUD_ORDER. This is because it can use either RADIX or HASH MMU
+at runtime using kernel cmdline. So the pXd_index_size is not known at
+compile time. Without this fix, when we add huge pfn support on powerpc
+in the next patch, vfio_pci_core driver compilation can fail with the
+following errors.
 
-Fixes: 7e1449cd15d1 ("hwmon: (aspeed-g6-pwm-tacho): Support for ASPEED g6 PWM/Fan tach")
-Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
-Link: https://lore.kernel.org/r/20260309-pwm_fixes-v2-1-ca9768e70470@aspeedtech.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+  CC [M]  drivers/vfio/vfio_main.o
+  CC [M]  drivers/vfio/group.o
+  CC [M]  drivers/vfio/container.o
+  CC [M]  drivers/vfio/virqfd.o
+  CC [M]  drivers/vfio/vfio_iommu_spapr_tce.o
+  CC [M]  drivers/vfio/pci/vfio_pci_core.o
+  CC [M]  drivers/vfio/pci/vfio_pci_intrs.o
+  CC [M]  drivers/vfio/pci/vfio_pci_rdwr.o
+  CC [M]  drivers/vfio/pci/vfio_pci_config.o
+  CC [M]  drivers/vfio/pci/vfio_pci.o
+  AR      kernel/built-in.a
+../drivers/vfio/pci/vfio_pci_core.c: In function ‘vfio_pci_vmf_insert_pfn’:
+../drivers/vfio/pci/vfio_pci_core.c:1678:9: error: case label does not reduce to an integer constant
+ 1678 |         case PMD_ORDER:
+      |         ^~~~
+../drivers/vfio/pci/vfio_pci_core.c:1682:9: error: case label does not reduce to an integer constant
+ 1682 |         case PUD_ORDER:
+      |         ^~~~
+make[6]: *** [../scripts/Makefile.build:289: drivers/vfio/pci/vfio_pci_core.o] Error 1
+make[6]: *** Waiting for unfinished jobs....
+make[5]: *** [../scripts/Makefile.build:546: drivers/vfio/pci] Error 2
+make[5]: *** Waiting for unfinished jobs....
+make[4]: *** [../scripts/Makefile.build:546: drivers/vfio] Error 2
+make[3]: *** [../scripts/Makefile.build:546: drivers] Error 2
+
+Fixes: f9e54c3a2f5b7 ("vfio/pci: implement huge_fault support")
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Reviewed-by: Alex Williamson <alex@shazbot.org>
+Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/b155e19993ee1f5584c72050192eb468b31c5029.1773058761.git.ritesh.list@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/aspeed-g6-pwm-tach.c | 8 --------
- 1 file changed, 8 deletions(-)
+ drivers/vfio/pci/vfio_pci_core.c | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/hwmon/aspeed-g6-pwm-tach.c b/drivers/hwmon/aspeed-g6-pwm-tach.c
-index 44e1ecba205d7..4f6e6d440dd40 100644
---- a/drivers/hwmon/aspeed-g6-pwm-tach.c
-+++ b/drivers/hwmon/aspeed-g6-pwm-tach.c
-@@ -517,13 +517,6 @@ static int aspeed_pwm_tach_probe(struct platform_device *pdev)
- 	return 0;
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index d07f0ede5d731..53a846d3e6758 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -1687,21 +1687,16 @@ vm_fault_t vfio_pci_vmf_insert_pfn(struct vfio_pci_core_device *vdev,
+ 	if (vdev->pm_runtime_engaged || !__vfio_pci_memory_enabled(vdev))
+ 		return VM_FAULT_SIGBUS;
+ 
+-	switch (order) {
+-	case 0:
++	if (!order)
+ 		return vmf_insert_pfn(vmf->vma, vmf->address, pfn);
+-#ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
+-	case PMD_ORDER:
++
++	if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PMD_PFNMAP) && order == PMD_ORDER)
+ 		return vmf_insert_pfn_pmd(vmf, pfn, false);
+-#endif
+-#ifdef CONFIG_ARCH_SUPPORTS_PUD_PFNMAP
+-	case PUD_ORDER:
++
++	if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PUD_PFNMAP) && order == PUD_ORDER)
+ 		return vmf_insert_pfn_pud(vmf, pfn, false);
+-		break;
+-#endif
+-	default:
+-		return VM_FAULT_FALLBACK;
+-	}
++
++	return VM_FAULT_FALLBACK;
  }
+ EXPORT_SYMBOL_GPL(vfio_pci_vmf_insert_pfn);
  
--static void aspeed_pwm_tach_remove(struct platform_device *pdev)
--{
--	struct aspeed_pwm_tach_data *priv = platform_get_drvdata(pdev);
--
--	reset_control_assert(priv->reset);
--}
--
- static const struct of_device_id aspeed_pwm_tach_match[] = {
- 	{
- 		.compatible = "aspeed,ast2600-pwm-tach",
-@@ -537,7 +530,6 @@ MODULE_DEVICE_TABLE(of, aspeed_pwm_tach_match);
- 
- static struct platform_driver aspeed_pwm_tach_driver = {
- 	.probe = aspeed_pwm_tach_probe,
--	.remove = aspeed_pwm_tach_remove,
- 	.driver	= {
- 		.name = "aspeed-g6-pwm-tach",
- 		.of_match_table = aspeed_pwm_tach_match,
 -- 
 2.53.0
 
