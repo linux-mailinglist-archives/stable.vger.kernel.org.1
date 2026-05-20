@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253221-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SLuNHsDvDWpu4wUAu9opvQ
-	(envelope-from <stable+bounces-251195-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:30:40 +0200
+	id gCLwOgUvDmoK7wUAu9opvQ
+	(envelope-from <stable+bounces-253221-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:00:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3921593D72
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:30:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C1B959B952
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:00:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 66A7231326DE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0B9D4385BDE8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A673D8138;
-	Wed, 20 May 2026 17:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE5B54219FC;
+	Wed, 20 May 2026 18:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GJmbXHC6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SDX5Ai/l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A786135F619;
-	Wed, 20 May 2026 17:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBA84218B4;
+	Wed, 20 May 2026 18:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297347; cv=none; b=hUQB9tTw/xMSIvkIeVyav2j4qfJBP7XFIfwuy7+rSwRI5X6RZLC/LqpSV+e5GMFP6nu31xzc9YkDEa1Zfl8rqtIMan6FoaVarWtcBdSSHVmqKfRUrzfAXSIF/V0FYw0i0zv4imACXSO31q70JKnSI/Xcu3xEWcalF7V6c2SG9O4=
+	t=1779302715; cv=none; b=k1RZqinEVYzs0Qyp/ztRuGZ2QT2prcAv7eZFDX5/lzauz6BDGyYQt6cK09Ov/CSgqmw+NfWjDMHqhyarxcVrueVxF3xonO7wUxWVueZ3gfOtdOgbC2ly/gN8PfmSvDjV3hV4r6ta9kv+tMl91VTcU9OClMrZFaUbN7/zc7M4/fY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297347; c=relaxed/simple;
-	bh=QC3vpeVnI3vjFjvF8IbwkJCrI6VxEGL0TquQp3hyIfQ=;
+	s=arc-20240116; t=1779302715; c=relaxed/simple;
+	bh=op0fGIeU16xIHAMla2hmy5P8ToM2xf/4a+j4sZgzlpo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EfusXJBZCAH7bLlE8bopQas/n3kYeHPInJqv9zXH1w6lFDwY11cItB2bsQzy/WzVhlBwlu2ksbfCWXiOH57XIFFiNl1t/I9kmou7IJAgQcfMuN9CdCSELdwAqgd6UUKU+ZvEVyBVm6l+RfbR+wl7C0p2LF14owYbhnGtV63gGHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GJmbXHC6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18B4E1F000E9;
-	Wed, 20 May 2026 17:15:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=V4lNpE9Wc7OQtwAbOasGRKFSqd80btc1rXC2x+NQikbT/qdDVFhJ8ZVUYaaus+yjMs6c9zKY7YQIDCihsM2t6JwCo6YB6nrJckT4xXhYjL7VzDehW1aBzAfLFVzcPTBlE2PxVU8DD7LTGuTdKv6HiriZTQ6eolIMztK9euf4kFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SDX5Ai/l; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CFCA1F000E9;
+	Wed, 20 May 2026 18:45:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297346;
-	bh=IcCt84H4sbbMBZ/v/q1AsvuieODrPp9Ot4Zaf8lx5vs=;
+	s=korg; t=1779302714;
+	bh=iA9SLXIOAT9P05U/9W3DsE70r3jQtmGpVqZ3BG7Oo50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GJmbXHC6pfXayw6YEu2rX06vXlqq1JQPgTioKVVDOudO8yipVz/vEYvvHQg9GW5eb
-	 CvRpKsG8lZunh9sQgbkOgyvbj3w7FO60+DyH+cEJ2NFo2bBG4qyPiqhvwUleZSWUWK
-	 FDk0l5TAWRe6NXloK3TWGeMTRC92twaPKmDG3j48=
+	b=SDX5Ai/lPOgc5sstAAs89Pli7DdCog2/E8+bz2K3H4cneCPfj7O86EDwLHI37zwvR
+	 e51GwsrYCiwfjnr+BLFQkVP0dyb9taC/+vH7I+7QWDyFQp/ul6HcRXS0wWkhNeIr3q
+	 cPiiYB3OiADx/ywJO71lgozIrpWZuiZdpS8bPWHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Mark Brown <broonie@kernel.org>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 1145/1146] spi: sifive: Simplify clock handling with devm_clk_get_enabled()
+Subject: [PATCH 6.6 372/508] drm/amdgpu/uvd3.1: Dont validate the firmware when already validated
 Date: Wed, 20 May 2026 18:23:15 +0200
-Message-ID: <20260520162214.169265486@linuxfoundation.org>
+Message-ID: <20260520162106.685425169@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,140 +64,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-253221-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251195-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,kylinos.cn:email,msgid.link:url]
-X-Rspamd-Queue-Id: F3921593D72
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,gitlab.freedesktop.org:url]
+X-Rspamd-Queue-Id: 4C1B959B952
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 140039c23aca067b9ff0242e3c0ce96276bb95f3 ]
+[ Upstream commit 13e4cf116dbf7a1fb8123a59bea2c098f30d3736 ]
 
-Replace devm_clk_get() followed by clk_prepare_enable() with
-devm_clk_get_enabled() for the bus clock. This reduces boilerplate code
-and error handling, as the managed API automatically disables the clock
-when the device is removed or if probe fails.
+UVD 3.1 firmware validation seems to always fail after
+attempting it when it had already been validated.
+(This works similarly with the VCE 1.0 as well.)
 
-Remove the now-unnecessary clk_disable_unprepare() calls from the probe
-error path and the remove callback. Adjust the error handling to use the
-existing put_host label.
+Don't attempt repeating the validation when it's already done.
 
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Link: https://patch.msgid.link/73d0d8ecb4e1af5a558d6a7866c0f886d94fe3d1.1773885292.git.xiaopei01@kylinos.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 0f25236694a2 ("spi: sifive: fix controller deregistration")
+This caused issues in situations when the system isn't able
+to suspend the GPU properly and so the GPU isn't actually
+powered down. Then amdgpu would fail when calling the IP
+block resume function.
+
+Closes: https://gitlab.freedesktop.org/drm/amd/-/work_items/2887
+Fixes: bb7978111dd3 ("drm/amdgpu: fix SI UVD firmware validate resume fail")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 889a2cfd889c4a4dd9d0c89ce9a8e60b78be71dd)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-sifive.c |   21 ++++++---------------
- 1 file changed, 6 insertions(+), 15 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/spi/spi-sifive.c
-+++ b/drivers/spi/spi-sifive.c
-@@ -312,7 +312,8 @@ static int sifive_spi_probe(struct platf
- 		goto put_host;
- 	}
+diff --git a/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c b/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
+index 191057db58db3..49a0d66d5b2c0 100644
+--- a/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
++++ b/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
+@@ -242,6 +242,10 @@ static void uvd_v3_1_mc_resume(struct amdgpu_device *adev)
+ 	uint64_t addr;
+ 	uint32_t size;
  
--	spi->clk = devm_clk_get(&pdev->dev, NULL);
-+	/* Spin up the bus clock before hitting registers */
-+	spi->clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(spi->clk)) {
- 		dev_err(&pdev->dev, "Unable to find bus clock\n");
- 		ret = PTR_ERR(spi->clk);
-@@ -342,13 +343,6 @@ static int sifive_spi_probe(struct platf
- 		goto put_host;
- 	}
++	/* When the keyselect is already set, don't perturb it. */
++	if (RREG32(mmUVD_FW_START))
++		return;
++
+ 	/* program the VCPU memory controller bits 0-27 */
+ 	addr = (adev->uvd.inst->gpu_addr + AMDGPU_UVD_FIRMWARE_OFFSET) >> 3;
+ 	size = AMDGPU_UVD_FIRMWARE_SIZE(adev) >> 3;
+@@ -284,6 +288,12 @@ static int uvd_v3_1_fw_validate(struct amdgpu_device *adev)
+ 	int i;
+ 	uint32_t keysel = adev->uvd.keyselect;
  
--	/* Spin up the bus clock before hitting registers */
--	ret = clk_prepare_enable(spi->clk);
--	if (ret) {
--		dev_err(&pdev->dev, "Unable to enable bus clock\n");
--		goto put_host;
--	}
--
- 	/* probe the number of CS lines */
- 	spi->cs_inactive = sifive_spi_read(spi, SIFIVE_SPI_REG_CSDEF);
- 	sifive_spi_write(spi, SIFIVE_SPI_REG_CSDEF, 0xffffffffU);
-@@ -357,14 +351,14 @@ static int sifive_spi_probe(struct platf
- 	if (!cs_bits) {
- 		dev_err(&pdev->dev, "Could not auto probe CS lines\n");
- 		ret = -EINVAL;
--		goto disable_clk;
-+		goto put_host;
- 	}
++	if (RREG32(mmUVD_FW_START) & UVD_FW_STATUS__PASS_MASK) {
++		dev_dbg(adev->dev, "UVD keyselect already set: 0x%x (on CPU: 0x%x)\n",
++			RREG32(mmUVD_FW_START), adev->uvd.keyselect);
++		return 0;
++	}
++
+ 	WREG32(mmUVD_FW_START, keysel);
  
- 	num_cs = ilog2(cs_bits) + 1;
- 	if (num_cs > SIFIVE_SPI_MAX_CS) {
- 		dev_err(&pdev->dev, "Invalid number of spi targets\n");
- 		ret = -EINVAL;
--		goto disable_clk;
-+		goto put_host;
- 	}
- 
- 	/* Define our host */
-@@ -392,7 +386,7 @@ static int sifive_spi_probe(struct platf
- 			       dev_name(&pdev->dev), spi);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Unable to bind to interrupt\n");
--		goto disable_clk;
-+		goto put_host;
- 	}
- 
- 	dev_info(&pdev->dev, "mapped; irq=%d, cs=%d\n",
-@@ -401,13 +395,11 @@ static int sifive_spi_probe(struct platf
- 	ret = devm_spi_register_controller(&pdev->dev, host);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "spi_register_host failed\n");
--		goto disable_clk;
-+		goto put_host;
- 	}
- 
- 	return 0;
- 
--disable_clk:
--	clk_disable_unprepare(spi->clk);
- put_host:
- 	spi_controller_put(host);
- 
-@@ -421,7 +413,6 @@ static void sifive_spi_remove(struct pla
- 
- 	/* Disable all the interrupts just in case */
- 	sifive_spi_write(spi, SIFIVE_SPI_REG_IE, 0);
--	clk_disable_unprepare(spi->clk);
- }
- 
- static int sifive_spi_suspend(struct device *dev)
+ 	for (i = 0; i < 10; ++i) {
+-- 
+2.53.0
+
 
 
 
