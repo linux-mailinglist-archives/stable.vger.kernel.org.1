@@ -1,166 +1,165 @@
-Return-Path: <stable+bounces-253406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253407-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SHqgLi5IDmoM9gUAu9opvQ
-	(envelope-from <stable+bounces-253406-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 01:47:58 +0200
+	id IJxEMbtIDmoM9gUAu9opvQ
+	(envelope-from <stable+bounces-253407-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 01:50:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73D7A59CE87
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 01:47:57 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C679459CEEB
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 01:50:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BC7DC3168823
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:29:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 20D7F303896F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:50:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B04F3B6367;
-	Wed, 20 May 2026 23:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 591873CF665;
+	Wed, 20 May 2026 23:49:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ah57ljzq"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CDD833B951
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 23:29:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB952DC76C
+	for <stable@vger.kernel.org>; Wed, 20 May 2026 23:49:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779319750; cv=none; b=lYpW+KXGnwIbLPyW8J6s94hyq6qsMq77csyGivOW3Af1UrunSeyVfrF9xwIhu+i/Ypfc2xh9uLS8VIA2bz9YHllmDufAhTMLSd98c2OMbHLXL2ACZnnoEcwpJOVS7VYGktpyNtG8+sobbS7tRDKQovdt8/ornbOtLODlJmU68Uk=
+	t=1779320992; cv=none; b=fZDNrEye0r/HR1ubKprSsgHkL8pH1B8f8wc2brjcDP2VsUT9b7uSDu3xKF37I78/arfM2mEPQzEWbZTHkz4F/UGKUGl4Zvc2EeUJJsTS4X75pBkLF26Th15FChlmnDjkNUnM7LrGJcSjYnrB9fTVYtNtyesjBvW8CLs6BwCXLF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779319750; c=relaxed/simple;
-	bh=liQbuJWeiZixIC2fg9p1TinVlqTVYlb/0O5h5heDu94=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=U3BPiVFqVy2prDfxQhALCig5mqaCQdhWfEwM4V0meT/7OVaFZS/n6n7lS2xsGcS61fd37fQbJtJ8rumyypUgmg5j/acmiIFgA1SjzKYw6FnaCY/U37mztLdwAmJpLtzcpmWL0bNXPQ6uJNbcUoLO6TazudW/sj5WINA3IAkQBkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from [192.168.0.103] (unknown [123.118.218.47])
-	by APP-05 (Coremail) with SMTP id zQCowACHGw+2Qw5qO+nwEA--.7258S2;
-	Thu, 21 May 2026 07:28:55 +0800 (CST)
-Message-ID: <99c8c715-b37f-4f2a-8100-5ea4970ff34d@iscas.ac.cn>
-Date: Thu, 21 May 2026 07:28:54 +0800
+	s=arc-20240116; t=1779320992; c=relaxed/simple;
+	bh=P77qAkUz0cnFyO5pvDzEyE+dz36m4uDSf+IpfF0k2WI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JouOB/bnLtdRl+TwyKMHWaV2n1onFXNphZ4qNGo3IGIBtCOnMJEEBBL9pB3TkmWeXyMwpAituZhDhuozrCzbkxfnNd75AMY/grV4KY/dvcRJpLA5ChT6wbUC2sTZySkNhQbZwm7oX7K0D2Hpp+2CSt+tmQaL5Oje+2gneuDoGnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ah57ljzq; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779320989; x=1810856989;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=P77qAkUz0cnFyO5pvDzEyE+dz36m4uDSf+IpfF0k2WI=;
+  b=ah57ljzqf3eW9TfT8u6eN3Qw0G35Wbem3W2tTaI6JYoEelfC5GNUA9GH
+   21t4RIXrU4uR7swHK2HvzYWtr2EqGOcyE/lYZ6oHijX4ipTSRUypMYTJi
+   r57O82AijJCn/9RpUMz90jC2+MT0w4VY44fgpynz7jerGyGSrL+VF+3g+
+   DnV1vRSq8dKk00MS98skdquFdEicGf9L38/F+lAd6maprbjlTVXAvHsf6
+   31MuKvFAWHB+j9twSu6G4rkuIkzo+RDD6pAkirvKmBPV2gkb3c+YuygOa
+   LN0Ji1TtFDvpudtJi0qnlT5Bkw0FXFVUauL70q07rkot5XPosPuJ01xUl
+   g==;
+X-CSE-ConnectionGUID: k3hTkcZwTiG2995+u4m2zA==
+X-CSE-MsgGUID: xCypdDWlRVeSKRG8rEwmbA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="80213988"
+X-IronPort-AV: E=Sophos;i="6.23,245,1770624000"; 
+   d="scan'208";a="80213988"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 16:49:47 -0700
+X-CSE-ConnectionGUID: lgabgfkOSJ+BVfslUqjJRQ==
+X-CSE-MsgGUID: OEBmMMFxSISWP3yIWyilsg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,245,1770624000"; 
+   d="scan'208";a="242165617"
+Received: from dut4463arlhx.fm.intel.com ([10.105.10.179])
+  by fmviesa004.fm.intel.com with ESMTP; 20 May 2026 16:49:47 -0700
+From: Brian Nguyen <brian3.nguyen@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: Brian Nguyen <brian3.nguyen@intel.com>,
+	stable@vger.kernel.org,
+	Zongyao Bai <zongyao.bai@intel.com>
+Subject: [PATCH] drm/xe: Use PDE mask for 2M page reclaim entries
+Date: Wed, 20 May 2026 23:49:47 +0000
+Message-ID: <20260520234946.1055572-2-brian3.nguyen@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7.0 1102/1146] riscv: misaligned: Make enabling delegation
- depend on NONPORTABLE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Conor Dooley <conor.dooley@microchip.com>,
- Paul Walmsley <pjw@kernel.org>, Songsong Zhang <U2FsdGVkX1@gmail.com>,
- Anirudh Srinivasan <asrinivasan@oss.tenstorrent.com>
-References: <20260520162148.390695140@linuxfoundation.org>
- <20260520162213.183375345@linuxfoundation.org>
-Content-Language: en-US
-From: Vivian Wang <wangruikang@iscas.ac.cn>
-In-Reply-To: <20260520162213.183375345@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:zQCowACHGw+2Qw5qO+nwEA--.7258S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxur4UJFy5AryUJFykWrWfZrb_yoW5Ww1Upr
-	43GF12vrW5tr4xZF4xCw4I9Fy8X395Gr17G3yft34F9r90vry0vr9agw48ZFyUCrn5Ga48
-	XrnxK3409FyDAa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkab7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
-	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwV
-	C2z280aVCY1x0267AKxVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
-	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7CjxVAaw2AFwI0_JF0_Jw1l
-	42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJV
-	WUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAK
-	I48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r
-	4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY
-	6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07bYYLPUUUUU=
-X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
-X-Spamd-Result: default: False [-1.46 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-253406-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[lists.linux.dev,microchip.com,kernel.org,gmail.com,oss.tenstorrent.com];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TAGGED_FROM(0.00)[bounces-253407-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wangruikang@iscas.ac.cn,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	R_DKIM_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[brian3.nguyen@intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,iscas.ac.cn:mid,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: 73D7A59CE87
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,intel.com:mid,intel.com:dkim]
+X-Rspamd-Queue-Id: C679459CEEB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Greg and stable team,
+2M pages use PDE encoding where the physical address occupies bits [51:21],
+but generate_reclaim_entry() uses XE_PTE_ADDR_MASK (bits [51:12]) for all
+leaf entries. Add XE_PDE_ADDR_MASK and select the correct mask based on
+whether the entry is a 2M PDE.
 
-On 5/21/26 00:22, Greg Kroah-Hartman wrote:
-> 7.0-stable review patch.  If anyone has any objections, please let me know.
->
-> ------------------
->
-> From: Vivian Wang <wangruikang@iscas.ac.cn>
->
-> commit b69bcb13ed7024a84d6cd8ad330f1e32782fcf28 upstream.
->
-> The unaligned access emulation code in Linux has various deficiencies.
-> For example, it doesn't emulate vector instructions [1] [2], and doesn't
-> emulate KVM guest accesses. Therefore, requesting misaligned exception
-> delegation with SBI FWFT actually regresses vector instructions' and KVM
-> guests' behavior.
->
-> Until Linux can handle it properly, guard these sbi_fwft_set() calls
-> behind RISCV_SBI_FWFT_DELEGATE_MISALIGNED, which in turn depends on
-> NONPORTABLE. Those who are sure that this wouldn't be a problem can
-> enable this option, perhaps getting better performance.
->
-> The rest of the existing code proceeds as before, except as if
-> SBI_FWFT_MISALIGNED_EXC_DELEG is not available, to handle any remaining
-> address misaligned exceptions on a best-effort basis. The KVM SBI FWFT
-> implementation is also not touched, but it is disabled if the firmware
-> emulates unaligned accesses.
->
-> Cc: stable@vger.kernel.org
-> Fixes: cf5a8abc6560 ("riscv: misaligned: request misaligned exception from SBI")
-> Reported-by: Songsong Zhang <U2FsdGVkX1@gmail.com> # KVM
-> Link: https://lore.kernel.org/linux-riscv/38ce44c1-08cf-4e3f-8ade-20da224f529c@iscas.ac.cn/ [1]
-> Link: https://lore.kernel.org/linux-riscv/b3cfcdac-0337-4db0-a611-258f2868855f@iscas.ac.cn/ [2]
-> Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
-> Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> Link: https://patch.msgid.link/20260401-riscv-misaligned-dont-delegate-v2-1-5014a288c097@iscas.ac.cn
-> Signed-off-by: Paul Walmsley <pjw@kernel.org>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 83b914f972bb ("drm/xe: Fix page reclaim entry handling for large pages")
+Cc: stable@vger.kernel.org
+Suggested-by: Zongyao Bai <zongyao.bai@intel.com>
+Signed-off-by: Brian Nguyen <brian3.nguyen@intel.com>
+---
+ drivers/gpu/drm/xe/regs/xe_gtt_defs.h | 1 +
+ drivers/gpu/drm/xe/xe_pt.c            | 8 ++++++--
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-Can we drop this 7.0 patch and the 6.18 patch [1]? There were boot time
-crashes reported on latest 7.1-rc/linux-next [2] on some
-hardware/firmware. While superficially it seems to be caused by badly
-broken FW (one of the register dumps was a null pointer dereference in
-the firmware itself from emulating reading the time counter, which is
-essential on riscv), we don't know for sure yet and would like more time
-to figure out.
-
-In other words I retract my Cc stable backport request for now.
-
-The file name for both are
-
-    riscv-misaligned-make-enabling-delegation-depend-on-nonportable.patch
-
-Thanks and apologies for the trouble,
-Vivian "dramforever" Wang
-
-[1] https://lore.kernel.org/all/20260520162154.619467251@linuxfoundation.org/
-[2] https://lore.kernel.org/linux-riscv/nrvt74qnojaubiwjo37ums4lnclu466hovwrhmtbag6f5uhrql@q6msoe2oto4b/
+diff --git a/drivers/gpu/drm/xe/regs/xe_gtt_defs.h b/drivers/gpu/drm/xe/regs/xe_gtt_defs.h
+index 4d83461e538b..22a6c197ed96 100644
+--- a/drivers/gpu/drm/xe/regs/xe_gtt_defs.h
++++ b/drivers/gpu/drm/xe/regs/xe_gtt_defs.h
+@@ -10,6 +10,7 @@
+ #define XELPG_GGTT_PTE_PAT1	BIT_ULL(53)
+ 
+ #define XE_PTE_ADDR_MASK	GENMASK_ULL(51, 12)
++#define XE_PDE_ADDR_MASK	GENMASK_ULL(51, 21)
+ #define GGTT_PTE_VFID		GENMASK_ULL(11, 2)
+ 
+ #define GUC_GGTT_TOP		0xFEE00000
+diff --git a/drivers/gpu/drm/xe/xe_pt.c b/drivers/gpu/drm/xe/xe_pt.c
+index 2669ff5ee747..ae5ed0370d72 100644
+--- a/drivers/gpu/drm/xe/xe_pt.c
++++ b/drivers/gpu/drm/xe/xe_pt.c
+@@ -1615,7 +1615,11 @@ static int generate_reclaim_entry(struct xe_tile *tile,
+ {
+ 	struct xe_gt *gt = tile->primary_gt;
+ 	struct xe_guc_page_reclaim_entry *reclaim_entries = prl->entries;
+-	u64 phys_addr = pte & XE_PTE_ADDR_MASK;
++	bool is_2m = xe_child->level == 1 && (pte & XE_PDE_PS_2M);
++	/* 2M pages are encoded as PDEs, other reclaimable pages use PTE encoding */
++	u64 addr_mask = is_2m ? XE_PDE_ADDR_MASK : XE_PTE_ADDR_MASK;
++	u64 phys_addr = pte & addr_mask;
++	/* Page address is relative to 4K page regardless of entry level */
+ 	u64 phys_page = phys_addr >> XE_PTE_SHIFT;
+ 	int num_entries = prl->num_entries;
+ 	u32 reclamation_size;
+@@ -1641,7 +1645,7 @@ static int generate_reclaim_entry(struct xe_tile *tile,
+ 		xe_gt_stats_incr(gt, XE_GT_STATS_ID_PRL_64K_ENTRY_COUNT, 1);
+ 		reclamation_size = COMPUTE_RECLAIM_ADDRESS_MASK(SZ_64K); /* reclamation_size = 4 */
+ 		xe_tile_assert(tile, phys_addr % SZ_64K == 0);
+-	} else if (xe_child->level == 1 && pte & XE_PDE_PS_2M) {
++	} else if (is_2m) {
+ 		xe_gt_stats_incr(gt, XE_GT_STATS_ID_PRL_2M_ENTRY_COUNT, 1);
+ 		reclamation_size = COMPUTE_RECLAIM_ADDRESS_MASK(SZ_2M);  /* reclamation_size = 9 */
+ 		xe_tile_assert(tile, phys_addr % SZ_2M == 0);
+-- 
+2.43.0
 
 
