@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-250620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252199-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +DvcCPjqDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250620-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:10:16 +0200
+	id MA7cNZD4DWqR5AUAu9opvQ
+	(envelope-from <stable+bounces-252199-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:08:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E22B059303D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:10:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D40F5955D9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:08:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3C11E31AED4B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:51:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9AD9E3036F8C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:00:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CFA7352C52;
-	Wed, 20 May 2026 16:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 898723F39F5;
+	Wed, 20 May 2026 18:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IC+LOigv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0dq5oS85"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC30C318EC7;
-	Wed, 20 May 2026 16:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546D6370D54;
+	Wed, 20 May 2026 18:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295887; cv=none; b=dy4YwYH3hzQCAjjDWKvvOavo+Ni8MHu6zJWk2e0cw//k5DPjzBID30NfZOOIK1C2Nf0Ec8wpmnyN37BQi5XiVC51J+LPM7JVpyrFY6YfPoc7z2I3JJv5xWYRxFO6/EHgv7YhnEgBP4ExdB5hpdTUgpjl/VpujoaU/Vu4xAQb/tw=
+	t=1779300051; cv=none; b=uPd1ehpTa5rkBD1luHUO1doaNlAJf2mnR0dXpSP7X2oPAAKEG0C69c68w2rF40aA/wcjFlzSpIO9WY8pte+YYoP45tlQzeoxAsINGpq5PyRj1arGYs/98mNsQrf/eTgCPY/7Y+I0fTyoe97qRdv1+n3lOkHXeaig6t4Mi8n1teU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295887; c=relaxed/simple;
-	bh=BADr2ZxAUoQ0v8z7kW+ISEddcTDVFYWlvZ9DsB5ZD0g=;
+	s=arc-20240116; t=1779300051; c=relaxed/simple;
+	bh=gYfWmRvTbesSpwXUY6OkVJy8kDiFXsDPbPrLDH+ziws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BcSPTwl4c7ovHP4bCsQSEdC66ElIit9cG6s/alBf/zszkCYQo+djY3tu/u36zX05yOGVo8ZFafOqJix9La6g+NhhtA+XDB0RdoThza2017eBgTMPa8XBki/Ihg2gvqosnPTr751vgnHle2Z9VVrA5a5gIy77fbKxSe5C2dt4Ui0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IC+LOigv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CA6D1F000E9;
-	Wed, 20 May 2026 16:51:26 +0000 (UTC)
+	 MIME-Version; b=d3S6Y0r5O9uUL65rBIHt+RAXLT6e+mAFgnNnGiBNk+103QDRDEdMYQnvk98N7XDJ7O+5jBUQD0Esy8TweGJVJNzvVFr9xSLN5YuiykN/xZy4lbwtEtAOxEjBhiDvhbHXHgTLLDg4/BQlUVenpNIYMybzGy49gLgrUec3WKhxXw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0dq5oS85; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAA801F000E9;
+	Wed, 20 May 2026 18:00:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295886;
-	bh=3jWvKiZJGR7HYdr+7AkuCbPNJpEomfHnYpx798460zY=;
+	s=korg; t=1779300050;
+	bh=BL/rw0hstJAjRAimXLCrl4K6riIbG4JoAESkvi75ZTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IC+LOigvQ5iVsB6d+t4l6z5+4vJd9p/fGALmcWickB789WThZDCAiIq0fgVIAb+Cs
-	 Y3/9v2g6j4XDy4BV5G93UcdWLE0U0RZj6j1q4e+o1jwlmsHaAT57k0v9TQaLugLCmC
-	 UI17A9zjkaJfgNPZuZAb6pDxbK8DxDOLPAB/rSgM=
+	b=0dq5oS85jvuLgAKd6YG75W6vI72JejivX/pBG0d+EWGK2h9nc9cTPO5zxVIhr8Kxc
+	 UnIF3925voIbmRF2Bie+5Me7hiXGh4VQG4nkJ9U469M2VS+p3eimcp8Q9LDrNVb20f
+	 oQ/nBMshzWrpS68Irj3RGxQiaOO9TmSQhgXceLl0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0589/1146] power: supply: max77705: Drop duplicated IRQ error message
+Subject: [PATCH 6.12 028/666] hrtimer: Avoid pointless reprogramming in __hrtimer_start_range_ns()
 Date: Wed, 20 May 2026 18:13:59 +0200
-Message-ID: <20260520162201.508315837@linuxfoundation.org>
+Message-ID: <20260520162111.845623129@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250620-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252199-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,64 +86,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,intel.com:email,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: E22B059303D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,infradead.org:email]
+X-Rspamd-Queue-Id: 4D40F5955D9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 2064c64ceb1996ee02a6bbb1de05fd6e8028e3e4 ]
+[ Upstream commit d19ff16c11db38f3ee179d72751fb9b340174330 ]
 
-Core already prints error message on devm_request_threaded_irq()
-failure, so no need to do that second time.
+Much like hrtimer_reprogram(), skip programming if the cpu_base is running
+the hrtimer interrupt.
 
-Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20260305-workqueue-devm-v2-3-66a38741c652@oss.qualcomm.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Stable-dep-of: 1e668baadefb ("power: supply: max77705: Free allocated workqueue and fix removal order")
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Juri Lelli <juri.lelli@redhat.com>
+Reviewed-by: Thomas Gleixner <tglx@kernel.org>
+Link: https://patch.msgid.link/20260224163429.069535561@kernel.org
+Stable-dep-of: f2e388a019e4 ("hrtimer: Reduce trace noise in hrtimer_start()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/max77705_charger.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ kernel/time/hrtimer.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/power/supply/max77705_charger.c b/drivers/power/supply/max77705_charger.c
-index 5dd02f658f5bd..0dfe4ab10919f 100644
---- a/drivers/power/supply/max77705_charger.c
-+++ b/drivers/power/supply/max77705_charger.c
-@@ -666,19 +666,15 @@ static int max77705_charger_probe(struct i2c_client *i2c)
- 					NULL, max77705_chgin_irq,
- 					IRQF_TRIGGER_NONE,
- 					"chgin-irq", chg);
--	if (ret) {
--		dev_err_probe(dev, ret, "Failed to Request chgin IRQ\n");
-+	if (ret)
- 		goto destroy_wq;
--	}
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index 6abd0d2807f5d..343c7e4008aba 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -1279,6 +1279,14 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
+ 	}
  
- 	ret = devm_request_threaded_irq(dev, regmap_irq_get_virq(irq_data, MAX77705_AICL_I),
- 					NULL, max77705_aicl_irq,
- 					IRQF_TRIGGER_NONE,
- 					"aicl-irq", chg);
--	if (ret) {
--		dev_err_probe(dev, ret, "Failed to Request aicl IRQ\n");
-+	if (ret)
- 		goto destroy_wq;
--	}
- 
- 	ret = max77705_charger_enable(chg);
- 	if (ret) {
+ 	first = enqueue_hrtimer(timer, new_base, mode);
++
++	/*
++	 * If the hrtimer interrupt is running, then it will reevaluate the
++	 * clock bases and reprogram the clock event device.
++	 */
++	if (new_base->cpu_base->in_hrtirq)
++		return false;
++
+ 	if (!force_local) {
+ 		/*
+ 		 * If the current CPU base is online, then the timer is
 -- 
 2.53.0
 
