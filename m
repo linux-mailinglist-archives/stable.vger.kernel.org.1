@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-250754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251727-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MBxFMobsDWo04wUAu9opvQ
-	(envelope-from <stable+bounces-250754-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:16:54 +0200
+	id gCyEKXfzDWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251727-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:46:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 721485933B9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:16:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CBAE594859
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:46:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5330030E7741
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:57:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D9070309F13C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:39:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EDAE3E832A;
-	Wed, 20 May 2026 16:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 281173E6385;
+	Wed, 20 May 2026 17:38:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jX/1TiTU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cGkxAW9u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9E03A383C;
-	Wed, 20 May 2026 16:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0D93ED136;
+	Wed, 20 May 2026 17:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296230; cv=none; b=B1BG4GYtuDVL31oNrCjD3PQ0ijgjJsWAp5XxqI0Vj94JtdxbmUdrYe1lqoSuTn0M1yfU8K+nRFfJUAE3cAS33cFsgJpr0bodWTF0bDe5PvsEzZ5VgvoSTBOCiSodkvpNs2Jp997ClQHsLs6NieFgMymOMmcLw+CtPabX2bHFl6k=
+	t=1779298733; cv=none; b=n2HMwS9JVQH+cQH43USh9pglCGJM/s7NcgoZshzaxGZgkSB9C8C3dUGasDmOyP5S+g0TdCPWB1dStr5/MYn079p2ihZXcvyCZOdT2iVxaEbRaAkC/O1kQu3qOebbCSa2Q+5h5cy1wBP8/bCF+8dAz7o0NEe+4NRdnwlYmZWIGgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296230; c=relaxed/simple;
-	bh=TlwqqH6AJUAxVJO8VGQ3cy4auHV2CSzCXrq7GtpWwRI=;
+	s=arc-20240116; t=1779298733; c=relaxed/simple;
+	bh=nhRxLOWFakYqaf6V3OSdD8wck2YlYyvnOLjfH2zk1vk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vp8G62P0UYdPGKNWL68aTdKqjRvZYfJ/HxzloeqZNrQzHVzz33/spBLSDuyK/P0JFD1MmcVQ6Ai9rP2S+nnRgrQn91V1EmTOcrfPhD48KjVqXmbGzih4IMt56tNJAP9by49L+aL3RRxuF2YJea5Bg29GjXB9KIrjoZGceB/YIws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jX/1TiTU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 713871F000E9;
-	Wed, 20 May 2026 16:57:08 +0000 (UTC)
+	 MIME-Version; b=cOvj+FRpf4soj1tZufeWgPfrtWJi/yvA1NWF0KgsMjDiQI/dJgk3uMQsadjlwwGwMWmQXjKX8hnjxHScqln9yLbjMRNTx5UAtofKRkDEpgBUwPBai2EWLAVaYi1XqK+nb455crBewssGdqlfADIjYlEW/oTju95jXWQaVj3eXjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cGkxAW9u; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C0BA1F000E9;
+	Wed, 20 May 2026 17:38:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296228;
-	bh=wBJyoXf/vTR/cKp1hJygI2pjRs9izbDzgr/9s4sxQn0=;
+	s=korg; t=1779298732;
+	bh=Tmd/M+dn2yo1RMcYSgsBJ7TwlRwBelttvNDybcmlVo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jX/1TiTUUOyFilr2xzkM9dVU810UnSqDKfdeQ7hJFLL0yo8mJj84DSUrkQaNrV+rC
-	 C3SrrexG2eoI2ImuxBt+/b5QpsFIRZksEj02wPyqEqDIYeqC/Hmmwi2QS8aM3UYXKh
-	 SE9rBjbL7niPG/nXU4a1/4DBjuvd526wQe67ofeg=
+	b=cGkxAW9utdJ9kIEcSv6hfoXmKTgIe60yituFBXBFpr0rybIPnDd/I3YVhG6M7KcG+
+	 HpMeAZVQ0jYOwVXwgwHyvi64leTwvv3qAmnoommrGtXp/UznhXNM9Ota40VMq2CO5D
+	 kL17NuFvMoGyoLJzjo5iW6QB5Gy5kmIU2zKWfNsI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Val Packett <val@packett.cool>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Song Liu <song@kernel.org>,
+	Puranjay Mohan <puranjay@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0719/1146] clk: qcom: dispcc-sm8250: Enable parents for pixel clocks
+Subject: [PATCH 6.18 486/957] bpf, arm64: Remove redundant bpf_flush_icache() after pack allocator finalize
 Date: Wed, 20 May 2026 18:16:09 +0200
-Message-ID: <20260520162204.476628077@linuxfoundation.org>
+Message-ID: <20260520162145.064310688@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250754-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251727-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,60 +87,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,packett.cool:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 721485933B9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 4CBAE594859
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Val Packett <val@packett.cool>
+From: Puranjay Mohan <puranjay@kernel.org>
 
-[ Upstream commit acf7a91d0b0e9e3ef374944021de62062125b7e4 ]
+[ Upstream commit 42f18ae53011826cfd3c84d041817e7f07bc645b ]
 
-Add CLK_OPS_PARENT_ENABLE to MDSS pixel clock sources to ensure parent
-clocks are enabled during clock operations, preventing potential
-stability issues during display configuration.
+bpf_flush_icache() calls flush_icache_range() to clean the data cache
+and invalidate the instruction cache for the JITed code region. However,
+since commit 1dad391daef1 ("bpf, arm64: use bpf_prog_pack for memory
+management"), this flush is redundant.
 
-Fixes: 80a18f4a8567 ("clk: qcom: Add display clock controller driver for SM8150 and SM8250")
-Signed-off-by: Val Packett <val@packett.cool>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260312112321.370983-9-val@packett.cool
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+bpf_jit_binary_pack_finalize() copies the JITed instructions to the ROX
+region via bpf_arch_text_copy() -> aarch64_insn_copy() -> __text_poke(),
+and __text_poke() already calls flush_icache_range() on the written
+range. The subsequent bpf_flush_icache() repeats the same cache
+maintenance on an overlapping range, including an unnecessary second
+synchronous IPI to all CPUs via kick_all_cpus_sync().
+
+Remove the redundant bpf_flush_icache() call and its now-unused
+definition.
+
+Fixes: 1dad391daef1 ("bpf, arm64: use bpf_prog_pack for memory management")
+Acked-by: Song Liu <song@kernel.org>
+Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
+Acked-by: Breno Leitao <leitao@debian.org>
+Link: https://lore.kernel.org/r/20260413191111.3426023-2-puranjay@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-sm8250.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/net/bpf_jit_comp.c | 12 ------------
+ 1 file changed, 12 deletions(-)
 
-diff --git a/drivers/clk/qcom/dispcc-sm8250.c b/drivers/clk/qcom/dispcc-sm8250.c
-index cdfdb2cfb02b2..e59cdadd56479 100644
---- a/drivers/clk/qcom/dispcc-sm8250.c
-+++ b/drivers/clk/qcom/dispcc-sm8250.c
-@@ -578,7 +578,7 @@ static struct clk_rcg2 disp_cc_mdss_pclk0_clk_src = {
- 		.name = "disp_cc_mdss_pclk0_clk_src",
- 		.parent_data = disp_cc_parent_data_6,
- 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_6),
--		.flags = CLK_SET_RATE_PARENT,
-+		.flags = CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE,
- 		.ops = &clk_pixel_ops,
- 	},
- };
-@@ -592,7 +592,7 @@ static struct clk_rcg2 disp_cc_mdss_pclk1_clk_src = {
- 		.name = "disp_cc_mdss_pclk1_clk_src",
- 		.parent_data = disp_cc_parent_data_6,
- 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_6),
--		.flags = CLK_SET_RATE_PARENT,
-+		.flags = CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE,
- 		.ops = &clk_pixel_ops,
- 	},
- };
+diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
+index 4b2aacdd43221..873c1b784a872 100644
+--- a/arch/arm64/net/bpf_jit_comp.c
++++ b/arch/arm64/net/bpf_jit_comp.c
+@@ -18,7 +18,6 @@
+ 
+ #include <asm/asm-extable.h>
+ #include <asm/byteorder.h>
+-#include <asm/cacheflush.h>
+ #include <asm/cpufeature.h>
+ #include <asm/debug-monitors.h>
+ #include <asm/insn.h>
+@@ -1964,11 +1963,6 @@ static int validate_ctx(struct jit_ctx *ctx)
+ 	return 0;
+ }
+ 
+-static inline void bpf_flush_icache(void *start, void *end)
+-{
+-	flush_icache_range((unsigned long)start, (unsigned long)end);
+-}
+-
+ static void priv_stack_init_guard(void __percpu *priv_stack_ptr, int alloc_size)
+ {
+ 	int cpu, underflow_idx = (alloc_size - PRIV_STACK_GUARD_SZ) >> 3;
+@@ -2207,12 +2201,6 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
+ 			prog = orig_prog;
+ 			goto out_off;
+ 		}
+-		/*
+-		 * The instructions have now been copied to the ROX region from
+-		 * where they will execute. Now the data cache has to be cleaned to
+-		 * the PoU and the I-cache has to be invalidated for the VAs.
+-		 */
+-		bpf_flush_icache(ro_header, ctx.ro_image + ctx.idx);
+ 	} else {
+ 		jit_data->ctx = ctx;
+ 		jit_data->ro_image = ro_image_ptr;
 -- 
 2.53.0
 
