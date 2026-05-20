@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-250414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251312-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gF/fDhMQDmrB5wUAu9opvQ
-	(envelope-from <stable+bounces-250414-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:48:35 +0200
+	id IPU0C+byDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251312-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DF0C598C20
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:48:34 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE6255946CC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 080AF328EF7D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 350E030D9174
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:20:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DC3D3D7D66;
-	Wed, 20 May 2026 16:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC806366075;
+	Wed, 20 May 2026 17:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cnTuJbMP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="twdKQoCS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BE5367B8D;
-	Wed, 20 May 2026 16:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3783BE165;
+	Wed, 20 May 2026 17:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295352; cv=none; b=Zdbsn9AINnlg6kPtFqbXWe9ubvVZnZnRfzbvHnNFf1FBuGwXFKvf9lLwWNJeqHECMeEdITnx4fx05S/BDDd5Y7CEYI+prb46Pb/lhAcJTVuPbZ4HdbText54OrZcdR1x1vnYhrWdZPJljfYiK8pc6K25BVobq3IEPrLTGoOs/q0=
+	t=1779297654; cv=none; b=SxfcNJCSlFJ2xfXwbaG/amtLrQ+fmFmayCVA+Cwq6WZdgFXdidZ/S2Ta7AE2h8dObN+hkMCN03lYaPFHNW6G/jRRIdVE3PG9nuMM7taNrpVa2RB1NWifbE3swt5dQ0SGAY398QXJGeRraJm5r+kXuK7ruiUecieEyLlGlIrc/vU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295352; c=relaxed/simple;
-	bh=WsdjYOPaECQDkSS9U+QCdvtdsCivPo08ZwxDn/h0YQA=;
+	s=arc-20240116; t=1779297654; c=relaxed/simple;
+	bh=rWTV6soQ7aL4pM43nn/dEOv3pSkU4L159g9qvNryLk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V7eJKi6oDZBVI42DUOPYANL+YVnRntAl5UnV9R1o1Yv4UV7vVLKC25bF2iYpHvu8+GjPwtCM1/FAxhjK+NJHSWq+BpX+URkyELZp/xDr5NS4XZGsI4zWfgd3CLbOI7MO6lhBzY1RVdwuzB3ff3zAIcO2ticLP+rDLHVRykyX+RQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cnTuJbMP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D55D1F000E9;
-	Wed, 20 May 2026 16:42:30 +0000 (UTC)
+	 MIME-Version; b=rX7quIVlIwRIXCBT2YQLxIob7pGC8tgzC5zFtb/Hx6AfhntGIitu6Y0j9seFt/waqLSB4e4TjTTOWpf7U8AON3IFGhbtj6lV6RVWixccnALzqjhvQRzfA977sNcBN3QiW8QN9aLbANnKLERmC4Q8xCNMNUXc5UyOVB9rWYI5Yrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=twdKQoCS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C1DF1F000E9;
+	Wed, 20 May 2026 17:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295350;
-	bh=eL887zRX4baw/UiaLNG0vCHFmkqhHdbQ6l0ovVjgQHI=;
+	s=korg; t=1779297653;
+	bh=WuiQ3bZyM55afwibOEj2XjE7CW8y1T2zpLErupdI/9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cnTuJbMPDU3CdY7rz1/avoeRpZ6yv9YNiF9HTM65KTQcnrem/XpHK+edsmfFgMeNm
-	 p1S74lSpQqRr/sWS869mwuKJe0YaGoXmRJ1HZ6N3GWQsB26uaZMpmHD3VOzd88vyDL
-	 B7IPunXs4M6fja0yj3wUZ8Y9cgo2pW1wmy7NDJ1E=
+	b=twdKQoCSs63hqY1HyI9BhVztJppkI97fVp6GnoUZdmvlmbNMfl4BXxux8MU3iALQv
+	 bLI0Ww15icnE6THfMf3V0RSjw19BotVmVh3m6Ju+txaYwjMoZ4C89k4Yd+2afLD+RK
+	 jTfDUUoa4ftBjGeClyiKUyGgqDG2cS2kh+y0LNtY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Alexey Velichayshiy <a.velichayshiy@ispras.ru>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0345/1146] drm/amdgpu/uvd4.2: Dont initialize UVD 4.2 when DPM is disabled
+Subject: [PATCH 6.18 112/957] wifi: rtw89: phy: fix uninitialized variable access in rtw89_phy_cfo_set_crystal_cap()
 Date: Wed, 20 May 2026 18:09:55 +0200
-Message-ID: <20260520162156.008921826@linuxfoundation.org>
+Message-ID: <20260520162136.989460884@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +63,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250414-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251312-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
-X-Rspamd-Queue-Id: 9DF0C598C20
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxtesting.org:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,ispras.ru:email]
+X-Rspamd-Queue-Id: BE6255946CC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Alexey Velichayshiy <a.velichayshiy@ispras.ru>
 
-[ Upstream commit 8b3e8fa6d7bdab292447a43f70532db437d5d4f5 ]
+[ Upstream commit 047cddf88c611e616d49a00311d4722e46286234 ]
 
-UVD 4.2 doesn't work at all when DPM is disabled because
-the SMU is responsible for ungating it. So, Linux fails
-to boot with CIK GPUs when using the amdgpu.dpm=0 parameter.
+In the rtw89_phy_cfo_set_crystal_cap() function, for chips other than
+RTL8852A/RTL8851B, the values read by rtw89_mac_read_xtal_si() are
+stored into the local variables sc_xi_val and sc_xo_val. If either
+read fails, these variables remain uninitialized, they are later
+used to update cfo->crystal_cap and in debug print statements. This
+can lead to undefined behavior.
 
-Fix this by returning -ENOENT from uvd_v4_2_early_init()
-when amdgpu_dpm isn't enabled.
+Fix the issue by initializing sc_xi_val and sc_xo_val to zero,
+like is implemented in vendor driver.
 
-Note: amdgpu.dpm=0 is often suggested as a workaround
-for issues and is useful for debugging.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: a2e73f56fa62 ("drm/amdgpu: Add support for CIK parts")
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 8379fa611536 ("rtw89: 8852c: add write/read crystal function in CFO tracking")
+Signed-off-by: Alexey Velichayshiy <a.velichayshiy@ispras.ru>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20260323140613.1615574-1-a.velichayshiy@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/uvd_v4_2.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/wireless/realtek/rtw89/phy.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/uvd_v4_2.c b/drivers/gpu/drm/amd/amdgpu/uvd_v4_2.c
-index 73ce3d211ed64..8a9ba2276275c 100644
---- a/drivers/gpu/drm/amd/amdgpu/uvd_v4_2.c
-+++ b/drivers/gpu/drm/amd/amdgpu/uvd_v4_2.c
-@@ -93,6 +93,11 @@ static void uvd_v4_2_ring_set_wptr(struct amdgpu_ring *ring)
- static int uvd_v4_2_early_init(struct amdgpu_ip_block *ip_block)
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index ba7feadd75828..36dee482bc34b 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -4499,7 +4499,7 @@ static void rtw89_phy_cfo_set_crystal_cap(struct rtw89_dev *rtwdev,
  {
- 	struct amdgpu_device *adev = ip_block->adev;
-+
-+	/* UVD doesn't work without DPM, it needs DPM to ungate it. */
-+	if (!amdgpu_dpm)
-+		return -ENOENT;
-+
- 	adev->uvd.num_uvd_inst = 1;
+ 	struct rtw89_cfo_tracking_info *cfo = &rtwdev->cfo_tracking;
+ 	const struct rtw89_chip_info *chip = rtwdev->chip;
+-	u8 sc_xi_val, sc_xo_val;
++	u8 sc_xi_val = 0, sc_xo_val = 0;
  
- 	uvd_v4_2_set_ring_funcs(adev);
+ 	if (!force && cfo->crystal_cap == crystal_cap)
+ 		return;
 -- 
 2.53.0
 
