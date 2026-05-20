@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250281-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sI1vND0YDmp96AUAu9opvQ
-	(envelope-from <stable+bounces-251215-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:23:25 +0200
+	id b5OILyLwDWqo4wUAu9opvQ
+	(envelope-from <stable+bounces-250281-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:32:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37E96599855
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:23:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 001A9593E44
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:32:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0C84C312FB9F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3F6ED336F45F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:37:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDF0F3D8138;
-	Wed, 20 May 2026 17:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3DC339A05A;
+	Wed, 20 May 2026 16:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0mYvDSL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uMNcW83p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7070B3D75C7;
-	Wed, 20 May 2026 17:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF28375ACB;
+	Wed, 20 May 2026 16:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297400; cv=none; b=m0hcOJHtpRhnMa6M84RJJR8FJtfMead+gy1DIKVDNkaAPeeQklT85nS6fxakVAQEAfKo2+qAp02rWNearZ6Pg4fgoUI/s4zoPZf5BF9XF+WMi6ZxOKuJ5iy3+KhzPJca97SIz9/m0qEgLpeLb+vsjIrxSlFKd8tK8CNUk8hEXpE=
+	t=1779295001; cv=none; b=D6sBtiDc65KQS/Dq+oXaef0DcWxo65oepX59cR+BMNsnjzkrfhKyO//agCgn372+3eWz8tTxqjPP+DkoXBrVHX4KQvHzbd7+o/+/oWqxrQox2y8mTBqTU8w6cb6nM5VMCR2WlfScezacNujfLcsWCj7skkd92U4CfBw/RYEf/rM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297400; c=relaxed/simple;
-	bh=5OqBMl6kq2bciBxLAezZDP8NoV5t0wf/trybgWayKGs=;
+	s=arc-20240116; t=1779295001; c=relaxed/simple;
+	bh=bcO688jFA5sMK3+6HZitp+iw44zQpdzsyf6qUtDj6Wo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L4Us8znHZDTDI1SlSkWGwcG0Zh98FTUUf+XWidSttTUda9BshqhDyZ0YxgC278mY7AbCoQoXA1lrPApzXpRpRa14sn771CGFvLbxlzku+zM4tBeCqw95KJiJ7Bk44fuvQwSj3PXAL8ohY7hi0vmTRkKgfZFEUmgQ8faEryUoAjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z0mYvDSL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A701F000E9;
-	Wed, 20 May 2026 17:16:38 +0000 (UTC)
+	 MIME-Version; b=Q+9Mqypt+DQouop1ODEfKfxm+FsryNej6gVCukWUsd5haDvG5RWZBxmieRFubmxhvSH7u8GESuzrKR39M0UpKo51zpyMl/ly6jduUFHVZDXdOYg8yI1EGWzF3GX5d3zamKEugX6wmIZ35QTSa9QOb4mvWoDixeEigBTH3zDPI4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uMNcW83p; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0170C1F000E9;
+	Wed, 20 May 2026 16:36:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297399;
-	bh=tOTbs0bvAryWBedXNHRrRh6SrdleT1EKZwddYm81l4M=;
+	s=korg; t=1779295000;
+	bh=ZdCGm7/iV84o//A07vUbWFW6iFYPp8h0FqBJrUvjl4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=z0mYvDSL5cS2wjgkN/FWU8zJ9LdTHny7TWyzj98WPy7vadjL7WaAv9R10YPyrDB3l
-	 0UutCU8u9GCbVhtcgZDyCSMKgih+TbQggA3vFDJ6EuxY5ol7G3tykoBEIFP92E7TXf
-	 +sRxlznrs89cB3OM6vdv70BpnMragj3ZicV/Efgw=
+	b=uMNcW83pJhwNOoOKXjk7Pk6kFv8ODV5zCgvUWHuGZ2Sx91BQCVTaBqepHLLOw5UFH
+	 R9DI+JaxjoLkech+qbYymWzx+RAmCpjuWjymouKo0FRWPPkihdKZUygWeAASzigU+F
+	 kQizZgnU7KcopTvdZERPG3SlFUL/jyLwC1JB4BQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Andersson <andersson@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 018/957] OPP: debugfs: Use performance level if available to distinguish between rates
+Subject: [PATCH 7.0 0251/1146] dm cache: fix write path cache coherency in passthrough mode
 Date: Wed, 20 May 2026 18:08:21 +0200
-Message-ID: <20260520162134.956642880@linuxfoundation.org>
+Message-ID: <20260520162153.914660321@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,98 +68,114 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251215-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250281-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email]
-X-Rspamd-Queue-Id: 37E96599855
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 001A9593E44
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-[ Upstream commit e560083c0467f86b72aecac377b27bd1e7d16c49 ]
+[ Upstream commit 0c5eef0aad508231d8e43ff8392692925e131b68 ]
 
-Some OPP tables have entries with same rate and different performance
-level. For these entries, using only the rate as the debugfs directory name
-causes below error:
+In passthrough mode, dm-cache defers write bio submission until cache
+invalidation completes to maintain existing coherency, requiring the
+target map function to return DM_MAPIO_SUBMITTED. The current map_bio()
+returns DM_MAPIO_REMAPPED, violating the required ordering constraint.
 
-debugfs: 'opp:5000000' already exists in 'soc@0-1c00000.pci'
+Reproduce steps:
 
-Fix it by appending the performance level to the dir name if available.
+1. Create a cache device
 
-Reported-by: Bjorn Andersson <andersson@kernel.org>
-Closes: https://lore.kernel.org/linux-arm-msm/75lzykd37zdvrks5i2bb4zb2yzjtm25kv3hegmikndkbr772mz@w2ykff3ny45u/
-Fixes: 05db35963eef ("OPP: Add support to find OPP for a set of keys")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
+dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
+dmsetup create cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+
+2. Promote the first data block into the cache
+
+fio --filename=/dev/mapper/cache --name=populate --rw=write --bs=4k \
+--direct=1 --size=64k
+
+3. Reload the cache into passthrough mode
+
+dmsetup suspend cache
+dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 passthrough smq 0"
+dmsetup resume cache
+
+4. Write to the first data block, and check io ordering using ftrace
+
+echo 1 > /sys/kernel/debug/tracing/events/block/block_bio_queue/enable
+echo 1 > /sys/kernel/debug/tracing/events/block/block_bio_complete/enable
+echo 1 > /sys/kernel/debug/tracing/events/block/block_rq_complete/enable
+fio --filename=/dev/mapper/cache --name=test --rw=write --bs=64k \
+--direct=1 --size 64k
+
+5. ftrace logs show that write operations to the cache origin (252:2)
+   and metadata operations (252:0) are unsynchronized: the origin write
+   occurs before metadata commit.
+
+ <snip>
+       fio-146  [000] .....  420.139562: block_bio_queue: 252,3 WS 0 + 128 [fio]
+       fio-146  [000] .....  420.149395: block_bio_queue: 252,2 WS 0 + 128 [fio]
+       fio-146  [000] .....  420.149763: block_bio_queue: 8,32 WS 262144 + 128 [fio]
+       fio-146  [000] dNh1.  420.151446: block_rq_complete: 8,32 WS () 262144 + 128 be,0,4 [0]
+       fio-146  [000] dNh1.  420.152731: block_bio_complete: 252,2 WS 0 + 128 [0]
+       fio-146  [000] dNh1.  420.154229: block_bio_complete: 252,3 WS 0 + 128 [0]
+ kworker/0:0-9  [000] .....  420.160530: block_bio_queue: 252,0 W 408 + 8 [kworker/0:0]
+ kworker/0:0-9  [000] .....  420.161641: block_bio_queue: 8,32 W 408 + 8 [kworker/0:0]
+ kworker/0:0-9  [000] .....  420.162533: block_bio_queue: 252,0 W 416 + 8 [kworker/0:0]
+ kworker/0:0-9  [000] .....  420.162821: block_bio_queue: 8,32 W 416 + 8 [kworker/0:0]
+ <snip>
+
+Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/opp/debugfs.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ drivers/md/dm-cache-target.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/opp/debugfs.c b/drivers/opp/debugfs.c
-index 8fc6238b17284..61506d30d5ff0 100644
---- a/drivers/opp/debugfs.c
-+++ b/drivers/opp/debugfs.c
-@@ -130,22 +130,24 @@ void opp_debug_create_one(struct dev_pm_opp *opp, struct opp_table *opp_table)
- {
- 	struct dentry *pdentry = opp_table->dentry;
- 	struct dentry *d;
--	unsigned long id;
--	char name[25];	/* 20 chars for 64 bit value + 5 (opp:\0) */
-+	char name[36];	/* "opp:"(4) + u64(20) + "-" (1) + u32(10) + NULL(1) */
- 
- 	/*
- 	 * Get directory name for OPP.
- 	 *
--	 * - Normally rate is unique to each OPP, use it to get unique opp-name.
-+	 * - Normally rate is unique to each OPP, use it to get unique opp-name,
-+	 *   together with performance level if available.
- 	 * - For some devices rate isn't available or there are multiple, use
- 	 *   index instead for them.
- 	 */
--	if (likely(opp_table->clk_count == 1 && opp->rates[0]))
--		id = opp->rates[0];
--	else
--		id = _get_opp_count(opp_table);
--
--	snprintf(name, sizeof(name), "opp:%lu", id);
-+	if (likely(opp_table->clk_count == 1 && opp->rates[0])) {
-+		if (opp->level == OPP_LEVEL_UNSET)
-+			snprintf(name, sizeof(name), "opp:%lu", opp->rates[0]);
-+		else
-+			snprintf(name, sizeof(name), "opp:%lu-%u", opp->rates[0], opp->level);
-+	} else {
-+		snprintf(name, sizeof(name), "opp:%u", _get_opp_count(opp_table));
-+	}
- 
- 	/* Create per-opp directory */
- 	d = debugfs_create_dir(name, pdentry);
+diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
+index ae1edffd14eaa..b608e88acd511 100644
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -1703,6 +1703,7 @@ static int map_bio(struct cache *cache, struct bio *bio, dm_oblock_t block,
+ 				bio_drop_shared_lock(cache, bio);
+ 				atomic_inc(&cache->stats.demotion);
+ 				invalidate_start(cache, cblock, block, bio);
++				return DM_MAPIO_SUBMITTED;
+ 			} else
+ 				remap_to_origin_clear_discard(cache, bio, block);
+ 		} else {
 -- 
 2.53.0
 
