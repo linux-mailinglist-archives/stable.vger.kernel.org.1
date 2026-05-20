@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251586-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wGp8JogjDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252225-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:11:36 +0200
+	id mJ/NHXbyDWro4wUAu9opvQ
+	(envelope-from <stable+bounces-251586-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:42:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A95859A85F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:11:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD55559458D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:42:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 641733284E0E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:02:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4652B3114B80
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:32:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 684D53F88A6;
-	Wed, 20 May 2026 18:02:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14AF36F421;
+	Wed, 20 May 2026 17:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tg2BWFI5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yVZSVmL0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C94C3F54D1;
-	Wed, 20 May 2026 18:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A067629D26E;
+	Wed, 20 May 2026 17:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300120; cv=none; b=fZT4qRF08uytFuTlghsmPePaw8F/HnJL49Azx1ElhPZf87Qe/Zjb8lfwRgoNDoQkFCTjhPBYqtoEEIrNr8FX0kV21AlkZRTxdmm8w5gG11OIMRi6HSUBWp3RXqaW7evcCDktdeS05BR61X6+Z9WcCbpAu8bym2/KI941/64pjRo=
+	t=1779298366; cv=none; b=Sr+Nw93ZBBGY7PkIsQ4Yg0A/k7vsP1IrDzoboxfdsPoeNhSQheqfNk2zLOunPCVKIQl7k/QmFTEnSoB+oDyjorAzF9Wi22Ma/QDu3QjZ9xyhdKGJxRb9aPEwd5gsARii5mWn7rRxPw7Sxn90RXzk0ER8oHiuYuX+QgQNUi0zs1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300120; c=relaxed/simple;
-	bh=yH0njiYOrUdcLOgubW/MXVmUuVhSLd3LeSgs4zAv5q0=;
+	s=arc-20240116; t=1779298366; c=relaxed/simple;
+	bh=ymW61Lfqjwv6huhgAJPvZi/+43w5pZLwBJjYslT2y4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=onixbgfgiQmH7mMlGW7/k2zbEQDxZthR6s0kpc7xhG6fMvTXgK7m1jb686AwcpVGfmVV/+euogrpKHiaKAZ3By0E0D+K2KCtBdfrO3m8CJ5otXgMb1ucBaV0aLv5PMQRhdqCImUbT+TrLs5OAw3/0FYT6LHqPBJZafa2fcCToT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tg2BWFI5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A411F000E9;
-	Wed, 20 May 2026 18:01:58 +0000 (UTC)
+	 MIME-Version; b=deMAuuZM9H0h7tm0MqU2qb31sks1NjjTBns2453PthwzPQO4fLoLYEHLN0wzKZIxIBFDPasFTK4fDl39O1nIVsfmP8WJM7K4UrZdY4lnJHAqggzx8KFmG3bxHgG/PZm3jX8bN738/hhI70F86FHXbKU3zQ3Zmr9LnqpcSgHY7yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yVZSVmL0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDE1E1F00893;
+	Wed, 20 May 2026 17:32:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300119;
-	bh=lMo8sR051ou11cDkE+fRSIClB9Sh6xpDydT1CVH5I2o=;
+	s=korg; t=1779298365;
+	bh=Df16oEIAGAMp5V/+FNyDhzqL/U1FoVM5E+HuvBY85kA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tg2BWFI52tasOvSOoMsOJoWABH4cfxJxIsXA0FqFsp8hagckZTWRE3uxTeQWWvGvn
-	 UvdxvCg67V39ngzl0V/LU/EblW+FwblEr6BFG/8UmgvD6Tq6GI1LtKzlegCCVCdN6O
-	 DJy5u+TuGy5iFoFhiyFJu7XNAuX+FljWrYTN7NJQ=
+	b=yVZSVmL0JrcfqVK9k+Uysg9ttNxabm7jEVBgiYLnVw7EsLMeP9evTwYBFjGTIHy8G
+	 wcvMa85mgG4xdzvJNTFpNGdeQTVa6cyDaFpjYmCPYPUs2/Yocs7sqeyaffuhbG3IJM
+	 SOkOG/fpLlvp5TrSmMq7F9JbdTIotR2awidG2CIk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Lo <michael.lo@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Josua Mayer <josua@solid-run.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 054/666] wifi: mt76: mt7921: fix 6GHz regulatory update on connection
+Subject: [PATCH 6.18 382/957] arm64: dts: imx8mp-hummingboard-pulse: fix mini-hdmi dsi port reference
 Date: Wed, 20 May 2026 18:14:25 +0200
-Message-ID: <20260520162112.408231372@linuxfoundation.org>
+Message-ID: <20260520162142.812420017@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,71 +66,91 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252225-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251586-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mediatek.com:email,msgid.link:url,nbd.name:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 3A95859A85F
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nxp.com:email,0.0.0.0:email,0.0.0.1:email]
+X-Rspamd-Queue-Id: DD55559458D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Lo <michael.lo@mediatek.com>
+From: Josua Mayer <josua@solid-run.com>
 
-[ Upstream commit 3dc0c40d7806c72cfe88cf4e1e2650c1673f9db4 ]
+[ Upstream commit 1d1d14d4253e6f373c247e67f3716768910be81e ]
 
-Call mt7921_regd_update() instead of mt7921_mcu_set_clc() when setting
-the 6GHz power type after connection, so that regulatory limits and SAR
-power are also applied.
+imx8mp.dtsi includes a default port@1 node with an empty placeholder
+endpoint intended for linking to a dsi bridge or panel.
 
-Fixes: 51ba0e3a15eb ("wifi: mt76: mt7921: add 6GHz power type support for clc")
-Signed-off-by: Michael Lo <michael.lo@mediatek.com>
-Link: https://patch.msgid.link/20260211095025.2415624-1-leon.yen@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+HummingBoard Pulse mini-hdmi dtsi described a new endpoint node with a
+different label attached.
+
+This duplicate label causes confusion and is suspected to also cause
+errors during dsi_attach.
+
+Remove the duplicate node and link to the one defined in soc dtsi.
+Further remove the unnecessary attach-bridge property.
+
+Fixes: 2a222aa2bee9 ("arm64: dts: add description for solidrun imx8mp hummingboard variants")
+Signed-off-by: Josua Mayer <josua@solid-run.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../imx8mp-hummingboard-pulse-mini-hdmi.dtsi          | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 6ed2edd054b55..a93ae4e44f16a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -791,7 +791,8 @@ mt7921_regd_set_6ghz_power_type(struct ieee80211_vif *vif, bool is_add)
- 	}
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-hummingboard-pulse-mini-hdmi.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-hummingboard-pulse-mini-hdmi.dtsi
+index 46916ddc05335..0e5f4607c7c1b 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-hummingboard-pulse-mini-hdmi.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-hummingboard-pulse-mini-hdmi.dtsi
+@@ -41,7 +41,7 @@ port@0 {
+ 				reg = <0>;
  
- out:
--	mt7921_mcu_set_clc(dev, dev->mt76.alpha2, dev->country_ie_env);
-+	if (vif->bss_conf.chanreq.oper.chan->band == NL80211_BAND_6GHZ)
-+		mt7921_regd_update(dev);
- }
+ 				adv7535_from_dsim: endpoint {
+-					remote-endpoint = <&dsim_to_adv7535>;
++					remote-endpoint = <&mipi_dsi_out>;
+ 				};
+ 			};
  
- int mt7921_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+@@ -71,11 +71,8 @@ &lcdif1 {
+ &mipi_dsi {
+ 	samsung,esc-clock-frequency = <10000000>;
+ 	status = "okay";
++};
+ 
+-	port@1 {
+-		dsim_to_adv7535: endpoint {
+-			remote-endpoint = <&adv7535_from_dsim>;
+-			attach-bridge;
+-		};
+-	};
++&mipi_dsi_out {
++	remote-endpoint = <&adv7535_from_dsim>;
+ };
 -- 
 2.53.0
 
