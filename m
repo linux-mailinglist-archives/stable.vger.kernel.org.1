@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-253312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253314-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2OLCCbgvDmqD7wUAu9opvQ
-	(envelope-from <stable+bounces-253312-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:03:36 +0200
+	id 8A0iJiseDmro6AUAu9opvQ
+	(envelope-from <stable+bounces-253314-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:48:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D17759BAA0
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:03:35 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B81CB59A25A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:48:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4BCDF39B343B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:53:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E27E8324ED2A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:53:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 531D23FC5A1;
-	Wed, 20 May 2026 18:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E51BF403EA0;
+	Wed, 20 May 2026 18:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uJnmeDPL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vberfzya"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA574028DA;
-	Wed, 20 May 2026 18:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BFC40315E;
+	Wed, 20 May 2026 18:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302951; cv=none; b=FJQ1n6GfrMpsnFMNqHgu2G5KdQFcL1KzrwEGo5CMeGzpB7vFF9vSAPzjO5Uq69l9fbgJof1u1AS3PO6LsKe4zkBJUCSl+hng+FyDw2H30CF0+9oDNVrMR6aB0FRfbtg4Gu4Ed9jzXTplF+cJp+/h5nBDFUEw5G/UzABB4biADBc=
+	t=1779302956; cv=none; b=sJx+5cky+mfD1RMr9hWpVNxrp7FInKF8jwIxIHFtc0yryebktNNdAvCTpdz3qbIysm6FMHL/1Q39eeT2oZRdAaVjVb9w0ddmNM911TjAHAiSd5rTDmqLFL99254nSUL9nLXskpP4p+KXnjJo2ypyGBiiYRHaZR4tutQB5w/AN/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302951; c=relaxed/simple;
-	bh=LI/dEXyZVk1mqD9BfYhJvoPlkGio3xdXDYKSXJu9w0c=;
+	s=arc-20240116; t=1779302956; c=relaxed/simple;
+	bh=cyq466VDDgWbCofvKSKrfoL0QfLs7+krejn5ggRWfOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tQ+0ddKa5pDQ7HppKZy4yD40QJXT+SrRWZAmOWfqe2Behr/leQO+j9wkfMYvH7haxpd7QxK1SpPPI5OXE2a1FNxLPfQk1zo6MHRGnWLT+UnneUlzngQVFKYoFmUWjDw94HKPf9xMr4DGfg1Pa9WjLrktpc2k93eYoZo6IhhhjBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uJnmeDPL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 077F81F00893;
-	Wed, 20 May 2026 18:49:07 +0000 (UTC)
+	 MIME-Version; b=IOOW0QSweNQfbH2noXwskhuzw+0THZXIal8ycSNlgmnMWAUyl7ke1uOEBdSv4QV2ycjLI1SqpZYplxK9tsqSVV6g3rbnYcOHZGQVFTxjFy3MjCGEHrnYMbXQ0RhHjXhe3wRyRKe2fAz9w8EUAC9gvt9VgFO0A5RmOeeuPHjxL30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vberfzya; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA081F00893;
+	Wed, 20 May 2026 18:49:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302948;
-	bh=GeeH2UqhAtSHrfjTUz8UqXmByGNkYKMC4DuOryPhYqs=;
+	s=korg; t=1779302953;
+	bh=YMrTVCDsp1v+w06FhuFiDapu9M2NH5IKe5kVJzWX+zs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uJnmeDPL1L3XLWIqBLAS9er6XR2eb3RawmwhYPG5pIjYkePqYR9PAKTR6k24aP7Hk
-	 8xCYupfbf5Q2oCfivDxOELaJGlnqOcaQ3QzVIIXEeTGbnvfneKivSNPdR5HVEl+axs
-	 6VhOsuMdWLcKIdi0f43ERh1RjXjUSdSBHhMjl2T8=
+	b=vberfzyarp0KnoXhTlsElfhJWsGMl8VV6s9ysZ+Pzurm8sw3Rii46VRAYJ+2wbVe4
+	 KRa1Yn4DrT4fcueG4Js2/3kTGd8A9DKL7PIjZZKu2AXHsIVPFKj6Jq7qhVViTujikc
+	 XQV3HGJGBdaTe6PCIy0DXsrJn8Alyxy6BXfGZSa0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiang Ma <maqianga@uniontech.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.6 461/508] KVM: x86: Fix Xen hypercall tracepoint argument assignment
-Date: Wed, 20 May 2026 18:24:44 +0200
-Message-ID: <20260520162108.587158342@linuxfoundation.org>
+	Inseo An <y0un9sa@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Li hongliang <1468888505@139.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 462/508] netfilter: nf_tables: unconditionally bump set->nelems before insertion
+Date: Wed, 20 May 2026 18:24:45 +0200
+Message-ID: <20260520162108.608447515@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
 References: <20260520162058.573354582@linuxfoundation.org>
@@ -65,33 +68,34 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253312-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-253314-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,netfilter.org,strlen.de,139.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,uniontech.com:email]
-X-Rspamd-Queue-Id: 9D17759BAA0
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,strlen.de:email]
+X-Rspamd-Queue-Id: B81CB59A25A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,36 +103,99 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Qiang Ma <maqianga@uniontech.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 2b72f1674e427c56e3772c5ccf785fdda2138820 upstream.
+[ Upstream commit def602e498a4f951da95c95b1b8ce8ae68aa733a ]
 
-TRACE_EVENT(kvm_xen_hypercall) stores a5 in __entry->a4 instead of
-__entry->a5.
+In case that the set is full, a new element gets published then removed
+without waiting for the RCU grace period, while RCU reader can be
+walking over it already.
 
-That overwrites the recorded a4 argument and leaves a5 unset in the
-trace entry. Fix the typo so both arguments are captured correctly.
+To address this issue, add the element transaction even if set is full,
+but toggle the set_full flag to report -ENFILE so the abort path safely
+unwinds the set to its previous state.
 
-Signed-off-by: Qiang Ma <maqianga@uniontech.com>
-Link: https://patch.msgid.link/20260512015313.1685784-1-maqianga@uniontech.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As for element updates, decrement set->nelems to restore it.
+
+A simpler fix is to call synchronize_rcu() in the error path.
+However, with a large batch adding elements to already maxed-out set,
+this could cause noticeable slowdown of such batches.
+
+Fixes: 35d0ac9070ef ("netfilter: nf_tables: fix set->nelems counting with no NLM_F_EXCL")
+Reported-by: Inseo An <y0un9sa@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+[ Minor conflict resolved. ]
+Signed-off-by: Li hongliang <1468888505@139.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/trace.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
---- a/arch/x86/kvm/trace.h
-+++ b/arch/x86/kvm/trace.h
-@@ -140,7 +140,7 @@ TRACE_EVENT(kvm_xen_hypercall,
- 		__entry->a2 = a2;
- 		__entry->a3 = a3;
- 		__entry->a4 = a4;
--		__entry->a4 = a5;
-+		__entry->a5 = a5;
- 	),
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index a0914a92e07dd..6fc88bf511092 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -6803,6 +6803,7 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
+ 	struct nft_data_desc desc;
+ 	enum nft_registers dreg;
+ 	struct nft_trans *trans;
++	bool set_full = false;
+ 	u64 timeout;
+ 	u64 expiration;
+ 	int err, i;
+@@ -7095,10 +7096,18 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
+ 	if (err < 0)
+ 		goto err_elem_free;
  
- 	TP_printk("cpl %d nr 0x%lx a0 0x%lx a1 0x%lx a2 0x%lx a3 0x%lx a4 0x%lx a5 %lx",
++	if (!(flags & NFT_SET_ELEM_CATCHALL)) {
++		unsigned int max = nft_set_maxsize(set), nelems;
++
++		nelems = atomic_inc_return(&set->nelems);
++		if (nelems > max)
++			set_full = true;
++	}
++
+ 	trans = nft_trans_elem_alloc(ctx, NFT_MSG_NEWSETELEM, set);
+ 	if (trans == NULL) {
+ 		err = -ENOMEM;
+-		goto err_elem_free;
++		goto err_set_size;
+ 	}
+ 
+ 	ext->genmask = nft_genmask_cur(ctx->net);
+@@ -7130,23 +7139,16 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
+ 		goto err_element_clash;
+ 	}
+ 
+-	if (!(flags & NFT_SET_ELEM_CATCHALL)) {
+-		unsigned int max = nft_set_maxsize(set);
+-
+-		if (!atomic_add_unless(&set->nelems, 1, max)) {
+-			err = -ENFILE;
+-			goto err_set_full;
+-		}
+-	}
+-
+ 	nft_trans_elem(trans) = elem;
+ 	nft_trans_commit_list_add_tail(ctx->net, trans);
+-	return 0;
+ 
+-err_set_full:
+-	nft_setelem_remove(ctx->net, set, &elem);
++	return set_full ? -ENFILE : 0;
++
+ err_element_clash:
+ 	kfree(trans);
++err_set_size:
++	if (!(flags & NFT_SET_ELEM_CATCHALL))
++		atomic_dec(&set->nelems);
+ err_elem_free:
+ 	nf_tables_set_elem_destroy(ctx, set, elem.priv);
+ err_parse_data:
+-- 
+2.53.0
+
 
 
 
