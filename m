@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-251926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251927-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8L5gNg0gDmqI6QUAu9opvQ
-	(envelope-from <stable+bounces-251926-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:56:45 +0200
+	id GCHBBRIADmo95QUAu9opvQ
+	(envelope-from <stable+bounces-251927-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:40:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9FAB59A547
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:56:44 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15A65596F6E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:40:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 602B331FE840
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:48:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E25603283F4B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:48:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC5A13F23C5;
-	Wed, 20 May 2026 17:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A5A3F44D9;
+	Wed, 20 May 2026 17:48:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a6YJOf8b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XtMCNZ7L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7F93F0A83;
-	Wed, 20 May 2026 17:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5005D3F1AB8;
+	Wed, 20 May 2026 17:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299277; cv=none; b=ZzuV/zg5E6pwhOZYN9eKV4fxIoBDMCMu5GFBAkbYlMXua6WiXWBH9PFrOOMbdE2VVXsaJE8sWXpsHbcVA/JnCdh8YpZA7DEkUyjVooiU5MiN3avbbsuMyFBD/QJlNvxAjbhcuf6KiIhBadM0mefn+trUFP5puIC/Ao1dvHqwDqA=
+	t=1779299280; cv=none; b=aHZxoGY+CFIJiO79jzDltqpuCFDkW3LQIlpxs+Br/IQs5cCXBlTDLw0R1LRFmUHXMw3fcjso8byRuWhmmwVYdAxal4Hfl6XXrTPKX3TppdaRjSxvYFQMCyBb09lhw3xxYJMSE17iaM/eMXAYr8dw52KcKypL6QisJsoeiaJ5xhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299277; c=relaxed/simple;
-	bh=JjttOUUAVmgQqUbkyHC200kWHZbnVrAuTKPde/Yoywk=;
+	s=arc-20240116; t=1779299280; c=relaxed/simple;
+	bh=UhZ97qSAs+0ZA56NT4EK0T1FsgeeMebLTckcZX+ET6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Luj7K5d4UDyuCMhtTyI+i1haB744+lfofekJXaGTqdjtUo0HCYeGopuQWjC8aXVTGl0gclSq3yu+U8TZ8G34s6uODOme5nujzqf7PTh/uHYKSJIci1Jq2n11qVwIAWztoI3nDEVwjmPEz5Ci/S0RWrpW6TYzMJaT6dSHUt1iMeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a6YJOf8b; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF3601F000E9;
-	Wed, 20 May 2026 17:47:55 +0000 (UTC)
+	 MIME-Version; b=paqKZ7FzVwuXrHvCYAVPf+E0hqCgtLuIUCNXUSaqVMQzTfHCxEoq1Mv5Th2Mf5bUHOIxZs16BwrglRRfS8BiPtiGtGTLaKlQFs5dZOvSVg0/Qp2mxG63zRzCifAwQgKpaX0jSCpjXMhk5U/9Iuehhvc+lAqGoh/x3yzlcBUl8S8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XtMCNZ7L; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59F611F00893;
+	Wed, 20 May 2026 17:47:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299276;
-	bh=8LQUw3TM1w9LgtdRzcWDR1LQ0SemB1E73B13w0fRG3U=;
+	s=korg; t=1779299278;
+	bh=uMBYgTjBMCongEHtHq/B6MZ0fBkAV8K7+fXi4qfW/sE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=a6YJOf8barkP1fOlgmlAdtXtfn1JkPm2Z6d9HQNnallE9NnCjwmb4KAIwNuRsGB+S
-	 9oLrV1FvSQ9HqvaHTEVgZ8B0DOY8xB8Nq4zYC5DmNPLlU/lRheKlRS23GOUUT58MW4
-	 AJJInDOfkBgLCT9Za1LXaU4zYQnh82QoXQm7HOcQ=
+	b=XtMCNZ7LkPnGehHve8gBmC57vMF+HYMyq8HxqU7bDR15bv2SllXYJzkgHPTBTLchs
+	 pZAOvMSeT4t+2gcPICMw5jNwzbhzJA+wbZFSL+4paTK3sxKJOJaWZdTtIpVWZu/45R
+	 0cEpCkrT025IeePKglWI5Bi1cso2KgWUDEP26Uv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,9 +49,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 507/508] mptcp: pm: ADD_ADDR rtx: fix potential data-race
-Date: Wed, 20 May 2026 18:25:30 +0200
-Message-ID: <20260520162109.587719059@linuxfoundation.org>
+Subject: [PATCH 6.6 508/508] mptcp: pm: ADD_ADDR rtx: resched blocked ADD_ADDR quicker
+Date: Wed, 20 May 2026 18:25:31 +0200
+Message-ID: <20260520162109.610335165@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
 References: <20260520162058.573354582@linuxfoundation.org>
@@ -69,13 +69,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251926-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251927-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
@@ -83,7 +83,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -92,8 +92,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D9FAB59A547
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 15A65596F6E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,51 +103,48 @@ X-Rspamd-Server: lfdr
 
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit 5cd6e0ad79d2615264f63929f8b457ad97ae550d ]
+[ Upstream commit 3cf12492891c4b5ff54dda404a2de4ec54c9e1b5 ]
 
-This mptcp_pm_add_timer() helper is executed as a timer callback in
-softirq context. To avoid any data races, the socket lock needs to be
-held with bh_lock_sock().
+When an ADD_ADDR needs to be retransmitted and another one has already
+been prepared -- e.g. multiple ADD_ADDRs have been sent in a row and
+need to be retransmitted later -- this additional retransmission will
+need to wait.
 
-If the socket is in use, retry again soon after, similar to what is done
-with the keepalive timer.
+In this case, the timer was reset to TCP_RTO_MAX / 8, which is ~15
+seconds. This delay is unnecessary long: it should just be rescheduled
+at the next opportunity, e.g. after the retransmission timeout.
+
+Without this modification, some issues can be seen from time to time in
+the selftests when multiple ADD_ADDRs are sent, and the host takes time
+to process them, e.g. the "signal addresses, ADD_ADDR timeout" MPTCP
+Join selftest, especially with a debug kernel config.
+
+Note that on older kernels, 'timeout' is not available. It should be
+enough to replace it by one second (HZ).
 
 Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
 Cc: stable@vger.kernel.org
 Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-3-fca8091060a4@kernel.org
+Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-6-fca8091060a4@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ applied hunk to `net/mptcp/pm_netlink.c` instead of `net/mptcp/pm.c` ]
+[ replaced `TCP_RTO_MAX / 8` with `HZ` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/mptcp/pm_netlink.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 --- a/net/mptcp/pm_netlink.c
 +++ b/net/mptcp/pm_netlink.c
-@@ -308,6 +308,13 @@ static void mptcp_pm_add_timer(struct ti
- 	if (!entry->addr.id)
- 		return;
+@@ -316,7 +316,7 @@ static void mptcp_pm_add_timer(struct ti
+ 	}
  
-+	bh_lock_sock(sk);
-+	if (sock_owned_by_user(sk)) {
-+		/* Try again later. */
-+		sk_reset_timer(sk, timer, jiffies + HZ / 20);
-+		goto out;
-+	}
-+
  	if (mptcp_pm_should_add_signal_addr(msk)) {
- 		sk_reset_timer(sk, timer, jiffies + TCP_RTO_MAX / 8);
+-		sk_reset_timer(sk, timer, jiffies + TCP_RTO_MAX / 8);
++		sk_reset_timer(sk, timer, jiffies + HZ);
  		goto out;
-@@ -336,6 +343,7 @@ static void mptcp_pm_add_timer(struct ti
- 		mptcp_pm_subflow_established(msk);
- 
- out:
-+	bh_unlock_sock(sk);
- 	__sock_put(sk);
- }
+ 	}
  
 
 
