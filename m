@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-250474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251416-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CMU8GcroDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250474-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:00:58 +0200
+	id sE/4EYsaDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251416-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:33:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4286E592CD8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:00:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2CFB599C38
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:33:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C444E3054E48
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:45:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E8D9933BC84B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:26:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7932A3D75AA;
-	Wed, 20 May 2026 16:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 545803F23D5;
+	Wed, 20 May 2026 17:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hhTErNmp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EJ6mR/hz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35671352016;
-	Wed, 20 May 2026 16:45:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E823F2116;
+	Wed, 20 May 2026 17:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295504; cv=none; b=owjrHxqmu8fWXWUvTOk80nxmODPuJpfY/iym1UyMHtinmqBwjS7LuxINclW3Gv9ylYT87+sDZbO1cC/0lksplXIResC6OBg2HmGB9pn+gzWsCgp4+SYGUD8RHtp79KHUlPQG7tzkt+OrQKe6QO2KFPbypF5O4T9C+oLpjSaoVXQ=
+	t=1779297924; cv=none; b=caQNkHSPYhNUHNyzYn2qys2TAeWeuU8i9FYFsW8f2Qra2D4dJUvAQaI2a2OLmZfUeLpyKgcJG3mJvRDrqoif/CW4FPSJHIdiocpZdotWfRJ/61I1hXecLLl13/VQEB/6CHL1CABJfd9bsElrrxXxzglyli+1RrDyKGg5Lwc/wOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295504; c=relaxed/simple;
-	bh=1gcqyFoQYOTt0Er6zuMajpL/ZsM5MqnAPitMMB35gHk=;
+	s=arc-20240116; t=1779297924; c=relaxed/simple;
+	bh=fCKJnanw0x0OdH017VLAh1Ka1emYbLBo37FvLU8R55g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eKRGsBgJ7POiG13XzD2Xyg5XAtNBlzLlWv6Hyzc0vkaymKVGhxJACaPSZ8oKTF3Izy/x4p1/scFe0AkpXMmjArFbFa3fZ/HusdT6GV3k5BKUSdPHPB5hdWfVkC5ekybyjqd5Cb8e6Uhth/C2Jyk8wQUhZ4NpE8/r93hTqZYe3iE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hhTErNmp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C209F1F00893;
-	Wed, 20 May 2026 16:45:02 +0000 (UTC)
+	 MIME-Version; b=TEfbshX7kdG9ZE7Xn3gkqjmRSd62UlFTcYICzPuhcqq9gNMUPYwp9i1gcgD9JbiSyQyevg2Qfbw1S3hWIACNcS1zovm/ohxaPJDfJbBjcX//9ncTlV/2WA7YlaMvJIBDM8vBE8ZUGdnn7byvkzQn3cyirfOPP695SSr81v50Qs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EJ6mR/hz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 140281F000E9;
+	Wed, 20 May 2026 17:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295503;
-	bh=FF+nKnUpaxJ1I9G/2G1jjJmj186VKeGVwGDWZVYj4Ro=;
+	s=korg; t=1779297922;
+	bh=5FqjS6GgVGfRolhyaPWGa6vYS+hSr/lyTzOO9YdY2ME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hhTErNmpd9m+sUHsO7+8Q9aPWlV23UuFpKxrDHS+awObhdboUJKtxc2SDB1CGKDsi
-	 pZjxiIUKZnQBp7abbLTSSb4+Sz+FrBos1szZQI1GAMuIIG/mlKikvZp19052p+qu86
-	 yqzoR8F+40+yHqo3gqhhbPpSU1kljZlV0MYapZaE=
+	b=EJ6mR/hz6LBdbZf6OASfQBf973BothoBMBE7QV7enwdGEHCKKoRqqfQbNDbHHEHtJ
+	 HqjEkIVFSFOeT2TNzkVJwk79aqMTtYzuNovPXDcHTutsVmlIa7NtbQdx+CQ1Iit3/o
+	 gm0NEYZWBkAZ2qq8HDyo3ZL0L5tkJcFMv3yss1OM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Paul Moore <paul@paul-moore.com>,
-	Jan Kara <jack@suse.cz>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Jayesh Choudhary <j-choudhary@ti.com>,
+	Harikrishna Shenoy <h-shenoy@ti.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0445/1146] fanotify: call fanotify_events_supported() before path_permission() and security_path_notify()
-Date: Wed, 20 May 2026 18:11:35 +0200
-Message-ID: <20260520162158.270129836@linuxfoundation.org>
+Subject: [PATCH 6.18 213/957] drm/bridge: cadence: cdns-mhdp8546-core: Add mode_valid hook to drm_bridge_funcs
+Date: Wed, 20 May 2026 18:11:36 +0200
+Message-ID: <20260520162139.158834343@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,108 +70,104 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,gmail.com,paul-moore.com,suse.cz,kernel.org];
-	TAGGED_FROM(0.00)[bounces-250474-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251416-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,paul-moore.com:email]
-X-Rspamd-Queue-Id: 4286E592CD8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ti.com:email,bootlin.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,ideasonboard.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: C2CFB599C38
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ondrej Mosnacek <omosnace@redhat.com>
+From: Jayesh Choudhary <j-choudhary@ti.com>
 
-[ Upstream commit 66052a768d4726a31e939b5ac902f2b0b452c8d5 ]
+[ Upstream commit 6dbff34016052b099558b76632e4983e2df13fed ]
 
-The latter trigger LSM (e.g. SELinux) checks, which will log a denial
-when permission is denied, so it's better to do them after validity
-checks to avoid logging a denial when the operation would fail anyway.
+Add cdns_mhdp_bridge_mode_valid() to check if specific mode is valid for
+this bridge or not. In the legacy usecase with
+!DRM_BRIDGE_ATTACH_NO_CONNECTOR we were using the hook from
+drm_connector_helper_funcs but with DRM_BRIDGE_ATTACH_NO_CONNECTOR
+we need to have mode_valid() in drm_bridge_funcs.
 
-Fixes: 0b3b094ac9a7 ("fanotify: Disallow permission events for proc filesystem")
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Reviewed-by: Paul Moore <paul@paul-moore.com>
-Link: https://patch.msgid.link/20260216150625.793013-3-omosnace@redhat.com
-Signed-off-by: Jan Kara <jack@suse.cz>
+Without this patch, when using DRM_BRIDGE_ATTACH_NO_CONNECTOR
+flag, the cdns_mhdp_bandwidth_ok() function would not be called
+during  mode validation, potentially allowing modes that exceed
+the bridge's bandwidth capabilities to be incorrectly marked as
+valid.
+
+Fixes: c932ced6b585 ("drm/tidss: Update encoder/bridge chain connect model")
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Jayesh Choudhary <j-choudhary@ti.com>
+Signed-off-by: Harikrishna Shenoy <h-shenoy@ti.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Link: https://patch.msgid.link/20251209120332.3559893-3-h-shenoy@ti.com
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/notify/fanotify/fanotify_user.c | 25 ++++++++++---------------
- 1 file changed, 10 insertions(+), 15 deletions(-)
+ .../drm/bridge/cadence/cdns-mhdp8546-core.c   | 20 +++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/fs/notify/fanotify/fanotify_user.c b/fs/notify/fanotify/fanotify_user.c
-index 5d030fbb2dffe..ae904451dfc09 100644
---- a/fs/notify/fanotify/fanotify_user.c
-+++ b/fs/notify/fanotify/fanotify_user.c
-@@ -1210,6 +1210,7 @@ static int fanotify_find_path(int dfd, const char __user *filename,
- 
- 		*path = fd_file(f)->f_path;
- 		path_get(path);
-+		ret = 0;
- 	} else {
- 		unsigned int lookup_flags = 0;
- 
-@@ -1219,22 +1220,7 @@ static int fanotify_find_path(int dfd, const char __user *filename,
- 			lookup_flags |= LOOKUP_DIRECTORY;
- 
- 		ret = user_path_at(dfd, filename, lookup_flags, path);
--		if (ret)
--			goto out;
- 	}
--
--	/* you can only watch an inode if you have read permissions on it */
--	ret = path_permission(path, MAY_READ);
--	if (ret) {
--		path_put(path);
--		goto out;
--	}
--
--	ret = security_path_notify(path, mask, obj_type);
--	if (ret)
--		path_put(path);
--
--out:
- 	return ret;
+diff --git a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
+index ef2d0ea606f78..2fb8acd363b14 100644
+--- a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
++++ b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
+@@ -2162,6 +2162,25 @@ static const struct drm_edid *cdns_mhdp_bridge_edid_read(struct drm_bridge *brid
+ 	return cdns_mhdp_edid_read(mhdp, connector);
  }
  
-@@ -2058,6 +2044,15 @@ static int do_fanotify_mark(int fanotify_fd, unsigned int flags, __u64 mask,
- 			goto path_put_and_out;
- 	}
++static enum drm_mode_status
++cdns_mhdp_bridge_mode_valid(struct drm_bridge *bridge,
++			    const struct drm_display_info *info,
++			    const struct drm_display_mode *mode)
++{
++	struct cdns_mhdp_device *mhdp = bridge_to_mhdp(bridge);
++
++	mutex_lock(&mhdp->link_mutex);
++
++	if (!cdns_mhdp_bandwidth_ok(mhdp, mode, mhdp->link.num_lanes,
++				    mhdp->link.rate)) {
++		mutex_unlock(&mhdp->link_mutex);
++		return MODE_CLOCK_HIGH;
++	}
++
++	mutex_unlock(&mhdp->link_mutex);
++	return MODE_OK;
++}
++
+ static const struct drm_bridge_funcs cdns_mhdp_bridge_funcs = {
+ 	.atomic_enable = cdns_mhdp_atomic_enable,
+ 	.atomic_disable = cdns_mhdp_atomic_disable,
+@@ -2176,6 +2195,7 @@ static const struct drm_bridge_funcs cdns_mhdp_bridge_funcs = {
+ 	.edid_read = cdns_mhdp_bridge_edid_read,
+ 	.hpd_enable = cdns_mhdp_bridge_hpd_enable,
+ 	.hpd_disable = cdns_mhdp_bridge_hpd_disable,
++	.mode_valid = cdns_mhdp_bridge_mode_valid,
+ };
  
-+	/* you can only watch an inode if you have read permissions on it */
-+	ret = path_permission(&path, MAY_READ);
-+	if (ret)
-+		goto path_put_and_out;
-+
-+	ret = security_path_notify(&path, mask, obj_type);
-+	if (ret)
-+		goto path_put_and_out;
-+
- 	if (fid_mode) {
- 		ret = fanotify_test_fsid(path.dentry, flags, &__fsid);
- 		if (ret)
+ static bool cdns_mhdp_detect_hpd(struct cdns_mhdp_device *mhdp, bool *hpd_pulse)
 -- 
 2.53.0
 
