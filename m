@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252614-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MLVNIpTxDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-251079-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:38:28 +0200
+	id 4LYNAU8nDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252614-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:27:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28FE25942A7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:38:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73D9059AE14
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:27:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 939FB30B3725
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:11:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AF2CB3445065
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:18:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 290D83D8918;
-	Wed, 20 May 2026 17:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B7DC37DE8A;
+	Wed, 20 May 2026 18:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="plEQ+6PZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qWzzr79q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C468D364E89;
-	Wed, 20 May 2026 17:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088413F23C5;
+	Wed, 20 May 2026 18:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297044; cv=none; b=Fn5r0HroHzVjEES7xXhnjnvfxaZ9QsnfT8srKZAM4TKXJKIv7cDqn9R6zVNCrShb4NDe/gFAW9EQhR9VNyBXi709X7M/IsyOruLoTbMllfpMiiQkM3mqS5jNJ6zSI255IxJKEy5tnH+js5tf25UTVbXZ36H0besrvfcHZuDudlc=
+	t=1779301137; cv=none; b=McwPUur288IZ82t+PkcGPKXD3OxNHsmTB7jKGt7mmjOxztlEvq1EXq4rcy6ibLRw8ktC005wrs4HldLXbBYK8nBZF4Z7Tsv35hQ16GW7FPeQrQgtJGZiezKdCxj6X9tbli1yQ+GkE3vhr7UPDJSz4Lf5I1uJBwQmym7GN5pGdOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297044; c=relaxed/simple;
-	bh=ufnb1MVS9g1u69JFudKgthLanM6oPGCm/+8s0g+WAII=;
+	s=arc-20240116; t=1779301137; c=relaxed/simple;
+	bh=+0JtV4dVO83RcfbOk1Gb+XlE2G7fDlkmNTZtOAEu8dE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OkX+8ZR3ny5+ImWezktM2VXLrTzu0Fd6iD6fqc5lvwAq/5oEn0HVPQ21N2fQ1edAZPg8JCtSEeIG86caEhQeouKaKCRIerCODFv7eOnNWAcx2yNVEzPuqq9mNm+rZ5nvI3LwEJQkJsBxSagXTWAddkD/HpBg8J6jFupDCDDzI2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=plEQ+6PZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34CD71F000E9;
-	Wed, 20 May 2026 17:10:43 +0000 (UTC)
+	 MIME-Version; b=lOuMGgLPYj9l+EjRjrz92rYU3/viFvyxpp9ahtfyFzSbAoygTJfKR2eeWycNk0IyzHq4NkxWLJh3/DPCd1aJNJyd5XQIGjxskaStgliWbMAhdzkolYe9znR9NNZK0ncPsdlL1P6SWvzcqB+1UkSJVumgP+q2ZmhVJDL4JeY/tM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qWzzr79q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69D5B1F000E9;
+	Wed, 20 May 2026 18:18:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297043;
-	bh=fqm1kFWmrT3yvdqhctlfWTcwOI84+12sodl6AEjPIcY=;
+	s=korg; t=1779301135;
+	bh=mjve1dL2ciMN7yESY9MoA7UFCqvTA5Ag/9MhRCoVDxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=plEQ+6PZnrTf9FSicClNVa8SGpBs8ICGo1E0nO98ZBKPlg2DpGh9UaDcaiDpzrVBM
-	 TwexKRlPjwsO0krQ9lyeMT086EhWm6e6rvrtrEIKSu6HRDg2LGvlQX7/2BpofCc8My
-	 eN/Ue3+y9xqR98KhZ3LVgK4XM1Y0j+QGPGioz0FU=
+	b=qWzzr79qNmXRyu8by5W0XLw+gFZz4D8EwRBdk/zZrNWvJ/9PVU4xCOmFt3L8sh1ew
+	 Er4jZACh3W9dA/E4aFxkA0zIjQd6tu9La+l1J9xw/qbifUTok+ZbOnab6uqzHM+K63
+	 XOuxOPxvhNETTwSyjio7DX2lryGPcc8drr4TJh2U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 1002/1146] drm/amd/display: Allow embedded connectors without DDC
+Subject: [PATCH 6.12 441/666] arm64: dts: imx8mn-tqma8mqnl: Correct PAD settings for PMIC_nINT
 Date: Wed, 20 May 2026 18:20:52 +0200
-Message-ID: <20260520162210.909928309@linuxfoundation.org>
+Message-ID: <20260520162120.829579931@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +63,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251079-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-252614-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,gitlab.freedesktop.org:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
-X-Rspamd-Queue-Id: 28FE25942A7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email]
+X-Rspamd-Queue-Id: 73D9059AE14
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 494941aa772dab79251543764db6cd14bd337e43 ]
+[ Upstream commit 0fb37990774113afd943eaa91323679388584b6d ]
 
-On some laptops, the embedded panel may not have
-a DDC (display data channel) available. On these,
-the EDID may be hardcoded in ACPI or the VBIOS.
+With commit 5d0efaf47ee90 ("regulator: pca9450: Correct interrupt type"),
+there might be interrupt storm for this board. Need to set PAD PUE and PU
+together to make pull up work properly.
 
-In this case, use GPIO_DDC_LINE_UNKNOWN and don't fail.
-
-Fixes: def3488eb0fd ("drm/amd/display: refactor HPD to increase flexibility")
-Link: https://gitlab.freedesktop.org/drm/amd/-/work_items/5192
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 75b8a6ca0e8bc3ce24572f854e95f8721b321179)
+Fixes: 3e56e354db6d3 ("arm64: dts: freescale: add initial device tree for TQMa8MQNL with i.MX8MN")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dc.h                | 2 +-
- drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c | 3 +++
- drivers/gpu/drm/amd/display/dc/link/link_factory.c | 4 +++-
- 3 files changed, 7 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dc.h b/drivers/gpu/drm/amd/display/dc/dc.h
-index 4c4239cac863d..8044c80971f04 100644
---- a/drivers/gpu/drm/amd/display/dc/dc.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc.h
-@@ -1638,7 +1638,7 @@ struct dc_scratch_space {
- 	struct dc_link_training_overrides preferred_training_settings;
- 	struct dp_audio_test_data audio_test_data;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi
+index 2d64b2c0b181d..5cd81024269a9 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi
+@@ -293,7 +293,7 @@ pinctrl_i2c1_gpio: i2c1gpiogrp {
+ 	};
  
--	uint8_t ddc_hw_inst;
-+	enum gpio_ddc_line ddc_hw_inst;
+ 	pinctrl_pmic: pmicgrp {
+-		fsl,pins = <MX8MN_IOMUXC_GPIO1_IO08_GPIO1_IO8	0x84>;
++		fsl,pins = <MX8MN_IOMUXC_GPIO1_IO08_GPIO1_IO8	0x1c4>;
+ 	};
  
- 	uint8_t hpd_src;
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c b/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
-index a2c46350e44e8..95f8b7c7d657a 100644
---- a/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
-+++ b/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
-@@ -646,6 +646,9 @@ enum gpio_result dal_ddc_change_mode(
- enum gpio_ddc_line dal_ddc_get_line(
- 	const struct ddc *ddc)
- {
-+	if (!ddc)
-+		return GPIO_DDC_LINE_UNKNOWN;
-+
- 	return (enum gpio_ddc_line)dal_gpio_get_enum(ddc->pin_data);
- }
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/link_factory.c b/drivers/gpu/drm/amd/display/dc/link/link_factory.c
-index 21815ad01a295..409cc6e6cd846 100644
---- a/drivers/gpu/drm/amd/display/dc/link/link_factory.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_factory.c
-@@ -549,7 +549,9 @@ static bool construct_phy(struct dc_link *link,
- 		goto ddc_create_fail;
- 	}
- 
--	if (!link->ddc->ddc_pin) {
-+	/* Embedded display connectors such as LVDS may not have DDC. */
-+	if (!link->ddc->ddc_pin &&
-+	    !dc_is_embedded_signal(link->connector_signal)) {
- 		DC_ERROR("Failed to get I2C info for connector!\n");
- 		goto ddc_create_fail;
- 	}
+ 	pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
 -- 
 2.53.0
 
