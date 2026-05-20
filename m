@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-251154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252083-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SEe5DJQVDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251154-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:12:04 +0200
+	id 0HVXJsb+DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252083-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:46 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 872B55993FC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:12:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37981596A63
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E8DCD317EAE3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2E7BC38A2C8B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:55:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5424E3F20F0;
-	Wed, 20 May 2026 17:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDA4F3F23C5;
+	Wed, 20 May 2026 17:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TLFBpVk5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sKMQPrmU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D05F3403F4;
-	Wed, 20 May 2026 17:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACDAC29B8D0;
+	Wed, 20 May 2026 17:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297240; cv=none; b=antsTzqgq3b1Lpg6JmuvWjnkpOb39GWUWswP+LdyTytgaHY3Z4ITybqgGnnyh52lFT62paQE8tUNfzxVfPPr637f4WS4YZh0DqVr5hcviU4VJ8MQc3Q6u6TuxBb32DNCNnt4e41/6YN7Lqb2hZ5pIaegrkH+QBUcYa/pF9sKVko=
+	t=1779299701; cv=none; b=JbH2Zl+SQyA5dNrGgDKMy1nqNQ4X0xGsynbfd24xwfbQVZSnJ21Glc4fjis3ue21H3tqHaE6Ko+KXlQaiu0bmmOjVEOsdIgzuLggtLZPwO30Id0sMqnrGQn2Vg5+cjQHH+w5uIHafOdLrzUdk2+3ylWfDOYD8rc8FUGIuYmCNVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297240; c=relaxed/simple;
-	bh=1hmCuTcXUFoLmn1bisYIeCDsrKkL5VVs5t88Oej/rDE=;
+	s=arc-20240116; t=1779299701; c=relaxed/simple;
+	bh=YDQ5BrifFKzCCMqeCv6U91V0WLDeNTUTxXwdPW2TLUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gE9WV4sF+BZ3suwm4nUcaoA+XFDNLg95aW3Jo2eOGVke2xR9BwV9bU2k7fohoGK+CfbygJQFRsLybvWEa2fKU90UoL9jYZxX4aifUwKjNS3tNp2lOeGcCzuoTTQon7FlNaWaHjJna0SyfnYxqlaNbX8/rrNuwzpuqT6WjpYkdHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TLFBpVk5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AFAF1F000E9;
-	Wed, 20 May 2026 17:13:58 +0000 (UTC)
+	 MIME-Version; b=upt/63FFKjXSEtFMnzhJi+sK4ZtNK4T/jnuEB6ZgJwA472NkmvvPTjb/DwJk/cDe/j0II7xdYzAk/ksHxvw2wiZQEKAkqS3zKi3YXcZsmn38fWg31S+VBmXO8bsSLyVWyv/eEL9MEp1/6RMYXYrN6maVyFtTQXTYAsXhhcpKKrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sKMQPrmU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F6B01F000E9;
+	Wed, 20 May 2026 17:54:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297238;
-	bh=csUTH6NMqWm4B2zZNHtgTWDhklabwa47K1n+pX5UZQ8=;
+	s=korg; t=1779299700;
+	bh=iBZpTvXYadTSsoMNTpp8dyr4QfGyg1nepZn6vR94JKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TLFBpVk5UBuo0t5e0kZ4fa0gvWF3LgcM5iOnjd1cmmMWDwBQXuu/DXE+VxUJXOUed
-	 RiKtjgTYoecwo/ZjUZLQSNh/jRMFUxQgqvjcn1YngmgzndFLTucgs15cushbmYoHV6
-	 WlLatsyV0j9nVsu5jLzrai8g9MIwmk4SuWqEPH9o=
+	b=sKMQPrmUpXZD7RE5FYYEVrUHVmOMSj9qSLWNx1YaYCX5H7Oa02cTyk0rRf0EQQ6oQ
+	 Ilco0IA5yhdyYATAuWVqT++8cVWh1bRS3KSDE2HggaEa9nDHgOgWhY0tvVu7AEPPon
+	 grk0D0zVtVlh3M4NOxb94LvmvcfZHPXA0Dck/L5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaoli Feng <xifeng@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	David Howells <dhowells@redhat.com>,
-	netfs@lists.linux.dev,
-	linux-cifs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 7.0 1104/1146] netfs: fix error handling in netfs_extract_user_iter()
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 871/957] net/sched: sch_pie: annotate more data-races in pie_dump_stats()
 Date: Wed, 20 May 2026 18:22:34 +0200
-Message-ID: <20260520162213.229460888@linuxfoundation.org>
+Message-ID: <20260520162153.455913436@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,95 +73,109 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251154-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252083-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 872B55993FC
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 37981596A63
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 0aad5704c6b4d14007d4eab15883e8524e4310f4 upstream.
+[ Upstream commit 6d4106e8df94c0c52cf3ca6a6a0d01567fb3844e ]
 
-In netfs_extract_user_iter(), if iov_iter_extract_pages() failed to
-extract user pages, bail out on -ENOMEM, otherwise return the error
-code only if @npages == 0, allowing short DIO reads and writes to be
-issued.
+My prior patch missed few READ_ONCE()/WRITE_ONCE() annotations.
 
-This fixes mmapstress02 from LTP tests against CIFS.
-
-Fixes: 85dd2c8ff368 ("netfs: Add a function to extract a UBUF or IOVEC into a BVEC iterator")
-Reported-by: Xiaoli Feng <xifeng@redhat.com>
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://patch.msgid.link/20260512123404.719402-10-dhowells@redhat.com
-Cc: netfs@lists.linux.dev
-Cc: stable@vger.kernel.org
-Cc: linux-cifs@vger.kernel.org
-Cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5154561d9b11 ("net/sched: sch_pie: annotate data-races in pie_dump_stats()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260430080056.35104-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/iterator.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ net/sched/sch_pie.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
---- a/fs/netfs/iterator.c
-+++ b/fs/netfs/iterator.c
-@@ -22,7 +22,7 @@
-  *
-  * Extract the page fragments from the given amount of the source iterator and
-  * build up a second iterator that refers to all of those bits.  This allows
-- * the original iterator to disposed of.
-+ * the original iterator to be disposed of.
-  *
-  * @extraction_flags can have ITER_ALLOW_P2PDMA set to request peer-to-peer DMA be
-  * allowed on the pages extracted.
-@@ -67,8 +67,8 @@ ssize_t netfs_extract_user_iter(struct i
- 		ret = iov_iter_extract_pages(orig, &pages, count,
- 					     max_pages - npages, extraction_flags,
- 					     &offset);
--		if (ret < 0) {
--			pr_err("Couldn't get user pages (rc=%zd)\n", ret);
-+		if (unlikely(ret <= 0)) {
-+			ret = ret ?: -EIO;
- 			break;
- 		}
+diff --git a/net/sched/sch_pie.c b/net/sched/sch_pie.c
+index 73650200482f4..40149edecbd5a 100644
+--- a/net/sched/sch_pie.c
++++ b/net/sched/sch_pie.c
+@@ -219,16 +219,14 @@ void pie_process_dequeue(struct sk_buff *skb, struct pie_params *params,
+ 	 * packet timestamp.
+ 	 */
+ 	if (!params->dq_rate_estimator) {
+-		vars->qdelay = now - pie_get_enqueue_time(skb);
++		WRITE_ONCE(vars->qdelay,
++			   backlog ? now - pie_get_enqueue_time(skb) : 0);
  
-@@ -97,6 +97,13 @@ ssize_t netfs_extract_user_iter(struct i
- 		npages += cur_npages;
- 	}
+ 		if (vars->dq_tstamp != DTIME_INVALID)
+ 			dtime = now - vars->dq_tstamp;
  
-+	if (ret < 0 && (ret == -ENOMEM || npages == 0)) {
-+		for (i = 0; i < npages; i++)
-+			unpin_user_page(bv[i].bv_page);
-+		kvfree(bv);
-+		return ret;
-+	}
-+
- 	iov_iter_bvec(new, orig->data_source, bv, npages, orig_len - count);
- 	return npages;
- }
+ 		vars->dq_tstamp = now;
+ 
+-		if (backlog == 0)
+-			vars->qdelay = 0;
+-
+ 		if (dtime == 0)
+ 			return;
+ 
+@@ -376,7 +374,7 @@ void pie_calculate_probability(struct pie_params *params, struct pie_vars *vars,
+ 	if (qdelay > (PSCHED_NS2TICKS(250 * NSEC_PER_MSEC)))
+ 		delta += MAX_PROB / (100 / 2);
+ 
+-	vars->prob += delta;
++	WRITE_ONCE(vars->prob, vars->prob + delta);
+ 
+ 	if (delta > 0) {
+ 		/* prevent overflow */
+@@ -401,7 +399,7 @@ void pie_calculate_probability(struct pie_params *params, struct pie_vars *vars,
+ 
+ 	if (qdelay == 0 && qdelay_old == 0 && update_prob)
+ 		/* Reduce drop probability to 98.4% */
+-		vars->prob -= vars->prob / 64;
++		WRITE_ONCE(vars->prob, vars->prob - vars->prob / 64);
+ 
+ 	WRITE_ONCE(vars->qdelay, qdelay);
+ 	vars->backlog_old = backlog;
+@@ -501,7 +499,7 @@ static int pie_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ {
+ 	struct pie_sched_data *q = qdisc_priv(sch);
+ 	struct tc_pie_xstats st = {
+-		.prob		= q->vars.prob << BITS_PER_BYTE,
++		.prob		= READ_ONCE(q->vars.prob) << BITS_PER_BYTE,
+ 		.delay		= ((u32)PSCHED_TICKS2NS(READ_ONCE(q->vars.qdelay))) /
+ 				   NSEC_PER_USEC,
+ 		.packets_in	= READ_ONCE(q->stats.packets_in),
+@@ -512,7 +510,7 @@ static int pie_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ 	};
+ 
+ 	/* avg_dq_rate is only valid if dq_rate_estimator is enabled */
+-	st.dq_rate_estimating = q->params.dq_rate_estimator;
++	st.dq_rate_estimating = READ_ONCE(q->params.dq_rate_estimator);
+ 
+ 	/* unscale and return dq_rate in bytes per sec */
+ 	if (st.dq_rate_estimating)
+-- 
+2.53.0
+
 
 
 
