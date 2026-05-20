@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250977-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8BigKaIfDmpd6QUAu9opvQ
-	(envelope-from <stable+bounces-251885-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:54:58 +0200
+	id GBMsOr/1DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-250977-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:56:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4353B59A4D6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:54:58 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AAF6594EFF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:56:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 67E62371B66C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:45:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A7CDA3149E89
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:08:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 178863F1AB8;
-	Wed, 20 May 2026 17:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96CAD3FB060;
+	Wed, 20 May 2026 17:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x9qBLBiX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AtRUS28N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD6393546C8;
-	Wed, 20 May 2026 17:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584193FADE9;
+	Wed, 20 May 2026 17:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299141; cv=none; b=j5FmiEctdw3MQ64MEDpwHS18QZBO1q5L0Bk1ezOfYwKYvIaciDM9NEt5oRqWkwRSrXNPGHDSPJBzlA5C8U01vv4K4BqwG0ZUHYZOnSJwMt5ZAT2947IXiMHQR3bFRM2Vsxxf0zdpq6t7Hh29/EpcJkYPRVGkNb5ojx7RR1RSXag=
+	t=1779296781; cv=none; b=KNV0CfqgQcCXdZN3CoL9MknpzkkuEA3WgBSwozlwKAV1T3FFO/JfwW9j6akry3jqkmV+BS6otke9dE5aUCkQYtcEfXqZDiaHcOwcgNQvZb1CDPp0pdAYSEtoRqrNEKV5YIDy6RjfFBiVcNay21bpPoKYfDdaaYNB0+/w/sTz6XQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299141; c=relaxed/simple;
-	bh=IAE7P3GSB+R4p2gPeG5ejKngILtIo+lZQHfIO+3HLJk=;
+	s=arc-20240116; t=1779296781; c=relaxed/simple;
+	bh=8FVKax+QEIXRoHwIGqL4mY6R1C0ivva4E3v8S/MMrHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KsUzSgIO6f2rVZKYNO/RBaqiIBzzawymveVjONfQZSt52gKxpx6CUSqIyXcjzbMv099Slm/xkF+DTxE8ednAgnq0DJ/84SInc7PYRDxDnlj7DnaoDvVEn1H001VikqrrvmYaKlNuINCgeCkLgRS5bFanl0DUv54Bh1VB/4vrfkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x9qBLBiX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F0AF1F000E9;
-	Wed, 20 May 2026 17:45:40 +0000 (UTC)
+	 MIME-Version; b=bfYz9hmRTJENYqeCRkkYV38XwEhfNlMXyJvnXnY8HxJWd/e8cBVIzYCpVCjsUbmK12N42D53zzDQPibUkUJObQCDwahou/dmLJsBS1MGCdJY1wop4e2964jop2PNt8ClfSsekuvxITiUc1eFOEngYbrGoIYjUI9e0Gu+lvYLh2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AtRUS28N; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCCD71F000E9;
+	Wed, 20 May 2026 17:06:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299140;
-	bh=yxQMP+VN7MOgN7aab6AOGtOLZ00MnLkL0IFaJvujAYY=;
+	s=korg; t=1779296780;
+	bh=x8PfNTQK9AGceS+gFUy86Ue2Lk8y0jw2+PPlB69yYIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=x9qBLBiXj7LBFELpOyE6mLCih9SFMCw1pRltSNaKhmt7R1fqIa22O9dQol2ly9HHL
-	 u21wPb+5kv3uaQWfw4kurhhfkV9MiWfFKEo/dtEvYn+9YI9Gkhe5vNdL/hO8DowtrB
-	 hiyKhRwFPARagPCM6719Sc8aixJaVdaNbGJzAMrM=
+	b=AtRUS28N3Y4jIygrkAXuPYPXS4pPG7zdlBn41DoBzBjb0r3z0YM2SlCpTjTLSyCiq
+	 1Ig9Nedpmj/Ql5IzH7806OL04j8tSlQjPSl0OI6r4ve8WImZ/+m6C36yREoI8EiUwY
+	 ymfNm/1N9f2CkVgXq48gRQAt13RuyBQLsOGi/O4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vikas Gupta <vikas.gupta@broadcom.com>,
-	Rahul Gupta <rahul-rg.gupta@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 679/957] bnge: fix initial HWRM sequence
+Subject: [PATCH 7.0 0912/1146] ASoC: SOF: Intel: add an empty adr_link
 Date: Wed, 20 May 2026 18:19:22 +0200
-Message-ID: <20260520162149.262580333@linuxfoundation.org>
+Message-ID: <20260520162208.880751522@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,121 +69,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251885-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250977-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,broadcom.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 4353B59A4D6
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,cirrus.com:email]
+X-Rspamd-Queue-Id: 0AAF6594EFF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vikas Gupta <vikas.gupta@broadcom.com>
+From: Bard Liao <yung-chuan.liao@linux.intel.com>
 
-[ Upstream commit 70d7c905a07ae8415b955569620bf2bf77423553 ]
+[ Upstream commit 3c6f06a200796ae7b2b1065e8a6499b138e27a50 ]
 
-Firmware may not advertize correct resources if backing store is not
-enabled before resource information is queried.
-Fix the initial sequence of HWRMs so that driver gets capabilities
-and resource information correctly.
+An empty adr_link is expected to terminate the
+for (adr_link = mach_params->links; adr_link->num_adr; adr_link++) loop.
+Allocate link_num + 1 links to add an empty adr_link.
 
-Fixes: 3fa9e977a0cd ("bng_en: Initialize default configuration")
-Signed-off-by: Vikas Gupta <vikas.gupta@broadcom.com>
-Reviewed-by: Rahul Gupta <rahul-rg.gupta@broadcom.com>
-Link: https://patch.msgid.link/20260418023438.1597876-2-vikas.gupta@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 5226d19d4cae5 ("ASoC: SOF: Intel: use sof_sdw as default SDW machine driver")
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20260424105031.114053-1-yung-chuan.liao@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/broadcom/bnge/bnge_core.c    | 30 ++++++++++++++-----
- 1 file changed, 22 insertions(+), 8 deletions(-)
+ sound/soc/sof/intel/hda.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_core.c b/drivers/net/ethernet/broadcom/bnge/bnge_core.c
-index 312a9db4d75d1..657cd7a880d29 100644
---- a/drivers/net/ethernet/broadcom/bnge/bnge_core.c
-+++ b/drivers/net/ethernet/broadcom/bnge/bnge_core.c
-@@ -68,6 +68,13 @@ static int bnge_func_qcaps(struct bnge_dev *bd)
- 		return rc;
- 	}
+diff --git a/sound/soc/sof/intel/hda.c b/sound/soc/sof/intel/hda.c
+index 8a240dcb7fcb3..5fa773bb26788 100644
+--- a/sound/soc/sof/intel/hda.c
++++ b/sound/soc/sof/intel/hda.c
+@@ -1399,7 +1399,8 @@ static struct snd_soc_acpi_mach *hda_sdw_machine_select(struct snd_sof_dev *sdev
+ 		link_mask |= BIT(peripherals->array[i]->bus->link_id);
  
-+	return 0;
-+}
-+
-+static int bnge_func_qrcaps_qcfg(struct bnge_dev *bd)
-+{
-+	int rc;
-+
- 	rc = bnge_hwrm_func_resc_qcaps(bd);
- 	if (rc) {
- 		dev_err(bd->dev, "query resc caps failure rc: %d\n", rc);
-@@ -127,23 +134,28 @@ static int bnge_fw_register_dev(struct bnge_dev *bd)
- 
- 	bnge_hwrm_fw_set_time(bd);
- 
--	rc =  bnge_hwrm_func_drv_rgtr(bd);
-+	/* Get the resources and configuration from firmware */
-+	rc = bnge_func_qcaps(bd);
- 	if (rc) {
--		dev_err(bd->dev, "Failed to rgtr with firmware rc: %d\n", rc);
-+		dev_err(bd->dev, "Failed querying caps rc: %d\n", rc);
- 		return rc;
- 	}
- 
- 	rc = bnge_alloc_ctx_mem(bd);
- 	if (rc) {
- 		dev_err(bd->dev, "Failed to allocate ctx mem rc: %d\n", rc);
--		goto err_func_unrgtr;
-+		goto err_free_ctx_mem;
- 	}
- 
--	/* Get the resources and configuration from firmware */
--	rc = bnge_func_qcaps(bd);
-+	rc = bnge_hwrm_func_drv_rgtr(bd);
- 	if (rc) {
--		dev_err(bd->dev, "Failed initial configuration rc: %d\n", rc);
--		rc = -ENODEV;
-+		dev_err(bd->dev, "Failed to rgtr with firmware rc: %d\n", rc);
-+		goto err_free_ctx_mem;
-+	}
-+
-+	rc = bnge_func_qrcaps_qcfg(bd);
-+	if (rc) {
-+		dev_err(bd->dev, "Failed querying resources rc: %d\n", rc);
- 		goto err_func_unrgtr;
- 	}
- 
-@@ -152,7 +164,9 @@ static int bnge_fw_register_dev(struct bnge_dev *bd)
- 	return 0;
- 
- err_func_unrgtr:
--	bnge_fw_unregister_dev(bd);
-+	bnge_hwrm_func_drv_unrgtr(bd);
-+err_free_ctx_mem:
-+	bnge_free_ctx_mem(bd);
- 	return rc;
- }
+ 	link_num = hweight32(link_mask);
+-	links = devm_kcalloc(sdev->dev, link_num, sizeof(*links), GFP_KERNEL);
++	/* An empty adr_link is needed to terminate the adr_link loop */
++	links = devm_kcalloc(sdev->dev, link_num + 1, sizeof(*links), GFP_KERNEL);
+ 	if (!links)
+ 		return NULL;
  
 -- 
 2.53.0
