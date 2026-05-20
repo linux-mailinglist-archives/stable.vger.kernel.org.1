@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-253006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251907-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sHSJH7wADmp+5QUAu9opvQ
-	(envelope-from <stable+bounces-253006-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:08 +0200
+	id AM8QAgj1DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251907-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:12 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20D79597104
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7749D594D23
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 03DEC312AC17
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 19073308187D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:46:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1323FBECB;
-	Wed, 20 May 2026 18:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 085133B0AD6;
+	Wed, 20 May 2026 17:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TrCT9vqK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jqr8PlpX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4903F23A1;
-	Wed, 20 May 2026 18:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4E263546C8;
+	Wed, 20 May 2026 17:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302157; cv=none; b=MI4C5KVn9ywvI31ubM4ctMeSs6QlMoUTABGYO5Wm+zQriXva89cSjHL7m6mLtaibeDqSHW+PUcQYl0S0CSI4LYp9WolA7kNGCZZjNUwcHAs+CV1iqLExqX0UW7GSnzybLN+iFkTVG1JNX0fqrtFRksm83Zu3tt1Scd/2GsNGV0c=
+	t=1779299199; cv=none; b=bmzlBPCGQ6EjsRroJ4RCrkNsrPce0sjuefuqmXIHS8JZS2ejEwvb75KxJDHpdL9p3oQe5DxoWn+zKFnpxwQNWwA6w9UjcEgUPsELPmrUXgumqbmdjUHDNFW+/KwnpNroepnENwmTQSZAFfAGqPPvYo1B4w+Y65FAC05uF3NOQZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302157; c=relaxed/simple;
-	bh=0T9yOWZ5cJUfcTUJ0SpHNEU2DWZWcABxtnkYmDZxfyU=;
+	s=arc-20240116; t=1779299199; c=relaxed/simple;
+	bh=iI2ZverocCH1DSfOBimRE7OF1RWhf9LSz5AeBq8HACI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KUKbNEKcRKvIizyDAVQeIu2zRH7wsQHHwrd1ZduR9lXWn+fCR1kje0hjN0pIBffsEb33viTZfBXMjACaEQ2PIwyTmmIUuLScHhaZ0UZW/rTR4nFXg/xIlrO6q2l4vS8ewRlClmR1AdQU61bJP4Tay3G7XvmsZqo7Pj2cJ0C10JM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TrCT9vqK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09FF81F000E9;
-	Wed, 20 May 2026 18:35:55 +0000 (UTC)
+	 MIME-Version; b=ATMWuEJXrSS1ljr6kc+kami5XT0GxQqVAcS50EWOpIHT/mO/XdOjZxHykE712zl7zCkudwpoh0bDuEk48dQNDojYsA00G5yEaBT2BO2FXXk/lAlinJZ7lm5elE6W5pwMgLN0tYw+eSeASmgUC7CfWUkx56Aa1fdxEUpjqF+JjAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jqr8PlpX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 161A11F000E9;
+	Wed, 20 May 2026 17:46:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302156;
-	bh=vvFTGA8W2twh0LOLl5rDpwyN0Upcd08aCUijNYIfpgQ=;
+	s=korg; t=1779299198;
+	bh=4/TCntk7paHDSTbwAwZAFlKWuTrtd8EJHxRnrPRMrYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TrCT9vqKjYDrc+jC01WqxRnUf5FfNVeYd8DbyD3D+REkUo1p2x1CsoXz/dhHidaLt
-	 MEX+ystJtlfkvaiZ7l0wkpR0uVUssxZkOGTf7t9LLDMCX7mSoBavIDbm4r+Uo2+jZM
-	 Nmhmf20jk658U+uvA9CchvXeWAyrMzdZP3GXyxoQ=
+	b=Jqr8PlpX0DRuKkoDxzYqRfkdm4DgJBWJrJwijQF3jRifPOyL9wmX44OHzwvPRsLTG
+	 PIVXzLdIItIXpTXmRRmcO0cdr9du/jM6RkfXSHh/RzWdX7MJfXaNOr4TSAvpOVaA4I
+	 nZTRCIRuNpfjIEH6AJysHQd2i9Jk5DdjA16YsyRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 159/508] PCI: tegra194: Rename root_bus to root_port_bus in tegra_pcie_downstream_dev_to_D0()
+Subject: [PATCH 6.18 699/957] net: airoha: Rework the code flow in airoha_remove() and in airoha_probe() error path
 Date: Wed, 20 May 2026 18:19:42 +0200
-Message-ID: <20260520162102.085106796@linuxfoundation.org>
+Message-ID: <20260520162149.699066996@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,93 +74,199 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253006-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251907-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:email]
-X-Rspamd-Queue-Id: 20D79597104
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 7749D594D23
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit e1bd928479fb1fa60e9034b0fdb1ab9f3fa92f33 ]
+[ Upstream commit b1c803d5c8167026791abfaed96fd3e6a1fcd750 ]
 
-In tegra_pcie_downstream_dev_to_D0(), PCI devices are transitioned to D0
-state. For iterating over the devices, first the downstream bus of the Root
-Port is searched from the root bus. But the name of the variable that holds
-the Root Port downstream bus is named as 'root_bus', which is wrong.
+As suggested by Simon in [0], rework the code flow in airoha_remove()
+and in the airoha_probe() error path in order to rely on a more common
+approach un-registering configured net-devices first and destroying the
+hw resources at the end of the code.
+Introduce airoha_qdma_cleanup routine to release QDMA resources.
 
-Rename the variable to 'root_port_bus'. Also, move the comment on 'bringing
-the devices to D0' to where the state is set exactly.
+[0] https://lore.kernel.org/netdev/20251214-airoha-fix-dev-registration-v1-1-860e027ad4c6@kernel.org/
 
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20250922081057.15209-1-mani@kernel.org
-Stable-dep-of: 71d9f67701e1 ("PCI: tegra194: Don't force the device into the D0 state before L2")
+Suggested-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260321-airoha-remove-rework-v2-1-16c7bade5fe5@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 4b91cb65789b ("net: airoha: Add size check for TX NAPIs in airoha_qdma_cleanup()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/airoha/airoha_eth.c | 76 ++++++++++++++----------
+ 1 file changed, 44 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index e79f77c3152da..47421796cc147 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -1291,7 +1291,7 @@ static int tegra_pcie_bpmp_set_pll_state(struct tegra_pcie_dw *pcie,
- static void tegra_pcie_downstream_dev_to_D0(struct tegra_pcie_dw *pcie)
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index 1d5447684ecab..8416451f4786a 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -1465,6 +1465,33 @@ static int airoha_qdma_init(struct platform_device *pdev,
+ 	return airoha_qdma_hw_init(qdma);
+ }
+ 
++static void airoha_qdma_cleanup(struct airoha_qdma *qdma)
++{
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(qdma->q_rx); i++) {
++		if (!qdma->q_rx[i].ndesc)
++			continue;
++
++		netif_napi_del(&qdma->q_rx[i].napi);
++		airoha_qdma_cleanup_rx_queue(&qdma->q_rx[i]);
++		if (qdma->q_rx[i].page_pool) {
++			page_pool_destroy(qdma->q_rx[i].page_pool);
++			qdma->q_rx[i].page_pool = NULL;
++		}
++	}
++
++	for (i = 0; i < ARRAY_SIZE(qdma->q_tx_irq); i++)
++		netif_napi_del(&qdma->q_tx_irq[i].napi);
++
++	for (i = 0; i < ARRAY_SIZE(qdma->q_tx); i++) {
++		if (!qdma->q_tx[i].ndesc)
++			continue;
++
++		airoha_qdma_cleanup_tx_queue(&qdma->q_tx[i]);
++	}
++}
++
+ static int airoha_hw_init(struct platform_device *pdev,
+ 			  struct airoha_eth *eth)
  {
- 	struct dw_pcie_rp *pp = &pcie->pci.pp;
--	struct pci_bus *child, *root_bus = NULL;
-+	struct pci_bus *child, *root_port_bus = NULL;
- 	struct pci_dev *pdev;
- 
- 	/*
-@@ -1304,19 +1304,19 @@ static void tegra_pcie_downstream_dev_to_D0(struct tegra_pcie_dw *pcie)
- 	 */
- 
- 	list_for_each_entry(child, &pp->bridge->bus->children, node) {
--		/* Bring downstream devices to D0 if they are not already in */
- 		if (child->parent == pp->bridge->bus) {
--			root_bus = child;
-+			root_port_bus = child;
- 			break;
- 		}
+@@ -1492,41 +1519,30 @@ static int airoha_hw_init(struct platform_device *pdev,
+ 	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++) {
+ 		err = airoha_qdma_init(pdev, eth, &eth->qdma[i]);
+ 		if (err)
+-			return err;
++			goto error;
  	}
  
--	if (!root_bus) {
--		dev_err(pcie->dev, "Failed to find downstream devices\n");
-+	if (!root_port_bus) {
-+		dev_err(pcie->dev, "Failed to find downstream bus of Root Port\n");
- 		return;
- 	}
+ 	err = airoha_ppe_init(eth);
+ 	if (err)
+-		return err;
++		goto error;
  
--	list_for_each_entry(pdev, &root_bus->devices, bus_list) {
-+	/* Bring downstream devices to D0 if they are not already in */
-+	list_for_each_entry(pdev, &root_port_bus->devices, bus_list) {
- 		if (PCI_SLOT(pdev->devfn) == 0) {
- 			if (pci_set_power_state(pdev, PCI_D0))
- 				dev_err(pcie->dev,
+ 	set_bit(DEV_STATE_INITIALIZED, &eth->state);
+ 
+ 	return 0;
++error:
++	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
++		airoha_qdma_cleanup(&eth->qdma[i]);
++
++	return err;
+ }
+ 
+-static void airoha_hw_cleanup(struct airoha_qdma *qdma)
++static void airoha_hw_cleanup(struct airoha_eth *eth)
+ {
+ 	int i;
+ 
+-	for (i = 0; i < ARRAY_SIZE(qdma->q_rx); i++) {
+-		if (!qdma->q_rx[i].ndesc)
+-			continue;
+-
+-		netif_napi_del(&qdma->q_rx[i].napi);
+-		airoha_qdma_cleanup_rx_queue(&qdma->q_rx[i]);
+-		if (qdma->q_rx[i].page_pool)
+-			page_pool_destroy(qdma->q_rx[i].page_pool);
+-	}
+-
+-	for (i = 0; i < ARRAY_SIZE(qdma->q_tx_irq); i++)
+-		netif_napi_del(&qdma->q_tx_irq[i].napi);
+-
+-	for (i = 0; i < ARRAY_SIZE(qdma->q_tx); i++) {
+-		if (!qdma->q_tx[i].ndesc)
+-			continue;
+-
+-		airoha_qdma_cleanup_tx_queue(&qdma->q_tx[i]);
+-	}
++	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
++		airoha_qdma_cleanup(&eth->qdma[i]);
++	airoha_ppe_deinit(eth);
+ }
+ 
+ static void airoha_qdma_start_napi(struct airoha_qdma *qdma)
+@@ -3096,7 +3112,7 @@ static int airoha_probe(struct platform_device *pdev)
+ 
+ 	err = airoha_hw_init(pdev, eth);
+ 	if (err)
+-		goto error_hw_cleanup;
++		goto error_netdev_free;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
+ 		airoha_qdma_start_napi(&eth->qdma[i]);
+@@ -3125,10 +3141,6 @@ static int airoha_probe(struct platform_device *pdev)
+ error_napi_stop:
+ 	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
+ 		airoha_qdma_stop_napi(&eth->qdma[i]);
+-	airoha_ppe_deinit(eth);
+-error_hw_cleanup:
+-	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
+-		airoha_hw_cleanup(&eth->qdma[i]);
+ 
+ 	for (i = 0; i < ARRAY_SIZE(eth->ports); i++) {
+ 		struct airoha_gdm_port *port = eth->ports[i];
+@@ -3140,6 +3152,8 @@ static int airoha_probe(struct platform_device *pdev)
+ 			unregister_netdev(port->dev);
+ 		airoha_metadata_dst_free(port);
+ 	}
++	airoha_hw_cleanup(eth);
++error_netdev_free:
+ 	free_netdev(eth->napi_dev);
+ 	platform_set_drvdata(pdev, NULL);
+ 
+@@ -3151,10 +3165,8 @@ static void airoha_remove(struct platform_device *pdev)
+ 	struct airoha_eth *eth = platform_get_drvdata(pdev);
+ 	int i;
+ 
+-	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++) {
++	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
+ 		airoha_qdma_stop_napi(&eth->qdma[i]);
+-		airoha_hw_cleanup(&eth->qdma[i]);
+-	}
+ 
+ 	for (i = 0; i < ARRAY_SIZE(eth->ports); i++) {
+ 		struct airoha_gdm_port *port = eth->ports[i];
+@@ -3165,9 +3177,9 @@ static void airoha_remove(struct platform_device *pdev)
+ 		unregister_netdev(port->dev);
+ 		airoha_metadata_dst_free(port);
+ 	}
+-	free_netdev(eth->napi_dev);
++	airoha_hw_cleanup(eth);
+ 
+-	airoha_ppe_deinit(eth);
++	free_netdev(eth->napi_dev);
+ 	platform_set_drvdata(pdev, NULL);
+ }
+ 
 -- 
 2.53.0
 
