@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-253159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252064-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yBw/BJcGDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-253159-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:08:07 +0200
+	id cBdMHXz5DWqR5AUAu9opvQ
+	(envelope-from <stable+bounces-252064-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EA0A597D08
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:08:06 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54EAE5958AA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 78DD732BAC1C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0AFEA30D2030
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:54:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1131C403EBF;
-	Wed, 20 May 2026 18:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7133F39C9;
+	Wed, 20 May 2026 17:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FAOF2J2I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EvOAjdZl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3BD43FC5BE;
-	Wed, 20 May 2026 18:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86FE3F23BF;
+	Wed, 20 May 2026 17:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302560; cv=none; b=FiifppDfmMLzTgBIDcZWb66miU6QxDW7RItFcAtUbqEdGsN7os7Q8usNpe2Ogkb7tuv9h+TyHVVUccSbUL8hPiyfvxELQdo3/P4H/icKBhUCJR1DPDrrYgJGZY4dfzTz1prvc6zz/Vwo3aCmxfKhhOpf7d7WkQsQb1/Z8XJQI5g=
+	t=1779299651; cv=none; b=e51dUHSB0MMfoPMz+trM+j97g+lxWpP9O/yLEz8hnjkdPpaheXA6TXa39OCFDxSMVMAu/K9LQ04a4hBPLm2jNN4LkIRP9ntEUA2UuyFZrD6mx+W59Z8Fs40o9kcbp8tTXeqlnmCJ3oeW3x/9oxUP0jTDadlMlKCWwTwPZ1TqSl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302560; c=relaxed/simple;
-	bh=3UqiF+gvtv97WaQUSKIjraXslN70XUXBEtrx8P6vtAM=;
+	s=arc-20240116; t=1779299651; c=relaxed/simple;
+	bh=c7aXHaIeJ9Ji9Sj8Menb2kL+W3AQC/CPrQ5FB0kuH8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LGjV/AaOzpq8RP5JPBS2XDdVWJ+0X4U7qLKhHXbwjQK+PmTczbsi5e52XGNcj/tmukuY+pTVRfqOSnUZ4T4gthAGAfVoazHloO5pg2ImFI5PQp3pY7kYUPQqouaMoKomRYaUXSjabtcm8rtLMu9igqUMyISzpeknVZ+TI/d7qJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FAOF2J2I; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A381F000E9;
-	Wed, 20 May 2026 18:42:38 +0000 (UTC)
+	 MIME-Version; b=rHToKGf+u0bhtoGPRpm8u/4ejZRbNleXV5GT0UBRM5OrW6/LSITU0I4AF3S+7Vvv2hCaQNiZYC7iBysb8hkIwkXYVnwdm0Ff+MnbuQMGAwtdLXhbf5XHI1r8f4SKckH5fB8lF6RZKGcsmLRqlaDJMD4KLnz2xW639FRjUY1BSms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EvOAjdZl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 110E41F00893;
+	Wed, 20 May 2026 17:54:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302559;
-	bh=AO/grFLjKmW8rz/nCuxAlDqSRdE/Cg39UuG/cdHXM3U=;
+	s=korg; t=1779299650;
+	bh=IxMbR3XBFcUA1gv2hMOkfCzsCD6AWbz74bNfiWDqOtU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FAOF2J2IN1PAjtyEzUDCbJJb8N2n/6hj0ksvCtRZmVeGXgYlPdtZ8hNQ2HY17fvvI
-	 nDwGKrE4vo9rD5Px57dOatj9Io5v9yOYhPsXBC9tCblWFb79zIfPkVsu4n3seIRGmW
-	 YRPfNSjbrQWjWsWJKJNpC1Y9A13J5TwfZSo1HRCI=
+	b=EvOAjdZlDyR50aoskTE2r4rnH+u4+ZS3gTRdfgdSw8TpYt/biz1ik0/CttdruOhS7
+	 kv86wufba1IFe5f9m/iWCE4rPkBMIe/Ab8Jufmf7RK0YThXfJesIYpHZzaQGRhRkZ0
+	 TCPgJVD2Ru2XwQEzWbeYVWTbk+OgBVrZAaxaf72M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxi Qian <qjx1298677004@gmail.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 314/508] net/sched: taprio: fix use-after-free in advance_sched() on schedule switch
+Subject: [PATCH 6.18 854/957] net: tls: fix strparser anchor skb leak on offload RX setup failure
 Date: Wed, 20 May 2026 18:22:17 +0200
-Message-ID: <20260520162105.441444850@linuxfoundation.org>
+Message-ID: <20260520162153.086577483@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,90 +69,119 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253159-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252064-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email]
-X-Rspamd-Queue-Id: 8EA0A597D08
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 54EAE5958AA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 105425b1969c5affe532713cfac1c0b320d7ac2b ]
+[ Upstream commit 58689498ca3384851145a754dbb1d8ed1cf9fb54 ]
 
-In advance_sched(), when should_change_schedules() returns true,
-switch_schedules() is called to promote the admin schedule to oper.
-switch_schedules() queues the old oper schedule for RCU freeing via
-call_rcu(), but 'next' still points into an entry of the old oper
-schedule. The subsequent 'next->end_time = end_time' and
-rcu_assign_pointer(q->current_entry, next) are use-after-free.
+When tls_set_device_offload_rx() fails at tls_dev_add(), the error path
+calls tls_sw_free_resources_rx() to clean up the SW context that was
+initialized by tls_set_sw_offload(). This function calls
+tls_sw_release_resources_rx() (which stops the strparser via
+tls_strp_stop()) and tls_sw_free_ctx_rx() (which kfrees the context),
+but never frees the anchor skb that was allocated by alloc_skb(0) in
+tls_strp_init().
 
-Fix this by selecting 'next' from the new oper schedule immediately
-after switch_schedules(), and using its pre-calculated end_time.
-setup_first_end_time() sets the first entry's end_time to
-base_time + interval when the schedule is installed, so the value
-is already correct.
+Note that tls_sw_free_resources_rx() is exclusively used for this
+"failed to start offload" code path, there's no other caller.
 
-The deleted 'end_time = sched_base_time(admin)' assignment was also
-harmful independently: it would overwrite the new first entry's
-pre-calculated end_time with just base_time.
+The leak did not exist before commit 84c61fe1a75b ("tls: rx: do not use
+the standard strparser"), because the standard strparser doesn't try
+to pre-allocate an skb.
 
-Fixes: a3d43c0d56f1 ("taprio: Add support adding an admin schedule")
-Reported-by: Junxi Qian <qjx1298677004@gmail.com>
-Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+The normal close path in tls_sk_proto_close() handles cleanup by calling
+tls_sw_strparser_done() (which calls tls_strp_done()) after dropping
+the socket lock, because tls_strp_done() does cancel_work_sync() and
+the strparser work handler takes the socket lock.
+
+Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Link: https://patch.msgid.link/20260428231559.1358502-1-kuba@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_taprio.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ net/tls/tls.h      | 1 +
+ net/tls/tls_strp.c | 6 ++++++
+ net/tls/tls_sw.c   | 4 ++++
+ 3 files changed, 11 insertions(+)
 
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index a01d17d03bf57..6df93d5c2e9d9 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -982,11 +982,12 @@ static enum hrtimer_restart advance_sched(struct hrtimer *timer)
- 	}
+diff --git a/net/tls/tls.h b/net/tls/tls.h
+index 2f86baeb71fcb..a1d8467bece33 100644
+--- a/net/tls/tls.h
++++ b/net/tls/tls.h
+@@ -188,6 +188,7 @@ int tls_strp_dev_init(void);
+ void tls_strp_dev_exit(void);
  
- 	if (should_change_schedules(admin, oper, end_time)) {
--		/* Set things so the next time this runs, the new
--		 * schedule runs.
--		 */
--		end_time = sched_base_time(admin);
- 		switch_schedules(q, &admin, &oper);
-+		/* After changing schedules, the next entry is the first one
-+		 * in the new schedule, with a pre-calculated end_time.
-+		 */
-+		next = list_first_entry(&oper->entries, struct sched_entry, list);
-+		end_time = next->end_time;
- 	}
+ void tls_strp_done(struct tls_strparser *strp);
++void __tls_strp_done(struct tls_strparser *strp);
+ void tls_strp_stop(struct tls_strparser *strp);
+ int tls_strp_init(struct tls_strparser *strp, struct sock *sk);
+ void tls_strp_data_ready(struct tls_strparser *strp);
+diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
+index 98e12f0ff57e5..c72e883176273 100644
+--- a/net/tls/tls_strp.c
++++ b/net/tls/tls_strp.c
+@@ -624,6 +624,12 @@ void tls_strp_done(struct tls_strparser *strp)
+ 	WARN_ON(!strp->stopped);
  
- 	next->end_time = end_time;
+ 	cancel_work_sync(&strp->work);
++	__tls_strp_done(strp);
++}
++
++/* For setup error paths where the strparser was initialized but never armed. */
++void __tls_strp_done(struct tls_strparser *strp)
++{
+ 	tls_strp_anchor_free(strp);
+ }
+ 
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 16aaf41a8cc09..f2ea190777f0b 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -2625,8 +2625,12 @@ void tls_sw_free_ctx_rx(struct tls_context *tls_ctx)
+ void tls_sw_free_resources_rx(struct sock *sk)
+ {
+ 	struct tls_context *tls_ctx = tls_get_ctx(sk);
++	struct tls_sw_context_rx *ctx;
++
++	ctx = tls_sw_ctx_rx(tls_ctx);
+ 
+ 	tls_sw_release_resources_rx(sk);
++	__tls_strp_done(&ctx->strp);
+ 	tls_sw_free_ctx_rx(tls_ctx);
+ }
+ 
 -- 
 2.53.0
 
