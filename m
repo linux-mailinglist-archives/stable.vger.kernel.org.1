@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-251469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251480-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YL4AHdT7DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-251469-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:12 +0200
+	id cLAvKLTxDWp+4wUAu9opvQ
+	(envelope-from <stable+bounces-251480-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:39:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 785CA595E94
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:11 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F19C5942FF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:38:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8A526339FE30
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:27:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4D36F30AE9FB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:28:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D031C2046BA;
-	Wed, 20 May 2026 17:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21C0336A376;
+	Wed, 20 May 2026 17:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmkxFdqE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oV3UJEQM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8C53D75C7;
-	Wed, 20 May 2026 17:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB082346E5E;
+	Wed, 20 May 2026 17:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298063; cv=none; b=SK0+qBU0baRa8aHkzbVXgT/N6FZndkrWr/L3tbxZHzIIzpt4LK0mI1Sm4W0/+yT/0/1gygpKLVvT8RPbdOS4I0oyvj6bMgnWlnZ1Z3a4/41Uk2qUjJhmRb8AlfxBBQfynZKZ/jhx3UzNDppi8pQYauMgJ+i5XCXfxb66UtDyK7A=
+	t=1779298092; cv=none; b=tKdmzpEb+Xdbwnfk4yzpA3n7eEY1DCoFfGv5INucIeJgtaIBV8GlieLKjMnNuzquqayuCJ+O9fjABDpgoJXvLKZPctMvvlIZ8m5hKunn/Wgz6ZJ2z4nNe7+RZQMj8VK2hzX+Wf/KhQU+jwoIk5oSmc0zB4I7/VHULftZPLMJqVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298063; c=relaxed/simple;
-	bh=3fsWRVvaWHD2arSZRKXiQSzd8PGNUSBN3BG0YjKVyl4=;
+	s=arc-20240116; t=1779298092; c=relaxed/simple;
+	bh=G/+I+Gr6zx1KJnEalpYn8nHDYl3CI7Nmf4Mp+LRc51w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ClpdbmoHkhDGEF4p1VF8TBkBX+8aT9USYe0DvzxUgdZ7t0QnLwo1zrIa5S4xTIXbgXv3fL/9vo3yCS2edV2Thd/PjduRPKW2OiyzmMgPB/T/21at9Y5V/eatD0b+BobA2XMo0auhTkiKMHBoo13sXgHcRvCeuXdIf7aFMd2JWjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmkxFdqE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F441F000E9;
-	Wed, 20 May 2026 17:27:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dXC2cRKwqdaz3BITMFXjsJdGir9DVngbUWDoC8P7715ebh70NM3ewQUKJ4Dv7cLYaqVUJajtzYllMyvSLZDpy4VtH0ZEpi5f6T5A8EDuIq+8ALER30a65umZ4PSWhewi88K4H2vZiY/XjqnqiPVCIfHjkFQ1MuRukkGhKFA/4YI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oV3UJEQM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BAC01F0089E;
+	Wed, 20 May 2026 17:28:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298062;
-	bh=w2N75WeOJ7QLDhE73zkzEshDhosSY5dgZk8h+IgS/Ps=;
+	s=korg; t=1779298091;
+	bh=J2zOVQ5ublqEzgnvFTfdzkEjimedq3qFVJx/Xru1fyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mmkxFdqENUF1qcS+A1KkLKCVeJcqGkXwHRy2F2PJTz4Rfq8lgs9y5lVMeXV240Fsf
-	 De1dEpTQTRdiZzKEUtbVN2GoeZ/4ItBIPzG8po/d6ryKINcw7ZGG9+0M/8So+OFYwX
-	 s4dW6cQNsnqGS7YXLtmUcgNg5X9oUDjKvb2walbY=
+	b=oV3UJEQM8DjYJCMWsQBpFyvxMlqPo83c93mccYXpKE2hmQxgG4XMmIWx/ujMvzfVX
+	 c6Tw9+eajFooWNCoy8FDcHYoex8gG7t+gFjiQheGGXKNjh8R8Pp9pSFlzF3kC0/1Xb
+	 wn0yPAJI2XCUtz/pDFTAY+dAv4pkFTbgOtaIg3mQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 261/957] drm/amd/pm/ci: Disable MCLK DPM on problematic CI ASICs
-Date: Wed, 20 May 2026 18:12:24 +0200
-Message-ID: <20260520162140.204551889@linuxfoundation.org>
+Subject: [PATCH 6.18 262/957] drm/amd/pm/smu7: Fix SMU7 voltage dependency on display clock
+Date: Wed, 20 May 2026 18:12:25 +0200
+Message-ID: <20260520162140.225843056@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
 References: <20260520162134.554764788@linuxfoundation.org>
@@ -70,11 +70,11 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251469-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251480-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -91,9 +91,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 785CA595E94
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 1F19C5942FF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,60 +103,185 @@ X-Rspamd-Server: lfdr
 
 From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 9851f29cb06c09f7dad3867d8b0feec3fc71b6c8 ]
+[ Upstream commit 0138610c14130425be53423b35336561829965e0 ]
 
-There are two known cases where MCLK DPM can causes issues:
+The DCE (display controller engine) requires a minimum voltage
+in order to function correctly, depending on which clock level
+it currently uses.
 
-Radeon R9 M380 found in iMac computers from 2015.
-The SMU in this GPU just hangs as soon as we send it the
-PPSMC_MSG_MCLKDPM_Enable command, even when MCLK switching is
-disabled, and even when we only populate one MCLK DPM level.
-Apply workaround to all devices with the same subsystem ID.
+Add a new table that contains display clock frequency levels
+and the corresponding required voltages. The clock frequency
+levels are taken from DC (and the old radeon driver's voltage
+dependency table for CI in cases where its values were lower).
+The voltage levels are taken from the following function:
+phm_initializa_dynamic_state_adjustment_rule_settings().
+Furthermore, in case of CI, call smu7_patch_vddc() on the new
+table to account for leakage voltage (like in radeon).
 
-Radeon R7 260X due to old memory controller microcode.
-We only flash the MC ucode when it isn't set up by the VBIOS,
-therefore there is no way to make sure that it has the correct
-ucode version.
+Use the display clock value from amd_pp_display_configuration
+to look up the voltage level needed by the DCE. Send the
+voltage to the SMU via the PPSMC_MSG_VddC_Request command.
 
-I verified that this patch fixes the SMU hang on the R9 M380
-which would previously fail to boot. This also fixes the UVD
-initialization error on that GPU which happened because the
-SMU couldn't ungate the UVD after it hung.
+The previous implementation of this feature was non-functional
+because it relied on a "dal_power_level" field which was never
+assigned; and it was not at all implemented for CI ASICs.
 
-Fixes: 86457c3b21cb ("drm/amd/powerplay: Add support for CI asics to hwmgr")
+I verified this on a Radeon R9 M380 which previously booted to
+a black screen with DC enabled (default since Linux 6.19), but
+now works correctly.
+
+Fixes: 599a7e9fe1b6 ("drm/amd/powerplay: implement smu7 hwmgr to manager asics with smu ip version 7.")
 Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/hwmgr.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ .../drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c   | 88 ++++++++++++++++++-
+ drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h  |  1 +
+ 2 files changed, 86 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/hwmgr.c
-index 2b5ac21fee399..1d6e30269d567 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/hwmgr.c
-@@ -104,6 +104,21 @@ int hwmgr_early_init(struct pp_hwmgr *hwmgr)
- 					 PP_GFXOFF_MASK);
- 		hwmgr->pp_table_version = PP_TABLE_V0;
- 		hwmgr->od_enabled = false;
-+		switch (hwmgr->chip_id) {
-+		case CHIP_BONAIRE:
-+			/* R9 M380 in iMac 2015: SMU hangs when enabling MCLK DPM
-+			 * R7 260X cards with old MC ucode: MCLK DPM is unstable
-+			 */
-+			if (adev->pdev->subsystem_vendor == 0x106B ||
-+			    adev->pdev->device == 0x6658) {
-+				dev_info(adev->dev, "disabling MCLK DPM on quirky ASIC");
-+				adev->pm.pp_feature &= ~PP_MCLK_DPM_MASK;
-+				hwmgr->feature_mask &= ~PP_MCLK_DPM_MASK;
-+			}
-+			break;
-+		default:
-+			break;
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+index 9b28c07282699..07d946c38ec04 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+@@ -2802,6 +2802,10 @@ static int smu7_patch_dependency_tables_with_leakage(struct pp_hwmgr *hwmgr)
+ 	if (tmp)
+ 		return -EINVAL;
+ 
++	tmp = smu7_patch_vddc(hwmgr, hwmgr->dyn_state.vddc_dependency_on_display_clock);
++	if (tmp)
++		return -EINVAL;
++
+ 	tmp = smu7_patch_vce_vddc(hwmgr, hwmgr->dyn_state.vce_clock_voltage_dependency_table);
+ 	if (tmp)
+ 		return -EINVAL;
+@@ -2885,6 +2889,8 @@ static int smu7_hwmgr_backend_fini(struct pp_hwmgr *hwmgr)
+ {
+ 	kfree(hwmgr->dyn_state.vddc_dep_on_dal_pwrl);
+ 	hwmgr->dyn_state.vddc_dep_on_dal_pwrl = NULL;
++	kfree(hwmgr->dyn_state.vddc_dependency_on_display_clock);
++	hwmgr->dyn_state.vddc_dependency_on_display_clock = NULL;
+ 	kfree(hwmgr->backend);
+ 	hwmgr->backend = NULL;
+ 
+@@ -2955,6 +2961,51 @@ static int smu7_update_edc_leakage_table(struct pp_hwmgr *hwmgr)
+ 	return ret;
+ }
+ 
++static int smu7_init_voltage_dependency_on_display_clock_table(struct pp_hwmgr *hwmgr)
++{
++	struct phm_clock_voltage_dependency_table *table;
++
++	if (!amdgpu_device_ip_get_ip_block(hwmgr->adev, AMD_IP_BLOCK_TYPE_DCE))
++		return 0;
++
++	table = kzalloc(struct_size(table, entries, 4), GFP_KERNEL);
++	if (!table)
++		return -ENOMEM;
++
++	if (hwmgr->chip_id >= CHIP_POLARIS10) {
++		table->entries[0].clk = 38918;
++		table->entries[1].clk = 45900;
++		table->entries[2].clk = 66700;
++		table->entries[3].clk = 113200;
++
++		table->entries[0].v = 700;
++		table->entries[1].v = 740;
++		table->entries[2].v = 800;
++		table->entries[3].v = 900;
++	} else {
++		if (hwmgr->chip_family == AMDGPU_FAMILY_CZ) {
++			table->entries[0].clk = 35200;
++			table->entries[1].clk = 35200;
++			table->entries[2].clk = 46700;
++			table->entries[3].clk = 64300;
++		} else {
++			table->entries[0].clk = 0;
++			table->entries[1].clk = 35200;
++			table->entries[2].clk = 54000;
++			table->entries[3].clk = 62500;
 +		}
- 		smu7_init_function_pointers(hwmgr);
- 		break;
- 	case AMDGPU_FAMILY_CZ:
++
++		table->entries[0].v = 0;
++		table->entries[1].v = 720;
++		table->entries[2].v = 810;
++		table->entries[3].v = 900;
++	}
++
++	table->count = 4;
++	hwmgr->dyn_state.vddc_dependency_on_display_clock = table;
++	return 0;
++}
++
+ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
+ {
+ 	struct amdgpu_device *adev = hwmgr->adev;
+@@ -2983,6 +3034,10 @@ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
+ 		smu7_get_elb_voltages(hwmgr);
+ 	}
+ 
++	result = smu7_init_voltage_dependency_on_display_clock_table(hwmgr);
++	if (result)
++		goto fail;
++
+ 	if (hwmgr->pp_table_version == PP_TABLE_V1) {
+ 		smu7_complete_dependency_tables(hwmgr);
+ 		smu7_set_private_data_based_on_pptable_v1(hwmgr);
+@@ -3079,13 +3134,40 @@ static int smu7_force_dpm_highest(struct pp_hwmgr *hwmgr)
+ 	return 0;
+ }
+ 
++static uint32_t smu7_lookup_vddc_from_dispclk(struct pp_hwmgr *hwmgr)
++{
++	const struct amd_pp_display_configuration *cfg = hwmgr->display_config;
++	const struct phm_clock_voltage_dependency_table *vddc_dep_on_dispclk =
++			hwmgr->dyn_state.vddc_dependency_on_display_clock;
++	uint32_t i;
++
++	if (!vddc_dep_on_dispclk || !vddc_dep_on_dispclk->count ||
++	    !cfg || !cfg->num_display || !cfg->display_clk)
++		return 0;
++
++	/* Start from 1 because ClocksStateUltraLow should not be used according to DC. */
++	for (i = 1; i < vddc_dep_on_dispclk->count; ++i)
++		if (vddc_dep_on_dispclk->entries[i].clk >= cfg->display_clk)
++			return vddc_dep_on_dispclk->entries[i].v;
++
++	return vddc_dep_on_dispclk->entries[vddc_dep_on_dispclk->count - 1].v;
++}
++
++static void smu7_apply_minimum_dce_voltage_request(struct pp_hwmgr *hwmgr)
++{
++	uint32_t req_vddc = smu7_lookup_vddc_from_dispclk(hwmgr);
++
++	smum_send_msg_to_smc_with_parameter(hwmgr,
++			PPSMC_MSG_VddC_Request,
++			req_vddc * VOLTAGE_SCALE,
++			NULL);
++}
++
+ static int smu7_upload_dpm_level_enable_mask(struct pp_hwmgr *hwmgr)
+ {
+ 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
+ 
+-	if (hwmgr->pp_table_version == PP_TABLE_V1)
+-		phm_apply_dal_min_voltage_request(hwmgr);
+-/* TO DO  for v0 iceland and Ci*/
++	smu7_apply_minimum_dce_voltage_request(hwmgr);
+ 
+ 	if (!data->sclk_dpm_key_disabled) {
+ 		if (data->dpm_level_enable_mask.sclk_dpm_enable_mask)
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h b/drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h
+index c661185753b42..2f49c95342a14 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h
++++ b/drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h
+@@ -631,6 +631,7 @@ struct phm_dynamic_state_info {
+ 	struct phm_clock_voltage_dependency_table *vddci_dependency_on_mclk;
+ 	struct phm_clock_voltage_dependency_table *vddc_dependency_on_mclk;
+ 	struct phm_clock_voltage_dependency_table *mvdd_dependency_on_mclk;
++	struct phm_clock_voltage_dependency_table *vddc_dependency_on_display_clock;
+ 	struct phm_clock_voltage_dependency_table *vddc_dep_on_dal_pwrl;
+ 	struct phm_clock_array                    *valid_sclk_values;
+ 	struct phm_clock_array                    *valid_mclk_values;
 -- 
 2.53.0
 
