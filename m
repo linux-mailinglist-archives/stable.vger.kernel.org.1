@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250368-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iFPoHTAXDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251303-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:18:56 +0200
+	id 4NPzB1TnDWqm4gUAu9opvQ
+	(envelope-from <stable+bounces-250368-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:54:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FE005996C5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:18:55 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1EF05929D8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:54:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 44D2A35729F2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:20:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BAA20306F774
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:40:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17AF13A6EE0;
-	Wed, 20 May 2026 17:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C0FD34D4FE;
+	Wed, 20 May 2026 16:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RjHbRq6x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yPOjo4gd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D625E2DC76C;
-	Wed, 20 May 2026 17:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14952C15AB;
+	Wed, 20 May 2026 16:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297630; cv=none; b=Y1awPFJEXHY8UkL+YTftl79JX0yOzqd6b2QeRmsB/fCT27brvkvmXkqVef1tt6PdoMJg4RWDtxXNlwoRg06EZtbRZ00P1cH2sEwWsamOkCjf2YqUMV/LyRV8WSLEKDFWPsyV4VvKgRb4/XNRJ+nUPKfjBm8RKTyzuYKEAfJxVQI=
+	t=1779295230; cv=none; b=SxqVWi1VQhIXC0SJfJ3jPxanBiWxnCKt/K5xekGLz4MDgIhK0j/dAiQZdtnnD1fIobQtVTbJ/EuMoIsa9EyzsDnh1QOefLsAvnd3I/AgmPwscHNBbaHQpYe3CQ1pTJagP8K9+VKOgo2F9V33cTXBwXK9GhUwucA4RbzWhGuBUXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297630; c=relaxed/simple;
-	bh=dKdZZYaIczxDul7bpKF7zXEfgAjZLDL6ulfhbPXYJrk=;
+	s=arc-20240116; t=1779295230; c=relaxed/simple;
+	bh=lxfWCSEYdjlLl6MtfHDMkOYofGOkfPvCtvcqb4iup/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fPj2bLAnvE4tL/+5dPOiJvZg3rV23kiHuBsKd2noa5U2mo/ubWtoksMnOM7g41E9mEIzoiIIlPf8GLHozX+nVlDkXQehAtkjOgGtNtI3VigVcVUCx7v7p86J2YLTOnMUPuP3U+X6EAJiO3NuW5OJpxWYmpgW+NDADdCby0g8lk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RjHbRq6x; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E38C1F000E9;
-	Wed, 20 May 2026 17:20:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=l18hWwGAVSwTRX4VL4oMrImgj582bdSgdxIqOUQsbC8O32kbXNs+IjgdcJ+4vVlHq15Z6o5ICv9Smd3K4TQ3TDFZqG/fnjISRtNZjkcCcWjPHO39Xina2La7ouDDX5lnikGMTWJJDH0Qnr+t3F0NQjhtGDUNA87DFECxTPRl6ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yPOjo4gd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 432D21F000E9;
+	Wed, 20 May 2026 16:40:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297629;
-	bh=6f8cAZT2ollrjn8riBJy+y3bWJOUe+RNvdwhTPYHBdM=;
+	s=korg; t=1779295229;
+	bh=Kjbs68B1YvrBP4hNyd/dAR+HZE0vvDsVai3XzwNmeyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RjHbRq6xRTTu4oe2/lHuOLh/bXVmGEaz615Z3XBaq1HcHyEsyXiVwdN7HL7BB58yv
-	 kVnxgvxUN+iAl6v16LXuaCZH9OhyKMT9S8j81KfTe5aAvCnH41bjt30thP0MdB2q4F
-	 8ocQxm2CkcQMfhWeMXM1AiKKHg6v6NIuKkuVW6uA=
+	b=yPOjo4gdA7m1Lkw/zt/4lZJvxjdFAXXUsqOOcqiEkXzk9SnTpP83FPOOHqHQhxEPe
+	 S3EpwFG0c6b98ktICG0v9lPTUK0e3zjmIGrSZN6R6oB/YduPEMKk84+LP5H/w7Gobh
+	 /q+xEt0LRFksPb8/pLI8uKm8oeJYCLpir+es77Qs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 104/957] wifi: mt76: mt7996: Decrement sta counter removing the link in mt7996_mac_reset_sta_iter()
-Date: Wed, 20 May 2026 18:09:47 +0200
-Message-ID: <20260520162136.816837486@linuxfoundation.org>
+Subject: [PATCH 7.0 0338/1146] drm/amd/pm/ci: Use highest MCLK on CI when MCLK DPM is disabled
+Date: Wed, 20 May 2026 18:09:48 +0200
+Message-ID: <20260520162155.849307290@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +63,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-250368-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251303-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nbd.name:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 4FE005996C5
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: F1EF05929D8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit e648051d52afbdb360bd586218961f5fffff63e8 ]
+[ Upstream commit 894f0d34d66cb47fe718fe2ae5c18729d22c5218 ]
 
-Fixes tracking per-phy stations for offchannel switching.
+When MCLK DPM is disabled for any reason, populate the MCLK
+table with the highest MCLK DPM level, so that the ASIC can
+use the highest possible memory clock to get good performance
+even when MCLK DPM is disabled.
 
-Fixes: ace5d3b6b49e8 ("wifi: mt76: mt7996: improve hardware restart reliability")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20260308-mt7996_mac_reset_vif_iter-fix-v1-1-57f640aa2dcf@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index 3280446f7caa8..dce9f48637927 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -2399,6 +2399,7 @@ mt7996_mac_reset_sta_iter(void *data, struct ieee80211_sta *sta)
- 
- 	for (i = 0; i < ARRAY_SIZE(msta->link); i++) {
- 		struct mt7996_sta_link *msta_link = NULL;
-+		struct mt7996_phy *phy;
- 
- 		msta_link = rcu_replace_pointer(msta->link[i], msta_link,
- 						lockdep_is_held(&dev->mt76.mutex));
-@@ -2406,6 +2407,10 @@ mt7996_mac_reset_sta_iter(void *data, struct ieee80211_sta *sta)
- 			continue;
- 
- 		mt7996_mac_sta_deinit_link(dev, msta_link);
-+		phy = __mt7996_phy(dev, msta_link->wcid.phy_idx);
-+		if (phy)
-+			phy->mt76->num_sta--;
-+
- 		if (msta_link != &msta->deflink)
- 			kfree_rcu(msta_link, rcu_head);
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
+index 7d5df18db8d26..c0a04fab3ceca 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
+@@ -1322,6 +1322,14 @@ static int ci_populate_all_memory_levels(struct pp_hwmgr *hwmgr)
+ 			return result;
  	}
+ 
++	if (data->mclk_dpm_key_disabled && dpm_table->mclk_table.count) {
++		/* Populate the table with the highest MCLK level when MCLK DPM is disabled */
++		for (i = 0; i < dpm_table->mclk_table.count - 1; i++) {
++			levels[i] = levels[dpm_table->mclk_table.count - 1];
++			levels[i].DisplayWatermark = PPSMC_DISPLAY_WATERMARK_HIGH;
++		}
++	}
++
+ 	smu_data->smc_state_table.MemoryLevel[0].EnabledForActivity = 1;
+ 
+ 	dev_id = adev->pdev->device;
 -- 
 2.53.0
 
