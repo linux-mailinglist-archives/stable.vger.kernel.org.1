@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-251151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253175-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iHSeHhnwDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-251151-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:32:09 +0200
+	id 4AhdN4QFDmp25gUAu9opvQ
+	(envelope-from <stable+bounces-253175-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:03:32 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF24A593E1A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:32:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A58A597A45
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:03:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5868831D4F44
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A707C31FCA3D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D3733F9F2D;
-	Wed, 20 May 2026 17:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 441433FC5DC;
+	Wed, 20 May 2026 18:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KwYr5VVo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vlKLSOT6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9DB34B40F;
-	Wed, 20 May 2026 17:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D734F3EDAC6;
+	Wed, 20 May 2026 18:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297232; cv=none; b=KqeqQu0dCvuXNbAHB0NFvoAyzKJWUKE6Q7Tg3O2F9zrXPkygOq7HYMoaSnM/UM2Q9g4k6G3h7erM/5PXl/UNX9BREdt7bOSPtRHVZB/TP6Y8poKD6Z79Dpo4V62dwQ13lPXO7vgL+p+97iIj7VzMv1yluXmZty1iT+P1EsYvGN0=
+	t=1779302600; cv=none; b=YGUFUIXXwu56MaflNG5VhbdThtqE4f1rDqNHvgNIsFSdgRdH54IQOanBSYYBwoCrg8/C424kFk5w3SPy/gAtlfwfq+2oKOYGgN2OYYzS/v6qauNR1aRBRg/sp3Dsor3N7YKM0mTUoRnckb3yxy+cfHz9qL0+PvR/W7D1DGdq6ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297232; c=relaxed/simple;
-	bh=aSlhtTFE8I7S4QNC+xz1r5JvxdzjZd+HX+RIMmOVMQM=;
+	s=arc-20240116; t=1779302600; c=relaxed/simple;
+	bh=d9aBAqj5LKW91wDxEdtOlWFD+e6sCu6y91U83nOQ8V4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dLQDSHyj8ZHjz1l8tqIS1zqorDK02wKnjruP7q1nhyTQcwbS21cN+7922Rcae0vg9ZCsxJSuWE71kS6d7b1YV4nm61VEkvBCd/UV0qJlZOquxIH3VHj+yfVlccPLz2DZcIMoaQIbJMQLdP2Egrm1PPYywgqi3WKtZvu3al5Jm6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KwYr5VVo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E8FA1F000E9;
-	Wed, 20 May 2026 17:13:50 +0000 (UTC)
+	 MIME-Version; b=bq21aHWARLEBdzGmZNmV4jvyHHJOUJjUHwo5TXmHjmJqGuongaDopBceFBec/f2d9W2qVITYajVinxflUDGmHzAzRIJOEGkzcL7wTwADtl55Vxf0tih9bwgcjD9RHpJPA9TDlkjUA6CTUGOXi9c9lQ9f90yttXAHwenDhR9Ak1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vlKLSOT6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49CBD1F000E9;
+	Wed, 20 May 2026 18:43:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297230;
-	bh=pTrliAw0GzlEC2KfD1P5UR8DCA1LLYlGobcgWykHtTA=;
+	s=korg; t=1779302598;
+	bh=Xb30l8ZZiaD0s8xEuInYL2kSlJX6dgx2gxM7xDaDrkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KwYr5VVoAO8th1vDSgcV0hvqn1RKlWjuS1Y10qfy2KnKVvnSiAG2W5DxXhCYH1ujw
-	 yx9joYm5zTWKUDKA1Pr7pHquWlpQA/ezk6NJ+O3MI2kNF5rl8GDIIf0bBSz8BUoktO
-	 SL2mQf8XFjeDiHPIqy6a3h8oisJM0Ib20c7WwoJo=
+	b=vlKLSOT6LRDjrq3dLJQ8sArzS7nlD//KZxKisvQINsudR7flaLexLcjkGktLwEsPo
+	 m+gSYBWpQYjI8F3RK0yUD0/yNyM2WcSfF4AcRPEMBax67r8Y48FLFPfVGV4ft68JWH
+	 B3GYAZK11FJzQuTVWEalnVd3Xj4AxDKE7Y8/JhqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Michael Roth <michael.roth@amd.com>,
-	stable@kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 7.0 1101/1146] virt: sev-guest: Do not use host-controlled page order in cleanup path
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 328/508] openvswitch: cap upcall PID array size and pre-size vport replies
 Date: Wed, 20 May 2026 18:22:31 +0200
-Message-ID: <20260520162213.161445810@linuxfoundation.org>
+Message-ID: <20260520162105.741262708@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,114 +65,171 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251151-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-253175-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,ovn.org,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,alien8.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: DF24A593E1A
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,asu.edu:email,ovn.org:email]
+X-Rspamd-Queue-Id: 6A58A597A45
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos López <clopez@suse.de>
+From: Weiming Shi <bestswngs@gmail.com>
 
-commit 23e6a1ca04ae44806439a5a446e62e4d42e80bb4 upstream.
+[ Upstream commit 2091c6aa0df6aba47deb5c8ab232b1cb60af3519 ]
 
-When issuing an extended guest request (SVM_VMGEXIT_EXT_GUEST_REQUEST),
-get_ext_report() allocates a buffer to retrieve a certificate blob from the
-host, keeping track of its size in report_req->certs_len.
+The vport netlink reply helpers allocate a fixed-size skb with
+nlmsg_new(NLMSG_DEFAULT_SIZE, ...) but serialize the full upcall PID
+array via ovs_vport_get_upcall_portids().  Since
+ovs_vport_set_upcall_portids() accepts any non-zero multiple of
+sizeof(u32) with no upper bound, a CAP_NET_ADMIN user can install a PID
+array large enough to overflow the reply buffer, causing nla_put() to
+fail with -EMSGSIZE and hitting BUG_ON(err < 0).  On systems with
+unprivileged user namespaces enabled (e.g., Ubuntu default), this is
+reachable via unshare -Urn since OVS vport mutation operations use
+GENL_UNS_ADMIN_PERM.
 
-However, the host may return SNP_GUEST_VMM_ERR_INVALID_LEN, indicating
-an invalid buffer size, as well as the expected length of such buffer.
-get_ext_report() subsequently updates report_req->certs_len with the
-host-controlled value, and cleans up the buffer by computing a page order
-from such value. This is incorrect, as the host-provided length may not
-match the page order of the original allocation, potentially resulting
-in corruption in the page allocator.
+ kernel BUG at net/openvswitch/datapath.c:2414!
+ Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+ CPU: 1 UID: 0 PID: 65 Comm: poc Not tainted 7.0.0-rc7-00195-geb216e422044 #1
+ RIP: 0010:ovs_vport_cmd_set+0x34c/0x400
+ Call Trace:
+  <TASK>
+  genl_family_rcv_msg_doit (net/netlink/genetlink.c:1116)
+  genl_rcv_msg (net/netlink/genetlink.c:1194)
+  netlink_rcv_skb (net/netlink/af_netlink.c:2550)
+  genl_rcv (net/netlink/genetlink.c:1219)
+  netlink_unicast (net/netlink/af_netlink.c:1344)
+  netlink_sendmsg (net/netlink/af_netlink.c:1894)
+  __sys_sendto (net/socket.c:2206)
+  __x64_sys_sendto (net/socket.c:2209)
+  do_syscall_64 (arch/x86/entry/syscall_64.c:63)
+  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+  </TASK>
+ Kernel panic - not syncing: Fatal exception
 
-Fix this by using alloc_pages_exact() instead, and reusing @npages to
-compute the size passed to free_pages_exact(). For consistency, also
-use @npages to compute the size when allocating the pages, even though
-this last change has no functional effect.
+Reject attempts to set more PIDs than nr_cpu_ids in
+ovs_vport_set_upcall_portids(), and pre-compute the worst-case reply
+size in ovs_vport_cmd_msg_size() based on that bound, similar to the
+existing ovs_dp_cmd_msg_size().  nr_cpu_ids matches the cap already
+used by the per-CPU dispatch configuration on the datapath side
+(ovs_dp_cmd_fill_info() serialises at most nr_cpu_ids PIDs), so the
+two sides stay consistent.
 
-Fixes: 3e385c0d6ce8 ("virt: sev-guest: Move SNP Guest Request data pages handling under snp_cmd_mutex")
-Signed-off-by: Carlos López <clopez@suse.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Michael Roth <michael.roth@amd.com>
-Cc: stable@kernel.org
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5cd667b0a456 ("openvswitch: Allow each vport to have an array of 'port_id's.")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Assisted-by: Claude:claude-opus-4-6
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
+Link: https://patch.msgid.link/20260416024653.153456-2-bestswngs@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/virt/coco/sev-guest/sev-guest.c |   12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ net/openvswitch/datapath.c | 35 +++++++++++++++++++++++++++++++++--
+ net/openvswitch/vport.c    |  3 +++
+ 2 files changed, 36 insertions(+), 2 deletions(-)
 
---- a/drivers/virt/coco/sev-guest/sev-guest.c
-+++ b/drivers/virt/coco/sev-guest/sev-guest.c
-@@ -176,7 +176,6 @@ static int get_ext_report(struct snp_gue
- 	struct snp_guest_req req = {};
- 	int ret, npages = 0, resp_len;
- 	sockptr_t certs_address;
--	struct page *page;
- 
- 	if (sockptr_is_null(io->req_data) || sockptr_is_null(io->resp_data))
- 		return -EINVAL;
-@@ -211,16 +210,15 @@ static int get_ext_report(struct snp_gue
- 	 * zeros to indicate that certificate data was not provided.
- 	 */
- 	npages = report_req->certs_len >> PAGE_SHIFT;
--	page = alloc_pages(GFP_KERNEL_ACCOUNT | __GFP_ZERO,
--			   get_order(report_req->certs_len));
--	if (!page)
-+	req.certs_data = alloc_pages_exact(npages << PAGE_SHIFT,
-+					   GFP_KERNEL_ACCOUNT | __GFP_ZERO);
-+	if (!req.certs_data)
- 		return -ENOMEM;
- 
--	req.certs_data = page_address(page);
- 	ret = set_memory_decrypted((unsigned long)req.certs_data, npages);
- 	if (ret) {
- 		pr_err("failed to mark page shared, ret=%d\n", ret);
--		__free_pages(page, get_order(report_req->certs_len));
-+		free_pages_exact(req.certs_data, npages << PAGE_SHIFT);
- 		return -EFAULT;
- 	}
- 
-@@ -277,7 +275,7 @@ e_free_data:
- 		if (set_memory_encrypted((unsigned long)req.certs_data, npages))
- 			WARN_ONCE(ret, "failed to restore encryption mask (leak it)\n");
- 		else
--			__free_pages(page, get_order(report_req->certs_len));
-+			free_pages_exact(req.certs_data, npages << PAGE_SHIFT);
- 	}
- 	return ret;
+diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
+index cb52fac7caa3c..7803e7548d920 100644
+--- a/net/openvswitch/datapath.c
++++ b/net/openvswitch/datapath.c
+@@ -2158,9 +2158,40 @@ static int ovs_vport_cmd_fill_info(struct vport *vport, struct sk_buff *skb,
+ 	return err;
  }
+ 
++static size_t ovs_vport_cmd_msg_size(void)
++{
++	size_t msgsize = NLMSG_ALIGN(sizeof(struct ovs_header));
++
++	msgsize += nla_total_size(sizeof(u32)); /* OVS_VPORT_ATTR_PORT_NO */
++	msgsize += nla_total_size(sizeof(u32)); /* OVS_VPORT_ATTR_TYPE */
++	msgsize += nla_total_size(IFNAMSIZ);    /* OVS_VPORT_ATTR_NAME */
++	msgsize += nla_total_size(sizeof(u32)); /* OVS_VPORT_ATTR_IFINDEX */
++	msgsize += nla_total_size(sizeof(s32)); /* OVS_VPORT_ATTR_NETNSID */
++
++	/* OVS_VPORT_ATTR_STATS */
++	msgsize += nla_total_size_64bit(sizeof(struct ovs_vport_stats));
++
++	/* OVS_VPORT_ATTR_UPCALL_STATS(OVS_VPORT_UPCALL_ATTR_SUCCESS +
++	 *                             OVS_VPORT_UPCALL_ATTR_FAIL)
++	 */
++	msgsize += nla_total_size(nla_total_size_64bit(sizeof(u64)) +
++				  nla_total_size_64bit(sizeof(u64)));
++
++	/* OVS_VPORT_ATTR_UPCALL_PID */
++	msgsize += nla_total_size(nr_cpu_ids * sizeof(u32));
++
++	/* OVS_VPORT_ATTR_OPTIONS(OVS_TUNNEL_ATTR_DST_PORT +
++	 *                        OVS_TUNNEL_ATTR_EXTENSION(OVS_VXLAN_EXT_GBP))
++	 */
++	msgsize += nla_total_size(nla_total_size(sizeof(u16)) +
++				  nla_total_size(nla_total_size(0)));
++
++	return msgsize;
++}
++
+ static struct sk_buff *ovs_vport_cmd_alloc_info(void)
+ {
+-	return nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
++	return genlmsg_new(ovs_vport_cmd_msg_size(), GFP_KERNEL);
+ }
+ 
+ /* Called with ovs_mutex, only via ovs_dp_notify_wq(). */
+@@ -2170,7 +2201,7 @@ struct sk_buff *ovs_vport_cmd_build_info(struct vport *vport, struct net *net,
+ 	struct sk_buff *skb;
+ 	int retval;
+ 
+-	skb = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
++	skb = ovs_vport_cmd_alloc_info();
+ 	if (!skb)
+ 		return ERR_PTR(-ENOMEM);
+ 
+diff --git a/net/openvswitch/vport.c b/net/openvswitch/vport.c
+index 0faa6e097829c..a0a8854e9f19e 100644
+--- a/net/openvswitch/vport.c
++++ b/net/openvswitch/vport.c
+@@ -407,6 +407,9 @@ int ovs_vport_set_upcall_portids(struct vport *vport, const struct nlattr *ids)
+ 	if (!nla_len(ids) || nla_len(ids) % sizeof(u32))
+ 		return -EINVAL;
+ 
++	if (nla_len(ids) / sizeof(u32) > nr_cpu_ids)
++		return -EINVAL;
++
+ 	old = ovsl_dereference(vport->upcall_portids);
+ 
+ 	vport_portids = kmalloc(sizeof(*vport_portids) + nla_len(ids),
+-- 
+2.53.0
+
 
 
 
