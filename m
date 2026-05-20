@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-250313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250314-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QEGsE27wDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-250313-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:34 +0200
+	id YOhrCjLmDWqm4gUAu9opvQ
+	(envelope-from <stable+bounces-250314-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD980593F2F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:33 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF330592838
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4866634AF1F6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:38:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6924230BC1BC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:38:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3481E33ADB9;
-	Wed, 20 May 2026 16:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 823893191D0;
+	Wed, 20 May 2026 16:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xGEm1eXa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iEbByfTt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43ED63D810C;
-	Wed, 20 May 2026 16:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D110636D9E7;
+	Wed, 20 May 2026 16:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295087; cv=none; b=Jsjjnz42cr70abkSd4zEINQORdBZD7tPSxVlQmWjsRGyTkUE96shtNLx/g89McdAg/cfxXbDnb4i8zujxfCqjh98LgISnBFYQm0WSHrDEl5YmrgB5qnbbzBlnwpA05xGECFf3SFMVOM+S8m2bvht/YuGg8wqFT2yPDa5Pcd6iNo=
+	t=1779295089; cv=none; b=RSVAZhL1LYYv/li5mWM9HRvBUePegff+7Y460Byqjb2yUfR/XCF1Wg3z8XJDz26IKJmS/8lnLMC4I055VbJNiJhUbbhkTEIjopcjTua9TeZji2Fza4eHneV2Lfwqwbdp57RRHThO1m2JO+2iFo0oEHiu4HqLwl8PyArvaSt+080=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295087; c=relaxed/simple;
-	bh=+QDuyROuEIyNMj5uiL8c7VJG2rMpllNfF7qafdFtzqY=;
+	s=arc-20240116; t=1779295089; c=relaxed/simple;
+	bh=xSYmPeu40OgATJE8bMk+WhvjI/1fSR742VSJ05frBYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CwixaWKAt43p6JWmEjnDd/XK+t1TvHkp6InEgQEBuH8O0VyMc57GDdfyRhRoKURBLAfABX1no/DvhMm1ThqqR3lN3HqY8UYnVX/Xfa73AKW4rNW1rLpEXDLAjEWqGK7T2vjmChuNxGp7eVdc+Wzr6bmCtyRwLRweqGG7vE51L+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xGEm1eXa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6406E1F00893;
-	Wed, 20 May 2026 16:38:04 +0000 (UTC)
+	 MIME-Version; b=hcigVScRx8Dl+RC8q/qksn18PoCg78ARV7bLC7QczYfwpCJBaBuzhq8hxHxZS92S6yEn8LdOYheCHaeMCyF0+sVzPNRc6CYCaPAqPc8jODUPfgbAu6iaKV8yYf0XMy+It7anrTba+BGVuXfJkXTkY39isjwmzi2ify3HQhYBeH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iEbByfTt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D8771F000E9;
+	Wed, 20 May 2026 16:38:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295084;
-	bh=e1e/QeySaPwSUXHPmMs//uUJ+kyHL7ol7wuEpUdR4Nw=;
+	s=korg; t=1779295087;
+	bh=8iDQx6cGHgr7POun8H1fIsCCiQu4+wAkz5GWSqi1Mdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xGEm1eXapsQUqBwI18NHm13OSoy6qPkJcq8raOEB7NXJKI0+hX8Jhxt506d0HbEPK
-	 P/swNFW2ozI3el4D0euQb6Wd5trnwIABx37Drl8nsuXfa8qHgefkinANfQMARSgztE
-	 2aKdqoVyBQ1TCieqkkzcr5d8K6PmsePyKOCSajMc=
+	b=iEbByfTtLxDP6EqVV4ftoPsxhFR/5/yq2vPi/W+2HsGKxgfb5Ce07Yfw/U8L+9m4g
+	 MiO7eleh6g4lL96Glmi7KAsYPHMuAoM6jAh98TAWVvgh8/e8kLpa1aNrdw/+VqAyF3
+	 NrEuKKN1wFtBQupJGuN2cavcr59h/ZFHr4ESObME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ethan Tidmore <ethantidmore06@gmail.com>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Chen-Yu Tsai <wens@kernel.org>,
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0284/1146] drm/sun4i: Fix resource leaks
-Date: Wed, 20 May 2026 18:08:54 +0200
-Message-ID: <20260520162154.644614418@linuxfoundation.org>
+Subject: [PATCH 7.0 0285/1146] crypto: inside-secure/eip93 - register hash before authenc algorithms
+Date: Wed, 20 May 2026 18:08:55 +0200
+Message-ID: <20260520162154.666461599@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -65,36 +64,35 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-250314-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,wp.pl,gondor.apana.org.au,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-250313-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: AD980593F2F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,wp.pl:email,apana.org.au:email]
+X-Rspamd-Queue-Id: CF330592838
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,39 +100,65 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Ethan Tidmore <ethantidmore06@gmail.com>
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
 
-[ Upstream commit 127367ad2e0f4870de60c6d719ae82ecf68d674c ]
+[ Upstream commit 5377032914b29b4643adece0ff1dfc67e36700f4 ]
 
-Three clocks are not being released in devm_regmap_init_mmio() error
-path.
+Register hash before hmac and authenc algorithms. This will ensure
+selftests pass at startup. Previously, selftests failed on the
+crypto_alloc_ahash() function since the associated algorithm was
+not yet registered.
 
-Add proper goto and set ret to the error code.
+Fixes following error:
+...
+[   18.375811] alg: self-tests for authenc(hmac(sha1),cbc(aes)) using authenc(hmac(sha1-eip93),cbc(aes-eip93)) failed (rc=-2)
+[   18.382140] alg: self-tests for authenc(hmac(sha224),rfc3686(ctr(aes))) using authenc(hmac(sha224-eip93),rfc3686(ctr(aes-eip93))) failed (rc=-2)
+[   18.395029] alg: aead: authenc(hmac(sha256-eip93),cbc(des-eip93)) setkey failed on test vector 0; expected_error=0, actual_error=-2, flags=0x1
+[   18.409734] alg: aead: authenc(hmac(md5-eip93),cbc(des3_ede-eip93)) setkey failed on test vector 0; expected_error=0, actual_error=-2, flags=0x1
+...
 
-Fixes: 8270249fbeaf0 ("drm/sun4i: backend: Create regmap after access is possible")
-Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
-Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Link: https://patch.msgid.link/20260226163836.10335-1-ethantidmore06@gmail.com
-Signed-off-by: Chen-Yu Tsai <wens@kernel.org>
+Fixes: 9739f5f93b78 ("crypto: eip93 - Add Inside Secure SafeXcel EIP-93 crypto engine support")
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/sun4i/sun4i_backend.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/crypto/inside-secure/eip93/eip93-main.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/sun4i/sun4i_backend.c b/drivers/gpu/drm/sun4i/sun4i_backend.c
-index 6391bdc94a5c2..e989f75c09b7d 100644
---- a/drivers/gpu/drm/sun4i/sun4i_backend.c
-+++ b/drivers/gpu/drm/sun4i/sun4i_backend.c
-@@ -881,7 +881,8 @@ static int sun4i_backend_bind(struct device *dev, struct device *master,
- 						     &sun4i_backend_regmap_config);
- 	if (IS_ERR(backend->engine.regs)) {
- 		dev_err(dev, "Couldn't create the backend regmap\n");
--		return PTR_ERR(backend->engine.regs);
-+		ret = PTR_ERR(backend->engine.regs);
-+		goto err_disable_ram_clk;
- 	}
+diff --git a/drivers/crypto/inside-secure/eip93/eip93-main.c b/drivers/crypto/inside-secure/eip93/eip93-main.c
+index b7fd9795062d4..76858bb4fcc22 100644
+--- a/drivers/crypto/inside-secure/eip93/eip93-main.c
++++ b/drivers/crypto/inside-secure/eip93/eip93-main.c
+@@ -36,6 +36,14 @@ static struct eip93_alg_template *eip93_algs[] = {
+ 	&eip93_alg_cbc_aes,
+ 	&eip93_alg_ctr_aes,
+ 	&eip93_alg_rfc3686_aes,
++	&eip93_alg_md5,
++	&eip93_alg_sha1,
++	&eip93_alg_sha224,
++	&eip93_alg_sha256,
++	&eip93_alg_hmac_md5,
++	&eip93_alg_hmac_sha1,
++	&eip93_alg_hmac_sha224,
++	&eip93_alg_hmac_sha256,
+ 	&eip93_alg_authenc_hmac_md5_cbc_des,
+ 	&eip93_alg_authenc_hmac_sha1_cbc_des,
+ 	&eip93_alg_authenc_hmac_sha224_cbc_des,
+@@ -52,14 +60,6 @@ static struct eip93_alg_template *eip93_algs[] = {
+ 	&eip93_alg_authenc_hmac_sha1_rfc3686_aes,
+ 	&eip93_alg_authenc_hmac_sha224_rfc3686_aes,
+ 	&eip93_alg_authenc_hmac_sha256_rfc3686_aes,
+-	&eip93_alg_md5,
+-	&eip93_alg_sha1,
+-	&eip93_alg_sha224,
+-	&eip93_alg_sha256,
+-	&eip93_alg_hmac_md5,
+-	&eip93_alg_hmac_sha1,
+-	&eip93_alg_hmac_sha224,
+-	&eip93_alg_hmac_sha256,
+ };
  
- 	list_add_tail(&backend->engine.list, &drv->engine_list);
+ inline void eip93_irq_disable(struct eip93_device *eip93, u32 mask)
 -- 
 2.53.0
 
