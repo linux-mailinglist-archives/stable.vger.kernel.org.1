@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-250508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250464-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IKO+GcMQDmrw5wUAu9opvQ
-	(envelope-from <stable+bounces-250508-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:51:31 +0200
+	id 4IO+GbPoDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250464-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:00:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D0DC598CD9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:51:30 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42685592CA1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:00:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0A64A35186A8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:46:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D042F310FFA3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:45:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D81602F0C62;
-	Wed, 20 May 2026 16:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 101E337A4BA;
+	Wed, 20 May 2026 16:44:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xWH+sQyr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G465ICet"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A96285061;
-	Wed, 20 May 2026 16:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB13369D6A;
+	Wed, 20 May 2026 16:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295593; cv=none; b=af3XrU00f8OEehXAh/+kTC5WaXvlkbx6RmK9o367CqsfF6P9xv+X/i2o7ujLWJJ08otewKqFIh8zRst6+ZQBS06R8e6EGh02YrRI7tRV9NtQoVY9WCrdLV1zkMDV+RUv4urgvVyLdEHCdHyM7/6KReQ+T7oWGqkhwoW6vm1EmNw=
+	t=1779295480; cv=none; b=tinx4Z+rYpk/AkFcyJUWNW96WR1AXfNjW3L3MTuF1UfYSYfYO7TS6OHE0C/cJf4VIFHg5x2QOpHft2t/lhm6p+kzugtCsJZ2r5e86YHpH8RBrVYEtAfUx5ksmW3siuaSeTq6hdHcSyVpqr3N09HQ156dGtOfDjJC6noN4vKmAhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295593; c=relaxed/simple;
-	bh=tgCc89o38wU+TjtD3YTpcuWzNzuBSBPFh4l53ER22XM=;
+	s=arc-20240116; t=1779295480; c=relaxed/simple;
+	bh=OTPwUTQzjXOtos0aFtM4dY3ID8UWeCUAdX5Cq2ceRGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oX5d293yVxAcATvq71memr5apdyGEi2NbieullApMXZdtAbsvMkQQJ0ovpU29Cq3RqweL7cxIfIJ8pQAEuaPURMquxMS6qZBR37A6yfruSMSfyIG4zvohAiDdGIQBoSabK7OOd+rtGVka7x4YCTvBB2xGfLoK9wiux6n16U8l0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xWH+sQyr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F159E1F000E9;
-	Wed, 20 May 2026 16:46:31 +0000 (UTC)
+	 MIME-Version; b=ungeUx+Hpq7P35Di7nxYY/9HNu4/ItwpSBujK/EUBM9qp89v7McN4pjKyXMezV+46JPdy2nXnOWPZRpl21TQqMLbbXRDQ6PzoyWQpkKKVDTBFkC7tY2lH7Zah9XEDL2W+ttZl6V/RyJAd/msjgygAwVWyoH7Jx83+42r0uVokY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G465ICet; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17F1E1F000E9;
+	Wed, 20 May 2026 16:44:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295592;
-	bh=k8HMxdruXge/4DzXqR+O4Leb/T6dRGXvfjzYIX3hNbs=;
+	s=korg; t=1779295479;
+	bh=7rG6OXpOFDTRnn4SeUwmNX75Qsf75GHZ1PWvAtbtbtg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xWH+sQyr+f0EGG/XFBe6+pvc4ZSEZYrWRqnuGi0yk+wwcdx49ZXtFda5Y0oHu5rcu
-	 crAx10jiL9Lgn/prpd0S+FdUPelzDqoWqzQ2ZJvEpMKDCfJ0e2MZEURozgCERBoxNa
-	 FHRoRMY56UBOvLkLjBCRXNo2EQgHJL1S66szfd0E=
+	b=G465ICetfhFOG8fU8vzW/uEzRDlKMkMMWikwhEQK2j9LXatWtqXLR5I+5IXBOtIIf
+	 Qjm7WCIRuY80b4uSBqazpCJIUm1IykXcTfKaFYSBOkPyvIxT5HWKheL+Qw8+ywe7fx
+	 GTdOazfOxcsEl9uBINGzvOvRcePNAHGMnzKvaCcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vidya Sagar <vidyas@nvidia.com>,
 	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
 	Manivannan Sadhasivam <mani@kernel.org>,
 	Bjorn Helgaas <bhelgaas@google.com>,
 	Jon Hunter <jonathanh@nvidia.com>,
+	Vidya Sagar <vidyas@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0427/1146] PCI: tegra194: Disable L1.2 capability of Tegra234 EP
-Date: Wed, 20 May 2026 18:11:17 +0200
-Message-ID: <20260520162157.853228889@linuxfoundation.org>
+Subject: [PATCH 7.0 0428/1146] PCI: tegra194: Fix CBB timeout caused by DBI access before core power-on
+Date: Wed, 20 May 2026 18:11:18 +0200
+Message-ID: <20260520162157.875987038@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -71,31 +71,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250508-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250464-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 5D0DC598CD9
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 42685592CA1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,76 +102,76 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Vidya Sagar <vidyas@nvidia.com>
+From: Manikanta Maddireddy <mmaddireddy@nvidia.com>
 
-[ Upstream commit f59df1d9e6bdb6bd7ef65fb5d200900ac40c20ba ]
+[ Upstream commit 34b3eef48d980cd37b876e128bbf314f69fb5d70 ]
 
-When Tegra234 is operating in the Endpoint mode with L1.2 enabled, PCIe
-link goes down during L1.2 exit. This is because Tegra234 powers up UPHY
-PLL immediately without making sure that the REFCLK is stable.
+When PERST# is deasserted twice (assert -> deassert -> assert -> deassert),
+a CBB (Control Backbone) timeout occurs at DBI register offset 0x8bc
+(PCIE_MISC_CONTROL_1_OFF). This happens because pci_epc_deinit_notify()
+and dw_pcie_ep_cleanup() are called before reset_control_deassert() powers
+on the controller core.
 
-This causes UPHY PLL to fail to lock to the correct frequency and leads to
-link going down. There is no hardware fix for this, hence do not advertise
-the L1.2 capability in the Endpoint mode.
+The call chain that causes the timeout:
 
-Fixes: a54e19073718 ("PCI: tegra194: Add Tegra234 PCIe support")
-Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+  pex_ep_event_pex_rst_deassert()
+    pci_epc_deinit_notify()
+      pci_epf_test_epc_deinit()
+        pci_epf_test_clear_bar()
+          pci_epc_clear_bar()
+            dw_pcie_ep_clear_bar()
+              __dw_pcie_ep_reset_bar()
+                dw_pcie_dbi_ro_wr_en()      <- Accesses 0x8bc DBI register
+    reset_control_deassert(pcie->core_rst)  <- Core powered on HERE
+
+The DBI registers, including PCIE_MISC_CONTROL_1_OFF (0x8bc), are only
+accessible after the controller core is powered on via
+reset_control_deassert(pcie->core_rst). Accessing them before this point
+results in a CBB timeout because the hardware is not yet operational.
+
+Fix this by moving pci_epc_deinit_notify() and dw_pcie_ep_cleanup() to
+after reset_control_deassert(pcie->core_rst), ensuring the controller is
+fully powered on before any DBI register accesses occur.
+
+Fixes: 40e2125381dc ("PCI: tegra194: Move controller cleanups to pex_ep_event_pex_rst_deassert()")
 Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
 Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Tested-by: Jon Hunter <jonathanh@nvidia.com>
 Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
 Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
-Link: https://patch.msgid.link/20260324190755.1094879-14-mmaddireddy@nvidia.com
+Link: https://patch.msgid.link/20260324190755.1094879-15-mmaddireddy@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/pci/controller/dwc/pcie-tegra194.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index 688da5a73d02e..eb24f88e0175b 100644
+index eb24f88e0175b..336d3c759547a 100644
 --- a/drivers/pci/controller/dwc/pcie-tegra194.c
 +++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -234,6 +234,7 @@ struct tegra_pcie_dw_of_data {
- 	bool has_sbr_reset_fix;
- 	bool has_l1ss_exit_fix;
- 	bool has_ltr_req_fix;
-+	bool disable_l1_2;
- 	u32 cdm_chk_int_en_bit;
- 	u32 gen4_preset_vec;
- 	u8 n_fts[2];
-@@ -679,6 +680,23 @@ static void init_host_aspm(struct tegra_pcie_dw *pcie)
- 	if (pcie->supports_clkreq)
- 		pci->l1ss_support = true;
+@@ -1750,10 +1750,6 @@ static void pex_ep_event_pex_rst_deassert(struct tegra_pcie_dw *pcie)
+ 		goto fail_phy;
+ 	}
  
-+	/*
-+	 * Disable L1.2 capability advertisement for Tegra234 Endpoint mode.
-+	 * Tegra234 has a hardware bug where during L1.2 exit, the UPHY PLL is
-+	 * powered up immediately without waiting for REFCLK to stabilize. This
-+	 * causes the PLL to fail to lock to the correct frequency, resulting in
-+	 * PCIe link loss. Since there is no hardware fix available, we prevent
-+	 * the Endpoint from advertising L1.2 support by clearing the L1.2 bits
-+	 * in the L1 PM Substates Capabilities register. This ensures the host
-+	 * will not attempt to enter L1.2 state with this Endpoint.
-+	 */
-+	if (pcie->of_data->disable_l1_2 &&
-+	    pcie->of_data->mode == DW_PCIE_EP_TYPE) {
-+		val = dw_pcie_readl_dbi(pci, l1ss + PCI_L1SS_CAP);
-+		val &= ~(PCI_L1SS_CAP_PCIPM_L1_2 | PCI_L1SS_CAP_ASPM_L1_2);
-+		dw_pcie_writel_dbi(pci, l1ss + PCI_L1SS_CAP, val);
-+	}
+-	/* Perform cleanup that requires refclk */
+-	pci_epc_deinit_notify(pcie->pci.ep.epc);
+-	dw_pcie_ep_cleanup(&pcie->pci.ep);
+-
+ 	/* Clear any stale interrupt statuses */
+ 	appl_writel(pcie, 0xFFFFFFFF, APPL_INTR_STATUS_L0);
+ 	appl_writel(pcie, 0xFFFFFFFF, APPL_INTR_STATUS_L1_0_0);
+@@ -1823,6 +1819,10 @@ static void pex_ep_event_pex_rst_deassert(struct tegra_pcie_dw *pcie)
+ 
+ 	reset_control_deassert(pcie->core_rst);
+ 
++	/* Perform cleanup that requires refclk and core reset deasserted */
++	pci_epc_deinit_notify(pcie->pci.ep.epc);
++	dw_pcie_ep_cleanup(&pcie->pci.ep);
 +
- 	/* Program L0s and L1 entrance latencies */
- 	val = dw_pcie_readl_dbi(pci, PCIE_PORT_AFR);
- 	val &= ~PORT_AFR_L0S_ENTRANCE_LAT_MASK;
-@@ -2444,6 +2462,7 @@ static const struct tegra_pcie_dw_of_data tegra234_pcie_dw_ep_of_data = {
- 	.mode = DW_PCIE_EP_TYPE,
- 	.has_l1ss_exit_fix = true,
- 	.has_ltr_req_fix = true,
-+	.disable_l1_2 = true,
- 	.cdm_chk_int_en_bit = BIT(18),
- 	/* Gen4 - 6, 8 and 9 presets enabled */
- 	.gen4_preset_vec = 0x340,
+ 	val = dw_pcie_readl_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL);
+ 	val &= ~PORT_LOGIC_SPEED_CHANGE;
+ 	dw_pcie_writel_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL, val);
 -- 
 2.53.0
 
