@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-250887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251823-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6NXnJ3T1DWoz5AUAu9opvQ
-	(envelope-from <stable+bounces-250887-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:55:00 +0200
+	id GAVyDHH0DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251823-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:50:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD65F594EAE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:54:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4531594B79
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:50:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8418530EC35F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:04:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0C49B310BB95
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:43:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BC223F86FB;
-	Wed, 20 May 2026 17:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8E6C28DC4;
+	Wed, 20 May 2026 17:43:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nf8w6wxx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p7ljWNO3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A073F787E;
-	Wed, 20 May 2026 17:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734BB3F1ADC;
+	Wed, 20 May 2026 17:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296569; cv=none; b=kz/fcI0d7v4NRmq7+euXLJfyAxJZ0uPUlJK/OX7EuIaB6TSpjoD/bojXFO/2ANtKm34w6Rzq2/9mKlO7RTEcTxgAwYj5DiFvnrUQ+heh517OqclcpMQ8pwy272RnTQYuOgjHfOVS4Q1atHJphTuRnQDrJ/DuaC4M4GUNXH2YBTE=
+	t=1779298981; cv=none; b=siTu3G3B5qyrrzLrcaRfXvbJa8x8pPrxfpyI/j4mXTsm0PZJPq70nob1WARga8duRfiHtq/RMKUaYZqgUvTea3fRxf1AHsfZ1Ahxtv+0Lj+Upjh9MBs7jHsSOJC5no2MH2qufqWYL/LiY8xGbiX6WmcW95ItHok6gvTEyhsh1b8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296569; c=relaxed/simple;
-	bh=neGo8+hOmJ4U6u6DRsF1Efkk6zzc9P8ZbJ8inh5DB6o=;
+	s=arc-20240116; t=1779298981; c=relaxed/simple;
+	bh=Bhtm7ZVhlGmR5cnK7cPeaqMkHpB2KVUvWkI5Qze7MCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q3v4qF5Mtha9w5ENZQjWeqHtt94+QB2m+xGubx/4Jo5l19c+SWaGoOPe9nq0xU/XuQcTFqPcP5+d114GnaRS4rpuISgKR1PZqQeIXOT8YsK5HIZJzW82N+UR7XQI0KF0O+WsaXbRSmAq6XPrR8hnm75UHTVQLUA17MnM8EXF3+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nf8w6wxx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92D451F00893;
-	Wed, 20 May 2026 17:02:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sKsYJ5+C3WNFR0YlnR32hj2idMIC0nk1gM0PEirg6eIuqkV+80A3ejhTpaZk1CFlRe4W8qjHT9tnfi8/QOR4Jq9bHJuTN4playh4i7gUx/FL9z0Q816yygx2ryh6KkhuEeovO+QzxCng/U3hz1VSKfWvIxD3x7RLNT8BAsnLZtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p7ljWNO3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7CB71F000E9;
+	Wed, 20 May 2026 17:42:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296567;
-	bh=DMo6PVJ10CVz7Q8n5ToDxxweA1AGgKbCLOAsjwvQtgk=;
+	s=korg; t=1779298980;
+	bh=++oIMLFvzU/pNuVERkb5ygYeaAxiR/XhRV0QdMlFIic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nf8w6wxx4TysL/7vS2zJa+NemFFPVDXuj8NeVWoHwATHRzo2GeuTIjh4YUW06HNl3
-	 8Yh8vnpafbfekFCWpnCkUaklr/h5a3INSHP+1P9a0YMUlUlXwXXRAGmDAORM11Hu+B
-	 RVtllAMYizg7z+ZSnTbOpeO8m5dAJPg94FZDBZ4I=
+	b=p7ljWNO3C/gie61r5A/fBkWZQqDfng0X1id9lFqNne6AWorc+A/mfbeO+ffYHEnvX
+	 75OUCWOYnpnoUrAzCyOwU03iW480Npu6gQrWAND2k/rTXakazkq5Qbvjbs3kroaQ/O
+	 yWw7USa6GMdplE+Fs7g3mK08qriMx1bq/PSzJOCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Dudu Lu <phx0fer@gmail.com>,
 	Simon Horman <horms@kernel.org>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0848/1146] net: airoha: Rework the code flow in airoha_remove() and in airoha_probe() error path
+Subject: [PATCH 6.18 615/957] net/sched: act_mirred: fix wrong device for mac_header_xmit check in tcf_blockcast_redir
 Date: Wed, 20 May 2026 18:18:18 +0200
-Message-ID: <20260520162207.427734114@linuxfoundation.org>
+Message-ID: <20260520162147.871428149@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,209 +64,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,redhat.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250887-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251823-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: DD65F594EAE
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: B4531594B79
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Dudu Lu <phx0fer@gmail.com>
 
-[ Upstream commit b1c803d5c8167026791abfaed96fd3e6a1fcd750 ]
+[ Upstream commit 4510d140524ca7d6e772db962e013f26f09a63b1 ]
 
-As suggested by Simon in [0], rework the code flow in airoha_remove()
-and in the airoha_probe() error path in order to rely on a more common
-approach un-registering configured net-devices first and destroying the
-hw resources at the end of the code.
-Introduce airoha_qdma_cleanup routine to release QDMA resources.
+In tcf_blockcast_redir(), when iterating block ports to redirect
+packets to multiple devices, the mac_header_xmit flag is queried
+from the wrong device. The loop sends to dev_prev but queries
+dev_is_mac_header_xmit(dev) — which is the NEXT device in the
+iteration, not the one being sent to.
 
-[0] https://lore.kernel.org/netdev/20251214-airoha-fix-dev-registration-v1-1-860e027ad4c6@kernel.org/
+This causes tcf_mirred_to_dev() to make incorrect decisions about
+whether to push or pull the MAC header. When the block contains
+mixed device types (e.g., an ethernet veth and a tunnel device),
+intermediate devices get the wrong mac_header_xmit flag, leading to
+skb header corruption. In the worst case, skb_push_rcsum with an
+incorrect mac_len can exhaust headroom and panic.
 
-Suggested-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+The last device in the loop is handled correctly (line 365-366 uses
+dev_is_mac_header_xmit(dev_prev)), confirming this is a copy-paste
+oversight for the intermediate devices.
+
+Fix by using dev_prev instead of dev for the mac_header_xmit query,
+consistent with the device actually being sent to.
+
+Fixes: 42f39036cda8 ("net/sched: act_mirred: Allow mirred to block")
+Signed-off-by: Dudu Lu <phx0fer@gmail.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260321-airoha-remove-rework-v2-1-16c7bade5fe5@kernel.org
+Link: https://patch.msgid.link/20260413084927.71353-1-phx0fer@gmail.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 4b91cb65789b ("net: airoha: Add size check for TX NAPIs in airoha_qdma_cleanup()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/airoha/airoha_eth.c | 76 ++++++++++++++----------
- 1 file changed, 44 insertions(+), 32 deletions(-)
+ net/sched/act_mirred.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index 3f0e795353372..adff897e9bfde 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -1434,6 +1434,33 @@ static int airoha_qdma_init(struct platform_device *pdev,
- 	return airoha_qdma_hw_init(qdma);
- }
+diff --git a/net/sched/act_mirred.c b/net/sched/act_mirred.c
+index 5f01f567c934d..18d9378a9c113 100644
+--- a/net/sched/act_mirred.c
++++ b/net/sched/act_mirred.c
+@@ -370,7 +370,7 @@ static int tcf_blockcast_redir(struct sk_buff *skb, struct tcf_mirred *m,
+ 			goto assign_prev;
  
-+static void airoha_qdma_cleanup(struct airoha_qdma *qdma)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(qdma->q_rx); i++) {
-+		if (!qdma->q_rx[i].ndesc)
-+			continue;
-+
-+		netif_napi_del(&qdma->q_rx[i].napi);
-+		airoha_qdma_cleanup_rx_queue(&qdma->q_rx[i]);
-+		if (qdma->q_rx[i].page_pool) {
-+			page_pool_destroy(qdma->q_rx[i].page_pool);
-+			qdma->q_rx[i].page_pool = NULL;
-+		}
-+	}
-+
-+	for (i = 0; i < ARRAY_SIZE(qdma->q_tx_irq); i++)
-+		netif_napi_del(&qdma->q_tx_irq[i].napi);
-+
-+	for (i = 0; i < ARRAY_SIZE(qdma->q_tx); i++) {
-+		if (!qdma->q_tx[i].ndesc)
-+			continue;
-+
-+		airoha_qdma_cleanup_tx_queue(&qdma->q_tx[i]);
-+	}
-+}
-+
- static int airoha_hw_init(struct platform_device *pdev,
- 			  struct airoha_eth *eth)
- {
-@@ -1461,41 +1488,30 @@ static int airoha_hw_init(struct platform_device *pdev,
- 	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++) {
- 		err = airoha_qdma_init(pdev, eth, &eth->qdma[i]);
- 		if (err)
--			return err;
-+			goto error;
- 	}
- 
- 	err = airoha_ppe_init(eth);
- 	if (err)
--		return err;
-+		goto error;
- 
- 	set_bit(DEV_STATE_INITIALIZED, &eth->state);
- 
- 	return 0;
-+error:
-+	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
-+		airoha_qdma_cleanup(&eth->qdma[i]);
-+
-+	return err;
- }
- 
--static void airoha_hw_cleanup(struct airoha_qdma *qdma)
-+static void airoha_hw_cleanup(struct airoha_eth *eth)
- {
- 	int i;
- 
--	for (i = 0; i < ARRAY_SIZE(qdma->q_rx); i++) {
--		if (!qdma->q_rx[i].ndesc)
--			continue;
--
--		netif_napi_del(&qdma->q_rx[i].napi);
--		airoha_qdma_cleanup_rx_queue(&qdma->q_rx[i]);
--		if (qdma->q_rx[i].page_pool)
--			page_pool_destroy(qdma->q_rx[i].page_pool);
--	}
--
--	for (i = 0; i < ARRAY_SIZE(qdma->q_tx_irq); i++)
--		netif_napi_del(&qdma->q_tx_irq[i].napi);
--
--	for (i = 0; i < ARRAY_SIZE(qdma->q_tx); i++) {
--		if (!qdma->q_tx[i].ndesc)
--			continue;
--
--		airoha_qdma_cleanup_tx_queue(&qdma->q_tx[i]);
--	}
-+	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
-+		airoha_qdma_cleanup(&eth->qdma[i]);
-+	airoha_ppe_deinit(eth);
- }
- 
- static void airoha_qdma_start_napi(struct airoha_qdma *qdma)
-@@ -3088,7 +3104,7 @@ static int airoha_probe(struct platform_device *pdev)
- 
- 	err = airoha_hw_init(pdev, eth);
- 	if (err)
--		goto error_hw_cleanup;
-+		goto error_netdev_free;
- 
- 	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
- 		airoha_qdma_start_napi(&eth->qdma[i]);
-@@ -3117,10 +3133,6 @@ static int airoha_probe(struct platform_device *pdev)
- error_napi_stop:
- 	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
- 		airoha_qdma_stop_napi(&eth->qdma[i]);
--	airoha_ppe_deinit(eth);
--error_hw_cleanup:
--	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
--		airoha_hw_cleanup(&eth->qdma[i]);
- 
- 	for (i = 0; i < ARRAY_SIZE(eth->ports); i++) {
- 		struct airoha_gdm_port *port = eth->ports[i];
-@@ -3132,6 +3144,8 @@ static int airoha_probe(struct platform_device *pdev)
- 			unregister_netdev(port->dev);
- 		airoha_metadata_dst_free(port);
- 	}
-+	airoha_hw_cleanup(eth);
-+error_netdev_free:
- 	free_netdev(eth->napi_dev);
- 	platform_set_drvdata(pdev, NULL);
- 
-@@ -3143,10 +3157,8 @@ static void airoha_remove(struct platform_device *pdev)
- 	struct airoha_eth *eth = platform_get_drvdata(pdev);
- 	int i;
- 
--	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++) {
-+	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
- 		airoha_qdma_stop_napi(&eth->qdma[i]);
--		airoha_hw_cleanup(&eth->qdma[i]);
--	}
- 
- 	for (i = 0; i < ARRAY_SIZE(eth->ports); i++) {
- 		struct airoha_gdm_port *port = eth->ports[i];
-@@ -3157,9 +3169,9 @@ static void airoha_remove(struct platform_device *pdev)
- 		unregister_netdev(port->dev);
- 		airoha_metadata_dst_free(port);
- 	}
--	free_netdev(eth->napi_dev);
-+	airoha_hw_cleanup(eth);
- 
--	airoha_ppe_deinit(eth);
-+	free_netdev(eth->napi_dev);
- 	platform_set_drvdata(pdev, NULL);
- }
- 
+ 		tcf_mirred_to_dev(skb, m, dev_prev,
+-				  dev_is_mac_header_xmit(dev),
++				  dev_is_mac_header_xmit(dev_prev),
+ 				  mirred_eaction, retval);
+ assign_prev:
+ 		dev_prev = dev;
 -- 
 2.53.0
 
