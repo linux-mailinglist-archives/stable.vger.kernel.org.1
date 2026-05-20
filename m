@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-250063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250075-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cOCMLILnDWrO4gUAu9opvQ
-	(envelope-from <stable+bounces-250063-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:55:30 +0200
+	id WD+yCyDjDWpF4gUAu9opvQ
+	(envelope-from <stable+bounces-250075-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9C9F592A74
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:55:29 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5C3F592213
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3593F3198AC3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:29:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B7ED630A3D21
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:30:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F563F20E8;
-	Wed, 20 May 2026 16:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A673F1AD9;
+	Wed, 20 May 2026 16:27:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2KohCOhb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Go5J0tM9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E92A352022;
-	Wed, 20 May 2026 16:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179323ECBF3;
+	Wed, 20 May 2026 16:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294449; cv=none; b=tPS7h1igWvaaW5ytyO4n1AyDfTAb7mrUay9X41wCKqCVZaABzd3Z21bP7mX9ExqzkbgsrQ6la7Hdz0eAldNk+OKM/5FCF3toAhMpHh6FftVubJteokO2WgNjrQsEOvfBehbuyV9b+YPMzublySuzL4T6uKYaOToTERmjkpdY694=
+	t=1779294478; cv=none; b=piHNnpITZlSK4T8Ky8yOKL95gf9PUr1hhnLroOK9VT5U3VaRUEmmAS9tn7r8uHOQimVfs0vzxJqz2mTysN5OyDJ9ew3WySy78XxFMg7r9j3hr011P/bDKy+teETiw4wvKKTQ7a/BjptLeGV5QUSKaLc2G0/652+vRaEsdw8ZIoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294449; c=relaxed/simple;
-	bh=VOE7Oc7gcusPuiu6yvDehfdF/yfWVBmCifzYdO3uv30=;
+	s=arc-20240116; t=1779294478; c=relaxed/simple;
+	bh=mspfhGSo0AKZVONAt+JSpWcxt0ixALw7GAxPw6U8RyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=evO6P/THq9fMUyMeYwA/g9F8TjOrNWmgI8KQLJ/KPoLEgDYjJuIfldOZp2wsAgdJfx657lcbVDfU+qHyl6khrv3ByToVl92FfRMxevEc2CSAxWRADFdeN0KvaTAobMLgJoQIgHhI/y1y3kX0/gfelY6gngXX0fBgXKG2cJPt+cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2KohCOhb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A28F1F00893;
-	Wed, 20 May 2026 16:27:27 +0000 (UTC)
+	 MIME-Version; b=Fxnx3BtSLfxB2jckizbd1PpDms7oWgDWHQElPEJdKY6H6cAO81ArBda1fj6qiWtjHRbQ6elchk4eNpfA9o8M/09KdygqjtxcE8TL//KN1JCvjieAooFlqPyWgEC4Wn8OZGrAvJtH0FaqsH18SqIvz5fUXeQlo37eQ0aVoaYcX4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Go5J0tM9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78ADE1F00893;
+	Wed, 20 May 2026 16:27:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294448;
-	bh=zg6gYTHC0IaSMm9I7Q96WLsuisr87Am1XUpwv/03bKQ=;
+	s=korg; t=1779294477;
+	bh=ReD1opUjQdltx7qbef0Ozkx4yQPICfXBhm7tpsBr4SA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2KohCOhbjdtFX+/51Xjfeli2uZbC9LBQZ2xh4dsKTus3/WUVxBGuKEVWSa+ejame1
-	 a3GsCzhwBBmLbh230doaSXgzby7P07CEZ286FlnpYAbejlp0aInQjEXOoiLGlbWLFa
-	 /BQ9OqYwdiblPyh1EAiA4k+vknY0w/3L3YDy1evw=
+	b=Go5J0tM9OCVuMiLD34hnzGC6xqm3N5nHBdlpmGAhB2KAvoldVMYMzZkZDr+XynHW7
+	 87uZb8mEVB4mstc3r2pNqurafDcamKfgDXWJIHKO95+4hLrPdfYZjypI6g299Wd3jW
+	 snQoLphinSCEOHXnFJkBSAKHE6G+0QXN/sm68Ljk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bert Karwatzki <spasswolf@web.de>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Gary Guo <gary@garyguo.net>
-Subject: [PATCH 7.0 0036/1146] cpufreq: Pass the policy to cpufreq_driver->adjust_perf()
-Date: Wed, 20 May 2026 18:04:46 +0200
-Message-ID: <20260520162149.199317399@linuxfoundation.org>
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 0037/1146] PCI: use generic driver_override infrastructure
+Date: Wed, 20 May 2026 18:04:47 +0200
+Message-ID: <20260520162149.222950952@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -73,31 +70,31 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,web.de,linaro.org,amd.com,oss.qualcomm.com,kernel.org,garyguo.net];
-	TAGGED_FROM(0.00)[bounces-250063-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,shazbot.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-250075-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,garyguo.net:email,qualcomm.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
-X-Rspamd-Queue-Id: D9C9F592A74
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: E5C3F592213
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -105,191 +102,207 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: K Prateek Nayak <kprateek.nayak@amd.com>
+From: Danilo Krummrich <dakr@kernel.org>
 
-[ Upstream commit c03791085adcd61fa9b766ab303c7d0941d7378d ]
+[ Upstream commit 10a4206a24013be4d558d476010cbf2eb4c9fa64 ]
 
-cpufreq_cpu_get() can sleep on PREEMPT_RT in presence of concurrent
-writer(s), however amd-pstate depends on fetching the cpudata via the
-policy's driver data which necessitates grabbing the reference.
+When a driver is probed through __driver_attach(), the bus' match()
+callback is called without the device lock held, thus accessing the
+driver_override field without a lock, which can cause a UAF.
 
-Since schedutil governor can call "cpufreq_driver->update_perf()"
-during sched_tick/enqueue/dequeue with rq_lock held and IRQs disabled,
-fetching the policy object using the cpufreq_cpu_get() helper in the
-scheduler fast-path leads to "BUG: scheduling while atomic" on
-PREEMPT_RT [1].
+Fix this by using the driver-core driver_override infrastructure taking
+care of proper locking internally.
 
-Pass the cached cpufreq policy object in sg_policy to the update_perf()
-instead of just the CPU. The CPU can be inferred using "policy->cpu".
+Note that calling match() from __driver_attach() without the device lock
+held is intentional. [1]
 
-The lifetime of cpufreq_policy object outlasts that of the governor and
-the cpufreq driver (allocated when the CPU is onlined and only reclaimed
-when the CPU is offlined / the CPU device is removed) which makes it
-safe to be referenced throughout the governor's lifetime.
-
-Closes:https://lore.kernel.org/all/20250731092316.3191-1-spasswolf@web.de/ [1]
-
-Fixes: 1d215f0319c2 ("cpufreq: amd-pstate: Add fast switch function for AMD P-State")
-Reported-by: Bert Karwatzki <spasswolf@web.de>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Acked-by: Gary Guo <gary@garyguo.net> # Rust
-Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Reviewed-by: Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260316081849.19368-3-kprateek.nayak@amd.com
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Link: https://lore.kernel.org/driver-core/DGRGTIRHA62X.3RY09D9SOK77P@kernel.org/ [1]
+Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220789
+Fixes: 782a985d7af2 ("PCI: Introduce new device binding path using pci_dev.driver_override")
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Acked-by: Alex Williamson <alex@shazbot.org>
+Tested-by: Gui-Dong Han <hanguidong02@gmail.com>
+Reviewed-by: Gui-Dong Han <hanguidong02@gmail.com>
+Link: https://patch.msgid.link/20260324005919.2408620-6-dakr@kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/amd-pstate.c     |  3 +--
- drivers/cpufreq/cpufreq.c        |  6 +++---
- drivers/cpufreq/intel_pstate.c   |  4 ++--
- include/linux/cpufreq.h          |  4 ++--
- kernel/sched/cpufreq_schedutil.c |  5 +++--
- rust/kernel/cpufreq.rs           | 13 ++++++-------
- 6 files changed, 17 insertions(+), 18 deletions(-)
+ drivers/pci/pci-driver.c           | 11 +++++++----
+ drivers/pci/pci-sysfs.c            | 28 ----------------------------
+ drivers/pci/probe.c                |  1 -
+ drivers/vfio/pci/vfio_pci_core.c   |  5 ++---
+ drivers/xen/xen-pciback/pci_stub.c |  6 ++++--
+ include/linux/pci.h                |  6 ------
+ 6 files changed, 13 insertions(+), 44 deletions(-)
 
-diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
-index 24cdeffbcd40e..78b70bdcb008f 100644
---- a/drivers/cpufreq/amd-pstate.c
-+++ b/drivers/cpufreq/amd-pstate.c
-@@ -712,13 +712,12 @@ static unsigned int amd_pstate_fast_switch(struct cpufreq_policy *policy,
- 	return policy->cur;
- }
- 
--static void amd_pstate_adjust_perf(unsigned int cpu,
-+static void amd_pstate_adjust_perf(struct cpufreq_policy *policy,
- 				   unsigned long _min_perf,
- 				   unsigned long target_perf,
- 				   unsigned long capacity)
+diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+index dd9075403987d..d10ece0889f0f 100644
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -138,9 +138,11 @@ static const struct pci_device_id *pci_match_device(struct pci_driver *drv,
  {
- 	u8 max_perf, min_perf, des_perf, cap_perf;
--	struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(cpu);
- 	struct amd_cpudata *cpudata;
- 	union perf_cached perf;
+ 	struct pci_dynid *dynid;
+ 	const struct pci_device_id *found_id = NULL, *ids;
++	int ret;
  
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index 1f794524a1d92..44441ceedb768 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -2228,7 +2228,7 @@ EXPORT_SYMBOL_GPL(cpufreq_driver_fast_switch);
+ 	/* When driver_override is set, only bind to the matching driver */
+-	if (dev->driver_override && strcmp(dev->driver_override, drv->name))
++	ret = device_match_driver_override(&dev->dev, &drv->driver);
++	if (ret == 0)
+ 		return NULL;
  
- /**
-  * cpufreq_driver_adjust_perf - Adjust CPU performance level in one go.
-- * @cpu: Target CPU.
-+ * @policy: cpufreq policy object of the target CPU.
-  * @min_perf: Minimum (required) performance level (units of @capacity).
-  * @target_perf: Target (desired) performance level (units of @capacity).
-  * @capacity: Capacity of the target CPU.
-@@ -2247,12 +2247,12 @@ EXPORT_SYMBOL_GPL(cpufreq_driver_fast_switch);
-  * parallel with either ->target() or ->target_index() or ->fast_switch() for
-  * the same CPU.
-  */
--void cpufreq_driver_adjust_perf(unsigned int cpu,
-+void cpufreq_driver_adjust_perf(struct cpufreq_policy *policy,
- 				 unsigned long min_perf,
- 				 unsigned long target_perf,
- 				 unsigned long capacity)
- {
--	cpufreq_driver->adjust_perf(cpu, min_perf, target_perf, capacity);
-+	cpufreq_driver->adjust_perf(policy, min_perf, target_perf, capacity);
+ 	/* Look at the dynamic ids first, before the static ones */
+@@ -164,7 +166,7 @@ static const struct pci_device_id *pci_match_device(struct pci_driver *drv,
+ 		 * matching.
+ 		 */
+ 		if (found_id->override_only) {
+-			if (dev->driver_override)
++			if (ret > 0)
+ 				return found_id;
+ 		} else {
+ 			return found_id;
+@@ -172,7 +174,7 @@ static const struct pci_device_id *pci_match_device(struct pci_driver *drv,
+ 	}
+ 
+ 	/* driver_override will always match, send a dummy id */
+-	if (dev->driver_override)
++	if (ret > 0)
+ 		return &pci_device_id_any;
+ 	return NULL;
  }
- 
- /**
-diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
-index 11c58af419006..0f50034e4b680 100644
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -3239,12 +3239,12 @@ static unsigned int intel_cpufreq_fast_switch(struct cpufreq_policy *policy,
- 	return target_pstate * cpu->pstate.scaling;
- }
- 
--static void intel_cpufreq_adjust_perf(unsigned int cpunum,
-+static void intel_cpufreq_adjust_perf(struct cpufreq_policy *policy,
- 				      unsigned long min_perf,
- 				      unsigned long target_perf,
- 				      unsigned long capacity)
+@@ -452,7 +454,7 @@ static int __pci_device_probe(struct pci_driver *drv, struct pci_dev *pci_dev)
+ static inline bool pci_device_can_probe(struct pci_dev *pdev)
  {
--	struct cpudata *cpu = all_cpu_data[cpunum];
-+	struct cpudata *cpu = all_cpu_data[policy->cpu];
- 	u64 hwp_cap = READ_ONCE(cpu->hwp_cap_cached);
- 	int old_pstate = cpu->pstate.current_pstate;
- 	int cap_pstate, min_pstate, max_pstate, target_pstate;
-diff --git a/include/linux/cpufreq.h b/include/linux/cpufreq.h
-index cc894fc389710..4317c5a312bd1 100644
---- a/include/linux/cpufreq.h
-+++ b/include/linux/cpufreq.h
-@@ -372,7 +372,7 @@ struct cpufreq_driver {
- 	 * conditions) scale invariance can be disabled, which causes the
- 	 * schedutil governor to fall back to the latter.
- 	 */
--	void		(*adjust_perf)(unsigned int cpu,
-+	void		(*adjust_perf)(struct cpufreq_policy *policy,
- 				       unsigned long min_perf,
- 				       unsigned long target_perf,
- 				       unsigned long capacity);
-@@ -617,7 +617,7 @@ struct cpufreq_governor {
- /* Pass a target to the cpufreq driver */
- unsigned int cpufreq_driver_fast_switch(struct cpufreq_policy *policy,
- 					unsigned int target_freq);
--void cpufreq_driver_adjust_perf(unsigned int cpu,
-+void cpufreq_driver_adjust_perf(struct cpufreq_policy *policy,
- 				unsigned long min_perf,
- 				unsigned long target_perf,
- 				unsigned long capacity);
-diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
-index 153232dd8276a..ae9fd211cec1f 100644
---- a/kernel/sched/cpufreq_schedutil.c
-+++ b/kernel/sched/cpufreq_schedutil.c
-@@ -461,6 +461,7 @@ static void sugov_update_single_perf(struct update_util_data *hook, u64 time,
- 				     unsigned int flags)
- {
- 	struct sugov_cpu *sg_cpu = container_of(hook, struct sugov_cpu, update_util);
-+	struct sugov_policy *sg_policy = sg_cpu->sg_policy;
- 	unsigned long prev_util = sg_cpu->util;
- 	unsigned long max_cap;
- 
-@@ -482,10 +483,10 @@ static void sugov_update_single_perf(struct update_util_data *hook, u64 time,
- 	if (sugov_hold_freq(sg_cpu) && sg_cpu->util < prev_util)
- 		sg_cpu->util = prev_util;
- 
--	cpufreq_driver_adjust_perf(sg_cpu->cpu, sg_cpu->bw_min,
-+	cpufreq_driver_adjust_perf(sg_policy->policy, sg_cpu->bw_min,
- 				   sg_cpu->util, max_cap);
- 
--	sg_cpu->sg_policy->last_freq_update_time = time;
-+	sg_policy->last_freq_update_time = time;
+ 	return (!pdev->is_virtfn || pdev->physfn->sriov->drivers_autoprobe ||
+-		pdev->driver_override);
++		device_has_driver_override(&pdev->dev));
  }
+ #else
+ static inline bool pci_device_can_probe(struct pci_dev *pdev)
+@@ -1722,6 +1724,7 @@ static const struct cpumask *pci_device_irq_get_affinity(struct device *dev,
  
- static unsigned int sugov_next_freq_shared(struct sugov_cpu *sg_cpu, u64 time)
-diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
-index f5adee48d40cb..d8d26870bea2e 100644
---- a/rust/kernel/cpufreq.rs
-+++ b/rust/kernel/cpufreq.rs
-@@ -1257,18 +1257,17 @@ impl<T: Driver> Registration<T> {
-     /// # Safety
-     ///
-     /// - This function may only be called from the cpufreq C infrastructure.
-+    /// - The pointer arguments must be valid pointers.
-     unsafe extern "C" fn adjust_perf_callback(
--        cpu: c_uint,
-+        ptr: *mut bindings::cpufreq_policy,
-         min_perf: c_ulong,
-         target_perf: c_ulong,
-         capacity: c_ulong,
-     ) {
--        // SAFETY: The C API guarantees that `cpu` refers to a valid CPU number.
--        let cpu_id = unsafe { CpuId::from_u32_unchecked(cpu) };
+ const struct bus_type pci_bus_type = {
+ 	.name		= "pci",
++	.driver_override = true,
+ 	.match		= pci_bus_match,
+ 	.uevent		= pci_uevent,
+ 	.probe		= pci_device_probe,
+diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
+index 16eaaf749ba97..a9006cf4e9c85 100644
+--- a/drivers/pci/pci-sysfs.c
++++ b/drivers/pci/pci-sysfs.c
+@@ -615,33 +615,6 @@ static ssize_t devspec_show(struct device *dev,
+ static DEVICE_ATTR_RO(devspec);
+ #endif
+ 
+-static ssize_t driver_override_store(struct device *dev,
+-				     struct device_attribute *attr,
+-				     const char *buf, size_t count)
+-{
+-	struct pci_dev *pdev = to_pci_dev(dev);
+-	int ret;
 -
--        if let Ok(mut policy) = PolicyCpu::from_cpu(cpu_id) {
--            T::adjust_perf(&mut policy, min_perf, target_perf, capacity);
--        }
-+        // SAFETY: The `ptr` is guaranteed to be valid by the contract with the C code for the
-+        // lifetime of `policy`.
-+        let policy = unsafe { Policy::from_raw_mut(ptr) };
-+        T::adjust_perf(policy, min_perf, target_perf, capacity);
-     }
+-	ret = driver_set_override(dev, &pdev->driver_override, buf, count);
+-	if (ret)
+-		return ret;
+-
+-	return count;
+-}
+-
+-static ssize_t driver_override_show(struct device *dev,
+-				    struct device_attribute *attr, char *buf)
+-{
+-	struct pci_dev *pdev = to_pci_dev(dev);
+-	ssize_t len;
+-
+-	device_lock(dev);
+-	len = sysfs_emit(buf, "%s\n", pdev->driver_override);
+-	device_unlock(dev);
+-	return len;
+-}
+-static DEVICE_ATTR_RW(driver_override);
+-
+ static struct attribute *pci_dev_attrs[] = {
+ 	&dev_attr_power_state.attr,
+ 	&dev_attr_resource.attr,
+@@ -669,7 +642,6 @@ static struct attribute *pci_dev_attrs[] = {
+ #ifdef CONFIG_OF
+ 	&dev_attr_devspec.attr,
+ #endif
+-	&dev_attr_driver_override.attr,
+ 	&dev_attr_ari_enabled.attr,
+ 	NULL,
+ };
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index bccc7a4bdd794..b4707640e1021 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -2488,7 +2488,6 @@ static void pci_release_dev(struct device *dev)
+ 	pci_release_of_node(pci_dev);
+ 	pcibios_release_device(pci_dev);
+ 	pci_bus_put(pci_dev->bus);
+-	kfree(pci_dev->driver_override);
+ 	bitmap_free(pci_dev->dma_alias_mask);
+ 	dev_dbg(dev, "device released\n");
+ 	kfree(pci_dev);
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index d43745fe4c843..460852f79f29b 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -1987,9 +1987,8 @@ static int vfio_pci_bus_notifier(struct notifier_block *nb,
+ 	    pdev->is_virtfn && physfn == vdev->pdev) {
+ 		pci_info(vdev->pdev, "Captured SR-IOV VF %s driver_override\n",
+ 			 pci_name(pdev));
+-		pdev->driver_override = kasprintf(GFP_KERNEL, "%s",
+-						  vdev->vdev.ops->name);
+-		WARN_ON(!pdev->driver_override);
++		WARN_ON(device_set_driver_override(&pdev->dev,
++						   vdev->vdev.ops->name));
+ 	} else if (action == BUS_NOTIFY_BOUND_DRIVER &&
+ 		   pdev->is_virtfn && physfn == vdev->pdev) {
+ 		struct pci_driver *drv = pci_dev_driver(pdev);
+diff --git a/drivers/xen/xen-pciback/pci_stub.c b/drivers/xen/xen-pciback/pci_stub.c
+index e4b27aecbf059..79a2b5dfd6941 100644
+--- a/drivers/xen/xen-pciback/pci_stub.c
++++ b/drivers/xen/xen-pciback/pci_stub.c
+@@ -598,6 +598,8 @@ static int pcistub_seize(struct pci_dev *dev,
+ 	return err;
+ }
  
-     /// Driver's `get_intermediate` callback.
++static struct pci_driver xen_pcibk_pci_driver;
++
+ /* Called when 'bind'. This means we must _NOT_ call pci_reset_function or
+  * other functions that take the sysfs lock. */
+ static int pcistub_probe(struct pci_dev *dev, const struct pci_device_id *id)
+@@ -609,8 +611,8 @@ static int pcistub_probe(struct pci_dev *dev, const struct pci_device_id *id)
+ 
+ 	match = pcistub_match(dev);
+ 
+-	if ((dev->driver_override &&
+-	     !strcmp(dev->driver_override, PCISTUB_DRIVER_NAME)) ||
++	if (device_match_driver_override(&dev->dev,
++					 &xen_pcibk_pci_driver.driver) > 0 ||
+ 	    match) {
+ 
+ 		if (dev->hdr_type != PCI_HEADER_TYPE_NORMAL
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 1c270f1d51230..57e9463e4347b 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -575,12 +575,6 @@ struct pci_dev {
+ 	u8		supported_speeds; /* Supported Link Speeds Vector */
+ 	phys_addr_t	rom;		/* Physical address if not from BAR */
+ 	size_t		romlen;		/* Length if not from BAR */
+-	/*
+-	 * Driver name to force a match.  Do not set directly, because core
+-	 * frees it.  Use driver_set_override() to set or clear it.
+-	 */
+-	const char	*driver_override;
+-
+ 	unsigned long	priv_flags;	/* Private flags for the PCI driver */
+ 
+ 	/* These methods index pci_reset_fn_methods[] */
 -- 
 2.53.0
 
