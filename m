@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-250092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250093-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oBtoGCHtDWo04wUAu9opvQ
-	(envelope-from <stable+bounces-250092-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:19:29 +0200
+	id CKgNM4njDWpN4gUAu9opvQ
+	(envelope-from <stable+bounces-250093-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:38:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF66959354D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:19:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 804545922BF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:38:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2639C35889A7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:30:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7C63930B8B84
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:30:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F4D8352030;
-	Wed, 20 May 2026 16:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAEA01B7910;
+	Wed, 20 May 2026 16:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZXSmRNdV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ix1zhbHU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED49936A369;
-	Wed, 20 May 2026 16:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB142F0C62;
+	Wed, 20 May 2026 16:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294524; cv=none; b=p3ktD9r9TYPogA+Fr88TKZ36oVuIycHqCKs8r+HAA5eqZuqP0AOK7CAecwuX9j2Mfzay0L3APJrZV1OHPzw5laJX2Sm9gIX4DG74xdevuNV3lcs0FnUn5wwG6qbKmkbtqE1JHMTisO6TwVRPcDY802ELafR7S/xAVpnNGEwHmwc=
+	t=1779294527; cv=none; b=HWkl4jWrEGOkH5zDET1Nwf3tdycZeW0LbFnPGmSwv8FwQOWrT7QZC+ZLIHIMOKOOjGL26954N2zYMN8persWYuZ829RZBIbvpy7XbecBnz5u44NGKAzOnJWG7iKa1TfWQJrjPJdqKLwwW4WhuVHErTgXf/Ifqn8sBfOC1YQMW+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294524; c=relaxed/simple;
-	bh=S/BlO+SfMobAgRwHjwXD16PJCoCZ/t/xzBpVfvc+G+k=;
+	s=arc-20240116; t=1779294527; c=relaxed/simple;
+	bh=vWwJ0PCUkM5h8LsECNlNhXgFhG5MURo67x3fGBiX+lo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LUKeI7eB/o2OyUjYW76I+aGvtFHYvj/GbcH6v4CDmMDDPtGaJcMOOnu6YGCy0eyhpg+jU5ARbFhAeDAnbdfkeCtUBmY/v8K9tTNq10Zkh6RUyPGZr8ekz7wjQCy0NxKN7H+cPTOoPk2CSh1OrTFVx8F8vajlTaQEWUfma3GhdUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZXSmRNdV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30A5F1F000E9;
-	Wed, 20 May 2026 16:28:41 +0000 (UTC)
+	 MIME-Version; b=uKVjMcG5MYpwLecEkFOkbN68ernKgMZgjGc/wt4L650OhnAJlv+XFs4wG1u4rv9rcuPE19FuL/0MGtfnlm+Y2IgNW8k51uLiY0Wb1UC3rrY0Q39hgTLwWOFucjJaFScLqMNzrlVLghYetbVgupl/WSvOhG9YHAXnv4KOgtV3mXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ix1zhbHU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD05C1F00893;
+	Wed, 20 May 2026 16:28:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294521;
-	bh=+GSAOFkwF+6hBrYl5QOYfLuzb2DcL3PDVPQL6QlQZLQ=;
+	s=korg; t=1779294524;
+	bh=IhrvCV5V+TS+gqYOR6V9Q/t5Bfqs5r6zcrxFvLn11CA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZXSmRNdV+nikd7SgC45+SEVXtP/sWQqhknyz+E65nqgu+t0AmBcx5widrUijVeEFI
-	 qgfc/N1qUtxdqOnMBTExTcvdacxed572ZetLnfgLlryBqiAoAGllVQM1d3WzjykKT6
-	 l8n3BkjxujdLbcJL7eH/GRCbfPLEADkBREu33wSg=
+	b=Ix1zhbHUbfZgCD/odv70F8Sok9SXtOImt68AehLy5VZwBJAYMiuRxSRmCQePN/1Ci
+	 2izsg70urEQnc4b+rifJsc3MD2YzHzqe9hn2rn28eZsKK2by+WiNk1t5thZMurOIkc
+	 e+MvfE/lV5J4UdY6g81a2rzvy9tYV2DKgQs/lJzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
 	Zilin Guan <zilin@seu.edu.cn>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Jeff Chen <jeff.chen_1@nxp.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0070/1146] wifi: ath11k: fix memory leaks in beacon template setup
-Date: Wed, 20 May 2026 18:05:20 +0200
-Message-ID: <20260520162149.942568871@linuxfoundation.org>
+Subject: [PATCH 7.0 0071/1146] wifi: mwifiex: Fix memory leak in mwifiex_11n_aggregate_pkt()
+Date: Wed, 20 May 2026 18:05:21 +0200
+Message-ID: <20260520162149.964208060@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -70,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250092-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250093-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,13 +86,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[seu.edu.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
-X-Rspamd-Queue-Id: AF66959354D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,seu.edu.cn:email]
+X-Rspamd-Queue-Id: 804545922BF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,100 +102,44 @@ X-Rspamd-Server: lfdr
 
 From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit ff49eba595df500e4ddccc593088c8a4ab5f2c27 ]
+[ Upstream commit 990a73dec3fdc145fef6c827c29205437d533ece ]
 
-The functions ath11k_mac_setup_bcn_tmpl_ema() and
-ath11k_mac_setup_bcn_tmpl_mbssid() allocate memory for beacon templates
-but fail to free it when parameter setup returns an error.
+In mwifiex_11n_aggregate_pkt(), skb_aggr is allocated via
+mwifiex_alloc_dma_align_buf(). If mwifiex_is_ralist_valid() returns false,
+the function currently returns -1 immediately without freeing the
+previously allocated skb_aggr, causing a memory leak.
 
-Since beacon templates must be released during normal execution, they
-must also be released in the error handling paths to prevent memory
-leaks.
+Since skb_aggr has not yet been queued via skb_queue_tail(), no other
+references to this memory exist. Therefore, it has to be freed locally
+before returning the error.
 
-Fix this by using unified exit paths with proper cleanup in the respective
-error paths.
+Fix this by calling mwifiex_write_data_complete() to free skb_aggr before
+returning the error status.
 
 Compile tested only. Issue found using a prototype static analysis tool
 and code review.
 
-Fixes: 3a415daa3e8b ("wifi: ath11k: add P2P IE in beacon template")
-Fixes: 335a92765d30 ("wifi: ath11k: MBSSID beacon support")
-Suggested-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Fixes: 5e6e3a92b9a4 ("wireless: mwifiex: initial commit for Marvell mwifiex driver")
 Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260130084451.110768-1-zilin@seu.edu.cn
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Reviewed-by: Jeff Chen <jeff.chen_1@nxp.com>
+Link: https://patch.msgid.link/20260119092625.1349934-1-zilin@seu.edu.cn
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/mac.c | 28 ++++++++++++++++-----------
- 1 file changed, 17 insertions(+), 11 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/11n_aggr.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index e4ee2ba1f669e..c06ee110a90f0 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -1557,12 +1557,15 @@ static int ath11k_mac_setup_bcn_tmpl_ema(struct ath11k_vif *arvif,
- 	if (!beacons || !beacons->cnt) {
- 		ath11k_warn(arvif->ar->ab,
- 			    "failed to get ema beacon templates from mac80211\n");
--		return -EPERM;
-+		ret = -EPERM;
-+		goto free;
- 	}
+diff --git a/drivers/net/wireless/marvell/mwifiex/11n_aggr.c b/drivers/net/wireless/marvell/mwifiex/11n_aggr.c
+index 34b4b34276d6d..042b1fe5f0d67 100644
+--- a/drivers/net/wireless/marvell/mwifiex/11n_aggr.c
++++ b/drivers/net/wireless/marvell/mwifiex/11n_aggr.c
+@@ -203,6 +203,7 @@ mwifiex_11n_aggregate_pkt(struct mwifiex_private *priv,
  
- 	if (tx_arvif == arvif) {
--		if (ath11k_mac_set_vif_params(tx_arvif, beacons->bcn[0].skb))
--			return -EINVAL;
-+		if (ath11k_mac_set_vif_params(tx_arvif, beacons->bcn[0].skb)) {
-+			ret = -EINVAL;
-+			goto free;
-+		}
- 	} else {
- 		arvif->wpaie_present = tx_arvif->wpaie_present;
- 	}
-@@ -1589,11 +1592,11 @@ static int ath11k_mac_setup_bcn_tmpl_ema(struct ath11k_vif *arvif,
+ 		if (!mwifiex_is_ralist_valid(priv, pra_list, ptrindex)) {
+ 			spin_unlock_bh(&priv->wmm.ra_list_spinlock);
++			mwifiex_write_data_complete(adapter, skb_aggr, 1, -1);
+ 			return -1;
  		}
- 	}
- 
--	ieee80211_beacon_free_ema_list(beacons);
--
- 	if (tx_arvif != arvif && !nontx_vif_params_set)
--		return -EINVAL; /* Profile not found in the beacons */
-+		ret = -EINVAL; /* Profile not found in the beacons */
- 
-+free:
-+	ieee80211_beacon_free_ema_list(beacons);
- 	return ret;
- }
- 
-@@ -1622,19 +1625,22 @@ static int ath11k_mac_setup_bcn_tmpl_mbssid(struct ath11k_vif *arvif,
- 	}
- 
- 	if (tx_arvif == arvif) {
--		if (ath11k_mac_set_vif_params(tx_arvif, bcn))
--			return -EINVAL;
-+		if (ath11k_mac_set_vif_params(tx_arvif, bcn)) {
-+			ret = -EINVAL;
-+			goto free;
-+		}
- 	} else if (!ath11k_mac_set_nontx_vif_params(tx_arvif, arvif, bcn)) {
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto free;
- 	}
- 
- 	ret = ath11k_wmi_bcn_tmpl(ar, arvif->vdev_id, &offs, bcn, 0);
--	kfree_skb(bcn);
--
- 	if (ret)
- 		ath11k_warn(ab, "failed to submit beacon template command: %d\n",
- 			    ret);
- 
-+free:
-+	kfree_skb(bcn);
- 	return ret;
- }
  
 -- 
 2.53.0
