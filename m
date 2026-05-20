@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250496-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CEWlEij0DWoF5AUAu9opvQ
-	(envelope-from <stable+bounces-251432-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:49:28 +0200
+	id +C1gJHXzDWoF5AUAu9opvQ
+	(envelope-from <stable+bounces-250496-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:46:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB6ED594AA3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:49:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D10C159484A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:46:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DC21F3226E48
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:26:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 66D4A379AAD3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:46:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A8A836F421;
-	Wed, 20 May 2026 17:26:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 411DC1BD9D0;
+	Wed, 20 May 2026 16:46:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QZ7neDnq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fkBuoIoX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A1910F2;
-	Wed, 20 May 2026 17:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D7241760;
+	Wed, 20 May 2026 16:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297966; cv=none; b=I7E00eboGuR+NIHVcxJmyhwayRfQWBBrsteqYkW9JkU6ClMy6W8h4kDKn832txOtdpBVtvzIixuvq+th2Y+lz7blKhi+5bOesHCn85DwjbYjefMwYYY8i/02LGA3P/KwAmnUo6ranPXF2YMhvN3XqC1hqqpQ/vy130iUh1D/KAg=
+	t=1779295562; cv=none; b=VhLy9a0ezat7EpsZ/lqdhU7p3xLWomFySfI42N4pmyZWfZLFbwM5JN4bFKnmKiBZhfB6FOCn+cdr9zd9T0WkjdqNb25cA9zdy5tbX3SZ9J1u9VPzz7qS6F11fgsoPExtxDQe0+YztaPxixkhAtSh3QzFGbjpWZLsy3wuSZObURY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297966; c=relaxed/simple;
-	bh=2ZKhdJjO8cAQak8Uow224XTTUIpj6WAyABpaTA0wl7o=;
+	s=arc-20240116; t=1779295562; c=relaxed/simple;
+	bh=5gBCR1GDizYstfsOGdBxnMTLlRv/FH3qim4sKi3OmcQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gcZqfLZqnuqkEzttW+1AsCcKYUjLbmnQo981DRorxXH0j7pbz4N1+FX9xCUvpksRrUe7Uf9cgQtv3cwyQgUTTVKZ2JLQy9h+UV3yV7yCdvI073j7ha7Qmqe+NPWQ+yPmpMTCxyzgnzB8eTaDQk9QiRNKymHP5zvW/DC1MVcOPqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QZ7neDnq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 369E61F000E9;
-	Wed, 20 May 2026 17:26:04 +0000 (UTC)
+	 MIME-Version; b=ENOQjC/QbejZpullhdUUEltwZcSjs7HyaLFk60VmuaSIGxWCNGbIkwHfQGo0YLpeFM+8j2Z8UETQ76hw6DbRfGf3lIKUNEVc+NBkn9RmHQcmH7ihvZGVYMT1FQkE3wxm0Ugyaz49YF3W/M4xbNCT5oJ5BYFxjPfPa2LMns4d4zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fkBuoIoX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 890A01F000E9;
+	Wed, 20 May 2026 16:46:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297964;
-	bh=czw5+Bb4VRIb1czxrQF2LftzRn1KaNAymDLNi5A5E5k=;
+	s=korg; t=1779295560;
+	bh=2EVgbjBZ5ie10W4spkWDNONJSbQ6mfxOvnIZo2yGVa8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QZ7neDnqIXCEyoonXdF8Z+necQ46ODLQQ9sCAF9iBgv3O5ms1TRoQBsHKKU3/4IKG
-	 UnPOCmxGFf1ArInWYxRPo2r0K2EM2TI+MxiejV3dW/7blSD66pn51xJCMy6hJNbvq3
-	 Sw70bKBS5Vn12hfEbd4kQQSWVQaehtHUmkwmQAK4=
+	b=fkBuoIoXiEDoaUAAGoePvhscDWKaGvGdxfHledS/KiHQEFjJRHMI6evm9ARTxoFNh
+	 wjPoGBFMOH7ewO7GTzJ3VBJ0cV+KeluYfhs08TUlaBVqY8MYaIN8pp/hoyZucjtEM3
+	 qcFfS5KaYuDXDeQ4qTJe+UY0/nGAz/S94/EUr0No=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuyi Zhou <zhouchuyi@bytedance.com>,
-	Daniel Jordan <daniel.m.jordan@oracle.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Joshua Klinesmith <joshuaklinesmith@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 232/957] padata: Remove cpu online check from cpu add and removal
+Subject: [PATCH 7.0 0465/1146] ksmbd: fix use-after-free from async crypto on Qualcomm crypto engine
 Date: Wed, 20 May 2026 18:11:55 +0200
-Message-ID: <20260520162139.570346680@linuxfoundation.org>
+Message-ID: <20260520162158.718973012@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,108 +69,103 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	TAGGED_FROM(0.00)[bounces-250496-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251432-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,bytedance.com:email,apana.org.au:email]
-X-Rspamd-Queue-Id: EB6ED594AA3
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: D10C159484A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuyi Zhou <zhouchuyi@bytedance.com>
+From: Joshua Klinesmith <joshuaklinesmith@gmail.com>
 
-[ Upstream commit 73117ea6470dca787f70f33c001f9faf437a1c0b ]
+[ Upstream commit 3e298897f41c61450c2e7a4f457e8b2485eb35b3 ]
 
-During the CPU offline process, the dying CPU is cleared from the
-cpu_online_mask in takedown_cpu(). After this step, various CPUHP_*_DEAD
-callbacks are executed to perform cleanup jobs for the dead CPU, so this
-cpu online check in padata_cpu_dead() is unnecessary.
+ksmbd_crypt_message() sets a NULL completion callback on AEAD requests
+and does not handle the -EINPROGRESS return code from async hardware
+crypto engines like the Qualcomm Crypto Engine (QCE). When QCE returns
+-EINPROGRESS, ksmbd treats it as an error and immediately frees the
+request while the hardware DMA operation is still in flight. The DMA
+completion callback then dereferences freed memory, causing a NULL
+pointer crash:
 
-Similarly, when executing padata_cpu_online() during the
-CPUHP_AP_ONLINE_DYN phase, the CPU has already been set in the
-cpu_online_mask, the action even occurs earlier than the
-CPUHP_AP_ONLINE_IDLE stage.
+  pc : qce_skcipher_done+0x24/0x174
+  lr : vchan_complete+0x230/0x27c
+  ...
+  el1h_64_irq+0x68/0x6c
+  ksmbd_free_work_struct+0x20/0x118 [ksmbd]
+  ksmbd_exit_file_cache+0x694/0xa4c [ksmbd]
 
-Remove this unnecessary cpu online check in __padata_add_cpu() and
-__padata_remove_cpu().
+Use the standard crypto_wait_req() pattern with crypto_req_done() as
+the completion callback, matching the approach used by the SMB client
+in fs/smb/client/smb2ops.c. This properly handles both synchronous
+engines (immediate return) and async engines (-EINPROGRESS followed
+by callback notification).
 
-Signed-off-by: Chuyi Zhou <zhouchuyi@bytedance.com>
-Acked-by: Daniel Jordan <daniel.m.jordan@oracle.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: c8c4a2972f83 ("padata: Put CPU offline callback in ONLINE section to allow failure")
+Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
+Link: https://github.com/openwrt/openwrt/issues/21822
+Signed-off-by: Joshua Klinesmith <joshuaklinesmith@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/padata.c | 26 ++++++++------------------
- 1 file changed, 8 insertions(+), 18 deletions(-)
+ fs/smb/server/auth.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/padata.c b/kernel/padata.c
-index f4def028c48c0..f53263d7c9d42 100644
---- a/kernel/padata.c
-+++ b/kernel/padata.c
-@@ -736,32 +736,22 @@ EXPORT_SYMBOL(padata_set_cpumask);
+diff --git a/fs/smb/server/auth.c b/fs/smb/server/auth.c
+index af5f403043317..7d0691f7263fe 100644
+--- a/fs/smb/server/auth.c
++++ b/fs/smb/server/auth.c
+@@ -827,6 +827,7 @@ int ksmbd_crypt_message(struct ksmbd_work *work, struct kvec *iov,
+ 	struct smb2_transform_hdr *tr_hdr = smb_get_msg(iov[0].iov_base);
+ 	unsigned int assoc_data_len = sizeof(struct smb2_transform_hdr) - 20;
+ 	int rc;
++	DECLARE_CRYPTO_WAIT(wait);
+ 	struct scatterlist *sg;
+ 	u8 sign[SMB2_SIGNATURE_SIZE] = {};
+ 	u8 key[SMB3_ENC_DEC_KEY_SIZE];
+@@ -913,12 +914,12 @@ int ksmbd_crypt_message(struct ksmbd_work *work, struct kvec *iov,
  
- static int __padata_add_cpu(struct padata_instance *pinst, int cpu)
- {
--	int err = 0;
--
--	if (cpumask_test_cpu(cpu, cpu_online_mask)) {
--		err = padata_replace(pinst);
-+	int err = padata_replace(pinst);
+ 	aead_request_set_crypt(req, sg, sg, crypt_len, iv);
+ 	aead_request_set_ad(req, assoc_data_len);
+-	aead_request_set_callback(req, CRYPTO_TFM_REQ_MAY_SLEEP, NULL, NULL);
++	aead_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG |
++				  CRYPTO_TFM_REQ_MAY_SLEEP,
++				  crypto_req_done, &wait);
  
--		if (padata_validate_cpumask(pinst, pinst->cpumask.pcpu) &&
--		    padata_validate_cpumask(pinst, pinst->cpumask.cbcpu))
--			__padata_start(pinst);
--	}
-+	if (padata_validate_cpumask(pinst, pinst->cpumask.pcpu) &&
-+	    padata_validate_cpumask(pinst, pinst->cpumask.cbcpu))
-+		__padata_start(pinst);
+-	if (enc)
+-		rc = crypto_aead_encrypt(req);
+-	else
+-		rc = crypto_aead_decrypt(req);
++	rc = crypto_wait_req(enc ? crypto_aead_encrypt(req) :
++			     crypto_aead_decrypt(req), &wait);
+ 	if (rc)
+ 		goto free_iv;
  
- 	return err;
- }
- 
- static int __padata_remove_cpu(struct padata_instance *pinst, int cpu)
- {
--	int err = 0;
--
--	if (!cpumask_test_cpu(cpu, cpu_online_mask)) {
--		if (!padata_validate_cpumask(pinst, pinst->cpumask.pcpu) ||
--		    !padata_validate_cpumask(pinst, pinst->cpumask.cbcpu))
--			__padata_stop(pinst);
--
--		err = padata_replace(pinst);
--	}
-+	if (!padata_validate_cpumask(pinst, pinst->cpumask.pcpu) ||
-+	    !padata_validate_cpumask(pinst, pinst->cpumask.cbcpu))
-+		__padata_stop(pinst);
- 
--	return err;
-+	return padata_replace(pinst);
- }
- 
- static inline int pinst_has_cpu(struct padata_instance *pinst, int cpu)
 -- 
 2.53.0
 
