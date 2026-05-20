@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-251575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250664-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8H+MJnryDWro4wUAu9opvQ
-	(envelope-from <stable+bounces-251575-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:42:18 +0200
+	id eM9ZGFL1DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-250664-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:54:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AA0159459F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:42:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C392594E55
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:54:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ED833310696A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:32:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 31F9031D2256
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:53:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1512436405A;
-	Wed, 20 May 2026 17:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8FBD372B31;
+	Wed, 20 May 2026 16:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VWwLcco7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2EsfIHmf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56EC28DC4;
-	Wed, 20 May 2026 17:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82DBC371D13;
+	Wed, 20 May 2026 16:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298337; cv=none; b=rRL9Q2o8tJuSxwIXhC9ENnZVBKOOsDAw+OOhT4pHzygKqEFRUjiYcm1ap6JzfYPxu4FLrB3QeFq93zWRW0NaJbLvR82RGh3ZZW87JmaIjfh0s2pH7XvfCRXQHS/5avcvXMH32tEEXi5KnJLgMAUbB3deV64qzK1kbgyEevAF5R8=
+	t=1779295999; cv=none; b=FLVP33IE1BANnBloeORLxjeEYivJ5vzBVxFi8vZ9uO77zt4uOjQBu3Wp0KmYtDtNB93m/Ty7TkI86LBgSEcpSxm5mekokDPgjdCjHw3zSmhyoFKoaX8NgKxMH794cX5z7LTYkdzpru1DI7CmmEgGMGMrqZzv+4NF3oyTfeaej3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298337; c=relaxed/simple;
-	bh=WJtLto4CH92jx8gZ5RzNiH3aYs47o5StY6ikzAPLCvw=;
+	s=arc-20240116; t=1779295999; c=relaxed/simple;
+	bh=W14LPHuCEYQ4QSIk3bQqJRNSdWzJBGCtz3laHIqTSTU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rzlM/eRpWPAqXdNegTug+lWFOeBhmI8SO35NOZuz2eMO9w5BNeWrbDirgL40HpcvqaiVSk7D1yLLFwUaslDqkeKmFnzhY/eNLJN9w+KTb7F6FOx+SfGzJEQb+lvbA7iPw+tAs0WZgZxRLf/f60OFMwGPq/6avhQn1OOIbekmO8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VWwLcco7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A1E1F000E9;
-	Wed, 20 May 2026 17:32:15 +0000 (UTC)
+	 MIME-Version; b=Gf0Ae+UKFIjTCiusWMGAZ3KOotz3Jl9blbtkdzRTkAbrT3KC9R1bc6JCZvgv5vbB4kgxOh5+4QNuaiw+qz1T24BuEHQSvWMwKpKhg1f3T38N9TUYuvJTBXNu39Wf6y/6qGnPN6Q0llQ3Y+eGn3FSJFV5RbcK1cvUYyLQsvp8w1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2EsfIHmf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A101F00893;
+	Wed, 20 May 2026 16:53:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298336;
-	bh=AK5jXa/fLmfthXgdhK2A+pUC/FFP2XaHlwjWi6RRhZo=;
+	s=korg; t=1779295997;
+	bh=ibQ6d/RLnwByLdaKPkfcU8VoYvsEz3dPZ5iwQxDaeZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VWwLcco7cHzTULE0lEtRenbMlZDlzKF/m/IAf8VjPHcSLbA6oTkReX8BKXvY1ibP1
-	 9uUA+1XfmNi4l07UkfbPfdIZ+GWCvgYQ3gI6DOBfCHPyZjjg8Od6j0UD66uMycJe/w
-	 P8pvn21jnyME7gVHWiSwaBp2q2V5yKXVYDQOBCWY=
+	b=2EsfIHmfG+QAneFSQ4G+4W3Dx9iS4Cs1Y9pZLd7xBbNovVkcZlACN6ieqDFDAR+cw
+	 JIE9nQGb7QGyRDvyfRaKyiNXqm3zNX7tooqbNbMcgL4kPTnRDdpw0USjDf3KJkcPtL
+	 I+uOYtLSWA9fddwO2pLKhJL1XaYe39pnSUnjBwIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Ye Bin <yebin10@huawei.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 372/957] arm64: dts: qcom: sm6125-xiaomi-ginkgo: Correct reserved memory ranges
+Subject: [PATCH 7.0 0605/1146] ext4: call deactivate_super() in extents_kunit_exit()
 Date: Wed, 20 May 2026 18:14:15 +0200
-Message-ID: <20260520162142.596325992@linuxfoundation.org>
+Message-ID: <20260520162201.871838712@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,130 +65,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251575-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250664-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,gmail.com,linux.ibm.com,mit.edu,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 1AA0159459F
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,huawei.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 0C392594E55
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Barnabás Czémán <barnabas.czeman@mainlining.org>
+From: Ye Bin <yebin10@huawei.com>
 
-[ Upstream commit 242801cc24e865cb525ef7d826ce6ebeffcad606 ]
+[ Upstream commit f9c1f7647ac8fb70bebb1615ac112d1568abe339 ]
 
-The device was crashing on high memory load because the reserved memory
-ranges was wrongly defined. Correct the ranges for avoid the crashes.
-Change the ramoops memory range to match with the values from the recovery
-to be able to get the results from the device.
+Call deactivate_super() is called in extents_kunit_exit() to cleanup
+the file system resource.
 
-Fixes: 9b1a6c925c88 ("arm64: dts: qcom: sm6125: Initial support for xiaomi-ginkgo")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-Link: https://lore.kernel.org/r/20260126-xiaomi-willow-v3-2-aad7b106c311@mainlining.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: cb1e0c1d1fad ("ext4: kunit tests for extent splitting and conversion")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://patch.msgid.link/20260330133035.287842-3-yebin@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/qcom/sm6125-xiaomi-ginkgo.dts    | 41 +++++++++++++------
- 1 file changed, 29 insertions(+), 12 deletions(-)
+ fs/ext4/extents-test.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts b/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts
-index bf03226a6f854..d5e5abdb3b2ff 100644
---- a/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts
-+++ b/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts
-@@ -13,6 +13,12 @@
- #include "sm6125.dtsi"
- #include "pm6125.dtsi"
+diff --git a/fs/ext4/extents-test.c b/fs/ext4/extents-test.c
+index 82c59291e0458..3d4663d99eb13 100644
+--- a/fs/ext4/extents-test.c
++++ b/fs/ext4/extents-test.c
+@@ -146,6 +146,7 @@ static void extents_kunit_exit(struct kunit *test)
+ 	struct ext4_sb_info *sbi = sb->s_fs_info;
  
-+/delete-node/ &adsp_pil_mem;
-+/delete-node/ &cont_splash_mem;
-+/delete-node/ &gpu_mem;
-+/delete-node/ &ipa_fw_mem;
-+/delete-node/ &ipa_gsi_mem;
-+
- / {
- 	model = "Xiaomi Redmi Note 8";
- 	compatible = "xiaomi,ginkgo", "qcom,sm6125";
-@@ -36,28 +42,39 @@ framebuffer0: framebuffer@5c000000 {
- 	};
- 
- 	reserved-memory {
--		debug_mem: debug@ffb00000 {
--			reg = <0x0 0xffb00000 0x0 0xc0000>;
-+		adsp_pil_mem: adsp_pil_mem@55300000 {
-+			reg = <0x0 0x55300000 0x0 0x2200000>;
- 			no-map;
- 		};
- 
--		last_log_mem: lastlog@ffbc0000 {
--			reg = <0x0 0xffbc0000 0x0 0x80000>;
-+		ipa_fw_mem: ipa_fw_mem@57500000 {
-+			reg = <0x0 0x57500000 0x0 0x10000>;
- 			no-map;
- 		};
- 
--		pstore_mem: ramoops@ffc00000 {
--			compatible = "ramoops";
--			reg = <0x0 0xffc40000 0x0 0xc0000>;
--			record-size = <0x1000>;
--			console-size = <0x40000>;
--			pmsg-size = <0x20000>;
-+		ipa_gsi_mem: ipa_gsi_mem@57510000 {
-+			reg = <0x0 0x57510000 0x0 0x5000>;
-+			no-map;
- 		};
- 
--		cmdline_mem: memory@ffd00000 {
--			reg = <0x0 0xffd40000 0x0 0x1000>;
-+		gpu_mem: gpu_mem@57515000 {
-+			reg = <0x0 0x57515000 0x0 0x2000>;
- 			no-map;
- 		};
-+
-+		framebuffer@5c000000 {
-+			reg = <0x0 0x5c000000 0x0 (2340 * 1080 * 4)>;
-+			no-map;
-+		};
-+
-+		/* Matching with recovery values to be able to get the results. */
-+		ramoops@61600000 {
-+			compatible = "ramoops";
-+			reg = <0x0 0x61600000 0x0 0x400000>;
-+			record-size = <0x80000>;
-+			pmsg-size = <0x200000>;
-+			console-size = <0x100000>;
-+		};
- 	};
- 
- 	extcon_usb: extcon-usb {
+ 	ext4_es_unregister_shrinker(sbi);
++	deactivate_super(sbi->s_sb);
+ 	kfree(sbi);
+ 	kfree(k_ctx.k_ei);
+ 	kfree(k_ctx.k_data);
 -- 
 2.53.0
 
