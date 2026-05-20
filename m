@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-250991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253052-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YMKaH/L1DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-250991-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:57:06 +0200
+	id iH+8MTsBDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-253052-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:45:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BA50594F59
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:57:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DA9E5972E1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:45:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C6DDC31A9245
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:08:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E52E83169EF4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:38:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 109D83F44D0;
-	Wed, 20 May 2026 17:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E27D3D5647;
+	Wed, 20 May 2026 18:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VDVAJoPp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kT/Mpemk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E85E3F44D9;
-	Wed, 20 May 2026 17:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5BB83D1CA0;
+	Wed, 20 May 2026 18:37:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296819; cv=none; b=I2gRh/MRedISLbQwANY+0NrhG2ypemYsd0RfeAnJND4bDRsERYUElSHU9CXx+wI8FtEUiDiAHgeRhSUuCbdAr6YivgDOuqZc5D36ftVqAZAp5W+qsDNk41/Z/8hiHuosXeCnmiG/gjcKupqik3zWjgYxDHb56jACjevY/WGwhPM=
+	t=1779302279; cv=none; b=PbNG2WJr/9aIUHcN0cXwXUmCRxeuAYczhDAnv8I2mu/vbTjGbkPh7yKNgPH3e2fQoFAs+dlO0u9mWuFzskp7SL8XlSEdPz9xgskIOL6hCtLX9mjVVyo43BySeX5MVzdJKpRQNprc6aDR4TA/yGRxbS3QifPWvIc2sQF/3SlRxiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296819; c=relaxed/simple;
-	bh=WaoyBACkZz1Tm98MRQVj6iqN+V7pp6eS1jbyRAmmt68=;
+	s=arc-20240116; t=1779302279; c=relaxed/simple;
+	bh=9wcMQnuQPiwsrjOGpj7p+R7lS2fPwG/D5UBqto9A4hs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EVywdNs4HXidKN9v8ozeZgJ3m4V91fIOmhcDMP6IZVBQgTq5202NuP/kz1PlDTCUCcKtvf3F3kayxQ8skennvqFbFzhyROUXmTitB6Qu6to1oddZDoruqaic8MRzuhsBLLPE1G5iMnj2FL6oDp+g3sJNNjOy9kcihV4WjlkwHug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VDVAJoPp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 988E91F00893;
-	Wed, 20 May 2026 17:06:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JELA3fio8+iwPirfnFla5AsRtK5s4o4ND5ZYzm4t/cgG3wZCT6/bZ5ttIymBxMEP3ox/NbXQBfqP2ezxn3Q2HZ8r5UmL7Tg/0oR+pCAjC9scHVTXoKfE4yaSvm1DeZxVARXnSno0Dx3JPRA+twBNTOvZMrKKBpZFFUIJjkps79M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kT/Mpemk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E551F000E9;
+	Wed, 20 May 2026 18:37:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296817;
-	bh=5NN/HFF1yqX7p8CguOHRF1PMjWePaWtL7krN/VhboNQ=;
+	s=korg; t=1779302277;
+	bh=7I7ZWSvUN80x60LCwK7eE+n4reeJzPVyReoZnrGwd68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VDVAJoPpI4sFYpcBtmuamStNdZel5NEsxBWNsPBB7Ys6YxCXGA/Xv3ow1Sw4d9tGz
-	 6koHa4sYk0uimOagYcEuAERRloDIEYt3WUhxNtZ/JZkVY4P5Kpdb3rCYlsvesjKZIi
-	 FVLVxRIUbRogPaSaF5KRObB9+W3vileEJEydatPo=
+	b=kT/MpemkXo35cxH3bQMS0rUrGvH92RiR5CLM99hix6jsiLTomEk0fDZs25JIY2ybE
+	 rbwYVGK2LoZItrPp8zyFAl4I1cNgZ73trIc2uMA9LzjFMy59ncojxXZDhX1QA94XlY
+	 U4zzJ+il9Ym1lC1nFmsK0bVlUt58EGu0+xjxfk3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3f46c095ac0ca048cb71@syzkaller.appspotmail.com,
-	Andrew Lunn <andrew@lunn.ch>,
-	Zhan Jun <zhanjun@uniontech.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0942/1146] net: usb: rtl8150: fix use-after-free in rtl8150_start_xmit()
+Subject: [PATCH 6.6 169/508] ALSA: sc6000: Keep the programmed board state in card-private data
 Date: Wed, 20 May 2026 18:19:52 +0200
-Message-ID: <20260520162209.553814152@linuxfoundation.org>
+Message-ID: <20260520162102.299689011@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,124 +63,322 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-250991-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253052-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,3f46c095ac0ca048cb71];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,appspotmail.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,uniontech.com:email,syzkaller.appspot.com:url,lunn.ch:email]
-X-Rspamd-Queue-Id: 8BA50594F59
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 6DA9E5972E1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhan Jun <zhanjun@uniontech.com>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-[ Upstream commit 23f0e34c64acba15cad4d23e50f41f533da195fa ]
+[ Upstream commit fb79bf127ac2577b4876132da6dba768018aad4c ]
 
-syzbot reported a KASAN slab-use-after-free read in rtl8150_start_xmit()
-when accessing skb->len for tx statistics after usb_submit_urb() has
-been called:
+The driver may auto-select IRQ and DMA resources at probe time, but
+sc6000_init_board() still derives the SC-6000 soft configuration from
+the module parameter arrays.  When irq=auto or dma=auto is used, the
+codec is created with the selected resources while the board is
+programmed with the unresolved values.
 
-  BUG: KASAN: slab-use-after-free in rtl8150_start_xmit+0x71f/0x760
-    drivers/net/usb/rtl8150.c:712
-  Read of size 4 at addr ffff88810eb7a930 by task kworker/0:4/5226
+Store the mapped ports and generated SC-6000 board configuration in
+card-private data, build that configuration from the live probe
+results instead of the raw module parameters, and keep the probe-time
+board programming in a shared helper.
 
-The URB completion handler write_bulk_callback() frees the skb via
-dev_kfree_skb_irq(dev->tx_skb). The URB may complete on another CPU
-in softirq context before usb_submit_urb() returns in the submitter,
-so by the time the submitter reads skb->len the skb has already been
-queued to the per-CPU completion_queue and freed by net_tx_action():
+This fixes the resource-programming mismatch and leaves the driver
+with a stable board-state block that can be reused by suspend/resume.
 
-  CPU A (xmit)                      CPU B (USB completion softirq)
-  ------------                      ------------------------------
-  dev->tx_skb = skb;
-  usb_submit_urb()      --+
-                          |-------> write_bulk_callback()
-                          |           dev_kfree_skb_irq(dev->tx_skb)
-                          |         net_tx_action()
-                          |           napi_skb_cache_put()   <-- free
-  netdev->stats.tx_bytes  |
-    += skb->len;          <-- UAF read
-
-Fix it by caching skb->len before submitting the URB and using the
-cached value when updating the tx_bytes counter.
-
-The pre-existing tx_bytes semantics are preserved: the counter tracks
-the original frame length (skb->len), not the ETH_ZLEN/USB-alignment
-padded "count" value that is handed to the device.  Changing that
-would be a user-visible accounting change and is out of scope for
-this UAF fix.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+3f46c095ac0ca048cb71@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/69e69ee7.050a0220.24bfd3.002b.GAE@google.com/
-Closes: https://syzkaller.appspot.com/bug?extid=3f46c095ac0ca048cb71
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Zhan Jun <zhanjun@uniontech.com>
-Link: https://patch.msgid.link/809895186B866C10+20260423004913.136655-1-zhangdandan@uniontech.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c282866101bf ("ALSA: sc6000: add support for SC-6600 and SC-7000")
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20260410-alsa-sc6000-pm-v1-1-4d9e95493d26@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/rtl8150.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ sound/isa/sc6000.c | 152 +++++++++++++++++++++++++++------------------
+ 1 file changed, 92 insertions(+), 60 deletions(-)
 
-diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
-index 4cda0643afb6e..1bbfdeab4d624 100644
---- a/drivers/net/usb/rtl8150.c
-+++ b/drivers/net/usb/rtl8150.c
-@@ -683,6 +683,7 @@ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
- 					    struct net_device *netdev)
- {
- 	rtl8150_t *dev = netdev_priv(netdev);
-+	unsigned int skb_len;
- 	int count, res;
+diff --git a/sound/isa/sc6000.c b/sound/isa/sc6000.c
+index 3115c32b4061b..4066b68a102e2 100644
+--- a/sound/isa/sc6000.c
++++ b/sound/isa/sc6000.c
+@@ -100,6 +100,15 @@ MODULE_PARM_DESC(joystick, "Enable gameport.");
+ #define PFX "sc6000: "
+ #define DRV_NAME "SC-6000"
  
- 	/* pad the frame and ensure terminating USB packet, datasheet 9.2.3 */
-@@ -694,6 +695,8 @@ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
- 		return NETDEV_TX_OK;
- 	}
- 
-+	skb_len = skb->len;
++struct snd_sc6000 {
++	char __iomem *vport;
++	char __iomem *vmss_port;
++	u8 mss_config;
++	u8 config;
++	u8 hw_cfg[2];
++	bool old_dsp;
++};
 +
- 	netif_stop_queue(netdev);
- 	dev->tx_skb = skb;
- 	usb_fill_bulk_urb(dev->tx_urb, dev->udev, usb_sndbulkpipe(dev->udev, 2),
-@@ -709,7 +712,7 @@ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
- 		}
- 	} else {
- 		netdev->stats.tx_packets++;
--		netdev->stats.tx_bytes += skb->len;
-+		netdev->stats.tx_bytes += skb_len;
- 		netif_trans_update(netdev);
+ /* hardware dependent functions */
+ 
+ /*
+@@ -267,7 +276,7 @@ static int sc6000_dsp_reset(char __iomem *vport)
+ 
+ /* detection and initialization */
+ static int sc6000_hw_cfg_write(struct device *devptr,
+-			       char __iomem *vport, const int *cfg)
++			       char __iomem *vport, const u8 *cfg)
+ {
+ 	if (sc6000_write(devptr, vport, COMMAND_6C) < 0) {
+ 		dev_warn(devptr, "CMD 0x%x: failed!\n", COMMAND_6C);
+@@ -353,8 +362,7 @@ static int sc6000_init_mss(struct device *devptr,
+ 	return 0;
+ }
+ 
+-static void sc6000_hw_cfg_encode(struct device *devptr,
+-				 char __iomem *vport, int *cfg,
++static void sc6000_hw_cfg_encode(struct device *devptr, u8 *cfg,
+ 				 long xport, long xmpu,
+ 				 long xmss_port, int joystick)
+ {
+@@ -376,27 +384,83 @@ static void sc6000_hw_cfg_encode(struct device *devptr,
+ 	dev_dbg(devptr, "hw cfg %x, %x\n", cfg[0], cfg[1]);
+ }
+ 
+-static int sc6000_init_board(struct device *devptr,
+-			     char __iomem *vport,
+-			     char __iomem *vmss_port, int dev)
++static void sc6000_prepare_board(struct device *devptr,
++				 struct snd_sc6000 *sc6000,
++				 unsigned int dev, int xirq, int xdma)
++{
++	sc6000->mss_config = sc6000_irq_to_softcfg(xirq) |
++			     sc6000_dma_to_softcfg(xdma);
++	sc6000->config = sc6000->mss_config |
++			 sc6000_mpu_irq_to_softcfg(mpu_irq[dev]);
++	sc6000_hw_cfg_encode(devptr, sc6000->hw_cfg, port[dev], mpu_port[dev],
++			     mss_port[dev], joystick[dev]);
++}
++
++static void sc6000_detect_old_dsp(struct device *devptr,
++				  struct snd_sc6000 *sc6000)
++{
++	sc6000_write(devptr, sc6000->vport, COMMAND_5C);
++	sc6000->old_dsp = sc6000_read(sc6000->vport) < 0;
++}
++
++static int sc6000_program_board(struct device *devptr,
++				struct snd_sc6000 *sc6000)
++{
++	int err;
++
++	if (!sc6000->old_dsp) {
++		if (sc6000_hw_cfg_write(devptr, sc6000->vport,
++					sc6000->hw_cfg) < 0) {
++			dev_err(devptr, "sc6000_hw_cfg_write: failed!\n");
++			return -EIO;
++		}
++	}
++
++	err = sc6000_setup_board(devptr, sc6000->vport, sc6000->config);
++	if (err < 0) {
++		dev_err(devptr, "sc6000_setup_board: failed!\n");
++		return -ENODEV;
++	}
++
++	sc6000_dsp_reset(sc6000->vport);
++
++	if (!sc6000->old_dsp) {
++		sc6000_write(devptr, sc6000->vport, COMMAND_60);
++		sc6000_write(devptr, sc6000->vport, 0x02);
++		sc6000_dsp_reset(sc6000->vport);
++	}
++
++	err = sc6000_setup_board(devptr, sc6000->vport, sc6000->config);
++	if (err < 0) {
++		dev_err(devptr, "sc6000_setup_board: failed!\n");
++		return -ENODEV;
++	}
++
++	err = sc6000_init_mss(devptr, sc6000->vport, sc6000->config,
++			      sc6000->vmss_port, sc6000->mss_config);
++	if (err < 0) {
++		dev_err(devptr, "Cannot initialize Microsoft Sound System mode.\n");
++		return -ENODEV;
++	}
++
++	return 0;
++}
++
++static int sc6000_init_board(struct device *devptr, struct snd_sc6000 *sc6000)
+ {
+ 	char answer[15];
+ 	char version[2];
+-	int mss_config = sc6000_irq_to_softcfg(irq[dev]) |
+-			 sc6000_dma_to_softcfg(dma[dev]);
+-	int config = mss_config |
+-		     sc6000_mpu_irq_to_softcfg(mpu_irq[dev]);
+ 	int err;
+-	int old = 0;
+ 
+-	err = sc6000_dsp_reset(vport);
++	err = sc6000_dsp_reset(sc6000->vport);
+ 	if (err < 0) {
+ 		dev_err(devptr, "sc6000_dsp_reset: failed!\n");
+ 		return err;
  	}
  
+ 	memset(answer, 0, sizeof(answer));
+-	err = sc6000_dsp_get_answer(devptr, vport, GET_DSP_COPYRIGHT, answer, 15);
++	err = sc6000_dsp_get_answer(devptr, sc6000->vport, GET_DSP_COPYRIGHT,
++				    answer, 15);
+ 	if (err <= 0) {
+ 		dev_err(devptr, "sc6000_dsp_copyright: failed!\n");
+ 		return -ENODEV;
+@@ -408,54 +472,17 @@ static int sc6000_init_board(struct device *devptr,
+ 	if (strncmp("SC-6000", answer, 7))
+ 		dev_warn(devptr, "Warning: non SC-6000 audio card!\n");
+ 
+-	if (sc6000_dsp_get_answer(devptr, vport, GET_DSP_VERSION, version, 2) < 2) {
++	if (sc6000_dsp_get_answer(devptr, sc6000->vport,
++				  GET_DSP_VERSION, version, 2) < 2) {
+ 		dev_err(devptr, "sc6000_dsp_version: failed!\n");
+ 		return -ENODEV;
+ 	}
+ 	dev_info(devptr, "Detected model: %s, DSP version %d.%d\n",
+ 		answer, version[0], version[1]);
+ 
+-	/* set configuration */
+-	sc6000_write(devptr, vport, COMMAND_5C);
+-	if (sc6000_read(vport) < 0)
+-		old = 1;
+-
+-	if (!old) {
+-		int cfg[2];
+-		sc6000_hw_cfg_encode(devptr,
+-				     vport, &cfg[0], port[dev], mpu_port[dev],
+-				     mss_port[dev], joystick[dev]);
+-		if (sc6000_hw_cfg_write(devptr, vport, cfg) < 0) {
+-			dev_err(devptr, "sc6000_hw_cfg_write: failed!\n");
+-			return -EIO;
+-		}
+-	}
+-	err = sc6000_setup_board(devptr, vport, config);
+-	if (err < 0) {
+-		dev_err(devptr, "sc6000_setup_board: failed!\n");
+-		return -ENODEV;
+-	}
+-
+-	sc6000_dsp_reset(vport);
+-
+-	if (!old) {
+-		sc6000_write(devptr, vport, COMMAND_60);
+-		sc6000_write(devptr, vport, 0x02);
+-		sc6000_dsp_reset(vport);
+-	}
++	sc6000_detect_old_dsp(devptr, sc6000);
+ 
+-	err = sc6000_setup_board(devptr, vport, config);
+-	if (err < 0) {
+-		dev_err(devptr, "sc6000_setup_board: failed!\n");
+-		return -ENODEV;
+-	}
+-	err = sc6000_init_mss(devptr, vport, config, vmss_port, mss_config);
+-	if (err < 0) {
+-		dev_err(devptr, "Cannot initialize Microsoft Sound System mode.\n");
+-		return -ENODEV;
+-	}
+-
+-	return 0;
++	return sc6000_program_board(devptr, sc6000);
+ }
+ 
+ static int snd_sc6000_mixer(struct snd_wss *chip)
+@@ -538,10 +565,10 @@ static int snd_sc6000_match(struct device *devptr, unsigned int dev)
+ 
+ static void snd_sc6000_free(struct snd_card *card)
+ {
+-	char __iomem *vport = (char __force __iomem *)card->private_data;
++	struct snd_sc6000 *sc6000 = card->private_data;
+ 
+-	if (vport)
+-		sc6000_setup_board(card->dev, vport, 0);
++	if (sc6000->vport)
++		sc6000_setup_board(card->dev, sc6000->vport, 0);
+ }
+ 
+ static int __snd_sc6000_probe(struct device *devptr, unsigned int dev)
+@@ -552,15 +579,17 @@ static int __snd_sc6000_probe(struct device *devptr, unsigned int dev)
+ 	int xirq = irq[dev];
+ 	int xdma = dma[dev];
+ 	struct snd_card *card;
++	struct snd_sc6000 *sc6000;
+ 	struct snd_wss *chip;
+ 	struct snd_opl3 *opl3;
+ 	char __iomem *vport;
+ 	char __iomem *vmss_port;
+ 
+ 	err = snd_devm_card_new(devptr, index[dev], id[dev], THIS_MODULE,
+-				0, &card);
++				sizeof(*sc6000), &card);
+ 	if (err < 0)
+ 		return err;
++	sc6000 = card->private_data;
+ 
+ 	if (xirq == SNDRV_AUTO_IRQ) {
+ 		xirq = snd_legacy_find_free_irq(possible_irqs);
+@@ -587,7 +616,7 @@ static int __snd_sc6000_probe(struct device *devptr, unsigned int dev)
+ 		dev_err(devptr, "I/O port cannot be iomapped.\n");
+ 		return -EBUSY;
+ 	}
+-	card->private_data = (void __force *)vport;
++	sc6000->vport = vport;
+ 
+ 	/* to make it marked as used */
+ 	if (!devm_request_region(devptr, mss_port[dev], 4, DRV_NAME)) {
+@@ -600,12 +629,15 @@ static int __snd_sc6000_probe(struct device *devptr, unsigned int dev)
+ 		dev_err(devptr, "MSS port I/O cannot be iomapped.\n");
+ 		return -EBUSY;
+ 	}
++	sc6000->vmss_port = vmss_port;
+ 
+ 	dev_dbg(devptr, "Initializing BASE[0x%lx] IRQ[%d] DMA[%d] MIRQ[%d]\n",
+ 		port[dev], xirq, xdma,
+ 		mpu_irq[dev] == SNDRV_AUTO_IRQ ? 0 : mpu_irq[dev]);
+ 
+-	err = sc6000_init_board(devptr, vport, vmss_port, dev);
++	sc6000_prepare_board(devptr, sc6000, dev, xirq, xdma);
++
++	err = sc6000_init_board(devptr, sc6000);
+ 	if (err < 0)
+ 		return err;
+ 	card->private_free = snd_sc6000_free;
 -- 
 2.53.0
 
