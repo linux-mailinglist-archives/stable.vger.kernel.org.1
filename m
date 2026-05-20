@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-252124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253220-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MMhZHC7/DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-252124-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:30 +0200
+	id aFEdGj4ODmqe5wUAu9opvQ
+	(envelope-from <stable+bounces-253220-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:40:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 036CB596C14
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:29 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E12C598968
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:40:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1D17F323EB80
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:57:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 333863271F3D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD52F17A309;
-	Wed, 20 May 2026 17:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5788240912F;
+	Wed, 20 May 2026 18:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M1SId+33"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EpelwN7k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C4073BE64B;
-	Wed, 20 May 2026 17:57:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11F7369D42;
+	Wed, 20 May 2026 18:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299853; cv=none; b=beQ3YXOYwvV2e+hympWplTTQ4QHULh4OV5iNV4vBSTLS2SjmaDpkpn0dOF00Cwd/Z4IP7+XDBhCfuNxzwvz2JYoeH4iYFBKKlesEwkP1ERXnSEH4T1N0I+o+1forXVsl4/iDzp9RpI03fakfh1WHHq0PhD0SUHxAWtIxZkofkzM=
+	t=1779302713; cv=none; b=NmxpQCZ30wAP48N/isBECy/378FLv0JEneZf/gRHA3nvmVj1dyIveZVJpkFpMErRCnNUQ+rr3HCcBSJ5qNF8mIZL2ATBE3qg49nGdkZfvRlhhhdpbEuC4Yu/RGVQOqIn1Z8vLre3fg1Ttrd387sAc4F20dYu+ZkV46VIsX8wQKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299853; c=relaxed/simple;
-	bh=2KseTn3SbY426e69M2IGrW/QfqgJaMnHxPBzK0XLpf8=;
+	s=arc-20240116; t=1779302713; c=relaxed/simple;
+	bh=uzzQazJ0JXJ951o3O00bxJ9wQzwEwkK1weIrBFhocyY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VG8et71kRTeXaFv+VlfLvfn8dp4eappR7F1++xP4bY65nZvZe3Y1uE0o45i7rfSlKOUuBkdstrEMsIS7bWs7x9dtQmbjYlrugUnPhcNQTwkQhFQMHBLD6RzvvDPFOQnYhgqXpm5MYdraa1tqokR3kAZkiLReRf47HfFQZSau/1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M1SId+33; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E29C31F000E9;
-	Wed, 20 May 2026 17:57:31 +0000 (UTC)
+	 MIME-Version; b=d5o/aghZAarWpCP17Mb7y2zM+KQ5XMV74z7tLdalYVlQn72kWwgyYoWu0TKqDEqOloQzMWC3mNvE7aByLsQUgLoA9/U5s9ld91GZFzdEc7YVBHaqRtmOdxMZZulDfybN/pgBnjQnxL6pLXPlQI+EVs3bhMi1DT/6F0Kd2dbsHnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EpelwN7k; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 636801F000E9;
+	Wed, 20 May 2026 18:45:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299852;
-	bh=lN0bu2yJQydjTcfa4Bk4QLXswL2/5Z9K5XfdArNl3a4=;
+	s=korg; t=1779302711;
+	bh=fVx8qVHk4kUNGWzn0tXN+S6UomKLghns1Qsk2DmlRBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=M1SId+332sRsEc9VogK4gvJxu37DsNVFmwxUvhWnsm4p8Td4R7ejTILHDShW+x0+N
-	 7SGKE67FB2lARbLNd+wv5n6fFBiJe0WLvFdxaFe6JqoCPtZXOeyJ7SwS5Yqik1Ayk6
-	 2pxobYIEXLgBZaXIFOC21IopXvnJUuS7dXua/rhY=
+	b=EpelwN7k0p01g/ATGBnln/9WzZOVvfpGsvjlTemUCkAp2iCdUhiywI6JU29g6MUWl
+	 DC/+z16ZnTZ7B1TZSNeGr4PkoPnizCydknHPKkXE1sgWsVF0uPoO1z5cT4DVMMMnkM
+	 idqJgNfFYmaWXa/pk457QkML62ApAaEYXwgXFE9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrien Burnett <an.arctic.pigeon@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.18 911/957] ALSA: hda/realtek: Add mute LED quirk for HP Pavilion Laptop 16-ag0xxx
+	Alexandre Demers <alexandre.f.demers@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 371/508] drm/amdgpu: fix spelling typos
 Date: Wed, 20 May 2026 18:23:14 +0200
-Message-ID: <20260520162154.332633728@linuxfoundation.org>
+Message-ID: <20260520162106.663963757@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,20 +69,21 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TAGGED_FROM(0.00)[bounces-253220-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252124-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -89,50 +91,115 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email]
-X-Rspamd-Queue-Id: 036CB596C14
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 8E12C598968
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrien Burnett <an.arctic.pigeon@gmail.com>
+From: Alexandre Demers <alexandre.f.demers@gmail.com>
 
-commit 7d1051ad68df3d584b5f24bfa1fb19f3a24db278 upstream.
+[ Upstream commit ce43abd7ec9464cf954f90e1c69e11768b02fa0a ]
 
-Add a SND_PCI_QUIRK entry for the HP Pavilion Laptop 16-ag0xxx
-(subsystem 0x103c:0x8cbc, Realtek ALC245). The
-ALC245_FIXUP_HP_X360_MUTE_LEDS fixup is already used by the
-neighbouring HP Pavilion Aero Laptop 13-bg0xxx (0x103c:0x8cbd);
-it chains the master-mute COEF handler with the GPIO mic-mute
-LED handler, which is what this machine needs.
+Found some typos while exploring amdgpu code.
 
-Tested on the affected hardware: both the mute and mic-mute key
-LEDs respond correctly to the keyboard hotkeys after this change.
-
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Adrien Burnett <an.arctic.pigeon@gmail.com>
-Link: https://patch.msgid.link/20260514165905.21175-1-an.arctic.pigeon@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alexandre Demers <alexandre.f.demers@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 13e4cf116dbf ("drm/amdgpu/uvd3.1: Don't validate the firmware when already validated")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/codecs/realtek/alc269.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c | 2 +-
+ drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c   | 6 +++---
+ drivers/gpu/drm/amd/amdgpu/uvd_v4_2.c   | 3 ++-
+ drivers/gpu/drm/amd/amdgpu/vce_v2_0.c   | 2 +-
+ 4 files changed, 7 insertions(+), 6 deletions(-)
 
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -6960,6 +6960,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x103c, 0x8ca4, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8ca7, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8caf, "HP Elite mt645 G8 Mobile Thin Client", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
-+	SND_PCI_QUIRK(0x103c, 0x8cbc, "HP Pavilion Laptop 16-ag0xxx", ALC245_FIXUP_HP_X360_MUTE_LEDS),
- 	SND_PCI_QUIRK(0x103c, 0x8cbd, "HP Pavilion Aero Laptop 13-bg0xxx", ALC245_FIXUP_HP_X360_MUTE_LEDS),
- 	SND_PCI_QUIRK(0x103c, 0x8cdd, "HP Spectre", ALC245_FIXUP_HP_SPECTRE_X360_EU0XXX),
- 	SND_PCI_QUIRK(0x103c, 0x8cde, "HP OmniBook Ultra Flip Laptop 14t", ALC245_FIXUP_HP_SPECTRE_X360_EU0XXX),
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+index 8cb192636368f..1584936f29510 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+@@ -264,7 +264,7 @@ void amdgpu_gmc_sysvm_location(struct amdgpu_device *adev, struct amdgpu_gmc *mc
+  * @adev: amdgpu device structure holding all necessary information
+  * @mc: memory controller structure holding memory information
+  *
+- * Function will place try to place GART before or after VRAM.
++ * Function will try to place GART before or after VRAM.
+  * If GART size is bigger than space left then we ajust GART size.
+  * Thus function will never fails.
+  */
+diff --git a/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c b/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
+index 1e0189f90fd6a..191057db58db3 100644
+--- a/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
++++ b/drivers/gpu/drm/amd/amdgpu/uvd_v3_1.c
+@@ -98,7 +98,7 @@ static void uvd_v3_1_ring_emit_ib(struct amdgpu_ring *ring,
+ }
+ 
+ /**
+- * uvd_v3_1_ring_emit_fence - emit an fence & trap command
++ * uvd_v3_1_ring_emit_fence - emit a fence & trap command
+  *
+  * @ring: amdgpu_ring pointer
+  * @addr: address
+@@ -242,7 +242,7 @@ static void uvd_v3_1_mc_resume(struct amdgpu_device *adev)
+ 	uint64_t addr;
+ 	uint32_t size;
+ 
+-	/* programm the VCPU memory controller bits 0-27 */
++	/* program the VCPU memory controller bits 0-27 */
+ 	addr = (adev->uvd.inst->gpu_addr + AMDGPU_UVD_FIRMWARE_OFFSET) >> 3;
+ 	size = AMDGPU_UVD_FIRMWARE_SIZE(adev) >> 3;
+ 	WREG32(mmUVD_VCPU_CACHE_OFFSET0, addr);
+@@ -416,7 +416,7 @@ static int uvd_v3_1_start(struct amdgpu_device *adev)
+ 	/* Set the write pointer delay */
+ 	WREG32(mmUVD_RBC_RB_WPTR_CNTL, 0);
+ 
+-	/* programm the 4GB memory segment for rptr and ring buffer */
++	/* Program the 4GB memory segment for rptr and ring buffer */
+ 	WREG32(mmUVD_LMI_EXT40_ADDR, upper_32_bits(ring->gpu_addr) |
+ 		   (0x7 << 16) | (0x1 << 31));
+ 
+diff --git a/drivers/gpu/drm/amd/amdgpu/uvd_v4_2.c b/drivers/gpu/drm/amd/amdgpu/uvd_v4_2.c
+index c108b83817951..01d8e7d2caf97 100644
+--- a/drivers/gpu/drm/amd/amdgpu/uvd_v4_2.c
++++ b/drivers/gpu/drm/amd/amdgpu/uvd_v4_2.c
+@@ -298,7 +298,7 @@ static int uvd_v4_2_start(struct amdgpu_device *adev)
+ 	/* enable VCPU clock */
+ 	WREG32(mmUVD_VCPU_CNTL,  1 << 9);
+ 
+-	/* disable interupt */
++	/* disable interrupt */
+ 	WREG32_P(mmUVD_MASTINT_EN, 0, ~(1 << 1));
+ 
+ #ifdef __BIG_ENDIAN
+@@ -308,6 +308,7 @@ static int uvd_v4_2_start(struct amdgpu_device *adev)
+ #endif
+ 	WREG32(mmUVD_LMI_SWAP_CNTL, lmi_swap_cntl);
+ 	WREG32(mmUVD_MP_SWAP_CNTL, mp_swap_cntl);
++
+ 	/* initialize UVD memory controller */
+ 	WREG32(mmUVD_LMI_CTRL, 0x203108);
+ 
+diff --git a/drivers/gpu/drm/amd/amdgpu/vce_v2_0.c b/drivers/gpu/drm/amd/amdgpu/vce_v2_0.c
+index 67eb01fef789b..479eb9382c77e 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vce_v2_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vce_v2_0.c
+@@ -278,7 +278,7 @@ static int vce_v2_0_stop(struct amdgpu_device *adev)
+ 	int status;
+ 
+ 	if (vce_v2_0_lmi_clean(adev)) {
+-		DRM_INFO("vce is not idle \n");
++		DRM_INFO("VCE is not idle \n");
+ 		return 0;
+ 	}
+ 
+-- 
+2.53.0
+
 
 
 
