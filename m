@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-251817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252458-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gA1kCWT0DWoF5AUAu9opvQ
-	(envelope-from <stable+bounces-251817-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:50:28 +0200
+	id 0NPLF1YCDmra5QUAu9opvQ
+	(envelope-from <stable+bounces-252458-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:49:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D13F3594B3D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:50:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F118597476
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:49:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4E0333076D42
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:42:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 75EDF3858A92
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:12:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7005133BBCF;
-	Wed, 20 May 2026 17:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 843D53F88A6;
+	Wed, 20 May 2026 18:12:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dK/yLCJS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="APhIiSjf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4079E28DC4;
-	Wed, 20 May 2026 17:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E7053F86FB;
+	Wed, 20 May 2026 18:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298968; cv=none; b=LzcVRkHMIQRwRD8gCHkZhrIKaAXAoFBN9BiqXy/0tUsviEaiGK+xEkWZDAK2q+bh/cUa4fm+T+Kxx7w0M0sihn7NpJLajnoaMpS6NapLk5hzti2NsOf9Flk9fAnfIFaLtgU4xSwaS8Pk7YUBpAvoSjIloZegSzNcQur3N5ehPWs=
+	t=1779300726; cv=none; b=KmvN09jl/dP+C52jMlYN5fqucYyI0rtiIJcMJowqTHAH1L16VAnGDX/jRVM2La6psqNlidrUJTMGRN5DwRbd1xXokO+poqpp1JIvWsvR/SrUDlR1AEl+TQTKSjUWWneut4z5kiTft6hj2/WoU8cijEnEdTSIzUvTHz8XMC7+fXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298968; c=relaxed/simple;
-	bh=d+vwgXbZmh+114vMYWlQmvyLC03dcf64f7VgS70tolk=;
+	s=arc-20240116; t=1779300726; c=relaxed/simple;
+	bh=8CDxzGNpRBYBTKqj6wGpMm5YguJ0ESJ6CfB5AWvxZr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=INfT6OQqgIi58pchQoYmiymcsTNhDUMgyjiFuVa4ST1FdKrnJkP3KWt2DnOLGwNFnr84cOrhwgrqXCNPXvBKtg7+7LRADtCuwQoOz5s5fuWrTtKMlAOq9/4eplVVh/I21d2jlDyLh39ehYFD2jaenWb0vT4TeX7Z+H87wt6lR4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dK/yLCJS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A43BE1F000E9;
-	Wed, 20 May 2026 17:42:46 +0000 (UTC)
+	 MIME-Version; b=BySLAXbvL6znER/gbecWq2+XiIo4ioub4q3nJ7VZ6KK3AMB78xASxDiRd6mgdpIDEJfJEpP/rdEOCp1ppdxWQw/4SQqfabNdM8f1jgq+A7s6EWtALQKlOGnepziuoNZiG1MrpgYkaNLF2vjEQHBtEpgn51enaKFoBKQWX0PGSh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=APhIiSjf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A52781F000E9;
+	Wed, 20 May 2026 18:12:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298967;
-	bh=YSVTlxORN6OEkJuEKWyweSSzMZQPwk2h2G13geoGi8c=;
+	s=korg; t=1779300725;
+	bh=sqC55/Ol1iX0U7qatJH4p4tTNg1unzFViyKqKRmd/AA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dK/yLCJSIMyO45ymjF2wR6KJ9CyBcRrhs+nSVpjl6c7rc5DGd3BduS+jnhXf5witA
-	 WGVk0ZfnpgccYdDUFoSLnzij9o8JzRRW2p8NTx/gxf3w7pmJVt8qvt7KDVLNYgP5Rh
-	 NczhJ6eJ0WNwZZ5IdXxIAhBKfxDiJcSDe6B7DjPE=
+	b=APhIiSjfC9VXD52DtVJU8itg2IEfShjBvtn40+JYXpopApEJYfkQEIOMDLYMC7fh1
+	 s2+uXKWz5plm6qyDd/VtmF/yObY6P9mVft+198h1aPENvGGg0r8BM06dvQ2fx40Jq6
+	 M9zTsEEveroBaOSNK1x1N4wS+0D9aqboRZF5BRgI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Abel Vesa <abel.vesa@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 611/957] arm64: dts: imx8mn-tqma8mqnl: Correct PAD settings for PMIC_nINT
+Subject: [PATCH 6.12 283/666] arm64: dts: qcom: sm8450: Fix GIC_ITS range length
 Date: Wed, 20 May 2026 18:18:14 +0200
-Message-ID: <20260520162147.785055238@linuxfoundation.org>
+Message-ID: <20260520162117.349626990@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,66 +70,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252458-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251817-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D13F3594B3D
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,1.5.137.32:email,linaro.org:email,1.4.236.224:email]
+X-Rspamd-Queue-Id: 9F118597476
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit 0fb37990774113afd943eaa91323679388584b6d ]
+[ Upstream commit 14044fa192c50265bc1f636108371044bbdcf7b7 ]
 
-With commit 5d0efaf47ee90 ("regulator: pca9450: Correct interrupt type"),
-there might be interrupt storm for this board. Need to set PAD PUE and PU
-together to make pull up work properly.
+Currently, the GITS_SGIR register is cut off. Fix it up.
 
-Fixes: 3e56e354db6d3 ("arm64: dts: freescale: add initial device tree for TQMa8MQNL with i.MX8MN")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Fixes: fc8b0b9b630d ("arm64: dts: qcom: sm8450 add ITS device tree node")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260317-topic-its_range_fixup-v1-3-49be8076adb1@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi | 2 +-
+ arch/arm64/boot/dts/qcom/sm8450.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi
-index e2ccebf6ee13f..5e2c6d6e94550 100644
---- a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi
-@@ -298,7 +298,7 @@ pinctrl_i2c1_gpio: i2c1gpiogrp {
- 	};
+diff --git a/arch/arm64/boot/dts/qcom/sm8450.dtsi b/arch/arm64/boot/dts/qcom/sm8450.dtsi
+index 58ed68f534e50..cfa880c577a40 100644
+--- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
+@@ -4274,7 +4274,7 @@ intc: interrupt-controller@17100000 {
  
- 	pinctrl_pmic: pmicgrp {
--		fsl,pins = <MX8MN_IOMUXC_GPIO1_IO08_GPIO1_IO8	0x84>;
-+		fsl,pins = <MX8MN_IOMUXC_GPIO1_IO08_GPIO1_IO8	0x1c4>;
- 	};
- 
- 	pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
+ 			gic_its: msi-controller@17140000 {
+ 				compatible = "arm,gic-v3-its";
+-				reg = <0x0 0x17140000 0x0 0x20000>;
++				reg = <0x0 0x17140000 0x0 0x40000>;
+ 				msi-controller;
+ 				#msi-cells = <1>;
+ 			};
 -- 
 2.53.0
 
