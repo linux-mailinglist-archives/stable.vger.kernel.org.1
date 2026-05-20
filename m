@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-250635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251535-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oBZhAVsSDmoJ6AUAu9opvQ
-	(envelope-from <stable+bounces-250635-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:58:19 +0200
+	id gHF8Hs8bDmrP6AUAu9opvQ
+	(envelope-from <stable+bounces-251535-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:38:39 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 611BF598F36
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:58:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB004599E02
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:38:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3BF8A30D0D81
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:52:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4FC1533D7C4A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:30:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E26C436EAB8;
-	Wed, 20 May 2026 16:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B1243A3825;
+	Wed, 20 May 2026 17:30:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fa9A/VTg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sZGprU1d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7915B31F9BE;
-	Wed, 20 May 2026 16:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0219B30675C;
+	Wed, 20 May 2026 17:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295928; cv=none; b=Rq6OlP2dewdX20GqMQvykPvfHfDMqGwq5qho0lSwO22ke+u1zOxyExSLMG6xHyHxU0IV7ZLLj9JwRPL6ZhKcSFBu9BFArt25eBZ3wGifQwjwX03OL19LURgnpn02HRpVJ1f0DkDEwCV8sIay+DFgvm3eucjIzEYcjka16fqtErU=
+	t=1779298232; cv=none; b=Th3VVxTfWQChc7DILjrsYxn9ELGRDjPgUruDx3i6gR7fYE6MGxOheBFAoqdnuOlNEzbL8VvTaIFuyUQstVEjwW+A9cY0WuuDFvbXBC7RNC63hIHBLafViTocXqKqVfhDT2AXMZSae6Hkclh5MsK0tBoe7/zUhZWPM0w5SQMJ0PQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295928; c=relaxed/simple;
-	bh=5yYE/syqt5ZKByl1oR8GghVHxyq4hpuG6Jj/xLje4EI=;
+	s=arc-20240116; t=1779298232; c=relaxed/simple;
+	bh=gqKIEatqJ9IF3Oh2LtGs3X9gCxFfrf2e88V6KvXRu/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mAQXkwuRDEr+R5tnz0ZrDI1Bvjt0wNjNsKPx1gFd7L8W1Feqy/i6Dfxv+jJlYoqjJEO7F/vRZprdLh6BREcisM6HalcYzNLk6iKEQ4zWVZ6IaQxt3BF2RxQXvEVTJ41c94povXaVBUsIH+ZxsAw3NjPskNt2ERpDpTbnM7fiUFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fa9A/VTg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CD0A1F000E9;
-	Wed, 20 May 2026 16:52:05 +0000 (UTC)
+	 MIME-Version; b=NhrElYYJAo5Y23mRDbz5qP3f73qjbP3LE1wttAwSkQbFnxkOoWwH2IDJ7fYEM/srBW8SW4+F8eNIrZ9e53f4tHf4oZFMU4wvRip3vM8PRIgdZL/QKqcVaB7wt6HjhxpiH8CavHtZ+1oFpwOktCURLT/i8NxC5bp5YlB0os/GV3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sZGprU1d; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D8581F000E9;
+	Wed, 20 May 2026 17:30:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295926;
-	bh=P7FOTMBBMoxFz5pjq7p9z2fP5zAaxcgVm34WQmn6Zng=;
+	s=korg; t=1779298230;
+	bh=9iXLPD00G1KcpDHtctyYgvNXzbFGQOYoEVqxx5OJiFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Fa9A/VTgwQ6ehCaqES9JVESQXBAhKdDCUBoB4f6qv+9cRrbRXEdYw/L8xDe4E+8Wk
-	 ibLeoYKbRvavJXou8F+olwRHLRICzOKOAFNCwkTvmDqxqeOn9EvwKVCw/7Uf0D96cL
-	 jjPK5vKfXR/VlhDdWQ55aCbKuGp7vdWgVCQQGxBQ=
+	b=sZGprU1d8Lr67uyB2M7W4d/lFek9wLqjuP2o+6IqdLKpqN2rSW0XO4liZ9egTf28R
+	 dpa+h8Q9qmx46+pfWBnJiD+6RTBpwQoQkIv6hn8J/LwsIlJCPvIVho4jDGKovQyUa6
+	 qT03d0cOV8KJHqtNt9RP6hSYlIFTPw2xsDiM+XHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	David Howells <dhowells@redhat.com>,
-	David Gow <davidgow@google.com>,
-	Kees Cook <kees@kernel.org>,
-	Petr Mladek <pmladek@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Vidya Sagar <vidyas@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0565/1146] lib: kunit_iov_iter: fix memory leaks
+Subject: [PATCH 6.18 332/957] PCI: tegra194: Fix CBB timeout caused by DBI access before core power-on
 Date: Wed, 20 May 2026 18:13:35 +0200
-Message-ID: <20260520162200.970834770@linuxfoundation.org>
+Message-ID: <20260520162141.730905094@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250635-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251535-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
@@ -91,96 +90,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,linux-foundation.org:email,sashiko.dev:url,c--e.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 611BF598F36
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: DB004599E02
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Manikanta Maddireddy <mmaddireddy@nvidia.com>
 
-[ Upstream commit 0b49c7d0ae697fcecd7377cb7dda220f7cd096ff ]
+[ Upstream commit 34b3eef48d980cd37b876e128bbf314f69fb5d70 ]
 
-Use vfree() instead of vunmap() to free the buffer allocated by
-iov_kunit_create_buffer() because vunmap() does not honour
-VM_MAP_PUT_PAGES.  In order for this to work the page array itself must
-not be managed by kunit.
+When PERST# is deasserted twice (assert -> deassert -> assert -> deassert),
+a CBB (Control Backbone) timeout occurs at DBI register offset 0x8bc
+(PCIE_MISC_CONTROL_1_OFF). This happens because pci_epc_deinit_notify()
+and dw_pcie_ep_cleanup() are called before reset_control_deassert() powers
+on the controller core.
 
-Remove the folio_put() when destroying a folioq.  This is handled by
-vfree(), now.
+The call chain that causes the timeout:
 
-Pointed out by sashiko.dev on a previous iteration of this series.
+  pex_ep_event_pex_rst_deassert()
+    pci_epc_deinit_notify()
+      pci_epf_test_epc_deinit()
+        pci_epf_test_clear_bar()
+          pci_epc_clear_bar()
+            dw_pcie_ep_clear_bar()
+              __dw_pcie_ep_reset_bar()
+                dw_pcie_dbi_ro_wr_en()      <- Accesses 0x8bc DBI register
+    reset_control_deassert(pcie->core_rst)  <- Core powered on HERE
 
-Tested by running the kunit test 10000 times in a loop.
+The DBI registers, including PCIE_MISC_CONTROL_1_OFF (0x8bc), are only
+accessible after the controller core is powered on via
+reset_control_deassert(pcie->core_rst). Accessing them before this point
+results in a CBB timeout because the hardware is not yet operational.
 
-Link: https://lkml.kernel.org/r/20260326214905.818170-4-lk@c--e.de
-Fixes: 2d71340ff1d4 ("iov_iter: Kunit tests for copying to/from an iterator")
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-Cc: David Howells <dhowells@redhat.com>
-Cc: David Gow <davidgow@google.com>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fix this by moving pci_epc_deinit_notify() and dw_pcie_ep_cleanup() to
+after reset_control_deassert(pcie->core_rst), ensuring the controller is
+fully powered on before any DBI register accesses occur.
+
+Fixes: 40e2125381dc ("PCI: tegra194: Move controller cleanups to pex_ep_event_pex_rst_deassert()")
+Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
+Link: https://patch.msgid.link/20260324190755.1094879-15-mmaddireddy@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/tests/kunit_iov_iter.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/pci/controller/dwc/pcie-tegra194.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/lib/tests/kunit_iov_iter.c b/lib/tests/kunit_iov_iter.c
-index bb847e5010eb2..d16449bdb8334 100644
---- a/lib/tests/kunit_iov_iter.c
-+++ b/lib/tests/kunit_iov_iter.c
-@@ -42,7 +42,7 @@ static inline u8 pattern(unsigned long x)
- 
- static void iov_kunit_unmap(void *data)
- {
--	vunmap(data);
-+	vfree(data);
- }
- 
- static void *__init iov_kunit_create_buffer(struct kunit *test,
-@@ -53,17 +53,22 @@ static void *__init iov_kunit_create_buffer(struct kunit *test,
- 	unsigned long got;
- 	void *buffer;
- 
--	pages = kunit_kcalloc(test, npages, sizeof(struct page *), GFP_KERNEL);
--        KUNIT_ASSERT_NOT_ERR_OR_NULL(test, pages);
-+	pages = kzalloc_objs(struct page *, npages, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, pages);
- 	*ppages = pages;
- 
- 	got = alloc_pages_bulk(GFP_KERNEL, npages, pages);
- 	if (got != npages) {
- 		release_pages(pages, got);
-+		kvfree(pages);
- 		KUNIT_ASSERT_EQ(test, got, npages);
+diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+index c37be61f2b90a..fdbf440fb3819 100644
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -1750,10 +1750,6 @@ static void pex_ep_event_pex_rst_deassert(struct tegra_pcie_dw *pcie)
+ 		goto fail_phy;
  	}
  
- 	buffer = vmap(pages, npages, VM_MAP | VM_MAP_PUT_PAGES, PAGE_KERNEL);
-+	if (buffer == NULL) {
-+		release_pages(pages, got);
-+		kvfree(pages);
-+	}
-         KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buffer);
+-	/* Perform cleanup that requires refclk */
+-	pci_epc_deinit_notify(pcie->pci.ep.epc);
+-	dw_pcie_ep_cleanup(&pcie->pci.ep);
+-
+ 	/* Clear any stale interrupt statuses */
+ 	appl_writel(pcie, 0xFFFFFFFF, APPL_INTR_STATUS_L0);
+ 	appl_writel(pcie, 0xFFFFFFFF, APPL_INTR_STATUS_L1_0_0);
+@@ -1823,6 +1819,10 @@ static void pex_ep_event_pex_rst_deassert(struct tegra_pcie_dw *pcie)
  
- 	kunit_add_action_or_reset(test, iov_kunit_unmap, buffer);
-@@ -369,9 +374,6 @@ static void iov_kunit_destroy_folioq(void *data)
+ 	reset_control_deassert(pcie->core_rst);
  
- 	for (folioq = data; folioq; folioq = next) {
- 		next = folioq->next;
--		for (int i = 0; i < folioq_nr_slots(folioq); i++)
--			if (folioq_folio(folioq, i))
--				folio_put(folioq_folio(folioq, i));
- 		kfree(folioq);
- 	}
- }
++	/* Perform cleanup that requires refclk and core reset deasserted */
++	pci_epc_deinit_notify(pcie->pci.ep.epc);
++	dw_pcie_ep_cleanup(&pcie->pci.ep);
++
+ 	val = dw_pcie_readl_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL);
+ 	val &= ~PORT_LOGIC_SPEED_CHANGE;
+ 	dw_pcie_writel_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL, val);
 -- 
 2.53.0
 
