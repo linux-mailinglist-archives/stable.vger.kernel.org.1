@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253223-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oFCGFfnuDWpu4wUAu9opvQ
-	(envelope-from <stable+bounces-251196-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:27:21 +0200
+	id WBwTIyAEDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-253223-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:57:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AFF2593B45
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:27:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05FEB597781
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:57:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6BEEC317A70F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9BCB732B294D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6DB3DA7C6;
-	Wed, 20 May 2026 17:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B19B03FE35E;
+	Wed, 20 May 2026 18:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fmXpta+r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Armm3Gjt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53DF633A033;
-	Wed, 20 May 2026 17:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248983FC5A9;
+	Wed, 20 May 2026 18:45:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297350; cv=none; b=Sgq7j6oqDb57MDEtDNodTd34lA7wROexpgKbsz/hZs15hdKPuHp/tU/z+0/ok2aBfATmQTDfApA87Ggt3k2oho2m+A6E0fM4+KdVwwC1FjhA0sRDKUPQ4k1UHu5/XXWhlwOhLHbK0z8UwvuVaa/RGW98t+5k8HE2ThwCXjkpDjY=
+	t=1779302721; cv=none; b=b9bmHzrXR9hSkSN8s29s1dLSe/8C/BAjIgb9pZXuB0FY9wSmhK0Fhchskzjwck1n3CmLkVxlOh06wuLbCXROLrDrQITZro5zb80M9kToNgJaj3nsWvCraB3iE5MH3iMd4R2A1us4d9XOUO+VspPXSmc9robzH+OJAkXXDZvh/FA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297350; c=relaxed/simple;
-	bh=pok7uqEav/bEHYlJypf0jibnVESA1J1t7pIE2aMaa2s=;
+	s=arc-20240116; t=1779302721; c=relaxed/simple;
+	bh=sXluGS3pUnEycEaOnzG+ERmtXjodGiAW9SSQOjhtxDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IodEYkj5mF3Bzhvmp11tzxV+gzBdFmpolGwYyXBRbanJASfjzh/vKI0HJL4mNIKd42Lma5zO5xcrNGCqX/VkO/V2RtOCULKCRMhTHME6VtYABIULUMSj6TVmwwVvRkt9E1nHvrGr8z4AEyCReA0DW4xxHmmcB10mnIYT/lYWy6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fmXpta+r; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B21D11F00893;
-	Wed, 20 May 2026 17:15:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tsZDwIWzZTnC+16V0DA/jLpHzZo2HuKH1k5qV9oIPNTPtKYX0Hqi4VHW3AZ+s+rYYVRfo51jwHvqB3kYwaAIdDD1iSzpjrK/5vU1/FWefwFl37byS/6gZxdRdFiZ6dob1LfKdHs78uGhaelvDAkKBSa/m1pE/9xMWKPXmSca13s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Armm3Gjt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C9211F000E9;
+	Wed, 20 May 2026 18:45:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297349;
-	bh=FwoDsdIQnXaoCV0z2gt1royBFkiv3Kv6fQUtdGGhSEw=;
+	s=korg; t=1779302719;
+	bh=PBkAo0zWbOenJdqttih13nDwmob8umI9Vlsw2O9PEJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fmXpta+rwD1busT50qHBkfJP2LDHB/lCHUt00zrj8dT1rXQjGRWop1EyTK4wJ1yP8
-	 bxHmnDDMB/gevfuX962bStZVwiXv/AcLdWJeJZcX5a5ay+mXzW/W+IGCGOxfGGsa3y
-	 iyatVyVQv5j0PdSZXwwE2lcMMul8vNrQG/Cej7G4=
+	b=Armm3GjtNxN3WMMP77SKhHZCBTcU3xHrC2MZuFaWDONqCr+9r77fh7+tbjaJ8cUlo
+	 OFZ624UQRGmuBSyaq15AQWg3Te1dC/HXRDcPQ3vliAHhsCzYPtxLJNauCie0gPzxHf
+	 hp7tLjoZZnvryQKTVl1egw9U8ZIfOIUDbuzIrGTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yash Shah <yash.shah@sifive.com>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 1146/1146] spi: sifive: fix controller deregistration
+Subject: [PATCH 6.6 373/508] drm/amdgpu/gfx6: Support harvested SI chips with disabled TCCs (v2)
 Date: Wed, 20 May 2026 18:23:16 +0200
-Message-ID: <20260520162214.194682948@linuxfoundation.org>
+Message-ID: <20260520162106.705577005@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +64,183 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251196-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-253223-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 0AFF2593B45
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bugs.freedesktop.org:url,gitlab.freedesktop.org:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 05FEB597781
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 0f25236694a2854627c1597465a071e6bb6fe572 ]
+[ Upstream commit fe2b84f9228e2a0903221a4d0d8c350b018e9c0c ]
 
-Make sure to deregister the controller before disabling underlying
-resources like interrupts during driver unbind.
+This commit fixes amdgpu to work on the Radeon HD 7870 XT
+which has never worked with the Linux open source drivers before.
 
-Note that clocks were also disabled before the recent commit
-140039c23aca ("spi: sifive: Simplify clock handling with
-devm_clk_get_enabled()").
+Some boards have "harvested" chips, meaning that some parts of
+the chip are disabled and fused, and it's sold for cheaper and
+under a different marketing name.
+On a harvested chip, any of the following can be disabled:
+- CUs (Compute Units)
+- RBs (Render Backend, aka. ROP)
+- Memory channels (ie. the chip has a lower bandwidth)
+- TCCs (ie. less L2 cache)
 
-Fixes: 484a9a68d669 ("spi: sifive: Add driver for the SiFive SPI controller")
-Cc: stable@vger.kernel.org	# 5.1
-Cc: Yash Shah <yash.shah@sifive.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-15-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Handle chips with harvested TCCs by patching the registers
+that configure how TCCs are mapped.
+
+If some TCCs are disabled, we need to make sure that
+the disabled TCCs are not used, and the remaining TCCs
+are used optimally.
+
+TCP_CHAN_STEER_LO/HI control which TCC is used by TCP channels.
+TCP_ADDR_CONFIG.NUM_TCC_BANKS controls how many channels are used.
+
+Note that the TCC configuration is highly relevant to performance.
+Suboptimal configuration (eg. CHAN_STEER=0) can significantly
+reduce gaming performance.
+
+For optimal performance:
+- Rely on the CHAN_STEER from the golden registers table,
+  only skip disabled TCCs but keep the mapping order.
+- Limit NUM_TCC_BANKS to number of active TCCs to avoid thrashing,
+  which performs better than using the same TCC twice.
+
+v2:
+- Also consider CGTS_USER_TCC_DISABLE for disabled TCCs.
+
+Link: https://bugs.freedesktop.org/show_bug.cgi?id=60879
+Closes: https://gitlab.freedesktop.org/drm/amd/-/work_items/2664
+Fixes: 2cd46ad22383 ("drm/amdgpu: add graphic pipeline implementation for si v8")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 00218d15528fab9f6b31241fe5904eea4fcaa30d)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-sifive.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c | 66 +++++++++++++++++++++++++++
+ 1 file changed, 66 insertions(+)
 
---- a/drivers/spi/spi-sifive.c
-+++ b/drivers/spi/spi-sifive.c
-@@ -392,7 +392,7 @@ static int sifive_spi_probe(struct platf
- 	dev_info(&pdev->dev, "mapped; irq=%d, cs=%d\n",
- 		 irq, host->num_chipselect);
- 
--	ret = devm_spi_register_controller(&pdev->dev, host);
-+	ret = spi_register_controller(host);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "spi_register_host failed\n");
- 		goto put_host;
-@@ -411,8 +411,14 @@ static void sifive_spi_remove(struct pla
- 	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct sifive_spi *spi = spi_controller_get_devdata(host);
- 
-+	spi_controller_get(host);
-+
-+	spi_unregister_controller(host);
-+
- 	/* Disable all the interrupts just in case */
- 	sifive_spi_write(spi, SIFIVE_SPI_REG_IE, 0);
-+
-+	spi_controller_put(host);
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c
+index 34f9211b26793..d4f0437001089 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c
+@@ -1554,6 +1554,71 @@ static void gfx_v6_0_setup_spi(struct amdgpu_device *adev)
+ 	mutex_unlock(&adev->grbm_idx_mutex);
  }
  
- static int sifive_spi_suspend(struct device *dev)
++/**
++ * gfx_v6_0_setup_tcc() - setup which TCCs are used
++ *
++ * @adev: amdgpu_device pointer
++ *
++ * Verify whether the current GPU has any TCCs disabled,
++ * which can happen when the GPU is harvested and some
++ * memory channels are disabled, reducing the memory bus width.
++ * For example, on the Radeon HD 7870 XT (Tahiti LE).
++ *
++ * If some TCCs are disabled, we need to make sure that
++ * the disabled TCCs are not used, and the remaining TCCs
++ * are used optimally.
++ *
++ * TCP_CHAN_STEER_LO/HI control which TCC is used by TCP channels.
++ * TCP_ADDR_CONFIG.NUM_TCC_BANKS controls how many channels are used.
++ *
++ * For optimal performance:
++ * - Rely on the CHAN_STEER from the golden registers table,
++ *   only skip disabled TCCs but keep the mapping order.
++ * - Limit NUM_TCC_BANKS to number of active TCCs to avoid thrashing,
++ *   which performs better than using the same TCC twice.
++ */
++static void gfx_v6_0_setup_tcc(struct amdgpu_device *adev)
++{
++	u32 i, tcc, tcp_addr_config, num_active_tcc = 0;
++	u64 chan_steer, patched_chan_steer = 0;
++	const u32 num_max_tcc = adev->gfx.config.max_texture_channel_caches;
++	const u32 dis_tcc_mask =
++		amdgpu_gfx_create_bitmask(num_max_tcc) &
++		(REG_GET_FIELD(RREG32(mmCGTS_TCC_DISABLE),
++			       CGTS_TCC_DISABLE, TCC_DISABLE) |
++		 REG_GET_FIELD(RREG32(mmCGTS_USER_TCC_DISABLE),
++			       CGTS_USER_TCC_DISABLE, TCC_DISABLE));
++
++	/* When no TCC is disabled, the golden registers table already has optimal TCC setup */
++	if (!dis_tcc_mask)
++		return;
++
++	/* Each 4-bit nibble contains the index of a TCC used by all TCPs */
++	chan_steer = RREG32(mmTCP_CHAN_STEER_LO) | ((u64)RREG32(mmTCP_CHAN_STEER_HI) << 32ull);
++
++	/* Patch the TCP to TCC mapping to skip disabled TCCs */
++	for (i = 0; i < num_max_tcc; ++i) {
++		tcc = (chan_steer >> (u64)(4 * i)) & 0xf;
++
++		if (!((1 << tcc) & dis_tcc_mask)) {
++			/* Copy enabled TCC indices to the patched register value. */
++			patched_chan_steer |= (u64)tcc << (u64)(4 * num_active_tcc);
++			++num_active_tcc;
++		}
++	}
++
++	WARN_ON(num_active_tcc != num_max_tcc - hweight32(dis_tcc_mask));
++
++	/* Patch number of TCCs used by TCPs */
++	tcp_addr_config = REG_SET_FIELD(RREG32(mmTCP_ADDR_CONFIG),
++					TCP_ADDR_CONFIG, NUM_TCC_BANKS,
++					num_active_tcc - 1);
++
++	WREG32(mmTCP_ADDR_CONFIG, tcp_addr_config);
++	WREG32(mmTCP_CHAN_STEER_HI, upper_32_bits(patched_chan_steer));
++	WREG32(mmTCP_CHAN_STEER_LO, lower_32_bits(patched_chan_steer));
++}
++
+ static void gfx_v6_0_config_init(struct amdgpu_device *adev)
+ {
+ 	adev->gfx.config.double_offchip_lds_buf = 0;
+@@ -1712,6 +1777,7 @@ static void gfx_v6_0_constants_init(struct amdgpu_device *adev)
+ 	gfx_v6_0_tiling_mode_table_init(adev);
+ 
+ 	gfx_v6_0_setup_rb(adev);
++	gfx_v6_0_setup_tcc(adev);
+ 
+ 	gfx_v6_0_setup_spi(adev);
+ 
+-- 
+2.53.0
+
 
 
 
