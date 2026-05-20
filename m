@@ -1,59 +1,71 @@
-Return-Path: <stable+bounces-250576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251556-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UJmIKUv0DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-250576-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:50:03 +0200
+	id mAMXFkzyDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251556-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B9F2594AFC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:50:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5094594505
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 254113176F8E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:50:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1766C3055057
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:31:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88C4936605E;
-	Wed, 20 May 2026 16:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F06A12D879E;
+	Wed, 20 May 2026 17:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cnls10Qf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eaQIJast"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A783BE64B;
-	Wed, 20 May 2026 16:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DEB42BE7BA;
+	Wed, 20 May 2026 17:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295774; cv=none; b=pz8oskUdGHq49/56OBLAiv1+oV/cmhoo8fbfapLTcQknsghLnrHajYTfFCAkvhiTIzsP+h5nfUsY9creOAx1R2clk+pZqr25Vn8ndg6w/BD//eiDWc0kmuwLUUv8rFtfga1UCQZZgNN0kiagChDN2ixYr5uCdSpbIMWTpkaJ9RU=
+	t=1779298287; cv=none; b=EqJbVpVj6mMENFHtnqGSqKMrZwj7J9IB7hZwY4vekoqpy/edZ/qVCa7xByhh9heiwHeot8F3P+VfwsQ+68w+525IWukbgx1pSA5aC60VrXvwIeyoF9YTwhj9tL1ElDxjSEphmuHD1DyNqWopYkXTuXJY05s7opeKnijVaVjDOHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295774; c=relaxed/simple;
-	bh=Z2DR/V24Y9xoWUzBhbA/zgzgQkHKfdtxZ/+MqRhp6F0=;
+	s=arc-20240116; t=1779298287; c=relaxed/simple;
+	bh=zS5AcYWMLGR6A/WEtC8HIgFTMVOTh66p8gSYc+Jin/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X/gyUjJcnWHONJKVvyF7N8jETv4Vd78+XQeNMx58RkxzGpBSQr8Iga0U2n2jmkb81u6KQYyhf5od4zMye3oJ1cxMdryhrqa4X2BacBix4FAaextRdlwdNWWEqXtIZklxFEV2hPEHNL33IsxhlxhcN+evwNOK4fq7VKaPVotkFGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cnls10Qf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B0191F000E9;
-	Wed, 20 May 2026 16:49:31 +0000 (UTC)
+	 MIME-Version; b=RJ1QtHbSDlj7DrghPLhLGmb9fm62fJiJLoyDq+uKodr2w2Pp4T72d90cFyG1iYyovXqh+tMBXNhDNONB3wrlu58I2N0ceGZMaoPXGZlJE+fvLke+fWPSmLCQ70l1MZG4f+EtvqYNFMt9VT7h6e/FpfB36FXktTMNVeKOzlQemVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eaQIJast; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB5771F00893;
+	Wed, 20 May 2026 17:31:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295771;
-	bh=JTopMf6gtb30tcoTnrACAaf/4SgV8tQ6Zd+rZgUhbA8=;
+	s=korg; t=1779298286;
+	bh=tPHYin3srlTHHRTyGoLipUYIz1HfXYk3AJL5ZkFCD9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cnls10QfyUL6UqltY7eTjKRTUlD53cCcnM/8nheq4q//w574q5uDi+/vPTwyx93If
-	 VyFJz+QULrVlDAQ/EWEWmtFkCFtJ4m/eyMUKMR4wMyUKmnrQZK44u4iSA0lhdcazJt
-	 OSLQMBnLqPqeMaAUep+2q2qRGF07lZjBgVgF7pjw=
+	b=eaQIJastwLdQiKzLaCk5kwFANFyw+UDMkpLJspLsrAVu2v6C4PMlHz9ALowOtefE1
+	 QNgz7MyKedxPy//GtJRiLwbfRlKyKtzIKgeLoOCZ20X7x0/aJOJv4ZSz4YqatGAxvT
+	 I9FVuay0Z7l9k/aajaUAjp8FPvBEWGNtMxX09h1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josua Mayer <josua@solid-run.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	Jane Chu <jane.chu@oracle.com>,
+	David Hildenbrand <david@kernel.org>,
+	Hillf Danton <hillf.zj@alibaba-inc.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0545/1146] arm64: dts: lx2160a: change zeros to hexadecimal in pinmux nodes
+Subject: [PATCH 6.18 312/957] Documentation: fix a hugetlbfs reservation statement
 Date: Wed, 20 May 2026 18:13:15 +0200
-Message-ID: <20260520162200.513141226@linuxfoundation.org>
+Message-ID: <20260520162141.298767941@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,8 +90,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250576-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251556-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -87,84 +99,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[solid-run.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,70010012c:email]
-X-Rspamd-Queue-Id: 0B9F2594AFC
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: C5094594505
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josua Mayer <josua@solid-run.com>
+From: Jane Chu <jane.chu@oracle.com>
 
-[ Upstream commit 03241620d2b9915c9e3463dbc56e9eb95ad43c08 ]
+[ Upstream commit 7a197d346a44384a1a858a98ef03766840e561d4 ]
 
-Replace some stray zeros from decimal to hexadecimal format within
-pinmux nodes.
+Documentation/mm/hugetlbfs_reserv.rst has
+	if (resv_needed <= (resv_huge_pages - free_huge_pages))
+		resv_huge_pages += resv_needed;
+which describes this code in gather_surplus_pages()
+	needed = (h->resv_huge_pages + delta) - h->free_huge_pages;
+	if (needed <= 0) {
+		h->resv_huge_pages += delta;
+		return 0;
+	}
+which means if there are enough free hugepages to account for the new
+reservation, simply update the global reservation count without
+further action.
 
-No functional change intended.
+But the description is backwards, it should be
+	if (resv_needed <= (free_huge_pages - resv_huge_pages))
+instead.
 
-Fixes: 8a1365c7bbc1 ("arm64: dts: lx2160a: add pinmux and i2c gpio to support bus recovery")
-Signed-off-by: Josua Mayer <josua@solid-run.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lkml.kernel.org/r/20260302201015.1824798-1-jane.chu@oracle.com
+Fixes: 70bc0dc578b3 ("Documentation: vm, add hugetlbfs reservation overview")
+Signed-off-by: Jane Chu <jane.chu@oracle.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Hillf Danton <hillf.zj@alibaba-inc.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Shuah Khan <skhan@linuxfoundation.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ Documentation/mm/hugetlbfs_reserv.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-index 53b9c5f1f1935..d266bf96e2c6a 100644
---- a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-@@ -1722,7 +1722,7 @@ pinmux_i2crv: pinmux@70010012c {
- 			pinctrl-single,function-mask = <0x7>;
+diff --git a/Documentation/mm/hugetlbfs_reserv.rst b/Documentation/mm/hugetlbfs_reserv.rst
+index 4914fbf07966c..a49115db18c76 100644
+--- a/Documentation/mm/hugetlbfs_reserv.rst
++++ b/Documentation/mm/hugetlbfs_reserv.rst
+@@ -155,7 +155,7 @@ are enough free huge pages to accommodate the reservation.  If there are,
+ the global reservation count resv_huge_pages is adjusted something like the
+ following::
  
- 			i2c1_pins: iic2-i2c-pins {
--				pinctrl-single,bits = <0x0 0 0x7>;
-+				pinctrl-single,bits = <0x0 0x0 0x7>;
- 			};
+-	if (resv_needed <= (resv_huge_pages - free_huge_pages))
++	if (resv_needed <= (free_huge_pages - resv_huge_pages)
+ 		resv_huge_pages += resv_needed;
  
- 			gpio0_31_30_pins: iic2-gpio-pins {
-@@ -1734,7 +1734,7 @@ esdhc0_cd_wp_pins: iic2-sdhc-pins {
- 			};
- 
- 			i2c2_pins: iic3-i2c-pins {
--				pinctrl-single,bits = <0x0 0 (0x7 << 3)>;
-+				pinctrl-single,bits = <0x0 0x0 (0x7 << 3)>;
- 			};
- 
- 			gpio0_29_28_pins: iic3-gpio-pins {
-@@ -1742,7 +1742,7 @@ gpio0_29_28_pins: iic3-gpio-pins {
- 			};
- 
- 			i2c3_pins: iic4-i2c-pins {
--				pinctrl-single,bits = <0x0 0 (0x7 << 6)>;
-+				pinctrl-single,bits = <0x0 0x0 (0x7 << 6)>;
- 			};
- 
- 			gpio0_27_26_pins: iic4-gpio-pins {
-@@ -1750,7 +1750,7 @@ gpio0_27_26_pins: iic4-gpio-pins {
- 			};
- 
- 			i2c4_pins: iic5-i2c-pins {
--				pinctrl-single,bits = <0x0 0 (0x7 << 9)>;
-+				pinctrl-single,bits = <0x0 0x0 (0x7 << 9)>;
- 			};
- 
- 			gpio0_25_24_pins: iic5-gpio-pins {
-@@ -1758,7 +1758,7 @@ gpio0_25_24_pins: iic5-gpio-pins {
- 			};
- 
- 			i2c5_pins: iic6-i2c-pins {
--				pinctrl-single,bits = <0x0 0 (0x7 << 12)>;
-+				pinctrl-single,bits = <0x0 0x0 (0x7 << 12)>;
- 			};
- 
- 			gpio0_23_22_pins: iic6-gpio-pins {
+ Note that the global lock hugetlb_lock is held when checking and adjusting
 -- 
 2.53.0
 
