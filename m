@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-251988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251058-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QHXdOtv9DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-251988-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:30:51 +0200
+	id cGKQGtv2DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251058-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:00:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D3F259666D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:30:51 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 875B35951B5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:00:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 57C1A37A76FE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:50:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9BF2D3126774
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:10:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E24EB3F23BF;
-	Wed, 20 May 2026 17:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8795F36494B;
+	Wed, 20 May 2026 17:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BUL/vQYx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sEFWFocb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A3C2F363F;
-	Wed, 20 May 2026 17:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F54F364E89;
+	Wed, 20 May 2026 17:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299451; cv=none; b=hR4crZAKrLZu1wcm1BHX5NGSf60rfS44vDuWhdAHhh4SyvE9Sgfe3nQBrFuGjpqXj5jnTzTJeAfW7UTgTgbTTxRWbB5uq/0++tjkkioHzydSaE4TyrHZdJTFjsttzbstPE3L2/8XFGp3DHyRq37Nyig3+bvdxL6YyXVWsYfpWNo=
+	t=1779296992; cv=none; b=C2j8684oljcHfEvt9oEUmAqIpOP6XFVJf8nwQXMKEvA/fBEWDOBl+zJBSwHs11zCSkWdIZkbChY7F/nFaDnuvCNzQGFR3zXPTVaFQKeFZxu9PZmKMDPgz11acoQkTfocrTcEoZJXXv4a2WNwWvNrdO+3O8ddvKrCn7QcwjwiurM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299451; c=relaxed/simple;
-	bh=ghO5dY0je5G4abV07GLxyN1CYAPojMWFecYeX/3lp7c=;
+	s=arc-20240116; t=1779296992; c=relaxed/simple;
+	bh=62+fWg09E777s9B7Auoszdx+zgeZdXhBuPDmEKLn2uI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SGQGmgY+ig7RtF/uOz82MdS/Y7vvL7HJhXJUU2JS2iPnFeMF2IIhbWiJr0f10eiphRDqZl1Me/2id7xggsQ6bwrWcImy/bBkOeR+4EVjxdS7oRNmUSyEyoO/+/1YnMJ5Q4uh09mkzjjra7Jvf2Qmq1RYuHZ2vDv5i9bJyfjeYqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BUL/vQYx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEFEA1F000E9;
-	Wed, 20 May 2026 17:50:49 +0000 (UTC)
+	 MIME-Version; b=PIxCt0A65xW2SdQslQM6hNGMIn8PrykYd59U3JcLBNQ7K8kNG+ISdyq2t2vGA8hmZyYHfCjRHsAy613ks8JXfAfoglAitLtk/nLFiRM1KXxUBRGxVB0uj1NH821vAgXidPtpFi4HdWS8Vc405tqtpz+t0szG3yTx/VdMu4WgdkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sEFWFocb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5BBA1F000E9;
+	Wed, 20 May 2026 17:09:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299450;
-	bh=Bx+mP6ybNf6/zISk8Fy2dVm8+IwPgPU0fsK6OjCLPos=;
+	s=korg; t=1779296991;
+	bh=yZES8JXowZHG4MMcm9smGC2/5Z5BFsPVLoS1xYWgVwo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BUL/vQYxNCjVMYtJ+rZ/ZmB8nXIQJRBHjtWOVIczkHlL/mv/ku+ae8yMyj0wq2I2P
-	 FEkJFRTdXl5N441nhvNeN5sPody7JuPcJPWqoSZvvH03fPOboyz2oV3KozfieGfyGJ
-	 LSfvP45DmAOe6Jq8JwliuOSlQNDqHokaCQL60baw=
+	b=sEFWFocbjUjC1WtssQZKJ7SFg9+wXJx8y+EoLAsm4UynK+//4VwsyBgIhXHbcEFph
+	 q6ZVSnIUKnlYVvr1tFFzCW0n6TcwBbh5R1LRZnul47uC8X8OypXqSUR3CO7IhWg8cd
+	 pIRa4e6Jdz1T7y/dHiFVYdr4NbQMA1Sfu7Ne0MOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoze Xie <royenheart@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Stuart Summers <stuart.summers@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 777/957] vrf: Fix a potential NPD when removing a port from a VRF
+Subject: [PATCH 7.0 1010/1146] drm/xe/debugfs: Correct printing of register whitelist ranges
 Date: Wed, 20 May 2026 18:21:00 +0200
-Message-ID: <20260520162151.411364298@linuxfoundation.org>
+Message-ID: <20260520162211.091034232@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,145 +69,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-251988-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251058-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 5D3F259666D
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,intel.com:email]
+X-Rspamd-Queue-Id: 875B35951B5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Matt Roper <matthew.d.roper@intel.com>
 
-[ Upstream commit 2674d603a9e6970463b2b9ebcf8e31e90beae169 ]
+[ Upstream commit 03f2499c51dffce611b065b2894406beb9f2ebe0 ]
 
-RCU readers that identified a net device as a VRF port using
-netif_is_l3_slave() assume that a subsequent call to
-netdev_master_upper_dev_get_rcu() will return a VRF device. They then
-continue to dereference its l3mdev operations.
+The register-save-restore debugfs prints whitelist entries as offset
+ranges.  E.g.,
 
-This assumption is not always correct and can result in a NPD [1]. There
-is no RCU synchronization when removing a port from a VRF, so it is
-possible for an RCU reader to see a new master device (e.g., a bridge)
-that does not have l3mdev operations.
+        REG[0x39319c-0x39319f]: allow read access
 
-Fix by adding RCU synchronization after clearing the IFF_L3MDEV_SLAVE
-flag. Skip this synchronization when a net device is removed from a VRF
-as part of its deletion and when the VRF device itself is deleted. In
-the latter case an RCU grace period will pass by the time RTNL is
-released.
+for a single dword-sized register.  However the GENMASK value used to
+set the lower bits to '1' for the upper bound of the whitelist range
+incorrectly included one more bit than it should have, causing the
+whitelist ranges to sometimes appear twice as large as they really were.
+For example,
 
-[1]
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-[...]
-RIP: 0010:l3mdev_fib_table_rcu (net/l3mdev/l3mdev.c:181)
-[...]
-Call Trace:
-<TASK>
-l3mdev_fib_table_by_index (net/l3mdev/l3mdev.c:201 net/l3mdev/l3mdev.c:189)
-__inet_bind (net/ipv4/af_inet.c:499 (discriminator 3))
-inet_bind_sk (net/ipv4/af_inet.c:469)
-__sys_bind (./include/linux/file.h:62 (discriminator 1) ./include/linux/file.h:83 (discriminator 1) net/socket.c:1951 (discriminator 1))
-__x64_sys_bind (net/socket.c:1969 (discriminator 1) net/socket.c:1967 (discriminator 1) net/socket.c:1967 (discriminator 1))
-do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+        REG[0x6210-0x6217]: allow rw access
 
-Fixes: fdeea7be88b1 ("net: vrf: Set slave's private flag before linking")
-Reported-by: Haoze Xie <royenheart@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Closes: https://lore.kernel.org/netdev/20260419145332.3988923-1-n05ec@lzu.edu.cn/
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20260423063607.1208202-1-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+was also intended to be a single dword-sized register whitelist (with a
+range 0x6210-0x6213) but was printed incorrectly as a qword-sized range
+because one too many bits was flipped on.  Similar 'off by one' logic
+was applied when printing 4-dword register ranges and 64-dword register
+ranges as well.
+
+Correct the GENMASK logic to print these ranges in debugfs correctly.
+No impact outside of correcting the misleading debugfs output.
+
+Fixes: d855d2246ea6 ("drm/xe: Print whitelist while applying")
+Reviewed-by: Stuart Summers <stuart.summers@intel.com>
+Link: https://patch.msgid.link/20260408-regsr_wl_range-v1-1-e9a28c8b4264@intel.com
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+(cherry picked from commit 1a2a722ff96749734a5585dfe7f0bea7719caa8b)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vrf.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/xe/xe_reg_whitelist.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
-index 571847a7f86d7..4b62b167650ea 100644
---- a/drivers/net/vrf.c
-+++ b/drivers/net/vrf.c
-@@ -1084,6 +1084,7 @@ static int do_vrf_add_slave(struct net_device *dev, struct net_device *port_dev,
- 
- err:
- 	port_dev->priv_flags &= ~IFF_L3MDEV_SLAVE;
-+	synchronize_net();
- 	return ret;
- }
- 
-@@ -1103,10 +1104,16 @@ static int vrf_add_slave(struct net_device *dev, struct net_device *port_dev,
- }
- 
- /* inverse of do_vrf_add_slave */
--static int do_vrf_del_slave(struct net_device *dev, struct net_device *port_dev)
-+static int do_vrf_del_slave(struct net_device *dev, struct net_device *port_dev,
-+			    bool needs_sync)
- {
- 	netdev_upper_dev_unlink(port_dev, dev);
- 	port_dev->priv_flags &= ~IFF_L3MDEV_SLAVE;
-+	/* Make sure that concurrent RCU readers that identified the device
-+	 * as a VRF port see a VRF master or no master at all.
-+	 */
-+	if (needs_sync)
-+		synchronize_net();
- 
- 	cycle_netdev(port_dev, NULL);
- 
-@@ -1115,7 +1122,7 @@ static int do_vrf_del_slave(struct net_device *dev, struct net_device *port_dev)
- 
- static int vrf_del_slave(struct net_device *dev, struct net_device *port_dev)
- {
--	return do_vrf_del_slave(dev, port_dev);
-+	return do_vrf_del_slave(dev, port_dev, true);
- }
- 
- static void vrf_dev_uninit(struct net_device *dev)
-@@ -1669,7 +1676,7 @@ static void vrf_dellink(struct net_device *dev, struct list_head *head)
- 	struct list_head *iter;
- 
- 	netdev_for_each_lower_dev(dev, port_dev, iter)
--		vrf_del_slave(dev, port_dev);
-+		do_vrf_del_slave(dev, port_dev, false);
- 
- 	vrf_map_unregister_dev(dev);
- 
-@@ -1801,7 +1808,7 @@ static int vrf_device_event(struct notifier_block *unused,
- 			goto out;
- 
- 		vrf_dev = netdev_master_upper_dev_get(dev);
--		vrf_del_slave(vrf_dev, dev);
-+		do_vrf_del_slave(vrf_dev, dev, false);
+diff --git a/drivers/gpu/drm/xe/xe_reg_whitelist.c b/drivers/gpu/drm/xe/xe_reg_whitelist.c
+index 1d36c09681aaa..fc4b6f835d4b3 100644
+--- a/drivers/gpu/drm/xe/xe_reg_whitelist.c
++++ b/drivers/gpu/drm/xe/xe_reg_whitelist.c
+@@ -218,7 +218,7 @@ void xe_reg_whitelist_print_entry(struct drm_printer *p, unsigned int indent,
  	}
- out:
- 	return NOTIFY_DONE;
+ 
+ 	range_start = reg & REG_GENMASK(25, range_bit);
+-	range_end = range_start | REG_GENMASK(range_bit, 0);
++	range_end = range_start | REG_GENMASK(range_bit - 1, 0);
+ 
+ 	switch (val & RING_FORCE_TO_NONPRIV_ACCESS_MASK) {
+ 	case RING_FORCE_TO_NONPRIV_ACCESS_RW:
 -- 
 2.53.0
 
