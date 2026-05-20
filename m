@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-251044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251935-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mHzLBqnsDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-251044-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:17:29 +0200
+	id 0NCqJ4n2DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251935-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:59:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6D10593410
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:17:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A1A25950F6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:59:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8F31630ADDD5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:10:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D460A30A8824
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:48:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A22003D8918;
-	Wed, 20 May 2026 17:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CB56369D67;
+	Wed, 20 May 2026 17:48:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UxX3KKZD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Li+mbqQq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB08372EED;
-	Wed, 20 May 2026 17:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D273E5ECF;
+	Wed, 20 May 2026 17:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296956; cv=none; b=OqIOmSVkdp1J1aqaRn5CVpHXaj2yMacyOJEX9u/Vk+VXzZCfd2UzPmVFx56KfwXZXGjHZaCZ81zeQ/2f94UL/FueNi1cHndAwtAw/HkZbhrw+rzI+DfnpsOtagy8IKkjS82JlxAmIKOoDEeR7hXySV6jWz+qlDXpuvnp9WCOQm4=
+	t=1779299315; cv=none; b=OIAjr2N4IpuraXNTbSKzetuwbo8jDMW9mVPWP3tmdTiGUsCG9nCy4yqTcyp4T5L4EKL0K2OK+jOwhK+Sa/XHkyUxqST3nhTiLvcYmVG/XNGb3VPMOPB8DjsZs0WeaYSPEDGOIxF9n5jzAAvMwdEPDLKMGg592c7kJkq4TqPH0bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296956; c=relaxed/simple;
-	bh=0LbHfqfKhKfrt6An6C4tI2l7mRRyXJ/Yru+Z2GEdv4U=;
+	s=arc-20240116; t=1779299315; c=relaxed/simple;
+	bh=hghlJTZ5y2K1qDtjideBb1iSDWa39GR6AZyHDTihzPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=obQmjdGYmdWm8sjB0VahSPfYc4bDWjp+2mBmOmzqG/AWF+nJjEr/Twn0ybv8d6avNBkFnYV/jg5KxUL6jjny9pLTAnlzIuXUj1QW3rDe+++kLlPPSQHkwM/IWjOVjVMyfV1+fxZgMkSEqtz9yMcl8HLT82zwCF3i66pzuGMaTHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UxX3KKZD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C168B1F000E9;
-	Wed, 20 May 2026 17:09:13 +0000 (UTC)
+	 MIME-Version; b=a9ihw5yp+lQyegCdxQuLiW3QuxtKC/hj9BwoA0x9Xkg7BIPuI1bPe7k5e6z1YWaWjtNZHzA/LJvuX2RdSLmM+hm78jljDdfeK4bV+/X5qADT9niqyVh/JQbuB7X8lvZTDRvCBC0+bwPA2w1Xbe0AbBwjcRlinL4HZaVs0Xo1szc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Li+mbqQq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44EEA1F000E9;
+	Wed, 20 May 2026 17:48:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296954;
-	bh=7XuMedGLx+OcbZCmtsaaQ+0W0gXi3tGYm8ub7d6cWyc=;
+	s=korg; t=1779299313;
+	bh=/XNB7H1jw9clHUA25BSACTUJF0tQTLJWTGuZAQO5Xt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UxX3KKZDQd1c/zDf2JQf1Lrzh2RhwnMuOhIdeas6B0obZRgpz0pUB0DhgIoLg5+Lh
-	 C9tCabpNXdUIHr6UEugvRyPlTJWhZGbbQqbHaAigbvyi50bweX7GANmw5k+KLItAlv
-	 /VUJlXf/aQz2JgxsEcpeM7VpcwXh0wRBkOOcRzs4=
+	b=Li+mbqQq7L7V/Da1zWe7ZCPbF3KflH/D+fT14lIHkvC43hJltwMg1R5au+IGfqYsu
+	 rLuS/xUg3Yqv5rg33R2hnnHmfJh86vj4+omDiaIrOdnojuL5XRAwgcQrcIYn7y5avk
+	 ays9SX+uz4q5iHTYiyUFcfxQo3HVnCahTo4lqp94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Yue <glass.su@suse.com>,
-	Yu Kuai <yukuai@fnnas.com>,
+	Mathias Krause <minipli@grsecurity.net>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0958/1146] md/md-bitmap: split bitmap sysfs groups
+Subject: [PATCH 6.18 725/957] kbuild: builddeb - avoid recompiles for non-cross-compiles
 Date: Wed, 20 May 2026 18:20:08 +0200
-Message-ID: <20260520162209.913443792@linuxfoundation.org>
+Message-ID: <20260520162150.276541469@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,216 +70,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251935-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251044-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,fnnas.com:email]
-X-Rspamd-Queue-Id: A6D10593410
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,grsecurity.net:email]
+X-Rspamd-Queue-Id: 5A1A25950F6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai@fnnas.com>
+From: Mathias Krause <minipli@grsecurity.net>
 
-[ Upstream commit aba3d6d6cb55c6e1116d1215140559dd7ecdf9a9 ]
+[ Upstream commit 2452dcf4d740effff5aa71b7f6529ee8c04fd8f6 ]
 
-Split the classic bitmap sysfs files into a common bitmap group with
-the location attribute and a separate internal bitmap group for the
-remaining files.
+Commit e2c318225ac1 ("kbuild: deb-pkg: add
+pkg.linux-upstream.nokernelheaders build profile") changed how
+install-extmod-build gets called, making it always rebuild the host
+programs below scripts/ if HOSTCC wasn't specified with its full triplet
+on the make command line. That is, apparently, needed to fix up commit
+f1d87664b82a ("kbuild: cross-compile linux-headers package when
+possible") for cross-compiles. However, in the much more common case of
+non-cross-compile builds this will lead to unnecessary rebuilding of
+host tools including gcc plugins. This, in turn, will lead to a full
+kernel rebuild on the next 'make bindeb-pkg' which is unfortunate.
 
-At the same time, convert bitmap operations from a single sysfs group
-to a sysfs group array so backends can share part of their sysfs
-layout while adding backend-specific attributes separately.
+Avoid that by only triggering the rebuild of host tools for actual
+cross-compile builds.
 
-Switch the bitmap sysfs helpers to use sysfs_update_groups() for the
-add and update path, and remove groups in reverse order so shared named
-groups are unmerged before the last group removes the directory.
-
-Also make bitmap operation lookup depend only on the currently selected
-bitmap id matching the installed backend. This prepares the lookup path
-for a later registered none backend.
-
-Reviewed-by: Su Yue <glass.su@suse.com>
-Link: https://lore.kernel.org/r/20260425024615.1696892-3-yukuai@fnnas.com
-Signed-off-by: Yu Kuai <yukuai@fnnas.com>
-Stable-dep-of: f2926a533d03 ("md/md-bitmap: add a none backend for bitmap grow")
+Signed-off-by: Mathias Krause <minipli@grsecurity.net>
+Fixes: e2c318225ac1 ("kbuild: deb-pkg: add pkg.linux-upstream.nokernelheaders build profile")
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Nicolas Schier <nsc@kernel.org>
+Link: https://patch.msgid.link/20260402145116.1010901-1-minipli@grsecurity.net
+Signed-off-by: Nicolas Schier <nsc@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md-bitmap.c   | 23 +++++++++++++++++++----
- drivers/md/md-bitmap.h   |  2 +-
- drivers/md/md-llbitmap.c |  7 ++++++-
- drivers/md/md.c          | 21 ++++++++++++++-------
- 4 files changed, 40 insertions(+), 13 deletions(-)
+ scripts/package/builddeb | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
-index 83378c033c728..eba649703a1c0 100644
---- a/drivers/md/md-bitmap.c
-+++ b/drivers/md/md-bitmap.c
-@@ -2955,8 +2955,12 @@ static struct md_sysfs_entry max_backlog_used =
- __ATTR(max_backlog_used, S_IRUGO | S_IWUSR,
-        behind_writes_used_show, behind_writes_used_reset);
+diff --git a/scripts/package/builddeb b/scripts/package/builddeb
+index 3627ca227e5a5..ba1defc616524 100755
+--- a/scripts/package/builddeb
++++ b/scripts/package/builddeb
+@@ -139,7 +139,13 @@ install_kernel_headers () {
+ 	pdir=debian/$1
+ 	version=${1#linux-headers-}
  
--static struct attribute *md_bitmap_attrs[] = {
-+static struct attribute *md_bitmap_common_attrs[] = {
- 	&bitmap_location.attr,
-+	NULL
-+};
-+
-+static struct attribute *md_bitmap_internal_attrs[] = {
- 	&bitmap_space.attr,
- 	&bitmap_timeout.attr,
- 	&bitmap_backlog.attr,
-@@ -2967,9 +2971,20 @@ static struct attribute *md_bitmap_attrs[] = {
- 	NULL
- };
+-	CC="${DEB_HOST_GNU_TYPE}-gcc" "${srctree}/scripts/package/install-extmod-build" "${pdir}/usr/src/linux-headers-${version}"
++	# Override $CC only for cross-compiles, to not unnecessarily rebuild
++	# scripts/ including plugins, which may lead to a full kernel rebuild.
++	if [ -n "${CROSS_COMPILE}" ]; then
++		CC="${DEB_HOST_GNU_TYPE}-gcc" "${srctree}/scripts/package/install-extmod-build" "${pdir}/usr/src/linux-headers-${version}"
++	else
++		"${srctree}/scripts/package/install-extmod-build" "${pdir}/usr/src/linux-headers-${version}"
++	fi
  
--static struct attribute_group md_bitmap_group = {
-+static struct attribute_group md_bitmap_common_group = {
-+	.name = "bitmap",
-+	.attrs = md_bitmap_common_attrs,
-+};
-+
-+static struct attribute_group md_bitmap_internal_group = {
- 	.name = "bitmap",
--	.attrs = md_bitmap_attrs,
-+	.attrs = md_bitmap_internal_attrs,
-+};
-+
-+static const struct attribute_group *bitmap_groups[] = {
-+	&md_bitmap_common_group,
-+	&md_bitmap_internal_group,
-+	NULL,
- };
- 
- static struct bitmap_operations bitmap_ops = {
-@@ -3013,7 +3028,7 @@ static struct bitmap_operations bitmap_ops = {
- 	.set_pages		= bitmap_set_pages,
- 	.free			= md_bitmap_free,
- 
--	.group			= &md_bitmap_group,
-+	.groups			= bitmap_groups,
- };
- 
- int md_bitmap_init(void)
-diff --git a/drivers/md/md-bitmap.h b/drivers/md/md-bitmap.h
-index b42a28fa83a0f..214f623c7e790 100644
---- a/drivers/md/md-bitmap.h
-+++ b/drivers/md/md-bitmap.h
-@@ -125,7 +125,7 @@ struct bitmap_operations {
- 	void (*set_pages)(void *data, unsigned long pages);
- 	void (*free)(void *data);
- 
--	struct attribute_group *group;
-+	const struct attribute_group **groups;
- };
- 
- /* the bitmap API */
-diff --git a/drivers/md/md-llbitmap.c b/drivers/md/md-llbitmap.c
-index cdfecaca216bf..aeb061166e732 100644
---- a/drivers/md/md-llbitmap.c
-+++ b/drivers/md/md-llbitmap.c
-@@ -1562,6 +1562,11 @@ static struct attribute_group md_llbitmap_group = {
- 	.attrs = md_llbitmap_attrs,
- };
- 
-+static const struct attribute_group *md_llbitmap_groups[] = {
-+	&md_llbitmap_group,
-+	NULL,
-+};
-+
- static struct bitmap_operations llbitmap_ops = {
- 	.head = {
- 		.type	= MD_BITMAP,
-@@ -1598,7 +1603,7 @@ static struct bitmap_operations llbitmap_ops = {
- 	.dirty_bits		= llbitmap_dirty_bits,
- 	.write_all		= llbitmap_write_all,
- 
--	.group			= &md_llbitmap_group,
-+	.groups			= md_llbitmap_groups,
- };
- 
- int md_llbitmap_init(void)
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 3b58d94c1c7aa..f736aead193ba 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -690,7 +690,7 @@ static void no_op(struct percpu_ref *r) {}
- 
- static void md_bitmap_sysfs_add(struct mddev *mddev)
- {
--	if (sysfs_create_group(&mddev->kobj, mddev->bitmap_ops->group))
-+	if (sysfs_update_groups(&mddev->kobj, mddev->bitmap_ops->groups))
- 		pr_warn("md: cannot register extra bitmap attributes for %s\n",
- 			mdname(mddev));
- 	else
-@@ -703,16 +703,23 @@ static void md_bitmap_sysfs_add(struct mddev *mddev)
- 
- static void md_bitmap_sysfs_del(struct mddev *mddev)
- {
--	sysfs_remove_group(&mddev->kobj, mddev->bitmap_ops->group);
-+	int nr_groups = 0;
-+
-+	for (nr_groups = 0; mddev->bitmap_ops->groups[nr_groups]; nr_groups++)
-+		;
-+
-+	while (--nr_groups >= 1)
-+		sysfs_unmerge_group(&mddev->kobj,
-+				    mddev->bitmap_ops->groups[nr_groups]);
-+	sysfs_remove_group(&mddev->kobj, mddev->bitmap_ops->groups[0]);
- }
- 
- static bool mddev_set_bitmap_ops_nosysfs(struct mddev *mddev)
- {
--	struct bitmap_operations *old = mddev->bitmap_ops;
- 	struct md_submodule_head *head;
- 
--	if (mddev->bitmap_id == ID_BITMAP_NONE ||
--	    (old && old->head.id == mddev->bitmap_id))
-+	if (mddev->bitmap_ops &&
-+	    mddev->bitmap_ops->head.id == mddev->bitmap_id)
- 		return true;
- 
- 	xa_lock(&md_submodule);
-@@ -6590,7 +6597,7 @@ static int md_bitmap_create(struct mddev *mddev)
- 	if (err)
- 		return err;
- 
--	if (!mddev_is_dm(mddev) && mddev->bitmap_ops->group)
-+	if (!mddev_is_dm(mddev) && mddev->bitmap_ops->groups)
- 		md_bitmap_sysfs_add(mddev);
- 
- 	return 0;
-@@ -6608,7 +6615,7 @@ static void md_bitmap_destroy_nosysfs(struct mddev *mddev)
- static void md_bitmap_destroy(struct mddev *mddev)
- {
- 	if (!mddev_is_dm(mddev) && mddev->bitmap_ops &&
--	    mddev->bitmap_ops->group)
-+	    mddev->bitmap_ops->groups)
- 		md_bitmap_sysfs_del(mddev);
- 
- 	md_bitmap_destroy_nosysfs(mddev);
+ 	mkdir -p $pdir/lib/modules/$version/
+ 	ln -s /usr/src/linux-headers-$version $pdir/lib/modules/$version/build
 -- 
 2.53.0
 
