@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-251075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252005-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mA/mCJvuDWpu4wUAu9opvQ
-	(envelope-from <stable+bounces-251075-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:25:47 +0200
+	id AD9nNhL+DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252005-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:31:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 838105939ED
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:25:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D4A0596745
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:31:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 203B130E0F6E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:11:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 704593875D3B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:51:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1BEA3F4DC0;
-	Wed, 20 May 2026 17:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEA343F39D7;
+	Wed, 20 May 2026 17:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rOZG8Jjs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQ8Blw8d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5203F44D0;
-	Wed, 20 May 2026 17:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D60E3F6C53;
+	Wed, 20 May 2026 17:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297034; cv=none; b=jF05VY21Jtj0NL8g1DdH3nC3S1R8i6leMuvYPVTyLJUYvdCDoqurVkhd+BqRNP+dB+WGh9/XHSdDu697HhOQkogHNhAuObzPgxGvc0uJuZuh44Ru2Dmz7oSJ/6BVN0ZDdNvmUOP+sWye01k6Z0zAz4X18WMVaIaXoXcfSCAt4QQ=
+	t=1779299496; cv=none; b=OXvVlqbISJ/iL5fgC6WXnnS7P0NfPm7gBtuN0KglSHuAWoueATujxQRy2OkdaLnBGC98xzH2BGGlwgHL98FcexCjhokNdFq74PkJ9QikGBCUkD05B8WQTI1UdhXtbfcJEBNKeRvsK+W0mgh4h3NPBmoMCVWiKIg+i46RuYu2610=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297034; c=relaxed/simple;
-	bh=1dcyuBDWAgkH60ONtql2+TOA1Ock+feNL1OE91RiXzY=;
+	s=arc-20240116; t=1779299496; c=relaxed/simple;
+	bh=DBU2QBL5c0g+4J2qo/codwbL1fEEWXhAnJKhEjU3ckU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uNFrbHvfdO0pRMVfA2Y5PSf7zviIGdrNtt24oIj5g41atdau4VQwFehPh0OQ3/u9p+oheKIlnpmMAYk+7GGsmC7mfldXjvVCe2PdgUu+GTWJWOBCgJWSmPoj1h5NUputHDdQFkXKTjYbmNMFryOfHS31FCVeC8lTUdeyMWhA8eM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rOZG8Jjs; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAB5F1F000E9;
-	Wed, 20 May 2026 17:10:32 +0000 (UTC)
+	 MIME-Version; b=TVwbk21J8OCesnGnc6bgNS3Z6jGMGpLQs3cRcwRBe052+TZJKEqtDTV29KoJ4/+bxF5mgUZd+hI/QswlMiG3f507YImWwvr8b0CVQQMXqRVfmo/VBQKwZ92enfZP0vhL1WJhEKQ84MDkpvIRH4UwCZhUJ5NjmGsu3RkxAbz7wFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQ8Blw8d; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C46961F000E9;
+	Wed, 20 May 2026 17:51:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297033;
-	bh=s8MPOW5TWZ1eXP4QVZNPZBCBAOz7eykI/tgBxQYsVpY=;
+	s=korg; t=1779299495;
+	bh=kIUBx5YXGdYbzRAtSHP8Ie/W7QaVxUJQYN+mD7+Wljs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rOZG8Jjsvd2XNHlpX6J8fBg2NXCWeSTwZvjrA6TZ7lVA5awV+gzvlnrR6n7mfgYd9
-	 FIsU9J2aD1M31Apc3yIJ9zVselu68rj2TJOAK3BMwuJXtTr3IiaT85OJDZJ3AzLxwa
-	 0QlJybKueg1esjMshWmFfnCwJvTFM1OANZ+yoOfE=
+	b=fQ8Blw8dUsWwAcVgYM825kFzcQa/tQP4RWFK3BnVeicD87eWE8Elwh+6uixJ5dXu6
+	 uqtuT+26pOIpqv66pHuhJ00Zhc3b2MPfB8EvcCDy4vsCzPwlj771ucv5h6VSnkWg0j
+	 ZISfiEj4KmBJeHd5FQgbW41gmZo/73lNPfmsrOqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Oros <poros@redhat.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Alexander Nowlin <alexander.nowlin@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Yu Kuai <yukuai@fnnas.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 1025/1146] ice: fix infinite recursion in ice_cfg_tx_topo via ice_init_dev_hw
+Subject: [PATCH 6.18 792/957] md: add fallback to correct bitmap_ops on version mismatch
 Date: Wed, 20 May 2026 18:21:15 +0200
-Message-ID: <20260520162211.426484459@linuxfoundation.org>
+Message-ID: <20260520162151.740633956@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,134 +67,183 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251075-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252005-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,mpg.de:email]
-X-Rspamd-Queue-Id: 838105939ED
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,fnnas.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 7D4A0596745
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Oros <poros@redhat.com>
+From: Yu Kuai <yukuai@fnnas.com>
 
-[ Upstream commit 70ad216411e030f67b1743774e245601194aee6a ]
+[ Upstream commit 09af773650024279a60348e7319d599e6571b15c ]
 
-On certain E810 configurations where firmware supports Tx scheduler
-topology switching (tx_sched_topo_comp_mode_en), ice_cfg_tx_topo()
-may need to apply a new 5-layer or 9-layer topology from the DDP
-package. If the AQ command to set the topology fails (e.g. due to
-invalid DDP data or firmware limitations), the global configuration
-lock must still be cleared via a CORER reset.
+If default bitmap version and on-disk version doesn't match, and mdadm
+is not the latest version to set bitmap_type, set bitmap_ops based on
+the disk version.
 
-Commit 86aae43f21cf ("ice: don't leave device non-functional if Tx
-scheduler config fails") correctly fixed this by refactoring
-ice_cfg_tx_topo() to always trigger CORER after acquiring the global
-lock and re-initialize hardware via ice_init_hw() afterwards.
-
-However, commit 8a37f9e2ff40 ("ice: move ice_deinit_dev() to the end
-of deinit paths") later moved ice_init_dev_hw() into ice_init_hw(),
-breaking the reinit path introduced by 86aae43f21cf. This creates an
-infinite recursive call chain:
-
-  ice_init_hw()
-    ice_init_dev_hw()
-      ice_cfg_tx_topo()         # topology change needed
-        ice_deinit_hw()
-        ice_init_hw()           # reinit after CORER
-          ice_init_dev_hw()     # recurse
-            ice_cfg_tx_topo()
-              ...               # stack overflow
-
-Fix by moving ice_init_dev_hw() back out of ice_init_hw() and calling
-it explicitly from ice_probe() and ice_devlink_reinit_up(). The third
-caller, ice_cfg_tx_topo(), intentionally does not need ice_init_dev_hw()
-during its reinit, it only needs the core HW reinitialization. This
-breaks the recursion cleanly without adding flags or guards.
-
-The deinit ordering changes from commit 8a37f9e2ff40 ("ice: move
-ice_deinit_dev() to the end of deinit paths") which fixed slow rmmod
-are preserved, only the init-side placement of ice_init_dev_hw() is
-reverted.
-
-Fixes: 8a37f9e2ff40 ("ice: move ice_deinit_dev() to the end of deinit paths")
-Signed-off-by: Petr Oros <poros@redhat.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260427-jk-iwl-net-petr-oros-fixes-v1-6-cdcb48303fd8@intel.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/linux-raid/20260323054644.3351791-2-yukuai@fnnas.com/
+Signed-off-by: Yu Kuai <yukuai@fnnas.com>
+Stable-dep-of: f2926a533d03 ("md/md-bitmap: add a none backend for bitmap grow")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/devlink/devlink.c | 2 ++
- drivers/net/ethernet/intel/ice/ice_common.c      | 2 --
- drivers/net/ethernet/intel/ice/ice_main.c        | 2 ++
- 3 files changed, 4 insertions(+), 2 deletions(-)
+ drivers/md/md.c | 111 +++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 110 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/devlink/devlink.c b/drivers/net/ethernet/intel/ice/devlink/devlink.c
-index 6144cee8034d7..641d6e289d5ce 100644
---- a/drivers/net/ethernet/intel/ice/devlink/devlink.c
-+++ b/drivers/net/ethernet/intel/ice/devlink/devlink.c
-@@ -1245,6 +1245,8 @@ static int ice_devlink_reinit_up(struct ice_pf *pf)
- 		return err;
- 	}
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index b91ac1b7d7a15..4520c485c0c06 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -6329,15 +6329,124 @@ static void md_safemode_timeout(struct timer_list *t)
  
-+	ice_init_dev_hw(pf);
+ static int start_dirty_degraded;
+ 
++/*
++ * Read bitmap superblock and return the bitmap_id based on disk version.
++ * This is used as fallback when default bitmap version and on-disk version
++ * doesn't match, and mdadm is not the latest version to set bitmap_type.
++ */
++static enum md_submodule_id md_bitmap_get_id_from_sb(struct mddev *mddev)
++{
++	struct md_rdev *rdev;
++	struct page *sb_page;
++	bitmap_super_t *sb;
++	enum md_submodule_id id = ID_BITMAP_NONE;
++	sector_t sector;
++	u32 version;
 +
- 	/* load MSI-X values */
- 	ice_set_min_max_msix(pf);
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
-index ce11fea122d03..b617a6bff8913 100644
---- a/drivers/net/ethernet/intel/ice/ice_common.c
-+++ b/drivers/net/ethernet/intel/ice/ice_common.c
-@@ -1126,8 +1126,6 @@ int ice_init_hw(struct ice_hw *hw)
- 	if (status)
- 		goto err_unroll_fltr_mgmt_struct;
- 
--	ice_init_dev_hw(hw->back);
--
- 	mutex_init(&hw->tnl_lock);
- 	ice_init_chk_recipe_reuse_support(hw);
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index ce3a0afe302d2..055968485af6c 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -5245,6 +5245,8 @@ ice_probe(struct pci_dev *pdev, const struct pci_device_id __always_unused *ent)
- 		return err;
- 	}
- 
-+	ice_init_dev_hw(pf);
++	if (!mddev->bitmap_info.offset)
++		return ID_BITMAP_NONE;
 +
- 	adapter = ice_adapter_get(pdev);
- 	if (IS_ERR(adapter)) {
- 		err = PTR_ERR(adapter);
++	sb_page = alloc_page(GFP_KERNEL);
++	if (!sb_page) {
++		pr_warn("md: %s: failed to allocate memory for bitmap\n",
++			mdname(mddev));
++		return ID_BITMAP_NONE;
++	}
++
++	sector = mddev->bitmap_info.offset;
++
++	rdev_for_each(rdev, mddev) {
++		u32 iosize;
++
++		if (!test_bit(In_sync, &rdev->flags) ||
++		    test_bit(Faulty, &rdev->flags) ||
++		    test_bit(Bitmap_sync, &rdev->flags))
++			continue;
++
++		iosize = roundup(sizeof(bitmap_super_t),
++				 bdev_logical_block_size(rdev->bdev));
++		if (sync_page_io(rdev, sector, iosize, sb_page, REQ_OP_READ,
++				 true))
++			goto read_ok;
++	}
++	pr_warn("md: %s: failed to read bitmap from any device\n",
++		mdname(mddev));
++	goto out;
++
++read_ok:
++	sb = kmap_local_page(sb_page);
++	if (sb->magic != cpu_to_le32(BITMAP_MAGIC)) {
++		pr_warn("md: %s: invalid bitmap magic 0x%x\n",
++			mdname(mddev), le32_to_cpu(sb->magic));
++		goto out_unmap;
++	}
++
++	version = le32_to_cpu(sb->version);
++	switch (version) {
++	case BITMAP_MAJOR_LO:
++	case BITMAP_MAJOR_HI:
++	case BITMAP_MAJOR_CLUSTERED:
++		id = ID_BITMAP;
++		break;
++	case BITMAP_MAJOR_LOCKLESS:
++		id = ID_LLBITMAP;
++		break;
++	default:
++		pr_warn("md: %s: unknown bitmap version %u\n",
++			mdname(mddev), version);
++		break;
++	}
++
++out_unmap:
++	kunmap_local(sb);
++out:
++	__free_page(sb_page);
++	return id;
++}
++
+ static int md_bitmap_create(struct mddev *mddev)
+ {
++	enum md_submodule_id orig_id = mddev->bitmap_id;
++	enum md_submodule_id sb_id;
++	int err;
++
+ 	if (mddev->bitmap_id == ID_BITMAP_NONE)
+ 		return -EINVAL;
+ 
+ 	if (!mddev_set_bitmap_ops(mddev))
+ 		return -ENOENT;
+ 
+-	return mddev->bitmap_ops->create(mddev);
++	err = mddev->bitmap_ops->create(mddev);
++	if (!err)
++		return 0;
++
++	/*
++	 * Create failed, if default bitmap version and on-disk version
++	 * doesn't match, and mdadm is not the latest version to set
++	 * bitmap_type, set bitmap_ops based on the disk version.
++	 */
++	mddev_clear_bitmap_ops(mddev);
++
++	sb_id = md_bitmap_get_id_from_sb(mddev);
++	if (sb_id == ID_BITMAP_NONE || sb_id == orig_id)
++		return err;
++
++	pr_info("md: %s: bitmap version mismatch, switching from %d to %d\n",
++		mdname(mddev), orig_id, sb_id);
++
++	mddev->bitmap_id = sb_id;
++	if (!mddev_set_bitmap_ops(mddev)) {
++		mddev->bitmap_id = orig_id;
++		return -ENOENT;
++	}
++
++	err = mddev->bitmap_ops->create(mddev);
++	if (err) {
++		mddev_clear_bitmap_ops(mddev);
++		mddev->bitmap_id = orig_id;
++	}
++
++	return err;
+ }
+ 
+ static void md_bitmap_destroy(struct mddev *mddev)
 -- 
 2.53.0
 
