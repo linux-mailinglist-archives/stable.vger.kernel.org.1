@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-252273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251633-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2AuPFKP7DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-252273-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:21:23 +0200
+	id QGeNJeD2DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251633-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:01:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 237FB595E0D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:21:23 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 686295951CE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:01:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CE02630528ED
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:04:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9DD3030F3AE2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:34:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5416A3E95A4;
-	Wed, 20 May 2026 18:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D78033A3825;
+	Wed, 20 May 2026 17:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PGcLk60m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eFlVZPin"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BED836CE19;
-	Wed, 20 May 2026 18:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89BDC36405A;
+	Wed, 20 May 2026 17:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300244; cv=none; b=o9Em+t1Lb+b6Skdoxd53+jyVv/QP6CpWl0a9KiaUwE/HifKgLCaLXEXR2rK+N+3BBqX1gMGJWqAjxkb4MidX4Gog2QnlUf6dhZuw0cco2/GyR5HzoKw21VXGETvjAdhS+bCG2aOv/a2urxjI9n13R+spfgBhQM/JzcvBUhWzaI8=
+	t=1779298490; cv=none; b=qkvVpzsfEluzlTPWdrpdTrLjGujKgKuHaE07FWoKcRlBa9VJv+BbFtuayXdyQehspQ2ueTCjDc9lrJ4NClxHvcrs1lwlwsgFxKzlZcJZ0unw8XiCwwOqseEXKxVY3MykT/YtMLl/O7S7UjNX1ZXnrPCoqzIsitX/goxEsTELN5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300244; c=relaxed/simple;
-	bh=91SIoZCELKwKdVCK5vUgL4epIzhWSLSXltLOVoi/FeY=;
+	s=arc-20240116; t=1779298490; c=relaxed/simple;
+	bh=p7ZRQDqGoqlaUrL74Rr78iDt0v7ou4cK6w8/UndsCVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CusyOPFuo/9CrE4ndyLBO6qBk3Bp45YpUIxRHXJVziZJogLZmc/qXmtdajzwaM84wKTtkaGKn8oKvVDaVN1griQPYFn0VOZoGOLsZGIqXPwMVQTO38jfzmPfRqf0rZH8Seow9vBusRkr7IKPayhjepr3uR0KnN8LdR0G/kQZc7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PGcLk60m; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A16F1F000E9;
-	Wed, 20 May 2026 18:04:02 +0000 (UTC)
+	 MIME-Version; b=Nj/1kZTUkjgOqgOtIE2Z0G/3MmvSjXIrWfX6QBt4JsPpbZm2l68r1R5kBXloN/ge4ddgKGvQZhlKuEReqEbv7/xfiXVXBGLQqpfQNC8YCnlxOHwDdxUxdwqPLcbZuXDgzr9TqerzrTk3q0bpdEP8EYSx5kHa6eqtC80Q+LK2U4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eFlVZPin; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6FB91F000E9;
+	Wed, 20 May 2026 17:34:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300243;
-	bh=DTmfDKSnkhGH0uItWrTjHVa4oP4xmICt9qGkbzVADeI=;
+	s=korg; t=1779298489;
+	bh=0ReyQSHrGjPxBOZSZhNwYT1+0gYJDAjrN8Grp/dHTow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PGcLk60muhk6TV8jL742/7Co/9e9R/R4X29w3/Tiryao/UbXNGzriaceMfHGBiJeb
-	 J489JIc20o22q30z7Cxku0Tiw1ghYAxXvAJq2Mzea+xBpem6b2DAmcRVbw8FODmMxL
-	 3fD85tESFgKIz4tHDTrqea/QNhRIJP2bFrh1HkX8=
+	b=eFlVZPinTO4EkOVABgzhcaOqid4N6RwT7HA1BR/DMV3/NL+6iK8aJQQdBfCY1ACd/
+	 ckj4WkcSZRFxjEcbQcvb/lNTggGENzQ2Kjwfk1+ElH0/Jkrp0H5nxdSLf/Q+Z8uTSB
+	 HD7Pi50Oia9fbkx5qtpU4suCN6vo6ziT7vJqupOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josua Mayer <josua@solid-run.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sumit Gupta <sumitg@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 101/666] dt-bindings: net: dsa: nxp,sja1105: make spi-cpol optional for sja1110
+Subject: [PATCH 6.18 429/957] soc/tegra: cbb: Fix cross-fabric target timeout lookup
 Date: Wed, 20 May 2026 18:15:12 +0200
-Message-ID: <20260520162113.411611752@linuxfoundation.org>
+Message-ID: <20260520162143.825230195@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,75 +68,116 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252273-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251633-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,microchip.com:email,solid-run.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 237FB595E0D
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
+X-Rspamd-Queue-Id: 686295951CE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josua Mayer <josua@solid-run.com>
+From: Sumit Gupta <sumitg@nvidia.com>
 
-[ Upstream commit 600f01dc4bd0c736b3ffea9f7976136d8bf1b136 ]
+[ Upstream commit a5f51b04cbb3ae0f9cb2c4488952b775ebb0ccbf ]
 
-Currently, the binding requires 'spi-cpha' for SJA1105 and 'spi-cpol'
-for SJA1110.
+When a fabric receives an error interrupt, the error may have
+occurred on a different fabric. The target timeout lookup was using
+the wrong base address (cbb->regs) with offsets from a different
+fabric's target map, causing a kernel page fault.
 
-However, the SJA1110 supports both SPI modes 0 and 2. Mode 2
-(cpha=0, cpol=1) is used by the NXP LX2160 Bluebox 3.
+  Unable to handle kernel paging request at virtual address ffff80000954cc00
+  pc : tegra234_cbb_get_tmo_slv+0xc/0x28
+  Call trace:
+   tegra234_cbb_get_tmo_slv+0xc/0x28
+   print_err_notifier+0x6c0/0x7d0
+   tegra234_cbb_isr+0xe4/0x1b4
 
-On the SolidRun i.MX8DXL HummingBoard Telematics, mode 0 is stable,
-while forcing mode 2 introduces CRC errors especially during bursts.
+Add tegra234_cbb_get_fabric() to look up the correct fabric device
+using fab_id, and use its base address for accessing target timeout
+registers.
 
-Drop the requirement on spi-cpol for SJA1110.
-
-Fixes: af2eab1a8243 ("dt-bindings: net: nxp,sja1105: document spi-cpol/cpha")
-Signed-off-by: Josua Mayer <josua@solid-run.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://patch.msgid.link/20260409-imx8dxl-sr-som-v2-1-83ff20629ba0@solid-run.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 25de5c8fe0801 ("soc/tegra: cbb: Improve handling for per SoC fabric data")
+Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/net/dsa/nxp,sja1105.yaml | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/soc/tegra/cbb/tegra234-cbb.c | 27 ++++++++++++++++++++++++++-
+ 1 file changed, 26 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/net/dsa/nxp,sja1105.yaml b/Documentation/devicetree/bindings/net/dsa/nxp,sja1105.yaml
-index 9432565f4f5d3..8bfa2ea579f0c 100644
---- a/Documentation/devicetree/bindings/net/dsa/nxp,sja1105.yaml
-+++ b/Documentation/devicetree/bindings/net/dsa/nxp,sja1105.yaml
-@@ -131,8 +131,6 @@ allOf:
-     else:
-       properties:
-         spi-cpha: false
--      required:
--        - spi-cpol
+diff --git a/drivers/soc/tegra/cbb/tegra234-cbb.c b/drivers/soc/tegra/cbb/tegra234-cbb.c
+index 626e0e820329b..7e387fc54c6b1 100644
+--- a/drivers/soc/tegra/cbb/tegra234-cbb.c
++++ b/drivers/soc/tegra/cbb/tegra234-cbb.c
+@@ -313,12 +313,37 @@ static void tegra234_cbb_lookup_apbslv(struct seq_file *file, const char *target
+ 	}
+ }
  
- unevaluatedProperties: false
++static struct tegra234_cbb *tegra234_cbb_get_fabric(u8 fab_id)
++{
++	struct tegra_cbb *entry;
++
++	list_for_each_entry(entry, &cbb_list, node) {
++		struct tegra234_cbb *priv = to_tegra234_cbb(entry);
++
++		if (priv->fabric->fab_id == fab_id)
++			return priv;
++	}
++
++	return NULL;
++}
++
+ static void tegra234_sw_lookup_target_timeout(struct seq_file *file, struct tegra234_cbb *cbb,
+ 					      u8 target_id, u8 fab_id)
+ {
+ 	const struct tegra234_target_lookup *map = cbb->fabric->fab_list[fab_id].target_map;
++	struct tegra234_cbb *target_cbb = NULL;
+ 	void __iomem *addr;
  
++	if (fab_id == cbb->fabric->fab_id)
++		target_cbb = cbb;
++	else
++		target_cbb = tegra234_cbb_get_fabric(fab_id);
++
++	if (!target_cbb) {
++		dev_err(cbb->base.dev, "could not find fabric for fab_id:%d\n", fab_id);
++		return;
++	}
++
+ 	if (target_id >= cbb->fabric->fab_list[fab_id].max_targets) {
+ 		tegra_cbb_print_err(file, "\t  Invalid target_id:%d\n", target_id);
+ 		return;
+@@ -341,7 +366,7 @@ static void tegra234_sw_lookup_target_timeout(struct seq_file *file, struct tegr
+ 	 *	e) Goto step-a till all bits are set.
+ 	 */
+ 
+-	addr = cbb->regs + map[target_id].offset;
++	addr = target_cbb->regs + map[target_id].offset;
+ 
+ 	if (strstr(map[target_id].name, "AXI2APB")) {
+ 		addr += APB_BLOCK_TMO_STATUS_0;
 -- 
 2.53.0
 
