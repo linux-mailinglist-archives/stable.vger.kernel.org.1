@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-251987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253083-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WJNQGST5DWqR5AUAu9opvQ
-	(envelope-from <stable+bounces-251987-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:10:44 +0200
+	id YGIcDYUFDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-253083-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:03:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E689595791
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:10:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A341597A44
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:03:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3A2EB326B2A3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:50:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 77EB3395BC3E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:45:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A9CB3F44CD;
-	Wed, 20 May 2026 17:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8E663FE35F;
+	Wed, 20 May 2026 18:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uRZrdKWj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GRtNjWvz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E60BC3E5ECF;
-	Wed, 20 May 2026 17:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D1C844BCAA;
+	Wed, 20 May 2026 18:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299449; cv=none; b=EmtiM4JFFD3grLp07CrVR1cj8vmLcrUBCrrQbI8jL2tZfLKufqa2UxfOw97FIngt4D76BjkCyX1g3v97iMWvS//mVbnvZ7ZIsWyW7/0+WtHRekX2hgqcPSGl/mzyyWXAvCmnut7UEBs0l6k8A6WIwxRHJtdIW+Ooi83rofha2TM=
+	t=1779302360; cv=none; b=j2UB+dPSHbfq5LmDE0xfy/iAxRp4skCYTyyFvObxDqe1FIzK2ZaCpca+PWJECHVVaD5c8NgfuWznRbiHcvJvAqKLrJ2N438Wzd+6oHZ7++vuxxL3noNYX4uMkGej+x6cPI2wGm8EDOtyRdq/pb8GmilZYiqkjtWBhezVpiRtxvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299449; c=relaxed/simple;
-	bh=Xc0zePj6Kr9D9HJONYj44rSmkOEgKYh1q1daXZzw5O0=;
+	s=arc-20240116; t=1779302360; c=relaxed/simple;
+	bh=LSXDXobJPuBF0Xg6M3YHWw/NO2I8V0ZvQgWcNVnKydY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p5AMFPskF2xsjdxjlXU3kWPofIZkjvuJwR8uROWF03MJmfd/omxjyFqZFuJ6k1gp15g5AKgLiQ7VYoxwb1f+uO02ssTwbtJI2yjk6u3bqA3fUKLq2eGrFo/qVExpjJkZoWcerRX9SlT49BnJmJk9Y2aZLdTejUZOCQHUwN5o8PQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uRZrdKWj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 591B61F00894;
-	Wed, 20 May 2026 17:50:47 +0000 (UTC)
+	 MIME-Version; b=p7eH3OB1l9LI7ND0ATolQpH3cF2Fq3FeCSWRDnkquyIx8XO8KdK/HDBPWpkYDo21cUr0WNoze2Ha7rxaL63aGA6+VmRrQauATEaNZixFTGFzIUsM1NnGKo/lZR4zZP5PtczCm41T1rQBlknP3zqoM5JTJtZ6LnNsjLnn9C+ZoUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GRtNjWvz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C081D1F00893;
+	Wed, 20 May 2026 18:39:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299447;
-	bh=tbdXeuvIRZNynK4um3YBWzZjG0LMyRwzPhlzFnDAy5A=;
+	s=korg; t=1779302359;
+	bh=OHyQVv+iLg7sDrhR3hHQxfv4phLL9+yK33HH+pSaqZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uRZrdKWjeDda01eRd8NxyMolopXEWZWVMng+PAKK6jEqN1/1cROyL6BHU8hzv27JI
-	 6pLi6yzECryfk3Ymnw3GdVyuzu8rG33mps/A0Jt/9m6QsYgItsAhExhtVcQMSE8H3R
-	 ju7Ft30vsAI+Md/YsXSFqM6iXRYDl+QmvOrkkdlk=
+	b=GRtNjWvzGjP3PyQUnezjrVwOgXwTKoIzHNO/ct7t53t9tHRPt+57f7YtByxNOe4RX
+	 vqhFrfejuIwKInzea85BplLU7RHea2o67jNHVKqnDOqU5ZI4AFWc+VIMz/bex4Kqmn
+	 9eOU+HgxBPyTNn4P1fwiVPziRkM7KHnOTeJ36Q9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Michal Luczaj <mhal@rbox.co>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 776/957] net/sched: sch_fq_pie: annotate data-races in fq_pie_dump_stats()
-Date: Wed, 20 May 2026 18:20:59 +0200
-Message-ID: <20260520162151.390442186@linuxfoundation.org>
+Subject: [PATCH 6.6 237/508] bpf, sockmap: Fix af_unix iter deadlock
+Date: Wed, 20 May 2026 18:21:00 +0200
+Message-ID: <20260520162103.784690049@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,90 +71,130 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251987-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253083-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mojatatu.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 5E689595791
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,rbox.co:email,linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 6A341597A44
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Michal Luczaj <mhal@rbox.co>
 
-[ Upstream commit 59b145771c7982cfe9020d4e9e22da92d6b5ae31 ]
+[ Upstream commit 4d328dd695383224aa750ddee6b4ad40c0f8d205 ]
 
-fq_codel_dump_stats() acquires the qdisc spinlock a bit too late.
+bpf_iter_unix_seq_show() may deadlock when lock_sock_fast() takes the fast
+path and the iter prog attempts to update a sockmap. Which ends up spinning
+at sock_map_update_elem()'s bh_lock_sock():
 
-Move this acquisition before we fill tc_fq_pie_xstats with live data.
+WARNING: possible recursive locking detected
+test_progs/1393 is trying to acquire lock:
+ffff88811ec25f58 (slock-AF_UNIX){+...}-{3:3}, at: sock_map_update_elem+0xdb/0x1f0
 
-Alternative would be to add READ_ONCE() and WRITE_ONCE() annotations,
-but the spinlock is needed anyway to scan q->new_flows and q->old_flows.
+but task is already holding lock:
+ffff88811ec25f58 (slock-AF_UNIX){+...}-{3:3}, at: __lock_sock_fast+0x37/0xe0
 
-Fixes: ec97ecf1ebe4 ("net: sched: add Flow Queue PIE packet scheduler")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260423063527.2568262-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+other info that might help us debug this:
+ Possible unsafe locking scenario:
+
+       CPU0
+       ----
+  lock(slock-AF_UNIX);
+  lock(slock-AF_UNIX);
+
+ *** DEADLOCK ***
+
+ May be due to missing lock nesting notation
+
+4 locks held by test_progs/1393:
+ #0: ffff88814b59c790 (&p->lock){+.+.}-{4:4}, at: bpf_seq_read+0x59/0x10d0
+ #1: ffff88811ec25fd8 (sk_lock-AF_UNIX){+.+.}-{0:0}, at: bpf_seq_read+0x42c/0x10d0
+ #2: ffff88811ec25f58 (slock-AF_UNIX){+...}-{3:3}, at: __lock_sock_fast+0x37/0xe0
+ #3: ffffffff85a6a7c0 (rcu_read_lock){....}-{1:3}, at: bpf_iter_run_prog+0x51d/0xb00
+
+Call Trace:
+ dump_stack_lvl+0x5d/0x80
+ print_deadlock_bug.cold+0xc0/0xce
+ __lock_acquire+0x130f/0x2590
+ lock_acquire+0x14e/0x2b0
+ _raw_spin_lock+0x30/0x40
+ sock_map_update_elem+0xdb/0x1f0
+ bpf_prog_2d0075e5d9b721cd_dump_unix+0x55/0x4f4
+ bpf_iter_run_prog+0x5b9/0xb00
+ bpf_iter_unix_seq_show+0x1f7/0x2e0
+ bpf_seq_read+0x42c/0x10d0
+ vfs_read+0x171/0xb20
+ ksys_read+0xff/0x200
+ do_syscall_64+0x6b/0x3a0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Fixes: 2c860a43dd77 ("bpf: af_unix: Implement BPF iterator for UNIX domain socket.")
+Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
+Suggested-by: Martin KaFai Lau <martin.lau@linux.dev>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260414-unix-proto-update-null-ptr-deref-v4-2-2af6fe97918e@rbox.co
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_fq_pie.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ net/unix/af_unix.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/net/sched/sch_fq_pie.c b/net/sched/sch_fq_pie.c
-index 7b96bc3ff8918..0c7b2095f8655 100644
---- a/net/sched/sch_fq_pie.c
-+++ b/net/sched/sch_fq_pie.c
-@@ -510,18 +510,19 @@ static int fq_pie_dump(struct Qdisc *sch, struct sk_buff *skb)
- static int fq_pie_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- {
- 	struct fq_pie_sched_data *q = qdisc_priv(sch);
--	struct tc_fq_pie_xstats st = {
--		.packets_in	= q->stats.packets_in,
--		.overlimit	= q->stats.overlimit,
--		.overmemory	= q->overmemory,
--		.dropped	= q->stats.dropped,
--		.ecn_mark	= q->stats.ecn_mark,
--		.new_flow_count = q->new_flow_count,
--		.memory_usage   = q->memory_usage,
--	};
-+	struct tc_fq_pie_xstats st = { 0 };
- 	struct list_head *pos;
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 651c7debe799d..8bf6c2b7215e8 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -3561,15 +3561,14 @@ static int bpf_iter_unix_seq_show(struct seq_file *seq, void *v)
+ 	struct bpf_prog *prog;
+ 	struct sock *sk = v;
+ 	uid_t uid;
+-	bool slow;
+ 	int ret;
  
- 	sch_tree_lock(sch);
-+
-+	st.packets_in	= q->stats.packets_in;
-+	st.overlimit	= q->stats.overlimit;
-+	st.overmemory	= q->overmemory;
-+	st.dropped	= q->stats.dropped;
-+	st.ecn_mark	= q->stats.ecn_mark;
-+	st.new_flow_count = q->new_flow_count;
-+	st.memory_usage   = q->memory_usage;
-+
- 	list_for_each(pos, &q->new_flows)
- 		st.new_flows_len++;
+ 	if (v == SEQ_START_TOKEN)
+ 		return 0;
+ 
+-	slow = lock_sock_fast(sk);
++	lock_sock(sk);
+ 
+-	if (unlikely(sk_unhashed(sk))) {
++	if (unlikely(sock_flag(sk, SOCK_DEAD))) {
+ 		ret = SEQ_SKIP;
+ 		goto unlock;
+ 	}
+@@ -3579,7 +3578,7 @@ static int bpf_iter_unix_seq_show(struct seq_file *seq, void *v)
+ 	prog = bpf_iter_get_info(&meta, false);
+ 	ret = unix_prog_seq_show(prog, &meta, v, uid);
+ unlock:
+-	unlock_sock_fast(sk, slow);
++	release_sock(sk);
+ 	return ret;
+ }
  
 -- 
 2.53.0
