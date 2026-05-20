@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-251001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253023-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0CkXF3PsDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-251001-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:16:35 +0200
+	id AK+ADJ8JDmru5gUAu9opvQ
+	(envelope-from <stable+bounces-253023-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:21:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDA79593370
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:16:34 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64E605982E2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:21:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C99A5308A8E7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:08:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 23E7530789A5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA0EB3F4DD1;
-	Wed, 20 May 2026 17:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9281F3A3E90;
+	Wed, 20 May 2026 18:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQsrKcbd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sHW5i2re"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA43E3D8129;
-	Wed, 20 May 2026 17:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560E5DF59;
+	Wed, 20 May 2026 18:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296845; cv=none; b=YVnnVGBufRwh0bWRVoEV2dApZQWq1N8sII3M2DIIMRVxAAjpPVrGJ9ne+/wGmtK+7JaMgERDuKRhlVruksOMtJtMRPKkywuQ41xH6k7pJZlpy3KHSPfjwUEFwShXjW9N+WDckMntDaW0CJHFBonz24hSHrjVYQ62ginBx/rRo8s=
+	t=1779302202; cv=none; b=J8dPL9Q+tnQBipLCja0OPKeDoflDWjPK3SzdT6SCNYnJmrgzKyHNaGDIq47HI8cfdtBVAyTBWizGFoUHYl9KJ7nmIontptvlGz3C1AvFzUte5yQedo+XMIrH+VURW+hWSs+mgDCJ2VMDMDMBbmnxPajTu9GzLvMQ0SZvDo6OXps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296845; c=relaxed/simple;
-	bh=RbTlRE73DINY6yoydVv/y0zCi06kSnlfAb1jpmz8etU=;
+	s=arc-20240116; t=1779302202; c=relaxed/simple;
+	bh=MjMsE5R8M/3G6KRMe9soM2FWPWnxeizl7Igym5u1uO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gUsfc0NS3JzjwQnfHYoTajJm47T7x6Is7nf9JpjGDzVBAj/l52u2aHMRcT9ALms+CVcPFu7JDC5MMwNMPXio2FjVpMfwzw7I2p43N1lvma08mQabShojdf3V0GUt8SGtmhr68kRe3+ZD6pYw/qgUGiPn0xWvg/PGTWCKrujjNtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQsrKcbd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E82521F000E9;
-	Wed, 20 May 2026 17:07:22 +0000 (UTC)
+	 MIME-Version; b=jnpwD2BaxIjDixI9ILnnoiuTIKPQGRp3Am7hj5glkEWukA9TtEwSadf+IdPdB2PFMXQSGYkCjVbBhTe0X2sMDIAR5zkG/QMMl1ViZHwZb4PHUlx+haLqEymP2PC/YIQrxfrEGeUx5nP+XbPYh93+mz10a44QxbBtuerNjssoq1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sHW5i2re; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD3961F000E9;
+	Wed, 20 May 2026 18:36:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296843;
-	bh=K0nEmt1rvjdUQDOYL9lV0W8FNdA/iPJDfaqTnOfKan4=;
+	s=korg; t=1779302201;
+	bh=wsctpJjTR6DVKtXGXq2CzqNBhGGdq9fjZZyaGwIrJa8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xQsrKcbdQnBLgE+F8O096dBjp1WdAhIe7pLqZzJrmJsVWwigp7eXRgqbhqeeBYdRX
-	 bdxi+WqxZYjiNE/eEUqOc2EeZ8nxOtrgc7pOdQXHluDkicvhIJTf0GuG0K4nTy/tyX
-	 OLb5fUK4ym/lI1XCdoK27kvBoYUtHE8qVrsJG/qU=
+	b=sHW5i2reVipkf4CkXo21VcY+gqqV5GUIwLgidZz6E+pco7sL9017rz6jd44W6Ja77
+	 vvzhqRkh4dIUye07NG4tm1NwRkKtiL9rMQVsmRYD5zS6w5Y3jFD841oQRXDvT8uDfN
+	 vmY3sdhdJEaTAyXapLRI75OYGMrGu63R+tpr96Yg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <error27@gmail.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0951/1146] ALSA: usb-audio: Fix potential leak of pd at parsing UAC3 streams
+Subject: [PATCH 6.6 178/508] gfs2: prevent NULL pointer dereference during unmount
 Date: Wed, 20 May 2026 18:20:01 +0200
-Message-ID: <20260520162209.757136471@linuxfoundation.org>
+Message-ID: <20260520162102.495745561@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,234 +69,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253023-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,redhat.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251001-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: DDA79593370
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email]
+X-Rspamd-Queue-Id: 64E605982E2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit c39f0bc03f84ba64c9144c95714df1dc36150f6d ]
+[ Upstream commit 74b4dbb946060a3233604d91859a9abd3708141d ]
 
-At parsing UAC3 streams, we allocate a PD object at each time, and
-either assign or free it.  But there is a case where the PD object may
-be leaked; namely, in __snd_usb_parse_audio_interface() loop, when an
-audioformat shares the same endpoint with others, it's put to a link
-and returns from snd_usb_add_audio_stream(), but the PD is forgotten
-afterwards.  Overall, the treatment of PD object in the parser code is
-a bit flaky, and we should be more careful about the object ownership.
+When flushing out outstanding glock work during an unmount, gfs2_log_flush()
+can be called when sdp->sd_jdesc has already been deallocated and sdp->sd_jdesc
+is NULL.  Commit 35264909e9d1 ("gfs2: Fix NULL pointer dereference in
+gfs2_log_flush") added a check for that to gfs2_log_flush() itself, but it
+missed the sdp->sd_jdesc dereference in gfs2_log_release().  Fix that.
 
-This patch tries to fix the above case and improve the code a bit.
-The pd object is now managed with the auto-cleanup in the loop, and
-the ownership is updated when the pd object gets assigned to the
-stream, which guarantees the release of the leftover object.
-
-Fixes: 7edf3b5e6a45 ("ALSA: usb-audio: AudioStreaming Power Domain parsing")
-Link: https://patch.msgid.link/20260427151508.12544-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Closes: https://lore.kernel.org/r/202604071139.HNJiCaAi-lkp@intel.com/
+Fixes: 35264909e9d1 ("gfs2: Fix NULL pointer dereference in gfs2_log_flush")
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks.c |  2 +-
- sound/usb/stream.c | 58 ++++++++++++++++++----------------------------
- sound/usb/stream.h |  3 ++-
- 3 files changed, 25 insertions(+), 38 deletions(-)
+ fs/gfs2/log.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
-index 6f2a053d971c9..e8ae3464887b2 100644
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -122,7 +122,7 @@ static int add_audio_stream_from_fixed_fmt(struct snd_usb_audio *chip,
- 
- 	snd_usb_audioformat_set_sync_ep(chip, fp);
- 
--	err = snd_usb_add_audio_stream(chip, stream, fp);
-+	err = snd_usb_add_audio_stream(chip, stream, fp, NULL);
- 	if (err < 0)
- 		return err;
- 
-diff --git a/sound/usb/stream.c b/sound/usb/stream.c
-index b07e2ec661c16..03a939cdd07ac 100644
---- a/sound/usb/stream.c
-+++ b/sound/usb/stream.c
-@@ -79,7 +79,7 @@ static void snd_usb_audio_pcm_free(struct snd_pcm *pcm)
- static void snd_usb_init_substream(struct snd_usb_stream *as,
- 				   int stream,
- 				   struct audioformat *fp,
--				   struct snd_usb_power_domain *pd)
-+				   struct snd_usb_power_domain **pdptr)
+diff --git a/fs/gfs2/log.c b/fs/gfs2/log.c
+index 01fa92ac9ab20..b8be6c1c942d4 100644
+--- a/fs/gfs2/log.c
++++ b/fs/gfs2/log.c
+@@ -478,8 +478,9 @@ void gfs2_log_release(struct gfs2_sbd *sdp, unsigned int blks)
  {
- 	struct snd_usb_substream *subs = &as->substream[stream];
- 
-@@ -105,10 +105,11 @@ static void snd_usb_init_substream(struct snd_usb_stream *as,
- 	if (fp->channels > subs->channels_max)
- 		subs->channels_max = fp->channels;
- 
--	if (pd) {
--		subs->str_pd = pd;
-+	if (pdptr && *pdptr) {
-+		subs->str_pd = *pdptr;
-+		*pdptr = NULL; /* assigned */
- 		/* Initialize Power Domain to idle status D1 */
--		snd_usb_power_domain_set(subs->stream->chip, pd,
-+		snd_usb_power_domain_set(subs->stream->chip, subs->str_pd,
- 					 UAC3_PD_STATE_D1);
- 	}
- 
-@@ -486,11 +487,14 @@ snd_pcm_chmap_elem *convert_chmap_v3(struct uac3_cluster_header_descriptor
-  * if not, create a new pcm stream. note, fp is added to the substream
-  * fmt_list and will be freed on the chip instance release. do not free
-  * fp or do remove it from the substream fmt_list to avoid double-free.
-+ *
-+ * pdptr is optional and can be NULL.  When it's non-NULL and the PD gets
-+ * assigned to the stream, *pdptr is cleared to NULL upon return.
-  */
--static int __snd_usb_add_audio_stream(struct snd_usb_audio *chip,
--				      int stream,
--				      struct audioformat *fp,
--				      struct snd_usb_power_domain *pd)
-+int snd_usb_add_audio_stream(struct snd_usb_audio *chip,
-+			     int stream,
-+			     struct audioformat *fp,
-+			     struct snd_usb_power_domain **pdptr)
- 
- {
- 	struct snd_usb_stream *as;
-@@ -523,7 +527,7 @@ static int __snd_usb_add_audio_stream(struct snd_usb_audio *chip,
- 		err = snd_pcm_new_stream(as->pcm, stream, 1);
- 		if (err < 0)
- 			return err;
--		snd_usb_init_substream(as, stream, fp, pd);
-+		snd_usb_init_substream(as, stream, fp, pdptr);
- 		return add_chmap(as->pcm, stream, subs);
- 	}
- 
-@@ -552,7 +556,7 @@ static int __snd_usb_add_audio_stream(struct snd_usb_audio *chip,
- 	else
- 		strscpy(pcm->name, "USB Audio");
- 
--	snd_usb_init_substream(as, stream, fp, pd);
-+	snd_usb_init_substream(as, stream, fp, pdptr);
- 
- 	/*
- 	 * Keep using head insertion for M-Audio Audiophile USB (tm) which has a
-@@ -570,21 +574,6 @@ static int __snd_usb_add_audio_stream(struct snd_usb_audio *chip,
- 	return add_chmap(pcm, stream, &as->substream[stream]);
+ 	atomic_add(blks, &sdp->sd_log_blks_free);
+ 	trace_gfs2_log_blocks(sdp, blks);
+-	gfs2_assert_withdraw(sdp, atomic_read(&sdp->sd_log_blks_free) <=
+-				  sdp->sd_jdesc->jd_blocks);
++	gfs2_assert_withdraw(sdp, !sdp->sd_jdesc ||
++			atomic_read(&sdp->sd_log_blks_free) <=
++			sdp->sd_jdesc->jd_blocks);
+ 	if (atomic_read(&sdp->sd_log_blks_needed))
+ 		wake_up(&sdp->sd_log_waitq);
  }
- 
--int snd_usb_add_audio_stream(struct snd_usb_audio *chip,
--			     int stream,
--			     struct audioformat *fp)
--{
--	return __snd_usb_add_audio_stream(chip, stream, fp, NULL);
--}
--
--static int snd_usb_add_audio_stream_v3(struct snd_usb_audio *chip,
--				       int stream,
--				       struct audioformat *fp,
--				       struct snd_usb_power_domain *pd)
--{
--	return __snd_usb_add_audio_stream(chip, stream, fp, pd);
--}
--
- static int parse_uac_endpoint_attributes(struct snd_usb_audio *chip,
- 					 struct usb_host_interface *alts,
- 					 int protocol, int iface_no)
-@@ -1107,8 +1096,7 @@ snd_usb_get_audioformat_uac3(struct snd_usb_audio *chip,
- 		}
- 	}
- 
--	if (pd)
--		*pd_out = pd;
-+	*pd_out = pd;
- 
- 	return fp;
- }
-@@ -1123,7 +1111,6 @@ static int __snd_usb_parse_audio_interface(struct snd_usb_audio *chip,
- 	struct usb_interface_descriptor *altsd;
- 	int i, altno, err, stream;
- 	struct audioformat *fp = NULL;
--	struct snd_usb_power_domain *pd = NULL;
- 	bool set_iface_first;
- 	int num, protocol;
- 
-@@ -1165,6 +1152,12 @@ static int __snd_usb_parse_audio_interface(struct snd_usb_audio *chip,
- 		if (snd_usb_apply_interface_quirk(chip, iface_no, altno))
- 			continue;
- 
-+		/* pd may be allocated at snd_usb_get_audioformat_uac3() and
-+		 * assigned at snd_usb_add_audio_stream(); otherwise it'll be
-+		 * freed automatically by cleanup at each loop.
-+		 */
-+		struct snd_usb_power_domain *pd __free(kfree) = NULL;
-+
- 		/*
- 		 * Roland audio streaming interfaces are marked with protocols
- 		 * 0/1/2, but are UAC 1 compatible.
-@@ -1220,23 +1213,16 @@ static int __snd_usb_parse_audio_interface(struct snd_usb_audio *chip,
- 			*has_non_pcm = true;
- 		if ((fp->fmt_type == UAC_FORMAT_TYPE_I) == non_pcm) {
- 			audioformat_free(fp);
--			kfree(pd);
- 			fp = NULL;
--			pd = NULL;
- 			continue;
- 		}
- 
- 		snd_usb_audioformat_set_sync_ep(chip, fp);
- 
- 		dev_dbg(&dev->dev, "%u:%d: add audio endpoint %#x\n", iface_no, altno, fp->endpoint);
--		if (protocol == UAC_VERSION_3)
--			err = snd_usb_add_audio_stream_v3(chip, stream, fp, pd);
--		else
--			err = snd_usb_add_audio_stream(chip, stream, fp);
--
-+		err = snd_usb_add_audio_stream(chip, stream, fp, &pd);
- 		if (err < 0) {
- 			audioformat_free(fp);
--			kfree(pd);
- 			return err;
- 		}
- 
-diff --git a/sound/usb/stream.h b/sound/usb/stream.h
-index d92e18d5818fe..61b9a133da018 100644
---- a/sound/usb/stream.h
-+++ b/sound/usb/stream.h
-@@ -7,7 +7,8 @@ int snd_usb_parse_audio_interface(struct snd_usb_audio *chip,
- 
- int snd_usb_add_audio_stream(struct snd_usb_audio *chip,
- 			     int stream,
--			     struct audioformat *fp);
-+			     struct audioformat *fp,
-+			     struct snd_usb_power_domain **pdptr);
- 
- #endif /* __USBAUDIO_STREAM_H */
- 
 -- 
 2.53.0
 
