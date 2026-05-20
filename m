@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-253219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252123-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YK0kFBgHDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-253219-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:10:16 +0200
+	id SKtyHIgiDmr26QUAu9opvQ
+	(envelope-from <stable+bounces-252123-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:07:20 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3B32597DCF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:10:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1FC359A790
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:07:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BAAE128426D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8DAAD37DA89D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:57:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1E664218BA;
-	Wed, 20 May 2026 18:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 688813F20FA;
+	Wed, 20 May 2026 17:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQJ0gC+X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tvCdMCYe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567BE40F8D3;
-	Wed, 20 May 2026 18:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D1817A309;
+	Wed, 20 May 2026 17:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302710; cv=none; b=Q66c29bsBNJDsHwUMNYMcj3VaLnMuMR7wHY0ifa843ZbzyAYarEKanQ6/0HmUFhrlKqh3fTfyaqCz2odh+IcX2t675MTxB7kkRRJssG3wan4xfZ6xE/PHnhNvWoZvLwr2Xz/F8ACPXn2YL8DGVtk5isqp0YX8d97flKpfWRMgNI=
+	t=1779299851; cv=none; b=Q396sspQh7+p9DiarHXFYGQeNZqqgvLat7fkd5cCV5gTayMnBjHV7XyI2uFEjQYsp/K9LE0Ug4+u1fXyJOPqRUDQNvYRCjTc9JYhHa4TSoo6dyLhXRv2/EGIGucet7zLKYs87YrdhG+3u4UukakhTM0aq/HncW05gzyj0lQ+7WA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302710; c=relaxed/simple;
-	bh=O8tZ6B9u6SDpNl+i9Vwp6RnYR7sF5xAHvLdKOFIi8Sk=;
+	s=arc-20240116; t=1779299851; c=relaxed/simple;
+	bh=J1qO4cDG6arpMAdqTq7qtOFHhOYSiYX2cmBskso3hdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qqzp1aRH58DJL7x/Cq4TOg1TLBJ2kOA0BLF4AE5JbBVvxC2GyvillzGaVXhjP05f5Ve62FoGcSlBq5dztOtifwsuhMblMrVtXT7IRCwf02q0fAfIYbp6aEWNA0ANqmNDO9JBT8jr6Prnf9KWk8xWlvAyuvdAHIhdQJCqtDhcZfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQJ0gC+X; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC77E1F000E9;
-	Wed, 20 May 2026 18:45:08 +0000 (UTC)
+	 MIME-Version; b=qXKw4PlabRUUjVscQ/AFKaHxUvlMK5tuYv7Z1P5Er1H3MQSLWPBfjTVzi+NJ94oz4zkVCPG8GxL366W/uHO7feJ0YiBGmJLp6Zt+OBjqqIU0w+g7yxavJxGm+0CTxWtzUMZCNbXUtm4gBYK1Ncl8dr500XAYh6E+6LhX/b8ot9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tvCdMCYe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4667C1F000E9;
+	Wed, 20 May 2026 17:57:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302709;
-	bh=LIL9/zhkRrcJJE8Ai2kna02s+TDaQn6T1hqS3dcEPEM=;
+	s=korg; t=1779299849;
+	bh=ihvuYRGcyoKOZKVi5XkgTGfrIUSQ/0Vb2loMxj3Hk5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iQJ0gC+X3iE3e5JpNHhP9yVAi32Qro0f23ITeFr6Dj62VqwqNjGihAW5qBUdRJxIk
-	 WBdJiWk69ug3yEBfDu7lcgQ93SDR1xnelednndjBnSI8QeEmQfhUTQnnnxgvSIWY+d
-	 C8zy+rXNuYVOYbxlXC2/OYh6pdawYeTOOnZLByYw=
+	b=tvCdMCYeUwIk0HiXYtDcc6IU8zEOLyU0kEVXHJfe6MoXdZ2lM40eQFKW893iaz2jx
+	 ZMH5/Jl9GU2XBHTFWovyV2rL7hbQXLUEuyW8U4WyQCs5FafL5zwQLZHWktJOgINM80
+	 y0GorUc0hOgGJD3yolODkD6+fA4jLULRWObZlq8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 370/508] drm/amdgpu: fix AMDGPU_INFO_READ_MMR_REG
+	Gyeyoung Baek <gye976@gmail.com>,
+	Tomeu Vizoso <tomeu@tomeuvizoso.net>,
+	Steven Price <steven.price@arm.com>
+Subject: [PATCH 6.18 910/957] accel/rocket: Fix prep_bo ioctl leaking positive return from dma_resv_wait_timeout()
 Date: Wed, 20 May 2026 18:23:13 +0200
-Message-ID: <20260520162106.643090227@linuxfoundation.org>
+Message-ID: <20260520162154.310371584@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,168 +63,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253219-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252123-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,tomeuvizoso.net,arm.com];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: D3B32597DCF
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tomeuvizoso.net:email,arm.com:email]
+X-Rspamd-Queue-Id: E1FC359A790
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Gyeyoung Baek <gye976@gmail.com>
 
-[ Upstream commit 0ef196a208385b7d7da79f411c161b04e97283e2 ]
+commit 74570e12b4705ea11dcdfbfbd0a0b0fdaeff3059 upstream.
 
-There were multiple issues in that code.
+dma_resv_wait_timeout() returns a positive 'remaining jiffies' value
+on success, 0 on timeout, and -errno on failure.
 
-First of all the order between the reset semaphore and the mm_lock was
-wrong (e.g. copy_to_user) was called while holding the lock.
+rocket_ioctl_prep_bo() returns this 'long' result from an int-typed
+ioctl handler, so positive values reach userspace as bogus errors.
+Explicitly set ret to 0 on the success path.
 
-Then we allocated memory while holding the reset semaphore which is also
-a pretty big bug and can deadlock.
-
-Then we used down_read_trylock() instead of waiting for the reset to
-finish.
-
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Fixes: 9e823f307074 ("drm/amdgpu: Block MMR_READ IOCTL in reset")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 361b6e6b303d4b691f6c5974d3eaab67ca6dd90e)
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 525ad89dd904 ("accel/rocket: Add IOCTLs for synchronizing memory accesses")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
+Reviewed-by: Tomeu Vizoso <tomeu@tomeuvizoso.net>
+Link: https://patch.msgid.link/c0ebf83b345721701b22d8f5bc41c52c0ecf5e16.1776581974.git.gye976@gmail.com
+Signed-off-by: Steven Price <steven.price@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c | 57 +++++++++++--------------
- 1 file changed, 24 insertions(+), 33 deletions(-)
+ drivers/accel/rocket/rocket_gem.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-index 10730f256ae0f..4c678048be63b 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-@@ -724,68 +724,59 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
- 				    ? -EFAULT : 0;
- 	}
- 	case AMDGPU_INFO_READ_MMR_REG: {
--		int ret = 0;
--		unsigned int n, alloc_size;
--		uint32_t *regs;
- 		unsigned int se_num = (info->read_mmr_reg.instance >>
- 				   AMDGPU_INFO_MMR_SE_INDEX_SHIFT) &
- 				  AMDGPU_INFO_MMR_SE_INDEX_MASK;
- 		unsigned int sh_num = (info->read_mmr_reg.instance >>
- 				   AMDGPU_INFO_MMR_SH_INDEX_SHIFT) &
- 				  AMDGPU_INFO_MMR_SH_INDEX_MASK;
--
--		if (!down_read_trylock(&adev->reset_domain->sem))
--			return -ENOENT;
-+		unsigned int alloc_size;
-+		uint32_t *regs;
-+		int ret;
- 
- 		/* set full masks if the userspace set all bits
- 		 * in the bitfields
- 		 */
--		if (se_num == AMDGPU_INFO_MMR_SE_INDEX_MASK) {
-+		if (se_num == AMDGPU_INFO_MMR_SE_INDEX_MASK)
- 			se_num = 0xffffffff;
--		} else if (se_num >= AMDGPU_GFX_MAX_SE) {
--			ret = -EINVAL;
--			goto out;
--		}
-+		else if (se_num >= AMDGPU_GFX_MAX_SE)
-+			return -EINVAL;
- 
--		if (sh_num == AMDGPU_INFO_MMR_SH_INDEX_MASK) {
-+		if (sh_num == AMDGPU_INFO_MMR_SH_INDEX_MASK)
- 			sh_num = 0xffffffff;
--		} else if (sh_num >= AMDGPU_GFX_MAX_SH_PER_SE) {
--			ret = -EINVAL;
--			goto out;
--		}
-+		else if (sh_num >= AMDGPU_GFX_MAX_SH_PER_SE)
-+			return -EINVAL;
- 
--		if (info->read_mmr_reg.count > 128) {
--			ret = -EINVAL;
--			goto out;
--		}
-+		if (info->read_mmr_reg.count > 128)
-+			return -EINVAL;
- 
--		regs = kmalloc_array(info->read_mmr_reg.count, sizeof(*regs), GFP_KERNEL);
--		if (!regs) {
--			ret = -ENOMEM;
--			goto out;
--		}
-+		regs = kmalloc_array(info->read_mmr_reg.count, sizeof(*regs),
-+				     GFP_KERNEL);
-+		if (!regs)
-+			return -ENOMEM;
- 
-+		down_read(&adev->reset_domain->sem);
- 		alloc_size = info->read_mmr_reg.count * sizeof(*regs);
--
- 		amdgpu_gfx_off_ctrl(adev, false);
+--- a/drivers/accel/rocket/rocket_gem.c
++++ b/drivers/accel/rocket/rocket_gem.c
+@@ -144,6 +144,8 @@ int rocket_ioctl_prep_bo(struct drm_devi
+ 	ret = dma_resv_wait_timeout(gem_obj->resv, DMA_RESV_USAGE_WRITE, true, timeout);
+ 	if (!ret)
+ 		ret = timeout ? -ETIMEDOUT : -EBUSY;
++	else if (ret > 0)
 +		ret = 0;
- 		for (i = 0; i < info->read_mmr_reg.count; i++) {
- 			if (amdgpu_asic_read_register(adev, se_num, sh_num,
- 						      info->read_mmr_reg.dword_offset + i,
- 						      &regs[i])) {
- 				DRM_DEBUG_KMS("unallowed offset %#x\n",
- 					      info->read_mmr_reg.dword_offset + i);
--				kfree(regs);
--				amdgpu_gfx_off_ctrl(adev, true);
- 				ret = -EFAULT;
--				goto out;
-+				break;
- 			}
- 		}
- 		amdgpu_gfx_off_ctrl(adev, true);
--		n = copy_to_user(out, regs, min(size, alloc_size));
--		kfree(regs);
--		ret = (n ? -EFAULT : 0);
--out:
- 		up_read(&adev->reset_domain->sem);
-+
-+		if (!ret) {
-+			ret = copy_to_user(out, regs, min(size, alloc_size))
-+				? -EFAULT : 0;
-+		}
-+		kfree(regs);
- 		return ret;
- 	}
- 	case AMDGPU_INFO_DEV_INFO: {
--- 
-2.53.0
-
+ 
+ 	shmem_obj = &to_rocket_bo(gem_obj)->base;
+ 
 
 
 
