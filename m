@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252706-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ODHJNtsVDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251185-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:13:15 +0200
+	id MI0GKFUoDmqk6gUAu9opvQ
+	(envelope-from <stable+bounces-252706-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:32:05 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 489775994A5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:13:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0475759AFCB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:32:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 641E0322E4FA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7367C39998DC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:23:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B87D03F23A4;
-	Wed, 20 May 2026 17:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608C73F23A4;
+	Wed, 20 May 2026 18:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VfRbRSKU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EaUa8VDE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F09028DC4;
-	Wed, 20 May 2026 17:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3BF23FBB7D;
+	Wed, 20 May 2026 18:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297321; cv=none; b=SrcecTn3yhSOKCROEZW5UNpNZo4CfaCWJHyXCzJFNCDVwj/ka8LI4QneivCLQ4U+zK4jUVD84V1ZkWzm4tRCGyDbSVLXgz9bp1IuJg/Erofyauhy9fLXU92+1WAl4ri76zO9MMTgiBtSLAZ+JEewhySj0bLSrALUId2GLP0dTb8=
+	t=1779301377; cv=none; b=DXx7zdfHiH7g9vFl7aXXMHDFZG0yV6kaXkV30l0kIpB2VhogGKx7m1DD+16SjTThiAo12yBf8YzUo/igLN/TfVXXz8BO8l0dpyCZiG7M4Id/ZjbJEPf1CS5+KQ4rbrlOrVW/xVvNGLTxbnKq8s6XAjjjHChboWAVmBBMyRCW3Lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297321; c=relaxed/simple;
-	bh=ey7R/E12OIKzT7T5jhY1u3ZlITpxfODVKKCBTjis7IY=;
+	s=arc-20240116; t=1779301377; c=relaxed/simple;
+	bh=QZ0C7bxeKf+w6I+8SzaJGubY3J1XHKr8h74hIiVQBkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MZd2HGp76vq4XCVGUqvGWgKn2B3mZa+6yUad+0bJ9kVnLnt24vbe/Z2O+skVkhIyBo5wf7j7c4BmO2PIP3xd6uk0hPBX3YxNaXKjAtdI/xqetcXZZUtKjZQAQ+560hgihLoF7YyQUQaeBjyleyiIlIsUOWM1zOkImFLeigwz7kM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VfRbRSKU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4D281F000E9;
-	Wed, 20 May 2026 17:15:19 +0000 (UTC)
+	 MIME-Version; b=BijRBZZZ97r6V2cEuVnbJcho68vKVDe+6zOfgMpLvAOzwfUXz1stfflTgtBFbuOTMAi0abgnl8Z/motCfEEbPJsiDfZDJHNBkwvwJEijGC8k1kx/2gweA0q6yKBqVle1TR6NaG6yRLiEsgM8TQ6DnzEdamz9E5PamC8oI9Z4cCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EaUa8VDE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E189F1F000E9;
+	Wed, 20 May 2026 18:22:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297320;
-	bh=6vJhqz8zq07VxkqjgyA47ZupviApOyagd5W2KpNVAvg=;
+	s=korg; t=1779301375;
+	bh=E/MSeq+YnvItqMe1jaS5zSefoVVoZlWCuy2rw/b1izQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VfRbRSKUX0HexuVhtmfyR7LLEIyW/uCO+Hp4ckko6zVt4CRtGCp+XULrFIyv57hHf
-	 Aw+bDZ/4bWUjZgMkZAnTmwp0YzFNiKFn1vqp2wHsTgjYz9k8fa6o5+rrF7HMxBYhiR
-	 gUknpYRL9qSR1trcHhmX6G2pcT3xmfmm3H38nTBQ=
+	b=EaUa8VDEqC4W++XdKyl4XE4ZeP2fSHzd+ZFkNXKQLrkx5FnXRc5jVmox5h+ryJOu7
+	 oRIY/A5S1e/rl1BvErwLRINiakLpKK6F7rssHCcdfh4iZaDpy/9R+VLd8Gqdz+k8PS
+	 k8wGwy/WqekfvqJXYo/0E62ivS9JDZpVQYTACeLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 7.0 1093/1146] btrfs: only release the dirty pages io tree after successful writes
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 532/666] net/sched: netem: fix queue limit check to include reordered packets
 Date: Wed, 20 May 2026 18:22:23 +0200
-Message-ID: <20260520162212.973942681@linuxfoundation.org>
+Message-ID: <20260520162122.803158072@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,187 +67,77 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251185-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252706-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email]
-X-Rspamd-Queue-Id: 489775994A5
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,networkplumber.org:email]
+X-Rspamd-Queue-Id: 0475759AFCB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Stephen Hemminger <stephen@networkplumber.org>
 
-commit 4066c55e109475a06d18a1f127c939d551211956 upstream.
+[ Upstream commit 4185701fcce6b426b6c3630b25330dddd9c47b0d ]
 
-[WARNING]
-With extra warning on dirty extent buffers at umount (aka, the next
-patch in the series), test case generic/388 can trigger the following
-warning about dirty extent buffers at unmount time:
+The queue limit check in netem_enqueue() uses q->t_len which only
+counts packets in the internal tfifo. Packets placed in sch->q by
+the reorder path (__qdisc_enqueue_head) are not counted, allowing
+the total queue occupancy to exceed sch->limit under reordering.
 
-  BTRFS critical (device dm-2 state E): emergency shutdown
-  BTRFS error (device dm-2 state E): error while writing out transaction: -30
-  BTRFS warning (device dm-2 state E): Skipping commit of aborted transaction.
-  BTRFS error (device dm-2 state EA): Transaction 9 aborted (error -30)
-  BTRFS: error (device dm-2 state EA) in cleanup_transaction:2068: errno=-30 Readonly filesystem
-  BTRFS info (device dm-2 state EA): forced readonly
-  BTRFS info (device dm-2 state EA): last unmount of filesystem 4fbf2e15-f941-49a0-bc7c-716315d2777c
-  ------------[ cut here ]------------
-  WARNING: disk-io.c:3311 at invalidate_and_check_btree_folios+0xfd/0x1ca [btrfs], CPU#8: umount/914368
-  CPU: 8 UID: 0 PID: 914368 Comm: umount Tainted: G           OE       7.1.0-rc1-custom+ #372 PREEMPT(full)  2de38db8d1deae71fde295430a0ff3ab98ccf596
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 02/02/2022
-  RIP: 0010:invalidate_and_check_btree_folios+0xfd/0x1ca [btrfs]
-  Call Trace:
-   <TASK>
-   close_ctree+0x52e/0x574 [btrfs d2f0b1cd330d1287e7a9919d112eadfc0e914efd]
-   generic_shutdown_super+0x89/0x1a0
-   kill_anon_super+0x16/0x40
-   btrfs_kill_super+0x16/0x20 [btrfs d2f0b1cd330d1287e7a9919d112eadfc0e914efd]
-   deactivate_locked_super+0x2d/0xb0
-   cleanup_mnt+0xdc/0x140
-   task_work_run+0x5a/0xa0
-   exit_to_user_mode_loop+0x123/0x4b0
-   do_syscall_64+0x243/0x7c0
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-   </TASK>
-  ---[ end trace 0000000000000000 ]---
-  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30539776 owner 9 gen 9 refs 2 flags 0x7
-  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30621696 owner 257 gen 9 refs 2 flags 0x7
-  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30638080 owner 258 gen 9 refs 2 flags 0x7
-  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30654464 owner 7 gen 9 refs 2 flags 0x7
-  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30703616 owner 2 gen 9 refs 2 flags 0x7
-  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30720000 owner 10 gen 9 refs 2 flags 0x7
-  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30736384 owner 4 gen 9 refs 2 flags 0x7
-  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30752768 owner 11 gen 9 refs 2 flags 0x7
+Include sch->q.qlen in the limit check.
 
-I'm using a stripped down version, which seems to trigger the warning
-more reliably:
-
-  _fsstress_pid=""
-  workload()
-  {
-  	dmesg -C
-  	mkfs.btrfs -f -K $dev > /dev/null
-  	echo 1 > /sys/kernel/debug/clear_warn_once
-  	mount $dev $mnt
-  	$fsstress -w -n 1024 -p 4 -d $mnt &
-  	_fsstress_pid=$!
-  	sleep 0
-  	$godown $mnt
-  	pkill --echo -PIPE fsstress > /dev/null
-  	wait $_fsstress_pid
-  	unset _fsstress_pid
-  	umount $mnt
-
-  	if dmesg | grep -q "WARNING"; then
-  		fail
-  	fi
-  }
-
-  for (( i = 0; i < $runtime; i++ )); do
-  	echo "=== $i/$runtime ==="
-  	workload
-  done
-
-[CAUSE]
-Inside btrfs_write_and_wait_transaction(), we first try to write all
-dirty ebs, then wait for them to finish.
-
-After that we call btrfs_extent_io_tree_release() to free all
-extent states from dirty_pages io tree.
-
-However if we hit an error from btrfs_write_marked_extent(), then we
-still call btrfs_extent_io_tree_release() to clear that dirty_pages io
-tree, which may contain dirty records that we haven't yet submitted.
-
-Furthermore, the later transaction cleanup path will utilize that
-dirty_pages io tree to properly cleanup those dirty ebs, but since it's
-already empty, no dirty ebs are properly cleaned up, thus will later
-trigger the warnings inside invalidate_btree_folios().
-
-[FIX]
-Normally such dirty ebs won't cause problems, as when the iput() is
-called on the btree inode, the dirty ebs will be forcibly written back,
-and since the fs is already in an error status, such writeback will not
-reach disk and finish immediately.
-
-But it's still better to get rid of such dirty ebs, if we ended up with
-dirty ebs but the fs is not in an error status, then such writeback at
-iput() time will be too late, as all workers are already stopped but
-writeback will utilize workers, which will lead to NULL pointer
-dereferences.
-
-Instead of unconditionally calling btrfs_extent_io_tree_release(), only
-call it if btrfs_write_and_wait_transaction() finished successfully, so
-that @dirty_pages extent io tree is kept untouched for transaction
-cleanup.
-
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f8d4bc455047 ("net/sched: netem: account for backlog updates from child qdisc")
+Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260418032027.900913-3-stephen@networkplumber.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/disk-io.c     |    1 +
- fs/btrfs/transaction.c |    9 ++++-----
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ net/sched/sch_netem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -4709,6 +4709,7 @@ static void btrfs_destroy_marked_extents
- 			free_extent_buffer_stale(eb);
- 		}
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index add20b1ab79b2..542ab3f7e3d07 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -522,7 +522,7 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 				1 << get_random_u32_below(8);
  	}
-+	btrfs_extent_io_tree_release(dirty_pages);
- }
  
- static void btrfs_destroy_pinned_extent(struct btrfs_fs_info *fs_info,
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -1275,14 +1275,13 @@ static int btrfs_write_and_wait_transact
- 	blk_finish_plug(&plug);
- 	ret2 = btrfs_wait_extents(fs_info, dirty_pages);
- 
--	btrfs_extent_io_tree_release(&trans->transaction->dirty_pages);
--
- 	if (ret)
- 		return ret;
--	else if (ret2)
-+	if (ret2)
- 		return ret2;
--	else
--		return 0;
-+
-+	btrfs_extent_io_tree_release(&trans->transaction->dirty_pages);
-+	return 0;
- }
- 
- /*
+-	if (unlikely(q->t_len >= sch->limit)) {
++	if (unlikely(sch->q.qlen >= sch->limit)) {
+ 		/* re-link segs, so that qdisc_drop_all() frees them all */
+ 		skb->next = segs;
+ 		qdisc_drop_all(skb, sch, to_free);
+-- 
+2.53.0
+
 
 
 
