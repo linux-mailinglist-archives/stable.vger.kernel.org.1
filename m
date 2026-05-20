@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-252122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252755-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GOl2BS3/DWpV5QUAu9opvQ
-	(envelope-from <stable+bounces-252122-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:29 +0200
+	id iBUDNwr+DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252755-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:31:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D7D9596C00
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 985E3596728
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:31:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9D17437DA4B5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:57:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 76EE630E0886
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753B23F39C9;
-	Wed, 20 May 2026 17:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B6693FA5EB;
+	Wed, 20 May 2026 18:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SF2wCST5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vh+B9/L7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393353EF0C1;
-	Wed, 20 May 2026 17:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1016D332EBD;
+	Wed, 20 May 2026 18:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299848; cv=none; b=oSjEuMHKn2xupNvbRchAskFQt4ESTjLWVBl5KtVBBsw+hTmYpIKn8gEzh4P9xMan4QqhriIJ7Y/5ZxnX7A+KUrgIPV4783X0rsMaAFBdIGdIVSkMJFaNulgCFA/vYTrqIPXyFwQ5+i/3xx15MLNZz8u+7ETuWb3+UNcQDbJ4cW4=
+	t=1779301506; cv=none; b=aFlu8phbD0l7JtMrvkWNZjquckUfaW+6XACqXWviZS7xGH8sieTkE22tQbRFvSL1el6j/5EPObNUSJrnPuajLFdFH0qZjdi9ESV0jOgAdtp2tJr5ncqPPrmX6NQzdbFRGVXqnF2Zqn2m3q8jdTrWJUFX/GYSGBGEPxlNgIoA3ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299848; c=relaxed/simple;
-	bh=r75JDSRshUqcDCKyjsQ/ndPGG1S+LcBItbD6mhpIqZw=;
+	s=arc-20240116; t=1779301506; c=relaxed/simple;
+	bh=QUSDeXhGG6907lVznC92Ye6KzDqJBEBzd7x9nhdOw6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PO5Rv0A+yvdIWbI0PuErA92oRvDHZ9j2xBxMpAEBRzk9sOb4X+HYkcLuCcnL67P+lXL2c9+5OnWpgtfsDAOKtb81uMJAfvQTQOmQFy7qeXbZg9BZRMTrwD3PI8QgHaJRH2ikP2CF8LR79+XIvMrAvO9//PJ2oiY/506c5L+EZ/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SF2wCST5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE221F000E9;
-	Wed, 20 May 2026 17:57:26 +0000 (UTC)
+	 MIME-Version; b=c8nXt6/D08VtUp1avbo4WAIu+odxnNdym+vLTSmMqzoJbnFw6MS0yOcqiqdYqJvaL0XyQgwlpItGK/cqst1k+o19ArIUneyAx6oFdKzOoswWw/KvjparfTXLrEQM1ESoEFXKWe2/c3SqIjKmAF86XGkpwOudsiucCGSOHXiG4uQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vh+B9/L7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2252C1F000E9;
+	Wed, 20 May 2026 18:25:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299847;
-	bh=QbUwQgQWHQCNR5zuT/ITQD1eOaO9M/LXTvDokeK9KuY=;
+	s=korg; t=1779301504;
+	bh=TCtSoQ0Xw1wtzclDZUeVcZoHg62B216rvS3zk+w50Z4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SF2wCST5IHWL+i+d3k9CSl9wwHR94f7eOnaUx3ZjGZ9FryOVadv93BfSbz860fLuA
-	 eLg1h6rI1OnzKaSYjTcUbvvQCO52RkxfrwdBYQscLQNhKRsRPGJGcoKWsBq7zNvaJr
-	 MzSlEgFXmEGLrSeV8rubwVyTwOS2PpcNf/8NWOn8=
+	b=vh+B9/L71cwAV8MRe++2C0N7f2BGsuREFXYRIQ52e3tIakYO1KINIstStIWrPP2tB
+	 YGU6TCxaSczIKc5WtAHMSxGMmFJl3Y9L22zfvhKilE1Z9Ut18dPmosmN1YdR/KJljj
+	 7FFxilFZSpPAxsf/yHngy0Jkrnr39HXK3EoLkMhE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	Rong Zhang <i@rong.moe>,
-	"Derek J. Clark" <derekjohn.clark@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.18 909/957] platform/x86: lenovo-wmi-other: Fix tunable_attr_01 struct members
+	Francois Dugast <francois.dugast@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 581/666] drm/xe: Fix error cleanup in xe_exec_queue_create_ioctl()
 Date: Wed, 20 May 2026 18:23:12 +0200
-Message-ID: <20260520162154.288513967@linuxfoundation.org>
+Message-ID: <20260520162123.861437658@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,84 +66,117 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,squebb.ca,rong.moe,gmail.com,linux.intel.com];
-	TAGGED_FROM(0.00)[bounces-252122-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252755-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 6D7D9596C00
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 985E3596728
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Derek J. Clark <derekjohn.clark@gmail.com>
+From: Shuicheng Lin <shuicheng.lin@intel.com>
 
-commit 71f3843e0f81e3c097a088c1121154bb9a44da0a upstream.
+[ Upstream commit f3cc22d4df3ed58439ea7e21daa54c3608e03b78 ]
 
-In struct tunable_attr_01 the capdata pointer is unused and the size of
-the id members is u32 when it should be u8. Fix these prior to adding
-additional members.
+Two error handling issues exist in xe_exec_queue_create_ioctl():
 
-No functional change intended.
+1. When xe_hw_engine_group_add_exec_queue() fails, the error path jumps
+   to put_exec_queue which skips xe_exec_queue_kill(). If the VM is in
+   preempt fence mode, xe_vm_add_compute_exec_queue() has already added
+   the queue to the VM's compute exec queue list. Skipping the kill
+   leaves the queue on that list, leading to a dangling pointer after
+   the queue is freed.
 
-Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Cc: stable@vger.kernel.org
-Reviewed-by: Rong Zhang <i@rong.moe>
-Tested-by: Rong Zhang <i@rong.moe>
-Signed-off-by: Derek J. Clark <derekjohn.clark@gmail.com>
-Link: https://patch.msgid.link/20260510042546.436874-6-derekjohn.clark@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+2. When xa_alloc() fails after xe_hw_engine_group_add_exec_queue() has
+   succeeded, the error path does not call
+   xe_hw_engine_group_del_exec_queue() to remove the queue from the hw
+   engine group list. The queue is then freed while still linked into
+   the hw engine group, causing a use-after-free.
+
+Fix both by:
+- Changing the xe_hw_engine_group_add_exec_queue() failure path to jump
+  to kill_exec_queue so that xe_exec_queue_kill() properly removes the
+  queue from the VM's compute list.
+- Adding a del_hw_engine_group label before kill_exec_queue for the
+  xa_alloc() failure path, which removes the queue from the hw engine
+  group before proceeding with the rest of the cleanup.
+
+Fixes: 7970cb36966c ("'drm/xe/hw_engine_group: Register hw engine group's exec queues")
+Cc: Francois Dugast <francois.dugast@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+Assisted-by: Claude:claude-opus-4.6
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patch.msgid.link/20260408020647.3397933-1-shuicheng.lin@intel.com
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+(cherry picked from commit 37c831f401746a45d510b312b0ed7a77b1e06ec8)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/lenovo/wmi-other.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/xe/xe_exec_queue.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/platform/x86/lenovo/wmi-other.c
-+++ b/drivers/platform/x86/lenovo/wmi-other.c
-@@ -82,11 +82,10 @@ struct lwmi_om_priv {
- };
+diff --git a/drivers/gpu/drm/xe/xe_exec_queue.c b/drivers/gpu/drm/xe/xe_exec_queue.c
+index 268cd3123be9d..e6c3074d0a785 100644
+--- a/drivers/gpu/drm/xe/xe_exec_queue.c
++++ b/drivers/gpu/drm/xe/xe_exec_queue.c
+@@ -638,7 +638,7 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
+ 		if (q->vm && q->hwe->hw_engine_group) {
+ 			err = xe_hw_engine_group_add_exec_queue(q->hwe->hw_engine_group, q);
+ 			if (err)
+-				goto put_exec_queue;
++				goto kill_exec_queue;
+ 		}
+ 	}
  
- struct tunable_attr_01 {
--	struct capdata01 *capdata;
- 	struct device *dev;
--	u32 feature_id;
--	u32 device_id;
--	u32 type_id;
-+	u8 feature_id;
-+	u8 device_id;
-+	u8 type_id;
- };
+@@ -647,12 +647,15 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
+ 	/* user id alloc must always be last in ioctl to prevent UAF */
+ 	err = xa_alloc(&xef->exec_queue.xa, &id, q, xa_limit_32b, GFP_KERNEL);
+ 	if (err)
+-		goto kill_exec_queue;
++		goto del_hw_engine_group;
  
- static struct tunable_attr_01 ppt_pl1_spl = {
+ 	args->exec_queue_id = id;
+ 
+ 	return 0;
+ 
++del_hw_engine_group:
++	if (q->vm && q->hwe && q->hwe->hw_engine_group)
++		xe_hw_engine_group_del_exec_queue(q->hwe->hw_engine_group, q);
+ kill_exec_queue:
+ 	xe_exec_queue_kill(q);
+ put_exec_queue:
+-- 
+2.53.0
+
 
 
 
