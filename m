@@ -1,66 +1,59 @@
-Return-Path: <stable+bounces-253103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252008-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +BGKAkUuDmoK7wUAu9opvQ
-	(envelope-from <stable+bounces-253103-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:57:25 +0200
+	id oBgeGgT5DWqq5AUAu9opvQ
+	(envelope-from <stable+bounces-252008-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:10:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CD2959B854
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:57:24 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 369B359572B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:10:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A70C6395D8C8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:47:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5E7183143C04
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:52:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49DB247DD4E;
-	Wed, 20 May 2026 18:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86F053F8704;
+	Wed, 20 May 2026 17:51:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S8bm3KCI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IernF0Cw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE818401A0B;
-	Wed, 20 May 2026 18:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4711F3F7A9F;
+	Wed, 20 May 2026 17:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302413; cv=none; b=DW+SFEIE/158Gmj3/N2g2+WLbWyoirK0pzqkrJIO52v7tkHgUHydR5KltCUySvOhF1z+fgHp2M6F4a2l9p1B+h/AggOYyEkMc9oc+YKusEe7MqTc7Hpl56yJwLK++Dp/+uYsj83zGCnWMzvQcIpn8ANJBXZljPUS/Wm3jfUcXCQ=
+	t=1779299504; cv=none; b=P3zz1kh9IYCY4R1GO4QkJDrIPIy0t6kl4LAH3r0CxperALvnCucpBhuCIXUZpehDSdUovpp5butq48id41iywSlQMB6fBWy98Ngxl+fxzeQclTqeXMlF+GQ14K/9e1KfX6UY6Zpz9MvCu1iJVaWcvjDNVCWlWsBA0I0M+G9Nl00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302413; c=relaxed/simple;
-	bh=kmjYNpCUlhnhC6y6XT+I1YIy3KG8ZNg+eBnY3rCyLoU=;
+	s=arc-20240116; t=1779299504; c=relaxed/simple;
+	bh=5INQm0SyC41KZy0iXIwNE7Haci4c1suepJRoKAcq5pg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IoAScyxP7WQ5M04cr0WKYwFAL5RW7M6Y0JDXoJ1A6eXOo8kkx61HZHRNwti/Z5WLqN1cT5IqzJ4OePE2t1PgeC/Zu/OUjXzWhb2+dpp68Gsm1HDN2xZhGoIs9CWfgUN4tWUPePhPUEwPKEdKbrneHLCn5OxpTkY6UgF6L83EwPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S8bm3KCI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D0441F000E9;
-	Wed, 20 May 2026 18:40:11 +0000 (UTC)
+	 MIME-Version; b=M0c4MnabHNG/0cXuonkOCTtq9Y35eEoLY0A8aBKCjDSRfCbDQQNeQW00flElNRg4amSrqtty9gLXfaP0ORm2sOq1jOuWM7m/JV8NHAWFsxr0WeKlajMgYDISd66enLPMIj0QYHXEoIIxa3kS/wiNnlOIgeVANFcgRCXJ0l8M36A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IernF0Cw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1B51F000E9;
+	Wed, 20 May 2026 17:51:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302411;
-	bh=b2hZTTQtu798jXBbXMI/8Veca0HZwC3bVNUXldvgPjQ=;
+	s=korg; t=1779299503;
+	bh=kz/W8+of0kfzJ7UVOGsoXuxsuU3WgVE/oi34L3xDx+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=S8bm3KCIpnCHhgzS2AKq31QjMCVk+8OY+9YZuHGshxUyiuYMzhQgeu/MxivLSengr
-	 yUAp/6whpn7ZLAzhKIKuRxD5Q0obp9aereGVo/O1ys0jiycPJudqanFioNf5oQcQHa
-	 +NkuW6UpSR0gom/CrP909yaSCX5kR71NgcQ58cpo=
+	b=IernF0CwZhAmme+RMxOUiuPepA6YjauCRxVnbkSoNvAwoET0SuVBS3Vyi7xI1FoF9
+	 CqFFyxNKd8DJH8y0Obx1ekjJX1NXd+xBz77BN+vVmHVMFTcyUjHB8P26vXkavYp6iD
+	 JkKrKjR+C1E8gNAnfjdRvdzf76vkXRBmslmFNcis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ZhengYuan Huang <gality369@gmail.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	John Madieu <john.madieu@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 215/508] ocfs2: validate group add input before caching
+Subject: [PATCH 6.18 755/957] spi: rockchip: Read ISR, not IMR, to detect cs-inactive IRQ
 Date: Wed, 20 May 2026 18:20:38 +0200
-Message-ID: <20260520162103.297800140@linuxfoundation.org>
+Message-ID: <20260520162150.938670203@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,145 +64,96 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252008-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-253103-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,fasheh.com:email,live.cn:email]
-X-Rspamd-Queue-Id: 5CD2959B854
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 369B359572B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZhengYuan Huang <gality369@gmail.com>
+From: John Madieu <john.madieu@gmail.com>
 
-[ Upstream commit 70b672833f4025341c11b22c7f83778a5cd611bc ]
+[ Upstream commit b4683a239a409d65f88052f5630c748a8ba070cd ]
 
-[BUG]
-OCFS2_IOC_GROUP_ADD can trigger a BUG_ON in
-ocfs2_set_new_buffer_uptodate():
+rockchip_spi_isr() decides whether the current interrupt was the
+cs-inactive event by reading IMR:
 
-kernel BUG at fs/ocfs2/uptodate.c:509!
-Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-RIP: 0010:ocfs2_set_new_buffer_uptodate+0x194/0x1e0 fs/ocfs2/uptodate.c:509
-Code: ffffe88f 42b9fe4c 89e64889 dfe8b4df
-Call Trace:
- ocfs2_group_add+0x3f1/0x1510 fs/ocfs2/resize.c:507
- ocfs2_ioctl+0x309/0x6e0 fs/ocfs2/ioctl.c:887
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl fs/ioctl.c:583 [inline]
- __x64_sys_ioctl+0x197/0x1e0 fs/ioctl.c:583
- x64_sys_call+0x1144/0x26a0 arch/x86/include/generated/asm/syscalls_64.h:17
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x93/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7bbfb55a966d
+	if (rs->cs_inactive &&
+	    readl_relaxed(rs->regs + ROCKCHIP_SPI_IMR) & INT_CS_INACTIVE)
+		ctlr->target_abort(ctlr);
 
-[CAUSE]
-ocfs2_group_add() calls ocfs2_set_new_buffer_uptodate() on a
-user-controlled group block before ocfs2_verify_group_and_input()
-validates that block number. That helper is only valid for newly
-allocated metadata and asserts that the block is not already present in
-the chosen metadata cache. The code also uses INODE_CACHE(inode) even
-though the group descriptor belongs to main_bm_inode and later journal
-accesses use that cache context instead.
+IMR is the interrupt mask register: it tells which sources are enabled,
+not which one fired. In the PIO path, rockchip_spi_prepare_irq() enables
+both INT_RF_FULL and INT_CS_INACTIVE in IMR when rs->cs_inactive is true:
 
-[FIX]
-Validate the on-disk group descriptor before caching it, then add it to
-the metadata cache tracked by INODE_CACHE(main_bm_inode). Keep the
-validation failure path separate from the later cleanup path so we only
-remove the buffer from that cache after it has actually been inserted.
-This keeps the group buffer lifetime consistent across validation,
-journaling, and cleanup.
+	if (rs->cs_inactive)
+		writel_relaxed(INT_RF_FULL | INT_CS_INACTIVE,
+			       rs->regs + ROCKCHIP_SPI_IMR);
 
-Link: https://lkml.kernel.org/r/20260410020209.3786348-1-gality369@gmail.com
-Fixes: 7909f2bf8353 ("[PATCH 2/2] ocfs2: Implement group add for online resize")
-Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+so the IMR check is always true once cs_inactive is enabled, and every
+PIO interrupt - including normal RF_FULL completions - is dispatched to
+ctlr->target_abort(), aborting the transfer. The bug is reachable on
+ROCKCHIP_SPI_VER2_TYPE2 in target mode with a DMA-capable controller
+when the transfer is short enough to fall back to PIO
+(rockchip_spi_can_dma() returns false below fifo_len).
+
+Read ISR (which is RISR masked by IMR) so the check actually reflects
+which interrupt fired, and parenthesise the expression for clarity while
+at it.
+
+Fixes: 869f2c94db92 ("spi: rockchip: Stop spi slave dma receiver when cs inactive")
+Signed-off-by: John Madieu <john.madieu@gmail.com>
+Link: https://patch.msgid.link/20260425092936.2590132-2-john.madieu@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/resize.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/spi/spi-rockchip.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ocfs2/resize.c b/fs/ocfs2/resize.c
-index 42c0d314f95e8..acf2769f4c8c7 100644
---- a/fs/ocfs2/resize.c
-+++ b/fs/ocfs2/resize.c
-@@ -500,14 +500,14 @@ int ocfs2_group_add(struct inode *inode, struct ocfs2_new_group_input *input)
- 		goto out_unlock;
- 	}
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index 45b1ad40a7efc..f7001c7bbe109 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -357,7 +357,8 @@ static irqreturn_t rockchip_spi_isr(int irq, void *dev_id)
+ 	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
  
--	ocfs2_set_new_buffer_uptodate(INODE_CACHE(inode), group_bh);
--
- 	ret = ocfs2_verify_group_and_input(main_bm_inode, fe, input, group_bh);
- 	if (ret) {
- 		mlog_errno(ret);
- 		goto out_free_group_bh;
- 	}
- 
-+	ocfs2_set_new_buffer_uptodate(INODE_CACHE(main_bm_inode), group_bh);
-+
- 	trace_ocfs2_group_add((unsigned long long)input->group,
- 			       input->chain, input->clusters, input->frees);
- 
-@@ -515,7 +515,7 @@ int ocfs2_group_add(struct inode *inode, struct ocfs2_new_group_input *input)
- 	if (IS_ERR(handle)) {
- 		mlog_errno(PTR_ERR(handle));
- 		ret = -EINVAL;
--		goto out_free_group_bh;
-+		goto out_remove_cache;
- 	}
- 
- 	cl_bpc = le16_to_cpu(fe->id2.i_chain.cl_bpc);
-@@ -569,9 +569,11 @@ int ocfs2_group_add(struct inode *inode, struct ocfs2_new_group_input *input)
- out_commit:
- 	ocfs2_commit_trans(osb, handle);
- 
--out_free_group_bh:
-+out_remove_cache:
- 	if (ret < 0)
--		ocfs2_remove_from_cache(INODE_CACHE(inode), group_bh);
-+		ocfs2_remove_from_cache(INODE_CACHE(main_bm_inode), group_bh);
-+
-+out_free_group_bh:
- 	brelse(group_bh);
- 
- out_unlock:
+ 	/* When int_cs_inactive comes, spi target abort */
+-	if (rs->cs_inactive && readl_relaxed(rs->regs + ROCKCHIP_SPI_IMR) & INT_CS_INACTIVE) {
++	if (rs->cs_inactive &&
++	    (readl_relaxed(rs->regs + ROCKCHIP_SPI_ISR) & INT_CS_INACTIVE)) {
+ 		ctlr->target_abort(ctlr);
+ 		writel_relaxed(0, rs->regs + ROCKCHIP_SPI_IMR);
+ 		writel_relaxed(0xffffffff, rs->regs + ROCKCHIP_SPI_ICR);
 -- 
 2.53.0
 
