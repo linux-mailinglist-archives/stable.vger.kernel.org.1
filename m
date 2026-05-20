@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-250105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250106-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SDNcI9rjDWpN4gUAu9opvQ
-	(envelope-from <stable+bounces-250105-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:39:54 +0200
+	id mJeBHJ3tDWpb4wUAu9opvQ
+	(envelope-from <stable+bounces-250106-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:21:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FA40592317
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:39:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF3875936B5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:21:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B3424306BD0A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:31:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C598D3439FB8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:31:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 595083ED5C5;
-	Wed, 20 May 2026 16:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DABAC3F58F5;
+	Wed, 20 May 2026 16:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFPkCC5K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gQY9KGvN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B2873EE1DA;
-	Wed, 20 May 2026 16:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0AE33D7D74;
+	Wed, 20 May 2026 16:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294557; cv=none; b=ZVO+M8VLCFquxAwaT1nHHyZsBvarCYbDOP6d/Euw6EAIJqjc7CB42mH0oCglPv3xtfoWpQXclPOASQ90+82+EjzjEr2ytbThEtwtxN+c+ia6FU7xp9AQssuT3LjGyDS0VOulHS8bULc77R/TRmCBVD70S4NUjHlG/3w2e9bXeXM=
+	t=1779294559; cv=none; b=ARrRRMTREbjhk0qsdpKEfLwB9vCsbzMT/T4xcs9sl7rUs5pafigQA5apOUuolBqyfB1YVTI7UXFP/9LtiufLupSSF84y7QCgzuue60i31AAWrJFNbZWbn5L03xWhrvQQi3fqQ1hY7XtiEx3V4HOS7NpJraPOiPXLd736SSILsLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294557; c=relaxed/simple;
-	bh=n8aCt7folw2SdNWSaG+NBg5Qv9LoFbg9SkjQxq6QN5s=;
+	s=arc-20240116; t=1779294559; c=relaxed/simple;
+	bh=JCuWA7cx9jWKHt02t2hJO6NGZFiaPYhJkG5AoExHcYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D4HDoC88dEVTLcPoUaZQYSar7ZCuyHh2STjgR8zM5iGph/VFb6paTYQQd1zpqd/AE4oJR6xFCl1gput6Aj/24I4x4Gt8n/BF+OJYV6tlSFTYzfIew+lwQ63qXhNxm+Rp73pjtXPVInugHlplQVEpj4sHXm79GGcuUlHL34WvoBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gFPkCC5K; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6876C1F00893;
-	Wed, 20 May 2026 16:29:15 +0000 (UTC)
+	 MIME-Version; b=E86bVhA+ltGT/I/kA96ncPwVkREITXR2L3BFIClwIAD0jxGububBuZOPiCCb9hfTCUw9oVOqR8/Ruod+DZhGa6rREdPFjbJLBTDqMfcmG7wm553rw85cX2eRXm7IRrVR3e/oifi0NaKRV807fEzD96xwpavNvLNf1YUJE7EMU3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gQY9KGvN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1138C1F000E9;
+	Wed, 20 May 2026 16:29:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294555;
-	bh=NOHmzKfcRu9SrDUDh38LyNoCUq7BvuSEOwrJ5SF2M5o=;
+	s=korg; t=1779294558;
+	bh=PFVMN5XiWuyNCN2e9/hW937DaFwVuS52VZveJ4RJ7Os=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gFPkCC5KrgMb/QaYAx8gzmuJV6TZ0B7BLO6NzCfUq1ZD8rOTVnhX/1D14LCPJTDaC
-	 HDVTXmkjo7foi6a+ivIXHNVD+AXrNm2jAN4Re4lcjZJDf4sIVHPQbqPDa1wEQp0aQa
-	 fVfMk+BRV9rzFMyPoFIQtaYYUNGPcpY3I8Nor1L4=
+	b=gQY9KGvN6wDBAc5/llaVYLpcY3Rv0pCxA+c/RoUTgFAD8Ysqn+PnZh1law3ECBr4h
+	 jisi0Tg+HbDZGUZdGpZ8Vp+kwQP/9AqkjMu9IAesOYM/LvRek6gqOlNO3mLh6lEou/
+	 IQ/YT6clOS8qX7138pXaKyPGQDnVvISo+csEOvqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Davidlohr Bueso <dave@stgolabs.net>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0043/1146] locking/mutex: Rename mutex_init_lockep()
-Date: Wed, 20 May 2026 18:04:53 +0200
-Message-ID: <20260520162149.355602526@linuxfoundation.org>
+Subject: [PATCH 7.0 0044/1146] locking/mutex: Fix wrong comment for CONFIG_DEBUG_LOCK_ALLOC
+Date: Wed, 20 May 2026 18:04:54 +0200
+Message-ID: <20260520162149.377834566@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250105-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250106-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,9 +89,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 4FA40592317
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,infradead.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: BF3875936B5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,61 +101,33 @@ X-Rspamd-Server: lfdr
 
 From: Davidlohr Bueso <dave@stgolabs.net>
 
-[ Upstream commit 8b65eb52d93e4e496bd26e6867152344554eb39e ]
+[ Upstream commit babcde3be8c9148aa60a14b17831e8f249854963 ]
 
-Typo, this wants to be _lockdep().
+... that endif block should be CONFIG_DEBUG_LOCK_ALLOC, not
+CONFIG_LOCKDEP.
 
 Fixes: 51d7a054521d ("locking/mutex: Redo __mutex_init() to reduce generated code size")
 Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20260217191512.1180151-2-dave@stgolabs.net
+Link: https://patch.msgid.link/20260217191512.1180151-3-dave@stgolabs.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mutex.h  | 4 ++--
- kernel/locking/mutex.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ include/linux/mutex.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/include/linux/mutex.h b/include/linux/mutex.h
-index ecaa0440f6ec4..8126da9590886 100644
+index 8126da9590886..f57d2a97da57f 100644
 --- a/include/linux/mutex.h
 +++ b/include/linux/mutex.h
-@@ -87,12 +87,12 @@ do {									\
- 	struct mutex mutexname = __MUTEX_INITIALIZER(mutexname)
- 
- #ifdef CONFIG_DEBUG_LOCK_ALLOC
--void mutex_init_lockep(struct mutex *lock, const char *name, struct lock_class_key *key);
-+void mutex_init_lockdep(struct mutex *lock, const char *name, struct lock_class_key *key);
- 
- static inline void __mutex_init(struct mutex *lock, const char *name,
- 				struct lock_class_key *key)
+@@ -146,7 +146,7 @@ static inline void __mutex_init(struct mutex *lock, const char *name,
  {
--	mutex_init_lockep(lock, name, key);
-+	mutex_init_lockdep(lock, name, key);
+ 	mutex_rt_init_generic(lock);
  }
- #else
- extern void mutex_init_generic(struct mutex *lock);
-diff --git a/kernel/locking/mutex.c b/kernel/locking/mutex.c
-index 2a1d165b3167e..c867f6c15530d 100644
---- a/kernel/locking/mutex.c
-+++ b/kernel/locking/mutex.c
-@@ -171,7 +171,7 @@ static __always_inline bool __mutex_unlock_fast(struct mutex *lock)
+-#endif /* !CONFIG_LOCKDEP */
++#endif /* !CONFIG_DEBUG_LOCK_ALLOC */
+ #endif /* CONFIG_PREEMPT_RT */
  
- #else /* !CONFIG_DEBUG_LOCK_ALLOC */
- 
--void mutex_init_lockep(struct mutex *lock, const char *name, struct lock_class_key *key)
-+void mutex_init_lockdep(struct mutex *lock, const char *name, struct lock_class_key *key)
- {
- 	__mutex_init_generic(lock);
- 
-@@ -181,7 +181,7 @@ void mutex_init_lockep(struct mutex *lock, const char *name, struct lock_class_k
- 	debug_check_no_locks_freed((void *)lock, sizeof(*lock));
- 	lockdep_init_map_wait(&lock->dep_map, name, key, 0, LD_WAIT_SLEEP);
- }
--EXPORT_SYMBOL(mutex_init_lockep);
-+EXPORT_SYMBOL(mutex_init_lockdep);
- #endif /* !CONFIG_DEBUG_LOCK_ALLOC */
- 
- static inline void __mutex_set_flag(struct mutex *lock, unsigned long flag)
+ #ifdef CONFIG_DEBUG_MUTEXES
 -- 
 2.53.0
 
