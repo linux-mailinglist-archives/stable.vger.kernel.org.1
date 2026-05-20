@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252884-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ut8NK3j0DWos5AUAu9opvQ
-	(envelope-from <stable+bounces-251828-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:50:48 +0200
+	id MIodBXj/DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252884-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:37:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21E3B594B8A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:50:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6DF4596CC6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:37:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BA23630A9A6E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:43:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 387F230A9E67
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:30:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD7243A3E9C;
-	Wed, 20 May 2026 17:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DDC2347514;
+	Wed, 20 May 2026 18:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YRfI3oSI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1NknO5eo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4632F0C62;
-	Wed, 20 May 2026 17:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446C530DEAC;
+	Wed, 20 May 2026 18:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298994; cv=none; b=WIu59b+zEepDu2MrFDRxIDZVa93z/WGFQ6dqvXzwa4pFkic51CihzNBzaafKABmIBDRE4imfu7Al88wVx4BgHUZWL/yClENvgA5hGpbB4pCdPhyxoNDQ63rGC3PFADH/yXu1ul9daJqqzt7aM8O2WS8ZvoG3PVkhyEsw9QDux+M=
+	t=1779301841; cv=none; b=Z81eV7G+zfHLMr62maVPJwPzHmOpK6IRsHQGfh+OMGjmGr5BtcKIrtzGuuOCOq8qWVE9jmrqhYpEtGQUQIlXAg0VVz+V8J918HUZnXusA8MZ7U4+I8ps4Jnls5E+hWNSAs/QRjwf4+lvkjcqPev+u5GTvioURRgQkv3dkv3/5uU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298994; c=relaxed/simple;
-	bh=ZEycEP7NfYAl9kgGyDpOLiEHrYcCzPi8m8tPey5XO+c=;
+	s=arc-20240116; t=1779301841; c=relaxed/simple;
+	bh=j5Ez2AFBuRIDxLWqNv8qblo0kZLTfjnF+SgQltA2fU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YPBo0vpAGG8nQ7uFriB5CmZZReRACQliUh1ZV46rOMCbizxFSrllPwh7kjiQ4bGAR481Nwmiuq4iplsywnsvjVYXmaecmqFBxkhHWcCAyYDBNqfXJQLaK9YG396HjSOIkhlWV0NAcXGTLPAuDTb0IRnbGufOZIl3XNOXOQcLdHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YRfI3oSI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0052C1F000E9;
-	Wed, 20 May 2026 17:43:12 +0000 (UTC)
+	 MIME-Version; b=bUsg3K1lxb362sANuzbvlHmgQVY14ZLO5PeTWmeb+QOwsn55Bmtq5yvXpVm43HRz3VBLSZh8mVXwFio+6Zl7467f5l5Ry+ZBejg8rxe70AHAsAVKdUuwxp46BKwD8+kqqqjEWivSAmEdMM94LrUQPGtrAT5jkOxDkrwCA1+xpPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1NknO5eo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A15391F000E9;
+	Wed, 20 May 2026 18:30:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298993;
-	bh=W9tPojonAKJALsksOzHTvT/W8LWvq09J+f1IXCqGBLk=;
+	s=korg; t=1779301840;
+	bh=iINCJKi3IYtWBEPW609DWcpMpoqbO7r6Frwz16XVOhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YRfI3oSIFrURV8VSRgGSW9XGG6d6FRkvmYS6jgsUhUUAfr1Nj8Kua+IBIMN1jFRd/
-	 I7Nyj9Xm9MACP/fuVPmcyBKSGPMNBvm/Yn6TM3SBt2L7zv+o7JnoVjdh5jhJ2k44lB
-	 heBuQPwXDzZiHhkaSwF+XO+9TtKPk2n5Hmnw0sL4=
+	b=1NknO5eo39EJ6xbRT62iXvAm/4fymlWM3kCfw8L0tOukQleJGCBvt3P0XPJT1BULi
+	 Oka+QthidijsIIygTvsOx03T4vmpXPBYZpSVa22egDzZnF3EMr42jX9o2/XQjAhVK2
+	 kLu4lwF3mZQRgql52HR/fZM3eZ+yG0gxdNbgmbTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Alexey Velichayshiy <a.velichayshiy@ispras.ru>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 581/957] f2fs: use f2fs_filemap_get_folio() instead of f2fs_pagecache_get_page()
+Subject: [PATCH 6.6 041/508] wifi: rtw89: phy: fix uninitialized variable access in rtw89_phy_cfo_set_crystal_cap()
 Date: Wed, 20 May 2026 18:17:44 +0200
-Message-ID: <20260520162147.130422770@linuxfoundation.org>
+Message-ID: <20260520162059.483291436@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251828-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252884-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,117 +89,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,fio.sbi:url]
-X-Rspamd-Queue-Id: 21E3B594B8A
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,ispras.ru:email,realtek.com:email,msgid.link:url,linuxtesting.org:url]
+X-Rspamd-Queue-Id: C6DF4596CC6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Alexey Velichayshiy <a.velichayshiy@ispras.ru>
 
-[ Upstream commit e0b89d00ea9f846da42fc92f200c96254d0e2fef ]
+[ Upstream commit 047cddf88c611e616d49a00311d4722e46286234 ]
 
-Let's use f2fs_filemap_get_folio() instead of f2fs_pagecache_get_page() in
-ra_data_block() and move_data_block(), then remove f2fs_pagecache_get_page()
-since it has no user.
+In the rtw89_phy_cfo_set_crystal_cap() function, for chips other than
+RTL8852A/RTL8851B, the values read by rtw89_mac_read_xtal_si() are
+stored into the local variables sc_xi_val and sc_xo_val. If either
+read fails, these variables remain uninitialized, they are later
+used to update cfo->crystal_cap and in debug print statements. This
+can lead to undefined behavior.
 
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Stable-dep-of: 570e2ccc7cb3 ("f2fs: avoid reading already updated pages during GC")
+Fix the issue by initializing sc_xi_val and sc_xo_val to zero,
+like is implemented in vendor driver.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 8379fa611536 ("rtw89: 8852c: add write/read crystal function in CFO tracking")
+Signed-off-by: Alexey Velichayshiy <a.velichayshiy@ispras.ru>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20260323140613.1615574-1-a.velichayshiy@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/f2fs.h | 10 ----------
- fs/f2fs/gc.c   | 23 +++++++++++++----------
- 2 files changed, 13 insertions(+), 20 deletions(-)
+ drivers/net/wireless/realtek/rtw89/phy.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index 939bd1fb57070..c0747dd2ce511 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -2996,16 +2996,6 @@ static inline struct folio *f2fs_filemap_get_folio(
- 	return __filemap_get_folio(mapping, index, fgp_flags, gfp_mask);
- }
- 
--static inline struct page *f2fs_pagecache_get_page(
--				struct address_space *mapping, pgoff_t index,
--				fgf_t fgp_flags, gfp_t gfp_mask)
--{
--	if (time_to_inject(F2FS_M_SB(mapping), FAULT_PAGE_GET))
--		return NULL;
--
--	return pagecache_get_page(mapping, index, fgp_flags, gfp_mask);
--}
--
- static inline void f2fs_folio_put(struct folio *folio, bool unlock)
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index 457c1dd31bf9d..3da2f623c01c6 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -2434,7 +2434,7 @@ static void rtw89_phy_cfo_set_crystal_cap(struct rtw89_dev *rtwdev,
  {
- 	if (IS_ERR_OR_NULL(folio))
-diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
-index 9d2f4f22fd396..5647e76c6bdb0 100644
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -1211,7 +1211,7 @@ static int ra_data_block(struct inode *inode, pgoff_t index)
- 	struct address_space *mapping = f2fs_is_cow_file(inode) ?
- 				F2FS_I(inode)->atomic_inode->i_mapping : inode->i_mapping;
- 	struct dnode_of_data dn;
--	struct folio *folio;
-+	struct folio *folio, *efolio;
- 	struct f2fs_io_info fio = {
- 		.sbi = sbi,
- 		.ino = inode->i_ino,
-@@ -1266,14 +1266,15 @@ static int ra_data_block(struct inode *inode, pgoff_t index)
+ 	struct rtw89_cfo_tracking_info *cfo = &rtwdev->cfo_tracking;
+ 	const struct rtw89_chip_info *chip = rtwdev->chip;
+-	u8 sc_xi_val, sc_xo_val;
++	u8 sc_xi_val = 0, sc_xo_val = 0;
  
- 	f2fs_wait_on_block_writeback(inode, dn.data_blkaddr);
- 
--	fio.encrypted_page = f2fs_pagecache_get_page(META_MAPPING(sbi),
--					dn.data_blkaddr,
-+	efolio = f2fs_filemap_get_folio(META_MAPPING(sbi), dn.data_blkaddr,
- 					FGP_LOCK | FGP_CREAT, GFP_NOFS);
--	if (!fio.encrypted_page) {
--		err = -ENOMEM;
-+	if (IS_ERR(efolio)) {
-+		err = PTR_ERR(efolio);
- 		goto put_folio;
- 	}
- 
-+	fio.encrypted_page = &efolio->page;
-+
- 	err = f2fs_submit_page_bio(&fio);
- 	if (err)
- 		goto put_encrypted_page;
-@@ -1313,7 +1314,7 @@ static int move_data_block(struct inode *inode, block_t bidx,
- 	struct dnode_of_data dn;
- 	struct f2fs_summary sum;
- 	struct node_info ni;
--	struct folio *folio, *mfolio;
-+	struct folio *folio, *mfolio, *efolio;
- 	block_t newaddr;
- 	int err = 0;
- 	bool lfs_mode = f2fs_lfs_mode(fio.sbi);
-@@ -1407,14 +1408,16 @@ static int move_data_block(struct inode *inode, block_t bidx,
- 		goto up_out;
- 	}
- 
--	fio.encrypted_page = f2fs_pagecache_get_page(META_MAPPING(fio.sbi),
--				newaddr, FGP_LOCK | FGP_CREAT, GFP_NOFS);
--	if (!fio.encrypted_page) {
--		err = -ENOMEM;
-+	efolio = f2fs_filemap_get_folio(META_MAPPING(fio.sbi), newaddr,
-+					FGP_LOCK | FGP_CREAT, GFP_NOFS);
-+	if (IS_ERR(efolio)) {
-+		err = PTR_ERR(efolio);
- 		f2fs_folio_put(mfolio, true);
- 		goto recover_block;
- 	}
- 
-+	fio.encrypted_page = &efolio->page;
-+
- 	/* write target block */
- 	f2fs_wait_on_page_writeback(fio.encrypted_page, DATA, true, true);
- 	memcpy(page_address(fio.encrypted_page),
+ 	if (!force && cfo->crystal_cap == crystal_cap)
+ 		return;
 -- 
 2.53.0
 
