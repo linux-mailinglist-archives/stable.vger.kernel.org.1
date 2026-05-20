@@ -1,71 +1,62 @@
-Return-Path: <stable+bounces-252398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251758-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MFK1CRglDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252398-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:18:16 +0200
+	id cC0gAfUADmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-251758-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FAE259AAF6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:18:15 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03E345971D8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0F0BC31C2DF4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:09:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5034A3074D13
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:40:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90BDF3F54D1;
-	Wed, 20 May 2026 18:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1AC0363C6F;
+	Wed, 20 May 2026 17:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gUX966Cm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jg/RNocj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 444D53EAC82;
-	Wed, 20 May 2026 18:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8013C1C3BFC;
+	Wed, 20 May 2026 17:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300571; cv=none; b=g5hRPcCWPax3tDJy5iErJU7kSJF+tuT9SEDtBIGHnt4NbqjjWYyaiuLiXMS71BfVSrLAETvv3eDwJjfQPxCARljuaipTB0G2uwvzmIWoTJRAgl+tfrFm4+1QF4n/vbjdb6pyrjk7xhpAyMshxe6G4eS1V5LS+vns5Hlx5OEWmjs=
+	t=1779298815; cv=none; b=uTsuylVnF9Ol/EhkKQDX30odKt2+u6P4QOg1ANHWEy6HIuJXg3cH0CSMCeQKAcAtEJVhNdJ9Iy3qPRIyh1UId5htKWUqTtsI6MMX2Z9fZjaCw6T2qePwPLjhuuDvfBLv83YU4ZmwAOE/hPhBGmwJhYmSWRdRmx94UnAV66To7Q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300571; c=relaxed/simple;
-	bh=ZxRW1U6qMlayZm1PG8Vs+RTvm7p06b71McRxO0vxTVU=;
+	s=arc-20240116; t=1779298815; c=relaxed/simple;
+	bh=mkcT8bEkdqPUTfwI8dRB2I7QCUx9DPhFOureEczXxoo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CXaBRFI+IxuPul/++9gycAGktAkSyxKPoiN3fYuf8g0TIFrqCY7rpwnUOTtP31UR4pRovLz/+P8swyVdZf4wJ1sr2x6q9qHvHRJ0jQOY+g1y6wK5djjIXtfsrDPC5T/rFxe1/ZGmJmN4WQIQ/MlV9Hiqt2ThJ/IGSyXSXlmrXIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gUX966Cm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E60A1F000E9;
-	Wed, 20 May 2026 18:09:29 +0000 (UTC)
+	 MIME-Version; b=UfRoyDab8ggcnTUv1Cfyu0eF0lMHYGt5FRWHAln6vf+R1h8SLQHh8th7rsCBn5n+Uvak44fxJeFcn4HRYEr1ChcubacYBvw3jCzkHUQJsKTTbL/+PN/nFRadAWHoJMYJnTh72KJAfm3xQnTZThjHr4uiYSXi0dTfoqCyPRS/znw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jg/RNocj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA2201F000E9;
+	Wed, 20 May 2026 17:40:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300570;
-	bh=EcpNBoaUV0eczAsR0bof8uWimFQzszAMkFdtyfEG1n8=;
+	s=korg; t=1779298814;
+	bh=9QBKGOEsVyBdeV4+a3jLgf4n7UHySN1uUVa5ofklpdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gUX966Cm8K7SJ+nYEcKGV+IfiqsEvfCVOKDR90T4FSj1tJjZXBRKF9zVfvykPThAc
-	 9gt1uG0jyvd74sUlNavcJ3TuKNMhZQZtIaRKkBZlAqlmd2Ni+LHUmddfcpwoqpZB94
-	 XKB4ySvqcBUBrKIILrCSMNHbm/8dNRqDZSLgPYXo=
+	b=jg/RNocjaWUY5qJCMDkIFyAZZd2DhZ9D8gkOJz9JBlRGo+K0RbGYWz87L8Jk3Z+cV
+	 6TB4d9j1n94K2CmAZ0UnYHe8AN1EcyPzQQL4o0t+w74ATHXPC+xOFByWikK7gDYdVo
+	 NKW+PlXYJ2PYd/sKSo2kpvOA3spgB/wCJO4gI1so=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AnishMulay <anishm7030@gmail.com>,
-	SeongJae Park <sj@kernel.org>,
-	Dev Jain <dev.jain@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Sayali Patil <sayalip@linux.ibm.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	White Lewis <liu224806@gmail.com>,
+	Pengyu Luo <mitltlatltl@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 226/666] selftests/mm: skip migration tests if NUMA is unavailable
+Subject: [PATCH 6.18 554/957] clk: qcom: dispcc-sc8280xp: remove CLK_SET_RATE_PARENT from byte_div_clk_src dividers
 Date: Wed, 20 May 2026 18:17:17 +0200
-Message-ID: <20260520162116.111571236@linuxfoundation.org>
+Message-ID: <20260520162146.546819054@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,91 +69,106 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	TAGGED_FROM(0.00)[bounces-252398-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251758-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,arm.com,linux.ibm.com,oracle.com,suse.com,google.com,linux-foundation.org];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email,arm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oracle.com:email]
-X-Rspamd-Queue-Id: 4FAE259AAF6
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 03E345971D8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AnishMulay <anishm7030@gmail.com>
+From: White Lewis <liu224806@gmail.com>
 
-[ Upstream commit 54218f10dfbe88c8e41c744fd45a756cde60b8c4 ]
+[ Upstream commit 0b151a6307205eb867250985a910a88787cbf12e ]
 
-Currently, the migration test asserts that numa_available() returns 0.  On
-systems where NUMA is not available (returning -1), such as certain ARM64
-configurations or single-node systems, this assertion fails and crashes
-the test.
+The four byte_div_clk_src dividers (disp{0,1}_cc_mdss_byte{0,1}_div_clk_src)
+had CLK_SET_RATE_PARENT set. When the DSI driver calls clk_set_rate() on
+byte_intf_clk, the rate-change propagates through the divider up to the
+parent PLL (byte_clk_src), halving the byte clock rate.
 
-Update the test to check the return value of numa_available().  If it is
-less than 0, skip the test gracefully instead of failing.
+A simiar issue had been also encountered on SM8750.
+b8501febdc51 ("clk: qcom: dispcc-sm8750: Drop incorrect CLK_SET_RATE_PARENT on byte intf parent").
 
-This aligns the behavior with other MM selftests (like rmap) that skip
-when NUMA support is missing.
+Likewise, remove CLK_SET_RATE_PARENT from all four byte divider clocks
+so that clk_set_rate() on the divider adjusts only the divider ratio,
+leaving the parent PLL untouched.
 
-Link: https://lkml.kernel.org/r/20260218163941.13499-1-anishm7030@gmail.com
-Fixes: 0c2d08728470 ("mm: add selftests for migration entries")
-Signed-off-by: AnishMulay <anishm7030@gmail.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Tested-by: Sayali Patil <sayalip@linux.ibm.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 4a66e76fdb6d ("clk: qcom: Add SC8280XP display clock controller")
+Signed-off-by: White Lewis <liu224806@gmail.com>
+[pengyu: reword]
+Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260303115550.9279-1-mitltlatltl@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/mm/migration.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/clk/qcom/dispcc-sc8280xp.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/migration.c b/tools/testing/selftests/mm/migration.c
-index 64bcbb7151cff..c883ef420d3ba 100644
---- a/tools/testing/selftests/mm/migration.c
-+++ b/tools/testing/selftests/mm/migration.c
-@@ -33,7 +33,8 @@ FIXTURE_SETUP(migration)
- {
- 	int n;
- 
--	ASSERT_EQ(numa_available(), 0);
-+	if (numa_available() < 0)
-+		SKIP(return, "NUMA not available");
- 	self->nthreads = numa_num_task_cpus() - 1;
- 	self->n1 = -1;
- 	self->n2 = -1;
+diff --git a/drivers/clk/qcom/dispcc-sc8280xp.c b/drivers/clk/qcom/dispcc-sc8280xp.c
+index 5903a759d4af4..e91dfed0f37e9 100644
+--- a/drivers/clk/qcom/dispcc-sc8280xp.c
++++ b/drivers/clk/qcom/dispcc-sc8280xp.c
+@@ -1160,7 +1160,6 @@ static struct clk_regmap_div disp0_cc_mdss_byte0_div_clk_src = {
+ 			&disp0_cc_mdss_byte0_clk_src.clkr.hw,
+ 		},
+ 		.num_parents = 1,
+-		.flags = CLK_SET_RATE_PARENT,
+ 		.ops = &clk_regmap_div_ops,
+ 	},
+ };
+@@ -1175,7 +1174,6 @@ static struct clk_regmap_div disp1_cc_mdss_byte0_div_clk_src = {
+ 			&disp1_cc_mdss_byte0_clk_src.clkr.hw,
+ 		},
+ 		.num_parents = 1,
+-		.flags = CLK_SET_RATE_PARENT,
+ 		.ops = &clk_regmap_div_ops,
+ 	},
+ };
+@@ -1190,7 +1188,6 @@ static struct clk_regmap_div disp0_cc_mdss_byte1_div_clk_src = {
+ 			&disp0_cc_mdss_byte1_clk_src.clkr.hw,
+ 		},
+ 		.num_parents = 1,
+-		.flags = CLK_SET_RATE_PARENT,
+ 		.ops = &clk_regmap_div_ops,
+ 	},
+ };
+@@ -1205,7 +1202,6 @@ static struct clk_regmap_div disp1_cc_mdss_byte1_div_clk_src = {
+ 			&disp1_cc_mdss_byte1_clk_src.clkr.hw,
+ 		},
+ 		.num_parents = 1,
+-		.flags = CLK_SET_RATE_PARENT,
+ 		.ops = &clk_regmap_div_ops,
+ 	},
+ };
 -- 
 2.53.0
 
