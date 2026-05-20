@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-251291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250356-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4IP0EAMXDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251291-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:18:11 +0200
+	id 4DXeASkPDmrc5wUAu9opvQ
+	(envelope-from <stable+bounces-250356-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:44:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A340359969E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:18:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FA52598B1B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:44:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7A2813512EAA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:20:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B0EF634D2E0E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:39:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559023D88FC;
-	Wed, 20 May 2026 17:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67ABE34041C;
+	Wed, 20 May 2026 16:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJOXd1x8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kdzE5ESW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0DC9366075;
-	Wed, 20 May 2026 17:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305DE2D12EE;
+	Wed, 20 May 2026 16:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297602; cv=none; b=ckClKlK6sDaMUIJHvCq0xC0vr8MPza1HWgXqrTQQR3LLrGMhOvzuILAvHSIYcmOgxTDJJ+lunf8DlsR5fQ6dc74jPyeipiXUNaMTXizdGo69Cebpx2Ad4G4fGAIQFNr7XBw4HDARYXwkQWPifxNM34/viMBjms96bQFkJ0qyv+I=
+	t=1779295199; cv=none; b=TaxX19b/3fuLfccQvTyfrq67vCpom+8p6cwdZluMSijCJ1vCV2DU836N+qSO2eNqI4uzeIM4Uo4FFLL+1uZW4OiXFXqD3vS0jPAvQSCyjqe/J63Jid82IyyR75ZLpYvRDik1kNyAmj+7N7VRsCi+4+zd0zqWl2qXEiE3MJxXU5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297602; c=relaxed/simple;
-	bh=49XvN6rR4pXbsgc2Zy2DtBW9zBFc8XaT4LJ5aqnzgtA=;
+	s=arc-20240116; t=1779295199; c=relaxed/simple;
+	bh=v48o751rr3O+FwnPZ5qIdK+LHRWhmJnWrclFOXm6img=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YiBppFLf6YbZjWcJ+XOqNhDBzaYsgPW7abAaoxE/bPmLvOV+LnkmGH5MeBhfI5E5Z8rOFF9ldnCLfVlbUuQ5IpyVsB+2tkIhnH1KlEJqih/3h6GvtkoYK1cv+RIvO63GXtBlGb4EKs9eC0oZiRQtziEPCoaLm40EaB/BY1VJSGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJOXd1x8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AF731F000E9;
-	Wed, 20 May 2026 17:20:00 +0000 (UTC)
+	 MIME-Version; b=mWGVps4t93bko2BUrVWiSIjGOboY5vGCwODdOlXK+6oMHJgyr9MaGNJb4jq/7SBZzqsyds9C4nwbtsOEJ+9dKswUICnupZDSwAYR3sUXjtv2qt/IeoYeTIE6DxuIkgkMZAUdwcNqUyfWOMpAVWl8tFmbOwsYjMj/svk8tvVMHoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kdzE5ESW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 961301F000E9;
+	Wed, 20 May 2026 16:39:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297600;
-	bh=IAxxan1h3SnKi8pYFN2Gb9t2SJV1Lm6Z0hNgMpWR2+A=;
+	s=korg; t=1779295198;
+	bh=flYoLhmuXMuEV0rkdjSlLdAio74FFWn6yZcKGkNvxnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rJOXd1x8/Xdv8TmRYhUhgL/Kr9fPWMgTQMR24HFKIkqhhOiZAUcFypI/m2xOn2qP4
-	 wKoKd9kr82DxVUAXNRZEfL5drpuMJntNiTpjC5py/btKQpMqEjgK15QcdGway0WPad
-	 CWXgZYFkPpkCBp9FJrw+12KqBur1jJ2rzvAMNnxk=
+	b=kdzE5ESWP6W1O2bz1C0woZRCOecW5mdUePLY0nsbUXfhbOkSIDLS9pmxdf9Qs7iMR
+	 x4pA3POtTFZsSdFlg82Y5Q18VM076kpJza/0ltwb06sUGWcKn+jvpBikFhogLwfmQG
+	 f2xxiTsqBdJIQThBdX0TOePK8gn8NDUus/xA4ADI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@linaro.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Colton Lewis <coltonlewis@google.com>,
-	Will Deacon <will@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 094/957] arm64: cpufeature: Make PMUVer and PerfMon unsigned
+Subject: [PATCH 7.0 0327/1146] drm/panel: sharp-ls043t1le01: make use of prepare_prev_first
 Date: Wed, 20 May 2026 18:09:37 +0200
-Message-ID: <20260520162136.598513914@linuxfoundation.org>
+Message-ID: <20260520162155.597783922@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,13 +69,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251291-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250356-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
@@ -84,72 +83,54 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email]
-X-Rspamd-Queue-Id: A340359969E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,msgid.link:url,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,chromium.org:email]
+X-Rspamd-Queue-Id: 6FA52598B1B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@linaro.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit d1dcc20bcc40efe1f1c71639376c91dafa489222 ]
+[ Upstream commit c222177d7c7e1b2e0433d9e47ec2da7015345d50 ]
 
-On the host, this change doesn't make a difference because the fields
-are defined as FTR_EXACT. However, KVM allows userspace to set these
-fields for a guest and overrides the type to be FTR_LOWER_SAFE. And
-while KVM used to do an unsigned comparison to validate that the new
-value is lower than what the hardware provides, since the linked commit
-it uses the generic sanitization framework which does a signed
-comparison.
+The DSI link must be powered up to let panel driver to talk to the panel
+during prepare() callback execution. Set the prepare_prev_first flag to
+guarantee this.
 
-Fix it by defining these fields as unsigned. In theory, without this
-fix, userspace could set a higher PMU version than the hardware supports
-by providing any value with the top bit set.
-
-Fixes: c118cead07a7 ("KVM: arm64: Use generic sanitisation for ID_(AA64)DFR0_EL1")
-Signed-off-by: James Clark <james.clark@linaro.org>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Colton Lewis <coltonlewis@google.com>
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 9e15123eca79 ("drm/msm/dsi: Stop unconditionally powering up DSI hosts at modeset")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patch.msgid.link/20260323-panel-fix-v1-1-9f12b09161e8@oss.qualcomm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/cpufeature.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/panel/panel-sharp-ls043t1le01.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-index e25b0f84a22da..39a798f74778e 100644
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -564,7 +564,7 @@ static const struct arm64_ftr_bits ftr_id_aa64dfr0[] = {
- 	 * We can instantiate multiple PMU instances with different levels
- 	 * of support.
- 	 */
--	S_ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_EXACT, ID_AA64DFR0_EL1_PMUVer_SHIFT, 4, 0),
-+	ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_EXACT, ID_AA64DFR0_EL1_PMUVer_SHIFT, 4, 0),
- 	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_EXACT, ID_AA64DFR0_EL1_DebugVer_SHIFT, 4, 0x6),
- 	ARM64_FTR_END,
- };
-@@ -708,7 +708,7 @@ static const struct arm64_ftr_bits ftr_id_pfr2[] = {
+diff --git a/drivers/gpu/drm/panel/panel-sharp-ls043t1le01.c b/drivers/gpu/drm/panel/panel-sharp-ls043t1le01.c
+index 36abfa2e65e96..dd1eaba23ad3c 100644
+--- a/drivers/gpu/drm/panel/panel-sharp-ls043t1le01.c
++++ b/drivers/gpu/drm/panel/panel-sharp-ls043t1le01.c
+@@ -201,6 +201,7 @@ static int sharp_nt_panel_add(struct sharp_nt_panel *sharp_nt)
  
- static const struct arm64_ftr_bits ftr_id_dfr0[] = {
- 	/* [31:28] TraceFilt */
--	S_ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_EXACT, ID_DFR0_EL1_PerfMon_SHIFT, 4, 0),
-+	ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_EXACT, ID_DFR0_EL1_PerfMon_SHIFT, 4, 0),
- 	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_LOWER_SAFE, ID_DFR0_EL1_MProfDbg_SHIFT, 4, 0),
- 	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_LOWER_SAFE, ID_DFR0_EL1_MMapTrc_SHIFT, 4, 0),
- 	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_LOWER_SAFE, ID_DFR0_EL1_CopTrc_SHIFT, 4, 0),
+ 	drm_panel_init(&sharp_nt->base, &sharp_nt->dsi->dev,
+ 		       &sharp_nt_panel_funcs, DRM_MODE_CONNECTOR_DSI);
++	sharp_nt->base.prepare_prev_first = true;
+ 
+ 	ret = drm_panel_of_backlight(&sharp_nt->base);
+ 	if (ret)
 -- 
 2.53.0
 
