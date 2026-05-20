@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252307-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mJkFAAodDmro6AUAu9opvQ
-	(envelope-from <stable+bounces-251667-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:43:54 +0200
+	id yI4THRP8DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-252307-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5069A59A042
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:43:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28B52595F7F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E3C0235EA009
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:36:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E1A5431A883C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:06:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF9E3D524A;
-	Wed, 20 May 2026 17:36:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C1E3F8896;
+	Wed, 20 May 2026 18:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JT1da6GF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="izqeNkAu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499E830BF68;
-	Wed, 20 May 2026 17:36:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C404A3F787E;
+	Wed, 20 May 2026 18:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298579; cv=none; b=bQcMJTK6Whwz9buEGpq2QnIkvlXg5G76dNnXCUZhYZgiFQC3iVNF38DpYE6l1sCsSBeVSWixJ5Vn3thwzZZzRK12ujhOI0d40A9OlbnbuRwpAP99/emwep/gPDuSNRvj7+9v3OVe5f13gk3svOQ438oSx2Lv/tJmUaW9/XSstpQ=
+	t=1779300333; cv=none; b=ARawW5Y/oCehsHG+b/qXlq4uo3aUyz8U9aqvqTT7/m3mRv22CujlxwCcCt8Krtu78YGle1GfBjWraiJNWCmZ0TzxxY3GORknQOiVeFTWlfygSImDTsTp2pevjzNelvtP3v3pOO04FFbpwe6y5r17L1g3mGVE+FZODonFmGZL4Eo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298579; c=relaxed/simple;
-	bh=+dYXqgPeW30sZ0wNZCRvBYLMIXKH271vKSCSyg5DhBI=;
+	s=arc-20240116; t=1779300333; c=relaxed/simple;
+	bh=TZ1iOJylTw8zv+8PWUzMW8aEsutTfwL5A2sZ+vBmzYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q9Zmtg+hw+ytylYaxCjYckJzUdy1J6139kUcfkSMaD7E1Ui0aPIQ59YRM8Iz0yc9DsDdXlC48f2zgAGcyjSa5YVShImcht9Jxy7YIXSpPM4ievvYPcedKo8LUKdwZMPvMByb11AIxyj9JW0IVYU+TKeZPlI5Eq99LA2LVWOfqkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JT1da6GF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 766F61F00894;
-	Wed, 20 May 2026 17:36:17 +0000 (UTC)
+	 MIME-Version; b=HPxb8llJOYfNP2KtZUm+yjYSmG5q2e0AUhgIK265zo2wxESBRHMkQiOZHONINikzdJW/tFxO/nbqa3CRXkN42SM2V1twq5GS7fzDPNQ8KJ0MfflY2MsgzbAdRIhVn3jLq7khYq7Lohjw/lqr6BAZDEBJDvWsSizBnmT5uuFriE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=izqeNkAu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34CDA1F000E9;
+	Wed, 20 May 2026 18:05:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298578;
-	bh=LExVmXyv1iF+2YTBj9rDwqOTk+6Y2b4w0QQUdWadGSg=;
+	s=korg; t=1779300332;
+	bh=kgRat6izESs+6rNqUV7TUz8ItXctLU10CfhaQnChsrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JT1da6GFuDbjxZ98zArrNeD+YX59QphpMVyLmSCKfBV3YSVW2gP69j/aYW+3X84wW
-	 1nmdunHywwkjzSd0n0ag1aVKl0vaUNhfm9yZvgANXJGea/frE2u9tUAL9A4fd73Pmd
-	 217b6S7Bam4MgHie6r5l9kluUjoXq8ILUb5oBEd0=
+	b=izqeNkAuF3ytGTfSzQ4LtstHexz/hNQByToWEw0X/9RczdRRYbSLO8BrjwOyt7hHT
+	 HxdQ+HRSVuX0NURBmQYNflkPCpEc9wivr++zdYOJFEN3H28q7IEEdVaQRaZSdLP8qu
+	 62W3HaVu9u/HhUE4Z/rJ8b+dD0HOTATGBe1dPeuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Marc Zyngier <maz@kernel.org>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	Senchuan Zhang <zhangsenchuan@eswincomputing.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 464/957] dt-bindings: interrupt-controller: arm,gic-v3: Fix EPPI range
+Subject: [PATCH 6.12 136/666] PCI: dwc: Perform cleanup in the error path of dw_pcie_resume_noirq()
 Date: Wed, 20 May 2026 18:15:47 +0200
-Message-ID: <20260520162144.586746680@linuxfoundation.org>
+Message-ID: <20260520162114.158563981@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,77 +65,93 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251667-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-252307-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,glider.be:email]
-X-Rspamd-Queue-Id: 5069A59A042
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
+X-Rspamd-Queue-Id: 28B52595F7F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-[ Upstream commit 15cfc8984defc17e5e4de1f58db7b993240fcbda ]
+[ Upstream commit edb5ca3262e2255cf938a5948709d3472d4871ad ]
 
-According to the "Arm Generic Interrupt Controller (GIC) Architecture
-Specification, v3 and v4", revision H.b[1], there can be only 64
-Extended PPI interrupts.
+If the dw_pcie_resume_noirq() API fails, it just returns the errno without
+doing cleanup in the error path, leading to resource leak.
 
-[1] https://developer.arm.com/documentation/ihi0069/hb/
+So perform cleanup in the error path.
 
-Fixes: 4b049063e0bcbfd3 ("dt-bindings: interrupt-controller: arm,gic-v3: Describe EPPI range support")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Brain-farted-by: Marc Zyngier <maz@kernel.org>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Link: https://patch.msgid.link/3e49a63c6b2b6ee48e3737adee87781f9c136c5f.1772792753.git.geert+renesas@glider.be
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Fixes: 4774faf854f5 ("PCI: dwc: Implement generic suspend/resume functionality")
+Reported-by: Senchuan Zhang <zhangsenchuan@eswincomputing.com>
+Closes: https://lore.kernel.org/linux-pci/78296255.3869.19c8eb694d6.Coremail.zhangsenchuan@eswincomputing.com
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Link: https://patch.msgid.link/20260226133951.296743-1-mani@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../devicetree/bindings/interrupt-controller/arm,gic-v3.yaml    | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-designware-host.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/arm,gic-v3.yaml b/Documentation/devicetree/bindings/interrupt-controller/arm,gic-v3.yaml
-index f3247a47f9eed..71e6016fe3ca0 100644
---- a/Documentation/devicetree/bindings/interrupt-controller/arm,gic-v3.yaml
-+++ b/Documentation/devicetree/bindings/interrupt-controller/arm,gic-v3.yaml
-@@ -50,7 +50,7 @@ properties:
-       The 2nd cell contains the interrupt number for the interrupt type.
-       SPI interrupts are in the range [0-987]. PPI interrupts are in the
-       range [0-15]. Extended SPI interrupts are in the range [0-1023].
--      Extended PPI interrupts are in the range [0-127].
-+      Extended PPI interrupts are in the range [0-63].
+diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+index 92fd4810f2e21..deda5b040d7a0 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-host.c
++++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+@@ -984,15 +984,24 @@ int dw_pcie_resume_noirq(struct dw_pcie *pci)
  
-       The 3rd cell is the flags, encoded as follows:
-       bits[3:0] trigger type and level flags.
+ 	ret = dw_pcie_start_link(pci);
+ 	if (ret)
+-		return ret;
++		goto err_deinit;
+ 
+ 	ret = dw_pcie_wait_for_link(pci);
+-	if (ret)
+-		return ret;
++	if (ret == -ETIMEDOUT)
++		goto err_stop_link;
+ 
+ 	if (pci->pp.ops->post_init)
+ 		pci->pp.ops->post_init(&pci->pp);
+ 
++	return 0;
++
++err_stop_link:
++	dw_pcie_stop_link(pci);
++
++err_deinit:
++	if (pci->pp.ops->deinit)
++		pci->pp.ops->deinit(&pci->pp);
++
+ 	return ret;
+ }
+ EXPORT_SYMBOL_GPL(dw_pcie_resume_noirq);
 -- 
 2.53.0
 
