@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-252360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250783-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mOJlKfEFDmqv5gUAu9opvQ
-	(envelope-from <stable+bounces-252360-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:05:21 +0200
+	id YGInIAT4DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-250783-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:05:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7F56597B66
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:05:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58303595478
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:05:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A34D331E3AA8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:08:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B076935A3D3C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7E433F8896;
-	Wed, 20 May 2026 18:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDFD03D8129;
+	Wed, 20 May 2026 16:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+AmR33P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tZBw+MfD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EEF13DCD96;
-	Wed, 20 May 2026 18:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF32368968;
+	Wed, 20 May 2026 16:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300471; cv=none; b=R3+keEtCxfSINgbLsylV7shJuLFlxGM/oGGNC9gOYiMkScIuWSInpis20aYNUWWV4vKIuB2VKLvPJnkrDl8kUun3jWXjJPjpMl2cdZHlFxIRAYVZ9sz4pR/7/RlMNBDt6zG6IUKAP0ZmXBsRMK6oBVEW5V5bkYNdmixIBZ7JFtM=
+	t=1779296301; cv=none; b=NMkm55huInq4yNvLhwgAFpZw8r9q/pef8/EZLxV4Tp/i7I0RYpF5bZGMAzQZXD4XZ8oB93Lo510qAbNn0UsWosSLtKPvdlyFHTjWAQ5QFe87pVbE+tv257uc3eCWAPT+zBL7sq6kMdsTWbn9fw6SBCu4DzYLRyHpZyKceHA2opQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300471; c=relaxed/simple;
-	bh=649fZkrvYeC/SxG+bAiraWiLRqjUKk2E994OrTdVuhc=;
+	s=arc-20240116; t=1779296301; c=relaxed/simple;
+	bh=ZLe7muEFLnS2mjWvM+i7H9B+FofBsRSdYxC7/LHAyWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=vDlzgMW765TZbMLUM59N7fx6XjJyMUgGZDCYoOgKf4XOOkSmfV1gO0t6kPVznbdXbmk3wyNiHAQjDkBAd1L9+++JcnZLfPvw5bO6s+3tDIUfO4tbXTtnSEGgOFgcI4QkQGQ/IL1dSnP0O9hHNesRhphAmWcSpzCwFgDf84q8pgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+AmR33P; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94EBB1F000E9;
-	Wed, 20 May 2026 18:07:49 +0000 (UTC)
+	 MIME-Version; b=TEtX/bUWDvwT1wvROKKF1eLnyy0RLdX8BbW018S5OVHpN2yHWLLnksY+eYenkdKEB6Gf00Cp0XMzy+X6qmMaJ87HcISNvtU5h9xdl7AuYwgEDfayujc++c65FaWjF8uAPPOumqo2aC0AefNbXKf+fbOmFLQeymL1P18TBBkVf4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tZBw+MfD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A36051F000E9;
+	Wed, 20 May 2026 16:58:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300470;
-	bh=sGY3VCEX8RFf3PpzA9K5nF0HZhuH5kjYmO1vudAo8uo=;
+	s=korg; t=1779296300;
+	bh=TBA/fZHVbOUysIEQ6WTE2D9MJv5+8DyjejOdFa9aZtA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=r+AmR33PqQLim5gZgTmmW4RT2oiOByK81BnURbXn3IH7N/0XnrJ4Ani8k4st55uWl
-	 2EHZdmV8cli/kxbmUKlZ73FqYHW9MiMrU3oqb+L8nMNhybVmYSfjaLiS5QG7pkwUfh
-	 J8ybEn55Oo+IKrdN5C967t2xD5SukJaW4ckq6WJQ=
+	b=tZBw+MfDJ8sR/s2ksWwyEHL107fC5GVt12dxaisYPB8DJlgc8o/RchCtQGDK4NTDp
+	 Wg9/+Iw5V+GMrzyhSq7b6e6LI+94r43HYU1CroGKQptPcGFzv57fxPmkc2PyrtGYTG
+	 Xq4f20gy1QVwLNBi9R+uB+ELQzEVjz8ljJM2H6Z4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Adrian Vladu <avladu@cloudbasesolutions.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Aditya Garg <gargaditya@linux.microsoft.com>,
+	Roman Kisel <romank@linux.microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 187/666] hwmon: Switch back to struct platform_driver::remove()
+Subject: [PATCH 7.0 0748/1146] tools: hv: Fix cross-compilation
 Date: Wed, 20 May 2026 18:16:38 +0200
-Message-ID: <20260520162115.254764412@linuxfoundation.org>
+Message-ID: <20260520162205.137141255@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,430 +66,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252360-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250783-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,baylibre.com:email,roeck-us.net:email]
-X-Rspamd-Queue-Id: A7F56597B66
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 58303595478
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Aditya Garg <gargaditya@linux.microsoft.com>
 
-[ Upstream commit 6126f7bb6075d0af577e55bf7e2cbbcc272f520b ]
+[ Upstream commit ca5ee0e918115fb5cf626d75461d9fca06e06caf ]
 
-After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
-return void") .remove() is (again) the right callback to implement for
-platform drivers.
+Use the native ARCH only in case it is not set, this will allow the
+cross-compilation where ARCH is explicitly set.
 
-Convert all platform drivers below drivers/hwmonto use .remove(), with
-the eventual goal to drop struct platform_driver::remove_new(). As
-.remove() and .remove_new() have the same prototypes, conversion is done
-by just changing the structure member name in the driver initializer.
+Additionally, simplify the ARCH check to build the fcopy daemon only
+for x86 and x86_64.
 
-While touching these files, make indention of the struct initializer
-consistent in several files.
-
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Message-ID: <20241017155900.137357-2-u.kleine-koenig@baylibre.com>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Stable-dep-of: 46fef8583daa ("hwmon: (aspeed-g6-pwm-tach): remove redundant driver remove callback")
+Fixes: 82b0945ce2c2 ("tools: hv: Add new fcopy application based on uio driver")
+Reported-by: Adrian Vladu <avladu@cloudbasesolutions.com>
+Closes: https://lore.kernel.org/linux-hyperv/PR3PR09MB54119DB2FD76977C62D8DD6AB04D2@PR3PR09MB5411.eurprd09.prod.outlook.com/
+Co-developed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Signed-off-by: Aditya Garg <gargaditya@linux.microsoft.com>
+Reviewed-by: Roman Kisel <romank@linux.microsoft.com>
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/abituguru.c          | 2 +-
- drivers/hwmon/abituguru3.c         | 4 ++--
- drivers/hwmon/aspeed-g6-pwm-tach.c | 2 +-
- drivers/hwmon/da9052-hwmon.c       | 2 +-
- drivers/hwmon/dme1737.c            | 2 +-
- drivers/hwmon/f71805f.c            | 2 +-
- drivers/hwmon/f71882fg.c           | 2 +-
- drivers/hwmon/i5k_amb.c            | 2 +-
- drivers/hwmon/max197.c             | 2 +-
- drivers/hwmon/mc13783-adc.c        | 2 +-
- drivers/hwmon/occ/p9_sbe.c         | 4 ++--
- drivers/hwmon/pc87360.c            | 2 +-
- drivers/hwmon/pc87427.c            | 2 +-
- drivers/hwmon/sch5636.c            | 2 +-
- drivers/hwmon/sht15.c              | 2 +-
- drivers/hwmon/sis5595.c            | 2 +-
- drivers/hwmon/smsc47m1.c           | 2 +-
- drivers/hwmon/ultra45_env.c        | 2 +-
- drivers/hwmon/via-cputemp.c        | 2 +-
- drivers/hwmon/via686a.c            | 2 +-
- drivers/hwmon/vt1211.c             | 2 +-
- drivers/hwmon/vt8231.c             | 4 ++--
- drivers/hwmon/w83627hf.c           | 2 +-
- drivers/hwmon/w83781d.c            | 2 +-
- drivers/hwmon/xgene-hwmon.c        | 2 +-
- 25 files changed, 28 insertions(+), 28 deletions(-)
+ tools/hv/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/abituguru.c b/drivers/hwmon/abituguru.c
-index 93653ea054308..ba8c68ae45953 100644
---- a/drivers/hwmon/abituguru.c
-+++ b/drivers/hwmon/abituguru.c
-@@ -1531,7 +1531,7 @@ static struct platform_driver abituguru_driver = {
- 		.pm	= pm_sleep_ptr(&abituguru_pm),
- 	},
- 	.probe		= abituguru_probe,
--	.remove_new	= abituguru_remove,
-+	.remove		= abituguru_remove,
- };
+diff --git a/tools/hv/Makefile b/tools/hv/Makefile
+index 34ffcec264ab0..016753f3dd7f6 100644
+--- a/tools/hv/Makefile
++++ b/tools/hv/Makefile
+@@ -2,7 +2,7 @@
+ # Makefile for Hyper-V tools
+ include ../scripts/Makefile.include
  
- static int __init abituguru_detect(void)
-diff --git a/drivers/hwmon/abituguru3.c b/drivers/hwmon/abituguru3.c
-index 4501f0e49efb1..b70330dc21984 100644
---- a/drivers/hwmon/abituguru3.c
-+++ b/drivers/hwmon/abituguru3.c
-@@ -1147,12 +1147,12 @@ static int abituguru3_resume(struct device *dev)
- static DEFINE_SIMPLE_DEV_PM_OPS(abituguru3_pm, abituguru3_suspend, abituguru3_resume);
+-ARCH := $(shell uname -m 2>/dev/null)
++ARCH ?= $(shell uname -m 2>/dev/null)
+ sbindir ?= /usr/sbin
+ libexecdir ?= /usr/libexec
+ sharedstatedir ?= /var/lib
+@@ -20,7 +20,7 @@ override CFLAGS += -O2 -Wall -g -D_GNU_SOURCE -I$(OUTPUT)include
+ override CFLAGS += -Wno-address-of-packed-member
  
- static struct platform_driver abituguru3_driver = {
--	.driver = {
-+	.driver	= {
- 		.name	= ABIT_UGURU3_NAME,
- 		.pm	= pm_sleep_ptr(&abituguru3_pm),
- 	},
- 	.probe	= abituguru3_probe,
--	.remove_new = abituguru3_remove,
-+	.remove	= abituguru3_remove,
- };
- 
- static int __init abituguru3_dmi_detect(void)
-diff --git a/drivers/hwmon/aspeed-g6-pwm-tach.c b/drivers/hwmon/aspeed-g6-pwm-tach.c
-index 75eadda738ab6..4174b129d1fce 100644
---- a/drivers/hwmon/aspeed-g6-pwm-tach.c
-+++ b/drivers/hwmon/aspeed-g6-pwm-tach.c
-@@ -534,7 +534,7 @@ MODULE_DEVICE_TABLE(of, aspeed_pwm_tach_match);
- 
- static struct platform_driver aspeed_pwm_tach_driver = {
- 	.probe = aspeed_pwm_tach_probe,
--	.remove_new = aspeed_pwm_tach_remove,
-+	.remove = aspeed_pwm_tach_remove,
- 	.driver	= {
- 		.name = "aspeed-g6-pwm-tach",
- 		.of_match_table = aspeed_pwm_tach_match,
-diff --git a/drivers/hwmon/da9052-hwmon.c b/drivers/hwmon/da9052-hwmon.c
-index 7fb0c57dfef50..588e96790850a 100644
---- a/drivers/hwmon/da9052-hwmon.c
-+++ b/drivers/hwmon/da9052-hwmon.c
-@@ -473,7 +473,7 @@ static void da9052_hwmon_remove(struct platform_device *pdev)
- 
- static struct platform_driver da9052_hwmon_driver = {
- 	.probe = da9052_hwmon_probe,
--	.remove_new = da9052_hwmon_remove,
-+	.remove = da9052_hwmon_remove,
- 	.driver = {
- 		.name = "da9052-hwmon",
- 	},
-diff --git a/drivers/hwmon/dme1737.c b/drivers/hwmon/dme1737.c
-index 1a9b28dc91e64..3d4057309950d 100644
---- a/drivers/hwmon/dme1737.c
-+++ b/drivers/hwmon/dme1737.c
-@@ -2721,7 +2721,7 @@ static struct platform_driver dme1737_isa_driver = {
- 		.name = "dme1737",
- 	},
- 	.probe = dme1737_isa_probe,
--	.remove_new = dme1737_isa_remove,
-+	.remove = dme1737_isa_remove,
- };
- 
- /* ---------------------------------------------------------------------
-diff --git a/drivers/hwmon/f71805f.c b/drivers/hwmon/f71805f.c
-index 243c570dee4c1..820f894d9ffda 100644
---- a/drivers/hwmon/f71805f.c
-+++ b/drivers/hwmon/f71805f.c
-@@ -1497,7 +1497,7 @@ static struct platform_driver f71805f_driver = {
- 		.name	= DRVNAME,
- 	},
- 	.probe		= f71805f_probe,
--	.remove_new	= f71805f_remove,
-+	.remove		= f71805f_remove,
- };
- 
- static int __init f71805f_device_add(unsigned short address,
-diff --git a/drivers/hwmon/f71882fg.c b/drivers/hwmon/f71882fg.c
-index 734df959276af..204059d2de6cd 100644
---- a/drivers/hwmon/f71882fg.c
-+++ b/drivers/hwmon/f71882fg.c
-@@ -2660,7 +2660,7 @@ static struct platform_driver f71882fg_driver = {
- 		.name	= DRVNAME,
- 	},
- 	.probe		= f71882fg_probe,
--	.remove_new	= f71882fg_remove,
-+	.remove		= f71882fg_remove,
- };
- 
- static int __init f71882fg_init(void)
-diff --git a/drivers/hwmon/i5k_amb.c b/drivers/hwmon/i5k_amb.c
-index 02f5d35dd3199..b22e0423e3249 100644
---- a/drivers/hwmon/i5k_amb.c
-+++ b/drivers/hwmon/i5k_amb.c
-@@ -568,7 +568,7 @@ static struct platform_driver i5k_amb_driver = {
- 		.name = DRVNAME,
- 	},
- 	.probe = i5k_amb_probe,
--	.remove_new = i5k_amb_remove,
-+	.remove = i5k_amb_remove,
- };
- 
- static int __init i5k_amb_init(void)
-diff --git a/drivers/hwmon/max197.c b/drivers/hwmon/max197.c
-index bb30403f81caa..f0048ff376072 100644
---- a/drivers/hwmon/max197.c
-+++ b/drivers/hwmon/max197.c
-@@ -332,7 +332,7 @@ static struct platform_driver max197_driver = {
- 		.name = "max197",
- 	},
- 	.probe = max197_probe,
--	.remove_new = max197_remove,
-+	.remove = max197_remove,
- 	.id_table = max197_device_ids,
- };
- module_platform_driver(max197_driver);
-diff --git a/drivers/hwmon/mc13783-adc.c b/drivers/hwmon/mc13783-adc.c
-index 67471c9cd4d47..66304d48d33a4 100644
---- a/drivers/hwmon/mc13783-adc.c
-+++ b/drivers/hwmon/mc13783-adc.c
-@@ -315,7 +315,7 @@ static const struct platform_device_id mc13783_adc_idtable[] = {
- MODULE_DEVICE_TABLE(platform, mc13783_adc_idtable);
- 
- static struct platform_driver mc13783_adc_driver = {
--	.remove_new	= mc13783_adc_remove,
-+	.remove		= mc13783_adc_remove,
- 	.driver		= {
- 		.name	= DRIVER_NAME,
- 	},
-diff --git a/drivers/hwmon/occ/p9_sbe.c b/drivers/hwmon/occ/p9_sbe.c
-index b5993c79c09ea..89761a9c8892f 100644
---- a/drivers/hwmon/occ/p9_sbe.c
-+++ b/drivers/hwmon/occ/p9_sbe.c
-@@ -192,8 +192,8 @@ static struct platform_driver p9_sbe_occ_driver = {
- 		.name = "occ-hwmon",
- 		.of_match_table = p9_sbe_occ_of_match,
- 	},
--	.probe	= p9_sbe_occ_probe,
--	.remove_new = p9_sbe_occ_remove,
-+	.probe = p9_sbe_occ_probe,
-+	.remove = p9_sbe_occ_remove,
- };
- 
- module_platform_driver(p9_sbe_occ_driver);
-diff --git a/drivers/hwmon/pc87360.c b/drivers/hwmon/pc87360.c
-index 788b5d58f77ea..0f8aa6b42164f 100644
---- a/drivers/hwmon/pc87360.c
-+++ b/drivers/hwmon/pc87360.c
-@@ -1606,7 +1606,7 @@ static struct platform_driver pc87360_driver = {
- 		.name	= DRIVER_NAME,
- 	},
- 	.probe		= pc87360_probe,
--	.remove_new	= pc87360_remove,
-+	.remove		= pc87360_remove,
- };
- 
- /*
-diff --git a/drivers/hwmon/pc87427.c b/drivers/hwmon/pc87427.c
-index 7bca04eb4ee4f..571402a89368a 100644
---- a/drivers/hwmon/pc87427.c
-+++ b/drivers/hwmon/pc87427.c
-@@ -1129,7 +1129,7 @@ static struct platform_driver pc87427_driver = {
- 		.name	= DRVNAME,
- 	},
- 	.probe		= pc87427_probe,
--	.remove_new	= pc87427_remove,
-+	.remove		= pc87427_remove,
- };
- 
- static int __init pc87427_device_add(const struct pc87427_sio_data *sio_data)
-diff --git a/drivers/hwmon/sch5636.c b/drivers/hwmon/sch5636.c
-index a4b05ebb05460..d00bd5cc6b154 100644
---- a/drivers/hwmon/sch5636.c
-+++ b/drivers/hwmon/sch5636.c
-@@ -512,7 +512,7 @@ static struct platform_driver sch5636_driver = {
- 		.name	= DRVNAME,
- 	},
- 	.probe		= sch5636_probe,
--	.remove_new	= sch5636_remove,
-+	.remove		= sch5636_remove,
- 	.id_table	= sch5636_device_id,
- };
- 
-diff --git a/drivers/hwmon/sht15.c b/drivers/hwmon/sht15.c
-index 494f9655f44f4..3d55047e9baf9 100644
---- a/drivers/hwmon/sht15.c
-+++ b/drivers/hwmon/sht15.c
-@@ -1051,7 +1051,7 @@ static struct platform_driver sht15_driver = {
- 		.of_match_table = of_match_ptr(sht15_dt_match),
- 	},
- 	.probe = sht15_probe,
--	.remove_new = sht15_remove,
-+	.remove = sht15_remove,
- 	.id_table = sht15_device_ids,
- };
- module_platform_driver(sht15_driver);
-diff --git a/drivers/hwmon/sis5595.c b/drivers/hwmon/sis5595.c
-index e73b1522f3cef..b7a7bcd6d3af0 100644
---- a/drivers/hwmon/sis5595.c
-+++ b/drivers/hwmon/sis5595.c
-@@ -784,7 +784,7 @@ static struct platform_driver sis5595_driver = {
- 		.name	= DRIVER_NAME,
- 	},
- 	.probe		= sis5595_probe,
--	.remove_new	= sis5595_remove,
-+	.remove		= sis5595_remove,
- };
- 
- static int sis5595_pci_probe(struct pci_dev *dev,
-diff --git a/drivers/hwmon/smsc47m1.c b/drivers/hwmon/smsc47m1.c
-index 0d46edbcb144b..595bceb78d760 100644
---- a/drivers/hwmon/smsc47m1.c
-+++ b/drivers/hwmon/smsc47m1.c
-@@ -858,7 +858,7 @@ static struct platform_driver smsc47m1_driver __refdata = {
- 	.driver = {
- 		.name	= DRVNAME,
- 	},
--	.remove_new	= __exit_p(smsc47m1_remove),
-+	.remove		= __exit_p(smsc47m1_remove),
- };
- 
- static int __init smsc47m1_device_add(unsigned short address,
-diff --git a/drivers/hwmon/ultra45_env.c b/drivers/hwmon/ultra45_env.c
-index 2765d5f1b7f05..e4f1bb538628c 100644
---- a/drivers/hwmon/ultra45_env.c
-+++ b/drivers/hwmon/ultra45_env.c
-@@ -317,7 +317,7 @@ static struct platform_driver env_driver = {
- 		.of_match_table = env_match,
- 	},
- 	.probe		= env_probe,
--	.remove_new	= env_remove,
-+	.remove		= env_remove,
- };
- 
- module_platform_driver(env_driver);
-diff --git a/drivers/hwmon/via-cputemp.c b/drivers/hwmon/via-cputemp.c
-index 5abe95b683c02..823bff2871e1e 100644
---- a/drivers/hwmon/via-cputemp.c
-+++ b/drivers/hwmon/via-cputemp.c
-@@ -197,7 +197,7 @@ static struct platform_driver via_cputemp_driver = {
- 		.name = DRVNAME,
- 	},
- 	.probe = via_cputemp_probe,
--	.remove_new = via_cputemp_remove,
-+	.remove = via_cputemp_remove,
- };
- 
- struct pdev_entry {
-diff --git a/drivers/hwmon/via686a.c b/drivers/hwmon/via686a.c
-index 3a002ad3c005b..bbaeb808cc15e 100644
---- a/drivers/hwmon/via686a.c
-+++ b/drivers/hwmon/via686a.c
-@@ -799,7 +799,7 @@ static struct platform_driver via686a_driver = {
- 		.name	= DRIVER_NAME,
- 	},
- 	.probe		= via686a_probe,
--	.remove_new	= via686a_remove,
-+	.remove		= via686a_remove,
- };
- 
- static const struct pci_device_id via686a_pci_ids[] = {
-diff --git a/drivers/hwmon/vt1211.c b/drivers/hwmon/vt1211.c
-index 2f3890463e18d..386edea6b69e5 100644
---- a/drivers/hwmon/vt1211.c
-+++ b/drivers/hwmon/vt1211.c
-@@ -1221,7 +1221,7 @@ static struct platform_driver vt1211_driver = {
- 		.name  = DRVNAME,
- 	},
- 	.probe  = vt1211_probe,
--	.remove_new = vt1211_remove,
-+	.remove = vt1211_remove,
- };
- 
- static int __init vt1211_device_add(unsigned short address)
-diff --git a/drivers/hwmon/vt8231.c b/drivers/hwmon/vt8231.c
-index dcdd14ccd115c..3bf27c21845ba 100644
---- a/drivers/hwmon/vt8231.c
-+++ b/drivers/hwmon/vt8231.c
-@@ -910,11 +910,11 @@ static void vt8231_remove(struct platform_device *pdev)
- 
- 
- static struct platform_driver vt8231_driver = {
--	.driver = {
-+	.driver	= {
- 		.name	= DRIVER_NAME,
- 	},
- 	.probe	= vt8231_probe,
--	.remove_new = vt8231_remove,
-+	.remove	= vt8231_remove,
- };
- 
- static const struct pci_device_id vt8231_pci_ids[] = {
-diff --git a/drivers/hwmon/w83627hf.c b/drivers/hwmon/w83627hf.c
-index 2fc9b718e2aba..95115d7b863e3 100644
---- a/drivers/hwmon/w83627hf.c
-+++ b/drivers/hwmon/w83627hf.c
-@@ -1844,7 +1844,7 @@ static struct platform_driver w83627hf_driver = {
- 		.pm	= W83627HF_DEV_PM_OPS,
- 	},
- 	.probe		= w83627hf_probe,
--	.remove_new	= w83627hf_remove,
-+	.remove		= w83627hf_remove,
- };
- 
- static int __init w83627hf_find(int sioaddr, unsigned short *addr,
-diff --git a/drivers/hwmon/w83781d.c b/drivers/hwmon/w83781d.c
-index b7957c84d2352..076200ed2ec91 100644
---- a/drivers/hwmon/w83781d.c
-+++ b/drivers/hwmon/w83781d.c
-@@ -1828,7 +1828,7 @@ static struct platform_driver w83781d_isa_driver = {
- 		.name = "w83781d",
- 	},
- 	.probe = w83781d_isa_probe,
--	.remove_new = w83781d_isa_remove,
-+	.remove = w83781d_isa_remove,
- };
- 
- /* return 1 if a supported chip is found, 0 otherwise */
-diff --git a/drivers/hwmon/xgene-hwmon.c b/drivers/hwmon/xgene-hwmon.c
-index 4e05077e4256d..2cdbd5f107a2c 100644
---- a/drivers/hwmon/xgene-hwmon.c
-+++ b/drivers/hwmon/xgene-hwmon.c
-@@ -772,7 +772,7 @@ MODULE_DEVICE_TABLE(of, xgene_hwmon_of_match);
- 
- static struct platform_driver xgene_hwmon_driver = {
- 	.probe = xgene_hwmon_probe,
--	.remove_new = xgene_hwmon_remove,
-+	.remove = xgene_hwmon_remove,
- 	.driver = {
- 		.name = "xgene-slimpro-hwmon",
- 		.of_match_table = xgene_hwmon_of_match,
+ ALL_TARGETS := hv_kvp_daemon hv_vss_daemon
+-ifneq ($(ARCH), aarch64)
++ifneq ($(filter x86_64 x86,$(ARCH)),)
+ ALL_TARGETS += hv_fcopy_uio_daemon
+ endif
+ ALL_PROGRAMS := $(patsubst %,$(OUTPUT)%,$(ALL_TARGETS))
 -- 
 2.53.0
 
