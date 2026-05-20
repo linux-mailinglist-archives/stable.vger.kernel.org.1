@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250952-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sOF0N+78DWoo5QUAu9opvQ
-	(envelope-from <stable+bounces-251919-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:54 +0200
+	id 8bwBC87tDWpu4wUAu9opvQ
+	(envelope-from <stable+bounces-250952-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:22:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 448D15962B6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 022F659373C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:22:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2C50436F8850
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:47:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 470F630F16C2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:07:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0505036405A;
-	Wed, 20 May 2026 17:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B5F53F5BDA;
+	Wed, 20 May 2026 17:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rT3cFQCj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yI0jJiok"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEAAC3B0AD6;
-	Wed, 20 May 2026 17:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378513E0C70;
+	Wed, 20 May 2026 17:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299228; cv=none; b=fVTuqlwH7EEjcoyQBuIcIZhT5n/VFO29FaK3iqUDDiUFubhjhGLplgB6kSw+20w2SoKQ+9chEPyHeilduLGVgJoN/yGzv6y+kbmJxnsqshM5+PD4++uRF0mIDqCkoyycUIhfez87h49PMrBCkHkubHuaiI5gQUcGdLMIFJP5WVQ=
+	t=1779296718; cv=none; b=soxJHwBlWDJ5r0CmeF42peCGV6RCybfrU0tgfEr9MgsX4t/pQdT0IC/WCCzu7iYvqi+uwLyNNBYNUBpFSt18ylo8NJHYuPb8ZsnNeiY9iICYR/qCVz7G6BvTns6oRrKZYi//QWNYWyOaBbzi8sbFtZHQs3L71LJjEvuxmg+fofY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299228; c=relaxed/simple;
-	bh=11TwPq0JSmy+6W/eIHOGnkICgMZ8yY2k9GfMbuWUi9w=;
+	s=arc-20240116; t=1779296718; c=relaxed/simple;
+	bh=s9naC6ZzfGXk38SBt31c246bBCeziSxS4H7bmZ89inc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KzAlb2831+I4cj5PXavdZDIKntzndKwpKTCDAKLRi/5nU46xqSBjfUGfurw0UO6Ckr49vOfKo22r69lzq9kI1Tx2o1odmLCVJ+DuROwf/Z4S/iATdrZ3nuXdPzcXm3BpcY3GxVOaLZYOC09C6YL+VSx0udMOTjvfGZJrYt/aPvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rT3cFQCj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FCF01F000E9;
-	Wed, 20 May 2026 17:47:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YtrRXcghbNwJL6YYLuM/hTbGLimd8PoaHavU8aj1wze5H3Kqi2g7qiUPUfH5gbxL1/OhvCt/UPiYnhzgFnjsUc71nVh81vzfD2rd4GAbSZS7RcUYW/SqYifdBtGeuEDVb5ELkhj1cuUPvin0ATBECO6VS2ziq1t+dgHsvKehs20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yI0jJiok; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E9061F00893;
+	Wed, 20 May 2026 17:05:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299227;
-	bh=WO1r7LvNEu5Fz/2/+KmuwR/7cyYILqPy8qXjsVTpbac=;
+	s=korg; t=1779296717;
+	bh=kRgRtE8IibTxQ/KXn9KjZGdoWotvBYf+fHJLD/D9uOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rT3cFQCjHmVkjZ74KdrLkVaqaZkLZLYy0qEyz4QO6a6wjsb8IpFyWXfJ9G4o+4QG6
-	 KLyU/G/HMSbcENmGHEW5tUudC5URd3Sdicncy47y7bZ5DjsEkORppzQUtXbV8+Ga6n
-	 gOX1ggaPafXw36z7lfXdi3OTOnXtzGf7Nwe/0XBg=
+	b=yI0jJiokn636A7x91TeJNLg4q0jSifQmQ1WQntuwGP3U82koL0sJltYo/taN1H8EU
+	 KaWIfmSQGHxJmJ9Y0LyRZvxRpwojlhFCB4arFUENywWxYM/9gEOwN4Yz7JfE+pf767
+	 P/v5ISBKDiyRoJwHf1wV2l5kvl2d7jpE9wzFrhvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Kito Xu (veritas501)" <hxzene@gmail.com>,
-	Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 670/957] net/sched: sch_dualpi2: drain both C-queue and L-queue in dualpi2_change()
-Date: Wed, 20 May 2026 18:19:13 +0200
-Message-ID: <20260520162149.066051904@linuxfoundation.org>
+Subject: [PATCH 7.0 0904/1146] drm/amdgpu: fix AMDGPU_INFO_READ_MMR_REG
+Date: Wed, 20 May 2026 18:19:14 +0200
+Message-ID: <20260520162208.695996590@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,119 +63,164 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nokia-bell-labs.com,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-251919-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250952-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nokia-bell-labs.com:email]
-X-Rspamd-Queue-Id: 448D15962B6
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: 022F659373C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+From: Christian König <christian.koenig@amd.com>
 
-[ Upstream commit 478ed6b7d2577439c610f91fa8759a4c878a4264 ]
+[ Upstream commit 0ef196a208385b7d7da79f411c161b04e97283e2 ]
 
-Fix dualpi2_change() to correctly enforce updated limit and memlimit
-values after a configuration change of the dualpi2 qdisc.
+There were multiple issues in that code.
 
-Before this patch, dualpi2_change() always attempted to dequeue packets
-via the root qdisc (C-queue) when reducing backlog or memory usage, and
-unconditionally assumed that a valid skb will be returned. When traffic
-classification results in packets being queued in the L-queue while the
-C-queue is empty, this leads to a NULL skb dereference during limit or
-memlimit enforcement.
+First of all the order between the reset semaphore and the mm_lock was
+wrong (e.g. copy_to_user) was called while holding the lock.
 
-This is fixed by first dequeuing from the C-queue path if it is
-non-empty. Once the C-queue is empty, packets are dequeued directly from
-the L-queue. Return values from qdisc_dequeue_internal() are checked for
-both queues. When dequeuing from the L-queue, the parent qdisc qlen and
-backlog counters are updated explicitly to keep overall qdisc statistics
-consistent.
+Then we allocated memory while holding the reset semaphore which is also
+a pretty big bug and can deadlock.
 
-Fixes: 320d031ad6e4 ("sched: Struct definition and parsing of dualpi2 qdisc")
-Reported-by: "Kito Xu (veritas501)" <hxzene@gmail.com>
-Closes: https://lore.kernel.org/netdev/20260413075740.2234828-1-hxzene@gmail.com/
-Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-Link: https://patch.msgid.link/20260417152551.71648-1-chia-yu.chang@nokia-bell-labs.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Then we used down_read_trylock() instead of waiting for the reset to
+finish.
+
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Fixes: 9e823f307074 ("drm/amdgpu: Block MMR_READ IOCTL in reset")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 361b6e6b303d4b691f6c5974d3eaab67ca6dd90e)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_dualpi2.c | 32 ++++++++++++++++++++++++++++----
- 1 file changed, 28 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c | 57 +++++++++++--------------
+ 1 file changed, 24 insertions(+), 33 deletions(-)
 
-diff --git a/net/sched/sch_dualpi2.c b/net/sched/sch_dualpi2.c
-index 4b975feb52b1f..efa32240c5a95 100644
---- a/net/sched/sch_dualpi2.c
-+++ b/net/sched/sch_dualpi2.c
-@@ -871,11 +871,35 @@ static int dualpi2_change(struct Qdisc *sch, struct nlattr *opt,
- 	old_backlog = sch->qstats.backlog;
- 	while (qdisc_qlen(sch) > sch->limit ||
- 	       q->memory_used > q->memory_limit) {
--		struct sk_buff *skb = qdisc_dequeue_internal(sch, true);
-+		struct sk_buff *skb = NULL;
- 
--		q->memory_used -= skb->truesize;
--		qdisc_qstats_backlog_dec(sch, skb);
--		rtnl_qdisc_drop(skb, sch);
-+		if (qdisc_qlen(sch) > qdisc_qlen(q->l_queue)) {
-+			skb = qdisc_dequeue_internal(sch, true);
-+			if (unlikely(!skb)) {
-+				WARN_ON_ONCE(1);
-+				break;
-+			}
-+			q->memory_used -= skb->truesize;
-+			rtnl_qdisc_drop(skb, sch);
-+		} else if (qdisc_qlen(q->l_queue)) {
-+			skb = qdisc_dequeue_internal(q->l_queue, true);
-+			if (unlikely(!skb)) {
-+				WARN_ON_ONCE(1);
-+				break;
-+			}
-+			/* L-queue packets are counted in both sch and
-+			 * l_queue on enqueue; qdisc_dequeue_internal()
-+			 * handled l_queue, so we further account for sch.
-+			 */
-+			--sch->q.qlen;
-+			qdisc_qstats_backlog_dec(sch, skb);
-+			q->memory_used -= skb->truesize;
-+			rtnl_qdisc_drop(skb, q->l_queue);
-+			qdisc_qstats_drop(sch);
-+		} else {
-+			WARN_ON_ONCE(1);
-+			break;
-+		}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+index 7f19554b9ad11..a50c3058f97f4 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+@@ -873,68 +873,59 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
+ 				    ? -EFAULT : 0;
  	}
- 	qdisc_tree_reduce_backlog(sch, old_qlen - qdisc_qlen(sch),
- 				  old_backlog - sch->qstats.backlog);
+ 	case AMDGPU_INFO_READ_MMR_REG: {
+-		int ret = 0;
+-		unsigned int n, alloc_size;
+-		uint32_t *regs;
+ 		unsigned int se_num = (info->read_mmr_reg.instance >>
+ 				   AMDGPU_INFO_MMR_SE_INDEX_SHIFT) &
+ 				  AMDGPU_INFO_MMR_SE_INDEX_MASK;
+ 		unsigned int sh_num = (info->read_mmr_reg.instance >>
+ 				   AMDGPU_INFO_MMR_SH_INDEX_SHIFT) &
+ 				  AMDGPU_INFO_MMR_SH_INDEX_MASK;
+-
+-		if (!down_read_trylock(&adev->reset_domain->sem))
+-			return -ENOENT;
++		unsigned int alloc_size;
++		uint32_t *regs;
++		int ret;
+ 
+ 		/* set full masks if the userspace set all bits
+ 		 * in the bitfields
+ 		 */
+-		if (se_num == AMDGPU_INFO_MMR_SE_INDEX_MASK) {
++		if (se_num == AMDGPU_INFO_MMR_SE_INDEX_MASK)
+ 			se_num = 0xffffffff;
+-		} else if (se_num >= AMDGPU_GFX_MAX_SE) {
+-			ret = -EINVAL;
+-			goto out;
+-		}
++		else if (se_num >= AMDGPU_GFX_MAX_SE)
++			return -EINVAL;
+ 
+-		if (sh_num == AMDGPU_INFO_MMR_SH_INDEX_MASK) {
++		if (sh_num == AMDGPU_INFO_MMR_SH_INDEX_MASK)
+ 			sh_num = 0xffffffff;
+-		} else if (sh_num >= AMDGPU_GFX_MAX_SH_PER_SE) {
+-			ret = -EINVAL;
+-			goto out;
+-		}
++		else if (sh_num >= AMDGPU_GFX_MAX_SH_PER_SE)
++			return -EINVAL;
+ 
+-		if (info->read_mmr_reg.count > 128) {
+-			ret = -EINVAL;
+-			goto out;
+-		}
++		if (info->read_mmr_reg.count > 128)
++			return -EINVAL;
+ 
+-		regs = kmalloc_array(info->read_mmr_reg.count, sizeof(*regs), GFP_KERNEL);
+-		if (!regs) {
+-			ret = -ENOMEM;
+-			goto out;
+-		}
++		regs = kmalloc_array(info->read_mmr_reg.count, sizeof(*regs),
++				     GFP_KERNEL);
++		if (!regs)
++			return -ENOMEM;
+ 
++		down_read(&adev->reset_domain->sem);
+ 		alloc_size = info->read_mmr_reg.count * sizeof(*regs);
+-
+ 		amdgpu_gfx_off_ctrl(adev, false);
++		ret = 0;
+ 		for (i = 0; i < info->read_mmr_reg.count; i++) {
+ 			if (amdgpu_asic_read_register(adev, se_num, sh_num,
+ 						      info->read_mmr_reg.dword_offset + i,
+ 						      &regs[i])) {
+ 				DRM_DEBUG_KMS("unallowed offset %#x\n",
+ 					      info->read_mmr_reg.dword_offset + i);
+-				kfree(regs);
+-				amdgpu_gfx_off_ctrl(adev, true);
+ 				ret = -EFAULT;
+-				goto out;
++				break;
+ 			}
+ 		}
+ 		amdgpu_gfx_off_ctrl(adev, true);
+-		n = copy_to_user(out, regs, min(size, alloc_size));
+-		kfree(regs);
+-		ret = (n ? -EFAULT : 0);
+-out:
+ 		up_read(&adev->reset_domain->sem);
++
++		if (!ret) {
++			ret = copy_to_user(out, regs, min(size, alloc_size))
++				? -EFAULT : 0;
++		}
++		kfree(regs);
+ 		return ret;
+ 	}
+ 	case AMDGPU_INFO_DEV_INFO: {
 -- 
 2.53.0
 
