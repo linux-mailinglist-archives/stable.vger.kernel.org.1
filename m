@@ -1,58 +1,71 @@
-Return-Path: <stable+bounces-252813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253279-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cGTeBgP/DWpV5QUAu9opvQ
-	(envelope-from <stable+bounces-252813-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:35:47 +0200
+	id uI5pGLoHDmp25gUAu9opvQ
+	(envelope-from <stable+bounces-253279-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:12:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDBA1596B5B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:35:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4716597F4E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:12:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CE27F305B8DB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:27:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D2FAD299D73
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A50B3D1CC6;
-	Wed, 20 May 2026 18:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72B842EEDF;
+	Wed, 20 May 2026 18:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V/15VIZz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1RB5I9hF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23BC3CCFB0;
-	Wed, 20 May 2026 18:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F8CE438FF3;
+	Wed, 20 May 2026 18:47:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301656; cv=none; b=l7+R7QbgzJZc+FPJNYcFlESGA0+P5LekBcFCBewnaB46S/5s16ZO4NT6dXO2g4j04kdWx29nuyV2ZWvy3FF4AmPdiAm4iCdytPoXlF4EJjguebGFt0jcZ9oZrsuxNRdN9C6uPZTih/keMf21bNBBvwM3OFBXQbN+M1qHiMEQbHE=
+	t=1779302866; cv=none; b=fbxCLTQjiFhQN2QE8vkGQ9Gw8gOow484T3Y1V55tYZGWIBOLtjrmcGCobUvdVHy7os+MUNDb2sN/miEql+pl32fuGRhQdFvvObwXyGQeC/XyoNg92VAmab167SBBdRMHZmnkpZRkowf0Umy4qwU4X2FZla2JdqGsHf8vSpmcRc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301656; c=relaxed/simple;
-	bh=TScwjoSuYt0nRQ+yCAM79Fs2B66cJohZMjFcHR6yfUU=;
+	s=arc-20240116; t=1779302866; c=relaxed/simple;
+	bh=S+9h0lDkndDGLHxCTnJIXRipCT04tuMJywVblzJ3w90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LQ83PMF100AWkKxkx9ejdx/lNYySL3KnZBAyeIT1RPjpZxRRPshrrEiDw4SF/lf0b9n3Ska512rZsPmISZ+XSKj+83kQJ4sDJCu5bTKCjV4t2VTGLoYL7VD97E6cNjwjM4RkXm4Vx0Aa5YHCuGFHVZlG4udry46vgrz9lEuej7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/15VIZz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 476291F000E9;
-	Wed, 20 May 2026 18:27:34 +0000 (UTC)
+	 MIME-Version; b=a9JrM52XMJ6nLggFyDqAArKRZ5NDXyI4C/rvjFihAZKpwhxqoG3Rhkx96EnkBP3Tt6Emg9p5vR0LMg5uE5r9x8GLQzStWVl4h0X79YXsPHTJoAzZFBNwGxXASqq5k61/hAcDQL7Dor2O8FVczQE/BOr//HpxaNlSwVH6trmhaZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1RB5I9hF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFFF81F00893;
+	Wed, 20 May 2026 18:47:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301654;
-	bh=9mI5m3KlpSSYyjE5dElR8Sfx6c3tRMRaD13iwFLyzeU=;
+	s=korg; t=1779302859;
+	bh=0fvQ5j4K030rMU8FedbhVmTJtyMZ0wYLQCN8kxi5kKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=V/15VIZzpaxWxBvGnpvkOvATTLBp2V/O9sADcGJ/mXLLe7p5wYJSJWxkzDmsHNIYy
-	 u+NdsBRLxBk508LF0taKSs9wFM+3IwIHX7V5/VzI/4kNRRrVMVHg/SH84pBuy7JZJK
-	 +Htsa9JoQutWvn+hXfOFdHHWJ21BLtnCC3zbkQIc=
+	b=1RB5I9hFEXq0apQcOftryYgNGJjInisWOozCWHEvzRWZ9j1URraDGICbEpCcVfa4q
+	 xuefOkN857tShJhhqyI1AhAAlSOgnud1j1OBsqbq33NcKbwJ0cmNwDFAakoSw1bKTV
+	 X6VSn2D7TZZ4X7MIt2zUUnZ9Eus3Z/B7e2CI/t6w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.12 637/666] libceph: Fix potential null-ptr-deref in decode_choose_args()
-Date: Wed, 20 May 2026 18:24:08 +0200
-Message-ID: <20260520162125.082892187@linuxfoundation.org>
+	Jay Vosburgh <jv@jvosburgh.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Tonghao Zhang <tonghao@bamaicloud.com>,
+	Zengbing Tu <tuzengbing@didiglobal.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 426/508] net: bonding: add broadcast_neighbor option for 802.3ad
+Date: Wed, 20 May 2026 18:24:09 +0200
+Message-ID: <20260520162107.832892102@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +76,380 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252813-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253279-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,netdev];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,tu-ilmenau.de:email]
-X-Rspamd-Queue-Id: DDBA1596B5B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: D4716597F4E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+From: Tonghao Zhang <tonghao@bamaicloud.com>
 
-commit 28b0a2ab8c82d0bbdeb8013029c67c978ce6e4bf upstream.
+[ Upstream commit ce7a381697cb3958ffe0b45e5028ac69444e9288 ]
 
-A message of type CEPH_MSG_OSD_MAP contains an OSD map that itself
-contains a CRUSH map. When decoding this CRUSH map in crush_decode(), an
-array of max_buckets CRUSH buckets is decoded, where some indices may
-not refer to actual buckets and are therefore set to NULL. The received
-CRUSH map may optionally contain choose_args that get decoded in
-decode_choose_args(). When decoding a crush_choose_arg_map, a series of
-choose_args for different buckets is decoded, with the bucket_index
-being read from the incoming message. It is only checked that the bucket
-index does not exceed max_buckets, but not that it doesn't point to an
-index with a NULL bucket. If a (potentially corrupted) message contains
-a crush_choose_arg_map including such a bucket_index, a null pointer
-dereference may occur in the subsequent processing when attempting to
-access the bucket with the given index.
+Stacking technology is a type of technology used to expand ports on
+Ethernet switches. It is widely used as a common access method in
+large-scale Internet data center architectures. Years of practice
+have proved that stacking technology has advantages and disadvantages
+in high-reliability network architecture scenarios. For instance,
+in stacking networking arch, conventional switch system upgrades
+require multiple stacked devices to restart at the same time.
+Therefore, it is inevitable that the business will be interrupted
+for a while. It is for this reason that "no-stacking" in data centers
+has become a trend. Additionally, when the stacking link connecting
+the switches fails or is abnormal, the stack will split. Although it is
+not common, it still happens in actual operation. The problem is that
+after the split, it is equivalent to two switches with the same
+configuration appearing in the network, causing network configuration
+conflicts and ultimately interrupting the services carried by the
+stacking system.
 
-This patch fixes the issue by extending the affected check. Now, it is
-only attempted to access the bucket if it is not NULL.
+To improve network stability, "non-stacking" solutions have been
+increasingly adopted, particularly by public cloud providers and
+tech companies like Alibaba, Tencent, and Didi. "non-stacking" is
+a method of mimicing switch stacking that convinces a LACP peer,
+bonding in this case, connected to a set of "non-stacked" switches
+that all of its ports are connected to a single switch
+(i.e., LACP aggregator), as if those switches were stacked. This
+enables the LACP peer's ports to aggregate together, and requires
+(a) special switch configuration, described in the linked article,
+and (b) modifications to the bonding 802.3ad (LACP) mode to send
+all ARP/ND packets across all ports of the active aggregator.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
-Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Note that, with multiple aggregators, the current broadcast mode
+logic will send only packets to the selected aggregator(s).
+
+ +-----------+   +-----------+
+ |  switch1  |   |  switch2  |
+ +-----------+   +-----------+
+         ^           ^
+         |           |
+      +-----------------+
+      |   bond4 lacp    |
+      +-----------------+
+         |           |
+         | NIC1      | NIC2
+      +-----------------+
+      |     server      |
+      +-----------------+
+
+- https://www.ruijie.com/fr-fr/support/tech-gallery/de-stack-data-center-network-architecture/
+
+Cc: Jay Vosburgh <jv@jvosburgh.net>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: Tonghao Zhang <tonghao@bamaicloud.com>
+Signed-off-by: Zengbing Tu <tuzengbing@didiglobal.com>
+Link: https://patch.msgid.link/84d0a044514157bb856a10b6d03a1028c4883561.1751031306.git.tonghao@bamaicloud.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: c4f050ce06c5 ("bonding: 3ad: implement proper RCU rules for port->aggregator")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ceph/osdmap.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ Documentation/networking/bonding.rst |  6 +++
+ drivers/net/bonding/bond_main.c      | 66 +++++++++++++++++++++++++---
+ drivers/net/bonding/bond_options.c   | 42 ++++++++++++++++++
+ include/net/bond_options.h           |  1 +
+ include/net/bonding.h                |  3 ++
+ 5 files changed, 112 insertions(+), 6 deletions(-)
 
---- a/net/ceph/osdmap.c
-+++ b/net/ceph/osdmap.c
-@@ -390,7 +390,8 @@ static int decode_choose_args(void **p,
- 				goto fail;
+diff --git a/Documentation/networking/bonding.rst b/Documentation/networking/bonding.rst
+index e774b48de9f51..1a9439488c531 100644
+--- a/Documentation/networking/bonding.rst
++++ b/Documentation/networking/bonding.rst
+@@ -562,6 +562,12 @@ lacp_rate
  
- 			if (arg->ids_size &&
--			    arg->ids_size != c->buckets[bucket_index]->size)
-+			    (!c->buckets[bucket_index] ||
-+			     arg->ids_size != c->buckets[bucket_index]->size))
- 				goto e_inval;
- 		}
+ 	The default is slow.
  
++broadcast_neighbor
++
++	Option specifying whether to broadcast ARP/ND packets to all
++	active slaves.  This option has no effect in modes other than
++	802.3ad mode.  The default is off (0).
++
+ max_bonds
+ 
+ 	Specifies the number of bonding devices to create for this
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 8d481a6495e89..70718bf6e716c 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -211,6 +211,8 @@ atomic_t netpoll_block_tx = ATOMIC_INIT(0);
+ 
+ unsigned int bond_net_id __read_mostly;
+ 
++DEFINE_STATIC_KEY_FALSE(bond_bcast_neigh_enabled);
++
+ static const struct flow_dissector_key flow_keys_bonding_keys[] = {
+ 	{
+ 		.key_id = FLOW_DISSECTOR_KEY_CONTROL,
+@@ -4397,6 +4399,9 @@ static int bond_open(struct net_device *bond_dev)
+ 
+ 		bond_for_each_slave(bond, slave, iter)
+ 			dev_mc_add(slave->dev, lacpdu_mcast_addr);
++
++		if (bond->params.broadcast_neighbor)
++			static_branch_inc(&bond_bcast_neigh_enabled);
+ 	}
+ 
+ 	if (bond_mode_can_use_xmit_hash(bond))
+@@ -4420,6 +4425,10 @@ static int bond_close(struct net_device *bond_dev)
+ 	if (bond_is_lb(bond))
+ 		bond_alb_deinitialize(bond);
+ 
++	if (BOND_MODE(bond) == BOND_MODE_8023AD &&
++	    bond->params.broadcast_neighbor)
++		static_branch_dec(&bond_bcast_neigh_enabled);
++
+ 	if (bond_uses_primary(bond)) {
+ 		rcu_read_lock();
+ 		slave = rcu_dereference(bond->curr_active_slave);
+@@ -5256,6 +5265,37 @@ static struct slave *bond_xdp_xmit_3ad_xor_slave_get(struct bonding *bond,
+ 	return slaves->arr[hash % count];
+ }
+ 
++static bool bond_should_broadcast_neighbor(struct sk_buff *skb,
++					   struct net_device *dev)
++{
++	struct bonding *bond = netdev_priv(dev);
++	struct {
++		struct ipv6hdr ip6;
++		struct icmp6hdr icmp6;
++	} *combined, _combined;
++
++	if (!static_branch_unlikely(&bond_bcast_neigh_enabled))
++		return false;
++
++	if (!bond->params.broadcast_neighbor)
++		return false;
++
++	if (skb->protocol == htons(ETH_P_ARP))
++		return true;
++
++	if (skb->protocol == htons(ETH_P_IPV6)) {
++		combined = skb_header_pointer(skb, skb_mac_header_len(skb),
++					      sizeof(_combined),
++					      &_combined);
++		if (combined && combined->ip6.nexthdr == NEXTHDR_ICMP &&
++		    (combined->icmp6.icmp6_type == NDISC_NEIGHBOUR_SOLICITATION ||
++		     combined->icmp6.icmp6_type == NDISC_NEIGHBOUR_ADVERTISEMENT))
++			return true;
++	}
++
++	return false;
++}
++
+ /* Use this Xmit function for 3AD as well as XOR modes. The current
+  * usable slave array is formed in the control path. The xmit function
+  * just calculates hash and sends the packet out.
+@@ -5275,17 +5315,27 @@ static netdev_tx_t bond_3ad_xor_xmit(struct sk_buff *skb,
+ 	return bond_tx_drop(dev, skb);
+ }
+ 
+-/* in broadcast mode, we send everything to all usable interfaces. */
++/* in broadcast mode, we send everything to all or usable slave interfaces.
++ * under rcu_read_lock when this function is called.
++ */
+ static netdev_tx_t bond_xmit_broadcast(struct sk_buff *skb,
+-				       struct net_device *bond_dev)
++				       struct net_device *bond_dev,
++				       bool all_slaves)
+ {
+ 	struct bonding *bond = netdev_priv(bond_dev);
+-	struct slave *slave = NULL;
+-	struct list_head *iter;
++	struct bond_up_slave *slaves;
+ 	bool xmit_suc = false;
+ 	bool skb_used = false;
++	int slaves_count, i;
+ 
+-	bond_for_each_slave_rcu(bond, slave, iter) {
++	if (all_slaves)
++		slaves = rcu_dereference(bond->all_slaves);
++	else
++		slaves = rcu_dereference(bond->usable_slaves);
++
++	slaves_count = slaves ? READ_ONCE(slaves->count) : 0;
++	for (i = 0; i < slaves_count; i++) {
++		struct slave *slave = slaves->arr[i];
+ 		struct sk_buff *skb2;
+ 
+ 		if (!(bond_slave_is_up(slave) && slave->link == BOND_LINK_UP))
+@@ -5523,10 +5573,13 @@ static netdev_tx_t __bond_start_xmit(struct sk_buff *skb, struct net_device *dev
+ 	case BOND_MODE_ACTIVEBACKUP:
+ 		return bond_xmit_activebackup(skb, dev);
+ 	case BOND_MODE_8023AD:
++		if (bond_should_broadcast_neighbor(skb, dev))
++			return bond_xmit_broadcast(skb, dev, false);
++		fallthrough;
+ 	case BOND_MODE_XOR:
+ 		return bond_3ad_xor_xmit(skb, dev);
+ 	case BOND_MODE_BROADCAST:
+-		return bond_xmit_broadcast(skb, dev);
++		return bond_xmit_broadcast(skb, dev, true);
+ 	case BOND_MODE_ALB:
+ 		return bond_alb_xmit(skb, dev);
+ 	case BOND_MODE_TLB:
+@@ -6426,6 +6479,7 @@ static int __init bond_check_params(struct bond_params *params)
+ 	eth_zero_addr(params->ad_actor_system);
+ 	params->ad_user_port_key = ad_user_port_key;
+ 	params->coupled_control = 1;
++	params->broadcast_neighbor = 0;
+ 	if (packets_per_slave > 0) {
+ 		params->reciprocal_packets_per_slave =
+ 			reciprocal_value(packets_per_slave);
+diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
+index b823425ad7f69..fe955ba5c9685 100644
+--- a/drivers/net/bonding/bond_options.c
++++ b/drivers/net/bonding/bond_options.c
+@@ -87,6 +87,8 @@ static int bond_option_missed_max_set(struct bonding *bond,
+ 				      const struct bond_opt_value *newval);
+ static int bond_option_coupled_control_set(struct bonding *bond,
+ 					   const struct bond_opt_value *newval);
++static int bond_option_broadcast_neigh_set(struct bonding *bond,
++					   const struct bond_opt_value *newval);
+ 
+ static const struct bond_opt_value bond_mode_tbl[] = {
+ 	{ "balance-rr",    BOND_MODE_ROUNDROBIN,   BOND_VALFLAG_DEFAULT},
+@@ -240,6 +242,12 @@ static const struct bond_opt_value bond_coupled_control_tbl[] = {
+ 	{ NULL,  -1, 0},
+ };
+ 
++static const struct bond_opt_value bond_broadcast_neigh_tbl[] = {
++	{ "off", 0, BOND_VALFLAG_DEFAULT},
++	{ "on",	 1, 0},
++	{ NULL,  -1, 0}
++};
++
+ static const struct bond_option bond_opts[BOND_OPT_LAST] = {
+ 	[BOND_OPT_MODE] = {
+ 		.id = BOND_OPT_MODE,
+@@ -513,6 +521,14 @@ static const struct bond_option bond_opts[BOND_OPT_LAST] = {
+ 		.flags = BOND_OPTFLAG_IFDOWN,
+ 		.values = bond_coupled_control_tbl,
+ 		.set = bond_option_coupled_control_set,
++	},
++	[BOND_OPT_BROADCAST_NEIGH] = {
++		.id = BOND_OPT_BROADCAST_NEIGH,
++		.name = "broadcast_neighbor",
++		.desc = "Broadcast neighbor packets to all active slaves",
++		.unsuppmodes = BOND_MODE_ALL_EX(BIT(BOND_MODE_8023AD)),
++		.values = bond_broadcast_neigh_tbl,
++		.set = bond_option_broadcast_neigh_set,
+ 	}
+ };
+ 
+@@ -894,6 +910,13 @@ static int bond_option_mode_set(struct bonding *bond,
+ 	bond->params.arp_validate = BOND_ARP_VALIDATE_NONE;
+ 	bond->params.mode = newval->value;
+ 
++	/* When changing mode, the bond device is down, we may reduce
++	 * the bond_bcast_neigh_enabled in bond_close() if broadcast_neighbor
++	 * enabled in 8023ad mode. Therefore, only clear broadcast_neighbor
++	 * to 0.
++	 */
++	bond->params.broadcast_neighbor = 0;
++
+ 	if (bond->dev->reg_state == NETREG_REGISTERED) {
+ 		bool update = false;
+ 
+@@ -1843,3 +1866,22 @@ static int bond_option_coupled_control_set(struct bonding *bond,
+ 	bond->params.coupled_control = newval->value;
+ 	return 0;
+ }
++
++static int bond_option_broadcast_neigh_set(struct bonding *bond,
++					   const struct bond_opt_value *newval)
++{
++	if (bond->params.broadcast_neighbor == newval->value)
++		return 0;
++
++	bond->params.broadcast_neighbor = newval->value;
++	if (bond->dev->flags & IFF_UP) {
++		if (bond->params.broadcast_neighbor)
++			static_branch_inc(&bond_bcast_neigh_enabled);
++		else
++			static_branch_dec(&bond_bcast_neigh_enabled);
++	}
++
++	netdev_dbg(bond->dev, "Setting broadcast_neighbor to %s (%llu)\n",
++		   newval->string, newval->value);
++	return 0;
++}
+diff --git a/include/net/bond_options.h b/include/net/bond_options.h
+index 18687ccf06383..022b122a9fb61 100644
+--- a/include/net/bond_options.h
++++ b/include/net/bond_options.h
+@@ -77,6 +77,7 @@ enum {
+ 	BOND_OPT_NS_TARGETS,
+ 	BOND_OPT_PRIO,
+ 	BOND_OPT_COUPLED_CONTROL,
++	BOND_OPT_BROADCAST_NEIGH,
+ 	BOND_OPT_LAST
+ };
+ 
+diff --git a/include/net/bonding.h b/include/net/bonding.h
+index 66940d41d4854..0d9c1eb40d12b 100644
+--- a/include/net/bonding.h
++++ b/include/net/bonding.h
+@@ -115,6 +115,8 @@ static inline int is_netpoll_tx_blocked(struct net_device *dev)
+ #define is_netpoll_tx_blocked(dev) (0)
+ #endif
+ 
++DECLARE_STATIC_KEY_FALSE(bond_bcast_neigh_enabled);
++
+ struct bond_params {
+ 	int mode;
+ 	int xmit_policy;
+@@ -149,6 +151,7 @@ struct bond_params {
+ 	struct in6_addr ns_targets[BOND_MAX_NS_TARGETS];
+ #endif
+ 	int coupled_control;
++	int broadcast_neighbor;
+ 
+ 	/* 2 bytes of padding : see ether_addr_equal_64bits() */
+ 	u8 ad_actor_system[ETH_ALEN + 2];
+-- 
+2.53.0
+
 
 
 
