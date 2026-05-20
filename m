@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-251947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253044-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wBRhHzj2DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251947-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:58:16 +0200
+	id EDq4B/4ADmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-253044-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 458A0595026
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:58:16 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B484A597204
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 317493039248
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:49:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2DCFC308AEC1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:37:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 419863D5647;
-	Wed, 20 May 2026 17:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBD003CB2F8;
+	Wed, 20 May 2026 18:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1cTK+hKl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OMhGBH6m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB9C3F39EE;
-	Wed, 20 May 2026 17:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF047DF59;
+	Wed, 20 May 2026 18:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299348; cv=none; b=jXZJMyc47zGSDvTm24cf54HhojwfBx6fwUuO+WEDiqY7FkxGrrf6EWc+m79YT/txCxJyMBDQHL3mVjCwBGdIzYv8faz+iyg37PSDe6wfJ2HqWEgx8bMcng9/MuL6FEsTjCDwejWxpbQscl1g70G2wCruQJz87bQdgAYpZFL+Bts=
+	t=1779302257; cv=none; b=d0qPUPP45Sept3ki9IHJi6MviGHZbncJOOQA2yIDtBW9a3fbSRoxkDGX6BNJngHeuZnscoLWVj0bWGVH0oagljoL/n30kv1jdqEDyvDbJYZo9uhYjrdF30QN3OTxmMJTzPxc02heArpxosZS93P5Cvnm/CiPZIxx8lTGk7pikUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299348; c=relaxed/simple;
-	bh=mRZfdbYwgEQb8v7pUCj3NudVx/8RzSZlN3ZpOILSE1k=;
+	s=arc-20240116; t=1779302257; c=relaxed/simple;
+	bh=54j1qpbVs9u2aUjhwX6ZF7SESM1FExfCj+bYuuDOwU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oDi0t4u3MpolMiDySanF65gZfneRkriOU83zR1ERSZSxYHUZuvKeeE5FE9V+FZ2EdC28eqW1xEAFL2LN59JG4pCu2GtkCvUznfkzK5+4unpNFwvdCbBu38TkRCE10jEE3InGEqkV0bhPjJORtbSdv93fdZII5DYsmP82gkUU8UA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1cTK+hKl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC6221F000E9;
-	Wed, 20 May 2026 17:49:04 +0000 (UTC)
+	 MIME-Version; b=sA2wtfU+C5Dmpnk7lLMxtHrFrK5QV1IcnTXe3oqLzYnC/x6mlzotnJKtr8aZn50QydU3SUViBsp96UtvRTwjb83QvzF3lp0XkJXozCtHRugzaqmuupG6t6blihBKBAAuDH8SuAuAAY+14gQ1eaKItt6A+okgGl9ohAJf/ZSSAtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OMhGBH6m; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 184531F000E9;
+	Wed, 20 May 2026 18:37:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299345;
-	bh=alYdLh4LgRgDkoCi4gJBqdIu5hiSfxozDaoOvDeb5JE=;
+	s=korg; t=1779302256;
+	bh=S2asAyCDwdaOBo5S2tNKLGdmhdW1wGAR0KX05DpkwK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1cTK+hKlr1Tetj1bee4QmCwfTxi3PXVjYizzWQWJ6FKtKIvRiaP7EfNoXN/eG8Dtx
-	 SHxveQ8+NywhF6QjX8pxdldL7ckVeXIYog64ldlI6gPPJk4e2R29AhGQJGz9CYKwDB
-	 Q2ZeeEn7EC78ISPUg1pZ2UQfGYHXPXx6PJKNiLDA=
+	b=OMhGBH6mWFv+sU6qAjX8sxjxX22T+EP/AqcS9p5MeovlC/6wZm0vgLtzn1nok4DzP
+	 N26XIfoSiVRBo1nhjy5QLa/y4SxHMgFxNLaEuNIYZ1uw3a6s7qF6ngwSfUVb0UsbE+
+	 1I1lshlKtGVR9pjZKV9fW9ZEsTUSXCL9wl+To2tk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 736/957] mailbox: add sanity check for channel array
-Date: Wed, 20 May 2026 18:20:19 +0200
-Message-ID: <20260520162150.521559110@linuxfoundation.org>
+Subject: [PATCH 6.6 197/508] arm64: dts: qcom: sm8550: Fix xo clock supply of platform SD host controller
+Date: Wed, 20 May 2026 18:20:20 +0200
+Message-ID: <20260520162102.904459617@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +66,79 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-251947-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sang-engineering.com,glider.be,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253044-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,sang-engineering.com:email,glider.be:email]
-X-Rspamd-Queue-Id: 458A0595026
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,0.134.86.160:email,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: B484A597204
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-[ Upstream commit c1aad75595fb67edc7fda8af249d3b886efa1be9 ]
+[ Upstream commit 30ac651c69bddbc83cab6d52fc5d2e03bed83282 ]
 
-Fail gracefully if there is no channel array attached to the mailbox
-controller. Otherwise the later dereference will cause an OOPS which
-might not be seen because mailbox controllers might instantiate very
-early. Remove the comment explaining the obvious while here.
+The expected frequency of SD host controller core supply clock is 19.2MHz,
+while RPMH_CXO_CLK clock frequency on SM8650 platform is 38.4MHz.
 
-Fixes: 2b6d83e2b8b7 ("mailbox: Introduce framework for mailbox")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Apparently the overclocked supply clock could be good enough on some
+boards and even with the most of SD cards, however some low-end UHS-I
+SD cards in SDR104 mode of the host controller produce I/O errors in
+runtime, fortunately this problem is gone, if the "xo" clock frequency
+matches the expected 19.2MHz clock rate.
+
+Fixes: ffc50b2d3828 ("arm64: dts: qcom: Add base SM8550 dtsi")
+Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20260314023715.357512-2-vladimir.zapolskiy@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mailbox.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8550.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
-index 617ba505691d3..b77162db509f2 100644
---- a/drivers/mailbox/mailbox.c
-+++ b/drivers/mailbox/mailbox.c
-@@ -505,8 +505,7 @@ int mbox_controller_register(struct mbox_controller *mbox)
- {
- 	int i, txdone;
+diff --git a/arch/arm64/boot/dts/qcom/sm8550.dtsi b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+index beab9fd10da87..3d14575e5aace 100644
+--- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+@@ -2521,7 +2521,7 @@ sdhc_2: mmc@8804000 {
  
--	/* Sanity check */
--	if (!mbox || !mbox->dev || !mbox->ops || !mbox->num_chans)
-+	if (!mbox || !mbox->dev || !mbox->ops || !mbox->chans || !mbox->num_chans)
- 		return -EINVAL;
- 
- 	if (mbox->txdone_irq)
+ 			clocks = <&gcc GCC_SDCC2_AHB_CLK>,
+ 				 <&gcc GCC_SDCC2_APPS_CLK>,
+-				 <&rpmhcc RPMH_CXO_CLK>;
++				 <&bi_tcxo_div2>;
+ 			clock-names = "iface", "core", "xo";
+ 			iommus = <&apps_smmu 0x540 0>;
+ 			qcom,dll-config = <0x0007642c>;
 -- 
 2.53.0
 
