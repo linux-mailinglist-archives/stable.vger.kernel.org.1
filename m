@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-250125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250126-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +NN7DeLtDWpb4wUAu9opvQ
-	(envelope-from <stable+bounces-250125-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:22:42 +0200
+	id +JWdEB3kDWpk4gUAu9opvQ
+	(envelope-from <stable+bounces-250126-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:41:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA352593777
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:22:41 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AA5A5923E4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:41:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8B91D34A8F74
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:31:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 095143073DD5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:31:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA5CB3033E7;
-	Wed, 20 May 2026 16:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 805DD330D43;
+	Wed, 20 May 2026 16:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IkhWRS11"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6Jj6D+u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E70372EF6;
-	Wed, 20 May 2026 16:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3CC33A6F2;
+	Wed, 20 May 2026 16:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294609; cv=none; b=JppPMPmQK4LY7NeVOIb0ukMTt7Zk5kYXiM1uCQ7cpQ2Q5MQ+mCbopE8C0SJFIGMj9+Qp/M9Dj4ehxze9Mw8z5BaCdDo75JUCmVHyIjoqwiqHbODBJiA0cAMk4Ud1RtCJ9ISEj135y4eucSsCFNuhiW/9eibNM2BF50Qs1a4+NbI=
+	t=1779294612; cv=none; b=JH9NCbnj25b5XvteFIjHS0Obk4MTlA9iMhh3U8EOwFY61p2A1FtLE0shCy7bXjBFRLQ0phN90J/Knf/j4K4vahwKe5n1P10SdeWFoapr3vqYhC0kIwSK/4+OZTKKsLXigEPPsTO8GKZx5ZYfN3xD2R6fc9WPslXOxI+LJ4Lg50w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294609; c=relaxed/simple;
-	bh=HVBuOXe9BegCGm2HXvGi+MwvYQwTefeytpY5sWToCL0=;
+	s=arc-20240116; t=1779294612; c=relaxed/simple;
+	bh=6xglFkWIGb46B8wXO+YpV24VXeQkzBF91Z0Bp22Kxkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n7O2s7X0ho1XGc8ZFXwGzBXYvb8OEpZTHKH7qXsBMhdq6iUdNtbm3TONKLqv6mIh53v/wkYXyTwvpkb4HL9KS6DHIic8JBFHYBMK5rcD6zIY6LfJ/eh2pczgKJfb4qdyC8+Vh3+TGR5D5LWmKT3A4tGnulN0aD8o18QRiGeSS1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IkhWRS11; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07B4F1F000E9;
-	Wed, 20 May 2026 16:30:07 +0000 (UTC)
+	 MIME-Version; b=bLuZ4xfcDSLFtR04mn3iiQugSur0fUhsJniiXHk7PjtzzejK+gLe1kbm0bcy+tkm3yc65AE+6rn95eoSuizWlic7uyHjZoX52QAKEjZB903iCl/Piauq16NSgzI96viAFKom7s7HbLZ/rTryiDKr0HLdsTtrfMsmXmoj66UNYCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6Jj6D+u; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F0B81F000E9;
+	Wed, 20 May 2026 16:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294608;
-	bh=5jMzBFhObh6TAGBz8DXQtw2yVaRWCsm0a3hzda0OqJc=;
+	s=korg; t=1779294611;
+	bh=HI3URE6mF6C9qKxCc7klNLuhBAJg5XiJa/7XfdBCwRo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IkhWRS11Rj/nw0ok2gfykCiE4keSh8zhTLloP72R+GXcMYdNk8f5jZcJLaeITaNcM
-	 BdFNj8w+ACbsrB3OxXR3GhBZsjUaop6VvQIQ1QM220dXfe75q8W/RiQHbmXt91hmAI
-	 0XlInUqsT8HHSnZTIRKlSWdtnnH2MZIVWGp2sfg4=
+	b=X6Jj6D+u9Y0UJ1xZhTHxh9pO++eBe2LhyuUNoV6Ow69ql8BIgJiVdSXkhQf7dAEnd
+	 dP2flEHzLtZPGwg3mz3O/vFZC7mcc+6vOB3NVEEU7oKuFGPedaw+tNOCwI0DRKqwu4
+	 N6QqsfjKOwaK/wHkuV6nH5SQZDUZQBn0pC4DESMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
 	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0104/1146] wifi: mt76: mt7925: prevent NULL pointer dereference in mt7925_tx_check_aggr()
-Date: Wed, 20 May 2026 18:05:54 +0200
-Message-ID: <20260520162150.695254727@linuxfoundation.org>
+Subject: [PATCH 7.0 0105/1146] wifi: mt76: mt7925: prevent NULL vif dereference in mt7925_mac_write_txwi
+Date: Wed, 20 May 2026 18:05:55 +0200
+Message-ID: <20260520162150.717475150@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250125-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250126-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,9 +89,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nbd.name:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,mediatek.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: AA352593777
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mediatek.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nbd.name:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 2AA5A5923E4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,40 +101,36 @@ X-Rspamd-Server: lfdr
 
 From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-[ Upstream commit 83ae3a18ba957257b4c406273d2da2caeea2b439 ]
+[ Upstream commit 962eb04e67552be406c906c83099c1d736aae3b6 ]
 
-Move the NULL check for 'sta' before dereferencing it to prevent a
-possible crash.
+Check for a NULL `vif` before accessing `ieee80211_vif_is_mld(vif)` to
+avoid a potential kernel panic in scenarios where `vif` might not be
+initialized.
 
-Fixes: 44eb173bdd4f ("wifi: mt76: mt7925: add link handling in mt7925_txwi_free")
+Fixes: ebb1406813c6 ("wifi: mt76: mt7925: add link handling to txwi")
 Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Link: https://patch.msgid.link/20250904030649.655436-4-mingyen.hsieh@mediatek.com
+Link: https://patch.msgid.link/20250904030649.655436-3-mingyen.hsieh@mediatek.com
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/mac.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/mac.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
-index ebe872f58c88f..711daa5f07fab 100644
+index 711daa5f07fab..82eedd80f694d 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
-@@ -846,11 +846,14 @@ static void mt7925_tx_check_aggr(struct ieee80211_sta *sta, struct sk_buff *skb,
- 	bool is_8023;
- 	u16 fc, tid;
+@@ -804,8 +804,8 @@ mt7925_mac_write_txwi(struct mt76_dev *dev, __le32 *txwi,
+ 	txwi[5] = cpu_to_le32(val);
  
-+	if (!sta)
-+		return;
-+
- 	link_sta = rcu_dereference(sta->link[wcid->link_id]);
- 	if (!link_sta)
- 		return;
- 
--	if (!sta || !(link_sta->ht_cap.ht_supported || link_sta->he_cap.has_he))
-+	if (!(link_sta->ht_cap.ht_supported || link_sta->he_cap.has_he))
- 		return;
- 
- 	tid = skb->priority & IEEE80211_QOS_CTL_TID_MASK;
+ 	val = MT_TXD6_DAS | FIELD_PREP(MT_TXD6_MSDU_CNT, 1);
+-	if (!ieee80211_vif_is_mld(vif) ||
+-	    (q_idx >= MT_LMAC_ALTX0 && q_idx <= MT_LMAC_BCN0))
++	if (vif && (!ieee80211_vif_is_mld(vif) ||
++	    (q_idx >= MT_LMAC_ALTX0 && q_idx <= MT_LMAC_BCN0)))
+ 		val |= MT_TXD6_DIS_MAT;
+ 	txwi[6] = cpu_to_le32(val);
+ 	txwi[7] = 0;
 -- 
 2.53.0
 
