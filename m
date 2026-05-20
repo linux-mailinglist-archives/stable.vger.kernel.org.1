@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250383-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QGs+OVoZDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251324-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:28:10 +0200
+	id EAk5Id7xDWp+4wUAu9opvQ
+	(envelope-from <stable+bounces-250383-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:39:42 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C3C25999FD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:28:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCBBD59435B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:39:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 365B635947DE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:21:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3CAF9375532B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D63E136CE19;
-	Wed, 20 May 2026 17:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3D6373BE0;
+	Wed, 20 May 2026 16:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RCsr9TS7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CWVq1CHp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906FA36A376;
-	Wed, 20 May 2026 17:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767A136A357;
+	Wed, 20 May 2026 16:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297686; cv=none; b=mIbrbCKjt1qwgPiWcoX632hvbSzju9WZpoB1t90yb/s3XLPNXjb01P6/H1Ng8fgYg17h/srmbHP5acqeEFQJGLlN6uE2yRTDLIqnQ5tPPN/z8LgabDOx458ocdDMSyIGBFRexhlR8KTUya+PTHJB2317PImL1lUbLmZUvPvYdXY=
+	t=1779295270; cv=none; b=e2EtRji56GjW5V5YyO26EVxTxzPHY3vUn03DrjsGSQqCOU36J25reysSI4Zk7buz87tXdzwMAcYYVStTr8AoiU4sSvS648qsAu6pygyVGM6bxehLh3N/8HcOFaqAasWIGyG0B2+LlJUqIXBwqyf0AdTWXoP7yV0N5CtX7dN7yUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297686; c=relaxed/simple;
-	bh=/zRLFd9oYaPH/C5HqvIkLurqLQiqFTIJtdyKIlHfYRA=;
+	s=arc-20240116; t=1779295270; c=relaxed/simple;
+	bh=Bfdy6274z0RnlzblHJ++X3P+v5pavGJhh6QMuNol+uA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hmdmVXT9LaveGa1yKemw0rZyTT18GZcHSZPsauaMByVAaAs+4rrZNWa1IAwtUDJaDihqYKwVS8mnFYwfLd/E7nJdb9/bVnsooP3dQcKjVgGOnXQBOjsOinae0Hb9wyiXM+EcgUwX7ZUs0wshumKLhPXICwi6ki9/kCzdYOtQjxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RCsr9TS7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B307A1F000E9;
-	Wed, 20 May 2026 17:21:24 +0000 (UTC)
+	 MIME-Version; b=sJw3hGTApLsQQ0kjGVt6odHaFbtQUyxuHJFehhE9ih9DHHYOAbzD5x+dISrmRlZn/massASUyXCnXUyJYVOMSKwMuv04E/X91MjnyKcUemOLUNOaMuH14wtTW62T1SyHZtsC6I8CNbYOOh/4mNz83MUmVRx2jlGN/uBoy1Q5qcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CWVq1CHp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D38261F000E9;
+	Wed, 20 May 2026 16:41:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297685;
-	bh=Y/WV111Tj5es1hjRinFn/HWzu4esc3F5T5FsSJEb3T4=;
+	s=korg; t=1779295269;
+	bh=6iBVLFNXuuI1yAj5mkkGN2Rm0SjAIOmlzgkbqO/kFxY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RCsr9TS7/nbAIYE4LdsnJj4qHn7udO55lCFUZCFLh6fXNLweDXLBNLK8JMANZ4Vf8
-	 rhyscSRHjPC9dLVtLsrHXUSu8Hggel/NS83e+4e3Jj5JqDAyDA+PF4E3/f/13Lk/OP
-	 yMLGEAMqmGPIOwhdmfouey2N5YMHxSWZWZPvcMnY=
+	b=CWVq1CHprPRQLXKt5ItxNo/lgxCRbnV6D7mjKS7zAlPNq4urzlqGAOg7izgCt5LfN
+	 jypeHCvBtCaZKPx2ynGSp/BdaOrffR2vyHBb55GH7XyjlSYP5neVCquduVe5Dx78wX
+	 moqx86gBD6bYaZw8086u3yyvpCD0vIQ1IOfi5ra8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 123/957] net: ethernet: ti-cpsw:: rename soft_reset() function
+Subject: [PATCH 7.0 0356/1146] drm/msm/shrinker: Fix can_block() logic
 Date: Wed, 20 May 2026 18:10:06 +0200
-Message-ID: <20260520162137.225711662@linuxfoundation.org>
+Message-ID: <20260520162156.258434025@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,118 +64,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,arndb.de,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251324-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250383-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 6C3C25999FD
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,collabora.com:email,patchwork.freedesktop.org:url,qualcomm.com:email,gitlab.freedesktop.org:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: CCBBD59435B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Rob Clark <robin.clark@oss.qualcomm.com>
 
-[ Upstream commit 961f3c535608df64553f61d64ca086aa9f371bdd ]
+[ Upstream commit df0f439e3926817cf577ca6272aad68468ff7624 ]
 
-While looking at the glob symbols shared between the cpsw drivers,
-I noticed that soft_reset() is the only one that is missing a proper
-namespace prefix, and will pollute the kernel namespace, so rename
-it to be consistent with the other symbols.
+The intention here was to allow blocking if DIRECT_RECLAIM or if called
+from kswapd and KSWAPD_RECLAIM is set.
 
-Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20260402184726.3746487-1-arnd@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: df75bd552a87 ("net: ethernet: ti-cpsw: fix linking built-in code to modules")
+Reported by Claude code review: https://lore.gitlab.freedesktop.org/drm-ai-reviews/review-patch9-20260309151119.290217-10-boris.brezillon@collabora.com/ on a panthor patch which had copied similar logic.
+
+Reported-by: Boris Brezillon <boris.brezillon@collabora.com>
+Fixes: 7860d720a84c ("drm/msm: Fix build break with recent mm tree")
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Patchwork: https://patchwork.freedesktop.org/patch/714238/
+Message-ID: <20260325184106.1259528-1-robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/cpsw.c      | 2 +-
- drivers/net/ethernet/ti/cpsw_new.c  | 2 +-
- drivers/net/ethernet/ti/cpsw_priv.c | 2 +-
- drivers/net/ethernet/ti/cpsw_priv.h | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/msm/msm_gem_shrinker.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
-index b0e18bdc2c851..aa3531e844e87 100644
---- a/drivers/net/ethernet/ti/cpsw.c
-+++ b/drivers/net/ethernet/ti/cpsw.c
-@@ -706,7 +706,7 @@ static void cpsw_init_host_port(struct cpsw_priv *priv)
- 	struct cpsw_common *cpsw = priv->cpsw;
+diff --git a/drivers/gpu/drm/msm/msm_gem_shrinker.c b/drivers/gpu/drm/msm/msm_gem_shrinker.c
+index 1039e3c0a47bf..31fa51a44f86e 100644
+--- a/drivers/gpu/drm/msm/msm_gem_shrinker.c
++++ b/drivers/gpu/drm/msm/msm_gem_shrinker.c
+@@ -26,9 +26,8 @@ static bool can_swap(void)
  
- 	/* soft reset the controller and initialize ale */
--	soft_reset("cpsw", &cpsw->regs->soft_reset);
-+	cpsw_soft_reset("cpsw", &cpsw->regs->soft_reset);
- 	cpsw_ale_start(cpsw->ale);
- 
- 	/* switch to vlan aware mode */
-diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
-index fd3931d667021..c6cf7a0375e08 100644
---- a/drivers/net/ethernet/ti/cpsw_new.c
-+++ b/drivers/net/ethernet/ti/cpsw_new.c
-@@ -573,7 +573,7 @@ static void cpsw_init_host_port(struct cpsw_priv *priv)
- 	u32 control_reg;
- 
- 	/* soft reset the controller and initialize ale */
--	soft_reset("cpsw", &cpsw->regs->soft_reset);
-+	cpsw_soft_reset("cpsw", &cpsw->regs->soft_reset);
- 	cpsw_ale_start(cpsw->ale);
- 
- 	/* switch to vlan aware mode */
-diff --git a/drivers/net/ethernet/ti/cpsw_priv.c b/drivers/net/ethernet/ti/cpsw_priv.c
-index bc4fdf17a99ec..c6eb6b785b0b5 100644
---- a/drivers/net/ethernet/ti/cpsw_priv.c
-+++ b/drivers/net/ethernet/ti/cpsw_priv.c
-@@ -275,7 +275,7 @@ void cpsw_set_slave_mac(struct cpsw_slave *slave, struct cpsw_priv *priv)
- 	slave_write(slave, mac_lo(priv->mac_addr), SA_LO);
+ static bool can_block(struct shrink_control *sc)
+ {
+-	if (!(sc->gfp_mask & __GFP_DIRECT_RECLAIM))
+-		return false;
+-	return current_is_kswapd() || (sc->gfp_mask & __GFP_RECLAIM);
++	return (sc->gfp_mask & __GFP_DIRECT_RECLAIM) ||
++	       (current_is_kswapd() && (sc->gfp_mask & __GFP_KSWAPD_RECLAIM));
  }
  
--void soft_reset(const char *module, void __iomem *reg)
-+void cpsw_soft_reset(const char *module, void __iomem *reg)
- {
- 	unsigned long timeout = jiffies + HZ;
- 
-diff --git a/drivers/net/ethernet/ti/cpsw_priv.h b/drivers/net/ethernet/ti/cpsw_priv.h
-index acb6181c5c9e1..fddd7a79f4b0f 100644
---- a/drivers/net/ethernet/ti/cpsw_priv.h
-+++ b/drivers/net/ethernet/ti/cpsw_priv.h
-@@ -458,7 +458,7 @@ int cpsw_tx_poll(struct napi_struct *napi_tx, int budget);
- int cpsw_rx_mq_poll(struct napi_struct *napi_rx, int budget);
- int cpsw_rx_poll(struct napi_struct *napi_rx, int budget);
- void cpsw_rx_vlan_encap(struct sk_buff *skb);
--void soft_reset(const char *module, void __iomem *reg);
-+void cpsw_soft_reset(const char *module, void __iomem *reg);
- void cpsw_set_slave_mac(struct cpsw_slave *slave, struct cpsw_priv *priv);
- void cpsw_ndo_tx_timeout(struct net_device *ndev, unsigned int txqueue);
- int cpsw_need_resplit(struct cpsw_common *cpsw);
+ static unsigned long
 -- 
 2.53.0
 
