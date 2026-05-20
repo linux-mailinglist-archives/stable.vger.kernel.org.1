@@ -1,218 +1,172 @@
-Return-Path: <stable+bounces-252356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252667-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WKQfOeAkDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252356-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:17:20 +0200
+	id 6ODpFez8DWok5QUAu9opvQ
+	(envelope-from <stable+bounces-252667-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6313A59AAB2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:17:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC2985962A5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6656833ED338
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:08:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2BBE030873FB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:21:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BE803A6B6D;
-	Wed, 20 May 2026 18:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F5823F9280;
+	Wed, 20 May 2026 18:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hWeVJZTe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gg60MDAY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990073EAC82
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 18:07:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3283348C55;
+	Wed, 20 May 2026 18:21:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300463; cv=none; b=nUI8QetpjDFyBWovI03h1PhHrfpQN6egYqUu2P51p8xC90/lt3Jfns9B4xR15Bs+2FeQbMJSAjQWwmjsoZkwnY64e0sB2F2daM93SSaCuZg4TmMIWxo6GcYNBBzR9YMqCcjKv0OzBxgXBxqVkvpVx+St1bI42b2CFd6XtA8OFgE=
+	t=1779301275; cv=none; b=XI/0QWa6Gdhizj2bfmJ7fY/VEE2023W+FTrKaPqJ3IChLNyRr2B8PKr/SRjjG+ZcZbPjMQ6yhuw9PpKWnFG/EHMkq25HqtiopiKEqVRtE+qyUa9aJF8a+gE/puBY69W6IJ6GTGFa8ENyJ5jWGqkmFvAe6FU/j5LE04bPXvY58O8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300463; c=relaxed/simple;
-	bh=xfNlFdn1cqV9kYZZDjV/Uwxd3csiryoiiiDv+XVg55o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tGOiVOS/E7Hk/MaW1QbUmOgq2Ck7sWN9utLQKgdqfmVDV+olVzwB8NWfLRIE8LC5ZuQ0vK5Q3pKP19n5LD1xDhXHSUZyA0X8g0GFgEymY0W7DZWFgZUSCoZG2n+lcEQiDzQL+L8dqBBoZiRtBiD3lFuAynYHUQMwbwQu3XyM8xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hWeVJZTe; arc=none smtp.client-ip=74.125.82.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-2f03d6cf77bso5253596eec.0
-        for <stable@vger.kernel.org>; Wed, 20 May 2026 11:07:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779300461; x=1779905261; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nklZPvrJ0WfKoc1xZCOc0oOhjU6AGmqWwTNyTfjgmsQ=;
-        b=hWeVJZTeigJzObalTM7AUZy47yEbDptJfL2UhHrLO2c4T4AvgZKuRNypI/yP7gPZRx
-         QeUdPsyIxX8BugFuQ5mYBFH5pITc2XDpBQz5RpJt93hdvARv+mWeBdlNb/ZtTmdJs2Ms
-         jCXJZ+d03cMS/w18h/pWaGORbfxKePv1hPiOatN+6VrI4vOWFnrFEsb3eIjMoMOeYD8t
-         yxEFGWIKaimXpbpD8Ttd7uXRJ/JLwuFECJsDFUEC7TPRInFjAKsc+P65FiVMBzGpEq6U
-         XcWfYnazumOI0ppIJGUMpSGFoACsF3qYKgeifp+l6NNj9ejdsPoxJ4xleQa5iRkY0R3k
-         6KvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779300461; x=1779905261;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nklZPvrJ0WfKoc1xZCOc0oOhjU6AGmqWwTNyTfjgmsQ=;
-        b=g7g9schrXl+cOr74yOn3Q4psq8T867fw0SL5AgVvPnUdwxViMwdc2Dw2bTcWQSVmFi
-         ODuukAHSpXnd7379msepzDyEhVaH7Bp+HTFlZtnAaXrPYBPtYWxJln8i7ryIcwPD6Wnd
-         Mp0OhRoI8OjsKeiyzY3a6aWyQAWm8vcdi+FD2oXoYM6qqG1AHRu01EzEWldbx4wLpM5m
-         nqldYsCEpoVgvGVR7iC1TTRzlgCs7qK8YsQodYlAJsDvUWxldFQbyJGkvW0PmWm65Ldb
-         gOxpGT+rpRYL8dUzfbEXdt0xpxoYtt954wEr23OnbTEMeMqT2WZpbw9suuEaECsrCrqr
-         Xehw==
-X-Forwarded-Encrypted: i=1; AFNElJ/n/kZ8idB4D4ZJCnllPEm4qQpy5oUVtWhF5ysQtAo6F5mOiKOmXvbCZHkF05f38wBRKPNoR90=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxu+T2o1b9EiUi68P34wYBRTwimc+d418Y/rc022Qk7C/Bdla7B
-	IgEZnuAqTNPfhElRSBjTwvLEFDoCETIa/49V2jlonDZKq2BDJXnOhNBtV4B1OA18RhjoiQ==
-X-Gm-Gg: Acq92OEYzipSXGus7XnuorzIbItaP+CpkaEQJvQ2o/plmOjiwPITM/f1FIzjkJlzFPV
-	cHvoWQ6sxH75KSvLudEhfJw+IObwva0GnbGGczXr4NfyjE8clx9zsd8VkuUtrtSfcw2Lbj3Fw1i
-	PlXCftgcsY34T6lOa/2wq4Vw7Kx5WzXzBSXpPJ+QYY/df1Jja8eQOAg/E9yldWemHahX/7RtFri
-	mNSvaFfg1JQ2CTKScGitzDjtOM9NUJekrMiRO6y+r7EFEMxtUBtdohGEayOnHscvTIvW1z5ndjF
-	YtqoQXDeEy3P1VDG4gtPtgC7r36ECldutUdT5sUOaMBVdsj3o/rGqkeSfUpdMRw1VG1wljP1BGV
-	THHsW6LM85RB4i3p0GP+RctCLEkIGz03z5+w/3KiQOkIc6wcS+TfzRpW8+rJF7tyxdkS25b2140
-	2C2x9AyleG/z6+kS/RKXfFduUf3jIndJcWJnK89A==
-X-Received: by 2002:a05:7300:a505:b0:2e2:4979:eb5 with SMTP id 5a478bee46e88-303982b2f85mr11180375eec.10.1779300460601;
-        Wed, 20 May 2026 11:07:40 -0700 (PDT)
-Received: from localhost.localdomain ([148.135.103.3])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30294500726sm18183954eec.10.2026.05.20.11.07.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 May 2026 11:07:40 -0700 (PDT)
-From: Shaomin Chen <eeesssooo020@gmail.com>
-To: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Christian Hopps <chopps@labn.net>,
-	stable@vger.kernel.org
-Subject: [PATCH net] xfrm: iptfs: reset runtime state when cloning SAs
-Date: Thu, 21 May 2026 02:07:23 +0800
-Message-ID: <20260520180723.965339-1-eeesssooo020@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1779301275; c=relaxed/simple;
+	bh=T0F3yG+11uxj+1P/vNrg+2C71fzu0Z8eZceliFJ+oPQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bRQslLxFzFCEtiEj76jFt2mQp7Z/orKxSOq7iHlHzF78DuakQXN2hb7sVS/26/cFBUXzz94oOkgSlpL7utPQ6pcP52LboLbEvYyxbyq+c/fqMj0ZvqRIXtTqyxAtz41RQ8Q88u51tYDebTcRW73+bI81+9Ksd02DO52p1tdzhLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gg60MDAY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C42441F000E9;
+	Wed, 20 May 2026 18:21:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779301273;
+	bh=hAeACngJkQf4FLu5lKLPnlHaL+G/6grH03HBIB/iFa4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=gg60MDAY17O3tqaRfXL2LGk5E5o677rsnNPrFGwmTR0bML5XJVB55IjGXFPM3jOTY
+	 GM1tDAist0BE6tYr6QOo4PVCfNUvMpuUFtTY6zqOa1qrtP1Ja8o6MEJOEexSuZDMvI
+	 SzliCPjYTWJVVdOIb4/wqcdc8bX5yvqAtLcT9CseAsl5E10gmtoLPQx1fFeyd0DSLT
+	 a+9sHy+m3J9siZXj7pqTuyVEahOjEC0RooN4hWrwfS5h1rrg9T96+oVVKxQJK7dlUZ
+	 3Kw7gitn6O1rUtABO1DURE+HvspgvaOuD0r9s92WkKCqSV4VDXYNqHzjsOLSYwxW2w
+	 tM0Ehr3xeb51w==
+Date: Thu, 21 May 2026 02:21:09 +0800
+From: Gao Xiang <xiang@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Amir Goldstein <amir73il@gmail.com>,
+	Chunhai Guo <guochunhai@vivo.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.12 011/666] erofs: verify metadata accesses for
+ file-backed mounts
+Message-ID: <ag37lbajmtyv9xBd@debian>
+References: <20260520162111.222830634@linuxfoundation.org>
+ <20260520162111.476779194@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260520162111.476779194@linuxfoundation.org>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_FROM(0.00)[bounces-252356-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,gmail.com,vivo.com,linux.alibaba.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-252667-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[eeesssooo020@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[xiang@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 6313A59AAB2
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: DC2985962A5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-iptfs_clone_state() clones the IPTFS mode data with kmemdup(). This
-copies runtime objects which must not be shared with the original SA,
-including the embedded sk_buff_head, hrtimers, spinlock, and in-flight
-reassembly/reorder state.
+Hi Greg,
 
-If xfrm_state_migrate() fails after clone_state() but before the later
-init_state() call has reinitialized those fields, the cloned state can be
-destroyed by xfrm_state_gc_task() with list and timer state copied from the
-original SA. With queued packets this lets the clone splice and free skbs
-owned by the original IPTFS queue, leading to use-after-free and
-double-free reports in iptfs_destroy_state() and skb release paths.
+On Wed, May 20, 2026 at 06:13:42PM +0200, Greg Kroah-Hartman wrote:
+> 6.12-stable review patch.  If anyone has any objections, please let me know.
+> 
 
-Reinitialize the clone's runtime state before publishing it through
-x->mode_data. Because clone_state() now publishes a destroyable mode_data
-object before init_state(), take the mode callback module reference there.
-Avoid taking it again from __iptfs_init_state() for the same object.
+Could you please help drop this too, the same reason as:
+https://lore.kernel.org/r/ag3qlMOcTYM2FBUQ@debian
 
-Fixes: 0e4fbf013fa5 ("xfrm: iptfs: add user packet (tunnel ingress) handling")
-Cc: stable@vger.kernel.org
-Signed-off-by: Shaomin Chen <eeesssooo020@gmail.com>
----
- net/xfrm/xfrm_iptfs.c | 28 +++++++++++++++++++++++-----
- 1 file changed, 23 insertions(+), 5 deletions(-)
+I will address this backport manually later.
 
-diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-index 97bc979e55ba..6c6bbc040517 100644
---- a/net/xfrm/xfrm_iptfs.c
-+++ b/net/xfrm/xfrm_iptfs.c
-@@ -2650,7 +2650,8 @@ static void __iptfs_init_state(struct xfrm_state *x,
- 	x->props.enc_hdr_len = sizeof(struct ip_iptfs_hdr);
- 
- 	/* Always keep a module reference when x->mode_data is set */
--	__module_get(x->mode_cbs->owner);
-+	if (x->mode_data != xtfs)
-+		__module_get(x->mode_cbs->owner);
- 
- 	x->mode_data = xtfs;
- 	xtfs->x = x;
-@@ -2658,22 +2659,39 @@ static void __iptfs_init_state(struct xfrm_state *x,
- 
- static int iptfs_clone_state(struct xfrm_state *x, struct xfrm_state *orig)
- {
-+	struct skb_wseq *w_saved = NULL;
- 	struct xfrm_iptfs_data *xtfs;
- 
- 	xtfs = kmemdup(orig->mode_data, sizeof(*xtfs), GFP_KERNEL);
- 	if (!xtfs)
- 		return -ENOMEM;
- 
--	xtfs->ra_newskb = NULL;
- 	if (xtfs->cfg.reorder_win_size) {
--		xtfs->w_saved = kzalloc_objs(*xtfs->w_saved,
--					     xtfs->cfg.reorder_win_size);
--		if (!xtfs->w_saved) {
-+		w_saved = kzalloc_objs(*w_saved, xtfs->cfg.reorder_win_size);
-+		if (!w_saved) {
- 			kfree_sensitive(xtfs);
- 			return -ENOMEM;
- 		}
- 	}
-+	xtfs->w_saved = w_saved;
-+
-+	__skb_queue_head_init(&xtfs->queue);
-+	xtfs->queue_size = 0;
-+	hrtimer_setup(&xtfs->iptfs_timer, iptfs_delay_timer, CLOCK_MONOTONIC,
-+		      IPTFS_HRTIMER_MODE);
-+
-+	spin_lock_init(&xtfs->drop_lock);
-+	hrtimer_setup(&xtfs->drop_timer, iptfs_drop_timer, CLOCK_MONOTONIC,
-+		      IPTFS_HRTIMER_MODE);
- 
-+	xtfs->w_seq_set = false;
-+	xtfs->w_wantseq = 0;
-+	xtfs->w_savedlen = 0;
-+	xtfs->ra_newskb = NULL;
-+	xtfs->ra_wantseq = 0;
-+	xtfs->ra_runtlen = 0;
-+
-+	__module_get(x->mode_cbs->owner);
- 	x->mode_data = xtfs;
- 	xtfs->x = x;
- 
--- 
-2.47.3
+Thanks,
+Gao Xiang
 
+> ------------------
+> 
+> From: Gao Xiang <hsiangkao@linux.alibaba.com>
+> 
+> [ Upstream commit 307210c262a29f41d7177851295ea1703bd04175 ]
+> 
+> For file-backed mounts, metadata is fetched via the page cache of
+> backing inodes to avoid double caching and redundant copy ops out
+> of RO uptodate folios, which is used by Android APEXes, ComposeFS,
+> containerd.  However, rw_verify_area() was missing prior to
+> metadata accesses.
+> 
+> Similar to vfs_iocb_iter_read(), fix this by:
+>  - Enabling fanotify pre-content hooks on metadata accesses;
+>  - security_file_permission() for security modules.
+> 
+> Verified that fanotify pre-content hooks now works correctly.
+> 
+> Fixes: fb176750266a ("erofs: add file-backed mount support")
+> Acked-by: Amir Goldstein <amir73il@gmail.com>
+> Reviewed-by: Chunhai Guo <guochunhai@vivo.com>
+> Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  fs/erofs/data.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+> 
+> diff --git a/fs/erofs/data.c b/fs/erofs/data.c
+> index 91182d5e3a66c..192c7ed885acd 100644
+> --- a/fs/erofs/data.c
+> +++ b/fs/erofs/data.c
+> @@ -30,6 +30,20 @@ void *erofs_bread(struct erofs_buf *buf, erofs_off_t offset,
+>  {
+>  	pgoff_t index = offset >> PAGE_SHIFT;
+>  	struct folio *folio = NULL;
+> +	loff_t fpos;
+> +	int err;
+> +
+> +	/*
+> +	 * Metadata access for file-backed mounts reuses page cache of backing
+> +	 * fs inodes (only folio data will be needed) to prevent double caching.
+> +	 * However, the data access range must be verified here in advance.
+> +	 */
+> +	if (buf->file) {
+> +		fpos = index << PAGE_SHIFT;
+> +		err = rw_verify_area(READ, buf->file, &fpos, PAGE_SIZE);
+> +		if (err < 0)
+> +			return ERR_PTR(err);
+> +	}
+>  
+>  	if (buf->page) {
+>  		folio = page_folio(buf->page);
+> -- 
+> 2.53.0
+> 
+> 
+> 
 
