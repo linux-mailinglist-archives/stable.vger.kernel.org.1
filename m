@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251816-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6OctB7v/DWpV5QUAu9opvQ
-	(envelope-from <stable+bounces-252915-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:38:51 +0200
+	id AAtCDegeDmro6AUAu9opvQ
+	(envelope-from <stable+bounces-251816-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:51:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA92E596DC9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:38:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7C8059A36A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:51:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 79D8C3170A34
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:32:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 045C03475640
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:42:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD2934EEF7;
-	Wed, 20 May 2026 18:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC14928DC4;
+	Wed, 20 May 2026 17:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q6iw5Oxx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ECcGRA1I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2018E343880;
-	Wed, 20 May 2026 18:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9375333BBCF;
+	Wed, 20 May 2026 17:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301923; cv=none; b=eu2x6/9cLzE2Fwgq5NimZpDj7m64YaM+IVTfAIlS4u6CmXAPuFgzOkfm83xzfwQnzfcgg3j+/2rrz5HNHvQxgtRpYWoa2gNAWaRRCXN18sm1i/G9RVnHhM1TKmDWEqxqhdZRQuPmdfiRnKwIxcN1O8mRxhQ/6+Vu3IolvtGC1ZE=
+	t=1779298965; cv=none; b=H3HJZliNSVyjMAHr3rduQzeixoYxXMQcssKoEXHN9tTE0ruzS/DHCLSXr2dCB4RcReFTIzd0lZ3PGbHvmr7VWQ3njVO/wzKZvVyXH06UWYeklvz8NHzbrxvbX8q6XqAYddmWgYyNErm0hkpT2OTFrb/hxRJ0F6VW/zcAGYPZ6xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301923; c=relaxed/simple;
-	bh=fEl2Mw/aYRGDtY4MC2c7qMYLe0HaGwxRW2zLzepYbeQ=;
+	s=arc-20240116; t=1779298965; c=relaxed/simple;
+	bh=L4q8WyOSKTWYqdd60CS8UcDZWvavL/jQu/L85fXrxn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=asiNKZY41XiBot8OueBQa962N1BJX4lIl7VoJVV8Yaip3CDo7amEEtUpMj4xIubOcf1B0GK1zu4OumF8X6jztomDYFcnCNun0OdEAPWdpYTEytdGmxjbY+YyduJu+X9tOi5dsBUIRfP9QNYg2fNs/9wHm1hNGnzKthN31lbXLN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q6iw5Oxx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 854801F000E9;
-	Wed, 20 May 2026 18:32:01 +0000 (UTC)
+	 MIME-Version; b=f1cR0wNy4jRBRyv6Xn1lejfU10Uqe7B+t7uTJoMZe6ZZvIkxpUh8ITJoZtGaHOAUJobw0paYf7W56Q/dEALCuUnkrqrXknxQPpy2dsbb/unjGqQ5fvk1IdXUO9MQblbQ9eLasPElaO7svpFc9YXp6TV/nOkA70YTK8XemtDirnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ECcGRA1I; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05A871F000E9;
+	Wed, 20 May 2026 17:42:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301922;
-	bh=tUrPxu8ki9HQCWUWssmDObgkGadb+xush0ByGm8zKH4=;
+	s=korg; t=1779298964;
+	bh=I2rDmqOllo8Kxkf5+Vq4TxR9zy09iwWWu6g8Bx388m0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Q6iw5Oxxwjtc/ITd5ay9Hl+40yBKJD6GTfb0qDnzCSpNXxKtXm4CYMkwHzOD0pCWI
-	 ivmqxsiWpaxVsC8+fxsbCbyQUJqmRAmgFgAc4m2HcXk1qoJJ0WPcFuIVaX07XS5JaW
-	 gHsGSQpQOTfuCz/xA2xs/1uykba+0yJuhoDCuWvY=
+	b=ECcGRA1IyGjivSdOiETWtrLEp7bRL0HmUqGzBEjg/YoOrFBXw9DynEAc7iBZhcltL
+	 aZnjwvJCbS9jAuWFgxR7tsBzSUj0wFQzmWPWbo4bJ5kpUoE32v6y5F02n1yJLo3u2+
+	 KxwjGsGdi2BrwzM1DQFGIPz7G06dYVT3vmhciabw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taegu Ha <hataegu0826@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 070/508] ppp: require CAP_NET_ADMIN in target netns for unattached ioctls
+Subject: [PATCH 6.18 610/957] arm64: dts: imx8mm-emtop-som: Correct PAD settings for PMIC_nINT
 Date: Wed, 20 May 2026 18:18:13 +0200
-Message-ID: <20260520162100.124286830@linuxfoundation.org>
+Message-ID: <20260520162147.763709920@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,80 +68,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252915-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251816-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: AA92E596DC9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,0.0.0.25:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: B7C8059A36A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taegu Ha <hataegu0826@gmail.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 2bb6379416fd19f44c3423a00bfd8626259f6067 ]
+[ Upstream commit 721dec3ee9ff5231d13a412ff87df63b966d137b ]
 
-/dev/ppp open is currently authorized against file->f_cred->user_ns,
-while unattached administrative ioctls operate on current->nsproxy->net_ns.
+With commit 5d0efaf47ee90 ("regulator: pca9450: Correct interrupt type"),
+there might be interrupt storm for this board. Need to set PAD PUE and PU
+together to make pull up work properly.
 
-As a result, a local unprivileged user can create a new user namespace
-with CLONE_NEWUSER, gain CAP_NET_ADMIN only in that new user namespace,
-and still issue PPPIOCNEWUNIT, PPPIOCATTACH, or PPPIOCATTCHAN against
-an inherited network namespace.
+While at here, also correct interrupt type as IRQ_TYPE_LEVEL_LOW.
 
-Require CAP_NET_ADMIN in the user namespace that owns the target network
-namespace before handling unattached PPP administrative ioctls.
-
-This preserves normal pppd operation in the network namespace it is
-actually privileged in, while rejecting the userns-only inherited-netns
-case.
-
-Fixes: 273ec51dd7ce ("net: ppp_generic - introduce net-namespace functionality v2")
-Signed-off-by: Taegu Ha <hataegu0826@gmail.com>
-Link: https://patch.msgid.link/20260409071117.4354-1-hataegu0826@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: cbd3ef64eb9d1 ("arm64: dts: Add support for Emtop SoM & Baseboard")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ppp/ppp_generic.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/boot/dts/freescale/imx8mm-emtop-som.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
-index 46ac51217114b..7c863cb99383b 100644
---- a/drivers/net/ppp/ppp_generic.c
-+++ b/drivers/net/ppp/ppp_generic.c
-@@ -1062,6 +1062,9 @@ static int ppp_unattached_ioctl(struct net *net, struct ppp_file *pf,
- 	struct ppp_net *pn;
- 	int __user *p = (int __user *)arg;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-emtop-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-emtop-som.dtsi
+index 67d22d3768aa8..507d1824d99d9 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-emtop-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-emtop-som.dtsi
+@@ -60,7 +60,7 @@ pmic@25 {
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_pmic>;
+ 		interrupt-parent = <&gpio1>;
+-		interrupts = <3 IRQ_TYPE_EDGE_RISING>;
++		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
  
-+	if (!ns_capable(net->user_ns, CAP_NET_ADMIN))
-+		return -EPERM;
-+
- 	switch (cmd) {
- 	case PPPIOCNEWUNIT:
- 		/* Create a new ppp unit */
+ 		regulators {
+ 			buck1: BUCK1 {
+@@ -194,7 +194,7 @@ MX8MM_IOMUXC_I2C1_SDA_I2C1_SDA				0x400001c3
+ 
+ 	pinctrl_pmic: emtop-pmic-grp {
+ 		fsl,pins = <
+-			MX8MM_IOMUXC_GPIO1_IO03_GPIO1_IO3			0x41
++			MX8MM_IOMUXC_GPIO1_IO03_GPIO1_IO3			0x141
+ 		>;
+ 	};
+ 
 -- 
 2.53.0
 
