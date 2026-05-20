@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-250536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251472-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SI1fIGXpDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250536-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:03:33 +0200
+	id qM0POdb7DWoK5QUAu9opvQ
+	(envelope-from <stable+bounces-251472-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42F64592DE2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:03:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58D81595EA5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2C08B3097774
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:47:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D1CF235A569C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:27:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47A533A9CF;
-	Wed, 20 May 2026 16:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C95B13A3826;
+	Wed, 20 May 2026 17:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="idaYMhUD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZK3L5HkE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D2A334C1D;
-	Wed, 20 May 2026 16:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8082D2701C4;
+	Wed, 20 May 2026 17:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295667; cv=none; b=eli6HwsJS8JQUJqK6Q+ezA7g8xKEWjoIlYsY2/xfs3u28P7xaF/uUVGnFBQqZQfZiVh33caMvW6oIHZf0ImcbFB386cTkuwFagrtmxhd4m4lYnuIqa09kczIST2PkoisZwUvMXNTrM5n8FjFepjRfMsd+iiWTK3a7783ZjcmvCk=
+	t=1779298071; cv=none; b=oFOGT0oA+YELI5+z6OV9hNEy3YLSJWPhp/TEmJUAHV/5TFlzQ9HRrEfeWmDmBhb5jq4++cI3M/DTSp7a5vV+jvTLg6wqHh4/7021C0r7rulJaPebqGe+IsysFxsub+lke/v1qAAsWAM/j8yzL71fwwLiVcvKktkZ4yq+6bxhjas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295667; c=relaxed/simple;
-	bh=RP2ccKYokauqL/Y2fTsxisIl+jsO62VBOfVqMcdPKuk=;
+	s=arc-20240116; t=1779298071; c=relaxed/simple;
+	bh=CFm/TOKs6kytgRs3RKuBYkj/or06/X2jFgtRIgqAPNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BaEfHGI0BYVWnQv0DkI9SJ94iERcIS+JqZqcYdTmYPMJwrpYtJ3PEJV65+XBm8A45DOlGDVmALC3mTvkQby8Ia38fi4oweVqCRO9JIdqxUU+lFblraOL6fYONDYdITMzk/A/MiVk0untJmbp1M+CEoTrj+Q/VOqPRh4s6koSvrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=idaYMhUD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABBCC1F000E9;
-	Wed, 20 May 2026 16:47:45 +0000 (UTC)
+	 MIME-Version; b=no7J+eH4gXjKTz9O4/bYprwDJLRutXh/3qQjCs346XVMPeSXy6QrwXfTkIGHff29hM3iS0UYccjJIYifaFSg0DPhFe7byEFAPPme08LOWuHh4X6TJFsjhA0FWrDH6Bqr2rUCvLbIRRqEiDZsvCQUnaCqnAlo91ecZUERuyOUzsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZK3L5HkE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC7371F000E9;
+	Wed, 20 May 2026 17:27:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295666;
-	bh=dEl5hT9sYsz4hMO9vdvY1oxg9rNsgfyi2zZ33XrI7k0=;
+	s=korg; t=1779298070;
+	bh=GabApUelk/qmvRuBqOx7HbDWOGrbMBg66azqSfF3sRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=idaYMhUDxyGTK+2jWsllhrqE1EeD3dd11XUgqAcBi/ycO/KD9zdHkrO0COF3+mnZ/
-	 S1LOEZ8jDjNE4p9aEUN6dODOdngPl5YSmRR92vI+OJ2aFDKSTcN3ejbLYCtrCVO72z
-	 PG34Cx+kbwuCgDbGM/fVnO0IEhJE5oKLVMWLstHM=
+	b=ZK3L5HkEGqWu+b1lUoLdkaTFZSDDtCZ2C/+vs4L0HPantpFrqeKJjrBH//Ghbwx01
+	 OelmHW5bN+Go+RWsTn7hzidSrgIvHU2h2iKdUirSRdkesksF28JflOtxZQmOuzd23M
+	 SgXiN16UrM3Xn3RKgtU/NTHSlZVQAcdIJvLcljkE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurelien Jarno <aurelien@aurel32.net>,
-	Yixun Lan <dlan@kernel.org>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0505/1146] riscv: dts: spacemit: drop incorrect pinctrl for combo PHY
+Subject: [PATCH 6.18 272/957] drm/msm/vma: Avoid lock in VM_BIND fence signaling path
 Date: Wed, 20 May 2026 18:12:35 +0200
-Message-ID: <20260520162159.618426226@linuxfoundation.org>
+Message-ID: <20260520162140.442249940@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250536-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251472-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,52 +89,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,aurel32.net:email]
-X-Rspamd-Queue-Id: 42F64592DE2
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,patchwork.freedesktop.org:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 58D81595EA5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aurelien Jarno <aurelien@aurel32.net>
+From: Rob Clark <robin.clark@oss.qualcomm.com>
 
-[ Upstream commit c68360c0d636dae71f766b7b296ddfcf2827ccc7 ]
+[ Upstream commit 8a7023b035355ef5bfa096bd323256fa8abbbc6a ]
 
-The combo PHY on the Banana Pi F3 is used for the USB 3.0 port. The high
-speed differential lanes are always configured as such, and do not
-require a pinctrl entry.
+Use msm_gem_unpin_active(), similar to what is used in the GEM_SUBMIT
+path.  This avoids needing to hold the obj lock, and the end result is
+the same.  (As with GEM_SUBMIT, we know the fence isn't signaled yet.)
 
-The existing pinctrl entry only configures PCIe secondary pins, which
-are unused for USB and instead routed to the MIPI CSI1 connector.
-
-Remove this incorrect pinctrl entry.
-
-Fixes: 0be016a4b5d1b9 ("riscv: dts: spacemit: PCIe and PHY-related updates")
-Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
-Reviewed-by: Yixun Lan <dlan@kernel.org>
-Link: https://lore.kernel.org/r/20260322202502.2205755-1-aurelien@aurel32.net
-Signed-off-by: Yixun Lan <dlan@kernel.org>
+Reported-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Fixes: 2e6a8a1fe2b2 ("drm/msm: Add VM_BIND ioctl")
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/712230/
+Message-ID: <20260316184442.673558-1-robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/boot/dts/spacemit/k1-bananapi-f3.dts | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/gpu/drm/msm/msm_gem.c     | 3 +++
+ drivers/gpu/drm/msm/msm_gem_vma.c | 9 ++++++---
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/arch/riscv/boot/dts/spacemit/k1-bananapi-f3.dts b/arch/riscv/boot/dts/spacemit/k1-bananapi-f3.dts
-index 51f6c6a774b0d..48c034736aa5a 100644
---- a/arch/riscv/boot/dts/spacemit/k1-bananapi-f3.dts
-+++ b/arch/riscv/boot/dts/spacemit/k1-bananapi-f3.dts
-@@ -81,8 +81,6 @@ usb3_hub_5v: usb3-hub-5v {
- };
+diff --git a/drivers/gpu/drm/msm/msm_gem.c b/drivers/gpu/drm/msm/msm_gem.c
+index 9f7fbe577abb1..8636a7f031d24 100644
+--- a/drivers/gpu/drm/msm/msm_gem.c
++++ b/drivers/gpu/drm/msm/msm_gem.c
+@@ -533,8 +533,11 @@ void msm_gem_unpin_locked(struct drm_gem_object *obj)
+  */
+ void msm_gem_unpin_active(struct drm_gem_object *obj)
+ {
++	struct msm_drm_private *priv = obj->dev->dev_private;
+ 	struct msm_gem_object *msm_obj = to_msm_bo(obj);
  
- &combo_phy {
--	pinctrl-names = "default";
--	pinctrl-0 = <&pcie0_3_cfg>;
- 	status = "okay";
- };
++	GEM_WARN_ON(!mutex_is_locked(&priv->lru.lock));
++
+ 	msm_obj->pin_count--;
+ 	GEM_WARN_ON(msm_obj->pin_count < 0);
+ 	update_lru_active(obj);
+diff --git a/drivers/gpu/drm/msm/msm_gem_vma.c b/drivers/gpu/drm/msm/msm_gem_vma.c
+index 89a95977f41ef..44bcc2b291e47 100644
+--- a/drivers/gpu/drm/msm/msm_gem_vma.c
++++ b/drivers/gpu/drm/msm/msm_gem_vma.c
+@@ -680,6 +680,7 @@ static struct dma_fence *
+ msm_vma_job_run(struct drm_sched_job *_job)
+ {
+ 	struct msm_vm_bind_job *job = to_msm_vm_bind_job(_job);
++	struct msm_drm_private *priv = job->vm->drm->dev_private;
+ 	struct msm_gem_vm *vm = to_msm_vm(job->vm);
+ 	struct drm_gem_object *obj;
+ 	int ret = vm->unusable ? -EINVAL : 0;
+@@ -722,12 +723,14 @@ msm_vma_job_run(struct drm_sched_job *_job)
+ 	if (ret)
+ 		msm_gem_vm_unusable(job->vm);
  
++	mutex_lock(&priv->lru.lock);
++
+ 	job_foreach_bo (obj, job) {
+-		msm_gem_lock(obj);
+-		msm_gem_unpin_locked(obj);
+-		msm_gem_unlock(obj);
++		msm_gem_unpin_active(obj);
+ 	}
+ 
++	mutex_unlock(&priv->lru.lock);
++
+ 	/* VM_BIND ops are synchronous, so no fence to wait on: */
+ 	return NULL;
+ }
 -- 
 2.53.0
 
