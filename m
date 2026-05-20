@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-252811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253275-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UK4RHXwEDmqs5QUAu9opvQ
-	(envelope-from <stable+bounces-252811-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:59:08 +0200
+	id fPuUG2kvDmqD7wUAu9opvQ
+	(envelope-from <stable+bounces-253275-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:02:17 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE513597863
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:59:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C921A59BA0E
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:02:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5192A39ECF10
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:27:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AEAE63993CF4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D930E3F8706;
-	Wed, 20 May 2026 18:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9E823C872C;
+	Wed, 20 May 2026 18:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uVL4HJCa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cWvCk6Yx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8633FBEAA;
-	Wed, 20 May 2026 18:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912BA3FFAAD;
+	Wed, 20 May 2026 18:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301650; cv=none; b=OWlU9WvY7Ni1Rg6GOl7uMfh76G//khkgkSfIeVIPCaNIuT7atCxZ0N3TatZX6uZdGVCIryFMgyfYjhPIun2tO2FLf0Sg+dKyAaN8ZD+HdET82mU0qsQiiuKtKEOKxBxXfboZuJpDHhBKsh32kYZotBgwG8TVtGUBCO+xtjodGZc=
+	t=1779302852; cv=none; b=uYcaKznqy8fUOH116IX6/MuPsk2GONfqmVjDytF5JsDnAxbEqv1TyRNdxWPhsOA6UfEpqLxhctvmP6cENttvTs2B6WnvwlbEGbj74h96hsKUHWuvOhRCk8UoBZZZq86ACZF8IG50loBBI62LIz2LFt29idmR1f5oUBPc/8xPdEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301650; c=relaxed/simple;
-	bh=tHAdUK2UxvQ2Kc3uWVYMCGos1bftNf4FfWY8xDHn1mM=;
+	s=arc-20240116; t=1779302852; c=relaxed/simple;
+	bh=cWqj9qmomywCZxLkRQ+n/yAQU0IgHapJmA4eS+bocAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QqELPvO3fjErrwfaQMU9fwntA1UF53lQBFT+hW6ZOwmb/+MAmMCKWptjr3TD4rzp1ni26H9wjzeet0svc4lkVsHYNekuHpSkIs7Spw5fwHm7OIPp9/UKu5FRNJKgc5rvLMDDuwMNlCv9adONPGqyCnol0HxLgh8VVsKDnHOe+Oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uVL4HJCa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05C5A1F000E9;
-	Wed, 20 May 2026 18:27:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rSWI6bQB0n1VeZCjqo3G+Juegd78FJAxIb2ePhQaKKwaXiMJt4sTOgrffnpP3xsCf+/ri0uX4R4prwJ18lwRlOUHX8iS+LN+AIjrmqrfM6desL4BHwwdB0ELnsZbuOzW+5e+Kefo2IBhx6I8vuvWv2YSLmI24h/D78K4ScC6cCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cWvCk6Yx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 034251F000E9;
+	Wed, 20 May 2026 18:47:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301649;
-	bh=L79EUcUgtYn8NmDj1xQxiOcPJrgpxbOHQNAS2k3SJhg=;
+	s=korg; t=1779302851;
+	bh=Z3KcbkRaS+CHV1FzUqUPrVcxJP2+fAna2bYTCm+6kaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uVL4HJCaiyzfiAIaBW2VQy3XP8HiAPA4zs+utwoM64049J/9VdORukfR5jIrGKwhq
-	 o+rUf1Dj6TAKo2mW7GHUlqwuh9FMvjVYihJNdC8kMTByU1khphH7OSEocx5GFOOKrP
-	 ILxJ7+slLOtb9MLsDLsX+iDNczlV8hhMkBMpqBY4=
+	b=cWvCk6YxZQ9hI78fL5mFboz/4E88GzOv7m7Sk3FoWVR9c67rlkdnnSjHKaboqqxgk
+	 N+DPePdcVnVQZUqrShFGbInaReEpXMH0BSV0VZCvOtOtHoMyK61Xf+GRly59UdBFdP
+	 K8KTlJ9K7/IpzZ7nk5gvzn/X8diC6d9igel4QXw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yong-Xuan Wang <yongxuan.wang@sifive.com>,
-	Thomas Gleixner <tglx@kernel.org>
-Subject: [PATCH 6.12 635/666] irqchip/riscv-imsic: Clear interrupt move state during CPU offlining
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 423/508] drm/amd/display: Allow DCE link encoder without AUX registers
 Date: Wed, 20 May 2026 18:24:06 +0200
-Message-ID: <20260520162125.038322269@linuxfoundation.org>
+Message-ID: <20260520162107.768280424@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +63,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252811-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253275-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sifive.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: EE513597863
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amd.com:email,gitlab.freedesktop.org:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C921A59BA0E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-commit cefafbd561402b0fe6447449364a30315b9b1570 upstream.
+[ Upstream commit ac27e3f99035f132f23bc0409d0e57f11f054c70 ]
 
-Affinity changes of IMSIC interrupts have to be careful to not lose an
-interrupt in the process. Each vector keeps track of an affinity change in
-progress with two pointers in struct imsic_vector.
+Allow constructing the DCE link encoder without DDC,
+which means the AUX registers array will be NULL.
 
-imsic_vector::move_prev points to the previous CPU target data and
-imsic_vector::move_next to the designated new CPU target data.
+This is necessary to support embedded connectors without DDC.
 
-imsic_vector::move_prev on the new CPU can only be cleared after the
-previous CPU has cleared imsic_vector::move_next, which ususally happens in
-__imsic_remote_sync().
-
-In case of CPU hot-unplug __imsic_remote_sync() is not invoked because the
-CPU is already marked offline. That means imsic_vector::move_prev becomes
-stale until the CPU is onlined again.
-
-The stale pointer prevents further affinity changes for the affected
-interrupts.
-
-Solve this by clearing the imsic_vector::move_prev pointers in the CPU
-hotplug offline path.
-
-[ tglx: Replace word salad in change log ]
-
-Fixes: 0f67911e821c ("irqchip/riscv-imsic: Separate next and previous pointers in IMSIC vector")
-Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260508-imsic-v2-1-e9f08dd46cf5@sifive.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4562236b3bc0 ("drm/amd/dc: Add dc display driver (v2)")
+Link: https://gitlab.freedesktop.org/drm/amd/-/work_items/5192
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 87f30b101af62590faf6020d106da07efdda199b)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-riscv-imsic-early.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/irqchip/irq-riscv-imsic-early.c
-+++ b/drivers/irqchip/irq-riscv-imsic-early.c
-@@ -139,6 +139,8 @@ static int imsic_dying_cpu(unsigned int
- 	/* Cleanup IPIs */
- 	imsic_ipi_dying_cpu();
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c b/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
+index 0a33f8f117e92..623abdf7065e7 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
+@@ -989,7 +989,9 @@ void dce110_link_encoder_hw_init(
+ 		ASSERT(result == BP_RESULT_OK);
  
-+	imsic_local_sync_all(false);
+ 	}
+-	aux_initialize(enc110);
 +
- 	/* Mark per-CPU IMSIC state as offline */
- 	imsic_state_offline();
++	if (enc110->aux_regs)
++		aux_initialize(enc110);
  
+ 	/* reinitialize HPD.
+ 	 * hpd_initialize() will pass DIG_FE id to HW context.
+-- 
+2.53.0
+
 
 
 
