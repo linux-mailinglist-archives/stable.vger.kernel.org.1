@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-251224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250328-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QBdxHgvvDWpb4wUAu9opvQ
-	(envelope-from <stable+bounces-251224-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:27:39 +0200
+	id yGPcFQfnDWqx4gUAu9opvQ
+	(envelope-from <stable+bounces-250328-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:53:27 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37129593BB0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:27:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00E4B592965
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:53:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 56C6B307A4C4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:17:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1B59230067A1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:39:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75BBD35C1A0;
-	Wed, 20 May 2026 17:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08505369D75;
+	Wed, 20 May 2026 16:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wkq9VJE6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F93B/Zw1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FD7356748;
-	Wed, 20 May 2026 17:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87C6369211;
+	Wed, 20 May 2026 16:38:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297424; cv=none; b=UAMgyrBYJ2MjNlD/sCOElNj54+sTFSOPVSMHQVDEwP3/7BJU/a8beYdRx5GuwzRPXiIxo2FEjll6FlujDfhHKkZzlKp5siZwSvAlFeFbptO62qP/PUNfeJ2GVV8qKmgj2Z5JmadSyaHV7PNNx5rBzY/I8PUu6V8WrIOaiyqJ20A=
+	t=1779295126; cv=none; b=OYbT/yS4Ky2wfVxMc9ghn1YC8yBvD5spT0XSrobxKfZ70AnOofivgdDsCoSyOG4F4w+PkN3NjU7zGUFIkzj2VZ6wlCB1tHeX4hcplzw1XElBDbd42F+Zyg7JMIWNqF33NBWdC7fG7/HF7cK4cKWoXkP45jzpG+pdyn+tkCevEf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297424; c=relaxed/simple;
-	bh=LvNqNG5DEekom5ctOw/N9J0GjfdSK0JtDUrHEOgBWY4=;
+	s=arc-20240116; t=1779295126; c=relaxed/simple;
+	bh=uoEciZNhKAFB+x0cbEAhFs/oPBd3JhYkKdvJS8ns2Go=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nUQVdmyhSn8lT/u+kz8tf4Y0dQugyP6ukjzpN9MGsqLwER0Y/b+hhkQRDrQXiuLdlvC9fZL3eYuHXvr0gq/hRPegNQxODi9s7ylGe63daSPYqlVLIbLOTVlZtp8MqbnbaK9UJU4xevlOdcyVK7keI20k6LK5nhWphQIcdAzFmxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wkq9VJE6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 985241F000E9;
-	Wed, 20 May 2026 17:17:02 +0000 (UTC)
+	 MIME-Version; b=EJ0ygDp5QCnnPXk2DvAxO4auADHoeUuCJUyMKbNah4TqMKO0w39ieXeOWyrlr3QJEpbftIJeLWCNdIFtGushUHHhy7f1hMZA8DcRFhgG6XwbdmkHwDkasrFsCC+8VOrHUzGvVmP2RerDCWeXREfdnmbCf6XZ2mitgsXYLBOomnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F93B/Zw1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D591F000E9;
+	Wed, 20 May 2026 16:38:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297423;
-	bh=Pz0WrD4+YSTjPdhJepXVCJaRG7vh+XEGXPYFuJpt5DU=;
+	s=korg; t=1779295124;
+	bh=/BhNq9pljqbIGr7VGAcKd6pJLjMxGizHy2wAWSHIgvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wkq9VJE6C3AvsBsE0MroERXK5IEqLCz8+6c019zt1t26SpBjejkMaYPM37HYQNCHj
-	 NaO6e9jlREH8+QwH7AqGAlht4pOX2McrRSfLxxueQq0JasrHtGcC5Wdm7Z4lY7Vylj
-	 1RLnVrqAaiuYYEZwlDMheM0SZRymKCRzugJfmgj8=
+	b=F93B/Zw1RZiyzWs9cRJM+P087bMxdPDTwrGbrfksbIh7IK3y4uhBS6Beq31jqih62
+	 5ppglHWHzKenSyiHkOYQFS+Z0HplCbdqJOkLVgduljtDBNvP/PqlxF4hPhZL8GaCfB
+	 Ba7dx9IqBD2cEkjCDqkdqMwEedh/+TnVonu0OqWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	yangshiguang <yangshiguang@xiaomi.com>,
-	Gui-Dong Han <hanguidong02@gmail.com>,
+	Philip Yang <Philip.Yang@amd.com>,
+	Lang Yu <lang.yu@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 026/957] soundwire: debugfs: initialize firmware_file to empty string
+Subject: [PATCH 7.0 0259/1146] drm/amdgpu: GFX12.1 scratch memory limit up to 57-bit
 Date: Wed, 20 May 2026 18:08:29 +0200
-Message-ID: <20260520162135.126691242@linuxfoundation.org>
+Message-ID: <20260520162154.091665457@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,98 +68,168 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251224-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,xiaomi.com,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250328-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,xiaomi.com:email]
-X-Rspamd-Queue-Id: 37129593BB0
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 00E4B592965
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gui-Dong Han <hanguidong02@gmail.com>
+From: Philip Yang <Philip.Yang@amd.com>
 
-[ Upstream commit 7215e4552f31e53595eae56a834f7e286beecccc ]
+[ Upstream commit b2d13a41da94008fdd3786b396a6375c12454522 ]
 
-Passing NULL to debugfs_create_str() causes a NULL pointer dereference,
-and creating debugfs nodes with NULL string pointers is no longer
-permitted.
+The scratch aperture or gmc private aperture in flat memory contains
+57 bits of data on gfx v12.1.0 compared to the 32 bits from previous.
 
-Additionally, firmware_file is a global pointer. Previously, adding every
-new slave blindly overwrote it with NULL.
+Add new helper kfd_init_apertures_v12 for gfx version >= v12.1.0 which
+supports 57-bit VA space.
 
-Fix these issues by initializing firmware_file to an allocated empty
-string once in the subsystem init path (sdw_debugfs_init), and freeing
-it in the exit path. Existing driver code handles empty strings
-correctly.
+v2:
+  - update pdd->scratch_limit (Yu, Lang)
+  - update fixes tag (Felix Kuehling)
+  - add helper kfd_init_apertures_v12
 
-Fixes: fe46d2a4301d ("soundwire: debugfs: add interface to read/write commands")
-Reported-by: yangshiguang <yangshiguang@xiaomi.com>
-Closes: https://lore.kernel.org/lkml/17647e4c.d461.19b46144a4e.Coremail.yangshiguang1011@163.com/
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-Link: https://patch.msgid.link/20260323085930.88894-4-hanguidong02@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: db1882b3ff0c ("drm/amdkfd: Update LDS, Scratch base for 57bit address")
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Lang Yu <lang.yu@amd.com>
+Acked-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/debugfs.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v12_1.c       |  2 +-
+ drivers/gpu/drm/amd/amdgpu/gmc_v12_0.c       | 10 ++++--
+ drivers/gpu/drm/amd/amdkfd/kfd_flat_memory.c | 35 ++++++++++++++------
+ 3 files changed, 34 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/soundwire/debugfs.c b/drivers/soundwire/debugfs.c
-index 1e0f9318b6165..feb4d15102753 100644
---- a/drivers/soundwire/debugfs.c
-+++ b/drivers/soundwire/debugfs.c
-@@ -350,8 +350,8 @@ void sdw_slave_debugfs_init(struct sdw_slave *slave)
- 	debugfs_create_file("go", 0200, d, slave, &cmd_go_fops);
- 
- 	debugfs_create_file("read_buffer", 0400, d, slave, &read_buffer_fops);
--	firmware_file = NULL;
--	debugfs_create_str("firmware_file", 0200, d, &firmware_file);
-+	if (firmware_file)
-+		debugfs_create_str("firmware_file", 0200, d, &firmware_file);
- 
- 	slave->debugfs = d;
- }
-@@ -363,10 +363,15 @@ void sdw_slave_debugfs_exit(struct sdw_slave *slave)
- 
- void sdw_debugfs_init(void)
- {
-+	if (!firmware_file)
-+		firmware_file = kstrdup("", GFP_KERNEL);
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v12_1.c b/drivers/gpu/drm/amd/amdgpu/gfx_v12_1.c
+index eb9725ae1607a..557d15b90ad27 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v12_1.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v12_1.c
+@@ -1405,7 +1405,7 @@ static void gfx_v12_1_xcc_init_compute_vmid(struct amdgpu_device *adev,
+ 	/*
+ 	 * Configure apertures:
+ 	 * LDS:         0x20000000'00000000 - 0x20000001'00000000 (4GB)
+-	 * Scratch:     0x10000000'00000000 - 0x10000001'00000000 (4GB)
++	 * Scratch:     0x10000000'00000000 - 0x11ffffff'ffffffff (128PB 57-bit)
+ 	 */
+ 	sh_mem_bases = REG_SET_FIELD(0, SH_MEM_BASES, PRIVATE_BASE,
+ 				     (adev->gmc.private_aperture_start >> 58));
+diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v12_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v12_0.c
+index b9671fc39e2a8..da4a0cf4aad0c 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gmc_v12_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gmc_v12_0.c
+@@ -654,9 +654,15 @@ static int gmc_v12_0_early_init(struct amdgpu_ip_block *ip_block)
+ 	adev->gmc.shared_aperture_start = 0x2000000000000000ULL;
+ 	adev->gmc.shared_aperture_end =
+ 		adev->gmc.shared_aperture_start + (4ULL << 30) - 1;
 +
- 	sdw_debugfs_root = debugfs_create_dir("soundwire", NULL);
+ 	adev->gmc.private_aperture_start = 0x1000000000000000ULL;
+-	adev->gmc.private_aperture_end =
+-		adev->gmc.private_aperture_start + (4ULL << 30) - 1;
++	if (amdgpu_ip_version(adev, GC_HWIP, 0) >= IP_VERSION(12, 1, 0))
++		adev->gmc.private_aperture_end =
++			adev->gmc.private_aperture_start + (1ULL << 57) - 1;
++	else
++		adev->gmc.private_aperture_end =
++			adev->gmc.private_aperture_start + (4ULL << 30) - 1;
++
+ 	adev->gmc.noretry_flags = AMDGPU_VM_NORETRY_FLAGS_TF;
+ 
+ 	return 0;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_flat_memory.c b/drivers/gpu/drm/amd/amdkfd/kfd_flat_memory.c
+index e8da0b4527dc5..04c5e26f01ed9 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_flat_memory.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_flat_memory.c
+@@ -342,20 +342,14 @@ static void kfd_init_apertures_vi(struct kfd_process_device *pdd, uint8_t id)
+ 
+ static void kfd_init_apertures_v9(struct kfd_process_device *pdd, uint8_t id)
+ {
+-	if (KFD_GC_VERSION(pdd->dev) >= IP_VERSION(12, 1, 0))
+-		pdd->lds_base = pdd->dev->adev->gmc.shared_aperture_start;
+-	else
+-		pdd->lds_base = MAKE_LDS_APP_BASE_V9();
++	pdd->lds_base = MAKE_LDS_APP_BASE_V9();
+ 	pdd->lds_limit = MAKE_LDS_APP_LIMIT(pdd->lds_base);
+ 
+ 	pdd->gpuvm_base = AMDGPU_VA_RESERVED_BOTTOM;
+ 	pdd->gpuvm_limit =
+ 		pdd->dev->kfd->shared_resources.gpuvm_size - 1;
+ 
+-	if (KFD_GC_VERSION(pdd->dev) >= IP_VERSION(12, 1, 0))
+-		pdd->scratch_base = pdd->dev->adev->gmc.private_aperture_start;
+-	else
+-		pdd->scratch_base = MAKE_SCRATCH_APP_BASE_V9();
++	pdd->scratch_base = MAKE_SCRATCH_APP_BASE_V9();
+ 	pdd->scratch_limit = MAKE_SCRATCH_APP_LIMIT(pdd->scratch_base);
+ 
+ 	/*
+@@ -365,6 +359,25 @@ static void kfd_init_apertures_v9(struct kfd_process_device *pdd, uint8_t id)
+ 	pdd->qpd.cwsr_base = AMDGPU_VA_RESERVED_TRAP_START(pdd->dev->adev);
  }
  
- void sdw_debugfs_exit(void)
++static void kfd_init_apertures_v12(struct kfd_process_device *pdd, uint8_t id)
++{
++	pdd->lds_base = pdd->dev->adev->gmc.shared_aperture_start;
++	pdd->lds_limit = pdd->dev->adev->gmc.shared_aperture_end;
++
++	pdd->gpuvm_base = AMDGPU_VA_RESERVED_BOTTOM;
++	pdd->gpuvm_limit =
++		pdd->dev->kfd->shared_resources.gpuvm_size - 1;
++
++	pdd->scratch_base = pdd->dev->adev->gmc.private_aperture_start;
++	pdd->scratch_limit = pdd->dev->adev->gmc.private_aperture_end;
++
++	/*
++	 * Place TBA/TMA on opposite side of VM hole to prevent
++	 * stray faults from triggering SVM on these pages.
++	 */
++	pdd->qpd.cwsr_base = AMDGPU_VA_RESERVED_TRAP_START(pdd->dev->adev);
++}
++
+ int kfd_init_apertures(struct kfd_process *process)
  {
- 	debugfs_remove_recursive(sdw_debugfs_root);
-+	kfree(firmware_file);
-+	firmware_file = NULL;
- }
+ 	uint8_t id  = 0;
+@@ -412,9 +425,11 @@ int kfd_init_apertures(struct kfd_process *process)
+ 				kfd_init_apertures_vi(pdd, id);
+ 				break;
+ 			default:
+-				if (KFD_GC_VERSION(dev) >= IP_VERSION(9, 0, 1))
++				if (KFD_GC_VERSION(dev) >= IP_VERSION(12, 1, 0)) {
++					kfd_init_apertures_v12(pdd, id);
++				} else if (KFD_GC_VERSION(dev) >= IP_VERSION(9, 0, 1)) {
+ 					kfd_init_apertures_v9(pdd, id);
+-				else {
++				} else {
+ 					WARN(1, "Unexpected ASIC family %u",
+ 					     dev->adev->asic_type);
+ 					return -EINVAL;
 -- 
 2.53.0
 
