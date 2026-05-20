@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253078-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0Lp/Ex/tDWo04wUAu9opvQ
-	(envelope-from <stable+bounces-251096-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:19:27 +0200
+	id sBZYDhMcDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-253078-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:39:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBE43593542
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:19:26 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 316AD599E5E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:39:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 43AFC30F424A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:12:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 78C5E3234D50
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:44:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36CEC370D54;
-	Wed, 20 May 2026 17:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E2FB43C045;
+	Wed, 20 May 2026 18:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gAHFLs7n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ctP9+ir/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81403F23A1;
-	Wed, 20 May 2026 17:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A676436378;
+	Wed, 20 May 2026 18:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297087; cv=none; b=FbpPAZu8HY7kkTqx7Vitv0F0AMvQrVdFfERLqhQ72KL/p9UJGirJaAE/bF5ckrjlCUPlCxc++cWoRN9s06QCY8YWajCqxoEF9Ho0SqcO7vOMJvitMP/PWHN0yT/v68UO5vsfb7bzGgcTf2EZes1InH4Ya4rp3U6jS53GUUiSKxU=
+	t=1779302347; cv=none; b=U2PCTQHxvvUDQwAZrUOYsgqViOS4/5ry8cjWZZ2IEpdEgyk8RtKepUohv9vQ4MBebIc7bdiqwlc5RpjkHSKTZkjS1hV1CDE8YvBL2XBukHpb4jCsua02UCpiRWF9Je8Q8CkWS72MxsOXPu2WoC2OrvM4hEjQUqB0u8tTI7NL2q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297087; c=relaxed/simple;
-	bh=qpiV9TOepGCFSFpnnFN9DmW20z+pQ/6OLYWy3IBvJDU=;
+	s=arc-20240116; t=1779302347; c=relaxed/simple;
+	bh=6oCnVgV58vMqJKnKh9xStUe8PWgTRBwWMsxMHwyJXms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=krWXrZ2g3asIK2JlZ/e8xtXZg7YBGzpmTrxxRGbm+5eLuW8FYaKR2eQoY72HPOTRMvD8F7oE3XswGkAIOIS9R9LTeJcb2CIl1Dj0pe+ULZNgCQ39DxaESgtlX1ikXnu9kgjOVMEYqTmyFUBsDcFfwn2u4vE5qLmNhsgYPSTAHS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gAHFLs7n; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 478C61F000E9;
-	Wed, 20 May 2026 17:11:25 +0000 (UTC)
+	 MIME-Version; b=sdsdKh6parvnAHKZpzhVum6tgjS4JAdDfqWdztrCdmgzOuefSHfVKHluUR0/+7sMyaxSw+3RKp93Gs5GOtCDLe2KgAbmrkXiAWofYRjU9EBAAa8ZF0AOt4XhRIFwqrUZi2mvoA2LinPKNShxP9LtGQxp9PM3W9YJ1xMbGY8TEnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ctP9+ir/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BC541F02831;
+	Wed, 20 May 2026 18:39:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297085;
-	bh=o6OhcRt43DyBPk4cp1d/+aDBOUO2DGSMq2I/6omjsCw=;
+	s=korg; t=1779302345;
+	bh=zFIMV5ZTlAqdCuz81AfjyKxzQph9WsIdATJE5/IrUOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gAHFLs7nk2MduV1cuNtHSdjPPwHvadyfZte/GoyX7VxKhnSCMNSsUNBkXF6MiFkf6
-	 6w8scyXi3iFO/xDyUHajx0Xmyt700vYdr5KBRQpMHjfvNJ1sTpSS0rjQwv3s2eQAyR
-	 Wn2AqlwROo/vK3X47QcSmDEAXh4M2/IkZ4P5HX+A=
+	b=ctP9+ir/COqScbPqn4k6cXyDDSGp/E+r3S4XNx22cDwhjNzoRXXwKcXn6nInMqUfK
+	 BZNwwUwVGQp/f7faxifgUuFXArI9lVEA+nAJMtUvevvNYYpe7K/c1PksWEvxYRdm5s
+	 fF4jRA4cNdESfELigKgfWhn/nfAGX3MFTacXcyak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
+	Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 1004/1146] drm/amd/display: Allow constructing DCE6 link encoder without DDC
-Date: Wed, 20 May 2026 18:20:54 +0200
-Message-ID: <20260520162210.954705738@linuxfoundation.org>
+Subject: [PATCH 6.6 232/508] mtd: parsers: ofpart: call of_node_get() for dedicated subpartitions
+Date: Wed, 20 May 2026 18:20:55 +0200
+Message-ID: <20260520162103.677392913@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +64,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251096-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-253078-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,gitlab.freedesktop.org:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: CBE43593542
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,4.196.207.88:email,0.0.0.0:email,renesas.com:email]
+X-Rspamd-Queue-Id: 316AD599E5E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
 
-[ Upstream commit 880498a1943f865529819f778df3b9945ca57262 ]
+[ Upstream commit e882626c1747653f1f01ea9d12e278e613b11d0f ]
 
-When the DDC channel ID is set to CHANNEL_ID_UNKNOWN,
-pass NULL to the AUX regs array.
+In order to parse sub-partitions, add_mtd_partitions() calls
+parse_mtd_partitions() for all previously found partitions.
 
-This is necessary to support embedded connectors without DDC.
+Each partition will end up being passed to parse_fixed_partitions(), and
+its of_node will be treated as the ofpart_node.
 
-Fixes: 7c15fd86aaec ("drm/amd/display: dc/dce: add initial DCE6 support (v10)")
-Link: https://gitlab.freedesktop.org/drm/amd/-/work_items/5192
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 38a70e50b22a188ff601740d64dd75f46213121f)
+Commit 7cce81df7d26 ("mtd: parsers: ofpart: fix OF node refcount leak in
+parse_fixed_partitions()") added of_node_put() calls for ofpart_node on
+all exit paths.
+
+In the case where the partition passed to parse_fixed_partitions() has a
+parent, it is treated as a dedicated partitions node, and of_node_put()
+is wrongly called for it, even if of_node_get() was not called
+explicitly.
+
+On repeated bind / unbinds of the MTD, the extra of_node_put() ends up
+decrementing the refcount down to 0, which should never happen,
+resulting in the following error:
+
+OF: ERROR: of_node_release() detected bad of_node_put() on
+/soc/spi@80007000/flash@0/partitions/partition@0
+
+Call of_node_get() to balance the call to of_node_put() done for
+dedicated partitions nodes.
+
+Fixes: 7cce81df7d26 ("mtd: parsers: ofpart: fix OF node refcount leak in parse_fixed_partitions()")
+Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+Tested-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mtd/parsers/ofpart_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
-index 3d52973dd7f20..15f220671fbed 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dce60/dce60_resource.c
-@@ -753,7 +753,8 @@ static struct link_encoder *dce60_link_encoder_create(
- 				     enc_init_data,
- 				     &link_enc_feature,
- 				     &link_enc_regs[link_regs_id],
--				     &link_enc_aux_regs[enc_init_data->channel - 1],
-+				     enc_init_data->channel == CHANNEL_ID_UNKNOWN ?
-+				     NULL : &link_enc_aux_regs[enc_init_data->channel - 1],
- 				     enc_init_data->hpd_source >= ARRAY_SIZE(link_enc_hpd_regs) ?
- 				     NULL : &link_enc_hpd_regs[enc_init_data->hpd_source]);
- 	return &enc110->base;
+diff --git a/drivers/mtd/parsers/ofpart_core.c b/drivers/mtd/parsers/ofpart_core.c
+index 110994b1e02f5..c18fa1b3e3276 100644
+--- a/drivers/mtd/parsers/ofpart_core.c
++++ b/drivers/mtd/parsers/ofpart_core.c
+@@ -71,7 +71,7 @@ static int parse_fixed_partitions(struct mtd_info *master,
+ 			dedicated = false;
+ 		}
+ 	} else { /* Partition */
+-		ofpart_node = mtd_node;
++		ofpart_node = of_node_get(mtd_node);
+ 	}
+ 
+ 	of_id = of_match_node(parse_ofpart_match_table, ofpart_node);
 -- 
 2.53.0
 
