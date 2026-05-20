@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252058-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YJEEKFYVDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-251125-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:11:02 +0200
+	id YBnjG7b5DWrO5AUAu9opvQ
+	(envelope-from <stable+bounces-252058-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:13:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DD065993A5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:11:01 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F82C595949
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:13:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 565FA30D1F82
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:14:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AB61630DC5F5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:53:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 349F83F1AA4;
-	Wed, 20 May 2026 17:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D04B3F39C9;
+	Wed, 20 May 2026 17:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JROqxA+U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zgNrXrOz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC21F3F5BF0;
-	Wed, 20 May 2026 17:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E5D3A3E60;
+	Wed, 20 May 2026 17:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297163; cv=none; b=FAZgf8hzldKzMQc0a6O1aDsXcWPDEanef3SCYvNaMfsDlmxTvb/Wtfovk5t18vcmnhw0w7ZuBib1W0v7mHhSDL3hveY56QKzIk9g5U5cbmvWW8DZTsqs6hIBlLZqRwbxTPnqHRLQs9BBo+/xoh1QNfZgHqPGWaoOjPHrY5OdBhY=
+	t=1779299636; cv=none; b=tZEg81CeT+gzuyIz6hgZbX4QgmCmv88k73WOLscqE2VfCm53/rwItU4RBF0AvKdTOAkLcZtOjYOa81lTG/bHNjXGMghRCAakDYDJvg7wQrXPLkBVChWKmaCJzflh++vkyXHCGtreSzabqGToNUNZZm1VFR3pAtmLh369awxDgR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297163; c=relaxed/simple;
-	bh=U/gB07a1CRPu5ljdVNXEA4Mspw5RMELf9Dce3nLb0Lw=;
+	s=arc-20240116; t=1779299636; c=relaxed/simple;
+	bh=Lqya5tDp41MXKy1bFIxUemLLTbJsNa2Hj1G/ZjOen3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V4eyg4hHep4YP26InBY/Gky8Rxe3bjxvu+HuzIGMm1RNtYkTpjZExf/lvZEQlJLx8+uzB3x7KjXmltfAenJsM5LMZK2B/Lt4z1YonQY2VgfYeOt1w4zWIC3KTXMwwwWBm1bLNT3XW8xXkeOM4U8nZr+avgyru6z3Dyj/Hv+9aIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JROqxA+U; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5FBD1F000E9;
-	Wed, 20 May 2026 17:12:41 +0000 (UTC)
+	 MIME-Version; b=k/KUeOsglyzOxE62z5CuzYzdboFBgp6KetFdnAbFb3NiEfLkCuUG3RQE9INTa3eGHscSPzGCEMridI2iQuWpwbAHLLOH7WQaFcYxxVx0pqEFYOGSUSd0RMk7W+7cW9/joEDSDy4U3zc1yuPUwB3PjG9iMfU+v4kWtr8GkuJpWGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zgNrXrOz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 629D21F000E9;
+	Wed, 20 May 2026 17:53:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297162;
-	bh=bcy6PmKCc+jqcgUOnRFg1uy9xccwpefezNPjYnV+wys=;
+	s=korg; t=1779299634;
+	bh=eLy5D3CGN6UHoVXT+2BT7cjFRbEUP/n/gihTMQCtRJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JROqxA+UaI79TcRmyNINUU37V6P1qIcQIQVL70XvADcJW7PZhfwbJN731n8K207/0
-	 L/8/cdaIGbGXnba4M9h3G01KkB5wp/NE9bSt5fCZDfKK3T7HkZHNVpXbagc28uvm/w
-	 F2MGRMTtpe0HSkT9AO/mpuP1qmTPdbguDj0rAc1A=
+	b=zgNrXrOz0goPLMiZail/NsgUB/xPiBbfhFkxvLrzPwpnhRHrEbojz4d/MAiFSwkUO
+	 X7fFQBxPIi0GId3p6NW1MmyNH+SBKtOabSf+cuFc+mZKXD6y1xQzisuXXF6knj9+ZV
+	 KsfwGLGMLrezXAv1Cs9uzlpPRs27y3j8q2obDSiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d7c9eed171647e421013@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Dave Airlie <airlied@redhat.com>
-Subject: [PATCH 7.0 1073/1146] drm: Replace old pointer to new idr
+	Hasan Basbunar <basbunarhasan@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 840/957] page_pool: fix memory-provider leak in page_pool_create_percpu() error path
 Date: Wed, 20 May 2026 18:22:03 +0200
-Message-ID: <20260520162212.514166782@linuxfoundation.org>
+Message-ID: <20260520162152.779895729@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,111 +64,145 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TAGGED_FROM(0.00)[bounces-251125-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,qq.com,redhat.com];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252058-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,d7c9eed171647e421013];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qq.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,appspotmail.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 0DD065993A5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 9F82C595949
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Hasan Basbunar <basbunarhasan@gmail.com>
 
-commit dc366607c41c45fd0ae6f3db090f31dd611b644a upstream.
+[ Upstream commit 5ef343614db766acdc01c56d66e780a1b43c6ac6 ]
 
-Commit 5e28b7b94408 introduced a logical error by failing to replace the
-newly generated IDR pointer to old id's pointer at the correct location
-within the "change handle" logic; this resulted in the issue reported by
-syzbot [1].
+When page_pool_create_percpu() fails on page_pool_list(), it falls
+through to its err_uninit: label, which calls page_pool_uninit().
+At that point page_pool_init() has already taken two references
+when the user requested PP_FLAG_ALLOW_UNREADABLE_NETMEM:
 
-Specifically, the new IDR object pointer is intended to replace the original
-id's pointer during the normal execution flow.
+	pool->mp_ops->init(pool)
+	static_branch_inc(&page_pool_mem_providers);
 
-Additionally, an unnecessary conditional check for the ret exit path has
-been removed.
+Neither is undone by page_pool_uninit(); both are only undone by
+__page_pool_destroy() (success-side teardown). The error path
+therefore leaks the per-provider reference taken by mp_ops->init
+(io_zcrx_ifq->refs in the io_uring zcrx provider, the dmabuf
+binding refcount in the devmem provider) plus one increment of
+the page_pool_mem_providers static branch on every failure of
+xa_alloc_cyclic() inside page_pool_list().
 
-[1]
-!RB_EMPTY_ROOT(&prime_fpriv->dmabufs)
-WARNING: drivers/gpu/drm/drm_prime.c:224 at drm_prime_destroy_file_private+0x48/0x60 drivers/gpu/drm/drm_prime.c:224, CPU#0: syz.0.17/5833
-Call Trace:
- drm_file_free.part.0+0x7e6/0xcc0 drivers/gpu/drm/drm_file.c:269
- drm_file_free drivers/gpu/drm/drm_file.c:237 [inline]
- drm_close_helper.isra.0+0x186/0x200 drivers/gpu/drm/drm_file.c:290
- drm_release+0x1ab/0x360 drivers/gpu/drm/drm_file.c:438
+The leaked io_zcrx_ifq->refs in turn pins everything
+io_zcrx_ifq_free() would release on cleanup: ifq->user (uid),
+ifq->mm_account (mmdrop), ifq->dev (device refcount),
+ifq->netdev_tracker (netdev refcount), and the rbuf region.
+The leaked static branch increment forces all subsequent
+page_pool_alloc_netmems() and page_pool_return_page() callers to
+take the slow mp_ops branch for the lifetime of the kernel.
 
-Fixes: 5e28b7b94408 ("drm: Set old handle to NULL before prime swap in change_handle")
-Reported-by: syzbot+d7c9eed171647e421013@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d7c9eed171647e421013
-Cc: stable@vger.kernel.org
-Tested-by: syzbot+d7c9eed171647e421013@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Dave Airlie <airlied@redhat.com>
-Link: https://patch.msgid.link/tencent_C267296443AAA4567771176886DFF364A305@qq.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reachable via the io_uring zcrx path:
+
+	io_uring_register(IORING_REGISTER_ZCRX_IFQ)  /* CAP_NET_ADMIN */
+	  -> __io_uring_register
+	  -> io_register_zcrx
+	  -> zcrx_register_netdev
+	  -> netif_mp_open_rxq
+	  -> driver ndo_queue_mem_alloc
+	  -> page_pool_create_percpu
+	    -> page_pool_init succeeds (mp_ops->init runs, branch++)
+	    -> page_pool_list fails (xa_alloc_cyclic -ENOMEM)
+	    -> goto err_uninit         <-- leak
+
+The same shape applies to the devmem dmabuf provider via
+mp_dmabuf_devmem_init()/mp_dmabuf_devmem_destroy().
+
+Restore the cleanup symmetry by moving the mp_ops->destroy() and
+static_branch_dec() calls out of __page_pool_destroy() and into
+page_pool_uninit(), so page_pool_uninit() is again the strict
+inverse of page_pool_init(). page_pool_uninit() has only two
+callers (the err_uninit: path and __page_pool_destroy()), so this
+preserves the single-call invariant on the success path while
+fixing the err path. The error path of page_pool_init() itself
+still skips the mp_ops cleanup correctly: mp_ops->init is the
+last action that takes a reference before page_pool_init() returns
+0, so when it returns an error neither the refcount nor the static
+branch has been touched.
+
+Triggering the bug requires xa_alloc_cyclic() to fail with -ENOMEM,
+which under normal GFP_KERNEL retry behaviour is rare. It is
+deterministic under CONFIG_FAULT_INJECTION with fail_page_alloc /
+xa fault injection, or under sustained memory pressure. The leak
+is silent: there is no warning, and the released kernel build
+continues running with a permanently-incremented static branch.
+
+Fixes: 0f9214046893 ("memory-provider: dmabuf devmem memory provider")
+Signed-off-by: Hasan Basbunar <basbunarhasan@gmail.com>
+Link: https://patch.msgid.link/20260428170739.34881-1-basbunarhasan@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_gem.c |    7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ net/core/page_pool.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/drm_gem.c
-+++ b/drivers/gpu/drm/drm_gem.c
-@@ -1049,17 +1049,12 @@ int drm_gem_change_handle_ioctl(struct d
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 1a5edec485f14..b775b6305fb78 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -323,6 +323,11 @@ static void page_pool_uninit(struct page_pool *pool)
+ 	if (!pool->system)
+ 		free_percpu(pool->recycle_stats);
+ #endif
++
++	if (pool->mp_ops) {
++		pool->mp_ops->destroy(pool);
++		static_branch_dec(&page_pool_mem_providers);
++	}
+ }
  
- 	spin_unlock(&file_priv->table_lock);
+ /**
+@@ -1122,11 +1127,6 @@ static void __page_pool_destroy(struct page_pool *pool)
+ 	page_pool_unlist(pool);
+ 	page_pool_uninit(pool);
  
--	if (ret < 0)
--		goto out_unlock;
+-	if (pool->mp_ops) {
+-		pool->mp_ops->destroy(pool);
+-		static_branch_dec(&page_pool_mem_providers);
+-	}
 -
- 	if (obj->dma_buf) {
- 		ret = drm_prime_add_buf_handle(&file_priv->prime, obj->dma_buf,
- 					       handle);
- 		if (ret < 0) {
- 			spin_lock(&file_priv->table_lock);
- 			idr_remove(&file_priv->object_idr, handle);
--			idrobj = idr_replace(&file_priv->object_idr, obj, handle);
--			WARN_ON(idrobj != NULL);
- 			spin_unlock(&file_priv->table_lock);
- 			goto out_unlock;
- 		}
-@@ -1071,7 +1066,9 @@ int drm_gem_change_handle_ioctl(struct d
+ 	kfree(pool);
+ }
  
- 	spin_lock(&file_priv->table_lock);
- 	idr_remove(&file_priv->object_idr, args->handle);
-+	idrobj = idr_replace(&file_priv->object_idr, obj, handle);
- 	spin_unlock(&file_priv->table_lock);
-+	WARN_ON(idrobj != NULL);
- 
- out_unlock:
- 	mutex_unlock(&file_priv->prime.lock);
+-- 
+2.53.0
+
 
 
 
