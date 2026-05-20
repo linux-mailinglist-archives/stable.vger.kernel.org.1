@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250485-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kKEMJvAaDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251464-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:34:56 +0200
+	id kO8KOZUQDmrw5wUAu9opvQ
+	(envelope-from <stable+bounces-250485-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:50:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE3AB599CC1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:34:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83505598C95
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:50:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2BA3432702C0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:27:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DF5453794B01
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:45:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C84163D5642;
-	Wed, 20 May 2026 17:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53F97370AF4;
+	Wed, 20 May 2026 16:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZNmqEjCl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bK1so3Hl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D913A4526;
-	Wed, 20 May 2026 17:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1294331F9BE;
+	Wed, 20 May 2026 16:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298050; cv=none; b=SvM/9Zvvx77Q2oLryV9ANZX98wmXI94x449nagsnFwQGaEqSGeg9DT+z6ow5+bjxT2Abt00sGNVCAGIQqEzJdqqEhbzWAtr1r8Bif5ucDN/ARtEIjsFvrQYJMj1xeXR/KNpLQfpKPp1FaxzK+1qBZ4E2CgizJ/oTQ/gY6dl/gWA=
+	t=1779295533; cv=none; b=BmHBsPUNhIYBvC0sJ1hDvTJ+GwxVIj+mF4T9j08Rp22IXv1VTt890PEnqHe+UK33KMtd/sm0mSWf8gsekfhyzsyww4hQrjqlDKSk18tlEiCokhAg1U32KauO4LqYdkF5SVUHo13zYH8LvufPg/84iiKVH+SV3xPlvjXbOv+NWZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298050; c=relaxed/simple;
-	bh=pSIl2qbnbbA0O460QI0lSmIOwsQntT6chpjkxLFZHYc=;
+	s=arc-20240116; t=1779295533; c=relaxed/simple;
+	bh=zx0GtGJD4e2R+oevWi7YXfRiNi2+E0fZPEN9H3ndLlM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kLmkviODzj4it6Ovhk10syojKvvT9i6aiwsURL0gRtykVBYlQxlL+NK1oNhMlr4Y0VyqJEDub51v4bf6sdotccNT0t6bmK5FckLBiK64fK2FsBwUG3XdNpc3DwmShu2b3rdu2ZTOf+3K5n3Xa6LxevLZul9zvHNXi69wZPS8HYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZNmqEjCl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B26651F000E9;
-	Wed, 20 May 2026 17:27:28 +0000 (UTC)
+	 MIME-Version; b=DpY62J3IjfHsR0CVWNj/bnsTA6zsBn9eOXwO1pWcNR7kXPI7wsqFTYBo6E8PHvhYCtdBXQqb9ck+/PxKJ6yYdhp4bsaqSpFba5hmFBX2KBxZBXn1ZI4XmU73XUY9Eqp1vrPH5kMvB/evFbN5mXh5R2Bpfq8Ab3HkjBSPmDJUjfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bK1so3Hl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 780D31F000E9;
+	Wed, 20 May 2026 16:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298049;
-	bh=IMmvzjt8kObSCINE5Sy9zuPoczn9xFZttX9ex78LtsE=;
+	s=korg; t=1779295532;
+	bh=gdDfpewL76VCo6Sznu0cng3sFRJheCSiDgm66mt2hOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZNmqEjCl3sak6cdXjner1W/lFw3m2tw4zuTu7sCP0pVMHgyHetBN5SnhEmyGzFPWE
-	 aH4VUwyindLSmw5zW9d+GXwJxNL7V02cj92kQ8/+AwXJAOxipNCKrptytrB9J3ckGt
-	 bIZWjWg7N83XwQZhWEJ1UU8E7Q33nNUM/+1FPUjQ=
+	b=bK1so3HlSzQ8qc2IG4lOUFX9sUETp51oQNPFI9NDEIp2qcMcCCuXrT8Lm1WqgAA2j
+	 +80uDy/b9eLJpIQ7yWegBnKgQmmotgkJWgHELzNy5DMxKE6JWBKEIgWVNOrMlmYV6X
+	 cM6/85wsR6OiyL0r5vr0EAbCUsUkmJoSJlcHYNUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ethan Tidmore <ethantidmore06@gmail.com>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Chen-Yu Tsai <wens@kernel.org>,
+	Wander Lairson Costa <wander@redhat.com>,
+	Tomas Glozar <tglozar@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 221/957] drm/sun4i: Fix resource leaks
-Date: Wed, 20 May 2026 18:11:44 +0200
-Message-ID: <20260520162139.335774242@linuxfoundation.org>
+Subject: [PATCH 7.0 0455/1146] rtla/utils: Fix resource leak in set_comm_sched_attr()
+Date: Wed, 20 May 2026 18:11:45 +0200
+Message-ID: <20260520162158.498035085@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,8 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
@@ -75,67 +73,89 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251464-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250485-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: EE3AB599CC1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 83505598C95
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Tidmore <ethantidmore06@gmail.com>
+From: Wander Lairson Costa <wander@redhat.com>
 
-[ Upstream commit 127367ad2e0f4870de60c6d719ae82ecf68d674c ]
+[ Upstream commit 5b6dc659ad792c72b3ff1be8039ae2945e030928 ]
 
-Three clocks are not being released in devm_regmap_init_mmio() error
-path.
+The set_comm_sched_attr() function opens the /proc directory via
+opendir() but fails to call closedir() on its successful exit path.
+If the function iterates through all processes without error, it
+returns 0 directly, leaking the DIR stream pointer.
 
-Add proper goto and set ret to the error code.
+Fix this by refactoring the function to use a single exit path. A
+retval variable is introduced to track the success or failure status.
+All exit points now jump to a unified out label that calls closedir()
+before the function returns, ensuring the resource is always freed.
 
-Fixes: 8270249fbeaf0 ("drm/sun4i: backend: Create regmap after access is possible")
-Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
-Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Link: https://patch.msgid.link/20260226163836.10335-1-ethantidmore06@gmail.com
-Signed-off-by: Chen-Yu Tsai <wens@kernel.org>
+Fixes: dada03db9bb19 ("rtla: Remove procps-ng dependency")
+Signed-off-by: Wander Lairson Costa <wander@redhat.com>
+Link: https://lore.kernel.org/r/20260309195040.1019085-18-wander@redhat.com
+Signed-off-by: Tomas Glozar <tglozar@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/sun4i/sun4i_backend.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/tracing/rtla/src/utils.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/sun4i/sun4i_backend.c b/drivers/gpu/drm/sun4i/sun4i_backend.c
-index 0484cc27c97ae..1518126e9fe32 100644
---- a/drivers/gpu/drm/sun4i/sun4i_backend.c
-+++ b/drivers/gpu/drm/sun4i/sun4i_backend.c
-@@ -880,7 +880,8 @@ static int sun4i_backend_bind(struct device *dev, struct device *master,
- 						     &sun4i_backend_regmap_config);
- 	if (IS_ERR(backend->engine.regs)) {
- 		dev_err(dev, "Couldn't create the backend regmap\n");
--		return PTR_ERR(backend->engine.regs);
-+		ret = PTR_ERR(backend->engine.regs);
-+		goto err_disable_ram_clk;
- 	}
+diff --git a/tools/tracing/rtla/src/utils.c b/tools/tracing/rtla/src/utils.c
+index 22d2182c729e5..53e45eabae03c 100644
+--- a/tools/tracing/rtla/src/utils.c
++++ b/tools/tracing/rtla/src/utils.c
+@@ -360,22 +360,23 @@ int set_comm_sched_attr(const char *comm_prefix, struct sched_attr *attr)
  
- 	list_add_tail(&backend->engine.list, &drv->engine_list);
+ 		if (strtoi(proc_entry->d_name, &pid)) {
+ 			err_msg("'%s' is not a valid pid", proc_entry->d_name);
+-			goto out_err;
++			retval = 1;
++			goto out;
+ 		}
+ 		/* procfs_is_workload_pid confirmed it is a pid */
+ 		retval = __set_sched_attr(pid, attr);
+ 		if (retval) {
+ 			err_msg("Error setting sched attributes for pid:%s\n", proc_entry->d_name);
+-			goto out_err;
++			goto out;
+ 		}
+ 
+ 		debug_msg("Set sched attributes for pid:%s\n", proc_entry->d_name);
+ 	}
+-	return 0;
+ 
+-out_err:
++	retval = 0;
++out:
+ 	closedir(procfs);
+-	return 1;
++	return retval;
+ }
+ 
+ #define INVALID_VAL	(~0L)
 -- 
 2.53.0
 
