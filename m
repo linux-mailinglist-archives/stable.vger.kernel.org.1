@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-251350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250412-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yDvLEmrxDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-251350-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:37:46 +0200
+	id sEglIy3yDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-250412-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C60BF594244
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:37:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2692594462
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D9D5630FF499
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:22:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9A5DE32547A4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4934D3D6673;
-	Wed, 20 May 2026 17:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23798221F2F;
+	Wed, 20 May 2026 16:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M8WUeArl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RxMlqf5L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4240369999;
-	Wed, 20 May 2026 17:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B5863CB;
+	Wed, 20 May 2026 16:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297750; cv=none; b=mmRGupFsf3KpI1f2JMjc4uL1fRSDbHdz7JhP4zITc72bnRmwCS1vUyw4CqqB30OVq2ULooeWNSfbiWDUdZUdtvgqLMQTnQZFac8OmMQKrrhTxbxxfZ9890XHR1SCoL3CZuVAU5UZG015enP0K++Z8uJ+/7nC+cSxnPhizXeKmg8=
+	t=1779295346; cv=none; b=fnINjeje9dqRi4OWRJ7r83h8vtti1zmXniKUlrvs6OHrVJ938JmWWtDEN+G+uomyfAe3FRXrusEjYARUEHrP1b2/RiOeRDfCnXkDp62WdBA0Xk254Qn8CUM+otAiyGR5ogC9stOtNciWnaIjZZeZIo8yOV1K1OihOCvSMNohbws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297750; c=relaxed/simple;
-	bh=xZiaYPjOWOJslRbm/nduc8PZ6k2Zg8fCPHIbukC/ETY=;
+	s=arc-20240116; t=1779295346; c=relaxed/simple;
+	bh=CjX8L/IcLRJCCaxDi26YbBW6ddXifnHBdPsX8L+e8Pg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GhbFmRY3Q5Liv9TwNHYGqbQl1xJtO4Ia1AZ7/iRKhKqlCPr2u2wE2r9CsKvoDsrPBik4ocgPY9eq7SBd4sVV56czEYEH7FIzfDM6muJBfDaI3HSlwr0eBOvkAiCfCQzC5N0ODeqAL+j/pubZDPnbyI/hLUB1SU9gkR4DMjSecr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M8WUeArl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DFEF1F000E9;
-	Wed, 20 May 2026 17:22:28 +0000 (UTC)
+	 MIME-Version; b=jdQAdkv1y7wWho3p+sptEivm/gBGGoVNSp+9I7PT6UCXSqsmbAeKDScXIs7CnNMYUGTNTX37VNSrTyz8p3xWllBeaYkkHcn4QlRcV7UY4KFuwwbCHAtXFhVf6rHJxLK/lisv9MU9D36r6vZmusozk4exm5ACyFukZ3YVDNmPFZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RxMlqf5L; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3509A1F00893;
+	Wed, 20 May 2026 16:42:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297748;
-	bh=OiLM4A7K0yqVE6QfMPzfnK8mz5vaZjERfOZQ2nJeRvA=;
+	s=korg; t=1779295345;
+	bh=fX1spIT6m5VFkq/7+E49JT+OX8oH9zZIIGZzjEzEcWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=M8WUeArlK8hP2cA0Ym3GRPWDZlQ7b5pdc1pm9X8Uqwxt2gb9FEhcY3+MYvPsdpWUF
-	 ezKKVYDcFiZ1VkXjR3V/pxNVlrxjDnjpcFJdW73UhaHI/aP0VAD7QXxX03GDxILzP9
-	 m764vSarGVADeVPUA/+eDWyWB8wJyZqXxk+b+ETw=
+	b=RxMlqf5LuasfzChONbpjQHASeVIiMZTXZ9Pk6cZ7bn3TAXdzgxFpYj/a5I6IAa5Ae
+	 yqwf/GRuiIdJtWQJM/w7qlmYccD9uLz1OLWvDspEnzfp4lMELPhYLrWevmXQdvL0Cm
+	 /Z/58U4P8ibP7G2AEOlguYj7erClnOr05tRZ+jGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 149/957] net: airoha: Add airoha_eth_soc_data struct
+Subject: [PATCH 7.0 0382/1146] ASoC: qcom: qdsp6: topology: check widget type before accessing data
 Date: Wed, 20 May 2026 18:10:32 +0200
-Message-ID: <20260520162137.785483056@linuxfoundation.org>
+Message-ID: <20260520162156.845112217@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,195 +68,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,redhat.com];
-	TAGGED_FROM(0.00)[bounces-251350-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_FROM(0.00)[bounces-250412-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: C60BF594244
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: E2692594462
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-[ Upstream commit 5863b4e065e2253ef05684f728a04e4972046bcb ]
+[ Upstream commit d5bfdd28e0cdd45043ae6e0ac168a451d59283dc ]
 
-Introduce airoha_eth_soc_data struct to contain differences between
-various SoC. Move XSI reset names in airoha_eth_soc_data. This is a
-preliminary patch to enable AN7583 ethernet controller support in
-airoha-eth driver.
+Check widget type before accessing the private data, as this could a
+virtual widget which is no associated with a dsp graph, container and
+module. Accessing witout check could lead to incorrect memory access.
 
-Co-developed-by: Christian Marangi <ansuelsmth@gmail.com>
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20251017-an7583-eth-support-v3-4-f28319666667@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 02f729643959 ("net: airoha: Fix FE_PSE_BUF_SET configuration if PPE2 is available")
+Fixes: 36ad9bf1d93d ("ASoC: qdsp6: audioreach: add topology support")
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260402081118.348071-4-srinivas.kandagatla@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/airoha/airoha_eth.c | 42 +++++++++++++++++++-----
- drivers/net/ethernet/airoha/airoha_eth.h | 17 ++++++++--
- 2 files changed, 48 insertions(+), 11 deletions(-)
+ sound/soc/qcom/qdsp6/topology.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index 060865b98880e..5162f2a689000 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -1406,8 +1406,7 @@ static int airoha_hw_init(struct platform_device *pdev,
- 	int err, i;
+diff --git a/sound/soc/qcom/qdsp6/topology.c b/sound/soc/qcom/qdsp6/topology.c
+index e732fac9b8ca0..1f69fba6de26d 100644
+--- a/sound/soc/qcom/qdsp6/topology.c
++++ b/sound/soc/qcom/qdsp6/topology.c
+@@ -952,9 +952,6 @@ static int audioreach_widget_unload(struct snd_soc_component *scomp,
+ 	struct audioreach_container *cont;
+ 	struct audioreach_module *mod;
  
- 	/* disable xsi */
--	err = reset_control_bulk_assert(ARRAY_SIZE(eth->xsi_rsts),
--					eth->xsi_rsts);
-+	err = reset_control_bulk_assert(eth->soc->num_xsi_rsts, eth->xsi_rsts);
- 	if (err)
- 		return err;
- 
-@@ -2943,6 +2942,7 @@ static int airoha_register_gdm_devices(struct airoha_eth *eth)
- 
- static int airoha_probe(struct platform_device *pdev)
- {
-+	struct reset_control_bulk_data *xsi_rsts;
- 	struct device_node *np;
- 	struct airoha_eth *eth;
- 	int i, err;
-@@ -2951,6 +2951,10 @@ static int airoha_probe(struct platform_device *pdev)
- 	if (!eth)
- 		return -ENOMEM;
- 
-+	eth->soc = of_device_get_match_data(&pdev->dev);
-+	if (!eth->soc)
-+		return -EINVAL;
-+
- 	eth->dev = &pdev->dev;
- 
- 	err = dma_set_mask_and_coherent(eth->dev, DMA_BIT_MASK(32));
-@@ -2975,13 +2979,18 @@ static int airoha_probe(struct platform_device *pdev)
- 		return err;
+-	mod = dobj->private;
+-	cont = mod->container;
+-
+ 	if (w->id == snd_soc_dapm_mixer) {
+ 		/* virtual widget */
+ 		struct snd_ar_control *scontrol = dobj->private;
+@@ -963,6 +960,11 @@ static int audioreach_widget_unload(struct snd_soc_component *scomp,
+ 		kfree(scontrol);
+ 		return 0;
  	}
- 
--	eth->xsi_rsts[0].id = "xsi-mac";
--	eth->xsi_rsts[1].id = "hsi0-mac";
--	eth->xsi_rsts[2].id = "hsi1-mac";
--	eth->xsi_rsts[3].id = "hsi-mac";
--	eth->xsi_rsts[4].id = "xfp-mac";
-+	xsi_rsts = devm_kzalloc(eth->dev,
-+				eth->soc->num_xsi_rsts * sizeof(*xsi_rsts),
-+				GFP_KERNEL);
-+	if (err)
-+		return err;
++	mod = dobj->private;
++	if (!mod)
++		return 0;
 +
-+	eth->xsi_rsts = xsi_rsts;
-+	for (i = 0; i < eth->soc->num_xsi_rsts; i++)
-+		eth->xsi_rsts[i].id = eth->soc->xsi_rsts_names[i];
-+
- 	err = devm_reset_control_bulk_get_exclusive(eth->dev,
--						    ARRAY_SIZE(eth->xsi_rsts),
-+						    eth->soc->num_xsi_rsts,
- 						    eth->xsi_rsts);
- 	if (err) {
- 		dev_err(eth->dev, "failed to get bulk xsi reset lines\n");
-@@ -3074,8 +3083,23 @@ static void airoha_remove(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, NULL);
- }
++	cont = mod->container;
  
-+static const char * const en7581_xsi_rsts_names[] = {
-+	"xsi-mac",
-+	"hsi0-mac",
-+	"hsi1-mac",
-+	"hsi-mac",
-+	"xfp-mac",
-+};
-+
-+static const struct airoha_eth_soc_data en7581_soc_data = {
-+	.version = 0x7581,
-+	.xsi_rsts_names = en7581_xsi_rsts_names,
-+	.num_xsi_rsts = ARRAY_SIZE(en7581_xsi_rsts_names),
-+	.num_ppe = 2,
-+};
-+
- static const struct of_device_id of_airoha_match[] = {
--	{ .compatible = "airoha,en7581-eth" },
-+	{ .compatible = "airoha,en7581-eth", .data = &en7581_soc_data },
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, of_airoha_match);
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
-index 3e43f01e9a652..655bc6acd80f0 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.h
-+++ b/drivers/net/ethernet/airoha/airoha_eth.h
-@@ -21,7 +21,6 @@
- #define AIROHA_MAX_NUM_IRQ_BANKS	4
- #define AIROHA_MAX_DSA_PORTS		7
- #define AIROHA_MAX_NUM_RSTS		3
--#define AIROHA_MAX_NUM_XSI_RSTS		5
- #define AIROHA_MAX_MTU			9216
- #define AIROHA_MAX_PACKET_SIZE		2048
- #define AIROHA_NUM_QOS_CHANNELS		4
-@@ -556,9 +555,18 @@ struct airoha_ppe {
- 	struct dentry *debugfs_dir;
- };
- 
-+struct airoha_eth_soc_data {
-+	u16 version;
-+	const char * const *xsi_rsts_names;
-+	int num_xsi_rsts;
-+	int num_ppe;
-+};
-+
- struct airoha_eth {
- 	struct device *dev;
- 
-+	const struct airoha_eth_soc_data *soc;
-+
- 	unsigned long state;
- 	void __iomem *fe_regs;
- 
-@@ -568,7 +576,7 @@ struct airoha_eth {
- 	struct rhashtable flow_table;
- 
- 	struct reset_control_bulk_data rsts[AIROHA_MAX_NUM_RSTS];
--	struct reset_control_bulk_data xsi_rsts[AIROHA_MAX_NUM_XSI_RSTS];
-+	struct reset_control_bulk_data *xsi_rsts;
- 
- 	struct net_device *napi_dev;
- 
-@@ -611,6 +619,11 @@ static inline bool airhoa_is_lan_gdm_port(struct airoha_gdm_port *port)
- 	return port->id == 1;
- }
- 
-+static inline bool airoha_is_7581(struct airoha_eth *eth)
-+{
-+	return eth->soc->version == 0x7581;
-+}
-+
- bool airoha_is_valid_gdm_port(struct airoha_eth *eth,
- 			      struct airoha_gdm_port *port);
- 
+ 	mutex_lock(&apm->lock);
+ 	idr_remove(&apm->modules_idr, mod->instance_id);
 -- 
 2.53.0
 
