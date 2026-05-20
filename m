@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250723-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sMpENs0FDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-252339-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:04:45 +0200
+	id CFoVH1vsDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250723-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:16:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BD6D597B22
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:04:45 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20AD5593335
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:16:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E8B9431C0812
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:07:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 215C8304A621
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:57:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8414E3E95A4;
-	Wed, 20 May 2026 18:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A476E3F1AB8;
+	Wed, 20 May 2026 16:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="btRvKD2i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WquDUJA9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A303F86FB;
-	Wed, 20 May 2026 18:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 683863EFD22;
+	Wed, 20 May 2026 16:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300418; cv=none; b=XXdjZHLKuUAdBmW3ncIoc1edAIrbc3lMzu/WWMfM+pbNQ2Da+mcoKZhrb2KYwM56UM1J8wVFY2A2QEMZpXglwbRwc/K3+zBRJ339wPZdYMedtI+YSJJqCJSgHAdrijUs3HwvIxi6zuBitITieBT3lSA3PNU7zsw9XZ9oLk984fA=
+	t=1779296148; cv=none; b=pMQnmpttDTSUuEZ7YU9K1di2l3aiQvGQaYotOP43OMmDJoHrCwXvTaJzHMgyWnB+hQSyZKcR2lhW8qHxqG+jVShyCvAuh4pOCLxXWddNZ/CUGOmEC55uAyxlrsL1fP8swme2JYkYwBfYrNPT8dFcZbpKSqKdFx+gUxu6oHhuYRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300418; c=relaxed/simple;
-	bh=u2yMBjDgRVk8nZki5PvUis+WDXcP3uN04fOfgKsCmYg=;
+	s=arc-20240116; t=1779296148; c=relaxed/simple;
+	bh=Isp3wXgVb1VQA2JEDeI/s8JHc1kVjXW/y2a7/B9vUlM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DAyo9x+CKSU8+MFqTGyAd6WPpgQt8o95PGYTBTc/LtE0jLCnNiEeV6SX9XMc4RrA5l1smMY7N8YAe/V4lkW2C4uKkKfWr4tDqahJtPzynBHBr07qZjryJQ7+woI8C5zP5vk9IXexLjXwDIm7/SD3tIB9UcTOuWaoutaUSqoafdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=btRvKD2i; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EB871F000E9;
-	Wed, 20 May 2026 18:06:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=G+e1d4I3iV5MYrMvSLPNDgti+u/S6SFvJ8PxdVoO5xxD6TSjUd3QSFyXVSyT2uJBsmBZUTuN8jQsoHwPMlRwWWZ5hmTcd7eOnzhNxUGEkR4PkY+2foIadOljLs/SJFjGMWhk80MLznorIL5STlPuvvwSaSOm8cC7fUF37A4V9Ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WquDUJA9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC191F000E9;
+	Wed, 20 May 2026 16:55:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300417;
-	bh=2Z/CWzLvVAkUTwea5X4F3k0Ii6xwg94uettm8oIWtew=;
+	s=korg; t=1779296147;
+	bh=0s2vxNfkKBJsMiF5bwdIJ3PCqNZ9n88umPtiydvjxO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=btRvKD2ikoySwtDz0Zboz1W4ijZpKZev7HyQXJhBYaXRrVPJGi+wkrUfArhkdOUTr
-	 2nPBU/iUCf4nTkQg7gWcQcMrgUPGoSCJ1ZSllPxSJMfY+fz4aBn4yA+fre44T3NtPm
-	 DwvmLeC1J32868iawf40ejiPLmui1H2ZkJAL9BSo=
+	b=WquDUJA9OJHmQ1duVTpVFsodA5AdchMMT24/jYlZnqn8ka7bfabL2/s75JgGkMXlk
+	 Xp0YhF0nMzQUihcg+dflJm0Lr56E2lKI4Tx3DFD0PN72GYrtyIwNpGkeBZjHbV6AIo
+	 j92mKK+hAtSCwmCoiljzInJeEo/OUpQSH4j7c2hA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Emre Cecanpunar <emreleno@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 126/666] dm cache: fix write path cache coherency in passthrough mode
+Subject: [PATCH 7.0 0687/1146] platform/x86: hp-wmi: avoid cancel_delayed_work_sync from work handler
 Date: Wed, 20 May 2026 18:15:37 +0200
-Message-ID: <20260520162113.947080047@linuxfoundation.org>
+Message-ID: <20260520162203.737935159@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +63,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252339-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250723-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com,kernel.org];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 2BD6D597B22
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 20AD5593335
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Emre Cecanpunar <emreleno@gmail.com>
 
-[ Upstream commit 0c5eef0aad508231d8e43ff8392692925e131b68 ]
+[ Upstream commit 249ddba9c0ba4453c0a6bc0e3626e7864751d940 ]
 
-In passthrough mode, dm-cache defers write bio submission until cache
-invalidation completes to maintain existing coherency, requiring the
-target map function to return DM_MAPIO_SUBMITTED. The current map_bio()
-returns DM_MAPIO_REMAPPED, violating the required ordering constraint.
+hp_wmi_apply_fan_settings() uses cancel_delayed_work_sync() to stop
+the keep-alive timer in AUTO mode. However, since
+hp_wmi_apply_fan_settings() is also called from the keep-alive
+handler, a race condition with a sysfs write can cause the handler to
+wait on itself, leading to a deadlock.
 
-Reproduce steps:
+Replace cancel_delayed_work_sync() with cancel_delayed_work() in
+hp_wmi_apply_fan_settings() to avoid the self-flush deadlock.
 
-1. Create a cache device
-
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
-dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
-dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-dmsetup create cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-
-2. Promote the first data block into the cache
-
-fio --filename=/dev/mapper/cache --name=populate --rw=write --bs=4k \
---direct=1 --size=64k
-
-3. Reload the cache into passthrough mode
-
-dmsetup suspend cache
-dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 passthrough smq 0"
-dmsetup resume cache
-
-4. Write to the first data block, and check io ordering using ftrace
-
-echo 1 > /sys/kernel/debug/tracing/events/block/block_bio_queue/enable
-echo 1 > /sys/kernel/debug/tracing/events/block/block_bio_complete/enable
-echo 1 > /sys/kernel/debug/tracing/events/block/block_rq_complete/enable
-fio --filename=/dev/mapper/cache --name=test --rw=write --bs=64k \
---direct=1 --size 64k
-
-5. ftrace logs show that write operations to the cache origin (252:2)
-   and metadata operations (252:0) are unsynchronized: the origin write
-   occurs before metadata commit.
-
- <snip>
-       fio-146  [000] .....  420.139562: block_bio_queue: 252,3 WS 0 + 128 [fio]
-       fio-146  [000] .....  420.149395: block_bio_queue: 252,2 WS 0 + 128 [fio]
-       fio-146  [000] .....  420.149763: block_bio_queue: 8,32 WS 262144 + 128 [fio]
-       fio-146  [000] dNh1.  420.151446: block_rq_complete: 8,32 WS () 262144 + 128 be,0,4 [0]
-       fio-146  [000] dNh1.  420.152731: block_bio_complete: 252,2 WS 0 + 128 [0]
-       fio-146  [000] dNh1.  420.154229: block_bio_complete: 252,3 WS 0 + 128 [0]
- kworker/0:0-9  [000] .....  420.160530: block_bio_queue: 252,0 W 408 + 8 [kworker/0:0]
- kworker/0:0-9  [000] .....  420.161641: block_bio_queue: 8,32 W 408 + 8 [kworker/0:0]
- kworker/0:0-9  [000] .....  420.162533: block_bio_queue: 252,0 W 416 + 8 [kworker/0:0]
- kworker/0:0-9  [000] .....  420.162821: block_bio_queue: 8,32 W 416 + 8 [kworker/0:0]
- <snip>
-
-Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: c203c59fb5de ("platform/x86: hp-wmi: implement fan keep-alive")
+Signed-off-by: Emre Cecanpunar <emreleno@gmail.com>
+Link: https://patch.msgid.link/20260407142515.20683-3-emreleno@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-cache-target.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/platform/x86/hp/hp-wmi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
-index c1e94ffc9b3d6..61f6050479d15 100644
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -1697,6 +1697,7 @@ static int map_bio(struct cache *cache, struct bio *bio, dm_oblock_t block,
- 				bio_drop_shared_lock(cache, bio);
- 				atomic_inc(&cache->stats.demotion);
- 				invalidate_start(cache, cblock, block, bio);
-+				return DM_MAPIO_SUBMITTED;
- 			} else
- 				remap_to_origin_clear_discard(cache, bio, block);
- 		} else {
+diff --git a/drivers/platform/x86/hp/hp-wmi.c b/drivers/platform/x86/hp/hp-wmi.c
+index c9fe740d8933e..4dd7e4a118ea4 100644
+--- a/drivers/platform/x86/hp/hp-wmi.c
++++ b/drivers/platform/x86/hp/hp-wmi.c
+@@ -2389,7 +2389,7 @@ static int hp_wmi_apply_fan_settings(struct hp_wmi_hwmon_priv *priv)
+ 		}
+ 		if (ret < 0)
+ 			return ret;
+-		cancel_delayed_work_sync(&priv->keep_alive_dwork);
++		cancel_delayed_work(&priv->keep_alive_dwork);
+ 		return 0;
+ 	default:
+ 		/* shouldn't happen */
 -- 
 2.53.0
 
