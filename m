@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250822-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6CqdBKYkDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252352-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:16:22 +0200
+	id 4FP2EeHxDWp+4wUAu9opvQ
+	(envelope-from <stable+bounces-250822-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:39:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5C6859AA1F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:16:21 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3023E594370
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:39:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E6C9E30DF543
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:07:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4FE073258EF4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:01:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C3A42A96;
-	Wed, 20 May 2026 18:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C3711E633C;
+	Wed, 20 May 2026 16:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K7gZV2E3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VMl6rNCw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A16436CE19;
-	Wed, 20 May 2026 18:07:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A5C3EAC82;
+	Wed, 20 May 2026 16:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300452; cv=none; b=lGURVOq0lYBQxpF6QS0xZ0z1VN+SMPNXXdjDta3+/buEpQY2jqxjYIYMzMik/pD/vi2HZdYNVeyA7YIDo74ZNxNQnkD0QVpIQO8gWqIjsZmpDZUcZuSDERfqyWKVxBeVvO6iQDkOo185Nyc8NJw42gIiLI9c8nm3xaixHtUIDmE=
+	t=1779296397; cv=none; b=NeYZMT0jR35zsMVw1BEVK81yneJ6GzdtKdPX9wDoQ9AIbN9AaEwIpJxtjsSE+h80IzDM/m35cnfAVQOx1Odblu9JlEIcguySUGim4PEjtUx3467FcA8ELogVgrZIw3ConjUMpNYhZKsnl+sn3ZRDV2qncuxpbpHpjhihwuA2McY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300452; c=relaxed/simple;
-	bh=24sD+amJ9pP4AmyvY2DDQO3feedxCRxeRNS3ymxMEEU=;
+	s=arc-20240116; t=1779296397; c=relaxed/simple;
+	bh=Ezb8tMlMNJ56k5BzTRraEagxQQeoF8mTczq6vLg4DBg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qcfng8PEGsvWEdEEFl8q92crdsMuw6ICL/0PEcCvTKXVgb0yZ0IWKlNdXwPyP4jsExUle61cM2bvZGT+vOs7UZkm6qBKWGuOzn7RJIbUUhq2e/+3egSGISwSU3lFQ6YWmrdqhWK6ldUCo9Y9+x4llR+uMHmYZDotEDPEaz07KRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K7gZV2E3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E056E1F000E9;
-	Wed, 20 May 2026 18:07:30 +0000 (UTC)
+	 MIME-Version; b=WgQwV1LpJW6L0kpc2f/WJ1iGUATb6qdehOl8LD10vKM4mu4hm4sXVgorg003ybTxXaS9xG/lEXMYEwTvIQCNm2CgmA5pmhKxCWrk1ztSLyH3+khi5JYfXUYtFgDE62AE3Lqhp6TocH5mCFQRRO39Qi6c4NFKy69k10axm8dn7v8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VMl6rNCw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C00241F000E9;
+	Wed, 20 May 2026 16:59:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300451;
-	bh=VZeeNY53+fpYeOrw3c3fMvEts3dzJTlPxr18WmGdUY8=;
+	s=korg; t=1779296395;
+	bh=kmHV+8B6wHHdUEkop9D7bsm/Uc3byqcJnoPdvdRvr3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=K7gZV2E3YqgRXf3gabgsxtiNR8dK6SXLhV8LCgjpfAuYCGXLNVz0g+uHgVxuF1siG
-	 Mdxax7GGhTNuL88kxpPBnwRHjVByODFxCNYpZ0Yef9274JpPrrNsGco/TU3TPoJd1k
-	 I3MiUDEXrNnerT4jX8jynw9PXOON7MGyWbIGDwrM=
+	b=VMl6rNCwlWfRy4YZB0qwPA2he4UEIi8iR9E3yXeUEqVa0yE66NaRxFfkClu28pYc4
+	 8kvSnM1E9sheUewg7dmGxWCYmlxkb1uFtzTNy2gSa08JyYBevQGvXMPI/pOifHIznu
+	 8jNwekn64xValdeK6ZgL6NmSP2lW+o7fuHr7mjkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	Kenneth Kasilag <kenneth@kasilag.me>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 181/666] drm/amd/pm/ci: Fill DW8 fields from SMC
+Subject: [PATCH 7.0 0742/1146] crypto: eip93 - fix hmac setkey algo selection
 Date: Wed, 20 May 2026 18:16:32 +0200
-Message-ID: <20260520162115.124002005@linuxfoundation.org>
+Message-ID: <20260520162204.998969323@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +64,128 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252352-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,wp.pl,kasilag.me,gondor.apana.org.au,kernel.org];
+	TAGGED_FROM(0.00)[bounces-250822-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
-X-Rspamd-Queue-Id: A5C6859AA1F
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,apana.org.au:email,wp.pl:email,kasilag.me:email]
+X-Rspamd-Queue-Id: 3023E594370
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
 
-[ Upstream commit baf28ec5795c077406d6f52b8ad39e614153bce6 ]
+[ Upstream commit 3ba3b02f897b14e34977e1886d95ffe64d907204 ]
 
-In ci_populate_dw8() we currently just read a value from the SMU
-and then throw it away. Instead of throwing away the value,
-we should use it to fill other fields in DW8 (like radeon).
+eip93_hmac_setkey() allocates a temporary ahash transform for
+computing HMAC ipad/opad key material. The allocation uses the
+driver-specific cra_driver_name (e.g. "sha256-eip93") but passes
+CRYPTO_ALG_ASYNC as the mask, which excludes async algorithms.
 
-Otherwise the value of the other fiels is just cleared when
-we copy this data to the SMU later.
+Since the EIP93 hash algorithms are the only ones registered
+under those driver names and they are inherently async, the
+lookup is self-contradictory and always fails with -ENOENT.
 
-Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+When called from the AEAD setkey path, this failure leaves the
+SA record partially initialized with zeroed digest fields. A
+subsequent crypto operation then dereferences a NULL pointer in
+the request context, resulting in a kernel panic:
+
+```
+  pc : eip93_aead_handle_result+0xc8c/0x1240 [crypto_hw_eip93]
+  lr : eip93_aead_handle_result+0xbec/0x1240 [crypto_hw_eip93]
+  sp : ffffffc082feb820
+  x29: ffffffc082feb820 x28: ffffff8011043980 x27: 0000000000000000
+  x26: 0000000000000000 x25: ffffffc078da0bc8 x24: 0000000091043980
+  x23: ffffff8004d59e50 x22: ffffff8004d59410 x21: ffffff8004d593c0
+  x20: ffffff8004d593c0 x19: ffffff8004d4f300 x18: 0000000000000000
+  x17: 0000000000000000 x16: 0000000000000000 x15: 0000007fda7aa498
+  x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
+  x11: 0000000000000000 x10: fffffffff8127a80 x9 : 0000000000000000
+  x8 : ffffff8004d4f380 x7 : 0000000000000000 x6 : 000000000000003f
+  x5 : 0000000000000040 x4 : 0000000000000008 x3 : 0000000000000009
+  x2 : 0000000000000008 x1 : 0000000028000003 x0 : ffffff8004d388c0
+  Code: 910142b6 f94012e0 f9002aa0 f90006d3 (f9400740)
+```
+
+The reported symbol eip93_aead_handle_result+0xc8c is a
+resolution artifact from static functions being merged under
+the nearest exported symbol. Decoding the faulting sequence:
+
+```
+  910142b6  ADD  X22, X21, #0x50
+  f94012e0  LDR  X0, [X23, #0x20]
+  f9002aa0  STR  X0, [X21, #0x50]
+  f90006d3  STR  X19, [X22, #0x8]
+  f9400740  LDR  X0, [X26, #0x8]
+```
+
+The faulting LDR at [X26, #0x8] is loading ctx->flags
+(offset 8 in eip93_hash_ctx), where ctx has been resolved
+to NULL from a partially initialized or unreachable
+transform context following the failed setkey.
+
+Fix this by dropping the CRYPTO_ALG_ASYNC mask from the
+crypto_alloc_ahash() call. The code already handles async
+completion correctly via crypto_wait_req(), so there is no
+requirement to restrict the lookup to synchronous algorithms.
+
+Note that hashing a single 64-byte block through the hardware
+is likely slower than doing it in software due to the DMA
+round-trip overhead, but offloading it may still spare CPU
+cycles on the slower embedded cores where this IP is found.
+
+Fixes: 9739f5f93b78 ("crypto: eip93 - Add Inside Secure SafeXcel EIP-93 crypto engine support")
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+[Detailed investigation report of this bug]
+Signed-off-by: Kenneth Kasilag <kenneth@kasilag.me>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/crypto/inside-secure/eip93/eip93-common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-index 1494143132eb5..aea3ad523cc03 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-@@ -543,12 +543,11 @@ static int ci_populate_dw8(struct pp_hwmgr *hwmgr, uint32_t fuse_table_offset)
- {
- 	struct ci_smumgr *smu_data = (struct ci_smumgr *)(hwmgr->smu_backend);
- 	const struct ci_pt_defaults *defaults = smu_data->power_tune_defaults;
--	uint32_t temp;
+diff --git a/drivers/crypto/inside-secure/eip93/eip93-common.c b/drivers/crypto/inside-secure/eip93/eip93-common.c
+index f4ad6beff15e0..259714a4ee4d3 100644
+--- a/drivers/crypto/inside-secure/eip93/eip93-common.c
++++ b/drivers/crypto/inside-secure/eip93/eip93-common.c
+@@ -731,7 +731,7 @@ int eip93_hmac_setkey(u32 ctx_flags, const u8 *key, unsigned int keylen,
+ 		return -EINVAL;
+ 	}
  
- 	if (ci_read_smc_sram_dword(hwmgr,
- 			fuse_table_offset +
- 			offsetof(SMU7_Discrete_PmFuses, TdcWaterfallCtl),
--			(uint32_t *)&temp, SMC_RAM_END))
-+			(uint32_t *)&smu_data->power_tune_table.TdcWaterfallCtl, SMC_RAM_END))
- 		PP_ASSERT_WITH_CODE(false,
- 				"Attempt to read PmFuses.DW6 (SviLoadLineEn) from SMC Failed!",
- 				return -EINVAL);
+-	ahash_tfm = crypto_alloc_ahash(alg_name, 0, CRYPTO_ALG_ASYNC);
++	ahash_tfm = crypto_alloc_ahash(alg_name, 0, 0);
+ 	if (IS_ERR(ahash_tfm))
+ 		return PTR_ERR(ahash_tfm);
+ 
 -- 
 2.53.0
 
