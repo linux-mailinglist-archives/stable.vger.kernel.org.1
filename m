@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-249872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249874-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oDDBE52cDWoU0AUAu9opvQ
-	(envelope-from <stable+bounces-249872-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:35:57 +0200
+	id wC5eA+mdDWoS0AUAu9opvQ
+	(envelope-from <stable+bounces-249874-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:41:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E765158CA67
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:35:56 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C0D358CC7C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:41:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 014A530D514B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 11:28:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A13F630E54B4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 11:28:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9813DBD72;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB07C3F54DB;
 	Wed, 20 May 2026 11:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ApmKzAEK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A8kAzGAZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98183F7AA9;
-	Wed, 20 May 2026 11:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 743D73F86EF;
+	Wed, 20 May 2026 11:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779276061; cv=none; b=OtpmvwfKq9kI9sHkIJ5SYx28YzWmiWkfa7AXtL+MHnaCAfMHKjeB9gKyNE92q2DGJdaJcoDOdY5uO23WWMNtmBMCcUdvirUtXtOFsw56+Vrz0Lt+nkD7AM+m7aUCn+Y0Bib1J70lnKgFkqNOInOUpwznprWZgnNN9/Fq0ylqquM=
+	t=1779276062; cv=none; b=ONn4i+31Jwe5e89dbuyVAmgKBrsZcy91WOSZMZ+gRJgiAXtoxAvdXNcdm2HhuP6KuSxJSd6hf3J4JjYmttFmA9m8d2IkU52wgB5ZAl8qA/SFYT6nm5YwFnuBjBnXZEVlzQm7MZbL8hSNcfwMAfjjRcxjJZUBOfnVaiAgaF/3oG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779276061; c=relaxed/simple;
-	bh=0xxZol44F4hcM8ECcpKTGhNLkaDUQS+6DnHRlwMRPZc=;
+	s=arc-20240116; t=1779276062; c=relaxed/simple;
+	bh=q6eOR/vT0ruqLc4hKC0zEPDh3Q6xaUvvH3Ag+Rm9p30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h/EkL9lagp0pYoPcOxXMG3yk5M4fHyXSEGFtUjaM9rDvBcPp1cbEPu5gVU9BC/5ldgq7sXje1jklwwvns2kyItC76lKutaCVgfIui6ZxUwqxZ9iok2m1KDYX1Flr64b4zRK9ijz6ikEG+PvTtpIP+vcQyyDccZMeQXXXX93/vjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ApmKzAEK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 561CE1F00894;
-	Wed, 20 May 2026 11:20:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Wws+jXxt7T3JdWTansjQ9u6c/Mrq47dDfj90NXr5Qi6p9B6la3GLs7OWqmP0WhTayXq0eqzIeY/Kh3olvs6HOwCQNn9JciOK9u36r3+BF1IdF/DvP7kPr7tbz2c7nqURsNHjX70439/rHCcXqFu3f78PV/4CZFKQqWVcenLJM+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A8kAzGAZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D94C61F00897;
+	Wed, 20 May 2026 11:20:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779276057;
-	bh=A6I+UaJfx4VtYeDC9wXibAsHX+VrY8JE84i64An35Y8=;
+	s=k20260515; t=1779276058;
+	bh=4E4m0krrTAOPHzvgF8sRUKe90FnIaCW88Ns6rN2/13c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ApmKzAEKDa5pVBXe6qoTmfpb0Duk98ldyllpvToCZ6LEmf3YFqDz9SteUOTTLKIVY
-	 bK3E5ZN95NlqB7jMzz/40+FCP4+7c1Q1mgWuo2FygcSueV//gyIUpbjUgnShH7rCAh
-	 gI+YXhl7LUnH/Iv2ppmf3qd44qfSG/nOTrAlc0rk9SOaWRcd3hXSixvGynDqsrPnz3
-	 e556K6JaR9T49dOouwHcYaIBEzQNToEEvU3JocWtmrRvebb+/lgm+tZ4VigmlxHug0
-	 gPudeXox6p4t/Hx/ODFqwWwHxTJQlbF+N5d74OpEIvhzOOOGpZiMSN1Lj4LIYQ1+R3
-	 +djfOqI3EnlPQ==
+	b=A8kAzGAZezew7YqU1jAiuwjlJ7LYpDvl5E1RVUzBPu1MGtghsSRP0Ede8pQIZyV/N
+	 cdY0wkSpm4YxjWtx+rt6KeOEc8sn2C+7ayVwKExsC1arS8NAO8cKdyMfKaVPeIOnaU
+	 RCZiAMBSwEwjyLNZlqikzHZbRNLM8Wsj962Q0e3DWJSt2Ugo9i3ZOLx3a4/VQ+tPsC
+	 RBuKB/ZEGiCzm+k0tkn4aTlN40/AIn3HsV6gHCUkfrwS7zJLNe60IQtupPhrQz8r5E
+	 c30KFDvbO9cU2ClQ7YRxopIH0CVpeA9U/UtAKNuqxzjQneIVwC1IOvZM6X/89PKYMy
+	 rXvJ8yNe4pdtg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Paolo Pisati <p.pisati@gmail.com>,
-	Denis Benato <denis.benato@linux.dev>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+Cc: Athira Rajeev <atrajeev@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	corentin.chary@gmail.com,
-	luke@ljones.dev,
-	hansg@kernel.org,
-	platform-driver-x86@vger.kernel.org,
+	mpe@ellerman.id.au,
+	linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 7.0-6.12] platform/x86: asus-nb-wmi: add DMI quirk for ASUS Zenbook Duo UX8407AA
-Date: Wed, 20 May 2026 07:19:23 -0400
-Message-ID: <20260520111944.3424570-51-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 7.0-6.18] powerpc/pseries/htmdump: Free the global buffers in htmdump module exit
+Date: Wed, 20 May 2026 07:19:24 -0400
+Message-ID: <20260520111944.3424570-52-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260520111944.3424570-1-sashal@kernel.org>
 References: <20260520111944.3424570-1-sashal@kernel.org>
@@ -68,278 +65,416 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 7.0.9
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[gmail.com,linux.dev,linux.intel.com,kernel.org,ljones.dev,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-249872-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249874-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linux.dev:email]
-X-Rspamd-Queue-Id: E765158CA67
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,ozlabs.org:email]
+X-Rspamd-Queue-Id: 0C0D358CC7C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Paolo Pisati <p.pisati@gmail.com>
+From: Athira Rajeev <atrajeev@linux.ibm.com>
 
-[ Upstream commit 2997606dd17729404cef9821ce66dd037b6019eb ]
+[ Upstream commit 54d54f33813d7911555226b4220737177a2ba8d6 ]
 
-Use the existing zenbook duo keyboard quirk for the UX8407AA model too.
+htmdump modules uses global memory buffers to capture
+details like capabilities, status of specified HTM, read the
+trace buffer. These are initialized during module init and
+hence needs to be freed in module exit.
 
-Signed-off-by: Paolo Pisati <p.pisati@gmail.com>
-Reviewed-by: Denis Benato <denis.benato@linux.dev>
-Link: https://patch.msgid.link/20260508070956.62201-1-p.pisati@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Patch adds freeing of the memory in module exit. The change
+also includes minor clean up for the variable name. The
+read call back for the debugfs interface file saves filp->private_data
+to local variable name which is same as global variable
+name for the memory buffers. Rename these local variable
+names.
+
+Signed-off-by: Athira Rajeev <atrajeev@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20260314132432.25581-1-atrajeev@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Phase 1: Commit Message Forensics
-Step 1.1 Record: Subsystem `platform/x86: asus-nb-wmi`; action verb
-`add`; intent is to add a DMI match for `ASUS Zenbook Duo UX8407AA` to
-reuse an existing Zenbook Duo keyboard quirk.
+## Summary
+This commit fixes a real resource leak in
+`arch/powerpc/platforms/pseries/htmdump.c`: `htm_status_buf`,
+`htm_info_buf`, and `htm_caps_buf` are each allocated with
+`kmalloc(PAGE_SIZE, GFP_KERNEL)` during module/debugfs initialization,
+but only `htm_buf` is freed in `htmdump_exit()`. The patch adds the
+three missing `kfree()` calls. The local-variable renames are cleanup
+and are also used by the following two patches in the same posted
+series.
 
-Step 1.2 Record: Tags found: `Signed-off-by: Paolo Pisati`, `Reviewed-
-by: Denis Benato`, `Link:
-https://patch.msgid.link/20260508070956.62201-1-p.pisati@gmail.com`,
-`Reviewed-by: Ilpo Järvinen`, `Signed-off-by: Ilpo Järvinen`. No
-`Fixes:` tag and no explicit stable tag in the commit.
+The benefit is modest because the leak is on module unload, not a hot
+path, and the feature is PowerPC pseries/debugfs-specific. But it is a
+real leak in a `default m` module, the fix is trivial, isolated, and low
+risk. For stable trees that contain the v6.16-era `htmstatus`,
+`htminfo`, and `htmcaps` additions, this is suitable.
 
-Step 1.3 Record: The commit body says only: “Use the existing zenbook
-duo keyboard quirk for the UX8407AA model too.” The underlying quirk was
-verified in local history: it suppresses spurious WLAN key events on
-Zenbook Duo keyboards, avoiding unintended wireless/rfkill behavior.
+## Phase Walkthrough
+### Phase 1: Commit Message Forensics
+Record 1.1: Subsystem is `powerpc/pseries/htmdump`; action verb is
+`Free`; claimed intent is freeing global HTM debugfs buffers during
+module exit.
 
-Step 1.4 Record: This is a hardware quirk addition, not disguised
-cleanup. It fixes model-specific behavior by making an already-existing
-workaround apply to another DMI-identified ASUS model.
+Record 1.2: Tags in the supplied commit message: `Signed-off-by: Athira
+Rajeev <atrajeev@linux.ibm.com>`, `Signed-off-by: Madhavan Srinivasan
+<maddy@linux.ibm.com>`, `Link:
+https://patch.msgid.link/20260314132432.25581-1-atrajeev@linux.ibm.com`.
+No `Fixes:`, `Reported-by:`, `Tested-by:`, `Reviewed-by:`, `Acked-by:`,
+or `Cc: stable@vger.kernel.org` tag was present in this commit.
 
-## Phase 2: Diff Analysis
-Step 2.1 Record: One file changed: `drivers/platform/x86/asus-nb-wmi.c`,
-9 insertions, no removals. Modified area: `asus_quirks[]` DMI table.
-Scope: single-file surgical hardware quirk.
+Record 1.3: The body describes global memory buffers initialized in
+module init and not freed in module exit. The user-visible symptom is
+unreclaimed kernel memory after unloading the module. No crash, stack
+trace, reporter, affected-version statement, or reproducer is given.
 
-Step 2.2 Record: Before, UX8407AA did not match `asus_quirks[]`, so
-`quirk_asus_zenbook_duo_kbd` was not selected for that model. After,
-matching DMI vendor/product strings select `quirk_asus_zenbook_duo_kbd`.
+Record 1.4: This is a hidden cleanup-style bug fix: the functional
+change is missing resource release on module exit.
 
-Step 2.3 Record: Bug category is hardware workaround/DMI quirk. Verified
-quirk behavior: `quirk_asus_zenbook_duo_kbd` sets `key_wlan_event =
-ASUS_WMI_KEY_IGNORE`; `asus_nb_wmi_key_filter()` maps WMI codes `0x5D`,
-`0x5E`, and `0x5F` to that quirk value when set; without the quirk,
-those codes remain `KEY_WLAN` events.
+### Phase 2: Diff Analysis
+Record 2.1: One file changed:
+`arch/powerpc/platforms/pseries/htmdump.c`, 17 insertions and 14
+deletions in the posted patch. Modified functions are `htmdump_read()`,
+`htmstatus_read()`, `htminfo_read()`, `htmcaps_read()`, and
+`htmdump_exit()`. Scope is single-file surgical.
 
-Step 2.4 Record: Fix quality is high: 9-line DMI table entry, no new
-API, no shared logic change. Regression risk is very low and limited to
-systems whose DMI strings match `DMI_SYS_VENDOR=ASUS` and
-`DMI_PRODUCT_NAME=Zenbook Duo UX8407AA`.
+Record 2.2: The read-callback hunks rename local variables from names
+shadowing globals to `*_data`; behavior is unchanged. The exit hunk
+changes `htmdump_exit()` from freeing only `htm_buf` to freeing
+`htm_buf`, `htm_status_buf`, `htm_info_buf`, and `htm_caps_buf`.
 
-## Phase 3: Git History Investigation
-Step 3.1 Record: Blame around the table showed the existing UX8406MA
-quirk entry came from `9286dfd5735b` and UX8406CA from `7dc6b2d3b550`.
-Blame of the quirk definition showed `quirk_asus_zenbook_duo_kbd` was
-introduced by `9286dfd5735b`, later converted to `key_wlan_event =
-ASUS_WMI_KEY_IGNORE` by `132bfcd24925`.
+Record 2.3: Bug category is resource leak. Verified allocations are
+three `PAGE_SIZE` buffers for status/info/caps in
+`htmdump_init_debugfs()` without corresponding frees before this patch.
 
-Step 3.2 Record: No `Fixes:` tag is present, so there is no introducer
-tag to follow.
+Record 2.4: Fix quality is high: `kfree(NULL)` is safe, the buffers are
+global module-owned allocations, and debugfs removal already happens
+before freeing. Regression risk is very low. The only non-functional
+churn is local-variable rename.
 
-Step 3.3 Record: Recent related history includes `9286dfd5735b` fixing
-spurious rfkill on UX8406MA, `7dc6b2d3b550` adding UX8406CA, and later
-key handling fixes `132bfcd24925` and `225d1ee0f5ba`. The candidate is
-standalone where `quirk_asus_zenbook_duo_kbd` exists.
+### Phase 3: Git History Investigation
+Record 3.1: `git blame` on the current stable checkout points the
+relevant lines at the repository boundary merge `f3f5edc5e41e0`, so I
+followed explicit commit objects. `htm_status_buf` was added by
+`627cf584f4c3`, `htm_info_buf` by `dea7384e14e7`, and `htm_caps_buf` by
+`143a2584627c`, all described by `git describe --contains`/history as
+v6.16-rc1-era commits.
 
-Step 3.4 Record: `git log --author="Paolo Pisati" -10 --
-drivers/platform/x86` showed no prior local platform-x86 commits by this
-author. The patch was reviewed by Denis Benato and Ilpo Järvinen; Ilpo
-committed it.
+Record 3.2: Candidate has no `Fixes:` tag, so no direct Fixes target
+applies. Related series patches 2/3 and 3/3 have `Fixes:` tags for
+`dea7384e14e7` and `627cf584f4c3`, but this patch does not depend on
+those fixes.
 
-Step 3.5 Record: Dependency is the existing Zenbook Duo keyboard quirk.
-Verified present in releases `v6.12` and newer in this repo; absent from
-`v6.6`.
+Record 3.3: Recent `htmdump` history shows the v6.16 additions for
+status/info/setup/flags/caps and a header include fix. The candidate is
+patch 1/3 in a series; patch 1 is standalone, while patches 2/3 and 3/3
+textually build on its variable renames.
 
-## Phase 4: Mailing List And External Research
-Step 4.1 Record: `b4 dig -c 2997606dd17729404cef9821ce66dd037b6019eb`
-found the exact lore thread at the patch message-id URL. `b4 dig -a`
-showed only v1, so no newer revision was found.
+Record 3.4: Author Athira Rajeev authored the original htmdump expansion
+commits; Madhavan Srinivasan committed them. This was verified from `git
+show` for the status/info/caps commits.
 
-Step 4.2 Record: `b4 dig -w` showed recipients included Corentin Chary,
-Luke D. Jones, Denis Benato, Hans de Goede, Ilpo Järvinen, and
-`platform-driver-x86@vger.kernel.org`. The patch received `Reviewed-by`
-from Denis Benato and Ilpo Järvinen.
+Record 3.5: No prerequisite is needed for patch 1 beyond the buffers
+existing. An isolated `git apply --check` of patch 1 succeeds on the
+current 7.0 stable checkout.
 
-Step 4.3 Record: No separate bug report or `Reported-by` tag was found
-in the commit. The b4-fetched thread contained Denis’s review and Ilpo’s
-applied notice, but no detailed user report.
+### Phase 4: Mailing List And External Research
+Record 4.1: `b4 dig` could not be meaningfully run because the candidate
+commit object/hash is not present in the checked-out refs; `b4 dig -h`
+confirmed it requires `-c <commitish>`. I used `b4 mbox -c` with
+message-id `20260314132432.25581-1-atrajeev@linux.ibm.com`; it fetched a
+3-message thread and reported no newer revision.
 
-Step 4.4 Record: No multi-patch series; b4 identified this as a single-
-patch v1 series. Related local commits are the previous Zenbook Duo
-quirk additions and key handling corrections.
+Record 4.2: Original recipients from the mbox were
+`maddy@linux.ibm.com`, `linuxppc-dev@lists.ozlabs.org`, and CCs
+including `hbathini`, `sshegde`, and IBM HTM-related recipients. No
+review replies, NAKs, or stable nominations were present in the fetched
+mbox.
 
-Step 4.5 Record: Direct `WebFetch` searches on lore/stable were blocked
-by Anubis. I could not verify stable-list discussion via WebFetch. `b4`
-did successfully fetch the exact patch thread.
+Record 4.3: No `Reported-by` or bug-report link exists for this
+candidate. `WebFetch` to lore/patch.msgid was blocked by Anubis, but `b4
+mbox` successfully fetched the thread.
 
-## Phase 5: Code Semantic Analysis
-Step 5.1 Record: Modified data structure: `asus_quirks[]`. Existing
-functions involved by flow: `dmi_matched()`, `asus_nb_wmi_quirks()`,
-`asus_nb_wmi_key_filter()`, and `asus_wmi_handle_event_code()`.
+Record 4.4: The patch is part of a 3-patch series. Patch 1 fixes exit
+cleanup; patch 2 fixes `htminfo_read()` offset handling; patch 3 fixes
+`htmstatus_read()` offset handling. Patch 1 can apply standalone, and
+later patches depend textually on its renames.
 
-Step 5.2 Record: `asus_nb_wmi_quirks()` is wired through
-`.detect_quirks` in `asus_nb_wmi_driver`; `asus_wmi_add()` calls
-`detect_quirks()` during driver probe. `asus_nb_wmi_key_filter()` is
-wired through `.key_filter`; `asus_wmi_handle_event_code()` calls it
-before reporting input events.
+Record 4.5: Stable-specific lore WebFetch was blocked by Anubis.
+WebSearch for the exact subject and stable context found no specific
+stable discussion. Local `git log --grep` checks of `v6.18`, `v6.19`,
+`v7.0`, and `linux-rolling-stable` found no exact-subject match.
 
-Step 5.3 Record: Key callees/operations: `dmi_check_system(asus_quirks)`
-performs DMI matching; `dmi_matched()` assigns `quirks =
-dmi->driver_data`; event handling calls `sparse_keymap_report_event()`
-unless the filter changes the code to `ASUS_WMI_KEY_IGNORE`.
+### Phase 5: Code Semantic Analysis
+Record 5.1: Modified functions are `htmdump_read()`, `htmstatus_read()`,
+`htminfo_read()`, `htmcaps_read()`, and `htmdump_exit()`.
 
-Step 5.4 Record: Reachability is from ASUS WMI platform driver probe and
-ACPI/WMI event notifications on matching ASUS notebook hardware. This is
-hardware/model-specific, not a general syscall-triggered path.
+Record 5.2: Callers/entry points are verified through file operations
+and module macros: `htmdump_exit()` is registered with `module_exit()`,
+reads are reached through debugfs files created by
+`debugfs_create_file()` with the corresponding fops.
 
-Step 5.5 Record: Similar patterns found: UX8406MA and UX8406CA already
-use `quirk_asus_zenbook_duo_kbd`; ROG Z13 uses the same DMI table
-pattern with vendor `ASUS`.
+Record 5.3: Key callees are `debugfs_remove_recursive()`, `kfree()`,
+`htm_hcall_wrapper()`, `virt_to_phys()`, and
+`simple_read_from_buffer()`. The functional fix only adds `kfree()`
+calls in exit.
 
-## Phase 6: Stable Tree Analysis
-Step 6.1 Record: `git grep` over tags showed
-`quirk_asus_zenbook_duo_kbd` exists in `v6.12`, `v6.15`, `v6.16`,
-`v6.17`, `v6.18`, `v6.19`, and `v7.0`; it was not present in `v6.1` or
-`v6.6`. UX8406CA exists from `v6.16`; ROG Z13 context exists from
-`v6.17`.
+Record 5.4: Reachability is module lifecycle and debugfs based. The leak
+triggers on module unload after successful allocation of the
+status/info/caps buffers. Unprivileged triggering was not verified and
+is not relied on; Kconfig shows `HTMDUMP` is `tristate`, `default m`,
+and depends on `PPC_PSERIES && DEBUG_FS`.
 
-Step 6.2 Record: `git apply --check` against the current tree succeeded.
-Expected backport difficulty: clean for trees with matching nearby
-context; minor context adjustment for trees where UX8406CA or ROG Z13
-entries are absent, but the quirk symbol exists.
+Record 5.5: Similar pattern found: `htm_buf` was already freed in
+`htmdump_exit()`, while the three later-added global buffers were not.
 
-Step 6.3 Record: No existing UX8407AA entry or related UX8407AA fix was
-found in local `git log --grep="UX8407AA"`.
+### Phase 6: Stable Tree Analysis
+Record 6.1: `v6.15` has `htmdump.c` with only `htm_buf`; `v6.16`,
+`v6.17`, `v6.18`, `v6.19`, and `v7.0` have the three additional buffers
+and only free `htm_buf`. So the bug affects stable trees containing the
+v6.16 htmdump expansions, not older trees lacking those buffers.
 
-## Phase 7: Subsystem And Maintainer Context
-Step 7.1 Record: Subsystem is `drivers/platform/x86`, ASUS notebook WMI
-driver. Criticality: peripheral/driver-specific, affecting users of the
-ASUS Zenbook Duo UX8407AA.
+Record 6.2: Backport difficulty is low for affected trees. The patch’s
+base blob matches `v6.16`/`v6.17`/current 7.0 content for the relevant
+file, and isolated patch 1 applies cleanly to the current checkout.
 
-Step 7.2 Record: The subsystem and file are active: recent local history
-includes multiple ASUS WMI quirk/keymap fixes and platform-x86 changes.
+Record 6.3: No exact-subject related fix was found in checked `v6.18`,
+`v6.19`, `v7.0`, or `linux-rolling-stable`.
 
-## Phase 8: Impact And Risk
-Step 8.1 Record: Affected population is driver-specific: users of ASUS
-Zenbook Duo UX8407AA with `asus-nb-wmi`.
+### Phase 7: Subsystem And Maintainer Context
+Record 7.1: Subsystem is PowerPC pseries platform driver/debugfs
+support. Criticality is peripheral/platform-specific, not core kernel-
+wide.
 
-Step 8.2 Record: Trigger is hardware-specific WMI keyboard attach/detach
-or wireless-console events. I verified the relevant event codes are
-mapped as `KEY_WLAN` unless the quirk rewrites them to ignore.
+Record 7.2: `git log -20 v7.0 -- arch/powerpc/platforms/pseries` shows
+active pseries development, but this particular fix is contained to
+`htmdump.c`.
 
-Step 8.3 Record: Failure mode is unintended WLAN/rfkill-style input
-events on this model. Severity is medium: user-visible connectivity
-disruption, not a crash, data corruption, or security issue.
+### Phase 8: Impact And Risk
+Record 8.1: Affected users are PowerPC pseries users with
+`CONFIG_HTMDUMP` enabled, primarily using the debugfs HTM dump module.
 
-Step 8.4 Record: Benefit is high for affected hardware and low globally.
-Risk is very low: a DMI-only quirk entry using existing behavior,
-isolated to one model string.
+Record 8.2: Trigger is successful module initialization followed by
+module exit/unload. Repeated load/unload can accumulate unreclaimed
+pages until reboot. This is not verified as unprivileged-triggerable.
 
-## Phase 9: Final Synthesis
-Evidence for backporting: this is exactly the stable-accepted hardware
-quirk category; it is small, reviewed, isolated, uses existing code, and
-fixes real model-specific input/rfkill behavior for affected hardware.
+Record 8.3: Failure mode is kernel memory/resource leak, three
+`PAGE_SIZE` allocations per unload for the later buffers. Severity is
+medium: real and persistent until reboot, but not a crash/security/data-
+corruption fix and not a hot path.
 
-Evidence against backporting: no explicit `Cc: stable`, no separate bug
-report in the thread, and older stable trees without
-`quirk_asus_zenbook_duo_kbd` need prerequisites or are not applicable.
+Record 8.4: Benefit is moderate for affected stable users; risk is very
+low because the functional change is only three `kfree()` calls after
+debugfs removal.
 
-Stable rules checklist: obviously correct: yes; fixes real hardware
-behavior: yes; important enough for affected users: yes, though not
-critical; small and contained: yes, 9 insertions in one DMI table; no
-new APIs/features: yes; applies to stable: yes for current tree, likely
-minor context-only adjustments for some older applicable trees.
+### Phase 9: Final Synthesis
+Record 9.1: Evidence for backporting: real resource leak, affects stable
+trees v6.16 and newer that contain the expanded htmdump module, fix is
+tiny and obviously correct, isolated patch applies cleanly. Evidence
+against: peripheral platform-specific module, leak occurs on module
+unload rather than common runtime path, no reporter/testing/stable tags
+in this patch. Unresolved: no full lore review discussion was available
+beyond the 3-patch mbox; direct WebFetch lore pages were blocked.
 
-Exception category: hardware-specific DMI quirk/workaround, which is a
-standard stable exception.
+Record 9.2: Stable rules checklist: obviously correct yes; fixes a real
+bug yes; important enough is borderline but acceptable as a real
+resource leak with very low regression risk; small and contained yes; no
+new feature/API yes; applies to affected stable trees yes for current
+7.0 and likely cleanly where file matches v6.16+.
+
+Record 9.3: No automatic exception category applies: this is not a
+device ID, quirk, DT update, build fix, or documentation-only fix.
+
+Record 9.4: Decision is YES for stable trees that contain
+`htm_status_buf`, `htm_info_buf`, and `htm_caps_buf`.
 
 ## Verification
-- [Phase 1] Parsed commit metadata from `git show
-  2997606dd17729404cef9821ce66dd037b6019eb`.
-- [Phase 2] Verified diff is one DMI entry in
-  `drivers/platform/x86/asus-nb-wmi.c`.
-- [Phase 3] Ran `git blame` on the DMI table and quirk definition;
-  identified existing quirk history.
-- [Phase 3] Checked related commits `9286dfd5735b`, `7dc6b2d3b550`,
-  `132bfcd24925`, `225d1ee0f5ba`.
-- [Phase 4] Ran `b4 dig -c`, `b4 dig -a`, `b4 dig -w`; found exact v1
-  patch thread and recipients.
-- [Phase 4] Ran `b4 mbox`/`b4 am` by message-id; confirmed Denis review
-  and Ilpo applied notice.
-- [Phase 5] Used `rg` and file reads to trace `detect_quirks`,
-  `key_filter`, and event reporting.
-- [Phase 6] Used `git grep` over version tags to verify which releases
-  contain the existing quirk machinery.
-- [Phase 6] Ran `git apply --check`; candidate applies cleanly to the
-  current tree.
-- UNVERIFIED: Direct lore/stable search results, because WebFetch was
-  blocked by Anubis.
-- UNVERIFIED: Actual UX8407AA firmware DMI strings beyond the submitted
-  patch and maintainer review.
-
-This should be backported to stable trees where the existing Zenbook Duo
-keyboard quirk is present, with trivial context adjustment if needed.
+- Phase 1: Parsed supplied commit message and b4-fetched patch 1;
+  confirmed no `Fixes:`, `Reported-by`, `Tested-by`, review, or stable
+  tag in patch 1.
+- Phase 2: Read `arch/powerpc/platforms/pseries/htmdump.c`; confirmed
+  allocations and missing frees; inspected patch hunks from
+  `/tmp/htmdump-20260314.mbx`.
+- Phase 3: Ran `git blame -L 410,485`; followed explicit commits
+  `627cf584f4c3`, `dea7384e14e7`, and `143a2584627c` with `git show`;
+  checked author/subsystem history.
+- Phase 4: `b4 mbox -c` fetched the 3-message thread; direct `WebFetch`
+  lore URLs were blocked; WebSearch found no exact stable discussion.
+- Phase 5: Used `rg`, `ReadFile`, and Kconfig/Makefile/docs to verify
+  module/debugfs reachability and `CONFIG_HTMDUMP` as `tristate`,
+  `default m`.
+- Phase 6: Checked `v6.15`, `v6.16`, `v6.17`, `v6.18`, `v6.19`, and
+  `v7.0` file contents; isolated patch 1 passed `git apply --check`.
+- Phase 8: Verified failure mode from concrete `kmalloc(PAGE_SIZE)`
+  allocations and missing matching `kfree()` calls.
+- Unverified: whether every downstream stable branch has identical
+  context; direct stable-list lore search was blocked by Anubis.
 
 **YES**
 
- drivers/platform/x86/asus-nb-wmi.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/powerpc/platforms/pseries/htmdump.c | 31 +++++++++++++-----------
+ 1 file changed, 17 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/platform/x86/asus-nb-wmi.c b/drivers/platform/x86/asus-nb-wmi.c
-index b4677c5bba5b4..8005c088e9eee 100644
---- a/drivers/platform/x86/asus-nb-wmi.c
-+++ b/drivers/platform/x86/asus-nb-wmi.c
-@@ -544,6 +544,15 @@ static const struct dmi_system_id asus_quirks[] = {
- 		},
- 		.driver_data = &quirk_asus_zenbook_duo_kbd,
- 	},
-+	{
-+		.callback = dmi_matched,
-+		.ident = "ASUS Zenbook Duo UX8407AA",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUS"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Zenbook Duo UX8407AA"),
-+		},
-+		.driver_data = &quirk_asus_zenbook_duo_kbd,
-+	},
- 	{
- 		.callback = dmi_matched,
- 		.ident = "ASUS ROG Z13",
+diff --git a/arch/powerpc/platforms/pseries/htmdump.c b/arch/powerpc/platforms/pseries/htmdump.c
+index 742ec52c9d4df..93f0cc2dc7fb6 100644
+--- a/arch/powerpc/platforms/pseries/htmdump.c
++++ b/arch/powerpc/platforms/pseries/htmdump.c
+@@ -86,7 +86,7 @@ static ssize_t htm_return_check(long rc)
+ static ssize_t htmdump_read(struct file *filp, char __user *ubuf,
+ 			     size_t count, loff_t *ppos)
+ {
+-	void *htm_buf = filp->private_data;
++	void *htm_buf_data = filp->private_data;
+ 	unsigned long page, read_size, available;
+ 	loff_t offset;
+ 	long rc, ret;
+@@ -100,7 +100,7 @@ static ssize_t htmdump_read(struct file *filp, char __user *ubuf,
+ 	 * - last three values are address, size and offset
+ 	 */
+ 	rc = htm_hcall_wrapper(htmflags, nodeindex, nodalchipindex, coreindexonchip,
+-				   htmtype, H_HTM_OP_DUMP_DATA, virt_to_phys(htm_buf),
++				   htmtype, H_HTM_OP_DUMP_DATA, virt_to_phys(htm_buf_data),
+ 				   PAGE_SIZE, page);
+ 
+ 	ret = htm_return_check(rc);
+@@ -112,7 +112,7 @@ static ssize_t htmdump_read(struct file *filp, char __user *ubuf,
+ 	available = PAGE_SIZE;
+ 	read_size = min(count, available);
+ 	*ppos += read_size;
+-	return simple_read_from_buffer(ubuf, count, &offset, htm_buf, available);
++	return simple_read_from_buffer(ubuf, count, &offset, htm_buf_data, available);
+ }
+ 
+ static const struct file_operations htmdump_fops = {
+@@ -226,7 +226,7 @@ static int htmstart_get(void *data, u64 *val)
+ static ssize_t htmstatus_read(struct file *filp, char __user *ubuf,
+ 			     size_t count, loff_t *ppos)
+ {
+-	void *htm_status_buf = filp->private_data;
++	void *htm_status_data = filp->private_data;
+ 	long rc, ret;
+ 	u64 *num_entries;
+ 	u64 to_copy;
+@@ -238,7 +238,7 @@ static ssize_t htmstatus_read(struct file *filp, char __user *ubuf,
+ 	 * - last three values as addr, size and offset
+ 	 */
+ 	rc = htm_hcall_wrapper(htmflags, nodeindex, nodalchipindex, coreindexonchip,
+-				   htmtype, H_HTM_OP_STATUS, virt_to_phys(htm_status_buf),
++				   htmtype, H_HTM_OP_STATUS, virt_to_phys(htm_status_data),
+ 				   PAGE_SIZE, 0);
+ 
+ 	ret = htm_return_check(rc);
+@@ -255,13 +255,13 @@ static ssize_t htmstatus_read(struct file *filp, char __user *ubuf,
+ 	 * So total count to copy is:
+ 	 * 32 bytes (for first 7 fields) + (number of HTM entries * entry size)
+ 	 */
+-	num_entries = htm_status_buf + 0x10;
++	num_entries = htm_status_data + 0x10;
+ 	if (htmtype == 0x2)
+ 		htmstatus_flag = 0x8;
+ 	else
+ 		htmstatus_flag = 0x6;
+ 	to_copy = 32 + (be64_to_cpu(*num_entries) * htmstatus_flag);
+-	return simple_read_from_buffer(ubuf, count, ppos, htm_status_buf, to_copy);
++	return simple_read_from_buffer(ubuf, count, ppos, htm_status_data, to_copy);
+ }
+ 
+ static const struct file_operations htmstatus_fops = {
+@@ -273,7 +273,7 @@ static const struct file_operations htmstatus_fops = {
+ static ssize_t htminfo_read(struct file *filp, char __user *ubuf,
+ 			     size_t count, loff_t *ppos)
+ {
+-	void *htm_info_buf = filp->private_data;
++	void *htm_info_data = filp->private_data;
+ 	long rc, ret;
+ 	u64 *num_entries;
+ 	u64 to_copy;
+@@ -284,7 +284,7 @@ static ssize_t htminfo_read(struct file *filp, char __user *ubuf,
+ 	 * - last three values as addr, size and offset
+ 	 */
+ 	rc = htm_hcall_wrapper(htmflags, nodeindex, nodalchipindex, coreindexonchip,
+-				   htmtype, H_HTM_OP_DUMP_SYSPROC_CONF, virt_to_phys(htm_info_buf),
++				   htmtype, H_HTM_OP_DUMP_SYSPROC_CONF, virt_to_phys(htm_info_data),
+ 				   PAGE_SIZE, 0);
+ 
+ 	ret = htm_return_check(rc);
+@@ -301,15 +301,15 @@ static ssize_t htminfo_read(struct file *filp, char __user *ubuf,
+ 	 * So total count to copy is:
+ 	 * 32 bytes (for first 5 fields) + (number of HTM entries * entry size)
+ 	 */
+-	num_entries = htm_info_buf + 0x10;
++	num_entries = htm_info_data + 0x10;
+ 	to_copy = 32 + (be64_to_cpu(*num_entries) * 16);
+-	return simple_read_from_buffer(ubuf, count, ppos, htm_info_buf, to_copy);
++	return simple_read_from_buffer(ubuf, count, ppos, htm_info_data, to_copy);
+ }
+ 
+ static ssize_t htmcaps_read(struct file *filp, char __user *ubuf,
+ 			     size_t count, loff_t *ppos)
+ {
+-	void *htm_caps_buf = filp->private_data;
++	void *htm_caps_data = filp->private_data;
+ 	long rc, ret;
+ 
+ 	/*
+@@ -319,7 +319,7 @@ static ssize_t htmcaps_read(struct file *filp, char __user *ubuf,
+ 	 *   and zero
+ 	 */
+ 	rc = htm_hcall_wrapper(htmflags, nodeindex, nodalchipindex, coreindexonchip,
+-				   htmtype, H_HTM_OP_CAPABILITIES, virt_to_phys(htm_caps_buf),
++				   htmtype, H_HTM_OP_CAPABILITIES, virt_to_phys(htm_caps_data),
+ 				   0x80, 0);
+ 
+ 	ret = htm_return_check(rc);
+@@ -328,7 +328,7 @@ static ssize_t htmcaps_read(struct file *filp, char __user *ubuf,
+ 		return ret;
+ 	}
+ 
+-	return simple_read_from_buffer(ubuf, count, ppos, htm_caps_buf, 0x80);
++	return simple_read_from_buffer(ubuf, count, ppos, htm_caps_data, 0x80);
+ }
+ 
+ static const struct file_operations htminfo_fops = {
+@@ -482,6 +482,9 @@ static void __exit htmdump_exit(void)
+ {
+ 	debugfs_remove_recursive(htmdump_debugfs_dir);
+ 	kfree(htm_buf);
++	kfree(htm_status_buf);
++	kfree(htm_info_buf);
++	kfree(htm_caps_buf);
+ }
+ 
+ module_init(htmdump_init);
 -- 
 2.53.0
 
