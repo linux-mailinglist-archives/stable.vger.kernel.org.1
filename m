@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-251314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250417-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8AMpM9/yDWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251314-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:59 +0200
+	id MFzEIjzyDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-250417-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8331C5946B6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6F5D5944B1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 08CAF309C770
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:21:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3BDB333E6989
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:44:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E40237754D;
-	Wed, 20 May 2026 17:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 595ED3E2AAD;
+	Wed, 20 May 2026 16:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HmPQCYzf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pJKDboWO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E854330BF68;
-	Wed, 20 May 2026 17:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1575F3E1D1B;
+	Wed, 20 May 2026 16:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297660; cv=none; b=TeqXS/bpZ3i3ZMpDYrbfjMNDFWIdTtb0p3G/KwG09UeSxbl6LPOSw6lk4QfjExy/qF2DnyLHq2mOD6Ow6vXLcNJFXNjwjViN0HTqHRwGPA0WclrpjjNN8GfGk49bjSARrh+mXwhIsJuJQimBjQ9F9bBA3ldZVbw6u2/lILaxxLQ=
+	t=1779295360; cv=none; b=TSp263vvPGpovCMpUv2fUjkBahGcCFsdCEORa42iTbRLina0/+XxvlUniNMhZOJ5RpdeBJy8dyzsqFqhKh/cGAMdrK2RbKMIzHRkCpfwg8KeH1fA5nNJhZJt/eWCG8JZDBGAt8ncM/ONBiRavUKBNUWCk9ug7p8pK/tqYQt2x/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297660; c=relaxed/simple;
-	bh=FfT13X6vl+Okr1N8Y+OpKlHoKZ67fnTzW3tBGLUfUxM=;
+	s=arc-20240116; t=1779295360; c=relaxed/simple;
+	bh=qP0Pka6aP3IiUvA0C7ZOOcYbYa4AVK0EZwc6AEjQ1Ls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KOTreYU4UQzbR1GB3yRr5laa6+T7o8f5GXQuVNZq9WRgMAH9dghhjn/z7XzE07S3yK91rKfC9FCbZcZCRviLIaqmcxwUQ/6zXUb9CiRGGah35xwFwsKM5+WAYmDn6XrxB+JzsgafzMNk6gBRbLe4z2TZRvxUsDhIAJ6Vdc0oE3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HmPQCYzf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F6E01F000E9;
-	Wed, 20 May 2026 17:20:58 +0000 (UTC)
+	 MIME-Version; b=iQuvZInh/MkzzRz59veB8xVIQi4mYE0kJVTAOkS0qI7uAZDYKAV9/iETEIi+A/ae1f1C2vZJlHrLN3hEgnUU4yYAH2Z4mXBkyek237OBnd8HcFu0xYxLquDW4VpoyItmsuQd4hDnX3KPtjTCp3cnvH4Tq20lRrx+O3r3mfFXlgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pJKDboWO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5140E1F000E9;
+	Wed, 20 May 2026 16:42:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297658;
-	bh=n7cuOknYAquYaKLUeXcQZTUVHtL7FdLET9hsMcoNHIQ=;
+	s=korg; t=1779295358;
+	bh=xN+VTsTZrgpD9w8frbtH0wt3P3CWYZWjkPX2tLKOMls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HmPQCYzf3RpqPV8hcsFWZ33GohvBAeiiAONgmnTS+irZXnXlHejbLebropQXOPfUC
-	 uKc7byoO5Q0vwkJwl/rd5O5SETaEdYqXt4m2XxjfycZu60YgHCNBEn/o6SMPf7Xhiu
-	 2AdIIQdZIUqhlaDfcihMUwfRCb4+zdX1UVHrWlS0=
+	b=pJKDboWOtv8A6XSH2/wJdBLpx6CAi8zqy3USzFbdGIfFhBCjTsWynrR53nHS+pUgO
+	 XSOtD/YKSchqXXGWQd6+6UWDOCksLLZgA+IGnrUXvnWnmh/MG/hOPkUwjbxzfy+7yX
+	 qAreWj5nIp3NMdmUhnIZcye4wyhy2QM3iM9TQ4nk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Alex Williamson <alex@shazbot.org>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Lei Huang <huanglei@kylinos.cn>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 114/957] drivers/vfio_pci_core: Change PXD_ORDER check from switch case to if/else block
-Date: Wed, 20 May 2026 18:09:57 +0200
-Message-ID: <20260520162137.031673993@linuxfoundation.org>
+Subject: [PATCH 7.0 0348/1146] ALSA: hda/realtek: fix bad indentation for alc269
+Date: Wed, 20 May 2026 18:09:58 +0200
+Message-ID: <20260520162156.075486177@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,125 +63,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.ibm.com,shazbot.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-251314-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250417-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,shazbot.org:email]
-X-Rspamd-Queue-Id: 8331C5946B6
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,suse.de:email,kylinos.cn:email]
+X-Rspamd-Queue-Id: D6F5D5944B1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+From: Lei Huang <huanglei@kylinos.cn>
 
-[ Upstream commit 948b71aa81cd89b222942db6055e8d9c51c54e78 ]
+[ Upstream commit c1258a2924d3a2453a6e7a6581acd8d6e5c6ba70 ]
 
-Architectures like PowerPC uses runtime defined values for
-PMD_ORDER/PUD_ORDER. This is because it can use either RADIX or HASH MMU
-at runtime using kernel cmdline. So the pXd_index_size is not known at
-compile time. Without this fix, when we add huge pfn support on powerpc
-in the next patch, vfio_pci_core driver compilation can fail with the
-following errors.
+Mention complains about this coding style:
 
-  CC [M]  drivers/vfio/vfio_main.o
-  CC [M]  drivers/vfio/group.o
-  CC [M]  drivers/vfio/container.o
-  CC [M]  drivers/vfio/virqfd.o
-  CC [M]  drivers/vfio/vfio_iommu_spapr_tce.o
-  CC [M]  drivers/vfio/pci/vfio_pci_core.o
-  CC [M]  drivers/vfio/pci/vfio_pci_intrs.o
-  CC [M]  drivers/vfio/pci/vfio_pci_rdwr.o
-  CC [M]  drivers/vfio/pci/vfio_pci_config.o
-  CC [M]  drivers/vfio/pci/vfio_pci.o
-  AR      kernel/built-in.a
-../drivers/vfio/pci/vfio_pci_core.c: In function ‘vfio_pci_vmf_insert_pfn’:
-../drivers/vfio/pci/vfio_pci_core.c:1678:9: error: case label does not reduce to an integer constant
- 1678 |         case PMD_ORDER:
-      |         ^~~~
-../drivers/vfio/pci/vfio_pci_core.c:1682:9: error: case label does not reduce to an integer constant
- 1682 |         case PUD_ORDER:
-      |         ^~~~
-make[6]: *** [../scripts/Makefile.build:289: drivers/vfio/pci/vfio_pci_core.o] Error 1
-make[6]: *** Waiting for unfinished jobs....
-make[5]: *** [../scripts/Makefile.build:546: drivers/vfio/pci] Error 2
-make[5]: *** Waiting for unfinished jobs....
-make[4]: *** [../scripts/Makefile.build:546: drivers/vfio] Error 2
-make[3]: *** [../scripts/Makefile.build:546: drivers] Error 2
+  ERROR: code indent should use tabs where possible
+  #6640: FILE: sound/hda/codecs/realtek/alc269.c:6640:
+  +        [ALC233_FIXUP_LENOVO_GPIO2_MIC_HOTKEY] = {$
 
-Fixes: f9e54c3a2f5b7 ("vfio/pci: implement huge_fault support")
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Reviewed-by: Alex Williamson <alex@shazbot.org>
-Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/b155e19993ee1f5584c72050192eb468b31c5029.1773058761.git.ritesh.list@gmail.com
+fix it up.
+
+Fixes: 5de5db35350d ("ALSA: hda/realtek - Enable Mute LED for Lenovo platform")
+Signed-off-by: Lei Huang <huanglei@kylinos.cn>
+Link: https://patch.msgid.link/20260331024036.30782-1-huanglei814@163.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/vfio_pci_core.c | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+ sound/hda/codecs/realtek/alc269.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index d07f0ede5d731..53a846d3e6758 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -1687,21 +1687,16 @@ vm_fault_t vfio_pci_vmf_insert_pfn(struct vfio_pci_core_device *vdev,
- 	if (vdev->pm_runtime_engaged || !__vfio_pci_memory_enabled(vdev))
- 		return VM_FAULT_SIGBUS;
- 
--	switch (order) {
--	case 0:
-+	if (!order)
- 		return vmf_insert_pfn(vmf->vma, vmf->address, pfn);
--#ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
--	case PMD_ORDER:
-+
-+	if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PMD_PFNMAP) && order == PMD_ORDER)
- 		return vmf_insert_pfn_pmd(vmf, pfn, false);
--#endif
--#ifdef CONFIG_ARCH_SUPPORTS_PUD_PFNMAP
--	case PUD_ORDER:
-+
-+	if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PUD_PFNMAP) && order == PUD_ORDER)
- 		return vmf_insert_pfn_pud(vmf, pfn, false);
--		break;
--#endif
--	default:
--		return VM_FAULT_FALLBACK;
--	}
-+
-+	return VM_FAULT_FALLBACK;
- }
- EXPORT_SYMBOL_GPL(vfio_pci_vmf_insert_pfn);
- 
+diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
+index ded6e78142a07..8e135bcaa28e6 100644
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -6657,10 +6657,10 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc288_fixup_surface_swap_dacs,
+ 	},
+-        [ALC233_FIXUP_LENOVO_GPIO2_MIC_HOTKEY] = {
+-                .type = HDA_FIXUP_FUNC,
+-                .v.func = alc233_fixup_lenovo_gpio2_mic_hotkey,
+-        },
++	[ALC233_FIXUP_LENOVO_GPIO2_MIC_HOTKEY] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = alc233_fixup_lenovo_gpio2_mic_hotkey,
++	},
+ 	[ALC245_FIXUP_BASS_HP_DAC] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		/* Borrow the DAC routing selected for those Thinkpads */
 -- 
 2.53.0
 
