@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-252129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253226-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4H4WCJ0iDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252129-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:07:41 +0200
+	id 8GDLC9kFDmp25gUAu9opvQ
+	(envelope-from <stable+bounces-253226-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:04:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8165659A7A7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:07:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A80F9597B3E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:04:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 741C838B5314
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:57:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B2FD730D20FA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 141313F39C9;
-	Wed, 20 May 2026 17:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE2C7347515;
+	Wed, 20 May 2026 18:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOSmPUhC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V2bBV6DC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7FFF30675C;
-	Wed, 20 May 2026 17:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 219FE346E55;
+	Wed, 20 May 2026 18:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299866; cv=none; b=I/CzTC9mTj8plX7Xpap2HVDUlhe/mlYLl3zAs4Vlbc53yo+juwe5Qs2Ks9sKqkCs4E4RO7bVFcJgE1MeB442SKo0za3D+wM8ubx5+yqpF3eWxqbvFFVDV1FSeg3/HUclB4jpUT/+gK/n9Nl7YTeDNIxoxaY8zXFDjxc710n+nBA=
+	t=1779302726; cv=none; b=Fm1Hcxfe9JjGOyBMvb/r4DImFBXMxeTHuGjVWLInnKSwR4LOgc+zWl1M9boc5yjYbOMOe5QxhLAFnKbpSJPW57F1OONBxwXi0V/dKTInZ1m9mchmG8XvapfdMbcRaHc6NtW43qX8rmr8xHqb5de6fe9xzrHwlCZUjKA4834HoH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299866; c=relaxed/simple;
-	bh=O39okzC32fyFq+6miS6LmQgYHDBiqK6lpIjUVEhkgUk=;
+	s=arc-20240116; t=1779302726; c=relaxed/simple;
+	bh=0YI48m3BHe83FPui6aXkuuYKpYOoLVNUjHBRlRMxDEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lvBwYfRSPHS3EetY4hCvL6cyyhA++e55yHlrZn17XM6OmWx4LZ6AQCPsHgzFW4mpsHrt3PTnzMpgk6R9yZTrUDDRsnNlNx5KJQavRtIlKgQx+3sJ99nsgxu0ci6VbFZD2+U+Q9OIT+wCxV+iLUVNsNmnVC6++JZUGMZeXGVy78M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOSmPUhC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A9281F000E9;
-	Wed, 20 May 2026 17:57:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JcQc+dW6Kf5F9RZ4IDghM7QhDlXYaR1iNNYeuCvsHhcID5u4FmTs35+/A8ir2hM/laynaWGtuRMEeihbrkiZIIBXX4ptadZaz2iDefs/fAIg3i2tspVcsutWta5tXIzeotIlKudYphPHWjYss9LIAvOzd9w1/sPUkwpA0NaBRa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V2bBV6DC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C4C21F000E9;
+	Wed, 20 May 2026 18:45:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299865;
-	bh=QhFQXw7fRWTlDb0Q2CX23SAF0xxSnDBf5qigTmK0ohk=;
+	s=korg; t=1779302725;
+	bh=t1GpQLoNXQbXiJQaJ1/VY6Ssx4/3Kir56tVz5IT+9es=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jOSmPUhCFsWC+GHA/X8fMcx2+fiLVvHdq7k6pyfCAWg9fIWl7SoJ5bipMVwwgNsAB
-	 bOTwymtuSHZ6P0lh9dU8o9bQhDeA6u9gDd+cv2/qHaRfCAPNuHM4iZVlp4IWy/iDbQ
-	 yg8pg42MXjGN5sJ7MwLm7/xX6dK0zJCg9br9Hci4=
+	b=V2bBV6DChJLQtDhcGQBSCalcUYmTFYSWkSX5LmqWoGMIEDK2QLszjy51X6iRsTCNz
+	 T4dzSTs2cKANdHicHlpiNo6D0+3iOyKfzgwpPMWmZuNxjeWJh9DpfcqR2deaBdN5sN
+	 zcY6sAOYkuCozOqaE8D67SLvr1iJ/2LzfsTS4uqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.18 915/957] ALSA: usb-audio: qcom: Check offload mapping failures
+	Klaudia Kloc <klaudia@vidocsecurity.com>,
+	=?UTF-8?q?Dawid=20Moczad=C5=82o?= <dawid@vidocsecurity.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Jenny Guanni Qu <qguanni@gmail.com>
+Subject: [PATCH 6.6 375/508] netfilter: nf_conntrack_sip: dont use simple_strtoul
 Date: Wed, 20 May 2026 18:23:18 +0200
-Message-ID: <20260520162154.421150237@linuxfoundation.org>
+Message-ID: <20260520162106.748639219@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,139 +71,383 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252129-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253226-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vidocsecurity.com,strlen.de,netfilter.org,kernel.org,gmail.com];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email]
-X-Rspamd-Queue-Id: 8165659A7A7
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email]
+X-Rspamd-Queue-Id: A80F9597B3E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit 814b2c9b30e56074e11fc0a6e5419b3fee0639bc upstream.
+[ Upstream commit 8cf6809cddcbe301aedfc6b51bcd4944d45795f6 ]
 
-uaudio_transfer_buffer_setup() calls dma_get_sgtable() and then passes
-the sg_table to uaudio_iommu_map_xfer_buf() without checking whether sg
-table construction succeeded. If dma_get_sgtable() fails, the sg_table
-contents are not valid.
+Replace unsafe port parsing in epaddr_len(), ct_sip_parse_header_uri(),
+and ct_sip_parse_request() with a new sip_parse_port() helper that
+validates each digit against the buffer limit, eliminating the use of
+simple_strtoul() which assumes NUL-terminated strings.
 
-uaudio_iommu_map_pa() also ignores iommu_map() failures for the event and
-transfer rings and still returns the allocated IOVA to the QMI response.
-That can expose an unmapped IOVA to the audio DSP. For transfer rings,
-the failed mapping also leaves the IOVA allocator state marked in use.
+The previous code dereferenced pointers without bounds checks after
+sip_parse_addr() and relied on simple_strtoul() on non-NUL-terminated
+skb data. A port that reaches the buffer limit without a trailing
+character is also rejected as malformed.
 
-Check both operations. Free the coherent transfer buffer when sg table
-construction fails, free the sg table when transfer-buffer IOMMU mapping
-fails, and release the transfer-ring IOVA if iommu_map() fails. Also
-return the existing event-ring IOVA when the event ring is already mapped,
-matching the pre-split helper behavior.
+Also get rid of all simple_strtoul() usage in conntrack, prefer a
+stricter version instead.  There are intentional changes:
 
-Fixes: 326bbc348298 ("ALSA: usb-audio: qcom: Introduce QC USB SND offloading support")
-Fixes: 44499ecb4f28 ("ALSA: usb: qcom: Fix false-positive address space check")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260511-alsa-usb-qcom-offload-map-errors-v1-1-6502695e58bc@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+- Bail out if number is > UINT_MAX and indicate a failure, same for
+  too long sequences.
+  While we do accept 05535 as port 5535, we will not accept e.g.
+  'sip:10.0.0.1:005060'.  While its syntactically valid under RFC 3261,
+  we should restrict this to not waste cycles when presented with
+  malformed packets with 64k '0' characters.
+
+- Force base 10 in ct_sip_parse_numerical_param(). This is used to fetch
+  'expire=' and 'rports='; both are expected to use base-10.
+
+- In nf_nat_sip.c, only accept the parsed value if its within the 1k-64k
+  range.
+
+- epaddr_len now returns 0 if the port is invalid, as it already does
+  for invalid ip addresses.  This is intentional. nf_conntrack_sip
+  performs lots of guesswork to find the right parts of the message
+  to parse.  Being stricter could break existing setups.
+  Connection tracking helpers are designed to allow traffic to
+  pass, not to block it.
+
+Based on an earlier patch from Jenny Guanni Qu <qguanni@gmail.com>.
+
+Fixes: 05e3ced297fe ("[NETFILTER]: nf_conntrack_sip: introduce SIP-URI parsing helper")
+Reported-by: Klaudia Kloc <klaudia@vidocsecurity.com>
+Reported-by: Dawid Moczadło <dawid@vidocsecurity.com>
+Reported-by: Jenny Guanni Qu <qguanni@gmail.com>.
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/qcom/qc_audio_offload.c |   31 +++++++++++++++++++++++++------
- 1 file changed, 25 insertions(+), 6 deletions(-)
+ net/netfilter/nf_conntrack_sip.c | 152 ++++++++++++++++++++++++-------
+ net/netfilter/nf_nat_sip.c       |   1 +
+ 2 files changed, 119 insertions(+), 34 deletions(-)
 
---- a/sound/usb/qcom/qc_audio_offload.c
-+++ b/sound/usb/qcom/qc_audio_offload.c
-@@ -565,6 +565,7 @@ static unsigned long uaudio_iommu_map_pa
- 	unsigned long iova = 0;
- 	bool map = true;
- 	int prot = uaudio_iommu_map_prot(dma_coherent);
-+	int ret;
+diff --git a/net/netfilter/nf_conntrack_sip.c b/net/netfilter/nf_conntrack_sip.c
+index fda6fc1fc4c58..4b32ee408ea15 100644
+--- a/net/netfilter/nf_conntrack_sip.c
++++ b/net/netfilter/nf_conntrack_sip.c
+@@ -181,6 +181,57 @@ static int sip_parse_addr(const struct nf_conn *ct, const char *cp,
+ 	return 1;
+ }
  
- 	switch (mtype) {
- 	case MEM_EVENT_RING:
-@@ -582,10 +583,24 @@ static unsigned long uaudio_iommu_map_pa
- 		dev_err(uaudio_qdev->data->dev, "unknown mem type %d\n", mtype);
++/* Parse optional port number after IP address.
++ * Returns false on malformed input, true otherwise.
++ * If port is non-NULL, stores parsed port in network byte order.
++ * If no port is present, sets *port to default SIP port.
++ */
++static bool sip_parse_port(const char *dptr, const char **endp,
++			   const char *limit, __be16 *port)
++{
++	unsigned int p = 0;
++	int len = 0;
++
++	if (dptr >= limit)
++		return false;
++
++	if (*dptr != ':') {
++		if (port)
++			*port = htons(SIP_PORT);
++		if (endp)
++			*endp = dptr;
++		return true;
++	}
++
++	dptr++; /* skip ':' */
++
++	while (dptr < limit && isdigit(*dptr)) {
++		p = p * 10 + (*dptr - '0');
++		dptr++;
++		len++;
++		if (len > 5) /* max "65535" */
++			return false;
++	}
++
++	if (len == 0)
++		return false;
++
++	/* reached limit while parsing port */
++	if (dptr >= limit)
++		return false;
++
++	if (p < 1024 || p > 65535)
++		return false;
++
++	if (port)
++		*port = htons(p);
++
++	if (endp)
++		*endp = dptr;
++
++	return true;
++}
++
+ /* skip ip address. returns its length. */
+ static int epaddr_len(const struct nf_conn *ct, const char *dptr,
+ 		      const char *limit, int *shift)
+@@ -193,11 +244,8 @@ static int epaddr_len(const struct nf_conn *ct, const char *dptr,
+ 		return 0;
  	}
  
--	if (!iova || !map)
-+	if (!iova)
+-	/* Port number */
+-	if (*dptr == ':') {
+-		dptr++;
+-		dptr += digits_len(ct, dptr, limit, shift);
+-	}
++	if (!sip_parse_port(dptr, &dptr, limit, NULL))
++		return 0;
+ 	return dptr - aux;
+ }
+ 
+@@ -228,6 +276,51 @@ static int skp_epaddr_len(const struct nf_conn *ct, const char *dptr,
+ 	return epaddr_len(ct, dptr, limit, shift);
+ }
+ 
++/* simple_strtoul stops after first non-number character.
++ * But as we're not dealing with c-strings, we can't rely on
++ * hitting \r,\n,\0 etc. before moving past end of buffer.
++ *
++ * This is a variant of simple_strtoul, but doesn't require
++ * a c-string.
++ *
++ * If value exceeds UINT_MAX, 0 is returned.
++ */
++static unsigned int sip_strtouint(const char *cp, unsigned int len, char **endp)
++{
++	const unsigned int max = sizeof("4294967295");
++	unsigned int olen = len;
++	const char *s = cp;
++	u64 result = 0;
++
++	if (len > max)
++		len = max;
++
++	while (olen > 0 && isdigit(*s)) {
++		unsigned int value;
++
++		if (len == 0)
++			goto err;
++
++		value = *s - '0';
++		result = result * 10 + value;
++
++		if (result > UINT_MAX)
++			goto err;
++		s++;
++		len--;
++		olen--;
++	}
++
++	if (endp)
++		*endp = (char *)s;
++
++	return result;
++err:
++	if (endp)
++		*endp = (char *)cp;
++	return 0;
++}
++
+ /* Parse a SIP request line of the form:
+  *
+  * Request-Line = Method SP Request-URI SP SIP-Version CRLF
+@@ -241,7 +334,6 @@ int ct_sip_parse_request(const struct nf_conn *ct,
+ {
+ 	const char *start = dptr, *limit = dptr + datalen, *end;
+ 	unsigned int mlen;
+-	unsigned int p;
+ 	int shift = 0;
+ 
+ 	/* Skip method and following whitespace */
+@@ -267,14 +359,8 @@ int ct_sip_parse_request(const struct nf_conn *ct,
+ 
+ 	if (!sip_parse_addr(ct, dptr, &end, addr, limit, true))
+ 		return -1;
+-	if (end < limit && *end == ':') {
+-		end++;
+-		p = simple_strtoul(end, (char **)&end, 10);
+-		if (p < 1024 || p > 65535)
+-			return -1;
+-		*port = htons(p);
+-	} else
+-		*port = htons(SIP_PORT);
++	if (!sip_parse_port(end, &end, limit, port))
++		return -1;
+ 
+ 	if (end == dptr)
+ 		return 0;
+@@ -509,7 +595,6 @@ int ct_sip_parse_header_uri(const struct nf_conn *ct, const char *dptr,
+ 			    union nf_inet_addr *addr, __be16 *port)
+ {
+ 	const char *c, *limit = dptr + datalen;
+-	unsigned int p;
+ 	int ret;
+ 
+ 	ret = ct_sip_walk_headers(ct, dptr, dataoff ? *dataoff : 0, datalen,
+@@ -520,14 +605,8 @@ int ct_sip_parse_header_uri(const struct nf_conn *ct, const char *dptr,
+ 
+ 	if (!sip_parse_addr(ct, dptr + *matchoff, &c, addr, limit, true))
+ 		return -1;
+-	if (*c == ':') {
+-		c++;
+-		p = simple_strtoul(c, (char **)&c, 10);
+-		if (p < 1024 || p > 65535)
+-			return -1;
+-		*port = htons(p);
+-	} else
+-		*port = htons(SIP_PORT);
++	if (!sip_parse_port(c, &c, limit, port))
++		return -1;
+ 
+ 	if (dataoff)
+ 		*dataoff = c - dptr;
+@@ -609,7 +688,7 @@ int ct_sip_parse_numerical_param(const struct nf_conn *ct, const char *dptr,
  		return 0;
  
--	iommu_map(uaudio_qdev->data->domain, iova, pa, size, prot, GFP_KERNEL);
-+	if (!map)
-+		return iova;
+ 	start += strlen(name);
+-	*val = simple_strtoul(start, &end, 0);
++	*val = sip_strtouint(start, limit - start, (char **)&end);
+ 	if (start == end)
+ 		return -1;
+ 	if (matchoff && matchlen) {
+@@ -1065,6 +1144,8 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
+ 
+ 	mediaoff = sdpoff;
+ 	for (i = 0; i < ARRAY_SIZE(sdp_media_types); ) {
++		char *end;
 +
-+	ret = iommu_map(uaudio_qdev->data->domain, iova, pa, size, prot,
-+			GFP_KERNEL);
-+	if (ret) {
-+		dev_err(uaudio_qdev->data->dev,
-+			"failed to map %zu bytes at iova 0x%08lx: %d\n",
-+			size, iova, ret);
-+		if (mtype == MEM_XFER_RING)
-+			uaudio_put_iova(iova, size,
-+					&uaudio_qdev->xfer_ring_list,
-+					&uaudio_qdev->xfer_ring_iova_size);
-+		return 0;
-+	}
+ 		if (ct_sip_get_sdp_header(ct, *dptr, mediaoff, *datalen,
+ 					  SDP_HDR_MEDIA, SDP_HDR_UNSPEC,
+ 					  &mediaoff, &medialen) <= 0)
+@@ -1080,8 +1161,8 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
+ 		mediaoff += t->len;
+ 		medialen -= t->len;
  
- 	return iova;
- }
-@@ -1054,15 +1069,17 @@ static int uaudio_transfer_buffer_setup(
- 	if (!xfer_buf)
- 		return -ENOMEM;
+-		port = simple_strtoul(*dptr + mediaoff, NULL, 10);
+-		if (port == 0)
++		port = sip_strtouint(*dptr + mediaoff, *datalen - mediaoff, (char **)&end);
++		if (port == 0 || *dptr + mediaoff == end)
+ 			continue;
+ 		if (port < 1024 || port > 65535) {
+ 			nf_ct_helper_log(skb, ct, "wrong port %u", port);
+@@ -1255,7 +1336,7 @@ static int process_register_request(struct sk_buff *skb, unsigned int protoff,
+ 	 */
+ 	if (ct_sip_get_header(ct, *dptr, 0, *datalen, SIP_HDR_EXPIRES,
+ 			      &matchoff, &matchlen) > 0)
+-		expires = simple_strtoul(*dptr + matchoff, NULL, 10);
++		expires = sip_strtouint(*dptr + matchoff, *datalen - matchoff, NULL);
  
--	dma_get_sgtable(subs->dev->bus->sysdev, &xfer_buf_sgt, xfer_buf,
--			xfer_buf_dma, len);
-+	ret = dma_get_sgtable(subs->dev->bus->sysdev, &xfer_buf_sgt, xfer_buf,
-+			      xfer_buf_dma, len);
-+	if (ret)
-+		goto free_xfer_buf;
+ 	ret = ct_sip_parse_header_uri(ct, *dptr, NULL, *datalen,
+ 				      SIP_HDR_CONTACT, NULL,
+@@ -1359,7 +1440,7 @@ static int process_register_response(struct sk_buff *skb, unsigned int protoff,
  
- 	/* map the physical buffer into sysdev as well */
- 	xfer_buf_dma_sysdev = uaudio_iommu_map_xfer_buf(dma_coherent,
- 							len, &xfer_buf_sgt);
- 	if (!xfer_buf_dma_sysdev) {
- 		ret = -ENOMEM;
--		goto unmap_sync;
-+		goto free_sgt;
+ 	if (ct_sip_get_header(ct, *dptr, 0, *datalen, SIP_HDR_EXPIRES,
+ 			      &matchoff, &matchlen) > 0)
+-		expires = simple_strtoul(*dptr + matchoff, NULL, 10);
++		expires = sip_strtouint(*dptr + matchoff, *datalen - matchoff, NULL);
+ 
+ 	while (1) {
+ 		unsigned int c_expires = expires;
+@@ -1419,10 +1500,12 @@ static int process_sip_response(struct sk_buff *skb, unsigned int protoff,
+ 	struct nf_conn *ct = nf_ct_get(skb, &ctinfo);
+ 	unsigned int matchoff, matchlen, matchend;
+ 	unsigned int code, cseq, i;
++	char *end;
+ 
+ 	if (*datalen < strlen("SIP/2.0 200"))
+ 		return NF_ACCEPT;
+-	code = simple_strtoul(*dptr + strlen("SIP/2.0 "), NULL, 10);
++	code = sip_strtouint(*dptr + strlen("SIP/2.0 "),
++			     *datalen - strlen("SIP/2.0 "), NULL);
+ 	if (!code) {
+ 		nf_ct_helper_log(skb, ct, "cannot get code");
+ 		return NF_DROP;
+@@ -1433,8 +1516,8 @@ static int process_sip_response(struct sk_buff *skb, unsigned int protoff,
+ 		nf_ct_helper_log(skb, ct, "cannot parse cseq");
+ 		return NF_DROP;
  	}
+-	cseq = simple_strtoul(*dptr + matchoff, NULL, 10);
+-	if (!cseq && *(*dptr + matchoff) != '0') {
++	cseq = sip_strtouint(*dptr + matchoff, *datalen - matchoff, (char **)&end);
++	if (*dptr + matchoff == end) {
+ 		nf_ct_helper_log(skb, ct, "cannot get cseq");
+ 		return NF_DROP;
+ 	}
+@@ -1483,6 +1566,7 @@ static int process_sip_request(struct sk_buff *skb, unsigned int protoff,
  
- 	mem_info->dma = xfer_buf_dma;
-@@ -1073,7 +1090,9 @@ static int uaudio_transfer_buffer_setup(
+ 	for (i = 0; i < ARRAY_SIZE(sip_handlers); i++) {
+ 		const struct sip_handler *handler;
++		char *end;
  
- 	return 0;
+ 		handler = &sip_handlers[i];
+ 		if (handler->request == NULL)
+@@ -1499,8 +1583,8 @@ static int process_sip_request(struct sk_buff *skb, unsigned int protoff,
+ 			nf_ct_helper_log(skb, ct, "cannot parse cseq");
+ 			return NF_DROP;
+ 		}
+-		cseq = simple_strtoul(*dptr + matchoff, NULL, 10);
+-		if (!cseq && *(*dptr + matchoff) != '0') {
++		cseq = sip_strtouint(*dptr + matchoff, *datalen - matchoff, (char **)&end);
++		if (*dptr + matchoff == end) {
+ 			nf_ct_helper_log(skb, ct, "cannot get cseq");
+ 			return NF_DROP;
+ 		}
+@@ -1576,7 +1660,7 @@ static int sip_help_tcp(struct sk_buff *skb, unsigned int protoff,
+ 				      &matchoff, &matchlen) <= 0)
+ 			break;
  
--unmap_sync:
-+free_sgt:
-+	sg_free_table(&xfer_buf_sgt);
-+free_xfer_buf:
- 	usb_free_coherent(subs->dev, len, xfer_buf, xfer_buf_dma);
+-		clen = simple_strtoul(dptr + matchoff, (char **)&end, 10);
++		clen = sip_strtouint(dptr + matchoff, datalen - matchoff, (char **)&end);
+ 		if (dptr + matchoff == end)
+ 			break;
  
- 	return ret;
+diff --git a/net/netfilter/nf_nat_sip.c b/net/netfilter/nf_nat_sip.c
+index c845b6d1a2bdf..9fbfc6bff0c22 100644
+--- a/net/netfilter/nf_nat_sip.c
++++ b/net/netfilter/nf_nat_sip.c
+@@ -246,6 +246,7 @@ static unsigned int nf_nat_sip(struct sk_buff *skb, unsigned int protoff,
+ 		if (ct_sip_parse_numerical_param(ct, *dptr, matchend, *datalen,
+ 						 "rport=", &poff, &plen,
+ 						 &n) > 0 &&
++		    n >= 1024 && n <= 65535 &&
+ 		    htons(n) == ct->tuplehash[dir].tuple.dst.u.udp.port &&
+ 		    htons(n) != ct->tuplehash[!dir].tuple.src.u.udp.port) {
+ 			__be16 p = ct->tuplehash[!dir].tuple.src.u.udp.port;
+-- 
+2.53.0
+
 
 
 
