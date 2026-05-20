@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-251082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253141-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EMQFIaXuDWpu4wUAu9opvQ
-	(envelope-from <stable+bounces-251082-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:25:57 +0200
+	id cLq9F8YNDmqe5wUAu9opvQ
+	(envelope-from <stable+bounces-253141-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:38:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFCCC593A13
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:25:56 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6353F5988B0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:38:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 88A4030E61DA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:11:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CD3B931641CD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01B6A3E7155;
-	Wed, 20 May 2026 17:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E51E3FC5A1;
+	Wed, 20 May 2026 18:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SD8YC0WU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kqoxq4+O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81983E314D;
-	Wed, 20 May 2026 17:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1704834EEF7;
+	Wed, 20 May 2026 18:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297052; cv=none; b=ptB8Q4CtVEyUWZsLQcILjmi7syLc65BqkqunWaYjIzSqngmWc5ahpZD/KQy5t8tTU6iZXoyXnC7WGvU6uBH8uO+IpbU7yU/Jsmio8lguEe56Em6Z55sk87lcTgo7h5lQmK2VAJd9z8Grfjpkzx4wBFcMr88YoNC9d1gSsXMLRIY=
+	t=1779302513; cv=none; b=UC5mNoiCs4WVPv584ae5hOoNbIMflTAgH3W0HFUGKuVjFyaxg3J1posQPjIRaeWOGYTlTZFFBv9Vvtg90zELPiTKCzxjHXzyff3b/TnH+NA4jtzZg6BTaVZdcrDW0Z+OvU2Ol4KzL7mvn061KWXbdS+Hbq3JGl74bChzzLFjl6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297052; c=relaxed/simple;
-	bh=R83Jn/DAVbO4TR6K28ikF2DhZzA6VXkn69U3asmoFqA=;
+	s=arc-20240116; t=1779302513; c=relaxed/simple;
+	bh=iTFmew2ifSlInJw8J8f8qX1GlmvKViku1/xp2FekjaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gXeRqz+4fKJ1QKcljm7xeBOgNcQbMiMyQJi9TOtcReIpXELUU0zH9406swlDpy+wCUXJd2db7WGvdKFxxUqvNN3Zvx/Ko0j2s/C3gAXlY3/t0zpMhwR6NsYfJEei9EW4yHwj2YnBwVGUrPw71bN6T+E3cyJMyWR0AIPLcbU1+70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SD8YC0WU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 181C21F000E9;
-	Wed, 20 May 2026 17:10:50 +0000 (UTC)
+	 MIME-Version; b=D1Ps0+xkMPnOBQNnkpZZSBuT1YvAFu9CMnfxAZh4yPzg7fmgVIhBppPPyaqJ+We+A/sZCFyDz1bfAXgor2iStUCcCiBChRi+5Is2UvlYs0KMBrS2IAUjA1T+5S7siRyVg02V7rdJX4TGg7bFryvWJGWYAfEsQTzUlKMu27lFj8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kqoxq4+O; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 560C01F000E9;
+	Wed, 20 May 2026 18:41:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297051;
-	bh=h23EfNRKBwllzyNSqBmacCj58mLfZMMtsDgu3VdLceE=;
+	s=korg; t=1779302511;
+	bh=sNpR3Q0vE5/tXnCr1PAFAad+vFOHCtcNrpDLO6CZl2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SD8YC0WUasYfhAeqUAj9dK9mT1Qdpen1mUQnYQdnbCUaL1940Ps7L0PSp0LssEnZA
-	 LlXoc7Zg+dUcpoezo01tqwdfre0ALTMbqnbf8D3dG2i47ZD+j2GLyRgxuIlUrVmfR3
-	 xM820M2Ley5hlGmQiOHW1qIz/FY4QSIfkzb81f3E=
+	b=kqoxq4+ObirxzLEg+EqXye2MYqeVa2sL16eCw4GqA4c33AmKnMWXllU2Vg4litXJz
+	 P1BVUlnx1auP8ypNbUypJ4dr+ARGUu/7R1Bhfzd+JCnDMc54F3Z3q0OOV7i4jTLqnl
+	 0kL915awRCXdo+aA6tT5e4mUyadpsAyn+SSnaXi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Jorge Marques <jorge.marques@analog.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 1031/1146] net: tls: fix strparser anchor skb leak on offload RX setup failure
+Subject: [PATCH 6.6 258/508] i3c: master: Fix error codes at send_ccc_cmd
 Date: Wed, 20 May 2026 18:21:21 +0200
-Message-ID: <20260520162211.560792200@linuxfoundation.org>
+Message-ID: <20260520162104.236146409@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251082-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253141-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,102 +87,138 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linux.dev:email]
-X-Rspamd-Queue-Id: EFCCC593A13
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:email,intel.com:email,msgid.link:url,analog.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linaro.org:email]
+X-Rspamd-Queue-Id: 6353F5988B0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Jorge Marques <jorge.marques@analog.com>
 
-[ Upstream commit 58689498ca3384851145a754dbb1d8ed1cf9fb54 ]
+[ Upstream commit ef8b5229348f0719aca557c4ca5530630ae4d134 ]
 
-When tls_set_device_offload_rx() fails at tls_dev_add(), the error path
-calls tls_sw_free_resources_rx() to clean up the SW context that was
-initialized by tls_set_sw_offload(). This function calls
-tls_sw_release_resources_rx() (which stops the strparser via
-tls_strp_stop()) and tls_sw_free_ctx_rx() (which kfrees the context),
-but never frees the anchor skb that was allocated by alloc_skb(0) in
-tls_strp_init().
+i3c_master_send_ccc_cmd_locked() would propagate cmd->err (positive,
+Mx codes) to the ret variable, cascading down multiple methods until
+reaching methods that explicitly stated they would return 0 on success
+or negative error code. For example, the call chain:
 
-Note that tls_sw_free_resources_rx() is exclusively used for this
-"failed to start offload" code path, there's no other caller.
+  i3c_device_enable_ibi <- i3c_dev_enable_ibi_locked <-
+  master->ops.enable_ibi <- i3c_master_enec_locked <-
+  i3c_master_enec_disec_locked <- i3c_master_send_ccc_cmd_locked
 
-The leak did not exist before commit 84c61fe1a75b ("tls: rx: do not use
-the standard strparser"), because the standard strparser doesn't try
-to pre-allocate an skb.
+Fix this by returning the ret value, callers can still read the cmd->err
+value if ret is negative.
 
-The normal close path in tls_sk_proto_close() handles cleanup by calling
-tls_sw_strparser_done() (which calls tls_strp_done()) after dropping
-the socket lock, because tls_strp_done() does cancel_work_sync() and
-the strparser work handler takes the socket lock.
+All corner cases where the Mx codes do need to be handled individually,
+are resolved in previous commits. Those corner cases are all scenarios
+when I3C_ERROR_M2 is expected and acceptable.
+The prerequisite patches for the fix are:
 
-Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20260428231559.1358502-1-kuba@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+  i3c: master: Move rstdaa error suppression
+  i3c: master: Move entdaa error suppression
+  i3c: master: Move bus_init error suppression
+
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/linux-iio/aYXvT5FW0hXQwhm_@stanley.mountain/
+Fixes: 3a379bbcea0a ("i3c: Add core I3C infrastructure")
+Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Jorge Marques <jorge.marques@analog.com>
+Link: https://patch.msgid.link/20260323-ad4062-positive-error-fix-v3-4-30bdc68004be@analog.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls.h      | 1 +
- net/tls/tls_strp.c | 6 ++++++
- net/tls/tls_sw.c   | 4 ++++
- 3 files changed, 11 insertions(+)
+ drivers/i3c/master.c | 32 +++++++++++++-------------------
+ 1 file changed, 13 insertions(+), 19 deletions(-)
 
-diff --git a/net/tls/tls.h b/net/tls/tls.h
-index 2f86baeb71fcb..a1d8467bece33 100644
---- a/net/tls/tls.h
-+++ b/net/tls/tls.h
-@@ -188,6 +188,7 @@ int tls_strp_dev_init(void);
- void tls_strp_dev_exit(void);
- 
- void tls_strp_done(struct tls_strparser *strp);
-+void __tls_strp_done(struct tls_strparser *strp);
- void tls_strp_stop(struct tls_strparser *strp);
- int tls_strp_init(struct tls_strparser *strp, struct sock *sk);
- void tls_strp_data_ready(struct tls_strparser *strp);
-diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
-index 98e12f0ff57e5..c72e883176273 100644
---- a/net/tls/tls_strp.c
-+++ b/net/tls/tls_strp.c
-@@ -624,6 +624,12 @@ void tls_strp_done(struct tls_strparser *strp)
- 	WARN_ON(!strp->stopped);
- 
- 	cancel_work_sync(&strp->work);
-+	__tls_strp_done(strp);
-+}
-+
-+/* For setup error paths where the strparser was initialized but never armed. */
-+void __tls_strp_done(struct tls_strparser *strp)
-+{
- 	tls_strp_anchor_free(strp);
+diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+index f74ef65d257d7..84fe0de5a9bc7 100644
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -792,11 +792,17 @@ static void i3c_ccc_cmd_init(struct i3c_ccc_cmd *cmd, bool rnw, u8 id,
+ 	cmd->err = I3C_ERROR_UNKNOWN;
  }
  
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 83e78a3d1e651..23a31646d0387 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -2625,8 +2625,12 @@ void tls_sw_free_ctx_rx(struct tls_context *tls_ctx)
- void tls_sw_free_resources_rx(struct sock *sk)
++/**
++ * i3c_master_send_ccc_cmd_locked() - send a CCC (Common Command Codes)
++ * @master: master used to send frames on the bus
++ * @cmd: command to send
++ *
++ * Return: 0 in case of success, or a negative error code otherwise.
++ *         I3C Mx error codes are stored in cmd->err.
++ */
+ static int i3c_master_send_ccc_cmd_locked(struct i3c_master_controller *master,
+ 					  struct i3c_ccc_cmd *cmd)
  {
- 	struct tls_context *tls_ctx = tls_get_ctx(sk);
-+	struct tls_sw_context_rx *ctx;
-+
-+	ctx = tls_sw_ctx_rx(tls_ctx);
+-	int ret;
+-
+ 	if (!cmd || !master)
+ 		return -EINVAL;
  
- 	tls_sw_release_resources_rx(sk);
-+	__tls_strp_done(&ctx->strp);
- 	tls_sw_free_ctx_rx(tls_ctx);
+@@ -814,15 +820,7 @@ static int i3c_master_send_ccc_cmd_locked(struct i3c_master_controller *master,
+ 	    !master->ops->supports_ccc_cmd(master, cmd))
+ 		return -ENOTSUPP;
+ 
+-	ret = master->ops->send_ccc_cmd(master, cmd);
+-	if (ret) {
+-		if (cmd->err != I3C_ERROR_UNKNOWN)
+-			return cmd->err;
+-
+-		return ret;
+-	}
+-
+-	return 0;
++	return master->ops->send_ccc_cmd(master, cmd);
  }
  
+ static struct i2c_dev_desc *
+@@ -926,8 +924,7 @@ static int i3c_master_rstdaa_locked(struct i3c_master_controller *master,
+  *
+  * This function must be called with the bus lock held in write mode.
+  *
+- * Return: 0 in case of success, a positive I3C error code if the error is
+- * one of the official Mx error codes, and a negative error code otherwise.
++ * Return: 0 in case of success, or a negative error code otherwise.
+  */
+ int i3c_master_entdaa_locked(struct i3c_master_controller *master)
+ {
+@@ -979,8 +976,7 @@ static int i3c_master_enec_disec_locked(struct i3c_master_controller *master,
+  *
+  * This function must be called with the bus lock held in write mode.
+  *
+- * Return: 0 in case of success, a positive I3C error code if the error is
+- * one of the official Mx error codes, and a negative error code otherwise.
++ * Return: 0 in case of success, or a negative error code otherwise.
+  */
+ int i3c_master_disec_locked(struct i3c_master_controller *master, u8 addr,
+ 			    u8 evts)
+@@ -1000,8 +996,7 @@ EXPORT_SYMBOL_GPL(i3c_master_disec_locked);
+  *
+  * This function must be called with the bus lock held in write mode.
+  *
+- * Return: 0 in case of success, a positive I3C error code if the error is
+- * one of the official Mx error codes, and a negative error code otherwise.
++ * Return: 0 in case of success, or a negative error code otherwise.
+  */
+ int i3c_master_enec_locked(struct i3c_master_controller *master, u8 addr,
+ 			   u8 evts)
+@@ -1026,8 +1021,7 @@ EXPORT_SYMBOL_GPL(i3c_master_enec_locked);
+  *
+  * This function must be called with the bus lock held in write mode.
+  *
+- * Return: 0 in case of success, a positive I3C error code if the error is
+- * one of the official Mx error codes, and a negative error code otherwise.
++ * Return: 0 in case of success, or a negative error code otherwise.
+  */
+ int i3c_master_defslvs_locked(struct i3c_master_controller *master)
+ {
 -- 
 2.53.0
 
