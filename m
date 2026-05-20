@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-251158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253162-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sHeLKSLwDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-251158-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:32:18 +0200
+	id uHN8IJkuDmoK7wUAu9opvQ
+	(envelope-from <stable+bounces-253162-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 213E8593E45
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:32:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1C3D59B8CA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 83E7E30680AF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B57E8396FBFB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F8243F23BF;
-	Wed, 20 May 2026 17:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3CB440586A;
+	Wed, 20 May 2026 18:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="objUIrTs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMWJ1yLl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5584C3D75D3;
-	Wed, 20 May 2026 17:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FFE7405C2D;
+	Wed, 20 May 2026 18:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297250; cv=none; b=tEiPHWqZgZBQ/Zb4vCD9XnsD0ttv/Q/zQTix3QhX5Q77+TgYPpE5QGg0BhEAzgFKMxZZqIbNAtxMWZGeaMjb+NSdmxJ+c1HTrgjHw5xeInxfL37H9PaBlbRHHWxzrjoUiRuY4ImDFU/MkoY6FTBNyeBkJl4tNEulIqjzBKrezsg=
+	t=1779302568; cv=none; b=KIL9TMYueXTLvZThFdb9A28aYC5lp7Yj/r9zzBqHgI78zOoeibAj+SJnmFWhC0cpHUdcRoquWdhMmPR3O9WRE9LlFOH9bvOqXfudynZsGfskV1f6FmXkmSEhzz572bLjbU+O8OSUB43gYbKTdiHWjNnH6Tn95GHYp5WoM/TE0K4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297250; c=relaxed/simple;
-	bh=aJVNSYvmPV9HI8t/xc6PvvXMCtGk+0xm4/sVMjGTMUA=;
+	s=arc-20240116; t=1779302568; c=relaxed/simple;
+	bh=bIvID8CagBNeoFB2wKkO9hn6qTr+v4q1vzLjOZEHm30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QVoqTFfIttUBWXLraFXY/ncm4PrvdPL8uCo2GUL8/AkAXK2pTytIWRRKqCd+ByuvcdmYhdzB1pVneeWZlWj9NHlMYxOQeJ64fC542tvmWu0qsp1SFoe1fEuKJrrf9VqBa+6QnZ9UjuggXd0OjzCT3LRBhU/zOUlGOd/dNnr7lHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=objUIrTs; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA0A21F000E9;
-	Wed, 20 May 2026 17:14:08 +0000 (UTC)
+	 MIME-Version; b=qha+EKF5BhWCh8HUKMqBA02GNlrmiS8V3KecJ1SoZfZuZabwP35q/r6VDslw7DfK8njfjuOW9VHXx/Xcb13+XkGsGJuyn6dG7DSOwvD37GMXhwUj9QCqpq3AoaWbonEKMM9EEs7WjVtvxMmpeXThbqoxe5fEVYnHvncY4pPESyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMWJ1yLl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3E8A1F000E9;
+	Wed, 20 May 2026 18:42:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297249;
-	bh=ka/QTBMlkmsoN3S+/iQc0MkCvW/xVyeIGtrLbaPKFSI=;
+	s=korg; t=1779302567;
+	bh=QoZ4sZrrtrjLxGITU3xnV+GxTjKT/qWiM5SjZCXB+mk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=objUIrTsLTd36ssq5rA8qCcg6h/cBWDmOhPMSrMzVE4GJlaTxt9m4aXaZAp9qOJnR
-	 B2Zh745J0G9iz/IzhdovddYTWlcJNjuAFh/hFufHBIekd4RT+zDEJwldjtn3MQlMHe
-	 wa0G89gJJsZ/AJJNWov8waQv3rHjkaZiFJIWUVLQ=
+	b=yMWJ1yLlmV5JKyKOXdpNrVwD10B3e1yi4ugNpJkX9YCJCmHSqXnxHmAqQsvWT3gHn
+	 5mPNakOZ/xKBktLCBvedxaWbbgjfMkqUydqv+rco9R7p5tvLC8TpCoSRGghJVpYstR
+	 VKl8YTBQttxpMTkXzj6KSPOSBSZ71LXE4k3ootno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 7.0 1090/1146] ALSA: usb-audio: Bound MIDI 2.0 endpoint descriptor scans
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 317/508] tcp: annotate data-races around tp->bytes_retrans
 Date: Wed, 20 May 2026 18:22:20 +0200
-Message-ID: <20260520162212.906195365@linuxfoundation.org>
+Message-ID: <20260520162105.506120104@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +63,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251158-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-253162-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 213E8593E45
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: E1C3D59B8CA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 918be519c7876329e1b6e2ea1c59f0b75e792dca upstream.
+[ Upstream commit 5efc7b9f7cbd43401f1af81d3d7f2be00f93390d ]
 
-The USB MIDI 2.0 endpoint parser has the same descriptor walking
-pattern as the legacy MIDI parser. It validates bLength against
-bNumGrpTrmBlock before reading baAssoGrpTrmBlkID[], but not against the
-remaining bytes in the endpoint-extra scan.
+tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
+add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
 
-A malformed device can therefore make later baAssoGrpTrmBlkID[] reads
-consume bytes past the walked descriptor.
-
-Reject zero-length and overlong descriptors while walking endpoint
-extras.
-
-Fixes: ff49d1df79ae ("ALSA: usb-audio: USB MIDI 2.0 UMP support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260507-usb-midi-endpoint-scan-bounds-v1-2-329d7348160e@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fb31c9b9f6c8 ("tcp: add data bytes retransmitted stats")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260416200319.3608680-9-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/midi2.c |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ net/ipv4/tcp.c        | 4 ++--
+ net/ipv4/tcp_output.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/sound/usb/midi2.c
-+++ b/sound/usb/midi2.c
-@@ -496,15 +496,17 @@ static void *find_usb_ms_endpoint_descri
- 	while (extralen > 3) {
- 		struct usb_ms_endpoint_descriptor *ms_ep =
- 			(struct usb_ms_endpoint_descriptor *)extra;
-+		int length = ms_ep->bLength;
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index c6b58bbb43c8a..2ab4b8f4d8d10 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -3988,8 +3988,8 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
  
--		if (ms_ep->bLength > 3 &&
-+		if (!length || length > extralen)
-+			break;
-+
-+		if (length > 3 &&
- 		    ms_ep->bDescriptorType == USB_DT_CS_ENDPOINT &&
- 		    ms_ep->bDescriptorSubtype == subtype)
- 			return ms_ep;
--		if (!extra[0])
--			break;
--		extralen -= extra[0];
--		extra += extra[0];
-+		extralen -= length;
-+		extra += length;
- 	}
- 	return NULL;
- }
+ 	nla_put_u64_64bit(stats, TCP_NLA_BYTES_SENT, READ_ONCE(tp->bytes_sent),
+ 			  TCP_NLA_PAD);
+-	nla_put_u64_64bit(stats, TCP_NLA_BYTES_RETRANS, tp->bytes_retrans,
+-			  TCP_NLA_PAD);
++	nla_put_u64_64bit(stats, TCP_NLA_BYTES_RETRANS,
++			  READ_ONCE(tp->bytes_retrans), TCP_NLA_PAD);
+ 	nla_put_u32(stats, TCP_NLA_DSACK_DUPS, tp->dsack_dups);
+ 	nla_put_u32(stats, TCP_NLA_REORD_SEEN, tp->reord_seen);
+ 	nla_put_u32(stats, TCP_NLA_SRTT, tp->srtt_us >> 3);
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index 1fd807236c651..ea982c3670d33 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -3350,7 +3350,7 @@ int __tcp_retransmit_skb(struct sock *sk, struct sk_buff *skb, int segs)
+ 	if (TCP_SKB_CB(skb)->tcp_flags & TCPHDR_SYN)
+ 		__NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPSYNRETRANS);
+ 	WRITE_ONCE(tp->total_retrans, tp->total_retrans + segs);
+-	tp->bytes_retrans += skb->len;
++	WRITE_ONCE(tp->bytes_retrans, tp->bytes_retrans + skb->len);
+ 
+ 	/* make sure skb->data is aligned on arches that require it
+ 	 * and check if ack-trimming & collapsing extended the headroom
+-- 
+2.53.0
+
 
 
 
