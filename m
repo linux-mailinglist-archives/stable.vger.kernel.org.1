@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-253190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251166-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UIX+CFIdDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-253190-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:45:06 +0200
+	id WHs8HbAVDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251166-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:12:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4498459A0C6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:45:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E7B0599440
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:12:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AC65731E3821
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0ADDD31B0B4F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F42640802D;
-	Wed, 20 May 2026 18:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B02993F1AA4;
+	Wed, 20 May 2026 17:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bhhx94PO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oS0VSl/T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D18440802A;
-	Wed, 20 May 2026 18:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693FA370D54;
+	Wed, 20 May 2026 17:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302639; cv=none; b=Xtme89qwYihDanNjly9kwt8Q/3+ZRyzDCMvZPB1em/Mzz8b8+cMsC+Cnsyo/rDjQUVHQbPYwwwc8248l0cThne04qhJsbtUZjc49c/62HIhv4FvxxQl8Z+WiawEC3gZziQbJLwdep3rjtVynCv++euampiKAqmnx2gJnvdMfRxI=
+	t=1779297271; cv=none; b=bs63CciI0gVwWNj2CPUJuPJ1xvNFIgMHUu/ocH5HWDRwMNdZ6BoNgDjlbHKVlDFYkCY6qG1CR0AM/xZq4/ri5BtK5hELtSQ5i6z2qFh4a1TK6fkIYkULFx2nmx5r7zRlVFrqpuyC4YAen2W9bhqoDnDhCg63hGoObkj4TF/Ru+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302639; c=relaxed/simple;
-	bh=Ha7ol/Vr7VxkvIX1604S9Vc+rAhBXs4hxSKxq4YY4/I=;
+	s=arc-20240116; t=1779297271; c=relaxed/simple;
+	bh=yGD+GEh3JRVEq+gaVLrz8We7eQpRFK5F92NRW+Dlnbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YwZjkXkijIbcMT8HfPRXK1qKmMjESL12nmQtRRrKT9uc1CQ5FrbJlFm9m12YcFAv7pbz3r4o1HKIZmEZtXVkbhj8c4jhaezace4XdozvIYvNlJ9ybmUdNgfdwAHPil7H/RxCpiErnITgVqtivJxCu0ZOXybNFpEf5oufDuemKP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bhhx94PO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D37841F000E9;
-	Wed, 20 May 2026 18:43:57 +0000 (UTC)
+	 MIME-Version; b=JxSFof76glqXOEFTgLchAk43FbSe4CMKWTeeGOsdtaYP0mKpedss3/GoB6H4g/XIOJXI1co4mGztkS0mCfvL6nkyxhOUAh+qtEat/A8p84zB1nKl4XyFsYDoE8fkMNjnlYOFQ56sG0rSnVtvhGhUsGIESffIgJsZLmqwEec/LGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oS0VSl/T; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE2081F000E9;
+	Wed, 20 May 2026 17:14:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302638;
-	bh=JcsAeHOiZeDp7a1lp6YX71iSws6UYMZFy0LFzYx0lMI=;
+	s=korg; t=1779297270;
+	bh=6VRa4SjdMCkfw2uctrHyJgLg5XrOFBwdQUOoiyfrH/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bhhx94POwr5v+63CS7MNdFlQw1z6cWez2v4RhclR7UZjDL99i/A98dQoPQ746ZrTf
-	 DmY5Ld0pbemXdEbaE4lM0ODtt316zsN9/NWCznFFDLfgHZWijgemtimVIM9YI8rVx/
-	 oh2Sxa3CMFQEHbzkFqbCsZyNTVWdmV8iyYw1y/1A=
+	b=oS0VSl/TMv8DgrD0QDIXRWRdekWJVmur0jvxQIsVMkdvmQ1uyboZdXoJCL0gGRzNh
+	 F3dJW8F1tszTRZw7GhD8WiYadrC2xzgAJx8EY9MuHY5CjZLVaG20g+RmtqjjwFP6k6
+	 KQ+1Z9nLabL6Xkoxt+8cnhDWjC6mf9/wWst8hico=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Atte=20Heikkil=C3=A4?= <atteh.mailbox@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 341/508] ksmbd: add support for supplementary groups
-Date: Wed, 20 May 2026 18:22:44 +0200
-Message-ID: <20260520162106.021281801@linuxfoundation.org>
+	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 7.0 1115/1146] libceph: Fix potential null-ptr-deref in decode_choose_args()
+Date: Wed, 20 May 2026 18:22:45 +0200
+Message-ID: <20260520162213.477830862@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,425 +62,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-253190-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
-	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251166-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,gmail.com];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 4498459A0C6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tu-ilmenau.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 1E7B0599440
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
 
-[ Upstream commit a77e0e02af1c2db5fc040511aa78a58a52e116ab ]
+commit 28b0a2ab8c82d0bbdeb8013029c67c978ce6e4bf upstream.
 
-Even though system user has a supplementary group, It gets
-NT_STATUS_ACCESS_DENIED when attempting to create file or directory.
-This patch add KSMBD_EVENT_LOGIN_REQUEST_EXT/RESPONSE_EXT netlink events
-to get supplementary groups list. The new netlink event doesn't break
-backward compatibility when using old ksmbd-tools.
+A message of type CEPH_MSG_OSD_MAP contains an OSD map that itself
+contains a CRUSH map. When decoding this CRUSH map in crush_decode(), an
+array of max_buckets CRUSH buckets is decoded, where some indices may
+not refer to actual buckets and are therefore set to NULL. The received
+CRUSH map may optionally contain choose_args that get decoded in
+decode_choose_args(). When decoding a crush_choose_arg_map, a series of
+choose_args for different buckets is decoded, with the bucket_index
+being read from the incoming message. It is only checked that the bucket
+index does not exceed max_buckets, but not that it doesn't point to an
+index with a NULL bucket. If a (potentially corrupted) message contains
+a crush_choose_arg_map including such a bucket_index, a null pointer
+dereference may occur in the subsequent processing when attempting to
+access the bucket with the given index.
 
-Co-developed-by: Atte Heikkilä <atteh.mailbox@gmail.com>
-Signed-off-by: Atte Heikkilä <atteh.mailbox@gmail.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Stable-dep-of: b32c8db48212 ("ksmbd: destroy async_ida in ksmbd_conn_free()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch fixes the issue by extending the affected check. Now, it is
+only attempted to access the bucket if it is not NULL.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/auth.c             |  6 ++-
- fs/smb/server/ksmbd_netlink.h    | 17 +++++++++
- fs/smb/server/mgmt/user_config.c | 45 ++++++++++++++++++----
- fs/smb/server/mgmt/user_config.h |  5 ++-
- fs/smb/server/smb_common.c       | 15 ++++++--
- fs/smb/server/transport_ipc.c    | 64 ++++++++++++++++++++++++++++++--
- fs/smb/server/transport_ipc.h    |  2 +
- 7 files changed, 137 insertions(+), 17 deletions(-)
+ net/ceph/osdmap.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/auth.c b/fs/smb/server/auth.c
-index d28b34e1d047a..825cc03692754 100644
---- a/fs/smb/server/auth.c
-+++ b/fs/smb/server/auth.c
-@@ -514,6 +514,7 @@ int ksmbd_krb5_authenticate(struct ksmbd_session *sess, char *in_blob,
- 			    int in_len, char *out_blob, int *out_len)
- {
- 	struct ksmbd_spnego_authen_response *resp;
-+	struct ksmbd_login_response_ext *resp_ext = NULL;
- 	struct ksmbd_user *user = NULL;
- 	int retval;
+--- a/net/ceph/osdmap.c
++++ b/net/ceph/osdmap.c
+@@ -389,7 +389,8 @@ static int decode_choose_args(void **p,
+ 				goto fail;
  
-@@ -542,7 +543,10 @@ int ksmbd_krb5_authenticate(struct ksmbd_session *sess, char *in_blob,
- 		goto out;
- 	}
- 
--	user = ksmbd_alloc_user(&resp->login_response);
-+	if (resp->login_response.status & KSMBD_USER_FLAG_EXTENSION)
-+		resp_ext = ksmbd_ipc_login_request_ext(resp->login_response.account);
-+
-+	user = ksmbd_alloc_user(&resp->login_response, resp_ext);
- 	if (!user) {
- 		ksmbd_debug(AUTH, "login failure\n");
- 		retval = -ENOMEM;
-diff --git a/fs/smb/server/ksmbd_netlink.h b/fs/smb/server/ksmbd_netlink.h
-index 363501fc308aa..125ea1b9839ef 100644
---- a/fs/smb/server/ksmbd_netlink.h
-+++ b/fs/smb/server/ksmbd_netlink.h
-@@ -51,6 +51,9 @@
-  *  - KSMBD_EVENT_SPNEGO_AUTHEN_REQUEST/RESPONSE(ksmbd_spnego_authen_request/response)
-  *    This event is to make kerberos authentication to be processed in
-  *    userspace.
-+ *
-+ *  - KSMBD_EVENT_LOGIN_REQUEST_EXT/RESPONSE_EXT(ksmbd_login_request_ext/response_ext)
-+ *    This event is to get user account extension info to user IPC daemon.
-  */
- 
- #define KSMBD_GENL_NAME		"SMBD_GENL"
-@@ -147,6 +150,16 @@ struct ksmbd_login_response {
- 	__u32	reserved[16];			/* Reserved room */
- };
- 
-+/*
-+ * IPC user login response extension.
-+ */
-+struct ksmbd_login_response_ext {
-+	__u32	handle;
-+	__s32	ngroups;			/* supplementary group count */
-+	__s8	reserved[128];			/* Reserved room */
-+	__s8	____payload[];
-+};
-+
- /*
-  * IPC request to fetch net share config.
-  */
-@@ -308,6 +321,9 @@ enum ksmbd_event {
- 	KSMBD_EVENT_SPNEGO_AUTHEN_REQUEST,
- 	KSMBD_EVENT_SPNEGO_AUTHEN_RESPONSE	= 15,
- 
-+	KSMBD_EVENT_LOGIN_REQUEST_EXT,
-+	KSMBD_EVENT_LOGIN_RESPONSE_EXT,
-+
- 	__KSMBD_EVENT_MAX,
- 	KSMBD_EVENT_MAX = __KSMBD_EVENT_MAX - 1
- };
-@@ -338,6 +354,7 @@ enum KSMBD_TREE_CONN_STATUS {
- #define KSMBD_USER_FLAG_BAD_USER	BIT(3)
- #define KSMBD_USER_FLAG_GUEST_ACCOUNT	BIT(4)
- #define KSMBD_USER_FLAG_DELAY_SESSION	BIT(5)
-+#define KSMBD_USER_FLAG_EXTENSION	BIT(6)
- 
- /*
-  * Share config flags.
-diff --git a/fs/smb/server/mgmt/user_config.c b/fs/smb/server/mgmt/user_config.c
-index 279d00feff216..421a4a95e216a 100644
---- a/fs/smb/server/mgmt/user_config.c
-+++ b/fs/smb/server/mgmt/user_config.c
-@@ -12,6 +12,7 @@
- struct ksmbd_user *ksmbd_login_user(const char *account)
- {
- 	struct ksmbd_login_response *resp;
-+	struct ksmbd_login_response_ext *resp_ext = NULL;
- 	struct ksmbd_user *user = NULL;
- 
- 	resp = ksmbd_ipc_login_request(account);
-@@ -21,15 +22,19 @@ struct ksmbd_user *ksmbd_login_user(const char *account)
- 	if (!(resp->status & KSMBD_USER_FLAG_OK))
- 		goto out;
- 
--	user = ksmbd_alloc_user(resp);
-+	if (resp->status & KSMBD_USER_FLAG_EXTENSION)
-+		resp_ext = ksmbd_ipc_login_request_ext(account);
-+
-+	user = ksmbd_alloc_user(resp, resp_ext);
- out:
- 	kvfree(resp);
- 	return user;
- }
- 
--struct ksmbd_user *ksmbd_alloc_user(struct ksmbd_login_response *resp)
-+struct ksmbd_user *ksmbd_alloc_user(struct ksmbd_login_response *resp,
-+		struct ksmbd_login_response_ext *resp_ext)
- {
--	struct ksmbd_user *user = NULL;
-+	struct ksmbd_user *user;
- 
- 	user = kmalloc(sizeof(struct ksmbd_user), GFP_KERNEL);
- 	if (!user)
-@@ -44,18 +49,42 @@ struct ksmbd_user *ksmbd_alloc_user(struct ksmbd_login_response *resp)
- 	if (user->passkey)
- 		memcpy(user->passkey, resp->hash, resp->hash_sz);
- 
--	if (!user->name || !user->passkey) {
--		kfree(user->name);
--		kfree(user->passkey);
--		kfree(user);
--		user = NULL;
-+	user->ngroups = 0;
-+	user->sgid = NULL;
-+
-+	if (!user->name || !user->passkey)
-+		goto err_free;
-+
-+	if (resp_ext) {
-+		if (resp_ext->ngroups > NGROUPS_MAX) {
-+			pr_err("ngroups(%u) from login response exceeds max groups(%d)\n",
-+					resp_ext->ngroups, NGROUPS_MAX);
-+			goto err_free;
-+		}
-+
-+		user->sgid = kmemdup(resp_ext->____payload,
-+				     resp_ext->ngroups * sizeof(gid_t),
-+				     GFP_KERNEL);
-+		if (!user->sgid)
-+			goto err_free;
-+
-+		user->ngroups = resp_ext->ngroups;
-+		ksmbd_debug(SMB, "supplementary groups : %d\n", user->ngroups);
- 	}
-+
- 	return user;
-+
-+err_free:
-+	kfree(user->name);
-+	kfree(user->passkey);
-+	kfree(user);
-+	return NULL;
- }
- 
- void ksmbd_free_user(struct ksmbd_user *user)
- {
- 	ksmbd_ipc_logout_request(user->name, user->flags);
-+	kfree(user->sgid);
- 	kfree(user->name);
- 	kfree(user->passkey);
- 	kfree(user);
-diff --git a/fs/smb/server/mgmt/user_config.h b/fs/smb/server/mgmt/user_config.h
-index e068a19fd9049..8c227b8d49543 100644
---- a/fs/smb/server/mgmt/user_config.h
-+++ b/fs/smb/server/mgmt/user_config.h
-@@ -18,6 +18,8 @@ struct ksmbd_user {
- 
- 	size_t			passkey_sz;
- 	char			*passkey;
-+	int			ngroups;
-+	gid_t			*sgid;
- };
- 
- static inline bool user_guest(struct ksmbd_user *user)
-@@ -60,7 +62,8 @@ static inline unsigned int user_gid(struct ksmbd_user *user)
- }
- 
- struct ksmbd_user *ksmbd_login_user(const char *account);
--struct ksmbd_user *ksmbd_alloc_user(struct ksmbd_login_response *resp);
-+struct ksmbd_user *ksmbd_alloc_user(struct ksmbd_login_response *resp,
-+		struct ksmbd_login_response_ext *resp_ext);
- void ksmbd_free_user(struct ksmbd_user *user);
- int ksmbd_anonymous_user(struct ksmbd_user *user);
- bool ksmbd_compare_user(struct ksmbd_user *u1, struct ksmbd_user *u2);
-diff --git a/fs/smb/server/smb_common.c b/fs/smb/server/smb_common.c
-index 2839c704110cd..c64d1fc34d6bf 100644
---- a/fs/smb/server/smb_common.c
-+++ b/fs/smb/server/smb_common.c
-@@ -740,13 +740,15 @@ int __ksmbd_override_fsids(struct ksmbd_work *work,
- 		struct ksmbd_share_config *share)
- {
- 	struct ksmbd_session *sess = work->sess;
-+	struct ksmbd_user *user = sess->user;
- 	struct cred *cred;
- 	struct group_info *gi;
- 	unsigned int uid;
- 	unsigned int gid;
-+	int i;
- 
--	uid = user_uid(sess->user);
--	gid = user_gid(sess->user);
-+	uid = user_uid(user);
-+	gid = user_gid(user);
- 	if (share->force_uid != KSMBD_SHARE_INVALID_UID)
- 		uid = share->force_uid;
- 	if (share->force_gid != KSMBD_SHARE_INVALID_GID)
-@@ -759,11 +761,18 @@ int __ksmbd_override_fsids(struct ksmbd_work *work,
- 	cred->fsuid = make_kuid(&init_user_ns, uid);
- 	cred->fsgid = make_kgid(&init_user_ns, gid);
- 
--	gi = groups_alloc(0);
-+	gi = groups_alloc(user->ngroups);
- 	if (!gi) {
- 		abort_creds(cred);
- 		return -ENOMEM;
- 	}
-+
-+	for (i = 0; i < user->ngroups; i++)
-+		gi->gid[i] = make_kgid(&init_user_ns, user->sgid[i]);
-+
-+	if (user->ngroups)
-+		groups_sort(gi);
-+
- 	set_groups(cred, gi);
- 	put_group_info(gi);
- 
-diff --git a/fs/smb/server/transport_ipc.c b/fs/smb/server/transport_ipc.c
-index 53bfcf57f167a..f0f93f76bc43d 100644
---- a/fs/smb/server/transport_ipc.c
-+++ b/fs/smb/server/transport_ipc.c
-@@ -120,6 +120,12 @@ static const struct nla_policy ksmbd_nl_policy[KSMBD_EVENT_MAX + 1] = {
- 	},
- 	[KSMBD_EVENT_SPNEGO_AUTHEN_RESPONSE] = {
- 	},
-+	[KSMBD_EVENT_LOGIN_REQUEST_EXT] = {
-+		.len = sizeof(struct ksmbd_login_request),
-+	},
-+	[KSMBD_EVENT_LOGIN_RESPONSE_EXT] = {
-+		.len = sizeof(struct ksmbd_login_response_ext),
-+	},
- };
- 
- static struct genl_ops ksmbd_genl_ops[] = {
-@@ -187,6 +193,14 @@ static struct genl_ops ksmbd_genl_ops[] = {
- 		.cmd	= KSMBD_EVENT_SPNEGO_AUTHEN_RESPONSE,
- 		.doit	= handle_generic_event,
- 	},
-+	{
-+		.cmd	= KSMBD_EVENT_LOGIN_REQUEST_EXT,
-+		.doit	= handle_unsupported_event,
-+	},
-+	{
-+		.cmd	= KSMBD_EVENT_LOGIN_RESPONSE_EXT,
-+		.doit	= handle_generic_event,
-+	},
- };
- 
- static struct genl_family ksmbd_genl_family = {
-@@ -198,7 +212,7 @@ static struct genl_family ksmbd_genl_family = {
- 	.module		= THIS_MODULE,
- 	.ops		= ksmbd_genl_ops,
- 	.n_ops		= ARRAY_SIZE(ksmbd_genl_ops),
--	.resv_start_op	= KSMBD_EVENT_SPNEGO_AUTHEN_RESPONSE + 1,
-+	.resv_start_op	= KSMBD_EVENT_LOGIN_RESPONSE_EXT + 1,
- };
- 
- static void ksmbd_nl_init_fixup(void)
-@@ -478,16 +492,24 @@ static int ipc_validate_msg(struct ipc_msg_table_entry *entry)
- {
- 	unsigned int msg_sz = entry->msg_sz;
- 
--	if (entry->type == KSMBD_EVENT_RPC_REQUEST) {
-+	switch (entry->type) {
-+	case KSMBD_EVENT_RPC_REQUEST:
-+	{
- 		struct ksmbd_rpc_command *resp = entry->response;
- 
- 		msg_sz = sizeof(struct ksmbd_rpc_command) + resp->payload_sz;
--	} else if (entry->type == KSMBD_EVENT_SPNEGO_AUTHEN_REQUEST) {
-+		break;
-+	}
-+	case KSMBD_EVENT_SPNEGO_AUTHEN_REQUEST:
-+	{
- 		struct ksmbd_spnego_authen_response *resp = entry->response;
- 
- 		msg_sz = sizeof(struct ksmbd_spnego_authen_response) +
- 				resp->session_key_len + resp->spnego_blob_len;
--	} else if (entry->type == KSMBD_EVENT_SHARE_CONFIG_REQUEST) {
-+		break;
-+	}
-+	case KSMBD_EVENT_SHARE_CONFIG_REQUEST:
-+	{
- 		struct ksmbd_share_config_response *resp = entry->response;
- 
- 		if (resp->payload_sz) {
-@@ -497,6 +519,17 @@ static int ipc_validate_msg(struct ipc_msg_table_entry *entry)
- 			msg_sz = sizeof(struct ksmbd_share_config_response) +
- 					resp->payload_sz;
+ 			if (arg->ids_size &&
+-			    arg->ids_size != c->buckets[bucket_index]->size)
++			    (!c->buckets[bucket_index] ||
++			     arg->ids_size != c->buckets[bucket_index]->size))
+ 				goto e_inval;
  		}
-+		break;
-+	}
-+	case KSMBD_EVENT_LOGIN_REQUEST_EXT:
-+	{
-+		struct ksmbd_login_response_ext *resp = entry->response;
-+
-+		if (resp->ngroups) {
-+			msg_sz = sizeof(struct ksmbd_login_response_ext) +
-+					resp->ngroups * sizeof(gid_t);
-+		}
-+	}
- 	}
  
- 	return entry->msg_sz != msg_sz ? -EINVAL : 0;
-@@ -582,6 +615,29 @@ struct ksmbd_login_response *ksmbd_ipc_login_request(const char *account)
- 	return resp;
- }
- 
-+struct ksmbd_login_response_ext *ksmbd_ipc_login_request_ext(const char *account)
-+{
-+	struct ksmbd_ipc_msg *msg;
-+	struct ksmbd_login_request *req;
-+	struct ksmbd_login_response_ext *resp;
-+
-+	if (strlen(account) >= KSMBD_REQ_MAX_ACCOUNT_NAME_SZ)
-+		return NULL;
-+
-+	msg = ipc_msg_alloc(sizeof(struct ksmbd_login_request));
-+	if (!msg)
-+		return NULL;
-+
-+	msg->type = KSMBD_EVENT_LOGIN_REQUEST_EXT;
-+	req = (struct ksmbd_login_request *)msg->payload;
-+	req->handle = ksmbd_acquire_id(&ipc_ida);
-+	strscpy(req->account, account, KSMBD_REQ_MAX_ACCOUNT_NAME_SZ);
-+	resp = ipc_msg_send_request(msg, req->handle);
-+	ipc_msg_handle_free(req->handle);
-+	ipc_msg_free(msg);
-+	return resp;
-+}
-+
- struct ksmbd_spnego_authen_response *
- ksmbd_ipc_spnego_authen_request(const char *spnego_blob, int blob_len)
- {
-diff --git a/fs/smb/server/transport_ipc.h b/fs/smb/server/transport_ipc.h
-index 5e5b90a0c1879..d9b6737f8cd03 100644
---- a/fs/smb/server/transport_ipc.h
-+++ b/fs/smb/server/transport_ipc.h
-@@ -12,6 +12,8 @@
- 
- struct ksmbd_login_response *
- ksmbd_ipc_login_request(const char *account);
-+struct ksmbd_login_response_ext *
-+ksmbd_ipc_login_request_ext(const char *account);
- 
- struct ksmbd_session;
- struct ksmbd_share_config;
--- 
-2.53.0
-
 
 
 
