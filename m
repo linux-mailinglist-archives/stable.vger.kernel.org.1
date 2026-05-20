@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253159-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CPmkImbvDWqZ4wUAu9opvQ
-	(envelope-from <stable+bounces-251140-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:29:10 +0200
+	id yBw/BJcGDmp25gUAu9opvQ
+	(envelope-from <stable+bounces-253159-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:08:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 213E1593CCF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:29:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EA0A597D08
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:08:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5770231CAF1B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:14:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 78DD732BAC1C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C1063F39F5;
-	Wed, 20 May 2026 17:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1131C403EBF;
+	Wed, 20 May 2026 18:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lU9hoVcD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FAOF2J2I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56343D8138;
-	Wed, 20 May 2026 17:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3BD43FC5BE;
+	Wed, 20 May 2026 18:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297203; cv=none; b=J3+oEoChtQGHl9Bplhr4A/cgElWsWN9sKZE7AuRDJU9zYHLAHq8Uwh2BSujgt4PADSpEyd71p2WbewGNYUG519fEcuMYRu5OnJQ9BcLeHrDpjGYaTjl98Bm/d0W29JbBG98ISppuvpDW8QLrSOGtMZfgQPwFwtOskZ/0TAtoqWY=
+	t=1779302560; cv=none; b=FiifppDfmMLzTgBIDcZWb66miU6QxDW7RItFcAtUbqEdGsN7os7Q8usNpe2Ogkb7tuv9h+TyHVVUccSbUL8hPiyfvxELQdo3/P4H/icKBhUCJR1DPDrrYgJGZY4dfzTz1prvc6zz/Vwo3aCmxfKhhOpf7d7WkQsQb1/Z8XJQI5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297203; c=relaxed/simple;
-	bh=VRDXyZjmKgZQ1I1W918xuRP7s1CGutN6iaWN9RHIaYg=;
+	s=arc-20240116; t=1779302560; c=relaxed/simple;
+	bh=3UqiF+gvtv97WaQUSKIjraXslN70XUXBEtrx8P6vtAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OhELlidO5UOhhcjhpgW5a1jZzu5JuT2u+z5ijt1XWY0GdSzhOHx/hqp3cvdJQGFOIrbFqM+5dgracarg7IYjbBpUpWaaJoYxE17O2O0vKtl2d3ELbZ7+8aDn9GXG40mzUmeAqOkp2NqhmNM4NtXvvmSIH9kdEvkgAcGpllGvhLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lU9hoVcD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5644F1F000E9;
-	Wed, 20 May 2026 17:13:21 +0000 (UTC)
+	 MIME-Version; b=LGjV/AaOzpq8RP5JPBS2XDdVWJ+0X4U7qLKhHXbwjQK+PmTczbsi5e52XGNcj/tmukuY+pTVRfqOSnUZ4T4gthAGAfVoazHloO5pg2ImFI5PQp3pY7kYUPQqouaMoKomRYaUXSjabtcm8rtLMu9igqUMyISzpeknVZ+TI/d7qJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FAOF2J2I; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A381F000E9;
+	Wed, 20 May 2026 18:42:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297201;
-	bh=OB5VGmhDzXGlNrlHipUesl7F1qMEoo7EBYo0BJ48WDE=;
+	s=korg; t=1779302559;
+	bh=AO/grFLjKmW8rz/nCuxAlDqSRdE/Cg39UuG/cdHXM3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lU9hoVcDYigOs0Jcf7fx0xegWepw29b3dukqhqKzi/tzE6T/VlghMjUL/+RVmMjDb
-	 S6d2ZIaCFXeqYhLmZ5lz8eAVU8tvxiDZU4hQi454TAKQGVqh6v9oqCpJ0hLuIHd2nv
-	 A0a1n0eGcog/Z1bI5V77FHrDRzPFmR2HJN+AE3Sg=
+	b=FAOF2J2IN1PAjtyEzUDCbJJb8N2n/6hj0ksvCtRZmVeGXgYlPdtZ8hNQ2HY17fvvI
+	 nDwGKrE4vo9rD5Px57dOatj9Io5v9yOYhPsXBC9tCblWFb79zIfPkVsu4n3seIRGmW
+	 YRPfNSjbrQWjWsWJKJNpC1Y9A13J5TwfZSo1HRCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gyeyoung Baek <gye976@gmail.com>,
-	Tomeu Vizoso <tomeu@tomeuvizoso.net>,
-	Steven Price <steven.price@arm.com>
-Subject: [PATCH 7.0 1087/1146] accel/rocket: Fix prep_bo ioctl leaking positive return from dma_resv_wait_timeout()
+	Junxi Qian <qjx1298677004@gmail.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 314/508] net/sched: taprio: fix use-after-free in advance_sched() on schedule switch
 Date: Wed, 20 May 2026 18:22:17 +0200
-Message-ID: <20260520162212.835663388@linuxfoundation.org>
+Message-ID: <20260520162105.441444850@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,73 +67,95 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251140-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,tomeuvizoso.net,arm.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-253159-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,arm.com:email]
-X-Rspamd-Queue-Id: 213E1593CCF
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email]
+X-Rspamd-Queue-Id: 8EA0A597D08
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gyeyoung Baek <gye976@gmail.com>
+From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
 
-commit 74570e12b4705ea11dcdfbfbd0a0b0fdaeff3059 upstream.
+[ Upstream commit 105425b1969c5affe532713cfac1c0b320d7ac2b ]
 
-dma_resv_wait_timeout() returns a positive 'remaining jiffies' value
-on success, 0 on timeout, and -errno on failure.
+In advance_sched(), when should_change_schedules() returns true,
+switch_schedules() is called to promote the admin schedule to oper.
+switch_schedules() queues the old oper schedule for RCU freeing via
+call_rcu(), but 'next' still points into an entry of the old oper
+schedule. The subsequent 'next->end_time = end_time' and
+rcu_assign_pointer(q->current_entry, next) are use-after-free.
 
-rocket_ioctl_prep_bo() returns this 'long' result from an int-typed
-ioctl handler, so positive values reach userspace as bogus errors.
-Explicitly set ret to 0 on the success path.
+Fix this by selecting 'next' from the new oper schedule immediately
+after switch_schedules(), and using its pre-calculated end_time.
+setup_first_end_time() sets the first entry's end_time to
+base_time + interval when the schedule is installed, so the value
+is already correct.
 
-Fixes: 525ad89dd904 ("accel/rocket: Add IOCTLs for synchronizing memory accesses")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
-Reviewed-by: Tomeu Vizoso <tomeu@tomeuvizoso.net>
-Link: https://patch.msgid.link/c0ebf83b345721701b22d8f5bc41c52c0ecf5e16.1776581974.git.gye976@gmail.com
-Signed-off-by: Steven Price <steven.price@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The deleted 'end_time = sched_base_time(admin)' assignment was also
+harmful independently: it would overwrite the new first entry's
+pre-calculated end_time with just base_time.
+
+Fixes: a3d43c0d56f1 ("taprio: Add support adding an admin schedule")
+Reported-by: Junxi Qian <qjx1298677004@gmail.com>
+Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/rocket/rocket_gem.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/sched/sch_taprio.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/accel/rocket/rocket_gem.c
-+++ b/drivers/accel/rocket/rocket_gem.c
-@@ -145,6 +145,8 @@ int rocket_ioctl_prep_bo(struct drm_devi
- 	ret = dma_resv_wait_timeout(gem_obj->resv, DMA_RESV_USAGE_WRITE, true, timeout);
- 	if (!ret)
- 		ret = timeout ? -ETIMEDOUT : -EBUSY;
-+	else if (ret > 0)
-+		ret = 0;
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index a01d17d03bf57..6df93d5c2e9d9 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -982,11 +982,12 @@ static enum hrtimer_restart advance_sched(struct hrtimer *timer)
+ 	}
  
- 	shmem_obj = &to_rocket_bo(gem_obj)->base;
+ 	if (should_change_schedules(admin, oper, end_time)) {
+-		/* Set things so the next time this runs, the new
+-		 * schedule runs.
+-		 */
+-		end_time = sched_base_time(admin);
+ 		switch_schedules(q, &admin, &oper);
++		/* After changing schedules, the next entry is the first one
++		 * in the new schedule, with a pre-calculated end_time.
++		 */
++		next = list_first_entry(&oper->entries, struct sched_entry, list);
++		end_time = next->end_time;
+ 	}
  
+ 	next->end_time = end_time;
+-- 
+2.53.0
+
 
 
 
