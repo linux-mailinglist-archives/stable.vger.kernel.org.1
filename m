@@ -1,61 +1,51 @@
-Return-Path: <stable+bounces-249782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249783-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KBH1KxFyDWroxQUAu9opvQ
-	(envelope-from <stable+bounces-249782-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 10:34:25 +0200
+	id kLuuLWdxDWpJxgUAu9opvQ
+	(envelope-from <stable+bounces-249783-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 10:31:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C30B589D94
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 10:34:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 251BA589CFF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 10:31:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DF6B53134410
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 08:13:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EA83331E4929
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 08:20:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AA983A960A;
-	Wed, 20 May 2026 08:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 844793ACF14;
+	Wed, 20 May 2026 08:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b="Uh3wbPHC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J0LcOem7"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9913A759D;
-	Wed, 20 May 2026 08:13:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779264820; cv=pass; b=EZjQk/tiNyqngCGL+RIBspC617y/sFAa9tr7g8EALVmLti0tXAGuszPyzRkSZ3LXxgy8iPSJF6tVsxUBafrhXOV1SPZO4v+ebn5LxyEunTDnQYHracG5WCGKO5MzVwklNOze68xlKbYguUy/6bdtY7/lZ/XFPQic21kLUrXawv8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779264820; c=relaxed/simple;
-	bh=UuHZN8bLdDb35hsZfOIbiCsj2GNcJv+JahtKBFao7JM=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397FC3AC0EF;
+	Wed, 20 May 2026 08:19:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779265182; cv=none; b=fYdA2UiBJc+8gVNM/bzJx4or2XiJ4d07+NQsVMZtfltfkvnmgBYXD+SJH+danHoTPC7gxWziLpYUcjhSb5X4zb+gKG+rMbCNAyjV/U/RZefhkKja+dvttsNKASHAS0niZ4J7ijXtGGqkXusDMpS6Syxa6P2zyRjtQdjcC5zPEgQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779265182; c=relaxed/simple;
+	bh=i2gq+ANBqm5F6falm1FxtgNSk382OIJC+4lXIKRf220=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pKNMFiuXGETu7as/d6seWnmLSeRSihnDweFiyI7tHyzCU27PrsgyENEMvCJunHW3VgfA1rlTLfUwlAekOhmyHvSNJZL8cpE0R+/XScC+Uww/kHoEJcHN/LtalLretmo1n4ExjfxFxYO7GSDi0xYq3RXJI3krvBpT5Nxrfs15bRU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b=Uh3wbPHC; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1779264795; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=fhoFZAGE734g7YrwnK69+Fp+SlBP+e532/rwFxqqOg8FV5tdEIfaFORTiqM7n7YHad3es+GlWxlzsGHFrGKmdpYlnHvbmI07PynfxC0MmNg3KoTVLwV5hv//8Qm7A/9yCp5Bqp5lY06N0LRgOXEXr1Tm2J2d+40YejVZHso/9qc=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1779264795; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=1DaCzDhRImq3pbfy2r8JVXerCF/X/rQL52mfTWicG4k=; 
-	b=K3aH/+VmSSz2zNU3CCHPtj8w3HqysMSbIPKHzatggDefM46va4bIfeUqv9Yi8u7NpUttUonl5naq6Pn/swZE223u1Adj+zj2Zvh30+EWyGv6ZzG7yNetKASukVSTLQVsaovI58YmPid6/GP6ZYkLAv9PWmFKpTYTPnzTcqVhyL4=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
-	dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1779264795;
-	s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=1DaCzDhRImq3pbfy2r8JVXerCF/X/rQL52mfTWicG4k=;
-	b=Uh3wbPHCLetqao1sJ7Ww936T/0G+TEuQ9eZT1Mp+poKOwsOIjUnwdOOdRXAk4InP
-	Uaty3nP1NfXa2mETMeGvPFJJqqvNUqPmcIWGCohU4EwEQ1nDdkykQdd/R7m2KjrSQ51
-	g2CJSVyOSfXMx1O01zyUaaPNsikI0NgfwcNfxCrI=
-Received: by mx.zohomail.com with SMTPS id 1779264793673372.72174741381184;
-	Wed, 20 May 2026 01:13:13 -0700 (PDT)
-Message-ID: <f37bdc63-3575-49e5-aa5b-7b93428b293d@collabora.com>
-Date: Wed, 20 May 2026 11:12:53 +0300
+	 In-Reply-To:Content-Type; b=KksLpzTkwTEPd6tUF4TlPXjiZC1Jex8h3FuXQMJSdCUZMvCB9rX95S4QGTI/JHbxzI/GwH/k33MQNUyYJvJ4ir0fnqTPLwvpTfk1rtU9tEY5EsWmE6XOoAssqYp4cqut3rMUKnc2pdY7y+xAmG9ZfKQdQstK3NvAjfvKAz7bnkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J0LcOem7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35EF01F000E9;
+	Wed, 20 May 2026 08:19:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779265180;
+	bh=xt7NdPGSKY6kkU775v+b8eu3ytjDkVjAd/pHlIbUHDs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=J0LcOem7efWqG1g4tT0cANXGG1UZIjWUf1bD+2ORwRNHysCAmNEsPJzPl3dlyfvVj
+	 ST8OUnal7UjU8b3pWaWPAR4eM7NZsoPHDOGK7Q9+LUtphjECniEqdsfYoFCfWoL004
+	 8UJQd7bmDGioUkLECcXqEm8Qbp6zY7pEKWLlvtUWygd3sPaOtzOwDB+QcfsDacidrz
+	 P7jkFbpmYf+PakzAOk4f6+SdpbiI6Ejfgdota9UkZKTr2D+uI3DBtCvcB/KOA964dy
+	 EPQ3OVrhoYPrT5356cixl/8EY/O0yVxJ+r8+u/wepG0G8dE5w552omcMxOEcYGTZOs
+	 +exV+0EL8GmIg==
+Message-ID: <55481a8b-dcfc-4bef-ba59-aa0b43dca88b@kernel.org>
+Date: Wed, 20 May 2026 10:19:34 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,121 +53,126 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] drm/virtio: use uninterruptible resv lock for plane
- updates
-To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Deepanshu Kartikey <kartikey406@gmail.com>, airlied@redhat.com,
- kraxel@redhat.com, gurchetansingh@chromium.org, olvaffe@gmail.com,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- simona@ffwll.ch, sumit.semwal@linaro.org
-Cc: dri-devel@lists.freedesktop.org, virtualization@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org,
- syzbot+72bd3dd3a5d5f39a0271@syzkaller.appspotmail.com, stable@vger.kernel.org
-References: <20260519082247.34470-1-kartikey406@gmail.com>
- <2e23513c-9d59-4891-acfe-9f1fbcbce778@amd.com>
- <f6bcef23-5510-4aad-bf6a-4e1ecfc8d474@collabora.com>
- <a0f2cfd5-d4df-4e50-a52b-d5befbc2e481@amd.com>
+Subject: Re: [PATCH] mm/cma_debug: fix invalid accesses for inactive CMA areas
+To: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Frank van der Linden <fvdl@google.com>,
+ Stefan Strogin <stefan.strogin@gmail.com>,
+ Dmitry Safonov <0x7f454c46@gmail.com>, Michal Nazarewicz
+ <mina86@mina86.com>, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ muchun.song@linux.dev
+References: <20260520061025.3971821-1-songmuchun@bytedance.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-In-Reply-To: <a0f2cfd5-d4df-4e50-a52b-d5befbc2e481@amd.com>
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260520061025.3971821-1-songmuchun@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
+Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[collabora.com,none];
-	R_DKIM_ALLOW(-0.20)[collabora.com:s=zohomail];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249782-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[amd.com,gmail.com,redhat.com,chromium.org,linux.intel.com,kernel.org,suse.de,ffwll.ch,linaro.org];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[kernel.org,infradead.org,google.com,suse.com,gmail.com,mina86.com,vger.kernel.org,linux.dev];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-249783-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dmitry.osipenko@collabora.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[collabora.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,72bd3dd3a5d5f39a0271];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 5C30B589D94
+X-Rspamd-Queue-Id: 251BA589CFF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 5/20/26 10:05, Christian König wrote:
-> On 5/20/26 08:50, Dmitry Osipenko wrote:
->> On 5/19/26 11:27, Christian König wrote:
->>> On 5/19/26 10:22, Deepanshu Kartikey wrote:
->>>> virtio_gpu_cursor_plane_update() and virtio_gpu_resource_flush() lock
->>>> the framebuffer BO's dma_resv via virtio_gpu_array_lock_resv() and
->>>> ignore its return value. The function can fail with -EINTR from
->>>> dma_resv_lock_interruptible() (signal during lock wait) or with
->>>> -ENOMEM from dma_resv_reserve_fences() (fence slot allocation),
->>>> leaving the resv lock not held. The queue path then walks the object
->>>> array and calls dma_resv_add_fence(), which requires the lock held;
->>>> with lockdep enabled this trips dma_resv_assert_held():
->>>>
->>>>   WARNING: drivers/dma-buf/dma-resv.c:296 at dma_resv_add_fence+0x71e/0x840
->>>>   Call Trace:
->>>>    virtio_gpu_array_add_fence
->>>>    virtio_gpu_queue_ctrl_sgs
->>>>    virtio_gpu_queue_fenced_ctrl_buffer
->>>>    virtio_gpu_cursor_plane_update
->>>>    drm_atomic_helper_commit_planes
->>>>    drm_atomic_helper_commit_tail
->>>>    commit_tail
->>>>    drm_atomic_helper_commit
->>>>    drm_atomic_commit
->>>>    drm_atomic_helper_update_plane
->>>>    __setplane_atomic
->>>>    drm_mode_cursor_universal
->>>>    drm_mode_cursor_common
->>>>    drm_mode_cursor_ioctl
->>>>    drm_ioctl
->>>>    __x64_sys_ioctl
->>>>
->>>> Beyond the WARN, mutating the dma_resv fence list without the lock
->>>> races with concurrent readers/writers and can corrupt the list.
->>>
->>> Well why are you trying to add a fence on an atomic mode set in the first place?
->>>
->>> That is usually an illegal operation here.
->> That is pre-existing in the driver. It performs draw operation and in
->> some cases waits for the completion during atomic. Whether all that
->> syncing is correct is hard to say immediately as some of it may be
->> historical edge cases.
+On 5/20/26 08:10, Muchun Song wrote:
+> cma_activate_area() can fail after allocating range bitmaps. Its cleanup
+> path frees those bitmaps, but only clears cma->count and
+> cma->available_count. It leaves cma->nranges and each range's count in
+> place, so cma_debugfs_init() can still register debugfs files for an area
+> that never activated successfully.
 > 
-> I'm not not so deeply in the atomic mode setting stuff but it strongly sounds like that this is seriously broken.
+> That exposes two problems. Reading the bitmap file can make debugfs walk a
+> freed range bitmap and trigger an invalid memory access. Reading maxchunk
+> can also take cma->lock even though that lock is initialized only on the
+> successful activation path.
 > 
-> The background is that the atomic mode set framework allows an output dma_fence which is signaled when the commit is finished.
+> Fix this by creating debugfs entries only for CMA areas that reached
+> CMA_ACTIVATED.
 > 
-> So when you allocate a fence slot and add a new fence to finish the atomic commit it is trivially possible that this cycles back and waits for the atomic commit to finish. In other words you have a deadlock.
-> 
-> You probably need specially crafted userspace with the right timing to trigger that, but such issues are usually a rather big no-no and need to be fixed in the long term.
-> 
-> Try to add dma_fence_begin_signaling() and dma_fence_end_signaling() annotation and enable lockdep, the tool should be able to point out if and what exactly goes wrong.
-> 
-> The usual fix is to prepare everything before commit_tail is called (alloc memory, create, reserve slot, add dma_fence etc....) and then just send out the prepared commands later on.
+> Fixes: c009da4258f9 ("mm, cma: support multiple contiguous ranges, if requested")
+> Fixes: 2e32b947606d ("mm: cma: add functions to get region pages counters")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> ---
 
-We tried with moving resv alloc to prepare_fb() in a previous patch
-version, it resulted in a non-trivial deadlocks. The goal of this patch
-is to fix immediate problem with a minimal code change.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-What you're saying is correct, but it may require a rather big
-refactoring of the code. In general, everything works okay today, so not
-really an urgent problem.
+cma_sysfs_init() also traverses all cma_area_count. Does it make sense to expose
+them there?
 
 -- 
-Best regards,
-Dmitry
+Cheers,
+
+David
 
