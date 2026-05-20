@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-250560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250561-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cBQ+FWURDmrw5wUAu9opvQ
-	(envelope-from <stable+bounces-250560-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:54:13 +0200
+	id cKzQMGkRDmrw5wUAu9opvQ
+	(envelope-from <stable+bounces-250561-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:54:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A965A598DCA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:54:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22530598DD1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:54:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 263E93198047
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:48:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 18AA232E3699
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:48:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C91E23630AF;
-	Wed, 20 May 2026 16:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3195351C2F;
+	Wed, 20 May 2026 16:48:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jzpvunmw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LbKQKQz5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7398D351C2F;
-	Wed, 20 May 2026 16:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B653352016;
+	Wed, 20 May 2026 16:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295730; cv=none; b=ps/bO8CSKehtEGfaf4j7ZdxvS85Eg+RYvzz+ccHwuhIvYnRltEnt1tOnGC62dzxAoPp+QikXn2MKFONyNMFRuH8qrc89yboEPLsIWzoU4DQ2/Yz1PITO6r7zyR58v6DMUGFrd7bRIiK2WOGj7YORXcKq9WSFATf/wpoDr6DSd+M=
+	t=1779295733; cv=none; b=ekub6I63RtwdlwRFGS98Js4nGgVMImuW1B9rcwuvEPoBk+vFRurpcyOfD58TkqhdHctgEMhGsAxNml4oGFPE7aUZOxAqIM+d4XNUnYLYkd1yPKDhz0VVZekmRkSGab0dI0brTt+9MDAl/e0mb61PRBtXqgFIGYxHNk31wvcSCO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295730; c=relaxed/simple;
-	bh=DhSoVA9VFaexd+xOLz3nO4zfhLvhlCOjT9Y0W6oeoRo=;
+	s=arc-20240116; t=1779295733; c=relaxed/simple;
+	bh=D5xSlrFWEEsDEZVL31Dz0z+rlKIE8rgCu5hbEqKEwko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SsAYk7huqVdevdWOr6d93P4qff8QSOKWq9e7pb1XJ7qHQxB3Zp4XMn+C8fwppQU/GuQGdkfd6yoOiEvZIBh86/ZPQpAbE4A0I1dIhwhQuAsMSCkZxyfidDi8ZR0U/dPU/bB9jT54r7PAk65hpiouFgro6YK1c2lJ1Aw8xGIbYTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jzpvunmw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7EF31F000E9;
-	Wed, 20 May 2026 16:48:48 +0000 (UTC)
+	 MIME-Version; b=MQX4CxpcwgSHs5FG+bOWe7rsjSRNwBCK2H4+mEbP5a6ZKqnJZz3KfFBRPBfcqAC3tCt3Q5vba4ayWujCg+gsCjBaetjB6yqqtwIIysztdpZNp9odyH+4f/X6qk4OtW7m+BFh0z8PL02nr8lXbJWmYlE1kbnf9TTUDchY4rUU4zE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LbKQKQz5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80D151F000E9;
+	Wed, 20 May 2026 16:48:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295729;
-	bh=Po9KVEfb+d3rOk7SYr5zZpdSqmkzO0e9nXkRF5JctXY=;
+	s=korg; t=1779295732;
+	bh=aCVyOpRjUnzwyuIjp+JQoAqWnOyInok32URy240pIKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jzpvunmwTPRDHfKQ2J+IhQGq7JmvW9INq3xOBAa4bUCg1hHb704pMZDQfQD7ZFo4K
-	 91c5zhr2yh2PfBHq63VqDk65suPlT1fm9c8uYShowcZTMLG2oFrrm/OMRh2wxo6WCi
-	 HDZ0v+7rNggGQbV6zN3IbNGeh4R0lr5Nn2maSdcI=
+	b=LbKQKQz5jrdKRl1kZchpXGpQh4P/wvg4ConAQz6LBloa9XU4V+FLFP45pAtRLwZTu
+	 35tsxaxx0l/2QdjYsJywrt01IctmEk9t6XRLhL93Xq8EcQyPb6oL3DltQl6YjGcNlV
+	 jnL5kxgxWxp6syeqFh55GiFhK/kPrQ3dyZX3a9Jc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Judith Mendez <jm@ti.com>,
+	Moteen Shah <m-shah@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0531/1146] arm64: dts: qcom: msm8917-xiaomi-riva: Fix board-id for all bootloader
-Date: Wed, 20 May 2026 18:13:01 +0200
-Message-ID: <20260520162200.199023728@linuxfoundation.org>
+Subject: [PATCH 7.0 0532/1146] arm64: dts: ti: k3-am62p5-sk: Disable MMC1 internal pulls on data pins
+Date: Wed, 20 May 2026 18:13:02 +0200
+Message-ID: <20260520162200.221739093@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -65,36 +64,36 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-250560-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-250561-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,mainlining.org:email]
-X-Rspamd-Queue-Id: A965A598DCA
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 22530598DD1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,39 +101,50 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Barnabás Czémán <barnabas.czeman@mainlining.org>
+From: Judith Mendez <jm@ti.com>
 
-[ Upstream commit a49cd243503c528ea99e31a7853cf438ccc9032d ]
+[ Upstream commit 6d4441be969bea89bb9702781f5dfb3a8f2a02a4 ]
 
-Redmi 5A comes with multiple bootloader versions where the expected
-board-id is different.
-Change the board-id to unified form what works on both bootloader
-version.
+AM62P SK has external 10K pullups on MMC1 DAT1-DAT3 pins [0].
+Disable internal pullups on DAT1-DAT3 so that each line has a
+single pullup source:
+- with both pullups enabled, the effective parallel resistance on
+  DAT1-3 (~8.33K) drops below the 10K minimum pullup requirement
+  for data lines (per SD Physical Layer Specification)
+- removing internal pullups makes DAT1-3 match DAT0 10K
+  external pullup so its consistent and within spec
+- both internal and external pullups enabled equals unnecessary power
+  consumption
 
-Fixes: 26633b582056 ("arm64: dts: qcom: Add Xiaomi Redmi 5A")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260315-riva-common-v3-1-897f130786ed@mainlining.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+[0] https://www.ti.com/lit/zip/SPRR487
+
+Fixes: c00504ea42c0 ("arm64: dts: ti: k3-am62p5-sk: Updates for SK EVM")
+Signed-off-by: Judith Mendez <jm@ti.com>
+Reviewed-by: Moteen Shah <m-shah@ti.com>
+Link: https://patch.msgid.link/20260223233731.2690472-2-jm@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8917-xiaomi-riva.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/ti/k3-am62p5-sk.dts | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8917-xiaomi-riva.dts b/arch/arm64/boot/dts/qcom/msm8917-xiaomi-riva.dts
-index 9db503e218886..1bfb16f90ddd5 100644
---- a/arch/arm64/boot/dts/qcom/msm8917-xiaomi-riva.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8917-xiaomi-riva.dts
-@@ -18,7 +18,7 @@ / {
- 	chassis-type = "handset";
- 
- 	qcom,msm-id = <QCOM_ID_MSM8917 0>;
--	qcom,board-id = <0x1000b 2>, <0x2000b 2>;
-+	qcom,board-id = <0x1000b 1>, <0x1000b 2>;
- 
- 	pwm_backlight: backlight {
- 		compatible = "pwm-backlight";
+diff --git a/arch/arm64/boot/dts/ti/k3-am62p5-sk.dts b/arch/arm64/boot/dts/ti/k3-am62p5-sk.dts
+index 4f7f6f95b02ef..35baa777b9121 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62p5-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-am62p5-sk.dts
+@@ -271,9 +271,9 @@ main_mmc1_pins_default: main-mmc1-default-pins {
+ 			AM62PX_IOPAD(0x023c, PIN_INPUT, 0) /* (H20) MMC1_CMD */
+ 			AM62PX_IOPAD(0x0234, PIN_OUTPUT, 0) /* (J24) MMC1_CLK */
+ 			AM62PX_IOPAD(0x0230, PIN_INPUT, 0) /* (H21) MMC1_DAT0 */
+-			AM62PX_IOPAD(0x022c, PIN_INPUT_PULLUP, 0) /* (H23) MMC1_DAT1 */
+-			AM62PX_IOPAD(0x0228, PIN_INPUT_PULLUP, 0) /* (H22) MMC1_DAT2 */
+-			AM62PX_IOPAD(0x0224, PIN_INPUT_PULLUP, 0) /* (H25) MMC1_DAT3 */
++			AM62PX_IOPAD(0x022c, PIN_INPUT, 0) /* (H23) MMC1_DAT1 */
++			AM62PX_IOPAD(0x0228, PIN_INPUT, 0) /* (H22) MMC1_DAT2 */
++			AM62PX_IOPAD(0x0224, PIN_INPUT, 0) /* (H25) MMC1_DAT3 */
+ 			AM62PX_IOPAD(0x0240, PIN_INPUT, 0) /* (D23) MMC1_SDCD */
+ 		>;
+ 		bootph-all;
 -- 
 2.53.0
 
