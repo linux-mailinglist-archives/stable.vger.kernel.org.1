@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253294-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AM2eG+QpDmpq6gUAu9opvQ
-	(envelope-from <stable+bounces-252842-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:38:44 +0200
+	id EH0hBpEvDmqD7wUAu9opvQ
+	(envelope-from <stable+bounces-253294-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:02:57 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA77F59B25F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:38:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8399859BA50
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:02:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C57F531CDFCE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:28:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E9AB629FD49
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6FCC3F39EE;
-	Wed, 20 May 2026 18:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6DE9402425;
+	Wed, 20 May 2026 18:48:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LPZdTa3G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IZAstA0D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6783D1CC6;
-	Wed, 20 May 2026 18:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD8A402421;
+	Wed, 20 May 2026 18:48:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301732; cv=none; b=htQ17KrGBNigCEMaOAfR5oHFJqdR4aiuUhpPlNrUOHSge8H3RnBOsEZCYTI8CqSwJyIiMDHSJ9XoTm+qkW8fiZH8af1hTKefF3vmuOiSCTBeZXi9AXnmNMu7wyheLKeUhqZ2Bo38FmSJKkxa4ZJDiBY/yQgvXbzJgx/sPurBuxY=
+	t=1779302902; cv=none; b=BJSr6w/WTPsVEFckiFk0/cLZWHHEFSPpe3IBKIq3gb4eviLESmw9DUqF/mBBD0U/Cvy8wl+WOPpGoPHvjB/4mmEzwKhPGyaw0PE+BKOL/fiLe/Jd2R3geIq10mH4rqTzvomf8xWQyyRJZINrDcINLH50leXl0EPK8pV1yzzWd2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301732; c=relaxed/simple;
-	bh=3kcxQMbrqcvMU5/ckb1x4fgzeap3wevfbL8biv5052k=;
+	s=arc-20240116; t=1779302902; c=relaxed/simple;
+	bh=BbWYbEEP2Eh7PDNSxQ9Z//LBBtSaI3aQwYOKL9FrRBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sEWDgF4PxXp1yZ5jsXRy84dq7h3bdEH+OHyt1tCpmNKGfsiZNtqTt7gdJUehybZvi0YPQhiMDSbVGBUwqtnxbMrXR8+zYc76OckGVofBJV9JzFRJKGAT6P6QP4RcQV/z0h2jfBq3+hFBbuBUpFKlgt9x3eu9nGOcapYO3NsDijY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LPZdTa3G; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC15A1F00899;
-	Wed, 20 May 2026 18:28:50 +0000 (UTC)
+	 MIME-Version; b=jGgr9Bjkt9exhwEWMtH5GIeRa5FFLrZCJcWJMQiUruMZjP2cowKmPpAKRWry3tTwRLBbUp3t9ItH2uD+KXVQQE2Gim8sniZA6mK769Gz0R1LcHBAPRYUmuK8zqJwrHyH5EQBx2evlqCanWLw2FCXm3eCSZfm93dm8FY/dDTVI7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IZAstA0D; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A95C41F00893;
+	Wed, 20 May 2026 18:48:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301731;
-	bh=y3wzFYlaPTgctW2fgqXg3QrGR0/yLJDEQBMSO+G6rG8=;
+	s=korg; t=1779302901;
+	bh=JYBlEYcOnW9950M5zm7PERjWsEFMGDtUm8rybM4Fffk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LPZdTa3G5AmxWygCIRwSC3CiRR0DEH92XwERNwcegFiLQdmjED+tVdLcKSn96QMpY
-	 MOeOxN7RIqlpMmiEOaqLVbPDgQSPsLHLtKypj9qCndXsLgBp0cGF5oT34AgCi5OwXQ
-	 B8eYOl1oqBJv1DhzqtxT/AgliAixpjbm3OtR6Yig=
+	b=IZAstA0DDazyckyoLgb4kFv8vFnZjcwe90JMxCtxJB3Sxu6alKr+7COHd8FR/icNK
+	 HT+ZKcZ+IORpIwnM1QvuieJS2y80LWEqBpjbxWBT8zMcgf+9JwW92wx7OCX7GkJeu4
+	 6EkdG8hWQ5PQlwgVOE5iBWo8PrJBsIGW0MWqJ+wY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <longli@microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 655/666] RDMA/mana: Remove user triggerable WARN_ON() in mana_ib_create_qp_rss()
-Date: Wed, 20 May 2026 18:24:26 +0200
-Message-ID: <20260520162125.481757585@linuxfoundation.org>
+Subject: [PATCH 6.6 444/508] crypto: nx - fix bounce buffer leaks in nx842_crypto_{alloc,free}_ctx
+Date: Wed, 20 May 2026 18:24:27 +0200
+Message-ID: <20260520162108.219068469@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,7 +74,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252842-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253294-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -91,52 +91,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sashiko.dev:url,msgid.link:url,nvidia.com:email]
-X-Rspamd-Queue-Id: AA77F59B25F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,apana.org.au:email,linux.dev:email]
+X-Rspamd-Queue-Id: 8399859BA50
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit 159f2efabc89d3f931d38f2d35876535d4abf0a3 ]
+[ Upstream commit adb3faf2db1a66d0f015b44ac909a32dfc7f2f9c ]
 
-Sashiko points out that the user can specify WQs sharing the same CQ as a
-part of the uAPI and this will trigger the WARN_ON() then go on to corrupt
-the kernel.
+The bounce buffers are allocated with __get_free_pages() using
+BOUNCE_BUFFER_ORDER (order 2 = 4 pages), but both the allocation error
+path and nx842_crypto_free_ctx() release the buffers with free_page().
+Use free_pages() with the matching order instead.
 
-Just reject it outright and fail the QP creation.
-
+Fixes: ed70b479c2c0 ("crypto: nx - add hardware 842 crypto comp alg")
 Cc: stable@vger.kernel.org
-Fixes: c15d7802a424 ("RDMA/mana_ib: Add CQ interrupt support for RAW QP")
-Link: https://sashiko.dev/#/patchset/0-v2-1c49eeb88c48%2B91-rdma_udata_rep_jgg%40nvidia.com?part=1
-Link: https://patch.msgid.link/r/5-v1-41f3135e5565+9d2-rdma_ai_fixes1_jgg@nvidia.com
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-[ adjusted context ]
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mana/cq.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/crypto/nx/nx-842.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/infiniband/hw/mana/cq.c
-+++ b/drivers/infiniband/hw/mana/cq.c
-@@ -120,8 +120,9 @@ int mana_ib_install_cq_cb(struct mana_ib
- 
- 	if (cq->queue.id >= gc->max_num_cqs)
- 		return -EINVAL;
--	/* Create CQ table entry */
--	WARN_ON(gc->cq_table[cq->queue.id]);
-+	/* Create CQ table entry, sharing a CQ between WQs is not supported */
-+	if (gc->cq_table[cq->queue.id])
-+		return -EINVAL;
- 	gdma_cq = kzalloc(sizeof(*gdma_cq), GFP_KERNEL);
- 	if (!gdma_cq)
+diff --git a/drivers/crypto/nx/nx-842.c b/drivers/crypto/nx/nx-842.c
+index 82214cde2bcd9..3b82b6f67f8c4 100644
+--- a/drivers/crypto/nx/nx-842.c
++++ b/drivers/crypto/nx/nx-842.c
+@@ -112,8 +112,8 @@ int nx842_crypto_init(struct crypto_tfm *tfm, struct nx842_driver *driver)
+ 	ctx->dbounce = (u8 *)__get_free_pages(GFP_KERNEL, BOUNCE_BUFFER_ORDER);
+ 	if (!ctx->wmem || !ctx->sbounce || !ctx->dbounce) {
+ 		kfree(ctx->wmem);
+-		free_page((unsigned long)ctx->sbounce);
+-		free_page((unsigned long)ctx->dbounce);
++		free_pages((unsigned long)ctx->sbounce, BOUNCE_BUFFER_ORDER);
++		free_pages((unsigned long)ctx->dbounce, BOUNCE_BUFFER_ORDER);
  		return -ENOMEM;
+ 	}
+ 
+@@ -126,8 +126,8 @@ void nx842_crypto_exit(struct crypto_tfm *tfm)
+ 	struct nx842_crypto_ctx *ctx = crypto_tfm_ctx(tfm);
+ 
+ 	kfree(ctx->wmem);
+-	free_page((unsigned long)ctx->sbounce);
+-	free_page((unsigned long)ctx->dbounce);
++	free_pages((unsigned long)ctx->sbounce, BOUNCE_BUFFER_ORDER);
++	free_pages((unsigned long)ctx->dbounce, BOUNCE_BUFFER_ORDER);
+ }
+ EXPORT_SYMBOL_GPL(nx842_crypto_exit);
+ 
+-- 
+2.53.0
+
 
 
 
