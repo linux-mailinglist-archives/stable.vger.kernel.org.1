@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-252194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251582-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uMZUE4b4DWqR5AUAu9opvQ
-	(envelope-from <stable+bounces-252194-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:08:06 +0200
+	id ACouDIzyDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251582-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:42:36 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC58D5955CA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:08:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B908B5945E9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:42:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CD21B30873E8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:00:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1B856310EFBA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:32:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858F834DCE4;
-	Wed, 20 May 2026 18:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5589A369D7E;
+	Wed, 20 May 2026 17:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zM0XhLjf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QgNiWWZw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2695C3769E0;
-	Wed, 20 May 2026 18:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0463329D26E;
+	Wed, 20 May 2026 17:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300038; cv=none; b=uz87znhzGvWOvq3I5C821VPBHXQ2cNoy82DPuBbH8Ejdf9scyQXf+0Wgn6YT+JalPyCpGLjrc9rfmiYcXsYzrxUWNsB4ivoYw9D+6CSqbMf97uJ0KJQLy4hWe22lSGvqgaaykILrt4W4tRlmo88KEw+HmvvTjTuZY+NUyTV+jKY=
+	t=1779298356; cv=none; b=e9sa7M6nV8w0lozALC7UIMYiVyY8A2NfDMhw0k2WoAxOGHK3Msu0WWosW6z1ZCc0w+QTYlMjkQlhDauHK9zya6M/Ff1Q4j7LTYtMq4t6p4ClalLkt0eFjK7SZ0GGkBHqHb8imerYcNPMnZYDmypqS3zE+Foa2+py+PFhnU31PEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300038; c=relaxed/simple;
-	bh=huAfnK56Y2m9fumLScb/QblbkoWsqtPpGL+mGNtSES8=;
+	s=arc-20240116; t=1779298356; c=relaxed/simple;
+	bh=k1XDkYqeyGI0FnNd/BfleVPsI0RnRy+u4zqdplCdkhc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EA1OV274ENSxeI9K09icUbH0TLT2ggin+fgRXHYD8Hw62rKRnvDU8DM/ef0Q9X7N7IAdFPdNNDb4p2/LvYFxfMG7M4Vt55BOYvPj4Atq3u20QfyW0pYxk1PN6s82iJqhaxDPhvRyvbAScuc1mE+wqiXp2PGuR/FG+K3yUk/FZno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zM0XhLjf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C8231F000E9;
-	Wed, 20 May 2026 18:00:36 +0000 (UTC)
+	 MIME-Version; b=ZsDWy0KynSBdrimf50Wf69LVE9gniCM+OJtR262g/OvbrWRhiQWwnxoG09Can3kfhM83zYCShG3Mczy3XyGQVFORaYukkbu3IbAi4sdEoXN2/bBEm6XQq3Ezq1BVDsoCJWu/x50v+dMV268ApMdx1CxX6RhGuxbzNdSJP0w7BtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QgNiWWZw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6572A1F000E9;
+	Wed, 20 May 2026 17:32:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300037;
-	bh=ubaDCDzBt24Ntrbkr0Go4S8FWvOvXeKdwKChJQ1VB0c=;
+	s=korg; t=1779298354;
+	bh=/M829w2uEgTx/MUcfNsk/RYEedevuFw07XVgTa1/b0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zM0XhLjf0+BWenQDrOJddzoyj2ooxb1YjQQ64TGJuX5M0NRTg9a+evPpqzfZ2G+Pz
-	 kKTUlW/R0enquP2Hhkii9qPuJ4uBsQudLkOOGlK6pc+B8yE0XmaWmauxroQfzAvgbF
-	 26inEteaFk+oschHG3500d5d5MX/E+xtydhCGppg=
+	b=QgNiWWZwTK7jb3NWu1oz14/lkpDSuX36QeYISRmKWFybgGa6d/vHtvFk+2bGpEUaL
+	 yuKjEJFIf5EiJFKeJ+DHky62nAJYhZn2MTv0+1oZBoaVy2dr6rfxotAEu6lc+rYXng
+	 NC3whwfkMx/Yz9sg5hNofCJJIegLTy46ztf3FHPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	Armin Wolf <W_Armin@gmx.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Wander Lairson Costa <wander@redhat.com>,
+	Tomas Glozar <tglozar@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 023/666] platform/wmi: use generic driver_override infrastructure
-Date: Wed, 20 May 2026 18:13:54 +0200
-Message-ID: <20260520162111.734939858@linuxfoundation.org>
+Subject: [PATCH 6.18 352/957] rtla: Replace atoi() with a robust strtoi()
+Date: Wed, 20 May 2026 18:13:55 +0200
+Message-ID: <20260520162142.164769391@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,167 +63,194 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,gmx.de,linux.intel.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252194-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251582-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,gmx.de:email]
-X-Rspamd-Queue-Id: CC58D5955CA
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: B908B5945E9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Wander Lairson Costa <wander@redhat.com>
 
-[ Upstream commit 8a700b1fc94df4d847a04f14ebc7f8532592b367 ]
+[ Upstream commit 7e9dfccf8f11c26208211457c4597a466135b56a ]
 
-When a driver is probed through __driver_attach(), the bus' match()
-callback is called without the device lock held, thus accessing the
-driver_override field without a lock, which can cause a UAF.
+The atoi() function does not perform error checking, which can lead to
+undefined behavior when parsing invalid or out-of-range strings. This
+can cause issues when parsing user-provided numerical inputs, such as
+signal numbers, PIDs, or CPU lists.
 
-Fix this by using the driver-core driver_override infrastructure taking
-care of proper locking internally.
+To address this, introduce a new strtoi() helper function that safely
+converts a string to an integer. This function validates the input and
+checks for overflows, returning a negative value on  failure.
 
-Note that calling match() from __driver_attach() without the device lock
-held is intentional. [1]
+Replace all calls to atoi() with the new strtoi() function and add
+proper error handling to make the parsing more robust and prevent
+potential issues.
 
-Link: https://lore.kernel.org/driver-core/DGRGTIRHA62X.3RY09D9SOK77P@kernel.org/ [1]
-Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220789
-Fixes: 12046f8c77e0 ("platform/x86: wmi: Add driver_override support")
-Reviewed-by: Armin Wolf <W_Armin@gmx.de>
-Acked-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://patch.msgid.link/20260324005919.2408620-7-dakr@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Wander Lairson Costa <wander@redhat.com>
+Link: https://lore.kernel.org/r/20260106133655.249887-5-wander@redhat.com
+Signed-off-by: Tomas Glozar <tglozar@redhat.com>
+Stable-dep-of: 5b6dc659ad79 ("rtla/utils: Fix resource leak in set_comm_sched_attr()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/wmi.c | 36 +++++-------------------------------
- include/linux/wmi.h        |  4 ----
- 2 files changed, 5 insertions(+), 35 deletions(-)
+ tools/tracing/rtla/src/actions.c |  7 +++---
+ tools/tracing/rtla/src/utils.c   | 40 ++++++++++++++++++++++++++++----
+ tools/tracing/rtla/src/utils.h   |  2 ++
+ 3 files changed, 41 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/platform/x86/wmi.c b/drivers/platform/x86/wmi.c
-index 3cbe180c3fc0a..f13173eb070e6 100644
---- a/drivers/platform/x86/wmi.c
-+++ b/drivers/platform/x86/wmi.c
-@@ -696,39 +696,11 @@ static ssize_t expensive_show(struct device *dev,
+diff --git a/tools/tracing/rtla/src/actions.c b/tools/tracing/rtla/src/actions.c
+index 15986505b4376..4274fa0894b04 100644
+--- a/tools/tracing/rtla/src/actions.c
++++ b/tools/tracing/rtla/src/actions.c
+@@ -181,12 +181,13 @@ actions_parse(struct actions *self, const char *trigger, const char *tracefn)
+ 		/* Takes two arguments, num (signal) and pid */
+ 		while (token != NULL) {
+ 			if (strlen(token) > 4 && strncmp(token, "num=", 4) == 0) {
+-				signal = atoi(token + 4);
++				if (strtoi(token + 4, &signal))
++					return -1;
+ 			} else if (strlen(token) > 4 && strncmp(token, "pid=", 4) == 0) {
+ 				if (strncmp(token + 4, "parent", 7) == 0)
+ 					pid = -1;
+-				else
+-					pid = atoi(token + 4);
++				else if (strtoi(token + 4, &pid))
++					return -1;
+ 			} else {
+ 				/* Invalid argument */
+ 				return -1;
+diff --git a/tools/tracing/rtla/src/utils.c b/tools/tracing/rtla/src/utils.c
+index bd5f34b446480..6b7717fcd142b 100644
+--- a/tools/tracing/rtla/src/utils.c
++++ b/tools/tracing/rtla/src/utils.c
+@@ -17,6 +17,7 @@
+ #include <fcntl.h>
+ #include <sched.h>
+ #include <stdio.h>
++#include <limits.h>
+ 
+ #include "utils.h"
+ 
+@@ -112,16 +113,18 @@ int parse_cpu_set(char *cpu_list, cpu_set_t *set)
+ 	nr_cpus = sysconf(_SC_NPROCESSORS_CONF);
+ 
+ 	for (p = cpu_list; *p; ) {
+-		cpu = atoi(p);
+-		if (cpu < 0 || (!cpu && *p != '0') || cpu >= nr_cpus)
++		if (strtoi(p, &cpu))
++			goto err;
++		if (cpu < 0 || cpu >= nr_cpus)
+ 			goto err;
+ 
+ 		while (isdigit(*p))
+ 			p++;
+ 		if (*p == '-') {
+ 			p++;
+-			end_cpu = atoi(p);
+-			if (end_cpu < cpu || (!end_cpu && *p != '0') || end_cpu >= nr_cpus)
++			if (strtoi(p, &end_cpu))
++				goto err;
++			if (end_cpu < cpu || end_cpu >= nr_cpus)
+ 				goto err;
+ 			while (isdigit(*p))
+ 				p++;
+@@ -322,6 +325,7 @@ int set_comm_sched_attr(const char *comm_prefix, struct sched_attr *attr)
+ 	struct dirent *proc_entry;
+ 	DIR *procfs;
+ 	int retval;
++	int pid;
+ 
+ 	if (strlen(comm_prefix) >= MAX_PATH) {
+ 		err_msg("Command prefix is too long: %d < strlen(%s)\n",
+@@ -341,8 +345,12 @@ int set_comm_sched_attr(const char *comm_prefix, struct sched_attr *attr)
+ 		if (!retval)
+ 			continue;
+ 
++		if (strtoi(proc_entry->d_name, &pid)) {
++			err_msg("'%s' is not a valid pid", proc_entry->d_name);
++			goto out_err;
++		}
+ 		/* procfs_is_workload_pid confirmed it is a pid */
+-		retval = __set_sched_attr(atoi(proc_entry->d_name), attr);
++		retval = __set_sched_attr(pid, attr);
+ 		if (retval) {
+ 			err_msg("Error setting sched attributes for pid:%s\n", proc_entry->d_name);
+ 			goto out_err;
+@@ -985,3 +993,25 @@ char *parse_optional_arg(int argc, char **argv)
+ 		return NULL;
+ 	}
  }
- static DEVICE_ATTR_RO(expensive);
++
++/*
++ * strtoi - convert string to integer with error checking
++ *
++ * Returns 0 on success, -1 if conversion fails or result is out of int range.
++ */
++int strtoi(const char *s, int *res)
++{
++	char *end_ptr;
++	long lres;
++
++	if (!*s)
++		return -1;
++
++	errno = 0;
++	lres = strtol(s, &end_ptr, 0);
++	if (errno || *end_ptr || lres > INT_MAX || lres < INT_MIN)
++		return -1;
++
++	*res = (int) lres;
++	return 0;
++}
+diff --git a/tools/tracing/rtla/src/utils.h b/tools/tracing/rtla/src/utils.h
+index d8d83abf0f0d0..f11d27927223c 100644
+--- a/tools/tracing/rtla/src/utils.h
++++ b/tools/tracing/rtla/src/utils.h
+@@ -3,6 +3,7 @@
+ #include <stdint.h>
+ #include <time.h>
+ #include <sched.h>
++#include <stdbool.h>
  
--static ssize_t driver_override_show(struct device *dev, struct device_attribute *attr,
--				    char *buf)
--{
--	struct wmi_device *wdev = to_wmi_device(dev);
--	ssize_t ret;
--
--	device_lock(dev);
--	ret = sysfs_emit(buf, "%s\n", wdev->driver_override);
--	device_unlock(dev);
--
--	return ret;
--}
--
--static ssize_t driver_override_store(struct device *dev, struct device_attribute *attr,
--				     const char *buf, size_t count)
--{
--	struct wmi_device *wdev = to_wmi_device(dev);
--	int ret;
--
--	ret = driver_set_override(dev, &wdev->driver_override, buf, count);
--	if (ret < 0)
--		return ret;
--
--	return count;
--}
--static DEVICE_ATTR_RW(driver_override);
--
- static struct attribute *wmi_attrs[] = {
- 	&dev_attr_modalias.attr,
- 	&dev_attr_guid.attr,
- 	&dev_attr_instance_count.attr,
- 	&dev_attr_expensive.attr,
--	&dev_attr_driver_override.attr,
- 	NULL
- };
- ATTRIBUTE_GROUPS(wmi);
-@@ -797,7 +769,6 @@ static void wmi_dev_release(struct device *dev)
- {
- 	struct wmi_block *wblock = dev_to_wblock(dev);
+ /*
+  * '18446744073709551615\0'
+@@ -81,6 +82,7 @@ static inline int set_deepest_cpu_idle_state(unsigned int cpu, unsigned int stat
+ static inline int have_libcpupower_support(void) { return 0; }
+ #endif /* HAVE_LIBCPUPOWER_SUPPORT */
+ int auto_house_keeping(cpu_set_t *monitored_cpus);
++__attribute__((__warn_unused_result__)) int strtoi(const char *s, int *res);
  
--	kfree(wblock->dev.driver_override);
- 	kfree(wblock);
- }
- 
-@@ -806,10 +777,12 @@ static int wmi_dev_match(struct device *dev, const struct device_driver *driver)
- 	const struct wmi_driver *wmi_driver = drv_to_wdrv(driver);
- 	struct wmi_block *wblock = dev_to_wblock(dev);
- 	const struct wmi_device_id *id = wmi_driver->id_table;
-+	int ret;
- 
- 	/* When driver_override is set, only bind to the matching driver */
--	if (wblock->dev.driver_override)
--		return !strcmp(wblock->dev.driver_override, driver->name);
-+	ret = device_match_driver_override(dev, driver);
-+	if (ret >= 0)
-+		return ret;
- 
- 	if (id == NULL)
- 		return 0;
-@@ -891,6 +864,7 @@ static struct class wmi_bus_class = {
- static const struct bus_type wmi_bus_type = {
- 	.name = "wmi",
- 	.dev_groups = wmi_groups,
-+	.driver_override = true,
- 	.match = wmi_dev_match,
- 	.uevent = wmi_dev_uevent,
- 	.probe = wmi_dev_probe,
-diff --git a/include/linux/wmi.h b/include/linux/wmi.h
-index 3275470b5531e..63cca3b58d6df 100644
---- a/include/linux/wmi.h
-+++ b/include/linux/wmi.h
-@@ -16,16 +16,12 @@
-  * struct wmi_device - WMI device structure
-  * @dev: Device associated with this WMI device
-  * @setable: True for devices implementing the Set Control Method
-- * @driver_override: Driver name to force a match; do not set directly,
-- *		     because core frees it; use driver_set_override() to
-- *		     set or clear it.
-  *
-  * This represents WMI devices discovered by the WMI driver core.
-  */
- struct wmi_device {
- 	struct device dev;
- 	bool setable;
--	const char *driver_override;
- };
- 
- /**
+ #define ns_to_usf(x) (((double)x/1000))
+ #define ns_to_per(total, part) ((part * 100) / (double)total)
 -- 
 2.53.0
 
