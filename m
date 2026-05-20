@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-250540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251476-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IBhoBW/pDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250540-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:03:43 +0200
+	id EBLzIVT1DWoz5AUAu9opvQ
+	(envelope-from <stable+bounces-251476-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:54:28 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB9A2592DF9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:03:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B31C594E5C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:54:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9CD43309C750
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:47:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0F16030874D4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:28:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EEBB33AD9D;
-	Wed, 20 May 2026 16:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 598D03F1AB8;
+	Wed, 20 May 2026 17:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tgJV1vMv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BwL6JgTj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C755731A575;
-	Wed, 20 May 2026 16:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17B2C39B975;
+	Wed, 20 May 2026 17:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295677; cv=none; b=VuuCPFxpfhDmsvh5cKSZSP9Hp6s7KSUapunkxAEIEBzvSaH229LKJKMYi9q4zQFdjqM8nHsHr6G7NVkoRHxM/AG8Az47es943fasXqSMN+wzNaM9IqD+1DLeCxq3KSBhEwHxf7vAsyPnBAXDQxS5BhsKXEA8UWyUo0ujPbz6H4g=
+	t=1779298082; cv=none; b=LQcAP8pVG4PHg/L99Zj5XWBu5kxmZr3qA+Jik5Sa33QCcczoiYcbqa9zEFXWlKbH2g19za+MojAx3zkwuVp4tIzR2MrVOiqa4iBd7XDbIUITiy6jFOQvYanx/uMRNOAn6OfiJS+/na5FYtB0ZIpvWNGklZwmBfX10XNDDojfIZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295677; c=relaxed/simple;
-	bh=mV7ayiho8Y7/OB4wLdJffBU/z075lrOSkuEZwEjFvew=;
+	s=arc-20240116; t=1779298082; c=relaxed/simple;
+	bh=7Hem0lp9bGdk82r2MoqPU9HPfgmGa7XQoTR0xHFgFpo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gxXDvetShbQhL+dqZsvQ1b/jGTptTCoN4Mf8ac6RrWTlJdnwmNq5DRa288TnB9A1pixn/7XQsUhqpb/Mtkv35gLmmnYi8eElA5iPDPg9+xWnweeeEyjO3LHHbaBe6XUobBZG9Pm+G5c8UGwXDrqw672s2Siu3U42c2ke0J1qov8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tgJV1vMv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 389A71F000E9;
-	Wed, 20 May 2026 16:47:56 +0000 (UTC)
+	 MIME-Version; b=OWKQOwwmh3rvnTPoFAVco7H0+kdVmCgJbEZSUXZltWm6daG0TnzwixR1aqiDxhL8jNK6TyfaD4R1O0vCMJivBv523E2yYxGu52U/N8+lDUt3vLJzllWv6DBE/DccJRJgwRnQJJ8QbvtO9NagvDSNPz7Fb1FZeAXWWDHOxUyYyvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BwL6JgTj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76F6E1F00893;
+	Wed, 20 May 2026 17:28:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295676;
-	bh=32cXe74AaLJvxm8sBzk/+C6V+Ylh9ztq2Y4kIcYzFH4=;
+	s=korg; t=1779298081;
+	bh=7Uo5I+itP9A68KcHtDULO5MBCa3oEn6O6YfxSH6vDm8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tgJV1vMvTFESljMT89ugCcjc9wrpum6xGangX7+RG330BTiNDlYvavH6pNz8sdknZ
-	 xJePKPFxk8SlCm6aRw8UmEP28PK1jvbrPLJvXFAqf4lm5X9d7NPy5clPdWfychJ9BA
-	 WkN24zpzq+W2yAbHzgsZUNE8es6wN6mr/oXxfVXI=
+	b=BwL6JgTjrqxi4IEGJG9gLXdixDsZ6dtJzZwqDyKhflmQ+JgJRv5/pXiCP0Eah6x3P
+	 hLd7ryDxQ46QGPsVdmfxJksWqDOpOCJv4lTZbGIJ22KXaF/NgxvvxUK0YMcTv5b6uS
+	 yF/7+muA5aOr5e3OJO6G8jFb/TI0eBWRSZ2uleo8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Riccardo Mereu <r.mereu@arduino.cc>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0509/1146] arm64: dts: qcom: arduino-imola: fix faulty spidev node
+Subject: [PATCH 6.18 276/957] drm/msm/shrinker: Fix can_block() logic
 Date: Wed, 20 May 2026 18:12:39 +0200
-Message-ID: <20260520162159.705382783@linuxfoundation.org>
+Message-ID: <20260520162140.527573125@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,77 +73,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250540-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251476-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,arduino.cc:email,0.0.0.0:email]
-X-Rspamd-Queue-Id: CB9A2592DF9
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,collabora.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,patchwork.freedesktop.org:url,gitlab.freedesktop.org:url]
+X-Rspamd-Queue-Id: 2B31C594E5C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Riccardo Mereu <r.mereu@arduino.cc>
+From: Rob Clark <robin.clark@oss.qualcomm.com>
 
-[ Upstream commit 1a040df09fab28b31399fce14a76455b536a2b08 ]
+[ Upstream commit df0f439e3926817cf577ca6272aad68468ff7624 ]
 
-CS pin added on pinctrl0 property is causing spidev to return -ENODEV
-since that GPIO is already part of spi5 pinmuxing.
+The intention here was to allow blocking if DIRECT_RECLAIM or if called
+from kswapd and KSWAPD_RECLAIM is set.
 
-Fixes: 3f745bc0f11f ("arm64: dts: qcom: qrb2210: add dts for Arduino unoq")
-Signed-off-by: Riccardo Mereu <r.mereu@arduino.cc>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260213101002.105238-1-r.mereu.kernel@arduino.cc
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reported by Claude code review: https://lore.gitlab.freedesktop.org/drm-ai-reviews/review-patch9-20260309151119.290217-10-boris.brezillon@collabora.com/ on a panthor patch which had copied similar logic.
+
+Reported-by: Boris Brezillon <boris.brezillon@collabora.com>
+Fixes: 7860d720a84c ("drm/msm: Fix build break with recent mm tree")
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Patchwork: https://patchwork.freedesktop.org/patch/714238/
+Message-ID: <20260325184106.1259528-1-robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/qrb2210-arduino-imola.dts | 12 ++----------
- 1 file changed, 2 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/msm/msm_gem_shrinker.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/qrb2210-arduino-imola.dts b/arch/arm64/boot/dts/qcom/qrb2210-arduino-imola.dts
-index 197ab6eb1666f..5ab605cc56c80 100644
---- a/arch/arm64/boot/dts/qcom/qrb2210-arduino-imola.dts
-+++ b/arch/arm64/boot/dts/qcom/qrb2210-arduino-imola.dts
-@@ -325,21 +325,13 @@ &sdhc_1 {
- &spi5 {
- 	status = "okay";
+diff --git a/drivers/gpu/drm/msm/msm_gem_shrinker.c b/drivers/gpu/drm/msm/msm_gem_shrinker.c
+index 1039e3c0a47bf..31fa51a44f86e 100644
+--- a/drivers/gpu/drm/msm/msm_gem_shrinker.c
++++ b/drivers/gpu/drm/msm/msm_gem_shrinker.c
+@@ -26,9 +26,8 @@ static bool can_swap(void)
  
--	spidev@0 {
--		reg = <0>;
-+	mcu@0 {
- 		compatible = "arduino,unoq-mcu";
--		pinctrl-0 = <&spidev_cs>;
--		pinctrl-names = "default";
-+		reg = <0>;
- 	};
- };
+ static bool can_block(struct shrink_control *sc)
+ {
+-	if (!(sc->gfp_mask & __GFP_DIRECT_RECLAIM))
+-		return false;
+-	return current_is_kswapd() || (sc->gfp_mask & __GFP_RECLAIM);
++	return (sc->gfp_mask & __GFP_DIRECT_RECLAIM) ||
++	       (current_is_kswapd() && (sc->gfp_mask & __GFP_KSWAPD_RECLAIM));
+ }
  
- &tlmm {
--	spidev_cs: spidev-cs-state {
--		pins = "gpio17";
--		function = "gpio";
--		drive-strength = <16>;
--	};
--
- 	jmisc_gpio18: jmisc-gpio18-state {
- 		pins = "gpio18";
- 		function = "gpio";
+ static unsigned long
 -- 
 2.53.0
 
