@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-250678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251611-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mJA+Fs0SDmoJ6AUAu9opvQ
-	(envelope-from <stable+bounces-250678-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:00:13 +0200
+	id gI4bHIccDmro6AUAu9opvQ
+	(envelope-from <stable+bounces-251611-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:41:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0B7A598FF4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:00:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F7D7599F1A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:41:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CE9C93209420
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:53:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7B016338922D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:33:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 334E2369D6E;
-	Wed, 20 May 2026 16:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE46435AC17;
+	Wed, 20 May 2026 17:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W0WNpxqd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dZTpgqh9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6456317160;
-	Wed, 20 May 2026 16:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C5F359A6F;
+	Wed, 20 May 2026 17:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296030; cv=none; b=JRmi/nGhxJXbB4dtszNfEIqFOdj9Ot/AnUuaAgiEO91GV4PEY1AaLnd+NyAo2iagenRe/Tz3MyGZtoPyvxcBkwvH4wHQhYX44qUun9kocKbkGLbZFhgp7HVTmpVph4ybQZGUCW72bBOuF5MzkU4xO1w1nR++Hir65GWPiFQUiR4=
+	t=1779298432; cv=none; b=PfEast+J3/99V69BN/pW9FMWMnB1B9ha4x1LjXRj+yWrWbMhapYgpKUaXgIDwSdzYLjZzGN+nf4PDOyeX0O8PWyTHMyT9EM2hrlyq5/eZdA4hD2iHT9g89b/GqwsUw0g11HChXFvTLQBE/fR7Yoknhbwxd4xsTSinJaLWCLfpO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296030; c=relaxed/simple;
-	bh=wbcloYHsxYrskBXKxBB8DcXUmD86J3oYsZ3hMSJrW4k=;
+	s=arc-20240116; t=1779298432; c=relaxed/simple;
+	bh=ZqS/Pg6M2fuz0eR3fT4zV8cfywHozLdU6FIIthFxkKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=md1w229TVDyoaVM5tUtvJ/gqNMWTly8IrtMkMi8JNqrAeFDDixhvCXjkxL09+V6mxRENTsDFPe8Uh0IXo4GCU3qc5M3EDZqR7rUfEgqC32fo4GY6K1fZ6DXjQipWn5nZn6AAJ6Hx9+3dY1bo47JLXsnNCxQQY5heD5/FEar5wGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W0WNpxqd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54B801F000E9;
-	Wed, 20 May 2026 16:53:48 +0000 (UTC)
+	 MIME-Version; b=Yu551fKWSn9HTNZVKYMxC/BdvK68eUuzByjrqsEc4KS0zrUL8XOEW4aG4ab+OX/5P/cuyBSNG3QFGiRoBS4JazHPuk5aV9osb0Lv3p9/QA+QZ6Po7WRE9VoCizYXgccTtpn1NcSALFXFhH1oy/gvm+GT4zO0edhhDE0n9XxAfS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dZTpgqh9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6EB21F000E9;
+	Wed, 20 May 2026 17:33:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296028;
-	bh=gsCRdPgDZJzc3wnsNjKB9CHTRGLrea5odkOxRIeSiyc=;
+	s=korg; t=1779298431;
+	bh=eOiLi4/TtUAGmqaHzouAuvW1O6IMcmtEC0DbcPki1is=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=W0WNpxqdCNesgvX3Yc6olEQmrgomfelMt5BnCRjklFq4/DPZzu5ABWDmzkcAx8o87
-	 8ZOg9e8CeYcQ/0oKof5p8pNk5j6yEFN6fowXqoLb0kCU+mHgWIPqAgLtgdw5jqIWxC
-	 72PQaFNwv2jQY0XY3clwQxdnE44T3+Dq89zLDZzw=
+	b=dZTpgqh9Q4Y90Pm2Iqh5DLA9aCcbYW8KIv5h4jCq88NpjrMfVHY13JvvqkMtYO3N5
+	 YJZSAH2VK1EjfKdGC2rw68ZM71n0RPXbNIjF75awArGyhi3uYKUyidIzJ/pXW9uU6h
+	 G/2HYSkLGDTHYjUgol7bArKqab4INKt2ISnbZIeY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Ian Rogers <irogers@google.com>,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0642/1146] perf tools: Fix module symbol resolution for non-zero .text sh_addr
+Subject: [PATCH 6.18 409/957] arm64: dts: qcom: sm8650: Enable UHS-I SDR50 and SDR104 SD card modes
 Date: Wed, 20 May 2026 18:14:52 +0200
-Message-ID: <20260520162202.707416944@linuxfoundation.org>
+Message-ID: <20260520162143.394260735@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,7 +76,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250678-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251611-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
@@ -93,84 +93,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email]
-X-Rspamd-Queue-Id: E0B7A598FF4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email]
+X-Rspamd-Queue-Id: 0F7D7599F1A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-[ Upstream commit 9a82bfde4775b7a87cd1a7e791f46f83ae442848 ]
+[ Upstream commit 93f823e7d48232e62fb8fb74481696609c90244a ]
 
-When perf resolves symbols from kernel module ELF files (ET_REL),
-it converts symbol addresses to file offsets so that sample IPs
-can be matched to the correct symbol. The conversion adjusts each
-symbol's st_value:
+The restriction on UHS-I speed modes was added to all SM8650 platforms
+by copying it from SM8450 and SM8550 dtsi files, and it was an actually
+reproducible problem due to the overclocking of SD cards. Since the latter
+issue has been fixed in the SM8650 GCC driver, UHS-I speed modes are
+working fine on SM8650 boards, below is the test performed on SM8650-HDK:
 
-  sym->st_value -= shdr->sh_addr - shdr->sh_offset;
+SDR50 speed mode:
 
-For vmlinux (ET_EXEC), st_value is a virtual address and sh_addr
-is the section's virtual base, so subtracting sh_addr and adding
-sh_offset correctly yields a file offset.
+    mmc0: new UHS-I speed SDR50 SDHC card at address 0001
+    mmcblk0: mmc0:0001 00000 14.6 GiB
+     mmcblk0: p1
 
-For kernel modules (ET_REL), st_value is a section-relative
-offset. The module loader ignores sh_addr entirely and places
-symbols at module_base + st_value. Converting to file offset
-requires only adding sh_offset; subtracting sh_addr introduces an
-error equal to sh_addr bytes.
+    % dd if=/dev/mmcblk0p1 of=/dev/null bs=1M count=1024
+    1024+0 records in
+    1024+0 records out
+    1073741824 bytes (1.1 GB, 1.0 GiB) copied, 24.8086 s, 43.3 MB/s
 
-When .text has sh_addr == 0 -- the historical norm for simple
-modules -- both formulas produce the same result and the bug is
-latent. As modules gain more metadata sections before .text (.note,
-.static_call.text, etc.), the linker assigns .text a non-zero
-sh_addr, exposing the defect. For example, nfsd.ko on this kernel
-has sh_addr=0xa80, kvm-intel.ko has sh_addr=0x1e90.
+SDR104 speed mode:
 
-The effect is that all .text symbols in affected modules
-shift by sh_addr bytes relative to sample IPs, causing perf
-report to attribute samples to incorrect, nearby symbols. This
-was observed as 13% of LLC-load-miss samples misattributed
-to nfsd_file_get_dio_attrs when the actual hot function was
-nfsd_cache_lookup, approximately 0xa80 bytes away in the symbol
-table.
+    mmc0: new UHS-I speed SDR104 SDHC card at address 59b4
+    mmcblk0: mmc0:59b4 USDU1 28.3 GiB
+     mmcblk0: p1
 
-Use the existing dso__rel() flag (already set for ET_REL modules)
-to select the correct adjustment: add sh_offset for ET_REL,
-subtract (sh_addr - sh_offset) for ET_EXEC/ET_DYN.
+    % dd if=/dev/mmcblk0p1 of=/dev/null bs=1M count=1024
+    1024+0 records in
+    1024+0 records out
+    1073741824 bytes (1.1 GB, 1.0 GiB) copied, 12.9448 s, 82.9 MB/s
 
-Fixes: 0131c4ec794a ("perf tools: Make it possible to read object code from kernel modules")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Tested-by: Thomas Richter <tmricht@linux.ibm.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Unset the UHS-I speed mode restrictions from the SM8550 platform dtsi
+file, there is no indication that the SDHC controller is broken.
+
+Fixes: 10e024671295 ("arm64: dts: qcom: sm8650: add interconnect dependent device nodes")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Link: https://lore.kernel.org/r/20260314023715.357512-7-vladimir.zapolskiy@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/symbol-elf.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8650.dtsi | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/tools/perf/util/symbol-elf.c b/tools/perf/util/symbol-elf.c
-index 76912c62b6a07..968e269d9be1f 100644
---- a/tools/perf/util/symbol-elf.c
-+++ b/tools/perf/util/symbol-elf.c
-@@ -1356,8 +1356,12 @@ static int dso__process_kernel_symbol(struct dso *dso, struct map *map,
- 	char dso_name[PATH_MAX];
+diff --git a/arch/arm64/boot/dts/qcom/sm8650.dtsi b/arch/arm64/boot/dts/qcom/sm8650.dtsi
+index d157cbc493d92..069b7f1267a0e 100644
+--- a/arch/arm64/boot/dts/qcom/sm8650.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8650.dtsi
+@@ -4941,9 +4941,6 @@ &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
  
- 	/* Adjust symbol to map to file offset */
--	if (adjust_kernel_syms)
--		sym->st_value -= shdr->sh_addr - shdr->sh_offset;
-+	if (adjust_kernel_syms) {
-+		if (dso__rel(dso))
-+			sym->st_value += shdr->sh_offset;
-+		else
-+			sym->st_value -= shdr->sh_addr - shdr->sh_offset;
-+	}
+ 			bus-width = <4>;
  
- 	if (strcmp(section_name, (dso__short_name(curr_dso) + dso__short_name_len(dso))) == 0)
- 		return 0;
+-			/* Forbid SDR104/SDR50 - broken hw! */
+-			sdhci-caps-mask = <0x3 0>;
+-
+ 			qcom,dll-config = <0x0007642c>;
+ 			qcom,ddr-config = <0x80040868>;
+ 
 -- 
 2.53.0
 
