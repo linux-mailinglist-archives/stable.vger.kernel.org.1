@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251620-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mE4mB4T7DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-252259-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:20:52 +0200
+	id uNHTATkcDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251620-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:40:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB4D1595DB4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:20:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C293599E89
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:40:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DDA8730762F5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:03:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D96D2340BE1D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:34:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E9B3ED3B8;
-	Wed, 20 May 2026 18:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8745E369D67;
+	Wed, 20 May 2026 17:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1njZiOhn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xqxtU4Yz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B6E83F4DC0;
-	Wed, 20 May 2026 18:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43CE9312825;
+	Wed, 20 May 2026 17:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300207; cv=none; b=tE/CFULUcfibuLnkZso13zjWhHTyYeKiZ0UPzMthAbGsLLqntZbmFsYDYOnzGaWwTdvIsLoyXyJ3T/zxpNI8+ZCBRpde+NA7nzLEDLVk0p4HhBwsLj/c8r3QG2B5F2F5MjBJuB2JfVhdjOHnj6pmknfptDY2WNCBstP6gsrsTZI=
+	t=1779298456; cv=none; b=VSmHw5b85cpmXgK5TQ1NEb9pPBdv7IejnllMZVu+lDoqU+lzCD2nbERNPJtLM8/NWuiB/wG2fb2Jo9c3HM04swJ39escsCZtU/x/D+uIaTqvNQhli0A5cgl4b7tBUTCQrBNDdj2CX7R2FeSOYaZVyYHE5R3Tig2AVEfSThjOMB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300207; c=relaxed/simple;
-	bh=OannJ61j3ckLldH791Up8MSnHmKLrczvGAZH1tkWgwU=;
+	s=arc-20240116; t=1779298456; c=relaxed/simple;
+	bh=eCSeVju3pQ0Wf2QgRdkB4t7ERMBJgaVX80syj/9SI50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uCZO94bQ7lGL8WsiDfZ9vY+16JDqG8RmBG/jeH7WqcAyGlSYMlR6o2Z8MkZ+zYkP39EQ5rbB4L+qGe1VojPzHOLT0QqrKRso2paeipo08oXzdLTyqZv3efaFJSfEJNsl0iEOGwM77rSeYDRxPCzjuiag6XHVKbqI+kvws+KDMuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1njZiOhn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0A221F000E9;
-	Wed, 20 May 2026 18:03:25 +0000 (UTC)
+	 MIME-Version; b=hZjVMl1TImbyaqnrkVUckfwYhkjVCT9nXvvnAiDdfZuVWVFCTAhx1zBnAT3KOrglSB0FaNUvO3Dp+vYd8Y7LajzXXxjrjLwb0oCzi7IoxJVnvAQ6IOnAotUaKr7rZCSRhqDqUcdlS66Oio1CemY2vZwnYYoH6GvjnNDDAJjVdeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xqxtU4Yz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A05711F000E9;
+	Wed, 20 May 2026 17:34:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300206;
-	bh=z5HDuthEeKSv7PePbW/PrNI5TR/qJBQ4p6R4RYrxDc4=;
+	s=korg; t=1779298455;
+	bh=CBFEVCwjgScy3m+scWSQl2XbMsXTEQnfdIaMmn+OzmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1njZiOhnwELpFVTK52f1BqTtb4cvtCfvTjJ9jwGzjUcCc03KXHT+6qTUiEldvS/3b
-	 B1VnXNQ6mlBjzLnEjHL4yCXSjJT8tEX1gHnOnFihgYTQwNLWTRtISiovHLktuB+nFp
-	 Izow2EJm0JgU1yB5ySja5wBam2KwJex/rbSm3dzY=
+	b=xqxtU4Yz1VDhwY16zUUeFbpt/8w7fnKkAcNkOUBuQ1F/E/pPmLgeM8AFewmdzPcyN
+	 BVcoHypwv+yjbFz3xKQXQOH+wi/JCv4v/uXVytBFAIdCXIQ02cNCTczNeZQN7gWsnm
+	 OVmHk38ZkhvLwvqXFnZ3x92a22nC2jwrw7RNysT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	STAR Labs SG <info@starlabs.sg>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Annette Kobou <annette.kobou@kontron.de>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 088/666] bpf: Enforce regsafe base id consistency for BPF_ADD_CONST scalars
-Date: Wed, 20 May 2026 18:14:59 +0200
-Message-ID: <20260520162113.135221489@linuxfoundation.org>
+Subject: [PATCH 6.18 417/957] arm64: dts: imx8mp-kontron: Fix boot order for PMIC and RTC
+Date: Wed, 20 May 2026 18:15:00 +0200
+Message-ID: <20260520162143.565944673@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,98 +77,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252259-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-251620-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_PROHIBIT(0.00)[0.0.0.52:email];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,iogearbox.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: BB4D1595DB4
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,kontron.de:email]
+X-Rspamd-Queue-Id: 6C293599E89
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Annette Kobou <annette.kobou@kontron.de>
 
-[ Upstream commit 2f2ec8e7730e21fc9bd49e0de9cdd58213ea24d0 ]
+[ Upstream commit 130d90114c5255a7a729158da8fd8298a02017f1 ]
 
-When regsafe() compares two scalar registers that both carry
-BPF_ADD_CONST, check_scalar_ids() maps their full compound id
-(aka base | BPF_ADD_CONST flag) as one idmap entry. However,
-it never verifies that the underlying base ids, that is, with
-the flag stripped are consistent with existing idmap mappings.
+The PMIC provides a level-shifter for the I2C lines to the RTC. As the
+level shifter needs to be enabled before the RTC can be accessed, make sure
+that the PMIC driver is probed first.
 
-This allows construction of two verifier states where the old
-state has R3 = R2 + 10 (both sharing base id A) while the current
-state has R3 = R4 + 10 (base id C, unrelated to R2). The idmap
-creates two independent entries: A->B (for R2) and A|flag->C|flag
-(for R3), without catching that A->C conflicts with A->B. State
-pruning then incorrectly succeeds.
+As the PMIC also provides the supply voltage for the RTC through the 3.3V
+regulator, simply express this in the DT to create the required dependency.
 
-Fix this by additionally verifying base ID mapping consistency
-whenever BPF_ADD_CONST is set: after mapping the compound ids,
-also invoke check_ids() on the base IDs (flag bits stripped).
-This ensures that if A was already mapped to B from comparing
-the source register, any ADD_CONST derivative must also derive
-from B, not an unrelated C.
+Avoid sporadic boot hangs that occurred when the RTC was accessed before
+the level-shifter was enabled.
 
-Fixes: 98d7ca374ba4 ("bpf: Track delta between "linked" registers.")
-Reported-by: STAR Labs SG <info@starlabs.sg>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/r/20260410232651.559778-1-daniel@iogearbox.net
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 946ab10e3f40f ("arm64: dts: Add support for Kontron OSM-S i.MX8MP SoM and BL carrier board")
+Signed-off-by: Annette Kobou <annette.kobou@kontron.de>
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx8mp-kontron-osm-s.dtsi | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 87d631917f4dd..f5e9ee63fff99 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -17442,6 +17442,13 @@ static bool check_ids(u32 old_id, u32 cur_id, struct bpf_idmap *idmap)
-  * and r7.id=0 (both independent), without temp IDs both would map old_id=X
-  * to cur_id=0 and pass. With temp IDs: r6 maps X->temp1, r7 tries to map
-  * X->temp2, but X is already mapped to temp1, so the check fails correctly.
-+ *
-+ * When old_id has BPF_ADD_CONST set, the compound id (base | flag) and the
-+ * base id (flag stripped) must both map consistently. Example: old has
-+ * r2.id=A, r3.id=A|flag (r3 = r2 + delta), cur has r2.id=B, r3.id=C|flag
-+ * (r3 derived from unrelated r4). Without the base check, idmap gets two
-+ * independent entries A->B and A|flag->C|flag, missing that A->C conflicts
-+ * with A->B. The base ID cross-check catches this.
-  */
- static bool check_scalar_ids(u32 old_id, u32 cur_id, struct bpf_idmap *idmap)
- {
-@@ -17450,7 +17457,15 @@ static bool check_scalar_ids(u32 old_id, u32 cur_id, struct bpf_idmap *idmap)
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-kontron-osm-s.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-kontron-osm-s.dtsi
+index b97bfeb1c30f8..bc1a261bb000e 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-kontron-osm-s.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-kontron-osm-s.dtsi
+@@ -330,6 +330,12 @@ rv3028: rtc@52 {
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_rtc>;
+ 		interrupts-extended = <&gpio3 24 IRQ_TYPE_LEVEL_LOW>;
++		/*
++		 * While specifying the vdd-supply is normally not strictly necessary,
++		 * here it also makes sure that the PMIC driver enables the level-
++		 * shifter for the RTC before the RTC is probed.
++		 */
++		vdd-supply = <&reg_vdd_3v3>;
+ 	};
+ };
  
- 	cur_id = cur_id ? cur_id : ++idmap->tmp_id_gen;
- 
--	return check_ids(old_id, cur_id, idmap);
-+	if (!check_ids(old_id, cur_id, idmap))
-+		return false;
-+	if (old_id & BPF_ADD_CONST) {
-+		old_id &= ~BPF_ADD_CONST;
-+		cur_id &= ~BPF_ADD_CONST;
-+		if (!check_ids(old_id, cur_id, idmap))
-+			return false;
-+	}
-+	return true;
- }
- 
- static void clean_func_state(struct bpf_verifier_env *env,
 -- 
 2.53.0
 
