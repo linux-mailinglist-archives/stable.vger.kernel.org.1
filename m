@@ -1,66 +1,58 @@
-Return-Path: <stable+bounces-251689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250713-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +OYaLgbzDWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251689-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:38 +0200
+	id SIhMC58TDmot6AUAu9opvQ
+	(envelope-from <stable+bounces-250713-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:03:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30B04594755
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF886599105
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:03:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 189F6306411C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:37:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 713423278002
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF2D73DD504;
-	Wed, 20 May 2026 17:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CC053EC2D1;
+	Wed, 20 May 2026 16:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DCObswyn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YfOSjOmK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76BC43E123F;
-	Wed, 20 May 2026 17:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD6B3ED3B8;
+	Wed, 20 May 2026 16:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298636; cv=none; b=qsXRSOV+ZQExF7jKy0HF36GL7F2qFvucHI/fS3DtESGocn0SoYXhoc2V5oy855HP/L/JAsaCL/V6Z18RE18aRxIue8ChzgaX1yiGLIQLSsy1GAUWD+vO99QPfY0an6mkzqnFF4GqotNVbXjqyLtO3BjTdsXVjGsyYZ/+0gxDGOI=
+	t=1779296122; cv=none; b=b4YfQuuJnq0tQ598LxxBNC1Ss9Tid45k67AshHbZsnaXC7+HpJhTVQPU/uD+NBUhZkrV0CVTCus3RqKkUim57gurkZlFOge65I6u8AYMHSi72wz9vI0e53mUoAgb394YqgYkEv5ksllHW67kVLA8ry/3A8ML8iK+mYIEG3hUUkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298636; c=relaxed/simple;
-	bh=WgeWWmK+SG16V/jO5CHKeanfRpz0mWLseJ4Xx3ZG0xM=;
+	s=arc-20240116; t=1779296122; c=relaxed/simple;
+	bh=wyr/a1lZoNfIz6EyojVVpEIf2ywylrD25JHEYynes6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XoxG3C/Baa4l87ww9h4iDpG+KebSdTswZMd0Rajim4IWLxs+80eV0ITrzM5g3fdV+fFjIuEI6hfqYwj4ETswe1VUgCbuiByykEhn1L/dxc6XnVRotaEpS5TcOVh56V13acryVakbMZPuX24NZNgXa3uaG3B8JZDcI/UEbXe3dv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DCObswyn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E168A1F000E9;
-	Wed, 20 May 2026 17:37:14 +0000 (UTC)
+	 MIME-Version; b=rBantQxMKaBiTxEexaSvBiWbQaqdFs4phQOZLbmQMQZd/2H8bcbDe56sWZ/Xp0V8OfBtW9u1PUEVUSVWlGMXSAXe3uGisjmyzAXMa407eNLqNb0X4bM9xItm4ZPoTXY66dhUGC0e1GkEsqrxJOTM+osj18iQtobuvsKVbEmQ3c8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YfOSjOmK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 700B81F00893;
+	Wed, 20 May 2026 16:55:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298635;
-	bh=wcj3yOCcG7CcXQlUo+ZnSFYOm2S7JiZnN5aYHukrGSE=;
+	s=korg; t=1779296120;
+	bh=jZXOY5GcslNwHsOR/HpqM0rPnlosgTex/BsiazOUZSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DCObswynPncTooqDCakKRjuZRHC76Hmiz9bDxuNwGkxRyClaolT0PvNuidO7S34d7
-	 U86vONI6a04Cx3Wkzb4BC6sTEePsNRSjfqsY5mn8plycsXADpODbxj9gVvfHnufLfL
-	 WFZ12+h68sawPHi0JuTTFl7vZFTBdO9HESAvdwxQ=
+	b=YfOSjOmKi/mVoTmpyvEpf/9dI85fBv1Df+CXfdxUDehcIwOPX07EQzOm2oTOjNSMq
+	 TtxGM0CJtnvPtifs+fn8gQ/vwUo6PgPmrugyPWyT7hq8IyUJyknhJ4sK09kc3j2gLP
+	 POE59EQV2Xb6qLAaa7ORLR3eIBuNVkOAJLi02RHM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ZhengYuan Huang <gality369@gmail.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 445/957] ocfs2: validate group add input before caching
+Subject: [PATCH 7.0 0678/1146] nfsd: use dynamic allocation for oversized NFSv4.0 replay cache
 Date: Wed, 20 May 2026 18:15:28 +0200
-Message-ID: <20260520162144.171251964@linuxfoundation.org>
+Message-ID: <20260520162203.531077622@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,21 +67,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251689-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-250713-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -98,117 +90,140 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,oracle.com:email,linux-foundation.org:email,live.cn:email]
-X-Rspamd-Queue-Id: 30B04594755
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email]
+X-Rspamd-Queue-Id: BF886599105
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZhengYuan Huang <gality369@gmail.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 70b672833f4025341c11b22c7f83778a5cd611bc ]
+[ Upstream commit 116b6b7acdd82605ed530232cd7509d1b5282f5c ]
 
-[BUG]
-OCFS2_IOC_GROUP_ADD can trigger a BUG_ON in
-ocfs2_set_new_buffer_uptodate():
+Commit 1e8e9913672a ("nfsd: fix heap overflow in NFSv4.0 LOCK
+replay cache") capped the replay cache copy at NFSD4_REPLAY_ISIZE
+to prevent a heap overflow, but set rp_buflen to zero when the
+encoded response exceeded the inline buffer. A retransmitted LOCK
+reaching the replay path then produced only a status code with no
+operation body, resulting in a malformed XDR response.
 
-kernel BUG at fs/ocfs2/uptodate.c:509!
-Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-RIP: 0010:ocfs2_set_new_buffer_uptodate+0x194/0x1e0 fs/ocfs2/uptodate.c:509
-Code: ffffe88f 42b9fe4c 89e64889 dfe8b4df
-Call Trace:
- ocfs2_group_add+0x3f1/0x1510 fs/ocfs2/resize.c:507
- ocfs2_ioctl+0x309/0x6e0 fs/ocfs2/ioctl.c:887
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl fs/ioctl.c:583 [inline]
- __x64_sys_ioctl+0x197/0x1e0 fs/ioctl.c:583
- x64_sys_call+0x1144/0x26a0 arch/x86/include/generated/asm/syscalls_64.h:17
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x93/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7bbfb55a966d
+When the encoded response exceeds the 112-byte inline rp_ibuf, a
+buffer is kmalloc'd to hold it. If the allocation fails, rp_buflen
+remains zero, preserving the behavior from the capped-copy fix.
+The buffer is freed when the stateowner is released or when a
+subsequent operation's response fits in the inline buffer.
 
-[CAUSE]
-ocfs2_group_add() calls ocfs2_set_new_buffer_uptodate() on a
-user-controlled group block before ocfs2_verify_group_and_input()
-validates that block number. That helper is only valid for newly
-allocated metadata and asserts that the block is not already present in
-the chosen metadata cache. The code also uses INODE_CACHE(inode) even
-though the group descriptor belongs to main_bm_inode and later journal
-accesses use that cache context instead.
-
-[FIX]
-Validate the on-disk group descriptor before caching it, then add it to
-the metadata cache tracked by INODE_CACHE(main_bm_inode). Keep the
-validation failure path separate from the later cleanup path so we only
-remove the buffer from that cache after it has actually been inserted.
-This keeps the group buffer lifetime consistent across validation,
-journaling, and cleanup.
-
-Link: https://lkml.kernel.org/r/20260410020209.3786348-1-gality369@gmail.com
-Fixes: 7909f2bf8353 ("[PATCH 2/2] ocfs2: Implement group add for online resize")
-Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 1e8e9913672a ("nfsd: fix heap overflow in NFSv4.0 LOCK replay cache")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/resize.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ fs/nfsd/nfs4state.c | 16 ++++++++++++++++
+ fs/nfsd/nfs4xdr.c   | 23 ++++++++++++++++-------
+ fs/nfsd/state.h     | 12 +++++++-----
+ 3 files changed, 39 insertions(+), 12 deletions(-)
 
-diff --git a/fs/ocfs2/resize.c b/fs/ocfs2/resize.c
-index ed7ed15ad9a73..583a411557ab9 100644
---- a/fs/ocfs2/resize.c
-+++ b/fs/ocfs2/resize.c
-@@ -508,14 +508,14 @@ int ocfs2_group_add(struct inode *inode, struct ocfs2_new_group_input *input)
- 		goto out_unlock;
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 1f49637dfc96f..f932a165f5b9b 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -1495,8 +1495,24 @@ release_all_access(struct nfs4_ol_stateid *stp)
  	}
+ }
  
--	ocfs2_set_new_buffer_uptodate(INODE_CACHE(inode), group_bh);
--
- 	ret = ocfs2_verify_group_and_input(main_bm_inode, fe, input, group_bh);
- 	if (ret) {
- 		mlog_errno(ret);
- 		goto out_free_group_bh;
- 	}
- 
-+	ocfs2_set_new_buffer_uptodate(INODE_CACHE(main_bm_inode), group_bh);
++/**
++ * nfs4_replay_free_cache - release dynamically allocated replay buffer
++ * @rp: replay cache to reset
++ *
++ * If @rp->rp_buf points to a kmalloc'd buffer, free it and reset
++ * rp_buf to the inline rp_ibuf. Always zeroes rp_buflen.
++ */
++void nfs4_replay_free_cache(struct nfs4_replay *rp)
++{
++	if (rp->rp_buf != rp->rp_ibuf)
++		kfree(rp->rp_buf);
++	rp->rp_buf = rp->rp_ibuf;
++	rp->rp_buflen = 0;
++}
 +
- 	trace_ocfs2_group_add((unsigned long long)input->group,
- 			       input->chain, input->clusters, input->frees);
+ static inline void nfs4_free_stateowner(struct nfs4_stateowner *sop)
+ {
++	nfs4_replay_free_cache(&sop->so_replay);
+ 	kfree(sop->so_owner.data);
+ 	sop->so_ops->so_free(sop);
+ }
+diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
+index 9d234913100b9..ef663331063b1 100644
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -6281,14 +6281,23 @@ nfsd4_encode_operation(struct nfsd4_compoundres *resp, struct nfsd4_op *op)
+ 		int len = xdr->buf->len - (op_status_offset + XDR_UNIT);
  
-@@ -523,7 +523,7 @@ int ocfs2_group_add(struct inode *inode, struct ocfs2_new_group_input *input)
- 	if (IS_ERR(handle)) {
- 		mlog_errno(PTR_ERR(handle));
- 		ret = -EINVAL;
--		goto out_free_group_bh;
-+		goto out_remove_cache;
- 	}
- 
- 	cl_bpc = le16_to_cpu(fe->id2.i_chain.cl_bpc);
-@@ -577,9 +577,11 @@ int ocfs2_group_add(struct inode *inode, struct ocfs2_new_group_input *input)
- out_commit:
- 	ocfs2_commit_trans(osb, handle);
- 
--out_free_group_bh:
-+out_remove_cache:
- 	if (ret < 0)
--		ocfs2_remove_from_cache(INODE_CACHE(inode), group_bh);
-+		ocfs2_remove_from_cache(INODE_CACHE(main_bm_inode), group_bh);
+ 		so->so_replay.rp_status = op->status;
+-		if (len <= NFSD4_REPLAY_ISIZE) {
+-			so->so_replay.rp_buflen = len;
+-			read_bytes_from_xdr_buf(xdr->buf,
+-						op_status_offset + XDR_UNIT,
+-						so->so_replay.rp_buf, len);
+-		} else {
+-			so->so_replay.rp_buflen = 0;
++		if (len > NFSD4_REPLAY_ISIZE) {
++			char *buf = kmalloc(len, GFP_KERNEL);
 +
-+out_free_group_bh:
- 	brelse(group_bh);
++			nfs4_replay_free_cache(&so->so_replay);
++			if (buf) {
++				so->so_replay.rp_buf = buf;
++			} else {
++				/* rp_buflen already zeroed; skip caching */
++				goto status;
++			}
++		} else if (so->so_replay.rp_buf != so->so_replay.rp_ibuf) {
++			nfs4_replay_free_cache(&so->so_replay);
+ 		}
++		so->so_replay.rp_buflen = len;
++		read_bytes_from_xdr_buf(xdr->buf,
++					op_status_offset + XDR_UNIT,
++					so->so_replay.rp_buf, len);
+ 	}
+ status:
+ 	op->status = nfsd4_map_status(op->status,
+diff --git a/fs/nfsd/state.h b/fs/nfsd/state.h
+index c0ca115c3b74b..2c836984ad0f1 100644
+--- a/fs/nfsd/state.h
++++ b/fs/nfsd/state.h
+@@ -549,10 +549,10 @@ struct nfs4_client_reclaim {
+  *   ~32(deleg. ace) = 112 bytes
+  *
+  * Some responses can exceed this. A LOCK denial includes the conflicting
+- * lock owner, which can be up to 1024 bytes (NFS4_OPAQUE_LIMIT). Responses
+- * larger than REPLAY_ISIZE are not cached in rp_ibuf; only rp_status is
+- * saved. Enlarging this constant increases the size of every
+- * nfs4_stateowner.
++ * lock owner, which can be up to 1024 bytes (NFS4_OPAQUE_LIMIT). When a
++ * response exceeds REPLAY_ISIZE, a buffer is dynamically allocated. If
++ * that allocation fails, only rp_status is saved. Enlarging this constant
++ * increases the size of every nfs4_stateowner.
+  */
  
- out_unlock:
+ #define NFSD4_REPLAY_ISIZE       112 
+@@ -564,12 +564,14 @@ struct nfs4_client_reclaim {
+ struct nfs4_replay {
+ 	__be32			rp_status;
+ 	unsigned int		rp_buflen;
+-	char			*rp_buf;
++	char			*rp_buf; /* rp_ibuf or kmalloc'd */
+ 	struct knfsd_fh		rp_openfh;
+ 	int			rp_locked;
+ 	char			rp_ibuf[NFSD4_REPLAY_ISIZE];
+ };
+ 
++extern void nfs4_replay_free_cache(struct nfs4_replay *rp);
++
+ struct nfs4_stateowner;
+ 
+ struct nfs4_stateowner_operations {
 -- 
 2.53.0
 
