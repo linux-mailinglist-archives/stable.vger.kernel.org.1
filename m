@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-250539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251475-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GMsILT7wDWqo4wUAu9opvQ
-	(envelope-from <stable+bounces-250539-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:32:46 +0200
+	id KOV0CuLxDWp+4wUAu9opvQ
+	(envelope-from <stable+bounces-251475-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:39:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDE5A593E94
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:32:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91B1759437F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:39:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 05ED8304CFB6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:47:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C3644302F43E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:28:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77FDE33A9CF;
-	Wed, 20 May 2026 16:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90E493A3826;
+	Wed, 20 May 2026 17:27:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dP2wCwae"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ptMiTnQp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3671CDFCA;
-	Wed, 20 May 2026 16:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E248331220;
+	Wed, 20 May 2026 17:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295675; cv=none; b=f+cXer8OZQk2RH1Op/LOZzHLGIkFqNoBhK+/HEq2R8sBjYrMDtkZDJSjtxBnjZxAuWdHKcLXwHd1vaHDhtnEN9+XJMTcwkQlVYhrf4nF4iwIjAReOz1XNtMrdoUD/H8umKPvkRDaXJg1FlI7r6mc4qZq/wBvl3xkvzuONrdCo7E=
+	t=1779298079; cv=none; b=S7ROHGJCnWolioQr7VMI0Ek9pGH2gG4FLPB8DWFpW3SWzePPYyfFeu1X9tFabbFhvx+wgeiB60bUhWYof4t6GYHNEMt/xAZKV0Fnjm+EA1ejL2VFBikP+15U/UCeZood5Iuytipw6F2BnI3W70Eq+Cqjz1W4+j90HylCXmamyoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295675; c=relaxed/simple;
-	bh=7MVTeSLb6uZWSGXUd5g0jgmMfWVVaMhaVr9BHsiue9w=;
+	s=arc-20240116; t=1779298079; c=relaxed/simple;
+	bh=VITqL5UQLaMUfHsrE5A9NtawQTdkXipG5bhbgoHfR8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bvcbRpaRx7sndWy6/3EW+5gh9oo/z/1K+Jyrede9m4B/NDlMK2/Tq4Tuc9w8xhNls6pG5gpcYtMpSc4EuXCD6Fj0XtQtYFcq2e8rSRWWTg/x6gFRR/YjWmdyBHY4o7csM9o2V+XAnRm3PDQ0PD19TvmnF9XRVNs8lV1kGFqSAr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dP2wCwae; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 904DF1F000E9;
-	Wed, 20 May 2026 16:47:53 +0000 (UTC)
+	 MIME-Version; b=uVUvXNT5fjwEP5AaERD1Ei7XWnw1U6jBrNU+IBn+doKy5IHCs80CSr1kDhKwFMSv+VP3thuMY0REBGfU9dSb4eTrgxjeoPkNG4DhC5bQgAofUoCiBS9LVbo04ahOwmcjha2dmZvQZcHaA5ohExrTjRjv12gm3PgZtskEN3637hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ptMiTnQp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4FFF1F00893;
+	Wed, 20 May 2026 17:27:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295674;
-	bh=gPYr8ygwSSoS4Rp3SPUQt3Wiodni0T2Zrcb8WMKV6ME=;
+	s=korg; t=1779298078;
+	bh=gxzsy01aQ0V67MHIk1Dwi+BhqI3z7xGNVFUh1Av3JXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dP2wCwaecX4fP1TtVdd+gW5zEU4cvcwHiwLgmUnpibLRSsVykD+l+umGZ9w8IZREI
-	 e/FSTeGiGjA5Sd98kSPg0/YXNmRNG8w+QaMXn2ApKrdYLjotHr7YSDUzCNtlhpAMtQ
-	 oJbfQWme3YgUGILJKE/5kTQiMez5vsUgl4aokppU=
+	b=ptMiTnQpPenBOPYzFQjOZ23xsf4f/Qwh0/1J+Vs2/uVi1oz4FcT5qh9zjWg+uUdSl
+	 JPuRsNidSZPnVImeSj1dRb4v6AtUEPQeXA8d4PufCsjBTo+DXERSolSXkJ8iWqtMii
+	 7W6ovWjEj17dWfMEDJ5wMVetvagLVmtbSIINIoyk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gatien Chevallier <gatien.chevallier@foss.st.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Connor Abbott <cwabbott0@gmail.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0508/1146] bus: rifsc: fix RIF configuration check for peripherals
+Subject: [PATCH 6.18 275/957] drm/msm/a6xx: Fix HLSQ register dumping
 Date: Wed, 20 May 2026 18:12:38 +0200
-Message-ID: <20260520162159.684661843@linuxfoundation.org>
+Message-ID: <20260520162140.506556320@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,133 +66,71 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-251475-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250539-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,st.com:email]
-X-Rspamd-Queue-Id: BDE5A593E94
+	DBL_BLOCKED_OPENRESOLVER(0.00)[patchwork.freedesktop.org:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
+X-Rspamd-Queue-Id: 91B1759437F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gatien Chevallier <gatien.chevallier@foss.st.com>
+From: Rob Clark <robin.clark@oss.qualcomm.com>
 
-[ Upstream commit d5ce3b4e951bc41a6ce877c8500bb4fe42146669 ]
+[ Upstream commit c289a6db9ba6cb974f0317da142e4f665d589566 ]
 
-Peripheral holding CID0 cannot be accessed, remove this completely
-incorrect check. While there, fix  and simplify the semaphore checking
-that should be performed when the CID filtering is enabled.
+Fix the bitfield offset of HLSQ_READ_SEL state-type bitfield.  Otherwise
+we are always reading TP state when we wanted SP or HLSQ state.
 
-Fixes: a18208457253 ("bus: rifsc: introduce RIFSC firewall controller driver")
-Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
-Link: https://lore.kernel.org/r/20260129-fix_cid_check_rifsc-v1-1-ef280ccf764d@foss.st.com
-Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Reported-by: Connor Abbott <cwabbott0@gmail.com>
+Suggested-by: Connor Abbott <cwabbott0@gmail.com>
+Fixes: 1707add81551 ("drm/msm/a6xx: Add a6xx gpu state")
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/714236/
+Message-ID: <20260325184043.1259312-1-robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/stm32_rifsc.c | 52 ++++++++++++++-------------------------
- 1 file changed, 18 insertions(+), 34 deletions(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/bus/stm32_rifsc.c b/drivers/bus/stm32_rifsc.c
-index debeaf8ea1bd2..5682c086ba1e8 100644
---- a/drivers/bus/stm32_rifsc.c
-+++ b/drivers/bus/stm32_rifsc.c
-@@ -688,34 +688,6 @@ static int stm32_rifsc_grant_access(struct stm32_firewall_controller *ctrl, u32
- 	sec_reg_value = readl(rifsc_controller->mmio + RIFSC_RISC_SECCFGR0 + 0x4 * reg_id);
- 	cid_reg_value = readl(rifsc_controller->mmio + RIFSC_RISC_PER0_CIDCFGR + 0x8 * firewall_id);
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
+index 9cec333e23e15..def021ba19299 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
+@@ -1013,7 +1013,7 @@ static void a6xx_get_crashdumper_hlsq_registers(struct msm_gpu *gpu,
+ 	u64 out = dumper->iova + A6XX_CD_DATA_OFFSET;
+ 	int i, regcount = 0;
  
--	/* First check conditions for semaphore mode, which doesn't take into account static CID. */
--	if ((cid_reg_value & CIDCFGR_SEMEN) && (cid_reg_value & CIDCFGR_CFEN)) {
--		if (cid_reg_value & BIT(RIF_CID1 + SEMWL_SHIFT)) {
--			/* Static CID is irrelevant if semaphore mode */
--			goto skip_cid_check;
--		} else {
--			dev_dbg(rifsc_controller->dev,
--				"Invalid bus semaphore configuration: index %d\n", firewall_id);
--			return -EACCES;
--		}
--	}
--
--	/*
--	 * Skip CID check if CID filtering isn't enabled or filtering is enabled on CID0, which
--	 * corresponds to whatever CID.
--	 */
--	if (!(cid_reg_value & CIDCFGR_CFEN) ||
--	    FIELD_GET(RIFSC_RISC_SCID_MASK, cid_reg_value) == RIF_CID0)
--		goto skip_cid_check;
--
--	/* Coherency check with the CID configuration */
--	if (FIELD_GET(RIFSC_RISC_SCID_MASK, cid_reg_value) != RIF_CID1) {
--		dev_dbg(rifsc_controller->dev, "Invalid CID configuration for peripheral: %d\n",
--			firewall_id);
--		return -EACCES;
--	}
--
--skip_cid_check:
- 	/* Check security configuration */
- 	if (sec_reg_value & BIT(reg_offset)) {
- 		dev_dbg(rifsc_controller->dev,
-@@ -723,19 +695,31 @@ static int stm32_rifsc_grant_access(struct stm32_firewall_controller *ctrl, u32
- 		return -EACCES;
- 	}
+-	in += CRASHDUMP_WRITE(in, REG_A6XX_HLSQ_DBG_READ_SEL, regs->val1);
++	in += CRASHDUMP_WRITE(in, REG_A6XX_HLSQ_DBG_READ_SEL, (regs->val1 & 0xff) << 8);
  
--	/*
--	 * If the peripheral is in semaphore mode, take the semaphore so that
--	 * the CID1 has the ownership.
--	 */
--	if ((cid_reg_value & CIDCFGR_SEMEN) && (cid_reg_value & CIDCFGR_CFEN)) {
-+	/* Skip CID check if CID filtering isn't enabled */
-+	if (!(cid_reg_value & CIDCFGR_CFEN))
-+		goto skip_cid_check;
-+
-+	/* First check conditions for semaphore mode, which doesn't take into account static CID. */
-+	if (cid_reg_value & CIDCFGR_SEMEN) {
-+		if (!(cid_reg_value & BIT(RIF_CID1 + SEMWL_SHIFT))) {
-+			dev_dbg(rifsc_controller->dev,
-+				"Invalid bus semaphore configuration: index %d\n", firewall_id);
-+			return -EACCES;
-+		}
-+
- 		rc = stm32_rif_acquire_semaphore(rifsc_controller, firewall_id);
- 		if (rc) {
--			dev_err(rifsc_controller->dev,
-+			dev_dbg(rifsc_controller->dev,
- 				"Couldn't acquire semaphore for peripheral: %d\n", firewall_id);
- 			return rc;
- 		}
-+	} else if (FIELD_GET(RIFSC_RISC_SCID_MASK, cid_reg_value) != RIF_CID1) {
-+		dev_dbg(rifsc_controller->dev, "Invalid CID configuration for peripheral: %d\n",
-+			firewall_id);
-+		return -EACCES;
- 	}
- 
-+skip_cid_check:
- 	return 0;
- }
- 
+ 	for (i = 0; i < regs->count; i += 2) {
+ 		u32 count = RANGE(regs->registers, i);
 -- 
 2.53.0
 
