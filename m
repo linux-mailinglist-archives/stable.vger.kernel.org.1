@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-251513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250534-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IF1qIpEbDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251513-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:37:37 +0200
+	id SPkpJtIQDmrB5wUAu9opvQ
+	(envelope-from <stable+bounces-250534-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:51:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8094599DA2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:37:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 452E9598CF6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:51:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9329F33CBEAE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:29:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B363232F2986
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:47:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68C8C3E3C62;
-	Wed, 20 May 2026 17:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AEB333AD9D;
+	Wed, 20 May 2026 16:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="txyG7kKn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ox1OH2k5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10EFB3D75A0;
-	Wed, 20 May 2026 17:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E30334C1D;
+	Wed, 20 May 2026 16:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298177; cv=none; b=QKysfysxoykzzdrFLCMGSlzosBvGGm5Q8IQk9avDgG1SvYKRPdreQbfNVR+f4v4x8Qhs6037RMnJU8ScQFzQHkir9huBY4Sl/1btR9EcsW5eYl+HqQjcJBontsnPln/A0yO+xpfC+g7t1wZDdjNSxdO5VwyC5uaO7sSPmRD4Yoo=
+	t=1779295662; cv=none; b=JL3z/FTUNN0ShxkYXgk1aEX4ffBjZG3Ntz29NHyAArK+ECQXvMQXObDpRnSHGAKRvn/SGALUAtjS36TGEzHBOywGFdh2lzFam/qNCHQuU/S0mDP5BBs2XYcObfxt/nLHMNMR86jcu6uHR7nL7sD0e9smnzG53LW6wBtNqdj8sSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298177; c=relaxed/simple;
-	bh=2xSgTPo9ctisTDAdLJneuz/A2KZyV6J86lcPiPCOsLw=;
+	s=arc-20240116; t=1779295662; c=relaxed/simple;
+	bh=SjC98U0+yjIssBg1p6FCSE7dtTcxoYujcSP+13JuhIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VJnVDjIgrAl17X0IfN7LD8PGLZCngENAoohL2KnP6R+k6uAAtA2fXmtqwzwL64OeL5QR7rVcdz1PAkvyTWe4AG88DaG75mT6BFQATmmd/CxHk0woSPWsYAZ73gl7xWq/lv7ogc8Hegbzkj+tJ5k+XGRlvNI8CicdCKo+nyQ8nk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=txyG7kKn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43D331F000E9;
-	Wed, 20 May 2026 17:29:35 +0000 (UTC)
+	 MIME-Version; b=dv3OJAp8y5VFB7FxfSm269lqZt/IfXIHul5yZPjv1x6GO5UsJimQunD8nYtGD4Ql2LTPDhUg0p1oz+90JvPr+Ar8WXUiCW8vWup5N4d/lSkLQtwX4437c6hCe6ei0qqkKPGTwLq7c/S+Ex1OhnjQP6IhGq0ZOqQtz3OPlVM9FWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ox1OH2k5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 713BA1F00893;
+	Wed, 20 May 2026 16:47:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298175;
-	bh=AGbskkCguKAPKdVDPf5AhlCmswn1dXy2DsLI9G1Y+6A=;
+	s=korg; t=1779295660;
+	bh=RgaihKdFFEzKrpQvT14Lu7W9erNFpWEQwmBvvRvZIMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=txyG7kKnNRehb2qyt8udmUwdal7Ui/mma65bHP9gQd+9cJleJFSW690exILSx40lE
-	 87ErFduPZwkwJ9Fw9FlisLKTWdi+esosNjXoDsXy8AQD7UvbftaRfqLQFJZabz4k1n
-	 dMYSlkuxP8dn60DDwY2/aGAGRjG333QszXqu1fkw=
+	b=Ox1OH2k59OYKsl0PTrA4nJkGqvTNBvG3fA0/wMB2covMfoKZYI9yBK2/8KNq92Pjw
+	 2ytWO3fi1eLZ1I+RV0KIUtepW0Z8nscy2pFPa/tV4CTUNsBBRLsDxU6SynYKdreEgx
+	 CT+Ew5Oj7kVIdEZdToYK43TCbOQDNt9JumghmA4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Billy Tsai <billy_tsai@aspeedtech.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Brian Masney <bmasney@redhat.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 269/957] hwmon: (aspeed-g6-pwm-tach): remove redundant driver remove callback
-Date: Wed, 20 May 2026 18:12:32 +0200
-Message-ID: <20260520162140.377143139@linuxfoundation.org>
+Subject: [PATCH 7.0 0503/1146] soc: qcom: ocmem: register reasons for probe deferrals
+Date: Wed, 20 May 2026 18:12:33 +0200
+Message-ID: <20260520162159.573687365@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,83 +68,78 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251513-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-250534-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,roeck-us.net:email]
-X-Rspamd-Queue-Id: E8094599DA2
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 452E9598CF6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Billy Tsai <billy_tsai@aspeedtech.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit 46fef8583daa1bf78fda7eaa523c64d4440322ac ]
+[ Upstream commit 9dfd69cd89cd6afa4723be9098979abeef3bb8c6 ]
 
-Drops the remove callback as it only asserts reset and the probe already
-registers a devres action (devm_add_action_or_reset()) to call
-aspeed_pwm_tach_reset_assert().
+Instead of printing messages to the dmesg, let the message be recorded
+as a reason for the OCMEM client deferral.
 
-Fixes: 7e1449cd15d1 ("hwmon: (aspeed-g6-pwm-tacho): Support for ASPEED g6 PWM/Fan tach")
-Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
-Link: https://lore.kernel.org/r/20260309-pwm_fixes-v2-1-ca9768e70470@aspeedtech.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 88c1e9404f1d ("soc: qcom: add OCMEM driver")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Brian Masney <bmasney@redhat.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260323-ocmem-v1-2-ad9bcae44763@oss.qualcomm.com
+[bjorn: s/ERR_PTR(dev_err_probe)/dev_err_ptr_probe/
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/aspeed-g6-pwm-tach.c | 8 --------
- 1 file changed, 8 deletions(-)
+ drivers/soc/qcom/ocmem.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hwmon/aspeed-g6-pwm-tach.c b/drivers/hwmon/aspeed-g6-pwm-tach.c
-index 4174b129d1fce..d1f7f43974824 100644
---- a/drivers/hwmon/aspeed-g6-pwm-tach.c
-+++ b/drivers/hwmon/aspeed-g6-pwm-tach.c
-@@ -517,13 +517,6 @@ static int aspeed_pwm_tach_probe(struct platform_device *pdev)
- 	return 0;
- }
+diff --git a/drivers/soc/qcom/ocmem.c b/drivers/soc/qcom/ocmem.c
+index dd46bb14b7be3..d47ce5707fd88 100644
+--- a/drivers/soc/qcom/ocmem.c
++++ b/drivers/soc/qcom/ocmem.c
+@@ -196,10 +196,10 @@ struct ocmem *of_get_ocmem(struct device *dev)
+ 	}
  
--static void aspeed_pwm_tach_remove(struct platform_device *pdev)
--{
--	struct aspeed_pwm_tach_data *priv = platform_get_drvdata(pdev);
--
--	reset_control_assert(priv->reset);
--}
--
- static const struct of_device_id aspeed_pwm_tach_match[] = {
- 	{
- 		.compatible = "aspeed,ast2600-pwm-tach",
-@@ -534,7 +527,6 @@ MODULE_DEVICE_TABLE(of, aspeed_pwm_tach_match);
+ 	pdev = of_find_device_by_node(devnode->parent);
+-	if (!pdev) {
+-		dev_err(dev, "Cannot find device node %s\n", devnode->name);
+-		return ERR_PTR(-EPROBE_DEFER);
+-	}
++	if (!pdev)
++		return dev_err_ptr_probe(dev, -EPROBE_DEFER,
++					 "Cannot find device node %s\n",
++					 devnode->name);
  
- static struct platform_driver aspeed_pwm_tach_driver = {
- 	.probe = aspeed_pwm_tach_probe,
--	.remove = aspeed_pwm_tach_remove,
- 	.driver	= {
- 		.name = "aspeed-g6-pwm-tach",
- 		.of_match_table = aspeed_pwm_tach_match,
+ 	ocmem = platform_get_drvdata(pdev);
+ 	put_device(&pdev->dev);
 -- 
 2.53.0
 
