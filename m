@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-252563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251882-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mDf1NcQmDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252563-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:25:24 +0200
+	id kBjxFWECDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-251882-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:50:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D44C59AD19
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:25:23 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 776AD59749D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:50:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ED7D632F0E18
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:16:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2197C31EAF07
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:45:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C3634DCE4;
-	Wed, 20 May 2026 18:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 337183F1AB8;
+	Wed, 20 May 2026 17:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mc9Ih5ct"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwHLs4De"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14CA33F9F25;
-	Wed, 20 May 2026 18:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B783546C8;
+	Wed, 20 May 2026 17:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301004; cv=none; b=jtPhaxp8bygj3ZkGy/JwIi2hZ+HrdbsAjKUadSDIx7cuLlwjNNZOhL3usKcdWbigPY1uy2DQimMB2lbThfrOQmY7WMqUHIK9wmXM9FrbeaN1mL5P6cETzzS1AFWczF5MGIQv54y8C8J0H94qenccJCE6yvLao3XddzlZNSeuxtM=
+	t=1779299134; cv=none; b=rJMr8RzTS+RxL1KQJwebGeftkW0hU7P+sdDCcNoxL8OdUDyedAF69fmcaEeaeX6t/SG8MbkDznSBS6pevITb9mJ9DzXUHeBFvoyvcszWvC6zIdrfyTdJCQL5mk+Rs2BK51bV+uq64yoLjJwlIiKr4DYKngRDRfR9kX2X5HpeZwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301004; c=relaxed/simple;
-	bh=MZYUuinJHb2Lf68I4TEWja31s7L/XQqoCGTj1BigjDI=;
+	s=arc-20240116; t=1779299134; c=relaxed/simple;
+	bh=yGAWFZNA0nn/KN2cQsGn6h3yrCOwOF4s9bVB0/N1PFw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EnkDTp5cYvd/h8uUo5ccoJglZZ4byajkjtQLfALcSR6WrFnTFD1eTM0ysuhvvbM8pyCfBcWVWzPqJGD/Ribo3DC1OovQg5hVTim0YftO/x5FmNdcCheaEQ2U/3thL2/SW971elC6ViFok5zLKJggjc1fcV8JzH/M1CT2yuAMgkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mc9Ih5ct; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B7791F000E9;
-	Wed, 20 May 2026 18:16:41 +0000 (UTC)
+	 MIME-Version; b=mZzd/H7NzQf9OpdHwFIItZDlM+zBGiZmufbb78hWRyjFJyrznlnDxutpE+69IyPcjGANkbF5ufPEVBwguIqkKt1jgSbUTiiORpeaa68D2A7OaCPKmv1a2GSO2W3q/DfZPRcftw+i1L6iUldLyrtIzzJGDDLhWk1DAm2EACt0sSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rwHLs4De; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55FE01F000E9;
+	Wed, 20 May 2026 17:45:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301001;
-	bh=bUvK8QWtClwKLKZXks73ZH2KxsyXr6wHzkwc24kwVTQ=;
+	s=korg; t=1779299132;
+	bh=y6jcDqYUzotVLml1CEm8iT6M3cvS6ErnoBJC9bbe9OI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Mc9Ih5ctLqILfZk0DE5AWnZKK5j7962alXO7K5+PJOMzYEPXVDZcOm6fB1JeHsXY6
-	 nWJPdL6XV6iWC4oHCxeG6Duu0Y5CXVmNhMTizmHconlRot2VPqng2cid+bz0l/EUl5
-	 wjX2rJLZlYFQA57sEVz5T7hgcdfiuMFPdTVRQYTk=
+	b=rwHLs4DeWkJ6PZc+fSLFvwAMaS4gzy+kCb2S1NgyKCr6M8AWhcABWYRjRKipsQl3h
+	 V3nGtepqSX+ZfaAyMip3z39k5Jyw/C6UkOXHQRcCCIF2jT33ndC07CYSR/8i96QPP+
+	 GB0VdNLdFB5Yj+ovPMAgk77TMeqRIkwO70Zte3gU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Luczaj <mhal@rbox.co>,
-	=?UTF-8?q?=E9=92=B1=E4=B8=80=E9=93=AD?= <yimingqian591@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	DaeMyung Kang <charsyam@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 348/666] bpf, sockmap: Fix af_unix null-ptr-deref in proto update
+Subject: [PATCH 6.18 676/957] ksmbd: fix durable fd leak on ClientGUID mismatch in durable v2 open
 Date: Wed, 20 May 2026 18:19:19 +0200
-Message-ID: <20260520162118.771418966@linuxfoundation.org>
+Message-ID: <20260520162149.199172492@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,233 +64,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252563-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,rbox.co,gmail.com,google.com,linux.dev,kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251882-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,rbox.co:email]
-X-Rspamd-Queue-Id: 1D44C59AD19
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 776AD59749D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: DaeMyung Kang <charsyam@gmail.com>
 
-[ Upstream commit dca38b7734d2ea00af4818ff3ae836fab33d5d5a ]
+[ Upstream commit 804054d19886ac6628883d82410f6ee42a818664 ]
 
-unix_stream_connect() sets sk_state (`WRITE_ONCE(sk->sk_state,
-TCP_ESTABLISHED)`) _before_ it assigns a peer (`unix_peer(sk) = newsk`).
-sk_state == TCP_ESTABLISHED makes sock_map_sk_state_allowed() believe that
-socket is properly set up, which would include having a defined peer. IOW,
-there's a window when unix_stream_bpf_update_proto() can be called on
-socket which still has unix_peer(sk) == NULL.
+ksmbd_lookup_fd_cguid() returns a ksmbd_file with its refcount
+incremented via ksmbd_fp_get(). parse_durable_handle_context() in
+the DURABLE_REQ_V2 case properly releases this reference on every
+path inside the ClientGUID-match branch, either by calling
+ksmbd_put_durable_fd() or by transferring ownership to dh_info->fp
+for a successful reconnect. However, when an entry exists in the
+global file table with the same CreateGuid but a different
+ClientGUID, the code simply falls through to the new-open path
+without dropping the reference obtained from ksmbd_lookup_fd_cguid().
 
-         CPU0 bpf                            CPU1 connect
-         --------                            ------------
+Per MS-SMB2 section 3.3.5.9.10 ("Handling the
+SMB2_CREATE_DURABLE_HANDLE_REQUEST_V2 Create Context"), the server
+MUST locate an Open whose Open.CreateGuid matches the request's
+CreateGuid AND whose Open.ClientGuid matches the ClientGuid of the
+connection that received the request. If no such Open is found, the
+server MUST continue with the normal open execution phase. A
+CreateGuid hit with a ClientGUID mismatch is therefore the
+"Open not found" case: proceeding with a new open is correct, but
+the reference obtained purely as a side effect of the lookup must
+not be leaked.
 
-                                WRITE_ONCE(sk->sk_state, TCP_ESTABLISHED)
-sock_map_sk_state_allowed(sk)
-...
-sk_pair = unix_peer(sk)
-sock_hold(sk_pair)
-                                sock_hold(newsk)
-                                smp_mb__after_atomic()
-                                unix_peer(sk) = newsk
+Repeated requests that hit this mismatch pin global_ft entries,
+prevent __ksmbd_close_fd() from ever running for the corresponding
+files, and defeat the durable scavenger, leading to long-lived
+resource leaks.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000080
-RIP: 0010:unix_stream_bpf_update_proto+0xa0/0x1b0
-Call Trace:
-  sock_map_link+0x564/0x8b0
-  sock_map_update_common+0x6e/0x340
-  sock_map_update_elem_sys+0x17d/0x240
-  __sys_bpf+0x26db/0x3250
-  __x64_sys_bpf+0x21/0x30
-  do_syscall_64+0x6b/0x3a0
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+Release the reference in the mismatch path and clear dh_info->fp so
+subsequent logic does not mistake a non-matching lookup result for
+a reconnect target.
 
-Initial idea was to move peer assignment _before_ the sk_state update[1],
-but that involved an additional memory barrier, and changing the hot path
-was rejected.
-Then a NULL check during proto update in unix_stream_bpf_update_proto() was
-considered[2], but the follow-up discussion[3] focused on the root cause,
-i.e. sockmap update taking a wrong lock. Or, more specifically, missing
-unix_state_lock()[4].
-In the end it was concluded that teaching sockmap about the af_unix locking
-would be unnecessarily complex[5].
-Complexity aside, since BPF_PROG_TYPE_SCHED_CLS and BPF_PROG_TYPE_SCHED_ACT
-are allowed to update sockmaps, sock_map_update_elem() taking the unix
-lock, as it is currently implemented in unix_state_lock():
-spin_lock(&unix_sk(s)->lock), would be problematic. unix_state_lock() taken
-in a process context, followed by a softirq-context TC BPF program
-attempting to take the same spinlock -- deadlock[6].
-This way we circled back to the peer check idea[2].
-
-[1]: https://lore.kernel.org/netdev/ba5c50aa-1df4-40c2-ab33-a72022c5a32e@rbox.co/
-[2]: https://lore.kernel.org/netdev/20240610174906.32921-1-kuniyu@amazon.com/
-[3]: https://lore.kernel.org/netdev/7603c0e6-cd5b-452b-b710-73b64bd9de26@linux.dev/
-[4]: https://lore.kernel.org/netdev/CAAVpQUA+8GL_j63CaKb8hbxoL21izD58yr1NvhOhU=j+35+3og@mail.gmail.com/
-[5]: https://lore.kernel.org/bpf/CAAVpQUAHijOMext28Gi10dSLuMzGYh+jK61Ujn+fZ-wvcODR2A@mail.gmail.com/
-[6]: https://lore.kernel.org/bpf/dd043c69-4d03-46fe-8325-8f97101435cf@linux.dev/
-
-Summary of scenarios where af_unix/stream connect() may race a sockmap
-update:
-
-1. connect() vs. bpf(BPF_MAP_UPDATE_ELEM), i.e. sock_map_update_elem_sys()
-
-   Implemented NULL check is sufficient. Once assigned, socket peer won't
-   be released until socket fd is released. And that's not an issue because
-   sock_map_update_elem_sys() bumps fd refcnf.
-
-2. connect() vs BPF program doing update
-
-   Update restricted per verifier.c:may_update_sockmap() to
-
-      BPF_PROG_TYPE_TRACING/BPF_TRACE_ITER
-      BPF_PROG_TYPE_SOCK_OPS (bpf_sock_map_update() only)
-      BPF_PROG_TYPE_SOCKET_FILTER
-      BPF_PROG_TYPE_SCHED_CLS
-      BPF_PROG_TYPE_SCHED_ACT
-      BPF_PROG_TYPE_XDP
-      BPF_PROG_TYPE_SK_REUSEPORT
-      BPF_PROG_TYPE_FLOW_DISSECTOR
-      BPF_PROG_TYPE_SK_LOOKUP
-
-   Plus one more race to consider:
-
-            CPU0 bpf                            CPU1 connect
-            --------                            ------------
-
-                                   WRITE_ONCE(sk->sk_state, TCP_ESTABLISHED)
-   sock_map_sk_state_allowed(sk)
-                                   sock_hold(newsk)
-                                   smp_mb__after_atomic()
-                                   unix_peer(sk) = newsk
-   sk_pair = unix_peer(sk)
-   if (unlikely(!sk_pair))
-      return -EINVAL;
-
-                                                 CPU1 close
-                                                 ----------
-
-                                   skpair = unix_peer(sk);
-                                   unix_peer(sk) = NULL;
-                                   sock_put(skpair)
-   // use after free?
-   sock_hold(sk_pair)
-
-   2.1 BPF program invoking helper function bpf_sock_map_update() ->
-       BPF_CALL_4(bpf_sock_map_update(), ...)
-
-       Helper limited to BPF_PROG_TYPE_SOCK_OPS. Nevertheless, a unix sock
-       might be accessible via bpf_map_lookup_elem(). Which implies sk
-       already having psock, which in turn implies sk already having
-       sk_pair. Since sk_psock_destroy() is queued as RCU work, sk_pair
-       won't go away while BPF executes the update.
-
-   2.2 BPF program invoking helper function bpf_map_update_elem() ->
-       sock_map_update_elem()
-
-       2.2.1 Unix sock accessible to BPF prog only via sockmap lookup in
-             BPF_PROG_TYPE_SOCKET_FILTER, BPF_PROG_TYPE_SCHED_CLS,
-             BPF_PROG_TYPE_SCHED_ACT, BPF_PROG_TYPE_XDP,
-             BPF_PROG_TYPE_SK_REUSEPORT, BPF_PROG_TYPE_FLOW_DISSECTOR,
-             BPF_PROG_TYPE_SK_LOOKUP.
-
-             Pretty much the same as case 2.1.
-
-       2.2.2 Unix sock accessible to BPF program directly:
-             BPF_PROG_TYPE_TRACING, narrowed down to BPF_TRACE_ITER.
-
-             Sockmap iterator (sock_map_seq_ops) is safe: unix sock
-             residing in a sockmap means that the sock already went through
-             the proto update step.
-
-             Unix sock iterator (bpf_iter_unix_seq_ops), on the other hand,
-             gives access to socks that may still be unconnected. Which
-             means iterator prog can race sockmap/proto update against
-             connect().
-
-             BUG: KASAN: null-ptr-deref in unix_stream_bpf_update_proto+0x253/0x4d0
-             Write of size 4 at addr 0000000000000080 by task test_progs/3140
-             Call Trace:
-              dump_stack_lvl+0x5d/0x80
-              kasan_report+0xe4/0x1c0
-              kasan_check_range+0x125/0x200
-              unix_stream_bpf_update_proto+0x253/0x4d0
-              sock_map_link+0x71c/0xec0
-              sock_map_update_common+0xbc/0x600
-              sock_map_update_elem+0x19a/0x1f0
-              bpf_prog_bbbf56096cdd4f01_selective_dump_unix+0x20c/0x217
-              bpf_iter_run_prog+0x21e/0xae0
-              bpf_iter_unix_seq_show+0x1e0/0x2a0
-              bpf_seq_read+0x42c/0x10d0
-              vfs_read+0x171/0xb20
-              ksys_read+0xff/0x200
-              do_syscall_64+0xf7/0x5e0
-              entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-             While the introduced NULL check prevents null-ptr-deref in the
-             BPF program path as well, it is insufficient to guard against
-             a poorly timed close() leading to a use-after-free. This will
-             be addressed in a subsequent patch.
-
-Fixes: c63829182c37 ("af_unix: Implement ->psock_update_sk_prot()")
-Closes: https://lore.kernel.org/netdev/ba5c50aa-1df4-40c2-ab33-a72022c5a32e@rbox.co/
-Reported-by: Michal Luczaj <mhal@rbox.co>
-Reported-by: 钱一铭 <yimingqian591@gmail.com>
-Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
-Suggested-by: Martin KaFai Lau <martin.lau@linux.dev>
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260414-unix-proto-update-null-ptr-deref-v4-4-2af6fe97918e@rbox.co
+Fixes: c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
+Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/unix_bpf.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/smb/server/smb2pdu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/unix/unix_bpf.c b/net/unix/unix_bpf.c
-index bca2d86ba97d8..976e035053e5a 100644
---- a/net/unix/unix_bpf.c
-+++ b/net/unix/unix_bpf.c
-@@ -184,6 +184,9 @@ int unix_stream_bpf_update_proto(struct sock *sk, struct sk_psock *psock, bool r
- 	 */
- 	if (!psock->sk_pair) {
- 		sk_pair = unix_peer(sk);
-+		if (unlikely(!sk_pair))
-+			return -EINVAL;
-+
- 		sock_hold(sk_pair);
- 		psock->sk_pair = sk_pair;
- 	}
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 4bfbfe53aa4eb..756624b4e90e0 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -2854,6 +2854,8 @@ static int parse_durable_handle_context(struct ksmbd_work *work,
+ 					dh_info->reconnected = true;
+ 					goto out;
+ 				}
++				ksmbd_put_durable_fd(dh_info->fp);
++				dh_info->fp = NULL;
+ 			}
+ 
+ 			if ((lc && (lc->req_state & SMB2_LEASE_HANDLE_CACHING_LE)) ||
 -- 
 2.53.0
 
