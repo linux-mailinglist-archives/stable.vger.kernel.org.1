@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252933-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qFL3NfkUDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-252501-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:09:29 +0200
+	id 6JlLGdkqDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252933-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:42:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D579759931A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:09:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFB8759B392
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:42:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 02380310C55E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:14:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0275133411BA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:32:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 103A43F8896;
-	Wed, 20 May 2026 18:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A19172D7386;
+	Wed, 20 May 2026 18:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="adgoOp/F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LUXBM7gl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE56F3769E0;
-	Wed, 20 May 2026 18:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3EA17A2FC;
+	Wed, 20 May 2026 18:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300838; cv=none; b=ePZHpO2cfavkHNkdnTImBkVB/ha5NGHnEq9MO9r7727jOmX39DTcEIsfaq2X+nJofTG7Pe4MNXtYs4hFZL8aQi3KxX0xx/YIEA2nIL/r4Z1pjAGoD+XfKQA2r6ALuXl/jxM6nOtwZ4xjsK4NglPHKthaxbRapM2BIj8KyPqKX+I=
+	t=1779301968; cv=none; b=rX0i02O1Nv0PqRVTyio3+1wq8k+0qRmjxhQGtWhifzOprPCvyPc4B3gDO8jiknw6BCWGzrbhRZpoTFJAqaeVv1VFD0jcts/QvmZE5oO6eyd7gu0seR5Q5GonIrKtCKTqOgCXfbw8g6Ei5NMTqOFtKm1HEEoG2595DAtYekPZx1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300838; c=relaxed/simple;
-	bh=c8A6AvX1qcmiuiEuwHe4D7CMEr8SlzBvOGUofVls0T0=;
+	s=arc-20240116; t=1779301968; c=relaxed/simple;
+	bh=t7KDHhuwB4fJTtx8eTGUuGTmvnyJdnaU9oJlHaeQh5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J+1Je22blovqVHDyKLnuEfWABHknejEGKCqG05YsN0HsbqMEkxZzutNP2cXpWf0wfEuXdt7jvLxV3mKYtrF6tRT09ngupC+ixQZBoqlmelNJuMjhVUIIkXJnzHp2i8dWy1ovVhggyliLQ/puMPvkvrMg6xovaf1+y/OwPJmJsuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=adgoOp/F; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20E201F00894;
-	Wed, 20 May 2026 18:13:56 +0000 (UTC)
+	 MIME-Version; b=DDxSgbNQz2m/XwH8myUBgehCgTKPXrwlkN41ENqNDx3/hsJJVZBfqceew76p/PmselwujqlBbdsRq09/iDhtZr63TROKRd/dD0SrO3uLQsfEVJV0Mhsx4kJdr5qOkBrFLmsyUdDfZWsWQWKdIf13ewIeFb+otUDdwuDobDaLXmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LUXBM7gl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71CDC1F00894;
+	Wed, 20 May 2026 18:32:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300837;
-	bh=4cZ4iLYMK8Jta0aAtQrV6GqTMRCdou8GrLvAS2tnaRo=;
+	s=korg; t=1779301966;
+	bh=ami2pFcE1RJjy9mcOz1xlGVJcBHg0vhm38w+AKEHTV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=adgoOp/Fk/4MHjGgu4wnlsCeZYuTAn29gTT6qXe4R5IoYjXJ2+rLi9QWxWvCKTopn
-	 vHoThbaiLukODHq8y8Yxu/1H/VUfKhqgP9RWbrqbUHL7lsbdXAA34dKfZQECv0EGPs
-	 1b+xf5km0aCAyyGhDLygwpp+5S2/LALZ2/KLtkZU=
+	b=LUXBM7glV1TFN+dzSFilqyO+CNaP1/nZPGBWWY7SMcGdyYV+mZ4CNIqPu8bW7gGzX
+	 o5lPxbog+pIPoAvG2PcewB3pI15qkCqwi4doMiItZqLeXcOFvtx1S0sdXamQ2v4XsB
+	 U8Kh8dUO1cGwhSzYgW+F70EHYTPGZngio94qD1cY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josua Mayer <josua@solid-run.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	Sander Vanheule <sander@svanheule.net>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 300/666] arm64: dts: lx2160a: add sda gpio references for i2c bus recovery
-Date: Wed, 20 May 2026 18:18:31 +0200
-Message-ID: <20260520162117.719433920@linuxfoundation.org>
+Subject: [PATCH 6.6 089/508] ASoC: sti: Return errors from regmap_field_alloc()
+Date: Wed, 20 May 2026 18:18:32 +0200
+Message-ID: <20260520162100.543342042@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,20 +68,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252501-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252933-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -91,106 +91,57 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: D579759931A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,svanheule.net:email]
+X-Rspamd-Queue-Id: CFB8759B392
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josua Mayer <josua@solid-run.com>
+From: Sander Vanheule <sander@svanheule.net>
 
-[ Upstream commit 89ea0dbd701f89805499d26bd90657468c789545 ]
+[ Upstream commit 272aabef50bc3fe58edd26de000f4cdd41bdbe60 ]
 
-LX2160A pinmux is done in groups by various length bitfields within
-configuration registers.
+When regmap_field_alloc() fails, it can return an error. Specifically,
+it will return PTR_ERR(-ENOMEM) when the allocation returns a NULL
+pointer. The code then uses these allocations with a simple NULL check:
 
-In particular i2c sda/scl pins are always configured together. Therefore
-bus recovery may control both sda and scl.
+    if (player->clk_sel) {
+        // May dereference invalid pointer (-ENOMEM)
+        err = regmap_field_write(player->clk_sel, ...);
+    }
 
-When pinmux nodes and bus recovery was enabled originally for LX2160,
-only the scl-gpios were added to the i2c controller nodes.
+Ensure initialization fails by forwarding the errors from
+regmap_field_alloc(), thus avoiding the use of the invalid pointers.
 
-Add references to sda-gpios for each i2c controller.
-
-Fixes: 8a1365c7bbc1 ("arm64: dts: lx2160a: add pinmux and i2c gpio to support bus recovery")
-Signed-off-by: Josua Mayer <josua@solid-run.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Fixes: 76c2145ded6b ("ASoC: sti: Add CPU DAI driver for playback")
+Signed-off-by: Sander Vanheule <sander@svanheule.net>
+Link: https://patch.msgid.link/20260220152634.480766-2-sander@svanheule.net
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ sound/soc/sti/uniperif_player.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-index 2b322cdab9479..83e618df6f4b9 100644
---- a/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-lx2160a.dtsi
-@@ -753,6 +753,7 @@ i2c0: i2c@2000000 {
- 			pinctrl-0 = <&i2c0_pins>;
- 			pinctrl-1 = <&gpio0_3_2_pins>;
- 			scl-gpios = <&gpio0 3 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+			sda-gpios = <&gpio0 2 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 			status = "disabled";
- 		};
+diff --git a/sound/soc/sti/uniperif_player.c b/sound/soc/sti/uniperif_player.c
+index 6d1ce030963c6..f1b7e76f97b58 100644
+--- a/sound/soc/sti/uniperif_player.c
++++ b/sound/soc/sti/uniperif_player.c
+@@ -1029,7 +1029,12 @@ static int uni_player_parse_dt_audio_glue(struct platform_device *pdev,
+ 	}
  
-@@ -769,6 +770,7 @@ i2c1: i2c@2010000 {
- 			pinctrl-0 = <&i2c1_pins>;
- 			pinctrl-1 = <&gpio0_31_30_pins>;
- 			scl-gpios = <&gpio0 31 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+			sda-gpios = <&gpio0 30 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 			status = "disabled";
- 		};
+ 	player->clk_sel = regmap_field_alloc(regmap, regfield[0]);
++	if (IS_ERR(player->clk_sel))
++		return PTR_ERR(player->clk_sel);
++
+ 	player->valid_sel = regmap_field_alloc(regmap, regfield[1]);
++	if (IS_ERR(player->valid_sel))
++		return PTR_ERR(player->valid_sel);
  
-@@ -785,6 +787,7 @@ i2c2: i2c@2020000 {
- 			pinctrl-0 = <&i2c2_pins>;
- 			pinctrl-1 = <&gpio0_29_28_pins>;
- 			scl-gpios = <&gpio0 29 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+			sda-gpios = <&gpio0 28 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 			status = "disabled";
- 		};
- 
-@@ -801,6 +804,7 @@ i2c3: i2c@2030000 {
- 			pinctrl-0 = <&i2c3_pins>;
- 			pinctrl-1 = <&gpio0_27_26_pins>;
- 			scl-gpios = <&gpio0 27 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+			sda-gpios = <&gpio0 26 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 			status = "disabled";
- 		};
- 
-@@ -817,6 +821,7 @@ i2c4: i2c@2040000 {
- 			pinctrl-0 = <&i2c4_pins>;
- 			pinctrl-1 = <&gpio0_25_24_pins>;
- 			scl-gpios = <&gpio0 25 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+			sda-gpios = <&gpio0 24 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 			status = "disabled";
- 		};
- 
-@@ -833,6 +838,7 @@ i2c5: i2c@2050000 {
- 			pinctrl-0 = <&i2c5_pins>;
- 			pinctrl-1 = <&gpio0_23_22_pins>;
- 			scl-gpios = <&gpio0 23 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+			sda-gpios = <&gpio0 22 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 			status = "disabled";
- 		};
- 
-@@ -849,6 +855,7 @@ i2c6: i2c@2060000 {
- 			pinctrl-0 = <&i2c6_i2c7_pins>;
- 			pinctrl-1 = <&gpio1_18_15_pins>;
- 			scl-gpios = <&gpio1 16 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+			sda-gpios = <&gpio1 15 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 			status = "disabled";
- 		};
- 
-@@ -865,6 +872,7 @@ i2c7: i2c@2070000 {
- 			pinctrl-0 = <&i2c6_i2c7_pins>;
- 			pinctrl-1 = <&gpio1_18_15_pins>;
- 			scl-gpios = <&gpio1 18 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+			sda-gpios = <&gpio1 17 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 			status = "disabled";
- 		};
- 
+ 	return 0;
+ }
 -- 
 2.53.0
 
