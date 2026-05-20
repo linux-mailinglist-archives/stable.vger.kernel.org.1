@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250902-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8JOzGG0GDmqy5gUAu9opvQ
-	(envelope-from <stable+bounces-252437-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:07:25 +0200
+	id eK78HUbqDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250902-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:07:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7848C597CB0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:07:24 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4033592EF5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:07:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 028F43103774
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:11:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1DC293064041
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:04:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 258973F889E;
-	Wed, 20 May 2026 18:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D7813F44CD;
+	Wed, 20 May 2026 17:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tJVAkgx7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jVzU65U/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24FA3ED3B8;
-	Wed, 20 May 2026 18:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2342D3F44D0;
+	Wed, 20 May 2026 17:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300670; cv=none; b=WYDnla/p+ZDtTG7TMLwr439e5W0si3cwHel6rjzqyR1fNVJMoJN72jdrRq9q58nVLj0hgskDopMKV5pa9sUlBqMP8fGw7gdhcSUGeaTrZj/we/FZsVWD8i1Iy81GetPOMmnNsJo66NS3Qf4YuKn2R1oxX8VDqJzffOPGZHzGtQY=
+	t=1779296605; cv=none; b=Zw4EBT/lgRTU4U6LwfTJRE0Mu/fCy3+UMk+ycAiVvRU664ZMiDkQGle2P9xcEPlWG/0JsRBI8Z+1MboGIARfe77V+FJX+ly8qBepqSew72Y9fJtELu1pB5idG90HB3J4wiTzjziPr9nYh0d5Fz15z+lydMnwu+SPL5FNb+T89Bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300670; c=relaxed/simple;
-	bh=cN+Sw/m38KfL22GJTS+Ebx5BSSqzDGMrX32kqv+JEgk=;
+	s=arc-20240116; t=1779296605; c=relaxed/simple;
+	bh=YoZha9X8XhWC0pS4AkufhPjDCW6vI3mcQNHoiQGsUuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q5olIFVok1i68/MRVOYuRsTsYffobqY6k+tDFIA3p9vezv3K2qD2RBo8mzDYjSBHCTO3kmed01obSdubHBRbeDUJ28oxE6Ove/6dqX0LsKkkMDKUcqo4TaJMZCWrTIA1N3HfkJVKiMepYjXSdP7Vn6407WRPZHCkHJltpavll4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tJVAkgx7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A341F000E9;
-	Wed, 20 May 2026 18:11:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=s3iJRfI7zzx5ImJE6vPBulrqGGsWjUeftNu4g2ciURwAkGF2QlpV7+fpUOr93VkgP3fbM4aoyGmVLpy7cJQLY7pvxA7xXJxLOwYWkxlwbJ2PF0I+/pIiBiwnjnsW764K9cYY24c3jJJZK3xEjL1SiSY7hC3ithtAVRIZp4vNnUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jVzU65U/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57D121F000E9;
+	Wed, 20 May 2026 17:03:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300669;
-	bh=0fSasMTJcy3AxIirBK6DDK2MAjl1E538YTZ6mzTmte8=;
+	s=korg; t=1779296603;
+	bh=zXXqCjRTo60HE97/8SHLZH+RjROAR32zyQHqwK5Mv1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tJVAkgx7EwpoE5kf0jbbz10aV/FLLeZdtLVuGNE8/3/jkTWjj4h0CEweh8XEmrelD
-	 w5eRsOcYx+k7yvF8mRzdZY7Lhg3iXsGvBW4u6b42AbTHft3NTnoz4bXcQg0XYMhQtb
-	 nrJoREXYjTXHCKhySSquz8JnREQ7qs89sb4zbO+I=
+	b=jVzU65U/1xTau+e7UaAVfd0sKcUhNEIz7Yxw8oQSfd7a95saFhY6vLN5C4R4jd5zn
+	 mPPpx5b9yvQfvDb+sqFL2ny2S6pAs5/Wr8ONXH3s5iWlKp8wwffWkZzrNjmnDw/3dV
+	 FrbNL4HRPJlbrwysM83p4F64N7KXTeL1QGh0cCNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Sangyun Kim <sangyun.kim@snu.ac.kr>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 264/666] ARM: dts: mediatek: mt7623: fix efuse fallback compatible
+Subject: [PATCH 7.0 0825/1146] pwm: atmel-tcb: Cache clock rates and mark chip as atomic
 Date: Wed, 20 May 2026 18:17:55 +0200
-Message-ID: <20260520162116.939322076@linuxfoundation.org>
+Message-ID: <20260520162206.902761026@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,23 +68,21 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252437-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250902-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_PROHIBIT(0.00)[0.155.187.48:email];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -92,50 +90,143 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[devicetree.org:url,milecki.pl:email,collabora.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,0.155.164.36:email]
-X-Rspamd-Queue-Id: 7848C597CB0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,snu.ac.kr:email]
+X-Rspamd-Queue-Id: E4033592EF5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Sangyun Kim <sangyun.kim@snu.ac.kr>
 
-[ Upstream commit 5978ff33cc6f0988388a2830dc5cd2ea4e81f36a ]
+[ Upstream commit 68637b68afcc3cb4d56aca14a3a1d1b47b879369 ]
 
-Fix following validation error:
-arch/arm/boot/dts/mediatek/mt7623a-rfb-emmc.dtb: efuse@10206000: compatible: 'oneOf' conditional failed, one must be fixed:
-        ['mediatek,mt7623-efuse', 'mediatek,mt8173-efuse'] is too long
-        'mediatek,mt8173-efuse' was expected
-        'mediatek,efuse' was expected
-        from schema $id: http://devicetree.org/schemas/nvmem/mediatek,efuse.yaml#
-arch/arm/boot/dts/mediatek/mt7623a-rfb-emmc.dtb: efuse@10206000: Unevaluated properties are not allowed ('compatible' was unexpected)
-        from schema $id: http://devicetree.org/schemas/nvmem/mediatek,efuse.yaml#
+atmel_tcb_pwm_apply() holds tcbpwmc->lock as a spinlock via
+guard(spinlock)() and then calls atmel_tcb_pwm_config(), which calls
+clk_get_rate() twice. clk_get_rate() acquires clk_prepare_lock (a
+mutex), so this is a sleep-in-atomic-context violation.
 
-Fixes: 43c7a91b4b3a ("arm: dts: mt7623: add efuse nodes to the mt7623.dtsi file")
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+On CONFIG_DEBUG_ATOMIC_SLEEP kernels every pwm_apply_state() that
+enables or reconfigures the PWM triggers a "BUG: sleeping function
+called from invalid context" warning.
+
+Acquire exclusive control over the clock rates with
+clk_rate_exclusive_get() at probe time and cache the rates in struct
+atmel_tcb_pwm_chip, then read the cached rates from
+atmel_tcb_pwm_config(). This keeps the spinlock-based mutual exclusion
+introduced in commit 37f7707077f5 ("pwm: atmel-tcb: Fix race condition
+and convert to guards") and removes the sleeping calls from the atomic
+section.
+
+With no sleeping calls left in .apply() and the regmap-mmio bus already
+running with fast_io=true, also mark the chip as atomic so consumers
+can use pwm_apply_atomic() from atomic context.
+
+Fixes: 37f7707077f5 ("pwm: atmel-tcb: Fix race condition and convert to guards")
+Signed-off-by: Sangyun Kim <sangyun.kim@snu.ac.kr>
+Link: https://patch.msgid.link/20260419080838.3192357-1-sangyun.kim@snu.ac.kr
+[ukleinek: Ensure .clk is enabled before calling clk_get_rate on it.]
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/mediatek/mt7623.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pwm/pwm-atmel-tcb.c | 38 +++++++++++++++++++++++++++++++++----
+ 1 file changed, 34 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/boot/dts/mediatek/mt7623.dtsi b/arch/arm/boot/dts/mediatek/mt7623.dtsi
-index fd7a89cc337d6..a60b1d6879ffe 100644
---- a/arch/arm/boot/dts/mediatek/mt7623.dtsi
-+++ b/arch/arm/boot/dts/mediatek/mt7623.dtsi
-@@ -328,7 +328,7 @@ sysirq: interrupt-controller@10200100 {
+diff --git a/drivers/pwm/pwm-atmel-tcb.c b/drivers/pwm/pwm-atmel-tcb.c
+index f9ff78ba122d4..3d30aeab507e0 100644
+--- a/drivers/pwm/pwm-atmel-tcb.c
++++ b/drivers/pwm/pwm-atmel-tcb.c
+@@ -50,6 +50,8 @@ struct atmel_tcb_pwm_chip {
+ 	spinlock_t lock;
+ 	u8 channel;
+ 	u8 width;
++	unsigned long rate;
++	unsigned long slow_rate;
+ 	struct regmap *regmap;
+ 	struct clk *clk;
+ 	struct clk *gclk;
+@@ -266,7 +268,7 @@ static int atmel_tcb_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	int slowclk = 0;
+ 	unsigned period;
+ 	unsigned duty;
+-	unsigned rate = clk_get_rate(tcbpwmc->clk);
++	unsigned long rate = tcbpwmc->rate;
+ 	unsigned long long min;
+ 	unsigned long long max;
  
- 	efuse: efuse@10206000 {
- 		compatible = "mediatek,mt7623-efuse",
--			     "mediatek,mt8173-efuse";
-+			     "mediatek,efuse";
- 		reg = <0 0x10206000 0 0x1000>;
- 		#address-cells = <1>;
- 		#size-cells = <1>;
+@@ -294,7 +296,7 @@ static int atmel_tcb_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	 */
+ 	if (i == ARRAY_SIZE(atmel_tcb_divisors)) {
+ 		i = slowclk;
+-		rate = clk_get_rate(tcbpwmc->slow_clk);
++		rate = tcbpwmc->slow_rate;
+ 		min = div_u64(NSEC_PER_SEC, rate);
+ 		max = min << tcbpwmc->width;
+ 
+@@ -431,24 +433,49 @@ static int atmel_tcb_pwm_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	chip->ops = &atmel_tcb_pwm_ops;
++	chip->atomic = true;
+ 	tcbpwmc->channel = channel;
+ 	tcbpwmc->width = config->counter_width;
+ 
+-	err = clk_prepare_enable(tcbpwmc->slow_clk);
++	err = clk_prepare_enable(tcbpwmc->clk);
+ 	if (err)
+ 		goto err_gclk;
+ 
++	err = clk_prepare_enable(tcbpwmc->slow_clk);
++	if (err)
++		goto err_disable_clk;;
++
++	err = clk_rate_exclusive_get(tcbpwmc->clk);
++	if (err)
++		goto err_disable_slow_clk;
++
++	err = clk_rate_exclusive_get(tcbpwmc->slow_clk);
++	if (err)
++		goto err_clk_unlock;
++
++	tcbpwmc->rate = clk_get_rate(tcbpwmc->clk);
++	tcbpwmc->slow_rate = clk_get_rate(tcbpwmc->slow_clk);
++
+ 	spin_lock_init(&tcbpwmc->lock);
+ 
+ 	err = pwmchip_add(chip);
+ 	if (err < 0)
+-		goto err_disable_clk;
++		goto err_slow_clk_unlock;
+ 
+ 	platform_set_drvdata(pdev, chip);
+ 
+ 	return 0;
+ 
++err_slow_clk_unlock:
++	clk_rate_exclusive_put(tcbpwmc->slow_clk);
++
++err_clk_unlock:
++	clk_rate_exclusive_put(tcbpwmc->clk);
++
+ err_disable_clk:
++	clk_disable_unprepare(tcbpwmc->clk);
++
++err_disable_slow_clk:
+ 	clk_disable_unprepare(tcbpwmc->slow_clk);
+ 
+ err_gclk:
+@@ -470,6 +497,9 @@ static void atmel_tcb_pwm_remove(struct platform_device *pdev)
+ 
+ 	pwmchip_remove(chip);
+ 
++	clk_rate_exclusive_put(tcbpwmc->slow_clk);
++	clk_rate_exclusive_put(tcbpwmc->clk);
++	clk_disable_unprepare(tcbpwmc->clk);
+ 	clk_disable_unprepare(tcbpwmc->slow_clk);
+ 	clk_put(tcbpwmc->gclk);
+ 	clk_put(tcbpwmc->clk);
 -- 
 2.53.0
 
