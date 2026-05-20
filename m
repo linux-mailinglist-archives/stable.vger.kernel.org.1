@@ -1,210 +1,175 @@
-Return-Path: <stable+bounces-249797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249786-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KMeWGqqIDWrBygUAu9opvQ
-	(envelope-from <stable+bounces-249797-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 12:10:50 +0200
+	id 2MBoEvF+DWosyAUAu9opvQ
+	(envelope-from <stable+bounces-249786-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 11:29:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D90CF58B6BA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 12:10:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C00858ACB9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 11:29:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AD3933026147
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 10:06:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9606B31A7AA0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 08:58:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DCE533AD8A;
-	Wed, 20 May 2026 10:06:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 274BC36BCD7;
+	Wed, 20 May 2026 08:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uji9iJmF"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="xHMuVhFV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED67B3D4117;
-	Wed, 20 May 2026 10:06:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D411E3B27D5;
+	Wed, 20 May 2026 08:58:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779271583; cv=none; b=Rdm7M4e687smz0zRKwHor1OSklWZo4eqZnbRrR9oZpmHQeQnSWJlA0ZbRjs05B2DL/MkwTDomqcqNKRmGhnCEeMtk9+ZE+CdoJQ1QnMhpnuIQ2vEViKm0FB910Haoo8Hv/6VjQVGEQ7t4ZyfDEYm0q3n30wW/tr+7xEGCnAntFc=
+	t=1779267520; cv=none; b=Gv86gNLz8rnz/OyWbcsflXNeRboBOeni7orzhKvGXPu7eLnyXWp5qZAY+lnysSQBqg4d3/DcPdwYL2sfTFA2QkkX9h/z599nsr4ah+HQ7RL1YSN1WrsvIaUwtTxTio67bAbWJgLEw3G3PRKqAuCw8ZLnA2bCYampLeqkblUewXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779271583; c=relaxed/simple;
-	bh=7DrL6mvyAQc494j0Pu351HA4NFMoFhgFtS+EhbUq+AU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rHCAWF3TiFC6WjFZxOxyTQyRDSdhnK74RXm2Ut7J4BuQUyW7eYvK2kFiNEdgOW0YllBvOHrPJGdfRPLBmKBKwmethzCExUFgLdGt5kDzm22oJFFLvpJAiukb6GYqXp/b9oKuhyIXkgKotK4c1JZV82I6NWOkCIUG11y9wWcGWtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uji9iJmF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94C501F00894;
-	Wed, 20 May 2026 10:06:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779271577;
-	bh=2RPy3bZOecuXVY+I02YmM8MTDDvQormgDjM/U3lBnKI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Uji9iJmFNrXmWJ20K/wqfiLb0GQaDPHT7G+4GbwFHVuGYv98g20AFtYuYuqbZmC7y
-	 FfXZBVVGfbwKIQEW7LcJKbRG/Sy7UVT57TlqgCsq2US5j4cuWFrGfR5Hs+blbhKdKJ
-	 crPRoB+SGaw2lLY6UopdNdHZT9b5t1bb+LCLQ7nVkPvOeZf5DK+focn1DWDozFGq9b
-	 JsWBL+MKBINKctGdwygylicLp4cwBhiu6Pt2RMtVmplicGSpOaGxzf5erG9kW9egU4
-	 01+FEQ87yF+0maIsb5f9vxlio42x9TskxeJu+n4kGkJE7XdayRZdrFdOCLJpwTFent
-	 4AVXFrPdvvPmQ==
-From: Hans Verkuil <hverkuil+cisco@kernel.org>
-To: linux-media@vger.kernel.org
-Cc: Nicolas Dufresne <nicolas@ndufresne.ca>,
-	stable@vger.kernel.org,
-	syzbot+dac8f5eaa46837e97b89@syzkaller.appspotmail.com,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCHv2 2/2] media: vivid: check for vb2_is_busy() when toggling caps
-Date: Wed, 20 May 2026 10:36:22 +0200
-Message-ID: <ba02852937616394e2f5de34ee2effa0944d7c88.1779266182.git.hverkuil+cisco@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1779266182.git.hverkuil+cisco@kernel.org>
-References: <cover.1779266182.git.hverkuil+cisco@kernel.org>
+	s=arc-20240116; t=1779267520; c=relaxed/simple;
+	bh=C7c7KpWnigi7II5FEvk/eOPvVHrwTYsrna6FOHAYA+4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=VgJlUybTFn7LMCuxUR/EsLGg3Y84nhVWr4H1vrz554lKnpLaoP+aZ2+0xailORiklaIkChRSchaCQFPgYFacGdFwxvWOiPOT4zzRopZPV1sjM/KucsO8q332FSf95uWaMcj4J+9BnWLb7ZiHTfCsqVZtVFVvWKGaolwewLHnMvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=xHMuVhFV; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=0kNSpQkTH2BddyvatsQSQRab4uR59/gfZ0Rx4WHQy+g=;
+	t=1779267517; x=1780477117; b=xHMuVhFVFChkeBpNanpV4asMtDBKUXBYXL97KgGx42psIh+
+	IJPqmk2oSw6hbCFaUMaDqzOTVlOjbB0LBJOdI5NRGBVua1syRNjVWi2nDMHCfFA3yJh239LPsfpqI
+	TxEO85jH5aHbxpZ1MeZu1zjhLCkUUPqd1xXGXcGuDVFL1/qABExIocitRpqx37+qMUw9u3unD3l47
+	PKtv1I6i7v6C9iE/F/35KecMUCLmxGhOvR+MnYuGU1+U5BQ5IdF7lTMd72mhdHlAFNYSsQ4sgY2KE
+	56bmjt+ht5WKawIMVWhcrh9t6pFsbwtqBWKL7c6FRU3zgZL9MnIQqZE4UR+Btfsw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1wPcl4-0000000A19z-4AXW;
+	Wed, 20 May 2026 10:58:31 +0200
+Message-ID: <739ba20fa3c88e92bf034d80383015b8bc78ebfe.camel@sipsolutions.net>
+Subject: Re: [PATCH v4] wifi: mac80211: fix monitor mode frame capture for
+ real chanctx drivers
+From: Johannes Berg <johannes@sipsolutions.net>
+To: =?ISO-8859-1?Q?=D3scar?= Alfonso =?ISO-8859-1?Q?D=EDaz?=
+	 <oscar.alfonso.diaz@gmail.com>
+Cc: Devin Wittmayer <lucid_duck@justthetip.ca>, 
+	linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>, Lorenzo
+ Bianconi	 <lorenzo@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, 	fjhhz1997@gmail.com, Brite
+ <brite.airgeddon@gmail.com>
+Date: Wed, 20 May 2026 10:58:29 +0200
+In-Reply-To: <CA+bbHrV3fFHWevyDGPtAS=2M2mc+LxP6=xA-5fXaiTKTD=R31g@mail.gmail.com> (sfid-20260520_100244_085590_6B2EF659)
+References: <20260518170147.13885-1-lucid_duck@justthetip.ca>
+	 <20260519235713.49109-1-lucid_duck@justthetip.ca>
+	 <20260519235713.49109-2-lucid_duck@justthetip.ca>
+	 <CA+bbHrUcwtNhatzV+ufa8O3Wrku2_W4-UL=3XMy4-kg9qiOdXw@mail.gmail.com>
+	 <a36b5712dd420da4090bfa8868e78b1b2b90c916.camel@sipsolutions.net>
+	 <CA+bbHrV3fFHWevyDGPtAS=2M2mc+LxP6=xA-5fXaiTKTD=R31g@mail.gmail.com>
+	 (sfid-20260520_100244_085590_6B2EF659)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-malware-bazaar: not-scanned
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-249797-lists,stable=lfdr.de,cisco];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249786-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[justthetip.ca,vger.kernel.org,nbd.name,kernel.org,gmail.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hverkuil@kernel.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable,dac8f5eaa46837e97b89,cisco];
-	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,syzkaller.appspot.com:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: D90CF58B6BA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sipsolutions.net:mid,sipsolutions.net:dkim]
+X-Rspamd-Queue-Id: 9C00858ACB9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The vivid_update_format_cap/out() functions must only be called if the
-capture/output queue are not busy. But for the controls that select
-the CROP/COMPOSE/SCALE capability that is not checked.
+On Wed, 2026-05-20 at 10:02 +0200, =C3=93scar Alfonso D=C3=ADaz wrote:
+> I tested it on 6.18.12
+>=20
+> Let me know if you need me to test it again or whatever. I remember
+> during my testing with the Brite's different patches that is not the
+> same testing it on 6.18.x than 6.19 . Some stuff changed and the patch
+> needed to be different. I've added Brite to the thread, he can add
+> more useful data for you.
 
-Only when streaming starts will they be set to 'grabbed' and it is
-impossible to change the control, but between REQBUFS and STREAMON you
-are still allowed to set these controls. Since vivid_update_format_cap/out
-will change the format, this can cause unexpected results.
+I guess I don't really care about 6.18.x or 6.19.x, only about 7.1-rcX
+at this point. We'll want to explicitly _not_ backport this fix to older
+kernel versions since it caused driver crashes.
 
-Besides adding these checks, also add a WARN_ON in
-vivid_update_format_cap/out() if the queue is busy.
+> Regarding the approach of fixing the bug on the driver side... I've
+> emailed and contacted by IRC to Lorenzo explaining the problem... but
+> I got no response. So if we feel yet like this is something that needs
+> to be fixed from the "driver side"... how to say it softly... we are
+> f***ed up :) . Maybe the "hack" way dealing with the vif null var is
+> not bad idea after all as it seems the only way to move forward.
 
-I'm 90% certain that this is the cause of this syzbot bug:
+I feel I've tried to say this before, but maybe it helps if I summarise:
 
-https://syzkaller.appspot.com/bug?extid=dac8f5eaa46837e97b89
+There's one feature and one (possible) bug here.
 
-But since we never have reproducers, it is hard to be certain. In any case,
-these checks are needed regardless.
+The feature is:
+ - monitor mode injection works for chanctx drivers.
 
-Fixes: 73c3f48230cd ("[media] vivid: add the control handling code")
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+dac8f5eaa46837e97b89@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=dac8f5eaa46837e97b89
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
----
- drivers/media/test-drivers/vivid/vivid-ctrls.c   | 12 ++++++++++++
- drivers/media/test-drivers/vivid/vivid-vid-cap.c |  6 ++++++
- drivers/media/test-drivers/vivid/vivid-vid-out.c |  6 ++++++
- 3 files changed, 24 insertions(+)
+The bug is:
+ - monitor mode injection with the feature patch crashes at least some
+   mt76 devices, which you reported, which I consider to be a bug in the
+   driver that needs to be fixed there.
 
-diff --git a/drivers/media/test-drivers/vivid/vivid-ctrls.c b/drivers/media/test-drivers/vivid/vivid-ctrls.c
-index 1077445f5772..a8a134b36720 100644
---- a/drivers/media/test-drivers/vivid/vivid-ctrls.c
-+++ b/drivers/media/test-drivers/vivid/vivid-ctrls.c
-@@ -613,14 +613,20 @@ static int vivid_vid_cap_s_ctrl(struct v4l2_ctrl *ctrl)
- 			vivid_update_reduced_fps(dev);
- 		break;
- 	case VIVID_CID_HAS_CROP_CAP:
-+		if (vb2_is_busy(&dev->vb_vid_cap_q))
-+			return -EBUSY;
- 		dev->has_crop_cap = ctrl->val;
- 		vivid_update_format_cap(dev, true);
- 		break;
- 	case VIVID_CID_HAS_COMPOSE_CAP:
-+		if (vb2_is_busy(&dev->vb_vid_cap_q))
-+			return -EBUSY;
- 		dev->has_compose_cap = ctrl->val;
- 		vivid_update_format_cap(dev, true);
- 		break;
- 	case VIVID_CID_HAS_SCALER_CAP:
-+		if (vb2_is_busy(&dev->vb_vid_cap_q))
-+			return -EBUSY;
- 		dev->has_scaler_cap = ctrl->val;
- 		vivid_update_format_cap(dev, true);
- 		break;
-@@ -1117,14 +1123,20 @@ static int vivid_vid_out_s_ctrl(struct v4l2_ctrl *ctrl)
- 
- 	switch (ctrl->id) {
- 	case VIVID_CID_HAS_CROP_OUT:
-+		if (vb2_is_busy(&dev->vb_vid_out_q))
-+			return -EBUSY;
- 		dev->has_crop_out = ctrl->val;
- 		vivid_update_format_out(dev);
- 		break;
- 	case VIVID_CID_HAS_COMPOSE_OUT:
-+		if (vb2_is_busy(&dev->vb_vid_out_q))
-+			return -EBUSY;
- 		dev->has_compose_out = ctrl->val;
- 		vivid_update_format_out(dev);
- 		break;
- 	case VIVID_CID_HAS_SCALER_OUT:
-+		if (vb2_is_busy(&dev->vb_vid_out_q))
-+			return -EBUSY;
- 		dev->has_scaler_out = ctrl->val;
- 		vivid_update_format_out(dev);
- 		break;
-diff --git a/drivers/media/test-drivers/vivid/vivid-vid-cap.c b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
-index 76e0b161c049..e20449084709 100644
---- a/drivers/media/test-drivers/vivid/vivid-vid-cap.c
-+++ b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
-@@ -391,6 +391,12 @@ void vivid_update_format_cap(struct vivid_dev *dev, bool keep_controls)
- 	struct v4l2_bt_timings *bt = &dev->dv_timings_cap[dev->input].bt;
- 	u32 dims[V4L2_CTRL_MAX_DIMS] = {};
- 
-+	/*
-+	 * This resets the format, so must never be called while vb2_is_busy().
-+	 */
-+	if (WARN_ON(vb2_is_busy(&dev->vb_vid_cap_q)))
-+		return;
-+
- 	switch (dev->input_type[dev->input]) {
- 	case WEBCAM:
- 	default:
-diff --git a/drivers/media/test-drivers/vivid/vivid-vid-out.c b/drivers/media/test-drivers/vivid/vivid-vid-out.c
-index 8c037b90833e..23e1d5a189ee 100644
---- a/drivers/media/test-drivers/vivid/vivid-vid-out.c
-+++ b/drivers/media/test-drivers/vivid/vivid-vid-out.c
-@@ -214,6 +214,12 @@ void vivid_update_format_out(struct vivid_dev *dev)
- 	unsigned size, p;
- 	u64 pixelclock;
- 
-+	/*
-+	 * This resets the format, so must never be called while vb2_is_busy().
-+	 */
-+	if (WARN_ON(vb2_is_busy(&dev->vb_vid_out_q)))
-+		return;
-+
- 	switch (dev->output_type[dev->output]) {
- 	case SVID:
- 	default:
--- 
-2.53.0
+To me, the trade-off is crystal clear - as long as the bug exists, I'm
+not going to apply this or a similar patch to enable the feature.
 
+I'm also not going to apply a patch like proposed before that hacks it
+by redirecting the vif pointer to a (more or less random) other vif,
+that's a lazy hack that happens to fix the problem in your _specific_
+use case, but will almost certainly still expose the crash in other use
+cases.
+
+I do think there's a chance that between 6.18/6.19 and 7.1-rcX the bug
+in the driver has already been fixed, that's why I keep asking about
+versions etc. But I also think there's a chance you're just testing
+different subdrivers of mt76 with different devices, so I'm also asking
+you to compare the specific devices.
+
+I'm happy to apply this patch if the people who previously reported it
+to crash (i.e. mostly you, not sure about others) are saying that
+against a more recent kernel it no longer causes the test to crash
+(rather than just not work, which is clearly better than crashing.)
+
+You could always just claim you've tested this patch without the crash
+and I'll apply it, but then if someone still finds a crash I'm just
+going to have to revert it, and we'd be back to square one.
+
+I hope this explains what I'm thinking and going to do (and not do),
+make of it what you will.
+
+johannes
 
