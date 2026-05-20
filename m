@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250895-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sLPzFv//DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-252967-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:59 +0200
+	id yBCgCQfqDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250895-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:06:15 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D96B1596F27
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 969A3592E9C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:06:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0EEE93085BFD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:34:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3E0BB304776F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:04:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E7F5272E56;
-	Wed, 20 May 2026 18:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBEFB3F39D7;
+	Wed, 20 May 2026 17:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mFqRwsHW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yql7GLOc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CF330DEAC;
-	Wed, 20 May 2026 18:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0303E27E045;
+	Wed, 20 May 2026 17:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302057; cv=none; b=qKoTSilqR9sJ5f38nssfOWoW4SzllNesmPy7EqQQIZzwnEBX2VodWqmncqzwe8MHmG/k5b2m+vDVn4iq+ZZUyxH2Mo4RE9xXnlTkShkgFVH/9iQxUo2rxwW9XACJeznrj1NY2cPuYLDBoyR1IdTFq6zm5jdHnXGULj6J1/BmHF4=
+	t=1779296588; cv=none; b=tkH4U6M5L+RT/oBFBA6VqifqhVZVc2UiRC2cZ9KJPVRlNE4Xj+2tVonA2eQS48YTcB2gZycCuVEDKvgNHkQfWtumF7xjf61Zi8kdkmJT349OaHQLVtD3KqXl/sq9R1w1YCi4jlAxjtj0NAotoPoG6AJyX92uuuohXQf8TfeuIhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302057; c=relaxed/simple;
-	bh=DxNBSoLPWpvDabLsuCzhsjWvrtFznNi8/Kjqp1I5akw=;
+	s=arc-20240116; t=1779296588; c=relaxed/simple;
+	bh=DJNAU/Qhqg7nLRLD16Vh3dB1p9+sodAp5EzXFFzZ/Ds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bxIdNCwiuU8f9tfgHZV5Cz/J3tgj8oRY+SNZmindUlNHcLANcNdrZQSVIb/YFIWF9sRrNf9u0Bwf1PVAylVK/yzYBp6Q4k+HRLIX5FV7qk9FvUXThGCzQCRlA3+H3voHQSoupmgiDTXVOHTcvAuBCAhqcdrwfOteYnBQG56GYjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mFqRwsHW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C0701F000E9;
-	Wed, 20 May 2026 18:34:15 +0000 (UTC)
+	 MIME-Version; b=uStxSqVS9a3FEx3hDbGP1g8pPO3TFR5XCRqhOwCw1wnnBFVXfOFM3E+BX7tCLOV+Ahafn09lXhOViQkkL50UKhzU/JIrm1iBoSrHAbbsn6AciB9Q5ZE3FOnk/t7UgDjZ0VVGKEZKm2uDyEzudr2eNd09ZV4ONiRIvrPMsoxMsoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yql7GLOc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD03B1F000E9;
+	Wed, 20 May 2026 17:03:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302056;
-	bh=Hqm6o4LujjybOGouSXgSQbU0HRgUzZyPe3MFX8nLyt4=;
+	s=korg; t=1779296585;
+	bh=63iGXUbq4/KktTLZnv673niiGkBdI9U+cshMNcctqMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mFqRwsHWmNcmncKl+cYS0zYX87A6DLgpADOsXt7VCmkd6jUWSw1VKMuOwDH0SIRZ4
-	 arsRSoZF2sqDi2tKz5Nz7DXO2GuQK2wN9M/sGB/rdN89Ce00pTR0BhvhGDTzksad40
-	 2njtx7gmwvaFauW32s1V5keHyO4VgtNxMjWlzttc=
+	b=yql7GLOcZgcooxIKcAEnX9EVTna6QjVTAej8EkJcGE1b4r5lIFDnNW7FnCyX2iRP6
+	 GJhV9quvsigecuxkHbBk462RGtlXXwh0w+QCJi2h3Ci/sAsysFy55ZN0dn+pl6yXs3
+	 /eXGV1og7/Hb9iv6dM9rX4HtKtRzq1BW4TnflS7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 081/508] net: phy: aquantia: move to separate directory
+Subject: [PATCH 7.0 0854/1146] net: mana: Fix EQ leak in mana_remove on NULL port
 Date: Wed, 20 May 2026 18:18:24 +0200
-Message-ID: <20260520162100.364483853@linuxfoundation.org>
+Message-ID: <20260520162207.566329562@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,129 +74,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252967-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lunn.ch,davemloft.net,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250895-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lunn.ch:email,davemloft.net:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D96B1596F27
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 969A3592E9C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
 
-[ Upstream commit d2213db3f49bce8e7a87c8de05b9a091f78f654e ]
+[ Upstream commit 65267c9c4f28199985505977bc2c628c82fc50ef ]
 
-Move aquantia PHY driver to separate driectory in preparation for
-firmware loading support to keep things tidy.
+In mana_remove(), when a NULL port is encountered in the port iteration
+loop, 'goto out' skips the mana_destroy_eq(ac) call, leaking the event
+queues allocated earlier by mana_create_eq().
 
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: e7a62edd34b1 ("net: phy: qcom: at803x: Use the correct bit to disable extended next page")
+This can happen when mana_probe_port() fails for port 0, leaving
+ac->ports[0] as NULL. On driver unload or error cleanup, mana_remove()
+hits the NULL entry and jumps past mana_destroy_eq().
+
+Change 'goto out' to 'break' so the for-loop exits normally and
+mana_destroy_eq() is always reached. Remove the now-unreferenced out:
+label.
+
+Fixes: 1e2d0824a9c3 ("net: mana: Add support for EQ sharing")
+Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+Link: https://patch.msgid.link/20260420124741.1056179-6-ernis@linux.microsoft.com
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/Kconfig                         | 5 +----
- drivers/net/phy/Makefile                        | 6 +-----
- drivers/net/phy/aquantia/Kconfig                | 5 +++++
- drivers/net/phy/aquantia/Makefile               | 6 ++++++
- drivers/net/phy/{ => aquantia}/aquantia.h       | 0
- drivers/net/phy/{ => aquantia}/aquantia_hwmon.c | 0
- drivers/net/phy/{ => aquantia}/aquantia_main.c  | 0
- 7 files changed, 13 insertions(+), 9 deletions(-)
- create mode 100644 drivers/net/phy/aquantia/Kconfig
- create mode 100644 drivers/net/phy/aquantia/Makefile
- rename drivers/net/phy/{ => aquantia}/aquantia.h (100%)
- rename drivers/net/phy/{ => aquantia}/aquantia_hwmon.c (100%)
- rename drivers/net/phy/{ => aquantia}/aquantia_main.c (100%)
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index 107880d13d219..aa5491aaaab40 100644
---- a/drivers/net/phy/Kconfig
-+++ b/drivers/net/phy/Kconfig
-@@ -96,10 +96,7 @@ config ADIN1100_PHY
- 	  Currently supports the:
- 	  - ADIN1100 - Robust,Industrial, Low Power 10BASE-T1L Ethernet PHY
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index 09d67617dfbbf..14d6f68eaa695 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -3715,7 +3715,7 @@ void mana_remove(struct gdma_dev *gd, bool suspending)
+ 		if (!ndev) {
+ 			if (i == 0)
+ 				dev_err(dev, "No net device to remove\n");
+-			goto out;
++			break;
+ 		}
  
--config AQUANTIA_PHY
--	tristate "Aquantia PHYs"
--	help
--	  Currently supports the Aquantia AQ1202, AQ2104, AQR105, AQR405
-+source "drivers/net/phy/aquantia/Kconfig"
+ 		apc = netdev_priv(ndev);
+@@ -3746,7 +3746,7 @@ void mana_remove(struct gdma_dev *gd, bool suspending)
+ 	}
  
- config AX88796B_PHY
- 	tristate "Asix PHYs"
-diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
-index c945ed9bd14b3..f65e85c91fc10 100644
---- a/drivers/net/phy/Makefile
-+++ b/drivers/net/phy/Makefile
-@@ -35,11 +35,7 @@ obj-y				+= $(sfp-obj-y) $(sfp-obj-m)
- obj-$(CONFIG_ADIN_PHY)		+= adin.o
- obj-$(CONFIG_ADIN1100_PHY)	+= adin1100.o
- obj-$(CONFIG_AMD_PHY)		+= amd.o
--aquantia-objs			+= aquantia_main.o
--ifdef CONFIG_HWMON
--aquantia-objs			+= aquantia_hwmon.o
--endif
--obj-$(CONFIG_AQUANTIA_PHY)	+= aquantia.o
-+obj-$(CONFIG_AQUANTIA_PHY)	+= aquantia/
- obj-$(CONFIG_AT803X_PHY)	+= at803x.o
- obj-$(CONFIG_AX88796B_PHY)	+= ax88796b.o
- obj-$(CONFIG_BCM54140_PHY)	+= bcm54140.o
-diff --git a/drivers/net/phy/aquantia/Kconfig b/drivers/net/phy/aquantia/Kconfig
-new file mode 100644
-index 0000000000000..226146417a6a7
---- /dev/null
-+++ b/drivers/net/phy/aquantia/Kconfig
-@@ -0,0 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+config AQUANTIA_PHY
-+	tristate "Aquantia PHYs"
-+	help
-+	  Currently supports the Aquantia AQ1202, AQ2104, AQR105, AQR405
-diff --git a/drivers/net/phy/aquantia/Makefile b/drivers/net/phy/aquantia/Makefile
-new file mode 100644
-index 0000000000000..346f350bc0846
---- /dev/null
-+++ b/drivers/net/phy/aquantia/Makefile
-@@ -0,0 +1,6 @@
-+# SPDX-License-Identifier: GPL-2.0
-+aquantia-objs			+= aquantia_main.o
-+ifdef CONFIG_HWMON
-+aquantia-objs			+= aquantia_hwmon.o
-+endif
-+obj-$(CONFIG_AQUANTIA_PHY)	+= aquantia.o
-diff --git a/drivers/net/phy/aquantia.h b/drivers/net/phy/aquantia/aquantia.h
-similarity index 100%
-rename from drivers/net/phy/aquantia.h
-rename to drivers/net/phy/aquantia/aquantia.h
-diff --git a/drivers/net/phy/aquantia_hwmon.c b/drivers/net/phy/aquantia/aquantia_hwmon.c
-similarity index 100%
-rename from drivers/net/phy/aquantia_hwmon.c
-rename to drivers/net/phy/aquantia/aquantia_hwmon.c
-diff --git a/drivers/net/phy/aquantia_main.c b/drivers/net/phy/aquantia/aquantia_main.c
-similarity index 100%
-rename from drivers/net/phy/aquantia_main.c
-rename to drivers/net/phy/aquantia/aquantia_main.c
+ 	mana_destroy_eq(ac);
+-out:
++
+ 	if (ac->per_port_queue_reset_wq) {
+ 		destroy_workqueue(ac->per_port_queue_reset_wq);
+ 		ac->per_port_queue_reset_wq = NULL;
 -- 
 2.53.0
 
