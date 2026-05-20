@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-250709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252289-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OGQYHjvsDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250709-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:15:39 +0200
+	id wLppIOYSDmoJ6AUAu9opvQ
+	(envelope-from <stable+bounces-252289-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:00:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21D4B5932D1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:15:39 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89EED599019
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:00:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E63303181207
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:56:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 01BDD31A95D7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:05:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5ED13BED26;
-	Wed, 20 May 2026 16:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8452E3F88B5;
+	Wed, 20 May 2026 18:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SGHRFfo8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w61rZfTy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A1B36CDF2;
-	Wed, 20 May 2026 16:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF153F6619;
+	Wed, 20 May 2026 18:04:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296111; cv=none; b=S9+TiGPkioKwOXpjW1Nsmof5/zgkTworxmrH8VeYP3Y6sZwpYiarUy/CnESbpQXdNqlQVbrxg0iSSd3Oebz8eTdQpou7Zw87r/4BabtFXBw+zo+6lzmcybfML8qop4my4Kl5XLQkvCiWTORcvr87GCV/qmdHBKiHX1Q22rOyJes=
+	t=1779300286; cv=none; b=KZp/R4hy7n+7Yu0zqWCwCLSTlGpMfGteXLy//3LqINWgLZ+gX9LoXSVsUgb5pf0Dlx8C4jZwKyVgLOuWY1XzpQUncfDi9VaPnoNoYqb8Y2zeqURVCO+mmm2/kABOmhtzxI1Ibo0P34ar/PjuefuicvhfTAuY/jf2tDmNGzkCH6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296111; c=relaxed/simple;
-	bh=HauQpVYE0SCAmr9R61boVW/FhBfvaXRcXDP7WWkYT/o=;
+	s=arc-20240116; t=1779300286; c=relaxed/simple;
+	bh=eBitnv+lGsMXu6wctWwuBO6x556LTdX8TtSzBY9FRog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=McY0YxwQ03ZbH62RSQdhR64HN5e3fohSAl+fBUPv5XlucU7JN8uAbRN8xePxeECdIIHauOdhhLGVHlXdqRRl2ik1kHw1OmXSHSEYMQaDgdFCWDoV2liOSHFsFtuOcxSTPA01WiEOMkZdPvhu+mjUzE15L8KlZBMDnacQAEdICnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SGHRFfo8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D89181F000E9;
-	Wed, 20 May 2026 16:55:09 +0000 (UTC)
+	 MIME-Version; b=IkB/yfmScnlopg4iHbOwO8Enu0S1N/h45KDiGUuBn1y63RaQ6FDuMsAj9nW0m4rvnhYagS171FXBT80pe/Pj681h6IWn+U8irEzPlADH4jlQkfBO7nNtFtV8fAbUuoz37ep9udzZJ0UkjovQtHNQkt1b82W7h+p+9qUiJ/Fe2eQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w61rZfTy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2AA41F000E9;
+	Wed, 20 May 2026 18:04:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296110;
-	bh=lDHtNARbYUh8469Cp7CK2DIMqgTQfjrevNx+fUX9yvg=;
+	s=korg; t=1779300285;
+	bh=6N9tPZeG9O1civ7EYYtcgQojAiLekrTBwbHdhbrI3bs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SGHRFfo8x8Gvk/xZskYl5+PG8FoMIhF6ymv2FkgGgbQSF3it86putWOU82MVdRSXQ
-	 frtYixc2UjWSIwOBJR20cy4qXoosmc7ZHwlF1Kg3arJ5roglDFqgc5nDvh2tDStFm4
-	 UKfYW7I2WPeD0ttR1Qt9ciVEq4UI39oLor1mHRpY=
+	b=w61rZfTyzRNUSUKF+ZBm7S91+LnTdDXwvKFKxf5WdMFpS3Q5JPw0bnvcVq2Q4byDF
+	 Mpocn4217Ncm2EyTkaeAjcsMfonlmkigPGFYiK9GRp0r5nj7+ZKz534bMddmdwclHd
+	 8vnRTxVbl+cBEdl/uKIiOaC1b8WWQhc/wpBDWDSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0675/1146] sunrpc: Kill RPC_IFDEBUG()
-Date: Wed, 20 May 2026 18:15:25 +0200
-Message-ID: <20260520162203.464117047@linuxfoundation.org>
+Subject: [PATCH 6.12 115/666] tcp: Dont set treq->req_usec_ts in cookie_tcp_reqsk_init().
+Date: Wed, 20 May 2026 18:15:26 +0200
+Message-ID: <20260520162113.713317385@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,143 +66,86 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252289-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250709-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,oracle.com:email]
-X-Rspamd-Queue-Id: 21D4B5932D1
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 89EED599019
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit adcc59114ccd402259c089b0fea24da5e4974563 ]
+[ Upstream commit c058bbf05b1197c33df7204842665bd8bc70b3a8 ]
 
-RPC_IFDEBUG() is used in only two places. In one the user of
-the definition is guarded by ifdeffery, in the second one
-it's implied due to dprintk() usage. Kill the macro and move
-the ifdeffery to the regular condition with the variable defined
-inside, while in the second case add the same conditional and
-move the respective code there.
+Commit de5626b95e13 ("tcp: Factorise cookie-independent fields
+initialisation in cookie_v[46]_check().") miscategorised
+tcp_rsk(req)->req_usec_ts init to cookie_tcp_reqsk_init(),
+which is used by both BPF/non-BPF SYN cookie reqsk.
 
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Stable-dep-of: 6f57293abb8d ("sunrpc: Fix compilation error (`make W=1`) when dprintk() is no-op")
+Rather, it should have been moved to cookie_tcp_reqsk_alloc() by
+commit 8e7bab6b9652 ("tcp: Factorise cookie-dependent fields
+initialisation in cookie_v[46]_check()") so that only non-BPF SYN
+cookie sets tcp_rsk(req)->req_usec_ts to false.
+
+Let's move the initialisation to cookie_tcp_reqsk_alloc() to
+respect bpf_tcp_req_attrs.usec_ts_ok.
+
+Fixes: e472f88891ab ("bpf: tcp: Support arbitrary SYN Cookie.")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260410235328.1773449-1-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfsfh.c                          |  9 +++++---
- include/linux/sunrpc/debug.h             |  2 --
- net/sunrpc/xprtrdma/svc_rdma_transport.c | 27 ++++++++++++------------
- 3 files changed, 20 insertions(+), 18 deletions(-)
+ net/ipv4/syncookies.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/nfsfh.c b/fs/nfsd/nfsfh.c
-index ed85dd43da18e..68b629fbaaeb9 100644
---- a/fs/nfsd/nfsfh.c
-+++ b/fs/nfsd/nfsfh.c
-@@ -105,9 +105,12 @@ static __be32 nfsd_setuser_and_check_port(struct svc_rqst *rqstp,
- {
- 	/* Check if the request originated from a secure port. */
- 	if (rqstp && !nfsd_originating_port_ok(rqstp, cred, exp)) {
--		RPC_IFDEBUG(char buf[RPC_MAX_ADDRBUFLEN]);
--		dprintk("nfsd: request from insecure port %s!\n",
--		        svc_print_addr(rqstp, buf, sizeof(buf)));
-+		if (IS_ENABLED(CONFIG_SUNRPC_DEBUG)) {
-+			char buf[RPC_MAX_ADDRBUFLEN];
-+
-+			dprintk("nfsd: request from insecure port %s!\n",
-+			        svc_print_addr(rqstp, buf, sizeof(buf)));
-+		}
- 		return nfserr_perm;
- 	}
+diff --git a/net/ipv4/syncookies.c b/net/ipv4/syncookies.c
+index 1948d15f1f281..640fc3b54277d 100644
+--- a/net/ipv4/syncookies.c
++++ b/net/ipv4/syncookies.c
+@@ -284,7 +284,6 @@ static int cookie_tcp_reqsk_init(struct sock *sk, struct sk_buff *skb,
+ 	treq->rcv_isn = ntohl(th->seq) - 1;
+ 	treq->snt_isn = ntohl(th->ack_seq) - 1;
+ 	treq->syn_tos = TCP_SKB_CB(skb)->ip_dsfield;
+-	treq->req_usec_ts = false;
  
-diff --git a/include/linux/sunrpc/debug.h b/include/linux/sunrpc/debug.h
-index eb4bd62df3190..93d1a11ffbfb3 100644
---- a/include/linux/sunrpc/debug.h
-+++ b/include/linux/sunrpc/debug.h
-@@ -49,12 +49,10 @@ do {									\
- 	}								\
- } while (0)
+ #if IS_ENABLED(CONFIG_MPTCP)
+ 	treq->is_mptcp = sk_is_mptcp(sk);
+@@ -347,6 +346,7 @@ struct request_sock *cookie_tcp_reqsk_alloc(const struct request_sock_ops *ops,
+ 	ireq->wscale_ok = tcp_opt->wscale_ok;
+ 	ireq->ecn_ok = !!(tcp_opt->rcv_tsecr & TS_OPT_ECN);
  
--# define RPC_IFDEBUG(x)		x
- #else
- # define ifdebug(fac)		if (0)
- # define dfprintk(fac, fmt, ...)	do {} while (0)
- # define dfprintk_rcu(fac, fmt, ...)	do {} while (0)
--# define RPC_IFDEBUG(x)
- #endif
++	treq->req_usec_ts = false;
+ 	treq->ts_off = tsoff;
  
- /*
-diff --git a/net/sunrpc/xprtrdma/svc_rdma_transport.c b/net/sunrpc/xprtrdma/svc_rdma_transport.c
-index 9b623849723ed..f2d72181a6fe8 100644
---- a/net/sunrpc/xprtrdma/svc_rdma_transport.c
-+++ b/net/sunrpc/xprtrdma/svc_rdma_transport.c
-@@ -414,7 +414,6 @@ static struct svc_xprt *svc_rdma_accept(struct svc_xprt *xprt)
- 	struct ib_qp_init_attr qp_attr;
- 	struct ib_device *dev;
- 	int ret = 0;
--	RPC_IFDEBUG(struct sockaddr *sap);
- 
- 	listen_rdma = container_of(xprt, struct svcxprt_rdma, sc_xprt);
- 	clear_bit(XPT_CONN, &xprt->xpt_flags);
-@@ -560,18 +559,20 @@ static struct svc_xprt *svc_rdma_accept(struct svc_xprt *xprt)
- 		goto errout;
- 	}
- 
--#if IS_ENABLED(CONFIG_SUNRPC_DEBUG)
--	dprintk("svcrdma: new connection accepted on device %s:\n", dev->name);
--	sap = (struct sockaddr *)&newxprt->sc_cm_id->route.addr.src_addr;
--	dprintk("    local address   : %pIS:%u\n", sap, rpc_get_port(sap));
--	sap = (struct sockaddr *)&newxprt->sc_cm_id->route.addr.dst_addr;
--	dprintk("    remote address  : %pIS:%u\n", sap, rpc_get_port(sap));
--	dprintk("    max_sge         : %d\n", newxprt->sc_max_send_sges);
--	dprintk("    sq_depth        : %d\n", newxprt->sc_sq_depth);
--	dprintk("    rdma_rw_ctxs    : %d\n", ctxts);
--	dprintk("    max_requests    : %d\n", newxprt->sc_max_requests);
--	dprintk("    ord             : %d\n", conn_param.initiator_depth);
--#endif
-+	if (IS_ENABLED(CONFIG_SUNRPC_DEBUG)) {
-+		struct sockaddr *sap;
-+
-+		dprintk("svcrdma: new connection accepted on device %s:\n", dev->name);
-+		sap = (struct sockaddr *)&newxprt->sc_cm_id->route.addr.src_addr;
-+		dprintk("    local address   : %pIS:%u\n", sap, rpc_get_port(sap));
-+		sap = (struct sockaddr *)&newxprt->sc_cm_id->route.addr.dst_addr;
-+		dprintk("    remote address  : %pIS:%u\n", sap, rpc_get_port(sap));
-+		dprintk("    max_sge         : %d\n", newxprt->sc_max_send_sges);
-+		dprintk("    sq_depth        : %d\n", newxprt->sc_sq_depth);
-+		dprintk("    rdma_rw_ctxs    : %d\n", ctxts);
-+		dprintk("    max_requests    : %d\n", newxprt->sc_max_requests);
-+		dprintk("    ord             : %d\n", conn_param.initiator_depth);
-+	}
- 
- 	return &newxprt->sc_xprt;
- 
+ 	return req;
 -- 
 2.53.0
 
