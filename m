@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-250700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252278-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OCG2CaH2DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-250700-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:00:01 +0200
+	id WMafAKYSDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-252278-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:59:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35453595120
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:00:00 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03577598FAE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:59:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 618E2355ED01
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:56:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3A9FF306DA14
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:04:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86A523E314D;
-	Wed, 20 May 2026 16:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14BD3ED3B8;
+	Wed, 20 May 2026 18:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nRTrLFcA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4S9/LXH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8A23F889E;
-	Wed, 20 May 2026 16:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EAA036CE19;
+	Wed, 20 May 2026 18:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296088; cv=none; b=lxatvwfN0mqIvgGmxj2jLc9HpcjZ0CwoFG1BvtFTM0bn9MZH65TBjiAYpttaIpnvOz4geykEBbdd2SwV9mhTgl3Tufp17h9eEp6zN7otP207LTWq9dT9gKoWsvviyKkPpS/2TleMBsVKPhVGbeuBgQN6KeEZvJHlbxe7ZeX9BLM=
+	t=1779300257; cv=none; b=OpoA7NUb3IMKbURjc+jixnbSe17k1y7CMy2k8pxmFTfchmVczGrz99hpn8WkhbeNCCxWCxRCRoKPjqzK+xmzNDLlOvacevLyCNQeGhOU7b7QNYCIoCRGFFMkSIycS3w1ZekWQ2D3Fxr8XI0lTBXf3ri8pYyii5Z+QShSH35mpoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296088; c=relaxed/simple;
-	bh=HUJsB7W4GlDX05byxb4Qm5Zsn8m1PfA8MLoKo1taScQ=;
+	s=arc-20240116; t=1779300257; c=relaxed/simple;
+	bh=2owwJlION4ImDexhD/U+Aya/JhsUsN2Ka8BgNCFDjbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tXoYA+2+OpYkb1ayCMzjlwpCN5nI6TAo8/vkulJd/C//nq4fR7eI/q5naNky5P22x8DFmEjYhAB1iTQzuVQd1pg9/1rDdJ/K4Te3e0C7Bn3SGNrZDJ0Vht5UDxzUVqLjS3AX5fmPLmHN3aazWCcMDbZX8Ey4Ltjwno+b6baFhbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nRTrLFcA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D6511F000E9;
-	Wed, 20 May 2026 16:54:46 +0000 (UTC)
+	 MIME-Version; b=oMHxvHdr9GV067g/vqEVkOD9YhC4EknmTG3IqVk0geV2qynep5sS20CV+mrqGrSB5lmmKuHCkZLbUzeGupkZy/8wrrch6BmDcYrFMT+3GUSLwfyWmPwWalSgAr/g5txKc3waGFoqe4Hs8+xtMcCIEEmkVcw76W3SWeo81BT12rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4S9/LXH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B08711F000E9;
+	Wed, 20 May 2026 18:04:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296086;
-	bh=pMIkQdkOR+XDKps/aQ6bEhE3vSxOnu8HmvcPah7pvqY=;
+	s=korg; t=1779300256;
+	bh=iiOIDfXiozVkY+lrDgPR+TP9BSzV0oTCpBUh1iWG6AU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nRTrLFcAIvuoBqiO8KevG+hXV6AxGyJcFlkMEcgCez8Pe4qjGB1L97H9ypEtNgg9i
-	 DaV+iDksEo+N0ckngz5fxILoanF7WmCpUU2+z1arlFGp0kesB+UgmMeyCQGuKzv0T6
-	 xXgUp4FJUj6ICTA7/UoCY2GvkPWSCJczoyzkd53w=
+	b=v4S9/LXHqlO+crW25OcXfFpKbKi290zzjTqppWaVISlV2TBiAjmPsmG3AlC4EaYCM
+	 VuFT8ny5EG79+8jxSDYKPKi3tomdSvYBKc+Igj/F5ORvRbplNZMoT4tPHVs8+cr/ia
+	 YPrFImUqmwCu+9rFags/u/IeRYMTZi0a6Pr94ICs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Lee Jones <lee@kernel.org>,
+	syzbot+619b9ef527f510a57cfc@syzkaller.appspotmail.com,
+	Sun Jian <sun.jian.kdev@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0666/1146] leds: lgm-sso: Remove duplicate assignments for priv->mmap
+Subject: [PATCH 6.12 105/666] bpf: reject short IPv4/IPv6 inputs in bpf_prog_test_run_skb
 Date: Wed, 20 May 2026 18:15:16 +0200
-Message-ID: <20260520162203.261429942@linuxfoundation.org>
+Message-ID: <20260520162113.497779646@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +65,108 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250700-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252278-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: 35453595120
+	TAGGED_RCPT(0.00)[stable,619b9ef527f510a57cfc];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 03577598FAE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Sun Jian <sun.jian.kdev@gmail.com>
 
-[ Upstream commit 7186d0330c3f3e86de577687a82f4ebd96dcb5ac ]
+[ Upstream commit 12bec2bd4b76d81c5d3996bd14ec1b7f4d983747 ]
 
-Remove duplicate assignment of priv->mmap in intel_sso_led_probe().
+bpf_prog_test_run_skb() calls eth_type_trans() first and then uses
+skb->protocol to initialize sk family and address fields for the test
+run.
 
-Fixes: fba8a6f2263b ("leds: lgm-sso: Fix clock handling")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Link: https://patch.msgid.link/20260226033048.3715915-1-nichen@iscas.ac.cn
-Signed-off-by: Lee Jones <lee@kernel.org>
+For IPv4 and IPv6 packets, it may access ip_hdr(skb) or ipv6_hdr(skb)
+even when the provided test input only contains an Ethernet header.
+
+Reject the input earlier if the Ethernet frame carries IPv4/IPv6
+EtherType but the L3 header is too short.
+
+Fold the IPv4/IPv6 header length checks into the existing protocol
+switch and return -EINVAL before accessing the network headers.
+
+Fixes: fa5cb548ced6 ("bpf: Setup socket family and addresses in bpf_prog_test_run_skb")
+Reported-by: syzbot+619b9ef527f510a57cfc@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=619b9ef527f510a57cfc
+Signed-off-by: Sun Jian <sun.jian.kdev@gmail.com>
+Link: https://lore.kernel.org/r/20260408034623.180320-2-sun.jian.kdev@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/blink/leds-lgm-sso.c | 2 --
- 1 file changed, 2 deletions(-)
+ net/bpf/test_run.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/leds/blink/leds-lgm-sso.c b/drivers/leds/blink/leds-lgm-sso.c
-index 8923d2df47049..3d9ef9a54805c 100644
---- a/drivers/leds/blink/leds-lgm-sso.c
-+++ b/drivers/leds/blink/leds-lgm-sso.c
-@@ -808,8 +808,6 @@ static int intel_sso_led_probe(struct platform_device *pdev)
+diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
+index 18257cf6bb488..7f12abc8a80cb 100644
+--- a/net/bpf/test_run.c
++++ b/net/bpf/test_run.c
+@@ -1061,19 +1061,23 @@ int bpf_prog_test_run_skb(struct bpf_prog *prog, const union bpf_attr *kattr,
  
- 	priv->fpid_clkrate = clk_get_rate(priv->clocks[1].clk);
- 
--	priv->mmap = syscon_node_to_regmap(dev->of_node);
--
- 	priv->mmap = syscon_node_to_regmap(dev->of_node);
- 	if (IS_ERR(priv->mmap)) {
- 		dev_err(dev, "Failed to map iomem!\n");
+ 	switch (skb->protocol) {
+ 	case htons(ETH_P_IP):
+-		sk->sk_family = AF_INET;
+-		if (sizeof(struct iphdr) <= skb_headlen(skb)) {
+-			sk->sk_rcv_saddr = ip_hdr(skb)->saddr;
+-			sk->sk_daddr = ip_hdr(skb)->daddr;
++		if (skb_headlen(skb) < sizeof(struct iphdr)) {
++			ret = -EINVAL;
++			goto out;
+ 		}
++		sk->sk_family = AF_INET;
++		sk->sk_rcv_saddr = ip_hdr(skb)->saddr;
++		sk->sk_daddr = ip_hdr(skb)->daddr;
+ 		break;
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	case htons(ETH_P_IPV6):
+-		sk->sk_family = AF_INET6;
+-		if (sizeof(struct ipv6hdr) <= skb_headlen(skb)) {
+-			sk->sk_v6_rcv_saddr = ipv6_hdr(skb)->saddr;
+-			sk->sk_v6_daddr = ipv6_hdr(skb)->daddr;
++		if (skb_headlen(skb) < sizeof(struct ipv6hdr)) {
++			ret = -EINVAL;
++			goto out;
+ 		}
++		sk->sk_family = AF_INET6;
++		sk->sk_v6_rcv_saddr = ipv6_hdr(skb)->saddr;
++		sk->sk_v6_daddr = ipv6_hdr(skb)->daddr;
+ 		break;
+ #endif
+ 	default:
 -- 
 2.53.0
 
