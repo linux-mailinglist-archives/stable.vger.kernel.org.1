@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-251758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250825-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cC0gAfUADmqs5QUAu9opvQ
-	(envelope-from <stable+bounces-251758-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:05 +0200
+	id yMm+LKkUDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-250825-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:08:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03E345971D8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81B905992C3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:08:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5034A3074D13
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:40:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6DFE335C7B40
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:01:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1AC0363C6F;
-	Wed, 20 May 2026 17:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99B1E36BCDE;
+	Wed, 20 May 2026 17:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jg/RNocj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ewFrQVra"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8013C1C3BFC;
-	Wed, 20 May 2026 17:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A293EAC8F;
+	Wed, 20 May 2026 17:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298815; cv=none; b=uTsuylVnF9Ol/EhkKQDX30odKt2+u6P4QOg1ANHWEy6HIuJXg3cH0CSMCeQKAcAtEJVhNdJ9Iy3qPRIyh1UId5htKWUqTtsI6MMX2Z9fZjaCw6T2qePwPLjhuuDvfBLv83YU4ZmwAOE/hPhBGmwJhYmSWRdRmx94UnAV66To7Q0=
+	t=1779296405; cv=none; b=fCM/JQ5xQenJWjSqywlgi4YfvBAdCDZm4JCASmqAO4MBl3GsBXugA5L5bQrzfR1GIkuylCG6a+0gwj8ExwVxFMXaowogPdwnOBrpApAdhOHyje+OhC/L0uR9CQ/TSPH0ydHkBkK+/zYQMJdJoW3yyqkwP5pB3juwrxazvzfRwOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298815; c=relaxed/simple;
-	bh=mkcT8bEkdqPUTfwI8dRB2I7QCUx9DPhFOureEczXxoo=;
+	s=arc-20240116; t=1779296405; c=relaxed/simple;
+	bh=TuLFmc5O/HpcCuQwijmqYzdYL70aHnQcYOqEshWxNOE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UfRoyDab8ggcnTUv1Cfyu0eF0lMHYGt5FRWHAln6vf+R1h8SLQHh8th7rsCBn5n+Uvak44fxJeFcn4HRYEr1ChcubacYBvw3jCzkHUQJsKTTbL/+PN/nFRadAWHoJMYJnTh72KJAfm3xQnTZThjHr4uiYSXi0dTfoqCyPRS/znw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jg/RNocj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA2201F000E9;
-	Wed, 20 May 2026 17:40:13 +0000 (UTC)
+	 MIME-Version; b=ZJJUsA0aVRTFxHj9hFVGZETn3W1AIzD7wdMX+DzJLaPYGgOosTI0naT1zIEbAU373F1pRA0YYtsyD6qh+LGO9wPPUOpKbrxsJpm5afVfcu2N3qOKQkBs5DYy0iI/u8yUT8GDDY7fxTfcn9mVbZ0o4lPgDTeRXQ+zuBUKDfxLJsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ewFrQVra; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 016071F00893;
+	Wed, 20 May 2026 17:00:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298814;
-	bh=9QBKGOEsVyBdeV4+a3jLgf4n7UHySN1uUVa5ofklpdk=;
+	s=korg; t=1779296403;
+	bh=FW/6J8V8eJ3VmT3GG3XG0Ey1L0P4RlQGstAddP6UO58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jg/RNocjaWUY5qJCMDkIFyAZZd2DhZ9D8gkOJz9JBlRGo+K0RbGYWz87L8Jk3Z+cV
-	 6TB4d9j1n94K2CmAZ0UnYHe8AN1EcyPzQQL4o0t+w74ATHXPC+xOFByWikK7gDYdVo
-	 NKW+PlXYJ2PYd/sKSo2kpvOA3spgB/wCJO4gI1so=
+	b=ewFrQVraXxZ4ZywfuwET0CnqiGgaw+2YTfYFUiDl+RIIGBBs/ZGnGAPK6xRHrMPbk
+	 E7n6oclys0zeJmaRcJON9GG1yzu3mYdVi+o9i7ku8vAq8YsSF7I6XdbtyQKgeUsGSE
+	 TE3p8XJzOK18S4Wpq8aDqmQpIG1nzLdQnCk+PxpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	White Lewis <liu224806@gmail.com>,
-	Pengyu Luo <mitltlatltl@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 554/957] clk: qcom: dispcc-sc8280xp: remove CLK_SET_RATE_PARENT from byte_div_clk_src dividers
+Subject: [PATCH 7.0 0787/1146] tcp: annotate data-races around tp->bytes_retrans
 Date: Wed, 20 May 2026 18:17:17 +0200
-Message-ID: <20260520162146.546819054@linuxfoundation.org>
+Message-ID: <20260520162206.032868344@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,106 +66,85 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251758-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250825-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 03E345971D8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 81B905992C3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: White Lewis <liu224806@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 0b151a6307205eb867250985a910a88787cbf12e ]
+[ Upstream commit 5efc7b9f7cbd43401f1af81d3d7f2be00f93390d ]
 
-The four byte_div_clk_src dividers (disp{0,1}_cc_mdss_byte{0,1}_div_clk_src)
-had CLK_SET_RATE_PARENT set. When the DSI driver calls clk_set_rate() on
-byte_intf_clk, the rate-change propagates through the divider up to the
-parent PLL (byte_clk_src), halving the byte clock rate.
+tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
+add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
 
-A simiar issue had been also encountered on SM8750.
-b8501febdc51 ("clk: qcom: dispcc-sm8750: Drop incorrect CLK_SET_RATE_PARENT on byte intf parent").
-
-Likewise, remove CLK_SET_RATE_PARENT from all four byte divider clocks
-so that clk_set_rate() on the divider adjusts only the divider ratio,
-leaving the parent PLL untouched.
-
-Fixes: 4a66e76fdb6d ("clk: qcom: Add SC8280XP display clock controller")
-Signed-off-by: White Lewis <liu224806@gmail.com>
-[pengyu: reword]
-Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260303115550.9279-1-mitltlatltl@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: fb31c9b9f6c8 ("tcp: add data bytes retransmitted stats")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260416200319.3608680-9-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-sc8280xp.c | 4 ----
- 1 file changed, 4 deletions(-)
+ net/ipv4/tcp.c        | 4 ++--
+ net/ipv4/tcp_output.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/qcom/dispcc-sc8280xp.c b/drivers/clk/qcom/dispcc-sc8280xp.c
-index 5903a759d4af4..e91dfed0f37e9 100644
---- a/drivers/clk/qcom/dispcc-sc8280xp.c
-+++ b/drivers/clk/qcom/dispcc-sc8280xp.c
-@@ -1160,7 +1160,6 @@ static struct clk_regmap_div disp0_cc_mdss_byte0_div_clk_src = {
- 			&disp0_cc_mdss_byte0_clk_src.clkr.hw,
- 		},
- 		.num_parents = 1,
--		.flags = CLK_SET_RATE_PARENT,
- 		.ops = &clk_regmap_div_ops,
- 	},
- };
-@@ -1175,7 +1174,6 @@ static struct clk_regmap_div disp1_cc_mdss_byte0_div_clk_src = {
- 			&disp1_cc_mdss_byte0_clk_src.clkr.hw,
- 		},
- 		.num_parents = 1,
--		.flags = CLK_SET_RATE_PARENT,
- 		.ops = &clk_regmap_div_ops,
- 	},
- };
-@@ -1190,7 +1188,6 @@ static struct clk_regmap_div disp0_cc_mdss_byte1_div_clk_src = {
- 			&disp0_cc_mdss_byte1_clk_src.clkr.hw,
- 		},
- 		.num_parents = 1,
--		.flags = CLK_SET_RATE_PARENT,
- 		.ops = &clk_regmap_div_ops,
- 	},
- };
-@@ -1205,7 +1202,6 @@ static struct clk_regmap_div disp1_cc_mdss_byte1_div_clk_src = {
- 			&disp1_cc_mdss_byte1_clk_src.clkr.hw,
- 		},
- 		.num_parents = 1,
--		.flags = CLK_SET_RATE_PARENT,
- 		.ops = &clk_regmap_div_ops,
- 	},
- };
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 10c36a68de4b1..368b576cfe369 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -4497,8 +4497,8 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
+ 
+ 	nla_put_u64_64bit(stats, TCP_NLA_BYTES_SENT, READ_ONCE(tp->bytes_sent),
+ 			  TCP_NLA_PAD);
+-	nla_put_u64_64bit(stats, TCP_NLA_BYTES_RETRANS, tp->bytes_retrans,
+-			  TCP_NLA_PAD);
++	nla_put_u64_64bit(stats, TCP_NLA_BYTES_RETRANS,
++			  READ_ONCE(tp->bytes_retrans), TCP_NLA_PAD);
+ 	nla_put_u32(stats, TCP_NLA_DSACK_DUPS, tp->dsack_dups);
+ 	nla_put_u32(stats, TCP_NLA_REORD_SEEN, tp->reord_seen);
+ 	nla_put_u32(stats, TCP_NLA_SRTT, tp->srtt_us >> 3);
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index 2c9ca89aa9e50..51e7f40e7e313 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -3627,7 +3627,7 @@ int __tcp_retransmit_skb(struct sock *sk, struct sk_buff *skb, int segs)
+ 	if (TCP_SKB_CB(skb)->tcp_flags & TCPHDR_SYN)
+ 		__NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPSYNRETRANS);
+ 	WRITE_ONCE(tp->total_retrans, tp->total_retrans + segs);
+-	tp->bytes_retrans += skb->len;
++	WRITE_ONCE(tp->bytes_retrans, tp->bytes_retrans + skb->len);
+ 
+ 	/* make sure skb->data is aligned on arches that require it
+ 	 * and check if ack-trimming & collapsing extended the headroom
 -- 
 2.53.0
 
