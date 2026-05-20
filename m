@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-253206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252111-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yESWJaRDDmrV9QUAu9opvQ
-	(envelope-from <stable+bounces-253206-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 01:28:36 +0200
+	id +FmsJN8EDmpO5gUAu9opvQ
+	(envelope-from <stable+bounces-252111-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:00:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9571559CBF5
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 01:28:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A622A597924
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:00:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6936031F81D8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7302D31321C7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:57:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38A8B40963B;
-	Wed, 20 May 2026 18:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 917143F6C5F;
+	Wed, 20 May 2026 17:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cWjnbvyE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="atCJhNq4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B742A409615;
-	Wed, 20 May 2026 18:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D8D3C4576;
+	Wed, 20 May 2026 17:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302679; cv=none; b=N+Z4X2Q/9qWltJw6cufb4UaQ9BBdAmg3nl+tbpoy6TjWmrTHe4AC+DL4ip7OfbSY4vgT6fKy/p9LL/Ddy6tfUB97rZD5wWX+jzzcs6BUP9ZFNV9iEBsQ8Bz5WMaZH9NFabzqBZd00P2vLKcx7ak4QCcehK+WaMRnHXbM6d5GEdg=
+	t=1779299819; cv=none; b=cBCTn0sfRQlbHoo8w0qLIrK0nOcI4J5HWk0loWSSCRBo5n1f7vZJokmrd5UrqAQG2ndT+xGnpFb2oL/IfhfhBKlK3EdRZV1Qzpb5Hl7PConEH/A3hOuzdV25zC8Nlj0UnsdNISDPIVolU0ip/k5eZjgpClVXlA5WWNE8QwkPhVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302679; c=relaxed/simple;
-	bh=QrK8NMpsbMYYNywISmnMwcXIxo99sRQiJYT/xnAXumg=;
+	s=arc-20240116; t=1779299819; c=relaxed/simple;
+	bh=b9T6dwu7P+VHlx80j42hMdPGBV+mp1NXakT8Gi2zerc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KFKfkttjGZleZ7vIT5CYu7s4Y7E8XkCvQV7Pmsu0qjXkrZhkkl0zJ/OUC0liePvB1bqXuoV5WtHCxNgNrXDgJjGcIFPUS4cfmA63B0l//uDW6pybfVPSoZwWEH2gJDAaDBPliFFXcp7WwGb/qwvpQ7R/ecjamNdE3stxxUih+bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cWjnbvyE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2749E1F000E9;
-	Wed, 20 May 2026 18:44:36 +0000 (UTC)
+	 MIME-Version; b=qLHJEwQh9bOa8xePPP6xaSQtGEM61t5oxEoaEYyKDkdK9iivLKMlXItsqdMXaMMPgLAbygkX2uWGQhYtERIMxnbERIDQC+vYdjyIKiJrbioI3RldoUMoQg9BZycxY/p0KUKzlqUHzbipz65biUY3oBjatdeOkwE2gLliJQ1PDM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=atCJhNq4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F2911F000E9;
+	Wed, 20 May 2026 17:56:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302677;
-	bh=TfGGZq8T3BLe+CUMXcECGNVaSWTLV1+LK55OZQJL6WE=;
+	s=korg; t=1779299818;
+	bh=ZLxrbNNW/dai/Yb6GJSXoHc90cFtUxtmIsEL0N3wC1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cWjnbvyERs9LtE0Z83esJIypztZE9OOTz7e/1gyaJ/b8wnHZ9jRUp/PB/Pb+CPBR/
-	 5AgmGNvJ1eigZv6XDKJyRh64IAGuG7Ag+2bT3uRcfxst+a2vuVPgPGnCgBKz+DpKrl
-	 BCbzibgio8ORYrTQLbV7bL+llkW81xfZN4tW6eYI=
+	b=atCJhNq4a6MqO9/3pxT/b2aZFupInayIwiEw7fuU44rIvd/2MPz5FwfXQsE6bDCU9
+	 sxil75mzwyQVyk4E/7jU+CzihbB4o8SV9HRkQmnnLQPcwO1ZMTx4NP4RYK86QdRmF8
+	 8DhO/7iGhp7vrcOpirp6EdS2KbsVRsaVAdFxRx4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+33e571025d88efd1312c@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Chen Ridong <chenridong@huaweicloud.com>,
-	Tejun Heo <tj@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Igor Pylypiv <ipylypiv@google.com>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 359/508] sched/psi: fix race between file release and pressure write
+Subject: [PATCH 6.18 899/957] ata: libata-scsi: fix requeue of deferred ATA PASS-THROUGH commands
 Date: Wed, 20 May 2026 18:23:02 +0200
-Message-ID: <20260520162106.410950922@linuxfoundation.org>
+Message-ID: <20260520162154.069397634@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,222 +65,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [5.34 / 15.00];
-	SEM_URIBL(3.50)[huaweicloud.com:email];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253206-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,qq.com,huaweicloud.com,kernel.org];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	TAGGED_FROM(0.00)[bounces-252111-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	GREYLIST(0.00)[pass,body];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_SPAM(0.00)[0.999];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	R_SPF_ALLOW(0.00)[+ip4:104.64.211.4:c];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable,33e571025d88efd1312c];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,appspotmail.com:email,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: 9571559CBF5
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: A622A597924
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Igor Pylypiv <ipylypiv@google.com>
 
-[ Upstream commit a5b98009f16d8a5fb4a8ff9a193f5735515c38fa ]
+[ Upstream commit 8ebf408e7d463eee02c348a3c8277b95587b710d ]
 
-A potential race condition exists between pressure write and cgroup file
-release regarding the priv member of struct kernfs_open_file, which
-triggers the uaf reported in [1].
+Commit 0ea84089dbf6 ("ata: libata-scsi: avoid Non-NCQ command starvation")
+introduced ata_scsi_requeue_deferred_qc() to handle commands deferred
+during resets or NCQ failures. This deferral logic completed commands
+with DID_SOFT_ERROR to trigger a retry in the SCSI mid-layer.
 
-Consider the following scenario involving execution on two separate CPUs:
+However, DID_SOFT_ERROR is subject to scsi_cmd_retry_allowed() checks.
+ATA PASS-THROUGH commands sent via SG_IO ioctl have scmd->allowed set
+to zero. This causes the mid-layer to fail the command immediately
+instead of retrying, even though the command was never actually issued
+to the hardware.
 
-   CPU0					CPU1
-   ====					====
-					vfs_rmdir()
-					kernfs_iop_rmdir()
-					cgroup_rmdir()
-					cgroup_kn_lock_live()
-					cgroup_destroy_locked()
-					cgroup_addrm_files()
-					cgroup_rm_file()
-					kernfs_remove_by_name()
-					kernfs_remove_by_name_ns()
- vfs_write()				__kernfs_remove()
- new_sync_write()			kernfs_drain()
- kernfs_fop_write_iter()		kernfs_drain_open_files()
- cgroup_file_write()			kernfs_release_file()
- pressure_write()			cgroup_file_release()
- ctx = of->priv;
-					kfree(ctx);
- 					of->priv = NULL;
-					cgroup_kn_unlock()
- cgroup_kn_lock_live()
- cgroup_get(cgrp)
- cgroup_kn_unlock()
- if (ctx->psi.trigger)  // here, trigger uaf for ctx, that is of->priv
+Switch to DID_REQUEUE to ensure these commands are inserted back into
+the request queue regardless of retry limits.
 
-The cgroup_rmdir() is protected by the cgroup_mutex, it also safeguards
-the memory deallocation of of->priv performed within cgroup_file_release().
-However, the operations involving of->priv executed within pressure_write()
-are not entirely covered by the protection of cgroup_mutex. Consequently,
-if the code in pressure_write(), specifically the section handling the
-ctx variable executes after cgroup_file_release() has completed, a uaf
-vulnerability involving of->priv is triggered.
-
-Therefore, the issue can be resolved by extending the scope of the
-cgroup_mutex lock within pressure_write() to encompass all code paths
-involving of->priv, thereby properly synchronizing the race condition
-occurring between cgroup_file_release() and pressure_write().
-
-And, if an live kn lock can be successfully acquired while executing
-the pressure write operation, it indicates that the cgroup deletion
-process has not yet reached its final stage; consequently, the priv
-pointer within open_file cannot be NULL. Therefore, the operation to
-retrieve the ctx value must be moved to a point *after* the live kn
-lock has been successfully acquired.
-
-In another situation, specifically after entering cgroup_kn_lock_live()
-but before acquiring cgroup_mutex, there exists a different class of
-race condition:
-
-CPU0: write memory.pressure               CPU1: write cgroup.pressure=0
-===========================		  =============================
-
-kernfs_fop_write_iter()
- kernfs_get_active_of(of)
- pressure_write()
-   cgroup_kn_lock_live(memory.pressure)
-     cgroup_tryget(cgrp)
-     kernfs_break_active_protection(kn)
-     ... blocks on cgroup_mutex
-
-                                     	  cgroup_pressure_write()
-                                     	  cgroup_kn_lock_live(cgroup.pressure)
-                                     	  cgroup_file_show(memory.pressure, false)
-                                     	    kernfs_show(false)
-                                     	      kernfs_drain_open_files()
-                                     	        cgroup_file_release(of)
-                                     	          kfree(ctx)
-                                     	            of->priv = NULL
-                                     	  cgroup_kn_unlock()
-
-   ... acquires cgroup_mutex
-   ctx = of->priv;        // may now be NULL
-   if (ctx->psi.trigger)  // NULL dereference
-
-Consequently, there is a possibility that of->priv is NULL, the pressure
-write needs to check for this.
-
-Now that the scope of the cgroup_mutex has been expanded, the original
-explicit cgroup_get/put operations are no longer necessary, this is
-because acquiring/releasing the live kn lock inherently executes a
-cgroup get/put operation.
-
-[1]
-BUG: KASAN: slab-use-after-free in pressure_write+0xa4/0x210 kernel/cgroup/cgroup.c:4011
-Call Trace:
- pressure_write+0xa4/0x210 kernel/cgroup/cgroup.c:4011
- cgroup_file_write+0x36f/0x790 kernel/cgroup/cgroup.c:4311
- kernfs_fop_write_iter+0x3b0/0x540 fs/kernfs/file.c:352
-
-Allocated by task 9352:
- cgroup_file_open+0x90/0x3a0 kernel/cgroup/cgroup.c:4256
- kernfs_fop_open+0x9eb/0xcb0 fs/kernfs/file.c:724
- do_dentry_open+0x83d/0x13e0 fs/open.c:949
-
-Freed by task 9353:
- cgroup_file_release+0xd6/0x100 kernel/cgroup/cgroup.c:4283
- kernfs_release_file fs/kernfs/file.c:764 [inline]
- kernfs_drain_open_files+0x392/0x720 fs/kernfs/file.c:834
- kernfs_drain+0x470/0x600 fs/kernfs/dir.c:525
-
-Fixes: 0e94682b73bf ("psi: introduce psi monitor")
-Reported-by: syzbot+33e571025d88efd1312c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=33e571025d88efd1312c
-Tested-by: syzbot+33e571025d88efd1312c@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: 0ea84089dbf6 ("ata: libata-scsi: avoid Non-NCQ command starvation")
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cgroup.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ drivers/ata/libata-scsi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index e787dc0eacd7d..97812c0b04dd6 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -3775,33 +3775,41 @@ static int cgroup_cpu_pressure_show(struct seq_file *seq, void *v)
- static ssize_t pressure_write(struct kernfs_open_file *of, char *buf,
- 			      size_t nbytes, enum psi_res res)
- {
--	struct cgroup_file_ctx *ctx = of->priv;
-+	struct cgroup_file_ctx *ctx;
- 	struct psi_trigger *new;
- 	struct cgroup *cgrp;
- 	struct psi_group *psi;
-+	ssize_t ret = 0;
- 
- 	cgrp = cgroup_kn_lock_live(of->kn, false);
- 	if (!cgrp)
- 		return -ENODEV;
- 
--	cgroup_get(cgrp);
--	cgroup_kn_unlock(of->kn);
-+	ctx = of->priv;
-+	if (!ctx) {
-+		ret = -ENODEV;
-+		goto out_unlock;
-+	}
- 
- 	/* Allow only one trigger per file descriptor */
- 	if (ctx->psi.trigger) {
--		cgroup_put(cgrp);
--		return -EBUSY;
-+		ret = -EBUSY;
-+		goto out_unlock;
- 	}
- 
- 	psi = cgroup_psi(cgrp);
- 	new = psi_trigger_create(psi, buf, res, of->file, of);
- 	if (IS_ERR(new)) {
--		cgroup_put(cgrp);
--		return PTR_ERR(new);
-+		ret = PTR_ERR(new);
-+		goto out_unlock;
- 	}
- 
- 	smp_store_release(&ctx->psi.trigger, new);
--	cgroup_put(cgrp);
-+
-+out_unlock:
-+	cgroup_kn_unlock(of->kn);
-+	if (ret)
-+		return ret;
- 
- 	return nbytes;
+diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+index 88689369db03d..e7c78b8d3c2c0 100644
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -1691,7 +1691,7 @@ void ata_scsi_requeue_deferred_qc(struct ata_port *ap)
+ 	/*
+ 	 * If we have a deferred qc when a reset occurs or NCQ commands fail,
+ 	 * do not try to be smart about what to do with this deferred command
+-	 * and simply retry it by completing it with DID_SOFT_ERROR.
++	 * and simply requeue it by completing it with DID_REQUEUE.
+ 	 */
+ 	if (!qc)
+ 		return;
+@@ -1700,7 +1700,7 @@ void ata_scsi_requeue_deferred_qc(struct ata_port *ap)
+ 	ap->deferred_qc = NULL;
+ 	cancel_work(&ap->deferred_qc_work);
+ 	ata_qc_free(qc);
+-	scmd->result = (DID_SOFT_ERROR << 16);
++	scmd->result = (DID_REQUEUE << 16);
+ 	scsi_done(scmd);
  }
+ 
 -- 
 2.53.0
 
