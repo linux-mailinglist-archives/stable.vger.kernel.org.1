@@ -1,210 +1,126 @@
-Return-Path: <stable+bounces-249795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249798-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qIY2MVGGDWpdygUAu9opvQ
-	(envelope-from <stable+bounces-249795-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 12:00:49 +0200
+	id SMfTEkyJDWpdygUAu9opvQ
+	(envelope-from <stable+bounces-249798-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 12:13:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E18658B3F2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 12:00:49 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06EED58B7D7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 12:13:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3A6D0307E9B9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 09:55:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5C694303ECE9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 10:13:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B883D1CA8;
-	Wed, 20 May 2026 09:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D695D3D6479;
+	Wed, 20 May 2026 10:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MMr3ejzB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ob1nUAAM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313833B3C1A
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 09:55:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779270918; cv=pass; b=UEMYGvJXLnj1mOWpGy4pCHoOzvAZcqbmfQpvS74HW3wtoDgzOj44CJr3fK7TnVF2mr7Tw+V5EwGNsugKLn8urzqCYyW5arnIbQxtLuQrnFASXlRTqdfoXNrE/LhfuNC8UCzYVqojRoHZMcD9Tmz2Yqet6gJ6dR0kkogeuv8wULQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779270918; c=relaxed/simple;
-	bh=aqk78QgJ104he+OWGbfDlhysznkZBUE8x0MvCqO2EdY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cnnLpYMpn7prUmRGCH26z4vQurdUuVQ+Yzt8yUTi091bbEZMoTXzJrIRqsfwH2vqJR9IwGhmS9geUP4TVsj4RuCGGdlcTro42MXZvgJs03CiC6z+HAzOQNKLES7Jekg0lfw5kkwmBk75tFHd5m7690VrDOTdEz2zd+j/vpcPnqo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MMr3ejzB; arc=pass smtp.client-ip=209.85.160.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-439cae0dc81so1119090fac.1
-        for <stable@vger.kernel.org>; Wed, 20 May 2026 02:55:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779270916; cv=none;
-        d=google.com; s=arc-20240605;
-        b=HCVRanjryLjLf0Hz8gnJrwYUYK8PxnwqJpY8DCW3RwCR3Oz1gJe8yNJHzrfA5p0mHm
-         kMKxi9pYE96VEn71u7mP+IAMqn4OP0vVzHIm64hcg4ZEF45ncsbfu+k2BvvK3Es825ut
-         Y4dhuH+Nal8VON477JY7GbHIADWxPiPAVXZUQnep89eXX8Wkk7Yy6cIvTDwBT1RjjPU9
-         MEFRO9g0iyfnJyEf9ONcFK2ZYtjnYG11As2dO1w+otIDYbOyNJ7yCKwr4osEoXWan8Jq
-         RtwCYxs7j8MOd1FPeUEMgMbyOjXMcWuGeByLd+0nghxlW6IqSD/1xkomOpRBtrMC0gtM
-         bdPg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=aqk78QgJ104he+OWGbfDlhysznkZBUE8x0MvCqO2EdY=;
-        fh=vYqjDj3srS9NhIdl+GE+cSGW6bgw+/ep7esPN4UWYLw=;
-        b=MlDPolDjqMq/YF+a5/Mgv4YFaKSnCAZaeLsOxhjm4RFKF99P0BUeZpaR1xXcs2+R6f
-         sZ86wqxUvW+N5W5PbonshtNJLp08A6JrgQAae3E+mVYkhMaax5FVDf6uxUZHqEVP+Eju
-         50rCp/+8iDlp2J7GQZ/7qcxAwp/ooR6iMuq+fUvleeZszHcy8DsXp4qEJxWWNI1IrOsi
-         iCnGM7uINnSU/V/b7Jg1+RjFR6j98ThicxJZ/HhB6asz32BQgPgP5Fc27oBqtcZv4K7L
-         mhw4oNLsKXhjD59EOl7kOEd6TSXIKvxuoAA+r3c6qZUkliiopPhGVexz3FQU7qJvsGll
-         Rq1g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779270916; x=1779875716; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aqk78QgJ104he+OWGbfDlhysznkZBUE8x0MvCqO2EdY=;
-        b=MMr3ejzBNVvIoAlR0TGaxSG/E6OU6K6uyPaUmN85APANsp5qPgimkLDttK//EJkVPY
-         CTJCouFHyaWdaitnYASVw2xy3TR8HqmIWKXBWNKusKmzpUAz0fnVFhFsQ8sJA9SuijIv
-         8fgIawurWtIF1f0Vs+J9L9kMBTHReAKpSW6Ed6Yap7OnD+NvOoYOGfWsNCbWaukcLjPn
-         eWD0J11ZjvQzp02JKe7foIB2oFdOTomgFmJglAzunlUzaisIEOlal55tV5FusSjruzh3
-         aJIJYwAg1x3N/AQmSVvMqUG56qqxcBzRePo6tJhxqCNg5YdKwWCAVr3EqdmJbodRVxR2
-         EiGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779270916; x=1779875716;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=aqk78QgJ104he+OWGbfDlhysznkZBUE8x0MvCqO2EdY=;
-        b=hOhPn5/9Q+pCoR+/Pmtq+8ue1Gmcb7mg1ikdhSB3UkNBedGLQZZw+IpBMaocLukINL
-         j+xeNmXQssYWP9LkIpW8L1Y1CQ+hWn4vJwFxb2oRwTIXMx8zip8hYf3QByrIwX/K35WX
-         qAgzgCpML2fy3zD4/v7NUbygx0cS5AEWP9X57nnwVOVXoSsFGWYM6Kn+6trJaLJ61jTk
-         LSxii4ywd5ieu3Izmkkm4g3BDYepZ25qqMh5Gl2tCkORsgpMe7Xhhidzyo6pB+f/Jz6a
-         QAKlqXiejrVkkljvc5AE9oZPUB3gU+m4QtCsNPQrgU2GHFJPXyrAQ4uzooeiyYAaEyOO
-         cvEA==
-X-Forwarded-Encrypted: i=1; AFNElJ9Ui70Xfi/IYT/k9xYgrYbnIhai9udvRZlIh5OXKunZKVqqRH2EGsct7VLYQqZYKF5Kg2wIDF4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTUjW9IgkijfH7OXDHkvxPat0N6gsi6FNHLUPNPOMyoU8cqfgo
-	w3rg+qOFhs4rck1v2INPnGyKcfn9+r4p68wRiLruiScMoyqW0+tGf/fTlgfi1tcvkzou5XpVRu+
-	/o35E5ubs0DB/96kNH4dLqUIGFPTvGb60CzQTgclf7g==
-X-Gm-Gg: Acq92OHf6n8iMYFFl2R20V3476s5FltLl0ciVAQj4LC/ETSQynciW8gn/s2oR1D5xpL
-	r+NYb3mbuQBDGtb0qgWdPSNJ5vvI51Bz2dzsrNE4V5xON5JTVWXsMmat2i6N90p/lQs473DOaEV
-	eZ+agu2/7s/VvPmxQy7zMc+rcb1D6OUMAcAhfuPg4/yFIEF2szM9SBUgByJoeTNl0Dr4DlsGRUg
-	P6i6vsD+Uip8Cx2GiUUQmKYq2W6L2SXL7/lNGlYqnKa4YTObh+etnur9qWqGrRctwYep0GPHmvZ
-	J+QxgB/y
-X-Received: by 2002:a05:6871:85d3:10b0:43a:e061:c99d with SMTP id
- 586e51a60fabf-43ae061e95dmr2646830fac.7.1779270916227; Wed, 20 May 2026
- 02:55:16 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A95973CFF7E;
+	Wed, 20 May 2026 10:13:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779271987; cv=none; b=hi2kvh1P2HKAnZhIz2QHv5VQzwtFYzRyVQERH59pQDidi7dd1V15CGjN07J3BYopnm3JOrGZ1RAyof5QvIzdZFtr492GAg0UCC/1N6gH76YlZYK+KweHaFResEiMNNZLxQ5S20QOvOwoSSVZiDCh1qCjztY1bGhzuO6lTm2ShJ0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779271987; c=relaxed/simple;
+	bh=+5WIfa1cTbG74ah2/gMk5Y5G5l9wp7C7p78BaSEI0cg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VpHWVUv9HNQuYrM6Yee2DAx1C+fmLgtms/jJe/9zWKRjjBhwKSDFZaiOqvp29OAoOQfah433VDs75lq/k36OlI4EGowgIDenEKpoRwrVgBAPKKDwQ/QzVVz+MtwMLoslSYpNMXGUDkV/w14j3Y7yLwA9HG/4sxVtZ6dJ0SemY78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ob1nUAAM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D811F00893;
+	Wed, 20 May 2026 10:13:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779271986;
+	bh=vS4iz4rZse6XbTnPwVMgqalS3oYcI+kt6rMOGfXvAjs=;
+	h=From:To:Cc:Subject:Date;
+	b=Ob1nUAAM+KQ1hwg6M2mwhwC86hzivP3nRZa2oGKfXIDh64Ymh+yznMV+Xh79h3oKF
+	 qMnVmb7+IxkZcyRsDEcdxs23jp7g+GcI+RtFNUt7KQiETrg2z7cbHdtF2GnX5DVnwq
+	 ySdOnxMZ9VABie/5kYLD2lvLD0lkrUzIQn8V3BE5eAQjNxMIKDRCKy3jOzGdQY1q7l
+	 3HrNbX6YzKIDfEJr8G7CbIozuRlzbA4/Pefru/hiNGmPXNzlBxh/klCpCaNEkcuaOx
+	 Z8CFAmCuIxopnZM2++NiN2XbxE/FXNVlCTMhDLgM8I2SPXffwg+bXOfJ7Se5/cz3Hl
+	 1k09Q4qcOK2zA==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1wPdvD-00000002l2Q-37nQ;
+	Wed, 20 May 2026 12:13:03 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Johan Hovold <johan@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] USB: serial: keyspan: fix missing indat transfer sanity check
+Date: Wed, 20 May 2026 12:12:30 +0200
+Message-ID: <20260520101230.657426-1-johan@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260518170147.13885-1-lucid_duck@justthetip.ca>
- <20260519235713.49109-1-lucid_duck@justthetip.ca> <20260519235713.49109-2-lucid_duck@justthetip.ca>
- <CA+bbHrUcwtNhatzV+ufa8O3Wrku2_W4-UL=3XMy4-kg9qiOdXw@mail.gmail.com>
- <a36b5712dd420da4090bfa8868e78b1b2b90c916.camel@sipsolutions.net>
- <CA+bbHrV3fFHWevyDGPtAS=2M2mc+LxP6=xA-5fXaiTKTD=R31g@mail.gmail.com>
- <739ba20fa3c88e92bf034d80383015b8bc78ebfe.camel@sipsolutions.net>
- <CA+bbHrUqh+nu_eKBMVaPH6Q8YxuKS=S0kON2Zsb+gRZHU=SBPA@mail.gmail.com> <e73634b3b52d9ebe6c4e339ea5f6c35cb6d433a7.camel@sipsolutions.net>
-In-Reply-To: <e73634b3b52d9ebe6c4e339ea5f6c35cb6d433a7.camel@sipsolutions.net>
-From: =?UTF-8?B?w5NzY2FyIEFsZm9uc28gRMOtYXo=?= <oscar.alfonso.diaz@gmail.com>
-Date: Wed, 20 May 2026 11:55:05 +0200
-X-Gm-Features: AVHnY4Id6Yle6QkH4Hljq9XolpLHRYF8rDV8ZoJve7dZ581wt_uk2wJ9p8JWBdw
-Message-ID: <CA+bbHrXtEdHEDHDb+8KNaKu=ODvkYwjiEEOtU2HntSRb8-WZ5g@mail.gmail.com>
-Subject: Re: [PATCH v4] wifi: mac80211: fix monitor mode frame capture for
- real chanctx drivers
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Devin Wittmayer <lucid_duck@justthetip.ca>, linux-wireless@vger.kernel.org, 
-	Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, fjhhz1997@gmail.com, 
-	Brite <brite.airgeddon@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-0.10 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	R_MIXED_CHARSET(0.56)[subject];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249795-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-249798-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[justthetip.ca,vger.kernel.org,nbd.name,kernel.org,gmail.com];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[oscaralfonsodiaz@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sipsolutions.net:email]
-X-Rspamd-Queue-Id: 2E18658B3F2
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 06EED58B7D7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Ok, I'll do the testing using this one you suggested:
-https://patchwork.kernel.org/project/linux-wireless/patch/20260519235713.49=
-109-2-lucid_duck@justthetip.ca/
+Add the missing sanity check on the size of usa49wg indat transfers to
+avoid parsing stale or uninitialised slab data.
 
-Thanks.
---
-Oscar
+Fixes: 0ca1268e109a ("USB Serial Keyspan: add support for USA-49WG & USA-28XG")
+Cc: stable@vger.kernel.org	# 2.6.23
+Signed-off-by: Johan Hovold <johan@kernel.org>
+---
+ drivers/usb/serial/keyspan.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-OpenPGP Key: DA9C60E9 ||
-https://pgp.mit.edu/pks/lookup?op=3Dget&search=3D0x79B17260DA9C60E9
-4F74 B302 354D 817D DE38 0A43 79B1 7260 DA9C 60E9
---
+diff --git a/drivers/usb/serial/keyspan.c b/drivers/usb/serial/keyspan.c
+index 46448843541a..a267bc51afc1 100644
+--- a/drivers/usb/serial/keyspan.c
++++ b/drivers/usb/serial/keyspan.c
+@@ -1187,6 +1187,10 @@ static void usa49wg_indat_callback(struct urb *urb)
+ 	len = 0;
+ 
+ 	while (i < urb->actual_length) {
++		if (urb->actual_length - i < 3) {
++			dev_warn_ratelimited(&serial->dev, "malformed indat packet\n");
++			break;
++		}
+ 
+ 		/* Check port number from message */
+ 		if (data[i] >= serial->num_ports) {
+-- 
+2.53.0
 
-El mi=C3=A9, 20 may 2026 a las 11:53, Johannes Berg
-(<johannes@sipsolutions.net>) escribi=C3=B3:
->
-> On Wed, 2026-05-20 at 11:51 +0200, =C3=93scar Alfonso D=C3=ADaz wrote:
-> > Ok, let me do one final test using Johannes=E2=80=99 v2 patch. The expe=
-cted
-> > behavior is as follows:
-> >
-> > 6.18 or lower: no need to test, it will not work. It=E2=80=99s clear no=
-w that
-> > this does not matter, since the goal is only to fix newer kernel
-> > versions.
-> >
-> > 6.19: some versions of the 6.19 will crash and others will not. The
-> > crash was fixed at some point between 6.18.12 and 6.19.12. No need to
-> > test.
-> >
-> > 7.0, or 7.1: the expected result is that there will be no crash, and
-> > VIF + deauth will work only on 2.4 GHz. It will not work on 5 GHz
-> > (I'll test both, normal DoS and VIF+DoS). There should be no crash,
-> > but it will not work.
-> >
-> > So I'll focus my testing on 7.0 and 7.1 and I'll get back to you with
-> > the results. I'll be testing this patch (v2):
-> > https://patchwork.kernel.org/project/linux-wireless/patch/2025121611190=
-9.25076-2-johannes@sipsolutions.net/
-> >
->
-> Thanks. For testing that one you'd have to revert the other first, I
-> think, you could also just test this one:
->
-> https://patchwork.kernel.org/project/linux-wireless/patch/20260519235713.=
-49109-2-lucid_duck@justthetip.ca/
->
-> But I think they're basically all equivalent.
->
-> Since we eventually need a patch to apply w/o reverting, Devin's is
-> probably better than my old one.
->
-> johannes
 
