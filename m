@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-250271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251241-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GOqPJ/DlDWpz4gUAu9opvQ
-	(envelope-from <stable+bounces-250271-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:48 +0200
+	id GGaHLKXwDWqo4wUAu9opvQ
+	(envelope-from <stable+bounces-251241-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:34:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F7715927DD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AD36593FE6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:34:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5751230A83C8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:37:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EFC973153CA3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:17:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C1523B61B;
-	Wed, 20 May 2026 16:36:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 318C036A376;
+	Wed, 20 May 2026 17:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZGg9zNuo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dQlK6SL1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED4236494B;
-	Wed, 20 May 2026 16:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27EC366075;
+	Wed, 20 May 2026 17:17:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294975; cv=none; b=CMPEmpGv8bPMIUGEUBx3lwDuZUwdM08upP3wQZBAsFUthj2EfWeffsw9BKOidUCtnod03KkstAWLuEsOtNfbw6VFz5IZ+e483ryOqPNo4oZ5BLbJv1nJlf5BYzMZ2pmBHIPTqNOTJ2Rew84LXRDAzmNyMsbsk0sv3n1cQrpya3Q=
+	t=1779297469; cv=none; b=oTmlhxkOZMldGvz8mNRU+5kNCHOwRL6WuftuFfDz3fuhwq9ijdSJTf5GvFAh9b3EzmdfEaUbib+NN2dCVidkGLAmZR7cxb78jUSxKuOe99AbTMapG4TauG5lGhuaPk3XHfzkh9bGInQXWk/EklcTUq9ezw+HBi3GJvUW/PxoqFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294975; c=relaxed/simple;
-	bh=VkCUCdby4hI63G9U0RYiSbmVFRE/seDt+ZkIypzMW40=;
+	s=arc-20240116; t=1779297469; c=relaxed/simple;
+	bh=TZf5bVz9MBsFyfhoQewSOk8zs6Nxgoz0rUYzczHkGig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KeE1OVBzWzis3ZGOLKU+29CrNaKhLTIA2mx7YKejBHhOv8wCV3NZ7T4t0Egbfc2oJ6Nl+2BS0klb2DB37Yk3Ff5Z15BgBXfoNG0lvgmNkxxJrz/QdSrsMH+F38d2ZkhjQs5uDjmjqSBh3plfI2V0tkgB0/zzyDjwWdTKy+3NrRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZGg9zNuo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B392F1F000E9;
-	Wed, 20 May 2026 16:36:13 +0000 (UTC)
+	 MIME-Version; b=TN+dPa7rwOYdN9mFMmp9wlsORJb9xp/FfGMzvcjmqEJqYdSJlSuXKn4r0o2Z9oIAlM7S3XwNan3KeuTX/TU5IT0aVuapLgsAzxMVKVkqH+gxxMoeZcpA6wGbjULssy3z5gdItk2TgMKUSVS1aZxIhOoQZQWMVtNFm0WwwPg+C08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQlK6SL1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42DCB1F000E9;
+	Wed, 20 May 2026 17:17:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294974;
-	bh=ZtDqVT+ROZtTbTEMdj3c10bE44UkjzJnJu7/alHEqNI=;
+	s=korg; t=1779297467;
+	bh=Xg9sSSWa+3enJq6O+W5IilsZ8SU04pFja3AVLpRHr0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZGg9zNuoyE7X6K19XrDFMu38Taf4kBgFryjXe68GLImMN1GHMXJ0llVZlY/SZ5nYA
-	 bd0u3SJ/JCTbKXQNusF9OgjwbNdXlGxUdkNojHnY8a4xR1s1LgwaPt00PCx5+7wf5q
-	 O7UEy0NYFUUP9SIqggm5wMDwCbtYNuZWFbBB8wt0=
+	b=dQlK6SL1aXKdiKZVVTbBdZOewRmXUQRT5WVv7tTZE3jWrnyJs15YXe8BaSaMtfDFQ
+	 t1mu2tShFOlu1OreU+C1a4biPUKzlwRdaxLw3jQK4WL1kReoNQpxMoNj7ke8Oz2wXA
+	 aqOUJGKzHDZwe/KxZ0zvS9yvir2mK8Vsg61gEDA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eliot Courtney <ecourtney@nvidia.com>,
-	Gary Guo <gary@garyguo.net>,
-	Alexandre Courbot <acourbot@nvidia.com>,
+	Cole Leavitt <cole@unwrap.rs>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0242/1146] gpu: nova-core: gsp: fix improper handling of empty slot in cmdq
+Subject: [PATCH 6.18 009/957] pstore/ram: fix resource leak when ioremap() fails
 Date: Wed, 20 May 2026 18:08:12 +0200
-Message-ID: <20260520162153.717143999@linuxfoundation.org>
+Message-ID: <20260520162134.764327286@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,104 +68,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250271-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251241-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,nvidia.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,garyguo.net:email]
-X-Rspamd-Queue-Id: 5F7715927DD
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 2AD36593FE6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eliot Courtney <ecourtney@nvidia.com>
+From: Cole Leavitt <cole@unwrap.rs>
 
-[ Upstream commit f64caf673cb5add9ac2065609a52049e2317c498 ]
+[ Upstream commit 2ddb69f686ef7a621645e97fc7329c50edf5d0e5 ]
 
-The current code hands out buffers that go all the way up to and
-including `rx - 1`, but we need to maintain an empty slot to prevent the
-ring buffer from wrapping around into having 'tx == rx', which means
-empty.
+In persistent_ram_iomap(), ioremap() or ioremap_wc() may return NULL on
+failure. Currently, if this happens, the function returns NULL without
+releasing the memory region acquired by request_mem_region().
 
-Also add more rigorous no-panic proofs.
+This leads to a resource leak where the memory region remains reserved
+but unusable.
 
-Fixes: 75f6b1de8133 ("gpu: nova-core: gsp: Add GSP command queue bindings and handling")
-Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://patch.msgid.link/20260129-nova-core-cmdq1-v3-4-2ede85493a27@nvidia.com
-Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+Additionally, the caller persistent_ram_buffer_map() handles NULL
+correctly by returning -ENOMEM, but without this check, a NULL return
+combined with request_mem_region() succeeding leaves resources in an
+inconsistent state.
+
+This is the ioremap() counterpart to commit 05363abc7625 ("pstore:
+ram_core: fix incorrect success return when vmap() fails") which fixed
+a similar issue in the vmap() path.
+
+Fixes: 404a6043385d ("staging: android: persistent_ram: handle reserving and mapping memory")
+Signed-off-by: Cole Leavitt <cole@unwrap.rs>
+Link: https://patch.msgid.link/20260225235406.11790-1-cole@unwrap.rs
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/nova-core/gsp/cmdq.rs | 34 ++++++++++++++++++-------------
- 1 file changed, 20 insertions(+), 14 deletions(-)
+ fs/pstore/ram_core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/gsp/cmdq.rs
-index fc4e7b1074307..5da153c71800a 100644
---- a/drivers/gpu/nova-core/gsp/cmdq.rs
-+++ b/drivers/gpu/nova-core/gsp/cmdq.rs
-@@ -237,21 +237,27 @@ impl DmaGspMem {
-         // PANIC: per the invariant of `cpu_write_ptr`, `tx` is `<= MSGQ_NUM_PAGES`.
-         let (before_tx, after_tx) = gsp_mem.cpuq.msgq.data.split_at_mut(tx);
+diff --git a/fs/pstore/ram_core.c b/fs/pstore/ram_core.c
+index 7b6d6378a3b87..95675d4bab141 100644
+--- a/fs/pstore/ram_core.c
++++ b/fs/pstore/ram_core.c
+@@ -489,6 +489,10 @@ static void *persistent_ram_iomap(phys_addr_t start, size_t size,
+ 	else
+ 		va = ioremap_wc(start, size);
  
--        if rx <= tx {
--            // The area from `tx` up to the end of the ring, and from the beginning of the ring up
--            // to `rx`, minus one unit, belongs to the driver.
--            if rx == 0 {
--                let last = after_tx.len() - 1;
--                (&mut after_tx[..last], &mut [])
--            } else {
--                (after_tx, &mut before_tx[..rx])
--            }
-+        // The area starting at `tx` and ending at `rx - 2` modulo MSGQ_NUM_PAGES, inclusive,
-+        // belongs to the driver for writing.
++	/* We must release the mem region if ioremap fails. */
++	if (!va)
++		release_mem_region(start, size);
 +
-+        if rx == 0 {
-+            // Since `rx` is zero, leave an empty slot at end of the buffer.
-+            let last = after_tx.len() - 1;
-+            (&mut after_tx[..last], &mut [])
-+        } else if rx <= tx {
-+            // The area is discontiguous and we leave an empty slot before `rx`.
-+            // PANIC:
-+            // - The index `rx - 1` is non-negative because `rx != 0` in this branch.
-+            // - The index does not exceed `before_tx.len()` (which equals `tx`) because
-+            //   `rx <= tx` in this branch.
-+            (after_tx, &mut before_tx[..(rx - 1)])
-         } else {
--            // The area from `tx` to `rx`, minus one unit, belongs to the driver.
--            //
--            // PANIC: per the invariants of `cpu_write_ptr` and `gsp_read_ptr`, `rx` and `tx` are
--            // `<= MSGQ_NUM_PAGES`, and the test above ensured that `rx > tx`.
--            (after_tx.split_at_mut(rx - tx).0, &mut [])
-+            // The area is contiguous and we leave an empty slot before `rx`.
-+            // PANIC:
-+            // - The index `rx - tx - 1` is non-negative because `rx > tx` in this branch.
-+            // - The index does not exceed `after_tx.len()` (which is `MSGQ_NUM_PAGES - tx`)
-+            //   because `rx < MSGQ_NUM_PAGES` by the `gsp_read_ptr` invariant.
-+            (&mut after_tx[..(rx - tx - 1)], &mut [])
-         }
-     }
- 
+ 	/*
+ 	 * Since request_mem_region() and ioremap() are byte-granularity
+ 	 * there is no need handle anything special like we do when the
 -- 
 2.53.0
 
