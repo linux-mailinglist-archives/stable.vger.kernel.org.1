@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-253019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253030-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6NxaJucADmo95QUAu9opvQ
-	(envelope-from <stable+bounces-253019-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:51 +0200
+	id 2D8JG+8ADmo95QUAu9opvQ
+	(envelope-from <stable+bounces-253030-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 411D159719F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:51 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E131E5971C2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E7B623028EC4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D6410317E0B9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:37:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DFEB369D7A;
-	Wed, 20 May 2026 18:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19726DF59;
+	Wed, 20 May 2026 18:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oSR0ehpY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nhXezcbm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA92272E56;
-	Wed, 20 May 2026 18:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4B7331A41;
+	Wed, 20 May 2026 18:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302192; cv=none; b=Io3uhmVhxmMrMgCMFnFMJhEvyMPIYau6oQxh+4w5DIU/cwmsmrEexn16cDDBrgHq8HObljepMlkOgEO7pbh6lUJUiH4qI+RoDre8ScKV/w1pKWGOxpAU8AUgB/nde7Fk44DhtsqXjLlLIS5iwk+fvMG24HasBb3ig1VE8dPEWuc=
+	t=1779302220; cv=none; b=kwT+//4TQSpR2IvgoGkcaitW9sSO/BjzSlNVh7jOZITcV7f4zk1oDxoV9pQ/VjBRQ/97sudGcOzghgpzigxethOaR6y/LMnE2p2QuXkxQ4R1H7MOT49zHQZDJm9+1xgWOCTjGsMPCRGNJUkuDlberOmtZEl79sYa8xqyJB6FP/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302192; c=relaxed/simple;
-	bh=yu9BDYruO//a0hday1UWtMS1v9PklUBI7m8R919xYdo=;
+	s=arc-20240116; t=1779302220; c=relaxed/simple;
+	bh=FA9xhnzKczuAAD7DbR0xyL09bUo8h1WWwO5Za4x/+Vs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BuKYncGgUHxOEDfaYFXuZ4MfEeFr8zJWQUsmEdJ+RhGUepv8js5C7x0kOfw8enq79kt1xLvA7TIG9gSZ1eemxTaVmjLS+mtwy5g9PK6RYXP0X8p8rZkAWCIvrq4hRnpCnnpYgR3+wWMbkxpf4JDW1ptlIIIXMFALuyPXsA2G/n4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oSR0ehpY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 437411F000E9;
-	Wed, 20 May 2026 18:36:30 +0000 (UTC)
+	 MIME-Version; b=fl0yIGa6SsENjKN8s1DO5n2i/qniL7A/RUkOd9xx0GQiGIjdutrjdjRBS0tgBqXmdlp4wtWVu6H4CCV9TkbTPDaEjZu1dta0PS6jyAYAAReYiMF49I8jQalTpcGzZAZgYFHNAQfNyjDKytuF0soJqL5OvX3PbWwhllKQF2CU6Pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nhXezcbm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E1791F000E9;
+	Wed, 20 May 2026 18:36:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302190;
-	bh=Sy5C7SiXcYG0hhpiefSzO9Ej+BT0Vw9tizMCrpOZfpg=;
+	s=korg; t=1779302219;
+	bh=dLQZojlbwHlhPmkxshHdQV6Rm8ATwp1kJTDx+ZqUyJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oSR0ehpYrgkdqwGYq26CnxFp0QlWbe78rggoKgxlotoZfRApithJarJ9j+Cj+NF9N
-	 +u2NgxloK1OWRf3HxP/6XEFCu9ROVM5XbxeFSJCtMWwn590763YGHMYSNC04P38RE4
-	 Xf6GABPmkhMC11yp7pvCrMPc+THX0j8xmm//9Zko=
+	b=nhXezcbm+ZoEqMKpNkY+uobyBu+yhApeIMON/ioBa1GjXlJAKCyrGvw/gagAXajxJ
+	 KleW3pCgDMTfPpyIgGX4rv7vm6yimMrjasjn5shhBmSTrkpOxJrIoURIl5Q2wIxYid
+	 1y4jkWKWSUc3nnh3KB9eqFpnD7V88CEXV61qw2JE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Vidya Sagar <vidyas@nvidia.com>,
+	Pei Xiao <xiaopei01@kylinos.cn>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 166/508] PCI: dwc: Apply ECRC workaround to DesignWare 5.00a as well
-Date: Wed, 20 May 2026 18:19:49 +0200
-Message-ID: <20260520162102.236581511@linuxfoundation.org>
+Subject: [PATCH 6.6 167/508] spi: mtk-snfi: unregister ECC engine on probe failure and remove() callback
+Date: Wed, 20 May 2026 18:19:50 +0200
+Message-ID: <20260520162102.257592617@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
 References: <20260520162058.573354582@linuxfoundation.org>
@@ -69,33 +66,33 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253019-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253030-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 411D159719F
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,kylinos.cn:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: E131E5971C2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,61 +100,57 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-[ Upstream commit 40805f32dceadebb7381d911003100bec7b8cd51 ]
+[ Upstream commit ab00febad191d7a4400aa1c3468279fb508258d4 ]
 
-The ECRC (TLP digest) workaround was originally added for DesignWare
-version 4.90a. Tegra234 SoC has 5.00a DWC HW version, which has the same
-ATU TD override behaviour, so apply the workaround for 5.00a too.
+mtk_snand_probe() registers the on-host NAND ECC engine, but teardown was
+missing from both probe unwind and remove-time cleanup. Add a devm cleanup
+action after successful registration so
+nand_ecc_unregister_on_host_hw_engine() runs automatically on probe
+failures and during device removal.
 
-Fixes: a54e19073718 ("PCI: tegra194: Add Tegra234 PCIe support")
-Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
-Link: https://patch.msgid.link/20260324190755.1094879-13-mmaddireddy@nvidia.com
+Fixes: 764f1b748164 ("spi: add driver for MTK SPI NAND Flash Interface")
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Link: https://patch.msgid.link/20263f885f1a9c9d559f95275298cd6de4b11ed5.1775546401.git.xiaopei01@kylinos.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-designware.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/spi/spi-mtk-snfi.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware.c b/drivers/pci/controller/dwc/pcie-designware.c
-index 46b12e157bebe..504450a8b6a45 100644
---- a/drivers/pci/controller/dwc/pcie-designware.c
-+++ b/drivers/pci/controller/dwc/pcie-designware.c
-@@ -426,13 +426,13 @@ static inline void dw_pcie_writel_atu_ob(struct dw_pcie *pci, u32 index, u32 reg
- static inline u32 dw_pcie_enable_ecrc(u32 val)
- {
- 	/*
--	 * DesignWare core version 4.90A has a design issue where the 'TD'
--	 * bit in the Control register-1 of the ATU outbound region acts
--	 * like an override for the ECRC setting, i.e., the presence of TLP
--	 * Digest (ECRC) in the outgoing TLPs is solely determined by this
--	 * bit. This is contrary to the PCIe spec which says that the
--	 * enablement of the ECRC is solely determined by the AER
--	 * registers.
-+	 * DWC versions 0x3530302a and 0x3536322a have a design issue where
-+	 * the 'TD' bit in the Control register-1 of the ATU outbound
-+	 * region acts like an override for the ECRC setting, i.e., the
-+	 * presence of TLP Digest (ECRC) in the outgoing TLPs is solely
-+	 * determined by this bit. This is contrary to the PCIe spec which
-+	 * says that the enablement of the ECRC is solely determined by the
-+	 * AER registers.
- 	 *
- 	 * Because of this, even when the ECRC is enabled through AER
- 	 * registers, the transactions going through ATU won't have TLP
-@@ -502,7 +502,7 @@ static int __dw_pcie_prog_outbound_atu(struct dw_pcie *pci, u8 func_no,
- 	if (upper_32_bits(limit_addr) > upper_32_bits(cpu_addr) &&
- 	    dw_pcie_ver_is_ge(pci, 460A))
- 		val |= PCIE_ATU_INCREASE_REGION_SIZE;
--	if (dw_pcie_ver_is(pci, 490A))
-+	if (dw_pcie_ver_is(pci, 490A) || dw_pcie_ver_is(pci, 500A))
- 		val = dw_pcie_enable_ecrc(val);
- 	dw_pcie_writel_atu_ob(pci, index, PCIE_ATU_REGION_CTRL1, val);
+diff --git a/drivers/spi/spi-mtk-snfi.c b/drivers/spi/spi-mtk-snfi.c
+index 4433a8a9299f6..22f3b22d77ad8 100644
+--- a/drivers/spi/spi-mtk-snfi.c
++++ b/drivers/spi/spi-mtk-snfi.c
+@@ -1307,6 +1307,13 @@ static const struct spi_controller_mem_caps mtk_snand_mem_caps = {
+ 	.ecc = true,
+ };
  
++static void mtk_unregister_ecc_engine(void *data)
++{
++	struct nand_ecc_engine *eng = data;
++
++	nand_ecc_unregister_on_host_hw_engine(eng);
++}
++
+ static irqreturn_t mtk_snand_irq(int irq, void *id)
+ {
+ 	struct mtk_snand *snf = id;
+@@ -1487,6 +1494,13 @@ static int mtk_snand_probe(struct platform_device *pdev)
+ 		goto disable_clk;
+ 	}
+ 
++	ret = devm_add_action_or_reset(&pdev->dev, mtk_unregister_ecc_engine,
++				       &ms->ecc_eng);
++	if (ret) {
++		dev_err_probe(&pdev->dev, ret, "failed to add ECC unregister action\n");
++		goto release_ecc;
++	}
++
+ 	ctlr->num_chipselect = 1;
+ 	ctlr->mem_ops = &mtk_snand_mem_ops;
+ 	ctlr->mem_caps = &mtk_snand_mem_caps;
 -- 
 2.53.0
 
