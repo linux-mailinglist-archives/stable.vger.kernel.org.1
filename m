@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-253083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251988-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YGIcDYUFDmqs5QUAu9opvQ
-	(envelope-from <stable+bounces-253083-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:03:33 +0200
+	id QHXdOtv9DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-251988-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:30:51 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A341597A44
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:03:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D3F259666D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:30:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 77EB3395BC3E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:45:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 57C1A37A76FE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:50:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8E663FE35F;
-	Wed, 20 May 2026 18:39:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E24EB3F23BF;
+	Wed, 20 May 2026 17:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GRtNjWvz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BUL/vQYx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D1C844BCAA;
-	Wed, 20 May 2026 18:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A3C2F363F;
+	Wed, 20 May 2026 17:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302360; cv=none; b=j2UB+dPSHbfq5LmDE0xfy/iAxRp4skCYTyyFvObxDqe1FIzK2ZaCpca+PWJECHVVaD5c8NgfuWznRbiHcvJvAqKLrJ2N438Wzd+6oHZ7++vuxxL3noNYX4uMkGej+x6cPI2wGm8EDOtyRdq/pb8GmilZYiqkjtWBhezVpiRtxvc=
+	t=1779299451; cv=none; b=hR4crZAKrLZu1wcm1BHX5NGSf60rfS44vDuWhdAHhh4SyvE9Sgfe3nQBrFuGjpqXj5jnTzTJeAfW7UTgTgbTTxRWbB5uq/0++tjkkioHzydSaE4TyrHZdJTFjsttzbstPE3L2/8XFGp3DHyRq37Nyig3+bvdxL6YyXVWsYfpWNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302360; c=relaxed/simple;
-	bh=LSXDXobJPuBF0Xg6M3YHWw/NO2I8V0ZvQgWcNVnKydY=;
+	s=arc-20240116; t=1779299451; c=relaxed/simple;
+	bh=ghO5dY0je5G4abV07GLxyN1CYAPojMWFecYeX/3lp7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p7eH3OB1l9LI7ND0ATolQpH3cF2Fq3FeCSWRDnkquyIx8XO8KdK/HDBPWpkYDo21cUr0WNoze2Ha7rxaL63aGA6+VmRrQauATEaNZixFTGFzIUsM1NnGKo/lZR4zZP5PtczCm41T1rQBlknP3zqoM5JTJtZ6LnNsjLnn9C+ZoUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GRtNjWvz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C081D1F00893;
-	Wed, 20 May 2026 18:39:18 +0000 (UTC)
+	 MIME-Version; b=SGQGmgY+ig7RtF/uOz82MdS/Y7vvL7HJhXJUU2JS2iPnFeMF2IIhbWiJr0f10eiphRDqZl1Me/2id7xggsQ6bwrWcImy/bBkOeR+4EVjxdS7oRNmUSyEyoO/+/1YnMJ5Q4uh09mkzjjra7Jvf2Qmq1RYuHZ2vDv5i9bJyfjeYqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BUL/vQYx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEFEA1F000E9;
+	Wed, 20 May 2026 17:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302359;
-	bh=OHyQVv+iLg7sDrhR3hHQxfv4phLL9+yK33HH+pSaqZM=;
+	s=korg; t=1779299450;
+	bh=Bx+mP6ybNf6/zISk8Fy2dVm8+IwPgPU0fsK6OjCLPos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GRtNjWvzGjP3PyQUnezjrVwOgXwTKoIzHNO/ct7t53t9tHRPt+57f7YtByxNOe4RX
-	 vqhFrfejuIwKInzea85BplLU7RHea2o67jNHVKqnDOqU5ZI4AFWc+VIMz/bex4Kqmn
-	 9eOU+HgxBPyTNn4P1fwiVPziRkM7KHnOTeJ36Q9s=
+	b=BUL/vQYxNCjVMYtJ+rZ/ZmB8nXIQJRBHjtWOVIczkHlL/mv/ku+ae8yMyj0wq2I2P
+	 FEkJFRTdXl5N441nhvNeN5sPody7JuPcJPWqoSZvvH03fPOboyz2oV3KozfieGfyGJ
+	 LSfvP45DmAOe6Jq8JwliuOSlQNDqHokaCQL60baw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Michal Luczaj <mhal@rbox.co>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Haoze Xie <royenheart@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 237/508] bpf, sockmap: Fix af_unix iter deadlock
+Subject: [PATCH 6.18 777/957] vrf: Fix a potential NPD when removing a port from a VRF
 Date: Wed, 20 May 2026 18:21:00 +0200
-Message-ID: <20260520162103.784690049@linuxfoundation.org>
+Message-ID: <20260520162151.411364298@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,125 +79,139 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253083-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-251988-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,rbox.co:email,linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 6A341597A44
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 5D3F259666D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 4d328dd695383224aa750ddee6b4ad40c0f8d205 ]
+[ Upstream commit 2674d603a9e6970463b2b9ebcf8e31e90beae169 ]
 
-bpf_iter_unix_seq_show() may deadlock when lock_sock_fast() takes the fast
-path and the iter prog attempts to update a sockmap. Which ends up spinning
-at sock_map_update_elem()'s bh_lock_sock():
+RCU readers that identified a net device as a VRF port using
+netif_is_l3_slave() assume that a subsequent call to
+netdev_master_upper_dev_get_rcu() will return a VRF device. They then
+continue to dereference its l3mdev operations.
 
-WARNING: possible recursive locking detected
-test_progs/1393 is trying to acquire lock:
-ffff88811ec25f58 (slock-AF_UNIX){+...}-{3:3}, at: sock_map_update_elem+0xdb/0x1f0
+This assumption is not always correct and can result in a NPD [1]. There
+is no RCU synchronization when removing a port from a VRF, so it is
+possible for an RCU reader to see a new master device (e.g., a bridge)
+that does not have l3mdev operations.
 
-but task is already holding lock:
-ffff88811ec25f58 (slock-AF_UNIX){+...}-{3:3}, at: __lock_sock_fast+0x37/0xe0
+Fix by adding RCU synchronization after clearing the IFF_L3MDEV_SLAVE
+flag. Skip this synchronization when a net device is removed from a VRF
+as part of its deletion and when the VRF device itself is deleted. In
+the latter case an RCU grace period will pass by the time RTNL is
+released.
 
-other info that might help us debug this:
- Possible unsafe locking scenario:
-
-       CPU0
-       ----
-  lock(slock-AF_UNIX);
-  lock(slock-AF_UNIX);
-
- *** DEADLOCK ***
-
- May be due to missing lock nesting notation
-
-4 locks held by test_progs/1393:
- #0: ffff88814b59c790 (&p->lock){+.+.}-{4:4}, at: bpf_seq_read+0x59/0x10d0
- #1: ffff88811ec25fd8 (sk_lock-AF_UNIX){+.+.}-{0:0}, at: bpf_seq_read+0x42c/0x10d0
- #2: ffff88811ec25f58 (slock-AF_UNIX){+...}-{3:3}, at: __lock_sock_fast+0x37/0xe0
- #3: ffffffff85a6a7c0 (rcu_read_lock){....}-{1:3}, at: bpf_iter_run_prog+0x51d/0xb00
-
+[1]
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+[...]
+RIP: 0010:l3mdev_fib_table_rcu (net/l3mdev/l3mdev.c:181)
+[...]
 Call Trace:
- dump_stack_lvl+0x5d/0x80
- print_deadlock_bug.cold+0xc0/0xce
- __lock_acquire+0x130f/0x2590
- lock_acquire+0x14e/0x2b0
- _raw_spin_lock+0x30/0x40
- sock_map_update_elem+0xdb/0x1f0
- bpf_prog_2d0075e5d9b721cd_dump_unix+0x55/0x4f4
- bpf_iter_run_prog+0x5b9/0xb00
- bpf_iter_unix_seq_show+0x1f7/0x2e0
- bpf_seq_read+0x42c/0x10d0
- vfs_read+0x171/0xb20
- ksys_read+0xff/0x200
- do_syscall_64+0x6b/0x3a0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+<TASK>
+l3mdev_fib_table_by_index (net/l3mdev/l3mdev.c:201 net/l3mdev/l3mdev.c:189)
+__inet_bind (net/ipv4/af_inet.c:499 (discriminator 3))
+inet_bind_sk (net/ipv4/af_inet.c:469)
+__sys_bind (./include/linux/file.h:62 (discriminator 1) ./include/linux/file.h:83 (discriminator 1) net/socket.c:1951 (discriminator 1))
+__x64_sys_bind (net/socket.c:1969 (discriminator 1) net/socket.c:1967 (discriminator 1) net/socket.c:1967 (discriminator 1))
+do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
+entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
 
-Fixes: 2c860a43dd77 ("bpf: af_unix: Implement BPF iterator for UNIX domain socket.")
-Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
-Suggested-by: Martin KaFai Lau <martin.lau@linux.dev>
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260414-unix-proto-update-null-ptr-deref-v4-2-2af6fe97918e@rbox.co
+Fixes: fdeea7be88b1 ("net: vrf: Set slave's private flag before linking")
+Reported-by: Haoze Xie <royenheart@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Closes: https://lore.kernel.org/netdev/20260419145332.3988923-1-n05ec@lzu.edu.cn/
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20260423063607.1208202-1-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/net/vrf.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 651c7debe799d..8bf6c2b7215e8 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -3561,15 +3561,14 @@ static int bpf_iter_unix_seq_show(struct seq_file *seq, void *v)
- 	struct bpf_prog *prog;
- 	struct sock *sk = v;
- 	uid_t uid;
--	bool slow;
- 	int ret;
+diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
+index 571847a7f86d7..4b62b167650ea 100644
+--- a/drivers/net/vrf.c
++++ b/drivers/net/vrf.c
+@@ -1084,6 +1084,7 @@ static int do_vrf_add_slave(struct net_device *dev, struct net_device *port_dev,
  
- 	if (v == SEQ_START_TOKEN)
- 		return 0;
- 
--	slow = lock_sock_fast(sk);
-+	lock_sock(sk);
- 
--	if (unlikely(sk_unhashed(sk))) {
-+	if (unlikely(sock_flag(sk, SOCK_DEAD))) {
- 		ret = SEQ_SKIP;
- 		goto unlock;
- 	}
-@@ -3579,7 +3578,7 @@ static int bpf_iter_unix_seq_show(struct seq_file *seq, void *v)
- 	prog = bpf_iter_get_info(&meta, false);
- 	ret = unix_prog_seq_show(prog, &meta, v, uid);
- unlock:
--	unlock_sock_fast(sk, slow);
-+	release_sock(sk);
+ err:
+ 	port_dev->priv_flags &= ~IFF_L3MDEV_SLAVE;
++	synchronize_net();
  	return ret;
  }
  
+@@ -1103,10 +1104,16 @@ static int vrf_add_slave(struct net_device *dev, struct net_device *port_dev,
+ }
+ 
+ /* inverse of do_vrf_add_slave */
+-static int do_vrf_del_slave(struct net_device *dev, struct net_device *port_dev)
++static int do_vrf_del_slave(struct net_device *dev, struct net_device *port_dev,
++			    bool needs_sync)
+ {
+ 	netdev_upper_dev_unlink(port_dev, dev);
+ 	port_dev->priv_flags &= ~IFF_L3MDEV_SLAVE;
++	/* Make sure that concurrent RCU readers that identified the device
++	 * as a VRF port see a VRF master or no master at all.
++	 */
++	if (needs_sync)
++		synchronize_net();
+ 
+ 	cycle_netdev(port_dev, NULL);
+ 
+@@ -1115,7 +1122,7 @@ static int do_vrf_del_slave(struct net_device *dev, struct net_device *port_dev)
+ 
+ static int vrf_del_slave(struct net_device *dev, struct net_device *port_dev)
+ {
+-	return do_vrf_del_slave(dev, port_dev);
++	return do_vrf_del_slave(dev, port_dev, true);
+ }
+ 
+ static void vrf_dev_uninit(struct net_device *dev)
+@@ -1669,7 +1676,7 @@ static void vrf_dellink(struct net_device *dev, struct list_head *head)
+ 	struct list_head *iter;
+ 
+ 	netdev_for_each_lower_dev(dev, port_dev, iter)
+-		vrf_del_slave(dev, port_dev);
++		do_vrf_del_slave(dev, port_dev, false);
+ 
+ 	vrf_map_unregister_dev(dev);
+ 
+@@ -1801,7 +1808,7 @@ static int vrf_device_event(struct notifier_block *unused,
+ 			goto out;
+ 
+ 		vrf_dev = netdev_master_upper_dev_get(dev);
+-		vrf_del_slave(vrf_dev, dev);
++		do_vrf_del_slave(vrf_dev, dev, false);
+ 	}
+ out:
+ 	return NOTIFY_DONE;
 -- 
 2.53.0
 
