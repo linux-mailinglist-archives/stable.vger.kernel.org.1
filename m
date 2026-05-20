@@ -1,165 +1,218 @@
-Return-Path: <stable+bounces-253407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253408-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IJxEMbtIDmoM9gUAu9opvQ
-	(envelope-from <stable+bounces-253407-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 01:50:19 +0200
+	id 4A/kCN9NDmrL9gUAu9opvQ
+	(envelope-from <stable+bounces-253408-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 02:12:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C679459CEEB
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 01:50:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7724059D332
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 02:12:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 20D7F303896F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:50:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DB624315A72D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 591873CF665;
-	Wed, 20 May 2026 23:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD42E3BED66;
+	Wed, 20 May 2026 23:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ah57ljzq"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Is8k7vIz";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="cSYjkTbu"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB952DC76C
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 23:49:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282FE39A7E7
+	for <stable@vger.kernel.org>; Wed, 20 May 2026 23:58:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779320992; cv=none; b=fZDNrEye0r/HR1ubKprSsgHkL8pH1B8f8wc2brjcDP2VsUT9b7uSDu3xKF37I78/arfM2mEPQzEWbZTHkz4F/UGKUGl4Zvc2EeUJJsTS4X75pBkLF26Th15FChlmnDjkNUnM7LrGJcSjYnrB9fTVYtNtyesjBvW8CLs6BwCXLF4=
+	t=1779321528; cv=none; b=GfOoGGGEee5oKYEEDquFQ4VbZaXC90nJUnYRIB/PoYStRm38jL0S81wvEN3x/U1NSvo7vnUjzruuCoREH1df4KpCNdKVrEN7MBwqP6mWOKfDJDsJ1GbVmvQWopbpyuiJ3unoFKDYRbobKjvIzxG1kgTYGyaT0nnqIO1OJJQ7clg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779320992; c=relaxed/simple;
-	bh=P77qAkUz0cnFyO5pvDzEyE+dz36m4uDSf+IpfF0k2WI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JouOB/bnLtdRl+TwyKMHWaV2n1onFXNphZ4qNGo3IGIBtCOnMJEEBBL9pB3TkmWeXyMwpAituZhDhuozrCzbkxfnNd75AMY/grV4KY/dvcRJpLA5ChT6wbUC2sTZySkNhQbZwm7oX7K0D2Hpp+2CSt+tmQaL5Oje+2gneuDoGnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ah57ljzq; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779320989; x=1810856989;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=P77qAkUz0cnFyO5pvDzEyE+dz36m4uDSf+IpfF0k2WI=;
-  b=ah57ljzqf3eW9TfT8u6eN3Qw0G35Wbem3W2tTaI6JYoEelfC5GNUA9GH
-   21t4RIXrU4uR7swHK2HvzYWtr2EqGOcyE/lYZ6oHijX4ipTSRUypMYTJi
-   r57O82AijJCn/9RpUMz90jC2+MT0w4VY44fgpynz7jerGyGSrL+VF+3g+
-   DnV1vRSq8dKk00MS98skdquFdEicGf9L38/F+lAd6maprbjlTVXAvHsf6
-   31MuKvFAWHB+j9twSu6G4rkuIkzo+RDD6pAkirvKmBPV2gkb3c+YuygOa
-   LN0Ji1TtFDvpudtJi0qnlT5Bkw0FXFVUauL70q07rkot5XPosPuJ01xUl
-   g==;
-X-CSE-ConnectionGUID: k3hTkcZwTiG2995+u4m2zA==
-X-CSE-MsgGUID: xCypdDWlRVeSKRG8rEwmbA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="80213988"
-X-IronPort-AV: E=Sophos;i="6.23,245,1770624000"; 
-   d="scan'208";a="80213988"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 16:49:47 -0700
-X-CSE-ConnectionGUID: lgabgfkOSJ+BVfslUqjJRQ==
-X-CSE-MsgGUID: OEBmMMFxSISWP3yIWyilsg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,245,1770624000"; 
-   d="scan'208";a="242165617"
-Received: from dut4463arlhx.fm.intel.com ([10.105.10.179])
-  by fmviesa004.fm.intel.com with ESMTP; 20 May 2026 16:49:47 -0700
-From: Brian Nguyen <brian3.nguyen@intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: Brian Nguyen <brian3.nguyen@intel.com>,
-	stable@vger.kernel.org,
-	Zongyao Bai <zongyao.bai@intel.com>
-Subject: [PATCH] drm/xe: Use PDE mask for 2M page reclaim entries
-Date: Wed, 20 May 2026 23:49:47 +0000
-Message-ID: <20260520234946.1055572-2-brian3.nguyen@intel.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1779321528; c=relaxed/simple;
+	bh=uOOiRD/C+EHFgynyt39wxQXM82SqV00R2YSRUShCnmg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oCtTxcDwd1C5/mBnqIEGW17BBw+m+/AzFr2HLHqTBOkMVjZc+24iFwT3P0TXOGkRar8POOQH/AK8Ez9qHldZmVnYnlo+cBSq14PfuzwQG+WKOa9geA++UVracJFshh+70LTsjA9vjgiVpJAomWCiS/f7gxlOT2AaRSujyFeUOiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Is8k7vIz; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=cSYjkTbu; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64KG2LnL446712
+	for <stable@vger.kernel.org>; Wed, 20 May 2026 23:58:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=xslQDtl6G93vlsd/+8QfWRHF
+	e5YOMqqj6g8oprL6TDI=; b=Is8k7vIzj9HFkHlalVxgYbkv/a5RbqeQBDLxixxS
+	M0KirKPoxqByptR3SK9JoyuI+zJ8TYOWwxAtvLbLWS33d3N5MN2KgvwIbllHv0Sb
+	9AHE11oqwf4Uxg1JkTmJrwuatOoSAM0HdDTrfhD/Aphmm5w0dvprWgrU2QW8EOUe
+	aitNdxcPW/8yI8rZ9W+Gu9PSB1Z7/L21kSvqDzQBJha/TiZs+G1KPW8v/XVkNH9V
+	n2rsy2LJGeMeL94PRS8y4nGLGDrvCKgKopABUt9yEQkaTysXPRSiLNGddofYZvgo
+	ClhKzBMBZAuMhvsjxOegOrKR214CUwAcjQNTYKlDpTMkYw==
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e9anrk4vr-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Wed, 20 May 2026 23:58:45 +0000 (GMT)
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-50fb3c7b989so105500761cf.0
+        for <stable@vger.kernel.org>; Wed, 20 May 2026 16:58:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1779321525; x=1779926325; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xslQDtl6G93vlsd/+8QfWRHFe5YOMqqj6g8oprL6TDI=;
+        b=cSYjkTbuteBoT9NErIP5Tyf+SmYqiNEcENlA+LA6CtDs055xNEhRt/F3M5RK8ygVGb
+         DObBxe+njEmgl6N13U37DutffX7+p1ggXGKzi8X9C4acUDoJbZuNdXKlwE4rFRLRT09B
+         lpG71cnyhfIjBBHXQZhSDJbWzo8C4nwy6H0Xhl5d5HukEOuk+I9XrI0ZwBjIJ6p2gPDO
+         SIIaT+Nc+bxNWJwSmvLmJwYoW578zxisL7bTdyJ3miNt7Gw0hXgnD+ouIjC57pvfsQDH
+         qZNX5cVxr5bbvtqo/d/Tilbm0SS3U2Gg9/+T6BTbf+5ypQwSa2c6dvSTbLvTBDc0GOPx
+         wahw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779321525; x=1779926325;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xslQDtl6G93vlsd/+8QfWRHFe5YOMqqj6g8oprL6TDI=;
+        b=CycOcQeMzZSRxsJfXqQrYeYI0rnKeHpkwxpBtSGmjBHeEvlwY7Rci+9qVLCdsOg3Yl
+         ELrPke3S4Q4LsLxiM6hdgPG5JCq3zg/ehDfCFFCkpaZMqlev7+ePk1HiKVgQN2jJUaHQ
+         UKNxViCoZQKt1GwMdgzHuEhHFGBEe1aGZxo6bi6C1YxRL1pdA8q6vSYYzRHwGuNbZDNP
+         yJ8Lpt02P97PhjGpyBJoQIkSe0Khf7/YmgDuGfH1RrnF75v9qJLX2WWH7QiGmYfkyK2p
+         zAvzx/AUFO2RVnI0EjttysHdXpn+VuHkf9Bk7DpVVI9J28CbLzVAvEdIQyI68n5xn1p6
+         mylg==
+X-Forwarded-Encrypted: i=1; AFNElJ/l2J4TOSX9B8qlctMPGTQcmbvvP6kvpORGeI51YKLUmopWny6R9UJtGg/5uy4ixOqQ7vP6GzI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRuutVhDAm9tbhxJkeuIvPfIQdOLE6+tshE/Ng9sAT9OznqZer
+	KWn13ICEmhfKPVs72A6Mds9PZXcz+h1sBkoutr2r5iAVQUl+Qx2CldFIprumExRIXVsVtDjebOH
+	PuTzjGIl1znsnUHQhSClPtbWePtM2bJl0WuhgU7pQzllz5I4g7SeObWsjvCM=
+X-Gm-Gg: Acq92OFCxf6uMVj7xvyBe0XaTblqP6plXuBzaJHoLIjfPccbKoHoKSEk2bD52emdVmE
+	z0yk/EcuIsvNlrmjTC8420huRdn+9+TiH0qDqAq8XrK8O3wQ98SpNtcSxdEUuI5gRJGyvU/UR7U
+	ZVArnNDMbgYnsd92Pbbeg/NzZi0CD8GAlI0lLacOaa5Xfp6UZkjdwVQrZgs6irI/k9zLU05C1MT
+	9Q7xyRtbXCJc8tZmR+mTxil8xuD205yMnEljk76EjuXrpZZ6XYsZ6Yiv9P8FeCrYbP/ssIbIyat
+	6zvKE7LnBdpeGS+btDotyv599uxABN9fjT2EOxWlB/m8YmG/GC4YVaN8EjdMxtBVAwP/G/HrPHK
+	Epa+YwkslnJ9N1XlS7aVkuP2yGFxHtRj83FBv6YJQOB7xUFOv7b2Q701yudRzqBtGgRtTRwJPUf
+	zs3eBBLUOn+APuPcg55YgohYv/QMTF1T4CoVs=
+X-Received: by 2002:a05:622a:1b90:b0:50f:b17d:7e57 with SMTP id d75a77b69052e-516c54d32ffmr9945281cf.24.1779321525357;
+        Wed, 20 May 2026 16:58:45 -0700 (PDT)
+X-Received: by 2002:a05:622a:1b90:b0:50f:b17d:7e57 with SMTP id d75a77b69052e-516c54d32ffmr9944971cf.24.1779321524875;
+        Wed, 20 May 2026 16:58:44 -0700 (PDT)
+Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a9164bc20fsm5302758e87.43.2026.05.20.16.58.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 May 2026 16:58:42 -0700 (PDT)
+Date: Thu, 21 May 2026 02:58:39 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Cc: Georgi Djakov <djakov@kernel.org>,
+        Raviteja Laggyshetty <quic_rlaggysh@quicinc.com>,
+        Konrad Dybcio <konradybcio@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, sashiko-bot@kernel.org
+Subject: Re: [PATCH] interconnect: qcom: icc-rpmh: Fix resource leak in case
+ of missing QoS clocks
+Message-ID: <vhpgkyasgtckugbf75vkidzacda2tg5qbqrgvg6rwcsjfqzy4w@pwf6wkoze327>
+References: <20260520191953.190564-2-krzysztof.kozlowski@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260520191953.190564-2-krzysztof.kozlowski@oss.qualcomm.com>
+X-Proofpoint-GUID: qO4lqrJQQWWIGiz3KdvEBWg1pZZymN6V
+X-Proofpoint-ORIG-GUID: qO4lqrJQQWWIGiz3KdvEBWg1pZZymN6V
+X-Authority-Analysis: v=2.4 cv=UuJT8ewB c=1 sm=1 tr=0 ts=6a0e4ab5 cx=c_pps
+ a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22 a=VwQbUJbxAAAA:8
+ a=EUspDBNiAAAA:8 a=efQzfd3GQAiEoQBuJ0gA:9 a=CjuIK1q_8ugA:10
+ a=dawVfQjAaf238kedN5IG:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIwMDIzNSBTYWx0ZWRfX+ymzTDuFcoQX
+ Z5uleGQCHCiw01yAreMDr7FzGxN4GimikbWOXy2DtW0B3kDAKsg5+jFsxHjNQyfeWKiVCBqZJxp
+ Xi0CnV9BmJKVzRtxjl2KwpsJEFiYVzEh6EvLVA6q4grr+gXk2mKMANRa0eiWdSxFzCK7s3X5NOF
+ WFFf3qVgoO3m4LKXJeTLtLvhWMRtGoCqDyTRYONd519qg4p2KnhwB6YFC+UyzPOY5y2lJ07k5lC
+ x/DBFGjVygTNN+1B3Hmvq/Zyhxu21FynHc5XfM3eTzvro/Sq2DOng8slJxn4JYI8I8R5en5czei
+ OgsqbBKtpyo+N+vd6HJl8P83v+j61VaYbDh7NL0KaYfoXlJ5rR+2FwLkbS5ZWRqkswSlgvEsfQn
+ Lg/hyOmPCFu0dCTGQp8gNpNQ6S0wbxYfnBzDGHF8Kp8jjtwGD1E6ErLAwMxy48vEFTxGmTyL/0B
+ 5/ZCvyHbYlhII3VJXLA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-20_03,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 clxscore=1015 lowpriorityscore=0 impostorscore=0
+ priorityscore=1501 suspectscore=0 spamscore=0 malwarescore=0 bulkscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605130000
+ definitions=main-2605200235
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	RCVD_TLS_LAST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TAGGED_FROM(0.00)[bounces-253407-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[brian3.nguyen@intel.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253408-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oss.qualcomm.com:dkim,qualcomm.com:email,qualcomm.com:dkim];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,intel.com:mid,intel.com:dkim]
-X-Rspamd-Queue-Id: C679459CEEB
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dmitry.baryshkov@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 7724059D332
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-2M pages use PDE encoding where the physical address occupies bits [51:21],
-but generate_reclaim_entry() uses XE_PTE_ADDR_MASK (bits [51:12]) for all
-leaf entries. Add XE_PDE_ADDR_MASK and select the correct mask based on
-whether the entry is a 2M PDE.
+On Wed, May 20, 2026 at 09:19:54PM +0200, Krzysztof Kozlowski wrote:
+> Driver defers probe if getting clocks for interconnect providers with
+> QoS returns -EPROBE_DEFER, but it fails to cleanup in such case leading
+> to both resource leak and potential use-after-free, since the ICC nodes
+> are stored in static driver data.
+> 
+> Cc: <stable@vger.kernel.org>
+> Fixes: 05123e3299dd ("interconnect: qcom: icc-rpmh: probe defer incase of missing QoS clock dependency")
+> Reported-by: sashiko-bot@kernel.org
+> Closes: https://lore.kernel.org/r/20260520190807.509871F000E9@smtp.kernel.org/
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> ---
+>  drivers/interconnect/qcom/icc-rpmh.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/interconnect/qcom/icc-rpmh.c b/drivers/interconnect/qcom/icc-rpmh.c
+> index 3b445acefece..56512989d1af 100644
+> --- a/drivers/interconnect/qcom/icc-rpmh.c
+> +++ b/drivers/interconnect/qcom/icc-rpmh.c
+> @@ -324,8 +324,10 @@ int qcom_icc_rpmh_probe(struct platform_device *pdev)
+>  		}
+>  
+>  		qp->num_clks = devm_clk_bulk_get_all(qp->dev, &qp->clks);
+> -		if (qp->num_clks == -EPROBE_DEFER)
+> -			return dev_err_probe(dev, qp->num_clks, "Failed to get QoS clocks\n");
+> +		if (qp->num_clks == -EPROBE_DEFER) {
+> +			ret = dev_err_probe(dev, qp->num_clks, "Failed to get QoS clocks\n");
+> +			goto err_remove_nodes;
 
-Fixes: 83b914f972bb ("drm/xe: Fix page reclaim entry handling for large pages")
-Cc: stable@vger.kernel.org
-Suggested-by: Zongyao Bai <zongyao.bai@intel.com>
-Signed-off-by: Brian Nguyen <brian3.nguyen@intel.com>
----
- drivers/gpu/drm/xe/regs/xe_gtt_defs.h | 1 +
- drivers/gpu/drm/xe/xe_pt.c            | 8 ++++++--
- 2 files changed, 7 insertions(+), 2 deletions(-)
+Well... this can race with another driver probing at the same time and
+using the nodes which will be removed. 
 
-diff --git a/drivers/gpu/drm/xe/regs/xe_gtt_defs.h b/drivers/gpu/drm/xe/regs/xe_gtt_defs.h
-index 4d83461e538b..22a6c197ed96 100644
---- a/drivers/gpu/drm/xe/regs/xe_gtt_defs.h
-+++ b/drivers/gpu/drm/xe/regs/xe_gtt_defs.h
-@@ -10,6 +10,7 @@
- #define XELPG_GGTT_PTE_PAT1	BIT_ULL(53)
- 
- #define XE_PTE_ADDR_MASK	GENMASK_ULL(51, 12)
-+#define XE_PDE_ADDR_MASK	GENMASK_ULL(51, 21)
- #define GGTT_PTE_VFID		GENMASK_ULL(11, 2)
- 
- #define GUC_GGTT_TOP		0xFEE00000
-diff --git a/drivers/gpu/drm/xe/xe_pt.c b/drivers/gpu/drm/xe/xe_pt.c
-index 2669ff5ee747..ae5ed0370d72 100644
---- a/drivers/gpu/drm/xe/xe_pt.c
-+++ b/drivers/gpu/drm/xe/xe_pt.c
-@@ -1615,7 +1615,11 @@ static int generate_reclaim_entry(struct xe_tile *tile,
- {
- 	struct xe_gt *gt = tile->primary_gt;
- 	struct xe_guc_page_reclaim_entry *reclaim_entries = prl->entries;
--	u64 phys_addr = pte & XE_PTE_ADDR_MASK;
-+	bool is_2m = xe_child->level == 1 && (pte & XE_PDE_PS_2M);
-+	/* 2M pages are encoded as PDEs, other reclaimable pages use PTE encoding */
-+	u64 addr_mask = is_2m ? XE_PDE_ADDR_MASK : XE_PTE_ADDR_MASK;
-+	u64 phys_addr = pte & addr_mask;
-+	/* Page address is relative to 4K page regardless of entry level */
- 	u64 phys_page = phys_addr >> XE_PTE_SHIFT;
- 	int num_entries = prl->num_entries;
- 	u32 reclamation_size;
-@@ -1641,7 +1645,7 @@ static int generate_reclaim_entry(struct xe_tile *tile,
- 		xe_gt_stats_incr(gt, XE_GT_STATS_ID_PRL_64K_ENTRY_COUNT, 1);
- 		reclamation_size = COMPUTE_RECLAIM_ADDRESS_MASK(SZ_64K); /* reclamation_size = 4 */
- 		xe_tile_assert(tile, phys_addr % SZ_64K == 0);
--	} else if (xe_child->level == 1 && pte & XE_PDE_PS_2M) {
-+	} else if (is_2m) {
- 		xe_gt_stats_incr(gt, XE_GT_STATS_ID_PRL_2M_ENTRY_COUNT, 1);
- 		reclamation_size = COMPUTE_RECLAIM_ADDRESS_MASK(SZ_2M);  /* reclamation_size = 9 */
- 		xe_tile_assert(tile, phys_addr % SZ_2M == 0);
+> +		}
+>  
+>  		if (qp->num_clks < 0 || (!qp->num_clks && desc->qos_requires_clocks)) {
+>  			dev_info(dev, "Skipping QoS, failed to get clk: %d\n", qp->num_clks);
+> -- 
+> 2.53.0
+> 
+
 -- 
-2.43.0
-
+With best wishes
+Dmitry
 
