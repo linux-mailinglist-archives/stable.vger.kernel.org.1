@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-250557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251498-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oAbkOIznDWqm4gUAu9opvQ
-	(envelope-from <stable+bounces-250557-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:55:40 +0200
+	id 6CqQG+jxDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251498-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:39:52 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 808CE592A92
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:55:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFD8159438D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:39:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 540CF3054222
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:48:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9442E30EE5C2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:29:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B06934216C;
-	Wed, 20 May 2026 16:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9645C3C870E;
+	Wed, 20 May 2026 17:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hZdXHDPZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V3+U+U5A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC06536C5BF;
-	Wed, 20 May 2026 16:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59F413D6CB5;
+	Wed, 20 May 2026 17:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295723; cv=none; b=IT1tQC3jH/J0gaTjg8i9MXqOQtjr/+HA781yklXODQ22ee8K/jgWoCnL8wCIAWKR2imQwdZveKr8QLgbMWVjssOmFhYI2Ngh+B1idIs3CeONB0VhwBIK1tNRtS6D3NZPb5E3iHD3gcYgOtf8o+iHTNVydlyCUdRa6/LrTL1ASWg=
+	t=1779298137; cv=none; b=lGhyWwRxh7JDLPWWP1VGN35GydEwC4gPwLPzA8GwjMtCWne4nU8BBGQCO3xAkb99V7VAcmp4cdQHuI6egDgqvRqVU8KHNBITD0+7JqovlDOkBBqu8i53NhgT2VRbtcfFdhheGD40T9qn07ZINXP5fxD0/BY8Z/X4vFGTNm6P+lI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295723; c=relaxed/simple;
-	bh=7HbNSHUK3FoL8++yeWhFkFpVR9wK8D1ODoA0s1313Gc=;
+	s=arc-20240116; t=1779298137; c=relaxed/simple;
+	bh=zgekUuNlWhbbEvof3bSZ7fn/lRNoZrWpILPziuXNqLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d63nr3TJdCh+80niOEL+IglBGu6HePAWt8IVamQQ4NcZ1mEdB8+3b9Fh/EJ+s5n94QMEc8o1BeFeo1nJQ2O8psCZhjNij5SAZynYH32HqpyBSBgoaUa71G2wYzsMk20NpHaVzz2YJht4izOmm99xS4gMnaJHx7/fPwm8AcNMusU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hZdXHDPZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECC231F00893;
-	Wed, 20 May 2026 16:48:40 +0000 (UTC)
+	 MIME-Version; b=ukw6yQOPnO2xTi86RJzqvDui78dUEmeRP4yS0aCRiYJuLcz++Vi+WuB9VQGT387uZ1VDGWwiM3JziEsU1BA3/BbQjOQ2DayEVyHlnOnUrcwaX8+QOHoX4zTrhfrd9aF+BGBVh5ZiKIjYBwtJARXnXh0EuIR3wky+K/e9+PR6pMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V3+U+U5A; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C04621F000E9;
+	Wed, 20 May 2026 17:28:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295721;
-	bh=ZbQqxaryPu1jNuSHIs2hyYPalN/RQ9/BrFCcvW97y0E=;
+	s=korg; t=1779298136;
+	bh=ir8P2r9ninLPX6RdnWzsHPGeYdCgDVJJJoQYKvwCJrM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hZdXHDPZCfUk7FNIH1RP2NqC2KsZ+1t3OILGQPQnWbnbEjA1u03xgrLTLIsESk1kN
-	 eucO7fSt3GmpaoXVqG5SSbHlIT/AXr+QrRK81JXeHyIyMfWt/vDEVgcva/8oPqy6Ks
-	 fA3HfZOlzPasT13/7KdM+tuWPtON5woLSbTcMSeI=
+	b=V3+U+U5AUnVIvRajveCupvmj4VOTmso2cNJDQgao+AXvrKBkNu4dMdMQtmKrRLIPZ
+	 XFfdtTzp9Nd4G5OFV3aP04Hvos7j7y3Fw8i7y/Au2E8hfE8lebqJb9EcjIzPBut7Ky
+	 4mLU+Lm+1ydkAwnSGzTd0z7+HepwYxQ6SLCUTx6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0528/1146] arm64: dts: qcom: sm8650: Enable UHS-I SDR50 and SDR104 SD card modes
+Subject: [PATCH 6.18 295/957] iommu/riscv: Remove overflows on the invalidation path
 Date: Wed, 20 May 2026 18:12:58 +0200
-Message-ID: <20260520162200.130459495@linuxfoundation.org>
+Message-ID: <20260520162140.933183040@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,92 +73,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250557-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251498-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linaro.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 808CE592A92
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: EFD8159438D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 93f823e7d48232e62fb8fb74481696609c90244a ]
+[ Upstream commit 40a13b49957937427bc23e78eb50679df4396a47 ]
 
-The restriction on UHS-I speed modes was added to all SM8650 platforms
-by copying it from SM8450 and SM8550 dtsi files, and it was an actually
-reproducible problem due to the overclocking of SD cards. Since the latter
-issue has been fixed in the SM8650 GCC driver, UHS-I speed modes are
-working fine on SM8650 boards, below is the test performed on SM8650-HDK:
+Since RISC-V supports a sign extended page table it should support
+a gather->end of ULONG_MAX, but if this happens it will infinite loop
+because of the overflow.
 
-SDR50 speed mode:
+Also avoid overflow computing the length by moving the +1 to the other
+side of the <
 
-    mmc0: new UHS-I speed SDR50 SDHC card at address 0001
-    mmcblk0: mmc0:0001 00000 14.6 GiB
-     mmcblk0: p1
-
-    % dd if=/dev/mmcblk0p1 of=/dev/null bs=1M count=1024
-    1024+0 records in
-    1024+0 records out
-    1073741824 bytes (1.1 GB, 1.0 GiB) copied, 24.8086 s, 43.3 MB/s
-
-SDR104 speed mode:
-
-    mmc0: new UHS-I speed SDR104 SDHC card at address 59b4
-    mmcblk0: mmc0:59b4 USDU1 28.3 GiB
-     mmcblk0: p1
-
-    % dd if=/dev/mmcblk0p1 of=/dev/null bs=1M count=1024
-    1024+0 records in
-    1024+0 records out
-    1073741824 bytes (1.1 GB, 1.0 GiB) copied, 12.9448 s, 82.9 MB/s
-
-Unset the UHS-I speed mode restrictions from the SM8550 platform dtsi
-file, there is no indication that the SDHC controller is broken.
-
-Fixes: 10e024671295 ("arm64: dts: qcom: sm8650: add interconnect dependent device nodes")
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Link: https://lore.kernel.org/r/20260314023715.357512-7-vladimir.zapolskiy@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 488ffbf18171 ("iommu/riscv: Paging domain support")
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8650.dtsi | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/iommu/riscv/iommu.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8650.dtsi b/arch/arm64/boot/dts/qcom/sm8650.dtsi
-index 75de839f7a2df..64a7480291d84 100644
---- a/arch/arm64/boot/dts/qcom/sm8650.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8650.dtsi
-@@ -4976,9 +4976,6 @@ &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
+diff --git a/drivers/iommu/riscv/iommu.c b/drivers/iommu/riscv/iommu.c
+index 1e8007a153c32..de286563bd44e 100644
+--- a/drivers/iommu/riscv/iommu.c
++++ b/drivers/iommu/riscv/iommu.c
+@@ -931,8 +931,6 @@ static void riscv_iommu_iotlb_inval(struct riscv_iommu_domain *domain,
+ 	struct riscv_iommu_bond *bond;
+ 	struct riscv_iommu_device *iommu, *prev;
+ 	struct riscv_iommu_command cmd;
+-	unsigned long len = end - start + 1;
+-	unsigned long iova;
  
- 			bus-width = <4>;
+ 	/*
+ 	 * For each IOMMU linked with this protection domain (via bonds->dev),
+@@ -975,11 +973,14 @@ static void riscv_iommu_iotlb_inval(struct riscv_iommu_domain *domain,
  
--			/* Forbid SDR104/SDR50 - broken hw! */
--			sdhci-caps-mask = <0x3 0>;
--
- 			qcom,dll-config = <0x0007642c>;
- 			qcom,ddr-config = <0x80040868>;
- 
+ 		riscv_iommu_cmd_inval_vma(&cmd);
+ 		riscv_iommu_cmd_inval_set_pscid(&cmd, domain->pscid);
+-		if (len && len < RISCV_IOMMU_IOTLB_INVAL_LIMIT) {
+-			for (iova = start; iova < end; iova += PAGE_SIZE) {
++		if (end - start < RISCV_IOMMU_IOTLB_INVAL_LIMIT - 1) {
++			unsigned long iova = start;
++
++			do {
+ 				riscv_iommu_cmd_inval_set_addr(&cmd, iova);
+ 				riscv_iommu_cmd_send(iommu, &cmd);
+-			}
++			} while (!check_add_overflow(iova, PAGE_SIZE, &iova) &&
++				 iova < end);
+ 		} else {
+ 			riscv_iommu_cmd_send(iommu, &cmd);
+ 		}
 -- 
 2.53.0
 
