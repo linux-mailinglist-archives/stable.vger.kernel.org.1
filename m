@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252497-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kML/BygrDmpq6gUAu9opvQ
-	(envelope-from <stable+bounces-252957-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:44:08 +0200
+	id KGWsIIv9DWoo5QUAu9opvQ
+	(envelope-from <stable+bounces-252497-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:29:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 767E559B3E2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:44:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 284DE59655A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:29:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 05C3835F3278
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:33:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C5A72307F2FE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:13:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B56331A41;
-	Wed, 20 May 2026 18:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D4953EAC82;
+	Wed, 20 May 2026 18:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NDqMS9NX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RlCDX37x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FAB633CEA2;
-	Wed, 20 May 2026 18:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 337DB3A6B6D;
+	Wed, 20 May 2026 18:13:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302031; cv=none; b=ixMZ78lWN8ZuhYBDFAn5nm8UC9omYAojqd9rqC+wCObwnED97IlVS+zQcT61Z/rBhbqMLFGmErCjpi7j1ZWUxb0Pp94XSTG93w2xxb6y42OvbX5ckiXR5UBxIsz/ub9KPHZg9Jgx9wGgOG80HRBz6Tfsta/9tHqGgc9av1eD3KE=
+	t=1779300828; cv=none; b=dv/cMScXjOJ67UTaeXl3vP6oUFWlEMiexKwGwitFsfY3L3XJ2PYStLLoYY83RaKqf4wjmTiteTIvqMZIdiaFL96VRWY5daCWyYxLo7u83ecQJIywK4bkMc9ypfJVEVlC+oSHS/CzbcL6wiLfXzZWWyBfSYs9JoN28pu7o8WelZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302031; c=relaxed/simple;
-	bh=zPh8Ze659h4UJFbS0NvWN7Iq7hOBY9OCeKPNJV+LcDk=;
+	s=arc-20240116; t=1779300828; c=relaxed/simple;
+	bh=ObFvQ7hfIBJMzFdgBgjBeYjUonWTe+7BRaBaA5azUhc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZegWhu+qQvelxhDAFzJuIJbXzPDMcCL5Jnn5chDrc4FtoEFfca5ncD9qXdCd9HxXkA7/TmgbU5MlYeqrMeQv9L6PlAuDhfW0Yq2PLiOEmIwKiBvvXRs46KZIqzSgaMnWCfs5MGbuWkiASznUSKCju2dKY0LDacFsNosltttKZLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NDqMS9NX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A870E1F000E9;
-	Wed, 20 May 2026 18:33:49 +0000 (UTC)
+	 MIME-Version; b=ugTZN5KGEoJlliMTHLb2r9r1UnqUGS8VLePc057n2QMgmsOzTVHDGv3VsFOKGaEp6AHCBwoA9JLf1vFdOlchtojU8UbDyWzE/kaWLUu3iKW3RkQUG4kJPQQIRfbNMcl9xIyFoI3EjDZZnPflnioLQ9uNd0hN3jxFMf68q5St7VE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RlCDX37x; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99A941F000E9;
+	Wed, 20 May 2026 18:13:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302030;
-	bh=PPXrPUXnhpx1RkXp/kGYICwaOqOdsbWlSxQ+0SSQ6Ig=;
+	s=korg; t=1779300827;
+	bh=GYZiMvkqHVSe0vIZ9FYtBcPrUW4vcWksfCxJq5PRXfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NDqMS9NXGDSm9jgpcCD0bfnxsHw0BgfNb7bZQXSJZ8fCxRb5yPw0SyokER1xYL1zJ
-	 9m90Iw/9bgreOawY5j1BeokNKvJw6zGyvtOOt1DfK9Ger/I2yKbTpLQWu5fQSDRxpu
-	 ADBEuxkAoS5Wdp1zhkDq1t77Vn6VKlCAH4VFE21M=
+	b=RlCDX37x69VEjbGb2IgBwV1ymAlQUJaG6rX1zL3VpgdnQ0wCFmXwBQTtVC065ll/+
+	 /2rSrDU83uRBijvuHLuqcdXrs90jnIUQzwkCl5LnL4ZFa+ZJX11IDllDQmRgAdIN4y
+	 0BCFvl/PTpmROv6cOkInLT3gKXH+u59xUUQMitbs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Tom Zanussi <zanussi@kernel.org>,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 111/508] crypto: atmel-aes - guard unregister on error in atmel_aes_register_algs
+Subject: [PATCH 6.12 323/666] tracing: Rebuild full_name on each hist_field_name() call
 Date: Wed, 20 May 2026 18:18:54 +0200
-Message-ID: <20260520162101.032579476@linuxfoundation.org>
+Message-ID: <20260520162118.225560111@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,79 +67,87 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-252957-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-252497-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 767E559B3E2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,goodmis.org:email]
+X-Rspamd-Queue-Id: 284DE59655A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-[ Upstream commit 57a13941c0bb06ae24e3b34672d7b6f2172b253f ]
+[ Upstream commit 5ec1d1e97de134beed3a5b08235a60fc1c51af96 ]
 
-Ensure the device supports XTS and GCM with 'has_xts' and 'has_gcm'
-before unregistering algorithms when XTS or authenc registration fails,
-which would trigger a WARN in crypto_unregister_alg().
+hist_field_name() uses a static MAX_FILTER_STR_VAL buffer for fully
+qualified variable-reference names, but it currently appends into that
+buffer with strcat() without rebuilding it first. As a result, repeated
+calls append a new "system.event.field" name onto the previous one,
+which can eventually run past the end of full_name.
 
-Currently, with the capabilities defined in atmel_aes_get_cap(), this
-bug cannot happen because all devices that support XTS and authenc also
-support GCM, but the error handling should still be correct regardless
-of hardware capabilities.
+Build the name with snprintf() on each call and return NULL if the fully
+qualified name does not fit in MAX_FILTER_STR_VAL.
 
-Fixes: d52db5188a87 ("crypto: atmel-aes - add support to the XTS mode")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Link: https://patch.msgid.link/20260401112224.85582-1-pengpeng@iscas.ac.cn
+Fixes: 067fe038e70f ("tracing: Add variable reference handling to hist triggers")
+Reviewed-by: Tom Zanussi <zanussi@kernel.org>
+Tested-by: Tom Zanussi <zanussi@kernel.org>
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/atmel-aes.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ kernel/trace/trace_events_hist.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/crypto/atmel-aes.c b/drivers/crypto/atmel-aes.c
-index 9bd18825e1bf2..3402cf3f017f1 100644
---- a/drivers/crypto/atmel-aes.c
-+++ b/drivers/crypto/atmel-aes.c
-@@ -2269,10 +2269,12 @@ static int atmel_aes_register_algs(struct atmel_aes_dev *dd)
- 	/* i = ARRAY_SIZE(aes_authenc_algs); */
- err_aes_authenc_alg:
- 	crypto_unregister_aeads(aes_authenc_algs, i);
--	crypto_unregister_skcipher(&aes_xts_alg);
-+	if (dd->caps.has_xts)
-+		crypto_unregister_skcipher(&aes_xts_alg);
- #endif
- err_aes_xts_alg:
--	crypto_unregister_aead(&aes_gcm_alg);
-+	if (dd->caps.has_gcm)
-+		crypto_unregister_aead(&aes_gcm_alg);
- err_aes_gcm_alg:
- 	i = ARRAY_SIZE(aes_algs);
- err_aes_algs:
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index 83de1a196a4af..2d085115afde3 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -1342,12 +1342,14 @@ static const char *hist_field_name(struct hist_field *field,
+ 		 field->flags & HIST_FIELD_FL_VAR_REF) {
+ 		if (field->system) {
+ 			static char full_name[MAX_FILTER_STR_VAL];
++			int len;
++
++			len = snprintf(full_name, sizeof(full_name), "%s.%s.%s",
++				       field->system, field->event_name,
++				       field->name);
++			if (len >= sizeof(full_name))
++				return NULL;
+ 
+-			strcat(full_name, field->system);
+-			strcat(full_name, ".");
+-			strcat(full_name, field->event_name);
+-			strcat(full_name, ".");
+-			strcat(full_name, field->name);
+ 			field_name = full_name;
+ 		} else
+ 			field_name = field->name;
 -- 
 2.53.0
 
