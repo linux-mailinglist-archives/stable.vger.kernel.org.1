@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-250085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250087-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UCbbDXLjDWpN4gUAu9opvQ
-	(envelope-from <stable+bounces-250085-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:38:10 +0200
+	id kA6qL7XnDWrO4gUAu9opvQ
+	(envelope-from <stable+bounces-250087-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:56:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E671E592293
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:38:09 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C03C2592AF3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:56:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5323330B2577
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:30:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E541131AE9D3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:30:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94DEC3F58C5;
-	Wed, 20 May 2026 16:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F9D536A354;
+	Wed, 20 May 2026 16:28:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SjHdH/q5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SkRZ29ab"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4992F0C62;
-	Wed, 20 May 2026 16:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962A83F5BF7;
+	Wed, 20 May 2026 16:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294507; cv=none; b=X5r4q73VAphCC8SjZ8fWCBi8E9vOdsFrzKOjTFJJ5eIzWbiX+GL6d5l2wrFHu0jU8vyA8Qmv5+GN8hl+NxAJ5M05wFWKTQheisvUe2LZntsXGBLztzvs7mVnNsI2ZOm+yKxthDESa0yp3pYNxjTMcJKN38xlMtVZPehv+vDMTlo=
+	t=1779294511; cv=none; b=OgRrfImQgBj7ORzssIet9+Ua/PuZl6hza6nGa6om8p2P0OjNHxcq5AF73zqmKrOiRKJIwG2V7ZgFTfaQ5eICgr8faaxkE3D+JVbs0sOLR1dILE1tjU1EZVe0BjRCrKprGeEtHA14GMcpZQEZT8fDxcYplxHoC3epnybZ9AwWBJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294507; c=relaxed/simple;
-	bh=BRwJmpqDs/Hu8qUxlz8R4Jojt2VxNzYXf6iloUtW2UQ=;
+	s=arc-20240116; t=1779294511; c=relaxed/simple;
+	bh=bZm2nRmgXLvQWOmUa7w73WUrgRSfa4Ex+RDI1D44B+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PFlvKfCsYgIVhCKULjLqnaZ5iw9r5gglPAGHmZ42wRXWyIgmoqhDsYxN8x7px/X2sNjYnFwgo12ZmPKb7JLywZuhfh5VBhwUhi+W8fR7NfFerSoybYA9LA1OYbE8LYQULtxECLbiYyZvi7Ajfhe7Ro1NdmeCJ1aWLQYtHAtQFDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SjHdH/q5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD7D11F00896;
-	Wed, 20 May 2026 16:28:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qZCqlt+TQrV/UJUTG1QrChOA5WSmLBpx9fwO9vnvtCKFwCENafNAWsbBk3MoVGcuxlfwk7OD9JHHnX6O5d7hHFsKLCd1KvGWfxL7Rub807/PRLj7JNoxbWLHlr3jWPeEsYFK7Nk0Kx+9fEdQn1Yc+kc5z5sUxbHCzOmhYMfvKI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SkRZ29ab; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D49B1F00894;
+	Wed, 20 May 2026 16:28:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294503;
-	bh=RoLICWOMaeh2SEVZDKU9siUvubga8wZLhpyah/msltQ=;
+	s=korg; t=1779294508;
+	bh=7F+pKd8it24yUMVY0WZb9acN6GXWFcv9erFexdKCa+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SjHdH/q58XvliigUQ9s/6i5T2MNFZUnQWiVSaT8njBgdfkCTsxfyNmu9mFpMyK3aA
-	 AgIHQ66NQDjpB+/Olnhw43KJGOetjXftcfWqFpP1+xPFCV2CUiSKYkVcxphJxUQxfi
-	 TCKBKUVN6vPPRPd2BYbmYwWt4KoFEh/I5BSavClU=
+	b=SkRZ29abKX8LMomrdg9IhVC2Ge8yS5ZYGt0fnRgHsRPDkaIJaqRszmoNJlocvHymP
+	 BjcSnhqzgMOkS2+lb4HoWRbzVYXoIJ1VoBynezeTHIXSznrZd2X3GE17qMXD89qv0N
+	 a4Eb4n6cv3uymHac6wszgNzMZltAgG3+oAc6Lf2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ahmed S. Darwish" <darwi@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Juergen Gross <jgross@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0064/1146] ASoC: Intel: avs: Include CPUID header at file scope
-Date: Wed, 20 May 2026 18:05:14 +0200
-Message-ID: <20260520162149.813464413@linuxfoundation.org>
+Subject: [PATCH 7.0 0065/1146] x86/vdso: Clean up remnants of VDSO32_NOTE_MASK
+Date: Wed, 20 May 2026 18:05:15 +0200
+Message-ID: <20260520162149.834973286@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -64,35 +66,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250085-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-250087-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,linutronix.de:email,alien8.de:email]
-X-Rspamd-Queue-Id: E671E592293
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,linutronix.de:email,suse.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: C03C2592AF3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,114 +102,49 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Ahmed S. Darwish <darwi@linutronix.de>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 7f78e0b46e9984e955cb73ffada8dace8b4dd059 ]
+[ Upstream commit 6517f293b2c6774d21b6e7e26a55fae60c6ec4cf ]
 
-Commit
+VDSO32_NOTE_MASK is not used or provided anymore, remove it.
 
-    cbe37a4d2b3c ("ASoC: Intel: avs: Configure basefw on TGL-based platforms")
-
-includes the main CPUID header from within a C function.  This works by
-luck and forbids valid refactoring inside that header.
-
-Include the CPUID header at file scope instead.
-
-Remove the COMPILE_TEST build flag so that the CONFIG_X86 conditionals can
-be removed.  The driver gets enough compilation testing already on x86.
-
-For clarity, refactor the CPUID(0x15) code into its own function without
-changing any of the driver's logic.
-
-Fixes: cbe37a4d2b3c ("ASoC: Intel: avs: Configure basefw on TGL-based platforms")
-Suggested-by: Borislav Petkov <bp@alien8.de>		# CONFIG_X86 removal
-Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://lore.kernel.org/all/20250612234010.572636-3-darwi@linutronix.de
+Fixes: a13f2ef168cb ("x86/xen: remove 32-bit Xen PV guest support")
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Cc: Juergen Gross <jgross@suse.com>
+Link: https://patch.msgid.link/20260330-vdso-x86-vdso32_note_mask-v1-1-2f5c473327bf@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/Kconfig   |  2 +-
- sound/soc/intel/avs/tgl.c | 37 ++++++++++++++++++++++++-------------
- 2 files changed, 25 insertions(+), 14 deletions(-)
+ arch/x86/include/asm/vdso.h | 1 -
+ arch/x86/tools/vdso2c.c     | 1 -
+ 2 files changed, 2 deletions(-)
 
-diff --git a/sound/soc/intel/Kconfig b/sound/soc/intel/Kconfig
-index 412555e626b81..63367364916ae 100644
---- a/sound/soc/intel/Kconfig
-+++ b/sound/soc/intel/Kconfig
-@@ -95,7 +95,7 @@ config SND_SOC_INTEL_KEEMBAY
+diff --git a/arch/x86/include/asm/vdso.h b/arch/x86/include/asm/vdso.h
+index e8afbe9faa5b9..f2d49212ae902 100644
+--- a/arch/x86/include/asm/vdso.h
++++ b/arch/x86/include/asm/vdso.h
+@@ -18,7 +18,6 @@ struct vdso_image {
+ 	unsigned long extable_base, extable_len;
+ 	const void *extable;
  
- config SND_SOC_INTEL_AVS
- 	tristate "Intel AVS driver"
--	depends on X86 || COMPILE_TEST
-+	depends on X86
- 	depends on PCI
- 	depends on COMMON_CLK
- 	select ACPI_NHLT if ACPI
-diff --git a/sound/soc/intel/avs/tgl.c b/sound/soc/intel/avs/tgl.c
-index 4649d749b41e0..a7123639de431 100644
---- a/sound/soc/intel/avs/tgl.c
-+++ b/sound/soc/intel/avs/tgl.c
-@@ -7,6 +7,7 @@
- //
+-	long sym_VDSO32_NOTE_MASK;
+ 	long sym___kernel_sigreturn;
+ 	long sym___kernel_rt_sigreturn;
+ 	long sym___kernel_vsyscall;
+diff --git a/arch/x86/tools/vdso2c.c b/arch/x86/tools/vdso2c.c
+index f84e8f8fa5fe6..b8a555763f437 100644
+--- a/arch/x86/tools/vdso2c.c
++++ b/arch/x86/tools/vdso2c.c
+@@ -75,7 +75,6 @@ struct vdso_sym {
+ };
  
- #include <linux/pci.h>
-+#include <asm/cpuid/api.h>
- #include "avs.h"
- #include "debug.h"
- #include "messages.h"
-@@ -38,28 +39,38 @@ static int avs_tgl_dsp_core_stall(struct avs_dev *adev, u32 core_mask, bool stal
- 	return avs_dsp_core_stall(adev, core_mask, stall);
- }
- 
--static int avs_tgl_config_basefw(struct avs_dev *adev)
-+/*
-+ * Succeed if CPUID(0x15) is not available, or if the nominal core crystal clock
-+ * frequency cannot be enumerated from it.  There is nothing to do in both cases.
-+ */
-+static int avs_tgl_set_xtal_freq(struct avs_dev *adev)
- {
--	struct pci_dev *pci = adev->base.pci;
--	struct avs_bus_hwid hwid;
-+	unsigned int freq;
- 	int ret;
--#ifdef CONFIG_X86
--	unsigned int ecx;
--
--#include <asm/cpuid/api.h>
- 
- 	if (boot_cpu_data.cpuid_level < CPUID_LEAF_TSC)
--		goto no_cpuid;
-+		return 0;
- 
--	ecx = cpuid_ecx(CPUID_LEAF_TSC);
--	if (ecx) {
--		ret = avs_ipc_set_fw_config(adev, 1, AVS_FW_CFG_XTAL_FREQ_HZ, sizeof(ecx), &ecx);
-+	freq = cpuid_ecx(CPUID_LEAF_TSC);
-+	if (freq) {
-+		ret = avs_ipc_set_fw_config(adev, 1, AVS_FW_CFG_XTAL_FREQ_HZ, sizeof(freq), &freq);
- 		if (ret)
- 			return AVS_IPC_RET(ret);
- 	}
--#endif
- 
--no_cpuid:
-+	return 0;
-+}
-+
-+static int avs_tgl_config_basefw(struct avs_dev *adev)
-+{
-+	struct pci_dev *pci = adev->base.pci;
-+	struct avs_bus_hwid hwid;
-+	int ret;
-+
-+	ret = avs_tgl_set_xtal_freq(adev);
-+	if (ret)
-+		return ret;
-+
- 	hwid.device = pci->device;
- 	hwid.subsystem = pci->subsystem_vendor | (pci->subsystem_device << 16);
- 	hwid.revision = pci->revision;
+ struct vdso_sym required_syms[] = {
+-	{"VDSO32_NOTE_MASK", true},
+ 	{"__kernel_vsyscall", true},
+ 	{"__kernel_sigreturn", true},
+ 	{"__kernel_rt_sigreturn", true},
 -- 
 2.53.0
 
