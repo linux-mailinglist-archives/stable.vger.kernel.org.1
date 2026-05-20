@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251850-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kMiXLXT9DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-252488-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:29:08 +0200
+	id MKOkFCICDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-251850-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:49:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D4F55964E3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:29:08 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D8205973F8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:49:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DB05830E5FDE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:13:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7191C3253A37
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:44:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 236B93D5647;
-	Wed, 20 May 2026 18:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 104653F2116;
+	Wed, 20 May 2026 17:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DG/PP6FW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0hKCjbI2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A9E33B97A;
-	Wed, 20 May 2026 18:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD38E3F20FA;
+	Wed, 20 May 2026 17:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300804; cv=none; b=eN12TpwYqaBxvy0F0jtpp3muoMtrKDwJK1KHgP/TReywJHMmiAUvs9eUAAYLvgE/lSUAZhXo0QwNlvdnv8/IlI5vo1n74Zm34y5zL4fMo0KLzRi3IDqGhinFX3Y/cAMWjCojIYdT6hLKls1Zwc7ILGgdMaIN4RgF27u2XkdV98A=
+	t=1779299049; cv=none; b=FjQkXshR2FJlTo4rlyc53O5MeRv7i1PIbuZKat65MhY1BVV8z8xyRoFeP2AivjgjFqvpsQ6UfQ+4ZvQMMly8PbMiZmd5OnznZ9AU687STiDBpGBL2x7FKKhvZHYaqRTkcIR15KMKSJ9qxeOipNoBCoaZnMqrczbKsV5tv3mIfHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300804; c=relaxed/simple;
-	bh=U+dTYVGob6CHMG3tDGycCCsuaxFpJqtXEWgilZyOX7U=;
+	s=arc-20240116; t=1779299049; c=relaxed/simple;
+	bh=Nc/m82iZGAD+u0kKzPTyuO0REDI3BFMXzid6ufxLang=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oRAnNGdfRFtxtCj8GnwZralJkel82cW/R94hEYYCA0vHw9llx4iv/uib1zlxauv1z4R4xbUcIPsth9MIojCGZLPj1MD+by68rMqDFlNMFkC9Rytg963w/24hjinAV+W4n/k1QefAH3WFi64VFP68KY83KZBdQScFqq9sVZ1DwYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DG/PP6FW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B7DD1F000E9;
-	Wed, 20 May 2026 18:13:23 +0000 (UTC)
+	 MIME-Version; b=WNmC9gpQbnM7/e3saAow35Zd14Bps9Xe9+TQJ1JbdlCoVIQywmxNm7iEvnkqiC5eEvhtjXG9Z2y33JD8UKV/ZQe4nVLPyVyNCZpsw8Cgu3QQw2iXgL0+PFSH8jktGCQ1y8/jEasBvvPscHBLsmboG1sRSLTWPVvxcKl9jXJtxK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0hKCjbI2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E18B1F00893;
+	Wed, 20 May 2026 17:44:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300803;
-	bh=MyDsAzyZkhN9tKo6KI+1M2DKJfyhgXxGK477lkVHBlY=;
+	s=korg; t=1779299048;
+	bh=pc/OIFDBrEetn5wZOLZZTcmZSGw9BIDdXzulv73FKwk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DG/PP6FWh9PuPVijpyYeW/vSUp+xMaMnLXmTI6p6OmVplTQNNBRcLoB5KCzkxf6/9
-	 2RVrlJ71vXnl2zdKuEHhsEi27WdYu3bCHXsUcMgomCYMOxLZHC0L3djt4DZJWfuhXW
-	 2llEf+/xsDQrhORziZNzsVPjRxvqDZDDfb3KbDDE=
+	b=0hKCjbI2/z3iWq04WkkzBCzk4jXfi/tDAXTkNbjKLWKNHUOGtbSZ/JFIlHaC4i0co
+	 f/q8dQ2JBYUE14AJ6e7TRVVuFm8AwjInLW1yDE7Mf0vrsKslMFiVK0lV7nXPsHOxi1
+	 p7M661xU3YMcr09MArQVSKXBtEkbROrVx4O/3EGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Ene <sebastianene@google.com>,
-	Sudeep Holla <sudeep.holla@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 315/666] firmware: arm_ffa: Use the correct buffer size during RXTX_MAP
+Subject: [PATCH 6.18 643/957] tcp: annotate data-races around tp->timeout_rehash
 Date: Wed, 20 May 2026 18:18:46 +0200
-Message-ID: <20260520162118.048293992@linuxfoundation.org>
+Message-ID: <20260520162148.472284608@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,70 +66,84 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251850-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252488-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 6D4F55964E3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 4D8205973F8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Ene <sebastianene@google.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 83210251fd70d5f96bcdc8911e15f7411a6b2463 ]
+[ Upstream commit 71c675358b711bbfd8528949249419dc2dfa4ce1 ]
 
-Don't use the discovered buffer size from an FFA_FEATURES call directly
-since we can run on a system that has the PAGE_SIZE larger than the
-returned size which makes the alloc_pages_exact for the buffer to be
-rounded up.
+tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
+add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
 
-Fixes: 61824feae5c0 ("firmware: arm_ffa: Fetch the Rx/Tx buffer size using ffa_features()")
-Signed-off-by: Sebastian Ene <sebastianene@google.com>
-Link: https://patch.msgid.link/20260402113939.930221-1-sebastianene@google.com
-Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
+Fixes: 32efcc06d2a1 ("tcp: export count for rehash attempts")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260416200319.3608680-13-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_ffa/driver.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/tcp.c       | 3 ++-
+ net/ipv4/tcp_timer.c | 2 +-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
-index bec1fbaff7f34..15e71a53956e2 100644
---- a/drivers/firmware/arm_ffa/driver.c
-+++ b/drivers/firmware/arm_ffa/driver.c
-@@ -1804,7 +1804,7 @@ static int __init ffa_init(void)
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index a799329281532..888fe31e42f0b 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -4444,7 +4444,8 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
+ 	nla_put_u32(stats, TCP_NLA_DSACK_DUPS, READ_ONCE(tp->dsack_dups));
+ 	nla_put_u32(stats, TCP_NLA_REORD_SEEN, READ_ONCE(tp->reord_seen));
+ 	nla_put_u32(stats, TCP_NLA_SRTT, READ_ONCE(tp->srtt_us) >> 3);
+-	nla_put_u16(stats, TCP_NLA_TIMEOUT_REHASH, tp->timeout_rehash);
++	nla_put_u16(stats, TCP_NLA_TIMEOUT_REHASH,
++		    READ_ONCE(tp->timeout_rehash));
+ 	nla_put_u32(stats, TCP_NLA_BYTES_NOTSENT,
+ 		    max_t(int, 0, tp->write_seq - tp->snd_nxt));
+ 	nla_put_u64_64bit(stats, TCP_NLA_EDT, orig_skb->skb_mstamp_ns,
+diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
+index 2dd73a4e8e517..b2e5848b6980a 100644
+--- a/net/ipv4/tcp_timer.c
++++ b/net/ipv4/tcp_timer.c
+@@ -296,7 +296,7 @@ static int tcp_write_timeout(struct sock *sk)
+ 	}
  
- 	ret = ffa_rxtx_map(virt_to_phys(drv_info->tx_buffer),
- 			   virt_to_phys(drv_info->rx_buffer),
--			   rxtx_bufsz / FFA_PAGE_SIZE);
-+			   PAGE_ALIGN(rxtx_bufsz) / FFA_PAGE_SIZE);
- 	if (ret) {
- 		pr_err("failed to register FFA RxTx buffers\n");
- 		goto free_pages;
+ 	if (sk_rethink_txhash(sk)) {
+-		tp->timeout_rehash++;
++		WRITE_ONCE(tp->timeout_rehash, tp->timeout_rehash + 1);
+ 		__NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPTIMEOUTREHASH);
+ 	}
+ 
 -- 
 2.53.0
 
