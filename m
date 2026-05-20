@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252602-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CPY3FSzuDWpu4wUAu9opvQ
-	(envelope-from <stable+bounces-251037-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:56 +0200
+	id qO2JCGEmDmpZ6gUAu9opvQ
+	(envelope-from <stable+bounces-252602-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:23:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF4305938AF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E84059AC93
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:23:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 314B93152C43
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B6CC13397AB4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:18:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E90C3EEAC6;
-	Wed, 20 May 2026 17:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 921C53F4DD6;
+	Wed, 20 May 2026 18:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F/gBcqt0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bBz1cTTj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1A53F1AC4;
-	Wed, 20 May 2026 17:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C34D3CCFB0;
+	Wed, 20 May 2026 18:18:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296936; cv=none; b=Es+a/EmHHaosyW/eykLzDDUjp70qeum/R9Nc5n5EQJC6Wt+2vfsZ08+AGlNG58a+SOejOpdaPhd8CsalkHS+NIbd+3cx2syY3gMvZ60eaFxXUrjTkMi4oFT7hVy7L/GX43p27BmFVterxKpOEbFFlxUVbVSSg65D5pnB4u6wVg0=
+	t=1779301105; cv=none; b=FwY7iaAq6xnZ/lQKCkTVlX5ZmgEJHnGsIPRaZrHeT4jI2uJZiz2ipcynsTcQpvQxhlwTdy8S7XvH3yhWTZFaFZ/BKYCbOAJdPOUJr0z/CZ9E4Kd18nDI2x15DwcOTNNBzrdBRUJEJr35LRnJX6eRpoSw7hEM49griVYYWo5WOWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296936; c=relaxed/simple;
-	bh=Qd5aBoXKULkP7X5mkCis4D8yAnkMi8dS8HTSV0SyB3I=;
+	s=arc-20240116; t=1779301105; c=relaxed/simple;
+	bh=/hBuqdIJFE4hd0MRIdcldDa6TkCXJBNRmKtcmFZ/3ck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FLkg9XTbL1vQ+vd88PG7Kg/7Le6lBV9c+75kwKkrn5YFtjSS9tQYymkYFIsVG0j1dMmmTyf6y9B0gw7Ea+ds/kSQ+R2sav42NipgNcpP6W5bZzQl2GEVpPtIBUfGRRxrj5uVrv7QB4OJpUIhgZmHBbVJttd/lM3e4qhux05HhCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/gBcqt0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33E5F1F000E9;
-	Wed, 20 May 2026 17:08:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LvLc/PDB9LksAYUPRBtEG9grDXh8gr+VN8uj4D9xpdln9sxWxU9sJA6X/waPbSTf/P//FnHNCYH1B8EByEFK3zcckL9fHsShHI8G0q3Rf+c6fjibCbluLgbXCTR49C1DlWuMcRPGDdanZRS9a860Pws7Kmn6kB9DL4LahH+lk1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bBz1cTTj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2A721F000E9;
+	Wed, 20 May 2026 18:18:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296935;
-	bh=0WetREYeWkbmlEvOoeo6IL1+Kq+TiaTngwhTbY/ieFg=;
+	s=korg; t=1779301104;
+	bh=Kr46I+UtZMQymxd7yhLclKm9qZPQ4LU1VLyJ4bvze8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=F/gBcqt06J7srNBa7gzUohSyfofctLemttmEOKCPWb5t6JHWj8Net/8iiBTOPQKD1
-	 Ft91GvI8ZoJHJau/TIDQWZOzI0Hih92rCPCinUDfGRFG8TrQpglqc0+VpZ7efBu/VB
-	 KWmfwr+ZawJBLRz5+kcFx7XNsT2Tr/agN0DQTzfc=
+	b=bBz1cTTjSJuTLASawmjX125sVyCNSo7Yx818oZxpBoEjCZFwRJEJjx1X2QTdDQ3ZB
+	 zhDt5Jw/igQ7dHLmXljXwIEuZldaGVszBilZmxA0bwTXI6uPR5Rvza7t0Un6CadUD4
+	 RTmJhvZqmwrWanpbAUJyiYG9fQZUNvt6J6b6l+j8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xin Long <lucien.xin@gmail.com>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Vinod Govindapillai <vinod.govindapillai@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0987/1146] sctp: discard stale INIT after handshake completion
+Subject: [PATCH 6.12 426/666] drm/i915/wm: Verify the correct plane DDB entry
 Date: Wed, 20 May 2026 18:20:37 +0200
-Message-ID: <20260520162210.570378026@linuxfoundation.org>
+Message-ID: <20260520162120.502872961@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,80 +66,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-251037-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-252602-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: CF4305938AF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,intel.com:email,ursulin.net:email]
+X-Rspamd-Queue-Id: 7E84059AC93
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit 8a92cb475ca90d84db769e4d4383e631ace0d6e5 ]
+[ Upstream commit a97c88a176b6b8d116f4d3f508f3bd02bc77b462 ]
 
-After an association reaches ESTABLISHED, the peer’s init_tag is already
-known from the handshake. Any subsequent INIT with the same init_tag is
-not a valid restart, but a delayed or duplicate INIT.
+Actually verify the DDB entry for the plane we're looking
+at instead of always verifying the cursor DDB.
 
-Drop such INIT chunks in sctp_sf_do_unexpected_init() instead of
-processing them as new association attempts.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Acked-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-Link: https://patch.msgid.link/5788c76c1ee122a3ed00189e88dcf9df1fba226c.1777214801.git.lucien.xin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 7d4561722c3b ("drm/i915: Tweak plane ddb allocation tracking")
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patch.msgid.link/20260324134843.2364-5-ville.syrjala@linux.intel.com
+Reviewed-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
+(cherry picked from commit f002f7c7439de18117a31ca84dc87a59719c3dd6)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/sm_statefuns.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/i915/display/skl_watermark.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-index 7b823d7591419..8e89a870780c4 100644
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -1556,6 +1556,12 @@ static enum sctp_disposition sctp_sf_do_unexpected_init(
- 	/* Tag the variable length parameters.  */
- 	chunk->param_hdr.v = skb_pull(chunk->skb, sizeof(struct sctp_inithdr));
+diff --git a/drivers/gpu/drm/i915/display/skl_watermark.c b/drivers/gpu/drm/i915/display/skl_watermark.c
+index 2b05db764a3a9..0c868be53f2f9 100644
+--- a/drivers/gpu/drm/i915/display/skl_watermark.c
++++ b/drivers/gpu/drm/i915/display/skl_watermark.c
+@@ -3718,8 +3718,8 @@ void intel_wm_state_verify(struct intel_atomic_state *state,
+ 		}
  
-+	if (asoc->state >= SCTP_STATE_ESTABLISHED) {
-+		/* Discard INIT matching peer vtag after handshake completion (stale INIT). */
-+		if (ntohl(chunk->subh.init_hdr->init_tag) == asoc->peer.i.init_tag)
-+			return sctp_sf_pdiscard(net, ep, asoc, type, arg, commands);
-+	}
-+
- 	/* Verify the INIT chunk before processing it. */
- 	err_chunk = NULL;
- 	if (!sctp_verify_init(net, ep, asoc, chunk->chunk_hdr->type,
+ 		/* DDB */
+-		hw_ddb_entry = &hw->ddb[PLANE_CURSOR];
+-		sw_ddb_entry = &new_crtc_state->wm.skl.plane_ddb[PLANE_CURSOR];
++		hw_ddb_entry = &hw->ddb[plane->id];
++		sw_ddb_entry = &new_crtc_state->wm.skl.plane_ddb[plane->id];
+ 
+ 		if (!skl_ddb_entry_equal(hw_ddb_entry, sw_ddb_entry)) {
+ 			drm_err(&i915->drm,
 -- 
 2.53.0
 
