@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-250800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251707-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0Af/FGQUDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-250800-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:07:00 +0200
+	id +PqbES3zDWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251707-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:45:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C976599268
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:06:58 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3A5D59478E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:45:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4883231A45BF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:59:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 37A66307E8BE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:38:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15BE83F1ADC;
-	Wed, 20 May 2026 16:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A5B15E8B;
+	Wed, 20 May 2026 17:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SlIRQCRm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2mdA2AMB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C222B3EEAED;
-	Wed, 20 May 2026 16:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCFB3D7D66;
+	Wed, 20 May 2026 17:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296343; cv=none; b=GN7b9/6uj/ZDjErB/X6NJJk1M0j6QljY3DKE9uVX8OBqQ0wB8K54oPBvFX1PIGu75riu3guliizS21IHG0TY6VZBUbIHF1up2Z0HLilBQCGHHiX4oc/6/r9mL7edms230B2J38112NiQJ6V+12RDfoCt95ahLyN7GgCvyKPklho=
+	t=1779298684; cv=none; b=UpdSgLzf7KrZ5HW6WzXG0vnGltYSrxO8bDKQYwEzbR7GaVF5PjBAVCJYCpUkwbJNPNp3mP/VgP40b6tu60Gk8UH0rcDLuWJmKt1vw6KyTJKNSN3cb0+A6u30dSV5TStU3hCGe82vn0fXjQAjKepI6CDCcWVPZ+p6idZihPnQrSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296343; c=relaxed/simple;
-	bh=PyK1fQPTP1FmqyoIB8IUgSA4ZZ4hx2uzwjuIkf2jYSc=;
+	s=arc-20240116; t=1779298684; c=relaxed/simple;
+	bh=IuqkHH364ogtZ9aYzn0nbaWUtnPy4UvcsCWtiKCyveo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zvg7FRnVIXlJR6YiXJUQmAuagq+hoQpQR1EzUs8vwsLI0kXaAxIqSsL3+kZlX6eZkFrYpAG3oKOVq2vu0mxyqaDvbLX3ie97tcd3MGAgk5wVNjwIkNXciFzJKJmMqoyWOVxIYVzXyTf+9jDNpc8k8/D6b2Ql+UE2VLc1s5vfnks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SlIRQCRm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7E241F00893;
-	Wed, 20 May 2026 16:59:01 +0000 (UTC)
+	 MIME-Version; b=WR6IfGPxDIsJV/DTtc+8uh7s+ClGX44PCP3RLf/tNZizK1cbcVcl8GSHQCLojpLiFfoltjGGLWDNR6M8SBj13l3uJ4kwpQF2xKJqXlT7BJXedNCE9W37AVhflcGKYKtfdQHP+l+FYV+FrDB5KxJBqX2FczwA6uC+Kx7MSYNxcLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2mdA2AMB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F39A1F000E9;
+	Wed, 20 May 2026 17:38:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296342;
-	bh=sZM5ZnddiV8VcQ48rt1Q4Y5Oep5mipVtPAAufdeZYaU=;
+	s=korg; t=1779298682;
+	bh=Hz9Q60WvfB803Zj5nyAT0Bh1hj7gH8n54ZIiHMAYiuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SlIRQCRm4Fqcsun0x0ZwHxtPMhANK5B56UWv68+xo+Gg3JJ4X1XHIAKCCE24t1cEO
-	 1bRACF6xxgSCkAFGQe4CR8c5pOYetPTigOrwrPt0Gu8XjkmppEt7rpUv4oR7EdlmHg
-	 +6xH5E3MUcC3/ZfKE437wnBlQYcvkaz1MdBvY9zA=
+	b=2mdA2AMBlZPjOy4qQHh4n8/9K7hRw90i6f5DlBZIjnMAl8nmhBddOZgw/rMSN8tj7
+	 Q2R4Wpa0kwWpbMX3DTgIXr7Im+4upUKmD7oC5oX+KJiulX/kQi0ppyfmnERSQ13Ne9
+	 1Gzw5+EOhRaYjbcrac4qqeD0v3M1Q8HPezFu3Zkc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>,
-	Taniya Das <taniya.das@oss.qualcomm.com>,
-	Abel Vesa <abel.vesa@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Leo Yan <leo.yan@arm.com>,
+	Mike Leach <mike.leach@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0736/1146] clk: qcom: gcc-x1e80100: Keep GCC USB QTB clock always ON
-Date: Wed, 20 May 2026 18:16:26 +0200
-Message-ID: <20260520162204.862950694@linuxfoundation.org>
+Subject: [PATCH 6.18 504/957] perf: tools: cs-etm: Fix print issue for Coresight debug in ETE/TRBE trace
+Date: Wed, 20 May 2026 18:16:27 +0200
+Message-ID: <20260520162145.462228043@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,74 +69,143 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250800-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251707-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
-X-Rspamd-Queue-Id: 0C976599268
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,arm.com:email]
+X-Rspamd-Queue-Id: D3A5D59478E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>
+From: Mike Leach <mike.leach@arm.com>
 
-[ Upstream commit 05566ebcc0cd170bd4f50c907ee3ed8e106251e3 ]
+[ Upstream commit 6c478e7b3eba3f387a2d6c749e3e3ee0f8ad1c53 ]
 
-In Hamoa, SMMU invalidation requires the GCC_AGGRE_USB_NOC_AXI_CLK
-to be on for the USB QTB to be functional. This is currently
-explicitly enabled by the DWC3 glue driver, so an invalidation
-happening while the USB controller is suspended will fault.
+Building perf with CORESIGHT=1 and the optional CSTRACE_RAW=1 enables
+additional debug printing of raw trace data when using command:-
+perf report --dump.
 
-Solve this by voting for the GCC MMU USB QTB clock.
+This raw trace prints the CoreSight formatted trace frames, which may be
+used to investigate suspected issues with trace quality / corruption /
+decode.
 
-Fixes: 161b7c401f4b ("clk: qcom: Add Global Clock controller (GCC) driver for X1E80100")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>
-Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
-Reviewed-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260327-hamoa-usb-qtb-clk-always-on-v2-1-7d8a406e650f@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+These frames are not present in ETE + TRBE trace.
+This fix removes the unnecessary call to print these frames.
+
+This fix also rationalises implementation - original code had helper
+function that unnecessarily repeated initialisation calls that had
+already been made.
+
+Due to an addtional fault with the OpenCSD library, this call when ETE/TRBE
+are being decoded will cause a segfault in perf. This fix also prevents
+that problem for perf using older (<= 1.8.0 version) OpenCSD libraries.
+
+Fixes: 68ffe3902898 ("perf tools: Add decoder mechanic to support dumping trace data")
+Reported-by: Leo Yan <leo.yan@arm.com>
+Signed-off-by: Mike Leach <mike.leach@arm.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-x1e80100.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../perf/util/cs-etm-decoder/cs-etm-decoder.c | 51 +++++--------------
+ 1 file changed, 13 insertions(+), 38 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-x1e80100.c b/drivers/clk/qcom/gcc-x1e80100.c
-index 74afd12c158c0..73a2a5112623e 100644
---- a/drivers/clk/qcom/gcc-x1e80100.c
-+++ b/drivers/clk/qcom/gcc-x1e80100.c
-@@ -7480,6 +7480,7 @@ static int gcc_x1e80100_probe(struct platform_device *pdev)
- 	qcom_branch_set_clk_en(regmap, 0x32004); /* GCC_VIDEO_AHB_CLK */
- 	qcom_branch_set_clk_en(regmap, 0x32030); /* GCC_VIDEO_XO_CLK */
- 	qcom_branch_set_clk_en(regmap, 0x71004); /* GCC_GPU_CFG_AHB_CLK */
-+	qcom_branch_set_clk_en(regmap, 0x7d01c); /* GCC_HLOS1_VOTE_AGGRE_NOC_MMU_USB_QTB_CLK */
+diff --git a/tools/perf/util/cs-etm-decoder/cs-etm-decoder.c b/tools/perf/util/cs-etm-decoder/cs-etm-decoder.c
+index b85a8837bddcd..43ac711a4e2ae 100644
+--- a/tools/perf/util/cs-etm-decoder/cs-etm-decoder.c
++++ b/tools/perf/util/cs-etm-decoder/cs-etm-decoder.c
+@@ -237,46 +237,24 @@ cs_etm_decoder__init_def_logger_printing(struct cs_etm_decoder_params *d_params,
+ 					      (void *)decoder,
+ 					      cs_etm_decoder__print_str_cb);
+ 	if (ret != 0)
+-		ret = -1;
+-
+-	return 0;
+-}
++		return -1;
  
- 	/* Clear GDSC_SLEEP_ENA_VOTE to stop votes being auto-removed in sleep. */
- 	regmap_write(regmap, 0x52224, 0x0);
+ #ifdef CS_LOG_RAW_FRAMES
+-static void
+-cs_etm_decoder__init_raw_frame_logging(struct cs_etm_decoder_params *d_params,
+-				       struct cs_etm_decoder *decoder)
+-{
+-	/* Only log these during a --dump operation */
+-	if (d_params->operation == CS_ETM_OPERATION_PRINT) {
+-		/* set up a library default logger to process the
+-		 *  raw frame printer we add later
+-		 */
+-		ocsd_def_errlog_init(OCSD_ERR_SEV_ERROR, 1);
+-
+-		/* no stdout / err / file output */
+-		ocsd_def_errlog_config_output(C_API_MSGLOGOUT_FLG_NONE, NULL);
+-
+-		/* set the string CB for the default logger,
+-		 * passes strings to perf print logger.
+-		 */
+-		ocsd_def_errlog_set_strprint_cb(decoder->dcd_tree,
+-						(void *)decoder,
+-						cs_etm_decoder__print_str_cb);
+-
++	/*
++	 * Only log raw frames if --dump operation and hardware is actually
++	 * generating formatted CoreSight trace frames
++	 */
++	if ((d_params->operation == CS_ETM_OPERATION_PRINT) &&
++	    (d_params->formatted == true)) {
+ 		/* use the built in library printer for the raw frames */
+-		ocsd_dt_set_raw_frame_printer(decoder->dcd_tree,
+-					      CS_RAW_DEBUG_FLAGS);
++		ret = ocsd_dt_set_raw_frame_printer(decoder->dcd_tree,
++						    CS_RAW_DEBUG_FLAGS);
++		if (ret != 0)
++			return -1;
+ 	}
+-}
+-#else
+-static void
+-cs_etm_decoder__init_raw_frame_logging(
+-		struct cs_etm_decoder_params *d_params __maybe_unused,
+-		struct cs_etm_decoder *decoder __maybe_unused)
+-{
+-}
+ #endif
++	return 0;
++}
+ 
+ static ocsd_datapath_resp_t
+ cs_etm_decoder__do_soft_timestamp(struct cs_etm_queue *etmq,
+@@ -760,9 +738,6 @@ cs_etm_decoder__new(int decoders, struct cs_etm_decoder_params *d_params,
+ 	if (ret != 0)
+ 		goto err_free_decoder;
+ 
+-	/* init raw frame logging if required */
+-	cs_etm_decoder__init_raw_frame_logging(d_params, decoder);
+-
+ 	for (i = 0; i < decoders; i++) {
+ 		ret = cs_etm_decoder__create_etm_decoder(d_params,
+ 							 &t_params[i],
 -- 
 2.53.0
 
