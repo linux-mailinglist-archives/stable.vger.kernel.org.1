@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-253277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252813-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4OvtMbIHDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-253277-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:12:50 +0200
+	id cGTeBgP/DWpV5QUAu9opvQ
+	(envelope-from <stable+bounces-252813-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:35:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 480DF597F38
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:12:49 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDBA1596B5B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:35:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8544E399D1DA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CE27F305B8DB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:27:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60663429835;
-	Wed, 20 May 2026 18:47:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A50B3D1CC6;
+	Wed, 20 May 2026 18:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BPt84cS0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V/15VIZz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D350429803;
-	Wed, 20 May 2026 18:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23BC3CCFB0;
+	Wed, 20 May 2026 18:27:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302859; cv=none; b=aaDzlybJC+hUhEmtkdC10hp3IV29tOwZGxWNBrQy87hXHuKYdSvjgHQ1XcwcboqFhQBR4MLbFWQEl9RkbYMRNA6c1PoyP9W30ShIGT90STDjwV3bRGYPEmMW2IBHrxT0HSlTWDA6mS4IZA3w94R2k+H8LxmbZoWzJyBLM0YRwew=
+	t=1779301656; cv=none; b=l7+R7QbgzJZc+FPJNYcFlESGA0+P5LekBcFCBewnaB46S/5s16ZO4NT6dXO2g4j04kdWx29nuyV2ZWvy3FF4AmPdiAm4iCdytPoXlF4EJjguebGFt0jcZ9oZrsuxNRdN9C6uPZTih/keMf21bNBBvwM3OFBXQbN+M1qHiMEQbHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302859; c=relaxed/simple;
-	bh=rS7lufg/+qBrYOfxXcOZNJR/XaI90QAhmdiX6hHWZMU=;
+	s=arc-20240116; t=1779301656; c=relaxed/simple;
+	bh=TScwjoSuYt0nRQ+yCAM79Fs2B66cJohZMjFcHR6yfUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HcOvNHmausbinsmatU+do4ogUQ97ba4pPQYff5NasRNky+IsusRBRj/zOHFwdYY0SoBEhXMbXeIOMu59PJregpkfw7wVFGVELCpOARRNyuzK++ajFWddm0KJedQNkmgA8324w/HwS7C2fKwNS38Ii4PbBUg6g6eHVSpL9ZzutQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BPt84cS0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 432BC1F000E9;
-	Wed, 20 May 2026 18:47:36 +0000 (UTC)
+	 MIME-Version; b=LQ83PMF100AWkKxkx9ejdx/lNYySL3KnZBAyeIT1RPjpZxRRPshrrEiDw4SF/lf0b9n3Ska512rZsPmISZ+XSKj+83kQJ4sDJCu5bTKCjV4t2VTGLoYL7VD97E6cNjwjM4RkXm4Vx0Aa5YHCuGFHVZlG4udry46vgrz9lEuej7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/15VIZz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 476291F000E9;
+	Wed, 20 May 2026 18:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302856;
-	bh=3MUzXSR4jA5c9DYRDoG8y9NeV8+spAIfsdCpA0KLcVI=;
+	s=korg; t=1779301654;
+	bh=9mI5m3KlpSSYyjE5dElR8Sfx6c3tRMRaD13iwFLyzeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BPt84cS0q90js423P8lFKuOpANq9a47oUowagufz1vu6TdPhN5CeHw8v+BwqlgU62
-	 hHqoq3OXlNHquFXZX1pl9MqNqSaeIm/8KacZsJCK4uum/cskpvV47V8SLsOOXtqa71
-	 8hVLugs+eVa0uWDqGmMI+h7hD334gbjqiqGxqjSg=
+	b=V/15VIZzpaxWxBvGnpvkOvATTLBp2V/O9sADcGJ/mXLLe7p5wYJSJWxkzDmsHNIYy
+	 u+NdsBRLxBk508LF0taKSs9wFM+3IwIHX7V5/VzI/4kNRRrVMVHg/SH84pBuy7JZJK
+	 +Htsa9JoQutWvn+hXfOFdHHWJ21BLtnCC3zbkQIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jones Syue <jonessyue@qnap.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Jay Vosburgh <jay.vosburgh@canonical.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 425/508] bonding: 802.3ad replace MAC_ADDRESS_EQUAL with __agg_has_partner
+	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.12 637/666] libceph: Fix potential null-ptr-deref in decode_choose_args()
 Date: Wed, 20 May 2026 18:24:08 +0200
-Message-ID: <20260520162107.811205872@linuxfoundation.org>
+Message-ID: <20260520162125.082892187@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,123 +62,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-253277-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qnap.com,gmail.com,nvidia.com,canonical.com,kernel.org];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252813-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qnap.com:email,canonical.com:email]
-X-Rspamd-Queue-Id: 480DF597F38
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,tu-ilmenau.de:email]
+X-Rspamd-Queue-Id: DDBA1596B5B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jones Syue 薛懷宗 <jonessyue@qnap.com>
+From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
 
-[ Upstream commit 4440873f3655325f849366d75382aa05d09b5575 ]
+commit 28b0a2ab8c82d0bbdeb8013029c67c978ce6e4bf upstream.
 
-Replace macro MAC_ADDRESS_EQUAL() for null_mac_addr checking with inline
-function__agg_has_partner(). When MAC_ADDRESS_EQUAL() is verifiying
-aggregator's partner mac addr with null_mac_addr, means that seeing if
-aggregator has a valid partner or not. Using __agg_has_partner() makes it
-more clear to understand.
+A message of type CEPH_MSG_OSD_MAP contains an OSD map that itself
+contains a CRUSH map. When decoding this CRUSH map in crush_decode(), an
+array of max_buckets CRUSH buckets is decoded, where some indices may
+not refer to actual buckets and are therefore set to NULL. The received
+CRUSH map may optionally contain choose_args that get decoded in
+decode_choose_args(). When decoding a crush_choose_arg_map, a series of
+choose_args for different buckets is decoded, with the bucket_index
+being read from the incoming message. It is only checked that the bucket
+index does not exceed max_buckets, but not that it doesn't point to an
+index with a NULL bucket. If a (potentially corrupted) message contains
+a crush_choose_arg_map including such a bucket_index, a null pointer
+dereference may occur in the subsequent processing when attempting to
+access the bucket with the given index.
 
-In ad_port_selection_logic(), since aggregator->partner_system and
-port->partner_oper.system has been compared first as a prerequisite, it is
-safe to replace the upcoming MAC_ADDRESS_EQUAL() for null_mac_addr checking
-with __agg_has_partner().
+This patch fixes the issue by extending the affected check. Now, it is
+only attempted to access the bucket if it is not NULL.
 
-Delete null_mac_addr, which is not required anymore in bond_3ad.c, since
-all references to it are gone.
-
-Signed-off-by: Jones Syue <jonessyue@qnap.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Acked-by: Jay Vosburgh <jay.vosburgh@canonical.com>
-Link: https://lore.kernel.org/r/SI2PR04MB5097BCA8FF2A2F03D9A5A3EEDC5A2@SI2PR04MB5097.apcprd04.prod.outlook.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: c4f050ce06c5 ("bonding: 3ad: implement proper RCU rules for port->aggregator")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_3ad.c | 14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+ net/ceph/osdmap.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3ad.c
-index d02a91cefec89..4c2560ae8866a 100644
---- a/drivers/net/bonding/bond_3ad.c
-+++ b/drivers/net/bonding/bond_3ad.c
-@@ -82,10 +82,6 @@ enum ad_link_speed_type {
- #define MAC_ADDRESS_EQUAL(A, B)	\
- 	ether_addr_equal_64bits((const u8 *)A, (const u8 *)B)
+--- a/net/ceph/osdmap.c
++++ b/net/ceph/osdmap.c
+@@ -390,7 +390,8 @@ static int decode_choose_args(void **p,
+ 				goto fail;
  
--static const u8 null_mac_addr[ETH_ALEN + 2] __long_aligned = {
--	0, 0, 0, 0, 0, 0
--};
--
- static const u16 ad_ticks_per_sec = 1000 / AD_TIMER_INTERVAL;
- static const int ad_delta_in_ticks = (AD_TIMER_INTERVAL * HZ) / 1000;
+ 			if (arg->ids_size &&
+-			    arg->ids_size != c->buckets[bucket_index]->size)
++			    (!c->buckets[bucket_index] ||
++			     arg->ids_size != c->buckets[bucket_index]->size))
+ 				goto e_inval;
+ 		}
  
-@@ -1592,7 +1588,7 @@ static void ad_port_selection_logic(struct port *port, bool *update_slave_arr)
- 		     (aggregator->partner_system_priority == port->partner_oper.system_priority) &&
- 		     (aggregator->partner_oper_aggregator_key == port->partner_oper.key)
- 		    ) &&
--		    ((!MAC_ADDRESS_EQUAL(&(port->partner_oper.system), &(null_mac_addr)) && /* partner answers */
-+		    ((__agg_has_partner(aggregator) && /* partner answers */
- 		      !aggregator->is_individual)  /* but is not individual OR */
- 		    )
- 		   ) {
-@@ -2042,9 +2038,7 @@ static void ad_enable_collecting(struct port *port)
-  */
- static void ad_disable_distributing(struct port *port, bool *update_slave_arr)
- {
--	if (port->aggregator &&
--	    !MAC_ADDRESS_EQUAL(&port->aggregator->partner_system,
--			       &(null_mac_addr))) {
-+	if (port->aggregator && __agg_has_partner(port->aggregator)) {
- 		slave_dbg(port->slave->bond->dev, port->slave->dev,
- 			  "Disabling distributing on port %d (LAG %d)\n",
- 			  port->actor_port_number,
-@@ -2084,9 +2078,7 @@ static void ad_enable_collecting_distributing(struct port *port,
- static void ad_disable_collecting_distributing(struct port *port,
- 					       bool *update_slave_arr)
- {
--	if (port->aggregator &&
--	    !MAC_ADDRESS_EQUAL(&(port->aggregator->partner_system),
--			       &(null_mac_addr))) {
-+	if (port->aggregator && __agg_has_partner(port->aggregator)) {
- 		slave_dbg(port->slave->bond->dev, port->slave->dev,
- 			  "Disabling port %d (LAG %d)\n",
- 			  port->actor_port_number,
--- 
-2.53.0
-
 
 
 
