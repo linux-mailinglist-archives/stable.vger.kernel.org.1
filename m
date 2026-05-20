@@ -1,59 +1,67 @@
-Return-Path: <stable+bounces-250931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252480-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SOtmOH3wDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-250931-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:49 +0200
+	id uHrQOGT9DWoo5QUAu9opvQ
+	(envelope-from <stable+bounces-252480-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:28:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83DF0593F79
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:49 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B03BD59648D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:28:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 57E5E31CFD86
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:05:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5C19230FDE40
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:13:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC6E83F888B;
-	Wed, 20 May 2026 17:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76FBE33B97A;
+	Wed, 20 May 2026 18:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W+Wisv4/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CO1pnD7X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8143F23D9;
-	Wed, 20 May 2026 17:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B80D3A6B6D;
+	Wed, 20 May 2026 18:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296665; cv=none; b=uLBI4tzWfgPomu4cfAijCmz1rn8Ogt7qvNn2vTB1CA5kajot56vNAgBlplQrOU/IgkzYekU+XRnE+ahgYgN20rFRRWDIhUvn4FUFvQMQTEt8wiOMBEM2Ub2TBxDPCQRDSLErTx8z8gpv/i/9B84Clm7PlPpebBowWpb4wrMfCc0=
+	t=1779300784; cv=none; b=YEXE8xKpyOgrePM+XdCX/byVH8+MKMt90AZc0R/0eRVCKBc9NGaYtyU4tTd51f1v0VdUzxkBRKLSbHjvNDkY/boTv2G8WW3lH8rMSPRspt9oFo3Mp8TW6iQL/YeFZQboz6LYiawXjMcuWhyeJafalxLputS4ggOyBwegurEUKWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296665; c=relaxed/simple;
-	bh=F6HZXWmzYE4cHA6zx8Xl2F/aO2yXe4/PNq3AhXpQWys=;
+	s=arc-20240116; t=1779300784; c=relaxed/simple;
+	bh=cESjLOv/kLVsMGpSi9dTeBQc+9zqeTG65/wKdzI0CLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SwhdgwJvJSUwog2xxVTAS2nBDyWTX/4U7IOYaKg/M7jAuRRi1bGaT9O0GDw9xCE1gcQp/DHanLDhzvVosaItnL/97CTcnQmeUkHzWccMfoV4QRajC8Of17JB3h1BeujpK8VYw38lCA7BY7lhVDEBCny0UO6m2hSRSI2qNZveRqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W+Wisv4/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E16131F00893;
-	Wed, 20 May 2026 17:04:23 +0000 (UTC)
+	 MIME-Version; b=sn9rvm2XvEu25XkpE//irX8i5q8765D1P4yG8aVudCRn1LzUG0qmelboKcV+nmlMkiFVQCftrI78oUqDYm7hiq9I6eGuTuSUlhWGGoxO/YUf0sqfHaqEP1kOemP9ujL5D5amSLe0NAPTJNGS2SDDGn8+WaaT+9HEyOfAIMmVjCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CO1pnD7X; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8851C1F000E9;
+	Wed, 20 May 2026 18:13:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296664;
-	bh=r9HxFwxtktZDy8EdD2JjmCjUtRaIxxlYiD1YKZ2hopI=;
+	s=korg; t=1779300783;
+	bh=84SVOeuB5q3FC5N0Z38GOKOZZHtcY2IxhSRR/Jo9d2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=W+Wisv4/ReEuvLpUKzIMbejvWIP9NBrSvEZ+hg4AcXWVyDBwbbtIfFypGbRAQ2Zgl
-	 CBAc7hb8jpYlqMO7VEQfA2etphBiDvtCxchs2D9bNiwWAE4MaQxkxTQdJJWlBPc6sd
-	 wl3elmgn+gXWefwcbV9UcP+yqwRKQP9vo5oYguBk=
+	b=CO1pnD7XmYm1P0puXK0piFhOIpsHkTko2FI48LAtuB6YBOtl+wgwOBReYNMpV8Dlo
+	 WfjhyP16hXzKQYDOfrmlQZ+nMLt8EVVO7/czy3W99jWHYeiaK+JbVEFsq11X0RYccK
+	 WKMY02GyzrVrlUj80uzjI+ReDXPDi7g0L5vZTFhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bae Yeonju <iwasbaeyz@gmail.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0868/1146] fs/adfs: validate nzones in adfs_validate_bblk()
+Subject: [PATCH 6.12 307/666] ocfs2/dlm: validate qr_numregions in dlm_match_regions()
 Date: Wed, 20 May 2026 18:18:38 +0200
-Message-ID: <20260520162207.883001485@linuxfoundation.org>
+Message-ID: <20260520162117.875293098@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +72,109 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250931-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,armlinux.org.uk,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252480-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,gmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,kernel];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 83DF0593F79
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: B03BD59648D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bae Yeonju <iwasbaeyz@gmail.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-[ Upstream commit dd9d3e16c2d5fa166e13dce07413be51f42c8f5d ]
+[ Upstream commit 7ab3fbb01bc6d79091bc375e5235d360cd9b78be ]
 
-Reject ADFS disc records with a zero zone count during boot block
-validation, before the disc record is used.
+Patch series "ocfs2/dlm: fix two bugs in dlm_match_regions()".
 
-When nzones is 0, adfs_read_map() passes it to kmalloc_array(0, ...)
-which returns ZERO_SIZE_PTR, and adfs_map_layout() then writes to
-dm[-1], causing an out-of-bounds write before the allocated buffer.
+In dlm_match_regions(), the qr_numregions field from a DLM_QUERY_REGION
+network message is used to drive loops over the qr_regions buffer without
+sufficient validation.  This series fixes two issues:
 
-adfs_validate_dr0() already rejects nzones != 1 for old-format
-images.  Add the equivalent check to adfs_validate_bblk() for
-new-format images so that a crafted image with nzones == 0 is
-rejected at probe time.
+- Patch 1 adds a bounds check to reject messages where qr_numregions
+  exceeds O2NM_MAX_REGIONS. The o2net layer only validates message
+  byte length; it does not constrain field values, so a crafted message
+  can set qr_numregions up to 255 and trigger out-of-bounds reads past
+  the 1024-byte qr_regions buffer.
 
-Found by syzkaller.
+- Patch 2 fixes an off-by-one in the local-vs-remote comparison loop,
+  which uses '<=' instead of '<', reading one entry past the valid range
+  even when qr_numregions is within bounds.
 
-Fixes: f6f14a0d71b0 ("fs/adfs: map: move map-specific sb initialisation to map.c")
-Signed-off-by: Bae Yeonju <iwasbaeyz@gmail.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+This patch (of 2):
+
+The qr_numregions field from a DLM_QUERY_REGION network message is used
+directly as loop bounds in dlm_match_regions() without checking against
+O2NM_MAX_REGIONS.  Since qr_regions is sized for at most O2NM_MAX_REGIONS
+(32) entries, a crafted message with qr_numregions > 32 causes
+out-of-bounds reads past the qr_regions buffer.
+
+Add a bounds check for qr_numregions before entering the loops.
+
+Link: https://lkml.kernel.org/r/SYBPR01MB7881A334D02ACEE5E0645801AF7BA@SYBPR01MB7881.ausprd01.prod.outlook.com
+Link: https://lkml.kernel.org/r/SYBPR01MB788166F524AD04E262E174BEAF7BA@SYBPR01MB7881.ausprd01.prod.outlook.com
+Fixes: ea2034416b54 ("ocfs2/dlm: Add message DLM_QUERY_REGION")
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/adfs/super.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/ocfs2/dlm/dlmdomain.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/fs/adfs/super.c b/fs/adfs/super.c
-index 2c5b2076acf9e..a4cd0a5159dd1 100644
---- a/fs/adfs/super.c
-+++ b/fs/adfs/super.c
-@@ -317,6 +317,9 @@ static int adfs_validate_bblk(struct super_block *sb, struct buffer_head *bh,
- 	if (adfs_checkdiscrecord(dr))
- 		return -EILSEQ;
+diff --git a/fs/ocfs2/dlm/dlmdomain.c b/fs/ocfs2/dlm/dlmdomain.c
+index 2018501b22493..ad335fa6c188d 100644
+--- a/fs/ocfs2/dlm/dlmdomain.c
++++ b/fs/ocfs2/dlm/dlmdomain.c
+@@ -980,6 +980,14 @@ static int dlm_match_regions(struct dlm_ctxt *dlm,
+ 		goto bail;
+ 	}
  
-+	if ((dr->nzones | dr->nzones_high << 8) == 0)
-+		return -EILSEQ;
++	if (qr->qr_numregions > O2NM_MAX_REGIONS) {
++		mlog(ML_ERROR, "Domain %s: Joining node %d has invalid "
++		     "number of heartbeat regions %u\n",
++		     qr->qr_domain, qr->qr_node, qr->qr_numregions);
++		status = -EINVAL;
++		goto bail;
++	}
 +
- 	*drp = dr;
- 	return 0;
- }
+ 	r = remote;
+ 	for (i = 0; i < qr->qr_numregions; ++i) {
+ 		mlog(0, "Region %.*s\n", O2HB_MAX_REGION_NAME_LEN, r);
 -- 
 2.53.0
 
