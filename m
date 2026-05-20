@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-253001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250973-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6L0ED7YADmo95QUAu9opvQ
-	(envelope-from <stable+bounces-253001-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:02 +0200
+	id WPJ5E7/tDWpb4wUAu9opvQ
+	(envelope-from <stable+bounces-250973-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:22:07 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C25375970F6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9A8E59370F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:22:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7EFE2316EB66
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 033733075376
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:08:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD3C137DE8A;
-	Wed, 20 May 2026 18:35:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A76BA3FA5F1;
+	Wed, 20 May 2026 17:06:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dIziVw5V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0J1sxEan"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F3D3F9F2A;
-	Wed, 20 May 2026 18:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670F33F9F21;
+	Wed, 20 May 2026 17:06:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302144; cv=none; b=UyJoG3fdUkj/NZppHZexueJT0X4dZlOYbZywQ1CIAePtTj1KIwzl46/Ljg1DYuKJo6ZuylJBArjjQqr/fGhPG2fBA6Zn++4KkWdIClnAlNwR9Ay6GBB8AqTyxPtp+0C/fGg6xXuiYXKZpj0x0WQ+KsmuF9MPyh6a4I5wWiN3t64=
+	t=1779296773; cv=none; b=qNNHIjj4Ul3sNLlcyvpCf0pu1nMm5toQ/Kkjw41Y7NSWUlFvDuF7TRfFPi3HJaqTIDio6XBXoL2NDzj5BiqzdaS9lg++XtNT+tyxSYsKbZ8uW3312Vrt5JiYlxLnrykFkZg64GKm3vCjL23jsbYhsR+RawjFoi8gieW5KoXBiDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302144; c=relaxed/simple;
-	bh=C4COkLT9IcDlHS/K/L3z3G9rD1tOB7pDqUGdo+q8dIA=;
+	s=arc-20240116; t=1779296773; c=relaxed/simple;
+	bh=qzktxVn48n7Q6yBEVDDONem0/GCKeHsr6lgOO9GrtM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pMDiA/fBN5yHa6Rj2duk3CErbHkdxh3K/kMhgLtn5z9kgBHPuU93LiCzJeKhHKlUgMLmT4erC3N3BIUsZqh6Oj5KGj89+KZsAW54mdTBf3+AcAqw2k6DoP0KJ0srWCiV47iKWbFrF4KyWf0x3OdI2X1bvxeqWNDMTtPVpWfwVjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dIziVw5V; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D74541F000E9;
-	Wed, 20 May 2026 18:35:42 +0000 (UTC)
+	 MIME-Version; b=uMLNBihfqsTtrsHP9vRWIJZ4JoLsog9GhFJk9SWj6N711HoX6GgzShCcKbG0BGmBTrM6qaIWD75fKSXndEYpj2Z/oR7cp0Rs3N6KWZMlDO3DG6shtgWFWj4AqwbDBmYowbWvau/rlucCbL8B/iLTOWIw4L8gLg1vLACnfKmcWsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0J1sxEan; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC101F000E9;
+	Wed, 20 May 2026 17:06:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302143;
-	bh=wAdF4ThUFNP2cmkKrhFX7s0EDS1WIkK8BBx1BlWv1Bc=;
+	s=korg; t=1779296772;
+	bh=2N+L67Gf+lpCKrTQTJHw7ucLWmwhjqkNsa/QVvPYE7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dIziVw5V9ZIpGGAw+29wsK0vyy1MX/HVHY3R15msnbnDIAPreoA0E1sOV1okY6vIt
-	 ow5uL/5z1xIdnkqouyuCvX3E++6vR7/Y5ws4bUbgra2XhaY82IpS8dMQrlTuVkfcX8
-	 +ENGAWy0wOjCJczMwO4GilFUZ4iyqfv/RsAxuvxc=
+	b=0J1sxEanfhHm0q3GHaNLUhkghwn/RWy49QVBRukCSJ6pMJuc+TSEceNUxyXmXoABb
+	 e3WFB+lxrL/OQKQ497Ad0ReKlyGz61sf6cHglgmJFbHk1AYgy+fvnC2/QyYs+E+8gj
+	 uLUr2EoeCY+rqd96V4/8t4umL+hAwzQovWfS57eo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Panagiotis Petrakopoulos <npetrakopoulos2003@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	"Nikola Z. Ivanov" <zlatistiv@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 154/508] ALSA: scarlett2: Add missing sentinel initializer field
+Subject: [PATCH 7.0 0927/1146] netdevsim: zero initialize struct iphdr in dummy sk_buff
 Date: Wed, 20 May 2026 18:19:37 +0200
-Message-ID: <20260520162101.973903374@linuxfoundation.org>
+Message-ID: <20260520162209.217416503@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,72 +67,75 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253001-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,kernel.org];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-250973-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: C25375970F6
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,syzkaller.appspot.com:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C9A8E59370F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Panagiotis Petrakopoulos <npetrakopoulos2003@gmail.com>
+From: Nikola Z. Ivanov <zlatistiv@gmail.com>
 
-[ Upstream commit 2428cd6e8b6fa80c36db4652702ca0acd2ce3f08 ]
+[ Upstream commit 35eaa6d8d6c2ee65e96f507add856e0eacf24591 ]
 
-A "-Wmissing-field-initializers" warning was emitted when compiling the
-module using the W=2 option. There is a sentinel initializer field
-missing in the end of scarlett2_devices[]. Tested using a
-Scarlett Solo 4th gen.
+Syzbot reports a KMSAN uninit-value originating from
+nsim_dev_trap_skb_build, with the allocation also
+being performed in the same function.
 
-Fixes: d98cc489029d ("ALSA: scarlett2: Move USB IDs out from device_info struct")
-Signed-off-by: Panagiotis Petrakopoulos <npetrakopoulos2003@gmail.com>
-Link: https://patch.msgid.link/20260405222548.8903-1-npetrakopoulos2003@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fix this by calling skb_put_zero instead of skb_put to
+guarantee zero initialization of the whole IP header.
+
+Closes: https://syzkaller.appspot.com/bug?extid=23d7fcd204e3837866ff
+Fixes: da58f90f11f5 ("netdevsim: Add devlink-trap support")
+Signed-off-by: Nikola Z. Ivanov <zlatistiv@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260426201434.742030-1-zlatistiv@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_scarlett2.c | 2 +-
+ drivers/net/netdevsim/dev.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/usb/mixer_scarlett2.c b/sound/usb/mixer_scarlett2.c
-index c4b29b3670cd4..8aa7414d0b2fa 100644
---- a/sound/usb/mixer_scarlett2.c
-+++ b/sound/usb/mixer_scarlett2.c
-@@ -1011,7 +1011,7 @@ static const struct scarlett2_device_entry scarlett2_devices[] = {
- 	{ USB_ID(0x1235, 0x820c), &clarett_8pre_info, "Clarett+" },
+diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
+index e82de0fd31579..8f6d0a09e1761 100644
+--- a/drivers/net/netdevsim/dev.c
++++ b/drivers/net/netdevsim/dev.c
+@@ -829,7 +829,7 @@ static struct sk_buff *nsim_dev_trap_skb_build(void)
+ 	skb->protocol = htons(ETH_P_IP);
  
- 	/* End of list */
--	{ 0, NULL },
-+	{ 0, NULL, NULL },
- };
- 
- /* get the starting port index number for a given port type/direction */
+ 	skb_set_network_header(skb, skb->len);
+-	iph = skb_put(skb, sizeof(struct iphdr));
++	iph = skb_put_zero(skb, sizeof(struct iphdr));
+ 	iph->protocol = IPPROTO_UDP;
+ 	iph->saddr = in_aton("192.0.2.1");
+ 	iph->daddr = in_aton("198.51.100.1");
 -- 
 2.53.0
 
