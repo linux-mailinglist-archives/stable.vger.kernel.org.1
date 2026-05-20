@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-252800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253265-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ePRFAm0IDmrY5gUAu9opvQ
-	(envelope-from <stable+bounces-252800-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:15:57 +0200
+	id WDhVMyEGDmqv5gUAu9opvQ
+	(envelope-from <stable+bounces-253265-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:06:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2047E5980A0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:15:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36A1F597BF3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:06:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7215E32BBDDA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:27:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EB14131780C0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 222C23EFFB8;
-	Wed, 20 May 2026 18:27:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83EF400E0B;
+	Wed, 20 May 2026 18:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qUmMHGPx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ALlIxb1Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0DD363C4C;
-	Wed, 20 May 2026 18:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3739436EA8B;
+	Wed, 20 May 2026 18:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301621; cv=none; b=sIGb0o2jwW9sbfc0iqZPepyrui5o6FQ81ABbNpt2B6gkNKXwIeBtVDwKWlak5syS1V8yNa3k/onUi45X21uQ2X54MKbN9AJwfFesiN8e3HXPsHBGHEl14H05xXuA4uVlNgEAmInYzuRgfmc9IYJGwF+PmLzEQyLfOwcgJzR/T6M=
+	t=1779302826; cv=none; b=sn9IX+dSeUjOGQZQoqIQeEZmXw2jHm4IIcuVrM7sqHiu5rLqt93gf3a7vbbX9hFF/TVh9wo59W7wIpa55vQZvaPFnJ6TiVB3pu8tcxT9tz6MlL6QQJTR3+n8nDm/yhuXQVuNQ0oIDWMNrSBwbtNLrkCnvg63rvldQosEj1CDfs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301621; c=relaxed/simple;
-	bh=9cq6uUNqbD9a2vnsBtIthQvkoBhE//7/4Nyu108J+jY=;
+	s=arc-20240116; t=1779302826; c=relaxed/simple;
+	bh=ykh2ULy62SyY6wT4PfoZZBifO0kY6XUgNnAlcaQXT0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=muPD8DDgQ3n2nCwEO5G58r7bvZ+yLsrQNwMyBubIIHuxqaPSzw1tyTvErki4xmoH2YKGqcNfzAKZErxq1Dci6YLmPVRpOzU4ZrR3AZsdvH0gfj5PYpDUxKrI6aPbPABKOvf3uHSlFelMVtyFKRt7SQnCs4XSEmweM9Ho74de7dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qUmMHGPx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0997C1F00893;
-	Wed, 20 May 2026 18:26:59 +0000 (UTC)
+	 MIME-Version; b=ehw9LZB4HoDQJPW4C80WBBKmMPyyz8cYWh14I+It/zd/+ZylGiNtmWXDoatLqM1NXMiaNhp7vhSlqwQoW+RqE/pILqYHHvAOL4DpURUwZQpOJHVw5rRFrIuLrdppfPi8y3WnoR1nAJXwgDEu+dpaMFaGWR/AsBjvuMNFKnOUAPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ALlIxb1Q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CE601F000E9;
+	Wed, 20 May 2026 18:47:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301620;
-	bh=kfYfNhy115zCNOl9m5w0zpna5XZ/L9vF0z7U91EFr94=;
+	s=korg; t=1779302825;
+	bh=KFXN0KlKGGuz8MiW2SpmuYtLuyxndKvc6swim272+XY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qUmMHGPxj8b4O+cWR4AePh5e/ysOwY5hOxHXIGqdqky67enFUWNExKD1uO7LDOItW
-	 rkwMyW1FgzDexcwA6WFIM5VonMn65ECsLddPIE+ETAB1AEliUkEfjXHyezf6/5D2Ed
-	 AWfcDD/pNpC2yBG0caL6Jt27mgKiSowH51h39bew=
+	b=ALlIxb1QYaPtXwDlDpnKo34LZgwTgSUUAl/iKHm1ldWTEC7z0bGROQpP2aMpNma+s
+	 sMOqKceMltLPJdUa8REj5jK0S3tOeDbQ9fWWdHeoyBBxYO6HmuBfSUUocHNk5go/9Q
+	 WWYLG/J8IJwOSwAK2+2NR7rgeIRGU0R6mVGypz0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	Ye Bin <yebin10@huawei.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 625/666] smb/client: fix possible infinite loop and oob read in symlink_data()
-Date: Wed, 20 May 2026 18:23:56 +0200
-Message-ID: <20260520162124.821300612@linuxfoundation.org>
+	Guillaume Nault <gnault@redhat.com>,
+	Beniamino Galvani <b.galvani@gmail.com>,
+	David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 414/508] ipv6: rename and move ip6_dst_lookup_tunnel()
+Date: Wed, 20 May 2026 18:23:57 +0200
+Message-ID: <20260520162107.578990834@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +66,301 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252800-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,gmail.com,kernel.org,davemloft.net];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253265-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,kylinos.cn:email,huawei.com:email]
-X-Rspamd-Queue-Id: 2047E5980A0
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,davemloft.net:email]
+X-Rspamd-Queue-Id: 36A1F597BF3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Beniamino Galvani <b.galvani@gmail.com>
 
-commit 7d9a7f1f96cd617ee9e75bb22217c709038e26b8 upstream.
+[ Upstream commit fc47e86dbfb75a864c0c9dd8e78affb6506296bb ]
 
-On 32-bit architectures, the infinite loop is as follows:
+At the moment ip6_dst_lookup_tunnel() is used only by bareudp.
+Ideally, other UDP tunnel implementations should use it, but to do so
+the function needs to accept new parameters that are specific for UDP
+tunnels, such as the ports.
 
-  len = p->ErrorDataLength == 0xfffffff8
-  u8 *next = p->ErrorContextData + len
-  next == p
+Prepare for these changes by renaming the function to
+udp_tunnel6_dst_lookup() and move it to file
+net/ipv6/ip6_udp_tunnel.c.
 
-On 32-bit architectures, the out-of-bounds read is as follows:
+This is similar to what already done for IPv4 in commit bf3fcbf7e7a0
+("ipv4: rename and move ip_route_output_tunnel()").
 
-  len = p->ErrorDataLength == 0xfffffff0
-  u8 *next = p->ErrorContextData + len
-  next == (u8 *)p - 8
-
-Reported-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Fixes: 76894f3e2f71 ("cifs: improve symlink handling for smb2+")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Guillaume Nault <gnault@redhat.com>
+Signed-off-by: Beniamino Galvani <b.galvani@gmail.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: aa6c6d9ee064 ("bareudp: fix NULL pointer dereference in bareudp_fill_metadata_dst()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2file.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/bareudp.c     | 10 +++---
+ include/net/ipv6.h        |  6 ----
+ include/net/udp_tunnel.h  |  7 ++++
+ net/ipv6/ip6_output.c     | 68 --------------------------------------
+ net/ipv6/ip6_udp_tunnel.c | 69 +++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 81 insertions(+), 79 deletions(-)
 
---- a/fs/smb/client/smb2file.c
-+++ b/fs/smb/client/smb2file.c
-@@ -49,6 +49,9 @@ static struct smb2_symlink_err_rsp *syml
- 				 __func__, le32_to_cpu(p->ErrorId));
+diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
+index 385cc386ecaee..150049d9a81a7 100644
+--- a/drivers/net/bareudp.c
++++ b/drivers/net/bareudp.c
+@@ -393,8 +393,8 @@ static int bareudp6_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 	if (!sock)
+ 		return -ESHUTDOWN;
  
- 			len = ALIGN(le32_to_cpu(p->ErrorDataLength), 8);
-+			if (len > end - ((u8 *)p + sizeof(*p)))
-+				return ERR_PTR(-EINVAL);
+-	dst = ip6_dst_lookup_tunnel(skb, dev, bareudp->net, sock, &saddr, info,
+-				    IPPROTO_UDP, use_cache);
++	dst = udp_tunnel6_dst_lookup(skb, dev, bareudp->net, sock, &saddr, info,
++				     IPPROTO_UDP, use_cache);
+ 	if (IS_ERR(dst))
+ 		return PTR_ERR(dst);
+ 
+@@ -520,9 +520,9 @@ static int bareudp_fill_metadata_dst(struct net_device *dev,
+ 		struct in6_addr saddr;
+ 		struct socket *sock = rcu_dereference(bareudp->sock);
+ 
+-		dst = ip6_dst_lookup_tunnel(skb, dev, bareudp->net, sock,
+-					    &saddr, info, IPPROTO_UDP,
+-					    use_cache);
++		dst = udp_tunnel6_dst_lookup(skb, dev, bareudp->net, sock,
++					     &saddr, info, IPPROTO_UDP,
++					     use_cache);
+ 		if (IS_ERR(dst))
+ 			return PTR_ERR(dst);
+ 
+diff --git a/include/net/ipv6.h b/include/net/ipv6.h
+index d98f5390ffad3..3645776d71c9c 100644
+--- a/include/net/ipv6.h
++++ b/include/net/ipv6.h
+@@ -1133,12 +1133,6 @@ struct dst_entry *ip6_dst_lookup_flow(struct net *net, const struct sock *sk, st
+ struct dst_entry *ip6_sk_dst_lookup_flow(struct sock *sk, struct flowi6 *fl6,
+ 					 const struct in6_addr *final_dst,
+ 					 bool connected);
+-struct dst_entry *ip6_dst_lookup_tunnel(struct sk_buff *skb,
+-					struct net_device *dev,
+-					struct net *net, struct socket *sock,
+-					struct in6_addr *saddr,
+-					const struct ip_tunnel_info *info,
+-					u8 protocol, bool use_cache);
+ struct dst_entry *ip6_blackhole_route(struct net *net,
+ 				      struct dst_entry *orig_dst);
+ 
+diff --git a/include/net/udp_tunnel.h b/include/net/udp_tunnel.h
+index a8ff2613fabc2..6818a59a1ebcb 100644
+--- a/include/net/udp_tunnel.h
++++ b/include/net/udp_tunnel.h
+@@ -168,6 +168,13 @@ struct rtable *udp_tunnel_dst_lookup(struct sk_buff *skb,
+ 				     const struct ip_tunnel_key *key,
+ 				     __be16 sport, __be16 dport, u8 tos,
+ 				     struct dst_cache *dst_cache);
++struct dst_entry *udp_tunnel6_dst_lookup(struct sk_buff *skb,
++					 struct net_device *dev,
++					 struct net *net,
++					 struct socket *sock,
++					 struct in6_addr *saddr,
++					 const struct ip_tunnel_info *info,
++					 u8 protocol, bool use_cache);
+ 
+ struct metadata_dst *udp_tun_rx_dst(struct sk_buff *skb, unsigned short family,
+ 				    __be16 flags, __be64 tunnel_id,
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index a824c707dffff..710aadbb2e267 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -1307,74 +1307,6 @@ struct dst_entry *ip6_sk_dst_lookup_flow(struct sock *sk, struct flowi6 *fl6,
+ }
+ EXPORT_SYMBOL_GPL(ip6_sk_dst_lookup_flow);
+ 
+-/**
+- *      ip6_dst_lookup_tunnel - perform route lookup on tunnel
+- *      @skb: Packet for which lookup is done
+- *      @dev: Tunnel device
+- *      @net: Network namespace of tunnel device
+- *      @sock: Socket which provides route info
+- *      @saddr: Memory to store the src ip address
+- *      @info: Tunnel information
+- *      @protocol: IP protocol
+- *      @use_cache: Flag to enable cache usage
+- *      This function performs a route lookup on a tunnel
+- *
+- *      It returns a valid dst pointer and stores src address to be used in
+- *      tunnel in param saddr on success, else a pointer encoded error code.
+- */
+-
+-struct dst_entry *ip6_dst_lookup_tunnel(struct sk_buff *skb,
+-					struct net_device *dev,
+-					struct net *net,
+-					struct socket *sock,
+-					struct in6_addr *saddr,
+-					const struct ip_tunnel_info *info,
+-					u8 protocol,
+-					bool use_cache)
+-{
+-	struct dst_entry *dst = NULL;
+-#ifdef CONFIG_DST_CACHE
+-	struct dst_cache *dst_cache;
+-#endif
+-	struct flowi6 fl6;
+-	__u8 prio;
+-
+-#ifdef CONFIG_DST_CACHE
+-	dst_cache = (struct dst_cache *)&info->dst_cache;
+-	if (use_cache) {
+-		dst = dst_cache_get_ip6(dst_cache, saddr);
+-		if (dst)
+-			return dst;
+-	}
+-#endif
+-	memset(&fl6, 0, sizeof(fl6));
+-	fl6.flowi6_mark = skb->mark;
+-	fl6.flowi6_proto = protocol;
+-	fl6.daddr = info->key.u.ipv6.dst;
+-	fl6.saddr = info->key.u.ipv6.src;
+-	prio = info->key.tos;
+-	fl6.flowlabel = ip6_make_flowinfo(prio, info->key.label);
+-
+-	dst = ipv6_stub->ipv6_dst_lookup_flow(net, sock->sk, &fl6,
+-					      NULL);
+-	if (IS_ERR(dst)) {
+-		netdev_dbg(dev, "no route to %pI6\n", &fl6.daddr);
+-		return ERR_PTR(-ENETUNREACH);
+-	}
+-	if (dst->dev == dev) { /* is this necessary? */
+-		netdev_dbg(dev, "circular route to %pI6\n", &fl6.daddr);
+-		dst_release(dst);
+-		return ERR_PTR(-ELOOP);
+-	}
+-#ifdef CONFIG_DST_CACHE
+-	if (use_cache)
+-		dst_cache_set_ip6(dst_cache, dst, &fl6.saddr);
+-#endif
+-	*saddr = fl6.saddr;
+-	return dst;
+-}
+-EXPORT_SYMBOL_GPL(ip6_dst_lookup_tunnel);
+-
+ static inline struct ipv6_opt_hdr *ip6_opt_dup(struct ipv6_opt_hdr *src,
+ 					       gfp_t gfp)
+ {
+diff --git a/net/ipv6/ip6_udp_tunnel.c b/net/ipv6/ip6_udp_tunnel.c
+index cdc4d4ee24206..7aef559e60ec5 100644
+--- a/net/ipv6/ip6_udp_tunnel.c
++++ b/net/ipv6/ip6_udp_tunnel.c
+@@ -1,3 +1,4 @@
 +
- 			p = (struct smb2_error_context_rsp *)(p->ErrorContextData + len);
- 		}
- 	} else if (le32_to_cpu(err->ByteCount) >= sizeof(*sym) &&
+ // SPDX-License-Identifier: GPL-2.0-only
+ #include <linux/module.h>
+ #include <linux/errno.h>
+@@ -111,4 +112,72 @@ int udp_tunnel6_xmit_skb(struct dst_entry *dst, struct sock *sk,
+ }
+ EXPORT_SYMBOL_GPL(udp_tunnel6_xmit_skb);
+ 
++/**
++ *      udp_tunnel6_dst_lookup - perform route lookup on UDP tunnel
++ *      @skb: Packet for which lookup is done
++ *      @dev: Tunnel device
++ *      @net: Network namespace of tunnel device
++ *      @sock: Socket which provides route info
++ *      @saddr: Memory to store the src ip address
++ *      @info: Tunnel information
++ *      @protocol: IP protocol
++ *      @use_cache: Flag to enable cache usage
++ *      This function performs a route lookup on a UDP tunnel
++ *
++ *      It returns a valid dst pointer and stores src address to be used in
++ *      tunnel in param saddr on success, else a pointer encoded error code.
++ */
++
++struct dst_entry *udp_tunnel6_dst_lookup(struct sk_buff *skb,
++					 struct net_device *dev,
++					 struct net *net,
++					 struct socket *sock,
++					 struct in6_addr *saddr,
++					 const struct ip_tunnel_info *info,
++					 u8 protocol,
++					 bool use_cache)
++{
++	struct dst_entry *dst = NULL;
++#ifdef CONFIG_DST_CACHE
++	struct dst_cache *dst_cache;
++#endif
++	struct flowi6 fl6;
++	__u8 prio;
++
++#ifdef CONFIG_DST_CACHE
++	dst_cache = (struct dst_cache *)&info->dst_cache;
++	if (use_cache) {
++		dst = dst_cache_get_ip6(dst_cache, saddr);
++		if (dst)
++			return dst;
++	}
++#endif
++	memset(&fl6, 0, sizeof(fl6));
++	fl6.flowi6_mark = skb->mark;
++	fl6.flowi6_proto = protocol;
++	fl6.daddr = info->key.u.ipv6.dst;
++	fl6.saddr = info->key.u.ipv6.src;
++	prio = info->key.tos;
++	fl6.flowlabel = ip6_make_flowinfo(prio, info->key.label);
++
++	dst = ipv6_stub->ipv6_dst_lookup_flow(net, sock->sk, &fl6,
++					      NULL);
++	if (IS_ERR(dst)) {
++		netdev_dbg(dev, "no route to %pI6\n", &fl6.daddr);
++		return ERR_PTR(-ENETUNREACH);
++	}
++	if (dst->dev == dev) { /* is this necessary? */
++		netdev_dbg(dev, "circular route to %pI6\n", &fl6.daddr);
++		dst_release(dst);
++		return ERR_PTR(-ELOOP);
++	}
++#ifdef CONFIG_DST_CACHE
++	if (use_cache)
++		dst_cache_set_ip6(dst_cache, dst, &fl6.saddr);
++#endif
++	*saddr = fl6.saddr;
++	return dst;
++}
++EXPORT_SYMBOL_GPL(udp_tunnel6_dst_lookup);
++
+ MODULE_LICENSE("GPL");
+-- 
+2.53.0
+
 
 
 
