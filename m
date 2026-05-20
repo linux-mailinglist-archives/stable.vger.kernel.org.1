@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-253177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252082-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UGxGFsYGDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-253177-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:08:54 +0200
+	id iB7bMsj+DWpV5QUAu9opvQ
+	(envelope-from <stable+bounces-252082-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB0BC597D6F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:08:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F6D9596A7D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BA9B438574CA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 960A338A2A52
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:55:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B0793FC5DE;
-	Wed, 20 May 2026 18:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FC823F1AD9;
+	Wed, 20 May 2026 17:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QjaODJvJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MjwoOeBd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24FE93EEAD8;
-	Wed, 20 May 2026 18:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C1829B8D0;
+	Wed, 20 May 2026 17:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302605; cv=none; b=O9pVi9NOeX6C9kg5Bnny6aQI2gLjMoz9zKaejClmryz8UgLgmtLmQe3osynLD2FPmF/NvSR0uRkJilyke0DfucBClyTDId45QACAq1PHaszehMjeLSY5Y/Eeo1zLzIVsZd0Uwvg36ddy3geSkYp39qwPJkX9ADFgo58p3DsFIOA=
+	t=1779299699; cv=none; b=hPzXsskk6C5hd0CkVjOam3sqdAUCDVGcofQhNbX0p3Ga5rZ1CkSGMHWXqnBJfZIoqpu8vOFqT1f1cZ1O1IjPGuDmLoVb5oDPCscff6SLhk/rg53TD3I9Tp6UcCkF0HcfVlUB2vgKU7uK8TpUMWf6R0blyoBUrR9PteGdwTHJ37Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302605; c=relaxed/simple;
-	bh=Jgmw+15yFXFuHUA4SycnRh99EHW+WxCVaMDdh/GVdnI=;
+	s=arc-20240116; t=1779299699; c=relaxed/simple;
+	bh=gt1wBtAwCimi8lYUovj7SF/18uRUwN6imhWFCvIRgzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O0qqrtq59yfPA3cOjO4Ct4DBTdKOKPKKj/LSaKoCg1ZaMHu7XIEz3A0OwT7DDdCMEMmdEr6/lLm91Xp5sljQiAWbdQUuSDWARbSex33tPlOnlT+sNDcBzVTuMKl94D7Ebq+1UYv+ctf9PDsf8p+/wc0IafIiMlW765Z8YXthzWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QjaODJvJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AF6F1F000E9;
-	Wed, 20 May 2026 18:43:23 +0000 (UTC)
+	 MIME-Version; b=J/+qBLV7f7wdouM0mPQijkx5f45L9/bzH0oicBNkON8MBcvDURqhDPIjuF7RHlMQ6xFwUay7ULtmlPylrkanPfiYh8o+4lax8cyYbONeb4WDKzN8PBrz6lpOzZU1XDND3X/rz4Lpikp8IFyoFAxxHyFh/GiHeR1YRi3yba1Lbbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MjwoOeBd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C6FF1F000E9;
+	Wed, 20 May 2026 17:54:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302604;
-	bh=CTCh/L4hqYXZSbkXNyTlDvaiGtsHyULNz1eESWRB3hw=;
+	s=korg; t=1779299698;
+	bh=5Pi8rpgMBaD3/tY9Rcfe5kqe9x95+pOwdJ2FHVHMw58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QjaODJvJ7NeI5f5VgYKXO0ngWyxQlxuf5k6+zStgQB4gWbzMnws6dimKWO6X1Gn5M
-	 wlO7ESgtwvaU5SqsoyedBPt6j3FX+JDnahh88KdgS9Tv8DYd4VCKDyHFBBAw9IgJoy
-	 IMbX7DT9xRzKrx876ZPGeMyYofnwGvbx3qu137m0=
+	b=MjwoOeBdBCO2wRHPHk6hKJyc+c1VQlVCwv41cKRkt8rM/HhrndVC3YRK8tWbEsy8N
+	 Lh05FRq9rdCi1VfsfoiD4qcZvySMF2BVlQN3AkE9TCWoZXfr5NwdI6b2N9CoguuLT9
+	 SxXbbZGEHx899JRn7J+Qeba/kuI1VIappBtwTnnc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 329/508] netfilter: nft_osf: restrict it to ipv4
-Date: Wed, 20 May 2026 18:22:32 +0200
-Message-ID: <20260520162105.762126173@linuxfoundation.org>
+Subject: [PATCH 6.18 870/957] net: airoha: Move ndesc initialization at end of airoha_qdma_init_tx()
+Date: Wed, 20 May 2026 18:22:33 +0200
+Message-ID: <20260520162153.434319374@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,72 +74,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253177-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252082-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,strlen.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: BB0BC597D6F
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 6F6D9596A7D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit b336fdbb7103fb1484e1dcb6741151d4b5a41e35 ]
+[ Upstream commit f329924bb49458c65297f1361f545816a5b90998 ]
 
-This expression only supports for ipv4, restrict it.
+If queue entry list allocation fails in airoha_qdma_init_tx_queue routine,
+airoha_qdma_cleanup_tx_queue() will trigger a NULL pointer dereference
+accessing the queue entry array. The issue is due to the early ndesc
+initialization in airoha_qdma_init_tx_queue(). Fix the issue moving ndesc
+initialization at end of airoha_qdma_init_tx routine.
 
-Fixes: b96af92d6eaf ("netfilter: nf_tables: implement Passive OS fingerprint module in nft_osf")
-Acked-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 3f47e67dff1f7 ("net: airoha: Add the capability to consume out-of-order DMA tx descriptors")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20260417-airoha_qdma_cleanup_tx_queue-fix-net-v4-1-e04bcc2c9642@kernel.org
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_osf.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/airoha/airoha_eth.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/netfilter/nft_osf.c b/net/netfilter/nft_osf.c
-index 123b4f47ccef4..23ec9b397f1eb 100644
---- a/net/netfilter/nft_osf.c
-+++ b/net/netfilter/nft_osf.c
-@@ -28,6 +28,11 @@ static void nft_osf_eval(const struct nft_expr *expr, struct nft_regs *regs,
- 	struct nf_osf_data data;
- 	struct tcphdr _tcph;
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index b4dfab2702cb9..3f97a0135f7f8 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -1019,27 +1019,27 @@ static int airoha_qdma_init_tx_queue(struct airoha_queue *q,
+ 	dma_addr_t dma_addr;
  
-+	if (nft_pf(pkt) != NFPROTO_IPV4) {
-+		regs->verdict.code = NFT_BREAK;
-+		return;
-+	}
-+
- 	if (pkt->tprot != IPPROTO_TCP) {
- 		regs->verdict.code = NFT_BREAK;
- 		return;
-@@ -119,7 +124,6 @@ static int nft_osf_validate(const struct nft_ctx *ctx,
+ 	spin_lock_init(&q->lock);
+-	q->ndesc = size;
+ 	q->qdma = qdma;
+ 	q->free_thr = 1 + MAX_SKB_FRAGS;
+ 	INIT_LIST_HEAD(&q->tx_list);
  
- 	switch (ctx->family) {
- 	case NFPROTO_IPV4:
--	case NFPROTO_IPV6:
- 	case NFPROTO_INET:
- 		hooks = (1 << NF_INET_LOCAL_IN) |
- 			(1 << NF_INET_PRE_ROUTING) |
+-	q->entry = devm_kzalloc(eth->dev, q->ndesc * sizeof(*q->entry),
++	q->entry = devm_kzalloc(eth->dev, size * sizeof(*q->entry),
+ 				GFP_KERNEL);
+ 	if (!q->entry)
+ 		return -ENOMEM;
+ 
+-	q->desc = dmam_alloc_coherent(eth->dev, q->ndesc * sizeof(*q->desc),
++	q->desc = dmam_alloc_coherent(eth->dev, size * sizeof(*q->desc),
+ 				      &dma_addr, GFP_KERNEL);
+ 	if (!q->desc)
+ 		return -ENOMEM;
+ 
+-	for (i = 0; i < q->ndesc; i++) {
++	for (i = 0; i < size; i++) {
+ 		u32 val = FIELD_PREP(QDMA_DESC_DONE_MASK, 1);
+ 
+ 		list_add_tail(&q->entry[i].list, &q->tx_list);
+ 		WRITE_ONCE(q->desc[i].ctrl, cpu_to_le32(val));
+ 	}
++	q->ndesc = size;
+ 
+ 	/* xmit ring drop default setting */
+ 	airoha_qdma_set(qdma, REG_TX_RING_BLOCKING(qid),
 -- 
 2.53.0
 
