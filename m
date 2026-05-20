@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253168-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gB36Nc4hDmqI6QUAu9opvQ
-	(envelope-from <stable+bounces-252073-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:04:14 +0200
+	id wOGDJa4GDmqy5gUAu9opvQ
+	(envelope-from <stable+bounces-253168-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:08:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 243FB59A6B5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:04:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFF38597D1F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:08:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E33E331459BB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:54:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E75753856645
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEE223E5ECF;
-	Wed, 20 May 2026 17:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87C9F402BAA;
+	Wed, 20 May 2026 18:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mzU5frs9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VltIfx1P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65DB93A3E60;
-	Wed, 20 May 2026 17:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C1A40757A;
+	Wed, 20 May 2026 18:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299675; cv=none; b=HcRcxckQtXCf4smbsaBHQ9La3+BYa3jgk0aaZoxsS8OfusvXX8ifURS0xLtp+H/holLtTSWDlcl9UhV63X5cuS9stI6Cdn/+kzkj6ZROyUqy2L8e1RwHRFGBspzsG4teYIRd5zkn/gWFvRtTOsSHe9ngpnYrxnSs9D8SME9j3f8=
+	t=1779302584; cv=none; b=ZM9taVJJUIJyI20k0pMPWbKx358pfkf2toyx2uaSbkSmREGxqrf1F9WP4mWf1B2LyXDPrl8H+ycpWG5ZoR/Z7gz/15cynJdSrSNxgHTyploe198AGbIZT6swk/01Duu2bbE0/koYJ6B4YXyyBunQm4EAtwwEhIruRWp6OfQMXI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299675; c=relaxed/simple;
-	bh=TIAoJvG7P4ZRHDgPL4nBBXHPXnG68zzzEvsq2QyDjEM=;
+	s=arc-20240116; t=1779302584; c=relaxed/simple;
+	bh=R8zfV337DM1pBus8ujPZ2eWNpECL+Msi1yt5aRaEwVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aUCyIshicM11uPvc+fJ347D4aer6ftFUlpkKl2528YMq4I1BLQOoqI91M2DCUN9ryK0ik+JHdTPRURDuEnEfLwVbf80wv6zvbd/9DSF9sBfAQ6OAfOOC9Gs8RosnXgB7yo5EJWK5Rb0eSW60dP79sbuvEx4Kk/mukwGbi4kusiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mzU5frs9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D251F000E9;
-	Wed, 20 May 2026 17:54:33 +0000 (UTC)
+	 MIME-Version; b=jlj49N1N1ACkzZsS2JCKL4KGTxj9qOT3jDLv8Oh53YPQ6izEkE99egwNIYAu0r4EH3DQBTX/ms/znodHOYh/dqyV8fsyin5ZN2k//AiWZF9rzdLiB58LRhOCx0iAGCGXyP04Kq6cLexGiSznYpUAvgbMLDlqrgXwfCPxfAXsl6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VltIfx1P; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A65311F000E9;
+	Wed, 20 May 2026 18:43:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299674;
-	bh=HL18afsGFGCZhDgo48LOCjoCiO3CaTTOnrIuzs3mxTw=;
+	s=korg; t=1779302583;
+	bh=D03DfUYVm0OULc/LF0ZrCiYjhsAnMK9+VxagNSs6Kkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mzU5frs93Xsk1Aw4JryQXAv1pogDy2ZxNHw/ZK8IszCROehruesdmSJ+dbaoWauV1
-	 mkBO0p+ZoMyRkV047Cd6X2tM422esKufOYVYqgxt8IcrDBW395b9+la8oaTE2vNeJu
-	 wVAQHfT3/DXaoMZytqc8XXmZt0gJHphQyeSKJUsY=
+	b=VltIfx1PLehSbv8iGKRMbItFmuGY1XkTcURiQ0NSx27X6e2vRkerb1H3faQDt3hHw
+	 jffobK1oTy16d7ZKgcQCHTO+ctvaF4VHDXd+R1kzIEx4cw0qnIzrgsggrZKBpSgGLF
+	 8J8FLIQeKo+Z2ujgUq94dybcy5xt6Cpz8hMS36EA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Michal Schmidt <mschmidt@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 862/957] PCI: Initialize temporary device in new_id_store()
+Subject: [PATCH 6.6 322/508] ice: fix double-free of tx_buf skb
 Date: Wed, 20 May 2026 18:22:25 +0200
-Message-ID: <20260520162153.259576594@linuxfoundation.org>
+Message-ID: <20260520162105.614124332@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,7 +75,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252073-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253168-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
@@ -92,97 +92,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,qemu.org:url]
-X-Rspamd-Queue-Id: 243FB59A6B5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email]
+X-Rspamd-Queue-Id: EFF38597D1F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samiullah Khawaja <skhawaja@google.com>
+From: Michal Schmidt <mschmidt@redhat.com>
 
-[ Upstream commit f45a49a2380a47332817b7248c61a0ebbc6f0d00 ]
+[ Upstream commit 1a303baa715e6b78d6a406aaf335f87ff35acfcd ]
 
-When setting new_id of a PCI device driver using sysfs a lockdep splat
-occurs. This is because new_id_store() builds a temporary pci_dev for
-pci_match_device(), which calls device_match_driver_override().  That
-depends on the driver_override.lock added by cb3d1049f4ea ("driver core:
-generalize driver_override in struct device").
+If ice_tso() or ice_tx_csum() fail, the error path in
+ice_xmit_frame_ring() frees the skb, but the 'first' tx_buf still points
+to it and is marked as valid (ICE_TX_BUF_SKB).
+'next_to_use' remains unchanged, so the potential problem will
+likely fix itself when the next packet is transmitted and the tx_buf
+gets overwritten. But if there is no next packet and the interface is
+brought down instead, ice_clean_tx_ring() -> ice_unmap_and_free_tx_buf()
+will find the tx_buf and free the skb for the second time.
 
-The new driver_override.lock was not initialized in the temporary pci_dev,
-resulting in this lockdep splat.
+The fix is to reset the tx_buf type to ICE_TX_BUF_EMPTY in the error
+path, so that ice_unmap_and_free_tx_buf().
+Move the initialization of 'first' up, to ensure it's already valid in
+case we hit the linearization error path.
 
-Initialize the temporary pci_dev to fix this.
+The bug was spotted by AI while I had it looking for something else.
+It also proposed an initial version of the patch.
 
-Repro:
+I reproduced the bug and tested the fix by adding code to inject
+failures, on a build with KASAN.
 
-  Build with CONFIG_LOCKDEP=y, boot with QEMU, and add a new ID:
+I looked for similar bugs in related Intel drivers and did not find any.
 
-  # echo "8086 10f5" > /sys/bus/pci/drivers/e1000e/new_id
-
-  INFO: trying to register non-static key.
-  The code is fine but needs lockdep annotation, or maybe
-  you didn't initialize this object before use?
-  turning off the locking correctness validator.
-  CPU: 2 UID: 0 PID: 177 Comm: liveupdate-iomm Not tainted 7.0.0+ #9 PREEMPT(full)
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x5d/0x80
-   register_lock_class+0x77e/0x790
-   lock_acquire+0xbf/0x2e0
-   pci_match_device+0x24/0x180
-   new_id_store+0x189/0x1d0
-   kernfs_fop_write_iter+0x14f/0x210
-   vfs_write+0x263/0x5e0
-   ksys_write+0x79/0xf0
-   do_syscall_64+0x117/0xf80
-
-Fixes: 10a4206a2401 ("PCI: use generic driver_override infrastructure")
-Fixes: 8895d3bcb8ba ("PCI: Fail new_id for vendor/device values already built into driver")
-Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
-[bhelgaas: add commit log details and repro, trim backtrace]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://patch.msgid.link/20260505234327.716630-1-skhawaja@google.com
+Fixes: d76a60ba7afb ("ice: Add support for VLANs and offloads")
+Assisted-by: Claude:claude-4.6-opus-high Cursor
+Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260416-iwl-net-submission-2026-04-14-v2-4-686c33c9828d@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci-driver.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_txrx.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
-index fba07a700508f..f9ead94d5ebb6 100644
---- a/drivers/pci/pci-driver.c
-+++ b/drivers/pci/pci-driver.c
-@@ -179,6 +179,11 @@ static const struct pci_device_id *pci_match_device(struct pci_driver *drv,
- 	return NULL;
+diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
+index 66da8a34be0f1..4e110a008a257 100644
+--- a/drivers/net/ethernet/intel/ice/ice_txrx.c
++++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
+@@ -2364,6 +2364,9 @@ ice_xmit_frame_ring(struct sk_buff *skb, struct ice_tx_ring *tx_ring)
+ 
+ 	ice_trace(xmit_frame_ring, tx_ring, skb);
+ 
++	/* record the location of the first descriptor for this packet */
++	first = &tx_ring->tx_buf[tx_ring->next_to_use];
++
+ 	count = ice_xmit_desc_count(skb);
+ 	if (ice_chk_linearize(skb, count)) {
+ 		if (__skb_linearize(skb))
+@@ -2389,8 +2392,6 @@ ice_xmit_frame_ring(struct sk_buff *skb, struct ice_tx_ring *tx_ring)
+ 
+ 	offload.tx_ring = tx_ring;
+ 
+-	/* record the location of the first descriptor for this packet */
+-	first = &tx_ring->tx_buf[tx_ring->next_to_use];
+ 	first->skb = skb;
+ 	first->type = ICE_TX_BUF_SKB;
+ 	first->bytecount = max_t(unsigned int, skb->len, ETH_ZLEN);
+@@ -2452,6 +2453,7 @@ ice_xmit_frame_ring(struct sk_buff *skb, struct ice_tx_ring *tx_ring)
+ out_drop:
+ 	ice_trace(xmit_frame_ring_drop, tx_ring, skb);
+ 	dev_kfree_skb_any(skb);
++	first->type = ICE_TX_BUF_EMPTY;
+ 	return NETDEV_TX_OK;
  }
  
-+static void _pci_free_device(struct device *dev)
-+{
-+	kfree(to_pci_dev(dev));
-+}
-+
- /**
-  * new_id_store - sysfs frontend to pci_add_dynid()
-  * @driver: target device driver
-@@ -214,11 +219,13 @@ static ssize_t new_id_store(struct device_driver *driver, const char *buf,
- 		pdev->subsystem_vendor = subvendor;
- 		pdev->subsystem_device = subdevice;
- 		pdev->class = class;
-+		pdev->dev.release = _pci_free_device;
- 
-+		device_initialize(&pdev->dev);
- 		if (pci_match_device(pdrv, pdev))
- 			retval = -EEXIST;
- 
--		kfree(pdev);
-+		put_device(&pdev->dev);
- 
- 		if (retval)
- 			return retval;
 -- 
 2.53.0
 
