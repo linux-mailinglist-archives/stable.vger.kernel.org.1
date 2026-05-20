@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-250818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252348-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UK/BEZwUDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-250818-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:07:56 +0200
+	id 8Ga3Iz78DWoK5QUAu9opvQ
+	(envelope-from <stable+bounces-252348-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0E865992AB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:07:55 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 548CB596036
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C4EAE35C5103
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:01:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AA22B316B2E7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:07:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C2893D75CB;
-	Wed, 20 May 2026 16:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 400573A6B6D;
+	Wed, 20 May 2026 18:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="chxHeq8e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EofmpcR6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0431C3AE6E6;
-	Wed, 20 May 2026 16:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0083F331220;
+	Wed, 20 May 2026 18:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296386; cv=none; b=I0evH9Dcd3FLXOdmBhGxUMEaqqtAEg8QY3wm7nngKa0lDwmaLJwwbXY3gDvfiCi18GAitOaN1LysF/JIjK20wOk1pOefgSpJZrmvE9oJdCLaZSAw6vOoIil4YWH/zMNGAqb1ccPq3MsHkhlRMdQIPERW0jp4z07WadgN1CO6tAk=
+	t=1779300442; cv=none; b=WrRi8Fomxe0lRiqeA42KRT0paPSKwBipBsLw0pyh9LKLCt4wd8nVRAs5yN/sc+QmLyFjyLChWAZ4HJbkzrV61MAMP59A2X59y1jOEPQ9fvcb4b54H1QW53V9ZcY2s0qTw5Wn1Ldv+UdVCSngNnhh3SYEHcAFS7MJ4ELpmtM/saY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296386; c=relaxed/simple;
-	bh=BnPv+WOlvE53JaCYUo9NkKe9xg/HwOD3B4rjhXF7AAU=;
+	s=arc-20240116; t=1779300442; c=relaxed/simple;
+	bh=Q20OPbUWU4EEgo3XlEqGETuyZN1J2u1Tnd7N8gs6IuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NkuCE/+oqsVWnHHfMtLmO0Td9GsDNBAjIz4GRxLWS0iSbMAYa/b8OpPNiwrLrvICdb+bvrOfz6+krmFJHePfczupsPCj3HIvFMf+uHiHN+zgBp3YQMuJJUjyb5hYoOZ4EPyA25dCt8wH/rfoW2kdJMqxqS/kcckODnEXwk3V48I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=chxHeq8e; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BB311F00893;
-	Wed, 20 May 2026 16:59:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hf1/2J5vxjAVHsdr+tFHWAxMjX1nPGMp21Kon+BIEPMlx3tZ3XQg1ps1CdmCGJgxmALujkhu7fgy8j6mJu4o5i3tR01H7yUidux1dqKpvgs1kYSlosHJozZnUDktEtevCwaJABRSyi/eUHxCI63QSHuFi2Y0c0dZaC6iIHcKSIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EofmpcR6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 664201F000E9;
+	Wed, 20 May 2026 18:07:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296384;
-	bh=udFhIriGAvgOiFC/f3U0NpEeR3rlo9HoXXptHbBbAV4=;
+	s=korg; t=1779300440;
+	bh=p6ylkuoD/AP6bK3O6+Um7Agw6fVF2B9hGQnzHRErBz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=chxHeq8eEAGZqhy2lQLKVYMImyUSugV9q55nvFjurRrR5JAfnwfEqMbQGCcVs7sRt
-	 ajsdsZp8/6RaU2ImMVKO64hsdIGu1qfdaQoIW7pZReWC0PRwNL6VJT2ErLMstH6NEV
-	 iHQ88y1eiMeSeB4ZVByptOE8p02aHKN5D638+pfo=
+	b=EofmpcR64DkPscc4lHhkCkc1LA4NbBhHqHn3KSc/zn03gH4kiz8/L+UR3FOBeDBNv
+	 js79Pz+bX8DviIXXzeonduro78j53JIRWO7VvVE8IjjNRJUWb20QWBaEVfRwp9gITV
+	 bkSfYBB+IR/6A36WGmSL0Xq1TKD8gKc8FCx2GdxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daeho Jeong <daehojeong@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0738/1146] f2fs: allow empty mount string for Opt_usr|grp|projjquota
+Subject: [PATCH 6.12 177/666] drm/amd/pm/ci: Disable MCLK DPM on problematic CI ASICs
 Date: Wed, 20 May 2026 18:16:28 +0200
-Message-ID: <20260520162204.908745330@linuxfoundation.org>
+Message-ID: <20260520162115.037155172@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,117 +63,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-252348-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250818-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: B0E865992AB
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 548CB596036
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaegeuk Kim <jaegeuk@kernel.org>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 2a3db1e02ce08c14af04da70bb99e8a0a31eb9e8 ]
+[ Upstream commit 9851f29cb06c09f7dad3867d8b0feec3fc71b6c8 ]
 
-The fsparam_string_empty() gives an error when mounting without string, since
-its type is set to fsparam_flag in VFS. So, let's allow the flag as well.
+There are two known cases where MCLK DPM can causes issues:
 
-This addresses xfstests/f2fs/015 and f2fs/021.
+Radeon R9 M380 found in iMac computers from 2015.
+The SMU in this GPU just hangs as soon as we send it the
+PPSMC_MSG_MCLKDPM_Enable command, even when MCLK switching is
+disabled, and even when we only populate one MCLK DPM level.
+Apply workaround to all devices with the same subsystem ID.
 
-Fixes: d18535132523 ("f2fs: separate the options parsing and options checking")
-Reviewed-by: Daeho Jeong <daehojeong@google.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Radeon R7 260X due to old memory controller microcode.
+We only flash the MC ucode when it isn't set up by the VBIOS,
+therefore there is no way to make sure that it has the correct
+ucode version.
+
+I verified that this patch fixes the SMU hang on the R9 M380
+which would previously fail to boot. This also fixes the UVD
+initialization error on that GPU which happened because the
+SMU couldn't ungate the UVD after it hung.
+
+Fixes: 86457c3b21cb ("drm/amd/powerplay: Add support for CI asics to hwmgr")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/super.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/hwmgr.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index f44e962b1ee7d..79cc7b39802f8 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -336,9 +336,12 @@ static const struct fs_parameter_spec f2fs_param_specs[] = {
- 	fsparam_flag("usrquota", Opt_usrquota),
- 	fsparam_flag("grpquota", Opt_grpquota),
- 	fsparam_flag("prjquota", Opt_prjquota),
--	fsparam_string_empty("usrjquota", Opt_usrjquota),
--	fsparam_string_empty("grpjquota", Opt_grpjquota),
--	fsparam_string_empty("prjjquota", Opt_prjjquota),
-+	fsparam_string("usrjquota", Opt_usrjquota),
-+	fsparam_flag("usrjquota", Opt_usrjquota),
-+	fsparam_string("grpjquota", Opt_grpjquota),
-+	fsparam_flag("grpjquota", Opt_grpjquota),
-+	fsparam_string("prjjquota", Opt_prjjquota),
-+	fsparam_flag("prjjquota", Opt_prjjquota),
- 	fsparam_flag("nat_bits", Opt_nat_bits),
- 	fsparam_enum("jqfmt", Opt_jqfmt, f2fs_param_jqfmt),
- 	fsparam_enum("alloc_mode", Opt_alloc, f2fs_param_alloc_mode),
-@@ -979,26 +982,26 @@ static int f2fs_parse_param(struct fs_context *fc, struct fs_parameter *param)
- 		ctx_set_opt(ctx, F2FS_MOUNT_PRJQUOTA);
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/hwmgr.c
+index 2b5ac21fee399..1d6e30269d567 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/hwmgr.c
+@@ -104,6 +104,21 @@ int hwmgr_early_init(struct pp_hwmgr *hwmgr)
+ 					 PP_GFXOFF_MASK);
+ 		hwmgr->pp_table_version = PP_TABLE_V0;
+ 		hwmgr->od_enabled = false;
++		switch (hwmgr->chip_id) {
++		case CHIP_BONAIRE:
++			/* R9 M380 in iMac 2015: SMU hangs when enabling MCLK DPM
++			 * R7 260X cards with old MC ucode: MCLK DPM is unstable
++			 */
++			if (adev->pdev->subsystem_vendor == 0x106B ||
++			    adev->pdev->device == 0x6658) {
++				dev_info(adev->dev, "disabling MCLK DPM on quirky ASIC");
++				adev->pm.pp_feature &= ~PP_MCLK_DPM_MASK;
++				hwmgr->feature_mask &= ~PP_MCLK_DPM_MASK;
++			}
++			break;
++		default:
++			break;
++		}
+ 		smu7_init_function_pointers(hwmgr);
  		break;
- 	case Opt_usrjquota:
--		if (!*param->string)
--			ret = f2fs_unnote_qf_name(fc, USRQUOTA);
--		else
-+		if (param->type == fs_value_is_string && *param->string)
- 			ret = f2fs_note_qf_name(fc, USRQUOTA, param);
-+		else
-+			ret = f2fs_unnote_qf_name(fc, USRQUOTA);
- 		if (ret)
- 			return ret;
- 		break;
- 	case Opt_grpjquota:
--		if (!*param->string)
--			ret = f2fs_unnote_qf_name(fc, GRPQUOTA);
--		else
-+		if (param->type == fs_value_is_string && *param->string)
- 			ret = f2fs_note_qf_name(fc, GRPQUOTA, param);
-+		else
-+			ret = f2fs_unnote_qf_name(fc, GRPQUOTA);
- 		if (ret)
- 			return ret;
- 		break;
- 	case Opt_prjjquota:
--		if (!*param->string)
--			ret = f2fs_unnote_qf_name(fc, PRJQUOTA);
--		else
-+		if (param->type == fs_value_is_string && *param->string)
- 			ret = f2fs_note_qf_name(fc, PRJQUOTA, param);
-+		else
-+			ret = f2fs_unnote_qf_name(fc, PRJQUOTA);
- 		if (ret)
- 			return ret;
- 		break;
+ 	case AMDGPU_FAMILY_CZ:
 -- 
 2.53.0
 
