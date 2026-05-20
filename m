@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-250261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250262-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oNmVJ43lDWpz4gUAu9opvQ
-	(envelope-from <stable+bounces-250261-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:47:09 +0200
+	id 0JekNAjlDWpz4gUAu9opvQ
+	(envelope-from <stable+bounces-250262-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:44:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 284135926D9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:47:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 526775925ED
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:44:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 43A8530AB9DE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:37:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 83A5C306E2DC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 428823EF0A1;
-	Wed, 20 May 2026 16:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 357EC371056;
+	Wed, 20 May 2026 16:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tKg33129"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dKQFENAw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C416B371056;
-	Wed, 20 May 2026 16:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA9D370D7C;
+	Wed, 20 May 2026 16:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294950; cv=none; b=R2IVWZCDs1G2qnTdCI+TEL/f/H+W7ONJmPFulrWQKcxDrI/HZNrPVBU2RmxkFc5UlZGHOVS1ep81nx9B12gu+mYql6JVh1nPce0IOI4maJeuOsucBrst+rQOrgN8vpAh+4OQ9LWGCdzdvXeYfbfjcgXg2/G+HRM5XxEHaGHHGh0=
+	t=1779294952; cv=none; b=t5SFvzE56IabnCFKk1Jw/uXwt7hYaQQRdUIgI+O8Aua/pbDRyrRYW9qKGR6G+zEp9yM+W8YjjOdWI9+1aOjKn5ewdkbA29LraHO23oMBa+THO1Mg0PXnoNj18lmdEgMDETDfIyPIJVO9UohLpstQ8hn6TUSj0fy3OFcmTzQ1i/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294950; c=relaxed/simple;
-	bh=bWDcgmYb9qD6eZ/5aSCmUIqQT0inRaXQ1KWaUuU4lO0=;
+	s=arc-20240116; t=1779294952; c=relaxed/simple;
+	bh=szEPEwhGdBrLJBMoYuHZ6ZpJbA/dc9k+xu8JrZVQU1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s9Mh0xEjhpXf9TeR2H2Wpaw/oQAE6/heJ+6Xe82Z2kSsYLxSid727rUK07evVNy8b1c90FGtO7uYyEN2WC6Y/i2zngYtElPn9xbWZ+8Bbbufi0CDMar+6d690CH/r2iACcK6ha0TNsj0UfDCx3dyQDe/gxQwIJeiQmzccF9gjGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tKg33129; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 739221F000E9;
-	Wed, 20 May 2026 16:35:47 +0000 (UTC)
+	 MIME-Version; b=Bm3qIWWHspilmTudP5kMwqr+dmGhPTiPZINgWsEfwLNCOIgBrqxUXWK/BlPhFAUDSYz9trrIdvOqFc/KipgT5tiqJ9M83icW473x1Dczg7pqlqLCqaO+Qtj0NTVU306aX83MJNNCncDd9dNbuTmg+kQ2oc2K9L3TNMwSR6WWcOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dKQFENAw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15D7E1F00893;
+	Wed, 20 May 2026 16:35:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294948;
-	bh=bZ0RwZY4RJ+IjcKBnWPCcuThh1hwkhbhYJjA/4PSrOI=;
+	s=korg; t=1779294950;
+	bh=6Yw0dOndZZ0X+cgl/UR53Yw2Qi+ZvStFwZxIO76Uc+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tKg33129jwWGZvPKLJtsIheQCX/KnJHYul2SsuFfjuP6Xq3QMc0CuBuG2E2citkTf
-	 jkVT2h+EEL1qtBVmsQ4jPrN2Ju6LmEMNi4+CU/hh7mIhVJ9GJPB1w6uiE0qSWoiUlg
-	 QZbJ0wdPPetv1ZS1oEg4avVJ0F4uoEN3x9LMzmOU=
+	b=dKQFENAw9aJs51pfHvWJGbGJce6mVr7/0jiB2P/AvZ8VLjX6yzhFz3i/y3cTx1nlg
+	 kEJn60p/jl7vM56jCUWNlTJV9bC9VlRw93jYeot54L1yKGdJgaXrityZWXwZ1xQJGj
+	 aYc6UcIqyG6TF+8HzqhsTEqZcfSL7jSmhDI3BtOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,9 +50,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Frank Li <Frank.Li@nxp.com>,
 	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0233/1146] PCI: endpoint: pci-epf-vntb: Fix MSI doorbell IRQ unwind
-Date: Wed, 20 May 2026 18:08:03 +0200
-Message-ID: <20260520162153.522307420@linuxfoundation.org>
+Subject: [PATCH 7.0 0234/1146] PCI: endpoint: pci-epf-test: Dont free doorbell IRQ unless requested
+Date: Wed, 20 May 2026 18:08:04 +0200
+Message-ID: <20260520162153.544063054@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250261-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250262-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,13 +87,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,msgid.link:url,valinux.co.jp:email]
-X-Rspamd-Queue-Id: 284135926D9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,valinux.co.jp:email]
+X-Rspamd-Queue-Id: 526775925ED
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,70 +103,73 @@ X-Rspamd-Server: lfdr
 
 From: Koichiro Den <den@valinux.co.jp>
 
-[ Upstream commit cc04f2bfb9dae60b6e34d6bff75c26d4ec3237ce ]
+[ Upstream commit e81fa70179aac6ac3a6636565d5d35968dca3900 ]
 
-epf_ntb_db_bar_init_msi_doorbell() requests ntb->db_count doorbell IRQs
-and then performs additional MSI doorbell setup that may still fail.
-The error path unwinds the requested IRQs, but it uses a loop variable
-that is reused later in the function. When a later step fails, the
-unwind can run with an unexpected index value and leave some IRQs
-requested.
+pci_epf_test_doorbell_cleanup() unconditionally calls free_irq() for the
+doorbell virq, which can trigger "Trying to free already-free IRQ"
+warnings when the IRQ was never requested or when request_threaded_irq()
+failed.
 
-Track the number of successfully requested IRQs separately and use that
-counter for the unwind so all previously requested IRQs are freed on
-failure.
+Move free_irq() out of pci_epf_test_doorbell_cleanup() and invoke it
+only after a successful request, so that free_irq() is not called for
+an unrequested IRQ.
 
-Fixes: dc693d606644 ("PCI: endpoint: pci-epf-vntb: Add MSI doorbell support")
+Fixes: eff0c286aa91 ("PCI: endpoint: pci-epf-test: Add doorbell test support")
 Signed-off-by: Koichiro Den <den@valinux.co.jp>
 Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Link: https://patch.msgid.link/20260217063856.3759713-2-den@valinux.co.jp
+Link: https://patch.msgid.link/20260217063856.3759713-3-den@valinux.co.jp
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-vntb.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/pci/endpoint/functions/pci-epf-test.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-index 65f5bbf28480d..c9c7b50587dd2 100644
---- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-@@ -527,20 +527,20 @@ static int epf_ntb_db_bar_init_msi_doorbell(struct epf_ntb *ntb,
- 	struct msi_msg *msg;
- 	size_t sz;
- 	int ret;
--	int i;
-+	int i, req;
+diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
+index 33548935765e3..0e7cbcbebf0b4 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-test.c
++++ b/drivers/pci/endpoint/functions/pci-epf-test.c
+@@ -715,7 +715,6 @@ static void pci_epf_test_doorbell_cleanup(struct pci_epf_test *epf_test)
+ 	struct pci_epf_test_reg *reg = epf_test->reg[epf_test->test_reg_bar];
+ 	struct pci_epf *epf = epf_test->epf;
  
- 	ret = pci_epf_alloc_doorbell(epf,  ntb->db_count);
+-	free_irq(epf->db_msg[0].virq, epf_test);
+ 	reg->doorbell_bar = cpu_to_le32(NO_BAR);
+ 
+ 	pci_epf_free_doorbell(epf);
+@@ -759,7 +758,7 @@ static void pci_epf_test_enable_doorbell(struct pci_epf_test *epf_test,
+ 					 &epf_test->db_bar.phys_addr, &offset);
+ 
  	if (ret)
- 		return ret;
+-		goto err_doorbell_cleanup;
++		goto err_free_irq;
  
--	for (i = 0; i < ntb->db_count; i++) {
--		ret = request_irq(epf->db_msg[i].virq, epf_ntb_doorbell_handler,
-+	for (req = 0; req < ntb->db_count; req++) {
-+		ret = request_irq(epf->db_msg[req].virq, epf_ntb_doorbell_handler,
- 				  0, "pci_epf_vntb_db", ntb);
+ 	reg->doorbell_offset = cpu_to_le32(offset);
  
- 		if (ret) {
- 			dev_err(&epf->dev,
- 				"Failed to request doorbell IRQ: %d\n",
--				epf->db_msg[i].virq);
-+				epf->db_msg[req].virq);
- 			goto err_free_irq;
- 		}
- 	}
-@@ -598,8 +598,8 @@ static int epf_ntb_db_bar_init_msi_doorbell(struct epf_ntb *ntb,
- 	return 0;
+@@ -769,12 +768,14 @@ static void pci_epf_test_enable_doorbell(struct pci_epf_test *epf_test,
  
- err_free_irq:
--	for (i--; i >= 0; i--)
--		free_irq(epf->db_msg[i].virq, ntb);
-+	for (req--; req >= 0; req--)
-+		free_irq(epf->db_msg[req].virq, ntb);
+ 	ret = pci_epc_set_bar(epc, epf->func_no, epf->vfunc_no, &epf_test->db_bar);
+ 	if (ret)
+-		goto err_doorbell_cleanup;
++		goto err_free_irq;
  
- 	pci_epf_free_doorbell(ntb->epf);
- 	return ret;
+ 	status |= STATUS_DOORBELL_ENABLE_SUCCESS;
+ 	reg->status = cpu_to_le32(status);
+ 	return;
+ 
++err_free_irq:
++	free_irq(epf->db_msg[0].virq, epf_test);
+ err_doorbell_cleanup:
+ 	pci_epf_test_doorbell_cleanup(epf_test);
+ set_status_err:
+@@ -794,6 +795,7 @@ static void pci_epf_test_disable_doorbell(struct pci_epf_test *epf_test,
+ 	if (bar < BAR_0)
+ 		goto set_status_err;
+ 
++	free_irq(epf->db_msg[0].virq, epf_test);
+ 	pci_epf_test_doorbell_cleanup(epf_test);
+ 
+ 	/*
 -- 
 2.53.0
 
