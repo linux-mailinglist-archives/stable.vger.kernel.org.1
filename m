@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250759-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8EEmFrLzDWoF5AUAu9opvQ
-	(envelope-from <stable+bounces-251736-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:30 +0200
+	id 4K/aIZTsDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250759-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:17:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBE05594937
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:29 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37F225933DC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:17:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 996BD3047769
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:39:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C295730F64C5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:58:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E920C363C6F;
-	Wed, 20 May 2026 17:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F573EFD22;
+	Wed, 20 May 2026 16:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YcF1eUeD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9zyY/IA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962FF3A3E9C;
-	Wed, 20 May 2026 17:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA7C3ED5C5;
+	Wed, 20 May 2026 16:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298757; cv=none; b=UImCazf8n4MgDW9RTU8aft6optmUQfRY/Sg53WtehQ6JWoygmIToTsdph6MNbYKEQSS3P1M8V0Nl7AIc42q1mWvaJlbNWXSMSnlbe3BrmEHQvzz/xvNP5CdSC8WiBensYoeSDbme/cxcaa4jA0fuW/6OkiI06GVmwJQxTX0tZCI=
+	t=1779296243; cv=none; b=tPH+c3Gcs3LCVzWTzfV8sfsKHH7vf/aN09TLD+wqhgrTWdlSsY1jyGf+s5/kB50KjL9UHtScrLcn2ttUCtTOoHf645lb3kor/5lAzwxpG385Fzk2c1VhmngmCit1XaxJG7akHMh/cP4Q8NelxrIjXVsEM5xGNSd/1zrpkTiCpyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298757; c=relaxed/simple;
-	bh=Lx1RH290B0JxtkQJ9GZJC29pxrDNFjSo517mHKspjxE=;
+	s=arc-20240116; t=1779296243; c=relaxed/simple;
+	bh=bbj0Lv3ym0lQVKUBado6majT/KqKHwABVi3E5cD/efk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KclQ1qCHorYDTpwBdQZ5fVpC4Fk370jh5Yd64Ws4hz1gquPmR2kv8U7aYRbl8clHSS4dvDKnqq8voT6srs1PUhKkMSl7PnYrCKHWCJ6hHr5E8BT9Oq4RI2O3DoD54BcPk1d7TZysUiakpCprBQunjdiGvYCG4bcHh6CiJ9MwJz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YcF1eUeD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC731F000E9;
-	Wed, 20 May 2026 17:39:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bAzfLU2vonG/VvTtzXfEWVNOSDWjHUxi8/wQL26BM3vZKzE8tOCTxpAxFN+jsvJcWx3mjKBe6rE8nLBW3YCalLme6ei0gl3I4ZmWnFRaKj4kG9z/Aij3L02gcjY31QO6yz0gXGoEhKROtzp6ILVJiye8EUlyF1ErGrSD4dZuxAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9zyY/IA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99BA41F000E9;
+	Wed, 20 May 2026 16:57:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298756;
-	bh=6KG+inLnMN6irLM3BkcNr/WI/kpNDhq5UA7Gy/zwpLw=;
+	s=korg; t=1779296242;
+	bh=8PU+8avh1XnwlTNNIKYUHItERGgSFFBYeTvpIPGktG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YcF1eUeDpwOR7kAIy9iSzWgkKmUg3npIIjvzrjxrE9+3yGmtf7A33SOLviIGksiOh
-	 oIFYM07KiM715ogeWlEOAE8HQByuaNGm0DDWGLrC+rFo1jsBda90FOtCQ27PuxtvGO
-	 U6FJU/2ixOoPbAoH1L9NrRwbhjVMVcsyMAsJlufc=
+	b=o9zyY/IACapNSJE8PBleg1cL4jsx+Mxr2E0+3v7ebMm1ngHqZ4M7TjkNeYafaKetN
+	 1k1E5VHq0EkNeFGcYudB1eC+TQ01PxytqNgn8O9L2Uj18Ccypi3vmWPSc6TSDHUi+N
+	 sbE0lr6XS/saG7gWUFoyl16OOVgqq2r0E3SADTiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Michal Luczaj <mhal@rbox.co>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 490/957] bpf, sockmap: Take state lock for af_unix iter
-Date: Wed, 20 May 2026 18:16:13 +0200
-Message-ID: <20260520162145.151925884@linuxfoundation.org>
+Subject: [PATCH 7.0 0724/1146] x86/um: fix vDSO installation
+Date: Wed, 20 May 2026 18:16:14 +0200
+Message-ID: <20260520162204.588899682@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,149 +63,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251736-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250759-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,rbox.co:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: BBE05594937
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,weissschuh.net:email]
+X-Rspamd-Queue-Id: 37F225933DC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit 64c2f93fc3254d3bf5de4445fb732ee5c451edb6 ]
+[ Upstream commit d1895c15fc7d90a615bc8c455feb02acaf08ef1e ]
 
-When a BPF iterator program updates a sockmap, there is a race condition in
-unix_stream_bpf_update_proto() where the `peer` pointer can become stale[1]
-during a state transition TCP_ESTABLISHED -> TCP_CLOSE.
+The generic vDSO installation logic used by 'make vdso_install' requires
+that $(vdso-install-y) is defined by the top-level architecture Makefile
+and that it contains a path relative to the root of the tree.
+For UML neither of these is satisfied.
 
-        CPU0 bpf                          CPU1 close
-        --------                          ----------
-// unix_stream_bpf_update_proto()
-sk_pair = unix_peer(sk)
-if (unlikely(!sk_pair))
-   return -EINVAL;
-                                     // unix_release_sock()
-                                     skpair = unix_peer(sk);
-                                     unix_peer(sk) = NULL;
-                                     sock_put(skpair)
-sock_hold(sk_pair) // UaF
+Move the definition of $(vdso-install-y) to a place which is included by
+the arch/um/Makefile and use the full relative path.
 
-More practically, this fix guarantees that the iterator program is
-consistently provided with a unix socket that remains stable during
-iterator execution.
-
-[1]:
-BUG: KASAN: slab-use-after-free in unix_stream_bpf_update_proto+0x155/0x490
-Write of size 4 at addr ffff8881178c9a00 by task test_progs/2231
-Call Trace:
- dump_stack_lvl+0x5d/0x80
- print_report+0x170/0x4f3
- kasan_report+0xe4/0x1c0
- kasan_check_range+0x125/0x200
- unix_stream_bpf_update_proto+0x155/0x490
- sock_map_link+0x71c/0xec0
- sock_map_update_common+0xbc/0x600
- sock_map_update_elem+0x19a/0x1f0
- bpf_prog_bbbf56096cdd4f01_selective_dump_unix+0x20c/0x217
- bpf_iter_run_prog+0x21e/0xae0
- bpf_iter_unix_seq_show+0x1e0/0x2a0
- bpf_seq_read+0x42c/0x10d0
- vfs_read+0x171/0xb20
- ksys_read+0xff/0x200
- do_syscall_64+0xf7/0x5e0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Allocated by task 2236:
- kasan_save_stack+0x30/0x50
- kasan_save_track+0x14/0x30
- __kasan_slab_alloc+0x63/0x80
- kmem_cache_alloc_noprof+0x1d5/0x680
- sk_prot_alloc+0x59/0x210
- sk_alloc+0x34/0x470
- unix_create1+0x86/0x8a0
- unix_stream_connect+0x318/0x15b0
- __sys_connect+0xfd/0x130
- __x64_sys_connect+0x72/0xd0
- do_syscall_64+0xf7/0x5e0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Freed by task 2236:
- kasan_save_stack+0x30/0x50
- kasan_save_track+0x14/0x30
- kasan_save_free_info+0x3b/0x70
- __kasan_slab_free+0x47/0x70
- kmem_cache_free+0x11c/0x590
- __sk_destruct+0x432/0x6e0
- unix_release_sock+0x9b3/0xf60
- unix_release+0x8a/0xf0
- __sock_release+0xb0/0x270
- sock_close+0x18/0x20
- __fput+0x36e/0xac0
- fput_close_sync+0xe5/0x1a0
- __x64_sys_close+0x7d/0xd0
- do_syscall_64+0xf7/0x5e0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Fixes: 2c860a43dd77 ("bpf: af_unix: Implement BPF iterator for UNIX domain socket.")
-Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260414-unix-proto-update-null-ptr-deref-v4-5-2af6fe97918e@rbox.co
+Fixes: f1c2bb8b9964 ("um: implement a x86_64 vDSO")
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://patch.msgid.link/20260318-um-vdso-install-v1-1-26a4ca5c4210@weissschuh.net
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/Makefile.um      | 2 ++
+ arch/x86/um/vdso/Makefile | 2 --
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index cf022252d521c..33ed8ecb556dd 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -3779,6 +3779,7 @@ static int bpf_iter_unix_seq_show(struct seq_file *seq, void *v)
- 		return 0;
+diff --git a/arch/x86/Makefile.um b/arch/x86/Makefile.um
+index c86cbd9cbba38..19c13afa474e9 100644
+--- a/arch/x86/Makefile.um
++++ b/arch/x86/Makefile.um
+@@ -60,4 +60,6 @@ ELF_FORMAT := elf64-x86-64
+ LINK-$(CONFIG_LD_SCRIPT_DYN_RPATH) += -Wl,-rpath,/lib64
+ LINK-y += -m64
  
- 	lock_sock(sk);
-+	unix_state_lock(sk);
++vdso-install-y += arch/x86/um/vdso/vdso.so.dbg
++
+ endif
+diff --git a/arch/x86/um/vdso/Makefile b/arch/x86/um/vdso/Makefile
+index 8a7c8b37cb6eb..7664cbedbe30f 100644
+--- a/arch/x86/um/vdso/Makefile
++++ b/arch/x86/um/vdso/Makefile
+@@ -3,8 +3,6 @@
+ # Building vDSO images for x86.
+ #
  
- 	if (unlikely(sock_flag(sk, SOCK_DEAD))) {
- 		ret = SEQ_SKIP;
-@@ -3790,6 +3791,7 @@ static int bpf_iter_unix_seq_show(struct seq_file *seq, void *v)
- 	prog = bpf_iter_get_info(&meta, false);
- 	ret = unix_prog_seq_show(prog, &meta, v, uid);
- unlock:
-+	unix_state_unlock(sk);
- 	release_sock(sk);
- 	return ret;
- }
+-vdso-install-y += vdso.so
+-
+ # files to link into the vdso
+ vobjs-y := vdso-note.o um_vdso.o
+ 
 -- 
 2.53.0
 
