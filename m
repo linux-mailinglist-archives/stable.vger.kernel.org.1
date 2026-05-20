@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-250382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251323-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cAgVMeQPDmrB5wUAu9opvQ
-	(envelope-from <stable+bounces-250382-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:47:48 +0200
+	id 6OD0KCnxDWp+4wUAu9opvQ
+	(envelope-from <stable+bounces-251323-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FE70598BEB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:47:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A9C25941AB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 214EB322520E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 883423035AB4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:21:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DB6C369D4E;
-	Wed, 20 May 2026 16:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF96B36A376;
+	Wed, 20 May 2026 17:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xtUSpDM4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bO0eJwz7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 226C236A357;
-	Wed, 20 May 2026 16:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9FF42DC76C;
+	Wed, 20 May 2026 17:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295268; cv=none; b=hLLEGI+/rGgzbuzxAM2IOzNVMBFNPWZFwwbIGBV4c5yGqSWu6n1SQxg+nW+s2pFXdjM+fr2rcWAwFdeD8m1nDQTgd5TaNd8kWAXEr9VWzOCLS9hKN8lptRT+myMRShEc8hI5wiGqbFP5KWcHAilC4aO/BA/8GvSMZ3aATIVE7ig=
+	t=1779297683; cv=none; b=fDYgEDrP2QmXpJ5GdRXzmf8RKbS9kiQb0qlsb+Vou8H/t/794wsibhryHAtpbcuOXEdZbNRCYzc0WzSGDNhvQ0YvtL//HlTOVAwfcAr2oSn2JC+3sdpgQjmIfikxu923OYKfyjFnjqtskgXuGIIc3Hxm+riewJvyZb0fB3m7Kc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295268; c=relaxed/simple;
-	bh=sdNLlUG0H/IDuuVpJPXTlbC9xApIY/pYdKsUkUm/Gng=;
+	s=arc-20240116; t=1779297683; c=relaxed/simple;
+	bh=0MxombyVQxDkid9JkTz540AOEiExFKz1K2abTH7YBA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gtczfxn5WBDrfq85ilcZ0hs7JmNddeXCo+4gyvFyzsyQoJ9H+aduhwSG/+iaE4HeveKcJQIN+XApYqVvidpMntUdIjfE5A+40NnF8ZPeFEUqFsmTfy+L8kVHOi0DgiXUBD7/RgHQ/aTOMJkOni8XXGoxS8LfQ0EUcOxoptHfUl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xtUSpDM4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DBD91F000E9;
-	Wed, 20 May 2026 16:41:06 +0000 (UTC)
+	 MIME-Version; b=bSXkF51+R5Nptr9zbZYAGFA4n5Jh0wCF4glvrKEzvyH/041BkQLEjTXaY/MRUjuhWS013Lv6p0MBh+QQjxvz/eGM4dlhDlgyMLhL/L62riDpua3ycvA+cwexEw9jjCWJ2J0sIdbaSDDqJg31p0DmR5okAmXmoElWWBohiIqSXUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bO0eJwz7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B4771F000E9;
+	Wed, 20 May 2026 17:21:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295266;
-	bh=2mMrGT2DStifiJSwPTQ8buFLAf3ILCLtZUUIC/8Ezew=;
+	s=korg; t=1779297682;
+	bh=5yDQDCF8ifZEKNN6IoPrwRpRUuaoHD2KLh/328PUBK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xtUSpDM4m837ItKO1HMIrExhQrmELbha8jPlNBHd3SBVtQb1NXWTGRh51YHgLSbQj
-	 QAMUwqlnoi+CdNCX7dga/tRQw70sg5yc4+IHJ9bBBOipKMTJlDgt7WyhDv/8MBcIT+
-	 1G8YDjhWXEyt50gWu/VhX+Hxl9FKtAM7iFPCJAHg=
+	b=bO0eJwz7YLSOhUzPR3ryZw7QGjOl4hTVaAhMY5TdtraWzwg72J3pbo2WOO+47rcIy
+	 dD8Ybr/+JmCQEEHQ8Rrr8DGu0l0kzaZum8cJmYmo4PB+QPFM3oi+5W2FSGNvhLF2cq
+	 Vtn9Xz0uMRbSIq17ZR9Ir6Rfo6vbAPno5aoqU12w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Connor Abbott <cwabbott0@gmail.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	MingTao Huang <mintaohuang@tencent.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0355/1146] drm/msm/a6xx: Fix HLSQ register dumping
+Subject: [PATCH 6.18 122/957] bpf: Fix stale offload->prog pointer after constant blinding
 Date: Wed, 20 May 2026 18:10:05 +0200
-Message-ID: <20260520162156.235287483@linuxfoundation.org>
+Message-ID: <20260520162137.204961618@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,72 +66,103 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250382-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251323-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,patchwork.freedesktop.org:url]
-X-Rspamd-Queue-Id: 2FE70598BEB
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tencent.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4A9C25941AB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robin.clark@oss.qualcomm.com>
+From: MingTao Huang <mintaohuang@tencent.com>
 
-[ Upstream commit c289a6db9ba6cb974f0317da142e4f665d589566 ]
+[ Upstream commit a1aa9ef47c299c5bbc30594d3c2f0589edf908e6 ]
 
-Fix the bitfield offset of HLSQ_READ_SEL state-type bitfield.  Otherwise
-we are always reading TP state when we wanted SP or HLSQ state.
+When a dev-bound-only BPF program (BPF_F_XDP_DEV_BOUND_ONLY) undergoes
+JIT compilation with constant blinding enabled (bpf_jit_harden >= 2),
+bpf_jit_blind_constants() clones the program. The original prog is then
+freed in bpf_jit_prog_release_other(), which updates aux->prog to point
+to the surviving clone, but fails to update offload->prog.
 
-Reported-by: Connor Abbott <cwabbott0@gmail.com>
-Suggested-by: Connor Abbott <cwabbott0@gmail.com>
-Fixes: 1707add81551 ("drm/msm/a6xx: Add a6xx gpu state")
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/714236/
-Message-ID: <20260325184043.1259312-1-robin.clark@oss.qualcomm.com>
+This leaves offload->prog pointing to the freed original program. When
+the network namespace is subsequently destroyed, cleanup_net() triggers
+bpf_dev_bound_netdev_unregister(), which iterates ondev->progs and calls
+__bpf_prog_offload_destroy(offload->prog). Accessing the freed prog
+causes a page fault:
+
+BUG: unable to handle page fault for address: ffffc900085f1038
+Workqueue: netns cleanup_net
+RIP: 0010:__bpf_prog_offload_destroy+0xc/0x80
+Call Trace:
+__bpf_offload_dev_netdev_unregister+0x257/0x350
+bpf_dev_bound_netdev_unregister+0x4a/0x90
+unregister_netdevice_many_notify+0x2a2/0x660
+...
+cleanup_net+0x21a/0x320
+
+The test sequence that triggers this reliably is:
+
+1. Set net.core.bpf_jit_harden=2 (echo 2 > /proc/sys/net/core/bpf_jit_harden)
+2. Run xdp_metadata selftest, which creates a dev-bound-only XDP
+   program on a veth inside a netns (./test_progs -t xdp_metadata)
+3. cleanup_net -> page fault in __bpf_prog_offload_destroy
+
+Dev-bound-only programs are unique in that they have an offload structure
+but go through the normal JIT path instead of bpf_prog_offload_compile().
+This means they are subject to constant blinding's prog clone-and-replace,
+while also having offload->prog that must stay in sync.
+
+Fix this by updating offload->prog in bpf_jit_prog_release_other(),
+alongside the existing aux->prog update. Both are back-pointers to
+the prog that must be kept in sync when the prog is replaced.
+
+Fixes: 2b3486bc2d23 ("bpf: Introduce device-bound XDP programs")
+Signed-off-by: MingTao Huang <mintaohuang@tencent.com>
+Link: https://lore.kernel.org/r/tencent_BCF692F45859CCE6C22B7B0B64827947D406@qq.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-index 2d56fe0a65b7e..72c4bb360acd5 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-@@ -1013,7 +1013,7 @@ static void a6xx_get_crashdumper_hlsq_registers(struct msm_gpu *gpu,
- 	u64 out = dumper->iova + A6XX_CD_DATA_OFFSET;
- 	int i, regcount = 0;
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index 8de006d388f67..931a4ddd8530c 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -1468,6 +1468,8 @@ void bpf_jit_prog_release_other(struct bpf_prog *fp, struct bpf_prog *fp_other)
+ 	 * know whether fp here is the clone or the original.
+ 	 */
+ 	fp->aux->prog = fp;
++	if (fp->aux->offload)
++		fp->aux->offload->prog = fp;
+ 	bpf_prog_clone_free(fp_other);
+ }
  
--	in += CRASHDUMP_WRITE(in, REG_A6XX_HLSQ_DBG_READ_SEL, regs->val1);
-+	in += CRASHDUMP_WRITE(in, REG_A6XX_HLSQ_DBG_READ_SEL, (regs->val1 & 0xff) << 8);
- 
- 	for (i = 0; i < regs->count; i += 2) {
- 		u32 count = RANGE(regs->registers, i);
 -- 
 2.53.0
 
