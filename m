@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-253017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250950-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UF1LIMwADmp+5QUAu9opvQ
-	(envelope-from <stable+bounces-253017-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:24 +0200
+	id iKbKOIftDWpb4wUAu9opvQ
+	(envelope-from <stable+bounces-250950-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:21:11 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 291A5597140
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D983593690
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:21:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A2D8731379DC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CDBFD3112754
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:06:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C07D9270545;
-	Wed, 20 May 2026 18:36:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34FBE3F4DDA;
+	Wed, 20 May 2026 17:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OdWPk7me"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZWTaOxDj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A613368968;
-	Wed, 20 May 2026 18:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F773F1AB8;
+	Wed, 20 May 2026 17:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302186; cv=none; b=gaEPEo685lufXRaWNexhsZC3/+4fVAmEHV55CzFmqiQDFpdl/ClW/4E9kTtWzNvVPAumozaioO5sGlkyLC3AqdDzjd4dVWlEYAFCvtU8mrwsXYP203P7Rn4eo86TUKjEPloEqjEsZatD7XHAzQhWV6N8xpsUlCCGCVe/lrSoC3Q=
+	t=1779296713; cv=none; b=unKofudepxPPG88UFz4Dix27om5jNG7655uBKAtcVmUCD1XL5uLpZG+HrUmgoBsl13OZzgogRrMKuSs/YIkWj8bL634u7buEruRcZVXX90YYp/fIj/tCmD2cx+4vPVZzP8fohD57/XPD+57+49ywbvBSXYT4rKQd4TWmRHa01Ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302186; c=relaxed/simple;
-	bh=YUwHsz8ZgdY6QNAxwtobzmW9g6POU2FwElgXFc2t4eA=;
+	s=arc-20240116; t=1779296713; c=relaxed/simple;
+	bh=KnkdIfLq969hMacmJOsMJMuabImPbXnS00wC9Zn4zkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nvkKUOSEr+IN0D0qJQe04CZNJf654TquksPoBR22upYK72WVTm8b7fays4ANX7FGkMTIcFIPRbzJzZq5URONJMSmR1REIGehHohoArlEM0zixefCrJ0NaVn1C3WQIjTKu8FOuci+eF4xi606d7NYe/E5t6U8E8dF1HDH2sUKyzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OdWPk7me; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF98D1F00893;
-	Wed, 20 May 2026 18:36:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GYO+hvYx/9nrFq0cnZNWYUgCw6rT4UXT1dTZcLOsfeoxIC4k8Ke2/ISXzoPdonszlE5zZvS1KOlbJsoj4n1dOUjK40ovaoN5sel+cR4meAScnKWR3v603221hl9mo16MhXEnmXsw9LQ3+cLQx6eaSUM2qNSreLLzQrfuhInYzIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZWTaOxDj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 597291F00893;
+	Wed, 20 May 2026 17:05:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302185;
-	bh=WvQkDc4dwD1eP2isKF2qX0TkfDASQ8VKCrtm5t4eSs8=;
+	s=korg; t=1779296711;
+	bh=ik/9sbTYTwwrmXjrnhe+jeUss2v14B+K63xWTiSKHfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OdWPk7meE6nSkEZVFMHtQlpKOoZUe70Rs2NTSAE1tRyh8VeI9CwW06n5LZms3FJ1D
-	 RhmvhtLvioHP66mPPiCxTLMetwhHkcM8VVAvRA0zKTwM3wKULh7N6iTYE5+q2M1RDw
-	 guz75KdGjzNx3Uber+ywkIYp4tE+4Hf9oF1oe7I0=
+	b=ZWTaOxDjzQppA29YiFN2bRBtvFR/5t2CIRn1Ex/ewCxlcb6+krpCgSO/VuD1sNYGr
+	 SNVZIWIrMIaOFm6ukveUTE/Btf4Ba9T3HyjPM1YuuaEExx3gj6qug+EAuZGET7Kufv
+	 Mj7SogDiUgnrKsfP1zKodWW7UGrkYs9unCV8kF5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lei Huang <huanglei@kylinos.cn>,
-	Takashi Iwai <tiwai@suse.de>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 129/508] ALSA: hda/realtek: fix code style (ERROR: else should follow close brace })
+Subject: [PATCH 7.0 0902/1146] drm/amdgpu/gmc: Fix AMDGPU_GART_PLACEMENT_LOW to not overlap with VRAM
 Date: Wed, 20 May 2026 18:19:12 +0200
-Message-ID: <20260520162101.423264713@linuxfoundation.org>
+Message-ID: <20260520162208.650194873@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +64,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253017-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-250950-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,suse.de:email,kylinos.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 291A5597140
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 9D983593690
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lei Huang <huanglei@kylinos.cn>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit d1888bf848ade6a9e71c7ba516fd215aa1bd8d65 ]
+[ Upstream commit 36d65da7570bf72ce28504fa9a81abfc728e6d96 ]
 
-Fix checkpatch code style errors:
+When the GART placement is set to AMDGPU_GART_PLACEMENT_LOW:
+Make sure that GART does not overlap with VRAM when
+VRAM is configured to be in the low address space.
 
-  ERROR: else should follow close brace '}'
-  #2300: FILE: sound/hda/codecs/realtek/alc269.c:2300:
-  +       }
-  +       else
+Solve this according to the following logic:
+- When GART fits before VRAM, use zero address for GART
+- Otherwise, put GART after the end of VRAM, aligned to 4 GiB
 
-Fixes: 31278997add6 ("ALSA: hda/realtek - Add headset quirk for Dell DT")
-Signed-off-by: Lei Huang <huanglei@kylinos.cn>
-Link: https://patch.msgid.link/20260331075405.78148-1-huanglei814@163.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Previously, I had assumed this was not possible
+so it was OK to not handle it, but now we got a report
+from a user who has a board that is configured this way.
+
+Fixes: 917f91d8d8e8 ("drm/amdgpu/gmc: add a way to force a particular placement for GART")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 3d9de5d86a1658cadb311461b001eb1df67263ad)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 6ef859f59f8d1..937f3fdbab252 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -6043,9 +6043,9 @@ static void alc_fixup_headset_mode_alc255_no_hp_mic(struct hda_codec *codec,
- 		struct alc_spec *spec = codec->spec;
- 		spec->parse_flags |= HDA_PINCFG_HEADSET_MIC;
- 		alc255_set_default_jack_type(codec);
--	}
--	else
-+	} else {
- 		alc_fixup_headset_mode(codec, fix, action);
-+	}
- }
- 
- static void alc288_update_headset_jack_cb(struct hda_codec *codec,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+index 5179fa008626e..19abb09f0e197 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+@@ -313,7 +313,10 @@ void amdgpu_gmc_gart_location(struct amdgpu_device *adev, struct amdgpu_gmc *mc,
+ 		mc->gart_start = max_mc_address - mc->gart_size + 1;
+ 		break;
+ 	case AMDGPU_GART_PLACEMENT_LOW:
+-		mc->gart_start = 0;
++		if (size_bf >= mc->gart_size)
++			mc->gart_start = 0;
++		else
++			mc->gart_start = ALIGN(mc->fb_end, four_gb);
+ 		break;
+ 	case AMDGPU_GART_PLACEMENT_BEST_FIT:
+ 	default:
 -- 
 2.53.0
 
