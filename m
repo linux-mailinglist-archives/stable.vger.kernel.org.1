@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-250751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252329-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QL8qOuMTDmot6AUAu9opvQ
-	(envelope-from <stable+bounces-250751-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:04:51 +0200
+	id wFuyEyv8DWoK5QUAu9opvQ
+	(envelope-from <stable+bounces-252329-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96819599197
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:04:51 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E5D2596004
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 28E2235813D5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:57:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6A3913004D1A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:07:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7283836CDE9;
-	Wed, 20 May 2026 16:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C7193FBEA2;
+	Wed, 20 May 2026 18:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nGOIIIP/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v1Bi/ci1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B6037D101;
-	Wed, 20 May 2026 16:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDF23F54D1;
+	Wed, 20 May 2026 18:06:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296222; cv=none; b=uOhXt6x3g+hngvfTsvwphVFM/RYWIYTmpx6wWOwbgDWRpowj2pUUjAkR+RoGU2Q669k2joJ9jWQr8I8Xszwgdw+W+fEF7Dnw8CgOxdZ/1Tzu3d/Yd/XtKkzTKW8ux1SUXQJWwn5XNt+ild07XI/nOBaUdeFL1TxljM5OUGiyB/w=
+	t=1779300391; cv=none; b=JKwnQhSKlz5E3U5WeGPXgpn47nKIcKh4rQCNwEQzNctHp3WRn6tzQhc3sGxSwcuIHwu+LcBCBi/8rwk/ParwgpsXcpx10qG+h1JbxHrqTK3AA7A39VRrRJUIP4npYUVE9Rinj3sjLAfLL3zHzR4Wa322d1j1MyJh9yzyUTH2vIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296222; c=relaxed/simple;
-	bh=oPJMExxDHNKPmg7KyWln/YnLRnc+zfauwkzKMsRqj/M=;
+	s=arc-20240116; t=1779300391; c=relaxed/simple;
+	bh=/5/u836PCP6i503eIWsNHLhk80Gio0zuKLuRTA56pPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RhGWEOnQK6ItIBTYqGmOKU2dFTQsX40t3QtbSxPjmnxgtarR6YhxkSC9XnMs3Tglel4eZ46Go0lfQ0YXIVu+tYK5cIfgvyCqNML1V/r6GpNyK++Pwu6kkFgyAXzd2krK39RCt6mxLe1fN6yUfF4+Li59qBe8vx5LQmHxx3vKYhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nGOIIIP/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953D71F000E9;
-	Wed, 20 May 2026 16:57:00 +0000 (UTC)
+	 MIME-Version; b=mcdmiolIs5nyJ0m7tWL8Qct2prClDrRUhaOjrtx9Nmh3jwzpMj9OR7S4D1RbDoJJhioluJx9Ynpl9cRsVeKpVM9Fu8/KarlO9a4UdlH+1iaPV2C5K6rqkjAk/iEbQCMhgzFF5Jt7DrQDHHwH60YGO54NHs7DM1LgGz6GlwqCURc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v1Bi/ci1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FB561F000E9;
+	Wed, 20 May 2026 18:06:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296221;
-	bh=eRo6931aVvZqxe6OYuVkNuwqRodB3VLw1nAUT5CTgbs=;
+	s=korg; t=1779300390;
+	bh=fPCSIdWEoNSqku0p9hzdWsocRqD7/TR31MvwDaBiD1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nGOIIIP/8Qba6Ctd7Ocna78YAZbyj2ez+9mYoGmmMVVWVF5n/e25VSDQ6vrPevLy6
-	 uS9KyuaUOkqvBuykmqY5cbzrzvNykMBKzSvY3FsIbTTA0PJI/shU6vJLecbtjgG3x2
-	 yeUo9Dkprox1jq+4avpY4w4iQbikV2L9Uvhki9ZQ=
+	b=v1Bi/ci137Vu5+QAezE9lHhqOxCxzYhGP+8vZgBteFLPr4PabDhYL/UrUm/Z9UIBY
+	 0gmgQSgWdVsHuAPqfw5n/X3XpdzFr8AN3JNY728RaiFWis7Xa/A07TRzlGgR9qmKmQ
+	 TQVz9jQ2uiOQ0NlOZwja3swyrQ7gCkTyg2R6XrLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Val Packett <val@packett.cool>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Guangwu Zhang <guazhang@redhat.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0717/1146] clk: qcom: gcc-sc8180x: Use retention for PCIe power domains
+Subject: [PATCH 6.12 156/666] crypto: tegra - Disable softirqs before finalizing request
 Date: Wed, 20 May 2026 18:16:07 +0200
-Message-ID: <20260520162204.415065336@linuxfoundation.org>
+Message-ID: <20260520162114.590441534@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,104 +68,127 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250751-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252329-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,packett.cool:email]
-X-Rspamd-Queue-Id: 96819599197
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,apana.org.au:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 2E5D2596004
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Val Packett <val@packett.cool>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit ccb92c78b42edd26225b4d5920847dfee3e1b093 ]
+[ Upstream commit 2aeec9af775fb53aa086419b953302c6f4ad4984 ]
 
-As the PCIe host controller driver does not yet support dealing with the
-loss of state during suspend, use retention for relevant GDSCs.
+Softirqs must be disabled when calling the finalization fucntion on
+a request.
 
-This fixes the link not surviving upon resume:
-
-    nvme 0002:01:00.0: Unable to change power state from D3cold to D0, device inaccessible
-    nvme nvme0: controller is down; will reset: CSTS=0xffffffff, PCI_STATUS read failed (134)
-    nvme 0002:01:00.0: Unable to change power state from D3cold to D0, device inaccessible
-    nvme nvme0: Disabling device after reset failure: -19
-
-Fixes: 4433594bbe5d ("clk: qcom: gcc: Add global clock controller driver for SC8180x")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Val Packett <val@packett.cool>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://lore.kernel.org/r/20260312112321.370983-5-val@packett.cool
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reported-by: Guangwu Zhang <guazhang@redhat.com>
+Fixes: 0880bb3b00c8 ("crypto: tegra - Add Tegra Security Engine driver")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sc8180x.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/crypto/tegra/tegra-se-aes.c  | 9 +++++++++
+ drivers/crypto/tegra/tegra-se-hash.c | 3 +++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/drivers/clk/qcom/gcc-sc8180x.c b/drivers/clk/qcom/gcc-sc8180x.c
-index b116a9c0b2d94..4095a1f54a099 100644
---- a/drivers/clk/qcom/gcc-sc8180x.c
-+++ b/drivers/clk/qcom/gcc-sc8180x.c
-@@ -4199,7 +4199,7 @@ static struct gdsc pcie_0_gdsc = {
- 	.pd = {
- 		.name = "pcie_0_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- 	.flags = POLL_CFG_GDSCR,
- };
+diff --git a/drivers/crypto/tegra/tegra-se-aes.c b/drivers/crypto/tegra/tegra-se-aes.c
+index 9210cceb4b7b2..30c78afe3dea6 100644
+--- a/drivers/crypto/tegra/tegra-se-aes.c
++++ b/drivers/crypto/tegra/tegra-se-aes.c
+@@ -4,6 +4,7 @@
+  * Crypto driver to handle block cipher algorithms using NVIDIA Security Engine.
+  */
  
-@@ -4226,7 +4226,7 @@ static struct gdsc pcie_1_gdsc = {
- 	.pd = {
- 		.name = "pcie_1_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- 	.flags = POLL_CFG_GDSCR,
- };
++#include <linux/bottom_half.h>
+ #include <linux/clk.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/module.h>
+@@ -333,7 +334,9 @@ static int tegra_aes_do_one_req(struct crypto_engine *engine, void *areq)
+ 		tegra_key_invalidate_reserved(ctx->se, key2_id, ctx->alg);
  
-@@ -4235,7 +4235,7 @@ static struct gdsc pcie_2_gdsc = {
- 	.pd = {
- 		.name = "pcie_2_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- 	.flags = POLL_CFG_GDSCR,
- };
+ out_finalize:
++	local_bh_disable();
+ 	crypto_finalize_skcipher_request(se->engine, req, ret);
++	local_bh_enable();
  
-@@ -4253,7 +4253,7 @@ static struct gdsc pcie_3_gdsc = {
- 	.pd = {
- 		.name = "pcie_3_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- 	.flags = POLL_CFG_GDSCR,
- };
+ 	return 0;
+ }
+@@ -1262,7 +1265,9 @@ static int tegra_ccm_do_one_req(struct crypto_engine *engine, void *areq)
+ 		tegra_key_invalidate_reserved(ctx->se, rctx->key_id, ctx->alg);
  
+ out_finalize:
++	local_bh_disable();
+ 	crypto_finalize_aead_request(ctx->se->engine, req, ret);
++	local_bh_enable();
+ 
+ 	return 0;
+ }
+@@ -1348,7 +1353,9 @@ static int tegra_gcm_do_one_req(struct crypto_engine *engine, void *areq)
+ 		tegra_key_invalidate_reserved(ctx->se, rctx->key_id, ctx->alg);
+ 
+ out_finalize:
++	local_bh_disable();
+ 	crypto_finalize_aead_request(ctx->se->engine, req, ret);
++	local_bh_enable();
+ 
+ 	return 0;
+ }
+@@ -1746,7 +1753,9 @@ static int tegra_cmac_do_one_req(struct crypto_engine *engine, void *areq)
+ 	if (tegra_key_is_reserved(rctx->key_id))
+ 		tegra_key_invalidate_reserved(ctx->se, rctx->key_id, ctx->alg);
+ 
++	local_bh_disable();
+ 	crypto_finalize_hash_request(se->engine, req, ret);
++	local_bh_enable();
+ 
+ 	return 0;
+ }
+diff --git a/drivers/crypto/tegra/tegra-se-hash.c b/drivers/crypto/tegra/tegra-se-hash.c
+index 024f750bd7eea..327f9c802f6d4 100644
+--- a/drivers/crypto/tegra/tegra-se-hash.c
++++ b/drivers/crypto/tegra/tegra-se-hash.c
+@@ -4,6 +4,7 @@
+  * Crypto driver to handle HASH algorithms using NVIDIA Security Engine.
+  */
+ 
++#include <linux/bottom_half.h>
+ #include <linux/clk.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/module.h>
+@@ -498,7 +499,9 @@ static int tegra_sha_do_one_req(struct crypto_engine *engine, void *areq)
+ 	}
+ 
+ out:
++	local_bh_disable();
+ 	crypto_finalize_hash_request(se->engine, req, ret);
++	local_bh_enable();
+ 
+ 	return 0;
+ }
 -- 
 2.53.0
 
