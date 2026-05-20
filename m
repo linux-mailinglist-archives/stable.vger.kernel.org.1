@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-250967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251896-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cLdWCbDtDWpZ4wUAu9opvQ
-	(envelope-from <stable+bounces-250967-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:21:52 +0200
+	id eJ53A74fDmp26QUAu9opvQ
+	(envelope-from <stable+bounces-251896-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:55:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96C395936FA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:21:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 677EA59A508
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:55:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 80FE4306DAC8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:07:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7D24A339E2AF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:46:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8BE33F39F5;
-	Wed, 20 May 2026 17:05:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C2BD3F1AB8;
+	Wed, 20 May 2026 17:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BJXZxnVw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sHfq5ilH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F95C3D8104;
-	Wed, 20 May 2026 17:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B84D9349AFF;
+	Wed, 20 May 2026 17:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296757; cv=none; b=jEkOzo2K3feqFd5G0mOYHx32iLm1ya+QC/YW+F5TQTU8ZmBPfUKpWR3pkRgHJXXwKGunkvLcnymO/mb4IgZi2JKxsW+DandiGfPnVkQLsJ7612+g5USx9USWd69mQrskCqDIEvzgerekM5CMa/2GcKqL5vtM2DKS0gFQ0ptlXoI=
+	t=1779299170; cv=none; b=VttnOCINh9jaa8tkcHS7br109sbQWk3Zvu+qQ5jNWtHLZxonyzOFFja5QuElpgYqv8nEFrXrHvB4G1OrVwwZfYksOZyprmh+vXK6ac46X8qqxgBVhHVZssrk/2e17xVOkidl30rkICANO+HEHlVxw07FqHIRfPASV8tFw8c9yeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296757; c=relaxed/simple;
-	bh=ChLxA/W9cBQXWNuRydn6KxlHyxnmn+Q385dZp2n9vxM=;
+	s=arc-20240116; t=1779299170; c=relaxed/simple;
+	bh=U2IpSD13deqJ9w0uNiFuLvjoNT0fSSzvXHelB1K1OME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ty9ye3uPMV6YUoXMxYyrC8b5kCVBxbKX1zLb27hWEcuezfTEJf0ErVY/78zGqdoT5g1TnH3dho6aEPO+EAV1OJ84vzLvIz6jZcIV6HpHob3CP/O9CxdbasReVwqPHTOEkY/96TKK8ZHTN23G2MZKllySPi+WK9NBac04Bq73bTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BJXZxnVw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10BC01F000E9;
-	Wed, 20 May 2026 17:05:55 +0000 (UTC)
+	 MIME-Version; b=T2pnOZRrPCc0Og4A0xRXMF3VFkd9yIMLf5NZeB/aGwQNtvQLpUqFGyOTeWuJws7i++loHzVLJ5on+EqJUuApvZ1UGvKDuqGPfSsYdmAPwIQmd4jeXHwl/kG7w+L0ZGhaWYLVrlzUPqV7M0WwtPYutsjp5UeGEKjj04zID2HicXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sHfq5ilH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 282A51F000E9;
+	Wed, 20 May 2026 17:46:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296756;
-	bh=Gq4PHINNAks04CQP5uGH0rpgEQ/9t1ythEANsJ1NR/g=;
+	s=korg; t=1779299169;
+	bh=8UZYVTo+063CnadWAZNSstD0VS03y+giKf3uvVHR31A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BJXZxnVw4uSTkz8syqO6IjblIfjazGh11q56FkXeUIEm7c4mDZHO2oNF2fRv//EK4
-	 q5SPAapmP9KZgty7ZqJEqgCMMPxzs2rjvr1LJcS3dpvjUH2PiZgFX6ZLMyHsvCjKh7
-	 nUdHcvUhELeW8DKF5wgt0ErB3CuKdw+osJAnhvbE=
+	b=sHfq5ilHnm2GhOETMwUlJS2umg62SDUUrpjIzqwB7WN6QGsOxhXqxFXFnK0aVjFBd
+	 PvCeYm/JeLqRyxX3yL4sRxdCnQGdPMjHmLpsVOgnIQ7gR1YMob0YAxKPe9H6nrbt9k
+	 8P747cFqFxB+IBnc3jeiGIuS5FKm2JlmjP+qz8JQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0921/1146] mtd: spinand: winbond: Set the packed page read flag to W35N02/04JW
-Date: Wed, 20 May 2026 18:19:31 +0200
-Message-ID: <20260520162209.082785838@linuxfoundation.org>
+Subject: [PATCH 6.18 689/957] net/sched: sch_red: annotate data-races in red_dump_stats()
+Date: Wed, 20 May 2026 18:19:32 +0200
+Message-ID: <20260520162149.481993080@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,75 +69,142 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251896-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250967-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 96C395936FA
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,mojatatu.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 677EA59A508
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 8d655748aba1b603c54053a20322401dc1e5d782 ]
+[ Upstream commit a8f5192809caf636d05ba47c144f282cfd0e3839 ]
 
-Both W35N02JW and W35N04JW diverge from W35N01JW when it comes to the
-"data read" operation in ODTR mode. In order to stuff more address
-bits (up to 18), the second command byte is replaced by the most
-significant address bits, keeping the number of address bytes to 2.
+red_dump_stats() only runs with RTNL held,
+reading fields that can be changed in qdisc fast path.
 
-Fixes: 44a2f49b9bdc ("mtd: spinand: winbond: W35N octal DTR support")
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Add READ_ONCE()/WRITE_ONCE() annotations.
+
+Alternative would be to acquire the qdisc spinlock, but our long-term
+goal is to make qdisc dump operations lockless as much as we can.
+
+tc_red_xstats fields don't need to be latched atomically,
+otherwise this bug would have been caught earlier.
+
+Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260421142309.3964322-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/spi/winbond.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/sched/sch_red.c | 31 +++++++++++++++++++++----------
+ 1 file changed, 21 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
-index ad22774096e61..ea62fecea661d 100644
---- a/drivers/mtd/nand/spi/winbond.c
-+++ b/drivers/mtd/nand/spi/winbond.c
-@@ -518,7 +518,7 @@ static const struct spinand_info winbond_spinand_table[] = {
- 		     SPINAND_INFO_OP_VARIANTS(&read_cache_octal_variants,
- 					      &write_cache_octal_variants,
- 					      &update_cache_octal_variants),
--		     0,
-+		     SPINAND_ODTR_PACKED_PAGE_READ,
- 		     SPINAND_INFO_VENDOR_OPS(&winbond_w35_ops),
- 		     SPINAND_ECCINFO(&w35n01jw_ooblayout, NULL),
- 		     SPINAND_CONFIGURE_CHIP(w35n0xjw_vcr_cfg)),
-@@ -529,7 +529,7 @@ static const struct spinand_info winbond_spinand_table[] = {
- 		     SPINAND_INFO_OP_VARIANTS(&read_cache_octal_variants,
- 					      &write_cache_octal_variants,
- 					      &update_cache_octal_variants),
--		     0,
-+		     SPINAND_ODTR_PACKED_PAGE_READ,
- 		     SPINAND_INFO_VENDOR_OPS(&winbond_w35_ops),
- 		     SPINAND_ECCINFO(&w35n01jw_ooblayout, NULL),
- 		     SPINAND_CONFIGURE_CHIP(w35n0xjw_vcr_cfg)),
+diff --git a/net/sched/sch_red.c b/net/sched/sch_red.c
+index 68ee41ce78c50..86651a68d4015 100644
+--- a/net/sched/sch_red.c
++++ b/net/sched/sch_red.c
+@@ -90,17 +90,20 @@ static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	case RED_PROB_MARK:
+ 		qdisc_qstats_overlimit(sch);
+ 		if (!red_use_ecn(q)) {
+-			q->stats.prob_drop++;
++			WRITE_ONCE(q->stats.prob_drop,
++				   q->stats.prob_drop + 1);
+ 			goto congestion_drop;
+ 		}
+ 
+ 		if (INET_ECN_set_ce(skb)) {
+-			q->stats.prob_mark++;
++			WRITE_ONCE(q->stats.prob_mark,
++				   q->stats.prob_mark + 1);
+ 			skb = tcf_qevent_handle(&q->qe_mark, sch, skb, to_free, &ret);
+ 			if (!skb)
+ 				return NET_XMIT_CN | ret;
+ 		} else if (!red_use_nodrop(q)) {
+-			q->stats.prob_drop++;
++			WRITE_ONCE(q->stats.prob_drop,
++				   q->stats.prob_drop + 1);
+ 			goto congestion_drop;
+ 		}
+ 
+@@ -111,17 +114,20 @@ static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		reason = SKB_DROP_REASON_QDISC_OVERLIMIT;
+ 		qdisc_qstats_overlimit(sch);
+ 		if (red_use_harddrop(q) || !red_use_ecn(q)) {
+-			q->stats.forced_drop++;
++			WRITE_ONCE(q->stats.forced_drop,
++				   q->stats.forced_drop + 1);
+ 			goto congestion_drop;
+ 		}
+ 
+ 		if (INET_ECN_set_ce(skb)) {
+-			q->stats.forced_mark++;
++			WRITE_ONCE(q->stats.forced_mark,
++				   q->stats.forced_mark + 1);
+ 			skb = tcf_qevent_handle(&q->qe_mark, sch, skb, to_free, &ret);
+ 			if (!skb)
+ 				return NET_XMIT_CN | ret;
+ 		} else if (!red_use_nodrop(q)) {
+-			q->stats.forced_drop++;
++			WRITE_ONCE(q->stats.forced_drop,
++				   q->stats.forced_drop + 1);
+ 			goto congestion_drop;
+ 		}
+ 
+@@ -135,7 +141,8 @@ static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		sch->qstats.backlog += len;
+ 		sch->q.qlen++;
+ 	} else if (net_xmit_drop_count(ret)) {
+-		q->stats.pdrop++;
++		WRITE_ONCE(q->stats.pdrop,
++			   q->stats.pdrop + 1);
+ 		qdisc_qstats_drop(sch);
+ 	}
+ 	return ret;
+@@ -463,9 +470,13 @@ static int red_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ 		dev->netdev_ops->ndo_setup_tc(dev, TC_SETUP_QDISC_RED,
+ 					      &hw_stats_request);
+ 	}
+-	st.early = q->stats.prob_drop + q->stats.forced_drop;
+-	st.pdrop = q->stats.pdrop;
+-	st.marked = q->stats.prob_mark + q->stats.forced_mark;
++	st.early = READ_ONCE(q->stats.prob_drop) +
++		   READ_ONCE(q->stats.forced_drop);
++
++	st.pdrop = READ_ONCE(q->stats.pdrop);
++
++	st.marked = READ_ONCE(q->stats.prob_mark) +
++		    READ_ONCE(q->stats.forced_mark);
+ 
+ 	return gnet_stats_copy_app(d, &st, sizeof(st));
+ }
 -- 
 2.53.0
 
