@@ -1,77 +1,60 @@
-Return-Path: <stable+bounces-253051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251025-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eEfxOjkBDmo95QUAu9opvQ
-	(envelope-from <stable+bounces-253051-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:45:13 +0200
+	id gFvxGSLuDWpb4wUAu9opvQ
+	(envelope-from <stable+bounces-251025-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60F985972D9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:45:13 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AB01593896
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7672830FA0E5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:37:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 09F53317E386
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83CE43D5647;
-	Wed, 20 May 2026 18:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FE2D3F787F;
+	Wed, 20 May 2026 17:08:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWTWsvet"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mx1UkWMk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E86347514;
-	Wed, 20 May 2026 18:37:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C55B43E7155;
+	Wed, 20 May 2026 17:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302276; cv=none; b=IEc3IK2/lVZwy6IUAyGye0xk10dikj1Y4BlOMaJ0kKl+EmBZpxUEf7DKYq9mMyugmNDrAr0MhKG0dnmoqAvdGDZBcE1xxmBA/AS0WOxKfKcm6Pb9d3TpYzefzLU2lNJtL0lB5Lk7cRWA5Z19vqItZRdVpHKFTI5H1IEk0Pan5bE=
+	t=1779296907; cv=none; b=pCtwzYs0eMbKcgkQmRfx7mZuTjbKL0EIuQSm6oLor/ahXtyXDW8oN1MANQR9MnqZ+74qIGBDxCMZMn4JmThmKgW0eNr9ApHAVPqMpVpC22svuqyeus3kkzcckKrTfNixtZBGO8BZtE4o96k/yk7sX9NDw9byz0fr15t+rxok6fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302276; c=relaxed/simple;
-	bh=F/jrPL8O5o/rAN0d/j6LhA2GB9fBxS/uv445VTV2UOc=;
+	s=arc-20240116; t=1779296907; c=relaxed/simple;
+	bh=09OcRX83sQsCxScDxQFOB5Qu11zKxzrWH4w8yH7MTcA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BsnJJGKw0MWGWrGewIho5t4g9NEx3KxAZ5vWjsBoKmaKRQgnsKO4gqWazQQb2q3U+BkIMq7yGjV3aYPLQrC6l0NdCuvuvV5ONuRwyMl7IAZ1bLQkAD0dPQg6gWkYEoT8Q8Zv64fR1XDEyXevlnGCz5b/kpoa8KydM5+f2vG5/Ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWTWsvet; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6420E1F000E9;
-	Wed, 20 May 2026 18:37:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rTYpjUTidrX2UYzhzHXAg51W4kokTtzW5SNotRPeZQDZjpKPTGzryzp/Oyr68m9BtPfFBiNBDBop9ESrjFGycSDRUNqdL7aCNfUYaDm+SmmOsbI39MNYHheokSxAqyJqe2ddw4kzySBAG9oRcL/NgZZ5mz+qaYD4v9CZ3mKWCuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mx1UkWMk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37C6F1F000E9;
+	Wed, 20 May 2026 17:08:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302275;
-	bh=V8y6E0zQs10/o56Z/Ejql+Ys+jzkVg7boPtfUfU3c8s=;
+	s=korg; t=1779296906;
+	bh=Np3wftlBu1g6AnaEamjpYV6NAKeKjwJdtUzJcld2Dw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tWTWsvetQGPcjZQYCVhK0Ztpig/VBNG1nOMpvsYBbOxsT+uo2Nk3xNLCXVb6U9ZSH
-	 1+z0qsFJbtFywOKGb9F+gvjYDDWwoyGzVJn0wuojPhgJAYuXfK/mAQZG7jcfZauFYn
-	 hc0Iv4uIzWfdWh+kDTB0ZcZmyMGPbs4SWr0qhcVQ=
+	b=mx1UkWMkeqUViEWE49kpyVCGJiMXTqq2qTJvZrmWtFfMspD+Yy11FYji3981bks0K
+	 B8BmrbsGI/na+Nheubx8UGkGOaA4RpOlJaD29pSG+53NqSAIfC3iw5pW5yoISy561K
+	 P0jFdMJSd+Ia4yLSTgIMkZYvcSf3OLvrvK24jq+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Grzedzicki <mge@meta.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Alexey Gladkov (Intel)" <legion@kernel.org>,
-	Ben Segall <bsegall@google.com>,
-	David Hildenbrand <david@kernel.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Kees Cook <kees@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	Mel Gorman <mgorman@suse.de>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Yinjie Yao <yinjie.yao@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 204/508] unshare: fix nsproxy leak in ksys_unshare() on set_cred_ucounts() failure
+Subject: [PATCH 7.0 0977/1146] drm/amdgpu/jpeg: set no_user_fence for JPEG v5.0.0 ring
 Date: Wed, 20 May 2026 18:20:27 +0200
-Message-ID: <20260520162103.057407333@linuxfoundation.org>
+Message-ID: <20260520162210.343591858@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -81,125 +64,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-251025-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253051-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 60F985972D9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: 2AB01593896
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Grzedzicki <mge@meta.com>
+From: Yinjie Yao <yinjie.yao@amd.com>
 
-[ Upstream commit a98621a0f187a934c115dcfe79a49520ae892111 ]
+[ Upstream commit ea7c61c5f895e8f9ea0ffffa180498ef9c740152 ]
 
-When set_cred_ucounts() fails in ksys_unshare() new_nsproxy is leaked.
+JPEG rings do not support 64-bit user fence writes, reject CS
+submissions with user fences.
 
-Let's call put_nsproxy() if that happens.
-
-Link: https://lkml.kernel.org/r/20260213193959.2556730-1-mge@meta.com
-Fixes: 905ae01c4ae2 ("Add a reference to ucounts for each cred")
-Signed-off-by: Michal Grzedzicki <mge@meta.com>
-Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: Alexey Gladkov (Intel) <legion@kernel.org>
-Cc: Ben Segall <bsegall@google.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Juri Lelli <juri.lelli@redhat.com>
-Cc: Kees Cook <kees@kernel.org>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Valentin Schneider <vschneid@redhat.com>
-Cc: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: dfad65c65728 ("drm/amdgpu: Add JPEG5 support")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 0f43893d3cd478fa57836697525b338817c9c23d)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/fork.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_0.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index c65a70581af73..e280f02b6446a 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -3443,11 +3443,10 @@ int ksys_unshare(unsigned long unshare_flags)
- 					 new_cred, new_fs);
- 	if (err)
- 		goto bad_unshare_cleanup_cred;
--
- 	if (new_cred) {
- 		err = set_cred_ucounts(new_cred);
- 		if (err)
--			goto bad_unshare_cleanup_cred;
-+			goto bad_unshare_cleanup_nsproxy;
- 	}
- 
- 	if (new_fs || new_fd || do_sysvsem || new_cred || new_nsproxy) {
-@@ -3463,8 +3462,10 @@ int ksys_unshare(unsigned long unshare_flags)
- 			shm_init_task(current);
- 		}
- 
--		if (new_nsproxy)
-+		if (new_nsproxy) {
- 			switch_task_namespaces(current, new_nsproxy);
-+			new_nsproxy = NULL;
-+		}
- 
- 		task_lock(current);
- 
-@@ -3493,13 +3494,15 @@ int ksys_unshare(unsigned long unshare_flags)
- 
- 	perf_event_namespaces(current);
- 
-+bad_unshare_cleanup_nsproxy:
-+	if (new_nsproxy)
-+		put_nsproxy(new_nsproxy);
- bad_unshare_cleanup_cred:
- 	if (new_cred)
- 		put_cred(new_cred);
- bad_unshare_cleanup_fd:
- 	if (new_fd)
- 		put_files_struct(new_fd);
--
- bad_unshare_cleanup_fs:
- 	if (new_fs)
- 		free_fs_struct(new_fs);
+diff --git a/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_0.c b/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_0.c
+index 46bf15dce2bd0..72a4b2d0676fa 100644
+--- a/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_0.c
+@@ -680,6 +680,7 @@ static const struct amd_ip_funcs jpeg_v5_0_0_ip_funcs = {
+ static const struct amdgpu_ring_funcs jpeg_v5_0_0_dec_ring_vm_funcs = {
+ 	.type = AMDGPU_RING_TYPE_VCN_JPEG,
+ 	.align_mask = 0xf,
++	.no_user_fence = true,
+ 	.get_rptr = jpeg_v5_0_0_dec_ring_get_rptr,
+ 	.get_wptr = jpeg_v5_0_0_dec_ring_get_wptr,
+ 	.set_wptr = jpeg_v5_0_0_dec_ring_set_wptr,
 -- 
 2.53.0
 
