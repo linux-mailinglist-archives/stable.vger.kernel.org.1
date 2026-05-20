@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-253092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251068-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kDalDAgNDmo35wUAu9opvQ
-	(envelope-from <stable+bounces-253092-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:35:36 +0200
+	id 2HVAOuz2DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251068-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:01:16 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36FAE598762
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:35:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBCF25951F1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:01:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5E73A308C922
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:46:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2DABE311E6E3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:10:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D66A472784;
-	Wed, 20 May 2026 18:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A48B3EEAC6;
+	Wed, 20 May 2026 17:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kydcQ5Me"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jcxccukF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4698C46AF0F;
-	Wed, 20 May 2026 18:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9387432E128;
+	Wed, 20 May 2026 17:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302384; cv=none; b=mQ5qsqPgLyzQnx9cJ9ScKoD1Ve1da8K+wGLBmSAtc/zrGjVrdDGb7T9r79wtczSruIs/LWZc0EHn4ZTlTY2KzVP2OlQoIeyCxXvZGzp+PixZ0yxD2dsRRsd7rS21C5/4oFn8E5f8c2D9dHVVoCphgd9BhoYVdXnsd9SluIBnS0U=
+	t=1779297018; cv=none; b=J4SFlnvdNfaQlPWOfCB6eNJTbxKn4HRDIe6QZ8rXECHsyRqE29ueFTSzL2C49o+05Vox8nbdq5RvYW0tFreFgFKGHk/kdMg38bHZhznDBcYEdEyMN8vjXqQ2PjCRQ8LAht5p/yGwb3NgjjTeV3hSpY+lFe2Ne/XRklN8KiT71zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302384; c=relaxed/simple;
-	bh=VlGOKISakQokrCVQ+F981Fvu7gy1GBcWqH0KUz7k8gc=;
+	s=arc-20240116; t=1779297018; c=relaxed/simple;
+	bh=fwRQIYIRid+Nk3JF5tkjxKiEglq0DpftlAI2xr20/bY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QlAgQS2BZUVjDzkoH/1sJRjI2W01d4PElqoC0VzrHI+HOmYxHFX2pIqytTrl/t2/Ou53eIBzRTmccdwHPQcx/lRgUi0fOOYFgPleEuveQZoBM+QVcO+h9XrtcEzQGq4fIylf5eHKBv+GgiSmUODZAEYr5DAMskXsV6KOzVER9Mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kydcQ5Me; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F7DA1F00898;
-	Wed, 20 May 2026 18:39:42 +0000 (UTC)
+	 MIME-Version; b=paDgUFSwQ62YNRy9VduTvdyXofsF+BLzQxU2hhMFx6mLXMQNZVVBJ06io6XZtMcX4pQFGG9GZM+abD94W03w0dHO7ghpVrt5PRQOi1cKk8C1Igkrltyt0KLwKqek3VF+4Qimp9McNiw+/nOZIH5httfE+vUh0X+nJozoSNw5IfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jcxccukF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04BCC1F000E9;
+	Wed, 20 May 2026 17:10:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302383;
-	bh=RjlZpoLAKQ8SKPn/bP9gf3MrNSkPqWg0rQYshcyEVgA=;
+	s=korg; t=1779297017;
+	bh=RLgIOOfuscX9Syx2K8KM1nF+6B4VUgHzd+DRBu/O6jk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kydcQ5Me+lgUPSlRP8u/mdQfHqc2bm9RmTgNIXRImAPGhjJLOJ4i7FUt/Jwq0QLOo
-	 K76Hij/5cngZERRxu0Jvz8l9qC/7G+LWPaH+Dma1dgvrLBYFvJPNndKR5gRBTfDRj/
-	 i8Da/9+ZUzs7tt+qOyiG5hLAzUOI0jRXyXDYZY8I=
+	b=jcxccukF+v77V3h61RyluaFHsj7apH+CGQMaJhBTB+n4fueBoOrgGN6mMrUNtU3dL
+	 zb53rSW5r7rJ4wDHbDSFk0vKmD60u1ZoTpDDPOgBV5dn94WXHIf7O7Ut8xQWAamFiu
+	 rIYfRuMaloi8AuU0g/QD8c39u/koIfRRavOv8HMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Linus Walleij <linusw@kernel.org>,
+	Hasan Basbunar <basbunarhasan@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 245/508] pinctrl: cy8c95x0: remove duplicate error message
-Date: Wed, 20 May 2026 18:21:08 +0200
-Message-ID: <20260520162103.960476296@linuxfoundation.org>
+Subject: [PATCH 7.0 1019/1146] page_pool: fix memory-provider leak in page_pool_create_percpu() error path
+Date: Wed, 20 May 2026 18:21:09 +0200
+Message-ID: <20260520162211.291179932@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,16 +68,16 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253092-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251068-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -87,84 +87,119 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 36FAE598762
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: EBCF25951F1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Hasan Basbunar <basbunarhasan@gmail.com>
 
-[ Upstream commit 970dacb3b9f0fedbbbcfd7dbf1f4f22340b3f359 ]
+[ Upstream commit 5ef343614db766acdc01c56d66e780a1b43c6ac6 ]
 
-The pin control core is covered to report any error via message.
-The devm_request_threaded_irq() already prints an error message.
-Remove the duplicates.
+When page_pool_create_percpu() fails on page_pool_list(), it falls
+through to its err_uninit: label, which calls page_pool_uninit().
+At that point page_pool_init() has already taken two references
+when the user requested PP_FLAG_ALLOW_UNREADABLE_NETMEM:
 
-While at it, drop the info message as the same information about
-an IRQ in use can be retrieved differently.
+	pool->mp_ops->init(pool)
+	static_branch_inc(&page_pool_mem_providers);
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
-Stable-dep-of: 5ad32c3607cf ("pinctrl: cy8c95x0: Avoid returning positive values to user space")
+Neither is undone by page_pool_uninit(); both are only undone by
+__page_pool_destroy() (success-side teardown). The error path
+therefore leaks the per-provider reference taken by mp_ops->init
+(io_zcrx_ifq->refs in the io_uring zcrx provider, the dmabuf
+binding refcount in the devmem provider) plus one increment of
+the page_pool_mem_providers static branch on every failure of
+xa_alloc_cyclic() inside page_pool_list().
+
+The leaked io_zcrx_ifq->refs in turn pins everything
+io_zcrx_ifq_free() would release on cleanup: ifq->user (uid),
+ifq->mm_account (mmdrop), ifq->dev (device refcount),
+ifq->netdev_tracker (netdev refcount), and the rbuf region.
+The leaked static branch increment forces all subsequent
+page_pool_alloc_netmems() and page_pool_return_page() callers to
+take the slow mp_ops branch for the lifetime of the kernel.
+
+Reachable via the io_uring zcrx path:
+
+	io_uring_register(IORING_REGISTER_ZCRX_IFQ)  /* CAP_NET_ADMIN */
+	  -> __io_uring_register
+	  -> io_register_zcrx
+	  -> zcrx_register_netdev
+	  -> netif_mp_open_rxq
+	  -> driver ndo_queue_mem_alloc
+	  -> page_pool_create_percpu
+	    -> page_pool_init succeeds (mp_ops->init runs, branch++)
+	    -> page_pool_list fails (xa_alloc_cyclic -ENOMEM)
+	    -> goto err_uninit         <-- leak
+
+The same shape applies to the devmem dmabuf provider via
+mp_dmabuf_devmem_init()/mp_dmabuf_devmem_destroy().
+
+Restore the cleanup symmetry by moving the mp_ops->destroy() and
+static_branch_dec() calls out of __page_pool_destroy() and into
+page_pool_uninit(), so page_pool_uninit() is again the strict
+inverse of page_pool_init(). page_pool_uninit() has only two
+callers (the err_uninit: path and __page_pool_destroy()), so this
+preserves the single-call invariant on the success path while
+fixing the err path. The error path of page_pool_init() itself
+still skips the mp_ops cleanup correctly: mp_ops->init is the
+last action that takes a reference before page_pool_init() returns
+0, so when it returns an error neither the refcount nor the static
+branch has been touched.
+
+Triggering the bug requires xa_alloc_cyclic() to fail with -ENOMEM,
+which under normal GFP_KERNEL retry behaviour is rare. It is
+deterministic under CONFIG_FAULT_INJECTION with fail_page_alloc /
+xa fault injection, or under sustained memory pressure. The leak
+is silent: there is no warning, and the released kernel build
+continues running with a permanently-incremented static branch.
+
+Fixes: 0f9214046893 ("memory-provider: dmabuf devmem memory provider")
+Signed-off-by: Hasan Basbunar <basbunarhasan@gmail.com>
+Link: https://patch.msgid.link/20260428170739.34881-1-basbunarhasan@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-cy8c95x0.c | 21 +++++----------------
- 1 file changed, 5 insertions(+), 16 deletions(-)
+ net/core/page_pool.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-cy8c95x0.c b/drivers/pinctrl/pinctrl-cy8c95x0.c
-index d2488d80912c9..97eeaae17f669 100644
---- a/drivers/pinctrl/pinctrl-cy8c95x0.c
-+++ b/drivers/pinctrl/pinctrl-cy8c95x0.c
-@@ -1253,6 +1253,7 @@ static int cy8c95x0_irq_setup(struct cy8c95x0_pinctrl *chip, int irq)
- {
- 	struct gpio_irq_chip *girq = &chip->gpio_chip.irq;
- 	DECLARE_BITMAP(pending_irqs, MAX_LINE);
-+	struct device *dev = chip->dev;
- 	int ret;
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 265a729431bb7..8171d1173221b 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -327,6 +327,11 @@ static void page_pool_uninit(struct page_pool *pool)
+ 	if (!pool->system)
+ 		free_percpu(pool->recycle_stats);
+ #endif
++
++	if (pool->mp_ops) {
++		pool->mp_ops->destroy(pool);
++		static_branch_dec(&page_pool_mem_providers);
++	}
+ }
  
- 	mutex_init(&chip->irq_lock);
-@@ -1279,17 +1280,9 @@ static int cy8c95x0_irq_setup(struct cy8c95x0_pinctrl *chip, int irq)
- 	girq->handler = handle_simple_irq;
- 	girq->threaded = true;
+ /**
+@@ -1126,11 +1131,6 @@ static void __page_pool_destroy(struct page_pool *pool)
+ 	page_pool_unlist(pool);
+ 	page_pool_uninit(pool);
  
--	ret = devm_request_threaded_irq(chip->dev, irq,
--					NULL, cy8c95x0_irq_handler,
--					IRQF_ONESHOT | IRQF_SHARED,
--					dev_name(chip->dev), chip);
--	if (ret) {
--		dev_err(chip->dev, "failed to request irq %d\n", irq);
--		return ret;
+-	if (pool->mp_ops) {
+-		pool->mp_ops->destroy(pool);
+-		static_branch_dec(&page_pool_mem_providers);
 -	}
--	dev_info(chip->dev, "Registered threaded IRQ\n");
 -
--	return 0;
-+	return devm_request_threaded_irq(dev, irq, NULL, cy8c95x0_irq_handler,
-+					 IRQF_ONESHOT | IRQF_SHARED,
-+					 dev_name(chip->dev), chip);
+ 	kfree(pool);
  }
  
- static int cy8c95x0_setup_pinctrl(struct cy8c95x0_pinctrl *chip)
-@@ -1305,11 +1298,7 @@ static int cy8c95x0_setup_pinctrl(struct cy8c95x0_pinctrl *chip)
- 	pd->owner = THIS_MODULE;
- 
- 	chip->pctldev = devm_pinctrl_register(chip->dev, pd, chip);
--	if (IS_ERR(chip->pctldev))
--		return dev_err_probe(chip->dev, PTR_ERR(chip->pctldev),
--			"can't register controller\n");
--
--	return 0;
-+	return PTR_ERR_OR_ZERO(chip->pctldev);
- }
- 
- static int cy8c95x0_detect(struct i2c_client *client,
 -- 
 2.53.0
 
