@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-250163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250165-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJpJHZHkDWpN4gUAu9opvQ
-	(envelope-from <stable+bounces-250163-lists+stable=lfdr.de@vger.kernel.org>)
+	id gK9bBpHkDWpN4gUAu9opvQ
+	(envelope-from <stable+bounces-250165-lists+stable=lfdr.de@vger.kernel.org>)
 	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:42:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DA095924D2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:42:57 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB45E5924CB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:42:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 154E430FEE44
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:33:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C6FAE3101487
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:33:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA15D371071;
-	Wed, 20 May 2026 16:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2EB13D5642;
+	Wed, 20 May 2026 16:31:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ILW5ttPg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D3UBlL/M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C54A36A37D;
-	Wed, 20 May 2026 16:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD79368941;
+	Wed, 20 May 2026 16:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294709; cv=none; b=dlGOzNMNxmkEiBz1wNSTlH7BXboTPuIv3NO2P8bC8QDr6pES+QdnzeO80WrnmZcNBM+g07/Dr9P9M3GKJfVDGCC7Mw2JPt7LbE2n0oUq+NAd9z0g92Y+R6rF10zSi8rQjMInegC2hIpmL2e+914THrKxjS/LxNeUiyo+nCnZH9c=
+	t=1779294717; cv=none; b=eUTdKrkEKotCsC+je5yV4OzbtS+99FgVIId887Cxf04SCecX4jZhwMe73qoDsyUj65UIF5vG3y1IJRf5V7kTLfz/Go6V1su3CaBEPE3SCfR+hBE+WRbm+Z0z/B8WsNcaVRS/Woco38GEULVRihgc+itlqjYC7TVrxqpmF7JtQm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294709; c=relaxed/simple;
-	bh=95fIhVYv/BPUiqWBZk4cQVv1/HnVWZsIyfy3z9Y43pg=;
+	s=arc-20240116; t=1779294717; c=relaxed/simple;
+	bh=xFkjVMC3I4XlJup9mWlwoRsyA/BCK/ziF+0YrEfI23g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gWjyIcjsrBDyk13upc/MJvn9nD/khEFPkUFDcsM/Mhni6K/hJIeVxF0KOI+dQQtVv+1n6HsrJlwQc7K+DDaNFHnls3RBf1rmazKMtW2XBpB0alemPtNC0fAsOMb4OBTR53kBVt23TLdK9tfEQ8o5lVDcAg2pSn07tdm22E8QYrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ILW5ttPg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBA201F000E9;
-	Wed, 20 May 2026 16:31:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tgYofj5ADlFKjsQBAFWNWA2Tr8+liuwKhkwXFJEl539Hu0namguuU2OdN5n4aleqi3qdmYl4m+m0SYKo5LdfhQUeqJojWeH3dUSWip7gryhOQpyezyugBzhTvRcIo1j8sGyP9642P5Odd1sP5MUBk9FXhbTna89iOiEp6C0TAks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D3UBlL/M; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 919F71F000E9;
+	Wed, 20 May 2026 16:31:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294708;
-	bh=x67jiimvOY6xJ+YOXSH0mG0N8umZbSX5yqxSaIdidCE=;
+	s=korg; t=1779294711;
+	bh=F7Xe4YDp3BrHx+N5ydsxURLaUIMhF9nME1grksalKrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ILW5ttPg5I6htSHonypUzAJAA9bwr1rFHYF4K/OarikvLSKqTadvn9GIykWTsDihT
-	 GburHiyeiNOmyescoQMrQsXnMQQ8bEDpisjIRA/c4hBM/fQJPVJk/1pZYBCo0uWZ0D
-	 8O+6976OLAD4BewrpO1YR3Fg0mwPz5pIk5OaHI+g=
+	b=D3UBlL/MXoqk4kjpmYdKO7C9rWj2ANoBR6W1R96k43lPqA5srxgn75Y/ecWhF+PSO
+	 f514LXvwpvYXrd/McJOLbWEDPwJsIXxAOiGTGuvAOfrAdm5Bo8kLMPtiswHEmDE2Qn
+	 zr3qI3arq48R+Y62Vpom58rn82bAadH/y6IsCEbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Aditya Gupta <adityag@linux.ibm.com>,
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Hari Bathini <hbathini@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0142/1146] selftests/tracing: Fix to check awk supports non POSIX strtonum()
-Date: Wed, 20 May 2026 18:06:32 +0200
-Message-ID: <20260520162151.525079932@linuxfoundation.org>
+Subject: [PATCH 7.0 0143/1146] powerpc/crash: fix backup region offset update to elfcorehdr
+Date: Wed, 20 May 2026 18:06:33 +0200
+Message-ID: <20260520162151.546223857@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -63,35 +65,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-250165-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250163-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 5DA095924D2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: EB45E5924CB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,51 +101,58 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
 
-[ Upstream commit 3d0b8e45075d398369eb07e11f529c17a63cf5e1 ]
+[ Upstream commit 789335cacdf37da93bb7c70322dff8c7e82881df ]
 
-Check the awk command supports non POSIX strtonum() function in
-the trace_marker_raw test case.
+update_backup_region_phdr() in file_load_64.c iterates over all the
+program headers in the kdump kernel’s elfcorehdr and updates the
+p_offset of the program header whose physical address starts at 0.
 
-Fixes: 37f46601383a ("selftests/tracing: Add basic test for trace_marker_raw file")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Link: https://lore.kernel.org/r/177071726229.2369897.11506524546451139051.stgit@mhiramat.tok.corp.google.com
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+However, the loop logic is incorrect because the program header pointer
+is not updated during iteration. Since elfcorehdr typically contains
+PT_NOTE entries first, the PT_LOAD program header with physical address
+0 is never reached. As a result, its p_offset is not updated to point to
+the backup region.
+
+Because of this behavior, the capture kernel exports the first 64 KB of
+the crashed kernel’s memory at offset 0, even though that memory
+actually lives in the backup region. When a crash happens, purgatory
+copies the first 64 KB of the crashed kernel’s memory into the backup
+region so the capture kernel can safely use it.
+
+This has not caused problems so far because the first 64 KB is usually
+identical in both the crashed and capture kernels. However, this is
+just an assumption and is not guaranteed to always hold true.
+
+Fix update_backup_region_phdr() to correctly update the p_offset of the
+program header with a starting physical address of 0 by correcting the
+logic used to iterate over the program headers.
+
+Fixes: cb350c1f1f86 ("powerpc/kexec_file: Prepare elfcore header for crashing kernel")
+Reviewed-by: Aditya Gupta <adityag@linux.ibm.com>
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Reviewed-by: Hari Bathini <hbathini@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20260312083051.1935737-2-sourabhjain@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/ftrace/test.d/00basic/trace_marker_raw.tc       | 2 ++
- tools/testing/selftests/ftrace/test.d/functions               | 4 ++++
- 2 files changed, 6 insertions(+)
+ arch/powerpc/kexec/file_load_64.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/ftrace/test.d/00basic/trace_marker_raw.tc b/tools/testing/selftests/ftrace/test.d/00basic/trace_marker_raw.tc
-index a2c42e13f614b..8e905d4fe6dd2 100644
---- a/tools/testing/selftests/ftrace/test.d/00basic/trace_marker_raw.tc
-+++ b/tools/testing/selftests/ftrace/test.d/00basic/trace_marker_raw.tc
-@@ -4,6 +4,8 @@
- # requires: trace_marker_raw
- # flags: instance
+diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
+index 5f6d50e4c3d45..a7db7eca0481b 100644
+--- a/arch/powerpc/kexec/file_load_64.c
++++ b/arch/powerpc/kexec/file_load_64.c
+@@ -391,7 +391,7 @@ static void update_backup_region_phdr(struct kimage *image, Elf64_Ehdr *ehdr)
+ 	unsigned int i;
  
-+check_awk_strtonum || exit_unresolved
-+
- is_little_endian() {
- 	if lscpu | grep -q 'Little Endian'; then
- 		echo 1;
-diff --git a/tools/testing/selftests/ftrace/test.d/functions b/tools/testing/selftests/ftrace/test.d/functions
-index e8e718139294d..41325f387ee7a 100644
---- a/tools/testing/selftests/ftrace/test.d/functions
-+++ b/tools/testing/selftests/ftrace/test.d/functions
-@@ -173,6 +173,10 @@ check_requires() { # Check required files and tracers
-     done
- }
- 
-+check_awk_strtonum() { # strtonum is GNU awk extension
-+    awk 'BEGIN{strtonum("0x1")}'
-+}
-+
- LOCALHOST=127.0.0.1
- 
- yield() {
+ 	phdr = (Elf64_Phdr *)(ehdr + 1);
+-	for (i = 0; i < ehdr->e_phnum; i++) {
++	for (i = 0; i < ehdr->e_phnum; i++, phdr++) {
+ 		if (phdr->p_paddr == BACKUP_SRC_START) {
+ 			phdr->p_offset = image->arch.backup_start;
+ 			kexec_dprintk("Backup region offset updated to 0x%lx\n",
 -- 
 2.53.0
 
