@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250935-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UCjOHR73DWpd5AUAu9opvQ
-	(envelope-from <stable+bounces-251863-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:02:06 +0200
+	id OJ87GpPwDWqo4wUAu9opvQ
+	(envelope-from <stable+bounces-250935-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:34:11 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BE2F595251
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:02:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08212593FB1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:34:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1B11E30C65AA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:44:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F20AC31A319E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:06:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 317F03451CC;
-	Wed, 20 May 2026 17:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF89E3FC5D1;
+	Wed, 20 May 2026 17:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="obbgOBV7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TzFNDmFa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58FB1C3BFC;
-	Wed, 20 May 2026 17:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0E03FC5C7;
+	Wed, 20 May 2026 17:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299084; cv=none; b=JBZyEf+AOxvrNTbu2TbdsGMV7hgDaRu6Z0zQMXCHi1ZeAEhtc1JEso3NDPLA2HYHHIAWUuxM2paAu0itpAQYsCHoe8BDz624GWMlI1v9aaVDPBWyzHYQVeQns4k1swPOPS4MBJQK7fva0s6yXpr7K+Zlfn6lPrD9ynSepsmlokU=
+	t=1779296673; cv=none; b=srR9VQiZtpmLoWkSB1PG7NU6bOVUtzn9V4rDrAR5Yckn+wbafDLPpE7Gw9SMsihdOtd44zOTlY++ZfNID+9vlyRk/igcFac75Ig2LtID+CBzTMTjH6zqoybGXL5yLZlQjy5yMjaGRx/CT8aB2bqGQjbMDHwjV5Adl2kaoL1PfVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299084; c=relaxed/simple;
-	bh=VGo7tLB2i2ZBiTHdSJkRy7l49rRo+neqEEFctFtNBtw=;
+	s=arc-20240116; t=1779296673; c=relaxed/simple;
+	bh=NUGCBbBbkdlC6R9HLDUk6zsWITElSQJo9l1KsigZ/NE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o7QYANmaZnBbFpkwyQDMsHwe9KkN3Kq6S4iRaoWDoIJNy+OwhyoUgyEzyDWT67OzQY9BexS/3uNkHjyX7n8+cQTV3zVhcaFiofDgz2gWfuBJwbzl5elMAgcEABWEH9m1WYlWyOATPwKOFvDgrD1XeGyccBaRtSP18H9lw2RGZRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=obbgOBV7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 575F81F000E9;
-	Wed, 20 May 2026 17:44:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ldy90TLLfhytPpGahfVkFdaAEZXmRdqYPAK4HwQF3HontVMTvGaqaZf2zCwQE+3sa5FIzAK07sVkIkwSDO+aRvqpA6bMZAQLVT79uJEHrNX9qKAs3lIBTIa1iMlHkg2cEJ63MOyJtHZiJYRqNMQb3NtVsEQakTVnUXZbeS8aEL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TzFNDmFa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4CA71F000E9;
+	Wed, 20 May 2026 17:04:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299082;
-	bh=c7Cu3OBw4UVC2rQSWiKwOBTYcrLNmKzdf1+EFq1wCv4=;
+	s=korg; t=1779296672;
+	bh=nJrTnsZv0YNjP5ApC3a8Sx1Kx1n9HE9rGjIs4LWBo0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=obbgOBV75m0KGSoBHnRDD2P2mzIYZpL6uX4VYrsSKsDmWZJ7WvU4ELGGOs24/JPF+
-	 WUa331oSPmbfZJOh8cbEgy2OKg7JJTCCuJroNZwxK7bg00CtFlWeHQat2/y8uf+0fJ
-	 Ylji80yeHuySkjAHTBOYmPdEHgnWScDTdjdPR/WA=
+	b=TzFNDmFaFmY/5rPztKJyUcU1s/weW4N8osrGO9GOWWs4Bcyj3n+Pdxlw2xMY8K4XJ
+	 aZXhF2na8Nc23DXHxdUGJlzs6wf+kI7F0qwpQzLStxYLLBfxNkKRqMbiiFESYG5ZrU
+	 kMOlfwx/NzHWkaygmPhJStiWcFysOnc4cPzZCKd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Xin Yin <yinxin.x@bytedance.com>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 655/957] sctp: fix OOB write to userspace in sctp_getsockopt_peer_auth_chunks
+Subject: [PATCH 7.0 0888/1146] fsnotify: fix inode reference leak in fsnotify_recalc_mask()
 Date: Wed, 20 May 2026 18:18:58 +0200
-Message-ID: <20260520162148.737436068@linuxfoundation.org>
+Message-ID: <20260520162208.333979786@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,104 +64,183 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-251863-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,bytedance.com,gmail.com,suse.cz,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-250935-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 4BE2F595251
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,suse.cz:email,bytedance.com:email]
+X-Rspamd-Queue-Id: 08212593FB1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit 0cf004ffb61cd32d140531c3a84afe975f9fc7ea ]
+[ Upstream commit 4aca914ac152f5d055ddcb36704d1e539ac08977 ]
 
-sctp_getsockopt_peer_auth_chunks() checks that the caller's optval
-buffer is large enough for the peer AUTH chunk list with
+fsnotify_recalc_mask() fails to handle the return value of
+__fsnotify_recalc_mask(), which may return an inode pointer that needs
+to be released via fsnotify_drop_object() when the connector's HAS_IREF
+flag transitions from set to cleared.
 
-    if (len < num_chunks)
-            return -EINVAL;
+This manifests as a hung task with the following call trace:
 
-but then writes num_chunks bytes to p->gauth_chunks, which lives
-at offset offsetof(struct sctp_authchunks, gauth_chunks) == 8
-inside optval.  The check is missing the sizeof(struct
-sctp_authchunks) = 8-byte header.  When the caller supplies
-len == num_chunks (for any num_chunks > 0) the test passes but
-copy_to_user() writes sizeof(struct sctp_authchunks) = 8 bytes
-past the declared buffer.
+  INFO: task umount:1234 blocked for more than 120 seconds.
+  Call Trace:
+   __schedule
+   schedule
+   fsnotify_sb_delete
+   generic_shutdown_super
+   kill_anon_super
+   cleanup_mnt
+   task_work_run
+   do_exit
+   do_group_exit
 
-The sibling function sctp_getsockopt_local_auth_chunks() at the
-next line already has the correct check:
+The race window that triggers the iref leak:
 
-    if (len < sizeof(struct sctp_authchunks) + num_chunks)
-            return -EINVAL;
+  Thread A (adding mark)              Thread B (removing mark)
+  ──────────────────────              ────────────────────────
+  fsnotify_add_mark_locked():
+    fsnotify_add_mark_list():
+      spin_lock(conn->lock)
+      add mark_B(evictable) to list
+      spin_unlock(conn->lock)
+    return
 
-Align the peer variant with its sibling.
+    /* ---- gap: no lock held ---- */
 
-Reproducer confirms on v7.0-13-generic: an unprivileged userspace
-caller that opens a loopback SCTP association with AUTH enabled,
-queries num_chunks with a short optval, then issues the real
-getsockopt with len == num_chunks and sentinel bytes painted past
-the buffer observes those sentinel bytes overwritten with the
-peer's AUTH chunk type.  The bytes written are under the peer's
-control but land in the caller's own userspace; this is not a
-kernel memory corruption, but it is a kernel-side contract
-violation that can silently corrupt adjacent userspace data.
+                                      fsnotify_detach_mark(mark_A):
+                                        spin_lock(mark_A->lock)
+                                        clear ATTACHED flag on mark_A
+                                        spin_unlock(mark_A->lock)
+                                        fsnotify_put_mark(mark_A)
 
-Fixes: 65b07e5d0d09 ("[SCTP]: API updates to suport SCTP-AUTH extensions.")
-Assisted-by: Claude:claude-opus-4-6
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20260416031903.1447072-1-michael.bommarito@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+    fsnotify_recalc_mask():
+      spin_lock(conn->lock)
+      __fsnotify_recalc_mask():
+        /* mark_A skipped: ATTACHED cleared */
+        /* only mark_B(evictable) remains */
+        want_iref = false
+        has_iref = true  /* not yet cleared */
+        -> HAS_IREF transitions true -> false
+        -> returns inode pointer
+      spin_unlock(conn->lock)
+      /* BUG: return value discarded!
+       * iput() and fsnotify_put_sb_watched_objects()
+       * are never called */
+
+Fix this by deferring the transition true -> false of HAS_IREF flag from
+fsnotify_recalc_mask() (Thread A) to fsnotify_put_mark() (thread B).
+
+Fixes: c3638b5b1374 ("fsnotify: allow adding an inode mark without pinning inode")
+Signed-off-by: Xin Yin <yinxin.x@bytedance.com>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Link: https://patch.msgid.link/CAOQ4uxiPsbHb0o5voUKyPFMvBsDkG914FYDcs4C5UpBMNm0Vcg@mail.gmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/socket.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/notify/mark.c | 39 ++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 36 insertions(+), 3 deletions(-)
 
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index c57a53192beef..2c5ad53984906 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -6990,7 +6990,7 @@ static int sctp_getsockopt_peer_auth_chunks(struct sock *sk, int len,
+diff --git a/fs/notify/mark.c b/fs/notify/mark.c
+index 622f05977f86a..e256b420100dc 100644
+--- a/fs/notify/mark.c
++++ b/fs/notify/mark.c
+@@ -238,7 +238,12 @@ static struct inode *fsnotify_update_iref(struct fsnotify_mark_connector *conn,
+ 	return inode;
+ }
  
- 	/* See if the user provided enough room for all the data */
- 	num_chunks = ntohs(ch->param_hdr.length) - sizeof(struct sctp_paramhdr);
--	if (len < num_chunks)
-+	if (len < sizeof(struct sctp_authchunks) + num_chunks)
- 		return -EINVAL;
+-static void *__fsnotify_recalc_mask(struct fsnotify_mark_connector *conn)
++/*
++ * Calculate mask of events for a list of marks.
++ *
++ * Return true if any of the attached marks want to hold an inode reference.
++ */
++static bool __fsnotify_recalc_mask(struct fsnotify_mark_connector *conn)
+ {
+ 	u32 new_mask = 0;
+ 	bool want_iref = false;
+@@ -262,6 +267,34 @@ static void *__fsnotify_recalc_mask(struct fsnotify_mark_connector *conn)
+ 	 */
+ 	WRITE_ONCE(*fsnotify_conn_mask_p(conn), new_mask);
  
- 	if (copy_to_user(to, ch->chunks, num_chunks))
++	return want_iref;
++}
++
++/*
++ * Calculate mask of events for a list of marks after attach/modify mark
++ * and get an inode reference for the connector if needed.
++ *
++ * A concurrent add of evictable mark and detach of non-evictable mark can
++ * lead to __fsnotify_recalc_mask() returning false want_iref, but in this
++ * case we defer clearing iref to fsnotify_recalc_mask_clear_iref() called
++ * from fsnotify_put_mark().
++ */
++static void fsnotify_recalc_mask_set_iref(struct fsnotify_mark_connector *conn)
++{
++	bool has_iref = conn->flags & FSNOTIFY_CONN_FLAG_HAS_IREF;
++	bool want_iref = __fsnotify_recalc_mask(conn) || has_iref;
++
++	(void) fsnotify_update_iref(conn, want_iref);
++}
++
++/*
++ * Calculate mask of events for a list of marks after detach mark
++ * and return the inode object if its reference is no longer needed.
++ */
++static void *fsnotify_recalc_mask_clear_iref(struct fsnotify_mark_connector *conn)
++{
++	bool want_iref = __fsnotify_recalc_mask(conn);
++
+ 	return fsnotify_update_iref(conn, want_iref);
+ }
+ 
+@@ -298,7 +331,7 @@ void fsnotify_recalc_mask(struct fsnotify_mark_connector *conn)
+ 
+ 	spin_lock(&conn->lock);
+ 	update_children = !fsnotify_conn_watches_children(conn);
+-	__fsnotify_recalc_mask(conn);
++	fsnotify_recalc_mask_set_iref(conn);
+ 	update_children &= fsnotify_conn_watches_children(conn);
+ 	spin_unlock(&conn->lock);
+ 	/*
+@@ -419,7 +452,7 @@ void fsnotify_put_mark(struct fsnotify_mark *mark)
+ 		/* Update watched objects after detaching mark */
+ 		if (sb)
+ 			fsnotify_update_sb_watchers(sb, conn);
+-		objp = __fsnotify_recalc_mask(conn);
++		objp = fsnotify_recalc_mask_clear_iref(conn);
+ 		type = conn->type;
+ 	}
+ 	WRITE_ONCE(mark->connector, NULL);
 -- 
 2.53.0
 
