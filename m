@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-252968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251872-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IL08J6EZDmqA6AUAu9opvQ
-	(envelope-from <stable+bounces-252968-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:29:21 +0200
+	id 4FwsKOj2DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251872-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:01:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B584B599A72
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:29:20 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A47F5951DB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:01:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 363CE31E48C9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:34:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9BC8D3088AA9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:45:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCEC2357A25;
-	Wed, 20 May 2026 18:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F244B3F1AD9;
+	Wed, 20 May 2026 17:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YLagWd0W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KYofV0eM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9DA17A2FC;
-	Wed, 20 May 2026 18:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860783F2115;
+	Wed, 20 May 2026 17:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302060; cv=none; b=mtoQMVDTnxuCkPsImXEmFBOuonYaCJIoEHrY+NRepEII5uxKlQzkJoK21Mh7C4WLTvY2cjZI9mfQPscPpcFVLnCnbFoPVUMsULHvWRYlCPpFsKGaIIEcUdqvnjGcDg7fWN0Kk7ZS8h37PXy6yesEdNaCLRCMe8WOEYMA9PG6QJ0=
+	t=1779299107; cv=none; b=qKNzPmQS+o4jlxCuo8x1K8JtO07wFadvmxRLkHQpZTmCkPxz/S+PEXEjhOi3UtIhl2ep7GQL4X4SOXmXcIofdbfbROFpJISdXQhksDE+bAc2QR/CN5buKjK0lvQnE2ckN20x/WPsTvzcBQLNmBfbTg9IIejs2pBieDujcMa3BhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302060; c=relaxed/simple;
-	bh=Di/hBDCvfcFfIiCCkbxHjbDDsMVEebKP7y+/M9SVCVI=;
+	s=arc-20240116; t=1779299107; c=relaxed/simple;
+	bh=oLHWKQfHHMb5nxIMCoAn5q4ss3kk/o+1aLX2fHy/EnY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FsjvbS3Y+4NHoTqLSi3T1g3A+isZ6X4GAbDDTxPgUZjl6n8pmG81RyQGI/JpALR8VENkPMs6JS+CHHuzSf/071fS8XL+ygg9tPshpRPqU2mTRzpZ5woa3AI8jrc+VsQ6QWK/ICuF76gkaq6tpsSjqkB+WM+xXpLxLqqulFe2Tfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YLagWd0W; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A815A1F000E9;
-	Wed, 20 May 2026 18:34:18 +0000 (UTC)
+	 MIME-Version; b=fqMXerlR9DJ2JJW1t1GZsrOYEhOpK1c+qXciN1ArvUxI4FDGZ850EkP5QEXuIiZ5FAMtVXDVINuQbMRzj7eegKYUY6fe628hTpI1lCy6JpVhd0v6E4wFmLGbZEDmVZLDcyy+0k+gipfV0to21/Zbohy4vAb4xWPn++XHmZFJTO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KYofV0eM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB2061F000E9;
+	Wed, 20 May 2026 17:45:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302059;
-	bh=hc/h8VwXF9IuI78JZv2bOFl6vMXjPj9ZPyTzAt1j4g0=;
+	s=korg; t=1779299106;
+	bh=LdPnEGyFSpek7f0EepYEXvUayvjDZoMMGM2HlJ617m8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YLagWd0WCIAoot7cvk6sRwp4Om3o5hRvMbvbc+mQm/KaDT5r3S2fGdApmdoxGqw5M
-	 zHvHgXMzzD/QgkTMybMi/vrInBC1yszeFI2Z9ftsTOQ6YInYkt+bMW/blda+3zLbzT
-	 CoQZYOaafUHwoljGWleR1uANA6NP/WA52E3tVbFk=
+	b=KYofV0eMJdaccemeeUNG4fqCD66506U/WSLrQQwaeZ35V8bbD/8HWPmiXGF2slaKC
+	 pooGJyC7E5AjL3EYOFYaAZMkhykK6qidc5RpZWkOky+4rHhgsa7nApa9nQpTViX2Ye
+	 J5hE28CXNkzIVTu8JPEU+ejEMPTJ16PHjXBC7PHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Benno Lossin <benno.lossin@proton.me>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	Andrew Lunn <andrew@lunn.ch>,
-	Alice Ryhl <aliceryhl@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 082/508] net: phy: add Rust Asix PHY driver
-Date: Wed, 20 May 2026 18:18:25 +0200
-Message-ID: <20260520162100.385997744@linuxfoundation.org>
+Subject: [PATCH 6.18 623/957] net: dsa: append ethtool counters of all hidden ports to conduit
+Date: Wed, 20 May 2026 18:18:26 +0200
+Message-ID: <20260520162148.041661058@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,275 +65,255 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,umich.edu,proton.me,lunn.ch,google.com,davemloft.net,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252968-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251872-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,lunn.ch:email,davemloft.net:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,proton.me:email,umich.edu:email]
-X-Rspamd-Queue-Id: B584B599A72
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lunn.ch:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email]
+X-Rspamd-Queue-Id: 5A47F5951DB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit cbe0e415089636170aa6eb540ca4af5dc9842a60 ]
+[ Upstream commit f647ed2ca78ec4efcc436915b441da9de0974926 ]
 
-This is the Rust implementation of drivers/net/phy/ax88796b.c. The
-features are equivalent. You can choose C or Rust version kernel
-configuration.
+Currently there is no way to see packet counters on cascade ports, and
+no clarity on how the API for that would look like.
 
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Because it's something that is currently needed, just extend the hack
+where ethtool -S on the conduit interface dumps CPU port counters, and
+also use it to dump counters of cascade ports.
+
+Note that the "pXX_" naming convention changes to "sXX_pYY", to
+distinguish between ports having the same index but belonging to
+different switches. This has a slight chance of causing regressions to
+existing tooling:
+
+- grepping for "p04_counter_name" still works, but might return more
+  than one string now
+- grepping for "    p04_counter_name" no longer works
+
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: e7a62edd34b1 ("net: phy: qcom: at803x: Use the correct bit to disable extended next page")
+Link: https://patch.msgid.link/20251122112311.138784-4-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 0f99e0c3e19b ("net: dsa: remove redundant netdev_lock_ops() from conduit ethtool ops")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- MAINTAINERS                      |   8 ++
- drivers/net/phy/Kconfig          |   8 ++
- drivers/net/phy/Makefile         |   6 +-
- drivers/net/phy/ax88796b_rust.rs | 135 +++++++++++++++++++++++++++++++
- rust/uapi/uapi_helper.h          |   2 +
- 5 files changed, 158 insertions(+), 1 deletion(-)
- create mode 100644 drivers/net/phy/ax88796b_rust.rs
+ net/dsa/conduit.c | 126 ++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 93 insertions(+), 33 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e700dca4974b3..8b1ee5b11eca2 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3060,6 +3060,14 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/net/asix,ax88796c.yaml
- F:	drivers/net/ethernet/asix/ax88796c_*
+diff --git a/net/dsa/conduit.c b/net/dsa/conduit.c
+index c210e31296558..a1b044467bd6f 100644
+--- a/net/dsa/conduit.c
++++ b/net/dsa/conduit.c
+@@ -87,25 +87,51 @@ static void dsa_conduit_get_regs(struct net_device *dev,
+ 	}
+ }
  
-+ASIX PHY DRIVER [RUST]
-+M:	FUJITA Tomonori <fujita.tomonori@gmail.com>
-+R:	Trevor Gross <tmgross@umich.edu>
-+L:	netdev@vger.kernel.org
-+L:	rust-for-linux@vger.kernel.org
-+S:	Maintained
-+F:	drivers/net/phy/ax88796b_rust.rs
++static ssize_t dsa_conduit_append_port_stats(struct dsa_switch *ds, int port,
++					     u64 *data, size_t start)
++{
++	int count;
 +
- ASPEED CRYPTO DRIVER
- M:	Neal Liu <neal_liu@aspeedtech.com>
- L:	linux-aspeed@lists.ozlabs.org (moderated for non-subscribers)
-diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index aa5491aaaab40..466d3dff60744 100644
---- a/drivers/net/phy/Kconfig
-+++ b/drivers/net/phy/Kconfig
-@@ -104,6 +104,14 @@ config AX88796B_PHY
- 	  Currently supports the Asix Electronics PHY found in the X-Surf 100
- 	  AX88796B package.
++	if (!ds->ops->get_sset_count)
++		return 0;
++
++	count = ds->ops->get_sset_count(ds, port, ETH_SS_STATS);
++	if (count < 0)
++		return count;
++
++	if (ds->ops->get_ethtool_stats)
++		ds->ops->get_ethtool_stats(ds, port, data + start);
++
++	return count;
++}
++
+ static void dsa_conduit_get_ethtool_stats(struct net_device *dev,
+ 					  struct ethtool_stats *stats,
+ 					  u64 *data)
+ {
+-	struct dsa_port *cpu_dp = dev->dsa_ptr;
++	struct dsa_port *dp, *cpu_dp = dev->dsa_ptr;
+ 	const struct ethtool_ops *ops = cpu_dp->orig_ethtool_ops;
+-	struct dsa_switch *ds = cpu_dp->ds;
+-	int port = cpu_dp->index;
+-	int count = 0;
++	struct dsa_switch_tree *dst = cpu_dp->dst;
++	int count, mcount = 0;
  
-+config AX88796B_RUST_PHY
-+	bool "Rust reference driver for Asix PHYs"
-+	depends on RUST_PHYLIB_ABSTRACTIONS && AX88796B_PHY
-+	help
-+	  Uses the Rust reference driver for Asix PHYs (ax88796b_rust.ko).
-+	  The features are equivalent. It supports the Asix Electronics PHY
-+	  found in the X-Surf 100 AX88796B package.
-+
- config BROADCOM_PHY
- 	tristate "Broadcom 54XX PHYs"
- 	select BCM_NET_PHYLIB
-diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
-index f65e85c91fc10..ab450a46b8550 100644
---- a/drivers/net/phy/Makefile
-+++ b/drivers/net/phy/Makefile
-@@ -37,7 +37,11 @@ obj-$(CONFIG_ADIN1100_PHY)	+= adin1100.o
- obj-$(CONFIG_AMD_PHY)		+= amd.o
- obj-$(CONFIG_AQUANTIA_PHY)	+= aquantia/
- obj-$(CONFIG_AT803X_PHY)	+= at803x.o
--obj-$(CONFIG_AX88796B_PHY)	+= ax88796b.o
-+ifdef CONFIG_AX88796B_RUST_PHY
-+  obj-$(CONFIG_AX88796B_PHY)	+= ax88796b_rust.o
-+else
-+  obj-$(CONFIG_AX88796B_PHY)	+= ax88796b.o
-+endif
- obj-$(CONFIG_BCM54140_PHY)	+= bcm54140.o
- obj-$(CONFIG_BCM63XX_PHY)	+= bcm63xx.o
- obj-$(CONFIG_BCM7XXX_PHY)	+= bcm7xxx.o
-diff --git a/drivers/net/phy/ax88796b_rust.rs b/drivers/net/phy/ax88796b_rust.rs
-new file mode 100644
-index 0000000000000..5c92572962dce
---- /dev/null
-+++ b/drivers/net/phy/ax88796b_rust.rs
-@@ -0,0 +1,135 @@
-+// SPDX-License-Identifier: GPL-2.0
-+// Copyright (C) 2023 FUJITA Tomonori <fujita.tomonori@gmail.com>
-+
-+//! Rust Asix PHYs driver
-+//!
-+//! C version of this driver: [`drivers/net/phy/ax88796b.c`](./ax88796b.c)
-+use kernel::{
-+    c_str,
-+    net::phy::{self, DeviceId, Driver},
-+    prelude::*,
-+    uapi,
-+};
-+
-+kernel::module_phy_driver! {
-+    drivers: [PhyAX88772A, PhyAX88772C, PhyAX88796B],
-+    device_table: [
-+        DeviceId::new_with_driver::<PhyAX88772A>(),
-+        DeviceId::new_with_driver::<PhyAX88772C>(),
-+        DeviceId::new_with_driver::<PhyAX88796B>()
-+    ],
-+    name: "rust_asix_phy",
-+    author: "FUJITA Tomonori <fujita.tomonori@gmail.com>",
-+    description: "Rust Asix PHYs driver",
-+    license: "GPL",
-+}
-+
-+const MII_BMCR: u16 = uapi::MII_BMCR as u16;
-+const BMCR_SPEED100: u16 = uapi::BMCR_SPEED100 as u16;
-+const BMCR_FULLDPLX: u16 = uapi::BMCR_FULLDPLX as u16;
-+
-+// Performs a software PHY reset using the standard
-+// BMCR_RESET bit and poll for the reset bit to be cleared.
-+// Toggle BMCR_RESET bit off to accommodate broken AX8796B PHY implementation
-+// such as used on the Individual Computers' X-Surf 100 Zorro card.
-+fn asix_soft_reset(dev: &mut phy::Device) -> Result {
-+    dev.write(uapi::MII_BMCR as u16, 0)?;
-+    dev.genphy_soft_reset()
-+}
-+
-+struct PhyAX88772A;
-+
-+#[vtable]
-+impl Driver for PhyAX88772A {
-+    const FLAGS: u32 = phy::flags::IS_INTERNAL;
-+    const NAME: &'static CStr = c_str!("Asix Electronics AX88772A");
-+    const PHY_DEVICE_ID: DeviceId = DeviceId::new_with_exact_mask(0x003b1861);
-+
-+    // AX88772A is not working properly with some old switches (NETGEAR EN 108TP):
-+    // after autoneg is done and the link status is reported as active, the MII_LPA
-+    // register is 0. This issue is not reproducible on AX88772C.
-+    fn read_status(dev: &mut phy::Device) -> Result<u16> {
-+        dev.genphy_update_link()?;
-+        if !dev.is_link_up() {
-+            return Ok(0);
-+        }
-+        // If MII_LPA is 0, phy_resolve_aneg_linkmode() will fail to resolve
-+        // linkmode so use MII_BMCR as default values.
-+        let ret = dev.read(MII_BMCR)?;
-+
-+        if ret & BMCR_SPEED100 != 0 {
-+            dev.set_speed(uapi::SPEED_100);
-+        } else {
-+            dev.set_speed(uapi::SPEED_10);
-+        }
-+
-+        let duplex = if ret & BMCR_FULLDPLX != 0 {
-+            phy::DuplexMode::Full
-+        } else {
-+            phy::DuplexMode::Half
-+        };
-+        dev.set_duplex(duplex);
-+
-+        dev.genphy_read_lpa()?;
-+
-+        if dev.is_autoneg_enabled() && dev.is_autoneg_completed() {
-+            dev.resolve_aneg_linkmode();
-+        }
-+
-+        Ok(0)
-+    }
-+
-+    fn suspend(dev: &mut phy::Device) -> Result {
-+        dev.genphy_suspend()
-+    }
-+
-+    fn resume(dev: &mut phy::Device) -> Result {
-+        dev.genphy_resume()
-+    }
-+
-+    fn soft_reset(dev: &mut phy::Device) -> Result {
-+        asix_soft_reset(dev)
-+    }
-+
-+    fn link_change_notify(dev: &mut phy::Device) {
-+        // Reset PHY, otherwise MII_LPA will provide outdated information.
-+        // This issue is reproducible only with some link partner PHYs.
-+        if dev.state() == phy::DeviceState::NoLink {
-+            let _ = dev.init_hw();
-+            let _ = dev.start_aneg();
-+        }
-+    }
-+}
-+
-+struct PhyAX88772C;
-+
-+#[vtable]
-+impl Driver for PhyAX88772C {
-+    const FLAGS: u32 = phy::flags::IS_INTERNAL;
-+    const NAME: &'static CStr = c_str!("Asix Electronics AX88772C");
-+    const PHY_DEVICE_ID: DeviceId = DeviceId::new_with_exact_mask(0x003b1881);
-+
-+    fn suspend(dev: &mut phy::Device) -> Result {
-+        dev.genphy_suspend()
-+    }
-+
-+    fn resume(dev: &mut phy::Device) -> Result {
-+        dev.genphy_resume()
-+    }
-+
-+    fn soft_reset(dev: &mut phy::Device) -> Result {
-+        asix_soft_reset(dev)
-+    }
-+}
-+
-+struct PhyAX88796B;
-+
-+#[vtable]
-+impl Driver for PhyAX88796B {
-+    const NAME: &'static CStr = c_str!("Asix Electronics AX88796B");
-+    const PHY_DEVICE_ID: DeviceId = DeviceId::new_with_model_mask(0x003b1841);
-+
-+    fn soft_reset(dev: &mut phy::Device) -> Result {
-+        asix_soft_reset(dev)
-+    }
-+}
-diff --git a/rust/uapi/uapi_helper.h b/rust/uapi/uapi_helper.h
-index 301f5207f0238..08f5e9334c9e8 100644
---- a/rust/uapi/uapi_helper.h
-+++ b/rust/uapi/uapi_helper.h
-@@ -7,3 +7,5 @@
-  */
+ 	if (ops && ops->get_sset_count && ops->get_ethtool_stats) {
+ 		netdev_lock_ops(dev);
+-		count = ops->get_sset_count(dev, ETH_SS_STATS);
++		mcount = ops->get_sset_count(dev, ETH_SS_STATS);
+ 		ops->get_ethtool_stats(dev, stats, data);
+ 		netdev_unlock_ops(dev);
+ 	}
  
- #include <uapi/asm-generic/ioctl.h>
-+#include <uapi/linux/mii.h>
-+#include <uapi/linux/ethtool.h>
+-	if (ds->ops->get_ethtool_stats)
+-		ds->ops->get_ethtool_stats(ds, port, data + count);
++	list_for_each_entry(dp, &dst->ports, list) {
++		if (!dsa_port_is_dsa(dp) && !dsa_port_is_cpu(dp))
++			continue;
++
++		count = dsa_conduit_append_port_stats(dp->ds, dp->index,
++						      data, mcount);
++		if (count < 0)
++			return;
++
++		mcount += count;
++	}
+ }
+ 
+ static void dsa_conduit_get_ethtool_phy_stats(struct net_device *dev,
+@@ -136,11 +162,18 @@ static void dsa_conduit_get_ethtool_phy_stats(struct net_device *dev,
+ 		ds->ops->get_ethtool_phy_stats(ds, port, data + count);
+ }
+ 
++static void dsa_conduit_append_port_sset_count(struct dsa_switch *ds, int port,
++					       int sset, int *count)
++{
++	if (ds->ops->get_sset_count)
++		*count += ds->ops->get_sset_count(ds, port, sset);
++}
++
+ static int dsa_conduit_get_sset_count(struct net_device *dev, int sset)
+ {
+-	struct dsa_port *cpu_dp = dev->dsa_ptr;
++	struct dsa_port *dp, *cpu_dp = dev->dsa_ptr;
+ 	const struct ethtool_ops *ops = cpu_dp->orig_ethtool_ops;
+-	struct dsa_switch *ds = cpu_dp->ds;
++	struct dsa_switch_tree *dst = cpu_dp->dst;
+ 	int count = 0;
+ 
+ 	netdev_lock_ops(dev);
+@@ -154,26 +187,57 @@ static int dsa_conduit_get_sset_count(struct net_device *dev, int sset)
+ 	if (count < 0)
+ 		count = 0;
+ 
+-	if (ds->ops->get_sset_count)
+-		count += ds->ops->get_sset_count(ds, cpu_dp->index, sset);
++	list_for_each_entry(dp, &dst->ports, list) {
++		if (!dsa_port_is_dsa(dp) && !dsa_port_is_cpu(dp))
++			continue;
++
++		dsa_conduit_append_port_sset_count(dp->ds, dp->index, sset,
++						   &count);
++	}
+ 
+ 	return count;
+ }
+ 
+-static void dsa_conduit_get_strings(struct net_device *dev, u32 stringset,
+-				    u8 *data)
++static ssize_t dsa_conduit_append_port_strings(struct dsa_switch *ds, int port,
++					       u32 stringset, u8 *data,
++					       size_t start)
+ {
+-	struct dsa_port *cpu_dp = dev->dsa_ptr;
+-	const struct ethtool_ops *ops = cpu_dp->orig_ethtool_ops;
+-	struct dsa_switch *ds = cpu_dp->ds;
+-	int port = cpu_dp->index;
+ 	int len = ETH_GSTRING_LEN;
+-	int mcount = 0, count, i;
+-	u8 pfx[4], *ndata;
++	u8 pfx[8], *ndata;
++	int count, i;
++
++	if (!ds->ops->get_strings)
++		return 0;
+ 
+-	snprintf(pfx, sizeof(pfx), "p%.2d", port);
++	snprintf(pfx, sizeof(pfx), "s%.2d_p%.2d", ds->index, port);
+ 	/* We do not want to be NULL-terminated, since this is a prefix */
+ 	pfx[sizeof(pfx) - 1] = '_';
++	ndata = data + start * len;
++	/* This function copies ETH_GSTRINGS_LEN bytes, we will mangle
++	 * the output after to prepend our CPU port prefix we
++	 * constructed earlier
++	 */
++	ds->ops->get_strings(ds, port, stringset, ndata);
++	count = ds->ops->get_sset_count(ds, port, stringset);
++	if (count < 0)
++		return count;
++
++	for (i = 0; i < count; i++) {
++		memmove(ndata + (i * len + sizeof(pfx)),
++			ndata + i * len, len - sizeof(pfx));
++		memcpy(ndata + i * len, pfx, sizeof(pfx));
++	}
++
++	return count;
++}
++
++static void dsa_conduit_get_strings(struct net_device *dev, u32 stringset,
++				    u8 *data)
++{
++	struct dsa_port *dp, *cpu_dp = dev->dsa_ptr;
++	const struct ethtool_ops *ops = cpu_dp->orig_ethtool_ops;
++	struct dsa_switch_tree *dst = cpu_dp->dst;
++	int count, mcount = 0;
+ 
+ 	netdev_lock_ops(dev);
+ 	if (stringset == ETH_SS_PHY_STATS && dev->phydev &&
+@@ -191,21 +255,17 @@ static void dsa_conduit_get_strings(struct net_device *dev, u32 stringset,
+ 	}
+ 	netdev_unlock_ops(dev);
+ 
+-	if (ds->ops->get_strings) {
+-		ndata = data + mcount * len;
+-		/* This function copies ETH_GSTRINGS_LEN bytes, we will mangle
+-		 * the output after to prepend our CPU port prefix we
+-		 * constructed earlier
+-		 */
+-		ds->ops->get_strings(ds, port, stringset, ndata);
+-		count = ds->ops->get_sset_count(ds, port, stringset);
++	list_for_each_entry(dp, &dst->ports, list) {
++		if (!dsa_port_is_dsa(dp) && !dsa_port_is_cpu(dp))
++			continue;
++
++		count = dsa_conduit_append_port_strings(dp->ds, dp->index,
++							stringset, data,
++							mcount);
+ 		if (count < 0)
+ 			return;
+-		for (i = 0; i < count; i++) {
+-			memmove(ndata + (i * len + sizeof(pfx)),
+-				ndata + i * len, len - sizeof(pfx));
+-			memcpy(ndata + i * len, pfx, sizeof(pfx));
+-		}
++
++		mcount += count;
+ 	}
+ }
+ 
 -- 
 2.53.0
 
