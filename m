@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252945-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wDbZEckUDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-252485-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:08:41 +0200
+	id 8CyeDUoZDmqA6AUAu9opvQ
+	(envelope-from <stable+bounces-252945-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:27:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F53E5992E8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:08:39 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EAC65999C9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:27:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8B4AA3155870
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:13:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1102931DAC6D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:33:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F8F83E95A4;
-	Wed, 20 May 2026 18:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAE9D34EEF7;
+	Wed, 20 May 2026 18:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AWva3Tam"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/6T3qBu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3327A3A6B6D;
-	Wed, 20 May 2026 18:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 952F0348C47;
+	Wed, 20 May 2026 18:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300797; cv=none; b=UHxxENvho6+FZZSGYZPT6NeBKvlef/SBUm1grs7Tqu+qcQVJsdMnaZ5+RyUz/ovjMs9RSDike2+DmtW2I13ZmG9hMPuq2DXTmtlrUVqMABI8b3vh2DGVHxHiujmjO06gru3hOWVeyN3HOTplo5FUFi2HfstFtGLjUILUnfYzFVM=
+	t=1779301999; cv=none; b=VACxKW/8ufCPUK0YskkbwAVCU6MKo2iSNVCdLEw7UjRUweRCQ3U201H3FnOMZQXT3CJj+CS3LP+ucn649CeM81OuYjTBl8c0/suRFfnHeFk5e/Fuybcaf/+PimguEtmaaL0JdYCCFgH+nJjOXWWbiKLkV4UHpMnafpdyHhQ5Lfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300797; c=relaxed/simple;
-	bh=OLtvAQfTJdoJ5iqvUhXyo2OvkHn8OIAJbGeI9jKyR8M=;
+	s=arc-20240116; t=1779301999; c=relaxed/simple;
+	bh=gx2L1rU4Y0LZmDg5QjOKtbHo3WCe+HQmZnDWVbAedu4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DVVjZ6FAvnJhhW9fjiXm/KdrTdR0hbhtfED9bJJRCLtec3vlLJryZtgfeL170HNKbtdPEdpb4+drg0NvR/xWzS2/zyOYZa0UI5IIgw34l9jxWOaq14pQOe60z1bM3bY5fgHQZxX0vzT3NrsK2lQCxMxrxe5PvfF/ULKI5++1Jgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AWva3Tam; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 800051F000E9;
-	Wed, 20 May 2026 18:13:15 +0000 (UTC)
+	 MIME-Version; b=s4X0hCBa3nadFH0aml8SRLMKH6USFVzKp0NE7qyZHbJNpMltsPP7YIkGBouiqMS5WCVoL6JV+ir2VpliEHXSpG4ercD9CwcH4n9gB43GAB2miLRM2WP205ISLD5lG7JRnTrfgvcH9dJxVi5zYeAwpnFveF06PHiG3gxJZEWT3as=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/6T3qBu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 057D61F000E9;
+	Wed, 20 May 2026 18:33:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300796;
-	bh=8Ux8ATyhoElJps1H07spRUPeupRr0bcv6IK/htbXdmo=;
+	s=korg; t=1779301998;
+	bh=x8tlFj5zE2PEoJVWnfotpWm5+mE7c06m6vH2jx9YE0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AWva3TamMQz3oL+TtI4dHoGXqFtzEb5MVpX0onotpKMxjrGJ5YJt/Hlkg1r3cP8K3
-	 e3XDJ3adqFsSttMIXSwYOlpJolg6igJte/GD1F4p5+2zFRaTr9Z4RyECGTho/k5OyU
-	 huVd7ltHbN4UB+Unb8DFcYAhQc+70VxXHPvC7CBQ=
+	b=v/6T3qBufR5cFbsTLt/Udoah3pnXi+H4HSK/s9X/baFfijoe/NEJOo4LdcJDl0bCd
+	 AWQ+3mvPtFrN9DDgFDwHRfjenxJJHMkIe+gCsynY0kjepdUhHHuZ9fhY+IWPD38gpG
+	 aBXlPY1HqcPKi8S7PwEYdXe94o77ViK+8BpwauWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Kevin Hilman <khilman@baylibre.com>,
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 312/666] ARM: OMAP1: Fix DEBUG_LL and earlyprintk on OMAP16XX
+Subject: [PATCH 6.6 100/508] dm log: fix out-of-bounds write due to region_count overflow
 Date: Wed, 20 May 2026 18:18:43 +0200
-Message-ID: <20260520162117.984433071@linuxfoundation.org>
+Message-ID: <20260520162100.784814079@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,72 +67,114 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252485-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-252945-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,redhat.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,baylibre.com:email,iki.fi:email]
-X-Rspamd-Queue-Id: 3F53E5992E8
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,outlook.com:email]
+X-Rspamd-Queue-Id: 5EAC65999C9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaro Koskinen <aaro.koskinen@iki.fi>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-[ Upstream commit 7e74b606dd39c46d4378d6f6563f560a00ab8694 ]
+[ Upstream commit c20e36b7631d83e7535877f08af8b0af72c44b1a ]
 
-On OMAP16XX, the UART enable bit shifts are written instead of the actual
-bits. This breaks the boot when DEBUG_LL and earlyprintk is enabled;
-the UART gets disabled and some random bits get enabled. Fix that.
+The local variable region_count in create_log_context() is declared as
+unsigned int (32-bit), but dm_sector_div_up() returns sector_t (64-bit).
+When a device-mapper target has a sufficiently large ti->len with a small
+region_size, the division result can exceed UINT_MAX. The truncated
+value is then used to calculate bitset_size, causing clean_bits,
+sync_bits, and recovering_bits to be allocated far smaller than needed
+for the actual number of regions.
 
-Fixes: 34c86239b184 ("ARM: OMAP1: clock: Fix early UART rate issues")
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Link: https://patch.msgid.link/aca7HnXZ-aCSJPW7@darkstar.musicnaut.iki.fi
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Subsequent log operations (log_set_bit, log_clear_bit, log_test_bit) use
+region indices derived from the full untruncated region space, causing
+out-of-bounds writes to kernel heap memory allocated by vmalloc.
+
+This can be reproduced by creating a mirror target whose region_count
+overflows 32 bits:
+
+  dmsetup create bigzero --table '0 8589934594 zero'
+  dmsetup create mymirror --table '0 8589934594 mirror \
+    core 2 2 nosync 2 /dev/mapper/bigzero 0 \
+    /dev/mapper/bigzero 0'
+
+The status output confirms the truncation (sync_count=1 instead of
+4294967297, because 0x100000001 was truncated to 1):
+
+  $ dmsetup status mymirror
+  0 8589934594 mirror 2 254:1 254:1 1/4294967297 ...
+
+This leads to a kernel crash in core_in_sync:
+
+  BUG: scheduling while atomic: (udev-worker)/9150/0x00000000
+  RIP: 0010:core_in_sync+0x14/0x30 [dm_log]
+  CR2: 0000000000000008
+  Fixing recursive fault but reboot is needed!
+
+Fix by widening the local region_count to sector_t and adding an
+explicit overflow check before the value is assigned to lc->region_count.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-omap1/clock_data.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/md/dm-log.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-omap1/clock_data.c b/arch/arm/mach-omap1/clock_data.c
-index c58d200e4816b..5203b047deac8 100644
---- a/arch/arm/mach-omap1/clock_data.c
-+++ b/arch/arm/mach-omap1/clock_data.c
-@@ -700,8 +700,8 @@ int __init omap1_clk_init(void)
- 	/* Make sure UART clocks are enabled early */
- 	if (cpu_is_omap16xx())
- 		omap_writel(omap_readl(MOD_CONF_CTRL_0) |
--			    CONF_MOD_UART1_CLK_MODE_R |
--			    CONF_MOD_UART3_CLK_MODE_R, MOD_CONF_CTRL_0);
-+			    (1 << CONF_MOD_UART1_CLK_MODE_R) |
-+			    (1 << CONF_MOD_UART3_CLK_MODE_R), MOD_CONF_CTRL_0);
- #endif
+diff --git a/drivers/md/dm-log.c b/drivers/md/dm-log.c
+index e215478bcee04..94d3f13e673e9 100644
+--- a/drivers/md/dm-log.c
++++ b/drivers/md/dm-log.c
+@@ -373,7 +373,7 @@ static int create_log_context(struct dm_dirty_log *log, struct dm_target *ti,
  
- 	/* USB_REQ_EN will be disabled later if necessary (usb_dc_ck) */
+ 	struct log_c *lc;
+ 	uint32_t region_size;
+-	unsigned int region_count;
++	sector_t region_count;
+ 	size_t bitset_size, buf_size;
+ 	int r;
+ 	char dummy;
+@@ -401,6 +401,10 @@ static int create_log_context(struct dm_dirty_log *log, struct dm_target *ti,
+ 	}
+ 
+ 	region_count = dm_sector_div_up(ti->len, region_size);
++	if (region_count > UINT_MAX) {
++		DMWARN("region count exceeds limit of %u", UINT_MAX);
++		return -EINVAL;
++	}
+ 
+ 	lc = kmalloc(sizeof(*lc), GFP_KERNEL);
+ 	if (!lc) {
 -- 
 2.53.0
 
