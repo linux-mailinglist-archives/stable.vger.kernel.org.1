@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-251423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250432-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6IQdAgT+DWok5QUAu9opvQ
-	(envelope-from <stable+bounces-251423-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:31:32 +0200
+	id CN2XHnLyDWro4wUAu9opvQ
+	(envelope-from <stable+bounces-250432-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:42:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D1955966FE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:31:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C041594578
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:42:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1B2CE30A7B28
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:26:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D6DCC3305E73
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:44:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B355C3F7874;
-	Wed, 20 May 2026 17:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9928B36D4E1;
+	Wed, 20 May 2026 16:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wK/Mn97A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dH9ugU9U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A1C3FB05D;
-	Wed, 20 May 2026 17:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E93A36C5BF;
+	Wed, 20 May 2026 16:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297942; cv=none; b=lT/e6+Lf1WOXcNdVDcFlTJGUDuBiL/kKxaiKXVKp+6gNNRuyCjruC0JeNNmdZKaPWBfnM+P4mYobhKFl8gijC8LHLWznh1jkXnq5Ex3DkNV/oAYCxxo8CpR5qSAl7cOKBNyV1u4Y12tDgKOADMarzWu62JNnvbnOlZYl9eHpLTk=
+	t=1779295399; cv=none; b=LE/DuIfCcaT4FCxLDsiUF+9TRBy3APvpbO0RBsD+9bd5aLaHwDQFEK2ID2nugERPz595pfZWL5gwg93IBM65PYzqhZIiMoHo9b0yecLEJBO1SuSOVmUzIgdeVVQ6sRuddh9HUbni+yQKHWrf5QgRliZPvnUJw7k+oY0d8A3T+V4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297942; c=relaxed/simple;
-	bh=EFW9YTvtEs80j8eJFAyQQc8QQMRjCE09joqT6VAeD/U=;
+	s=arc-20240116; t=1779295399; c=relaxed/simple;
+	bh=/VeCHI55qXqwnO/lGw/IabUKOQIeG5HK9gwBWvnmLoA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FSDINYIOW5kt9rZv448E6oJcyBjzi8TRMloLYTD4L3FyUpmKk3Sw//Fo2IQLAhLJqyu7GccdIgZFAIXhK0lUhvalQo+KpI6A9Kj0HFdu5pwqkvE1z8Ql6F/2W29c3QqRFkcnD90Bc46FxieoqZPnQMnme/9C98Pbo3Y7k4s68XQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wK/Mn97A; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F7D21F000E9;
-	Wed, 20 May 2026 17:25:40 +0000 (UTC)
+	 MIME-Version; b=ES7H9ZSuirXVB1yzwBKsQ53/BNSypONHGOItaqTC4B2TN/NolahTzCur5gNSq8f72u5EK9BAOubpIESpGBXKlWY7qF/vqwl6bsotOY4FrP6x4Y5m8jZUw8O1oO48bHbAJWl5jCmB/RsILmeMzpNESuk8MxsLzlCnR6ORAFW8JXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dH9ugU9U; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9449E1F000E9;
+	Wed, 20 May 2026 16:43:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297941;
-	bh=9sboOangNf4onDnHDFg6EDOPYxbTbmsL+Jiqu5YGn4Y=;
+	s=korg; t=1779295398;
+	bh=m80YamsfEuzJbbe5IOX3iS8O7RZWRpc7nUl84f7RxGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wK/Mn97ASO1HGWsoIxX5oCfe2hIYY61W5pxUmAnP6elg7NbNJVjYS2N5YSaTwsnY/
-	 1LkVIT41U1rYo2BMhgrXWmLUvvm/SNv0vUxl4xmEHYtEDQlhpZc8cQlTLTXEgTw8nt
-	 kGcEcyxTmpERjgBgDwTW3tMWXITldwNZ3v9rs+DM=
+	b=dH9ugU9U/q43ZlbL+9t/ELpkO9OUzcJKdbTwosP2AbtZWW2cCXSZmADEzdhArOqQZ
+	 K575A+Pi4suF6070qlzK/dK/OvTyiYZXyH8zU8ag5rAHXHzeWCf/xim8haL7ZVqX9G
+	 iI1ZOKmwXzine0+qZZYJKpw9L6rj0ypNn4mzP9eQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gal Pressman <gal@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 171/957] net/mlx5e: Fix features not applied during netdev registration
+Subject: [PATCH 7.0 0404/1146] gpu: nova-core: remove redundant `.as_ref()` for `dev_*` print
 Date: Wed, 20 May 2026 18:10:54 +0200
-Message-ID: <20260520162138.261850066@linuxfoundation.org>
+Message-ID: <20260520162157.342458035@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,92 +68,155 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251423-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250432-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 3D1955966FE
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,garyguo.net:email]
+X-Rspamd-Queue-Id: 4C041594578
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Gary Guo <gary@garyguo.net>
 
-[ Upstream commit 9994ad4df82d64e57135c0f0906897685f5a9e87 ]
+[ Upstream commit 8d1a65c2defdc4213a49008d0531bd35d26fdf35 ]
 
-mlx5e_fix_features() returns early when the netdevice is not present.
-This is correct during profile transitions where priv is cleared, but it
-also incorrectly blocks feature fixups during register_netdev(), when
-the device is also not yet present.
+This is now handled by the macro itself.
 
-It is not trivial to distinguish between both cases as we cannot use
-priv to carry state, and in both cases reg_state == NETREG_REGISTERED.
-
-Force a netdev features update after register_netdev() completes, where
-the device is present and fix_features() can actually work.
-
-This is not a pretty solution, as it results in an additional features
-update call (register_netdevice() already calls
-__netdev_update_features() internally), but it is the simplest,
-cleanest, and most robust way I found to fix this issue after multiple
-attempts.
-
-This fixes an issue on systems where CQE compression is enabled by
-default, RXHASH remains enabled after registration despite the two
-features being mutually exclusive.
-
-Fixes: ab4b01bfdaa6 ("net/mlx5e: Verify dev is present for fix features ndo")
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260409202852.158059-2-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Gary Guo <gary@garyguo.net>
+Link: https://patch.msgid.link/20260123175854.176735-7-gary@kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Stable-dep-of: a7a080bb4236 ("gpu: nova-core: fix missing colon in SEC2 boot debug message")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/nova-core/driver.rs   |  2 +-
+ drivers/gpu/nova-core/gpu.rs      |  4 ++--
+ drivers/gpu/nova-core/gsp/boot.rs | 32 +++++++------------------------
+ 3 files changed, 10 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index cb993ad2d9ad9..a696fb88dbef9 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -6740,6 +6740,14 @@ static int _mlx5e_probe(struct auxiliary_device *adev)
- 		goto err_resume;
- 	}
+diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driver.rs
+index 5a4cc047bcfc9..e39885c0d5ca5 100644
+--- a/drivers/gpu/nova-core/driver.rs
++++ b/drivers/gpu/nova-core/driver.rs
+@@ -70,7 +70,7 @@ impl pci::Driver for NovaCore {
  
-+	/* mlx5e_fix_features() returns early when the device is not present
-+	 * to avoid dereferencing cleared priv during profile changes.
-+	 * This also causes it to be a no-op during register_netdev(), where
-+	 * the device is not yet present.
-+	 * Trigger an additional features update that will actually work.
-+	 */
-+	mlx5e_update_features(netdev);
-+
- 	mlx5e_dcbnl_init_app(priv);
- 	mlx5_core_uplink_netdev_set(mdev, netdev);
- 	mlx5e_params_print_info(mdev, &priv->channels.params);
+     fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInfo) -> impl PinInit<Self, Error> {
+         pin_init::pin_init_scope(move || {
+-            dev_dbg!(pdev.as_ref(), "Probe Nova Core GPU driver.\n");
++            dev_dbg!(pdev, "Probe Nova Core GPU driver.\n");
+ 
+             pdev.enable_device_mem()?;
+             pdev.set_master();
+diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
+index 9b042ef1a3086..60c85fffaeafd 100644
+--- a/drivers/gpu/nova-core/gpu.rs
++++ b/drivers/gpu/nova-core/gpu.rs
+@@ -262,13 +262,13 @@ impl Gpu {
+     ) -> impl PinInit<Self, Error> + 'a {
+         try_pin_init!(Self {
+             spec: Spec::new(pdev.as_ref(), bar).inspect(|spec| {
+-                dev_info!(pdev.as_ref(),"NVIDIA ({})\n", spec);
++                dev_info!(pdev,"NVIDIA ({})\n", spec);
+             })?,
+ 
+             // We must wait for GFW_BOOT completion before doing any significant setup on the GPU.
+             _: {
+                 gfw::wait_gfw_boot_completion(bar)
+-                    .inspect_err(|_| dev_err!(pdev.as_ref(), "GFW boot did not complete\n"))?;
++                    .inspect_err(|_| dev_err!(pdev, "GFW boot did not complete\n"))?;
+             },
+ 
+             sysmem_flush: SysmemFlush::register(pdev.as_ref(), bar, spec.chipset)?,
+diff --git a/drivers/gpu/nova-core/gsp/boot.rs b/drivers/gpu/nova-core/gsp/boot.rs
+index 62ffed5f25a15..a13255c464bc3 100644
+--- a/drivers/gpu/nova-core/gsp/boot.rs
++++ b/drivers/gpu/nova-core/gsp/boot.rs
+@@ -170,15 +170,10 @@ impl super::Gsp {
+             Some(libos_handle as u32),
+             Some((libos_handle >> 32) as u32),
+         )?;
+-        dev_dbg!(
+-            pdev.as_ref(),
+-            "GSP MBOX0: {:#x}, MBOX1: {:#x}\n",
+-            mbox0,
+-            mbox1
+-        );
++        dev_dbg!(pdev, "GSP MBOX0: {:#x}, MBOX1: {:#x}\n", mbox0, mbox1);
+ 
+         dev_dbg!(
+-            pdev.as_ref(),
++            pdev,
+             "Using SEC2 to load and run the booter_load firmware...\n"
+         );
+ 
+@@ -190,19 +185,10 @@ impl super::Gsp {
+             Some(wpr_handle as u32),
+             Some((wpr_handle >> 32) as u32),
+         )?;
+-        dev_dbg!(
+-            pdev.as_ref(),
+-            "SEC2 MBOX0: {:#x}, MBOX1{:#x}\n",
+-            mbox0,
+-            mbox1
+-        );
++        dev_dbg!(pdev, "SEC2 MBOX0: {:#x}, MBOX1{:#x}\n", mbox0, mbox1);
+ 
+         if mbox0 != 0 {
+-            dev_err!(
+-                pdev.as_ref(),
+-                "Booter-load failed with error {:#x}\n",
+-                mbox0
+-            );
++            dev_err!(pdev, "Booter-load failed with error {:#x}\n", mbox0);
+             return Err(ENODEV);
+         }
+ 
+@@ -216,11 +202,7 @@ impl super::Gsp {
+             Delta::from_secs(5),
+         )?;
+ 
+-        dev_dbg!(
+-            pdev.as_ref(),
+-            "RISC-V active? {}\n",
+-            gsp_falcon.is_riscv_active(bar),
+-        );
++        dev_dbg!(pdev, "RISC-V active? {}\n", gsp_falcon.is_riscv_active(bar),);
+ 
+         // Create and run the GSP sequencer.
+         let seq_params = GspSequencerParams {
+@@ -239,8 +221,8 @@ impl super::Gsp {
+         // Obtain and display basic GPU information.
+         let info = commands::get_gsp_info(&mut self.cmdq, bar)?;
+         match info.gpu_name() {
+-            Ok(name) => dev_info!(pdev.as_ref(), "GPU name: {}\n", name),
+-            Err(e) => dev_warn!(pdev.as_ref(), "GPU name unavailable: {:?}\n", e),
++            Ok(name) => dev_info!(pdev, "GPU name: {}\n", name),
++            Err(e) => dev_warn!(pdev, "GPU name unavailable: {:?}\n", e),
+         }
+ 
+         Ok(())
 -- 
 2.53.0
 
