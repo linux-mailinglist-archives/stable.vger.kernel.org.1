@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-252271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250693-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +FCqMKH7DWoK5QUAu9opvQ
-	(envelope-from <stable+bounces-252271-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:21:21 +0200
+	id CGFwIS32DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-250693-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:58:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BD73595E05
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:21:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8483594FE6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:58:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0446630A5809
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:04:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 296F533B942F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:55:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32D9A3E95A4;
-	Wed, 20 May 2026 18:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D698E34216C;
+	Wed, 20 May 2026 16:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ycaWkj3e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E1CiKdcO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA657371CEA;
-	Wed, 20 May 2026 18:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647B73D3CE5;
+	Wed, 20 May 2026 16:54:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300239; cv=none; b=lot0JT/F7k8bPb0nwZNlsTttHKZoS5tYTVEY1KI6brqtTKD2DlSyjs7a9Z1DYRbm0HqRln7sQ6IzvdC4dxjUqVGp5GagsaP5P38BZ98qKT4hOe2JiwG3Id4XfgveuFaa/mESxBEZHFW7cUGNaWsCKm4g5lpQPFd4HP6RK5MZCrc=
+	t=1779296069; cv=none; b=KloLfDdnuF8biIIYEn65tRQUMrjl02gyiSERWAgO1xLh7Ak8VA9LKSoNI8Ko8aRkdM1De5DUWN9t4sc+GK5mBEe8F2Mw9TjxpJ8WZrxnVi98fv2Ms0tekJn1XyKJrersjGqyHUIubUBgTLl25P8LlRRT7OQhlrDYwl3oVvRxzbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300239; c=relaxed/simple;
-	bh=0IDP+AtUzey/Vp9j36YQ+6jOUiUm54CqjUE4MosTB6Y=;
+	s=arc-20240116; t=1779296069; c=relaxed/simple;
+	bh=FYEBR+FBmrYvPGeYUNFHoFq5SC2JL+5Uw8bML0X2Jtk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JcaydwHwONlupknjNMthk9lbezM2lGgypndZumnMoW5PEhcjWxk7NSLyd/354GBPVmccCGa5zmt+VgLhW3rCFn+q5cGFoF5bCMNos7mQ1DV6aAuY0lv6dj+hDIqBKSykFyinZQ9Zayf1P2Jp5/FJ33oEbfhbSBZVSr5IRnpgvDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ycaWkj3e; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DDA61F000E9;
-	Wed, 20 May 2026 18:03:57 +0000 (UTC)
+	 MIME-Version; b=lTEqYVIk0zrSb5baG03FiyqrD9GQdqzu83VCi6nJ7CXzNhlYLP/plo5CqmpcxFtMG6Y4uFFIbuTqlh3O+xzT+7l7RTtPVfrv9Wx4vGxnHswlE/J7/3v3X9M/m2L0Xn/pGS/L37BlMab4eITgZ+eQfGGa8JXE84aAfozVw2Jfol0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E1CiKdcO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C770D1F000E9;
+	Wed, 20 May 2026 16:54:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300237;
-	bh=LrLmIwtsOHXblShu5FrAzz66iwFg1voL64xqh6msHCE=;
+	s=korg; t=1779296068;
+	bh=AfnYNJEHxMed9qYtJvLO+K6/XkI4pn9YO8XxJVMPmsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ycaWkj3eKlUvHVIwWxvQ+Si1QSritIk7K12VtddbHsXxyl/QskTn3unUEFkdd5ob1
-	 UF1vV9afr2xIBVLlwskOc0ysYUIYVYvsoBSJLtzqnVTheDrJE7DE+o3Tj6NaLgrPLJ
-	 0jE8EQYgmq2wdpEm/G2HWdnBd2at7ErOVm1gRDCc=
+	b=E1CiKdcOG0tIJJwHE+BJ0pijPKGFicc7Cb3rc6sxlJk85I6+FT7cTwRiAY+LckEQy
+	 KWoDNB5pWgFx8nVH9S6FfJYq/qzXLpZ/OLv+X2PjPV+m7fROci5fjT6rgO1i82OSNv
+	 /U031FSW18lAp0HHJ2i6pN0d0RtHu8+CS1PczN/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Jorge Marques <jorge.marques@analog.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 099/666] net: ipa: Fix programming of QTIME_TIMESTAMP_CFG
+Subject: [PATCH 7.0 0660/1146] i3c: master: Fix error codes at send_ccc_cmd
 Date: Wed, 20 May 2026 18:15:10 +0200
-Message-ID: <20260520162113.369435259@linuxfoundation.org>
+Message-ID: <20260520162203.122077007@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252271-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250693-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,63 +87,138 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,qualcomm.com:email,msgid.link:url,sashiko.dev:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,fairphone.com:email]
-X-Rspamd-Queue-Id: 6BD73595E05
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,bootlin.com:email]
+X-Rspamd-Queue-Id: E8483594FE6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: Jorge Marques <jorge.marques@analog.com>
 
-[ Upstream commit de08f9585692813bd41ee654fca0487664c4de30 ]
+[ Upstream commit ef8b5229348f0719aca557c4ca5530630ae4d134 ]
 
-The 'val' variable gets overwritten multiple times, discarding previous
-values. Looking at the git log shows these should be combined with |=
-instead.
+i3c_master_send_ccc_cmd_locked() would propagate cmd->err (positive,
+Mx codes) to the ret variable, cascading down multiple methods until
+reaching methods that explicitly stated they would return 0 on success
+or negative error code. For example, the call chain:
 
-Fixes: 9265a4f0f0b4 ("net: ipa: define even more IPA register fields")
-Link: https://sashiko.dev/#/patchset/20260403-milos-ipa-v1-0-01e9e4e03d3e%40fairphone.com?part=4
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260409-ipa-fixes-v1-1-a817c30678ac@fairphone.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  i3c_device_enable_ibi <- i3c_dev_enable_ibi_locked <-
+  master->ops.enable_ibi <- i3c_master_enec_locked <-
+  i3c_master_enec_disec_locked <- i3c_master_send_ccc_cmd_locked
+
+Fix this by returning the ret value, callers can still read the cmd->err
+value if ret is negative.
+
+All corner cases where the Mx codes do need to be handled individually,
+are resolved in previous commits. Those corner cases are all scenarios
+when I3C_ERROR_M2 is expected and acceptable.
+The prerequisite patches for the fix are:
+
+  i3c: master: Move rstdaa error suppression
+  i3c: master: Move entdaa error suppression
+  i3c: master: Move bus_init error suppression
+
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/linux-iio/aYXvT5FW0hXQwhm_@stanley.mountain/
+Fixes: 3a379bbcea0a ("i3c: Add core I3C infrastructure")
+Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Jorge Marques <jorge.marques@analog.com>
+Link: https://patch.msgid.link/20260323-ad4062-positive-error-fix-v3-4-30bdc68004be@analog.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ipa/ipa_main.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/i3c/master.c | 32 +++++++++++++-------------------
+ 1 file changed, 13 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/ipa/ipa_main.c b/drivers/net/ipa/ipa_main.c
-index 5f3dd5a2dcf46..f374a590d1c5e 100644
---- a/drivers/net/ipa/ipa_main.c
-+++ b/drivers/net/ipa/ipa_main.c
-@@ -361,7 +361,7 @@ static void ipa_qtime_config(struct ipa *ipa)
+diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+index 9e6be49bebb2c..930c4dad632fc 100644
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -898,11 +898,17 @@ static void i3c_ccc_cmd_init(struct i3c_ccc_cmd *cmd, bool rnw, u8 id,
+ 	cmd->err = I3C_ERROR_UNKNOWN;
+ }
+ 
++/**
++ * i3c_master_send_ccc_cmd_locked() - send a CCC (Common Command Codes)
++ * @master: master used to send frames on the bus
++ * @cmd: command to send
++ *
++ * Return: 0 in case of success, or a negative error code otherwise.
++ *         I3C Mx error codes are stored in cmd->err.
++ */
+ static int i3c_master_send_ccc_cmd_locked(struct i3c_master_controller *master,
+ 					  struct i3c_ccc_cmd *cmd)
  {
- 	const struct reg *reg;
- 	u32 offset;
--	u32 val;
-+	u32 val = 0;
+-	int ret;
+-
+ 	if (!cmd || !master)
+ 		return -EINVAL;
  
- 	/* Timer clock divider must be disabled when we change the rate */
- 	reg = ipa_reg(ipa, TIMERS_XO_CLK_DIV_CFG);
-@@ -374,8 +374,8 @@ static void ipa_qtime_config(struct ipa *ipa)
- 		val |= reg_bit(reg, DPL_TIMESTAMP_SEL);
- 	}
- 	/* Configure tag and NAT Qtime timestamp resolution as well */
--	val = reg_encode(reg, TAG_TIMESTAMP_LSB, TAG_TIMESTAMP_SHIFT);
--	val = reg_encode(reg, NAT_TIMESTAMP_LSB, NAT_TIMESTAMP_SHIFT);
-+	val |= reg_encode(reg, TAG_TIMESTAMP_LSB, TAG_TIMESTAMP_SHIFT);
-+	val |= reg_encode(reg, NAT_TIMESTAMP_LSB, NAT_TIMESTAMP_SHIFT);
+@@ -920,15 +926,7 @@ static int i3c_master_send_ccc_cmd_locked(struct i3c_master_controller *master,
+ 	    !master->ops->supports_ccc_cmd(master, cmd))
+ 		return -EOPNOTSUPP;
  
- 	iowrite32(val, ipa->reg_virt + reg_offset(reg));
+-	ret = master->ops->send_ccc_cmd(master, cmd);
+-	if (ret) {
+-		if (cmd->err != I3C_ERROR_UNKNOWN)
+-			return cmd->err;
+-
+-		return ret;
+-	}
+-
+-	return 0;
++	return master->ops->send_ccc_cmd(master, cmd);
+ }
  
+ static struct i2c_dev_desc *
+@@ -1032,8 +1030,7 @@ static int i3c_master_rstdaa_locked(struct i3c_master_controller *master,
+  *
+  * This function must be called with the bus lock held in write mode.
+  *
+- * Return: 0 in case of success, a positive I3C error code if the error is
+- * one of the official Mx error codes, and a negative error code otherwise.
++ * Return: 0 in case of success, or a negative error code otherwise.
+  */
+ int i3c_master_entdaa_locked(struct i3c_master_controller *master)
+ {
+@@ -1085,8 +1082,7 @@ static int i3c_master_enec_disec_locked(struct i3c_master_controller *master,
+  *
+  * This function must be called with the bus lock held in write mode.
+  *
+- * Return: 0 in case of success, a positive I3C error code if the error is
+- * one of the official Mx error codes, and a negative error code otherwise.
++ * Return: 0 in case of success, or a negative error code otherwise.
+  */
+ int i3c_master_disec_locked(struct i3c_master_controller *master, u8 addr,
+ 			    u8 evts)
+@@ -1106,8 +1102,7 @@ EXPORT_SYMBOL_GPL(i3c_master_disec_locked);
+  *
+  * This function must be called with the bus lock held in write mode.
+  *
+- * Return: 0 in case of success, a positive I3C error code if the error is
+- * one of the official Mx error codes, and a negative error code otherwise.
++ * Return: 0 in case of success, or a negative error code otherwise.
+  */
+ int i3c_master_enec_locked(struct i3c_master_controller *master, u8 addr,
+ 			   u8 evts)
+@@ -1132,8 +1127,7 @@ EXPORT_SYMBOL_GPL(i3c_master_enec_locked);
+  *
+  * This function must be called with the bus lock held in write mode.
+  *
+- * Return: 0 in case of success, a positive I3C error code if the error is
+- * one of the official Mx error codes, and a negative error code otherwise.
++ * Return: 0 in case of success, or a negative error code otherwise.
+  */
+ int i3c_master_defslvs_locked(struct i3c_master_controller *master)
+ {
 -- 
 2.53.0
 
