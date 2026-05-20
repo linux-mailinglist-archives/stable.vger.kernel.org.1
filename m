@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-250618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251600-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ePwUAwDqDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250618-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:06:08 +0200
+	id 4CHyGh/yDWrj4wUAu9opvQ
+	(envelope-from <stable+bounces-251600-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:40:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1E71592E8C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:06:07 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7E7D59442E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:40:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2E19530A8297
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:51:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9C560312CF21
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:33:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C86D2F83A0;
-	Wed, 20 May 2026 16:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16986366075;
+	Wed, 20 May 2026 17:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PfxvEvC0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e9SO/99C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CD934216C;
-	Wed, 20 May 2026 16:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7388359A6F;
+	Wed, 20 May 2026 17:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295883; cv=none; b=LEDNn+Vm/DZXZaIWqEGwlzaf/jdivFSlHLabU8ImynVwnh41gMPyNvPQeJ1mldns/6fGavktRK0Q3dboV6ZxaPwJKgl9LEZ8q8ZOn3KxMqF7mvj9UOaGmM3ZQ3c6Io3+Xbu2K2YHeJNxRb+yjACZWHz2gNm6Ym57mGaQegY48us=
+	t=1779298403; cv=none; b=oLvR/SA55RHKjRFmUMVMcg4N/WaLsh+A2HutWd/QVWoLaGDjHcZrZUlN6YT4tjxCzqgSUEsV+ZO6TNhxCPpSbfmxYNOyiWfuT82bKtBaxtJ9Wlh1+zsVObnYz918/Ctdvr+Mq7hwyQ5JonyIQiaQ3Mc2NaY2VPncJacCiOiE0G8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295883; c=relaxed/simple;
-	bh=HZ/j/l9/ETF+2tZP03+pnb6bTqATSm29wUC8IsQ06hE=;
+	s=arc-20240116; t=1779298403; c=relaxed/simple;
+	bh=ZQGMuJL6ZB9PZaHt2alWmBI3O9H19MFDCQp9zRXWhvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a4k4qdBDIE2M/7AeeWytSvr66Hqna+QwAKdT4gYTtdN/P6wKQVnnZbt3c3iGPIfKdJeaUdn3ARXTfYgSiNlcmv+ops9RFlbxwq/u92pXDNf7zaMOxkDkSnpH9fmTP28UmUSTs+MtaG4NwUV03Sd6OdcpHq1I0eYW/GOseOlfTkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PfxvEvC0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E02A81F000E9;
-	Wed, 20 May 2026 16:51:20 +0000 (UTC)
+	 MIME-Version; b=IgwscF9WSlwHhQ8JBcVxcEJet6/F7XwOX8Z2JXWvi7/cLh6XjnUOyxZmeyccv1mllw8pH8zkDyCUrmE3o8GX8gUOmwfxQ/GeKa9tH3/+wUUfwLddWoMO/ezMH03d7kxWThkmIcGCk4gfvLmw6znAQWq02U2abSqFAK/R8GkgEwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e9SO/99C; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5EFD1F000E9;
+	Wed, 20 May 2026 17:33:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295881;
-	bh=sTO/5NOgC8Rm081w8dD7n5M6VRlPV+5SDVYBL94o4Oo=;
+	s=korg; t=1779298402;
+	bh=9ZhhidQuWc3gTzIbd5jzGLcAX6Es4mXUbPRs0y8D5ds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PfxvEvC0rmGViL49MXBNNwq+QVuueobO3DTslmd+A2HD/nzRpaTN5gatYH7/qe4/4
-	 SVHqbfsuBTmMFBlcVogUdkpuJQ5LtJhLS1f/P/POxi9qnEmMIRNmYdPJFK9avFT4yb
-	 GWio0bJqmj5hztO6TJUo1nwRxokTix1zDvBbejZo=
+	b=e9SO/99CO5XGhW/1n/pBoMTxd0GmkL6aLwb1S1EngZzX3HLiJLxy7VQXZ9JKA5eio
+	 ZXrJYoRxD1msIWmomVNnsV5pa6udn91WUc+cWywtrWYP89SaiVADX/Tj+yczyQRqrL
+	 oFHRuFpCJGelPAymjSiR3xzTMLsZG0DMfycNNNVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Tejun Heo <tj@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Sam Sun <samsun1006219@gmail.com>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0588/1146] workqueue: devres: Add device-managed allocate workqueue
+Subject: [PATCH 6.18 355/957] quota: Fix race of dquot_scan_active() with quota deactivation
 Date: Wed, 20 May 2026 18:13:58 +0200
-Message-ID: <20260520162201.484541412@linuxfoundation.org>
+Message-ID: <20260520162142.228717873@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,177 +66,180 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-251600-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250618-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email]
-X-Rspamd-Queue-Id: C1E71592E8C
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.cz:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: D7E7D59442E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 1dfc9d60a69ec148e1cb709256617d86e5f0e8f8 ]
+[ Upstream commit e93ab401da4b2e2c1b8ef2424de2f238d51c8b2d ]
 
-Add a Resource-managed version of alloc_workqueue() to fix common
-problem of drivers mixing devm() calls with destroy_workqueue.  Such
-naive and discouraged driver approach leads to difficult to debug bugs
-when the driver:
+dquot_scan_active() can race with quota deactivation in
+quota_release_workfn() like:
 
-1. Allocates workqueue in standard way and destroys it in driver
-   remove() callback,
-2. Sets work struct with devm_work_autocancel(),
-3. Registers interrupt handler with devm_request_threaded_irq().
+  CPU0 (quota_release_workfn)         CPU1 (dquot_scan_active)
+  ==============================      ==============================
+  spin_lock(&dq_list_lock);
+  list_replace_init(
+    &releasing_dquots, &rls_head);
+    /* dquot X on rls_head,
+       dq_count == 0,
+       DQ_ACTIVE_B still set */
+  spin_unlock(&dq_list_lock);
+  synchronize_srcu(&dquot_srcu);
+                                      spin_lock(&dq_list_lock);
+                                      list_for_each_entry(dquot,
+                                          &inuse_list, dq_inuse) {
+                                        /* finds dquot X */
+                                        dquot_active(X) -> true
+                                        atomic_inc(&X->dq_count);
+                                      }
+                                      spin_unlock(&dq_list_lock);
+  spin_lock(&dq_list_lock);
+  dquot = list_first_entry(&rls_head);
+  WARN_ON_ONCE(atomic_read(&dquot->dq_count));
 
-Which leads to following unbind/removal path:
+The problem is not only a cosmetic one as under memory pressure the
+caller of dquot_scan_active() can end up working on freed dquot.
 
-1. destroy_workqueue() via driver remove(),
-   Any interrupt coming now would still execute the interrupt handler,
-   which queues work on destroyed workqueue.
-2. devm_irq_release(),
-3. devm_work_drop() -> cancel_work_sync() on destroyed workqueue.
+Fix the problem by making sure the dquot is removed from releasing list
+when we acquire a reference to it.
 
-devm_alloc_workqueue() has two benefits:
-1. Solves above problem of mix-and-match devres and non-devres code in
-   driver,
-2. Simplify any sane drivers which were correctly using
-   alloc_workqueue() + devm_add_action_or_reset().
-
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Acked-by: Tejun Heo <tj@kernel.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Stable-dep-of: 1e668baadefb ("power: supply: max77705: Free allocated workqueue and fix removal order")
+Fixes: 869b6ea1609f ("quota: Fix slow quotaoff")
+Reported-by: Sam Sun <samsun1006219@gmail.com>
+Link: https://lore.kernel.org/all/CAEkJfYPTt3uP1vAYnQ5V2ZWn5O9PLhhGi5HbOcAzyP9vbXyjeg@mail.gmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../driver-api/driver-model/devres.rst        |  4 +++
- include/linux/workqueue.h                     | 22 +++++++++++++++
- kernel/workqueue.c                            | 28 +++++++++++++++++++
- 3 files changed, 54 insertions(+)
+ fs/quota/dquot.c         | 38 ++++++++++++++++++++++++++++++--------
+ include/linux/quotaops.h |  9 +--------
+ 2 files changed, 31 insertions(+), 16 deletions(-)
 
-diff --git a/Documentation/driver-api/driver-model/devres.rst b/Documentation/driver-api/driver-model/devres.rst
-index 7d2b897d66fa9..017fb155a5bc2 100644
---- a/Documentation/driver-api/driver-model/devres.rst
-+++ b/Documentation/driver-api/driver-model/devres.rst
-@@ -464,3 +464,7 @@ SPI
- 
- WATCHDOG
-   devm_watchdog_register_device()
-+
-+WORKQUEUE
-+  devm_alloc_workqueue()
-+  devm_alloc_ordered_workqueue()
-diff --git a/include/linux/workqueue.h b/include/linux/workqueue.h
-index a4749f56398fd..f8d235aef10dd 100644
---- a/include/linux/workqueue.h
-+++ b/include/linux/workqueue.h
-@@ -512,6 +512,26 @@ __printf(1, 4) struct workqueue_struct *
- alloc_workqueue_noprof(const char *fmt, unsigned int flags, int max_active, ...);
- #define alloc_workqueue(...)	alloc_hooks(alloc_workqueue_noprof(__VA_ARGS__))
- 
-+/**
-+ * devm_alloc_workqueue - Resource-managed allocate a workqueue
-+ * @dev: Device to allocate workqueue for
-+ * @fmt: printf format for the name of the workqueue
-+ * @flags: WQ_* flags
-+ * @max_active: max in-flight work items, 0 for default
-+ * @...: args for @fmt
-+ *
-+ * Resource managed workqueue, see alloc_workqueue() for details.
-+ *
-+ * The workqueue will be automatically destroyed on driver detach.  Typically
-+ * this should be used in drivers already relying on devm interafaces.
-+ *
-+ * RETURNS:
-+ * Pointer to the allocated workqueue on success, %NULL on failure.
-+ */
-+__printf(2, 5) struct workqueue_struct *
-+devm_alloc_workqueue(struct device *dev, const char *fmt, unsigned int flags,
-+		     int max_active, ...);
-+
- #ifdef CONFIG_LOCKDEP
- /**
-  * alloc_workqueue_lockdep_map - allocate a workqueue with user-defined lockdep_map
-@@ -568,6 +588,8 @@ alloc_workqueue_lockdep_map(const char *fmt, unsigned int flags, int max_active,
-  */
- #define alloc_ordered_workqueue(fmt, flags, args...)			\
- 	alloc_workqueue(fmt, WQ_UNBOUND | __WQ_ORDERED | (flags), 1, ##args)
-+#define devm_alloc_ordered_workqueue(dev, fmt, flags, args...)		\
-+	devm_alloc_workqueue(dev, fmt, WQ_UNBOUND | __WQ_ORDERED | (flags), 1, ##args)
- 
- #define create_workqueue(name)						\
- 	alloc_workqueue("%s", __WQ_LEGACY | WQ_MEM_RECLAIM | WQ_PERCPU, 1, (name))
-diff --git a/kernel/workqueue.c b/kernel/workqueue.c
-index c6ea96d5b7167..e57040931d8b7 100644
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -41,6 +41,7 @@
- #include <linux/mempolicy.h>
- #include <linux/freezer.h>
- #include <linux/debug_locks.h>
-+#include <linux/device/devres.h>
- #include <linux/lockdep.h>
- #include <linux/idr.h>
- #include <linux/jhash.h>
-@@ -5904,6 +5905,33 @@ struct workqueue_struct *alloc_workqueue_noprof(const char *fmt,
+diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
+index 6c4a6ee1fa2b6..45a46dc4de4ef 100644
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -363,6 +363,31 @@ static inline int dquot_active(struct dquot *dquot)
+ 	return test_bit(DQ_ACTIVE_B, &dquot->dq_flags);
  }
- EXPORT_SYMBOL_GPL(alloc_workqueue_noprof);
  
-+static void devm_workqueue_release(void *res)
++static struct dquot *__dqgrab(struct dquot *dquot)
 +{
-+	destroy_workqueue(res);
++	lockdep_assert_held(&dq_list_lock);
++	if (!atomic_read(&dquot->dq_count))
++		remove_free_dquot(dquot);
++	atomic_inc(&dquot->dq_count);
++	return dquot;
 +}
 +
-+__printf(2, 5) struct workqueue_struct *
-+devm_alloc_workqueue(struct device *dev, const char *fmt, unsigned int flags,
-+		     int max_active, ...)
++/*
++ * Get reference to dquot when we got pointer to it by some other means. The
++ * dquot has to be active and the caller has to make sure it cannot get
++ * deactivated under our hands.
++ */
++struct dquot *dqgrab(struct dquot *dquot)
 +{
-+	struct workqueue_struct *wq;
-+	va_list args;
-+	int ret;
++	spin_lock(&dq_list_lock);
++	WARN_ON_ONCE(!dquot_active(dquot));
++	dquot = __dqgrab(dquot);
++	spin_unlock(&dq_list_lock);
 +
-+	va_start(args, max_active);
-+	wq = alloc_workqueue(fmt, flags, max_active, args);
-+	va_end(args);
-+	if (!wq)
-+		return NULL;
-+
-+	ret = devm_add_action_or_reset(dev, devm_workqueue_release, wq);
-+	if (ret)
-+		return NULL;
-+
-+	return wq;
++	return dquot;
 +}
-+EXPORT_SYMBOL_GPL(devm_alloc_workqueue);
++EXPORT_SYMBOL_GPL(dqgrab);
 +
- #ifdef CONFIG_LOCKDEP
- __printf(1, 5)
- struct workqueue_struct *
+ static inline int dquot_dirty(struct dquot *dquot)
+ {
+ 	return test_bit(DQ_MOD_B, &dquot->dq_flags);
+@@ -641,15 +666,14 @@ int dquot_scan_active(struct super_block *sb,
+ 			continue;
+ 		if (dquot->dq_sb != sb)
+ 			continue;
+-		/* Now we have active dquot so we can just increase use count */
+-		atomic_inc(&dquot->dq_count);
++		__dqgrab(dquot);
+ 		spin_unlock(&dq_list_lock);
+ 		dqput(old_dquot);
+ 		old_dquot = dquot;
+ 		/*
+ 		 * ->release_dquot() can be racing with us. Our reference
+-		 * protects us from new calls to it so just wait for any
+-		 * outstanding call and recheck the DQ_ACTIVE_B after that.
++		 * protects us from dquot_release() proceeding so just wait for
++		 * any outstanding call and recheck the DQ_ACTIVE_B after that.
+ 		 */
+ 		wait_on_dquot(dquot);
+ 		if (dquot_active(dquot)) {
+@@ -717,7 +741,7 @@ int dquot_writeback_dquots(struct super_block *sb, int type)
+ 			/* Now we have active dquot from which someone is
+  			 * holding reference so we can safely just increase
+ 			 * use count */
+-			dqgrab(dquot);
++			__dqgrab(dquot);
+ 			spin_unlock(&dq_list_lock);
+ 			err = dquot_write_dquot(dquot);
+ 			if (err && !ret)
+@@ -963,9 +987,7 @@ struct dquot *dqget(struct super_block *sb, struct kqid qid)
+ 		spin_unlock(&dq_list_lock);
+ 		dqstats_inc(DQST_LOOKUPS);
+ 	} else {
+-		if (!atomic_read(&dquot->dq_count))
+-			remove_free_dquot(dquot);
+-		atomic_inc(&dquot->dq_count);
++		__dqgrab(dquot);
+ 		spin_unlock(&dq_list_lock);
+ 		dqstats_inc(DQST_CACHE_HITS);
+ 		dqstats_inc(DQST_LOOKUPS);
+diff --git a/include/linux/quotaops.h b/include/linux/quotaops.h
+index c334f82ed385a..f9c0f9d7c9d93 100644
+--- a/include/linux/quotaops.h
++++ b/include/linux/quotaops.h
+@@ -44,14 +44,7 @@ int dquot_initialize(struct inode *inode);
+ bool dquot_initialize_needed(struct inode *inode);
+ void dquot_drop(struct inode *inode);
+ struct dquot *dqget(struct super_block *sb, struct kqid qid);
+-static inline struct dquot *dqgrab(struct dquot *dquot)
+-{
+-	/* Make sure someone else has active reference to dquot */
+-	WARN_ON_ONCE(!atomic_read(&dquot->dq_count));
+-	WARN_ON_ONCE(!test_bit(DQ_ACTIVE_B, &dquot->dq_flags));
+-	atomic_inc(&dquot->dq_count);
+-	return dquot;
+-}
++struct dquot *dqgrab(struct dquot *dquot);
+ 
+ static inline bool dquot_is_busy(struct dquot *dquot)
+ {
 -- 
 2.53.0
 
