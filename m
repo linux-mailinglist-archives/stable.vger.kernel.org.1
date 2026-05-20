@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-250097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250102-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8KwFHP7rDWo04wUAu9opvQ
-	(envelope-from <stable+bounces-250097-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:14:38 +0200
+	id cOWCMarjDWpN4gUAu9opvQ
+	(envelope-from <stable+bounces-250102-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:39:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0561593238
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:14:37 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71D7E5922E3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:39:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8F9E33092E31
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:30:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F3A9630BDA9B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:31:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85FF036404E;
-	Wed, 20 May 2026 16:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 564153D75AB;
+	Wed, 20 May 2026 16:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hGF+HT+c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FE4bYMqM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DE03356754;
-	Wed, 20 May 2026 16:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E178E36DA03;
+	Wed, 20 May 2026 16:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294536; cv=none; b=f7cZlDNmPutb+I0G+pg9esgu25UTWkInsGbBFqMNVR81/qGc2LTeHllRBbY7ZFSsEw2H2txJnT6Lb/rxkP0lk9oV4T/8iMJpDXmA5lOp7TPlFr1Ii9SG0Awyd//N4u8ubB/K/sIU40etsx+FpCejbceC9G0/Wm2XfYB1Orh/SH8=
+	t=1779294550; cv=none; b=Lgbtn+7seqQvZ8Y+Q7Mc1eXNeeKEm19sfeU9WgQ3buCPB5CQa/i94Te9yI9Pw3yanPpvKyvye2rRPYtTU67pU+sePYbXniK+SPGJi0zA3waKp4MbOIpTSyD/Z91paS7ZMoq1x/sMfhWDtKX746jWu1D/qHnQt3UKY0ltwqSyzd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294536; c=relaxed/simple;
-	bh=TiC+OBPymeKcDGPLCfrHQpBfgZJFicQQTvZ60amCTPE=;
+	s=arc-20240116; t=1779294550; c=relaxed/simple;
+	bh=VCNbQ8ZjYJgTAFbFDAzo+S45FRPv2YimO82ECysKPeQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mKwPFNXhAKZzR3UB+QMYDsI+44hziyYjllsQeBbU4jarSOa+/Mb46NH7lMRNwKWcRtLuC3J05Sux+/E7Yv1AgSrirLrQJcd6vTV0nLTQqbxGMlBB/QAUtL2Pt0++yD4v40eVTofqZWKdUDtuH7ciRDScXdPFJSdflmRc6EkDDx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hGF+HT+c; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B7941F000E9;
-	Wed, 20 May 2026 16:28:54 +0000 (UTC)
+	 MIME-Version; b=n0rQvr7HMFPpVNPA81a7TP3AKJu0ObUEh/I7NBLnjL3ZxiCcbh4AKZFlX4J2loW3HMJb5M5VgRinS0VgT2K3WF6rvBPsxxCAvK0gZRMBRvPRnfjDqBkvutO502QsCZwCkdzWsWFvZHAnBfbAWUllLJeno5M0iITUwAxoDsIVweU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FE4bYMqM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DBA21F000E9;
+	Wed, 20 May 2026 16:29:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294534;
-	bh=GR4szUdE+9ZHOEs3SqM2n+3bGd1tFFmo13DlLxb3gDE=;
+	s=korg; t=1779294548;
+	bh=/N6xFZhtzS0MoT62s6cfQh88HwvE1wsTrX9umHKygpo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hGF+HT+cmHNmuTOMTnfgVIHuv/6DbfjAt5OtBaNp6iILjfOcZx/SxheLMdtpedKtd
-	 gbG47YRsEMoZFXsubKFL0V7art7j6JaN5Z8B1Cfoh22CW578fFCAW1heymclPw8zbz
-	 ig/3uEuxZLtjLWeZacPzRgb14tYbCXyOKC7tyjgU=
+	b=FE4bYMqMrStZmGWskycGQyZZ4CostJBKnveLNW3r1Lv6r4xJmSy9ujiFdh+Frq8ma
+	 1Ihd0Bz+5NO7+GxAkh1eMyqFonSwnzGh42+CjPHbIH3EdA0PvlCb5805EHmUnWO2Xf
+	 B55AFZ+VDFkcWTYtuY4jv9yWDbZcMQfgNydCqhj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Gui-Dong Han <hanguidong02@gmail.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Vineeth Vijayan <vneethv@linux.ibm.com>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0039/1146] vdpa: use generic driver_override infrastructure
-Date: Wed, 20 May 2026 18:04:49 +0200
-Message-ID: <20260520162149.267015111@linuxfoundation.org>
+Subject: [PATCH 7.0 0040/1146] s390/cio: use generic driver_override infrastructure
+Date: Wed, 20 May 2026 18:04:50 +0200
+Message-ID: <20260520162149.288336753@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -65,36 +64,36 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250097-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.ibm.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-250102-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: B0561593238
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 71D7E5922E3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -104,7 +103,7 @@ X-Rspamd-Server: lfdr
 
 From: Danilo Krummrich <dakr@kernel.org>
 
-[ Upstream commit 85bb534ff12aab6916058897b39c748940a7a4c6 ]
+[ Upstream commit ac4d8bb6e2e13e8684a76ea48d13ebaaaf5c24c4 ]
 
 When a driver is probed through __driver_attach(), the bus' match()
 callback is called without the device lock held, thus accessing the
@@ -119,47 +118,56 @@ held is intentional. [1]
 Link: https://lore.kernel.org/driver-core/DGRGTIRHA62X.3RY09D9SOK77P@kernel.org/ [1]
 Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
 Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220789
-Fixes: 539fec78edb4 ("vdpa: add driver_override support")
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Link: https://patch.msgid.link/20260324005919.2408620-9-dakr@kernel.org
+Fixes: ebc3d1791503 ("s390/cio: introduce driver_override on the css bus")
+Reviewed-by: Vineeth Vijayan <vneethv@linux.ibm.com>
+Link: https://patch.msgid.link/20260324005919.2408620-10-dakr@kernel.org
 Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vdpa/vdpa.c  | 48 +++++---------------------------------------
- include/linux/vdpa.h |  4 ----
- 2 files changed, 5 insertions(+), 47 deletions(-)
+ drivers/s390/cio/cio.h |  5 -----
+ drivers/s390/cio/css.c | 34 ++++------------------------------
+ 2 files changed, 4 insertions(+), 35 deletions(-)
 
-diff --git a/drivers/vdpa/vdpa.c b/drivers/vdpa/vdpa.c
-index 34874beb0152e..caf0ee5d6856c 100644
---- a/drivers/vdpa/vdpa.c
-+++ b/drivers/vdpa/vdpa.c
-@@ -67,57 +67,20 @@ static void vdpa_dev_remove(struct device *d)
+diff --git a/drivers/s390/cio/cio.h b/drivers/s390/cio/cio.h
+index 08a5e9380e75a..bad142c536e1e 100644
+--- a/drivers/s390/cio/cio.h
++++ b/drivers/s390/cio/cio.h
+@@ -103,11 +103,6 @@ struct subchannel {
+ 	struct work_struct todo_work;
+ 	struct schib_config config;
+ 	u64 dma_mask;
+-	/*
+-	 * Driver name to force a match.  Do not set directly, because core
+-	 * frees it.  Use driver_set_override() to set or clear it.
+-	 */
+-	const char *driver_override;
+ } __attribute__ ((aligned(8)));
  
- static int vdpa_dev_match(struct device *dev, const struct device_driver *drv)
- {
--	struct vdpa_device *vdev = dev_to_vdpa(dev);
-+	int ret;
+ DECLARE_PER_CPU_ALIGNED(struct irb, cio_irb);
+diff --git a/drivers/s390/cio/css.c b/drivers/s390/cio/css.c
+index 5ab239f38588f..e5a0ec6b4e3e7 100644
+--- a/drivers/s390/cio/css.c
++++ b/drivers/s390/cio/css.c
+@@ -159,7 +159,6 @@ static void css_subchannel_release(struct device *dev)
  
- 	/* Check override first, and if set, only use the named driver */
--	if (vdev->driver_override)
--		return strcmp(vdev->driver_override, drv->name) == 0;
-+	ret = device_match_driver_override(dev, drv);
-+	if (ret >= 0)
-+		return ret;
- 
- 	/* Currently devices must be supported by all vDPA bus drivers */
- 	return 1;
+ 	sch->config.intparm = 0;
+ 	cio_commit_config(sch);
+-	kfree(sch->driver_override);
+ 	kfree(sch);
  }
+ 
+@@ -323,37 +322,9 @@ static ssize_t modalias_show(struct device *dev, struct device_attribute *attr,
+ 
+ static DEVICE_ATTR_RO(modalias);
  
 -static ssize_t driver_override_store(struct device *dev,
 -				     struct device_attribute *attr,
 -				     const char *buf, size_t count)
 -{
--	struct vdpa_device *vdev = dev_to_vdpa(dev);
+-	struct subchannel *sch = to_subchannel(dev);
 -	int ret;
 -
--	ret = driver_set_override(dev, &vdev->driver_override, buf, count);
+-	ret = driver_set_override(dev, &sch->driver_override, buf, count);
 -	if (ret)
 -		return ret;
 -
@@ -169,64 +177,44 @@ index 34874beb0152e..caf0ee5d6856c 100644
 -static ssize_t driver_override_show(struct device *dev,
 -				    struct device_attribute *attr, char *buf)
 -{
--	struct vdpa_device *vdev = dev_to_vdpa(dev);
+-	struct subchannel *sch = to_subchannel(dev);
 -	ssize_t len;
 -
 -	device_lock(dev);
--	len = sysfs_emit(buf, "%s\n", vdev->driver_override);
+-	len = sysfs_emit(buf, "%s\n", sch->driver_override);
 -	device_unlock(dev);
--
 -	return len;
 -}
 -static DEVICE_ATTR_RW(driver_override);
 -
--static struct attribute *vdpa_dev_attrs[] = {
+ static struct attribute *subch_attrs[] = {
+ 	&dev_attr_type.attr,
+ 	&dev_attr_modalias.attr,
 -	&dev_attr_driver_override.attr,
--	NULL,
--};
--
--static const struct attribute_group vdpa_dev_group = {
--	.attrs  = vdpa_dev_attrs,
--};
--__ATTRIBUTE_GROUPS(vdpa_dev);
--
- static const struct bus_type vdpa_bus = {
- 	.name  = "vdpa",
--	.dev_groups = vdpa_dev_groups,
+ 	NULL,
+ };
+ 
+@@ -1356,9 +1327,11 @@ static int css_bus_match(struct device *dev, const struct device_driver *drv)
+ 	struct subchannel *sch = to_subchannel(dev);
+ 	const struct css_driver *driver = to_cssdriver(drv);
+ 	struct css_device_id *id;
++	int ret;
+ 
+ 	/* When driver_override is set, only bind to the matching driver */
+-	if (sch->driver_override && strcmp(sch->driver_override, drv->name))
++	ret = device_match_driver_override(dev, drv);
++	if (ret == 0)
+ 		return 0;
+ 
+ 	for (id = driver->subchannel_type; id->match_flags; id++) {
+@@ -1415,6 +1388,7 @@ static int css_uevent(const struct device *dev, struct kobj_uevent_env *env)
+ 
+ static const struct bus_type css_bus_type = {
+ 	.name     = "css",
 +	.driver_override = true,
- 	.match = vdpa_dev_match,
- 	.probe = vdpa_dev_probe,
- 	.remove = vdpa_dev_remove,
-@@ -132,7 +95,6 @@ static void vdpa_release_dev(struct device *d)
- 		ops->free(vdev);
- 
- 	ida_free(&vdpa_index_ida, vdev->index);
--	kfree(vdev->driver_override);
- 	kfree(vdev);
- }
- 
-diff --git a/include/linux/vdpa.h b/include/linux/vdpa.h
-index 2bfe3baa63f42..782c42d25db16 100644
---- a/include/linux/vdpa.h
-+++ b/include/linux/vdpa.h
-@@ -72,9 +72,6 @@ struct vdpa_mgmt_dev;
-  * struct vdpa_device - representation of a vDPA device
-  * @dev: underlying device
-  * @vmap: the metadata passed to upper layer to be used for mapping
-- * @driver_override: driver name to force a match; do not set directly,
-- *                   because core frees it; use driver_set_override() to
-- *                   set or clear it.
-  * @config: the configuration ops for this device.
-  * @map: the map ops for this device
-  * @cf_lock: Protects get and set access to configuration layout.
-@@ -90,7 +87,6 @@ struct vdpa_mgmt_dev;
- struct vdpa_device {
- 	struct device dev;
- 	union virtio_map vmap;
--	const char *driver_override;
- 	const struct vdpa_config_ops *config;
- 	const struct virtio_map_ops *map;
- 	struct rw_semaphore cf_lock; /* Protects get/set config */
+ 	.match    = css_bus_match,
+ 	.probe    = css_probe,
+ 	.remove   = css_remove,
 -- 
 2.53.0
 
