@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-252610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251021-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6KuPIhwmDmpZ6gUAu9opvQ
-	(envelope-from <stable+bounces-252610-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:22:36 +0200
+	id sOVhJoXsDWo04wUAu9opvQ
+	(envelope-from <stable+bounces-251021-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:16:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAB3E59AC40
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:22:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 341665933AB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:16:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 83415343BFAF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:18:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D089F3146AF6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2277A3CCFB0;
-	Wed, 20 May 2026 18:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2E3B3DC4DA;
+	Wed, 20 May 2026 17:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0IYu3QQm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k29Ya9Hk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C418E37DE8A;
-	Wed, 20 May 2026 18:18:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51DB7373BEB;
+	Wed, 20 May 2026 17:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301126; cv=none; b=GTrxcaDhB3c/j9AS4/NDhMOhbENxGRnkky4cmTr1UtkjLLHdGLLZXHFZsiJh3wBUIjF2gvU+zwOBE/IWnudzL6+lfJLSY/XfpUuXkr7rPhTi+HPBbJi9vWX7br0BklifM3Et152ePw/rXpEn0Aj5h2dpjxbW5ChAus8CpPQGKQM=
+	t=1779296897; cv=none; b=UU9F1Rz93I7LXnI1aN8W7R2klY24cVmukFSnOgAtuajyH2L5XOVmpqQvWJ/PqvYO5NkRmzjT6BKAAJ3VeWwBUmg4MrSzLL7lVGVeikk7QJL9+UldYwtyT+xJN2oCpQWc51jGTA4WRO3ghnZMJASgPGduAeSvSi42oH/jHviDjLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301126; c=relaxed/simple;
-	bh=LcDG44bAUxuebou/6j9io13mZeUAO6jjRwWw3Ieli1w=;
+	s=arc-20240116; t=1779296897; c=relaxed/simple;
+	bh=NKfsz8nsIva7DoWie1H1XQXSZweQxtquPbLYRWjV1QM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iib3tGP8stfXSNiDcGYaSY5VrMrfgvgFbqub7VtP9Gd+UZYrJIvg0T6esQM8mmlR76qpXebkOJK+SqdNLSwrP0uSL3Ogs6o1LeKtcsGIP8XjKxFinBR1THSA2LXq42bSigmMuexIRO36uLBTNKakzF7kdu7CHpNbFxXuPLPmYew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0IYu3QQm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E167A1F000E9;
-	Wed, 20 May 2026 18:18:44 +0000 (UTC)
+	 MIME-Version; b=CLd9zsa85ZsXTzZlNZBtVa2sEr2TR5irxBO6wZ30sWjOLboH3PTk387ATg7ruDhOKUc/0e/Gz8QQ285eYhqikayuL4blLCtlkRuD+2arfFK5ToQuHyzIUQZZvS5r3YxT2DjBC9ClIJg6TUlaHRJ9RPpCduOOV1AcFpqgKtwrKks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k29Ya9Hk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B83461F000E9;
+	Wed, 20 May 2026 17:08:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301125;
-	bh=zjpyKTXruo+EswzA48w51tPxUE8s/Gzfs6vZu1znYck=;
+	s=korg; t=1779296896;
+	bh=K7gkumkKoqESQNWF5T41jAi9jayz/+iIg2JziZPk7As=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0IYu3QQmarrCjEzUoqb1eG0njZ+oI7gRejd6MMwW9ITU7Ibg9O8uyuieddmgWCrsO
-	 O3wAnXhpoN+NrWWp0fS/ffpTnaq3h55dUC7bMTeu/TTKCIPc23B6XXvFh+1y1anfFP
-	 ufuuzPHKjtVM1Q58UT/NxyPa/JJntpa8QBuSlUAo=
+	b=k29Ya9HkEo6X/t9jsQVjsy/FL4rJX+D1XkZclBKzjppZ4I2xLIcZ/qG/Ntp9gfQdK
+	 n+G5PJMTGU50jzt/Rwnqd5L1vtkWmIRqWkE/J3+u/Hb59vFNJSJYNMfBlyKXu2A7ek
+	 qIf83OYz6bi1YZBIGKPnCIW7cVKpk4rszSsWo8T8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Benato <denis.benato@linux.dev>,
-	Luke Jones <luke@ljones.dev>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Yu Kuai <yukuai@fnnas.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 394/666] platform/x86: asus-wmi: fix screenpad brightness range
-Date: Wed, 20 May 2026 18:20:05 +0200
-Message-ID: <20260520162119.796662583@linuxfoundation.org>
+Subject: [PATCH 7.0 0956/1146] md: add fallback to correct bitmap_ops on version mismatch
+Date: Wed, 20 May 2026 18:20:06 +0200
+Message-ID: <20260520162209.869161306@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,126 +62,188 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252610-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251021-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,intel.com:email,msgid.link:url,ljones.dev:email]
-X-Rspamd-Queue-Id: EAB3E59AC40
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 341665933AB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Benato <denis.benato@linux.dev>
+From: Yu Kuai <yukuai@fnnas.com>
 
-[ Upstream commit 8d95d1f4aa5c76202b0833a70998769384612488 ]
+[ Upstream commit 09af773650024279a60348e7319d599e6571b15c ]
 
-Fix screenpad brightness range being too limited without reason:
-testing this patch on a Zenbook Duo showed the hardware minimum not being
-too low, therefore allow the user to configure the entire range, and
-expose to userspace the hardware brightness range and value.
+If default bitmap version and on-disk version doesn't match, and mdadm
+is not the latest version to set bitmap_type, set bitmap_ops based on
+the disk version.
 
-Fixes: 2c97d3e55b70 ("platform/x86: asus-wmi: add support for ASUS screenpad")
-Signed-off-by: Denis Benato <denis.benato@linux.dev>
-Signed-off-by: Luke Jones <luke@ljones.dev>
-Link: https://patch.msgid.link/20260302174431.349816-3-denis.benato@linux.dev
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/linux-raid/20260323054644.3351791-2-yukuai@fnnas.com/
+Signed-off-by: Yu Kuai <yukuai@fnnas.com>
+Stable-dep-of: f2926a533d03 ("md/md-bitmap: add a none backend for bitmap grow")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/asus-wmi.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ drivers/md/md.c | 111 +++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 110 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
-index 2e03d63708a7c..5d701fde07df4 100644
---- a/drivers/platform/x86/asus-wmi.c
-+++ b/drivers/platform/x86/asus-wmi.c
-@@ -127,7 +127,6 @@ module_param(fnlock_default, bool, 0444);
- #define NVIDIA_TEMP_MIN		75
- #define NVIDIA_TEMP_MAX		87
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 9c552904a5ddc..99a5ba1485565 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -6465,15 +6465,124 @@ static void md_safemode_timeout(struct timer_list *t)
  
--#define ASUS_SCREENPAD_BRIGHT_MIN 20
- #define ASUS_SCREENPAD_BRIGHT_MAX 255
- #define ASUS_SCREENPAD_BRIGHT_DEFAULT 60
+ static int start_dirty_degraded;
  
-@@ -4119,13 +4118,13 @@ static int read_screenpad_brightness(struct backlight_device *bd)
- 		return err;
- 	/* The device brightness can only be read if powered, so return stored */
- 	if (err == BACKLIGHT_POWER_OFF)
--		return asus->driver->screenpad_brightness - ASUS_SCREENPAD_BRIGHT_MIN;
-+		return bd->props.brightness;
++/*
++ * Read bitmap superblock and return the bitmap_id based on disk version.
++ * This is used as fallback when default bitmap version and on-disk version
++ * doesn't match, and mdadm is not the latest version to set bitmap_type.
++ */
++static enum md_submodule_id md_bitmap_get_id_from_sb(struct mddev *mddev)
++{
++	struct md_rdev *rdev;
++	struct page *sb_page;
++	bitmap_super_t *sb;
++	enum md_submodule_id id = ID_BITMAP_NONE;
++	sector_t sector;
++	u32 version;
++
++	if (!mddev->bitmap_info.offset)
++		return ID_BITMAP_NONE;
++
++	sb_page = alloc_page(GFP_KERNEL);
++	if (!sb_page) {
++		pr_warn("md: %s: failed to allocate memory for bitmap\n",
++			mdname(mddev));
++		return ID_BITMAP_NONE;
++	}
++
++	sector = mddev->bitmap_info.offset;
++
++	rdev_for_each(rdev, mddev) {
++		u32 iosize;
++
++		if (!test_bit(In_sync, &rdev->flags) ||
++		    test_bit(Faulty, &rdev->flags) ||
++		    test_bit(Bitmap_sync, &rdev->flags))
++			continue;
++
++		iosize = roundup(sizeof(bitmap_super_t),
++				 bdev_logical_block_size(rdev->bdev));
++		if (sync_page_io(rdev, sector, iosize, sb_page, REQ_OP_READ,
++				 true))
++			goto read_ok;
++	}
++	pr_warn("md: %s: failed to read bitmap from any device\n",
++		mdname(mddev));
++	goto out;
++
++read_ok:
++	sb = kmap_local_page(sb_page);
++	if (sb->magic != cpu_to_le32(BITMAP_MAGIC)) {
++		pr_warn("md: %s: invalid bitmap magic 0x%x\n",
++			mdname(mddev), le32_to_cpu(sb->magic));
++		goto out_unmap;
++	}
++
++	version = le32_to_cpu(sb->version);
++	switch (version) {
++	case BITMAP_MAJOR_LO:
++	case BITMAP_MAJOR_HI:
++	case BITMAP_MAJOR_CLUSTERED:
++		id = ID_BITMAP;
++		break;
++	case BITMAP_MAJOR_LOCKLESS:
++		id = ID_LLBITMAP;
++		break;
++	default:
++		pr_warn("md: %s: unknown bitmap version %u\n",
++			mdname(mddev), version);
++		break;
++	}
++
++out_unmap:
++	kunmap_local(sb);
++out:
++	__free_page(sb_page);
++	return id;
++}
++
+ static int md_bitmap_create(struct mddev *mddev)
+ {
++	enum md_submodule_id orig_id = mddev->bitmap_id;
++	enum md_submodule_id sb_id;
++	int err;
++
+ 	if (mddev->bitmap_id == ID_BITMAP_NONE)
+ 		return -EINVAL;
  
- 	err = asus_wmi_get_devstate(asus, ASUS_WMI_DEVID_SCREENPAD_LIGHT, &retval);
- 	if (err < 0)
- 		return err;
+ 	if (!mddev_set_bitmap_ops(mddev))
+ 		return -ENOENT;
  
--	return (retval & ASUS_WMI_DSTS_BRIGHTNESS_MASK) - ASUS_SCREENPAD_BRIGHT_MIN;
-+	return retval & ASUS_WMI_DSTS_BRIGHTNESS_MASK;
+-	return mddev->bitmap_ops->create(mddev);
++	err = mddev->bitmap_ops->create(mddev);
++	if (!err)
++		return 0;
++
++	/*
++	 * Create failed, if default bitmap version and on-disk version
++	 * doesn't match, and mdadm is not the latest version to set
++	 * bitmap_type, set bitmap_ops based on the disk version.
++	 */
++	mddev_clear_bitmap_ops(mddev);
++
++	sb_id = md_bitmap_get_id_from_sb(mddev);
++	if (sb_id == ID_BITMAP_NONE || sb_id == orig_id)
++		return err;
++
++	pr_info("md: %s: bitmap version mismatch, switching from %d to %d\n",
++		mdname(mddev), orig_id, sb_id);
++
++	mddev->bitmap_id = sb_id;
++	if (!mddev_set_bitmap_ops(mddev)) {
++		mddev->bitmap_id = orig_id;
++		return -ENOENT;
++	}
++
++	err = mddev->bitmap_ops->create(mddev);
++	if (err) {
++		mddev_clear_bitmap_ops(mddev);
++		mddev->bitmap_id = orig_id;
++	}
++
++	return err;
  }
  
- static int update_screenpad_bl_status(struct backlight_device *bd)
-@@ -4165,22 +4164,19 @@ static int asus_screenpad_init(struct asus_wmi *asus)
- 	int err, power;
- 	int brightness = 0;
- 
--	power = read_screenpad_backlight_power(asus);
-+	power = asus_wmi_get_devstate_simple(asus, ASUS_WMI_DEVID_SCREENPAD_POWER);
- 	if (power < 0)
- 		return power;
- 
--	if (power != BACKLIGHT_POWER_OFF) {
-+	if (power) {
- 		err = asus_wmi_get_devstate(asus, ASUS_WMI_DEVID_SCREENPAD_LIGHT, &brightness);
- 		if (err < 0)
- 			return err;
- 	}
--	/* default to an acceptable min brightness on boot if too low */
--	if (brightness < ASUS_SCREENPAD_BRIGHT_MIN)
--		brightness = ASUS_SCREENPAD_BRIGHT_DEFAULT;
- 
- 	memset(&props, 0, sizeof(struct backlight_properties));
- 	props.type = BACKLIGHT_RAW; /* ensure this bd is last to be picked */
--	props.max_brightness = ASUS_SCREENPAD_BRIGHT_MAX - ASUS_SCREENPAD_BRIGHT_MIN;
-+	props.max_brightness = ASUS_SCREENPAD_BRIGHT_MAX;
- 	bd = backlight_device_register("asus_screenpad",
- 				       &asus->platform_device->dev, asus,
- 				       &asus_screenpad_bl_ops, &props);
-@@ -4191,7 +4187,7 @@ static int asus_screenpad_init(struct asus_wmi *asus)
- 
- 	asus->screenpad_backlight_device = bd;
- 	asus->driver->screenpad_brightness = brightness;
--	bd->props.brightness = brightness - ASUS_SCREENPAD_BRIGHT_MIN;
-+	bd->props.brightness = brightness;
- 	bd->props.power = power;
- 	backlight_update_status(bd);
- 
+ static void md_bitmap_destroy(struct mddev *mddev)
 -- 
 2.53.0
 
