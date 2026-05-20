@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-251355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250454-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qKE0OxvxDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-251355-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:27 +0200
+	id GKRlKcPyDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-250454-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71AA859416F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0964A594648
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5B18A312577D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:23:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A4B333771B0C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:44:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E89C3DA7C6;
-	Wed, 20 May 2026 17:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9601B36405A;
+	Wed, 20 May 2026 16:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jVlycmVj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hn6wTe9b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7793F23A4;
-	Wed, 20 May 2026 17:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D24352016;
+	Wed, 20 May 2026 16:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297763; cv=none; b=OKXFbIpbtfLE+Jz47/jsz+G6zcwsG/GgR328pRA/idHrLrs28eb+GuD8XFGbSktefVPW+gG32v0Fi7QGctFoDsRI4e4IR63QFpdjrargGzeUOVV/7NTpmIOVPzHtE5cyXkdHfDnZuYOxchAiDC/MjuWln8EwMnP8Jz4KXnR0EFQ=
+	t=1779295454; cv=none; b=pjkbODrLJ6D+2fRbYPlmEscEACdBqzY0H6CbcV7PiCCzNycwRf0v28nSyTNOfsbXwGtRYz7xuQ+4MLxgJR12P8UBDeIKS/Oq7Y1X3rnjSfwlf0QmMpuDF2mBcNn6m5NlGolqOVR7mTPfltU0JmZZF1XrGv7iC1pPBK1OQKWFVyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297763; c=relaxed/simple;
-	bh=9bxDNSZEdBeba8wwRcrZlvcQ0Oypi3PF8bPBZ7D7l24=;
+	s=arc-20240116; t=1779295454; c=relaxed/simple;
+	bh=coorjHFbkY+MsUBYDvxPK30Hj1p+tQlJ9Fn/QJEa0j4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=in8qQjaghR/tUhq7F9HdKQ/xp5fY5gJFE1tiUWtT8V/XfGW6exOnq7E6grEhWWgD2Xn7wflFPcW7c6pzpf6yuthxJjqTMhSFmcE1GYrk7ifVBUzxwfBJIVDdYBxH5EzaQPNMeC/ezdYrYyD0FxwUR9T2mOinjRhEuprqzoZXYdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jVlycmVj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 828DE1F000E9;
-	Wed, 20 May 2026 17:22:41 +0000 (UTC)
+	 MIME-Version; b=r7vxoCXRlUq2ygmKoTFKgrhVIuvyvkzgdXXTe1G4li2Yc58q3YYWAJ3k7LarbFg+iDvpC9TR6MHVyn/29sJq7LGr1PvKivSxEDIg1Stvi2CgKktleIysPvzip4bqzhtsgOygT/6hOAkaa2XATmuJz4srHfrupUEO3OqJd5DjzGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hn6wTe9b; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01411F000E9;
+	Wed, 20 May 2026 16:44:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297762;
-	bh=7JZqfJjoW3PyPr4gjed4yMzOIGz41uxBrcYhPpQ33eo=;
+	s=korg; t=1779295453;
+	bh=5u3tjGgS8X2edg+MLtdB3TtU1uC+X5R39C95fJzYbow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jVlycmVjN7go77Vty7AEg7YDXBYu+K8FVH4fMiumnTsUDQgHkke5AyjvXSoAlII5L
-	 hi3qqeohuufvRaA5hFJOfWgeZQ20npu6Pcts0pqXfSWY0CvgOypCVewyZ6eaLVWRcD
-	 L80U3mDnBoFUqArLfoxj8olhrPreOgNuhtm8hrSw=
+	b=hn6wTe9bK9Lq4Dx29Q5vzdOuD3ATrifGaS0lXA3AVmwsE1bLnss7sW0Qeh9lWkdpr
+	 drSDtFThj5RayczSkNL9w/BQikjNhOz+G4jyOLmatt96jE3thf5uOFAc/bWbbLNwBo
+	 d8bZrjnXYi+oaMsN9ecL7m1RdSVjuHAqpEIQxJOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 154/957] selftests/bpf: fix __jited_unpriv tag name
-Date: Wed, 20 May 2026 18:10:37 +0200
-Message-ID: <20260520162137.890826189@linuxfoundation.org>
+Subject: [PATCH 7.0 0388/1146] crypto: iaa - fix per-node CPU counter reset in rebalance_wq_table()
+Date: Wed, 20 May 2026 18:10:38 +0200
+Message-ID: <20260520162156.980561271@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,69 +69,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.dev,kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-251355-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250454-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 71AA859416F
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,apana.org.au:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+X-Rspamd-Queue-Id: 0964A594648
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 
-[ Upstream commit cdd54fe98c00549264a92613af6bb0e9a5fd0d1c ]
+[ Upstream commit 590fa5d69c27cfaecd2e8287aec78f902417c877 ]
 
-__jited_unpriv was using "test_jited=" as its tag name, same as the
-priv variant __jited. Fix by using "test_jited_unpriv=".
+The cpu counter used to compute the IAA device index is reset to zero
+at the start of each NUMA node iteration. This causes CPUs on every
+node to map starting from IAA index 0 instead of continuing from the
+previous node's last index. On multi-node systems, this results in all
+nodes mapping their CPUs to the same initial set of IAA devices,
+leaving higher-indexed devices unused.
 
-Fixes: 7d743e4c759c ("selftests/bpf: __jited test tag to check disassembly after jit")
-Acked-by: Ihor Solodrai <ihor.solodrai@linux.dev>
-Reviewed-by: Puranjay Mohan <puranjay@kernel.org>
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20260410-selftests-global-tags-ordering-v2-1-c566ec9781bf@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Move the cpu counter initialization before the for_each_node_with_cpus()
+loop so that the IAA index computation accumulates correctly across all
+nodes.
+
+Fixes: 714ca27e9bf4 ("crypto: iaa - Optimize rebalance_wq_table()")
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/progs/bpf_misc.h | 2 +-
+ drivers/crypto/intel/iaa/iaa_crypto_main.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/progs/bpf_misc.h b/tools/testing/selftests/bpf/progs/bpf_misc.h
-index a7a1a684eed11..25172ca74b204 100644
---- a/tools/testing/selftests/bpf/progs/bpf_misc.h
-+++ b/tools/testing/selftests/bpf/progs/bpf_misc.h
-@@ -137,7 +137,7 @@
- #define __msg_unpriv(msg)	__attribute__((btf_decl_tag("comment:test_expect_msg_unpriv=" XSTR(__COUNTER__) "=" msg)))
- #define __not_msg_unpriv(msg)	__attribute__((btf_decl_tag("comment:test_expect_not_msg_unpriv=" XSTR(__COUNTER__) "=" msg)))
- #define __xlated_unpriv(msg)	__attribute__((btf_decl_tag("comment:test_expect_xlated_unpriv=" XSTR(__COUNTER__) "=" msg)))
--#define __jited_unpriv(msg)	__attribute__((btf_decl_tag("comment:test_jited=" XSTR(__COUNTER__) "=" msg)))
-+#define __jited_unpriv(msg)	__attribute__((btf_decl_tag("comment:test_jited_unpriv=" XSTR(__COUNTER__) "=" msg)))
- #define __failure_unpriv	__attribute__((btf_decl_tag("comment:test_expect_failure_unpriv")))
- #define __success_unpriv	__attribute__((btf_decl_tag("comment:test_expect_success_unpriv")))
- #define __log_level(lvl)	__attribute__((btf_decl_tag("comment:test_log_level="#lvl)))
+diff --git a/drivers/crypto/intel/iaa/iaa_crypto_main.c b/drivers/crypto/intel/iaa/iaa_crypto_main.c
+index 547abf453d4a2..f62b994e18e58 100644
+--- a/drivers/crypto/intel/iaa/iaa_crypto_main.c
++++ b/drivers/crypto/intel/iaa/iaa_crypto_main.c
+@@ -906,8 +906,8 @@ static void rebalance_wq_table(void)
+ 		return;
+ 	}
+ 
++	cpu = 0;
+ 	for_each_node_with_cpus(node) {
+-		cpu = 0;
+ 		node_cpus = cpumask_of_node(node);
+ 
+ 		for_each_cpu(node_cpu, node_cpus) {
 -- 
 2.53.0
 
