@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251830-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6CSWL/7/DWp+5QUAu9opvQ
-	(envelope-from <stable+bounces-252928-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:58 +0200
+	id AINSB1P8DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-251830-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 790A3596F1F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EB08596077
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3F8B830DA8A7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:32:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 45B87370CCF6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:43:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA86E34EEF7;
-	Wed, 20 May 2026 18:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EFA63B0AD6;
+	Wed, 20 May 2026 17:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+zk8VvB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dEJTb3AR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1D9D285CBA;
-	Wed, 20 May 2026 18:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D785A36F901;
+	Wed, 20 May 2026 17:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301957; cv=none; b=hePh64rmxfaqfyGdBM9VQGAUEIWVW4pz1xDxY5TuSlgQEyawsXyH0he+J1JPthAzelcPR+oHhDkaGGoru+vJeFU3WY9N8r8xZgUHpRV9bbJuMyZzPqi7Ebgeb9D3ARNW7XwNAx8ZXnyv0tJkOTJw2Zm4wnA2tP9VoQyacj6avTo=
+	t=1779298999; cv=none; b=ahOOwsSJYmF6EUcUPbgMIro0cgEOuX1eFL8ooS/9DvXzHuPozqYJPB5wd94vSFGfO1mOQi6cBsJ1H/VRKfLKmAz3QqN5rfs6lU70j4TpZpYLPcrYIIm8bX/73JlJHPwservWG98gllY/NL/bcfKNlusvYX6tEZ0G5Wq7VYOYSTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301957; c=relaxed/simple;
-	bh=P5zlKwgkAHu0eMX54cTKLeO7w0jW6QiXLoX2nHDyqz8=;
+	s=arc-20240116; t=1779298999; c=relaxed/simple;
+	bh=amGxJ3bXNXUi7/YNHQCZt5burf6NxV8gCrzA+/xrRuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZSvFg1e6aHLvJbISEoWeAl9r16Cm3TdptkDjT9M0rPFlUOANxQfxQ35CXPXsknBQZ1pwW4SvNYJc7Xe5IeDI6cL5nTrP5Hif9IsjsJ0Taw4Gx8hSyP080+KiRD+ya/S2MYz9x/fTNWQ127bkFOvjSjeptkLesh2l2lVI9Rc30bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+zk8VvB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E11201F000E9;
-	Wed, 20 May 2026 18:32:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZWQrjPYkLltMCm8WV7uzp9Vw7QA83uaK6yya2y3UPk4hp8JOWjDhuR0Xz1wnB8AfSXHLQwKyIcGMM8QxHUh7Z+HzT5htQTtZ4MpNObYhP2WtiNU6B4nuKaajI0kXqcM4E/uCROYdUkKzlIcw8LWHKknkxfpoHYCwXfh1vnIzsdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dEJTb3AR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47BB01F000E9;
+	Wed, 20 May 2026 17:43:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301956;
-	bh=/A/4eoFGogxYftRxZDUc6UvNJGWOEc4nJgKW/Y9Spbw=;
+	s=korg; t=1779298998;
+	bh=APoX5xKBRySpuwfceItLLb9ebXk2s8DlXZ/+TOCH/YQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=L+zk8VvBmEMpejIzP5VOSCK2JYg0vKXr/Ab6cYllXc1ubNJmDA/Kzyz6LUvDa3FV3
-	 xHwGowGQLsmCoioAKSrH7favjSVjBo1yRZzhwt2Hqu2BHQQUzFax2gjOAaVQOFL3kL
-	 ub9T8LbnCD/KVzdCDqo5HMaUAZ6l9ZPb4Vn2zFOI=
+	b=dEJTb3ARgCYa2AIn1+Ltv9buSjh4lZagOnIbA020c2kfJLXrsCfU8mc7G7CALjEIQ
+	 Icx54NUreh7iq+hKKI4H9o5Enk3hzVFHxPaZ8T4WreL021Gw1nJp60AmH7GJTcRqrf
+	 uPiEpAi5i1Yz8l/TKu/sbOD/HxOPh6H3aiAbB/gw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Dudu Lu <phx0fer@gmail.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 077/508] Bluetooth: L2CAP: Fix printing wrong information if SDU length exceeds MTU
+Subject: [PATCH 6.18 617/957] net/sched: sch_cake: fix NAT destination port not being updated in cake_update_flowkeys
 Date: Wed, 20 May 2026 18:18:20 +0200
-Message-ID: <20260520162100.279102001@linuxfoundation.org>
+Message-ID: <20260520162147.914681249@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +64,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252928-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,toke.dk,redhat.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251830-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,mpg.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 790A3596F1F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,toke.dk:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 6EB08596077
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Dudu Lu <phx0fer@gmail.com>
 
-[ Upstream commit 15bf35a660eb82a49f8397fc3d3acada8dae13db ]
+[ Upstream commit f9e40664706927d7ae22a448a3383e23c38a4c0b ]
 
-The code was printing skb->len and sdu_len in the places where it should
-be sdu_len and chan->imtu respectively to match the if conditions.
+cake_update_flowkeys() is supposed to update the flow dissector keys
+with the NAT-translated addresses and ports from conntrack, so that
+CAKE's per-flow fairness correctly identifies post-NAT flows as
+belonging to the same connection.
 
-Link: https://lore.kernel.org/linux-bluetooth/20260315132013.75ab40c5@kernel.org/T/#m1418f9c82eeff8510c1beaa21cf53af20db96c06
-Fixes: e1d9a6688986 ("Bluetooth: LE L2CAP: Disconnect if received packet's SDU exceeds IMTU")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+For the source port, this works correctly:
+    keys->ports.src = port;
+
+But for the destination port, the assignment is reversed:
+    port = keys->ports.dst;
+
+This means the NAT destination port is never updated in the flow keys.
+As a result, when multiple connections are NATed to the same destination,
+CAKE treats them as separate flows because the original (pre-NAT)
+destination ports differ. This breaks CAKE's NAT-aware flow isolation
+when using the "nat" mode.
+
+The bug was introduced in commit b0c19ed6088a ("sch_cake: Take advantage
+of skb->hash where appropriate") which refactored the original direct
+assignment into a compare-and-conditionally-update pattern, but wrote
+the destination port update backwards.
+
+Fix by reversing the assignment direction to match the source port
+pattern.
+
+Fixes: b0c19ed6088a ("sch_cake: Take advantage of skb->hash where appropriate")
+Signed-off-by: Dudu Lu <phx0fer@gmail.com>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Link: https://patch.msgid.link/20260413110041.44704-1-phx0fer@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c | 2 +-
+ net/sched/sch_cake.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 3da3e9fddd049..2a15863a882d6 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -6658,7 +6658,7 @@ static int l2cap_ecred_data_rcv(struct l2cap_chan *chan, struct sk_buff *skb)
- 
- 		if (sdu_len > chan->imtu) {
- 			BT_ERR("Too big LE L2CAP SDU length: len %u > %u",
--			       skb->len, sdu_len);
-+			       sdu_len, chan->imtu);
- 			l2cap_send_disconn_req(chan, ECONNRESET);
- 			err = -EMSGSIZE;
- 			goto failed;
+diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
+index d325a90cde9ee..1a2023cd55109 100644
+--- a/net/sched/sch_cake.c
++++ b/net/sched/sch_cake.c
+@@ -606,7 +606,7 @@ static bool cake_update_flowkeys(struct flow_keys *keys,
+ 		}
+ 		port = rev ? tuple.src.u.all : tuple.dst.u.all;
+ 		if (port != keys->ports.dst) {
+-			port = keys->ports.dst;
++			keys->ports.dst = port;
+ 			upd = true;
+ 		}
+ 	}
 -- 
 2.53.0
 
