@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-250775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252341-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mL70JxcUDmot6AUAu9opvQ
-	(envelope-from <stable+bounces-250775-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:05:43 +0200
+	id YC1ABVITDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-252341-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:02:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03A9C5991E1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:05:42 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F72B5990AE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:02:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9F92A33B3AD0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:58:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 59DB2312916C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:07:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21F7F3CCFB0;
-	Wed, 20 May 2026 16:58:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D594C3F7AA9;
+	Wed, 20 May 2026 18:07:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NjpwhKZN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JSq5GF2M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D862339C00B;
-	Wed, 20 May 2026 16:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80BA536A02E;
+	Wed, 20 May 2026 18:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296282; cv=none; b=az5YfYz6RVQQJmm91F41BxZtMa4ZCniLMths7qk92pi2+L6KQwYCEEgFPY/39T7YnGLYKRSu84Y/wHVkxLj/VqQZ9msSoUASi9uA7FRfV6mNy3nUgdGYs5g4zGI1trANVT+YIPuVwAesj6NLYYWvb2AaNzxABx2syUVL/vcBkmU=
+	t=1779300423; cv=none; b=bQ+mZHCIwrJJ0pl0Bi7I1NT9MYlPIM31ht2Sxyd7lxZn8ycCnRz4/7wQcYTPEp1jA6dczaxczGRG8bTSwOkVsaki9pzp5bOs5y27bWAuDK/5Yhy7ACuFRiGa8cArcRzDH2pu63okaDgh2MfgUHSq/MvLxFC7Sl3078n1+1YCSAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296282; c=relaxed/simple;
-	bh=/Svxyi5ElMIT2P7J3EENI/DneMrdKnC2BqKKXB0oIZo=;
+	s=arc-20240116; t=1779300423; c=relaxed/simple;
+	bh=wG96jBI3C2SZcS2McELdmqus/CqUoVlDWlinPtomd/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bN5OCHt3HVqO/xUHujFGFRcy2ER0peeKrBhzeUcUM7CKbGOjbB+WXunn3nisypCALFa7J9sWuL/i60ebOJy7bj6WPq9ntkIr9K8QkUDUdfp7sDlR2Y5OFEeeDxOg5aCALWv89UidTCGQaJGJQbCbHBMIlLiBb8cLk1AmG4S84QI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NjpwhKZN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B7B01F000E9;
-	Wed, 20 May 2026 16:58:01 +0000 (UTC)
+	 MIME-Version; b=VmAwggoZgY1LXhbMR4Vtr0BhK6emDuXSacjW6r7F55qD3EX1D0oJr4+5zGAHYqJHN54+Js5tiCJ2D45Aw954bC232Ull9Fu6qJ/WzvYejBaARedyVLCdcnrYKrqf4V690T9lHj11lEhBPY2K73/Mw1jeFOe6DJ2KjRg4PqaxCJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JSq5GF2M; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E50A21F000E9;
+	Wed, 20 May 2026 18:07:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296281;
-	bh=ry85zMWprDhGR9tTx3jUFfIOmJsSbsDAKGyMjN27tW0=;
+	s=korg; t=1779300422;
+	bh=FJ1ZJf5NY35Xy4LGivVS9h7qyzPwizHQQOZycI7A87Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NjpwhKZNqTZ3kYLxk55ToTQSIbwd1cYWo5ItlHFKqJB1v00kQk1Kl1bqxoTKq+mR1
-	 hc4MTfjz0Sg5NHZInVZOHZzsBxTzOQohkTx6eV+QkTio+9aEDZXNY/OBNTXszM3uMJ
-	 F3kI0/j4zEzmnyQYnBy6M9qAvTD0EeLTANbo+tL8=
+	b=JSq5GF2MYNHEmU6AB7KbSEGg/IuWDa7fqJB4jPkeLBjjSmmcRe5bIc2jjoYpxC0PW
+	 cYRxNF4gjRDUIv5yhcmIs+AwNk3xCyiDJ9QCuuKibMc9LAs2w+mo9OWzgLPKDvBjIi
+	 9EJsLiUF3IGNRUtr0nqc6OPXuFTDPTWEkS1k4wcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Emre Cecanpunar <emreleno@gmail.com>,
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0689/1146] platform/x86: hp-wmi: fix u8 underflow in gpu_delta calculation
+Subject: [PATCH 6.12 128/666] dm cache policy smq: fix missing locks in invalidating cache blocks
 Date: Wed, 20 May 2026 18:15:39 +0200
-Message-ID: <20260520162203.782503865@linuxfoundation.org>
+Message-ID: <20260520162113.988554547@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +63,126 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-250775-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252341-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.intel.com,gmail.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email]
-X-Rspamd-Queue-Id: 03A9C5991E1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 4F72B5990AE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emre Cecanpunar <emreleno@gmail.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-[ Upstream commit cb4daa450f05447c1f914eaef75b2577c25a0fcd ]
+[ Upstream commit 2d1f7b65f5deedd2e6b09fdc6ea27f8375f24b45 ]
 
-gpu_delta was declared as u8. If the firmware specifies a GPU RPM
-lower than the CPU RPM, subtracting them causes an underflow
-(e.g. 10 - 20 = 246), which forces the GPU fan to remain clamped at
-U8_MAX (100% speed) during operation.
+In passthrough mode, the policy invalidate_mapping operation is called
+simultaneously from multiple workers, thus it should be protected by a
+lock. Otherwise, we might end up with data races on the allocated blocks
+counter, or even use-after-free issues with internal data structures
+when doing concurrent writes.
 
-Change gpu_delta to int and use signed arithmetic. Existing signed logic
-in hp_wmi_fan_speed_set() correctly handles negative deltas.
+Note that the existing FIXME in smq_invalidate_mapping() doesn't affect
+passthrough mode since migration tasks don't exist there, but would need
+attention if supporting fast device shrinking via suspend/resume without
+target reloading.
 
-Fixes: 46be1453e6e6 ("platform/x86: hp-wmi: add manual fan control for Victus S models")
-Suggested-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Emre Cecanpunar <emreleno@gmail.com>
-Link: https://patch.msgid.link/20260407142515.20683-5-emreleno@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reproduce steps:
+
+1. Create a cache device consisting of 1024 cache entries
+
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
+dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
+dmsetup create cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+
+2. Populate the cache, and record the number of cached blocks
+
+fio --name=populate --filename=/dev/mapper/cache --rw=randwrite --bs=4k \
+--size=64m --direct=1
+nr_cached=$(dmsetup status cache | awk '{split($7, a, "/"); print a[1]}')
+
+3. Reload the cache into passthrough mode
+
+dmsetup suspend cache
+dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 passthrough smq 0"
+dmsetup resume cache
+
+4. Write to the passthrough cache. By setting multiple jobs with I/O
+   size equal to the cache block size, cache blocks are invalidated
+   concurrently from different workers.
+
+fio --filename=/dev/mapper/cache --name=test --rw=randwrite --bs=64k \
+--direct=1 --numjobs=2 --randrepeat=0 --size=64m
+
+5. Check if demoted matches cached block count. These numbers should
+   match but may differ due to the data race.
+
+nr_demoted=$(dmsetup status cache | awk '{print $12}')
+echo "$nr_cached, $nr_demoted"
+
+Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/hp/hp-wmi.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/md/dm-cache-policy-smq.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/platform/x86/hp/hp-wmi.c b/drivers/platform/x86/hp/hp-wmi.c
-index 273fa95bc9bab..dd0f86b8807fa 100644
---- a/drivers/platform/x86/hp/hp-wmi.c
-+++ b/drivers/platform/x86/hp/hp-wmi.c
-@@ -460,7 +460,7 @@ enum pwm_modes {
- struct hp_wmi_hwmon_priv {
- 	u8 min_rpm;
- 	u8 max_rpm;
--	u8 gpu_delta;
-+	int gpu_delta;
- 	u8 mode;
- 	u8 pwm;
- 	struct delayed_work keep_alive_dwork;
-@@ -2554,8 +2554,8 @@ static int hp_wmi_setup_fan_settings(struct hp_wmi_hwmon_priv *priv)
+diff --git a/drivers/md/dm-cache-policy-smq.c b/drivers/md/dm-cache-policy-smq.c
+index 2ed894155cabb..d81a87142cacf 100644
+--- a/drivers/md/dm-cache-policy-smq.c
++++ b/drivers/md/dm-cache-policy-smq.c
+@@ -1589,14 +1589,18 @@ static int smq_invalidate_mapping(struct dm_cache_policy *p, dm_cblock_t cblock)
  {
- 	u8 fan_data[128] = { 0 };
- 	struct victus_s_fan_table *fan_table;
--	u8 min_rpm, max_rpm, gpu_delta;
--	int ret;
-+	u8 min_rpm, max_rpm;
-+	int gpu_delta, ret;
+ 	struct smq_policy *mq = to_smq_policy(p);
+ 	struct entry *e = get_entry(&mq->cache_alloc, from_cblock(cblock));
++	unsigned long flags;
  
- 	/* Default behaviour on hwmon init is automatic mode */
- 	priv->mode = PWM_MODE_AUTO;
+ 	if (!e->allocated)
+ 		return -ENODATA;
+ 
++	spin_lock_irqsave(&mq->lock, flags);
+ 	// FIXME: what if this block has pending background work?
+ 	del_queue(mq, e);
+ 	h_remove(&mq->table, e);
+ 	free_entry(&mq->cache_alloc, e);
++	spin_unlock_irqrestore(&mq->lock, flags);
++
+ 	return 0;
+ }
+ 
 -- 
 2.53.0
 
