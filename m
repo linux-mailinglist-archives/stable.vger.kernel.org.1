@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251960-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iLK+EBQnDmpq6gUAu9opvQ
-	(envelope-from <stable+bounces-252593-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:26:44 +0200
+	id gLUAFYH4DWqR5AUAu9opvQ
+	(envelope-from <stable+bounces-251960-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:08:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B205C59ADAF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:26:43 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFF085955AB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:08:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0D16A332AC7C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:18:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1A9F63107142
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2AAF37DE8A;
-	Wed, 20 May 2026 18:18:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 634A03F44CB;
+	Wed, 20 May 2026 17:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1giTaLdm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KtfabWoM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A22BB29B78D;
-	Wed, 20 May 2026 18:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB763F23BF;
+	Wed, 20 May 2026 17:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301081; cv=none; b=fd7YSqK9NgH0TAB7fQKtm06hB+36az3gaa+E4rXhWAAuQ9E6TDr9IRrOa96nlCAcM2ZaDl6U8YqQqWYrtsPs48EvwLO7ZSleIATjhJkMcWm7VXVbeiiKBa6mjy9qkjyXtVnm3kbJjymRmV7t18mBnp/5db+RabObRdZAJ9jRUVE=
+	t=1779299378; cv=none; b=C7vRJ2yj1ZikV91WfOt1Wa42WYRfisayGK7qS/ypoPmayr3nEs6O1KXOhJ+TPZ64DmXpbSsrkPY0wEQoc5YmaQ07EhNQKYFGP8w7eH2Q68MGDoDWWrZLDoR7lk+2mz2cfDJX68hEW14/WatxnnLS238bgY8gwONPIEfzgdu6oBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301081; c=relaxed/simple;
-	bh=tlJUM7LmXo0VTDFNxFFLQKOLBIFQyTH3tzjwOPx6lOY=;
+	s=arc-20240116; t=1779299378; c=relaxed/simple;
+	bh=y3fO4MaX/J861YGfNODgG5Bifw8qwvRVSmphWrViiRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i5ssktp4tZ0p2d5nazw+L2ivFO7XYpHoNg0kuNOdnHmXd18fOy9DMPxTSQ069QwezGDT2vUilB/z+amLIwPjtVTw6d/SviZlKJbRTNoh/3sQVa3rrnZft/0ngm74VhVTQMM41UO539TaurDPb9VKEUcEmMNMQ5bpWCC8oHxOvOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1giTaLdm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 143071F000E9;
-	Wed, 20 May 2026 18:17:59 +0000 (UTC)
+	 MIME-Version; b=Y2XdYoBzhFYh2pQnAM/1oDVJls+l5qF6uxPmlabn2VGEgI2NOJXw0hWONxTv7mLSk0liFEqTlXiCZTP9yGwUEfTqR40A84oCoscZhdXXavVJTWLII3P/QVtJ+BuJvdGigMnvN6//tVNTJW4qoLOGiK3kZFk4pLKNDo1PD20GZyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KtfabWoM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F4791F000E9;
+	Wed, 20 May 2026 17:49:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301080;
-	bh=JyD6uUDakjcPaDsqOu1UYpvrR4Fzk27qrc/usD1V5Tg=;
+	s=korg; t=1779299376;
+	bh=XDO4RfWNeqmp29jzfEeaY6fzRxchiFL+D1saMMB36j4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1giTaLdmgHnDFCLBok//Fit/Xr/QEoLw783nMJGgiE9RZgx/LJBG3A2osCNZMvoBZ
-	 WIz9tJHIdMn7+zQu11UNaEjhs4JlWqnfBV3R3/PG1GM8G1v9wd2sTMUo2r9MlYrbMC
-	 TNnpPIMuagWsAEeKGymXPCQlGase3eOxe3tVaRWk=
+	b=KtfabWoMdt1TYeh/DQHAp7rtQz2HyPgBFt7CkiEhxSGOhqOxgo04gs21SsadgiEjj
+	 p4B5IzOjLO5yu6BcJD6XjzFhbQrmmTdpbx+4SHLhM6fqL93Uiu1SZvR6SOpeILH66j
+	 4nN8MYDwPkrPR63yl3/xsMOvTe36L9D/P0UcB2zE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Brian Masney <bmasney@redhat.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Kanchan Joshi <joshi.k@samsung.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 418/666] clk: xgene: Fix mapping leak in xgene_pllclk_init()
-Date: Wed, 20 May 2026 18:20:29 +0200
-Message-ID: <20260520162120.326870570@linuxfoundation.org>
+Subject: [PATCH 6.18 747/957] nvme-pci: fix missed admin queue sq doorbell write
+Date: Wed, 20 May 2026 18:20:30 +0200
+Message-ID: <20260520162150.762068202@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,72 +65,72 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252593-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-251960-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,glider.be:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: B205C59ADAF
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,samsung.com:email]
+X-Rspamd-Queue-Id: EFF085955AB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit f520a492e07bc6718e26cfb7543ab4cadd8bb0e2 ]
+[ Upstream commit 1cc4cdae2a3b7730d462d69e30f213fd2efe7807 ]
 
-If xgene_register_clk_pll() fails, the mapped register block is never
-unmapped.
+We can batch admin commands submitted through io_uring_cmd passthrough,
+which means bd->last may be false and skips the doorbell write to
+aggregate multiple commands per write. If a subsequent command can't be
+dispatched for whatever reason, we have to provide the blk-mq ops'
+commit_rqs callback in order to ensure we properly update the doorbell.
 
-Fixes: 308964caeebc45eb ("clk: Add APM X-Gene SoC clock driver")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Brian Masney <bmasney@redhat.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: 58e5bdeb9c2b ("nvme: enable uring-passthrough for admin commands")
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-xgene.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/nvme/host/pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/clk-xgene.c b/drivers/clk/clk-xgene.c
-index 0c3d0cee98c83..a542b78d9c731 100644
---- a/drivers/clk/clk-xgene.c
-+++ b/drivers/clk/clk-xgene.c
-@@ -187,6 +187,8 @@ static void xgene_pllclk_init(struct device_node *np, enum xgene_pll_type pll_ty
- 		of_clk_add_provider(np, of_clk_src_simple_get, clk);
- 		clk_register_clkdev(clk, clk_name, NULL);
- 		pr_debug("Add %s clock PLL\n", clk_name);
-+	} else {
-+		iounmap(reg);
- 	}
- }
- 
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 8875855e45352..2e32242bed67c 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -2028,6 +2028,7 @@ static int nvme_create_queue(struct nvme_queue *nvmeq, int qid, bool polled)
+ static const struct blk_mq_ops nvme_mq_admin_ops = {
+ 	.queue_rq	= nvme_queue_rq,
+ 	.complete	= nvme_pci_complete_rq,
++	.commit_rqs	= nvme_commit_rqs,
+ 	.init_hctx	= nvme_admin_init_hctx,
+ 	.init_request	= nvme_pci_init_request,
+ 	.timeout	= nvme_timeout,
 -- 
 2.53.0
 
