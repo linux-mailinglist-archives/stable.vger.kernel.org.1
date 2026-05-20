@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-251930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253026-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aKSJHjsgDmqI6QUAu9opvQ
-	(envelope-from <stable+bounces-251930-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:57:31 +0200
+	id 4LVzMugADmo95QUAu9opvQ
+	(envelope-from <stable+bounces-253026-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA0C359A56B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:57:30 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AE635971A6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E562F32F4C41
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:48:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B30C1313160C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55AAA3F0A83;
-	Wed, 20 May 2026 17:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B9BA318ED6;
+	Wed, 20 May 2026 18:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="od1ksCc3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Luqum3MZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78A0233933;
-	Wed, 20 May 2026 17:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A20BDF59;
+	Wed, 20 May 2026 18:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299302; cv=none; b=NE0pCCVDkDYkLyGaZlBH1Zjc3mQNjIdBFLNfUv0gjm11+XSOLbaGr9fMP15SDBi71Xkpp4g8/H9KHFfBk5MWKCF75IfDRVV5OWi+ysnJQmTxwVBXlwuYFe50PeSfrQlQ/lTUjPSExXg14oqwepCC9Mb4RYE6DKm65u0yUFabux8=
+	t=1779302210; cv=none; b=hpdEkDReJK1xPd3ya70a2RObJMtN8b1lxnI+3lW7Ijlgxr2jrAnDVvG1h3cwnsns/LlkBaMkAfTHv6FSHDNZRpF/Ag4sbHyJxG13gAuI+hmQzasSH0OkFdoP+E6rNgJyCvjN6LytlLOm9mRwCgJvRpB0cx0gqaPXjAAzKyJwlb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299302; c=relaxed/simple;
-	bh=P+WRjTvVQrpA8pAiJ+bLcBJTKYyCobIDIGPRbRn4SXw=;
+	s=arc-20240116; t=1779302210; c=relaxed/simple;
+	bh=GpCPAcmh910j24wPtlii6rhXJmkWERVZyVzypgoyO6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e+aD7K5lvVwy6jZFL9fx6P3ksXeeOhbr4YestCsooUr8B4c/Me5F8+USv32D0Q8b6/TUZ48qT0OCKKnW8+SlfIzpv6qAFYIJ8KSNEXic8DhByzIjCOJAwTPDjiTZUOXoNnzbozSjp3cfIvk4dtAJDnk8cM/e8o+pHtHhzuUjE90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=od1ksCc3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 214551F000E9;
-	Wed, 20 May 2026 17:48:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pBmSlJnVVwsHbrQeCZ2Xa8ltHzUSLz/X9+uDiU4T9hcMOoU/KpCJUYn2otwxR0Gu9gnwTBkrDZMpLNz9fZ8fHrtMJwO7so3Gceo584XoEHcQjpme5kPk2nwEU32H/6kQ1qbd7psI20++rVxireq5RemLGjFYlyKrIxpvxwcyyEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Luqum3MZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1C531F000E9;
+	Wed, 20 May 2026 18:36:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299300;
-	bh=xcZu6X//FpWRmEi3Lm3VquuHVUPpeyUdcQtfLT/ZCrY=;
+	s=korg; t=1779302209;
+	bh=m99B2bfr7hNdt4Jq2M1ePOBBAg6ULUwXGKrv/AfXwiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=od1ksCc3JC0db74cwrfPn1z3NdlXQ6TfEifHwp1O4BzkEKfW0cgIYAPqfgjk4zDqT
-	 lKgupYthaOBYX1OTa5Crxz+SbxBkotMvdlybEk947mDoNMoOTkqpOnDj/Ibb+rJ4bX
-	 7U+1z7us+1a6VnGjrF6whF3PDaLbkcaYuMo0cLPE=
+	b=Luqum3MZj/OQ0J3DYIJx5TOQQqeeI+Jo2QU+XaN1eT/FU9FzXg02/Is5/Kk2McTVH
+	 tr7EFfGqPkW1ysxGjyZ98Pj1yc4EnE4g/Vb68GNDlqO8A6ttWU7P0f9d8nxxmKjAO7
+	 DDcMld99TsW1SN4EPfn26HuM0Rem1tAOIsvKKACg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian Brauner (Amutable)" <brauner@kernel.org>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 721/957] eventpoll: move epi_fget() up
+Subject: [PATCH 6.6 181/508] ARM: dts: mediatek: mt7623: fix efuse fallback compatible
 Date: Wed, 20 May 2026 18:20:04 +0200
-Message-ID: <20260520162150.185481131@linuxfoundation.org>
+Message-ID: <20260520162102.560466964@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,131 +63,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251930-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253026-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_PROHIBIT(0.00)[0.155.164.36:email,0.155.187.48:email];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: CA0C359A56B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,devicetree.org:url,milecki.pl:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,collabora.com:email]
+X-Rspamd-Queue-Id: 4AE635971A6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit 86e87059e6d1fd5115a31949726450ed03c1073b ]
+[ Upstream commit 5978ff33cc6f0988388a2830dc5cd2ea4e81f36a ]
 
-We'll need it when removing files so move it up. No functional change.
+Fix following validation error:
+arch/arm/boot/dts/mediatek/mt7623a-rfb-emmc.dtb: efuse@10206000: compatible: 'oneOf' conditional failed, one must be fixed:
+        ['mediatek,mt7623-efuse', 'mediatek,mt8173-efuse'] is too long
+        'mediatek,mt8173-efuse' was expected
+        'mediatek,efuse' was expected
+        from schema $id: http://devicetree.org/schemas/nvmem/mediatek,efuse.yaml#
+arch/arm/boot/dts/mediatek/mt7623a-rfb-emmc.dtb: efuse@10206000: Unevaluated properties are not allowed ('compatible' was unexpected)
+        from schema $id: http://devicetree.org/schemas/nvmem/mediatek,efuse.yaml#
 
-Link: https://patch.msgid.link/20260423-work-epoll-uaf-v1-5-2470f9eec0f5@kernel.org
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-Stable-dep-of: a6dc643c6931 ("eventpoll: fix ep_remove struct eventpoll / struct file UAF")
+Fixes: 43c7a91b4b3a ("arm: dts: mt7623: add efuse nodes to the mt7623.dtsi file")
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/eventpoll.c | 56 +++++++++++++++++++++++++-------------------------
- 1 file changed, 28 insertions(+), 28 deletions(-)
+ arch/arm/boot/dts/mediatek/mt7623.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-index 68607634a60df..df6994943e59f 100644
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -826,6 +826,34 @@ static void ep_free(struct eventpoll *ep)
- 	kfree_rcu(ep, rcu);
- }
+diff --git a/arch/arm/boot/dts/mediatek/mt7623.dtsi b/arch/arm/boot/dts/mediatek/mt7623.dtsi
+index 9c5a52ce9351a..748f9b3668975 100644
+--- a/arch/arm/boot/dts/mediatek/mt7623.dtsi
++++ b/arch/arm/boot/dts/mediatek/mt7623.dtsi
+@@ -328,7 +328,7 @@ sysirq: interrupt-controller@10200100 {
  
-+/*
-+ * The ffd.file pointer may be in the process of being torn down due to
-+ * being closed, but we may not have finished eventpoll_release() yet.
-+ *
-+ * Normally, even with the atomic_long_inc_not_zero, the file may have
-+ * been free'd and then gotten re-allocated to something else (since
-+ * files are not RCU-delayed, they are SLAB_TYPESAFE_BY_RCU).
-+ *
-+ * But for epoll, users hold the ep->mtx mutex, and as such any file in
-+ * the process of being free'd will block in eventpoll_release_file()
-+ * and thus the underlying file allocation will not be free'd, and the
-+ * file re-use cannot happen.
-+ *
-+ * For the same reason we can avoid a rcu_read_lock() around the
-+ * operation - 'ffd.file' cannot go away even if the refcount has
-+ * reached zero (but we must still not call out to ->poll() functions
-+ * etc).
-+ */
-+static struct file *epi_fget(const struct epitem *epi)
-+{
-+	struct file *file;
-+
-+	file = epi->ffd.file;
-+	if (!file_ref_get(&file->f_ref))
-+		file = NULL;
-+	return file;
-+}
-+
- /*
-  * Called with &file->f_lock held,
-  * returns with it released
-@@ -1018,34 +1046,6 @@ static __poll_t __ep_eventpoll_poll(struct file *file, poll_table *wait, int dep
- 	return res;
- }
- 
--/*
-- * The ffd.file pointer may be in the process of being torn down due to
-- * being closed, but we may not have finished eventpoll_release() yet.
-- *
-- * Normally, even with the atomic_long_inc_not_zero, the file may have
-- * been free'd and then gotten re-allocated to something else (since
-- * files are not RCU-delayed, they are SLAB_TYPESAFE_BY_RCU).
-- *
-- * But for epoll, users hold the ep->mtx mutex, and as such any file in
-- * the process of being free'd will block in eventpoll_release_file()
-- * and thus the underlying file allocation will not be free'd, and the
-- * file re-use cannot happen.
-- *
-- * For the same reason we can avoid a rcu_read_lock() around the
-- * operation - 'ffd.file' cannot go away even if the refcount has
-- * reached zero (but we must still not call out to ->poll() functions
-- * etc).
-- */
--static struct file *epi_fget(const struct epitem *epi)
--{
--	struct file *file;
--
--	file = epi->ffd.file;
--	if (!file_ref_get(&file->f_ref))
--		file = NULL;
--	return file;
--}
--
- /*
-  * Differs from ep_eventpoll_poll() in that internal callers already have
-  * the ep->mtx so we need to start from depth=1, such that mutex_lock_nested()
+ 	efuse: efuse@10206000 {
+ 		compatible = "mediatek,mt7623-efuse",
+-			     "mediatek,mt8173-efuse";
++			     "mediatek,efuse";
+ 		reg = <0 0x10206000 0 0x1000>;
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
 -- 
 2.53.0
 
