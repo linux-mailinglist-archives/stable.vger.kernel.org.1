@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251974-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EAb2DFHuDWpb4wUAu9opvQ
-	(envelope-from <stable+bounces-251048-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:24:33 +0200
+	id KE+qGqb9DWok5QUAu9opvQ
+	(envelope-from <stable+bounces-251974-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:29:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B065C593919
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:24:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC4725965C2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:29:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7C92930BB524
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:10:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4DD653310289
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:50:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E660370D54;
-	Wed, 20 May 2026 17:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 378DB3D5647;
+	Wed, 20 May 2026 17:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ciVD1pdA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DB0kwlhG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7AD93CAE61;
-	Wed, 20 May 2026 17:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035F32F363F;
+	Wed, 20 May 2026 17:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296966; cv=none; b=kpL3KXTt888QDqK8ODocYD5lGCkcONLxq95R5lw5Verk9rRPo85/Cg6MBnDqQjkX8M6UKzeCqKBWwgTpFh1TrqtGwAPJf6ssQwbafYwvVfuOgwPWjfa/6a21hCp8+1SCb7MqNAnENfdL2oUD5fcyalh8RL9wQhVmGAS5jlQYk5c=
+	t=1779299415; cv=none; b=n/+PLZKfMneVNsE6/5eyQGp3QUggp2gtwQ3ODvTmDFfBa30Cnwt0PiXihYC1iKONvU2xS2v0ZMRDJ6Maj+12blYN4EI0j2nWCazmMTdwiVKmNNiOnxoBRcfJO70SqnsJZcsZJo/W94pqQa1ogb6d6VdfH4vqXXGgEDbZCcL9qhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296966; c=relaxed/simple;
-	bh=cIB5cUvEJLeIeFjJ7j3KNdXgrlpr5LfkfcULTVyqFXA=;
+	s=arc-20240116; t=1779299415; c=relaxed/simple;
+	bh=By95oAWtBYsI8gOK/X9DdUU50cfWQ8ulK1ghoMSZGrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bt5xZYI5rku/EHiQDX8XQ5K9f541M+bI0efRI3nE5E5dCCk22unZBzshUhN84kIOs09Wm3W/kvRnlDv8YHXyYvEUgaZIXfjpBP6r1nD59cFeaFTiC1Xf4cgnbRvnU4IEqMyrWBe0/Bw84q9LaDLSmuc8+cNdQlkyA2urO0PbiQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ciVD1pdA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5865C1F000E9;
-	Wed, 20 May 2026 17:09:24 +0000 (UTC)
+	 MIME-Version; b=dZnMYwOnwp5fkNX3+00FgGtTmoCg/QHy1yRnFmlT4pAkz4EpWNBC9JypQhsm52xG/4pUgntmQhEbWngKd++h8i1t0AdKZ/aWJBD4pSM9s7JshArO5Ffex1Ng9tn2WRtL3eXX5/XjOEgHMDTqsCizGvMN9kTRvlo6YZ4uqrSuhuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DB0kwlhG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EEF21F000E9;
+	Wed, 20 May 2026 17:50:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296964;
-	bh=6+BTsCFAbgwTUXoEdWpPD018p1rkz2Gf1VbI7JYoY6A=;
+	s=korg; t=1779299413;
+	bh=rPS+h+PcT9GlnmKtvk4k/RoSocRnqE0LYf7TEQiAfkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ciVD1pdAU/xqbgUIRHtz9Mb43Q+T61CB5bcuvGPSaZscDceLoopn8ADSBPIA/psqf
-	 NRmcs2ZRW+OjJkss2sCwEcP+mmF3DO4OfNZz6Of1zbMPRsXERWZRiVyjbqN9zK1IUy
-	 RdUbNqAZG/toan+nT0IcC+s3CmiDUZIdwL8sjoXA=
+	b=DB0kwlhGGXVTvvBG/KdUML6gxS0ZIbdpL2LfL4cpcCqsh1WPGTLyplQ67Ubbcov25
+	 R9K8XD0XwsiC7tOv63DSmGAJ+S5WSgXeLIGH/a///9XjDYmHQN/lw7VkKe6Y67B3A7
+	 OBodLh20d+l0R4qxvh4Rpr0cqPLGKur4bqmmDkPM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
+	"Nikola Z. Ivanov" <zlatistiv@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0997/1146] netconsole: restore userdatum value on update_userdata() failure
+Subject: [PATCH 6.18 764/957] netdevsim: zero initialize struct iphdr in dummy sk_buff
 Date: Wed, 20 May 2026 18:20:47 +0200
-Message-ID: <20260520162210.795673366@linuxfoundation.org>
+Message-ID: <20260520162151.132508262@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,100 +69,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-251974-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251048-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: B065C593919
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: AC4725965C2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Nikola Z. Ivanov <zlatistiv@gmail.com>
 
-[ Upstream commit 869cd6490fafe09c89a15d01610e8a03932d79f0 ]
+[ Upstream commit 35eaa6d8d6c2ee65e96f507add856e0eacf24591 ]
 
-userdatum_value_store() updates udm->value first and only then calls
-update_userdata() to rebuild the on-the-wire payload. If
-update_userdata() fails (e.g. -ENOMEM from kmalloc), the function
-returns the error to userspace, but udm->value already holds the new
-string while the live nt->userdata buffer still reflects the old one.
+Syzbot reports a KMSAN uninit-value originating from
+nsim_dev_trap_skb_build, with the allocation also
+being performed in the same function.
 
-The next successful write to any sibling userdatum on the same target
-will call update_userdata() again, which walks every entry and packs
-the now-stale udm->value into the payload. The failed write is thus
-silently activated later, with no indication to userspace that the
-value it tried to set was rejected.
+Fix this by calling skb_put_zero instead of skb_put to
+guarantee zero initialization of the whole IP header.
 
-Snapshot the previous value before overwriting udm->value and restore
-it if update_userdata() fails so the visible state and the active
-payload stay consistent.
-
-Fixes: eb83801af2dc ("netconsole: Dynamic allocation of userdata buffer")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20260427-netconsole_ai_fixes-v2-4-59965f29d9cc@debian.org
+Closes: https://syzkaller.appspot.com/bug?extid=23d7fcd204e3837866ff
+Fixes: da58f90f11f5 ("netdevsim: Add devlink-trap support")
+Signed-off-by: Nikola Z. Ivanov <zlatistiv@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260426201434.742030-1-zlatistiv@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/netconsole.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/netdevsim/dev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-index b3b36e3ddd03d..57dd6821a8aa9 100644
---- a/drivers/net/netconsole.c
-+++ b/drivers/net/netconsole.c
-@@ -1079,6 +1079,7 @@ static ssize_t userdatum_value_store(struct config_item *item, const char *buf,
- 				     size_t count)
- {
- 	struct userdatum *udm = to_userdatum(item);
-+	char old_value[MAX_EXTRADATA_VALUE_LEN];
- 	struct netconsole_target *nt;
- 	struct userdata *ud;
- 	ssize_t ret;
-@@ -1088,6 +1089,8 @@ static ssize_t userdatum_value_store(struct config_item *item, const char *buf,
+diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
+index 56a47c060f2e1..4064c488439b4 100644
+--- a/drivers/net/netdevsim/dev.c
++++ b/drivers/net/netdevsim/dev.c
+@@ -773,7 +773,7 @@ static struct sk_buff *nsim_dev_trap_skb_build(void)
+ 	skb->protocol = htons(ETH_P_IP);
  
- 	mutex_lock(&netconsole_subsys.su_mutex);
- 	dynamic_netconsole_mutex_lock();
-+	/* Snapshot for rollback if update_userdata() fails below */
-+	strscpy(old_value, udm->value, sizeof(old_value));
- 	/* count is bounded above, so strscpy() cannot truncate here */
- 	strscpy(udm->value, buf, sizeof(udm->value));
- 	trim_newline(udm->value, sizeof(udm->value));
-@@ -1095,8 +1098,11 @@ static ssize_t userdatum_value_store(struct config_item *item, const char *buf,
- 	ud = to_userdata(item->ci_parent);
- 	nt = userdata_to_target(ud);
- 	ret = update_userdata(nt);
--	if (ret < 0)
-+	if (ret < 0) {
-+		/* Restore the previous value so it matches the live payload */
-+		strscpy(udm->value, old_value, sizeof(udm->value));
- 		goto out_unlock;
-+	}
- 	ret = count;
- out_unlock:
- 	dynamic_netconsole_mutex_unlock();
+ 	skb_set_network_header(skb, skb->len);
+-	iph = skb_put(skb, sizeof(struct iphdr));
++	iph = skb_put_zero(skb, sizeof(struct iphdr));
+ 	iph->protocol = IPPROTO_UDP;
+ 	iph->saddr = in_aton("192.0.2.1");
+ 	iph->daddr = in_aton("198.51.100.1");
 -- 
 2.53.0
 
