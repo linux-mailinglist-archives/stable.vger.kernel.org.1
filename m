@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252671-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aBxxClX4DWqR5AUAu9opvQ
-	(envelope-from <stable+bounces-252035-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:07:17 +0200
+	id eDtZKvYnDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252671-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:30:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB90C595569
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:07:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 022FC59AEFE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:30:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 43FAF3162B0A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:52:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D7F6C34A5659
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:21:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 873193F23BF;
-	Wed, 20 May 2026 17:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC01C3F8896;
+	Wed, 20 May 2026 18:21:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dhZlbBXy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rin6Blvq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4257C3F39C9;
-	Wed, 20 May 2026 17:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD09348C55;
+	Wed, 20 May 2026 18:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299575; cv=none; b=URa8PxBc4Wx0mWHb/5I66s8pkpVxgq0lcoBAZJAgekznJTwgOzvz/ZOm1t9SHEY8GtBpRx5SjAs0GsAsF8WqAFBK+s5la97gtyon72jtBVmHM92mx2J5vS/4vOXqhjvZQPrC7u9hjG0oqFpDvi2cjPaxbB4Fd22KZ06ZqC0HZ8Y=
+	t=1779301284; cv=none; b=PEyvkTLzU25Rg31Yaeq1VL4iOCrK+PjNvunUlH5ex8rT10MzL49Ly8O+Q3utJoH47jaUtmvD7pTnG9toF8aOeLCV5zMPkuJSJ8xPOb1BNIj9UvKyyhNPzreZyECLFn1A0tbFe0nuQkR83Sz7Xj9FsEHxEzM27RYimx92b7lt1j8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299575; c=relaxed/simple;
-	bh=F66xDXWa5FWMQ2KiFcw3XCwsMKfFkJvkE6e+yIMpHyo=;
+	s=arc-20240116; t=1779301284; c=relaxed/simple;
+	bh=l2lnxLzoXMyV/ePa3u+Goo7SB0rN6XCnlVnMzzqmrxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SiR+93j3ENszzaXl3LOdBQPtSBZ7qmpj46R04tOA5NFJ0KpleCqeYj717S9bVHGfd9hR/elz8i9g4nRcXmRB63Tqs1sk21tfUpvXSiZEKoYLsfd8wU3r4tJ0nyRbLfer4zs7/QZUUh6omjQ7151PJXRx/RxdGVOMMVuLg6D7fi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dhZlbBXy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A88C11F00893;
-	Wed, 20 May 2026 17:52:53 +0000 (UTC)
+	 MIME-Version; b=gzcmCxizY7JKlg82HER+z8+nGOCDg1CFwjDPppzdB+nZ9mcfl2yALJaaw5FIGb8T5tfQab8NtFXVW5JeyAHHQtcXIyVFBZBlefuY4gnOXWV3/Ws54+DLPALzYxj0TYP+ub4NRioc0vbj8iXkzT55mLYWQ47UZJhtI6VAGIlxcaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rin6Blvq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C13431F000E9;
+	Wed, 20 May 2026 18:21:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299574;
-	bh=XGOJ4p+VisknIc+9m3e6sgVlPmfa4udZBZVtL1A0hb8=;
+	s=korg; t=1779301283;
+	bh=fgsUCEg5THUqvkhEw7odli5jtBZS1lZ5Aqs6538CAKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dhZlbBXydUvU2rRsokbDFmDq+s/cv+HZ+vr/vWC6k3t7cBJXUQUhuOHc4PLBrM3nT
-	 pkFOt6DajVm7Jw4T9sGxBTLJfpYq7QOlHSKIo2PlunMeh4rFgP1sc02Iwt1VA7VRJb
-	 Vj4nix8z8LWLulUXVBpY+3X9PRRbSkQgm4FVrTTc=
+	b=Rin6Blvq6nFkyW+qz6yQ+UgI6MCwYnZjCfVKHPAXkqmyHJ+5wjnmFnXr7ffMQo3bZ
+	 e1GvFCiqcQxBIuQkMMgriUOT1GufCnnAPeikhdCMEJ55afzXTigcVp5uCNNi5x4H73
+	 vD5sQs/I52DppSGQAqjZa5t13KRWf8xXmf4LF1NM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wangdicheng <wangdicheng@kylinos.cn>,
-	Takashi Iwai <tiwai@suse.de>,
+	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 824/957] ALSA: hda/conexant: Fix missing error check for jack detection
+Subject: [PATCH 6.12 496/666] nfp: fix swapped arguments in nfp_encode_basic_qdr() calls
 Date: Wed, 20 May 2026 18:21:47 +0200
-Message-ID: <20260520162152.438424382@linuxfoundation.org>
+Message-ID: <20260520162122.011809496@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,91 +66,139 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252671-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252035-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,kylinos.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: CB90C595569
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,bell-sw.com:email]
+X-Rspamd-Queue-Id: 022FC59AEFE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wangdicheng <wangdicheng@kylinos.cn>
+From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
 
-[ Upstream commit b0e2333a231107adedd38c6fcfe1adc6162716fc ]
+[ Upstream commit 4078c5611d7585548b249377ebd60c272e410490 ]
 
-In cx_probe(), the return value of snd_hda_jack_detect_enable_callback()
-is ignored. This function returns a pointer, and if it fails (e.g., due
-to memory allocation failure), it returns an error pointer which must
-be checked using IS_ERR().
+There is a mismatch between the passed arguments and the actual
+nfp_encode_basic_qdr() function parameter names:
 
-If the registration fails, the driver continues to probe, but the jack
-detection callback will not be registered. This can lead to a kernel
-crash later when the driver attempts to handle jack events or accesses
-the uninitialized structure.
+  static int nfp_encode_basic_qdr(u64 addr, int dest_island, int cpp_tgt,
+                                  int mode, bool addr40, int isld1,
+                                  int isld0)
+  {
+      ...
 
-Check the return value using IS_ERR() and propagate the error via
-PTR_ERR() to the probe caller.
+But "dest_island" and "cpp_tgt" are swapped at every call-site.
+For example:
 
-Fixes: 7aeb25908648 ("ALSA: hda/conexant: Fix headset auto detect fail in cx8070 and SN6140")
-Signed-off-by: wangdicheng <wangdicheng@kylinos.cn>
-Link: https://patch.msgid.link/20260428080450.108801-1-wangdich9700@163.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+  return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
+                              mode, addr40, isld1, isld0);
+
+As a result, nfp_encode_basic_qdr() receives "dest_island" as CPP target
+type, which is always NFP_CPP_TARGET_QDR(2) for these calls, and "cpp_tgt"
+as the destination island ID, which can accidentally match or be outside
+the valid NFP_CPP_TARGET_* types (e.g. '-1' for any destination).
+
+Since code already worked for years, also add extra pr_warn() to error
+paths in nfp_encode_basic_qdr() to help identify any potential address
+verification failures.
+
+Detected using the static analysis tool - Svace.
+
+Fixes: 4cb584e0ee7d ("nfp: add CPP access core")
+Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+Link: https://patch.msgid.link/20260422160536.61855-1-aleksei.kodanev@bell-sw.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/codecs/conexant.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ .../ethernet/netronome/nfp/nfpcore/nfp_target.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/sound/hda/codecs/conexant.c b/sound/hda/codecs/conexant.c
-index f71123a475464..263773f8bd6ae 100644
---- a/sound/hda/codecs/conexant.c
-+++ b/sound/hda/codecs/conexant.c
-@@ -1183,6 +1183,7 @@ static void add_cx5051_fake_mutes(struct hda_codec *codec)
- static int cx_probe(struct hda_codec *codec, const struct hda_device_id *id)
- {
- 	struct conexant_spec *spec;
-+	struct hda_jack_callback *callback;
- 	int err;
+diff --git a/drivers/net/ethernet/netronome/nfp/nfpcore/nfp_target.c b/drivers/net/ethernet/netronome/nfp/nfpcore/nfp_target.c
+index 79470f198a62a..9cf19446657c6 100644
+--- a/drivers/net/ethernet/netronome/nfp/nfpcore/nfp_target.c
++++ b/drivers/net/ethernet/netronome/nfp/nfpcore/nfp_target.c
+@@ -435,12 +435,17 @@ static int nfp_encode_basic_qdr(u64 addr, int dest_island, int cpp_tgt,
  
- 	codec_info(codec, "%s: BIOS auto-probing.\n", codec->core.chip_name);
-@@ -1198,7 +1199,12 @@ static int cx_probe(struct hda_codec *codec, const struct hda_device_id *id)
- 	case 0x14f11f86:
- 	case 0x14f11f87:
- 		spec->is_cx11880_sn6140 = true;
--		snd_hda_jack_detect_enable_callback(codec, 0x19, cx_update_headset_mic_vref);
-+		callback = snd_hda_jack_detect_enable_callback(codec, 0x19,
-+				cx_update_headset_mic_vref);
-+		if (IS_ERR(callback)) {
-+			err = PTR_ERR(callback);
-+			goto error;
-+		}
- 		break;
- 	}
+ 	/* Full Island ID and channel bits overlap? */
+ 	ret = nfp_decode_basic(addr, &v, cpp_tgt, mode, addr40, isld1, isld0);
+-	if (ret)
++	if (ret) {
++		pr_warn("%s: decode dest_island failed: %d\n", __func__, ret);
+ 		return ret;
++	}
  
+ 	/* The current address won't go where expected? */
+-	if (dest_island != -1 && dest_island != v)
++	if (dest_island != -1 && dest_island != v) {
++		pr_warn("%s: dest_island mismatch: current (%d) != decoded (%d)\n",
++			__func__, dest_island, v);
+ 		return -EINVAL;
++	}
+ 
+ 	/* If dest_island was -1, we don't care where it goes. */
+ 	return 0;
+@@ -493,7 +498,7 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
+ 			 * the address but we can verify if the existing
+ 			 * contents will point to a valid island.
+ 			 */
+-			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
++			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
+ 						    mode, addr40, isld1, isld0);
+ 
+ 		iid_lsb = addr40 ? 34 : 26;
+@@ -504,7 +509,7 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
+ 		return 0;
+ 	case 1:
+ 		if (cpp_tgt == NFP_CPP_TARGET_QDR && !addr40)
+-			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
++			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
+ 						    mode, addr40, isld1, isld0);
+ 
+ 		idx_lsb = addr40 ? 39 : 31;
+@@ -530,7 +535,7 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
+ 			 * be set before hand and with them select an island.
+ 			 * So we need to confirm that it's at least plausible.
+ 			 */
+-			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
++			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
+ 						    mode, addr40, isld1, isld0);
+ 
+ 		/* Make sure we compare against isldN values
+@@ -551,7 +556,7 @@ static int nfp_encode_basic(u64 *addr, int dest_island, int cpp_tgt,
+ 			 * iid<1> = addr<30> = channel<0>
+ 			 * channel<1> = addr<31> = Index
+ 			 */
+-			return nfp_encode_basic_qdr(*addr, cpp_tgt, dest_island,
++			return nfp_encode_basic_qdr(*addr, dest_island, cpp_tgt,
+ 						    mode, addr40, isld1, isld0);
+ 
+ 		isld[0] &= ~3;
 -- 
 2.53.0
 
