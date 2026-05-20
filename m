@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-251928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251002-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oLenHp/2DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251928-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:59:59 +0200
+	id aETaKBLxDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251002-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:18 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E5A8595119
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:59:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64AD3594152
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0257230CF9F3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:48:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 32510306664E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 109343F2115;
-	Wed, 20 May 2026 17:48:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C0173F58F5;
+	Wed, 20 May 2026 17:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2aHOf9aM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HstDPP1h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B43B43F0A83;
-	Wed, 20 May 2026 17:48:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821973F58CC;
+	Wed, 20 May 2026 17:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299296; cv=none; b=ANdMSVp5pcP/OEbIQSfYIvG8kwOr8arwCpmGJZjNnGAcKQ6tGSeZIWyIgPtPZyuVH9tzZU0ysvltLtGCnea2PXp1RxwJ2aUSSkdod56FQH7hXjOpRx6NF/Ezt8lulnQR8wSY6DJgpCUgvq5OL/EL+RecRoserUD3wVwL+Wr832Q=
+	t=1779296848; cv=none; b=ROcuUhQlkUnYNTc8F2ER02Kuvea35j3NiND3uWvtBmce0J84+22w68uV5njtVC0qj2ERbsNWEkRAuEcrrh10+JOIKTvfqRvzndyCv0H03ylrKptQC+dxVs5Y5Zp33PHwYdJL7A3Fa2QwK0vjPaBVJgD+9I0LSzukwQiJ6zbuEGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299296; c=relaxed/simple;
-	bh=8cT7cwbRqiqrml73WkEs9YAC62yNKsdBFFoa45LOMFE=;
+	s=arc-20240116; t=1779296848; c=relaxed/simple;
+	bh=jp3andc19psJ27ZAEnIXgu9rPS2lqGttJ8OiKC+wr0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z60ZT5KN8lax4SBoeU0Z2sGPNOfSIOkjvtVw918003CIlBKBHwvh5ymY+phxIO6jbnKR4jeJFUmyWG2pJ+lbhLay87bvzXpUVt/uXQJaS4tsz6iME/zhoUBWCVsEKgggo27yOQryJfAdbTC/kx4AIgF0z60s0ENMhQzlpnTrxMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2aHOf9aM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA1191F00896;
-	Wed, 20 May 2026 17:48:14 +0000 (UTC)
+	 MIME-Version; b=RYKGrUTKMD8xDdtA02OtK45FqorMX9ct6wKlyxnGtca5Bi2+uOvJr3eq6Ux63ATKYT9Qjo+Y0kFq61XY3tbXn1maN/CsyZbDk1/7xNTgqO5YbjwI5Sq+oR7UwtxK4hg5pqT3Zj63BuQH1XfrKuEni0BgtfCQ4r/s/ajHXoGth44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HstDPP1h; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B3281F000E9;
+	Wed, 20 May 2026 17:07:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299295;
-	bh=ttPF7Fa2lINL0r3H9VfEQzb/vu2z8U4Wmz599nxLzQQ=;
+	s=korg; t=1779296846;
+	bh=2pc8QnsUhhSMZMfdchLNgzC/fKTdfyia5D1dqZgWuqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2aHOf9aMSH7A4ECMvql+zag69H5MtWjJSABjn/5gm9oLuWTWLY/68nwu6+xC6qfha
-	 1eJJ3AxxCBfRyp5Z5oh0dHjI+agWv6s67syt2wrbop9ny+hBJUysbXZ1vmj/5VAUli
-	 vmxe9WnHIFJvxFqj0q3NQt4u6WNaWtBau3d6pOf0=
+	b=HstDPP1hzcSE2uRPv2Ny3nLPyeAd3AZ+z8kf4VdrDNDOzrij1VEafuaLQoFE8vLyz
+	 qZajIknH6yuwnMkfW73RbwTopayBBXrilz4THJ7wGR9Bu2kocohomSna5TwduiIi0b
+	 h4BeArYVYVBK0OHEy3bcA11UrA7hLS4T3UvRvrZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian Brauner (Amutable)" <brauner@kernel.org>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 719/957] eventpoll: kill __ep_remove()
+Subject: [PATCH 7.0 0952/1146] sched/fair: Fix wakeup_preempt_fair() vs delayed dequeue
 Date: Wed, 20 May 2026 18:20:02 +0200
-Message-ID: <20260520162150.141335050@linuxfoundation.org>
+Message-ID: <20260520162209.778326966@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251928-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251002-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,142 +87,128 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 3E5A8595119
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,infradead.org:email,linaro.org:email]
+X-Rspamd-Queue-Id: 64AD3594152
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Vincent Guittot <vincent.guittot@linaro.org>
 
-[ Upstream commit e9e5cd40d7c403e19f21d0f7b8b8ba3a76b58330 ]
+[ Upstream commit ac8e69e693631689d74d8f1ebee6f84f737f797f ]
 
-Remove the boolean conditional in __ep_remove() and restructure the code
-so the check for racing with eventpoll_release_file() are only done in
-the ep_remove_safe() path where they belong.
+Similar to how pick_next_entity() must dequeue delayed entities, so too must
+wakeup_preempt_fair(). Any delayed task being found means it is eligible and
+hence past the 0-lag point, ready for removal.
 
-Link: https://patch.msgid.link/20260423-work-epoll-uaf-v1-3-2470f9eec0f5@kernel.org
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-Stable-dep-of: a6dc643c6931 ("eventpoll: fix ep_remove struct eventpoll / struct file UAF")
+Worse, by not removing delayed entities from consideration, it can skew the
+preemption decision, with the end result that a short slice wakeup will not
+result in a preemption.
+
+                     tip/sched/core  tip/sched/core    +this patch
+cyclictest slice  (ms) (default)2.8             8               8
+hackbench slice   (ms) (default)2.8            20              20
+Total Samples          |    22559           22595           22683
+Average           (us) |      157              64( 59%)        59(  8%)
+Median (P50)      (us) |       57              57(  0%)        58(- 2%)
+90th Percentile   (us) |       64              60(  6%)        60(  0%)
+99th Percentile   (us) |     2407              67( 97%)        67(  0%)
+99.9th Percentile (us) |     3400            2288( 33%)       727( 68%)
+Maximum           (us) |     5037            9252(-84%)      7461( 19%)
+
+Fixes: f12e148892ed ("sched/fair: Prepare pick_next_task() for delayed dequeue")
+Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://patch.msgid.link/20260422093400.319251-1-vincent.guittot@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/eventpoll.c | 67 ++++++++++++++++++++++----------------------------
- 1 file changed, 30 insertions(+), 37 deletions(-)
+ kernel/sched/fair.c | 27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
-diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-index 36f3545a71bfa..5d982c2503d68 100644
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -826,49 +826,18 @@ static void ep_free(struct eventpoll *ep)
- 	kfree_rcu(ep, rcu);
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index ab4114712be74..87200a22b3169 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -1007,7 +1007,7 @@ static inline void cancel_protect_slice(struct sched_entity *se)
+  *
+  * Which allows tree pruning through eligibility.
+  */
+-static struct sched_entity *__pick_eevdf(struct cfs_rq *cfs_rq, bool protect)
++static struct sched_entity *pick_eevdf(struct cfs_rq *cfs_rq, bool protect)
+ {
+ 	struct rb_node *node = cfs_rq->tasks_timeline.rb_root.rb_node;
+ 	struct sched_entity *se = __pick_first_entity(cfs_rq);
+@@ -1078,11 +1078,6 @@ static struct sched_entity *__pick_eevdf(struct cfs_rq *cfs_rq, bool protect)
+ 	return best;
  }
  
--static void __ep_remove_file(struct eventpoll *ep, struct epitem *epi, struct file *file);
--static bool __ep_remove_epi(struct eventpoll *ep, struct epitem *epi);
--
--/*
-- * Removes a "struct epitem" from the eventpoll RB tree and deallocates
-- * all the associated resources. Must be called with "mtx" held.
-- * If the dying flag is set, do the removal only if force is true.
-- * This prevents ep_clear_and_put() from dropping all the ep references
-- * while running concurrently with eventpoll_release_file().
-- * Returns true if the eventpoll can be disposed.
-- */
--static bool __ep_remove(struct eventpoll *ep, struct epitem *epi, bool force)
+-static struct sched_entity *pick_eevdf(struct cfs_rq *cfs_rq)
 -{
--	struct file *file = epi->ffd.file;
--
--	lockdep_assert_irqs_enabled();
--
--	/*
--	 * Removes poll wait queue hooks.
--	 */
--	ep_unregister_pollwait(ep, epi);
--
--	/* Remove the current item from the list of epoll hooks */
--	spin_lock(&file->f_lock);
--	if (epi->dying && !force) {
--		spin_unlock(&file->f_lock);
--		return false;
--	}
--
--	__ep_remove_file(ep, epi, file);
--	return __ep_remove_epi(ep, epi);
+-	return __pick_eevdf(cfs_rq, true);
 -}
 -
- /*
-  * Called with &file->f_lock held,
-  * returns with it released
-  */
--static void __ep_remove_file(struct eventpoll *ep, struct epitem *epi, struct file *file)
-+static void __ep_remove_file(struct eventpoll *ep, struct epitem *epi,
-+			     struct file *file)
+ struct sched_entity *__pick_last_entity(struct cfs_rq *cfs_rq)
  {
- 	struct epitems_head *to_free = NULL;
- 	struct hlist_head *head = file->f_ep;
- 
- 	lockdep_assert_held(&ep->mtx);
-+	lockdep_assert_held(&file->f_lock);
- 
- 	if (hlist_is_singular_node(&epi->fllink, head)) {
- 		/* See eventpoll_release() for details. */
-@@ -915,7 +884,25 @@ static bool __ep_remove_epi(struct eventpoll *ep, struct epitem *epi)
+ 	struct rb_node *last = rb_last(&cfs_rq->tasks_timeline.rb_root);
+@@ -5540,11 +5535,11 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags);
+  * 4) do not run the "skip" process, if something else is available
   */
- static void ep_remove_safe(struct eventpoll *ep, struct epitem *epi)
+ static struct sched_entity *
+-pick_next_entity(struct rq *rq, struct cfs_rq *cfs_rq)
++pick_next_entity(struct rq *rq, struct cfs_rq *cfs_rq, bool protect)
  {
--	if (__ep_remove(ep, epi, false))
-+	struct file *file = epi->ffd.file;
-+
-+	lockdep_assert_irqs_enabled();
-+	lockdep_assert_held(&ep->mtx);
-+
-+	ep_unregister_pollwait(ep, epi);
-+
-+	/* sync with eventpoll_release_file() */
-+	if (unlikely(READ_ONCE(epi->dying)))
-+		return;
-+
-+	spin_lock(&file->f_lock);
-+	if (epi->dying) {
-+		spin_unlock(&file->f_lock);
-+		return;
-+	}
-+	__ep_remove_file(ep, epi, file);
-+
-+	if (__ep_remove_epi(ep, epi))
- 		WARN_ON_ONCE(ep_refcount_dec_and_test(ep));
- }
+ 	struct sched_entity *se;
  
-@@ -1147,7 +1134,7 @@ void eventpoll_release_file(struct file *file)
- 	spin_lock(&file->f_lock);
- 	if (file->f_ep && file->f_ep->first) {
- 		epi = hlist_entry(file->f_ep->first, struct epitem, fllink);
--		epi->dying = true;
-+		WRITE_ONCE(epi->dying, true);
- 		spin_unlock(&file->f_lock);
- 
+-	se = pick_eevdf(cfs_rq);
++	se = pick_eevdf(cfs_rq, protect);
+ 	if (se->sched_delayed) {
+ 		dequeue_entities(rq, se, DEQUEUE_SLEEP | DEQUEUE_DELAYED);
  		/*
-@@ -1156,7 +1143,13 @@ void eventpoll_release_file(struct file *file)
- 		 */
- 		ep = epi->ep;
- 		mutex_lock(&ep->mtx);
--		dispose = __ep_remove(ep, epi, true);
-+
-+		ep_unregister_pollwait(ep, epi);
-+
-+		spin_lock(&file->f_lock);
-+		__ep_remove_file(ep, epi, file);
-+		dispose = __ep_remove_epi(ep, epi);
-+
- 		mutex_unlock(&ep->mtx);
+@@ -8809,7 +8804,7 @@ static void wakeup_preempt_fair(struct rq *rq, struct task_struct *p, int wake_f
+ {
+ 	enum preempt_wakeup_action preempt_action = PREEMPT_WAKEUP_PICK;
+ 	struct task_struct *donor = rq->donor;
+-	struct sched_entity *se = &donor->se, *pse = &p->se;
++	struct sched_entity *nse, *se = &donor->se, *pse = &p->se;
+ 	struct cfs_rq *cfs_rq = task_cfs_rq(donor);
+ 	int cse_is_idle, pse_is_idle;
  
- 		if (dispose && ep_refcount_dec_and_test(ep))
+@@ -8920,11 +8915,17 @@ static void wakeup_preempt_fair(struct rq *rq, struct task_struct *p, int wake_f
+ 	}
+ 
+ pick:
++	nse = pick_next_entity(rq, cfs_rq, preempt_action != PREEMPT_WAKEUP_SHORT);
++	/* If @p has become the most eligible task, force preemption */
++	if (nse == pse)
++		goto preempt;
++
+ 	/*
+-	 * If @p has become the most eligible task, force preemption.
++	 * Because p is enqueued, nse being null can only mean that we
++	 * dequeued a delayed task.
+ 	 */
+-	if (__pick_eevdf(cfs_rq, preempt_action != PREEMPT_WAKEUP_SHORT) == pse)
+-		goto preempt;
++	if (!nse)
++		goto pick;
+ 
+ 	if (sched_feat(RUN_TO_PARITY))
+ 		update_protect_slice(cfs_rq, se);
+@@ -8959,7 +8960,7 @@ static struct task_struct *pick_task_fair(struct rq *rq, struct rq_flags *rf)
+ 
+ 		throttled |= check_cfs_rq_runtime(cfs_rq);
+ 
+-		se = pick_next_entity(rq, cfs_rq);
++		se = pick_next_entity(rq, cfs_rq, true);
+ 		if (!se)
+ 			goto again;
+ 		cfs_rq = group_cfs_rq(se);
 -- 
 2.53.0
 
