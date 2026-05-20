@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-252763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253227-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6MIXJHoXDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-252763-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:20:10 +0200
+	id 4IuSLiUHDmp25gUAu9opvQ
+	(envelope-from <stable+bounces-253227-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:10:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8743599761
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:20:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20496597DF5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:10:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C4CF43100129
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A7A2C287853
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D6FB3FBEAA;
-	Wed, 20 May 2026 18:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5733FE359;
+	Wed, 20 May 2026 18:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bK73r+Wf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0pnsMgMR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63213CCFB0;
-	Wed, 20 May 2026 18:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49AE3FC5C1;
+	Wed, 20 May 2026 18:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301527; cv=none; b=u5jEO3M0rJHpmC/R3srr2N6bc+o6qlCxbmshNXsu15Ibik3BI28urHi1d9Zdg8kIrtXdBgzohb4rhb8xC4TmhmIMif6BsDOJ9gBTmkTkkE+osmKYoBeGK0RKWutX0bSa+BsjJmBKa3poY5TFNFJ8nRkYYSXARivPww4JKKunBic=
+	t=1779302728; cv=none; b=mwARfO+eSFLaVesyNGCGGUTGOfANr0FeiKHvov0qeoag7NibRgIxlgafL7Caj/1k6KQabZit9P3IqCVeVRkzAioDLu6/qMyS6+2Z+j46hqtKrbq6WilWT0Fm8zOzEqZvgqq20fR58OzqhSydyyqIl7XjnGw0J79WWAZSFFZ5hCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301527; c=relaxed/simple;
-	bh=o03UAQdNMTMvVEwxQtGU3iHLXEihKylBYHjKXcxNA8Y=;
+	s=arc-20240116; t=1779302728; c=relaxed/simple;
+	bh=mmDHLVQATxXaUUBemVFIlDTAXbgGe26w07vGcZxAVLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oo1T2SpuR4r2ZFtIvYloqoT1JL3xqBtTOS/SoTbIzMG7v7cu5LnJOy9vqXsuHz3fvDorCBDHntcSyhAwBccn2EBsIZLmCywsIbLHgIwQxCkeU/QShV9XLWK1GEfdA0BpvLTTWMQ684moKbsvMjQLDbmIZFr10CHHBVgOTRwsTLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bK73r+Wf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 329391F000E9;
-	Wed, 20 May 2026 18:25:25 +0000 (UTC)
+	 MIME-Version; b=R0nHpREqE223WyEJnsASBnBur/qj8eTD65ZDxnO4G2taV4IXp5nFdiX51v615oZs0hMMfcN6tkaCnT0XxH8C0wXx9udt5pwb6Ks+FHv+mSz4R0S6kyeDqHvmyMqA9Vc0uyvofwAux5eescPY6toF+PfIuOoWDeD/JZH436nO7c4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0pnsMgMR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DBE81F000E9;
+	Wed, 20 May 2026 18:45:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301525;
-	bh=ec+Rol/ER9Vhdo5ZjqqAmqmwyE3dJPr1wWH9Hdi9oMM=;
+	s=korg; t=1779302727;
+	bh=lb1il2AJhRROtrJr6jsIBAM0wGHyFXH/rIq34Nhb33g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bK73r+Wfwir8bKChaaozdZmI+ZbrufmrWL+7w6amjc6CWVozLG4hyU8e8o1qKScYX
-	 FnKI6Kov7SJUJF3bsNS9kjN5XqKBu9xJAzHhCKblTT12OJZN5ItT2OOtzZUe7CUWTX
-	 q7+NRsf9quHHWrS1cNnCmjmxrIKhXwxCt1uWiBdI=
+	b=0pnsMgMR2kNq0rzDXM7Rd1g46SCF5GsFYlk4Cc44d8iixrkNFtsB2Hw0rBhTrlBiu
+	 pj62Ky3rS8aD7do74MirTbFBS6YvCyEanHxwJfWqeMp+NFm313YVrhbyLnEKWHFzwX
+	 0VW7XAIAzsYjq2Z2mx6HFsgfnlSquJBS3QNp3WGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Oros <poros@redhat.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	John Madieu <john.madieu@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 588/666] iavf: wait for PF confirmation before removing VLAN filters
+Subject: [PATCH 6.6 376/508] spi: rockchip: Read ISR, not IMR, to detect cs-inactive IRQ
 Date: Wed, 20 May 2026 18:23:19 +0200
-Message-ID: <20260520162124.008317865@linuxfoundation.org>
+Message-ID: <20260520162106.770356465@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,223 +64,97 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252763-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-253227-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: A8743599761
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 20496597DF5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Oros <poros@redhat.com>
+From: John Madieu <john.madieu@gmail.com>
 
-[ Upstream commit bbcbe4ed70dea948849549af7edf44bd42bbd695 ]
+[ Upstream commit b4683a239a409d65f88052f5630c748a8ba070cd ]
 
-The VLAN filter DELETE path was asymmetric with the ADD path: ADD
-waits for PF confirmation (ADD -> ADDING -> ACTIVE), but DELETE
-immediately frees the filter struct after sending the DEL message
-without waiting for the PF response.
+rockchip_spi_isr() decides whether the current interrupt was the
+cs-inactive event by reading IMR:
 
-This is problematic because:
- - If the PF rejects the DEL, the filter remains in HW but the driver
-   has already freed the tracking structure, losing sync.
- - Race conditions between DEL pending and other operations
-   (add, reset) cannot be properly resolved if the filter struct
-   is already gone.
+	if (rs->cs_inactive &&
+	    readl_relaxed(rs->regs + ROCKCHIP_SPI_IMR) & INT_CS_INACTIVE)
+		ctlr->target_abort(ctlr);
 
-Add IAVF_VLAN_REMOVING state to make the DELETE path symmetric:
+IMR is the interrupt mask register: it tells which sources are enabled,
+not which one fired. In the PIO path, rockchip_spi_prepare_irq() enables
+both INT_RF_FULL and INT_CS_INACTIVE in IMR when rs->cs_inactive is true:
 
-  REMOVE -> REMOVING (send DEL) -> PF confirms -> kfree
-                                -> PF rejects  -> ACTIVE
+	if (rs->cs_inactive)
+		writel_relaxed(INT_RF_FULL | INT_CS_INACTIVE,
+			       rs->regs + ROCKCHIP_SPI_IMR);
 
-In iavf_del_vlans(), transition filters from REMOVE to REMOVING
-instead of immediately freeing them. The new DEL completion handler
-in iavf_virtchnl_completion() frees filters on success or reverts
-them to ACTIVE on error.
+so the IMR check is always true once cs_inactive is enabled, and every
+PIO interrupt - including normal RF_FULL completions - is dispatched to
+ctlr->target_abort(), aborting the transfer. The bug is reachable on
+ROCKCHIP_SPI_VER2_TYPE2 in target mode with a DMA-capable controller
+when the transfer is short enough to fall back to PIO
+(rockchip_spi_can_dma() returns false below fifo_len).
 
-Update iavf_add_vlan() to handle the REMOVING state: if a DEL is
-pending and the user re-adds the same VLAN, queue it for ADD so
-it gets re-programmed after the PF processes the DEL.
+Read ISR (which is RISR masked by IMR) so the check actually reflects
+which interrupt fired, and parenthesise the expression for clarity while
+at it.
 
-The !VLAN_FILTERING_ALLOWED early-exit path still frees filters
-directly since no PF message is sent in that case.
-
-Also update iavf_del_vlan() to skip filters already in REMOVING
-state: DEL has been sent to PF and the completion handler will
-free the filter when PF confirms. Without this guard, the sequence
-DEL(pending) -> user-del -> second DEL could cause the PF to return
-an error for the second DEL (filter already gone), causing the
-completion handler to incorrectly revert a deleted filter back to
-ACTIVE.
-
-Fixes: 968996c070ef ("iavf: Fix VLAN_V2 addition/rejection")
-Signed-off-by: Petr Oros <poros@redhat.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260427-jk-iwl-net-petr-oros-fixes-v1-3-cdcb48303fd8@intel.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 869f2c94db92 ("spi: rockchip: Stop spi slave dma receiver when cs inactive")
+Signed-off-by: John Madieu <john.madieu@gmail.com>
+Link: https://patch.msgid.link/20260425092936.2590132-2-john.madieu@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf.h        |  1 +
- drivers/net/ethernet/intel/iavf/iavf_main.c   | 13 ++++---
- .../net/ethernet/intel/iavf/iavf_virtchnl.c   | 37 +++++++++++++------
- 3 files changed, 34 insertions(+), 17 deletions(-)
+ drivers/spi/spi-rockchip.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
-index 41596b9889540..8cd742c4da913 100644
---- a/drivers/net/ethernet/intel/iavf/iavf.h
-+++ b/drivers/net/ethernet/intel/iavf/iavf.h
-@@ -161,6 +161,7 @@ enum iavf_vlan_state_t {
- 	IAVF_VLAN_ADDING,	/* ADD sent to PF, waiting for response */
- 	IAVF_VLAN_ACTIVE,	/* PF confirmed, filter is in HW */
- 	IAVF_VLAN_REMOVE,	/* filter queued for DEL from PF */
-+	IAVF_VLAN_REMOVING,	/* DEL sent to PF, waiting for response */
- };
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index 9e160cba1ff37..03a11aed055ee 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -352,7 +352,8 @@ static irqreturn_t rockchip_spi_isr(int irq, void *dev_id)
+ 	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
  
- struct iavf_vlan_filter {
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index cc1430b2ec593..383e015a6f4eb 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -774,10 +774,10 @@ iavf_vlan_filter *iavf_add_vlan(struct iavf_adapter *adapter,
- 		adapter->num_vlan_filters++;
- 		iavf_schedule_aq_request(adapter, IAVF_FLAG_AQ_ADD_VLAN_FILTER);
- 	} else if (f->state == IAVF_VLAN_REMOVE) {
--		/* Re-add the filter since we cannot tell whether the
--		 * pending delete has already been processed by the PF.
--		 * A duplicate add is harmless.
--		 */
-+		/* DEL not yet sent to PF, cancel it */
-+		f->state = IAVF_VLAN_ACTIVE;
-+	} else if (f->state == IAVF_VLAN_REMOVING) {
-+		/* DEL already sent to PF, re-add after completion */
- 		f->state = IAVF_VLAN_ADD;
- 		iavf_schedule_aq_request(adapter,
- 					 IAVF_FLAG_AQ_ADD_VLAN_FILTER);
-@@ -808,11 +808,14 @@ static void iavf_del_vlan(struct iavf_adapter *adapter, struct iavf_vlan vlan)
- 			list_del(&f->list);
- 			kfree(f);
- 			adapter->num_vlan_filters--;
--		} else {
-+		} else if (f->state != IAVF_VLAN_REMOVING) {
- 			f->state = IAVF_VLAN_REMOVE;
- 			iavf_schedule_aq_request(adapter,
- 						 IAVF_FLAG_AQ_DEL_VLAN_FILTER);
- 		}
-+		/* If REMOVING, DEL is already sent to PF; completion
-+		 * handler will free the filter when PF confirms.
-+		 */
- 	}
- 
- 	spin_unlock_bh(&adapter->mac_vlan_list_lock);
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-index 316ce79f14c36..9ba36e12dabf0 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-@@ -835,12 +835,10 @@ void iavf_del_vlans(struct iavf_adapter *adapter)
- 
- 		vvfl->vsi_id = adapter->vsi_res->vsi_id;
- 		vvfl->num_elements = count;
--		list_for_each_entry_safe(f, ftmp, &adapter->vlan_filter_list, list) {
-+		list_for_each_entry(f, &adapter->vlan_filter_list, list) {
- 			if (f->state == IAVF_VLAN_REMOVE) {
- 				vvfl->vlan_id[i] = f->vlan.vid;
--				list_del(&f->list);
--				kfree(f);
--				adapter->num_vlan_filters--;
-+				f->state = IAVF_VLAN_REMOVING;
- 				i++;
- 				if (i == count)
- 					break;
-@@ -876,7 +874,7 @@ void iavf_del_vlans(struct iavf_adapter *adapter)
- 
- 		vvfl_v2->vport_id = adapter->vsi_res->vsi_id;
- 		vvfl_v2->num_elements = count;
--		list_for_each_entry_safe(f, ftmp, &adapter->vlan_filter_list, list) {
-+		list_for_each_entry(f, &adapter->vlan_filter_list, list) {
- 			if (f->state == IAVF_VLAN_REMOVE) {
- 				struct virtchnl_vlan_supported_caps *filtering_support =
- 					&adapter->vlan_v2_caps.filtering.filtering_support;
-@@ -891,9 +889,7 @@ void iavf_del_vlans(struct iavf_adapter *adapter)
- 				vlan->tci = f->vlan.vid;
- 				vlan->tpid = f->vlan.tpid;
- 
--				list_del(&f->list);
--				kfree(f);
--				adapter->num_vlan_filters--;
-+				f->state = IAVF_VLAN_REMOVING;
- 				i++;
- 				if (i == count)
- 					break;
-@@ -2040,10 +2036,6 @@ void iavf_virtchnl_completion(struct iavf_adapter *adapter,
- 			ether_addr_copy(adapter->hw.mac.addr, netdev->dev_addr);
- 			wake_up(&adapter->vc_waitqueue);
- 			break;
--		case VIRTCHNL_OP_DEL_VLAN:
--			dev_err(&adapter->pdev->dev, "Failed to delete VLAN filter, error %s\n",
--				iavf_stat_str(&adapter->hw, v_retval));
--			break;
- 		case VIRTCHNL_OP_DEL_ETH_ADDR:
- 			dev_err(&adapter->pdev->dev, "Failed to delete MAC filter, error %s\n",
- 				iavf_stat_str(&adapter->hw, v_retval));
-@@ -2534,6 +2526,27 @@ void iavf_virtchnl_completion(struct iavf_adapter *adapter,
- 		spin_unlock_bh(&adapter->mac_vlan_list_lock);
- 		}
- 		break;
-+	case VIRTCHNL_OP_DEL_VLAN:
-+	case VIRTCHNL_OP_DEL_VLAN_V2: {
-+		struct iavf_vlan_filter *f, *ftmp;
-+
-+		spin_lock_bh(&adapter->mac_vlan_list_lock);
-+		list_for_each_entry_safe(f, ftmp, &adapter->vlan_filter_list,
-+					 list) {
-+			if (f->state == IAVF_VLAN_REMOVING) {
-+				if (v_retval) {
-+					/* PF rejected DEL, keep filter */
-+					f->state = IAVF_VLAN_ACTIVE;
-+				} else {
-+					list_del(&f->list);
-+					kfree(f);
-+					adapter->num_vlan_filters--;
-+				}
-+			}
-+		}
-+		spin_unlock_bh(&adapter->mac_vlan_list_lock);
-+		}
-+		break;
- 	case VIRTCHNL_OP_ENABLE_VLAN_STRIPPING:
- 		/* PF enabled vlan strip on this VF.
- 		 * Update netdev->features if needed to be in sync with ethtool.
+ 	/* When int_cs_inactive comes, spi target abort */
+-	if (rs->cs_inactive && readl_relaxed(rs->regs + ROCKCHIP_SPI_IMR) & INT_CS_INACTIVE) {
++	if (rs->cs_inactive &&
++	    (readl_relaxed(rs->regs + ROCKCHIP_SPI_ISR) & INT_CS_INACTIVE)) {
+ 		ctlr->target_abort(ctlr);
+ 		writel_relaxed(0, rs->regs + ROCKCHIP_SPI_IMR);
+ 		writel_relaxed(0xffffffff, rs->regs + ROCKCHIP_SPI_ICR);
 -- 
 2.53.0
 
