@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-252136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253233-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wJ4/DED6DWq75AUAu9opvQ
-	(envelope-from <stable+bounces-252136-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:15:28 +0200
+	id 6PdMMhUvDmpo7wUAu9opvQ
+	(envelope-from <stable+bounces-253233-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:00:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0FF4595A7B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:15:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03B3959B96E
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:00:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 326A830F0F67
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:58:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2D22E39902DF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:51:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89F153F65E6;
-	Wed, 20 May 2026 17:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA363421A12;
+	Wed, 20 May 2026 18:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GEX682T9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QGxyfyWN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F03E3F54C7;
-	Wed, 20 May 2026 17:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A25C3FE646;
+	Wed, 20 May 2026 18:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299886; cv=none; b=Wf8nsXFbs9OAeksvAHmPvirzPIpSmAV9u1J5C5pRq3n7sON0fTLgFFgzmlFr67AFuujaktzXsizesWNnCG6EFahREGVVxMW9F2BsTW6YkEHSjWHZUF4v7uWh9wYar1ILe/k2FIYeBAbl5kf30puvg5QXMprjWMYJz71VEAT9Uak=
+	t=1779302746; cv=none; b=kVTBjHaU1i85KVDul44JOrzr/+LVNss8C1pw/y/UTYaf5PsHVT2cQSJ2Z1d1GO23UkEI7uDCmowhsJAhRfbTzMtznTm3CqmBqAU6SgY5Dba/qnM95XkghTW8neYUsfiO6kGZRhd2CYUA+Jg6GSITgb121ApKlVnSD/yoNJ2l4Fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299886; c=relaxed/simple;
-	bh=+as0IiY0eyQ2CMg/RJEub8uTFzDTbFcgVnCkiSnPXHs=;
+	s=arc-20240116; t=1779302746; c=relaxed/simple;
+	bh=H5NtBQhzRDfJPfRkIAaktzHA5rjOhpjUVpnnFeuwvcU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=us74gKno2LLQvuO9A/0pq/NVk0oqoqSokgpXUmyv9BixMykcbJbDB5M8CWdjy8fHyZjwWvYFJnA45owEF8NUAskGaMzsvFCU4rHJZvfkZ7EfTFFam5g7InJ8HAdYLpZgFBotm2CF778s7aVOLxbX/6qlZDxrg4FkdfMdXk9Kffs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GEX682T9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FB051F000E9;
-	Wed, 20 May 2026 17:58:03 +0000 (UTC)
+	 MIME-Version; b=hM0N0c4RPx5hwu7zcyyXkDPZYtDc4+A+I5VMSoGJWrccoe4gWarSO/fHrXmsj39oRoCWoAtqK0Ol+OL0ec7fw2QAoc2hvYilkj20zEFbokJmfCjVEaYQv8aDSksXJ+QH/GvW1ERpZCp5EijdHPms+1tSyxgWwrP4tW3+rdA7Wzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QGxyfyWN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F23F71F00893;
+	Wed, 20 May 2026 18:45:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299884;
-	bh=ceWILVPF3sQkcJVC2qxGg+MF/ok4fm+boNI/hmUsIqs=;
+	s=korg; t=1779302743;
+	bh=nw9Ak7H3E2S4d2Mxvi5F7+5DHWonVmhwpFtOviWnDp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GEX682T9FDQpEd+rvb9hqNZ28ThtS/sTonDC3ZIq4fCjF+KO6LL/dTlgJnvGYzSob
-	 AetgC5MDZUI2EoLx2BSI0RkyEbLW5OAEw2EVI1FO4JuYNnAd6ivIGSNRP83/5Xs2RA
-	 Uyna4NXT7pW9a+2ysnmoutgNHflCN5xEDh7so4RU=
+	b=QGxyfyWNQLrdyPIkPrk/5mlNLu10tzZ+x7VcfrvQQFPeWvE0iqr/DwpYEDNPxOR5f
+	 a/FPm3Mtn6eyIVjQOpphDxKJP0+B6jKvVerCDIK0a46/RKQrtX52O3FXCvoJNvCf3t
+	 j2Rku1RICYOObhbUl07TFkjaR8zrdoiTOMoV5BBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Carlos Maiolino <cmaiolino@redhat.com>,
-	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
-	Hans Holmberg <hans.holmberg@wdc.com>,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>
-Subject: [PATCH 6.18 922/957] xfs: fix memory leak on error in xfs_alloc_zone_info()
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 382/508] net/sched: netem: fix queue limit check to include reordered packets
 Date: Wed, 20 May 2026 18:23:25 +0200
-Message-ID: <20260520162154.575526229@linuxfoundation.org>
+Message-ID: <20260520162106.898197947@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,71 +69,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252136-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253233-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,lst.de:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,wdc.com:email]
-X-Rspamd-Queue-Id: D0FF4595A7B
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,networkplumber.org:email,msgid.link:url]
+X-Rspamd-Queue-Id: 03B3959B96E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+From: Stephen Hemminger <stephen@networkplumber.org>
 
-commit 592975da8c3ca87b043077e6eafa37665eae7936 upstream.
+[ Upstream commit 4185701fcce6b426b6c3630b25330dddd9c47b0d ]
 
-Currently, the 0th index of the zi_used_bucket_bitmap array is not freed
-on error due to the pre-decrement then evaluate semantic of the while
-loop used in xfs_alloc_zone_info(). Fix it by allowing for the i == 0
-case to be covered.
+The queue limit check in netem_enqueue() uses q->t_len which only
+counts packets in the internal tfifo. Packets placed in sch->q by
+the reorder path (__qdisc_enqueue_head) are not counted, allowing
+the total queue occupancy to exceed sch->limit under reordering.
 
-Fixes: 080d01c41d44 ("xfs: implement zoned garbage collection")
-Cc: stable@vger.kernel.org # v6.15
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
-Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
-Reviewed-by: Hans Holmberg <hans.holmberg@wdc.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Include sch->q.qlen in the limit check.
+
+Fixes: f8d4bc455047 ("net/sched: netem: account for backlog updates from child qdisc")
+Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260418032027.900913-3-stephen@networkplumber.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_zone_alloc.c |    2 +-
+ net/sched/sch_netem.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/xfs/xfs_zone_alloc.c
-+++ b/fs/xfs/xfs_zone_alloc.c
-@@ -1178,7 +1178,7 @@ xfs_alloc_zone_info(
- 	return zi;
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index a1b2912e2b6c7..b3af6a50b43be 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -522,7 +522,7 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 				1 << get_random_u32_below(8);
+ 	}
  
- out_free_bitmaps:
--	while (--i > 0)
-+	while (--i >= 0)
- 		kvfree(zi->zi_used_bucket_bitmap[i]);
- 	kfree(zi);
- 	return NULL;
+-	if (unlikely(q->t_len >= sch->limit)) {
++	if (unlikely(sch->q.qlen >= sch->limit)) {
+ 		/* re-link segs, so that qdisc_drop_all() frees them all */
+ 		skb->next = segs;
+ 		qdisc_drop_all(skb, sch, to_free);
+-- 
+2.53.0
+
 
 
 
