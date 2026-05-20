@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-250780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251717-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sOZqIX7zDWoF5AUAu9opvQ
-	(envelope-from <stable+bounces-250780-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:46:38 +0200
+	id mHpSNlDzDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251717-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:45:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99A0459487E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:46:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 712DF594801
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:45:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 466D83202A51
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:59:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 91320311166F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:38:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CAC43D75D3;
-	Wed, 20 May 2026 16:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C76E3D7D66;
+	Wed, 20 May 2026 17:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZHQvPOsX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uXXQz50Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0442A3EA953;
-	Wed, 20 May 2026 16:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29116376A0C;
+	Wed, 20 May 2026 17:38:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296296; cv=none; b=E26ulOsgQh1HRQb3HdAIwJ72dlmwR43b3apczN/PlSZO6dS7mth64rX0Rv6i5ei7ZegeNLdrl+K2hIVLIl6Zlb5V1FaFLZtcnvq9IA6xXN2erfiIm5XFOW2wv6ePS73shZEYmmaYCPJHqBQiENhUbdQN+vflQO/Et6hgHm/Breg=
+	t=1779298710; cv=none; b=aXn7++bbqCWLhtF+2Pd/oLTNPnMq4uFkjj8GuHsCxgWOSb1eA4v/vjN/uC4R6Jdib+Kmhrdy+KHy6K9Ydq9c/tYDHR5mrRb3dzhW/RHRouwUmYsrmzUHlsCEixNb7j+X9c2ZOVZe3EfSeM8Kf1a7pXKFpPfcOKg9k0z9pIvj/q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296296; c=relaxed/simple;
-	bh=8LUZ6LYaGzomv9IDstvscQ592V5zobNbNzDjXMzXBT4=;
+	s=arc-20240116; t=1779298710; c=relaxed/simple;
+	bh=12aYwnQGjDkOZyNXwGmHmNqaDjoLHUZkK76QSFE6rX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VNY7ABXupIrtgIh+46+XP4tENajsyrNIpnRDAoP/P0AoURFQ4+vCRsR4QLay0NEWSJJEFZbRzb9Y/0/AuPeZBsCH2BghA2ORgnfF4zngAqDJnIL/h5hx/JesNdzPwQoh7gGFqz39pwYq42XTdxx9xfnFcocGu4rIyqetp5V3aiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZHQvPOsX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 693971F00893;
-	Wed, 20 May 2026 16:58:14 +0000 (UTC)
+	 MIME-Version; b=a9PjcEqW1zPHvpuQdUGXUR+XzfjWlu7leqfvhVSo/gH3zzN961ns/yxuvySRIWToN7kCidD2cH4+rGEIgG2v+AvK0AM9BITvp8EQcW/UcXu+DvU/d3dNIR1RmwT+itkw5nYoD6mGDeoyxJ6JSrZZwR+/+o/zSusSYv10m/IbQf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uXXQz50Y; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F4E41F000E9;
+	Wed, 20 May 2026 17:38:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296294;
-	bh=ROdkS8zPvfbf/o7g4Pbv4t/D4mXBPfxW1runvALDX8o=;
+	s=korg; t=1779298709;
+	bh=iGYMJiELae5sqbHUxWbV77O7tmKIMxiTWzD8GdLVTYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZHQvPOsXhEGUEWPhhkdihFMoCg643nx5JK0gim1xvDyN4saYKGhJPh4NsAL2iHkmK
-	 Lb0B9TToPHJIWCFMTHKVKiKMBSPserZ7mZA0TpFdQ817/jO0JwgWm2YfV8XHhk1iO6
-	 0V1CHc2SMbAX/FKi1kJb7ggkoNrdBTXUkhdsecec=
+	b=uXXQz50YepRJahFjszu178rn7DK70aTIL3m+L9ur+cnF0tcskpTdd14koYHkvrOP8
+	 AC7A1mPOJxgNYLjteDK5TrOhAiWZsFnQql+W2l+5Jaj31vZXARTS/VIQGYR4nkhnAR
+	 dWu2Jb0yxV1FyDUizSBxbzDd8pFS+InM9JzNfdl0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Leo Yan <leo.yan@arm.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0746/1146] erofs: fix offset truncation when shifting pgoff on 32-bit platforms
+Subject: [PATCH 6.18 513/957] perf expr: Return -EINVAL for syntax error in expr__find_ids()
 Date: Wed, 20 May 2026 18:16:36 +0200
-Message-ID: <20260520162205.089914008@linuxfoundation.org>
+Message-ID: <20260520162145.661939301@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,84 +69,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251717-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250780-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,alibaba.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 99A0459487E
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,arm.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 712DF594801
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit c99493ce409c3b98fec1616dbcf24c102e006deb ]
+[ Upstream commit 3a61fd866ef9aaa1d3158b460f852b74a2df07f4 ]
 
-On 32-bit platforms, pgoff_t is 32 bits wide, so left-shifting
-large arbitrary pgoff_t values by PAGE_SHIFT performs 32-bit arithmetic
-and silently truncates the result for pages beyond the 4 GiB boundary.
+expr__find_ids() propagates the parser return value directly.  For syntax
+errors, the parser can return a positive value, but callers treat it as
+success, e.g., for below case on Arm64 platform:
 
-Cast the page index to loff_t before shifting to produce a correct
-64-bit byte offset.
+  metric expr 100 * (STALL_SLOT_BACKEND / (CPU_CYCLES * #slots) - BR_MIS_PRED * 3 / CPU_CYCLES) for backend_bound
+  parsing metric: 100 * (STALL_SLOT_BACKEND / (CPU_CYCLES * #slots) - BR_MIS_PRED * 3 / CPU_CYCLES)
+  Failure to read '#slots' literal: #slots = nan
+  syntax error
 
-Fixes: 386292919c25 ("erofs: introduce readmore decompression strategy")
-Fixes: 307210c262a2 ("erofs: verify metadata accesses for file-backed mounts")
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Convert positive parser returns in expr__find_ids() to -EINVAL, as a
+result, the error value will be respected by callers.
+
+Before:
+
+  perf stat -C 5
+  Failure to read '#slots'Failure to read '#slots'Failure to read '#slots'Failure to read '#slots'Segmentation fault
+
+After:
+
+  perf stat -C 5
+  Failure to read '#slots'Cannot find metric or group `Default'
+
+Fixes: ded80bda8bc9 ("perf expr: Migrate expr ids table to a hashmap")
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/data.c  | 2 +-
- fs/erofs/zdata.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ tools/perf/util/expr.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/erofs/data.c b/fs/erofs/data.c
-index 132a27deb2f3b..b2c12c5856acc 100644
---- a/fs/erofs/data.c
-+++ b/fs/erofs/data.c
-@@ -39,7 +39,7 @@ void *erofs_bread(struct erofs_buf *buf, erofs_off_t offset, bool need_kmap)
- 	 * However, the data access range must be verified here in advance.
- 	 */
- 	if (buf->file) {
--		fpos = index << PAGE_SHIFT;
-+		fpos = (loff_t)index << PAGE_SHIFT;
- 		err = rw_verify_area(READ, buf->file, &fpos, PAGE_SIZE);
- 		if (err < 0)
- 			return ERR_PTR(err);
-diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
-index fe8121df9ef2f..624b83ff4ecb7 100644
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -1874,7 +1874,7 @@ static void z_erofs_pcluster_readmore(struct z_erofs_frontend *f,
+diff --git a/tools/perf/util/expr.c b/tools/perf/util/expr.c
+index 7fda0ff89c168..0893c88a4ef83 100644
+--- a/tools/perf/util/expr.c
++++ b/tools/perf/util/expr.c
+@@ -376,7 +376,8 @@ int expr__find_ids(const char *expr, const char *one,
+ 	if (one)
+ 		expr__del_id(ctx, one);
  
- 		if (cur < PAGE_SIZE)
- 			break;
--		cur = (index << PAGE_SHIFT) - 1;
-+		cur = ((loff_t)index << PAGE_SHIFT) - 1;
- 	}
+-	return ret;
++	/* A positive value means syntax error, convert to -EINVAL */
++	return ret > 0 ? -EINVAL : ret;
  }
  
+ double expr_id_data__value(const struct expr_id_data *data)
 -- 
 2.53.0
 
