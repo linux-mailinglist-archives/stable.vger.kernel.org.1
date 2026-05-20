@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-250793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252370-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4AY6L1PvDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-250793-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:28:51 +0200
+	id 2PSzCzwkDmr26QUAu9opvQ
+	(envelope-from <stable+bounces-252370-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:14:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A3B7593CA7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:28:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B6AE59A955
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:14:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1DCBD314F2D5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:59:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 48B0A3813D65
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:08:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1B563A3E9C;
-	Wed, 20 May 2026 16:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 198FD3F7884;
+	Wed, 20 May 2026 18:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Ta41RTM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1LVhmVT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956AF3B6349;
-	Wed, 20 May 2026 16:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCBA93DC4DA;
+	Wed, 20 May 2026 18:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296327; cv=none; b=C1SwPH7LJErdRR/hl7upevt7ergPYml/sozBR/97CXaS5M37gvaoGhnwyNG+gk8NFASte3DSlt042MCJSMTopa0waJbtPP3EOn7AJg/XarHWksQ5BggW9afOcWkLHVq/nwEWMSkVpmR4Cy8VvnX9DBJa+w+HXttiSEg0cCkd6jQ=
+	t=1779300497; cv=none; b=SkwEYFS2oUmH9VKwm9g4I66vg8AOcTzQ6LY4172BjB45gDYx02MRv8dkD6xWkKght9QVOVChxK+ro3YcW7ydKMaZvfPka+UnMWUNYy8ImMuWQqV2yedMrDwxFZ1KcxOsf7Uz74NXbbkYode954zQZjxCcGVBnY62r16LugQWiwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296327; c=relaxed/simple;
-	bh=mSVGH53lG5Y99HJp9jUIiR+x6Mo4lOaSLlszHk35cwc=;
+	s=arc-20240116; t=1779300497; c=relaxed/simple;
+	bh=Sf1DKGa5v8qet8vwO1HLL4PlVuMzFvfDXmqQn/7m0XE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ejGNC1Sa3Tg6ES41p9GpQLn/TxR5clsvWEcI1kTFbdKYqcaRNigm7FMCfeGXvnZ13SRSUJv37PZXm2aZ7N49zedA4xosI8bgET+NU4WRvmWdBTKF6NuBNehVxjPWrcvB+O16FoxT2TWsZaOE4Jy2EkRpQ8acHXrB80A3AfG1528=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Ta41RTM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 061E91F000E9;
-	Wed, 20 May 2026 16:58:45 +0000 (UTC)
+	 MIME-Version; b=fqqArVdgFaIXIwaR+mpE+0FLqjh+eJs1hGsYcQ2wp/RZG6HJeDX/FaILV4KdpXVg95viYvq5tw9pVpqh4oC3hEXJeTFDp4n8LZ+oNzQbJrSGogmdkgBJh+6yrBDvDk2rQGWe9RFtgIoD5e+rz6shboeqRkA6jwtj+KKORY0B4H4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1LVhmVT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB3E71F000E9;
+	Wed, 20 May 2026 18:08:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296326;
-	bh=jYa2/p/iHnwjQCw71Pd95E7sLpbbRHyyUr6cqhjgsIs=;
+	s=korg; t=1779300496;
+	bh=7TNB/3EOrd0j0JZBgqfbqnxNxt/eOS4JXB4NnuGiK6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0Ta41RTMGGsrHWdqCQ0W31up/3nxxVtDRenSKv1m0b9yBd8uR0QpNZULu8QeQKQYY
-	 ayrxAWgm0crgFkcqETT7+TcjbapDoWsMzrml4m6OT9YXFCZIhL1KqUTDN53gpTXmn7
-	 Azih8VALWBQNVWR9jLpO2WAU2yiuizn6z2RCiBz0=
+	b=t1LVhmVThoSFnvBv0LKVENi/uVPqza6tCBISnQs+rMAGSjTPDW2sc01CRj/BM84n4
+	 hUfyP+4XKiC/e8X/o+lFZI1IrmHMdY5Nb7m5/GU6/JObjDrYMG4o5AUqjqfKuW5Kiv
+	 GjMehnyOlbjiDGzg4YN7R98AiQLJNbnnNWNmc88A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Felix Gu <ustc.gu@gmail.com>,
 	Peng Fan <peng.fan@nxp.com>,
-	Josua Mayer <josua@solid-run.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0757/1146] arm64: dts: imx8mp-sr-som: Correct PAD settings for PMIC_nINT
+Subject: [PATCH 6.12 196/666] pmdomain: imx: scu-pd: Fix device_node reference leak during ->probe()
 Date: Wed, 20 May 2026 18:16:47 +0200
-Message-ID: <20260520162205.342453903@linuxfoundation.org>
+Message-ID: <20260520162115.450731197@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,80 +65,73 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nxp.com,linaro.org,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250793-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252370-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,solid-run.com:email,0.0.0.25:email]
-X-Rspamd-Queue-Id: 5A3B7593CA7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linaro.org:email]
+X-Rspamd-Queue-Id: 6B6AE59A955
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-[ Upstream commit 695a476275cfb9c798a696aeaa43967701d5c78a ]
+[ Upstream commit c8e9b6a55702be6c6d034e973d519c52c3848415 ]
 
-With commit 5d0efaf47ee90 ("regulator: pca9450: Correct interrupt type"),
-there might be interrupt storm for this board. Need to set PAD PUE and PU
-together to make pull up work properly.
+When calling of_parse_phandle_with_args(), the caller is responsible
+to call of_node_put() to release the reference of device node.
+In imx_sc_pd_get_console_rsrc(), it does not release the reference.
 
-Fixes: a009c0c66ecb4 ("arm64: dts: add description for solidrun imx8mp som and cubox-m")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Josua Mayer <josua@solid-run.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Fixes: 893cfb99734f ("firmware: imx: scu-pd: do not power off console domain")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-sr-som.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pmdomain/imx/scu-pd.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-sr-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-sr-som.dtsi
-index 3cdb0bc0ab721..c3f7daa773eaf 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-sr-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-sr-som.dtsi
-@@ -174,7 +174,7 @@ pmic: pmic@25 {
- 		pinctrl-0 = <&pmic_pins>;
- 		pinctrl-names = "default";
- 		interrupt-parent = <&gpio1>;
--		interrupts = <3 GPIO_ACTIVE_LOW>;
-+		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
- 		nxp,i2c-lt-enable;
+diff --git a/drivers/pmdomain/imx/scu-pd.c b/drivers/pmdomain/imx/scu-pd.c
+index 01d465d88f60d..3ec33667a308c 100644
+--- a/drivers/pmdomain/imx/scu-pd.c
++++ b/drivers/pmdomain/imx/scu-pd.c
+@@ -326,6 +326,7 @@ static void imx_sc_pd_get_console_rsrc(void)
+ 		return;
  
- 		regulators {
-@@ -417,7 +417,7 @@ MX8MP_IOMUXC_SAI1_RXD1__GPIO4_IO03		0x160
+ 	imx_con_rsrc = specs.args[0];
++	of_node_put(specs.np);
+ }
  
- 	pmic_pins: pinctrl-pmic-grp {
- 		fsl,pins = <
--			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03		0x41
-+			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03		0x1c0
- 		>;
- 	};
- 
+ static int imx_sc_get_pd_power(struct device *dev, u32 rsrc)
 -- 
 2.53.0
 
