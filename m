@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250962-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2E1JCXn8DWoK5QUAu9opvQ
-	(envelope-from <stable+bounces-251847-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:57 +0200
+	id gBrbG4v1DWoz5AUAu9opvQ
+	(envelope-from <stable+bounces-250962-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:55:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AE80596100
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:56 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77D90594EBC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:55:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 025A536F55AA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:44:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 93B7E3161560
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:07:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FC223EE1FA;
-	Wed, 20 May 2026 17:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD1A53F86F4;
+	Wed, 20 May 2026 17:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fWoZxhQi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kBEFZjxf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72603F1661;
-	Wed, 20 May 2026 17:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7508C3F789B;
+	Wed, 20 May 2026 17:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299042; cv=none; b=DjGG3BLEQ65N9xDvK+PUOm+KU/U1VTfoqeJxIyzWmF9DwW6fev3YyWuHMXBL+9N8w+4OAzqaJ21JAddY2QXXYlE7VM+gkyigHVj2IwxpiVJvrQ+I/u7Op+t8N/ToRJt1Z/XXwlbMi4P1VcEsEyx2ZD8PW22poD33nh6KDxbQ6gM=
+	t=1779296744; cv=none; b=fykFGwu10rR3pw5LKQOCSDOB7NjDr8/tDQq98JlU20yego009ZKNrKEfYUMjim8z/taRgpLshx6O7DY1vV3I/H62ZKD0MDfTTWlSBvuKlZTJo2wE61CwitRQ6LyOgHVmv4ATgDb8+8VJy3lDu+GrnQjrxO9hcIMNC+xj944pnqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299042; c=relaxed/simple;
-	bh=9Kh7dkfiXnyfpH5AC5TzWJsNdjlYzMcSIwCz3d0LrKc=;
+	s=arc-20240116; t=1779296744; c=relaxed/simple;
+	bh=ArcmgR+FOtvRWGcUWHg1p3d251rRRsBysJJLkzPicdc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qU2/0larZKqAaGXBQHQR14JrDupCLrT7ieQs7339ZCb+YxQvocK8An2JCYXOwO5DWjaC5wwlyqRNgfQ2VwJrWl6L9MQC6SeFmRI4Wf/DXTL9HnwplKWiCgyF/EKEsP/wfrEzydFkMM7ErzSRDGytJRGNPYS9uxkYn0tQX10k5yE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fWoZxhQi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD1F1F000E9;
-	Wed, 20 May 2026 17:44:00 +0000 (UTC)
+	 MIME-Version; b=Mi4UdiLKv1cD8ngO/nsYkCpPKyFV1DNDtRcKshND0bAqhb4dJVBivDtExqU4iam9Ue28aBRxkhbW+SAATsmhDVoi/zaOyYBRpd0F0oLSC7C4HdjN4K0H7W5JcJQ2qoAcf3GyRtIPyUGBCPmUgxE81i2SHRTxQQ/4ZpaKGoPtbzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kBEFZjxf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC10E1F000E9;
+	Wed, 20 May 2026 17:05:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299040;
-	bh=Gp8GTA3hklJlcRXxT/lNQBWmKFo2N3TkFCOR6RoJbUM=;
+	s=korg; t=1779296743;
+	bh=W53d9qc+axIa0vpeK/jGU6Y/MdELBlFVwtWDBViupow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fWoZxhQipyiTbdr+g2i1ISufDbcq2e6SXqKjW4F8QwaVHWwCHdMVxX2vJ5GqPrFE1
-	 ctCjiHDnr2qR9T6ykCuVmeQN6zaiY7otmFbAycf1Zv57n+Q2mzwPz9hKkddVPif5vf
-	 GO7i9KRNFY7eZc1vYe36M7liJ9spuDsK34EODHJw=
+	b=kBEFZjxfZiLngsA0px+ZvOM6+/3ltwpmjoDrgwbanOYk3WOQ97ilZZzo6FHWdBUud
+	 JUY9C9Kn+c1Yots4GxvNMs5yezxepNvfBRH9O8OfhnY+vJ6DBMzXa+wyfDb9CKuBkk
+	 j5mnImQcW5gVzYrPQWcn/owyoZhjpq5cRTSmrUWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Len Brown <len.brown@intel.com>,
+	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 640/957] tcp: annotate data-races around tp->reord_seen
-Date: Wed, 20 May 2026 18:18:43 +0200
-Message-ID: <20260520162148.408051789@linuxfoundation.org>
+Subject: [PATCH 7.0 0874/1146] tools/power turbostat: Fix --cpu-set 0 regression on HT systems
+Date: Wed, 20 May 2026 18:18:44 +0200
+Message-ID: <20260520162208.018080563@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251847-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250962-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,68 +89,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 5AE80596100
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 77D90594EBC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Len Brown <len.brown@intel.com>
 
-[ Upstream commit 62585690e6b2a112c408fe25f142b246ac833c42 ]
+[ Upstream commit 2c52f942fcf21c8e09c7dac669fca591cec2692b ]
 
-tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
-add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
+"turbostat --cpu-set 0" appears to hang if cpu0 has an HT sibling.
 
-Fixes: 7ec65372ca53 ("tcp: add stat of data packet reordering events")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260416200319.3608680-11-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This is because the initialization code recognizes that it does not
+have to open perf files for the HT sibling, but the HT support
+in the collection code sees the HT sibling and tries to read
+from an uninitialized file descriptor, 0 (standard input).
+
+Access HT siblings only when they are in the allowed set.
+
+Fixes: a2b4d0f8bf07 ("tools/power turbostat: Favor cpu# over core#")
+Signed-off-by: Len Brown <len.brown@intel.com>
+Reported-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp.c       | 2 +-
- net/ipv4/tcp_input.c | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ tools/power/x86/turbostat/turbostat.c | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 3a5801ba3df1a..03299c21e4d68 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -4418,7 +4418,7 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
- 	nla_put_u64_64bit(stats, TCP_NLA_BYTES_RETRANS,
- 			  READ_ONCE(tp->bytes_retrans), TCP_NLA_PAD);
- 	nla_put_u32(stats, TCP_NLA_DSACK_DUPS, READ_ONCE(tp->dsack_dups));
--	nla_put_u32(stats, TCP_NLA_REORD_SEEN, tp->reord_seen);
-+	nla_put_u32(stats, TCP_NLA_REORD_SEEN, READ_ONCE(tp->reord_seen));
- 	nla_put_u32(stats, TCP_NLA_SRTT, tp->srtt_us >> 3);
- 	nla_put_u16(stats, TCP_NLA_TIMEOUT_REHASH, tp->timeout_rehash);
- 	nla_put_u32(stats, TCP_NLA_BYTES_NOTSENT,
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 90727e1e581e4..5a944b1ec320c 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -1266,7 +1266,7 @@ static void tcp_check_sack_reordering(struct sock *sk, const u32 low_seq,
- 	}
+diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
+index d6b4fd17c5f37..7f61f07ceb314 100644
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -2427,11 +2427,17 @@ char *sys_lpi_file_debugfs = "/sys/kernel/debug/pmc_core/slp_s0_residency_usec";
  
- 	/* This exciting event is worth to be remembered. 8) */
--	tp->reord_seen++;
-+	WRITE_ONCE(tp->reord_seen, tp->reord_seen + 1);
- 	NET_INC_STATS(sock_net(sk),
- 		      ts ? LINUX_MIB_TCPTSREORDER : LINUX_MIB_TCPSACKREORDER);
- }
-@@ -2224,7 +2224,7 @@ static void tcp_check_reno_reordering(struct sock *sk, const int addend)
- 	WRITE_ONCE(tp->reordering,
- 		   min_t(u32, tp->packets_out + addend,
- 			 READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_max_reordering)));
--	tp->reord_seen++;
-+	WRITE_ONCE(tp->reord_seen, tp->reord_seen + 1);
- 	NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPRENOREORDER);
+ int cpu_is_not_present(int cpu)
+ {
++	if (cpu < 0)
++		return 1;
++
+ 	return !CPU_ISSET_S(cpu, cpu_present_setsize, cpu_present_set);
  }
  
+ int cpu_is_not_allowed(int cpu)
+ {
++	if (cpu < 0)
++		return 1;
++
+ 	return !CPU_ISSET_S(cpu, cpu_allowed_setsize, cpu_allowed_set);
+ }
+ 
+@@ -2473,9 +2479,12 @@ int for_all_cpus(int (func) (struct thread_data *, struct core_data *, struct pk
+ 		int i;
+ 
+ 		for (i = MAX_HT_ID; i > 0; --i) {	/* ht_id 0 is self */
+-			if (cpus[cpu].ht_sibling_cpu_id[i] <= 0)
++			int sibling_cpu_id = cpus[cpu].ht_sibling_cpu_id[i];
++
++			if (cpu_is_not_allowed(sibling_cpu_id))
+ 				continue;
+-			t = &thread_base[cpus[cpu].ht_sibling_cpu_id[i]];
++
++			t = &thread_base[sibling_cpu_id];
+ 
+ 			retval |= func(t, c, p);
+ 		}
+@@ -6252,10 +6261,13 @@ int for_all_cpus_2(int (func) (struct thread_data *, struct core_data *,
+ 		int i;
+ 
+ 		for (i = MAX_HT_ID; i > 0; --i) {	/* ht_id 0 is self */
+-			if (cpus[cpu].ht_sibling_cpu_id[i] <= 0)
++			int sibling_cpu_id = cpus[cpu].ht_sibling_cpu_id[i];
++
++			if (cpu_is_not_allowed(sibling_cpu_id))
+ 				continue;
+-			t = &thread_base[cpus[cpu].ht_sibling_cpu_id[i]];
+-			t2 = &thread_base2[cpus[cpu].ht_sibling_cpu_id[i]];
++
++			t = &thread_base[sibling_cpu_id];
++			t2 = &thread_base2[sibling_cpu_id];
+ 
+ 			retval |= func(t, c, p, t2, c2, p2);
+ 		}
 -- 
 2.53.0
 
