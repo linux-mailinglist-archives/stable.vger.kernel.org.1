@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-251584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250644-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CAotOSj/DWpV5QUAu9opvQ
-	(envelope-from <stable+bounces-251584-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:24 +0200
+	id YA8UIh/1DWoz5AUAu9opvQ
+	(envelope-from <stable+bounces-250644-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B5D2596BE9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D81C3594D87
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 11CC6307330B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:32:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BFC9D334E635
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A87E836C9D2;
-	Wed, 20 May 2026 17:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D98CF36D9EA;
+	Wed, 20 May 2026 16:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wWjxOAl6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wvZSf0Uz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A16A29D26E;
-	Wed, 20 May 2026 17:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E19E2F0C62;
+	Wed, 20 May 2026 16:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298361; cv=none; b=KSvZ8+d6WbdvpHuOl+anqdJ9bz9emIZR4vHVti3cIShM7luoDf5WFH3CGbGeMNT33WqXh/LRSIsuA4SVZW8bPuSBrlwcw5FyTYmvrHTeGpZT18nSwAEAbMPnI/g5wOtqVA1WI3BxAJS9DdPaXIm7aAvqLX+dC/n0Eib8jfdnl9w=
+	t=1779295948; cv=none; b=KU+eh8dvI2MHnLRfZtbBvWofBuZTrxS6A5TbD13QlZx5nkp4dSwkfvTfvTAT6lwLRtFxdLBC4HvYWQmsSYhgOc/SDA2Y9gEku49o8Ogg99EyFtN0HGEFW7R3Mb3GMNNIemwsUlCy98k57r2qvTzyIHcVgzXs8uqsuHhqkM5HCEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298361; c=relaxed/simple;
-	bh=utxKUp6pvkf1aVMus1QHg2eNnieKQCIdsCv5hJUnYCY=;
+	s=arc-20240116; t=1779295948; c=relaxed/simple;
+	bh=GskuIYbmvKY8HeVgeOyGbHKhlXVC1qi73w9+VZkvuwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=USFTDMDkOFhUf/pyEGc98jl1AWJPinQph/t0VSp2OPQMCtasYs0kRkhA3VYgtVNs96u288/niLfMBopTr7ksAVRYyAts4LTfdcHoIdi0OoYsMxnr8ZnbqjTFoFInGmtNmFtGQuxo11B3mVscnZPXY/hyBlmnGxjQ4Urmy8a0M38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wWjxOAl6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A18701F000E9;
-	Wed, 20 May 2026 17:32:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eqkeokGKMx4es500Vb2f+WnqIot/XI62pWXKaMOjLJQVKL93Bgj/m9vZhvLEHU8E5HDfvegnOJzLTUXz3idzekh0F9sQ3P8AW2A1iLFO79kOtV5jDOKkRjHZXB8Nhi+ytsEBglKWo4dZjYeMUZRRwUlf72+OysbYriLfOKE01ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wvZSf0Uz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F1BD1F000E9;
+	Wed, 20 May 2026 16:52:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298360;
-	bh=KKwuQRRG9iOPOLX+YYdmGkzEPrzyo1+UsVArSZUXuNw=;
+	s=korg; t=1779295947;
+	bh=/vf/y2+ZilCfYx+MVdYcQfETMyfpGcAsIpJOAz8+wk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wWjxOAl6/qkUb3aodXn2LQgFdNDJZXLDwyC31vjvjWn5tb5inJv+I6DeOm4t397fz
-	 r2II7mknbGaSO5Nj5SREJqIY5/uMnsxj8drCEC+uT1GOHU+NrfBDNnPM9Lpb8hkYxP
-	 uyrihuNd+eB41FW9Q5K3HUjb72Td/tQhdTDIi+wE=
+	b=wvZSf0UzJ6ehLJWlI5BFgzDOTuv1j4J/MHfNMtFoyrBtNi5BKsuLs1XDZTL6o7ZKh
+	 azXtTSFeNaStsZn5YF6gy643Tplln4Yl1H5MQcCx1mzpgtvJpiN949fy04BVMpez+Y
+	 HXcNmSWBTH8A6fF0NsksYTEqmwFIPxC5ScF4H4s8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
-	Frank Li <Frank.Li@nxp.com>,
+	Michal Luczaj <mhal@rbox.co>,
+	=?UTF-8?q?=E9=92=B1=E4=B8=80=E9=93=AD?= <yimingqian591@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 380/957] arm64: dts: imx8mp-kontron: Fix touch reset configuration on DL devices
-Date: Wed, 20 May 2026 18:14:23 +0200
-Message-ID: <20260520162142.769620057@linuxfoundation.org>
+Subject: [PATCH 7.0 0614/1146] bpf, sockmap: Fix af_unix null-ptr-deref in proto update
+Date: Wed, 20 May 2026 18:14:24 +0200
+Message-ID: <20260520162202.079061858@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +66,232 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,rbox.co,gmail.com,google.com,linux.dev,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251584-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-250644-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,kontron.de:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,5d:email]
-X-Rspamd-Queue-Id: 1B5D2596BE9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,rbox.co:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,linux.dev:email]
+X-Rspamd-Queue-Id: D81C3594D87
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frieder Schrempf <frieder.schrempf@kontron.de>
+From: Michal Luczaj <mhal@rbox.co>
 
-[ Upstream commit 058c53476dde9937877e93d964a283bbb5e1e4c7 ]
+[ Upstream commit dca38b7734d2ea00af4818ff3ae836fab33d5d5a ]
 
-The reset signal needs a pullup, but there is no hardware pullup.
-As a workaround, enable the internal pullup to fix the touchscreen.
+unix_stream_connect() sets sk_state (`WRITE_ONCE(sk->sk_state,
+TCP_ESTABLISHED)`) _before_ it assigns a peer (`unix_peer(sk) = newsk`).
+sk_state == TCP_ESTABLISHED makes sock_map_sk_state_allowed() believe that
+socket is properly set up, which would include having a defined peer. IOW,
+there's a window when unix_stream_bpf_update_proto() can be called on
+socket which still has unix_peer(sk) == NULL.
 
-As this deviates from the default generic GPIO settings in the OSM
-devicetree, add a new node for the touch pinctrl and redefine the
-generic gpio1 pinctrl.
+         CPU0 bpf                            CPU1 connect
+         --------                            ------------
 
-Fixes: 946ab10e3f40f ("arm64: dts: Add support for Kontron OSM-S i.MX8MP SoM and BL carrier board")
-Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+                                WRITE_ONCE(sk->sk_state, TCP_ESTABLISHED)
+sock_map_sk_state_allowed(sk)
+...
+sk_pair = unix_peer(sk)
+sock_hold(sk_pair)
+                                sock_hold(newsk)
+                                smp_mb__after_atomic()
+                                unix_peer(sk) = newsk
+
+BUG: kernel NULL pointer dereference, address: 0000000000000080
+RIP: 0010:unix_stream_bpf_update_proto+0xa0/0x1b0
+Call Trace:
+  sock_map_link+0x564/0x8b0
+  sock_map_update_common+0x6e/0x340
+  sock_map_update_elem_sys+0x17d/0x240
+  __sys_bpf+0x26db/0x3250
+  __x64_sys_bpf+0x21/0x30
+  do_syscall_64+0x6b/0x3a0
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Initial idea was to move peer assignment _before_ the sk_state update[1],
+but that involved an additional memory barrier, and changing the hot path
+was rejected.
+Then a NULL check during proto update in unix_stream_bpf_update_proto() was
+considered[2], but the follow-up discussion[3] focused on the root cause,
+i.e. sockmap update taking a wrong lock. Or, more specifically, missing
+unix_state_lock()[4].
+In the end it was concluded that teaching sockmap about the af_unix locking
+would be unnecessarily complex[5].
+Complexity aside, since BPF_PROG_TYPE_SCHED_CLS and BPF_PROG_TYPE_SCHED_ACT
+are allowed to update sockmaps, sock_map_update_elem() taking the unix
+lock, as it is currently implemented in unix_state_lock():
+spin_lock(&unix_sk(s)->lock), would be problematic. unix_state_lock() taken
+in a process context, followed by a softirq-context TC BPF program
+attempting to take the same spinlock -- deadlock[6].
+This way we circled back to the peer check idea[2].
+
+[1]: https://lore.kernel.org/netdev/ba5c50aa-1df4-40c2-ab33-a72022c5a32e@rbox.co/
+[2]: https://lore.kernel.org/netdev/20240610174906.32921-1-kuniyu@amazon.com/
+[3]: https://lore.kernel.org/netdev/7603c0e6-cd5b-452b-b710-73b64bd9de26@linux.dev/
+[4]: https://lore.kernel.org/netdev/CAAVpQUA+8GL_j63CaKb8hbxoL21izD58yr1NvhOhU=j+35+3og@mail.gmail.com/
+[5]: https://lore.kernel.org/bpf/CAAVpQUAHijOMext28Gi10dSLuMzGYh+jK61Ujn+fZ-wvcODR2A@mail.gmail.com/
+[6]: https://lore.kernel.org/bpf/dd043c69-4d03-46fe-8325-8f97101435cf@linux.dev/
+
+Summary of scenarios where af_unix/stream connect() may race a sockmap
+update:
+
+1. connect() vs. bpf(BPF_MAP_UPDATE_ELEM), i.e. sock_map_update_elem_sys()
+
+   Implemented NULL check is sufficient. Once assigned, socket peer won't
+   be released until socket fd is released. And that's not an issue because
+   sock_map_update_elem_sys() bumps fd refcnf.
+
+2. connect() vs BPF program doing update
+
+   Update restricted per verifier.c:may_update_sockmap() to
+
+      BPF_PROG_TYPE_TRACING/BPF_TRACE_ITER
+      BPF_PROG_TYPE_SOCK_OPS (bpf_sock_map_update() only)
+      BPF_PROG_TYPE_SOCKET_FILTER
+      BPF_PROG_TYPE_SCHED_CLS
+      BPF_PROG_TYPE_SCHED_ACT
+      BPF_PROG_TYPE_XDP
+      BPF_PROG_TYPE_SK_REUSEPORT
+      BPF_PROG_TYPE_FLOW_DISSECTOR
+      BPF_PROG_TYPE_SK_LOOKUP
+
+   Plus one more race to consider:
+
+            CPU0 bpf                            CPU1 connect
+            --------                            ------------
+
+                                   WRITE_ONCE(sk->sk_state, TCP_ESTABLISHED)
+   sock_map_sk_state_allowed(sk)
+                                   sock_hold(newsk)
+                                   smp_mb__after_atomic()
+                                   unix_peer(sk) = newsk
+   sk_pair = unix_peer(sk)
+   if (unlikely(!sk_pair))
+      return -EINVAL;
+
+                                                 CPU1 close
+                                                 ----------
+
+                                   skpair = unix_peer(sk);
+                                   unix_peer(sk) = NULL;
+                                   sock_put(skpair)
+   // use after free?
+   sock_hold(sk_pair)
+
+   2.1 BPF program invoking helper function bpf_sock_map_update() ->
+       BPF_CALL_4(bpf_sock_map_update(), ...)
+
+       Helper limited to BPF_PROG_TYPE_SOCK_OPS. Nevertheless, a unix sock
+       might be accessible via bpf_map_lookup_elem(). Which implies sk
+       already having psock, which in turn implies sk already having
+       sk_pair. Since sk_psock_destroy() is queued as RCU work, sk_pair
+       won't go away while BPF executes the update.
+
+   2.2 BPF program invoking helper function bpf_map_update_elem() ->
+       sock_map_update_elem()
+
+       2.2.1 Unix sock accessible to BPF prog only via sockmap lookup in
+             BPF_PROG_TYPE_SOCKET_FILTER, BPF_PROG_TYPE_SCHED_CLS,
+             BPF_PROG_TYPE_SCHED_ACT, BPF_PROG_TYPE_XDP,
+             BPF_PROG_TYPE_SK_REUSEPORT, BPF_PROG_TYPE_FLOW_DISSECTOR,
+             BPF_PROG_TYPE_SK_LOOKUP.
+
+             Pretty much the same as case 2.1.
+
+       2.2.2 Unix sock accessible to BPF program directly:
+             BPF_PROG_TYPE_TRACING, narrowed down to BPF_TRACE_ITER.
+
+             Sockmap iterator (sock_map_seq_ops) is safe: unix sock
+             residing in a sockmap means that the sock already went through
+             the proto update step.
+
+             Unix sock iterator (bpf_iter_unix_seq_ops), on the other hand,
+             gives access to socks that may still be unconnected. Which
+             means iterator prog can race sockmap/proto update against
+             connect().
+
+             BUG: KASAN: null-ptr-deref in unix_stream_bpf_update_proto+0x253/0x4d0
+             Write of size 4 at addr 0000000000000080 by task test_progs/3140
+             Call Trace:
+              dump_stack_lvl+0x5d/0x80
+              kasan_report+0xe4/0x1c0
+              kasan_check_range+0x125/0x200
+              unix_stream_bpf_update_proto+0x253/0x4d0
+              sock_map_link+0x71c/0xec0
+              sock_map_update_common+0xbc/0x600
+              sock_map_update_elem+0x19a/0x1f0
+              bpf_prog_bbbf56096cdd4f01_selective_dump_unix+0x20c/0x217
+              bpf_iter_run_prog+0x21e/0xae0
+              bpf_iter_unix_seq_show+0x1e0/0x2a0
+              bpf_seq_read+0x42c/0x10d0
+              vfs_read+0x171/0xb20
+              ksys_read+0xff/0x200
+              do_syscall_64+0xf7/0x5e0
+              entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+             While the introduced NULL check prevents null-ptr-deref in the
+             BPF program path as well, it is insufficient to guard against
+             a poorly timed close() leading to a use-after-free. This will
+             be addressed in a subsequent patch.
+
+Fixes: c63829182c37 ("af_unix: Implement ->psock_update_sk_prot()")
+Closes: https://lore.kernel.org/netdev/ba5c50aa-1df4-40c2-ab33-a72022c5a32e@rbox.co/
+Reported-by: Michal Luczaj <mhal@rbox.co>
+Reported-by: 钱一铭 <yimingqian591@gmail.com>
+Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
+Suggested-by: Martin KaFai Lau <martin.lau@linux.dev>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260414-unix-proto-update-null-ptr-deref-v4-4-2af6fe97918e@rbox.co
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/freescale/imx8mp-kontron-dl.dtso | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ net/unix/unix_bpf.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-kontron-dl.dtso b/arch/arm64/boot/dts/freescale/imx8mp-kontron-dl.dtso
-index a3cba41d2b531..7131e9a499ae1 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-kontron-dl.dtso
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-kontron-dl.dtso
-@@ -77,6 +77,8 @@
- 	touchscreen@5d {
- 		compatible = "goodix,gt928";
- 		reg = <0x5d>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_touch>;
- 		interrupt-parent = <&gpio1>;
- 		interrupts = <6 8>;
- 		irq-gpios = <&gpio1 6 0>;
-@@ -98,6 +100,16 @@
- 	status = "okay";
- };
- 
-+/* redefine to remove touch controller GPIOs */
-+&pinctrl_gpio1 {
-+	fsl,pins = <
-+		MX8MP_IOMUXC_GPIO1_IO00__GPIO1_IO00		0x19 /* GPIO_A_0 */
-+		MX8MP_IOMUXC_GPIO1_IO01__GPIO1_IO01		0x19 /* GPIO_A_1 */
-+		MX8MP_IOMUXC_GPIO1_IO05__GPIO1_IO05		0x19 /* GPIO_A_2 */
-+		MX8MP_IOMUXC_GPIO1_IO08__GPIO1_IO08		0x19 /* GPIO_A_5 */
-+	>;
-+};
+diff --git a/net/unix/unix_bpf.c b/net/unix/unix_bpf.c
+index e0d30d6d22acb..57f3124c9d8db 100644
+--- a/net/unix/unix_bpf.c
++++ b/net/unix/unix_bpf.c
+@@ -185,6 +185,9 @@ int unix_stream_bpf_update_proto(struct sock *sk, struct sk_psock *psock, bool r
+ 	 */
+ 	if (!psock->sk_pair) {
+ 		sk_pair = unix_peer(sk);
++		if (unlikely(!sk_pair))
++			return -EINVAL;
 +
- &pwm1 {
- 	status = "okay";
- };
-@@ -108,4 +120,11 @@
- 			MX8MP_IOMUXC_SAI3_RXFS__GPIO4_IO28		0x19
- 		>;
- 	};
-+
-+	pinctrl_touch: touchgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO06__GPIO1_IO06		0x19
-+			MX8MP_IOMUXC_GPIO1_IO07__GPIO1_IO07		0x150
-+		>;
-+	};
- };
+ 		sock_hold(sk_pair);
+ 		psock->sk_pair = sk_pair;
+ 	}
 -- 
 2.53.0
 
