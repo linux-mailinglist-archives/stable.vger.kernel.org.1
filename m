@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253231-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cP0bAw4pDmqk6gUAu9opvQ
-	(envelope-from <stable+bounces-252767-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:35:10 +0200
+	id EFfxFS4HDmp25gUAu9opvQ
+	(envelope-from <stable+bounces-253231-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:10:38 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6074D59B0DA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:35:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4438597E04
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:10:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DAA8839E14A7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:26:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ECBE5398FFBE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BEE53FD14D;
-	Wed, 20 May 2026 18:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26C30421EE7;
+	Wed, 20 May 2026 18:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6zxX6BL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FB/wbabn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E7693F9296;
-	Wed, 20 May 2026 18:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B5F4219EE;
+	Wed, 20 May 2026 18:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301537; cv=none; b=eciic6lO99jZuiJ4C7+MAaK2SYlb0WQFRh/i/+HdmQvmtYKe8T9NFnfoshj+WkNdfZRR2AcDxfnDX79f+ORJqKfPVdzapkvzHJKG1a3AyqdJmjUlfuuvI6xQoVyLCNZJicb+x4lPalvJ1W0KKsUb8SmOAmK3wIkNPlxl/bAW5vs=
+	t=1779302739; cv=none; b=SVjptIBjcoI4AeGmSMMHm7hA268q+2Nl7rHT64G6ET1b+2K2nZ3vJXHC6T+C4IqnvAgF/e/TRkUAU1lxPG0BZijCwGzCmO1t8L77hIPU5bWsxXEbjLGR5ItD6FqpLQsWTceQjF/v8DJrknIRFoZ2s/aGSOsDgPB/78oU0sFXkr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301537; c=relaxed/simple;
-	bh=63FcdFOVROcleBa1qLeA9cDlkOBIUjYIfnPIjIlAJ4w=;
+	s=arc-20240116; t=1779302739; c=relaxed/simple;
+	bh=433LdXqElNnUi9pjcks0kINgTuZCBANp4/gjNufgQdI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OZUPn2w76gWnxluXdkfZjI4wJt4MlRmYZmApqGA7ZbHSEc3Nvsb4M69tCYyptgxTBaRxG8aZS4GuQWFvPZtwMiKLxkHstzuV61+wF4g/L3PQLBgjFz3pnOSO8dTIiOMvkm8JGQOxAK/2RrH84H9Cr71f9HAihGMWPAIDz3Z+wE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6zxX6BL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A7C1F000E9;
-	Wed, 20 May 2026 18:25:35 +0000 (UTC)
+	 MIME-Version; b=f6LD0v5OBtZt710zjbw4jdzM1Op5DTFuaRt+AfMCyydI8i/52hDdrzR7AaTcxEM+a+OMOBlUo8llpyJIC8yqUW4F/7KZhEvM9b+ZbBNLhXu8pJSyR4z2mpLGgPkErqGJenmhb14O/hmepQ6YNn4BdJ10WQw8iyQkE+RyxfhZMgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FB/wbabn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A89E81F000E9;
+	Wed, 20 May 2026 18:45:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301536;
-	bh=8AINpeB7+D4fUTMjg4XXPo+3A3eCTrPBHxKjrSQ1efE=;
+	s=korg; t=1779302738;
+	bh=NOTjhjThPM59dEBGud26FOkoh+fip3F8TMnKV6Rglkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=R6zxX6BLVBRjTjvgdcUPm0SuY/z6qf/z2TIgV7PgaLlmXwjgylE6O1lJSoBVzivw6
-	 Zqj690AXyRXhoMwP/YXoQ6i2HZSo+SHJx5XQmpm7zCVPoWJ/EBc5t9PzwFpzbTTF0T
-	 TiIst/GWsh7MzUbVt0YyFoB2D3zSEMCV4aNEO+L0=
+	b=FB/wbabnoq76fhPM731VL7b+5mWRo4mQYT9gyQ6W9U1yGcxE1T18bBBeVzSAQZf0i
+	 dSPv3vOY3nNgqk3JguKbXRBI8X4YDfwM4UtPhnS6itgTyASt4PCuGSgNFGqEddVwUY
+	 7lxvisDK0NH0+4dzWPOQrHifW/KwyrMt1B0LftRs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <error27@gmail.com>,
-	Edward Cree <ecree.xilinx@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	"Nikola Z. Ivanov" <zlatistiv@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 592/666] sfc: fix error code in efx_devlink_info_running_versions()
+Subject: [PATCH 6.6 380/508] netdevsim: zero initialize struct iphdr in dummy sk_buff
 Date: Wed, 20 May 2026 18:23:23 +0200
-Message-ID: <20260520162124.095771047@linuxfoundation.org>
+Message-ID: <20260520162106.856143056@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,73 +65,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253231-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252767-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 6074D59B0DA
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: D4438597E04
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <error27@gmail.com>
+From: Nikola Z. Ivanov <zlatistiv@gmail.com>
 
-[ Upstream commit 051ffb001b8a232cfa6e72f38bb5f51c4270a60b ]
+[ Upstream commit 35eaa6d8d6c2ee65e96f507add856e0eacf24591 ]
 
-Return -EIO if efx_mcdi_rpc() doesn't return enough space.
+Syzbot reports a KMSAN uninit-value originating from
+nsim_dev_trap_skb_build, with the allocation also
+being performed in the same function.
 
-Fixes: 14743ddd2495 ("sfc: add devlink info support for ef100")
-Signed-off-by: Dan Carpenter <error27@gmail.com>
-Reviewed-by: Edward Cree <ecree.xilinx@gmail.com>
-Link: https://patch.msgid.link/afGpsbLRHL4_H0KS@stanley.mountain
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fix this by calling skb_put_zero instead of skb_put to
+guarantee zero initialization of the whole IP header.
+
+Closes: https://syzkaller.appspot.com/bug?extid=23d7fcd204e3837866ff
+Fixes: da58f90f11f5 ("netdevsim: Add devlink-trap support")
+Signed-off-by: Nikola Z. Ivanov <zlatistiv@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260426201434.742030-1-zlatistiv@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/sfc/efx_devlink.c | 2 +-
+ drivers/net/netdevsim/dev.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/sfc/efx_devlink.c b/drivers/net/ethernet/sfc/efx_devlink.c
-index 3cd750820fdde..d5a4b3cf94544 100644
---- a/drivers/net/ethernet/sfc/efx_devlink.c
-+++ b/drivers/net/ethernet/sfc/efx_devlink.c
-@@ -530,7 +530,7 @@ static int efx_devlink_info_running_versions(struct efx_nic *efx,
- 	if (rc || outlength < MC_CMD_GET_VERSION_OUT_LEN) {
- 		netif_err(efx, drv, efx->net_dev,
- 			  "mcdi MC_CMD_GET_VERSION failed\n");
--		return rc;
-+		return rc ?: -EIO;
- 	}
+diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
+index 2614d6509954c..daec92570c2e3 100644
+--- a/drivers/net/netdevsim/dev.c
++++ b/drivers/net/netdevsim/dev.c
+@@ -758,7 +758,7 @@ static struct sk_buff *nsim_dev_trap_skb_build(void)
+ 	skb->protocol = htons(ETH_P_IP);
  
- 	/* Handle previous output */
+ 	skb_set_network_header(skb, skb->len);
+-	iph = skb_put(skb, sizeof(struct iphdr));
++	iph = skb_put_zero(skb, sizeof(struct iphdr));
+ 	iph->protocol = IPPROTO_UDP;
+ 	iph->saddr = in_aton("192.0.2.1");
+ 	iph->daddr = in_aton("198.51.100.1");
 -- 
 2.53.0
 
