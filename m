@@ -1,157 +1,168 @@
-Return-Path: <stable+bounces-250023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250022-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6AmZEOThDWop4gUAu9opvQ
-	(envelope-from <stable+bounces-250023-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:31:32 +0200
+	id QNMVNiroDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250022-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:58:18 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98DFB592085
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:31:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6112B592B7D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:58:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3DD413387EDE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:02:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 522CE358BD64
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D53317160;
-	Wed, 20 May 2026 16:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55FE5352030;
+	Wed, 20 May 2026 16:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arkamax.eu header.i=@arkamax.eu header.b="MovymO1O"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lz3fbk9c"
 X-Original-To: stable@vger.kernel.org
-Received: from arkamax.eu (128-116-240-228.dyn.eolo.it [128.116.240.228])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F2D332ECB;
-	Wed, 20 May 2026 16:02:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.116.240.228
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B87F4345CBE
+	for <stable@vger.kernel.org>; Wed, 20 May 2026 16:00:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779292972; cv=none; b=HMrjzPXTDaJXYIBucYeHtJbm75gXsRaidaSSBpKQ0pmkkA0+ag+er+w2FqIgoGD6aop/tBvlVzkrRG0ExX3DVgQgA6/U9NXdmgv9wXM0ZunaTVcgk2T2fDGSmdcsNIQRk2JiXLZaPxDnig+xWzv/1CYCg5N/O0Ol99ZmDQ2X8Y4=
+	t=1779292820; cv=none; b=PSYvZI59xDxxLHJIdtS+Fg5xKXF3j8gMpfcA1Ib3lufvTCe8mrgkunUPxV2xcE32qXrC56K6+hQeUQ82an++GdArMwKVvhoqDcjjaTnxHVhXWF6W9zi6qZAcFIbb7Egd3Etqf4wreSdXRgO92JX1b3YFcO6afOsSIN10luWIiPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779292972; c=relaxed/simple;
-	bh=GaBbEc9uW+LfiXI2M88y+C80PeLZt/HAXzvHd5Boy+U=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=c5NsLbe9/F7rWNthnneH6zjb9H48umjoR0aINWUfaSInncvXNHPdHRNwjIXo64VUJAJ8sia4w9LZOvACzGTp1Q4U56t6SvTM1DICosRzm6KJRU5WneUEehGMZ3mRsGW4FUFd48hH1tudq6waKWKlHjtDQeIiI5z6pUFMgdv1a9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arkamax.eu; spf=pass smtp.mailfrom=arkamax.eu; dkim=pass (2048-bit key) header.d=arkamax.eu header.i=@arkamax.eu header.b=MovymO1O; arc=none smtp.client-ip=128.116.240.228
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arkamax.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arkamax.eu
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; s=mail1; bh=GaBbEc9uW+LfiX
-	I2M88y+C80PeLZt/HAXzvHd5Boy+U=; h=in-reply-to:references:subject:cc:
-	to:from:date; d=arkamax.eu; b=MovymO1ObrkaEcz6X3fGcxgsmOwsOW6UUc5gIop2
-	vcLpL4oNkQckWErXCbkw0iak04CIAb6Ldl7N2TyfnmZMHglBYLRig9qQk8Pu0PWr7IkE65
-	ApewtpU8kVHxwUnVSlQbdGH7aPW7sP8/j3qMbpemy9/I9h4xjFvvk5t8FfzCglnhCH6diR
-	+CRzjotYHGd6m29+k8sHwJ3yk4jdXszutDS2OVb6Z1uqtprFH9GzZaQxaWk+UXU+IkKt0f
-	Np4B4XPJchbbmKS/H+Mnl41w4fFddeI3x3XqQRUv3ezGhmpf2r5JNho5DZgPlwMZjmyAk0
-	aPaNw07ExBoK0gWz0dkq2A==
-Received: from localhost (128-116-240-228.dyn.eolo.it [128.116.240.228])
-	by arkamax.eu (OpenSMTPD) with ESMTPSA id 5e3afc91 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Wed, 20 May 2026 17:56:06 +0200 (CEST)
+	s=arc-20240116; t=1779292820; c=relaxed/simple;
+	bh=0KHnLGELU+7pMiO62FEG+LzHx86K6KaWCewfhA5dFw4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iQX60kUPqLnRrB1NZZTtUUJyFf6AfCMbVLd3CI9dsBZyuh2Y8a+maN3G8sZQqTQXRGF05QtD6IJsFLGLkQmddyrsLM6dC455vXIqwbM5r7hI80aJXia9Uh4j8u3bZtVfnjIWSb0lJsx5WHl2FjMVajO1aEi4Jq7fdTzCWn6/hts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lz3fbk9c; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-36931e4f5e8so4354729a91.2
+        for <stable@vger.kernel.org>; Wed, 20 May 2026 09:00:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779292818; x=1779897618; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=0KHnLGELU+7pMiO62FEG+LzHx86K6KaWCewfhA5dFw4=;
+        b=lz3fbk9chOm/0ulyyFUG2MKoiR2XoAJQm6mL85IAcvzRBI4iCi/w7pytZPDqpcYukH
+         V98EbYrhQsG1umraKjquJmjmhGLC/2UQwAl2a6d4DvU52y5nNM6alfyb0wmW6rghW74o
+         hoYzLCqYn3vX9dmoWxESdbJvvNDmW9Xcd+H9hUe/3DVovZXNmS63zTTw98GdXEMu/m3I
+         OgZOVgtNnRVP+mzE4UyFYZCR7EiGzOR18hdeRZchl+7P7nvFzaPrrLzYI/uHfDfZ4SlI
+         x1/6kPKUCPEw+flqDz3MWpSCWCElnAwahmg5se+mrgjME/lVqkIjuZXiPyZBK5y9ncg3
+         UFEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779292818; x=1779897618;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0KHnLGELU+7pMiO62FEG+LzHx86K6KaWCewfhA5dFw4=;
+        b=TeJVyINeOdira7mMRRN0byCux64QFE4t238z1XW8nJ/Fljo2zGH96Twow5UsOVT+vk
+         dlYtrKcufWY6Vddb9lSOzupdH+h2CIjSi2T8Fci6Kxql5iraKk830Tpk4nerP4FrfcNC
+         JBOcK/CXUgWH24WDtIWATCj0w7v0l9RLREmjKDL2ns66GBhIQl3YarZ1cSmv7yySb2nS
+         M4IIboA9ldXpBAnXBxKq7yZ6wu7GXPORYvDAmVcUM2Mzdb3n4CriSEiyx9KBvhQL7noU
+         GgN+bY6vf9tUU8iKIBN1RPtYYzpqr7wMPxZroyhPaQZtYB5xi8JYP0sGztkMQS8kBjfJ
+         gD1Q==
+X-Forwarded-Encrypted: i=1; AFNElJ9pTna9eTJHeKy2uL4Du5093TDPOqM8ehJhj4SGrJ742WZAg2o61YQaxuMfoSUjtdzeSOoq3Xk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3WHb3c6C93CQMw80zXQe5L4wPpPHG+w3GwlhTFi2y0HYzlofo
+	K3LgDj2AHwV9zDkRMIJQ5yQsfa79+f2oqE8/ukDHUtFvduZ5pAWZyST9
+X-Gm-Gg: Acq92OGZHGwu8VjW7n+d1Jz7O3g2MVTTJYKkuJlumrRY033o32BBQkm/kqyv5NUvRkq
+	nbEYpKEsdysiIbNYpBXaGMRo16BzQNcYl+PBymYrDmu4g+HJX/ubUwdPJt7OCRwoDBinhptvGWb
+	1ps2NLvNR92MCra3FsLunHLiBF3tvBVW80CEgQZvyPWpArdchUVrqaXrLNVoF2YJbJuyKrL/rMS
+	ZMW4z8/jC+gZua8G06BL4qcwIxkiOJGlarz46l9QgtW6VBIBBoAmphRkFwsu8LkPpm41LHC8CdR
+	VXo6Acx7SehXKX0yEnrvpYVGr+Sy2T7YWXC12LCA49wzAr6/6Rbix2msVXiDx/1J6V+2xTIsLB6
+	zr9bNEYBXInsAYL+2gQ68YypKvwHUG5lr4VuZNWg25zoNvjzQ95OrnTS+gSpVcc5h/9nE0vZxNL
+	gEmS8RNhVcxZB7MaAndrAb
+X-Received: by 2002:a17:90b:5904:b0:367:d850:6a5f with SMTP id 98e67ed59e1d1-36951c9f53dmr25356929a91.25.1779292817925;
+        Wed, 20 May 2026 09:00:17 -0700 (PDT)
+Received: from john-p8 ([98.97.43.100])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5bd5f2dcsm223753765ad.13.2026.05.20.09.00.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 May 2026 09:00:17 -0700 (PDT)
+Date: Wed, 20 May 2026 09:00:14 -0700
+From: John Fastabend <john.fastabend@gmail.com>
+To: Zhang Cen <rollkingzzc@gmail.com>
+Cc: Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Jakub Sitnicki <jakub@cloudflare.com>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, bpf@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, zerocling0077@gmail.com, 
+	2045gemini@gmail.com, stable@vger.kernel.org
+Subject: Re: [PATCH v3] bpf, sockmap: keep sk_msg copy state in sync
+Message-ID: <2bojhuplzmn2cmofwusp72nds54usdcvk6agypz47ooninegye@rydeh4wwhvuq>
+References: <20260520102715.3033936-1-rollkingzzc@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 20 May 2026 17:56:05 +0200
-Message-Id: <DINMKOIB4PRJ.1Y571RHF6NAQJ@arkamax.eu>
-From: "Maurizio Lombardi" <mlombard@arkamax.eu>
-To: "Alexandru Hossu" <hossu.alexandru@gmail.com>,
- <martin.petersen@oracle.com>
-Cc: <bvanassche@acm.org>, <target-devel@vger.kernel.org>,
- <linux-scsi@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH v2] scsi: target: iscsi: validate CHAP_R length before
- base64 decode
-X-Mailer: aerc 0.21.0
-References: <20260518121811.385350-1-hossu.alexandru@gmail.com>
- <20260518235040.48647-1-hossu.alexandru@gmail.com>
-In-Reply-To: <20260518235040.48647-1-hossu.alexandru@gmail.com>
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260520102715.3033936-1-rollkingzzc@gmail.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[arkamax.eu,quarantine];
-	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[arkamax.eu:s=mail1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-250023-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-250022-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,oracle.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[kernel.org,iogearbox.net,linux.dev,fomichev.me,cloudflare.com,davemloft.net,google.com,redhat.com,vger.kernel.org,gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mlombard@arkamax.eu,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[arkamax.eu:+];
+	FROM_NEQ_ENVFROM(0.00)[johnfastabend@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: 98DFB592085
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 6112B592B7D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue May 19, 2026 at 1:50 AM CEST, Alexandru Hossu wrote:
-> chap_server_compute_hash() allocates client_digest as
-> kzalloc(chap->digest_size) and then, for BASE64-encoded responses,
-> passes chap_r directly to chap_base64_decode() without checking whether
-> the input length could produce more than digest_size bytes of output.
+On Wed, May 20, 2026 at 06:27:15PM +0800, Zhang Cen wrote:
+>SK_MSG uses msg->sg.copy as per-scatterlist-entry provenance. Entries
+>with this bit set are copied before data/data_end are exposed to SK_MSG
+>BPF programs for direct packet access.
 >
-> chap_base64_decode() writes to the destination unconditionally as long
-> as there is input to consume. With MAX_RESPONSE_LENGTH set to 128 and
-> the "0b" prefix stripped by extract_param(), up to 127 base64 characters
-> can reach the decoder. 127 characters decode to 95 bytes. For SHA-256
-> (digest_size=3D32) this overflows client_digest by 63 bytes; for MD5
-> (digest_size=3D16) the overflow is 79 bytes.
+>bpf_msg_pull_data(), bpf_msg_push_data(), and bpf_msg_pop_data()
+>rewrite the sk_msg scatterlist ring by collapsing, splitting, and
+>shifting entries. These operations move msg->sg.data[] entries, but the
+>parallel copy bitmap can be left behind on the old slot. A copied entry
+>can then return to msg->sg.start with its copy bit clear and be exposed
+>as directly writable packet data.
 >
-> The length check at line 344 fires after the write has already happened.
+>This corruption path requires an attached SK_MSG BPF program that calls
+>the mutating helpers; ordinary sockmap/TLS traffic that never runs
+>push/pop/pull helper sequences is not affected.
 >
-> The HEX branch in the same switch statement already validates the length
-> up front. Apply the same approach to the BASE64 branch: reject any input
-> whose maximum decoded length exceeds digest_size before calling the
-> decoder.
+>Keep msg->sg.copy synchronized with scatterlist entry moves, preserve
+>the copy bit when an entry is split, clear it when a helper replaces an
+>entry with a private page, and clear slots vacated by pull-data
+>compaction.
 >
-> DIV_ROUND_UP(digest_size * 4, 3) is the maximum number of base64
-> characters that can decode to exactly digest_size bytes, matching the
-> convention used in base64.h BASE64_CHARS().
->
-> Fixes: 1e5733883421 ("scsi: target: iscsi: Support base64 in CHAP")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Alexandru Hossu <hossu.alexandru@gmail.com>
-> ---
-> v2: use DIV_ROUND_UP(digest_size * 4, 3) as suggested by David Disseldorp
->
->  drivers/target/iscsi/iscsi_target_auth.c | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/drivers/target/iscsi/iscsi_target_auth.c b/drivers/target/is=
-csi/iscsi_target_auth.c
-> index c46c69a..50eeded 100644
-> --- a/drivers/target/iscsi/iscsi_target_auth.c
-> +++ b/drivers/target/iscsi/iscsi_target_auth.c
-> @@ -341,6 +341,10 @@ static int chap_server_compute_hash(
->  		}
->  		break;
->  	case BASE64:
-> +		if (strlen(chap_r) > DIV_ROUND_UP(chap->digest_size * 4, 3)) {
-> +			pr_err("Malformed CHAP_R: base64 payload too long\n");
-> +			goto out;
-> +		}
+>Fixes: 015632bb30da ("bpf: sk_msg program helper bpf_sk_msg_pull_data")
+>Fixes: 6fff607e2f14 ("bpf: sk_msg program helper bpf_msg_push_data")
+>Fixes: 7246d8ed4dcc ("bpf: helper to pop data from messages")
+>Cc: stable@vger.kernel.org
+>Co-developed-by: Han Guidong <2045gemini@gmail.com>
+>Signed-off-by: Han Guidong <2045gemini@gmail.com>
+>Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
+>---
 
+The bot reports are smaller fixups that we can add on top of this.
 
-There is something that doesn't totally convince me about this length check=
-.
-Couldn't chap_r contain those Base64 padding '=3D' characters that
-would make strlen(chap_r) too big to pass this check?
-
-Maurizio
-
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
 
