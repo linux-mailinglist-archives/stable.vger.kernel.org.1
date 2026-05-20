@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-252698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252020-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +Kj1J5cCDmqs5QUAu9opvQ
-	(envelope-from <stable+bounces-252698-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:51:03 +0200
+	id UEkwLPoDDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-252020-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:56:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F346E5974EF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:51:02 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0E6C597718
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:56:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0029E39902F3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:22:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 64A2530D0377
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:52:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D03D8348C55;
-	Wed, 20 May 2026 18:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FFE13F6C53;
+	Wed, 20 May 2026 17:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T7l5lZ95"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJd1n0aU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 788212D7386;
-	Wed, 20 May 2026 18:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9EE33F58CC;
+	Wed, 20 May 2026 17:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301355; cv=none; b=liyJQpL0nirJ5KI/Gq09AN+QAvgzX9vXoAFhiVTcDrq0lTafcKFKwSr7ko8mIHcas5mW5lxKTCdtVaechUh6CO63RXHiPCPGDL5p/zw5yihE0uGeSCDWe9cbm454ujRiSOeHjnrS12fbFNmZjbwCXDw91Tz8bYHxqH6pSUtm6rw=
+	t=1779299535; cv=none; b=VYwu+E2ytkI/1SS00ZBXsGgH0u8N0sK2jtBZXlHLTwZu/Mp54SGRlpkdtvkEVedL6pKkMR1Pli3lPoicPc1KJh7ny8HXGOv+UEM1KfMctF8WNeQI2I63Up8EqVkAB2mPEmyeCqRgGh9/qNMHJYr3/4dzg/9Ak9CNrWuxMzzrw4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301355; c=relaxed/simple;
-	bh=c0LLlvJrD05ZVUGE5A8K1gqXjdVXr3AurO8gjSW6ezI=;
+	s=arc-20240116; t=1779299535; c=relaxed/simple;
+	bh=KtFVO0XcmQc7hs9qc45B5B3pfzB5KZGm4syVPTtoAj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X0BqC7QLrcf586SDUwySpGMbwOu1H4s6evMx0fAOpQ6ekXeVWL9INM6/nV+9vovihdZ78ecvGW0+FymfzSlJaauxoYoHh8/hLUHUG3+9Wh3NsuGnSfawPrjp+50nV1HOhThhkANnORaA5LizopNIBVMcZu66ZddLpQG9YxdzegI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T7l5lZ95; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC9DC1F000E9;
-	Wed, 20 May 2026 18:22:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=h3roKkpSizHCXsIQXH+DMUQuFxKXDU19OFGfrLkGVVLeDHHoeKYoNoZHLGPPy6HFfyhlPbKUQenM72OGl0R5KhcuX6TKQuj2Z3/P8v/vD07hWkIQoyyzBub8XeVkM5wsuOfsjn15I22vwqasXGlLRWeKS0MofRFw/2O+ImZjWt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJd1n0aU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C51D1F000E9;
+	Wed, 20 May 2026 17:52:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301354;
-	bh=/xsiD3ia+LZlx4XgkrUY755nJRQnfUd10Psyd/lu2b4=;
+	s=korg; t=1779299534;
+	bh=pkmuR98FxXvkHxm2sv8jeAel/I5X7hgpglJ3KI05NxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=T7l5lZ9564b5I6EWGwhLCfTAa6lwF7IE1ecCLW5go/XgJeYhDQOYYZisFyOpIMCcb
-	 o+lk8LlefQQlGtIlrW5rZGXIngnMxfib1x3vZTaCeST/6acIklhgsFJOIhTENwkrup
-	 J5ri0YUQVD3VUormRJk09N6RCs8WDFQA/t8ZTQVw=
+	b=gJd1n0aUCD0y0OXYW0QQSRFHJkWSvUyw2T90dDE4yofFfEZ2Bss1fv4s8PksHmERr
+	 lQ/kDkI3OhK5g1mOTXpD845vd6lz+27C8fPlBzQZ60WcHrm9KvvEWkCr+/IdnE52A7
+	 CXumStIzCz8NqDERKTUXneHYr00q9wx6jVWnwfe8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Sharath Srinivasan <sharath.srinivasan@oracle.com>,
-	Allison Henderson <achender@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Yinjie Yao <yinjie.yao@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 482/666] net/rds: zero per-item info buffer before handing it to visitors
+Subject: [PATCH 6.18 810/957] drm/amdgpu/jpeg: set no_user_fence for JPEG v4.0.3 ring
 Date: Wed, 20 May 2026 18:21:33 +0200
-Message-ID: <20260520162121.712473942@linuxfoundation.org>
+Message-ID: <20260520162152.132562510@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,148 +64,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-252020-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252698-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,oracle.com:email]
-X-Rspamd-Queue-Id: F346E5974EF
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: D0E6C597718
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Yinjie Yao <yinjie.yao@amd.com>
 
-[ Upstream commit c88eb7e8d8397a8c1db59c425332c5a30b2a1682 ]
+[ Upstream commit 83e37c0987ca92f9e87789b46dd311dcf5a4a6c8 ]
 
-rds_for_each_conn_info() and rds_walk_conn_path_info() both hand a
-caller-allocated on-stack u64 buffer to a per-connection visitor and
-then copy the full item_len bytes back to user space via
-rds_info_copy() regardless of how much of the buffer the visitor
-actually wrote.
+JPEG rings do not support 64-bit user fence writes, reject CS
+submissions with user fences.
 
-rds_ib_conn_info_visitor() and rds6_ib_conn_info_visitor() only
-write a subset of their output struct when the underlying
-rds_connection is not in state RDS_CONN_UP (src/dst addr, tos, sl
-and the two GIDs via explicit memsets). Several u32 fields
-(max_send_wr, max_recv_wr, max_send_sge, rdma_mr_max, rdma_mr_size,
-cache_allocs) and the 2-byte alignment hole between sl and
-cache_allocs remain as whatever stack contents preceded the visitor
-call and are then memcpy_to_user()'d out to user space.
-
-struct rds_info_rdma_connection and struct rds6_info_rdma_connection
-are the only rds_info_* structs in include/uapi/linux/rds.h that are
-not marked __attribute__((packed)), so they have a real alignment
-hole. The other info visitors (rds_conn_info_visitor,
-rds6_conn_info_visitor, rds_tcp_tc_info, ...) write all fields of
-their packed output struct today and are not known to be vulnerable,
-but a future visitor that adds a conditional write-path would have
-the same bug.
-
-Reproduction on a kernel built without CONFIG_INIT_STACK_ALL_ZERO=y:
-a local unprivileged user opens AF_RDS, sets SO_RDS_TRANSPORT=IB,
-binds to a local address on an RDMA-capable netdev (rxe soft-RoCE on
-any netdev is sufficient), sendto()'s any peer on the same subnet
-(fails cleanly but installs an rds_connection in the global hash in
-RDS_CONN_CONNECTING), then calls getsockopt(SOL_RDS,
-RDS_INFO_IB_CONNECTIONS). The returned 68-byte item contains 26
-bytes of stack garbage including kernel text/data pointers:
-
-    0..7   0a 63 00 01 0a 63 00 02     src=10.99.0.1 dst=10.99.0.2
-    8..39  00 ...                      gids (memset-zeroed)
-    40..47 e0 92 a3 81 ff ff ff ff     kernel pointer (max_send_wr)
-    48..55 7f 37 b5 81 ff ff ff ff     kernel pointer (rdma_mr_max)
-    56..59 01 00 08 00                 rdma_mr_size (garbage)
-    60..61 00 00                       tos, sl
-    62..63 00 00                       alignment padding
-    64..67 18 00 00 00                 cache_allocs (garbage)
-
-Fix by zeroing the per-item buffer in both rds_for_each_conn_info()
-and rds_walk_conn_path_info() before invoking the visitor. This
-covers the IPv4/IPv6 IB visitors and hardens all current and future
-visitors against the same class of bug.
-
-No functional change for visitors that fully populate their output.
-
-Changes in v2:
-- retarget at the net tree (subject prefix "[PATCH net v2]",
-  net/rds: prefix in the title)
-- pick up Reviewed-by tags from Sharath Srinivasan and
-  Allison Henderson
-
-Fixes: ec16227e1414 ("RDS/IB: Infiniband transport")
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Reviewed-by: Sharath Srinivasan <sharath.srinivasan@oracle.com>
-Reviewed-by: Allison Henderson <achender@kernel.org>
-Assisted-by: Claude:claude-opus-4-7
-Link: https://patch.msgid.link/20260418141047.3398203-1-michael.bommarito@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e684e654eba9 ("drm/amdgpu/jpeg: add jpeg support for VCN4_0_3")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 2f6afc97d259d530f4f86c7743efbc573a8da927)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rds/connection.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/rds/connection.c b/net/rds/connection.c
-index 3a1b548dcdcb2..d6ee386fd820e 100644
---- a/net/rds/connection.c
-+++ b/net/rds/connection.c
-@@ -673,6 +673,13 @@ void rds_for_each_conn_info(struct socket *sock, unsigned int len,
- 	     i++, head++) {
- 		hlist_for_each_entry_rcu(conn, head, c_hash_node) {
- 
-+			/* Zero the per-item buffer before handing it to the
-+			 * visitor so any field the visitor does not write -
-+			 * including implicit alignment padding - cannot leak
-+			 * stack contents to user space via rds_info_copy().
-+			 */
-+			memset(buffer, 0, item_len);
-+
- 			/* XXX no c_lock usage.. */
- 			if (!visitor(conn, buffer))
- 				continue;
-@@ -722,6 +729,13 @@ static void rds_walk_conn_path_info(struct socket *sock, unsigned int len,
- 			 */
- 			cp = conn->c_path;
- 
-+			/* Zero the per-item buffer for the same reason as
-+			 * rds_for_each_conn_info(): any byte the visitor
-+			 * does not write (including alignment padding) must
-+			 * not leak stack contents via rds_info_copy().
-+			 */
-+			memset(buffer, 0, item_len);
-+
- 			/* XXX no cp_lock usage.. */
- 			if (!visitor(cp, buffer))
- 				continue;
+diff --git a/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c b/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c
+index 47f2192fc7e7e..99e6dabc36ee8 100644
+--- a/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c
++++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c
+@@ -1214,6 +1214,7 @@ static const struct amd_ip_funcs jpeg_v4_0_3_ip_funcs = {
+ static const struct amdgpu_ring_funcs jpeg_v4_0_3_dec_ring_vm_funcs = {
+ 	.type = AMDGPU_RING_TYPE_VCN_JPEG,
+ 	.align_mask = 0xf,
++	.no_user_fence = true,
+ 	.get_rptr = jpeg_v4_0_3_dec_ring_get_rptr,
+ 	.get_wptr = jpeg_v4_0_3_dec_ring_get_wptr,
+ 	.set_wptr = jpeg_v4_0_3_dec_ring_set_wptr,
 -- 
 2.53.0
 
