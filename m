@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-252015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251089-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GJZDNu4DDmoD5gUAu9opvQ
-	(envelope-from <stable+bounces-252015-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:56:46 +0200
+	id UJCOCbDuDWpb4wUAu9opvQ
+	(envelope-from <stable+bounces-251089-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:26:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D4205976FC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:56:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EE3A593A4D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:26:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 72862319509E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:52:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6F6ED30EBEEB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:11:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE3603F4DDB;
-	Wed, 20 May 2026 17:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68EDA3EBF35;
+	Wed, 20 May 2026 17:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QfqjcEDp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sRKnXyo1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 971FF3F44F7;
-	Wed, 20 May 2026 17:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1870F3D75DA;
+	Wed, 20 May 2026 17:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299522; cv=none; b=huAm9h+CEfoYGESdOeDv8KMqgWykxOaX6ATFP6hdmRsSDBbawzc8+NYVJPYXOsoPhg0lpMADSy53cLeGLmNAbPwkFdkorZtoadEVt92C/NYpFfQZhb6NNCJyqjJLTQxqhYOjVad2wmbK5ZI1Uos8HyHmYxF9Vq0fE0AYoQJE91M=
+	t=1779297071; cv=none; b=q0/yjdJ2IMoopIo9Sk/B3HiPSMH9awdFzxkQkB6Nly9X+mv9sngbhPz5v6BH2/7zZHoRsr6kY49R0peT7JUkrZg+z1oDg6ECLF+20sqLL8SoEFrnRNhVZz/JnS8ksZD0IQ/3PWBJuJYecZPjZIu8xUTesI7yBvdMLGtrwS/h4YM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299522; c=relaxed/simple;
-	bh=FQ5UqUIWF2o013yhl/0hUPB+lKXhcDpn4fE2/i/kDbc=;
+	s=arc-20240116; t=1779297071; c=relaxed/simple;
+	bh=NZR1UrUuayu89T00dFkRIblz1ORXbNUanTXUawG67CQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ojNTBKEdMCHvpl10iC7Z8aopQNN4ySFZqagNL1dNpqbiDhmt/TjSbAzEpypz2HtI7QpMakJDrAhLBqh+lpGtLRbOxq3wfqB02egDZUO/IBoHDQ0VIJd53tl/A8yAQEUn2bygH/cNvxo3i44Hm1w4kYXtysqSWGEncMLb0K2bzNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QfqjcEDp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0956E1F000E9;
-	Wed, 20 May 2026 17:52:00 +0000 (UTC)
+	 MIME-Version; b=n2aRimFrYOOqORsE8BvB5qqbCSe/8x30IgH6QDeVpg4gKnKqFgawNcU6XM4ptd/dT7bJLFImOXhVVD25WtIeXsJl4CFq/UJWXpvrqy33/RnKlaNwlwG9cGNiXpSn5gkWZ8E6YpuLoqUbG2tz4w5vh9mm5Qz6RNh7QJuDuT3oWJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sRKnXyo1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F4441F000E9;
+	Wed, 20 May 2026 17:11:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299521;
-	bh=TDpRpkJBeg3DPpAfgUr1DZ5v1wtIdPblHHTuLxmpGHk=;
+	s=korg; t=1779297070;
+	bh=+vcMpsFcdOM7pndeDck1NvqfqZ/6+asdMP5v78I38ds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QfqjcEDpELXVl5I+5pCrXDYD/BBaIs99zIccLOPIh0EnXG6JC0KLg/tWIb2NUIxs8
-	 2dXAzx5gCcZYS7qeqtBIlEL4e695j/AxpxEcE79NrbH0Lk/N/xdQvDfbapMBhdyXoo
-	 Of30IgpAzcAfBBmIhmhNlQFiQpNy/AwC55gVvh8M=
+	b=sRKnXyo13NrgPtj83jc4nAPUehQTiWhqMlIzDYwS5oROtzg21G6uhSS35l2+4ilBM
+	 zwiTHHXnucy13FOGnoGfzajfrH13/DcU0d6PnmhxSv6z52pax9CoslJYYQ6iiXZqh8
+	 CL1KMLSIQr73IN0fIEA0bXm2HKAbu9TCvZT0RI0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Yinjie Yao <yinjie.yao@amd.com>,
+	Breno Leitao <leitao@debian.org>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 805/957] drm/amdgpu/vcn: set no_user_fence for VCN v5.0.1 enc ring
+Subject: [PATCH 7.0 1038/1146] workqueue: fix devm_alloc_workqueue() va_list misuse
 Date: Wed, 20 May 2026 18:21:28 +0200
-Message-ID: <20260520162152.026128939@linuxfoundation.org>
+Message-ID: <20260520162211.723011897@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +63,175 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252015-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251089-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 0D4205976FC
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 8EE3A593A4D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yinjie Yao <yinjie.yao@amd.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 8f4954722eab88e10c4ea0c0d3b1269c31421d3a ]
+[ Upstream commit 0de4cb473aed57ee4ba7e0551ad27bddc19fc519 ]
 
-VCN encoder and decoder rings do not support 64-bit user fence writes,
-reject CS submissions with user fences.
+devm_alloc_workqueue() built a va_list and passed it as a single
+positional argument to the variadic alloc_workqueue() macro:
 
-Fixes: 346492f30ce3 ("drm/amdgpu: Add VCN_5_0_1 support")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit e16be95a2c3ee712b142cb27d2dca0b461181359)
+	va_start(args, max_active);
+	wq = alloc_workqueue(fmt, flags, max_active, args);
+	va_end(args);
+
+C does not allow forwarding a va_list through a ... parameter.
+alloc_workqueue() expands to alloc_workqueue_noprof(), which runs
+its own va_start() over its ... params, so the inner
+vsnprintf(wq->name, sizeof(wq->name), fmt, args) in
+__alloc_workqueue() received the outer va_list object as the first
+variadic slot rather than the caller's actual format arguments.
+
+Add a new static helper alloc_workqueue_va() that wraps
+__alloc_workqueue() and runs wq_init_lockdep() on success, and
+fold both alloc_workqueue_noprof() and devm_alloc_workqueue_noprof()
+onto it as suggested by Tejun.
+
+The wq_init_lockdep() step is required on the devm path
+too, otherwise __flush_workqueue()'s on-stack
+COMPLETION_INITIALIZER_ONSTACK_MAP would NULL-deref wq->lockdep_map.
+
+No caller changes are required. devm_alloc_ordered_workqueue() is
+a macro forwarding to devm_alloc_workqueue() and inherits the fix.
+Two in-tree callers actively trigger the broken path on every probe:
+
+  drivers/power/supply/mt6370-charger.c:889
+  drivers/power/supply/max77705_charger.c:649
+
+both of which use devm_alloc_ordered_workqueue(dev, "%s", 0,
+dev_name(dev)).
+
+A standalone reproducer module is available at[1].
+
+Link: https://github.com/leitao/debug/blob/main/workqueue/valist/wq_va_test.c [1]
+Fixes: 1dfc9d60a69e ("workqueue: devres: Add device-managed allocate workqueue")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/workqueue.h |  6 ++++--
+ kernel/workqueue.c        | 28 +++++++++++++++++++---------
+ 2 files changed, 23 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
-index 8bd457dea4cff..972d4a7147a12 100644
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_1.c
-@@ -1330,6 +1330,7 @@ static const struct amdgpu_ring_funcs vcn_v5_0_1_unified_ring_vm_funcs = {
- 	.type = AMDGPU_RING_TYPE_VCN_ENC,
- 	.align_mask = 0x3f,
- 	.nop = VCN_ENC_CMD_NO_OP,
-+	.no_user_fence = true,
- 	.get_rptr = vcn_v5_0_1_unified_ring_get_rptr,
- 	.get_wptr = vcn_v5_0_1_unified_ring_get_wptr,
- 	.set_wptr = vcn_v5_0_1_unified_ring_set_wptr,
+diff --git a/include/linux/workqueue.h b/include/linux/workqueue.h
+index f8d235aef10dd..218557a8f7577 100644
+--- a/include/linux/workqueue.h
++++ b/include/linux/workqueue.h
+@@ -529,8 +529,10 @@ alloc_workqueue_noprof(const char *fmt, unsigned int flags, int max_active, ...)
+  * Pointer to the allocated workqueue on success, %NULL on failure.
+  */
+ __printf(2, 5) struct workqueue_struct *
+-devm_alloc_workqueue(struct device *dev, const char *fmt, unsigned int flags,
+-		     int max_active, ...);
++devm_alloc_workqueue_noprof(struct device *dev, const char *fmt,
++			    unsigned int flags, int max_active, ...);
++#define devm_alloc_workqueue(...)	\
++	alloc_hooks(devm_alloc_workqueue_noprof(__VA_ARGS__))
+ 
+ #ifdef CONFIG_LOCKDEP
+ /**
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index e57040931d8b7..5d704df76a946 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -5885,6 +5885,20 @@ static struct workqueue_struct *__alloc_workqueue(const char *fmt,
+ 	return NULL;
+ }
+ 
++static struct workqueue_struct *alloc_workqueue_va(const char *fmt,
++						   unsigned int flags,
++						   int max_active,
++						   va_list args)
++{
++	struct workqueue_struct *wq;
++
++	wq = __alloc_workqueue(fmt, flags, max_active, args);
++	if (wq)
++		wq_init_lockdep(wq);
++
++	return wq;
++}
++
+ __printf(1, 4)
+ struct workqueue_struct *alloc_workqueue_noprof(const char *fmt,
+ 						unsigned int flags,
+@@ -5894,12 +5908,8 @@ struct workqueue_struct *alloc_workqueue_noprof(const char *fmt,
+ 	va_list args;
+ 
+ 	va_start(args, max_active);
+-	wq = __alloc_workqueue(fmt, flags, max_active, args);
++	wq = alloc_workqueue_va(fmt, flags, max_active, args);
+ 	va_end(args);
+-	if (!wq)
+-		return NULL;
+-
+-	wq_init_lockdep(wq);
+ 
+ 	return wq;
+ }
+@@ -5911,15 +5921,15 @@ static void devm_workqueue_release(void *res)
+ }
+ 
+ __printf(2, 5) struct workqueue_struct *
+-devm_alloc_workqueue(struct device *dev, const char *fmt, unsigned int flags,
+-		     int max_active, ...)
++devm_alloc_workqueue_noprof(struct device *dev, const char *fmt,
++			    unsigned int flags, int max_active, ...)
+ {
+ 	struct workqueue_struct *wq;
+ 	va_list args;
+ 	int ret;
+ 
+ 	va_start(args, max_active);
+-	wq = alloc_workqueue(fmt, flags, max_active, args);
++	wq = alloc_workqueue_va(fmt, flags, max_active, args);
+ 	va_end(args);
+ 	if (!wq)
+ 		return NULL;
+@@ -5930,7 +5940,7 @@ devm_alloc_workqueue(struct device *dev, const char *fmt, unsigned int flags,
+ 
+ 	return wq;
+ }
+-EXPORT_SYMBOL_GPL(devm_alloc_workqueue);
++EXPORT_SYMBOL_GPL(devm_alloc_workqueue_noprof);
+ 
+ #ifdef CONFIG_LOCKDEP
+ __printf(1, 5)
 -- 
 2.53.0
 
