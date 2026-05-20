@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-251526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251528-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kL5NCdj1DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251526-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:56:40 +0200
+	id CBB8AhEbDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251528-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:35:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3F79594F32
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:56:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64ABD599CDD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:35:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2659B31450F0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:30:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 790C23429084
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:30:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC61E36E48C;
-	Wed, 20 May 2026 17:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12BF8362136;
+	Wed, 20 May 2026 17:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z++2K1J+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OIesYZlF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A5B31282F;
-	Wed, 20 May 2026 17:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C2B3A3825;
+	Wed, 20 May 2026 17:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298208; cv=none; b=urmku+gm1VLq1SPLr8pA8gw6dr7pwxGFQSnJpF0KAQZnBKBJlRq9f+ynfjyWvGX2b5xsyXdLCdO4BtS6wNENysZnEJUGV2gLr54PSXxO1JqhbJlkZ8M4RkIWc3AlLEcA/0F8lYO2w0AQfJsh1Yl0/0Z74y37oqrcE5Z+KpVo/MQ=
+	t=1779298213; cv=none; b=nHi7Vu/5kXbAavoRwKdRsjQcgKQoJjy52CEuWCH2mp2UldM6lJGs975Sdr0QWaj2DIt3e9BfPaM1ZkYHJQ9xrI55MUbYY73hqV6I4LHQW4Dx1FfZKknAmGvxiETOL/mI/TI0RxwSGDCl98SD/BCcYJL0KcWp9OZseIDcr2AkMYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298208; c=relaxed/simple;
-	bh=CDcWEKoeYb+mWX94mVE7x8czSPNOxibidmUcn4G9etw=;
+	s=arc-20240116; t=1779298213; c=relaxed/simple;
+	bh=GGL/xUdCJCyTbU2dB3T4F+YBnT1U6YYfNG0g1AGmvLM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qr9CrQ2PEoE222br9p4lR1MC1BLpA2NSneC+4uHG/5ETKDOksWlcvwgnRm+16uNFxMJEx4CI6lUmPA8lk2SIQ/3BGgOymNjCTTnNpWAXianmA6rfxJkYG/RbsHdlKyS0ichafq9awZSFsLSZzmpoFEVrqz/nGoOFw2YeaC2gEq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z++2K1J+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E16981F000E9;
-	Wed, 20 May 2026 17:30:06 +0000 (UTC)
+	 MIME-Version; b=YIaeNVWVhE1Lfk1awz5+34xMMxBNF2kY7Ank2Wl6GdleFbUHHCpNvhg4mG4mUTCMG60FhENC25DPe/PkPjSIpXXBv9AbWDX9pXIGYjhbzpKPXjR0oFIdZ7VFbVU7kIB1ilxYyCq+vZ7UbypqMqlQTKqJQnWlXYklV6zRpBR7b2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OIesYZlF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2962C1F000E9;
+	Wed, 20 May 2026 17:30:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298207;
-	bh=Ld30ofDoVN499mZd4KdeqSMGM970Q2ULIdW7/y+DqXI=;
+	s=korg; t=1779298212;
+	bh=+tbbDefS4FFUjwawYn0TidgUls2LOOX0XHvswBprpWs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Z++2K1J+DIbgPafKbrUE8H6xkyAIZ41zSKLiqxXQNZz4FWLpxYu8I2j46YTSSxkHz
-	 kA+KB2He0kR67rQGxU/xavAqb1xAj3HYwV5FvwwmReyyxtb/SyztpC2t21tdyfXvEn
-	 +mMHdLWgSieg31gbjqhy50VF+B5DIKkjGAHaEkeQ=
+	b=OIesYZlF2+FlUTqAm6PoOBdZyQ6RSlLX2TK4gQaYkd+HqEW+rPrrwGsNtsm9kkPlK
+	 1bO8RkPtUtXmYufOGiXDverBNn+JuxOzrb/G/LprhQPvrUmBzHcenjOJgVC7HurKXG
+	 VK0cRNHRp+svC3aUMyDIrf24MAU1rRTvNhgElRs8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -51,9 +51,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Bjorn Helgaas <bhelgaas@google.com>,
 	Jon Hunter <jonathanh@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 324/957] PCI: tegra194: Disable direct speed change for Endpoint mode
-Date: Wed, 20 May 2026 18:13:27 +0200
-Message-ID: <20260520162141.557217208@linuxfoundation.org>
+Subject: [PATCH 6.18 325/957] PCI: tegra194: Set LTR message request before PCIe link up in Endpoint mode
+Date: Wed, 20 May 2026 18:13:28 +0200
+Message-ID: <20260520162141.578551139@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
 References: <20260520162134.554764788@linuxfoundation.org>
@@ -71,30 +71,31 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251526-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251528-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: F3F79594F32
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 64ABD599CDD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -104,17 +105,15 @@ X-Rspamd-Server: lfdr
 
 From: Vidya Sagar <vidyas@nvidia.com>
 
-[ Upstream commit 976f6763f57970388bcd7118931f33f447916927 ]
+[ Upstream commit b256493bf8cacf0e524bf4c10b5c4901d0c6cefe ]
 
-Pre-silicon simulation showed the controller operating in Endpoint mode
-initiating link speed change after completing Secondary Bus Reset. Ideally,
-the Root Port or the Switch Downstream Port should initiate the link speed
-change post SBR, not the Endpoint.
+LTR message should be sent as soon as the Root Port enables LTR in the
+Endpoint mode. So set snoop and no-snoop LTR timing and LTR message request
+before the PCIe link comes up, so that the LTR message is sent upstream as
+soon as LTR is enabled.
 
-So, as per the hardware team recommendation, disable direct speed change
-for the Endpoint mode to prevent it from initiating speed change after the
-physical layer link is up at Gen1, leaving speed change ownership with the
-host.
+Without programming these values, the Endpoint would send latencies of 0 to
+the host, which will be inaccurate.
 
 Fixes: c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint mode in Tegra194")
 Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
@@ -122,30 +121,50 @@ Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
 [mani: commit log]
 Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
 Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
-Link: https://patch.msgid.link/20260324190755.1094879-8-mmaddireddy@nvidia.com
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://patch.msgid.link/20260324190755.1094879-9-mmaddireddy@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/pci/controller/dwc/pcie-tegra194.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index 2557217f9df16..698012f2a9465 100644
+index 698012f2a9465..7d3ea4309e9bb 100644
 --- a/drivers/pci/controller/dwc/pcie-tegra194.c
 +++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -1834,6 +1834,10 @@ static void pex_ep_event_pex_rst_deassert(struct tegra_pcie_dw *pcie)
+@@ -487,15 +487,6 @@ static irqreturn_t tegra_pcie_ep_irq_thread(int irq, void *arg)
+ 	if (val & PCI_COMMAND_MASTER) {
+ 		ktime_t timeout;
  
+-		/* 110us for both snoop and no-snoop */
+-		val = FIELD_PREP(PCI_LTR_VALUE_MASK, 110) |
+-		      FIELD_PREP(PCI_LTR_SCALE_MASK, 2) |
+-		      LTR_MSG_REQ |
+-		      FIELD_PREP(PCI_LTR_NOSNOOP_VALUE, 110) |
+-		      FIELD_PREP(PCI_LTR_NOSNOOP_SCALE, 2) |
+-		      LTR_NOSNOOP_MSG_REQ;
+-		appl_writel(pcie, val, APPL_LTR_MSG_1);
+-
+ 		/* Send LTR upstream */
+ 		val = appl_readl(pcie, APPL_LTR_MSG_2);
+ 		val |= APPL_LTR_MSG_2_LTR_MSG_REQ_STATE;
+@@ -1832,6 +1823,15 @@ static void pex_ep_event_pex_rst_deassert(struct tegra_pcie_dw *pcie)
+ 	val |= APPL_INTR_EN_L1_0_0_RDLH_LINK_UP_INT_EN;
+ 	appl_writel(pcie, val, APPL_INTR_EN_L1_0_0);
+ 
++	/* 110us for both snoop and no-snoop */
++	val = FIELD_PREP(PCI_LTR_VALUE_MASK, 110) |
++	      FIELD_PREP(PCI_LTR_SCALE_MASK, 2) |
++	      LTR_MSG_REQ |
++	      FIELD_PREP(PCI_LTR_NOSNOOP_VALUE, 110) |
++	      FIELD_PREP(PCI_LTR_NOSNOOP_SCALE, 2) |
++	      LTR_NOSNOOP_MSG_REQ;
++	appl_writel(pcie, val, APPL_LTR_MSG_1);
++
  	reset_control_deassert(pcie->core_rst);
  
-+	val = dw_pcie_readl_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL);
-+	val &= ~PORT_LOGIC_SPEED_CHANGE;
-+	dw_pcie_writel_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL, val);
-+
- 	if (pcie->update_fc_fixup) {
- 		val = dw_pcie_readl_dbi(pci, CFG_TIMER_CTRL_MAX_FUNC_NUM_OFF);
- 		val |= 0x1 << CFG_TIMER_CTRL_ACK_NAK_SHIFT;
+ 	val = dw_pcie_readl_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL);
 -- 
 2.53.0
 
