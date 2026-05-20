@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-250363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251299-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kCgRLL7wDWqo4wUAu9opvQ
-	(envelope-from <stable+bounces-250363-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:34:54 +0200
+	id 0OEhLDXzDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251299-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:45:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2804359401A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:34:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BC645947AA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:45:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 96D5A34DF37B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:40:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 549F9318BEFC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:20:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB65E32B123;
-	Wed, 20 May 2026 16:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 911253D75A0;
+	Wed, 20 May 2026 17:20:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SRp3en9n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pbX9oNnp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30F135201E;
-	Wed, 20 May 2026 16:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B70435AC18;
+	Wed, 20 May 2026 17:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295217; cv=none; b=jVwE5edlRt9M1XT3lkVjGYZwlLFow1lFCD7f7xrfSa29TDs6xIg7bnl8998gT4xq5JmdNNAlThcgSEHcVQnwiudmGVx1tq+EHOrcn1HMWCksLEqRIu+ZLRx8dU/UvuENXspGVOpMxNC3MwPOajyymVkKueKtK8NOmFFMiVx592o=
+	t=1779297620; cv=none; b=KCCCiwgUR1lxhW4WF/89C8775e+ZNMeP1qBVbaBn9KYEl8tktoh6VIutcKT5p9hwcp8xAIeuXwikP3RbwkGyaGfvWIYbRuugxUn7Ngh4cqav50xafGZC1BGv4hq9wqfjuUhcVOKQOwJPhgZspS6tVI405NNcBTqlYTm4HJ1Hrnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295217; c=relaxed/simple;
-	bh=5PTPNe0bxGWYB3w3+6dXr+BXtbTuCS3WvRyKP94w0U8=;
+	s=arc-20240116; t=1779297620; c=relaxed/simple;
+	bh=xcjUjgIOc1SH4wHOQpWcxc6UOyszkDvlTS+nw5JcFQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KJg7FiCcMNjSjG5igdin1WeSlqTKzcB8ytG3NfZLhmHqnpUjwRtqwjTysT82B9LSc4I1YPoHECbCJeGTV2XDBYutgHD591gAxCmJwnPAC/f/I1bLrmdTimMWAUxyFi2/HzVIwpd48sMZRkG5Fy7UIy8sL6ah5OJa5cYfykzFw7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SRp3en9n; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13D6E1F000E9;
-	Wed, 20 May 2026 16:40:15 +0000 (UTC)
+	 MIME-Version; b=T81SHMcSiYVN8jUovKjcg3nxnNT58x/bmBH858cWyR5NB1HmRq3zao9PDn6JA0t0mbs+uRwU9I/ui79eGZnsDuP4wjf1ZgnM1IOb8431Ts6J2lrOsLuVAv23VXdCANSittzDeYN7FXBfh/UK17jjHSIHj3Vso4r2CeB4SLOnBdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pbX9oNnp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B02001F00893;
+	Wed, 20 May 2026 17:20:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295216;
-	bh=wRWMYekSp29z/0uHotLxgbPBtYv4wsF4OdvJSdsnrNw=;
+	s=korg; t=1779297619;
+	bh=x5n2CmBf8QMjoKn2ij9krTFoXqmR8AAWVai9ycaY+64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SRp3en9n61lW79fO9SggvQPHWlqoTHPZBW6fvqOgU4NEVvaRQK01l0jAdqMN8ENoI
-	 E1/ASZGkOHvMtwwIxNfMt61svXf6emr3kYdUE9EqEfIgnImoDa29DjWz9m5SgnlgsP
-	 ghooMMLtjYYjNfKDlv0g6j5txTzkdUQsvJiMiSTw=
+	b=pbX9oNnpbwfK85it801AGMrpuG2mCGhvubHn4U8tVXH7MJhnUn1xDMI8X3R5vhXiw
+	 qOmadJ/Xe1loDaWBozzGkCo21Y/pFyqQ+2OhvgJdC3QOk7Avc6ldud+7avDLN5Ll6x
+	 ARVfHHgMUc1c5Mga1z0JSGYOUWw7f8foROOUieog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ethan Tidmore <ethantidmore06@gmail.com>,
-	Andrew Jones <andrew.jones@oss.qualcomm.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0334/1146] iommu/riscv: Fix signedness bug
+Subject: [PATCH 6.18 101/957] wifi: mt76: mt7996: Remove link pointer dependency in mt7996_mac_sta_remove_links()
 Date: Wed, 20 May 2026 18:09:44 +0200
-Message-ID: <20260520162155.759506873@linuxfoundation.org>
+Message-ID: <20260520162136.751207369@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,82 +68,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,amd.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-250363-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-251299-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 2804359401A
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nbd.name:email,msgid.link:url]
+X-Rspamd-Queue-Id: 8BC645947AA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Tidmore <ethantidmore06@gmail.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 553a127cb66523089bc10eb54640205495f4bb5b ]
+[ Upstream commit 569ce4340268915911fc356ec9ad27e92fb82289 ]
 
-The function platform_irq_count() returns negative error codes and
-iommu->irqs_count is an unsigned integer, so the check
-(iommu->irqs_count <= 0) is always impossible.
+Remove link pointer dependency in mt7996_mac_sta_remove_links routine to
+get the mt7996_phy pointer since the link can be already offchannel
+running mt7996_mac_sta_remove_links(). Rely on __mt7996_phy routine
+instead.
 
-Make the return value of platform_irq_count() be assigned to ret, check
-for error, and then assign iommu->irqs_count to ret.
-
-Detected by Smatch:
-drivers/iommu/riscv/iommu-platform.c:119 riscv_iommu_platform_probe() warn:
-'iommu->irqs_count' unsigned <= 0
-
-Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
-Fixes: 5c0ebbd3c6c6 ("iommu/riscv: Add RISC-V IOMMU platform device driver")
-Reviewed-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Fixes: 344dd6a4c919 ("wifi: mt76: mt7996: Move num_sta accounting in mt7996_mac_sta_{add,remove}_links")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20260306-mt7996-deflink-lookup-link-remove-v1-1-7162b332873c@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/riscv/iommu-platform.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/main.c | 14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/iommu/riscv/iommu-platform.c b/drivers/iommu/riscv/iommu-platform.c
-index 8f15b06e84997..399ba8fe1b3e5 100644
---- a/drivers/iommu/riscv/iommu-platform.c
-+++ b/drivers/iommu/riscv/iommu-platform.c
-@@ -115,10 +115,13 @@ static int riscv_iommu_platform_probe(struct platform_device *pdev)
- 		fallthrough;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index 589b228a4eb0c..32d44540605fc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -1047,8 +1047,7 @@ mt7996_mac_sta_remove_links(struct mt7996_dev *dev, struct ieee80211_vif *vif,
  
- 	case RISCV_IOMMU_CAPABILITIES_IGS_WSI:
--		iommu->irqs_count = platform_irq_count(pdev);
--		if (iommu->irqs_count <= 0)
-+		ret = platform_irq_count(pdev);
-+		if (ret <= 0)
- 			return dev_err_probe(dev, -ENODEV,
- 					     "no IRQ resources provided\n");
-+
-+		iommu->irqs_count = ret;
-+
- 		if (iommu->irqs_count > RISCV_IOMMU_INTR_COUNT)
- 			iommu->irqs_count = RISCV_IOMMU_INTR_COUNT;
+ 	for_each_set_bit(link_id, &links, IEEE80211_MLD_MAX_NUM_LINKS) {
+ 		struct mt7996_sta_link *msta_link = NULL;
+-		struct mt7996_vif_link *link;
+-		struct mt76_phy *mphy;
++		struct mt7996_phy *phy;
  
+ 		msta_link = rcu_replace_pointer(msta->link[link_id], msta_link,
+ 						lockdep_is_held(&mdev->mutex));
+@@ -1057,17 +1056,12 @@ mt7996_mac_sta_remove_links(struct mt7996_dev *dev, struct ieee80211_vif *vif,
+ 
+ 		mt7996_mac_wtbl_update(dev, msta_link->wcid.idx,
+ 				       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
+-
+ 		mt7996_mac_sta_deinit_link(dev, msta_link);
+-		link = mt7996_vif_link(dev, vif, link_id);
+-		if (!link)
+-			continue;
+ 
+-		mphy = mt76_vif_link_phy(&link->mt76);
+-		if (!mphy)
+-			continue;
++		phy = __mt7996_phy(dev, msta_link->wcid.phy_idx);
++		if (phy)
++			phy->mt76->num_sta--;
+ 
+-		mphy->num_sta--;
+ 		if (msta->deflink_id == link_id) {
+ 			msta->deflink_id = IEEE80211_LINK_UNSPECIFIED;
+ 			continue;
 -- 
 2.53.0
 
