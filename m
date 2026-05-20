@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-253227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252130-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4IuSLiUHDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-253227-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:10:29 +0200
+	id YI1qJS36DWq75AUAu9opvQ
+	(envelope-from <stable+bounces-252130-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:15:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20496597DF5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:10:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54E4F595A5F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:15:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A7A2C287853
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A4E6330A4337
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:57:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5733FE359;
-	Wed, 20 May 2026 18:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D91E23D75C7;
+	Wed, 20 May 2026 17:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0pnsMgMR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Dsin0lG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49AE3FC5C1;
-	Wed, 20 May 2026 18:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E9D04F5E0;
+	Wed, 20 May 2026 17:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302728; cv=none; b=mwARfO+eSFLaVesyNGCGGUTGOfANr0FeiKHvov0qeoag7NibRgIxlgafL7Caj/1k6KQabZit9P3IqCVeVRkzAioDLu6/qMyS6+2Z+j46hqtKrbq6WilWT0Fm8zOzEqZvgqq20fR58OzqhSydyyqIl7XjnGw0J79WWAZSFFZ5hCc=
+	t=1779299869; cv=none; b=myvSSMEXWQdfGlmRUuXVoOWX90WwUdiutz+9ueyeEEKFaHV+VsrGjFyHXNLNTWUUQKGHGVRZ3BRijILoGFErL5131VBMKUqJPIdpT49T4C1F6cEhl67x3pxljjEz5hH3czeLTSRmizmrRleNgvUyRnJQyPq98EORWU2iPTSQAQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302728; c=relaxed/simple;
-	bh=mmDHLVQATxXaUUBemVFIlDTAXbgGe26w07vGcZxAVLA=;
+	s=arc-20240116; t=1779299869; c=relaxed/simple;
+	bh=y7//oqThvCDXK0N9m6texK3HAAgBoVQ+mIQBufqRCeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R0nHpREqE223WyEJnsASBnBur/qj8eTD65ZDxnO4G2taV4IXp5nFdiX51v615oZs0hMMfcN6tkaCnT0XxH8C0wXx9udt5pwb6Ks+FHv+mSz4R0S6kyeDqHvmyMqA9Vc0uyvofwAux5eescPY6toF+PfIuOoWDeD/JZH436nO7c4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0pnsMgMR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DBE81F000E9;
-	Wed, 20 May 2026 18:45:27 +0000 (UTC)
+	 MIME-Version; b=jCmcfNO0U8s0RL9esWamN7SjjvFI5DEdrMDgTswDLgHXauQ+EVadZRukfSfcfnRqnUcBlaGhXYkaHJCT2BDC9d9uJWZAaAB+56mRLkpiIQ5/QVVArZXb932BNFImC7QZ44ule0f5bmp/DGcm3MyyLMMBEwZG2U/gRrZrH62gM6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Dsin0lG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F241F000E9;
+	Wed, 20 May 2026 17:57:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302727;
-	bh=lb1il2AJhRROtrJr6jsIBAM0wGHyFXH/rIq34Nhb33g=;
+	s=korg; t=1779299868;
+	bh=11SHJ3svCgksjCx0U60Zt8hVDf4EIMlhqTD2VdAwRhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0pnsMgMR2kNq0rzDXM7Rd1g46SCF5GsFYlk4Cc44d8iixrkNFtsB2Hw0rBhTrlBiu
-	 pj62Ky3rS8aD7do74MirTbFBS6YvCyEanHxwJfWqeMp+NFm313YVrhbyLnEKWHFzwX
-	 0VW7XAIAzsYjq2Z2mx6HFsgfnlSquJBS3QNp3WGM=
+	b=2Dsin0lGniaNlADDMQt8+2ThmDjVfgZ5z0MKq732QLKH6zSY0lIfyGlzS+NLC+fzk
+	 Wy5myg1eDgu+n/45ad17S7Yw/fxaZYV+MmGtVOyeMlZt5C8DvL6geefNKAfvkbi9jv
+	 na7xQUWCrVi7vBsnDx7eE/WAffquqFRbH/4YqCXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Madieu <john.madieu@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 376/508] spi: rockchip: Read ISR, not IMR, to detect cs-inactive IRQ
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.18 916/957] btrfs: only release the dirty pages io tree after successful writes
 Date: Wed, 20 May 2026 18:23:19 +0200
-Message-ID: <20260520162106.770356465@linuxfoundation.org>
+Message-ID: <20260520162154.443605242@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,100 +64,188 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TAGGED_FROM(0.00)[bounces-253227-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252130-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 20496597DF5
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 54E4F595A5F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Madieu <john.madieu@gmail.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit b4683a239a409d65f88052f5630c748a8ba070cd ]
+commit 4066c55e109475a06d18a1f127c939d551211956 upstream.
 
-rockchip_spi_isr() decides whether the current interrupt was the
-cs-inactive event by reading IMR:
+[WARNING]
+With extra warning on dirty extent buffers at umount (aka, the next
+patch in the series), test case generic/388 can trigger the following
+warning about dirty extent buffers at unmount time:
 
-	if (rs->cs_inactive &&
-	    readl_relaxed(rs->regs + ROCKCHIP_SPI_IMR) & INT_CS_INACTIVE)
-		ctlr->target_abort(ctlr);
+  BTRFS critical (device dm-2 state E): emergency shutdown
+  BTRFS error (device dm-2 state E): error while writing out transaction: -30
+  BTRFS warning (device dm-2 state E): Skipping commit of aborted transaction.
+  BTRFS error (device dm-2 state EA): Transaction 9 aborted (error -30)
+  BTRFS: error (device dm-2 state EA) in cleanup_transaction:2068: errno=-30 Readonly filesystem
+  BTRFS info (device dm-2 state EA): forced readonly
+  BTRFS info (device dm-2 state EA): last unmount of filesystem 4fbf2e15-f941-49a0-bc7c-716315d2777c
+  ------------[ cut here ]------------
+  WARNING: disk-io.c:3311 at invalidate_and_check_btree_folios+0xfd/0x1ca [btrfs], CPU#8: umount/914368
+  CPU: 8 UID: 0 PID: 914368 Comm: umount Tainted: G           OE       7.1.0-rc1-custom+ #372 PREEMPT(full)  2de38db8d1deae71fde295430a0ff3ab98ccf596
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 02/02/2022
+  RIP: 0010:invalidate_and_check_btree_folios+0xfd/0x1ca [btrfs]
+  Call Trace:
+   <TASK>
+   close_ctree+0x52e/0x574 [btrfs d2f0b1cd330d1287e7a9919d112eadfc0e914efd]
+   generic_shutdown_super+0x89/0x1a0
+   kill_anon_super+0x16/0x40
+   btrfs_kill_super+0x16/0x20 [btrfs d2f0b1cd330d1287e7a9919d112eadfc0e914efd]
+   deactivate_locked_super+0x2d/0xb0
+   cleanup_mnt+0xdc/0x140
+   task_work_run+0x5a/0xa0
+   exit_to_user_mode_loop+0x123/0x4b0
+   do_syscall_64+0x243/0x7c0
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+   </TASK>
+  ---[ end trace 0000000000000000 ]---
+  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30539776 owner 9 gen 9 refs 2 flags 0x7
+  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30621696 owner 257 gen 9 refs 2 flags 0x7
+  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30638080 owner 258 gen 9 refs 2 flags 0x7
+  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30654464 owner 7 gen 9 refs 2 flags 0x7
+  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30703616 owner 2 gen 9 refs 2 flags 0x7
+  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30720000 owner 10 gen 9 refs 2 flags 0x7
+  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30736384 owner 4 gen 9 refs 2 flags 0x7
+  BTRFS warning (device dm-2 state EA): unable to release extent buffer 30752768 owner 11 gen 9 refs 2 flags 0x7
 
-IMR is the interrupt mask register: it tells which sources are enabled,
-not which one fired. In the PIO path, rockchip_spi_prepare_irq() enables
-both INT_RF_FULL and INT_CS_INACTIVE in IMR when rs->cs_inactive is true:
+I'm using a stripped down version, which seems to trigger the warning
+more reliably:
 
-	if (rs->cs_inactive)
-		writel_relaxed(INT_RF_FULL | INT_CS_INACTIVE,
-			       rs->regs + ROCKCHIP_SPI_IMR);
+  _fsstress_pid=""
+  workload()
+  {
+  	dmesg -C
+  	mkfs.btrfs -f -K $dev > /dev/null
+  	echo 1 > /sys/kernel/debug/clear_warn_once
+  	mount $dev $mnt
+  	$fsstress -w -n 1024 -p 4 -d $mnt &
+  	_fsstress_pid=$!
+  	sleep 0
+  	$godown $mnt
+  	pkill --echo -PIPE fsstress > /dev/null
+  	wait $_fsstress_pid
+  	unset _fsstress_pid
+  	umount $mnt
 
-so the IMR check is always true once cs_inactive is enabled, and every
-PIO interrupt - including normal RF_FULL completions - is dispatched to
-ctlr->target_abort(), aborting the transfer. The bug is reachable on
-ROCKCHIP_SPI_VER2_TYPE2 in target mode with a DMA-capable controller
-when the transfer is short enough to fall back to PIO
-(rockchip_spi_can_dma() returns false below fifo_len).
+  	if dmesg | grep -q "WARNING"; then
+  		fail
+  	fi
+  }
 
-Read ISR (which is RISR masked by IMR) so the check actually reflects
-which interrupt fired, and parenthesise the expression for clarity while
-at it.
+  for (( i = 0; i < $runtime; i++ )); do
+  	echo "=== $i/$runtime ==="
+  	workload
+  done
 
-Fixes: 869f2c94db92 ("spi: rockchip: Stop spi slave dma receiver when cs inactive")
-Signed-off-by: John Madieu <john.madieu@gmail.com>
-Link: https://patch.msgid.link/20260425092936.2590132-2-john.madieu@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[CAUSE]
+Inside btrfs_write_and_wait_transaction(), we first try to write all
+dirty ebs, then wait for them to finish.
+
+After that we call btrfs_extent_io_tree_release() to free all
+extent states from dirty_pages io tree.
+
+However if we hit an error from btrfs_write_marked_extent(), then we
+still call btrfs_extent_io_tree_release() to clear that dirty_pages io
+tree, which may contain dirty records that we haven't yet submitted.
+
+Furthermore, the later transaction cleanup path will utilize that
+dirty_pages io tree to properly cleanup those dirty ebs, but since it's
+already empty, no dirty ebs are properly cleaned up, thus will later
+trigger the warnings inside invalidate_btree_folios().
+
+[FIX]
+Normally such dirty ebs won't cause problems, as when the iput() is
+called on the btree inode, the dirty ebs will be forcibly written back,
+and since the fs is already in an error status, such writeback will not
+reach disk and finish immediately.
+
+But it's still better to get rid of such dirty ebs, if we ended up with
+dirty ebs but the fs is not in an error status, then such writeback at
+iput() time will be too late, as all workers are already stopped but
+writeback will utilize workers, which will lead to NULL pointer
+dereferences.
+
+Instead of unconditionally calling btrfs_extent_io_tree_release(), only
+call it if btrfs_write_and_wait_transaction() finished successfully, so
+that @dirty_pages extent io tree is kept untouched for transaction
+cleanup.
+
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-rockchip.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/btrfs/disk-io.c     |    1 +
+ fs/btrfs/transaction.c |    9 ++++-----
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 9e160cba1ff37..03a11aed055ee 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -352,7 +352,8 @@ static irqreturn_t rockchip_spi_isr(int irq, void *dev_id)
- 	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -4646,6 +4646,7 @@ static void btrfs_destroy_marked_extents
+ 			free_extent_buffer_stale(eb);
+ 		}
+ 	}
++	btrfs_extent_io_tree_release(dirty_pages);
+ }
  
- 	/* When int_cs_inactive comes, spi target abort */
--	if (rs->cs_inactive && readl_relaxed(rs->regs + ROCKCHIP_SPI_IMR) & INT_CS_INACTIVE) {
-+	if (rs->cs_inactive &&
-+	    (readl_relaxed(rs->regs + ROCKCHIP_SPI_ISR) & INT_CS_INACTIVE)) {
- 		ctlr->target_abort(ctlr);
- 		writel_relaxed(0, rs->regs + ROCKCHIP_SPI_IMR);
- 		writel_relaxed(0xffffffff, rs->regs + ROCKCHIP_SPI_ICR);
--- 
-2.53.0
-
+ static void btrfs_destroy_pinned_extent(struct btrfs_fs_info *fs_info,
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -1268,14 +1268,13 @@ static int btrfs_write_and_wait_transact
+ 	blk_finish_plug(&plug);
+ 	ret2 = btrfs_wait_extents(fs_info, dirty_pages);
+ 
+-	btrfs_extent_io_tree_release(&trans->transaction->dirty_pages);
+-
+ 	if (ret)
+ 		return ret;
+-	else if (ret2)
++	if (ret2)
+ 		return ret2;
+-	else
+-		return 0;
++
++	btrfs_extent_io_tree_release(&trans->transaction->dirty_pages);
++	return 0;
+ }
+ 
+ /*
 
 
 
