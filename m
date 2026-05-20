@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-250986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252552-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4IvgIfzwDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-250986-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:35:56 +0200
+	id OF18EX8VDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-252552-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:11:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F1095940D7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:35:55 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A6E75993ED
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:11:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4427B31F6278
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:08:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 63DBC30E47CB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:16:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CB653EEAC6;
-	Wed, 20 May 2026 17:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E26F83F871A;
+	Wed, 20 May 2026 18:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQq2z+iF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lsF3INvS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C6C4352C52;
-	Wed, 20 May 2026 17:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DBA83F6619;
+	Wed, 20 May 2026 18:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296805; cv=none; b=MnDP1zBuLqoDs2za6rY+uI3pHrJx8lJ3YsIJ1t8h8MRO2eaGdLFBJrWGT59x2UoKez1TbNTuFozKs4eoJRgTAQilvGjlqFfrn7i2UHNnJKz3fEk4eDsK9b67KFOj60SqIvc5q2Z9ICP9l0yjlmpTTap97XbE5t5ZMSycAZJGXdw=
+	t=1779300973; cv=none; b=MgzP8cQst6pA2kHMCGUdeHELjlWYvaHrOmGS71EG9nUVZ3LUTc8d+t+16xzgDZ+zU+3W9vcH1c8+s/7Ly3pdDI5LN8f13DGe3a4P1jQvcqHuUzzHXpfnvKNS6jUbXqSaN7lM58WOnGs2eLSXNQtYmo4uO6hOKPoNHEC0tyM7Xo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296805; c=relaxed/simple;
-	bh=j4lvfqSgkHHG8KcRUSFtpV0KxvLskKJiT73kkUqcYY4=;
+	s=arc-20240116; t=1779300973; c=relaxed/simple;
+	bh=4tufP1NMZrY1F5wmecGBBlAGcTvrN91QCHu+OaabPE8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EnCWvhgDGZ7DnKOw8X1zYiDJUf3rxF2JmXE+vGFM7kv+3jZkY3DwlQtNEr3Y94E4KW3h/qgF+7yc5QFnmPKQv3nIkB1EYqJO5sbqiAz9JS1ehtfGaRNTV+dTIj520pEBsB2DPctMMBpcXxXgO34zZ80vLETI7tDe1KWuc2jwSyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQq2z+iF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 713451F000E9;
-	Wed, 20 May 2026 17:06:43 +0000 (UTC)
+	 MIME-Version; b=bOJhMOuWcdcnXUTVnbl3pVSBo6OvfLd2Fm6npifwqQwvjJ7Ep8aCYKoXDiYBz0vIge7U36cXSjiBFy2//3bXapSDWckUpetFFQqp8iAYQKBwujMMsUau6BtCxDcvUTFgSCPrg840ORE3QxBQmFgmd1uHXn64R52+CrQu7MdFuW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lsF3INvS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F281B1F000E9;
+	Wed, 20 May 2026 18:16:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296803;
-	bh=JWbsFHTHBH3IRdu3381vc1Mh/Be9x3w+TH+yPhng2T4=;
+	s=korg; t=1779300972;
+	bh=3OYDoDZFyv05nHG+VDtx1Y5NHyVwKoc9492QKkLMiYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aQq2z+iFODnXDzPWEhYYeWHvE5If94YVm8BBNKXqHf1VGPOt6Cgtli2bK1DCgZyJV
-	 8qoSc8W8ZN4EH3vHTswZtGdRLDQHrfosSeAfOQjNjcwKYx7TyR0JrthWS5LihkepUr
-	 x+mgFpLnm04MrfmcWWtxh21WbHSIcObOgMKILG68=
+	b=lsF3INvSa6rtWWHxvqeeH14z6SUpOZ7GNTJjpogr/ex2LHRd5jCeF4aCZtxGmJ12f
+	 JVa4Oda0l8WTlDXIX5CP5W7XGBgvpzbEI1E4lfoae5MKIZBbe0od0Ia8GZaVt3iUBE
+	 Yr1/Z+GNLrQMigCsBSsNd7vDIZ5LqsbLbguDmGnY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Sun Jian <sun.jian.kdev@gmail.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0938/1146] net: airoha: Do not read uninitialized fragment address in airoha_dev_xmit()
+Subject: [PATCH 6.12 377/666] perf cgroup: Update metric leader in evlist__expand_cgroup
 Date: Wed, 20 May 2026 18:19:48 +0200
-Message-ID: <20260520162209.464093976@linuxfoundation.org>
+Message-ID: <20260520162119.421988645@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +65,130 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250986-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252552-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 2F1095940D7
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4A6E75993ED
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit bde34e84edc8b5571fbde7e941e175a4293ee1eb ]
+[ Upstream commit c9ef786c0970991578397043f1c819229e2b7197 ]
 
-The transmit loop in airoha_dev_xmit() reads fragment address and length
-during its final iteration, when the loop index equals
-skb_shinfo(skb)->nr_frags, at which point the fragment data is
-uninitialized. While these values are never consumed, the read itself is
-unsafe and may trigger a page fault. Fix this by avoiding the fragment
-read on the last iteration.
-Additionally, move the skb pointer from the first to the last used packet
-descriptor, so that airoha_qdma_tx_napi_poll() defers freeing the skb
-until the final descriptor is processed.
+When the evlist is expanded the metric leader wasn't being updated. As
+the original evsel is deleted this creates a use-after-free in
+stat-shadow's prepare_metric. This was detected running the "perf stat
+--bpf-counters --for-each-cgroup test" with sanitizers.
 
-Fixes: 23020f0493270 ("net: airoha: Introduce ethernet support for EN7581 SoC")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20260424-airoha-xmit-fix-read-frag-v1-1-fdc0a83c79e8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The change itself puts the copied evsel into the priv field (known
+unused because of evsel__clone use) and then in a second pass over the
+list updates the copied values using the priv pointer.
+
+Fixes: d1c5a0e86a4e ("perf stat: Add --for-each-cgroup option")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Acked-by: Sun Jian <sun.jian.kdev@gmail.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/airoha/airoha_eth.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ tools/perf/util/cgroup.c | 30 +++++++++++++++++++++++-------
+ 1 file changed, 23 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index f9e6406ca55da..3e406d880c0cd 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -2005,8 +2005,8 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
- 	struct netdev_queue *txq;
- 	struct airoha_queue *q;
- 	LIST_HEAD(tx_list);
-+	int i = 0, qid;
- 	void *data;
--	int i, qid;
- 	u16 index;
- 	u8 fport;
+diff --git a/tools/perf/util/cgroup.c b/tools/perf/util/cgroup.c
+index fbcc0626f9ce2..e172bcdf7fcb1 100644
+--- a/tools/perf/util/cgroup.c
++++ b/tools/perf/util/cgroup.c
+@@ -417,7 +417,6 @@ int evlist__expand_cgroup(struct evlist *evlist, const char *str,
+ 			  struct rblist *metric_events, bool open_cgroup)
+ {
+ 	struct evlist *orig_list, *tmp_list;
+-	struct evsel *pos, *evsel, *leader;
+ 	struct rblist orig_metric_events;
+ 	struct cgroup *cgrp = NULL;
+ 	struct cgroup_name *cn;
+@@ -456,6 +455,7 @@ int evlist__expand_cgroup(struct evlist *evlist, const char *str,
+ 		goto out_err;
  
-@@ -2065,7 +2065,7 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
- 			     list);
- 	index = e - q->entry;
+ 	list_for_each_entry(cn, &cgroup_list, list) {
++		struct evsel *pos;
+ 		char *name;
  
--	for (i = 0; i < nr_frags; i++) {
-+	while (true) {
- 		struct airoha_qdma_desc *desc = &q->desc[index];
- 		skb_frag_t *frag = &skb_shinfo(skb)->frags[i];
- 		dma_addr_t addr;
-@@ -2077,7 +2077,7 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
- 			goto error_unmap;
+ 		if (!cn->used)
+@@ -471,21 +471,37 @@ int evlist__expand_cgroup(struct evlist *evlist, const char *str,
+ 		if (cgrp == NULL)
+ 			continue;
  
- 		list_move_tail(&e->list, &tx_list);
--		e->skb = i ? NULL : skb;
-+		e->skb = i == nr_frags - 1 ? skb : NULL;
- 		e->dma_addr = addr;
- 		e->dma_len = len;
- 
-@@ -2096,6 +2096,9 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
- 		WRITE_ONCE(desc->msg1, cpu_to_le32(msg1));
- 		WRITE_ONCE(desc->msg2, cpu_to_le32(0xffff));
- 
-+		if (++i == nr_frags)
-+			break;
+-		leader = NULL;
++		/* copy the list and set to the new cgroup. */
+ 		evlist__for_each_entry(orig_list, pos) {
+-			evsel = evsel__clone(/*dest=*/NULL, pos);
++			struct evsel *evsel = evsel__clone(/*dest=*/NULL, pos);
 +
- 		data = skb_frag_address(frag);
- 		len = skb_frag_size(frag);
- 	}
+ 			if (evsel == NULL)
+ 				goto out_err;
+ 
++			/* stash the copy during the copying. */
++			pos->priv = evsel;
+ 			cgroup__put(evsel->cgrp);
+ 			evsel->cgrp = cgroup__get(cgrp);
+ 
+-			if (evsel__is_group_leader(pos))
+-				leader = evsel;
+-			evsel__set_leader(evsel, leader);
+-
+ 			evlist__add(tmp_list, evsel);
+ 		}
++		/* update leader information using stashed pointer to copy. */
++		evlist__for_each_entry(orig_list, pos) {
++			struct evsel *evsel = pos->priv;
++
++			if (evsel__leader(pos))
++				evsel__set_leader(evsel, evsel__leader(pos)->priv);
++
++			if (pos->metric_leader)
++				evsel->metric_leader = pos->metric_leader->priv;
++
++			if (pos->first_wildcard_match)
++				evsel->first_wildcard_match = pos->first_wildcard_match->priv;
++		}
++		/* the stashed copy is no longer used. */
++		evlist__for_each_entry(orig_list, pos)
++			pos->priv = NULL;
++
+ 		/* cgroup__new() has a refcount, release it here */
+ 		cgroup__put(cgrp);
+ 		nr_cgroups++;
 -- 
 2.53.0
 
