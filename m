@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-253003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251905-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OG8CEEEaDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-253003-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:32:01 +0200
+	id SJACJcD8DWok5QUAu9opvQ
+	(envelope-from <stable+bounces-251905-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70DA4599BA9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:32:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BD43596226
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E5E7430830A2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E49AB365B895
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:46:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 155E93FBEB3;
-	Wed, 20 May 2026 18:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B57D3B0AD6;
+	Wed, 20 May 2026 17:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x8g07tre"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ozb8w7Pn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B729A3D1CA0;
-	Wed, 20 May 2026 18:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F753F1ADC;
+	Wed, 20 May 2026 17:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302149; cv=none; b=K0tGBlykPawWZ0QsjNzPu47csBnTUVPjLge9UFhzO+vUchrHYH4vOCSx29HNw7bAw7pGnlU5wsIDqWBDAGI7agtLmURkWEkbfXD5GkJ06N611TKFtJki/QkVAwSd2uQmYMzaPGi6byXxRnjKsJDnvD5uWsJ4UxLl4efGEZzo4lU=
+	t=1779299194; cv=none; b=UwZlis4Ii8WJ1iyJ+bqDUdSUbMl5PQjAnSB4wjBVn4LkHVyUfbEnjrNSbTGCl9PS/n4w+Z/YOzSUJBQrDztmhS4hdyiqP3ct9t/mbYWaOW7rKCqoMWkhrPzyiEuR8IZNcHlW1mULvh8gfUiU01wPsdA10tqwUFfXdmQA33uD/XU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302149; c=relaxed/simple;
-	bh=yMB2sL2HVh259HUAYU5rfFxympZQTHk2d9SU+pMnkA4=;
+	s=arc-20240116; t=1779299194; c=relaxed/simple;
+	bh=gOSIJ59HOxBa5XhN3PbH/5/ysgcDOCJJJ85wUEXyRaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lu4ip5/UVgmt6CwH8CX7AQ72DzlKvtNraWLa82Yd6MjMqmWTB4OtvcFi6eJ4AtlMhHDyeVGSigaoVA5EVA4RF1fOkvQFdVd05zH0LsRy/BBf2dFywXEBykQiC1+T6LKyKkPPzYlZKZAJCX+Hsn3PhdN928xx9wRup64eFpYM14c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x8g07tre; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C3A01F000E9;
-	Wed, 20 May 2026 18:35:48 +0000 (UTC)
+	 MIME-Version; b=uexCgwajsW2PgARukC/muaxrlTc5/0otf/EMxUItU+Z2hMTeYjtj9Or+CGUO3P3XXVhR4QMnO5+21+C8IpkgdrFStfs3ASUw1FLYdSHdBCJz3VFlDfhbP3dWHmumxPPBVz6zdTbRPzYY0tmAwki3ZoyqzHFDxEg2gh4WgzldD7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ozb8w7Pn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CACF21F000E9;
+	Wed, 20 May 2026 17:46:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302148;
-	bh=XIVDQC2gEAZnlQjRThW/w1AOL02WQ3UFTvefGIsPXHc=;
+	s=korg; t=1779299193;
+	bh=UTxV97LsMwBjbPEJzqpDLPBUW3ZguiLlV8ovLGx/pQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=x8g07treWzerAHlAu9ZEOaRLe48OkWLP1W8OXNA4b+ZLrlpeHzR4kqj2U1nsfSgkd
-	 ww8MyCh8u2o4aJlxfFOmMUjikBDQnjFhmMxHW7IARnE63jT7nHUxEG5G1IRc+7/aUe
-	 AZ5GJlYJELNEBzTc1piGWyM7tp4LyCE0quy1f9zM=
+	b=Ozb8w7PnWRszhEaDMieAVd96GGsHcaOty1zvzI+zJDzmq/slYM0cTf/rVuJ9Se+iW
+	 vYS+v1/+Zw79UPtuTnXau1yTmfl+nJLXYSQqGugwDq3ZiON5I5iYR7itaV5g/1X4hv
+	 Jaiwf2ZYFiX/k+QW8d/fPk0+qpgLO0W5GlEw2e6c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vidya Sagar <vidyas@nvidia.com>,
-	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
+	Abdulkader Alrezej <alrazj.abdulkader@gmail.com>,
+	Mieczyslaw Nalewaj <namiltd@yahoo.com>,
+	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 156/508] PCI: tegra194: Fix polling delay for L2 state
-Date: Wed, 20 May 2026 18:19:39 +0200
-Message-ID: <20260520162102.017668043@linuxfoundation.org>
+Subject: [PATCH 6.18 697/957] net: dsa: realtek: rtl8365mb: fix mode mask calculation
+Date: Wed, 20 May 2026 18:19:40 +0200
+Message-ID: <20260520162149.655778122@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,93 +66,79 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253003-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251905-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,yahoo.com,redhat.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,nvidia.com:email]
-X-Rspamd-Queue-Id: 70DA4599BA9
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 2BD43596226
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vidya Sagar <vidyas@nvidia.com>
+From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
 
-[ Upstream commit adaffed907f14f954096555665ad6af2ae724d83 ]
+[ Upstream commit 0c078021d3861966614d5e594ee03587f0c9e74d ]
 
-As per PCIe r7.0, sec 5.3.3.2.1, after sending PME_Turn_Off message, Root
-Port should wait for 1-10 msec for PME_TO_Ack message. Currently, driver is
-polling for 10 msec with 1 usec delay which is aggressive.  Use existing
-macro PCIE_PME_TO_L2_TIMEOUT_US to poll for 10 msec with 1 msec delay.
-Since this function is used in non-atomic context only, use non-atomic poll
-function.
+The RTL8365MB_DIGITAL_INTERFACE_SELECT_MODE_MASK macro was shifting
+the 4-bit mask (0xF) by only (_extint % 2) bits instead of
+(_extint % 2) * 4. This caused the mask to overlap with the adjacent
+nibble when configuring odd-numbered external interfaces, selecting
+the wrong bits entirely.
 
-Fixes: 56e15a238d92 ("PCI: tegra: Add Tegra194 PCIe support")
-Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
-Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://patch.msgid.link/20260324190755.1094879-2-mmaddireddy@nvidia.com
+Align the shift calculation with the existing ...MODE_OFFSET macro.
+
+Fixes: 4af2950c50c8 ("net: dsa: realtek-smi: add rtl8365mb subdriver for RTL8365MB-VC")
+Signed-off-by: Abdulkader Alrezej <alrazj.abdulkader@gmail.com>
+Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+Reviewed-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+Link: https://patch.msgid.link/400a6387-a444-4576-af6d-26be5410bce3@yahoo.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/net/dsa/realtek/rtl8365mb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index ce2a7a6dab90c..6a4e0dc0d1dce 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -205,8 +205,6 @@
- #define CAP_SPCIE_CAP_OFF_USP_TX_PRESET0_MASK	GENMASK(11, 8)
- #define CAP_SPCIE_CAP_OFF_USP_TX_PRESET0_SHIFT	8
+diff --git a/drivers/net/dsa/realtek/rtl8365mb.c b/drivers/net/dsa/realtek/rtl8365mb.c
+index 3a48db295e7e4..e10a789e22022 100644
+--- a/drivers/net/dsa/realtek/rtl8365mb.c
++++ b/drivers/net/dsa/realtek/rtl8365mb.c
+@@ -216,7 +216,7 @@
+ 		 (_extint) == 2 ? RTL8365MB_DIGITAL_INTERFACE_SELECT_REG1 : \
+ 		 0x0)
+ #define   RTL8365MB_DIGITAL_INTERFACE_SELECT_MODE_MASK(_extint) \
+-		(0xF << (((_extint) % 2)))
++		(0xF << (((_extint) % 2) * 4))
+ #define   RTL8365MB_DIGITAL_INTERFACE_SELECT_MODE_OFFSET(_extint) \
+ 		(((_extint) % 2) * 4)
  
--#define PME_ACK_TIMEOUT 10000
--
- #define LTSSM_TIMEOUT 50000	/* 50ms */
- 
- #define GEN3_GEN4_EQ_PRESET_INIT	5
-@@ -1583,9 +1581,10 @@ static int tegra_pcie_try_link_l2(struct tegra_pcie_dw *pcie)
- 	val |= APPL_PM_XMT_TURNOFF_STATE;
- 	appl_writel(pcie, val, APPL_RADM_STATUS);
- 
--	return readl_poll_timeout_atomic(pcie->appl_base + APPL_DEBUG, val,
--				 val & APPL_DEBUG_PM_LINKST_IN_L2_LAT,
--				 1, PME_ACK_TIMEOUT);
-+	return readl_poll_timeout(pcie->appl_base + APPL_DEBUG, val,
-+				  val & APPL_DEBUG_PM_LINKST_IN_L2_LAT,
-+				  PCIE_PME_TO_L2_TIMEOUT_US/10,
-+				  PCIE_PME_TO_L2_TIMEOUT_US);
- }
- 
- static void tegra_pcie_dw_pme_turnoff(struct tegra_pcie_dw *pcie)
 -- 
 2.53.0
 
