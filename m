@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250547-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gN7RM88aDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251444-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:34:23 +0200
+	id ILqkNeoQDmrB5wUAu9opvQ
+	(envelope-from <stable+bounces-250547-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:52:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DC1B599C9B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:34:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 316B2598D2A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:52:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 756FB32D2FBA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:27:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 802D53332833
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:48:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD2043F4124;
-	Wed, 20 May 2026 17:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 594A3363C6F;
+	Wed, 20 May 2026 16:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2XUziq6v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bhi/+0On"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794B430BF68;
-	Wed, 20 May 2026 17:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23CB1363086;
+	Wed, 20 May 2026 16:48:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297997; cv=none; b=OKwEhJY4xH36ux9K5ukYl0vP94RknsQouHSq1cKoReiJHYoB5NAkYGlXUlHXSPNjCZ5Y45R4kjGhSnp2LQwnOdr5cboKAR8CdFEgKTHHcWOAlXuOGrErXazPeqQkX0fsH/uQglQDxyFAQD/cHOY2KPGzOk57emyoG6LTrpX6a1Y=
+	t=1779295696; cv=none; b=qRfRFgd5pydLCHizd45HZ8/Ja4PxE+lQrBkq6/tVrOj4pSYR4O7V7XEGM1eoqVuSOjMpbqm5LaTfMkt7BXQy4rBI0kPejnnqAjtY9z6Kjdqea4suzEdOOSP4gqVGM6n8uSatdi9FCvMIgztA/5fqW23bOzUDBv6EQUiOf13OSHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297997; c=relaxed/simple;
-	bh=HvpujqBfulUjRidpgCbDzQbU6uIoee0Y/ANg3Q6KS/k=;
+	s=arc-20240116; t=1779295696; c=relaxed/simple;
+	bh=cHC3bRM/SJ7Yd1959qkOg8JMemmivlovhFUFkP4/h8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kxvRsLYPWEIgyqbqJvlr0siT/xQ0nFMfz6pNt1AxiT6HDhL53ZFtwsg6Toozj4yBtvbPau8NNaqchA8DQlJWpi5MJuFlmIKtfmNsKLh1JAJYiKsWySeOcTKvrY04EiiZJX//1hw40yHWnhNmXtvgYmi1ooQhehSXXsD5TOA/dhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2XUziq6v; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF41D1F000E9;
-	Wed, 20 May 2026 17:26:35 +0000 (UTC)
+	 MIME-Version; b=NbBL9xH4LzW21mfWGnB0J/dYJgWicPCSF9C7Bj0wpGkR0ovSqcgTMM6wMEZLEdJ7nLjnTagsorukXTxMxEWT/pF0ypLId3+4MNY/kmO2tmH5cm7OKwgjvywksLVUTrwx9wUTUmazu5Cvu8UAyDxw/ZU54XNVtGxhoMoq7xq+lTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bhi/+0On; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B05CF1F000E9;
+	Wed, 20 May 2026 16:48:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297996;
-	bh=CF1SMEErsPMbNb3PISXdw2fh1DF98BNKAZKNYkYvSZo=;
+	s=korg; t=1779295695;
+	bh=mp/K1rYtPPbvqid0wt+nRYKgNMyTZJ5i1s8z7kN/SnI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2XUziq6vpRqnUI0jdAy9mIrWjVpwgWJ9rgUTM8G2UPw1nh37cnoOfFqmHH/6Esi5P
-	 McnJP0y1bfrgHcp1It2436Swci8iPInncVIn3hdFKPeXY58GzmFVjkJ1CTp15o6gnw
-	 5kx0ap7XMqHJvO1cLVFcQDkcfp62sqfDjojf0JVI=
+	b=bhi/+0OnK/Agt5szilJ1viVkDBzyX+NY6tB5ShhdepGd47xwRZvFT0YSbGJWK5Go9
+	 J/+wufDMio16IHD8o/FSs85OJnu52LSEYsOeP7ZOD5MVOlMKcJ1w303BQ7Jw+M7huV
+	 3XzTpG1rTobbGSslBSQDIb87WWrNgL5cOOvhfSf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Pengyu Luo <mitltlatltl@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 243/957] drm/msm/dsi: add the missing parameter description
+Subject: [PATCH 7.0 0476/1146] iommufd: vfio compatibility extension check for noiommu mode
 Date: Wed, 20 May 2026 18:12:06 +0200
-Message-ID: <20260520162139.812949786@linuxfoundation.org>
+Message-ID: <20260520162158.966777467@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,73 +66,72 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251444-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250547-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,oss.qualcomm.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
-X-Rspamd-Queue-Id: 3DC1B599C9B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 316B2598D2A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengyu Luo <mitltlatltl@gmail.com>
+From: Jacob Pan <jacob.pan@linux.microsoft.com>
 
-[ Upstream commit 958adefc4c0fddee3b12269da5dd7cb49bac953f ]
+[ Upstream commit 7147ec874ea08c322d779d8eba28946e294ed1f3 ]
 
-Add a description for is_bonded_dsi in dsi_adjust_pclk_for_compression
-to match the existing kernel-doc comment.
+VFIO_CHECK_EXTENSION should return false for TYPE1_IOMMU variants when
+in NO-IOMMU mode and IOMMUFD compat container is set. This change makes
+the behavior match VFIO_CONTAINER in noiommu mode. It also prevents
+userspace from incorrectly attempting to use TYPE1 IOMMU operations
+in a no-iommu context.
 
-Fixes: e4eb11b34d6c ("drm/msm/dsi: fix pclk rate calculation for bonded dsi")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202603080314.XeqyRZ7A-lkp@intel.com/
-Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/710112/
-Link: https://lore.kernel.org/r/20260309100254.877801-1-mitltlatltl@gmail.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Fixes: d624d6652a65 ("iommufd: vfio container FD ioctl compatibility")
+Link: https://patch.msgid.link/r/20260213183636.3340-1-jacob.pan@linux.microsoft.com
+Signed-off-by: Jacob Pan <jacob.pan@linux.microsoft.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dsi/dsi_host.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/iommu/iommufd/vfio_compat.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
-index db6da99375a18..6cb634590e7a7 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_host.c
-+++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
-@@ -569,6 +569,7 @@ void dsi_link_clk_disable_v2(struct msm_dsi_host *msm_host)
-  * dsi_adjust_pclk_for_compression() - Adjust the pclk rate for compression case
-  * @mode: The selected mode for the DSI output
-  * @dsc: DRM DSC configuration for this DSI output
-+ * @is_bonded_dsi: True if two DSI controllers are bonded
-  *
-  * Adjust the pclk rate by calculating a new hdisplay proportional to
-  * the compression ratio such that:
+diff --git a/drivers/iommu/iommufd/vfio_compat.c b/drivers/iommu/iommufd/vfio_compat.c
+index a258ee2f4579f..acb48cdd3b005 100644
+--- a/drivers/iommu/iommufd/vfio_compat.c
++++ b/drivers/iommu/iommufd/vfio_compat.c
+@@ -283,7 +283,7 @@ static int iommufd_vfio_check_extension(struct iommufd_ctx *ictx,
+ 	case VFIO_TYPE1_IOMMU:
+ 	case VFIO_TYPE1v2_IOMMU:
+ 	case VFIO_UNMAP_ALL:
+-		return 1;
++		return !ictx->no_iommu_mode;
+ 
+ 	case VFIO_NOIOMMU_IOMMU:
+ 		return IS_ENABLED(CONFIG_VFIO_NOIOMMU);
 -- 
 2.53.0
 
