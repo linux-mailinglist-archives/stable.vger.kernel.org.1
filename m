@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251615-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4IjNBYD7DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-252255-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:20:48 +0200
+	id mOknBpAcDmro6AUAu9opvQ
+	(envelope-from <stable+bounces-251615-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:41:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDD60595DAD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:20:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F355599F28
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:41:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 47D9E30750A9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:03:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9FBB93167FDA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:34:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85B353F6619;
-	Wed, 20 May 2026 18:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4796236C9D2;
+	Wed, 20 May 2026 17:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6RxKDMH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+idYq3z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 471151B7910;
-	Wed, 20 May 2026 18:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F3B36405A;
+	Wed, 20 May 2026 17:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300199; cv=none; b=OCwEdz9HAUmVPmY5Rzxh2WtuWtUzxheWIt7OzH1B+lm69h/fVLM6skYBTYr9LDqT9kuMY/kYc5fophuPDmkmhKCZpdm1Amp11C3wJ5zKoHJiewkE14PNyyucoEz0b5xzJgf/nde5nVLNzIYrM4+W7U48OasGjWvN4oy/5q2jX8M=
+	t=1779298443; cv=none; b=aU+30uNaIADIboTb5ng5hctLPedstsl0o5Fm/OZ5P4FkXkrc/7MmXhTKDFj/UawAkI4gb9XYnxFojZS937FkGno/5OdgldW/d79QT1tILZaPYo8jaD9Y3eacQLpLCb7ro4pGL4f2z/81XVBK2ifBdD8UWc07KFB5LW1fI6Jto0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300199; c=relaxed/simple;
-	bh=hzNYH8serR8wnquNFPmf3h9jzNrnAZybP0pjH6Y1mfg=;
+	s=arc-20240116; t=1779298443; c=relaxed/simple;
+	bh=lCTAr81X3qX82k356AIvLpNxgbg41UvgwxWWJ+isorQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JGPg71pQrdRreCzRkttSKaSjbCOX1W0o6M841yN16xMNPFXRgfugBb23lcNdBX7OAcn+eOalZEcQSgcUZw+63dXDzDzQL5IP1y0OOke/DUcnU9IhKIo4SVgXmR/ZhWvMKmunFwbyWjpD9JyzwO0a/5Nc3CmyYgYR3l+kfqGm3Eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6RxKDMH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC63E1F000E9;
-	Wed, 20 May 2026 18:03:17 +0000 (UTC)
+	 MIME-Version; b=n2Q7+zAAy89Tz5e5pJ6yPP+j7yzZWSZ2Qjcljik8cN4gZD7bP0L4L6mpKwuF4di5cJ/d2GuGKPE7wjwoknT2/vy1pHC4uUJojePcl56trjyMO9p/lFlJulemfZ2stAvYdaW7v6jLiu+f53VYPUfF9SJqAL0WE0qM61kmEbv3/XE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+idYq3z; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E3751F000E9;
+	Wed, 20 May 2026 17:34:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300198;
-	bh=QATEgzemGvzAPdb1MBVbQ6b7/u/+e8XIkRrvnBcN8LM=;
+	s=korg; t=1779298441;
+	bh=XvkE5Y3TkDwkrYsPvHB6q1gwlgfoFaKE3155I/kyxQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=r6RxKDMHU9mQ70JhPAY/Jbm3eW96oja4eOF7yQHd5x8hPkLk0W5/abxNyCOYN6UOO
-	 vzM2C/2EsqrBehCDcLBy2Kiu0G1j2msKYUiCdvKEhooXrgzefrH9S38zn8han2qfoc
-	 mIYNTxTrJd8lOqxQxj/0D2BJ4czLI/ofIk7MnyA0=
+	b=r+idYq3zVT2AZtBW4ALetl0LhcKKH7A7NlTHfnu7xLuuaMLqjqZRUPp6c3TQQ4dmQ
+	 GCjQQqe0Gg8J9+ewxoFOAeD0EUhjHz0tTONgt43n/sjmT0/rNBZo8ISMrFy1StuHAQ
+	 dCBjtXFhU9pQ0RSeG/ogJMPqu5eCyt8deySzmtCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sun Jian <sun.jian.kdev@gmail.com>,
-	Sechang Lim <rhkrqnwk98@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Judith Mendez <jm@ti.com>,
+	Moteen Shah <m-shah@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 085/666] bpf: Fix RCU stall in bpf_fd_array_map_clear()
+Subject: [PATCH 6.18 413/957] arm64: dts: ti: k3-am62p5-sk: Disable MMC1 internal pulls on data pins
 Date: Wed, 20 May 2026 18:14:56 +0200
-Message-ID: <20260520162113.071483402@linuxfoundation.org>
+Message-ID: <20260520162143.480082008@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,97 +65,86 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-252255-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251615-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: DDD60595DAD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,ti.com:url,ti.com:email]
+X-Rspamd-Queue-Id: 7F355599F28
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sechang Lim <rhkrqnwk98@gmail.com>
+From: Judith Mendez <jm@ti.com>
 
-[ Upstream commit 4406942e65ca128c56c67443832988873c21d2e9 ]
+[ Upstream commit 6d4441be969bea89bb9702781f5dfb3a8f2a02a4 ]
 
-Add a missing cond_resched() in bpf_fd_array_map_clear() loop.
+AM62P SK has external 10K pullups on MMC1 DAT1-DAT3 pins [0].
+Disable internal pullups on DAT1-DAT3 so that each line has a
+single pullup source:
+- with both pullups enabled, the effective parallel resistance on
+  DAT1-3 (~8.33K) drops below the 10K minimum pullup requirement
+  for data lines (per SD Physical Layer Specification)
+- removing internal pullups makes DAT1-3 match DAT0 10K
+  external pullup so its consistent and within spec
+- both internal and external pullups enabled equals unnecessary power
+  consumption
 
-For PROG_ARRAY maps with many entries this loop calls
-prog_array_map_poke_run() per entry which can be expensive, and
-without yielding this can cause RCU stalls under load:
+[0] https://www.ti.com/lit/zip/SPRR487
 
-  rcu: Stack dump where RCU GP kthread last ran:
-  CPU: 0 UID: 0 PID: 30932 Comm: kworker/0:2 Not tainted 6.14.0-13195-g967e8def1100 #2 PREEMPT(undef)
-  Workqueue: events prog_array_map_clear_deferred
-  RIP: 0010:write_comp_data+0x38/0x90 kernel/kcov.c:246
-  Call Trace:
-   <TASK>
-   prog_array_map_poke_run+0x77/0x380 kernel/bpf/arraymap.c:1096
-   __fd_array_map_delete_elem+0x197/0x310 kernel/bpf/arraymap.c:925
-   bpf_fd_array_map_clear kernel/bpf/arraymap.c:1000 [inline]
-   prog_array_map_clear_deferred+0x119/0x1b0 kernel/bpf/arraymap.c:1141
-   process_one_work+0x898/0x19d0 kernel/workqueue.c:3238
-   process_scheduled_works kernel/workqueue.c:3319 [inline]
-   worker_thread+0x770/0x10b0 kernel/workqueue.c:3400
-   kthread+0x465/0x880 kernel/kthread.c:464
-   ret_from_fork+0x4d/0x80 arch/x86/kernel/process.c:153
-   ret_from_fork_asm+0x19/0x30 arch/x86/entry/entry_64.S:245
-   </TASK>
-
-Reviewed-by: Sun Jian <sun.jian.kdev@gmail.com>
-Fixes: da765a2f5993 ("bpf: Add poke dependency tracking for prog array maps")
-Signed-off-by: Sechang Lim <rhkrqnwk98@gmail.com>
-Link: https://lore.kernel.org/r/20260407103823.3942156-1-rhkrqnwk98@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: c00504ea42c0 ("arm64: dts: ti: k3-am62p5-sk: Updates for SK EVM")
+Signed-off-by: Judith Mendez <jm@ti.com>
+Reviewed-by: Moteen Shah <m-shah@ti.com>
+Link: https://patch.msgid.link/20260223233731.2690472-2-jm@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/arraymap.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/ti/k3-am62p5-sk.dts | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/bpf/arraymap.c b/kernel/bpf/arraymap.c
-index 6cdbb4c33d31d..7ec69545fe056 100644
---- a/kernel/bpf/arraymap.c
-+++ b/kernel/bpf/arraymap.c
-@@ -998,8 +998,10 @@ static void bpf_fd_array_map_clear(struct bpf_map *map, bool need_defer)
- 	struct bpf_array *array = container_of(map, struct bpf_array, map);
- 	int i;
- 
--	for (i = 0; i < array->map.max_entries; i++)
-+	for (i = 0; i < array->map.max_entries; i++) {
- 		__fd_array_map_delete_elem(map, &i, need_defer);
-+		cond_resched();
-+	}
- }
- 
- static void prog_array_map_seq_show_elem(struct bpf_map *map, void *key,
+diff --git a/arch/arm64/boot/dts/ti/k3-am62p5-sk.dts b/arch/arm64/boot/dts/ti/k3-am62p5-sk.dts
+index a064a632680ec..f5054912ad910 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62p5-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-am62p5-sk.dts
+@@ -271,9 +271,9 @@ main_mmc1_pins_default: main-mmc1-default-pins {
+ 			AM62PX_IOPAD(0x023c, PIN_INPUT, 0) /* (H20) MMC1_CMD */
+ 			AM62PX_IOPAD(0x0234, PIN_OUTPUT, 0) /* (J24) MMC1_CLK */
+ 			AM62PX_IOPAD(0x0230, PIN_INPUT, 0) /* (H21) MMC1_DAT0 */
+-			AM62PX_IOPAD(0x022c, PIN_INPUT_PULLUP, 0) /* (H23) MMC1_DAT1 */
+-			AM62PX_IOPAD(0x0228, PIN_INPUT_PULLUP, 0) /* (H22) MMC1_DAT2 */
+-			AM62PX_IOPAD(0x0224, PIN_INPUT_PULLUP, 0) /* (H25) MMC1_DAT3 */
++			AM62PX_IOPAD(0x022c, PIN_INPUT, 0) /* (H23) MMC1_DAT1 */
++			AM62PX_IOPAD(0x0228, PIN_INPUT, 0) /* (H22) MMC1_DAT2 */
++			AM62PX_IOPAD(0x0224, PIN_INPUT, 0) /* (H25) MMC1_DAT3 */
+ 			AM62PX_IOPAD(0x0240, PIN_INPUT, 0) /* (D23) MMC1_SDCD */
+ 		>;
+ 		bootph-all;
 -- 
 2.53.0
 
