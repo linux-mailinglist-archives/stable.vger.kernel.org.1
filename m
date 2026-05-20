@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-250290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251229-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +MxtE7rmDWqm4gUAu9opvQ
-	(envelope-from <stable+bounces-250290-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:10 +0200
+	id 6EXJMFEWDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251229-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:15:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D2685928E7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 051B9599587
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:15:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F0E3330AF6F0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:37:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4C47032B56BD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:17:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C6F370AF4;
-	Wed, 20 May 2026 16:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4A235F619;
+	Wed, 20 May 2026 17:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1lIyZBEE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RvAqx6+K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538263D7D74;
-	Wed, 20 May 2026 16:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C35C33D4E9;
+	Wed, 20 May 2026 17:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295027; cv=none; b=Gr2IoOLVU/vsE0By0zxvEndflimjLt1gNOS/Z9Dty2t9UXoErpOaN01ez6noadYZSLtv/NilCJdupYGcaXnc5SvZCHrKLwpjk/md3OXIH4C8/5VXHpNQwx5BO6/EmSJ2JCoKfWKhpKIUwWV3kwQm6//mgQQQF8HSZVXPAPHYuCw=
+	t=1779297437; cv=none; b=swnpR1ycysFo757OQtFxM8lW5VTnRKPVXZCSWRUXDrsCqC/YjljNAVxI/ZqSH3iC7VE8NtNpedof/WLx2h0ROi5vfe4SyWKPEhOsLEE5EeX/ssqY08fDGkkJQoPgv7//bPD++sV+ZPBbSWe9QqtSVS8EJqpQuM+wzahEZK7TssI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295027; c=relaxed/simple;
-	bh=scpvrgMIWN3IpmKYp4b6T/vpkZufXP2CxfGFvLyRqus=;
+	s=arc-20240116; t=1779297437; c=relaxed/simple;
+	bh=m5nkQc+jxcnmlgaG0PUShWN9YZ8EATcUI5c1K+27SYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=je1FGSMDwJ8wxWqE+6oaiGVrk2AQZXuLe0MAMbzT7ZV5iNj/Jo3PW1usp9au1zegaArr8iRXT5pFtxUSoWguByxYdVIRc6TidxUbOAWoQMbBykLLwgiQuQyF49tOKR0MRHwNrRHYmNbr8w/9/bWV1AYya39FAvey7kXzEeZ15aU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1lIyZBEE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B41C41F00894;
-	Wed, 20 May 2026 16:37:03 +0000 (UTC)
+	 MIME-Version; b=I7I5PjMc8D0Gn0hZhpYzoECAc+JDrdAyAPIb2264M3rJn9+tbj22BXjxB4HBkSEA/oTq10jd0l8SR7vvkFahJXmutB2XKl38Bz+xa+lMEsYkhsMUbs8uZ/ATlXPEEpuWaOxId2ws6CoU09UIyhJpG9IMzdQ+wxxgA8Q/qgwM6qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RvAqx6+K; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2C2C1F000E9;
+	Wed, 20 May 2026 17:17:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295024;
-	bh=XZovqm+oL6yE9cqmjPSWkkXM2PzkiEwDXZ7fYk5Uat8=;
+	s=korg; t=1779297436;
+	bh=M6J2RzdOAek53R9UKg2KVxvMwN5fGedrTZWfAhGmoco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1lIyZBEEXaCFjcGFUOsvBtVIu8pb2wYVt55LBWEnHgRFIExvQg+CoK8BJYIv7kxh5
-	 aXLsPFzAdFAG1B/82adHmWLjx2gWNyQEcKTSsBpXRN3TSFQVvHj0aG3yxIHkB9g8eS
-	 IFAVXuKn2TS1LMDAN1NCHd36A0yi7I+bTVICDk+o=
+	b=RvAqx6+K/m80NgPJrj2+1X8v4KbA6dorLMUt4hM6pRhukf2ToqksAVYVg2a9m/RS6
+	 fvi+vgFahHyogcXsXmAWfEQaxl8G8MI2B2an5a66USQEvQYHPyH9CGYlnJPeCk3l7U
+	 L4xDwF1XcnN3ctuiRlIwSt+/Rr+2kZzXAuZrxKXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eliot Courtney <ecourtney@nvidia.com>,
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Alex Williamson <alex@shazbot.org>,
 	Danilo Krummrich <dakr@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0263/1146] gpu: nova-core: falcon: rename load parameters to reflect DMA dependency
+Subject: [PATCH 6.18 030/957] PCI: use generic driver_override infrastructure
 Date: Wed, 20 May 2026 18:08:33 +0200
-Message-ID: <20260520162154.179430568@linuxfoundation.org>
+Message-ID: <20260520162135.213758114@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,332 +70,240 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250290-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251229-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,shazbot.org,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
-X-Rspamd-Queue-Id: 1D2685928E7
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,shazbot.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 051B9599587
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Courbot <acourbot@nvidia.com>
+From: Danilo Krummrich <dakr@kernel.org>
 
-[ Upstream commit 8a623869b8269dbf52d52711cd7b9355044b6b53 ]
+[ Upstream commit 10a4206a24013be4d558d476010cbf2eb4c9fa64 ]
 
-The current `FalconLoadParams` and `FalconLoadTarget` types are fit for
-DMA loading, but not so much for PIO loading which will require its own
-types. Start by renaming them to something that indicates that they are
-indeed DMA-related.
+When a driver is probed through __driver_attach(), the bus' match()
+callback is called without the device lock held, thus accessing the
+driver_override field without a lock, which can cause a UAF.
 
-Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
-Acked-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://patch.msgid.link/20260306-turing_prep-v11-3-8f0042c5d026@nvidia.com
-[acourbot@nvidia.com: fixup order of import items.]
-Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-Stable-dep-of: 17d7c97f73c7 ("gpu: nova-core: firmware: fix and explain v2 header offsets computations")
+Fix this by using the driver-core driver_override infrastructure taking
+care of proper locking internally.
+
+Note that calling match() from __driver_attach() without the device lock
+held is intentional. [1]
+
+Link: https://lore.kernel.org/driver-core/DGRGTIRHA62X.3RY09D9SOK77P@kernel.org/ [1]
+Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220789
+Fixes: 782a985d7af2 ("PCI: Introduce new device binding path using pci_dev.driver_override")
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Acked-by: Alex Williamson <alex@shazbot.org>
+Tested-by: Gui-Dong Han <hanguidong02@gmail.com>
+Reviewed-by: Gui-Dong Han <hanguidong02@gmail.com>
+Link: https://patch.msgid.link/20260324005919.2408620-6-dakr@kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/nova-core/falcon.rs          | 19 +++++++-------
- drivers/gpu/nova-core/firmware.rs        | 32 ++++++++++++------------
- drivers/gpu/nova-core/firmware/booter.rs | 26 +++++++++----------
- drivers/gpu/nova-core/firmware/fwsec.rs  | 14 +++++------
- 4 files changed, 46 insertions(+), 45 deletions(-)
+ drivers/pci/pci-driver.c           | 11 +++++++----
+ drivers/pci/pci-sysfs.c            | 28 ----------------------------
+ drivers/pci/probe.c                |  1 -
+ drivers/vfio/pci/vfio_pci_core.c   |  5 ++---
+ drivers/xen/xen-pciback/pci_stub.c |  6 ++++--
+ include/linux/pci.h                |  6 ------
+ 6 files changed, 13 insertions(+), 44 deletions(-)
 
-diff --git a/drivers/gpu/nova-core/falcon.rs b/drivers/gpu/nova-core/falcon.rs
-index 8d444cf9d55c1..808c17e981d19 100644
---- a/drivers/gpu/nova-core/falcon.rs
-+++ b/drivers/gpu/nova-core/falcon.rs
-@@ -326,9 +326,10 @@ pub(crate) trait FalconEngine:
-     const ID: Self;
+diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+index b4111c92c9572..fba07a700508f 100644
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -138,9 +138,11 @@ static const struct pci_device_id *pci_match_device(struct pci_driver *drv,
+ {
+ 	struct pci_dynid *dynid;
+ 	const struct pci_device_id *found_id = NULL, *ids;
++	int ret;
+ 
+ 	/* When driver_override is set, only bind to the matching driver */
+-	if (dev->driver_override && strcmp(dev->driver_override, drv->name))
++	ret = device_match_driver_override(&dev->dev, &drv->driver);
++	if (ret == 0)
+ 		return NULL;
+ 
+ 	/* Look at the dynamic ids first, before the static ones */
+@@ -164,7 +166,7 @@ static const struct pci_device_id *pci_match_device(struct pci_driver *drv,
+ 		 * matching.
+ 		 */
+ 		if (found_id->override_only) {
+-			if (dev->driver_override)
++			if (ret > 0)
+ 				return found_id;
+ 		} else {
+ 			return found_id;
+@@ -172,7 +174,7 @@ static const struct pci_device_id *pci_match_device(struct pci_driver *drv,
+ 	}
+ 
+ 	/* driver_override will always match, send a dummy id */
+-	if (dev->driver_override)
++	if (ret > 0)
+ 		return &pci_device_id_any;
+ 	return NULL;
+ }
+@@ -423,7 +425,7 @@ static int __pci_device_probe(struct pci_driver *drv, struct pci_dev *pci_dev)
+ static inline bool pci_device_can_probe(struct pci_dev *pdev)
+ {
+ 	return (!pdev->is_virtfn || pdev->physfn->sriov->drivers_autoprobe ||
+-		pdev->driver_override);
++		device_has_driver_override(&pdev->dev));
+ }
+ #else
+ static inline bool pci_device_can_probe(struct pci_dev *pdev)
+@@ -1695,6 +1697,7 @@ static const struct cpumask *pci_device_irq_get_affinity(struct device *dev,
+ 
+ const struct bus_type pci_bus_type = {
+ 	.name		= "pci",
++	.driver_override = true,
+ 	.match		= pci_bus_match,
+ 	.uevent		= pci_uevent,
+ 	.probe		= pci_device_probe,
+diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
+index 9d6f74bd95f8c..d36b46849fee2 100644
+--- a/drivers/pci/pci-sysfs.c
++++ b/drivers/pci/pci-sysfs.c
+@@ -615,33 +615,6 @@ static ssize_t devspec_show(struct device *dev,
+ static DEVICE_ATTR_RO(devspec);
+ #endif
+ 
+-static ssize_t driver_override_store(struct device *dev,
+-				     struct device_attribute *attr,
+-				     const char *buf, size_t count)
+-{
+-	struct pci_dev *pdev = to_pci_dev(dev);
+-	int ret;
+-
+-	ret = driver_set_override(dev, &pdev->driver_override, buf, count);
+-	if (ret)
+-		return ret;
+-
+-	return count;
+-}
+-
+-static ssize_t driver_override_show(struct device *dev,
+-				    struct device_attribute *attr, char *buf)
+-{
+-	struct pci_dev *pdev = to_pci_dev(dev);
+-	ssize_t len;
+-
+-	device_lock(dev);
+-	len = sysfs_emit(buf, "%s\n", pdev->driver_override);
+-	device_unlock(dev);
+-	return len;
+-}
+-static DEVICE_ATTR_RW(driver_override);
+-
+ static struct attribute *pci_dev_attrs[] = {
+ 	&dev_attr_power_state.attr,
+ 	&dev_attr_resource.attr,
+@@ -669,7 +642,6 @@ static struct attribute *pci_dev_attrs[] = {
+ #ifdef CONFIG_OF
+ 	&dev_attr_devspec.attr,
+ #endif
+-	&dev_attr_driver_override.attr,
+ 	&dev_attr_ari_enabled.attr,
+ 	NULL,
+ };
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index 23833fd7265e2..4e4e38e626912 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -2449,7 +2449,6 @@ static void pci_release_dev(struct device *dev)
+ 	pci_release_of_node(pci_dev);
+ 	pcibios_release_device(pci_dev);
+ 	pci_bus_put(pci_dev->bus);
+-	kfree(pci_dev->driver_override);
+ 	bitmap_free(pci_dev->dma_alias_mask);
+ 	dev_dbg(dev, "device released\n");
+ 	kfree(pci_dev);
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index 085373d71e9c2..69476fc67ca08 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -2013,9 +2013,8 @@ static int vfio_pci_bus_notifier(struct notifier_block *nb,
+ 	    pdev->is_virtfn && physfn == vdev->pdev) {
+ 		pci_info(vdev->pdev, "Captured SR-IOV VF %s driver_override\n",
+ 			 pci_name(pdev));
+-		pdev->driver_override = kasprintf(GFP_KERNEL, "%s",
+-						  vdev->vdev.ops->name);
+-		WARN_ON(!pdev->driver_override);
++		WARN_ON(device_set_driver_override(&pdev->dev,
++						   vdev->vdev.ops->name));
+ 	} else if (action == BUS_NOTIFY_BOUND_DRIVER &&
+ 		   pdev->is_virtfn && physfn == vdev->pdev) {
+ 		struct pci_driver *drv = pci_dev_driver(pdev);
+diff --git a/drivers/xen/xen-pciback/pci_stub.c b/drivers/xen/xen-pciback/pci_stub.c
+index 045e74847fe6b..7de2fa67743c6 100644
+--- a/drivers/xen/xen-pciback/pci_stub.c
++++ b/drivers/xen/xen-pciback/pci_stub.c
+@@ -598,6 +598,8 @@ static int pcistub_seize(struct pci_dev *dev,
+ 	return err;
  }
  
--/// Represents a portion of the firmware to be loaded into a particular memory (e.g. IMEM or DMEM).
-+/// Represents a portion of the firmware to be loaded into a particular memory (e.g. IMEM or DMEM)
-+/// using DMA.
- #[derive(Debug, Clone)]
--pub(crate) struct FalconLoadTarget {
-+pub(crate) struct FalconDmaLoadTarget {
-     /// Offset from the start of the source object to copy from.
-     pub(crate) src_start: u32,
-     /// Offset from the start of the destination memory to copy into.
-@@ -348,20 +349,20 @@ pub(crate) struct FalconBromParams {
-     pub(crate) ucode_id: u8,
- }
++static struct pci_driver xen_pcibk_pci_driver;
++
+ /* Called when 'bind'. This means we must _NOT_ call pci_reset_function or
+  * other functions that take the sysfs lock. */
+ static int pcistub_probe(struct pci_dev *dev, const struct pci_device_id *id)
+@@ -609,8 +611,8 @@ static int pcistub_probe(struct pci_dev *dev, const struct pci_device_id *id)
  
--/// Trait for providing load parameters of falcon firmwares.
--pub(crate) trait FalconLoadParams {
-+/// Trait implemented by falcon firmwares that can be loaded using DMA.
-+pub(crate) trait FalconDmaLoadable {
-     /// Returns the firmware data as a slice of bytes.
-     fn as_slice(&self) -> &[u8];
+ 	match = pcistub_match(dev);
  
-     /// Returns the load parameters for Secure `IMEM`.
--    fn imem_sec_load_params(&self) -> FalconLoadTarget;
-+    fn imem_sec_load_params(&self) -> FalconDmaLoadTarget;
+-	if ((dev->driver_override &&
+-	     !strcmp(dev->driver_override, PCISTUB_DRIVER_NAME)) ||
++	if (device_match_driver_override(&dev->dev,
++					 &xen_pcibk_pci_driver.driver) > 0 ||
+ 	    match) {
  
-     /// Returns the load parameters for Non-Secure `IMEM`,
-     /// used only on Turing and GA100.
--    fn imem_ns_load_params(&self) -> Option<FalconLoadTarget>;
-+    fn imem_ns_load_params(&self) -> Option<FalconDmaLoadTarget>;
+ 		if (dev->hdr_type != PCI_HEADER_TYPE_NORMAL
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 05aeee8c8844a..89f5a4290b6e2 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -547,12 +547,6 @@ struct pci_dev {
+ 	u8		supported_speeds; /* Supported Link Speeds Vector */
+ 	phys_addr_t	rom;		/* Physical address if not from BAR */
+ 	size_t		romlen;		/* Length if not from BAR */
+-	/*
+-	 * Driver name to force a match.  Do not set directly, because core
+-	 * frees it.  Use driver_set_override() to set or clear it.
+-	 */
+-	const char	*driver_override;
+-
+ 	unsigned long	priv_flags;	/* Private flags for the PCI driver */
  
-     /// Returns the load parameters for `DMEM`.
--    fn dmem_load_params(&self) -> FalconLoadTarget;
-+    fn dmem_load_params(&self) -> FalconDmaLoadTarget;
- 
-     /// Returns the parameters to write into the BROM registers.
-     fn brom_params(&self) -> FalconBromParams;
-@@ -373,7 +374,7 @@ pub(crate) trait FalconLoadParams {
- /// Trait for a falcon firmware.
- ///
- /// A falcon firmware can be loaded on a given engine.
--pub(crate) trait FalconFirmware: FalconLoadParams {
-+pub(crate) trait FalconFirmware: FalconDmaLoadable {
-     /// Engine on which this firmware is to be loaded.
-     type Target: FalconEngine;
- }
-@@ -421,7 +422,7 @@ impl<E: FalconEngine + 'static> Falcon<E> {
-         bar: &Bar0,
-         dma_obj: &DmaObject,
-         target_mem: FalconMem,
--        load_offsets: FalconLoadTarget,
-+        load_offsets: FalconDmaLoadTarget,
-     ) -> Result {
-         const DMA_LEN: u32 = 256;
- 
-diff --git a/drivers/gpu/nova-core/firmware.rs b/drivers/gpu/nova-core/firmware.rs
-index be911d0a38276..186f166564651 100644
---- a/drivers/gpu/nova-core/firmware.rs
-+++ b/drivers/gpu/nova-core/firmware.rs
-@@ -16,8 +16,8 @@ use kernel::{
- 
- use crate::{
-     falcon::{
--        FalconFirmware,
--        FalconLoadTarget, //
-+        FalconDmaLoadTarget,
-+        FalconFirmware, //
-     },
-     gpu,
-     num::{
-@@ -170,9 +170,9 @@ pub(crate) trait FalconUCodeDescriptor {
-         ((hdr & HDR_SIZE_MASK) >> HDR_SIZE_SHIFT).into_safe_cast()
-     }
- 
--    fn imem_sec_load_params(&self) -> FalconLoadTarget;
--    fn imem_ns_load_params(&self) -> Option<FalconLoadTarget>;
--    fn dmem_load_params(&self) -> FalconLoadTarget;
-+    fn imem_sec_load_params(&self) -> FalconDmaLoadTarget;
-+    fn imem_ns_load_params(&self) -> Option<FalconDmaLoadTarget>;
-+    fn dmem_load_params(&self) -> FalconDmaLoadTarget;
- }
- 
- impl FalconUCodeDescriptor for FalconUCodeDescV2 {
-@@ -204,24 +204,24 @@ impl FalconUCodeDescriptor for FalconUCodeDescV2 {
-         0
-     }
- 
--    fn imem_sec_load_params(&self) -> FalconLoadTarget {
--        FalconLoadTarget {
-+    fn imem_sec_load_params(&self) -> FalconDmaLoadTarget {
-+        FalconDmaLoadTarget {
-             src_start: 0,
-             dst_start: self.imem_sec_base,
-             len: self.imem_sec_size,
-         }
-     }
- 
--    fn imem_ns_load_params(&self) -> Option<FalconLoadTarget> {
--        Some(FalconLoadTarget {
-+    fn imem_ns_load_params(&self) -> Option<FalconDmaLoadTarget> {
-+        Some(FalconDmaLoadTarget {
-             src_start: 0,
-             dst_start: self.imem_phys_base,
-             len: self.imem_load_size.checked_sub(self.imem_sec_size)?,
-         })
-     }
- 
--    fn dmem_load_params(&self) -> FalconLoadTarget {
--        FalconLoadTarget {
-+    fn dmem_load_params(&self) -> FalconDmaLoadTarget {
-+        FalconDmaLoadTarget {
-             src_start: self.dmem_offset,
-             dst_start: self.dmem_phys_base,
-             len: self.dmem_load_size,
-@@ -258,21 +258,21 @@ impl FalconUCodeDescriptor for FalconUCodeDescV3 {
-         self.signature_versions
-     }
- 
--    fn imem_sec_load_params(&self) -> FalconLoadTarget {
--        FalconLoadTarget {
-+    fn imem_sec_load_params(&self) -> FalconDmaLoadTarget {
-+        FalconDmaLoadTarget {
-             src_start: 0,
-             dst_start: self.imem_phys_base,
-             len: self.imem_load_size,
-         }
-     }
- 
--    fn imem_ns_load_params(&self) -> Option<FalconLoadTarget> {
-+    fn imem_ns_load_params(&self) -> Option<FalconDmaLoadTarget> {
-         // Not used on V3 platforms
-         None
-     }
- 
--    fn dmem_load_params(&self) -> FalconLoadTarget {
--        FalconLoadTarget {
-+    fn dmem_load_params(&self) -> FalconDmaLoadTarget {
-+        FalconDmaLoadTarget {
-             src_start: self.imem_load_size,
-             dst_start: self.dmem_phys_base,
-             len: self.dmem_load_size,
-diff --git a/drivers/gpu/nova-core/firmware/booter.rs b/drivers/gpu/nova-core/firmware/booter.rs
-index ab7956602e758..1a6b2a7e17906 100644
---- a/drivers/gpu/nova-core/firmware/booter.rs
-+++ b/drivers/gpu/nova-core/firmware/booter.rs
-@@ -18,9 +18,9 @@ use crate::{
-         sec2::Sec2,
-         Falcon,
-         FalconBromParams,
--        FalconFirmware,
--        FalconLoadParams,
--        FalconLoadTarget, //
-+        FalconDmaLoadTarget,
-+        FalconDmaLoadable,
-+        FalconFirmware, //
-     },
-     firmware::{
-         BinFirmware,
-@@ -248,12 +248,12 @@ impl<'a> FirmwareSignature<BooterFirmware> for BooterSignature<'a> {}
- /// The `Booter` loader firmware, responsible for loading the GSP.
- pub(crate) struct BooterFirmware {
-     // Load parameters for Secure `IMEM` falcon memory.
--    imem_sec_load_target: FalconLoadTarget,
-+    imem_sec_load_target: FalconDmaLoadTarget,
-     // Load parameters for Non-Secure `IMEM` falcon memory,
-     // used only on Turing and GA100
--    imem_ns_load_target: Option<FalconLoadTarget>,
-+    imem_ns_load_target: Option<FalconDmaLoadTarget>,
-     // Load parameters for `DMEM` falcon memory.
--    dmem_load_target: FalconLoadTarget,
-+    dmem_load_target: FalconDmaLoadTarget,
-     // BROM falcon parameters.
-     brom_params: FalconBromParams,
-     // Device-mapped firmware image.
-@@ -362,7 +362,7 @@ impl BooterFirmware {
-         let (imem_sec_dst_start, imem_ns_load_target) = if chipset <= Chipset::GA100 {
-             (
-                 app0.offset,
--                Some(FalconLoadTarget {
-+                Some(FalconDmaLoadTarget {
-                     src_start: 0,
-                     dst_start: load_hdr.os_code_offset,
-                     len: load_hdr.os_code_size,
-@@ -373,13 +373,13 @@ impl BooterFirmware {
-         };
- 
-         Ok(Self {
--            imem_sec_load_target: FalconLoadTarget {
-+            imem_sec_load_target: FalconDmaLoadTarget {
-                 src_start: app0.offset,
-                 dst_start: imem_sec_dst_start,
-                 len: app0.len,
-             },
-             imem_ns_load_target,
--            dmem_load_target: FalconLoadTarget {
-+            dmem_load_target: FalconDmaLoadTarget {
-                 src_start: load_hdr.os_data_offset,
-                 dst_start: 0,
-                 len: load_hdr.os_data_size,
-@@ -390,20 +390,20 @@ impl BooterFirmware {
-     }
- }
- 
--impl FalconLoadParams for BooterFirmware {
-+impl FalconDmaLoadable for BooterFirmware {
-     fn as_slice(&self) -> &[u8] {
-         self.ucode.0.as_slice()
-     }
- 
--    fn imem_sec_load_params(&self) -> FalconLoadTarget {
-+    fn imem_sec_load_params(&self) -> FalconDmaLoadTarget {
-         self.imem_sec_load_target.clone()
-     }
- 
--    fn imem_ns_load_params(&self) -> Option<FalconLoadTarget> {
-+    fn imem_ns_load_params(&self) -> Option<FalconDmaLoadTarget> {
-         self.imem_ns_load_target.clone()
-     }
- 
--    fn dmem_load_params(&self) -> FalconLoadTarget {
-+    fn dmem_load_params(&self) -> FalconDmaLoadTarget {
-         self.dmem_load_target.clone()
-     }
- 
-diff --git a/drivers/gpu/nova-core/firmware/fwsec.rs b/drivers/gpu/nova-core/firmware/fwsec.rs
-index 7fff3acdaa735..7ac5cfeb594d4 100644
---- a/drivers/gpu/nova-core/firmware/fwsec.rs
-+++ b/drivers/gpu/nova-core/firmware/fwsec.rs
-@@ -30,9 +30,9 @@ use crate::{
-         gsp::Gsp,
-         Falcon,
-         FalconBromParams,
--        FalconFirmware,
--        FalconLoadParams,
--        FalconLoadTarget, //
-+        FalconDmaLoadTarget,
-+        FalconDmaLoadable,
-+        FalconFirmware, //
-     },
-     firmware::{
-         FalconUCodeDesc,
-@@ -180,20 +180,20 @@ pub(crate) struct FwsecFirmware {
-     ucode: FirmwareObject<Self, Signed>,
- }
- 
--impl FalconLoadParams for FwsecFirmware {
-+impl FalconDmaLoadable for FwsecFirmware {
-     fn as_slice(&self) -> &[u8] {
-         self.ucode.0.as_slice()
-     }
- 
--    fn imem_sec_load_params(&self) -> FalconLoadTarget {
-+    fn imem_sec_load_params(&self) -> FalconDmaLoadTarget {
-         self.desc.imem_sec_load_params()
-     }
- 
--    fn imem_ns_load_params(&self) -> Option<FalconLoadTarget> {
-+    fn imem_ns_load_params(&self) -> Option<FalconDmaLoadTarget> {
-         self.desc.imem_ns_load_params()
-     }
- 
--    fn dmem_load_params(&self) -> FalconLoadTarget {
-+    fn dmem_load_params(&self) -> FalconDmaLoadTarget {
-         self.desc.dmem_load_params()
-     }
- 
+ 	/* These methods index pci_reset_fn_methods[] */
 -- 
 2.53.0
 
