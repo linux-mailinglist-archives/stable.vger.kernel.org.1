@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-252474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250860-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6ItMNagUDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-252474-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:08:08 +0200
+	id 6Kj5BufvDWp+4wUAu9opvQ
+	(envelope-from <stable+bounces-250860-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:31:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF6E85992C2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:08:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA8BD593DB4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:31:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DA0BD327C8EE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:12:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C84A13197BF7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:02:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E03633EAC82;
-	Wed, 20 May 2026 18:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 003F83D8918;
+	Wed, 20 May 2026 17:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SBNmVcoT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iSMsEePL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E1843F7884;
-	Wed, 20 May 2026 18:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CD42D7386;
+	Wed, 20 May 2026 17:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300768; cv=none; b=XRdEJRdmSPpsJOlLKd14L6hlWpkq3ujqs8RuKGmWp6T9FbQLEFQSUJ+0ryzqoDXJ+RfECRaMAbJ1zrodmVUDRz4CnsZQAF42Jm9a0yCIJjCviCBoU8b9YrUxN170VrpZUOh0LTnAXyeYVW5OIcnv6pzY0aH26GVWKn0tdgxIKl0=
+	t=1779296496; cv=none; b=T2f8sK36G/Pwnqm1lnnaApAdtPdEG6K4QfMXwifCYZYs4/PlEF9bj1wvQZGYSOSyD9shGzSZTEKCpXU8AR2HPifTdCCj/8Q6YoJ7LH4kY3rYX94gfC2ig30WqbKrUX9wbjr5PT5SAgEhly1YVVl1hO6lR0t6Dro2ii98J8Dl1Eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300768; c=relaxed/simple;
-	bh=aK11H8okw54+ggNdozE/pzwgeMMWt3eoFkvYqVO0TJU=;
+	s=arc-20240116; t=1779296496; c=relaxed/simple;
+	bh=7IcxnzKp/rC8T7mGRtXOy/17LcCqmv24EVKavi6Jj18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mzCxqdZTWLTic/We1fzqYhAxkTSX65qxQsaYi92v8UF+VSHse6NEZLUUdvGcXW4HcX6n8g/o/+k4ontc+Tq6Btzsz3hFpzKxjQGxhQePDItVkvrO/I+EMmtsTY81QVufI4yzIPFdwrRf2VRfVrb8DozPNgIl0FcCaLfE8qzRFq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SBNmVcoT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B761F00893;
-	Wed, 20 May 2026 18:12:46 +0000 (UTC)
+	 MIME-Version; b=ipqTVy6FT0Y4fkLOtmwLvMf0aVQwxa7UmxLMznjSe+kEukeA00snEtD6fzoAjEfC5IuVQt4eG7jh2yctCDxoMB91d6FDCUlI81m+6u6BidBFu2d5hpRUaMsssAD0PNPu/Yn2i6oA4DVLm9rj9Tl5ZVfxO3mPI3LAgLjzJCfOyxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iSMsEePL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF2EE1F00893;
+	Wed, 20 May 2026 17:01:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300767;
-	bh=AT5HLT8cECoT2QbffyxrknUt96Ear87PtPKnEONpZws=;
+	s=korg; t=1779296495;
+	bh=A5ZpKAmquhfWrTOo8I42kqcYeoWKBP+EbqhOzqIUr7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SBNmVcoTDTMx3bY1rJH0IzOokR3+Q9t/tbAjKQGVZYatNnSBgTsBZSqEfJBPVr4FE
-	 okluZmcdZhMjAGzbKI2x7dmDhAzllAFiLWirxSpw3dibmW4nBlmb/OApmc5ZkN7SdY
-	 dFPWjFAmp5gkw3cue1fWc7rNTAbJKyiUZveVssKE=
+	b=iSMsEePL3bXV306cOJ0tcgYDemjYq0LC0EhQXm2w8fGkKTRAqq1wbjL+i/k/a89p/
+	 RwcntjkAlnSrnC0Brok9sjGAHOKXhkHcb/tpd6IXIZ7ApIc+5vnun2vOPPA7HH8lyQ
+	 8j/34CZRhiBUfPXGDw0pPo9Uk8M9H9X7md1vHnGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Sun <samsun1006219@gmail.com>,
-	Jan Kara <jack@suse.cz>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 258/666] quota: Fix race of dquot_scan_active() with quota deactivation
+Subject: [PATCH 7.0 0819/1146] slip: reject VJ receive packets on instances with no rstate array
 Date: Wed, 20 May 2026 18:17:49 +0200
-Message-ID: <20260520162116.807749592@linuxfoundation.org>
+Message-ID: <20260520162206.764942525@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,181 +68,130 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252474-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz,kernel.org];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org,redhat.com];
+	TAGGED_FROM(0.00)[bounces-250860-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: EF6E85992C2
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: DA8BD593DB4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit e93ab401da4b2e2c1b8ef2424de2f238d51c8b2d ]
+[ Upstream commit e76607442d5b73e1ba6768f501ef815bb58c2c0e ]
 
-dquot_scan_active() can race with quota deactivation in
-quota_release_workfn() like:
+slhc_init() accepts rslots == 0 as a valid configuration, with the
+documented meaning of 'no receive compression'. In that case the
+allocation loop in slhc_init() is skipped, so comp->rstate stays
+NULL and comp->rslot_limit stays 0 (from the kzalloc of struct
+slcompress).
 
-  CPU0 (quota_release_workfn)         CPU1 (dquot_scan_active)
-  ==============================      ==============================
-  spin_lock(&dq_list_lock);
-  list_replace_init(
-    &releasing_dquots, &rls_head);
-    /* dquot X on rls_head,
-       dq_count == 0,
-       DQ_ACTIVE_B still set */
-  spin_unlock(&dq_list_lock);
-  synchronize_srcu(&dquot_srcu);
-                                      spin_lock(&dq_list_lock);
-                                      list_for_each_entry(dquot,
-                                          &inuse_list, dq_inuse) {
-                                        /* finds dquot X */
-                                        dquot_active(X) -> true
-                                        atomic_inc(&X->dq_count);
-                                      }
-                                      spin_unlock(&dq_list_lock);
-  spin_lock(&dq_list_lock);
-  dquot = list_first_entry(&rls_head);
-  WARN_ON_ONCE(atomic_read(&dquot->dq_count));
+The receive helpers do not defend against that configuration.
+slhc_uncompress() dereferences comp->rstate[x] when the VJ header
+carries an explicit connection ID, and slhc_remember() later assigns
+cs = &comp->rstate[...] after only comparing the packet's slot number
+to comp->rslot_limit. Because rslot_limit is 0, slot 0 passes the
+range check, and the code dereferences a NULL rstate.
 
-The problem is not only a cosmetic one as under memory pressure the
-caller of dquot_scan_active() can end up working on freed dquot.
+The configuration is reachable in-tree through PPP. PPPIOCSMAXCID
+stores its argument in a signed int, and (val >> 16) uses arithmetic
+shift. Passing 0xffff0000 therefore sign-extends to -1, so val2 + 1
+is 0 and ppp_generic.c ends up calling slhc_init(0, 1). Because
+/dev/ppp open is gated by ns_capable(CAP_NET_ADMIN), the whole path
+is reachable from an unprivileged user namespace. Once the malformed
+VJ state is installed, any inbound VJ-compressed or VJ-uncompressed
+frame that selects slot 0 crashes the kernel in softirq context:
 
-Fix the problem by making sure the dquot is removed from releasing list
-when we acquire a reference to it.
+ Oops: general protection fault, probably for non-canonical
+       address 0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
+ KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+ RIP: 0010:slhc_uncompress (drivers/net/slip/slhc.c:519)
+ Call Trace:
+  <TASK>
+  ppp_receive_nonmp_frame (drivers/net/ppp/ppp_generic.c:2466)
+  ppp_input (drivers/net/ppp/ppp_generic.c:2359)
+  ppp_async_process (drivers/net/ppp/ppp_async.c:492)
+  tasklet_action_common (kernel/softirq.c:926)
+  handle_softirqs (kernel/softirq.c:623)
+  run_ksoftirqd (kernel/softirq.c:1055)
+  smpboot_thread_fn (kernel/smpboot.c:160)
+  kthread (kernel/kthread.c:436)
+  ret_from_fork (arch/x86/kernel/process.c:164)
+  </TASK>
 
-Fixes: 869b6ea1609f ("quota: Fix slow quotaoff")
-Reported-by: Sam Sun <samsun1006219@gmail.com>
-Link: https://lore.kernel.org/all/CAEkJfYPTt3uP1vAYnQ5V2ZWn5O9PLhhGi5HbOcAzyP9vbXyjeg@mail.gmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
+Reject the receive side on such instances instead of touching rstate.
+slhc_uncompress() falls through to its existing 'bad' label, which
+bumps sls_i_error and enters the toss state. slhc_remember() mirrors
+that with an explicit sls_i_error increment followed by slhc_toss();
+the sls_i_runt counter is not used here because a missing rstate is
+an internal configuration state, not a runt packet.
+
+The transmit path is unaffected: the only in-tree caller that picks
+rslots from userspace (ppp_generic.c) still supplies tslots >= 1, and
+slip.c always calls slhc_init(16, 16), so comp->tstate remains valid
+and slhc_compress() continues to work.
+
+Fixes: 4ab42d78e37a ("ppp, slip: Validate VJ compression slot parameters completely")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260415204130.258866-2-bestswngs@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/quota/dquot.c         | 38 ++++++++++++++++++++++++++++++--------
- include/linux/quotaops.h |  9 +--------
- 2 files changed, 31 insertions(+), 16 deletions(-)
+ drivers/net/slip/slhc.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
-index 94825180385ab..7c3095622872f 100644
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -364,6 +364,31 @@ static inline int dquot_active(struct dquot *dquot)
- 	return test_bit(DQ_ACTIVE_B, &dquot->dq_flags);
- }
+diff --git a/drivers/net/slip/slhc.c b/drivers/net/slip/slhc.c
+index e3c785da3eef3..e18a4213d10ce 100644
+--- a/drivers/net/slip/slhc.c
++++ b/drivers/net/slip/slhc.c
+@@ -506,6 +506,8 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
+ 		comp->sls_i_error++;
+ 		return 0;
+ 	}
++	if (!comp->rstate)
++		goto bad;
+ 	changes = *cp++;
+ 	if(changes & NEW_C){
+ 		/* Make sure the state index is in range, then grab the state.
+@@ -649,6 +651,10 @@ slhc_remember(struct slcompress *comp, unsigned char *icp, int isize)
+ 	struct cstate *cs;
+ 	unsigned int ihl;
  
-+static struct dquot *__dqgrab(struct dquot *dquot)
-+{
-+	lockdep_assert_held(&dq_list_lock);
-+	if (!atomic_read(&dquot->dq_count))
-+		remove_free_dquot(dquot);
-+	atomic_inc(&dquot->dq_count);
-+	return dquot;
-+}
-+
-+/*
-+ * Get reference to dquot when we got pointer to it by some other means. The
-+ * dquot has to be active and the caller has to make sure it cannot get
-+ * deactivated under our hands.
-+ */
-+struct dquot *dqgrab(struct dquot *dquot)
-+{
-+	spin_lock(&dq_list_lock);
-+	WARN_ON_ONCE(!dquot_active(dquot));
-+	dquot = __dqgrab(dquot);
-+	spin_unlock(&dq_list_lock);
-+
-+	return dquot;
-+}
-+EXPORT_SYMBOL_GPL(dqgrab);
-+
- static inline int dquot_dirty(struct dquot *dquot)
- {
- 	return test_bit(DQ_MOD_B, &dquot->dq_flags);
-@@ -642,15 +667,14 @@ int dquot_scan_active(struct super_block *sb,
- 			continue;
- 		if (dquot->dq_sb != sb)
- 			continue;
--		/* Now we have active dquot so we can just increase use count */
--		atomic_inc(&dquot->dq_count);
-+		__dqgrab(dquot);
- 		spin_unlock(&dq_list_lock);
- 		dqput(old_dquot);
- 		old_dquot = dquot;
- 		/*
- 		 * ->release_dquot() can be racing with us. Our reference
--		 * protects us from new calls to it so just wait for any
--		 * outstanding call and recheck the DQ_ACTIVE_B after that.
-+		 * protects us from dquot_release() proceeding so just wait for
-+		 * any outstanding call and recheck the DQ_ACTIVE_B after that.
- 		 */
- 		wait_on_dquot(dquot);
- 		if (dquot_active(dquot)) {
-@@ -718,7 +742,7 @@ int dquot_writeback_dquots(struct super_block *sb, int type)
- 			/* Now we have active dquot from which someone is
-  			 * holding reference so we can safely just increase
- 			 * use count */
--			dqgrab(dquot);
-+			__dqgrab(dquot);
- 			spin_unlock(&dq_list_lock);
- 			err = dquot_write_dquot(dquot);
- 			if (err && !ret)
-@@ -964,9 +988,7 @@ struct dquot *dqget(struct super_block *sb, struct kqid qid)
- 		spin_unlock(&dq_list_lock);
- 		dqstats_inc(DQST_LOOKUPS);
- 	} else {
--		if (!atomic_read(&dquot->dq_count))
--			remove_free_dquot(dquot);
--		atomic_inc(&dquot->dq_count);
-+		__dqgrab(dquot);
- 		spin_unlock(&dq_list_lock);
- 		dqstats_inc(DQST_CACHE_HITS);
- 		dqstats_inc(DQST_LOOKUPS);
-diff --git a/include/linux/quotaops.h b/include/linux/quotaops.h
-index 06cc8888199e8..2334a02c30149 100644
---- a/include/linux/quotaops.h
-+++ b/include/linux/quotaops.h
-@@ -44,14 +44,7 @@ int dquot_initialize(struct inode *inode);
- bool dquot_initialize_needed(struct inode *inode);
- void dquot_drop(struct inode *inode);
- struct dquot *dqget(struct super_block *sb, struct kqid qid);
--static inline struct dquot *dqgrab(struct dquot *dquot)
--{
--	/* Make sure someone else has active reference to dquot */
--	WARN_ON_ONCE(!atomic_read(&dquot->dq_count));
--	WARN_ON_ONCE(!test_bit(DQ_ACTIVE_B, &dquot->dq_flags));
--	atomic_inc(&dquot->dq_count);
--	return dquot;
--}
-+struct dquot *dqgrab(struct dquot *dquot);
- 
- static inline bool dquot_is_busy(struct dquot *dquot)
- {
++	if (!comp->rstate) {
++		comp->sls_i_error++;
++		return slhc_toss(comp);
++	}
+ 	/* The packet is shorter than a legal IP header.
+ 	 * Also make sure isize is positive.
+ 	 */
 -- 
 2.53.0
 
