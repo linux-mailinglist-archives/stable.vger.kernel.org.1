@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-251504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250562-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eJklN5T1DWoz5AUAu9opvQ
-	(envelope-from <stable+bounces-251504-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:55:32 +0200
+	id iKRDF73zDWry4wUAu9opvQ
+	(envelope-from <stable+bounces-250562-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88B81594EC4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:55:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7E9359495B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DF8403108592
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:29:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4DEF3317E843
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:48:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846983D5642;
-	Wed, 20 May 2026 17:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AC43352C52;
+	Wed, 20 May 2026 16:48:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sOxog8vL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YOl6Ugql"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199AC331220;
-	Wed, 20 May 2026 17:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDFF9352016;
+	Wed, 20 May 2026 16:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298153; cv=none; b=iyDJeXVQZZ3mYtOd3UKO4lqpnx/bjm8/5XQZua+oUyRk3Ef0DjSRuOzslKy/H7V2BP/BYm4wVM6zanq7wWx0ximItzkNz31MEbWlGdeSw5PBi6+N7ObEcDpOuyKiQv1g5dPfffhObnHHSmUkpuqdozQUNBUnS13KXruBzU0ufEs=
+	t=1779295735; cv=none; b=MPcQadgV3lIaO4IhfpqtfK+eMrHu5g9NsRuwPs4m4r+nV1IwlsSRb2qHDPCF1oBvb/ac8WBx7sbzKMynCwZ0grjLrLgcYDXPr6Iixv9Ewp+nwf2gVbAU8DM/9cEZ+isT0dJ/2x/+9lHaMnXInlrOyQlale0dmMkVu1L3GQmN3zI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298153; c=relaxed/simple;
-	bh=XvCHcCGXS7WOZxVvwCoZz2LSIMIO0ZKO0QqPsdAFgUY=;
+	s=arc-20240116; t=1779295735; c=relaxed/simple;
+	bh=/FXsVzaTqngRSJtl/ug6dYBalb+WkULIIMkNQQdu7DY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d+uIEQhvCVUz3DK3VyLfLfYRfzMcQdYsMoz8wAQ1Eku73T4GlK++ixKKv5uRFzsRfK0FdAo6qicmnrM+bu84brD6TK4HfkbannJcTiSni1EUAhFEEs0aeIK0hTX7cZnqVrR4nbIdDL9oZ4N1sXlp+OnV2/6eFZkTDWZ476qsa+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sOxog8vL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B6C1F000E9;
-	Wed, 20 May 2026 17:29:11 +0000 (UTC)
+	 MIME-Version; b=OuKzPGXc1DsjZmmUwqT5CArfhaXGIMY7Joa1/CXUZjvzsFm1sjpDbxrAtXEkq9GcU5vnxPaD7A5rP0+5fBKBL06d4z7I+QVkEGGolTIM2B7umlYKWsUrDTojwYCdTIzh0LuQPBnwbj56mLC4lV/UG8vNzaiXsNIcca3aJ2gvjOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YOl6Ugql; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26D551F000E9;
+	Wed, 20 May 2026 16:48:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298152;
-	bh=SquYIIW8zxlc/R070UXhIMlb8sFwfHfe9qdAptxkXfQ=;
+	s=korg; t=1779295734;
+	bh=bCpcPlfsOeTB8Z3ll5No/6YZKjq9Kp7aFPvFyAOJRFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sOxog8vLZvbwIYPS/FWGNnGeiFFH3mEFH3ugI9N58HoVyAoUIYjPcDWIuf6rtOqBl
-	 4F8FjsldLZYUniGFU6aG5nd0GFjej7YiaIus4hjwEedqtTBqBrj1O3wrwB206Di0LA
-	 bhE08yZ0bVB9jWqFHs5sAb97Xh4wWWJf62xG7a6c=
+	b=YOl6Ugqlz9YWAHf3M786JJfH7AppTUg1WpynZ+oh9xL3lGkAQ1q/chXdDlyH2Q6si
+	 UmTqWBQMxVIByjyUvzyxQjujXmahJmCT9J2o8uiqy8G/JBCmTzMTLoBJHZhF0jHvrS
+	 ypLpIuw9Kn0chBrhFLRVe0urMmIbZziDtuH3hVr4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Laurent M Coquerel <laurent.m.coquerel@intel.com>,
-	Ahsan Atta <ahsan.atta@intel.com>,
-	Wojciech Drewek <wojciech.drewek@linux.intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Judith Mendez <jm@ti.com>,
+	Moteen Shah <m-shah@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 300/957] crypto: qat - fix compression instance leak
+Subject: [PATCH 7.0 0533/1146] arm64: dts: ti: k3-am62l3-evm: Disable MMC1 internal pulls on data pins
 Date: Wed, 20 May 2026 18:13:03 +0200
-Message-ID: <20260520162141.038689838@linuxfoundation.org>
+Message-ID: <20260520162200.244170332@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251504-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250562-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,77 +86,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,apana.org.au:email]
-X-Rspamd-Queue-Id: 88B81594EC4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,ti.com:url,ti.com:email]
+X-Rspamd-Queue-Id: D7E9359495B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+From: Judith Mendez <jm@ti.com>
 
-[ Upstream commit 795c24c677c7a1c12f5768daf22a874a2890662f ]
+[ Upstream commit 02532ba56362907b6aca3e8289c4a9247ef83325 ]
 
-qat_comp_alg_init_tfm() acquires a compression instance via
-qat_compression_get_instance_node() before calling qat_comp_build_ctx()
-to initialize the compression context. If qat_comp_build_ctx() fails, the
-function returns an error without releasing the compression instance,
-causing a resource leak.
+AM62L EVM has external 47K pullups on MMC1 DAT1-DAT3 pins [0].
+Disable internal pullups on DAT1-DAT3 so that each line has a
+single pullup source:
+- with both pullups enabled, the effective parallel resistance on
+  DAT1-3 (~24.2K) creates a ~2x mismatch vs DAT0 (47K external
+  only). Removing internal pullups results in DAT1-3 matching DAT0 at 47K
+- 47K external alone is within the recommended range for 1.8V
+  signaling (10K min, 50K recommended max)
+- both internal and external pullups enabled equals unnecessary power
+  consumption
 
-When qat_comp_build_ctx() fails, release the compression instance with
-qat_compression_put_instance() and clear the context to avoid leaving a
-stale reference to the released instance.
+[0] https://www.ti.com/lit/zip/SPRCAL6
 
-The issue was introduced when build_deflate_ctx() (which always returned
-void) was replaced by qat_comp_build_ctx() (which can return an error)
-without adding error handling for the failure path.
-
-Fixes: cd0e7160f80f ("crypto: qat - refactor compression template logic")
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Reviewed-by: Laurent M Coquerel <laurent.m.coquerel@intel.com>
-Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@linux.intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 00fb4c73b67d ("arm64: dts: ti: k3-am62l: add initial reference board file")
+Signed-off-by: Judith Mendez <jm@ti.com>
+Reviewed-by: Moteen Shah <m-shah@ti.com>
+Link: https://patch.msgid.link/20260223233731.2690472-3-jm@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/qat/qat_common/qat_comp_algs.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am62l3-evm.dts | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/crypto/intel/qat/qat_common/qat_comp_algs.c b/drivers/crypto/intel/qat/qat_common/qat_comp_algs.c
-index 8b123472b71cc..4273a0ecb6c80 100644
---- a/drivers/crypto/intel/qat/qat_common/qat_comp_algs.c
-+++ b/drivers/crypto/intel/qat/qat_common/qat_comp_algs.c
-@@ -133,7 +133,7 @@ static int qat_comp_alg_init_tfm(struct crypto_acomp *acomp_tfm)
- 	struct crypto_tfm *tfm = crypto_acomp_tfm(acomp_tfm);
- 	struct qat_compression_ctx *ctx = crypto_tfm_ctx(tfm);
- 	struct qat_compression_instance *inst;
--	int node;
-+	int node, ret;
- 
- 	if (tfm->node == NUMA_NO_NODE)
- 		node = numa_node_id();
-@@ -146,7 +146,13 @@ static int qat_comp_alg_init_tfm(struct crypto_acomp *acomp_tfm)
- 		return -EINVAL;
- 	ctx->inst = inst;
- 
--	return qat_comp_build_ctx(inst->accel_dev, ctx->comp_ctx, QAT_DEFLATE);
-+	ret = qat_comp_build_ctx(inst->accel_dev, ctx->comp_ctx, QAT_DEFLATE);
-+	if (ret) {
-+		qat_compression_put_instance(inst);
-+		memset(ctx, 0, sizeof(*ctx));
-+	}
-+
-+	return ret;
- }
- 
- static void qat_comp_alg_exit_tfm(struct crypto_acomp *acomp_tfm)
+diff --git a/arch/arm64/boot/dts/ti/k3-am62l3-evm.dts b/arch/arm64/boot/dts/ti/k3-am62l3-evm.dts
+index cae04cce33736..bd876c68aa347 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62l3-evm.dts
++++ b/arch/arm64/boot/dts/ti/k3-am62l3-evm.dts
+@@ -272,9 +272,9 @@ mmc1_pins_default: mmc1-default-pins {
+ 			AM62LX_IOPAD(0x0230, PIN_INPUT, 0) /* (Y3) MMC1_CMD */
+ 			AM62LX_IOPAD(0x0228, PIN_OUTPUT, 0) /* (Y2) MMC1_CLK */
+ 			AM62LX_IOPAD(0x0224, PIN_INPUT, 0) /* (AA1) MMC1_DAT0 */
+-			AM62LX_IOPAD(0x0220, PIN_INPUT_PULLUP, 0) /* (Y4) MMC1_DAT1 */
+-			AM62LX_IOPAD(0x021c, PIN_INPUT_PULLUP, 0) /* (AA2) MMC1_DAT2 */
+-			AM62LX_IOPAD(0x0218, PIN_INPUT_PULLUP, 0) /* (AB2) MMC1_DAT3 */
++			AM62LX_IOPAD(0x0220, PIN_INPUT, 0) /* (Y4) MMC1_DAT1 */
++			AM62LX_IOPAD(0x021c, PIN_INPUT, 0) /* (AA2) MMC1_DAT2 */
++			AM62LX_IOPAD(0x0218, PIN_INPUT, 0) /* (AB2) MMC1_DAT3 */
+ 			AM62LX_IOPAD(0x0234, PIN_INPUT, 0) /* (B6) MMC1_SDCD */
+ 		>;
+ 		bootph-all;
 -- 
 2.53.0
 
