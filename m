@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251659-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UCZFJsL6DWrq5AUAu9opvQ
-	(envelope-from <stable+bounces-252300-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:17:38 +0200
+	id 6IhFFxMdDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251659-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:44:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63166595B9E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:17:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D300F59A056
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:44:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1C0BE306CDCD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:06:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7886E3726501
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:36:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9903B3FBEDF;
-	Wed, 20 May 2026 18:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FFAA30BF68;
+	Wed, 20 May 2026 17:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jrbtgA5S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ltj/YfSO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 548283FB07B;
-	Wed, 20 May 2026 18:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57F33EBF35;
+	Wed, 20 May 2026 17:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300315; cv=none; b=V5T+VUPnthVHmmMgWGO3gg2J7wckfnn4oRq5N0hxx9dKzkSuyeMJ6OQIFbanlozxSkS1Dor6t1U7rNmjprARSPhHh2gNSgt17zOLouxspuDnGOhbVZGNAWh7u0GhQudJs/hUozRMjBw1zvI1g9JgQ2obwo/ddudUI1LqnQtwSbs=
+	t=1779298560; cv=none; b=dyCsU16BAieokwWm1otQNIil2GWp/+zateSHMuVVk65hb4FmNbaOZreTPH33XREITlTJlIXMOMwfB8ZfOtqyWlC7CBCMJGJlaN55oCkvVtiZR6U6esmZ/QqtARofz4C/FKJiDVaWgkTKD96z4lcCZ/ZUa+nFRsKkPEKX4NSTKUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300315; c=relaxed/simple;
-	bh=TSsawxepmmM9LZSPHVpuw+Ij/Xf+kURvlV9U2rpG/0Y=;
+	s=arc-20240116; t=1779298560; c=relaxed/simple;
+	bh=Xc4x2KaitfWWEqt6ZceJCtzXCQeIoLu5FsgH2du64cg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CzfNvoC25HJK8jqLBqotURP7OPyqIuPV8hTzxWWzFOM6eriFey6lqNhRwEZG/L58f9Z6hrRhJwd7FoXMd0QPs5rgYmZ61e6MDBYdbpMhFrJKXIJ5Q3kefJ66Nuf2qjoEbBXq8ILdyM9Hs5L5EksJ74QIF3QVWmQU4o3XujBEgIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jrbtgA5S; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA1F81F000E9;
-	Wed, 20 May 2026 18:05:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Yj3YDKgGleEDEk5hODX79wZbOnE1mxwPyRy8epMvDHgEEBRzzfboj4QEuLCgCFsv5/EH5Iz0nmg7IMdTCTO6boV2JIozKy5Z1bgpuv347TRx95XC5mkyoSEeaUEVTV/ezkMXaj5t0B1k6twk1jp2BBQHacrzu4eUn5pbKsP78Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ltj/YfSO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AC7B1F00894;
+	Wed, 20 May 2026 17:35:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300314;
-	bh=j2L1+Frn7nifPpCDJyhME/FWeo885GH8aVaiIeJ/uGw=;
+	s=korg; t=1779298556;
+	bh=YPHqGuw5SdGCfzAIimFViIPhg3H1BsfFvG2CVKFwAlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jrbtgA5SdQ8HlILPh4mz6zjoInrCeMWI3CMwoTEUcoy1Eq9jmXt+KXQpypuzfE6do
-	 dAjdk4u3OsdS2h3A5yH/+AP7fTMf0SWNrkFdO7Nwh1XorMsbsBT8V7let/2K3ZdRXn
-	 iGkIgPGUnzpkywR130DcgOg6Moqxx5I87qY4C7wk=
+	b=ltj/YfSOrRNwKF85Wl74OukWFqaJwiOmVhaegk2u+2Rs8gEDBEzAUxodNPfDA54UJ
+	 YbB1zPdmhIxaFIgGKpMHRzc1xj7PhDN9/sErHzTZfVrUI63q0EE8Wu8y0Nj/r7uGQq
+	 FuF2PYhz1rFbTbvH5WChfRvK+ce9G3lenGb/aIMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 129/666] dm cache: fix concurrent write failure in passthrough mode
+Subject: [PATCH 6.18 457/957] stop_machine: Fix the documentation for a NULL cpus argument
 Date: Wed, 20 May 2026 18:15:40 +0200
-Message-ID: <20260520162114.010023291@linuxfoundation.org>
+Message-ID: <20260520162144.433558162@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,118 +64,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-251659-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252300-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 63166595B9E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linutronix.de:email]
+X-Rspamd-Queue-Id: D300F59A056
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit e4f66341779d0cf4c83c74793753a84094286d9e ]
+[ Upstream commit 48f7a50c027dd2abb9e7b8a6ecc8e531d87f2c21 ]
 
-When bio prison cell lock acquisition fails due to concurrent writes to
-the same block in passthrough mode, dm-cache incorrectly returns an I/O
-error instead of properly handling the concurrency. This can occur in
-both process and workqueue contexts when invalidate_lock() is called for
-exclusive access to a data block. Fix this by deferring the write bios
-to ensure proper block device behavior.
+A recent refactoring of the kernel-docs for stop machine changed the
+description of the cpus parameter from "NULL = any online cpu"
+to "NULL = run on each online CPU".
 
-Reproduce steps:
+However the callback is only executed on a single CPU, not all of them.
+The old wording was a bit ambiguous and could have been read both ways.
 
-1. Create a cache device
+Reword the documentation to be correct again and hopefully also clearer.
 
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
-dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
-dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-dmsetup create cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-
-2. Promote the first data block into cache
-
-fio --filename=/dev/mapper/cache --name=populate --rw=write --bs=4k \
---direct=1 --size=64k
-
-3. Reload the cache into passthrough mode
-
-dmsetup suspend cache
-dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 passthrough smq 0"
-dmsetup resume cache
-
-4. Write to the first cached block concurrently. Sometimes one of the
-   processes will receive I/O errors.
-
-fio --filename=/dev/mapper/cache --name test --rw=randwrite --bs=4k \
---randrepeat=0 --direct=1 --numjobs=2 --size 64k
-
- <snip>
- fio-3.41
- fio: io_u error on file /dev/mapper/cache: Input/output error: write offset=4096, buflen=4096
- fio: pid=106, err=5/file:io_u.c:2008, func=io_u error, error=Input/output error
- test: (groupid=0, jobs=1): err= 0: pid=105
- test: (groupid=0, jobs=1): err= 5 (file:io_u.c:2008, func=io_u error, error=Input/output error): pid=106
- <snip>
-
-Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: fc6f89dc7078 ("stop_machine: Improve kernel-doc function-header comments")
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-cache-target.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ include/linux/stop_machine.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
-index 2f882eb77dacf..13543b5b3aa04 100644
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -1555,6 +1555,15 @@ static int invalidate_lock(struct dm_cache_migration *mg)
- 			    READ_WRITE_LOCK_LEVEL, prealloc, &mg->cell);
- 	if (r < 0) {
- 		free_prison_cell(cache, prealloc);
-+
-+		/* Defer the bio for retrying the cell lock */
-+		if (mg->overwrite_bio) {
-+			struct bio *bio = mg->overwrite_bio;
-+
-+			mg->overwrite_bio = NULL;
-+			defer_bio(cache, bio);
-+		}
-+
- 		invalidate_complete(mg, false);
- 		return r;
- 	}
+diff --git a/include/linux/stop_machine.h b/include/linux/stop_machine.h
+index 72820503514cc..01011113d2263 100644
+--- a/include/linux/stop_machine.h
++++ b/include/linux/stop_machine.h
+@@ -99,7 +99,7 @@ static inline void print_stop_info(const char *log_lvl, struct task_struct *task
+  * stop_machine: freeze the machine on all CPUs and run this function
+  * @fn: the function to run
+  * @data: the data ptr to pass to @fn()
+- * @cpus: the cpus to run @fn() on (NULL = run on each online CPU)
++ * @cpus: the cpus to run @fn() on (NULL = one unspecified online CPU)
+  *
+  * Description: This causes a thread to be scheduled on every CPU, which
+  * will run with interrupts disabled.  Each CPU specified by @cpus will
+@@ -133,7 +133,7 @@ int stop_machine(cpu_stop_fn_t fn, void *data, const struct cpumask *cpus);
+  * stop_machine_cpuslocked: freeze the machine on all CPUs and run this function
+  * @fn: the function to run
+  * @data: the data ptr to pass to @fn()
+- * @cpus: the cpus to run @fn() on (NULL = run on each online CPU)
++ * @cpus: the cpus to run @fn() on (NULL = one unspecified online CPU)
+  *
+  * Same as above.  Avoids nested calls to cpus_read_lock().
+  *
 -- 
 2.53.0
 
