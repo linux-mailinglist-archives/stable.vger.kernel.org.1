@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-253104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251040-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CFB1Ms0cDmro6AUAu9opvQ
-	(envelope-from <stable+bounces-253104-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:42:53 +0200
+	id iEBZJEnxDWp+4wUAu9opvQ
+	(envelope-from <stable+bounces-251040-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:37:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEB53599FC3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:42:52 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBB25594206
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:37:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3157B310C67E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:47:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EFF4530E7B29
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEA76401A18;
-	Wed, 20 May 2026 18:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F5113F1ACA;
+	Wed, 20 May 2026 17:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yq0jNuKL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kBMgmQox"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79CE8401A1F;
-	Wed, 20 May 2026 18:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFCA63F1AB9;
+	Wed, 20 May 2026 17:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302415; cv=none; b=mvelWwsgIYCupFEUMzGOzE4raN5s+5SP/Ucekk2AyUGl7ojTtBl6AThg/m1TkHL65AVH9fevIevSNKugbIT2IvDRuVCbuLg6OFeGEpRk9danCBEK2qoo/tv6SvgWsaGyR/yW7jTW9B2TH+XXr3uwVXRPxdlTE6rnn7htjrKOA/A=
+	t=1779296945; cv=none; b=qmsTwygUjHuqyRlUvjolIv1kPkLs2mn0hHTKzVAlbb9sWdA+6T/1Z/kPPPB/4veP1EO4MhccP1uS6EXl7SKbqRedraPjp4zQ0REZlcSVdIAq+OiTpgqVLj0WDyqrlS47i/BlZ5QLdFTmkYM6APPFc5gfvhw/fPeA0QgBYSP4XUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302415; c=relaxed/simple;
-	bh=ZcpQZ+u8RKAFCZmetz3NVuR6oS/FjmvSiE83SuNCQyg=;
+	s=arc-20240116; t=1779296945; c=relaxed/simple;
+	bh=srTXkIcB76AHnl9BdoN35MZgSOYe1UCOGwIKhbyHrng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hg/kV207gbjI7ZWzL9Vx4RAADbwZjD8JLJcO+gI3yQvPYzpV8Zz+J1u5mCuY5dloO+0QotpPFQYE0IDS3NvqWi+uZTaTnuf5No/U0rYjOd7zcBbxhIGVHPO10d8hpLVJe9j5ILgvz69+dtPWm9dEGJGDVJcO+faiZu5JdwYJPYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yq0jNuKL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEB871F00894;
-	Wed, 20 May 2026 18:40:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VMR0Uyw8oW/7IPmzu+sg7ihC/ieYbP7hP+B3XKYyqRR3HRkv1D9Gqze3LQGWXXDmp0rDnfyFDdjeqIM+ZsUaG63Jt46Aq8ouK/NKDmtFF4py6c2IZYmrTHtnDyF2dtsK/LCI45XbcU0rt2WUUgwoKb8JOMEJK8hJBNCFLXQ8w6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kBMgmQox; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 304551F000E9;
+	Wed, 20 May 2026 17:09:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302414;
-	bh=ytrdTLGa55pO1cw6RdZfOfc2AkCW1FzmE64WngUl2CQ=;
+	s=korg; t=1779296943;
+	bh=zU9PzC43CSf+XGJGZctXc+HLrsVMNl0ZY7fy6GrpwI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yq0jNuKLWa0wmWbqpiz6G0KNefvUB+4sZJIfhzoTZ+ersOPra6waizZ+c/KIvgrpJ
-	 k1vzzbmZzZhFhHQmrIvCZmr1HGdrHg1JllxkVloGW4Ka15K+zlwDikAQC48gVHW3hi
-	 UdiCaOh6BH7kocjDW4F5GE/rd0GebjtxOeDqsZ+U=
+	b=kBMgmQox55Nuq+5ZX6oQZwPf0SLZuov2pJjEWUocb+mNi1g+3nLRjLd4u8TzgyJGr
+	 S+fJbtskT1uw75qNlyuzt6yTSq5Ebssa3+rpoFh+iLnJSj6ncJ5cUAHnum79RcbVBk
+	 R9TzFPWYmsUwsn42X9koY0N2JnoQzCEatBWKIHbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Khairul Anuar Romli <karom.9560@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 216/508] dmaengine: dw-axi-dmac: Remove unnecessary return statement from void function
-Date: Wed, 20 May 2026 18:20:39 +0200
-Message-ID: <20260520162103.320104157@linuxfoundation.org>
+Subject: [PATCH 7.0 0990/1146] net/sched: sch_cake: annotate data-races in cake_dump_stats() (II)
+Date: Wed, 20 May 2026 18:20:40 +0200
+Message-ID: <20260520162210.637699443@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +64,178 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TAGGED_FROM(0.00)[bounces-253104-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251040-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,checkpatch.pl:url]
-X-Rspamd-Queue-Id: CEB53599FC3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,toke.dk:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: EBB25594206
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Khairul Anuar Romli <karom.9560@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 48278a72fce8a8d30efaedeb206c9c3f05c1eb3f ]
+[ Upstream commit 91a96427b93b9ba27413077b7e825d2fefbfa134 ]
 
-checkpatch.pl --strict reports a WARNING in dw-axi-dmac-platform.c:
+cake_dump_stats() runs without qdisc spinlock being held.
 
-  WARNING: void function return statements are not generally useful
-  FILE: drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
+In this second patch, I add READ_ONCE()/WRITE_ONCE() annotations
+for the following fields:
 
-According to Linux kernel coding style [Documentation/process/
-coding-style.rst], explicit "return;" statements at the end of void
-functions are redundant and should be omitted. The function will
-automatically return upon reaching the closing brace, so the extra
-statement adds unnecessary clutter without functional benefit.
+- bulk_flow_count
+- unresponsive_flow_count
+- max_skblen
+- flow_quantum
 
-This patch removes the superfluous "return;" statement in
-dw_axi_dma_set_hw_channel() to comply with kernel coding standards and
-eliminate the checkpatch warning.
+Other annotations are added in following patches, to ease code review.
 
-Fixes: 32286e279385 ("dmaengine: dw-axi-dmac: Remove free slot check algorithm in dw_axi_dma_set_hw_channel")
-Signed-off-by: Khairul Anuar Romli <karom.9560@gmail.com>
-Link: https://patch.msgid.link/20260202060224.12616-4-karom.9560@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 046f6fd5daef ("sched: Add Common Applications Kept Enhanced (cake) qdisc")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: "Toke Høiland-Jørgensen" <toke@toke.dk>
+Link: https://patch.msgid.link/20260427083606.459355-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c | 2 --
- 1 file changed, 2 deletions(-)
+ net/sched/sch_cake.c | 34 +++++++++++++++++++---------------
+ 1 file changed, 19 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
-index 72fb40de58b3f..3ea3e203253a9 100644
---- a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
-+++ b/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
-@@ -546,8 +546,6 @@ static void dw_axi_dma_set_hw_channel(struct axi_dma_chan *chan, bool set)
- 			(chan->id * DMA_APB_HS_SEL_BIT_SIZE));
- 	reg_value |= (val << (chan->id * DMA_APB_HS_SEL_BIT_SIZE));
- 	lo_hi_writeq(reg_value, chip->apb_regs + DMAC_APB_HW_HS_SEL_0);
--
--	return;
- }
+diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
+index ac82fe7aafcb3..a164464f63d18 100644
+--- a/net/sched/sch_cake.c
++++ b/net/sched/sch_cake.c
+@@ -1590,7 +1590,8 @@ static unsigned int cake_drop(struct Qdisc *sch, struct sk_buff **to_free)
+ 	}
  
- /*
+ 	if (cobalt_queue_full(&flow->cvars, &b->cparams, now))
+-		b->unresponsive_flow_count++;
++		WRITE_ONCE(b->unresponsive_flow_count,
++			   b->unresponsive_flow_count + 1);
+ 
+ 	len = qdisc_pkt_len(skb);
+ 	q->buffer_used      -= skb->truesize;
+@@ -1795,7 +1796,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	}
+ 
+ 	if (unlikely(len > b->max_skblen))
+-		b->max_skblen = len;
++		WRITE_ONCE(b->max_skblen, len);
+ 
+ 	if (qdisc_pkt_segs(skb) > 1 && q->config->rate_flags & CAKE_FLAG_SPLIT_GSO) {
+ 		struct sk_buff *segs, *nskb;
+@@ -1930,7 +1931,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		 */
+ 		flow->set = CAKE_SET_BULK;
+ 		WRITE_ONCE(b->sparse_flow_count, b->sparse_flow_count - 1);
+-		b->bulk_flow_count++;
++		WRITE_ONCE(b->bulk_flow_count, b->bulk_flow_count + 1);
+ 
+ 		cake_inc_srchost_bulk_flow_count(b, flow, q->config->flow_mode);
+ 		cake_inc_dsthost_bulk_flow_count(b, flow, q->config->flow_mode);
+@@ -2150,7 +2151,7 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
+ 		if (flow->set == CAKE_SET_SPARSE) {
+ 			if (flow->head) {
+ 				WRITE_ONCE(b->sparse_flow_count, b->sparse_flow_count - 1);
+-				b->bulk_flow_count++;
++				WRITE_ONCE(b->bulk_flow_count, b->bulk_flow_count + 1);
+ 
+ 				cake_inc_srchost_bulk_flow_count(b, flow, q->config->flow_mode);
+ 				cake_inc_dsthost_bulk_flow_count(b, flow, q->config->flow_mode);
+@@ -2177,7 +2178,8 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
+ 		if (!skb) {
+ 			/* this queue was actually empty */
+ 			if (cobalt_queue_empty(&flow->cvars, &b->cparams, now))
+-				b->unresponsive_flow_count--;
++				WRITE_ONCE(b->unresponsive_flow_count,
++					   b->unresponsive_flow_count - 1);
+ 
+ 			if (flow->cvars.p_drop || flow->cvars.count ||
+ 			    ktime_before(now, flow->cvars.drop_next)) {
+@@ -2187,7 +2189,7 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
+ 				list_move_tail(&flow->flowchain,
+ 					       &b->decaying_flows);
+ 				if (flow->set == CAKE_SET_BULK) {
+-					b->bulk_flow_count--;
++					WRITE_ONCE(b->bulk_flow_count, b->bulk_flow_count - 1);
+ 
+ 					cake_dec_srchost_bulk_flow_count(b, flow, q->config->flow_mode);
+ 					cake_dec_dsthost_bulk_flow_count(b, flow, q->config->flow_mode);
+@@ -2206,7 +2208,7 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
+ 				    flow->set == CAKE_SET_SPARSE_WAIT) {
+ 					WRITE_ONCE(b->sparse_flow_count, b->sparse_flow_count - 1);
+ 				} else if (flow->set == CAKE_SET_BULK) {
+-					b->bulk_flow_count--;
++					WRITE_ONCE(b->bulk_flow_count, b->bulk_flow_count - 1);
+ 
+ 					cake_dec_srchost_bulk_flow_count(b, flow, q->config->flow_mode);
+ 					cake_dec_dsthost_bulk_flow_count(b, flow, q->config->flow_mode);
+@@ -2329,9 +2331,9 @@ static void cake_set_rate(struct cake_tin_data *b, u64 rate, u32 mtu,
+ 	u8  rate_shft = 0;
+ 	u64 rate_ns = 0;
+ 
+-	b->flow_quantum = 1514;
+ 	if (rate) {
+-		b->flow_quantum = max(min(rate >> 12, 1514ULL), 300ULL);
++		WRITE_ONCE(b->flow_quantum,
++			   max(min(rate >> 12, 1514ULL), 300ULL));
+ 		rate_shft = 34;
+ 		rate_ns = ((u64)NSEC_PER_SEC) << rate_shft;
+ 		rate_ns = div64_u64(rate_ns, max(MIN_RATE, rate));
+@@ -2339,8 +2341,10 @@ static void cake_set_rate(struct cake_tin_data *b, u64 rate, u32 mtu,
+ 			rate_ns >>= 1;
+ 			rate_shft--;
+ 		}
+-	} /* else unlimited, ie. zero delay */
+-
++	} else {
++		/* else unlimited, ie. zero delay */
++		WRITE_ONCE(b->flow_quantum, 1514);
++	}
+ 	b->tin_rate_bps  = rate;
+ 	b->tin_rate_ns   = rate_ns;
+ 	b->tin_rate_shft = rate_shft;
+@@ -3056,11 +3060,11 @@ static int cake_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ 
+ 		PUT_TSTAT_U32(SPARSE_FLOWS, READ_ONCE(b->sparse_flow_count) +
+ 					    READ_ONCE(b->decaying_flow_count));
+-		PUT_TSTAT_U32(BULK_FLOWS, b->bulk_flow_count);
+-		PUT_TSTAT_U32(UNRESPONSIVE_FLOWS, b->unresponsive_flow_count);
+-		PUT_TSTAT_U32(MAX_SKBLEN, b->max_skblen);
++		PUT_TSTAT_U32(BULK_FLOWS, READ_ONCE(b->bulk_flow_count));
++		PUT_TSTAT_U32(UNRESPONSIVE_FLOWS, READ_ONCE(b->unresponsive_flow_count));
++		PUT_TSTAT_U32(MAX_SKBLEN, READ_ONCE(b->max_skblen));
+ 
+-		PUT_TSTAT_U32(FLOW_QUANTUM, b->flow_quantum);
++		PUT_TSTAT_U32(FLOW_QUANTUM, READ_ONCE(b->flow_quantum));
+ 		nla_nest_end(d->skb, ts);
+ 	}
+ 
 -- 
 2.53.0
 
