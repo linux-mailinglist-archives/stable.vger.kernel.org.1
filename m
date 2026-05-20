@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-251539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250639-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oDbSEOT4DWqq5AUAu9opvQ
-	(envelope-from <stable+bounces-251539-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:09:40 +0200
+	id 8PYvDIfxDWp+4wUAu9opvQ
+	(envelope-from <stable+bounces-250639-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:38:15 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47CD65956DC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:09:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 182A0594281
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:38:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 831C8323F7E7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:30:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 36EDD30399FC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:52:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA37E36405A;
-	Wed, 20 May 2026 17:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2CF3A3833;
+	Wed, 20 May 2026 16:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xTs4ABx5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+DAupIS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4480312825;
-	Wed, 20 May 2026 17:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1237B36D9EA;
+	Wed, 20 May 2026 16:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298242; cv=none; b=S3+AAafYc/kTRDl7SYM5UfU1oun8+1N145SiMIffh+ZSf9gWPLi/ARPrLFEjyOKiZDwH4zmAhdy/lfsmAB0e2/k5oI+fs/MYWgg2K0uift97piENZPb9pSNyrJnKIGf5q+1mehjspDw+kAwVrDW8dn6QAXBdNke0zDMHXv1G4F0=
+	t=1779295935; cv=none; b=HRZ2hqJn5YX2PbePn22E6njmqczFqCkGf3JyKx3BvksBP4O1Znz5aPQQ1yaArk5HW+sAczRn8hKK6XNG7w2sgRoycacwVequRL9Nv5Lw5C/Cga9RNgaU9bRVAssKo4aK7/i3cLaUqHiACagiRkXyw57/DGfcTyq6DxyvoAHB7GM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298242; c=relaxed/simple;
-	bh=uLm0ASMj5VwvdAklJD84KjjdtBBst7sNRxkh4bk00BQ=;
+	s=arc-20240116; t=1779295935; c=relaxed/simple;
+	bh=D6aQgEtLC+dGoYRLW7Ycx3nLWOBqYp5W5EajzqgCXeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AIvEgKp9ozs/03g17EcGVT4sPxO6q+I8by1alwfo9tc7oKM/XHKO30u0wTYt3LTw8U5IvSkXNtpFAPoJEhVK/sL5s1Hdey7ckXMCKB5W2kQiEvnWMdYMklDS9ruF/0LTHd9zO7mTAuvoq6xqGOLHizICL4jLME7wOmgVBMiHNfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xTs4ABx5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D0281F00893;
-	Wed, 20 May 2026 17:30:40 +0000 (UTC)
+	 MIME-Version; b=rEOYUY7a/U1a9IXcbt/kjsaAOwsUCd13HepmYW6vqh9XWfqgd7R7Au8e9k4rcpSrpnUCI1rlI9Plhwc6rbctXnTPZXDXisdtqwJY/t2tnwc2vX80c4cjuV9nDD6040WejznhGfNRvsSrANtyN1nmffhvgmCqkhHvwqe2L69ykNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+DAupIS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 780E41F000E9;
+	Wed, 20 May 2026 16:52:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298241;
-	bh=0og89KdK9je2YXuetatqQGgcEeg9oYEkWuJvYDuDyhc=;
+	s=korg; t=1779295934;
+	bh=KLZ2UisTsf7I0oSbRIWZF+EiY2l9eP48GWBak9GiuwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xTs4ABx555kEo/pG5NqsZ2FgFp1nQfk27CgEtuPdie6BrjK4RQawYFVhay5Sazqg8
-	 f9DSupJx3CXBY/E0pYVr/QMgwzSjjXqI93RGjRZYblRyHwUAtM/68AhMTKSsspntMZ
-	 iiPPgrh0yaq9lVRyabaN2kruOexDiLxw7MCaHYMY=
+	b=x+DAupISmwphNj9Jy/xlzhEXBTlYsbxogOHdEJvyNPQz76pYtxIXEw5/GjJep8vNx
+	 a6CriAuGuxt493zoFGNe+Ewx5sDuMkoJJQ6ocq+aZeHuQsbxjI3uKK3GEcaUiEnPB6
+	 ex8E98yX6TdxOu6ALVpMJCQaCXMUIJx/Py0utgYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <error27@gmail.com>,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Richard Cheng <icheng@nvidia.com>,
+	Kai-Heng Feng <kaihengf@nvidia.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 335/957] dm cache: fix missing return in invalidate_committeds error path
+Subject: [PATCH 7.0 0568/1146] fwctl: Fix class init ordering to avoid NULL pointer dereference on device removal
 Date: Wed, 20 May 2026 18:13:38 +0200
-Message-ID: <20260520162141.796112867@linuxfoundation.org>
+Message-ID: <20260520162201.039686504@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,76 +75,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-251539-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250639-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 47CD65956DC
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 182A0594281
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Richard Cheng <icheng@nvidia.com>
 
-[ Upstream commit 8c0ee19db81f0fa1ff25fd75b22b17c0cc2acde3 ]
+[ Upstream commit a55f80233f384dc89ef3425b2e1dd0e6d44bcf29 ]
 
-In passthrough mode, dm-cache defers write submission until after
-metadata commit completes via the invalidate_committed() continuation.
-On commit error, invalidate_committed() calls invalidate_complete() to
-end the bio and free the migration struct, after which it should return
-immediately.
+CXL is linked before fwctl in drivers/Makefile. Both use `module_init, so
+`cxl_pci_driver_init()` runs first. When `cxl_pci_probe()` calls
+`fwctl_register()` and then `device_add()`, fwctl_class is not yet
+registered because fwctl_init() hasn't run, causing `class_to_subsys()` to
+return NULL and skip knode_class initialization.
 
-The patch 4ca8b8bd952d ("dm cache: fix write hang in passthrough mode")
-omitted this early return, causing execution to fall through into the
-success path on error. This results in use-after-free on the migration
-struct in the subsequent calls.
+On device removal, `class_to_subsys()` returns non-NULL, and
+`device_del()` calls `klist_del()` on the uninitialized knode, triggering
+a NULL pointer dereference.
 
-Fix by adding the missing return after the invalidate_complete() call.
-
-Fixes: 4ca8b8bd952d ("dm cache: fix write hang in passthrough mode")
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/dm-devel/adjMq6T5RRjv_uxM@stanley.mountain/
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: 858ce2f56b52 ("cxl: Add FWCTL support to CXL")
+Link: https://patch.msgid.link/r/20260409051902.40218-1-icheng@nvidia.com
+Signed-off-by: Richard Cheng <icheng@nvidia.com>
+Reviewed-by: Kai-Heng Feng <kaihengf@nvidia.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-cache-target.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/fwctl/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
-index 9c64fe56ecb6c..bb0b484d4d687 100644
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -1521,8 +1521,10 @@ static void invalidate_committed(struct work_struct *ws)
- 	struct bio *bio = mg->overwrite_bio;
- 	struct per_bio_data *pb = get_per_bio_data(bio);
+diff --git a/drivers/fwctl/main.c b/drivers/fwctl/main.c
+index bc6378506296c..098c3824ad751 100644
+--- a/drivers/fwctl/main.c
++++ b/drivers/fwctl/main.c
+@@ -415,7 +415,7 @@ static void __exit fwctl_exit(void)
+ 	unregister_chrdev_region(fwctl_dev, FWCTL_MAX_DEVICES);
+ }
  
--	if (mg->k.input)
-+	if (mg->k.input) {
- 		invalidate_complete(mg, false);
-+		return;
-+	}
- 
- 	init_continuation(&mg->k, invalidate_completed);
- 	remap_to_origin_clear_discard(cache, bio, mg->invalidate_oblock);
+-module_init(fwctl_init);
++subsys_initcall(fwctl_init);
+ module_exit(fwctl_exit);
+ MODULE_DESCRIPTION("fwctl device firmware access framework");
+ MODULE_LICENSE("GPL");
 -- 
 2.53.0
 
