@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-251929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251003-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6DvjJRz9DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-251929-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:40 +0200
+	id iALILyX6DWq75AUAu9opvQ
+	(envelope-from <stable+bounces-251003-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:15:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00EE1596363
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:39 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4054595A41
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:15:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D41B73255E6F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:48:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6F1A930544F6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E6F53F23BF;
-	Wed, 20 May 2026 17:48:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B30E3F4DCC;
+	Wed, 20 May 2026 17:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CdPfeXfb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yaqA49Tn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F08E3B0AD6;
-	Wed, 20 May 2026 17:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4A63F54D0;
+	Wed, 20 May 2026 17:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299299; cv=none; b=n1Nrz9grdVtYsDN1MxPwPIjNjWqJWlnMsYdvmiz/ezE1OTjUpafXuXczAAm8Bg113A4Hkc9XRD7V91CnISyQP2v+vBbIdiSa/GjBZwmPDPTujVo3P/JqzaDcGoHqKJuPkYF1dxnHUVEYwc3JfF4ETNAPJ+vAemW6MEM3vuUuWIw=
+	t=1779296851; cv=none; b=VLb9w1LSg3peXqJebxc172UgfvbYQpyGIfo7xwdztovYGptoR06uPY68o6Na+ufSWhtaDe8+5UmGWRi/7NG1DVEPLC/iPV/Im6I63bWanrOlcXJnsWRUADabW1CD0i5TT0uxyTcGEhVvpDCqIFn8FgM1nu+6DsUypNkQRBNGbrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299299; c=relaxed/simple;
-	bh=Th+9Y2/zHXwX4ZAb+rYbBkK+MpO/GYgHu5Q7ZSZ9DVw=;
+	s=arc-20240116; t=1779296851; c=relaxed/simple;
+	bh=Me8/3sPgCzN6uO4ZokIjAm/sm5JXB0Fo2lALEmAocg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aBL9IHYPHNKvIDQXthYlhtn4Ek08KvWaBGyFXL532sBFiygCqa9+he4Q7Etlm/HHuKBH9FeaYZbVMjpQQZIw6CLyzkOPIzinsBXSGQb55UBq6ekXfJA/aP+djFO0aiWo8k0lrrvW5bdopjhY05XQqQeOcLXdveXBmADgSOKHvi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CdPfeXfb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB9A1F000E9;
-	Wed, 20 May 2026 17:48:17 +0000 (UTC)
+	 MIME-Version; b=AFs36/3csm18LuJ0uxh8FblmkgXZvLrWCWyTOOHgRr2SfSK+qz9LpOdDeiI7Z18n+pJXSh9zk5gnOathtmIo/c4hyKWWVe1q02WYJxkG3JS65OPObtaNZpPhfWu/BmVhGwzKUaWJA4uO60UUiia4qfSr6rMDA0bGDTO/VS4r7hA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yaqA49Tn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31A5D1F00893;
+	Wed, 20 May 2026 17:07:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299298;
-	bh=rm+gfWPl1Swpq0tTFds3DdtfoPJUuwRzghEGHhKEblc=;
+	s=korg; t=1779296848;
+	bh=G7FJvgfjpSZe13FDiLcRvodWyG0HH9GsFgekvvUkhOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CdPfeXfbq5SZmKShnomerY2VkbcL0SX4IL3dN06oHE6qW7fpOpPvv1hM/PLtzXmq9
-	 r/waE0uFIG0akPRCr+B8TMAUCeQdDOBEnMMP6GTs186QvY6QqI1Ua/JXOqMS5+lL+8
-	 12r1eJtBVOLDo3F4HY7M1Gcw527i4DwrNfysbJ+E=
+	b=yaqA49Tnoq1r6TlPjgsdAQD1v6UOlg0wrLUKdQvkgDcEFU+SMBIQOxqczn9d1wzGh
+	 AgehB+JNyoJBU4/3D1zSfI/iCeQbWU4zmrtoVpVFBDdvY+VtsUZfHNMhytbEPBAn1T
+	 HWWO8ZihfQxVDjtlK6rfX8W3UIgx6cvhXnNF8Ho8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian Brauner (Amutable)" <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 720/957] eventpoll: drop vestigial __ prefix from ep_remove_{file,epi}()
+	Zicheng Qu <quzicheng@huawei.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Hui Tang <tanghui20@huawei.com>,
+	Zhang Qiao <zhangqiao22@huawei.com>
+Subject: [PATCH 7.0 0953/1146] sched/fair: Clear rel_deadline when initializing forked entities
 Date: Wed, 20 May 2026 18:20:03 +0200
-Message-ID: <20260520162150.163307899@linuxfoundation.org>
+Message-ID: <20260520162209.802234491@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,98 +70,116 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251003-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251929-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 00EE1596363
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,infradead.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: C4054595A41
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Zicheng Qu <quzicheng@huawei.com>
 
-[ Upstream commit 0feaf644f7180c4a91b6b405a881afbfd958f1cf ]
+[ Upstream commit 3da56dc063cd77b9c0b40add930767fab4e389f3 ]
 
-With __ep_remove() gone, the double-underscore on __ep_remove_file()
-and __ep_remove_epi() no longer contrasts with a __-less parent and
-just reads as noise. Rename both to ep_remove_file() and
-ep_remove_epi(). No functional change.
+A yield-triggered crash can happen when a newly forked sched_entity
+enters the fair class with se->rel_deadline unexpectedly set.
 
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-Stable-dep-of: a6dc643c6931 ("eventpoll: fix ep_remove struct eventpoll / struct file UAF")
+The failing sequence is:
+
+  1. A task is forked while se->rel_deadline is still set.
+  2. __sched_fork() initializes vruntime, vlag and other sched_entity
+     state, but does not clear rel_deadline.
+  3. On the first enqueue, enqueue_entity() calls place_entity().
+  4. Because se->rel_deadline is set, place_entity() treats se->deadline
+     as a relative deadline and converts it to an absolute deadline by
+     adding the current vruntime.
+  5. However, the forked entity's deadline is not a valid inherited
+     relative deadline for this new scheduling instance, so the conversion
+     produces an abnormally large deadline.
+  6. If the task later calls sched_yield(), yield_task_fair() advances
+     se->vruntime to se->deadline.
+  7. The inflated vruntime is then used by the following enqueue path,
+     where the vruntime-derived key can overflow when multiplied by the
+     entity weight.
+  8. This corrupts cfs_rq->sum_w_vruntime, breaks EEVDF eligibility
+     calculation, and can eventually make all entities appear ineligible.
+     pick_next_entity() may then return NULL unexpectedly, leading to a
+     later NULL dereference.
+
+A captured trace shows the effect clearly. Before yield, the entity's
+vruntime was around:
+
+  9834017729983308
+
+After yield_task_fair() executed:
+
+  se->vruntime = se->deadline
+
+the vruntime jumped to:
+
+  19668035460670230
+
+and the deadline was later advanced further to:
+
+  19668035463470230
+
+This shows that the deadline had already become abnormally large before
+yield_task_fair() copied it into vruntime.
+
+rel_deadline is only meaningful when se->deadline really carries a
+relative deadline that still needs to be placed against vruntime. A
+freshly forked sched_entity should not inherit or retain this state.
+Clear se->rel_deadline in __sched_fork(), together with the other
+sched_entity runtime state, so that the first enqueue does not interpret
+the new entity's deadline as a stale relative deadline.
+
+Fixes: 82e9d0456e06 ("sched/fair: Avoid re-setting virtual deadline on 'migrations'")
+Analyzed-by: Hui Tang <tanghui20@huawei.com>
+Analyzed-by: Zhang Qiao <zhangqiao22@huawei.com>
+Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://patch.msgid.link/20260424071113.1199600-1-quzicheng@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/eventpoll.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ kernel/sched/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-index 5d982c2503d68..68607634a60df 100644
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -830,7 +830,7 @@ static void ep_free(struct eventpoll *ep)
-  * Called with &file->f_lock held,
-  * returns with it released
-  */
--static void __ep_remove_file(struct eventpoll *ep, struct epitem *epi,
-+static void ep_remove_file(struct eventpoll *ep, struct epitem *epi,
- 			     struct file *file)
- {
- 	struct epitems_head *to_free = NULL;
-@@ -854,7 +854,7 @@ static void __ep_remove_file(struct eventpoll *ep, struct epitem *epi,
- 	free_ephead(to_free);
- }
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index d5d0099d5ebf9..567b1b1efdb58 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -4398,6 +4398,7 @@ static void __sched_fork(u64 clone_flags, struct task_struct *p)
+ 	p->se.nr_migrations		= 0;
+ 	p->se.vruntime			= 0;
+ 	p->se.vlag			= 0;
++	p->se.rel_deadline		= 0;
+ 	INIT_LIST_HEAD(&p->se.group_node);
  
--static bool __ep_remove_epi(struct eventpoll *ep, struct epitem *epi)
-+static bool ep_remove_epi(struct eventpoll *ep, struct epitem *epi)
- {
- 	lockdep_assert_held(&ep->mtx);
- 
-@@ -900,9 +900,9 @@ static void ep_remove_safe(struct eventpoll *ep, struct epitem *epi)
- 		spin_unlock(&file->f_lock);
- 		return;
- 	}
--	__ep_remove_file(ep, epi, file);
-+	ep_remove_file(ep, epi, file);
- 
--	if (__ep_remove_epi(ep, epi))
-+	if (ep_remove_epi(ep, epi))
- 		WARN_ON_ONCE(ep_refcount_dec_and_test(ep));
- }
- 
-@@ -1147,8 +1147,8 @@ void eventpoll_release_file(struct file *file)
- 		ep_unregister_pollwait(ep, epi);
- 
- 		spin_lock(&file->f_lock);
--		__ep_remove_file(ep, epi, file);
--		dispose = __ep_remove_epi(ep, epi);
-+		ep_remove_file(ep, epi, file);
-+		dispose = ep_remove_epi(ep, epi);
- 
- 		mutex_unlock(&ep->mtx);
- 
+ 	/* A delayed task cannot be in clone(). */
 -- 
 2.53.0
 
