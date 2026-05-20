@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-251887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252511-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eHo7Dqf8DWoK5QUAu9opvQ
-	(envelope-from <stable+bounces-251887-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:25:43 +0200
+	id iLjTNhAVDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-252511-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:09:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABF2E596199
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:25:42 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14AEE59933D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:09:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A07693795A79
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:45:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CEC6F313FDB1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:14:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 883043B0AD6;
-	Wed, 20 May 2026 17:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7296C3769E0;
+	Wed, 20 May 2026 18:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gfWMGSMf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XG/cn9ML"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E6FB36405A;
-	Wed, 20 May 2026 17:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6573DC4DA;
+	Wed, 20 May 2026 18:14:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299147; cv=none; b=iOlLJi9us2zs0ot2jMk8AhKJNsegWMti6XoQGKr1cd8WBQBH2qy5MvhMKlWI83H0PspKdM/wWXlDGsVE4rffDsOIzVS7DZRz7VymIHjBqS6OnElKpPeaPJIN3sfx8OswHC8OwhVpsxkegGUg9w8VNK2Fq7PI+m0og6L/P1Md7aI=
+	t=1779300865; cv=none; b=mK7MPq4kmImPxMkq/t8W7g/dAGEClGuEbGXbBtZX1c8fG/XQh7cDeHJ9O/NW78Su3QE91ttSRiUv7NRCLGd8QJPjGu6OnNRaRZ5a7QtPEUDyvrq5+3KUrkO5OlgFqkT2XO3U5Tb3xBh2fdp6mHETW1cqDi1cpbeEwxGRIiyFma0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299147; c=relaxed/simple;
-	bh=xjOM/lIWGCwBLRL7InaXATkjsXfhMV9j7q766tBQCZg=;
+	s=arc-20240116; t=1779300865; c=relaxed/simple;
+	bh=hbl/Y30VauLguiH7L/KozQ+sNeX4jpHH4rhJIRIZ/F4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ebFGUy4vSr+lAGB9/kZvysiah12Y7xcMsK/Lpy8+Hp6qvQQmg+O1q4TrQgvkbUvvh2V9CcA+5WSLI72y52VgK1cblRKjhv3mtPt2wb0Hosk4mZthYPmLyUf36vmiWN6ci8yXgSacotnA3ngBVsfZNR4pQKx1WJw7/FN/wj6nO20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gfWMGSMf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C9F51F000E9;
-	Wed, 20 May 2026 17:45:45 +0000 (UTC)
+	 MIME-Version; b=quiBxGzpfoCssOjQmPdItsJ1FqHuBRNcQovJYUghkbT2s1vmljbgIcFrxxE3JC4P3KICvMKQWhqLiVYIJu8vOeWRR/P5xMJuYAgF6n3N4btIdNysX+aryGTwX5q6kZ0hsbB+cAlnVBtXd77dMeJMMzKYsyh3hXCP9uov9NZr0Pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XG/cn9ML; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 735071F000E9;
+	Wed, 20 May 2026 18:14:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299146;
-	bh=wi7gL2glDnmnYYsDqpazFzFqZMa1cQ1MVoyFTR+RYKI=;
+	s=korg; t=1779300864;
+	bh=KYHg7kpezx+bs/dJL7sqiayYKEAzp6do0p7g0R6zTt8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gfWMGSMfqMq9x/i8n+7oA73yz9K/CY+AdPNnt7GMj9EQ+ylL/QNIbaZKeT37mrK09
-	 vgB2L07JBgxoL09UMvA/riEWQH160l6qaUZ5dtmsluSZnDs7I9KFxETnDrolqv5YqE
-	 0ifc0eK47DwhSauOyawXE2b/h2bBzPraOnfrWwpg=
+	b=XG/cn9MLvg3YQGPp5IcIAuBdgf5PZACVNWJpsMW2O93Rb6sa7BisQ2vcZakI6RdKW
+	 Nl0uscxcYJQ5+qlh373tEbYxIho93ilEhc2k3t+RtI3bz7ckMUQYCGftAA569ThJ2R
+	 pnWnxmuDyk/R7eMFjeQ2HQEbbl2TWCNHzsvbHO8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Kito Xu (veritas501)" <hxzene@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Takahiro Kuwano <Takahiro.Kuwano@infineon.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 663/957] netfilter: xtables: restrict several matches to inet family
-Date: Wed, 20 May 2026 18:19:06 +0200
-Message-ID: <20260520162148.910518875@linuxfoundation.org>
+Subject: [PATCH 6.12 336/666] mtd: spi-nor: sfdp: introduce smpt_map_id fixup hook
+Date: Wed, 20 May 2026 18:19:07 +0200
+Message-ID: <20260520162118.514478524@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,242 +66,123 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251887-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,netfilter.org,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-252511-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,netfilter.org:email]
-X-Rspamd-Queue-Id: ABF2E596199
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mailbox.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linaro.org:email]
+X-Rspamd-Queue-Id: 14AEE59933D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
 
-[ Upstream commit b6fe26f86a1649f84e057f3f15605b08eda15497 ]
+[ Upstream commit f74de390557bf2bcc5dca4a357b41c0701d3f76e ]
 
-This is a partial revert of:
+Certain chips have inconsistent Sector Map Parameter Table (SMPT) data,
+which leads to the wrong map ID being identified, causing failures to
+detect the correct sector map.
 
-  commit ab4f21e6fb1c ("netfilter: xtables: use NFPROTO_UNSPEC in more extensions")
+To fix this, introduce smpt_map_id() into the struct spi_nor_fixups.
+This function will be called after the initial SMPT-based detection,
+allowing chip-specific logic to correct the map ID.
 
-to allow ipv4 and ipv6 only.
+Infineon S25FS512S needs this fixup as it has inconsistency between map
+ID definition and configuration register value actually obtained.
 
-- xt_mac
-- xt_owner
-- xt_physdev
-
-These extensions are not used by ebtables in userspace.
-
-Moreover, xt_realm is only for ipv4, since dst->tclassid is ipv4
-specific.
-
-Fixes: ab4f21e6fb1c ("netfilter: xtables: use NFPROTO_UNSPEC in more extensions")
-Reported-by: "Kito Xu (veritas501)" <hxzene@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Co-developed-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Tested-by: Marek Vasut <marek.vasut+renesas@mailbox.org> # S25FS512S
+Signed-off-by: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
+Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>>
+Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+Stable-dep-of: 3620d67b4849 ("mtd: spi-nor: update spi_nor_fixups::post_sfdp() documentation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/xt_mac.c     | 34 +++++++++++++++++++++++-----------
- net/netfilter/xt_owner.c   | 37 +++++++++++++++++++++++++------------
- net/netfilter/xt_physdev.c | 29 +++++++++++++++++++----------
- net/netfilter/xt_realm.c   |  2 +-
- 4 files changed, 68 insertions(+), 34 deletions(-)
+ drivers/mtd/spi-nor/core.h |  3 +++
+ drivers/mtd/spi-nor/sfdp.c | 12 ++++++++++++
+ 2 files changed, 15 insertions(+)
 
-diff --git a/net/netfilter/xt_mac.c b/net/netfilter/xt_mac.c
-index 81649da57ba5d..bd2354760895d 100644
---- a/net/netfilter/xt_mac.c
-+++ b/net/netfilter/xt_mac.c
-@@ -38,25 +38,37 @@ static bool mac_mt(const struct sk_buff *skb, struct xt_action_param *par)
- 	return ret;
- }
- 
--static struct xt_match mac_mt_reg __read_mostly = {
--	.name      = "mac",
--	.revision  = 0,
--	.family    = NFPROTO_UNSPEC,
--	.match     = mac_mt,
--	.matchsize = sizeof(struct xt_mac_info),
--	.hooks     = (1 << NF_INET_PRE_ROUTING) | (1 << NF_INET_LOCAL_IN) |
--	             (1 << NF_INET_FORWARD),
--	.me        = THIS_MODULE,
-+static struct xt_match mac_mt_reg[] __read_mostly = {
-+	{
-+		.name		= "mac",
-+		.family		= NFPROTO_IPV4,
-+		.match		= mac_mt,
-+		.matchsize	= sizeof(struct xt_mac_info),
-+		.hooks		= (1 << NF_INET_PRE_ROUTING) |
-+				  (1 << NF_INET_LOCAL_IN) |
-+				  (1 << NF_INET_FORWARD),
-+		.me		= THIS_MODULE,
-+	},
-+	{
-+		.name		= "mac",
-+		.family		= NFPROTO_IPV6,
-+		.match		= mac_mt,
-+		.matchsize	= sizeof(struct xt_mac_info),
-+		.hooks		= (1 << NF_INET_PRE_ROUTING) |
-+				  (1 << NF_INET_LOCAL_IN) |
-+				  (1 << NF_INET_FORWARD),
-+		.me		= THIS_MODULE,
-+	},
+diff --git a/drivers/mtd/spi-nor/core.h b/drivers/mtd/spi-nor/core.h
+index 56718f954a859..3aeca2299ddb1 100644
+--- a/drivers/mtd/spi-nor/core.h
++++ b/drivers/mtd/spi-nor/core.h
+@@ -410,6 +410,8 @@ struct spi_nor_flash_parameter {
+  * @post_bfpt: called after the BFPT table has been parsed
+  * @smpt_read_dummy: called during SMPT table is being parsed. Used to fix the
+  *                   number of dummy cycles in read register ops.
++ * @smpt_map_id: called after map ID in SMPT table has been determined for the
++ *               case the map ID is wrong and needs to be fixed.
+  * @post_sfdp: called after SFDP has been parsed (is also called for SPI NORs
+  *             that do not support RDSFDP). Typically used to tweak various
+  *             parameters that could not be extracted by other means (i.e.
+@@ -428,6 +430,7 @@ struct spi_nor_fixups {
+ 			 const struct sfdp_parameter_header *bfpt_header,
+ 			 const struct sfdp_bfpt *bfpt);
+ 	void (*smpt_read_dummy)(const struct spi_nor *nor, u8 *read_dummy);
++	void (*smpt_map_id)(const struct spi_nor *nor, u8 *map_id);
+ 	int (*post_sfdp)(struct spi_nor *nor);
+ 	int (*late_init)(struct spi_nor *nor);
  };
- 
- static int __init mac_mt_init(void)
- {
--	return xt_register_match(&mac_mt_reg);
-+	return xt_register_matches(mac_mt_reg, ARRAY_SIZE(mac_mt_reg));
+diff --git a/drivers/mtd/spi-nor/sfdp.c b/drivers/mtd/spi-nor/sfdp.c
+index 86d869810d07a..20b791568d5f0 100644
+--- a/drivers/mtd/spi-nor/sfdp.c
++++ b/drivers/mtd/spi-nor/sfdp.c
+@@ -726,6 +726,16 @@ static u8 spi_nor_smpt_read_dummy(const struct spi_nor *nor, const u32 settings)
+ 	return read_dummy;
  }
  
- static void __exit mac_mt_exit(void)
- {
--	xt_unregister_match(&mac_mt_reg);
-+	xt_unregister_matches(mac_mt_reg, ARRAY_SIZE(mac_mt_reg));
- }
++static void spi_nor_smpt_map_id_fixups(const struct spi_nor *nor, u8 *map_id)
++{
++	if (nor->manufacturer && nor->manufacturer->fixups &&
++	    nor->manufacturer->fixups->smpt_map_id)
++		nor->manufacturer->fixups->smpt_map_id(nor, map_id);
++
++	if (nor->info->fixups && nor->info->fixups->smpt_map_id)
++		nor->info->fixups->smpt_map_id(nor, map_id);
++}
++
+ /**
+  * spi_nor_get_map_in_use() - get the configuration map in use
+  * @nor:	pointer to a 'struct spi_nor'
+@@ -779,6 +789,8 @@ static const u32 *spi_nor_get_map_in_use(struct spi_nor *nor, const u32 *smpt,
+ 		map_id = map_id << 1 | !!(*buf & read_data_mask);
+ 	}
  
- module_init(mac_mt_init);
-diff --git a/net/netfilter/xt_owner.c b/net/netfilter/xt_owner.c
-index 50332888c8d23..7be2fe22b067e 100644
---- a/net/netfilter/xt_owner.c
-+++ b/net/netfilter/xt_owner.c
-@@ -127,26 +127,39 @@ owner_mt(const struct sk_buff *skb, struct xt_action_param *par)
- 	return true;
- }
- 
--static struct xt_match owner_mt_reg __read_mostly = {
--	.name       = "owner",
--	.revision   = 1,
--	.family     = NFPROTO_UNSPEC,
--	.checkentry = owner_check,
--	.match      = owner_mt,
--	.matchsize  = sizeof(struct xt_owner_match_info),
--	.hooks      = (1 << NF_INET_LOCAL_OUT) |
--	              (1 << NF_INET_POST_ROUTING),
--	.me         = THIS_MODULE,
-+static struct xt_match owner_mt_reg[] __read_mostly = {
-+	{
-+		.name       = "owner",
-+		.revision   = 1,
-+		.family     = NFPROTO_IPV4,
-+		.checkentry = owner_check,
-+		.match      = owner_mt,
-+		.matchsize  = sizeof(struct xt_owner_match_info),
-+		.hooks      = (1 << NF_INET_LOCAL_OUT) |
-+			      (1 << NF_INET_POST_ROUTING),
-+		.me         = THIS_MODULE,
-+	},
-+	{
-+		.name       = "owner",
-+		.revision   = 1,
-+		.family     = NFPROTO_IPV6,
-+		.checkentry = owner_check,
-+		.match      = owner_mt,
-+		.matchsize  = sizeof(struct xt_owner_match_info),
-+		.hooks      = (1 << NF_INET_LOCAL_OUT) |
-+			      (1 << NF_INET_POST_ROUTING),
-+		.me         = THIS_MODULE,
-+	}
- };
- 
- static int __init owner_mt_init(void)
- {
--	return xt_register_match(&owner_mt_reg);
-+	return xt_register_matches(owner_mt_reg, ARRAY_SIZE(owner_mt_reg));
- }
- 
- static void __exit owner_mt_exit(void)
- {
--	xt_unregister_match(&owner_mt_reg);
-+	xt_unregister_matches(owner_mt_reg, ARRAY_SIZE(owner_mt_reg));
- }
- 
- module_init(owner_mt_init);
-diff --git a/net/netfilter/xt_physdev.c b/net/netfilter/xt_physdev.c
-index 343e65f377d44..130842c35c6fa 100644
---- a/net/netfilter/xt_physdev.c
-+++ b/net/netfilter/xt_physdev.c
-@@ -115,24 +115,33 @@ static int physdev_mt_check(const struct xt_mtchk_param *par)
- 	return 0;
- }
- 
--static struct xt_match physdev_mt_reg __read_mostly = {
--	.name       = "physdev",
--	.revision   = 0,
--	.family     = NFPROTO_UNSPEC,
--	.checkentry = physdev_mt_check,
--	.match      = physdev_mt,
--	.matchsize  = sizeof(struct xt_physdev_info),
--	.me         = THIS_MODULE,
-+static struct xt_match physdev_mt_reg[] __read_mostly = {
-+	{
-+		.name		= "physdev",
-+		.family		= NFPROTO_IPV4,
-+		.checkentry	= physdev_mt_check,
-+		.match		= physdev_mt,
-+		.matchsize	= sizeof(struct xt_physdev_info),
-+		.me		= THIS_MODULE,
-+	},
-+	{
-+		.name		= "physdev",
-+		.family		= NFPROTO_IPV6,
-+		.checkentry	= physdev_mt_check,
-+		.match		= physdev_mt,
-+		.matchsize	= sizeof(struct xt_physdev_info),
-+		.me		= THIS_MODULE,
-+	},
- };
- 
- static int __init physdev_mt_init(void)
- {
--	return xt_register_match(&physdev_mt_reg);
-+	return xt_register_matches(physdev_mt_reg, ARRAY_SIZE(physdev_mt_reg));
- }
- 
- static void __exit physdev_mt_exit(void)
- {
--	xt_unregister_match(&physdev_mt_reg);
-+	xt_unregister_matches(physdev_mt_reg, ARRAY_SIZE(physdev_mt_reg));
- }
- 
- module_init(physdev_mt_init);
-diff --git a/net/netfilter/xt_realm.c b/net/netfilter/xt_realm.c
-index 6df485f4403d0..61b2f1e58d150 100644
---- a/net/netfilter/xt_realm.c
-+++ b/net/netfilter/xt_realm.c
-@@ -33,7 +33,7 @@ static struct xt_match realm_mt_reg __read_mostly = {
- 	.matchsize	= sizeof(struct xt_realm_info),
- 	.hooks		= (1 << NF_INET_POST_ROUTING) | (1 << NF_INET_FORWARD) |
- 			  (1 << NF_INET_LOCAL_OUT) | (1 << NF_INET_LOCAL_IN),
--	.family		= NFPROTO_UNSPEC,
-+	.family		= NFPROTO_IPV4,
- 	.me		= THIS_MODULE
- };
- 
++	spi_nor_smpt_map_id_fixups(nor, &map_id);
++
+ 	/*
+ 	 * If command descriptors are provided, they always precede map
+ 	 * descriptors in the table. There is no need to start the iteration
 -- 
 2.53.0
 
