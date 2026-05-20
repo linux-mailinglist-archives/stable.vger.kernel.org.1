@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-251298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250362-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8DuHBjnzDWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251298-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:45:29 +0200
+	id OKEpFrnwDWp+4wUAu9opvQ
+	(envelope-from <stable+bounces-250362-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:34:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC5EC5947B9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:45:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF507593FFB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:34:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6415B317855D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:20:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7DA00319C173
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:40:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD693A6EE0;
-	Wed, 20 May 2026 17:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E406369D4A;
+	Wed, 20 May 2026 16:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ia89CZ7Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eXSmfPGx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA073EBF35;
-	Wed, 20 May 2026 17:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F852C15AB;
+	Wed, 20 May 2026 16:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297617; cv=none; b=OzBhorvtrKWGQzDOED0sucNpo2eFvZbLiEZK/V43AdnrSzC+sKQwMOFV012roiGBNrW26qJqAdvmk3Ut8kXJxsCsEh6yC0/BElHMNm/THZ6tavvnaXkRoFtssN7yPBVmkQ8/CYK9Y1pEhR6fFhJXnr/UAjEZ8xeHRdywgjWRD74=
+	t=1779295215; cv=none; b=kkqeqAXsyJYM2jgYupwHLHcdhttkUChJwTS56DIYvgJMTFi915D+EqKf6tjb+CUdcH+vNHs7eWk6Zp2a/CVaBlnVZhDvuVEG41fW80JXLfhMjyJ+R5FOeQYe2EZuANuiTLaVal6GSZP5qqOlPURONsc+Eh/500jvqT59ENciD60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297617; c=relaxed/simple;
-	bh=6a/fegO4+0o6zYv92lLi0kOWRd8q/DBvXGMSuCjF6LY=;
+	s=arc-20240116; t=1779295215; c=relaxed/simple;
+	bh=aFSgwPogAO1LIBDjFyKs4h5G+6M5c6vsivEiKtVnV64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BsWKa/zcFJLwAV121BlGDMEFnl6VJnVpmyLkR2NIoygN7diqtVetDBCLQAxNfWpbkXqUtPVuyaAHyabyYbjSAJO9C6cPguzX39LC/i33KekOSNFfSZ2YvPBtjU4xRchDNyLqQBxqIKLmxoXy42iV3dQ1lzpX7tT80fxUKXozpLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ia89CZ7Q; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E1D81F000E9;
-	Wed, 20 May 2026 17:20:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EknkArH7PcdeDR/Z49zt/hdd4f3PuNSZvj9/qpomnDCpxu8qM8vhQZZ6MMPqqiTbzu5zqfGPsdaEhCqsRq5/PbqQ2lrZRhXENyVwp324fMMBcAYerer4tuoRAr7alcQ0O4+Eh76D5HUS+LCd6uG8leOZE+cj4gtM31luY7jZbDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eXSmfPGx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B9741F000E9;
+	Wed, 20 May 2026 16:40:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297616;
-	bh=n+m969KkFvqGpPTQhoOymVGQag84uH02jM0nBLvEvT4=;
+	s=korg; t=1779295213;
+	bh=tTSU4S5vV/DRsEYYwGR48CMd5r/7JCXTc2FJG4HRUOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ia89CZ7QYnvQAYKSMXSHbJWdknr5B1hOQdHb+koZxUMZDVoeKajbxmtBLBur/VaWb
-	 rPnPno9Dsh2EiaDueFgpdzceGKIn2AXcBrhV7x7acvKBZX4xQCI2fQesBgWQv0CyyO
-	 ow9SSsIN7tGq5WBL/jqiZJKCsfOwPaOlWOvVIMC0=
+	b=eXSmfPGxbIC3NzTxYV9ZDo5vo6ifxWhNlG/v660hdVgTSZ/xJKWoYo56Gd8A2emCb
+	 pNx+AWPQKz8BlH+XFHd74j4QIAJase8JKgB1FOPru173DO1Rhor3/Q7jPnagRZhU8E
+	 iCZvuJsezgtjLs+NiiLN7L+aKGNZROp26+V4LM58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Guenter Roeck <linux@roeck-us.net>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Xifer <xiferdev@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 100/957] wifi: mt76: mt7996: Add missing CHANCTX_STA_CSA property
+Subject: [PATCH 7.0 0333/1146] PCI: Fix alignment calculation for resource size larger than align
 Date: Wed, 20 May 2026 18:09:43 +0200
-Message-ID: <20260520162136.728254427@linuxfoundation.org>
+Message-ID: <20260520162155.735740400@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +65,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,roeck-us.net,linux.intel.com,google.com,gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251298-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250362-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,nbd.name:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: CC5EC5947B9
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,roeck-us.net:email]
+X-Rspamd-Queue-Id: AF507593FFB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit c0a47ffc4caaf5161955add553322112c3a211b0 ]
+[ Upstream commit 8cb081667377709f4924ab6b3a88a0d7a761fe91 ]
 
-Enable missing CHANCTX_STA_CSA property required for MLO.
+The commit bc75c8e50711 ("PCI: Rewrite bridge window head alignment
+function") did not use if (r_size <= align) check from pbus_size_mem() for
+the new head alignment bookkeeping structure (aligns2[]). In some
+configurations, this can result in producing a gap into the bridge window
+which the resource larger than its alignment cannot fill.
 
-Fixes: f5160304d57c ("wifi: mt76: mt7996: Enable MLO support for client interfaces")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patch.msgid.link/20250928-mt7996_chanctx_sta_csa-v1-1-82e455185990@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+The old alignment calculation algorithm was removed by the subsequent
+commit 3958bf16e2fe ("PCI: Stop over-estimating bridge window size") which
+renamed the aligns2[] array leaving only aligns[] array.
+
+Add the if (r_size <= align) check back to avoid this problem.
+
+Fixes: bc75c8e50711 ("PCI: Rewrite bridge window head alignment function")
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Closes: https://lore.kernel.org/all/b05a6f14-979d-42c9-924c-d8408cb12ae7@roeck-us.net/
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Xifer <xiferdev@gmail.com>
+Link: https://patch.msgid.link/20260324165633.4583-11-ilpo.jarvinen@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/init.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pci/setup-bus.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index ba769e6de76d2..817acfad31d06 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -536,6 +536,7 @@ mt7996_init_wiphy(struct ieee80211_hw *hw, struct mtk_wed_device *wed)
- 	ieee80211_hw_set(hw, SUPPORTS_RX_DECAP_OFFLOAD);
- 	ieee80211_hw_set(hw, NO_VIRTUAL_MONITOR);
- 	ieee80211_hw_set(hw, SUPPORTS_MULTI_BSSID);
-+	ieee80211_hw_set(hw, CHANCTX_STA_CSA);
+diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
+index 9506845c112c4..8f2830c6d34f7 100644
+--- a/drivers/pci/setup-bus.c
++++ b/drivers/pci/setup-bus.c
+@@ -1333,7 +1333,14 @@ static void pbus_size_mem(struct pci_bus *bus, struct resource *b_res,
+ 			r_size = resource_size(r);
+ 			size += max(r_size, align);
  
- 	hw->max_tx_fragments = 4;
- 
+-			aligns[order] += align;
++			/*
++			 * If resource's size is larger than its alignment,
++			 * some configurations result in an unwanted gap in
++			 * the head space that the larger resource cannot
++			 * fill.
++			 */
++			if (r_size <= align)
++				aligns[order] += align;
+ 			if (order > max_order)
+ 				max_order = order;
+ 		}
 -- 
 2.53.0
 
