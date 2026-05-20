@@ -1,71 +1,60 @@
-Return-Path: <stable+bounces-250428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251371-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UJR0KXHoDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250428-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:59:29 +0200
+	id aJpIN9sZDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251371-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:30:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 754DE592C57
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:59:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37A40599B2A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:30:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0C8C330FDE61
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:44:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CE71F361D15D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:23:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1690369D75;
-	Wed, 20 May 2026 16:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8042036A376;
+	Wed, 20 May 2026 17:23:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hvKrm1Os"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="10zkti/q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403F23EAC8F;
-	Wed, 20 May 2026 16:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48CFA331220;
+	Wed, 20 May 2026 17:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295389; cv=none; b=ID3SFLL6LZ12V1YmoyQBEg0RQ7lRq6RdoEqpVoDyH4V/d7Y2rvaMlkk28e2M+7ST8rGvtWtm2y1EYE0Buk3NG5OPPrb9Vhnxue0rQ2cgqxjqnPTM9wjlyv3xkCCYkJI4pW26IQ695hjsD1ViI8Fjba+Qcd0NYmItwY0MKGh9hkU=
+	t=1779297805; cv=none; b=YVUHBIRPauuhV9OooEB2POohZSkRbufh/4DjPi7xxignUKy4EN4FYAyCOvTsPRx4YUjh2dcdF2IZuXTv5eAuUb2Fi4tHHTP+V1ScL6SiHB+GBfCPim4IS18ki2clXJoPnBBjuctesoii0VEq/pwLiP+hPFaA+yexRXN7uM+3Fpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295389; c=relaxed/simple;
-	bh=kXsg/TxVIxsAY8OysjPnBq054QTeU6jKoEB93GVLnTo=;
+	s=arc-20240116; t=1779297805; c=relaxed/simple;
+	bh=TDhkyw+wokx/aOwZXJNxjTgTpG+fIheQfEImLZyW8Sk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UzdMg2eitgF5eOiEG+8gN1UC3Z9bz97gbAlESoopGjKq3ZpG1ERedudvSvdBOvEJCeQMNa4Z2Ay/nkDGd6kmoyYPmS/h6AS+DFdEz9wVxj6eyMqSMYfkPU6Cu5q8yUAWtNgaCS5US4x6AD7oJuw8+SUFOdFf2wAhXHqzfQ8TBCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hvKrm1Os; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1740F1F00893;
-	Wed, 20 May 2026 16:43:07 +0000 (UTC)
+	 MIME-Version; b=MrYi7AsgXjQ+rli1uSha8J7O5yIdF+3OQhqkI1JOuDr05cllGDaqI+b5oMdReXZSXfSh4AMvCoitHV6LuQI3vUhD97G+xqCcL/0c+duD2ZQX2eQwjpRItYYev51ZKX0Ggt/MNeZmqJxCPmtyJZPjYqHjJsBfQGJOvhCT/V9prvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=10zkti/q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE71A1F000E9;
+	Wed, 20 May 2026 17:23:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295387;
-	bh=cgk5rWaI3a40sDr45r9iuwxvhKTPp1UpjddN3bMSIyg=;
+	s=korg; t=1779297804;
+	bh=aLL40Mf3PJCWLLTp3uSf2mOHh8qjAe27KVY/ViMcrXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hvKrm1OsyVdzKpQlV1uMZajscY9C/eO2VMSvt4UWo27R2PEbHCpKqeHflc0rs5ApC
-	 oDzBA2NXGzB+YgCHeIfgLT92Cn5p5W1c0YcxjQbh8Oh2gmqqpWkvJ5DvU4k38Ylm/7
-	 LxBBmc9c0CtXrPYgO748AiOqfxzP/Q4LuO5Rprpw=
+	b=10zkti/q3BMzXQMgEbKi2fFoCuC02Hnzgae4IJcHogU0m59G+SgOybQeuCG4pDrkh
+	 MD8V0u1ZnA46+3DwOcbKs1w+OcMHUl3/AtFhxOdQpSpgTXsCpAP3Mkv16IPkiGstdn
+	 N4QIWz1cwlLrk4k6qoFoYrbgSGpIiVUH7XbqHXcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	wang lian <lianux.mm@gmail.com>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0401/1146] Docs/mm/damon/index: fix typo: autoamted -> automated
+Subject: [PATCH 6.18 168/957] net: ipa: Fix decoding EV_PER_EE for IPA v5.0+
 Date: Wed, 20 May 2026 18:10:51 +0200
-Message-ID: <20260520162157.277004172@linuxfoundation.org>
+Message-ID: <20260520162138.195041950@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,83 +65,76 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	TAGGED_FROM(0.00)[bounces-250428-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,linux.dev,google.com,lwn.net,oracle.com,suse.com,linux-foundation.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251371-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,lwn.net:email]
-X-Rspamd-Queue-Id: 754DE592C57
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,qualcomm.com:email,sashiko.dev:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 37A40599B2A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-[ Upstream commit a4e82de81fe59d5bfcc9450145e8e108561f2e07 ]
+[ Upstream commit 1335b903cf2e8aeaca87fd665683384c731ec941 ]
 
-There is an obvious typo.  Fix it (s/autoamted/automated/).
+Initially 'reg' and 'val' are assigned from HW_PARAM_2.
 
-Link: https://lkml.kernel.org/r/20260307195356.203753-8-sj@kernel.org
-Fixes: 32d11b320897 ("Docs/mm/damon/index: simplify the intro")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Acked-by: wang lian <lianux.mm@gmail.com>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>
-Cc: David Gow <davidgow@google.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Shuah Khan <skhan@linuxfoundation.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+But since IPA v5.0+ takes EV_PER_EE from HW_PARAM_4 (instead of
+NUM_EV_PER_EE from HW_PARAM_2), we not only need to re-assign 'reg' but
+also read the register value of that register into 'val' so that
+reg_decode() works on the correct value.
+
+Fixes: f651334e1ef5 ("net: ipa: add HW_PARAM_4 GSI register")
+Link: https://sashiko.dev/#/patchset/20260403-milos-ipa-v1-0-01e9e4e03d3e%40fairphone.com?part=2
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260409-ipa-fixes-v1-2-a817c30678ac@fairphone.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/mm/damon/index.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ipa/gsi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/mm/damon/index.rst b/Documentation/mm/damon/index.rst
-index 82f6c5eea49a7..318f6a7bfea47 100644
---- a/Documentation/mm/damon/index.rst
-+++ b/Documentation/mm/damon/index.rst
-@@ -12,7 +12,7 @@ DAMON is a Linux kernel subsystem for efficient :ref:`data access monitoring
-  - *light-weight* (for production online usages),
-  - *scalable* (in terms of memory size),
-  - *tunable* (for flexible usages), and
-- - *autoamted* (for production operation without manual tunings).
-+ - *automated* (for production operation without manual tunings).
- 
- .. toctree::
-    :maxdepth: 2
+diff --git a/drivers/net/ipa/gsi.c b/drivers/net/ipa/gsi.c
+index 4c3227e77898c..624649484d627 100644
+--- a/drivers/net/ipa/gsi.c
++++ b/drivers/net/ipa/gsi.c
+@@ -2044,6 +2044,7 @@ static int gsi_ring_setup(struct gsi *gsi)
+ 		count = reg_decode(reg, NUM_EV_PER_EE, val);
+ 	} else {
+ 		reg = gsi_reg(gsi, HW_PARAM_4);
++		val = ioread32(gsi->virt + reg_offset(reg));
+ 		count = reg_decode(reg, EV_PER_EE, val);
+ 	}
+ 	if (!count) {
 -- 
 2.53.0
 
