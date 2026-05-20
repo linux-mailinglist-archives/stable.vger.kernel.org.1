@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-252101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253197-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sBXkD+r5DWrO5AUAu9opvQ
-	(envelope-from <stable+bounces-252101-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:14:02 +0200
+	id cC/XGrIFDmp25gUAu9opvQ
+	(envelope-from <stable+bounces-253197-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:04:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D0A15959BF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:14:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7D5A597ACA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:04:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2142F3078DE8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:56:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DC4BA321D9C9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C8B53F44CD;
-	Wed, 20 May 2026 17:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F647409138;
+	Wed, 20 May 2026 18:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VmVsWJ4k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9X1dvzw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378DB1684BE;
-	Wed, 20 May 2026 17:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7F63FD126;
+	Wed, 20 May 2026 18:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299793; cv=none; b=Dzuwaed+Ww1V6TQ13T8f9W8Aawqx66esOVYUUXxrjFK0QcGYMKfsyjEzHkP0cW5KrBP02OOkx4CqEhF4v5OvcD04WWstj+iJAcTiHXlFNQef2VXOQuQedX0VieA8jz57Ok8yzUTSIMc1+6N6zI9Mc8muf35C4/hfl52KWSLChJA=
+	t=1779302655; cv=none; b=sqY/5JwVL23vF0UxHJG0k6CrbY+0KIj7v5M+nkAp93kIJBAYW++V4ILxfWqqmhsd7P81lirdog69nXmvVxa7c3oNQgH0QPzCUGfe9Aep+ov8alkUI2GZ74g5f5oywNrQPhWle9VLMa9uuikXzasdknYKGAIpljdoID5MZlpF+ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299793; c=relaxed/simple;
-	bh=Dgo0CewfoW4m0GBksQlajvnXYRHjC4VrGZfRh9fHVVE=;
+	s=arc-20240116; t=1779302655; c=relaxed/simple;
+	bh=V1jRKmh2pT7Kxu9s6VTuywyr7gjkQ0eMYDCm/ivt5xo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qhyG4cuMadbyTMHucCtYY3Mgj3XDkE7hebv/KHSObic6zVdORYng52MkzebaNZ9uq1wRN1TzxahncOOBrNEGpY5saPsoN/wAZCJ7yuESLd3HFWHatEdtSn7/cXb9h0pUxP9ff4sHt1HMyd6AtzxIqnUHqTmi1rG/0Q1uuCpHswA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VmVsWJ4k; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B19F1F000E9;
-	Wed, 20 May 2026 17:56:31 +0000 (UTC)
+	 MIME-Version; b=VNJofo3b7X+rYJG4vMVhJOkUw6++/wQMk3PL83C+Ol+kqozsqIx7ZJrCMzIJKaKo4gFyLVzRlzrXHJGghUVt9wH5hDJ+i197K+N0gmt7MIgrUr/Un6MR0ZNB9qWSW9jBO0LDJhpS3LuWoQobH0oB46Z5RnJ6EVOAKu/ROn1eiGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9X1dvzw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 701A21F000E9;
+	Wed, 20 May 2026 18:44:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299791;
-	bh=pjfEQRWKu2apwmLPJvgMrAbhLpqtqdwoAlyMiAP9gRw=;
+	s=korg; t=1779302653;
+	bh=K+LB1tvbeCYq4v5ISxIFYcEDs2rvF24mWSfF4w5Lmrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VmVsWJ4k83Hmj75IbOLr0oAQl5t9D4x5MvAERZEYgmc5Y94D6qW28WKZGkD602C7w
-	 ugD9O4HLp1Y3ry97T2WeKgmsQNekbUEsn5j7b8l4Cj0QQqIomL9gRkFApFJ+rRZ7FT
-	 K3yGFqPsFVgvd/Sii3YP5SLO6W2dTTaiHEfrA+no=
+	b=X9X1dvzwoKwAa33DY5GHEhncxaqnoNxtTCui5dXDPecRibewhuVIFq4atvFus7SmY
+	 p+76v5ueGKsjdpkZ+pci2nO2pHnYKOCK2/hr/eVavZJjGskxEWCSjAeF7IzUJlPX2J
+	 pLosuAWh17ZRTQDGxjCjTd4KTY4aLBqe83VHqJXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Oros <poros@redhat.com>,
-	Ivan Vecera <ivecera@redhat.com>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Alexander Nowlin <alexander.nowlin@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 847/957] ice: fix missing SMA pin initialization in DPLL subsystem
-Date: Wed, 20 May 2026 18:22:10 +0200
-Message-ID: <20260520162152.933577918@linuxfoundation.org>
+Subject: [PATCH 6.6 308/508] arm64: dts: imx8mm-emtop-som: Correct PAD settings for PMIC_nINT
+Date: Wed, 20 May 2026 18:22:11 +0200
+Message-ID: <20260520162105.315461778@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,119 +63,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252101-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-253197-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 0D0A15959BF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,0.0.0.25:email]
+X-Rspamd-Queue-Id: D7D5A597ACA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Oros <poros@redhat.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 56a643aed0f0af5c29ebb4593d4917b78344dd48 ]
+[ Upstream commit 721dec3ee9ff5231d13a412ff87df63b966d137b ]
 
-The DPLL SMA/U.FL pin redesign introduced ice_dpll_sw_pin_frequency_get()
-which gates frequency reporting on the pin's active flag. This flag is
-determined by ice_dpll_sw_pins_update() from the PCA9575 GPIO expander
-state. Before the redesign, SMA pins were exposed as direct HW
-input/output pins and ice_dpll_frequency_get() returned the CGU
-frequency unconditionally — the PCA9575 state was never consulted.
+With commit 5d0efaf47ee90 ("regulator: pca9450: Correct interrupt type"),
+there might be interrupt storm for this board. Need to set PAD PUE and PU
+together to make pull up work properly.
 
-The PCA9575 powers on with all outputs high, setting ICE_SMA1_DIR_EN,
-ICE_SMA1_TX_EN, ICE_SMA2_DIR_EN and ICE_SMA2_TX_EN. Nothing in the
-driver writes the register during initialization, so
-ice_dpll_sw_pins_update() sees all pins as inactive and
-ice_dpll_sw_pin_frequency_get() permanently returns 0 Hz for every
-SW pin.
+While at here, also correct interrupt type as IRQ_TYPE_LEVEL_LOW.
 
-Fix this by writing a default SMA configuration in
-ice_dpll_init_info_sw_pins(): clear all SMA bits, then set SMA1 and
-SMA2 as active inputs (DIR_EN=0) with U.FL1 output and U.FL2 input
-disabled. Each SMA/U.FL pair shares a physical signal path so only
-one pin per pair can be active at a time. U.FL pins still report
-frequency 0 after this fix: U.FL1 (output-only) is disabled by
-ICE_SMA1_TX_EN which keeps the TX output buffer off, and U.FL2
-(input-only) is disabled by ICE_SMA2_UFL2_RX_DIS. They can be
-activated by changing the corresponding SMA pin direction via dpll
-netlink.
-
-Fixes: 2dd5d03c77e2 ("ice: redesign dpll sma/u.fl pins control")
-Signed-off-by: Petr Oros <poros@redhat.com>
-Reviewed-by: Ivan Vecera <ivecera@redhat.com>
-Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260427-jk-iwl-net-petr-oros-fixes-v1-7-cdcb48303fd8@intel.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: cbd3ef64eb9d1 ("arm64: dts: Add support for Emtop SoM & Baseboard")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_dpll.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ arch/arm64/boot/dts/freescale/imx8mm-emtop-som.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
-index 53b54e395a2ed..c2ad39bfe177d 100644
---- a/drivers/net/ethernet/intel/ice/ice_dpll.c
-+++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
-@@ -3545,6 +3545,7 @@ static int ice_dpll_init_info_sw_pins(struct ice_pf *pf)
- 	struct ice_dpll_pin *pin;
- 	u32 phase_adj_max, caps;
- 	int i, ret;
-+	u8 data;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-emtop-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-emtop-som.dtsi
+index 67d22d3768aa8..507d1824d99d9 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-emtop-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-emtop-som.dtsi
+@@ -60,7 +60,7 @@ pmic@25 {
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_pmic>;
+ 		interrupt-parent = <&gpio1>;
+-		interrupts = <3 IRQ_TYPE_EDGE_RISING>;
++		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
  
- 	if (pf->hw.device_id == ICE_DEV_ID_E810C_QSFP)
- 		input_idx_offset = ICE_E810_RCLK_PINS_NUM;
-@@ -3604,6 +3605,22 @@ static int ice_dpll_init_info_sw_pins(struct ice_pf *pf)
- 		}
- 		ice_dpll_phase_range_set(&pin->prop.phase_range, phase_adj_max);
- 	}
-+
-+	/* Initialize the SMA control register to a known-good default state.
-+	 * Without this write the PCA9575 GPIO expander retains its power-on
-+	 * default (all outputs high) which makes all SW pins appear inactive.
-+	 * Set SMA1 and SMA2 as active inputs, disable U.FL1 output and
-+	 * U.FL2 input.
-+	 */
-+	ret = ice_read_sma_ctrl(&pf->hw, &data);
-+	if (ret)
-+		return ret;
-+	data &= ~ICE_ALL_SMA_MASK;
-+	data |= ICE_SMA1_TX_EN | ICE_SMA2_TX_EN | ICE_SMA2_UFL2_RX_DIS;
-+	ret = ice_write_sma_ctrl(&pf->hw, data);
-+	if (ret)
-+		return ret;
-+
- 	ret = ice_dpll_pin_state_update(pf, pin, ICE_DPLL_PIN_TYPE_SOFTWARE,
- 					NULL);
- 	if (ret)
+ 		regulators {
+ 			buck1: BUCK1 {
+@@ -194,7 +194,7 @@ MX8MM_IOMUXC_I2C1_SDA_I2C1_SDA				0x400001c3
+ 
+ 	pinctrl_pmic: emtop-pmic-grp {
+ 		fsl,pins = <
+-			MX8MM_IOMUXC_GPIO1_IO03_GPIO1_IO3			0x41
++			MX8MM_IOMUXC_GPIO1_IO03_GPIO1_IO3			0x141
+ 		>;
+ 	};
+ 
 -- 
 2.53.0
 
