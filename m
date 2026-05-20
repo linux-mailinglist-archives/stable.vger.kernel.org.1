@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251739-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uN/bIn76DWrh5AUAu9opvQ
-	(envelope-from <stable+bounces-252374-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:16:30 +0200
+	id MDsOIrjzDWoF5AUAu9opvQ
+	(envelope-from <stable+bounces-251739-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39066595B1F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:16:30 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FFAB59493F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8C9A63151358
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:08:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5BD0B304705D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:39:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0ED83F54D1;
-	Wed, 20 May 2026 18:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFE553D75C7;
+	Wed, 20 May 2026 17:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VVQZdqJZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DdT6DgvJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B942F363F;
-	Wed, 20 May 2026 18:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF383D7D66;
+	Wed, 20 May 2026 17:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300508; cv=none; b=Elnb/MZBczwLYepTEKHuHt/BWxk5Gx+8xp2lf0VQkw0UrhTDN+Lz1LhegiXi++JL7gbqx4d+4+yb3RBaJbUI3VsoNz0yi/lPLNMSXTzHu0svVgxroys0L5mxS6yeV8gXVtQMoky+VgprAFhCYCs1aPL0wQx6134Wj2DuGeSGGwI=
+	t=1779298765; cv=none; b=hrRY6KjiS0cxpwxJoui05aeXXL3DT68qwf1MnU9snpzVyO8zieU1lurr1nmym4EdkW/XtQAzm9TvzYwQ3SZWJC6OjPiXUWZX0Qr8rYu3niv56t9TRb5pXLw9tef/ljNHdD9Gs/sAoiqoJpcaeuV1xjJubD76WuMNVBcBem1up/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300508; c=relaxed/simple;
-	bh=FnHAZc82NITFhwIh37ZJ0Q/+IYaFlHLWPOoZnxNaQ8I=;
+	s=arc-20240116; t=1779298765; c=relaxed/simple;
+	bh=7c/YYnussZU2APp2DrCVeVgbJGSQ6TbLuEnyzvd53tg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RJTSCMaKnBXxuDfgUS0JCcYfy8+HfJnuPX7JC7yjwVLRz8s9qd9me0myz59BVknODDPkh+DEWQn727enFmkRgltkj2Kga9luHeqrDWHl2nDPgsdOkkedd0umaposMnZVS3E0johYN3a10w4cWrN2Qta2zt0iYwqLV5EX87Sp5FM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VVQZdqJZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C54F1F000E9;
-	Wed, 20 May 2026 18:08:26 +0000 (UTC)
+	 MIME-Version; b=lWJaBiUN6YI/JJnRvhafXfdOo50XyiOM6zZ+uRnYT5CdItN+QgteWnaXAZxB7u4rit+ZWTwE+WlpCH9bf5GkqqtMqKdvmi+dAc3Zt5gaya48i9RjfNrYNeDq0vuOtxnHWhWq2Xgf7RMZECbYyzwlyX2nbpG151GAslOeAvkXs3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DdT6DgvJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7AF61F000E9;
+	Wed, 20 May 2026 17:39:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300507;
-	bh=E5ePk5OfwfqD+fJ17rsTP0XKTpkQEhmBZDxBgrHKQQ8=;
+	s=korg; t=1779298764;
+	bh=FmF7duMJAuYRhbSXLQEkPx8HCQvuivrz1MX2mrM22BE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VVQZdqJZlUOrDcLGKQkhHPIPLUrU6snqy5fw0V9A3ShHDu+QMe8OMV9cq42OquH0D
-	 Y4q3kVpraEqrLzVz+Nw9oBrKjW2XKHxs4oZvSK+r9UdFyjy1FCs1+THpnEYILUyPeH
-	 Is+3mq04ffGrLOYM3RMuTO47Jee4meB4382wXE98=
+	b=DdT6DgvJqo3vqMWqYRz6OID2DH0kTKVnas4HWSuK6WRkse0TRA1xDum3LE9ihUwWQ
+	 4j0U85Va4ao4O9kb2hu6HyTF4lVITP4bgsixs7RVq/PtISOwuBXll3DCp1V4rNfaYZ
+	 rKrf9l3D2i1zItzPhSPBHrewrBm/8T9C2zy98rLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Billy Tsai <billy_tsai@aspeedtech.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 200/666] ASoC: fsl_micfil: Fix event generation in hwvad_put_init_mode()
+Subject: [PATCH 6.18 528/957] i3c: mipi-i3c-hci: fix IBI payload length calculation for final status
 Date: Wed, 20 May 2026 18:16:51 +0200
-Message-ID: <20260520162115.538812794@linuxfoundation.org>
+Message-ID: <20260520162145.983828377@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,81 +69,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251739-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252374-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nxp.com:email]
-X-Rspamd-Queue-Id: 39066595B1F
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,aspeedtech.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 2FFAB59493F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Billy Tsai <billy_tsai@aspeedtech.com>
 
-[ Upstream commit 7e226209906906421f0d952d7304e48fdb0adabc ]
+[ Upstream commit d35a6db887eeae7c57b719521e39d64f929c6dc3 ]
 
-ALSA controls should return 1 if the value in the control changed but the
-control put operation hwvad_put_init_mode() only returns 0 or a negative
-error code, causing ALSA to not generate any change events.
+In DMA mode, the IBI status descriptor encodes the payload using
+CHUNKS (number of chunks) and DATA_LENGTH (valid bytes in the last
+chunk). All preceding chunks are implicitly full-sized.
 
-Add a suitable check in the function before updating the vad_init_mode
-variable.
+The current code accumulates full chunk sizes for non-final status
+descriptors, but for the final status descriptor it only adds
+DATA_LENGTH. This ignores the contribution of the preceding full
+chunks described by the same final status entry.
 
-Fixes: 29dbfeecab85 ("ASoC: fsl_micfil: Add Hardware Voice Activity Detector support")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/20260401094226.2900532-4-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+As a result, the computed IBI payload length is truncated whenever
+the final status spans multiple chunks. For example, with a chunk
+size of 4 bytes, CHUNKS=2 and DATA_LENGTH=1 should result in a total
+payload size of 5 bytes, but the current code reports only 1 byte.
+
+Fix the calculation by adding the size of (CHUNKS - 1) full chunks
+plus DATA_LENGTH for the last chunk.
+
+Fixes: 9ad9a52cce28 ("i3c/master: introduce the mipi-i3c-hci driver")
+Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20260407-i3c-hci-dma-v2-1-a583187b9d22@aspeedtech.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_micfil.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/i3c/master/mipi-i3c-hci/dma.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
-index 6fc94cafc9da8..47b8688605fa6 100644
---- a/sound/soc/fsl/fsl_micfil.c
-+++ b/sound/soc/fsl/fsl_micfil.c
-@@ -307,13 +307,18 @@ static int hwvad_put_init_mode(struct snd_kcontrol *kcontrol,
- 	unsigned int *item = ucontrol->value.enumerated.item;
- 	struct fsl_micfil *micfil = snd_soc_component_get_drvdata(comp);
- 	int val = snd_soc_enum_item_to_val(e, item[0]);
-+	bool change = false;
-+
-+	if (val < MICFIL_HWVAD_ENVELOPE_MODE || val > MICFIL_HWVAD_ENERGY_MODE)
-+		return -EINVAL;
- 
- 	/* 0 - Envelope-based Mode
- 	 * 1 - Energy-based Mode
- 	 */
-+	change = (micfil->vad_init_mode != val);
- 	micfil->vad_init_mode = val;
- 
--	return 0;
-+	return change;
- }
- 
- static int hwvad_get_init_mode(struct snd_kcontrol *kcontrol,
+diff --git a/drivers/i3c/master/mipi-i3c-hci/dma.c b/drivers/i3c/master/mipi-i3c-hci/dma.c
+index fe8894f6fe607..42ee94767be3d 100644
+--- a/drivers/i3c/master/mipi-i3c-hci/dma.c
++++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
+@@ -683,7 +683,10 @@ static void hci_dma_process_ibi(struct i3c_hci *hci, struct hci_rh_data *rh)
+ 		if (!(ibi_status & IBI_LAST_STATUS)) {
+ 			ibi_size += chunks * rh->ibi_chunk_sz;
+ 		} else {
+-			ibi_size += FIELD_GET(IBI_DATA_LENGTH, ibi_status);
++			if (chunks) {
++				ibi_size += (chunks - 1) * rh->ibi_chunk_sz;
++				ibi_size += FIELD_GET(IBI_DATA_LENGTH, ibi_status);
++			}
+ 			last_ptr = ptr;
+ 			break;
+ 		}
 -- 
 2.53.0
 
