@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253134-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IA6MIlL5DWqR5AUAu9opvQ
-	(envelope-from <stable+bounces-252039-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:30 +0200
+	id 4EL0OGwuDmoK7wUAu9opvQ
+	(envelope-from <stable+bounces-253134-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F2E4595812
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F1B859B889
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 544F8316B2F7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:53:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 793C1306535E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 307773F20FA;
-	Wed, 20 May 2026 17:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3569402B92;
+	Wed, 20 May 2026 18:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vwMLXcbg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0HkI21Gu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55073F1AD9;
-	Wed, 20 May 2026 17:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E696402B8E;
+	Wed, 20 May 2026 18:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299586; cv=none; b=BG7VoezgG+TuA8/oZf+jODQ/jYTzZ3coJUI5Lsk2zK9ChX6Ay6syNRXEViuB1wbLa+3purM4kghpeNPGsRBbDoHImyzdzSIvg81AoMrciIiRQssU2eLenhh6tnHTGqZfw84EAyPy9tt6oXGbSKyRUD47SY8VFSjiaZCRpDKIxuA=
+	t=1779302494; cv=none; b=roNm2y1hGFuLdiqJGnLfL/nrAs8q/5kSyw/NvIClD+fIvMmYdxd2HAVIjHzU0pbAJLZXvpuXjhuHIwsreCRLSoSUU/1EeVpCzVW6JIWnfWuzV4C6yt587hrYbsxLbaf2HhqmeBehbe7IVcGq9/lh8eMe9QFkBmpst2jge1rRyPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299586; c=relaxed/simple;
-	bh=UytnZt19SqwDgMX7o6TBZJ8BL65ciR9M4fPA/VYIyyc=;
+	s=arc-20240116; t=1779302494; c=relaxed/simple;
+	bh=IbSO4ixGG27XYIpezuN1RQwzunyhHATAfTtwjc5+sIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lIzsW0o8HaAUqps0lgBvwodzJqyliNQnfNI9Y6bXL2jxUCp891wYvtzTISm+Zreeql4GcuI/6UaL7JcjeUZCFgN7ChW2T9IqGl5MaTfLkukrCNUyDV3jfny8tVxA+lOlnOpSqceQnKCa3Px5XBmg19Ae2UitPqW9HHNN1iKNiMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vwMLXcbg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 477421F000E9;
-	Wed, 20 May 2026 17:53:04 +0000 (UTC)
+	 MIME-Version; b=L+DniYqVGANe7FpyUv2w8tPNv4GFIYAxLb5WsiL/H4DLt4LErefuCeuilTKZuxqH/2ckf1ijrMBREMZEctxW2hP8g6G25X5bBKmYqj7MKshbc61fpM8oVyvKWywFFklzGBnUDUEolTcxtNstYrRMVUTdVI4ZqFoK8MoJltDHX/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0HkI21Gu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E71D61F000E9;
+	Wed, 20 May 2026 18:41:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299584;
-	bh=KvhaaYxTmxT0gEWhyoaxr05aHRG4tUX5D2dTVj4abnE=;
+	s=korg; t=1779302493;
+	bh=LgFIb6TQLcDiv/knYffaAUsPRtZHC7ViqB9l/ro5dtk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vwMLXcbgQ1VLKls5KJgQr8BAWOKl0Ee+dOvHUIgRdaNSzGhaHzCI+8SLYnCXrw56V
-	 cdPSRRqgLoht6Rh681/QO7Kq005LXepU9cd4SodEUKsRa++FbuQkfjJAhv8m0Jyljp
-	 MMOR76IEc1s/pjpm5RjdDA8PaeOMmEOiSbAaNTiY=
+	b=0HkI21GuEjIPJP00XFQG45sc+1dy6z9TGZof/8tekMJe4fwiLXotrH38zRUf3V+TZ
+	 b+Kiyr/rStEB8VPYbSHd+vR6U4H6IR9Ux7+boIUQpE1eMg7iKxZXWrHjZ8ksrNb7sW
+	 p7+6ZrkQN30OCkjL7PGflcyx84U2cIadrCvN/rtw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moritz Klammler <Moritz.Klammler@ferchau.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Thomas Gleixner <tglx@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Kees Cook <kees@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 827/957] futex: Prevent lockup in requeue-PI during signal/ timeout wakeup
+Subject: [PATCH 6.6 287/508] clk: qoriq: avoid format string warning
 Date: Wed, 20 May 2026 18:21:50 +0200
-Message-ID: <20260520162152.502690331@linuxfoundation.org>
+Message-ID: <20260520162104.861520939@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,129 +69,116 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252039-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253134-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,linutronix.de:email,msgid.link:url]
-X-Rspamd-Queue-Id: 4F2E4595812
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,arndb.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4F1B859B889
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit bc7304f3ae20972d11db6e0b1b541c63feda5f05 ]
+[ Upstream commit 096abbb6682ee031a0f5ce9f4c71ead9fa63d31e ]
 
-During wait-requeue-pi (task A) and requeue-PI (task B) the following
-race can happen:
+clang-22 warns about the use of non-variadic format arguments passed into
+snprintf():
 
-     Task A                             Task B
-  futex_wait_requeue_pi()
-    futex_setup_timer()
-    futex_do_wait()
-                                   futex_requeue()
-                                        CLASS(hb, hb1)(&key1);
-                                        CLASS(hb, hb2)(&key2);
-        *timeout*
-    futex_requeue_pi_wakeup_sync()
-        requeue_state = Q_REQUEUE_PI_IGNORE
+drivers/clk/clk-qoriq.c:925:39: error: diagnostic behavior may be improved by adding the
+      'format(printf, 7, 8)' attribute to the declaration of 'create_mux_common' [-Werror,-Wmissing-format-attribute]
+  910 | static struct clk * __init create_mux_common(struct clockgen *cg,
+      | __attribute__((format(printf, 7, 8)))
+  911 |                                              struct mux_hwclock *hwc,
+  912 |                                              const struct clk_ops *ops,
+  913 |                                              unsigned long min_rate,
+  914 |                                              unsigned long max_rate,
+  915 |                                              unsigned long pct80_rate,
+  916 |                                              const char *fmt, int idx)
+  917 | {
+  918 |         struct clk_init_data init = {};
+  919 |         struct clk *clk;
+  920 |         const struct clockgen_pll_div *div;
+  921 |         const char *parent_names[NUM_MUX_PARENTS];
+  922 |         char name[32];
+  923 |         int i, j;
+  924 |
+  925 |         snprintf(name, sizeof(name), fmt, idx);
+      |                                              ^
+drivers/clk/clk-qoriq.c:910:28: note: 'create_mux_common' declared here
+  910 | static struct clk * __init create_mux_common(struct clockgen *cg,
 
-    *blocks on hb->lock*
+Rework this to pass the 'int idx' as a varargs argument, allowing the
+format string to be verified at the caller location.
 
-                                        futex_proxy_trylock_atomic()
-                                          futex_requeue_pi_prepare()
-                                            Q_REQUEUE_PI_IGNORE => -EAGAIN
-                                        double_unlock_hb(hb1, hb2)
-                                         *retry*
-
-Task B acquires both hb locks and attempts to acquire the PI-lock of the
-top most waiter (task B). Task A is leaving early due to a signal/
-timeout and started removing itself from the queue. It updates its
-requeue_state but can not remove it from the list because this requires
-the hb lock which is owned by task B.
-
-Usually task A is able to swoop the lock after task B unlocked it.
-However if task B is of higher priority then task A may not be able to
-wake up in time and acquire the lock before task B gets it again.
-Especially on a UP system where A is never scheduled.
-
-As a result task A blocks on the lock and task B busy loops, trying to
-make progress but live locks the system instead. Tragic.
-
-This can be fixed by removing the top most waiter from the list in this
-case. This allows task B to grab the next top waiter (if any) in the
-next iteration and make progress.
-
-Remove the top most waiter if futex_requeue_pi_prepare() fails.
-Let the waiter conditionally remove itself from the list in
-handle_early_requeue_pi_wakeup().
-
-Fixes: 07d91ef510fb1 ("futex: Prevent requeue_pi() lock nesting issue on RT")
-Reported-by: Moritz Klammler <Moritz.Klammler@ferchau.com>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Link: https://patch.msgid.link/20260428103425.dywXyPd3@linutronix.de
-Closes: https://lore.kernel.org/all/VE1PR06MB6894BE61C173D802365BE19DFF4CA@VE1PR06MB6894.eurprd06.prod.outlook.com
+Fixes: 0dfc86b3173f ("clk: qoriq: Move chip-specific knowledge into driver")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/futex/requeue.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/clk/clk-qoriq.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/futex/requeue.c b/kernel/futex/requeue.c
-index d818b4d47f1ba..b597cb3d17fc1 100644
---- a/kernel/futex/requeue.c
-+++ b/kernel/futex/requeue.c
-@@ -319,8 +319,11 @@ futex_proxy_trylock_atomic(u32 __user *pifutex, struct futex_hash_bucket *hb1,
- 		return -EINVAL;
+diff --git a/drivers/clk/clk-qoriq.c b/drivers/clk/clk-qoriq.c
+index 4dcde305944c4..318acd176a2ef 100644
+--- a/drivers/clk/clk-qoriq.c
++++ b/drivers/clk/clk-qoriq.c
+@@ -906,13 +906,11 @@ static const struct clockgen_pll_div *get_pll_div(struct clockgen *cg,
+ 	return &cg->pll[pll].div[div];
+ }
  
- 	/* Ensure that this does not race against an early wakeup */
--	if (!futex_requeue_pi_prepare(top_waiter, NULL))
-+	if (!futex_requeue_pi_prepare(top_waiter, NULL)) {
-+		plist_del(&top_waiter->list, &hb1->chain);
-+		futex_hb_waiters_dec(hb1);
- 		return -EAGAIN;
-+	}
+-static struct clk * __init create_mux_common(struct clockgen *cg,
+-					     struct mux_hwclock *hwc,
+-					     const struct clk_ops *ops,
+-					     unsigned long min_rate,
+-					     unsigned long max_rate,
+-					     unsigned long pct80_rate,
+-					     const char *fmt, int idx)
++static struct clk * __init __printf(7, 8)
++create_mux_common(struct clockgen *cg, struct mux_hwclock *hwc,
++		  const struct clk_ops *ops, unsigned long min_rate,
++		  unsigned long max_rate, unsigned long pct80_rate,
++		  const char *fmt, ...)
+ {
+ 	struct clk_init_data init = {};
+ 	struct clk *clk;
+@@ -920,8 +918,11 @@ static struct clk * __init create_mux_common(struct clockgen *cg,
+ 	const char *parent_names[NUM_MUX_PARENTS];
+ 	char name[32];
+ 	int i, j;
++	va_list args;
  
- 	/*
- 	 * Try to take the lock for top_waiter and set the FUTEX_WAITERS bit
-@@ -722,10 +725,12 @@ int handle_early_requeue_pi_wakeup(struct futex_hash_bucket *hb,
+-	snprintf(name, sizeof(name), fmt, idx);
++	va_start(args, fmt);
++	vsnprintf(name, sizeof(name), fmt, args);
++	va_end(args);
  
- 	/*
- 	 * We were woken prior to requeue by a timeout or a signal.
--	 * Unqueue the futex_q and determine which it was.
-+	 * Conditionally unqueue the futex_q and determine which it was.
- 	 */
--	plist_del(&q->list, &hb->chain);
--	futex_hb_waiters_dec(hb);
-+	if (!plist_node_empty(&q->list)) {
-+		plist_del(&q->list, &hb->chain);
-+		futex_hb_waiters_dec(hb);
-+	}
- 
- 	/* Handle spurious wakeups gracefully */
- 	ret = -EWOULDBLOCK;
+ 	for (i = 0, j = 0; i < NUM_MUX_PARENTS; i++) {
+ 		unsigned long rate;
 -- 
 2.53.0
 
