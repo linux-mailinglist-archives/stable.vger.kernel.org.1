@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250646-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aEi7NDL/DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-251587-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:34 +0200
+	id eDtwO5zxDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-250646-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:38:36 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3BCF596C1C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AB6B5942BD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:38:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A0CDC3065E43
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:32:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 475FD304E7E6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:52:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50BC33A381D;
-	Wed, 20 May 2026 17:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9E7C372B31;
+	Wed, 20 May 2026 16:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NffBJTX5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N5aky5f5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE9028DC4;
-	Wed, 20 May 2026 17:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6593164C3;
+	Wed, 20 May 2026 16:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298369; cv=none; b=qQBSlt/056oIS5zl1aNMotQTsJZfByK+2NWeIz+nJXvSGwLsJM8d0MnIHFGJnuN0mc/cnM1rMnGBlfcKvh+q6vIlibWLfO3H80e25AH3RHqvQl/2j5L7/aNjU6Mpy0odQof/kpvyWJOSMU6m3tVUzSa/hl1/W8DfuNg1EANbE3M=
+	t=1779295953; cv=none; b=JUGat/YQfA/Nx62oNjuEHOtgF9VRUedO7TRHJSphvYVL0pLgEDMv31r2FmIpUlPjp5if6uishov1Dena6wPW+Kq4iyyLKA3R4J/07y71axAohQ/fIHQQRMYvDBhucjP2yaYBxe9cxDjtH3UnLB22HyjMbOL9AwTNfNFFbyfxUx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298369; c=relaxed/simple;
-	bh=e/TH9V0mVb+QG/dwIOdvQ2yXDXip+qSalTmcfSfTva4=;
+	s=arc-20240116; t=1779295953; c=relaxed/simple;
+	bh=gBed/N+d4kujpxU32M9fgmoMWGoaP6BV0YJp3yLzBtw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uILaOEoEFiQAAzA1FRnfr7tJZtOcEgACshvWhf4cjAlw/rbx0bMVz88qd03/TD4kJrsaxAl3E3193jE+vXEjKwurRM4y8lWfyKlYLXXDnmDFLuiyIoAtL9+IauRGGxiKnN1VTnVJePW1QUz77t7TM+JxJrrgJ9p+hg/55qcyhL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NffBJTX5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81F191F000E9;
-	Wed, 20 May 2026 17:32:47 +0000 (UTC)
+	 MIME-Version; b=jVJJXAu3hJmHScP50gVD5jDTya5DEjInbKgUNPCGoLV5gUl1SQmSsOFiR62b4SPPPGP/qDg4Ean/gnk8xr4LGIZH2YaGtX9KTPLxYUeDQMFW8F9TdVHjFyaEho3uZMkZLGvHEVwVgvxtrvLeSmmtyhytF8ZyLfFb3SaUkxvsndM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N5aky5f5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D35F41F000E9;
+	Wed, 20 May 2026 16:52:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298368;
-	bh=ZJbVnJGF/cQUeIyqvZXK/mB+C95TC2fQfROkPAm4wv0=;
+	s=korg; t=1779295952;
+	bh=SEpqY6+gs7JQreNFh2eta5dUSynZ353X86Jk96NLluw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NffBJTX5CrQZiHXvLVZ/St/CiaVqiGk1jjleXSXqSZeLUWHpUUQ/gLapEqbG8dMuS
-	 SUYBVPsm59ri50zrumJpSgmeVynxx9vpZjjECEGMq3OY7LhCtK1vYtLwdcXwQTuHdM
-	 eUO/Gk7pA6vVrw6C96lG7ThEOgvWefGsz4Nkztio=
+	b=N5aky5f5J21VV8siYHlFSSpcNvOWMpUvlKZIIWyliQ7My5yzhjLvR7iAMqV178eRI
+	 Zfa+YS1N8f1gBhBIHylbzWEfswYdglxH8DeTg5REE51554K/3U2W6BIrnUzPsl5NVN
+	 nxbl7njR1lC5ASnAPbEF1hLHGMym8RgASniX8CLU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 383/957] arm64: dts: qcom: msm8953-xiaomi-vince: correct wled ovp value
+Subject: [PATCH 7.0 0616/1146] bpf: Fix precedence bug in convert_bpf_ld_abs alignment check
 Date: Wed, 20 May 2026 18:14:26 +0200
-Message-ID: <20260520162142.834502602@linuxfoundation.org>
+Message-ID: <20260520162202.124475252@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +63,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251587-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250646-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,mainlining.org:email]
-X-Rspamd-Queue-Id: F3BCF596C1C
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iogearbox.net:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 3AB6B5942BD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Barnabás Czémán <barnabas.czeman@mainlining.org>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit 9e87f0eaadccc3fecdf3c3c0334e05694804b5f5 ]
+[ Upstream commit e5f635edd393aeaa7cad9e42831d397e6e2e1eed ]
 
-PMI8950 doesn't actually support setting an OVP threshold value of
-29.6 V. The closest allowed value is 29.5 V. Set that instead.
+Fix an operator precedence issue in convert_bpf_ld_abs() where the
+expression offset + ip_align % size evaluates as offset + (ip_align % size)
+due to % having higher precedence than +. That latter evaluation does
+not make any sense. The intended check is (offset + ip_align) % size == 0
+to verify that the packet load offset is properly aligned for direct
+access.
 
-Fixes: aa17e707e04a ("arm64: dts: qcom: msm8953: Add device tree for Xiaomi Redmi 5 Plus")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-Link: https://lore.kernel.org/r/20260116-pmi8950-wled-v3-5-e6c93de84079@mainlining.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+With NET_IP_ALIGN == 2, the bug causes the inline fast-path for direct
+packet loads to almost never be taken on !CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
+platforms. This forces nearly all cBPF BPF_LD_ABS packet loads through
+the bpf_skb_load_helper slow path on the affected archs.
+
+Fixes: e0cea7ce988c ("bpf: implement ld_abs/ld_ind in native bpf")
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/r/20260416122719.661033-1-daniel@iogearbox.net
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8953-xiaomi-vince.dts | 2 +-
+ net/core/filter.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8953-xiaomi-vince.dts b/arch/arm64/boot/dts/qcom/msm8953-xiaomi-vince.dts
-index d46325e799176..c2a290bf493c1 100644
---- a/arch/arm64/boot/dts/qcom/msm8953-xiaomi-vince.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8953-xiaomi-vince.dts
-@@ -169,7 +169,7 @@ &pm8953_resin {
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 90ae4f314b6c3..d4fe9e4a45d11 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -508,7 +508,7 @@ static bool convert_bpf_ld_abs(struct sock_filter *fp, struct bpf_insn **insnp)
+ 	    ((unaligned_ok && offset >= 0) ||
+ 	     (!unaligned_ok && offset >= 0 &&
+ 	      offset + ip_align >= 0 &&
+-	      offset + ip_align % size == 0))) {
++	      (offset + ip_align) % size == 0))) {
+ 		bool ldx_off_ok = offset <= S16_MAX;
  
- &pmi8950_wled {
- 	qcom,current-limit-microamp = <20000>;
--	qcom,ovp-millivolt = <29600>;
-+	qcom,ovp-millivolt = <29500>;
- 	qcom,num-strings = <2>;
- 	qcom,external-pfet;
- 	qcom,cabc;
+ 		*insn++ = BPF_MOV64_REG(BPF_REG_TMP, BPF_REG_H);
 -- 
 2.53.0
 
