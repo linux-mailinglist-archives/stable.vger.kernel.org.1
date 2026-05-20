@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-251529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250640-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ICt/EiMbDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251529-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:35:47 +0200
+	id 6P12FhT1DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-250640-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9274599CFE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:35:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF7A8594D47
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 29FF93693B1A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:30:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6BD1D31E4650
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:52:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D9CC3EDAC6;
-	Wed, 20 May 2026 17:30:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C02836B05E;
+	Wed, 20 May 2026 16:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PqK9xUMq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s7tnzsnG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513083EAC83;
-	Wed, 20 May 2026 17:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9CC031F9BE;
+	Wed, 20 May 2026 16:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298216; cv=none; b=oME3PcTdVuUO5LjtZsfzMaQ2ew25vb4jPabeQg+o42qP07t6L8G2v7Y9+hPFhvoqMseOfnJrV/+ijml6MLlpulz9rG0ZgNUIF4+2CtrEy+AN6cNcICuQt2imSVs2+cmdxyn3fM+EjNK0Azji/H1bBrw00z1EvKQgbWAW7LLZQQ0=
+	t=1779295938; cv=none; b=Ntbz6s58mWP5oXInhOJbLR4dHqv82aR8ROH4WBCLR8HLcC7KF17wzKDlYXxYWk8ezcS7ppxzV4Cl+ZRNaZRzNNNcQRjMsgiCWMWgZgP0r8w0D9KpLAohkhxSxSUS2DscheHMYU2HbUvvbVstD9NuiPvYwnN32pshtHB46RH0HJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298216; c=relaxed/simple;
-	bh=IXdzBtqvIgYyJFpsAaBPbRK9te46yKiOQs4PlhlOkBg=;
+	s=arc-20240116; t=1779295938; c=relaxed/simple;
+	bh=onKFGNISb1vy2QMlBIXk22cPsOUUvqbCjq4l7fTsn18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HSlPPGo7h1Wir9y49j5v8cmh1h4a8oDUtmxxiM3DSEMhSYdKiQbffw9PpOuwCRr7L1DwPgD6txmkDXec37Dybncac5RYtdGwMFjt7m4fVi3AjlAO7uKn7ZoSOIo0Mh4h21f5dyYPuT1xgV3sogSKeP3GjIlHlDsJ/VQNCwlfD50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PqK9xUMq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC7621F00893;
-	Wed, 20 May 2026 17:30:14 +0000 (UTC)
+	 MIME-Version; b=Dxe8drM/yOU0l3uoeP6qMZLZ2YImyRrZBMiN1rTwZPQlbzKFXuDK3XaRXo9JRIkMP1wdWWQeb3A0koCKHX0cB43hU/Ya1QCAgh3zH6Mm5o75DmuYIHH/cDcEZYTwEjF50wV9CySA9PwW2m+Is7qyY4iUFavqexwvrg2+S4z8Lcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s7tnzsnG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C44F1F000E9;
+	Wed, 20 May 2026 16:52:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298215;
-	bh=9WKLz+nmuPgRpOgXYU5H+zYDszaeRNR6DtA21xUyre8=;
+	s=korg; t=1779295936;
+	bh=pytLVnX54q2YidkE6szHaqLGjd5TY8+CX8cPZsBRO2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PqK9xUMqdVlbqnuM5C7dVUH6hxytHBlYN9RF0txHJwEulzYZ67oUupWqtflNOoP0t
-	 d2h/MIdh6pBvGhBF3N6QPCksqekYwW/xeJ8UkV1QWVmEwjmMkatUW0/oj/gKAVQMw7
-	 W+65YjT+60AUHFKEZ8udR+Cah8NJRWSQpGWdm3Nc=
+	b=s7tnzsnGChqKhrzxnA+/wbTsa0COJt7MFFCn3Nc4El5dlLS4jrKzAAMZaaXqThmx0
+	 Ey2dDZrVEX+dZxy+lvz6iW1xpOQHWX39RR9qVgLZIvBW+p/HRGppxYrq6/ciD68qiU
+	 +bvjuhG2zzoRmpv7PAqe785E/AqpnvUkf8PdN9H0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vidya Sagar <vidyas@nvidia.com>,
-	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
 	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 326/957] PCI: tegra194: Allow system suspend when the Endpoint link is not up
+Subject: [PATCH 7.0 0559/1146] soc: qcom: llcc: fix v1 SB syndrome register offset
 Date: Wed, 20 May 2026 18:13:29 +0200
-Message-ID: <20260520162141.600799493@linuxfoundation.org>
+Message-ID: <20260520162200.831588194@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,138 +70,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251529-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250640-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D9274599CFE
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oracle.com:email,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: AF7A8594D47
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vidya Sagar <vidyas@nvidia.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit c76f8eae7d4695b1176c4ea5eb93c17e16a20272 ]
+[ Upstream commit 24e7625df5ce065393249b78930781be593bc381 ]
 
-Host software initiates the L2 sequence. PCIe link is kept in L2 state
-during suspend. If Endpoint mode is enabled and the link is up, the
-software cannot proceed with suspend. However, when the PCIe Endpoint
-driver is probed, but the PCIe link is not up, Tegra can go into suspend
-state. So, allow system to suspend in this case.
+The llcc_v1_edac_reg_offset table uses 0x2304c for trp_ecc_sb_err_syn0,
+which is inconsistent with the surrounding TRP ECC registers (0x2034x)
+and with llcc_v2_1_edac_reg_offset, where trp_ecc_sb_err_syn0 is 0x2034c
+adjacent to trp_ecc_error_status0/1 at 0x20344/0x20348.
 
-Fixes: de2bbf2b71bb ("PCI: tegra194: Don't allow suspend when Tegra PCIe is in EP mode")
-Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
-Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
-Link: https://patch.msgid.link/20260324190755.1094879-10-mmaddireddy@nvidia.com
+Use 0x2034c for llcc v1 so the SB syndrome register follows the expected
++0x4 progression from trp_ecc_error_status1. This fixes EDAC reading the
+wrong register for SB syndrome reporting.
+
+Fixes: c13d7d261e36 ("soc: qcom: llcc: Pass LLCC version based register offsets to EDAC driver")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260330095118.2657362-1-alok.a.tiwari@oracle.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 31 +++++++++++++++++-----
- 1 file changed, 25 insertions(+), 6 deletions(-)
+ drivers/soc/qcom/llcc-qcom.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index 7d3ea4309e9bb..f4784945c04bb 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -2304,16 +2304,28 @@ static void tegra_pcie_dw_remove(struct platform_device *pdev)
- 		gpiod_set_value(pcie->pex_refclk_sel_gpiod, 0);
- }
- 
--static int tegra_pcie_dw_suspend_late(struct device *dev)
-+static int tegra_pcie_dw_suspend(struct device *dev)
- {
- 	struct tegra_pcie_dw *pcie = dev_get_drvdata(dev);
--	u32 val;
- 
- 	if (pcie->of_data->mode == DW_PCIE_EP_TYPE) {
--		dev_err(dev, "Failed to Suspend as Tegra PCIe is in EP mode\n");
--		return -EPERM;
-+		if (pcie->ep_state == EP_STATE_ENABLED) {
-+			dev_err(dev, "Tegra PCIe is in EP mode, suspend not allowed\n");
-+			return -EPERM;
-+		}
-+
-+		disable_irq(pcie->pex_rst_irq);
-+		return 0;
- 	}
- 
-+	return 0;
-+}
-+
-+static int tegra_pcie_dw_suspend_late(struct device *dev)
-+{
-+	struct tegra_pcie_dw *pcie = dev_get_drvdata(dev);
-+	u32 val;
-+
- 	if (!pcie->link_state)
- 		return 0;
- 
-@@ -2333,6 +2345,9 @@ static int tegra_pcie_dw_suspend_noirq(struct device *dev)
- {
- 	struct tegra_pcie_dw *pcie = dev_get_drvdata(dev);
- 
-+	if (pcie->of_data->mode == DW_PCIE_EP_TYPE)
-+		return 0;
-+
- 	if (!pcie->link_state)
- 		return 0;
- 
-@@ -2347,6 +2362,9 @@ static int tegra_pcie_dw_resume_noirq(struct device *dev)
- 	struct tegra_pcie_dw *pcie = dev_get_drvdata(dev);
- 	int ret;
- 
-+	if (pcie->of_data->mode == DW_PCIE_EP_TYPE)
-+		return 0;
-+
- 	if (!pcie->link_state)
- 		return 0;
- 
-@@ -2379,8 +2397,8 @@ static int tegra_pcie_dw_resume_early(struct device *dev)
- 	u32 val;
- 
- 	if (pcie->of_data->mode == DW_PCIE_EP_TYPE) {
--		dev_err(dev, "Suspend is not supported in EP mode");
--		return -ENOTSUPP;
-+		enable_irq(pcie->pex_rst_irq);
-+		return 0;
- 	}
- 
- 	if (!pcie->link_state)
-@@ -2485,6 +2503,7 @@ static const struct of_device_id tegra_pcie_dw_of_match[] = {
- };
- 
- static const struct dev_pm_ops tegra_pcie_dw_pm_ops = {
-+	.suspend = tegra_pcie_dw_suspend,
- 	.suspend_late = tegra_pcie_dw_suspend_late,
- 	.suspend_noirq = tegra_pcie_dw_suspend_noirq,
- 	.resume_noirq = tegra_pcie_dw_resume_noirq,
+diff --git a/drivers/soc/qcom/llcc-qcom.c b/drivers/soc/qcom/llcc-qcom.c
+index ad5899d083f3f..b80d3f9cff641 100644
+--- a/drivers/soc/qcom/llcc-qcom.c
++++ b/drivers/soc/qcom/llcc-qcom.c
+@@ -3943,7 +3943,7 @@ static const struct llcc_slice_config x1e80100_data[] = {
+ static const struct llcc_edac_reg_offset llcc_v1_edac_reg_offset = {
+ 	.trp_ecc_error_status0 = 0x20344,
+ 	.trp_ecc_error_status1 = 0x20348,
+-	.trp_ecc_sb_err_syn0 = 0x2304c,
++	.trp_ecc_sb_err_syn0 = 0x2034c,
+ 	.trp_ecc_db_err_syn0 = 0x20370,
+ 	.trp_ecc_error_cntr_clear = 0x20440,
+ 	.trp_interrupt_0_status = 0x20480,
 -- 
 2.53.0
 
