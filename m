@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-250309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251245-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YGMZCrsODmrB5wUAu9opvQ
-	(envelope-from <stable+bounces-250309-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:42:51 +0200
+	id +Js9C34WDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251245-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:15:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AF5F598A44
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:42:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE8E45995D4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:15:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 83B7F33E2C6F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:38:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2DEFB3397196
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:18:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA35E3BA246;
-	Wed, 20 May 2026 16:37:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF8F372B58;
+	Wed, 20 May 2026 17:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bokxJI3N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+ffn1jV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627CC373BEB;
-	Wed, 20 May 2026 16:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F0C331220;
+	Wed, 20 May 2026 17:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295075; cv=none; b=DL5HDvDtoctEMgcHB1/2EQdkcbYQtzw+v3xTxagoOLo7UpQ1P/ZlIn4gsLdm3thmbUcUU0WdKVnhyYASL+VbY5J9k0k9kVaeAz3I/tAFKIrce0Ze0t1gcLQlc2PI+LzpabKkyST3MYjPZKPB64Cg9/ogZrU2MxPZmCowMUBkfPU=
+	t=1779297480; cv=none; b=d7jRjFfA3ah9tmFCdgc8v24W45z0XHOAJC5XghmDA0cxFpKm3104mLP1mRvRRt5Ro59ypthP46PFMJLKefAJ6pFo/tF3KsMvVamQvu7Kzxhmppm8BGDElDinSrXAmqHHn6fdzdYxtIDllULDywKx6UHIEOB30XhUEH3c4VAdv8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295075; c=relaxed/simple;
-	bh=T5FD6XFPyv/MdubG2NrivpxnaCwos4euYP5jGynDIUc=;
+	s=arc-20240116; t=1779297480; c=relaxed/simple;
+	bh=35UotdP/CVm65DKulhvfBxjUESnRJL6q1LHLfyNVIcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nzcy9f8BrCI07rXlHtbD9KGwQsMJumnbU15Z4PuGi1luyBf75bg2SdoNcgmrfz4z5R40ArBvSPIgyKU3vOz915EDCLZH23geFUq4tl2K3Z42VLoLC2uPsprXH0lcQYMF7rOY11VwH+fyblw+e3O3s+7/tBHsLkEYgOn1piZmawE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bokxJI3N; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D761F000E9;
-	Wed, 20 May 2026 16:37:53 +0000 (UTC)
+	 MIME-Version; b=XO+sxajCYPqAsDBR8n/WlUo9YfvGSOncvbkPyuBuHKXgE+SEkyhb6aMKweBFbggBdr5HKWeoHASWNhsXoTQeJ1NOkkIbiuf8CHSJaF2iifKGJWcPRy7EYCVW6Q7gQJyjiqIgm0JlYNL/GSxdNSUQ6g84sqvhRDeMSl5xOXkSxo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+ffn1jV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A43C1F000E9;
+	Wed, 20 May 2026 17:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295074;
-	bh=yNm0ryTY5cF6Bqg/pHC8wkuY2SP1WIlLt1lJLv8NPuQ=;
+	s=korg; t=1779297478;
+	bh=i2ma8Cue9u9nl5Qak5s6BLkscLerSVZPBSZI0BK2xNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bokxJI3Nw8c7w4eO/N6peQo7Lxvlt91szIQCrMvs8bQw8FA89APoIEi2KCKCybX0L
-	 EBTpoOAwW4aqmZP1KPH95LUDXRH3PPYVPVr2aFZNfocNBHFQE8Ws4VFmIf1Yp5bg0N
-	 R9HqD/d2NVEh/IrRsQKUO9UWj02YEGEfJ75vqPdo=
+	b=l+ffn1jVd1K4cj3Oao7VTdMWhh9w2WD3y+AdKU2jAwEIkTmyCZeuf0kFc3sX+58t3
+	 FEUeAd5CcygXX6zvg2J63qSGLpTZ6LYxLr3JE57mbDzp+pwGIkaryQS8/4X0cYFNwB
+	 h8eff4Y1OrnPKueZugrjDLio8nuHIjL0zn/3B/tU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Mark Brown <broonie@kernel.org>,
+	"Ahmed S. Darwish" <darwi@linutronix.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0281/1146] spi: atcspi200: fix mutex initialization order
+Subject: [PATCH 6.18 048/957] ASoC: Intel: avs: Check maximum valid CPUID leaf
 Date: Wed, 20 May 2026 18:08:51 +0200
-Message-ID: <20260520162154.575348582@linuxfoundation.org>
+Message-ID: <20260520162135.600130105@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,92 +67,94 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250309-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-251245-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,kylinos.cn:email,msgid.link:url]
-X-Rspamd-Queue-Id: 4AF5F598A44
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linutronix.de:email]
+X-Rspamd-Queue-Id: AE8E45995D4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Ahmed S. Darwish <darwi@linutronix.de>
 
-[ Upstream commit 869d5b4b2a8012f6ef6058a1055cac6922c2cb55 ]
+[ Upstream commit 93a1f0e61329f538cfc7122d7fa0e7a1803e326d ]
 
-The atcspi_exec_mem_op() function may call mutex_lock() on the
-driver's mutex before it is properly initialized if a SPI memory
-operation is initiated immediately after devm_spi_register_controller()
-is called. The mutex initialization currently occurs after the
-controller registration, which leaves a window where the mutex could
-be used uninitialized.
+The Intel AVS driver queries CPUID(0x15) before checking if the CPUID leaf
+is available.  Check the maximum-valid CPU standard leaf beforehand.
 
-Move the mutex initialization to the beginning of the probe function,
-before any registration or resource allocation.
+Use the CPUID_LEAF_TSC macro instead of the custom local one for the
+CPUID(0x15) leaf number.
 
-Fixes: 34e3815ea459 ("spi: atcspi200: Add ATCSPI200 SPI controller driver")
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Link: https://patch.msgid.link/15a71241affc25108a97d40d9d3dd1bc3d2d69ed.1773282905.git.xiaopei01@kylinos.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: cbe37a4d2b3c ("ASoC: Intel: avs: Configure basefw on TGL-based platforms")
+Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Link: https://patch.msgid.link/20260327021645.555257-2-darwi@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-atcspi200.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/soc/intel/avs/tgl.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-atcspi200.c b/drivers/spi/spi-atcspi200.c
-index 2665f31a49ceb..02517af9e3987 100644
---- a/drivers/spi/spi-atcspi200.c
-+++ b/drivers/spi/spi-atcspi200.c
-@@ -567,6 +567,8 @@ static int atcspi_probe(struct platform_device *pdev)
- 	spi->dev = &pdev->dev;
- 	dev_set_drvdata(&pdev->dev, host);
+diff --git a/sound/soc/intel/avs/tgl.c b/sound/soc/intel/avs/tgl.c
+index afb0665161010..4649d749b41e0 100644
+--- a/sound/soc/intel/avs/tgl.c
++++ b/sound/soc/intel/avs/tgl.c
+@@ -11,8 +11,6 @@
+ #include "debug.h"
+ #include "messages.h"
  
-+	mutex_init(&spi->mutex_lock);
+-#define CPUID_TSC_LEAF 0x15
+-
+ static int avs_tgl_dsp_core_power(struct avs_dev *adev, u32 core_mask, bool power)
+ {
+ 	core_mask &= AVS_MAIN_CORE_MASK;
+@@ -49,7 +47,11 @@ static int avs_tgl_config_basefw(struct avs_dev *adev)
+ 	unsigned int ecx;
+ 
+ #include <asm/cpuid/api.h>
+-	ecx = cpuid_ecx(CPUID_TSC_LEAF);
 +
- 	ret = atcspi_init_resources(pdev, spi, &mem_res);
- 	if (ret)
- 		goto free_controller;
-@@ -597,7 +599,6 @@ static int atcspi_probe(struct platform_device *pdev)
- 		else
- 			spi->use_dma = true;
++	if (boot_cpu_data.cpuid_level < CPUID_LEAF_TSC)
++		goto no_cpuid;
++
++	ecx = cpuid_ecx(CPUID_LEAF_TSC);
+ 	if (ecx) {
+ 		ret = avs_ipc_set_fw_config(adev, 1, AVS_FW_CFG_XTAL_FREQ_HZ, sizeof(ecx), &ecx);
+ 		if (ret)
+@@ -57,6 +59,7 @@ static int avs_tgl_config_basefw(struct avs_dev *adev)
  	}
--	mutex_init(&spi->mutex_lock);
+ #endif
  
- 	return 0;
- 
-@@ -605,6 +606,7 @@ static int atcspi_probe(struct platform_device *pdev)
- 	clk_disable_unprepare(spi->clk);
- 
- free_controller:
-+	mutex_destroy(&spi->mutex_lock);
- 	spi_controller_put(host);
- 	return ret;
- }
++no_cpuid:
+ 	hwid.device = pci->device;
+ 	hwid.subsystem = pci->subsystem_vendor | (pci->subsystem_device << 16);
+ 	hwid.revision = pci->revision;
 -- 
 2.53.0
 
