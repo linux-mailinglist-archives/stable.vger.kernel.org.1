@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252943-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UJWuBzgfDmpd6QUAu9opvQ
-	(envelope-from <stable+bounces-251843-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:53:12 +0200
+	id 8FHEF/wqDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252943-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:43:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C22159A413
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:53:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D71F759B3B6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:43:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 74F8F3513222
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:43:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0EFA53312540
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:33:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BC2336D9EA;
-	Wed, 20 May 2026 17:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA0317A2FC;
+	Wed, 20 May 2026 18:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pCDWwneI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mooOdtt4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF123EC2DB;
-	Wed, 20 May 2026 17:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84912272E56;
+	Wed, 20 May 2026 18:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299034; cv=none; b=j8hThviCFwkWjMBTskG84GFDAdR8UzYObQgil1bYxBEf/KI9td5iRw7dtkHZe5DntiUDS/eDcyrnc8VtfC26PeV2T68xUggeL768Nwqo7mNtWmBMRNxY/xKjauieFGH7s3ZHWTTsXsavIqCZlNvMa1O+3FyyP6gHTCu1aIRX7tE=
+	t=1779301994; cv=none; b=K4fNgqXaSyhTVbeIzwZY5tyh30QXV4D42xwQ5rwnJyhB7sEiWjTlaBXFFdvB415r8vJqxEiyovKrQ/bbPvboAdDfZ24+MLcE985D3IDDx+w2xPUk51cV+xIfUC9Jtscqfknh48WEXXmKfV9GBrZNLojawCZLUMql64UJ3WcPdaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299034; c=relaxed/simple;
-	bh=cm30XwlV/RcgDIy6cqgVsWKj7cUqVU0gLMh+hKZT15U=;
+	s=arc-20240116; t=1779301994; c=relaxed/simple;
+	bh=AXMv0Ga7JblV/VX2/2qhjxQFnCVs2BJT9/GDyY0UgRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HzT3bSbtvyc2uHNE2Y8CLsGULgJC1O3m2yMEQOE9Ld6wkXOEnQSPJSVtTRg50eK+n4Q+oPbc0znTXf4/836W5oM+1cYk/DkvHtWeUjCY9KQJl2K7WN0AFFvuZhXR1Hs+0GImKb/rJbJvszJ4REnKs8wsY6UybiJCqPjed0qDgkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pCDWwneI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85BAF1F000E9;
-	Wed, 20 May 2026 17:43:52 +0000 (UTC)
+	 MIME-Version; b=s3hmW6efxZdjR9Ye411Nz/6TAQ3cS5obiyPnjXLJpRT/NsPzfrdg/us1MTPvfrjXmjDqo/H3uKzYvTlGWwt4LwrP75R9T7O1WvX8GaPYcnFULcZXyL+bn2Wc38DpxrdLSRINDRrHqasg/dyDpMgT4gjBHoxpATq3WIuCT+ourE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mooOdtt4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE68A1F000E9;
+	Wed, 20 May 2026 18:33:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299033;
-	bh=SKIB3zSq9VL4+RWFaReqy5vPXXuEu0bvjOyxLVxhUjU=;
+	s=korg; t=1779301993;
+	bh=vlIq1GQKY/bmS5dktZv6h4UDDDbO2+1kDmxggduW9fA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pCDWwneIfKiKrfxY+p79M/keQ2ausoB7yKP0kbt+g4xrZmsGaaCIqsbsGRLsEoneK
-	 P4h6fHvalx0UEF6DdKDRcb4iF4wsj9JAiGxB68qd25yjVt0fBBaqOnIMKZeiNIxRze
-	 xaguOHhmviAz32+MTKS0eouPDXRF8W9u9BiRe6oQ=
+	b=mooOdtt4U+wWd+iDS77B3d6SFKNVBaroovN/8al9Z4T32auwuGKeeKMkqbPoNcMmg
+	 OaZjAICyu8ZbfliOHV31QPoD/zp6QAiONqICUvc2A8pMQX1OzD9RPqB4Y/u7kCj0vV
+	 teaKHL49I2C2BEvg9QiOn0b+aBTxaDVyyFAE5T5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 637/957] tcp: annotate data-races around tp->bytes_sent
-Date: Wed, 20 May 2026 18:18:40 +0200
-Message-ID: <20260520162148.343297727@linuxfoundation.org>
+Subject: [PATCH 6.6 098/508] platform/chrome: chromeos_tbmc: Drop wakeup source on remove
+Date: Wed, 20 May 2026 18:18:41 +0200
+Message-ID: <20260520162100.738374665@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,7 +74,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251843-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252943-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -91,59 +91,56 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 7C22159A413
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email]
+X-Rspamd-Queue-Id: D71F759B3B6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit ee43e957ce2ec77b2ec47fef28f3c0df6ab01a31 ]
+[ Upstream commit 5d441a4bc93642ed6f41da87327a39946b4e1455 ]
 
-tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
-add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
+The wakeup source added by device_init_wakeup() in chromeos_tbmc_add()
+needs to be dropped during driver removal, so add a .remove() callback
+to the driver for this purpose.
 
-Fixes: ba113c3aa79a ("tcp: add data bytes sent stats")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260416200319.3608680-8-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 0144c00ed86b ("platform/chrome: chromeos_tbmc: Report wake events")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://lore.kernel.org/r/6151957.MhkbZ0Pkbq@rafael.j.wysocki
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp.c        | 2 +-
- net/ipv4/tcp_output.c | 3 ++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ drivers/platform/chrome/chromeos_tbmc.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 0d6e991155c95..7d45a2aab18dd 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -4413,7 +4413,7 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
- 			  READ_ONCE(tp->write_seq) - READ_ONCE(tp->snd_una)));
- 	nla_put_u8(stats, TCP_NLA_CA_STATE, inet_csk(sk)->icsk_ca_state);
+diff --git a/drivers/platform/chrome/chromeos_tbmc.c b/drivers/platform/chrome/chromeos_tbmc.c
+index d1cf8f3463ce3..e248567c0a182 100644
+--- a/drivers/platform/chrome/chromeos_tbmc.c
++++ b/drivers/platform/chrome/chromeos_tbmc.c
+@@ -95,6 +95,11 @@ static int chromeos_tbmc_add(struct acpi_device *adev)
+ 	return 0;
+ }
  
--	nla_put_u64_64bit(stats, TCP_NLA_BYTES_SENT, tp->bytes_sent,
-+	nla_put_u64_64bit(stats, TCP_NLA_BYTES_SENT, READ_ONCE(tp->bytes_sent),
- 			  TCP_NLA_PAD);
- 	nla_put_u64_64bit(stats, TCP_NLA_BYTES_RETRANS, tp->bytes_retrans,
- 			  TCP_NLA_PAD);
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index e6aa54d2335c0..c2492f4be2151 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -1605,7 +1605,8 @@ static int __tcp_transmit_skb(struct sock *sk, struct sk_buff *skb,
- 		tcp_event_data_sent(tp, sk);
- 		WRITE_ONCE(tp->data_segs_out,
- 			   tp->data_segs_out + tcp_skb_pcount(skb));
--		tp->bytes_sent += skb->len - tcp_header_size;
-+		WRITE_ONCE(tp->bytes_sent,
-+			   tp->bytes_sent + skb->len - tcp_header_size);
- 	}
- 
- 	if (after(tcb->end_seq, tp->snd_nxt) || tcb->seq == tcb->end_seq)
++static void chromeos_tbmc_remove(struct acpi_device *adev)
++{
++	device_init_wakeup(&adev->dev, false);
++}
++
+ static const struct acpi_device_id chromeos_tbmc_acpi_device_ids[] = {
+ 	{ ACPI_DRV_NAME, 0 },
+ 	{ }
+@@ -110,6 +115,7 @@ static struct acpi_driver chromeos_tbmc_driver = {
+ 	.ids = chromeos_tbmc_acpi_device_ids,
+ 	.ops = {
+ 		.add = chromeos_tbmc_add,
++		.remove = chromeos_tbmc_remove,
+ 		.notify = chromeos_tbmc_notify,
+ 	},
+ 	.drv.pm = &chromeos_tbmc_pm_ops,
 -- 
 2.53.0
 
