@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-250935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252961-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OJ87GpPwDWqo4wUAu9opvQ
-	(envelope-from <stable+bounces-250935-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:34:11 +0200
+	id 8HsWHokZDmqA6AUAu9opvQ
+	(envelope-from <stable+bounces-252961-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:28:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08212593FB1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:34:10 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B774599A4E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:28:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F20AC31A319E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:06:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E30D831D55C6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:34:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF89E3FC5D1;
-	Wed, 20 May 2026 17:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FFBC357A25;
+	Wed, 20 May 2026 18:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TzFNDmFa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jcGTIW8i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0E03FC5C7;
-	Wed, 20 May 2026 17:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C58FB17A2FC;
+	Wed, 20 May 2026 18:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296673; cv=none; b=srR9VQiZtpmLoWkSB1PG7NU6bOVUtzn9V4rDrAR5Yckn+wbafDLPpE7Gw9SMsihdOtd44zOTlY++ZfNID+9vlyRk/igcFac75Ig2LtID+CBzTMTjH6zqoybGXL5yLZlQjy5yMjaGRx/CT8aB2bqGQjbMDHwjV5Adl2kaoL1PfVE=
+	t=1779302041; cv=none; b=J+pM43eCv/gvDzOCJjJAGmNZSC1GwIHE5eBmr+9UyUIZ+oCQl6LaHzwOaGr6krnRWXJ9puATnCXLcoLDnysIglY7FAddRRZ3F78Oc2WeHZu9qQODRc1q/bwCzZrsWGZVnbG+Pyk3ZpJQeuRYjGaT4MbHZmNUANHqgrxfC47VaZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296673; c=relaxed/simple;
-	bh=NUGCBbBbkdlC6R9HLDUk6zsWITElSQJo9l1KsigZ/NE=;
+	s=arc-20240116; t=1779302041; c=relaxed/simple;
+	bh=F4isP3rLXAmkuirtf6mT+tiecM71lPxJaTo1EQzLc0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ldy90TLLfhytPpGahfVkFdaAEZXmRdqYPAK4HwQF3HontVMTvGaqaZf2zCwQE+3sa5FIzAK07sVkIkwSDO+aRvqpA6bMZAQLVT79uJEHrNX9qKAs3lIBTIa1iMlHkg2cEJ63MOyJtHZiJYRqNMQb3NtVsEQakTVnUXZbeS8aEL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TzFNDmFa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4CA71F000E9;
-	Wed, 20 May 2026 17:04:31 +0000 (UTC)
+	 MIME-Version; b=ah4HFvQHT3AXPoryca9GD2f2blVqMI1iHbJchQS3ln/tc4civgdqeX5BbF2Pr9L0qZdfqfBC2jHyLhvqda1U7+45rt/0XaohRXpebAaJk83xGvvGr4hUXJtZxuAdhfO+H/j8Zfy1en91dYFSiOpQpcfjulYSTTsxmzKSS+XDo8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jcGTIW8i; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 387071F000E9;
+	Wed, 20 May 2026 18:34:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296672;
-	bh=nJrTnsZv0YNjP5ApC3a8Sx1Kx1n9HE9rGjIs4LWBo0s=;
+	s=korg; t=1779302040;
+	bh=64kxuAMozG9SmhdeCMy8LtFbrJs+ycAWBI8ALjDcqes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TzFNDmFaFmY/5rPztKJyUcU1s/weW4N8osrGO9GOWWs4Bcyj3n+Pdxlw2xMY8K4XJ
-	 aZXhF2na8Nc23DXHxdUGJlzs6wf+kI7F0qwpQzLStxYLLBfxNkKRqMbiiFESYG5ZrU
-	 kMOlfwx/NzHWkaygmPhJStiWcFysOnc4cPzZCKd4=
+	b=jcGTIW8iFMXZJ9iOSXerInLpLX7kJoX97J5OIK+OuZtuXZMA5xBB9iLqBTnW7QPTk
+	 cW8T8wYMOALO7eFikoAyetaVETUKzVA6uinxUkrNZEa7kwMKyd3boT2vWcdZI3JfeE
+	 lLCaHvJVwXuF2z3WJWVzQ56FdBoSv64xweH7M4Qo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xin Yin <yinxin.x@bytedance.com>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Jan Kara <jack@suse.cz>,
+	Pei Xiao <xiaopei01@kylinos.cn>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0888/1146] fsnotify: fix inode reference leak in fsnotify_recalc_mask()
+Subject: [PATCH 6.6 115/508] spi: hisi-kunpeng: prevent infinite while() loop in hisi_spi_flush_fifo
 Date: Wed, 20 May 2026 18:18:58 +0200
-Message-ID: <20260520162208.333979786@linuxfoundation.org>
+Message-ID: <20260520162101.120869655@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,183 +63,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,bytedance.com,gmail.com,suse.cz,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250935-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252961-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,suse.cz:email,bytedance.com:email]
-X-Rspamd-Queue-Id: 08212593FB1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,kylinos.cn:email]
+X-Rspamd-Queue-Id: 7B774599A4E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-[ Upstream commit 4aca914ac152f5d055ddcb36704d1e539ac08977 ]
+[ Upstream commit 9f61daf2c2debe9f5cf4e1a4471e56a89a6fe45a ]
 
-fsnotify_recalc_mask() fails to handle the return value of
-__fsnotify_recalc_mask(), which may return an inode pointer that needs
-to be released via fsnotify_drop_object() when the connector's HAS_IREF
-flag transitions from set to cleared.
+The hisi_spi_flush_fifo()'s inner while loop that lacks any timeout
+mechanism. Maybe the hardware never becomes empty, the loop will spin
+forever, causing the CPU to hang.
 
-This manifests as a hung task with the following call trace:
+Fix this by adding a inner_limit based on loops_per_jiffy. The inner loop
+now exits after approximately one jiffy if the FIFO remains non-empty, logs
+a ratelimited warning, and breaks out of the outer loop. Additionally, add
+a cpu_relax() inside the busy loop to improve power efficiency.
 
-  INFO: task umount:1234 blocked for more than 120 seconds.
-  Call Trace:
-   __schedule
-   schedule
-   fsnotify_sb_delete
-   generic_shutdown_super
-   kill_anon_super
-   cleanup_mnt
-   task_work_run
-   do_exit
-   do_group_exit
-
-The race window that triggers the iref leak:
-
-  Thread A (adding mark)              Thread B (removing mark)
-  ──────────────────────              ────────────────────────
-  fsnotify_add_mark_locked():
-    fsnotify_add_mark_list():
-      spin_lock(conn->lock)
-      add mark_B(evictable) to list
-      spin_unlock(conn->lock)
-    return
-
-    /* ---- gap: no lock held ---- */
-
-                                      fsnotify_detach_mark(mark_A):
-                                        spin_lock(mark_A->lock)
-                                        clear ATTACHED flag on mark_A
-                                        spin_unlock(mark_A->lock)
-                                        fsnotify_put_mark(mark_A)
-
-    fsnotify_recalc_mask():
-      spin_lock(conn->lock)
-      __fsnotify_recalc_mask():
-        /* mark_A skipped: ATTACHED cleared */
-        /* only mark_B(evictable) remains */
-        want_iref = false
-        has_iref = true  /* not yet cleared */
-        -> HAS_IREF transitions true -> false
-        -> returns inode pointer
-      spin_unlock(conn->lock)
-      /* BUG: return value discarded!
-       * iput() and fsnotify_put_sb_watched_objects()
-       * are never called */
-
-Fix this by deferring the transition true -> false of HAS_IREF flag from
-fsnotify_recalc_mask() (Thread A) to fsnotify_put_mark() (thread B).
-
-Fixes: c3638b5b1374 ("fsnotify: allow adding an inode mark without pinning inode")
-Signed-off-by: Xin Yin <yinxin.x@bytedance.com>
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Link: https://patch.msgid.link/CAOQ4uxiPsbHb0o5voUKyPFMvBsDkG914FYDcs4C5UpBMNm0Vcg@mail.gmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
+Fixes: c770d8631e18 ("spi: Add HiSilicon SPI Controller Driver for Kunpeng SoCs")
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Link: https://patch.msgid.link/d834ce28172886bfaeb9c8ca00cfd9bf1c65d5a1.1773889292.git.xiaopei01@kylinos.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/notify/mark.c | 39 ++++++++++++++++++++++++++++++++++++---
- 1 file changed, 36 insertions(+), 3 deletions(-)
+ drivers/spi/spi-hisi-kunpeng.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/fs/notify/mark.c b/fs/notify/mark.c
-index 622f05977f86a..e256b420100dc 100644
---- a/fs/notify/mark.c
-+++ b/fs/notify/mark.c
-@@ -238,7 +238,12 @@ static struct inode *fsnotify_update_iref(struct fsnotify_mark_connector *conn,
- 	return inode;
+diff --git a/drivers/spi/spi-hisi-kunpeng.c b/drivers/spi/spi-hisi-kunpeng.c
+index f0a50f40a3ba1..77526f7940688 100644
+--- a/drivers/spi/spi-hisi-kunpeng.c
++++ b/drivers/spi/spi-hisi-kunpeng.c
+@@ -196,8 +196,18 @@ static void hisi_spi_flush_fifo(struct hisi_spi *hs)
+ 	unsigned long limit = loops_per_jiffy << 1;
+ 
+ 	do {
+-		while (hisi_spi_rx_not_empty(hs))
++		unsigned long inner_limit = loops_per_jiffy;
++
++		while (hisi_spi_rx_not_empty(hs) && --inner_limit) {
+ 			readl(hs->regs + HISI_SPI_DOUT);
++			cpu_relax();
++		}
++
++		if (!inner_limit) {
++			dev_warn_ratelimited(hs->dev, "RX FIFO flush timeout\n");
++			break;
++		}
++
+ 	} while (hisi_spi_busy(hs) && limit--);
  }
  
--static void *__fsnotify_recalc_mask(struct fsnotify_mark_connector *conn)
-+/*
-+ * Calculate mask of events for a list of marks.
-+ *
-+ * Return true if any of the attached marks want to hold an inode reference.
-+ */
-+static bool __fsnotify_recalc_mask(struct fsnotify_mark_connector *conn)
- {
- 	u32 new_mask = 0;
- 	bool want_iref = false;
-@@ -262,6 +267,34 @@ static void *__fsnotify_recalc_mask(struct fsnotify_mark_connector *conn)
- 	 */
- 	WRITE_ONCE(*fsnotify_conn_mask_p(conn), new_mask);
- 
-+	return want_iref;
-+}
-+
-+/*
-+ * Calculate mask of events for a list of marks after attach/modify mark
-+ * and get an inode reference for the connector if needed.
-+ *
-+ * A concurrent add of evictable mark and detach of non-evictable mark can
-+ * lead to __fsnotify_recalc_mask() returning false want_iref, but in this
-+ * case we defer clearing iref to fsnotify_recalc_mask_clear_iref() called
-+ * from fsnotify_put_mark().
-+ */
-+static void fsnotify_recalc_mask_set_iref(struct fsnotify_mark_connector *conn)
-+{
-+	bool has_iref = conn->flags & FSNOTIFY_CONN_FLAG_HAS_IREF;
-+	bool want_iref = __fsnotify_recalc_mask(conn) || has_iref;
-+
-+	(void) fsnotify_update_iref(conn, want_iref);
-+}
-+
-+/*
-+ * Calculate mask of events for a list of marks after detach mark
-+ * and return the inode object if its reference is no longer needed.
-+ */
-+static void *fsnotify_recalc_mask_clear_iref(struct fsnotify_mark_connector *conn)
-+{
-+	bool want_iref = __fsnotify_recalc_mask(conn);
-+
- 	return fsnotify_update_iref(conn, want_iref);
- }
- 
-@@ -298,7 +331,7 @@ void fsnotify_recalc_mask(struct fsnotify_mark_connector *conn)
- 
- 	spin_lock(&conn->lock);
- 	update_children = !fsnotify_conn_watches_children(conn);
--	__fsnotify_recalc_mask(conn);
-+	fsnotify_recalc_mask_set_iref(conn);
- 	update_children &= fsnotify_conn_watches_children(conn);
- 	spin_unlock(&conn->lock);
- 	/*
-@@ -419,7 +452,7 @@ void fsnotify_put_mark(struct fsnotify_mark *mark)
- 		/* Update watched objects after detaching mark */
- 		if (sb)
- 			fsnotify_update_sb_watchers(sb, conn);
--		objp = __fsnotify_recalc_mask(conn);
-+		objp = fsnotify_recalc_mask_clear_iref(conn);
- 		type = conn->type;
- 	}
- 	WRITE_ONCE(mark->connector, NULL);
 -- 
 2.53.0
 
