@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-250896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252968-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UDJgNhfqDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250896-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:06:31 +0200
+	id IL08J6EZDmqA6AUAu9opvQ
+	(envelope-from <stable+bounces-252968-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:29:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D936592EAB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:06:31 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B584B599A72
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:29:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EB1AC3016275
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:04:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 363CE31E48C9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:34:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B643F9F2D;
-	Wed, 20 May 2026 17:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCEC2357A25;
+	Wed, 20 May 2026 18:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0IDJdjLS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YLagWd0W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A25B3FA5EB;
-	Wed, 20 May 2026 17:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9DA17A2FC;
+	Wed, 20 May 2026 18:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296590; cv=none; b=p+qkFrouG7Gw0O7DG6/7hs7zzexAVxHDBvrGo3o1gWcoECobQu2dxkPRgUqWK4S6aZzb4k+NvmAoR5MRLpojlSraIewMg0sDsQzLEdySPIyh0zef8q5zm3BAprWzqn0GgMcR9Acw8cjM84sJZEaiDA2Q7HUv7npCIELDpZX2bFE=
+	t=1779302060; cv=none; b=mtoQMVDTnxuCkPsImXEmFBOuonYaCJIoEHrY+NRepEII5uxKlQzkJoK21Mh7C4WLTvY2cjZI9mfQPscPpcFVLnCnbFoPVUMsULHvWRYlCPpFsKGaIIEcUdqvnjGcDg7fWN0Kk7ZS8h37PXy6yesEdNaCLRCMe8WOEYMA9PG6QJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296590; c=relaxed/simple;
-	bh=Sq6W8QWipW24n7UGr9c1zmuw9A4lOIaHzDf0f+yGcyA=;
+	s=arc-20240116; t=1779302060; c=relaxed/simple;
+	bh=Di/hBDCvfcFfIiCCkbxHjbDDsMVEebKP7y+/M9SVCVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G7u4VSi718fzFgUORhmZS7ZX+dIoc9y2zmdbBySaBfI++MD/j6U0vimtjspFpTWlZXfe+QudlDRCYWWFHvTIGVeeZ1w8Virja5Rce8jExW9QgPm4zFl0gETii7YRbXXdCDyv/HKfvPKgMjgzB/mffdXti3FWHJNwAleHM+d5H3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0IDJdjLS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 813761F00893;
-	Wed, 20 May 2026 17:03:07 +0000 (UTC)
+	 MIME-Version; b=FsjvbS3Y+4NHoTqLSi3T1g3A+isZ6X4GAbDDTxPgUZjl6n8pmG81RyQGI/JpALR8VENkPMs6JS+CHHuzSf/071fS8XL+ygg9tPshpRPqU2mTRzpZ5woa3AI8jrc+VsQ6QWK/ICuF76gkaq6tpsSjqkB+WM+xXpLxLqqulFe2Tfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YLagWd0W; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A815A1F000E9;
+	Wed, 20 May 2026 18:34:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296588;
-	bh=342yWYi5vqXvyjuO/MU/Y1xVJ3x/lCF2P4B54vaAWcI=;
+	s=korg; t=1779302059;
+	bh=hc/h8VwXF9IuI78JZv2bOFl6vMXjPj9ZPyTzAt1j4g0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0IDJdjLS5Yav6gdqi0K9QCbBbPKvEOL8SCBlr/c1rJTFi1kqANRwc3r05hmwgm5SN
-	 0FrkVzgyRvRtwhwafMNSYuL1VqiC6ihvrqcnXJwttLU3/jCMgnzak+q5bf9Y8bEo7I
-	 NYMiAAypF2xEWtmZob+cyj9OW32rqEriQA/sGhvM=
+	b=YLagWd0WCIAoot7cvk6sRwp4Om3o5hRvMbvbc+mQm/KaDT5r3S2fGdApmdoxGqw5M
+	 zHvHgXMzzD/QgkTMybMi/vrInBC1yszeFI2Z9ftsTOQ6YInYkt+bMW/blda+3zLbzT
+	 CoQZYOaafUHwoljGWleR1uANA6NP/WA52E3tVbFk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Bobby Eshleman <bobbyeshleman@meta.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Alice Ryhl <aliceryhl@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0855/1146] vsock/virtio: fix MSG_ZEROCOPY pinned-pages accounting
+Subject: [PATCH 6.6 082/508] net: phy: add Rust Asix PHY driver
 Date: Wed, 20 May 2026 18:18:25 +0200
-Message-ID: <20260520162207.588804505@linuxfoundation.org>
+Message-ID: <20260520162100.385997744@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,115 +68,275 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,meta.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-250896-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,umich.edu,proton.me,lunn.ch,google.com,davemloft.net,kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252968-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,meta.com:email]
-X-Rspamd-Queue-Id: 6D936592EAB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,lunn.ch:email,davemloft.net:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,proton.me:email,umich.edu:email]
+X-Rspamd-Queue-Id: B584B599A72
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-[ Upstream commit 1cb36e252211506f51095fe7ced8286cc77b4c80 ]
+[ Upstream commit cbe0e415089636170aa6eb540ca4af5dc9842a60 ]
 
-virtio_transport_init_zcopy_skb() uses iter->count as the size argument
-for msg_zerocopy_realloc(), which in turn passes it to
-mm_account_pinned_pages() for RLIMIT_MEMLOCK accounting. However, this
-function is called after virtio_transport_fill_skb() has already consumed
-the iterator via __zerocopy_sg_from_iter(), so on the last skb, iter->count
-will be 0, skipping the RLIMIT_MEMLOCK enforcement.
+This is the Rust implementation of drivers/net/phy/ax88796b.c. The
+features are equivalent. You can choose C or Rust version kernel
+configuration.
 
-Pass pkt_len (the total bytes being sent) as an explicit parameter to
-virtio_transport_init_zcopy_skb() instead of reading the already-consumed
-iter->count.
-
-This matches TCP and UDP, which both call msg_zerocopy_realloc() with
-the original message size.
-
-Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
-Link: https://patch.msgid.link/20260420132051.217589-1-sgarzare@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Reviewed-by: Trevor Gross <tmgross@umich.edu>
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: e7a62edd34b1 ("net: phy: qcom: at803x: Use the correct bit to disable extended next page")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/virtio_transport_common.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ MAINTAINERS                      |   8 ++
+ drivers/net/phy/Kconfig          |   8 ++
+ drivers/net/phy/Makefile         |   6 +-
+ drivers/net/phy/ax88796b_rust.rs | 135 +++++++++++++++++++++++++++++++
+ rust/uapi/uapi_helper.h          |   2 +
+ 5 files changed, 158 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/phy/ax88796b_rust.rs
 
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 6547e199ea5b1..0d0265f770ada 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -75,6 +75,7 @@ static bool virtio_transport_can_zcopy(const struct virtio_transport *t_ops,
- static int virtio_transport_init_zcopy_skb(struct vsock_sock *vsk,
- 					   struct sk_buff *skb,
- 					   struct msghdr *msg,
-+					   size_t pkt_len,
- 					   bool zerocopy)
- {
- 	struct ubuf_info *uarg;
-@@ -83,12 +84,10 @@ static int virtio_transport_init_zcopy_skb(struct vsock_sock *vsk,
- 		uarg = msg->msg_ubuf;
- 		net_zcopy_get(uarg);
- 	} else {
--		struct iov_iter *iter = &msg->msg_iter;
- 		struct ubuf_info_msgzc *uarg_zc;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e700dca4974b3..8b1ee5b11eca2 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3060,6 +3060,14 @@ S:	Maintained
+ F:	Documentation/devicetree/bindings/net/asix,ax88796c.yaml
+ F:	drivers/net/ethernet/asix/ax88796c_*
  
- 		uarg = msg_zerocopy_realloc(sk_vsock(vsk),
--					    iter->count,
--					    NULL, false);
-+					    pkt_len, NULL, false);
- 		if (!uarg)
- 			return -1;
++ASIX PHY DRIVER [RUST]
++M:	FUJITA Tomonori <fujita.tomonori@gmail.com>
++R:	Trevor Gross <tmgross@umich.edu>
++L:	netdev@vger.kernel.org
++L:	rust-for-linux@vger.kernel.org
++S:	Maintained
++F:	drivers/net/phy/ax88796b_rust.rs
++
+ ASPEED CRYPTO DRIVER
+ M:	Neal Liu <neal_liu@aspeedtech.com>
+ L:	linux-aspeed@lists.ozlabs.org (moderated for non-subscribers)
+diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
+index aa5491aaaab40..466d3dff60744 100644
+--- a/drivers/net/phy/Kconfig
++++ b/drivers/net/phy/Kconfig
+@@ -104,6 +104,14 @@ config AX88796B_PHY
+ 	  Currently supports the Asix Electronics PHY found in the X-Surf 100
+ 	  AX88796B package.
  
-@@ -385,11 +384,17 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
- 		 * each iteration. If this is last skb for this buffer
- 		 * and MSG_ZEROCOPY mode is in use - we must allocate
- 		 * completion for the current syscall.
-+		 *
-+		 * Pass pkt_len because msg iter is already consumed
-+		 * by virtio_transport_fill_skb(), so iter->count
-+		 * can not be used for RLIMIT_MEMLOCK pinned-pages
-+		 * accounting done by msg_zerocopy_realloc().
- 		 */
- 		if (info->msg && info->msg->msg_flags & MSG_ZEROCOPY &&
- 		    skb_len == rest_len && info->op == VIRTIO_VSOCK_OP_RW) {
- 			if (virtio_transport_init_zcopy_skb(vsk, skb,
- 							    info->msg,
-+							    pkt_len,
- 							    can_zcopy)) {
- 				kfree_skb(skb);
- 				ret = -ENOMEM;
++config AX88796B_RUST_PHY
++	bool "Rust reference driver for Asix PHYs"
++	depends on RUST_PHYLIB_ABSTRACTIONS && AX88796B_PHY
++	help
++	  Uses the Rust reference driver for Asix PHYs (ax88796b_rust.ko).
++	  The features are equivalent. It supports the Asix Electronics PHY
++	  found in the X-Surf 100 AX88796B package.
++
+ config BROADCOM_PHY
+ 	tristate "Broadcom 54XX PHYs"
+ 	select BCM_NET_PHYLIB
+diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
+index f65e85c91fc10..ab450a46b8550 100644
+--- a/drivers/net/phy/Makefile
++++ b/drivers/net/phy/Makefile
+@@ -37,7 +37,11 @@ obj-$(CONFIG_ADIN1100_PHY)	+= adin1100.o
+ obj-$(CONFIG_AMD_PHY)		+= amd.o
+ obj-$(CONFIG_AQUANTIA_PHY)	+= aquantia/
+ obj-$(CONFIG_AT803X_PHY)	+= at803x.o
+-obj-$(CONFIG_AX88796B_PHY)	+= ax88796b.o
++ifdef CONFIG_AX88796B_RUST_PHY
++  obj-$(CONFIG_AX88796B_PHY)	+= ax88796b_rust.o
++else
++  obj-$(CONFIG_AX88796B_PHY)	+= ax88796b.o
++endif
+ obj-$(CONFIG_BCM54140_PHY)	+= bcm54140.o
+ obj-$(CONFIG_BCM63XX_PHY)	+= bcm63xx.o
+ obj-$(CONFIG_BCM7XXX_PHY)	+= bcm7xxx.o
+diff --git a/drivers/net/phy/ax88796b_rust.rs b/drivers/net/phy/ax88796b_rust.rs
+new file mode 100644
+index 0000000000000..5c92572962dce
+--- /dev/null
++++ b/drivers/net/phy/ax88796b_rust.rs
+@@ -0,0 +1,135 @@
++// SPDX-License-Identifier: GPL-2.0
++// Copyright (C) 2023 FUJITA Tomonori <fujita.tomonori@gmail.com>
++
++//! Rust Asix PHYs driver
++//!
++//! C version of this driver: [`drivers/net/phy/ax88796b.c`](./ax88796b.c)
++use kernel::{
++    c_str,
++    net::phy::{self, DeviceId, Driver},
++    prelude::*,
++    uapi,
++};
++
++kernel::module_phy_driver! {
++    drivers: [PhyAX88772A, PhyAX88772C, PhyAX88796B],
++    device_table: [
++        DeviceId::new_with_driver::<PhyAX88772A>(),
++        DeviceId::new_with_driver::<PhyAX88772C>(),
++        DeviceId::new_with_driver::<PhyAX88796B>()
++    ],
++    name: "rust_asix_phy",
++    author: "FUJITA Tomonori <fujita.tomonori@gmail.com>",
++    description: "Rust Asix PHYs driver",
++    license: "GPL",
++}
++
++const MII_BMCR: u16 = uapi::MII_BMCR as u16;
++const BMCR_SPEED100: u16 = uapi::BMCR_SPEED100 as u16;
++const BMCR_FULLDPLX: u16 = uapi::BMCR_FULLDPLX as u16;
++
++// Performs a software PHY reset using the standard
++// BMCR_RESET bit and poll for the reset bit to be cleared.
++// Toggle BMCR_RESET bit off to accommodate broken AX8796B PHY implementation
++// such as used on the Individual Computers' X-Surf 100 Zorro card.
++fn asix_soft_reset(dev: &mut phy::Device) -> Result {
++    dev.write(uapi::MII_BMCR as u16, 0)?;
++    dev.genphy_soft_reset()
++}
++
++struct PhyAX88772A;
++
++#[vtable]
++impl Driver for PhyAX88772A {
++    const FLAGS: u32 = phy::flags::IS_INTERNAL;
++    const NAME: &'static CStr = c_str!("Asix Electronics AX88772A");
++    const PHY_DEVICE_ID: DeviceId = DeviceId::new_with_exact_mask(0x003b1861);
++
++    // AX88772A is not working properly with some old switches (NETGEAR EN 108TP):
++    // after autoneg is done and the link status is reported as active, the MII_LPA
++    // register is 0. This issue is not reproducible on AX88772C.
++    fn read_status(dev: &mut phy::Device) -> Result<u16> {
++        dev.genphy_update_link()?;
++        if !dev.is_link_up() {
++            return Ok(0);
++        }
++        // If MII_LPA is 0, phy_resolve_aneg_linkmode() will fail to resolve
++        // linkmode so use MII_BMCR as default values.
++        let ret = dev.read(MII_BMCR)?;
++
++        if ret & BMCR_SPEED100 != 0 {
++            dev.set_speed(uapi::SPEED_100);
++        } else {
++            dev.set_speed(uapi::SPEED_10);
++        }
++
++        let duplex = if ret & BMCR_FULLDPLX != 0 {
++            phy::DuplexMode::Full
++        } else {
++            phy::DuplexMode::Half
++        };
++        dev.set_duplex(duplex);
++
++        dev.genphy_read_lpa()?;
++
++        if dev.is_autoneg_enabled() && dev.is_autoneg_completed() {
++            dev.resolve_aneg_linkmode();
++        }
++
++        Ok(0)
++    }
++
++    fn suspend(dev: &mut phy::Device) -> Result {
++        dev.genphy_suspend()
++    }
++
++    fn resume(dev: &mut phy::Device) -> Result {
++        dev.genphy_resume()
++    }
++
++    fn soft_reset(dev: &mut phy::Device) -> Result {
++        asix_soft_reset(dev)
++    }
++
++    fn link_change_notify(dev: &mut phy::Device) {
++        // Reset PHY, otherwise MII_LPA will provide outdated information.
++        // This issue is reproducible only with some link partner PHYs.
++        if dev.state() == phy::DeviceState::NoLink {
++            let _ = dev.init_hw();
++            let _ = dev.start_aneg();
++        }
++    }
++}
++
++struct PhyAX88772C;
++
++#[vtable]
++impl Driver for PhyAX88772C {
++    const FLAGS: u32 = phy::flags::IS_INTERNAL;
++    const NAME: &'static CStr = c_str!("Asix Electronics AX88772C");
++    const PHY_DEVICE_ID: DeviceId = DeviceId::new_with_exact_mask(0x003b1881);
++
++    fn suspend(dev: &mut phy::Device) -> Result {
++        dev.genphy_suspend()
++    }
++
++    fn resume(dev: &mut phy::Device) -> Result {
++        dev.genphy_resume()
++    }
++
++    fn soft_reset(dev: &mut phy::Device) -> Result {
++        asix_soft_reset(dev)
++    }
++}
++
++struct PhyAX88796B;
++
++#[vtable]
++impl Driver for PhyAX88796B {
++    const NAME: &'static CStr = c_str!("Asix Electronics AX88796B");
++    const PHY_DEVICE_ID: DeviceId = DeviceId::new_with_model_mask(0x003b1841);
++
++    fn soft_reset(dev: &mut phy::Device) -> Result {
++        asix_soft_reset(dev)
++    }
++}
+diff --git a/rust/uapi/uapi_helper.h b/rust/uapi/uapi_helper.h
+index 301f5207f0238..08f5e9334c9e8 100644
+--- a/rust/uapi/uapi_helper.h
++++ b/rust/uapi/uapi_helper.h
+@@ -7,3 +7,5 @@
+  */
+ 
+ #include <uapi/asm-generic/ioctl.h>
++#include <uapi/linux/mii.h>
++#include <uapi/linux/ethtool.h>
 -- 
 2.53.0
 
