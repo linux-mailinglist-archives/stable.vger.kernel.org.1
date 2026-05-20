@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-251347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250390-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QF9GOGYXDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251347-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:19:50 +0200
+	id 0IPrBvfxDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-250390-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:40:07 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58D4359972C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:19:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55E9C5943B1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:40:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D1C0B35E9B7D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:22:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B41D33758364
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACDE73C6A5C;
-	Wed, 20 May 2026 17:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8FA3B6349;
+	Wed, 20 May 2026 16:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LBSiymU3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dDo67t9J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43FAE3BE165;
-	Wed, 20 May 2026 17:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E25FB3A3E60;
+	Wed, 20 May 2026 16:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297742; cv=none; b=u9jzqOieGaQyPUT9vVjKniRIiYgpthXpH/FrG/PLY4eL5WMsPu/L0MrqQ4F5qD7ALDY5i5r69ltS9SyOXvcaEwwho9XEc+41pFYviS20HdM52XfuDvTN2sW+Cj78vRQgDB8mVO++hCNbN2Yc2YH1hDbwljcqnPF2KPv9M4R2BCg=
+	t=1779295289; cv=none; b=eVKpHMNZtM5bM2mBgSW2dNmPot0ATUCZri0mBPICWzF1UPGSD7DzT0qteo3eON+MbIGfV+NwWJTNtI6MpHxitYUtINm2TOrVlkpd7ed9q8cwEHABoLyfd/K+VjQ3De2OI4QPxzO+jhM2Mr059tRLHxqzW2tYja8tnQ6y7BQxD5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297742; c=relaxed/simple;
-	bh=aEOnOGIIOHXVz3SAzdulmm/Gsza24RgN0hvLV2GvJMA=;
+	s=arc-20240116; t=1779295289; c=relaxed/simple;
+	bh=Nz0dWmBTHgqQvwZZNloLaUvpJE1yeN34JdDKpWnv+U0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UNVm0o9ZE38rgBbhfWeKCDTr4FGX7anIwpE4BHuIUeakNb3W8wtWhQH2cErFoBjNQzk5ZCqZ+HJmbWb3zNjTy3iGCRiUEqF+o1k3z9LkMXcEGJamblzP98bt+upt3PZ0tiXfFLE8WrdYaVBMBnnt+4n70esU0WLaVT0eJF2WneU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LBSiymU3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E5C1F00894;
-	Wed, 20 May 2026 17:22:20 +0000 (UTC)
+	 MIME-Version; b=rBwJg9txJ40ksmfWoRa2+G9s4pdT/8TOi4tdLM9EO5uw9i+8pH3m0fwqE39nWzJ52NkVVFFtIPQKJuy7BZsuwTxEJ543QTx6KHvTtJdeAc2YdL08DtKOC650cJpf6NUcvMQ+ilMMD+MR7EzezdNxDUOtRHct2ihdmt8a8Aog6rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dDo67t9J; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 542951F000E9;
+	Wed, 20 May 2026 16:41:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297740;
-	bh=lRCT1jBOwpvsceAZqHtoLlrfElDHjgWxYJU2E9b2tBs=;
+	s=korg; t=1779295287;
+	bh=A881U0GJvmLom40owVgxyB4la3qQoWbw1dqo/urxLpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LBSiymU3imDAjg8wKA7HboG4FfWLNrJb9icF+4YJhC2kFWnx8gRkTxOWtiF3z0Vpl
-	 GLvCztdK7dwLgZDp2L+pX+piB3zp/wbMZ2lcU7o1O8/vVFyC1E529M9Q+tONJThnhA
-	 0e3xALkXGgeZ0QpueE9iLeTPMjlJ9QchILF97/sI=
+	b=dDo67t9JAtLV4ITJSSdh1Bayj59dwfgyP3JDNMAhekYHL9INQyETLsqmZ0XeekG4N
+	 0cNgRm7bbC7gQASiw8KM/1Y+9FhpCIBj16td8GAvgLTvWVydZJXUVZntex4Ewe8VR3
+	 vMhw01I+z80xY7wAfYi//Nw3pcGcEf9JwGl3a6IY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 129/957] wifi: ath10k: fix station lookup failure during disconnect
+Subject: [PATCH 7.0 0362/1146] drm/msm/adreno: Implement gx_is_on() for A8x
 Date: Wed, 20 May 2026 18:10:12 +0200
-Message-ID: <20260520162137.353278742@linuxfoundation.org>
+Message-ID: <20260520162156.393934306@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,165 +74,222 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251347-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250390-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,mpg.de:email]
-X-Rspamd-Queue-Id: 58D4359972C
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[patchwork.freedesktop.org:url,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 55E9C5943B1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
 
-[ Upstream commit 9a34a59c6086ae731a06b3e61b0951feef758648 ]
+[ Upstream commit ae25e6e9cdcac4cfef102b9d6de8bff13ca4d13b ]
 
-Recent commit [1] moved station statistics collection to an earlier stage
-of the disconnect flow. With this change in place, ath10k fails to resolve
-the station entry when handling a peer stats event triggered during
-disconnect, resulting in log messages such as:
+A8x has a diverged enough for a separate implementation of gx_is_on()
+check. Add that and move them to the adreno func table.
 
-wlp58s0: deauthenticating from 74:1a:e0:e7:b4:c8 by local choice (Reason: 3=DEAUTH_LEAVING)
-ath10k_pci 0000:3a:00.0: not found station for peer stats
-ath10k_pci 0000:3a:00.0: failed to parse stats info tlv: -22
-
-The failure occurs because ath10k relies on ieee80211_find_sta_by_ifaddr()
-for station lookup. That function uses local->sta_hash, but by the time
-the peer stats request is triggered during disconnect, mac80211 has
-already removed the station from that hash table, leading to lookup
-failure.
-
-Before commit [1], this issue was not visible because the transition from
-IEEE80211_STA_NONE to IEEE80211_STA_NOTEXIST prevented ath10k from sending
-a peer stats request at all: ath10k_mac_sta_get_peer_stats_info() would
-fail early to find the peer and skip requesting statistics.
-
-Fix this by switching the lookup path to ath10k_peer_find(), which queries
-ath10k's internal peer table. At the point where the firmware emits the
-peer stats event, the peer entry is still present in the driver's list,
-ensuring lookup succeeds.
-
-Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00309-QCARMSWPZ-1
-
-Fixes: a203dbeeca15 ("wifi: mac80211: collect station statistics earlier when disconnect") # [1]
-Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Closes: https://lore.kernel.org/ath10k/57671b89-ec9f-4e6c-992c-45eb8e75929c@molgen.mpg.de
-Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Link: https://patch.msgid.link/20260325-ath10k-station-lookup-failure-v1-1-2e0c970f25d5@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: 288a93200892 ("drm/msm/adreno: Introduce A8x GPU Support")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/714661/
+Message-ID: <20260327-a8xx-gpu-batch2-v2-5-2b53c38d2101@oss.qualcomm.com>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/wmi-tlv.c | 26 +++++++++++++----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gmu.c       | 42 +++++++++++++++++++--
+ drivers/gpu/drm/msm/adreno/a6xx_gmu.h       |  5 ++-
+ drivers/gpu/drm/msm/adreno/a6xx_gpu.c       |  6 ++-
+ drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c |  4 +-
+ drivers/gpu/drm/msm/adreno/adreno_gpu.h     |  1 +
+ 5 files changed, 50 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/wmi-tlv.c b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-index 16d07d619b4df..ba1294c8ee39f 100644
---- a/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-+++ b/drivers/net/wireless/ath/ath10k/wmi-tlv.c
-@@ -3,7 +3,7 @@
-  * Copyright (c) 2005-2011 Atheros Communications Inc.
-  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
-  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
-- * Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
-  */
- #include "core.h"
- #include "debug.h"
-@@ -14,6 +14,7 @@
- #include "wmi-tlv.h"
- #include "p2p.h"
- #include "testmode.h"
-+#include "txrx.h"
- #include <linux/bitfield.h>
- 
- /***************/
-@@ -224,8 +225,9 @@ static int ath10k_wmi_tlv_parse_peer_stats_info(struct ath10k *ar, u16 tag, u16
- 						const void *ptr, void *data)
- {
- 	const struct wmi_tlv_peer_stats_info *stat = ptr;
--	struct ieee80211_sta *sta;
-+	u32 vdev_id = *(u32 *)data;
- 	struct ath10k_sta *arsta;
-+	struct ath10k_peer *peer;
- 
- 	if (tag != WMI_TLV_TAG_STRUCT_PEER_STATS_INFO)
- 		return -EPROTO;
-@@ -241,20 +243,20 @@ static int ath10k_wmi_tlv_parse_peer_stats_info(struct ath10k *ar, u16 tag, u16
- 		   __le32_to_cpu(stat->last_tx_rate_code),
- 		   __le32_to_cpu(stat->last_tx_bitrate_kbps));
- 
--	rcu_read_lock();
--	sta = ieee80211_find_sta_by_ifaddr(ar->hw, stat->peer_macaddr.addr, NULL);
--	if (!sta) {
--		rcu_read_unlock();
--		ath10k_warn(ar, "not found station for peer stats\n");
-+	guard(spinlock_bh)(&ar->data_lock);
-+
-+	peer = ath10k_peer_find(ar, vdev_id, stat->peer_macaddr.addr);
-+	if (!peer || !peer->sta) {
-+		ath10k_warn(ar, "not found %s with vdev id %u mac addr %pM for peer stats\n",
-+			    peer ? "sta" : "peer", vdev_id, stat->peer_macaddr.addr);
- 		return -EINVAL;
- 	}
- 
--	arsta = (struct ath10k_sta *)sta->drv_priv;
-+	arsta = (struct ath10k_sta *)peer->sta->drv_priv;
- 	arsta->rx_rate_code = __le32_to_cpu(stat->last_rx_rate_code);
- 	arsta->rx_bitrate_kbps = __le32_to_cpu(stat->last_rx_bitrate_kbps);
- 	arsta->tx_rate_code = __le32_to_cpu(stat->last_tx_rate_code);
- 	arsta->tx_bitrate_kbps = __le32_to_cpu(stat->last_tx_bitrate_kbps);
--	rcu_read_unlock();
- 
- 	return 0;
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+index 690d3e53e2738..b41dbca1ebc63 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+@@ -91,10 +91,10 @@ bool a6xx_gmu_sptprac_is_on(struct a6xx_gmu *gmu)
  }
-@@ -266,6 +268,7 @@ static int ath10k_wmi_tlv_op_pull_peer_stats_info(struct ath10k *ar,
- 	const struct wmi_tlv_peer_stats_info_ev *ev;
- 	const void *data;
- 	u32 num_peer_stats;
-+	u32 vdev_id;
- 	int ret;
  
- 	tb = ath10k_wmi_tlv_parse_alloc(ar, skb->data, skb->len, GFP_ATOMIC);
-@@ -284,15 +287,16 @@ static int ath10k_wmi_tlv_op_pull_peer_stats_info(struct ath10k *ar,
+ /* Check to see if the GX rail is still powered */
+-bool a6xx_gmu_gx_is_on(struct a6xx_gmu *gmu)
++bool a6xx_gmu_gx_is_on(struct adreno_gpu *adreno_gpu)
+ {
+-	struct a6xx_gpu *a6xx_gpu = container_of(gmu, struct a6xx_gpu, gmu);
+-	struct adreno_gpu *adreno_gpu = &a6xx_gpu->base;
++	struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
++	struct a6xx_gmu *gmu = &a6xx_gpu->gmu;
+ 	u32 val;
+ 
+ 	/* This can be called from gpu state code so make sure GMU is valid */
+@@ -117,6 +117,40 @@ bool a6xx_gmu_gx_is_on(struct a6xx_gmu *gmu)
+ 		A6XX_GMU_SPTPRAC_PWR_CLK_STATUS_GX_HM_CLK_OFF));
+ }
+ 
++bool a7xx_gmu_gx_is_on(struct adreno_gpu *adreno_gpu)
++{
++	struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
++	struct a6xx_gmu *gmu = &a6xx_gpu->gmu;
++	u32 val;
++
++	/* This can be called from gpu state code so make sure GMU is valid */
++	if (!gmu->initialized)
++		return false;
++
++	val = gmu_read(gmu, REG_A6XX_GMU_SPTPRAC_PWR_CLK_STATUS);
++
++	return !(val &
++		(A7XX_GMU_SPTPRAC_PWR_CLK_STATUS_GX_HM_GDSC_POWER_OFF |
++		A7XX_GMU_SPTPRAC_PWR_CLK_STATUS_GX_HM_CLK_OFF));
++}
++
++bool a8xx_gmu_gx_is_on(struct adreno_gpu *adreno_gpu)
++{
++	struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
++	struct a6xx_gmu *gmu = &a6xx_gpu->gmu;
++	u32 val;
++
++	/* This can be called from gpu state code so make sure GMU is valid */
++	if (!gmu->initialized)
++		return false;
++
++	val = gmu_read(gmu, REG_A8XX_GMU_PWR_CLK_STATUS);
++
++	return !(val &
++		(A8XX_GMU_PWR_CLK_STATUS_GX_HM_GDSC_POWER_OFF |
++		 A8XX_GMU_PWR_CLK_STATUS_GX_HM_CLK_OFF));
++}
++
+ void a6xx_gmu_set_freq(struct msm_gpu *gpu, struct dev_pm_opp *opp,
+ 		       bool suspended)
+ {
+@@ -240,7 +274,7 @@ static bool a6xx_gmu_check_idle_level(struct a6xx_gmu *gmu)
+ 
+ 	if (val == local) {
+ 		if (gmu->idle_level != GMU_IDLE_STATE_IFPC ||
+-			!a6xx_gmu_gx_is_on(gmu))
++			!adreno_gpu->funcs->gx_is_on(adreno_gpu))
+ 			return true;
  	}
  
- 	num_peer_stats = __le32_to_cpu(ev->num_peers);
-+	vdev_id = __le32_to_cpu(ev->vdev_id);
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.h b/drivers/gpu/drm/msm/adreno/a6xx_gmu.h
+index 2af074c8e8cfa..9f09daf45ab2b 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.h
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.h
+@@ -10,6 +10,7 @@
+ #include <linux/notifier.h>
+ #include <linux/soc/qcom/qcom_aoss.h>
+ #include "msm_drv.h"
++#include "adreno_gpu.h"
+ #include "a6xx_hfi.h"
  
- 	ath10k_dbg(ar, ATH10K_DBG_WMI,
- 		   "wmi tlv peer stats info update peer vdev id %d peers %i more data %d\n",
--		   __le32_to_cpu(ev->vdev_id),
-+		   vdev_id,
- 		   num_peer_stats,
- 		   __le32_to_cpu(ev->more_data));
+ struct a6xx_gmu_bo {
+@@ -231,7 +232,9 @@ void a6xx_hfi_stop(struct a6xx_gmu *gmu);
+ int a6xx_hfi_send_prep_slumber(struct a6xx_gmu *gmu);
+ int a6xx_hfi_set_freq(struct a6xx_gmu *gmu, u32 perf_index, u32 bw_index);
  
- 	ret = ath10k_wmi_tlv_iter(ar, data, ath10k_wmi_tlv_len(data),
--				  ath10k_wmi_tlv_parse_peer_stats_info, NULL);
-+				  ath10k_wmi_tlv_parse_peer_stats_info, &vdev_id);
- 	if (ret)
- 		ath10k_warn(ar, "failed to parse stats info tlv: %d\n", ret);
+-bool a6xx_gmu_gx_is_on(struct a6xx_gmu *gmu);
++bool a6xx_gmu_gx_is_on(struct adreno_gpu *adreno_gpu);
++bool a7xx_gmu_gx_is_on(struct adreno_gpu *adreno_gpu);
++bool a8xx_gmu_gx_is_on(struct adreno_gpu *adreno_gpu);
+ bool a6xx_gmu_sptprac_is_on(struct a6xx_gmu *gmu);
+ void a6xx_sptprac_disable(struct a6xx_gmu *gmu);
+ int a6xx_sptprac_enable(struct a6xx_gmu *gmu);
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+index 4e0d67e3acb7e..9327ecf94386e 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+@@ -1643,7 +1643,7 @@ static void a6xx_recover(struct msm_gpu *gpu)
  
+ 	adreno_dump_info(gpu);
+ 
+-	if (a6xx_gmu_gx_is_on(&a6xx_gpu->gmu)) {
++	if (adreno_gpu->funcs->gx_is_on(adreno_gpu)) {
+ 		/* Sometimes crashstate capture is skipped, so SQE should be halted here again */
+ 		gpu_write(gpu, REG_A6XX_CP_SQE_CNTL, 3);
+ 
+@@ -2763,6 +2763,7 @@ const struct adreno_gpu_funcs a6xx_gpu_funcs = {
+ 	.get_timestamp = a6xx_gmu_get_timestamp,
+ 	.bus_halt = a6xx_bus_clear_pending_transactions,
+ 	.mmu_fault_handler = a6xx_fault_handler,
++	.gx_is_on = a6xx_gmu_gx_is_on,
+ };
+ 
+ const struct adreno_gpu_funcs a6xx_gmuwrapper_funcs = {
+@@ -2795,6 +2796,7 @@ const struct adreno_gpu_funcs a6xx_gmuwrapper_funcs = {
+ 	.get_timestamp = a6xx_get_timestamp,
+ 	.bus_halt = a6xx_bus_clear_pending_transactions,
+ 	.mmu_fault_handler = a6xx_fault_handler,
++	.gx_is_on = a6xx_gmu_gx_is_on,
+ };
+ 
+ const struct adreno_gpu_funcs a7xx_gpu_funcs = {
+@@ -2829,6 +2831,7 @@ const struct adreno_gpu_funcs a7xx_gpu_funcs = {
+ 	.get_timestamp = a6xx_gmu_get_timestamp,
+ 	.bus_halt = a6xx_bus_clear_pending_transactions,
+ 	.mmu_fault_handler = a6xx_fault_handler,
++	.gx_is_on = a7xx_gmu_gx_is_on,
+ };
+ 
+ const struct adreno_gpu_funcs a8xx_gpu_funcs = {
+@@ -2856,4 +2859,5 @@ const struct adreno_gpu_funcs a8xx_gpu_funcs = {
+ 	.get_timestamp = a8xx_gmu_get_timestamp,
+ 	.bus_halt = a8xx_bus_clear_pending_transactions,
+ 	.mmu_fault_handler = a8xx_fault_handler,
++	.gx_is_on = a8xx_gmu_gx_is_on,
+ };
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
+index e9a23d471f374..791623ddb67c9 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
+@@ -1251,7 +1251,7 @@ static void a6xx_get_gmu_registers(struct msm_gpu *gpu,
+ 		_a6xx_get_gmu_registers(gpu, a6xx_state, &a6xx_gpucc_reg,
+ 			&a6xx_state->gmu_registers[2], false);
+ 
+-	if (!a6xx_gmu_gx_is_on(&a6xx_gpu->gmu))
++	if (!adreno_gpu->funcs->gx_is_on(adreno_gpu))
+ 		return;
+ 
+ 	/* Set the fence to ALLOW mode so we can access the registers */
+@@ -1607,7 +1607,7 @@ struct msm_gpu_state *a6xx_gpu_state_get(struct msm_gpu *gpu)
+ 	}
+ 
+ 	/* If GX isn't on the rest of the data isn't going to be accessible */
+-	if (!a6xx_gmu_gx_is_on(&a6xx_gpu->gmu))
++	if (!adreno_gpu->funcs->gx_is_on(adreno_gpu))
+ 		return &a6xx_state->base;
+ 
+ 	/* Halt SQE first */
+diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.h b/drivers/gpu/drm/msm/adreno/adreno_gpu.h
+index c08725ed54c4f..29097e6b42535 100644
+--- a/drivers/gpu/drm/msm/adreno/adreno_gpu.h
++++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.h
+@@ -82,6 +82,7 @@ struct adreno_gpu_funcs {
+ 	u64 (*get_timestamp)(struct msm_gpu *gpu);
+ 	void (*bus_halt)(struct adreno_gpu *adreno_gpu, bool gx_off);
+ 	int (*mmu_fault_handler)(void *arg, unsigned long iova, int flags, void *data);
++	bool (*gx_is_on)(struct adreno_gpu *adreno_gpu);
+ };
+ 
+ struct adreno_reglist {
 -- 
 2.53.0
 
