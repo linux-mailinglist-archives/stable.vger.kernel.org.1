@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-251867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252965-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wD6cFHMfDmpd6QUAu9opvQ
-	(envelope-from <stable+bounces-251867-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:54:11 +0200
+	id qGcQEvv/DWp+5QUAu9opvQ
+	(envelope-from <stable+bounces-252965-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD6B659A484
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:54:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7976596F06
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 434A336D0F76
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:44:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 254A5303C664
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:34:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD9336D9EA;
-	Wed, 20 May 2026 17:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45FDE369D7A;
+	Wed, 20 May 2026 18:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YKyE2P85"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qv7/u7V/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1FB2F0C62;
-	Wed, 20 May 2026 17:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF8F370AEE;
+	Wed, 20 May 2026 18:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299094; cv=none; b=MRhC83fKYalBaUA9qCUaIyigLCTYW7e6zIKYfDrc4QottgKwzBMgqJrlIcBXlF5hcOX1MFyE7RRFmuIMiwFG/utBqy9qZ6MGj62A519b/4Ahtqd2AWkoZ35vl54SJlUhNSI6gfUoJ1GMhK8EeZB35IXbW2wrwn2rCjvvFiP6wpA=
+	t=1779302053; cv=none; b=OqIWQS8WZBy8o+V9AgjAVHUeA2JCjQ59Tt9w8jaCr6vueJ04ay5I5XZvr8U//oXA2xJl55bcnKjnO2op1i7h24b821VP/bFBiE3UDG/LEKX8XDLwLNZqY9hpEjnlkgWRZhpxc4Mhrfmohj/x42oKENyvvPSKakGH9MnTG+RdRbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299094; c=relaxed/simple;
-	bh=nTu56Bo7sE4fdvNjOCTktiDs+KaCuRmRF8toGUYv4HY=;
+	s=arc-20240116; t=1779302053; c=relaxed/simple;
+	bh=//OrHTap7eYIU6xCweGTP6+s7LCL0/YypC7sNbDiXSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=inendExvyJdMPz46o5lACEs2M1aT5HNwk2KymRusK/3hu7sLwlUNL4S0aILcm1uAeRbq89yYJZVzPmCDd4Bx3ZEBVQOK/U7gDd2Zf+fESQyWIFZr7cFeW2XtL3DFpNbXmiFdfNnulMY8lFApMzJRvoS1Z1LENMh6qVICQZJG4yE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YKyE2P85; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC45A1F000E9;
-	Wed, 20 May 2026 17:44:52 +0000 (UTC)
+	 MIME-Version; b=VzImzLTDci0qdri2SHKM5oyOxJM7g4TN8vi+AxkZIhKLHiI/IOooy/pR3h5ezuzSJjx6zCl4uoR4RenUD5XyTQW5khZ/m3m5TQZMih2OVgCa1Tj3RAsCVujNJgPns3U9DGPeFw0n+Uh1ycmnX3O0yoDFGsQu7WbiL62lbhQArDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qv7/u7V/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9C031F000E9;
+	Wed, 20 May 2026 18:34:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299093;
-	bh=GIln1AT3Mf/lWjHM18AJG252IImhEoacyUpWH6gv/C8=;
+	s=korg; t=1779302051;
+	bh=xvPgrzxFp8lujiaSQpqjYW3A8Z70XDOoHLGx7+VdYcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YKyE2P85Q1GrqdIotSFXaPFHWL6gjZD2yrgvp5sJ2nwGq6k7NRQkBvHpECrRrqQLh
-	 CufHYldaXAcoueWtRc3nyg3xgLVLJaunwyIfGUSMlaQoz3O6dJswGXvNkFtXGoNMkC
-	 RW8ke6sbWm2a7G4+q6diGXIcqCY8wflwMPjrfxzc=
+	b=qv7/u7V/etJOYTTmrO8cW62yX3+Q5ynRJRvBwiuZSaK9GO2Ysn6ez9rByzgUFtd81
+	 9n7yZa4YcyxXes5xnjWYMmwcGAlaN9AB1qA0BFRhwxk6lkjTlk99aOnxRTJZ4t0L1z
+	 /KNOrYX85fNXHWtYYLQkgpKkGtalN1LyANzMfvQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Alexander Koskovich <akoskovich@pm.me>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 658/957] openvswitch: cap upcall PID array size and pre-size vport replies
+Subject: [PATCH 6.6 118/508] drm/msm/dsi: rename MSM8998 DSI version from V2_2_0 to V2_0_0
 Date: Wed, 20 May 2026 18:19:01 +0200
-Message-ID: <20260520162148.801948597@linuxfoundation.org>
+Message-ID: <20260520162101.185064167@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,163 +69,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251867-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252965-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,ovn.org,kernel.org];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,asu.edu:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,ovn.org:email]
-X-Rspamd-Queue-Id: AD6B659A484
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,pm.me:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,patchwork.freedesktop.org:url]
+X-Rspamd-Queue-Id: B7976596F06
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Alexander Koskovich <akoskovich@pm.me>
 
-[ Upstream commit 2091c6aa0df6aba47deb5c8ab232b1cb60af3519 ]
+[ Upstream commit 913a709dea0eff9c7b2e9470f8c8594b9a0114ab ]
 
-The vport netlink reply helpers allocate a fixed-size skb with
-nlmsg_new(NLMSG_DEFAULT_SIZE, ...) but serialize the full upcall PID
-array via ovs_vport_get_upcall_portids().  Since
-ovs_vport_set_upcall_portids() accepts any non-zero multiple of
-sizeof(u32) with no upper bound, a CAP_NET_ADMIN user can install a PID
-array large enough to overflow the reply buffer, causing nla_put() to
-fail with -EMSGSIZE and hitting BUG_ON(err < 0).  On systems with
-unprivileged user namespaces enabled (e.g., Ubuntu default), this is
-reachable via unshare -Urn since OVS vport mutation operations use
-GENL_UNS_ADMIN_PERM.
+The MSM8998 DSI controller is v2.0.0 as stated in commit 7b8c9e203039
+("drm/msm/dsi: Add support for MSM8998 DSI controller"). The value was
+always correct just the name was wrong.
 
- kernel BUG at net/openvswitch/datapath.c:2414!
- Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
- CPU: 1 UID: 0 PID: 65 Comm: poc Not tainted 7.0.0-rc7-00195-geb216e422044 #1
- RIP: 0010:ovs_vport_cmd_set+0x34c/0x400
- Call Trace:
-  <TASK>
-  genl_family_rcv_msg_doit (net/netlink/genetlink.c:1116)
-  genl_rcv_msg (net/netlink/genetlink.c:1194)
-  netlink_rcv_skb (net/netlink/af_netlink.c:2550)
-  genl_rcv (net/netlink/genetlink.c:1219)
-  netlink_unicast (net/netlink/af_netlink.c:1344)
-  netlink_sendmsg (net/netlink/af_netlink.c:1894)
-  __sys_sendto (net/socket.c:2206)
-  __x64_sys_sendto (net/socket.c:2209)
-  do_syscall_64 (arch/x86/entry/syscall_64.c:63)
-  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-  </TASK>
- Kernel panic - not syncing: Fatal exception
+Rename and reorder to maintain version sorting.
 
-Reject attempts to set more PIDs than nr_cpu_ids in
-ovs_vport_set_upcall_portids(), and pre-compute the worst-case reply
-size in ovs_vport_cmd_msg_size() based on that bound, similar to the
-existing ovs_dp_cmd_msg_size().  nr_cpu_ids matches the cap already
-used by the per-CPU dispatch configuration on the datapath side
-(ovs_dp_cmd_fill_info() serialises at most nr_cpu_ids PIDs), so the
-two sides stay consistent.
-
-Fixes: 5cd667b0a456 ("openvswitch: Allow each vport to have an array of 'port_id's.")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Assisted-by: Claude:claude-opus-4-6
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
-Link: https://patch.msgid.link/20260416024653.153456-2-bestswngs@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 7b8c9e203039 ("drm/msm/dsi: Add support for MSM8998 DSI controller")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Alexander Koskovich <akoskovich@pm.me>
+Patchwork: https://patchwork.freedesktop.org/patch/713717/
+Link: https://lore.kernel.org/r/20260324-dsi-rgb101010-support-v5-3-ff6afc904115@pm.me
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/openvswitch/datapath.c | 35 +++++++++++++++++++++++++++++++++--
- net/openvswitch/vport.c    |  3 +++
- 2 files changed, 36 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/dsi/dsi_cfg.c | 4 ++--
+ drivers/gpu/drm/msm/dsi/dsi_cfg.h | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
-index d5b6e2002bc1f..2304c8e3be4f7 100644
---- a/net/openvswitch/datapath.c
-+++ b/net/openvswitch/datapath.c
-@@ -2186,9 +2186,40 @@ static int ovs_vport_cmd_fill_info(struct vport *vport, struct sk_buff *skb,
- 	return err;
- }
- 
-+static size_t ovs_vport_cmd_msg_size(void)
-+{
-+	size_t msgsize = NLMSG_ALIGN(sizeof(struct ovs_header));
-+
-+	msgsize += nla_total_size(sizeof(u32)); /* OVS_VPORT_ATTR_PORT_NO */
-+	msgsize += nla_total_size(sizeof(u32)); /* OVS_VPORT_ATTR_TYPE */
-+	msgsize += nla_total_size(IFNAMSIZ);    /* OVS_VPORT_ATTR_NAME */
-+	msgsize += nla_total_size(sizeof(u32)); /* OVS_VPORT_ATTR_IFINDEX */
-+	msgsize += nla_total_size(sizeof(s32)); /* OVS_VPORT_ATTR_NETNSID */
-+
-+	/* OVS_VPORT_ATTR_STATS */
-+	msgsize += nla_total_size_64bit(sizeof(struct ovs_vport_stats));
-+
-+	/* OVS_VPORT_ATTR_UPCALL_STATS(OVS_VPORT_UPCALL_ATTR_SUCCESS +
-+	 *                             OVS_VPORT_UPCALL_ATTR_FAIL)
-+	 */
-+	msgsize += nla_total_size(nla_total_size_64bit(sizeof(u64)) +
-+				  nla_total_size_64bit(sizeof(u64)));
-+
-+	/* OVS_VPORT_ATTR_UPCALL_PID */
-+	msgsize += nla_total_size(nr_cpu_ids * sizeof(u32));
-+
-+	/* OVS_VPORT_ATTR_OPTIONS(OVS_TUNNEL_ATTR_DST_PORT +
-+	 *                        OVS_TUNNEL_ATTR_EXTENSION(OVS_VXLAN_EXT_GBP))
-+	 */
-+	msgsize += nla_total_size(nla_total_size(sizeof(u16)) +
-+				  nla_total_size(nla_total_size(0)));
-+
-+	return msgsize;
-+}
-+
- static struct sk_buff *ovs_vport_cmd_alloc_info(void)
- {
--	return nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
-+	return genlmsg_new(ovs_vport_cmd_msg_size(), GFP_KERNEL);
- }
- 
- /* Called with ovs_mutex, only via ovs_dp_notify_wq(). */
-@@ -2198,7 +2229,7 @@ struct sk_buff *ovs_vport_cmd_build_info(struct vport *vport, struct net *net,
- 	struct sk_buff *skb;
- 	int retval;
- 
--	skb = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
-+	skb = ovs_vport_cmd_alloc_info();
- 	if (!skb)
- 		return ERR_PTR(-ENOMEM);
- 
-diff --git a/net/openvswitch/vport.c b/net/openvswitch/vport.c
-index f0ce8ce1dce0e..1f0c86a9f43b0 100644
---- a/net/openvswitch/vport.c
-+++ b/net/openvswitch/vport.c
-@@ -407,6 +407,9 @@ int ovs_vport_set_upcall_portids(struct vport *vport, const struct nlattr *ids)
- 	if (!nla_len(ids) || nla_len(ids) % sizeof(u32))
- 		return -EINVAL;
- 
-+	if (nla_len(ids) / sizeof(u32) > nr_cpu_ids)
-+		return -EINVAL;
-+
- 	old = ovsl_dereference(vport->upcall_portids);
- 
- 	vport_portids = kmalloc(sizeof(*vport_portids) + nla_len(ids),
+diff --git a/drivers/gpu/drm/msm/dsi/dsi_cfg.c b/drivers/gpu/drm/msm/dsi/dsi_cfg.c
+index 1f98ff74ceb09..39940685681b9 100644
+--- a/drivers/gpu/drm/msm/dsi/dsi_cfg.c
++++ b/drivers/gpu/drm/msm/dsi/dsi_cfg.c
+@@ -263,10 +263,10 @@ static const struct msm_dsi_cfg_handler dsi_cfg_handlers[] = {
+ 		&msm8996_dsi_cfg, &msm_dsi_6g_host_ops},
+ 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V1_4_2,
+ 		&msm8976_dsi_cfg, &msm_dsi_6g_host_ops},
++	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V2_0_0,
++		&msm8998_dsi_cfg, &msm_dsi_6g_v2_host_ops},
+ 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V2_1_0,
+ 		&sdm660_dsi_cfg, &msm_dsi_6g_v2_host_ops},
+-	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V2_2_0,
+-		&msm8998_dsi_cfg, &msm_dsi_6g_v2_host_ops},
+ 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V2_2_1,
+ 		&sdm845_dsi_cfg, &msm_dsi_6g_v2_host_ops},
+ 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V2_3_0,
+diff --git a/drivers/gpu/drm/msm/dsi/dsi_cfg.h b/drivers/gpu/drm/msm/dsi/dsi_cfg.h
+index 43f0dd74edb65..32eff45744624 100644
+--- a/drivers/gpu/drm/msm/dsi/dsi_cfg.h
++++ b/drivers/gpu/drm/msm/dsi/dsi_cfg.h
+@@ -19,8 +19,8 @@
+ #define MSM_DSI_6G_VER_MINOR_V1_3_1	0x10030001
+ #define MSM_DSI_6G_VER_MINOR_V1_4_1	0x10040001
+ #define MSM_DSI_6G_VER_MINOR_V1_4_2	0x10040002
++#define MSM_DSI_6G_VER_MINOR_V2_0_0	0x20000000
+ #define MSM_DSI_6G_VER_MINOR_V2_1_0	0x20010000
+-#define MSM_DSI_6G_VER_MINOR_V2_2_0	0x20000000
+ #define MSM_DSI_6G_VER_MINOR_V2_2_1	0x20020001
+ #define MSM_DSI_6G_VER_MINOR_V2_3_0	0x20030000
+ #define MSM_DSI_6G_VER_MINOR_V2_4_0	0x20040000
 -- 
 2.53.0
 
