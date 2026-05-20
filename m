@@ -1,67 +1,68 @@
-Return-Path: <stable+bounces-249731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249732-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qEqnC3UmDWo8twUAu9opvQ
-	(envelope-from <stable+bounces-249731-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 05:11:49 +0200
+	id SFiCLdklDWo8twUAu9opvQ
+	(envelope-from <stable+bounces-249732-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 05:09:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8907E587159
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 05:11:47 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8A2E5870E7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 05:09:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B4D66306BA80
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 03:08:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3958530265D6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 03:08:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 127E4331213;
-	Wed, 20 May 2026 03:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE0B2330B3F;
+	Wed, 20 May 2026 03:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="ABvjfNzn"
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="FoDSxdc8"
 X-Original-To: stable@vger.kernel.org
-Received: from out203-205-221-233.mail.qq.com (out203-205-221-233.mail.qq.com [203.205.221.233])
+Received: from out162-62-58-211.mail.qq.com (out162-62-58-211.mail.qq.com [162.62.58.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A063314C4;
-	Wed, 20 May 2026 03:08:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158DD17BED0;
+	Wed, 20 May 2026 03:08:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.58.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779246527; cv=none; b=JWM9UGy1ONm5SS0MvQuQNxoRBFgjMA/B/QDxMw0p4F5wrFLUVYzh8nqWiNfQ/L3/AUiNV7KlWNtCdr7Z/VIoF+EKOca7fK90uVukEkoHqzNYk5FCtiWmdd/G9ZEspheHGcr1ctDPDOrAzZCMlmop+nDhUy6iu3KyCEPTABg6I1E=
+	t=1779246534; cv=none; b=ERAvcUVXiJdGFnNXheGKsSV/GXImd5wgIUeJ7AYCPGqfPbtJmxbUGEbN1/0QnU1lXcvkEikRWvGrxmt4DwUThNeOlPW+wTc833nWe5LTfrMTpPHb587cM1+dJYxzQvsGXIMBkoOdQ3Z6OtoCJ34ppIp+Q8V7HBWYQsPYPidHzrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779246527; c=relaxed/simple;
-	bh=+A/8UfCVuc3HoGvfWb5xerd6zASwUyz7LVr3ZM+0VYs=;
+	s=arc-20240116; t=1779246534; c=relaxed/simple;
+	bh=LdDhmOvmUK4UpAL1mrmyxmYA4mZlMGY+44KcyoqnGvQ=;
 	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Vcipi+er0DdFqKg84OFmvDTD+4Q2NF+SBUz6rzNaoUCZ6Tim/lE6M73TJCLYR28I145xd6C122OpNi4ZhhoaEUp8O/AWej7Y8C2jG8KBkjAUZt8C8n3na7th9Wec+HyIcvvp1HUn1/tZ3vsZ+g3EhS6NCzgiPwScWA9auogRhrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=ABvjfNzn; arc=none smtp.client-ip=203.205.221.233
+	 MIME-Version; b=vAgOMfBIHRVMoLpidsqoeM8rhs4v8xZIcEqHFoB3WBqG6oLUMo70gm+8Mas66aB/Vl17o+gW1cjBBSaBBw1Cu8pxr7G1Oy0kurtWFzOzrXNl45tqge5vLaSgPrEHSiYJ0skPxAapPB8tdsDfcaLM/8VxiN64/cg68wHglUZLptg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=FoDSxdc8; arc=none smtp.client-ip=162.62.58.211
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1779246518;
-	bh=FBdO2ZdKG0UjUgimMPOfcquoq9sYhN3rdeOPDHj8bgI=;
+	s=s201512; t=1779246521;
+	bh=S6Um5vx+97M1tb2FlAGE4WpL2f1PWoO7RwTruyfUEIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ABvjfNzn0Y+p3fvs/DnPvLXVUDObJ468fg8tIUvwwKH71BFiaQZo6NmL5mam/dcN5
-	 dPXK81+61O1+zGnAPcO6trDjZnZaID1VjmJf/Pp34JYvEOUHTGJJwnoiM5iYSwFafN
-	 7plIB7sdWC7gV4a2EvVarFWwRSFPkUm0in8ZZPdQ=
+	b=FoDSxdc8xkl8uJ46mkPy5nLgF7KwlbYNzTCnCh3mjqyFlEG2UsL74SwDdtO9p6sqn
+	 wvhFIXRXdDoMZdX7D8/Ygip/qP49NZ89SWWVvAh1AHgR6RMzkmBKVefBMFHTBQVzMb
+	 H7hrPah2EToXDToB4/9idKEHmTFs3K03wfU1+RFA=
 Received: from China-team ([47.95.114.252])
 	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
 	id 215A5014; Wed, 20 May 2026 11:08:21 +0800
-X-QQ-mid: xmsmtpt1779246514tfa8ebmp4
-Message-ID: <tencent_5E3E7C2497AD95717A608A1A26694B6B7A09@qq.com>
-X-QQ-XMAILINFO: Oayzr6Bt9/qspB6roIxZROqMW7jUE374uNXZUMkyTmixn35XZJhMig7ykSy4ZP
-	 DwYhp/LkeDBaESi6y+/yVm+PJZNDso+9lGNvxLe3Ae1n+YjHkWRJKVOo3GeQLq4gdvwRoVCODMIs
-	 kzRNaMlDcIWeFW8Ct0RL3c5idnx442O3F+03pK2xo0EG3bpMEHOqtDHknmsr3O5gq+KLYfIm+VxC
-	 HqWHau5+KNDDjdT3RadVtSWJUGvv5Mx4s8Y94RI/hsemxTrPBlATRKWdXWP1s8o3P+N+Vw5YOfQZ
-	 1Q3oqfwP8eaPOZ2emNNu7rJvMg1e/JNZeaoY/NcEzY3+MMRWFUDzeoKUJW3p/GfymVunngwTXRj/
-	 NJjb8IFS6zTfvVdi2j2bUrnetuLXUjAtF4+3jiCvobXIrY90I8b2VDf+K2cZoWiAegqYcWvT7nob
-	 Mn2Dwf4pLcuj4NUO3gFWI4DEh4Gv3Cjbpp/9MIwbPk2cTFYKHcBI3zcj2A9YRRkvOAMl+9YkGd4A
-	 sFsDv9CbsuNQuHf8rluB+o9raohHVV8Y9KSgQVTvnXV5gpnZ7DVRKvClFBw8I8aD4HiIMrzQjwcX
-	 ZytGUn7OrF7Nl2YT7g/4Eyr2jcPrfSO43DBUNkvn5bQnAGiIC/u0e1MXxNSqvcqU9Tn9Gqutye9H
-	 tqdDD2dLZQ0Q5qYVAFzabuqW5nLjJXAW9p5caUSrtzNdTVe7nk2VVkqELOVrYQtwoaK9032jxIar
-	 zSygAzcLhxPbO3TXlONelBUdCqiUCFb0UQh7iilDf9YWgEZeZgUD/2mSeHfvlWfEGnOdk/Ahrh9x
-	 QOZa0z+OQYe0MIcg+M810Aow7hqnLsmFPdNrAaB3p9ttC/m2AZAP/dCFxYsxDBkULEYD6Ebsi0uw
-	 UK2tNX1EqdzUpGwV3SCzBXML447baevHXdSfujTT9xqTYPS/t1bgr/AJaC21ODOnw0n+NkUHQCoY
-	 bjfdtN2MZf00SLiUwaauxII8G4XBBEm87n6Vr0SXQTNAMsvQjykgDAmUyRsL5VkgaOy6j4ztYCX7
-	 Vxz2rYLrgqAR+6/i93eTTnn+EL/nENa1RKdffhQHdLtIqfbPuptk2OOfluvfM=
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+X-QQ-mid: xmsmtpt1779246517trbu94x03
+Message-ID: <tencent_2404270F46BFE18496AE06FA835C32CA5A05@qq.com>
+X-QQ-XMAILINFO: M/M2SMd6THQP8kZr40nJD2+jfSAxcxKFp74o50Ak7iuQSxAjyRv0zWLHnfqlse
+	 UGZUl2Fa82p9V8syOyDRF5Yznuee3pnN3bx1ShMu6+4KShtBk0JeqjZXCrk8VsIe3OfcmvUIrCNp
+	 E134FDFz1OzGbl+w86VeYq92nP3CHCdKaotm1gis5EP6n3bicLcNx+8o93Vjfv0gxomIXWk5wxKS
+	 fEV56nQPV+4prB9rw1bJYs2tRgAEz5ok6fRECZpZ6EV8n2tW44TzpF0cvqm4K4qvILwW1uPU/Gq5
+	 zIYyAmG8kLZZY70l55dAg6EU5tZ2YbRgR77Jghjyn8jhvtnVtf7SgOwJmigv696qUIEc1R7FPqKS
+	 gCeMzC07Jh8buWXhxxDy/vOZytEnRUxGRep2vUIxrVASQ9z69z0UFetCSt0oq0BUTm99T3nnmq+Y
+	 7Ch/Ku5+OoExBjLPPRSA8Qx8c6MyIge2wQOWHFkd4NQRM7jjYKsGc87Lt+B8MQX81qRx8N1qae/0
+	 RV8VZT1Gou+NXMSuptadFWHz88Zf1WF5aYhr5vcymMg6TN5INPim9/E88HL8Ib35e7FiOIAISO78
+	 vxx9wc5hyi2wX9eu9xR7EI8nxLbGssvRMU2UPZ+A7bTaD6k96LgnxN+I6nM2TAetXhT4vtCd8+5J
+	 XtjLvR71LGQL2IylYFujahgXv/JvU+/6hR9tw2tE85MHfeRSA+IwFLN0ugaz4Jw47QeTW/gSboDx
+	 fQYPWOQej6uDF3eEazblthLV2phL82ZpqXcCCz5K18REck/cLQzBQ5cc7oKycCSrNDhYcEXWFZ9g
+	 R0lTnEpWpB2HM44q/TpwTYbYyaOxnUFUoD/psSAawxqBJoHgtaSD7ZvXLtjP/9TN7I3DfTDQ3vpN
+	 DpAv0uBBOl7Vvg3+pLkXro+t+EsdXz0buanmqrFW4GYRxS2sXZc2yWslpF7L0E+9YRvaAt79+otF
+	 AyJsB3MojIHuVq1CnKyXHQx40wh5rY9nJpljCnMx303OcE81lntRUEwIZDwsAz6CS5VrHl632yDw
+	 4GwHUzy0D66nIQu2CiEbctPAiSmhonVXAyJQSNYOFYEnUtYiKk/T75yr8y4cWBnQ/mRSf5DM+Now
+	 MrRLDWDvAeWc1LicE4Xpf190DckA==
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
 From: Alva Lan <alvalan9@foxmail.com>
 To: gregkh@linuxfoundation.org,
 	sashal@kernel.org,
@@ -75,9 +76,9 @@ Cc: linux-kernel@vger.kernel.org,
 	ranjani.sridharan@linux.intel.com,
 	liam.r.girdwood@intel.com,
 	mateuszx.redzynia@intel.com
-Subject: [PATCH 6.6.y v2 2/3] ASoC: SOF: Intel: hda-dai: add support for dspless mode beyond HDAudio
-Date: Wed, 20 May 2026 11:08:01 +0800
-X-OQ-MSGID: <20260520030802.27966-3-alvalan9@foxmail.com>
+Subject: [PATCH 6.6.y v2 3/3] ASoC: SOF: Intel: hda: Fix NULL pointer dereference
+Date: Wed, 20 May 2026 11:08:02 +0800
+X-OQ-MSGID: <20260520030802.27966-4-alvalan9@foxmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260520030802.27966-1-alvalan9@foxmail.com>
 References: <20260520030802.27966-1-alvalan9@foxmail.com>
@@ -87,93 +88,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[foxmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[foxmail.com:s=s201512];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249731-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linux.intel.com,kernel.org,foxmail.com,intel.com];
 	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-249732-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,linux.intel.com,kernel.org,foxmail.com,intel.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[foxmail.com];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[alvalan9@foxmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[foxmail.com:+];
 	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,foxmail.com:email,foxmail.com:dkim,qq.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email]
-X-Rspamd-Queue-Id: 8907E587159
+	FREEMAIL_FROM(0.00)[foxmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:mid,intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,foxmail.com:email,foxmail.com:dkim]
+X-Rspamd-Queue-Id: B8A2E5870E7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
 
-[ Upstream commit 2065610b5ddd5b58eed1dc3b3c3db27a26ebd4b6 ]
+[ Upstream commit 16c589567a956d46a7c1363af3f64de3d420af20 ]
 
-For SoundWire/ALH, we need to have a dai configured, but we don't want
-to send a DMA_TLV to firmware. Add additional code branches.
+If there's a mismatch between the DAI links in the machine driver and
+the topology, it is possible that the playback/capture widget is not
+set, especially in the case of loopback capture for echo reference
+where we use the dummy DAI link. Return the error when the widget is not
+set to avoid a null pointer dereference like below when the topology is
+broken.
 
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+RIP: 0010:hda_dai_get_ops.isra.0+0x14/0xa0 [snd_sof_intel_hda_common]
+
+Signed-off-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
 Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Reviewed-by: Mateusz Redzynia <mateuszx.redzynia@intel.com>
 Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://msgid.link/r/20240213101247.28887-16-peter.ujfalusi@linux.intel.com
+Link: https://patch.msgid.link/20260204081833.16630-10-peter.ujfalusi@linux.intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Alva Lan <alvalan9@foxmail.com>
 ---
- sound/soc/sof/intel/hda-dai.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ sound/soc/sof/intel/hda-dai.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
 diff --git a/sound/soc/sof/intel/hda-dai.c b/sound/soc/sof/intel/hda-dai.c
-index f5bfa17bf650..1fe7cce16091 100644
+index 1fe7cce16091..a3d0b6d721aa 100644
 --- a/sound/soc/sof/intel/hda-dai.c
 +++ b/sound/soc/sof/intel/hda-dai.c
-@@ -83,6 +83,11 @@ hda_dai_get_ops(struct snd_pcm_substream *substream, struct snd_soc_dai *cpu_dai
+@@ -77,12 +77,22 @@ static const struct hda_dai_widget_dma_ops *
+ hda_dai_get_ops(struct snd_pcm_substream *substream, struct snd_soc_dai *cpu_dai)
+ {
+ 	struct snd_soc_dapm_widget *w = snd_soc_dai_get_widget(cpu_dai, substream->stream);
+-	struct snd_sof_widget *swidget = w->dobj.private;
++	struct snd_sof_widget *swidget;
+ 	struct snd_sof_dev *sdev;
+ 	struct snd_sof_dai *sdai;
  
- 	sdev = widget_to_sdev(w);
- 
-+	if (!swidget) {
-+		dev_err(sdev->dev, "%s: swidget is NULL\n", __func__);
+-	sdev = widget_to_sdev(w);
++	/*
++	 * this is unlikely if the topology and the machine driver DAI links match.
++	 * But if there's a missing DAI link in topology, this will prevent a NULL pointer
++	 * dereference later on.
++	 */
++	if (!w) {
++		dev_err(cpu_dai->dev, "%s: widget is NULL\n", __func__);
 +		return NULL;
 +	}
-+
- 	if (sdev->dspless_mode_selected)
- 		return hda_select_dai_widget_ops(sdev, swidget);
  
-@@ -364,8 +369,11 @@ static int non_hda_dai_hw_params(struct snd_pcm_substream *substream,
- 		return ret;
- 	}
- 
--	/* get stream_id */
- 	sdev = widget_to_sdev(w);
-+	if (sdev->dspless_mode_selected)
-+		goto skip_tlv;
-+
-+	/* get stream_id */
- 	hext_stream = ops->get_hext_stream(sdev, cpu_dai, substream);
- 
- 	if (!hext_stream) {
-@@ -398,6 +406,7 @@ static int non_hda_dai_hw_params(struct snd_pcm_substream *substream,
- 	dma_config->dma_stream_channel_map.device_count = 0; /* mapping not used */
- 	dma_config->dma_priv_config_size = 0;
- 
-+skip_tlv:
- 	return 0;
- }
- 
++	sdev = widget_to_sdev(w);
++	swidget = w->dobj.private;
+ 	if (!swidget) {
+ 		dev_err(sdev->dev, "%s: swidget is NULL\n", __func__);
+ 		return NULL;
 -- 
 2.43.0
 
