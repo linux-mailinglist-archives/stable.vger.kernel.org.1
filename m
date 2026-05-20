@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-252886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250856-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CEDxArQYDmqA6AUAu9opvQ
-	(envelope-from <stable+bounces-252886-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:25:24 +0200
+	id ECZEDYP5DWq75AUAu9opvQ
+	(envelope-from <stable+bounces-250856-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2286E5998EC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:25:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 766E15958C4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 40A1931BE8E5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:30:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 165CF35B7FAB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:02:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB5B1347514;
-	Wed, 20 May 2026 18:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D42813D7D7E;
+	Wed, 20 May 2026 17:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j07xDAJM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BN0mwC8i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE4533CEA2;
-	Wed, 20 May 2026 18:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D163D75D3;
+	Wed, 20 May 2026 17:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301846; cv=none; b=Y1gbVHSmUvR7TwxPAqbIrj8eYwCTYehOsFtCscQqaB3TI9OikBV44jY+DafW7oHTsetT/UaBT2MSaWLOk1XWyUpY/m4mTox5Ti8VsMKXB43OgOIu/KQB40u77bxyLnQ220v0Yu5PCNilbzuFjESCrTlrKxcgvDxRrY8+lSX+2oU=
+	t=1779296486; cv=none; b=BL1FKq5Uwsn2T7KOuCxcItKB3/iuhrWA70XRRNMd1061G80DCzqPFhO3NZmKUTshC6+glyyYxYQI/YBbeT/5YlLUpTD8kFO8aYf76wrT8+1+s++3B0D8bbzlwFmrqu5491ZX7AFxTSUrLOZktUezEIGq8L66u37dn9L+bJy7gR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301846; c=relaxed/simple;
-	bh=Q3rOB9MhqduJvL78/HrAdjM3r6MSlW2HZacgbgRz0Xk=;
+	s=arc-20240116; t=1779296486; c=relaxed/simple;
+	bh=ndov55ukpfyT3Pn4Ym9OGXDLNKJkJxqV7lE3hkxm71c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uTC1lhZGP3mG831iOj3ujWSHXBWl119uboDipvLpDP1sZjv5rebelyWnjQ4y8MlkoZhK6l+Ui0iiVHETL4UAq7RPDa9SnCgz+AV1bGHo3dA2sZgncg2J3T1aimmXP7TZc//vLAYM04uxPk981BuTHsiTT1EGNslb8FLCHbHQtrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j07xDAJM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E32791F000E9;
-	Wed, 20 May 2026 18:30:44 +0000 (UTC)
+	 MIME-Version; b=sEdNVCsNPTibSt9QehwYuSJ/mJZKMqGuZOPFCARaycp7oqr4rprOqveToBfXHZ1/eQoABPdZ5MjJfebszYun98lYiJQE89KpyYc3m/HC8WOLzxnzDjPS4UdOv7tEVPH5pmsz42yODg103bZ10q9APrfZZuhZPhoMnhkrB5NZrvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BN0mwC8i; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66DA21F000E9;
+	Wed, 20 May 2026 17:01:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301845;
-	bh=+AvYY2oohnb91YaQWTZs6ho1j3Qekgw+y6oY1WTekPg=;
+	s=korg; t=1779296484;
+	bh=2Elnzs48jdYzD53LI/OKF82zsG8LXy1EKqvsSrxDmKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=j07xDAJM0va2aee9QC24sOTcx20vUMa1Yv3W9Yaz3Imad++Js02AnaXVmchzjZAvJ
-	 nW8SXq3w1vs+9yk3wJlcZVr8iK5+WdEBqilnuD3duWvIb23i54zSuLe/HvsiW1z3cz
-	 s0lETi6z3E9c77d5kM4BlpiOpPjbRDvaf1oSbXRI=
+	b=BN0mwC8i+59WKP1zAoDlQUfeNjMksDADkw/rfKd6ZHdv7icJlD8W9RPW8mkeJPjiV
+	 Y5odWWTWcj3tksJdRLKtmUiCFZeRSRqbg5VZWvQyiTpoRqDSHGmFSRpn0PdFYT9Fft
+	 ZyUmtYM4Msip39r3Xh4Ejytt+1V4PSO+n3QBZ+ys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aditya Gupta <adityag@linux.ibm.com>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Hari Bathini <hbathini@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Yingnan Zhang <342144303@qq.com>,
+	Julian Anastasov <ja@ssi.bg>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 043/508] powerpc/crash: fix backup region offset update to elfcorehdr
+Subject: [PATCH 7.0 0816/1146] ipvs: fix MTU check for GSO packets in tunnel mode
 Date: Wed, 20 May 2026 18:17:46 +0200
-Message-ID: <20260520162059.526192668@linuxfoundation.org>
+Message-ID: <20260520162206.693939731@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,95 +64,132 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252886-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qq.com,ssi.bg,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-250856-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 2286E5998EC
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,ssi.bg:email,netfilter.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 766E15958C4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
+From: Yingnan Zhang <342144303@qq.com>
 
-[ Upstream commit 789335cacdf37da93bb7c70322dff8c7e82881df ]
+[ Upstream commit 67bf42cae41d847fd6e5749eb68278ca5d748b25 ]
 
-update_backup_region_phdr() in file_load_64.c iterates over all the
-program headers in the kdump kernel’s elfcorehdr and updates the
-p_offset of the program header whose physical address starts at 0.
+Currently, IPVS skips MTU checks for GSO packets by excluding them with
+the !skb_is_gso(skb) condition. This creates problems when IPVS tunnel
+mode encapsulates GSO packets with IPIP headers.
 
-However, the loop logic is incorrect because the program header pointer
-is not updated during iteration. Since elfcorehdr typically contains
-PT_NOTE entries first, the PT_LOAD program header with physical address
-0 is never reached. As a result, its p_offset is not updated to point to
-the backup region.
+The issue manifests in two ways:
 
-Because of this behavior, the capture kernel exports the first 64 KB of
-the crashed kernel’s memory at offset 0, even though that memory
-actually lives in the backup region. When a crash happens, purgatory
-copies the first 64 KB of the crashed kernel’s memory into the backup
-region so the capture kernel can safely use it.
+1. MTU violation after encapsulation:
+   When a GSO packet passes through IPVS tunnel mode, the original MTU
+   check is bypassed. After adding the IPIP tunnel header, the packet
+   size may exceed the outgoing interface MTU, leading to unexpected
+   fragmentation at the IP layer.
 
-This has not caused problems so far because the first 64 KB is usually
-identical in both the crashed and capture kernels. However, this is
-just an assumption and is not guaranteed to always hold true.
+2. Fragmentation with problematic IP IDs:
+   When net.ipv4.vs.pmtu_disc=1 and a GSO packet with multiple segments
+   is fragmented after encapsulation, each segment gets a sequentially
+   incremented IP ID (0, 1, 2, ...). This happens because:
 
-Fix update_backup_region_phdr() to correctly update the p_offset of the
-program header with a starting physical address of 0 by correcting the
-logic used to iterate over the program headers.
+   a) The GSO packet bypasses MTU check and gets encapsulated
+   b) At __ip_finish_output, the oversized GSO packet is split into
+      separate SKBs (one per segment), with IP IDs incrementing
+   c) Each SKB is then fragmented again based on the actual MTU
 
-Fixes: cb350c1f1f86 ("powerpc/kexec_file: Prepare elfcore header for crashing kernel")
-Reviewed-by: Aditya Gupta <adityag@linux.ibm.com>
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Reviewed-by: Hari Bathini <hbathini@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20260312083051.1935737-2-sourabhjain@linux.ibm.com
+   This sequential IP ID allocation differs from the expected behavior
+   and can cause issues with fragment reassembly and packet tracking.
+
+Fix this by properly validating GSO packets using
+skb_gso_validate_network_len(). This function correctly validates
+whether the GSO segments will fit within the MTU after segmentation. If
+validation fails, send an ICMP Fragmentation Needed message to enable
+proper PMTU discovery.
+
+Fixes: 4cdd34084d53 ("netfilter: nf_conntrack_ipv6: improve fragmentation handling")
+Signed-off-by: Yingnan Zhang <342144303@qq.com>
+Acked-by: Julian Anastasov <ja@ssi.bg>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kexec/file_load_64.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/ipvs/ip_vs_xmit.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
-index 7b71737ae24cc..12cbfc9fce451 100644
---- a/arch/powerpc/kexec/file_load_64.c
-+++ b/arch/powerpc/kexec/file_load_64.c
-@@ -773,7 +773,7 @@ static void update_backup_region_phdr(struct kimage *image, Elf64_Ehdr *ehdr)
- 	unsigned int i;
+diff --git a/net/netfilter/ipvs/ip_vs_xmit.c b/net/netfilter/ipvs/ip_vs_xmit.c
+index 3601eb86d0250..7c570f48ade28 100644
+--- a/net/netfilter/ipvs/ip_vs_xmit.c
++++ b/net/netfilter/ipvs/ip_vs_xmit.c
+@@ -102,6 +102,18 @@ __ip_vs_dst_check(struct ip_vs_dest *dest)
+ 	return dest_dst;
+ }
  
- 	phdr = (Elf64_Phdr *)(ehdr + 1);
--	for (i = 0; i < ehdr->e_phnum; i++) {
-+	for (i = 0; i < ehdr->e_phnum; i++, phdr++) {
- 		if (phdr->p_paddr == BACKUP_SRC_START) {
- 			phdr->p_offset = image->arch.backup_start;
- 			pr_debug("Backup region offset updated to 0x%lx\n",
++/* Based on ip_exceeds_mtu(). */
++static bool ip_vs_exceeds_mtu(const struct sk_buff *skb, unsigned int mtu)
++{
++	if (skb->len <= mtu)
++		return false;
++
++	if (skb_is_gso(skb) && skb_gso_validate_network_len(skb, mtu))
++		return false;
++
++	return true;
++}
++
+ static inline bool
+ __mtu_check_toobig_v6(const struct sk_buff *skb, u32 mtu)
+ {
+@@ -111,10 +123,9 @@ __mtu_check_toobig_v6(const struct sk_buff *skb, u32 mtu)
+ 		 */
+ 		if (IP6CB(skb)->frag_max_size > mtu)
+ 			return true; /* largest fragment violate MTU */
+-	}
+-	else if (skb->len > mtu && !skb_is_gso(skb)) {
++	} else if (ip_vs_exceeds_mtu(skb, mtu))
+ 		return true; /* Packet size violate MTU size */
+-	}
++
+ 	return false;
+ }
+ 
+@@ -232,7 +243,7 @@ static inline bool ensure_mtu_is_adequate(struct netns_ipvs *ipvs, int skb_af,
+ 			return true;
+ 
+ 		if (unlikely(ip_hdr(skb)->frag_off & htons(IP_DF) &&
+-			     skb->len > mtu && !skb_is_gso(skb) &&
++			     ip_vs_exceeds_mtu(skb, mtu) &&
+ 			     !ip_vs_iph_icmp(ipvsh))) {
+ 			icmp_send(skb, ICMP_DEST_UNREACH, ICMP_FRAG_NEEDED,
+ 				  htonl(mtu));
 -- 
 2.53.0
 
