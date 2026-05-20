@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-250601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252181-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IOq2B6b0DWos5AUAu9opvQ
-	(envelope-from <stable+bounces-250601-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:51:34 +0200
+	id kI3tCPD/DWqA5QUAu9opvQ
+	(envelope-from <stable+bounces-252181-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A20A8594BF4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:51:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B346596ED2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 242E437AB4A0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:51:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BC67038DB13D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:00:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7840D372EED;
-	Wed, 20 May 2026 16:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 151A23F39C9;
+	Wed, 20 May 2026 18:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NeNASpDu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fhhdQrHb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B84735201E;
-	Wed, 20 May 2026 16:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3E933DEE5;
+	Wed, 20 May 2026 18:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295838; cv=none; b=GOAEcy3+IGyFUEWObZ1CAkUhyg78PmMj70LBKQsVE3CinbEqNr2nb9GHiVHHyXFXdpCVfNlDJmaiXtaktrVPSb3KFunW/66srBPc+A4xmpfh6pGYVbTIAk7HaN7ELWryeAxObQA9oARvaEAvD1EDSSykB4bhgnvD6kkztFUP03U=
+	t=1779300003; cv=none; b=keIIL+uMO71xorZ6gOfMHJnDx7sczMFN9/gb1Q8UBr7FNu08+gkSatjV8GsZ8rhyanK8srPwR2rkfRa1aWnSrZHqRXFNapsf2Cr9PkBCfe9stxqF8GAUvp5cyNkBuQ0Nl4XQtUIJQBY+t5O2hhW7icifn7dK1iKMGvTifMJL6XM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295838; c=relaxed/simple;
-	bh=lLKCDByZlBuiglCoORcsvSwTaGj6AXXhSW/9lr86FrU=;
+	s=arc-20240116; t=1779300003; c=relaxed/simple;
+	bh=VOueD3MKeM8t5bnLz344AMMd+hR6TRhn+gaTEcDCWyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FvdnA9/bEcKZRh5v03e6GxKjdh/wpOOd/9s1JEVmsPqYCiVl6eve6QsoLl5pDc5O5qEob0WzjJcvJ+k3xseuwkXn3UKDQul4kFQ/XPJ1XkRkHk8C2WwqvU6+hfgKjCmRJlWZYTRoDPleImanU1V+r2hQrg49Cwu8Di/9E0kyGsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NeNASpDu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49CD21F000E9;
-	Wed, 20 May 2026 16:50:36 +0000 (UTC)
+	 MIME-Version; b=nIMDd9ua4JHDAe9YDMIx+XIW5qG+sRXRU3WzyfsOQ1BW+ZobwwMgrJW4JTQCxfoHfapDHflV9KPSaRBVdcx7CFVPOLpetPgLN4+4/ssAhntfYUS9dEaHH0RP2yf6Pe6ExYGztlErgabZzyY17FjddflVqTj514lQR3po/b2sfGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fhhdQrHb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B1ED1F000E9;
+	Wed, 20 May 2026 18:00:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295836;
-	bh=ZkiOmFlUQYq9zVLdCBkmTnrL+/6x8kafLvw260+GWek=;
+	s=korg; t=1779300002;
+	bh=eLk7cjpeV9lxIbHe7jVLxg3CoXWzkpSVZaVxNhqiwh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NeNASpDuHx9VBFhD3GFHIsNY2qSk8qCaTqP9PJ/cAmP33eRe/5baOEGSpeFHIpu+2
-	 1Lq7WQ9V2XQu0c86n8/K4eVYTRUKxVSDPLo4HBAOSlrxRMHmwqcbp3ti1aF9407E5i
-	 1eM6xby5K3WL4RYkp7CDDF3z2gHb5TqvfK2WTPPc=
+	b=fhhdQrHbGuZRvWhPuTwNsRiD7WR7bFw2/URt/Z4/yZQyVBbfVOrqnC54SsfaywyzO
+	 301VbhouvrDTXvJuW0jQLcHkNfYmbBKSLOLyTMzh6hGRXfUXHzCz9gHnQ0bThb9JV5
+	 TSA4RSkJ16/PQMxU3SzUPnukXS2fpDn2Yc9JXSVg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Khairul Anuar Romli <karom.9560@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Chunhai Guo <guochunhai@vivo.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0572/1146] dmaengine: dw-axi-dmac: fix Alignment should match open parenthesis
+Subject: [PATCH 6.12 011/666] erofs: verify metadata accesses for file-backed mounts
 Date: Wed, 20 May 2026 18:13:42 +0200
-Message-ID: <20260520162201.128878457@linuxfoundation.org>
+Message-ID: <20260520162111.476779194@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,131 +65,93 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250601-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252181-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,vivo.com,linux.alibaba.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,checkpatch.pl:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: A20A8594BF4
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 7B346596ED2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Khairul Anuar Romli <karom.9560@gmail.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit 6c5883a9ba296d2797437066592d15b2d202de7a ]
+[ Upstream commit 307210c262a29f41d7177851295ea1703bd04175 ]
 
-checkpatch.pl --strict reports a CHECK warning in dw-axi-dmac-platform.c:
+For file-backed mounts, metadata is fetched via the page cache of
+backing inodes to avoid double caching and redundant copy ops out
+of RO uptodate folios, which is used by Android APEXes, ComposeFS,
+containerd.  However, rw_verify_area() was missing prior to
+metadata accesses.
 
-  CHECK: Alignment should match open parenthesis
+Similar to vfs_iocb_iter_read(), fix this by:
+ - Enabling fanotify pre-content hooks on metadata accesses;
+ - security_file_permission() for security modules.
 
-This warning occurs when multi-line function calls or expressions have
-continuation lines that don't properly align with the opening parenthesis
-position.
+Verified that fanotify pre-content hooks now works correctly.
 
-This patch fixes all instances in dw-axi-dmac-platform.c where continuation
-lines were indented with an inconsistent number of spaces/tabs that neither
-matched the parenthesis column nor followed a standard indent pattern.
-Proper alignment improves code readability and maintainability by making
-parameter lists visually consistent across the kernel codebase.
-
-Fixes: 1fe20f1b8454 ("dmaengine: Introduce DW AXI DMAC driver")
-Fixes: e32634f466a9 ("dma: dw-axi-dmac: support per channel interrupt")
-Signed-off-by: Khairul Anuar Romli <karom.9560@gmail.com>
-Link: https://patch.msgid.link/20260202060224.12616-2-karom.9560@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: fb176750266a ("erofs: add file-backed mount support")
+Acked-by: Amir Goldstein <amir73il@gmail.com>
+Reviewed-by: Chunhai Guo <guochunhai@vivo.com>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ fs/erofs/data.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
-index 5d74bc29cf896..b9fbfeb873e76 100644
---- a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
-+++ b/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
-@@ -342,8 +342,8 @@ static void axi_desc_put(struct axi_dma_desc *desc)
- 	kfree(desc);
- 	atomic_sub(descs_put, &chan->descs_allocated);
- 	dev_vdbg(chan2dev(chan), "%s: %d descs put, %d still allocated\n",
--		axi_chan_name(chan), descs_put,
--		atomic_read(&chan->descs_allocated));
-+		 axi_chan_name(chan), descs_put,
-+		 atomic_read(&chan->descs_allocated));
- }
- 
- static void vchan_desc_put(struct virt_dma_desc *vdesc)
-@@ -353,7 +353,7 @@ static void vchan_desc_put(struct virt_dma_desc *vdesc)
- 
- static enum dma_status
- dma_chan_tx_status(struct dma_chan *dchan, dma_cookie_t cookie,
--		  struct dma_tx_state *txstate)
-+		   struct dma_tx_state *txstate)
+diff --git a/fs/erofs/data.c b/fs/erofs/data.c
+index 91182d5e3a66c..192c7ed885acd 100644
+--- a/fs/erofs/data.c
++++ b/fs/erofs/data.c
+@@ -30,6 +30,20 @@ void *erofs_bread(struct erofs_buf *buf, erofs_off_t offset,
  {
- 	struct axi_dma_chan *chan = dchan_to_axi_dma_chan(dchan);
- 	struct virt_dma_desc *vdesc;
-@@ -491,7 +491,7 @@ static void axi_chan_start_first_queued(struct axi_dma_chan *chan)
+ 	pgoff_t index = offset >> PAGE_SHIFT;
+ 	struct folio *folio = NULL;
++	loff_t fpos;
++	int err;
++
++	/*
++	 * Metadata access for file-backed mounts reuses page cache of backing
++	 * fs inodes (only folio data will be needed) to prevent double caching.
++	 * However, the data access range must be verified here in advance.
++	 */
++	if (buf->file) {
++		fpos = index << PAGE_SHIFT;
++		err = rw_verify_area(READ, buf->file, &fpos, PAGE_SIZE);
++		if (err < 0)
++			return ERR_PTR(err);
++	}
  
- 	desc = vd_to_axi_desc(vd);
- 	dev_vdbg(chan2dev(chan), "%s: started %u\n", axi_chan_name(chan),
--		vd->tx.cookie);
-+		 vd->tx.cookie);
- 	axi_chan_block_xfer_start(chan, desc);
- }
- 
-@@ -1162,7 +1162,7 @@ static irqreturn_t dw_axi_dma_interrupt(int irq, void *dev_id)
- 		axi_chan_irq_clear(chan, status);
- 
- 		dev_vdbg(chip->dev, "%s %u IRQ status: 0x%08x\n",
--			axi_chan_name(chan), i, status);
-+			 axi_chan_name(chan), i, status);
- 
- 		if (status & DWAXIDMAC_IRQ_ALL_ERR)
- 			axi_chan_handle_err(chan, status);
-@@ -1451,7 +1451,7 @@ static int axi_req_irqs(struct platform_device *pdev, struct axi_dma_chip *chip)
- 		if (chip->irq[i] < 0)
- 			return chip->irq[i];
- 		ret = devm_request_irq(chip->dev, chip->irq[i], dw_axi_dma_interrupt,
--				IRQF_SHARED, KBUILD_MODNAME, chip);
-+				       IRQF_SHARED, KBUILD_MODNAME, chip);
- 		if (ret < 0)
- 			return ret;
- 	}
-@@ -1645,7 +1645,7 @@ static void dw_remove(struct platform_device *pdev)
- 	of_dma_controller_free(chip->dev->of_node);
- 
- 	list_for_each_entry_safe(chan, _chan, &dw->dma.channels,
--			vc.chan.device_node) {
-+				 vc.chan.device_node) {
- 		list_del(&chan->vc.chan.device_node);
- 		tasklet_kill(&chan->vc.task);
- 	}
+ 	if (buf->page) {
+ 		folio = page_folio(buf->page);
 -- 
 2.53.0
 
