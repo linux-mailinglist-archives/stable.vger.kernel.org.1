@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-250583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251520-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oC7OA+/nDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250583-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:57:19 +0200
+	id oK1/HpsbDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251520-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:37:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CB27592B35
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:57:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2395599DB8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:37:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1B6863098509
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:50:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 57A0E3401224
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:29:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ABFF3D7D7E;
-	Wed, 20 May 2026 16:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5CB036F421;
+	Wed, 20 May 2026 17:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1JJnV7az"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sCLJB0kz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D6C3D8129;
-	Wed, 20 May 2026 16:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5543F3D5642;
+	Wed, 20 May 2026 17:29:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295793; cv=none; b=Gar3KbD8eroBYOH+hZLkPrZ+Qye7EoB/+M0S+ygv558AyVRHdvwOEWmc6AlrkzVNMYBmT7PCHyluwG9F28vyxt9kvBeJZm4XxoNt7wKZIhCdbTK0zcYkStm9DbpZrYTtq6P4LUT6vKndseqyPpHRROxurYugWXeCqt+auedoI1A=
+	t=1779298195; cv=none; b=oG5Zu96hk82oArMIxfiyRxZjPvD9UJ1KZvTmPeMOEGT7Xpv2OI728AE0Ys0NSaPM3/qqw9s3ohbio3qvkjcQ5CD9L0GodQjUboEClFJQht7cv4SHrGYea+A3Ljl8GtkKypPKI/Un+PSsyLgSArk1F8HpkgzedWgAxe9zy3OZS0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295793; c=relaxed/simple;
-	bh=Aq3ABlbJiOp9hrqGveJQFZu3XTfIA/ep5mwOBoSw5WM=;
+	s=arc-20240116; t=1779298195; c=relaxed/simple;
+	bh=Y/9xAeFQg/S7e7C0pn0VO2JCQUXdb6p1JzLOyujQG/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HGFlArEJN3twHD5wvRVKeBnzds1ZuGNk45SAVApEKEfS2QBgCFzP1w14V30Rhw+1dNlN0inRufFs9ty9L5j7EMpOvWm8e5WjoJqdxp96v8wjb2SUkpDuWaVjwmh+3i9moo+hlWR1tmQ8t4CePZGQ9mNS3XgSZHz/9hLK0EFX3bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1JJnV7az; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C22C21F00893;
-	Wed, 20 May 2026 16:49:49 +0000 (UTC)
+	 MIME-Version; b=qYQbGrYWrGzO4DK6uWtv+hoQiMEN2J/+aT1MNRsr5XOoeqbfjLyNbcV0Qn3Yswb/5vXOCLjDg15ZjIRwlY3wA48G5b+HTMvOStmjOsa4g08CQ5LSx8hEKKFwNUd99ajmu+QXpE6zjkSbqZtYDuHftLDnHqd7GFnyTZIiyDhb91o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sCLJB0kz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE1011F000E9;
+	Wed, 20 May 2026 17:29:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295790;
-	bh=SngIPOWVT7jY+2RkHFpkz67aUGlhoLJs+g80suHuW1g=;
+	s=korg; t=1779298194;
+	bh=h6OPKn4yxezDNIqrVua6JOrGBqCUeXfCxbzVoxZEmfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1JJnV7azsUfOeJCu/xFPDK+u4KyVZ6l8oTxls/okck26yXmhROd3r7Ct/lOaY4sbM
-	 D/DeIc45RCGPdp5NGrRpONUsGazOJHPrxwdJPCQQp3lyd2uNEaxhYDCC7qGj51a4Te
-	 EohvuhNUaJvt3rjplebYSHzhncL+jKTTlC1J/bDE=
+	b=sCLJB0kzzgWELL8xPX3UMdXAbn6OmsLicLsE0okzhUapw/Du0mr9zoYLE2hvgWKs/
+	 gXMrbh0EeSCXXi1ycFRxMfSFCoOUmiZNpSWwnKyHYJSc7YX46r+baJGvHkuu/JsClV
+	 sUYP+xit649oJoo0edIRotU/6FGEmjeKqDn7ATDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Vidya Sagar <vidyas@nvidia.com>,
+	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0552/1146] arm64: tegra: Fix RTC aliases
+Subject: [PATCH 6.18 319/957] PCI: tegra194: Increase LTSSM poll time on surprise link down
 Date: Wed, 20 May 2026 18:13:22 +0200
-Message-ID: <20260520162200.671408259@linuxfoundation.org>
+Message-ID: <20260520162141.449847112@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,84 +71,136 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-250583-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251520-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	DBL_PROHIBIT(0.00)[0.51.225.64:email];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,0.0.0.0:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nvidia.com:email,3c:email,0.52.203.160:email]
-X-Rspamd-Queue-Id: 7CB27592B35
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: F2395599DB8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jon Hunter <jonathanh@nvidia.com>
+From: Manikanta Maddireddy <mmaddireddy@nvidia.com>
 
-[ Upstream commit 69ec77b3f1074f3000d28f67f7629303e7999b84 ]
+[ Upstream commit 74dd8efe4d6cead433162147333af989a568aac7 ]
 
-The following warning is observed on the Tegra234 Jetson platforms ...
+On surprise link down, LTSSM state transits from L0 -> Recovery.RcvrLock ->
+Recovery.RcvrSpeed -> Gen1 Recovery.RcvrLock -> Detect. Recovery.RcvrLock
+and Recovery.RcvrSpeed transit times are 24 ms and 48 ms respectively, so
+the total time from L0 to Detect is ~96 ms. Increase the poll timeout to
+120 ms to account for this.
 
- rtc-nvidia-vrs10 4-003c: /aliases ID 0 not available
+While at it, add LTSSM state defines for Detect-related states and use them
+in the poll condition. Use readl_poll_timeout() instead of
+readl_poll_timeout_atomic() in tegra_pcie_dw_pme_turnoff() since that path
+runs in non-atomic context.
 
-This happens because the 'rtc@c2a0000' device is registered before the
-vrs10 RTC and so is assigned the 'rtc0' alias. We want the vrs10 RTC to
-be the default RTC because this RTC maintains time across power cycles.
-Fix this by adding a 'rtc1' alias for the 'rtc@c2a0000' device.
-
-Fixes: b1806f2b4e78 ("arm64: tegra: Add device-tree node for NVVRS RTC")
-Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Fixes: 56e15a238d92 ("PCI: tegra: Add Tegra194 PCIe support")
+Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://patch.msgid.link/20260324190755.1094879-3-mmaddireddy@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/nvidia/tegra234-p3701.dtsi | 1 +
- arch/arm64/boot/dts/nvidia/tegra234-p3767.dtsi | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/pci/controller/dwc/pcie-tegra194.c | 36 +++++++++++++---------
+ 1 file changed, 21 insertions(+), 15 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/nvidia/tegra234-p3701.dtsi b/arch/arm64/boot/dts/nvidia/tegra234-p3701.dtsi
-index 58bf55c0e414c..c10d041c183be 100644
---- a/arch/arm64/boot/dts/nvidia/tegra234-p3701.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra234-p3701.dtsi
-@@ -9,6 +9,7 @@ aliases {
- 		mmc0 = "/bus@0/mmc@3460000";
- 		mmc1 = "/bus@0/mmc@3400000";
- 		rtc0 = "/bpmp/i2c/pmic@3c";
-+		rtc1 = "/bus@0/rtc@c2a0000";
- 	};
+diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+index d2d3139e81d36..d2fefd5c8b08f 100644
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -137,7 +137,11 @@
+ #define APPL_DEBUG_PM_LINKST_IN_L0		0x11
+ #define APPL_DEBUG_LTSSM_STATE_MASK		GENMASK(8, 3)
+ #define APPL_DEBUG_LTSSM_STATE_SHIFT		3
+-#define LTSSM_STATE_PRE_DETECT			5
++#define LTSSM_STATE_DETECT_QUIET		0x00
++#define LTSSM_STATE_DETECT_ACT			0x08
++#define LTSSM_STATE_PRE_DETECT_QUIET		0x28
++#define LTSSM_STATE_DETECT_WAIT			0x30
++#define LTSSM_STATE_L2_IDLE			0xa8
  
- 	bus@0 {
-diff --git a/arch/arm64/boot/dts/nvidia/tegra234-p3767.dtsi b/arch/arm64/boot/dts/nvidia/tegra234-p3767.dtsi
-index ab391a71c3d33..9e9e80d57623c 100644
---- a/arch/arm64/boot/dts/nvidia/tegra234-p3767.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra234-p3767.dtsi
-@@ -8,6 +8,7 @@ / {
- 	aliases {
- 		mmc0 = "/bus@0/mmc@3400000";
- 		rtc0 = "/bpmp/i2c/pmic@3c";
-+		rtc1 = "/bus@0/rtc@c2a0000";
- 	};
+ #define APPL_RADM_STATUS			0xE4
+ #define APPL_PM_XMT_TURNOFF_STATE		BIT(0)
+@@ -198,7 +202,8 @@
+ #define CAP_SPCIE_CAP_OFF_USP_TX_PRESET0_MASK	GENMASK(11, 8)
+ #define CAP_SPCIE_CAP_OFF_USP_TX_PRESET0_SHIFT	8
  
- 	bus@0 {
+-#define LTSSM_TIMEOUT 50000	/* 50ms */
++#define LTSSM_DELAY_US		10000	/* 10 ms */
++#define LTSSM_TIMEOUT_US	120000	/* 120 ms */
+ 
+ #define GEN3_GEN4_EQ_PRESET_INIT	5
+ 
+@@ -1626,15 +1631,14 @@ static void tegra_pcie_dw_pme_turnoff(struct tegra_pcie_dw *pcie)
+ 		data &= ~APPL_CTRL_LTSSM_EN;
+ 		writel(data, pcie->appl_base + APPL_CTRL);
+ 
+-		err = readl_poll_timeout_atomic(pcie->appl_base + APPL_DEBUG,
+-						data,
+-						((data &
+-						APPL_DEBUG_LTSSM_STATE_MASK) >>
+-						APPL_DEBUG_LTSSM_STATE_SHIFT) ==
+-						LTSSM_STATE_PRE_DETECT,
+-						1, LTSSM_TIMEOUT);
++		err = readl_poll_timeout(pcie->appl_base + APPL_DEBUG, data,
++			((data & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_QUIET) ||
++			((data & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_ACT) ||
++			((data & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_PRE_DETECT_QUIET) ||
++			((data & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_WAIT),
++			LTSSM_DELAY_US, LTSSM_TIMEOUT_US);
+ 		if (err)
+-			dev_info(pcie->dev, "Link didn't go to detect state\n");
++			dev_info(pcie->dev, "LTSSM state: 0x%x detect timeout: %d\n", data, err);
+ 	}
+ 	/*
+ 	 * DBI registers may not be accessible after this as PLL-E would be
+@@ -1714,12 +1718,14 @@ static void pex_ep_event_pex_rst_assert(struct tegra_pcie_dw *pcie)
+ 	appl_writel(pcie, val, APPL_CTRL);
+ 
+ 	ret = readl_poll_timeout(pcie->appl_base + APPL_DEBUG, val,
+-				 ((val & APPL_DEBUG_LTSSM_STATE_MASK) >>
+-				 APPL_DEBUG_LTSSM_STATE_SHIFT) ==
+-				 LTSSM_STATE_PRE_DETECT,
+-				 1, LTSSM_TIMEOUT);
++		((val & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_QUIET) ||
++		((val & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_ACT) ||
++		((val & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_PRE_DETECT_QUIET) ||
++		((val & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_DETECT_WAIT) ||
++		((val & APPL_DEBUG_LTSSM_STATE_MASK) == LTSSM_STATE_L2_IDLE),
++		LTSSM_DELAY_US, LTSSM_TIMEOUT_US);
+ 	if (ret)
+-		dev_err(pcie->dev, "Failed to go Detect state: %d\n", ret);
++		dev_info(pcie->dev, "LTSSM state: 0x%x detect timeout: %d\n", val, ret);
+ 
+ 	reset_control_assert(pcie->core_rst);
+ 
 -- 
 2.53.0
 
