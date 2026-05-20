@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-250906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252935-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UByOKFnqDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250906-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:07:37 +0200
+	id eDZFKgcADmo95QUAu9opvQ
+	(envelope-from <stable+bounces-252935-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:40:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63D76592F20
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:07:37 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93313596F42
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:40:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C074C306B55E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:04:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 793E130C7BA3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:32:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7E493F4DFC;
-	Wed, 20 May 2026 17:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92ECD340407;
+	Wed, 20 May 2026 18:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oB62szc/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xlPBD6pG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C0003F54A7;
-	Wed, 20 May 2026 17:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B06285CBA;
+	Wed, 20 May 2026 18:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296615; cv=none; b=AieSlO29+WItqHJgDl9v8vRkH7j0iZbuAUTa/wqlUa7gfXiWp6Rbaqds/vN6zVrY1ctwB7vMXAjS1L7cL5B4PweEyGe3Gk45WU9JO9I50qi2qYwZtjGFPKu5cO2RHacPTSE8yVfj9s1ccYdPLksKji8HnIFNl40jWbUkq2zZWyY=
+	t=1779301973; cv=none; b=IooZ0AH0naLEzNynuzFO3y7tUw3Bf47O32he8ZNFQf1fQG8xZJAD5Ld55d+6Et1hHs1bRRJOql8DYrueTCnFvh+eqwftU4jny80Y04re/6Ky4ZmMDzYrD6Bjd6sq+x0Yev302FAyCiIQnmf2DdMzAFQKq2PBFyVELutDBEA06u0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296615; c=relaxed/simple;
-	bh=2F88ok+X7HJ4t4x/lVhuGjI8vIVAFyEpy+YLXrO+GNc=;
+	s=arc-20240116; t=1779301973; c=relaxed/simple;
+	bh=mYS4/5Oryq5oG8fJgFovj8Of4siLofh0s4Y8EKF4wSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QCBsnWGq59DT5Jau1RUR7BvwxRYx9cZib8MF0mUQfG2SVNwXjPUNpYhkBj11Ut05N7/xTXZGVOqSRWmmb199eV6Eo/UCdl4GdyUxUiBwrqnFYE5RHj8iIDR8JKNL25c+T8ru5n4k6Pnefy61xI0GtrNU8aF7OGIU/HCLmBLEqbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oB62szc/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E277D1F000E9;
-	Wed, 20 May 2026 17:03:33 +0000 (UTC)
+	 MIME-Version; b=ueDylHCBo0fILJA5CoSrixVNleg1QQtw1VRAyz3+MWMNHRWPNqvfOBP4SgHat7F8P5Qlj53Bxpc9Ysa8/qZD+gMNxSeZ5RNwnDgu6HPAar/MlPEi8ja4Kxo1by2sgd8d8+OEaOLE5lGcI9t1lPexOXE/jz4xj6Ed48ATjJYDoWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xlPBD6pG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5DD21F000E9;
+	Wed, 20 May 2026 18:32:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296614;
-	bh=bD55u0x/vwcY3afR3YOxKIV8aHxccyZdQpA86oK4S6o=;
+	s=korg; t=1779301972;
+	bh=KRPPlO1SVOeu/JzvBXyOIwfKtwq9PAM+9VwPSyvmwUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oB62szc/LM2dOrU3mrYgF1Gt3rQWnpRC2lOnX2eO0UpxFU8g34ApFlKi3bGFmucOD
-	 SDAoo+CiOPjHITdv5xv7CXgjPvekNnr2BuExFmTOwuoPG8Ln3WitsAsvNFHcqyqSqp
-	 O3AGZ8kCtN1TQZeYSeuDSOqQWVrMCpOYMnyTdRIg=
+	b=xlPBD6pGCdOOFyBTiZhPMEpf0PQZeVQezJFsJAjs+Hcu0KUkKGKXLWxvuCb2qqRUJ
+	 PMK+Fh747r/CUaA34Zu4hBn+eoIXwH5wHcAsoA4WS38jeupi9KWvo1g4c9an/I+XxW
+	 vnJSYYLUmTQr3L7FNhcmjGUEuAlBiAQZJNsqjmpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian Brauner (Amutable)" <brauner@kernel.org>,
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0864/1146] eventpoll: kill __ep_remove()
+Subject: [PATCH 6.6 091/508] dm cache: fix null-deref with concurrent writes in passthrough mode
 Date: Wed, 20 May 2026 18:18:34 +0200
-Message-ID: <20260520162207.791523139@linuxfoundation.org>
+Message-ID: <20260520162100.587631008@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,163 +66,118 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252935-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250906-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 63D76592F20
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 93313596F42
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-[ Upstream commit e9e5cd40d7c403e19f21d0f7b8b8ba3a76b58330 ]
+[ Upstream commit 7d1f98d668ee34c1d15bdc0420fdd062f24a27c0 ]
 
-Remove the boolean conditional in __ep_remove() and restructure the code
-so the check for racing with eventpoll_release_file() are only done in
-the ep_remove_safe() path where they belong.
+In passthrough mode, when dm-cache starts to invalidate a cache
+entry and bio prison cell lock fails due to concurrent write to
+the same cached block, mg->cell remains NULL. The error path in
+invalidate_complete() attempts to unlock and free the cell
+unconditionally, causing a NULL pointer dereference:
 
-Link: https://patch.msgid.link/20260423-work-epoll-uaf-v1-3-2470f9eec0f5@kernel.org
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-Stable-dep-of: a6dc643c6931 ("eventpoll: fix ep_remove struct eventpoll / struct file UAF")
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+CPU: 0 UID: 0 PID: 134 Comm: fio Not tainted 6.19.0-rc7 #3 PREEMPT
+RIP: 0010:dm_cell_unlock_v2+0x3f/0x210
+<snip>
+Call Trace:
+ invalidate_complete+0xef/0x430
+ map_bio+0x130f/0x1a10
+ cache_map+0x320/0x6b0
+ __map_bio+0x458/0x510
+ dm_submit_bio+0x40e/0x16d0
+ __submit_bio+0x419/0x870
+<snip>
+
+Reproduce steps:
+
+1. Create a cache device
+
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
+dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
+dmsetup create cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+
+2. Promote the first data block into cache
+
+fio --filename=/dev/mapper/cache --name=populate --rw=write --bs=4k \
+--direct=1 --size=64k
+
+3. Reload the cache into passthrough mode
+
+dmsetup suspend cache
+dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 passthrough smq 0"
+dmsetup resume cache
+
+4. Write to the first cached block concurrently
+
+fio --filename=/dev/mapper/cache --name test --rw=randwrite --bs=4k \
+--randrepeat=0 --direct=1 --numjobs=2 --size 64k
+
+Fix by checking if mg->cell is valid before attempting to unlock it.
+
+Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/eventpoll.c | 67 ++++++++++++++++++++++----------------------------
- 1 file changed, 30 insertions(+), 37 deletions(-)
+ drivers/md/dm-cache-target.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-index 99188c30fe6c7..c45995e790cfb 100644
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -826,49 +826,18 @@ static void ep_free(struct eventpoll *ep)
- 	kfree_rcu(ep, rcu);
- }
+diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
+index 0d002d50329da..9c4aa5180a70e 100644
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -1458,8 +1458,10 @@ static void invalidate_complete(struct dm_cache_migration *mg, bool success)
+ 	struct cache *cache = mg->cache;
  
--static void __ep_remove_file(struct eventpoll *ep, struct epitem *epi, struct file *file);
--static bool __ep_remove_epi(struct eventpoll *ep, struct epitem *epi);
--
--/*
-- * Removes a "struct epitem" from the eventpoll RB tree and deallocates
-- * all the associated resources. Must be called with "mtx" held.
-- * If the dying flag is set, do the removal only if force is true.
-- * This prevents ep_clear_and_put() from dropping all the ep references
-- * while running concurrently with eventpoll_release_file().
-- * Returns true if the eventpoll can be disposed.
-- */
--static bool __ep_remove(struct eventpoll *ep, struct epitem *epi, bool force)
--{
--	struct file *file = epi->ffd.file;
--
--	lockdep_assert_irqs_enabled();
--
--	/*
--	 * Removes poll wait queue hooks.
--	 */
--	ep_unregister_pollwait(ep, epi);
--
--	/* Remove the current item from the list of epoll hooks */
--	spin_lock(&file->f_lock);
--	if (epi->dying && !force) {
--		spin_unlock(&file->f_lock);
--		return false;
--	}
--
--	__ep_remove_file(ep, epi, file);
--	return __ep_remove_epi(ep, epi);
--}
--
- /*
-  * Called with &file->f_lock held,
-  * returns with it released
-  */
--static void __ep_remove_file(struct eventpoll *ep, struct epitem *epi, struct file *file)
-+static void __ep_remove_file(struct eventpoll *ep, struct epitem *epi,
-+			     struct file *file)
- {
- 	struct epitems_head *to_free = NULL;
- 	struct hlist_head *head = file->f_ep;
- 
- 	lockdep_assert_held(&ep->mtx);
-+	lockdep_assert_held(&file->f_lock);
- 
- 	if (hlist_is_singular_node(&epi->fllink, head)) {
- 		/* See eventpoll_release() for details. */
-@@ -915,7 +884,25 @@ static bool __ep_remove_epi(struct eventpoll *ep, struct epitem *epi)
-  */
- static void ep_remove_safe(struct eventpoll *ep, struct epitem *epi)
- {
--	if (__ep_remove(ep, epi, false))
-+	struct file *file = epi->ffd.file;
-+
-+	lockdep_assert_irqs_enabled();
-+	lockdep_assert_held(&ep->mtx);
-+
-+	ep_unregister_pollwait(ep, epi);
-+
-+	/* sync with eventpoll_release_file() */
-+	if (unlikely(READ_ONCE(epi->dying)))
-+		return;
-+
-+	spin_lock(&file->f_lock);
-+	if (epi->dying) {
-+		spin_unlock(&file->f_lock);
-+		return;
+ 	bio_list_init(&bios);
+-	if (dm_cell_unlock_v2(cache->prison, mg->cell, &bios))
+-		free_prison_cell(cache, mg->cell);
++	if (mg->cell) {
++		if (dm_cell_unlock_v2(cache->prison, mg->cell, &bios))
++			free_prison_cell(cache, mg->cell);
 +	}
-+	__ep_remove_file(ep, epi, file);
-+
-+	if (__ep_remove_epi(ep, epi))
- 		WARN_ON_ONCE(ep_refcount_dec_and_test(ep));
- }
  
-@@ -1147,7 +1134,7 @@ void eventpoll_release_file(struct file *file)
- 	spin_lock(&file->f_lock);
- 	if (file->f_ep && file->f_ep->first) {
- 		epi = hlist_entry(file->f_ep->first, struct epitem, fllink);
--		epi->dying = true;
-+		WRITE_ONCE(epi->dying, true);
- 		spin_unlock(&file->f_lock);
- 
- 		/*
-@@ -1156,7 +1143,13 @@ void eventpoll_release_file(struct file *file)
- 		 */
- 		ep = epi->ep;
- 		mutex_lock(&ep->mtx);
--		dispose = __ep_remove(ep, epi, true);
-+
-+		ep_unregister_pollwait(ep, epi);
-+
-+		spin_lock(&file->f_lock);
-+		__ep_remove_file(ep, epi, file);
-+		dispose = __ep_remove_epi(ep, epi);
-+
- 		mutex_unlock(&ep->mtx);
- 
- 		if (dispose && ep_refcount_dec_and_test(ep))
+ 	if (!success && mg->overwrite_bio)
+ 		bio_io_error(mg->overwrite_bio);
 -- 
 2.53.0
 
