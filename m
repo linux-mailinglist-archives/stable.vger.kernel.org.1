@@ -1,182 +1,326 @@
-Return-Path: <stable+bounces-251069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251094-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YOF5NXfuDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-251069-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:25:11 +0200
+	id QHwuFSv3DWpd5AUAu9opvQ
+	(envelope-from <stable+bounces-251094-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:02:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52E4F593995
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:25:10 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 562C859527B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:02:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1E29B30CB53A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:10:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B916931ACDE6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:11:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A951F3F076F;
-	Wed, 20 May 2026 17:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C77153EF0D7;
+	Wed, 20 May 2026 17:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b="kgOTCnr4"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="qJRNy+xf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255A03A7850
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 17:10:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D01277C88;
+	Wed, 20 May 2026 17:11:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297019; cv=none; b=NPR+JDPAhyoPe/RvIUwjPAn2ft9xoJx7ROfhZAI+3hlO1pt0HOE39gsrdDxqoRcYMr7JTcZ5vq5NMLCSRilk7tNkjh3Yt/wBCLvsqI4duJKSCPavc7adiexb5THe38ymU6y2HRzZBYt/zqzmzOIn0K17Plfn2ONvmsncSf3kxb0=
+	t=1779297084; cv=none; b=mEsKhmLU8NeOhS+3qOvNBqnwfHWP259Z2SmonFpc6D+lbOdh66bk1Uu9hKVWZ1eGSCfcrMObDhs3ddBN4Zo8obFkbiQU7JRIzYE+L6R/UOiixoqnHopzpIAti1GZaXmBy165q/dmbHN9a+gcXukXAZF4Vg2aiQISk3OqOlvCINY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297019; c=relaxed/simple;
-	bh=WRjV1fblvYAQ22vZ0eqwhU4cl3qJbPBDiN5/spvOquc=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:Mime-Version:
-	 References:In-Reply-To; b=ZNiBaQNFzTBYe3xYIiI2Y7MEmJl6hKjd7JhMA6KEf+RyhIKWVaoZnqbp2tmE0uZnbVDzFIkUnn5Sn07JsbAHqjfWlAE9mnshBj0sD6gqi8tEARmm1RBLK+fROXrML5/pZlgGLE/d7E7Knzu9RpZWCnxhJaoIzwTQkSKLEMJoiAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nexthop.ai; spf=pass smtp.mailfrom=nexthop.ai; dkim=pass (2048-bit key) header.d=nexthop.ai header.i=@nexthop.ai header.b=kgOTCnr4; arc=none smtp.client-ip=74.125.82.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nexthop.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nexthop.ai
-Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-1357c851a48so5574983c88.1
-        for <stable@vger.kernel.org>; Wed, 20 May 2026 10:10:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nexthop.ai; s=google; t=1779297017; x=1779901817; darn=vger.kernel.org;
-        h=in-reply-to:references:content-transfer-encoding:mime-version:to
-         :from:subject:cc:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WRjV1fblvYAQ22vZ0eqwhU4cl3qJbPBDiN5/spvOquc=;
-        b=kgOTCnr4iddIuKdp+BhE9fK9Mt2bZ3S3aRzEufl6VclCT6WQtDrrHJfXV4ylSnT/DP
-         p2tClAHROUpnRwN2haiaCqw+Z6RELm3JvNYSD/X96OOPV3//cYAfxYFbjb1anueF55d9
-         /4x9oyv5mAMU7NG0lN/mhqcpIkjiJNZCPd3iUsB0bLVv2Rhw8XdsstEGPgRwwHCTMxaQ
-         MF5IwEaekIEZbTBawcb2d3f3iuciQYU489ZUNWyNUWg0Ez5PeIRSGjd42jxUQdX10Hso
-         PLZZv0U2C91V+3R4gyRlfp0Ziu/jF4jokg1K/X+TO662jk53gvw3g0gurppH+E7989Su
-         kSHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779297017; x=1779901817;
-        h=in-reply-to:references:content-transfer-encoding:mime-version:to
-         :from:subject:cc:message-id:date:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=WRjV1fblvYAQ22vZ0eqwhU4cl3qJbPBDiN5/spvOquc=;
-        b=Ww1CPnt3EvasBWpmCkPs5Jns+mLnSuaRXn8ABZbeudlb22rTD3o16OvmZ2Zr2Ymyg7
-         T3KNcpMOUT02+SUy7ggcMrTrk1n1Ey2bLW1BTtIfBUypFC7yHQatf4aysM6B4pkGrPES
-         L7ZserkIg5FnjfPlozyipw5Y0hOXfV9d3KhLGhy3yxRyS0cnRoNUZCjL58XPI5oWRPFR
-         XNvNJ4z5i5NxamRAuVpyaTAQWFeVb5TM0BQWfLrqyLWPZUHMjuH1LtZMaEIoM3Advunf
-         zZup42ZpEg0De9Fu0wIhg4EmLryxX3Q8lLP1p7Ed1VHoG0id+w2h5rN/w3BDtY6UbKiZ
-         Yi0g==
-X-Forwarded-Encrypted: i=1; AFNElJ9wg7NJrz3hkAChgOKh3WM/Jjnj5q9AttxiN+jm3FYY/vCbVXHHvm8lEhOYh4ZTkFLglknMxyM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1K3xZZUe71H+rfIClfNdKCALheyZoWDo409fTidWCC+oqYYno
-	Y9dAoG3qaYhhMUsFglshp7rlVkXcK991OV8OmtzdMarEKvkaeFj1Ff4GpeLuZWI+gmtXnKFTtwX
-	aDhB3Kq4=
-X-Gm-Gg: Acq92OHa2qYUJKEJSGoOmpJ96IND3sJM+eyYI3m4YjdNCf8T1k8RNMF7mnme5CWt9Vh
-	miUa6XRB9KfvZkulfnPFMVXZceP3wtkSFYybhD7etkk3tTcdsSNxfV+5+SgR7gTTwL+3+VItI+b
-	a8oCr2bu44AmyabiZE6mzhs/vMevAbeaS+86VHXo+wBXV7MGYUEOOT/XikuMYT6ecdaGjavvTGC
-	o3ein162WJY2FXHxO3elRPM7Q987atGXBGKX1XxwvGK3qC6ko2YuCfthy+2LDG4undQoL4LZUO2
-	mBmPqhKAIwMaMgiO5d7Wz3EJAep3orMYOlaisjnowfRfFdMFzPqOU+/vrFYEQqEdRHNUBx7rPV0
-	Aq167O96heTTG879nhUUJhDvA2uC+eMDzu2jtkUv+W7gIBZ8Wqmcigfqn9r6T7Rvqg3FS5WRJ+Q
-	/LaLOgMs01gT0cCeGr8ZtOYzo=
-X-Received: by 2002:a05:7022:40d:b0:135:31e7:4e62 with SMTP id a92af1059eb24-13531e75045mr8225611c88.13.1779297016998;
-        Wed, 20 May 2026 10:10:16 -0700 (PDT)
-Received: from localhost ([50.145.100.174])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-134cbcb9ef5sm26085229c88.2.2026.05.20.10.10.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 May 2026 10:10:16 -0700 (PDT)
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 20 May 2026 10:10:15 -0700
-Message-Id: <DINO5GQHP6VK.ZBC2D5ENBYKW@nexthop.ai>
-Cc: <linux-hwmon@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <stable@vger.kernel.org>, "Guenter Roeck" <groeck7@gmail.com>
-Subject: Re: [PATCH v4 0/3] hwmon: (pmbus/adm1266) add clear_blackbox and
- powerup_counter debugfs entries
-From: "Abdurrahman Hussain" <abdurrahman@nexthop.ai>
-To: "Guenter Roeck" <linux@roeck-us.net>, "Abdurrahman Hussain"
- <abdurrahman@nexthop.ai>, "Alexandru Tachici"
- <alexandru.tachici@analog.com>
+	s=arc-20240116; t=1779297084; c=relaxed/simple;
+	bh=k4KMELZOZMjReqUINd6UWjfPtFpSJBooYrdFY9fuOQQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Ghawdw2iZ3mCRJ6YtODUZEnYvIcLW2eoDbKSutRI7IWqwLEib2q84cRbeIO2SSVUW2TJ7e2K71JQ4IdBAeMsdRh2ewfynp6rN1dSn1wyp9uEVRTzE4EZC/EcBuz0ZAYv1QxsS3PNfPQZsXpzcBnrXglPUv/e7wPXmAhQeKamoY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=qJRNy+xf; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64KCPslF4002074;
+	Wed, 20 May 2026 17:11:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=SsYY2v5J0FFWddj+V
+	ekcEqqu1s6FY7VRl+LYEUz+cfQ=; b=qJRNy+xf4ou7+htYgJT/+ZXg1EYOao69L
+	q5Xgo6yMnPbP4Av5BfpU4bylX1sVrkQutUr+WcXMyhyED77u5xGp+UJs5z7XjF4X
+	2bNgYxMiOyfIepqd3muz+yiNX+ulCrvqiMDNjpwK9053NkXkfnqu+An6s61x9pSY
+	RmdjqlbtbIuZjLUZHxVRbobANAHdpmNNizyVR2tZj+Jmemm5H3GOPwIyL0W2GLLY
+	kQPW4zpOz27CcHOuw6wqWnUkMUs3DYYg+ciMO8QDpIedqx+DZBvX2o8eIB9KxBJL
+	eIvOImnBYYSyGILSs0HuDiSE0BvgCYn/1UVLpHxapbigfKs+q7mcg==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6h9y37cq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 20 May 2026 17:11:18 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64KH94CR022634;
+	Wed, 20 May 2026 17:11:18 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e72wq8hhk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 20 May 2026 17:11:18 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64KHBGd167043824
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 20 May 2026 17:11:16 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6A0C558063;
+	Wed, 20 May 2026 17:11:16 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 651B358055;
+	Wed, 20 May 2026 17:11:15 +0000 (GMT)
+Received: from IBM-D32RQW3.ibm.com (unknown [9.61.255.46])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 20 May 2026 17:11:15 +0000 (GMT)
+From: Farhan Ali <alifm@linux.ibm.com>
+To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pci@vger.kernel.org
+Cc: helgaas@kernel.org, alex@shazbot.org, alifm@linux.ibm.com,
+        schnelle@linux.ibm.com, mjrosato@linux.ibm.com, stable@vger.kernel.org
+Subject: [PATCH v17 1/7] PCI: Allow per function PCI slots to fix slot reset on s390
+Date: Wed, 20 May 2026 10:11:07 -0700
+Message-ID: <20260520171113.1111-2-alifm@linux.ibm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260520171113.1111-1-alifm@linux.ibm.com>
+References: <20260520171113.1111-1-alifm@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: aerc 0.21.0
-References: <20260516-adm1266-v4-0-1f8df4797258@nexthop.ai>
- <da0fbce2-788e-4419-8ca1-975311951ce3@roeck-us.net>
-In-Reply-To: <da0fbce2-788e-4419-8ca1-975311951ce3@roeck-us.net>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIwMDE2NiBTYWx0ZWRfX7vfA+62mpLPU
+ A/gW8RLAXhhc+T+Bh+LacWGqy36nEygqCGqn8cjQ3KDieHrPuMM2MZodYJd550tHAh7lD+eSswO
+ CmfZSNKqctTR/w2+Rmjdn7LYDOFfclMRzrHzsMnel2JoTIx35x7p5CDp0AriHXn3qz7wp75+RBL
+ 5J9RsyP7MkdNFzDVvVLQ9MFs0eH1YSmAHOxa/OZpBeIoUtPghVPOtI1peqdwiVkcF/QSehLpwfd
+ bcoMgzB2ntlVAVWhYcJVuhsQjnuq1ccXieKuGRKXwN923qMxIl++jbgp0pmT2x0Uc/s3PHXJ7uw
+ USxjdaimA9f6h1fnq7+pSAYs4//CU2YYLe1RyoBA4ol6ILNN9O2UtezW7s5577QwMOIxf8PwbyJ
+ Dm8i9pBdzxognDYQyMY7XR97QqI+0BViSasqyTArYWV248UW0W3IXwJmkQirBwz0AKwZSepaajA
+ +6C3dDc3iGnXsjJUZyg==
+X-Authority-Analysis: v=2.4 cv=BNuDalQG c=1 sm=1 tr=0 ts=6a0deb36 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=9_SSeoq7eJPDN4OswFYA:9 a=O8hF6Hzn-FEA:10
+X-Proofpoint-ORIG-GUID: BKYDTmnLMs7ufXX1OeHxu3kTj6LQy7s8
+X-Proofpoint-GUID: BKYDTmnLMs7ufXX1OeHxu3kTj6LQy7s8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-20_03,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 priorityscore=1501 malwarescore=0 impostorscore=0 suspectscore=0
+ lowpriorityscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605200166
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[nexthop.ai,none];
-	MV_CASE(0.50)[];
-	R_DKIM_ALLOW(-0.20)[nexthop.ai:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251069-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[nexthop.ai:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[abdurrahman@nexthop.ai,stable@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251094-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,nexthop.ai:mid,nexthop.ai:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 52E4F593995
+	FROM_NEQ_ENVFROM(0.00)[alifm@linux.ibm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_COUNT_SEVEN(0.00)[11]
+X-Rspamd-Queue-Id: 562C859527B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed May 20, 2026 at 7:10 AM PDT, Guenter Roeck wrote:
-> Hi,
->
-> On 5/16/26 18:18, Abdurrahman Hussain wrote:
->> This is what remains of the v3 series after Guenter applied patches
->> 1/5 (firmware_revision) and 5/5 (GPIO line label) to hwmon-next, and
->> asked for patch 4/5 (rtc_class) to be dropped.
->>=20
->> Patch 1 adds a write-only clear_blackbox debugfs file. Devices
->> configured for single-recording mode (BLACKBOX_CONFIG[0] =3D 0) need
->> an explicit clear once the 32-record buffer fills; the documented
->> sub-command ({0xFE, 0x00} block-write to 0xDE) wasn't reachable
->> from userspace. The patch also acquires pmbus_lock at the
->> adm1266_nvmem_read() callback boundary so the memset of
->> data->dev_mem, the blackbox refill, and the memcpy to userspace run
->> as a single critical section -- the nvmem core does not serialize
->> concurrent reg_read calls.
->>=20
->> Patch 2 exposes the non-volatile POWERUP_COUNTER (0xE4) via debugfs.
->> The same value is embedded in every blackbox record, so the live
->> value lets userspace match a captured record back to the boot it
->> came from when correlating logs. The block-read is taken under
->> pmbus_lock to serialise against any pmbus_core PAGE+register
->> sequence on the device.
->>=20
->> Patch 3 takes pmbus_lock in adm1266_state_read() (the pre-existing
->> sequencer_state debugfs handler) for the same defensive-locking
->> reason that motivates the new debugfs files in patches 1 and 2:
->> any direct device access from outside pmbus_core should be ordered
->> with respect to pmbus_core's own PAGE+register sequences.
->>=20
->> Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
->
-> The series no longer applies after applying the bug fix series.
-> Please rebase it on top of the hwmon-next branch of
-> git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git
-> and resubmit.
->
-> Sorry for the trouble, and thanks a lot for fixing all the problems
-> with the driver.
->
-> Guenter
+On s390 systems, which use a machine level hypervisor, PCI devices are
+always accessed through a form of PCI pass-through which fundamentally
+operates on a per PCI function granularity. This is also reflected in the
+s390 PCI hotplug driver which creates hotplug slots for individual PCI
+functions. Its reset_slot() function, which is a wrapper for
+zpci_hot_reset_device(), thus also resets individual functions.
 
-Will do, thank you for your support!
+Currently, the kernel's PCI_SLOT() macro assigns the same pci_slot object
+to multifunction devices. This approach worked fine on s390 systems that
+only exposed virtual functions as individual PCI domains to the operating
+system.  Since commit 44510d6fa0c0 ("s390/pci: Handling multifunctions")
+s390 supports exposing the topology of multifunction PCI devices by
+grouping them in a shared PCI domain. This creates a problem when resetting
+a function through the hotplug driver's slot_reset() interface.
 
-Abdurrahman
+When attempting to reset a function through the hotplug driver, the shared
+slot assignment causes the wrong function to be reset instead of the
+intended one. It also leaks memory as we do create a pci_slot object for
+the function, but don't correctly free it in pci_slot_release().
+
+Add a flag for struct pci_slot to allow per function PCI slots for
+functions managed through a hypervisor, which exposes individual PCI
+functions while retaining the topology. Since we can use all 8 bits
+for slot 'number' (for ARI devices), change slot 'number' u16 to
+account for special values -1 and PCI_SLOT_ALL_DEVICES.
+
+Fixes: 44510d6fa0c0 ("s390/pci: Handling multifunctions")
+Cc: stable@vger.kernel.org
+Suggested-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+---
+ drivers/pci/hotplug/rpaphp_slot.c |  2 +-
+ drivers/pci/pci.c                 |  5 +++--
+ drivers/pci/slot.c                | 33 +++++++++++++++++++++++--------
+ include/linux/pci.h               |  8 ++++++--
+ 4 files changed, 35 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/pci/hotplug/rpaphp_slot.c b/drivers/pci/hotplug/rpaphp_slot.c
+index 67362e5b9971..92eabf5f61b9 100644
+--- a/drivers/pci/hotplug/rpaphp_slot.c
++++ b/drivers/pci/hotplug/rpaphp_slot.c
+@@ -84,7 +84,7 @@ int rpaphp_register_slot(struct slot *slot)
+ 	struct hotplug_slot *php_slot = &slot->hotplug_slot;
+ 	u32 my_index;
+ 	int retval;
+-	int slotno = -1;
++	int slotno = PCI_SLOT_PLACEHOLDER;
+ 
+ 	dbg("%s registering slot:path[%pOF] index[%x], name[%s] pdomain[%x] type[%d]\n",
+ 		__func__, slot->dn, slot->index, slot->name,
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index d34266651ad0..f5f8291482b0 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -4865,8 +4865,9 @@ static int pci_reset_hotplug_slot(struct hotplug_slot *hotplug, bool probe)
+ 
+ static int pci_dev_reset_slot_function(struct pci_dev *dev, bool probe)
+ {
+-	if (dev->multifunction || dev->subordinate || !dev->slot ||
+-	    dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET)
++	if (dev->subordinate || !dev->slot ||
++	    dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET ||
++	    (dev->multifunction && !dev->slot->per_func_slot))
+ 		return -ENOTTY;
+ 
+ 	return pci_reset_hotplug_slot(dev->slot->hotplug, probe);
+diff --git a/drivers/pci/slot.c b/drivers/pci/slot.c
+index 6d5cd37bfb1e..894d6213ed30 100644
+--- a/drivers/pci/slot.c
++++ b/drivers/pci/slot.c
+@@ -37,7 +37,7 @@ static const struct sysfs_ops pci_slot_sysfs_ops = {
+ 
+ static ssize_t address_read_file(struct pci_slot *slot, char *buf)
+ {
+-	if (slot->number == 0xff)
++	if (slot->number == (u16)PCI_SLOT_PLACEHOLDER)
+ 		return sysfs_emit(buf, "%04x:%02x\n",
+ 				  pci_domain_nr(slot->bus),
+ 				  slot->bus->number);
+@@ -72,6 +72,23 @@ static ssize_t cur_speed_read_file(struct pci_slot *slot, char *buf)
+ 	return bus_speed_read(slot->bus->cur_bus_speed, buf);
+ }
+ 
++static bool pci_dev_matches_slot(struct pci_dev *dev, struct pci_slot *slot)
++{
++	if (slot->per_func_slot)
++		return dev->devfn == slot->number;
++
++	return slot->number == PCI_SLOT_ALL_DEVICES ||
++		PCI_SLOT(dev->devfn) == slot->number;
++}
++
++static bool pci_slot_enabled_per_func(void)
++{
++	if (IS_ENABLED(CONFIG_S390))
++		return true;
++
++	return false;
++}
++
+ static void pci_slot_release(struct kobject *kobj)
+ {
+ 	struct pci_dev *dev;
+@@ -82,8 +99,7 @@ static void pci_slot_release(struct kobject *kobj)
+ 
+ 	down_read(&pci_bus_sem);
+ 	list_for_each_entry(dev, &slot->bus->devices, bus_list)
+-		if (slot->number == PCI_SLOT_ALL_DEVICES ||
+-		    PCI_SLOT(dev->devfn) == slot->number)
++		if (pci_dev_matches_slot(dev, slot))
+ 			dev->slot = NULL;
+ 	up_read(&pci_bus_sem);
+ 
+@@ -187,8 +203,7 @@ void pci_dev_assign_slot(struct pci_dev *dev)
+ 
+ 	mutex_lock(&pci_slot_mutex);
+ 	list_for_each_entry(slot, &dev->bus->slots, list)
+-		if (slot->number == PCI_SLOT_ALL_DEVICES ||
+-		    PCI_SLOT(dev->devfn) == slot->number)
++		if (pci_dev_matches_slot(dev, slot))
+ 			dev->slot = slot;
+ 	mutex_unlock(&pci_slot_mutex);
+ }
+@@ -267,7 +282,7 @@ struct pci_slot *pci_create_slot(struct pci_bus *parent, int slot_nr,
+ 
+ 	mutex_lock(&pci_slot_mutex);
+ 
+-	if (slot_nr == -1)
++	if (slot_nr == PCI_SLOT_PLACEHOLDER)
+ 		goto placeholder;
+ 
+ 	/*
+@@ -298,6 +313,9 @@ struct pci_slot *pci_create_slot(struct pci_bus *parent, int slot_nr,
+ 	slot->bus = pci_bus_get(parent);
+ 	slot->number = slot_nr;
+ 
++	if (pci_slot_enabled_per_func())
++		slot->per_func_slot = 1;
++
+ 	slot->kobj.kset = pci_slots_kset;
+ 
+ 	slot_name = make_slot_name(name);
+@@ -318,8 +336,7 @@ struct pci_slot *pci_create_slot(struct pci_bus *parent, int slot_nr,
+ 
+ 	down_read(&pci_bus_sem);
+ 	list_for_each_entry(dev, &parent->devices, bus_list)
+-		if (slot_nr == PCI_SLOT_ALL_DEVICES ||
+-		    PCI_SLOT(dev->devfn) == slot_nr)
++		if (pci_dev_matches_slot(dev, slot))
+ 			dev->slot = slot;
+ 	up_read(&pci_bus_sem);
+ 
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 2c4454583c11..d58982aa8730 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -78,14 +78,18 @@
+  * and, if ARI Forwarding is enabled, functions may appear to be on multiple
+  * devices.
+  */
+-#define PCI_SLOT_ALL_DEVICES	0xfe
++#define PCI_SLOT_ALL_DEVICES	0xfeff
++
++/* Used to identify a slot as a placeholder */
++#define PCI_SLOT_PLACEHOLDER	-1
+ 
+ /* pci_slot represents a physical slot */
+ struct pci_slot {
+ 	struct pci_bus		*bus;		/* Bus this slot is on */
+ 	struct list_head	list;		/* Node in list of slots */
+ 	struct hotplug_slot	*hotplug;	/* Hotplug info (move here) */
+-	unsigned char		number;		/* Device nr, or PCI_SLOT_ALL_DEVICES */
++	u16			number;		/* Device nr, or PCI_SLOT_ALL_DEVICES */
++	unsigned int		per_func_slot:1; /* Allow per function slot */
+ 	struct kobject		kobj;
+ };
+ 
+-- 
+2.43.0
 
 
