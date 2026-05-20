@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-253016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251917-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cL/YAZ0JDmru5gUAu9opvQ
-	(envelope-from <stable+bounces-253016-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:21:01 +0200
+	id ONTdASz1DWoz5AUAu9opvQ
+	(envelope-from <stable+bounces-251917-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 936355982DB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:20:58 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85C17594DDB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A88EA303F5B9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E441530B4221
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:47:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98ED2371CEA;
-	Wed, 20 May 2026 18:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C693F23A4;
+	Wed, 20 May 2026 17:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="omIrEhYU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6W+vxD4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C73318ED6;
-	Wed, 20 May 2026 18:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0113F1AD9;
+	Wed, 20 May 2026 17:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302185; cv=none; b=TE9KFk8Bc18La/3R5vL2mFdrnQ1XBKe+BdLpA2gvr+OCFfdXlGJDjLarig1Km0HMbbRI3JGSGhGabWmj/jGrB66puQ0rJSSqz39mDz/KN4ZHCoYl8jps+UafXsDLT6uEUR/ziaYpZVQXoVcgtyTsePdIAb+TtBAwOI8Zn5ZntKY=
+	t=1779299223; cv=none; b=kK0jVfVs4G0a89rV+fhFJnwYliwwp2tBErMaGxt8CiIz/DyhySvj8mHX4btPYEZJMlfVKw9X0lY6t7pUdRoUPUajglEf6QkRR56rnqUaTFYnWNUKCGXqA81hPU/EoqA+lqfhW3Fkd3fKq6++lkXzxv/j1So6vNXjb8aEuwYA3zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302185; c=relaxed/simple;
-	bh=L2Igj5PVqhG1PpXDnF0KawmPQueMAUu5xBZsg1jWBAk=;
+	s=arc-20240116; t=1779299223; c=relaxed/simple;
+	bh=07UIlzeca6P0L85wkC6rLOL4heIbHjh6U5jBy8UvTno=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DXq9Ij8Nhn70rOQQzN3wYakiGDS5/C60h+yUl8hcO04z+XKwtzueG7DDwFjJuyIfW9gly7n/5IRvtGtM5JyuxAZ3HG34rYXv3ckzEBxEhx9a2tpo8aYdszqaYZpnu0PdWV7FuR93K8hVpEeQJqTcYrgVKEtEi2YOrQ6cVTzu8Cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=omIrEhYU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53E271F000E9;
-	Wed, 20 May 2026 18:36:22 +0000 (UTC)
+	 MIME-Version; b=D33KILzrQOR/zFLLiId244vpKZN1gUxXsO7CAKhMmCqH+KcmmXfIEo9lrzRmrxuqVz9uO3F+qfxjZvVNVeBJZis79KwH5U7p5DODYXjFIwBNVuYhxOFL6uPTNpFagGO3+USHkWP1d+AiLbhYMTm1naX00k7u/5nGcNLbytNeBS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6W+vxD4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D73381F00893;
+	Wed, 20 May 2026 17:47:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302182;
-	bh=b876Ss5MicYGKH9NOmS/Pqfwl4zZpeI+vqqlHkFJarw=;
+	s=korg; t=1779299222;
+	bh=gn3oZMW5cT9vtgexx2d9Oyl6yv0a45sDOOmpVH3Z02w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=omIrEhYUeLwBlRbeJzI9QPi4BPf9kkIhKP1rLDkAvOP0Pw9OrEmCig2tb45+ErYSP
-	 i5nuH/kVihYDYgmPiMKmeSMOaKTiXGwoMjZvRE0ZN3rsnF88UaV8zSCFlpMXe8qmm2
-	 KrMArdrZ0D5g6vcvwqrCFUBgyaNl8bL7BDFv7w8U=
+	b=X6W+vxD4tPi3pw/R02ympcRCr8zNJXFImTpYwAOVvf7xWpcVGxDs7ejLLMddyfAsD
+	 0tBDCiEEZtBv+6Cb8o5kCdnqwqrrCjsnecyPcC/VAALW6ooRrNekFg5zy4hJVYsVvX
+	 mfAhJHDC1BXHgnzl3DfcpfTfT9HzRCzYsuDDkqYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 128/508] drm/amd/pm/smu7: Add SCLK cap for quirky Hawaii board
+Subject: [PATCH 6.18 668/957] slip: reject VJ receive packets on instances with no rstate array
 Date: Wed, 20 May 2026 18:19:11 +0200
-Message-ID: <20260520162101.401189098@linuxfoundation.org>
+Message-ID: <20260520162149.020244107@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,163 +65,133 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253016-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org,redhat.com];
+	TAGGED_FROM(0.00)[bounces-251917-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,amd.com:email]
-X-Rspamd-Queue-Id: 936355982DB
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,asu.edu:email,msgid.link:url]
+X-Rspamd-Queue-Id: 85C17594DDB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit 4724bc5b8d78c34b993594f9406135408ccb312a ]
+[ Upstream commit e76607442d5b73e1ba6768f501ef815bb58c2c0e ]
 
-On a specific Radeon R9 390X board, the GPU can "randomly" hang
-while gaming. Initially I thought this was a RADV bug and tried
-to work around this in Mesa:
-commit 8ea08747b86b ("radv: Mitigate GPU hang on Hawaii in Dota 2 and RotTR")
+slhc_init() accepts rslots == 0 as a valid configuration, with the
+documented meaning of 'no receive compression'. In that case the
+allocation loop in slhc_init() is skipped, so comp->rstate stays
+NULL and comp->rslot_limit stays 0 (from the kzalloc of struct
+slcompress).
 
-However, I got some feedback from other users who are reporting
-that the above mitigation causes a significant performance
-regression for them, and they didn't experience the hang on their
-GPU in the first place.
+The receive helpers do not defend against that configuration.
+slhc_uncompress() dereferences comp->rstate[x] when the VJ header
+carries an explicit connection ID, and slhc_remember() later assigns
+cs = &comp->rstate[...] after only comparing the packet's slot number
+to comp->rslot_limit. Because rslot_limit is 0, slot 0 passes the
+range check, and the code dereferences a NULL rstate.
 
-After some further investigation, it turns out that the problem
-is that the highest SCLK DPM level on this board isn't stable.
-Lowering SCLK to 1040 MHz (from 1070 MHz) works around the issue,
-and has a negligible impact on performance compared to the Mesa
-patch. (Note that increasing the voltage can also work around it,
-but we felt that lowering the SCLK is the safer option.)
+The configuration is reachable in-tree through PPP. PPPIOCSMAXCID
+stores its argument in a signed int, and (val >> 16) uses arithmetic
+shift. Passing 0xffff0000 therefore sign-extends to -1, so val2 + 1
+is 0 and ppp_generic.c ends up calling slhc_init(0, 1). Because
+/dev/ppp open is gated by ns_capable(CAP_NET_ADMIN), the whole path
+is reachable from an unprivileged user namespace. Once the malformed
+VJ state is installed, any inbound VJ-compressed or VJ-uncompressed
+frame that selects slot 0 crashes the kernel in softirq context:
 
-To solve the above issue, add an "sclk_cap" field to smu7_hwmgr
-and set this field for the affected board. The capped SCLK value
-correctly appears on the sysfs interface and shows up in GUI
-tools such as LACT.
+ Oops: general protection fault, probably for non-canonical
+       address 0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
+ KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+ RIP: 0010:slhc_uncompress (drivers/net/slip/slhc.c:519)
+ Call Trace:
+  <TASK>
+  ppp_receive_nonmp_frame (drivers/net/ppp/ppp_generic.c:2466)
+  ppp_input (drivers/net/ppp/ppp_generic.c:2359)
+  ppp_async_process (drivers/net/ppp/ppp_async.c:492)
+  tasklet_action_common (kernel/softirq.c:926)
+  handle_softirqs (kernel/softirq.c:623)
+  run_ksoftirqd (kernel/softirq.c:1055)
+  smpboot_thread_fn (kernel/smpboot.c:160)
+  kthread (kernel/kthread.c:436)
+  ret_from_fork (arch/x86/kernel/process.c:164)
+  </TASK>
 
-Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reject the receive side on such instances instead of touching rstate.
+slhc_uncompress() falls through to its existing 'bad' label, which
+bumps sls_i_error and enters the toss state. slhc_remember() mirrors
+that with an explicit sls_i_error increment followed by slhc_toss();
+the sls_i_runt counter is not used here because a missing rstate is
+an internal configuration state, not a runt packet.
+
+The transmit path is unaffected: the only in-tree caller that picks
+rslots from userspace (ppp_generic.c) still supplies tslots >= 1, and
+slip.c always calls slhc_init(16, 16), so comp->tstate remains valid
+and slhc_compress() continues to work.
+
+Fixes: 4ab42d78e37a ("ppp, slip: Validate VJ compression slot parameters completely")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260415204130.258866-2-bestswngs@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c   | 30 ++++++++++++++++---
- .../drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.h   |  1 +
- 2 files changed, 27 insertions(+), 4 deletions(-)
+ drivers/net/slip/slhc.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-index 9c2a2c46dea02..9dc01de3e7207 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-@@ -787,7 +787,7 @@ static int smu7_setup_dpm_tables_v0(struct pp_hwmgr *hwmgr)
- 		hwmgr->dyn_state.vddc_dependency_on_mclk;
- 	struct phm_cac_leakage_table *std_voltage_table =
- 		hwmgr->dyn_state.cac_leakage_table;
--	uint32_t i;
-+	uint32_t i, clk;
+diff --git a/drivers/net/slip/slhc.c b/drivers/net/slip/slhc.c
+index ee9fd3a94b96f..fcb3eebe7311c 100644
+--- a/drivers/net/slip/slhc.c
++++ b/drivers/net/slip/slhc.c
+@@ -506,6 +506,8 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
+ 		comp->sls_i_error++;
+ 		return 0;
+ 	}
++	if (!comp->rstate)
++		goto bad;
+ 	changes = *cp++;
+ 	if(changes & NEW_C){
+ 		/* Make sure the state index is in range, then grab the state.
+@@ -649,6 +651,10 @@ slhc_remember(struct slcompress *comp, unsigned char *icp, int isize)
+ 	struct cstate *cs;
+ 	unsigned int ihl;
  
- 	PP_ASSERT_WITH_CODE(allowed_vdd_sclk_table != NULL,
- 		"SCLK dependency table is missing. This table is mandatory", return -EINVAL);
-@@ -804,10 +804,12 @@ static int smu7_setup_dpm_tables_v0(struct pp_hwmgr *hwmgr)
- 	data->dpm_table.sclk_table.count = 0;
- 
- 	for (i = 0; i < allowed_vdd_sclk_table->count; i++) {
-+		clk = min(allowed_vdd_sclk_table->entries[i].clk, data->sclk_cap);
-+
- 		if (i == 0 || data->dpm_table.sclk_table.dpm_levels[data->dpm_table.sclk_table.count-1].value !=
--				allowed_vdd_sclk_table->entries[i].clk) {
-+				clk) {
- 			data->dpm_table.sclk_table.dpm_levels[data->dpm_table.sclk_table.count].value =
--				allowed_vdd_sclk_table->entries[i].clk;
-+				clk;
- 			data->dpm_table.sclk_table.dpm_levels[data->dpm_table.sclk_table.count].enabled = (i == 0) ? 1 : 0;
- 			data->dpm_table.sclk_table.count++;
- 		}
-@@ -3006,6 +3008,25 @@ static int smu7_init_voltage_dependency_on_display_clock_table(struct pp_hwmgr *
- 	return 0;
- }
- 
-+static void smu7_set_sclk_cap(struct pp_hwmgr *hwmgr)
-+{
-+	struct amdgpu_device *adev = hwmgr->adev;
-+	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
-+
-+	data->sclk_cap = 0xffffffff;
-+
-+	if (hwmgr->od_enabled)
-+		return;
-+
-+	/* R9 390X board: last sclk dpm level is unstable, use lower sclk */
-+	if (adev->pdev->device == 0x67B0 &&
-+	    adev->pdev->subsystem_vendor == 0x1043)
-+		data->sclk_cap = 104000; /* 1040 MHz */
-+
-+	if (data->sclk_cap != 0xffffffff)
-+		dev_info(adev->dev, "sclk cap: %u kHz on quirky ASIC\n", data->sclk_cap * 10);
-+}
-+
- static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
- {
- 	struct amdgpu_device *adev = hwmgr->adev;
-@@ -3017,6 +3038,7 @@ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
- 		return -ENOMEM;
- 
- 	hwmgr->backend = data;
-+	smu7_set_sclk_cap(hwmgr);
- 	smu7_patch_voltage_workaround(hwmgr);
- 	smu7_init_dpm_defaults(hwmgr);
- 
-@@ -3903,7 +3925,7 @@ static int smu7_get_pp_table_entry_callback_func_v0(struct pp_hwmgr *hwmgr,
- 
- 	/* Performance levels are arranged from low to high. */
- 	performance_level->memory_clock = memory_clock;
--	performance_level->engine_clock = engine_clock;
-+	performance_level->engine_clock = min(engine_clock, data->sclk_cap);
- 
- 	pcie_gen_from_bios = visland_clk_info->ucPCIEGen;
- 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.h b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.h
-index d9e8b386bd4d3..66adabeab6a3a 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.h
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.h
-@@ -234,6 +234,7 @@ struct smu7_hwmgr {
- 	uint32_t                       pcie_gen_cap;
- 	uint32_t                       pcie_lane_cap;
- 	uint32_t                       pcie_spc_cap;
-+	uint32_t                       sclk_cap;
- 	struct smu7_leakage_voltage          vddc_leakage;
- 	struct smu7_leakage_voltage          vddci_leakage;
- 	struct smu7_leakage_voltage          vddcgfx_leakage;
++	if (!comp->rstate) {
++		comp->sls_i_error++;
++		return slhc_toss(comp);
++	}
+ 	/* The packet is shorter than a legal IP header.
+ 	 * Also make sure isize is positive.
+ 	 */
 -- 
 2.53.0
 
