@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-251496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250555-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kJIlA3n+DWok5QUAu9opvQ
-	(envelope-from <stable+bounces-251496-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:33:29 +0200
+	id uGnpHFgRDmrw5wUAu9opvQ
+	(envelope-from <stable+bounces-250555-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:54:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 405A15968CC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:33:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06497598DBC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:53:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2E69B325BF52
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:28:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E054F322271E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF78E3D75C7;
-	Wed, 20 May 2026 17:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 311CE3630AF;
+	Wed, 20 May 2026 16:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opao6T6X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JMWg5Rv3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644F63C870E;
-	Wed, 20 May 2026 17:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB7E3630BC;
+	Wed, 20 May 2026 16:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298132; cv=none; b=gvBI8ToTPjVsgph15+iU1gV/Jok84/88v+WAL7XLXXmu3zsL7yHzTVRpw15AIzLulmRIwPklUUVbg0JG14sEIO/hBa+Y+3Cf4MqREDjpDlXbPPTuqjXamo3OVvXhAA1EZs8/ixvxqAVMqFwbtRlEXa78I4C0EzqHW5ZjGzhAHJc=
+	t=1779295719; cv=none; b=uB+sRI0tTRRc2SgsODk4XkmGVOQ59P0V6RC/LyW9n0WE1rmQ5Xdo3YU4WH8tQI0/upzXUWOSqIywD/6JNl+wEi1vhZbRb+pNPuwFDcivPg7WmznsfB/zD5JrJrxAMRbJzqM8LO1qf7EESLtXd+0HBktR/ZMdIFAo+X3KsYo++DY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298132; c=relaxed/simple;
-	bh=5yG3Vgscy2IZL5EWldH4U/EYZ//TfORosFNE1AHyQHo=;
+	s=arc-20240116; t=1779295719; c=relaxed/simple;
+	bh=EYIuvwSwF97FwtXcZJccar0P33LHMda5Js3lPZp567M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mbEY2Nhy8lyU/PqpMvYJ2syxxiO/P15mX1shk1PPOlOPoDZX1QdSK7jSL8zKSHNCiiuPlCPuAzsINGEaswk5yi3xvbdXGBbUD3EexFLtpSWJgxP3i7fN40BFosQljkMkB5S44+hUgTjPN+SRcB9zD0YNrxOPdBkX+sojtFYWlY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opao6T6X; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D8F31F000E9;
-	Wed, 20 May 2026 17:28:50 +0000 (UTC)
+	 MIME-Version; b=fh5K6FMn1SkuWn8PZ9pZZZXL/cXNt+hUaS3zy4OyTFJlpz0g3cImCfmFH7LLuCuX2V2zNtO5Gws9dKUHuqSktUsTHa8sazRAQBwcJlrDzDgNc4ISwVqdF+udaznikje8rNJDYJ9zs3HjLF1rOBUjODSsaZNTCUhvDm6JXJF03rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JMWg5Rv3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D701F00893;
+	Wed, 20 May 2026 16:48:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298131;
-	bh=rTcP0Q+ATvGk737mwYLbVc3XW+fef4fded6HjdKjqs8=;
+	s=korg; t=1779295716;
+	bh=rHrVOq0IViqwvAiZdqeRSDli/FahAQE+Wfbg+eeRl+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=opao6T6X0D5gyx8NBHd5lpjUt6qmGVlkZXTTZCu924wke/2eFvEnENRZrSRySSwc5
-	 ZTdAdLScvFlj7XK/O9adIZkMUQlA/6FTeZ30/Ry8CJ5MknfQvF+RaXHUKwnz9eBHbw
-	 16eySvcXjanREsTjMoVXcoIlF1/3jsk6lO25bnC8=
+	b=JMWg5Rv3vUB9ENWXUN4FOt8xQ4me1edyylKzNztPcpF2v12JJxksmatzH/tRSSTWE
+	 RPeJX5v7blp25prGibRjt3worfZXspHMEnKolsUAdh36DcS4ZD2oqIFRry23Vt7AmQ
+	 AATKdLXSU2NHQOEZd1KbRewMahYYei+RJ+0oV9sE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 293/957] ASoC: fsl_easrc: Change the type for iec958 channel status controls
+Subject: [PATCH 7.0 0526/1146] arm64: dts: qcom: sm8450: Enable UHS-I SDR50 and SDR104 SD card modes
 Date: Wed, 20 May 2026 18:12:56 +0200
-Message-ID: <20260520162140.890131302@linuxfoundation.org>
+Message-ID: <20260520162200.087096370@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,218 +70,106 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251496-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250555-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_PROHIBIT(0.00)[0.134.86.160:email];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,nxp.com:email]
-X-Rspamd-Queue-Id: 405A15968CC
+	RCPT_COUNT_SEVEN(0.00)[8];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,linaro.org:email]
+X-Rspamd-Queue-Id: 06497598DBC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-[ Upstream commit 47f28a5bd154a95d5aa563dde02a801bd32ddb81 ]
+[ Upstream commit db0c5ef1abda6effdc5c85d6688fb6af2b351ae5 ]
 
-Use the type SNDRV_CTL_ELEM_TYPE_IEC958 for iec958 channel status
-controls, the original type will cause mixer-test to iterate all 32bit
-values, which costs a lot of time. And using IEC958 type can reduce the
-control numbers.
+The reported problem of some non-working UHS-I speed modes on SM8450
+originates in commit 0a631a36f724 ("arm64: dts: qcom: Add device tree
+for Sony Xperia 1 IV"), and then it was spread to all SM8450 powered
+platforms by commit 9d561dc4e5cc ("arm64: dts: qcom: sm8450: disable
+SDHCI SDR104/SDR50 on all boards").
 
-Also enable pm runtime before updating registers to make the regmap cache
-data align with the value in hardware.
+The tests show that the rootcause of the problem was related to an
+overclocking of SD cards, and it's fixed later on by commit a27ac3806b0a
+("clk: qcom: gcc-sm8450: Use floor ops for SDCC RCGs").
 
-Fixes: 955ac624058f ("ASoC: fsl_easrc: Add EASRC ASoC CPU DAI drivers")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/20260401094226.2900532-12-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Since then both SDR50 and SDR104 speed modes are working fine on SM8450,
+tested on SM8450-HDK:
+
+SDR50 speed mode:
+
+    mmc0: new UHS-I speed SDR50 SDHC card at address 0001
+    mmcblk0: mmc0:0001 00000 14.6 GiB
+     mmcblk0: p1
+
+    % dd if=/dev/mmcblk0p1 of=/dev/null bs=1M count=1024
+    1024+0 records in
+    1024+0 records out
+    1073741824 bytes (1.1 GB, 1.0 GiB) copied, 24.6254 s, 43.6 MB/s
+
+SDR104 speed mode:
+
+    mmc0: new UHS-I speed SDR104 SDHC card at address 59b4
+    mmcblk0: mmc0:59b4 USDU1 28.3 GiB
+     mmcblk0: p1
+
+    % dd if=/dev/mmcblk0p1 of=/dev/null bs=1M count=1024
+    1024+0 records in
+    1024+0 records out
+    1073741824 bytes (1.1 GB, 1.0 GiB) copied, 12.3266 s, 87.1 MB/s
+
+Remove the restrictions on SD card speed modes from the SM8450 platform
+dtsi file and enable UHS-I speed modes.
+
+Fixes: 9d561dc4e5cc ("arm64: dts: qcom: sm8450: disable SDHCI SDR104/SDR50 on all boards")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Link: https://lore.kernel.org/r/20260314023715.357512-5-vladimir.zapolskiy@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_easrc.c | 118 +++++++++++++++++++++++++++-----------
- 1 file changed, 84 insertions(+), 34 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8450.dtsi | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
-index 725c7b65fe6b8..59cdf18731a0a 100644
---- a/sound/soc/fsl/fsl_easrc.c
-+++ b/sound/soc/fsl/fsl_easrc.c
-@@ -78,17 +78,47 @@ static int fsl_easrc_iec958_get_bits(struct snd_kcontrol *kcontrol,
- 	return 0;
- }
+diff --git a/arch/arm64/boot/dts/qcom/sm8450.dtsi b/arch/arm64/boot/dts/qcom/sm8450.dtsi
+index 1ac74ff586b86..dd60843e022ef 100644
+--- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
+@@ -5429,9 +5429,6 @@ sdhc_2: mmc@8804000 {
+ 			bus-width = <4>;
+ 			dma-coherent;
  
-+static int fsl_easrc_iec958_info(struct snd_kcontrol *kcontrol,
-+				 struct snd_ctl_elem_info *uinfo)
-+{
-+	uinfo->type = SNDRV_CTL_ELEM_TYPE_IEC958;
-+	uinfo->count = 1;
-+	return 0;
-+}
-+
- static int fsl_easrc_get_reg(struct snd_kcontrol *kcontrol,
- 			     struct snd_ctl_elem_value *ucontrol)
- {
- 	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
- 	struct soc_mreg_control *mc =
- 		(struct soc_mreg_control *)kcontrol->private_value;
--	unsigned int regval;
-+	struct fsl_asrc *easrc = snd_soc_component_get_drvdata(component);
-+	unsigned int *regval = (unsigned int *)ucontrol->value.iec958.status;
-+	int ret;
-+
-+	ret = regmap_read(easrc->regmap, REG_EASRC_CS0(mc->regbase), &regval[0]);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_read(easrc->regmap, REG_EASRC_CS1(mc->regbase), &regval[1]);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_read(easrc->regmap, REG_EASRC_CS2(mc->regbase), &regval[2]);
-+	if (ret)
-+		return ret;
+-			/* Forbid SDR104/SDR50 - broken hw! */
+-			sdhci-caps-mask = <0x3 0x0>;
+-
+ 			status = "disabled";
  
--	regval = snd_soc_component_read(component, mc->regbase);
-+	ret = regmap_read(easrc->regmap, REG_EASRC_CS3(mc->regbase), &regval[3]);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_read(easrc->regmap, REG_EASRC_CS4(mc->regbase), &regval[4]);
-+	if (ret)
-+		return ret;
- 
--	ucontrol->value.integer.value[0] = regval;
-+	ret = regmap_read(easrc->regmap, REG_EASRC_CS5(mc->regbase), &regval[5]);
-+	if (ret)
-+		return ret;
- 
- 	return 0;
- }
-@@ -100,22 +130,62 @@ static int fsl_easrc_set_reg(struct snd_kcontrol *kcontrol,
- 	struct soc_mreg_control *mc =
- 		(struct soc_mreg_control *)kcontrol->private_value;
- 	struct fsl_asrc *easrc = snd_soc_component_get_drvdata(component);
--	unsigned int regval = ucontrol->value.integer.value[0];
--	bool changed;
-+	unsigned int *regval = (unsigned int *)ucontrol->value.iec958.status;
-+	bool changed, changed_all = false;
- 	int ret;
- 
--	ret = regmap_update_bits_check(easrc->regmap, mc->regbase,
--				       GENMASK(31, 0), regval, &changed);
--	if (ret != 0)
-+	ret = pm_runtime_resume_and_get(component->dev);
-+	if (ret)
- 		return ret;
- 
--	return changed;
-+	ret = regmap_update_bits_check(easrc->regmap, REG_EASRC_CS0(mc->regbase),
-+				       GENMASK(31, 0), regval[0], &changed);
-+	if (ret != 0)
-+		goto err;
-+	changed_all |= changed;
-+
-+	ret = regmap_update_bits_check(easrc->regmap, REG_EASRC_CS1(mc->regbase),
-+				       GENMASK(31, 0), regval[1], &changed);
-+	if (ret != 0)
-+		goto err;
-+	changed_all |= changed;
-+
-+	ret = regmap_update_bits_check(easrc->regmap, REG_EASRC_CS2(mc->regbase),
-+				       GENMASK(31, 0), regval[2], &changed);
-+	if (ret != 0)
-+		goto err;
-+	changed_all |= changed;
-+
-+	ret = regmap_update_bits_check(easrc->regmap, REG_EASRC_CS3(mc->regbase),
-+				       GENMASK(31, 0), regval[3], &changed);
-+	if (ret != 0)
-+		goto err;
-+	changed_all |= changed;
-+
-+	ret = regmap_update_bits_check(easrc->regmap, REG_EASRC_CS4(mc->regbase),
-+				       GENMASK(31, 0), regval[4], &changed);
-+	if (ret != 0)
-+		goto err;
-+	changed_all |= changed;
-+
-+	ret = regmap_update_bits_check(easrc->regmap, REG_EASRC_CS5(mc->regbase),
-+				       GENMASK(31, 0), regval[5], &changed);
-+	if (ret != 0)
-+		goto err;
-+	changed_all |= changed;
-+err:
-+	pm_runtime_put_autosuspend(component->dev);
-+
-+	if (ret != 0)
-+		return ret;
-+	else
-+		return changed_all;
- }
- 
- #define SOC_SINGLE_REG_RW(xname, xreg) \
- {	.iface = SNDRV_CTL_ELEM_IFACE_PCM, .name = (xname), \
- 	.access = SNDRV_CTL_ELEM_ACCESS_READWRITE, \
--	.info = snd_soc_info_xr_sx, .get = fsl_easrc_get_reg, \
-+	.info = fsl_easrc_iec958_info, .get = fsl_easrc_get_reg, \
- 	.put = fsl_easrc_set_reg, \
- 	.private_value = (unsigned long)&(struct soc_mreg_control) \
- 		{ .regbase = xreg, .regcount = 1, .nbits = 32, \
-@@ -146,30 +216,10 @@ static const struct snd_kcontrol_new fsl_easrc_snd_controls[] = {
- 	SOC_SINGLE_VAL_RW("Context 2 IEC958 Bits Per Sample", 2),
- 	SOC_SINGLE_VAL_RW("Context 3 IEC958 Bits Per Sample", 3),
- 
--	SOC_SINGLE_REG_RW("Context 0 IEC958 CS0", REG_EASRC_CS0(0)),
--	SOC_SINGLE_REG_RW("Context 1 IEC958 CS0", REG_EASRC_CS0(1)),
--	SOC_SINGLE_REG_RW("Context 2 IEC958 CS0", REG_EASRC_CS0(2)),
--	SOC_SINGLE_REG_RW("Context 3 IEC958 CS0", REG_EASRC_CS0(3)),
--	SOC_SINGLE_REG_RW("Context 0 IEC958 CS1", REG_EASRC_CS1(0)),
--	SOC_SINGLE_REG_RW("Context 1 IEC958 CS1", REG_EASRC_CS1(1)),
--	SOC_SINGLE_REG_RW("Context 2 IEC958 CS1", REG_EASRC_CS1(2)),
--	SOC_SINGLE_REG_RW("Context 3 IEC958 CS1", REG_EASRC_CS1(3)),
--	SOC_SINGLE_REG_RW("Context 0 IEC958 CS2", REG_EASRC_CS2(0)),
--	SOC_SINGLE_REG_RW("Context 1 IEC958 CS2", REG_EASRC_CS2(1)),
--	SOC_SINGLE_REG_RW("Context 2 IEC958 CS2", REG_EASRC_CS2(2)),
--	SOC_SINGLE_REG_RW("Context 3 IEC958 CS2", REG_EASRC_CS2(3)),
--	SOC_SINGLE_REG_RW("Context 0 IEC958 CS3", REG_EASRC_CS3(0)),
--	SOC_SINGLE_REG_RW("Context 1 IEC958 CS3", REG_EASRC_CS3(1)),
--	SOC_SINGLE_REG_RW("Context 2 IEC958 CS3", REG_EASRC_CS3(2)),
--	SOC_SINGLE_REG_RW("Context 3 IEC958 CS3", REG_EASRC_CS3(3)),
--	SOC_SINGLE_REG_RW("Context 0 IEC958 CS4", REG_EASRC_CS4(0)),
--	SOC_SINGLE_REG_RW("Context 1 IEC958 CS4", REG_EASRC_CS4(1)),
--	SOC_SINGLE_REG_RW("Context 2 IEC958 CS4", REG_EASRC_CS4(2)),
--	SOC_SINGLE_REG_RW("Context 3 IEC958 CS4", REG_EASRC_CS4(3)),
--	SOC_SINGLE_REG_RW("Context 0 IEC958 CS5", REG_EASRC_CS5(0)),
--	SOC_SINGLE_REG_RW("Context 1 IEC958 CS5", REG_EASRC_CS5(1)),
--	SOC_SINGLE_REG_RW("Context 2 IEC958 CS5", REG_EASRC_CS5(2)),
--	SOC_SINGLE_REG_RW("Context 3 IEC958 CS5", REG_EASRC_CS5(3)),
-+	SOC_SINGLE_REG_RW("Context 0 IEC958 CS", 0),
-+	SOC_SINGLE_REG_RW("Context 1 IEC958 CS", 1),
-+	SOC_SINGLE_REG_RW("Context 2 IEC958 CS", 2),
-+	SOC_SINGLE_REG_RW("Context 3 IEC958 CS", 3),
- };
- 
- /*
+ 			sdhc2_opp_table: opp-table {
 -- 
 2.53.0
 
