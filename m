@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251033-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gNjGNff7DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-252569-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:47 +0200
+	id eO8vLFD6DWq75AUAu9opvQ
+	(envelope-from <stable+bounces-251033-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:15:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56411595EEE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:47 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC009595AB0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:15:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E3F10307CAA1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:17:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4FDB2305C22E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05B63D1CC6;
-	Wed, 20 May 2026 18:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90FB33F076F;
+	Wed, 20 May 2026 17:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vHxARED+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NqxQ2Ddi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813013E123F;
-	Wed, 20 May 2026 18:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358BD3F166E;
+	Wed, 20 May 2026 17:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301018; cv=none; b=sbamWpbIO6AUEmVRejc8Xf5AHH8xLxxkbjm/tR8Uh9Zi1NJiZSD97kBTq4YMpIbyewRAHCL90tH2+YVb3r+1czHHKk1KnFiDd5NGMr8tM6Nvd7isVdC9RaUL73vUXf2snNDDHdewizicP8qSBD87ErxvfKA9VWQiXXJHQA9zUUU=
+	t=1779296926; cv=none; b=hYtTnEqmAmBMRllNX8fxdvPTe7IMr0bamkrBKbs9pVr405XEWNAezKiYkf/fBKXuhQBo89Q+FBO91BhbPVkiIkvaapuDgsYOotN6xaJE7GX/ADIZcM42TPX1Tni56gXggT2UQHmC70rwMmNmL0icgXd0aCr7Wwyn4HG1JbdLFRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301018; c=relaxed/simple;
-	bh=ADxmBs7Oiha4f1W1dY1e9hbcopU9WWF61SD/CKe7PwY=;
+	s=arc-20240116; t=1779296926; c=relaxed/simple;
+	bh=Nu7S6odUZptSA6rOOyO2hTgr4liN/I8mz5gJMTyOvEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X7LrpX8OeOTBjvAWE9mcQNZ8il4Fm3WQQJcNCxAfptuUNyKWRXURErtePnqTZltfjh40NZsyV+gdsOawV1S+W5iQ82XdyAqqBGr4rLruBmaH1x1UooZcwo5KxSCLZ0+5oZO4ha7qqVnPhKhatKW2hR/WTmw6GrcsY73RpzK11O8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vHxARED+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3A5D1F000E9;
-	Wed, 20 May 2026 18:16:56 +0000 (UTC)
+	 MIME-Version; b=glBVNU32MY2bfXJ8JcUAg42ReBl/m86qjxefI/dQf6Em3hFXGAluOe5ifLfK6DM+eUZ1q2e0g0+9n5uRXF8FvjpjyfTS1ySRlsz6ZRx0g+g+4JewaqD2WsBvC+WwwkgrtGEm9ErGbgGhw32EVXaKlOs+tmBmQWheya2xwfBY1oU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NqxQ2Ddi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AF0C1F000E9;
+	Wed, 20 May 2026 17:08:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301017;
-	bh=Ra4f0gQNHCh1A+RNSrKnwgavUVaAUdLZPQR7MRpHovI=;
+	s=korg; t=1779296925;
+	bh=OpBGHl+xQ9VvulrZNyvVVS02Ev5Zthmrxr346b3J4KA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vHxARED+awM4rzmBYLTuDVJHmAwfv4g4/lntfjkUiZz7VWA8IBjNoit7nR6i93sXE
-	 Ys9tV3E9aBzDN6+RDqujm8ubH/EWpmWjEeOZAH0gqtIuMswRUH1skktF/UtbakuW/E
-	 aSuwKvFew0f2NuTwftfDImljxmRebAe2kLISv37Q=
+	b=NqxQ2DdiSTQrF0AK/fPzRqgMKdZ7/WRIr9li0jyHkJawzYEVLPpuDYWc7WNl0N4q2
+	 7GcQcWM9RGyXQ3ksgETyMTxytLeJ3Sityx3sd4d+pYCkE4mDK3zMoIWqshomQp+TTx
+	 8G3o2CDjAwX/Tf2ZWKCtp5QR2JvfjQXiE29ikMDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Su Yue <glass.su@suse.com>,
+	Yu Kuai <yukuai@fnnas.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 396/666] fs/ntfs3: terminate the cached volume label after UTF-8 conversion
+Subject: [PATCH 7.0 0957/1146] md: factor bitmap creation away from sysfs handling
 Date: Wed, 20 May 2026 18:20:07 +0200
-Message-ID: <20260520162119.841213912@linuxfoundation.org>
+Message-ID: <20260520162209.891876310@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252569-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251033-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,59 +89,184 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 56411595EEE
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,fnnas.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,suse.com:email]
+X-Rspamd-Queue-Id: DC009595AB0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Yu Kuai <yukuai@fnnas.com>
 
-[ Upstream commit a6cd43fe9b083fa23fe1595666d5738856cb261a ]
+[ Upstream commit 8776d342cf8fa0b98ca5e6fb2d956966fb5ca364 ]
 
-ntfs_fill_super() loads the on-disk volume label with utf16s_to_utf8s()
-and stores the result in sbi->volume.label. The converted label is later
-exposed through ntfs3_label_show() using %s, but utf16s_to_utf8s() only
-returns the number of bytes written and does not add a trailing NUL.
+Factor bitmap creation and destruction into helpers that do not touch
+bitmap sysfs registration.
 
-If the converted label fills the entire fixed buffer,
-ntfs3_label_show() can read past the end of sbi->volume.label while
-looking for a terminator.
+This prepares the bitmap sysfs rework so callers such as the sysfs
+bitmap location path can create or destroy a bitmap backend without
+coupling that to sysfs group lifetime management.
 
-Terminate the cached label explicitly after a successful conversion and
-clamp the exact-full case to the last byte of the buffer.
-
-Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Reviewed-by: Su Yue <glass.su@suse.com>
+Link: https://lore.kernel.org/r/20260425024615.1696892-2-yukuai@fnnas.com
+Signed-off-by: Yu Kuai <yukuai@fnnas.com>
+Stable-dep-of: f2926a533d03 ("md/md-bitmap: add a none backend for bitmap grow")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/super.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/md/md.c | 78 +++++++++++++++++++++++++++++++------------------
+ 1 file changed, 49 insertions(+), 29 deletions(-)
 
-diff --git a/fs/ntfs3/super.c b/fs/ntfs3/super.c
-index 89d126c155c7d..1af1500ec24b6 100644
---- a/fs/ntfs3/super.c
-+++ b/fs/ntfs3/super.c
-@@ -1235,8 +1235,13 @@ static int ntfs_fill_super(struct super_block *sb, struct fs_context *fc)
- 				      le32_to_cpu(attr->res.data_size) >> 1,
- 				      UTF16_LITTLE_ENDIAN, sbi->volume.label,
- 				      sizeof(sbi->volume.label));
--		if (err < 0)
-+		if (err < 0) {
- 			sbi->volume.label[0] = 0;
-+		} else if (err >= sizeof(sbi->volume.label)) {
-+			sbi->volume.label[sizeof(sbi->volume.label) - 1] = 0;
-+		} else {
-+			sbi->volume.label[err] = 0;
-+		}
- 	} else {
- 		/* Should we break mounting here? */
- 		//err = -EINVAL;
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 99a5ba1485565..3b58d94c1c7aa 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -688,7 +688,25 @@ static void active_io_release(struct percpu_ref *ref)
+ 
+ static void no_op(struct percpu_ref *r) {}
+ 
+-static bool mddev_set_bitmap_ops(struct mddev *mddev)
++static void md_bitmap_sysfs_add(struct mddev *mddev)
++{
++	if (sysfs_create_group(&mddev->kobj, mddev->bitmap_ops->group))
++		pr_warn("md: cannot register extra bitmap attributes for %s\n",
++			mdname(mddev));
++	else
++		/*
++		 * Inform user with KOBJ_CHANGE about new bitmap
++		 * attributes.
++		 */
++		kobject_uevent(&mddev->kobj, KOBJ_CHANGE);
++}
++
++static void md_bitmap_sysfs_del(struct mddev *mddev)
++{
++	sysfs_remove_group(&mddev->kobj, mddev->bitmap_ops->group);
++}
++
++static bool mddev_set_bitmap_ops_nosysfs(struct mddev *mddev)
+ {
+ 	struct bitmap_operations *old = mddev->bitmap_ops;
+ 	struct md_submodule_head *head;
+@@ -712,18 +730,6 @@ static bool mddev_set_bitmap_ops(struct mddev *mddev)
+ 
+ 	mddev->bitmap_ops = (void *)head;
+ 	xa_unlock(&md_submodule);
+-
+-	if (!mddev_is_dm(mddev) && mddev->bitmap_ops->group) {
+-		if (sysfs_create_group(&mddev->kobj, mddev->bitmap_ops->group))
+-			pr_warn("md: cannot register extra bitmap attributes for %s\n",
+-				mdname(mddev));
+-		else
+-			/*
+-			 * Inform user with KOBJ_CHANGE about new bitmap
+-			 * attributes.
+-			 */
+-			kobject_uevent(&mddev->kobj, KOBJ_CHANGE);
+-	}
+ 	return true;
+ 
+ err:
+@@ -731,15 +737,6 @@ static bool mddev_set_bitmap_ops(struct mddev *mddev)
+ 	return false;
+ }
+ 
+-static void mddev_clear_bitmap_ops(struct mddev *mddev)
+-{
+-	if (!mddev_is_dm(mddev) && mddev->bitmap_ops &&
+-	    mddev->bitmap_ops->group)
+-		sysfs_remove_group(&mddev->kobj, mddev->bitmap_ops->group);
+-
+-	mddev->bitmap_ops = NULL;
+-}
+-
+ int mddev_init(struct mddev *mddev)
+ {
+ 	int err = 0;
+@@ -6540,7 +6537,7 @@ static enum md_submodule_id md_bitmap_get_id_from_sb(struct mddev *mddev)
+ 	return id;
+ }
+ 
+-static int md_bitmap_create(struct mddev *mddev)
++static int md_bitmap_create_nosysfs(struct mddev *mddev)
+ {
+ 	enum md_submodule_id orig_id = mddev->bitmap_id;
+ 	enum md_submodule_id sb_id;
+@@ -6549,7 +6546,7 @@ static int md_bitmap_create(struct mddev *mddev)
+ 	if (mddev->bitmap_id == ID_BITMAP_NONE)
+ 		return -EINVAL;
+ 
+-	if (!mddev_set_bitmap_ops(mddev))
++	if (!mddev_set_bitmap_ops_nosysfs(mddev))
+ 		return -ENOENT;
+ 
+ 	err = mddev->bitmap_ops->create(mddev);
+@@ -6561,7 +6558,7 @@ static int md_bitmap_create(struct mddev *mddev)
+ 	 * doesn't match, and mdadm is not the latest version to set
+ 	 * bitmap_type, set bitmap_ops based on the disk version.
+ 	 */
+-	mddev_clear_bitmap_ops(mddev);
++	mddev->bitmap_ops = NULL;
+ 
+ 	sb_id = md_bitmap_get_id_from_sb(mddev);
+ 	if (sb_id == ID_BITMAP_NONE || sb_id == orig_id)
+@@ -6571,27 +6568,50 @@ static int md_bitmap_create(struct mddev *mddev)
+ 		mdname(mddev), orig_id, sb_id);
+ 
+ 	mddev->bitmap_id = sb_id;
+-	if (!mddev_set_bitmap_ops(mddev)) {
++	if (!mddev_set_bitmap_ops_nosysfs(mddev)) {
+ 		mddev->bitmap_id = orig_id;
+ 		return -ENOENT;
+ 	}
+ 
+ 	err = mddev->bitmap_ops->create(mddev);
+ 	if (err) {
+-		mddev_clear_bitmap_ops(mddev);
++		mddev->bitmap_ops = NULL;
+ 		mddev->bitmap_id = orig_id;
+ 	}
+ 
+ 	return err;
+ }
+ 
+-static void md_bitmap_destroy(struct mddev *mddev)
++static int md_bitmap_create(struct mddev *mddev)
++{
++	int err;
++
++	err = md_bitmap_create_nosysfs(mddev);
++	if (err)
++		return err;
++
++	if (!mddev_is_dm(mddev) && mddev->bitmap_ops->group)
++		md_bitmap_sysfs_add(mddev);
++
++	return 0;
++}
++
++static void md_bitmap_destroy_nosysfs(struct mddev *mddev)
+ {
+ 	if (!md_bitmap_registered(mddev))
+ 		return;
+ 
+ 	mddev->bitmap_ops->destroy(mddev);
+-	mddev_clear_bitmap_ops(mddev);
++	mddev->bitmap_ops = NULL;
++}
++
++static void md_bitmap_destroy(struct mddev *mddev)
++{
++	if (!mddev_is_dm(mddev) && mddev->bitmap_ops &&
++	    mddev->bitmap_ops->group)
++		md_bitmap_sysfs_del(mddev);
++
++	md_bitmap_destroy_nosysfs(mddev);
+ }
+ 
+ int md_run(struct mddev *mddev)
 -- 
 2.53.0
 
