@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-253197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251133-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cC/XGrIFDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-253197-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:04:18 +0200
+	id CHBaBWHvDWp+4wUAu9opvQ
+	(envelope-from <stable+bounces-251133-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:29:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7D5A597ACA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:04:17 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75F7D593CB1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:29:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DC4BA321D9C9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7DA7031C7E58
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:14:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F647409138;
-	Wed, 20 May 2026 18:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BAAF3F86FB;
+	Wed, 20 May 2026 17:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9X1dvzw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pVo0bNvU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7F63FD126;
-	Wed, 20 May 2026 18:44:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4573A3833;
+	Wed, 20 May 2026 17:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302655; cv=none; b=sqY/5JwVL23vF0UxHJG0k6CrbY+0KIj7v5M+nkAp93kIJBAYW++V4ILxfWqqmhsd7P81lirdog69nXmvVxa7c3oNQgH0QPzCUGfe9Aep+ov8alkUI2GZ74g5f5oywNrQPhWle9VLMa9uuikXzasdknYKGAIpljdoID5MZlpF+ig=
+	t=1779297184; cv=none; b=QEKjcNMVryFfjAUc1VwdJjxBMDt3vniKlm8egwXoMZ7JQCiNAQR2asc0dawD+Kzvjeosi25CkootZCv4yMikfVWKDvn0kf811LCPgbcMPpPqglBy/iTqnYXy5ki1fu+nhgDBZYMfk1pc48VZR0e19q/5Zytcyk/Lz1xARVVm5D0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302655; c=relaxed/simple;
-	bh=V1jRKmh2pT7Kxu9s6VTuywyr7gjkQ0eMYDCm/ivt5xo=;
+	s=arc-20240116; t=1779297184; c=relaxed/simple;
+	bh=Hub45jRJn8IVhr5JfIIOOLEruIHziQ3949/9aU68WQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VNJofo3b7X+rYJG4vMVhJOkUw6++/wQMk3PL83C+Ol+kqozsqIx7ZJrCMzIJKaKo4gFyLVzRlzrXHJGghUVt9wH5hDJ+i197K+N0gmt7MIgrUr/Un6MR0ZNB9qWSW9jBO0LDJhpS3LuWoQobH0oB46Z5RnJ6EVOAKu/ROn1eiGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9X1dvzw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 701A21F000E9;
-	Wed, 20 May 2026 18:44:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CWi+Vua9IpfwG47IdIJCfqVmLE0BIXCNIP2Wb+hLZhpxTfQU/v4M6gxGGqmD65mwRo37lnv6QFs/bCi3570WxudXUxt0GfDzMYkR2zz0TeWh4jz+YJzlvK/7nxgM9YKblcaJ9RaE7Y8YjlB9zTbeHSS1E764tH8NxHN99+IN8ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pVo0bNvU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8FE41F000E9;
+	Wed, 20 May 2026 17:13:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302653;
-	bh=K+LB1tvbeCYq4v5ISxIFYcEDs2rvF24mWSfF4w5Lmrs=;
+	s=korg; t=1779297183;
+	bh=D4uDOO5TnlIrwI9yIBOuiUHuMf80QG8C67kxxAbJ3qI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=X9X1dvzwoKwAa33DY5GHEhncxaqnoNxtTCui5dXDPecRibewhuVIFq4atvFus7SmY
-	 p+76v5ueGKsjdpkZ+pci2nO2pHnYKOCK2/hr/eVavZJjGskxEWCSjAeF7IzUJlPX2J
-	 pLosuAWh17ZRTQDGxjCjTd4KTY4aLBqe83VHqJXE=
+	b=pVo0bNvUucZlZ5YT+agoGarVWvh+fWXhl3Q3KStG8XoVaN01uPdUAoKvy0wJ+XHYB
+	 /lz+l05d9MdhHdKgSqsAbTlLA+KHYG1gI96kZEUN1sVGFqqHaxhZO/yW4BQ7J74PLi
+	 2bF48XZGwyVHTlFroYhDTFEl9ipAr5NUyH4NL6MQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 308/508] arm64: dts: imx8mm-emtop-som: Correct PAD settings for PMIC_nINT
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Rong Zhang <i@rong.moe>,
+	"Derek J. Clark" <derekjohn.clark@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 7.0 1081/1146] platform/x86: lenovo-wmi-other: Balance IDA id allocation and free
 Date: Wed, 20 May 2026 18:22:11 +0200
-Message-ID: <20260520162105.315461778@linuxfoundation.org>
+Message-ID: <20260520162212.701510500@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +64,174 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253197-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,squebb.ca,rong.moe,gmail.com,linux.intel.com];
+	TAGGED_FROM(0.00)[bounces-251133-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,0.0.0.25:email]
-X-Rspamd-Queue-Id: D7D5A597ACA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,sashiko.dev:url,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,rong.moe:email,squebb.ca:email]
+X-Rspamd-Queue-Id: 75F7D593CB1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Rong Zhang <i@rong.moe>
 
-[ Upstream commit 721dec3ee9ff5231d13a412ff87df63b966d137b ]
+commit 55a279ae819adaea99a94c609f31970b70e0ec0c upstream.
 
-With commit 5d0efaf47ee90 ("regulator: pca9450: Correct interrupt type"),
-there might be interrupt storm for this board. Need to set PAD PUE and PU
-together to make pull up work properly.
+Currently, the IDA id is only freed on wmi-other device removal or
+failure to create firmware-attributes device, kset, or attributes. It
+leaks IDA ids if the wmi-other device is bound multiple times, as the
+unbind callback never frees the previously allocated IDA id.
+Additionally, if the wmi-other device has failed to create a
+firmware-attributes device before it gets removed, the wmi-device
+removal callback double frees the same IDA id.
 
-While at here, also correct interrupt type as IRQ_TYPE_LEVEL_LOW.
+These bugs were found by sashiko.dev [1].
 
-Fixes: cbd3ef64eb9d1 ("arm64: dts: Add support for Emtop SoM & Baseboard")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix them by moving ida_free() into lwmi_om_fw_attr_remove() so it is
+balanced with ida_alloc() in lwmi_om_fw_attr_add(). With them fixed,
+properly set and utilize the validity of priv->ida_id to balance
+firmware-attributes registration and removal, without relying on
+propagating the registration error to the component framework, which is
+more reliable and aligns with the hwmon device registration and removal
+sequences.
+
+No functional change intended.
+
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Fixes: edc4b183b794 ("platform/x86: Add Lenovo Other Mode WMI Driver")
+Cc: stable@vger.kernel.org
+Link: https://sashiko.dev/#/patchset/20260331181208.421552-1-derekjohn.clark%40gmail.com [1]
+Signed-off-by: Rong Zhang <i@rong.moe>
+Signed-off-by: Derek J. Clark <derekjohn.clark@gmail.com>
+Link: https://patch.msgid.link/20260510042546.436874-3-derekjohn.clark@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mm-emtop-som.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/platform/x86/lenovo/wmi-other.c |   36 ++++++++++++++++++--------------
+ 1 file changed, 21 insertions(+), 15 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-emtop-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-emtop-som.dtsi
-index 67d22d3768aa8..507d1824d99d9 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-emtop-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-emtop-som.dtsi
-@@ -60,7 +60,7 @@ pmic@25 {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_pmic>;
- 		interrupt-parent = <&gpio1>;
--		interrupts = <3 IRQ_TYPE_EDGE_RISING>;
-+		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
+--- a/drivers/platform/x86/lenovo/wmi-other.c
++++ b/drivers/platform/x86/lenovo/wmi-other.c
+@@ -956,17 +956,17 @@ static struct capdata01_attr_group cd01_
+ /**
+  * lwmi_om_fw_attr_add() - Register all firmware_attributes_class members
+  * @priv: The Other Mode driver data.
+- *
+- * Return: Either 0, or an error code.
+  */
+-static int lwmi_om_fw_attr_add(struct lwmi_om_priv *priv)
++static void lwmi_om_fw_attr_add(struct lwmi_om_priv *priv)
+ {
+ 	unsigned int i;
+ 	int err;
  
- 		regulators {
- 			buck1: BUCK1 {
-@@ -194,7 +194,7 @@ MX8MM_IOMUXC_I2C1_SDA_I2C1_SDA				0x400001c3
+-	priv->ida_id = ida_alloc(&lwmi_om_ida, GFP_KERNEL);
+-	if (priv->ida_id < 0)
+-		return priv->ida_id;
++	err = ida_alloc(&lwmi_om_ida, GFP_KERNEL);
++	if (err < 0)
++		goto err_no_ida;
++
++	priv->ida_id = err;
  
- 	pinctrl_pmic: emtop-pmic-grp {
- 		fsl,pins = <
--			MX8MM_IOMUXC_GPIO1_IO03_GPIO1_IO3			0x41
-+			MX8MM_IOMUXC_GPIO1_IO03_GPIO1_IO3			0x141
- 		>;
- 	};
+ 	priv->fw_attr_dev = device_create(&firmware_attributes_class, NULL,
+ 					  MKDEV(0, 0), NULL, "%s-%u",
+@@ -992,7 +992,7 @@ static int lwmi_om_fw_attr_add(struct lw
  
--- 
-2.53.0
-
+ 		cd01_attr_groups[i].tunable_attr->dev = &priv->wdev->dev;
+ 	}
+-	return 0;
++	return;
+ 
+ err_remove_groups:
+ 	while (i--)
+@@ -1006,7 +1006,12 @@ err_destroy_classdev:
+ 
+ err_free_ida:
+ 	ida_free(&lwmi_om_ida, priv->ida_id);
+-	return err;
++
++err_no_ida:
++	priv->ida_id = -EIDRM;
++
++	dev_warn(&priv->wdev->dev,
++		 "failed to register firmware-attributes device: %d\n", err);
+ }
+ 
+ /**
+@@ -1015,12 +1020,17 @@ err_free_ida:
+  */
+ static void lwmi_om_fw_attr_remove(struct lwmi_om_priv *priv)
+ {
++	if (priv->ida_id < 0)
++		return;
++
+ 	for (unsigned int i = 0; i < ARRAY_SIZE(cd01_attr_groups) - 1; i++)
+ 		sysfs_remove_group(&priv->fw_attr_kset->kobj,
+ 				   cd01_attr_groups[i].attr_group);
+ 
+ 	kset_unregister(priv->fw_attr_kset);
+ 	device_unregister(priv->fw_attr_dev);
++	ida_free(&lwmi_om_ida, priv->ida_id);
++	priv->ida_id = -EIDRM;
+ }
+ 
+ /* ======== Self (master: lenovo-wmi-other) ======== */
+@@ -1062,7 +1072,9 @@ static int lwmi_om_master_bind(struct de
+ 
+ 	lwmi_om_fan_info_collect_cd00(priv);
+ 
+-	return lwmi_om_fw_attr_add(priv);
++	lwmi_om_fw_attr_add(priv);
++
++	return 0;
+ }
+ 
+ /**
+@@ -1114,13 +1126,7 @@ static int lwmi_other_probe(struct wmi_d
+ 
+ static void lwmi_other_remove(struct wmi_device *wdev)
+ {
+-	struct lwmi_om_priv *priv = dev_get_drvdata(&wdev->dev);
+-
+ 	component_master_del(&wdev->dev, &lwmi_om_master_ops);
+-
+-	/* No IDA to free if the driver is never bound to its components. */
+-	if (priv->ida_id >= 0)
+-		ida_free(&lwmi_om_ida, priv->ida_id);
+ }
+ 
+ static const struct wmi_device_id lwmi_other_id_table[] = {
 
 
 
