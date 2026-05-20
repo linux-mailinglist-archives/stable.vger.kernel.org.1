@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-252426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252924-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0OHlNdr8DWok5QUAu9opvQ
-	(envelope-from <stable+bounces-252426-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:34 +0200
+	id eEOnAfv/DWpV5QUAu9opvQ
+	(envelope-from <stable+bounces-252924-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9084D59626B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:34 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B800D596F07
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3DC713135315
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:10:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 069503097775
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:32:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DCA23EAC82;
-	Wed, 20 May 2026 18:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD88285CBA;
+	Wed, 20 May 2026 18:32:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LRqrLWdz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L17v88YD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59A04F5E0;
-	Wed, 20 May 2026 18:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54709272E56;
+	Wed, 20 May 2026 18:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300641; cv=none; b=gs04mH8MKAbnLNuGeQwvvs/LoW3/9gHQjEXBqZstLFDKTFyyZnaxE/FpUvnz9nwHbLWhEmz7ebSUQtlFdItqNO3ndiFRTIJHMLW1SFi7WfBGk8aV1fX6UKxgLhEw0maK3DFnve3DA9bPGI5dy6RfVCqo+ziUWsS7Awnal7tXJDo=
+	t=1779301948; cv=none; b=G0/RcMR+fe0Hcr/HbYVFErw2P20d1dpDcOpCbNGsepnF7qDqDBraGyyeIJxDHOHSKkrlFC39o29Ou4RP+BAnah+FD5yTlyBVgT5BkTmnDuBNmIeqDk4u7uoLF1ileiDbXhNRl1gl3otp5AMW0UfgswVZpxZ8uvyqwlVccpnqfGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300641; c=relaxed/simple;
-	bh=H6RQ8ZkjnB/Eo4/pkqr74NOQ3FwOYIiqHcVtx9ybJkA=;
+	s=arc-20240116; t=1779301948; c=relaxed/simple;
+	bh=ZdXgRoi/fS2dVJegs5KaPEuG+RNu/4Zz3VNfnkzdois=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LL/BJwi1v76v8Yd0UkRiq6SpmtAkDWUe33fPAy0DhClJv15MU608oN5ZxNcxuCyb0PZUWJ+8Okp16Ey6welsbPP68bLgaHDoPJCiLCb1OJI/gA1eOrDcDe73VjrNDLJE/WLVu/wxtqbaShINmN0Fh4cbcZ/TMJ9a3F03DTYn0Aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LRqrLWdz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 284721F000E9;
-	Wed, 20 May 2026 18:10:40 +0000 (UTC)
+	 MIME-Version; b=szLqepB27j4kuOSM+t3Qa6dMkTCcOMg/ieHiHJd0EvujlYNl5MXNGqJ1DKNP2kmWoKa1SX3PyPOdhbUuprznLLfLcqXEicndVWAnkBp0uoNRN90n4PyoORjNLCnybGNQNVJtM9U262PhNlmHL7vknF/6SFZ8ZdSnGLrEQPUAmdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L17v88YD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E8811F00897;
+	Wed, 20 May 2026 18:32:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300640;
-	bh=UoOOozzm1cBjystsiSktynjfZLhuzWoCT7bx1NrqOBE=;
+	s=korg; t=1779301945;
+	bh=2YAfLDk7udvkWSKdCy6epWZgt9LGD7hsYZV4BIIDvBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LRqrLWdzLpKG7RD1faF1oy1+hdqwtoAyQdBh2C+0LgrCsLC1vKL+31nSAn9g7+iDW
-	 KR5htBqSIWJbsDgyXqzTf41QLrDgljlpWV9YMMEMRm0v+2mV18UQyioJleBofRjqB8
-	 TNXUMawy/a0ZURCronH12RspmORpP5ZL+EEft6mo=
+	b=L17v88YD342OLd9hcH2YIpia9Tqu2E4w3eaFJTy7j6pyfs5h1ZR/hwVWtW0yPItUZ
+	 pm9jK+HyvlvsdknMKxnKU51rbM5lCzUs4zVZE6dBapj8xvVowxybPZ7+H+ODJuRJKV
+	 PsnGhsjwO14IFi/ZBdm/Tx9bujVOFUkNVDr2TqaI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>,
-	Jeremy Bethmont <jeremy.bethmont@gmail.com>
-Subject: [PATCH 6.12 250/666] ALSA: hda/realtek - fixed speaker no sound update
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Felix Fietkau <nbd@nbd.name>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 038/508] wifi: mt76: mt7915: fix use-after-free bugs in mt7915_mac_dump_work()
 Date: Wed, 20 May 2026 18:17:41 +0200
-Message-ID: <20260520162116.636891395@linuxfoundation.org>
+Message-ID: <20260520162059.417352956@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,102 +64,87 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-252426-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,realtek.com,suse.de,kernel.org,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-252924-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,realtek.com:email]
-X-Rspamd-Queue-Id: 9084D59626B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,zju.edu.cn:email,msgid.link:url,nbd.name:email]
+X-Rspamd-Queue-Id: B800D596F07
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit 46c862f5419e0a86b60b9f9558d247f6084c99f9 ]
+[ Upstream commit 1146d0946b5358fad24812bd39d68f31cd40cc34 ]
 
-Fixed speaker has pop noise on Lenovo Thinkpad X11 Carbon Gen 12.
+When the mt7915 pci chip is detaching, the mt7915_crash_data is
+released in mt7915_coredump_unregister(). However, the work item
+dump_work may still be running or pending, leading to UAF bugs
+when the already freed crash_data is dereferenced again in
+mt7915_mac_dump_work().
 
-Fixes: 630fbc6e870e ("ALSA: hda/realtek - fixed speaker no sound")
-Reported-and-tested-by: Jeremy Bethmont <jeremy.bethmont@gmail.com>
-Closes: https://lore.kernel.org/CAC88DfsHrhyhy0Pn1O-z9egBvMYu=6NYgcvcC6KCgwh_-Ldkxg@mail.gmail.com
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+The race condition can occur as follows:
+
+CPU 0 (removal path)               | CPU 1 (workqueue)
+mt7915_pci_remove()                | mt7915_sys_recovery_set()
+ mt7915_unregister_device()        |  mt7915_reset()
+  mt7915_coredump_unregister()     |   queue_work()
+   vfree(dev->coredump.crash_data) | mt7915_mac_dump_work()
+                                   |  crash_data-> // UAF
+
+Fix this by ensuring dump_work is properly canceled before
+the crash_data is deallocated. Add cancel_work_sync() in
+mt7915_unregister_device() to synchronize with any pending
+or executing dump work.
+
+Fixes: 4dbcb9125cc3 ("wifi: mt76: mt7915: enable coredump support")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Link: https://patch.msgid.link/20260130145759.84272-1-duoming@zju.edu.cn
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/init.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index c420cf5d87e99..b0ee9b58e0570 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -7881,22 +7881,11 @@ static void alc287_alc1318_playback_pcm_hook(struct hda_pcm_stream *hinfo,
- 				   struct snd_pcm_substream *substream,
- 				   int action)
- {
--	static const struct coef_fw dis_coefs[] = {
--		WRITE_COEF(0x24, 0x0013), WRITE_COEF(0x25, 0x0000), WRITE_COEF(0x26, 0xC203),
--		WRITE_COEF(0x28, 0x0004), WRITE_COEF(0x29, 0xb023),
--	}; /* Disable AMP silence detection */
--	static const struct coef_fw en_coefs[] = {
--		WRITE_COEF(0x24, 0x0013), WRITE_COEF(0x25, 0x0000), WRITE_COEF(0x26, 0xC203),
--		WRITE_COEF(0x28, 0x0084), WRITE_COEF(0x29, 0xb023),
--	}; /* Enable AMP silence detection */
--
- 	switch (action) {
- 	case HDA_GEN_PCM_ACT_OPEN:
--		alc_process_coef_fw(codec, dis_coefs);
- 		alc_write_coefex_idx(codec, 0x5a, 0x00, 0x954f); /* write gpio3 to high */
- 		break;
- 	case HDA_GEN_PCM_ACT_CLOSE:
--		alc_process_coef_fw(codec, en_coefs);
- 		alc_write_coefex_idx(codec, 0x5a, 0x00, 0x554f); /* write gpio3 as default value */
- 		break;
- 	}
-@@ -7919,10 +7908,15 @@ static void alc287_fixup_lenovo_thinkpad_with_alc1318(struct hda_codec *codec,
- 		WRITE_COEF(0x24, 0x0013), WRITE_COEF(0x25, 0x0000), WRITE_COEF(0x26, 0xC301),
- 		WRITE_COEF(0x28, 0x0001), WRITE_COEF(0x29, 0xb023),
- 	};
-+	static const struct coef_fw dis_coefs[] = {
-+		WRITE_COEF(0x24, 0x0013), WRITE_COEF(0x25, 0x0000), WRITE_COEF(0x26, 0xC203),
-+		WRITE_COEF(0x28, 0x0004), WRITE_COEF(0x29, 0xb023),
-+	}; /* Disable AMP silence detection */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index e9068718b3d1f..529a3640944b5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -1254,6 +1254,7 @@ int mt7915_register_device(struct mt7915_dev *dev)
  
- 	if (action != HDA_FIXUP_ACT_PRE_PROBE)
- 		return;
- 	alc_update_coef_idx(codec, 0x10, 1<<11, 1<<11);
-+	alc_process_coef_fw(codec, dis_coefs);
- 	alc_process_coef_fw(codec, coefs);
- 	spec->power_hook = alc287_s4_power_gpio3_default;
- 	spec->gen.pcm_playback_hook = alc287_alc1318_playback_pcm_hook;
+ void mt7915_unregister_device(struct mt7915_dev *dev)
+ {
++	cancel_work_sync(&dev->dump_work);
+ 	mt7915_unregister_ext_phy(dev);
+ 	mt7915_coredump_unregister(dev);
+ 	mt7915_unregister_thermal(&dev->phy);
 -- 
 2.53.0
 
