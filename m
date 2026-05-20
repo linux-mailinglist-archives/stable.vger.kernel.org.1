@@ -1,173 +1,125 @@
-Return-Path: <stable+bounces-249771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249772-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wDW9LkhmDWquwgUAu9opvQ
-	(envelope-from <stable+bounces-249771-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 09:44:08 +0200
+	id 4N0hB/1lDWquwgUAu9opvQ
+	(envelope-from <stable+bounces-249772-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 09:42:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15044589182
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 09:44:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAD9C589147
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 09:42:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9842E302AC06
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 07:38:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 84C7F3026F26
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 07:42:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FBE5351C27;
-	Wed, 20 May 2026 07:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6756D37C102;
+	Wed, 20 May 2026 07:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="guf+lFQy"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="qlQKwrEV"
 X-Original-To: stable@vger.kernel.org
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3046633F5A8
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 07:38:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33A621A453;
+	Wed, 20 May 2026 07:42:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779262719; cv=none; b=a9iQrxH2b+FnKPhyu3wPX0w87yDZK+NdFffob4eQkeEZspLnGG9xMqVFmwCxAJA8yhrb/rDoQsgrrf26fqLb3LKMYfajRwxYnYkhFjsV71YdiCrCqHFZSdV1BzBLJAOPwsgShfrvLeo38qyLZqUtMcuXtI1YVe1dn4/3d/QI9ug=
+	t=1779262969; cv=none; b=AqnDHdJmRUxayDdXWzRZqfqV5/s4FODx0pfLjdlcpW19X24U/3MGiRf8jNuQONhfHb7gN+dpHSjh8d1sA58AJMkITHSElf8mqIc1WoASdrOthyAS/oubJnC5rnDs1T9QQWdcFzvoO4Wn+4BDcfCuXN99YamoGQDh8xjOSIR89+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779262719; c=relaxed/simple;
-	bh=W9Wf6+1EnvL4wZQtjY/HoofUXLpADwBl0zleq9Tdm84=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=UCnZx3Uwd1q5l/HofmiQtTlXSAYuGopAz4pty3ikgIf6mFUYsyzLMr1YCHF9OnalZReQLtvtUSx3Nc9v7+kVabAYMpKWNSBlExGSj9+vdcvjhhmP3bAF+hP34+VsAySwzj7hTIKJ1b976VKe2VvOxab5nK9MPIsdDu2TkN6mRvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=guf+lFQy; arc=none smtp.client-ip=91.218.175.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779262706;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W9Wf6+1EnvL4wZQtjY/HoofUXLpADwBl0zleq9Tdm84=;
-	b=guf+lFQyC1RCTuzV3Otmw4kOpcCj/qPP9u1eo5RT962dqQXAvTE7BzDrn7qejVsyAwaWPI
-	4vM4H7zfd15REfct9cR5yZwiyQIf3V8R9/JS9Cz+BDABGc/MIrnH8PV+yvMzCcWIFLi8AU
-	cMwZU9Ru850/P2jTlZlkrUIqjlR5ykE=
+	s=arc-20240116; t=1779262969; c=relaxed/simple;
+	bh=K178Z+0C5nLDLTbzw9jt49UufgSin1MFtXEHJ1ULaiQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=IqX1FIrgFD/jmOUBvtXYCCOKtxdDXaiJUe4M2DRWEy2lMJHTRq6HnCObIoQvC2hHXwUbpZDaSGVbyrNyS3hNBqwtaQdNnYpDW8Lh/MVwLic94OqVDjpDTv4EYNtjcQzeNkrM2tgz+vLiQJQQkUqktFZlCr9M6cokHnnA/E7trek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=qlQKwrEV; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=K178Z+0C5nLDLTbzw9jt49UufgSin1MFtXEHJ1ULaiQ=;
+	t=1779262966; x=1780472566; b=qlQKwrEVwui7s3XrNavkQRvmbm0ZvgCuQQwov8b9i0+47WT
+	TnZ4Hu797wwTYvlxmnvtz+/kJDW5ut+y61+AwOFUpmPv424YoCzLSxofOUs2pRVx5HNymcBSjPJtf
+	NyUf07QeBCsGZgXHur/Xiv2CyM4AZcgoxpo4yupkaXTDecAxyn0EsACSNUalI6u1ZUMc/9p9ZQDD5
+	zoYrxk5sHzHDJLf23XkHu8rVplHwBlopmZpCP2TT86QSblU+gLpOa31gvzdwpkBtr9QuAkzlg3aHE
+	+iy7L9xTQIPBW9ETBg1qzyiv7iUT+WM6gYdJwyYxLbwvNInDyv7IEbJ3qmpgn9Lw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1wPbZe-00000009mp7-1Pxk;
+	Wed, 20 May 2026 09:42:38 +0200
+Message-ID: <a36b5712dd420da4090bfa8868e78b1b2b90c916.camel@sipsolutions.net>
+Subject: Re: [PATCH v4] wifi: mac80211: fix monitor mode frame capture for
+ real chanctx drivers
+From: Johannes Berg <johannes@sipsolutions.net>
+To: =?ISO-8859-1?Q?=D3scar?= Alfonso =?ISO-8859-1?Q?D=EDaz?=
+	 <oscar.alfonso.diaz@gmail.com>, Devin Wittmayer <lucid_duck@justthetip.ca>
+Cc: linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>, Lorenzo
+ Bianconi <lorenzo@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, 	fjhhz1997@gmail.com, Brite
+ <brite.airgeddon@gmail.com>
+Date: Wed, 20 May 2026 09:42:37 +0200
+In-Reply-To: <CA+bbHrUcwtNhatzV+ufa8O3Wrku2_W4-UL=3XMy4-kg9qiOdXw@mail.gmail.com> (sfid-20260520_084943_360396_7470D3C8)
+References: <20260518170147.13885-1-lucid_duck@justthetip.ca>
+	 <20260519235713.49109-1-lucid_duck@justthetip.ca>
+	 <20260519235713.49109-2-lucid_duck@justthetip.ca>
+	 <CA+bbHrUcwtNhatzV+ufa8O3Wrku2_W4-UL=3XMy4-kg9qiOdXw@mail.gmail.com>
+	 (sfid-20260520_084943_360396_7470D3C8)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
-Subject: Re: [PATCH] mm/cma_debug: fix invalid accesses for inactive CMA areas
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <ag1icL5DPMVXwRta@localhost.localdomain>
-Date: Wed, 20 May 2026 15:37:43 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- linux-mm@kvack.org,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- Frank van der Linden <fvdl@google.com>,
- Stefan Strogin <stefan.strogin@gmail.com>,
- Dmitry Safonov <0x7f454c46@gmail.com>,
- Michal Nazarewicz <mina86@mina86.com>,
- linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <BBDB1B2E-32A3-4B52-B1A1-F048B66AE47E@linux.dev>
-References: <20260520061025.3971821-1-songmuchun@bytedance.com>
- <ag1icL5DPMVXwRta@localhost.localdomain>
-To: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249771-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[bytedance.com,linux-foundation.org,kernel.org,kvack.org,infradead.org,google.com,suse.com,gmail.com,mina86.com,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-249772-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
+	FREEMAIL_TO(0.00)[gmail.com,justthetip.ca];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,nbd.name,kernel.org,gmail.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[muchun.song@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:mid,linux.dev:dkim,bytedance.com:email]
-X-Rspamd-Queue-Id: 15044589182
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: AAD9C589147
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Wed, 2026-05-20 at 08:49 +0200, =C3=93scar Alfonso D=C3=ADaz wrote:
+> Let me know if any testing of a concrete patch is needed when you feel
+> it is completely fixed.
 
+I guess Devin is saying it's fixed, and I'm saying it's the same as mine
+so can't be really fixed unless something else happened in the kernel.
 
-> On May 20, 2026, at 15:27, Oscar Salvador (SUSE) =
-<osalvador@kernel.org> wrote:
->=20
-> On Wed, May 20, 2026 at 02:10:25PM +0800, Muchun Song wrote:
->> cma_activate_area() can fail after allocating range bitmaps. Its =
-cleanup
->> path frees those bitmaps, but only clears cma->count and
->> cma->available_count. It leaves cma->nranges and each range's count =
-in
->> place, so cma_debugfs_init() can still register debugfs files for an =
-area
->> that never activated successfully.
->>=20
->> That exposes two problems. Reading the bitmap file can make debugfs =
-walk a
->> freed range bitmap and trigger an invalid memory access. Reading =
-maxchunk
->> can also take cma->lock even though that lock is initialized only on =
-the
->> successful activation path.
->>=20
->> Fix this by creating debugfs entries only for CMA areas that reached
->> CMA_ACTIVATED.
->>=20
->> Fixes: c009da4258f9 ("mm, cma: support multiple contiguous ranges, if =
-requested")
->> Fixes: 2e32b947606d ("mm: cma: add functions to get region pages =
-counters")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->=20
-> For the change:
->=20
-> Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
->=20
-> About Fixes, does this mean that before c009da4258f9 ("mm, cma: =
-support
-> multiple contiguous ranges, if requested"), this was already =
-triggerable
-> after 2e32b947606d?
+Do you recall which kernel version you tested with? (I don't.) Perhaps
+something else in the kernel changed and it's now OK to make this
+change, but we know it wasn't working when you tested before, and I'd
+rather have it not work than crash.
 
-c009da4258f9 introduced the invalid access to bitmap file. 2e32b947606d =
-introduced
-the invalid access to cma->lock.
-
-This change applies to both issues. So I added two Fixes tags.
-
-Thanks.
-
->=20
->=20
-> --=20
-> Oscar Salvador
-> SUSE Labs
-
-
+johannes
 
