@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-250503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251401-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OOaQN4/zDWry4wUAu9opvQ
-	(envelope-from <stable+bounces-250503-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:46:55 +0200
+	id 6NtMF/r6DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-251401-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:18:34 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 224A35948B7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:46:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3003595C5D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:18:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 01A3333B4471
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:46:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3187134271B7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:25:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDE8735201E;
-	Wed, 20 May 2026 16:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970703D75DA;
+	Wed, 20 May 2026 17:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u6BufEgO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1QZMlHjL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641B93164C3;
-	Wed, 20 May 2026 16:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F3813E0C70;
+	Wed, 20 May 2026 17:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295580; cv=none; b=iG670U9YkAiK9kxagb9+J6sxqPeuIAY5OkkkF0nxxVC5/PnglrMtqanukDt8yt6aY8sJlxmo+/W61labHdz50viRgGoewWvBw5/LKipjfL3KOBZHbOVckmeSghzbzZkRvAN5B9QKeJgqfkYF4LCWjaK3pxln+u16gwXv8D0TnrY=
+	t=1779297884; cv=none; b=ee4JLarRhescwg9Qga3F4nYv32b5jMAoKyVbTAW9quv5yvlJoNR4vZZo/gCNvmpaeIRS1nWWxXQ8msqT8jhtdC3NSk9SmgAhOs5T8E4TiFPC1YLVehsXay0eExMZqTCB/3sHJ3Jbe4psiynUsBTMnDtRXAmri+P6EyurKbV7rNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295580; c=relaxed/simple;
-	bh=zxj2JF64eFqZz53jzHnDDk+j2yMa72FPLvYLDHNcX/k=;
+	s=arc-20240116; t=1779297884; c=relaxed/simple;
+	bh=+Sa9u3zkkN5pe3c28qIYnXhE+3euj18tibjlXzDc1tk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jq3zZCXsNz88qp+7eom2V12CboRQy9jnO1U2Lcmr2elHBMLFWFGsARhpu/EcTnTH3gu4s2dtyDP9/OIv+Nm/nkiPc71KmR7I0cPY0z83XhJGmz5UC9etc7dXrxd6E5hLj59XaKxgNm1GnBigqGrgoPRcekFORdvjU8kBdxXnSoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u6BufEgO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98481F000E9;
-	Wed, 20 May 2026 16:46:18 +0000 (UTC)
+	 MIME-Version; b=DLGPb3ZjBQLj9MFmxgxSDG+4yczE31gp1bLwO6BPkx5bx6HTZyydBA/w0Uu38foT+pVx0phO/2RErFTP8PIA2zx+jGqb4hpCkqGp48J7o9zBxsU5dhzJSa+zkM7rXRuPu1cW3uTP4yLc65JJUR4swfkFvQ+5TOHM+2TYe1dnTDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1QZMlHjL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B50F11F000E9;
+	Wed, 20 May 2026 17:24:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295579;
-	bh=vE3Zm+DYCn82313TilGzgW5VDhQAnqAXjhwlzq/7KZg=;
+	s=korg; t=1779297883;
+	bh=ENluCIu4ywiW352katcgqczXHVQMPJO638dP0uRaTCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=u6BufEgOZMbGLsAHkfcYvIjoKrk3hmhJwghkqSjkrkGP7SguEGuGRZn3GXqQ4kQzG
-	 8+To4MOMYosQseyVVTmJPEHjzZesz8IGh3axEmAWzI6g2Ya2Ap5Gno0+q9b4sQQP/O
-	 GmxD+rdVZkVeETqqhapGzfEOoIcN5DuhN4HfY9Es=
+	b=1QZMlHjLPK0MKhVi+BhWo/u0y1gKZ89KGJysvhg+PwZ62y/Wi3pQh9c+5+7FSl3kT
+	 G0s9mL1zIL890rVYM+EW0vH7w79soCVDojFG4hejgbZAn7VzhmSq2dz5fA57RzYdCA
+	 dAwJysy/338UAYbMPMvjflXtLT1f0HW7y7r3ls0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0432/1146] ASoC: SDCA: Fix cleanup inversion in class driver
-Date: Wed, 20 May 2026 18:11:22 +0200
-Message-ID: <20260520162157.970387091@linuxfoundation.org>
+Subject: [PATCH 6.18 200/957] dm cache: fix write hang in passthrough mode
+Date: Wed, 20 May 2026 18:11:23 +0200
+Message-ID: <20260520162138.884139966@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,141 +73,112 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250503-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251401-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,cirrus.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 224A35948B7
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: B3003595C5D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-[ Upstream commit 7936490e04733ade80d0d445529c0a6de0f95515 ]
+[ Upstream commit 4ca8b8bd952df7c3ccdc68af9bd3419d0839a04b ]
 
-Fix inverted cleanup of the SoundWire IRQ and the function drivers
-that use it.
+The invalidate_remove() function has incomplete logic for handling write
+hit bios after cache invalidation. It sets up the remapping for the
+overwrite_bio but then drops it immediately without submission, causing
+write operations to hang.
 
-The devm cleanup function to call sdca_dev_unregister_functions() was
-being registered at the end of class_sdw_probe(). The bus core
-creates the parent SoundWire IRQ handler after class_sdw_probe() has
-returned, and it registers a devm cleanup handler at the same time.
+Fix by adding a new invalidate_committed() continuation that submits
+the remapped writes to the cache origin after metadata commit completes,
+while using the overwrite_endio hook to ensure proper completion
+sequencing. This maintains existing coherency. Also improve error
+handling in invalidate_complete() to preserve the original error status
+instead of using bio_io_error() unconditionally.
 
-This led to a cleanup inversion where the devm cleanup for the parent
-Soundwire IRQ runs before the handler that removes the function drivers.
-So the parent IRQ is destroyed before the function drivers had a chance
-to do any cleanup and remove their IRQ handlers.
-
-Move the registrations of the function driver cleanup into
-class_boot_work() after the function drivers are registered, so that it
-runs before the cleanup of the parent SoundWire IRQ handler.
-
-Fixes: 2d877d0659cb ("ASoC: SDCA: Add basic SDCA class driver")
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20260409164328.3999434-3-ckeepax@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sdca/sdca_class.c | 34 +++++++++++++++++++++-------------
- 1 file changed, 21 insertions(+), 13 deletions(-)
+ drivers/md/dm-cache-target.c | 30 +++++++++++++++++++++++++-----
+ 1 file changed, 25 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/sdca/sdca_class.c b/sound/soc/sdca/sdca_class.c
-index 918b638acb577..5def6ae2d99f0 100644
---- a/sound/soc/sdca/sdca_class.c
-+++ b/sound/soc/sdca/sdca_class.c
-@@ -137,6 +137,13 @@ static const struct regmap_config class_dev_regmap_config = {
- 	.unlock			= class_regmap_unlock,
- };
+diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
+index 69fa2f6479318..b191ea1361b40 100644
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -1467,8 +1467,14 @@ static void invalidate_complete(struct dm_cache_migration *mg, bool success)
+ 			free_prison_cell(cache, mg->cell);
+ 	}
  
-+static void class_remove_functions(void *data)
-+{
-+	struct sdca_class_drv *drv = data;
-+
-+	sdca_dev_unregister_functions(drv->sdw);
-+}
-+
- static void class_boot_work(struct work_struct *work)
- {
- 	struct sdca_class_drv *drv = container_of(work,
-@@ -157,6 +164,11 @@ static void class_boot_work(struct work_struct *work)
- 	if (ret)
- 		goto err;
+-	if (!success && mg->overwrite_bio)
+-		bio_io_error(mg->overwrite_bio);
++	if (mg->overwrite_bio) {
++		// Set generic error if the bio hasn't been issued yet,
++		// e.g., invalidation or metadata commit failed before bio
++		// submission. Otherwise preserve the bio's own error status.
++		if (!success && !mg->overwrite_bio->bi_status)
++			mg->overwrite_bio->bi_status = BLK_STS_IOERR;
++		bio_endio(mg->overwrite_bio);
++	}
  
-+	/* Ensure function drivers are removed before the IRQ is destroyed */
-+	ret = devm_add_action_or_reset(drv->dev, class_remove_functions, drv);
-+	if (ret)
-+		goto err;
-+
- 	dev_dbg(drv->dev, "boot work complete\n");
- 
- 	pm_runtime_mark_last_busy(drv->dev);
-@@ -168,15 +180,6 @@ static void class_boot_work(struct work_struct *work)
- 	pm_runtime_put_sync(drv->dev);
+ 	free_migration(mg);
+ 	defer_bios(cache, &bios);
+@@ -1508,6 +1514,22 @@ static int invalidate_cblock(struct cache *cache, dm_cblock_t cblock)
+ 	return r;
  }
  
--static void class_dev_remove(void *data)
--{
--	struct sdca_class_drv *drv = data;
--
--	cancel_work_sync(&drv->boot_work);
--
--	sdca_dev_unregister_functions(drv->sdw);
--}
--
- static int class_sdw_probe(struct sdw_slave *sdw, const struct sdw_device_id *id)
- {
- 	struct device *dev = &sdw->dev;
-@@ -230,15 +233,19 @@ static int class_sdw_probe(struct sdw_slave *sdw, const struct sdw_device_id *id
- 	if (ret)
- 		return ret;
- 
--	ret = devm_add_action_or_reset(dev, class_dev_remove, drv);
--	if (ret)
--		return ret;
--
- 	queue_work(system_long_wq, &drv->boot_work);
- 
- 	return 0;
- }
- 
-+static void class_sdw_remove(struct sdw_slave *sdw)
++static void invalidate_committed(struct work_struct *ws)
 +{
-+	struct device *dev = &sdw->dev;
-+	struct sdca_class_drv *drv = dev_get_drvdata(dev);
++	struct dm_cache_migration *mg = ws_to_mg(ws);
++	struct cache *cache = mg->cache;
++	struct bio *bio = mg->overwrite_bio;
++	struct per_bio_data *pb = get_per_bio_data(bio);
 +
-+	cancel_work_sync(&drv->boot_work);
++	if (mg->k.input)
++		invalidate_complete(mg, false);
++
++	init_continuation(&mg->k, invalidate_completed);
++	remap_to_origin_clear_discard(cache, bio, mg->invalidate_oblock);
++	dm_hook_bio(&pb->hook_info, bio, overwrite_endio, mg);
++	dm_submit_bio_remap(bio, NULL);
 +}
 +
- static int class_suspend(struct device *dev)
+ static void invalidate_remove(struct work_struct *ws)
  {
- 	struct sdca_class_drv *drv = dev_get_drvdata(dev);
-@@ -328,6 +335,7 @@ static struct sdw_driver class_sdw_driver = {
- 	},
+ 	int r;
+@@ -1520,10 +1542,8 @@ static void invalidate_remove(struct work_struct *ws)
+ 		return;
+ 	}
  
- 	.probe		= class_sdw_probe,
-+	.remove		= class_sdw_remove,
- 	.id_table	= class_sdw_id,
- 	.ops		= &class_sdw_ops,
- };
+-	init_continuation(&mg->k, invalidate_completed);
++	init_continuation(&mg->k, invalidate_committed);
+ 	continue_after_commit(&cache->committer, &mg->k);
+-	remap_to_origin_clear_discard(cache, mg->overwrite_bio, mg->invalidate_oblock);
+-	mg->overwrite_bio = NULL;
+ 	schedule_commit(&cache->committer);
+ }
+ 
 -- 
 2.53.0
 
