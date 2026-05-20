@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-252180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251542-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aEpAA/D/DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-252180-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:44 +0200
+	id cGknE+n7DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-251542-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:33 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F6EB596ED1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88BDB595EBC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 58C3C3561BA5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:00:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D9B9833D3AC5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:31:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C80F3F929A;
-	Wed, 20 May 2026 18:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEC21359A6F;
+	Wed, 20 May 2026 17:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lnr5mdHf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JdxxC3Eb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6F33F4DDB;
-	Wed, 20 May 2026 18:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9244C29D26E;
+	Wed, 20 May 2026 17:30:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300001; cv=none; b=l/HSfcXi6X132jDuuY2IYLlIy6c/cwl+WrwisilWIi4I7S8xB+hmGW56KJY2jAphCAZq9X0klD/7O4Z9vI1GtwkxOHVVH0jygi2EkYh/y/wDmOcCjbA3BkOqV7SEVdrEHQIReyz3x3qLSRBFfJsc7UBAu8jcU9bA5D/PoAk0y4c=
+	t=1779298250; cv=none; b=VYrXABwhMGvYgGb9oMMBFbitZuL6VuSiNd4y9e2H1yfFvt0TJnKWyohFFkyNF+998Ipd5l42ZPviRTkDRtWTqDlaa1aOW0/AGnGQNfIyE+t7KM33VsTg8+HYAjT/+JMqw5rGWIru75DmIN69NY6gtCYFsJtoTqWUWjIqVPHGpjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300001; c=relaxed/simple;
-	bh=Cs6wglBiuB6ZviHfr7M4jqS3UMVzRoiVFqOdYDiZ9Uc=;
+	s=arc-20240116; t=1779298250; c=relaxed/simple;
+	bh=mPbHzJKxM/mMyBKLrVnWj7x74V2cUhg0G+uzkWciq6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uIpKLKiRTrkts3RXGnS0hWi4txzqDK6hoLoqXc6oqONRhZhBC/23qfe8puNt4SMTN/s88J+Bzgz5aGtvJ0tlqVEqOnfJ7xokykB4cPUyysqIoXgbVpVtnVbVltWBbp6dhqH82LoOEi+QoeVadsupo7BpX755vIXcktQtTjTGSmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lnr5mdHf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 819161F000E9;
-	Wed, 20 May 2026 17:59:59 +0000 (UTC)
+	 MIME-Version; b=uSbmsOSEgvlmV9Jo+P2/Lho7A1QI7Z1v1hPSc/5VTlYEf21MOQ8Vtj58iUJW2Yiue7RWqx9p4jJwjnE6JHc0/B+PXaqG5YXqbA95x9GR9qJno8oWYImY32ysZyJhUW3iRkhOKFemDKEcMbppVZ/2dCpGqIC2KdCRvOasEr6s2Vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JdxxC3Eb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A8AF1F000E9;
+	Wed, 20 May 2026 17:30:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300000;
-	bh=fKbZDcyYHAut6WEupVzw+3m8g7ajtzvIWa9UFebvkGM=;
+	s=korg; t=1779298249;
+	bh=sWpC6qVx0nLA9GyHIg4X1j8Hk5AK3HvZgoCW4CUPuJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Lnr5mdHf0faoXy49hxElOW5UxxxKVaxmPDRFgfXiOH0H8wuZziQHxGaGPQm9l6GD9
-	 aCPTd8IAUOR2DvJM8H2WPeVVtDLpyzN4BhzEFN6SCyGZ83FepXRpn9zxJ4/hPqRx0Z
-	 m5VYFwuBGBc7Via3qNkSuiRU6w4CnfmjCF8RdmAQ=
+	b=JdxxC3EbCtTNCC+EYFo+7VRGmPATtQAVuJ0VB1gSwANR3hkHqZlIn8Xhir9YfoREy
+	 mFZhGzWgbdZ6AliMsjAckejS7HXONvBsWy7YcBPK0/kF+Er8YAqWmHMa0rXyuHfJjR
+	 Vrq+RSrhx25uYNgLBCuzmJJMpvtAarqmnpeBaLbo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cole Leavitt <cole@unwrap.rs>,
-	Kees Cook <kees@kernel.org>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Haixin Xu <jerryxucs@gmail.com>,
+	Stephan Mueller <smueller@chronox.de>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 010/666] pstore/ram: fix resource leak when ioremap() fails
+Subject: [PATCH 6.18 338/957] crypto: jitterentropy - replace long-held spinlock with mutex
 Date: Wed, 20 May 2026 18:13:41 +0200
-Message-ID: <20260520162111.454417941@linuxfoundation.org>
+Message-ID: <20260520162141.861746090@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,84 +71,141 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252180-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,chronox.de,gondor.apana.org.au,kernel.org];
+	TAGGED_FROM(0.00)[bounces-251542-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[unwrap.rs:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 3F6EB596ED1
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,apana.org.au:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 88BDB595EBC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cole Leavitt <cole@unwrap.rs>
+From: Haixin Xu <jerryxucs@gmail.com>
 
-[ Upstream commit 2ddb69f686ef7a621645e97fc7329c50edf5d0e5 ]
+[ Upstream commit 01d798e9feb30212952d4e992801ba6bd6a82351 ]
 
-In persistent_ram_iomap(), ioremap() or ioremap_wc() may return NULL on
-failure. Currently, if this happens, the function returns NULL without
-releasing the memory region acquired by request_mem_region().
+jent_kcapi_random() serializes the shared jitterentropy state, but it
+currently holds a spinlock across the jent_read_entropy() call. That
+path performs expensive jitter collection and SHA3 conditioning, so
+parallel readers can trigger stalls as contending waiters spin for
+the same lock.
 
-This leads to a resource leak where the memory region remains reserved
-but unusable.
+To prevent non-preemptible lock hold, replace rng->jent_lock with a
+mutex so contended readers sleep instead of spinning on a shared lock
+held across expensive entropy generation.
 
-Additionally, the caller persistent_ram_buffer_map() handles NULL
-correctly by returning -ENOMEM, but without this check, a NULL return
-combined with request_mem_region() succeeding leaves resources in an
-inconsistent state.
-
-This is the ioremap() counterpart to commit 05363abc7625 ("pstore:
-ram_core: fix incorrect success return when vmap() fails") which fixed
-a similar issue in the vmap() path.
-
-Fixes: 404a6043385d ("staging: android: persistent_ram: handle reserving and mapping memory")
-Signed-off-by: Cole Leavitt <cole@unwrap.rs>
-Link: https://patch.msgid.link/20260225235406.11790-1-cole@unwrap.rs
-Signed-off-by: Kees Cook <kees@kernel.org>
+Fixes: bb5530e40824 ("crypto: jitterentropy - add jitterentropy RNG")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Haixin Xu <jerryxucs@gmail.com>
+Reviewed-by: Stephan Mueller <smueller@chronox.de>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/pstore/ram_core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ crypto/jitterentropy-kcapi.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/fs/pstore/ram_core.c b/fs/pstore/ram_core.c
-index 7b6d6378a3b87..95675d4bab141 100644
---- a/fs/pstore/ram_core.c
-+++ b/fs/pstore/ram_core.c
-@@ -489,6 +489,10 @@ static void *persistent_ram_iomap(phys_addr_t start, size_t size,
- 	else
- 		va = ioremap_wc(start, size);
+diff --git a/crypto/jitterentropy-kcapi.c b/crypto/jitterentropy-kcapi.c
+index a53de7affe8d1..e9cd2b27d1e3c 100644
+--- a/crypto/jitterentropy-kcapi.c
++++ b/crypto/jitterentropy-kcapi.c
+@@ -42,6 +42,7 @@
+ #include <linux/fips.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
++#include <linux/mutex.h>
+ #include <linux/slab.h>
+ #include <linux/time.h>
+ #include <crypto/internal/rng.h>
+@@ -193,7 +194,7 @@ int jent_read_random_block(void *hash_state, char *dst, unsigned int dst_len)
+  ***************************************************************************/
  
-+	/* We must release the mem region if ioremap fails. */
-+	if (!va)
-+		release_mem_region(start, size);
-+
+ struct jitterentropy {
+-	spinlock_t jent_lock;
++	struct mutex jent_lock;
+ 	struct rand_data *entropy_collector;
+ 	struct crypto_shash *tfm;
+ 	struct shash_desc *sdesc;
+@@ -203,7 +204,7 @@ static void jent_kcapi_cleanup(struct crypto_tfm *tfm)
+ {
+ 	struct jitterentropy *rng = crypto_tfm_ctx(tfm);
+ 
+-	spin_lock(&rng->jent_lock);
++	mutex_lock(&rng->jent_lock);
+ 
+ 	if (rng->sdesc) {
+ 		shash_desc_zero(rng->sdesc);
+@@ -218,7 +219,7 @@ static void jent_kcapi_cleanup(struct crypto_tfm *tfm)
+ 	if (rng->entropy_collector)
+ 		jent_entropy_collector_free(rng->entropy_collector);
+ 	rng->entropy_collector = NULL;
+-	spin_unlock(&rng->jent_lock);
++	mutex_unlock(&rng->jent_lock);
+ }
+ 
+ static int jent_kcapi_init(struct crypto_tfm *tfm)
+@@ -228,7 +229,7 @@ static int jent_kcapi_init(struct crypto_tfm *tfm)
+ 	struct shash_desc *sdesc;
+ 	int size, ret = 0;
+ 
+-	spin_lock_init(&rng->jent_lock);
++	mutex_init(&rng->jent_lock);
+ 
  	/*
- 	 * Since request_mem_region() and ioremap() are byte-granularity
- 	 * there is no need handle anything special like we do when the
+ 	 * Use SHA3-256 as conditioner. We allocate only the generic
+@@ -265,7 +266,6 @@ static int jent_kcapi_init(struct crypto_tfm *tfm)
+ 		goto err;
+ 	}
+ 
+-	spin_lock_init(&rng->jent_lock);
+ 	return 0;
+ 
+ err:
+@@ -280,7 +280,7 @@ static int jent_kcapi_random(struct crypto_rng *tfm,
+ 	struct jitterentropy *rng = crypto_rng_ctx(tfm);
+ 	int ret = 0;
+ 
+-	spin_lock(&rng->jent_lock);
++	mutex_lock(&rng->jent_lock);
+ 
+ 	ret = jent_read_entropy(rng->entropy_collector, rdata, dlen);
+ 
+@@ -306,7 +306,7 @@ static int jent_kcapi_random(struct crypto_rng *tfm,
+ 		ret = -EINVAL;
+ 	}
+ 
+-	spin_unlock(&rng->jent_lock);
++	mutex_unlock(&rng->jent_lock);
+ 
+ 	return ret;
+ }
 -- 
 2.53.0
 
