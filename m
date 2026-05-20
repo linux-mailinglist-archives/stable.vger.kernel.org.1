@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252647-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cDLIElX4DWqR5AUAu9opvQ
-	(envelope-from <stable+bounces-252036-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:07:17 +0200
+	id QD/zI1wWDmpb6AUAu9opvQ
+	(envelope-from <stable+bounces-252647-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:15:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0321759556A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:07:16 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DD9E599597
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:15:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 41EC03162C74
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:52:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0553A30CAC94
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:20:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 265C23F0A83;
-	Wed, 20 May 2026 17:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98A933F4DD6;
+	Wed, 20 May 2026 18:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TJirtHLe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eBroW9Ga"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0FA53F1AD9;
-	Wed, 20 May 2026 17:52:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139123D1CC6;
+	Wed, 20 May 2026 18:20:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299577; cv=none; b=J2Gu5uHc0fxTZfn+WGw/2oHL0bpS8GLVnJzpgbgR9EymDB4OQ3+6gO85H3eygZFYJcjgmng2tTSMXhIN/3BpSUaZbN++NeBxJecflBrA7rl1nnUDsZqrvxPV3W7ACc1A//pANBRj6YA0FJwae0p2KGRTNsuyTtITFXbPhi4WTbc=
+	t=1779301224; cv=none; b=UvjJzzygB48emjqWYpG8N24RYaNxyJ8AcRfXMMdSeMn3KhuJxYvQZlEOg0cY4nPtxBk2wJz0LUyH2er3Ugh3fw4BnW3woPnfZ57oBzF6kpOH93hZYhyVnpAFxLEn4D9QlXE9rdA2qjZAyuEMxGJqmKl200eor/iycqGzN58DW3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299577; c=relaxed/simple;
-	bh=9WTdIIw6W/arQBVn6rUZoPO1wNo2S149QWaCz+6nmH4=;
+	s=arc-20240116; t=1779301224; c=relaxed/simple;
+	bh=i+xPW6fyPqcL+B6jcSt6B/dmJ1fb8UOzkd6I4Xcrzzw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EWBy+az7rTSNBaI3Qm4dsl1yt7qJiHJ6QH31LD25t7IgNo16MBGw41EADxsrhhuU2h3n3MEe9jU7QoIbIStNrvwG+qR5UngpHf0rm4GuBnAfNQ11LvF9BmvudKw++CSY7SJRvq/0QNzKvJ3mBWPcMBE0iDgwTXROq1sqRpAI2oA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TJirtHLe; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 529741F000E9;
-	Wed, 20 May 2026 17:52:56 +0000 (UTC)
+	 MIME-Version; b=gVscgrIejEMautyTn4WfTW7yb5NMlQKSHNPqwdtjDGvhPaFKxIGLSlzvRozlowJrAzX3Bu9vo3E6lZ5jW+5aUKB8QbYyZ+5Fg95cypB8FU5iJR/ObWjPh3XShX29LUCaQwNvRJuCo1vReoePqapfwnfNlpPbRCvyNPRkfE58DcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eBroW9Ga; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 643E91F000E9;
+	Wed, 20 May 2026 18:20:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299576;
-	bh=V3gL7yQ1zytJKO4OiZB384DR0aipPT4SXGLuJ9weTvI=;
+	s=korg; t=1779301222;
+	bh=vQRjSxMY7HzKHJK9bGJZBX8rLQZYXVGTeilAeONNr6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TJirtHLesgFvvtTqIOHM0BMpkx4qJRYM7N3Cvcs03G2ytR9LVjeWee9ztSkWL6hKU
-	 nDfo0ARje5mlO6sOJtmsOwmIVegxH824b5bqNO09SHyZ05tbzukpSzJO/k24e/mPZB
-	 6hWDM2i5pIHIiu8uIGUwUmCdP8+majGD44/aRBRM=
+	b=eBroW9Gaxpk58RUkioI1f/zdK2HwIxqnziGrH7RW0oeea+F8OSwjpScvwD6BJhwiC
+	 3mjImVjN9iBj5/JcxIcQSiemZFKNHH8PBmk1TnxBeNwzxOMFBVxnPxNjrRT8TRXtoI
+	 D5c/VW/OS+llI/zVothsq2nRA/BJDNdDaz8T6tTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Yinjie Yao <yinjie.yao@amd.com>,
+	Yingnan Zhang <342144303@qq.com>,
+	Julian Anastasov <ja@ssi.bg>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 798/957] drm/amdgpu/vcn: set no_user_fence for VCN v2.0 enc/dec rings
-Date: Wed, 20 May 2026 18:21:21 +0200
-Message-ID: <20260520162151.869491333@linuxfoundation.org>
+Subject: [PATCH 6.12 471/666] ipvs: fix MTU check for GSO packets in tunnel mode
+Date: Wed, 20 May 2026 18:21:22 +0200
+Message-ID: <20260520162121.477405730@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +64,133 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252036-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-252647-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qq.com,ssi.bg,netfilter.org,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 0321759556A
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qq.com:email,ssi.bg:email]
+X-Rspamd-Queue-Id: 8DD9E599597
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yinjie Yao <yinjie.yao@amd.com>
+From: Yingnan Zhang <342144303@qq.com>
 
-[ Upstream commit 8d80b293b41fcb5e9396db93e788b0f4ebcbafb7 ]
+[ Upstream commit 67bf42cae41d847fd6e5749eb68278ca5d748b25 ]
 
-VCN encoder and decoder rings do not support 64-bit user fence writes,
-reject CS submissions with user fences.
+Currently, IPVS skips MTU checks for GSO packets by excluding them with
+the !skb_is_gso(skb) condition. This creates problems when IPVS tunnel
+mode encapsulates GSO packets with IPIP headers.
 
-Fixes: 1b61de45dfaf ("drm/amdgpu: add initial VCN2.0 support (v2)")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit e2b5499fca55f1a32960a311bbb62e35891eaf73)
+The issue manifests in two ways:
+
+1. MTU violation after encapsulation:
+   When a GSO packet passes through IPVS tunnel mode, the original MTU
+   check is bypassed. After adding the IPIP tunnel header, the packet
+   size may exceed the outgoing interface MTU, leading to unexpected
+   fragmentation at the IP layer.
+
+2. Fragmentation with problematic IP IDs:
+   When net.ipv4.vs.pmtu_disc=1 and a GSO packet with multiple segments
+   is fragmented after encapsulation, each segment gets a sequentially
+   incremented IP ID (0, 1, 2, ...). This happens because:
+
+   a) The GSO packet bypasses MTU check and gets encapsulated
+   b) At __ip_finish_output, the oversized GSO packet is split into
+      separate SKBs (one per segment), with IP IDs incrementing
+   c) Each SKB is then fragmented again based on the actual MTU
+
+   This sequential IP ID allocation differs from the expected behavior
+   and can cause issues with fragment reassembly and packet tracking.
+
+Fix this by properly validating GSO packets using
+skb_gso_validate_network_len(). This function correctly validates
+whether the GSO segments will fit within the MTU after segmentation. If
+validation fails, send an ICMP Fragmentation Needed message to enable
+proper PMTU discovery.
+
+Fixes: 4cdd34084d53 ("netfilter: nf_conntrack_ipv6: improve fragmentation handling")
+Signed-off-by: Yingnan Zhang <342144303@qq.com>
+Acked-by: Julian Anastasov <ja@ssi.bg>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/netfilter/ipvs/ip_vs_xmit.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c b/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c
-index e35fae9cdaf66..0442bfcfd384d 100644
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c
-@@ -2113,6 +2113,7 @@ static const struct amd_ip_funcs vcn_v2_0_ip_funcs = {
- static const struct amdgpu_ring_funcs vcn_v2_0_dec_ring_vm_funcs = {
- 	.type = AMDGPU_RING_TYPE_VCN_DEC,
- 	.align_mask = 0xf,
-+	.no_user_fence = true,
- 	.secure_submission_supported = true,
- 	.get_rptr = vcn_v2_0_dec_ring_get_rptr,
- 	.get_wptr = vcn_v2_0_dec_ring_get_wptr,
-@@ -2145,6 +2146,7 @@ static const struct amdgpu_ring_funcs vcn_v2_0_enc_ring_vm_funcs = {
- 	.type = AMDGPU_RING_TYPE_VCN_ENC,
- 	.align_mask = 0x3f,
- 	.nop = VCN_ENC_CMD_NO_OP,
-+	.no_user_fence = true,
- 	.get_rptr = vcn_v2_0_enc_ring_get_rptr,
- 	.get_wptr = vcn_v2_0_enc_ring_get_wptr,
- 	.set_wptr = vcn_v2_0_enc_ring_set_wptr,
+diff --git a/net/netfilter/ipvs/ip_vs_xmit.c b/net/netfilter/ipvs/ip_vs_xmit.c
+index 8892f261451e9..ed8b2616cf178 100644
+--- a/net/netfilter/ipvs/ip_vs_xmit.c
++++ b/net/netfilter/ipvs/ip_vs_xmit.c
+@@ -103,6 +103,18 @@ __ip_vs_dst_check(struct ip_vs_dest *dest)
+ 	return dest_dst;
+ }
+ 
++/* Based on ip_exceeds_mtu(). */
++static bool ip_vs_exceeds_mtu(const struct sk_buff *skb, unsigned int mtu)
++{
++	if (skb->len <= mtu)
++		return false;
++
++	if (skb_is_gso(skb) && skb_gso_validate_network_len(skb, mtu))
++		return false;
++
++	return true;
++}
++
+ static inline bool
+ __mtu_check_toobig_v6(const struct sk_buff *skb, u32 mtu)
+ {
+@@ -112,10 +124,9 @@ __mtu_check_toobig_v6(const struct sk_buff *skb, u32 mtu)
+ 		 */
+ 		if (IP6CB(skb)->frag_max_size > mtu)
+ 			return true; /* largest fragment violate MTU */
+-	}
+-	else if (skb->len > mtu && !skb_is_gso(skb)) {
++	} else if (ip_vs_exceeds_mtu(skb, mtu))
+ 		return true; /* Packet size violate MTU size */
+-	}
++
+ 	return false;
+ }
+ 
+@@ -233,7 +244,7 @@ static inline bool ensure_mtu_is_adequate(struct netns_ipvs *ipvs, int skb_af,
+ 			return true;
+ 
+ 		if (unlikely(ip_hdr(skb)->frag_off & htons(IP_DF) &&
+-			     skb->len > mtu && !skb_is_gso(skb) &&
++			     ip_vs_exceeds_mtu(skb, mtu) &&
+ 			     !ip_vs_iph_icmp(ipvsh))) {
+ 			icmp_send(skb, ICMP_DEST_UNREACH, ICMP_FRAG_NEEDED,
+ 				  htonl(mtu));
 -- 
 2.53.0
 
