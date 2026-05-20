@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-251777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250843-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GOx3JB70DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251777-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:49:18 +0200
+	id mEn0C1z5DWq75AUAu9opvQ
+	(envelope-from <stable+bounces-250843-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18AC2594A82
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:49:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90A9159582E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 223E730104A4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:41:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7854A33BB6BE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:02:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D26F33ED5C8;
-	Wed, 20 May 2026 17:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7933F54D4;
+	Wed, 20 May 2026 17:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QNEk63au"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1C6jk/ZX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D74336D9EA;
-	Wed, 20 May 2026 17:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3AC3A1E72;
+	Wed, 20 May 2026 17:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298865; cv=none; b=Q3f1khfZtaCCiESvpi45GZTATEK3A0jFjTOCoktQT0f/qoEA0EKIKSa9uhKB9cCpnZnosZs/valIsJi1GZfQr1Yvgl12gLVS8scJAcPiTVqedqUvHwUcUw5pl1CuUZQMVGA3exh7w+E4l7uEjONECCP2Ob8TeOv5rjL7EeLC724=
+	t=1779296451; cv=none; b=B1ZKMupko7AnZgsAAvmxFErEWKPzrzYqkaSvdMFkxBZCxilKXPBxS5Z3UPaeULGFIPTj8/vfnI3Au3eyphUFZdbUghP5eXKrm+8ASYb0ne4JVoHotVJeK8kFSZ/uiN0GABQ6hapCXx6sCH6Um1GBUvIMzGT/KAGlax+EqZ+AWU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298865; c=relaxed/simple;
-	bh=mqRF9lr5ddDgmMNQdPgt3DryfjpETRcvVSzRvW4yAPU=;
+	s=arc-20240116; t=1779296451; c=relaxed/simple;
+	bh=szayO4GfZkqYNlZNwwM16cnLL14oPpjZfsONDVvxfiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I/oTuKQ3Taj7nC4LI84OprvezheOYe7QcbplIOruxMaHymlzwd7ytYk5BS9Qn7yW77AvOpY+RKnRukIvIa7rd317aeWo2xQfdmeQyLwJGIKTcRejKpHJYLbjDHSfQbvNQX72laV+YjLdKUjtCBmAgq4W6G0BGSw1aiSc1K1Viio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QNEk63au; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0F0B1F00893;
-	Wed, 20 May 2026 17:41:03 +0000 (UTC)
+	 MIME-Version; b=iW64HksxsXKfnWu0jTl2XNtzjWs7qZSFcqnuIiG7vgxd+jXJdNrbrC0BtTkV3PX+Aj7hx/su+Q0tvkSPjZLNSB2ti5rzZDoQqwubqyJ5cbTqI4Toq/Ur+P6JNI7S4T+no1TBtoDAJmTCxMtBzKBE5TXC5dZ/uaN/QGnxnSuIYz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1C6jk/ZX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 477471F000E9;
+	Wed, 20 May 2026 17:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298864;
-	bh=K93w9lcbx7cofnxtyvswu6Ne9deJLFRWgLLwJQDuhoM=;
+	s=korg; t=1779296450;
+	bh=92qIOK5MKCchAJQHy1aSogYet81RuwL6//I2sUccDuA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QNEk63auymEdb3qD+ke488Ipqt4dFklzRcbwX0e2tDuBb6ktYvU2G+fxlKwkmqBOV
-	 Dv0S3scXzSNTHlQus0a54gpBt3rE6loZFPP9A4YB7e5bWQKZUvlEDZAwDMdbbC39Nj
-	 FK+fhaYRmtjj8Ih9sOY0kaBjU/wM0Hf3WeQaKh1w=
+	b=1C6jk/ZX82jOACJFtcDOIewp4kxTuY6bfeSjC8OBYa7YhX2kqkQD/9Ulm8w1mpD0J
+	 E28stDd3ptUPFc3bnztqABeCxow/8E87y68vkVWKNTaEDEQbcvhfDB3IoUSQhhMWaH
+	 HpQ4+RagrInAKjaafs8DR0rNxIqEwvA7EBTv5W3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Abel Vesa <abel.vesa@oss.qualcomm.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Joe Damato <joe@dama.to>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 571/957] clk: imx: imx6q: Fix device node reference leak in pll6_bypassed()
+Subject: [PATCH 7.0 0804/1146] ipv6: fix possible UAF in icmpv6_rcv()
 Date: Wed, 20 May 2026 18:17:34 +0200
-Message-ID: <20260520162146.914379120@linuxfoundation.org>
+Message-ID: <20260520162206.422865228@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,91 +67,104 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-251777-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nxp.com,oss.qualcomm.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250843-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,clkspec.np:url,qualcomm.com:email]
-X-Rspamd-Queue-Id: 18AC2594A82
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,msgid.link:url]
+X-Rspamd-Queue-Id: 90A9159582E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 4b84d496c804b470124cd3a08e928df6801d8eae ]
+[ Upstream commit f996edd7615e686ada141b7f3395025729ff8ccb ]
 
-The function pll6_bypassed() calls of_parse_phandle_with_args()
-but never calls of_node_put() to release the reference, causing
-a memory leak.
+Caching saddr and daddr before pskb_pull() is problematic
+since skb->head can change.
 
-Fix this by adding proper cleanup calls on all exit paths.
+Remove these temporary variables:
 
-Fixes: 3cc48976e9763 ("clk: imx6q: handle ENET PLL bypass")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Link: https://patch.msgid.link/20260203-clk-imx6q-v3-1-6cd2696bb371@gmail.com
-Signed-off-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+- We only access &ipv6_hdr(skb)->saddr and &ipv6_hdr(skb)->daddr
+  when net_dbg_ratelimited() is called in the slow path.
+
+- Avoid potential future misuse after pskb_pull() call.
+
+Fixes: 4b3418fba0fe ("ipv6: icmp: include addresses in debug messages")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Reviewed-by: Joe Damato <joe@dama.to>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260416103505.2380753-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx6q.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/ipv6/icmp.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-imx6q.c b/drivers/clk/imx/clk-imx6q.c
-index bf4c1d9c99287..ba696cf34fe3b 100644
---- a/drivers/clk/imx/clk-imx6q.c
-+++ b/drivers/clk/imx/clk-imx6q.c
-@@ -238,8 +238,11 @@ static bool pll6_bypassed(struct device_node *node)
- 			return false;
+diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
+index d5d23a9296eac..88356cbfb68b1 100644
+--- a/net/ipv6/icmp.c
++++ b/net/ipv6/icmp.c
+@@ -1104,7 +1104,6 @@ static int icmpv6_rcv(struct sk_buff *skb)
+ 	struct net *net = dev_net_rcu(skb->dev);
+ 	struct net_device *dev = icmp6_dev(skb);
+ 	struct inet6_dev *idev = __in6_dev_get(dev);
+-	const struct in6_addr *saddr, *daddr;
+ 	struct icmp6hdr *hdr;
+ 	u8 type;
  
- 		if (clkspec.np == node &&
--		    clkspec.args[0] == IMX6QDL_PLL6_BYPASS)
-+		    clkspec.args[0] == IMX6QDL_PLL6_BYPASS) {
-+			of_node_put(clkspec.np);
- 			break;
-+		}
-+		of_node_put(clkspec.np);
+@@ -1135,12 +1134,10 @@ static int icmpv6_rcv(struct sk_buff *skb)
+ 
+ 	__ICMP6_INC_STATS(dev_net_rcu(dev), idev, ICMP6_MIB_INMSGS);
+ 
+-	saddr = &ipv6_hdr(skb)->saddr;
+-	daddr = &ipv6_hdr(skb)->daddr;
+-
+ 	if (skb_checksum_validate(skb, IPPROTO_ICMPV6, ip6_compute_pseudo)) {
+ 		net_dbg_ratelimited("ICMPv6 checksum failed [%pI6c > %pI6c]\n",
+-				    saddr, daddr);
++				    &ipv6_hdr(skb)->saddr,
++				    &ipv6_hdr(skb)->daddr);
+ 		goto csum_error;
  	}
  
- 	/* PLL6 bypass is not part of the assigned clock list */
-@@ -249,6 +252,9 @@ static bool pll6_bypassed(struct device_node *node)
- 	ret = of_parse_phandle_with_args(node, "assigned-clock-parents",
- 					 "#clock-cells", index, &clkspec);
+@@ -1220,7 +1217,8 @@ static int icmpv6_rcv(struct sk_buff *skb)
+ 			break;
  
-+	if (!ret)
-+		of_node_put(clkspec.np);
-+
- 	if (clkspec.args[0] != IMX6QDL_CLK_PLL6)
- 		return true;
+ 		net_dbg_ratelimited("icmpv6: msg of unknown type [%pI6c > %pI6c]\n",
+-				    saddr, daddr);
++				    &ipv6_hdr(skb)->saddr,
++				    &ipv6_hdr(skb)->daddr);
  
+ 		/*
+ 		 * error of unknown type.
 -- 
 2.53.0
 
