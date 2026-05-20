@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-249955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249956-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IJ9+CIfHDWr93AUAu9opvQ
-	(envelope-from <stable+bounces-249955-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:39:03 +0200
+	id iLYDNojHDWr93AUAu9opvQ
+	(envelope-from <stable+bounces-249956-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:39:04 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9F6658FC5D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:39:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BBF658FC66
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:39:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 60A25303A629
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 14:38:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6382F303B6B2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 14:38:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26A913ECBC8;
-	Wed, 20 May 2026 14:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06683233958;
+	Wed, 20 May 2026 14:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D1i6k/0i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S+hfom+W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B401D3EA94A
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 14:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C8D3E1D16
+	for <stable@vger.kernel.org>; Wed, 20 May 2026 14:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779287881; cv=none; b=pCxdMVq1I621socJuiTTKZNVEnJ/J6YhksYvcqi9c8BdJd7zBWWw7sfDd+Q2yEC0DUarcdQmMXFDOaacvDppao66KvzT1SiAu96Rpf9yM3MHAjA6QTAn30SwPmWquJ2Em4e3CfYGP+VIOEzNA/6lN+V+5+AvnZnvY9w4QYGCuc8=
+	t=1779287889; cv=none; b=gZ4g1Glk2SkwYw5SvjfmDkTqusb+/MqQ8VXqj4bzIOG+6yb0jZIuRvxATVKX0nqXh52o6YNw7j1ObH003qdqJlJedOmV/AwEsLblJTBU561UH832zufO+jcpVbdK00b9vy7aBwify/LHUDAKkghcDNOdV/Gcmf3i89Q/IquP73M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779287881; c=relaxed/simple;
-	bh=wIMeRIip10ZzOfZo0Zpm/FdvWwKLy3Ej2Sgd5MhZ7Zs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ks1UpKo+/Ffra3nRpbUpeQfg9Cg3++AOTk0QK2+7JQMlJRdcBKjgeI0CvZL1LjY5Jfuo6fBXHEZxdTW4GCIOACXAvez8pQHOxZctinp0A5SnFpUdh2Y/ilP35UHt12zQDtXPGvdQEbbgZsNr3nQ2TNyV5ipbfQkyvH34Tjv28KQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D1i6k/0i; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE6C81F000E9;
-	Wed, 20 May 2026 14:37:59 +0000 (UTC)
+	s=arc-20240116; t=1779287889; c=relaxed/simple;
+	bh=gooRKoCZbJ4YQWubavNCNNkvu2cZaoaSK3kVtUouhC4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Hb5X2ZbPI2jbqkOW9yI7rDzMaC3QdiJkqJ487T1U3fHqMQXU7LNbwwAqmc4fo6dBLW9VyiNtKkoCJZ0pdQNOMtFDgkyj5rruJh7Ddr+Cg8/ECYCei3H37REoe1ptVvY5D6wAlT9H7L4r0ENV1N3jG3Ekxb0iDns0Rb7gN9QeaR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S+hfom+W; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 654FF1F000E9;
+	Wed, 20 May 2026 14:38:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779287880;
-	bh=KZo3TaykI8ESfMz9gHt/d1klE/pgzsbnKC5Fn0nK7bs=;
+	s=korg; t=1779287887;
+	bh=2l5EigCaKs7okWJEczIAaq1TS2/7CB5vK7wzUh2TKj4=;
 	h=Subject:To:Cc:From:Date;
-	b=D1i6k/0io9+1DTf5FmAu59C90bMYOCESuUg2mRpeprArX4WHXx1YWjKpP5q/bk/Fu
-	 iiPuTpdWdHFr1X93DvCCouZ3UBSQBdDm9ACtqYLsPKP3ydnQdGxak5SlqmqhGL87cQ
-	 cS8yaCpbHahpW8/XiVlkKdtMHsaIee1NnzbiQUZQ=
-Subject: FAILED: patch "[PATCH] platform/x86: intel: Add notifiers support" failed to apply to 6.12-stable tree
+	b=S+hfom+W+QGHgVHZeCDmp/aUcU1GkjsmomqqDdI1rmXDswMMnqKyTRtBxzGb/v01G
+	 KgZnCq7VNMVGAcX6EBnriFI21k2EkKIaJ685gLxfqhT5PZABZuj0P4EhufKTdDehhC
+	 Jt7qv8HMVNqtuXDck7oodVbcKKuxOnv96qMAmx50=
+Subject: FAILED: patch "[PATCH] platform/x86: intel: Move debugfs register before creating" failed to apply to 6.12-stable tree
 To: srinivas.pandruvada@linux.intel.com,ilpo.jarvinen@linux.intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 20 May 2026 16:38:03 +0200
-Message-ID: <2026052003-opal-bling-9542@gregkh>
+Date: Wed, 20 May 2026 16:38:11 +0200
+Message-ID: <2026052011-viewpoint-showoff-4451@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,7 +64,7 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-249955-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-249956-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -73,7 +73,7 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	NEURAL_HAM(-0.00)[-0.999];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
@@ -82,7 +82,7 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,gregkh:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: A9F6658FC5D
+X-Rspamd-Queue-Id: 8BBF658FC66
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -96,10 +96,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 57c347a2e2473bfb5c1f1132a3209c55efbe640b
+git cherry-pick -x ad3bff944c0f4f2e913298a9664391af32f87491
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052003-opal-bling-9542@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052011-viewpoint-showoff-4451@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,99 +111,55 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 57c347a2e2473bfb5c1f1132a3209c55efbe640b Mon Sep 17 00:00:00 2001
+From ad3bff944c0f4f2e913298a9664391af32f87491 Mon Sep 17 00:00:00 2001
 From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Date: Thu, 30 Apr 2026 08:11:02 -0700
-Subject: [PATCH] platform/x86: intel: Add notifiers support
+Date: Thu, 30 Apr 2026 08:11:01 -0700
+Subject: [PATCH] platform/x86: intel: Move debugfs register before creating
+ devices
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-In some cases a driver using services of vsec_tpmi driver requires some
-processing before vsec_tpmi exits. For example a children using debugfs
-can't use debugfs as this will be deleted by the vsec_tpmi driver.
+It is possible that the driver handling device is enumerated before
+registering debugfs. If the driver wants to access debugfs by calling
+tpmi_get_debugfs_dir(), this will return error in this case.
 
-This is the case when unbind using PCI driver interface. In this case
-the remove callback of vsec_tpmi driver is called first, then remove
-callback of its children.
-
-Add support of blocking chain notifiers support. Notify on successful probe
-and before clean up in the remove callback.
+Hence register debugfs before creating devices.
 
 Fixes: 811f67c51636 ("platform/x86/intel/tpmi: Add new auxiliary driver for performance limits")
 Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 Cc: Stable@vger.kernel.org
-Link: https://patch.msgid.link/20260430151103.1549733-3-srinivas.pandruvada@linux.intel.com
+Link: https://patch.msgid.link/20260430151103.1549733-2-srinivas.pandruvada@linux.intel.com
 Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
 diff --git a/drivers/platform/x86/intel/vsec_tpmi.c b/drivers/platform/x86/intel/vsec_tpmi.c
-index a38014e81e85..16fd7aa41f20 100644
+index 7fc6ff8d1040..a38014e81e85 100644
 --- a/drivers/platform/x86/intel/vsec_tpmi.c
 +++ b/drivers/platform/x86/intel/vsec_tpmi.c
-@@ -56,6 +56,7 @@
- #include <linux/io.h>
- #include <linux/iopoll.h>
- #include <linux/module.h>
-+#include <linux/notifier.h>
- #include <linux/pci.h>
- #include <linux/security.h>
- #include <linux/sizes.h>
-@@ -188,6 +189,20 @@ struct tpmi_feature_state {
- /* Used during auxbus device creation */
- static DEFINE_IDA(intel_vsec_tpmi_ida);
+@@ -817,10 +817,6 @@ static int intel_vsec_tpmi_init(struct auxiliary_device *auxdev)
  
-+static BLOCKING_NOTIFIER_HEAD(tpmi_notify_list);
-+
-+int tpmi_register_notifier(struct notifier_block *nb)
-+{
-+	return blocking_notifier_chain_register(&tpmi_notify_list, nb);
-+}
-+EXPORT_SYMBOL_NS_GPL(tpmi_register_notifier, "INTEL_TPMI");
-+
-+int tpmi_unregister_notifier(struct notifier_block *nb)
-+{
-+	return blocking_notifier_chain_unregister(&tpmi_notify_list, nb);
-+}
-+EXPORT_SYMBOL_NS_GPL(tpmi_unregister_notifier, "INTEL_TPMI");
-+
- struct oobmsm_plat_info *tpmi_get_platform_data(struct auxiliary_device *auxdev)
- {
- 	struct intel_vsec_device *vsec_dev = auxdev_to_ivdev(auxdev);
-@@ -832,6 +847,8 @@ static int intel_vsec_tpmi_init(struct auxiliary_device *auxdev)
- 		return ret;
- 	}
+ 	auxiliary_set_drvdata(auxdev, tpmi_info);
  
-+	blocking_notifier_call_chain(&tpmi_notify_list, TPMI_CORE_INIT, auxdev);
+-	ret = tpmi_create_devices(tpmi_info);
+-	if (ret)
+-		return ret;
+-
+ 	/*
+ 	 * Allow debugfs when security policy allows. Everything this debugfs
+ 	 * interface provides, can also be done via /dev/mem access. If
+@@ -830,6 +826,12 @@ static int intel_vsec_tpmi_init(struct auxiliary_device *auxdev)
+ 	if (!security_locked_down(LOCKDOWN_DEV_MEM) && capable(CAP_SYS_RAWIO))
+ 		tpmi_dbgfs_register(tpmi_info);
+ 
++	ret = tpmi_create_devices(tpmi_info);
++	if (ret) {
++		debugfs_remove_recursive(tpmi_info->dbgfs_dir);
++		return ret;
++	}
 +
  	return 0;
  }
  
-@@ -845,6 +862,8 @@ static void tpmi_remove(struct auxiliary_device *auxdev)
- {
- 	struct intel_tpmi_info *tpmi_info = auxiliary_get_drvdata(auxdev);
- 
-+	blocking_notifier_call_chain(&tpmi_notify_list, TPMI_CORE_EXIT, auxdev);
-+
- 	debugfs_remove_recursive(tpmi_info->dbgfs_dir);
- }
- 
-diff --git a/include/linux/intel_tpmi.h b/include/linux/intel_tpmi.h
-index 94c06bf214fb..15f02422e9ca 100644
---- a/include/linux/intel_tpmi.h
-+++ b/include/linux/intel_tpmi.h
-@@ -28,6 +28,12 @@ enum intel_tpmi_id {
- 	TPMI_INFO_ID = 0x81,	/* Special ID for PCI BDF and Package ID information */
- };
- 
-+#define TPMI_CORE_INIT	0
-+#define TPMI_CORE_EXIT	1
-+
-+int tpmi_register_notifier(struct notifier_block *nb);
-+int tpmi_unregister_notifier(struct notifier_block *nb);
-+
- struct oobmsm_plat_info *tpmi_get_platform_data(struct auxiliary_device *auxdev);
- struct resource *tpmi_get_resource_at_index(struct auxiliary_device *auxdev, int index);
- int tpmi_get_resource_count(struct auxiliary_device *auxdev);
 
 
