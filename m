@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-252735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251138-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aImAAQUIDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-252735-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:14:13 +0200
+	id iLVsKEXyDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251138-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13412597FE9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:14:11 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FE645944E1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4EE0832A761B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 798D83164CF4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:14:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A54E3FE345;
-	Wed, 20 May 2026 18:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F79A3F8EC0;
+	Wed, 20 May 2026 17:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dDWuAie1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ee4pe5Lc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388863EDAC6;
-	Wed, 20 May 2026 18:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990F5347512;
+	Wed, 20 May 2026 17:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301453; cv=none; b=Tul03PSyJ5A+uRNT7fMeJhSd6mvCPBn8KFf/ApE1z2+6Flw4YK5FRH+3FEh/4vWw0Vkw5QOjvuaSPvc3vcV4G3ERjufZFCzA/XC+2bU01e7JVIRkugmqgI+gf4t0uvmH1xR2XR1vT+tjNu6HoOgcAzvkXgJ/6lstn5iuSwisFRc=
+	t=1779297197; cv=none; b=p57Jo/P2ImkMENmyjcrX1O57to4QwdaKXeYeaUOA2OjSv+anCbPGSNKBi+GC68gHLf++hbqBup+ioJ/g+WtfDfNw905dW7M3fHsilrXzZx9IMYi6c7ec9ZVyLf3Z5i8+amplHJJfEHaW25tcSEVivpEJiEXR0vsDoctHcgjhuMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301453; c=relaxed/simple;
-	bh=MY9itdchDc9b3F1VsJTgVwWR1mO3TT7knrEh+DPZEKo=;
+	s=arc-20240116; t=1779297197; c=relaxed/simple;
+	bh=DDas/yM9F0z6OB+BfMLaw+Djg2C8a2P8QYlFLTxu4cM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ea26GlHbeieQ5BkrtSqHGWt2c+RTKyRkmTJPXpWERnW8/5S89F2dOM5lDJX827B6Oc+z6pzPVfuMYrPMUJwglzGzPJyvaP6yfU2x1QSYKGO6dZpPvWPKGQm5x4H6jHMfECk1ZKrkrWQhbZT86faW5YquZJ8RwSurQdPVu1LerGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dDWuAie1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AE751F000E9;
-	Wed, 20 May 2026 18:24:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qJkJqXXmJI0luCGuFQuxNEW4XtRSEbt8vJGTSkQUyvHAK61GjNB0fRWfb2LzW0MxslFVI+yvrOY/FKPrh2PTFz80f09R0rWIDDDM2vV+d5gLCXDaY0ZN0jJNJLaKDoOVltcyJuRuo2J7ddipnk4nVMxXZIfQeGeMdAJhCVB4wcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ee4pe5Lc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A7A71F000E9;
+	Wed, 20 May 2026 17:13:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301451;
-	bh=KEe64E6TVduX7edfXi36HiMgfU7azf3ps/2aeMJwkQw=;
+	s=korg; t=1779297196;
+	bh=6qqJ/kQyjnp0rhD+87p6a15zZ2gL4Dl/asT18ZW5TSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dDWuAie1pzCYjD9NtsEiaiDav8tBav2YvWJPXVlagw1mF35Oh8Ry+WrxbSCf2DJFn
-	 bDqA89cklocQGUL1u7k2wEFfVjP3sAOhYt8cmGHRHfIkuqYGDJVBBCo7pRZJD2ZG19
-	 U7rvnIwMupNJhHfWzriIK2/EUI7+FovJxdWMmwVI=
+	b=ee4pe5LczWinVeDkFOKEy/My/URzPKd3QCzi0oSzQqeP1YrEmkyvVzroKBybopU99
+	 8xBsKLANmfalt/s/53PvMX0C7p/sKyjWcztUk/QzRFOgXgxYQHU28hxwOpxV9em7Cp
+	 uZxhwb9WMciAE2DwnSsNwZPYnbUiGsTiaA2WjrD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Jiexun Wang <wangjiexun2025@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 523/666] netfilter: xt_policy: fix strict mode inbound policy matching
-Date: Wed, 20 May 2026 18:22:14 +0200
-Message-ID: <20260520162122.599400309@linuxfoundation.org>
+	Rong Zhang <i@rong.moe>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	"Derek J. Clark" <derekjohn.clark@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 7.0 1085/1146] platform/x86: lenovo-wmi-other: Add Attribute ID helper functions
+Date: Wed, 20 May 2026 18:22:15 +0200
+Message-ID: <20260520162212.790564587@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,86 +64,262 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-252735-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,rong.moe,squebb.ca,gmail.com,linux.intel.com];
+	TAGGED_FROM(0.00)[bounces-251138-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,strlen.de,netfilter.org,kernel.org];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,strlen.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email,lzu.edu.cn:email]
-X-Rspamd-Queue-Id: 13412597FE9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,squebb.ca:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,rong.moe:email,msgid.link:url]
+X-Rspamd-Queue-Id: 4FE645944E1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiexun Wang <wangjiexun2025@gmail.com>
+From: Derek J. Clark <derekjohn.clark@gmail.com>
 
-[ Upstream commit 4b2b4d7d4e203c92db8966b163edfacb1f0e1e29 ]
+commit 30a4ad208a7f7bdb790cd31d368595890045334f upstream.
 
-match_policy_in() walks sec_path entries from the last transform to the
-first one, but strict policy matching needs to consume info->pol[] in
-the same forward order as the rule layout.
+Adds lwmi_attr_id() function. In the same vein as LWMI_ATTR_ID_FAN_RPM(),
+but as a generic, to de-duplicate attribute_id assignment boilerplate.
 
-Derive the strict-match policy position from the number of transforms
-already consumed so that multi-element inbound rules are matched
-consistently.
+Adds tunable_attr_01_id() function that breaks out the members of a
+tunable_attr_01 struct and passes them to lwmi_attr_id().
 
-Fixes: c4b885139203 ("[NETFILTER]: x_tables: replace IPv4/IPv6 policy match by address family independant version")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Acked-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+No functional change intended.
+
+Cc: stable@vger.kernel.org
+Reviewed-by: Rong Zhang <i@rong.moe>
+Tested-by: Rong Zhang <i@rong.moe>
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Signed-off-by: Derek J. Clark <derekjohn.clark@gmail.com>
+Link: https://patch.msgid.link/20260510042546.436874-9-derekjohn.clark@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/xt_policy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/lenovo/wmi-capdata.c |    8 ++--
+ drivers/platform/x86/lenovo/wmi-capdata.h |   20 ++++++++++++
+ drivers/platform/x86/lenovo/wmi-other.c   |   49 ++++++++++++------------------
+ 3 files changed, 44 insertions(+), 33 deletions(-)
 
-diff --git a/net/netfilter/xt_policy.c b/net/netfilter/xt_policy.c
-index cb6e8279010a4..b5fa65558318f 100644
---- a/net/netfilter/xt_policy.c
-+++ b/net/netfilter/xt_policy.c
-@@ -63,7 +63,7 @@ match_policy_in(const struct sk_buff *skb, const struct xt_policy_info *info,
- 		return 0;
+--- a/drivers/platform/x86/lenovo/wmi-capdata.c
++++ b/drivers/platform/x86/lenovo/wmi-capdata.c
+@@ -27,7 +27,6 @@
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
  
- 	for (i = sp->len - 1; i >= 0; i--) {
--		pos = strict ? i - sp->len + 1 : 0;
-+		pos = strict ? sp->len - i - 1 : 0;
- 		if (pos >= info->len)
- 			return 0;
- 		e = &info->pol[pos];
--- 
-2.53.0
-
+ #include <linux/acpi.h>
+-#include <linux/bitfield.h>
+ #include <linux/bug.h>
+ #include <linux/cleanup.h>
+ #include <linux/component.h>
+@@ -48,6 +47,7 @@
+ #include <linux/wmi.h>
+ 
+ #include "wmi-capdata.h"
++#include "wmi-helpers.h"
+ 
+ #define LENOVO_CAPABILITY_DATA_00_GUID "362A3AFE-3D96-4665-8530-96DAD5BB300E"
+ #define LENOVO_CAPABILITY_DATA_01_GUID "7A8F5407-CB67-4D6E-B547-39B3BE018154"
+@@ -58,9 +58,9 @@
+ 
+ #define LWMI_FEATURE_ID_FAN_TEST 0x05
+ 
+-#define LWMI_ATTR_ID_FAN_TEST							\
+-	(FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, LWMI_DEVICE_ID_FAN) |		\
+-	 FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, LWMI_FEATURE_ID_FAN_TEST))
++#define LWMI_ATTR_ID_FAN_TEST                                      \
++	lwmi_attr_id(LWMI_DEVICE_ID_FAN, LWMI_FEATURE_ID_FAN_TEST, \
++		     LWMI_GZ_THERMAL_MODE_NONE, LWMI_TYPE_ID_NONE)
+ 
+ enum lwmi_cd_type {
+ 	LENOVO_CAPABILITY_DATA_00,
+--- a/drivers/platform/x86/lenovo/wmi-capdata.h
++++ b/drivers/platform/x86/lenovo/wmi-capdata.h
+@@ -6,6 +6,7 @@
+ #define _LENOVO_WMI_CAPDATA_H_
+ 
+ #include <linux/bits.h>
++#include <linux/bitfield.h>
+ #include <linux/types.h>
+ 
+ #define LWMI_SUPP_VALID		BIT(0)
+@@ -19,6 +20,8 @@
+ 
+ #define LWMI_DEVICE_ID_FAN	0x04
+ 
++#define LWMI_TYPE_ID_NONE 0x00
++
+ struct component_match;
+ struct device;
+ struct cd_list;
+@@ -57,6 +60,23 @@ struct lwmi_cd_binder {
+ 	cd_list_cb_t cd_fan_list_cb;
+ };
+ 
++/**
++ * lwmi_attr_id() - Formats a capability data attribute ID
++ * @dev_id: The u8 corresponding to the device ID.
++ * @feat_id: The u8 corresponding to the feature ID on the device.
++ * @mode_id: The u8 corresponding to the wmi-gamezone mode for set/get.
++ * @type_id: The u8 corresponding to the sub-device.
++ *
++ * Return: encoded capability data attribute ID.
++ */
++static inline u32 lwmi_attr_id(u8 dev_id, u8 feat_id, u8 mode_id, u8 type_id)
++{
++	return (FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, dev_id)   |
++		FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, feat_id) |
++		FIELD_PREP(LWMI_ATTR_MODE_ID_MASK, mode_id) |
++		FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, type_id));
++}
++
+ void lwmi_cd_match_add_all(struct device *master, struct component_match **matchptr);
+ int lwmi_cd00_get_data(struct cd_list *list, u32 attribute_id, struct capdata00 *output);
+ int lwmi_cd01_get_data(struct cd_list *list, u32 attribute_id, struct capdata01 *output);
+--- a/drivers/platform/x86/lenovo/wmi-other.c
++++ b/drivers/platform/x86/lenovo/wmi-other.c
+@@ -61,8 +61,6 @@
+ 
+ #define LWMI_FEATURE_ID_FAN_RPM 0x03
+ 
+-#define LWMI_TYPE_ID_NONE 0x00
+-
+ #define LWMI_FEATURE_VALUE_GET 17
+ #define LWMI_FEATURE_VALUE_SET 18
+ 
+@@ -70,13 +68,12 @@
+ #define LWMI_FAN_NR 4
+ #define LWMI_FAN_ID(x) ((x) + LWMI_FAN_ID_BASE)
+ 
+-#define LWMI_ATTR_ID_FAN_RPM(x)						\
+-	(FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, LWMI_DEVICE_ID_FAN) |	\
+-	 FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, LWMI_FEATURE_ID_FAN_RPM) |	\
+-	 FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, LWMI_FAN_ID(x)))
+-
+ #define LWMI_FAN_DIV 100
+ 
++#define LWMI_ATTR_ID_FAN_RPM(x)                                   \
++	lwmi_attr_id(LWMI_DEVICE_ID_FAN, LWMI_FEATURE_ID_FAN_RPM, \
++		     LWMI_GZ_THERMAL_MODE_NONE, LWMI_FAN_ID(x))
++
+ #define LWMI_OM_FW_ATTR_BASE_PATH "lenovo-wmi-other"
+ #define LWMI_OM_HWMON_NAME "lenovo_wmi_other"
+ 
+@@ -551,6 +548,18 @@ struct tunable_attr_01 {
+ 	u8 type_id;
+ };
+ 
++/**
++ * tunable_attr_01_id() - Formats a tunable_attr_01 to a capdata attribute ID
++ * @attr: The tunable_attr_01 to format.
++ * @mode: The u8 corresponding to the wmi-gamezone mode for set/get.
++ *
++ * Return: encoded capability data attribute ID.
++ */
++static u32 tunable_attr_01_id(struct tunable_attr_01 *attr, u8 mode)
++{
++	return lwmi_attr_id(attr->device_id, attr->feature_id, mode, attr->type_id);
++}
++
+ static struct tunable_attr_01 ppt_pl1_spl = {
+ 	.device_id = LWMI_DEVICE_ID_CPU,
+ 	.feature_id = LWMI_FEATURE_ID_CPU_SPL,
+@@ -714,12 +723,7 @@ static ssize_t attr_capdata01_show(struc
+ 	u32 attribute_id;
+ 	int value, ret;
+ 
+-	attribute_id =
+-		FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, tunable_attr->device_id) |
+-		FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, tunable_attr->feature_id) |
+-		FIELD_PREP(LWMI_ATTR_MODE_ID_MASK,
+-			   LWMI_GZ_THERMAL_MODE_CUSTOM) |
+-		FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, tunable_attr->type_id);
++	attribute_id = tunable_attr_01_id(tunable_attr, LWMI_GZ_THERMAL_MODE_CUSTOM);
+ 
+ 	ret = lwmi_cd01_get_data(priv->cd01_list, attribute_id, &capdata);
+ 	if (ret)
+@@ -774,7 +778,6 @@ static ssize_t attr_current_value_store(
+ 	struct wmi_method_args_32 args = {};
+ 	struct capdata01 capdata;
+ 	enum thermal_mode mode;
+-	u32 attribute_id;
+ 	u32 value;
+ 	int ret;
+ 
+@@ -785,13 +788,9 @@ static ssize_t attr_current_value_store(
+ 	if (mode != LWMI_GZ_THERMAL_MODE_CUSTOM)
+ 		return -EBUSY;
+ 
+-	attribute_id =
+-		FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, tunable_attr->device_id) |
+-		FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, tunable_attr->feature_id) |
+-		FIELD_PREP(LWMI_ATTR_MODE_ID_MASK, mode) |
+-		FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, tunable_attr->type_id);
++	args.arg0 = tunable_attr_01_id(tunable_attr, mode);
+ 
+-	ret = lwmi_cd01_get_data(priv->cd01_list, attribute_id, &capdata);
++	ret = lwmi_cd01_get_data(priv->cd01_list, args.arg0, &capdata);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -802,7 +801,6 @@ static ssize_t attr_current_value_store(
+ 	if (value < capdata.min_value || value > capdata.max_value)
+ 		return -EINVAL;
+ 
+-	args.arg0 = attribute_id;
+ 	args.arg1 = value;
+ 
+ 	ret = lwmi_dev_evaluate_int(priv->wdev, 0x0, LWMI_FEATURE_VALUE_SET,
+@@ -836,7 +834,6 @@ static ssize_t attr_current_value_show(s
+ 	struct lwmi_om_priv *priv = dev_get_drvdata(tunable_attr->dev);
+ 	struct wmi_method_args_32 args = {};
+ 	enum thermal_mode mode;
+-	u32 attribute_id;
+ 	int retval;
+ 	int ret;
+ 
+@@ -844,13 +841,7 @@ static ssize_t attr_current_value_show(s
+ 	if (ret)
+ 		return ret;
+ 
+-	attribute_id =
+-		FIELD_PREP(LWMI_ATTR_DEV_ID_MASK, tunable_attr->device_id) |
+-		FIELD_PREP(LWMI_ATTR_FEAT_ID_MASK, tunable_attr->feature_id) |
+-		FIELD_PREP(LWMI_ATTR_MODE_ID_MASK, mode) |
+-		FIELD_PREP(LWMI_ATTR_TYPE_ID_MASK, tunable_attr->type_id);
+-
+-	args.arg0 = attribute_id;
++	args.arg0 = tunable_attr_01_id(tunable_attr, mode);
+ 
+ 	ret = lwmi_dev_evaluate_int(priv->wdev, 0x0, LWMI_FEATURE_VALUE_GET,
+ 				    (unsigned char *)&args, sizeof(args),
 
 
 
