@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-253008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252547-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EI+TMb8ADmo95QUAu9opvQ
-	(envelope-from <stable+bounces-253008-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:11 +0200
+	id OOiSBrr7DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-252547-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:21:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CAD559711A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:11 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3966595E6C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:21:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 425B5312D631
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F1C17312CED7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:16:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 441A53F39EE;
-	Wed, 20 May 2026 18:36:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1C753FA5EB;
+	Wed, 20 May 2026 18:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLpCb2Qc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GJ8wUgky"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E06713D6CB7;
-	Wed, 20 May 2026 18:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 728343F6619;
+	Wed, 20 May 2026 18:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302163; cv=none; b=hYAMTkir9CKXTNVO0TfwlPx7tnBtcxi6HYKAwgr6bF+2Bog/j0fTABNxjLSCuuUeAcWtzamwxeEpGExQTCHcuWPWZ1dmyZC+gBDW7en48G9VTGRwW3IWrpmJE835PEnBfgJwqkCJ3l0A5ezDM3FFEOqHFtsOdoWqACy7Tzyvj+w=
+	t=1779300960; cv=none; b=HmDBN+oLQYVx3bqaMUimOG0llHbZ30sFHFSLKWhaZ8NC43JIDNEIEN5cQtJeY0l7n4IKhNY0Le6Bijd6ta82PSfR4LGl112wvrYyEarkSQ2e0FmdW/9sYKd9eEMuw7TPK9bGsMILdDHhh1165WdTmgaJudMT9H1Y2LlHswRQX6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302163; c=relaxed/simple;
-	bh=05Bs9A703B6zB/q4EEtWMWtLzzmwJuEEIUfKkG695+k=;
+	s=arc-20240116; t=1779300960; c=relaxed/simple;
+	bh=KzMFrMGP0O3/oitjDJWqJi/r9YjqLm14LmExdaul53I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oBr2mtJ2i9m6whymlUmUdHeujcyVTt8H+rPo6KR9fhdxnrl5RbRTLL2Dyn0YUGMedpa6oMQx9XvISD8WEyZRmXVYWmc5Hl0Aw9qtIfyFPO6zCxq2jJ7dqPJ4TJcqiuOFfdlnFgK0ptTfGaITh58OFNracBRLdLoh1Nh9ndVo4Fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xLpCb2Qc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51FE61F000E9;
-	Wed, 20 May 2026 18:36:01 +0000 (UTC)
+	 MIME-Version; b=VfSUyWsDVvKhQKOr3id9MvGuhHyHF6dUvRK1n/Q9s0pYVAx/IGV2VLHB6nXwm6rVMadZkJSIXv/lhdcgRrGgHAYm3y/yGBLRcZz6aQ98Q6YnapdkHGMX+tKKlbb3iOX9HnT3PQmPHCLwrF/NSyKcR6W0gyucKgHqL1iYp7vtOFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GJ8wUgky; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB2F31F000E9;
+	Wed, 20 May 2026 18:15:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302161;
-	bh=9I+LiyZvr9gqcsPgFbdlGsSrlTMursxYP89IoSnMCfw=;
+	s=korg; t=1779300959;
+	bh=uJ108eRS0cyiuO0R0JjBXrPD4EgX+u1oGqL3aVWH2KU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xLpCb2QcJpm1w43GIrJSwqyftcu3lRS/RTpz1R9f+VmLdDz2JB2hoIIJ2G8ZZ1JBr
-	 3nfKxa4JhtkF8QuuHmvvcoYWjMaV3MHwl+bavBFzRa9XXq1Qg/cjiaq8edv1Va+WTb
-	 UQ/GiGT4hY4JA75FEbO8THFOv1axLKdEZAqmGSE0=
+	b=GJ8wUgkyd4zBPQHwHxSzChnqMDrnl1xBAw5Zt+osp2D8FEcbwCEhpFx7lUln5Vo6B
+	 2lsiooVVesds0t5sGOZaUIHjFWQ9XVtZlXKspSo2pPiRBO5GR9bSQHQor8a+4JSkFP
+	 jOU6Ul8b+kT6nIE+6WDQmpuyHKxlzrEBWiqLUSiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vidya Sagar <vidyas@nvidia.com>,
-	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
+	Jian Zhang <zhangjian.3032@bytedance.com>,
+	Corey Minyard <corey@minyard.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 160/508] PCI: tegra194: Dont force the device into the D0 state before L2
+Subject: [PATCH 6.12 372/666] ipmi: ssif_bmc: fix message desynchronization after truncated response
 Date: Wed, 20 May 2026 18:19:43 +0200
-Message-ID: <20260520162102.105893685@linuxfoundation.org>
+Message-ID: <20260520162119.307083095@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,141 +68,116 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253008-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252547-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 7CAD559711A
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,bytedance.com:email,minyard.net:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: A3966595E6C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vidya Sagar <vidyas@nvidia.com>
+From: Jian Zhang <zhangjian.3032@bytedance.com>
 
-[ Upstream commit 71d9f67701e1affc82d18ca88ae798c5361beddf ]
+[ Upstream commit 1d38e849adb6851ee280aa1a1d687b2181549a66 ]
 
-As per PCIe CEM r6.0, sec 2.3, the PCIe Endpoint device should be in D3cold
-to assert WAKE# pin. The previous workaround that forced downstream devices
-to D0 before taking the link to L2 cited PCIe r4.0, sec 5.2, "Link State
-Power Management"; however, that spec does not explicitly require putting
-the device into D0 and only indicates that power removal may be initiated
-without transitioning to D3hot.
+A truncated response, caused by host power-off, or other conditions,
+can lead to message desynchronization.
 
-Remove the D0 workaround so that Endpoint devices can use wake
-functionality (WAKE# from D3). With some Endpoints the link may not enter
-L2 when they remain in D3, but the Root Port continues with the usual flow
-after PME timeout, so there is no functional issue.
+Raw trace data (STOP loss scenario, add state transition comment):
 
-Fixes: 56e15a238d92 ("PCI: tegra: Add Tegra194 PCIe support")
-Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
-Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://patch.msgid.link/20260324190755.1094879-5-mmaddireddy@nvidia.com
+1. T-1: Read response phase (SSIF_RES_SENDING)
+8271.955342  WR_RCV [03]                          <- Read polling cmd
+8271.955348  RD_REQ [04]  <== SSIF_RES_SENDING    <- start sending response
+8271.955436  RD_PRO [b4]
+8271.955527  RD_PRO [00]
+8271.955618  RD_PRO [c1]
+8271.955707  RD_PRO [00]
+8271.955814  RD_PRO [ad]  <== SSIF_RES_SENDING     <- last byte
+	<- !! STOP lost (truncated response)
+
+2. T: New Write request arrives, BMC still in SSIF_RES_SENDING
+8271.967973  WR_REQ []    <== SSIF_RES_SENDING >> SSIF_ABORTING  <- log: unexpected WR_REQ in RES_SENDING
+8271.968447  WR_RCV [02]  <== SSIF_ABORTING  <- do nothing
+8271.968452  WR_RCV [02]  <== SSIF_ABORTING  <- do nothing
+8271.968454  WR_RCV [18]  <== SSIF_ABORTING  <- do nothing
+8271.968456  WR_RCV [01]  <== SSIF_ABORTING  <- do nothing
+8271.968458  WR_RCV [66]  <== SSIF_ABORTING  <- do nothing
+8271.978714  STOP []      <== SSIF_ABORTING >> SSIF_READY  <- log: unexpected SLAVE STOP in state=SSIF_ABORTING
+
+3. T+1: Next Read polling, treated as a fresh transaction
+8271.979125  WR_REQ []    <== SSIF_READY >> SSIF_START
+8271.979326  WR_RCV [03]  <== SSIF_START >> SSIF_SMBUS_CMD        <- smbus_cmd=0x03
+8271.979331  RD_REQ [04]  <== SSIF_RES_SENDING      <- sending response
+8271.979427  RD_PRO [b4]                            <- !! this is T's stale response -> desynchronization
+
+When in SSIF_ABORTING state, a newly arrived command should still be
+handled to avoid dropping the request or causing message
+desynchronization.
+
+Fixes: dd2bc5cc9e25 ("ipmi: ssif_bmc: Add SSIF BMC driver")
+Signed-off-by: Jian Zhang <zhangjian.3032@bytedance.com>
+Message-ID: <20260403090603.3988423-3-zhangjian.3032@bytedance.com>
+Signed-off-by: Corey Minyard <corey@minyard.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 41 ----------------------
- 1 file changed, 41 deletions(-)
+ drivers/char/ipmi/ssif_bmc.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index 47421796cc147..23c7c6e691b26 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -1288,44 +1288,6 @@ static int tegra_pcie_bpmp_set_pll_state(struct tegra_pcie_dw *pcie,
- 	return 0;
+diff --git a/drivers/char/ipmi/ssif_bmc.c b/drivers/char/ipmi/ssif_bmc.c
+index c2e59899f1c4c..d3a088d758fce 100644
+--- a/drivers/char/ipmi/ssif_bmc.c
++++ b/drivers/char/ipmi/ssif_bmc.c
+@@ -457,6 +457,15 @@ static bool supported_write_cmd(u8 cmd)
+ 	return false;
  }
  
--static void tegra_pcie_downstream_dev_to_D0(struct tegra_pcie_dw *pcie)
--{
--	struct dw_pcie_rp *pp = &pcie->pci.pp;
--	struct pci_bus *child, *root_port_bus = NULL;
--	struct pci_dev *pdev;
--
--	/*
--	 * link doesn't go into L2 state with some of the endpoints with Tegra
--	 * if they are not in D0 state. So, need to make sure that immediate
--	 * downstream devices are in D0 state before sending PME_TurnOff to put
--	 * link into L2 state.
--	 * This is as per PCI Express Base r4.0 v1.0 September 27-2017,
--	 * 5.2 Link State Power Management (Page #428).
--	 */
--
--	list_for_each_entry(child, &pp->bridge->bus->children, node) {
--		if (child->parent == pp->bridge->bus) {
--			root_port_bus = child;
--			break;
--		}
--	}
--
--	if (!root_port_bus) {
--		dev_err(pcie->dev, "Failed to find downstream bus of Root Port\n");
--		return;
--	}
--
--	/* Bring downstream devices to D0 if they are not already in */
--	list_for_each_entry(pdev, &root_port_bus->devices, bus_list) {
--		if (PCI_SLOT(pdev->devfn) == 0) {
--			if (pci_set_power_state(pdev, PCI_D0))
--				dev_err(pcie->dev,
--					"Failed to transition %s to D0 state\n",
--					dev_name(&pdev->dev));
--		}
--	}
--}
--
- static int tegra_pcie_get_slot_regulators(struct tegra_pcie_dw *pcie)
++static bool supported_write_start_cmd(u8 cmd)
++{
++	if (cmd == SSIF_IPMI_SINGLEPART_WRITE ||
++	    cmd == SSIF_IPMI_MULTIPART_WRITE_START)
++		return true;
++
++	return false;
++}
++
+ /* Process the IPMI response that will be read by master */
+ static void handle_read_processed(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
  {
- 	pcie->slot_ctl_3v3 = devm_regulator_get_optional(pcie->dev, "vpcie3v3");
-@@ -1655,7 +1617,6 @@ static void tegra_pcie_dw_pme_turnoff(struct tegra_pcie_dw *pcie)
+@@ -708,6 +717,11 @@ static void on_write_received_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
+ 			ssif_bmc->state = SSIF_ABORTING;
+ 		else
+ 			ssif_bmc->state = SSIF_REQ_RECVING;
++	} else if (ssif_bmc->state == SSIF_ABORTING) {
++		if (supported_write_start_cmd(*val)) {
++			ssif_bmc->state = SSIF_SMBUS_CMD;
++			ssif_bmc->aborting = false;
++		}
+ 	}
  
- static void tegra_pcie_deinit_controller(struct tegra_pcie_dw *pcie)
- {
--	tegra_pcie_downstream_dev_to_D0(pcie);
- 	dw_pcie_host_deinit(&pcie->pci.pp);
- 	tegra_pcie_dw_pme_turnoff(pcie);
- 	tegra_pcie_unconfig_controller(pcie);
-@@ -2373,7 +2334,6 @@ static int tegra_pcie_dw_suspend_noirq(struct device *dev)
- 	if (!pcie->link_state)
- 		return 0;
- 
--	tegra_pcie_downstream_dev_to_D0(pcie);
- 	tegra_pcie_dw_pme_turnoff(pcie);
- 	tegra_pcie_unconfig_controller(pcie);
- 
-@@ -2447,7 +2407,6 @@ static void tegra_pcie_dw_shutdown(struct platform_device *pdev)
- 			return;
- 
- 		debugfs_remove_recursive(pcie->debugfs);
--		tegra_pcie_downstream_dev_to_D0(pcie);
- 
- 		disable_irq(pcie->pci.pp.irq);
- 		if (IS_ENABLED(CONFIG_PCI_MSI))
+ 	/* This is response sending state */
 -- 
 2.53.0
 
