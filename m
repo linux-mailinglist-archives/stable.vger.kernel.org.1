@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-252508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251920-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aMpMNaX9DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-252508-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:29:57 +0200
+	id SLWVCIMCDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-251920-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:50:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 914625965CA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:29:57 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E6745974CC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:50:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 37BB431254FB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:14:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 912E2327877C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D1AB3F789B;
-	Wed, 20 May 2026 18:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 946E03F0A83;
+	Wed, 20 May 2026 17:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wu6xTk04"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LelmQjZ+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 549433F8707;
-	Wed, 20 May 2026 18:14:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47CA6349AFF;
+	Wed, 20 May 2026 17:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300857; cv=none; b=RXl4hJ6q2AZhfwTuYl2VPETyGvRFYUg8KHsvNggt1EyYIAdqkyYpuJb0DBj89TUsGtHopw8oULbM1Gs4kpiBsbeQRcsgsiQg2hjiyzeoTKQfdP28xoqHlpWMA3DrCErpMoo6ZmFfUnkMvIjbLbjahTcBhSDeq+/V5UNrVnoqg/s=
+	t=1779299231; cv=none; b=mStbDLPoIcI2VAtKmYB5y023FhXgjxOmAnVjhH2FlZ9RBmBAZYmmu2ozhVXo7sef2pPnHnpBYTY+jqBe8leMJ38Cd59//vT45xX4BSXnpqs7i09FBsW92lvXA7J0cVVzG6WOcfml8ME0jQJDHIuk6Q0O2pdeTYeQO9swTk+dIyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300857; c=relaxed/simple;
-	bh=ayB5LISmOZllfjWqZGowuRiticb7P12YdZXVlEMThb8=;
+	s=arc-20240116; t=1779299231; c=relaxed/simple;
+	bh=pV7go090PH0k+cUC4UfXSDFNVcUG8TfI5VonCB5w1/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fMgbHH/It/oXHRK7Z9s0dRbQSH03Own1MIn8Yiry1f/kQwWYJWI8r3cIimUzu0FeZ7KlAApZNtsSz8tqth0mHXNdgIUcnXnVu6+8AeEKPwnY8VE85kbI9vfsA66wCjRyaEHwzZEku+Zs+bmxSM+vpulAstyptwMO5SXIA6v0AtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wu6xTk04; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA3D1F000E9;
-	Wed, 20 May 2026 18:14:15 +0000 (UTC)
+	 MIME-Version; b=AxEYLRGXOjEyIiCRWvDEszW1Aye+iQoAGpbaKbi8vKVTtX8oAT9FUbOOALPGJci5/pcWJaQIhsbWaWeaRsAt6p6oM/N0fa8xywpXiSsL03dg0G8tIBDy9/qeMRDtDSCml+qtHAAOSsbcoNJ13g+eC2DWzQNAtBPxF1gWzLoaxGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LelmQjZ+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B60451F000E9;
+	Wed, 20 May 2026 17:47:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300856;
-	bh=ekJRZH5AaLc1hasOvQzyuU/hgGecOe2ne8waqosiSho=;
+	s=korg; t=1779299230;
+	bh=mdViNADGup4CqCToRn4WCYed2ozDx2+Wek/Ki7rj4ac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Wu6xTk04sbkFA45KUFgpFDMxGPzBpOE/M8hUDZK+t4Kd14groGfgZakBiv/Kgm+cY
-	 7WwoOFBgGbCfR2s52k03dWNXtnu74LSWvtyO/h3fa0I4vlq5hxJaeF0qV7OJ5DcWj3
-	 yCRac2gwvzDZzG5LXLdTrAJ5Z0hK3nw4dESOTS0Q=
+	b=LelmQjZ+0gEBLKq9W2eQIrbFFZS9Qbm0w9H/snwNn5c4SRhFwW58kfMRqovIZYJWr
+	 YfwVZJjJvVJ/1PJ3Hr2bHWkkUYmFXCvA6y2eHkRjKrdSCfBsYglEUsUTmSsAr+wmom
+	 fG4rBNhYlxm1LPdO5uR0/CEc99Usb//AlftOaPq0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Marc Zyngier <maz@kernel.org>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Xiang Mei <xmei5@asu.edu>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 333/666] dt-bindings: interrupt-controller: arm,gic-v3: Fix EPPI range
+Subject: [PATCH 6.18 661/957] netfilter: nfnetlink_osf: fix divide-by-zero in OSF_WSS_MODULO
 Date: Wed, 20 May 2026 18:19:04 +0200
-Message-ID: <20260520162118.448567996@linuxfoundation.org>
+Message-ID: <20260520162148.867023812@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,76 +67,102 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-252508-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-251920-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,netfilter.org,asu.edu,suse.de,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[glider.be:email,arm.com:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 914625965CA
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,asu.edu:email,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,strlen.de:email,netfilter.org:email]
+X-Rspamd-Queue-Id: 1E6745974CC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Xiang Mei <xmei5@asu.edu>
 
-[ Upstream commit 15cfc8984defc17e5e4de1f58db7b993240fcbda ]
+[ Upstream commit 2195574dc6d9017d32ac346987e12659f931d932 ]
 
-According to the "Arm Generic Interrupt Controller (GIC) Architecture
-Specification, v3 and v4", revision H.b[1], there can be only 64
-Extended PPI interrupts.
+nf_osf_match_one() computes ctx->window % f->wss.val in the
+OSF_WSS_MODULO branch with no guard for f->wss.val == 0. A
+CAP_NET_ADMIN user can add such a fingerprint via nfnetlink; a
+subsequent matching TCP SYN divides by zero and panics the kernel.
 
-[1] https://developer.arm.com/documentation/ihi0069/hb/
+Reject the bogus fingerprint in nfnl_osf_add_callback() above the
+per-option for-loop. f->wss is per-fingerprint, not per-option, so
+the check must run regardless of f->opt_num (including 0). Also
+reject wss.wc >= OSF_WSS_MAX; nf_osf_match_one() already treats that
+as "should not happen".
 
-Fixes: 4b049063e0bcbfd3 ("dt-bindings: interrupt-controller: arm,gic-v3: Describe EPPI range support")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Brain-farted-by: Marc Zyngier <maz@kernel.org>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Link: https://patch.msgid.link/3e49a63c6b2b6ee48e3737adee87781f9c136c5f.1772792753.git.geert+renesas@glider.be
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Crash:
+ Oops: divide error: 0000 [#1] SMP KASAN NOPTI
+ RIP: 0010:nf_osf_match_one (net/netfilter/nfnetlink_osf.c:98)
+ Call Trace:
+ <IRQ>
+  nf_osf_match (net/netfilter/nfnetlink_osf.c:220)
+  xt_osf_match_packet (net/netfilter/xt_osf.c:32)
+  ipt_do_table (net/ipv4/netfilter/ip_tables.c:348)
+  nf_hook_slow (net/netfilter/core.c:622)
+  ip_local_deliver (net/ipv4/ip_input.c:265)
+  ip_rcv (include/linux/skbuff.h:1162)
+  __netif_receive_skb_one_core (net/core/dev.c:6181)
+  process_backlog (net/core/dev.c:6642)
+  __napi_poll (net/core/dev.c:7710)
+  net_rx_action (net/core/dev.c:7945)
+  handle_softirqs (kernel/softirq.c:622)
+
+Fixes: 11eeef41d5f6 ("netfilter: passive OS fingerprint xtables match")
+Reported-by: Weiming Shi <bestswngs@gmail.com>
+Suggested-by: Florian Westphal <fw@strlen.de>
+Suggested-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../devicetree/bindings/interrupt-controller/arm,gic-v3.yaml    | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nfnetlink_osf.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/arm,gic-v3.yaml b/Documentation/devicetree/bindings/interrupt-controller/arm,gic-v3.yaml
-index 5f051c666cbe5..9deaf132d0e9b 100644
---- a/Documentation/devicetree/bindings/interrupt-controller/arm,gic-v3.yaml
-+++ b/Documentation/devicetree/bindings/interrupt-controller/arm,gic-v3.yaml
-@@ -50,7 +50,7 @@ properties:
-       The 2nd cell contains the interrupt number for the interrupt type.
-       SPI interrupts are in the range [0-987]. PPI interrupts are in the
-       range [0-15]. Extended SPI interrupts are in the range [0-1023].
--      Extended PPI interrupts are in the range [0-127].
-+      Extended PPI interrupts are in the range [0-63].
+diff --git a/net/netfilter/nfnetlink_osf.c b/net/netfilter/nfnetlink_osf.c
+index 9fc9544d4bc53..2305c7d9761eb 100644
+--- a/net/netfilter/nfnetlink_osf.c
++++ b/net/netfilter/nfnetlink_osf.c
+@@ -320,6 +320,10 @@ static int nfnl_osf_add_callback(struct sk_buff *skb,
+ 	if (f->opt_num > ARRAY_SIZE(f->opt))
+ 		return -EINVAL;
  
-       The 3rd cell is the flags, encoded as follows:
-       bits[3:0] trigger type and level flags.
++	if (f->wss.wc >= OSF_WSS_MAX ||
++	    (f->wss.wc == OSF_WSS_MODULO && f->wss.val == 0))
++		return -EINVAL;
++
+ 	for (i = 0; i < f->opt_num; i++) {
+ 		if (!f->opt[i].length || f->opt[i].length > MAX_IPOPTLEN)
+ 			return -EINVAL;
 -- 
 2.53.0
 
