@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250903-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6MO7GhUfDmro6AUAu9opvQ
-	(envelope-from <stable+bounces-251833-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:52:37 +0200
+	id kHQeBUzqDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250903-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:07:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD7A059A3BE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:52:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACB21592EFC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:07:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5C15937714E7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:43:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E01A8306633E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:04:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08DBC3EEAC6;
-	Wed, 20 May 2026 17:43:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D36F73F4114;
+	Wed, 20 May 2026 17:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FKn8uRMu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VwVZyCZI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46302F0C62;
-	Wed, 20 May 2026 17:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FA7366075;
+	Wed, 20 May 2026 17:03:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299007; cv=none; b=eHbekza4jpHz+wqugukfKJkSwTdD2/p7Vn8yVLCBZhzItrvgwgjvFwGGZO/TP3Q3IMVe/lvFnZmjxAreYlTlHZ6WZrLQnSUoqux/ISMcdhwiT3CeiLUO2qaqzP1J9twpYi4wzXM7Tioo0gdA8Ep8rs/5cmhAHlXGKT02w6n8I7c=
+	t=1779296607; cv=none; b=HFxds7TdlSXJLybF9HNknI+l2rM/aCUZ/nJpwEZBnCsJL43ilL9JZrOVO6o8hcLLPIMitcXUzBuEXuqX93C7w9nRtyBSDNTT1BDyoGKa2NrMbifbzgMa8YcE9pC5OQmCwFbhQ7DfJvbRJH4uwVrtwul/eo3GZXi2OdWtGqvb418=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299007; c=relaxed/simple;
-	bh=Ubg6B1+Ah9njhMHw5fY19jxoZSvgEQbpYSuguoNa/b0=;
+	s=arc-20240116; t=1779296607; c=relaxed/simple;
+	bh=0/Xc83+DOvzJgIlRpqaW2NzMj7EiKPCMFXlwJ8M3Hug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tirDu+bJf8hEnkMneztrznB2OURbwzqxqrDc2+0vTV02b4Kkb7fcFqUzduPXnthpK0rAvyugWzJrjr/1iGW0Es+fbV7gXQLVlcPSfU4ezoAjg2Y3MN55pV8QDpEXwmjJlTfZwiW+vi0RQYt7PjRH/o7Q1wSp0+No5By4sg/Y7ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FKn8uRMu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34B371F000E9;
-	Wed, 20 May 2026 17:43:26 +0000 (UTC)
+	 MIME-Version; b=TAol3m9gdJCn0f11tUW0p+SejC/bG682q90BQvyNaqML/sd1/8Zwlu4xirvgRtkxQ9IVQgQwedNs2kB3iQKJ9xrn0uGNFKlhsTeBq5E5tFwsHZsc6/BU7sXwM109iNMRkj1BhIv9mK5kmbQ3iOY/9n3/ZIEXXtdXEMAnS8gx2jQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VwVZyCZI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01BD01F00893;
+	Wed, 20 May 2026 17:03:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299006;
-	bh=gjb9t9W0LGygYI7U1qgFl7H3srwmGvTCeD05QSLwOU8=;
+	s=korg; t=1779296606;
+	bh=CrUMsV3iCDUkU6on9jR1Y/C/jXLba7RsLx47UzZk9QQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FKn8uRMuZRryInmgw/dkAaRBdVKC0+nnp3booVFrin/x7RA9nxUyJOgrRUfQlCrUj
-	 6rYL/UgASuydg+5HqDfY9xS7QhxioccRqKPUj4nWFyTuEVluOcuaKAJ2TICP42g8aL
-	 UfHrhv1W2WQyfcE4z/mrnLUhEKFK6Jf9qGjrUCOc=
+	b=VwVZyCZIfujvL5dhvp6vIIjUIosV3TKjs45L3GqRDJ7GAle7C7WOjvV4gVFz9lZbe
+	 WnAYO2aQaub733LShmJCW9AgZMSeCg5zqKWUKXkSTHdsNM3WXkpS61mkoF3wz5sH4C
+	 omkZZbfzAhYS/p6RORYf+i/vkkuEVJ7EcJdX3NFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akif <akif.sait111@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 628/957] ksmbd: fix use-after-free in smb2_open during durable reconnect
+Subject: [PATCH 7.0 0861/1146] nstree: fix func. parameter kernel-doc warnings
 Date: Wed, 20 May 2026 18:18:31 +0200
-Message-ID: <20260520162148.148165404@linuxfoundation.org>
+Message-ID: <20260520162207.725054402@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,112 +64,92 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251833-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250903-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: DD7A059A3BE
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: ACB21592EFC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akif <akif.sait111@gmail.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 1baff47b81f94f9231c91236aa511420d0e266b9 ]
+[ Upstream commit 43eb354ecb471426e97b0ce6a0c922ec20f82027 ]
 
-In smb2_open, the call to ksmbd_put_durable_fd(fp) drops the reference
-to the durable file descriptor early during the durable reconnect
-process. If an error occurs subsequently (eg, ksmbd_iov_pin_rsp fails)
-or a scavenger accesses the file, it leads to a use-after-free when
-accessing fp properties (eg fp->create_time).
+Use the correct parameter name ("__ns") for function parameter kernel-doc
+to avoid 3 warnings:
 
-Move the single put to the end of the function below err_out2 so fp
-stays valid until smb2_open returns.
+Warning: include/linux/nstree.h:68 function parameter '__ns' not described in 'ns_tree_add_raw'
+Warning: include/linux/nstree.h:77 function parameter '__ns' not described in 'ns_tree_add'
+Warning: include/linux/nstree.h:88 function parameter '__ns' not described in 'ns_tree_remove'
 
-Fixes: c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
-Signed-off-by: Akif <akif.sait111@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 885fc8ac0a4d ("nstree: make iterator generic")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://patch.msgid.link/20260416215429.948898-1-rdunlap@infradead.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ include/linux/nstree.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 16ea123f61223..4bfbfe53aa4eb 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -3024,29 +3024,23 @@ int smb2_open(struct ksmbd_work *work)
- 		if (dh_info.reconnected == true) {
- 			rc = smb2_check_durable_oplock(conn, share, dh_info.fp,
- 					lc, sess->user, name);
--			if (rc) {
--				ksmbd_put_durable_fd(dh_info.fp);
-+			if (rc)
- 				goto err_out2;
--			}
+diff --git a/include/linux/nstree.h b/include/linux/nstree.h
+index 175e4625bfa6d..5b64d45728819 100644
+--- a/include/linux/nstree.h
++++ b/include/linux/nstree.h
+@@ -61,7 +61,7 @@ static inline void __ns_tree_add(struct ns_common *ns, struct ns_tree_root *ns_t
  
- 			rc = ksmbd_reopen_durable_fd(work, dh_info.fp);
--			if (rc) {
--				ksmbd_put_durable_fd(dh_info.fp);
-+			if (rc)
- 				goto err_out2;
--			}
+ /**
+  * ns_tree_add_raw - Add a namespace to a namespace
+- * @ns: Namespace to add
++ * @__ns: Namespace to add
+  *
+  * This function adds a namespace to the appropriate namespace tree
+  * without assigning a id.
+@@ -70,7 +70,7 @@ static inline void __ns_tree_add(struct ns_common *ns, struct ns_tree_root *ns_t
  
- 			fp = dh_info.fp;
+ /**
+  * ns_tree_add - Add a namespace to a namespace tree
+- * @ns: Namespace to add
++ * @__ns: Namespace to add
+  *
+  * This function assigns a new id to the namespace and adds it to the
+  * appropriate namespace tree and list.
+@@ -81,7 +81,7 @@ static inline void __ns_tree_add(struct ns_common *ns, struct ns_tree_root *ns_t
  
- 			if (ksmbd_override_fsids(work)) {
- 				rc = -ENOMEM;
--				ksmbd_put_durable_fd(dh_info.fp);
- 				goto err_out2;
- 			}
- 
- 			file_info = FILE_OPENED;
- 
- 			rc = ksmbd_vfs_getattr(&fp->filp->f_path, &stat);
--			ksmbd_put_durable_fd(fp);
- 			if (rc)
- 				goto err_out2;
- 
-@@ -3816,6 +3810,9 @@ int smb2_open(struct ksmbd_work *work)
- 		ksmbd_debug(SMB, "Error response: %x\n", rsp->hdr.Status);
- 	}
- 
-+	if (dh_info.reconnected)
-+		ksmbd_put_durable_fd(dh_info.fp);
-+
- 	kfree(name);
- 	kfree(lc);
- 
+ /**
+  * ns_tree_remove - Remove a namespace from a namespace tree
+- * @ns: Namespace to remove
++ * @__ns: Namespace to remove
+  *
+  * This function removes a namespace from the appropriate namespace
+  * tree and list.
 -- 
 2.53.0
 
