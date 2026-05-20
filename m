@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-251166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252730-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WHs8HbAVDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251166-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:12:32 +0200
+	id 2F/PB/v9DWok5QUAu9opvQ
+	(envelope-from <stable+bounces-252730-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:31:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E7B0599440
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:12:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE58C5966ED
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:31:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0ADDD31B0B4F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 325F9317A70C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B02993F1AA4;
-	Wed, 20 May 2026 17:14:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9096E3FE34B;
+	Wed, 20 May 2026 18:24:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oS0VSl/T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eenCHNGj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693FA370D54;
-	Wed, 20 May 2026 17:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 398003FDC00;
+	Wed, 20 May 2026 18:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297271; cv=none; b=bs63CciI0gVwWNj2CPUJuPJ1xvNFIgMHUu/ocH5HWDRwMNdZ6BoNgDjlbHKVlDFYkCY6qG1CR0AM/xZq4/ri5BtK5hELtSQ5i6z2qFh4a1TK6fkIYkULFx2nmx5r7zRlVFrqpuyC4YAen2W9bhqoDnDhCg63hGoObkj4TF/Ru+A=
+	t=1779301440; cv=none; b=hIDMHNiBIyTY6HdlWSk1KYSBbV8FhPHzfmgi0RCHICPZWjCpk7dQuyVyG+44lub/b8N1JVTQNnRW6bEBJGaw/iST0QlbLek/CWEmoQSUxRi52Dg1TqF4EGfCjnzC0D9n0NO7TeTra7OA2aSIsyHDgeEB+1dneUoNu8uAsEuQ9jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297271; c=relaxed/simple;
-	bh=yGD+GEh3JRVEq+gaVLrz8We7eQpRFK5F92NRW+Dlnbw=;
+	s=arc-20240116; t=1779301440; c=relaxed/simple;
+	bh=XtxISad3kFIJMghku5VwpB8koa28ZuUfc7Xf5dg3TNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JxSFof76glqXOEFTgLchAk43FbSe4CMKWTeeGOsdtaYP0mKpedss3/GoB6H4g/XIOJXI1co4mGztkS0mCfvL6nkyxhOUAh+qtEat/A8p84zB1nKl4XyFsYDoE8fkMNjnlYOFQ56sG0rSnVtvhGhUsGIESffIgJsZLmqwEec/LGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oS0VSl/T; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE2081F000E9;
-	Wed, 20 May 2026 17:14:29 +0000 (UTC)
+	 MIME-Version; b=M5rxIxzW+mkMUxP2k90QT/Ch2XASnzNatkm5oogpQ7W+ytvx00lcIFzYnvFKyuLcQmVmr6CYHMHfJmAKIiCLCwYjlIwH12k4lJX7FPUCm/peKhKffPKbHfmIHcKPKv3ngzR1tlX9VZC9qxAS15jbXF/rbslf0sjy11E5MYR8v/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eenCHNGj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A0D31F000E9;
+	Wed, 20 May 2026 18:23:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297270;
-	bh=6VRa4SjdMCkfw2uctrHyJgLg5XrOFBwdQUOoiyfrH/Q=;
+	s=korg; t=1779301438;
+	bh=dOrrQXivXCkY3ePLncHb1BXci+IvdPTttJqMvjCXU40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oS0VSl/TMv8DgrD0QDIXRWRdekWJVmur0jvxQIsVMkdvmQ1uyboZdXoJCL0gGRzNh
-	 F3dJW8F1tszTRZw7GhD8WiYadrC2xzgAJx8EY9MuHY5CjZLVaG20g+RmtqjjwFP6k6
-	 KQ+1Z9nLabL6Xkoxt+8cnhDWjC6mf9/wWst8hico=
+	b=eenCHNGjY8WKGrZ846SGB8xWL8fbf9cZlXgALpvOWiKEFOps4zch/+geGiyuwmsXo
+	 v3lKs2jYZhuUjs5eL+cegcmHIfdxNx/wB5v6pTPXI9Xg/B5dlWs6BZPW/5to6L1qHK
+	 rVREDkk61/ypq1EQ5PgdbkyrrLpytnta2GCZiayQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 7.0 1115/1146] libceph: Fix potential null-ptr-deref in decode_choose_args()
+	Heiko Schocher <hs@nabladev.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 554/666] net: phy: dp83869: fix setting CLK_O_SEL field.
 Date: Wed, 20 May 2026 18:22:45 +0200
-Message-ID: <20260520162213.477830862@linuxfoundation.org>
+Message-ID: <20260520162123.274541960@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,83 +67,98 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251166-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,gmail.com];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252730-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tu-ilmenau.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 1E7B0599440
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nabladev.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: AE58C5966ED
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+From: Heiko Schocher <hs@nabladev.com>
 
-commit 28b0a2ab8c82d0bbdeb8013029c67c978ce6e4bf upstream.
+[ Upstream commit 46f74a3f7d57d9cc0110b09cbc8163fa0a01afa2 ]
 
-A message of type CEPH_MSG_OSD_MAP contains an OSD map that itself
-contains a CRUSH map. When decoding this CRUSH map in crush_decode(), an
-array of max_buckets CRUSH buckets is decoded, where some indices may
-not refer to actual buckets and are therefore set to NULL. The received
-CRUSH map may optionally contain choose_args that get decoded in
-decode_choose_args(). When decoding a crush_choose_arg_map, a series of
-choose_args for different buckets is decoded, with the bucket_index
-being read from the incoming message. It is only checked that the bucket
-index does not exceed max_buckets, but not that it doesn't point to an
-index with a NULL bucket. If a (potentially corrupted) message contains
-a crush_choose_arg_map including such a bucket_index, a null pointer
-dereference may occur in the subsequent processing when attempting to
-access the bucket with the given index.
+Table 7-121 in datasheet says we have to set register 0xc6
+to value 0x10 before CLK_O_SEL can be modified. No more infos
+about this field found in datasheet. With this fix, setting
+of CLK_O_SEL field in IO_MUX_CFG register worked through dts
+property "ti,clk-output-sel" on a DP83869HMRGZR.
 
-This patch fixes the issue by extending the affected check. Now, it is
-only attempted to access the bucket if it is not NULL.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
-Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Heiko Schocher <hs@nabladev.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Fixes: 01db923e8377 ("net: phy: dp83869: Add TI dp83869 phy")
+Link: https://patch.msgid.link/20260425031339.3318-1-hs@nabladev.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ceph/osdmap.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/phy/dp83869.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
---- a/net/ceph/osdmap.c
-+++ b/net/ceph/osdmap.c
-@@ -389,7 +389,8 @@ static int decode_choose_args(void **p,
- 				goto fail;
+diff --git a/drivers/net/phy/dp83869.c b/drivers/net/phy/dp83869.c
+index b6b38caf9c0ed..96e5b8b03083a 100644
+--- a/drivers/net/phy/dp83869.c
++++ b/drivers/net/phy/dp83869.c
+@@ -31,6 +31,7 @@
+ #define DP83869_RGMIICTL	0x0032
+ #define DP83869_STRAP_STS1	0x006e
+ #define DP83869_RGMIIDCTL	0x0086
++#define DP83869_ANA_PLL_PROG_PI	0x00c6
+ #define DP83869_RXFCFG		0x0134
+ #define DP83869_RXFPMD1		0x0136
+ #define DP83869_RXFPMD2		0x0137
+@@ -827,12 +828,22 @@ static int dp83869_config_init(struct phy_device *phydev)
+ 		dp83869_config_port_mirroring(phydev);
  
- 			if (arg->ids_size &&
--			    arg->ids_size != c->buckets[bucket_index]->size)
-+			    (!c->buckets[bucket_index] ||
-+			     arg->ids_size != c->buckets[bucket_index]->size))
- 				goto e_inval;
- 		}
+ 	/* Clock output selection if muxing property is set */
+-	if (dp83869->clk_output_sel != DP83869_CLK_O_SEL_REF_CLK)
++	if (dp83869->clk_output_sel != DP83869_CLK_O_SEL_REF_CLK) {
++		/*
++		 * Table 7-121 in datasheet says we have to set register 0xc6
++		 * to value 0x10 before CLK_O_SEL can be modified.
++		 */
++		ret = phy_write_mmd(phydev, DP83869_DEVADDR,
++				    DP83869_ANA_PLL_PROG_PI, 0x10);
++		if (ret)
++			return ret;
++
+ 		ret = phy_modify_mmd(phydev,
+ 				     DP83869_DEVADDR, DP83869_IO_MUX_CFG,
+ 				     DP83869_IO_MUX_CFG_CLK_O_SEL_MASK,
+ 				     dp83869->clk_output_sel <<
+ 				     DP83869_IO_MUX_CFG_CLK_O_SEL_SHIFT);
++	}
  
+ 	if (phy_interface_is_rgmii(phydev)) {
+ 		ret = phy_write_mmd(phydev, DP83869_DEVADDR, DP83869_RGMIIDCTL,
+-- 
+2.53.0
+
 
 
 
