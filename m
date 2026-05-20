@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-251829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252419-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4KDPBHr0DWoF5AUAu9opvQ
-	(envelope-from <stable+bounces-251829-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:50:50 +0200
+	id yC6gHRwUDmot6AUAu9opvQ
+	(envelope-from <stable+bounces-252419-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:05:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81101594BA1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:50:49 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7375C5991EA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:05:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E082930A9A4C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:43:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 14DB630E7B0A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:10:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767923A3E60;
-	Wed, 20 May 2026 17:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E534F5E0;
+	Wed, 20 May 2026 18:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hLmLACqQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p3SgpHDY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E3E3EDACC;
-	Wed, 20 May 2026 17:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6220F331220;
+	Wed, 20 May 2026 18:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298997; cv=none; b=U2/Q0Gg1bVx5SjZgslGghoWO4QV98R0tHQ2T1oSY3L9r4fpH3N7pYl2BaCjNRXbMd55fPX/ij2GPzGVMZwGQDqp0w8bfCFSfw9DpFjejykn9m2090j7P/z/LlUjKiKpOuWYmv5keLFcpJ/ZYWMQ7qo8ulc6sYVejypxiU4ZIrT0=
+	t=1779300623; cv=none; b=Wce4XI/8gCJZDx0t0es5GuEeaVzsfVMmbcmOTmYDG08JtlWagZhzCSEf69pZ2iAEjFRWSy0Z1z62E2HrN4YlxHW+90NRz2zR/PFPpKTWsRLiFgyYgVVqMRyXHHyWzz6y2w5w9O0MKYO8LcaSpmWsF/nn7vrCyI4EHtMbUUTAu2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298997; c=relaxed/simple;
-	bh=ugQmfA5X7e4uM/8aSenPAiIyh8BMF29/hl7S+MkZ6tk=;
+	s=arc-20240116; t=1779300623; c=relaxed/simple;
+	bh=SPTR86Iyulx6C02cZtSeYiDqmWAplfnnjNP/MnmSdAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RKcaxFlXIUk/rh9MKlOZbTtTrySj6WAQNIgfa/MpY2yafcn7qSP0W43hnX7MenxhaFLTNVAH+RewIntQl6w7n9D3lTHCxXRikemswDklvi1oj1Uf9gjFD2uwyW9YwE6C87mXWy1fGZQxkwKFtuh6NavdwDblW/nyQHPF7uaUj18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hLmLACqQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D2591F000E9;
-	Wed, 20 May 2026 17:43:15 +0000 (UTC)
+	 MIME-Version; b=llI4RRNyzaCRznJIWGPFkOvyid5NHYCCEJxOKI1uq16JVff7+G9qeoZmk1bWuMlbdajsgicxlESfyKnlhMKCaT/ByikkVt5Z9TSQr7onuk1H5Twq2Ofl5zS6aCmjT4oPIdZMRnHuGY+9CFpWlN4ApUsAHYtfoA6dnuMWKaeiHrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p3SgpHDY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDA701F000E9;
+	Wed, 20 May 2026 18:10:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298996;
-	bh=+XG9P/fHs+4AT86Z15g361xcFatvlotKev5dqqqP0+Q=;
+	s=korg; t=1779300622;
+	bh=ohuwp6kKHVnqWk+nGQofgi4wRctPdjeuyG/ONkHYlB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hLmLACqQEJvQM9pu4ww2GaNXX80IrnP5/lyJ+rSjEAYw1dARZVJ9ApXvG4+CecbKe
-	 0yaXmjYsUDvI1tb9/SGVLTVPUeYd2wRKa7MizkjhK6Wt63P90CFAx0ydhASMfkhqgc
-	 X/ZZjfdiPG0rBEsranL1E6jvVz4k8nta4GO7oFc8=
+	b=p3SgpHDYZvYxbvMciqmtWukPZX128rV9RFmn9r6vpzAbdsmJfBffyBfJOIkJ6LCRw
+	 t8uogSJOcg6sAl9z08DxdMRi+07AUh9VYqiiDjQAJriZHWlc6GCWH0QnFJZxsyi31p
+	 p5EQoWaZIg0sycNeB9TKqc1eVhO1ohFFxiSSyXhM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Abel Vesa <abel.vesa@oss.qualcomm.com>,
+	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Vidya Sagar <vidyas@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 572/957] clk: imx: imx6q: Fix device node reference leak in of_assigned_ldb_sels()
+Subject: [PATCH 6.12 244/666] PCI: dwc: Apply ECRC workaround to DesignWare 5.00a as well
 Date: Wed, 20 May 2026 18:17:35 +0200
-Message-ID: <20260520162146.935165219@linuxfoundation.org>
+Message-ID: <20260520162116.507652625@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,92 +67,97 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-251829-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nxp.com,oss.qualcomm.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252419-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 81101594BA1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 7375C5991EA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Manikanta Maddireddy <mmaddireddy@nvidia.com>
 
-[ Upstream commit 9faf207208951460f3f7eefbc112246c8d28ff1b ]
+[ Upstream commit 40805f32dceadebb7381d911003100bec7b8cd51 ]
 
-The function of_assigned_ldb_sels() calls of_parse_phandle_with_args()
-but never calls of_node_put() to release the reference, causing a memory
-leak.
+The ECRC (TLP digest) workaround was originally added for DesignWare
+version 4.90a. Tegra234 SoC has 5.00a DWC HW version, which has the same
+ATU TD override behaviour, so apply the workaround for 5.00a too.
 
-Fix this by adding proper cleanup calls on all exit paths.
-
-Fixes: 5d283b083800 ("clk: imx6: Fix procedure to switch the parent of LDB_DI_CLK")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Link: https://patch.msgid.link/20260203-clk-imx6q-v3-2-6cd2696bb371@gmail.com
-Signed-off-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+Fixes: a54e19073718 ("PCI: tegra194: Add Tegra234 PCIe support")
+Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
+Link: https://patch.msgid.link/20260324190755.1094879-13-mmaddireddy@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx6q.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/pci/controller/dwc/pcie-designware.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-imx6q.c b/drivers/clk/imx/clk-imx6q.c
-index ba696cf34fe3b..048e2ddba490b 100644
---- a/drivers/clk/imx/clk-imx6q.c
-+++ b/drivers/clk/imx/clk-imx6q.c
-@@ -188,9 +188,11 @@ static void of_assigned_ldb_sels(struct device_node *node,
- 		}
- 		if (clkspec.np != node || clkspec.args[0] >= IMX6QDL_CLK_END) {
- 			pr_err("ccm: parent clock %d not in ccm\n", index);
-+			of_node_put(clkspec.np);
- 			return;
- 		}
- 		parent = clkspec.args[0];
-+		of_node_put(clkspec.np);
+diff --git a/drivers/pci/controller/dwc/pcie-designware.c b/drivers/pci/controller/dwc/pcie-designware.c
+index f7d10cb788e0e..bc3d6269f33bc 100644
+--- a/drivers/pci/controller/dwc/pcie-designware.c
++++ b/drivers/pci/controller/dwc/pcie-designware.c
+@@ -429,13 +429,13 @@ static inline void dw_pcie_writel_atu_ob(struct dw_pcie *pci, u32 index, u32 reg
+ static inline u32 dw_pcie_enable_ecrc(u32 val)
+ {
+ 	/*
+-	 * DesignWare core version 4.90A has a design issue where the 'TD'
+-	 * bit in the Control register-1 of the ATU outbound region acts
+-	 * like an override for the ECRC setting, i.e., the presence of TLP
+-	 * Digest (ECRC) in the outgoing TLPs is solely determined by this
+-	 * bit. This is contrary to the PCIe spec which says that the
+-	 * enablement of the ECRC is solely determined by the AER
+-	 * registers.
++	 * DWC versions 0x3530302a and 0x3536322a have a design issue where
++	 * the 'TD' bit in the Control register-1 of the ATU outbound
++	 * region acts like an override for the ECRC setting, i.e., the
++	 * presence of TLP Digest (ECRC) in the outgoing TLPs is solely
++	 * determined by this bit. This is contrary to the PCIe spec which
++	 * says that the enablement of the ECRC is solely determined by the
++	 * AER registers.
+ 	 *
+ 	 * Because of this, even when the ECRC is enabled through AER
+ 	 * registers, the transactions going through ATU won't have TLP
+@@ -505,7 +505,7 @@ int dw_pcie_prog_outbound_atu(struct dw_pcie *pci,
+ 	if (upper_32_bits(limit_addr) > upper_32_bits(cpu_addr) &&
+ 	    dw_pcie_ver_is_ge(pci, 460A))
+ 		val |= PCIE_ATU_INCREASE_REGION_SIZE;
+-	if (dw_pcie_ver_is(pci, 490A))
++	if (dw_pcie_ver_is(pci, 490A) || dw_pcie_ver_is(pci, 500A))
+ 		val = dw_pcie_enable_ecrc(val);
+ 	dw_pcie_writel_atu_ob(pci, atu->index, PCIE_ATU_REGION_CTRL1, val);
  
- 		rc = of_parse_phandle_with_args(node, "assigned-clocks",
- 				"#clock-cells", index, &clkspec);
-@@ -198,9 +200,11 @@ static void of_assigned_ldb_sels(struct device_node *node,
- 			return;
- 		if (clkspec.np != node || clkspec.args[0] >= IMX6QDL_CLK_END) {
- 			pr_err("ccm: child clock %d not in ccm\n", index);
-+			of_node_put(clkspec.np);
- 			return;
- 		}
- 		child = clkspec.args[0];
-+		of_node_put(clkspec.np);
- 
- 		if (child != IMX6QDL_CLK_LDB_DI0_SEL &&
- 		    child != IMX6QDL_CLK_LDB_DI1_SEL)
 -- 
 2.53.0
 
