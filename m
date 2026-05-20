@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250539-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UKWMKOfyDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-251474-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:07 +0200
+	id GMsILT7wDWqo4wUAu9opvQ
+	(envelope-from <stable+bounces-250539-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:32:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ADEB5946E0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:07 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDE5A593E94
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:32:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1EF01304BD3D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:28:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 05ED8304CFB6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:47:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07FFE39B975;
-	Wed, 20 May 2026 17:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77FDE33A9CF;
+	Wed, 20 May 2026 16:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sfP5VEAj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dP2wCwae"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEE3037754D;
-	Wed, 20 May 2026 17:27:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3671CDFCA;
+	Wed, 20 May 2026 16:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298076; cv=none; b=ODx3BYbywcXA4Uv4kTwQq8hVwdWgTSwa1wieJ+wLf9mrt9dRORNrl5T7TTw2txuLreXMt4ikEfRmc4Oc0pLX8G29kFVVGTqGqAsMwIhkVE+0op45ko/7mk9cuNhdHg58M3Tql9GF6dWht63zLc/dsiWTDPe3rt34bBDOZIB1WDg=
+	t=1779295675; cv=none; b=f+cXer8OZQk2RH1Op/LOZzHLGIkFqNoBhK+/HEq2R8sBjYrMDtkZDJSjtxBnjZxAuWdHKcLXwHd1vaHDhtnEN9+XJMTcwkQlVYhrf4nF4iwIjAReOz1XNtMrdoUD/H8umKPvkRDaXJg1FlI7r6mc4qZq/wBvl3xkvzuONrdCo7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298076; c=relaxed/simple;
-	bh=LE98jFH8+ICaKGEzqQ0fZ4TtVx6Qe9DhYn5NMhXNSis=;
+	s=arc-20240116; t=1779295675; c=relaxed/simple;
+	bh=7MVTeSLb6uZWSGXUd5g0jgmMfWVVaMhaVr9BHsiue9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AxqGBifTvPYJIxVlBMhr5BY4JE5jmobNuHudw+OmUKl3c1B3kzmFjYwY3Z0eeDnv+c4YtVXgQ74ZVM2bj/5juaCZtzzXAkGFE1W9mDkPTY//hNBrtVWHCW9jVzhBRXHDYhA5ZU7xpjWGT/Vx286IdPqQGF+ArQBPX2VeSbFbtso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sfP5VEAj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BB321F00893;
-	Wed, 20 May 2026 17:27:55 +0000 (UTC)
+	 MIME-Version; b=bvcbRpaRx7sndWy6/3EW+5gh9oo/z/1K+Jyrede9m4B/NDlMK2/Tq4Tuc9w8xhNls6pG5gpcYtMpSc4EuXCD6Fj0XtQtYFcq2e8rSRWWTg/x6gFRR/YjWmdyBHY4o7csM9o2V+XAnRm3PDQ0PD19TvmnF9XRVNs8lV1kGFqSAr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dP2wCwae; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 904DF1F000E9;
+	Wed, 20 May 2026 16:47:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298075;
-	bh=GZ+ObSHamVwxpV6air7yEHlaoTbH8fzE/fnjyWMTr3M=;
+	s=korg; t=1779295674;
+	bh=gPYr8ygwSSoS4Rp3SPUQt3Wiodni0T2Zrcb8WMKV6ME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sfP5VEAjpzk0rgomTVSP8iYdgwNxkSesvbjqOqXqlYA770AfvcNcKVG/WU7ol7P6e
-	 4UbE1VISdZNXzveC4HGE0Ew4F0n1OxrE/TNpYZ6a7doI/KYRYeSOnMVa+jAebosTsX
-	 +dS7IsZXqmwmps1lAhFF3oV6i3fwrXKQafujOfdA=
+	b=dP2wCwaecX4fP1TtVdd+gW5zEU4cvcwHiwLgmUnpibLRSsVykD+l+umGZ9w8IZREI
+	 e/FSTeGiGjA5Sd98kSPg0/YXNmRNG8w+QaMXn2ApKrdYLjotHr7YSDUzCNtlhpAMtQ
+	 oJbfQWme3YgUGILJKE/5kTQiMez5vsUgl4aokppU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victoria Brekenfeld <victoria@system76.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Gatien Chevallier <gatien.chevallier@foss.st.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 274/957] drm/msm: Fix VM_BIND UNMAP locking
-Date: Wed, 20 May 2026 18:12:37 +0200
-Message-ID: <20260520162140.484448708@linuxfoundation.org>
+Subject: [PATCH 7.0 0508/1146] bus: rifsc: fix RIF configuration check for peripherals
+Date: Wed, 20 May 2026 18:12:38 +0200
+Message-ID: <20260520162159.684661843@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251474-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250539-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,50 +89,110 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.freedesktop.org:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,patchwork.freedesktop.org:url,qualcomm.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,system76.com:email]
-X-Rspamd-Queue-Id: 4ADEB5946E0
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,st.com:email]
+X-Rspamd-Queue-Id: BDE5A593E94
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robin.clark@oss.qualcomm.com>
+From: Gatien Chevallier <gatien.chevallier@foss.st.com>
 
-[ Upstream commit 85042c2cd970a6b0e686329387096fe19989ae62 ]
+[ Upstream commit d5ce3b4e951bc41a6ce877c8500bb4fe42146669 ]
 
-Wrong argument meant that the objs involved in UNMAP ops were not always
-getting locked.
+Peripheral holding CID0 cannot be accessed, remove this completely
+incorrect check. While there, fix  and simplify the semaphore checking
+that should be performed when the CID filtering is enabled.
 
-Since _NO_SHARE objs share a common resv with the VM (which is always
-locked) this would only show up with non-_NO_SHARE BOs.
-
-Reported-by: Victoria Brekenfeld <victoria@system76.com>
-Fixes: 2e6a8a1fe2b2 ("drm/msm: Add VM_BIND ioctl")
-Closes: https://gitlab.freedesktop.org/drm/msm/-/issues/94
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/713898/
-Message-ID: <20260324220519.1221471-2-robin.clark@oss.qualcomm.com>
+Fixes: a18208457253 ("bus: rifsc: introduce RIFSC firewall controller driver")
+Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
+Link: https://lore.kernel.org/r/20260129-fix_cid_check_rifsc-v1-1-ef280ccf764d@foss.st.com
+Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_gem_vma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bus/stm32_rifsc.c | 52 ++++++++++++++-------------------------
+ 1 file changed, 18 insertions(+), 34 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/msm_gem_vma.c b/drivers/gpu/drm/msm/msm_gem_vma.c
-index 44bcc2b291e47..9016ef978be5e 100644
---- a/drivers/gpu/drm/msm/msm_gem_vma.c
-+++ b/drivers/gpu/drm/msm/msm_gem_vma.c
-@@ -1232,7 +1232,7 @@ vm_bind_job_lock_objects(struct msm_vm_bind_job *job, struct drm_exec *exec)
- 			case MSM_VM_BIND_OP_UNMAP:
- 				ret = drm_gpuvm_sm_unmap_exec_lock(job->vm, exec,
- 							      op->iova,
--							      op->obj_offset);
-+							      op->range);
- 				break;
- 			case MSM_VM_BIND_OP_MAP:
- 			case MSM_VM_BIND_OP_MAP_NULL: {
+diff --git a/drivers/bus/stm32_rifsc.c b/drivers/bus/stm32_rifsc.c
+index debeaf8ea1bd2..5682c086ba1e8 100644
+--- a/drivers/bus/stm32_rifsc.c
++++ b/drivers/bus/stm32_rifsc.c
+@@ -688,34 +688,6 @@ static int stm32_rifsc_grant_access(struct stm32_firewall_controller *ctrl, u32
+ 	sec_reg_value = readl(rifsc_controller->mmio + RIFSC_RISC_SECCFGR0 + 0x4 * reg_id);
+ 	cid_reg_value = readl(rifsc_controller->mmio + RIFSC_RISC_PER0_CIDCFGR + 0x8 * firewall_id);
+ 
+-	/* First check conditions for semaphore mode, which doesn't take into account static CID. */
+-	if ((cid_reg_value & CIDCFGR_SEMEN) && (cid_reg_value & CIDCFGR_CFEN)) {
+-		if (cid_reg_value & BIT(RIF_CID1 + SEMWL_SHIFT)) {
+-			/* Static CID is irrelevant if semaphore mode */
+-			goto skip_cid_check;
+-		} else {
+-			dev_dbg(rifsc_controller->dev,
+-				"Invalid bus semaphore configuration: index %d\n", firewall_id);
+-			return -EACCES;
+-		}
+-	}
+-
+-	/*
+-	 * Skip CID check if CID filtering isn't enabled or filtering is enabled on CID0, which
+-	 * corresponds to whatever CID.
+-	 */
+-	if (!(cid_reg_value & CIDCFGR_CFEN) ||
+-	    FIELD_GET(RIFSC_RISC_SCID_MASK, cid_reg_value) == RIF_CID0)
+-		goto skip_cid_check;
+-
+-	/* Coherency check with the CID configuration */
+-	if (FIELD_GET(RIFSC_RISC_SCID_MASK, cid_reg_value) != RIF_CID1) {
+-		dev_dbg(rifsc_controller->dev, "Invalid CID configuration for peripheral: %d\n",
+-			firewall_id);
+-		return -EACCES;
+-	}
+-
+-skip_cid_check:
+ 	/* Check security configuration */
+ 	if (sec_reg_value & BIT(reg_offset)) {
+ 		dev_dbg(rifsc_controller->dev,
+@@ -723,19 +695,31 @@ static int stm32_rifsc_grant_access(struct stm32_firewall_controller *ctrl, u32
+ 		return -EACCES;
+ 	}
+ 
+-	/*
+-	 * If the peripheral is in semaphore mode, take the semaphore so that
+-	 * the CID1 has the ownership.
+-	 */
+-	if ((cid_reg_value & CIDCFGR_SEMEN) && (cid_reg_value & CIDCFGR_CFEN)) {
++	/* Skip CID check if CID filtering isn't enabled */
++	if (!(cid_reg_value & CIDCFGR_CFEN))
++		goto skip_cid_check;
++
++	/* First check conditions for semaphore mode, which doesn't take into account static CID. */
++	if (cid_reg_value & CIDCFGR_SEMEN) {
++		if (!(cid_reg_value & BIT(RIF_CID1 + SEMWL_SHIFT))) {
++			dev_dbg(rifsc_controller->dev,
++				"Invalid bus semaphore configuration: index %d\n", firewall_id);
++			return -EACCES;
++		}
++
+ 		rc = stm32_rif_acquire_semaphore(rifsc_controller, firewall_id);
+ 		if (rc) {
+-			dev_err(rifsc_controller->dev,
++			dev_dbg(rifsc_controller->dev,
+ 				"Couldn't acquire semaphore for peripheral: %d\n", firewall_id);
+ 			return rc;
+ 		}
++	} else if (FIELD_GET(RIFSC_RISC_SCID_MASK, cid_reg_value) != RIF_CID1) {
++		dev_dbg(rifsc_controller->dev, "Invalid CID configuration for peripheral: %d\n",
++			firewall_id);
++		return -EACCES;
+ 	}
+ 
++skip_cid_check:
+ 	return 0;
+ }
+ 
 -- 
 2.53.0
 
