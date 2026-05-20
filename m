@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250265-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GHvnEWoYDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251236-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:24:10 +0200
+	id aFRuAl8ODmrB5wUAu9opvQ
+	(envelope-from <stable+bounces-250265-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:41:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2050599889
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:24:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50D5A5989A6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:41:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CAD6B31B1697
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:17:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 385FA311D081
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:37:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ED63356748;
-	Wed, 20 May 2026 17:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9A452F0C62;
+	Wed, 20 May 2026 16:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lltb1B29"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pnQd/cRn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9343369999;
-	Wed, 20 May 2026 17:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B2DF33AD9D;
+	Wed, 20 May 2026 16:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297455; cv=none; b=PzD8zTEqpDBIqBqlo3y23Kjmer6RlkXDlacDxhba18FsMvNH3wdYjDeLlitqqsjuBUgmUrdjHwiAMrkHyoHSsyKCkUrU0Z8DNTAC1FhIu/sfvgf6/eyu8MlNSV6SZzAr1UIKnoTEf1SzYifdEhDwFpyy1+qgUg99kbLYok0Bf9c=
+	t=1779294959; cv=none; b=WKoAqoW6woJYKOiPGHMZ8S7yWSCLY6di6QtA4DVIJcBzO5QYrp/Yu20jgr+UgJDUK8ueknAM1/TrC4We6XjnxCZeRUOSrMiYQ6d1anCbT5TLsXknUwHOCUk+oHakA7e5d4VNUbyQzgxiCc4FEN7Re0JI/ZNq5Z1tiLthhkBcZDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297455; c=relaxed/simple;
-	bh=7bxvKaDs1XsdK5ja+K5VUs2+G3H0jGu96jbmspcI+nU=;
+	s=arc-20240116; t=1779294959; c=relaxed/simple;
+	bh=8kH0VraLF1Z85q5l0fCW/xr3AM5JzO5ZRNH9N+oB3+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LwKDRH3DyiJTzFd299Lfe3/5PvWIM3maN6Bhpi9hTXizmovlfgNohR/KLbYjZKeRHVuIhKuIusCzc3J5G54zJ6JZklzMUGY3bg/k+8IKDjE00NqGlZdC2iEGJlrVXAmz+eMgm2A0DbnXMxf+hYCkKSEHqIPeBY9ZdUtxpiVnEfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lltb1B29; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 325DF1F000E9;
-	Wed, 20 May 2026 17:17:34 +0000 (UTC)
+	 MIME-Version; b=ouqIw0Wo6XZEhows5M0/EI2h36Etl95+kj43sDQs8dpVXchavy19uzRSkadaMXk6on2yBQz/2Ab20l2vnSd+2epB70A7oHMgmFce2mBgPEjJdjQI8nwJW8iM1WDPnAzDtwGj00bRRN3IjnSVg/cjDrefIcTXWf7tNj9eevjdVh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pnQd/cRn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E934E1F00893;
+	Wed, 20 May 2026 16:35:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297454;
-	bh=7jtOe8jI2jnBRR7oJuVt0OWMXelJQpihS3pMWGyiNJM=;
+	s=korg; t=1779294958;
+	bh=4LiDQrExSLHulBSqBgFX3JyQHsFkXQEtYmpgAmC0Xho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lltb1B29b20h2pr0bEl52zQs7dnl1hDyIYO1O0+AAklVg5aBBGfFU9prS7vxLeKRY
-	 G/tQTd1GfQ/pvsvwiYpTA7ybihHmJ+2HijRO6bIhpWimlj1jh+Jvb7e8glWZ/eFDkL
-	 mfISiOyGWdfRCv6Dd1pMckATyGv+UuMjFvigy/2A=
+	b=pnQd/cRnItXv56cpKugAiC0woGYVWzq7gHNDXkh80//d3scxg7nYIK9bnCGj09Jyw
+	 A7PxtAjhxc1nCd73ka6D9npS5shgE3WFKeust9Wlh0AsNdfNpeqQ73KS9yanKX9CWf
+	 8ei3ndf+YcwoJBp82KbITmO4PbRqbmHg9trl1EX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiao Ni <xni@redhat.com>,
-	Yu Kuai <yukuai3@huawei.com>,
+	Ethan Tidmore <ethantidmore06@gmail.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 004/957] md/raid1: fix the comparing region of interval tree
+Subject: [PATCH 7.0 0237/1146] drm/sun4i: backend: fix error pointer dereference
 Date: Wed, 20 May 2026 18:08:07 +0200
-Message-ID: <20260520162134.654766711@linuxfoundation.org>
+Message-ID: <20260520162153.609179911@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,81 +68,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251236-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250265-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,huawei.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: C2050599889
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 50D5A5989A6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiao Ni <xni@redhat.com>
+From: Ethan Tidmore <ethantidmore06@gmail.com>
 
-[ Upstream commit de3544d2e5ea99064498de3c21ba490155864657 ]
+[ Upstream commit 06277983eca4a31d3c2114fa33d99a6e82484b11 ]
 
-Interval tree uses [start, end] as a region which stores in the tree.
-In raid1, it uses the wrong end value. For example:
-bio(A,B) is too big and needs to be split to bio1(A,C-1), bio2(C,B).
-The region of bio1 is [A,C] and the region of bio2 is [C,B]. So bio1 and
-bio2 overlap which is not right.
+The function drm_atomic_get_plane_state() can return an error pointer
+and is not checked for it. Add error pointer check.
 
-Fix this problem by using right end value of the region.
+Detected by Smatch:
+drivers/gpu/drm/sun4i/sun4i_backend.c:496 sun4i_backend_atomic_check() error:
+'plane_state' dereferencing possible ERR_PTR()
 
-Fixes: d0d2d8ba0494 ("md/raid1: introduce wait_for_serialization")
-Signed-off-by: Xiao Ni <xni@redhat.com>
-Link: https://lore.kernel.org/linux-raid/20260305011839.5118-2-xni@redhat.com/
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Fixes: 96180dde23b79 ("drm/sun4i: backend: Add a custom atomic_check for the frontend")
+Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
+Reviewed-by: Chen-Yu Tsai <wens@kernel.org>
+Link: https://patch.msgid.link/20260217014801.60760-1-ethantidmore06@gmail.com
+Signed-off-by: Chen-Yu Tsai <wens@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid1.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/sun4i/sun4i_backend.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
-index ce7fd68869566..84dbf801e9b1b 100644
---- a/drivers/md/raid1.c
-+++ b/drivers/md/raid1.c
-@@ -62,7 +62,7 @@ static int check_and_add_serial(struct md_rdev *rdev, struct r1bio *r1_bio,
- 	unsigned long flags;
- 	int ret = 0;
- 	sector_t lo = r1_bio->sector;
--	sector_t hi = lo + r1_bio->sectors;
-+	sector_t hi = lo + r1_bio->sectors - 1;
- 	struct serial_in_rdev *serial = &rdev->serial[idx];
- 
- 	spin_lock_irqsave(&serial->serial_lock, flags);
-@@ -453,7 +453,7 @@ static void raid1_end_write_request(struct bio *bio)
- 	int mirror = find_bio_disk(r1_bio, bio);
- 	struct md_rdev *rdev = conf->mirrors[mirror].rdev;
- 	sector_t lo = r1_bio->sector;
--	sector_t hi = r1_bio->sector + r1_bio->sectors;
-+	sector_t hi = r1_bio->sector + r1_bio->sectors - 1;
- 	bool ignore_error = !raid1_should_handle_error(bio) ||
- 		(bio->bi_status && bio_op(bio) == REQ_OP_DISCARD);
- 
+diff --git a/drivers/gpu/drm/sun4i/sun4i_backend.c b/drivers/gpu/drm/sun4i/sun4i_backend.c
+index 40405a52a073a..6391bdc94a5c2 100644
+--- a/drivers/gpu/drm/sun4i/sun4i_backend.c
++++ b/drivers/gpu/drm/sun4i/sun4i_backend.c
+@@ -491,6 +491,9 @@ static int sun4i_backend_atomic_check(struct sunxi_engine *engine,
+ 	drm_for_each_plane_mask(plane, drm, crtc_state->plane_mask) {
+ 		struct drm_plane_state *plane_state =
+ 			drm_atomic_get_plane_state(state, plane);
++		if (IS_ERR(plane_state))
++			return PTR_ERR(plane_state);
++
+ 		struct sun4i_layer_state *layer_state =
+ 			state_to_sun4i_layer_state(plane_state);
+ 		struct drm_framebuffer *fb = plane_state->fb;
 -- 
 2.53.0
 
