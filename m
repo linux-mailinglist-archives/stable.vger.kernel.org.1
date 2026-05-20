@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-252587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251952-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CFslBAYnDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252587-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:26:30 +0200
+	id gOVQMIQgDmqI6QUAu9opvQ
+	(envelope-from <stable+bounces-251952-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:58:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50B8C59AD82
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:26:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22F9B59A58C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:58:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F036A322C626
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:17:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D956D352C8CD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:49:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 249593C140F;
-	Wed, 20 May 2026 18:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C4F736405A;
+	Wed, 20 May 2026 17:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nzO785z7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5sZSd2Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB526347515;
-	Wed, 20 May 2026 18:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA71233933;
+	Wed, 20 May 2026 17:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301065; cv=none; b=kHwbOzP8u3bd75Zgo+P0S5yqFmd7zSa+f3vxH9EM1hRzcNEcD4vrAyDWNIvABJ531x+6xZ/QjsoCZi10FxLhvcWpJ52Wd3IIigt/ruagUhc+p7NHi9HXS4p6whsmYA34e/f2+tPAScq9to0YzjAsU1l0wm98gcMuokq06YsexzE=
+	t=1779299360; cv=none; b=qt2kWAbHuG+8M9fKLklR73dZgZmsiP1p8I9G6JkvJksw9RKmXeFiefIIMb1kRFphbUB5OOm3WkRTx75Lob9vZzRF04X+4orzWrbaSawM0/uCHnmZYFS8CqUjTKOiu6wXk2RdinIKxHfxi+IAZkHLvdLICkyc3AkLQwGRxWPzjn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301065; c=relaxed/simple;
-	bh=LehAEnhg+Kouh2lJHLaUvaBMtWKihR6wj5XjhUeq2n8=;
+	s=arc-20240116; t=1779299360; c=relaxed/simple;
+	bh=7prH0XWVD+7ymvTmENj1FrgzCi56dT5RoCM/PwqvfaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pGdUrpviLmCYPuzbLt6UGLYlWHL2rjtasLZnhtfj2muu3n8fErh44m2QpL1j/+fGZp+I2kqdXmoAJUa8yTpJYueu3uaVIzlS5+surwFcGLSlZXQUgtFZFeqrn6zQnbP7VIn+DP/zEKxMC+Ph12KLUWzCRwnQawAnjBjNWtjKM20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nzO785z7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C7F91F000E9;
-	Wed, 20 May 2026 18:17:44 +0000 (UTC)
+	 MIME-Version; b=JSvlrBNzubbuo7C1ktDB7FqGu5j1anDMDwEEWye3ZcJHTeMG35RzadZlniIRrorkmnVIL+7mrzAPtHF26+2sSfIL58f4uZ165LQVIKqyF/uW0Zzyqa42fbPe1QidH9Z+qEJZjinvseJ7+UPnxPvEh2v7u46YjQr2bqaKvytIpnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5sZSd2Q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01B111F00893;
+	Wed, 20 May 2026 17:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301064;
-	bh=kxBpxTHIcZ1isnUncyTjo55Do2AtCp87OPajGwMXnW4=;
+	s=korg; t=1779299358;
+	bh=tUK3N5hLChq5rx6utF84pwBciP7y/ojzhmOV2TWUyuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nzO785z7sh7y0EBvF/8ZbK3mb5xItnNnYFKzRlcX92Ozkusf4TxOuyT7Xl6MW7c0F
-	 eU3Ende8EbZDEfmxbPN9gF9sRiqSrq+0naeOk1TxPr6aqv2d/Pljk4WMipkRuKledx
-	 3OReI32a8Sv02P2oPO0lWXX8vkBKLrfdOX50a2oQ=
+	b=c5sZSd2Qqoe9HI3HlVaW+SgJdzMhbKDxdUXD44Cw+++sCp1c31G5FX9Zozb0BR0zM
+	 alYUimUngbi8WiY5OANC6wyXgdFoOadlcht+cpTyzCKXs28wvfSq6X1P+ktoq+WDFo
+	 iPUHfd8h0kQ7EMn+pYNCeGd/U+Wwkd/4t9ZAcaTg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Abel Vesa <abel.vesa@oss.qualcomm.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Mark Harmstone <mark@harmstone.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 413/666] clk: imx: imx6q: Fix device node reference leak in of_assigned_ldb_sels()
+Subject: [PATCH 6.18 741/957] btrfs: fix double-decrement of bytes_may_use in submit_one_async_extent()
 Date: Wed, 20 May 2026 18:20:24 +0200
-Message-ID: <20260520162120.214864744@linuxfoundation.org>
+Message-ID: <20260520162150.629855567@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,93 +65,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nxp.com,oss.qualcomm.com,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251952-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252587-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nxp.com:email,clkspec.np:url,msgid.link:url]
-X-Rspamd-Queue-Id: 50B8C59AD82
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,harmstone.com:email]
+X-Rspamd-Queue-Id: 22F9B59A58C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Mark Harmstone <mark@harmstone.com>
 
-[ Upstream commit 9faf207208951460f3f7eefbc112246c8d28ff1b ]
+[ Upstream commit 82323b1a7088b7a5c3e528a5d634bff447fa286f ]
 
-The function of_assigned_ldb_sels() calls of_parse_phandle_with_args()
-but never calls of_node_put() to release the reference, causing a memory
-leak.
+submit_one_async_extent() calls btrfs_reserve_extent(), which decrements
+bytes_may_use. If the call btrfs_create_io_em() fails, we jump to
+out_free_reserve, which calls extent_clear_unlock_delalloc().
 
-Fix this by adding proper cleanup calls on all exit paths.
+Because we're specifying EXTENT_DO_ACCOUNTING, i.e.
+EXTENT_CLEAR_META_RESV | EXTENT_CLEAR_DATA_RESV, this decreases
+bytes_may_use again. This can lead to problems later on, as an initial
+write can fail only for the writeback to silently ENOSPC.
 
-Fixes: 5d283b083800 ("clk: imx6: Fix procedure to switch the parent of LDB_DI_CLK")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Link: https://patch.msgid.link/20260203-clk-imx6q-v3-2-6cd2696bb371@gmail.com
-Signed-off-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+Fix this by replacing EXTENT_DO_ACCOUNTING with EXTENT_CLEAR_META_RESV.
+This parallels a4fe134fc1d8eb ("btrfs: fix a double release on reserved
+extents in cow_one_range()"), which is the same fix in cow_one_range().
+
+Fixes: 151a41bc46df ("Btrfs: fix what bits we clear when erroring out from delalloc")
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Mark Harmstone <mark@harmstone.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx6q.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/btrfs/inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/imx/clk-imx6q.c b/drivers/clk/imx/clk-imx6q.c
-index ba696cf34fe3b..048e2ddba490b 100644
---- a/drivers/clk/imx/clk-imx6q.c
-+++ b/drivers/clk/imx/clk-imx6q.c
-@@ -188,9 +188,11 @@ static void of_assigned_ldb_sels(struct device_node *node,
- 		}
- 		if (clkspec.np != node || clkspec.args[0] >= IMX6QDL_CLK_END) {
- 			pr_err("ccm: parent clock %d not in ccm\n", index);
-+			of_node_put(clkspec.np);
- 			return;
- 		}
- 		parent = clkspec.args[0];
-+		of_node_put(clkspec.np);
- 
- 		rc = of_parse_phandle_with_args(node, "assigned-clocks",
- 				"#clock-cells", index, &clkspec);
-@@ -198,9 +200,11 @@ static void of_assigned_ldb_sels(struct device_node *node,
- 			return;
- 		if (clkspec.np != node || clkspec.args[0] >= IMX6QDL_CLK_END) {
- 			pr_err("ccm: child clock %d not in ccm\n", index);
-+			of_node_put(clkspec.np);
- 			return;
- 		}
- 		child = clkspec.args[0];
-+		of_node_put(clkspec.np);
- 
- 		if (child != IMX6QDL_CLK_LDB_DI0_SEL &&
- 		    child != IMX6QDL_CLK_LDB_DI1_SEL)
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index feaa6de8a90f2..5b99f2941f577 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -1208,7 +1208,7 @@ static void submit_one_async_extent(struct async_chunk *async_chunk,
+ 				     NULL, &cached,
+ 				     EXTENT_LOCKED | EXTENT_DELALLOC |
+ 				     EXTENT_DELALLOC_NEW |
+-				     EXTENT_DEFRAG | EXTENT_DO_ACCOUNTING,
++				     EXTENT_DEFRAG | EXTENT_CLEAR_META_RESV,
+ 				     PAGE_UNLOCK | PAGE_START_WRITEBACK |
+ 				     PAGE_END_WRITEBACK);
+ 	free_async_extent_pages(async_extent);
 -- 
 2.53.0
 
