@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-250864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252395-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QCrRCpT5DWq75AUAu9opvQ
-	(envelope-from <stable+bounces-250864-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:36 +0200
+	id iDVBEOETDmot6AUAu9opvQ
+	(envelope-from <stable+bounces-252395-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:04:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8129A5958D7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:34 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5504759918D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:04:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D43EC35C0118
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:02:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2C0BD32257D1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:09:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7004B2D7386;
-	Wed, 20 May 2026 17:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D2BD36D4E1;
+	Wed, 20 May 2026 18:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8682xjv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wes2YziZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2348C2BE02A;
-	Wed, 20 May 2026 17:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52234F5E0;
+	Wed, 20 May 2026 18:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296507; cv=none; b=JKEOFn23sLpoAFn5Qcdgt1ZIVp9fKeRZYH36mzbKC0aaE8fc7fVqW35CIZeUNBvEzSNqYBx7iu5CZzzuXSI53v5KrBk5SLrvlgfXAEJFYks59sopETP0rXSmxHBblEp4lkfX44B94yMgrfB/h2OitHotOkm4OP0FEAjowHsI05Q=
+	t=1779300564; cv=none; b=KiUEtWd0XD6d/sMmLxNGzaIbObimnqhbnJfuxL8SJrZuuxgcT8bCn+cLjS9W7lf+VjvP4dMXZpah6Ktw73v+Y6kA1uHD/9YrJ2/xjQqhsfONFJtKtKhEpduMKnTRcPwJ6PqKYRye4XR1GWv5cL7ZzipmC9xzNeBrKL0Opm39ojw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296507; c=relaxed/simple;
-	bh=I2k9oZCetRtkf/qe2AvSJML0bl/W7EfRojIHAmi+sMI=;
+	s=arc-20240116; t=1779300564; c=relaxed/simple;
+	bh=3RjFNUQ/RtVaANpDfRGIv4M8PtQRC2xVtTN62q0lQwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NAc+BJRfxE9KPkO7tM3YjRxk6QKXA1FCG5j5Yzp7Y4dccsliOjiSopV2CWuaNR4wGdH1aW8xZ336/WK7+jv+p3tEystZF2Q/IqxOunYliTKIwe4cyek0RW3wMgc7WIKkrHYuAJUM0WMRHsBJiKZS7yorsueHcdKZ0w1lVGyrb44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8682xjv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 887DC1F00893;
-	Wed, 20 May 2026 17:01:45 +0000 (UTC)
+	 MIME-Version; b=U/+uzeHBf7crsk3liAnFyPoQsRTZl9mytC7nb9YhY/Bn5DkgtsSxWZKTYiBVgB7ffNqk8U4ON0mIC6e4JmD9kBKcsxIyfTz7vCpf2XZye69ts2oLmVk3dBoF0FXVfNuLNwgcIBboROlaSaJB7dkKdkffzWLj88d2itRXc13uscA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wes2YziZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5F6D1F000E9;
+	Wed, 20 May 2026 18:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296506;
-	bh=W6Tja8dnj1vjIrJNVwai+nJd99g9TCwr4OrEYVvLzuw=;
+	s=korg; t=1779300562;
+	bh=IxZjXlSjdmpIqrcVU+yG1fWumzIiCmNBuiFuuQgDNSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=d8682xjvNata67EJ/wbO3lSfS3lKOLmNP55qkulKuiE6bM6mZiY42P9FbpdKyFLwJ
-	 PHNboRnBm4OC77dtlwGw5wWL7v2sMZL//tM6XKYr6R+A4Y1xanewCHpPvcgj+QyOs7
-	 yVyEroDCjrNCxvi77YE9TOR77SYbVyUfoeuyqQXM=
+	b=wes2YziZ41v3ajpARsJImVIg7k6cM8oeyvLONVD+Iv5Gidnb9H2xO0izFGS+CtaQM
+	 9eDtm+7SYS6FfLh2R5/gexOc5CNlDxQOkly16QPJc2rKORs61ifOnBqXWGfsEm8yU8
+	 NQcQpvzG6QWGdwhAVVgiIFMbLmBzhNhJB47Aixhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Denis Rastyogin <gerben@altlinux.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0784/1146] tcp: annotate data-races around tp->delivered and tp->delivered_ce
+Subject: [PATCH 6.12 223/666] ASoC: rsnd: Fix potential out-of-bounds access of component_dais[]
 Date: Wed, 20 May 2026 18:17:14 +0200
-Message-ID: <20260520162205.960359169@linuxfoundation.org>
+Message-ID: <20260520162116.045996272@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,122 +69,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252395-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250864-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 8129A5958D7
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,renesas.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,altlinux.org:email]
+X-Rspamd-Queue-Id: 5504759918D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Denis Rastyogin <gerben@altlinux.org>
 
-[ Upstream commit faa886ad3ce5fc8f5156493491fe189b2b726bc9 ]
+[ Upstream commit f9e437cddf6cf9e603bdaefe148c1f4792aaf39c ]
 
-tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
-add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
+component_dais[RSND_MAX_COMPONENT] is initially zero-initialized
+and later populated in rsnd_dai_of_node(). However, the existing boundary check:
+  if (i >= RSND_MAX_COMPONENT)
 
-Fixes: feb5f2ec6464 ("tcp: export packets delivery info")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260416200319.3608680-6-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+does not guarantee that the last valid element remains zero. As a result,
+the loop can rely on component_dais[RSND_MAX_COMPONENT] being zero,
+which may lead to an out-of-bounds access.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 547b02f74e4a ("ASoC: rsnd: enable multi Component support for Audio Graph Card/Card2")
+Signed-off-by: Denis Rastyogin <gerben@altlinux.org>
+Acked-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://patch.msgid.link/20260327103311.459239-1-gerben@altlinux.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/tcp_ecn.h | 2 +-
- net/ipv4/tcp.c        | 4 ++--
- net/ipv4/tcp_input.c  | 8 ++++----
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ sound/soc/sh/rcar/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/tcp_ecn.h b/include/net/tcp_ecn.h
-index e9a933641636e..865d5c5a7718d 100644
---- a/include/net/tcp_ecn.h
-+++ b/include/net/tcp_ecn.h
-@@ -181,7 +181,7 @@ static inline void tcp_accecn_third_ack(struct sock *sk,
- 		    tcp_accecn_validate_syn_feedback(sk, ace, sent_ect)) {
- 			if ((tcp_accecn_extract_syn_ect(ace) == INET_ECN_CE) &&
- 			    !tp->delivered_ce)
--				tp->delivered_ce++;
-+				WRITE_ONCE(tp->delivered_ce, 1);
- 		}
- 		break;
- 	}
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 3eaaebc69eed7..ee50b2d3ed976 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -4487,8 +4487,8 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
- 		   READ_ONCE(inet_csk(sk)->icsk_retransmits));
- 	nla_put_u8(stats, TCP_NLA_DELIVERY_RATE_APP_LMT, data_race(!!tp->rate_app_limited));
- 	nla_put_u32(stats, TCP_NLA_SND_SSTHRESH, READ_ONCE(tp->snd_ssthresh));
--	nla_put_u32(stats, TCP_NLA_DELIVERED, tp->delivered);
--	nla_put_u32(stats, TCP_NLA_DELIVERED_CE, tp->delivered_ce);
-+	nla_put_u32(stats, TCP_NLA_DELIVERED, READ_ONCE(tp->delivered));
-+	nla_put_u32(stats, TCP_NLA_DELIVERED_CE, READ_ONCE(tp->delivered_ce));
+diff --git a/sound/soc/sh/rcar/core.c b/sound/soc/sh/rcar/core.c
+index e3ef9104b411c..c1d5f9b4d9342 100644
+--- a/sound/soc/sh/rcar/core.c
++++ b/sound/soc/sh/rcar/core.c
+@@ -1978,7 +1978,7 @@ static int rsnd_probe(struct platform_device *pdev)
+ 	 *	asoc register
+ 	 */
+ 	ci = 0;
+-	for (i = 0; priv->component_dais[i] > 0; i++) {
++	for (i = 0; i < RSND_MAX_COMPONENT && priv->component_dais[i] > 0; i++) {
+ 		int nr = priv->component_dais[i];
  
- 	nla_put_u32(stats, TCP_NLA_SNDQ_SIZE, tp->write_seq - tp->snd_una);
- 	nla_put_u8(stats, TCP_NLA_CA_STATE, inet_csk(sk)->icsk_ca_state);
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 177f87f2b7885..f1bb0ad2eead1 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -476,14 +476,14 @@ static bool tcp_accecn_process_option(struct tcp_sock *tp,
- 
- static void tcp_count_delivered_ce(struct tcp_sock *tp, u32 ecn_count)
- {
--	tp->delivered_ce += ecn_count;
-+	WRITE_ONCE(tp->delivered_ce, tp->delivered_ce + ecn_count);
- }
- 
- /* Updates the delivered and delivered_ce counts */
- static void tcp_count_delivered(struct tcp_sock *tp, u32 delivered,
- 				bool ece_ack)
- {
--	tp->delivered += delivered;
-+	WRITE_ONCE(tp->delivered, tp->delivered + delivered);
- 	if (tcp_ecn_mode_rfc3168(tp) && ece_ack)
- 		tcp_count_delivered_ce(tp, delivered);
- }
-@@ -6838,7 +6838,7 @@ static bool tcp_rcv_fastopen_synack(struct sock *sk, struct sk_buff *synack,
- 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPFASTOPENACTIVE);
- 		/* SYN-data is counted as two separate packets in tcp_ack() */
- 		if (tp->delivered > 1)
--			--tp->delivered;
-+			WRITE_ONCE(tp->delivered, tp->delivered - 1);
- 	}
- 
- 	tcp_fastopen_add_skb(sk, synack);
-@@ -7269,7 +7269,7 @@ tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
- 	SKB_DR_SET(reason, NOT_SPECIFIED);
- 	switch (sk->sk_state) {
- 	case TCP_SYN_RECV:
--		tp->delivered++; /* SYN-ACK delivery isn't tracked in tcp_ack */
-+		WRITE_ONCE(tp->delivered, tp->delivered + 1); /* SYN-ACK delivery isn't tracked in tcp_ack */
- 		if (!tp->srtt_us)
- 			tcp_synack_rtt_meas(sk, req);
- 
+ 		ret = devm_snd_soc_register_component(dev, &rsnd_soc_component,
 -- 
 2.53.0
 
