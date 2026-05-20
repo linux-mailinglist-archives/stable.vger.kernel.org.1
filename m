@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-251126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252690-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cCD7ClUVDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-251126-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:11:01 +0200
+	id AD/YOJ4HDmp25gUAu9opvQ
+	(envelope-from <stable+bounces-252690-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:12:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7C5A59939D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:11:00 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E42A6597F09
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:12:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6092D30DD61A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:14:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 87075308E8F3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:22:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEBA53F6C5F;
-	Wed, 20 May 2026 17:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1A113F9280;
+	Wed, 20 May 2026 18:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TOeLudgf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TzXkGx2S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C493BE165;
-	Wed, 20 May 2026 17:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6261A348C55;
+	Wed, 20 May 2026 18:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297166; cv=none; b=hW/KqvoE/u9gjY706KTxFoLhUnou+SF9rv5d9StcNJtYn4cNZvPDQKa/21bKJf48aF2zpFm+bOCPUF+QtUr3Y9/OISaEN3H8BYvyrw4CdxrP+cRl4lt9csSkkkvcQQfpRzVYmCz5wiQDX4nCAiev5n/OvoJf8REWMap8uHKDwmg=
+	t=1779301334; cv=none; b=NjV4l8NmHD9nDWkE52WIU289Jz6IfznRto7JOCf6YwckLlDDRoSuM+ipQeN4/CEnvwnSMxu4VRRTbCMz8GTk5w+7uBjGOlPwst0Z7akvuL7KYJEqG150l1tT+2fIUTaneOlgVPz11DftWlcWw9SljslIW3OGlmoa0uatTZozM08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297166; c=relaxed/simple;
-	bh=inblWgbzYzxkuV0EOWEvqFx3B13aD8KM5+1uyYequLw=;
+	s=arc-20240116; t=1779301334; c=relaxed/simple;
+	bh=NmgH9e+TXicOqcjREQ1b+tOIXBG+MtXmdrjv7TBoXjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tMcZr+eZPO4ni/agUx10K28iNVKuDXGB1y8Kl4kiDWj0FNLhTVDuP1/+LDQIml6GeXxsEX5yDVuUXjiQ2DJvbKhV7+RuCHH2zcoPVrpXRVkZYsMG08in0tfufHFD0agORhksmtUYS6eCq+JamYpZv46KtN4uKSZaRDdezEq/1Kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TOeLudgf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A4E81F000E9;
-	Wed, 20 May 2026 17:12:44 +0000 (UTC)
+	 MIME-Version; b=BYV4yseDe2PdeKpKmJ8ku/SwFXoeE/hyiayMCsQgv7hfv4XaQou+/4wtF+udlZYxtJOeHzuBnXOO7oNFJ2drKMUtHNZE1w4QzYJM73zpdJt+QFnRw8vcPSjciSz2uj7OepVTKAK2tHDswqyf1ewEPni2vB3b5B24ZTtvV6Jv6ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TzXkGx2S; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCBD91F00894;
+	Wed, 20 May 2026 18:22:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297165;
-	bh=wY7LznnS6Gr0+HXBi7yBCZECpag+xV+UIIvSbVKhmBw=;
+	s=korg; t=1779301333;
+	bh=+aJLyq9FT39J+IRJ7An5kzV1xIi5F2yf6yO/6GA5WXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TOeLudgfLUN5QHdC3s/HB+Yfa+Zg6bfzm3Y4+QuXSIcDidexTLAdxeoUuOTinsrus
-	 d5YTrv48u6Tt0zvj1NJbQOdbVCIZMZtAW+XvAYLmxzv5uClzCDypSKqKXx4JfHOVPQ
-	 MrrNaJ3jenFLV1CNFhVXirkzzkAgX7dabD+1xW2Y=
+	b=TzXkGx2SVrhwhSTZvFT7myFZyo4igXwc6MFUffKhZh19WPnQpRoEVVhEMfX4Gi1z6
+	 9+Um43TD5h8i9YgvoqctBqC09fmaDJdWgmRW35fA+4tca4N2gaewWiQSy5Y/+l02BH
+	 J2BP5d/Hp62PbI2nsFsV0V4Hl9d/d3R+Z0IkgeAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liu Ying <victor.liu@nxp.com>,
-	Guangshuo Li <lgs201920130244@gmail.com>
-Subject: [PATCH 7.0 1074/1146] drm/bridge: imx8qxp-pxl2dpi: avoid ERR_PTR with device_node cleanup
-Date: Wed, 20 May 2026 18:22:04 +0200
-Message-ID: <20260520162212.537270960@linuxfoundation.org>
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Ingo Molnar <mingo@elte.hu>,
+	Frederic Weisbecker <fweisbec@gmail.com>,
+	Breno Leitao <leitao@debian.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 514/666] tracing: branch: Fix inverted check on stat tracer registration
+Date: Wed, 20 May 2026 18:22:05 +0200
+Message-ID: <20260520162122.401979019@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,156 +70,105 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251126-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252690-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,efficios.com,elte.hu,gmail.com,debian.org,kernel.org,goodmis.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nxp.com,gmail.com];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: A7C5A59939D
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,elte.hu:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,goodmis.org:email,efficios.com:email]
+X-Rspamd-Queue-Id: E42A6597F09
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangshuo Li <lgs201920130244@gmail.com>
+From: Breno Leitao <leitao@debian.org>
 
-commit 53597deca0e38c30e6cd4ba2114fa42d2bcd85bb upstream.
+[ Upstream commit 3b75dd76e64a04771861bb5647951c264919e563 ]
 
-imx8qxp_pxl2dpi_get_available_ep_from_port() returns ERR_PTR()
-on errors. imx8qxp_pxl2dpi_find_next_bridge() stores its return
-value in a __free(device_node) variable before checking IS_ERR().
-When the function returns on the error path, the cleanup action calls
-of_node_put() on the ERR_PTR() value.
+init_annotated_branch_stats() and all_annotated_branch_stats() check the
+return value of register_stat_tracer() with "if (!ret)", but
+register_stat_tracer() returns 0 on success and a negative errno on
+failure. The inverted check causes the warning to be printed on every
+successful registration, e.g.:
 
-Do not let a device_node cleanup variable hold error pointers. Change
-imx8qxp_pxl2dpi_get_available_ep_from_port() to return an int and pass
-the endpoint node through an output argument. Initialize the output
-argument to NULL so callers hold either NULL on error paths or a valid
-device_node pointer on successful path.
+  Warning: could not register annotated branches stats
 
-Fixes: ceea3f7806a10 ("drm/bridge: imx8qxp-pxl2dpi: simplify put of device_node pointers")
-Cc: stable@vger.kernel.org
-Reviewed-by: Liu Ying <victor.liu@nxp.com>
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Link: https://patch.msgid.link/20260507100604.667731-1-lgs201920130244@gmail.com
-Signed-off-by: Liu Ying <victor.liu@nxp.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+while leaving real failures silent. The initcall also returned a
+hard-coded 1 instead of the actual error.
+
+Invert the check and propagate ret so that the warning fires on real
+errors and the initcall reports the correct status.
+
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Ingo Molnar <mingo@elte.hu>
+Cc: Frederic Weisbecker <fweisbec@gmail.com>
+Link: https://patch.msgid.link/20260420-tracing-v1-1-d8f4cd0d6af1@debian.org
+Fixes: 002bb86d8d42 ("tracing/ftrace: separate events tracing and stats tracing engine")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c |   40 +++++++++++++++------------
- 1 file changed, 23 insertions(+), 17 deletions(-)
+ kernel/trace/trace_branch.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
-+++ b/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
-@@ -222,52 +222,58 @@ static const struct drm_bridge_funcs imx
- 			imx8qxp_pxl2dpi_bridge_atomic_get_output_bus_fmts,
- };
- 
--static struct device_node *
-+static int
- imx8qxp_pxl2dpi_get_available_ep_from_port(struct imx8qxp_pxl2dpi *p2d,
--					   u32 port_id)
-+					   u32 port_id,
-+					   struct device_node **ep)
- {
--	struct device_node *port, *ep;
-+	struct device_node *port;
-+	int ret = 0;
- 	int ep_cnt;
- 
-+	*ep = NULL;
-+
- 	port = of_graph_get_port_by_id(p2d->dev->of_node, port_id);
- 	if (!port) {
- 		DRM_DEV_ERROR(p2d->dev, "failed to get port@%u\n", port_id);
--		return ERR_PTR(-ENODEV);
-+		return -ENODEV;
- 	}
- 
- 	ep_cnt = of_get_available_child_count(port);
- 	if (ep_cnt == 0) {
- 		DRM_DEV_ERROR(p2d->dev, "no available endpoints of port@%u\n",
- 			      port_id);
--		ep = ERR_PTR(-ENODEV);
-+		ret = -ENODEV;
- 		goto out;
- 	} else if (ep_cnt > 1) {
- 		DRM_DEV_ERROR(p2d->dev,
- 			      "invalid available endpoints of port@%u\n",
- 			      port_id);
--		ep = ERR_PTR(-EINVAL);
-+		ret = -EINVAL;
- 		goto out;
- 	}
- 
--	ep = of_get_next_available_child(port, NULL);
--	if (!ep) {
-+	*ep = of_get_next_available_child(port, NULL);
-+	if (!*ep) {
- 		DRM_DEV_ERROR(p2d->dev,
- 			      "failed to get available endpoint of port@%u\n",
- 			      port_id);
--		ep = ERR_PTR(-ENODEV);
-+		ret = -ENODEV;
- 		goto out;
- 	}
- out:
- 	of_node_put(port);
--	return ep;
-+	return ret;
- }
- 
- static int imx8qxp_pxl2dpi_find_next_bridge(struct imx8qxp_pxl2dpi *p2d)
- {
--	struct device_node *ep __free(device_node) =
--		imx8qxp_pxl2dpi_get_available_ep_from_port(p2d, 1);
--	if (IS_ERR(ep))
--		return PTR_ERR(ep);
-+	struct device_node *ep __free(device_node) = NULL;
-+	int ret;
-+
-+	ret = imx8qxp_pxl2dpi_get_available_ep_from_port(p2d, 1, &ep);
-+	if (ret)
-+		return ret;
- 
- 	struct device_node *remote __free(device_node) = of_graph_get_remote_port_parent(ep);
- 	if (!remote || !of_device_is_available(remote)) {
-@@ -291,9 +297,9 @@ static int imx8qxp_pxl2dpi_set_pixel_lin
- 	struct of_endpoint endpoint;
+diff --git a/kernel/trace/trace_branch.c b/kernel/trace/trace_branch.c
+index e47fdb4c92fbc..30f72e0ecb5d4 100644
+--- a/kernel/trace/trace_branch.c
++++ b/kernel/trace/trace_branch.c
+@@ -379,10 +379,10 @@ __init static int init_annotated_branch_stats(void)
  	int ret;
  
--	ep = imx8qxp_pxl2dpi_get_available_ep_from_port(p2d, 0);
--	if (IS_ERR(ep))
--		return PTR_ERR(ep);
-+	ret = imx8qxp_pxl2dpi_get_available_ep_from_port(p2d, 0, &ep);
-+	if (ret)
+ 	ret = register_stat_tracer(&annotated_branch_stats);
+-	if (!ret) {
++	if (ret) {
+ 		printk(KERN_WARNING "Warning: could not register "
+ 				    "annotated branches stats\n");
+-		return 1;
 +		return ret;
+ 	}
+ 	return 0;
+ }
+@@ -444,10 +444,10 @@ __init static int all_annotated_branch_stats(void)
+ 	int ret;
  
- 	ret = of_graph_parse_endpoint(ep, &endpoint);
- 	if (ret) {
+ 	ret = register_stat_tracer(&all_branch_stats);
+-	if (!ret) {
++	if (ret) {
+ 		printk(KERN_WARNING "Warning: could not register "
+ 				    "all branches stats\n");
+-		return 1;
++		return ret;
+ 	}
+ 	return 0;
+ }
+-- 
+2.53.0
+
 
 
 
