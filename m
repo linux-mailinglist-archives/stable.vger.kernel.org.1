@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253075-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MO5HF9LsDWo04wUAu9opvQ
-	(envelope-from <stable+bounces-251067-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:18:10 +0200
+	id sFBqOkYCDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-253075-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:49:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE4AC593469
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:18:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 634B7597453
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:49:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F172E3167732
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:10:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 98FD131300A7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:43:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6375F3EF0D7;
-	Wed, 20 May 2026 17:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 798DD3FC5D7;
+	Wed, 20 May 2026 18:38:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Fkm9U9o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0wviswlJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE775231842;
-	Wed, 20 May 2026 17:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 367083FC5D4;
+	Wed, 20 May 2026 18:38:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297016; cv=none; b=rFMlS+lPPonq9BMITjZoygmDIT1uxK6HyGRR1DyO0YtRGPO7ghbqL2+SuQpwNs8zrllbohWwD/2apt2TMzAn8tNact9iCyjd0ZGb8o98AwG9z5NWJiX3RMxJfWz3RPClz8nCiw/68Zl/7/8o8ftGb+SNL1+KWjOodrsya3/tEB4=
+	t=1779302339; cv=none; b=U5UAJR60P9g0mJ4vnz87L4Fu5Wam42Mqf+L2Zgl2AunjpZXL0dnQ/Ptqc+p2LY/bMZCz6IjRNAFsSem5I9FBMqtczQlGjX/yVzVEW/+aH841aNLkhri0e5qRpGjLCLJhs2jzQ+sSkftoJsYYpNcLPP0+xex93taqjTOiymRUJrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297016; c=relaxed/simple;
-	bh=B6/YJxuXHrs4Cpr/MeW21gxj6QN22aiDjVo028KzYU0=;
+	s=arc-20240116; t=1779302339; c=relaxed/simple;
+	bh=uDc9AueAL4+plFpLKWO1EdDOX0YbV0L7DR1C8sQKQ5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZgiAsWL5YVA4mz9DTVSjxqGxDz6+tpLUZ22++s62VVqjYkf2qfe5owJ8vUuliy7tlS8VnFsgcWKPLvmJwPMySstHRy3jf5guHbRdAqveZ25nocDoXNM63Yv0ZREVJM5vm5f19OoVsDoo7og5eAAgY5Id043BslLkWM7Rr9uIIk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Fkm9U9o; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FFD51F00893;
-	Wed, 20 May 2026 17:10:14 +0000 (UTC)
+	 MIME-Version; b=Hx/GQfh1VP9ab0PwVKsJgEBmIzg9wOAYfbFeuoFIUvm83jLfHzFLqqoT3swquwEmPHuPha4zWBO17Ks+eps80x84LzdOTJj7Ht2QyOxh1LNQUS2uPeTKxgBtddZ6zH/VChnHOk1KEW9nC2+6gX18M+XOcFO5RT3xzXbQ4e+XJGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0wviswlJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DA1F1F008A3;
+	Wed, 20 May 2026 18:38:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297014;
-	bh=h7RW88bCE9DR4E5HLOd2nrU7HQQ1RyutvVD8nMY+tus=;
+	s=korg; t=1779302337;
+	bh=2bTdPhUsmVAEbk3e40XlH5q5c2/1x0lcmT9KXw4XQ3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1Fkm9U9o1J3FsnrDSgn3fkOT7EbE41c2OiEzH7a+IN5vBEFjTXH4pFa7YqwuDDNgu
-	 cP5Xfoc7Slvgk+8gRfDxPVdwTO0lFXYRWZOFrwZkFc+ZZ4UFeNGQc61ZVAC/8bpKRw
-	 tDya00VorttRkO7vYTTc69+0jjrwyDYGT2Lwze3s=
+	b=0wviswlJ76YWMsEfPY1WXjGu2GgqXbvaxNOWCw/kOgvPvK/252O0aSg37daJWKybr
+	 hjZouzzr3iLsVUreumTmJMvabdGjWe7l/xRd4SjLgWCmIR+djJMpgiYrISQsoq4gDd
+	 kd0i2UYGRvtNVTIr4eHMuIrbwDQi4rK8N4F7VUVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moritz Klammler <Moritz.Klammler@ferchau.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Thomas Gleixner <tglx@kernel.org>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 1001/1146] futex: Prevent lockup in requeue-PI during signal/ timeout wakeup
-Date: Wed, 20 May 2026 18:20:51 +0200
-Message-ID: <20260520162210.887550220@linuxfoundation.org>
+Subject: [PATCH 6.6 229/508] mtd: spi-nor: update spi_nor_fixups::post_sfdp() documentation
+Date: Wed, 20 May 2026 18:20:52 +0200
+Message-ID: <20260520162103.612077078@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,133 +64,76 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251067-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TAGGED_FROM(0.00)[bounces-253075-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linutronix.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,ferchau.com:email]
-X-Rspamd-Queue-Id: CE4AC593469
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 634B7597453
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit bc7304f3ae20972d11db6e0b1b541c63feda5f05 ]
+[ Upstream commit 3620d67b48493c6252bbc873dc88dde81641d56b ]
 
-During wait-requeue-pi (task A) and requeue-PI (task B) the following
-race can happen:
+After commit 5273cc6df984 ("mtd: spi-nor: core: Call
+spi_nor_post_sfdp_fixups() only when SFDP is defined")
+spi_nor_post_sfdp_fixups() isn't called anymore if no SFDP is detected.
 
-     Task A                             Task B
-  futex_wait_requeue_pi()
-    futex_setup_timer()
-    futex_do_wait()
-                                   futex_requeue()
-                                        CLASS(hb, hb1)(&key1);
-                                        CLASS(hb, hb2)(&key2);
-        *timeout*
-    futex_requeue_pi_wakeup_sync()
-        requeue_state = Q_REQUEUE_PI_IGNORE
+Update the documentation accordingly.
 
-    *blocks on hb->lock*
-
-                                        futex_proxy_trylock_atomic()
-                                          futex_requeue_pi_prepare()
-                                            Q_REQUEUE_PI_IGNORE => -EAGAIN
-                                        double_unlock_hb(hb1, hb2)
-                                         *retry*
-
-Task B acquires both hb locks and attempts to acquire the PI-lock of the
-top most waiter (task B). Task A is leaving early due to a signal/
-timeout and started removing itself from the queue. It updates its
-requeue_state but can not remove it from the list because this requires
-the hb lock which is owned by task B.
-
-Usually task A is able to swoop the lock after task B unlocked it.
-However if task B is of higher priority then task A may not be able to
-wake up in time and acquire the lock before task B gets it again.
-Especially on a UP system where A is never scheduled.
-
-As a result task A blocks on the lock and task B busy loops, trying to
-make progress but live locks the system instead. Tragic.
-
-This can be fixed by removing the top most waiter from the list in this
-case. This allows task B to grab the next top waiter (if any) in the
-next iteration and make progress.
-
-Remove the top most waiter if futex_requeue_pi_prepare() fails.
-Let the waiter conditionally remove itself from the list in
-handle_early_requeue_pi_wakeup().
-
-Fixes: 07d91ef510fb1 ("futex: Prevent requeue_pi() lock nesting issue on RT")
-Reported-by: Moritz Klammler <Moritz.Klammler@ferchau.com>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Link: https://patch.msgid.link/20260428103425.dywXyPd3@linutronix.de
-Closes: https://lore.kernel.org/all/VE1PR06MB6894BE61C173D802365BE19DFF4CA@VE1PR06MB6894.eurprd06.prod.outlook.com
+Fixes: 5273cc6df984 ("mtd: spi-nor: core: Call spi_nor_post_sfdp_fixups() only when SFDP is defined")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/futex/requeue.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/mtd/spi-nor/core.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/futex/requeue.c b/kernel/futex/requeue.c
-index d818b4d47f1ba..b597cb3d17fc1 100644
---- a/kernel/futex/requeue.c
-+++ b/kernel/futex/requeue.c
-@@ -319,8 +319,11 @@ futex_proxy_trylock_atomic(u32 __user *pifutex, struct futex_hash_bucket *hb1,
- 		return -EINVAL;
- 
- 	/* Ensure that this does not race against an early wakeup */
--	if (!futex_requeue_pi_prepare(top_waiter, NULL))
-+	if (!futex_requeue_pi_prepare(top_waiter, NULL)) {
-+		plist_del(&top_waiter->list, &hb1->chain);
-+		futex_hb_waiters_dec(hb1);
- 		return -EAGAIN;
-+	}
- 
- 	/*
- 	 * Try to take the lock for top_waiter and set the FUTEX_WAITERS bit
-@@ -722,10 +725,12 @@ int handle_early_requeue_pi_wakeup(struct futex_hash_bucket *hb,
- 
- 	/*
- 	 * We were woken prior to requeue by a timeout or a signal.
--	 * Unqueue the futex_q and determine which it was.
-+	 * Conditionally unqueue the futex_q and determine which it was.
- 	 */
--	plist_del(&q->list, &hb->chain);
--	futex_hb_waiters_dec(hb);
-+	if (!plist_node_empty(&q->list)) {
-+		plist_del(&q->list, &hb->chain);
-+		futex_hb_waiters_dec(hb);
-+	}
- 
- 	/* Handle spurious wakeups gracefully */
- 	ret = -EWOULDBLOCK;
+diff --git a/drivers/mtd/spi-nor/core.h b/drivers/mtd/spi-nor/core.h
+index 6c478331e494e..398383ba0d8d6 100644
+--- a/drivers/mtd/spi-nor/core.h
++++ b/drivers/mtd/spi-nor/core.h
+@@ -420,7 +420,7 @@ struct spi_nor_flash_parameter {
+  *                   number of dummy cycles in read register ops.
+  * @smpt_map_id: called after map ID in SMPT table has been determined for the
+  *               case the map ID is wrong and needs to be fixed.
+- * @post_sfdp: called after SFDP has been parsed (is also called for SPI NORs
++ * @post_sfdp: called after SFDP has been parsed (is not called for SPI NORs
+  *             that do not support RDSFDP). Typically used to tweak various
+  *             parameters that could not be extracted by other means (i.e.
+  *             when information provided by the SFDP/flash_info tables are
 -- 
 2.53.0
 
