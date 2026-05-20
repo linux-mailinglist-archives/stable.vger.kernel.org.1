@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-252121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251204-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OHzrD4QiDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252121-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:07:16 +0200
+	id 0AjRLR0WDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251204-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:14:21 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A09C359A782
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:07:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16C0359950F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:14:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1B50238B3EAD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:57:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3610E3278F42
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECB1C3F39EE;
-	Wed, 20 May 2026 17:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE8FB3F39D1;
+	Wed, 20 May 2026 17:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oOZaLpGx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cr0wJLjd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912B94F5E0;
-	Wed, 20 May 2026 17:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A192A3F20E5;
+	Wed, 20 May 2026 17:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299845; cv=none; b=dm4j69fwu3fdAUAyakqC2/uQpXxlc/cv4N466jPMBJitqAUdtXdmeDZ7zSj69vqa+A5wjVGqWm4Qx/VB9SzeLWhwNhyhV92uY2wpzHkQ4pcq0xEFKbVqYKFG6SsuA79//xxCFdsy3DsG/Z9AAV+SvmuNcF+o65KhSiQ3NZrjQB8=
+	t=1779297371; cv=none; b=QTHKZJbiqfANTojrcD+x/O6Z8t8ND1tLSI5mOQFadvbP4yfcHHOW86dAhBclC5gXFJoq2k6WvijKWa24Jh51CXo1+tX2ubqLubu4jjrVObcNgkdXP9Cgpv9PcTCeV8LEUSKYv2ldI5k3HbscthbohsLGGFnHdNoX7Uox/lUpSYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299845; c=relaxed/simple;
-	bh=XUrrg4dNtXIT5zVLSvqPi01H8RUzXo2in7si+JQ5umY=;
+	s=arc-20240116; t=1779297371; c=relaxed/simple;
+	bh=VZMxkuJ0lzsWfoc0bUAP2Hd6stIwrI7HZ9Ay/iUpo88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EuO7Mj3ZfqXMyJYWOBgDy9+2SEhltcoemUdzz/yyFHqBnBDKL8/LxBxdVaBdvsa2FIvOFcojHIcJJhjxN2ajLsHlSAebnx1feK7W7l3ENx/ZBTGhachRwPLA0VtyDPxK7d+LUdlvltZRWVRl/WOifIZoIFK8mLLaPDkUuo2vJig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oOZaLpGx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 036B21F00893;
-	Wed, 20 May 2026 17:57:23 +0000 (UTC)
+	 MIME-Version; b=Z6phCiSSuljYmAH804bcZMZcnNjBdy1ooPtVJBoAopZopgKQ2vmSyv5QPlpYJddkt9aP8w5gcMYUem3jovTQW5sS3DmqeD/nQt0DeMaKIwC4NFfze91ZXPoWmxO33JdGjcc7gC2P/+u2IDDFbvus0JSvkXUrSHYyzgP9ThA6yRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cr0wJLjd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF1891F000E9;
+	Wed, 20 May 2026 17:16:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299844;
-	bh=NPInIet4L4bywzix6ZYLZeTyKCwUcZDIL5E/3+tKtdo=;
+	s=korg; t=1779297370;
+	bh=D07j4y4bmzYApxlb+nbmb3GNISkreBaupMezSz9jqfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oOZaLpGxD4RMgUtzxW9i8JKZeE/jOCsP8C2sGxxn0BcsOnomBaK53GVrK9zQpj2Ow
-	 7K/7j/lWUW9JvkIvU/x4IRJAaSRGmh2WodRD+2od7gtafjhDDqnjJy1xR5riyOl8mm
-	 TnriFYlcrtMWGDpZ5WrGnL4qL1kypn/uP8D4vE28=
+	b=Cr0wJLjdjrD9rj4T6LihlzrVTaqbxN1Ddh2C79oj1sIpeKPkdcw3v5f74Fcy1u3Ri
+	 hZY8Jjf2KFSOKVXRmuBIhsDMjfti8eeiNWgAUWHQW4nxAjnmx+VJA/Bifc9f/R5bBZ
+	 8uemVkmkbL1hJ/g6m9RYy2gUiVZF1w3hEw4e6Ryw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	Rong Zhang <i@rong.moe>,
-	"Derek J. Clark" <derekjohn.clark@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.18 908/957] platform/x86: lenovo-wmi-helpers: Move gamezone enums to wmi-helpers
+	James Morse <james.morse@arm.com>,
+	Ben Horgan <ben.horgan@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 7.0 1141/1146] arm_mpam: Check whether the config array is allocated before destroying it
 Date: Wed, 20 May 2026 18:23:11 +0200
-Message-ID: <20260520162154.267595990@linuxfoundation.org>
+Message-ID: <20260520162214.075932725@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,156 +63,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252121-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-251204-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,squebb.ca,rong.moe,gmail.com,linux.intel.com];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,rong.moe:email,squebb.ca:email]
-X-Rspamd-Queue-Id: A09C359A782
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,arm.com:email]
+X-Rspamd-Queue-Id: 16C0359950F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Derek J. Clark <derekjohn.clark@gmail.com>
+From: James Morse <james.morse@arm.com>
 
-commit 7e27896e16a1c450085c3fe020eeb1b223880f37 upstream.
+commit 6ccbb613b42a1f1ba7bfd547a148f644a902a25c upstream.
 
-In a later patch in the series the thermal mode enum will be accessed
-across three separate drivers (wmi-capdata, wmi-gamezonem and wmi-other).
-An additional patch in the series will also add a function prototype that
-needs to reference this enum in wmi-helpers.h. To avoid having all these
-drivers begin to import each others headers, and to avoid declaring an
-opaque enum to hande the second case, move the thermal mode enum to
-helpers where it can be safely accessed by everything that needs it from
-a single import.
+__destroy_component_cfg() is called to free the configuration array.
+It uses the embedded 'garbage' structure, which means the array has
+to be allocated.
 
-While at it, since the gamezone_events_type enum is the only remaining
-item in the header, move that as well and remove the gamezone header
-entirely.
+If __destroy_component_cfg() is called from mpam_disable() before the
+configuration was ever allocated, then a NULL pointer is dereferenced.
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Reviewed-by: Rong Zhang <i@rong.moe>
-Tested-by: Rong Zhang <i@rong.moe>
-Signed-off-by: Derek J. Clark <derekjohn.clark@gmail.com>
-Link: https://patch.msgid.link/20260510042546.436874-8-derekjohn.clark@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Check for this case and return early if the configuration is not
+allocated.
+
+__destroy_component_cfg() also frees the mbwu_state as this is allocated
+by __allocate_component_cfg(). As the mbwu_state is allocated after
+comp->cfg is set, and is also under mpam_list_lock, only the first
+pointer needs checking.
+
+Fixes: 3bd04fe7d807 ("arm_mpam: Extend reset logic to allow devices to be reset any time")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: James Morse <james.morse@arm.com>
+Reviewed-by: Ben Horgan <ben.horgan@arm.com>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/lenovo/wmi-events.c   |    2 +-
- drivers/platform/x86/lenovo/wmi-gamezone.c |    1 -
- drivers/platform/x86/lenovo/wmi-gamezone.h |   20 --------------------
- drivers/platform/x86/lenovo/wmi-helpers.h  |   13 +++++++++++++
- drivers/platform/x86/lenovo/wmi-other.c    |    1 -
- 5 files changed, 14 insertions(+), 23 deletions(-)
- delete mode 100644 drivers/platform/x86/lenovo/wmi-gamezone.h
+ drivers/resctrl/mpam_devices.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/platform/x86/lenovo/wmi-events.c
-+++ b/drivers/platform/x86/lenovo/wmi-events.c
-@@ -17,7 +17,7 @@
- #include <linux/wmi.h>
+--- a/drivers/resctrl/mpam_devices.c
++++ b/drivers/resctrl/mpam_devices.c
+@@ -2359,6 +2359,9 @@ static void __destroy_component_cfg(stru
  
- #include "wmi-events.h"
--#include "wmi-gamezone.h"
-+#include "wmi-helpers.h"
+ 	lockdep_assert_held(&mpam_list_lock);
  
- #define THERMAL_MODE_EVENT_GUID "D320289E-8FEA-41E0-86F9-911D83151B5F"
- 
---- a/drivers/platform/x86/lenovo/wmi-gamezone.c
-+++ b/drivers/platform/x86/lenovo/wmi-gamezone.c
-@@ -21,7 +21,6 @@
- #include <linux/wmi.h>
- 
- #include "wmi-events.h"
--#include "wmi-gamezone.h"
- #include "wmi-helpers.h"
- #include "wmi-other.h"
- 
---- a/drivers/platform/x86/lenovo/wmi-gamezone.h
-+++ /dev/null
-@@ -1,20 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-or-later */
--
--/* Copyright (C) 2025 Derek J. Clark <derekjohn.clark@gmail.com> */
--
--#ifndef _LENOVO_WMI_GAMEZONE_H_
--#define _LENOVO_WMI_GAMEZONE_H_
--
--enum gamezone_events_type {
--	LWMI_GZ_GET_THERMAL_MODE = 1,
--};
--
--enum thermal_mode {
--	LWMI_GZ_THERMAL_MODE_QUIET =	   0x01,
--	LWMI_GZ_THERMAL_MODE_BALANCED =	   0x02,
--	LWMI_GZ_THERMAL_MODE_PERFORMANCE = 0x03,
--	LWMI_GZ_THERMAL_MODE_EXTREME =	   0xE0, /* Ver 6+ */
--	LWMI_GZ_THERMAL_MODE_CUSTOM =	   0xFF,
--};
--
--#endif /* !_LENOVO_WMI_GAMEZONE_H_ */
---- a/drivers/platform/x86/lenovo/wmi-helpers.h
-+++ b/drivers/platform/x86/lenovo/wmi-helpers.h
-@@ -14,6 +14,19 @@ struct wmi_method_args_32 {
- 	u32 arg1;
- };
- 
-+enum lwmi_event_type {
-+	LWMI_GZ_GET_THERMAL_MODE = 0x01,
-+};
++	if (!comp->cfg)
++		return;
 +
-+enum thermal_mode {
-+	LWMI_GZ_THERMAL_MODE_NONE =	   0x00,
-+	LWMI_GZ_THERMAL_MODE_QUIET =	   0x01,
-+	LWMI_GZ_THERMAL_MODE_BALANCED =	   0x02,
-+	LWMI_GZ_THERMAL_MODE_PERFORMANCE = 0x03,
-+	LWMI_GZ_THERMAL_MODE_EXTREME =	   0xE0, /* Ver 6+ */
-+	LWMI_GZ_THERMAL_MODE_CUSTOM =	   0xFF,
-+};
-+
- int lwmi_dev_evaluate_int(struct wmi_device *wdev, u8 instance, u32 method_id,
- 			  unsigned char *buf, size_t size, u32 *retval);
- 
---- a/drivers/platform/x86/lenovo/wmi-other.c
-+++ b/drivers/platform/x86/lenovo/wmi-other.c
-@@ -36,7 +36,6 @@
- 
- #include "wmi-capdata01.h"
- #include "wmi-events.h"
--#include "wmi-gamezone.h"
- #include "wmi-helpers.h"
- #include "wmi-other.h"
- #include "../firmware_attributes_class.h"
+ 	add_to_garbage(comp->cfg);
+ 	list_for_each_entry(vmsc, &comp->vmsc, comp_list) {
+ 		msc = vmsc->msc;
 
 
 
