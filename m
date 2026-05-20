@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-251652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252321-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CHTaNdnyDWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251652-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:53 +0200
+	id UL8cMyH8DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-252321-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6048D594693
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65956595FCD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 10E5630E0F68
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:35:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 676903143CF3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:06:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FAE236F421;
-	Wed, 20 May 2026 17:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076723FB069;
+	Wed, 20 May 2026 18:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ziHmbtjJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xY3ORxPw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C50529D26E;
-	Wed, 20 May 2026 17:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C81A73A6B6D;
+	Wed, 20 May 2026 18:06:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298540; cv=none; b=jV0+zkHJHvDKAC6/akI3twkNFxQ6QSPK6lVtidWLgpseWQmda1Xbps9zO19SKNrLop5VdaWezACW07Ra2e+vCeyaWvIQpzxi87gaKUEkGHkvARqoyrJkbqsXXzp9c50UW62D4yNnbEIqmd188UcMVBogwJBaV+45ZSZ7/mTYH7w=
+	t=1779300370; cv=none; b=oH2TL299GyDZu6ektD6jIomZ3GX/g1f44BY2r8gQfyPIRSXfEOVP+6xHKHOxUuKwMCmHw5Exdhd+Gar3cXrBDr5Kg4xNg+rzKInoHreRyuayq0a6sP48piC0M8BqcqRdu3MXoqY1H4e68WViBUs068icZxo+b91t0hqYPRMv/50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298540; c=relaxed/simple;
-	bh=4tYSR2eoC38ihJa83eTT/3mhs3AF3rA58vxUbW4ypzk=;
+	s=arc-20240116; t=1779300370; c=relaxed/simple;
+	bh=g4yBgNbakceQEpSegLmwK8jkxr1MUmvhE7j70wwmdr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E6qV7Vf8gpmm9NSvoFyVFOUp8xUiAJwiaN2eLYReQwgcm8DAg/bj1YKgrgmNDSChorl3M0CfWDwSw0rfAxXeH/PDvTBroDOvqCurQE+ArFzuC7FNKp5HlLFvf1ruKhPJLsFWitZ7FB+qq2dtJtXAZWtuI3TU+UcAp6zTtP1JUeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ziHmbtjJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE261F000E9;
-	Wed, 20 May 2026 17:35:38 +0000 (UTC)
+	 MIME-Version; b=dAFQ/XrRg5MyNcMtk1ViHz1AVif/m/ozOD2/phMGpvGzMVH+n/b5q28ocvaLv+oYTpSAMvZBWA33FK+c38H0VuF3OaT6MSZ0n6U64snfW5nKzCAzmD+RW8/d4YhFK/5EpqS1zSTOtbzYYlR8YglmyLa5WQ0XZaTOO7LU1bORGOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xY3ORxPw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2564A1F000E9;
+	Wed, 20 May 2026 18:06:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298539;
-	bh=bptGYsGDsSZ51k8SnnOVcFjFv2GEkrdv2aDiZ2OQcxA=;
+	s=korg; t=1779300369;
+	bh=uJn1KePT1vx3VOV/+fWqbvtQ1twjbpWQ+kguB9gt2Ow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ziHmbtjJqbSsLl/NFsY4RCpNTi1UswoODOShPR+vQpuwuMoPWYpf8ueI1OgIb3GGQ
-	 INx3yLEqu8GJnYSbDZaxHlmoD0u8+KzNFNpMAEm5l5HHB9nLOSItzMIeFkX6kPyXgQ
-	 8HYpAHH9vRHwNoHTt2lPfxq8Oe/fZ/wvuWs6qrlw=
+	b=xY3ORxPwXLhk8GddZBGzqy2BsKzVl3BcQu2kQ0NLJDIJaEU1GnrRrkgFFcUTIiw/j
+	 Vsjs9/YY3MUcn/d/3Csg9S+Hk5aAN1JHm4l/X3BHJ4pzbDnBVTg67uCcSFdQSrAWGZ
+	 rLbDEfw0BYViYq+TgD7lRcvApYPO9F9vPjQHYCUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Norman Bintang <normanbt@google.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
-	Vinod Koul <vkoul@kernel.org>,
+	Ethan Tidmore <ethantidmore06@gmail.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 450/957] soundwire: cadence: Clear message complete before signaling waiting thread
+Subject: [PATCH 6.12 122/666] drm/sun4i: backend: fix error pointer dereference
 Date: Wed, 20 May 2026 18:15:33 +0200
-Message-ID: <20260520162144.278945606@linuxfoundation.org>
+Message-ID: <20260520162113.861868090@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,119 +66,75 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-252321-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251652-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,cirrus.com:email]
-X-Rspamd-Queue-Id: 6048D594693
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 65956595FCD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Ethan Tidmore <ethantidmore06@gmail.com>
 
-[ Upstream commit cbfea84f820962c3c5394ff06e7e9344c96bf761 ]
+[ Upstream commit 06277983eca4a31d3c2114fa33d99a6e82484b11 ]
 
-Clear the CDNS_MCP_INT_RX_WL interrupt before signaling completion.
+The function drm_atomic_get_plane_state() can return an error pointer
+and is not checked for it. Add error pointer check.
 
-This is to prevent the potential race where:
-- The main thread is scheduled immediately the completion is signaled,
-   and starts a new message
-- The RX_WL IRQ for this new message happens before sdw_cdns_irq() has
-  been re-scheduled.
-- When sdw_cdns_irq() is re-scheduled it clears the new RX_WL interrupt.
+Detected by Smatch:
+drivers/gpu/drm/sun4i/sun4i_backend.c:496 sun4i_backend_atomic_check() error:
+'plane_state' dereferencing possible ERR_PTR()
 
-MAIN THREAD                        |  IRQ THREAD
-                                   |
-  _cdns_xfer_msg()                 |
-  {                                |
-     write data to FIFO            |
-     wait_for_completion_timeout() |
-     <BLOCKED>                     |                       <---- RX_WL IRQ
-                                   | sdw_cdns_irq()
-                                   | {
-                                   |    signal completion
-                          <== RESCHEDULE <==
-  Handle message completion        |
-  }                                |
-                                   |
-Start new message                  |
-  _cdns_xfer_msg()                 |
-  {                                |
-     write data to FIFO            |
-     wait_for_completion_timeout() |
-     <BLOCKED>                     |                       <---- RX_WL IRQ
-                          ==> RESCHEDULE ==>
-                                   |    // New RX_WL IRQ is cleared before
-                                   |    // it has been handled.
-                                   |    clear CDNS_MCP_INTSTAT
-
-                                   |    return IRQ_HANDLED;
-                                   | }
-
-Before this change, this error message was sometimes seen on kernels
-that have large amounts of debugging enabled:
-
-   SCP Msg trf timed out
-
-This error indicates that the completion has not been signalled after
-500ms.
-
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: 956baa1992f9 ("soundwire: cdns: Add sdw_master_ops and IO transfer support")
-Reported-by: Norman Bintang <normanbt@google.com>
-Closes: https://issuetracker.google.com/issues/477099834
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
-Link: https://patch.msgid.link/20260310113133.1707288-1-rf@opensource.cirrus.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 96180dde23b79 ("drm/sun4i: backend: Add a custom atomic_check for the frontend")
+Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
+Reviewed-by: Chen-Yu Tsai <wens@kernel.org>
+Link: https://patch.msgid.link/20260217014801.60760-1-ethantidmore06@gmail.com
+Signed-off-by: Chen-Yu Tsai <wens@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/cadence_master.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/sun4i/sun4i_backend.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/soundwire/cadence_master.c b/drivers/soundwire/cadence_master.c
-index 21bb491d026b4..d7a0a14ad9626 100644
---- a/drivers/soundwire/cadence_master.c
-+++ b/drivers/soundwire/cadence_master.c
-@@ -933,6 +933,14 @@ irqreturn_t sdw_cdns_irq(int irq, void *dev_id)
- 
- 		cdns_read_response(cdns);
- 
-+		/*
-+		 * Clear interrupt before signalling the completion to avoid
-+		 * a race between this thread and the main thread starting
-+		 * another TX.
-+		 */
-+		cdns_writel(cdns, CDNS_MCP_INTSTAT, CDNS_MCP_INT_RX_WL);
-+		int_status &= ~CDNS_MCP_INT_RX_WL;
+diff --git a/drivers/gpu/drm/sun4i/sun4i_backend.c b/drivers/gpu/drm/sun4i/sun4i_backend.c
+index e89eb96d31317..a7c256e2c632b 100644
+--- a/drivers/gpu/drm/sun4i/sun4i_backend.c
++++ b/drivers/gpu/drm/sun4i/sun4i_backend.c
+@@ -490,6 +490,9 @@ static int sun4i_backend_atomic_check(struct sunxi_engine *engine,
+ 	drm_for_each_plane_mask(plane, drm, crtc_state->plane_mask) {
+ 		struct drm_plane_state *plane_state =
+ 			drm_atomic_get_plane_state(state, plane);
++		if (IS_ERR(plane_state))
++			return PTR_ERR(plane_state);
 +
- 		if (defer && defer->msg) {
- 			cdns_fill_msg_resp(cdns, defer->msg,
- 					   defer->length, 0);
+ 		struct sun4i_layer_state *layer_state =
+ 			state_to_sun4i_layer_state(plane_state);
+ 		struct drm_framebuffer *fb = plane_state->fb;
 -- 
 2.53.0
 
