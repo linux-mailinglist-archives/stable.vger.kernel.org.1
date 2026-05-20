@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-251935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251050-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0NCqJ4n2DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251935-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:59:37 +0200
+	id yM1TG1PuDWpu4wUAu9opvQ
+	(envelope-from <stable+bounces-251050-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:24:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A1A25950F6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:59:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA2EC593921
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:24:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D460A30A8824
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:48:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C87CB315E5B5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:10:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CB56369D67;
-	Wed, 20 May 2026 17:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1FF3D5642;
+	Wed, 20 May 2026 17:09:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Li+mbqQq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H0bajWEe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D273E5ECF;
-	Wed, 20 May 2026 17:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822C53A3833;
+	Wed, 20 May 2026 17:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299315; cv=none; b=OIAjr2N4IpuraXNTbSKzetuwbo8jDMW9mVPWP3tmdTiGUsCG9nCy4yqTcyp4T5L4EKL0K2OK+jOwhK+Sa/XHkyUxqST3nhTiLvcYmVG/XNGb3VPMOPB8DjsZs0WeaYSPEDGOIxF9n5jzAAvMwdEPDLKMGg592c7kJkq4TqPH0bg=
+	t=1779296971; cv=none; b=XmVoZT15Su1ZKnXGGLF+EEC1oEVTJ9zMVngLRk1sL2A8xOkivoJg7F2a0wA8STjFzRmJLt26HydWA0QEQ6rg/zfN3kiIa9krspWySInSxnV3my2tZEaZ0xeUbuIA1cic7KC09OmX7BikHtYQg6IEf7JMj5dHeQk61vtw/xfJgUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299315; c=relaxed/simple;
-	bh=hghlJTZ5y2K1qDtjideBb1iSDWa39GR6AZyHDTihzPA=;
+	s=arc-20240116; t=1779296971; c=relaxed/simple;
+	bh=wbZRUpHyPeosmZUbetrmk097gYvFXctsVdfFaB6LzCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a9ihw5yp+lQyegCdxQuLiW3QuxtKC/hj9BwoA0x9Xkg7BIPuI1bPe7k5e6z1YWaWjtNZHzA/LJvuX2RdSLmM+hm78jljDdfeK4bV+/X5qADT9niqyVh/JQbuB7X8lvZTDRvCBC0+bwPA2w1Xbe0AbBwjcRlinL4HZaVs0Xo1szc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Li+mbqQq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44EEA1F000E9;
-	Wed, 20 May 2026 17:48:33 +0000 (UTC)
+	 MIME-Version; b=SDaqdwjJDyVkBN0sI/ivjEsQX+/y91OJjdI5bOjh8GQZHdtRVaah80gWDPSUdKfxoyincfMuFseqo2X9s8jks3FdkdQKunS8tQEMwzfOBRJjWtRfNezKyHSvQ3OQrJQeo5WT4ORNW86FuB5ouGJgm54XsUcadfhrAn9sbERK1C4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H0bajWEe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F8A31F000E9;
+	Wed, 20 May 2026 17:09:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299313;
-	bh=/XNB7H1jw9clHUA25BSACTUJF0tQTLJWTGuZAQO5Xt0=;
+	s=korg; t=1779296970;
+	bh=Oz5VgvvPC0F8ioXFNwE++Yb6kaj8kBefxYw8hJoIaPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Li+mbqQq7L7V/Da1zWe7ZCPbF3KflH/D+fT14lIHkvC43hJltwMg1R5au+IGfqYsu
-	 rLuS/xUg3Yqv5rg33R2hnnHmfJh86vj4+omDiaIrOdnojuL5XRAwgcQrcIYn7y5avk
-	 ays9SX+uz4q5iHTYiyUFcfxQo3HVnCahTo4lqp94=
+	b=H0bajWEeZUHbDNTj3Ktjroy2UFh8P+W5lPPjqOozJbClvVmk2ePXO87yG6rL/PXuY
+	 sI3ZEd6w0Oppa90aaHA6OZk+2QAQabanX4rMh55Jo1+frJPBJhb+DEHaT8QgRQK3ik
+	 rH/n6U4sXywu0a5E5cn47UvMmiYh3G3vDl5DrXQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathias Krause <minipli@grsecurity.net>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>,
+	Su Yue <glass.su@suse.com>,
+	Yu Kuai <yukuai@fnnas.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 725/957] kbuild: builddeb - avoid recompiles for non-cross-compiles
-Date: Wed, 20 May 2026 18:20:08 +0200
-Message-ID: <20260520162150.276541469@linuxfoundation.org>
+Subject: [PATCH 7.0 0959/1146] md/md-bitmap: add a none backend for bitmap grow
+Date: Wed, 20 May 2026 18:20:09 +0200
+Message-ID: <20260520162209.936996284@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,86 +68,391 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251935-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251050-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,grsecurity.net:email]
-X-Rspamd-Queue-Id: 5A1A25950F6
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[fnnas.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.com:email]
+X-Rspamd-Queue-Id: EA2EC593921
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Krause <minipli@grsecurity.net>
+From: Yu Kuai <yukuai@fnnas.com>
 
-[ Upstream commit 2452dcf4d740effff5aa71b7f6529ee8c04fd8f6 ]
+[ Upstream commit f2926a533d03fe70d753b512b713e06a2aa174af ]
 
-Commit e2c318225ac1 ("kbuild: deb-pkg: add
-pkg.linux-upstream.nokernelheaders build profile") changed how
-install-extmod-build gets called, making it always rebuild the host
-programs below scripts/ if HOSTCC wasn't specified with its full triplet
-on the make command line. That is, apparently, needed to fix up commit
-f1d87664b82a ("kbuild: cross-compile linux-headers package when
-possible") for cross-compiles. However, in the much more common case of
-non-cross-compile builds this will lead to unnecessary rebuilding of
-host tools including gcc plugins. This, in turn, will lead to a full
-kernel rebuild on the next 'make bindeb-pkg' which is unfortunate.
+Add a real none bitmap backend that exposes the common bitmap sysfs
+group and use it to keep bitmap/location available when an array has no
+bitmap.
 
-Avoid that by only triggering the rebuild of host tools for actual
-cross-compile builds.
+Then switch the bitmap location sysfs path to move only between none
+and the classic bitmap backend, using the no-sysfs bitmap helpers while
+merging or unmerging the internal bitmap sysfs group.
 
-Signed-off-by: Mathias Krause <minipli@grsecurity.net>
-Fixes: e2c318225ac1 ("kbuild: deb-pkg: add pkg.linux-upstream.nokernelheaders build profile")
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Nicolas Schier <nsc@kernel.org>
-Link: https://patch.msgid.link/20260402145116.1010901-1-minipli@grsecurity.net
-Signed-off-by: Nicolas Schier <nsc@kernel.org>
+This restores mdadm --grow bitmap addition through bitmap/location.
+
+Fixes: fb8cc3b0d9db ("md/md-bitmap: delay registration of bitmap_ops until creating bitmap")
+Reviewed-by: Su Yue <glass.su@suse.com>
+Link: https://lore.kernel.org/r/20260425024615.1696892-4-yukuai@fnnas.com
+Signed-off-by: Yu Kuai <yukuai@fnnas.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/package/builddeb | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/md/md-bitmap.c | 108 ++++++++++++++++++++++++++++++++++++++---
+ drivers/md/md.c        |  42 +++++++++++++---
+ drivers/md/md.h        |   3 ++
+ 3 files changed, 137 insertions(+), 16 deletions(-)
 
-diff --git a/scripts/package/builddeb b/scripts/package/builddeb
-index 3627ca227e5a5..ba1defc616524 100755
---- a/scripts/package/builddeb
-+++ b/scripts/package/builddeb
-@@ -139,7 +139,13 @@ install_kernel_headers () {
- 	pdir=debian/$1
- 	version=${1#linux-headers-}
+diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
+index eba649703a1c0..028b9ca8ce52d 100644
+--- a/drivers/md/md-bitmap.c
++++ b/drivers/md/md-bitmap.c
+@@ -216,6 +216,7 @@ struct bitmap {
+ };
  
--	CC="${DEB_HOST_GNU_TYPE}-gcc" "${srctree}/scripts/package/install-extmod-build" "${pdir}/usr/src/linux-headers-${version}"
-+	# Override $CC only for cross-compiles, to not unnecessarily rebuild
-+	# scripts/ including plugins, which may lead to a full kernel rebuild.
-+	if [ -n "${CROSS_COMPILE}" ]; then
-+		CC="${DEB_HOST_GNU_TYPE}-gcc" "${srctree}/scripts/package/install-extmod-build" "${pdir}/usr/src/linux-headers-${version}"
-+	else
-+		"${srctree}/scripts/package/install-extmod-build" "${pdir}/usr/src/linux-headers-${version}"
-+	fi
+ static struct workqueue_struct *md_bitmap_wq;
++static struct attribute_group md_bitmap_internal_group;
  
- 	mkdir -p $pdir/lib/modules/$version/
- 	ln -s /usr/src/linux-headers-$version $pdir/lib/modules/$version/build
+ static int __bitmap_resize(struct bitmap *bitmap, sector_t blocks,
+ 			   int chunksize, bool init);
+@@ -2580,6 +2581,30 @@ static int bitmap_resize(struct mddev *mddev, sector_t blocks, int chunksize)
+ 	return __bitmap_resize(bitmap, blocks, chunksize, false);
+ }
+ 
++static bool bitmap_none_enabled(void *data, bool flush)
++{
++	return false;
++}
++
++static int bitmap_none_create(struct mddev *mddev)
++{
++	return 0;
++}
++
++static int bitmap_none_load(struct mddev *mddev)
++{
++	return 0;
++}
++
++static void bitmap_none_destroy(struct mddev *mddev)
++{
++}
++
++static int bitmap_none_get_stats(void *data, struct md_bitmap_stats *stats)
++{
++	return -ENOENT;
++}
++
+ static ssize_t
+ location_show(struct mddev *mddev, char *page)
+ {
+@@ -2618,7 +2643,11 @@ location_store(struct mddev *mddev, const char *buf, size_t len)
+ 			goto out;
+ 		}
+ 
+-		bitmap_destroy(mddev);
++		sysfs_unmerge_group(&mddev->kobj, &md_bitmap_internal_group);
++		md_bitmap_destroy_nosysfs(mddev);
++		mddev->bitmap_id = ID_BITMAP_NONE;
++		if (!mddev_set_bitmap_ops_nosysfs(mddev))
++			goto none_err;
+ 		mddev->bitmap_info.offset = 0;
+ 		if (mddev->bitmap_info.file) {
+ 			struct file *f = mddev->bitmap_info.file;
+@@ -2654,16 +2683,25 @@ location_store(struct mddev *mddev, const char *buf, size_t len)
+ 			}
+ 
+ 			mddev->bitmap_info.offset = offset;
+-			rv = bitmap_create(mddev);
++			md_bitmap_destroy_nosysfs(mddev);
++			mddev->bitmap_id = ID_BITMAP;
++			if (!mddev_set_bitmap_ops_nosysfs(mddev))
++				goto bitmap_err;
++
++			rv = md_bitmap_create_nosysfs(mddev);
+ 			if (rv)
+-				goto out;
++				goto create_err;
+ 
+-			rv = bitmap_load(mddev);
++			rv = mddev->bitmap_ops->load(mddev);
+ 			if (rv) {
+ 				mddev->bitmap_info.offset = 0;
+-				bitmap_destroy(mddev);
+-				goto out;
++				goto load_err;
+ 			}
++
++			rv = sysfs_merge_group(&mddev->kobj,
++					       &md_bitmap_internal_group);
++			if (rv)
++				goto merge_err;
+ 		}
+ 	}
+ 	if (!mddev->external) {
+@@ -2679,6 +2717,22 @@ location_store(struct mddev *mddev, const char *buf, size_t len)
+ 	if (rv)
+ 		return rv;
+ 	return len;
++
++merge_err:
++	mddev->bitmap_info.offset = 0;
++load_err:
++	md_bitmap_destroy_nosysfs(mddev);
++create_err:
++	mddev->bitmap_info.offset = 0;
++	mddev->bitmap_id = ID_BITMAP_NONE;
++	if (!mddev_set_bitmap_ops_nosysfs(mddev))
++		rv = -ENOENT;
++	goto out;
++bitmap_err:
++	rv = -ENOENT;
++none_err:
++	mddev->bitmap_info.offset = 0;
++	goto out;
+ }
+ 
+ static struct md_sysfs_entry bitmap_location =
+@@ -2987,6 +3041,27 @@ static const struct attribute_group *bitmap_groups[] = {
+ 	NULL,
+ };
+ 
++static const struct attribute_group *bitmap_none_groups[] = {
++	&md_bitmap_common_group,
++	NULL,
++};
++
++static struct bitmap_operations bitmap_none_ops = {
++	.head = {
++		.type	= MD_BITMAP,
++		.id	= ID_BITMAP_NONE,
++		.name	= "none",
++	},
++
++	.enabled		= bitmap_none_enabled,
++	.create			= bitmap_none_create,
++	.load			= bitmap_none_load,
++	.destroy		= bitmap_none_destroy,
++	.get_stats		= bitmap_none_get_stats,
++
++	.groups			= bitmap_none_groups,
++};
++
+ static struct bitmap_operations bitmap_ops = {
+ 	.head = {
+ 		.type	= MD_BITMAP,
+@@ -3033,16 +3108,33 @@ static struct bitmap_operations bitmap_ops = {
+ 
+ int md_bitmap_init(void)
+ {
++	int err;
++
+ 	md_bitmap_wq = alloc_workqueue("md_bitmap", WQ_MEM_RECLAIM | WQ_UNBOUND,
+ 				       0);
+ 	if (!md_bitmap_wq)
+ 		return -ENOMEM;
+ 
+-	return register_md_submodule(&bitmap_ops.head);
++	err = register_md_submodule(&bitmap_none_ops.head);
++	if (err)
++		goto err_wq;
++
++	err = register_md_submodule(&bitmap_ops.head);
++	if (err)
++		goto err_none;
++
++	return 0;
++
++err_none:
++	unregister_md_submodule(&bitmap_none_ops.head);
++err_wq:
++	destroy_workqueue(md_bitmap_wq);
++	return err;
+ }
+ 
+ void md_bitmap_exit(void)
+ {
+-	destroy_workqueue(md_bitmap_wq);
+ 	unregister_md_submodule(&bitmap_ops.head);
++	unregister_md_submodule(&bitmap_none_ops.head);
++	destroy_workqueue(md_bitmap_wq);
+ }
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index f736aead193ba..32927c24ebf7c 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -714,7 +714,7 @@ static void md_bitmap_sysfs_del(struct mddev *mddev)
+ 	sysfs_remove_group(&mddev->kobj, mddev->bitmap_ops->groups[0]);
+ }
+ 
+-static bool mddev_set_bitmap_ops_nosysfs(struct mddev *mddev)
++bool mddev_set_bitmap_ops_nosysfs(struct mddev *mddev)
+ {
+ 	struct md_submodule_head *head;
+ 
+@@ -4284,7 +4284,7 @@ bitmap_type_show(struct mddev *mddev, char *page)
+ 
+ 	xa_lock(&md_submodule);
+ 	xa_for_each(&md_submodule, i, head) {
+-		if (head->type != MD_BITMAP)
++		if (head->type != MD_BITMAP || head->id == ID_BITMAP_NONE)
+ 			continue;
+ 
+ 		if (mddev->bitmap_id == head->id)
+@@ -6544,7 +6544,7 @@ static enum md_submodule_id md_bitmap_get_id_from_sb(struct mddev *mddev)
+ 	return id;
+ }
+ 
+-static int md_bitmap_create_nosysfs(struct mddev *mddev)
++int md_bitmap_create_nosysfs(struct mddev *mddev)
+ {
+ 	enum md_submodule_id orig_id = mddev->bitmap_id;
+ 	enum md_submodule_id sb_id;
+@@ -6553,8 +6553,10 @@ static int md_bitmap_create_nosysfs(struct mddev *mddev)
+ 	if (mddev->bitmap_id == ID_BITMAP_NONE)
+ 		return -EINVAL;
+ 
+-	if (!mddev_set_bitmap_ops_nosysfs(mddev))
++	if (!mddev_set_bitmap_ops_nosysfs(mddev)) {
++		mddev->bitmap_id = orig_id;
+ 		return -ENOENT;
++	}
+ 
+ 	err = mddev->bitmap_ops->create(mddev);
+ 	if (!err)
+@@ -6568,8 +6570,10 @@ static int md_bitmap_create_nosysfs(struct mddev *mddev)
+ 	mddev->bitmap_ops = NULL;
+ 
+ 	sb_id = md_bitmap_get_id_from_sb(mddev);
+-	if (sb_id == ID_BITMAP_NONE || sb_id == orig_id)
++	if (sb_id == ID_BITMAP_NONE || sb_id == orig_id) {
++		mddev->bitmap_id = orig_id;
+ 		return err;
++	}
+ 
+ 	pr_info("md: %s: bitmap version mismatch, switching from %d to %d\n",
+ 		mdname(mddev), orig_id, sb_id);
+@@ -6603,7 +6607,7 @@ static int md_bitmap_create(struct mddev *mddev)
+ 	return 0;
+ }
+ 
+-static void md_bitmap_destroy_nosysfs(struct mddev *mddev)
++void md_bitmap_destroy_nosysfs(struct mddev *mddev)
+ {
+ 	if (!md_bitmap_registered(mddev))
+ 		return;
+@@ -6621,6 +6625,16 @@ static void md_bitmap_destroy(struct mddev *mddev)
+ 	md_bitmap_destroy_nosysfs(mddev);
+ }
+ 
++static void md_bitmap_set_none(struct mddev *mddev)
++{
++	mddev->bitmap_id = ID_BITMAP_NONE;
++	if (!mddev_set_bitmap_ops_nosysfs(mddev))
++		return;
++
++	if (!mddev_is_dm(mddev) && mddev->bitmap_ops->groups)
++		md_bitmap_sysfs_add(mddev);
++}
++
+ int md_run(struct mddev *mddev)
+ {
+ 	int err;
+@@ -6830,6 +6844,10 @@ int md_run(struct mddev *mddev)
+ 	if (mddev->sb_flags)
+ 		md_update_sb(mddev, 0);
+ 
++	if (IS_ENABLED(CONFIG_MD_BITMAP) && !mddev->bitmap_info.file &&
++	    !mddev->bitmap_info.offset)
++		md_bitmap_set_none(mddev);
++
+ 	md_new_event();
+ 	return 0;
+ 
+@@ -7775,7 +7793,8 @@ static int set_bitmap_file(struct mddev *mddev, int fd)
+ {
+ 	int err = 0;
+ 
+-	if (!md_bitmap_registered(mddev))
++	if (!md_bitmap_registered(mddev) ||
++	    mddev->bitmap_id == ID_BITMAP_NONE)
+ 		return -EINVAL;
+ 
+ 	if (mddev->pers) {
+@@ -7840,10 +7859,12 @@ static int set_bitmap_file(struct mddev *mddev, int fd)
+ 
+ 			if (err) {
+ 				md_bitmap_destroy(mddev);
++				md_bitmap_set_none(mddev);
+ 				fd = -1;
+ 			}
+ 		} else if (fd < 0) {
+ 			md_bitmap_destroy(mddev);
++			md_bitmap_set_none(mddev);
+ 		}
+ 	}
+ 
+@@ -8150,12 +8171,16 @@ static int update_array_info(struct mddev *mddev, mdu_array_info_t *info)
+ 				mddev->bitmap_info.default_offset;
+ 			mddev->bitmap_info.space =
+ 				mddev->bitmap_info.default_space;
++			mddev->bitmap_id = ID_BITMAP;
+ 			rv = md_bitmap_create(mddev);
+ 			if (!rv)
+ 				rv = mddev->bitmap_ops->load(mddev);
+ 
+-			if (rv)
++			if (rv) {
+ 				md_bitmap_destroy(mddev);
++				mddev->bitmap_info.offset = 0;
++				md_bitmap_set_none(mddev);
++			}
+ 		} else {
+ 			struct md_bitmap_stats stats;
+ 
+@@ -8183,6 +8208,7 @@ static int update_array_info(struct mddev *mddev, mdu_array_info_t *info)
+ 			}
+ 			md_bitmap_destroy(mddev);
+ 			mddev->bitmap_info.offset = 0;
++			md_bitmap_set_none(mddev);
+ 		}
+ 	}
+ 	md_update_sb(mddev, 1);
+diff --git a/drivers/md/md.h b/drivers/md/md.h
+index ac84289664cd7..409c8f61695d3 100644
+--- a/drivers/md/md.h
++++ b/drivers/md/md.h
+@@ -932,6 +932,9 @@ extern void md_allow_write(struct mddev *mddev);
+ extern void md_wait_for_blocked_rdev(struct md_rdev *rdev, struct mddev *mddev);
+ extern void md_set_array_sectors(struct mddev *mddev, sector_t array_sectors);
+ extern int md_check_no_bitmap(struct mddev *mddev);
++bool mddev_set_bitmap_ops_nosysfs(struct mddev *mddev);
++int md_bitmap_create_nosysfs(struct mddev *mddev);
++void md_bitmap_destroy_nosysfs(struct mddev *mddev);
+ extern int md_integrity_register(struct mddev *mddev);
+ extern int strict_strtoul_scaled(const char *cp, unsigned long *res, int scale);
+ 
 -- 
 2.53.0
 
