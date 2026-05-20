@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-252138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253235-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mIWDMc72DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-252138-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:00:46 +0200
+	id SOOTDjEHDmp25gUAu9opvQ
+	(envelope-from <stable+bounces-253235-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:10:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47F7C595182
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:00:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B54F597E11
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:10:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6EED2308DBD0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:58:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 84D292890FA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:51:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF37A3F6C4E;
-	Wed, 20 May 2026 17:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3364C3D1CA0;
+	Wed, 20 May 2026 18:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DrjHltmW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KPJ+xlNh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5244436D4E1;
-	Wed, 20 May 2026 17:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D0D3F660B;
+	Wed, 20 May 2026 18:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299890; cv=none; b=CB1dAjAmrmhPPWPdgtN/YyPIKPn16NJEpxuHeOeTxWtIXqh7xfTYc6+hlDb5rPub1nX21Phv+p2/7vHpZHpk7NuvV1lHrX7w3pN/qyZmYy0r4RRgoarWjnaN6h0gV9ZRLcu6iP+bzTY3LbOwzOYxeXN3+27G/6W2WAghHtj1Y+w=
+	t=1779302750; cv=none; b=fQpNrqegsKd4EATGgd8DhowXTGGES7vj+iWNListthRcVplA7ohiTvPM6mCG9tc1+FYlr4adClK5aaf3ZYmIJxQylT5K8Zo7wEmS5CKtqzNHXYLtiyQgjvST+6lki/3Gzn7ur8XSybG/fcs8/nTjzMFYInUvxsBP5HZOWcDGTiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299890; c=relaxed/simple;
-	bh=agUVXx+OUDTQSGTqZ5D4/OLR1URsxN4z6aHK7gLl3oE=;
+	s=arc-20240116; t=1779302750; c=relaxed/simple;
+	bh=iCV1Pwba3lLQq2qS4f7Ispyn99KFMrL0rxg3LjFFVTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rR+Bz6gDKTYatcxl0/k3CsNqJ3DlE/VjluMsSNq47uoAjyBRSQRPSGPDMS50yRjqVHYvc4emjiMKqf1Ib+BW6vmCEmxEVfLmA4nmZ4fnbStEblSG6Mrb147eqyx/6LkInfVCE0ck0Aev/WZDquBGI7B0Er772nl+jkYRvPGaaVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DrjHltmW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B76CD1F000E9;
-	Wed, 20 May 2026 17:58:08 +0000 (UTC)
+	 MIME-Version; b=O5d3dOCYmi1gH4/tDfRRj4iA7ZCy0qcuyIyVe3a5IjLsEpTquk11K9ZfMa3cp7RXjHUhcdoAECSdNvKOsedKDlgyBSqN6y11m0ePzFTBTgwKcyCOdy1g86uAGXmlGdc/IiVrw0HHmSxCgEl5jnt7G1pMUZ4TAZJ82PnkZRwgn/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KPJ+xlNh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 435541F000E9;
+	Wed, 20 May 2026 18:45:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299889;
-	bh=We8F32634B0WzSyJ5CJwCtqHSEPiY1GraLdImPjFTac=;
+	s=korg; t=1779302748;
+	bh=KQ2NX+2/Ty7mRUOTyuIpitjjagJ21E45Rvcu5ihrfnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DrjHltmW2JfDxjnOKy9IfSAsR0pmDsVKoV5hFY5Azh+CoyJsChTmYX7PfvyYlkwEU
-	 rydc+MH6uAeQPgXdFejfPSDYnqYsOcbuKnwTt6rBeifD/Fuzkqtsndbhv/iiOxc/zx
-	 jIpt54Zn0TdIOPEKMdsfkib6vRN/TnCrUNVjUodk=
+	b=KPJ+xlNheKU/LV6XARVO8edAKwgbztKVA4Q4p4NbVImYHcGKAZfGkl3vQKYzNZa2i
+	 ebrWB3l9dCxXTIAv6VI410NuJUtqURasNaN6KoJzlPKJMpYCIgHAKtL4bgYtl5BGnQ
+	 n08IWocdyDEdEapGKd99egxK0NgQCxqxdzusVHfA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Michael Roth <michael.roth@amd.com>,
-	stable@kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.18 923/957] virt: sev-guest: Do not use host-controlled page order in cleanup path
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 383/508] net/sched: netem: only reseed PRNG when seed is explicitly provided
 Date: Wed, 20 May 2026 18:23:26 +0200
-Message-ID: <20260520162154.597667481@linuxfoundation.org>
+Message-ID: <20260520162106.920006301@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,114 +64,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252138-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253235-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,alien8.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,linux-foundation.org:email]
-X-Rspamd-Queue-Id: 47F7C595182
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[networkplumber.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 8B54F597E11
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos López <clopez@suse.de>
+From: Stephen Hemminger <stephen@networkplumber.org>
 
-commit 23e6a1ca04ae44806439a5a446e62e4d42e80bb4 upstream.
+[ Upstream commit 986afaf809940577224a99c3a08d97a15eb37e93 ]
 
-When issuing an extended guest request (SVM_VMGEXIT_EXT_GUEST_REQUEST),
-get_ext_report() allocates a buffer to retrieve a certificate blob from the
-host, keeping track of its size in report_req->certs_len.
+netem_change() unconditionally reseeds the PRNG on every tc change
+command. If TCA_NETEM_PRNG_SEED is not specified, a new random seed
+is generated, destroying reproducibility for users who set a
+deterministic seed on a previous change.
 
-However, the host may return SNP_GUEST_VMM_ERR_INVALID_LEN, indicating
-an invalid buffer size, as well as the expected length of such buffer.
-get_ext_report() subsequently updates report_req->certs_len with the
-host-controlled value, and cleans up the buffer by computing a page order
-from such value. This is incorrect, as the host-provided length may not
-match the page order of the original allocation, potentially resulting
-in corruption in the page allocator.
+Move the initial random seed generation to netem_init() and only
+reseed in netem_change() when TCA_NETEM_PRNG_SEED is explicitly
+provided by the user.
 
-Fix this by using alloc_pages_exact() instead, and reusing @npages to
-compute the size passed to free_pages_exact(). For consistency, also
-use @npages to compute the size when allocating the pages, even though
-this last change has no functional effect.
-
-Fixes: 3e385c0d6ce8 ("virt: sev-guest: Move SNP Guest Request data pages handling under snp_cmd_mutex")
-Signed-off-by: Carlos López <clopez@suse.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Michael Roth <michael.roth@amd.com>
-Cc: stable@kernel.org
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4072d97ddc44 ("netem: add prng attribute to netem_sched_data")
+Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260418032027.900913-4-stephen@networkplumber.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/virt/coco/sev-guest/sev-guest.c |   12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ net/sched/sch_netem.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/virt/coco/sev-guest/sev-guest.c
-+++ b/drivers/virt/coco/sev-guest/sev-guest.c
-@@ -176,7 +176,6 @@ static int get_ext_report(struct snp_gue
- 	struct snp_guest_req req = {};
- 	int ret, npages = 0, resp_len;
- 	sockptr_t certs_address;
--	struct page *page;
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index b3af6a50b43be..e778eb1d1a510 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -1110,11 +1110,10 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
+ 	/* capping jitter to the range acceptable by tabledist() */
+ 	q->jitter = min_t(s64, abs(q->jitter), INT_MAX);
  
- 	if (sockptr_is_null(io->req_data) || sockptr_is_null(io->resp_data))
+-	if (tb[TCA_NETEM_PRNG_SEED])
++	if (tb[TCA_NETEM_PRNG_SEED]) {
+ 		q->prng.seed = nla_get_u64(tb[TCA_NETEM_PRNG_SEED]);
+-	else
+-		q->prng.seed = get_random_u64();
+-	prandom_seed_state(&q->prng.prng_state, q->prng.seed);
++		prandom_seed_state(&q->prng.prng_state, q->prng.seed);
++	}
+ 
+ unlock:
+ 	sch_tree_unlock(sch);
+@@ -1137,6 +1136,9 @@ static int netem_init(struct Qdisc *sch, struct nlattr *opt,
  		return -EINVAL;
-@@ -211,16 +210,15 @@ static int get_ext_report(struct snp_gue
- 	 * zeros to indicate that certificate data was not provided.
- 	 */
- 	npages = report_req->certs_len >> PAGE_SHIFT;
--	page = alloc_pages(GFP_KERNEL_ACCOUNT | __GFP_ZERO,
--			   get_order(report_req->certs_len));
--	if (!page)
-+	req.certs_data = alloc_pages_exact(npages << PAGE_SHIFT,
-+					   GFP_KERNEL_ACCOUNT | __GFP_ZERO);
-+	if (!req.certs_data)
- 		return -ENOMEM;
  
--	req.certs_data = page_address(page);
- 	ret = set_memory_decrypted((unsigned long)req.certs_data, npages);
- 	if (ret) {
- 		pr_err("failed to mark page shared, ret=%d\n", ret);
--		__free_pages(page, get_order(report_req->certs_len));
-+		free_pages_exact(req.certs_data, npages << PAGE_SHIFT);
- 		return -EFAULT;
- 	}
- 
-@@ -277,7 +275,7 @@ e_free_data:
- 		if (set_memory_encrypted((unsigned long)req.certs_data, npages))
- 			WARN_ONCE(ret, "failed to restore encryption mask (leak it)\n");
- 		else
--			__free_pages(page, get_order(report_req->certs_len));
-+			free_pages_exact(req.certs_data, npages << PAGE_SHIFT);
- 	}
- 	return ret;
- }
+ 	q->loss_model = CLG_RANDOM;
++	q->prng.seed = get_random_u64();
++	prandom_seed_state(&q->prng.prng_state, q->prng.seed);
++
+ 	ret = netem_change(sch, opt, extack);
+ 	if (ret)
+ 		pr_info("netem: change failed\n");
+-- 
+2.53.0
+
 
 
 
