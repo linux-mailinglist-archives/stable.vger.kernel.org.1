@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-252201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250635-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yO4+KDEADmo95QUAu9opvQ
-	(envelope-from <stable+bounces-252201-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:40:49 +0200
+	id oBZhAVsSDmoJ6AUAu9opvQ
+	(envelope-from <stable+bounces-250635-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:58:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CCE0596FA1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:40:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 611BF598F36
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:58:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 79F7038E6727
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:01:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3BF8A30D0D81
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:52:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4ED63E95A4;
-	Wed, 20 May 2026 18:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E26C436EAB8;
+	Wed, 20 May 2026 16:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UwldTLky"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fa9A/VTg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3DF3ED3B8;
-	Wed, 20 May 2026 18:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7915B31F9BE;
+	Wed, 20 May 2026 16:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300056; cv=none; b=YsAI8ogcrabNdPgzrsY5Ba6vRs0VlwVqpiLg2qPo1fwXfpFM3xUxK+PwWqnShHW7cfBkH4V/XIV1vjXoCQDUVTmq3/+G5q681xCMuNs9RDjRVDlRPK8bXVflkRxcQCjrNhp8FmAU1XSw9FCX5z+IpluJ2XrdiqrZGh3lfUzAKl8=
+	t=1779295928; cv=none; b=Rq6OlP2dewdX20GqMQvykPvfHfDMqGwq5qho0lSwO22ke+u1zOxyExSLMG6xHyHxU0IV7ZLLj9JwRPL6ZhKcSFBu9BFArt25eBZ3wGifQwjwX03OL19LURgnpn02HRpVJ1f0DkDEwCV8sIay+DFgvm3eucjIzEYcjka16fqtErU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300056; c=relaxed/simple;
-	bh=XRkybAT4SSqWVme+2Bqdx4qib0I9frD6tvdpEX6FXeY=;
+	s=arc-20240116; t=1779295928; c=relaxed/simple;
+	bh=5yYE/syqt5ZKByl1oR8GghVHxyq4hpuG6Jj/xLje4EI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t7imumO0+Yt4pOdrVlySwFYQhLn7DGDh24jjly7tWJT5XfJZUwBLAtmGcUOtK8oSgYQsV0rj59jhhkojTQv+GeCoyPUppM1dr6Th0Dv0opwDEfNgD/9TrL9KLm29meXA3cWd127OHvAPIZecktfidGeXV5zis0hZUljLCwNyoKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UwldTLky; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DA571F000E9;
-	Wed, 20 May 2026 18:00:54 +0000 (UTC)
+	 MIME-Version; b=mAQXkwuRDEr+R5tnz0ZrDI1Bvjt0wNjNsKPx1gFd7L8W1Feqy/i6Dfxv+jJlYoqjJEO7F/vRZprdLh6BREcisM6HalcYzNLk6iKEQ4zWVZ6IaQxt3BF2RxQXvEVTJ41c94povXaVBUsIH+ZxsAw3NjPskNt2ERpDpTbnM7fiUFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fa9A/VTg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CD0A1F000E9;
+	Wed, 20 May 2026 16:52:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300055;
-	bh=4L7jBQ0ZeWsNWhHZiQZijO3ovg31L8N9Ixc1cVL7kyg=;
+	s=korg; t=1779295926;
+	bh=P7FOTMBBMoxFz5pjq7p9z2fP5zAaxcgVm34WQmn6Zng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UwldTLkywJWo2ViY+zFvz1d62CEOfPg92v7+OWzB54hABmGNhu4a4vgeTbLyMjLhZ
-	 2Ydx9BBdIsX3AkESavLjqvUeVTaTXSENKQsMHnM3lkL+bIOUjzM+D5ChZjMuThgx0U
-	 hr5pZV6Iy/5F9XZM86DwCEKTVqHHhSDKR1Yw3Vsw=
+	b=Fa9A/VTgwQ6ehCaqES9JVESQXBAhKdDCUBoB4f6qv+9cRrbRXEdYw/L8xDe4E+8Wk
+	 ibLeoYKbRvavJXou8F+olwRHLRICzOKOAFNCwkTvmDqxqeOn9EvwKVCw/7Uf0D96cL
+	 jjPK5vKfXR/VlhDdWQ55aCbKuGp7vdWgVCQQGxBQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyungjung Joo <jhj140711@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	David Howells <dhowells@redhat.com>,
+	David Gow <davidgow@google.com>,
+	Kees Cook <kees@kernel.org>,
+	Petr Mladek <pmladek@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 004/666] fs/mbcache: cancel shrink work before destroying the cache
+Subject: [PATCH 7.0 0565/1146] lib: kunit_iov_iter: fix memory leaks
 Date: Wed, 20 May 2026 18:13:35 +0200
-Message-ID: <20260520162111.326029999@linuxfoundation.org>
+Message-ID: <20260520162200.970834770@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +70,117 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252201-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250635-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 0CCE0596FA1
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,linux-foundation.org:email,sashiko.dev:url,c--e.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 611BF598F36
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: HyungJung Joo <jhj140711@gmail.com>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-[ Upstream commit d227786ab1119669df4dc333a61510c52047cce4 ]
+[ Upstream commit 0b49c7d0ae697fcecd7377cb7dda220f7cd096ff ]
 
-mb_cache_destroy() calls shrinker_free() and then frees all cache
-entries and the cache itself, but it does not cancel the pending
-c_shrink_work work item first.
+Use vfree() instead of vunmap() to free the buffer allocated by
+iov_kunit_create_buffer() because vunmap() does not honour
+VM_MAP_PUT_PAGES.  In order for this to work the page array itself must
+not be managed by kunit.
 
-If mb_cache_entry_create() schedules c_shrink_work via schedule_work()
-and the work item is still pending or running when mb_cache_destroy()
-runs, mb_cache_shrink_worker() will access the cache after its memory
-has been freed, causing a use-after-free.
+Remove the folio_put() when destroying a folioq.  This is handled by
+vfree(), now.
 
-This is only reachable by a privileged user (root or CAP_SYS_ADMIN)
-who can trigger the last put of a mounted ext2/ext4/ocfs2 filesystem.
+Pointed out by sashiko.dev on a previous iteration of this series.
 
-Cancel the work item with cancel_work_sync() before calling
-shrinker_free(), ensuring the worker has finished and will not be
-rescheduled before the cache is torn down.
+Tested by running the kunit test 10000 times in a loop.
 
-Fixes: c2f3140fe2ec ("mbcache2: limit cache size")
-Signed-off-by: Hyungjung Joo <jhj140711@gmail.com>
-Link: https://patch.msgid.link/20260317054556.1821600-1-jhj140711@gmail.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Link: https://lkml.kernel.org/r/20260326214905.818170-4-lk@c--e.de
+Fixes: 2d71340ff1d4 ("iov_iter: Kunit tests for copying to/from an iterator")
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Cc: David Howells <dhowells@redhat.com>
+Cc: David Gow <davidgow@google.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/mbcache.c | 1 +
- 1 file changed, 1 insertion(+)
+ lib/tests/kunit_iov_iter.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/fs/mbcache.c b/fs/mbcache.c
-index e60a840999aa9..90b0564c62d0b 100644
---- a/fs/mbcache.c
-+++ b/fs/mbcache.c
-@@ -408,6 +408,7 @@ void mb_cache_destroy(struct mb_cache *cache)
+diff --git a/lib/tests/kunit_iov_iter.c b/lib/tests/kunit_iov_iter.c
+index bb847e5010eb2..d16449bdb8334 100644
+--- a/lib/tests/kunit_iov_iter.c
++++ b/lib/tests/kunit_iov_iter.c
+@@ -42,7 +42,7 @@ static inline u8 pattern(unsigned long x)
+ 
+ static void iov_kunit_unmap(void *data)
  {
- 	struct mb_cache_entry *entry, *next;
+-	vunmap(data);
++	vfree(data);
+ }
  
-+	cancel_work_sync(&cache->c_shrink_work);
- 	shrinker_free(cache->c_shrink);
+ static void *__init iov_kunit_create_buffer(struct kunit *test,
+@@ -53,17 +53,22 @@ static void *__init iov_kunit_create_buffer(struct kunit *test,
+ 	unsigned long got;
+ 	void *buffer;
  
- 	/*
+-	pages = kunit_kcalloc(test, npages, sizeof(struct page *), GFP_KERNEL);
+-        KUNIT_ASSERT_NOT_ERR_OR_NULL(test, pages);
++	pages = kzalloc_objs(struct page *, npages, GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, pages);
+ 	*ppages = pages;
+ 
+ 	got = alloc_pages_bulk(GFP_KERNEL, npages, pages);
+ 	if (got != npages) {
+ 		release_pages(pages, got);
++		kvfree(pages);
+ 		KUNIT_ASSERT_EQ(test, got, npages);
+ 	}
+ 
+ 	buffer = vmap(pages, npages, VM_MAP | VM_MAP_PUT_PAGES, PAGE_KERNEL);
++	if (buffer == NULL) {
++		release_pages(pages, got);
++		kvfree(pages);
++	}
+         KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buffer);
+ 
+ 	kunit_add_action_or_reset(test, iov_kunit_unmap, buffer);
+@@ -369,9 +374,6 @@ static void iov_kunit_destroy_folioq(void *data)
+ 
+ 	for (folioq = data; folioq; folioq = next) {
+ 		next = folioq->next;
+-		for (int i = 0; i < folioq_nr_slots(folioq); i++)
+-			if (folioq_folio(folioq, i))
+-				folio_put(folioq_folio(folioq, i));
+ 		kfree(folioq);
+ 	}
+ }
 -- 
 2.53.0
 
