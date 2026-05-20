@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-251197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251198-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AAE2MlvwDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-251197-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:15 +0200
+	id 0I6qFKLyDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251198-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:42:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CA01593EDF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:14 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12D37594601
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:42:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 72F7D3135F9B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 785BF300B9DD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 316823E0C70;
-	Wed, 20 May 2026 17:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDC5E3F0762;
+	Wed, 20 May 2026 17:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0dsOHuou"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="netfsJN0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3A833A033;
-	Wed, 20 May 2026 17:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBD0364E89;
+	Wed, 20 May 2026 17:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297353; cv=none; b=OKVIoexR5N2sdnSrBONYWU1u6ESf+uzFECB0cxjUawuOZg7SZ9zjDI3JnYzaboDMCphzHx7+A636m5i9/Yv5mMAr6wqUFrYjzX51rO0hwKj/tNYWMo9T7wJV0ocWB8RoyLhsBfMfS1ln5Iv6yXvxAwDRzTsCAZLJLIVxEBb0EOM=
+	t=1779297355; cv=none; b=Z6ORa9WwpEJPRyeNMLuuONuMbiXWwCWjpVy0PrpQSRyMBKoTvC5vEkxwt9y2fMwWg3vBBM9SIO0PBzcR4fCKQoR/auPwZOmCJhsiZbgZM/1pIq+jw7KCbeRxjcIQSLYdcdroohstHAzaysjafzJPXrpVH9jJEt9Xd/JeOdO4X88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297353; c=relaxed/simple;
-	bh=CBasPb+7QbyPJLrzFAYOccCIUtjxR83ljQZPGOF3/vk=;
+	s=arc-20240116; t=1779297355; c=relaxed/simple;
+	bh=fVUvF1B4DiC0uEBTSy23h8Lsp7WVdHv0PLLXF4uGMrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IIEsfT1OyjS0SkSNAMDCcImCleLEgf1qEVyNyTAlmcOk/s4LXvMJrpeA8USZWQnhYU4G1qpVxDCDpYHf+RdqFQem0MWfX/q+RRobwA6wug/+jG25nSvIym+nGxC4bpOwWBCEKYiCDXtIdqt12eABXsUBi5LL3T8Nmtj55qimXc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0dsOHuou; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B1C01F000E9;
-	Wed, 20 May 2026 17:15:51 +0000 (UTC)
+	 MIME-Version; b=e+GP8xBKHo7FNzx1r2lPlS6L0OAWhE2Bx8V/nDf15EqX0F3i+mnrrLwGL+9F7WqGycXdowUq+3TdhG3UoqMaffZlGcSUiD593q7KGGOooWleRZiamDI5Gwhnvnfb6aEGMt7xA5n82Uu3TWNb2G/vVHf/6GJKkmrozWJtTOP4qO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=netfsJN0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 015141F000E9;
+	Wed, 20 May 2026 17:15:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297351;
-	bh=ae5nYhguWVFVQr5CwXcc4nJfFR9ndmTSLcD24LiuQvw=;
+	s=korg; t=1779297354;
+	bh=J/0b6JYa5baVceLVzue8R2jIdsQTKN8Yi+SNjiPmHHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0dsOHuouZRmQP38tTp/1jw8ImTlLDe1CpdUWXcS+U1GTEi+fs3NE1JA8kfI4KGuS0
-	 713pOJypFOEChIu2ifTx+WPtmVvciVARw2B8lexu/zndwv9WWDskzdnnRr+8LrrQdf
-	 vjaDkC3aGx6pXwZhDlqoeigmBfPiooz3jGheO4TA=
+	b=netfsJN0uiqBKLSDqkVHXjcvp+ZBrKmnGcB4TixXMDB2UEW9Eu3PGSNDpac58cCsI
+	 fgiT8HCFNbEYerGbHCgdjgJjUGPUs/6Sc+uTD6RueMIAgT+Q9PS/8Yr6rhISVroMnW
+	 nggq4+KyikORh/tMBNkdBu6mFuRQ3pF3p+ceXAu8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Subject: [PATCH 7.0 1134/1146] drm/gma500/oaktrail_hdmi: fix i2c adapter leak on setup
-Date: Wed, 20 May 2026 18:23:04 +0200
-Message-ID: <20260520162213.916004198@linuxfoundation.org>
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 7.0 1135/1146] drm/gma500/oaktrail_lvds: fix hang on init failure
+Date: Wed, 20 May 2026 18:23:05 +0200
+Message-ID: <20260520162213.940655129@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -68,19 +68,19 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251197-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251198-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -91,8 +91,8 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 3CA01593EDF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 12D37594601
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,31 +102,53 @@ X-Rspamd-Server: lfdr
 
 From: Johan Hovold <johan@kernel.org>
 
-commit 950953f774b3f69da6f413e045ef075e1f3da2df upstream.
+commit 657a091ab6d01d0091b77660c75cfed573c9a53e upstream.
 
-Make sure to drop the reference taken to the I2C adapter (and its
-module) when setting up HDMI to allow the adapter to be deregistered.
+The LVDS init code looks up an I2C adapter using i2c_get_adapter() and
+tries to read the EDID before falling back to allocating and registering
+its own adapter.
 
-Fixes: 1b082ccf5901 ("gma500: Add Oaktrail support")
-Cc: stable@vger.kernel.org	# 3.3
+The error handling does not separate these cases so on a late init
+failure it will try to deregister and free also an adapter that had
+previously been registered. Since i2c_get_adapter() takes another
+reference to the adapter, deregistration hangs indefinitely while
+waiting for the reference to be released.
+
+Fix this by only destroying adapters allocated during LVDS init on
+errors.
+
+Fixes: a57ebfc0b4da ("drm/gma500: Make oaktrail lvds use ddc adapter from drm_connector")
+Cc: stable@vger.kernel.org	# 6.0
+Cc: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Link: https://patch.msgid.link/20260508144446.59722-2-johan@kernel.org
+Link: https://patch.msgid.link/20260508144446.59722-3-johan@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/gma500/oaktrail_hdmi.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/gma500/oaktrail_lvds.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/gma500/oaktrail_hdmi.c
-+++ b/drivers/gpu/drm/gma500/oaktrail_hdmi.c
-@@ -580,6 +580,7 @@ static int oaktrail_hdmi_get_modes(struc
- 	} else {
- 		edid = (struct edid *)raw_edid;
- 		/* FIXME ? edid = drm_get_edid(connector, i2c_adap); */
-+		i2c_put_adapter(i2c_adap);
- 	}
+--- a/drivers/gpu/drm/gma500/oaktrail_lvds.c
++++ b/drivers/gpu/drm/gma500/oaktrail_lvds.c
+@@ -293,7 +293,7 @@ void oaktrail_lvds_init(struct drm_devic
+ {
+ 	struct gma_encoder *gma_encoder;
+ 	struct gma_connector *gma_connector;
+-	struct gma_i2c_chan *ddc_bus;
++	struct gma_i2c_chan *ddc_bus = NULL;
+ 	struct drm_connector *connector;
+ 	struct drm_encoder *encoder;
+ 	struct drm_psb_private *dev_priv = to_drm_psb_private(dev);
+@@ -421,7 +421,8 @@ out:
  
- 	if (edid) {
+ err_unlock:
+ 	mutex_unlock(&dev->mode_config.mutex);
+-	gma_i2c_destroy(to_gma_i2c_chan(connector->ddc));
++	if (!IS_ERR_OR_NULL(ddc_bus))
++		gma_i2c_destroy(ddc_bus);
+ 	drm_encoder_cleanup(encoder);
+ err_connector_cleanup:
+ 	drm_connector_cleanup(connector);
 
 
 
