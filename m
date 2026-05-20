@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-251021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253028-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sOVhJoXsDWo04wUAu9opvQ
-	(envelope-from <stable+bounces-251021-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:16:53 +0200
+	id MPxnNO0ADmo95QUAu9opvQ
+	(envelope-from <stable+bounces-253028-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 341665933AB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:16:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88BFD5971BB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D089F3146AF6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 97B17313F910
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2E3B3DC4DA;
-	Wed, 20 May 2026 17:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC248342CB3;
+	Wed, 20 May 2026 18:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k29Ya9Hk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="01XA2CYI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51DB7373BEB;
-	Wed, 20 May 2026 17:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809C7272E56;
+	Wed, 20 May 2026 18:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296897; cv=none; b=UU9F1Rz93I7LXnI1aN8W7R2klY24cVmukFSnOgAtuajyH2L5XOVmpqQvWJ/PqvYO5NkRmzjT6BKAAJ3VeWwBUmg4MrSzLL7lVGVeikk7QJL9+UldYwtyT+xJN2oCpQWc51jGTA4WRO3ghnZMJASgPGduAeSvSi42oH/jHviDjLE=
+	t=1779302215; cv=none; b=nt5ClpGePtiObUX/7w2UX7JUbnDrKff9Kf7wZtgo3/f+XyvvzxlWveNzTBiHURi7iNf31/9do7e2vDKsULtQCJUuQZb6CbMYhdPuOPjtuP+5sFkaSmnztShb+690m5rKF6clACGOSBHOWxqPvuz5SKeMSLUJIIF+cnEmEmGsrRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296897; c=relaxed/simple;
-	bh=NKfsz8nsIva7DoWie1H1XQXSZweQxtquPbLYRWjV1QM=;
+	s=arc-20240116; t=1779302215; c=relaxed/simple;
+	bh=5KrzZZbkc48k6rMDZAZh9S75W+JmXm+c3lMUqBjiZTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CLd9zsa85ZsXTzZlNZBtVa2sEr2TR5irxBO6wZ30sWjOLboH3PTk387ATg7ruDhOKUc/0e/Gz8QQ285eYhqikayuL4blLCtlkRuD+2arfFK5ToQuHyzIUQZZvS5r3YxT2DjBC9ClIJg6TUlaHRJ9RPpCduOOV1AcFpqgKtwrKks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k29Ya9Hk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B83461F000E9;
-	Wed, 20 May 2026 17:08:15 +0000 (UTC)
+	 MIME-Version; b=dI+R2vObIexOuBbu5LtoMXZU5SQhpwpSmIFzVg0znoutK3cMpv4eC1J1NTNP5Jb0Abrni7Av205X7wQKixD2ThgpjpWVeFPqTj+wN5j58vnbGXetKStrlxhAK2nqUlOy084WHP28JXrUA7SgHKLUHXdOiBbhzvYa4clSs0fBB/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=01XA2CYI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE94E1F000E9;
+	Wed, 20 May 2026 18:36:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296896;
-	bh=K7gkumkKoqESQNWF5T41jAi9jayz/+iIg2JziZPk7As=;
+	s=korg; t=1779302214;
+	bh=+tjCosxDVb9oVkwQN9b3OkTCGtk6Q9jz3fhajfNu/68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=k29Ya9HkEo6X/t9jsQVjsy/FL4rJX+D1XkZclBKzjppZ4I2xLIcZ/qG/Ntp9gfQdK
-	 n+G5PJMTGU50jzt/Rwnqd5L1vtkWmIRqWkE/J3+u/Hb59vFNJSJYNMfBlyKXu2A7ek
-	 qIf83OYz6bi1YZBIGKPnCIW7cVKpk4rszSsWo8T8=
+	b=01XA2CYIlWFk+ivtszJd6HwtBRm5N/r3OLuHFAuG0ooVNKNzjzttNyj3Mr0Zd2zzf
+	 BVXztk8H3bfGDypJkCBTJ+xJMVYAqpCyM2M1ViUvZiDl3RhVTlPv8dlyu1zOcJCITQ
+	 2PAVxJMj4vh2/qf9Kt2pBPq/Go9fl0CKd93IVGLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai@fnnas.com>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0956/1146] md: add fallback to correct bitmap_ops on version mismatch
+Subject: [PATCH 6.6 183/508] memory: tegra30-emc: Fix dll_change check
 Date: Wed, 20 May 2026 18:20:06 +0200
-Message-ID: <20260520162209.869161306@linuxfoundation.org>
+Message-ID: <20260520162102.601334203@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,185 +66,79 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253028-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251021-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 341665933AB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 88BFD5971BB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai@fnnas.com>
+From: Mikko Perttunen <mperttunen@nvidia.com>
 
-[ Upstream commit 09af773650024279a60348e7319d599e6571b15c ]
+[ Upstream commit 0a93f2355cf4922ad2399dbef5ea1049fef116d4 ]
 
-If default bitmap version and on-disk version doesn't match, and mdadm
-is not the latest version to set bitmap_type, set bitmap_ops based on
-the disk version.
+The code checking whether the specified memory timing enables DLL
+in the EMRS register was reversed. DLL is enabled if bit A0 is low.
+Fix the check.
 
-Link: https://lore.kernel.org/linux-raid/20260323054644.3351791-2-yukuai@fnnas.com/
-Signed-off-by: Yu Kuai <yukuai@fnnas.com>
-Stable-dep-of: f2926a533d03 ("md/md-bitmap: add a none backend for bitmap grow")
+Fixes: e34212c75a68 ("memory: tegra: Introduce Tegra30 EMC driver")
+Signed-off-by: Mikko Perttunen <mperttunen@nvidia.com>
+Link: https://patch.msgid.link/20260126-fix-emc-dllchange-v1-2-47ad3bb63262@nvidia.com
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c | 111 +++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 110 insertions(+), 1 deletion(-)
+ drivers/memory/tegra/tegra30-emc.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 9c552904a5ddc..99a5ba1485565 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -6465,15 +6465,124 @@ static void md_safemode_timeout(struct timer_list *t)
+diff --git a/drivers/memory/tegra/tegra30-emc.c b/drivers/memory/tegra/tegra30-emc.c
+index 9eae25c57ec6e..b5cf2df6b1933 100644
+--- a/drivers/memory/tegra/tegra30-emc.c
++++ b/drivers/memory/tegra/tegra30-emc.c
+@@ -554,14 +554,14 @@ static int emc_prepare_timing_change(struct tegra_emc *emc, unsigned long rate)
+ 	emc->emc_cfg = readl_relaxed(emc->regs + EMC_CFG);
+ 	emc_dbg = readl_relaxed(emc->regs + EMC_DBG);
  
- static int start_dirty_degraded;
+-	if (emc->dll_on == !!(timing->emc_mode_1 & 0x1))
++	if (emc->dll_on == !(timing->emc_mode_1 & 0x1))
+ 		dll_change = DLL_CHANGE_NONE;
+-	else if (timing->emc_mode_1 & 0x1)
++	else if (!(timing->emc_mode_1 & 0x1))
+ 		dll_change = DLL_CHANGE_ON;
+ 	else
+ 		dll_change = DLL_CHANGE_OFF;
  
-+/*
-+ * Read bitmap superblock and return the bitmap_id based on disk version.
-+ * This is used as fallback when default bitmap version and on-disk version
-+ * doesn't match, and mdadm is not the latest version to set bitmap_type.
-+ */
-+static enum md_submodule_id md_bitmap_get_id_from_sb(struct mddev *mddev)
-+{
-+	struct md_rdev *rdev;
-+	struct page *sb_page;
-+	bitmap_super_t *sb;
-+	enum md_submodule_id id = ID_BITMAP_NONE;
-+	sector_t sector;
-+	u32 version;
-+
-+	if (!mddev->bitmap_info.offset)
-+		return ID_BITMAP_NONE;
-+
-+	sb_page = alloc_page(GFP_KERNEL);
-+	if (!sb_page) {
-+		pr_warn("md: %s: failed to allocate memory for bitmap\n",
-+			mdname(mddev));
-+		return ID_BITMAP_NONE;
-+	}
-+
-+	sector = mddev->bitmap_info.offset;
-+
-+	rdev_for_each(rdev, mddev) {
-+		u32 iosize;
-+
-+		if (!test_bit(In_sync, &rdev->flags) ||
-+		    test_bit(Faulty, &rdev->flags) ||
-+		    test_bit(Bitmap_sync, &rdev->flags))
-+			continue;
-+
-+		iosize = roundup(sizeof(bitmap_super_t),
-+				 bdev_logical_block_size(rdev->bdev));
-+		if (sync_page_io(rdev, sector, iosize, sb_page, REQ_OP_READ,
-+				 true))
-+			goto read_ok;
-+	}
-+	pr_warn("md: %s: failed to read bitmap from any device\n",
-+		mdname(mddev));
-+	goto out;
-+
-+read_ok:
-+	sb = kmap_local_page(sb_page);
-+	if (sb->magic != cpu_to_le32(BITMAP_MAGIC)) {
-+		pr_warn("md: %s: invalid bitmap magic 0x%x\n",
-+			mdname(mddev), le32_to_cpu(sb->magic));
-+		goto out_unmap;
-+	}
-+
-+	version = le32_to_cpu(sb->version);
-+	switch (version) {
-+	case BITMAP_MAJOR_LO:
-+	case BITMAP_MAJOR_HI:
-+	case BITMAP_MAJOR_CLUSTERED:
-+		id = ID_BITMAP;
-+		break;
-+	case BITMAP_MAJOR_LOCKLESS:
-+		id = ID_LLBITMAP;
-+		break;
-+	default:
-+		pr_warn("md: %s: unknown bitmap version %u\n",
-+			mdname(mddev), version);
-+		break;
-+	}
-+
-+out_unmap:
-+	kunmap_local(sb);
-+out:
-+	__free_page(sb_page);
-+	return id;
-+}
-+
- static int md_bitmap_create(struct mddev *mddev)
- {
-+	enum md_submodule_id orig_id = mddev->bitmap_id;
-+	enum md_submodule_id sb_id;
-+	int err;
-+
- 	if (mddev->bitmap_id == ID_BITMAP_NONE)
- 		return -EINVAL;
+-	emc->dll_on = !!(timing->emc_mode_1 & 0x1);
++	emc->dll_on = !(timing->emc_mode_1 & 0x1);
  
- 	if (!mddev_set_bitmap_ops(mddev))
- 		return -ENOENT;
- 
--	return mddev->bitmap_ops->create(mddev);
-+	err = mddev->bitmap_ops->create(mddev);
-+	if (!err)
-+		return 0;
-+
-+	/*
-+	 * Create failed, if default bitmap version and on-disk version
-+	 * doesn't match, and mdadm is not the latest version to set
-+	 * bitmap_type, set bitmap_ops based on the disk version.
-+	 */
-+	mddev_clear_bitmap_ops(mddev);
-+
-+	sb_id = md_bitmap_get_id_from_sb(mddev);
-+	if (sb_id == ID_BITMAP_NONE || sb_id == orig_id)
-+		return err;
-+
-+	pr_info("md: %s: bitmap version mismatch, switching from %d to %d\n",
-+		mdname(mddev), orig_id, sb_id);
-+
-+	mddev->bitmap_id = sb_id;
-+	if (!mddev_set_bitmap_ops(mddev)) {
-+		mddev->bitmap_id = orig_id;
-+		return -ENOENT;
-+	}
-+
-+	err = mddev->bitmap_ops->create(mddev);
-+	if (err) {
-+		mddev_clear_bitmap_ops(mddev);
-+		mddev->bitmap_id = orig_id;
-+	}
-+
-+	return err;
- }
- 
- static void md_bitmap_destroy(struct mddev *mddev)
+ 	if (timing->data[80] && !readl_relaxed(emc->regs + EMC_ZCAL_INTERVAL))
+ 		emc->zcal_long = true;
 -- 
 2.53.0
 
