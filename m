@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252569-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sKJvKSL9DWok5QUAu9opvQ
-	(envelope-from <stable+bounces-251933-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:46 +0200
+	id gNjGNff7DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-252569-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BAFB596381
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56411595EEE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 22E73343083B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:48:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E3F10307CAA1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:17:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8BEA370D43;
-	Wed, 20 May 2026 17:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05B63D1CC6;
+	Wed, 20 May 2026 18:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="esQRxfkr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vHxARED+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98AA1369D67;
-	Wed, 20 May 2026 17:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813013E123F;
+	Wed, 20 May 2026 18:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299309; cv=none; b=rMZAtsYal4G1Ygpkph9TXGuUVRihjePpLKcBWsmDPgPAmVMnzPJKoCCNh79iiWkbOI9jRVR/2YVXLKd1DTvxPIcoDCKpE3MENelxRbh5nX2yZXejxi0WAlqz2lzBSj7Br1M7spOIdMvjJS61QVN+9ItFA6y1rNerQUI8xyd+XOE=
+	t=1779301018; cv=none; b=sbamWpbIO6AUEmVRejc8Xf5AHH8xLxxkbjm/tR8Uh9Zi1NJiZSD97kBTq4YMpIbyewRAHCL90tH2+YVb3r+1czHHKk1KnFiDd5NGMr8tM6Nvd7isVdC9RaUL73vUXf2snNDDHdewizicP8qSBD87ErxvfKA9VWQiXXJHQA9zUUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299309; c=relaxed/simple;
-	bh=4zQ6+MM8yBHkM9ubpn8PA1T58EXUyAyKJDChA5DZh6M=;
+	s=arc-20240116; t=1779301018; c=relaxed/simple;
+	bh=ADxmBs7Oiha4f1W1dY1e9hbcopU9WWF61SD/CKe7PwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HdUtBXbFgUCIG/5lfgJdDFPqJLK/uQwMNTf4tADIaOcZTwg6Q3AeIgBCWV+gfJczcI4vAa2IL9++dOQFIH4Rjnb0AtDeunJoSzGwFv500NCOpLj4uRn6g055DsEH1Y2qC0ccI/ODEMBWetIO8S3qDeX4jEfdP1pv1FsUZtGQ6kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=esQRxfkr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A781F000E9;
-	Wed, 20 May 2026 17:48:27 +0000 (UTC)
+	 MIME-Version; b=X7LrpX8OeOTBjvAWE9mcQNZ8il4Fm3WQQJcNCxAfptuUNyKWRXURErtePnqTZltfjh40NZsyV+gdsOawV1S+W5iQ82XdyAqqBGr4rLruBmaH1x1UooZcwo5KxSCLZ0+5oZO4ha7qqVnPhKhatKW2hR/WTmw6GrcsY73RpzK11O8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vHxARED+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3A5D1F000E9;
+	Wed, 20 May 2026 18:16:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299308;
-	bh=B40PL5E5VXrW8UyhPNOglUlsVTaLgNOyyyK0Yn/pVRY=;
+	s=korg; t=1779301017;
+	bh=Ra4f0gQNHCh1A+RNSrKnwgavUVaAUdLZPQR7MRpHovI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=esQRxfkrBVYuIxSsCaDdLBjxst0xDhKIzgZ7TzG6LzER6RXVdujaR13nm3Pd0FzTu
-	 1iKWNc1g71jvvqnLVoDYBijLr8b/i0AFfvliumzHyqe92GFi/qNCghAtByWBQdis/y
-	 aLgTh3HAyKY+kQdfNQVSbFgY6xZKjq6h7twNmhuY=
+	b=vHxARED+awM4rzmBYLTuDVJHmAwfv4g4/lntfjkUiZz7VWA8IBjNoit7nR6i93sXE
+	 Ys9tV3E9aBzDN6+RDqujm8ubH/EWpmWjEeOZAH0gqtIuMswRUH1skktF/UtbakuW/E
+	 aSuwKvFew0f2NuTwftfDImljxmRebAe2kLISv37Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anthony Pighin <anthony.pighin@nokia.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 724/957] rtc: abx80x: Disable alarm feature if no interrupt attached
+Subject: [PATCH 6.12 396/666] fs/ntfs3: terminate the cached volume label after UTF-8 conversion
 Date: Wed, 20 May 2026 18:20:07 +0200
-Message-ID: <20260520162150.254123120@linuxfoundation.org>
+Message-ID: <20260520162119.841213912@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251933-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252569-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,59 +89,59 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,bootlin.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 3BAFB596381
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 56411595EEE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anthony Pighin (Nokia) <anthony.pighin@nokia.com>
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-[ Upstream commit 0fedce7244e4b85c049ce579c87e298a1b0b811d ]
+[ Upstream commit a6cd43fe9b083fa23fe1595666d5738856cb261a ]
 
-Commit 795cda8338ea ("rtc: interface: Fix long-standing race when setting
-alarm") exposed an issue where the rtc-abx80x driver does not clear the
-alarm feature bit, but instead relies on the set_alarm operation to return
-invalid.
+ntfs_fill_super() loads the on-disk volume label with utf16s_to_utf8s()
+and stores the result in sbi->volume.label. The converted label is later
+exposed through ntfs3_label_show() using %s, but utf16s_to_utf8s() only
+returns the number of bytes written and does not add a trailing NUL.
 
-For example, when a RTC_UIE_ON ioctl is handled, it should abort at the
-feature validation. Instead, it proceeds to the rtc_timer_enqueue(),
-which used to return an error from the set_alarm call. However,
-following the race condition handling, which likely should not be
-discarding predecing errors, a success condition is returned to the
-ioctl() caller. This results in (for example):
-    hwclock: select() to /dev/rtc0 to wait for clock tick timed out
+If the converted label fills the entire fixed buffer,
+ntfs3_label_show() can read past the end of sbi->volume.label while
+looking for a terminator.
 
-Notwithstanding the validity of the race condition handling, if an interrupt
-wasn't specified, or could not be attached, the driver should clear the
-alarm feature bit.
+Terminate the cached label explicitly after a successful conversion and
+clamp the exact-full case to the last byte of the buffer.
 
-Fixes: 718a820a303c ("rtc: abx80x: add alarm support")
-Signed-off-by: Anthony Pighin <anthony.pighin@nokia.com>
-Link: https://patch.msgid.link/BN0PR08MB69510928028C933749F4139383D1A@BN0PR08MB6951.namprd08.prod.outlook.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-abx80x.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/ntfs3/super.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/rtc/rtc-abx80x.c b/drivers/rtc/rtc-abx80x.c
-index 3fee27914ba80..5f3a3e60a19d0 100644
---- a/drivers/rtc/rtc-abx80x.c
-+++ b/drivers/rtc/rtc-abx80x.c
-@@ -933,6 +933,8 @@ static int abx80x_probe(struct i2c_client *client)
- 			client->irq = 0;
- 		}
- 	}
-+	if (client->irq <= 0)
-+		clear_bit(RTC_FEATURE_ALARM, priv->rtc->features);
- 
- 	err = rtc_add_group(priv->rtc, &rtc_calib_attr_group);
- 	if (err) {
+diff --git a/fs/ntfs3/super.c b/fs/ntfs3/super.c
+index 89d126c155c7d..1af1500ec24b6 100644
+--- a/fs/ntfs3/super.c
++++ b/fs/ntfs3/super.c
+@@ -1235,8 +1235,13 @@ static int ntfs_fill_super(struct super_block *sb, struct fs_context *fc)
+ 				      le32_to_cpu(attr->res.data_size) >> 1,
+ 				      UTF16_LITTLE_ENDIAN, sbi->volume.label,
+ 				      sizeof(sbi->volume.label));
+-		if (err < 0)
++		if (err < 0) {
+ 			sbi->volume.label[0] = 0;
++		} else if (err >= sizeof(sbi->volume.label)) {
++			sbi->volume.label[sizeof(sbi->volume.label) - 1] = 0;
++		} else {
++			sbi->volume.label[err] = 0;
++		}
+ 	} else {
+ 		/* Should we break mounting here? */
+ 		//err = -EINVAL;
 -- 
 2.53.0
 
