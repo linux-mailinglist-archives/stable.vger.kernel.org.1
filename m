@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-250995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251966-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8AHeB2vsDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250995-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:16:27 +0200
+	id iMBQG5T9DWok5QUAu9opvQ
+	(envelope-from <stable+bounces-251966-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:29:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A695593367
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:16:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B10B559658D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:29:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A24EF3086E8C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:08:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 33308376AD9E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:49:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64C773ED5C8;
-	Wed, 20 May 2026 17:07:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2572B233933;
+	Wed, 20 May 2026 17:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cO37vAeR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VRzAk8RY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841323F44D9;
-	Wed, 20 May 2026 17:07:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF396369D7E;
+	Wed, 20 May 2026 17:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296830; cv=none; b=F1pxgV19dcFLQ9GOKf7Bbu+ZG+owfrzx+iaMV2NeCtlOa+59h9o1r6NSofG31hgK1DAxqvW3ybkjnb+uP0HND/h48IkRjto4j2YWPhZQDdlPwoxUnIrfWaGSMIpnbRiIuYbH0VllLYXtGmIhL47lYgRh272qdQAV7rHXE5cRJUU=
+	t=1779299393; cv=none; b=VqwPqEIAHY5fvg9qv8YhlTYvonorcrjMJujUKWXiWlhx0hqz0WWiQKNLI8X2JcplnE1M2AsbebNyrCW+Wx3DNX3snPtZAIXwi4r0gzEQKROuGbNUP5Rrk4cacGHvp3W+NZIkdm/AVNBEIbPwMr37LSEALgmiyixRTBCw7Nbmjp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296830; c=relaxed/simple;
-	bh=ZU7odlbl7Pv3Elx/XZTuVWIMl3/1epRLojqzegAe9h4=;
+	s=arc-20240116; t=1779299393; c=relaxed/simple;
+	bh=ZQ/BFJld5+i8VwaLINPmh5NbtVlJ98rlaw8fmgJjYDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GMZNKyqqzuXBLAFlLWGMThMYgiTTRtWrLRouGOQDgiowojAr2WD80aLIxRclMK6QJf2XP5sbfX8kKd9A3r5zLh1GIRKGKVgcQxBcVBU+En+85FilFPXJpjXZoJmFMvFEqvqC/zNb4DjLgc6Oayr3tLpCS8WOm3/aSdc7WF19So8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cO37vAeR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31BA21F000E9;
-	Wed, 20 May 2026 17:07:07 +0000 (UTC)
+	 MIME-Version; b=UyDNFIHVoaDjtJiUfK6Xej0pRzzfPFlAAYCHZSzmouPZ3mTtu4yrKdM04Hcjk7FLf/uL4i3CrYe4k9tS3s/9px6dfCjiU/KH5SFEnQ/qsBnO9F7ioij0k1eQUaL5cDWyYyQI4rAcv5SBJG41s9YwRS8pdVFjwRibXBdrEix3v+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VRzAk8RY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B44D1F00896;
+	Wed, 20 May 2026 17:49:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296827;
-	bh=xj/tW+dKwrwlWm+i4tl/4yvvO1jgeIj2LaeErXBkiJ4=;
+	s=korg; t=1779299392;
+	bh=iFpvIN9jmqtGova8Ukb87bxpnCmgIgkfPh3BpAuSeUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cO37vAeRaPa5CxvtxeQaQarFoDWrPBXtvWPrNAaO1VapuRcri+epKhn9osG6Mk1e7
-	 yLqMcZ1M5KYcCp2a7RbmRQrOHeIsoOtdYCPVAFDiJzAlfb8sIYrGESRvYOjkkBZYxd
-	 w/DbnR2NwSzfrOCi7cOJS8RcJnpZs5zJEWU3HV7Q=
+	b=VRzAk8RYgX2xn2BRZ4CMzpEAoSdASoxTVRC/9RGL0lpb0HCSQKUTJd9a3HtOZAXI6
+	 f3J+Hdq2yiL8YC4hS9xNRxrYrwUBnY2p7moNX7G/GgIFOW8dnHzI4nLoJdyMkyXRJP
+	 yRU6z6deqmsV6Ou8G4yIpXAFYY4FZHfPa/3Jmlww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0946/1146] net/sched: taprio: fix NULL pointer dereference in class dump
+Subject: [PATCH 6.18 713/957] tcp: send a challenge ACK on SEG.ACK > SND.NXT
 Date: Wed, 20 May 2026 18:19:56 +0200
-Message-ID: <20260520162209.641856249@linuxfoundation.org>
+Message-ID: <20260520162150.008766991@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,153 +69,116 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,mojatatu.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-250995-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251966-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,mojatatu.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,asu.edu:email,msgid.link:url]
-X-Rspamd-Queue-Id: 9A695593367
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: B10B559658D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit 3d07ca5c0fae311226f737963984bd94bb159a87 ]
+[ Upstream commit 42726ec644cbdde0035c3e0417fee8ed9547e120 ]
 
-When a TAPRIO child qdisc is deleted via RTM_DELQDISC, taprio_graft()
-is called with new == NULL and stores NULL into q->qdiscs[cl - 1].
-Subsequent RTM_GETTCLASS dump operations walk all classes via
-taprio_walk() and call taprio_dump_class(), which calls taprio_leaf()
-returning the NULL pointer, then dereferences it to read child->handle,
-causing a kernel NULL pointer dereference.
+RFC 5961 Section 5.2 validates an incoming segment's ACK value
+against the range [SND.UNA - MAX.SND.WND, SND.NXT] and states:
 
-The bug is reachable with namespace-scoped CAP_NET_ADMIN on any kernel
-with CONFIG_NET_SCH_TAPRIO enabled. On systems with unprivileged user
-namespaces enabled, an unprivileged local user can trigger a kernel
-panic by creating a taprio qdisc inside a new network namespace,
-grafting an explicit child qdisc, deleting it, and requesting a class
-dump. The RTM_GETTCLASS dump itself requires no capability.
+  "All incoming segments whose ACK value doesn't satisfy the above
+   condition MUST be discarded and an ACK sent back."
 
- Oops: general protection fault, probably for non-canonical address 0xdffffc0000000007: 0000 [#1] SMP KASAN NOPTI
- KASAN: null-ptr-deref in range [0x0000000000000038-0x000000000000003f]
- RIP: 0010:taprio_dump_class (net/sched/sch_taprio.c:2478)
- Call Trace:
-  <TASK>
-  tc_fill_tclass (net/sched/sch_api.c:1966)
-  qdisc_class_dump (net/sched/sch_api.c:2326)
-  taprio_walk (net/sched/sch_taprio.c:2514)
-  tc_dump_tclass_qdisc (net/sched/sch_api.c:2352)
-  tc_dump_tclass_root (net/sched/sch_api.c:2370)
-  tc_dump_tclass (net/sched/sch_api.c:2431)
-  rtnl_dumpit (net/core/rtnetlink.c:6864)
-  netlink_dump (net/netlink/af_netlink.c:2325)
-  rtnetlink_rcv_msg (net/core/rtnetlink.c:6959)
-  netlink_rcv_skb (net/netlink/af_netlink.c:2550)
-  </TASK>
+Commit 354e4aa391ed ("tcp: RFC 5961 5.2 Blind Data Injection Attack
+Mitigation") opted Linux into this mitigation and implements the
+challenge ACK on the lower side (SEG.ACK < SND.UNA - MAX.SND.WND),
+but the symmetric upper side (SEG.ACK > SND.NXT) still takes the
+pre-RFC-5961 path and silently returns
+SKB_DROP_REASON_TCP_ACK_UNSENT_DATA, even though RFC 793 Section 3.9
+(now RFC 9293 Section 3.10.7.4) has always required:
 
-Fix this by substituting &noop_qdisc when new is NULL in
-taprio_graft(), a common pattern used by other qdiscs (e.g.,
-multiq_graft()) to ensure the q->qdiscs[] slots are never NULL.
-This makes control-plane dump paths safe without requiring individual
-NULL checks.
+  "If the ACK acknowledges something not yet sent (SEG.ACK > SND.NXT)
+   then send an ACK, drop the segment, and return."
 
-Since the data-plane paths (taprio_enqueue and taprio_dequeue_from_txq)
-previously had explicit NULL guards that would drop/skip the packet
-cleanly, update those checks to test for &noop_qdisc instead. Without
-this, packets would reach taprio_enqueue_one() which increments the root
-qdisc's qlen and backlog before calling the child's enqueue; noop_qdisc
-drops the packet but those counters are never rolled back, permanently
-inflating the root qdisc's statistics.
+Complete the mitigation by sending a challenge ACK on that branch,
+reusing the existing tcp_send_challenge_ack() path which already
+enforces the per-socket RFC 5961 Section 7 rate limit via
+__tcp_oow_rate_limited().  FLAG_NO_CHALLENGE_ACK is honoured for
+symmetry with the lower-edge case.
 
-After this change *old can be a valid qdisc, NULL, or &noop_qdisc.
-Only call qdisc_put(*old) in the first case to avoid decreasing
-noop_qdisc's refcount, which was never increased.
+Update the existing tcp_ts_recent_invalid_ack.pkt selftest, which
+drives this exact path, to consume the new challenge ACK.
 
-Fixes: 665338b2a7a0 ("net/sched: taprio: dump class stats for the actual q->qdiscs[]")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Tested-by: Weiming Shi <bestswngs@gmail.com>
-Link: https://patch.msgid.link/20260422161958.2517539-3-bestswngs@gmail.com
+Fixes: 354e4aa391ed ("tcp: RFC 5961 5.2 Blind Data Injection Attack Mitigation")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260422123605.320000-2-jiayuan.chen@linux.dev
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_taprio.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ net/ipv4/tcp_input.c                                   | 10 +++++++---
+ .../net/packetdrill/tcp_ts_recent_invalid_ack.pkt      |  4 +++-
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index 0316f2dee06ac..3c85ef1ef4818 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -634,7 +634,7 @@ static int taprio_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	queue = skb_get_queue_mapping(skb);
- 
- 	child = q->qdiscs[queue];
--	if (unlikely(!child))
-+	if (unlikely(child == &noop_qdisc))
- 		return qdisc_drop(skb, sch, to_free);
- 
- 	if (taprio_skb_exceeds_queue_max_sdu(sch, skb)) {
-@@ -717,7 +717,7 @@ static struct sk_buff *taprio_dequeue_from_txq(struct Qdisc *sch, int txq,
- 	int len;
- 	u8 tc;
- 
--	if (unlikely(!child))
-+	if (unlikely(child == &noop_qdisc))
- 		return NULL;
- 
- 	if (TXTIME_ASSIST_IS_ENABLED(q->flags))
-@@ -2184,6 +2184,9 @@ static int taprio_graft(struct Qdisc *sch, unsigned long cl,
- 	if (!dev_queue)
- 		return -EINVAL;
- 
-+	if (!new)
-+		new = &noop_qdisc;
-+
- 	if (dev->flags & IFF_UP)
- 		dev_deactivate(dev);
- 
-@@ -2197,14 +2200,14 @@ static int taprio_graft(struct Qdisc *sch, unsigned long cl,
- 	*old = q->qdiscs[cl - 1];
- 	if (FULL_OFFLOAD_IS_ENABLED(q->flags)) {
- 		WARN_ON_ONCE(dev_graft_qdisc(dev_queue, new) != *old);
--		if (new)
-+		if (new != &noop_qdisc)
- 			qdisc_refcount_inc(new);
--		if (*old)
-+		if (*old && *old != &noop_qdisc)
- 			qdisc_put(*old);
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 5fb5f3f6393c1..b5cf32a56c04a 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -4025,11 +4025,15 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
+ 		goto old_ack;
  	}
  
- 	q->qdiscs[cl - 1] = new;
--	if (new)
-+	if (new != &noop_qdisc)
- 		new->flags |= TCQ_F_ONETXQUEUE | TCQ_F_NOPARENT;
+-	/* If the ack includes data we haven't sent yet, discard
+-	 * this segment (RFC793 Section 3.9).
++	/* If the ack includes data we haven't sent yet, drop the
++	 * segment.  RFC 793 Section 3.9 and RFC 5961 Section 5.2
++	 * require us to send an ACK back in that case.
+ 	 */
+-	if (after(ack, tp->snd_nxt))
++	if (after(ack, tp->snd_nxt)) {
++		if (!(flag & FLAG_NO_CHALLENGE_ACK))
++			tcp_send_challenge_ack(sk, false);
+ 		return -SKB_DROP_REASON_TCP_ACK_UNSENT_DATA;
++	}
  
- 	if (dev->flags & IFF_UP)
+ 	if (after(ack, prior_snd_una)) {
+ 		flag |= FLAG_SND_UNA_ADVANCED;
+diff --git a/tools/testing/selftests/net/packetdrill/tcp_ts_recent_invalid_ack.pkt b/tools/testing/selftests/net/packetdrill/tcp_ts_recent_invalid_ack.pkt
+index 174ce9a1bfc07..ee6baf7c36cfa 100644
+--- a/tools/testing/selftests/net/packetdrill/tcp_ts_recent_invalid_ack.pkt
++++ b/tools/testing/selftests/net/packetdrill/tcp_ts_recent_invalid_ack.pkt
+@@ -19,7 +19,9 @@
+ 
+ // bad packet with high tsval (its ACK sequence is above our sndnxt)
+    +0 < F. 1:1(0) ack 9999 win 20000 <nop,nop,TS val 200000 ecr 100>
+-
++// Challenge ACK for SEG.ACK > SND.NXT (RFC 5961 5.2 / RFC 793 3.9).
++// ecr=200 (not 200000) proves ts_recent was not updated from the bad packet.
++   +0 > . 1:1(0) ack 1 <nop,nop,TS val 200 ecr 200>
+ 
+    +0 < . 1:1001(1000) ack 1 win 20000 <nop,nop,TS val 201 ecr 100>
+    +0 > . 1:1(0) ack 1001 <nop,nop,TS val 200 ecr 201>
 -- 
 2.53.0
 
