@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-250934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251862-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QAm7GbnrDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250934-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:13:29 +0200
+	id wKO4ELH/DWpV5QUAu9opvQ
+	(envelope-from <stable+bounces-251862-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:38:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECC9F593198
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:13:28 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 467D5596D90
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:38:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A9876303EEA1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:05:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D4700325AE9C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:44:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 185143F39D7;
-	Wed, 20 May 2026 17:04:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C4003EDACC;
+	Wed, 20 May 2026 17:44:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ni3ei2iP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y6gDLeZG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCBE53FC5B4;
-	Wed, 20 May 2026 17:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5295E1C3BFC;
+	Wed, 20 May 2026 17:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296670; cv=none; b=gEoun9AXSm617BW8KEEbGDR/XjzsKvbi0ew+G1ueBQFGsFugsdPUtPkkpnwxerfICvrHtxJ1pEv5/ZfHCYwc98KP3yw4Y/GceFY+z7OJLvdm5Qab0DdbDvVpo8oM3XgzUuWZFPgdCxGorElXefUEsOwAXuAemAHW/d0wEFTKpxI=
+	t=1779299081; cv=none; b=hkVBML/lEENXffqvUVuATuIyhenS53I5T+NZbi0REFP/yZIGLZSgGDuKQocs2i5Z7gIH1Zq/cDDwpm08NWz1oBpWlBkREEmwjH0ySRoj+jDQdpgHMNFtmwUfAr9FdCQ/5kyZeeN1Ip9pbGcMzPSML6IhlUzy2le1E15bRxWFT+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296670; c=relaxed/simple;
-	bh=Tx1JCQCVXE8flOqS9cotWN1Kf/s8cN9VpLPIe5iY9Zg=;
+	s=arc-20240116; t=1779299081; c=relaxed/simple;
+	bh=svXUm58btVPlV43wKbHKOJErP2m1GlC5swMXRgpgO+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vE1wR9f3oD7NNmziFSvw7ht01gs1n3uY9wi1owz1Wrycz61hcJv7W2Z72piF+yNV8rbzC0LVm6NlIofCuJPfiiMnMro9c8DcFWzS0fwKaP+aZwMrwbuhebFA5OeDFQI//HXPEEyMuZWlhrg64yGfq68HJi5smRPQ0I1raJYdt/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ni3ei2iP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E30C1F00896;
-	Wed, 20 May 2026 17:04:29 +0000 (UTC)
+	 MIME-Version; b=cgmIF38vpwpgM9edVoJiyndmHQEvQsA8n4SfSXxz550qCSn/eKYsD2tSiSNkVaf5vU8HqtxdYd2RbJzGIkE/JBq1Y3bWUt37pLvqkGRSLPLDx+2ABWbKu/Ckf0w1GujoR8JlUqvT2MK4uW3vsOHPSehIlmctpUFSji01UJvFy5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y6gDLeZG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B54ED1F000E9;
+	Wed, 20 May 2026 17:44:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296669;
-	bh=oLvz2/0eLWTPr0quGleIkzTY40aAy3XEmAqZA5gty1U=;
+	s=korg; t=1779299080;
+	bh=Su3PebBN6O90E34xRgaJA1tomUC1oSSUHJF+cj+Xwow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ni3ei2iP7/oc/ePYqn/+2kRfnZVCNj71q+oo5ntksc/Ql+vf+M4b1cApY6/3dXF4m
-	 0h0v6iwBBtWWMGbODzbAi6bY1w7ciDr1vethOzwiwhsdfku2iwdplLv8SSNaiq4OAV
-	 1C2wbiblf/+/sc6m4UyTcF0TCAh71UOJPw9iOSsA=
+	b=Y6gDLeZGZyEuuYkpgxjg1JHFMRexZHJYEhO+fLd9JXQ2bIV+G0wAtEAlX4J0JdZMT
+	 U6sLMoMApJYLUd1O4v1PTkpI2kiA4Pfb9s2XgbClbvKs2tM3pJBdrpzsoMhaeVJGjW
+	 rQGda4Y5fmr6WVgDIXreigTtrNb4lU68dqnISA58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Joe Damato <joe@dama.to>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0887/1146] mailbox: mailbox-test: make data_ready a per-instance variable
+Subject: [PATCH 6.18 654/957] ipv6: fix possible UAF in icmpv6_rcv()
 Date: Wed, 20 May 2026 18:18:57 +0200
-Message-ID: <20260520162208.312448328@linuxfoundation.org>
+Message-ID: <20260520162148.715322567@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,108 +67,105 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250934-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sang-engineering.com,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251862-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,sang-engineering.com:email]
-X-Rspamd-Queue-Id: ECC9F593198
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,suse.de:email,dama.to:email]
+X-Rspamd-Queue-Id: 467D5596D90
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 6e937f4e769e60947909e3525965f0137b9039e8 ]
+[ Upstream commit f996edd7615e686ada141b7f3395025729ff8ccb ]
 
-While not the default case, multiple tests can be run simultaneously.
-Then, data_ready being a global variable will be overwritten and the
-per-instance lock will not help. Turn the global variable into a
-per-instance one to avoid this problem.
+Caching saddr and daddr before pskb_pull() is problematic
+since skb->head can change.
 
-Fixes: e339c80af95e ("mailbox: mailbox-test: don't rely on rx_buffer content to signal data ready")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Remove these temporary variables:
+
+- We only access &ipv6_hdr(skb)->saddr and &ipv6_hdr(skb)->daddr
+  when net_dbg_ratelimited() is called in the slow path.
+
+- Avoid potential future misuse after pskb_pull() call.
+
+Fixes: 4b3418fba0fe ("ipv6: icmp: include addresses in debug messages")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Reviewed-by: Joe Damato <joe@dama.to>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260416103505.2380753-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mailbox-test.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ net/ipv6/icmp.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
-index b341a64a1e312..41c8c7f3da9d8 100644
---- a/drivers/mailbox/mailbox-test.c
-+++ b/drivers/mailbox/mailbox-test.c
-@@ -28,8 +28,6 @@
- #define MBOX_HEXDUMP_MAX_LEN	(MBOX_HEXDUMP_LINE_LEN *		\
- 				 (MBOX_MAX_MSG_LEN / MBOX_BYTES_PER_LINE))
+diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
+index aa39aabe4417e..9cf0557d0ed29 100644
+--- a/net/ipv6/icmp.c
++++ b/net/ipv6/icmp.c
+@@ -904,7 +904,6 @@ static int icmpv6_rcv(struct sk_buff *skb)
+ 	struct net *net = dev_net_rcu(skb->dev);
+ 	struct net_device *dev = icmp6_dev(skb);
+ 	struct inet6_dev *idev = __in6_dev_get(dev);
+-	const struct in6_addr *saddr, *daddr;
+ 	struct icmp6hdr *hdr;
+ 	u8 type;
  
--static bool mbox_data_ready;
+@@ -935,12 +934,10 @@ static int icmpv6_rcv(struct sk_buff *skb)
+ 
+ 	__ICMP6_INC_STATS(dev_net_rcu(dev), idev, ICMP6_MIB_INMSGS);
+ 
+-	saddr = &ipv6_hdr(skb)->saddr;
+-	daddr = &ipv6_hdr(skb)->daddr;
 -
- struct mbox_test_device {
- 	struct device		*dev;
- 	void __iomem		*tx_mmio;
-@@ -42,6 +40,7 @@ struct mbox_test_device {
- 	spinlock_t		lock;
- 	struct mutex		mutex;
- 	wait_queue_head_t	waitq;
-+	bool			data_ready;
- 	struct fasync_struct	*async_queue;
- 	struct dentry		*root_debugfs_dir;
- };
-@@ -162,7 +161,7 @@ static bool mbox_test_message_data_ready(struct mbox_test_device *tdev)
- 	unsigned long flags;
- 
- 	spin_lock_irqsave(&tdev->lock, flags);
--	data_ready = mbox_data_ready;
-+	data_ready = tdev->data_ready;
- 	spin_unlock_irqrestore(&tdev->lock, flags);
- 
- 	return data_ready;
-@@ -227,7 +226,7 @@ static ssize_t mbox_test_message_read(struct file *filp, char __user *userbuf,
- 	*(touser + l) = '\0';
- 
- 	memset(tdev->rx_buffer, 0, MBOX_MAX_MSG_LEN);
--	mbox_data_ready = false;
-+	tdev->data_ready = false;
- 
- 	spin_unlock_irqrestore(&tdev->lock, flags);
- 
-@@ -297,7 +296,7 @@ static void mbox_test_receive_message(struct mbox_client *client, void *message)
- 				     message, MBOX_MAX_MSG_LEN);
- 		memcpy(tdev->rx_buffer, message, MBOX_MAX_MSG_LEN);
+ 	if (skb_checksum_validate(skb, IPPROTO_ICMPV6, ip6_compute_pseudo)) {
+ 		net_dbg_ratelimited("ICMPv6 checksum failed [%pI6c > %pI6c]\n",
+-				    saddr, daddr);
++				    &ipv6_hdr(skb)->saddr,
++				    &ipv6_hdr(skb)->daddr);
+ 		goto csum_error;
  	}
--	mbox_data_ready = true;
-+	tdev->data_ready = true;
- 	spin_unlock_irqrestore(&tdev->lock, flags);
  
- 	wake_up_interruptible(&tdev->waitq);
+@@ -1020,7 +1017,8 @@ static int icmpv6_rcv(struct sk_buff *skb)
+ 			break;
+ 
+ 		net_dbg_ratelimited("icmpv6: msg of unknown type [%pI6c > %pI6c]\n",
+-				    saddr, daddr);
++				    &ipv6_hdr(skb)->saddr,
++				    &ipv6_hdr(skb)->daddr);
+ 
+ 		/*
+ 		 * error of unknown type.
 -- 
 2.53.0
 
