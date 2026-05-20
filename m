@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252053-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +LsqMKjuDWpu4wUAu9opvQ
-	(envelope-from <stable+bounces-251085-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:26:00 +0200
+	id 4EFdK08EDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-252053-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:58:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68E50593A36
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:26:00 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D548C5977DF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:58:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D1C0E30E8C3C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:11:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 43A2331253FC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:53:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA6A83BBA0E;
-	Wed, 20 May 2026 17:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDD103F44CD;
+	Wed, 20 May 2026 17:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VuPX0j4n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2dMTVrmK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 928B0231842;
-	Wed, 20 May 2026 17:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B863A3E60;
+	Wed, 20 May 2026 17:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297060; cv=none; b=KfIcNY0EOrPOlKxuGUecqhlWTG67ka5TL8NirBbim3GnMaRDNA5wwJ9LNJOB4WVM2zMFFKLXgvav3dv5iwet0wNEEPz56iTUfcoKPNAiBfVy0ixXMygGB2F07wJLCXNYKiPp+xrkMiCjWCD2RjoWK2S7tYWCZdwrXqWeh95Rpzs=
+	t=1779299622; cv=none; b=bABlDzZpn980VQpVlHGSsDyu+zjJkFW5B6IELBpWiwXeN8+fRzHSiXZtR1QMiGm+P7H/ppYZLQ6DWKbisdiGynsik3rTiOIgWFO9EF1lN7j+dZcQJ+QuZFYxH1QopGFI7u5LaPcTIqjmGgqlR4BDzMhdc6EQHdkB6ESfT0mn9dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297060; c=relaxed/simple;
-	bh=ngMxNOuTHiQn5g/tBU4sFpe/Y5C36BJc/B/JcRVIqw0=;
+	s=arc-20240116; t=1779299622; c=relaxed/simple;
+	bh=04JJ5qgTPBGHacYaPhkQEIPn2yDIBvxdBfwHT1YCVcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mDFrP1Dyzj/aqI1lMud2z2vGHH6A2e5s6AYOlD44PX9xMB2Me75b6UBjAYHmCU3LGiSVfybeqbm1EogdLvktV3C2q/osByOVehVrKlvSCEuGIdfpxcYmx/ZVPqAVRACG6CJBIocnPQhAw3vG3y/+jm7QJJtWOk7Qn4I5odQ3wo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VuPX0j4n; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0313D1F000E9;
-	Wed, 20 May 2026 17:10:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IiKC0iM6HMy1/jMKX5L5R3fGw+RQgEKPydYfinm0PwvTpwN/kBs+kXrSXshjRK3bKs8EU0e3xWFGlOaYeQOeIAcN0qW9reVIWRxM4mVZToWajeeFuxzKlpT9FsX2KfaJt7Q1eyjYiNT/DPV2d64JItHsed8sm+iG1ldu6zQW3PE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2dMTVrmK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C0611F000E9;
+	Wed, 20 May 2026 17:53:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297059;
-	bh=4wwJY4X7qACYBTb+SYAQgspSvulU1Z9yXAs/iHZLWw8=;
+	s=korg; t=1779299621;
+	bh=RlnQjsDyUYr1AkgF/QBxeLjCNvyS7OdtQoP2zkpUi14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VuPX0j4n6JGxz0iOkt1Mo2sKd/uLIuUEwaVkwCtM/DddeW60/Rg5slzkrGRkIbEee
-	 KC1WufUYOkLl31aTqzrTKY/EHz8Od4ipC7fEfxEC/j49Mgjr6SwWtu9I51zopRXiUc
-	 63n/7yO0c8cDY3TDjQygE3ABTxANzh8nFqjFuJqw=
+	b=2dMTVrmKiOYqgvsiIIr9yiH77utwJLAQYO2OAmWfPGiqS0uOpi3Az/9tuDbowDmtJ
+	 jRDza+kjgt4OYwQaucwPnrUp3306MENNl8yjqmrEkLh7BfP3EM7wacSJ6KXWQ6ib/H
+	 GRvg54MGm5UyrvLILxoJGKCrPU4fgMG58d+vBdJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Yan <leo.yan@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Yinjie Yao <yinjie.yao@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 1034/1146] kselftest/arm64: Include <asm/ptrace.h> for user_gcs definition
+Subject: [PATCH 6.18 801/957] drm/amdgpu/vcn: set no_user_fence for VCN v4.0 enc ring
 Date: Wed, 20 May 2026 18:21:24 +0200
-Message-ID: <20260520162211.630707711@linuxfoundation.org>
+Message-ID: <20260520162151.937622676@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,94 +64,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251085-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-252053-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,arm.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 68E50593A36
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: D548C5977DF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Yinjie Yao <yinjie.yao@amd.com>
 
-[ Upstream commit bb7235e226888607e6aac1288062fcb1ac105589 ]
+[ Upstream commit 51f694221047c84fa185be98210eb2c354ffb8c6 ]
 
-kselftest includes kernel uAPI headers with option:
+VCN encoder and decoder rings do not support 64-bit user fence writes,
+reject CS submissions with user fences.
 
-  -isystem $(top_srcdir)/usr/include
-
-Include <asm/ptrace.h> in libc-gcs.c for the definition of struct
-user_gcs from the uAPI headers, and remove the redundant definition in
-gcs-util.h. This fixes a compilation error on systems where the
-toolchain defines NT_ARM_GCS.
-
-Fixes: a505a52b4e29 ("kselftest/arm64: Add a GCS test program built with the system libc")
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: 8da1170a16e4 ("drm/amdgpu: add VCN4 ip block support")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit fd852c048b46f9825e904a4f3f4538fe9d8827d9)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/arm64/gcs/gcs-util.h | 6 ------
- tools/testing/selftests/arm64/gcs/libc-gcs.c | 1 +
- 2 files changed, 1 insertion(+), 6 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/arm64/gcs/gcs-util.h b/tools/testing/selftests/arm64/gcs/gcs-util.h
-index c99a6b39ac147..7a81bb07ed4b8 100644
---- a/tools/testing/selftests/arm64/gcs/gcs-util.h
-+++ b/tools/testing/selftests/arm64/gcs/gcs-util.h
-@@ -18,12 +18,6 @@
- 
- #ifndef NT_ARM_GCS
- #define NT_ARM_GCS 0x410
--
--struct user_gcs {
--	__u64 features_enabled;
--	__u64 features_locked;
--	__u64 gcspr_el0;
--};
- #endif
- 
- /* Shadow Stack/Guarded Control Stack interface */
-diff --git a/tools/testing/selftests/arm64/gcs/libc-gcs.c b/tools/testing/selftests/arm64/gcs/libc-gcs.c
-index 17b2fabfec386..72e82bfbecc99 100644
---- a/tools/testing/selftests/arm64/gcs/libc-gcs.c
-+++ b/tools/testing/selftests/arm64/gcs/libc-gcs.c
-@@ -16,6 +16,7 @@
- 
- #include <asm/hwcap.h>
- #include <asm/mman.h>
-+#include <asm/ptrace.h>
- 
- #include <linux/compiler.h>
- 
+diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
+index 64bda0e944a7c..21e40eb2078d1 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
+@@ -1995,6 +1995,7 @@ static struct amdgpu_ring_funcs vcn_v4_0_unified_ring_vm_funcs = {
+ 	.type = AMDGPU_RING_TYPE_VCN_ENC,
+ 	.align_mask = 0x3f,
+ 	.nop = VCN_ENC_CMD_NO_OP,
++	.no_user_fence = true,
+ 	.extra_bytes = sizeof(struct amdgpu_vcn_rb_metadata),
+ 	.get_rptr = vcn_v4_0_unified_ring_get_rptr,
+ 	.get_wptr = vcn_v4_0_unified_ring_get_wptr,
 -- 
 2.53.0
 
