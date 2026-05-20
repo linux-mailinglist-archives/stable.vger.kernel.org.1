@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-250107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250063-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ULdhBaDtDWpZ4wUAu9opvQ
-	(envelope-from <stable+bounces-250107-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:21:36 +0200
+	id cOCMLILnDWrO4gUAu9opvQ
+	(envelope-from <stable+bounces-250063-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:55:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97CFC5936C4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:21:35 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9C9F592A74
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:55:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DC9933449574
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:31:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3593F3198AC3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:29:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8439A3E120E;
-	Wed, 20 May 2026 16:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F563F20E8;
+	Wed, 20 May 2026 16:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zw5U5gev"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2KohCOhb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F703D7D74;
-	Wed, 20 May 2026 16:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E92A352022;
+	Wed, 20 May 2026 16:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294562; cv=none; b=uULsDZJq7dfSVMxRh+LBClDao7OgE4G2ud+1sii/WjEywhU2eeVsWEbmbVb2sE1by6sVvlBqiODwLeMj9nDum1bEHUKiYUFVjRswa0n/pczhZbsvtI1/2zVRdQ8CJc4lr9qpQxYkAoS7MJ0MtQGl7Llk8kgjWAehwh86XpPBHX0=
+	t=1779294449; cv=none; b=tPS7h1igWvaaW5ytyO4n1AyDfTAb7mrUay9X41wCKqCVZaABzd3Z21bP7mX9ExqzkbgsrQ6la7Hdz0eAldNk+OKM/5FCF3toAhMpHh6FftVubJteokO2WgNjrQsEOvfBehbuyV9b+YPMzublySuzL4T6uKYaOToTERmjkpdY694=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294562; c=relaxed/simple;
-	bh=uhFeVCit7efG7joLFTKXrCWeiq8/l8BOELpPenAxzlA=;
+	s=arc-20240116; t=1779294449; c=relaxed/simple;
+	bh=VOE7Oc7gcusPuiu6yvDehfdF/yfWVBmCifzYdO3uv30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q2YLkwtYjzTEZ+KZGxIzb9sST7/QYPPifEGWc3FCBd54bLMmJs0ybVDmZ51hADU1Ys71jZLhErho+whEtPB6hwg4k6TM8yYs+7qPRVIbAq5t1DgJX63oO8F3X1lEl6ep56Yj5q0auhRu0cAK/DR94ABWa+1aYj1bJ1RWn4cxO50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zw5U5gev; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B891F000E9;
-	Wed, 20 May 2026 16:29:20 +0000 (UTC)
+	 MIME-Version; b=evO6P/THq9fMUyMeYwA/g9F8TjOrNWmgI8KQLJ/KPoLEgDYjJuIfldOZp2wsAgdJfx657lcbVDfU+qHyl6khrv3ByToVl92FfRMxevEc2CSAxWRADFdeN0KvaTAobMLgJoQIgHhI/y1y3kX0/gfelY6gngXX0fBgXKG2cJPt+cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2KohCOhb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A28F1F00893;
+	Wed, 20 May 2026 16:27:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294561;
-	bh=EOs5zyqSXIhr4620jjo+kz0F0ZfKlUjKXXwrytNb6PM=;
+	s=korg; t=1779294448;
+	bh=zg6gYTHC0IaSMm9I7Q96WLsuisr87Am1XUpwv/03bKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Zw5U5gev6hEQ7ID04lwK7pBdadlWGZ831PyTxXv1soFg0eXbmmjwZRyh8g2/N5bfL
-	 4+TJdevMjv2EaODAJyDR4IyaC6bsik2+S72WrYrLm7YOaYNqA7Yh1ceHwfc3viDy+q
-	 94aHwWd8JIr82xIw9SVyU2plFoSlb/0eAI9nMDns=
+	b=2KohCOhbjdtFX+/51Xjfeli2uZbC9LBQZ2xh4dsKTus3/WUVxBGuKEVWSa+ejame1
+	 a3GsCzhwBBmLbh230doaSXgzby7P07CEZ286FlnpYAbejlp0aInQjEXOoiLGlbWLFa
+	 /BQ9OqYwdiblPyh1EAiA4k+vknY0w/3L3YDy1evw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Bert Karwatzki <spasswolf@web.de>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
 	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0035/1146] amd-pstate: Update cppc_req_cached in fast_switch case
-Date: Wed, 20 May 2026 18:04:45 +0200
-Message-ID: <20260520162149.176615334@linuxfoundation.org>
+	Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Gary Guo <gary@garyguo.net>
+Subject: [PATCH 7.0 0036/1146] cpufreq: Pass the policy to cpufreq_driver->adjust_perf()
+Date: Wed, 20 May 2026 18:04:46 +0200
+Message-ID: <20260520162149.199317399@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -68,30 +73,31 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,web.de,linaro.org,amd.com,oss.qualcomm.com,kernel.org,garyguo.net];
+	TAGGED_FROM(0.00)[bounces-250063-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250107-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
-X-Rspamd-Queue-Id: 97CFC5936C4
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,garyguo.net:email,qualcomm.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: D9C9F592A74
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,43 +105,191 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Gautham R. Shenoy <gautham.shenoy@amd.com>
+From: K Prateek Nayak <kprateek.nayak@amd.com>
 
-[ Upstream commit fcc25a291fbdca2c06c2c6602532050873f0c9de ]
+[ Upstream commit c03791085adcd61fa9b766ab303c7d0941d7378d ]
 
-The function msr_update_perf() does not cache the new value that is
-written to MSR_AMD_CPPC_REQ into the variable cpudata->cppc_req_cached
-when the update is happening from the fast path.
+cpufreq_cpu_get() can sleep on PREEMPT_RT in presence of concurrent
+writer(s), however amd-pstate depends on fetching the cpudata via the
+policy's driver data which necessitates grabbing the reference.
 
-Fix that by caching the value everytime the MSR_AMD_CPPC_REQ gets
-updated.
+Since schedutil governor can call "cpufreq_driver->update_perf()"
+during sched_tick/enqueue/dequeue with rq_lock held and IRQs disabled,
+fetching the policy object using the cpufreq_cpu_get() helper in the
+scheduler fast-path leads to "BUG: scheduling while atomic" on
+PREEMPT_RT [1].
 
-This issue was discovered by Claude Opus 4.6 with the aid of Chris
-Mason's AI review-prompts
-(https://github.com/masoncl/review-prompts/tree/main/kernel).
+Pass the cached cpufreq policy object in sg_policy to the update_perf()
+instead of just the CPU. The CPU can be inferred using "policy->cpu".
 
-Assisted-by: Claude:claude-opus-4.6 review-prompts/linux
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Fixes: fff395796917 ("cpufreq/amd-pstate: Always write EPP value when updating perf")
-Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+The lifetime of cpufreq_policy object outlasts that of the governor and
+the cpufreq driver (allocated when the CPU is onlined and only reclaimed
+when the CPU is offlined / the CPU device is removed) which makes it
+safe to be referenced throughout the governor's lifetime.
+
+Closes:https://lore.kernel.org/all/20250731092316.3191-1-spasswolf@web.de/ [1]
+
+Fixes: 1d215f0319c2 ("cpufreq: amd-pstate: Add fast switch function for AMD P-State")
+Reported-by: Bert Karwatzki <spasswolf@web.de>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Acked-by: Gary Guo <gary@garyguo.net> # Rust
+Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Reviewed-by: Zhongqiu Han <zhongqiu.han@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260316081849.19368-3-kprateek.nayak@amd.com
 Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/amd-pstate.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/cpufreq/amd-pstate.c     |  3 +--
+ drivers/cpufreq/cpufreq.c        |  6 +++---
+ drivers/cpufreq/intel_pstate.c   |  4 ++--
+ include/linux/cpufreq.h          |  4 ++--
+ kernel/sched/cpufreq_schedutil.c |  5 +++--
+ rust/kernel/cpufreq.rs           | 13 ++++++-------
+ 6 files changed, 17 insertions(+), 18 deletions(-)
 
 diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
-index d57969c72c9dc..24cdeffbcd40e 100644
+index 24cdeffbcd40e..78b70bdcb008f 100644
 --- a/drivers/cpufreq/amd-pstate.c
 +++ b/drivers/cpufreq/amd-pstate.c
-@@ -261,7 +261,6 @@ static int msr_update_perf(struct cpufreq_policy *policy, u8 min_perf,
+@@ -712,13 +712,12 @@ static unsigned int amd_pstate_fast_switch(struct cpufreq_policy *policy,
+ 	return policy->cur;
+ }
  
- 	if (fast_switch) {
- 		wrmsrq(MSR_AMD_CPPC_REQ, value);
--		return 0;
- 	} else {
- 		int ret = wrmsrq_on_cpu(cpudata->cpu, MSR_AMD_CPPC_REQ, value);
+-static void amd_pstate_adjust_perf(unsigned int cpu,
++static void amd_pstate_adjust_perf(struct cpufreq_policy *policy,
+ 				   unsigned long _min_perf,
+ 				   unsigned long target_perf,
+ 				   unsigned long capacity)
+ {
+ 	u8 max_perf, min_perf, des_perf, cap_perf;
+-	struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(cpu);
+ 	struct amd_cpudata *cpudata;
+ 	union perf_cached perf;
  
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index 1f794524a1d92..44441ceedb768 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -2228,7 +2228,7 @@ EXPORT_SYMBOL_GPL(cpufreq_driver_fast_switch);
+ 
+ /**
+  * cpufreq_driver_adjust_perf - Adjust CPU performance level in one go.
+- * @cpu: Target CPU.
++ * @policy: cpufreq policy object of the target CPU.
+  * @min_perf: Minimum (required) performance level (units of @capacity).
+  * @target_perf: Target (desired) performance level (units of @capacity).
+  * @capacity: Capacity of the target CPU.
+@@ -2247,12 +2247,12 @@ EXPORT_SYMBOL_GPL(cpufreq_driver_fast_switch);
+  * parallel with either ->target() or ->target_index() or ->fast_switch() for
+  * the same CPU.
+  */
+-void cpufreq_driver_adjust_perf(unsigned int cpu,
++void cpufreq_driver_adjust_perf(struct cpufreq_policy *policy,
+ 				 unsigned long min_perf,
+ 				 unsigned long target_perf,
+ 				 unsigned long capacity)
+ {
+-	cpufreq_driver->adjust_perf(cpu, min_perf, target_perf, capacity);
++	cpufreq_driver->adjust_perf(policy, min_perf, target_perf, capacity);
+ }
+ 
+ /**
+diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
+index 11c58af419006..0f50034e4b680 100644
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -3239,12 +3239,12 @@ static unsigned int intel_cpufreq_fast_switch(struct cpufreq_policy *policy,
+ 	return target_pstate * cpu->pstate.scaling;
+ }
+ 
+-static void intel_cpufreq_adjust_perf(unsigned int cpunum,
++static void intel_cpufreq_adjust_perf(struct cpufreq_policy *policy,
+ 				      unsigned long min_perf,
+ 				      unsigned long target_perf,
+ 				      unsigned long capacity)
+ {
+-	struct cpudata *cpu = all_cpu_data[cpunum];
++	struct cpudata *cpu = all_cpu_data[policy->cpu];
+ 	u64 hwp_cap = READ_ONCE(cpu->hwp_cap_cached);
+ 	int old_pstate = cpu->pstate.current_pstate;
+ 	int cap_pstate, min_pstate, max_pstate, target_pstate;
+diff --git a/include/linux/cpufreq.h b/include/linux/cpufreq.h
+index cc894fc389710..4317c5a312bd1 100644
+--- a/include/linux/cpufreq.h
++++ b/include/linux/cpufreq.h
+@@ -372,7 +372,7 @@ struct cpufreq_driver {
+ 	 * conditions) scale invariance can be disabled, which causes the
+ 	 * schedutil governor to fall back to the latter.
+ 	 */
+-	void		(*adjust_perf)(unsigned int cpu,
++	void		(*adjust_perf)(struct cpufreq_policy *policy,
+ 				       unsigned long min_perf,
+ 				       unsigned long target_perf,
+ 				       unsigned long capacity);
+@@ -617,7 +617,7 @@ struct cpufreq_governor {
+ /* Pass a target to the cpufreq driver */
+ unsigned int cpufreq_driver_fast_switch(struct cpufreq_policy *policy,
+ 					unsigned int target_freq);
+-void cpufreq_driver_adjust_perf(unsigned int cpu,
++void cpufreq_driver_adjust_perf(struct cpufreq_policy *policy,
+ 				unsigned long min_perf,
+ 				unsigned long target_perf,
+ 				unsigned long capacity);
+diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
+index 153232dd8276a..ae9fd211cec1f 100644
+--- a/kernel/sched/cpufreq_schedutil.c
++++ b/kernel/sched/cpufreq_schedutil.c
+@@ -461,6 +461,7 @@ static void sugov_update_single_perf(struct update_util_data *hook, u64 time,
+ 				     unsigned int flags)
+ {
+ 	struct sugov_cpu *sg_cpu = container_of(hook, struct sugov_cpu, update_util);
++	struct sugov_policy *sg_policy = sg_cpu->sg_policy;
+ 	unsigned long prev_util = sg_cpu->util;
+ 	unsigned long max_cap;
+ 
+@@ -482,10 +483,10 @@ static void sugov_update_single_perf(struct update_util_data *hook, u64 time,
+ 	if (sugov_hold_freq(sg_cpu) && sg_cpu->util < prev_util)
+ 		sg_cpu->util = prev_util;
+ 
+-	cpufreq_driver_adjust_perf(sg_cpu->cpu, sg_cpu->bw_min,
++	cpufreq_driver_adjust_perf(sg_policy->policy, sg_cpu->bw_min,
+ 				   sg_cpu->util, max_cap);
+ 
+-	sg_cpu->sg_policy->last_freq_update_time = time;
++	sg_policy->last_freq_update_time = time;
+ }
+ 
+ static unsigned int sugov_next_freq_shared(struct sugov_cpu *sg_cpu, u64 time)
+diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
+index f5adee48d40cb..d8d26870bea2e 100644
+--- a/rust/kernel/cpufreq.rs
++++ b/rust/kernel/cpufreq.rs
+@@ -1257,18 +1257,17 @@ impl<T: Driver> Registration<T> {
+     /// # Safety
+     ///
+     /// - This function may only be called from the cpufreq C infrastructure.
++    /// - The pointer arguments must be valid pointers.
+     unsafe extern "C" fn adjust_perf_callback(
+-        cpu: c_uint,
++        ptr: *mut bindings::cpufreq_policy,
+         min_perf: c_ulong,
+         target_perf: c_ulong,
+         capacity: c_ulong,
+     ) {
+-        // SAFETY: The C API guarantees that `cpu` refers to a valid CPU number.
+-        let cpu_id = unsafe { CpuId::from_u32_unchecked(cpu) };
+-
+-        if let Ok(mut policy) = PolicyCpu::from_cpu(cpu_id) {
+-            T::adjust_perf(&mut policy, min_perf, target_perf, capacity);
+-        }
++        // SAFETY: The `ptr` is guaranteed to be valid by the contract with the C code for the
++        // lifetime of `policy`.
++        let policy = unsafe { Policy::from_raw_mut(ptr) };
++        T::adjust_perf(policy, min_perf, target_perf, capacity);
+     }
+ 
+     /// Driver's `get_intermediate` callback.
 -- 
 2.53.0
 
