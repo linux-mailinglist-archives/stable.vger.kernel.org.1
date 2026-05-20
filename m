@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-250696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252274-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IKD4BbvwDWqo4wUAu9opvQ
-	(envelope-from <stable+bounces-250696-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:34:51 +0200
+	id MHowJdURDmoJ6AUAu9opvQ
+	(envelope-from <stable+bounces-252274-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:56:05 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18629594003
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:34:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93B96598E92
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:56:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E3F2F316C878
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:56:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DCD613160601
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:04:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FDB13D8129;
-	Wed, 20 May 2026 16:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 355D73F4DD6;
+	Wed, 20 May 2026 18:04:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gkmAQElh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tluofZPR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5149D3D8914;
-	Wed, 20 May 2026 16:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8A43F23C5;
+	Wed, 20 May 2026 18:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296077; cv=none; b=XlWEAYtBA0KVYckgXMdSu6P5iLzPr4g94V/qz25tbWAwvblVisTFfg+7u225FBxS7lLk21dla/qOzFLd9dwa2Fqa4UH0/EMDEMzUkery/jTtkvcIj7fpefqB4r6xnBEK/0gq90u1Bfvj7XMOmM0dLKhLAJgYXGe4f4AXslJsmlM=
+	t=1779300247; cv=none; b=GEz/prE6NHPUMRTg75GhHRdrKGAQ83SiRMVtxpmqxI7BGvfdwvTt2Ty030ZR+T5gGjtR/cqqpqofxaiTwccuNegFI6sICwaXC/JbuGW89nHxeGmPJNmurBQD6BgvKhqpjOiE9LCZXhQyMohWfsNDaTVpEBpBjTT8FRQjdvL5wrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296077; c=relaxed/simple;
-	bh=lxSfV2QjgngY0mzVwwrf9Q1VNBFN+ukZ6aHlOr7TNSQ=;
+	s=arc-20240116; t=1779300247; c=relaxed/simple;
+	bh=UyfmklEKEGmwLdCYJbVU/WaZW1rzkeai1v3FZSOzbTU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hsoPV+CYrVOltKduqImmsYmYDkdj/2b196x1QjTJxJGUPZQQzpr84ey+8IxJEi5J9a0gJXmuSjnqSXkaRcRYh/SLsY3XprSGm2eU4FUtuBurtF/k4EUOayRz2ZUTMCjEVgqzb6X3MExwUTj7d2AWa53wRx/ghBzKRPH1VonWRYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gkmAQElh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5C2A1F000E9;
-	Wed, 20 May 2026 16:54:35 +0000 (UTC)
+	 MIME-Version; b=sHCohYh8PfpbtifZ8A+GlSIJvietbKj87EnY4QvfAYWRTk4vBuWOxlbEsMbPU3nwIYW3KrGbboFDAsmezM1AbpXGBf90YJu+kUPnuOg5gZODiYaLtpfPDx91Rq6O0dZ9AV27aqUSSYHDNLg50dotossdmwhmbmDg/S3SEzFko1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tluofZPR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EFA91F000E9;
+	Wed, 20 May 2026 18:04:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296076;
-	bh=CCWfoPBT2K9kh38f4f7nPJPi6hKyHXIDlDwwn9jRePU=;
+	s=korg; t=1779300245;
+	bh=HQLOJrTjDidNZa8DHpUqcah8c2S3De6EGJIccJixw38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gkmAQElhmfcnQH9VkIbmVs5tjWfh3CZyXx+0m4lgtpFS8lk2TKuAtHCAiP1Ps2kGR
-	 GRPqOtCdn5W9BBDgKYaFWFASc9rMpv2xgJjkGySJ6jAG+lUoZMM+5UhtS24/yYS3H7
-	 jqOc6hvzvcHUb6GutI7sa8Wuy9NCcCLIrH9TThxs=
+	b=tluofZPRdSHptmtKxg6eQgZvexcardTmin/QxY4iF+8zKQ3PVei1R/RmkwOCE0T+5
+	 B5F6wRHx2FPnoh7xidBocMxvzaPFcx8Q8FPk8ZEOxBf/L2x5H65GyAKNwr4cG6y9lx
+	 acswN12+IhD82pz7Sf648dLw/uoV2ViHXXl7LIPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7be88937363ac7ab7bb0@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Charles Perry <charles.perry@microchip.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0663/1146] fs/ntfs3: prevent uninitialized lcn caused by zero len
+Subject: [PATCH 6.12 102/666] net: phy: fix a return path in get_phy_c45_ids()
 Date: Wed, 20 May 2026 18:15:13 +0200
-Message-ID: <20260520162203.188129188@linuxfoundation.org>
+Message-ID: <20260520162113.433118283@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,100 +71,74 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-250696-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,qq.com,paragon-software.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-252274-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,7be88937363ac7ab7bb0];
+	TAGGED_RCPT(0.00)[stable,kernel];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,syzkaller.appspot.com:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 18629594003
+	DBL_BLOCKED_OPENRESOLVER(0.00)[microchip.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 93B96598E92
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Charles Perry <charles.perry@microchip.com>
 
-[ Upstream commit e98266e823a1fa06fe6499df61aeaac2fd6f7a49 ]
+[ Upstream commit 6f533abe7bbad2eef1e42c639b6bb9dad2b02362 ]
 
-syzbot reported a uninit-value in ntfs_iomap_begin [1].
+The return value of phy_c45_probe_present() is stored in "ret", not
+"phy_reg", fix this. "phy_reg" always has a positive value if we reach
+this return path (since it would have returned earlier otherwise), which
+means that the original goal of the patch of not considering -ENODEV
+fatal wasn't achieved.
 
-Since runs was not touched yet, run_lookup_entry() immediately fails
-and returns false, which makes the value of "*len" 0.
-Simultaneously, the new value and err value are also 0, causing the
-logic in attr_data_get_block_locked() to jump directly to ok, ultimately
-resulting in *lcn being triggered before it is set [1].
-
-In ntfs_iomap_begin(), the check for a 0 value in clen is moved forward
-to before updating lcn to avoid this [1].
-
-[1]
-BUG: KMSAN: uninit-value in ntfs_iomap_begin+0x8c0/0x1460 fs/ntfs3/inode.c:825
- ntfs_iomap_begin+0x8c0/0x1460 fs/ntfs3/inode.c:825
- iomap_iter+0x9b7/0x1540 fs/iomap/iter.c:110
-
-Local variable lcn created at:
- ntfs_iomap_begin+0x15d/0x1460 fs/ntfs3/inode.c:786
-
-Fixes: 10d7c95af043 ("fs/ntfs3: add delayed-allocation (delalloc) support")
-Reported-by: syzbot+7be88937363ac7ab7bb0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7be88937363ac7ab7bb0
-Tested-by: syzbot+7be88937363ac7ab7bb0@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: 17b447539408 ("net: phy: c45 scanning: Don't consider -ENODEV fatal")
+Signed-off-by: Charles Perry <charles.perry@microchip.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/20260409133654.3203336-1-charles.perry@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/inode.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/phy/phy_device.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index 6e65066ebcc1a..eac421cf98a87 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -822,6 +822,11 @@ static int ntfs_iomap_begin(struct inode *inode, loff_t offset, loff_t length,
- 		return err;
- 	}
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 7f995d0e51f7b..eb478e4961cb9 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -873,8 +873,8 @@ static int get_phy_c45_ids(struct mii_bus *bus, int addr,
+ 				/* returning -ENODEV doesn't stop bus
+ 				 * scanning
+ 				 */
+-				return (phy_reg == -EIO ||
+-					phy_reg == -ENODEV) ? -ENODEV : -EIO;
++				return (ret == -EIO ||
++					ret == -ENODEV) ? -ENODEV : -EIO;
  
-+	if (!clen) {
-+		/* broken file? */
-+		return -EINVAL;
-+	}
-+
- 	if (lcn == EOF_LCN) {
- 		/* request out of file. */
- 		if (flags & IOMAP_REPORT) {
-@@ -855,11 +860,6 @@ static int ntfs_iomap_begin(struct inode *inode, loff_t offset, loff_t length,
- 		return 0;
- 	}
- 
--	if (!clen) {
--		/* broken file? */
--		return -EINVAL;
--	}
--
- 	iomap->bdev = inode->i_sb->s_bdev;
- 	iomap->offset = offset;
- 	iomap->length = ((loff_t)clen << cluster_bits) - off;
+ 			if (!ret)
+ 				continue;
 -- 
 2.53.0
 
