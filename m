@@ -1,64 +1,66 @@
-Return-Path: <stable+bounces-252002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253102-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KCjKNRUhDmqI6QUAu9opvQ
-	(envelope-from <stable+bounces-252002-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:01:09 +0200
+	id kOmhIMccDmro6AUAu9opvQ
+	(envelope-from <stable+bounces-253102-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:42:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4119B59A621
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:01:09 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B11CE599FAC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:42:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 81F4B37AC289
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:51:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D03E03106D57
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:47:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08DF63F23CC;
-	Wed, 20 May 2026 17:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1334C47DF87;
+	Wed, 20 May 2026 18:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1bX2BEuw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XzAUwsfk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835CF3E5ECF;
-	Wed, 20 May 2026 17:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BC314014B4;
+	Wed, 20 May 2026 18:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299488; cv=none; b=EwQFtmRo6iHVP/poCkrAKu6ZaR21rlseHTEwlBcZIwLZ80Axzlhj/bp0BgtQt2449k5L9XD3hp1rqOEBpOolWgRdM1chFmZpClCWJb/0hLwrawWDbor8iKv0syXFbyLGRy8OQHMRMhJ3/7UxtVi9cxVICcraNF4ntIMeSnjMj5w=
+	t=1779302410; cv=none; b=qn93PNc/x7GfOag2NiEVV5R/1n/3sSNSXy9r42vGGdSX+Yk+KwfmMw5QsgNx/pNKwd4k/ndkbInZjI8SbWVbPcdBNUusvC9zPu67X9A2Hu6PGnkFsFvBaHsob23wTHNuhfk3pc828R+mqLCFO8xB6QDadZXNJFcibNPDM2QEh6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299488; c=relaxed/simple;
-	bh=jPkIfmZkmMX6D/q5a8RYtlZmJjM3qfmSu5qlop++J+M=;
+	s=arc-20240116; t=1779302410; c=relaxed/simple;
+	bh=eonR9oLji5tJPVfIOgdDVHIxNZ1rOmRY4rJl91xFW30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oWgtpJRjqouBQoLOIx9Mqq1iiZR1lofGVE4x5CzOVsep8MnE1eayZH3bHeVBNu4NBeIy6wWi/32T24/gITxANCYsyc//p4dgyVsYJc6ktvD/laKS+NpRnVkUxpvBElDvHiJ6hh2k69ISvKeRD7ahaq+mgN+cnIPFhfw50XNn7Hc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1bX2BEuw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3BB71F000E9;
-	Wed, 20 May 2026 17:51:26 +0000 (UTC)
+	 MIME-Version; b=UyslJdrRTlQwxnAJx298xhfrarbEqbyk6ACAnKfaldI5dlnN9g3Skzh716vk2ZLpWlEnrD0omhDaZ0LRwGWgJ8ZG+3y2OiHnlRUZCx6u3/NrUWab98qplkWy17sMZMHNzxBhL9YESXO+i+DBPXVk4Ns55bUX5UJ1snqFpEeEwV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XzAUwsfk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF3251F000E9;
+	Wed, 20 May 2026 18:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299487;
-	bh=tlb8Cm45hTAPUEtcgussz15t0SMP9uPJqq2+DSiY6VM=;
+	s=korg; t=1779302409;
+	bh=HVYfsAjk8FMPThzFKmxAYYgFSylD7w3Uf1Q7XeqnmmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1bX2BEuwps3rxEe/rJrDMShgRP5mjOyB2NWATpB9N4gXnsIwdGGBDqyjEKeBCSnwz
-	 fG3nRAUPLvusOGv4i41qkDQw7iBb73xCSGUU5Zepb70EGdb3Wvrcix/Qk5PgvyZUCp
-	 Rl1Q+GhJLSzSYRZruFVLEdiF2OJh2ZxULJnBSwIU=
+	b=XzAUwsfkWpPWuHd50hvTSMr9k1gG/KXgXVZPcuDPgepUx3QGev5P4E4bBYlxLRSIB
+	 dxfwJlrHkD00nP8gys9nJ7poxccvJ8pjBComS5cW8sO21KedQc3mlsrPb1G/RJp3Tt
+	 XGaRRt1+eAqYc9fuQ/S/73ewdxfyQLJCGwYi8jTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Robert Beckett <bob.beckett@collabora.com>,
-	Umang Jain <uajain@igalia.com>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Melissa Wen <mwen@igalia.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	ZhengYuan Huang <gality369@gmail.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 754/957] ASoC: amd: acp: Add DMI quirk for Valve Steam Deck OLED
+Subject: [PATCH 6.6 214/508] ocfs2: validate bg_bits during freefrag scan
 Date: Wed, 20 May 2026 18:20:37 +0200
-Message-ID: <20260520162150.917544875@linuxfoundation.org>
+Message-ID: <20260520162103.276620992@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,209 +73,154 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252002-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-253102-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,linux-foundation.org,kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,collabora.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,igalia.com:email]
-X-Rspamd-Queue-Id: 4119B59A621
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linux-foundation.org:email]
+X-Rspamd-Queue-Id: B11CE599FAC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guilherme G. Piccoli <gpiccoli@igalia.com>
+From: ZhengYuan Huang <gality369@gmail.com>
 
-[ Upstream commit b0f6f4ac7d5d04fe2adcdd63ed1cd1ad505b8958 ]
+[ Upstream commit 8f687eeed3da3012152b0f9473f578869de0cd7b ]
 
-Commit 671dd2ffbd8b ("ASoC: amd: acp: Add new cpu dai and dailink creation for I2S BT instance")
-introduced a change that "broke" Steam Deck's audio probe, in the OLED
-model, as observed in the following dmesg snippet:
+[BUG]
+A crafted filesystem can trigger an out-of-bounds bitmap walk when
+OCFS2_IOC_INFO is issued with OCFS2_INFO_FL_NON_COHERENT.
 
-[...]
-snd_sof_amd_vangogh 0000:04:00.5: Topology: ABI 3:26:0 Kernel ABI 3:23:1
-sof_mach nau8821-max: ASoC: physical link acp-bt-codec (id 2) not exist
-sof_mach nau8821-max: ASoC: topology: could not load header: -22
-snd_sof_amd_vangogh 0000:04:00.5: tplg amd/sof-tplg/sof-vangogh-nau8821-max.tplg component load failed -22
-snd_sof_amd_vangogh 0000:04:00.5: error: failed to load DSP topology -22
-snd_sof_amd_vangogh 0000:04:00.5: ASoC error (-22): at snd_soc_component_probe() on 0000:04:00.5
-sof_mach nau8821-max: ASoC: failed to instantiate card -22
-sof_mach nau8821-max: error -EINVAL: Failed to register card(sof-nau8821-max)
-sof_mach nau8821-max: probe with driver sof_mach failed with error -22
-[...]
+BUG: KASAN: use-after-free in instrument_atomic_read include/linux/instrumented.h:68 [inline]
+BUG: KASAN: use-after-free in _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
+BUG: KASAN: use-after-free in test_bit_le include/asm-generic/bitops/le.h:21 [inline]
+BUG: KASAN: use-after-free in ocfs2_info_freefrag_scan_chain fs/ocfs2/ioctl.c:495 [inline]
+BUG: KASAN: use-after-free in ocfs2_info_freefrag_scan_bitmap fs/ocfs2/ioctl.c:588 [inline]
+BUG: KASAN: use-after-free in ocfs2_info_handle_freefrag fs/ocfs2/ioctl.c:662 [inline]
+BUG: KASAN: use-after-free in ocfs2_info_handle_request+0x1c66/0x3370 fs/ocfs2/ioctl.c:754
+Read of size 8 at addr ffff888031bce000 by task syz.0.636/1435
+Call Trace:
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0xbe/0x130 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xd1/0x650 mm/kasan/report.c:482
+ kasan_report+0xfb/0x140 mm/kasan/report.c:595
+ check_region_inline mm/kasan/generic.c:186 [inline]
+ kasan_check_range+0x11c/0x200 mm/kasan/generic.c:200
+ __kasan_check_read+0x11/0x20 mm/kasan/shadow.c:31
+ instrument_atomic_read include/linux/instrumented.h:68 [inline]
+ _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
+ test_bit_le include/asm-generic/bitops/le.h:21 [inline]
+ ocfs2_info_freefrag_scan_chain fs/ocfs2/ioctl.c:495 [inline]
+ ocfs2_info_freefrag_scan_bitmap fs/ocfs2/ioctl.c:588 [inline]
+ ocfs2_info_handle_freefrag fs/ocfs2/ioctl.c:662 [inline]
+ ocfs2_info_handle_request+0x1c66/0x3370 fs/ocfs2/ioctl.c:754
+ ocfs2_info_handle+0x18d/0x2a0 fs/ocfs2/ioctl.c:828
+ ocfs2_ioctl+0x632/0x6e0 fs/ocfs2/ioctl.c:913
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl fs/ioctl.c:583 [inline]
+ __x64_sys_ioctl+0x197/0x1e0 fs/ioctl.c:583
+ ...
 
-Notice the quotes in "broke": it's not really a bug in such commit,
-but instead a problem with a topology file from Steam Deck OLED. This
-was discussed to great extent in [1], and Cristian proposed a pretty
-simple and functional change that resolved the issue for the Deck's
-issue. That change, though, would break other devices, so it wasn't
-accepted upstream. And the proper suggested solution (fix the topology)
-was never implemented, so Valve's kernel (and anyone that wants to boot
-the mainline on Steam Deck OLED) is carrying that fix downstream.
+[CAUSE]
+ocfs2_info_freefrag_scan_chain() uses on-disk bg_bits directly as the
+bitmap scan limit. The coherent path reads group descriptors through
+ocfs2_read_group_descriptor(), which validates the descriptor before
+use. The non-coherent path uses ocfs2_read_blocks_sync() instead and
+skips that validation, so an impossible bg_bits value can drive the
+bitmap walk past the end of the block.
 
-So, we propose hereby a different approach: a DMI quirk, as many already
-present in the sound drivers, to address this issue solely on Steam Deck
-OLED, not breaking other devices and as a bonus, allowing simple patch
-up in case eventually the topology file gets fixed (we'd just need to
-check against any DMI info reflecting that or the topology/FW versions).
+[FIX]
+Compute the bitmap capacity from the filesystem format with
+ocfs2_group_bitmap_size(), report descriptors whose bg_bits exceeds
+that limit, and clamp the scan to the computed capacity. This keeps the
+freefrag report going while avoiding reads beyond the buffer.
 
-The motivation of such upstream quirk is related to users that want
-to test latest kernel trees on their devices and get no only non-working
-sound device, but seems some games (like Ori and the Blind Forest)
-can't properly work without a proper functional audio device.
-Example of such report can be seen at [2].
-
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Robert Beckett <bob.beckett@collabora.com>
-Cc: Umang Jain <uajain@igalia.com>
-Fixes: 671dd2ffbd8b ("ASoC: amd: acp: Add new cpu dai and dailink creation for I2S BT instance")
-Link: https://lore.kernel.org/r/20231209205351.880797-11-cristian.ciocaltea@collabora.com/ [1]
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218677 [2]
-Reviewed-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Tested-by: Melissa Wen <mwen@igalia.com>
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-Link: https://patch.msgid.link/20260423183505.116445-1-gpiccoli@igalia.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lkml.kernel.org/r/20260410034220.3825769-1-gality369@gmail.com
+Fixes: d24a10b9f8ed ("Ocfs2: Add a new code 'OCFS2_INFO_FREEFRAG' for o2info ioctl.")
+Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/acp/acp-legacy-mach.c |  2 +-
- sound/soc/amd/acp/acp-mach-common.c | 22 +++++++++++++++++++---
- sound/soc/amd/acp/acp-mach.h        |  4 ++++
- sound/soc/amd/acp/acp-sof-mach.c    |  2 +-
- 4 files changed, 25 insertions(+), 5 deletions(-)
+ fs/ocfs2/ioctl.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/amd/acp/acp-legacy-mach.c b/sound/soc/amd/acp/acp-legacy-mach.c
-index a7a551366a409..235d6cc83fa98 100644
---- a/sound/soc/amd/acp/acp-legacy-mach.c
-+++ b/sound/soc/amd/acp/acp-legacy-mach.c
-@@ -174,7 +174,7 @@ static int acp_asoc_probe(struct platform_device *pdev)
- 		acp_card_drvdata->acp_rev = mach->mach_params.subsystem_rev;
+diff --git a/fs/ocfs2/ioctl.c b/fs/ocfs2/ioctl.c
+index b1550ba73f963..f34f404af2f77 100644
+--- a/fs/ocfs2/ioctl.c
++++ b/fs/ocfs2/ioctl.c
+@@ -442,13 +442,16 @@ static int ocfs2_info_freefrag_scan_chain(struct ocfs2_super *osb,
+ 	struct buffer_head *bh = NULL;
+ 	struct ocfs2_group_desc *bg = NULL;
  
- 	dmi_id = dmi_first_match(acp_quirk_table);
--	if (dmi_id && dmi_id->driver_data)
-+	if (dmi_id && dmi_id->driver_data == (void *)QUIRK_TDM_MODE_ENABLE)
- 		acp_card_drvdata->tdm_mode = dmi_id->driver_data;
+-	unsigned int max_bits, num_clusters;
++	unsigned int max_bits, max_bitmap_bits, num_clusters;
+ 	unsigned int offset = 0, cluster, chunk;
+ 	unsigned int chunk_free, last_chunksize = 0;
  
- 	ret = acp_legacy_dai_links_create(card);
-diff --git a/sound/soc/amd/acp/acp-mach-common.c b/sound/soc/amd/acp/acp-mach-common.c
-index c4bc8e849284c..a2031e7f61424 100644
---- a/sound/soc/amd/acp/acp-mach-common.c
-+++ b/sound/soc/amd/acp/acp-mach-common.c
-@@ -20,6 +20,7 @@
- #include <sound/soc.h>
- #include <linux/input.h>
- #include <linux/module.h>
-+#include <linux/dmi.h>
+ 	if (!le32_to_cpu(rec->c_free))
+ 		goto bail;
  
- #include "../../codecs/rt5682.h"
- #include "../../codecs/rt1019.h"
-@@ -37,15 +38,21 @@
- #define NAU8821_FREQ_OUT	12288000
- #define MAX98388_CODEC_DAI	"max98388-aif1"
- 
--#define TDM_MODE_ENABLE 1
--
- const struct dmi_system_id acp_quirk_table[] = {
- 	{
- 		/* Google skyrim proto-0 */
- 		.matches = {
- 			DMI_EXACT_MATCH(DMI_PRODUCT_FAMILY, "Google_Skyrim"),
- 		},
--		.driver_data = (void *)TDM_MODE_ENABLE,
-+		.driver_data = (void *)QUIRK_TDM_MODE_ENABLE,
-+	},
-+	{
-+		/* Valve Steam Deck OLED */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Valve"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Galileo"),
-+		},
-+		.driver_data = (void *)QUIRK_REMAP_DMIC_BT,
- 	},
- 	{}
- };
-@@ -1385,6 +1392,7 @@ int acp_sofdsp_dai_links_create(struct snd_soc_card *card)
- 	struct snd_soc_dai_link *links;
- 	struct device *dev = card->dev;
- 	struct acp_card_drvdata *drv_data = card->drvdata;
-+	const struct dmi_system_id *dmi_id = dmi_first_match(acp_quirk_table);
- 	int i = 0, num_links = 0;
- 
- 	if (drv_data->hs_cpu_id)
-@@ -1556,6 +1564,9 @@ int acp_sofdsp_dai_links_create(struct snd_soc_card *card)
- 			links[i].codecs = &snd_soc_dummy_dlc;
- 			links[i].num_codecs = 1;
- 		}
++	max_bitmap_bits = 8 * ocfs2_group_bitmap_size(osb->sb, 0,
++					      osb->s_feature_incompat);
 +
-+		if (dmi_id && dmi_id->driver_data == (void *)QUIRK_REMAP_DMIC_BT)
-+			links[i].id = DMIC_BE_ID;
- 		i++;
- 	}
+ 	do {
+ 		if (!bg)
+ 			blkno = le64_to_cpu(rec->c_blkno);
+@@ -480,6 +483,19 @@ static int ocfs2_info_freefrag_scan_chain(struct ocfs2_super *osb,
+ 			continue;
  
-@@ -1571,6 +1582,11 @@ int acp_sofdsp_dai_links_create(struct snd_soc_card *card)
- 		links[i].capture_only = 1;
- 		links[i].nonatomic = true;
- 		links[i].no_pcm = 1;
+ 		max_bits = le16_to_cpu(bg->bg_bits);
 +
-+		if (dmi_id && dmi_id->driver_data == (void *)QUIRK_REMAP_DMIC_BT) {
-+			links[i].id = BT_BE_ID;
-+			dev_dbg(dev, "quirk REMAP_DMIC_BT enabled\n");
++		/*
++		 * Non-coherent scans read raw blocks and do not get the
++		 * bg_bits validation from
++		 * ocfs2_read_group_descriptor().
++		 */
++		if (max_bits > max_bitmap_bits) {
++			mlog(ML_ERROR,
++			     "Group desc #%llu has %u bits, max bitmap bits %u\n",
++			     (unsigned long long)blkno, max_bits, max_bitmap_bits);
++			max_bits = max_bitmap_bits;
 +		}
- 	}
- 
- 	card->dai_link = links;
-diff --git a/sound/soc/amd/acp/acp-mach.h b/sound/soc/amd/acp/acp-mach.h
-index f94c30c20f20b..7177d3fd96192 100644
---- a/sound/soc/amd/acp/acp-mach.h
-+++ b/sound/soc/amd/acp/acp-mach.h
-@@ -26,6 +26,10 @@
- 
- #define acp_get_drvdata(card) ((struct acp_card_drvdata *)(card)->drvdata)
- 
-+/* List of DMI quirks - check acp-mach-common.c for usage. */
-+#define QUIRK_TDM_MODE_ENABLE 1
-+#define QUIRK_REMAP_DMIC_BT 2
 +
- enum be_id {
- 	HEADSET_BE_ID = 0,
- 	AMP_BE_ID,
-diff --git a/sound/soc/amd/acp/acp-sof-mach.c b/sound/soc/amd/acp/acp-sof-mach.c
-index 6215e31eceddf..36ecef7013b9c 100644
---- a/sound/soc/amd/acp/acp-sof-mach.c
-+++ b/sound/soc/amd/acp/acp-sof-mach.c
-@@ -110,7 +110,7 @@ static int acp_sof_probe(struct platform_device *pdev)
+ 		offset = 0;
  
- 	acp_card_drvdata = card->drvdata;
- 	dmi_id = dmi_first_match(acp_quirk_table);
--	if (dmi_id && dmi_id->driver_data)
-+	if (dmi_id && dmi_id->driver_data == (void *)QUIRK_TDM_MODE_ENABLE)
- 		acp_card_drvdata->tdm_mode = dmi_id->driver_data;
- 
- 	acp_card_drvdata->acp_rev = mach->mach_params.subsystem_rev;
+ 		for (chunk = 0; chunk < chunks_in_group; chunk++) {
 -- 
 2.53.0
 
