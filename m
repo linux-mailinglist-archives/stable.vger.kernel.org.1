@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-252119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251203-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KHhaACX/DWpV5QUAu9opvQ
-	(envelope-from <stable+bounces-252119-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:21 +0200
+	id eOaaEK7yDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251203-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C3FC596BCC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:20 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 028F759461E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DBC6A38B3641
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:57:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D0A343023BB9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CD7F3F44F7;
-	Wed, 20 May 2026 17:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A5343F23BF;
+	Wed, 20 May 2026 17:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v569I1rq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mxwW+WzC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581903EF0C1;
-	Wed, 20 May 2026 17:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5673EE1DA;
+	Wed, 20 May 2026 17:16:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299840; cv=none; b=ElOX3EhSxsMXPSVWavuyEcIs3FW9NCGEMRD96rojWrV8YrShKbbToCKrwajirjy4H7QFp1HAqzku3GWkoWCVv7ATCiyFEbZjNWnYQ3UD+L06EjN+FFgzXoeD34ePUr7Ctzw+T12XkaXxAtTajGhlh619einf7drHCswWkPLPxSE=
+	t=1779297369; cv=none; b=GdAp9JGl1wK7CAVnIHXsN5crvqRNpzl6hxstat//nmH+oGslIH74xrBV48WJyHSPTs6VqCScwGpVM/9bOyE67ils2Ht+JeYV641vldUuiFQKqWxAScaqb4mLpVT3IKkH5VnaxuWd2tPcmagNTQXqIiVlOUjQJh8dCZB6sDArKPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299840; c=relaxed/simple;
-	bh=drr5Q9ugDtKtpWoiyIdREfuy32hmWqKhijB2PLbs/nI=;
+	s=arc-20240116; t=1779297369; c=relaxed/simple;
+	bh=XbhUh/3hp0pAzlq1pS7mcyxH8YzqEg4qVP+KN8i076Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Joduroe0LATLg83Ct0tZ2qkbtnadb4xPYjOgXT8m4krinbnb4hSVJdWAndcDVySHRi4wemwK2Rv/Ux4Cawc/vTB3sCCBB21hQIqechM1Y1tJJyGtXeFSdpZSbjFq21TCWTur+AunqDoEr2Iz9tS+hNsxZZpwZd+l5gG2A55qYbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v569I1rq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B52471F000E9;
-	Wed, 20 May 2026 17:57:18 +0000 (UTC)
+	 MIME-Version; b=u2gulnRe3JtJWnr/Zcico7DwxroNIpY5vQKE7dI410jGbQyTmgArJ3u6e4UkQLRpVA8BesxCQaHPeZensgyXtsYHl2pboa8YeZ17chdmf/btHH1lG/SezRiSBnv9IcptlkN/EMitG7s8gX37Xf31Olfdfw5OxS1Fv3lsWmhfGc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mxwW+WzC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B371F000E9;
+	Wed, 20 May 2026 17:16:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299839;
-	bh=S9ad3loR+jpuxO+m8AdB0inLV7gX4AT/lQSkP8KeBAo=;
+	s=korg; t=1779297367;
+	bh=YgWrpFRj5BSZQOSjwfhvnCYs3+J04WrUcuhMMpByfWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=v569I1rqu/rpxM5w5KjGhltmYO4bWjSOveszJBHDATgArSu0xgFBgkS8/PJEjERzI
-	 hifiWB5edK+Kn/Hc/Yr/9BQ8dwsJMOq8HUfqQb4unICr1fe7ogsYuTWJjSPoS3zONu
-	 A0L4UPErPpGL1PvSAVF9HR5cNLfaBKKityim+bDU=
+	b=mxwW+WzC/bP7gtwFiLXcZ8e6q1wBDpchvza/fbMzgGd1kBFAO4iTRrioy/cB6MQ4+
+	 +xrOdYxIMbaq7+fkdHN2A0Oao9hdKMZ0+UUQk6byLyE4GL/JAwXK5kZ29F5+isX6/c
+	 CICqCYtMlYrLrTn88cUcnQWV6peI++Q1G4YMlD4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	DeepChirp <DeepChirp@outlook.com>,
-	Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH 6.18 906/957] drm/i915/dp: Fix VSC dynamic range signaling for RGB formats
-Date: Wed, 20 May 2026 18:23:09 +0200
-Message-ID: <20260520162154.223489118@linuxfoundation.org>
+	James Morse <james.morse@arm.com>,
+	Ben Horgan <ben.horgan@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 7.0 1140/1146] arm_mpam: Fix false positive assert failure during mpam_disable()
+Date: Wed, 20 May 2026 18:23:10 +0200
+Message-ID: <20260520162214.053792775@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,88 +68,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,intel.com,ursulin.net];
-	TAGGED_FROM(0.00)[bounces-252119-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-251203-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,gitlab.freedesktop.org:url,intel.com:email,ursulin.net:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,outlook.com:email]
-X-Rspamd-Queue-Id: 5C3FC596BCC
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,arm.com:email]
+X-Rspamd-Queue-Id: 028F759461E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+From: James Morse <james.morse@arm.com>
 
-commit 1ae15b6c7965d137eef21f2cc7d367b29cb88369 upstream.
+commit f1caff3335ea6eab88cdc84ec8f2e3c45ca05486 upstream.
 
-For RGB, set dynamic_range to CTA or VESA based on
-crtc_state->limited_color_range so sinks apply correct
-quantization. YCbCr remains limited (CTA) range.
-(DP v1.4, Table 5-1)
+mpam_assert_partid_sizes_fixed() is used to document that the caller
+doesn't expect the discovered PARTID size to change while it is walking
+a list sized by PARTID. Typically the MSC state is not written to until
+all the MSC have been discovered and this value is set.
 
-v2:
-- Added Reported-by and Tested-by tags
+However, if discovering the MSC fails and schedules mpam_disable(),
+then the MSC state is written to reset it. In this case the
+discovered PARTID size may be become smaller - but only PARTID 0
+will be used once resctrl_exit() has been called.
 
-v3:
-- Add back YCbCr comment(Suraj)
+Skip the WARN_ON_ONCE() if mpam_disable_reason has been set.
 
-Cc: stable@vger.kernel.org #v5.8+
-Reported-by: DeepChirp <DeepChirp@outlook.com>
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/work_items/15874
-Tested-by: DeepChirp <DeepChirp@outlook.com>
-Fixes: 9799c4c3b76e ("drm/i915/dp: Add compute routine for DP VSC SDP")
-Assisted-by: GitHub-Copilot:GPT-5.4
-Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Link: https://patch.msgid.link/20260505090920.2479112-1-chaitanya.kumar.borah@intel.com
-(cherry picked from commit 38e10ddae6f8d42a2e8437fcd25a1cac51106c64)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Fixes: 3bd04fe7d807 ("arm_mpam: Extend reset logic to allow devices to be reset any time")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: James Morse <james.morse@arm.com>
+Reviewed-by: Ben Horgan <ben.horgan@arm.com>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_dp.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/resctrl/mpam_devices.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -2869,8 +2869,13 @@ static void intel_dp_compute_vsc_colorim
- 	drm_WARN_ON(display->drm,
- 		    vsc->bpc == 6 && vsc->pixelformat != DP_PIXELFORMAT_RGB);
- 
--	/* all YCbCr are always limited range */
--	vsc->dynamic_range = DP_DYNAMIC_RANGE_CTA;
-+	/* All YCbCr formats are always limited range. */
-+	if (vsc->pixelformat == DP_PIXELFORMAT_RGB)
-+		vsc->dynamic_range = crtc_state->limited_color_range ?
-+			DP_DYNAMIC_RANGE_CTA : DP_DYNAMIC_RANGE_VESA;
-+	else
-+		vsc->dynamic_range = DP_DYNAMIC_RANGE_CTA;
-+
- 	vsc->content_type = DP_CONTENT_TYPE_NOT_DEFINED;
+--- a/drivers/resctrl/mpam_devices.c
++++ b/drivers/resctrl/mpam_devices.c
+@@ -148,11 +148,17 @@ static void mpam_free_garbage(void)
+ /*
+  * Once mpam is enabled, new requestors cannot further reduce the available
+  * partid. Assert that the size is fixed, and new requestors will be turned
+- * away.
++ * away. This is needed when walking over structures sized by PARTID.
++ *
++ * During mpam_disable() these structures are not fixed, but the MSC state
++ * is still reset using whatever sizes have been discovered so far. As only
++ * PARTID 0 will be used after mpam_disable(), any race would be benign.
++ * Skip the check if a mpam_disable_reason has been set.
+  */
+ static void mpam_assert_partid_sizes_fixed(void)
+ {
+-	WARN_ON_ONCE(!partid_max_published);
++	if (!mpam_disable_reason)
++		WARN_ON_ONCE(!partid_max_published);
  }
  
+ static u32 __mpam_read_reg(struct mpam_msc *msc, u16 reg)
 
 
 
