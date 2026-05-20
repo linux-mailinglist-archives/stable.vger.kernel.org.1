@@ -1,281 +1,198 @@
-Return-Path: <stable+bounces-250014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250010-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2OZ4MfbUDWrW3wUAu9opvQ
-	(envelope-from <stable+bounces-250014-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:36:22 +0200
+	id KODDOBXaDWrE4AUAu9opvQ
+	(envelope-from <stable+bounces-250010-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:58:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB41F591021
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:36:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 413B859157D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:58:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1C344337F54B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 15:20:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C640C332AC5D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 15:19:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DDDC3FA5CC;
-	Wed, 20 May 2026 15:18:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE79A3F8EB9;
+	Wed, 20 May 2026 15:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b="hWyY5U2U"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kK3uzTq7"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85133F54AA;
-	Wed, 20 May 2026 15:18:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779290311; cv=pass; b=C6LAoWJ67WSFufnbg4dk91DX5XjQNOtPIzdCved6JpAXKo9kOht7kyyOJgkch++rQpN909dF9mFko2GPh7P7HJ/alPtuo7NQuSg0BmD4t9Ko8rd37iH5UMuYgnxWR0hKdALwW6TpWmsccmJ/ZE5vUtkbPufi5c67jf2clFbrOEE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779290311; c=relaxed/simple;
-	bh=opTFpXWJDG4mggT7pNBH4jTMeVO+SaLXr02GT9hLgpY=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=CZpdFphU/F7on0GthGVYh3QFcMo1To7xXlT/fX8ejihznwbdqiZ8X/6H8vcBM8FqxbAxXa82O4Te0ztSmWGLVn/DA9b5aqZrjk/voNJYdE8HXlQr2V3SgwiMVWkHNc0F2o5KuQ/ihxyHP05tImO6z7uHJiUtnWYQDKc1VWIutKc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b=hWyY5U2U; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1779290292; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=DPRjwcSgU9NAVK3t6ludoB8Fls1PIsK60Ck1S6Ap3ODgBnm5sGrRIMXN40JKZBXPvLcYec7RJ4obTnn6CLzBWHyAvaHn0C11trK7PSCpgkKWOTG9ntSWfdxCbRjaUcr4FDiBHzyGzjN6JdFBFmOS+qUX/4QtUsrn465rk41SAyQ=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1779290292; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=1x0FyOWivNSIA+YkZsdTIQiJF2Ucpta4cBeqHywF/cU=; 
-	b=cKykkgi12BHITTf3cmtblCq9A1PtSiPBmGC7d6qJKKQ18zKc053waEwbsO0h3sBaiJ99hcj1oFt1BVBMl6bx9T6bj6mZVkUEhR31j3muX/EsqzbfNtBB8DN8rpgUbJse7ri8a4uZ4ipdLzPkodtTUgyb/KvkOMzYrbQdqXVUCJI=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
-	dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1779290292;
-	s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:From:From:To:To:Cc:Cc:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=1x0FyOWivNSIA+YkZsdTIQiJF2Ucpta4cBeqHywF/cU=;
-	b=hWyY5U2U9APDrOH/pIPFEvRW1dBjtgOXeO+Sg1GfhhWD8+ox0YEyaMGKIoWdiCuu
-	tTGicufnczt0iKCBwUgMmZW2AhJ1Y9QyK+R2CN6dwzO/sTi+FN4SDqFmcEy/xVhbZk1
-	hqTfPl5B56mtrSyS68pfcWFgc4TKBk1dYzeUL50Y=
-Received: by mx.zohomail.com with SMTPS id 1779290290871362.15164197070646;
-	Wed, 20 May 2026 08:18:10 -0700 (PDT)
-Message-ID: <ca7407f6-217b-4b78-9a98-e3c28756e565@collabora.com>
-Date: Wed, 20 May 2026 18:18:05 +0300
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A233F7A85
+	for <stable@vger.kernel.org>; Wed, 20 May 2026 15:18:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779290301; cv=none; b=b3zrPL/9rIIS8fJrMBTQpajuNQJgVj13nff4h3il7ILn0N//3jXL6GLp4MuHHpuMhPfq0+kyvHRhk7J3cqyTEmAajt/aOSmBrL6p8u9n3mg9Zn4ok21UL9xkzu+nyPM0fE2JWAx8xCKuXlhzFbcRmpcE5mL5dIMSRaG9MXuYRzg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779290301; c=relaxed/simple;
+	bh=UR0qn3BUMfjPxmzqVk5EJgRVtUYnYvuiO9yLlODWC34=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YG3eeAOPGM4eH9IO+v+ADcnC2md5mZfHITe8CMIrI4R2YknXje2SHIba7h1SfR0T7iiX9ZDs6e3IlHbw8a8gme5oT/D8PYCfPMeMmPSSPcQ5MFFgHODNKsko7aVMXf7OiVJ5A+7gjBOaEn+9oVd2hyRT4UIwlalo8MwOqtrANkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kK3uzTq7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6BF11F00893;
+	Wed, 20 May 2026 15:18:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779290300;
+	bh=bPcovmQKsQnKLiBPZmVcJ1Vj2HELlGWX5Ptbct8LFjo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=kK3uzTq7xkFbwcWXurfOCJQmU0mAgrMDmAe3sG9kQRLstt3GG5nO8NnQuhcPfrgeU
+	 lhmw4URYruK+qQtNnpITwmdkRELvqDyFGTgTLP0JJLHaoemv0wW9bnzmZKPPobvipE
+	 E+UOA1I5cddrFflJ/6lwM8MJCSa6NJFmKfhJugoivdgtvDXug0kUOk8SuNzvC1S0oo
+	 PNc2ClsN1+XccMYMh+DHpspiZifZ5AOpctKyqYnS/T6qhlT2UWpKGUQEgVpmUEZtXV
+	 xNv2wZuCeLKGK3AbV0w51uk2bseAIDcimNBkfH86IrFaAlpl1AF1XXErWagi5ej5c5
+	 9rsn6W8Pp+e/w==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Pei Xiao <xiaopei01@kylinos.cn>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/2] spi: sifive: Simplify clock handling with devm_clk_get_enabled()
+Date: Wed, 20 May 2026 11:18:17 -0400
+Message-ID: <20260520151818.3912903-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026051547-backside-sermon-2557@gregkh>
+References: <2026051547-backside-sermon-2557@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] drm/virtio: use uninterruptible resv lock for plane
- updates
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-To: Deepanshu Kartikey <kartikey406@gmail.com>, airlied@redhat.com,
- kraxel@redhat.com, gurchetansingh@chromium.org, olvaffe@gmail.com,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- simona@ffwll.ch, sumit.semwal@linaro.org, christian.koenig@amd.com
-Cc: dri-devel@lists.freedesktop.org, virtualization@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org,
- syzbot+72bd3dd3a5d5f39a0271@syzkaller.appspotmail.com, stable@vger.kernel.org
-References: <20260519082247.34470-1-kartikey406@gmail.com>
- <43ecdd2f-5faf-432a-a814-77190b3ef239@collabora.com>
-Content-Language: en-US
-In-Reply-To: <43ecdd2f-5faf-432a-a814-77190b3ef239@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[collabora.com,none];
-	R_DKIM_ALLOW(-0.20)[collabora.com:s=zohomail];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250014-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com,redhat.com,chromium.org,linux.intel.com,kernel.org,suse.de,ffwll.ch,linaro.org,amd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250010-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dmitry.osipenko@collabora.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[collabora.com:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,72bd3dd3a5d5f39a0271];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,appspotmail.com:email,collabora.com:mid,collabora.com:dkim,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: EB41F591021
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,kylinos.cn:email,msgid.link:url]
+X-Rspamd-Queue-Id: 413B859157D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 5/20/26 18:04, Dmitry Osipenko wrote:
-> On 5/19/26 11:22, Deepanshu Kartikey wrote:
->> virtio_gpu_cursor_plane_update() and virtio_gpu_resource_flush() lock
->> the framebuffer BO's dma_resv via virtio_gpu_array_lock_resv() and
->> ignore its return value. The function can fail with -EINTR from
->> dma_resv_lock_interruptible() (signal during lock wait) or with
->> -ENOMEM from dma_resv_reserve_fences() (fence slot allocation),
->> leaving the resv lock not held. The queue path then walks the object
->> array and calls dma_resv_add_fence(), which requires the lock held;
->> with lockdep enabled this trips dma_resv_assert_held():
->>
->>   WARNING: drivers/dma-buf/dma-resv.c:296 at dma_resv_add_fence+0x71e/0x840
->>   Call Trace:
->>    virtio_gpu_array_add_fence
->>    virtio_gpu_queue_ctrl_sgs
->>    virtio_gpu_queue_fenced_ctrl_buffer
->>    virtio_gpu_cursor_plane_update
->>    drm_atomic_helper_commit_planes
->>    drm_atomic_helper_commit_tail
->>    commit_tail
->>    drm_atomic_helper_commit
->>    drm_atomic_commit
->>    drm_atomic_helper_update_plane
->>    __setplane_atomic
->>    drm_mode_cursor_universal
->>    drm_mode_cursor_common
->>    drm_mode_cursor_ioctl
->>    drm_ioctl
->>    __x64_sys_ioctl
->>
->> Beyond the WARN, mutating the dma_resv fence list without the lock
->> races with concurrent readers/writers and can corrupt the list.
->>
->> Both call sites run inside the .atomic_update plane callback, which
->> DRM atomic helpers do not allow to fail (by the time it runs, the
->> commit has been signed off to userspace and there is no clean
->> rollback path). Moving the lock acquisition to .prepare_fb was
->> rejected because the broader lock scope deadlocks against other BO
->> locking paths in the same atomic commit.
->>
->> Introduce virtio_gpu_lock_one_resv_uninterruptible() that uses
->> dma_resv_lock() instead of dma_resv_lock_interruptible(). This
->> eliminates the -EINTR failure mode -- the realistic syzbot trigger
->> -- without extending the lock hold across the commit. The helper
->> locks a single BO and rejects nents > 1 with -EINVAL; both fix
->> sites lock exactly one BO.
->>
->> Use it from virtio_gpu_cursor_plane_update() and
->> virtio_gpu_resource_flush(); check the return value to handle the
->> remaining -ENOMEM case from dma_resv_reserve_fences() by freeing
->> the objs and skipping the plane update for that frame. The
->> framebuffer BOs touched here are not shared with other contexts
->> and lock contention is expected to be brief, so the loss of
->> signal-interruptibility is acceptable.
->>
->> Other callers of virtio_gpu_array_lock_resv() (the ioctl paths)
->> continue to use the interruptible variant.
->>
->> The bug was reported by syzbot, triggered via fault injection
->> (fail_nth) on the DRM_IOCTL_MODE_CURSOR path, which forces the
->> -ENOMEM branch in dma_resv_reserve_fences().
->>
->> Reported-by: syzbot+72bd3dd3a5d5f39a0271@syzkaller.appspotmail.com
->> Closes: https://syzkaller.appspot.com/bug?extid=72bd3dd3a5d5f39a0271
->> Fixes: 5cfd31c5b3a3 ("drm/virtio: fix virtio_gpu_cursor_plane_update().")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
->> ---
->> v4: Rename the helper to virtio_gpu_lock_one_resv_uninterruptible()
->>     and reject objs->nents > 1 with -EINVAL. The v3 helper's
->>     multi-object branch used drm_gem_lock_reservations(), which is
->>     interruptible, contradicting the "uninterruptible" name; both
->>     fix sites lock a single BO so the multi-object path is dropped.
->>     (Dmitry Osipenko)
->> v3: Drop the prepare_fb/cleanup_fb approach from v2 (it deadlocked
->>     against virtio_gpu_resource_flush(), which also locks the BO in
->>     the same atomic commit). Instead add an uninterruptible variant
->>     of the resv lock helper and use it in both
->>     virtio_gpu_cursor_plane_update() and virtio_gpu_resource_flush().
->>     (Dmitry Osipenko)
->> v2: Move resv lock acquisition from .atomic_update (which must not
->>     fail) to .prepare_fb (which may), per maintainer review of v1.
->>     The v1 approach of silently skipping the cursor update on lock
->>     failure violated the atomic-commit contract with userspace.
->> ---
->>  drivers/gpu/drm/virtio/virtgpu_drv.h   |  1 +
->>  drivers/gpu/drm/virtio/virtgpu_gem.c   | 17 +++++++++++++++++
->>  drivers/gpu/drm/virtio/virtgpu_plane.c | 10 ++++++++--
->>  3 files changed, 26 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/virtio/virtgpu_drv.h b/drivers/gpu/drm/virtio/virtgpu_drv.h
->> index f17660a71a3e..2f3531950aa4 100644
->> --- a/drivers/gpu/drm/virtio/virtgpu_drv.h
->> +++ b/drivers/gpu/drm/virtio/virtgpu_drv.h
->> @@ -317,6 +317,7 @@ virtio_gpu_array_from_handles(struct drm_file *drm_file, u32 *handles, u32 nents
->>  void virtio_gpu_array_add_obj(struct virtio_gpu_object_array *objs,
->>  			      struct drm_gem_object *obj);
->>  int virtio_gpu_array_lock_resv(struct virtio_gpu_object_array *objs);
->> +int virtio_gpu_lock_one_resv_uninterruptible(struct virtio_gpu_object_array *objs);
->>  void virtio_gpu_array_unlock_resv(struct virtio_gpu_object_array *objs);
->>  void virtio_gpu_array_add_fence(struct virtio_gpu_object_array *objs,
->>  				struct dma_fence *fence);
->> diff --git a/drivers/gpu/drm/virtio/virtgpu_gem.c b/drivers/gpu/drm/virtio/virtgpu_gem.c
->> index f22dc5c21cd4..435d37d36034 100644
->> --- a/drivers/gpu/drm/virtio/virtgpu_gem.c
->> +++ b/drivers/gpu/drm/virtio/virtgpu_gem.c
->> @@ -238,6 +238,23 @@ int virtio_gpu_array_lock_resv(struct virtio_gpu_object_array *objs)
->>  	return ret;
->>  }
->>  
->> +int virtio_gpu_lock_one_resv_uninterruptible(struct virtio_gpu_object_array *objs)
->> +{
->> +	int ret;
->> +
->> +	if (objs->nents != 1)
->> +		return -EINVAL;
->> +
->> +	dma_resv_lock(objs->objs[0]->resv, NULL);
->> +
->> +	ret = dma_resv_reserve_fences(objs->objs[0]->resv, 1);
->> +	if (ret) {
->> +		virtio_gpu_array_unlock_resv(objs);
->> +		return ret;
->> +	}
->> +	return 0;
->> +}
->> +
->>  void virtio_gpu_array_unlock_resv(struct virtio_gpu_object_array *objs)
->>  {
->>  	if (objs->nents == 1) {
->> diff --git a/drivers/gpu/drm/virtio/virtgpu_plane.c b/drivers/gpu/drm/virtio/virtgpu_plane.c
->> index a126d1b25f46..652352424744 100644
->> --- a/drivers/gpu/drm/virtio/virtgpu_plane.c
->> +++ b/drivers/gpu/drm/virtio/virtgpu_plane.c
->> @@ -215,7 +215,10 @@ static void virtio_gpu_resource_flush(struct drm_plane *plane,
->>  		if (!objs)
->>  			return;
->>  		virtio_gpu_array_add_obj(objs, vgfb->base.obj[0]);
->> -		virtio_gpu_array_lock_resv(objs);
->> +		if (virtio_gpu_lock_one_resv_uninterruptible(objs)) {
->> +			virtio_gpu_array_put_free(objs);
->> +			return;
->> +		}
->>  		virtio_gpu_cmd_resource_flush(vgdev, bo->hw_res_handle, x, y,
->>  					      width, height, objs,
->>  					      vgplane_st->fence);
->> @@ -459,7 +462,10 @@ static void virtio_gpu_cursor_plane_update(struct drm_plane *plane,
->>  		if (!objs)
->>  			return;
->>  		virtio_gpu_array_add_obj(objs, vgfb->base.obj[0]);
->> -		virtio_gpu_array_lock_resv(objs);
->> +		if (virtio_gpu_lock_one_resv_uninterruptible(objs)) {
->> +			virtio_gpu_array_put_free(objs);
->> +			return;
->> +		}
->>  		virtio_gpu_cmd_transfer_to_host_2d
->>  			(vgdev, 0,
->>  			 plane->state->crtc_w,
-> 
-> Applied to misc-next, thanks
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-Realized patche should go to -fixes, applied to misc-fixes too
+[ Upstream commit 140039c23aca067b9ff0242e3c0ce96276bb95f3 ]
 
+Replace devm_clk_get() followed by clk_prepare_enable() with
+devm_clk_get_enabled() for the bus clock. This reduces boilerplate code
+and error handling, as the managed API automatically disables the clock
+when the device is removed or if probe fails.
+
+Remove the now-unnecessary clk_disable_unprepare() calls from the probe
+error path and the remove callback. Adjust the error handling to use the
+existing put_host label.
+
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Link: https://patch.msgid.link/73d0d8ecb4e1af5a558d6a7866c0f886d94fe3d1.1773885292.git.xiaopei01@kylinos.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 0f25236694a2 ("spi: sifive: fix controller deregistration")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/spi/spi-sifive.c | 21 ++++++---------------
+ 1 file changed, 6 insertions(+), 15 deletions(-)
+
+diff --git a/drivers/spi/spi-sifive.c b/drivers/spi/spi-sifive.c
+index cfd17bbb22023..6964d287ae141 100644
+--- a/drivers/spi/spi-sifive.c
++++ b/drivers/spi/spi-sifive.c
+@@ -312,7 +312,8 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 		goto put_host;
+ 	}
+ 
+-	spi->clk = devm_clk_get(&pdev->dev, NULL);
++	/* Spin up the bus clock before hitting registers */
++	spi->clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(spi->clk)) {
+ 		dev_err(&pdev->dev, "Unable to find bus clock\n");
+ 		ret = PTR_ERR(spi->clk);
+@@ -342,13 +343,6 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 		goto put_host;
+ 	}
+ 
+-	/* Spin up the bus clock before hitting registers */
+-	ret = clk_prepare_enable(spi->clk);
+-	if (ret) {
+-		dev_err(&pdev->dev, "Unable to enable bus clock\n");
+-		goto put_host;
+-	}
+-
+ 	/* probe the number of CS lines */
+ 	spi->cs_inactive = sifive_spi_read(spi, SIFIVE_SPI_REG_CSDEF);
+ 	sifive_spi_write(spi, SIFIVE_SPI_REG_CSDEF, 0xffffffffU);
+@@ -357,14 +351,14 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 	if (!cs_bits) {
+ 		dev_err(&pdev->dev, "Could not auto probe CS lines\n");
+ 		ret = -EINVAL;
+-		goto disable_clk;
++		goto put_host;
+ 	}
+ 
+ 	num_cs = ilog2(cs_bits) + 1;
+ 	if (num_cs > SIFIVE_SPI_MAX_CS) {
+ 		dev_err(&pdev->dev, "Invalid number of spi targets\n");
+ 		ret = -EINVAL;
+-		goto disable_clk;
++		goto put_host;
+ 	}
+ 
+ 	/* Define our host */
+@@ -393,7 +387,7 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 			       dev_name(&pdev->dev), spi);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Unable to bind to interrupt\n");
+-		goto disable_clk;
++		goto put_host;
+ 	}
+ 
+ 	dev_info(&pdev->dev, "mapped; irq=%d, cs=%d\n",
+@@ -402,13 +396,11 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 	ret = devm_spi_register_controller(&pdev->dev, host);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "spi_register_host failed\n");
+-		goto disable_clk;
++		goto put_host;
+ 	}
+ 
+ 	return 0;
+ 
+-disable_clk:
+-	clk_disable_unprepare(spi->clk);
+ put_host:
+ 	spi_controller_put(host);
+ 
+@@ -422,7 +414,6 @@ static void sifive_spi_remove(struct platform_device *pdev)
+ 
+ 	/* Disable all the interrupts just in case */
+ 	sifive_spi_write(spi, SIFIVE_SPI_REG_IE, 0);
+-	clk_disable_unprepare(spi->clk);
+ }
+ 
+ static int sifive_spi_suspend(struct device *dev)
 -- 
-Best regards,
-Dmitry
+2.53.0
+
 
