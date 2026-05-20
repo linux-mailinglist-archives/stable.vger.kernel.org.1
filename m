@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-252875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252417-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uCoCJZsYDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-252875-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:24:59 +0200
+	id kNW7OKwBDmo95QUAu9opvQ
+	(envelope-from <stable+bounces-252417-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:47:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 936CF5998C9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:24:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8368A597390
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:47:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 985C73201382
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:30:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D315C38440F3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:10:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DAE2333441;
-	Wed, 20 May 2026 18:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64C6C3C140F;
+	Wed, 20 May 2026 18:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJC7TcDx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LExWUff3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39169270545;
-	Wed, 20 May 2026 18:30:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B106331220;
+	Wed, 20 May 2026 18:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301817; cv=none; b=aDzkjchQ/2HCd9NJA1a5L9kAu98YBfEUn/a9/IGUDbaBF/JrgPiAKWoxOxDi/T7wBJt+FDxhP63SCkM/NVpnDSuDAGH4ZUzMe+V8jc1Xfe38N5i3xmpz6SwP8/SmPTZE5IeM2RAaSNEoUPrWEpWDqkCeiYluG2oil9JLVc0utbU=
+	t=1779300618; cv=none; b=sFp1oko9VnnH3kh4RQ8LPqhT863BDQySOBpFOgAW9oI66/i3OUcyVB5zxLSkekY+HBKv8pWxt4rI4gtt83JhAZSMmeqsqPmHqI5qKn7TT2wEF3w/IwKhL4I4Kvvj403eV2r7oPeN3K8X/vOJpIcPPNtle4h7pjH4ThEgLPRUok8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301817; c=relaxed/simple;
-	bh=PY15ED9vfYOtezuY0gzkngrWhJFoU4S/CuJuwA1MAY8=;
+	s=arc-20240116; t=1779300618; c=relaxed/simple;
+	bh=kcJ4gsUIa4SBGX8TV5RcRPxvZc8BeHuVzuO/EbWKQt4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W6QDsiyr6+NrWmkpqBNS4MkIXihgrCnjD+QeNst77ViDhyqRYlke/PWGpI+IJ7qa4tR8jdfHOJysdUEOxvEYV39YVexGqUJXHdmEIxABFwyNbDN49Mx7kXXCi1gaTET+euyDHlPWg3+6Ungkp7GHAhDTscYz2EDl2WX8tcYcPy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJC7TcDx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F7111F000E9;
-	Wed, 20 May 2026 18:30:15 +0000 (UTC)
+	 MIME-Version; b=hJUxCBnn6HXW8vQC3K6mUCGhjIu7ByQ7DwepSPd7nzNI/qfpDaXZmZ8e4QG01f8SoNCdlnNZoYI+hXnFNrzgxsbiNdjJmlFkp/VAj7lvTBt6ncNhxs58xiRwepOxqzrubpobASNXGdRGdAZVcu8IDZK4S5mJlB8A4+TkuzvCzFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LExWUff3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 962A41F000E9;
+	Wed, 20 May 2026 18:10:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301816;
-	bh=TpsBP09FHxnxZUyPQUCBB3pobk9XUryq+ak5kclhcDs=;
+	s=korg; t=1779300617;
+	bh=gH7yDrkxrTkO0LWc9VdRD4KEwdlXGW7xcAa0pBgvR1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vJC7TcDxUj9pwP/s9DdyHs85vR/mEzH30ngjSDMSzq4+BlF6ASaL2uBI0HsN5MOpK
-	 fvpahZdTwZvdvtXB+Tu3u79hMWFYgNaEvA/VYMlBpgqYJIzSN3q7gmugy46iFJgTVy
-	 r+IKdCDrcsEDQ/b8tokU4ZK7PPDoUkV8F+iZ6vsI=
+	b=LExWUff3BWTGNh7AqfKH7OdRc0b221FTbsNxRiBj5Rm3rXY6bAcmJWQByMpUE6NlO
+	 zOaJkDf4pOrPsZIanQpnlg7e886x1aVgpX7hijuuxj59/+9rOKxjVLZ7/wD7T9sbPQ
+	 HzeOCH34HluUj6jJiWFgxM/eyaDw/5bcKRryAe2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Aaron Tomlin <atomlin@atomlin.com>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
+	Vidya Sagar <vidyas@nvidia.com>,
+	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 030/508] params: Replace __modinit with __init_or_module
+Subject: [PATCH 6.12 242/666] PCI: tegra194: Free up Endpoint resources during remove()
 Date: Wed, 20 May 2026 18:17:33 +0200
-Message-ID: <20260520162059.243308244@linuxfoundation.org>
+Message-ID: <20260520162116.463571762@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,13 +71,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252875-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252417-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
@@ -84,83 +85,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 936CF5998C9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
+X-Rspamd-Queue-Id: 8368A597390
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Pavlu <petr.pavlu@suse.com>
+From: Vidya Sagar <vidyas@nvidia.com>
 
-[ Upstream commit 3cb0c3bdea5388519bc1bf575dca6421b133302b ]
+[ Upstream commit 8870f02f7868209eb9bdc5dc53540a6262cf9227 ]
 
-Remove the custom __modinit macro from kernel/params.c and instead use the
-common __init_or_module macro from include/linux/module.h. Both provide the
-same functionality.
+Free up the resources during remove() that were acquired by the DesignWare
+driver for the Endpoint mode during probe().
 
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Reviewed-by: Aaron Tomlin <atomlin@atomlin.com>
-Reviewed-by: Daniel Gomez <da.gomez@samsung.com>
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
-Stable-dep-of: deffe1edba62 ("module: Fix freeing of charp module parameters when CONFIG_SYSFS=n")
+Fixes: bb617cbd8151 ("PCI: tegra194: Clean up the exit path for Endpoint mode")
+Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
+Link: https://patch.msgid.link/20260324190755.1094879-11-mmaddireddy@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/params.c | 15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
+ drivers/pci/controller/dwc/pcie-tegra194.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/params.c b/kernel/params.c
-index e39ac5420cd6d..2cfa12404ed0b 100644
---- a/kernel/params.c
-+++ b/kernel/params.c
-@@ -593,12 +593,6 @@ static ssize_t param_attr_store(struct module_attribute *mattr,
- }
- #endif
+diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+index bf7acdb725a33..dd08ad8d08cbd 100644
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -2282,6 +2282,7 @@ static int tegra_pcie_dw_probe(struct platform_device *pdev)
+ static void tegra_pcie_dw_remove(struct platform_device *pdev)
+ {
+ 	struct tegra_pcie_dw *pcie = platform_get_drvdata(pdev);
++	struct dw_pcie_ep *ep = &pcie->pci.ep;
  
--#ifdef CONFIG_MODULES
--#define __modinit
--#else
--#define __modinit __init
--#endif
--
- #ifdef CONFIG_SYSFS
- void kernel_param_lock(struct module *mod)
- {
-@@ -623,9 +617,9 @@ EXPORT_SYMBOL(kernel_param_unlock);
-  * create file in sysfs.  Returns an error on out of memory.  Always cleans up
-  * if there's an error.
-  */
--static __modinit int add_sysfs_param(struct module_kobject *mk,
--				     const struct kernel_param *kp,
--				     const char *name)
-+static __init_or_module int add_sysfs_param(struct module_kobject *mk,
-+					    const struct kernel_param *kp,
-+					    const char *name)
- {
- 	struct module_param_attrs *new_mp;
- 	struct attribute **new_attrs;
-@@ -759,7 +753,8 @@ void destroy_params(const struct kernel_param *params, unsigned num)
- 			params[i].ops->free(params[i].arg);
- }
+ 	if (pcie->of_data->mode == DW_PCIE_RC_TYPE) {
+ 		if (!pcie->link_state)
+@@ -2293,6 +2294,7 @@ static void tegra_pcie_dw_remove(struct platform_device *pdev)
+ 	} else {
+ 		disable_irq(pcie->pex_rst_irq);
+ 		pex_ep_event_pex_rst_assert(pcie);
++		dw_pcie_ep_deinit(ep);
+ 	}
  
--struct module_kobject __modinit * lookup_or_create_module_kobject(const char *name)
-+struct module_kobject * __init_or_module
-+lookup_or_create_module_kobject(const char *name)
- {
- 	struct module_kobject *mk;
- 	struct kobject *kobj;
+ 	pm_runtime_disable(pcie->dev);
 -- 
 2.53.0
 
