@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-252818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253282-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UNcAN//+DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-252818-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:35:43 +0200
+	id mOVzMX8vDmoK7wUAu9opvQ
+	(envelope-from <stable+bounces-253282-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:02:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84652596B4C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:35:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DE9F59BA33
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:02:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9B0C930832D4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:27:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0A0F439A5E91
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C2F33F8706;
-	Wed, 20 May 2026 18:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98B9443634C;
+	Wed, 20 May 2026 18:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0bnEj2L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kFW/VK+L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A2C3FB7FC;
-	Wed, 20 May 2026 18:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF0042EEB1;
+	Wed, 20 May 2026 18:47:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301669; cv=none; b=KIgfdwhk9+iIuiz3d4Y1a6soy21IFKiMN8ICWE6YA03f+r43UnypexN94b3aJr3h8BO5VPiqj2m1jIHs8kYtFaeAd3AmdzvtlgeoGbndkIZTdsNFtlzCmqrIgIsiILl/srQHPLBmre/zv48dWyDa5Fs+xdka9q22N/Wsum7Ukuw=
+	t=1779302876; cv=none; b=NzGo5bbAy+G9dwCfq33YfsbHrOXwkvfl0cnEjYqa3e4PQ3LbrOjc5aJHRnobNNGDlG+N287R1a2+r4cWWd8zGDwvNcwzqy4g4M44xVU3weowBwl0758NlnmwtisplOPlTl2uesltxAnDge4yX0ERHAS3i5nxr7IdgHP/DiIwk9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301669; c=relaxed/simple;
-	bh=rvMYhjMB1k/8gR2XuZbsAn5a8eFEzRHV8v2/8wYVdJE=;
+	s=arc-20240116; t=1779302876; c=relaxed/simple;
+	bh=NlK9FHA34MQG071iX/JSF4Z61kgHD6XFPaig2141iUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NJ9MF/LYYYk0vScuJL1S700nB+Ib8JH8CBrFSc/9ja/n803mPrAY9ab/WTxqwYTEhZT+nwBR7mAnk40gZd7qwMsSsEkPHQ1iZXulOfGvqBTnL12Un3H4KJrBc+vLv3/lZoz2Fcg3++gjcvovGJGi2I9GdH+iJtnSUBtgyrExP10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0bnEj2L; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 789BB1F000E9;
-	Wed, 20 May 2026 18:27:47 +0000 (UTC)
+	 MIME-Version; b=CXJYyvU48V5G3kSg6jvCNyq7Dmpzh6GyGEGg95sTqYhWQeVYgnsxJv+epuuB40HrUmQcJ1NxKtGZfqQHXFruMbYFE/Ux8tdLJDk7fQUetk3qd6osW4Rhm9MHHhzQMNuSWj1Z1ZGLjKGcckzrkLmmik0LJEYn+gB6q2cXnfeDvGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kFW/VK+L; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E70471F000E9;
+	Wed, 20 May 2026 18:47:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301668;
-	bh=ixMn1YulyB/5lTJ9iaDzJgvHMuRXAS2qZ4lf4xHJfik=;
+	s=korg; t=1779302872;
+	bh=w456P9GOvQ1WXMzHPByHriHDBBd45LT6vxfFoytwHo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=K0bnEj2LW7Bwm1qgeprlVii/v305Wzg5mv/eW/adFyvm4F1YIJ3l70vnClyYPF/kO
-	 3hpDi6nBLy3w7E2LWtcL3EuvtDfpM+gSBIj1xJ1Rn9PMbbGa0whpSHZn0sx4Jc1Cg4
-	 o6vaUM/G/p8ImrV4qNsPI6hyMARZ8aIGBhm59RGw=
+	b=kFW/VK+LrsmsKDFstf7ij7vqlC5pS+1c5ZAX0Skfb797sTRJEzoPT7jUR+1Ge6Bbw
+	 grEGHiTiPRxo9Co1GKauLPussalZsTYdbcatHZut2lFmjq8suiqXKgul5C+Dgdt5Yl
+	 vO+JySaywjX1LvXsR+hcxUM5/LjytX+EJ7cf61TI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
-	Krzysztof Karas <krzysztof.karas@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH 6.12 641/666] drm/i915: skip __i915_request_skip() for already signaled requests
-Date: Wed, 20 May 2026 18:24:12 +0200
-Message-ID: <20260520162125.170367723@linuxfoundation.org>
+	Petr Oros <poros@redhat.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 430/508] iavf: rename IAVF_VLAN_IS_NEW to IAVF_VLAN_ADDING
+Date: Wed, 20 May 2026 18:24:13 +0200
+Message-ID: <20260520162107.918629559@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,93 +73,120 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252818-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253282-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,gitlab.freedesktop.org:url,intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,ursulin.net:email]
-X-Rspamd-Queue-Id: 84652596B4C
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,intel.com:email]
+X-Rspamd-Queue-Id: 4DE9F59BA33
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+From: Petr Oros <poros@redhat.com>
 
-commit 4cfe4c0efbdcde742a47813180cc69b132d7598e upstream.
+[ Upstream commit 70d62b669f1f9080a25278fc90b64309f4ae8959 ]
 
-After a GPU reset the HWSP is zeroed, so previously completed
-requests appear incomplete. If such a request is picked up during
-reset_rewind() and marked guilty, i915_request_set_error_once()
-returns early (fence already signaled), leaving fence.error without
-a fatal error code. The subsequent __i915_request_skip() then hits:
-```
-GEM_BUG_ON(!fatal_error(rq->fence.error))
-```
+Rename the IAVF_VLAN_IS_NEW state to IAVF_VLAN_ADDING to better
+describe what the state represents: an ADD request has been sent to
+the PF and is waiting for a response.
 
-Fixes a kernel BUG observed on Sandy Bridge (Gen6) during
-heartbeat-triggered engine resets.
-```
-kernel BUG at drivers/gpu/drm/i915/i915_request.c:556!
-RIP: __i915_request_skip+0x15e/0x1d0 [i915]
-...
-__i915_request_reset+0x212/0xa70 [i915]
-reset_rewind+0xe4/0x280 [i915]
-intel_gt_reset+0x30d/0x5b0 [i915]
-heartbeat+0x516/0x530 [i915]
-```
+This is a pure rename with no behavioral change, preparing for a
+cleanup of the VLAN filter state machine.
 
-Guard __i915_request_skip() with i915_request_signaled(), if the
-fence is already signaled, the ring content is committed and there
-is nothing left to skip.
-
-Fixes: 36e191f0644b ("drm/i915: Apply i915_request_skip() on submission")
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/work_items/13729
-Signed-off-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-Cc: stable@vger.kernel.org # v5.7+
-Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://lore.kernel.org/r/fe76921d35b6ae85aa651822726d0d9815aa5362.1776339012.git.sebastian.brzezinka@intel.com
-(cherry picked from commit 5ba54393dcd7adf75a9f39f5a933b1538349cad5)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Petr Oros <poros@redhat.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260427-jk-iwl-net-petr-oros-fixes-v1-1-cdcb48303fd8@intel.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: f2ce65b9b917 ("iavf: stop removing VLAN filters from PF on interface down")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gt/intel_reset.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/iavf/iavf.h          | 2 +-
+ drivers/net/ethernet/intel/iavf/iavf_virtchnl.c | 8 ++++----
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/i915/gt/intel_reset.c
-+++ b/drivers/gpu/drm/i915/gt/intel_reset.c
-@@ -135,7 +135,8 @@ void __i915_request_reset(struct i915_re
- 	rcu_read_lock(); /* protect the GEM context */
- 	if (guilty) {
- 		i915_request_set_error_once(rq, -EIO);
--		__i915_request_skip(rq);
-+		if (!i915_request_signaled(rq))
-+			__i915_request_skip(rq);
- 		banned = mark_guilty(rq);
- 	} else {
- 		i915_request_set_error_once(rq, -EAGAIN);
+diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
+index 431d9d62c8c66..c09ec8cc1e9fb 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf.h
++++ b/drivers/net/ethernet/intel/iavf/iavf.h
+@@ -158,7 +158,7 @@ struct iavf_vlan {
+ enum iavf_vlan_state_t {
+ 	IAVF_VLAN_INVALID,
+ 	IAVF_VLAN_ADD,		/* filter needs to be added */
+-	IAVF_VLAN_IS_NEW,	/* filter is new, wait for PF answer */
++	IAVF_VLAN_ADDING,	/* ADD sent to PF, waiting for response */
+ 	IAVF_VLAN_ACTIVE,	/* filter is accepted by PF */
+ 	IAVF_VLAN_DISABLE,	/* filter needs to be deleted by PF, then marked INACTIVE */
+ 	IAVF_VLAN_INACTIVE,	/* filter is inactive, we are in IFF_DOWN */
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+index b95a4f903204b..bc8285f77a7be 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+@@ -637,7 +637,7 @@ static void iavf_vlan_add_reject(struct iavf_adapter *adapter)
+ 
+ 	spin_lock_bh(&adapter->mac_vlan_list_lock);
+ 	list_for_each_entry_safe(f, ftmp, &adapter->vlan_filter_list, list) {
+-		if (f->state == IAVF_VLAN_IS_NEW) {
++		if (f->state == IAVF_VLAN_ADDING) {
+ 			list_del(&f->list);
+ 			kfree(f);
+ 			adapter->num_vlan_filters--;
+@@ -702,7 +702,7 @@ void iavf_add_vlans(struct iavf_adapter *adapter)
+ 			if (f->state == IAVF_VLAN_ADD) {
+ 				vvfl->vlan_id[i] = f->vlan.vid;
+ 				i++;
+-				f->state = IAVF_VLAN_IS_NEW;
++				f->state = IAVF_VLAN_ADDING;
+ 				if (i == count)
+ 					break;
+ 			}
+@@ -763,7 +763,7 @@ void iavf_add_vlans(struct iavf_adapter *adapter)
+ 				vlan->tpid = f->vlan.tpid;
+ 
+ 				i++;
+-				f->state = IAVF_VLAN_IS_NEW;
++				f->state = IAVF_VLAN_ADDING;
+ 			}
+ 		}
+ 
+@@ -2520,7 +2520,7 @@ void iavf_virtchnl_completion(struct iavf_adapter *adapter,
+ 
+ 		spin_lock_bh(&adapter->mac_vlan_list_lock);
+ 		list_for_each_entry(f, &adapter->vlan_filter_list, list) {
+-			if (f->state == IAVF_VLAN_IS_NEW)
++			if (f->state == IAVF_VLAN_ADDING)
+ 				f->state = IAVF_VLAN_ACTIVE;
+ 		}
+ 		spin_unlock_bh(&adapter->mac_vlan_list_lock);
+-- 
+2.53.0
+
 
 
 
