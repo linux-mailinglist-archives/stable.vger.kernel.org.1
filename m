@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-250460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251360-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YI1OAOfyDWry4wUAu9opvQ
-	(envelope-from <stable+bounces-250460-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:07 +0200
+	id OOFkO3n7DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-251360-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:20:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57B4E5946D8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:06 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27928595D7B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:20:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0D36F3242747
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:45:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E02A630DF903
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:23:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60A1A373BEB;
-	Wed, 20 May 2026 16:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB4E93C6A5C;
+	Wed, 20 May 2026 17:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sfBtwzdq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wR1N1Gso"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21577370AE5;
-	Wed, 20 May 2026 16:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4579E36F421;
+	Wed, 20 May 2026 17:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295470; cv=none; b=NYbZVbeWLTIXItCgResQcWQ1rnA3IlOTtHHmnEOUX2Rnf8N6DOHFqQBGua31gSDAtOZcMpqe2eUXLJz76HCb+yjKOcfUlbnf/+sOx65rTG7MhVlZO18GdxEfFCdPp/wHkxkkKPMDz4TS5Bym1SCw9SELPhW3NWKqS9ix1yLzh+c=
+	t=1779297776; cv=none; b=gWVNQ8oU+gcNlKkL2MmSVRBv10/brj+P6g8oJodFM6p7L6afzC+NT7DvIMo5N2uN27D2Aq4rLcXOW7yGh5zD5X2W/wq+u1Y/Fpx1EDxNFC+jGx5aHSbXS2E6iPMcygp6b8Fx+0Zjgl1xWwwxqlfcR7QUv14HxIrLfDp9eoWWr88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295470; c=relaxed/simple;
-	bh=OK3KRorpkksQ03t2Ahz0wQetQBy+A+vs+pdFJAnjPyI=;
+	s=arc-20240116; t=1779297776; c=relaxed/simple;
+	bh=XV3ISsw0XC5QAVprW0nHIJZoBkDYSX7PJwwprogmBbs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nMmOsUjRq+iEZdy0pWZcgXmP+CnuaVPvynwDhWYOhnLH39+5C6ZdQPPJkWx9u1FLzdvdLH7TeizLyZDpC8jQAx+CxfwbZMBZzOj1LoguvozA4Z+WdMdUVhDJeytJJER0fverYCLYegAbuXb3rOfuBx1R2xCuOEs8/1LYUMsMYwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sfBtwzdq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86F081F000E9;
-	Wed, 20 May 2026 16:44:28 +0000 (UTC)
+	 MIME-Version; b=Rci3HqwskY+iND31sx8bfihJ/MBzNNx8GU7xTXRo2HL87Oqi9Rz2qDNcidEZnADfvuzEwdCfqyE5zXGbzii4RsABt2z9qV8XLGZJNwvOfbWpzwyRfb+sJtaSgjOQ8wiEfaFkW666+hQKGqWFTnfyBTRYuH1kQ1OrLmdHoiFWIjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wR1N1Gso; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABED61F000E9;
+	Wed, 20 May 2026 17:22:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295469;
-	bh=q7vGZ3xK6AEr0GDEFMdP3LoTOGMcVs7R3c0aN5/b0RA=;
+	s=korg; t=1779297775;
+	bh=MoacMsOjGgtpwKn1w34KJZUUtR5Q06ldTX9Td2Qe4vk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sfBtwzdq69cr5icJfplgKK1JqtXvkQXus8odiy3Bv1d1uYPR/lvot/tTr3jvfUfMg
-	 PoQ3Uyi8CVXb+qSsRkUeIVSx+WzYfsWCo++ypZq1pPi5oYcavgVYnnlVRKzhMA6ZLp
-	 z1juQRkHW1wFRULiW1qfx4pnjMDgjigxmoNSwOgc=
+	b=wR1N1Gso1prv/Gz0UZbzXVR5uLI4hknIiOmvgX2b6T/ikTu9gHM+6+KUyqjRcWB2p
+	 kiXalxuNjq0K464Dzgw7xXdA6jwRPglXDMaOPY689TW3hfSswf+/iQxM7w6gR1mf8g
+	 rlz8Lc4Ak6gtTg/PC/fTDE/uYbPCYcWSUEj+y7Gc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Rastyogin <gerben@altlinux.org>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0391/1146] ASoC: rsnd: Fix potential out-of-bounds access of component_dais[]
+Subject: [PATCH 6.18 158/957] net: mana: Support HW link state events
 Date: Wed, 20 May 2026 18:10:41 +0200
-Message-ID: <20260520162157.048169368@linuxfoundation.org>
+Message-ID: <20260520162137.976654692@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,74 +68,279 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250460-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251360-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxtesting.org:url,renesas.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 57B4E5946D8
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 27928595D7B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Rastyogin <gerben@altlinux.org>
+From: Haiyang Zhang <haiyangz@microsoft.com>
 
-[ Upstream commit f9e437cddf6cf9e603bdaefe148c1f4792aaf39c ]
+[ Upstream commit 54133f9b4b53ffa2204eb27cfc9d50072c9a52d2 ]
 
-component_dais[RSND_MAX_COMPONENT] is initially zero-initialized
-and later populated in rsnd_dai_of_node(). However, the existing boundary check:
-  if (i >= RSND_MAX_COMPONENT)
+Handle the NIC hardware link state events received from the HW
+channel, then set the proper link state accordingly.
 
-does not guarantee that the last valid element remains zero. As a result,
-the loop can rely on component_dais[RSND_MAX_COMPONENT] being zero,
-which may lead to an out-of-bounds access.
+And, add a feature bit, GDMA_DRV_CAP_FLAG_1_HW_VPORT_LINK_AWARE,
+to inform the NIC hardware this handler exists.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Our MANA NIC only sends out the link state down/up messages
+when we need to let the VM rerun DHCP client and change IP
+address. So, add netif_carrier_on() in the probe(), let the NIC
+show the right initial state in /sys/class/net/ethX/operstate.
 
-Fixes: 547b02f74e4a ("ASoC: rsnd: enable multi Component support for Audio Graph Card/Card2")
-Signed-off-by: Denis Rastyogin <gerben@altlinux.org>
-Acked-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://patch.msgid.link/20260327103311.459239-1-gerben@altlinux.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+Link: https://patch.msgid.link/1761770601-16920-1-git-send-email-haiyangz@linux.microsoft.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 3b7c7fc97aea ("net: mana: Move current_speed debugfs file to mana_init_port()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/renesas/rcar/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/ethernet/microsoft/mana/gdma_main.c   |  1 +
+ .../net/ethernet/microsoft/mana/hw_channel.c  | 12 +++++
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 54 +++++++++++++++++--
+ include/net/mana/gdma.h                       |  4 +-
+ include/net/mana/hw_channel.h                 |  2 +
+ include/net/mana/mana.h                       |  4 ++
+ 6 files changed, 71 insertions(+), 6 deletions(-)
 
-diff --git a/sound/soc/renesas/rcar/core.c b/sound/soc/renesas/rcar/core.c
-index 69fb19964a71d..2dc078358612d 100644
---- a/sound/soc/renesas/rcar/core.c
-+++ b/sound/soc/renesas/rcar/core.c
-@@ -1974,7 +1974,7 @@ static int rsnd_probe(struct platform_device *pdev)
- 	 *	asoc register
- 	 */
- 	ci = 0;
--	for (i = 0; priv->component_dais[i] > 0; i++) {
-+	for (i = 0; i < RSND_MAX_COMPONENT && priv->component_dais[i] > 0; i++) {
- 		int nr = priv->component_dais[i];
+diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+index c0de20b2183a2..d93cfb7f4e788 100644
+--- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
++++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+@@ -528,6 +528,7 @@ static void mana_gd_process_eqe(struct gdma_queue *eq)
+ 	case GDMA_EQE_HWC_INIT_DONE:
+ 	case GDMA_EQE_HWC_SOC_SERVICE:
+ 	case GDMA_EQE_RNIC_QP_FATAL:
++	case GDMA_EQE_HWC_SOC_RECONFIG_DATA:
+ 		if (!eq->eq.callback)
+ 			break;
  
- 		ret = devm_snd_soc_register_component(dev, &rsnd_soc_component,
+diff --git a/drivers/net/ethernet/microsoft/mana/hw_channel.c b/drivers/net/ethernet/microsoft/mana/hw_channel.c
+index 21cddafba5061..840c6b8957c90 100644
+--- a/drivers/net/ethernet/microsoft/mana/hw_channel.c
++++ b/drivers/net/ethernet/microsoft/mana/hw_channel.c
+@@ -118,6 +118,7 @@ static void mana_hwc_init_event_handler(void *ctx, struct gdma_queue *q_self,
+ 	struct gdma_dev *gd = hwc->gdma_dev;
+ 	union hwc_init_type_data type_data;
+ 	union hwc_init_eq_id_db eq_db;
++	struct mana_context *ac;
+ 	u32 type, val;
+ 	int ret;
+ 
+@@ -196,6 +197,17 @@ static void mana_hwc_init_event_handler(void *ctx, struct gdma_queue *q_self,
+ 			hwc->hwc_timeout = val;
+ 			break;
+ 
++		case HWC_DATA_HW_LINK_CONNECT:
++		case HWC_DATA_HW_LINK_DISCONNECT:
++			ac = gd->gdma_context->mana.driver_data;
++			if (!ac)
++				break;
++
++			WRITE_ONCE(ac->link_event, type);
++			schedule_work(&ac->link_change_work);
++
++			break;
++
+ 		default:
+ 			dev_warn(hwc->dev, "Received unknown reconfig type %u\n", type);
+ 			break;
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index abb207339992b..8277a1ac0ad74 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -20,6 +20,7 @@
+ 
+ #include <net/mana/mana.h>
+ #include <net/mana/mana_auxiliary.h>
++#include <net/mana/hw_channel.h>
+ 
+ static DEFINE_IDA(mana_adev_ida);
+ 
+@@ -84,7 +85,6 @@ static int mana_open(struct net_device *ndev)
+ 	/* Ensure port state updated before txq state */
+ 	smp_wmb();
+ 
+-	netif_carrier_on(ndev);
+ 	netif_tx_wake_all_queues(ndev);
+ 	netdev_dbg(ndev, "%s successful\n", __func__);
+ 	return 0;
+@@ -100,6 +100,46 @@ static int mana_close(struct net_device *ndev)
+ 	return mana_detach(ndev, true);
+ }
+ 
++static void mana_link_state_handle(struct work_struct *w)
++{
++	struct mana_context *ac;
++	struct net_device *ndev;
++	u32 link_event;
++	bool link_up;
++	int i;
++
++	ac = container_of(w, struct mana_context, link_change_work);
++
++	rtnl_lock();
++
++	link_event = READ_ONCE(ac->link_event);
++
++	if (link_event == HWC_DATA_HW_LINK_CONNECT)
++		link_up = true;
++	else if (link_event == HWC_DATA_HW_LINK_DISCONNECT)
++		link_up = false;
++	else
++		goto out;
++
++	/* Process all ports */
++	for (i = 0; i < ac->num_ports; i++) {
++		ndev = ac->ports[i];
++		if (!ndev)
++			continue;
++
++		if (link_up) {
++			netif_carrier_on(ndev);
++
++			__netdev_notify_peers(ndev);
++		} else {
++			netif_carrier_off(ndev);
++		}
++	}
++
++out:
++	rtnl_unlock();
++}
++
+ static bool mana_can_tx(struct gdma_queue *wq)
+ {
+ 	return mana_gd_wq_avail_space(wq) >= MAX_TX_WQE_SIZE;
+@@ -3086,9 +3126,6 @@ int mana_attach(struct net_device *ndev)
+ 	/* Ensure port state updated before txq state */
+ 	smp_wmb();
+ 
+-	if (apc->port_is_up)
+-		netif_carrier_on(ndev);
+-
+ 	netif_device_attach(ndev);
+ 
+ 	return 0;
+@@ -3183,7 +3220,6 @@ int mana_detach(struct net_device *ndev, bool from_close)
+ 	smp_wmb();
+ 
+ 	netif_tx_disable(ndev);
+-	netif_carrier_off(ndev);
+ 
+ 	if (apc->port_st_save) {
+ 		err = mana_dealloc_queues(ndev);
+@@ -3272,6 +3308,8 @@ static int mana_probe_port(struct mana_context *ac, int port_idx,
+ 		goto free_indir;
+ 	}
+ 
++	netif_carrier_on(ndev);
++
+ 	debugfs_create_u32("current_speed", 0400, apc->mana_port_debugfs, &apc->speed);
+ 
+ 	return 0;
+@@ -3462,6 +3500,8 @@ int mana_probe(struct gdma_dev *gd, bool resuming)
+ 
+ 	if (!resuming) {
+ 		ac->num_ports = num_ports;
++
++		INIT_WORK(&ac->link_change_work, mana_link_state_handle);
+ 	} else {
+ 		if (ac->num_ports != num_ports) {
+ 			dev_err(dev, "The number of vPorts changed: %d->%d\n",
+@@ -3469,6 +3509,8 @@ int mana_probe(struct gdma_dev *gd, bool resuming)
+ 			err = -EPROTO;
+ 			goto out;
+ 		}
++
++		enable_work(&ac->link_change_work);
+ 	}
+ 
+ 	if (ac->num_ports == 0)
+@@ -3531,6 +3573,8 @@ void mana_remove(struct gdma_dev *gd, bool suspending)
+ 	int err;
+ 	int i;
+ 
++	disable_work_sync(&ac->link_change_work);
++
+ 	/* adev currently doesn't support suspending, always remove it */
+ 	if (gd->adev)
+ 		remove_adev(gd);
+diff --git a/include/net/mana/gdma.h b/include/net/mana/gdma.h
+index 57df78cfbf82c..637f42485dba6 100644
+--- a/include/net/mana/gdma.h
++++ b/include/net/mana/gdma.h
+@@ -590,6 +590,7 @@ enum {
+ 
+ /* Driver can self reset on FPGA Reconfig EQE notification */
+ #define GDMA_DRV_CAP_FLAG_1_HANDLE_RECONFIG_EQE BIT(17)
++#define GDMA_DRV_CAP_FLAG_1_HW_VPORT_LINK_AWARE BIT(6)
+ 
+ #define GDMA_DRV_CAP_FLAGS1 \
+ 	(GDMA_DRV_CAP_FLAG_1_EQ_SHARING_MULTI_VPORT | \
+@@ -599,7 +600,8 @@ enum {
+ 	 GDMA_DRV_CAP_FLAG_1_DEV_LIST_HOLES_SUP | \
+ 	 GDMA_DRV_CAP_FLAG_1_DYNAMIC_IRQ_ALLOC_SUPPORT | \
+ 	 GDMA_DRV_CAP_FLAG_1_SELF_RESET_ON_EQE | \
+-	 GDMA_DRV_CAP_FLAG_1_HANDLE_RECONFIG_EQE)
++	 GDMA_DRV_CAP_FLAG_1_HANDLE_RECONFIG_EQE | \
++	 GDMA_DRV_CAP_FLAG_1_HW_VPORT_LINK_AWARE)
+ 
+ #define GDMA_DRV_CAP_FLAGS2 0
+ 
+diff --git a/include/net/mana/hw_channel.h b/include/net/mana/hw_channel.h
+index 83cf93338eb38..16feb39616c1b 100644
+--- a/include/net/mana/hw_channel.h
++++ b/include/net/mana/hw_channel.h
+@@ -24,6 +24,8 @@
+ #define HWC_INIT_DATA_PF_DEST_CQ_ID	11
+ 
+ #define HWC_DATA_CFG_HWC_TIMEOUT 1
++#define HWC_DATA_HW_LINK_CONNECT 2
++#define HWC_DATA_HW_LINK_DISCONNECT 3
+ 
+ #define HW_CHANNEL_WAIT_RESOURCE_TIMEOUT_MS 30000
+ 
+diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
+index 857f45a3386cc..f9f264385405c 100644
+--- a/include/net/mana/mana.h
++++ b/include/net/mana/mana.h
+@@ -477,6 +477,10 @@ struct mana_context {
+ 	struct dentry *mana_eqs_debugfs;
+ 
+ 	struct net_device *ports[MAX_PORTS_IN_MANA_DEV];
++
++	/* Link state change work */
++	struct work_struct link_change_work;
++	u32 link_event;
+ };
+ 
+ struct mana_port_context {
 -- 
 2.53.0
 
