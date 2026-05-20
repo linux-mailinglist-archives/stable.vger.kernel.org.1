@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-250776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252344-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iCviLWfzDWoF5AUAu9opvQ
-	(envelope-from <stable+bounces-250776-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:46:15 +0200
+	id GBO3Djr8DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-252344-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCDA1594825
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:46:13 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08A8A596028
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 94C8831FA5D4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:58:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 187733164CE2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:07:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D277B39C00B;
-	Wed, 20 May 2026 16:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF78C36A02E;
+	Wed, 20 May 2026 18:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QTd2mNhb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w45knjnt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5BD3D3D1C;
-	Wed, 20 May 2026 16:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71AE83EAC82;
+	Wed, 20 May 2026 18:07:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296285; cv=none; b=tXRP7PetUiHxhm39+ZFj0VpeZR9/ZaeTTYE0LDwfHQsjuUgj6uWdFKVmAQ3MnrPvJRCAKtBEPOeXzyXR3wjbncL1bimql2ZPzAS3MIZcZETRFfo2Cp+O0KzSwAr2kFxNxO3qZrxTFajI+Pi2fUgw9mx+0lrgH1/kBIk9e+r+fU8=
+	t=1779300431; cv=none; b=Tvjs9m0O2rQgbkUbrMz+g1w/sHHKn2v8VL6hOO24QqfYkCsnLQ29sssBTV+Br2UbhVtioRhujWnW1iRHozR+bCp2FNmRKjsfiLwRvywUpksayuV2GLuBPhOMfNXs1I6dyXwP9ovDYW5foyCGAAesa0BwVu1shySZe2wlQ6yFPeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296285; c=relaxed/simple;
-	bh=m/S/nh0+H8rb0T1/SYCmqg1jAH7g2v7Wp4F7Ga3mYFA=;
+	s=arc-20240116; t=1779300431; c=relaxed/simple;
+	bh=ybetXSr5sxW237+j86bPRJzJ/Ab7uv0brKnar+yzebI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rsbelnLdevDCViqs/jCwzilXg2ucCAbzcmCY3Bp25ii1DNohuCGQbk6cWYRyUqjqnhUIeP9j775/MUbDqRsnFEiLu6HkO9LD+VCmTzofuxEMheHE+OWvydZ+eqgNd4WoqMT1xU/zdgVFaS8oHRRiOU1KsTIjaT1ydJL3bBvYT48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QTd2mNhb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E23DE1F00893;
-	Wed, 20 May 2026 16:58:03 +0000 (UTC)
+	 MIME-Version; b=VOW3eNynWFDsm4TxSq1MI7+dOr+CdEkhxeNNve26U5AfB7tJSgduPpyHhiaUcWqbdMjpKpxrsLU4kV/PFUqGomqHZ0HVdREdvFSOb5/g9CmbkXazrwCYG+QLi518kaB7J87/kMwu5hZAWKn03JgFJZ6hpVuckaBtChvw5fcBcss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w45knjnt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B781F000E9;
+	Wed, 20 May 2026 18:07:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296284;
-	bh=BAs5+q3IIiLECBNjp6r+F+JvFBIOmHYx3LwzHN1ekK8=;
+	s=korg; t=1779300430;
+	bh=YOpLNBTI6g5RhMi9rZQ4x/Uw8+wSgJihYdxH44O7O5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QTd2mNhbRJvsG1jDl9nqQ8Zpsm1Uju7X+d1e6WuoRIUoOj/8OnPHIRKmdazjFH2AV
-	 PS8ev8IJk5jM7EAYO7p+4n2Bie6mpJC+5FRrZGVRCjb55wlOjADCBGegYeOpdAsv9S
-	 iO0MXfVlGWpQRW0CtpVn3/9cRVzgR69a2g38rczI=
+	b=w45knjnt0zCWo2m9jbh/3AG8sjPjU0TIBlgluNMDLvfcD3eSP1q7rtp/N5YSxG0HS
+	 dqN0aV11zYqcGkcVFEIFWLC/TkJHxClkByP7fTwV5v+7odRg8Bebnl982H3MLMNSsb
+	 Bb/34e4uxlJwEYl0hLL+Qa8rExZl9fGWkJd0VYqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Don Brace <don.brace@microchip.com>,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Ian Ray <ian.ray@gehealthcare.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0734/1146] scsi: hpsa: Enlarge controller and IRQ name buffers
+Subject: [PATCH 6.12 173/666] drm/panel: simple: Correct G190EAN01 prepare timing
 Date: Wed, 20 May 2026 18:16:24 +0200
-Message-ID: <20260520162204.817782518@linuxfoundation.org>
+Message-ID: <20260520162114.952684628@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250776-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252344-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,67 +86,53 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,iscas.ac.cn:email,microchip.com:email]
-X-Rspamd-Queue-Id: DCDA1594825
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,gehealthcare.com:email,collabora.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 08A8A596028
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
 
-[ Upstream commit 8e8cb6f39930e836144f51cdb6d409c9e4cb71fe ]
+[ Upstream commit f1080f82570b797598c1ba7e9c800ae9e94aafc6 ]
 
-hpsa formats the controller name into h->devname[8] and derives
-interrupt names from it in h->intrname[][16]. Once host_no reaches four
-digits, "hpsa%d" no longer fits in devname, and the derived IRQ names
-can then overrun the interrupt-name buffers as well.
+The prepare timing specified by the G190EAN01 datasheet should be
+between 30 and 50 ms. Considering it might take some time for the
+LVDS encoder to enable the signal, we should only wait the min.
+required time in the panel driver and not the max. allowed time.
 
-The previous fix switched these builders to bounded formatting, but that
-would truncate user-visible controller and IRQ names. Keep the existing
-names intact instead by enlarging the fixed buffers to cover the current
-formatted strings.
-
-Fixes: 2946e82bdd76 ("hpsa: use scsi host_no as hpsa controller number")
-Fixes: 8b47004a5512 ("hpsa: add interrupt number to /proc/interrupts interrupt name")
-Acked-by: Don Brace <don.brace@microchip.com>
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Link: https://patch.msgid.link/20260401120552.78541-1-pengpeng@iscas.ac.cn
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 2f7b832fc992 ("drm/panel: simple: Add support for AUO G190EAN01 panel")
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patch.msgid.link/20260217142528.68613-1-ian.ray@gehealthcare.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hpsa.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/panel/panel-simple.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/hpsa.h b/drivers/scsi/hpsa.h
-index 99b0750850b2b..f6bfe75dd696d 100644
---- a/drivers/scsi/hpsa.h
-+++ b/drivers/scsi/hpsa.h
-@@ -164,7 +164,7 @@ struct bmic_controller_parameters {
- struct ctlr_info {
- 	unsigned int *reply_map;
- 	int	ctlr;
--	char	devname[8];
-+	char	devname[16];
- 	char    *product_name;
- 	struct pci_dev *pdev;
- 	u32	board_id;
-@@ -255,7 +255,7 @@ struct ctlr_info {
- 	int remove_in_progress;
- 	/* Address of h->q[x] is passed to intr handler to know which queue */
- 	u8 q[MAX_REPLY_QUEUES];
--	char intrname[MAX_REPLY_QUEUES][16];	/* "hpsa0-msix00" names */
-+	char intrname[MAX_REPLY_QUEUES][32];	/* controller and IRQ names */
- 	u32 TMFSupportFlags; /* cache what task mgmt funcs are supported. */
- #define HPSATMF_BITS_SUPPORTED  (1 << 0)
- #define HPSATMF_PHYS_LUN_RESET  (1 << 1)
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index 32d876f6684e2..a0e2da2953768 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -1260,7 +1260,7 @@ static const struct panel_desc auo_g190ean01 = {
+ 		.height = 301,
+ 	},
+ 	.delay = {
+-		.prepare = 50,
++		.prepare = 30,
+ 		.enable = 200,
+ 		.disable = 110,
+ 		.unprepare = 1000,
 -- 
 2.53.0
 
