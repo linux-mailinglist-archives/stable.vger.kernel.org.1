@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-250451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251388-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SJuXObjyDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-250451-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:20 +0200
+	id gLvmLfn7DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-251388-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4DCD594633
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:19 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC191595EFB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 602753770A26
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:44:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CDEED31AECB8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:25:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA7033D412C;
-	Wed, 20 May 2026 16:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9057D3F2116;
+	Wed, 20 May 2026 17:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pUrXniMb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X2fQJUwL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A7C3D524A;
-	Wed, 20 May 2026 16:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B0A3C6A5C;
+	Wed, 20 May 2026 17:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295446; cv=none; b=J5R7fWqBQ+lLI6be/9mi03L8l4vVPuxozgn8uNojIUtgkcIuFrgvInyhP77KopV32Nmchl7QXaILcVRrJ5IDZ9b5s0Ll6cC2HHxyUpHx/wm0T8w5g8pRXI9rKqkdIPBg+csL9maUjZA+S4QFn+Zkm+uE3gJMtfFuSKv3x5sQQ7w=
+	t=1779297850; cv=none; b=U7FEKmbGVtWhEWdQEtULy4DRQSO+oDlElFs3MhvGEg03vRjni4u4GVnhSmshOoHrDJbB1mj+2//bM0RwK37tfYCiR9LNY9tmNDYzb6t6jXQVj35vmDaHZVtUo7Gj+i/i4OrLqpBK0fYztX4s0ISGkEhBTMUNIvCVjoChkr5Cyno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295446; c=relaxed/simple;
-	bh=DHBzWyoX24rqQ8gMDLM90dFtS8hq0jg3xKNRgUdLvG4=;
+	s=arc-20240116; t=1779297850; c=relaxed/simple;
+	bh=w4tJb3hSwb+/MvKShvMKe20nKAWVdMcLanhV1fXC8lU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hQQWoPxGYEVed9lsgJgBGbu96nq0dX+Jw57WVOq+J6hV0n9clnB244HvNSFXm5DlwCK6neiQrB6mX6nCuHG8P5HhgOvogYb2ngUjelFBheG883pf0nvV/OX49K5f5fNfOepglslMwKOJxv2GHnXzRZEqdOVduwqRRct2EhMikSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pUrXniMb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA64F1F000E9;
-	Wed, 20 May 2026 16:44:04 +0000 (UTC)
+	 MIME-Version; b=TNzt6MY1jmMPAqH378LOB27MWn4SDzGWWctAdhj/4cCwjpZ2s7tEZss+9uMsHsvC/u25piJVDyavxAMKLLk3DRIjqHwdR8nywXrWQG7yGNLZ0BEyVbrpGpMI6RMipg1hx3eymuaX5nnrK+gLb36mwav37fOR/ybeldWDjnf9FEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X2fQJUwL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A0291F000E9;
+	Wed, 20 May 2026 17:24:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295445;
-	bh=tOuKVPlZ7AMWO8DVdaH21ppqQ618W6PvQMuC9YTcOuU=;
+	s=korg; t=1779297849;
+	bh=mkjJ1ejJNQSdyH6NPmLQTLpwhCJK4njrzM1iyk8jKjM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pUrXniMbHGCJLkdW5wCLuBWch2zYD7koPAuuLpIWZK9b0ivUmnRjVJMimRy2AVzqJ
-	 Y00LOHDHUaaLqtgKMwF6lPTrPYnka1UqdNfd2ol4LH7sJdBiu12voWne3zSIInC+A7
-	 XLU2UauvBMn6fZJl1YRzchv5RUH5FLrBAHAOjblk=
+	b=X2fQJUwLYK8R/h0vnx8eBsEZy+5PR7HGQrnjhUEAHgTBABCtJVV90+zdv8TIkSiaI
+	 lRDu83sArCjdrDzB4/8IkVn7+Nsxym2VhNGt3EqY4DjY1KOnYnS35+5C7jMLNGXB7B
+	 SrZpCwRJjsA3KCCJ6CmRsIkosO5ol0cu796S6Kgw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vidya Sagar <vidyas@nvidia.com>,
-	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
+	Nicolin Chen <b42378@freescale.com>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0421/1146] PCI: tegra194: Disable direct speed change for Endpoint mode
+Subject: [PATCH 6.18 188/957] ASoC: soc-compress: use function to clear symmetric params
 Date: Wed, 20 May 2026 18:11:11 +0200
-Message-ID: <20260520162157.721966711@linuxfoundation.org>
+Message-ID: <20260520162138.629483894@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250451-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251388-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,64 +86,109 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D4DCD594633
+	DBL_BLOCKED_OPENRESOLVER(0.00)[freescale.com:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,renesas.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: DC191595EFB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vidya Sagar <vidyas@nvidia.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-[ Upstream commit 976f6763f57970388bcd7118931f33f447916927 ]
+[ Upstream commit 07c774dd64ba0c605dbf844132122e3edbdbea93 ]
 
-Pre-silicon simulation showed the controller operating in Endpoint mode
-initiating link speed change after completing Secondary Bus Reset. Ideally,
-the Root Port or the Switch Downstream Port should initiate the link speed
-change post SBR, not the Endpoint.
+Current soc-compress.c clears symmetric_rate, but it clears rate only,
+not clear other symmetric_channels/sample_bits.
 
-So, as per the hardware team recommendation, disable direct speed change
-for the Endpoint mode to prevent it from initiating speed change after the
-physical layer link is up at Gen1, leaving speed change ownership with the
-host.
+	static int soc_compr_clean(...)
+	{
+		...
+		if (!snd_soc_dai_active(cpu_dai))
+=>			cpu_dai->symmetric_rate = 0;
 
-Fixes: c57247f940e8 ("PCI: tegra: Add support for PCIe endpoint mode in Tegra194")
-Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
-Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
-[mani: commit log]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
-Link: https://patch.msgid.link/20260324190755.1094879-8-mmaddireddy@nvidia.com
+		if (!snd_soc_dai_active(codec_dai))
+=>			codec_dai->symmetric_rate = 0;
+		...
+	};
+
+This feature was added when v3.7 kernel [1], and there was only
+symmetric_rate, no symmetric_channels/sample_bits in that timing.
+
+symmetric_channels/sample_bits were added in v3.14 [2],
+but I guess it didn't notice that soc-compress.c is updating symmetric_xxx.
+
+We are clearing symmetry_xxx by soc_pcm_set_dai_params(), but is soc-pcm.c
+local function. Makes it global function and clear symmetry_xxx by it.
+
+[1] commit 1245b7005de02 ("ASoC: add compress stream support")
+[2] commit 3635bf09a89cf ("ASoC: soc-pcm: add symmetry for channels and
+			   sample bits")
+
+Fixes: 3635bf09a89c ("ASoC: soc-pcm: add symmetry for channels and sample bits")
+Cc: Nicolin Chen <b42378@freescale.com>
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://patch.msgid.link/87ms15e3kv.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/sound/soc.h      | 3 +++
+ sound/soc/soc-compress.c | 4 ++--
+ sound/soc/soc-pcm.c      | 4 ++--
+ 3 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index 71b80edd10c8c..4d8bfd3e34ece 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -1805,6 +1805,10 @@ static void pex_ep_event_pex_rst_deassert(struct tegra_pcie_dw *pcie)
+diff --git a/include/sound/soc.h b/include/sound/soc.h
+index a9c058b06ab42..33968935d00a9 100644
+--- a/include/sound/soc.h
++++ b/include/sound/soc.h
+@@ -1414,6 +1414,9 @@ struct snd_soc_dai *snd_soc_find_dai(
+ struct snd_soc_dai *snd_soc_find_dai_with_mutex(
+ 	const struct snd_soc_dai_link_component *dlc);
  
- 	reset_control_deassert(pcie->core_rst);
- 
-+	val = dw_pcie_readl_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL);
-+	val &= ~PORT_LOGIC_SPEED_CHANGE;
-+	dw_pcie_writel_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL, val);
++void soc_pcm_set_dai_params(struct snd_soc_dai *dai,
++			    struct snd_pcm_hw_params *params);
 +
- 	if (pcie->update_fc_fixup) {
- 		val = dw_pcie_readl_dbi(pci, CFG_TIMER_CTRL_MAX_FUNC_NUM_OFF);
- 		val |= 0x1 << CFG_TIMER_CTRL_ACK_NAK_SHIFT;
+ #include <sound/soc-dai.h>
+ 
+ static inline
+diff --git a/sound/soc/soc-compress.c b/sound/soc/soc-compress.c
+index 7b81dffc6a935..b8402802ae784 100644
+--- a/sound/soc/soc-compress.c
++++ b/sound/soc/soc-compress.c
+@@ -69,10 +69,10 @@ static int soc_compr_clean(struct snd_compr_stream *cstream, int rollback)
+ 	snd_soc_dai_digital_mute(codec_dai, 1, stream);
+ 
+ 	if (!snd_soc_dai_active(cpu_dai))
+-		cpu_dai->symmetric_rate = 0;
++		soc_pcm_set_dai_params(cpu_dai, NULL);
+ 
+ 	if (!snd_soc_dai_active(codec_dai))
+-		codec_dai->symmetric_rate = 0;
++		soc_pcm_set_dai_params(codec_dai, NULL);
+ 
+ 	snd_soc_link_compr_shutdown(cstream, rollback);
+ 
+diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
+index 2c21fd528afd0..99299364c9ba3 100644
+--- a/sound/soc/soc-pcm.c
++++ b/sound/soc/soc-pcm.c
+@@ -423,8 +423,8 @@ void dpcm_dapm_stream_event(struct snd_soc_pcm_runtime *fe, int dir, int event)
+ 	snd_soc_dapm_stream_event(fe, dir, event);
+ }
+ 
+-static void soc_pcm_set_dai_params(struct snd_soc_dai *dai,
+-				   struct snd_pcm_hw_params *params)
++void soc_pcm_set_dai_params(struct snd_soc_dai *dai,
++			    struct snd_pcm_hw_params *params)
+ {
+ 	if (params) {
+ 		dai->symmetric_rate	   = params_rate(params);
 -- 
 2.53.0
 
