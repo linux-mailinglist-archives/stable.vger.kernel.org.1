@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251196-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wKcLCnkXDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-252760-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:20:09 +0200
+	id oFCGFfnuDWpu4wUAu9opvQ
+	(envelope-from <stable+bounces-251196-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:27:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A6EA59975A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:20:08 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AFF2593B45
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:27:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A2C42304EFE8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6BEEC317A70F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 524093FC5D1;
-	Wed, 20 May 2026 18:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6DB3DA7C6;
+	Wed, 20 May 2026 17:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eWnx3nbp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fmXpta+r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D94F936BCDE;
-	Wed, 20 May 2026 18:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53DF633A033;
+	Wed, 20 May 2026 17:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301519; cv=none; b=bWpCoGf2yUTKCrwE2/UjytPtHhukVlvdblK44HlX4e0RxmwJnNX8zz4hJ4RlprFH3XaI6VwBGf91LdOIlVtmcR+XlUlO+66k/zphn0ZPjtfFqQj5ZUNQetYOaPNbWvx5aBxo13AkGKpL3yVZvs+pwJpXAW6latoYOCbP6+61lVY=
+	t=1779297350; cv=none; b=Sgq7j6oqDb57MDEtDNodTd34lA7wROexpgKbsz/hZs15hdKPuHp/tU/z+0/ok2aBfATmQTDfApA87Ggt3k2oho2m+A6E0fM4+KdVwwC1FjhA0sRDKUPQ4k1UHu5/XXWhlwOhLHbK0z8UwvuVaa/RGW98t+5k8HE2ThwCXjkpDjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301519; c=relaxed/simple;
-	bh=jVhtln0PMhikwiUS8f1lfQetj76RDVgVQhU4UyVoing=;
+	s=arc-20240116; t=1779297350; c=relaxed/simple;
+	bh=pok7uqEav/bEHYlJypf0jibnVESA1J1t7pIE2aMaa2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f6zchZAlbBeokauXqVSvatVo4p5Nn2692fzCEIJfJr7xnWQkk94/b3V6Y3x2Ew8rWPqc7Z2hHyTPcqZUi3s9oEYP+z6b17c+n/zRyADmC+EmKq4gkevasgXZ8cvbENULqxeR8x5Ly8IkvVGGARXWdA3IZDkM980SR6ytRbIE4IY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eWnx3nbp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 469F31F00899;
-	Wed, 20 May 2026 18:25:17 +0000 (UTC)
+	 MIME-Version; b=IodEYkj5mF3Bzhvmp11tzxV+gzBdFmpolGwYyXBRbanJASfjzh/vKI0HJL4mNIKd42Lma5zO5xcrNGCqX/VkO/V2RtOCULKCRMhTHME6VtYABIULUMSj6TVmwwVvRkt9E1nHvrGr8z4AEyCReA0DW4xxHmmcB10mnIYT/lYWy6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fmXpta+r; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B21D11F00893;
+	Wed, 20 May 2026 17:15:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301517;
-	bh=Had2PZoZ99vay+5G3/4j9oYLLN1Olj2LA8U7jBFt7mM=;
+	s=korg; t=1779297349;
+	bh=FwoDsdIQnXaoCV0z2gt1royBFkiv3Kv6fQUtdGGhSEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eWnx3nbpAlrpIXSQRW9nlIYzAeoV7SmjGaD39dNHuR+MltNU6XEl0aNvtXYs43TLy
-	 1iLre2r8UklUPeW+0usyEr63udVnsRUSoWH+lp4FAzAVfXdV1Bwh0a6oomHAqkFV8T
-	 SWKAMDbc9rK+20WKd/rGARczlgaPbLr+SBA1dJ1o=
+	b=fmXpta+rwD1busT50qHBkfJP2LDHB/lCHUt00zrj8dT1rXQjGRWop1EyTK4wJ1yP8
+	 bxHmnDDMB/gevfuX962bStZVwiXv/AcLdWJeJZcX5a5ay+mXzW/W+IGCGOxfGGsa3y
+	 iyatVyVQv5j0PdSZXwwE2lcMMul8vNrQG/Cej7G4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hasan Basbunar <basbunarhasan@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yash Shah <yash.shah@sifive.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 585/666] page_pool: fix memory-provider leak in page_pool_create_percpu() error path
+Subject: [PATCH 7.0 1146/1146] spi: sifive: fix controller deregistration
 Date: Wed, 20 May 2026 18:23:16 +0200
-Message-ID: <20260520162123.946449626@linuxfoundation.org>
+Message-ID: <20260520162214.194682948@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,144 +67,88 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252760-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251196-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 4A6EA59975A
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 0AFF2593B45
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hasan Basbunar <basbunarhasan@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 5ef343614db766acdc01c56d66e780a1b43c6ac6 ]
+[ Upstream commit 0f25236694a2854627c1597465a071e6bb6fe572 ]
 
-When page_pool_create_percpu() fails on page_pool_list(), it falls
-through to its err_uninit: label, which calls page_pool_uninit().
-At that point page_pool_init() has already taken two references
-when the user requested PP_FLAG_ALLOW_UNREADABLE_NETMEM:
+Make sure to deregister the controller before disabling underlying
+resources like interrupts during driver unbind.
 
-	pool->mp_ops->init(pool)
-	static_branch_inc(&page_pool_mem_providers);
+Note that clocks were also disabled before the recent commit
+140039c23aca ("spi: sifive: Simplify clock handling with
+devm_clk_get_enabled()").
 
-Neither is undone by page_pool_uninit(); both are only undone by
-__page_pool_destroy() (success-side teardown). The error path
-therefore leaks the per-provider reference taken by mp_ops->init
-(io_zcrx_ifq->refs in the io_uring zcrx provider, the dmabuf
-binding refcount in the devmem provider) plus one increment of
-the page_pool_mem_providers static branch on every failure of
-xa_alloc_cyclic() inside page_pool_list().
-
-The leaked io_zcrx_ifq->refs in turn pins everything
-io_zcrx_ifq_free() would release on cleanup: ifq->user (uid),
-ifq->mm_account (mmdrop), ifq->dev (device refcount),
-ifq->netdev_tracker (netdev refcount), and the rbuf region.
-The leaked static branch increment forces all subsequent
-page_pool_alloc_netmems() and page_pool_return_page() callers to
-take the slow mp_ops branch for the lifetime of the kernel.
-
-Reachable via the io_uring zcrx path:
-
-	io_uring_register(IORING_REGISTER_ZCRX_IFQ)  /* CAP_NET_ADMIN */
-	  -> __io_uring_register
-	  -> io_register_zcrx
-	  -> zcrx_register_netdev
-	  -> netif_mp_open_rxq
-	  -> driver ndo_queue_mem_alloc
-	  -> page_pool_create_percpu
-	    -> page_pool_init succeeds (mp_ops->init runs, branch++)
-	    -> page_pool_list fails (xa_alloc_cyclic -ENOMEM)
-	    -> goto err_uninit         <-- leak
-
-The same shape applies to the devmem dmabuf provider via
-mp_dmabuf_devmem_init()/mp_dmabuf_devmem_destroy().
-
-Restore the cleanup symmetry by moving the mp_ops->destroy() and
-static_branch_dec() calls out of __page_pool_destroy() and into
-page_pool_uninit(), so page_pool_uninit() is again the strict
-inverse of page_pool_init(). page_pool_uninit() has only two
-callers (the err_uninit: path and __page_pool_destroy()), so this
-preserves the single-call invariant on the success path while
-fixing the err path. The error path of page_pool_init() itself
-still skips the mp_ops cleanup correctly: mp_ops->init is the
-last action that takes a reference before page_pool_init() returns
-0, so when it returns an error neither the refcount nor the static
-branch has been touched.
-
-Triggering the bug requires xa_alloc_cyclic() to fail with -ENOMEM,
-which under normal GFP_KERNEL retry behaviour is rare. It is
-deterministic under CONFIG_FAULT_INJECTION with fail_page_alloc /
-xa fault injection, or under sustained memory pressure. The leak
-is silent: there is no warning, and the released kernel build
-continues running with a permanently-incremented static branch.
-
-Fixes: 0f9214046893 ("memory-provider: dmabuf devmem memory provider")
-Signed-off-by: Hasan Basbunar <basbunarhasan@gmail.com>
-Link: https://patch.msgid.link/20260428170739.34881-1-basbunarhasan@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 484a9a68d669 ("spi: sifive: Add driver for the SiFive SPI controller")
+Cc: stable@vger.kernel.org	# 5.1
+Cc: Yash Shah <yash.shah@sifive.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260410081757.503099-15-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/page_pool.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/spi/spi-sifive.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index 5c089469541c4..9c569a0371656 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -323,6 +323,11 @@ static void page_pool_uninit(struct page_pool *pool)
- 	if (!pool->system)
- 		free_percpu(pool->recycle_stats);
- #endif
+--- a/drivers/spi/spi-sifive.c
++++ b/drivers/spi/spi-sifive.c
+@@ -392,7 +392,7 @@ static int sifive_spi_probe(struct platf
+ 	dev_info(&pdev->dev, "mapped; irq=%d, cs=%d\n",
+ 		 irq, host->num_chipselect);
+ 
+-	ret = devm_spi_register_controller(&pdev->dev, host);
++	ret = spi_register_controller(host);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "spi_register_host failed\n");
+ 		goto put_host;
+@@ -411,8 +411,14 @@ static void sifive_spi_remove(struct pla
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+ 	struct sifive_spi *spi = spi_controller_get_devdata(host);
+ 
++	spi_controller_get(host);
 +
-+	if (pool->mp_ops) {
-+		pool->mp_ops->destroy(pool);
-+		static_branch_dec(&page_pool_mem_providers);
-+	}
++	spi_unregister_controller(host);
++
+ 	/* Disable all the interrupts just in case */
+ 	sifive_spi_write(spi, SIFIVE_SPI_REG_IE, 0);
++
++	spi_controller_put(host);
  }
  
- /**
-@@ -1088,11 +1093,6 @@ static void __page_pool_destroy(struct page_pool *pool)
- 	page_pool_unlist(pool);
- 	page_pool_uninit(pool);
- 
--	if (pool->mp_ops) {
--		pool->mp_ops->destroy(pool);
--		static_branch_dec(&page_pool_mem_providers);
--	}
--
- 	kfree(pool);
- }
- 
--- 
-2.53.0
-
+ static int sifive_spi_suspend(struct device *dev)
 
 
 
