@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-250692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251630-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OHIcFuDrDWo04wUAu9opvQ
-	(envelope-from <stable+bounces-250692-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:14:08 +0200
+	id oDKdEjUcDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251630-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:40:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 198BC59320C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:14:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A9BD599E7B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:40:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5C0B231218BA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:55:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 32B6F34C1182
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:34:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5125736B05E;
-	Wed, 20 May 2026 16:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D99F5369D7E;
+	Wed, 20 May 2026 17:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wiAYj8oj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TE1nsb7A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAAA13F1AAB;
-	Wed, 20 May 2026 16:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9D828DC4;
+	Wed, 20 May 2026 17:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296067; cv=none; b=AW4n2LvcO9ScTWU2yEANSJc+8q5jWpjYBHCZlyrkTsEJdyZQWlu5vUTZLXlh9WeZOzYY0UYwI3G1MMmqep0Lr7ZtVluLnrARkXKzmcmO8URCTgjS0+od/bkDyDhYhdggtQkkNkxDgGTCDv0lDbgfWBpyrOW6bQUWUp9ip3/Skk4=
+	t=1779298482; cv=none; b=uACeB7S7jQ+lvuShWNSv2XtXwT+POMn6nd8rTzIGBeRapZUSdE1dqDAdO9J/iMa00TTE3vycNJ7U9cp8xcdxGHW5fL28Mj11CAjiMZ8JVKWQUAjAGTo71/W0IRewxvE3XXKQW8wIwkDi6UzgSH6DmEPAvQ9/V/4STaeP116Gfck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296067; c=relaxed/simple;
-	bh=Hmpy3gpuNTGy0KMzRwmLkvCQtiepsXkScIo37d0IhAg=;
+	s=arc-20240116; t=1779298482; c=relaxed/simple;
+	bh=9JpRveCSySgO7ypcOt0Pp+m91jg8lcX5NlaoMCqYVq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iPs46/TSHCv9v7tD0XQfYJ4d58yoQ5OMotANWVcoKJB/XQDzzvdOPLO+op03zqTK9gq5BQ/fVnbQ0f2kE+Kjpdv+LrTp2SsFUxkbtCvWw5ihTe9Zd7/3Hh1dHOyOnRm+Y856u7vryCa22LN1zOHo8Dx5cJL704sMvAIY0d2ylwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wiAYj8oj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B0B81F000E9;
-	Wed, 20 May 2026 16:54:25 +0000 (UTC)
+	 MIME-Version; b=hGPR6YzgsN2I1HvKXukVUkMD1F3UqLmRyyYgaKI/FixXmugkXphGUeEjPnbGfMettqqSLll7B9BmuT+pHLqCYCwBJiFP0GoUmBpgnQre8BXK+4dWVOvYw+IA3WrCL9XJvDInFzUbakyQraE5ZAVma9daBngCFts97lLr2Z2sQPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TE1nsb7A; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08EF61F000E9;
+	Wed, 20 May 2026 17:34:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296065;
-	bh=ryRa6NYP66KYcj5cC3TayL3z7Cc7xz74pbYX2hdrTU8=;
+	s=korg; t=1779298481;
+	bh=PXV+f3J3qpquro6bKoBDks0wZ2OFtX6cpnXMw8Rqg4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wiAYj8ojzTsOylf9OSCgl+rE+JvMIHsRR3oLxo5+CbWeOMpmAGMNdAV9825XWqGHQ
-	 kv+QYIygHfc9QLiPakBP4657HbOeE+jzYAQq+Fv913ovMpfW0g9rdEFMra9XcDAOkH
-	 RsZwKY8Y5i2uosBw+G+JLRE20WSfl2uj9Jddb8+4=
+	b=TE1nsb7ArKDaAZIIANacRPh5jyp9btADRgcEMHlVJU6dXo0kqpl7YFsXvj/yMWFP7
+	 jzPZhw1Yrure66wbFx+2aJnLz7GXi3RUxFkj4nRdjsYvN6nsRnl3jpMkxhcga/M5Xk
+	 tH7PT/wYTaUCfhwUM7iqeCFkN5o67oszVAMYSzhU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
+	Xu Yang <xu.yang_2@nxp.com>,
 	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0659/1146] i3c: dw: Fix memory leak in dw_i3c_master_i3c_xfers()
+Subject: [PATCH 6.18 426/957] arm64: dts: imx8qxp-mek: switch Type-C connector power-role to dual
 Date: Wed, 20 May 2026 18:15:09 +0200
-Message-ID: <20260520162203.097842330@linuxfoundation.org>
+Message-ID: <20260520162143.760317766@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,103 +64,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-250692-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251630-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nxp.com,bootlin.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	DBL_PROHIBIT(0.00)[0.0.0.50:email];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 198BC59320C
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nxp.com:email]
+X-Rspamd-Queue-Id: 4A9BD599E7B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit 256cc1f1305a8e5dcadf8ca208d04a3acadd26f1 ]
+[ Upstream commit 825b8c7e1d2918d89eb378b761530d1e51dba82e ]
 
-The dw_i3c_master_i3c_xfers() function allocates memory for the xfer
-structure using dw_i3c_master_alloc_xfer(). If pm_runtime_resume_and_get()
-fails, the function returns without freeing the allocated xfer, resulting
-in a memory leak.
+When attach to PC Type-A port, the USB device controller does not function
+at all. Because it is configured as source-only and a Type-A port doesn't
+support PD capability, a data role swap is impossible.
 
-Since dw_i3c_master_free_xfer() is a thin wrapper around kfree(), use
-the __free(kfree) cleanup attribute to handle the free automatically on
-all exit paths.
+Actually, PTN5110THQ is configured for Source role only at POR, but after
+POR it can operate as a DRP (Dual-Role Power). By switching the power-role
+to dual, the port can operate as a sink and enter device mode when attach
+to Type-A port.
 
-Fixes: 62fe9d06f570 ("i3c: dw: Add power management support")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20260404-dw-i3c-2-v3-1-8f7d146549c1@gmail.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Since the board design uses EN_SRC to control the 5V VBUS path and EN_SNK
+to control the 12V VBUS output, to avoid outputting a higher VBUS when in
+sink role, we set the operation current limit to 0mA so that SW will not
+control EN_SNK at all.
+
+Fixes: 2faf4ebcee2e5 ("arm64: dts: freescale: imx8qxp-mek: enable cadence usb3")
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/dw-i3c-master.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8qxp-mek.dts | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i3c/master/dw-i3c-master.c b/drivers/i3c/master/dw-i3c-master.c
-index b87073d2f8afa..259e4f5276655 100644
---- a/drivers/i3c/master/dw-i3c-master.c
-+++ b/drivers/i3c/master/dw-i3c-master.c
-@@ -7,6 +7,7 @@
+diff --git a/arch/arm64/boot/dts/freescale/imx8qxp-mek.dts b/arch/arm64/boot/dts/freescale/imx8qxp-mek.dts
+index 7b03374455410..ea78e84341523 100644
+--- a/arch/arm64/boot/dts/freescale/imx8qxp-mek.dts
++++ b/arch/arm64/boot/dts/freescale/imx8qxp-mek.dts
+@@ -497,9 +497,17 @@ ptn5110: tcpc@50 {
+ 		usb_con1: connector {
+ 			compatible = "usb-c-connector";
+ 			label = "USB-C";
+-			power-role = "source";
++			power-role = "dual";
+ 			data-role = "dual";
++			try-power-role = "sink";
+ 			source-pdos = <PDO_FIXED(5000, 3000, PDO_FIXED_USB_COMM)>;
++			/*
++			 * Set operational current to 0mA as we don't want EN_SNK
++			 * enable 12V VBUS switch when it work as a sink.
++			 */
++			sink-pdos = <PDO_FIXED(5000, 0, PDO_FIXED_USB_COMM)>;
++			op-sink-microwatt = <0>;
++			self-powered;
  
- #include <linux/bitfield.h>
- #include <linux/bitops.h>
-+#include <linux/cleanup.h>
- #include <linux/clk.h>
- #include <linux/completion.h>
- #include <linux/err.h>
-@@ -924,7 +925,6 @@ static int dw_i3c_master_i3c_xfers(struct i3c_dev_desc *dev,
- 	struct i3c_master_controller *m = i3c_dev_get_master(dev);
- 	struct dw_i3c_master *master = to_dw_i3c_master(m);
- 	unsigned int nrxwords = 0, ntxwords = 0;
--	struct dw_i3c_xfer *xfer;
- 	int i, ret = 0;
- 
- 	if (!i3c_nxfers)
-@@ -944,7 +944,7 @@ static int dw_i3c_master_i3c_xfers(struct i3c_dev_desc *dev,
- 	    nrxwords > master->caps.datafifodepth)
- 		return -EOPNOTSUPP;
- 
--	xfer = dw_i3c_master_alloc_xfer(master, i3c_nxfers);
-+	struct dw_i3c_xfer *xfer __free(kfree) = dw_i3c_master_alloc_xfer(master, i3c_nxfers);
- 	if (!xfer)
- 		return -ENOMEM;
- 
-@@ -995,7 +995,6 @@ static int dw_i3c_master_i3c_xfers(struct i3c_dev_desc *dev,
- 	}
- 
- 	ret = xfer->ret;
--	dw_i3c_master_free_xfer(xfer);
- 
- 	pm_runtime_put_autosuspend(master->dev);
- 	return ret;
+ 			ports {
+ 				#address-cells = <1>;
 -- 
 2.53.0
 
