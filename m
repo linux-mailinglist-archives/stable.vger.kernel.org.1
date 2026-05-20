@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-252853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250864-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uNjBKlUYDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-252853-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:23:49 +0200
+	id QCrRCpT5DWq75AUAu9opvQ
+	(envelope-from <stable+bounces-250864-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3306599874
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:23:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8129A5958D7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5B5A33092F26
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:29:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D43EC35C0118
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:02:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 029B5348C55;
-	Wed, 20 May 2026 18:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7004B2D7386;
+	Wed, 20 May 2026 17:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ndbK6lkS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8682xjv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 970EA368968;
-	Wed, 20 May 2026 18:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2348C2BE02A;
+	Wed, 20 May 2026 17:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301761; cv=none; b=aYeVfXRANQ+SzDvtzYvclX7WKJ1o4tf6f+RXYBUZCKaYeeTUu0VK3VpCrH3WWEn/+9bkg4VNceHKSfdY+ISNsPQWEJMOH2oGJvydnl0vUnXSVxWXL8kHncAGXyf31ZazfHJClsR1ikCqsFX0CB8440H5xinXSGoD/Tfy0/iwmxc=
+	t=1779296507; cv=none; b=JKEOFn23sLpoAFn5Qcdgt1ZIVp9fKeRZYH36mzbKC0aaE8fc7fVqW35CIZeUNBvEzSNqYBx7iu5CZzzuXSI53v5KrBk5SLrvlgfXAEJFYks59sopETP0rXSmxHBblEp4lkfX44B94yMgrfB/h2OitHotOkm4OP0FEAjowHsI05Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301761; c=relaxed/simple;
-	bh=kzdCPZT0GIs5crRnvY9OS65yvXcP6BZcH1fU3atHKbE=;
+	s=arc-20240116; t=1779296507; c=relaxed/simple;
+	bh=I2k9oZCetRtkf/qe2AvSJML0bl/W7EfRojIHAmi+sMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G0MpYtZvbnSuB7PyvNaQjShMYsEohQl+mf7q8H607JJwpxN8tMM7PO1yIXVJWN/CDunpoCxZg8WGw6ZhK/r5va6H2vKtdHgBSRVAqrzJjjhGBCweVYacTFFP61UXF4gTNcYUAANCkntJRKQJ91t11DyHJArqC/0IFkJwy7GBfrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ndbK6lkS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09C5D1F000E9;
-	Wed, 20 May 2026 18:29:19 +0000 (UTC)
+	 MIME-Version; b=NAc+BJRfxE9KPkO7tM3YjRxk6QKXA1FCG5j5Yzp7Y4dccsliOjiSopV2CWuaNR4wGdH1aW8xZ336/WK7+jv+p3tEystZF2Q/IqxOunYliTKIwe4cyek0RW3wMgc7WIKkrHYuAJUM0WMRHsBJiKZS7yorsueHcdKZ0w1lVGyrb44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8682xjv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 887DC1F00893;
+	Wed, 20 May 2026 17:01:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301760;
-	bh=zXmTh2dMU4aC6JAmo48Kxo+rRlaBuVhGFcr61vFgmDA=;
+	s=korg; t=1779296506;
+	bh=W6Tja8dnj1vjIrJNVwai+nJd99g9TCwr4OrEYVvLzuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ndbK6lkSrL6oHc6Z6iYR6ANND8XJ3lI+t4GWc07Kxvw4s/y0Cfgy1xAgVhyxYJfBT
-	 bQYhSAcbxgVUeAw+AfcvgZwVILtgg+ybI9pO1gjufrT2+d/7Giw9yI8crRZvs424jZ
-	 CZfop2LcqOne5d33CLyeOOQaz98tbKxqAQyPo2Jw=
+	b=d8682xjvNata67EJ/wbO3lSfS3lKOLmNP55qkulKuiE6bM6mZiY42P9FbpdKyFLwJ
+	 PHNboRnBm4OC77dtlwGw5wWL7v2sMZL//tM6XKYr6R+A4Y1xanewCHpPvcgj+QyOs7
+	 yVyEroDCjrNCxvi77YE9TOR77SYbVyUfoeuyqQXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gopi Krishna Menon <krishnagopi487@gmail.com>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Lukasz Luba <lukasz.luba@arm.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 011/508] thermal/drivers/spear: Fix error condition for reading st,thermal-flags
+Subject: [PATCH 7.0 0784/1146] tcp: annotate data-races around tp->delivered and tp->delivered_ce
 Date: Wed, 20 May 2026 18:17:14 +0200
-Message-ID: <20260520162058.827468380@linuxfoundation.org>
+Message-ID: <20260520162205.960359169@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,72 +68,122 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252853-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,nxp.com,arm.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250864-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,arm.com:email]
-X-Rspamd-Queue-Id: B3306599874
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 8129A5958D7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gopi Krishna Menon <krishnagopi487@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit da2c4f332a0504d9c284e7626a561d343c8d6f57 ]
+[ Upstream commit faa886ad3ce5fc8f5156493491fe189b2b726bc9 ]
 
-of_property_read_u32 returns 0 on success. The current check returns
--EINVAL if the property is read successfully.
+tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
+add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
 
-Fix the check by removing ! from of_property_read_u32
-
-Fixes: b9c7aff481f1 ("drivers/thermal/spear_thermal.c: add Device Tree probing capability")
-Signed-off-by: Gopi Krishna Menon <krishnagopi487@gmail.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@kernel.org>
-Suggested-by: Daniel Baluta <daniel.baluta@nxp.com>
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-Link: https://patch.msgid.link/20260327090526.59330-1-krishnagopi487@gmail.com
+Fixes: feb5f2ec6464 ("tcp: export packets delivery info")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260416200319.3608680-6-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/spear_thermal.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/tcp_ecn.h | 2 +-
+ net/ipv4/tcp.c        | 4 ++--
+ net/ipv4/tcp_input.c  | 8 ++++----
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/thermal/spear_thermal.c b/drivers/thermal/spear_thermal.c
-index 96d99289799a1..a935002c2bdbe 100644
---- a/drivers/thermal/spear_thermal.c
-+++ b/drivers/thermal/spear_thermal.c
-@@ -93,7 +93,7 @@ static int spear_thermal_probe(struct platform_device *pdev)
- 	struct device_node *np = pdev->dev.of_node;
- 	int ret = 0, val;
- 
--	if (!np || !of_property_read_u32(np, "st,thermal-flags", &val)) {
-+	if (!np || of_property_read_u32(np, "st,thermal-flags", &val)) {
- 		dev_err(&pdev->dev, "Failed: DT Pdata not passed\n");
- 		return -EINVAL;
+diff --git a/include/net/tcp_ecn.h b/include/net/tcp_ecn.h
+index e9a933641636e..865d5c5a7718d 100644
+--- a/include/net/tcp_ecn.h
++++ b/include/net/tcp_ecn.h
+@@ -181,7 +181,7 @@ static inline void tcp_accecn_third_ack(struct sock *sk,
+ 		    tcp_accecn_validate_syn_feedback(sk, ace, sent_ect)) {
+ 			if ((tcp_accecn_extract_syn_ect(ace) == INET_ECN_CE) &&
+ 			    !tp->delivered_ce)
+-				tp->delivered_ce++;
++				WRITE_ONCE(tp->delivered_ce, 1);
+ 		}
+ 		break;
  	}
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 3eaaebc69eed7..ee50b2d3ed976 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -4487,8 +4487,8 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
+ 		   READ_ONCE(inet_csk(sk)->icsk_retransmits));
+ 	nla_put_u8(stats, TCP_NLA_DELIVERY_RATE_APP_LMT, data_race(!!tp->rate_app_limited));
+ 	nla_put_u32(stats, TCP_NLA_SND_SSTHRESH, READ_ONCE(tp->snd_ssthresh));
+-	nla_put_u32(stats, TCP_NLA_DELIVERED, tp->delivered);
+-	nla_put_u32(stats, TCP_NLA_DELIVERED_CE, tp->delivered_ce);
++	nla_put_u32(stats, TCP_NLA_DELIVERED, READ_ONCE(tp->delivered));
++	nla_put_u32(stats, TCP_NLA_DELIVERED_CE, READ_ONCE(tp->delivered_ce));
+ 
+ 	nla_put_u32(stats, TCP_NLA_SNDQ_SIZE, tp->write_seq - tp->snd_una);
+ 	nla_put_u8(stats, TCP_NLA_CA_STATE, inet_csk(sk)->icsk_ca_state);
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 177f87f2b7885..f1bb0ad2eead1 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -476,14 +476,14 @@ static bool tcp_accecn_process_option(struct tcp_sock *tp,
+ 
+ static void tcp_count_delivered_ce(struct tcp_sock *tp, u32 ecn_count)
+ {
+-	tp->delivered_ce += ecn_count;
++	WRITE_ONCE(tp->delivered_ce, tp->delivered_ce + ecn_count);
+ }
+ 
+ /* Updates the delivered and delivered_ce counts */
+ static void tcp_count_delivered(struct tcp_sock *tp, u32 delivered,
+ 				bool ece_ack)
+ {
+-	tp->delivered += delivered;
++	WRITE_ONCE(tp->delivered, tp->delivered + delivered);
+ 	if (tcp_ecn_mode_rfc3168(tp) && ece_ack)
+ 		tcp_count_delivered_ce(tp, delivered);
+ }
+@@ -6838,7 +6838,7 @@ static bool tcp_rcv_fastopen_synack(struct sock *sk, struct sk_buff *synack,
+ 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPFASTOPENACTIVE);
+ 		/* SYN-data is counted as two separate packets in tcp_ack() */
+ 		if (tp->delivered > 1)
+-			--tp->delivered;
++			WRITE_ONCE(tp->delivered, tp->delivered - 1);
+ 	}
+ 
+ 	tcp_fastopen_add_skb(sk, synack);
+@@ -7269,7 +7269,7 @@ tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
+ 	SKB_DR_SET(reason, NOT_SPECIFIED);
+ 	switch (sk->sk_state) {
+ 	case TCP_SYN_RECV:
+-		tp->delivered++; /* SYN-ACK delivery isn't tracked in tcp_ack */
++		WRITE_ONCE(tp->delivered, tp->delivered + 1); /* SYN-ACK delivery isn't tracked in tcp_ack */
+ 		if (!tp->srtt_us)
+ 			tcp_synack_rtt_meas(sk, req);
+ 
 -- 
 2.53.0
 
