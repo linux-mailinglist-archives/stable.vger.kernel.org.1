@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-252595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251962-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0BdcDBonDmpq6gUAu9opvQ
-	(envelope-from <stable+bounces-252595-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:26:50 +0200
+	id MGGEMIn9DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-251962-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:29:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AD6F59ADB7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:26:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CB65596543
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:29:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 31F41333DA57
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:18:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DB40E371AECC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:49:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FA54368968;
-	Wed, 20 May 2026 18:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C97793F20F9;
+	Wed, 20 May 2026 17:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2midWth6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tsdRsji+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB667347515;
-	Wed, 20 May 2026 18:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B06233933;
+	Wed, 20 May 2026 17:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301086; cv=none; b=UJLp0tf2z0bpqq5nojFYvEWLKQqvnh+VZIzu8gq0tJirMacX16bHzwZqZC5Z9Glss+iC4lwlb2u5Ot+kBjBTnV5tDe9yg42OUeIHTfzA7mtsfDxhiAzB8aIhJ2KPDEBgQe4A+uWZaNkCepL0mJa4eKqpk8OEiHsOifKk+aQovUA=
+	t=1779299383; cv=none; b=pRNZOUQYajxfhCrl7rEKDFwCyPVoeOh+IFJz4eNFW17ZUCGfXNuh0+1h8iakkmxZuGRujBsUMYnyfwqpFkhWJNKXJ6NUpS2yPY9vB8/23wsZiPr2HST2ghfCcAEfXDc7PBukavYIW8F36XEHwEVTHk4IRH3SGyeXPID6R5Bc2xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301086; c=relaxed/simple;
-	bh=YGPxNxLwqrhZD21PQeknOIsFhBaZxfz+ClrGnS84Gvw=;
+	s=arc-20240116; t=1779299383; c=relaxed/simple;
+	bh=+IC8sq1wEGU/h7kY3cWV7MHqeOXxmdWBJw7gVEwm5yk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fnU5vO9R2zIfbWv7C7TqTRtIS6LFcLwEYYzIDXy50INhnKXiSKrmpYg/iRzYM1KECUolXVIi6pNUq2z9dmONdNxywnB7KQI5KAFHmfe0ZHRDwJ44jKqRnbL9bEMwwjpHx0ZI+0Mwv2qLEnP8kcrkv3VdAbmW6dc192cQ9rmanMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2midWth6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 518821F000E9;
-	Wed, 20 May 2026 18:18:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=j++li6CNEg3HTqVA0Z/QTA1RNDzdR97KZf/bWc3S+OJrPtjVJoggdtPxEWAxzOcFIq6k5Q3hc8AZ9eoYWExBTnVPSL1LT8ydvBqxzD1b0YUuZy1hh3vBrFxUkrv+U5YZbNGc0IS8ISZXuZGUjkLwhR7wP5V6k/8XcPMGTm7qNCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tsdRsji+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE6D1F000E9;
+	Wed, 20 May 2026 17:49:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301085;
-	bh=lP1lYezKVEn6bPfeiV3GMJHO7gP8GgKen/nSr41nDZU=;
+	s=korg; t=1779299382;
+	bh=BMih6XdJT4lWDKIYUCKcQxu3HMWNjhFQBIxnbXzc0VQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2midWth6MScB1Oz2vV3iMPV5uPZDp2tbVaX5/tNyMFviF0RdFUBB0EdWLnKg2GugY
-	 QvPZrhlub0Sm8WkZYd5iPitAE8AScG0po3vx2Z02mOi/0eNoWk6cNvli59lwUwJauP
-	 7rXrLzlgUlS3LkrD3diabEx4mJaHDblteNXpRZ40=
+	b=tsdRsji+x1CTlElEcuWi9InsaPJ2jxrsKQXg1im21Sty4pUzfMtaLmry2iQj0zMVI
+	 9pHMnzCs0pXjPBMSxTytyIVdjqhQ33W2KhnA5Bo01ei6oyIAidn5+A1YBTWuORn5CK
+	 oRZ8SgLSo4M4mICF+ta/VXkw+gqRlBNDuj995kbs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Taniya Das <taniya.das@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Val Packett <val@packett.cool>
-Subject: [PATCH 6.12 420/666] clk: qcom: dispcc-sc7180: Add missing MDSS resets
-Date: Wed, 20 May 2026 18:20:31 +0200
-Message-ID: <20260520162120.370244982@linuxfoundation.org>
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 749/957] drm/amdgpu: fix AMDGPU_INFO_READ_MMR_REG
+Date: Wed, 20 May 2026 18:20:32 +0200
+Message-ID: <20260520162150.806491099@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,94 +63,164 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252595-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TAGGED_FROM(0.00)[bounces-251962-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
-X-Rspamd-Queue-Id: 9AD6F59ADB7
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 2CB65596543
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Christian König <christian.koenig@amd.com>
 
-[ Upstream commit b0bc6011c5499bdfddd0390262bfa13dce1eff74 ]
+[ Upstream commit 0ef196a208385b7d7da79f411c161b04e97283e2 ]
 
-The MDSS resets have so far been left undescribed. Fix that.
+There were multiple issues in that code.
 
-Fixes: dd3d06622138 ("clk: qcom: Add display clock controller driver for SC7180")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
-Tested-by: Val Packett <val@packett.cool> # sc7180-ecs-liva-qc710
-Link: https://lore.kernel.org/r/20260120-topic-7180_dispcc_bcr-v1-2-0b1b442156c3@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+First of all the order between the reset semaphore and the mm_lock was
+wrong (e.g. copy_to_user) was called while holding the lock.
+
+Then we allocated memory while holding the reset semaphore which is also
+a pretty big bug and can deadlock.
+
+Then we used down_read_trylock() instead of waiting for the reset to
+finish.
+
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Fixes: 9e823f307074 ("drm/amdgpu: Block MMR_READ IOCTL in reset")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 361b6e6b303d4b691f6c5974d3eaab67ca6dd90e)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-sc7180.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c | 57 +++++++++++--------------
+ 1 file changed, 24 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/clk/qcom/dispcc-sc7180.c b/drivers/clk/qcom/dispcc-sc7180.c
-index 4710247be5306..ae98fe4dcfb2b 100644
---- a/drivers/clk/qcom/dispcc-sc7180.c
-+++ b/drivers/clk/qcom/dispcc-sc7180.c
-@@ -16,6 +16,7 @@
- #include "clk-regmap-divider.h"
- #include "common.h"
- #include "gdsc.h"
-+#include "reset.h"
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+index d8c0154c5297d..915406ab9730d 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+@@ -837,68 +837,59 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
+ 				    ? -EFAULT : 0;
+ 	}
+ 	case AMDGPU_INFO_READ_MMR_REG: {
+-		int ret = 0;
+-		unsigned int n, alloc_size;
+-		uint32_t *regs;
+ 		unsigned int se_num = (info->read_mmr_reg.instance >>
+ 				   AMDGPU_INFO_MMR_SE_INDEX_SHIFT) &
+ 				  AMDGPU_INFO_MMR_SE_INDEX_MASK;
+ 		unsigned int sh_num = (info->read_mmr_reg.instance >>
+ 				   AMDGPU_INFO_MMR_SH_INDEX_SHIFT) &
+ 				  AMDGPU_INFO_MMR_SH_INDEX_MASK;
+-
+-		if (!down_read_trylock(&adev->reset_domain->sem))
+-			return -ENOENT;
++		unsigned int alloc_size;
++		uint32_t *regs;
++		int ret;
  
- enum {
- 	P_BI_TCXO,
-@@ -635,6 +636,11 @@ static struct gdsc mdss_gdsc = {
- 	.flags = HW_CTRL,
- };
+ 		/* set full masks if the userspace set all bits
+ 		 * in the bitfields
+ 		 */
+-		if (se_num == AMDGPU_INFO_MMR_SE_INDEX_MASK) {
++		if (se_num == AMDGPU_INFO_MMR_SE_INDEX_MASK)
+ 			se_num = 0xffffffff;
+-		} else if (se_num >= AMDGPU_GFX_MAX_SE) {
+-			ret = -EINVAL;
+-			goto out;
+-		}
++		else if (se_num >= AMDGPU_GFX_MAX_SE)
++			return -EINVAL;
  
-+static const struct qcom_reset_map disp_cc_sc7180_resets[] = {
-+	[DISP_CC_MDSS_CORE_BCR] = { 0x2000 },
-+	[DISP_CC_MDSS_RSCC_BCR] = { 0x4000 },
-+};
+-		if (sh_num == AMDGPU_INFO_MMR_SH_INDEX_MASK) {
++		if (sh_num == AMDGPU_INFO_MMR_SH_INDEX_MASK)
+ 			sh_num = 0xffffffff;
+-		} else if (sh_num >= AMDGPU_GFX_MAX_SH_PER_SE) {
+-			ret = -EINVAL;
+-			goto out;
+-		}
++		else if (sh_num >= AMDGPU_GFX_MAX_SH_PER_SE)
++			return -EINVAL;
+ 
+-		if (info->read_mmr_reg.count > 128) {
+-			ret = -EINVAL;
+-			goto out;
+-		}
++		if (info->read_mmr_reg.count > 128)
++			return -EINVAL;
+ 
+-		regs = kmalloc_array(info->read_mmr_reg.count, sizeof(*regs), GFP_KERNEL);
+-		if (!regs) {
+-			ret = -ENOMEM;
+-			goto out;
+-		}
++		regs = kmalloc_array(info->read_mmr_reg.count, sizeof(*regs),
++				     GFP_KERNEL);
++		if (!regs)
++			return -ENOMEM;
+ 
++		down_read(&adev->reset_domain->sem);
+ 		alloc_size = info->read_mmr_reg.count * sizeof(*regs);
+-
+ 		amdgpu_gfx_off_ctrl(adev, false);
++		ret = 0;
+ 		for (i = 0; i < info->read_mmr_reg.count; i++) {
+ 			if (amdgpu_asic_read_register(adev, se_num, sh_num,
+ 						      info->read_mmr_reg.dword_offset + i,
+ 						      &regs[i])) {
+ 				DRM_DEBUG_KMS("unallowed offset %#x\n",
+ 					      info->read_mmr_reg.dword_offset + i);
+-				kfree(regs);
+-				amdgpu_gfx_off_ctrl(adev, true);
+ 				ret = -EFAULT;
+-				goto out;
++				break;
+ 			}
+ 		}
+ 		amdgpu_gfx_off_ctrl(adev, true);
+-		n = copy_to_user(out, regs, min(size, alloc_size));
+-		kfree(regs);
+-		ret = (n ? -EFAULT : 0);
+-out:
+ 		up_read(&adev->reset_domain->sem);
 +
- static struct gdsc *disp_cc_sc7180_gdscs[] = {
- 	[MDSS_GDSC] = &mdss_gdsc,
- };
-@@ -686,6 +692,8 @@ static const struct qcom_cc_desc disp_cc_sc7180_desc = {
- 	.config = &disp_cc_sc7180_regmap_config,
- 	.clks = disp_cc_sc7180_clocks,
- 	.num_clks = ARRAY_SIZE(disp_cc_sc7180_clocks),
-+	.resets = disp_cc_sc7180_resets,
-+	.num_resets = ARRAY_SIZE(disp_cc_sc7180_resets),
- 	.gdscs = disp_cc_sc7180_gdscs,
- 	.num_gdscs = ARRAY_SIZE(disp_cc_sc7180_gdscs),
- };
++		if (!ret) {
++			ret = copy_to_user(out, regs, min(size, alloc_size))
++				? -EFAULT : 0;
++		}
++		kfree(regs);
+ 		return ret;
+ 	}
+ 	case AMDGPU_INFO_DEV_INFO: {
 -- 
 2.53.0
 
