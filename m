@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-250677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251577-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KDyTDcgSDmoJ6AUAu9opvQ
-	(envelope-from <stable+bounces-250677-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:00:08 +0200
+	id KMDPKRj/DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-251577-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ECEC598FED
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:00:07 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C998A596B87
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D459D31FA979
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:53:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 66884303201F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E627369D6E;
-	Wed, 20 May 2026 16:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08459359A6F;
+	Wed, 20 May 2026 17:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PcUobdJS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x2mmSfrL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 488AC317160;
-	Wed, 20 May 2026 16:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5CD01684BE;
+	Wed, 20 May 2026 17:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296027; cv=none; b=OFPb7oRma4q3kD6ksmQCtNcyFwKVDk9AZZlIoxyzRIWR9l+CuzKzGuTUV8vHeCoYmoSh1u8bH/5nb4UZjCoZo5funYD/IfwGU/XcecmvwcFWCiFFwWrxoFl+MdsQNZg9HXoSTJF5WGaOQ6E+827Z1hunf/Uw118/Tckjxiq9aXk=
+	t=1779298342; cv=none; b=e9VB2i8Sif2aiAYlVKZjQJW0i8PCSNH3msGLq3ig7LnB3Fn3tL53CJzB0wenVGir1ljIy+qndMvoEhSn9Bz+2Z/O9WgzLppDsJhfSYiRvrNP6424LivwSGtTj+vfL3IDfbCUL/+8hW21pqp9S+EpWGn8SbtK+HTqVeyf/5cj2E4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296027; c=relaxed/simple;
-	bh=WgCgJrnqWquAnd7EjvFd//MGWa+7Q+B6te5Y3wiOGAY=;
+	s=arc-20240116; t=1779298342; c=relaxed/simple;
+	bh=ORcMg6/k4ASIvBSKxQRxv6fPdryrzUGJZcgt2QduwlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ntpi5orBRyDiFJkor+UA9HU3Ilgpcq9cNiw0Fgkya2lDALj0p3U4925VFiIF2bttTikfkKZ2QxbsGz/94BEbcyNpfLcs2wU2f3fEBFECzUhAOaPvydtiqcZrZTNmDASLkkgPWNx2/FOC4Bsxv2hjQutZRpl5A1M7deZbPDaliwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PcUobdJS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF9D1F000E9;
-	Wed, 20 May 2026 16:53:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TJWObFoOOsXp1rQQrD88SfbpdGdTrimy1lZfrZm4k+oEY4VAuxa/5CNmlMg1/KcHlaFZUSnjqymKE+vohm+1UAtq2IT3joTSH0c62+4ugPwDQd8PfanEf3kwPWm75gUWKUUuNZjMT5exuYrjaHiST8LC0yVLVboYvIKA4fFnLUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x2mmSfrL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 387E51F000E9;
+	Wed, 20 May 2026 17:32:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296026;
-	bh=1Zr+jpgjXMxN5lMPi4F20vea2+LeC6kXqtSU28FGW9c=;
+	s=korg; t=1779298341;
+	bh=tcjC6ul946kat5OlEyhYHT899gWaQdabRZ0vNRLyPlM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PcUobdJSfha/AIDJki4+zJWhVamimQCDg/1C13vGZjJNWy9GYB20ewicNw0qg40xP
-	 iEKON9xa3n8buq2KZldkTJAsYtUteIQJqp0BPEGRMWAttmSmYubOb2HQ85pFffav/P
-	 U0y+/W5czzIT7byAKEKJbE+FLcSSmQ9lDlkqQVDs=
+	b=x2mmSfrLWObMgP9LxleIezy6EjaIN7yh5UzdKc8/A+w+j+W37B/zj+RFrCSvbBJ6M
+	 lVEHPhzZ8HhzaTL7OUAee2h+5lrpZ+l+P86BOcHFeCRtkUQpOZwcaa/hiGjI3Kx0L9
+	 8kTwNePx68wM2AXTayYbGatmO7Yo7GWbX0SgdzXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Biswapriyo Nath <nathbappai@gmail.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0606/1146] ext4: fix the error handling process in extents_kunit_init).
-Date: Wed, 20 May 2026 18:14:16 +0200
-Message-ID: <20260520162201.894102779@linuxfoundation.org>
+Subject: [PATCH 6.18 374/957] arm64: dts: qcom: sm6125-xiaomi-ginkgo: Fix reserved gpio ranges
+Date: Wed, 20 May 2026 18:14:17 +0200
+Message-ID: <20260520162142.639216197@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,155 +65,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,gmail.com,linux.ibm.com,mit.edu,kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,mainlining.org,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250677-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251577-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email]
-X-Rspamd-Queue-Id: 3ECEC598FED
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,mainlining.org:email]
+X-Rspamd-Queue-Id: C998A596B87
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Barnabás Czémán <barnabas.czeman@mainlining.org>
 
-[ Upstream commit 17f73c95d47325000ee68492be3ad76ae09f6f19 ]
+[ Upstream commit e8669e010991154bedadd1cd67700544e0362e99 ]
 
-The error processing in extents_kunit_init() is improper, causing
-resource leakage.
-Reconstruct the error handling process to prevent potential resource
-leaks
+The device was crashing on boot because the reserved gpio ranges
+was wrongly defined. Correct the ranges for avoid pinctrl crashing.
 
-Fixes: cb1e0c1d1fad ("ext4: kunit tests for extent splitting and conversion")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://patch.msgid.link/20260330133035.287842-4-yebin@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 9b1a6c925c88 ("arm64: dts: qcom: sm6125: Initial support for xiaomi-ginkgo")
+Tested-by: Biswapriyo Nath <nathbappai@gmail.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+Link: https://lore.kernel.org/r/20260126-xiaomi-willow-v3-5-aad7b106c311@mainlining.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents-test.c | 50 +++++++++++++++++++++++++++++-------------
- 1 file changed, 35 insertions(+), 15 deletions(-)
+ arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ext4/extents-test.c b/fs/ext4/extents-test.c
-index 3d4663d99eb13..4042bc8a95e2f 100644
---- a/fs/ext4/extents-test.c
-+++ b/fs/ext4/extents-test.c
-@@ -225,34 +225,38 @@ static int extents_kunit_init(struct kunit *test)
- 		(struct kunit_ext_test_param *)(test->param_value);
- 	int err;
+diff --git a/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts b/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts
+index 418cfe67a2da8..c3edeee3af3ef 100644
+--- a/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts
++++ b/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts
+@@ -293,7 +293,7 @@ &sdhc_2 {
+ };
  
--	sb = sget(&ext_fs_type, NULL, ext_set, 0, NULL);
--	if (IS_ERR(sb))
--		return PTR_ERR(sb);
--
--	sb->s_blocksize = 4096;
--	sb->s_blocksize_bits = 12;
--
- 	sbi = kzalloc_obj(struct ext4_sb_info);
- 	if (sbi == NULL)
- 		return -ENOMEM;
+ &tlmm {
+-	gpio-reserved-ranges = <22 2>, <28 6>;
++	gpio-reserved-ranges = <0 4>, <30 4>;
+ };
  
-+	sb = sget(&ext_fs_type, NULL, ext_set, 0, NULL);
-+	if (IS_ERR(sb)) {
-+		kfree(sbi);
-+		return PTR_ERR(sb);
-+	}
-+
- 	sbi->s_sb = sb;
- 	sb->s_fs_info = sbi;
- 
-+	sb->s_blocksize = 4096;
-+	sb->s_blocksize_bits = 12;
-+
- 	if (!param || !param->disable_zeroout)
- 		sbi->s_extent_max_zeroout_kb = 32;
- 
-+	err = ext4_es_register_shrinker(sbi);
-+	if (err)
-+		goto out_deactivate;
-+
- 	/* setup the mock inode */
- 	k_ctx.k_ei = kzalloc_obj(struct ext4_inode_info);
--	if (k_ctx.k_ei == NULL)
--		return -ENOMEM;
-+	if (k_ctx.k_ei == NULL) {
-+		err = -ENOMEM;
-+		goto out;
-+	}
- 	ei = k_ctx.k_ei;
- 	inode = &ei->vfs_inode;
- 
--	err = ext4_es_register_shrinker(sbi);
--	if (err)
--		return err;
--
- 	ext4_es_init_tree(&ei->i_es_tree);
- 	rwlock_init(&ei->i_es_lock);
- 	INIT_LIST_HEAD(&ei->i_es_list);
-@@ -267,8 +271,10 @@ static int extents_kunit_init(struct kunit *test)
- 	inode->i_sb = sb;
- 
- 	k_ctx.k_data = kzalloc(EXT_DATA_LEN * 4096, GFP_KERNEL);
--	if (k_ctx.k_data == NULL)
--		return -ENOMEM;
-+	if (k_ctx.k_data == NULL) {
-+		err = -ENOMEM;
-+		goto out;
-+	}
- 
- 	/*
- 	 * set the data area to a junk value
-@@ -313,6 +319,20 @@ static int extents_kunit_init(struct kunit *test)
- 	up_write(&sb->s_umount);
- 
- 	return 0;
-+
-+out:
-+	kfree(k_ctx.k_ei);
-+	k_ctx.k_ei = NULL;
-+
-+	kfree(k_ctx.k_data);
-+	k_ctx.k_data = NULL;
-+
-+	ext4_es_unregister_shrinker(sbi);
-+out_deactivate:
-+	deactivate_locked_super(sb);
-+	kfree(sbi);
-+
-+	return err;
- }
- 
- /*
+ &usb3 {
 -- 
 2.53.0
 
