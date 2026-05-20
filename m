@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-250736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252314-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cCw7AMgTDmot6AUAu9opvQ
-	(envelope-from <stable+bounces-250736-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:04:24 +0200
+	id WEisK5AFDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-252314-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:03:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 803F5599157
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:04:23 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B18DD597A7A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:03:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2291C357759E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:57:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B64993081D1F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:06:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91EC93E120E;
-	Wed, 20 May 2026 16:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A12983F9267;
+	Wed, 20 May 2026 18:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZE2HQzRt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="plmNlkqb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E84833B969;
-	Wed, 20 May 2026 16:56:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E563E95A4;
+	Wed, 20 May 2026 18:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296184; cv=none; b=iAK4GaFRs7NC60lDyaUoU3zceHS7JpCjpxT89ECp6WOXfwNuKgYChhTDOimKTgc0zuVztjzh0sVISy+BhmlX2+JztZnvKWGZjfh0lDSbkBmm8qJGFzNEsNrqJfjTE1m4MbaUVk0M+tRKaAHBRGbuzvT60PN1/q/Vaiz6Tocuvpo=
+	t=1779300352; cv=none; b=AM96hltlcncAyzMsDMPr2a8g20yxtTb/FRGBBJfHyW8799FNGhpSiH0OypiJxz840fJsdvN/Peesvta3oPs8YVA4R4ngKn/CNBuyH63l7rEfvtMHxZH7ETBZm/iKsdg2Nuxl6J6exAY595E5vyNuH0d6WE4C3XecDMrrDIdG+n4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296184; c=relaxed/simple;
-	bh=admyscYjLtI2UuRpZgUZmA05pSGk0niodf7hhdkEgeg=;
+	s=arc-20240116; t=1779300352; c=relaxed/simple;
+	bh=PWBCjXcOyxuVMRQb5yvzEy5X4Mugw880jR5VM1cmRq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L/vIYr0aBhXH0jqYHGrUGPclQjmgXvCCxsW/7JDmq6/cgLRWZK5bGugkTNlyGx/61wUKYx3h7j2oJ3coVUB+h8753aGBZM5GbQb/Iu0W+H/wTPEjPvfUX3THJ+rUoGFADgVQN+B0I1PaFPNJG5NDoSJvYybWn7ljRssvVCMhDo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZE2HQzRt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D191F000E9;
-	Wed, 20 May 2026 16:56:20 +0000 (UTC)
+	 MIME-Version; b=t1plCQoDMU4Qg+mku0A8gjS3eHAVqsAH8azGLhrGAFOd+6ejp9Yv85ROWNwK5fF30ggJrlXne2glzJrk3RFC3VGkkwwS2wvQDRMtaMJQDc6p0im8lELvljQADXJ6N52+8NciZt8WiJynfjDpbg5gePrptf/fv1xUJKVHs4D7Yg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=plmNlkqb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C9D11F00893;
+	Wed, 20 May 2026 18:05:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296181;
-	bh=XTeTn36qYZakxOa2NxMd/PrQUuShhKhB3ssEjSzKTKY=;
+	s=korg; t=1779300351;
+	bh=IsCMqE4/C9ON5YZ9FFqOh4ntL9MfVTTQoX9bG4+ZpHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZE2HQzRtd6Wq99TcP4FWo47eIIdsik2apSoh2w/fe/rDgIdCZks444MGoIRLS1I6E
-	 ANxQlhTbiM4EFM+OVrWRlY3USb/YrQBtpsPNDymBuMrF6f4uuKl7QRHrMGAfOv2uqc
-	 Z951+mnRY86BCZ9srsx5a7/dTvCoHJ67tf9fFaB8=
+	b=plmNlkqb03yxo3Gk4UVF/+YAd7R9M1d3GRvfyBB5MlRNUsucZEETdkvF4r3LsVtdl
+	 tmezy74RnAAGptkiNihH/gby/7tavYB9A27LFAPDxLqXOPLb/dnGi4rHd/d7t6im18
+	 s7jnIHccAlqHKBdfMkB/T2r+AJgJ5kAqcKvmHFss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Erkun <yangerkun@huawei.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Han Xu <han.xu@nxp.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0703/1146] scsi: sg: Resolve soft lockup issue when opening /dev/sgX
+Subject: [PATCH 6.12 142/666] spi: spi-nxp-fspi: enable runtime pm for fspi
 Date: Wed, 20 May 2026 18:15:53 +0200
-Message-ID: <20260520162204.100020126@linuxfoundation.org>
+Message-ID: <20260520162114.287421608@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,13 +69,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250736-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252314-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
@@ -83,7 +83,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -92,107 +92,223 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,huawei.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,acm.org:email]
-X-Rspamd-Queue-Id: 803F5599157
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: B18DD597A7A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Erkun <yangerkun@huawei.com>
+From: Haibo Chen <haibo.chen@nxp.com>
 
-[ Upstream commit d06a310b45e153872033dd0cf19d5a2279121099 ]
+[ Upstream commit 97be4b919a609fc8c4bd1118502b5d26cc2f77c4 ]
 
-The parameter def_reserved_size defines the default buffer size reserved
-for each Sg_fd and should be restricted to a range between 0 and 1,048,576
-(see https://tldp.org/HOWTO/SCSI-Generic-HOWTO/proc.html).  Although the
-function sg_proc_write_dressz enforces this limit, it is possible to bypass
-it by directly modifying the module parameter as shown below, which then
-causes a soft lockup:
+Enable the runtime PM in fspi driver.
+Also for system PM, On some board like i.MX8ULP-EVK board,
+after system suspend, IOMUX module will lost power, so all
+the pinctrl setting will lost when system resume back, need
+driver to save/restore the pinctrl setting.
 
-echo -1 > /sys/module/sg/parameters/def_reserved_size
-exec 4<> /dev/sg0
-
-watchdog: BUG: soft lockup - CPU#5 stuck for 26 seconds! [bash:537]
-Modules loaded:
-CPU: 5 UID: 0 PID: 537 Command: bash, kernel version 6.19.0-rc3+ #134,
-PREEMPT disabled
-Hardware: QEMU Standard PC (i440FX + PIIX, 1996), BIOS version
-1.16.1-2.fc37 dated 04/01/2014
-...
-Call Trace:
-
-  sg_build_reserve+0x5c/0xa0
-  sg_add_sfp+0x168/0x270
-  sg_open+0x16e/0x340
-  chrdev_open+0xbe/0x230
-  do_dentry_open+0x175/0x480
-  vfs_open+0x34/0xf0
-  do_open+0x265/0x3d0
-  path_openat+0x110/0x290
-  do_filp_open+0xc3/0x170
-  do_sys_openat2+0x71/0xe0
-  __x64_sys_openat+0x6d/0xa0
-  do_syscall_64+0x62/0x310
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-The fix is to use module_param_cb to validate and reject invalid values
-assigned to def_reserved_size.
-
-Fixes: 6460e75a104d ("[SCSI] sg: fixes for large page_size")
-Signed-off-by: Yang Erkun <yangerkun@huawei.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20260127062044.3034148-3-yangerkun@huawei.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Han Xu <han.xu@nxp.com>
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Link: https://patch.msgid.link/20250428-flexspipatch-v3-2-61d5e8f591bc@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 68c8c93fdb0d ("spi: nxp-fspi: Use reinit_completion() for repeated operations")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/sg.c | 29 +++++++++++++++++++++++++++--
- 1 file changed, 27 insertions(+), 2 deletions(-)
+ drivers/spi/spi-nxp-fspi.c | 93 +++++++++++++++++++++++++++++++-------
+ 1 file changed, 76 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
-index 71d34186dec93..f38d36fbeef37 100644
---- a/drivers/scsi/sg.c
-+++ b/drivers/scsi/sg.c
-@@ -1623,10 +1623,35 @@ sg_remove_device(struct device *cl_dev)
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index a43540d7995ef..67bcc6d351326 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -48,6 +48,8 @@
+ #include <linux/mutex.h>
+ #include <linux/of.h>
+ #include <linux/platform_device.h>
++#include <linux/pinctrl/consumer.h>
++#include <linux/pm_runtime.h>
+ #include <linux/pm_qos.h>
+ #include <linux/regmap.h>
+ #include <linux/sizes.h>
+@@ -57,6 +59,9 @@
+ #include <linux/spi/spi.h>
+ #include <linux/spi/spi-mem.h>
+ 
++/* runtime pm timeout */
++#define FSPI_RPM_TIMEOUT 50	/* 50ms */
++
+ /* Registers used by the driver */
+ #define FSPI_MCR0			0x00
+ #define FSPI_MCR0_AHB_TIMEOUT(x)	((x) << 24)
+@@ -396,6 +401,8 @@ struct nxp_fspi {
+ 	struct mutex lock;
+ 	struct pm_qos_request pm_qos_req;
+ 	int selected;
++#define FSPI_NEED_INIT		(1 << 0)
++	int flags;
+ };
+ 
+ static inline int needs_ip_only(struct nxp_fspi *f)
+@@ -935,6 +942,13 @@ static int nxp_fspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 
+ 	mutex_lock(&f->lock);
+ 
++	err = pm_runtime_get_sync(f->dev);
++	if (err < 0) {
++		mutex_unlock(&f->lock);
++		dev_err(f->dev, "Failed to enable clock %d\n", __LINE__);
++		return err;
++	}
++
+ 	/* Wait for controller being ready. */
+ 	err = fspi_readl_poll_tout(f, f->iobase + FSPI_STS0,
+ 				   FSPI_STS0_ARB_IDLE, 1, POLL_TOUT, true);
+@@ -963,8 +977,10 @@ static int nxp_fspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 	/* Invalidate the data in the AHB buffer. */
+ 	nxp_fspi_invalid(f);
+ 
+-	mutex_unlock(&f->lock);
++	pm_runtime_mark_last_busy(f->dev);
++	pm_runtime_put_autosuspend(f->dev);
+ 
++	mutex_unlock(&f->lock);
+ 	return err;
  }
  
- module_param_named(scatter_elem_sz, scatter_elem_sz, int, S_IRUGO | S_IWUSR);
--module_param_named(def_reserved_size, def_reserved_size, int,
--		   S_IRUGO | S_IWUSR);
- module_param_named(allow_dio, sg_allow_dio, int, S_IRUGO | S_IWUSR);
+@@ -1231,9 +1247,14 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 	if (irq < 0)
+ 		return dev_err_probe(dev, irq, "Failed to get irq source");
  
-+static int def_reserved_size_set(const char *val, const struct kernel_param *kp)
-+{
-+	int size, ret;
+-	ret = nxp_fspi_clk_prep_enable(f);
+-	if (ret)
+-		return dev_err_probe(dev, ret, "Can't enable the clock\n");
++	pm_runtime_enable(dev);
++	pm_runtime_set_autosuspend_delay(dev, FSPI_RPM_TIMEOUT);
++	pm_runtime_use_autosuspend(dev);
 +
-+	if (!val)
-+		return -EINVAL;
++	/* enable clock */
++	ret = pm_runtime_get_sync(f->dev);
++	if (ret < 0)
++		return dev_err_probe(dev, ret, "Failed to enable clock");
+ 
+ 	/* Clear potential interrupts */
+ 	reg = fspi_readl(f, f->iobase + FSPI_INTR);
+@@ -1242,12 +1263,14 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 
+ 	nxp_fspi_default_setup(f);
+ 
++	ret = pm_runtime_put_sync(dev);
++	if (ret < 0)
++		return dev_err_probe(dev, ret, "Failed to disable clock");
 +
-+	ret = kstrtoint(val, 0, &size);
+ 	ret = devm_request_irq(dev, irq,
+ 			nxp_fspi_irq_handler, 0, pdev->name, f);
+-	if (ret) {
+-		nxp_fspi_clk_disable_unprep(f);
++	if (ret)
+ 		return dev_err_probe(dev, ret, "Failed to request irq\n");
+-	}
+ 
+ 	ret = devm_mutex_init(dev, &f->lock);
+ 	if (ret)
+@@ -1271,29 +1294,70 @@ static void nxp_fspi_remove(struct platform_device *pdev)
+ {
+ 	struct nxp_fspi *f = platform_get_drvdata(pdev);
+ 
++	/* enable clock first since there is reigster access */
++	pm_runtime_get_sync(f->dev);
++
+ 	/* disable the hardware */
+ 	fspi_writel(f, FSPI_MCR0_MDIS, f->iobase + FSPI_MCR0);
+ 
++	pm_runtime_disable(f->dev);
++	pm_runtime_put_noidle(f->dev);
+ 	nxp_fspi_clk_disable_unprep(f);
+ 
+ 	if (f->ahb_addr)
+ 		iounmap(f->ahb_addr);
+ }
+ 
+-static int nxp_fspi_suspend(struct device *dev)
++static int nxp_fspi_runtime_suspend(struct device *dev)
+ {
++	struct nxp_fspi *f = dev_get_drvdata(dev);
++
++	nxp_fspi_clk_disable_unprep(f);
++
+ 	return 0;
+ }
+ 
+-static int nxp_fspi_resume(struct device *dev)
++static int nxp_fspi_runtime_resume(struct device *dev)
+ {
+ 	struct nxp_fspi *f = dev_get_drvdata(dev);
++	int ret;
+ 
+-	nxp_fspi_default_setup(f);
++	ret = nxp_fspi_clk_prep_enable(f);
 +	if (ret)
 +		return ret;
+ 
+-	return 0;
++	if (f->flags & FSPI_NEED_INIT) {
++		nxp_fspi_default_setup(f);
++		ret = pinctrl_pm_select_default_state(dev);
++		if (ret)
++			dev_err(dev, "select flexspi default pinctrl failed!\n");
++		f->flags &= ~FSPI_NEED_INIT;
++	}
 +
-+	/* limit to 1 MB */
-+	if (size < 0 || size > 1048576)
-+		return -ERANGE;
++	return ret;
+ }
+ 
++static int nxp_fspi_suspend(struct device *dev)
++{
++	struct nxp_fspi *f = dev_get_drvdata(dev);
++	int ret;
 +
-+	def_reserved_size = size;
-+	return 0;
++	ret = pinctrl_pm_select_sleep_state(dev);
++	if (ret) {
++		dev_err(dev, "select flexspi sleep pinctrl failed!\n");
++		return ret;
++	}
++
++	f->flags |= FSPI_NEED_INIT;
++
++	return pm_runtime_force_suspend(dev);
 +}
 +
-+static const struct kernel_param_ops def_reserved_size_ops = {
-+	.set	= def_reserved_size_set,
-+	.get	= param_get_int,
++static const struct dev_pm_ops nxp_fspi_pm_ops = {
++	RUNTIME_PM_OPS(nxp_fspi_runtime_suspend, nxp_fspi_runtime_resume, NULL)
++	SYSTEM_SLEEP_PM_OPS(nxp_fspi_suspend, pm_runtime_force_resume)
 +};
 +
-+module_param_cb(def_reserved_size, &def_reserved_size_ops, &def_reserved_size,
-+		   S_IRUGO | S_IWUSR);
-+
- MODULE_AUTHOR("Douglas Gilbert");
- MODULE_DESCRIPTION("SCSI generic (sg) driver");
- MODULE_LICENSE("GPL");
+ static const struct of_device_id nxp_fspi_dt_ids[] = {
+ 	{ .compatible = "nxp,lx2160a-fspi", .data = (void *)&lx2160a_data, },
+ 	{ .compatible = "nxp,imx8mm-fspi", .data = (void *)&imx8mm_data, },
+@@ -1313,17 +1377,12 @@ static const struct acpi_device_id nxp_fspi_acpi_ids[] = {
+ MODULE_DEVICE_TABLE(acpi, nxp_fspi_acpi_ids);
+ #endif
+ 
+-static const struct dev_pm_ops nxp_fspi_pm_ops = {
+-	.suspend	= nxp_fspi_suspend,
+-	.resume		= nxp_fspi_resume,
+-};
+-
+ static struct platform_driver nxp_fspi_driver = {
+ 	.driver = {
+ 		.name	= "nxp-fspi",
+ 		.of_match_table = nxp_fspi_dt_ids,
+ 		.acpi_match_table = ACPI_PTR(nxp_fspi_acpi_ids),
+-		.pm =   &nxp_fspi_pm_ops,
++		.pm = pm_ptr(&nxp_fspi_pm_ops),
+ 	},
+ 	.probe          = nxp_fspi_probe,
+ 	.remove_new	= nxp_fspi_remove,
 -- 
 2.53.0
 
