@@ -1,86 +1,51 @@
-Return-Path: <stable+bounces-253398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253399-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KMBxDzwvDmoK7wUAu9opvQ
-	(envelope-from <stable+bounces-253398-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:01:32 +0200
+	id EOeQNnMvDmoK7wUAu9opvQ
+	(envelope-from <stable+bounces-253399-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:02:27 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F23B959B9BC
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:01:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B0F459BA24
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:02:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2CE983064899
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:58:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4CC4E3082F7C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:59:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9FE33A7842;
-	Wed, 20 May 2026 21:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A753D3AFD03;
+	Wed, 20 May 2026 21:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QSEbJw1a"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F2x4AZIv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C468E3A758F
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 21:58:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4D23ACF11;
+	Wed, 20 May 2026 21:59:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779314307; cv=none; b=nyWhBc/04CyqisNN/m/BtiX1IuYodPEU0VffydcE1htQfPz1aT+hrdD0sL1r6MsyQrHBKtFs8dzIloOUJzJB3e5XW0RjwRjF/BhzcL7EJOmOCY1AmGnrDgOJNTqASesse57wCHPjQg5zmuCGxfH+lntunXjE89NrB2wVEvuPFE8=
+	t=1779314360; cv=none; b=nKYlGN3gf4ZHd91FH4f7T3ea6anJw3kheh62OjKecwkyfihRhqyU2pEqiGv+MiYknXEEpm9Xv0aPLdOq3IPBAbtnOs6iHffTP0T4Xcf+rXXmc9yiUxc0k5f1m/us5Mao7pbYrAoeBcQlx4jImCgdk9lmZ1LO6G8T2kj4N6GU8cU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779314307; c=relaxed/simple;
-	bh=ZJKCNJx/5IZ/imrwcqhHUrotj+Eo0tiqecZnQykyYOU=;
+	s=arc-20240116; t=1779314360; c=relaxed/simple;
+	bh=GlcOLnjqMn1eg6/oyGkPDFurrDtO5hbVAp2Q27rBlPk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eIfaPJtrHRGkzklDCQDrPmbE8b+6sEMV9SRW5Ymc6X7zXmXsMZHe88zSmh+/t2zn3WM1+m4mcAYp2SzImv8LpfoPjlA68AzB60T2U54JepQVw5DCCzLkvqPEgIhCiQNf7lFfFzChsrS7wPKPRTec989R7fB9fTmrxGFUNjEz8j8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QSEbJw1a; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2bc763e2ba8so25963125ad.3
-        for <stable@vger.kernel.org>; Wed, 20 May 2026 14:58:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779314302; x=1779919102; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=J81DA5Ki03IoGYOcCJh6J9dCQ0EPDVhxT9au4TbcbO0=;
-        b=QSEbJw1a+VZ/sKYE33oaSZRwDAu/4S4mZtFTs3U0udssAcEqAJ4X+K/Od7q6jMPVjw
-         pQY9wP6kLoeSgTWmiiSxxovrT9UeoA8xwq7f5YTcM7TENPjYssv0PoeOb0cWuWX1U89h
-         2TJsL+rugIqnop6Zh+1xskS/oD8nqr0dqO4kfYAG6qDWtu2EEZCvj8GIJL4fAKe9Atwd
-         nIwpn6h8ht3xQDp30B3+392466blVxtM74ar2BRJgOnpMQhMciY0EsAAGrtH4W0qy6Ht
-         nPil5j744XYcJDots5xYBwaJYpCXe7VhqNps8tIFMIr8/hc7k8Rd4GE/irekdAgQE9K4
-         W5Sw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779314302; x=1779919102;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=J81DA5Ki03IoGYOcCJh6J9dCQ0EPDVhxT9au4TbcbO0=;
-        b=knGECU+havWq9O27tCqL0rtETuJKBOPnWZo7Nd485SjBhift7pDvLVgeMvQtiboW9G
-         cpSCmFcK/CinniOGBSanWfI3HH6nEbgK1S3Fo2BeU6BAmccS/OgHRRC4ThgmjnBMIchk
-         k4udaM8x+zC/3W1sRssPeAFiTKl0H1RHhGWK9o0O77xwJ3HL9WSof6e1c3EZzYAflnS0
-         NBNriuhWHThwHgC6PgAz0T24FEniWMOtV4WF/2zmtBrQb20sw5BapvhjX4R+pL1lcYwv
-         aielxIsae8J0qrB1ZjN9k5H9SPHoxhrrN0Veq9YcX4wZjonEpMCr0ZlxE2wGE8EOlLKQ
-         DlIQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+t5xqpHyNeKvCagfsc+m8IMzEnC7o1bpPfUHDX/MSWvKiBlT4JagiO7kA1mm32x8vcsH0IgGE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7hZjV0mNRDHBP2H7KLNyLVFxmG85FWvGI84at2rwdmsK3k/LW
-	AC4bWwgnb8B9sphITLzeUQHCaJVxC+GKS8SFj6ppegrHy6NnqBVPC6ny
-X-Gm-Gg: Acq92OEeHikEmWExfC4YSS8MlabZ7qcRfHFc8o7F6PJwLDK+6i6dkJNj+cmV26Y9sOJ
-	/kjmH99Le/snBcl4TPu2A881YNbAKptm6pcv1h93+MyMTTKfYgX/DTJshiWJCAZY6V58xgHLER/
-	tK/7Jdqh8q5SKw71SqnXjYy6+vtYnJSfRr5WZccZiHh8M+EBm6F0UBvfk7AwdY/5GnuAKCNO9K2
-	YmITOi86eRfZLECNV3ZAGuP2LdpJJTIpSpb6riTih2xHvc/YTfrv/AYNwUw5wq2+tOoaehlnQCg
-	cnmC8aN6ysMgvshl8G/Z8NnyMAuJIwj67lI5HZ6oMSgbarWyNVnCPd7stY+QdPxf8uhxJFsKZWJ
-	nk0M3Dh1lghFICHcIJgrE7bpd+ZtfW8ViJjXHaJxcK9SI6cdrxYYs7N7VgjBwNegWsk+53XXcJ4
-	AjxuiKwOEjLW09TW8muxE2/v9wTeqveEHanTacENLt7er+kzZWiTTrPPeJNXQwWxUzIl99HVQna
-	Scr6q/JUWe2tQ==
-X-Received: by 2002:a17:90b:528a:b0:368:147f:bd27 with SMTP id 98e67ed59e1d1-36a45758617mr266709a91.23.1779314302401;
-        Wed, 20 May 2026 14:58:22 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36a3d0d847dsm563006a91.10.2026.05.20.14.58.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 May 2026 14:58:21 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <6cae33e8-410a-4ffe-a44f-642f2239323a@roeck-us.net>
-Date: Wed, 20 May 2026 14:58:21 -0700
+	 In-Reply-To:Content-Type; b=sH88EfBq3V5dZ2yIeS/3b7MV6pRTkZIuX+d2XFJbx8ow5WAnctJ8LK6OUxGijzkWR9ZFujg3eZoBLvTLLcH8YzAG/h9h9zn8AETqJns6myjECG8zQXNUR8eAdR5Ql7I/7bIJYVYdt/jJeCbSA8kkEN6r2KjGeTAWFwVTWFVEH3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F2x4AZIv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7E5B1F000E9;
+	Wed, 20 May 2026 21:59:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779314356;
+	bh=tjrZfJA5LVaV6nvefAlqmqd3ZyjRNop6UOwyOfVB51I=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=F2x4AZIvETZuTswgfkeOHnkgP5j/iV47PP07EQkqmBL9s+K6OVe8bb6kBrdcw6Pen
+	 zlEo7klNwkxdCSf6YBhEwzzm+AO0xa3E+EZg0itoUCZPOytvcbderUtMUDl4pTs5t6
+	 srPasluXZ8Sp9zApk2v8seFMUk+PjFypnjRiXDicDb1RplKUjqjQetm8EYfSEvqA53
+	 rDqAqNkEgz1aNSxK/MeIE/Ax+nrZkLjCbVBE/OxHTdx6rKzVFiscIjtvxZeCT770Pa
+	 t5j5khIrKUWesKiRhXErmr56Kke6x3kknpbZ1Z0hk9Ee7dDPZ/u88t9ONgQMT2ifsy
+	 uuRBaiONd0mSg==
+Message-ID: <003bbdb8-85ae-4e1a-9260-fb2a85fb9b3c@kernel.org>
+Date: Wed, 20 May 2026 23:59:08 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -88,157 +53,124 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/3] hwmon: (pmbus/adm1266) add clear_blackbox and
- powerup_counter debugfs entries
-To: Abdurrahman Hussain <abdurrahman@nexthop.ai>,
- Guenter Roeck <linux@roeck-us.net>,
- Alexandru Tachici <alexandru.tachici@analog.com>
-Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Guenter Roeck <groeck7@gmail.com>
-References: <20260516-adm1266-v4-0-1f8df4797258@nexthop.ai>
- <da0fbce2-788e-4419-8ca1-975311951ce3@roeck-us.net>
- <DINO5GQHP6VK.ZBC2D5ENBYKW@nexthop.ai>
- <DINRCDZ0SHS3.1X4T3VVLSL36E@nexthop.ai>
- <1783d74e-6acc-40d2-bdff-9bacbb04032c@roeck-us.net>
- <DINTFDZ1H8B4.FZ50CYI6WTVI@nexthop.ai>
+Subject: Re: [PATCH] x86/mm: fix vmemmap leak on memory hot-remove
+To: Dave Hansen <dave.hansen@intel.com>, Juhyung Park <qkrwngud825@gmail.com>
+Cc: linux-mm@kvack.org, stable@vger.kernel.org,
+ Lu Baolu <baolu.lu@linux.intel.com>, Jason Gunthorpe <jgg@nvidia.com>,
+ "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+ Oscar Salvador <osalvador@suse.de>, Andrew Morton
+ <akpm@linux-foundation.org>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dan Williams <djbw@kernel.org>,
+ Dave Jiang <dave.jiang@intel.com>, Vishal Verma <vishal.l.verma@intel.com>,
+ linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev
+References: <20260519151008.1399226-1-qkrwngud825@gmail.com>
+ <e9a08bed-3d5f-4606-8d17-80a16a4c82f1@kernel.org>
+ <CAD14+f316+wMZNm_sJF6ULRDUD9EbkdecdDwhGQKcsu70Bdp0w@mail.gmail.com>
+ <9c0e3e53-d284-4675-89d8-943f93436e07@kernel.org>
+ <78ef8003-9c86-4969-95b9-589127b30be2@intel.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: Guenter Roeck <guenter@roeck-us.net>
-In-Reply-To: <DINTFDZ1H8B4.FZ50CYI6WTVI@nexthop.ai>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <78ef8003-9c86-4969-95b9-589127b30be2@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-253398-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[roeck-us.net];
+	RCVD_COUNT_THREE(0.00)[4];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-253399-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FREEMAIL_TO(0.00)[intel.com,gmail.com];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[guenter@roeck-us.net,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: F23B959B9BC
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 5B0F459BA24
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 5/20/26 14:18, Abdurrahman Hussain wrote:
-> On Wed May 20, 2026 at 1:59 PM PDT, Guenter Roeck wrote:
->> On 5/20/26 12:40, Abdurrahman Hussain wrote:
->>> On Wed May 20, 2026 at 10:10 AM PDT, Abdurrahman Hussain wrote:
->>>> On Wed May 20, 2026 at 7:10 AM PDT, Guenter Roeck wrote:
->>>>> Hi,
->>>>>
->>>>> On 5/16/26 18:18, Abdurrahman Hussain wrote:
->>>>>> This is what remains of the v3 series after Guenter applied patches
->>>>>> 1/5 (firmware_revision) and 5/5 (GPIO line label) to hwmon-next, and
->>>>>> asked for patch 4/5 (rtc_class) to be dropped.
->>>>>>
->>>>>> Patch 1 adds a write-only clear_blackbox debugfs file. Devices
->>>>>> configured for single-recording mode (BLACKBOX_CONFIG[0] = 0) need
->>>>>> an explicit clear once the 32-record buffer fills; the documented
->>>>>> sub-command ({0xFE, 0x00} block-write to 0xDE) wasn't reachable
->>>>>> from userspace. The patch also acquires pmbus_lock at the
->>>>>> adm1266_nvmem_read() callback boundary so the memset of
->>>>>> data->dev_mem, the blackbox refill, and the memcpy to userspace run
->>>>>> as a single critical section -- the nvmem core does not serialize
->>>>>> concurrent reg_read calls.
->>>>>>
->>>>>> Patch 2 exposes the non-volatile POWERUP_COUNTER (0xE4) via debugfs.
->>>>>> The same value is embedded in every blackbox record, so the live
->>>>>> value lets userspace match a captured record back to the boot it
->>>>>> came from when correlating logs. The block-read is taken under
->>>>>> pmbus_lock to serialise against any pmbus_core PAGE+register
->>>>>> sequence on the device.
->>>>>>
->>>>>> Patch 3 takes pmbus_lock in adm1266_state_read() (the pre-existing
->>>>>> sequencer_state debugfs handler) for the same defensive-locking
->>>>>> reason that motivates the new debugfs files in patches 1 and 2:
->>>>>> any direct device access from outside pmbus_core should be ordered
->>>>>> with respect to pmbus_core's own PAGE+register sequences.
->>>>>>
->>>>>> Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
->>>>> The series no longer applies after applying the bug fix series.
->>>>> Please rebase it on top of the hwmon-next branch of
->>>>> git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging.git
->>>>> and resubmit.
->>>>>
->>>>> Sorry for the trouble, and thanks a lot for fixing all the problems
->>>>> with the driver.
->>>>>
->>>>> Guenter
->>>> Will do, thank you for your support!
->>>>
->>>> Abdurrahman
->>> Hi Guenter,
->>>
->>> Before I send v5 of the adm1266 series, I'd like to revisit the
->>> SET_RTC exposure question from your v3 review [1].
->>>
->>> The use case I keep landing on is the one the datasheet itself
->>> recommends: a userspace agent (chrony hook, systemd-timesyncd
->>> script, or a small periodic daemon) keeps the chip's seconds
->>> counter aligned with wall-clock so the value embedded in each
->>> blackbox record stays correct across long uptimes.  The probe-
->>> time ktime_get_real_seconds() seed (now in hwmon-next) only fixes
->>> this at boot; the chip's counter drifts after that.
->>>
->>> You ruled out rtc_class and called a kernel-side periodic timer
->>> "a bit excessive", which I agree, it is.  That leaves a
->>> userspace-triggered sync.  Two debugfs shapes I'd consider, both under
->>> pmbus/<hwmon>/adm1266/ (alongside the clear_blackbox,
->>> powerup_counter, and sequencer_state entries v5 already adds):
->>>
->>>     A. RW since_epoch -- mirrors /sys/class/rtc/<dev>/since_epoch.
->>>        Read returns the chip's SET_RTC seconds counter, write sets
->>>        it.  The read has the useful side benefit of letting
->>>        userspace measure host-vs-chip drift without writing.
->>>
->>>     B. Write-only set_rtc -- writing anything to the file makes
->>>        the driver read ktime_get_real_seconds() itself and push it
->>>        to SET_RTC.  Simpler interface (kernel owns the time
->>>        source; userspace just triggers the sync), no payload to
->>>        parse, no way for userspace to pass in a wrong value.
->>>
->> How about a combination ? read returns the current value, anything
->> written synchronizes with the kernel rtc.
->>
-> Going with that for v5.  One naming question before I send:
->
->    - set_rtc -- matches the PMBus command name (SET_RTC = 0xDF), but
->      "set" reads as write-only at first glance, which is a bit
->      misleading for an RW file.
->    - since_epoch -- mirrors /sys/class/rtc/<dev>/since_epoch, but
->      that one is read-only in the RTC subsystem so the dual
->      semantic might surprise users coming from there.
->    - rtc_sync -- describes the write semantic directly, but leaves
->      the read side unnamed.
->    - rtc -- shortest and most neutral; doesn't bias toward either
->      operation.
->
-> Any preference, or should I just pick?
+On 5/20/26 23:54, Dave Hansen wrote:
+> On 5/20/26 14:52, David Hildenbrand (Arm) wrote:
+>> On 5/20/26 12:33, Juhyung Park wrote:
+>>> Neat. Any sign of it getting merged?
+>> I hope it will catch the attention of more x86 maintainers soon 🙂
+> 
+> David, thanks a ton for that patch. It's in the queue behind a couple of
+> other things, but I'll definitely take a look.
+> 
+> Attention caught, I promise! ;)
 
-I like rtc_sync the best, but I'll accept your choice.
+No need to excuse ... my inbox is overflowing because of conferences and travel ...
 
-Thanks,
+Note that I have more cleanups that are waiting for that fix (including,
+removing the order parameter from free_pagetable(), removing
+CONFIG_HAVE_BOOTMEM_INFO_NODE), so expect free_pagetable() and
+free_vmemmap_pages() getting cleaned up properly next.
 
-Guenter
+-- 
+Cheers,
 
-
+David
 
