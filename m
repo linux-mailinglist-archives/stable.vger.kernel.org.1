@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253151-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iC0HDBj3DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251087-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:02:00 +0200
+	id sJZfLEYFDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-253151-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:02:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52D9D595230
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:01:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E09C65979DA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:02:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6126F31726EF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:11:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A93993283F06
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4920B3DC4DA;
-	Wed, 20 May 2026 17:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 833FE403EA6;
+	Wed, 20 May 2026 18:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oAjZhp8y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fSn5XAvj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D148D3D6CB5;
-	Wed, 20 May 2026 17:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE04403E9A;
+	Wed, 20 May 2026 18:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297067; cv=none; b=teM7CDONUzW2CVVnyOa08+KLUDua82xGfvfT/nu+ItPSYGQewlNDQRNTgrPQNnX6YBQuLanxRv28eAv/QyUVnbM8V1eqPbKOh2tiGERSaFBSimoRGagkSblPixSJfhNkTAvPrGIshAvP963WCrqFgRJpT/LMkkpdMzhAYW8wVtc=
+	t=1779302539; cv=none; b=sAiFgm6jsi0rb6HSz41tcSX/47U2Fam0yLJeFMRDGWzSLOjKVjjvS7dthLYPftt0z7ymA0Lc5h5Y0FATwUn729zKlF9+BQyM8MG9shf21twwZvve6iFkra6DUISGMr3R3HBAVaxAg18TCsWq/33dRQj8EdrW3iiBkiVMrlpbz80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297067; c=relaxed/simple;
-	bh=zHe2oxBI2k+1UdUHIeVJzTgZBuyOHzinTXEn4MA5oVw=;
+	s=arc-20240116; t=1779302539; c=relaxed/simple;
+	bh=Y5jjhHQBVyU3ln0jY7ZMxgBwePHLibxVxjRTpumW0sU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NpVESPPsSmt9BoGnZPIExn5+p/5sikr87WfkylDKVyqZIqL7D5n2ZpCLc3CJRHnl98ICPNbzTXu3kQ7Dtsfk0g+29Tf9tgVawX1acCzZHpk7UANY7lnbo5ipDw015uxgCS6I1Fg3Mm30Np7ILk0MBFZ5+YCg+b1FOitO5UCQtVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oAjZhp8y; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 428A31F000E9;
-	Wed, 20 May 2026 17:11:04 +0000 (UTC)
+	 MIME-Version; b=IaKt+Gf77RX4aObD4Rxh8c/dAeMJsrvfZeFTl2gprESR7/ZOLQqWm2mxPW5MBNdox6pL5IRfvgwKerbx5H53mGlLa8+qYBTOGMBXYDG4r7Un4tgA1FozlpxALY2Ty/ELb/X9iLVaaKnaEgS0jUDqkGZZP5Qm0X5x34yF9IOxGC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fSn5XAvj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B55E61F000E9;
+	Wed, 20 May 2026 18:42:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297064;
-	bh=M+uOpzUoJb5dMgQ1CfALtbxdp9jq9hh3qko5ubuBRkM=;
+	s=korg; t=1779302538;
+	bh=3QOVZ4NyW5PiIKEAhrSbxi6xk7DAhaNm0UzzGt8MWAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oAjZhp8yyZs/cwZCnuSOvNwlksHyxV+/NYeaKQu+1kPBmv8HwMvYx+RvhETLVJMLl
-	 yigVL2pzlPjSClNtBLCzuIxiZSM/BmzOE3UThZWR7y5QmCKItzMl/xPuUBnr9aNYQx
-	 7NyQchUD/fXzdBcglCGcec3OSmgRbqYktFggbLWs=
+	b=fSn5XAvjKvwHPdKNWuP907MZWXnyJdYKVSUXh1j/st44bwug2BCvv2huVE3Jn60Wz
+	 mFv1t29T1Ccv+i5XafnLhqI1NKWslg8B0xI0FJWGerwR3GLt+7AUAr0UP2weIctszt
+	 a4e3nzW8uwMD0+BisS5q49T0DdoFxFYn7AlbS36g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 1036/1146] futex: Drop CLONE_THREAD requirement for private default hash alloc
+Subject: [PATCH 6.6 263/508] leds: lgm-sso: Remove duplicate assignments for priv->mmap
 Date: Wed, 20 May 2026 18:21:26 +0200
-Message-ID: <20260520162211.677005303@linuxfoundation.org>
+Message-ID: <20260520162104.343872900@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,100 +66,68 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,stgolabs.net,linux-foundation.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-251087-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-253151-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linux-foundation.org:email,stgolabs.net:email]
-X-Rspamd-Queue-Id: 52D9D595230
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,iscas.ac.cn:email,msgid.link:url]
+X-Rspamd-Queue-Id: E09C65979DA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Davidlohr Bueso <dave@stgolabs.net>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit ee9dce44362b2d8132c32964656ab6dff7dfbc6a ]
+[ Upstream commit 7186d0330c3f3e86de577687a82f4ebd96dcb5ac ]
 
-Currently need_futex_hash_allocate_default() depends on strict pthread
-semantics, abusing CLONE_THREAD.  This breaks the non-concurrency
-assumptions when doing the mm->futex_ref pcpu allocations, leading to
-bugs[0] when sharing the mm in other ways; ie:
+Remove duplicate assignment of priv->mmap in intel_sso_led_probe().
 
-    BUG: KASAN: slab-use-after-free in futex_hash_put
-
-... where the +1 bias can end up on a percpu counter that mm->futex_ref
-no longer points at.
-
-Loosen the check to cover any CLONE_VM clone, except vfork().  Excluding
-vfork keeps the existing paths untouched (no overhead), and we can't
-race in the first place: either the parent is suspended and the child
-runs alone, or mm->futex_ref is already allocated from an earlier
-CLONE_VM.
-
-Link: https://lore.kernel.org/all/CAL_bE8LsmCQ-FAtYDuwbJhOkt9p2wwYQwAbMh=PifC=VsiBM6A@mail.gmail.com/ [0]
-Fixes: d9b05321e21e ("futex: Move futex_hash_free() back to __mmput()")
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: fba8a6f2263b ("leds: lgm-sso: Fix clock handling")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Link: https://patch.msgid.link/20260226033048.3715915-1-nichen@iscas.ac.cn
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/fork.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/leds/blink/leds-lgm-sso.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 87f3b8d48c0db..73622ad0665a0 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -1949,9 +1949,11 @@ static void rv_task_fork(struct task_struct *p)
+diff --git a/drivers/leds/blink/leds-lgm-sso.c b/drivers/leds/blink/leds-lgm-sso.c
+index 35c61311e7fd8..e104010345b18 100644
+--- a/drivers/leds/blink/leds-lgm-sso.c
++++ b/drivers/leds/blink/leds-lgm-sso.c
+@@ -806,8 +806,6 @@ static int intel_sso_led_probe(struct platform_device *pdev)
  
- static bool need_futex_hash_allocate_default(u64 clone_flags)
- {
--	if ((clone_flags & (CLONE_THREAD | CLONE_VM)) != (CLONE_THREAD | CLONE_VM))
--		return false;
--	return true;
-+	/*
-+	 * Allocate a default futex hash for any sibling that will
-+	 * share the parent's mm, except vfork.
-+	 */
-+	return (clone_flags & (CLONE_VM | CLONE_VFORK)) == CLONE_VM;
- }
+ 	priv->fpid_clkrate = clk_get_rate(priv->clocks[1].clk);
  
- /*
-@@ -2338,10 +2340,6 @@ __latent_entropy struct task_struct *copy_process(
- 	if (retval)
- 		goto bad_fork_cancel_cgroup;
- 
--	/*
--	 * Allocate a default futex hash for the user process once the first
--	 * thread spawns.
--	 */
- 	if (need_futex_hash_allocate_default(clone_flags)) {
- 		retval = futex_hash_allocate_default();
- 		if (retval)
+-	priv->mmap = syscon_node_to_regmap(dev->of_node);
+-
+ 	priv->mmap = syscon_node_to_regmap(dev->of_node);
+ 	if (IS_ERR(priv->mmap)) {
+ 		dev_err(dev, "Failed to map iomem!\n");
 -- 
 2.53.0
 
