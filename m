@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-252370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251730-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2PSzCzwkDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252370-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:14:36 +0200
+	id cCMzDLjzDWoF5AUAu9opvQ
+	(envelope-from <stable+bounces-251730-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B6AE59A955
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:14:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9829359493E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:47:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 48B0A3813D65
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:08:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6B197309B69A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:39:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 198FD3F7884;
-	Wed, 20 May 2026 18:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CD683EDACC;
+	Wed, 20 May 2026 17:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1LVhmVT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t3M0h1pp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCBA93DC4DA;
-	Wed, 20 May 2026 18:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56BA3D7D66;
+	Wed, 20 May 2026 17:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300497; cv=none; b=SkwEYFS2oUmH9VKwm9g4I66vg8AOcTzQ6LY4172BjB45gDYx02MRv8dkD6xWkKght9QVOVChxK+ro3YcW7ydKMaZvfPka+UnMWUNYy8ImMuWQqV2yedMrDwxFZ1KcxOsf7Uz74NXbbkYode954zQZjxCcGVBnY62r16LugQWiwY=
+	t=1779298741; cv=none; b=JhnyPsEU3pnNG2QOGXpyJUyVC54B7ogyTKrJIuFrCGN+hgbESKOj7CPaI4vPMN4tNGGTO6vUjgAswcJL1qUPlSH0/SjgiqSid6J6ebrz7K5kXeh89FQi4wd/D4E6FAx9FcE4NhUM5zgENwryASKwzA5bGy4l2enN+4IsB31xf5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300497; c=relaxed/simple;
-	bh=Sf1DKGa5v8qet8vwO1HLL4PlVuMzFvfDXmqQn/7m0XE=;
+	s=arc-20240116; t=1779298741; c=relaxed/simple;
+	bh=f1KFYi06XsidkpZUD9+EY4QEDRh27EnTgnWiX3k7N0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fqqArVdgFaIXIwaR+mpE+0FLqjh+eJs1hGsYcQ2wp/RZG6HJeDX/FaILV4KdpXVg95viYvq5tw9pVpqh4oC3hEXJeTFDp4n8LZ+oNzQbJrSGogmdkgBJh+6yrBDvDk2rQGWe9RFtgIoD5e+rz6shboeqRkA6jwtj+KKORY0B4H4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1LVhmVT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB3E71F000E9;
-	Wed, 20 May 2026 18:08:15 +0000 (UTC)
+	 MIME-Version; b=je+s4dSV5KHWJtRlK/PjwR84qa/aXGgAIKlJQPQLBq4BUHb6PbXk+oa47nE+GeyVTW6qUKhbqeJzr0449INi3VhDKWyzGm4TjmHjdbT5qdXfdtEo+qDnOggGrECc8Cq02oIAbVqvmrajUYnvE608OQgaqXp9t75yRI0sFlInF7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t3M0h1pp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C3E1F000E9;
+	Wed, 20 May 2026 17:39:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300496;
-	bh=7TNB/3EOrd0j0JZBgqfbqnxNxt/eOS4JXB4NnuGiK6I=;
+	s=korg; t=1779298740;
+	bh=SmZQ+lVTXQNr7m1DWDjUJzL92ufMa5CDg4BVjT674bY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=t1LVhmVThoSFnvBv0LKVENi/uVPqza6tCBISnQs+rMAGSjTPDW2sc01CRj/BM84n4
-	 hUfyP+4XKiC/e8X/o+lFZI1IrmHMdY5Nb7m5/GU6/JObjDrYMG4o5AUqjqfKuW5Kiv
-	 GjMehnyOlbjiDGzg4YN7R98AiQLJNbnnNWNmc88A=
+	b=t3M0h1ppIVYHzkwiDF6Pn0mcrsnj91cfeSkgb01vnci51SYUGJAbXwo5B7Omt0J/I
+	 9/SD/HY/yk6ZtVnVRW6ZwOken/ujgCH/RPgmSyvroCXarhzhWp9IFJ+Q/yqZLEFcUi
+	 lHP/ox9KD6JURxrKtoCoyPMGcAzPn2J3/xfkWC9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Felix Gu <ustc.gu@gmail.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 196/666] pmdomain: imx: scu-pd: Fix device_node reference leak during ->probe()
+Subject: [PATCH 6.18 524/957] i3c: master: renesas: Fix memory leak in renesas_i3c_i3c_xfers()
 Date: Wed, 20 May 2026 18:16:47 +0200
-Message-ID: <20260520162115.450731197@linuxfoundation.org>
+Message-ID: <20260520162145.898022517@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,70 +69,88 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nxp.com,linaro.org,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252370-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-251730-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,bp.renesas.com,nxp.com,gmail.com,bootlin.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linaro.org:email]
-X-Rspamd-Queue-Id: 6B6AE59A955
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,renesas.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 9829359493E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Felix Gu <ustc.gu@gmail.com>
 
-[ Upstream commit c8e9b6a55702be6c6d034e973d519c52c3848415 ]
+[ Upstream commit d7665c3b4f575251e449e2656879392346ca612b ]
 
-When calling of_parse_phandle_with_args(), the caller is responsible
-to call of_node_put() to release the reference of device node.
-In imx_sc_pd_get_console_rsrc(), it does not release the reference.
+The xfer structure allocated by renesas_i3c_alloc_xfer() was never freed
+in the renesas_i3c_i3c_xfers() function. Use the __free(kfree) cleanup
+attribute to automatically free the memory when the variable goes out of
+scope.
 
-Fixes: 893cfb99734f ("firmware: imx: scu-pd: do not power off console domain")
+Fixes: d028219a9f14 ("i3c: master: Add basic driver for the Renesas I3C controller")
+Tested-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+Reviewed-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://patch.msgid.link/20260406-renesas-v3-1-4b724d7708f4@gmail.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pmdomain/imx/scu-pd.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/i3c/master/renesas-i3c.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pmdomain/imx/scu-pd.c b/drivers/pmdomain/imx/scu-pd.c
-index 01d465d88f60d..3ec33667a308c 100644
---- a/drivers/pmdomain/imx/scu-pd.c
-+++ b/drivers/pmdomain/imx/scu-pd.c
-@@ -326,6 +326,7 @@ static void imx_sc_pd_get_console_rsrc(void)
- 		return;
+diff --git a/drivers/i3c/master/renesas-i3c.c b/drivers/i3c/master/renesas-i3c.c
+index 275f7b9242886..5b1bf5a0266cc 100644
+--- a/drivers/i3c/master/renesas-i3c.c
++++ b/drivers/i3c/master/renesas-i3c.c
+@@ -8,6 +8,7 @@
  
- 	imx_con_rsrc = specs.args[0];
-+	of_node_put(specs.np);
- }
+ #include <linux/bitfield.h>
+ #include <linux/bitops.h>
++#include <linux/cleanup.h>
+ #include <linux/clk.h>
+ #include <linux/completion.h>
+ #include <linux/err.h>
+@@ -800,13 +801,12 @@ static int renesas_i3c_priv_xfers(struct i3c_dev_desc *dev, struct i3c_priv_xfer
+ 	struct i3c_master_controller *m = i3c_dev_get_master(dev);
+ 	struct renesas_i3c *i3c = to_renesas_i3c(m);
+ 	struct renesas_i3c_i2c_dev_data *data = i3c_dev_get_master_data(dev);
+-	struct renesas_i3c_xfer *xfer;
+ 	int i;
  
- static int imx_sc_get_pd_power(struct device *dev, u32 rsrc)
+ 	/* Enable I3C bus. */
+ 	renesas_i3c_bus_enable(m, true);
+ 
+-	xfer = renesas_i3c_alloc_xfer(i3c, 1);
++	struct renesas_i3c_xfer *xfer __free(kfree) = renesas_i3c_alloc_xfer(i3c, 1);
+ 	if (!xfer)
+ 		return -ENOMEM;
+ 
 -- 
 2.53.0
 
