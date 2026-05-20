@@ -1,59 +1,97 @@
-Return-Path: <stable+bounces-250703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251642-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EAekK5QTDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-250703-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:03:32 +0200
+	id iJxPMdgcDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251642-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:43:04 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44D345990EB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:03:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ED06599FE7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:43:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9A32D30D27DB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:56:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5F1AA34E2601
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:35:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6723B3E9C3D;
-	Wed, 20 May 2026 16:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D81D30BF68;
+	Wed, 20 May 2026 17:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZYmIjZ+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hwzzDe33"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18EFF3BBA0E;
-	Wed, 20 May 2026 16:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3403312825;
+	Wed, 20 May 2026 17:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296096; cv=none; b=FYyVAUDz2lQSdt2POH+itdCLKx1YxcdBc52EfSMMQqpKcNyvecnn+/nvC+4k6wrFa4L5jfHH5qW7hbzXAYG4PyqwwGWgREAf7vdfJe6KXQoLT282y6d939l2+1GWhMt9ek3MCNBOZTd1NqSg5tNsCwPPIybNBdXh9CdlGBkd4zQ=
+	t=1779298514; cv=none; b=qmHqjlHV8zyGhovMrMRJ0hKIns2R0mpU/2PESgQry5DYUumtEha+qLNO0vb39tZW4fSpKkwEsnVjWfJW7h90qLbVP6jJuKMktDjXlzgh7w3a2DTyTKN4wZFZd3MaaOu91OZ19nU0aNasmS42WRMCjMkfkw2e8WfJkr9aB2x2Pp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296096; c=relaxed/simple;
-	bh=uX+cJLs8aiBGqBdxLQqMjCJ3n1+ovjOIP5BT8jJ3ftU=;
+	s=arc-20240116; t=1779298514; c=relaxed/simple;
+	bh=h2L+uIYmlUP7T/adroQ7SjHMLbqnY90kLv3p8uuT/O0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dv6+0OpVm06dsNQjF/qSc0w8Ej6O+H3RRwSBCIGhjnQfQlzee0QAgDB832+fzRnPV3MbtgXpPLMBaL5UfQXGrgTSASp0yrsp3uSldSdZdSrJJFNOW1cwP3sfit7cXyaXDVsN+EnPU7fzHY1sK5yHu9yOUSt6Bd5n/0CXyOn7GF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZYmIjZ+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 406101F000E9;
-	Wed, 20 May 2026 16:54:54 +0000 (UTC)
+	 MIME-Version; b=EKQBA1fshsLaCxntsshIi5Agc2aLPTcNXVFXcBWfs6DechFB5MSxn2DUkG9unMu96Z5/YdZrGH4LqNh9VPthaIpJvncCsnSi8UrmOEbNIbXXKHiop/yEadzRtrmvD57mu/QGkSqdJp/QiEya9PpThHOhzkjw2+8O6ibVlv1XBY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hwzzDe33; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269721F000E9;
+	Wed, 20 May 2026 17:35:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296094;
-	bh=HjCRey48jiFzZEzuuueKOTaafSc/cbjtBuWKmyiSgpA=;
+	s=korg; t=1779298512;
+	bh=oO7JUaLczO4CjK0S+lX3+Bi7cx2NBNqmNd0a4AH4NW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KZYmIjZ+vQf1hB7l5C8B15AW8s+42qlCSnL9oijWIF48r9uZQT0lueR7yZSSenEDF
-	 6WLcVm9ecOQhzOb89IIIf8FBHWEEDwWr5YvDSCzYMo6cNPPFRj590aayo30CnqqBgR
-	 ncL6gNAoMvxR9XOHsC2jcEvgUMHxrCVTRk7mbzFM=
+	b=hwzzDe33PJdf7DfbHcmZg+mD+wnVJsd0mf37Yxmwjy2J5fV36u3e/EZgawKA8Molz
+	 aEqLEwFzXmcD5Zownq8qmoXzYxi+zV/ukf46M8cvtLL3gBuOvHOH0xWO5IKQO9gIbe
+	 OLtOQ4pPv7zl92CtXnz2GqlIpaaUHPsUhvp7wL+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mostafa Saleh <smostafa@google.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Chris Mason <clm@fb.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Sterba <dsterba@suse.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	"Jason A. Donenfeld" <jason@zx2c4.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Li Nan <linan122@huawei.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Matt Turner <mattst88@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Richard Weinberger <richard@nod.at>,
+	Russell King <linux@armlinux.org.uk>,
+	Song Liu <song@kernel.org>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Ted Tso <tytso@mit.edu>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0669/1146] usb: typec: ps883x: Fix Oops at unbind
-Date: Wed, 20 May 2026 18:15:19 +0200
-Message-ID: <20260520162203.327935053@linuxfoundation.org>
+Subject: [PATCH 6.18 437/957] arm64/xor: fix conflicting attributes for xor_block_template
+Date: Wed, 20 May 2026 18:15:20 +0200
+Message-ID: <20260520162143.998405061@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,97 +106,110 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250703-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCPT_COUNT_TWELVE(0.00)[44];
+	TAGGED_FROM(0.00)[bounces-251642-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,lst.de,kernel.org,eecs.berkeley.edu,linux.ibm.com,ghiti.fr,gaisler.com,cambridgegreys.com,arndb.de,alien8.de,arm.com,fb.com,intel.com,davemloft.net,suse.com,gondor.apana.org.au,zytor.com,redhat.com,zx2c4.com,sipsolutions.net,huawei.com,gmail.com,ellerman.id.au,dabbelt.com,linaro.org,nod.at,armlinux.org.uk,mit.edu,xen0n.name,linux-foundation.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 44D345990EB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 4ED06599FE7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mostafa Saleh <smostafa@google.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 381133848a033c2086cf9cafb226f425bd0414ff ]
+[ Upstream commit 675a0dd596e712404557286d0a883b54ee28e4f4 ]
 
-When trying to unbind a device in order to bind to it vfio-platform as:
+Commit 2c54b423cf85 ("arm64/xor: use EOR3 instructions when available")
+changes the definition to __ro_after_init instead of const, but failed to
+update the external declaration in xor.h.  This was not found because
+xor-neon.c doesn't include <asm/xor.h>, and can't easily do that due to
+current architecture of the XOR code.
 
-  echo bc0000.geniqup  > /sys/bus/platform/devices/bc0000.geniqup/driver/unbind
-
-I get the following Oops:
-
-[  436.478639] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000020
-[  436.487762] Mem abort info:
-[  436.490716]   ESR = 0x0000000096000004
-[  436.494595]   EC = 0x25: DABT (current EL), IL = 32 bits
-[  436.500071]   SET = 0, FnV = 0
-[  436.503250]   EA = 0, S1PTW = 0
-[  436.506505]   FSC = 0x04: level 0 translation fault
-[  436.511533] Data abort info:
-[  436.514558]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
-[  436.520215]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[  436.525436]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[  436.530918] user pgtable: 4k pages, 48-bit VAs, pgdp=00000008861a9000
-[  436.537554] [0000000000000020] pgd=0000000000000000, p4d=0000000000000000
-[  436.544548] Internal error: Oops: 0000000096000004 [#1]  SMP
-[  436.550374] Modules linked in:
-[  436.553542] CPU: 2 UID: 0 PID: 671 Comm: bash Tainted: G        W           7.0.0-rc3-g56fcdd0911a5-dirty #2 PREEMPT
-[  436.564440] Tainted: [W]=WARN
-[  436.567515] Hardware name: LENOVO 91B6CTO1WW/3796, BIOS O6NKT3BA 05/02/2025
-[  436.574675] pstate: 21400005 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-[  436.581841] pc : ps883x_retimer_remove+0x14/0x94
-[  436.586605] lr : i2c_device_remove+0x28/0x84
-[  436.591017] sp : ffff8000847137c0
-
-That's because the ps883x_retimer_remove() retrieves the driver data
-from i2c_get_clientdata() which was never set at probe. So, add
-i2c_set_clientdata() at the end of the probe.
-
-Signed-off-by: Mostafa Saleh <smostafa@google.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Fixes: 257a087c8b52 ("usb: typec: Add support for Parade PS8830 Type-C Retimer")
-Link: https://patch.msgid.link/20260313155534.1916773-1-smostafa@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20260327061704.3707577-4-hch@lst.de
+Fixes: 2c54b423cf85 ("arm64/xor: use EOR3 instructions when available")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Eric Biggers <ebiggers@kernel.org>
+Tested-by: Eric Biggers <ebiggers@kernel.org>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Alexandre Ghiti <alex@ghiti.fr>
+Cc: Andreas Larsson <andreas@gaisler.com>
+Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: "Borislav Petkov (AMD)" <bp@alien8.de>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Chris Mason <clm@fb.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: David Sterba <dsterba@suse.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jason A. Donenfeld <jason@zx2c4.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Cc: Li Nan <linan122@huawei.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Magnus Lindholm <linmag7@gmail.com>
+Cc: Matt Turner <mattst88@gmail.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Cc: Richard Weinberger <richard@nod.at>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Song Liu <song@kernel.org>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Ted Ts'o <tytso@mit.edu>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: WANG Xuerui <kernel@xen0n.name>
+Cc: Will Deacon <will@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/mux/ps883x.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/include/asm/xor.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/typec/mux/ps883x.c b/drivers/usb/typec/mux/ps883x.c
-index 5f2879749769e..1256252eceedc 100644
---- a/drivers/usb/typec/mux/ps883x.c
-+++ b/drivers/usb/typec/mux/ps883x.c
-@@ -444,6 +444,7 @@ static int ps883x_retimer_probe(struct i2c_client *client)
- 		goto err_switch_unregister;
- 	}
+diff --git a/arch/arm64/include/asm/xor.h b/arch/arm64/include/asm/xor.h
+index befcd8a7abc98..7c03207157196 100644
+--- a/arch/arm64/include/asm/xor.h
++++ b/arch/arm64/include/asm/xor.h
+@@ -13,7 +13,7 @@
  
-+	i2c_set_clientdata(client, retimer);
- 	return 0;
+ #ifdef CONFIG_KERNEL_MODE_NEON
  
- err_switch_unregister:
+-extern struct xor_block_template const xor_block_inner_neon;
++extern struct xor_block_template xor_block_inner_neon __ro_after_init;
+ 
+ static void
+ xor_neon_2(unsigned long bytes, unsigned long * __restrict p1,
 -- 
 2.53.0
 
