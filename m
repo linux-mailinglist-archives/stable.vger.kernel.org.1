@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-251686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250749-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4PY9E/zyDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-251686-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:28 +0200
+	id sHIBE+ETDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-250749-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:04:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BF0759473E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9699A59918E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:04:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9E7A33061010
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:37:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 071A3357FF33
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:57:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 072DD3ED136;
-	Wed, 20 May 2026 17:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 392173164C3;
+	Wed, 20 May 2026 16:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KHLu9Btn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0m4wFf51"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945CA3EFD3D;
-	Wed, 20 May 2026 17:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A3733BBBA;
+	Wed, 20 May 2026 16:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298630; cv=none; b=sSlK/b76L00Jyt6KWcRO2ttCXStlFoe3STFI/Z+hwwGrZXKXo3D83N7HGtfZmnMTo2g/59dm+mlbFtWWtof/GkTjzSQueW4PKbugq+Sp2i2FOGArf1lS8O+5Uy3Y2XsEA58qwHjaN9FtuCqLhpvfkqshkHvjvVVyVtzp5SJxW0Y=
+	t=1779296217; cv=none; b=JCFeJI1pYB9fsadUxvs9JezZzvGRpZT6ZtW9auGOOERmPElsibtIjqhL1TrNiHDfy9ciG7Dbzvo4IrSAiadsV3hEJAtJeAYsyAGKRBFKUubgE+0P4+36xkCY9tL1ljEVAJBwE4KXmH0TRdJU3PSuclZwJO2vm4zlXtIpehRst9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298630; c=relaxed/simple;
-	bh=MwJL0l1pipqHENZ/wXnCHAzBXLFwKni6YE1Y7ndEB8k=;
+	s=arc-20240116; t=1779296217; c=relaxed/simple;
+	bh=Tfj8t+moexJC4yjnSS6KtI9FesCkkL1i4CDC8c5mXak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MGsJFG6spqhBkbcDkqCLiMR1CNo3yW+GSQgFgSsTeyD3+o9Fq0Qx5P83ipR/e3wfIYGhFc04zSZRDOCZjWxSD5imV99fRd9+Fya1VRvZ1QaPpFkVXUEc/uVpsFN2xdzLolGetZX+0IftKJsduV1wNMhCt+CPu04N/Sx8JXAK4bE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KHLu9Btn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89D781F000E9;
-	Wed, 20 May 2026 17:37:07 +0000 (UTC)
+	 MIME-Version; b=FvDykADasoiJuBftWaJi0oomXJg2fhmXnubh3UKZBVFJespCQmt3pjJxPGvt36HbSVipLGkTbc4WqNaEguO2Wcwuj/KWGRtgT6qP5jl1CQCrKiN150wRSOkcNRBNMsGHRSfWqtfrYeF2NYsCYEuvgw8fDYgq/52mjscG5isvxOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0m4wFf51; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53AE51F000E9;
+	Wed, 20 May 2026 16:56:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298628;
-	bh=QRrZlRpS5D+rSSgroYBoHiM8yoCyTz/F7p6e+GYBYnQ=;
+	s=korg; t=1779296215;
+	bh=dAeUvSxRgmWYqfcq1cE4/Zjz4QZnsDsrPkrTgqw9f+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KHLu9Btn5xo+QTAjG8rueFpxni7f7z9a1FLysRgd85yRjQRLFJRLCYtVbINbwmVh5
-	 UkYywAmqZp73S5M3bq8RZU1+bNfxwWWKVNr0TTYE3b9ZysbGJjh0LYx5A1p6VlizMp
-	 JhtMXXhH0wk+i88f+jrd4UaiLFqTgDpYj6qvB4l4=
+	b=0m4wFf51Nb+qjlrYmPWw531eayTr7YMxgrDPyEqCkzsnCqlIXacNn5IwRX7GmcuPx
+	 keXtOrQQdhyVWmqKHlKuMHcq4NtIxvchTtlBVvZDUgcTC6CuVAt2BRLhvEyYnlxYw1
+	 6MaoYMxv/OQBOfbHWU4PIOKFiGxKxncp2Ys8s2Pc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Val Packett <val@packett.cool>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 481/957] mtd: spinand: Give the bus interface to the configuration helper
-Date: Wed, 20 May 2026 18:16:04 +0200
-Message-ID: <20260520162144.956968894@linuxfoundation.org>
+Subject: [PATCH 7.0 0715/1146] clk: qcom: gcc-sc8180x: Add missing GDSCs
+Date: Wed, 20 May 2026 18:16:05 +0200
+Message-ID: <20260520162204.368313843@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,160 +70,124 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250749-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251686-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 0BF0759473E
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,packett.cool:email]
+X-Rspamd-Queue-Id: 9699A59918E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Val Packett <val@packett.cool>
 
-[ Upstream commit 0a331a1851aedd670b95a2d16c6a82496137378d ]
+[ Upstream commit 3565741eb985a8a7cc6656eb33496195468cb99e ]
 
-The chip configuration hook is the one responsible to actually switch
-the switch between bus interfaces. It is natural to give it the bus
-interface we expect with a new parameter. For now the only value we can
-give is SSDR, but this is subject to change in the future, so add a bit
-of extra logic in the implementations of this callback to make sure
-both the core and the chip driver are aligned on the request.
+There are 5 more GDSCs that we were ignoring and not putting to sleep,
+which are listed in downstream DTS. Add them.
 
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Stable-dep-of: 25a915fad503 ("mtd: spinand: winbond: Clarify when to enable the HS bit")
+Fixes: 4433594bbe5d ("clk: qcom: gcc: Add global clock controller driver for SC8180x")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Val Packett <val@packett.cool>
+Link: https://lore.kernel.org/r/20260312112321.370983-3-val@packett.cool
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/spi/core.c    |  2 +-
- drivers/mtd/nand/spi/winbond.c | 28 +++++++++++++++++++++-------
- include/linux/mtd/spinand.h    |  6 ++++--
- 3 files changed, 26 insertions(+), 10 deletions(-)
+ drivers/clk/qcom/gcc-sc8180x.c | 50 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
 
-diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
-index 9f6682c0af102..2f656a5e4af89 100644
---- a/drivers/mtd/nand/spi/core.c
-+++ b/drivers/mtd/nand/spi/core.c
-@@ -1499,7 +1499,7 @@ static int spinand_configure_chip(struct spinand_device *spinand)
- 		return ret;
+diff --git a/drivers/clk/qcom/gcc-sc8180x.c b/drivers/clk/qcom/gcc-sc8180x.c
+index 31e788e22ab4a..55dabf6259b29 100644
+--- a/drivers/clk/qcom/gcc-sc8180x.c
++++ b/drivers/clk/qcom/gcc-sc8180x.c
+@@ -4266,6 +4266,51 @@ static struct gdsc usb30_mp_gdsc = {
+ 	.flags = POLL_CFG_GDSCR,
+ };
  
- 	if (spinand->configure_chip) {
--		ret = spinand->configure_chip(spinand);
-+		ret = spinand->configure_chip(spinand, SSDR);
- 		if (ret)
- 			return ret;
- 	}
-diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
-index 6cb5dd45e6fb7..0ea5b1c97d33d 100644
---- a/drivers/mtd/nand/spi/winbond.c
-+++ b/drivers/mtd/nand/spi/winbond.c
-@@ -284,13 +284,17 @@ static int w25n02kv_ecc_get_status(struct spinand_device *spinand,
- 	return -EINVAL;
- }
- 
--static int w25n0xjw_hs_cfg(struct spinand_device *spinand)
-+static int w25n0xjw_hs_cfg(struct spinand_device *spinand,
-+			   enum spinand_bus_interface iface)
- {
- 	const struct spi_mem_op *op;
- 	bool hs;
- 	u8 sr4;
- 	int ret;
- 
-+	if (iface != SSDR)
-+		return -EOPNOTSUPP;
++static struct gdsc hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc = {
++	.gdscr = 0x7d050,
++	.pd = {
++		.name = "hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
 +
- 	op = spinand->op_templates->read_cache;
- 	if (op->cmd.dtr || op->addr.dtr || op->dummy.dtr || op->data.dtr)
- 		hs = false;
-@@ -347,17 +351,25 @@ static int w35n0xjw_write_vcr(struct spinand_device *spinand, u8 reg, u8 val)
- 	return 0;
- }
++static struct gdsc hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc = {
++	.gdscr = 0x7d058,
++	.pd = {
++		.name = "hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
++
++static struct gdsc hlos1_vote_mmnoc_mmu_tbu_sf_gdsc = {
++	.gdscr = 0x7d054,
++	.pd = {
++		.name = "hlos1_vote_mmnoc_mmu_tbu_sf_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
++
++static struct gdsc hlos1_vote_turing_mmu_tbu0_gdsc = {
++	.gdscr = 0x7d05c,
++	.pd = {
++		.name = "hlos1_vote_turing_mmu_tbu0_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
++
++static struct gdsc hlos1_vote_turing_mmu_tbu1_gdsc = {
++	.gdscr = 0x7d060,
++	.pd = {
++		.name = "hlos1_vote_turing_mmu_tbu1_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
++
+ static struct clk_regmap *gcc_sc8180x_clocks[] = {
+ 	[GCC_AGGRE_NOC_PCIE_TBU_CLK] = &gcc_aggre_noc_pcie_tbu_clk.clkr,
+ 	[GCC_AGGRE_UFS_CARD_AXI_CLK] = &gcc_aggre_ufs_card_axi_clk.clkr,
+@@ -4595,6 +4640,11 @@ static struct gdsc *gcc_sc8180x_gdscs[] = {
+ 	[USB30_MP_GDSC] = &usb30_mp_gdsc,
+ 	[USB30_PRIM_GDSC] = &usb30_prim_gdsc,
+ 	[USB30_SEC_GDSC] = &usb30_sec_gdsc,
++	[HLOS1_VOTE_MMNOC_MMU_TBU_HF0_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc,
++	[HLOS1_VOTE_MMNOC_MMU_TBU_HF1_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc,
++	[HLOS1_VOTE_MMNOC_MMU_TBU_SF_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_sf_gdsc,
++	[HLOS1_VOTE_TURING_MMU_TBU0_GDSC] = &hlos1_vote_turing_mmu_tbu0_gdsc,
++	[HLOS1_VOTE_TURING_MMU_TBU1_GDSC] = &hlos1_vote_turing_mmu_tbu1_gdsc,
+ };
  
--static int w35n0xjw_vcr_cfg(struct spinand_device *spinand)
-+static int w35n0xjw_vcr_cfg(struct spinand_device *spinand,
-+			    enum spinand_bus_interface iface)
- {
--	const struct spi_mem_op *op;
-+	const struct spi_mem_op *ref_op;
- 	unsigned int dummy_cycles;
- 	bool dtr, single;
- 	u8 io_mode;
- 	int ret;
- 
--	op = spinand->op_templates->read_cache;
-+	switch (iface) {
-+	case SSDR:
-+		ref_op = spinand->ssdr_op_templates.read_cache;
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	};
- 
--	dummy_cycles = ((op->dummy.nbytes * 8) / op->dummy.buswidth) / (op->dummy.dtr ? 2 : 1);
-+	dummy_cycles = ((ref_op->dummy.nbytes * 8) / ref_op->dummy.buswidth) /
-+		(ref_op->dummy.dtr ? 2 : 1);
- 	switch (dummy_cycles) {
- 	case 8:
- 	case 12:
-@@ -373,8 +385,10 @@ static int w35n0xjw_vcr_cfg(struct spinand_device *spinand)
- 	if (ret)
- 		return ret;
- 
--	single = (op->cmd.buswidth == 1 && op->addr.buswidth == 1 && op->data.buswidth == 1);
--	dtr = (op->cmd.dtr && op->addr.dtr && op->data.dtr);
-+	single = (ref_op->cmd.buswidth == 1 &&
-+		  ref_op->addr.buswidth == 1 &&
-+		  ref_op->data.buswidth == 1);
-+	dtr = (ref_op->cmd.dtr && ref_op->addr.dtr && ref_op->data.dtr);
- 	if (single && !dtr)
- 		io_mode = W35N01JW_VCR_IO_MODE_SINGLE_SDR;
- 	else if (!single && !dtr)
-diff --git a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
-index c991c6c3bdedf..07e4d87019c64 100644
---- a/include/linux/mtd/spinand.h
-+++ b/include/linux/mtd/spinand.h
-@@ -532,7 +532,8 @@ struct spinand_info {
- 	} op_variants;
- 	int (*select_target)(struct spinand_device *spinand,
- 			     unsigned int target);
--	int (*configure_chip)(struct spinand_device *spinand);
-+	int (*configure_chip)(struct spinand_device *spinand,
-+			      enum spinand_bus_interface iface);
- 	int (*set_cont_read)(struct spinand_device *spinand,
- 			     bool enable);
- 	struct spinand_fact_otp fact_otp;
-@@ -704,7 +705,8 @@ struct spinand_device {
- 	const struct spinand_manufacturer *manufacturer;
- 	void *priv;
- 
--	int (*configure_chip)(struct spinand_device *spinand);
-+	int (*configure_chip)(struct spinand_device *spinand,
-+			      enum spinand_bus_interface iface);
- 	bool cont_read_possible;
- 	int (*set_cont_read)(struct spinand_device *spinand,
- 			     bool enable);
+ static const struct regmap_config gcc_sc8180x_regmap_config = {
 -- 
 2.53.0
 
