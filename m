@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-253013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251909-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eCTRKIMADmo95QUAu9opvQ
-	(envelope-from <stable+bounces-253013-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:42:11 +0200
+	id sPCNDacCDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-251909-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:51:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 473DE59707C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:42:11 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39FD059750B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:51:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F0D0A312DC67
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D0A1831FF484
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:46:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 517633F9F2A;
-	Wed, 20 May 2026 18:36:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53CB23F1ADC;
+	Wed, 20 May 2026 17:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RAodAhNh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eceKLjUo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2031369D7A;
-	Wed, 20 May 2026 18:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E889B3F1AD9;
+	Wed, 20 May 2026 17:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302176; cv=none; b=rXXrahtpzpjsGI8lez/5Kiv0lnIxP+g1NjpBSk+RumoEM5I87fHaC3cbpqNwIdI7NB+TTqnOxd+S/S0nRsO16pFSe9/iNY5ASioPaWn8YUZaBSoImuxcd84oE1q8Q/Qlxux2RXaAUMDZ5Ve3AMVVrHADu0flfgSj+VMz+FTCboY=
+	t=1779299205; cv=none; b=Q1beyrNC4LRJ+KwU3W1BtddmPESrjRi3X8/4DiRuBRpArxnfizvpq35/EOAZOg3k5WAnAn/KfGL/AgUCEnh4KyhmJKl1l3Ilrz6o2EP9fVsbFC1/qXwndKgVQJmR5d0DFKhKVEXnmoLIozyCD0VOfzNErCDCd8FFiUFVw9N7XFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302176; c=relaxed/simple;
-	bh=rL5ndOJKia4Li8Ob04JsPddClJ3lWBkb+nAYwNeG0X4=;
+	s=arc-20240116; t=1779299205; c=relaxed/simple;
+	bh=yXtT8VctCHuPbNPbR/9/M4zxTXA3KOLI93IqOj47zc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dzwTdWkHPec3ouSFB6M5evDSbGj9tgoClGKYE5omABSf/BbCbOiC73oaCbMiG+duhEF10QJbqV1oNm+fCYmDT2GlUaQ8VQ2OvuzTGUsINw3oxgEDb6vWAqE3BceNjbAI3pbAgNmClPbiTVpcolBVQVVePGx3Sv82ltXz/c6Mj9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RAodAhNh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6360F1F000E9;
-	Wed, 20 May 2026 18:36:14 +0000 (UTC)
+	 MIME-Version; b=tGd3s2yf7diHJsWcCXCtdOqNuNny+gAB2cU4gg+PMlJH3/NcfRH2Mh5j1/H/sm9mglCRaKMU8yQwapeuZzyx6I3uy/naqTDoqqiMwuLJhFuMvrS2yJQZXDymUWRRYDwfS4/6z8LBh5j+XSS8PsaLlqPsiDyLGwxFx4NDRvhta/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eceKLjUo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59CD31F000E9;
+	Wed, 20 May 2026 17:46:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302174;
-	bh=0ffuP5SNBiuiGqSFsNwreQFlDVuIlzhifJqxZTkq4D4=;
+	s=korg; t=1779299203;
+	bh=IFpSEWqsOfjXHp3H3I+NKT2T0ttTIIkP9gdkQts9Zr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RAodAhNhf0RgBahQmuK2sNa52WNAxb1IrkWxMe1UwOMlixCUL8nr+06q9UfIsjwRU
-	 hwTSrQLLvr1OAC5EyEwrKY1QBT2LDeFR1UJgGzq29qw9FfNb21ilCPUbqS3wWsAk4j
-	 AOZeHISHnxtmekDj2ErGTza4Ar804ubR40bP9UZo=
+	b=eceKLjUoX8zF05LvNjztji7h4ioW7cUc7Oxx81098Hlj0Vvg+K7+ts1KFfwtwFhkw
+	 R0nIOu1tyd8E0QbqKE7BxuWp3N8MDRnRakWpXvj+zC92ONJuCc1EuY+VT3grqL0LbN
+	 QcpUQg7UOv96PWCnZyhkTC0911JJuAytkp3C7QK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Yingnan Zhang <342144303@qq.com>,
+	Julian Anastasov <ja@ssi.bg>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 125/508] drm/amd/pm/ci: Fix powertune defaults for Hawaii 0x67B0
+Subject: [PATCH 6.18 665/957] ipvs: fix MTU check for GSO packets in tunnel mode
 Date: Wed, 20 May 2026 18:19:08 +0200
-Message-ID: <20260520162101.337668738@linuxfoundation.org>
+Message-ID: <20260520162148.954134951@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +64,133 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253013-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-251909-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qq.com,ssi.bg,netfilter.org,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 473DE59707C
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,qq.com:email]
+X-Rspamd-Queue-Id: 39FD059750B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Yingnan Zhang <342144303@qq.com>
 
-[ Upstream commit d784759c07924280f3c313f205fc48eb62d7cb71 ]
+[ Upstream commit 67bf42cae41d847fd6e5749eb68278ca5d748b25 ]
 
-There is no AMD GPU with the ID 0x66B0, this looks like a typo.
-It should be 0x67B0 which is actually part of the PCI ID list,
-and should use the Hawaii XT powertune defaults according to
-the old radeon driver.
+Currently, IPVS skips MTU checks for GSO packets by excluding them with
+the !skb_is_gso(skb) condition. This creates problems when IPVS tunnel
+mode encapsulates GSO packets with IPIP headers.
 
-Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The issue manifests in two ways:
+
+1. MTU violation after encapsulation:
+   When a GSO packet passes through IPVS tunnel mode, the original MTU
+   check is bypassed. After adding the IPIP tunnel header, the packet
+   size may exceed the outgoing interface MTU, leading to unexpected
+   fragmentation at the IP layer.
+
+2. Fragmentation with problematic IP IDs:
+   When net.ipv4.vs.pmtu_disc=1 and a GSO packet with multiple segments
+   is fragmented after encapsulation, each segment gets a sequentially
+   incremented IP ID (0, 1, 2, ...). This happens because:
+
+   a) The GSO packet bypasses MTU check and gets encapsulated
+   b) At __ip_finish_output, the oversized GSO packet is split into
+      separate SKBs (one per segment), with IP IDs incrementing
+   c) Each SKB is then fragmented again based on the actual MTU
+
+   This sequential IP ID allocation differs from the expected behavior
+   and can cause issues with fragment reassembly and packet tracking.
+
+Fix this by properly validating GSO packets using
+skb_gso_validate_network_len(). This function correctly validates
+whether the GSO segments will fit within the MTU after segmentation. If
+validation fails, send an ICMP Fragmentation Needed message to enable
+proper PMTU discovery.
+
+Fixes: 4cdd34084d53 ("netfilter: nf_conntrack_ipv6: improve fragmentation handling")
+Signed-off-by: Yingnan Zhang <342144303@qq.com>
+Acked-by: Julian Anastasov <ja@ssi.bg>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/ipvs/ip_vs_xmit.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-index fa9ab4144d308..b600a87fbb005 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-@@ -245,7 +245,7 @@ static void ci_initialize_power_tune_defaults(struct pp_hwmgr *hwmgr)
- 		smu_data->power_tune_defaults = &defaults_hawaii_pro;
- 		break;
- 	case 0x67B8:
--	case 0x66B0:
-+	case 0x67B0:
- 		smu_data->power_tune_defaults = &defaults_hawaii_xt;
- 		break;
- 	case 0x6640:
+diff --git a/net/netfilter/ipvs/ip_vs_xmit.c b/net/netfilter/ipvs/ip_vs_xmit.c
+index ecbcdc43263d6..fc254d1f59de9 100644
+--- a/net/netfilter/ipvs/ip_vs_xmit.c
++++ b/net/netfilter/ipvs/ip_vs_xmit.c
+@@ -103,6 +103,18 @@ __ip_vs_dst_check(struct ip_vs_dest *dest)
+ 	return dest_dst;
+ }
+ 
++/* Based on ip_exceeds_mtu(). */
++static bool ip_vs_exceeds_mtu(const struct sk_buff *skb, unsigned int mtu)
++{
++	if (skb->len <= mtu)
++		return false;
++
++	if (skb_is_gso(skb) && skb_gso_validate_network_len(skb, mtu))
++		return false;
++
++	return true;
++}
++
+ static inline bool
+ __mtu_check_toobig_v6(const struct sk_buff *skb, u32 mtu)
+ {
+@@ -112,10 +124,9 @@ __mtu_check_toobig_v6(const struct sk_buff *skb, u32 mtu)
+ 		 */
+ 		if (IP6CB(skb)->frag_max_size > mtu)
+ 			return true; /* largest fragment violate MTU */
+-	}
+-	else if (skb->len > mtu && !skb_is_gso(skb)) {
++	} else if (ip_vs_exceeds_mtu(skb, mtu))
+ 		return true; /* Packet size violate MTU size */
+-	}
++
+ 	return false;
+ }
+ 
+@@ -233,7 +244,7 @@ static inline bool ensure_mtu_is_adequate(struct netns_ipvs *ipvs, int skb_af,
+ 			return true;
+ 
+ 		if (unlikely(ip_hdr(skb)->frag_off & htons(IP_DF) &&
+-			     skb->len > mtu && !skb_is_gso(skb) &&
++			     ip_vs_exceeds_mtu(skb, mtu) &&
+ 			     !ip_vs_iph_icmp(ipvsh))) {
+ 			icmp_send(skb, ICMP_DEST_UNREACH, ICMP_FRAG_NEEDED,
+ 				  htonl(mtu));
 -- 
 2.53.0
 
