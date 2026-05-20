@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-253185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252726-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8DOUC78uDmoK7wUAu9opvQ
-	(envelope-from <stable+bounces-253185-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:59:27 +0200
+	id 2HjSLPIHDmp25gUAu9opvQ
+	(envelope-from <stable+bounces-252726-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:13:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 775BF59B8F4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:59:26 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C13AB597FB6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:13:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A7D4C39781E5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8E9C03028333
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E2B13FC5C7;
-	Wed, 20 May 2026 18:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB3943FBEA2;
+	Wed, 20 May 2026 18:23:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DuFXaZRA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jyP0DqDF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB2D3EEAD8;
-	Wed, 20 May 2026 18:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DCC83FC5DE;
+	Wed, 20 May 2026 18:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302626; cv=none; b=aOjDZM8uNECjnT+gwiphu+T1o/tcssHGDpTR1gxC2i4OdFs8ma7yoPPERqk2hpwv6yxX02mt2EDl+bka2kAsSmVjpMoru3b6XYuDhMalboVkRxkBeqs1atHk/kwbtxqWbAPUevqxMr7Kekt2ePjnvJtNr//bMPHqleG3AzPtvCo=
+	t=1779301429; cv=none; b=RUdmT9O9f6EZAPuT/iM2l01g+ywa8gz8EIUPm9c3eoc9rIV3oLRy8nm0aOmYiM+de5n7dKec8qI8mvR68rSHMnYOLWX/MRsGkraYirvNaQKNGY1y/EFTBhzEf4aPbfVjk8aUBpuZuM8JtETb0IjqhW24UMnEJ9KhMZrgqYkzwf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302626; c=relaxed/simple;
-	bh=wbkyHbAn8jEkVb0SkaSzYI1qP5YdE0A6bEJJbTkdjHA=;
+	s=arc-20240116; t=1779301429; c=relaxed/simple;
+	bh=iHA762wzn1TZvchoo8C4M1ISc5uQvfZuVWRFZEPbmMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T8Jd6VNSr7Y9gDD3nJEvtup+Uk+y/+bs71wW3Gt/QiLLFfWZ5t9Bx8FucRUBk+f5dZJbruLqqE6jMkS5zSemb4A1p2ldjnwqxfsfHI+9IgGlPZuP+x0mDIynNpBUfKrRhkaVFBa4K19Te5vsOVlOBzqbOwu/nUby+KRBNH5tmgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DuFXaZRA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CED31F000E9;
-	Wed, 20 May 2026 18:43:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BYOBQTQ5zDaqFqxYbwmRxZXQR1xjtC2YgET8aSGalO9wJ4eRfS04WUhfkvJkFmtiyyXNV8gGDKE8OipkE8HKUfxGNtcmdzyM06ZA4xQk0GU2WUTzdxzKmCo27MosZwYPJ5l1+ljTI8SBs2DoUQmNlHoIMYyMUwvkS+wXj8YdjJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jyP0DqDF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE2011F000E9;
+	Wed, 20 May 2026 18:23:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302625;
-	bh=/liQMmrt2EGX6nuBMxt3esv25WsfL1w5k/YwzPfYz/g=;
+	s=korg; t=1779301428;
+	bh=4iDeeN8pebZkSWxDxj1qZqYwesE7T121zxY0z34Mk+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DuFXaZRAAbFjtG838meRR1SiCN3XJ75kdGKzDysCGh1gmCQZJ2Z9mGmAzhf37I7c5
-	 v1Pvsxk3ZlCYb51G5Wdn5ANB47+iz1qxq+Uk9dyAQR/g1A9SYEtOxJGBfpwCd64NLJ
-	 FYye5HI2YN4dnWBh+UuA74eGQGfdd4zp6BrQi9eA=
+	b=jyP0DqDFs648MZt4rYDT/GAdfaF+Bb+ozz/5/iXeQm2OYwK+kbtddGS/XXOTq7iCB
+	 MC9PIuurtBee4lbmPz+M34SSSjk/Etjr5+HXjAEYASRGROOtbdOWdTC1OUCF1mE2H0
+	 tHfJ6xZ4FFAFL5RdDIfVKw18x6qq+uMxcdZcRi6I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Breno Leitao <leitao@debian.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 337/508] slip: bound decode() reads against the compressed packet length
-Date: Wed, 20 May 2026 18:22:40 +0200
-Message-ID: <20260520162105.934315719@linuxfoundation.org>
+Subject: [PATCH 6.12 550/666] netpoll: fix IPv6 local-address corruption
+Date: Wed, 20 May 2026 18:22:41 +0200
+Message-ID: <20260520162123.189696282@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,194 +63,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253185-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,redhat.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-252726-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 775BF59B8F4
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: C13AB597FB6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 4c1367a2d7aad643a6f87c6931b13cc1a25e8ca7 ]
+[ Upstream commit 3bc179bc7146c26c9dff75d2943d10528274e301 ]
 
-slhc_uncompress() parses a VJ-compressed TCP header by advancing a
-pointer through the packet via decode() and pull16(). Neither helper
-bounds-checks against isize, and decode() masks its return with
-& 0xffff so it can never return the -1 that callers test for -- those
-error paths are dead code.
+netpoll_setup() decides whether to auto-populate the local source
+address by testing np->local_ip.ip, which only inspects the first 4
+bytes of the union inet_addr storage.
 
-A short compressed frame whose change byte requests optional fields
-lets decode() read past the end of the packet. The over-read bytes
-are folded into the cached cstate and reflected into subsequent
-reconstructed packets.
+For an IPv6 netpoll whose caller-supplied local address has a zero
+high-32 bits (::1, ::<suffix>, IPv4-mapped ::ffff:a.b.c.d, etc.), this
+misdetects the address as unset (which they are not, but the first
+4 bytes are empty), calls netpoll_take_ipv6() and overwrites it with
+whatever matching link-local/global address the device happens to expose
+first.
 
-Make decode() and pull16() take the packet end pointer and return -1
-when exhausted. Add a bounds check before the TCP-checksum read.
-The existing == -1 tests now do what they were always meant to.
+Introduce a helper netpoll_local_ip_unset() that picks the correct
+family-aware test (ipv6_addr_any() for IPv6, !.ip for IPv4) and use it
+from netpoll_setup().
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Simon Horman <horms@kernel.org>
-Closes: https://lore.kernel.org/netdev/20260414134126.758795-2-horms@kernel.org/
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260416100147.531855-5-bestswngs@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reproducer is something like:
+
+  echo "::2" > local_ip
+  echo 1     > enabled
+  cat local_ip
+  # before this fix: 2001:db8::1   (caller-supplied ::2 was clobbered)
+  # after  this fix: ::2
+
+Fixes: b7394d2429c1 ("netpoll: prepare for ipv6")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Link: https://patch.msgid.link/20260424-netpoll_fix-v1-1-3a55348c625f@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/slip/slhc.c | 43 ++++++++++++++++++++++++-----------------
- 1 file changed, 25 insertions(+), 18 deletions(-)
+ net/core/netpoll.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/slip/slhc.c b/drivers/net/slip/slhc.c
-index 3474792a37a67..ef586ab250747 100644
---- a/drivers/net/slip/slhc.c
-+++ b/drivers/net/slip/slhc.c
-@@ -80,9 +80,9 @@
- #include <asm/unaligned.h>
- 
- static unsigned char *encode(unsigned char *cp, unsigned short n);
--static long decode(unsigned char **cpp);
-+static long decode(unsigned char **cpp, const unsigned char *end);
- static unsigned char * put16(unsigned char *cp, unsigned short x);
--static unsigned short pull16(unsigned char **cpp);
-+static long pull16(unsigned char **cpp, const unsigned char *end);
- 
- /* Allocate compression data structure
-  *	slots must be in range 0 to 255 (zero meaning no compression)
-@@ -190,30 +190,34 @@ encode(unsigned char *cp, unsigned short n)
- 	return cp;
+diff --git a/net/core/netpoll.c b/net/core/netpoll.c
+index b5305ff217a8b..b754341db50fe 100644
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -750,6 +750,23 @@ static int netpoll_take_ipv4(struct netpoll *np, struct net_device *ndev)
+ 	return 0;
  }
  
--/* Pull a 16-bit integer in host order from buffer in network byte order */
--static unsigned short
--pull16(unsigned char **cpp)
-+/* Pull a 16-bit integer in host order from buffer in network byte order.
-+ * Returns -1 if the buffer is exhausted, otherwise the 16-bit value.
++/*
++ * Test whether the caller left np->local_ip unset, so that
++ * netpoll_setup() should auto-populate it from the egress device.
++ *
++ * np->local_ip is a union of __be32 (IPv4) and struct in6_addr (IPv6),
++ * so an IPv6 address whose first 4 bytes are zero (e.g. ::1, ::2,
++ * IPv4-mapped ::ffff:a.b.c.d) must not be tested via the IPv4 arm —
++ * doing so would misclassify a caller-supplied address as unset and
++ * silently overwrite it with whatever address the device exposes.
 + */
-+static long
-+pull16(unsigned char **cpp, const unsigned char *end)
++static bool netpoll_local_ip_unset(const struct netpoll *np)
++{
++	if (np->ipv6)
++		return ipv6_addr_any(&np->local_ip.in6);
++	return !np->local_ip.ip;
++}
++
+ int netpoll_setup(struct netpoll *np)
  {
--	short rval;
-+	long rval;
- 
-+	if (*cpp + 2 > end)
-+		return -1;
- 	rval = *(*cpp)++;
- 	rval <<= 8;
- 	rval |= *(*cpp)++;
- 	return rval;
- }
- 
--/* Decode a number */
-+/* Decode a number. Returns -1 if the buffer is exhausted. */
- static long
--decode(unsigned char **cpp)
-+decode(unsigned char **cpp, const unsigned char *end)
- {
- 	int x;
- 
-+	if (*cpp >= end)
-+		return -1;
- 	x = *(*cpp)++;
--	if(x == 0){
--		return pull16(cpp) & 0xffff;	/* pull16 returns -1 on error */
--	} else {
--		return x & 0xff;		/* -1 if PULLCHAR returned error */
--	}
-+	if (x == 0)
-+		return pull16(cpp, end);
-+	return x & 0xff;
- }
- 
- /*
-@@ -499,6 +503,7 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
- 	struct cstate *cs;
- 	int len, hdrlen;
- 	unsigned char *cp = icp;
-+	const unsigned char *end = icp + isize;
- 
- 	/* We've got a compressed packet; read the change byte */
- 	comp->sls_i_compressed++;
-@@ -536,6 +541,8 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
- 	thp = &cs->cs_tcp;
- 	ip = &cs->cs_ip;
- 
-+	if (cp + 2 > end)
-+		goto bad;
- 	thp->check = *(__sum16 *)cp;
- 	cp += 2;
- 
-@@ -566,26 +573,26 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
- 	default:
- 		if(changes & NEW_U){
- 			thp->urg = 1;
--			if((x = decode(&cp)) == -1) {
-+			if((x = decode(&cp, end)) == -1) {
- 				goto bad;
- 			}
- 			thp->urg_ptr = htons(x);
- 		} else
- 			thp->urg = 0;
- 		if(changes & NEW_W){
--			if((x = decode(&cp)) == -1) {
-+			if((x = decode(&cp, end)) == -1) {
- 				goto bad;
- 			}
- 			thp->window = htons( ntohs(thp->window) + x);
- 		}
- 		if(changes & NEW_A){
--			if((x = decode(&cp)) == -1) {
-+			if((x = decode(&cp, end)) == -1) {
- 				goto bad;
- 			}
- 			thp->ack_seq = htonl( ntohl(thp->ack_seq) + x);
- 		}
- 		if(changes & NEW_S){
--			if((x = decode(&cp)) == -1) {
-+			if((x = decode(&cp, end)) == -1) {
- 				goto bad;
- 			}
- 			thp->seq = htonl( ntohl(thp->seq) + x);
-@@ -593,7 +600,7 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
- 		break;
+ 	struct net *net = current->nsproxy->net_ns;
+@@ -793,7 +810,7 @@ int netpoll_setup(struct netpoll *np)
+ 		rtnl_lock();
  	}
- 	if(changes & NEW_I){
--		if((x = decode(&cp)) == -1) {
-+		if((x = decode(&cp, end)) == -1) {
- 			goto bad;
- 		}
- 		ip->id = htons (ntohs (ip->id) + x);
+ 
+-	if (!np->local_ip.ip) {
++	if (netpoll_local_ip_unset(np)) {
+ 		if (!np->ipv6) {
+ 			err = netpoll_take_ipv4(np, ndev);
+ 			if (err)
 -- 
 2.53.0
 
