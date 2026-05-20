@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-252006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252640-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4IDfHvr4DWqq5AUAu9opvQ
-	(envelope-from <stable+bounces-252006-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:10:02 +0200
+	id cBDyBb38DWok5QUAu9opvQ
+	(envelope-from <stable+bounces-252640-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B372595707
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:10:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7E28596217
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C1B11313BBE8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:51:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A99D230DA666
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:20:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A7723F23CC;
-	Wed, 20 May 2026 17:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B65573F23C5;
+	Wed, 20 May 2026 18:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pTtRrNZ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J6m9cDcL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39663F1AD9;
-	Wed, 20 May 2026 17:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF533BE64B;
+	Wed, 20 May 2026 18:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299499; cv=none; b=QZPMINvtzhR6mTzWxK6YJRPwpUSr123YWR0mby9swfd/jCHU6ISc/YKFTuwhZd4ljIGoGpoiZuLds4BG/NYSWmLBkeCzWXI4fIqF0/5C73US+PfIWYoV129Auplp7rgv0NQy0Dz34IMDsWzXWSFnnAAqCBEjU+il1t844j1yJoM=
+	t=1779301205; cv=none; b=rnHbyvIQthz5aBF5hUWgsv5jVPHY+FWncXlnQaxRJTICAmI70AaqyHAkt8KY0C3NfTcAj2QtDlgPM3hP5ewzj8s+QEeQ1w4rS8Hh+PXyNkNmht0cUWjOkNaNIwe7f6fdo75gtDjGLux+scV3Oz/Neaz9e0sJO2Uu3Y2maPTpWiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299499; c=relaxed/simple;
-	bh=TIRj1GifDqPGPNtWQT3DbuWrZ+zzbaB2LqYVv8cgrGs=;
+	s=arc-20240116; t=1779301205; c=relaxed/simple;
+	bh=xLlLhVIuq9/gqK3NDX2MxxYu4IUS6t6SHxA/zWD9X1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jMxtZvi4BWt/ncMQ9dAS81VkrnkxupvYvj0/At7euefpOCqyf8ov96UDDDPuLPZIx5N49j81T4iJFdjf8ge+BLas62JK0OH1NtDv2/PUkAK9YTHDx5NWWw5w4xiymAxpGnkHDClr5Ewt2m7gobBBT/827s12RrtGiA06ip9CK54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pTtRrNZ8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65CF61F000E9;
-	Wed, 20 May 2026 17:51:37 +0000 (UTC)
+	 MIME-Version; b=gQXqomcOirmOOmimAMEzrisCt2HyzR4DG5keaC8m46OOFdqPED/sWqC4SIEJDaTTnMSR63c6qyUe+Mn49Gh4EtBiDXA1HUk7RS51LiVnkkTWM8GSFzvzz4tGrkxzvlLpU7JSExay9go3Ur2dGgjuiBMy/Sag6SmCAn//+5bCosU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J6m9cDcL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E52731F000E9;
+	Wed, 20 May 2026 18:20:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299497;
-	bh=ygzInL6wOqXBZFQQl5oXWSEs65cTNxnHAOb0QMQJ6fs=;
+	s=korg; t=1779301204;
+	bh=eNJviFvtODDaIDmER1M2mazwKWG6v4JyZdmdyuL2T/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pTtRrNZ8qw97fKuIgMmDbgTQjIDdRY2q6S1oe7llu2pn5QL8W+crSLJZcboEUY8zv
-	 p808PVOHF2TR/xcmZM+ZCHu7RVe3mBzPAgpAhIBp7kzLgfhgz8mMJLHta1yxblJ+Di
-	 An1+sJODMzFldFSCTh1bbxqA2UfIY5WiwedPLPdo=
+	b=J6m9cDcLINhmGNT74Ft83FgKX6COGQAUWZW4XJAk7L1r6dUCMnV3+hRYjPDqxdvxr
+	 /tfP3JPIXwfWD/nZ6HisEl4uohJCUbBxQ//XKp1gKYXko2GiprHGOUQrFyXT6Xb0DW
+	 3BVWL26RGnZnUwRH6CK6X14rrmhNhYGZtr5AYMU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Yue <glass.su@suse.com>,
-	Yu Kuai <yukuai@fnnas.com>,
+	Prathamesh Deshpande <prathameshdeshpande7@gmail.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 793/957] md: factor bitmap creation away from sysfs handling
+Subject: [PATCH 6.12 465/666] net/mlx5: Fix HCA caps leak on notifier init failure
 Date: Wed, 20 May 2026 18:21:16 +0200
-Message-ID: <20260520162151.761963310@linuxfoundation.org>
+Message-ID: <20260520162121.347627300@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,205 +70,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-252640-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252006-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,fnnas.com:email,suse.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 2B372595707
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nvidia.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: A7E28596217
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai@fnnas.com>
+From: Prathamesh Deshpande <prathameshdeshpande7@gmail.com>
 
-[ Upstream commit 8776d342cf8fa0b98ca5e6fb2d956966fb5ca364 ]
+[ Upstream commit d03fc81a57956248383efec99967d0ae627390a8 ]
 
-Factor bitmap creation and destruction into helpers that do not touch
-bitmap sysfs registration.
+mlx5_mdev_init() allocates HCA caps via mlx5_hca_caps_alloc() before
+calling mlx5_notifiers_init(). If notifier initialization fails, the
+error path jumps to err_hca_caps and skips mlx5_hca_caps_free(), leaking
+allocated caps.
 
-This prepares the bitmap sysfs rework so callers such as the sysfs
-bitmap location path can create or destroy a bitmap backend without
-coupling that to sysfs group lifetime management.
+Add a dedicated unwind label for notifier-init failure that frees HCA
+caps before continuing the existing cleanup sequence.
 
-Reviewed-by: Su Yue <glass.su@suse.com>
-Link: https://lore.kernel.org/r/20260425024615.1696892-2-yukuai@fnnas.com
-Signed-off-by: Yu Kuai <yukuai@fnnas.com>
-Stable-dep-of: f2926a533d03 ("md/md-bitmap: add a none backend for bitmap grow")
+Fixes: b6b03097f982 ("net/mlx5: Initialize events outside devlink lock")
+Signed-off-by: Prathamesh Deshpande <prathameshdeshpande7@gmail.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260415005022.34764-1-prathameshdeshpande7@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c | 78 +++++++++++++++++++++++++++++++------------------
- 1 file changed, 49 insertions(+), 29 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 4520c485c0c06..3061370e959b3 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -686,7 +686,25 @@ static void active_io_release(struct percpu_ref *ref)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+index 8856949fbe6a4..4d8295249c427 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+@@ -1885,7 +1885,7 @@ int mlx5_mdev_init(struct mlx5_core_dev *dev, int profile_idx)
  
- static void no_op(struct percpu_ref *r) {}
+ 	err = mlx5_notifiers_init(dev);
+ 	if (err)
+-		goto err_hca_caps;
++		goto err_notifiers_init;
  
--static bool mddev_set_bitmap_ops(struct mddev *mddev)
-+static void md_bitmap_sysfs_add(struct mddev *mddev)
-+{
-+	if (sysfs_create_group(&mddev->kobj, mddev->bitmap_ops->group))
-+		pr_warn("md: cannot register extra bitmap attributes for %s\n",
-+			mdname(mddev));
-+	else
-+		/*
-+		 * Inform user with KOBJ_CHANGE about new bitmap
-+		 * attributes.
-+		 */
-+		kobject_uevent(&mddev->kobj, KOBJ_CHANGE);
-+}
-+
-+static void md_bitmap_sysfs_del(struct mddev *mddev)
-+{
-+	sysfs_remove_group(&mddev->kobj, mddev->bitmap_ops->group);
-+}
-+
-+static bool mddev_set_bitmap_ops_nosysfs(struct mddev *mddev)
- {
- 	struct bitmap_operations *old = mddev->bitmap_ops;
- 	struct md_submodule_head *head;
-@@ -710,18 +728,6 @@ static bool mddev_set_bitmap_ops(struct mddev *mddev)
+ 	/* The conjunction of sw_vhca_id with sw_owner_id will be a global
+ 	 * unique id per function which uses mlx5_core.
+@@ -1901,6 +1901,8 @@ int mlx5_mdev_init(struct mlx5_core_dev *dev, int profile_idx)
  
- 	mddev->bitmap_ops = (void *)head;
- 	xa_unlock(&md_submodule);
--
--	if (!mddev_is_dm(mddev) && mddev->bitmap_ops->group) {
--		if (sysfs_create_group(&mddev->kobj, mddev->bitmap_ops->group))
--			pr_warn("md: cannot register extra bitmap attributes for %s\n",
--				mdname(mddev));
--		else
--			/*
--			 * Inform user with KOBJ_CHANGE about new bitmap
--			 * attributes.
--			 */
--			kobject_uevent(&mddev->kobj, KOBJ_CHANGE);
--	}
- 	return true;
+ 	return 0;
  
- err:
-@@ -729,15 +735,6 @@ static bool mddev_set_bitmap_ops(struct mddev *mddev)
- 	return false;
- }
- 
--static void mddev_clear_bitmap_ops(struct mddev *mddev)
--{
--	if (!mddev_is_dm(mddev) && mddev->bitmap_ops &&
--	    mddev->bitmap_ops->group)
--		sysfs_remove_group(&mddev->kobj, mddev->bitmap_ops->group);
--
--	mddev->bitmap_ops = NULL;
--}
--
- int mddev_init(struct mddev *mddev)
- {
- 	int err = 0;
-@@ -6404,7 +6401,7 @@ static enum md_submodule_id md_bitmap_get_id_from_sb(struct mddev *mddev)
- 	return id;
- }
- 
--static int md_bitmap_create(struct mddev *mddev)
-+static int md_bitmap_create_nosysfs(struct mddev *mddev)
- {
- 	enum md_submodule_id orig_id = mddev->bitmap_id;
- 	enum md_submodule_id sb_id;
-@@ -6413,7 +6410,7 @@ static int md_bitmap_create(struct mddev *mddev)
- 	if (mddev->bitmap_id == ID_BITMAP_NONE)
- 		return -EINVAL;
- 
--	if (!mddev_set_bitmap_ops(mddev))
-+	if (!mddev_set_bitmap_ops_nosysfs(mddev))
- 		return -ENOENT;
- 
- 	err = mddev->bitmap_ops->create(mddev);
-@@ -6425,7 +6422,7 @@ static int md_bitmap_create(struct mddev *mddev)
- 	 * doesn't match, and mdadm is not the latest version to set
- 	 * bitmap_type, set bitmap_ops based on the disk version.
- 	 */
--	mddev_clear_bitmap_ops(mddev);
-+	mddev->bitmap_ops = NULL;
- 
- 	sb_id = md_bitmap_get_id_from_sb(mddev);
- 	if (sb_id == ID_BITMAP_NONE || sb_id == orig_id)
-@@ -6435,27 +6432,50 @@ static int md_bitmap_create(struct mddev *mddev)
- 		mdname(mddev), orig_id, sb_id);
- 
- 	mddev->bitmap_id = sb_id;
--	if (!mddev_set_bitmap_ops(mddev)) {
-+	if (!mddev_set_bitmap_ops_nosysfs(mddev)) {
- 		mddev->bitmap_id = orig_id;
- 		return -ENOENT;
- 	}
- 
- 	err = mddev->bitmap_ops->create(mddev);
- 	if (err) {
--		mddev_clear_bitmap_ops(mddev);
-+		mddev->bitmap_ops = NULL;
- 		mddev->bitmap_id = orig_id;
- 	}
- 
- 	return err;
- }
- 
--static void md_bitmap_destroy(struct mddev *mddev)
-+static int md_bitmap_create(struct mddev *mddev)
-+{
-+	int err;
-+
-+	err = md_bitmap_create_nosysfs(mddev);
-+	if (err)
-+		return err;
-+
-+	if (!mddev_is_dm(mddev) && mddev->bitmap_ops->group)
-+		md_bitmap_sysfs_add(mddev);
-+
-+	return 0;
-+}
-+
-+static void md_bitmap_destroy_nosysfs(struct mddev *mddev)
- {
- 	if (!md_bitmap_registered(mddev))
- 		return;
- 
- 	mddev->bitmap_ops->destroy(mddev);
--	mddev_clear_bitmap_ops(mddev);
-+	mddev->bitmap_ops = NULL;
-+}
-+
-+static void md_bitmap_destroy(struct mddev *mddev)
-+{
-+	if (!mddev_is_dm(mddev) && mddev->bitmap_ops &&
-+	    mddev->bitmap_ops->group)
-+		md_bitmap_sysfs_del(mddev);
-+
-+	md_bitmap_destroy_nosysfs(mddev);
- }
- 
- int md_run(struct mddev *mddev)
++err_notifiers_init:
++	mlx5_hca_caps_free(dev);
+ err_hca_caps:
+ 	mlx5_adev_cleanup(dev);
+ err_adev_init:
 -- 
 2.53.0
 
