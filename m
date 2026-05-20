@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-253110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251091-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6JBtHpANDmo35wUAu9opvQ
-	(envelope-from <stable+bounces-253110-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:37:52 +0200
+	id AC0HCLv6DWrt5AUAu9opvQ
+	(envelope-from <stable+bounces-251091-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:17:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A72F2598839
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:37:51 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E3D4595B97
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:17:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2889C3117EE2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C6AB631741B2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:11:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF9BF402422;
-	Wed, 20 May 2026 18:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF2EA3D6CB7;
+	Wed, 20 May 2026 17:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qop/pQPA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VQWbEVWb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D8A3FE352;
-	Wed, 20 May 2026 18:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C943C6A5C;
+	Wed, 20 May 2026 17:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302431; cv=none; b=gGiSf6xPDmiLvMIZ3MVwmY+PEN8fXSOTwsQCXMZHUOsrqsSEyJhE4ypkDbDCbq48L4kv12cTMbmgyYIdRS3Fyy38gwK9fy/EURDLWb3WyLNcAHmaEZGgsswfZH8oKcb75k6TSsU9NSPZ7mXq8v8kA7zO+BnXAxEHnXx+541S9Hw=
+	t=1779297076; cv=none; b=hJ1U87NLHvNfCBTkQzF1Zy5pbPzBe9a2vT+H9EWUalsCv5iDww5B6PIFTYYWpEEnpDi1zkdQWtJIQ4v4RM5oD7ksYPdx0I+8ZZMnLtD7G9OzgTHUOo5BmjjKHIi/8xnMgCwSrRgksQkX/jBfuRfyp/X1Ao3TfUtFa/6pWROfnCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302431; c=relaxed/simple;
-	bh=looRX9ufzxudajCiSRlU7v3pAqsrpHFPWV9yD+rnwXw=;
+	s=arc-20240116; t=1779297076; c=relaxed/simple;
+	bh=QiuSIJks/im+KylqlSpOG7k6W1V75uJlUQcd47aAWZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gXSKGnZdmPwxlQGtXHaNrOh0bN9CxGggZNZGzxrk8z9YeYuDf51pKWBoZlVWe22avQor//NHqckQNOepO43/C6GHvryNp2pB8LxPC0IgqaDpXRgAr6BvLKE+pPaGIFnWTE66Fmpr1himGEh2/SCRBXuaTCcwFKTa7/nfVTEG50Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qop/pQPA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C26DD1F000E9;
-	Wed, 20 May 2026 18:40:29 +0000 (UTC)
+	 MIME-Version; b=kiL95TSL7flsVOSxI/AooVJmIYoVETYnC3G3NPeXqQePwouflxOMIasXGOD9fmNdxhRccTtUqJ6j2lthQGwMr0hO/ILzEB8PBA0xWggybDny40CogkiV2JmCmquB50axH8etIg2xxyQcvOVZxRDu9PNRw7tLFwNEIzo+C+pl0Jo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VQWbEVWb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD331F000E9;
+	Wed, 20 May 2026 17:11:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302430;
-	bh=H1/FjnwBYEo/ZFjC27HkZgwLtFOpSEFnOMP2TUieAQc=;
+	s=korg; t=1779297075;
+	bh=Vztf8gTI/72N3pxenzds5pQ/H3nshz49csVWVPLeGq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qop/pQPAiocYFuuhy89zLRFG/kAdJKPEm5bttAlt/QNQf7msDBtl7YMojmvYazDcG
-	 uh0+4sfxkPyatlCW73pG0oskkX+p8LApirbh8pyJFfCzIqFAVZw6xfaj/aOlhy0qPz
-	 VffVmLyHCpfkdrFXvX1tKhjEWFT8wn7ipRF2EMPQ=
+	b=VQWbEVWbmwXQerfqQKbVYv1pfovokyweKAdtGi3Vi4tUT+fP7lSwz++glgc3/IrdH
+	 An3oiBpmogoWJ4Rwtp7ZwYxQJsuZvAdC6dBzjSXAvbO+P08pMWLPfGniKGqJYMCHlN
+	 YFEft6qCcSHU4+RTh/gFsBhdAZRk4V7k78b8rGk8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 265/508] platform/x86: panasonic-laptop: Fix OPTD notifier registration and cleanup
-Date: Wed, 20 May 2026 18:21:28 +0200
-Message-ID: <20260520162104.387515655@linuxfoundation.org>
+Subject: [PATCH 7.0 1039/1146] net/sched: sch_pie: annotate more data-races in pie_dump_stats()
+Date: Wed, 20 May 2026 18:21:29 +0200
+Message-ID: <20260520162211.744641532@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +63,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253110-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251091-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: A72F2598839
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 2E3D4595B97
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 8baeff2c1d33dad8572216c6ad3a7425852507d4 ]
+[ Upstream commit 6d4106e8df94c0c52cf3ca6a6a0d01567fb3844e ]
 
-An ACPI notify handler is leaked if device_create_file() returns an
-error in acpi_pcc_hotkey_add().
+My prior patch missed few READ_ONCE()/WRITE_ONCE() annotations.
 
-Also, it is pointless to call pcc_unregister_optd_notifier() in
-acpi_pcc_hotkey_remove() if pcc->platform is NULL and it is better
-to arrange the cleanup code in that function in the same order as
-the rollback code in acpi_pcc_hotkey_add().
-
-Address the above by placing the pcc_register_optd_notifier() call in
-acpi_pcc_hotkey_add() after the device_create_file() return value
-check and placing the pcc_unregister_optd_notifier() call in
-acpi_pcc_hotkey_remove() right before the device_remove_file() call.
-
-Fixes: d5a81d8e864b ("platform/x86: panasonic-laptop: Add support for optical driver power in Y and W series")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/2411055.ElGaqSPkdT@rafael.j.wysocki
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: 5154561d9b11 ("net/sched: sch_pie: annotate data-races in pie_dump_stats()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260430080056.35104-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/panasonic-laptop.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/sched/sch_pie.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/platform/x86/panasonic-laptop.c b/drivers/platform/x86/panasonic-laptop.c
-index ad907c558997a..f6dcf8d6a1dbb 100644
---- a/drivers/platform/x86/panasonic-laptop.c
-+++ b/drivers/platform/x86/panasonic-laptop.c
-@@ -1081,9 +1081,10 @@ static int acpi_pcc_hotkey_add(struct acpi_device *device)
- 		}
- 		result = device_create_file(&pcc->platform->dev,
- 			&dev_attr_cdpower);
--		pcc_register_optd_notifier(pcc, "\\_SB.PCI0.EHCI.ERHB.OPTD");
- 		if (result)
- 			goto out_platform;
-+
-+		pcc_register_optd_notifier(pcc, "\\_SB.PCI0.EHCI.ERHB.OPTD");
- 	} else {
- 		pcc->platform = NULL;
- 	}
-@@ -1117,10 +1118,10 @@ static void acpi_pcc_hotkey_remove(struct acpi_device *device)
- 	i8042_remove_filter(panasonic_i8042_filter);
+diff --git a/net/sched/sch_pie.c b/net/sched/sch_pie.c
+index 73650200482f4..40149edecbd5a 100644
+--- a/net/sched/sch_pie.c
++++ b/net/sched/sch_pie.c
+@@ -219,16 +219,14 @@ void pie_process_dequeue(struct sk_buff *skb, struct pie_params *params,
+ 	 * packet timestamp.
+ 	 */
+ 	if (!params->dq_rate_estimator) {
+-		vars->qdelay = now - pie_get_enqueue_time(skb);
++		WRITE_ONCE(vars->qdelay,
++			   backlog ? now - pie_get_enqueue_time(skb) : 0);
  
- 	if (pcc->platform) {
-+		pcc_unregister_optd_notifier(pcc, "\\_SB.PCI0.EHCI.ERHB.OPTD");
- 		device_remove_file(&pcc->platform->dev, &dev_attr_cdpower);
- 		platform_device_unregister(pcc->platform);
- 	}
--	pcc_unregister_optd_notifier(pcc, "\\_SB.PCI0.EHCI.ERHB.OPTD");
+ 		if (vars->dq_tstamp != DTIME_INVALID)
+ 			dtime = now - vars->dq_tstamp;
  
- 	sysfs_remove_group(&device->dev.kobj, &pcc_attr_group);
+ 		vars->dq_tstamp = now;
  
+-		if (backlog == 0)
+-			vars->qdelay = 0;
+-
+ 		if (dtime == 0)
+ 			return;
+ 
+@@ -376,7 +374,7 @@ void pie_calculate_probability(struct pie_params *params, struct pie_vars *vars,
+ 	if (qdelay > (PSCHED_NS2TICKS(250 * NSEC_PER_MSEC)))
+ 		delta += MAX_PROB / (100 / 2);
+ 
+-	vars->prob += delta;
++	WRITE_ONCE(vars->prob, vars->prob + delta);
+ 
+ 	if (delta > 0) {
+ 		/* prevent overflow */
+@@ -401,7 +399,7 @@ void pie_calculate_probability(struct pie_params *params, struct pie_vars *vars,
+ 
+ 	if (qdelay == 0 && qdelay_old == 0 && update_prob)
+ 		/* Reduce drop probability to 98.4% */
+-		vars->prob -= vars->prob / 64;
++		WRITE_ONCE(vars->prob, vars->prob - vars->prob / 64);
+ 
+ 	WRITE_ONCE(vars->qdelay, qdelay);
+ 	vars->backlog_old = backlog;
+@@ -501,7 +499,7 @@ static int pie_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ {
+ 	struct pie_sched_data *q = qdisc_priv(sch);
+ 	struct tc_pie_xstats st = {
+-		.prob		= q->vars.prob << BITS_PER_BYTE,
++		.prob		= READ_ONCE(q->vars.prob) << BITS_PER_BYTE,
+ 		.delay		= ((u32)PSCHED_TICKS2NS(READ_ONCE(q->vars.qdelay))) /
+ 				   NSEC_PER_USEC,
+ 		.packets_in	= READ_ONCE(q->stats.packets_in),
+@@ -512,7 +510,7 @@ static int pie_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ 	};
+ 
+ 	/* avg_dq_rate is only valid if dq_rate_estimator is enabled */
+-	st.dq_rate_estimating = q->params.dq_rate_estimator;
++	st.dq_rate_estimating = READ_ONCE(q->params.dq_rate_estimator);
+ 
+ 	/* unscale and return dq_rate in bytes per sec */
+ 	if (st.dq_rate_estimating)
 -- 
 2.53.0
 
