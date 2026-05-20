@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-250374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250334-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cOp+NdLuDWpb4wUAu9opvQ
-	(envelope-from <stable+bounces-250374-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:26:42 +0200
+	id wK48E+sODmrB5wUAu9opvQ
+	(envelope-from <stable+bounces-250334-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:43:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D61A3593ADF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:26:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACABF598A7A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:43:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A879A311337C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:42:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2D45934BEBB0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:39:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 728F33F58C5;
-	Wed, 20 May 2026 16:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DDED33ADB9;
+	Wed, 20 May 2026 16:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jNrz8kZp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NpSZB32y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5CC83F23D9;
-	Wed, 20 May 2026 16:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B15372EF6;
+	Wed, 20 May 2026 16:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295247; cv=none; b=tIUqhHMTV1mjeJr3nmZynGrdVVy4wg+WLJmlx6HerB6Su8KeErfSoGFEBEttsKl5ZIfw/kKpv495OKmPUjwFYdHw9v4fHDWn0njRJ+ac8bijd9l+EXIw6di5HMnb/eUbFLTsmaBezGUCKxHfxBQo7a8ZJunQj8Bbp5/jwKEWiOs=
+	t=1779295143; cv=none; b=er3xWDRNQns5v8/oI84gQzTzpZ31lDnZKOeNj+ewnDCZu5+djEu6jlcARv6hX0SkJ+5vCWtnGihRIsG5rOhlfPl8rfMIdMWey/wCxSqtv697vRj8tYWGw9MjUkUsT5Zhe/zOfEXW4hYkh6RxycqAO40SQ9e3FIsGuBiaCOM4i80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295247; c=relaxed/simple;
-	bh=tolPyuDMUUwxPRw6na+FFrmWlLdolsiK+Ee3F+awOTk=;
+	s=arc-20240116; t=1779295143; c=relaxed/simple;
+	bh=RdALTD1Q1/JvJkOPh7HYwrrgd2fdJiFkUokrEJ8jKfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iILgTIz59PbdLo37/Qc0ZtcRXD3G4JS669Se0xEOjWF8zUvm/U572k/Y7HbA9gbkG8A0UUe8/h2eyR3q2sjp/1kJGH0gF8OogyCUvX7i2QIdlvD23Opcxdyf357oa4fOXquZ279LgBbQRzhJUhJOOU0m5MQM9xkPrecbXlYO7Mw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jNrz8kZp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 084381F000E9;
-	Wed, 20 May 2026 16:40:44 +0000 (UTC)
+	 MIME-Version; b=uRO38XQi4QpWZC19u359tEr33Fg390tLPODk5UCu94lXn5HJNAEhyV4PPIGkP5KgQyjRWvuOUyPkV02q4D2RGRdR0Q5k8z+BoeymqUdDO7j3EJK7GyaVPHg4/7tgj+GFeQLYnzaOAMqwj5szndvCEirPJzXxsI0D+wfRHeYqfMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NpSZB32y; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A64361F00893;
+	Wed, 20 May 2026 16:38:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295245;
-	bh=zKmBitMb+wQnlT4Jsg6YNyzwQ5xgOn7NbvyQ2RtC+Bc=;
+	s=korg; t=1779295140;
+	bh=oqIZZx3aiqx7KkwJohd2l1tMlTKsDy7u2A4lo4VnZeg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jNrz8kZplcWWVCTSRvv7lwl88LkTBx14smKsqzE+rpU0xm0P3liqiRtQ2ZzrPkpAu
-	 gHuJYLwNSPm4MrkSaVnW9F1MSJnCmQUW5cLPJxz8r9QCy6PIxSztGa2rd0lDio0gym
-	 1oxWRZIuNBdlCZEVT3rAFwnKjOo3KXFpJhAyA9Ms=
+	b=NpSZB32ynUFqfzPX9B21phDzRLCM0ekGqzQjkg1LP8r0YtGc7jQI/fFqLHqGupSh/
+	 /ZCRXzM6zfhccXXTuybxRZhtsUUGry5qfN3pF2d49OIGGvkHNxU7QQZujHIQGCCsL6
+	 yrXq4jsS+4bZsGOfdHRVxOgMOBZ9x/8qy+QMLPn0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuyi Zhou <zhouchuyi@bytedance.com>,
+	syzbot+123e1b70473ce213f3af@syzkaller.appspotmail.com,
 	Daniel Jordan <daniel.m.jordan@oracle.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0306/1146] padata: Remove cpu online check from cpu add and removal
-Date: Wed, 20 May 2026 18:09:16 +0200
-Message-ID: <20260520162155.131801673@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>
+Subject: [PATCH 7.0 0307/1146] padata: Put CPU offline callback in ONLINE section to allow failure
+Date: Wed, 20 May 2026 18:09:17 +0200
+Message-ID: <20260520162155.153760392@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -65,34 +66,36 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250374-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-250334-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,bytedance.com:email,oracle.com:email,apana.org.au:email]
-X-Rspamd-Queue-Id: D61A3593ADF
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,123e1b70473ce213f3af];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,apana.org.au:email,appspotmail.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oracle.com:email]
+X-Rspamd-Queue-Id: ACABF598A7A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,77 +103,369 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Chuyi Zhou <zhouchuyi@bytedance.com>
+From: Daniel Jordan <daniel.m.jordan@oracle.com>
 
-[ Upstream commit 73117ea6470dca787f70f33c001f9faf437a1c0b ]
+[ Upstream commit c8c4a2972f83c8b68ff03b43cecdb898939ff851 ]
 
-During the CPU offline process, the dying CPU is cleared from the
-cpu_online_mask in takedown_cpu(). After this step, various CPUHP_*_DEAD
-callbacks are executed to perform cleanup jobs for the dead CPU, so this
-cpu online check in padata_cpu_dead() is unnecessary.
+syzbot reported the following warning:
 
-Similarly, when executing padata_cpu_online() during the
-CPUHP_AP_ONLINE_DYN phase, the CPU has already been set in the
-cpu_online_mask, the action even occurs earlier than the
-CPUHP_AP_ONLINE_IDLE stage.
+    DEAD callback error for CPU1
+    WARNING: kernel/cpu.c:1463 at _cpu_down+0x759/0x1020 kernel/cpu.c:1463, CPU#0: syz.0.1960/14614
 
-Remove this unnecessary cpu online check in __padata_add_cpu() and
-__padata_remove_cpu().
+at commit 4ae12d8bd9a8 ("Merge tag 'kbuild-fixes-7.0-2' of git://git.kernel.org/pub/scm/linux/kernel/git/kbuild/linux")
+which tglx traced to padata_cpu_dead() given it's the only
+sub-CPUHP_TEARDOWN_CPU callback that returns an error.
 
-Signed-off-by: Chuyi Zhou <zhouchuyi@bytedance.com>
-Acked-by: Daniel Jordan <daniel.m.jordan@oracle.com>
+Failure isn't allowed in hotplug states before CPUHP_TEARDOWN_CPU
+so move the CPU offline callback to the ONLINE section where failure is
+possible.
+
+Fixes: 894c9ef9780c ("padata: validate cpumask without removed CPU during offline")
+Reported-by: syzbot+123e1b70473ce213f3af@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/69af0a05.050a0220.310d8.002f.GAE@google.com/
+Debugged-by: Thomas Gleixner <tglx@kernel.org>
+Signed-off-by: Daniel Jordan <daniel.m.jordan@oracle.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: c8c4a2972f83 ("padata: Put CPU offline callback in ONLINE section to allow failure")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/padata.c | 26 ++++++++------------------
- 1 file changed, 8 insertions(+), 18 deletions(-)
+ include/linux/cpuhotplug.h |   1 -
+ include/linux/padata.h     |   8 +--
+ kernel/padata.c            | 120 +++++++++++++++++++------------------
+ 3 files changed, 65 insertions(+), 64 deletions(-)
 
+diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
+index 62cd7b35a29c9..22ba327ec2278 100644
+--- a/include/linux/cpuhotplug.h
++++ b/include/linux/cpuhotplug.h
+@@ -92,7 +92,6 @@ enum cpuhp_state {
+ 	CPUHP_NET_DEV_DEAD,
+ 	CPUHP_IOMMU_IOVA_DEAD,
+ 	CPUHP_AP_ARM_CACHE_B15_RAC_DEAD,
+-	CPUHP_PADATA_DEAD,
+ 	CPUHP_AP_DTPM_CPU_DEAD,
+ 	CPUHP_RANDOM_PREPARE,
+ 	CPUHP_WORKQUEUE_PREP,
+diff --git a/include/linux/padata.h b/include/linux/padata.h
+index 765f2778e264a..b6232bea6edf5 100644
+--- a/include/linux/padata.h
++++ b/include/linux/padata.h
+@@ -149,23 +149,23 @@ struct padata_mt_job {
+ /**
+  * struct padata_instance - The overall control structure.
+  *
+- * @cpu_online_node: Linkage for CPU online callback.
+- * @cpu_dead_node: Linkage for CPU offline callback.
++ * @cpuhp_node: Linkage for CPU hotplug callbacks.
+  * @parallel_wq: The workqueue used for parallel work.
+  * @serial_wq: The workqueue used for serial work.
+  * @pslist: List of padata_shell objects attached to this instance.
+  * @cpumask: User supplied cpumasks for parallel and serial works.
++ * @validate_cpumask: Internal cpumask used to validate @cpumask during hotplug.
+  * @kobj: padata instance kernel object.
+  * @lock: padata instance lock.
+  * @flags: padata flags.
+  */
+ struct padata_instance {
+-	struct hlist_node		cpu_online_node;
+-	struct hlist_node		cpu_dead_node;
++	struct hlist_node		cpuhp_node;
+ 	struct workqueue_struct		*parallel_wq;
+ 	struct workqueue_struct		*serial_wq;
+ 	struct list_head		pslist;
+ 	struct padata_cpumask		cpumask;
++	cpumask_var_t			validate_cpumask;
+ 	struct kobject                   kobj;
+ 	struct mutex			 lock;
+ 	u8				 flags;
 diff --git a/kernel/padata.c b/kernel/padata.c
-index 8657e6e0c224a..9e7cfa5ed55bc 100644
+index 9e7cfa5ed55bc..0d3ea1b68b1f7 100644
 --- a/kernel/padata.c
 +++ b/kernel/padata.c
-@@ -732,32 +732,22 @@ EXPORT_SYMBOL(padata_set_cpumask);
- 
- static int __padata_add_cpu(struct padata_instance *pinst, int cpu)
- {
--	int err = 0;
--
--	if (cpumask_test_cpu(cpu, cpu_online_mask)) {
--		err = padata_replace(pinst);
-+	int err = padata_replace(pinst);
- 
--		if (padata_validate_cpumask(pinst, pinst->cpumask.pcpu) &&
--		    padata_validate_cpumask(pinst, pinst->cpumask.cbcpu))
--			__padata_start(pinst);
--	}
-+	if (padata_validate_cpumask(pinst, pinst->cpumask.pcpu) &&
-+	    padata_validate_cpumask(pinst, pinst->cpumask.cbcpu))
-+		__padata_start(pinst);
- 
- 	return err;
+@@ -535,7 +535,8 @@ static void padata_init_reorder_list(struct parallel_data *pd)
  }
  
- static int __padata_remove_cpu(struct padata_instance *pinst, int cpu)
+ /* Allocate and initialize the internal cpumask dependend resources. */
+-static struct parallel_data *padata_alloc_pd(struct padata_shell *ps)
++static struct parallel_data *padata_alloc_pd(struct padata_shell *ps,
++					     int offlining_cpu)
  {
--	int err = 0;
--
--	if (!cpumask_test_cpu(cpu, cpu_online_mask)) {
--		if (!padata_validate_cpumask(pinst, pinst->cpumask.pcpu) ||
--		    !padata_validate_cpumask(pinst, pinst->cpumask.cbcpu))
--			__padata_stop(pinst);
--
--		err = padata_replace(pinst);
--	}
-+	if (!padata_validate_cpumask(pinst, pinst->cpumask.pcpu) ||
-+	    !padata_validate_cpumask(pinst, pinst->cpumask.cbcpu))
-+		__padata_stop(pinst);
+ 	struct padata_instance *pinst = ps->pinst;
+ 	struct parallel_data *pd;
+@@ -561,6 +562,10 @@ static struct parallel_data *padata_alloc_pd(struct padata_shell *ps)
  
+ 	cpumask_and(pd->cpumask.pcpu, pinst->cpumask.pcpu, cpu_online_mask);
+ 	cpumask_and(pd->cpumask.cbcpu, pinst->cpumask.cbcpu, cpu_online_mask);
++	if (offlining_cpu >= 0) {
++		__cpumask_clear_cpu(offlining_cpu, pd->cpumask.pcpu);
++		__cpumask_clear_cpu(offlining_cpu, pd->cpumask.cbcpu);
++	}
+ 
+ 	padata_init_reorder_list(pd);
+ 	padata_init_squeues(pd);
+@@ -607,11 +612,11 @@ static void __padata_stop(struct padata_instance *pinst)
+ }
+ 
+ /* Replace the internal control structure with a new one. */
+-static int padata_replace_one(struct padata_shell *ps)
++static int padata_replace_one(struct padata_shell *ps, int offlining_cpu)
+ {
+ 	struct parallel_data *pd_new;
+ 
+-	pd_new = padata_alloc_pd(ps);
++	pd_new = padata_alloc_pd(ps, offlining_cpu);
+ 	if (!pd_new)
+ 		return -ENOMEM;
+ 
+@@ -621,7 +626,7 @@ static int padata_replace_one(struct padata_shell *ps)
+ 	return 0;
+ }
+ 
+-static int padata_replace(struct padata_instance *pinst)
++static int padata_replace(struct padata_instance *pinst, int offlining_cpu)
+ {
+ 	struct padata_shell *ps;
+ 	int err = 0;
+@@ -629,7 +634,7 @@ static int padata_replace(struct padata_instance *pinst)
+ 	pinst->flags |= PADATA_RESET;
+ 
+ 	list_for_each_entry(ps, &pinst->pslist, list) {
+-		err = padata_replace_one(ps);
++		err = padata_replace_one(ps, offlining_cpu);
+ 		if (err)
+ 			break;
+ 	}
+@@ -646,9 +651,21 @@ static int padata_replace(struct padata_instance *pinst)
+ 
+ /* If cpumask contains no active cpu, we mark the instance as invalid. */
+ static bool padata_validate_cpumask(struct padata_instance *pinst,
+-				    const struct cpumask *cpumask)
++				    const struct cpumask *cpumask,
++				    int offlining_cpu)
+ {
+-	if (!cpumask_intersects(cpumask, cpu_online_mask)) {
++	cpumask_copy(pinst->validate_cpumask, cpu_online_mask);
++
++	/*
++	 * @offlining_cpu is still in cpu_online_mask, so remove it here for
++	 * validation.  Using a sub-CPUHP_TEARDOWN_CPU hotplug state where
++	 * @offlining_cpu wouldn't be in the online mask doesn't work because
++	 * padata_cpu_offline() can fail but such a state doesn't allow failure.
++	 */
++	if (offlining_cpu >= 0)
++		__cpumask_clear_cpu(offlining_cpu, pinst->validate_cpumask);
++
++	if (!cpumask_intersects(cpumask, pinst->validate_cpumask)) {
+ 		pinst->flags |= PADATA_INVALID;
+ 		return false;
+ 	}
+@@ -664,13 +681,13 @@ static int __padata_set_cpumasks(struct padata_instance *pinst,
+ 	int valid;
+ 	int err;
+ 
+-	valid = padata_validate_cpumask(pinst, pcpumask);
++	valid = padata_validate_cpumask(pinst, pcpumask, -1);
+ 	if (!valid) {
+ 		__padata_stop(pinst);
+ 		goto out_replace;
+ 	}
+ 
+-	valid = padata_validate_cpumask(pinst, cbcpumask);
++	valid = padata_validate_cpumask(pinst, cbcpumask, -1);
+ 	if (!valid)
+ 		__padata_stop(pinst);
+ 
+@@ -678,7 +695,7 @@ static int __padata_set_cpumasks(struct padata_instance *pinst,
+ 	cpumask_copy(pinst->cpumask.pcpu, pcpumask);
+ 	cpumask_copy(pinst->cpumask.cbcpu, cbcpumask);
+ 
+-	err = padata_setup_cpumasks(pinst) ?: padata_replace(pinst);
++	err = padata_setup_cpumasks(pinst) ?: padata_replace(pinst, -1);
+ 
+ 	if (valid)
+ 		__padata_start(pinst);
+@@ -730,26 +747,6 @@ EXPORT_SYMBOL(padata_set_cpumask);
+ 
+ #ifdef CONFIG_HOTPLUG_CPU
+ 
+-static int __padata_add_cpu(struct padata_instance *pinst, int cpu)
+-{
+-	int err = padata_replace(pinst);
+-
+-	if (padata_validate_cpumask(pinst, pinst->cpumask.pcpu) &&
+-	    padata_validate_cpumask(pinst, pinst->cpumask.cbcpu))
+-		__padata_start(pinst);
+-
 -	return err;
-+	return padata_replace(pinst);
+-}
+-
+-static int __padata_remove_cpu(struct padata_instance *pinst, int cpu)
+-{
+-	if (!padata_validate_cpumask(pinst, pinst->cpumask.pcpu) ||
+-	    !padata_validate_cpumask(pinst, pinst->cpumask.cbcpu))
+-		__padata_stop(pinst);
+-
+-	return padata_replace(pinst);
+-}
+-
+ static inline int pinst_has_cpu(struct padata_instance *pinst, int cpu)
+ {
+ 	return cpumask_test_cpu(cpu, pinst->cpumask.pcpu) ||
+@@ -761,27 +758,39 @@ static int padata_cpu_online(unsigned int cpu, struct hlist_node *node)
+ 	struct padata_instance *pinst;
+ 	int ret;
+ 
+-	pinst = hlist_entry_safe(node, struct padata_instance, cpu_online_node);
++	pinst = hlist_entry_safe(node, struct padata_instance, cpuhp_node);
+ 	if (!pinst_has_cpu(pinst, cpu))
+ 		return 0;
+ 
+ 	mutex_lock(&pinst->lock);
+-	ret = __padata_add_cpu(pinst, cpu);
++
++	ret = padata_replace(pinst, -1);
++
++	if (padata_validate_cpumask(pinst, pinst->cpumask.pcpu, -1) &&
++	    padata_validate_cpumask(pinst, pinst->cpumask.cbcpu, -1))
++		__padata_start(pinst);
++
+ 	mutex_unlock(&pinst->lock);
+ 	return ret;
  }
  
- static inline int pinst_has_cpu(struct padata_instance *pinst, int cpu)
+-static int padata_cpu_dead(unsigned int cpu, struct hlist_node *node)
++static int padata_cpu_offline(unsigned int cpu, struct hlist_node *node)
+ {
+ 	struct padata_instance *pinst;
+ 	int ret;
+ 
+-	pinst = hlist_entry_safe(node, struct padata_instance, cpu_dead_node);
++	pinst = hlist_entry_safe(node, struct padata_instance, cpuhp_node);
+ 	if (!pinst_has_cpu(pinst, cpu))
+ 		return 0;
+ 
+ 	mutex_lock(&pinst->lock);
+-	ret = __padata_remove_cpu(pinst, cpu);
++
++	if (!padata_validate_cpumask(pinst, pinst->cpumask.pcpu, cpu) ||
++	    !padata_validate_cpumask(pinst, pinst->cpumask.cbcpu, cpu))
++		__padata_stop(pinst);
++
++	ret = padata_replace(pinst, cpu);
++
+ 	mutex_unlock(&pinst->lock);
+ 	return ret;
+ }
+@@ -792,15 +801,14 @@ static enum cpuhp_state hp_online;
+ static void __padata_free(struct padata_instance *pinst)
+ {
+ #ifdef CONFIG_HOTPLUG_CPU
+-	cpuhp_state_remove_instance_nocalls(CPUHP_PADATA_DEAD,
+-					    &pinst->cpu_dead_node);
+-	cpuhp_state_remove_instance_nocalls(hp_online, &pinst->cpu_online_node);
++	cpuhp_state_remove_instance_nocalls(hp_online, &pinst->cpuhp_node);
+ #endif
+ 
+ 	WARN_ON(!list_empty(&pinst->pslist));
+ 
+ 	free_cpumask_var(pinst->cpumask.pcpu);
+ 	free_cpumask_var(pinst->cpumask.cbcpu);
++	free_cpumask_var(pinst->validate_cpumask);
+ 	destroy_workqueue(pinst->serial_wq);
+ 	destroy_workqueue(pinst->parallel_wq);
+ 	kfree(pinst);
+@@ -961,10 +969,10 @@ struct padata_instance *padata_alloc(const char *name)
+ 
+ 	if (!alloc_cpumask_var(&pinst->cpumask.pcpu, GFP_KERNEL))
+ 		goto err_free_serial_wq;
+-	if (!alloc_cpumask_var(&pinst->cpumask.cbcpu, GFP_KERNEL)) {
+-		free_cpumask_var(pinst->cpumask.pcpu);
+-		goto err_free_serial_wq;
+-	}
++	if (!alloc_cpumask_var(&pinst->cpumask.cbcpu, GFP_KERNEL))
++		goto err_free_p_mask;
++	if (!alloc_cpumask_var(&pinst->validate_cpumask, GFP_KERNEL))
++		goto err_free_cb_mask;
+ 
+ 	INIT_LIST_HEAD(&pinst->pslist);
+ 
+@@ -972,7 +980,7 @@ struct padata_instance *padata_alloc(const char *name)
+ 	cpumask_copy(pinst->cpumask.cbcpu, cpu_possible_mask);
+ 
+ 	if (padata_setup_cpumasks(pinst))
+-		goto err_free_masks;
++		goto err_free_v_mask;
+ 
+ 	__padata_start(pinst);
+ 
+@@ -981,18 +989,19 @@ struct padata_instance *padata_alloc(const char *name)
+ 
+ #ifdef CONFIG_HOTPLUG_CPU
+ 	cpuhp_state_add_instance_nocalls_cpuslocked(hp_online,
+-						    &pinst->cpu_online_node);
+-	cpuhp_state_add_instance_nocalls_cpuslocked(CPUHP_PADATA_DEAD,
+-						    &pinst->cpu_dead_node);
++						    &pinst->cpuhp_node);
+ #endif
+ 
+ 	cpus_read_unlock();
+ 
+ 	return pinst;
+ 
+-err_free_masks:
+-	free_cpumask_var(pinst->cpumask.pcpu);
++err_free_v_mask:
++	free_cpumask_var(pinst->validate_cpumask);
++err_free_cb_mask:
+ 	free_cpumask_var(pinst->cpumask.cbcpu);
++err_free_p_mask:
++	free_cpumask_var(pinst->cpumask.pcpu);
+ err_free_serial_wq:
+ 	destroy_workqueue(pinst->serial_wq);
+ err_put_cpus:
+@@ -1035,7 +1044,7 @@ struct padata_shell *padata_alloc_shell(struct padata_instance *pinst)
+ 	ps->pinst = pinst;
+ 
+ 	cpus_read_lock();
+-	pd = padata_alloc_pd(ps);
++	pd = padata_alloc_pd(ps, -1);
+ 	cpus_read_unlock();
+ 
+ 	if (!pd)
+@@ -1084,31 +1093,24 @@ void __init padata_init(void)
+ 	int ret;
+ 
+ 	ret = cpuhp_setup_state_multi(CPUHP_AP_ONLINE_DYN, "padata:online",
+-				      padata_cpu_online, NULL);
++				      padata_cpu_online, padata_cpu_offline);
+ 	if (ret < 0)
+ 		goto err;
+ 	hp_online = ret;
+-
+-	ret = cpuhp_setup_state_multi(CPUHP_PADATA_DEAD, "padata:dead",
+-				      NULL, padata_cpu_dead);
+-	if (ret < 0)
+-		goto remove_online_state;
+ #endif
+ 
+ 	possible_cpus = num_possible_cpus();
+ 	padata_works = kmalloc_objs(struct padata_work, possible_cpus);
+ 	if (!padata_works)
+-		goto remove_dead_state;
++		goto remove_online_state;
+ 
+ 	for (i = 0; i < possible_cpus; ++i)
+ 		list_add(&padata_works[i].pw_list, &padata_free_works);
+ 
+ 	return;
+ 
+-remove_dead_state:
+-#ifdef CONFIG_HOTPLUG_CPU
+-	cpuhp_remove_multi_state(CPUHP_PADATA_DEAD);
+ remove_online_state:
++#ifdef CONFIG_HOTPLUG_CPU
+ 	cpuhp_remove_multi_state(hp_online);
+ err:
+ #endif
 -- 
 2.53.0
 
