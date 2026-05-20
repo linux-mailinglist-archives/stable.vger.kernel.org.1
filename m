@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-250518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251460-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aGHUAjvpDWrr4gUAu9opvQ
-	(envelope-from <stable+bounces-250518-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:02:51 +0200
+	id AJl2MSP1DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251460-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:39 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F42B592D9F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:02:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95AF9594D9B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DD33B315BC81
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:47:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 23ACB30D38D5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:27:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62CB33403FA;
-	Wed, 20 May 2026 16:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0462364EB0;
+	Wed, 20 May 2026 17:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mOKVCOE0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qtY8fqMs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B79236605E;
-	Wed, 20 May 2026 16:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71972701C4;
+	Wed, 20 May 2026 17:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295621; cv=none; b=dklfqgvCVCNdiChrOheytKT90VpZnfMMiayGxpn0udzhhoHe+KibMMhlHEpZgsx2emQqKA2oVGdg8trHcTFgveYW9UmsTzvDyCc9AVyB10dZI57tt5zzmZWRaZ4JwUS4IOdPa0b7nZrrIRuwvcLmjy7uVBWUtIDB40yqV6R05Zg=
+	t=1779298039; cv=none; b=g62KM4a95J+54Y0n/No7XxXtPbvbP2mc5AIAjK6lFflLDe5422GB3+dxUArdbaV4yprJr5oamvIRSXlB9UNcru+h76R7UCbH0fKDppn8IkeMXpA2kLqWdd3yndISGIATJJ3XWyz1Y+5wr8IpBAzKkOZRGUNAziYWestxCOVRI9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295621; c=relaxed/simple;
-	bh=SK4o+zqRqtORdR2BhXQ9gq21D0VBIpC2/vo/Oeu9gZo=;
+	s=arc-20240116; t=1779298039; c=relaxed/simple;
+	bh=pxKjBqfBQHP+6hKPGS9KI1uGWY0INTsAyAw85Xm7tsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jj6PkilF6/oRGdTLJSRYVNzIf6vic8m2c7Y7gg0m+2gW4vcq+mw0TOHIVMxzP/Nhq+KrKVhXrWdvKoWQ9xeyYyxVcs0QufWOYY9CB5FUaW03HGtGuUlwM3nbj2X0YTSBKoM00YX9mGym2ygyUpoZZAzjUZyiAlprRlBe86d8GEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mOKVCOE0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5697E1F00893;
-	Wed, 20 May 2026 16:46:58 +0000 (UTC)
+	 MIME-Version; b=eH23pGIXU79v5PaEqlwQLzwS5oBJRdIWrrX61VZCAZF+NoJIsq5Ma6HtPIgqKoHCPge95djGf0+QAf+rW3/kk8lWxskiZPGZq+GYXC4nj99CM08w4yrqB+VKi7nL2AzLel1TXvZfmV95NTa8f1VjLpVvfbL6ZxBV6+PktnAVsHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qtY8fqMs; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 284FB1F00893;
+	Wed, 20 May 2026 17:27:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295618;
-	bh=a3OrJQHRHji6Q+pznd4GP9tntbE2R5oCk5hC5Zo0IQg=;
+	s=korg; t=1779298038;
+	bh=h8qBlfiRJ0vdJQjZBVrk3fJwZInbDoVy8wx+AHdHLJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mOKVCOE0z44IyvJRxtrsMdaAbtVTVk06DgUrhe5YaTK2LvwEEf2MPIK8mBXJZRrPW
-	 0AGJDGYj9RrooXlDCMlaaRUCaZQ1f38Jh3hz1abJQHwcD8LBaMUV4UhUVijB+1lGjo
-	 UNTU/yYeZogUOfWvwGHvRp3vzvkozIExF0jf+Jz8=
+	b=qtY8fqMsXPHnq391+h9498L9mUIGJPT4qjBGAdAFF0nuMmIzdcVQYH6K2Bb9OIlpu
+	 D+3snRS420KDTf16MMxnaE3ad1JZ+JC9lgnK0OKGu/x7BymYcrcl0UEoTcNisLq8B4
+	 g2E1XI/c/oyC2AYs5Rr5xw+kJEA/1FT+ZidIy1ZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
-	Frank Li <Frank.Li@nxp.com>,
+	Ethan Tidmore <ethantidmore06@gmail.com>,
+	Andrew Jones <andrew.jones@oss.qualcomm.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0489/1146] arm64: dts: imx8mp-kontron: Drop vmmc-supply to fix SD card on SMARC eval carrier
-Date: Wed, 20 May 2026 18:12:19 +0200
-Message-ID: <20260520162159.259893062@linuxfoundation.org>
+Subject: [PATCH 6.18 257/957] iommu/riscv: Fix signedness bug
+Date: Wed, 20 May 2026 18:12:20 +0200
+Message-ID: <20260520162140.117718868@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,63 +74,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,amd.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-251460-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250518-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,nxp.com:email]
-X-Rspamd-Queue-Id: 9F42B592D9F
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: 95AF9594D9B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frieder Schrempf <frieder.schrempf@kontron.de>
+From: Ethan Tidmore <ethantidmore06@gmail.com>
 
-[ Upstream commit d2ce84eecf081056b1d18d7524de52f849281ba7 ]
+[ Upstream commit 553a127cb66523089bc10eb54640205495f4bb5b ]
 
-The SMARC evaluation carrier provides an SD card power switch that
-complies with the OSM standard definition. The OSM base devicetree
-already describes this correctly.
+The function platform_irq_count() returns negative error codes and
+iommu->irqs_count is an unsigned integer, so the check
+(iommu->irqs_count <= 0) is always impossible.
 
-Stop overriding the vmmc-supply in the board devicetree and rely on
-the definition from the OSM base DTS instead to fix the power supply
-configuration for the SD card.
+Make the return value of platform_irq_count() be assigned to ret, check
+for error, and then assign iommu->irqs_count to ret.
 
-Fixes: 6fe1ced5ccab7 ("arm64: dts: Add support for Kontron i.MX8MP SMARC module and eval carrier")
-Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Detected by Smatch:
+drivers/iommu/riscv/iommu-platform.c:119 riscv_iommu_platform_probe() warn:
+'iommu->irqs_count' unsigned <= 0
+
+Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
+Fixes: 5c0ebbd3c6c6 ("iommu/riscv: Add RISC-V IOMMU platform device driver")
+Reviewed-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/freescale/imx8mp-kontron-smarc-eval-carrier.dts     | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/iommu/riscv/iommu-platform.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-kontron-smarc-eval-carrier.dts b/arch/arm64/boot/dts/freescale/imx8mp-kontron-smarc-eval-carrier.dts
-index 2173a36ff6917..74d620dd06b7b 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-kontron-smarc-eval-carrier.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-kontron-smarc-eval-carrier.dts
-@@ -249,6 +249,5 @@ &usb3_phy1 {
- };
+diff --git a/drivers/iommu/riscv/iommu-platform.c b/drivers/iommu/riscv/iommu-platform.c
+index 8f15b06e84997..399ba8fe1b3e5 100644
+--- a/drivers/iommu/riscv/iommu-platform.c
++++ b/drivers/iommu/riscv/iommu-platform.c
+@@ -115,10 +115,13 @@ static int riscv_iommu_platform_probe(struct platform_device *pdev)
+ 		fallthrough;
  
- &usdhc2 {
--	vmmc-supply = <&reg_vdd_3v3>;
- 	status = "okay";
- };
+ 	case RISCV_IOMMU_CAPABILITIES_IGS_WSI:
+-		iommu->irqs_count = platform_irq_count(pdev);
+-		if (iommu->irqs_count <= 0)
++		ret = platform_irq_count(pdev);
++		if (ret <= 0)
+ 			return dev_err_probe(dev, -ENODEV,
+ 					     "no IRQ resources provided\n");
++
++		iommu->irqs_count = ret;
++
+ 		if (iommu->irqs_count > RISCV_IOMMU_INTR_COUNT)
+ 			iommu->irqs_count = RISCV_IOMMU_INTR_COUNT;
+ 
 -- 
 2.53.0
 
