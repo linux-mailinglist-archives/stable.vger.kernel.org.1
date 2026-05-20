@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-252065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252744-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8A+TIan+DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-252065-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:17 +0200
+	id 4OiAJG4XDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-252744-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:19:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C84885969DB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:16 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E28459973C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:19:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C6E3E37BDB0C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:54:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7053232A81D0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87AF43F23BF;
-	Wed, 20 May 2026 17:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01A73F660B;
+	Wed, 20 May 2026 18:24:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="inCnmih1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vp9cIBoL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53FA939B483;
-	Wed, 20 May 2026 17:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19CC3FD14C;
+	Wed, 20 May 2026 18:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299654; cv=none; b=geqGa0n5zxZRobFY02GylIMJIwsJ/E6MQt0Uevyi0DAOBFaJXUjN1k3dN/AW4N6rtwoyxyArcp1zAk7mYcFNQ/KZzxbJUBjoB/V7sFhz0b+gN90u5XrIUBcqUD0G3MOyaNiSuBcUfPibf4OiXzwuyWEzfzH4IsCNy7Lk94s5JOQ=
+	t=1779301478; cv=none; b=bsSLaVhTVE5kiM6sqTG7cajKn1yaxBk9HN1qIozl2oR9281Wei2JvKwdJMuTt3DdJVGBYnA0GNgvwYLLpFiwVOrIj82mrfpfdPxgQVi4xqUXchlDYTktg1mb4D7jzlNtysc7dN9tqP2M8KQaA2BJKbCXo2TiwLx+edyDRxEcIiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299654; c=relaxed/simple;
-	bh=rBw/51LZjmg+NvJZYF4gyCd0AZI5pcJKV0ounwiACuk=;
+	s=arc-20240116; t=1779301478; c=relaxed/simple;
+	bh=+qnbKOW8jP17FDNnKm0L09LR6yQjDsVcoatReAPK49g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TzDdXrQKTwEmocOtxs7hv8pOEUjMI6dzK0mCTaFWOJUsN8nq+kl0yowK3epe07nGzzHgITg/Tkei45oXr2rk3k7OC7M1wh0ceHT+QTiMN35xQeRvIKXO5iGamJWFW87UoFiU+/6wxu7gyuO7HKa1d8K1yqMFD9XWn4JoW3iBHgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=inCnmih1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB0541F000E9;
-	Wed, 20 May 2026 17:54:12 +0000 (UTC)
+	 MIME-Version; b=qyr1H4HQ9XamBbFRakHUvFucXegHmDWJQzmpUCfUjJPgDEtflYAI5l/pslsM9divnKQj19nUC5qD54sLHlvfwwzLMgV5aikbTHBvhbc5FfpERQEB2cpNhH0sqBAUWi8Gwy27rEW1VOt34kHPeEEXk4J5nWHdtRt7JEYPSaGz3hg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vp9cIBoL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 135651F000E9;
+	Wed, 20 May 2026 18:24:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299653;
-	bh=rilJWf9z9LOCWwqCgqd2KCEzlVfOXmAzGOvJbGCJuPA=;
+	s=korg; t=1779301475;
+	bh=34fias831304GMDm130DejGozLjjZ7XLWsUiK6EWBVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=inCnmih1qKiGMS6uCqtLo6f/T9t+ggWHVtkejhyHtesm4MQF/ydcUW4CpvFUY6JFe
-	 mOpFMLKEcEIG7CY/WAo7xP9Bw5cGi7RV1SNAVyNnV4a6riof8wOFE2Vg6X1S9rYhgV
-	 5i2P5svp/FM/PyXVrM8NlppidKDcXxWp7Pc3O0Vo=
+	b=Vp9cIBoLAhoQfqg1PCZTBoLykaxkoSRIN11/nBCUYGXNduINXkKFP+gaGNglO2i0P
+	 o74cu71hGXLsOWpl4CoNxCdly4O8goMSzqch/8IUT5yO+kg6xmIGzEpM6rm5CfMVqo
+	 R6w2x32Z76ehS8/tQrCkktvCUi73AXhARZtIbTBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <error27@gmail.com>,
-	Edward Cree <ecree.xilinx@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Myeonghun Pak <mhun512@gmail.com>,
+	Ijae Kim <ae878000@gmail.com>,
+	Taegyu Kim <tmk5904@psu.edu>,
+	Yuho Choi <dbgh9129@gmail.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 855/957] sfc: fix error code in efx_devlink_info_running_versions()
+Subject: [PATCH 6.12 527/666] drm/sysfb: ofdrm: fix PCI device reference leaks
 Date: Wed, 20 May 2026 18:22:18 +0200
-Message-ID: <20260520162153.107897763@linuxfoundation.org>
+Message-ID: <20260520162122.692395081@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,72 +67,90 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-252065-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252744-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,psu.edu,suse.de,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: C84885969DB
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 9E28459973C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <error27@gmail.com>
+From: Yuho Choi <dbgh9129@gmail.com>
 
-[ Upstream commit 051ffb001b8a232cfa6e72f38bb5f51c4270a60b ]
+[ Upstream commit 4aa8110000b0d215deef8eed283565dd0c1def88 ]
 
-Return -EIO if efx_mcdi_rpc() doesn't return enough space.
+display_get_pci_dev_of() gets a referenced PCI device via
+pci_get_device(). Drop that reference when pci_enable_device() fails and
+release it during the managed teardown path after pci_disable_device().
 
-Fixes: 14743ddd2495 ("sfc: add devlink info support for ef100")
-Signed-off-by: Dan Carpenter <error27@gmail.com>
-Reviewed-by: Edward Cree <ecree.xilinx@gmail.com>
-Link: https://patch.msgid.link/afGpsbLRHL4_H0KS@stanley.mountain
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Without that, ofdrm leaks the pci_dev reference on both the error path
+and the normal cleanup path.
+
+Fixes: c8a17756c425 ("drm/ofdrm: Add ofdrm for Open Firmware framebuffers")
+Co-developed-by: Myeonghun Pak <mhun512@gmail.com>
+Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+Co-developed-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Ijae Kim <ae878000@gmail.com>
+Co-developed-by: Taegyu Kim <tmk5904@psu.edu>
+Signed-off-by: Taegyu Kim <tmk5904@psu.edu>
+Signed-off-by: Yuho Choi <dbgh9129@gmail.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patch.msgid.link/20260420002513.216-1-dbgh9129@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/sfc/efx_devlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/tiny/ofdrm.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/sfc/efx_devlink.c b/drivers/net/ethernet/sfc/efx_devlink.c
-index d842c60dfc100..e5c6f81af48be 100644
---- a/drivers/net/ethernet/sfc/efx_devlink.c
-+++ b/drivers/net/ethernet/sfc/efx_devlink.c
-@@ -531,7 +531,7 @@ static int efx_devlink_info_running_versions(struct efx_nic *efx,
- 	if (rc || outlength < MC_CMD_GET_VERSION_OUT_LEN) {
- 		netif_err(efx, drv, efx->net_dev,
- 			  "mcdi MC_CMD_GET_VERSION failed\n");
--		return rc;
-+		return rc ?: -EIO;
- 	}
+diff --git a/drivers/gpu/drm/tiny/ofdrm.c b/drivers/gpu/drm/tiny/ofdrm.c
+index 35996f7eedac0..cc90e0035d034 100644
+--- a/drivers/gpu/drm/tiny/ofdrm.c
++++ b/drivers/gpu/drm/tiny/ofdrm.c
+@@ -350,6 +350,7 @@ static void ofdrm_pci_release(void *data)
+ 	struct pci_dev *pcidev = data;
  
- 	/* Handle previous output */
+ 	pci_disable_device(pcidev);
++	pci_dev_put(pcidev);
+ }
+ 
+ static int ofdrm_device_init_pci(struct ofdrm_device *odev)
+@@ -375,6 +376,7 @@ static int ofdrm_device_init_pci(struct ofdrm_device *odev)
+ 	if (ret) {
+ 		drm_err(dev, "pci_enable_device(%s) failed: %d\n",
+ 			dev_name(&pcidev->dev), ret);
++		pci_dev_put(pcidev);
+ 		return ret;
+ 	}
+ 	ret = devm_add_action_or_reset(&pdev->dev, ofdrm_pci_release, pcidev);
 -- 
 2.53.0
 
