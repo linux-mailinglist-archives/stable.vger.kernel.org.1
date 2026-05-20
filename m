@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-253245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251167-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SLf5GjcvDmpo7wUAu9opvQ
-	(envelope-from <stable+bounces-253245-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:01:27 +0200
+	id KON+OekXDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251167-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:22:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1C3E59B99C
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:01:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D96C5997D1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:22:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AC70C3999473
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:51:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 171AB3037D62
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65E093FF885;
-	Wed, 20 May 2026 18:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 590EC3F44D9;
+	Wed, 20 May 2026 17:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rUr9abfc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TAmzwk8y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD503FB7FC;
-	Wed, 20 May 2026 18:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139C5356748;
+	Wed, 20 May 2026 17:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302775; cv=none; b=DmkJLluaBxGgPkhvfkPVi87rUhrOWNeCiiEjtMSBe4t+idIx3VGFfi0LNuDrWPbxgtBmRyy6qflkSd7VLvwnk3P6WfRUEgxJejBqwShcY/1co9ho0RrfVFbqs/6pnBZpDD+ENy9CpvScyAo1WTw+kVtZ/hGtO6TwviZbgcHggwg=
+	t=1779297274; cv=none; b=h3uQw1lSPLoohx+KL3urheLbvvg8RJXRdVMECISGthJkkp1zIC8sPBPXr1BmSAkL74qZn8W/oXv1qxKB4gp9tNlykzhRfvHUQRB8MM2bQ7cLWSCxl/O1OLD1T8dDReDOytbWKtZLXiw05yvVE2p/+G4B59T4aL2bxZRcXAU45yM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302775; c=relaxed/simple;
-	bh=zCNsgg9019a/wu6YEerm2rbPszHbku9X2CT3AcfpJ0I=;
+	s=arc-20240116; t=1779297274; c=relaxed/simple;
+	bh=xbRm/9KoIPHHopxtfySZQNa+kz7kI05N8Uy3p3v+czk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EeiJsAsOs/C5eblVAejRhANr0jpGa/472JdAC9zFBM/jydWF+TaNH6OHaonqECmpawtGWOg8PGp7tjSaV2/3iXMhmk6+LQB+FTO+8xVnoLln7rA18heZw/jXx/pVTwnFhFkSreOJFBYL4fh8fl7Trdnzr4I/U+XKP3cNS53gilw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rUr9abfc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05AD01F000E9;
-	Wed, 20 May 2026 18:46:11 +0000 (UTC)
+	 MIME-Version; b=PU6r/gctiBuXQshaETb2F3GoJEFaPkkr6UI+3Am024EEX5MWqUCZXAeFUlH4/2w70t4dI5xK+sQr0OD0vqOHhSL8wQyypeCfrIokk5cfuQ2g479fJfawoFYeG6iOcGlzR1ieYrIvpbnCwqNKwv/0SH1MkYSe28+GCQP0zYBrGs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TAmzwk8y; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78FCD1F000E9;
+	Wed, 20 May 2026 17:14:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302772;
-	bh=cKlL/nSbNjxQSn+XoDa3SMhblkn2mvZAIv4XN/ApyLM=;
+	s=korg; t=1779297273;
+	bh=j110dhZmWKLYL3exbBkstm0R2tqAz3fbBaNFmJic8G0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rUr9abfccCkUabBpr4TFdfIdJmSe4MxcYrysZryjsjkspQMtC+12XOnR2ge3F+jCr
-	 9v8E8FiM1z3qJfH842YCkWMI+ulTkMMjZb1Q+frJkOi7/PQ2/O+RbkPTnWK58BCwyD
-	 JCDJ6BhyAcpWjO3q2Q91ILT63KBV5t2I7iwFRKkA=
+	b=TAmzwk8ys9pur1S+I4qWNS55yb19c5LtDr6OzJBB1YQgTBOP6YdLGTVNvK5qL6uE+
+	 3cf4pDR7zV8i5nCri+vR+S6i2vdVzNgiwjkkS0k7vr+KT1fZMwivpiaA6EwbNf9Az/
+	 LnGngOud9wOIQJ36jtydaFJRoBP4IgZ6ZgdSkCt4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	DaeMyung Kang <charsyam@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 343/508] ksmbd: fix durable fd leak on ClientGUID mismatch in durable v2 open
+	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 7.0 1116/1146] libceph: Fix potential out-of-bounds access in __ceph_x_decrypt()
 Date: Wed, 20 May 2026 18:22:46 +0200
-Message-ID: <20260520162106.065116915@linuxfoundation.org>
+Message-ID: <20260520162213.499494528@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,100 +65,83 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253245-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251167-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,gmail.com];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: C1C3E59B99C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tu-ilmenau.de:email]
+X-Rspamd-Queue-Id: 3D96C5997D1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: DaeMyung Kang <charsyam@gmail.com>
+From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
 
-[ Upstream commit 804054d19886ac6628883d82410f6ee42a818664 ]
+commit 821365487aa58d06bda65c676ba215d506ba9768 upstream.
 
-ksmbd_lookup_fd_cguid() returns a ksmbd_file with its refcount
-incremented via ksmbd_fp_get(). parse_durable_handle_context() in
-the DURABLE_REQ_V2 case properly releases this reference on every
-path inside the ClientGUID-match branch, either by calling
-ksmbd_put_durable_fd() or by transferring ownership to dh_info->fp
-for a successful reconnect. However, when an entry exists in the
-global file table with the same CreateGuid but a different
-ClientGUID, the code simply falls through to the new-open path
-without dropping the reference obtained from ksmbd_lookup_fd_cguid().
+In __ceph_x_decrypt(), a part of the buffer p is interpreted as a
+ceph_x_encrypt_header, and the magic field of this struct is accessed.
+This happens without any guarantee that the buffer is large enough to
+hold this struct. The function parameter ciphertext_len represents the
+length of the ciphertext to decrypt and is guaranteed to be at most the
+remaining size of the allocated buffer p. However, this value is not
+necessarily greater than sizeof(ceph_x_encrypt_header). E.g., a message
+frame of type FRAME_TAG_AUTH_REPLY_MORE, that is just as long to hold
+the ciphertext at its end with a ciphertext_len of 8 or less, can
+trigger an out-of-bounds memory access when accessing hdr->magic.
 
-Per MS-SMB2 section 3.3.5.9.10 ("Handling the
-SMB2_CREATE_DURABLE_HANDLE_REQUEST_V2 Create Context"), the server
-MUST locate an Open whose Open.CreateGuid matches the request's
-CreateGuid AND whose Open.ClientGuid matches the ClientGuid of the
-connection that received the request. If no such Open is found, the
-server MUST continue with the normal open execution phase. A
-CreateGuid hit with a ClientGUID mismatch is therefore the
-"Open not found" case: proceeding with a new open is correct, but
-the reference obtained purely as a side effect of the lookup must
-not be leaked.
+This patch fixes the issue by adding a check to ensure that the
+decrypted plaintext in the buffer is large enough to represent at least
+the ceph_x_encrypt_header.
 
-Repeated requests that hit this mismatch pin global_ft entries,
-prevent __ksmbd_close_fd() from ever running for the corresponding
-files, and defeat the durable scavenger, leading to long-lived
-resource leaks.
-
-Release the reference in the mismatch path and clear dh_info->fp so
-subsequent logic does not mistake a non-matching lookup result for
-a reconnect target.
-
-Fixes: c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
-Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/ceph/auth_x.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 6c41a67be725d..d68fe617369e0 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -2827,6 +2827,8 @@ static int parse_durable_handle_context(struct ksmbd_work *work,
- 					dh_info->reconnected = true;
- 					goto out;
- 				}
-+				ksmbd_put_durable_fd(dh_info->fp);
-+				dh_info->fp = NULL;
- 			}
+--- a/net/ceph/auth_x.c
++++ b/net/ceph/auth_x.c
+@@ -115,6 +115,11 @@ static int __ceph_x_decrypt(const struct
+ 	if (ret)
+ 		return ret;
  
- 			if ((lc && (lc->req_state & SMB2_LEASE_HANDLE_CACHING_LE)) ||
--- 
-2.53.0
-
++	if (plaintext_len < sizeof(*hdr)) {
++		pr_err("%s plaintext too small %d\n", __func__, plaintext_len);
++		return -EINVAL;
++	}
++
+ 	hdr = p + ceph_crypt_data_offset(key);
+ 	if (le64_to_cpu(hdr->magic) != CEPHX_ENC_MAGIC) {
+ 		pr_err("%s bad magic\n", __func__);
 
 
 
