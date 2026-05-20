@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250604-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qCbiFzEjDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252183-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:10:09 +0200
+	id YHRDBv7nDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250604-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:57:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D62D359A81E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:10:08 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89F7A592B4A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:57:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D65C338DBE76
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:00:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2CA7430B3862
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:51:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76A093F58D6;
-	Wed, 20 May 2026 18:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A660363C6F;
+	Wed, 20 May 2026 16:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="abA4Ln8p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fCsu6iXt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09FAB3F6C4C;
-	Wed, 20 May 2026 18:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C596722F01;
+	Wed, 20 May 2026 16:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300009; cv=none; b=V5WHUWJ1+0ZNXbPLaG/JM9Mtrcc7GFafwBIh5y5V1oWPdLpFPVcgyEhbIItl6J8sep3P6fXOZeXFoeBE+7avFNwJrKLhiJRGrugZVT1V5hnjwhHVqjPORtmjRkEEa1nSheOs4ogmSjEKPvebH4i2xNVy+pnwPIyNAaH5zTW6syc=
+	t=1779295845; cv=none; b=cHNJ33+oJEqu0SqyPTTRgATsI1RFqnXLESz7zlsE34uUy2ZdbUk1JGDin0YOEuMdzyCcwyL+c6Bb6rZ7NPtih/yMCVpqeF3/nf3Mr3/Y4aUY0yY7qmKKS4X2OB1pS2BOFkZx1CKMiOlS4kB9NqLd/B3l1ZB8DcfE3m/Qj//5uOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300009; c=relaxed/simple;
-	bh=freQma6BfS7Lj5jdm5nQuVtsKB1ZaD6OXPufZSbQRxU=;
+	s=arc-20240116; t=1779295845; c=relaxed/simple;
+	bh=3lXpzDhanay9VKbvItF5A0boy98jX/LfwUOOVqltkUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D9LyFWOvFkQpyOeidtJK2HpM6iOAElDakG09EYTBii7yW0lDpi5IuDy0jkCQWrAILUHxa172Nf62KScZcMmwTnF/SU+6u/RVV8Ch37vlJe/qmAiVU8b7pBYSTLj7J6KJD6txHjV+gZUwDGr5FPGHcgkOYVvwnuIYr8h71nWtGiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=abA4Ln8p; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F2BC1F000E9;
-	Wed, 20 May 2026 18:00:07 +0000 (UTC)
+	 MIME-Version; b=myVVdCb22u/ydmYY/eMsCx3SIb3gnY4Xvlx+q5YaYET01YnmsiO6Cgzaue92wQvuMpTWokow4rcFKYkKtLLZpoeY+qEc4R579GHUtnm4IZhxkRUklXqm1uKhPkdSjWvqu2iYohXt/MMhAVUg2U/vekadtkVZdr9VlvJFT010Fr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fCsu6iXt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36DE91F000E9;
+	Wed, 20 May 2026 16:50:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300007;
-	bh=tT/mrnIG78VP5genPm6vRQdlQcx6Qlc2j19742gRlAY=;
+	s=korg; t=1779295844;
+	bh=o/U3+HV8aarztColwFJ30G5mfGuVEt66+1KXtTzIo8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=abA4Ln8pwZAdgjygxO5ro2q1snS3giukL4zH77RYnZ9mWoQ/5S2awBK2ogiFL0YNB
-	 CdEs8MpHaSIZkpQuMf3EZgwZFxMrEG2DS9Ibze0gPwdb/GsuwFp5HiHeAFzqXajevz
-	 2yb4FqPOlgn2SXgLPop1jGUWXz4nf9CvQFRz+1EE=
+	b=fCsu6iXtc64dDxxJHLnaEOIWh9IEWrUyJfR8rjb/Ks9vStxEWKplS0qI4rkwxDuD8
+	 O4lfVLx8H5tGEzNz4o1fSjnSCR+62zY29cZAgPiDcscL07pFoLem9ipjMOOtf/jSxm
+	 ImkmH41XFsjgWllMwSzlLIyyXQyx5G7lrH6AHqUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>,
+	Cole Leavitt <cole@unwrap.rs>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 013/666] btrfs: pass struct btrfs_inode to clone_copy_inline_extent()
-Date: Wed, 20 May 2026 18:13:44 +0200
-Message-ID: <20260520162111.519483821@linuxfoundation.org>
+Subject: [PATCH 7.0 0575/1146] soundwire: bus: demote UNATTACHED state warnings to dev_dbg()
+Date: Wed, 20 May 2026 18:13:45 +0200
+Message-ID: <20260520162201.196008607@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,161 +67,93 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252183-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250604-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[wdc.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email]
-X-Rspamd-Queue-Id: D62D359A81E
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,cirrus.com:email,unwrap.rs:email]
+X-Rspamd-Queue-Id: 89F7A592B4A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Cole Leavitt <cole@unwrap.rs>
 
-[ Upstream commit 65a66afd1ee5b2770fde296663baa0f79af56bc7 ]
+[ Upstream commit 2c96956fe764f8224f9ec93b2a9160a578949a7a ]
 
-Pass a struct btrfs_inode to clone_copy_inline_extent() as it's an
-internal interface, allowing to remove some use of BTRFS_I.
+The dev_warn() messages in sdw_handle_slave_status() for UNATTACHED
+transitions were added in commit d1b328557058 ("soundwire: bus: add
+dev_warn() messages to track UNATTACHED devices") to debug attachment
+failures with dynamic debug enabled.
 
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: b48c980b6a7e ("btrfs: fix deadlock between reflink and transaction commit when using flushoncommit")
+These warnings fire during normal operation -- for example when a codec
+driver triggers a hardware reset after firmware download, causing the
+device to momentarily go UNATTACHED before re-attaching -- producing
+misleading noise on every boot.
+
+Demote the messages to dev_dbg() so they remain available via dynamic
+debug for diagnosing real attachment failures without alarming users
+during expected initialization sequences.
+
+Fixes: d1b328557058 ("soundwire: bus: add dev_warn() messages to track UNATTACHED devices")
+Signed-off-by: Cole Leavitt <cole@unwrap.rs>
+Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://patch.msgid.link/20260218180210.9263-1-cole@unwrap.rs
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/reflink.c | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ drivers/soundwire/bus.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/btrfs/reflink.c b/fs/btrfs/reflink.c
-index f0824c948cb70..8640dbf1aefa4 100644
---- a/fs/btrfs/reflink.c
-+++ b/fs/btrfs/reflink.c
-@@ -165,7 +165,7 @@ static int copy_inline_to_page(struct btrfs_inode *inode,
-  * the source inode to destination inode when possible. When not possible we
-  * copy the inline extent's data into the respective page of the inode.
-  */
--static int clone_copy_inline_extent(struct inode *dst,
-+static int clone_copy_inline_extent(struct btrfs_inode *inode,
- 				    struct btrfs_path *path,
- 				    struct btrfs_key *new_key,
- 				    const u64 drop_start,
-@@ -175,8 +175,8 @@ static int clone_copy_inline_extent(struct inode *dst,
- 				    char *inline_data,
- 				    struct btrfs_trans_handle **trans_out)
- {
--	struct btrfs_fs_info *fs_info = inode_to_fs_info(dst);
--	struct btrfs_root *root = BTRFS_I(dst)->root;
-+	struct btrfs_root *root = inode->root;
-+	struct btrfs_fs_info *fs_info = root->fs_info;
- 	const u64 aligned_end = ALIGN(new_key->offset + datal,
- 				      fs_info->sectorsize);
- 	struct btrfs_trans_handle *trans = NULL;
-@@ -185,12 +185,12 @@ static int clone_copy_inline_extent(struct inode *dst,
- 	struct btrfs_key key;
+diff --git a/drivers/soundwire/bus.c b/drivers/soundwire/bus.c
+index fb68738dfb9b8..fe5316d93fefe 100644
+--- a/drivers/soundwire/bus.c
++++ b/drivers/soundwire/bus.c
+@@ -1899,8 +1899,8 @@ int sdw_handle_slave_status(struct sdw_bus *bus,
  
- 	if (new_key->offset > 0) {
--		ret = copy_inline_to_page(BTRFS_I(dst), new_key->offset,
-+		ret = copy_inline_to_page(inode, new_key->offset,
- 					  inline_data, size, datal, comp_type);
- 		goto out;
- 	}
+ 		if (status[i] == SDW_SLAVE_UNATTACHED &&
+ 		    slave->status != SDW_SLAVE_UNATTACHED) {
+-			dev_warn(&slave->dev, "Slave %d state check1: UNATTACHED, status was %d\n",
+-				 i, slave->status);
++			dev_dbg(&slave->dev, "Slave %d state check1: UNATTACHED, status was %d\n",
++			i, slave->status);
+ 			sdw_modify_slave_status(slave, SDW_SLAVE_UNATTACHED);
  
--	key.objectid = btrfs_ino(BTRFS_I(dst));
-+	key.objectid = btrfs_ino(inode);
- 	key.type = BTRFS_EXTENT_DATA_KEY;
- 	key.offset = 0;
- 	ret = btrfs_search_slot(NULL, root, &key, path, 0, 0);
-@@ -205,7 +205,7 @@ static int clone_copy_inline_extent(struct inode *dst,
- 				goto copy_inline_extent;
- 		}
- 		btrfs_item_key_to_cpu(path->nodes[0], &key, path->slots[0]);
--		if (key.objectid == btrfs_ino(BTRFS_I(dst)) &&
-+		if (key.objectid == btrfs_ino(inode) &&
- 		    key.type == BTRFS_EXTENT_DATA_KEY) {
- 			/*
- 			 * There's an implicit hole at file offset 0, copy the
-@@ -214,7 +214,7 @@ static int clone_copy_inline_extent(struct inode *dst,
- 			ASSERT(key.offset > 0);
- 			goto copy_to_page;
- 		}
--	} else if (i_size_read(dst) <= datal) {
-+	} else if (i_size_read(&inode->vfs_inode) <= datal) {
- 		struct btrfs_file_extent_item *ei;
+ 			/* Ensure driver knows that peripheral unattached */
+@@ -1951,8 +1951,8 @@ int sdw_handle_slave_status(struct sdw_bus *bus,
+ 			if (slave->status == SDW_SLAVE_UNATTACHED)
+ 				break;
  
- 		ei = btrfs_item_ptr(path->nodes[0], path->slots[0],
-@@ -236,7 +236,7 @@ static int clone_copy_inline_extent(struct inode *dst,
- 	 * We have no extent items, or we have an extent at offset 0 which may
- 	 * or may not be inlined. All these cases are dealt the same way.
- 	 */
--	if (i_size_read(dst) > datal) {
-+	if (i_size_read(&inode->vfs_inode) > datal) {
- 		/*
- 		 * At the destination offset 0 we have either a hole, a regular
- 		 * extent or an inline extent larger then the one we want to
-@@ -270,7 +270,7 @@ static int clone_copy_inline_extent(struct inode *dst,
- 	drop_args.start = drop_start;
- 	drop_args.end = aligned_end;
- 	drop_args.drop_cache = true;
--	ret = btrfs_drop_extents(trans, root, BTRFS_I(dst), &drop_args);
-+	ret = btrfs_drop_extents(trans, root, inode, &drop_args);
- 	if (ret)
- 		goto out;
- 	ret = btrfs_insert_empty_item(trans, root, path, new_key, size);
-@@ -281,9 +281,9 @@ static int clone_copy_inline_extent(struct inode *dst,
- 			    btrfs_item_ptr_offset(path->nodes[0],
- 						  path->slots[0]),
- 			    size);
--	btrfs_update_inode_bytes(BTRFS_I(dst), datal, drop_args.bytes_found);
--	btrfs_set_inode_full_sync(BTRFS_I(dst));
--	ret = btrfs_inode_set_file_extent_range(BTRFS_I(dst), 0, aligned_end);
-+	btrfs_update_inode_bytes(inode, datal, drop_args.bytes_found);
-+	btrfs_set_inode_full_sync(inode);
-+	ret = btrfs_inode_set_file_extent_range(inode, 0, aligned_end);
- out:
- 	if (!ret && !trans) {
- 		/*
-@@ -318,7 +318,7 @@ static int clone_copy_inline_extent(struct inode *dst,
- 	 */
- 	btrfs_release_path(path);
+-			dev_warn(&slave->dev, "Slave %d state check2: UNATTACHED, status was %d\n",
+-				 i, slave->status);
++			dev_dbg(&slave->dev, "Slave %d state check2: UNATTACHED, status was %d\n",
++			i, slave->status);
  
--	ret = copy_inline_to_page(BTRFS_I(dst), new_key->offset,
-+	ret = copy_inline_to_page(inode, new_key->offset,
- 				  inline_data, size, datal, comp_type);
- 	goto out;
- }
-@@ -526,7 +526,7 @@ static int btrfs_clone(struct inode *src, struct inode *inode,
- 				goto out;
- 			}
- 
--			ret = clone_copy_inline_extent(inode, path, &new_key,
-+			ret = clone_copy_inline_extent(BTRFS_I(inode), path, &new_key,
- 						       drop_start, datal, size,
- 						       comp, buf, &trans);
- 			if (ret)
+ 			sdw_modify_slave_status(slave, SDW_SLAVE_UNATTACHED);
+ 			break;
 -- 
 2.53.0
 
