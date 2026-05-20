@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-252606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251928-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GBJxMj0mDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252606-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:23:09 +0200
+	id oLenHp/2DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251928-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:59:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18B6E59AC6F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:23:09 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E5A8595119
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:59:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B1630343F4E0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:18:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0257230CF9F3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:48:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4495329B78D;
-	Wed, 20 May 2026 18:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 109343F2115;
+	Wed, 20 May 2026 17:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KD8AAzOz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2aHOf9aM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD8B37DE8A;
-	Wed, 20 May 2026 18:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B43B43F0A83;
+	Wed, 20 May 2026 17:48:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301116; cv=none; b=Rkbnrsfm6Jokr3GsPMBV1198JgyLmAgAAUEjmzgg/BqVTyDTan+oyv5+u44p1qULZ1ufF6IV9sHuMs4uAX7k9XnDa7TrWp9n1RdISK5ihGQgXOhDupMM03aWwiN24PBBR97boT2helX59ZGMzQe44jZu7XIkBrqb+Yli9ILyWDo=
+	t=1779299296; cv=none; b=ANdMSVp5pcP/OEbIQSfYIvG8kwOr8arwCpmGJZjNnGAcKQ6tGSeZIWyIgPtPZyuVH9tzZU0ysvltLtGCnea2PXp1RxwJ2aUSSkdod56FQH7hXjOpRx6NF/Ezt8lulnQR8wSY6DJgpCUgvq5OL/EL+RecRoserUD3wVwL+Wr832Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301116; c=relaxed/simple;
-	bh=zW86l+5/MSIKB5j7xMm5pwHE75zy8NydXtv0nrpYEY0=;
+	s=arc-20240116; t=1779299296; c=relaxed/simple;
+	bh=8cT7cwbRqiqrml73WkEs9YAC62yNKsdBFFoa45LOMFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iMg7vsaOrbbagXvDu87+sqD780JoJhQrDOT0oenJV7bq9NQa8kGua7NV+D9o1P3KU92XdG15kEKnT7eIxOo6L7jemsXSGtLawUESL7JxOdzDQLib6VKXveVEkP9IUR1w9v14wNvZmAU45Ro6PyaIAdEl+wgMWqNjrIbuNk5as6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KD8AAzOz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 535311F000E9;
-	Wed, 20 May 2026 18:18:34 +0000 (UTC)
+	 MIME-Version; b=Z60ZT5KN8lax4SBoeU0Z2sGPNOfSIOkjvtVw918003CIlBKBHwvh5ymY+phxIO6jbnKR4jeJFUmyWG2pJ+lbhLay87bvzXpUVt/uXQJaS4tsz6iME/zhoUBWCVsEKgggo27yOQryJfAdbTC/kx4AIgF0z60s0ENMhQzlpnTrxMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2aHOf9aM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA1191F00896;
+	Wed, 20 May 2026 17:48:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301114;
-	bh=L9oehwHlI/symE7WR2NHncnRXGVilew289OPZAc19Oc=;
+	s=korg; t=1779299295;
+	bh=ttPF7Fa2lINL0r3H9VfEQzb/vu2z8U4Wmz599nxLzQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KD8AAzOznJqEGh47vAtEdomIsOMWJb5wtj3Wb49Lv1lqodI071sfjuiWXUoKL5zzp
-	 aTryfg1geJIqSLl6L9NULxcRsaVLlipjtBAdIXLkGV2rwjwApH6z6ecEpTrE5ATqqs
-	 MxpoSDFbcUBQE8ffdYF94BS90BKD8cUFg55zEF9E=
+	b=2aHOf9aMSH7A4ECMvql+zag69H5MtWjJSABjn/5gm9oLuWTWLY/68nwu6+xC6qfha
+	 1eJJ3AxxCBfRyp5Z5oh0dHjI+agWv6s67syt2wrbop9ny+hBJUysbXZ1vmj/5VAUli
+	 vmxe9WnHIFJvxFqj0q3NQt4u6WNaWtBau3d6pOf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 390/666] platform/x86: panasonic-laptop: Fix OPTD notifier registration and cleanup
-Date: Wed, 20 May 2026 18:20:01 +0200
-Message-ID: <20260520162119.708873596@linuxfoundation.org>
+Subject: [PATCH 6.18 719/957] eventpoll: kill __ep_remove()
+Date: Wed, 20 May 2026 18:20:02 +0200
+Message-ID: <20260520162150.141335050@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +62,166 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252606-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251928-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: 18B6E59AC6F
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 3E5A8595119
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit 8baeff2c1d33dad8572216c6ad3a7425852507d4 ]
+[ Upstream commit e9e5cd40d7c403e19f21d0f7b8b8ba3a76b58330 ]
 
-An ACPI notify handler is leaked if device_create_file() returns an
-error in acpi_pcc_hotkey_add().
+Remove the boolean conditional in __ep_remove() and restructure the code
+so the check for racing with eventpoll_release_file() are only done in
+the ep_remove_safe() path where they belong.
 
-Also, it is pointless to call pcc_unregister_optd_notifier() in
-acpi_pcc_hotkey_remove() if pcc->platform is NULL and it is better
-to arrange the cleanup code in that function in the same order as
-the rollback code in acpi_pcc_hotkey_add().
-
-Address the above by placing the pcc_register_optd_notifier() call in
-acpi_pcc_hotkey_add() after the device_create_file() return value
-check and placing the pcc_unregister_optd_notifier() call in
-acpi_pcc_hotkey_remove() right before the device_remove_file() call.
-
-Fixes: d5a81d8e864b ("platform/x86: panasonic-laptop: Add support for optical driver power in Y and W series")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/2411055.ElGaqSPkdT@rafael.j.wysocki
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://patch.msgid.link/20260423-work-epoll-uaf-v1-3-2470f9eec0f5@kernel.org
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Stable-dep-of: a6dc643c6931 ("eventpoll: fix ep_remove struct eventpoll / struct file UAF")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/panasonic-laptop.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/eventpoll.c | 67 ++++++++++++++++++++++----------------------------
+ 1 file changed, 30 insertions(+), 37 deletions(-)
 
-diff --git a/drivers/platform/x86/panasonic-laptop.c b/drivers/platform/x86/panasonic-laptop.c
-index 851f0f92219dd..1b544953858c9 100644
---- a/drivers/platform/x86/panasonic-laptop.c
-+++ b/drivers/platform/x86/panasonic-laptop.c
-@@ -1093,9 +1093,10 @@ static int acpi_pcc_hotkey_add(struct acpi_device *device)
- 		}
- 		result = device_create_file(&pcc->platform->dev,
- 			&dev_attr_cdpower);
--		pcc_register_optd_notifier(pcc, "\\_SB.PCI0.EHCI.ERHB.OPTD");
- 		if (result)
- 			goto out_platform;
+diff --git a/fs/eventpoll.c b/fs/eventpoll.c
+index 36f3545a71bfa..5d982c2503d68 100644
+--- a/fs/eventpoll.c
++++ b/fs/eventpoll.c
+@@ -826,49 +826,18 @@ static void ep_free(struct eventpoll *ep)
+ 	kfree_rcu(ep, rcu);
+ }
+ 
+-static void __ep_remove_file(struct eventpoll *ep, struct epitem *epi, struct file *file);
+-static bool __ep_remove_epi(struct eventpoll *ep, struct epitem *epi);
+-
+-/*
+- * Removes a "struct epitem" from the eventpoll RB tree and deallocates
+- * all the associated resources. Must be called with "mtx" held.
+- * If the dying flag is set, do the removal only if force is true.
+- * This prevents ep_clear_and_put() from dropping all the ep references
+- * while running concurrently with eventpoll_release_file().
+- * Returns true if the eventpoll can be disposed.
+- */
+-static bool __ep_remove(struct eventpoll *ep, struct epitem *epi, bool force)
+-{
+-	struct file *file = epi->ffd.file;
+-
+-	lockdep_assert_irqs_enabled();
+-
+-	/*
+-	 * Removes poll wait queue hooks.
+-	 */
+-	ep_unregister_pollwait(ep, epi);
+-
+-	/* Remove the current item from the list of epoll hooks */
+-	spin_lock(&file->f_lock);
+-	if (epi->dying && !force) {
+-		spin_unlock(&file->f_lock);
+-		return false;
+-	}
+-
+-	__ep_remove_file(ep, epi, file);
+-	return __ep_remove_epi(ep, epi);
+-}
+-
+ /*
+  * Called with &file->f_lock held,
+  * returns with it released
+  */
+-static void __ep_remove_file(struct eventpoll *ep, struct epitem *epi, struct file *file)
++static void __ep_remove_file(struct eventpoll *ep, struct epitem *epi,
++			     struct file *file)
+ {
+ 	struct epitems_head *to_free = NULL;
+ 	struct hlist_head *head = file->f_ep;
+ 
+ 	lockdep_assert_held(&ep->mtx);
++	lockdep_assert_held(&file->f_lock);
+ 
+ 	if (hlist_is_singular_node(&epi->fllink, head)) {
+ 		/* See eventpoll_release() for details. */
+@@ -915,7 +884,25 @@ static bool __ep_remove_epi(struct eventpoll *ep, struct epitem *epi)
+  */
+ static void ep_remove_safe(struct eventpoll *ep, struct epitem *epi)
+ {
+-	if (__ep_remove(ep, epi, false))
++	struct file *file = epi->ffd.file;
 +
-+		pcc_register_optd_notifier(pcc, "\\_SB.PCI0.EHCI.ERHB.OPTD");
- 	} else {
- 		pcc->platform = NULL;
- 	}
-@@ -1129,10 +1130,10 @@ static void acpi_pcc_hotkey_remove(struct acpi_device *device)
- 	i8042_remove_filter(panasonic_i8042_filter);
++	lockdep_assert_irqs_enabled();
++	lockdep_assert_held(&ep->mtx);
++
++	ep_unregister_pollwait(ep, epi);
++
++	/* sync with eventpoll_release_file() */
++	if (unlikely(READ_ONCE(epi->dying)))
++		return;
++
++	spin_lock(&file->f_lock);
++	if (epi->dying) {
++		spin_unlock(&file->f_lock);
++		return;
++	}
++	__ep_remove_file(ep, epi, file);
++
++	if (__ep_remove_epi(ep, epi))
+ 		WARN_ON_ONCE(ep_refcount_dec_and_test(ep));
+ }
  
- 	if (pcc->platform) {
-+		pcc_unregister_optd_notifier(pcc, "\\_SB.PCI0.EHCI.ERHB.OPTD");
- 		device_remove_file(&pcc->platform->dev, &dev_attr_cdpower);
- 		platform_device_unregister(pcc->platform);
- 	}
--	pcc_unregister_optd_notifier(pcc, "\\_SB.PCI0.EHCI.ERHB.OPTD");
+@@ -1147,7 +1134,7 @@ void eventpoll_release_file(struct file *file)
+ 	spin_lock(&file->f_lock);
+ 	if (file->f_ep && file->f_ep->first) {
+ 		epi = hlist_entry(file->f_ep->first, struct epitem, fllink);
+-		epi->dying = true;
++		WRITE_ONCE(epi->dying, true);
+ 		spin_unlock(&file->f_lock);
  
- 	sysfs_remove_group(&device->dev.kobj, &pcc_attr_group);
+ 		/*
+@@ -1156,7 +1143,13 @@ void eventpoll_release_file(struct file *file)
+ 		 */
+ 		ep = epi->ep;
+ 		mutex_lock(&ep->mtx);
+-		dispose = __ep_remove(ep, epi, true);
++
++		ep_unregister_pollwait(ep, epi);
++
++		spin_lock(&file->f_lock);
++		__ep_remove_file(ep, epi, file);
++		dispose = __ep_remove_epi(ep, epi);
++
+ 		mutex_unlock(&ep->mtx);
  
+ 		if (dispose && ep_refcount_dec_and_test(ep))
 -- 
 2.53.0
 
