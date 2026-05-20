@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251136-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2Ey8I3wDDmoD5gUAu9opvQ
-	(envelope-from <stable+bounces-252724-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:54:52 +0200
+	id wJG7ELcXDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251136-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:21:11 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7D41597632
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:54:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C72CB59979D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:21:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3CBA539C9A83
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4174D311B3D9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:14:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F8213FC5DA;
-	Wed, 20 May 2026 18:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E77CF3F7AA6;
+	Wed, 20 May 2026 17:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FN/L7G26"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S3P0fnso"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE7E3FC5B0;
-	Wed, 20 May 2026 18:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993AD366075;
+	Wed, 20 May 2026 17:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301424; cv=none; b=XDTSw681ud7ByXVvB7LgpSLRHA+e2banad8p5P40BCaQeq5HqmT7ySs7UO2TXKN0tsmG303PZJYoc76BIqkpyaErUzHyqs3O5AfIbq9n6qJltFTF45UsXhDn9M6YNO6YOYbAnhuYxb98Qx9TNPXiPHPHk9GWz2uksGAQI5ksR30=
+	t=1779297192; cv=none; b=J/sZBQ75L2vmUFwAQSFif+VHLB2b8mSOiLdXtkT7U8XPSYUKaaZ7jA0gYJiY9tVYofXyY8M2EXHIOSH3nlUU/8oF3Bgjjv4S8D05bRHU2rwkX97tKlvgQoG6FIgp3YNNw5rYurdV0kj+CD1u1Xn5VLWTfBZ7eJ+0e/ltC3JWhUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301424; c=relaxed/simple;
-	bh=/hX7KRO6HFjuX+wJnGHUV5mViDCxvOibXniCTw5mRC0=;
+	s=arc-20240116; t=1779297192; c=relaxed/simple;
+	bh=8JkDuIbHKsec7QC6vcQYCZi8rXjeBqCd1TKgXR9yzWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oFFfmWAwpoXJ7NTFdiyFoDLpRaupgrWipvo8I3Yh/1qkQH23T/kfIllLptbncvc+CkksLVmGq8xfYZ/VUt+mK3Fns95doydF37/79Vf5aZSxneAhqBohflUDsR8unCVIIqNN/uxSqUHC9l0xofVTVv5PzvaFYyIlC30IIb+BtfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FN/L7G26; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6871C1F000E9;
-	Wed, 20 May 2026 18:23:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BzWJE0SoEB3Bq7E8BSZGEd0Cqqopo57y23JmzmRmBlg5XIeBu0z6MHXhRPmBxLSVUYsBLSljCMCX8C5jAMgPVOUs32F8FSanmV9sSKnrqB37MJoTfDSH4Lfh7O7z2d4oo/DWzv5zUm1L3NBATwkHEmWMi6ZXfJb223iBIjgtP/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S3P0fnso; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF8A11F000E9;
+	Wed, 20 May 2026 17:13:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301422;
-	bh=TiuJqxeMHcRk+N33h69uNJ6Oyf5qj2WPc12+Iiq5MVE=;
+	s=korg; t=1779297191;
+	bh=Vtf7IKcxofoa4/HPlI+A6CzBBVYAZwF0CStp2QlKtmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FN/L7G26UNvL6gaBYrEp38p+eU8B5pDrdP/zt1TbFX/VGJ/dXaiqftSH921tEDz4+
-	 NmL51jOcoOOHNRA+KMGLvjxDOjMJ/IEe3S4hm6oTQvJ1qg/quTZD8pnnG7hceWQ+ZA
-	 dxtwaY+EphD3K48Ipvi0Vnmx7gC3BplU98L+e4CU=
+	b=S3P0fnsoMZ6VDmIAjVSNEPkV3xFXtPcfzN2O6wiz8k1YaqFZe6+JzJDIktFq5JHYk
+	 p1tG5WEYrBkAt6l4zpHUvB7tvNtDgxm/XpiAPmhNwuMjPfN7redpjGiN/lyfwZbNON
+	 D7LaL2RF3EHFZza5OM8/33xLz8BXJVeK7+i71MU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 522/666] drm/amdgpu/gfx6: Support harvested SI chips with disabled TCCs (v2)
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Rong Zhang <i@rong.moe>,
+	"Derek J. Clark" <derekjohn.clark@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 7.0 1083/1146] platform/x86: lenovo-wmi-other: Zero initialize WMI arguments
 Date: Wed, 20 May 2026 18:22:13 +0200
-Message-ID: <20260520162122.578439367@linuxfoundation.org>
+Message-ID: <20260520162212.744819955@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,11 +75,11 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252724-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251136-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,squebb.ca,rong.moe,gmail.com,linux.intel.com];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -94,153 +94,83 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,gitlab.freedesktop.org:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,bugs.freedesktop.org:url]
-X-Rspamd-Queue-Id: E7D41597632
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,squebb.ca:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,rong.moe:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C72CB59979D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Derek J. Clark <derekjohn.clark@gmail.com>
 
-[ Upstream commit fe2b84f9228e2a0903221a4d0d8c350b018e9c0c ]
+commit 816fbd5dacee977ca56bab79bf97f71f2f7ac24e upstream.
 
-This commit fixes amdgpu to work on the Radeon HD 7870 XT
-which has never worked with the Linux open source drivers before.
+Adds explicit initialization of wmi_method_args_32 declarations with
+zero values to prevent uninitialized data from being sent to the device
+BIOS when passed.
 
-Some boards have "harvested" chips, meaning that some parts of
-the chip are disabled and fused, and it's sold for cheaper and
-under a different marketing name.
-On a harvested chip, any of the following can be disabled:
-- CUs (Compute Units)
-- RBs (Render Backend, aka. ROP)
-- Memory channels (ie. the chip has a lower bandwidth)
-- TCCs (ie. less L2 cache)
+No functional change intended.
 
-Handle chips with harvested TCCs by patching the registers
-that configure how TCCs are mapped.
-
-If some TCCs are disabled, we need to make sure that
-the disabled TCCs are not used, and the remaining TCCs
-are used optimally.
-
-TCP_CHAN_STEER_LO/HI control which TCC is used by TCP channels.
-TCP_ADDR_CONFIG.NUM_TCC_BANKS controls how many channels are used.
-
-Note that the TCC configuration is highly relevant to performance.
-Suboptimal configuration (eg. CHAN_STEER=0) can significantly
-reduce gaming performance.
-
-For optimal performance:
-- Rely on the CHAN_STEER from the golden registers table,
-  only skip disabled TCCs but keep the mapping order.
-- Limit NUM_TCC_BANKS to number of active TCCs to avoid thrashing,
-  which performs better than using the same TCC twice.
-
-v2:
-- Also consider CGTS_USER_TCC_DISABLE for disabled TCCs.
-
-Link: https://bugs.freedesktop.org/show_bug.cgi?id=60879
-Closes: https://gitlab.freedesktop.org/drm/amd/-/work_items/2664
-Fixes: 2cd46ad22383 ("drm/amdgpu: add graphic pipeline implementation for si v8")
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 00218d15528fab9f6b31241fe5904eea4fcaa30d)
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Fixes: 22024ac5366f ("platform/x86: Add Lenovo Gamezone WMI Driver")
+Fixes: edc4b183b794 ("platform/x86: Add Lenovo Other Mode WMI Driver")
+Reported-by: Rong Zhang <i@rong.moe>
+Closes: https://lore.kernel.org/platform-driver-x86/95c7e7b539dd0af41189c754fcd35cec5b6fe182.camel@rong.moe/
+Cc: stable@vger.kernel.org
+Reviewed-by: Rong Zhang <i@rong.moe>
+Tested-by: Rong Zhang <i@rong.moe>
+Signed-off-by: Derek J. Clark <derekjohn.clark@gmail.com>
+Link: https://patch.msgid.link/20260510042546.436874-5-derekjohn.clark@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c | 66 +++++++++++++++++++++++++++
- 1 file changed, 66 insertions(+)
+ drivers/platform/x86/lenovo/wmi-gamezone.c |    2 +-
+ drivers/platform/x86/lenovo/wmi-other.c    |    6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c
-index cc9f9b10b435b..90c426ee877b6 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c
-@@ -1553,6 +1553,71 @@ static void gfx_v6_0_setup_spi(struct amdgpu_device *adev)
- 	mutex_unlock(&adev->grbm_idx_mutex);
- }
- 
-+/**
-+ * gfx_v6_0_setup_tcc() - setup which TCCs are used
-+ *
-+ * @adev: amdgpu_device pointer
-+ *
-+ * Verify whether the current GPU has any TCCs disabled,
-+ * which can happen when the GPU is harvested and some
-+ * memory channels are disabled, reducing the memory bus width.
-+ * For example, on the Radeon HD 7870 XT (Tahiti LE).
-+ *
-+ * If some TCCs are disabled, we need to make sure that
-+ * the disabled TCCs are not used, and the remaining TCCs
-+ * are used optimally.
-+ *
-+ * TCP_CHAN_STEER_LO/HI control which TCC is used by TCP channels.
-+ * TCP_ADDR_CONFIG.NUM_TCC_BANKS controls how many channels are used.
-+ *
-+ * For optimal performance:
-+ * - Rely on the CHAN_STEER from the golden registers table,
-+ *   only skip disabled TCCs but keep the mapping order.
-+ * - Limit NUM_TCC_BANKS to number of active TCCs to avoid thrashing,
-+ *   which performs better than using the same TCC twice.
-+ */
-+static void gfx_v6_0_setup_tcc(struct amdgpu_device *adev)
-+{
-+	u32 i, tcc, tcp_addr_config, num_active_tcc = 0;
-+	u64 chan_steer, patched_chan_steer = 0;
-+	const u32 num_max_tcc = adev->gfx.config.max_texture_channel_caches;
-+	const u32 dis_tcc_mask =
-+		amdgpu_gfx_create_bitmask(num_max_tcc) &
-+		(REG_GET_FIELD(RREG32(mmCGTS_TCC_DISABLE),
-+			       CGTS_TCC_DISABLE, TCC_DISABLE) |
-+		 REG_GET_FIELD(RREG32(mmCGTS_USER_TCC_DISABLE),
-+			       CGTS_USER_TCC_DISABLE, TCC_DISABLE));
-+
-+	/* When no TCC is disabled, the golden registers table already has optimal TCC setup */
-+	if (!dis_tcc_mask)
-+		return;
-+
-+	/* Each 4-bit nibble contains the index of a TCC used by all TCPs */
-+	chan_steer = RREG32(mmTCP_CHAN_STEER_LO) | ((u64)RREG32(mmTCP_CHAN_STEER_HI) << 32ull);
-+
-+	/* Patch the TCP to TCC mapping to skip disabled TCCs */
-+	for (i = 0; i < num_max_tcc; ++i) {
-+		tcc = (chan_steer >> (u64)(4 * i)) & 0xf;
-+
-+		if (!((1 << tcc) & dis_tcc_mask)) {
-+			/* Copy enabled TCC indices to the patched register value. */
-+			patched_chan_steer |= (u64)tcc << (u64)(4 * num_active_tcc);
-+			++num_active_tcc;
-+		}
-+	}
-+
-+	WARN_ON(num_active_tcc != num_max_tcc - hweight32(dis_tcc_mask));
-+
-+	/* Patch number of TCCs used by TCPs */
-+	tcp_addr_config = REG_SET_FIELD(RREG32(mmTCP_ADDR_CONFIG),
-+					TCP_ADDR_CONFIG, NUM_TCC_BANKS,
-+					num_active_tcc - 1);
-+
-+	WREG32(mmTCP_ADDR_CONFIG, tcp_addr_config);
-+	WREG32(mmTCP_CHAN_STEER_HI, upper_32_bits(patched_chan_steer));
-+	WREG32(mmTCP_CHAN_STEER_LO, lower_32_bits(patched_chan_steer));
-+}
-+
- static void gfx_v6_0_config_init(struct amdgpu_device *adev)
+--- a/drivers/platform/x86/lenovo/wmi-gamezone.c
++++ b/drivers/platform/x86/lenovo/wmi-gamezone.c
+@@ -200,7 +200,7 @@ static int lwmi_gz_profile_set(struct de
+ 			       enum platform_profile_option profile)
  {
- 	adev->gfx.config.double_offchip_lds_buf = 0;
-@@ -1711,6 +1776,7 @@ static void gfx_v6_0_constants_init(struct amdgpu_device *adev)
- 	gfx_v6_0_tiling_mode_table_init(adev);
+ 	struct lwmi_gz_priv *priv = dev_get_drvdata(dev);
+-	struct wmi_method_args_32 args;
++	struct wmi_method_args_32 args = {};
+ 	enum thermal_mode mode;
+ 	int ret;
  
- 	gfx_v6_0_setup_rb(adev);
-+	gfx_v6_0_setup_tcc(adev);
+--- a/drivers/platform/x86/lenovo/wmi-other.c
++++ b/drivers/platform/x86/lenovo/wmi-other.c
+@@ -165,7 +165,7 @@ MODULE_PARM_DESC(relax_fan_constraint,
+  */
+ static int lwmi_om_fan_get_set(struct lwmi_om_priv *priv, int channel, u32 *val, bool set)
+ {
+-	struct wmi_method_args_32 args;
++	struct wmi_method_args_32 args = {};
+ 	u32 method_id, retval;
+ 	int err;
  
- 	gfx_v6_0_setup_spi(adev);
- 
--- 
-2.53.0
-
+@@ -772,7 +772,7 @@ static ssize_t attr_current_value_store(
+ 					struct tunable_attr_01 *tunable_attr)
+ {
+ 	struct lwmi_om_priv *priv = dev_get_drvdata(tunable_attr->dev);
+-	struct wmi_method_args_32 args;
++	struct wmi_method_args_32 args = {};
+ 	struct capdata01 capdata;
+ 	enum thermal_mode mode;
+ 	u32 attribute_id;
+@@ -835,7 +835,7 @@ static ssize_t attr_current_value_show(s
+ 				       struct tunable_attr_01 *tunable_attr)
+ {
+ 	struct lwmi_om_priv *priv = dev_get_drvdata(tunable_attr->dev);
+-	struct wmi_method_args_32 args;
++	struct wmi_method_args_32 args = {};
+ 	enum thermal_mode mode;
+ 	u32 attribute_id;
+ 	int retval;
 
 
 
