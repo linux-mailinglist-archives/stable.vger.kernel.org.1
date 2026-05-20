@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-251819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252459-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uHpyHu8eDmro6AUAu9opvQ
-	(envelope-from <stable+bounces-251819-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:51:59 +0200
+	id yGelJVYCDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-252459-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:49:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B67959A391
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:51:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C258597475
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:49:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1A76E347BE1D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:42:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 87291397A017
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:12:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B42553E123F;
-	Wed, 20 May 2026 17:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6797A3F88B5;
+	Wed, 20 May 2026 18:12:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gh3OdmXV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EaBV6o40"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 800EF28DC4;
-	Wed, 20 May 2026 17:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 287383F889E;
+	Wed, 20 May 2026 18:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298973; cv=none; b=WIbRTkbpPBNVSNcO4ywuXeOuq4WXH4th5oQTlfgq+yBycWsNjPItrPu6yUet5jbj/B6zFYbP8es56zxGniJJ98Rqhany2Z7SzC6zMOWgoiy6MMFudap4VOySPjnV7o9hSxIVEm697YWghgYbNt8NvyTca7xpm3LIx/b4d1dP84M=
+	t=1779300729; cv=none; b=AdNh4mhzq4I2PmO8mbwYD//lp/BiaE1SFhH/JfsED9AiLnwsCRc93FOzlN1zJuNDp0k8dUXteqJdhnSPeJvfmjChIeqXB735i8fKqhxodmDL+OfO+cD3c0jMKK8ttZqjZG4iR0wfahltWQrkpW1rjoxEpyiBNi2Ew0Gw4irNJfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298973; c=relaxed/simple;
-	bh=2tknn6+Pxck4RRbCzt+Xnl8RBuFEFT8TVVRu1TMZ6OY=;
+	s=arc-20240116; t=1779300729; c=relaxed/simple;
+	bh=o4WyYkNpeCYq1PMkKUuJihxT1zinqtSg9iGTDH73aGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=utOvXjL9x2kG3I6xpf/TW4hychLpNwcUcZzVpWY//+I6UvKaD7ptQxMSYUU2s0inX7pIDlBEjbhl3eRcmaNpGcbPxbIIlID807Mvhq7OOy04CThFGYxC+gJMnJSqocOSgKRqkJ8D/AV/hC7vBNIkcVRvIvS7URkIaN6+odUzJ2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gh3OdmXV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E58CC1F000E9;
-	Wed, 20 May 2026 17:42:51 +0000 (UTC)
+	 MIME-Version; b=K0XuTMuQQNVjP15x+9/oZvMKutGYYiw9V8OFeB8TDXgiDUYaWMwEHkR7zPOwroQ8/jA8C0+wofYZjmxJOs4o8I8gf0XgV1f8Bw6JQ/KN1OU72xlh+fCLkiOOjwvoGrF9LolHrQDaln7/b3i84Mz7eEBZEjb4Eh/6F8AMcQmjC1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EaBV6o40; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49EE31F000E9;
+	Wed, 20 May 2026 18:12:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298972;
-	bh=M8KN2xAZT4ccp07q64EWwhi+VvPRnJDQ99mZgm1YVSs=;
+	s=korg; t=1779300727;
+	bh=3ssNjQexSSwUAtVu9czZ3wtAegv45g8Sy3MXsn0AzP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Gh3OdmXV9wsFlfasKUNxlyMrrQ+b/ZBZ8VKe0lz0M62XmziffRsNMGomeGhdovbWK
-	 SSt4XtvQEY+yc9wQbO4NuPV1V1orw3APK5DZO77Vn1+Iv/AAGsfVoIBAG6Rrkwm+SI
-	 acxOi5GMegeRZ7e2TPZ+P4EuAtajVO5/V7zjRxMY=
+	b=EaBV6o40Vk1LQXcdi5f0ZL38R8DU2rBgVIn3yNd3X9Uxa6lyHu45alnDX87RsZ3Ge
+	 RxvERxT7cm1hl3Aw2tIArKz6Vi6KIcGQphXHdRnDy3FB0NcVYC6DQ9AJuuazLwbPQm
+	 /dGGyif+FV7FAF3M3OHkpj+VXeqYCKvzvYMAL7ks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Abel Vesa <abel.vesa@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 612/957] arm64: dts: imx8mm-tqma8mqml: Correct PAD settings for PMIC_nINT
+Subject: [PATCH 6.12 284/666] arm64: dts: qcom: sm8550: Fix GIC_ITS range length
 Date: Wed, 20 May 2026 18:18:15 +0200
-Message-ID: <20260520162147.807095940@linuxfoundation.org>
+Message-ID: <20260520162117.370701532@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,69 +68,70 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251819-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-252459-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 1B67959A391
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[1.4.236.224:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,1.5.137.32:email,linaro.org:email]
+X-Rspamd-Queue-Id: 9C258597475
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit 42a9f5a16328ed78a88e0498556965b6c6ec515c ]
+[ Upstream commit 357c559e386705609b6b9dc0544c420e3f91f3a0 ]
 
-With commit 5d0efaf47ee90 ("regulator: pca9450: Correct interrupt type"),
-there might be interrupt storm for this board. Need to set PAD PUE and PU
-together to make pull up work properly.
+Currently, the GITS_SGIR register is cut off. Fix it up.
 
-Fixes: dfcd1b6f7620e ("arm64: dts: freescale: add initial device tree for TQMa8MQML with i.MX8MM")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Fixes: ffc50b2d3828 ("arm64: dts: qcom: Add base SM8550 dtsi")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260317-topic-its_range_fixup-v1-4-49be8076adb1@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mm-tqma8mqml.dtsi | 2 +-
+ arch/arm64/boot/dts/qcom/sm8550.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-tqma8mqml.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-tqma8mqml.dtsi
-index b82e9790ea205..a0e8b158c4edf 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-tqma8mqml.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-tqma8mqml.dtsi
-@@ -291,7 +291,7 @@ pinctrl_i2c1_gpio: i2c1gpiogrp {
- 	};
+diff --git a/arch/arm64/boot/dts/qcom/sm8550.dtsi b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+index cfdd30009015f..5044a754cf5b2 100644
+--- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+@@ -4418,7 +4418,7 @@ intc: interrupt-controller@17100000 {
  
- 	pinctrl_pmic: pmicgrp {
--		fsl,pins = <MX8MM_IOMUXC_GPIO1_IO08_GPIO1_IO8		0x94>;
-+		fsl,pins = <MX8MM_IOMUXC_GPIO1_IO08_GPIO1_IO8		0x1d4>;
- 	};
- 
- 	pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
+ 			gic_its: msi-controller@17140000 {
+ 				compatible = "arm,gic-v3-its";
+-				reg = <0 0x17140000 0 0x20000>;
++				reg = <0 0x17140000 0 0x40000>;
+ 				msi-controller;
+ 				#msi-cells = <1>;
+ 			};
 -- 
 2.53.0
 
