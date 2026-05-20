@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250941-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QHfGIogqDmpq6gUAu9opvQ
-	(envelope-from <stable+bounces-252973-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:41:28 +0200
+	id mPmfNxv1DWoz5AUAu9opvQ
+	(envelope-from <stable+bounces-250941-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD93859B348
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:41:27 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3337594D72
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C859E37B27DA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:34:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C299931365C8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B456933DEE5;
-	Wed, 20 May 2026 18:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E58E372691;
+	Wed, 20 May 2026 17:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/J7VA83"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F4JVgRl1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6471130DEAC;
-	Wed, 20 May 2026 18:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96BB2609FD;
+	Wed, 20 May 2026 17:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302073; cv=none; b=bvoMivNDhMqZ1D2s/hWL0lq80dRN05mLJzl8T/84FELaQV4KnV2ysNMrxhGkEWXbX8knpgM65jtStMBiPjFsolqmZqqA1LDVddy6Ec+SS13ObYoK+v/Uo4kNW/sizK0kvKv9ZNoO6k/8ZYCalPS2PVhySreMJ+hOWDx3O9/b1OA=
+	t=1779296692; cv=none; b=K9a7qYVatk4EuAtFWyQFXlYOrxBHJ1ldfKMz2fqZTVD7YnhSvxFyTYwTSAf9+fWYsoSjFsGzY/P3VGo46ARkHRK6QNUuptTuyq7vM+mWnO3ayFS7jYpIIAgZJXdA08rw076cQzJ7kkVLLLQ5mFW8FbgMnOt39z6XCaMBVTfBTgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302073; c=relaxed/simple;
-	bh=P6KHpKWfxr0jdV4wzJ8dnwvOldgFGk2K4vkBDH5CwdA=;
+	s=arc-20240116; t=1779296692; c=relaxed/simple;
+	bh=fY+WCWMjMYp9L0neUnT8LJMVRsRr2Ey2XBQa9CDxHGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nYha7P9cjqX2oviv4v4RsI/eBTb9GwQAUDJVA/CXDLNcsitjvi4B2M5hL/xk5MTLCC9y/1/a8NijuC64PmY+0uLnEJQkRD0VJZA0GKzACxfvvP4gByBznp4DdIEmVEWNtrepxnanDWiuJx8dSIh6e6RjGxLfxcZbmecb7h+5ycw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/J7VA83; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA5A01F000E9;
-	Wed, 20 May 2026 18:34:31 +0000 (UTC)
+	 MIME-Version; b=nbXmMQq+3Q2GcAz/CQoIA02cx7Ot92W6bYAlJattGaINkC6jLUniuxhNpXV4e+wF8oPMarqMaoDhHyJROrVPwYzfB54HsKzzP5jyt7JHtARm0Iw8MzhNCU6lW0rs8JkR7ocSlL9Y9UcqyHO2j6NSBAhA0Rq8jfPzR6gY7rD6QD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F4JVgRl1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A8951F00893;
+	Wed, 20 May 2026 17:04:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302072;
-	bh=TR3Q5dS/IHqh0nu7re2WNZBHhd5y9yQthYZ3LL19aMw=;
+	s=korg; t=1779296690;
+	bh=TxGfP630dtWvoNckIKRArHlVxoetI4ycRyGsEnRM0FY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=S/J7VA83GXjOHxpU1OcXsbNNMpT1GvCk7NnyO8rsey5K/zYlp5iMBhMvhU4hirIy0
-	 LLRWfDwOYZW4BZy4J8xmY2h9C0tu3OtHH5oL1XAbUq0//hcqT/1Jw22rS19T/mQ+dX
-	 OlBAg6MCZ1UpZkAd4202hfWkD4GBqm1niYwUqwyI=
+	b=F4JVgRl1/woe9TtGY6XXihS2udnNzKhtLo1/o+82EXwLDXqVn/NCAREe3jtyaw+CK
+	 MxjZN6CXLmhsvlKUohHAywWIZX5QS5QGPehcFbyFyRkjHfDyBp1gdQuyiUapqmRcfX
+	 NMKFeGElfLy5gyp0z7WXVSke7GvdW4JpNT9u/ZTE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Xiang Mei <xmei5@asu.edu>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 121/508] ALSA: core: Validate compress device numbers without dynamic minors
-Date: Wed, 20 May 2026 18:19:04 +0200
-Message-ID: <20260520162101.251343649@linuxfoundation.org>
+Subject: [PATCH 7.0 0895/1146] netfilter: arp_tables: fix IEEE1394 ARP payload parsing
+Date: Wed, 20 May 2026 18:19:05 +0200
+Message-ID: <20260520162208.492125016@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +63,160 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252973-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,kernel.org];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250941-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: CD93859B348
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,netfilter.org:email,asu.edu:email]
+X-Rspamd-Queue-Id: E3337594D72
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 796e119e9b14763be905ad0d023c71a14bc2e931 ]
+[ Upstream commit 1e8e3f449b1e73b73a843257635b9c50f0cc0f0a ]
 
-Without CONFIG_SND_DYNAMIC_MINORS, ALSA reserves only two fixed minors
-for compress devices on each card: comprD0 and comprD1.
+Weiming Shi says:
 
-snd_find_free_minor() currently computes the compress minor as
-type + dev without validating dev first, so device numbers greater than
-1 spill into the HWDEP minor range instead of failing registration.
+"arp_packet_match() unconditionally parses the ARP payload assuming two
+hardware addresses are present (source and target). However,
+IPv4-over-IEEE1394 ARP (RFC 2734) omits the target hardware address
+field, and arp_hdr_len() already accounts for this by returning a
+shorter length for ARPHRD_IEEE1394 devices.
 
-ASoC passes rtd->id to snd_compress_new(), so this can happen on real
-non-dynamic-minor builds.
+As a result, on IEEE1394 interfaces arp_packet_match() advances past a
+nonexistent target hardware address and reads the wrong bytes for both
+the target device address comparison and the target IP address. This
+causes arptables rules to match against garbage data, leading to
+incorrect filtering decisions: packets that should be accepted may be
+dropped and vice versa.
 
-Add a dedicated fixed-minor check for SNDRV_DEVICE_TYPE_COMPRESS in
-snd_find_free_minor() and reject out-of-range device numbers with
--EINVAL before constructing the minor.
+The ARP stack in net/ipv4/arp.c (arp_create and arp_process) already
+handles this correctly by skipping the target hardware address for
+ARPHRD_IEEE1394. Apply the same pattern to arp_packet_match()."
 
-Also remove the stale TODO in compress_offload.c that still claims
-multiple compress nodes are missing.
+Mangle the original patch to always return 0 (no match) in case user
+matches on the target hardware address which is never present in
+IEEE1394.
 
-Fixes: 3eafc959b32f ("ALSA: core: add support for compressed devices")
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260325-alsa-compress-static-minors-v1-1-0628573bee1c@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Note that this returns 0 (no match) for either normal and inverse match
+because matching in the target hardware address in ARPHRD_IEEE1394 has
+never been supported by arptables. This is intentional, matching on the
+target hardware address should never evaluate true for ARPHRD_IEEE1394.
+
+Moreover, adjust arpt_mangle to drop the packet too as AI suggests:
+
+In arpt_mangle, the logic assumes a standard ARP layout. Because
+IEEE1394 (FireWire) omits the target hardware address, the linear
+pointer arithmetic miscalculates the offset for the target IP address.
+This causes mangling operations to write to the wrong location, leading
+to packet corruption. To ensure safety, this patch drops packets
+(NF_DROP) when mangling is requested for these fields on IEEE1394
+devices, as the current implementation cannot correctly map the FireWire
+ARP payload.
+
+This omits both mangling target hardware and IP address. Even if IP
+address mangling should be possible in IEEE1394, this would require
+to adjust arpt_mangle offset calculation, which has never been
+supported.
+
+Based on patch from Weiming Shi <bestswngs@gmail.com>.
+
+Fixes: 6752c8db8e0c ("firewire net, ipv4 arp: Extend hardware address and remove driver-level packet inspection.")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/compress_offload.c | 7 -------
- sound/core/sound.c            | 7 +++++++
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ net/ipv4/netfilter/arp_tables.c  | 18 +++++++++++++++---
+ net/ipv4/netfilter/arpt_mangle.c |  8 ++++++++
+ 2 files changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/sound/core/compress_offload.c b/sound/core/compress_offload.c
-index 619371aa9964d..8545c7bbc58e3 100644
---- a/sound/core/compress_offload.c
-+++ b/sound/core/compress_offload.c
-@@ -40,13 +40,6 @@
- #define COMPR_CODEC_CAPS_OVERFLOW
- #endif
+diff --git a/net/ipv4/netfilter/arp_tables.c b/net/ipv4/netfilter/arp_tables.c
+index 1cdd9c28ab2da..97ead883e4a13 100644
+--- a/net/ipv4/netfilter/arp_tables.c
++++ b/net/ipv4/netfilter/arp_tables.c
+@@ -110,13 +110,25 @@ static inline int arp_packet_match(const struct arphdr *arphdr,
+ 	arpptr += dev->addr_len;
+ 	memcpy(&src_ipaddr, arpptr, sizeof(u32));
+ 	arpptr += sizeof(u32);
+-	tgt_devaddr = arpptr;
+-	arpptr += dev->addr_len;
++
++	if (IS_ENABLED(CONFIG_FIREWIRE_NET) && dev->type == ARPHRD_IEEE1394) {
++		if (unlikely(memchr_inv(arpinfo->tgt_devaddr.mask, 0,
++					sizeof(arpinfo->tgt_devaddr.mask))))
++			return 0;
++
++		tgt_devaddr = NULL;
++	} else {
++		tgt_devaddr = arpptr;
++		arpptr += dev->addr_len;
++	}
+ 	memcpy(&tgt_ipaddr, arpptr, sizeof(u32));
  
--/* TODO:
-- * - add substream support for multiple devices in case of
-- *	SND_DYNAMIC_MINORS is not used
-- * - Multiple node representation
-- *	driver should be able to register multiple nodes
-- */
--
- struct snd_compr_file {
- 	unsigned long caps;
- 	struct snd_compr_stream stream;
-diff --git a/sound/core/sound.c b/sound/core/sound.c
-index df5571d986295..f3bb0adf37cce 100644
---- a/sound/core/sound.c
-+++ b/sound/core/sound.c
-@@ -219,9 +219,16 @@ static int snd_find_free_minor(int type, struct snd_card *card, int dev)
- 	case SNDRV_DEVICE_TYPE_RAWMIDI:
- 	case SNDRV_DEVICE_TYPE_PCM_PLAYBACK:
- 	case SNDRV_DEVICE_TYPE_PCM_CAPTURE:
-+		if (snd_BUG_ON(!card))
-+			return -EINVAL;
-+		minor = SNDRV_MINOR(card->number, type + dev);
-+		break;
- 	case SNDRV_DEVICE_TYPE_COMPRESS:
- 		if (snd_BUG_ON(!card))
- 			return -EINVAL;
-+		if (dev < 0 ||
-+		    dev >= SNDRV_MINOR_HWDEP - SNDRV_MINOR_COMPRESS)
-+			return -EINVAL;
- 		minor = SNDRV_MINOR(card->number, type + dev);
- 		break;
- 	default:
+ 	if (NF_INVF(arpinfo, ARPT_INV_SRCDEVADDR,
+ 		    arp_devaddr_compare(&arpinfo->src_devaddr, src_devaddr,
+-					dev->addr_len)) ||
++					dev->addr_len)))
++		return 0;
++
++	if (tgt_devaddr &&
+ 	    NF_INVF(arpinfo, ARPT_INV_TGTDEVADDR,
+ 		    arp_devaddr_compare(&arpinfo->tgt_devaddr, tgt_devaddr,
+ 					dev->addr_len)))
+diff --git a/net/ipv4/netfilter/arpt_mangle.c b/net/ipv4/netfilter/arpt_mangle.c
+index a4e07e5e9c118..f65dd339208e8 100644
+--- a/net/ipv4/netfilter/arpt_mangle.c
++++ b/net/ipv4/netfilter/arpt_mangle.c
+@@ -40,6 +40,10 @@ target(struct sk_buff *skb, const struct xt_action_param *par)
+ 	}
+ 	arpptr += pln;
+ 	if (mangle->flags & ARPT_MANGLE_TDEV) {
++		if (unlikely(IS_ENABLED(CONFIG_FIREWIRE_NET) &&
++			     skb->dev->type == ARPHRD_IEEE1394))
++			return NF_DROP;
++
+ 		if (ARPT_DEV_ADDR_LEN_MAX < hln ||
+ 		   (arpptr + hln > skb_tail_pointer(skb)))
+ 			return NF_DROP;
+@@ -47,6 +51,10 @@ target(struct sk_buff *skb, const struct xt_action_param *par)
+ 	}
+ 	arpptr += hln;
+ 	if (mangle->flags & ARPT_MANGLE_TIP) {
++		if (unlikely(IS_ENABLED(CONFIG_FIREWIRE_NET) &&
++			     skb->dev->type == ARPHRD_IEEE1394))
++			return NF_DROP;
++
+ 		if (ARPT_MANGLE_ADDR_LEN_MAX < pln ||
+ 		   (arpptr + pln > skb_tail_pointer(skb)))
+ 			return NF_DROP;
 -- 
 2.53.0
 
