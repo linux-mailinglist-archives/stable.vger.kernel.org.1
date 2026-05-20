@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-253240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251174-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kFwzFyAvDmoK7wUAu9opvQ
-	(envelope-from <stable+bounces-253240-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:01:04 +0200
+	id 8MO9FZjvDWpu4wUAu9opvQ
+	(envelope-from <stable+bounces-251174-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:30:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6752159B986
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:01:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B893C593D27
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:29:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B260B3980932
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:51:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AEA1631E295E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16CDA421EE4;
-	Wed, 20 May 2026 18:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF82335F619;
+	Wed, 20 May 2026 17:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nj9dgK9V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F8emEBk/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6C83FF89A;
-	Wed, 20 May 2026 18:46:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C09B37754D;
+	Wed, 20 May 2026 17:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302764; cv=none; b=jvksU9iEAibJtH/L0K0FBAQh23+lLbv0NoyVA62J9bnoeqhkLlMW3pjd/hq+rG0Pu8opBiFOP4KN1GriBBdLKV3u7SJkIKkYWeUBDv+CeuqcxSUt1vox8TmheBI7aQ4z27BoLx6gqYI3kFZQoEl06JsxGBP7voRp6DIdlIqvQRk=
+	t=1779297292; cv=none; b=OIepwMpC+Y6cIaU1DW00v6qTil5jit50wGbeSw7slu7C+kgphvtY2w/f7il6PFhQP1DbzgYsjv5SzJ1FQpqYTWMutdB8bAnw3j5hpqJwpYYZFXanx9PApmQDCG8ApRdPKobn5WqX5Q54moiwPqAq6OSjabNFj8CbcncnTOVknAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302764; c=relaxed/simple;
-	bh=RIryreL2VPwh6Ve0Ex7FePTdDDvv8V+MyqSC7q21JtA=;
+	s=arc-20240116; t=1779297292; c=relaxed/simple;
+	bh=wPYWVd2FTmpVXpaGWdsu/m2dJkFFaQrPNIRrm+jpAV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rdCRG+PBYLAwsjSxN1WBd5/mBvQtXr8tvYY3Z3tFXjxMvry1WJheD25UAX7aAwzd0LV2B+8n8Ob/vN+KW2KT9LVg1m06disM26wnSYBuax0yKWxP781mVUSL2uQ6V2RaLmy7NABz2nvONOqxDQ3SeEt24RyASvFX9AH3zarG3UI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nj9dgK9V; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 799F91F00893;
-	Wed, 20 May 2026 18:46:01 +0000 (UTC)
+	 MIME-Version; b=EEk28ajkYezjnE3hWI/nVHOe/GBybEovzEINqqVERw+BJzfWZZAuI9Rc+qOUVHqfXndrSFoslx8x0YcwgPPsH4a1rq92X/Ns8H5caEzS1L3GIkkdSzXXZyL+fofuxyWTVS5Rv2JV4jSIN/mX1JI+PUN5Hy7CNBsiLlFwollxiUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F8emEBk/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E14531F000E9;
+	Wed, 20 May 2026 17:14:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302762;
-	bh=np8bN7h1v4QOp9mrAygtXbboPQlYlbJnSVaZ7KisgpQ=;
+	s=korg; t=1779297291;
+	bh=qZMJMBkYPaegDneS4Cypx/tLmAtr3vsrs/kQvG5aLas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Nj9dgK9V4iWjpYZFUjN9UF2uEKTgdwlAEQiO4KA+OSauctYbrG2jEjCeMv/dl8JfM
-	 GB2dJh5PMfBAwfjKwW9HfcLYuJv73u9X8S7A7dAJ7z/N+uYkc05q3P4KFKQ9EbfXov
-	 PpOVDRzKhgqzJb/WDXJK82n3STSyQY+a4k86ZNv4=
+	b=F8emEBk/Sn9241gE5vwKotR7W7pJTgFdrCqovgcHMDYyUJiSECCIZqxkfhQcFgHRS
+	 iXra7k4/H+zDoieo95CnJtd+e6CqOnOjoLfaiFhbew+7QbKKzOsAHyfdwPZTC57fkt
+	 p5I+b9qYygBaNGWehCqh5JCil+ThPPsrdCeyRavE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 349/508] net/sched: sch_red: annotate data-races in red_dump_stats()
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 7.0 1122/1146] iommu: Fix NULL group->domain dereference in pci_dev_reset_iommu_done()
 Date: Wed, 20 May 2026 18:22:52 +0200
-Message-ID: <20260520162106.199548902@linuxfoundation.org>
+Message-ID: <20260520162213.633516289@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,145 +68,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253240-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251174-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,mojatatu.com:email]
-X-Rspamd-Queue-Id: 6752159B986
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nvidia.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: B893C593D27
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Nicolin Chen <nicolinc@nvidia.com>
 
-[ Upstream commit a8f5192809caf636d05ba47c144f282cfd0e3839 ]
+commit d769711fcddd005f1e654b3bde547140917fe696 upstream.
 
-red_dump_stats() only runs with RTNL held,
-reading fields that can be changed in qdisc fast path.
+Local sashiko review pointed it out that group->domain could be NULL when
+a default domain fails to allocate during the first probe, which can crash
+at domain->ops->attach_dev dereference in __iommu_attach_device() invoked
+by pci_dev_reset_iommu_done().
 
-Add READ_ONCE()/WRITE_ONCE() annotations.
+pci_dev_reset_iommu_prepare() is fine as an old_domain pointer can be NULL.
 
-Alternative would be to acquire the qdisc spinlock, but our long-term
-goal is to make qdisc dump operations lockless as much as we can.
+Skip the re-attach in pci_dev_reset_iommu_done() to fix the bug.
 
-tc_red_xstats fields don't need to be latched atomically,
-otherwise this bug would have been caught earlier.
-
-Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260421142309.3964322-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c279e83953d9 ("iommu: Introduce pci_dev_reset_iommu_prepare/done()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_red.c | 31 +++++++++++++++++++++----------
- 1 file changed, 21 insertions(+), 10 deletions(-)
+ drivers/iommu/iommu.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_red.c b/net/sched/sch_red.c
-index ea3580d1d19e8..5348b61053068 100644
---- a/net/sched/sch_red.c
-+++ b/net/sched/sch_red.c
-@@ -89,17 +89,20 @@ static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	case RED_PROB_MARK:
- 		qdisc_qstats_overlimit(sch);
- 		if (!red_use_ecn(q)) {
--			q->stats.prob_drop++;
-+			WRITE_ONCE(q->stats.prob_drop,
-+				   q->stats.prob_drop + 1);
- 			goto congestion_drop;
- 		}
+--- a/drivers/iommu/iommu.c
++++ b/drivers/iommu/iommu.c
+@@ -4035,8 +4035,13 @@ void pci_dev_reset_iommu_done(struct pci
+ 	if (WARN_ON(!group->blocking_domain))
+ 		return;
  
- 		if (INET_ECN_set_ce(skb)) {
--			q->stats.prob_mark++;
-+			WRITE_ONCE(q->stats.prob_mark,
-+				   q->stats.prob_mark + 1);
- 			skb = tcf_qevent_handle(&q->qe_mark, sch, skb, to_free, &ret);
- 			if (!skb)
- 				return NET_XMIT_CN | ret;
- 		} else if (!red_use_nodrop(q)) {
--			q->stats.prob_drop++;
-+			WRITE_ONCE(q->stats.prob_drop,
-+				   q->stats.prob_drop + 1);
- 			goto congestion_drop;
- 		}
- 
-@@ -109,17 +112,20 @@ static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	case RED_HARD_MARK:
- 		qdisc_qstats_overlimit(sch);
- 		if (red_use_harddrop(q) || !red_use_ecn(q)) {
--			q->stats.forced_drop++;
-+			WRITE_ONCE(q->stats.forced_drop,
-+				   q->stats.forced_drop + 1);
- 			goto congestion_drop;
- 		}
- 
- 		if (INET_ECN_set_ce(skb)) {
--			q->stats.forced_mark++;
-+			WRITE_ONCE(q->stats.forced_mark,
-+				   q->stats.forced_mark + 1);
- 			skb = tcf_qevent_handle(&q->qe_mark, sch, skb, to_free, &ret);
- 			if (!skb)
- 				return NET_XMIT_CN | ret;
- 		} else if (!red_use_nodrop(q)) {
--			q->stats.forced_drop++;
-+			WRITE_ONCE(q->stats.forced_drop,
-+				   q->stats.forced_drop + 1);
- 			goto congestion_drop;
- 		}
- 
-@@ -133,7 +139,8 @@ static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		sch->qstats.backlog += len;
- 		sch->q.qlen++;
- 	} else if (net_xmit_drop_count(ret)) {
--		q->stats.pdrop++;
-+		WRITE_ONCE(q->stats.pdrop,
-+			   q->stats.pdrop + 1);
- 		qdisc_qstats_drop(sch);
+-	/* Re-attach RID domain back to group->domain */
+-	if (group->domain != group->blocking_domain) {
++	/*
++	 * Re-attach RID domain back to group->domain
++	 *
++	 * Leave the device parked in the blocking_domain if group->domain isn't
++	 * initialized yet
++	 */
++	if (group->domain && group->domain != group->blocking_domain) {
+ 		WARN_ON(__iommu_attach_device(group->domain, &pdev->dev,
+ 					      group->blocking_domain));
  	}
- 	return ret;
-@@ -461,9 +468,13 @@ static int red_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- 		dev->netdev_ops->ndo_setup_tc(dev, TC_SETUP_QDISC_RED,
- 					      &hw_stats_request);
- 	}
--	st.early = q->stats.prob_drop + q->stats.forced_drop;
--	st.pdrop = q->stats.pdrop;
--	st.marked = q->stats.prob_mark + q->stats.forced_mark;
-+	st.early = READ_ONCE(q->stats.prob_drop) +
-+		   READ_ONCE(q->stats.forced_drop);
-+
-+	st.pdrop = READ_ONCE(q->stats.pdrop);
-+
-+	st.marked = READ_ONCE(q->stats.prob_mark) +
-+		    READ_ONCE(q->stats.forced_mark);
- 
- 	return gnet_stats_copy_app(d, &st, sizeof(st));
- }
--- 
-2.53.0
-
 
 
 
