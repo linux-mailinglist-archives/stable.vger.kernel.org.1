@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-251670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252312-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GND4MkYdDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251670-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:44:54 +0200
+	id MHGsGywTDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-252312-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:01:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B06559A0A2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:44:54 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7243A599089
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:01:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7E5C4372FBA4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:36:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 18EAA328BEB5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:06:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54EB73DD504;
-	Wed, 20 May 2026 17:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 456E93F9287;
+	Wed, 20 May 2026 18:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uvQax11n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qX896Cia"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F368D3D75D3;
-	Wed, 20 May 2026 17:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9FA3F660B;
+	Wed, 20 May 2026 18:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298587; cv=none; b=WNWsQWofWayHKWLHXCHhJScJ2Ifk0k93gvhyM7naFaTQDl1e7v0mOamhG256vwlKqG+flHzAjrPq0+vjDhVhoSZUy/eb8DJC80WsZ4PA0c6jUd34/jU80gV47Kr0OGrXrO5/qf/coPvuhFWZJdsehnqdF3unp3aa/XE4X3fVFiI=
+	t=1779300347; cv=none; b=ZSTg0QQjhVnhaVuqpCPSKPpiNBqQbLqdo4so11cPBEutU+69Nf5RbftV0LX6CJIGx3wMV1gk4+MPMvtEKM7wCeu9yO1h30Zt5d3ga4qFcV3VfA9AJL2viX47/ug3QEFP2iHyCB/vJmHdPbsGSWmB/SEHDryOABXlfUj2INf8fik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298587; c=relaxed/simple;
-	bh=WS0kCBd2oLzsP27raPJoWLv5VSgFNpn9kreBA+htezA=;
+	s=arc-20240116; t=1779300347; c=relaxed/simple;
+	bh=1rs0nf2/8DBRTHk+BbaPXReMz2hUYVR0RrW1FXv0CIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FkhodMW8Siwn1yuiuh0EAvT05ZCvYstSM77IFVWH5gFxD9hJ7E02VvFR98DWpnOAhpJyWvCTY+PUKVTtOrQme7RJhk7DIdT5LzVEu2jajC3xcXghFEd0cto83AycX2ehJCNadjoVr4DP0Q/PMXUfVUO8txPo0shz0Ln01H3O8kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uvQax11n; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 646D31F000E9;
-	Wed, 20 May 2026 17:36:25 +0000 (UTC)
+	 MIME-Version; b=gHgR3LSb1mf+sYr5r8fJTFZSisIIyozKXqOGkF3ibksA882CkeO4m8wxbDt8Wh8CIv88611AT6tXMGoD94IbRAprDPy2qep8qzi6QMWE3/tjKR8sd4Hd4Upr3Cb0jxu3tIj0oktE0iwxeRAg3HNyZpT7oSwqrepjf9UQhkloPos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qX896Cia; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E7A91F000E9;
+	Wed, 20 May 2026 18:05:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298585;
-	bh=k7MFf3Y1ELxPuu9U91nAp9tVYVpy9GcPclMSZ8Qwd0U=;
+	s=korg; t=1779300345;
+	bh=pfqmVYd2UF38Kl1J23SPWaWPeMMLrHDCo18ovgYVzsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uvQax11nL/yz9YvI6soGVVmG2VxiYQwL+edlbBolouhC30RaziUlYnm/SRpP9tUGp
-	 AhM1mBorryZvPAHxwGfVXQNRAVuEXeG8TVlHIjL8hYMepVrs4vQMjODR2ydlazJ8id
-	 Tyiiykgm2vRcR6cZSSO+qwX+8FZw/fmJZbrHrbOM=
+	b=qX896CiaJFr6HG619KYwxB7VwvSPQxtS8dHbJNRrZVJEpD7a2BmIrfqsiCnqEAeLV
+	 2EmzgdL1DFJRBcduQ9XrQshFJOguMk5RS2Sm/6BHlvDc0m2uMqCZsT7kdcITC4PAaw
+	 tQEFOh+5CDzXJNHkFZSbriZ3RpWemR8fLy4Apt/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Takahiro Kuwano <Takahiro.Kuwano@infineon.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Jayesh Choudhary <j-choudhary@ti.com>,
+	Harikrishna Shenoy <h-shenoy@ti.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 467/957] mtd: spi-nor: sfdp: introduce smpt_map_id fixup hook
-Date: Wed, 20 May 2026 18:15:50 +0200
-Message-ID: <20260520162144.651479661@linuxfoundation.org>
+Subject: [PATCH 6.12 140/666] drm/bridge: cadence: cdns-mhdp8546-core: Add mode_valid hook to drm_bridge_funcs
+Date: Wed, 20 May 2026 18:15:51 +0200
+Message-ID: <20260520162114.245208529@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,123 +66,108 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251670-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-252312-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mailbox.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linaro.org:email,infineon.com:email]
-X-Rspamd-Queue-Id: 2B06559A0A2
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,ideasonboard.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 7243A599089
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
+From: Jayesh Choudhary <j-choudhary@ti.com>
 
-[ Upstream commit f74de390557bf2bcc5dca4a357b41c0701d3f76e ]
+[ Upstream commit 6dbff34016052b099558b76632e4983e2df13fed ]
 
-Certain chips have inconsistent Sector Map Parameter Table (SMPT) data,
-which leads to the wrong map ID being identified, causing failures to
-detect the correct sector map.
+Add cdns_mhdp_bridge_mode_valid() to check if specific mode is valid for
+this bridge or not. In the legacy usecase with
+!DRM_BRIDGE_ATTACH_NO_CONNECTOR we were using the hook from
+drm_connector_helper_funcs but with DRM_BRIDGE_ATTACH_NO_CONNECTOR
+we need to have mode_valid() in drm_bridge_funcs.
 
-To fix this, introduce smpt_map_id() into the struct spi_nor_fixups.
-This function will be called after the initial SMPT-based detection,
-allowing chip-specific logic to correct the map ID.
+Without this patch, when using DRM_BRIDGE_ATTACH_NO_CONNECTOR
+flag, the cdns_mhdp_bandwidth_ok() function would not be called
+during  mode validation, potentially allowing modes that exceed
+the bridge's bandwidth capabilities to be incorrectly marked as
+valid.
 
-Infineon S25FS512S needs this fixup as it has inconsistency between map
-ID definition and configuration register value actually obtained.
-
-Co-developed-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Tested-by: Marek Vasut <marek.vasut+renesas@mailbox.org> # S25FS512S
-Signed-off-by: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
-Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>>
-Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
-Stable-dep-of: 3620d67b4849 ("mtd: spi-nor: update spi_nor_fixups::post_sfdp() documentation")
+Fixes: c932ced6b585 ("drm/tidss: Update encoder/bridge chain connect model")
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Jayesh Choudhary <j-choudhary@ti.com>
+Signed-off-by: Harikrishna Shenoy <h-shenoy@ti.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Link: https://patch.msgid.link/20251209120332.3559893-3-h-shenoy@ti.com
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/spi-nor/core.h |  3 +++
- drivers/mtd/spi-nor/sfdp.c | 12 ++++++++++++
- 2 files changed, 15 insertions(+)
+ .../drm/bridge/cadence/cdns-mhdp8546-core.c   | 20 +++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/mtd/spi-nor/core.h b/drivers/mtd/spi-nor/core.h
-index 5ad46d95d09cc..16b382d4f04f2 100644
---- a/drivers/mtd/spi-nor/core.h
-+++ b/drivers/mtd/spi-nor/core.h
-@@ -411,6 +411,8 @@ struct spi_nor_flash_parameter {
-  * @post_bfpt: called after the BFPT table has been parsed
-  * @smpt_read_dummy: called during SMPT table is being parsed. Used to fix the
-  *                   number of dummy cycles in read register ops.
-+ * @smpt_map_id: called after map ID in SMPT table has been determined for the
-+ *               case the map ID is wrong and needs to be fixed.
-  * @post_sfdp: called after SFDP has been parsed (is also called for SPI NORs
-  *             that do not support RDSFDP). Typically used to tweak various
-  *             parameters that could not be extracted by other means (i.e.
-@@ -429,6 +431,7 @@ struct spi_nor_fixups {
- 			 const struct sfdp_parameter_header *bfpt_header,
- 			 const struct sfdp_bfpt *bfpt);
- 	void (*smpt_read_dummy)(const struct spi_nor *nor, u8 *read_dummy);
-+	void (*smpt_map_id)(const struct spi_nor *nor, u8 *map_id);
- 	int (*post_sfdp)(struct spi_nor *nor);
- 	int (*late_init)(struct spi_nor *nor);
- };
-diff --git a/drivers/mtd/spi-nor/sfdp.c b/drivers/mtd/spi-nor/sfdp.c
-index 9a47dcaca06ae..a8324c2da0acf 100644
---- a/drivers/mtd/spi-nor/sfdp.c
-+++ b/drivers/mtd/spi-nor/sfdp.c
-@@ -730,6 +730,16 @@ static u8 spi_nor_smpt_read_dummy(const struct spi_nor *nor, const u32 settings)
- 	return read_dummy;
+diff --git a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
+index d718a908208f5..d56466e9b155f 100644
+--- a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
++++ b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
+@@ -2231,6 +2231,25 @@ static const struct drm_edid *cdns_mhdp_bridge_edid_read(struct drm_bridge *brid
+ 	return cdns_mhdp_edid_read(mhdp, connector);
  }
  
-+static void spi_nor_smpt_map_id_fixups(const struct spi_nor *nor, u8 *map_id)
++static enum drm_mode_status
++cdns_mhdp_bridge_mode_valid(struct drm_bridge *bridge,
++			    const struct drm_display_info *info,
++			    const struct drm_display_mode *mode)
 +{
-+	if (nor->manufacturer && nor->manufacturer->fixups &&
-+	    nor->manufacturer->fixups->smpt_map_id)
-+		nor->manufacturer->fixups->smpt_map_id(nor, map_id);
++	struct cdns_mhdp_device *mhdp = bridge_to_mhdp(bridge);
 +
-+	if (nor->info->fixups && nor->info->fixups->smpt_map_id)
-+		nor->info->fixups->smpt_map_id(nor, map_id);
++	mutex_lock(&mhdp->link_mutex);
++
++	if (!cdns_mhdp_bandwidth_ok(mhdp, mode, mhdp->link.num_lanes,
++				    mhdp->link.rate)) {
++		mutex_unlock(&mhdp->link_mutex);
++		return MODE_CLOCK_HIGH;
++	}
++
++	mutex_unlock(&mhdp->link_mutex);
++	return MODE_OK;
 +}
 +
- /**
-  * spi_nor_get_map_in_use() - get the configuration map in use
-  * @nor:	pointer to a 'struct spi_nor'
-@@ -783,6 +793,8 @@ static const u32 *spi_nor_get_map_in_use(struct spi_nor *nor, const u32 *smpt,
- 		map_id = map_id << 1 | !!(*buf & read_data_mask);
- 	}
+ static const struct drm_bridge_funcs cdns_mhdp_bridge_funcs = {
+ 	.atomic_enable = cdns_mhdp_atomic_enable,
+ 	.atomic_disable = cdns_mhdp_atomic_disable,
+@@ -2245,6 +2264,7 @@ static const struct drm_bridge_funcs cdns_mhdp_bridge_funcs = {
+ 	.edid_read = cdns_mhdp_bridge_edid_read,
+ 	.hpd_enable = cdns_mhdp_bridge_hpd_enable,
+ 	.hpd_disable = cdns_mhdp_bridge_hpd_disable,
++	.mode_valid = cdns_mhdp_bridge_mode_valid,
+ };
  
-+	spi_nor_smpt_map_id_fixups(nor, &map_id);
-+
- 	/*
- 	 * If command descriptors are provided, they always precede map
- 	 * descriptors in the table. There is no need to start the iteration
+ static bool cdns_mhdp_detect_hpd(struct cdns_mhdp_device *mhdp, bool *hpd_pulse)
 -- 
 2.53.0
 
