@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-250475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251417-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qNweAlTuDWpu4wUAu9opvQ
-	(envelope-from <stable+bounces-250475-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:24:36 +0200
+	id 4MJYCYEaDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251417-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:33:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16B84593922
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:24:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58996599C19
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:33:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E67EC309A53D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:45:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 887D43464A6E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:26:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 642853CB2F8;
-	Wed, 20 May 2026 16:45:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1463F44CB;
+	Wed, 20 May 2026 17:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YD2ab0x7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2v66gOrp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DAF73CCFB0;
-	Wed, 20 May 2026 16:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABE43D75DA;
+	Wed, 20 May 2026 17:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295507; cv=none; b=Bs5dLulaBXqB8lgkjDp16epv1fMaNVMBWIeQj4lfLJT2EdF7Ye0lSMp1+oaeDVgVMYI0zyFKG+oV8H6dfFRer7Cd6Yj7Cm6AI29J3a3jHWhE23ut9M5TDqdvd+Uwb//i+nmi0EfAWpp571A8YmiqUkfKCQY6T9OdFdi0k+GOEfo=
+	t=1779297926; cv=none; b=lQCiBLI0ge6aHhaWvVeA4S0q+2ZhwJ636IUMBrTmXSv8XXonZhnZw8k2bhHEvSpkMOkA9bJCU3x8hHkbFgObKpzNWvS7iPE8pq9Jicg1hAATjDkjeb0JY2l2U9GxkBr8fIVMrod183q2zwS3aY2uF8AxhyWA2i/OpPeF4UJqvDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295507; c=relaxed/simple;
-	bh=+JW96+VS1cPSDD1VW+BpOgjCqsEEFtMoeWNqTgcPQps=;
+	s=arc-20240116; t=1779297926; c=relaxed/simple;
+	bh=9/DSOy6V8YSwWyOdI4X1TVplpf2Xfn9PeDbg1sVftxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E73QdeA2iTsUH0zPUMjM35JGoo9HBHvzlfZCGdS0hyzyk5P+FFPSbl8XM2FFHK4wN5yJd8L4HjleKZcXpZRMh+5BlSEW6DjFLg6KMr9h237A+ZD72+baJQKtcKunI1RuAHZv5U4X7Br3EeWnpCJAurRfeFrVx4MW3lNl8RDJHyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YD2ab0x7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42E691F000E9;
-	Wed, 20 May 2026 16:45:05 +0000 (UTC)
+	 MIME-Version; b=jvReSgO6uLTl8gYqSP4d3yTu2dWOayDtFM9QokT/pvhwly5Fkh3wiwE+jm2oPqE6i8Imxy4nffkLdjBM8xcNMjMeh8zmG2RBa9KpJyHxZstvjMIO1jUILjf/UiQ7trPvGtBcd2ojunM8/CbZm8WQDnSJBd7kOIw8q7ox5nWSt60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2v66gOrp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B07681F00893;
+	Wed, 20 May 2026 17:25:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295505;
-	bh=yhpXagRSwhbEsGj/nDxcXNGTUBDpxANR0pCoVnPuU88=;
+	s=korg; t=1779297925;
+	bh=f299kKuOY81JN6bCJ28I+bvoF3ruest8KCVUWVhBjsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YD2ab0x7Ou0MpiPcgNRgTUYiCqmL1SuV20SUGCvOhDwCBj2U5Nu/AbG9Pz57bj1yG
-	 9MT4KwuhUByKeUTnA5RHzSFN9D6VsnlAKWlECXHRVQedDaZUsoFjpPyCCOCeZ4f35V
-	 gqBXlcyF+RXpmELeZtuKiiHrKeeqivM+xG0cGQzw=
+	b=2v66gOrphIitSYU+T1CCmUFUe1xrggQTTKSHqV7GbcegSrhm4hex1xfPu4rHtNKvR
+	 Qkt9up85wq+nUzl5/Og6iPeNipmS9mR9rg8AFjBzrTQXq4agxES0CbuCoOTUa9dDNH
+	 Rx422eSZswVOSGsb9lAE3bXfIz/yz9qsQh3MPzpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Horst Birthelmer <hbirthelmer@ddn.com>,
-	Joanne Koong <joannelkoong@gmail.com>,
-	Jingbo Xu <jefflexu@linux.alibaba.com>,
-	Miklos Szeredi <mszeredi@redhat.com>,
+	Harikrishna Shenoy <h-shenoy@ti.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0446/1146] fuse: fix premature writetrhough request for large folio
-Date: Wed, 20 May 2026 18:11:36 +0200
-Message-ID: <20260520162158.293493405@linuxfoundation.org>
+Subject: [PATCH 6.18 214/957] drm/bridge: cadence: cdns-mhdp8546-core: Handle HDCP state in bridge atomic check
+Date: Wed, 20 May 2026 18:11:37 +0200
+Message-ID: <20260520162139.180906252@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,104 +69,104 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ddn.com,gmail.com,linux.alibaba.com,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-250475-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251417-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,alibaba.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 16B84593922
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ti.com:email,bootlin.com:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,ideasonboard.com:email]
+X-Rspamd-Queue-Id: 58996599C19
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jingbo Xu <jefflexu@linux.alibaba.com>
+From: Harikrishna Shenoy <h-shenoy@ti.com>
 
-[ Upstream commit 5223e0470e7bb7910038fe3d31171490e00fbbb9 ]
+[ Upstream commit 4a8edd658489ec2a3d7e20482fa9e8d366153d8d ]
 
-When large folio is enabled and the initial folio offset exceeds
-PAGE_SIZE, e.g. the position resides in the second page of a large
-folio, after the folio copying the offset (in the page) won't be updated
-to 0 even though the expected range is successfully copied until the end
-of the folio.  In this case fuse_fill_write_pages() exits prematurelly
-before the request has reached the max_write/max_pages limit.
+Now that we have DRM_BRIDGE_ATTACH_NO_CONNECTOR framework, handle the
+HDCP state change in bridge atomic check as well to enable correct
+functioning for HDCP in both DRM_BRIDGE_ATTACH_NO_CONNECTOR and
+!DRM_BRIDGE_ATTACH_NO_CONNECTOR case.
 
-Fix this by eliminating page offset entirely and use folio offset
-instead.
+Without this patch, when using DRM_BRIDGE_ATTACH_NO_CONNECTOR flag, HDCP
+state changes would not be properly handled during atomic commits,
+potentially leading to HDCP authentication failures or incorrect
+protection status for content requiring HDCP encryption.
 
-Fixes: d60a6015e1a2 ("fuse: support large folios for writethrough writes")
-Reviewed-by: Horst Birthelmer <hbirthelmer@ddn.com>
-Reviewed-by: Joanne Koong <joannelkoong@gmail.com>
-Signed-off-by: Jingbo Xu <jefflexu@linux.alibaba.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Fixes: 6a3608eae6d33 ("drm: bridge: cdns-mhdp8546: Enable HDCP")
+Signed-off-by: Harikrishna Shenoy <h-shenoy@ti.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patch.msgid.link/20251209120332.3559893-4-h-shenoy@ti.com
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/file.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ .../drm/bridge/cadence/cdns-mhdp8546-core.c   | 23 +++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-index 676fd9856bfbf..3939f90d1b4d2 100644
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -1242,7 +1242,6 @@ static ssize_t fuse_fill_write_pages(struct fuse_io_args *ia,
+diff --git a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
+index 2fb8acd363b14..7ee19b7cc92fc 100644
+--- a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
++++ b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
+@@ -2123,6 +2123,10 @@ static int cdns_mhdp_atomic_check(struct drm_bridge *bridge,
  {
- 	struct fuse_args_pages *ap = &ia->ap;
- 	struct fuse_conn *fc = get_fuse_conn(mapping->host);
--	unsigned offset = pos & (PAGE_SIZE - 1);
- 	size_t count = 0;
- 	unsigned int num;
- 	int err = 0;
-@@ -1269,7 +1268,7 @@ static ssize_t fuse_fill_write_pages(struct fuse_io_args *ia,
- 		if (mapping_writably_mapped(mapping))
- 			flush_dcache_folio(folio);
+ 	struct cdns_mhdp_device *mhdp = bridge_to_mhdp(bridge);
+ 	const struct drm_display_mode *mode = &crtc_state->adjusted_mode;
++	struct drm_connector_state *old_state, *new_state;
++	struct drm_atomic_state *state = crtc_state->state;
++	struct drm_connector *conn = mhdp->connector_ptr;
++	u64 old_cp, new_cp;
  
--		folio_offset = ((index - folio->index) << PAGE_SHIFT) + offset;
-+		folio_offset = offset_in_folio(folio, pos);
- 		bytes = min(folio_size(folio) - folio_offset, num);
+ 	mutex_lock(&mhdp->link_mutex);
  
- 		tmp = copy_folio_from_iter_atomic(folio, folio_offset, bytes, ii);
-@@ -1299,9 +1298,6 @@ static ssize_t fuse_fill_write_pages(struct fuse_io_args *ia,
- 		count += tmp;
- 		pos += tmp;
- 		num -= tmp;
--		offset += tmp;
--		if (offset == folio_size(folio))
--			offset = 0;
+@@ -2142,6 +2146,25 @@ static int cdns_mhdp_atomic_check(struct drm_bridge *bridge,
+ 	if (mhdp->info)
+ 		bridge_state->input_bus_cfg.flags = *mhdp->info->input_bus_flags;
  
- 		/* If we copied full folio, mark it uptodate */
- 		if (tmp == folio_size(folio))
-@@ -1313,7 +1309,9 @@ static ssize_t fuse_fill_write_pages(struct fuse_io_args *ia,
- 			ia->write.folio_locked = true;
- 			break;
- 		}
--		if (!fc->big_writes || offset != 0)
-+		if (!fc->big_writes)
-+			break;
-+		if (folio_offset + tmp != folio_size(folio))
- 			break;
- 	}
- 
++	if (conn && mhdp->hdcp_supported) {
++		old_state = drm_atomic_get_old_connector_state(state, conn);
++		new_state = drm_atomic_get_new_connector_state(state, conn);
++		old_cp = old_state->content_protection;
++		new_cp = new_state->content_protection;
++
++		if (old_state->hdcp_content_type != new_state->hdcp_content_type &&
++		    new_cp != DRM_MODE_CONTENT_PROTECTION_UNDESIRED) {
++			new_state->content_protection = DRM_MODE_CONTENT_PROTECTION_DESIRED;
++			crtc_state = drm_atomic_get_new_crtc_state(state, new_state->crtc);
++			crtc_state->mode_changed = true;
++		}
++
++		if (!new_state->crtc) {
++			if (old_cp == DRM_MODE_CONTENT_PROTECTION_ENABLED)
++				new_state->content_protection = DRM_MODE_CONTENT_PROTECTION_DESIRED;
++		}
++	}
++
+ 	mutex_unlock(&mhdp->link_mutex);
+ 	return 0;
+ }
 -- 
 2.53.0
 
