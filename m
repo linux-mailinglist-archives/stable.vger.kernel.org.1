@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-250326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251261-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mI0wDmPmDWqm4gUAu9opvQ
-	(envelope-from <stable+bounces-250326-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:43 +0200
+	id QEbiN+vyDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251261-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9DE5592886
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:42 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAD785946F5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4C78E312189B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:39:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 05F42315E757
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:18:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 863DF369D6E;
-	Wed, 20 May 2026 16:38:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A20A35AC18;
+	Wed, 20 May 2026 17:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QHaQrERF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r17M9rO9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE802673AA;
-	Wed, 20 May 2026 16:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC573A3E9C;
+	Wed, 20 May 2026 17:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295121; cv=none; b=GmQF+noEfAyQefj3wPHJGdhqEgQfaiClm2pdgHVScfk++UkPqTf4nVm6dJzhkgt9pncueZsIvPY7P54MG8sNW7qeS85tyfMDBt57wB8Q+qP4BYD/W7pJdfGPiKMxGGaJ3vQtEboyQT4PRxXg8BxmJzXlXflp88JXXiyUJXEwJlc=
+	t=1779297523; cv=none; b=rcUzPdxoSFvAhuRja+lc7pp4KYcZhgtKhFk5OZPHempG/90COf0DgnoKUlJzjpfOEP0zZJSJ/Pqjt6cBUuVsrjz5hvNFtYyK86HtOOQSZ/zOttQwWjP2FjZI6Z5OlIZwtLh8/sbA+wYMJ7Xsh12NJRKjkar9/AfIbe+xsldh5O8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295121; c=relaxed/simple;
-	bh=DzdM7T6Sqt+PbTI/f56XHxKz4bL0o+SmV8KskWBfWSA=;
+	s=arc-20240116; t=1779297523; c=relaxed/simple;
+	bh=i94UWcJ1zPYTkxIKhEE/pKw2KIRPFJoruMbF9TIQn1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K7rV3dEk0a4GSzsAY8F34GENlcJHh9n2Al8TvcX+SACrVn9RKMsU6+YeSm12fITw4tGu5PnULWM5STq+pevnlwf9MPbYjnc4hnDpf7Nh0nO0Kpa0Ek2HXm8ArnK/WnM5t87kzpRKRToxmglhyjlxeB2qTJPybLFwrVcYIKemN4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QHaQrERF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A148E1F000E9;
-	Wed, 20 May 2026 16:38:38 +0000 (UTC)
+	 MIME-Version; b=bkOMfiv5mfwtRKILOw2QkWGbOVzk3pcdv04XPejRRRVe3UOgTESxAdyLFMCHKlFhJa7B2trCNOo/wS9XGHA+kJaBrx14gpTg4V789f18zshGi9lPmLhZfeerHsMau6KvkCKu7vlNPGVHLSkl70TPPFfBRbi3hEV92dDtTRqBLKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r17M9rO9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 502B11F000E9;
+	Wed, 20 May 2026 17:18:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295119;
-	bh=9IkyTZ+YMKjJyCLWNgo6MqWHpB+etrPDPeS5Z4vVs24=;
+	s=korg; t=1779297521;
+	bh=sdqLt8oEU3TAxDruzuUSj2WYsE4AI0wyNVc/AQnanZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QHaQrERF43TPIc6u7ik3pUdJaPv54Fuh0cjb/JbHkc2e7zKXkwxIeL1ggOL9PHzXK
-	 A9zS5jzgvNaaiowzroLZXkujaSCjUuNZs8eoSoIwL6GNB9EmLHgKpe8TOyFIY0mXzx
-	 x0D61uD9/ecoA19KZscGdkgpGZJV+viKUxOObDHI=
+	b=r17M9rO9vpb9930mhJjvjYHZf2iMy7Mp9nyq+cYAPK2DUFUJJHfVctSd9MkdPA7c3
+	 lhZkHGKt7DAjM5gumDGWFueU2G5hDqFLc5knKSXuo9UGTCJJTGCL115Jx1wIuNHhmk
+	 vVC9DUGVkFV9cfFm0/DSDzUoYa0Oc7IF5ZF2yKtw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robby Cai <robby.cai@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Cai Xinchen <caixinchen1@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0296/1146] regulator: dt-bindings: fp9931: Make vin-supply property as required
+Subject: [PATCH 6.18 063/957] dpaa2: add independent dependencies for FSL_DPAA2_SWITCH
 Date: Wed, 20 May 2026 18:09:06 +0200
-Message-ID: <20260520162154.911835946@linuxfoundation.org>
+Message-ID: <20260520162135.930073153@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,65 +69,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251261-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250326-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: B9DE5592886
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: AAD785946F5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robby Cai <robby.cai@nxp.com>
+From: Cai Xinchen <caixinchen1@huawei.com>
 
-[ Upstream commit d342f5e355aaa4ff4fb5bd4a4aab70ed3a4f3c35 ]
+[ Upstream commit 12589892f41c4c645c80ef9f036f7451a6045624 ]
 
-The FP9931 requires a vin power supply to operate, so mark vin-supply as
-a required property in the binding.
+Since the commit 84cba72956fd ("dpaa2-switch: integrate
+the MAC endpoint support") included dpaa2-mac.o in the driver,
+but it didn't select PCS_LYNX, PHYLINK and FSL_XGMAC_MDIO. it
+will lead to link error, such as
+undefined reference to `phylink_ethtool_ksettings_set'
+undefined reference to `lynx_pcs_create_fwnode'
 
-Fixes: 80bbdefdfb417 ("dt-bindings: regulator: Add Fitipower FP9931/JD9930")
-Signed-off-by: Robby Cai <robby.cai@nxp.com>
-Link: https://patch.msgid.link/20260313133102.2749890-2-robby.cai@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+And the same reason as the commit d2624e70a2f53 ("dpaa2-eth: select
+XGMAC_MDIO for MDIO bus support"), enable the FSL_XGMAC_MDIO Kconfig
+option in order to have MDIO access to internal and external PHYs.
+
+Because dpaa2-switch uses fsl_mc_driver APIs, add depends on FSL_MC_BUS
+&& FSL_MC_DPIO as FSL_DPAA2_SWITCH do.
+
+FSL_XGMAC_MDIO and FSL_MC_BUS depend on OF, thus the dependence of
+FSL_MC_BUS can satisfy FSL_XGMAC_MDIO's OF requirement.
+
+Fixes: 84cba72956fd ("dpaa2-switch: integrate the MAC endpoint support")
+Suggested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Signed-off-by: Cai Xinchen <caixinchen1@huawei.com>
+Link: https://patch.msgid.link/20260312065907.476663-2-caixinchen1@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../devicetree/bindings/regulator/fitipower,fp9931.yaml          | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/freescale/dpaa2/Kconfig | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/regulator/fitipower,fp9931.yaml b/Documentation/devicetree/bindings/regulator/fitipower,fp9931.yaml
-index c6585e3bacbec..00d66b9230475 100644
---- a/Documentation/devicetree/bindings/regulator/fitipower,fp9931.yaml
-+++ b/Documentation/devicetree/bindings/regulator/fitipower,fp9931.yaml
-@@ -66,6 +66,7 @@ properties:
- required:
-   - compatible
-   - reg
-+  - vin-supply
-   - pg-gpios
-   - enable-gpios
- 
+diff --git a/drivers/net/ethernet/freescale/dpaa2/Kconfig b/drivers/net/ethernet/freescale/dpaa2/Kconfig
+index d029b69c3f183..36280e5d99e1f 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/Kconfig
++++ b/drivers/net/ethernet/freescale/dpaa2/Kconfig
+@@ -34,6 +34,10 @@ config FSL_DPAA2_SWITCH
+ 	tristate "Freescale DPAA2 Ethernet Switch"
+ 	depends on BRIDGE || BRIDGE=n
+ 	depends on NET_SWITCHDEV
++	depends on FSL_MC_BUS && FSL_MC_DPIO
++	select PHYLINK
++	select PCS_LYNX
++	select FSL_XGMAC_MDIO
+ 	help
+ 	  Driver for Freescale DPAA2 Ethernet Switch. This driver manages
+ 	  switch objects discovered on the Freeescale MC bus.
 -- 
 2.53.0
 
