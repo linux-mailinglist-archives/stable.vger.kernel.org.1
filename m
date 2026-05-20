@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252108-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cDFfJ0HwDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-251182-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:32:49 +0200
+	id uI0ALfX+DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252108-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:35:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 325EB593EA5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:32:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E2DF596B37
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:35:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DE3D13078ACC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7D7EC38AD577
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:57:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8ADB3F7A9F;
-	Wed, 20 May 2026 17:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F262E3F39EE;
+	Wed, 20 May 2026 17:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cBndxI2T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gErlmNDS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669183F65EA;
-	Wed, 20 May 2026 17:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 748613BE64B;
+	Wed, 20 May 2026 17:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297313; cv=none; b=JzzBTgT3xH+1aLl5nyawRmXjOiGI5NlPxu5WJp1+bO91Q+w1L9PJbrJPIAfJTrdGb2I7wY2Gj/VLOMJH0A9ufG8YEqoxm/Kqy7ILrxyaoWbmncgzmiZoGI3nMRvcQ9pNcciN8zNV+5Gq7zHNBBcHPyYUKNcwCQMRUcnSBsjfiEQ=
+	t=1779299812; cv=none; b=jC/KReHtl3Duy9XEFadGZZxsiK3gzJA/k+aS5lENSkI/bRFevSgLslgu4dnggu9eUalMqC4lMjhQEZlWLpPTXRXdMkcKXsDZgHqrCQdCktf4b66GcIvO9P4uIjQiEK/B/S26YhxTnO4VRIY+h+Cua9cW1J7XV3rvJdmjvF7pTZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297313; c=relaxed/simple;
-	bh=jFEg/+p6jQFgH4YOptDwcUcuLrPXKJr2LK3VvGBpmpg=;
+	s=arc-20240116; t=1779299812; c=relaxed/simple;
+	bh=uM//zdkOZDZRRP8MX6jW/Jvan9RGjh5AZxYjQj5dUnM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BmZldPPTDu0ktZgeSG+4w+rblEirEVYppiJh9xpMveAlHTv6xmSGa6uNYGqKon0TImTJxfmrFRHyQmJmwewttxVWsS9QbExX5jCxeYlqyPyk5RwI99Y2oiBhMZkKYlHHqHkUal9KdlZAcr/X4zQ+W9cZIWT5yENkdFy6t4VJ1AQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cBndxI2T; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB8231F000E9;
-	Wed, 20 May 2026 17:15:11 +0000 (UTC)
+	 MIME-Version; b=F0hctvDXKAcRHaj5qt24PrWDzFvK1burhBEThqIdg/n01bs2in1/BUcsGicY3E1IkN3rsHIH/gF5KSslBAygi4FDO5K6tgQl1/kI+XuQ9n9sQ/mEiJhA7uatqIf+ngGae5rTb9BytXUVI7PQoO3InQqcREmrQ7q0v9eIbq38lRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gErlmNDS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C60A1F00893;
+	Wed, 20 May 2026 17:56:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297312;
-	bh=KnT/ugN3lNVM1Jf0cRBITPm9NJfsufiuwLXXdfazo/g=;
+	s=korg; t=1779299810;
+	bh=9Xkfb838FoQNzerqBuQAwlveUIlcs9Bx1318L27h/FU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cBndxI2TQJrn6kO3uDfO+Pj/WFXKCtEiUY5Mpm2NiY1AcFLSzG7ibbPt1tPRQbZkD
-	 2axn0piiXO4cJn1W6oZvSSjmnqp/2Jf7FQUz1jra465MKpcL/GmhqLGDUuJ+1cwJcP
-	 okPiRRVXkldGFhdFScxJ04pAY444ifPesraaU2Lg=
+	b=gErlmNDSmA6dlhMScHVsZEFNrahzoiKHfkeWdrySkYhErpq2tCB/KleAcdvNxMcCR
+	 8O2cGZojuLf6fr2WaCBYS6kvIl4OSzGHwyRs+IwCIZ2mifEXKn9VAVStAQexT3cwqF
+	 YgvDgVS5SmBb/jHw+kY9qSZd85md8cBqv0MknTIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gyeyoung Baek <gye976@gmail.com>,
-	=?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Steven Price <steven.price@arm.com>
-Subject: [PATCH 7.0 1129/1146] drm/panfrost: Fix wait_bo ioctl leaking positive return from dma_resv_wait_timeout()
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 896/957] HID: core: introduce hid_safe_input_report()
 Date: Wed, 20 May 2026 18:22:59 +0200
-Message-ID: <20260520162213.798696692@linuxfoundation.org>
+Message-ID: <20260520162154.003809940@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +63,174 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,collabora.com,arm.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251182-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252108-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,arm.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 325EB593EA5
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 2E2DF596B37
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gyeyoung Baek <gye976@gmail.com>
+From: Benjamin Tissoires <bentiss@kernel.org>
 
-commit 459d75523b71c0ec254d153d8850d0b7008af396 upstream.
+[ Upstream commit 206342541fc887ae919774a43942dc883161fece ]
 
-dma_resv_wait_timeout() returns a positive 'remaining jiffies' value
-on success, 0 on timeout, and -errno on failure.
+hid_input_report() is used in too many places to have a commit that
+doesn't cross subsystem borders. Instead of changing the API, introduce
+a new one when things matters in the transport layers:
+- usbhid
+- i2chid
 
-panfrost_ioctl_wait_bo() returns this 'long' result from an int-typed
-ioctl handler, so positive values reach userspace as bogus errors.
-Explicitly set ret to 0 on the success path.
+This effectively revert to the old behavior for those two transport
+layers.
 
-Fixes: f3ba91228e8e ("drm/panfrost: Add initial panfrost driver")
+Fixes: 0a3fe972a7cb ("HID: core: Mitigate potential OOB by removing bogus memset()")
 Cc: stable@vger.kernel.org
-Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
-Reviewed-by: Adrián Larumbe <adrian.larumbe@collabora.com>
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Link: https://patch.msgid.link/fe33f82fded7be1c18e2e0eb2db451d5a738cf39.1776581974.git.gye976@gmail.com
-Signed-off-by: Steven Price <steven.price@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panfrost/panfrost_drv.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hid/hid-core.c             | 25 +++++++++++++++++++++++++
+ drivers/hid/i2c-hid/i2c-hid-core.c |  7 ++++---
+ drivers/hid/usbhid/hid-core.c      | 11 ++++++-----
+ include/linux/hid.h                |  2 ++
+ 4 files changed, 37 insertions(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/panfrost/panfrost_drv.c
-+++ b/drivers/gpu/drm/panfrost/panfrost_drv.c
-@@ -390,6 +390,8 @@ panfrost_ioctl_wait_bo(struct drm_device
- 				    true, timeout);
- 	if (!ret)
- 		ret = timeout ? -ETIMEDOUT : -EBUSY;
-+	else if (ret > 0)
-+		ret = 0;
+diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
+index 9e8eb727c6c98..e67ea3a7d1395 100644
+--- a/drivers/hid/hid-core.c
++++ b/drivers/hid/hid-core.c
+@@ -2177,6 +2177,7 @@ static int __hid_input_report(struct hid_device *hid, enum hid_report_type type,
+  * @interrupt: distinguish between interrupt and control transfers
+  *
+  * This is data entry for lower layers.
++ * Legacy, please use hid_safe_input_report() instead.
+  */
+ int hid_input_report(struct hid_device *hid, enum hid_report_type type, u8 *data, u32 size,
+ 		     int interrupt)
+@@ -2187,6 +2188,30 @@ int hid_input_report(struct hid_device *hid, enum hid_report_type type, u8 *data
+ }
+ EXPORT_SYMBOL_GPL(hid_input_report);
  
- 	drm_gem_object_put(gem_obj);
++/**
++ * hid_safe_input_report - report data from lower layer (usb, bt...)
++ *
++ * @hid: hid device
++ * @type: HID report type (HID_*_REPORT)
++ * @data: report contents
++ * @bufsize: allocated size of the data buffer
++ * @size: useful size of data parameter
++ * @interrupt: distinguish between interrupt and control transfers
++ *
++ * This is data entry for lower layers.
++ * Please use this function instead of the non safe version because we provide
++ * here the size of the buffer, allowing hid-core to make smarter decisions
++ * regarding the incoming buffer.
++ */
++int hid_safe_input_report(struct hid_device *hid, enum hid_report_type type, u8 *data,
++			  size_t bufsize, u32 size, int interrupt)
++{
++	return __hid_input_report(hid, type, data, bufsize, size, interrupt, 0,
++				  false, /* from_bpf */
++				  false /* lock_already_taken */);
++}
++EXPORT_SYMBOL_GPL(hid_safe_input_report);
++
+ bool hid_match_one_id(const struct hid_device *hdev,
+ 		      const struct hid_device_id *id)
+ {
+diff --git a/drivers/hid/i2c-hid/i2c-hid-core.c b/drivers/hid/i2c-hid/i2c-hid-core.c
+index 5a183af3d5c6a..e0a302544cef4 100644
+--- a/drivers/hid/i2c-hid/i2c-hid-core.c
++++ b/drivers/hid/i2c-hid/i2c-hid-core.c
+@@ -574,9 +574,10 @@ static void i2c_hid_get_input(struct i2c_hid *ihid)
+ 		if (ihid->hid->group != HID_GROUP_RMI)
+ 			pm_wakeup_event(&ihid->client->dev, 0);
  
+-		hid_input_report(ihid->hid, HID_INPUT_REPORT,
+-				ihid->inbuf + sizeof(__le16),
+-				ret_size - sizeof(__le16), 1);
++		hid_safe_input_report(ihid->hid, HID_INPUT_REPORT,
++				      ihid->inbuf + sizeof(__le16),
++				      ihid->bufsize - sizeof(__le16),
++				      ret_size - sizeof(__le16), 1);
+ 	}
+ 
+ 	return;
+diff --git a/drivers/hid/usbhid/hid-core.c b/drivers/hid/usbhid/hid-core.c
+index df3cc89dfb37f..4a493b46d9ee7 100644
+--- a/drivers/hid/usbhid/hid-core.c
++++ b/drivers/hid/usbhid/hid-core.c
+@@ -283,9 +283,9 @@ static void hid_irq_in(struct urb *urb)
+ 			break;
+ 		usbhid_mark_busy(usbhid);
+ 		if (!test_bit(HID_RESUME_RUNNING, &usbhid->iofl)) {
+-			hid_input_report(urb->context, HID_INPUT_REPORT,
+-					 urb->transfer_buffer,
+-					 urb->actual_length, 1);
++			hid_safe_input_report(urb->context, HID_INPUT_REPORT,
++					      urb->transfer_buffer, urb->transfer_buffer_length,
++					      urb->actual_length, 1);
+ 			/*
+ 			 * autosuspend refused while keys are pressed
+ 			 * because most keyboards don't wake up when
+@@ -482,9 +482,10 @@ static void hid_ctrl(struct urb *urb)
+ 	switch (status) {
+ 	case 0:			/* success */
+ 		if (usbhid->ctrl[usbhid->ctrltail].dir == USB_DIR_IN)
+-			hid_input_report(urb->context,
++			hid_safe_input_report(urb->context,
+ 				usbhid->ctrl[usbhid->ctrltail].report->type,
+-				urb->transfer_buffer, urb->actual_length, 0);
++				urb->transfer_buffer, urb->transfer_buffer_length,
++				urb->actual_length, 0);
+ 		break;
+ 	case -ESHUTDOWN:	/* unplug */
+ 		unplug = 1;
+diff --git a/include/linux/hid.h b/include/linux/hid.h
+index d29efcf2e0789..204ada8d12e5c 100644
+--- a/include/linux/hid.h
++++ b/include/linux/hid.h
+@@ -990,6 +990,8 @@ struct hid_field *hid_find_field(struct hid_device *hdev, unsigned int report_ty
+ int hid_set_field(struct hid_field *, unsigned, __s32);
+ int hid_input_report(struct hid_device *hid, enum hid_report_type type, u8 *data, u32 size,
+ 		     int interrupt);
++int hid_safe_input_report(struct hid_device *hid, enum hid_report_type type, u8 *data,
++			  size_t bufsize, u32 size, int interrupt);
+ struct hid_field *hidinput_get_led_field(struct hid_device *hid);
+ unsigned int hidinput_count_leds(struct hid_device *hid);
+ __s32 hidinput_calc_abs_res(const struct hid_field *field, __u16 code);
+-- 
+2.53.0
+
 
 
 
