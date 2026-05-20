@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-253226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252762-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8GDLC9kFDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-253226-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:04:57 +0200
+	id AIS4MRD+DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252762-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:31:44 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A80F9597B3E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:04:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8777659673E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:31:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B2FD730D20FA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7058030EE5C5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE2C7347515;
-	Wed, 20 May 2026 18:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A613FC5D6;
+	Wed, 20 May 2026 18:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V2bBV6DC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KcKUV7jc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 219FE346E55;
-	Wed, 20 May 2026 18:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 242A329B8D0;
+	Wed, 20 May 2026 18:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302726; cv=none; b=Fm1Hcxfe9JjGOyBMvb/r4DImFBXMxeTHuGjVWLInnKSwR4LOgc+zWl1M9boc5yjYbOMOe5QxhLAFnKbpSJPW57F1OONBxwXi0V/dKTInZ1m9mchmG8XvapfdMbcRaHc6NtW43qX8rmr8xHqb5de6fe9xzrHwlCZUjKA4834HoH4=
+	t=1779301524; cv=none; b=D/pb+ow987lJz3h4oSEFRs9fqKoG5BzcFMezGX9k9pe+0Z6pkKQhOpnRIZ0/8cnKIL/w28uM/hPZmNWz3LOVfR1LrDHxrjyrGIUVD9QPacab8sEoONPQeMOXDqwa9GwA59ZCrWNMrVYcSU4lhvxuwBQtTwjzeSiAGKnc+VxAttU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302726; c=relaxed/simple;
-	bh=0YI48m3BHe83FPui6aXkuuYKpYOoLVNUjHBRlRMxDEg=;
+	s=arc-20240116; t=1779301524; c=relaxed/simple;
+	bh=rCDr02uC66eXxKwe41Qe8FLmvlyhvKLGl3XccnDeQkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JcQc+dW6Kf5F9RZ4IDghM7QhDlXYaR1iNNYeuCvsHhcID5u4FmTs35+/A8ir2hM/laynaWGtuRMEeihbrkiZIIBXX4ptadZaz2iDefs/fAIg3i2tspVcsutWta5tXIzeotIlKudYphPHWjYss9LIAvOzd9w1/sPUkwpA0NaBRa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V2bBV6DC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C4C21F000E9;
-	Wed, 20 May 2026 18:45:24 +0000 (UTC)
+	 MIME-Version; b=t0Fb5Cq+km038jJSs6WN5EcdFovKVpoTSYdP6XwkxWj0Kdi0owtyrbfFuLcdBGnSDeaDMbQ4PrXvR2nyagJ3uFdg7z+/BLqP5b8HOp2l0XFTT77b2CoVhWyGTZheNmp5NwBCTRdMkr4vAnfQzYmU/X9ZSygl3IzEndYqwUwIK0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KcKUV7jc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E7111F000E9;
+	Wed, 20 May 2026 18:25:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302725;
-	bh=t1GpQLoNXQbXiJQaJ1/VY6Ssx4/3Kir56tVz5IT+9es=;
+	s=korg; t=1779301523;
+	bh=vu/qtpvQXpftXt30minNIJk3p3XgdsS66OkQgSdIduE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=V2bBV6DChJLQtDhcGQBSCalcUYmTFYSWkSX5LmqWoGMIEDK2QLszjy51X6iRsTCNz
-	 T4dzSTs2cKANdHicHlpiNo6D0+3iOyKfzgwpPMWmZuNxjeWJh9DpfcqR2deaBdN5sN
-	 zcY6sAOYkuCozOqaE8D67SLvr1iJ/2LzfsTS4uqY=
+	b=KcKUV7jcOnkks9A1UVlkARrAVzZRXIgtnm+fO/Gqrk1RS74KQnCac4YNxKnu7TFpL
+	 pV/50KCUD0UXNVuoUeEKjDwNy9jF7ewqys6TKYHWF5zU4udUAg/wTJD3WyNSDhmLki
+	 ihNX9tA7H/at/emXHIf7ywJqxR6mHXitlIS9Mx80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Klaudia Kloc <klaudia@vidocsecurity.com>,
-	=?UTF-8?q?Dawid=20Moczad=C5=82o?= <dawid@vidocsecurity.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Jenny Guanni Qu <qguanni@gmail.com>
-Subject: [PATCH 6.6 375/508] netfilter: nf_conntrack_sip: dont use simple_strtoul
+	Petr Oros <poros@redhat.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 587/666] iavf: stop removing VLAN filters from PF on interface down
 Date: Wed, 20 May 2026 18:23:18 +0200
-Message-ID: <20260520162106.748639219@linuxfoundation.org>
+Message-ID: <20260520162123.988145408@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,385 +68,267 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-253226-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vidocsecurity.com,strlen.de,netfilter.org,kernel.org,gmail.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252762-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email]
-X-Rspamd-Queue-Id: A80F9597B3E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 8777659673E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Petr Oros <poros@redhat.com>
 
-[ Upstream commit 8cf6809cddcbe301aedfc6b51bcd4944d45795f6 ]
+[ Upstream commit f2ce65b9b917474a1a6ce68d357e15fac2aca0f2 ]
 
-Replace unsafe port parsing in epaddr_len(), ct_sip_parse_header_uri(),
-and ct_sip_parse_request() with a new sip_parse_port() helper that
-validates each digit against the buffer limit, eliminating the use of
-simple_strtoul() which assumes NUL-terminated strings.
+When a VF goes down, the driver currently sends DEL_VLAN to the PF for
+every VLAN filter (ACTIVE -> DISABLE -> send DEL -> INACTIVE), then
+re-adds them all on UP (INACTIVE -> ADD -> send ADD -> ADDING ->
+ACTIVE). This round-trip is unnecessary because:
 
-The previous code dereferenced pointers without bounds checks after
-sip_parse_addr() and relied on simple_strtoul() on non-NUL-terminated
-skb data. A port that reaches the buffer limit without a trailing
-character is also rejected as malformed.
+ 1. The PF disables the VF's queues via VIRTCHNL_OP_DISABLE_QUEUES,
+    which already prevents all RX/TX traffic regardless of VLAN filter
+    state.
 
-Also get rid of all simple_strtoul() usage in conntrack, prefer a
-stricter version instead.  There are intentional changes:
+ 2. The VLAN filters remaining in PF HW while the VF is down is
+    harmless - packets matching those filters have nowhere to go with
+    queues disabled.
 
-- Bail out if number is > UINT_MAX and indicate a failure, same for
-  too long sequences.
-  While we do accept 05535 as port 5535, we will not accept e.g.
-  'sip:10.0.0.1:005060'.  While its syntactically valid under RFC 3261,
-  we should restrict this to not waste cycles when presented with
-  malformed packets with 64k '0' characters.
+ 3. The DEL+ADD cycle during down/up creates race windows where the
+    VLAN filter list is incomplete. With spoofcheck enabled, the PF
+    enables TX VLAN filtering on the first non-zero VLAN add, blocking
+    traffic for any VLANs not yet re-added.
 
-- Force base 10 in ct_sip_parse_numerical_param(). This is used to fetch
-  'expire=' and 'rports='; both are expected to use base-10.
+Remove the entire DISABLE/INACTIVE state machinery:
+ - Remove IAVF_VLAN_DISABLE and IAVF_VLAN_INACTIVE enum values
+ - Remove iavf_restore_filters() and its call from iavf_open()
+ - Remove VLAN filter handling from iavf_clear_mac_vlan_filters(),
+   rename it to iavf_clear_mac_filters()
+ - Remove DEL_VLAN_FILTER scheduling from iavf_down()
+ - Remove all DISABLE/INACTIVE handling from iavf_del_vlans()
 
-- In nf_nat_sip.c, only accept the parsed value if its within the 1k-64k
-  range.
+VLAN filters now stay ACTIVE across down/up cycles. Only explicit
+user removal (ndo_vlan_rx_kill_vid) or PF/VF reset triggers VLAN
+filter deletion/re-addition.
 
-- epaddr_len now returns 0 if the port is invalid, as it already does
-  for invalid ip addresses.  This is intentional. nf_conntrack_sip
-  performs lots of guesswork to find the right parts of the message
-  to parse.  Being stricter could break existing setups.
-  Connection tracking helpers are designed to allow traffic to
-  pass, not to block it.
-
-Based on an earlier patch from Jenny Guanni Qu <qguanni@gmail.com>.
-
-Fixes: 05e3ced297fe ("[NETFILTER]: nf_conntrack_sip: introduce SIP-URI parsing helper")
-Reported-by: Klaudia Kloc <klaudia@vidocsecurity.com>
-Reported-by: Dawid Moczadło <dawid@vidocsecurity.com>
-Reported-by: Jenny Guanni Qu <qguanni@gmail.com>.
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: ed1f5b58ea01 ("i40evf: remove VLAN filters on close")
+Signed-off-by: Petr Oros <poros@redhat.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260427-jk-iwl-net-petr-oros-fixes-v1-2-cdcb48303fd8@intel.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_sip.c | 152 ++++++++++++++++++++++++-------
- net/netfilter/nf_nat_sip.c       |   1 +
- 2 files changed, 119 insertions(+), 34 deletions(-)
+ drivers/net/ethernet/intel/iavf/iavf.h        |  6 +--
+ drivers/net/ethernet/intel/iavf/iavf_main.c   | 39 ++-----------------
+ .../net/ethernet/intel/iavf/iavf_virtchnl.c   | 33 +++-------------
+ 3 files changed, 12 insertions(+), 66 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_sip.c b/net/netfilter/nf_conntrack_sip.c
-index fda6fc1fc4c58..4b32ee408ea15 100644
---- a/net/netfilter/nf_conntrack_sip.c
-+++ b/net/netfilter/nf_conntrack_sip.c
-@@ -181,6 +181,57 @@ static int sip_parse_addr(const struct nf_conn *ct, const char *cp,
- 	return 1;
+diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
+index 3ed541529e4fe..41596b9889540 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf.h
++++ b/drivers/net/ethernet/intel/iavf/iavf.h
+@@ -159,10 +159,8 @@ enum iavf_vlan_state_t {
+ 	IAVF_VLAN_INVALID,
+ 	IAVF_VLAN_ADD,		/* filter needs to be added */
+ 	IAVF_VLAN_ADDING,	/* ADD sent to PF, waiting for response */
+-	IAVF_VLAN_ACTIVE,	/* filter is accepted by PF */
+-	IAVF_VLAN_DISABLE,	/* filter needs to be deleted by PF, then marked INACTIVE */
+-	IAVF_VLAN_INACTIVE,	/* filter is inactive, we are in IFF_DOWN */
+-	IAVF_VLAN_REMOVE,	/* filter needs to be removed from list */
++	IAVF_VLAN_ACTIVE,	/* PF confirmed, filter is in HW */
++	IAVF_VLAN_REMOVE,	/* filter queued for DEL from PF */
+ };
+ 
+ struct iavf_vlan_filter {
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index 5f07f37933a04..cc1430b2ec593 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -818,27 +818,6 @@ static void iavf_del_vlan(struct iavf_adapter *adapter, struct iavf_vlan vlan)
+ 	spin_unlock_bh(&adapter->mac_vlan_list_lock);
  }
  
-+/* Parse optional port number after IP address.
-+ * Returns false on malformed input, true otherwise.
-+ * If port is non-NULL, stores parsed port in network byte order.
-+ * If no port is present, sets *port to default SIP port.
-+ */
-+static bool sip_parse_port(const char *dptr, const char **endp,
-+			   const char *limit, __be16 *port)
-+{
-+	unsigned int p = 0;
-+	int len = 0;
-+
-+	if (dptr >= limit)
-+		return false;
-+
-+	if (*dptr != ':') {
-+		if (port)
-+			*port = htons(SIP_PORT);
-+		if (endp)
-+			*endp = dptr;
-+		return true;
-+	}
-+
-+	dptr++; /* skip ':' */
-+
-+	while (dptr < limit && isdigit(*dptr)) {
-+		p = p * 10 + (*dptr - '0');
-+		dptr++;
-+		len++;
-+		if (len > 5) /* max "65535" */
-+			return false;
-+	}
-+
-+	if (len == 0)
-+		return false;
-+
-+	/* reached limit while parsing port */
-+	if (dptr >= limit)
-+		return false;
-+
-+	if (p < 1024 || p > 65535)
-+		return false;
-+
-+	if (port)
-+		*port = htons(p);
-+
-+	if (endp)
-+		*endp = dptr;
-+
-+	return true;
-+}
-+
- /* skip ip address. returns its length. */
- static int epaddr_len(const struct nf_conn *ct, const char *dptr,
- 		      const char *limit, int *shift)
-@@ -193,11 +244,8 @@ static int epaddr_len(const struct nf_conn *ct, const char *dptr,
- 		return 0;
- 	}
- 
--	/* Port number */
--	if (*dptr == ':') {
--		dptr++;
--		dptr += digits_len(ct, dptr, limit, shift);
+-/**
+- * iavf_restore_filters
+- * @adapter: board private structure
+- *
+- * Restore existing non MAC filters when VF netdev comes back up
+- **/
+-static void iavf_restore_filters(struct iavf_adapter *adapter)
+-{
+-	struct iavf_vlan_filter *f;
+-
+-	/* re-add all VLAN filters */
+-	spin_lock_bh(&adapter->mac_vlan_list_lock);
+-
+-	list_for_each_entry(f, &adapter->vlan_filter_list, list) {
+-		if (f->state == IAVF_VLAN_INACTIVE)
+-			f->state = IAVF_VLAN_ADD;
 -	}
-+	if (!sip_parse_port(dptr, &dptr, limit, NULL))
-+		return 0;
- 	return dptr - aux;
+-
+-	spin_unlock_bh(&adapter->mac_vlan_list_lock);
+-	adapter->aq_required |= IAVF_FLAG_AQ_ADD_VLAN_FILTER;
+-}
+ 
+ /**
+  * iavf_get_num_vlans_added - get number of VLANs added
+@@ -1257,13 +1236,12 @@ static void iavf_up_complete(struct iavf_adapter *adapter)
  }
  
-@@ -228,6 +276,51 @@ static int skp_epaddr_len(const struct nf_conn *ct, const char *dptr,
- 	return epaddr_len(ct, dptr, limit, shift);
+ /**
+- * iavf_clear_mac_vlan_filters - Remove mac and vlan filters not sent to PF
+- * yet and mark other to be removed.
++ * iavf_clear_mac_filters - Remove MAC filters not sent to PF yet and mark
++ * others to be removed.
+  * @adapter: board private structure
+  **/
+-static void iavf_clear_mac_vlan_filters(struct iavf_adapter *adapter)
++static void iavf_clear_mac_filters(struct iavf_adapter *adapter)
+ {
+-	struct iavf_vlan_filter *vlf, *vlftmp;
+ 	struct iavf_mac_filter *f, *ftmp;
+ 
+ 	spin_lock_bh(&adapter->mac_vlan_list_lock);
+@@ -1282,11 +1260,6 @@ static void iavf_clear_mac_vlan_filters(struct iavf_adapter *adapter)
+ 		}
+ 	}
+ 
+-	/* disable all VLAN filters */
+-	list_for_each_entry_safe(vlf, vlftmp, &adapter->vlan_filter_list,
+-				 list)
+-		vlf->state = IAVF_VLAN_DISABLE;
+-
+ 	spin_unlock_bh(&adapter->mac_vlan_list_lock);
  }
  
-+/* simple_strtoul stops after first non-number character.
-+ * But as we're not dealing with c-strings, we can't rely on
-+ * hitting \r,\n,\0 etc. before moving past end of buffer.
-+ *
-+ * This is a variant of simple_strtoul, but doesn't require
-+ * a c-string.
-+ *
-+ * If value exceeds UINT_MAX, 0 is returned.
-+ */
-+static unsigned int sip_strtouint(const char *cp, unsigned int len, char **endp)
-+{
-+	const unsigned int max = sizeof("4294967295");
-+	unsigned int olen = len;
-+	const char *s = cp;
-+	u64 result = 0;
-+
-+	if (len > max)
-+		len = max;
-+
-+	while (olen > 0 && isdigit(*s)) {
-+		unsigned int value;
-+
-+		if (len == 0)
-+			goto err;
-+
-+		value = *s - '0';
-+		result = result * 10 + value;
-+
-+		if (result > UINT_MAX)
-+			goto err;
-+		s++;
-+		len--;
-+		olen--;
-+	}
-+
-+	if (endp)
-+		*endp = (char *)s;
-+
-+	return result;
-+err:
-+	if (endp)
-+		*endp = (char *)cp;
-+	return 0;
-+}
-+
- /* Parse a SIP request line of the form:
-  *
-  * Request-Line = Method SP Request-URI SP SIP-Version CRLF
-@@ -241,7 +334,6 @@ int ct_sip_parse_request(const struct nf_conn *ct,
- {
- 	const char *start = dptr, *limit = dptr + datalen, *end;
- 	unsigned int mlen;
--	unsigned int p;
- 	int shift = 0;
+@@ -1382,7 +1355,7 @@ void iavf_down(struct iavf_adapter *adapter)
+ 	iavf_napi_disable_all(adapter);
+ 	iavf_irq_disable(adapter);
  
- 	/* Skip method and following whitespace */
-@@ -267,14 +359,8 @@ int ct_sip_parse_request(const struct nf_conn *ct,
+-	iavf_clear_mac_vlan_filters(adapter);
++	iavf_clear_mac_filters(adapter);
+ 	iavf_clear_cloud_filters(adapter);
+ 	iavf_clear_fdir_filters(adapter);
+ 	iavf_clear_adv_rss_conf(adapter);
+@@ -1399,8 +1372,6 @@ void iavf_down(struct iavf_adapter *adapter)
+ 		 */
+ 		if (!list_empty(&adapter->mac_filter_list))
+ 			adapter->aq_required |= IAVF_FLAG_AQ_DEL_MAC_FILTER;
+-		if (!list_empty(&adapter->vlan_filter_list))
+-			adapter->aq_required |= IAVF_FLAG_AQ_DEL_VLAN_FILTER;
+ 		if (!list_empty(&adapter->cloud_filter_list))
+ 			adapter->aq_required |= IAVF_FLAG_AQ_DEL_CLOUD_FILTER;
+ 		if (!list_empty(&adapter->fdir_list_head))
+@@ -4363,8 +4334,6 @@ static int iavf_open(struct net_device *netdev)
  
- 	if (!sip_parse_addr(ct, dptr, &end, addr, limit, true))
- 		return -1;
--	if (end < limit && *end == ':') {
--		end++;
--		p = simple_strtoul(end, (char **)&end, 10);
--		if (p < 1024 || p > 65535)
--			return -1;
--		*port = htons(p);
--	} else
--		*port = htons(SIP_PORT);
-+	if (!sip_parse_port(end, &end, limit, port))
-+		return -1;
+ 	spin_unlock_bh(&adapter->mac_vlan_list_lock);
  
- 	if (end == dptr)
- 		return 0;
-@@ -509,7 +595,6 @@ int ct_sip_parse_header_uri(const struct nf_conn *ct, const char *dptr,
- 			    union nf_inet_addr *addr, __be16 *port)
- {
- 	const char *c, *limit = dptr + datalen;
--	unsigned int p;
- 	int ret;
+-	/* Restore filters that were removed with IFF_DOWN */
+-	iavf_restore_filters(adapter);
+ 	iavf_restore_fdir_filters(adapter);
  
- 	ret = ct_sip_walk_headers(ct, dptr, dataoff ? *dataoff : 0, datalen,
-@@ -520,14 +605,8 @@ int ct_sip_parse_header_uri(const struct nf_conn *ct, const char *dptr,
+ 	iavf_configure(adapter);
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+index 84eea8f8c62ff..316ce79f14c36 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+@@ -799,22 +799,12 @@ void iavf_del_vlans(struct iavf_adapter *adapter)
+ 	spin_lock_bh(&adapter->mac_vlan_list_lock);
  
- 	if (!sip_parse_addr(ct, dptr + *matchoff, &c, addr, limit, true))
- 		return -1;
--	if (*c == ':') {
--		c++;
--		p = simple_strtoul(c, (char **)&c, 10);
--		if (p < 1024 || p > 65535)
--			return -1;
--		*port = htons(p);
--	} else
--		*port = htons(SIP_PORT);
-+	if (!sip_parse_port(c, &c, limit, port))
-+		return -1;
- 
- 	if (dataoff)
- 		*dataoff = c - dptr;
-@@ -609,7 +688,7 @@ int ct_sip_parse_numerical_param(const struct nf_conn *ct, const char *dptr,
- 		return 0;
- 
- 	start += strlen(name);
--	*val = simple_strtoul(start, &end, 0);
-+	*val = sip_strtouint(start, limit - start, (char **)&end);
- 	if (start == end)
- 		return -1;
- 	if (matchoff && matchlen) {
-@@ -1065,6 +1144,8 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
- 
- 	mediaoff = sdpoff;
- 	for (i = 0; i < ARRAY_SIZE(sdp_media_types); ) {
-+		char *end;
-+
- 		if (ct_sip_get_sdp_header(ct, *dptr, mediaoff, *datalen,
- 					  SDP_HDR_MEDIA, SDP_HDR_UNSPEC,
- 					  &mediaoff, &medialen) <= 0)
-@@ -1080,8 +1161,8 @@ static int process_sdp(struct sk_buff *skb, unsigned int protoff,
- 		mediaoff += t->len;
- 		medialen -= t->len;
- 
--		port = simple_strtoul(*dptr + mediaoff, NULL, 10);
--		if (port == 0)
-+		port = sip_strtouint(*dptr + mediaoff, *datalen - mediaoff, (char **)&end);
-+		if (port == 0 || *dptr + mediaoff == end)
- 			continue;
- 		if (port < 1024 || port > 65535) {
- 			nf_ct_helper_log(skb, ct, "wrong port %u", port);
-@@ -1255,7 +1336,7 @@ static int process_register_request(struct sk_buff *skb, unsigned int protoff,
- 	 */
- 	if (ct_sip_get_header(ct, *dptr, 0, *datalen, SIP_HDR_EXPIRES,
- 			      &matchoff, &matchlen) > 0)
--		expires = simple_strtoul(*dptr + matchoff, NULL, 10);
-+		expires = sip_strtouint(*dptr + matchoff, *datalen - matchoff, NULL);
- 
- 	ret = ct_sip_parse_header_uri(ct, *dptr, NULL, *datalen,
- 				      SIP_HDR_CONTACT, NULL,
-@@ -1359,7 +1440,7 @@ static int process_register_response(struct sk_buff *skb, unsigned int protoff,
- 
- 	if (ct_sip_get_header(ct, *dptr, 0, *datalen, SIP_HDR_EXPIRES,
- 			      &matchoff, &matchlen) > 0)
--		expires = simple_strtoul(*dptr + matchoff, NULL, 10);
-+		expires = sip_strtouint(*dptr + matchoff, *datalen - matchoff, NULL);
- 
- 	while (1) {
- 		unsigned int c_expires = expires;
-@@ -1419,10 +1500,12 @@ static int process_sip_response(struct sk_buff *skb, unsigned int protoff,
- 	struct nf_conn *ct = nf_ct_get(skb, &ctinfo);
- 	unsigned int matchoff, matchlen, matchend;
- 	unsigned int code, cseq, i;
-+	char *end;
- 
- 	if (*datalen < strlen("SIP/2.0 200"))
- 		return NF_ACCEPT;
--	code = simple_strtoul(*dptr + strlen("SIP/2.0 "), NULL, 10);
-+	code = sip_strtouint(*dptr + strlen("SIP/2.0 "),
-+			     *datalen - strlen("SIP/2.0 "), NULL);
- 	if (!code) {
- 		nf_ct_helper_log(skb, ct, "cannot get code");
- 		return NF_DROP;
-@@ -1433,8 +1516,8 @@ static int process_sip_response(struct sk_buff *skb, unsigned int protoff,
- 		nf_ct_helper_log(skb, ct, "cannot parse cseq");
- 		return NF_DROP;
- 	}
--	cseq = simple_strtoul(*dptr + matchoff, NULL, 10);
--	if (!cseq && *(*dptr + matchoff) != '0') {
-+	cseq = sip_strtouint(*dptr + matchoff, *datalen - matchoff, (char **)&end);
-+	if (*dptr + matchoff == end) {
- 		nf_ct_helper_log(skb, ct, "cannot get cseq");
- 		return NF_DROP;
- 	}
-@@ -1483,6 +1566,7 @@ static int process_sip_request(struct sk_buff *skb, unsigned int protoff,
- 
- 	for (i = 0; i < ARRAY_SIZE(sip_handlers); i++) {
- 		const struct sip_handler *handler;
-+		char *end;
- 
- 		handler = &sip_handlers[i];
- 		if (handler->request == NULL)
-@@ -1499,8 +1583,8 @@ static int process_sip_request(struct sk_buff *skb, unsigned int protoff,
- 			nf_ct_helper_log(skb, ct, "cannot parse cseq");
- 			return NF_DROP;
+ 	list_for_each_entry_safe(f, ftmp, &adapter->vlan_filter_list, list) {
+-		/* since VLAN capabilities are not allowed, we dont want to send
+-		 * a VLAN delete request because it will most likely fail and
+-		 * create unnecessary errors/noise, so just free the VLAN
+-		 * filters marked for removal to enable bailing out before
+-		 * sending a virtchnl message
+-		 */
+ 		if (f->state == IAVF_VLAN_REMOVE &&
+ 		    !VLAN_FILTERING_ALLOWED(adapter)) {
+ 			list_del(&f->list);
+ 			kfree(f);
+ 			adapter->num_vlan_filters--;
+-		} else if (f->state == IAVF_VLAN_DISABLE &&
+-		    !VLAN_FILTERING_ALLOWED(adapter)) {
+-			f->state = IAVF_VLAN_INACTIVE;
+-		} else if (f->state == IAVF_VLAN_REMOVE ||
+-			   f->state == IAVF_VLAN_DISABLE) {
++		} else if (f->state == IAVF_VLAN_REMOVE) {
+ 			count++;
  		}
--		cseq = simple_strtoul(*dptr + matchoff, NULL, 10);
--		if (!cseq && *(*dptr + matchoff) != '0') {
-+		cseq = sip_strtouint(*dptr + matchoff, *datalen - matchoff, (char **)&end);
-+		if (*dptr + matchoff == end) {
- 			nf_ct_helper_log(skb, ct, "cannot get cseq");
- 			return NF_DROP;
- 		}
-@@ -1576,7 +1660,7 @@ static int sip_help_tcp(struct sk_buff *skb, unsigned int protoff,
- 				      &matchoff, &matchlen) <= 0)
- 			break;
+ 	}
+@@ -846,13 +836,7 @@ void iavf_del_vlans(struct iavf_adapter *adapter)
+ 		vvfl->vsi_id = adapter->vsi_res->vsi_id;
+ 		vvfl->num_elements = count;
+ 		list_for_each_entry_safe(f, ftmp, &adapter->vlan_filter_list, list) {
+-			if (f->state == IAVF_VLAN_DISABLE) {
+-				vvfl->vlan_id[i] = f->vlan.vid;
+-				f->state = IAVF_VLAN_INACTIVE;
+-				i++;
+-				if (i == count)
+-					break;
+-			} else if (f->state == IAVF_VLAN_REMOVE) {
++			if (f->state == IAVF_VLAN_REMOVE) {
+ 				vvfl->vlan_id[i] = f->vlan.vid;
+ 				list_del(&f->list);
+ 				kfree(f);
+@@ -893,8 +877,7 @@ void iavf_del_vlans(struct iavf_adapter *adapter)
+ 		vvfl_v2->vport_id = adapter->vsi_res->vsi_id;
+ 		vvfl_v2->num_elements = count;
+ 		list_for_each_entry_safe(f, ftmp, &adapter->vlan_filter_list, list) {
+-			if (f->state == IAVF_VLAN_DISABLE ||
+-			    f->state == IAVF_VLAN_REMOVE) {
++			if (f->state == IAVF_VLAN_REMOVE) {
+ 				struct virtchnl_vlan_supported_caps *filtering_support =
+ 					&adapter->vlan_v2_caps.filtering.filtering_support;
+ 				struct virtchnl_vlan *vlan;
+@@ -908,13 +891,9 @@ void iavf_del_vlans(struct iavf_adapter *adapter)
+ 				vlan->tci = f->vlan.vid;
+ 				vlan->tpid = f->vlan.tpid;
  
--		clen = simple_strtoul(dptr + matchoff, (char **)&end, 10);
-+		clen = sip_strtouint(dptr + matchoff, datalen - matchoff, (char **)&end);
- 		if (dptr + matchoff == end)
- 			break;
- 
-diff --git a/net/netfilter/nf_nat_sip.c b/net/netfilter/nf_nat_sip.c
-index c845b6d1a2bdf..9fbfc6bff0c22 100644
---- a/net/netfilter/nf_nat_sip.c
-+++ b/net/netfilter/nf_nat_sip.c
-@@ -246,6 +246,7 @@ static unsigned int nf_nat_sip(struct sk_buff *skb, unsigned int protoff,
- 		if (ct_sip_parse_numerical_param(ct, *dptr, matchend, *datalen,
- 						 "rport=", &poff, &plen,
- 						 &n) > 0 &&
-+		    n >= 1024 && n <= 65535 &&
- 		    htons(n) == ct->tuplehash[dir].tuple.dst.u.udp.port &&
- 		    htons(n) != ct->tuplehash[!dir].tuple.src.u.udp.port) {
- 			__be16 p = ct->tuplehash[!dir].tuple.src.u.udp.port;
+-				if (f->state == IAVF_VLAN_DISABLE) {
+-					f->state = IAVF_VLAN_INACTIVE;
+-				} else {
+-					list_del(&f->list);
+-					kfree(f);
+-					adapter->num_vlan_filters--;
+-				}
++				list_del(&f->list);
++				kfree(f);
++				adapter->num_vlan_filters--;
+ 				i++;
+ 				if (i == count)
+ 					break;
 -- 
 2.53.0
 
