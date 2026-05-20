@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-253132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251109-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mISANfAcDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-253132-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:43:28 +0200
+	id SKisCDbvDWqa4wUAu9opvQ
+	(envelope-from <stable+bounces-251109-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:28:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1335759A020
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:43:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAFC7593C3C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:28:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 85F11338CD01
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 94BB03109E84
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:13:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DC26402B80;
-	Wed, 20 May 2026 18:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 723153F20F0;
+	Wed, 20 May 2026 17:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ckNesny3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V36Z4/rn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395313FBECB;
-	Wed, 20 May 2026 18:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF8236F421;
+	Wed, 20 May 2026 17:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302489; cv=none; b=lfuvcT7y/VbKzsjgtIWbQPvOVnhNV3LIbxfRl1O0GWuXj8vbTkzdAfxG1SuWOYPzKVUJRLNhvR/jYmKC150nzTRhG0aLAO+btoNK/8rmJo4/nhSEeTMFBXGGGaTWSZtJ0zkyTTPafgZYcuxDtUm8O+8IaFBDM2kpsrkFJ08/fJQ=
+	t=1779297121; cv=none; b=cwroTai0ry8/1udrQUEcZ3oXXpP8CxXdkvDCY7vZhlzZsYXFoy4Ihymik7ZVAof26Jn1xEo2xj+4MdCzQrfgHGQ9LWruFR+6IRXWR6hOTdznK1Gt7uHMUbwBIJ13ULJhI3RbWBZ85h0ee+CFs6PQuWvK5j2wCOnkqRyI1A+g89s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302489; c=relaxed/simple;
-	bh=HWuwGoUZeKvMB9vhQ9RHXQvqI+i3sn4gGYOiF9T2d5M=;
+	s=arc-20240116; t=1779297121; c=relaxed/simple;
+	bh=9L/UMjoFT8+u5Ku2XdTGvUAlXkUDHXwJIc4xNk/VWP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cpmNkKqpjPB+IlaPsTleBjI4HFnqPuRhBTaMW84DIf5O1Url0Gf092odF5kVHm6+BAGsTOhuWCkqxTrb4FTXh2VhN8ymOUOkXRWBKeRu8Q6GlW7QPEz5w1qw+WhjFiNmD3Xm4LBgD4ouKiNBpYcFiPVD5NDOm0exMsW8a/JmYjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ckNesny3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E89F1F000E9;
-	Wed, 20 May 2026 18:41:27 +0000 (UTC)
+	 MIME-Version; b=JwUUkCwTwmF9wyBwOSZFHm9NPcBcDDFKIfrKLahlPTyVK/QPG3QyQizR12AfixFU5b4eouJeVLuJVt2tWF0YAn4j2MilcLcjTFLjfc/hBBMELPF/6mVBjmbqa3chJqJRiFg9FTUj6w0UzjKX9olum0mHPzdyRPnp9yH9P7JFxcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V36Z4/rn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 965AB1F000E9;
+	Wed, 20 May 2026 17:11:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302488;
-	bh=sl0j5pIdBCEB7u8H+9nQqJg3kL2WSgDUdAkZlxouLyM=;
+	s=korg; t=1779297120;
+	bh=5Hu1LrCpBY6kBAMRLGfGWCLaCTUFvvwRlLMr+mqIEW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ckNesny3xNQOkWKb6KtN7K4wiSOgS30IcHdlFAjyUypT/MzB0KZdpRVd7Y9T5NPom
-	 L7qg6DINHvpJJkUQkHlUB6pvt6xTBxE8PVOT/vdV/XUrBEfZE394DmdajC50MJhv+g
-	 secFE7cTCf/0BMKICpf9ojAYGW1Uqv99zgonKrx8=
+	b=V36Z4/rnrIPwUvZPyMzSeMUEEvn9ywlh/s+HH7RSFE0caVscibG4dcgDBGwcqSZls
+	 oM4LzPhsIApd+VYVipCliMM4oNQpC6Srmq6J8MQ5t/0h98yYt4uJMjx4cVHZA6yhVT
+	 zREzRAyzbwKCCB8ICsteaOxuWTqDJIsJsZSyFbds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Abel Vesa <abel.vesa@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 285/508] clk: imx: imx6q: Fix device node reference leak in of_assigned_ldb_sels()
-Date: Wed, 20 May 2026 18:21:48 +0200
-Message-ID: <20260520162104.818680889@linuxfoundation.org>
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Matthew Rosato <mjrosato@linux.ibm.com>
+Subject: [PATCH 7.0 1059/1146] KVM: s390: pci: fix GAIT table indexing due to double-scaling pointer arithmetic
+Date: Wed, 20 May 2026 18:21:49 +0200
+Message-ID: <20260520162212.199625798@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,96 +65,107 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nxp.com,oss.qualcomm.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253132-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,linux.ibm.com];
+	TAGGED_FROM(0.00)[bounces-251109-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,nxp.com:email,clkspec.np:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 1335759A020
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,outlook.com:email]
+X-Rspamd-Queue-Id: BAFC7593C3C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-[ Upstream commit 9faf207208951460f3f7eefbc112246c8d28ff1b ]
+commit 16d990a15491cf76cd6eef0846e1b4100e63261a upstream.
 
-The function of_assigned_ldb_sels() calls of_parse_phandle_with_args()
-but never calls of_node_put() to release the reference, causing a memory
-leak.
+kvm_s390_pci_aif_enable(), kvm_s390_pci_aif_disable(), and
+aen_host_forward() index the GAIT by manually multiplying the index
+with sizeof(struct zpci_gaite).
 
-Fix this by adding proper cleanup calls on all exit paths.
+Since aift->gait is already a struct zpci_gaite pointer, this
+double-scales the offset, accessing element aisb*16 instead of aisb.
 
-Fixes: 5d283b083800 ("clk: imx6: Fix procedure to switch the parent of LDB_DI_CLK")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Link: https://patch.msgid.link/20260203-clk-imx6q-v3-2-6cd2696bb371@gmail.com
-Signed-off-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This causes out-of-bounds accesses when aisb >= 32 (with
+ZPCI_NR_DEVICES=512)
+
+Fix by removing the erroneous sizeof multiplication.
+
+Fixes: 3c5a1b6f0a18 ("KVM: s390: pci: provide routines for enabling/disabling interrupt forwarding")
+Fixes: 73f91b004321 ("KVM: s390: pci: enable host forwarding of Adapter Event Notifications")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Tested-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/imx/clk-imx6q.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/s390/kvm/interrupt.c |    3 +--
+ arch/s390/kvm/pci.c       |    6 ++----
+ 2 files changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-imx6q.c b/drivers/clk/imx/clk-imx6q.c
-index ba696cf34fe3b..048e2ddba490b 100644
---- a/drivers/clk/imx/clk-imx6q.c
-+++ b/drivers/clk/imx/clk-imx6q.c
-@@ -188,9 +188,11 @@ static void of_assigned_ldb_sels(struct device_node *node,
- 		}
- 		if (clkspec.np != node || clkspec.args[0] >= IMX6QDL_CLK_END) {
- 			pr_err("ccm: parent clock %d not in ccm\n", index);
-+			of_node_put(clkspec.np);
- 			return;
- 		}
- 		parent = clkspec.args[0];
-+		of_node_put(clkspec.np);
+--- a/arch/s390/kvm/interrupt.c
++++ b/arch/s390/kvm/interrupt.c
+@@ -3307,8 +3307,7 @@ static void aen_host_forward(unsigned lo
+ 	struct zpci_gaite *gaite;
+ 	struct kvm *kvm;
  
- 		rc = of_parse_phandle_with_args(node, "assigned-clocks",
- 				"#clock-cells", index, &clkspec);
-@@ -198,9 +200,11 @@ static void of_assigned_ldb_sels(struct device_node *node,
- 			return;
- 		if (clkspec.np != node || clkspec.args[0] >= IMX6QDL_CLK_END) {
- 			pr_err("ccm: child clock %d not in ccm\n", index);
-+			of_node_put(clkspec.np);
- 			return;
- 		}
- 		child = clkspec.args[0];
-+		of_node_put(clkspec.np);
+-	gaite = (struct zpci_gaite *)aift->gait +
+-		(si * sizeof(struct zpci_gaite));
++	gaite = aift->gait + si;
+ 	if (gaite->count == 0)
+ 		return;
+ 	if (gaite->aisb != 0)
+--- a/arch/s390/kvm/pci.c
++++ b/arch/s390/kvm/pci.c
+@@ -290,8 +290,7 @@ static int kvm_s390_pci_aif_enable(struc
+ 				    phys_to_virt(fib->fmt0.aibv));
  
- 		if (child != IMX6QDL_CLK_LDB_DI0_SEL &&
- 		    child != IMX6QDL_CLK_LDB_DI1_SEL)
--- 
-2.53.0
-
+ 	spin_lock_irq(&aift->gait_lock);
+-	gaite = (struct zpci_gaite *)aift->gait + (zdev->aisb *
+-						   sizeof(struct zpci_gaite));
++	gaite = aift->gait + zdev->aisb;
+ 
+ 	/* If assist not requested, host will get all alerts */
+ 	if (assist)
+@@ -357,8 +356,7 @@ static int kvm_s390_pci_aif_disable(stru
+ 	if (zdev->kzdev->fib.fmt0.aibv == 0)
+ 		goto out;
+ 	spin_lock_irq(&aift->gait_lock);
+-	gaite = (struct zpci_gaite *)aift->gait + (zdev->aisb *
+-						   sizeof(struct zpci_gaite));
++	gaite = aift->gait + zdev->aisb;
+ 	isc = gaite->gisc;
+ 	gaite->count--;
+ 	if (gaite->count == 0) {
 
 
 
