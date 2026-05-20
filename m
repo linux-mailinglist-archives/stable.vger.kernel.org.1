@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-251306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250419-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wEfCA6r8DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-251306-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:25:46 +0200
+	id mAPCOEXyDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-250419-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 093135961A9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:25:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A7625944E2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 273BD304220A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:20:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 650B432920D1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:44:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F25182DC76C;
-	Wed, 20 May 2026 17:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B96E13E6385;
+	Wed, 20 May 2026 16:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7LylQI6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="smlsrMtB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B391335AC18;
-	Wed, 20 May 2026 17:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462E23D8138;
+	Wed, 20 May 2026 16:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297638; cv=none; b=JlzFQP/3gMOCtFTnh63Uoq/11mXBirnviULHbtyEz3cv6CEXWO13xUfQvv/Lpt9bmEBe7lwXm3H1s83+kjQYtIBaMpH2BAEf9xXQrHYI38himHC4hAqhObGYJuDlbwuizqFA9X2d6++zQ+KxCG4FStW28MnEqnTLL0MSZhBQQtg=
+	t=1779295365; cv=none; b=rmuJrZTBIAay1NzqprQ27LKcwmm71w4NSBDAdAzCPJc6wp6qHnuL3J9pf3b9Z5PoMR/m/0tz98qVYp72qq/AvyweoZ3wiN11d4N9PMEF6JPKHIxmKnvCsI27fEFYm6oynmIwHkCAjPA4ELh7FTZtv4nLDp/FbfXuZmlJnI2Sxuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297638; c=relaxed/simple;
-	bh=ztRcoxZAu8mIQdKfANVLOkWA2hwup68P+z97j4Clw1c=;
+	s=arc-20240116; t=1779295365; c=relaxed/simple;
+	bh=2wux+9mONN5BOYu0F6JylFz5Jq4iBc+DeX9vAMsi2B0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y7e6817pn7JMkEo1Gz8GCmDEHdBSB8mMv949o3cLCSimYMgNIR5izL/YJd4kK1NnovTMr0TCZV2ByUGdOAdxJGG537ArTw6lRH70el1ePVDFwHKtNYotVzokA5b/QLWGnbTKztFqeGKZOTf6kgOFevYWaYSdtde+QPPXrqbLyjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7LylQI6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 253301F000E9;
-	Wed, 20 May 2026 17:20:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SHygGh3/SifdiFIwH8HaNC981T8WJHKlZqbNSuIecczZz9w+Ww7od33X6Um3oxhIZ2wAkXqj4sTR/IAQO5w5J03Tb4OJ3vDt4WDDTQcKNS9FdK+ojN9OIg87axI2WGkOMTuhzyJ/0ZF13s2YWWc0X8Hjqz4I4oZEz/7uxfrd8jU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=smlsrMtB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953B91F000E9;
+	Wed, 20 May 2026 16:42:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297637;
-	bh=NgN95DBoUtr/9c9OrwUXT4lw4UKquZnB18W1hrN2Grc=;
+	s=korg; t=1779295364;
+	bh=oatYlFhA4nb1m1gXrqYrguteCwb1I1REN7JqZOFZ+uY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=b7LylQI6ubnCb/53ifM1DIvMOw10SsghXf7BpwbbvCZcW+irf4nf9sAeCn81gcx/l
-	 Jmj8G7POqXs9H/PoY+nER9/GaVqFEN7FYkdM153wKO81GfzgZk2Rs1BI2mg9ePai0b
-	 7bUrnNFg7xXaZpPmXOnRKCzCLKkCxUZWArDO5pn4=
+	b=smlsrMtBLdAHyGTB2KSEuUkJ7soIqE/SokiI+o7DOyhvLL+ICBK2Z+DG6zwTnusJn
+	 FuKdM3APIPhWBCpxzI290UPbacpeDpLs0V3YnYru5HmJBxiFjtgvOOOxayQbn1/Qyl
+	 Q8b2fTwOpqA6H0lYJg3CwFD3hdcvWfue3t3OCD8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Chiu <chui-hao.chiu@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 107/957] wifi: mt76: mt7996: fix RRO EMU configuration
+Subject: [PATCH 7.0 0340/1146] drm/amd/pm/smu7: Fix SMU7 voltage dependency on display clock
 Date: Wed, 20 May 2026 18:09:50 +0200
-Message-ID: <20260520162136.882148915@linuxfoundation.org>
+Message-ID: <20260520162155.895408707@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,88 +63,225 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251306-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-250419-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,mediatek.com:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,nbd.name:email]
-X-Rspamd-Queue-Id: 093135961A9
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 7A7625944E2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Chiu <chui-hao.chiu@mediatek.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 73b46379e5231138025b271ce8e158d2a8aa0768 ]
+[ Upstream commit 0138610c14130425be53423b35336561829965e0 ]
 
-Use the correct helper to update specific bitfields instead of
-overwriting the entire register.
+The DCE (display controller engine) requires a minimum voltage
+in order to function correctly, depending on which clock level
+it currently uses.
 
-Fixes: eedb427eb260 ("wifi: mt76: mt7996: Enable HW RRO for MT7992 chipset")
-Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20260312095724.2117448-1-shayne.chen@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Add a new table that contains display clock frequency levels
+and the corresponding required voltages. The clock frequency
+levels are taken from DC (and the old radeon driver's voltage
+dependency table for CI in cases where its values were lower).
+The voltage levels are taken from the following function:
+phm_initializa_dynamic_state_adjustment_rule_settings().
+Furthermore, in case of CI, call smu7_patch_vddc() on the new
+table to account for leakage voltage (like in radeon).
+
+Use the display clock value from amd_pp_display_configuration
+to look up the voltage level needed by the DCE. Send the
+voltage to the SMU via the PPSMC_MSG_VddC_Request command.
+
+The previous implementation of this feature was non-functional
+because it relied on a "dal_power_level" field which was never
+assigned; and it was not at all implemented for CI ASICs.
+
+I verified this on a Radeon R9 M380 which previously booted to
+a black screen with DC enabled (default since Linux 6.19), but
+now works correctly.
+
+Fixes: 599a7e9fe1b6 ("drm/amd/powerplay: implement smu7 hwmgr to manager asics with smu ip version 7.")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/init.c | 3 +--
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c  | 2 +-
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ .../drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c   | 88 ++++++++++++++++++-
+ drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h  |  1 +
+ 2 files changed, 86 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index 817acfad31d06..efbd46d649017 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -857,8 +857,7 @@ void mt7996_rro_hw_init(struct mt7996_dev *dev)
- 			}
- 		} else {
- 			/* set emul 3.0 function */
--			mt76_wr(dev, MT_RRO_3_0_EMU_CONF,
--				MT_RRO_3_0_EMU_CONF_EN_MASK);
-+			mt76_set(dev, MT_RRO_3_0_EMU_CONF, MT_RRO_3_0_EMU_CONF_EN_MASK);
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+index e38222877f7ef..563482f5d35fd 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+@@ -2802,6 +2802,10 @@ static int smu7_patch_dependency_tables_with_leakage(struct pp_hwmgr *hwmgr)
+ 	if (tmp)
+ 		return -EINVAL;
  
- 			mt76_wr(dev, MT_RRO_ADDR_ARRAY_BASE0,
- 				dev->wed_rro.addr_elem[0].phy_addr);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index c375b4dd68a20..149d8d711fc4c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -2597,7 +2597,7 @@ void mt7996_mac_reset_work(struct work_struct *work)
- 	mt7996_dma_start(dev, false, false);
++	tmp = smu7_patch_vddc(hwmgr, hwmgr->dyn_state.vddc_dependency_on_display_clock);
++	if (tmp)
++		return -EINVAL;
++
+ 	tmp = smu7_patch_vce_vddc(hwmgr, hwmgr->dyn_state.vce_clock_voltage_dependency_table);
+ 	if (tmp)
+ 		return -EINVAL;
+@@ -2885,6 +2889,8 @@ static int smu7_hwmgr_backend_fini(struct pp_hwmgr *hwmgr)
+ {
+ 	kfree(hwmgr->dyn_state.vddc_dep_on_dal_pwrl);
+ 	hwmgr->dyn_state.vddc_dep_on_dal_pwrl = NULL;
++	kfree(hwmgr->dyn_state.vddc_dependency_on_display_clock);
++	hwmgr->dyn_state.vddc_dependency_on_display_clock = NULL;
+ 	kfree(hwmgr->backend);
+ 	hwmgr->backend = NULL;
  
- 	if (!is_mt7996(&dev->mt76) && dev->mt76.hwrro_mode == MT76_HWRRO_V3)
--		mt76_wr(dev, MT_RRO_3_0_EMU_CONF, MT_RRO_3_0_EMU_CONF_EN_MASK);
-+		mt76_set(dev, MT_RRO_3_0_EMU_CONF, MT_RRO_3_0_EMU_CONF_EN_MASK);
+@@ -2955,6 +2961,51 @@ static int smu7_update_edc_leakage_table(struct pp_hwmgr *hwmgr)
+ 	return ret;
+ }
  
- 	if (mtk_wed_device_active(&dev->mt76.mmio.wed)) {
- 		u32 wed_irq_mask = MT_INT_TX_DONE_BAND2 |
++static int smu7_init_voltage_dependency_on_display_clock_table(struct pp_hwmgr *hwmgr)
++{
++	struct phm_clock_voltage_dependency_table *table;
++
++	if (!amdgpu_device_ip_get_ip_block(hwmgr->adev, AMD_IP_BLOCK_TYPE_DCE))
++		return 0;
++
++	table = kzalloc(struct_size(table, entries, 4), GFP_KERNEL);
++	if (!table)
++		return -ENOMEM;
++
++	if (hwmgr->chip_id >= CHIP_POLARIS10) {
++		table->entries[0].clk = 38918;
++		table->entries[1].clk = 45900;
++		table->entries[2].clk = 66700;
++		table->entries[3].clk = 113200;
++
++		table->entries[0].v = 700;
++		table->entries[1].v = 740;
++		table->entries[2].v = 800;
++		table->entries[3].v = 900;
++	} else {
++		if (hwmgr->chip_family == AMDGPU_FAMILY_CZ) {
++			table->entries[0].clk = 35200;
++			table->entries[1].clk = 35200;
++			table->entries[2].clk = 46700;
++			table->entries[3].clk = 64300;
++		} else {
++			table->entries[0].clk = 0;
++			table->entries[1].clk = 35200;
++			table->entries[2].clk = 54000;
++			table->entries[3].clk = 62500;
++		}
++
++		table->entries[0].v = 0;
++		table->entries[1].v = 720;
++		table->entries[2].v = 810;
++		table->entries[3].v = 900;
++	}
++
++	table->count = 4;
++	hwmgr->dyn_state.vddc_dependency_on_display_clock = table;
++	return 0;
++}
++
+ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
+ {
+ 	struct amdgpu_device *adev = hwmgr->adev;
+@@ -2983,6 +3034,10 @@ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
+ 		smu7_get_elb_voltages(hwmgr);
+ 	}
+ 
++	result = smu7_init_voltage_dependency_on_display_clock_table(hwmgr);
++	if (result)
++		goto fail;
++
+ 	if (hwmgr->pp_table_version == PP_TABLE_V1) {
+ 		smu7_complete_dependency_tables(hwmgr);
+ 		smu7_set_private_data_based_on_pptable_v1(hwmgr);
+@@ -3079,13 +3134,40 @@ static int smu7_force_dpm_highest(struct pp_hwmgr *hwmgr)
+ 	return 0;
+ }
+ 
++static uint32_t smu7_lookup_vddc_from_dispclk(struct pp_hwmgr *hwmgr)
++{
++	const struct amd_pp_display_configuration *cfg = hwmgr->display_config;
++	const struct phm_clock_voltage_dependency_table *vddc_dep_on_dispclk =
++			hwmgr->dyn_state.vddc_dependency_on_display_clock;
++	uint32_t i;
++
++	if (!vddc_dep_on_dispclk || !vddc_dep_on_dispclk->count ||
++	    !cfg || !cfg->num_display || !cfg->display_clk)
++		return 0;
++
++	/* Start from 1 because ClocksStateUltraLow should not be used according to DC. */
++	for (i = 1; i < vddc_dep_on_dispclk->count; ++i)
++		if (vddc_dep_on_dispclk->entries[i].clk >= cfg->display_clk)
++			return vddc_dep_on_dispclk->entries[i].v;
++
++	return vddc_dep_on_dispclk->entries[vddc_dep_on_dispclk->count - 1].v;
++}
++
++static void smu7_apply_minimum_dce_voltage_request(struct pp_hwmgr *hwmgr)
++{
++	uint32_t req_vddc = smu7_lookup_vddc_from_dispclk(hwmgr);
++
++	smum_send_msg_to_smc_with_parameter(hwmgr,
++			PPSMC_MSG_VddC_Request,
++			req_vddc * VOLTAGE_SCALE,
++			NULL);
++}
++
+ static int smu7_upload_dpm_level_enable_mask(struct pp_hwmgr *hwmgr)
+ {
+ 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
+ 
+-	if (hwmgr->pp_table_version == PP_TABLE_V1)
+-		phm_apply_dal_min_voltage_request(hwmgr);
+-/* TO DO  for v0 iceland and Ci*/
++	smu7_apply_minimum_dce_voltage_request(hwmgr);
+ 
+ 	if (!data->sclk_dpm_key_disabled) {
+ 		if (data->dpm_level_enable_mask.sclk_dpm_enable_mask)
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h b/drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h
+index c661185753b42..2f49c95342a14 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h
++++ b/drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h
+@@ -631,6 +631,7 @@ struct phm_dynamic_state_info {
+ 	struct phm_clock_voltage_dependency_table *vddci_dependency_on_mclk;
+ 	struct phm_clock_voltage_dependency_table *vddc_dependency_on_mclk;
+ 	struct phm_clock_voltage_dependency_table *mvdd_dependency_on_mclk;
++	struct phm_clock_voltage_dependency_table *vddc_dependency_on_display_clock;
+ 	struct phm_clock_voltage_dependency_table *vddc_dep_on_dal_pwrl;
+ 	struct phm_clock_array                    *valid_sclk_values;
+ 	struct phm_clock_array                    *valid_mclk_values;
 -- 
 2.53.0
 
