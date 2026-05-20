@@ -1,332 +1,161 @@
-Return-Path: <stable+bounces-253383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253384-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8HYyFuccDmro6AUAu9opvQ
-	(envelope-from <stable+bounces-253383-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:43:19 +0200
+	id gLrRNCU+Dmqr9AUAu9opvQ
+	(envelope-from <stable+bounces-253384-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 01:05:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF95459A003
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:43:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ABD859C88F
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 01:05:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 421FF3074026
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:42:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 81D30335BA12
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:55:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFB73372EF1;
-	Wed, 20 May 2026 20:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA44376492;
+	Wed, 20 May 2026 20:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hyRC9W/x"
+	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="MiuU4rm7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63DE43630BE
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 20:42:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779309769; cv=pass; b=cEF++koAS+sYa8OIE0YYPmOl2r7WJNBCCTzkdw7P5iIR5uzBXGaqvOsWRTCYIcc4kfxvBM1QbtRNMhRaycx3ME37q9DdA0E/YDxcCZJ1QAEtSjaqsXR7PUuIC4pQMWBGIZyLPmwCQNEZM2Gx06htdlq0upcC3Df6HuAPs5F1CvE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779309769; c=relaxed/simple;
-	bh=swoniN8dKbxjmhX+Uk6nTtqqeMOaDJuOsCzcMmvbw1o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hF/or02dNNNTgRNH7iaXlfmjK47mTLR7AqfEVv7huaFO8XH+VxYEYvtPKo8a7PkO+jahHAVg4piwbh4R4Tbdl/O5SXe/FtJDoLanw7JHQRoUKkhUi1JUcSRbgybi28wuZesJp6mPrCIIb0octt3xH6k4umvWUWVnJZ+Xgy696Ng=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hyRC9W/x; arc=pass smtp.client-ip=74.125.82.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-133362c30cfso28c88.0
-        for <stable@vger.kernel.org>; Wed, 20 May 2026 13:42:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779309766; cv=none;
-        d=google.com; s=arc-20240605;
-        b=bjJNNkVIKJCIGxdwAn/5OG3yeD/GAxqC7qTPiFOi9MhCI5RtTqKgHs6K9d7n2tS+Oh
-         phtVGxuYGNC3W27uyLXKrmKeedU3LwxJ9EfR2FB4wWtB61aZnHu2Bt5zdOwNb1jcpsCi
-         tmO3DS8IQ3k1ANEjediuFBdnhk5unWA5MxWllGvuD1wpNeSrw/RcILd21x2DRFDD0KiP
-         TxCw6QOo3vuDUqXU3KnLNqwrunZOYHndUNJlLwmrENWg/Tik2z4qu3XomFHgePitdHsc
-         MXV39p9nB0aHkz2nFr8L4yIFzyURsacDrlNZGYfngivwLl0a3XVgtUtXDKZYyD1nJp2m
-         cwrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=vcExwVYkUpCIudziU/6/ngXHhFQ/KYbIMq9N2HBF1YI=;
-        fh=4+UiCreEPTgY0mNB4YB6M1jHmOMX+vxPvL60DOTooBQ=;
-        b=WzNZZ2BE7PlkCZK6tZSJqHxX+emNx7aFdndy9Qk4E7VIPT3+83FmPT2KasAuUjHUWt
-         k12QSgpAGuRJPCkf+hoMYdEI9f44rzVKDFAY6zbIgIbFqpwGCIbuXUHLM/Vl58vHFaXD
-         sG46bN4UczBJGFeheZ78VW5q2p8sJWgwM9meIHSAYgw1LX8/OcNhXXbdWqjzmNDHhhLW
-         Ndj6DyxsMdW7ytV4yuyL3++Lc+IhbeWo8l/P+KWJ61oX8QGX+JX9reBY0YLtvPpTbJzP
-         gL5wO5jAccHr+zdDvLidBB8sl6yekn8OpXRsswAtuPReCbx25zf+hWDGNfFE9FpmIc2Q
-         +Nbg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C915371053
+	for <stable@vger.kernel.org>; Wed, 20 May 2026 20:55:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779310548; cv=none; b=YvGmUn6ZRp5UuDxFhocwkTMRrUnYknyqU0ehunb3TyBpPnWZ4x/8SV472cJJIaKg3eVwBbqjoJ5592cHX/8am/xAwokXHy4YUkDEC2I12Nh2snzfudMW1JZQ66bZEVrFWYtCEhTX+kdkv9tOYP0kOiAh++gu40CDlsZZXpQvzwA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779310548; c=relaxed/simple;
+	bh=RNhi+VrJKeyp8QxPIcStj3ZSn3BJqKFpD9tswgBlpY0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U3GA1pFabEozXTR3pB3MjjeY8eJkqGwtPTKwXgGHKyHl70lZ+D/su4GYuolFmabISrAZGim4SIOuGXB2h6goFDm3mJSmq5eS84auV6QYTC4sodfbOS437KjHKOGDaKoXQaCeEUxnks00emaWxz1rESsPz/iDYMnGY4Wp+eQuJJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=MiuU4rm7; arc=none smtp.client-ip=74.125.82.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
+Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-132d1b2519eso12373893c88.0
+        for <stable@vger.kernel.org>; Wed, 20 May 2026 13:55:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779309766; x=1779914566; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vcExwVYkUpCIudziU/6/ngXHhFQ/KYbIMq9N2HBF1YI=;
-        b=hyRC9W/x/40Epk8d6ZrXyLem/qA+ZN9MJCA8UCBodEADRwAwaG06o/sWyYJ8w+S1J7
-         o10WCZAMsFlBLXyTdgnVRq3s/Ke6tPYA4kvR6bPzGC3sIQRydCKmLIkIBj3IU3rWRTj+
-         2CNsNauJDn/+CDAuE7UCVfxJnOFNxpY5p+EKl8S8omlSOrIQ6bzLfxd/YwjO9VBgTIFy
-         ZHN5/NZ8W9nkocXKEd1gIZSiFmd/Nfs6jFHdT4N4YFpp2c+sbaommHE0R0jWXxIueIwQ
-         +gDi8pZgqQNwPgA1IgN8ZG2DbLNNIdzY0UuZJGWBIk7/B54MV4hZRow6F8kVtATPcOj4
-         KZTQ==
+        d=linuxtx.org; s=google; t=1779310544; x=1779915344; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rf4adrALhwhE5Bg7Hir1wi5ddzsEvpjUUPdqrQb8HSg=;
+        b=MiuU4rm7U1QPmbTAJn2xNHiQXPEqT6nuonFBL6Kjkzznu88hwaHGQXeK/jRZnCCqRs
+         ZXvdJK76eKL0qwFgiTawU4tMB4GF8gAzpL+ivdCrT8nnnqk2n8FzX4AhEAZu+p7Eb7mx
+         WL3rYwbsANVYS3bMMtBayy5P0ovMZIB+DN+pk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779309766; x=1779914566;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=vcExwVYkUpCIudziU/6/ngXHhFQ/KYbIMq9N2HBF1YI=;
-        b=qWWnznXO8stONuEwXVZqw/pfuffHlb2h1zcBu8cSYfdK+n/BoXcgZbyJzXzn3Y6rJX
-         2DcDIp3yHLjC4I53tUpK8fgtq55/m2KaFmPSZqUoBaRFTVcmjTuQjXw9my+cIIYeblDQ
-         jyWrNA1BNbFyqLSyqAA3dCKUvZNBi/hJuSqADbiYhqldu6HW2IFff22BiGxhRYBU03tr
-         p0pJxr4KWT3AfsBNiig5r4Wqzl/DVFLvBcU/l3G/ql4J1aHnICWjoKtyaQdjq45B9+al
-         6+64nnK6ccjoXPT7etU1GQ+wNooN/MedJX/Q+7GQ3xP3/umBARj8D63O7Pl8u7GjYhWc
-         ReIA==
-X-Forwarded-Encrypted: i=1; AFNElJ/TaSy1lF1oQHuwMwGJBQS8vX7PTu1Jst7wuIp5z9DnkMP2Y9YZbYnL/ZHq6d2phlbyTQaqJk4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYmvVq8pgF37azaSAADTEw+BDz5GVt4ssC4nn/L/UC/0xXcKDW
-	4FUiiYK3b0YPbkmkleS0cms1EcrLfLwIYUWONtiQVPFMKn85ex19TLdFZJo2I4vttKbW3TS9j9t
-	NTPDx4AqR4rLFcLYR9dgcNGFTf7lMX4l/QnjkI8TR
-X-Gm-Gg: Acq92OEv3Yz0lotxrDVLOGviNYJV0pynCJTtcTBkwrCznFJOXUdXUlMMG7xTs6lraBG
-	azTflIVRm/khig/zb3Smi6QeYyGdfP+p6pMs7Cw999IvShBFalTOfzQe7/S/56mGVTsamDaTpCN
-	iL5I0K36LsOhGdiCtmuMt9UKC4z7Y8cpYFEnS0sD30aLhzHN3KK8nu1P2OQ0AKCfIrUDaMajGvQ
-	3UD1ad+Acxl0wV4nWPXAMPv8vVDDOMPzbehfP8yMGZhOxz9vsK4g0Lf9cIdvbANiVdcHNWMT5/+
-	bfFDWk59Y2Zghgtm4xRXq4UU8SuAk9A0ejcvn7KqZXUOpFK/VGEf
-X-Received: by 2002:a05:7022:108:b0:11a:b4dc:7773 with SMTP id
- a92af1059eb24-1363394eabfmr4014c88.12.1779309765824; Wed, 20 May 2026
- 13:42:45 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779310544; x=1779915344;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=rf4adrALhwhE5Bg7Hir1wi5ddzsEvpjUUPdqrQb8HSg=;
+        b=qJkZq+eU+IvVR9Htu1v++HBlnAXWuBt7AdaFhgg9oXo6+9Wvw9x2f9mfCDpu1OVO+t
+         zxnVawVn5Y4Wy/5YXP0HUi11OpzFzvTj0BIDNjRB7S54dbCGjOKdoljP/x40Ve/JzCs0
+         HYSdYkE98lpGDtMzVaFzep7/wv82j9oFeB6VdteDfOGrsuBvUXSo+srmQFK+ygjpCig+
+         iQ8/qpgsZlQKC/cVyoHtz5DuAR0w5uD3qu+ggRJFQJztnUrmiVS0lvILCZ1jtXsvHLHx
+         gjSCnWCWN9jq64ExgytrSCBGBqqbFmtRptVzHfrLblgurF/IybuT5ofCSJz8GOSmGsIG
+         so0w==
+X-Gm-Message-State: AOJu0Yxaj4m2DQpl9qh9y6RMeSyOybcvFBGGrVbibxIs2mdxxkJ7lMBl
+	eNGzQpLNPD7iN29EzXZzzYW+SXxR09FzfZc/o+hu1qNkfM2Q4dipTS/GBUxc0+nQaQ==
+X-Gm-Gg: Acq92OEEhmFQxatgxDqYxkQxjn+yZFSGg+V6EM7fAfR3yfuvKxu3xq4xoO2v5UVy3km
+	WfZdFjBK89T/2ZRNqzRnZwrePhmtZu7sVhguHMTmh54D8iWa/a6WyK7nGF8Z8I4NaL/BnRH2l/L
+	PqsM8NPwuljN1N933ezo9m0ZqYptBiWFZ8+HJ6sqEU5J60AbzB0+qjgYEYyHDQWYVXtwZ7TQwKE
+	XzopnqchA8vDlWFNspEI15HUjGgcG1v65alduapoO/iJROuJkb8ZEfSGJsZg7PNa39DtXCL5VVl
+	SRVtDiM+XgxLz1jazQsPaxRaPGYN7ijDot7UXhhiNH6LgDhTiDF0flQ1mrXdxPhj6R/q1Qp0GHH
+	njKG0iCQDnY5PlBsWb46ObEuTEI0TM+f+7APbhbt9djw2nbousyfYbierhHdLPc/S3LHPbFXJ9F
+	dGsB5WKSsdakvzLW+pcFpOBykLuAgTqc3TWUlvhUldrE/A5z2htzAg
+X-Received: by 2002:a05:7023:b8a:b0:12d:e126:b7c8 with SMTP id a92af1059eb24-13632a0824cmr128746c88.13.1779310544318;
+        Wed, 20 May 2026 13:55:44 -0700 (PDT)
+Received: from fedora64.linuxtx.org ([98.97.105.211])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-134cbcb93f3sm28204367c88.3.2026.05.20.13.55.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 May 2026 13:55:43 -0700 (PDT)
+Sender: Justin Forbes <jmforbes@linuxtx.org>
+Date: Wed, 20 May 2026 14:55:40 -0600
+From: Justin Forbes <jforbes@fedoraproject.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com
+Subject: Re: [PATCH 7.0 0000/1146] 7.0.10-rc1 review
+Message-ID: <ag4fzH2-dUdDHGtv@fedora64.linuxtx.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260519203530.66310-1-devnexen@gmail.com> <CAHS8izOL4yyPH4+ZUXxKB6JAj0EgbFK5UkG+SSb4rk_vG6EfhQ@mail.gmail.com>
- <CA+XhMqxPNEBVey8xw_yisymwL2H_04hL48GOyPk08U8p0tYM2g@mail.gmail.com>
-In-Reply-To: <CA+XhMqxPNEBVey8xw_yisymwL2H_04hL48GOyPk08U8p0tYM2g@mail.gmail.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Wed, 20 May 2026 13:42:32 -0700
-X-Gm-Features: AVHnY4ICiwqE7hbYCr0VxH30HD8L8io-G094d2MA_FbIMSMclBaeXhhNRblCHYc
-Message-ID: <CAHS8izMTxrywNPEeYsuyeJ9ETfdwt0qYdHFh5=v8pohboT86AQ@mail.gmail.com>
-Subject: Re: [PATCH net v2] net: devmem: reject dma-buf bind with
- non-page-aligned size or SG length
-To: David CARLIER <devnexen@gmail.com>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	sdf@fomichev.me, sdf.kernel@gmail.com, kaiyuanz@google.com, 
-	bobbyeshleman@gmail.com, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+X-Spamd-Result: default: False [-0.06 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_DKIM_ALLOW(-0.20)[linuxtx.org:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[fedoraproject.org : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[13];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TAGGED_FROM(0.00)[bounces-253383-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253384-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[almasrymina@google.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,davemloft.net,google.com,kernel.org,redhat.com,fomichev.me,gmail.com];
-	TAGGED_RCPT(0.00)[stable];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: DF95459A003
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jforbes@fedoraproject.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxtx.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 3ABD859C88F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, May 20, 2026 at 12:28=E2=80=AFPM David CARLIER <devnexen@gmail.com>=
- wrote:
->
-> On Wed, 20 May 2026 at 19:55, Mina Almasry <almasrymina@google.com> wrote=
-:
-> >
-> > On Tue, May 19, 2026 at 1:35=E2=80=AFPM David Carlier <devnexen@gmail.c=
-om> wrote:
-> > >
-> > > net_devmem_bind_dmabuf() trusts dmabuf->size and sg_dma_len() to be
-> > > PAGE_SIZE multiples without checking:
-> > >
-> > >   - tx_vec is sized dmabuf->size / PAGE_SIZE, and
-> > >     net_devmem_get_niov_at() only bounds-checks virt_addr < dmabuf->s=
-ize
-> > >     before indexing tx_vec[virt_addr / PAGE_SIZE]. With size =3D
-> > >     N*PAGE_SIZE + r (1 <=3D r < PAGE_SIZE), sendmsg() at iov_base =3D
-> > >     N*PAGE_SIZE passes the bound check and reads tx_vec[N] -- one pas=
-t.
-> > >
-> > >   - owner->area.num_niovs =3D len / PAGE_SIZE while gen_pool_add_owne=
-r()
-> > >     covers the full byte len, so a non-page-multiple non-final sg
-> > >     desyncs num_niovs from the gen_pool region for every later sg, on
-> > >     both RX and TX.
-> > >
-> > > dma-buf does not require page-aligned sizes, so the bind path has to
-> > > enforce what its own indexing assumes. Reject both with -EINVAL.
-> > >
-> > > The size check is TX-only (only tx_vec is sized off dmabuf->size); th=
-e
-> > > SG-length check covers both directions.
-> > >
-> > > Fixes: bd61848900bf ("net: devmem: Implement TX path")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: David Carlier <devnexen@gmail.com>
-> > > ---
-> > > Changes in v2:
-> > >   - Reframe commit message around the kernel-side OOB instead of
-> > >     "real exporters already page-align", which read as the OOB being
-> > >     unreachable and undercut Cc: stable (Stanislav Fomichev).
-> > >   - Hoist the SG-length check out of the if (TX) branch so it covers
-> > >     RX too; RX has the same num_niovs / gen_pool desync on a
-> > >     contract-violating exporter, just without an OOB. Keep the
-> > >     size-multiple check TX-only (Stanislav Fomichev).
-> > >   - Drop bool todevice; compare direction =3D=3D DMA_TO_DEVICE inline=
- to
-> > >     match the existing call site at the tx_vec[] assignment
-> > >     (Bobby Eshleman).
-> > >
-> > >  net/core/devmem.c | 11 +++++++++++
-> > >  1 file changed, 11 insertions(+)
-> > >
-> > > diff --git a/net/core/devmem.c b/net/core/devmem.c
-> > > index 468344739db2..4f71de44c0fb 100644
-> > > --- a/net/core/devmem.c
-> > > +++ b/net/core/devmem.c
-> > > @@ -241,6 +241,11 @@ net_devmem_bind_dmabuf(struct net_device *dev,
-> > >         }
-> > >
-> > >         if (direction =3D=3D DMA_TO_DEVICE) {
-> > > +               if (!IS_ALIGNED(dmabuf->size, PAGE_SIZE)) {
-> > > +                       err =3D -EINVAL;
-> > > +                       NL_SET_ERR_MSG(extack, "TX dma-buf size must =
-be a multiple of PAGE_SIZE");
-> > > +                       goto err_unmap;
-> > > +               }
-> > >                 binding->tx_vec =3D kvmalloc_objs(struct net_iov *,
-> > >                                                 dmabuf->size / PAGE_S=
-IZE);
-> > >                 if (!binding->tx_vec) {
-> > > @@ -267,6 +272,12 @@ net_devmem_bind_dmabuf(struct net_device *dev,
-> > >                 size_t len =3D sg_dma_len(sg);
-> > >                 struct net_iov *niov;
-> > >
-> > > +               if (!IS_ALIGNED(len, PAGE_SIZE)) {
-> > > +                       err =3D -EINVAL;
-> > > +                       NL_SET_ERR_MSG(extack, "dma-buf SG length mus=
-t be PAGE_SIZE aligned");
-> > > +                       goto err_free_chunks;
-> > > +               }
-> > > +
-> > >                 owner =3D kzalloc_node(sizeof(*owner), GFP_KERNEL,
-> > >                                      dev_to_node(&dev->dev));
-> > >                 if (!owner) {
-> > > --
-> > > 2.53.0
-> > >
-> >
-> > No hold on, I don't think we actually have a bug here. AFAIR all
-> > you're describing is intionional . Yes the TX vectors and their niov
-> > arrays do implicitly 'pad' the dmabuf size to PAGE_SIZE.
-> >
-> > But net_devmem_get_niov_at has this check that prevents us from trying
-> > to send past the dma-buf size, even if it's not page_aligned:
-> >
-> > ```
-> > if (virt_addr >=3D binding->dmabuf->size)
-> > return NULL;
-> > ```
-> >
-> > IIRC the NULL should be bubbled up to the user as some error.
-> >
-> > Please double check that we actually have a bug here. If not, please
-> > don't merge this. This change could break existing users using devmem
-> > TX correctly with non-PAGE_SIZE aligned dmabufs, which is a valid use
-> > case.
-> >
-> > And if we have a bug, lets fix it in some way that doesn't deprecate
-> > support for non page-aligned TX dmabufs. You may be breaking users
-> > here.
-> >
-> > --
-> > Thanks,
-> > Mina
->
-> Hi, Mina, note that the guard you're quoting doesn't cover the case
-> I'm describing. It's in bytes against dmabuf->size, while tx_vec is
-> sized dmabuf->size / PAGE_SIZE
->   (truncating) -- there's a sub-page window where the check passes and
-> the index doesn't.
->
->   Concretely, PAGE_SIZE =3D 4096 and dmabuf->size =3D 4097:
->
->   tx_vec allocated for 4097 / 4096 =3D 1 entry (valid index 0).
->   sendmsg with iov_base =3D 4096:
->     virt_addr >=3D dmabuf->size   ->  4096 >=3D 4097, passes.
->     tx_vec[virt_addr / PAGE_SIZE] -> tx_vec[1], OOB by one.
->
->   And the OOB pointer isn't just returned to the caller -- it flows
-> through get_netmem() -> __get_netmem(), which dereferences it
-> (net_is_devmem_iov() reads ->type) and
->    on a matching byte refcounts the binding off of it. So this is a
-> controlled OOB deref, not just a stray read.
->
+On Wed, May 20, 2026 at 06:04:10PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 7.0.10 release.
+> There are 1146 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 22 May 2026 16:20:16 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v7.x/stable-review/patch-7.0.10-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-7.0.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Ah, I see. I think that is indeed the bug. In the case PAGE_SIZE=3D4096
-and dmabuf->size is 4097, the intention in the code was to have tx_vec
-be an array of 2, where tx_vec[0] is [1->4096] and tx_vec[1] is
-[4097]. I have an off-by-one error in the tx_vec allocation :(
+If I revert:
+rtla: Use str_has_prefix() for prefix checks
+rtla/trace: Fix write loop in trace_event_save_hist()
 
-tx_vec[1] would contain an niov and as is stands we assume nvios are
-PAGE_SIZE, but IIRC net_devmem_get_niov_at() would make sure that the
-callers trying to use tx_vec[1] would only use it for a range that's
-valid, so using [4097] and not a range like [4097->8192].
+Everything builds fine.
 
-However when I dug deeper on proper pruning of page alignment
-assumptions in net_devmem_bind_dmabuf, the problems are deeper than
-this patch suggests. We don't properly handle the (probably
-non-existent?) edge case where the dma-buf itself is page aligned but
-for_each_sgtable_dma_sg itself gives us un-page_aligned sg entries :(
+Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
+x86_64), and boot tested x86_64. No regressions noted.
 
-I think probably all of this is very theoretical. In practice probably
-the dmabuf implementations in the wild seem to be page-aligned.
-udmabuf doesn't support non-page-aligned dmabufs even so we can't add
-tests for these things. So I guess fine, lets merge this.
-
->   On breaking users: the partial-page tail was never TX-usable to
-> begin with. The fill loop only populates num_niovs =3D len / PAGE_SIZE
-> entries while
->   gen_pool_add_owner() covers the full byte len, so any sendmsg into
-> [num_niovs*PAGE_SIZE, dmabuf->size) was already heading for either
-> NULL or this OOB. It's not
->   deprecating a working configuration -- it's rejecting one that wasn't w=
-orking.
->
-
-Yes, but still, today binding a non-PAGE_SIZE TX dmabuf but only using
-actually sendmsging up to the last PAGE_SIZE boundary is working,
-andthat would break entirely. I guess lets merge this and on the
-offchance someone is hitting this edge case we can revisit.
-
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-
-I don't know if you're interested in also fixing the edge case where
-the sg table entries themselves are not not page-aligned. I think that
-also doesn't work properly?
-
---
-Thanks,
-Mina
+Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
 
