@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250980-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AM8QAgj1DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251907-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:12 +0200
+	id MF04IVrsDWo04wUAu9opvQ
+	(envelope-from <stable+bounces-250980-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:16:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7749D594D23
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:11 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 806E8593333
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:16:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 19073308187D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:46:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8F6843080AF8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:08:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 085133B0AD6;
-	Wed, 20 May 2026 17:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D123FB7FF;
+	Wed, 20 May 2026 17:06:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jqr8PlpX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p96k9HGc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4E263546C8;
-	Wed, 20 May 2026 17:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C1FE369D78;
+	Wed, 20 May 2026 17:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299199; cv=none; b=bmzlBPCGQ6EjsRroJ4RCrkNsrPce0sjuefuqmXIHS8JZS2ejEwvb75KxJDHpdL9p3oQe5DxoWn+zKFnpxwQNWwA6w9UjcEgUPsELPmrUXgumqbmdjUHDNFW+/KwnpNroepnENwmTQSZAFfAGqPPvYo1B4w+Y65FAC05uF3NOQZU=
+	t=1779296789; cv=none; b=rNr17yLvSLWgXbgVSjZQd2sXpvLIY/qLjNVTBPKwS3Z4iD7wKVGY2TKSYMbQxmaNS4YbnVMkFLpd4Mokwc/3pOEmsw5+R/gWdCC9IWTli1HhqnhOAcnTE8rJX350dW7QlRPA8sBZxiyLtBsPJsz8AOnjiSwlG1EQx/5eZpfvb8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299199; c=relaxed/simple;
-	bh=iI2ZverocCH1DSfOBimRE7OF1RWhf9LSz5AeBq8HACI=;
+	s=arc-20240116; t=1779296789; c=relaxed/simple;
+	bh=FqU8HVX73zK3xNrUWwDwj8k+hx5rndrHNFeI3rr2lIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ATMWuEJXrSS1ljr6kc+kami5XT0GxQqVAcS50EWOpIHT/mO/XdOjZxHykE712zl7zCkudwpoh0bDuEk48dQNDojYsA00G5yEaBT2BO2FXXk/lAlinJZ7lm5elE6W5pwMgLN0tYw+eSeASmgUC7CfWUkx56Aa1fdxEUpjqF+JjAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jqr8PlpX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 161A11F000E9;
-	Wed, 20 May 2026 17:46:37 +0000 (UTC)
+	 MIME-Version; b=ri08/HQPV4Cug2cXy7A0JExvxdulL43MJDzMUQpBmKrUc1gtZ2o8dfwo1M5jMuTTsCczQfbqlSvXRzJwFuKy7py5drh1SbNkQlkJ5CQP91LMD/eMNOLX9tixk4eeQpk4yvVb5e/8AcGwxbpMDncAFpXb3kx1rn/M0n1WKVuTtF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p96k9HGc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A228C1F000E9;
+	Wed, 20 May 2026 17:06:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299198;
-	bh=4/TCntk7paHDSTbwAwZAFlKWuTrtd8EJHxRnrPRMrYY=;
+	s=korg; t=1779296788;
+	bh=1Arx4XvJgLDq4l01CNxDpcTXEsbNufKD1a/AvK+tWm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Jqr8PlpX0DRuKkoDxzYqRfkdm4DgJBWJrJwijQF3jRifPOyL9wmX44OHzwvPRsLTG
-	 PIVXzLdIItIXpTXmRRmcO0cdr9du/jM6RkfXSHh/RzWdX7MJfXaNOr4TSAvpOVaA4I
-	 nZTRCIRuNpfjIEH6AJysHQd2i9Jk5DdjA16YsyRQ=
+	b=p96k9HGcygroRPPTxdJktYDW3idBkDNE7XE0lql6NJ3YcDFe4NCd9ZvWwSOrTz36u
+	 m5x3l21arbuY9XhXCmWOhMgoujD5WLok29rtBxyKLP2S32xAl9RVzr6Ujxnm8BoAc3
+	 Q7/GAtb6JuCm2M05nkMGy5aeXa8q2mkJOdrwJHdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Stephen Hemminger <stephen@networkplumber.org>,
 	Simon Horman <horms@kernel.org>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 699/957] net: airoha: Rework the code flow in airoha_remove() and in airoha_probe() error path
+Subject: [PATCH 7.0 0932/1146] net/sched: netem: fix slot delay calculation overflow
 Date: Wed, 20 May 2026 18:19:42 +0200
-Message-ID: <20260520162149.699066996@linuxfoundation.org>
+Message-ID: <20260520162209.328412503@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251907-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250980-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,187 +86,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 7749D594D23
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,networkplumber.org:email]
+X-Rspamd-Queue-Id: 806E8593333
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Stephen Hemminger <stephen@networkplumber.org>
 
-[ Upstream commit b1c803d5c8167026791abfaed96fd3e6a1fcd750 ]
+[ Upstream commit 51e94e1e2fef351c74d69eb53666df808d26af95 ]
 
-As suggested by Simon in [0], rework the code flow in airoha_remove()
-and in the airoha_probe() error path in order to rely on a more common
-approach un-registering configured net-devices first and destroying the
-hw resources at the end of the code.
-Introduce airoha_qdma_cleanup routine to release QDMA resources.
+get_slot_next() computes a random delay between min_delay and
+max_delay using:
 
-[0] https://lore.kernel.org/netdev/20251214-airoha-fix-dev-registration-v1-1-860e027ad4c6@kernel.org/
+  get_random_u32() * (max_delay - min_delay) >> 32
 
-Suggested-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+This overflows signed 64-bit arithmetic when the delay range exceeds
+approximately 2.1 seconds (2^31 nanoseconds), producing a negative
+result that effectively disables slot-based pacing. This is a
+realistic configuration for WAN emulation (e.g., slot 1s 5s).
+
+Use mul_u64_u32_shr() which handles the widening multiply without
+overflow.
+
+Fixes: 0a9fe5c375b5 ("netem: slotting with non-uniform distribution")
+Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260321-airoha-remove-rework-v2-1-16c7bade5fe5@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 4b91cb65789b ("net: airoha: Add size check for TX NAPIs in airoha_qdma_cleanup()")
+Link: https://patch.msgid.link/20260418032027.900913-6-stephen@networkplumber.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/airoha/airoha_eth.c | 76 ++++++++++++++----------
- 1 file changed, 44 insertions(+), 32 deletions(-)
+ net/sched/sch_netem.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index 1d5447684ecab..8416451f4786a 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -1465,6 +1465,33 @@ static int airoha_qdma_init(struct platform_device *pdev,
- 	return airoha_qdma_hw_init(qdma);
- }
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index 640b51be807aa..475c14b3dbdbf 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -659,9 +659,8 @@ static void get_slot_next(struct netem_sched_data *q, u64 now)
  
-+static void airoha_qdma_cleanup(struct airoha_qdma *qdma)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(qdma->q_rx); i++) {
-+		if (!qdma->q_rx[i].ndesc)
-+			continue;
-+
-+		netif_napi_del(&qdma->q_rx[i].napi);
-+		airoha_qdma_cleanup_rx_queue(&qdma->q_rx[i]);
-+		if (qdma->q_rx[i].page_pool) {
-+			page_pool_destroy(qdma->q_rx[i].page_pool);
-+			qdma->q_rx[i].page_pool = NULL;
-+		}
-+	}
-+
-+	for (i = 0; i < ARRAY_SIZE(qdma->q_tx_irq); i++)
-+		netif_napi_del(&qdma->q_tx_irq[i].napi);
-+
-+	for (i = 0; i < ARRAY_SIZE(qdma->q_tx); i++) {
-+		if (!qdma->q_tx[i].ndesc)
-+			continue;
-+
-+		airoha_qdma_cleanup_tx_queue(&qdma->q_tx[i]);
-+	}
-+}
-+
- static int airoha_hw_init(struct platform_device *pdev,
- 			  struct airoha_eth *eth)
- {
-@@ -1492,41 +1519,30 @@ static int airoha_hw_init(struct platform_device *pdev,
- 	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++) {
- 		err = airoha_qdma_init(pdev, eth, &eth->qdma[i]);
- 		if (err)
--			return err;
-+			goto error;
- 	}
- 
- 	err = airoha_ppe_init(eth);
- 	if (err)
--		return err;
-+		goto error;
- 
- 	set_bit(DEV_STATE_INITIALIZED, &eth->state);
- 
- 	return 0;
-+error:
-+	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
-+		airoha_qdma_cleanup(&eth->qdma[i]);
-+
-+	return err;
- }
- 
--static void airoha_hw_cleanup(struct airoha_qdma *qdma)
-+static void airoha_hw_cleanup(struct airoha_eth *eth)
- {
- 	int i;
- 
--	for (i = 0; i < ARRAY_SIZE(qdma->q_rx); i++) {
--		if (!qdma->q_rx[i].ndesc)
--			continue;
--
--		netif_napi_del(&qdma->q_rx[i].napi);
--		airoha_qdma_cleanup_rx_queue(&qdma->q_rx[i]);
--		if (qdma->q_rx[i].page_pool)
--			page_pool_destroy(qdma->q_rx[i].page_pool);
--	}
--
--	for (i = 0; i < ARRAY_SIZE(qdma->q_tx_irq); i++)
--		netif_napi_del(&qdma->q_tx_irq[i].napi);
--
--	for (i = 0; i < ARRAY_SIZE(qdma->q_tx); i++) {
--		if (!qdma->q_tx[i].ndesc)
--			continue;
--
--		airoha_qdma_cleanup_tx_queue(&qdma->q_tx[i]);
--	}
-+	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
-+		airoha_qdma_cleanup(&eth->qdma[i]);
-+	airoha_ppe_deinit(eth);
- }
- 
- static void airoha_qdma_start_napi(struct airoha_qdma *qdma)
-@@ -3096,7 +3112,7 @@ static int airoha_probe(struct platform_device *pdev)
- 
- 	err = airoha_hw_init(pdev, eth);
- 	if (err)
--		goto error_hw_cleanup;
-+		goto error_netdev_free;
- 
- 	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
- 		airoha_qdma_start_napi(&eth->qdma[i]);
-@@ -3125,10 +3141,6 @@ static int airoha_probe(struct platform_device *pdev)
- error_napi_stop:
- 	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
- 		airoha_qdma_stop_napi(&eth->qdma[i]);
--	airoha_ppe_deinit(eth);
--error_hw_cleanup:
--	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
--		airoha_hw_cleanup(&eth->qdma[i]);
- 
- 	for (i = 0; i < ARRAY_SIZE(eth->ports); i++) {
- 		struct airoha_gdm_port *port = eth->ports[i];
-@@ -3140,6 +3152,8 @@ static int airoha_probe(struct platform_device *pdev)
- 			unregister_netdev(port->dev);
- 		airoha_metadata_dst_free(port);
- 	}
-+	airoha_hw_cleanup(eth);
-+error_netdev_free:
- 	free_netdev(eth->napi_dev);
- 	platform_set_drvdata(pdev, NULL);
- 
-@@ -3151,10 +3165,8 @@ static void airoha_remove(struct platform_device *pdev)
- 	struct airoha_eth *eth = platform_get_drvdata(pdev);
- 	int i;
- 
--	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++) {
-+	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
- 		airoha_qdma_stop_napi(&eth->qdma[i]);
--		airoha_hw_cleanup(&eth->qdma[i]);
--	}
- 
- 	for (i = 0; i < ARRAY_SIZE(eth->ports); i++) {
- 		struct airoha_gdm_port *port = eth->ports[i];
-@@ -3165,9 +3177,9 @@ static void airoha_remove(struct platform_device *pdev)
- 		unregister_netdev(port->dev);
- 		airoha_metadata_dst_free(port);
- 	}
--	free_netdev(eth->napi_dev);
-+	airoha_hw_cleanup(eth);
- 
--	airoha_ppe_deinit(eth);
-+	free_netdev(eth->napi_dev);
- 	platform_set_drvdata(pdev, NULL);
- }
- 
+ 	if (!q->slot_dist)
+ 		next_delay = q->slot_config.min_delay +
+-				(get_random_u32() *
+-				 (q->slot_config.max_delay -
+-				  q->slot_config.min_delay) >> 32);
++			mul_u64_u32_shr(q->slot_config.max_delay - q->slot_config.min_delay,
++					get_random_u32(), 32);
+ 	else
+ 		next_delay = tabledist(q->slot_config.dist_delay,
+ 				       (s32)(q->slot_config.dist_jitter),
 -- 
 2.53.0
 
