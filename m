@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-251274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250335-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YHtEFz/zDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-251274-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:45:35 +0200
+	id WAvuOu0ODmrB5wUAu9opvQ
+	(envelope-from <stable+bounces-250335-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:43:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F355E5947CF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:45:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9777598A87
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:43:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2BC4E31022B9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:19:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 559D134BDB6C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:39:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DFA136F421;
-	Wed, 20 May 2026 17:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A873191D0;
+	Wed, 20 May 2026 16:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jQkn9tpP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UO4RqMfW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29417372EDE;
-	Wed, 20 May 2026 17:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32561CDFCA;
+	Wed, 20 May 2026 16:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297557; cv=none; b=nwXLICO0bn7JybOSLODeh3LRnQM8TEPdApchmWty8FotmFgaSRz0CLCiIOaWQ6OkXwXu7pw3JUXad+boM7KNnh9CBvdB2jRwSl5OWgnzFJwGHkogjsXorSwM2YBGYDYKpKwVF34MYTVvMaeBqwg0SsoRJ9RhH1be3HFo5GvNXO0=
+	t=1779295144; cv=none; b=BXzCIXa36Xhkc3jYIJWIEJe/K1JTT49yUYmozs390dB9GpWF52rS4NCJgwWgPjCw1yhbFsqPOo29iQPtZ40m8nL1Q2nuPOS5Rk2rlTjBb4JgkHjYGK3L7ajXp15nGLr2A6+7/44dyOXGeozDCXjEtoIVcWn1ISaVIM8YQdOyf68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297557; c=relaxed/simple;
-	bh=h9f2gCAy2fG7IIUsDDycF3gwXPFe/RyiTl6SdfOl89U=;
+	s=arc-20240116; t=1779295144; c=relaxed/simple;
+	bh=SUUFmF3cT4TlVHxhYE/tbD5srEOlRcXcr/Zh2S5p2gM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X4gMi1Yf895vfcC6xshwxOU2YYeN9k/uXQc54q+SFqrarmZCyCN2BOaOlNEqhOHiyR7O1QKi75ukPLx/qYPp9ss+B9qVbfXA6LD+5REGBHoYD2W2Aa6SdhAvLadXKE2RzuR5QxssuapSmhD3rDSuroScSeFZ7OTiY++rehXvmXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jQkn9tpP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 874D21F000E9;
-	Wed, 20 May 2026 17:19:15 +0000 (UTC)
+	 MIME-Version; b=ImNmsfgtAssyozpiUXNxWOcrVHJkzKePA62qL7uUmWPZB4sHTY2IlNh1a5Gp3SFgKQGjNxKBGsHtxbfZW7bFEAZbgS4sskRw7qfqCeBzO3wbtMhvx+HrNqJ4fUWWYcIkVoNn9HWKRDU6+GQ3ftK0eaw7Q6hpbl91EGmbzF4ENgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UO4RqMfW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DBD01F000E9;
+	Wed, 20 May 2026 16:39:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297556;
-	bh=4dSyjwROSI5R/7LmqMGznVpIIXDrumM6NlFU1bqIT64=;
+	s=korg; t=1779295142;
+	bh=LU/gzOWJK7M5OwO4Le/DdIgxrLYZL4bDjvkcoB2hMuA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jQkn9tpPD3b8uE76gqBnwdwdm586nN4zg+FKY6shOre9wS68InMSuN9iQpzCtrK4G
-	 kKnmBmZac9l1k5ERq62+r9THeqKXi6I/0Q3kWqLpSiQVYF2W1X2Davbp7Kp1hDz4B0
-	 LVSMaoomGOBLP3JjTQ5UXI1iHxJqMGrhscx9tjbA=
+	b=UO4RqMfWxQAxeGP5Uta7dE4MYhcrq7mEehFZKdN1RUWZLdsvYmgx6fdnh8EPmVixY
+	 czU5DZ4ywRBQBeiOTnkfKsS5H6gdBO8NLmnE0elMLj6BS96xIuH5cBDuGpwrI1rfIO
+	 y4aUib/06KXyVGOGLY1A9urJNLvRfxSTFe9NXCgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Koichiro Den <den@valinux.co.jp>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 075/957] wifi: mt76: mt7996: fix iface combination for different chipsets
+Subject: [PATCH 7.0 0308/1146] PCI: dwc: rcar-gen4: Change EPC BAR alignment to 4K as per the documentation
 Date: Wed, 20 May 2026 18:09:18 +0200
-Message-ID: <20260520162136.190306479@linuxfoundation.org>
+Message-ID: <20260520162155.175190327@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,87 +70,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250335-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251274-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mediatek.com:email,nbd.name:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: F355E5947CF
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,valinux.co.jp:email]
+X-Rspamd-Queue-Id: E9777598A87
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shayne Chen <shayne.chen@mediatek.com>
+From: Koichiro Den <den@valinux.co.jp>
 
-[ Upstream commit 5ef0e8e2653b1ba325eb883ffb94073f19cb669a ]
+[ Upstream commit 13f55a7ca773c731a1e645934c1ae48577f48785 ]
 
-MT7992 and MT7990 support up to 19 interfaces per band and 32 in total.
+R-Car S4 Series (R8A779F[4-7]*) EP controller uses a 4K minimum iATU region
+size (CX_ATU_MIN_REGION_SIZE = 4K) as per R19UH0161EJ0130 Rev.1.30. Also,
+the controller itself can only be configured in the range 4 KB to 64 KB, so
+the current 1 MB alignment requirement is incorrect.
 
-Fixes: 8df63a4bbe3d ("wifi: mt76: mt7996: adjust interface num and wtbl size for mt7992")
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Link: https://patch.msgid.link/20251215063728.3013365-7-shayne.chen@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Hence, change the alignment to the min size 4K as per the documentation.
+
+This also fixes needless unusability of BAR4 on this platform when the
+target address is fixed, such as for doorbell targets.
+
+Fixes: e311b3834dfa ("PCI: rcar-gen4: Add endpoint mode support")
+Signed-off-by: Koichiro Den <den@valinux.co.jp>
+[mani: commit log]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Link: https://patch.msgid.link/20260305151050.1834007-1-den@valinux.co.jp
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7996/init.c    | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-rcar-gen4.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index b136b9a669769..e26f8e9e4f8fc 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -34,6 +34,20 @@ static const struct ieee80211_iface_combination if_comb_global = {
- 			       BIT(NL80211_CHAN_WIDTH_40) |
- 			       BIT(NL80211_CHAN_WIDTH_80) |
- 			       BIT(NL80211_CHAN_WIDTH_160),
-+	.beacon_int_min_gcd = 100,
-+};
-+
-+static const struct ieee80211_iface_combination if_comb_global_7992 = {
-+	.limits = &if_limits_global,
-+	.n_limits = 1,
-+	.max_interfaces = 32,
-+	.num_different_channels = MT7996_MAX_RADIOS - 1,
-+	.radar_detect_widths = BIT(NL80211_CHAN_WIDTH_20_NOHT) |
-+			       BIT(NL80211_CHAN_WIDTH_20) |
-+			       BIT(NL80211_CHAN_WIDTH_40) |
-+			       BIT(NL80211_CHAN_WIDTH_80) |
-+			       BIT(NL80211_CHAN_WIDTH_160),
-+	.beacon_int_min_gcd = 100,
+diff --git a/drivers/pci/controller/dwc/pcie-rcar-gen4.c b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
+index a6912e85e4ddc..8c7bc0691e52c 100644
+--- a/drivers/pci/controller/dwc/pcie-rcar-gen4.c
++++ b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
+@@ -426,7 +426,7 @@ static const struct pci_epc_features rcar_gen4_pcie_epc_features = {
+ 	.bar[BAR_3] = { .type = BAR_RESERVED, },
+ 	.bar[BAR_4] = { .type = BAR_FIXED, .fixed_size = 256 },
+ 	.bar[BAR_5] = { .type = BAR_RESERVED, },
+-	.align = SZ_1M,
++	.align = SZ_4K,
  };
  
- static const struct ieee80211_iface_limit if_limits[] = {
-@@ -485,7 +499,8 @@ mt7996_init_wiphy(struct ieee80211_hw *hw, struct mtk_wed_device *wed)
- 	hw->vif_data_size = sizeof(struct mt7996_vif);
- 	hw->chanctx_data_size = sizeof(struct mt76_chanctx);
- 
--	wiphy->iface_combinations = &if_comb_global;
-+	wiphy->iface_combinations = is_mt7996(&dev->mt76) ? &if_comb_global :
-+							    &if_comb_global_7992;
- 	wiphy->n_iface_combinations = 1;
- 
- 	wiphy->radio = dev->radios;
+ static const struct pci_epc_features*
 -- 
 2.53.0
 
