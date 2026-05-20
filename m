@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-252417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251776-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kNW7OKwBDmo95QUAu9opvQ
-	(envelope-from <stable+bounces-252417-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:47:08 +0200
+	id 1k++GmwcDmro6AUAu9opvQ
+	(envelope-from <stable+bounces-251776-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:41:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8368A597390
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:47:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98D0F599ED5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:41:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D315C38440F3
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:10:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6190E3746687
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:41:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64C6C3C140F;
-	Wed, 20 May 2026 18:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22AB736405A;
+	Wed, 20 May 2026 17:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LExWUff3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHjLL0Ai"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B106331220;
-	Wed, 20 May 2026 18:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D07CD36D9EA;
+	Wed, 20 May 2026 17:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300618; cv=none; b=sFp1oko9VnnH3kh4RQ8LPqhT863BDQySOBpFOgAW9oI66/i3OUcyVB5zxLSkekY+HBKv8pWxt4rI4gtt83JhAZSMmeqsqPmHqI5qKn7TT2wEF3w/IwKhL4I4Kvvj403eV2r7oPeN3K8X/vOJpIcPPNtle4h7pjH4ThEgLPRUok8=
+	t=1779298862; cv=none; b=UFQTYoLJwTZsLLgpJuUmkM5fTUf9+K5xlrcX4eOiEW05SEu/E+m5nEF1vIsYJuvc3muyXCiUeVHKVDw0jVzd+0Y/zBlWC8QRyqWqAgDPN4rosl1RQ4xbc4OVQaCdHHra34FVaRfgBM8QdjWjRjJMB5riVJ/0OQSygFCcmLx7ITI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300618; c=relaxed/simple;
-	bh=kcJ4gsUIa4SBGX8TV5RcRPxvZc8BeHuVzuO/EbWKQt4=;
+	s=arc-20240116; t=1779298862; c=relaxed/simple;
+	bh=jCVQzeLAB1ykizvcXZEtdqoI8w0Yd0cR/Dlh71ys7hI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hJUxCBnn6HXW8vQC3K6mUCGhjIu7ByQ7DwepSPd7nzNI/qfpDaXZmZ8e4QG01f8SoNCdlnNZoYI+hXnFNrzgxsbiNdjJmlFkp/VAj7lvTBt6ncNhxs58xiRwepOxqzrubpobASNXGdRGdAZVcu8IDZK4S5mJlB8A4+TkuzvCzFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LExWUff3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 962A41F000E9;
-	Wed, 20 May 2026 18:10:16 +0000 (UTC)
+	 MIME-Version; b=PRC1wZKAKEfRtz9IH7MWCZZHBjZMqnqBluwetJHHcDYsvVYxIja1znOo1qtfAP5boj8GQ83qpLVi+jRTNCIH29PJI3o0j1HClOEf2MUasYiFvtmKiBs045X+3Y6ho36H7xeqFe3X1YdewZPuUDvYFtBdsNvUG2PhuzUaVq/P0Tg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHjLL0Ai; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40B1D1F000E9;
+	Wed, 20 May 2026 17:41:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300617;
-	bh=gH7yDrkxrTkO0LWc9VdRD4KEwdlXGW7xcAa0pBgvR1w=;
+	s=korg; t=1779298861;
+	bh=bIMSjoAHSLaRAss0VhQ/bNjhlc39YkRYy+Tf51PEspI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LExWUff3BWTGNh7AqfKH7OdRc0b221FTbsNxRiBj5Rm3rXY6bAcmJWQByMpUE6NlO
-	 zOaJkDf4pOrPsZIanQpnlg7e886x1aVgpX7hijuuxj59/+9rOKxjVLZ7/wD7T9sbPQ
-	 HzeOCH34HluUj6jJiWFgxM/eyaDw/5bcKRryAe2Q=
+	b=aHjLL0Ai8tdJjTLjYeK6IcPa0az+AsrU0k5XYCWRTeiCRv4AHDn7VHr/UYLvVWOC3
+	 W32XO0Y/OGBm39eTExV5SvnECL9IEypzTSQaXFkfTCZ+QVL1mXp0/HXviJp3S0rpTZ
+	 6qLcqdUiVcOr9wOtV1TFp4OensbcWSnamUKOIFVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vidya Sagar <vidyas@nvidia.com>,
-	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
+	Val Packett <val@packett.cool>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 242/666] PCI: tegra194: Free up Endpoint resources during remove()
+Subject: [PATCH 6.18 570/957] clk: qcom: dispcc-sm8250: Enable parents for pixel clocks
 Date: Wed, 20 May 2026 18:17:33 +0200
-Message-ID: <20260520162116.463571762@linuxfoundation.org>
+Message-ID: <20260520162146.892462004@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,13 +69,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252417-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251776-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
@@ -85,65 +83,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
-X-Rspamd-Queue-Id: 8368A597390
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,packett.cool:email]
+X-Rspamd-Queue-Id: 98D0F599ED5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vidya Sagar <vidyas@nvidia.com>
+From: Val Packett <val@packett.cool>
 
-[ Upstream commit 8870f02f7868209eb9bdc5dc53540a6262cf9227 ]
+[ Upstream commit acf7a91d0b0e9e3ef374944021de62062125b7e4 ]
 
-Free up the resources during remove() that were acquired by the DesignWare
-driver for the Endpoint mode during probe().
+Add CLK_OPS_PARENT_ENABLE to MDSS pixel clock sources to ensure parent
+clocks are enabled during clock operations, preventing potential
+stability issues during display configuration.
 
-Fixes: bb617cbd8151 ("PCI: tegra194: Clean up the exit path for Endpoint mode")
-Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
-Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
-Link: https://patch.msgid.link/20260324190755.1094879-11-mmaddireddy@nvidia.com
+Fixes: 80a18f4a8567 ("clk: qcom: Add display clock controller driver for SM8150 and SM8250")
+Signed-off-by: Val Packett <val@packett.cool>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260312112321.370983-9-val@packett.cool
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/clk/qcom/dispcc-sm8250.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index bf7acdb725a33..dd08ad8d08cbd 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -2282,6 +2282,7 @@ static int tegra_pcie_dw_probe(struct platform_device *pdev)
- static void tegra_pcie_dw_remove(struct platform_device *pdev)
- {
- 	struct tegra_pcie_dw *pcie = platform_get_drvdata(pdev);
-+	struct dw_pcie_ep *ep = &pcie->pci.ep;
- 
- 	if (pcie->of_data->mode == DW_PCIE_RC_TYPE) {
- 		if (!pcie->link_state)
-@@ -2293,6 +2294,7 @@ static void tegra_pcie_dw_remove(struct platform_device *pdev)
- 	} else {
- 		disable_irq(pcie->pex_rst_irq);
- 		pex_ep_event_pex_rst_assert(pcie);
-+		dw_pcie_ep_deinit(ep);
- 	}
- 
- 	pm_runtime_disable(pcie->dev);
+diff --git a/drivers/clk/qcom/dispcc-sm8250.c b/drivers/clk/qcom/dispcc-sm8250.c
+index cdfdb2cfb02b2..e59cdadd56479 100644
+--- a/drivers/clk/qcom/dispcc-sm8250.c
++++ b/drivers/clk/qcom/dispcc-sm8250.c
+@@ -578,7 +578,7 @@ static struct clk_rcg2 disp_cc_mdss_pclk0_clk_src = {
+ 		.name = "disp_cc_mdss_pclk0_clk_src",
+ 		.parent_data = disp_cc_parent_data_6,
+ 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_6),
+-		.flags = CLK_SET_RATE_PARENT,
++		.flags = CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE,
+ 		.ops = &clk_pixel_ops,
+ 	},
+ };
+@@ -592,7 +592,7 @@ static struct clk_rcg2 disp_cc_mdss_pclk1_clk_src = {
+ 		.name = "disp_cc_mdss_pclk1_clk_src",
+ 		.parent_data = disp_cc_parent_data_6,
+ 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_6),
+-		.flags = CLK_SET_RATE_PARENT,
++		.flags = CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE,
+ 		.ops = &clk_pixel_ops,
+ 	},
+ };
 -- 
 2.53.0
 
