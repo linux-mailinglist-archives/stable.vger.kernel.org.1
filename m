@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-253287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252175-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6PFIHoYvDmqD7wUAu9opvQ
-	(envelope-from <stable+bounces-253287-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:02:46 +0200
+	id qKMRJUL4DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-252175-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:06:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D444B59BA3A
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:02:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33EAE595528
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:06:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8F4A2307401D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BAE06311E896
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:00:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77688401A14;
-	Wed, 20 May 2026 18:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E7DD30675C;
+	Wed, 20 May 2026 17:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lpKAnU5z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TvUWCRFz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209C43FA5FC;
-	Wed, 20 May 2026 18:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82FF43F20E9;
+	Wed, 20 May 2026 17:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302884; cv=none; b=nHJ6ELitlg68KMbMJvNBBbaKlDk1DmBVabE90/3OFDr2uoLBR0Ra/F6r2JplJOvLpoCB7n5PWqA57mn1R/A+2xbYcqT9fWwYYOuz8gxqC50KpKafeC30OXcHfyVF9smagb5JHIMBtUZ3sjum5g4ys4A6YlnDQrRJ/6TnYpt52Uw=
+	t=1779299989; cv=none; b=ghyl7ldl168jtspy5XqWBDxNyMkgp5nDwBnTd1QmUsvQrJzHdEDxxXeHHGVkqfPZMCjpVKmi0yLx6gOxtbzGOAGKf0DQLGWHdJ6fsB/r+eamDJcA1PbxfMyAC7+WtsuGJSoIaL6Ti+7MEKY50jHkuNcWjkvL8C6P7Mah3SCxGes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302884; c=relaxed/simple;
-	bh=8Q/1Un4g5OwmQKCNmndtUeItU2VkmXgWjabvU9DnUN0=;
+	s=arc-20240116; t=1779299989; c=relaxed/simple;
+	bh=6yYJ/3kF6Saff8SRp8XuTRNTHyH7D+wIRpaQZ8oZSyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pnQPi5/blu6wDltkLHMVTSA9YeW/CtOljIWqDIckpamsZ0Mn7GH4Ju43YdIubtlstIdHRQL2t8aWheER8e8aJ3EcJKmY5ah7noRJcW4mMaIH3Ls+PSp2pJwsYqwUXF2QEESl/87GnwZ1drxm3LUVJKaXMcrUbko/rocGAGqveEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lpKAnU5z; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 768661F000E9;
-	Wed, 20 May 2026 18:48:02 +0000 (UTC)
+	 MIME-Version; b=KBZwF+TONW/5lyNaHkE4yjyJVw6tsxVfhdMuB3ELsW4sE2Rm3UwCc+9/AjoIjN9w4XV+//kaXaKQheCCFZtpzMY99ejZNEZdHSxWUYHQburT8idmWRJq+aUbhbldo4eTtUIb6F4rRT9flKSZOpJTEeL1kkMH6Yx14bG9alvDGg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TvUWCRFz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509D41F000E9;
+	Wed, 20 May 2026 17:59:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302883;
-	bh=F5IUj0TEc6oCrFv3RnTk4+ibHdDEwmOcRKHA/KQbCJw=;
+	s=korg; t=1779299986;
+	bh=XzeNZvnuIk1Etoyq8KSJSVT8ewvZbjKql1AJvFV83dU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lpKAnU5zAeEU6OoBhQdcgpYT/UAs9dvM+YuMMW/EYHu6gnfpS80XtV4AZhIesFCmx
-	 SamCCJqVwa/WeM4e3V6zwwqEJgudCUiullJr3lB8OOmGtCLvy4nnGXuMTatNhwQI95
-	 aVdHuQR02Nno30qx+304uP3jHjmjJS1XLU/BgAEE=
+	b=TvUWCRFz2x5/mpvzJCAWYrj5BxWQGK7jeYLUoBtA/1ftD2RKtNjF4bv6t9pxR3jk+
+	 o5BEeceF1EdsteasU4zHgAHaRJFFexsGdnB+HhEAeEBB98ATU5+N8ru0EpnTldC/+T
+	 LrWef1ibRf84cwQRuGsRwx3YLk2G4NOMxlYV3NwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 394/508] neighbour: add RCU protection to neigh_tables[]
-Date: Wed, 20 May 2026 18:23:37 +0200
-Message-ID: <20260520162107.151695510@linuxfoundation.org>
+	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.18 935/957] libceph: Fix potential out-of-bounds access in crush_decode()
+Date: Wed, 20 May 2026 18:23:38 +0200
+Message-ID: <20260520162154.868666120@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,159 +67,131 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253287-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252175-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,davemloft.net:email]
-X-Rspamd-Queue-Id: D444B59BA3A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,tu-ilmenau.de:email]
+X-Rspamd-Queue-Id: 33EAE595528
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
 
-[ Upstream commit f8f2eb9de69a1119117d198547c13d7a1123a5a9 ]
+commit 4c79fc2d598694bda845b46229c9d48b65042970 upstream.
 
-In order to remove RTNL protection from neightbl_dump_info()
-and neigh_dump_info() later, we need to add
-RCU protection to neigh_tables[].
+A message of type CEPH_MSG_OSD_MAP containing a crush map with at least
+one bucket has two fields holding the bucket algorithm. If the values
+in these two fields differ, an out-of-bounds access can occur. This is
+the case because the first algorithm field (alg) is used to allocate
+the correct amount of memory for a bucket of this type, while the second
+algorithm field inside the bucket (b->alg) is used in the subsequent
+processing.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 4438113be604 ("neigh: let neigh_xmit take skb ownership")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch fixes the issue by adding a check that compares alg and
+b->alg and aborts the processing in case they differ. Furthermore,
+b->alg is set to 0 in this case, because the destruction of the crush
+map also uses this field to determine the bucket type, which can again
+result in an out-of-bounds access when trying to free the memory pointed
+to by the fields of the bucket. To correctly free the memory allocated
+for the bucket in such a case, the corresponding call to kfree is moved
+from the algorithm-specific crush_destroy_bucket functions to the
+generic crush_destroy_bucket().
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/neighbour.c | 30 +++++++++++++++++++-----------
- 1 file changed, 19 insertions(+), 11 deletions(-)
+ net/ceph/crush/crush.c |    6 +-----
+ net/ceph/osdmap.c      |    4 ++++
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index e6b36df482bc7..8f45692265ce3 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -1774,7 +1774,7 @@ static void neigh_parms_destroy(struct neigh_parms *parms)
- 
- static struct lock_class_key neigh_table_proxy_queue_class;
- 
--static struct neigh_table *neigh_tables[NEIGH_NR_TABLES] __read_mostly;
-+static struct neigh_table __rcu *neigh_tables[NEIGH_NR_TABLES] __read_mostly;
- 
- void neigh_table_init(int index, struct neigh_table *tbl)
+--- a/net/ceph/crush/crush.c
++++ b/net/ceph/crush/crush.c
+@@ -47,7 +47,6 @@ int crush_get_bucket_item_weight(const s
+ void crush_destroy_bucket_uniform(struct crush_bucket_uniform *b)
  {
-@@ -1831,13 +1831,19 @@ void neigh_table_init(int index, struct neigh_table *tbl)
- 	tbl->last_flush = now;
- 	tbl->last_rand	= now + tbl->parms.reachable_time * 20;
- 
--	neigh_tables[index] = tbl;
-+	rcu_assign_pointer(neigh_tables[index], tbl);
+ 	kfree(b->h.items);
+-	kfree(b);
  }
- EXPORT_SYMBOL(neigh_table_init);
  
-+/*
-+ * Only called from ndisc_cleanup(), which means this is dead code
-+ * because we no longer can unload IPv6 module.
-+ */
- int neigh_table_clear(int index, struct neigh_table *tbl)
+ void crush_destroy_bucket_list(struct crush_bucket_list *b)
+@@ -55,14 +54,12 @@ void crush_destroy_bucket_list(struct cr
+ 	kfree(b->item_weights);
+ 	kfree(b->sum_weights);
+ 	kfree(b->h.items);
+-	kfree(b);
+ }
+ 
+ void crush_destroy_bucket_tree(struct crush_bucket_tree *b)
  {
--	neigh_tables[index] = NULL;
-+	RCU_INIT_POINTER(neigh_tables[index], NULL);
-+	synchronize_rcu();
-+
- 	/* It is not clean... Fix it to unload IPv6 module safely */
- 	cancel_delayed_work_sync(&tbl->managed_work);
- 	cancel_delayed_work_sync(&tbl->gc_work);
-@@ -1869,10 +1875,10 @@ static struct neigh_table *neigh_find_table(int family)
+ 	kfree(b->h.items);
+ 	kfree(b->node_weights);
+-	kfree(b);
+ }
  
- 	switch (family) {
- 	case AF_INET:
--		tbl = neigh_tables[NEIGH_ARP_TABLE];
-+		tbl = rcu_dereference_rtnl(neigh_tables[NEIGH_ARP_TABLE]);
- 		break;
- 	case AF_INET6:
--		tbl = neigh_tables[NEIGH_ND_TABLE];
-+		tbl = rcu_dereference_rtnl(neigh_tables[NEIGH_ND_TABLE]);
+ void crush_destroy_bucket_straw(struct crush_bucket_straw *b)
+@@ -70,14 +67,12 @@ void crush_destroy_bucket_straw(struct c
+ 	kfree(b->straws);
+ 	kfree(b->item_weights);
+ 	kfree(b->h.items);
+-	kfree(b);
+ }
+ 
+ void crush_destroy_bucket_straw2(struct crush_bucket_straw2 *b)
+ {
+ 	kfree(b->item_weights);
+ 	kfree(b->h.items);
+-	kfree(b);
+ }
+ 
+ void crush_destroy_bucket(struct crush_bucket *b)
+@@ -99,6 +94,7 @@ void crush_destroy_bucket(struct crush_b
+ 		crush_destroy_bucket_straw2((struct crush_bucket_straw2 *)b);
  		break;
  	}
++	kfree(b);
+ }
  
-@@ -2338,7 +2344,7 @@ static int neightbl_set(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	ndtmsg = nlmsg_data(nlh);
- 
- 	for (tidx = 0; tidx < NEIGH_NR_TABLES; tidx++) {
--		tbl = neigh_tables[tidx];
-+		tbl = rcu_dereference_rtnl(neigh_tables[tidx]);
- 		if (!tbl)
- 			continue;
- 		if (ndtmsg->ndtm_family && tbl->family != ndtmsg->ndtm_family)
-@@ -2526,7 +2532,7 @@ static int neightbl_dump_info(struct sk_buff *skb, struct netlink_callback *cb)
- 	for (tidx = 0; tidx < NEIGH_NR_TABLES; tidx++) {
- 		struct neigh_parms *p;
- 
--		tbl = neigh_tables[tidx];
-+		tbl = rcu_dereference_rtnl(neigh_tables[tidx]);
- 		if (!tbl)
- 			continue;
- 
-@@ -2887,7 +2893,7 @@ static int neigh_dump_info(struct sk_buff *skb, struct netlink_callback *cb)
- 	s_t = cb->args[0];
- 
- 	for (t = 0; t < NEIGH_NR_TABLES; t++) {
--		tbl = neigh_tables[t];
-+		tbl = rcu_dereference_rtnl(neigh_tables[t]);
- 
- 		if (!tbl)
- 			continue;
-@@ -3151,14 +3157,15 @@ int neigh_xmit(int index, struct net_device *dev,
- 	       const void *addr, struct sk_buff *skb)
- {
- 	int err = -EAFNOSUPPORT;
-+
- 	if (likely(index < NEIGH_NR_TABLES)) {
- 		struct neigh_table *tbl;
- 		struct neighbour *neigh;
- 
--		tbl = neigh_tables[index];
--		if (!tbl)
--			goto out;
- 		rcu_read_lock();
-+		tbl = rcu_dereference(neigh_tables[index]);
-+		if (!tbl)
-+			goto out_unlock;
- 		if (index == NEIGH_ARP_TABLE) {
- 			u32 key = *((u32 *)addr);
- 
-@@ -3174,6 +3181,7 @@ int neigh_xmit(int index, struct net_device *dev,
- 			goto out_kfree_skb;
- 		}
- 		err = READ_ONCE(neigh->output)(neigh, skb);
-+out_unlock:
- 		rcu_read_unlock();
- 	}
- 	else if (index == NEIGH_LINK_TABLE) {
--- 
-2.53.0
-
+ /**
+--- a/net/ceph/osdmap.c
++++ b/net/ceph/osdmap.c
+@@ -518,6 +518,10 @@ static struct crush_map *crush_decode(vo
+ 		b->id = ceph_decode_32(p);
+ 		b->type = ceph_decode_16(p);
+ 		b->alg = ceph_decode_8(p);
++		if (b->alg != alg) {
++			b->alg = 0;
++			goto bad;
++		}
+ 		b->hash = ceph_decode_8(p);
+ 		b->weight = ceph_decode_32(p);
+ 		b->size = ceph_decode_32(p);
 
 
 
