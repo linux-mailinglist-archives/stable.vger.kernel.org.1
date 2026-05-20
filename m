@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-253052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251963-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iH+8MTsBDmqs5QUAu9opvQ
-	(envelope-from <stable+bounces-253052-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:45:15 +0200
+	id ADZVGov9DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-251963-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:29:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DA9E5972E1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:45:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB654596558
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:29:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E52E83169EF4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:38:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EC3E1373ED5C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:49:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E27D3D5647;
-	Wed, 20 May 2026 18:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2505C3D5647;
+	Wed, 20 May 2026 17:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kT/Mpemk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbSUZmoS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5BB83D1CA0;
-	Wed, 20 May 2026 18:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23E43E5ECF;
+	Wed, 20 May 2026 17:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302279; cv=none; b=PbNG2WJr/9aIUHcN0cXwXUmCRxeuAYczhDAnv8I2mu/vbTjGbkPh7yKNgPH3e2fQoFAs+dlO0u9mWuFzskp7SL8XlSEdPz9xgskIOL6hCtLX9mjVVyo43BySeX5MVzdJKpRQNprc6aDR4TA/yGRxbS3QifPWvIc2sQF/3SlRxiA=
+	t=1779299385; cv=none; b=fG88+hqBESDf1YBBLuJHgpfKzbk2962IN3y3LtGXc1NSs6+hJ6dz/z5fKYtt7KcyhGbG8s8EOlYD0MX9n9Saoi/z9L7K71wK9RM3tXJDdELSrJdGG4aqIZ05KI/pnk0N2CxpGjp8KTsl5mFU5ZjVxBh+jNEZPyskldKnEYiJz2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302279; c=relaxed/simple;
-	bh=9wcMQnuQPiwsrjOGpj7p+R7lS2fPwG/D5UBqto9A4hs=;
+	s=arc-20240116; t=1779299385; c=relaxed/simple;
+	bh=orBYPG24Iqh4JN3hKwA5YPl4DJ0i0zHQEXRX1QZI5yo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JELA3fio8+iwPirfnFla5AsRtK5s4o4ND5ZYzm4t/cgG3wZCT6/bZ5ttIymBxMEP3ox/NbXQBfqP2ezxn3Q2HZ8r5UmL7Tg/0oR+pCAjC9scHVTXoKfE4yaSvm1DeZxVARXnSno0Dx3JPRA+twBNTOvZMrKKBpZFFUIJjkps79M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kT/Mpemk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E551F000E9;
-	Wed, 20 May 2026 18:37:57 +0000 (UTC)
+	 MIME-Version; b=LSZsUhAAi8R7NVGWw3tWduGv+1lFiUGCtfI8WWQwEMsSv59FsPExCnRu8+IKal9Fu+0m7QJSKu7g5OCB3fEfP9ZI0dQOc/DNvuzPkBU1BE7BZgA0COwYcwipTVJdFbxz6OS0l05j8UH4P1zd8TZ3WJ46n3spdqYXmJYNj+sO7AQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbSUZmoS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4320D1F000E9;
+	Wed, 20 May 2026 17:49:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302277;
-	bh=7I7ZWSvUN80x60LCwK7eE+n4reeJzPVyReoZnrGwd68=;
+	s=korg; t=1779299384;
+	bh=BripImwmRU3xIvlG1cgTPie46pdB0q+Thu6LQCywMTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kT/MpemkXo35cxH3bQMS0rUrGvH92RiR5CLM99hix6jsiLTomEk0fDZs25JIY2ybE
-	 rbwYVGK2LoZItrPp8zyFAl4I1cNgZ73trIc2uMA9LzjFMy59ncojxXZDhX1QA94XlY
-	 U4zzJ+il9Ym1lC1nFmsK0bVlUt58EGu0+xjxfk3s=
+	b=gbSUZmoSUyvvfPkA7zblSS9c9jFGU1h3HtV0aRnOWg8wVQL1ca1M1QfO+ZeLGKn7A
+	 ptSrvd/fBw5U8Mc/RsF221bGOQvB71wK2CM4d3aH9VO7EDo8Ckil6X9j2JdyVzQwI8
+	 H1W7K6Qt13IierIzxBxiYH/VuYTaSh8F1QF4QEf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Yiming Qian <yimingqian591@gmail.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Bobby Eshleman <bobbyeshleman@meta.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 169/508] ALSA: sc6000: Keep the programmed board state in card-private data
-Date: Wed, 20 May 2026 18:19:52 +0200
-Message-ID: <20260520162102.299689011@linuxfoundation.org>
+Subject: [PATCH 6.18 710/957] vsock/virtio: fix MSG_ZEROCOPY pinned-pages accounting
+Date: Wed, 20 May 2026 18:19:53 +0200
+Message-ID: <20260520162149.942272646@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,322 +65,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-253052-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,kernel.org];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,meta.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-251963-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 6DA9E5972E1
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,meta.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: CB654596558
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-[ Upstream commit fb79bf127ac2577b4876132da6dba768018aad4c ]
+[ Upstream commit 1cb36e252211506f51095fe7ced8286cc77b4c80 ]
 
-The driver may auto-select IRQ and DMA resources at probe time, but
-sc6000_init_board() still derives the SC-6000 soft configuration from
-the module parameter arrays.  When irq=auto or dma=auto is used, the
-codec is created with the selected resources while the board is
-programmed with the unresolved values.
+virtio_transport_init_zcopy_skb() uses iter->count as the size argument
+for msg_zerocopy_realloc(), which in turn passes it to
+mm_account_pinned_pages() for RLIMIT_MEMLOCK accounting. However, this
+function is called after virtio_transport_fill_skb() has already consumed
+the iterator via __zerocopy_sg_from_iter(), so on the last skb, iter->count
+will be 0, skipping the RLIMIT_MEMLOCK enforcement.
 
-Store the mapped ports and generated SC-6000 board configuration in
-card-private data, build that configuration from the live probe
-results instead of the raw module parameters, and keep the probe-time
-board programming in a shared helper.
+Pass pkt_len (the total bytes being sent) as an explicit parameter to
+virtio_transport_init_zcopy_skb() instead of reading the already-consumed
+iter->count.
 
-This fixes the resource-programming mismatch and leaves the driver
-with a stable board-state block that can be reused by suspend/resume.
+This matches TCP and UDP, which both call msg_zerocopy_realloc() with
+the original message size.
 
-Fixes: c282866101bf ("ALSA: sc6000: add support for SC-6600 and SC-7000")
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20260410-alsa-sc6000-pm-v1-1-4d9e95493d26@gmail.com
+Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
+Link: https://patch.msgid.link/20260420132051.217589-1-sgarzare@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/isa/sc6000.c | 152 +++++++++++++++++++++++++++------------------
- 1 file changed, 92 insertions(+), 60 deletions(-)
+ net/vmw_vsock/virtio_transport_common.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/sound/isa/sc6000.c b/sound/isa/sc6000.c
-index 3115c32b4061b..4066b68a102e2 100644
---- a/sound/isa/sc6000.c
-+++ b/sound/isa/sc6000.c
-@@ -100,6 +100,15 @@ MODULE_PARM_DESC(joystick, "Enable gameport.");
- #define PFX "sc6000: "
- #define DRV_NAME "SC-6000"
- 
-+struct snd_sc6000 {
-+	char __iomem *vport;
-+	char __iomem *vmss_port;
-+	u8 mss_config;
-+	u8 config;
-+	u8 hw_cfg[2];
-+	bool old_dsp;
-+};
-+
- /* hardware dependent functions */
- 
- /*
-@@ -267,7 +276,7 @@ static int sc6000_dsp_reset(char __iomem *vport)
- 
- /* detection and initialization */
- static int sc6000_hw_cfg_write(struct device *devptr,
--			       char __iomem *vport, const int *cfg)
-+			       char __iomem *vport, const u8 *cfg)
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index 41be06c4bd7ff..495c93cddcdc0 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -75,6 +75,7 @@ static bool virtio_transport_can_zcopy(const struct virtio_transport *t_ops,
+ static int virtio_transport_init_zcopy_skb(struct vsock_sock *vsk,
+ 					   struct sk_buff *skb,
+ 					   struct msghdr *msg,
++					   size_t pkt_len,
+ 					   bool zerocopy)
  {
- 	if (sc6000_write(devptr, vport, COMMAND_6C) < 0) {
- 		dev_warn(devptr, "CMD 0x%x: failed!\n", COMMAND_6C);
-@@ -353,8 +362,7 @@ static int sc6000_init_mss(struct device *devptr,
- 	return 0;
- }
+ 	struct ubuf_info *uarg;
+@@ -83,12 +84,10 @@ static int virtio_transport_init_zcopy_skb(struct vsock_sock *vsk,
+ 		uarg = msg->msg_ubuf;
+ 		net_zcopy_get(uarg);
+ 	} else {
+-		struct iov_iter *iter = &msg->msg_iter;
+ 		struct ubuf_info_msgzc *uarg_zc;
  
--static void sc6000_hw_cfg_encode(struct device *devptr,
--				 char __iomem *vport, int *cfg,
-+static void sc6000_hw_cfg_encode(struct device *devptr, u8 *cfg,
- 				 long xport, long xmpu,
- 				 long xmss_port, int joystick)
- {
-@@ -376,27 +384,83 @@ static void sc6000_hw_cfg_encode(struct device *devptr,
- 	dev_dbg(devptr, "hw cfg %x, %x\n", cfg[0], cfg[1]);
- }
+ 		uarg = msg_zerocopy_realloc(sk_vsock(vsk),
+-					    iter->count,
+-					    NULL, false);
++					    pkt_len, NULL, false);
+ 		if (!uarg)
+ 			return -1;
  
--static int sc6000_init_board(struct device *devptr,
--			     char __iomem *vport,
--			     char __iomem *vmss_port, int dev)
-+static void sc6000_prepare_board(struct device *devptr,
-+				 struct snd_sc6000 *sc6000,
-+				 unsigned int dev, int xirq, int xdma)
-+{
-+	sc6000->mss_config = sc6000_irq_to_softcfg(xirq) |
-+			     sc6000_dma_to_softcfg(xdma);
-+	sc6000->config = sc6000->mss_config |
-+			 sc6000_mpu_irq_to_softcfg(mpu_irq[dev]);
-+	sc6000_hw_cfg_encode(devptr, sc6000->hw_cfg, port[dev], mpu_port[dev],
-+			     mss_port[dev], joystick[dev]);
-+}
-+
-+static void sc6000_detect_old_dsp(struct device *devptr,
-+				  struct snd_sc6000 *sc6000)
-+{
-+	sc6000_write(devptr, sc6000->vport, COMMAND_5C);
-+	sc6000->old_dsp = sc6000_read(sc6000->vport) < 0;
-+}
-+
-+static int sc6000_program_board(struct device *devptr,
-+				struct snd_sc6000 *sc6000)
-+{
-+	int err;
-+
-+	if (!sc6000->old_dsp) {
-+		if (sc6000_hw_cfg_write(devptr, sc6000->vport,
-+					sc6000->hw_cfg) < 0) {
-+			dev_err(devptr, "sc6000_hw_cfg_write: failed!\n");
-+			return -EIO;
-+		}
-+	}
-+
-+	err = sc6000_setup_board(devptr, sc6000->vport, sc6000->config);
-+	if (err < 0) {
-+		dev_err(devptr, "sc6000_setup_board: failed!\n");
-+		return -ENODEV;
-+	}
-+
-+	sc6000_dsp_reset(sc6000->vport);
-+
-+	if (!sc6000->old_dsp) {
-+		sc6000_write(devptr, sc6000->vport, COMMAND_60);
-+		sc6000_write(devptr, sc6000->vport, 0x02);
-+		sc6000_dsp_reset(sc6000->vport);
-+	}
-+
-+	err = sc6000_setup_board(devptr, sc6000->vport, sc6000->config);
-+	if (err < 0) {
-+		dev_err(devptr, "sc6000_setup_board: failed!\n");
-+		return -ENODEV;
-+	}
-+
-+	err = sc6000_init_mss(devptr, sc6000->vport, sc6000->config,
-+			      sc6000->vmss_port, sc6000->mss_config);
-+	if (err < 0) {
-+		dev_err(devptr, "Cannot initialize Microsoft Sound System mode.\n");
-+		return -ENODEV;
-+	}
-+
-+	return 0;
-+}
-+
-+static int sc6000_init_board(struct device *devptr, struct snd_sc6000 *sc6000)
- {
- 	char answer[15];
- 	char version[2];
--	int mss_config = sc6000_irq_to_softcfg(irq[dev]) |
--			 sc6000_dma_to_softcfg(dma[dev]);
--	int config = mss_config |
--		     sc6000_mpu_irq_to_softcfg(mpu_irq[dev]);
- 	int err;
--	int old = 0;
- 
--	err = sc6000_dsp_reset(vport);
-+	err = sc6000_dsp_reset(sc6000->vport);
- 	if (err < 0) {
- 		dev_err(devptr, "sc6000_dsp_reset: failed!\n");
- 		return err;
- 	}
- 
- 	memset(answer, 0, sizeof(answer));
--	err = sc6000_dsp_get_answer(devptr, vport, GET_DSP_COPYRIGHT, answer, 15);
-+	err = sc6000_dsp_get_answer(devptr, sc6000->vport, GET_DSP_COPYRIGHT,
-+				    answer, 15);
- 	if (err <= 0) {
- 		dev_err(devptr, "sc6000_dsp_copyright: failed!\n");
- 		return -ENODEV;
-@@ -408,54 +472,17 @@ static int sc6000_init_board(struct device *devptr,
- 	if (strncmp("SC-6000", answer, 7))
- 		dev_warn(devptr, "Warning: non SC-6000 audio card!\n");
- 
--	if (sc6000_dsp_get_answer(devptr, vport, GET_DSP_VERSION, version, 2) < 2) {
-+	if (sc6000_dsp_get_answer(devptr, sc6000->vport,
-+				  GET_DSP_VERSION, version, 2) < 2) {
- 		dev_err(devptr, "sc6000_dsp_version: failed!\n");
- 		return -ENODEV;
- 	}
- 	dev_info(devptr, "Detected model: %s, DSP version %d.%d\n",
- 		answer, version[0], version[1]);
- 
--	/* set configuration */
--	sc6000_write(devptr, vport, COMMAND_5C);
--	if (sc6000_read(vport) < 0)
--		old = 1;
--
--	if (!old) {
--		int cfg[2];
--		sc6000_hw_cfg_encode(devptr,
--				     vport, &cfg[0], port[dev], mpu_port[dev],
--				     mss_port[dev], joystick[dev]);
--		if (sc6000_hw_cfg_write(devptr, vport, cfg) < 0) {
--			dev_err(devptr, "sc6000_hw_cfg_write: failed!\n");
--			return -EIO;
--		}
--	}
--	err = sc6000_setup_board(devptr, vport, config);
--	if (err < 0) {
--		dev_err(devptr, "sc6000_setup_board: failed!\n");
--		return -ENODEV;
--	}
--
--	sc6000_dsp_reset(vport);
--
--	if (!old) {
--		sc6000_write(devptr, vport, COMMAND_60);
--		sc6000_write(devptr, vport, 0x02);
--		sc6000_dsp_reset(vport);
--	}
-+	sc6000_detect_old_dsp(devptr, sc6000);
- 
--	err = sc6000_setup_board(devptr, vport, config);
--	if (err < 0) {
--		dev_err(devptr, "sc6000_setup_board: failed!\n");
--		return -ENODEV;
--	}
--	err = sc6000_init_mss(devptr, vport, config, vmss_port, mss_config);
--	if (err < 0) {
--		dev_err(devptr, "Cannot initialize Microsoft Sound System mode.\n");
--		return -ENODEV;
--	}
--
--	return 0;
-+	return sc6000_program_board(devptr, sc6000);
- }
- 
- static int snd_sc6000_mixer(struct snd_wss *chip)
-@@ -538,10 +565,10 @@ static int snd_sc6000_match(struct device *devptr, unsigned int dev)
- 
- static void snd_sc6000_free(struct snd_card *card)
- {
--	char __iomem *vport = (char __force __iomem *)card->private_data;
-+	struct snd_sc6000 *sc6000 = card->private_data;
- 
--	if (vport)
--		sc6000_setup_board(card->dev, vport, 0);
-+	if (sc6000->vport)
-+		sc6000_setup_board(card->dev, sc6000->vport, 0);
- }
- 
- static int __snd_sc6000_probe(struct device *devptr, unsigned int dev)
-@@ -552,15 +579,17 @@ static int __snd_sc6000_probe(struct device *devptr, unsigned int dev)
- 	int xirq = irq[dev];
- 	int xdma = dma[dev];
- 	struct snd_card *card;
-+	struct snd_sc6000 *sc6000;
- 	struct snd_wss *chip;
- 	struct snd_opl3 *opl3;
- 	char __iomem *vport;
- 	char __iomem *vmss_port;
- 
- 	err = snd_devm_card_new(devptr, index[dev], id[dev], THIS_MODULE,
--				0, &card);
-+				sizeof(*sc6000), &card);
- 	if (err < 0)
- 		return err;
-+	sc6000 = card->private_data;
- 
- 	if (xirq == SNDRV_AUTO_IRQ) {
- 		xirq = snd_legacy_find_free_irq(possible_irqs);
-@@ -587,7 +616,7 @@ static int __snd_sc6000_probe(struct device *devptr, unsigned int dev)
- 		dev_err(devptr, "I/O port cannot be iomapped.\n");
- 		return -EBUSY;
- 	}
--	card->private_data = (void __force *)vport;
-+	sc6000->vport = vport;
- 
- 	/* to make it marked as used */
- 	if (!devm_request_region(devptr, mss_port[dev], 4, DRV_NAME)) {
-@@ -600,12 +629,15 @@ static int __snd_sc6000_probe(struct device *devptr, unsigned int dev)
- 		dev_err(devptr, "MSS port I/O cannot be iomapped.\n");
- 		return -EBUSY;
- 	}
-+	sc6000->vmss_port = vmss_port;
- 
- 	dev_dbg(devptr, "Initializing BASE[0x%lx] IRQ[%d] DMA[%d] MIRQ[%d]\n",
- 		port[dev], xirq, xdma,
- 		mpu_irq[dev] == SNDRV_AUTO_IRQ ? 0 : mpu_irq[dev]);
- 
--	err = sc6000_init_board(devptr, vport, vmss_port, dev);
-+	sc6000_prepare_board(devptr, sc6000, dev, xirq, xdma);
-+
-+	err = sc6000_init_board(devptr, sc6000);
- 	if (err < 0)
- 		return err;
- 	card->private_free = snd_sc6000_free;
+@@ -385,11 +384,17 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+ 		 * each iteration. If this is last skb for this buffer
+ 		 * and MSG_ZEROCOPY mode is in use - we must allocate
+ 		 * completion for the current syscall.
++		 *
++		 * Pass pkt_len because msg iter is already consumed
++		 * by virtio_transport_fill_skb(), so iter->count
++		 * can not be used for RLIMIT_MEMLOCK pinned-pages
++		 * accounting done by msg_zerocopy_realloc().
+ 		 */
+ 		if (info->msg && info->msg->msg_flags & MSG_ZEROCOPY &&
+ 		    skb_len == rest_len && info->op == VIRTIO_VSOCK_OP_RW) {
+ 			if (virtio_transport_init_zcopy_skb(vsk, skb,
+ 							    info->msg,
++							    pkt_len,
+ 							    can_zcopy)) {
+ 				kfree_skb(skb);
+ 				ret = -ENOMEM;
 -- 
 2.53.0
 
