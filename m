@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-252862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252404-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iGXNISkqDmpq6gUAu9opvQ
-	(envelope-from <stable+bounces-252862-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:39:53 +0200
+	id wMSkCB4lDmr26QUAu9opvQ
+	(envelope-from <stable+bounces-252404-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:18:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 169C659B2B6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:39:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A457A59AB0D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:18:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 852AA35ED7CF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:29:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 48A5638439C3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:09:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ACBC368968;
-	Wed, 20 May 2026 18:29:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD73F3F787E;
+	Wed, 20 May 2026 18:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gAfPu6lc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lH3vaqGc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DE47332EBD;
-	Wed, 20 May 2026 18:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA60F3E95A4;
+	Wed, 20 May 2026 18:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301783; cv=none; b=pZ99AXRM7RkhrqQ8UA8ZtEAYmvTuoG2efuLtCUsV6jmyd0MMKnIWB9mSKfPV8j/zsxZlKtAcH88SN/ekTuzr8/R0PPeCzJPDpUy3ZvtSlJFCyo22j+2dv2yBM40HMBbs6NRYutvWGGwroK7WHC11wB0NB40lQxbqeA/ejJkvZ/w=
+	t=1779300587; cv=none; b=p04x/aUHQ/VCpgVJf4FlwixIJ6r9ERFS2JI1Bp+gOLJEQE2dU2m83/CbL8oSGw3pLRCcoul3XJfUhzQAvlS8cNmfs1YpXaOWmb5opYtv12cN2LQ+Dq5YraJgqEn7b/sv0C7YDNRlSr25sVPKnTeUeJCIkLir2a6NkIiklY7ql5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301783; c=relaxed/simple;
-	bh=IyeQNQjNxShtmPUQggKFEqFasfzQsd4Scd8EIpM4zIg=;
+	s=arc-20240116; t=1779300587; c=relaxed/simple;
+	bh=axYXge8OCRiBbHPvOzRlrRmPgR4ZqOlMOtuBeMyhRkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gBFqF5gb98VhQVzmWLZRzu+gTXUtE4heUQgWX3Ys1BbJxOtlbrotrxhDAr+Cy1Xfg3hTKeo5LEMi10bTqNeDm0oqCYpEtdaS3vkfgIrMja6G3Afda0mWCGgutxIDi4OP0Xq/poRqq2V0bfUsn/Cuuo4MjNOeok9WQMfsU5Hy/oU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gAfPu6lc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 421561F000E9;
-	Wed, 20 May 2026 18:29:41 +0000 (UTC)
+	 MIME-Version; b=H285sTMJOa5PQQD7HzIXGirHYTNhvDn6h6MCDDvkQtlmVpgqowZmLxeplCx0J8XzX1k971Bn3e8WvD5NXIm0GbT+va0UNbNnw6F6S8M2Dq7TuWO/1IcuoZUFsxe7+GggltxhX/ggMgxyKimedcLcFFrzBQhNf+gnct3m4GjYsxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lH3vaqGc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4117B1F000E9;
+	Wed, 20 May 2026 18:09:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301781;
-	bh=dHnHChg84gFkuuY6SLI0xgQOqFb6uZY1pLhgBN7kRNk=;
+	s=korg; t=1779300585;
+	bh=/E9/D1xjC3wHGHYm+OBgFZ46BEEdyqTdBpZ376+TLIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gAfPu6lcSzMHdlZ6/cEYhNnXOdeOz6PNw92XspdtYha5PXPsTkVVisnH7vgVddbqy
-	 Ofa42RLCXh0FuzQpUOnq145GZVBmnjU5Ue6rcapzGpxqRIF6aJ021jeolMmlT1rV8R
-	 MlBpuMQLMO7ztLZGt4QS9vS+yuY/Sz71tfUYLjdc=
+	b=lH3vaqGcasle/3gXXnCfaGJCQaXodepFIE6B+hrvqHNe4HO2FMyle1eRt91xLiiun
+	 NvnJBZJhyd9Ic8GVQ1k5AA4RUgmjdjnTTq/CG4gG1vbXrJRQgH705FgFzdzYclxS2F
+	 6JkzdpllQgAPZKDvlRbOzD+f7CQdHqMYVmyJkooM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
+	Richard Cheng <icheng@nvidia.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Kai-Heng Feng <kaihengf@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 019/508] hrtimer: Avoid pointless reprogramming in __hrtimer_start_range_ns()
+Subject: [PATCH 6.12 231/666] PCI/NPEM: Set LED_HW_PLUGGABLE for hotplug-capable ports
 Date: Wed, 20 May 2026 18:17:22 +0200
-Message-ID: <20260520162059.004144092@linuxfoundation.org>
+Message-ID: <20260520162116.220205631@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,75 +70,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252862-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252404-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 169C659B2B6
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email,wunner.de:email]
+X-Rspamd-Queue-Id: A457A59AB0D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Richard Cheng <icheng@nvidia.com>
 
-[ Upstream commit d19ff16c11db38f3ee179d72751fb9b340174330 ]
+[ Upstream commit 16d021c878dca22532c984668c9e8cf4722d6a49 ]
 
-Much like hrtimer_reprogram(), skip programming if the cpu_base is running
-the hrtimer interrupt.
+NPEM registers LED classdevs on PCI endpoint that may be behind
+hotplug-capable ports. During hot-removal, led_classdev_unregister() calls
+led_set_brightness(LED_OFF) which leads to a PCI config read to a
+disconnected device, which fails and returns -ENODEV (topology details in
+msgid.link below):
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Juri Lelli <juri.lelli@redhat.com>
-Reviewed-by: Thomas Gleixner <tglx@kernel.org>
-Link: https://patch.msgid.link/20260224163429.069535561@kernel.org
-Stable-dep-of: f2e388a019e4 ("hrtimer: Reduce trace noise in hrtimer_start()")
+  leds 0003:01:00.0:enclosure:ok: Setting an LED's brightness failed (-19)
+
+The LED core already suppresses this for devices with LED_HW_PLUGGABLE set,
+but NPEM never sets it. Add the flag since NPEM LEDs are on hot-pluggable
+hardware by nature.
+
+Fixes: 4e893545ef87 ("PCI/NPEM: Add Native PCIe Enclosure Management support")
+Signed-off-by: Richard Cheng <icheng@nvidia.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Acked-by: Kai-Heng Feng <kaihengf@nvidia.com>
+Link: https://patch.msgid.link/20260402093850.23075-1-icheng@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/hrtimer.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/pci/npem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index 9f41327d3a6d6..3bc3111ca5317 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -1287,6 +1287,14 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
- 	}
+diff --git a/drivers/pci/npem.c b/drivers/pci/npem.c
+index 97507e0df769b..b5d012edebf35 100644
+--- a/drivers/pci/npem.c
++++ b/drivers/pci/npem.c
+@@ -504,7 +504,7 @@ static int pci_npem_set_led_classdev(struct npem *npem, struct npem_led *nled)
+ 	led->brightness_get = brightness_get;
+ 	led->max_brightness = 1;
+ 	led->default_trigger = "none";
+-	led->flags = 0;
++	led->flags = LED_HW_PLUGGABLE;
  
- 	first = enqueue_hrtimer(timer, new_base, mode);
-+
-+	/*
-+	 * If the hrtimer interrupt is running, then it will reevaluate the
-+	 * clock bases and reprogram the clock event device.
-+	 */
-+	if (new_base->cpu_base->in_hrtirq)
-+		return false;
-+
- 	if (!force_local) {
- 		/*
- 		 * If the current CPU base is online, then the timer is
+ 	ret = led_classdev_register(&npem->dev->dev, led);
+ 	if (ret)
 -- 
 2.53.0
 
