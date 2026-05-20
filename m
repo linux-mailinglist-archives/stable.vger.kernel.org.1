@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252725-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gDzuCbH5DWrO5AUAu9opvQ
-	(envelope-from <stable+bounces-252089-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:13:05 +0200
+	id ELidCM4oDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252725-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:34:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE818595942
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:13:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68D8459B059
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:34:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3121B30F68EF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:55:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 566A8370F2FD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33CF73F44F7;
-	Wed, 20 May 2026 17:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E923F1ACA;
+	Wed, 20 May 2026 18:23:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M5YIhK3Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VyH9Zjem"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91C343F44D9;
-	Wed, 20 May 2026 17:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C6E3FB060;
+	Wed, 20 May 2026 18:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299717; cv=none; b=qIReOuVMAQJMegyRzLx7CQm1hiN7nZVGfV3OXf7OdTZ5EVUjGgpugXY8nMpDaYonZjvJqEpcODHEZ0/pk/22iqM0gQs/f7skgogvUUkB1sADkI7ImroxVJMkpboYHWSiAsTyxCioApfGGJPTQmmjotgdkySvuE28MZN2zwhY2LA=
+	t=1779301426; cv=none; b=Tf+2a42+igXSs0SlatfP3eCo6FZWB90B5gE+IJCIhDUPXNHQRVFxEjnQINBXVPenLPZkg/9kPhkpE1ba2WOuGoFkI3bRTPYq3x/fpmcKK2QYr+To3KNE4mjTU6+JQJMeiavZAfj7XvpQUFEx9rIHpdFlcY77Y68LPD1lFzC8xuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299717; c=relaxed/simple;
-	bh=b41cx7Lncqe4XBmcfHnB2/YRxvGHQ6KjwK236pU92T0=;
+	s=arc-20240116; t=1779301426; c=relaxed/simple;
+	bh=bsO7srdbtsFFI2b3eAWj08jpDSJGtUQojmsGzsFN1Hc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S2Fyu0bL9Nl5vG8Wf4ackEamZH8aJD20ycYkIKpvuwGeubMEfYAVe52fJJVZ+ERBq7Z2TY7DUrzpVq5olHdpVQQHF7rvxNE7ka+c8mgmTY637QhHkZ6qCiR2RwyxMXwGJJKaWvWup9K1bvb7BscCtIcZ4FOoDv/uWfn9/isPNMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M5YIhK3Y; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA901F000E9;
-	Wed, 20 May 2026 17:55:15 +0000 (UTC)
+	 MIME-Version; b=jNkxu0MbjSxu1TSwfkAXlO10/lXdhZ5I4KfQMdX49FOZFOKC1im/P54xR9nLTce8FaOxiA2zDXbepaaTjXLEDP+0BiEaQGyiCTu2fccoTLpCpD4EyezGZOeS0vPz0/bBcfzJUuSrQzOznlfEUjnGnR0Afw0NHMSMMsepo3XZ1o8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VyH9Zjem; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F7B71F00898;
+	Wed, 20 May 2026 18:23:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299716;
-	bh=JXTye/Eyc5HqnGKcKPYmuof1BUjtxDh7uREfZJY4DO8=;
+	s=korg; t=1779301425;
+	bh=JLmuabpAWU5/0/LT8oBXQIcP9iuphJ1ryNTGrX78EQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=M5YIhK3Ya1ywTV57kXcad7S6Bui6Owmw2MmpiA/6zgsFnKb2xnRG4ApH7UdPwrv1J
-	 Z8wbZUtSMksva/iG32iSA9O+jkRNZAYvNlgBTPAcAGu36WzCDr+o3YUhPS1iD/OnKg
-	 C/usYyEoxhK7Y3/P8k1P9aLsgvi4mXdzDLE+9P5E=
+	b=VyH9ZjemEQkQ7FNxiGAhJglZGcLMe6Vp8sY2c+65Z6N1fUXlz3az9OC9W+aRfaQ0u
+	 jDKDo2j9zVxjbtiilPB7OlR+W5BGuoPkWoofDBs6zmBtZeMrp6wishrmXzb7kxYoTH
+	 ZTVM5J+/vqqlf6zNkZRtMoQIfYMxSsIK3FOaXmw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Breno Leitao <leitao@debian.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 877/957] sched/fair: Fix wakeup_preempt_fair() for not waking up task
+Subject: [PATCH 6.12 549/666] netpoll: extract IPv4 address retrieval into helper function
 Date: Wed, 20 May 2026 18:22:40 +0200
-Message-ID: <20260520162153.585074499@linuxfoundation.org>
+Message-ID: <20260520162123.168615541@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,86 +69,134 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252725-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252089-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,infradead.org:email]
-X-Rspamd-Queue-Id: DE818595942
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 68D8459B059
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Guittot <vincent.guittot@linaro.org>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 9f6d929ee2c6f0266edb564bcd2bd47fd6e884a8 ]
+[ Upstream commit 3699f992e8c22d3ce54d2c1a5774e2c49028f99c ]
 
-Make sure to only call pick_next_entity() on an non-empty cfs_rq.
+Move the IPv4 address retrieval logic from netpoll_setup() into a
+separate netpoll_take_ipv4() function to improve code organization
+and readability. This change consolidates the IPv4-specific logic
+and error handling into a dedicated function while maintaining
+the same functionality.
 
-The assumption that p is always enqueued and not delayed, is only true for
-wakeup. If p was moved while delayed, pick_next_entity() will dequeue it and
-the cfs might become empty. Test if there are still queued tasks before trying
-again to determine if p could be the next one to be picked.
+No functional changes.
 
-There are at least 2 cases:
-
-When cfs becomes idle, it tries to pull tasks but if those pulled tasks are
-delayed, they will be dequeued when attached to cfs. attach_tasks() ->
-attach_task() -> wakeup_preempt(rq, p, 0);
-
-A misfit task running on cfs A triggers a load balance to be pulled on a better
-cpu, the load balance on cfs B starts an active load balance to pulled the
-running misfit task. If there is a delayed dequeue task on cfs A, it can be
-pulled instead of the previously running misfit task. attach_one_task() ->
-attach_task() -> wakeup_preempt(rq, p, 0);
-
-Fixes: ac8e69e69363 ("sched/fair: Fix wakeup_preempt_fair() vs delayed dequeue")
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20260503104503.1732682-1-vincent.guittot@linaro.org
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250618-netpoll_ip_ref-v1-2-c2ac00fe558f@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 3bc179bc7146 ("netpoll: fix IPv6 local-address corruption")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/core/netpoll.c | 48 ++++++++++++++++++++++++++++++----------------
+ 1 file changed, 31 insertions(+), 17 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 565a96d6811e7..58f535cc64215 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -8985,9 +8985,10 @@ static void check_preempt_wakeup_fair(struct rq *rq, struct task_struct *p, int
+diff --git a/net/core/netpoll.c b/net/core/netpoll.c
+index a9c38f75b00ec..b5305ff217a8b 100644
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -721,13 +721,41 @@ static void netpoll_wait_carrier(struct netpoll *np, struct net_device *ndev,
+ 	}
+ }
  
- 	/*
- 	 * Because p is enqueued, nse being null can only mean that we
--	 * dequeued a delayed task.
-+	 * dequeued a delayed task. If there are still entities queued in
-+	 * cfs, check if the next one will be p.
- 	 */
--	if (!nse)
-+	if (!nse && cfs_rq->nr_queued)
- 		goto pick;
++/*
++ * Take the IPv4 from ndev and populate local_ip structure in netpoll
++ */
++static int netpoll_take_ipv4(struct netpoll *np, struct net_device *ndev)
++{
++	char buf[MAC_ADDR_STR_LEN + 1];
++	const struct in_ifaddr *ifa;
++	struct in_device *in_dev;
++
++	in_dev = __in_dev_get_rtnl(ndev);
++	if (!in_dev) {
++		np_err(np, "no IP address for %s, aborting\n",
++		       egress_dev(np, buf));
++		return -EDESTADDRREQ;
++	}
++
++	ifa = rtnl_dereference(in_dev->ifa_list);
++	if (!ifa) {
++		np_err(np, "no IP address for %s, aborting\n",
++		       egress_dev(np, buf));
++		return -EDESTADDRREQ;
++	}
++
++	np->local_ip.ip = ifa->ifa_local;
++	np_info(np, "local IP %pI4\n", &np->local_ip.ip);
++
++	return 0;
++}
++
+ int netpoll_setup(struct netpoll *np)
+ {
+ 	struct net *net = current->nsproxy->net_ns;
+ 	char buf[MAC_ADDR_STR_LEN + 1];
+ 	struct net_device *ndev = NULL;
+ 	bool ip_overwritten = false;
+-	struct in_device *in_dev;
+ 	int err;
  
- 	if (sched_feat(RUN_TO_PARITY))
+ 	rtnl_lock();
+@@ -767,24 +795,10 @@ int netpoll_setup(struct netpoll *np)
+ 
+ 	if (!np->local_ip.ip) {
+ 		if (!np->ipv6) {
+-			const struct in_ifaddr *ifa;
+-
+-			in_dev = __in_dev_get_rtnl(ndev);
+-			if (!in_dev)
+-				goto put_noaddr;
+-
+-			ifa = rtnl_dereference(in_dev->ifa_list);
+-			if (!ifa) {
+-put_noaddr:
+-				np_err(np, "no IP address for %s, aborting\n",
+-				       egress_dev(np, buf));
+-				err = -EDESTADDRREQ;
++			err = netpoll_take_ipv4(np, ndev);
++			if (err)
+ 				goto put;
+-			}
+-
+-			np->local_ip.ip = ifa->ifa_local;
+ 			ip_overwritten = true;
+-			np_info(np, "local IP %pI4\n", &np->local_ip.ip);
+ 		} else {
+ #if IS_ENABLED(CONFIG_IPV6)
+ 			struct inet6_dev *idev;
 -- 
 2.53.0
 
