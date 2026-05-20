@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-251569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250633-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4Nc5GCz2DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251569-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:58:04 +0200
+	id YK2CLnzoDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250633-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:59:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02778594FDC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:58:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 613FB592C74
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:59:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id ED3433036E32
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:32:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 81A3130CC5DA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:52:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47DC535AC17;
-	Wed, 20 May 2026 17:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4752F31F9BE;
+	Wed, 20 May 2026 16:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DuHdLxnK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s8p3oVKh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC59E3A874C;
-	Wed, 20 May 2026 17:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9419351C2F;
+	Wed, 20 May 2026 16:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298322; cv=none; b=ee/Msyp9THToyV6eRPJa2PhFPjFkv1qn3IoQVDxZW4d5kym/pse8hrYPAu4GEDzdRGmaktEkrdbGynTuHvO4gNewVaSWa7zNNfUJLvH5pnMnrjlMNcfMwyvLne0Gri9FbpIuNmKBhdbF3VPg7o1PCdiAXgpajujQ2s/R73LPiIs=
+	t=1779295922; cv=none; b=g/dP1n3AOH2B+A4hph6M/i727Bf4LFB77CkAerVIn6JToqXdwx8dKkmoO4GYhErhXOJhu90x2LEH+FIx/S73368QItWbb5dC55Gz91L/96xZ4a7T0xY/hEz27S38ASFG7MchdvCJCxrauC+v0Tq2w4FLJ49kH/y8m8eX6OLh1dY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298322; c=relaxed/simple;
-	bh=dwZJKmv1T2tGFkrd1CUfO5noAjiWUoKC3OsljqcX8nE=;
+	s=arc-20240116; t=1779295922; c=relaxed/simple;
+	bh=vW2DCJXPWkL2VJr6ULJgK9N1P6UQ93mWxicDZ71cngc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R0EpGzOby2RNw58hUfI9i08XoiJhgfglyQb7uv4jPcv9VwPqptcFwQwp+5rN0+Znz76uAf3SzHA5yK5cY0/ZKq3MCChdS1rgs7KOelHi94XSQE/In3B7RlxVy2JpDfBoqV5JFSO240gztQB3tp4Xyhu5YtFBBZjmiG1OleNRJ4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DuHdLxnK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C7621F000E9;
-	Wed, 20 May 2026 17:31:59 +0000 (UTC)
+	 MIME-Version; b=CasVXOAy/V4LEJLLM5Emr4JmjJyz3nRKHhb0JO38wn8eFvSmfa6ZsG1ZAhlSv7PzOUMJE5YH00s3nXpruV4of1fRd2lKOMiWsEYU4CHMQYssOZqQ5nw804kxXZxVSh2bL2EYGsFeAhhzjrXBGsCiwZtyyNGaUSKtufBQv5dQmxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s8p3oVKh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 829DC1F000E9;
+	Wed, 20 May 2026 16:52:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298320;
-	bh=ap5Asy32MEEDtMb2kJInU7P/m4jgGMSrp/tProoaP9Y=;
+	s=korg; t=1779295920;
+	bh=xshfqJ7fuD0/K6PV71k3tpiT0WhDOkpn3C3QoxNvJsc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DuHdLxnKF+TjWRHdSxLkWcPa6TSsuwZV4Z1HEPOTaTBU0O4qKtlwzz/Y21zA80Z73
-	 x5rcniDtzxuk+kQCj86wVyStSGfPWppnH3fWachcXhHyt7CRzi5aQUIt8eBtctHmuv
-	 iHUedmM33dDlndUYxhrpZeEDwE/BVlfTNrwuAh+U=
+	b=s8p3oVKhlIIvoBEA/7i9VLElNdU3gNiYwTTQLl4Bs2Vng2Dsf01pQKpEmz3+IyG4j
+	 SyariklG7ASWjUKB+EcKLGFuGP1KbBasu1DwH2NyBdGk4Y4aIyUeTHRIuL3e5uN/3e
+	 4Yy5MCdoB4nFg91BftpDoXbsFgvkqxXzxXW5XFLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@cherry.de>,
-	Heiko Stuebner <heiko.stuebner@cherry.de>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Richard Genoud <richard.genoud@bootlin.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 367/957] arm64: dts: rockchip: Make Jaguar PCIe-refclk pin use pull-up config
-Date: Wed, 20 May 2026 18:14:10 +0200
-Message-ID: <20260520162142.487713200@linuxfoundation.org>
+Subject: [PATCH 7.0 0601/1146] mtd: rawnand: sunxi: fix sunxi_nfc_hw_ecc_read_extra_oob
+Date: Wed, 20 May 2026 18:14:11 +0200
+Message-ID: <20260520162201.780580867@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,75 +65,101 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251569-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-250633-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,sntech.de:email,rock-chips.com:email]
-X-Rspamd-Queue-Id: 02778594FDC
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 613FB592C74
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Stuebner <heiko.stuebner@cherry.de>
+From: Richard Genoud <richard.genoud@bootlin.com>
 
-[ Upstream commit f45d4356feeba1c8dac3414b688f59292ddfc9f9 ]
+[ Upstream commit 848c13996c55fe4ea6bf5acc3ce6c8c5c944b5f6 ]
 
-The hardware PU/PD config of the pin after reset is to pull-up and on
-Jaguar this will also keep the device in reset until the driver actually
-enables the pin. So restore this boot pull-up config of the pin on Jaguar
-instead of setting it to pull-none.
+When dumping the OOB, the bytes at the end where actually copied from
+the beginning of the OOB instead of current_offset.
 
-Suggested-by: Quentin Schulz <quentin.schulz@cherry.de>
-Fixes: 0ec7e1096332 ("arm64: dts: rockchip: add PCIe3 support on rk3588-jaguar")
-Signed-off-by: Heiko Stuebner <heiko.stuebner@cherry.de>
-Reviewed-by: Shawn Lin <shawn.lin@rock-chips.com>
-Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
-Link: https://patch.msgid.link/20260210080303.680403-5-heiko@sntech.de
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+That leads to something like:
+OOB: ff ff ff ff ff ff ff ff ea 19 00 3a 83 db aa 8d
+OOB: 99 09 c8 9a 90 36 35 7d aa 15 13 07 3d 97 b2 a4
+OOB: a8 bb 19 b3 07 e9 f6 25 52 d7 1a 23 e2 7e 0a e4
+OOB: 52 8a 09 d2 1a 86 3d cf b4 99 43 13 d3 90 33 0b
+OOB: ff ff ff ff ff ff ff ff ea 19 00 3a 83 db aa 8d
+OOB: 99 09 c8 9a 90 36 35 7d aa 15 13 07 3d 97 b2 a4
+OOB: a8 bb 19 b3 07 e9 f6 25 52 d7 1a 23 e2 7e 0a e4
+OOB: 52 8a 09 d2 1a 86 3d cf b4 99 43 13 d3 90 33 0b
+instead of:
+OOB: ff ff ff ff ff ff ff ff ea 19 00 3a 83 db aa 8d
+OOB: 99 09 c8 9a 90 36 35 7d aa 15 13 07 3d 97 b2 a4
+OOB: a8 bb 19 b3 07 e9 f6 25 52 d7 1a 23 e2 7e 0a e4
+OOB: 52 8a 09 d2 1a 86 3d cf b4 99 43 13 d3 90 33 0b
+OOB: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+OOB: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+OOB: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+OOB: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+(example with BCH16, user data [8,0], no scrambling)
+
+*cur_off (offset from the beginning of the page) was compared to offset
+(offset from the beginning of the OOB), and then, the
+nand_change_read_column_op() sets the current position to the beginning
+of the OOB instead of OOB+offset
+
+Fixes: 15d6f118285f ("mtd: rawnand: sunxi: Stop supporting ECC_HW_SYNDROME mode")
+Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Signed-off-by: Richard Genoud <richard.genoud@bootlin.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3588-jaguar.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/raw/sunxi_nand.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3588-jaguar.dts b/arch/arm64/boot/dts/rockchip/rk3588-jaguar.dts
-index 176925d0a1a80..557158093b586 100644
---- a/arch/arm64/boot/dts/rockchip/rk3588-jaguar.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3588-jaguar.dts
-@@ -585,7 +585,7 @@ led1_pin: led1-pin {
+diff --git a/drivers/mtd/nand/raw/sunxi_nand.c b/drivers/mtd/nand/raw/sunxi_nand.c
+index e66adfcca7cd6..85b869041a37f 100644
+--- a/drivers/mtd/nand/raw/sunxi_nand.c
++++ b/drivers/mtd/nand/raw/sunxi_nand.c
+@@ -1048,9 +1048,9 @@ static void sunxi_nfc_hw_ecc_read_extra_oob(struct nand_chip *nand,
+ 	if (len <= 0)
+ 		return;
  
- 	pcie30x4 {
- 		pcie30x4_clkreqn_m0: pcie30x4-clkreqn-m0 {
--			rockchip,pins = <0 RK_PC6 RK_FUNC_GPIO &pcfg_pull_none>;
-+			rockchip,pins = <0 RK_PC6 RK_FUNC_GPIO &pcfg_pull_up>;
- 		};
+-	if (!cur_off || *cur_off != offset)
+-		nand_change_read_column_op(nand, mtd->writesize, NULL, 0,
+-					   false);
++	if (!cur_off || *cur_off != (offset + mtd->writesize))
++		nand_change_read_column_op(nand, mtd->writesize + offset,
++					   NULL, 0, false);
  
- 		pcie30x4_perstn_m0: pcie30x4-perstn-m0 {
+ 	if (!randomize)
+ 		sunxi_nfc_read_buf(nand, oob + offset, len);
 -- 
 2.53.0
 
