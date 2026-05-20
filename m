@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250854-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MIodBXj/DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-252884-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:37:44 +0200
+	id uCiRKVTyDWrj4wUAu9opvQ
+	(envelope-from <stable+bounces-250854-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6DF4596CC6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:37:43 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2C4A59450C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 387F230A9E67
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:30:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D7D50327A74B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:02:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DDC2347514;
-	Wed, 20 May 2026 18:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AF383E9C3D;
+	Wed, 20 May 2026 17:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1NknO5eo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UbQi9HeZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446C530DEAC;
-	Wed, 20 May 2026 18:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9AFB3D75C7;
+	Wed, 20 May 2026 17:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301841; cv=none; b=Z81eV7G+zfHLMr62maVPJwPzHmOpK6IRsHQGfh+OMGjmGr5BtcKIrtzGuuOCOq8qWVE9jmrqhYpEtGQUQIlXAg0VVz+V8J918HUZnXusA8MZ7U4+I8ps4Jnls5E+hWNSAs/QRjwf4+lvkjcqPev+u5GTvioURRgQkv3dkv3/5uU=
+	t=1779296481; cv=none; b=dW2/FGSP8gU+fizFmbId4MyXCL5l12ulLNJBzui+YReWhfi6WRW6ST+3sOatnyYVN4GjRg4UhvoeFonvr3c+QmCVg6+lMDhqSVejcbtpWXOBNz8e2hPlx8HRa2A777VL1vZNaldTQMcyOef+e47sM8xy+4zu82kX9Uf1yQ4TC7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301841; c=relaxed/simple;
-	bh=j5Ez2AFBuRIDxLWqNv8qblo0kZLTfjnF+SgQltA2fU0=;
+	s=arc-20240116; t=1779296481; c=relaxed/simple;
+	bh=wzsZvaxkTXGjYqQmwbiS2LreeA4caYaGwopMLCeSn1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bUsg3K1lxb362sANuzbvlHmgQVY14ZLO5PeTWmeb+QOwsn55Bmtq5yvXpVm43HRz3VBLSZh8mVXwFio+6Zl7467f5l5Ry+ZBejg8rxe70AHAsAVKdUuwxp46BKwD8+kqqqjEWivSAmEdMM94LrUQPGtrAT5jkOxDkrwCA1+xpPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1NknO5eo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A15391F000E9;
-	Wed, 20 May 2026 18:30:39 +0000 (UTC)
+	 MIME-Version; b=QckUAVhGwf7p44qVAISR0nu/5MHFROVGvXQ7Ug48Qa8Hp8Wad3PX2rcrxVWaDPm3EnnpTu/i40FD3KR6lCNSeiH64ZLBEfb5gDqrvEuZpEL1bQUI55r2Tjbsc0ZMFDGUHKNN2vhyVhvES1p0T66Kh+DYL8cBmjJt1vPHjYTkMgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UbQi9HeZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A9301F000E9;
+	Wed, 20 May 2026 17:01:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301840;
-	bh=iINCJKi3IYtWBEPW609DWcpMpoqbO7r6Frwz16XVOhw=;
+	s=korg; t=1779296479;
+	bh=xBCF4SgTTMf5Kl+bOS5j2ZsAmoN+xbcbO93nXLBmZtU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1NknO5eo39EJ6xbRT62iXvAm/4fymlWM3kCfw8L0tOukQleJGCBvt3P0XPJT1BULi
-	 Oka+QthidijsIIygTvsOx03T4vmpXPBYZpSVa22egDzZnF3EMr42jX9o2/XQjAhVK2
-	 kLu4lwF3mZQRgql52HR/fZM3eZ+yG0gxdNbgmbTA=
+	b=UbQi9HeZfGkYQbtYzhg/xltCODXAc7h3AJx2wjpVe2FGp5MYtKgR9XXY45p3qqUhg
+	 dIASsAHWdibuBs3E32YHUSgvUk5Lu/N8ZeNhxafTzJEtZcBYninA55BptsIEr2dVPU
+	 hOwb+Rg3ryQspINNwqSKpIFcO+HSdJS5DBHCXr30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Velichayshiy <a.velichayshiy@ispras.ru>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	"Kito Xu (veritas501)" <hxzene@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 041/508] wifi: rtw89: phy: fix uninitialized variable access in rtw89_phy_cfo_set_crystal_cap()
+Subject: [PATCH 7.0 0814/1146] netfilter: xtables: restrict several matches to inet family
 Date: Wed, 20 May 2026 18:17:44 +0200
-Message-ID: <20260520162059.483291436@linuxfoundation.org>
+Message-ID: <20260520162206.647370411@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,78 +66,240 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-250854-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,netfilter.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252884-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,ispras.ru:email,realtek.com:email,msgid.link:url,linuxtesting.org:url]
-X-Rspamd-Queue-Id: C6DF4596CC6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: C2C4A59450C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Velichayshiy <a.velichayshiy@ispras.ru>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 047cddf88c611e616d49a00311d4722e46286234 ]
+[ Upstream commit b6fe26f86a1649f84e057f3f15605b08eda15497 ]
 
-In the rtw89_phy_cfo_set_crystal_cap() function, for chips other than
-RTL8852A/RTL8851B, the values read by rtw89_mac_read_xtal_si() are
-stored into the local variables sc_xi_val and sc_xo_val. If either
-read fails, these variables remain uninitialized, they are later
-used to update cfo->crystal_cap and in debug print statements. This
-can lead to undefined behavior.
+This is a partial revert of:
 
-Fix the issue by initializing sc_xi_val and sc_xo_val to zero,
-like is implemented in vendor driver.
+  commit ab4f21e6fb1c ("netfilter: xtables: use NFPROTO_UNSPEC in more extensions")
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+to allow ipv4 and ipv6 only.
 
-Fixes: 8379fa611536 ("rtw89: 8852c: add write/read crystal function in CFO tracking")
-Signed-off-by: Alexey Velichayshiy <a.velichayshiy@ispras.ru>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20260323140613.1615574-1-a.velichayshiy@ispras.ru
+- xt_mac
+- xt_owner
+- xt_physdev
+
+These extensions are not used by ebtables in userspace.
+
+Moreover, xt_realm is only for ipv4, since dst->tclassid is ipv4
+specific.
+
+Fixes: ab4f21e6fb1c ("netfilter: xtables: use NFPROTO_UNSPEC in more extensions")
+Reported-by: "Kito Xu (veritas501)" <hxzene@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/phy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/xt_mac.c     | 34 +++++++++++++++++++++++-----------
+ net/netfilter/xt_owner.c   | 37 +++++++++++++++++++++++++------------
+ net/netfilter/xt_physdev.c | 29 +++++++++++++++++++----------
+ net/netfilter/xt_realm.c   |  2 +-
+ 4 files changed, 68 insertions(+), 34 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index 457c1dd31bf9d..3da2f623c01c6 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -2434,7 +2434,7 @@ static void rtw89_phy_cfo_set_crystal_cap(struct rtw89_dev *rtwdev,
- {
- 	struct rtw89_cfo_tracking_info *cfo = &rtwdev->cfo_tracking;
- 	const struct rtw89_chip_info *chip = rtwdev->chip;
--	u8 sc_xi_val, sc_xo_val;
-+	u8 sc_xi_val = 0, sc_xo_val = 0;
+diff --git a/net/netfilter/xt_mac.c b/net/netfilter/xt_mac.c
+index 81649da57ba5d..bd2354760895d 100644
+--- a/net/netfilter/xt_mac.c
++++ b/net/netfilter/xt_mac.c
+@@ -38,25 +38,37 @@ static bool mac_mt(const struct sk_buff *skb, struct xt_action_param *par)
+ 	return ret;
+ }
  
- 	if (!force && cfo->crystal_cap == crystal_cap)
- 		return;
+-static struct xt_match mac_mt_reg __read_mostly = {
+-	.name      = "mac",
+-	.revision  = 0,
+-	.family    = NFPROTO_UNSPEC,
+-	.match     = mac_mt,
+-	.matchsize = sizeof(struct xt_mac_info),
+-	.hooks     = (1 << NF_INET_PRE_ROUTING) | (1 << NF_INET_LOCAL_IN) |
+-	             (1 << NF_INET_FORWARD),
+-	.me        = THIS_MODULE,
++static struct xt_match mac_mt_reg[] __read_mostly = {
++	{
++		.name		= "mac",
++		.family		= NFPROTO_IPV4,
++		.match		= mac_mt,
++		.matchsize	= sizeof(struct xt_mac_info),
++		.hooks		= (1 << NF_INET_PRE_ROUTING) |
++				  (1 << NF_INET_LOCAL_IN) |
++				  (1 << NF_INET_FORWARD),
++		.me		= THIS_MODULE,
++	},
++	{
++		.name		= "mac",
++		.family		= NFPROTO_IPV6,
++		.match		= mac_mt,
++		.matchsize	= sizeof(struct xt_mac_info),
++		.hooks		= (1 << NF_INET_PRE_ROUTING) |
++				  (1 << NF_INET_LOCAL_IN) |
++				  (1 << NF_INET_FORWARD),
++		.me		= THIS_MODULE,
++	},
+ };
+ 
+ static int __init mac_mt_init(void)
+ {
+-	return xt_register_match(&mac_mt_reg);
++	return xt_register_matches(mac_mt_reg, ARRAY_SIZE(mac_mt_reg));
+ }
+ 
+ static void __exit mac_mt_exit(void)
+ {
+-	xt_unregister_match(&mac_mt_reg);
++	xt_unregister_matches(mac_mt_reg, ARRAY_SIZE(mac_mt_reg));
+ }
+ 
+ module_init(mac_mt_init);
+diff --git a/net/netfilter/xt_owner.c b/net/netfilter/xt_owner.c
+index 50332888c8d23..7be2fe22b067e 100644
+--- a/net/netfilter/xt_owner.c
++++ b/net/netfilter/xt_owner.c
+@@ -127,26 +127,39 @@ owner_mt(const struct sk_buff *skb, struct xt_action_param *par)
+ 	return true;
+ }
+ 
+-static struct xt_match owner_mt_reg __read_mostly = {
+-	.name       = "owner",
+-	.revision   = 1,
+-	.family     = NFPROTO_UNSPEC,
+-	.checkentry = owner_check,
+-	.match      = owner_mt,
+-	.matchsize  = sizeof(struct xt_owner_match_info),
+-	.hooks      = (1 << NF_INET_LOCAL_OUT) |
+-	              (1 << NF_INET_POST_ROUTING),
+-	.me         = THIS_MODULE,
++static struct xt_match owner_mt_reg[] __read_mostly = {
++	{
++		.name       = "owner",
++		.revision   = 1,
++		.family     = NFPROTO_IPV4,
++		.checkentry = owner_check,
++		.match      = owner_mt,
++		.matchsize  = sizeof(struct xt_owner_match_info),
++		.hooks      = (1 << NF_INET_LOCAL_OUT) |
++			      (1 << NF_INET_POST_ROUTING),
++		.me         = THIS_MODULE,
++	},
++	{
++		.name       = "owner",
++		.revision   = 1,
++		.family     = NFPROTO_IPV6,
++		.checkentry = owner_check,
++		.match      = owner_mt,
++		.matchsize  = sizeof(struct xt_owner_match_info),
++		.hooks      = (1 << NF_INET_LOCAL_OUT) |
++			      (1 << NF_INET_POST_ROUTING),
++		.me         = THIS_MODULE,
++	}
+ };
+ 
+ static int __init owner_mt_init(void)
+ {
+-	return xt_register_match(&owner_mt_reg);
++	return xt_register_matches(owner_mt_reg, ARRAY_SIZE(owner_mt_reg));
+ }
+ 
+ static void __exit owner_mt_exit(void)
+ {
+-	xt_unregister_match(&owner_mt_reg);
++	xt_unregister_matches(owner_mt_reg, ARRAY_SIZE(owner_mt_reg));
+ }
+ 
+ module_init(owner_mt_init);
+diff --git a/net/netfilter/xt_physdev.c b/net/netfilter/xt_physdev.c
+index 343e65f377d44..130842c35c6fa 100644
+--- a/net/netfilter/xt_physdev.c
++++ b/net/netfilter/xt_physdev.c
+@@ -115,24 +115,33 @@ static int physdev_mt_check(const struct xt_mtchk_param *par)
+ 	return 0;
+ }
+ 
+-static struct xt_match physdev_mt_reg __read_mostly = {
+-	.name       = "physdev",
+-	.revision   = 0,
+-	.family     = NFPROTO_UNSPEC,
+-	.checkentry = physdev_mt_check,
+-	.match      = physdev_mt,
+-	.matchsize  = sizeof(struct xt_physdev_info),
+-	.me         = THIS_MODULE,
++static struct xt_match physdev_mt_reg[] __read_mostly = {
++	{
++		.name		= "physdev",
++		.family		= NFPROTO_IPV4,
++		.checkentry	= physdev_mt_check,
++		.match		= physdev_mt,
++		.matchsize	= sizeof(struct xt_physdev_info),
++		.me		= THIS_MODULE,
++	},
++	{
++		.name		= "physdev",
++		.family		= NFPROTO_IPV6,
++		.checkentry	= physdev_mt_check,
++		.match		= physdev_mt,
++		.matchsize	= sizeof(struct xt_physdev_info),
++		.me		= THIS_MODULE,
++	},
+ };
+ 
+ static int __init physdev_mt_init(void)
+ {
+-	return xt_register_match(&physdev_mt_reg);
++	return xt_register_matches(physdev_mt_reg, ARRAY_SIZE(physdev_mt_reg));
+ }
+ 
+ static void __exit physdev_mt_exit(void)
+ {
+-	xt_unregister_match(&physdev_mt_reg);
++	xt_unregister_matches(physdev_mt_reg, ARRAY_SIZE(physdev_mt_reg));
+ }
+ 
+ module_init(physdev_mt_init);
+diff --git a/net/netfilter/xt_realm.c b/net/netfilter/xt_realm.c
+index 6df485f4403d0..61b2f1e58d150 100644
+--- a/net/netfilter/xt_realm.c
++++ b/net/netfilter/xt_realm.c
+@@ -33,7 +33,7 @@ static struct xt_match realm_mt_reg __read_mostly = {
+ 	.matchsize	= sizeof(struct xt_realm_info),
+ 	.hooks		= (1 << NF_INET_POST_ROUTING) | (1 << NF_INET_FORWARD) |
+ 			  (1 << NF_INET_LOCAL_OUT) | (1 << NF_INET_LOCAL_IN),
+-	.family		= NFPROTO_UNSPEC,
++	.family		= NFPROTO_IPV4,
+ 	.me		= THIS_MODULE
+ };
+ 
 -- 
 2.53.0
 
