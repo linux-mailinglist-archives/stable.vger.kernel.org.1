@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-251119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253143-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +LqCEEPvDWqZ4wUAu9opvQ
-	(envelope-from <stable+bounces-251119-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:28:35 +0200
+	id +GrVNXguDmoK7wUAu9opvQ
+	(envelope-from <stable+bounces-253143-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA70A593C63
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:28:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3645359B89F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B9707300E62A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:14:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A08D232C6A4C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1146C370D54;
-	Wed, 20 May 2026 17:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86F3E347514;
+	Wed, 20 May 2026 18:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f81DRM5z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eh8BqGuq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C5028DC4;
-	Wed, 20 May 2026 17:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3B73E2AAD;
+	Wed, 20 May 2026 18:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297147; cv=none; b=OjEgijKIDUhsiRmM0V1NsFATv05myLjXVix0HyzFb0hbtqlmK7BB5WPdQlTgtIwNc9HdfeujCt2fUgVkwZg8n8dusmQ4mVe0Un3s+FUt9z151LXf+Xp6dnezvbDZ80d6dlsFeT8xawwcyy1tuuN7N38UfujWH1YmxV29hQb/Nn8=
+	t=1779302518; cv=none; b=kl2nVnb6dFIAx1oyaG6u9+3s2Zgqnuc7aLLUDC8z0rfLpdkmwx/Jagy4aShWuThM4A2OLmSduyP/XZ/wTMkHgCUQSxDqj/+8CYi39l+58sAm/6pZgS5reBqV2XiJGk9bjl5pSiLjmiHDxmbNGM7dX6E3YCxa4/d9wQAprjSdSQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297147; c=relaxed/simple;
-	bh=rde69B2c8cslsi3Q4FJW8dmH3+tcL01qhNKxRqzs4TE=;
+	s=arc-20240116; t=1779302518; c=relaxed/simple;
+	bh=y4Qpedpmhz8uThPPhGjqfbB43d8uDG6rmG3xVQzb6hw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H6SGJrEhRMVeNUPMor3peMftcFUiQIQQ2OEfQGBzmTE49s/DZ9KTv8+4FlT9sJDNluMmRpGgjdrbTv6Xjn+whAiC1Pr/Mbn6ZLNsQwJCPsKGvgH1DhIV8flWLeQSERzelSsikxThx75PBZ4wgZnoXsnxaAykKUwXG+AgfhBQ3sQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f81DRM5z; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10FB01F000E9;
-	Wed, 20 May 2026 17:12:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ARANGml1gbbViZrncpGHVDGe3vNwn+xlA284DPeyIXq0JTNqyluYF7oKx1caRTUiqQkNsrjrkPibgClnLzqhVFWHGk863uRsGbifBVzi1IsJFaA7zvju99JLV8kwk6cHvLKtFQvKp3VwSqTvpJo4zVMl38Za+SeO/Ki39dQtC3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eh8BqGuq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 939311F000E9;
+	Wed, 20 May 2026 18:41:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297146;
-	bh=K34Kw7b5k5bxXhPXF2Pm3Ou36KoLNIcv/jv2fdwW84I=;
+	s=korg; t=1779302517;
+	bh=7vp/GBjguv46Ks9JLcnSe1mRnquKKBwN5I4SwjAsCDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=f81DRM5ztJDQi1K3p4JAmqzi42g4MxWV7TlGboclrYEM2o29YfM/GJ1E/pYIeAI6h
-	 KmAswPKKkCWTDl134LVQri5+cuhcvm2ERgp+0NIVyb1sEAhBw566jJtGYKyLsgVNQ4
-	 WNO+RepkurVpE3XZnZIUXvVTXWcmPhsokMPT2C8M=
+	b=Eh8BqGuqOVYXJMqg8jEdgvZo2oLQXj2f+hCWwMezIiaIMBali3xgOtVunIQmPzwCA
+	 O9IMrNdyUqYwViD3LEsktkbpIyLqhMaFkvofxYtIOfS+uVdoqEkV7EQBpII2+SsWiY
+	 TrvqsHbDSYCKqZsRzOHoI7VxGiV1qMmUztkPWJdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Tretter <m.tretter@pengutronix.de>,
-	Frank Li <Frank.Li@nxp.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 1068/1146] media: staging: imx: configure src_mux in csi_start
+Subject: [PATCH 6.6 295/508] drm/i915: Constify watermark state checker
 Date: Wed, 20 May 2026 18:21:58 +0200
-Message-ID: <20260520162212.401925482@linuxfoundation.org>
+Message-ID: <20260520162105.037194557@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,160 +63,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-251119-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253143-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: BA70A593C63
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 3645359B89F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Tretter <m.tretter@pengutronix.de>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit ebeec2b000a90cd8aae86d1931ff5ef23af8284e ]
+[ Upstream commit 487a2db8bc4eb79c53c9ff8fca65a7fc8350df6c ]
 
-After media_pipeline_start() was called, the media graph is assumed to
-be validated. It won't be validated again if a second stream starts.
+The skl+ wm state checker has no reason to modify the crtc state,
+so make it const.
 
-The imx-media-csi driver, however, changes hardware configuration in the
-link_validate() callback. This can result in started streams with
-misconfigured hardware.
-
-In the concrete example, the ipu2_csi1 is driven by a parallel video
-input. After the media pipeline has been started with this
-configuration, a second stream is configured to use ipu1_csi0 with
-MIPI-CSI input from imx6-mipi-csi2. This may require the reconfiguration
-of ipu1_csi0 with ipu_set_csi_src_mux(). Since the media pipeline is
-already running, link_validate won't be called, and the ipu1_csi0 won't
-be reconfigured. The resulting video is broken, because the ipu1_csi0 is
-misconfigured, but no error is reported.
-
-Move ipu_set_csi_src_mux from csi_link_validate to csi_start to ensure
-that input to ipu1_csi0 is configured correctly when starting the
-stream. This is a local reconfiguration in ipu1_csi0 and is possible
-while the media pipeline is running.
-
-Since csi_start() is called with priv->lock already locked,
-csi_set_src() must not lock priv->lock again. Thus, the mutex_lock() is
-dropped.
-
-Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
-Fixes: 4a34ec8e470c ("[media] media: imx: Add CSI subdev driver")
-Cc: stable@vger.kernel.org
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231004155607.7719-6-ville.syrjala@linux.intel.com
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Stable-dep-of: a97c88a176b6 ("drm/i915/wm: Verify the correct plane DDB entry")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/media/imx/imx-media-csi.c | 44 ++++++++++++-----------
- 1 file changed, 24 insertions(+), 20 deletions(-)
+ drivers/gpu/drm/i915/display/skl_watermark.c | 2 +-
+ drivers/gpu/drm/i915/display/skl_watermark.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/staging/media/imx/imx-media-csi.c b/drivers/staging/media/imx/imx-media-csi.c
-index 55a7d8f38465b..1bc644f73a9d1 100644
---- a/drivers/staging/media/imx/imx-media-csi.c
-+++ b/drivers/staging/media/imx/imx-media-csi.c
-@@ -744,6 +744,28 @@ static int csi_setup(struct csi_priv *priv,
- 	return 0;
+diff --git a/drivers/gpu/drm/i915/display/skl_watermark.c b/drivers/gpu/drm/i915/display/skl_watermark.c
+index 063929a42a42f..8a82576ca0289 100644
+--- a/drivers/gpu/drm/i915/display/skl_watermark.c
++++ b/drivers/gpu/drm/i915/display/skl_watermark.c
+@@ -3133,7 +3133,7 @@ static void skl_wm_get_hw_state_and_sanitize(struct drm_i915_private *i915)
  }
  
-+static void csi_set_src(struct csi_priv *priv,
-+			struct v4l2_mbus_config *mbus_cfg)
-+{
-+	bool is_csi2;
-+
-+	is_csi2 = !is_parallel_bus(mbus_cfg);
-+	if (is_csi2) {
-+		/*
-+		 * NOTE! It seems the virtual channels from the mipi csi-2
-+		 * receiver are used only for routing by the video mux's,
-+		 * or for hard-wired routing to the CSI's. Once the stream
-+		 * enters the CSI's however, they are treated internally
-+		 * in the IPU as virtual channel 0.
-+		 */
-+		ipu_csi_set_mipi_datatype(priv->csi, 0,
-+					  &priv->format_mbus[CSI_SINK_PAD]);
-+	}
-+
-+	/* select either parallel or MIPI-CSI2 as input to CSI */
-+	ipu_set_csi_src_mux(priv->ipu, priv->csi_id, is_csi2);
-+}
-+
- static int csi_start(struct csi_priv *priv)
+ void intel_wm_state_verify(struct intel_crtc *crtc,
+-			   struct intel_crtc_state *new_crtc_state)
++			   const struct intel_crtc_state *new_crtc_state)
  {
- 	struct v4l2_mbus_config mbus_cfg = { .type = 0 };
-@@ -760,6 +782,8 @@ static int csi_start(struct csi_priv *priv)
- 	input_fi = &priv->frame_interval[CSI_SINK_PAD];
- 	output_fi = &priv->frame_interval[priv->active_output_pad];
+ 	struct drm_i915_private *i915 = to_i915(crtc->base.dev);
+ 	struct skl_hw_state {
+diff --git a/drivers/gpu/drm/i915/display/skl_watermark.h b/drivers/gpu/drm/i915/display/skl_watermark.h
+index f91a3d4ddc075..3aa138d387900 100644
+--- a/drivers/gpu/drm/i915/display/skl_watermark.h
++++ b/drivers/gpu/drm/i915/display/skl_watermark.h
+@@ -39,7 +39,7 @@ bool skl_ddb_allocation_overlaps(const struct skl_ddb_entry *ddb,
+ 				 int num_entries, int ignore_idx);
  
-+	csi_set_src(priv, &mbus_cfg);
-+
- 	/* start upstream */
- 	ret = v4l2_subdev_call(priv->src_sd, video, s_stream, 1);
- 	ret = (ret && ret != -ENOIOCTLCMD) ? ret : 0;
-@@ -1130,7 +1154,6 @@ static int csi_link_validate(struct v4l2_subdev *sd,
- {
- 	struct csi_priv *priv = v4l2_get_subdevdata(sd);
- 	struct v4l2_mbus_config mbus_cfg = { .type = 0 };
--	bool is_csi2;
- 	int ret;
+ void intel_wm_state_verify(struct intel_crtc *crtc,
+-			   struct intel_crtc_state *new_crtc_state);
++			   const struct intel_crtc_state *new_crtc_state);
  
- 	ret = v4l2_subdev_link_validate_default(sd, link,
-@@ -1145,25 +1168,6 @@ static int csi_link_validate(struct v4l2_subdev *sd,
- 		return ret;
- 	}
- 
--	mutex_lock(&priv->lock);
--
--	is_csi2 = !is_parallel_bus(&mbus_cfg);
--	if (is_csi2) {
--		/*
--		 * NOTE! It seems the virtual channels from the mipi csi-2
--		 * receiver are used only for routing by the video mux's,
--		 * or for hard-wired routing to the CSI's. Once the stream
--		 * enters the CSI's however, they are treated internally
--		 * in the IPU as virtual channel 0.
--		 */
--		ipu_csi_set_mipi_datatype(priv->csi, 0,
--					  &priv->format_mbus[CSI_SINK_PAD]);
--	}
--
--	/* select either parallel or MIPI-CSI2 as input to CSI */
--	ipu_set_csi_src_mux(priv->ipu, priv->csi_id, is_csi2);
--
--	mutex_unlock(&priv->lock);
- 	return ret;
- }
- 
+ void skl_watermark_ipc_init(struct drm_i915_private *i915);
+ void skl_watermark_ipc_update(struct drm_i915_private *i915);
 -- 
 2.53.0
 
