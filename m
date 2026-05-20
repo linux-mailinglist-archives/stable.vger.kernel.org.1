@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253218-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iEC+KFbwDWqo4wUAu9opvQ
-	(envelope-from <stable+bounces-251192-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:10 +0200
+	id yK1MJBYHDmp25gUAu9opvQ
+	(envelope-from <stable+bounces-253218-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:10:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22C04593EC1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01105597DC8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:10:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9AA503133087
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DDD9A35CDBD3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374D13A6EE0;
-	Wed, 20 May 2026 17:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5EB41C314;
+	Wed, 20 May 2026 18:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QalYpRWY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lnJuwHal"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3DF347512;
-	Wed, 20 May 2026 17:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1B863FE343;
+	Wed, 20 May 2026 18:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297340; cv=none; b=nebV38ZuyR2NXWqcN6jUvghfbnccZwyuXhb/3ynCswDUguQOaZw+98KBeD0xuR54emY+vo5CcdJSS4jt7BZaCFFZ7j7gmoXRZI/dUODCnRIffttrw8HIMrNHxDMQLfrAPCCoSgIVi3QqTUa8yGJ27OG4m9WQe6so7QT5AK/QZ3U=
+	t=1779302708; cv=none; b=SMVOr3lOlU9WQUaHnWIed8Irjhw7iCN+VZzQRsdFqDQwdWznvGgCW3aGOKXVF59M9qZo9TyEDz5xZpNl6Z7OVcOZlOTv8i10Yp278WfchvoACqxHCFOZCVCfojcW797NZqsd6R8pdhHgGDCQdrZvxMplCQLkzmWK1c879Z5ZkD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297340; c=relaxed/simple;
-	bh=Fi18PsZ44FndpZ1IFXwn2vLbNW0x+zRU7lW2qG5oAtA=;
+	s=arc-20240116; t=1779302708; c=relaxed/simple;
+	bh=W6trpqwm6n1bT4MvgPFRR8Tww7hUkvQGDuUb2sMX6Jo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kc49eLuJg4n7kXjNuL99Qr30dXRC8bChwVj/Bm3uO91JuywShNJq22tq0xaUJ73ap9zsL9Uea28t4ujtWDomsYqJpAtYEpfugLtMdNyOOuvyoEUNMSve7fkIVcUsYUgn55NEW12DGkevzaQRyxHo9C4Wa7Lg90qT1C/HCAPclPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QalYpRWY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245EF1F0089A;
-	Wed, 20 May 2026 17:15:37 +0000 (UTC)
+	 MIME-Version; b=J3notRa1RBn7dULSwkx7fgcSjnjXTUw3Yd3bo7X/GP/MPH2NCzyygQVbgwOfUGL8lC0it9D0LKOH3AXif+EypT2J87MQCItO2xytRoTJJ37UCH0F8jm+NDNvy+Q0VowJ9etSFSDm2jOPPCS0qITpaLFgZCl2crQZBhzqt4NFvs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lnJuwHal; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F5271F000E9;
+	Wed, 20 May 2026 18:45:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297338;
-	bh=NVTcdb3FiKJ5zpdN9NdxEAGlFzTy+nxUe1ifEo9XUm0=;
+	s=korg; t=1779302706;
+	bh=3+lom519z0+6ZHhG7vP4TlqmRuDT8jleZpFxn2mFtxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QalYpRWYr4DxVqoUHALLKpAYzImgFKTSSY4oHyN9CkG1kczUW4cnm76AKDAkyrQIB
-	 DPkgPEKMTfZIwF146iOK8Zt8bbz3hmL9oWOHHEg7PajlxXSLEneMlo8AG026yg8e/O
-	 hFp6zMbfcCAIMRiuvJWPcF+sU19XZyTzhUxojBBI=
+	b=lnJuwHal/++n8jDSkNF6ZNzUVH9VbVDvTUhDQXPJfIFqqX5wY1qDOmwiD/IMdzeUI
+	 Bn32j4R9biTa3N8Eo5jBUrojbQ0PVjYI3FD2epl1MMyHmXRqShPnRw8Ll67IT5kY8J
+	 /YtnWVbqPjCBG35RWVZUdwkMqeC1BGwrMaNx3kBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Kanchan Joshi <joshi.k@samsung.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 1142/1146] eventfs: Simplify code using guard()s
+Subject: [PATCH 6.6 369/508] nvme-pci: fix missed admin queue sq doorbell write
 Date: Wed, 20 May 2026 18:23:12 +0200
-Message-ID: <20260520162214.100461112@linuxfoundation.org>
+Message-ID: <20260520162106.622521445@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,263 +69,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251192-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253218-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,goodmis.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,efficios.com:email]
-X-Rspamd-Queue-Id: 22C04593EC1
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,lst.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,samsung.com:email]
+X-Rspamd-Queue-Id: 01105597DC8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 4d9b262031ffef203243e53577a90ae6e1090e67 ]
+[ Upstream commit 1cc4cdae2a3b7730d462d69e30f213fd2efe7807 ]
 
-Use guard(mutex), scoped_guard(mutex) and guard(src) to simplify the code
-and remove a lot of the jumps to "out:" labels.
+We can batch admin commands submitted through io_uring_cmd passthrough,
+which means bd->last may be false and skips the doorbell write to
+aggregate multiple commands per write. If a subsequent command can't be
+dispatched for whatever reason, we have to provide the blk-mq ops'
+commit_rqs callback in order to ensure we properly update the doorbell.
 
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://lore.kernel.org/20250604151625.250d13e1@gandalf.local.home
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Stable-dep-of: f67950b2887f ("eventfs: Use list_add_tail_rcu() for SRCU-protected children list")
+Fixes: 58e5bdeb9c2b ("nvme: enable uring-passthrough for admin commands")
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/event_inode.c |   96 +++++++++++++++++------------------------------
- 1 file changed, 36 insertions(+), 60 deletions(-)
+ drivers/nvme/host/pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -180,29 +180,25 @@ static int eventfs_set_attr(struct mnt_i
- 	const char *name;
- 	int ret;
- 
--	mutex_lock(&eventfs_mutex);
-+	guard(mutex)(&eventfs_mutex);
- 	ei = dentry->d_fsdata;
--	if (ei->is_freed) {
--		/* Do not allow changes if the event is about to be removed. */
--		mutex_unlock(&eventfs_mutex);
-+	/* Do not allow changes if the event is about to be removed. */
-+	if (ei->is_freed)
- 		return -ENODEV;
--	}
- 
- 	/* Preallocate the children mode array if necessary */
- 	if (!(dentry->d_inode->i_mode & S_IFDIR)) {
- 		if (!ei->entry_attrs) {
- 			ei->entry_attrs = kzalloc_objs(*ei->entry_attrs,
- 						       ei->nr_entries, GFP_NOFS);
--			if (!ei->entry_attrs) {
--				ret = -ENOMEM;
--				goto out;
--			}
-+			if (!ei->entry_attrs)
-+				return -ENOMEM;
- 		}
- 	}
- 
- 	ret = simple_setattr(idmap, dentry, iattr);
- 	if (ret < 0)
--		goto out;
-+		return ret;
- 
- 	/*
- 	 * If this is a dir, then update the ei cache, only the file
-@@ -225,8 +221,6 @@ static int eventfs_set_attr(struct mnt_i
- 			}
- 		}
- 	}
-- out:
--	mutex_unlock(&eventfs_mutex);
- 	return ret;
- }
- 
-@@ -530,26 +524,24 @@ static struct dentry *eventfs_root_looku
- 	struct tracefs_inode *ti;
- 	struct eventfs_inode *ei;
- 	const char *name = dentry->d_name.name;
--	struct dentry *result = NULL;
- 
- 	ti = get_tracefs(dir);
- 	if (WARN_ON_ONCE(!(ti->flags & TRACEFS_EVENT_INODE)))
- 		return ERR_PTR(-EIO);
- 
--	mutex_lock(&eventfs_mutex);
-+	guard(mutex)(&eventfs_mutex);
- 
- 	ei = ti->private;
- 	if (!ei || ei->is_freed)
--		goto out;
-+		return NULL;
- 
- 	list_for_each_entry(ei_child, &ei->children, list) {
- 		if (strcmp(ei_child->name, name) != 0)
- 			continue;
- 		/* A child is freed and removed from the list at the same time */
- 		if (WARN_ON_ONCE(ei_child->is_freed))
--			goto out;
--		result = lookup_dir_entry(dentry, ei, ei_child);
--		goto out;
-+			return NULL;
-+		return lookup_dir_entry(dentry, ei, ei_child);
- 	}
- 
- 	for (int i = 0; i < ei->nr_entries; i++) {
-@@ -563,14 +555,12 @@ static struct dentry *eventfs_root_looku
- 
- 		data = ei->data;
- 		if (entry->callback(name, &mode, &data, &fops) <= 0)
--			goto out;
-+			return NULL;
-+
-+		return lookup_file_dentry(dentry, ei, i, mode, data, fops);
- 
--		result = lookup_file_dentry(dentry, ei, i, mode, data, fops);
--		goto out;
- 	}
-- out:
--	mutex_unlock(&eventfs_mutex);
--	return result;
-+	return NULL;
- }
- 
- /*
-@@ -586,7 +576,6 @@ static int eventfs_iterate(struct file *
- 	struct eventfs_inode *ei;
- 	const char *name;
- 	umode_t mode;
--	int idx;
- 	int ret = -EINVAL;
- 	int ino;
- 	int i, r, c;
-@@ -600,16 +589,13 @@ static int eventfs_iterate(struct file *
- 
- 	c = ctx->pos - 2;
- 
--	idx = srcu_read_lock(&eventfs_srcu);
-+	guard(srcu)(&eventfs_srcu);
- 
--	mutex_lock(&eventfs_mutex);
--	ei = READ_ONCE(ti->private);
--	if (ei && ei->is_freed)
--		ei = NULL;
--	mutex_unlock(&eventfs_mutex);
--
--	if (!ei)
--		goto out;
-+	scoped_guard(mutex, &eventfs_mutex) {
-+		ei = READ_ONCE(ti->private);
-+		if (!ei || ei->is_freed)
-+			return -EINVAL;
-+	}
- 
- 	/*
- 	 * Need to create the dentries and inodes to have a consistent
-@@ -624,21 +610,19 @@ static int eventfs_iterate(struct file *
- 		entry = &ei->entries[i];
- 		name = entry->name;
- 
--		mutex_lock(&eventfs_mutex);
- 		/* If ei->is_freed then just bail here, nothing more to do */
--		if (ei->is_freed) {
--			mutex_unlock(&eventfs_mutex);
--			goto out;
-+		scoped_guard(mutex, &eventfs_mutex) {
-+			if (ei->is_freed)
-+				return -EINVAL;
-+			r = entry->callback(name, &mode, &cdata, &fops);
- 		}
--		r = entry->callback(name, &mode, &cdata, &fops);
--		mutex_unlock(&eventfs_mutex);
- 		if (r <= 0)
- 			continue;
- 
- 		ino = EVENTFS_FILE_INODE_INO;
- 
- 		if (!dir_emit(ctx, name, strlen(name), ino, DT_REG))
--			goto out;
-+			return -EINVAL;
- 	}
- 
- 	/* Subtract the skipped entries above */
-@@ -661,19 +645,13 @@ static int eventfs_iterate(struct file *
- 
- 		ino = eventfs_dir_ino(ei_child);
- 
--		if (!dir_emit(ctx, name, strlen(name), ino, DT_DIR))
--			goto out_dec;
-+		if (!dir_emit(ctx, name, strlen(name), ino, DT_DIR)) {
-+			/* Incremented ctx->pos without adding something, reset it */
-+			ctx->pos--;
-+			return -EINVAL;
-+		}
- 	}
--	ret = 1;
-- out:
--	srcu_read_unlock(&eventfs_srcu, idx);
--
--	return ret;
--
-- out_dec:
--	/* Incremented ctx->pos without adding something, reset it */
--	ctx->pos--;
--	goto out;
-+	return 1;
- }
- 
- /**
-@@ -730,11 +708,10 @@ struct eventfs_inode *eventfs_create_dir
- 	INIT_LIST_HEAD(&ei->children);
- 	INIT_LIST_HEAD(&ei->list);
- 
--	mutex_lock(&eventfs_mutex);
--	if (!parent->is_freed)
--		list_add_tail(&ei->list, &parent->children);
--	mutex_unlock(&eventfs_mutex);
--
-+	scoped_guard(mutex, &eventfs_mutex) {
-+		if (!parent->is_freed)
-+			list_add_tail(&ei->list, &parent->children);
-+	}
- 	/* Was the parent freed? */
- 	if (list_empty(&ei->list)) {
- 		cleanup_ei(ei);
-@@ -880,9 +857,8 @@ void eventfs_remove_dir(struct eventfs_i
- 	if (!ei)
- 		return;
- 
--	mutex_lock(&eventfs_mutex);
-+	guard(mutex)(&eventfs_mutex);
- 	eventfs_remove_rec(ei, 0);
--	mutex_unlock(&eventfs_mutex);
- }
- 
- /**
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 40d9be6468b5e..87d30aaa35f10 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -1715,6 +1715,7 @@ static int nvme_create_queue(struct nvme_queue *nvmeq, int qid, bool polled)
+ static const struct blk_mq_ops nvme_mq_admin_ops = {
+ 	.queue_rq	= nvme_queue_rq,
+ 	.complete	= nvme_pci_complete_rq,
++	.commit_rqs	= nvme_commit_rqs,
+ 	.init_hctx	= nvme_admin_init_hctx,
+ 	.init_request	= nvme_pci_init_request,
+ 	.timeout	= nvme_timeout,
+-- 
+2.53.0
+
 
 
 
