@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-252771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252138-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QItkFgwEDmqs5QUAu9opvQ
-	(envelope-from <stable+bounces-252771-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:57:16 +0200
+	id mIWDMc72DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-252138-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:00:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C90F597755
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:57:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47F7C595182
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:00:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2CB0F39E218F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:26:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6EED2308DBD0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:58:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 407E2332EBD;
-	Wed, 20 May 2026 18:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF37A3F6C4E;
+	Wed, 20 May 2026 17:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="spMfUeqi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DrjHltmW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F603F1AA4;
-	Wed, 20 May 2026 18:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5244436D4E1;
+	Wed, 20 May 2026 17:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301548; cv=none; b=cdsZQPRX7qNKU8pDFBb4igOO6osxh/kTTVQnmY1H+2hA0IkCdijKt6HRs7D4wEXCO4w6OSB0mUcAJByVPreYSYKN7I1T3CUwXxarJiPPNlIcUl/hd/tQ/JOnVv64QRdEMxYSjc6Z4HHgzMDbJlihgbSO/mmNrnbVMueHV95E0fs=
+	t=1779299890; cv=none; b=CB1dAjAmrmhPPWPdgtN/YyPIKPn16NJEpxuHeOeTxWtIXqh7xfTYc6+hlDb5rPub1nX21Phv+p2/7vHpZHpk7NuvV1lHrX7w3pN/qyZmYy0r4RRgoarWjnaN6h0gV9ZRLcu6iP+bzTY3LbOwzOYxeXN3+27G/6W2WAghHtj1Y+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301548; c=relaxed/simple;
-	bh=u/UOSU9nyVOjWe2A9ug1KWuu29xeZK4z8u5ehJkUV90=;
+	s=arc-20240116; t=1779299890; c=relaxed/simple;
+	bh=agUVXx+OUDTQSGTqZ5D4/OLR1URsxN4z6aHK7gLl3oE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KYPPNVf7MRJya3D3X6QBNlcE2gKS4Vig7140kWjyR+9UvoZ1L9PNlpHOSBnn545iTxABVKt8hAX5ecyMwwyfGOIBplh5VbNHQy9qLw+uZFpJKrn5+oy8DmZVCbiFpP6XnHzZ4Kq0iyHl2ocxnOPhOy9I5jwYRfHPmb0su57u8Yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=spMfUeqi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39C471F000E9;
-	Wed, 20 May 2026 18:25:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rR+Bz6gDKTYatcxl0/k3CsNqJ3DlE/VjluMsSNq47uoAjyBRSQRPSGPDMS50yRjqVHYvc4emjiMKqf1Ib+BW6vmCEmxEVfLmA4nmZ4fnbStEblSG6Mrb147eqyx/6LkInfVCE0ck0Aev/WZDquBGI7B0Er772nl+jkYRvPGaaVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DrjHltmW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B76CD1F000E9;
+	Wed, 20 May 2026 17:58:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301546;
-	bh=3kTeMAtvUfvKmwe/I81tJkKwVJBvL5ScCLcdW3DGawU=;
+	s=korg; t=1779299889;
+	bh=We8F32634B0WzSyJ5CJwCtqHSEPiY1GraLdImPjFTac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=spMfUeqivPV3rpsAuWO01XdJQpS/zicBgZ+XEmcN2rcZKX33V4TWg2kflrMOetok/
-	 +ohtolWkZgefTs0xVPfAc/oJzOC3V0jBeXPBlxosK/omG81eyGPV1r9DYXS+aHM0oy
-	 dd+YfRabg5g/YBqfTzAWCdjV96Cg8MJHd14mR5Sc=
+	b=DrjHltmW2JfDxjnOKy9IfSAsR0pmDsVKoV5hFY5Azh+CoyJsChTmYX7PfvyYlkwEU
+	 rydc+MH6uAeQPgXdFejfPSDYnqYsOcbuKnwTt6rBeifD/Fuzkqtsndbhv/iiOxc/zx
+	 jIpt54Zn0TdIOPEKMdsfkib6vRN/TnCrUNVjUodk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liang Jie <liangjie@lixiang.com>,
-	Tom Talpey <tom@talpey.com>,
-	Steve French <stfrench@microsoft.com>,
-	Alva Lan <alvalan9@foxmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 595/666] smb: client: correctly handle ErrorContextData as a flexible array
+	=?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Michael Roth <michael.roth@amd.com>,
+	stable@kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.18 923/957] virt: sev-guest: Do not use host-controlled page order in cleanup path
 Date: Wed, 20 May 2026 18:23:26 +0200
-Message-ID: <20260520162124.160669657@linuxfoundation.org>
+Message-ID: <20260520162154.597667481@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,108 +65,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-252138-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252771-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,lixiang.com,talpey.com,microsoft.com,foxmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,foxmail.com:email,talpey.com:email,lixiang.com:email]
-X-Rspamd-Queue-Id: 8C90F597755
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,alien8.de:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,linux-foundation.org:email]
+X-Rspamd-Queue-Id: 47F7C595182
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liang Jie <liangjie@lixiang.com>
+From: Carlos López <clopez@suse.de>
 
-[ Upstream commit 215b7f9ecb8d7c14d56febdcdd246f3579c32aba ]
+commit 23e6a1ca04ae44806439a5a446e62e4d42e80bb4 upstream.
 
-The `smb2_symlink_err_rsp` structure was previously defined with
-`ErrorContextData` as a single `__u8` byte. However, the `ErrorContextData`
-field is intended to be a variable-length array based on `ErrorDataLength`.
-This mismatch leads to incorrect pointer arithmetic and potential memory
-access issues when processing error contexts.
+When issuing an extended guest request (SVM_VMGEXIT_EXT_GUEST_REQUEST),
+get_ext_report() allocates a buffer to retrieve a certificate blob from the
+host, keeping track of its size in report_req->certs_len.
 
-Updates the `ErrorContextData` field to be a flexible array
-(`__u8 ErrorContextData[]`). Additionally, it modifies the corresponding
-casts in the `symlink_data()` function to properly handle the flexible
-array, ensuring correct memory calculations and data handling.
+However, the host may return SNP_GUEST_VMM_ERR_INVALID_LEN, indicating
+an invalid buffer size, as well as the expected length of such buffer.
+get_ext_report() subsequently updates report_req->certs_len with the
+host-controlled value, and cleans up the buffer by computing a page order
+from such value. This is incorrect, as the host-provided length may not
+match the page order of the original allocation, potentially resulting
+in corruption in the page allocator.
 
-These changes improve the robustness of SMB2 symlink error processing.
+Fix this by using alloc_pages_exact() instead, and reusing @npages to
+compute the size passed to free_pages_exact(). For consistency, also
+use @npages to compute the size when allocating the pages, even though
+this last change has no functional effect.
 
-Signed-off-by: Liang Jie <liangjie@lixiang.com>
-Suggested-by: Tom Talpey <tom@talpey.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3e385c0d6ce8 ("virt: sev-guest: Move SNP Guest Request data pages handling under snp_cmd_mutex")
+Signed-off-by: Carlos López <clopez@suse.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Michael Roth <michael.roth@amd.com>
+Cc: stable@kernel.org
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2file.c | 4 ++--
- fs/smb/client/smb2pdu.h  | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/virt/coco/sev-guest/sev-guest.c |   12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/fs/smb/client/smb2file.c b/fs/smb/client/smb2file.c
-index b7ab18d4bedca..35d2933982d31 100644
---- a/fs/smb/client/smb2file.c
-+++ b/fs/smb/client/smb2file.c
-@@ -42,14 +42,14 @@ static struct smb2_symlink_err_rsp *symlink_data(const struct kvec *iov)
- 		end = (struct smb2_error_context_rsp *)((u8 *)err + iov->iov_len);
- 		do {
- 			if (le32_to_cpu(p->ErrorId) == SMB2_ERROR_ID_DEFAULT) {
--				sym = (struct smb2_symlink_err_rsp *)&p->ErrorContextData;
-+				sym = (struct smb2_symlink_err_rsp *)p->ErrorContextData;
- 				break;
- 			}
- 			cifs_dbg(FYI, "%s: skipping unhandled error context: 0x%x\n",
- 				 __func__, le32_to_cpu(p->ErrorId));
+--- a/drivers/virt/coco/sev-guest/sev-guest.c
++++ b/drivers/virt/coco/sev-guest/sev-guest.c
+@@ -176,7 +176,6 @@ static int get_ext_report(struct snp_gue
+ 	struct snp_guest_req req = {};
+ 	int ret, npages = 0, resp_len;
+ 	sockptr_t certs_address;
+-	struct page *page;
  
- 			len = ALIGN(le32_to_cpu(p->ErrorDataLength), 8);
--			p = (struct smb2_error_context_rsp *)((u8 *)&p->ErrorContextData + len);
-+			p = (struct smb2_error_context_rsp *)(p->ErrorContextData + len);
- 		} while (p < end);
- 	} else if (le32_to_cpu(err->ByteCount) >= sizeof(*sym) &&
- 		   iov->iov_len >= SMB2_SYMLINK_STRUCT_SIZE) {
-diff --git a/fs/smb/client/smb2pdu.h b/fs/smb/client/smb2pdu.h
-index 076d9e83e1a04..3c09a58dfd073 100644
---- a/fs/smb/client/smb2pdu.h
-+++ b/fs/smb/client/smb2pdu.h
-@@ -79,7 +79,7 @@ struct smb2_symlink_err_rsp {
- struct smb2_error_context_rsp {
- 	__le32 ErrorDataLength;
- 	__le32 ErrorId;
--	__u8  ErrorContextData; /* ErrorDataLength long array */
-+	__u8  ErrorContextData[] __counted_by_le(ErrorDataLength);
- } __packed;
+ 	if (sockptr_is_null(io->req_data) || sockptr_is_null(io->resp_data))
+ 		return -EINVAL;
+@@ -211,16 +210,15 @@ static int get_ext_report(struct snp_gue
+ 	 * zeros to indicate that certificate data was not provided.
+ 	 */
+ 	npages = report_req->certs_len >> PAGE_SHIFT;
+-	page = alloc_pages(GFP_KERNEL_ACCOUNT | __GFP_ZERO,
+-			   get_order(report_req->certs_len));
+-	if (!page)
++	req.certs_data = alloc_pages_exact(npages << PAGE_SHIFT,
++					   GFP_KERNEL_ACCOUNT | __GFP_ZERO);
++	if (!req.certs_data)
+ 		return -ENOMEM;
  
- /* ErrorId values */
--- 
-2.53.0
-
+-	req.certs_data = page_address(page);
+ 	ret = set_memory_decrypted((unsigned long)req.certs_data, npages);
+ 	if (ret) {
+ 		pr_err("failed to mark page shared, ret=%d\n", ret);
+-		__free_pages(page, get_order(report_req->certs_len));
++		free_pages_exact(req.certs_data, npages << PAGE_SHIFT);
+ 		return -EFAULT;
+ 	}
+ 
+@@ -277,7 +275,7 @@ e_free_data:
+ 		if (set_memory_encrypted((unsigned long)req.certs_data, npages))
+ 			WARN_ONCE(ret, "failed to restore encryption mask (leak it)\n");
+ 		else
+-			__free_pages(page, get_order(report_req->certs_len));
++			free_pages_exact(req.certs_data, npages << PAGE_SHIFT);
+ 	}
+ 	return ret;
+ }
 
 
 
