@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-251161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253185-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6HnxGqkVDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-251161-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:12:25 +0200
+	id 8DOUC78uDmoK7wUAu9opvQ
+	(envelope-from <stable+bounces-253185-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:59:27 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E50D759942A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:12:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 775BF59B8F4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:59:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A1D7F319E5B2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A7D4C39781E5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7980F3F39C9;
-	Wed, 20 May 2026 17:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E2B13FC5C7;
+	Wed, 20 May 2026 18:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1loVXGig"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DuFXaZRA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441753D5642;
-	Wed, 20 May 2026 17:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB2D3EEAD8;
+	Wed, 20 May 2026 18:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297258; cv=none; b=rdAk5UyHKYPsPxUICNWxG+kzUMxXIGvvZqP/p6yRAMQQ+921D1VRP9FofYPvisYoPGLMy669gnJ9IQpN1Le1JLQuFzU4VLjdHPqGjRJdCz1kEDU+r6XXS3kkzAJbXAIBpJCSg1I7nOxJjWhbhB9pRCJkc8m7EoSQspz29mUwaTo=
+	t=1779302626; cv=none; b=aOjDZM8uNECjnT+gwiphu+T1o/tcssHGDpTR1gxC2i4OdFs8ma7yoPPERqk2hpwv6yxX02mt2EDl+bka2kAsSmVjpMoru3b6XYuDhMalboVkRxkBeqs1atHk/kwbtxqWbAPUevqxMr7Kekt2ePjnvJtNr//bMPHqleG3AzPtvCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297258; c=relaxed/simple;
-	bh=Rdf2cwa/LzPXopYsU+DJOl1Ao8Z8d3mC/qQvYdvnaNY=;
+	s=arc-20240116; t=1779302626; c=relaxed/simple;
+	bh=wbkyHbAn8jEkVb0SkaSzYI1qP5YdE0A6bEJJbTkdjHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=flf4t/13VbxZi5O48IjcG5DFFi5FwJgRtkQIYbakq7k2aBUpOuzCYUH1Ey2rKfnWITtEOvDTCR4XrUuDN1OhQ6Fr3TCgMgXnaxcpJnvUWPm8FRjUsqmRUyFHp5R+h7Vx3WI1kQd9zEkrejdTid+iqy7KydJbmBerdk/gJin6MkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1loVXGig; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A87621F000E9;
-	Wed, 20 May 2026 17:14:16 +0000 (UTC)
+	 MIME-Version; b=T8Jd6VNSr7Y9gDD3nJEvtup+Uk+y/+bs71wW3Gt/QiLLFfWZ5t9Bx8FucRUBk+f5dZJbruLqqE6jMkS5zSemb4A1p2ldjnwqxfsfHI+9IgGlPZuP+x0mDIynNpBUfKrRhkaVFBa4K19Te5vsOVlOBzqbOwu/nUby+KRBNH5tmgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DuFXaZRA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CED31F000E9;
+	Wed, 20 May 2026 18:43:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297257;
-	bh=Ef8M3Hb7n4RDBAhSOUpwHxozQtDnGn2DEdcMueMA02w=;
+	s=korg; t=1779302625;
+	bh=/liQMmrt2EGX6nuBMxt3esv25WsfL1w5k/YwzPfYz/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1loVXGigebWl90aTModPNs/PEEgr8BEQCVW1+jzcSdoVuLpBCX2F9meHw6Cnywd6D
-	 6ocTueXgWGH8s9cb3WfFbbkFVoNr6Ms5fpiPNr2aUwXhp9xJdyKCzs9h24vXgOd4Y1
-	 vGWX2x3RcClwiLHzw+Mk+yMt0Md7G2uFJ8EyWzw4=
+	b=DuFXaZRAAbFjtG838meRR1SiCN3XJ75kdGKzDysCGh1gmCQZJ2Z9mGmAzhf37I7c5
+	 v1Pvsxk3ZlCYb51G5Wdn5ANB47+iz1qxq+Uk9dyAQR/g1A9SYEtOxJGBfpwCd64NLJ
+	 FYye5HI2YN4dnWBh+UuA74eGQGfdd4zp6BrQi9eA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xianwei Zhao <xianwei.zhao@amlogic.com>,
-	Thomas Gleixner <tglx@kernel.org>
-Subject: [PATCH 7.0 1110/1146] irqchip/meson-gpio: Use the correct register in meson_s4_gpio_irq_set_type()
+	Simon Horman <horms@kernel.org>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 337/508] slip: bound decode() reads against the compressed packet length
 Date: Wed, 20 May 2026 18:22:40 +0200
-Message-ID: <20260520162213.366286188@linuxfoundation.org>
+Message-ID: <20260520162105.934315719@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,72 +67,194 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251161-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-253185-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,redhat.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amlogic.com:email]
-X-Rspamd-Queue-Id: E50D759942A
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 775BF59B8F4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xianwei Zhao <xianwei.zhao@amlogic.com>
+From: Weiming Shi <bestswngs@gmail.com>
 
-commit 5363b67ac8ebcc3e227dbf59fc8061949109841d upstream.
+[ Upstream commit 4c1367a2d7aad643a6f87c6931b13cc1a25e8ca7 ]
 
-meson_s4_gpio_irq_set_type() uses the both-edge trigger register for
-configuring level type and single edge mode interrupts, which is not
-correct.
+slhc_uncompress() parses a VJ-compressed TCP header by advancing a
+pointer through the packet via decode() and pull16(). Neither helper
+bounds-checks against isize, and decode() masks its return with
+& 0xffff so it can never return the -1 that callers test for -- those
+error paths are dead code.
 
-Use REG_EDGE_POL instead.
+A short compressed frame whose change byte requests optional fields
+lets decode() read past the end of the packet. The over-read bytes
+are folded into the cached cstate and reflected into subsequent
+reconstructed packets.
 
-Fixes: bbd6fcc76b39 ("irqchip: Add support for Amlogic A4 and A5 SoCs")
-Signed-off-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260508-a9-gpio-irqchip-v1-1-9dc5f3e022e0@amlogic.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Make decode() and pull16() take the packet end pointer and return -1
+when exhausted. Add a bounds check before the TCP-checksum read.
+The existing == -1 tests now do what they were always meant to.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Simon Horman <horms@kernel.org>
+Closes: https://lore.kernel.org/netdev/20260414134126.758795-2-horms@kernel.org/
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260416100147.531855-5-bestswngs@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-meson-gpio.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/slip/slhc.c | 43 ++++++++++++++++++++++++-----------------
+ 1 file changed, 25 insertions(+), 18 deletions(-)
 
---- a/drivers/irqchip/irq-meson-gpio.c
-+++ b/drivers/irqchip/irq-meson-gpio.c
-@@ -415,8 +415,7 @@ static int meson_s4_gpio_irq_set_type(st
- 	if (type & (IRQ_TYPE_EDGE_RISING | IRQ_TYPE_EDGE_FALLING))
- 		val |= BIT(ctl->params->edge_single_offset + idx);
+diff --git a/drivers/net/slip/slhc.c b/drivers/net/slip/slhc.c
+index 3474792a37a67..ef586ab250747 100644
+--- a/drivers/net/slip/slhc.c
++++ b/drivers/net/slip/slhc.c
+@@ -80,9 +80,9 @@
+ #include <asm/unaligned.h>
  
--	meson_gpio_irq_update_bits(ctl, params->edge_pol_reg,
--				   BIT(idx) | BIT(12 + idx), val);
-+	meson_gpio_irq_update_bits(ctl, REG_EDGE_POL, BIT(idx) | BIT(12 + idx), val);
- 	return 0;
- };
+ static unsigned char *encode(unsigned char *cp, unsigned short n);
+-static long decode(unsigned char **cpp);
++static long decode(unsigned char **cpp, const unsigned char *end);
+ static unsigned char * put16(unsigned char *cp, unsigned short x);
+-static unsigned short pull16(unsigned char **cpp);
++static long pull16(unsigned char **cpp, const unsigned char *end);
  
+ /* Allocate compression data structure
+  *	slots must be in range 0 to 255 (zero meaning no compression)
+@@ -190,30 +190,34 @@ encode(unsigned char *cp, unsigned short n)
+ 	return cp;
+ }
+ 
+-/* Pull a 16-bit integer in host order from buffer in network byte order */
+-static unsigned short
+-pull16(unsigned char **cpp)
++/* Pull a 16-bit integer in host order from buffer in network byte order.
++ * Returns -1 if the buffer is exhausted, otherwise the 16-bit value.
++ */
++static long
++pull16(unsigned char **cpp, const unsigned char *end)
+ {
+-	short rval;
++	long rval;
+ 
++	if (*cpp + 2 > end)
++		return -1;
+ 	rval = *(*cpp)++;
+ 	rval <<= 8;
+ 	rval |= *(*cpp)++;
+ 	return rval;
+ }
+ 
+-/* Decode a number */
++/* Decode a number. Returns -1 if the buffer is exhausted. */
+ static long
+-decode(unsigned char **cpp)
++decode(unsigned char **cpp, const unsigned char *end)
+ {
+ 	int x;
+ 
++	if (*cpp >= end)
++		return -1;
+ 	x = *(*cpp)++;
+-	if(x == 0){
+-		return pull16(cpp) & 0xffff;	/* pull16 returns -1 on error */
+-	} else {
+-		return x & 0xff;		/* -1 if PULLCHAR returned error */
+-	}
++	if (x == 0)
++		return pull16(cpp, end);
++	return x & 0xff;
+ }
+ 
+ /*
+@@ -499,6 +503,7 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
+ 	struct cstate *cs;
+ 	int len, hdrlen;
+ 	unsigned char *cp = icp;
++	const unsigned char *end = icp + isize;
+ 
+ 	/* We've got a compressed packet; read the change byte */
+ 	comp->sls_i_compressed++;
+@@ -536,6 +541,8 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
+ 	thp = &cs->cs_tcp;
+ 	ip = &cs->cs_ip;
+ 
++	if (cp + 2 > end)
++		goto bad;
+ 	thp->check = *(__sum16 *)cp;
+ 	cp += 2;
+ 
+@@ -566,26 +573,26 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
+ 	default:
+ 		if(changes & NEW_U){
+ 			thp->urg = 1;
+-			if((x = decode(&cp)) == -1) {
++			if((x = decode(&cp, end)) == -1) {
+ 				goto bad;
+ 			}
+ 			thp->urg_ptr = htons(x);
+ 		} else
+ 			thp->urg = 0;
+ 		if(changes & NEW_W){
+-			if((x = decode(&cp)) == -1) {
++			if((x = decode(&cp, end)) == -1) {
+ 				goto bad;
+ 			}
+ 			thp->window = htons( ntohs(thp->window) + x);
+ 		}
+ 		if(changes & NEW_A){
+-			if((x = decode(&cp)) == -1) {
++			if((x = decode(&cp, end)) == -1) {
+ 				goto bad;
+ 			}
+ 			thp->ack_seq = htonl( ntohl(thp->ack_seq) + x);
+ 		}
+ 		if(changes & NEW_S){
+-			if((x = decode(&cp)) == -1) {
++			if((x = decode(&cp, end)) == -1) {
+ 				goto bad;
+ 			}
+ 			thp->seq = htonl( ntohl(thp->seq) + x);
+@@ -593,7 +600,7 @@ slhc_uncompress(struct slcompress *comp, unsigned char *icp, int isize)
+ 		break;
+ 	}
+ 	if(changes & NEW_I){
+-		if((x = decode(&cp)) == -1) {
++		if((x = decode(&cp, end)) == -1) {
+ 			goto bad;
+ 		}
+ 		ip->id = htons (ntohs (ip->id) + x);
+-- 
+2.53.0
+
 
 
 
