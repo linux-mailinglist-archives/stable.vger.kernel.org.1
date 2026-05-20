@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-252277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250698-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2EZfCan7DWoK5QUAu9opvQ
-	(envelope-from <stable+bounces-252277-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:21:29 +0200
+	id +NQjLXz2DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-250698-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:59:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5F33595E29
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:21:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C93E5950A6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:59:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 76BC430FD0D2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:04:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E07D535548A9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:56:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D0373EAC82;
-	Wed, 20 May 2026 18:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1EAA3E1D01;
+	Wed, 20 May 2026 16:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ERvipp5d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OlIK5nao"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E5A3E832A;
-	Wed, 20 May 2026 18:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935913DA7D9;
+	Wed, 20 May 2026 16:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300254; cv=none; b=VxJm3Dyd0r2rp9ufEAaprHxA04OhRrMcDIHADvq8UQiVtdqvh3JXjo4xv63ikh0y/ng+plK4gx8svw67ICWvDQbcTaYgad/AAE8PUf2+LvEwTC7r2S3AJ9z51AcjxJFRWcwtw5HGTSVM1ZtXTjBvOfXGwFHQhRckOhnS/P+USBM=
+	t=1779296082; cv=none; b=YKiPhq7D9XeIUM/meV3DkUNrbTGc4nnEj0BVCP9KHTkFvjjJHEFd5tqc7O51sHCqH/sjdwWmBZyaSySCsibDURPahefUlIpGqRNPdcdrL6cY6mfairGpRyQJTI4TEmPOlA9B+tPw/A0LFmzE8AFOrglIla1yOfRHuZwCjf7laLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300254; c=relaxed/simple;
-	bh=8zwUGZ4gHJVQGRU6oa4wRtxovHm7jyHNpd8HgRt/wzw=;
+	s=arc-20240116; t=1779296082; c=relaxed/simple;
+	bh=IbxoGcYBdMj92gV8KvEYUjxZzYVxegJX2p6hiGXM6B0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LZjX7bZKWAQerCFauviD5VPGUkWxFGIz9KEnekNbvfi9rPLvifRMtp2mE8H/o1eIdr67akg9VJeqcHEPGvvaWrX2o+5WvUOHhMQTF8IxktNHNbahjl8n1/A1yq/AYkT0XkaIeSL3GgaUlAIUFnOtqxxPZz7ISLVhLc4zrtdcyUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ERvipp5d; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14E001F000E9;
-	Wed, 20 May 2026 18:04:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=C7RwvtApWzqaloNrees/8lgk5wDiCtK1gov9WoXOkkJEx1taBlY3HjfzdgjSdopRi+xMUzTp8hclNlfGhIpfbcvGvhfs923qoTcEb0GE6/Z0SaycCt5LD/L4jU86g9yuYtnfzTfpcNraSSUZzAS/VTmBJ2dHGPi4K9AG+nBy7gY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OlIK5nao; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 017AA1F00893;
+	Wed, 20 May 2026 16:54:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300253;
-	bh=Vsc1FMibY7zEGKu97kg7BBDCuoOfgJFen40Q4u8oxR0=;
+	s=korg; t=1779296081;
+	bh=90rbFy9F3k717379ZMFgqYzZgfc49FYM3DY688LxlZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ERvipp5dRBRWUYnMXUnm8JnB3t8/NnuvOLpa7rypFfVFraOWpY3kawKxVuT/xLr8J
-	 a72X1aSf6vrxGNxZP00+cYx0qB+M4wsIUm+iFnv40eM1fdSSGv4gVAR9CfjuMg6GSQ
-	 vBMc77tdnVrH2uOa2Os2Z9IvV5J8ryoUaKprTpdw=
+	b=OlIK5naovKRxxM0RtWEUj8z7xF22vkHI2YUXnbyEdqwxB8tac87STTDKSd1gZIeOM
+	 HsJSvMnqVICE/hP8O/ge6Db9+FX2PDebLrg5WZmmXZnu3ji1Y0ZNX0baKQTAE0DYtK
+	 bi+lDb4Kn73syXwNe1ffAD/EXZmqMbGq/TOnBxRs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gal Pressman <gal@nvidia.com>,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 104/666] net/mlx5e: IPsec, fix ASO poll timeout with read_poll_timeout_atomic()
+Subject: [PATCH 7.0 0665/1146] platform/surface: surfacepro3_button: Drop wakeup source on remove
 Date: Wed, 20 May 2026 18:15:15 +0200
-Message-ID: <20260520162113.475449539@linuxfoundation.org>
+Message-ID: <20260520162203.237967195@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,114 +63,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252277-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250698-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
-X-Rspamd-Queue-Id: E5F33595E29
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,intel.com:email]
+X-Rspamd-Queue-Id: 3C93E5950A6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit edccdd1eb94712da97a6ce71123ec27890add754 ]
+[ Upstream commit 1410a228ab2d36fe2b383415a632ae12048d4f3a ]
 
-The do-while poll loop uses jiffies for its timeout:
-  expires = jiffies + msecs_to_jiffies(10);
+The wakeup source added by device_init_wakeup() in surface_button_add()
+needs to be dropped during driver removal, so update the driver to do
+that.
 
-jiffies is sampled at an arbitrary point within the current tick, so the
-first partial tick contributes anywhere from a full tick down to nearly
-zero real time. For small msecs_to_jiffies() results this is
-significant, the effective poll window can be much shorter than the
-requested 10ms, and in the worst case the loop exits after a single
-iteration (e.g., when HZ=100), well before the device has delivered the
-CQE.
-
-Replace the loop with read_poll_timeout_atomic(), which counts elapsed
-time via udelay() accounting rather than jiffies, guaranteeing the full
-poll window regardless of HZ.
-
-Additionally, read_poll_timeout_atomic() executes the poll operation one
-more time after the timeout has expired, giving the CQE a final chance
-to be detected. The old do-while loop could exit without a final poll if
-the timeout expired during the udelay() between iterations.
-
-Fixes: 76e463f6508b ("net/mlx5e: Overcome slow response for first IPsec ASO WQE")
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Jianbo Liu <jianbol@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260409202852.158059-3-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 19351f340765 ("platform/x86: surfacepro3: Support for wakeup from suspend-to-idle")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/4368848.1IzOArtZ34@rafael.j.wysocki
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mellanox/mlx5/core/en_accel/ipsec_offload.c      | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ drivers/platform/surface/surfacepro3_button.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
-index 40fe3d1e2342c..8f22559e373cd 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
-@@ -1,6 +1,8 @@
- // SPDX-License-Identifier: GPL-2.0 OR Linux-OpenIB
- /* Copyright (c) 2017, Mellanox Technologies inc. All rights reserved. */
+diff --git a/drivers/platform/surface/surfacepro3_button.c b/drivers/platform/surface/surfacepro3_button.c
+index 9bd39f09c7db4..a6c9d4d370bec 100644
+--- a/drivers/platform/surface/surfacepro3_button.c
++++ b/drivers/platform/surface/surfacepro3_button.c
+@@ -242,6 +242,7 @@ static void surface_button_remove(struct acpi_device *device)
+ {
+ 	struct surface_button *button = acpi_driver_data(device);
  
-+#include <linux/iopoll.h>
-+
- #include "mlx5_core.h"
- #include "en.h"
- #include "ipsec.h"
-@@ -593,7 +595,6 @@ int mlx5e_ipsec_aso_query(struct mlx5e_ipsec_sa_entry *sa_entry,
- 	struct mlx5_wqe_aso_ctrl_seg *ctrl;
- 	struct mlx5e_hw_objs *res;
- 	struct mlx5_aso_wqe *wqe;
--	unsigned long expires;
- 	u8 ds_cnt;
- 	int ret;
- 
-@@ -615,13 +616,8 @@ int mlx5e_ipsec_aso_query(struct mlx5e_ipsec_sa_entry *sa_entry,
- 	mlx5e_ipsec_aso_copy(ctrl, data);
- 
- 	mlx5_aso_post_wqe(aso->aso, false, &wqe->ctrl);
--	expires = jiffies + msecs_to_jiffies(10);
--	do {
--		ret = mlx5_aso_poll_cq(aso->aso, false);
--		if (ret)
--			/* We are in atomic context */
--			udelay(10);
--	} while (ret && time_is_after_jiffies(expires));
-+	read_poll_timeout_atomic(mlx5_aso_poll_cq, ret, !ret, 10,
-+				 10 * USEC_PER_MSEC, false, aso->aso, false);
- 	if (!ret)
- 		memcpy(sa_entry->ctx, aso->ctx, MLX5_ST_SZ_BYTES(ipsec_aso));
- 	spin_unlock_bh(&aso->lock);
++	device_init_wakeup(&device->dev, false);
+ 	input_unregister_device(button->input);
+ 	kfree(button);
+ }
 -- 
 2.53.0
 
