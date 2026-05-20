@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252585-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8MNLKEz9DWok5QUAu9opvQ
-	(envelope-from <stable+bounces-251950-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:28:28 +0200
+	id IMmaF8gVDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-252585-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:12:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FE49596403
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:28:27 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A6EF599480
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:12:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 15A38352F79A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:49:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B8247306A559
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:17:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FD1E3F23B7;
-	Wed, 20 May 2026 17:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D11E368968;
+	Wed, 20 May 2026 18:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z71peox2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jIXfuurj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E1D3F23D9;
-	Wed, 20 May 2026 17:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8EE137DE8A;
+	Wed, 20 May 2026 18:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299355; cv=none; b=nQ8bLMLnMpn6msqczirUAaL1bk3Mbo+1/0WEysaLp4HnR4kNPlq7lnHZKuUNOz3byeehCMTJwZe2+U1f8j88iGM+RxzGaXkSHwdnemSBETmzHqTSoDkU+L7TmadOiUcWJLPIGeeEvjrs0u2isO1U3AesQBGYHkI1OTeS/dN+EPA=
+	t=1779301061; cv=none; b=qnPZ9i0Ul2Kynoshxub52mCzyq0uPtb/6r8+LSxtKWHKoY5FjJKa0MSAriaVY02iBQpZ9cHQJpNaIoXcaTDMS4QMsP22C+Q5KaoCNJFBk5C3C/BuOn/swIss9Xk0k2gJ5Ep8eHNTyZYcs2gHkopuptJmI5TZMaQ/Bp9FFVVAo0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299355; c=relaxed/simple;
-	bh=WcL0emuqTA8BwIRmPN1knVczYC0GdieuijDt9XH08sg=;
+	s=arc-20240116; t=1779301061; c=relaxed/simple;
+	bh=pajZXQaaEMQTBS79CbfaZuKSFBiI1zHEPVkvNBQV4AE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VJ1Elf6JAlTUBwD6wrxuCbI++I3NBjIE8oFN0aiT/ygCoI/OUl1nwMQfhXoAFAHpg38626dXXtaJwTrZtcfsTbEVCAxp8Nk4vY3TqT0o9NF3gepkuydkdO14XXu+XmKSpCSqlGKIgT+fg0gRv40s09RjoXP9rzpgwezp4lA3Ojw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z71peox2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABD151F00893;
-	Wed, 20 May 2026 17:49:12 +0000 (UTC)
+	 MIME-Version; b=jHz70Zgzo36N36KBUhyacShpcZ+Wn1094c1YNcGwaPuQsTTl0LOlSsXwyswzdVvvR3e2SNpTllIXHdqmZke1cfH624bR1lp3CKmvRmEVaVKhh4X7PF4ynzKxS5B8uMHdNnbaA1FEo5u1XCeSE+MtnCEv7BSto7ZBCtjnSybAXb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jIXfuurj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 021441F000E9;
+	Wed, 20 May 2026 18:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299353;
-	bh=nFZFluQRsMvCXJfZ+STDBGf8vud+Z7ZjVovHWBGESXg=;
+	s=korg; t=1779301059;
+	bh=YHw8ePuMlq67kX73aFOV3/Is3WVuUo7T3IkYF+ZNddc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=z71peox2LzMHcCpFHh0vYOs50JPVs+FtRgi7l8cEDDmPak9gt4Iqy281fWD4AezIg
-	 arhcDVMOIL9GcEL/sRIm1hqVSArx5uCqjZIcUXrWd/Yi5Z4aE8ALwZpNGZrqmukFfN
-	 +eYLTnkeU9XVoaT+27mwRhZtj4GZ7VZl7DKgeoeU=
+	b=jIXfuurjvaCr48f2ZhT0oakw/kXUQE+tFYGKJgg5yOYzQ07Mt2/YLB8cbG+n17Vb3
+	 KdC57ePqpO8zvvd1ajzPAfIB6seHU1ylnqvCAgjnf/lV8tS4h/CzOIJC4Jrttc/mfl
+	 4urLwvFcHJnszMNgE/qDshqLVIZsQPXs1ywur2fM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+	Val Packett <val@packett.cool>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 739/957] mailbox: mailbox-test: make data_ready a per-instance variable
+Subject: [PATCH 6.12 411/666] clk: qcom: dispcc-sm8250: Enable parents for pixel clocks
 Date: Wed, 20 May 2026 18:20:22 +0200
-Message-ID: <20260520162150.586712842@linuxfoundation.org>
+Message-ID: <20260520162120.170863991@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,108 +65,82 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251950-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sang-engineering.com,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252585-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sang-engineering.com:email]
-X-Rspamd-Queue-Id: 2FE49596403
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,packett.cool:email]
+X-Rspamd-Queue-Id: 7A6EF599480
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Val Packett <val@packett.cool>
 
-[ Upstream commit 6e937f4e769e60947909e3525965f0137b9039e8 ]
+[ Upstream commit acf7a91d0b0e9e3ef374944021de62062125b7e4 ]
 
-While not the default case, multiple tests can be run simultaneously.
-Then, data_ready being a global variable will be overwritten and the
-per-instance lock will not help. Turn the global variable into a
-per-instance one to avoid this problem.
+Add CLK_OPS_PARENT_ENABLE to MDSS pixel clock sources to ensure parent
+clocks are enabled during clock operations, preventing potential
+stability issues during display configuration.
 
-Fixes: e339c80af95e ("mailbox: mailbox-test: don't rely on rx_buffer content to signal data ready")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Fixes: 80a18f4a8567 ("clk: qcom: Add display clock controller driver for SM8150 and SM8250")
+Signed-off-by: Val Packett <val@packett.cool>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260312112321.370983-9-val@packett.cool
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mailbox-test.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/clk/qcom/dispcc-sm8250.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
-index a0a7908c9cc26..c429acd3af87c 100644
---- a/drivers/mailbox/mailbox-test.c
-+++ b/drivers/mailbox/mailbox-test.c
-@@ -28,8 +28,6 @@
- #define MBOX_HEXDUMP_MAX_LEN	(MBOX_HEXDUMP_LINE_LEN *		\
- 				 (MBOX_MAX_MSG_LEN / MBOX_BYTES_PER_LINE))
- 
--static bool mbox_data_ready;
--
- struct mbox_test_device {
- 	struct device		*dev;
- 	void __iomem		*tx_mmio;
-@@ -42,6 +40,7 @@ struct mbox_test_device {
- 	spinlock_t		lock;
- 	struct mutex		mutex;
- 	wait_queue_head_t	waitq;
-+	bool			data_ready;
- 	struct fasync_struct	*async_queue;
- 	struct dentry		*root_debugfs_dir;
+diff --git a/drivers/clk/qcom/dispcc-sm8250.c b/drivers/clk/qcom/dispcc-sm8250.c
+index b21d16b094667..ea79d48b9a256 100644
+--- a/drivers/clk/qcom/dispcc-sm8250.c
++++ b/drivers/clk/qcom/dispcc-sm8250.c
+@@ -578,7 +578,7 @@ static struct clk_rcg2 disp_cc_mdss_pclk0_clk_src = {
+ 		.name = "disp_cc_mdss_pclk0_clk_src",
+ 		.parent_data = disp_cc_parent_data_6,
+ 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_6),
+-		.flags = CLK_SET_RATE_PARENT,
++		.flags = CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE,
+ 		.ops = &clk_pixel_ops,
+ 	},
  };
-@@ -162,7 +161,7 @@ static bool mbox_test_message_data_ready(struct mbox_test_device *tdev)
- 	unsigned long flags;
- 
- 	spin_lock_irqsave(&tdev->lock, flags);
--	data_ready = mbox_data_ready;
-+	data_ready = tdev->data_ready;
- 	spin_unlock_irqrestore(&tdev->lock, flags);
- 
- 	return data_ready;
-@@ -227,7 +226,7 @@ static ssize_t mbox_test_message_read(struct file *filp, char __user *userbuf,
- 	*(touser + l) = '\0';
- 
- 	memset(tdev->rx_buffer, 0, MBOX_MAX_MSG_LEN);
--	mbox_data_ready = false;
-+	tdev->data_ready = false;
- 
- 	spin_unlock_irqrestore(&tdev->lock, flags);
- 
-@@ -297,7 +296,7 @@ static void mbox_test_receive_message(struct mbox_client *client, void *message)
- 				     message, MBOX_MAX_MSG_LEN);
- 		memcpy(tdev->rx_buffer, message, MBOX_MAX_MSG_LEN);
- 	}
--	mbox_data_ready = true;
-+	tdev->data_ready = true;
- 	spin_unlock_irqrestore(&tdev->lock, flags);
- 
- 	wake_up_interruptible(&tdev->waitq);
+@@ -592,7 +592,7 @@ static struct clk_rcg2 disp_cc_mdss_pclk1_clk_src = {
+ 		.name = "disp_cc_mdss_pclk1_clk_src",
+ 		.parent_data = disp_cc_parent_data_6,
+ 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_6),
+-		.flags = CLK_SET_RATE_PARENT,
++		.flags = CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE,
+ 		.ops = &clk_pixel_ops,
+ 	},
+ };
 -- 
 2.53.0
 
