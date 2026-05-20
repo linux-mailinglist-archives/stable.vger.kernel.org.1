@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-250850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251824-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YF/SDnX5DWqR5AUAu9opvQ
-	(envelope-from <stable+bounces-250850-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:05 +0200
+	id 2KWBGWD0DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251824-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:50:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0106059588F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8006594B30
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:50:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 12B1838568B7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:02:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4939C310C0E4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:43:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 855203DCD9A;
-	Wed, 20 May 2026 17:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 525AE3A3E9C;
+	Wed, 20 May 2026 17:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NhHk0B9F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AMqK29m7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397151E633C;
-	Wed, 20 May 2026 17:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7173EFD3D;
+	Wed, 20 May 2026 17:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296470; cv=none; b=Jo9FMr8+9nLziFbV5CeoJcjSXPUK6t7hLP9RNG6PJDEFk7X7mjWho9nZtiNnDftydkxHRmbGObb4nEfaBmp9hLrod9Z3jVHw9riRkEvc2rJCsOHxWxrDVJ7UgVu1PJR7ONQYXDNDL3yxo5dij+BIgAiOrHHhm3oDI+BXgFh7Tj8=
+	t=1779298984; cv=none; b=QxHZlnTuNVtIUAhPUVPcW9nl9e2p6r6o/+XBIOlvvhl8xBU+DIB3WlIy68TQBQj8Hy15Bhg25G+RWRitJFFc9ahWTDe9r6EoZZsS6mdo55v5LTf5dNx/AnccLC6SkpzUi9fxkGjt21NY02EJp9kO02wW/VLbTHfh8fRPwTx1yBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296470; c=relaxed/simple;
-	bh=WMHnUGR75eQ5KGZu006h0xpQ+uXjvnqHpXauGvuBt3Y=;
+	s=arc-20240116; t=1779298984; c=relaxed/simple;
+	bh=+2E0ZN3GSD0iFBPE1Kyym0nN9i2dPR6Ye8SmbNsPJMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bmQ1ZSyKzIJe0KV99DFdDoKIEg7hsYx0EVxSD/4GJJVcNm8xClkzKsrCaYdKkR609Y8CVU+fLOJa0cZzWhm3nvsnwKJO6bATcMBv7LsUiBauxBU0ci/uKQGVkfopjowPsfnSvzqjrPEoM+e9WN8PQivDHb89FZu3yVSTCA+LMLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NhHk0B9F; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F0B91F000E9;
-	Wed, 20 May 2026 17:01:08 +0000 (UTC)
+	 MIME-Version; b=AmSlHBxBnTh4R5p2p5YlsUZyl9udQuoqelKQ77WZO/w/GdWmxo2mdMz4pknPAB7rupe2MH8JKEgUMCYN4XOtSDcx9stPzXAVTlyGSm02i0DllAEuPc+f7NBoVMndjAdbmE9gHJMOhRZYQBhC+IYYKhOATuydMMOJsB/FY5ix5aM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AMqK29m7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83E4E1F000E9;
+	Wed, 20 May 2026 17:43:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296469;
-	bh=UCq5BAi0EtWJMSabD87IGnxg+JJ/4Yde4OaYMi/bIHw=;
+	s=korg; t=1779298983;
+	bh=g74DSMhJFzhqAuWYqS0o7SuA3pzK8BjMhJmJVgDcl+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NhHk0B9FCoeJFCTtizHdco2f8/lRuWAj+ZokdFiDWhVHYa8Uu2wsmojWkI0MkKYKy
-	 u5qyK87QQawCP//Hh4f8mDKKSG42/S43iFFIqz9ZhF/B2qXCLIF8FvibFYZVDFQYEi
-	 OtrTi9tUnhIR7xxUj5lxfQ/WmFi9P8yZ3BdNYOEw=
+	b=AMqK29m7X4B68gN3/xHn0/KfzsFXhvIKhV4da5r2LUkyUIpec5RBrg0pmBROhW2HH
+	 UtsIf552Fkr4qGSvIWqko4ASBNK9b0Sr0szwkAchKTbtW8AyPhdQqYa/4FxofZfrSK
+	 i7CCp5f/yL02eGmxHcsIpPr+yRcb2/6GECSdDKPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Brian Masney <bmasney@redhat.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0810/1146] net: airoha: Fix possible TX queue stall in airoha_qdma_tx_napi_poll()
+Subject: [PATCH 6.18 577/957] clk: xgene: Fix mapping leak in xgene_pllclk_init()
 Date: Wed, 20 May 2026 18:17:40 +0200
-Message-ID: <20260520162206.558043986@linuxfoundation.org>
+Message-ID: <20260520162147.043272582@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,148 +65,71 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-251824-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250850-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 0106059588F
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,glider.be:email]
+X-Rspamd-Queue-Id: E8006594B30
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit b94769eb2f30e61e86cd8551c084c34134290d89 ]
+[ Upstream commit f520a492e07bc6718e26cfb7543ab4cadd8bb0e2 ]
 
-Since multiple net_device TX queues can share the same hw QDMA TX queue,
-there is no guarantee we have inflight packets queued in hw belonging to a
-net_device TX queue stopped in the xmit path because hw QDMA TX queue
-can be full. In this corner case the net_device TX queue will never be
-re-activated. In order to avoid any potential net_device TX queue stall,
-we need to wake all the net_device TX queues feeding the same hw QDMA TX
-queue in airoha_qdma_tx_napi_poll routine.
+If xgene_register_clk_pll() fails, the mapped register block is never
+unmapped.
 
-Fixes: 23020f0493270 ("net: airoha: Introduce ethernet support for EN7581 SoC")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260416-airoha-txq-potential-stall-v2-1-42c732074540@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 308964caeebc45eb ("clk: Add APM X-Gene SoC clock driver")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Brian Masney <bmasney@redhat.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/airoha/airoha_eth.c | 37 ++++++++++++++++++++----
- drivers/net/ethernet/airoha/airoha_eth.h |  1 +
- 2 files changed, 33 insertions(+), 5 deletions(-)
+ drivers/clk/clk-xgene.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index f484835af703c..3deffc499bcb4 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -843,6 +843,21 @@ static int airoha_qdma_init_rx(struct airoha_qdma *qdma)
- 	return 0;
+diff --git a/drivers/clk/clk-xgene.c b/drivers/clk/clk-xgene.c
+index 92e39f3237c2f..7dc247eb880fb 100644
+--- a/drivers/clk/clk-xgene.c
++++ b/drivers/clk/clk-xgene.c
+@@ -188,6 +188,8 @@ static void xgene_pllclk_init(struct device_node *np, enum xgene_pll_type pll_ty
+ 		of_clk_add_provider(np, of_clk_src_simple_get, clk);
+ 		clk_register_clkdev(clk, clk_name, NULL);
+ 		pr_debug("Add %s clock PLL\n", clk_name);
++	} else {
++		iounmap(reg);
+ 	}
  }
  
-+static void airoha_qdma_wake_netdev_txqs(struct airoha_queue *q)
-+{
-+	struct airoha_qdma *qdma = q->qdma;
-+	struct airoha_eth *eth = qdma->eth;
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(eth->ports); i++) {
-+		struct airoha_gdm_port *port = eth->ports[i];
-+
-+		if (port && port->qdma == qdma)
-+			netif_tx_wake_all_queues(port->dev);
-+	}
-+	q->txq_stopped = false;
-+}
-+
- static int airoha_qdma_tx_napi_poll(struct napi_struct *napi, int budget)
- {
- 	struct airoha_tx_irq_queue *irq_q;
-@@ -919,12 +934,21 @@ static int airoha_qdma_tx_napi_poll(struct napi_struct *napi, int budget)
- 
- 			txq = netdev_get_tx_queue(skb->dev, queue);
- 			netdev_tx_completed_queue(txq, 1, skb->len);
--			if (netif_tx_queue_stopped(txq) &&
--			    q->ndesc - q->queued >= q->free_thr)
--				netif_tx_wake_queue(txq);
--
- 			dev_kfree_skb_any(skb);
- 		}
-+
-+		if (q->txq_stopped && q->ndesc - q->queued >= q->free_thr) {
-+			/* Since multiple net_device TX queues can share the
-+			 * same hw QDMA TX queue, there is no guarantee we have
-+			 * inflight packets queued in hw belonging to a
-+			 * net_device TX queue stopped in the xmit path.
-+			 * In order to avoid any potential net_device TX queue
-+			 * stall, we need to wake all the net_device TX queues
-+			 * feeding the same hw QDMA TX queue.
-+			 */
-+			airoha_qdma_wake_netdev_txqs(q);
-+		}
-+
- unlock:
- 		spin_unlock_bh(&q->lock);
- 	}
-@@ -1970,6 +1994,7 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
- 	if (q->queued + nr_frags >= q->ndesc) {
- 		/* not enough space in the queue */
- 		netif_tx_stop_queue(txq);
-+		q->txq_stopped = true;
- 		spin_unlock_bh(&q->lock);
- 		return NETDEV_TX_BUSY;
- 	}
-@@ -2025,8 +2050,10 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
- 				TX_RING_CPU_IDX_MASK,
- 				FIELD_PREP(TX_RING_CPU_IDX_MASK, index));
- 
--	if (q->ndesc - q->queued < q->free_thr)
-+	if (q->ndesc - q->queued < q->free_thr) {
- 		netif_tx_stop_queue(txq);
-+		q->txq_stopped = true;
-+	}
- 
- 	spin_unlock_bh(&q->lock);
- 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
-index 8bcd809e6f53e..c9d1abda47768 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.h
-+++ b/drivers/net/ethernet/airoha/airoha_eth.h
-@@ -193,6 +193,7 @@ struct airoha_queue {
- 	int ndesc;
- 	int free_thr;
- 	int buf_size;
-+	bool txq_stopped;
- 
- 	struct napi_struct napi;
- 	struct page_pool *page_pool;
 -- 
 2.53.0
 
