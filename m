@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-250480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251435-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IBr6OTbzDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-250480-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:45:26 +0200
+	id iIWpNAL1DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251435-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 456E85947B1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:45:26 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AE3F594D1C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 68B433793396
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:45:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 51B6E3228F73
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:26:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 472D1367B8D;
-	Wed, 20 May 2026 16:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4664D2046BA;
+	Wed, 20 May 2026 17:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HHQr0vDS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xrGBxLTx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2CE369D6E;
-	Wed, 20 May 2026 16:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00952363C6F;
+	Wed, 20 May 2026 17:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295520; cv=none; b=GqaLQNUkwUPschzUt4ub+tYCLqeSGmT7AUS5hzGrtFrMJRDm2hb267+iS0wmjpJi/mRvKSME93VOGyU4ZrW7AKAdBtCeSWrD4q2Cut2kz4gGWKYBEfOGuC8Ms2gj9Trb9gM5cwx4yageVAR+wHUQ9V7/loxE+FZEeKA4pVTIH/c=
+	t=1779297974; cv=none; b=hwpvsAJ1bQQyVQ3RAgfQovkKc2IXKs1U3B3G6Kz+44OzshMNa6ri24cAD0yYk6DU2XNenJlVJK/cEjfv0AEafC0o0gH6vn/b0ivY4uD0roASMk7FkYrIik1QY3Vg7rQG9w1+iJAsKQSAb4jtdxQwlSdfHlhIrVsmoNyw054jUUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295520; c=relaxed/simple;
-	bh=jI5lknLLOYCc0Q+jzKNBUDEVbs7oVkfcM8AQScxhq30=;
+	s=arc-20240116; t=1779297974; c=relaxed/simple;
+	bh=Z+UmjIEqWx++c/1DGZuZHDoaZKQUgboENWJ17IReK4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u/h6FNE1QwhtjfJKWZvwRrl2f8A272rnveRe9XiDUWVjMAicTvAZJEXxA7BeASwZ2DESz9dKXD0EStbmHpbFcJ7sriiWtlCz0T2PibuOt1aWVGbbtgK5EeUEqZD/pScWXjXoKcInghg9fiULmf9qgU3Lhk6XDP3YRU5I0ImoR4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HHQr0vDS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56A621F000E9;
-	Wed, 20 May 2026 16:45:18 +0000 (UTC)
+	 MIME-Version; b=jeT5mykWKmJov5qEbi668WteCqviQuNWBBdc4nXFE2qxdY7g4ZCRN3FTz2fHWzT3Qi76BUDejkDEy/WUmSkQlj3fpB+z7SqMCMvHH/QnmTzr0GLPE0cuZO6S/AU09DiDr7GltLPzzkHMDegLnhlBeeY6h7SEYu4qay6aYfeNaKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xrGBxLTx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CFE21F000E9;
+	Wed, 20 May 2026 17:26:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295518;
-	bh=livAhtDYhBV++n0DQXHmyW8oxcRVXt+BV1i+IOljGgk=;
+	s=korg; t=1779297972;
+	bh=J5xmJJLRprqNQFSVX9+vo3CfYb+Hq1kBEZheXc7x7uI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HHQr0vDSNpu71MLX7VwAG/iSGNFk8d26/mn3C7/hsi5U0QzYMo1UDUpXRrFWgg/Sh
-	 MMuQubdLY+CiaAEwVlhTOSk/L+DlHrkBuw4nPzPJ18zzAyPi6+8lNbfyuKKpMOGHQq
-	 3qRteY/k/3U4ATXQsbt3iZIQKlSu86Bjhjmtopr4=
+	b=xrGBxLTxmynOth26hx6F0HwiVj2hBtypm+a7P1ON6G+6BWyoS2bJN7SfIy4P1eoqg
+	 Y803Vp+/WFdQPACOj9cqM0w97xgJtA3Kish4tSwq2wV3zfS5Hv/g7uyMyyLKvK1LfN
+	 lHD1gTU8i0PA9ZPym5lC2AbJacuDXbVI+9GiY0uI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Hawley <warthog9@eaglescrag.net>,
-	Andrea Righi <arighi@nvidia.com>,
-	Marcos Paulo de Souza <mpdesouza@suse.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pedro Falcato <pfalcato@suse.de>,
-	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0450/1146] ktest: Run POST_KTEST hooks on failure and cancellation
+Subject: [PATCH 6.18 217/957] media: i2c: og01a1b: Fix V4L2 subdevice data initialization on probe
 Date: Wed, 20 May 2026 18:11:40 +0200
-Message-ID: <20260520162158.381622883@linuxfoundation.org>
+Message-ID: <20260520162139.246470010@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,136 +64,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250480-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251435-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,goodmis.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 456E85947B1
+	TAGGED_RCPT(0.00)[stable,huawei];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email,intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 9AE3F594D1C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo B. Marlière <rbm@suse.com>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-[ Upstream commit bc6e165a452da909cef0efbc286e6695624db372 ]
+[ Upstream commit 535b7f106991c7d8f0e5b8e1769bfb8b1ce9d3d6 ]
 
-PRE_KTEST can be useful for setting up the environment and POST_KTEST to
-tear it down, however POST_KTEST only runs on the normal end-of-run path.
-It is skipped when ktest exits through dodie() or cancel_test(). Final
-cleanup hooks are skipped.
+It's necessary to finalize the camera sensor subdevice initialization on
+driver probe and clean V4L2 subdevice data up on error paths and driver
+removal.
 
-Factor the final hook execution into run_post_ktest(), call it from the
-normal exit path and from the early exit paths, and guard it so the hook
-runs at most once.
+The change fixes a previously reported by v4l2-compliance issue of
+the failed VIDIOC_(UN)SUBSCRIBE_EVENT/DQEVENT test:
 
-Cc: John Hawley <warthog9@eaglescrag.net>
-Cc: Andrea Righi <arighi@nvidia.com>
-Cc: Marcos Paulo de Souza <mpdesouza@suse.com>
-Cc: Matthieu Baerts <matttbe@kernel.org>
-Cc: Fernando Fernandez Mancera <fmancera@suse.de>
-Cc: Pedro Falcato <pfalcato@suse.de>
-Link: https://patch.msgid.link/20260307-ktest-fixes-v1-8-565d412f4925@suse.com
-Fixes: 921ed4c7208e ("ktest: Add PRE/POST_KTEST and TEST options")
-Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+  fail: v4l2-test-controls.cpp(1104): subscribe event for control 'User Controls' failed
+
+Fixes: 472377febf84 ("media: Add a driver for the og01a1b camera sensor")
+Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/ktest/ktest.pl | 27 ++++++++++++++++++++++-----
- 1 file changed, 22 insertions(+), 5 deletions(-)
+ drivers/media/i2c/og01a1b.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
-index 924e17df56f74..17bdce9cafac2 100755
---- a/tools/testing/ktest/ktest.pl
-+++ b/tools/testing/ktest/ktest.pl
-@@ -100,6 +100,7 @@ my $test_type;
- my $build_type;
- my $build_options;
- my $final_post_ktest;
-+my $post_ktest_done = 0;
- my $pre_ktest;
- my $post_ktest;
- my $pre_test;
-@@ -1575,6 +1576,24 @@ sub get_test_name() {
-     return $name;
- }
+diff --git a/drivers/media/i2c/og01a1b.c b/drivers/media/i2c/og01a1b.c
+index c7184de6251ae..7b892b26203c0 100644
+--- a/drivers/media/i2c/og01a1b.c
++++ b/drivers/media/i2c/og01a1b.c
+@@ -1042,6 +1042,7 @@ static void og01a1b_remove(struct i2c_client *client)
+ 	struct og01a1b *og01a1b = to_og01a1b(sd);
  
-+sub run_post_ktest {
-+    my $cmd;
+ 	v4l2_async_unregister_subdev(sd);
++	v4l2_subdev_cleanup(&og01a1b->sd);
+ 	media_entity_cleanup(&sd->entity);
+ 	v4l2_ctrl_handler_free(sd->ctrl_handler);
+ 	pm_runtime_disable(og01a1b->dev);
+@@ -1153,11 +1154,18 @@ static int og01a1b_probe(struct i2c_client *client)
+ 		goto probe_error_v4l2_ctrl_handler_free;
+ 	}
+ 
++	ret = v4l2_subdev_init_finalize(&og01a1b->sd);
++	if (ret < 0) {
++		dev_err_probe(og01a1b->dev, ret,
++			      "failed to finalize subdevice init\n");
++		goto probe_error_media_entity_cleanup;
++	}
 +
-+    return if ($post_ktest_done);
+ 	ret = v4l2_async_register_subdev_sensor(&og01a1b->sd);
+ 	if (ret < 0) {
+ 		dev_err(og01a1b->dev, "failed to register V4L2 subdev: %d",
+ 			ret);
+-		goto probe_error_media_entity_cleanup;
++		goto probe_error_v4l2_subdev_cleanup;
+ 	}
+ 
+ 	/* Enable runtime PM and turn off the device */
+@@ -1167,6 +1175,9 @@ static int og01a1b_probe(struct i2c_client *client)
+ 
+ 	return 0;
+ 
++probe_error_v4l2_subdev_cleanup:
++	v4l2_subdev_cleanup(&og01a1b->sd);
 +
-+    if (defined($final_post_ktest)) {
-+	$cmd = $final_post_ktest;
-+    } elsif (defined($post_ktest)) {
-+	$cmd = $post_ktest;
-+    } else {
-+	return;
-+    }
-+
-+    my $cp_post_ktest = eval_kernel_version($cmd);
-+    run_command $cp_post_ktest;
-+    $post_ktest_done = 1;
-+}
-+
- sub dodie {
-     # avoid recursion
-     return if ($in_die);
-@@ -1634,6 +1653,7 @@ sub dodie {
-     if (defined($post_test)) {
- 	run_command $post_test;
-     }
-+    run_post_ktest;
+ probe_error_media_entity_cleanup:
+ 	media_entity_cleanup(&og01a1b->sd.entity);
  
-     die @_, "\n";
- }
-@@ -4300,6 +4320,7 @@ sub cancel_test {
- 	send_email("KTEST: Your [$name] test was cancelled",
- 	    "Your test started at $script_start_time was cancelled: sig int");
-     }
-+    run_post_ktest;
-     die "\nCaught Sig Int, test interrupted: $!\n"
- }
- 
-@@ -4661,11 +4682,7 @@ for (my $i = 1; $i <= $opt{"NUM_TESTS"}; $i++) {
-     success $i;
- }
- 
--if (defined($final_post_ktest)) {
--
--    my $cp_final_post_ktest = eval_kernel_version $final_post_ktest;
--    run_command $cp_final_post_ktest;
--}
-+run_post_ktest;
- 
- if ($opt{"POWEROFF_ON_SUCCESS"}) {
-     halt;
 -- 
 2.53.0
 
