@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-252335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250757-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uMa+K8oFDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-252335-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:04:42 +0200
+	id CHi8LGP3DWpd5AUAu9opvQ
+	(envelope-from <stable+bounces-250757-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:03:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEDBF597B07
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:04:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1430F5952E6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:03:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 353C930EF933
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:07:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BEF9A38088D4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:57:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6FA03F88B5;
-	Wed, 20 May 2026 18:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E78C3A16B6;
+	Wed, 20 May 2026 16:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sA+vPmEI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JgoD9se1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980BD3F7884;
-	Wed, 20 May 2026 18:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB4634EF05;
+	Wed, 20 May 2026 16:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300407; cv=none; b=OiQXONZTClr6aPNwlmH+bqSpAxseVW/YQt0CrhtuHNpsEupdrNxSHk9XdZtwczQsyYkzkkw6JVfrauJbggUK+BrSS9BLyni5G6cHE6xpboTvUS95X3eJIGo7xh+MPxMGr5liQEwsRtU61orch9Xam6jGCYTQAwQKQfh4fX/+w+w=
+	t=1779296238; cv=none; b=EYg1x/bh28L+4tMj0LmGsQmOjEN9SUeqyh4oMpGqLw5VVduxmpFUGhQi2kvPM9Cb41TxGlIRlvGII1pZ4Mh2n9gSy79Sow0d1PQGvRTeZDKZM8BDN3K248ADKHb7C+Z+kafRLkZvDQvA/GNw77KiFXl7p+jIU1IY+MvarYNObSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300407; c=relaxed/simple;
-	bh=Sn6g7U8J6JCnYulKAQQmhdZAbD0AWnQ2473wIxhVrm4=;
+	s=arc-20240116; t=1779296238; c=relaxed/simple;
+	bh=U+zRW6qQuntHLqka3aGtjqbPC42t9RnnFnsKLgcxMRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EmtaD9Zjk5TSV/xhheAqhIHdoHRTW9uYz+cuc8a2T2wMH/DK4Niysc+JRfL/TXC6xX4ChNvyqd0i9I2Fuqc8xoxfVD06MD7NNIdnwHRATaBvQuiqxJYshNqydWZS5acS+50xZZNFLg4tyUiToFxTAyhvIHefnxPM522ziJnZlsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sA+vPmEI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 099921F000E9;
-	Wed, 20 May 2026 18:06:45 +0000 (UTC)
+	 MIME-Version; b=q3adlsdvmVYj4bWBbeQ+YaxUywwSmsEILtPdSmXPya2/XVzLNdvdJ5iqTHSG6G23edOAHZUUeIdb2X1WeOD69OlV+WSCGc0pBOF7Ytm9JeIjutEz3+9o8YDokyXOcFhcbKrLo21qlpznVqpPCYcMF4g3xkIc6Ik8JbvXzkSnxj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JgoD9se1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D9D61F00893;
+	Wed, 20 May 2026 16:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300406;
-	bh=AVornoZmqmeWenNkmumCaIT3V0xXX3LYC9LnruM8aCM=;
+	s=korg; t=1779296236;
+	bh=jLxQ9Pao5qIfqPKixwI6jvEuiyTffzqAD8LA9CNkSOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sA+vPmEISjqYTDvr1jknUfYCJ/T8q7DWTroY/a0mN/cm4bnEojCXo4Nz2kB6lE1nn
-	 8ElQF4gWaINv1tEElA4rKjc5jQ1VCK/2zKDuMWgkYaetQghKcGE6gt2fg1dYNcj5NA
-	 QwMGJzNRIGj+XJiDT6VyfibASabxpLNu1Z6eOt1Y=
+	b=JgoD9se1hYNjCWokcPixuD9oK/VBW/G+EZCQ0grdXZKuF03mDnVZ9RFwGz1OZDWtI
+	 dbQiKGX8k/uhrL0u3QnHa91L3Cl7yqaQA74uvzxbYSbOfhTYYAGAPAozcbImD5ppQL
+	 Fx0DO5YMi7T3J1IqdI77JPVaWIV+Fk02bxrxBbb4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Koichiro Den <den@valinux.co.jp>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Niklas Cassel <cassel@kernel.org>,
+	Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
+	Peng Fan <peng.fan@nxp.com>,
+	Abel Vesa <abel.vesa@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 161/666] PCI: dwc: rcar-gen4: Change EPC BAR alignment to 4K as per the documentation
+Subject: [PATCH 7.0 0722/1146] clk: imx8mq: Correct the CSI PHY sels
 Date: Wed, 20 May 2026 18:16:12 +0200
-Message-ID: <20260520162114.697735546@linuxfoundation.org>
+Message-ID: <20260520162204.544004647@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,77 +69,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252335-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250757-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,valinux.co.jp:email]
-X-Rspamd-Queue-Id: AEDBF597B07
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,msgid.link:url,i.mx:url]
+X-Rspamd-Queue-Id: 1430F5952E6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Koichiro Den <den@valinux.co.jp>
+From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
 
-[ Upstream commit 13f55a7ca773c731a1e645934c1ae48577f48785 ]
+[ Upstream commit d16f57caa78776e6e8a88b96cb2597797b376138 ]
 
-R-Car S4 Series (R8A779F[4-7]*) EP controller uses a 4K minimum iATU region
-size (CX_ATU_MIN_REGION_SIZE = 4K) as per R19UH0161EJ0130 Rev.1.30. Also,
-the controller itself can only be configured in the range 4 KB to 64 KB, so
-the current 1 MB alignment requirement is incorrect.
+According to i.MX 8M Quad Reference Manual (Section 5.1.2 Table 5-1)
+MIPI_CSI1_PHY_REF_CLK_ROOT and MIPI_CSI2_PHY_REF_CLK_ROOT have
+SYSTEM_PLL2_DIV3 available as their second source, which corresponds
+to sys2_pll_333m rather than sys2_pll_125m.
 
-Hence, change the alignment to the min size 4K as per the documentation.
-
-This also fixes needless unusability of BAR4 on this platform when the
-target address is fixed, such as for doorbell targets.
-
-Fixes: e311b3834dfa ("PCI: rcar-gen4: Add endpoint mode support")
-Signed-off-by: Koichiro Den <den@valinux.co.jp>
-[mani: commit log]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Link: https://patch.msgid.link/20260305151050.1834007-1-den@valinux.co.jp
+Fixes: b80522040cd3 ("clk: imx: Add clock driver for i.MX8MQ CCM")
+Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Link: https://patch.msgid.link/20260128-imx8mq-csi-clk-v1-1-ac028ed26e8c@puri.sm
+Signed-off-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-rcar-gen4.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/imx/clk-imx8mq.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-rcar-gen4.c b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
-index 397c2f9477a15..8dcb63f813beb 100644
---- a/drivers/pci/controller/dwc/pcie-rcar-gen4.c
-+++ b/drivers/pci/controller/dwc/pcie-rcar-gen4.c
-@@ -427,7 +427,7 @@ static const struct pci_epc_features rcar_gen4_pcie_epc_features = {
- 	.bar[BAR_3] = { .type = BAR_RESERVED, },
- 	.bar[BAR_4] = { .type = BAR_FIXED, .fixed_size = 256 },
- 	.bar[BAR_5] = { .type = BAR_RESERVED, },
--	.align = SZ_1M,
-+	.align = SZ_4K,
- };
+diff --git a/drivers/clk/imx/clk-imx8mq.c b/drivers/clk/imx/clk-imx8mq.c
+index f70ed231b92d6..cedc8a02aa1f0 100644
+--- a/drivers/clk/imx/clk-imx8mq.c
++++ b/drivers/clk/imx/clk-imx8mq.c
+@@ -237,7 +237,7 @@ static const char * const imx8mq_dsi_esc_sels[] = {"osc_25m", "sys2_pll_100m", "
+ static const char * const imx8mq_csi1_core_sels[] = {"osc_25m", "sys1_pll_266m", "sys2_pll_250m", "sys1_pll_800m",
+ 					      "sys2_pll_1000m", "sys3_pll_out", "audio_pll2_out", "video_pll1_out", };
  
- static const struct pci_epc_features*
+-static const char * const imx8mq_csi1_phy_sels[] = {"osc_25m", "sys2_pll_125m", "sys2_pll_100m", "sys1_pll_800m",
++static const char * const imx8mq_csi1_phy_sels[] = {"osc_25m", "sys2_pll_333m", "sys2_pll_100m", "sys1_pll_800m",
+ 					     "sys2_pll_1000m", "clk_ext2", "audio_pll2_out", "video_pll1_out", };
+ 
+ static const char * const imx8mq_csi1_esc_sels[] = {"osc_25m", "sys2_pll_100m", "sys1_pll_80m", "sys1_pll_800m",
+@@ -246,7 +246,7 @@ static const char * const imx8mq_csi1_esc_sels[] = {"osc_25m", "sys2_pll_100m",
+ static const char * const imx8mq_csi2_core_sels[] = {"osc_25m", "sys1_pll_266m", "sys2_pll_250m", "sys1_pll_800m",
+ 					      "sys2_pll_1000m", "sys3_pll_out", "audio_pll2_out", "video_pll1_out", };
+ 
+-static const char * const imx8mq_csi2_phy_sels[] = {"osc_25m", "sys2_pll_125m", "sys2_pll_100m", "sys1_pll_800m",
++static const char * const imx8mq_csi2_phy_sels[] = {"osc_25m", "sys2_pll_333m", "sys2_pll_100m", "sys1_pll_800m",
+ 					     "sys2_pll_1000m", "clk_ext2", "audio_pll2_out", "video_pll1_out", };
+ 
+ static const char * const imx8mq_csi2_esc_sels[] = {"osc_25m", "sys2_pll_100m", "sys1_pll_80m", "sys1_pll_800m",
 -- 
 2.53.0
 
