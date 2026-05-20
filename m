@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-252496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251858-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UGUNOBImDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252496-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:22:26 +0200
+	id +JhLKIr8DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-251858-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:25:14 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 488A959AC2A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:22:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42492596156
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:25:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1DB023861B84
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:13:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D77A93515282
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:44:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E813F54D1;
-	Wed, 20 May 2026 18:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DCFC3F1AD5;
+	Wed, 20 May 2026 17:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yqjPEYqa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="scH8r1Rp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C482F363F;
-	Wed, 20 May 2026 18:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E5E83F1661;
+	Wed, 20 May 2026 17:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300825; cv=none; b=DCsHwhbqhTbd30Cg5eetScZQoWMOY9Xpe443InLQ6fafyr1Zov8Q3wsm0ictqOTOIpmFyXXbPldhcliM0RAD/dSPrSj4eqsCd8FKQJlTz+fm/xoDjjOTwSM/e1C8j+vDkjkI+9SDmF3CHy7ROUcJe7h+820BRUasb9fQX0r3ZJo=
+	t=1779299071; cv=none; b=g537YX82tK2bl5F4rQNgYkdkSequr9ZK3U0im3G3kd7fte/JAO3KIuqNAqoWo7AMOWzjA9Rb3+jIGl9qQf000LTfxnMOfVd6F5os1sfjgd5pIRAoLjj072kBz9ukac5spNw7oTmhiiYKo5W2dYPZdxSvKE4miXIxVdQ6KNwKXcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300825; c=relaxed/simple;
-	bh=9W9k85n0RcwBwwdcYfcCMQQjqJ1pxXUsRsFLTBYw428=;
+	s=arc-20240116; t=1779299071; c=relaxed/simple;
+	bh=n7hhxb6d571N31UD2FkpG17Mlu4ghRA2lN/jR3U/bME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cr+tzhght8GjHvddly1zc6FNMcmKMuawF5V4q3E57h+byNmUmUdOIis1VfDbNhC0zbTuEJf6B0n+gb1vKzVvFME2LUpj94jdw+XDMDT8GVaktClNAg0d6Mw1v7OQvAd0eWx4SFTSDC6qzcH7Xt0Ad+Ezi855g1YkPDMZS/w4WMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yqjPEYqa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0191F1F00894;
-	Wed, 20 May 2026 18:13:43 +0000 (UTC)
+	 MIME-Version; b=UDsJe7pnUEDuFs60yY3+aVB2h6IpRM7oREOE1XHFkZXIsrOOZ1hc2TJd5XCpVV+KB1g6/ohrPP0Ztc2trs8icA8opCBNTlJ5Jr7INGovBmCg+ZfY3K5Qz98HMvYusIUiVEKGT9E5jJ+tGzjHbRldusun3E9xOt78Tswl0E3Zytg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=scH8r1Rp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 448B51F000E9;
+	Wed, 20 May 2026 17:44:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300824;
-	bh=YS6lWxSqjbdEROYjP1A+xyYRN7xR0OPoeHW/HAQ9d/U=;
+	s=korg; t=1779299069;
+	bh=99NwfUpP1g8+vr2FpB5sjFgxgTU4rPHZMfKXGx/GFpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yqjPEYqaIo/7+yzPUKaiw89cyL5FiLRQS/Vy8D2Ibilrk2rMkBXhXu5nUvtG4m8wn
-	 yvQne9w84n7oSCfHQzfxg/jBCeU1sBCsHSwRjYMySTSApiEGU0M6Um6oaBqJiiKr6N
-	 Jh+Z+ymTmR1Zdc8NYOvLbVs0OvND5yYwDS5e762w=
+	b=scH8r1Rpm7qUFcsOQJ3GATcPvIwbg+PvnC+ws7O/wd1LAIX5tIJtakkxwUsAbf/8t
+	 3fZo2d7bYbUGORDHdkjvobMz6Sw5ZP1z1faO4Giz5OgK5eqj2kc/BsW/JoYg285kRN
+	 ePZWDIxbsfR1QcnHnvBD0jz1+L1mjALoAZOKVsm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Norman Bintang <normanbt@google.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
-	Vinod Koul <vkoul@kernel.org>,
+	Paul Greenwalt <paul.greenwalt@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Sunitha Mekala <sunithax.d.mekala@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 322/666] soundwire: cadence: Clear message complete before signaling waiting thread
+Subject: [PATCH 6.18 650/957] ice: fix ICE_AQ_LINK_SPEED_M for 200G
 Date: Wed, 20 May 2026 18:18:53 +0200
-Message-ID: <20260520162118.201908180@linuxfoundation.org>
+Message-ID: <20260520162148.626569322@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,113 +77,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252496-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251858-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,msgid.link:url]
-X-Rspamd-Queue-Id: 488A959AC2A
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email]
+X-Rspamd-Queue-Id: 42492596156
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Paul Greenwalt <paul.greenwalt@intel.com>
 
-[ Upstream commit cbfea84f820962c3c5394ff06e7e9344c96bf761 ]
+[ Upstream commit 4a3a940059e98539de293a6e36e464094c2e875b ]
 
-Clear the CDNS_MCP_INT_RX_WL interrupt before signaling completion.
+When setting PHY configuration during driver initialization, 200G link
+speed is not being advertised even when the PHY is capable. This is
+because the get PHY capabilities link speed response is being masked by
+ICE_AQ_LINK_SPEED_M, which does not include the 200G link speed bit.
 
-This is to prevent the potential race where:
-- The main thread is scheduled immediately the completion is signaled,
-   and starts a new message
-- The RX_WL IRQ for this new message happens before sdw_cdns_irq() has
-  been re-scheduled.
-- When sdw_cdns_irq() is re-scheduled it clears the new RX_WL interrupt.
+ICE_AQ_LINK_SPEED_200GB is defined as BIT(11), but the mask 0x7FF only
+covers bits 0-10. Fix ICE_AQ_LINK_SPEED_M to use GENMASK(11, 0) so
+that it covers all defined link speed bits including 200G.
 
-MAIN THREAD                        |  IRQ THREAD
-                                   |
-  _cdns_xfer_msg()                 |
-  {                                |
-     write data to FIFO            |
-     wait_for_completion_timeout() |
-     <BLOCKED>                     |                       <---- RX_WL IRQ
-                                   | sdw_cdns_irq()
-                                   | {
-                                   |    signal completion
-                          <== RESCHEDULE <==
-  Handle message completion        |
-  }                                |
-                                   |
-Start new message                  |
-  _cdns_xfer_msg()                 |
-  {                                |
-     write data to FIFO            |
-     wait_for_completion_timeout() |
-     <BLOCKED>                     |                       <---- RX_WL IRQ
-                          ==> RESCHEDULE ==>
-                                   |    // New RX_WL IRQ is cleared before
-                                   |    // it has been handled.
-                                   |    clear CDNS_MCP_INTSTAT
-
-                                   |    return IRQ_HANDLED;
-                                   | }
-
-Before this change, this error message was sometimes seen on kernels
-that have large amounts of debugging enabled:
-
-   SCP Msg trf timed out
-
-This error indicates that the completion has not been signalled after
-500ms.
-
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: 956baa1992f9 ("soundwire: cdns: Add sdw_master_ops and IO transfer support")
-Reported-by: Norman Bintang <normanbt@google.com>
-Closes: https://issuetracker.google.com/issues/477099834
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
-Link: https://patch.msgid.link/20260310113133.1707288-1-rf@opensource.cirrus.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 24407a01e57c ("ice: Add 200G speed/phy type use")
+Signed-off-by: Paul Greenwalt <paul.greenwalt@intel.com>
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260416-iwl-net-submission-2026-04-14-v2-6-686c33c9828d@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/cadence_master.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_adminq_cmd.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soundwire/cadence_master.c b/drivers/soundwire/cadence_master.c
-index 6f2b5ec5c87c6..a503ef606a62c 100644
---- a/drivers/soundwire/cadence_master.c
-+++ b/drivers/soundwire/cadence_master.c
-@@ -931,6 +931,14 @@ irqreturn_t sdw_cdns_irq(int irq, void *dev_id)
- 
- 		cdns_read_response(cdns);
- 
-+		/*
-+		 * Clear interrupt before signalling the completion to avoid
-+		 * a race between this thread and the main thread starting
-+		 * another TX.
-+		 */
-+		cdns_writel(cdns, CDNS_MCP_INTSTAT, CDNS_MCP_INT_RX_WL);
-+		int_status &= ~CDNS_MCP_INT_RX_WL;
-+
- 		if (defer && defer->msg) {
- 			cdns_fill_msg_resp(cdns, defer->msg,
- 					   defer->length, 0);
+diff --git a/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h b/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
+index 859e9c66f3e7e..3cbb1b0582e32 100644
+--- a/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
++++ b/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
+@@ -1252,7 +1252,7 @@ struct ice_aqc_get_link_status_data {
+ #define ICE_AQ_LINK_PWR_QSFP_CLASS_3	2
+ #define ICE_AQ_LINK_PWR_QSFP_CLASS_4	3
+ 	__le16 link_speed;
+-#define ICE_AQ_LINK_SPEED_M		0x7FF
++#define ICE_AQ_LINK_SPEED_M		GENMASK(11, 0)
+ #define ICE_AQ_LINK_SPEED_10MB		BIT(0)
+ #define ICE_AQ_LINK_SPEED_100MB		BIT(1)
+ #define ICE_AQ_LINK_SPEED_1000MB	BIT(2)
 -- 
 2.53.0
 
