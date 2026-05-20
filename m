@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252860-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kFrgFuT6DWrO5AUAu9opvQ
-	(envelope-from <stable+bounces-252402-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:18:12 +0200
+	id sHYAGrgEDmpO5gUAu9opvQ
+	(envelope-from <stable+bounces-252860-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:00:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13C89595BFD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:18:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5F6A5978E6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:00:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B7C7730685DC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:09:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5D34E32EA4B6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:29:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C89C63EAC82;
-	Wed, 20 May 2026 18:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D2EA3F9296;
+	Wed, 20 May 2026 18:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dIk9jlFo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0wQJIekg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93FA3331220;
-	Wed, 20 May 2026 18:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70AE368968;
+	Wed, 20 May 2026 18:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300581; cv=none; b=lwLq/Qp77cKSfBU4dPSdMfKskVHPZtyX3nBKaail46+MaRtfDDAgVCeV98TcUUNWr6Ajia5oE3jHlRto3cjtQNNT8IcNS3RbIuTX/I9ZAZnphgXoQrTVLC9DF43buEUixVK/O21vF6NJStYnb2oGyyaP8l8mXsyoD+3uNjDJJPs=
+	t=1779301777; cv=none; b=a5U2C/Wo4sVzm+RhzH68bG2hYL9xBBceLZODM+YBMUGjKZSTb+Gdfo7oAXiaK+m/KPa4EwtSlJrhx4cSwBv3LsOmaLs24gBNj6Pxub9q1YNb7Lc0zCko7CPbqo4zIWTFSsks5jcqIw/3QFev/YeFEb3kQz7AjlJ8gtIQnxvS3LI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300581; c=relaxed/simple;
-	bh=EBoUQ++KW5WADrPFFg1k05z6j91rsFUjL1zYnb7W3Bs=;
+	s=arc-20240116; t=1779301777; c=relaxed/simple;
+	bh=v7a3SGIr4U6EfrYlcblj8J20BfJGT7Hl5pAn+hOqU0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tqsh110FU0ni3QT3VKIcxevEg9PMEEpH8pvX7Z0MRaawpNbfc206NTYUBkdIOWQz9np9pyYUrJQPkxmo4HN+B62iWZBcdT7rDhZZemzqXqCg/Fmv5NF03YcDfZE2EREu/LkmgvTQwsPkSSRi48M20fIStHb6DWkbAHsrcpKwUNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dIk9jlFo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05F091F000E9;
-	Wed, 20 May 2026 18:09:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CVcvScicbQabf0+nrN54BMwzkEkEsLLhgRK+VhxaPW7SdeQA7ulCMGX1Mo9lSCEUiq1vz6utAKf1ZlRe6yGbnSTAQQewe8Etqrbc742JaGZkggvTT3MJ46j7W0Wyh7k2ikDd9Dq/iG1CpIp+HzctVsBUdRqphMSUrIB45Rp16Xo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0wQJIekg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED8B61F000E9;
+	Wed, 20 May 2026 18:29:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300580;
-	bh=shXfF4X7qyyNJr2IC7R2TEfTTQnMhMkPexY89cbjPjI=;
+	s=korg; t=1779301776;
+	bh=Z60fvdKhBzD6rXNG0qxk65JofIpD+/ncWrewQD9aqZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dIk9jlFoAa8lDSFDyzVupqlsbBRSI1kPWsCFFRvrTWLFwD6jUEPOeR3tAnNcgt5UE
-	 unGvlfCmOD/yqYU12zCS4UskjRMYOew9f0PMRaPdsrt4bmeOfl66Y6zg1pJ5JLbtrf
-	 vze7AIjryN/tdLz5F70Fjr4gQgZj+ADcWj58SACU=
+	b=0wQJIekgZIexBVURiwJE0jdLeMMpeBhVRKkZgCvBffkonNGXptVNhZsy9iaPU0cho
+	 GbFJ6DrrtOujZ1Erh+eRhOMDPiw3c3YHAAIu0XXdDZr3wKCj3/tmrlLrMTRsQIEGjj
+	 6pJZ58App7lC5IqzLPYhdUik4I3jzoB0ZXnqxLio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Panagiotis Petrakopoulos <npetrakopoulos2003@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Brian Masney <bmasney@redhat.com>,
+	Thomas Gleixner <tglx@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 229/666] ALSA: scarlett2: Add missing sentinel initializer field
+Subject: [PATCH 6.6 017/508] irqchip/irq-pic32-evic: Address warning related to wrong printf() formatter
 Date: Wed, 20 May 2026 18:17:20 +0200
-Message-ID: <20260520162116.175998198@linuxfoundation.org>
+Message-ID: <20260520162058.960584932@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +63,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252402-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252860-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,suse.de:email]
-X-Rspamd-Queue-Id: 13C89595BFD
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: B5F6A5978E6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Panagiotis Petrakopoulos <npetrakopoulos2003@gmail.com>
+From: Brian Masney <bmasney@redhat.com>
 
-[ Upstream commit 2428cd6e8b6fa80c36db4652702ca0acd2ce3f08 ]
+[ Upstream commit 86be659415b0ddefebc3120e309091aa215a9064 ]
 
-A "-Wmissing-field-initializers" warning was emitted when compiling the
-module using the W=2 option. There is a sentinel initializer field
-missing in the end of scarlett2_devices[]. Tested using a
-Scarlett Solo 4th gen.
+This driver is currently only build on 32 bit MIPS systems. When building
+it on x86_64, the following warning occurs:
 
-Fixes: d98cc489029d ("ALSA: scarlett2: Move USB IDs out from device_info struct")
-Signed-off-by: Panagiotis Petrakopoulos <npetrakopoulos2003@gmail.com>
-Link: https://patch.msgid.link/20260405222548.8903-1-npetrakopoulos2003@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+    drivers/irqchip/irq-pic32-evic.c: In function ‘pic32_ext_irq_of_init’:
+    ./include/linux/kern_levels.h:5:25: error: format ‘%d’ expects argument of type
+     ‘int’, but argument 2 has type ‘long unsigned int’ [-Werror=format=]
+
+Update the printf() formatter in preparation for allowing this driver to
+be compiled on all architectures.
+
+Fixes: aaa8666ada780 ("IRQCHIP: irq-pic32-evic: Add support for PIC32 interrupt controller")
+Signed-off-by: Brian Masney <bmasney@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Link: https://patch.msgid.link/20260222-irqchip-pic32-v1-1-37f50d1f14af@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_scarlett2.c | 2 +-
+ drivers/irqchip/irq-pic32-evic.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/usb/mixer_scarlett2.c b/sound/usb/mixer_scarlett2.c
-index fe1d6e512699c..ef5945aa40e4a 100644
---- a/sound/usb/mixer_scarlett2.c
-+++ b/sound/usb/mixer_scarlett2.c
-@@ -2221,7 +2221,7 @@ static const struct scarlett2_device_entry scarlett2_devices[] = {
- 	{ USB_ID(0x1235, 0x820c), &clarett_8pre_info, "Clarett+" },
+diff --git a/drivers/irqchip/irq-pic32-evic.c b/drivers/irqchip/irq-pic32-evic.c
+index 5d6b8e025bb87..3cc6b439f5f90 100644
+--- a/drivers/irqchip/irq-pic32-evic.c
++++ b/drivers/irqchip/irq-pic32-evic.c
+@@ -196,7 +196,7 @@ static void __init pic32_ext_irq_of_init(struct irq_domain *domain)
  
- 	/* End of list */
--	{ 0, NULL },
-+	{ 0, NULL, NULL },
- };
- 
- /* get the starting port index number for a given port type/direction */
+ 	of_property_for_each_u32(node, pname, hwirq) {
+ 		if (i >= ARRAY_SIZE(priv->ext_irqs)) {
+-			pr_warn("More than %d external irq, skip rest\n",
++			pr_warn("More than %zu external irq, skip rest\n",
+ 				ARRAY_SIZE(priv->ext_irqs));
+ 			break;
+ 		}
 -- 
 2.53.0
 
