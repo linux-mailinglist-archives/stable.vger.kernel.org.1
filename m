@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-251684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252325-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SAqtKIgdDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251684-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:46:00 +0200
+	id CDy2BSb8DWoK5QUAu9opvQ
+	(envelope-from <stable+bounces-252325-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EC9059A136
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:46:00 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5FF5595FE8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DA6B7321CB2E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:37:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6E84431498A3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:06:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68CFA3EF0DA;
-	Wed, 20 May 2026 17:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BDC13FB7FC;
+	Wed, 20 May 2026 18:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XRYDal6R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l9FnK+mE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0283F1AD9;
-	Wed, 20 May 2026 17:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A85F3A6B6D;
+	Wed, 20 May 2026 18:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298626; cv=none; b=TBC+Rzo9nks1iddkhgoU0CV7KfrBZQ3xp3hI+8+I5PYi1O3CwE5HRGzCKz0tWKkoAMGzJUccfAvGBIUD2xlxEWouO10UJDtfPI6//NRwb2sWlyxZMOjWPFLECXDWl+Mc9EMNughdLdlSuF4XHX6rDclG4jz2lC8BAJLDp1+SMTs=
+	t=1779300381; cv=none; b=Cbbt8YeS2q/v44kffhrXdjRuuYfecevD9TUktg+BjECgcYbHzuzxXo2aGHrDOPtoQk1yaniWOQvHMaOQVqwLLaBsHZ/wSveiDSMePO/3AHaFaLihe8F5cvT0VAi2w9FZ6i6sH6OLoJQmCdcwb3WKK6Ay3xwUq5/SvdVljCZdyJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298626; c=relaxed/simple;
-	bh=lUeP3jxQvoNlDyiAecw8CWzyD106s94+dyayelWFuQM=;
+	s=arc-20240116; t=1779300381; c=relaxed/simple;
+	bh=vwE5Tu3I9JOjf3+32tHSA47GKYs60r6dqRlKoBrdoMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NwpeUBUIhTNJ6W7YXU2yoQSgh+STwUl+RcocWz/pdOkIg/7UfBGdeAcV/QlPhre2QmFzr1YEp9X9LSthBwGHPYfEw99I7vP2dJrVMYbYiV06iB52sNd6VptiFnJZtwu/7Q84K85GV+9Bz+V3UZwpV+ReqaMuh3yXB6Lp26kGcKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XRYDal6R; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F27C1F000E9;
-	Wed, 20 May 2026 17:37:02 +0000 (UTC)
+	 MIME-Version; b=Jesu2/DduBhFZD4tUTLAhT8r6cMzbZB2T75OjJjtHoRbdvFlqlOlP2xFl+/i69jCw9Zch7UBrqAe9+4/L126qzsOJt6YJXsFlX1RyRdTL6/fDVv8/A1dzU5gjl0p7XIwqS5WcLMpg2CtiunbEa/P8UUv/7iKXhowi/P3fzMC+6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l9FnK+mE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E5AB1F000E9;
+	Wed, 20 May 2026 18:06:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298622;
-	bh=T8GdM7gyN8SSpF9Qgw17SuFqLJheRPY5EckH2ggm870=;
+	s=korg; t=1779300380;
+	bh=Uq2EYbrdmHxAYMD6NTXFFIdQX4Ve34MU1Y/e5Ku2Z/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XRYDal6R95NQ0s86uqw+DaO9Z/pWE8KSj+/IjzgAvqnZNesbffcgRcVBqg5d1NTmu
-	 U1YScTZ1o67ReNTmBW/ZXvC3+BHNrBuDBT/mhVby6cLyB+j7Kd4hMCjl4HpBxr57za
-	 RdKKzjC8jo5nZAmF1tLV3Y36h31jWwmbR/Vg6QW0=
+	b=l9FnK+mEUPcS8N+fF1VsiND7dgMq90/4/SxfnXGSvDvgVkJlqEYUPx1X14NqMuriz
+	 ozds46MQSeoVrz8VdF2hIddJhUFxh/3gZKEEN9BIovSH8CMryLW0US9S2mtT08EQqA
+	 5q0NwKIPadlkwTTmMY6O81yHNIAf4KPmHFgCOMbE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jason Yan <yanaijie@huawei.com>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 479/957] mtd: spinand: Gather all the bus interface steps in one single function
-Date: Wed, 20 May 2026 18:16:02 +0200
-Message-ID: <20260520162144.913849614@linuxfoundation.org>
+Subject: [PATCH 6.12 152/666] fbdev: matroxfb: Mark variable with __maybe_unused to avoid W=1 build break
+Date: Wed, 20 May 2026 18:16:03 +0200
+Message-ID: <20260520162114.503284816@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,171 +67,102 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251684-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.intel.com,huawei.com,gmx.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-252325-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 3EC9059A136
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,gmx.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email]
+X-Rspamd-Queue-Id: D5FF5595FE8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit be0b86c648bf811237cc17e274e9f9488fccb772 ]
+[ Upstream commit caf6144053b4e1c815aa56afb54745a176f999df ]
 
-Writing the quad enable bit in one helper and doing the chip
-configuration in another does not make much sense from a bus interface
-setup point of view.
+Clang is not happy about set but unused variable:
 
-Instead, let's create a broader helper which is going to be in charge of
-all the bus configuration steps at once. This will specifically allow to
-transition to octal DDR mode, and even fallback to quad (if suppoorted)
-or single mode otherwise.
+drivers/video/fbdev/matrox/g450_pll.c:412:18: error: variable 'mnp' set but not used
+   412 |         unsigned int mnp;
+       |                      ^
+1 error generated.
 
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Stable-dep-of: 25a915fad503 ("mtd: spinand: winbond: Clarify when to enable the HS bit")
+Since the commit 7b987887f97b ("video: fbdev: matroxfb: remove dead code
+and set but not used variable") the 'mnp' became unused, but eliminating
+that code might have side-effects. The question here is what should we do
+with 'mnp'? The easiest way out is just mark it with __maybe_unused which
+will shut the compiler up and won't change any possible IO flow. So does
+this change.
+
+A dive into the history of the driver:
+
+The problem was revealed when the #if 0 guarded code along with unused
+pixel_vco variable was removed. That code was introduced in the original
+commit 213d22146d1f ("[PATCH] (1/3) matroxfb for 2.5.3"). And then guarded
+in the commit 705e41f82988 ("matroxfb DVI updates: Handle DVI output on
+G450/G550. Powerdown unused portions of G450/G550 DAC. Split G450/G550 DAC
+from older DAC1064 handling. Modify PLL setting when both CRTCs use same
+pixel clocks.").
+
+NOTE: The two commits mentioned above pre-date Git era and available in
+history.git repository for archaeological purposes.
+
+Even without that guard the modern compilers may see that the pixel_vco
+wasn't ever used and seems a leftover after some debug or review made
+25 years ago.
+
+The g450_mnp2vco() doesn't have any IO and as Jason said doesn't seem
+to have any side effects either than some unneeded CPU processing during
+runtime. I agree that's unlikely that timeout (or heating up the CPU) has
+any effect on the HW (GPU/display) functionality.
+
+Fixes: 7b987887f97b ("video: fbdev: matroxfb: remove dead code and set but not used variable")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Jason Yan <yanaijie@huawei.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/spi/core.c | 62 ++++++++++++++++++++++---------------
- 1 file changed, 37 insertions(+), 25 deletions(-)
+ drivers/video/fbdev/matrox/g450_pll.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
-index 5c1797946a047..b88f30ed746fc 100644
---- a/drivers/mtd/nand/spi/core.c
-+++ b/drivers/mtd/nand/spi/core.c
-@@ -177,18 +177,9 @@ static int spinand_init_cfg_cache(struct spinand_device *spinand)
- 	return 0;
- }
- 
--static int spinand_init_quad_enable(struct spinand_device *spinand)
-+static int spinand_init_quad_enable(struct spinand_device *spinand,
-+				    bool enable)
- {
--	bool enable = false;
--
--	if (!(spinand->flags & SPINAND_HAS_QE_BIT))
--		return 0;
--
--	if (spinand->op_templates->read_cache->data.buswidth == 4 ||
--	    spinand->op_templates->write_cache->data.buswidth == 4 ||
--	    spinand->op_templates->update_cache->data.buswidth == 4)
--		enable = true;
--
- 	return spinand_upd_cfg(spinand, CFG_QUAD_ENABLE,
- 			       enable ? CFG_QUAD_ENABLE : 0);
- }
-@@ -1314,12 +1305,6 @@ static int spinand_manufacturer_init(struct spinand_device *spinand)
- 			return ret;
- 	}
- 
--	if (spinand->configure_chip) {
--		ret = spinand->configure_chip(spinand);
--		if (ret)
--			return ret;
--	}
--
- 	return 0;
- }
- 
-@@ -1496,6 +1481,31 @@ static int spinand_detect(struct spinand_device *spinand)
- 	return 0;
- }
- 
-+static int spinand_configure_chip(struct spinand_device *spinand)
-+{
-+	bool quad_enable = false;
-+	int ret;
-+
-+	if (spinand->flags & SPINAND_HAS_QE_BIT) {
-+		if (spinand->ssdr_op_templates.read_cache->data.buswidth == 4 ||
-+		    spinand->ssdr_op_templates.write_cache->data.buswidth == 4 ||
-+		    spinand->ssdr_op_templates.update_cache->data.buswidth == 4)
-+			quad_enable = true;
-+	}
-+
-+	ret = spinand_init_quad_enable(spinand, quad_enable);
-+	if (ret)
-+		return ret;
-+
-+	if (spinand->configure_chip) {
-+		ret = spinand->configure_chip(spinand);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return ret;
-+}
-+
- static int spinand_init_flash(struct spinand_device *spinand)
- {
- 	struct device *dev = &spinand->spimem->spi->dev;
-@@ -1506,10 +1516,6 @@ static int spinand_init_flash(struct spinand_device *spinand)
- 	if (ret)
- 		return ret;
- 
--	ret = spinand_init_quad_enable(spinand);
--	if (ret)
--		return ret;
--
- 	ret = spinand_upd_cfg(spinand, CFG_OTP_ENABLE, 0);
- 	if (ret)
- 		return ret;
-@@ -1522,19 +1528,25 @@ static int spinand_init_flash(struct spinand_device *spinand)
- 		return ret;
- 	}
- 
-+	ret = spinand_configure_chip(spinand);
-+	if (ret)
-+		goto manuf_cleanup;
-+
- 	/* After power up, all blocks are locked, so unlock them here. */
- 	for (i = 0; i < nand->memorg.ntargets; i++) {
- 		ret = spinand_select_target(spinand, i);
- 		if (ret)
--			break;
-+			goto manuf_cleanup;
- 
- 		ret = spinand_lock_block(spinand, BL_ALL_UNLOCKED);
- 		if (ret)
--			break;
-+			goto manuf_cleanup;
- 	}
- 
--	if (ret)
--		spinand_manufacturer_cleanup(spinand);
-+	return 0;
-+
-+manuf_cleanup:
-+	spinand_manufacturer_cleanup(spinand);
- 
- 	return ret;
- }
+diff --git a/drivers/video/fbdev/matrox/g450_pll.c b/drivers/video/fbdev/matrox/g450_pll.c
+index ff8e321a22cef..b2d3f7328ea83 100644
+--- a/drivers/video/fbdev/matrox/g450_pll.c
++++ b/drivers/video/fbdev/matrox/g450_pll.c
+@@ -407,7 +407,7 @@ static int __g450_setclk(struct matrox_fb_info *minfo, unsigned int fout,
+ 		case M_VIDEO_PLL:
+ 			{
+ 				u_int8_t tmp;
+-				unsigned int mnp;
++				unsigned int mnp __maybe_unused;
+ 				unsigned long flags;
+ 				
+ 				matroxfb_DAC_lock_irqsave(flags);
 -- 
 2.53.0
 
