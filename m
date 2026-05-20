@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250377-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gATkKFUZDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251317-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:28:05 +0200
+	id KEdrAsvxDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-250377-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:39:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D95C5999EE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:28:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AA9859432C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:39:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 87AC33497B3B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:21:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A377C3503DD9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80B7E36CE19;
-	Wed, 20 May 2026 17:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7BE5372690;
+	Wed, 20 May 2026 16:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FmQ+Ka4a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cbO4SdDx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF4737754D;
-	Wed, 20 May 2026 17:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DBD2369D4E;
+	Wed, 20 May 2026 16:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297668; cv=none; b=D+4k1PNsoYTkOYJng/YzPq0b567ox8Y/hP716b0zflpcUiEavF5xHVTpmsqxhvv86Z+saox+ZVsEHMk/DacQmG5GdqBWRV02TeFavjyPsX+46n5ObARnJmAlW5RaqLbjqzCtjOzEsLxQj1lhRi1Th5+k8Eibx86Rw5txAYNFdl8=
+	t=1779295254; cv=none; b=noFgI9QH972R4MyHGxI3+kLgaZ17I2MG43TaJbWMNboNdmvNFr/kk8iscxR2mNJgHnAFB0lsaf1X4MB+r9xFdZ2wR0KcKABUlQGqQs3toXHe6EwUoPZfe7h32ml0vGYHkXTI80lc872m0o6bLkLZp1Iu6AjF0kLcvMjEsfKBZ8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297668; c=relaxed/simple;
-	bh=jbtOCgdKTOqAqEcx7TRp/fqg01lzn0LTisBEcmEu1Nk=;
+	s=arc-20240116; t=1779295254; c=relaxed/simple;
+	bh=Hqal4/aqtGdJB9hAnmTnWrFyWg5Sf4yXvZkI871Yk9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rsrOIK1fpq5uKmPyPzjP8aRsSsBcJbf0gbiPv553Zc/jaWeix4CMLx7DAVlSi1RPd6jlq7bfRTZZslVEAgbM3NMPo62XGKF2NVTDuztuIGyJ5XapN1nCpJOixYKcw1Y7YUmeDD/9Z/PfbQHtr1T+PoLihijoaaLhtI8m6zRrrnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FmQ+Ka4a; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E8D81F000E9;
-	Wed, 20 May 2026 17:21:06 +0000 (UTC)
+	 MIME-Version; b=lLZcv2+K26MphK5TyLcBWcadKtVll0I0A1c3oM0MpZOmHbM2I1+3J8bJqu/hmepHgwFuXoGaI8I1o/CrtrejPYeI/awWCAUDltKowgn5Vf3eI+/p6ORKdKGlALLx8Nq3gRCdpUZU9OuSLpS28m9U0IHrFKv8+SNHOAC8LSOj7ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cbO4SdDx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D261F00893;
+	Wed, 20 May 2026 16:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297666;
-	bh=IfBAXuKEazJ+mTUCbiezQZTr+trHcm5IAuFu6gf1qnc=;
+	s=korg; t=1779295253;
+	bh=4YnG76t9Fz8ndFO9q8pKhZONZe/VjGbahjy/53CdV7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FmQ+Ka4aLVaGi8A6CknOpIXZqGwutfdND/MtdrftGTwyqiQ1q8B+zz5TZ6xELXkRM
-	 GEbvKWNf6BE4cbCPolmcE0UcBHlA2L4TmpjeK8Yo/Sv/16f228N9Q7wny4rIfiXvEW
-	 zGvv5KMhvXdRjKN9EfTB0EfVSxpVDwR/VRyhdp/s=
+	b=cbO4SdDxcNvSHa5OySyJSN7uT3SFTl9I2ZX7NsgBiPElW03LLFdZPv3WMl0l97zyM
+	 WoJZ2BG/ioX1Yk2/EeJSmwoLTp9YuhY7fghrSVy2/eeieGoNQW2YJOTzFLSTmfQhNv
+	 mCMEE3Wr4rSg7exb6SmxVpLyHm1eqBUUU2b5eOHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aditya Gupta <adityag@linux.ibm.com>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Ethan Tidmore <ethantidmore06@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 117/957] powerpc/crash: Update backup region offset in elfcorehdr on memory hotplug
+Subject: [PATCH 7.0 0350/1146] ASoC: SOF: Intel: hda: Place check before dereference
 Date: Wed, 20 May 2026 18:10:00 +0200
-Message-ID: <20260520162137.096744831@linuxfoundation.org>
+Message-ID: <20260520162156.121400753@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,276 +66,92 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251317-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250377-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 1D95C5999EE
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4AA9859432C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
+From: Ethan Tidmore <ethantidmore06@gmail.com>
 
-[ Upstream commit f53b24d1fa263f56155213eabab734c18d884aff ]
+[ Upstream commit 6cbc8360f51a3df2ea16a786b262b9fe44d4c68c ]
 
-When elfcorehdr is prepared for kdump, the program header representing
-the first 64 KB of memory is expected to have its offset point to the
-backup region. This is required because purgatory copies the first 64 KB
-of the crashed kernel memory to this backup region following a kernel
-crash. This allows the capture kernel to use the first 64 KB of memory
-to place the exception vectors and other required data.
+The struct hext_stream is dereferenced before it is checked for NULL.
+Although it can never be NULL due to a check prior to
+hda_dsp_iccmax_stream_hw_params() being called, this change clears any
+confusion regarding hext_stream possibly being NULL.
 
-When elfcorehdr is recreated due to memory hotplug, the offset of
-the program header representing the first 64 KB is not updated.
-As a result, the capture kernel exports the first 64 KB at offset
-0, even though the data actually resides in the backup region.
+Check hext_stream for NULL and then assign its members.
 
-Fix this by calling sync_backup_region_phdr() to update the program
-header offset in the elfcorehdr created during memory hotplug.
+Detected by Smatch:
+sound/soc/sof/intel/hda-stream.c:488 hda_dsp_iccmax_stream_hw_params() warn:
+variable dereferenced before check 'hext_stream' (see line 486)
 
-sync_backup_region_phdr() works for images loaded via the
-kexec_file_load syscall. However, it does not work for kexec_load,
-because image->arch.backup_start is not initialized in that case.
-So introduce machine_kexec_post_load() to process the elfcorehdr
-prepared by kexec-tools and initialize image->arch.backup_start for
-kdump images loaded via kexec_load syscall.
-
-Rename update_backup_region_phdr() to sync_backup_region_phdr() and
-extend it to synchronize the backup region offset between the kdump
-image and the ELF core header. The helper now supports updating either
-the kdump image from the ELF program header or updating the ELF program
-header from the kdump image, avoiding code duplication.
-
-Define ARCH_HAS_KIMAGE_ARCH and struct kimage_arch when
-CONFIG_KEXEC_FILE or CONFIG_CRASH_DUMP is enabled so that
-kimage->arch.backup_start is available with the kexec_load system call.
-
-This patch depends on the patch titled
-"powerpc/crash: fix backup region offset update to elfcorehdr".
-
-Fixes: 849599b702ef ("powerpc/crash: add crash memory hotplug support")
-Reviewed-by: Aditya Gupta <adityag@linux.ibm.com>
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20260312083051.1935737-3-sourabhjain@linux.ibm.com
+Fixes: aca961f196e5d ("ASoC: SOF: Intel: hda: Add helper function to program ICCMAX stream")
+Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
+Link: https://patch.msgid.link/20260324173830.17563-1-ethantidmore06@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/kexec.h  | 14 +++++--
- arch/powerpc/kexec/crash.c        | 64 +++++++++++++++++++++++++++++++
- arch/powerpc/kexec/file_load_64.c | 29 +-------------
- 3 files changed, 76 insertions(+), 31 deletions(-)
+ sound/soc/sof/intel/hda-stream.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/kexec.h b/arch/powerpc/include/asm/kexec.h
-index 4bbf9f699aaaf..d3b5028102cdd 100644
---- a/arch/powerpc/include/asm/kexec.h
-+++ b/arch/powerpc/include/asm/kexec.h
-@@ -66,11 +66,9 @@ void relocate_new_kernel(unsigned long indirection_page, unsigned long reboot_co
- 			 unsigned long start_address) __noreturn;
- void kexec_copy_flush(struct kimage *image);
- 
--#ifdef CONFIG_KEXEC_FILE
--extern const struct kexec_file_ops kexec_elf64_ops;
- 
-+#if defined(CONFIG_KEXEC_FILE) || defined(CONFIG_CRASH_DUMP)
- #define ARCH_HAS_KIMAGE_ARCH
--
- struct kimage_arch {
- 	struct crash_mem *exclude_ranges;
- 
-@@ -78,6 +76,10 @@ struct kimage_arch {
- 	void *backup_buf;
- 	void *fdt;
- };
-+#endif
-+
-+#ifdef CONFIG_KEXEC_FILE
-+extern const struct kexec_file_ops kexec_elf64_ops;
- 
- char *setup_kdump_cmdline(struct kimage *image, char *cmdline,
- 			  unsigned long cmdline_len);
-@@ -143,6 +145,10 @@ int arch_crash_hotplug_support(struct kimage *image, unsigned long kexec_flags);
- 
- unsigned int arch_crash_get_elfcorehdr_size(void);
- #define crash_get_elfcorehdr_size arch_crash_get_elfcorehdr_size
-+
-+int machine_kexec_post_load(struct kimage *image);
-+#define machine_kexec_post_load machine_kexec_post_load
-+
- #endif /* CONFIG_CRASH_HOTPLUG */
- 
- extern int crashing_cpu;
-@@ -157,6 +163,8 @@ extern void default_machine_crash_shutdown(struct pt_regs *regs);
- extern void crash_kexec_prepare(void);
- extern void crash_kexec_secondary(struct pt_regs *regs);
- 
-+extern void sync_backup_region_phdr(struct kimage *image, Elf64_Ehdr *ehdr,
-+				    bool phdr_to_kimage);
- static inline bool kdump_in_progress(void)
+diff --git a/sound/soc/sof/intel/hda-stream.c b/sound/soc/sof/intel/hda-stream.c
+index 1c04b5d9c0d8b..5c1f3b427cdb8 100644
+--- a/sound/soc/sof/intel/hda-stream.c
++++ b/sound/soc/sof/intel/hda-stream.c
+@@ -480,16 +480,20 @@ int hda_dsp_iccmax_stream_hw_params(struct snd_sof_dev *sdev, struct hdac_ext_st
+ 				    struct snd_dma_buffer *dmab,
+ 				    struct snd_pcm_hw_params *params)
  {
- 	return crashing_cpu >= 0;
-diff --git a/arch/powerpc/kexec/crash.c b/arch/powerpc/kexec/crash.c
-index a325c1c02f96d..e6539f213b3d1 100644
---- a/arch/powerpc/kexec/crash.c
-+++ b/arch/powerpc/kexec/crash.c
-@@ -27,6 +27,7 @@
- #include <asm/debug.h>
- #include <asm/interrupt.h>
- #include <asm/kexec_ranges.h>
-+#include <asm/crashdump-ppc64.h>
+-	struct hdac_stream *hstream = &hext_stream->hstream;
+-	int sd_offset = SOF_STREAM_SD_OFFSET(hstream);
++	struct hdac_stream *hstream;
++	int sd_offset;
+ 	int ret;
+-	u32 mask = 0x1 << hstream->index;
++	u32 mask;
  
- /*
-  * The primary CPU waits a while for all secondary CPUs to enter. This is to
-@@ -399,7 +400,68 @@ void default_machine_crash_shutdown(struct pt_regs *regs)
- 		ppc_md.kexec_cpu_down(1, 0);
- }
- 
-+#ifdef CONFIG_CRASH_DUMP
-+/**
-+ * sync_backup_region_phdr - synchronize backup region offset between
-+ *			    kexec image and ELF core header.
-+ * @image: Kexec image.
-+ * @ehdr: ELF core header.
-+ * @phdr_to_kimage: If true, read the offset from the ELF program header
-+ *		    and update the kimage backup region. If false, update
-+ *		    the ELF program header offset from the kimage backup
-+ *		    region.
-+ *
-+ * Note: During kexec_load, this is called with phdr_to_kimage = true. For
-+ * kexec_file_load and ELF core header recreation during memory hotplug
-+ * events, it is called with phdr_to_kimage = false.
-+ *
-+ * Returns nothing.
-+ */
-+void sync_backup_region_phdr(struct kimage *image, Elf64_Ehdr *ehdr, bool phdr_to_kimage)
-+{
-+	Elf64_Phdr *phdr;
-+	unsigned int i;
-+
-+	phdr = (Elf64_Phdr *)(ehdr + 1);
-+	for (i = 0; i < ehdr->e_phnum; i++, phdr++) {
-+		if (phdr->p_paddr == BACKUP_SRC_START) {
-+			if (phdr_to_kimage)
-+				image->arch.backup_start = phdr->p_offset;
-+			else
-+				phdr->p_offset = image->arch.backup_start;
-+
-+			kexec_dprintk("Backup region offset updated to 0x%lx\n",
-+				      image->arch.backup_start);
-+			return;
-+		}
-+	}
-+}
-+#endif /* CONFIG_CRASH_DUMP */
-+
- #ifdef CONFIG_CRASH_HOTPLUG
-+
-+int machine_kexec_post_load(struct kimage *image)
-+{
-+	int i;
-+	unsigned long mem;
-+	unsigned char *ptr;
-+
-+	if (image->type != KEXEC_TYPE_CRASH)
-+		return 0;
-+
-+	if (image->file_mode)
-+		return 0;
-+
-+	for (i = 0; i < image->nr_segments; i++) {
-+		mem = image->segment[i].mem;
-+		ptr = (char *)__va(mem);
-+
-+		if (ptr && memcmp(ptr, ELFMAG, SELFMAG) == 0)
-+			sync_backup_region_phdr(image, (Elf64_Ehdr *) ptr, true);
-+	}
-+	return 0;
-+}
-+
- #undef pr_fmt
- #define pr_fmt(fmt) "crash hp: " fmt
- 
-@@ -474,6 +536,8 @@ static void update_crash_elfcorehdr(struct kimage *image, struct memory_notify *
- 		goto out;
+ 	if (!hext_stream) {
+ 		dev_err(sdev->dev, "error: no stream available\n");
+ 		return -ENODEV;
  	}
  
-+	sync_backup_region_phdr(image, (Elf64_Ehdr *) elfbuf, false);
++	hstream = &hext_stream->hstream;
++	sd_offset = SOF_STREAM_SD_OFFSET(hstream);
++	mask = 0x1 << hstream->index;
 +
- 	ptr = __va(mem);
- 	if (ptr) {
- 		/* Temporarily invalidate the crash image while it is replaced */
-diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
-index a7db7eca0481b..8c72e12ea44e5 100644
---- a/arch/powerpc/kexec/file_load_64.c
-+++ b/arch/powerpc/kexec/file_load_64.c
-@@ -374,33 +374,6 @@ static int load_backup_segment(struct kimage *image, struct kexec_buf *kbuf)
- 	return 0;
- }
- 
--/**
-- * update_backup_region_phdr - Update backup region's offset for the core to
-- *                             export the region appropriately.
-- * @image:                     Kexec image.
-- * @ehdr:                      ELF core header.
-- *
-- * Assumes an exclusive program header is setup for the backup region
-- * in the ELF headers
-- *
-- * Returns nothing.
-- */
--static void update_backup_region_phdr(struct kimage *image, Elf64_Ehdr *ehdr)
--{
--	Elf64_Phdr *phdr;
--	unsigned int i;
--
--	phdr = (Elf64_Phdr *)(ehdr + 1);
--	for (i = 0; i < ehdr->e_phnum; i++, phdr++) {
--		if (phdr->p_paddr == BACKUP_SRC_START) {
--			phdr->p_offset = image->arch.backup_start;
--			kexec_dprintk("Backup region offset updated to 0x%lx\n",
--				      image->arch.backup_start);
--			return;
--		}
--	}
--}
--
- static unsigned int kdump_extra_elfcorehdr_size(struct crash_mem *cmem)
- {
- #if defined(CONFIG_CRASH_HOTPLUG) && defined(CONFIG_MEMORY_HOTPLUG)
-@@ -445,7 +418,7 @@ static int load_elfcorehdr_segment(struct kimage *image, struct kexec_buf *kbuf)
- 	}
- 
- 	/* Fix the offset for backup region in the ELF header */
--	update_backup_region_phdr(image, headers);
-+	sync_backup_region_phdr(image, headers, false);
- 
- 	kbuf->buffer = headers;
- 	kbuf->mem = KEXEC_BUF_MEM_UNKNOWN;
+ 	if (!dmab) {
+ 		dev_err(sdev->dev, "error: no dma buffer allocated!\n");
+ 		return -ENODEV;
 -- 
 2.53.0
 
