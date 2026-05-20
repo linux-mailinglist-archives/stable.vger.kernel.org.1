@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-250994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252560-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KEjeFQfxDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-250994-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:07 +0200
+	id sEYsFLYmDmr26QUAu9opvQ
+	(envelope-from <stable+bounces-252560-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:25:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EB3359411A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACCC059AD0B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:25:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6000330B829B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:08:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4A7EE32716FC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:16:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA763F4DD7;
-	Wed, 20 May 2026 17:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A74368968;
+	Wed, 20 May 2026 18:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SxGE/vpE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MdRzhzGZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4943F4114;
-	Wed, 20 May 2026 17:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82FD3368B6;
+	Wed, 20 May 2026 18:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296826; cv=none; b=ggiuzJmL9kYN3YYZKlOCsLd2CjJjlkclkub+D43OptjzWz636KbnGyrbKxo1Q9yoMKbHw6Isi91zgSdG6WJ7zoGNbYjTAQMdZsVFWYSaVn1THU6uqK3SEa4oB9fGXtHgbMwv9pyzCN2i3k0OqYyT7x63OgB4//Sla8agUcWOPQE=
+	t=1779300995; cv=none; b=oAQsb2ywg6hQn12DiN1EALlqoGhWtvqHEB4Uvpr0k5uNdJIFpx7ZkFbnnG09Q5VPNrvgciYm28eLgt3bBUaSXFP0N3ajIxM8aFOqdOeU2N9dUH+ZnVkLd9PdmxviLV2UAUhXdc442su/3KQNv5S7+cLC+RMiuyE80QY8DsPRLqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296826; c=relaxed/simple;
-	bh=oamvajJuZ/fBo+/CpM16q2irh3q6Hg/AIu8miRy0Vbg=;
+	s=arc-20240116; t=1779300995; c=relaxed/simple;
+	bh=lcNpKrbHUVGUnIUqDZFluHKufvlNYmQAwr052F+xQTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MRViHx0Y4YoKmvxEcCXkBrD1h08TSMHQhMPpeH9TvUGSmAPepG57fDM9i3tsa91YHuyx/2JLQCfamhAkD8jeSUY/8FUrHxhqxXOqm7oIqdiZDfNql7ZhUyy6vqg58IhOB4eF6flsXumd60uGsh3/MnWDn3+MbXaYbfFJIptUnLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SxGE/vpE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A1231F00893;
-	Wed, 20 May 2026 17:07:04 +0000 (UTC)
+	 MIME-Version; b=RVq+W3i2fvaGlFB41h6wDs+Ez0LPy4LqZyRQgYb5TANqf8fS5fpr6flxdBS5SLGptWJkY5FBh7+xZGTGiGvDZpcI8PgLteWYivmOEQOIFMU/vm4WVBFRth8/npmub1eTd99gB5e3f1F1iCgXzexciR+U4ET8uILilH9PgGnT0xU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MdRzhzGZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A5191F000E9;
+	Wed, 20 May 2026 18:16:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296825;
-	bh=drV+8A2tJ/qm0aLqqAvegIG4GnPzrmhBLh6oQDk1LD0=;
+	s=korg; t=1779300993;
+	bh=lemmAfDexxozMKU0SsvtJeW8hPw4hqHCbfFygyAKPvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SxGE/vpEOamJkDR2FYKdyjrVWk26RYqYSYyHbKb09HgC8Ay9eDISXhV3yZJw4P5yB
-	 5fdTdinxOhCrM9+FhdvcbP8GRdD134WTdxtMsk/CLcKAfRqpNlGCMUi41NkaHtldFz
-	 FIApQ2wCY3U6mYLrnoXr/F+4JMWqxmFaBJaL1+CU=
+	b=MdRzhzGZD8sI0GOZTmbaaSu1pt3M2heY/Lvzf+X4JEU7fT7jmtP83EWDROG5sMQZF
+	 D5msPy+ku+AwZ640yE5jEkElBP6lGI9RTC/jZ8Fc9rS4qTnWNRL5ZE3aEf2mf7aXOd
+	 FfLs1Y71CPunpBLEb6+N7jp3nuJsPJxfUl9FAsY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Geurts <paul.geurts@prodrive-technologies.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Mark Greer <mgreer@animalcreek.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Jorge Marques <jorge.marques@analog.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0945/1146] NFC: trf7970a: Ignore antenna noise when checking for RF field
+Subject: [PATCH 6.12 384/666] i3c: master: Fix error codes at send_ccc_cmd
 Date: Wed, 20 May 2026 18:19:55 +0200
-Message-ID: <20260520162209.619374655@linuxfoundation.org>
+Message-ID: <20260520162119.576627180@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,82 +70,156 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250994-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252560-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,qualcomm.com:email,prodrive-technologies.com:email]
-X-Rspamd-Queue-Id: 0EB3359411A
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,linaro.org:email,intel.com:email,bootlin.com:email]
+X-Rspamd-Queue-Id: ACCC059AD0B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Geurts <paul.geurts@prodrive-technologies.com>
+From: Jorge Marques <jorge.marques@analog.com>
 
-[ Upstream commit a9bc28aa4e64320668131349436a650bf42591a5 ]
+[ Upstream commit ef8b5229348f0719aca557c4ca5530630ae4d134 ]
 
-The main channel Received Signal Strength Indicator (RSSI) measurement
-is used to determine whether an RF field is present or not. RSSI != 0
-is interpreted as an RF Field is present. This does not take RF noise
-and measurement inaccuracy into account, and results in false positives
-in the field.
+i3c_master_send_ccc_cmd_locked() would propagate cmd->err (positive,
+Mx codes) to the ret variable, cascading down multiple methods until
+reaching methods that explicitly stated they would return 0 on success
+or negative error code. For example, the call chain:
 
-Define a noise level and make sure the RF field is only interpreted as
-present when the RSSI is above the noise level.
+  i3c_device_enable_ibi <- i3c_dev_enable_ibi_locked <-
+  master->ops.enable_ibi <- i3c_master_enec_locked <-
+  i3c_master_enec_disec_locked <- i3c_master_send_ccc_cmd_locked
 
-Fixes: 851ee3cbf850 ("NFC: trf7970a: Don't turn on RF if there is already an RF field")
-Signed-off-by: Paul Geurts <paul.geurts@prodrive-technologies.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Reviewed-by: Mark Greer <mgreer@animalcreek.com>
-Link: https://patch.msgid.link/20260422100930.581237-1-paul.geurts@prodrive-technologies.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix this by returning the ret value, callers can still read the cmd->err
+value if ret is negative.
+
+All corner cases where the Mx codes do need to be handled individually,
+are resolved in previous commits. Those corner cases are all scenarios
+when I3C_ERROR_M2 is expected and acceptable.
+The prerequisite patches for the fix are:
+
+  i3c: master: Move rstdaa error suppression
+  i3c: master: Move entdaa error suppression
+  i3c: master: Move bus_init error suppression
+
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/linux-iio/aYXvT5FW0hXQwhm_@stanley.mountain/
+Fixes: 3a379bbcea0a ("i3c: Add core I3C infrastructure")
+Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Jorge Marques <jorge.marques@analog.com>
+Link: https://patch.msgid.link/20260323-ad4062-positive-error-fix-v3-4-30bdc68004be@analog.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nfc/trf7970a.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/i3c/master.c | 32 +++++++++++++-------------------
+ 1 file changed, 13 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/nfc/trf7970a.c b/drivers/nfc/trf7970a.c
-index d17c701c7888b..08c27bb438b59 100644
---- a/drivers/nfc/trf7970a.c
-+++ b/drivers/nfc/trf7970a.c
-@@ -317,6 +317,7 @@
- #define TRF7970A_RSSI_OSC_STATUS_RSSI_MASK	(BIT(2) | BIT(1) | BIT(0))
- #define TRF7970A_RSSI_OSC_STATUS_RSSI_X_MASK	(BIT(5) | BIT(4) | BIT(3))
- #define TRF7970A_RSSI_OSC_STATUS_RSSI_OSC_OK	BIT(6)
-+#define TRF7970A_RSSI_OSC_STATUS_RSSI_NOISE_LEVEL	1
+diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+index fe6f956cc3111..8e2bff031aac9 100644
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -825,11 +825,17 @@ static void i3c_ccc_cmd_init(struct i3c_ccc_cmd *cmd, bool rnw, u8 id,
+ 	cmd->err = I3C_ERROR_UNKNOWN;
+ }
  
- #define TRF7970A_SPECIAL_FCN_REG1_COL_7_6		BIT(0)
- #define TRF7970A_SPECIAL_FCN_REG1_14_ANTICOLL		BIT(1)
-@@ -1300,7 +1301,7 @@ static int trf7970a_is_rf_field(struct trf7970a *trf, bool *is_rf_field)
- 	if (ret)
- 		return ret;
++/**
++ * i3c_master_send_ccc_cmd_locked() - send a CCC (Common Command Codes)
++ * @master: master used to send frames on the bus
++ * @cmd: command to send
++ *
++ * Return: 0 in case of success, or a negative error code otherwise.
++ *         I3C Mx error codes are stored in cmd->err.
++ */
+ static int i3c_master_send_ccc_cmd_locked(struct i3c_master_controller *master,
+ 					  struct i3c_ccc_cmd *cmd)
+ {
+-	int ret;
+-
+ 	if (!cmd || !master)
+ 		return -EINVAL;
  
--	if (rssi & TRF7970A_RSSI_OSC_STATUS_RSSI_MASK)
-+	if ((rssi & TRF7970A_RSSI_OSC_STATUS_RSSI_MASK) > TRF7970A_RSSI_OSC_STATUS_RSSI_NOISE_LEVEL)
- 		*is_rf_field = true;
- 	else
- 		*is_rf_field = false;
+@@ -847,15 +853,7 @@ static int i3c_master_send_ccc_cmd_locked(struct i3c_master_controller *master,
+ 	    !master->ops->supports_ccc_cmd(master, cmd))
+ 		return -ENOTSUPP;
+ 
+-	ret = master->ops->send_ccc_cmd(master, cmd);
+-	if (ret) {
+-		if (cmd->err != I3C_ERROR_UNKNOWN)
+-			return cmd->err;
+-
+-		return ret;
+-	}
+-
+-	return 0;
++	return master->ops->send_ccc_cmd(master, cmd);
+ }
+ 
+ static struct i2c_dev_desc *
+@@ -959,8 +957,7 @@ static int i3c_master_rstdaa_locked(struct i3c_master_controller *master,
+  *
+  * This function must be called with the bus lock held in write mode.
+  *
+- * Return: 0 in case of success, a positive I3C error code if the error is
+- * one of the official Mx error codes, and a negative error code otherwise.
++ * Return: 0 in case of success, or a negative error code otherwise.
+  */
+ int i3c_master_entdaa_locked(struct i3c_master_controller *master)
+ {
+@@ -1012,8 +1009,7 @@ static int i3c_master_enec_disec_locked(struct i3c_master_controller *master,
+  *
+  * This function must be called with the bus lock held in write mode.
+  *
+- * Return: 0 in case of success, a positive I3C error code if the error is
+- * one of the official Mx error codes, and a negative error code otherwise.
++ * Return: 0 in case of success, or a negative error code otherwise.
+  */
+ int i3c_master_disec_locked(struct i3c_master_controller *master, u8 addr,
+ 			    u8 evts)
+@@ -1033,8 +1029,7 @@ EXPORT_SYMBOL_GPL(i3c_master_disec_locked);
+  *
+  * This function must be called with the bus lock held in write mode.
+  *
+- * Return: 0 in case of success, a positive I3C error code if the error is
+- * one of the official Mx error codes, and a negative error code otherwise.
++ * Return: 0 in case of success, or a negative error code otherwise.
+  */
+ int i3c_master_enec_locked(struct i3c_master_controller *master, u8 addr,
+ 			   u8 evts)
+@@ -1059,8 +1054,7 @@ EXPORT_SYMBOL_GPL(i3c_master_enec_locked);
+  *
+  * This function must be called with the bus lock held in write mode.
+  *
+- * Return: 0 in case of success, a positive I3C error code if the error is
+- * one of the official Mx error codes, and a negative error code otherwise.
++ * Return: 0 in case of success, or a negative error code otherwise.
+  */
+ int i3c_master_defslvs_locked(struct i3c_master_controller *master)
+ {
 -- 
 2.53.0
 
