@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252271-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2KZHNNj2DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251631-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:00:56 +0200
+	id +FCqMKH7DWoK5QUAu9opvQ
+	(envelope-from <stable+bounces-252271-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:21:21 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 988445951AE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:00:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BD73595E05
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:21:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0B033308A79E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:34:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0446630A5809
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:04:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73172369D67;
-	Wed, 20 May 2026 17:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32D9A3E95A4;
+	Wed, 20 May 2026 18:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fUb5t+5z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ycaWkj3e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4186C28DC4;
-	Wed, 20 May 2026 17:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA657371CEA;
+	Wed, 20 May 2026 18:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298485; cv=none; b=jM83/A0avhXoj6vdxnvZisOjr6BFnQ9G+uPUq+K7gIzjfkc6dC3L8qnUflhCvbagn4i6s3Opci+KY9lhoGcKY6042SDdGEd20uMC95wiHqvVU0BKcucmfenBOA6bGBEY4po3n9tYDIy43qvm8ZLrsv3ul2U4dYkc4rWCpBbI0Oc=
+	t=1779300239; cv=none; b=lot0JT/F7k8bPb0nwZNlsTttHKZoS5tYTVEY1KI6brqtTKD2DlSyjs7a9Z1DYRbm0HqRln7sQ6IzvdC4dxjUqVGp5GagsaP5P38BZ98qKT4hOe2JiwG3Id4XfgveuFaa/mESxBEZHFW7cUGNaWsCKm4g5lpQPFd4HP6RK5MZCrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298485; c=relaxed/simple;
-	bh=HMgqyjFWDYquMCJYHq2pa+HR6hEpCQ3i0WqcoRlBbL4=;
+	s=arc-20240116; t=1779300239; c=relaxed/simple;
+	bh=0IDP+AtUzey/Vp9j36YQ+6jOUiUm54CqjUE4MosTB6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iBv8hBdOhy7fWsy0SCj9APUU7hf2tFFQqAZWFH1QZCRDoV5UGpQOqepuofn5fE6Rbbx1qAvwBTPC6H/Dmsokvhc/uPei0TIo9LUfoHBhBby7BDgdV1/p6ZOTObBq6FmyeDeAorH3/lLsIQpEA9+YBcKv32eFuDdYk6v5NprD1UA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fUb5t+5z; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A61D61F000E9;
-	Wed, 20 May 2026 17:34:43 +0000 (UTC)
+	 MIME-Version; b=JcaydwHwONlupknjNMthk9lbezM2lGgypndZumnMoW5PEhcjWxk7NSLyd/354GBPVmccCGa5zmt+VgLhW3rCFn+q5cGFoF5bCMNos7mQ1DV6aAuY0lv6dj+hDIqBKSykFyinZQ9Zayf1P2Jp5/FJ33oEbfhbSBZVSr5IRnpgvDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ycaWkj3e; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DDA61F000E9;
+	Wed, 20 May 2026 18:03:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298484;
-	bh=IL/e0A4d4mDFFT0f6iitANJzYtY4zTX9bjAhwi3mm4s=;
+	s=korg; t=1779300237;
+	bh=LrLmIwtsOHXblShu5FrAzz66iwFg1voL64xqh6msHCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fUb5t+5zk2z/k+klAYp5+Ddn2ub4NbQq43cLs6OMFPUfxp0a72Vc56t/38NIPaFlA
-	 7670C8h4MnQL0ix9XNtBzpKSagtkq6p9HQBFhsruolTJ2re3GeXaI1Ji54Zo6OK7k0
-	 w5RqgK6HrDRiLTbAL5tOso64d72sdIX4YwhM+N+Y=
+	b=ycaWkj3eKlUvHVIwWxvQ+Si1QSritIk7K12VtddbHsXxyl/QskTn3unUEFkdd5ob1
+	 UF1vV9afr2xIBVLlwskOc0ysYUIYVYvsoBSJLtzqnVTheDrJE7DE+o3Tj6NaLgrPLJ
+	 0jE8EQYgmq2wdpEm/G2HWdnBd2at7ErOVm1gRDCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumit Gupta <sumitg@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 427/957] soc/tegra: cbb: Set ERD on resume for err interrupt
+Subject: [PATCH 6.12 099/666] net: ipa: Fix programming of QTIME_TIMESTAMP_CFG
 Date: Wed, 20 May 2026 18:15:10 +0200
-Message-ID: <20260520162143.782221632@linuxfoundation.org>
+Message-ID: <20260520162113.369435259@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,67 +74,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252271-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251631-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
-X-Rspamd-Queue-Id: 988445951AE
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,qualcomm.com:email,msgid.link:url,sashiko.dev:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,fairphone.com:email]
+X-Rspamd-Queue-Id: 6BD73595E05
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumit Gupta <sumitg@nvidia.com>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-[ Upstream commit b6ff71c5d1d4ad858ddf6f39394d169c96689596 ]
+[ Upstream commit de08f9585692813bd41ee654fca0487664c4de30 ]
 
-Set the Error Response Disable (ERD) bit to mask SError responses
-and use interrupt-based error reporting. When the ERD bit is set,
-inband error responses to the initiator via SError are suppressed,
-and fabric errors are reported via an interrupt instead.
+The 'val' variable gets overwritten multiple times, discarding previous
+values. Looking at the git log shows these should be combined with |=
+instead.
 
-The register is set during boot but the info is lost during system
-suspend and needs to be set again on resume.
-
-Fixes: fc2f151d2314 ("soc/tegra: cbb: Add driver for Tegra234 CBB 2.0")
-Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Fixes: 9265a4f0f0b4 ("net: ipa: define even more IPA register fields")
+Link: https://sashiko.dev/#/patchset/20260403-milos-ipa-v1-0-01e9e4e03d3e%40fairphone.com?part=4
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260409-ipa-fixes-v1-1-a817c30678ac@fairphone.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/tegra/cbb/tegra234-cbb.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ipa/ipa_main.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/soc/tegra/cbb/tegra234-cbb.c b/drivers/soc/tegra/cbb/tegra234-cbb.c
-index a9adbcecd47cc..518733a066588 100644
---- a/drivers/soc/tegra/cbb/tegra234-cbb.c
-+++ b/drivers/soc/tegra/cbb/tegra234-cbb.c
-@@ -1586,6 +1586,10 @@ static int __maybe_unused tegra234_cbb_resume_noirq(struct device *dev)
+diff --git a/drivers/net/ipa/ipa_main.c b/drivers/net/ipa/ipa_main.c
+index 5f3dd5a2dcf46..f374a590d1c5e 100644
+--- a/drivers/net/ipa/ipa_main.c
++++ b/drivers/net/ipa/ipa_main.c
+@@ -361,7 +361,7 @@ static void ipa_qtime_config(struct ipa *ipa)
  {
- 	struct tegra234_cbb *cbb = dev_get_drvdata(dev);
+ 	const struct reg *reg;
+ 	u32 offset;
+-	u32 val;
++	u32 val = 0;
  
-+	/* set ERD bit to mask SError and generate interrupt to report error */
-+	if (cbb->fabric->off_mask_erd)
-+		tegra234_cbb_mask_serror(cbb);
-+
- 	tegra234_cbb_error_enable(&cbb->base);
+ 	/* Timer clock divider must be disabled when we change the rate */
+ 	reg = ipa_reg(ipa, TIMERS_XO_CLK_DIV_CFG);
+@@ -374,8 +374,8 @@ static void ipa_qtime_config(struct ipa *ipa)
+ 		val |= reg_bit(reg, DPL_TIMESTAMP_SEL);
+ 	}
+ 	/* Configure tag and NAT Qtime timestamp resolution as well */
+-	val = reg_encode(reg, TAG_TIMESTAMP_LSB, TAG_TIMESTAMP_SHIFT);
+-	val = reg_encode(reg, NAT_TIMESTAMP_LSB, NAT_TIMESTAMP_SHIFT);
++	val |= reg_encode(reg, TAG_TIMESTAMP_LSB, TAG_TIMESTAMP_SHIFT);
++	val |= reg_encode(reg, NAT_TIMESTAMP_LSB, NAT_TIMESTAMP_SHIFT);
  
- 	dev_dbg(dev, "%s resumed\n", cbb->fabric->fab_list[cbb->fabric->fab_id].name);
+ 	iowrite32(val, ipa->reg_virt + reg_offset(reg));
+ 
 -- 
 2.53.0
 
