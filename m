@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-252753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253217-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SK1tAUn+DWpV5QUAu9opvQ
-	(envelope-from <stable+bounces-252753-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:32:41 +0200
+	id WEMJLhoEDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-253217-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:57:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B891059680C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:32:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FD2C597772
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:57:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 736E4317FDA1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 27E3032B1E61
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42BF3FBEC0;
-	Wed, 20 May 2026 18:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3529E41B34C;
+	Wed, 20 May 2026 18:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dw0PlVse"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BsNMv5uo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666CB332EBD;
-	Wed, 20 May 2026 18:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D2E3FE34B;
+	Wed, 20 May 2026 18:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301500; cv=none; b=pd+ijKhYBhtVLhX6VDqx/MveB/7XYjG1V96OdKd+IIjvm+VXjLFrEKLAMUAhL74HKMPelCFAS5h4oU6DXE3gA3pQrKz9nZH6WF4bq5OohE6AXOuHSTYlaALgqy25o9phJ0zqbif6CUsUU0znUypRJAt/AEfeGOqjg6zOam9tnXM=
+	t=1779302706; cv=none; b=QIObQQxSBY9WCXuNrqyk1Az15PVYicYSwa+SoF4mHZxH7AQ15hUoXUnNtH/aOJLg+KwjRP+GNkAfJyIVCg6MkR8ld9q6cwCOVj0I25KAlyacg8h73upb7f+B9eh+gNFO5ywtd0DvkgjYPh+MmoUJ8aEtC6H3bXmQc0lsesS8+Pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301500; c=relaxed/simple;
-	bh=rWbL0qxiOrkdquEeAEwcr/QcbLjfuLVa4DUx1JvdMPA=;
+	s=arc-20240116; t=1779302706; c=relaxed/simple;
+	bh=J0wM5RU2MBZ8o84SuQ+S8zS7nuoOhZnOsFAQK1/KYmo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aUwjDDnuisGXkkOmk+F8Ha/34O8R4eezDC4NIsFmS5lJ8mQw+Rf1HA+TJSybVHUZs2htJVSTir5D+G9G3TqFkoaR4eBS4+Vjb2JDT78bw91sr5OR0H843ftLk7BYgbQGSvs73qMUUk5liOcTUMPaHG+UrWQkQmNhDtNdQPCMv5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dw0PlVse; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC2EE1F000E9;
-	Wed, 20 May 2026 18:24:58 +0000 (UTC)
+	 MIME-Version; b=o2GAbwZ39PGDj9CX3mx6pjECyGzalBvs2jESC6YwHSbm3YoEeCBMWdjk8ohf56l6HDMnrIkbewLzR8NnBdSgT0xsP+9aXKvjQ/uYyuMdCbPxIvDPow5H1fFn3ITER3HK5BN64tdLv/HT2tvvpyL7piLJ+wXuXkJ2rffRkhUD59g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BsNMv5uo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D316B1F000E9;
+	Wed, 20 May 2026 18:45:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301499;
-	bh=YjvST5FoyeA4yGEE8dhTEUc1ngWllgMmabSS3phnZWE=;
+	s=korg; t=1779302701;
+	bh=9WYHzNGcYL7iEy8lUf86jVyl+KBrL7swLCTlFDSCjKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dw0PlVseIzMBIVaVEqRA9Un69jOGY59eM5CY1KSvKRH7qmjRzkK5vtJRJfhp/3nfo
-	 sYMGwdUK4TVsQxjKKtofhNU0GVPxuW9osLH7LXG96GRLaN583xHhDvuEbh9m1J8o2C
-	 XAXkMHZq742QBQcNW6pkjYwHR2xejkFKVWixTwmw=
+	b=BsNMv5uo3b/dy6HCfydDWOaSXssdsITwwYGdRxXXPJh3Y5YCff/xitCawccydXVh7
+	 gstKR9adMaKXFuHm8eyIENMJNdadlqR7KtgZOYgM+srMZimPbl0kxT/X5oObQGbxkl
+	 kczbDo+gOPer31tRXmkOQh86gzOkYX+sitzyzAww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Yunje Shin <ioerts@kookmin.ac.kr>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 579/666] drm/amd/display: Read EDID from VBIOS embedded panel info
+Subject: [PATCH 6.6 367/508] nvmet-tcp: propagate nvmet_tcp_build_pdu_iovec() errors to its callers
 Date: Wed, 20 May 2026 18:23:10 +0200
-Message-ID: <20260520162123.818202925@linuxfoundation.org>
+Message-ID: <20260520162106.579253793@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,170 +66,196 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252753-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-253217-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,gitlab.freedesktop.org:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: B891059680C
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,kookmin.ac.kr:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 2FD2C597772
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-[ Upstream commit 9ea16f64189bf7b6ba50fc7f0325b3c1f836d105 ]
+[ Upstream commit ea8e356acb165cb1fd75537a52e1f66e5e76c538 ]
 
-Some board manufacturers hardcode the EDID for the embedded
-panel in the VBIOS. This EDID should be used when the panel
-doesn't have a DDC.
+Currently, when nvmet_tcp_build_pdu_iovec() detects an out-of-bounds
+PDU length or offset, it triggers nvmet_tcp_fatal_error(cmd->queue)
+and returns early. However, because the function returns void, the
+callers are entirely unaware that a fatal error has occurred and
+that the cmd->recv_msg.msg_iter was left uninitialized.
 
-For reference, see the legacy non-DC display code:
-amdgpu_atombios_encoder_get_lcd_info()
+Callers such as nvmet_tcp_handle_h2c_data_pdu() proceed to blindly
+overwrite the queue state with queue->rcv_state = NVMET_TCP_RECV_DATA
+Consequently, the socket receiving loop may attempt to read incoming
+network data into the uninitialized iterator.
 
-This is necessary to support embedded connectors without DDC.
+Fix this by shifting the error handling responsibility to the callers.
 
-Fixes: 4562236b3bc0 ("drm/amd/dc: Add dc display driver (v2)")
-Link: https://gitlab.freedesktop.org/drm/amd/-/work_items/5192
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit eb105e63b474c11ef6a84a1c6b18100d851ff364)
+Fixes: 52a0a9854934 ("nvmet-tcp: add bounds checks in nvmet_tcp_build_pdu_iovec")
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Yunje Shin <ioerts@kookmin.ac.kr>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/dc/bios/bios_parser.c | 62 +++++++++++++++++++
- .../display/include/grph_object_ctrl_defs.h   |  4 ++
- 2 files changed, 66 insertions(+)
+ drivers/nvme/target/tcp.c | 51 ++++++++++++++++++++++-----------------
+ 1 file changed, 29 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-index a523c5cfcd248..fad0129bf8b12 100644
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-@@ -1215,6 +1215,60 @@ static enum bp_result bios_parser_get_embedded_panel_info(
- 	return BP_RESULT_FAILURE;
+diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
+index 4d1f260ae60ab..5f85c4a812abc 100644
+--- a/drivers/nvme/target/tcp.c
++++ b/drivers/nvme/target/tcp.c
+@@ -335,7 +335,7 @@ static void nvmet_tcp_free_cmd_buffers(struct nvmet_tcp_cmd *cmd)
+ 
+ static void nvmet_tcp_fatal_error(struct nvmet_tcp_queue *queue);
+ 
+-static void nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
++static int nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
+ {
+ 	struct bio_vec *iov = cmd->iov;
+ 	struct scatterlist *sg;
+@@ -348,22 +348,19 @@ static void nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
+ 	offset = cmd->rbytes_done;
+ 	cmd->sg_idx = offset / PAGE_SIZE;
+ 	sg_offset = offset % PAGE_SIZE;
+-	if (!cmd->req.sg_cnt || cmd->sg_idx >= cmd->req.sg_cnt) {
+-		nvmet_tcp_fatal_error(cmd->queue);
+-		return;
+-	}
++	if (!cmd->req.sg_cnt || cmd->sg_idx >= cmd->req.sg_cnt)
++		return -EPROTO;
++
+ 	sg = &cmd->req.sg[cmd->sg_idx];
+ 	sg_remaining = cmd->req.sg_cnt - cmd->sg_idx;
+ 
+ 	while (length) {
+-		if (!sg_remaining) {
+-			nvmet_tcp_fatal_error(cmd->queue);
+-			return;
+-		}
+-		if (!sg->length || sg->length <= sg_offset) {
+-			nvmet_tcp_fatal_error(cmd->queue);
+-			return;
+-		}
++		if (!sg_remaining)
++			return -EPROTO;
++
++		if (!sg->length || sg->length <= sg_offset)
++			return -EPROTO;
++
+ 		u32 iov_len = min_t(u32, length, sg->length - sg_offset);
+ 
+ 		bvec_set_page(iov, sg_page(sg), iov_len,
+@@ -378,6 +375,7 @@ static void nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
+ 
+ 	iov_iter_bvec(&cmd->recv_msg.msg_iter, ITER_DEST, cmd->iov,
+ 		      nr_pages, cmd->pdu_len);
++	return 0;
  }
  
-+static enum bp_result get_embedded_panel_extra_info(
-+	struct bios_parser *bp,
-+	struct embedded_panel_info *info,
-+	const uint32_t table_offset)
-+{
-+	uint8_t *record = bios_get_image(&bp->base, table_offset, 1);
-+	ATOM_PANEL_RESOLUTION_PATCH_RECORD *panel_res_record;
-+	ATOM_FAKE_EDID_PATCH_RECORD *fake_edid_record;
+ static void nvmet_tcp_fatal_error(struct nvmet_tcp_queue *queue)
+@@ -945,7 +943,7 @@ static int nvmet_tcp_handle_icreq(struct nvmet_tcp_queue *queue)
+ 	return 0;
+ }
+ 
+-static void nvmet_tcp_handle_req_failure(struct nvmet_tcp_queue *queue,
++static int nvmet_tcp_handle_req_failure(struct nvmet_tcp_queue *queue,
+ 		struct nvmet_tcp_cmd *cmd, struct nvmet_req *req)
+ {
+ 	size_t data_len = le32_to_cpu(req->cmd->common.dptr.sgl.length);
+@@ -961,19 +959,23 @@ static void nvmet_tcp_handle_req_failure(struct nvmet_tcp_queue *queue,
+ 	if (!nvme_is_write(cmd->req.cmd) || !data_len ||
+ 	    data_len > cmd->req.port->inline_data_size) {
+ 		nvmet_prepare_receive_pdu(queue);
+-		return;
++		return 0;
+ 	}
+ 
+ 	ret = nvmet_tcp_map_data(cmd);
+ 	if (unlikely(ret)) {
+ 		pr_err("queue %d: failed to map data\n", queue->idx);
+ 		nvmet_tcp_fatal_error(queue);
+-		return;
++		return -EPROTO;
+ 	}
+ 
+ 	queue->rcv_state = NVMET_TCP_RECV_DATA;
+-	nvmet_tcp_build_pdu_iovec(cmd);
+ 	cmd->flags |= NVMET_TCP_F_INIT_FAILED;
++	ret = nvmet_tcp_build_pdu_iovec(cmd);
++	if (unlikely(ret))
++		pr_err("queue %d: failed to build PDU iovec\n", queue->idx);
 +
-+	while (*record != ATOM_RECORD_END_TYPE) {
-+		switch (*record) {
-+		case LCD_MODE_PATCH_RECORD_MODE_TYPE:
-+			record += sizeof(ATOM_PATCH_RECORD_MODE);
-+			break;
-+		case LCD_RTS_RECORD_TYPE:
-+			record += sizeof(ATOM_LCD_RTS_RECORD);
-+			break;
-+		case LCD_CAP_RECORD_TYPE:
-+			record += sizeof(ATOM_LCD_MODE_CONTROL_CAP);
-+			break;
-+		case LCD_FAKE_EDID_PATCH_RECORD_TYPE:
-+			fake_edid_record = (ATOM_FAKE_EDID_PATCH_RECORD *)record;
-+			if (fake_edid_record->ucFakeEDIDLength) {
-+				if (fake_edid_record->ucFakeEDIDLength == 128)
-+					info->fake_edid_size =
-+						fake_edid_record->ucFakeEDIDLength;
-+				else
-+					info->fake_edid_size =
-+						fake_edid_record->ucFakeEDIDLength * 128;
-+
-+				info->fake_edid = fake_edid_record->ucFakeEDIDString;
-+
-+				record += struct_size(fake_edid_record,
-+						      ucFakeEDIDString,
-+						      info->fake_edid_size);
-+			} else {
-+				/* empty fake edid record must be 3 bytes long */
-+				record += sizeof(ATOM_FAKE_EDID_PATCH_RECORD) + 1;
-+			}
-+			break;
-+		case LCD_PANEL_RESOLUTION_RECORD_TYPE:
-+			panel_res_record = (ATOM_PANEL_RESOLUTION_PATCH_RECORD *)record;
-+			info->panel_width_mm = panel_res_record->usHSize;
-+			info->panel_height_mm = panel_res_record->usVSize;
-+			record += sizeof(ATOM_PANEL_RESOLUTION_PATCH_RECORD);
-+			break;
-+		default:
-+			return BP_RESULT_BADBIOSTABLE;
-+		}
++	return ret;
+ }
+ 
+ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
+@@ -1025,7 +1027,10 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
+ 		goto err_proto;
+ 	}
+ 	cmd->pdu_recv = 0;
+-	nvmet_tcp_build_pdu_iovec(cmd);
++	if (unlikely(nvmet_tcp_build_pdu_iovec(cmd))) {
++		pr_err("queue %d: failed to build PDU iovec\n", queue->idx);
++		goto err_proto;
 +	}
-+
-+	return BP_RESULT_OK;
-+}
-+
- static enum bp_result get_embedded_panel_info_v1_2(
- 	struct bios_parser *bp,
- 	struct embedded_panel_info *info)
-@@ -1331,6 +1385,10 @@ static enum bp_result get_embedded_panel_info_v1_2(
- 	if (ATOM_PANEL_MISC_API_ENABLED & lvds->ucLVDS_Misc)
- 		info->lcd_timing.misc_info.API_ENABLED = true;
+ 	queue->cmd = cmd;
+ 	queue->rcv_state = NVMET_TCP_RECV_DATA;
  
-+	if (lvds->usExtInfoTableOffset)
-+		return get_embedded_panel_extra_info(bp, info,
-+			le16_to_cpu(lvds->usExtInfoTableOffset) + DATA_TABLES(LCD_Info));
-+
- 	return BP_RESULT_OK;
- }
+@@ -1088,8 +1093,7 @@ static int nvmet_tcp_done_recv_pdu(struct nvmet_tcp_queue *queue)
+ 			req->cmd->common.opcode,
+ 			le32_to_cpu(req->cmd->common.dptr.sgl.length));
  
-@@ -1456,6 +1514,10 @@ static enum bp_result get_embedded_panel_info_v1_3(
- 			(uint32_t) (ATOM_PANEL_MISC_V13_GREY_LEVEL &
- 				lvds->ucLCD_Misc) >> ATOM_PANEL_MISC_V13_GREY_LEVEL_SHIFT;
+-		nvmet_tcp_handle_req_failure(queue, queue->cmd, req);
+-		return 0;
++		return nvmet_tcp_handle_req_failure(queue, queue->cmd, req);
+ 	}
  
-+	if (lvds->usExtInfoTableOffset)
-+		return get_embedded_panel_extra_info(bp, info,
-+			le16_to_cpu(lvds->usExtInfoTableOffset) + DATA_TABLES(LCD_Info));
-+
- 	return BP_RESULT_OK;
- }
- 
-diff --git a/drivers/gpu/drm/amd/display/include/grph_object_ctrl_defs.h b/drivers/gpu/drm/amd/display/include/grph_object_ctrl_defs.h
-index 813463ffe15c5..8e776c90d21bf 100644
---- a/drivers/gpu/drm/amd/display/include/grph_object_ctrl_defs.h
-+++ b/drivers/gpu/drm/amd/display/include/grph_object_ctrl_defs.h
-@@ -153,6 +153,10 @@ struct embedded_panel_info {
- 	uint32_t drr_enabled;
- 	uint32_t min_drr_refresh_rate;
- 	bool realtek_eDPToLVDS;
-+	uint16_t panel_width_mm;
-+	uint16_t panel_height_mm;
-+	uint16_t fake_edid_size;
-+	const uint8_t *fake_edid;
- };
- 
- struct dc_firmware_info {
+ 	ret = nvmet_tcp_map_data(queue->cmd);
+@@ -1106,8 +1110,11 @@ static int nvmet_tcp_done_recv_pdu(struct nvmet_tcp_queue *queue)
+ 	if (nvmet_tcp_need_data_in(queue->cmd)) {
+ 		if (nvmet_tcp_has_inline_data(queue->cmd)) {
+ 			queue->rcv_state = NVMET_TCP_RECV_DATA;
+-			nvmet_tcp_build_pdu_iovec(queue->cmd);
+-			return 0;
++			ret = nvmet_tcp_build_pdu_iovec(queue->cmd);
++			if (unlikely(ret))
++				pr_err("queue %d: failed to build PDU iovec\n",
++					queue->idx);
++			return ret;
+ 		}
+ 		/* send back R2T */
+ 		nvmet_tcp_queue_response(&queue->cmd->req);
 -- 
 2.53.0
 
