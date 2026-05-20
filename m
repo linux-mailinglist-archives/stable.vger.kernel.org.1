@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252995-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eJ53A74fDmp26QUAu9opvQ
-	(envelope-from <stable+bounces-251896-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:55:26 +0200
+	id qHoUN3oJDmru5gUAu9opvQ
+	(envelope-from <stable+bounces-252995-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:20:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 677EA59A508
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:55:25 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA64B59827E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:20:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7D24A339E2AF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:46:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id ACE5532EB923
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C2BD3F1AB8;
-	Wed, 20 May 2026 17:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56028270545;
+	Wed, 20 May 2026 18:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sHfq5ilH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KmSqIXhP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B84D9349AFF;
-	Wed, 20 May 2026 17:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4950369D7A;
+	Wed, 20 May 2026 18:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299170; cv=none; b=VttnOCINh9jaa8tkcHS7br109sbQWk3Zvu+qQ5jNWtHLZxonyzOFFja5QuElpgYqv8nEFrXrHvB4G1OrVwwZfYksOZyprmh+vXK6ac46X8qqxgBVhHVZssrk/2e17xVOkidl30rkICANO+HEHlVxw07FqHIRfPASV8tFw8c9yeo=
+	t=1779302129; cv=none; b=WwjjgUzoLEr6vSdJbzOu0NHcZzuP+H8SzhrlHHKWD7CP1V33JfUyIWN1fpY0EHWehq0XJ10HPIPk7SmHcdDPEowAQLrs03X/hOeQFs5symEDC5UiswAwvaKeHFSeZjS8AtrIgLQlH573nT0bayM4KL7vxw7fNHdxQYq6Ntj32DM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299170; c=relaxed/simple;
-	bh=U2IpSD13deqJ9w0uNiFuLvjoNT0fSSzvXHelB1K1OME=;
+	s=arc-20240116; t=1779302129; c=relaxed/simple;
+	bh=rhZ69ttzAe1UV/MOF3vIMA7UIuFofe/YDIastNZyY1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T2pnOZRrPCc0Og4A0xRXMF3VFkd9yIMLf5NZeB/aGwQNtvQLpUqFGyOTeWuJws7i++loHzVLJ5on+EqJUuApvZ1UGvKDuqGPfSsYdmAPwIQmd4jeXHwl/kG7w+L0ZGhaWYLVrlzUPqV7M0WwtPYutsjp5UeGEKjj04zID2HicXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sHfq5ilH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 282A51F000E9;
-	Wed, 20 May 2026 17:46:09 +0000 (UTC)
+	 MIME-Version; b=FlMXzRWPrjdiBgkjFLqyj+ZHy0iwaLvqM6m0fqy7WZrfHQu1RKe8kNwCKXa564bfGH/PJ1qLg08pdqTahAVQADohefvvHkCkRPuD8Asx0uwI3dd+oKhz9Hid7WfPgEAm/QLzDvxk2aa7ETmGs1WFTJ9eDIIXeYBFo8U1Jp5JPs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KmSqIXhP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46FE71F000E9;
+	Wed, 20 May 2026 18:35:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299169;
-	bh=8UZYVTo+063CnadWAZNSstD0VS03y+giKf3uvVHR31A=;
+	s=korg; t=1779302127;
+	bh=A2PR/+iMlpfxaQgw6wEHRHVPpnJCodZG6ShvF2Im/JI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sHfq5ilHnm2GhOETMwUlJS2umg62SDUUrpjIzqwB7WN6QGsOxhXqxFXFnK0aVjFBd
-	 PvCeYm/JeLqRyxX3yL4sRxdCnQGdPMjHmLpsVOgnIQ7gR1YMob0YAxKPe9H6nrbt9k
-	 8P747cFqFxB+IBnc3jeiGIuS5FKm2JlmjP+qz8JQ=
+	b=KmSqIXhPqC4mLbW5al4HTwtKJ9mfg3n03JigcAp07O7jkXz3QZXocaLdyQtorVqek
+	 n0s2EfpYqHXFjyMjk1N/Th+YkwzzhqEiMbArv7TPES/Aobr6k3fuYliTbQ2z2H5eEH
+	 O0XEVN8Nlk3/UWZcUmcieoj//gJ8AUL3PMdG8HTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alexander Schmidt <alexs@linux.ibm.com>,
+	Gerd Bayer <gbayer@linux.ibm.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 689/957] net/sched: sch_red: annotate data-races in red_dump_stats()
+Subject: [PATCH 6.6 149/508] PCI: Enable AtomicOps only if Root Port supports them
 Date: Wed, 20 May 2026 18:19:32 +0200
-Message-ID: <20260520162149.481993080@linuxfoundation.org>
+Message-ID: <20260520162101.865412195@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,13 +69,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251896-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252995-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
@@ -83,7 +83,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -92,119 +92,117 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,mojatatu.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 677EA59A508
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: EA64B59827E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Gerd Bayer <gbayer@linux.ibm.com>
 
-[ Upstream commit a8f5192809caf636d05ba47c144f282cfd0e3839 ]
+[ Upstream commit 1ae8c4ce157037e266184064a182af9ef9af278b ]
 
-red_dump_stats() only runs with RTNL held,
-reading fields that can be changed in qdisc fast path.
+When inspecting the config space of a Connect-X physical function in an
+s390 system after it was initialized by the mlx5_core device driver, we
+found the function to be enabled to request AtomicOps despite the Root Port
+lacking support for completing them:
 
-Add READ_ONCE()/WRITE_ONCE() annotations.
+  00:00.1 Ethernet controller: Mellanox Technologies MT2894 Family [ConnectX-6 Lx]
+          Subsystem: Mellanox Technologies Device 0002
+          DevCtl2: Completion Timeout: 50us to 50ms, TimeoutDis-
+                   AtomicOpsCtl: ReqEn+
 
-Alternative would be to acquire the qdisc spinlock, but our long-term
-goal is to make qdisc dump operations lockless as much as we can.
+On s390 and many virtualized guests, the Endpoint is visible but the Root
+Port is not.  In this case, pci_enable_atomic_ops_to_root() previously
+enabled AtomicOps in the Endpoint even though it can't tell whether the
+Root Port supports them as a completer.
 
-tc_red_xstats fields don't need to be latched atomically,
-otherwise this bug would have been caught earlier.
+Change pci_enable_atomic_ops_to_root() to fail if there's no Root Port or
+the Root Port doesn't support AtomicOps.
 
-Fixes: edb09eb17ed8 ("net: sched: do not acquire qdisc spinlock in qdisc/class stats dump")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260421142309.3964322-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 430a23689dea ("PCI: Add pci_enable_atomic_ops_to_root()")
+Reported-by: Alexander Schmidt <alexs@linux.ibm.com>
+Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
+[bhelgaas: commit log, check RP first to simplify flow]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://patch.msgid.link/20260330-fix_pciatops-v7-2-f601818417e8@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_red.c | 31 +++++++++++++++++++++----------
- 1 file changed, 21 insertions(+), 10 deletions(-)
+ drivers/pci/pci.c | 41 ++++++++++++++++++++---------------------
+ 1 file changed, 20 insertions(+), 21 deletions(-)
 
-diff --git a/net/sched/sch_red.c b/net/sched/sch_red.c
-index 68ee41ce78c50..86651a68d4015 100644
---- a/net/sched/sch_red.c
-+++ b/net/sched/sch_red.c
-@@ -90,17 +90,20 @@ static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	case RED_PROB_MARK:
- 		qdisc_qstats_overlimit(sch);
- 		if (!red_use_ecn(q)) {
--			q->stats.prob_drop++;
-+			WRITE_ONCE(q->stats.prob_drop,
-+				   q->stats.prob_drop + 1);
- 			goto congestion_drop;
- 		}
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index a21192ec5689b..e7648a1abfdbf 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -3956,8 +3956,7 @@ int pci_rebar_set_size(struct pci_dev *pdev, int bar, int size)
+  */
+ int pci_enable_atomic_ops_to_root(struct pci_dev *dev, u32 cap_mask)
+ {
+-	struct pci_bus *bus = dev->bus;
+-	struct pci_dev *bridge;
++	struct pci_dev *root, *bridge;
+ 	u32 cap, ctl2;
  
- 		if (INET_ECN_set_ce(skb)) {
--			q->stats.prob_mark++;
-+			WRITE_ONCE(q->stats.prob_mark,
-+				   q->stats.prob_mark + 1);
- 			skb = tcf_qevent_handle(&q->qe_mark, sch, skb, to_free, &ret);
- 			if (!skb)
- 				return NET_XMIT_CN | ret;
- 		} else if (!red_use_nodrop(q)) {
--			q->stats.prob_drop++;
-+			WRITE_ONCE(q->stats.prob_drop,
-+				   q->stats.prob_drop + 1);
- 			goto congestion_drop;
- 		}
- 
-@@ -111,17 +114,20 @@ static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		reason = SKB_DROP_REASON_QDISC_OVERLIMIT;
- 		qdisc_qstats_overlimit(sch);
- 		if (red_use_harddrop(q) || !red_use_ecn(q)) {
--			q->stats.forced_drop++;
-+			WRITE_ONCE(q->stats.forced_drop,
-+				   q->stats.forced_drop + 1);
- 			goto congestion_drop;
- 		}
- 
- 		if (INET_ECN_set_ce(skb)) {
--			q->stats.forced_mark++;
-+			WRITE_ONCE(q->stats.forced_mark,
-+				   q->stats.forced_mark + 1);
- 			skb = tcf_qevent_handle(&q->qe_mark, sch, skb, to_free, &ret);
- 			if (!skb)
- 				return NET_XMIT_CN | ret;
- 		} else if (!red_use_nodrop(q)) {
--			q->stats.forced_drop++;
-+			WRITE_ONCE(q->stats.forced_drop,
-+				   q->stats.forced_drop + 1);
- 			goto congestion_drop;
- 		}
- 
-@@ -135,7 +141,8 @@ static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		sch->qstats.backlog += len;
- 		sch->q.qlen++;
- 	} else if (net_xmit_drop_count(ret)) {
--		q->stats.pdrop++;
-+		WRITE_ONCE(q->stats.pdrop,
-+			   q->stats.pdrop + 1);
- 		qdisc_qstats_drop(sch);
+ 	/*
+@@ -3987,35 +3986,35 @@ int pci_enable_atomic_ops_to_root(struct pci_dev *dev, u32 cap_mask)
+ 		return -EINVAL;
  	}
- 	return ret;
-@@ -463,9 +470,13 @@ static int red_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- 		dev->netdev_ops->ndo_setup_tc(dev, TC_SETUP_QDISC_RED,
- 					      &hw_stats_request);
- 	}
--	st.early = q->stats.prob_drop + q->stats.forced_drop;
--	st.pdrop = q->stats.pdrop;
--	st.marked = q->stats.prob_mark + q->stats.forced_mark;
-+	st.early = READ_ONCE(q->stats.prob_drop) +
-+		   READ_ONCE(q->stats.forced_drop);
-+
-+	st.pdrop = READ_ONCE(q->stats.pdrop);
-+
-+	st.marked = READ_ONCE(q->stats.prob_mark) +
-+		    READ_ONCE(q->stats.forced_mark);
  
- 	return gnet_stats_copy_app(d, &st, sizeof(st));
- }
+-	while (bus->parent) {
+-		bridge = bus->self;
++	root = pcie_find_root_port(dev);
++	if (!root)
++		return -EINVAL;
+ 
+-		pcie_capability_read_dword(bridge, PCI_EXP_DEVCAP2, &cap);
++	pcie_capability_read_dword(root, PCI_EXP_DEVCAP2, &cap);
++	if ((cap & cap_mask) != cap_mask)
++		return -EINVAL;
+ 
++	bridge = pci_upstream_bridge(dev);
++	while (bridge != root) {
+ 		switch (pci_pcie_type(bridge)) {
+-		/* Ensure switch ports support AtomicOp routing */
+ 		case PCI_EXP_TYPE_UPSTREAM:
+-		case PCI_EXP_TYPE_DOWNSTREAM:
+-			if (!(cap & PCI_EXP_DEVCAP2_ATOMIC_ROUTE))
+-				return -EINVAL;
+-			break;
+-
+-		/* Ensure root port supports all the sizes we care about */
+-		case PCI_EXP_TYPE_ROOT_PORT:
+-			if ((cap & cap_mask) != cap_mask)
+-				return -EINVAL;
+-			break;
+-		}
+-
+-		/* Ensure upstream ports don't block AtomicOps on egress */
+-		if (pci_pcie_type(bridge) == PCI_EXP_TYPE_UPSTREAM) {
++			/* Upstream ports must not block AtomicOps on egress */
+ 			pcie_capability_read_dword(bridge, PCI_EXP_DEVCTL2,
+ 						   &ctl2);
+ 			if (ctl2 & PCI_EXP_DEVCTL2_ATOMIC_EGRESS_BLOCK)
+ 				return -EINVAL;
++			fallthrough;
++
++		/* All switch ports need to route AtomicOps */
++		case PCI_EXP_TYPE_DOWNSTREAM:
++			pcie_capability_read_dword(bridge, PCI_EXP_DEVCAP2,
++						   &cap);
++			if (!(cap & PCI_EXP_DEVCAP2_ATOMIC_ROUTE))
++				return -EINVAL;
++			break;
+ 		}
+ 
+-		bus = bus->parent;
++		bridge = pci_upstream_bridge(bridge);
+ 	}
+ 
+ 	pcie_capability_set_word(dev, PCI_EXP_DEVCTL2,
 -- 
 2.53.0
 
