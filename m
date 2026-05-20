@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252679-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yCEcIkT7DWrO5AUAu9opvQ
-	(envelope-from <stable+bounces-251115-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:19:48 +0200
+	id 2MujNQj9DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-252679-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9A00595D21
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:19:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5798C59632A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B7DC431A39B6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:14:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0895C3115992
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:21:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D3813F39C8;
-	Wed, 20 May 2026 17:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B70A63FA5D5;
+	Wed, 20 May 2026 18:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Spj2KsO5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jTLPkO4M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EEA5372EDE;
-	Wed, 20 May 2026 17:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D663E5ECF;
+	Wed, 20 May 2026 18:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297137; cv=none; b=NUV7bhhKMEgw1m72M0VyAfEqFHY7WTTtMAXZrr5KxKrE9Y+qtBC9sKK0RaZk+1GPsOHRUPv9+X+nSU8uk7pI4y4x17w8jwU5nflqITq3lUXLfGpeerTAkPxOr9lAbnY+n3+h3mQRVnfpFtQHVv/NW2yTjXKeSz+u2P1g+Tp5Upk=
+	t=1779301305; cv=none; b=HfnHzdd1oQHukCcJbNRAfI3ln+KMO5Vo3pxPK3wKnZqs8hvDChWxYGKugmyddN7kLdljGXpKSgB09J3PgFBzbq5v200uFJnIisDCrxLTSVGiXbzCsZUNNKwOJbW9vEQyfE85UCLwnLNuh6XcwLGshXaLbZlrsPD5HAOEgpixAC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297137; c=relaxed/simple;
-	bh=xXpeEEfpm06CrisPCMqCeLDJHJlEwFXuWhku1BNVEH8=;
+	s=arc-20240116; t=1779301305; c=relaxed/simple;
+	bh=F9+Ml0tK15i+A8EnOYQ6t8CyF5u4sHipY1WHWfAgvIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jhVZ7FlvtbKvvwvLXiXV2SqAfbtlm0K/hoMo9d7ROeQYGdum/H9qgLdw9tPG4LAsNgSSI6oWvFS7Qr/W0g3TsL6UqIdeg6co//BpN22qGshJZNV3uXPq75J2ggJDa6mKYUB+gPNhUIyGXlq5+uHMbV4XhdbvIaJjWd/7IynbQPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Spj2KsO5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74E101F000E9;
-	Wed, 20 May 2026 17:12:15 +0000 (UTC)
+	 MIME-Version; b=OEc0vjk9aHC1Q2qy7ZFyAu29VST040FoGT+LEny5/CldcD1o4sAqAdI5hsAqEvYbXGV6MMhE7VEeXCD2TZIVznECBecFSXlEmFKzeoeOT7KYer+0a0baBXl0lFnMvdr/d43svocDx08aC3MgJJ1I/0GZ2NjT+SdX/uQqjgq5LPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jTLPkO4M; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9F3F1F000E9;
+	Wed, 20 May 2026 18:21:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297136;
-	bh=zsMDX0mgen/Q80YzZkbSBSmn1RS+pl2ugOlsDHj/SwM=;
+	s=korg; t=1779301304;
+	bh=JWpxECjMjhgvmoZ0IjtBxA6Xc8Q21HXFyP1mzEpNZoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Spj2KsO5fz+RGLccLvfckKd11ssQAjCb8PaHrnTAi4RxPjylmQChwtzW4NQkOvVrK
-	 tVYuoHHl33EPIw3toEweM2wj0wSWxWvTY40BC0L0LAh89Q5Zz/XlJqXt2mWq3YO/HY
-	 MdliqJy0WZ3+1cuUGrepzV2EINfoj/HD6ubjv+Lw=
+	b=jTLPkO4MPSU/9Le7ZY3lFEh2Cg283OAWn9Vc7nJqsz3F7HN6bnx/luo1yrIS870lz
+	 au+PFjKfvxFlXBltkY1CcIgCnQC76IVW604MP/twRc95mmX/SnP2zTqxx20wcQDAl2
+	 ue8I98wiEx4KfqniH7BzfITGpQBnXxrPngfiLc1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Dmitry Vyukov <dvyukov@google.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 1064/1146] rseq: Implement read only ABI enforcement for optimized RSEQ V2 mode
-Date: Wed, 20 May 2026 18:21:54 +0200
-Message-ID: <20260520162212.311769581@linuxfoundation.org>
+Subject: [PATCH 6.12 504/666] mailbox: mailbox-test: free channels on probe error
+Date: Wed, 20 May 2026 18:21:55 +0200
+Message-ID: <20260520162122.185042309@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,263 +64,95 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251115-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252679-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sang-engineering.com,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_RCPT(0.00)[stable,renesas];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,infradead.org:email]
-X-Rspamd-Queue-Id: A9A00595D21
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sashiko.dev:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,sang-engineering.com:email]
+X-Rspamd-Queue-Id: 5798C59632A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@kernel.org>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit 82f572449cfe75f12ea985986da60e11f308f77d upstream.
+[ Upstream commit c02053a9055d5fdfd32432287cca8958db1d5bc5 ]
 
-The optimized RSEQ V2 mode requires that user space adheres to the ABI
-specification and does not modify the read-only fields cpu_id_start,
-cpu_id, node_id and mm_cid behind the kernel's back.
+On probe error, free the previously obtained channels. This not only
+prevents a leak, but also UAF scenarios because the client structure
+will be removed nonetheless because it was allocated with devm.
 
-While the kernel does not rely on these fields, the adherence to this is a
-fundamental prerequisite to allow multiple entities, e.g. libraries, in an
-application to utilize the full potential of RSEQ without stepping on each
-other toes.
-
-Validate this adherence on every update of these fields. If the kernel
-detects that user space modified the fields, the application is force
-terminated.
-
-Fixes: d6200245c75e ("rseq: Allow registering RSEQ with slice extension")
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
-Tested-by: Dmitry Vyukov <dvyukov@google.com>
-Link: https://patch.msgid.link/20260428224427.845230956%40kernel.org
-Cc: stable@vger.kernel.org
+Link: https://sashiko.dev/#/patchset/20260327151217.5327-2-wsa%2Brenesas%40sang-engineering.com
+Fixes: 8ea4484d0c2b ("mailbox: Add generic mechanism for testing Mailbox Controllers")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/rseq_entry.h | 83 ++++++++++++++------------------------
- include/linux/rseq_types.h |  4 +-
- kernel/rseq.c              |  5 +--
- 3 files changed, 35 insertions(+), 57 deletions(-)
+ drivers/mailbox/mailbox-test.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/rseq_entry.h b/include/linux/rseq_entry.h
-index c67a3476e9dd6..413a3543fbe8e 100644
---- a/include/linux/rseq_entry.h
-+++ b/include/linux/rseq_entry.h
-@@ -238,7 +238,6 @@ static __always_inline bool rseq_grant_slice_extension(bool work_pending) { retu
- #endif /* !CONFIG_RSEQ_SLICE_EXTENSION */
- 
- bool rseq_debug_update_user_cs(struct task_struct *t, struct pt_regs *regs, unsigned long csaddr);
--bool rseq_debug_validate_ids(struct task_struct *t);
- 
- static __always_inline void rseq_note_user_irq_entry(void)
- {
-@@ -358,43 +357,6 @@ bool rseq_debug_update_user_cs(struct task_struct *t, struct pt_regs *regs,
- 	return false;
- }
- 
--/*
-- * On debug kernels validate that user space did not mess with it if the
-- * debug branch is enabled.
-- */
--bool rseq_debug_validate_ids(struct task_struct *t)
--{
--	struct rseq __user *rseq = t->rseq.usrptr;
--	u32 cpu_id, uval, node_id;
--
--	/*
--	 * On the first exit after registering the rseq region CPU ID is
--	 * RSEQ_CPU_ID_UNINITIALIZED and node_id in user space is 0!
--	 */
--	node_id = t->rseq.ids.cpu_id != RSEQ_CPU_ID_UNINITIALIZED ?
--		  cpu_to_node(t->rseq.ids.cpu_id) : 0;
--
--	scoped_user_read_access(rseq, efault) {
--		unsafe_get_user(cpu_id, &rseq->cpu_id_start, efault);
--		if (cpu_id != t->rseq.ids.cpu_id)
--			goto die;
--		unsafe_get_user(uval, &rseq->cpu_id, efault);
--		if (uval != cpu_id)
--			goto die;
--		unsafe_get_user(uval, &rseq->node_id, efault);
--		if (uval != node_id)
--			goto die;
--		unsafe_get_user(uval, &rseq->mm_cid, efault);
--		if (uval != t->rseq.ids.mm_cid)
--			goto die;
--	}
--	return true;
--die:
--	t->rseq.event.fatal = true;
--efault:
--	return false;
--}
--
- #endif /* RSEQ_BUILD_SLOW_PATH */
- 
- /*
-@@ -504,20 +466,32 @@ rseq_update_user_cs(struct task_struct *t, struct pt_regs *regs, unsigned long c
-  * faults in task context are fatal too.
-  */
- static rseq_inline
--bool rseq_set_ids_get_csaddr(struct task_struct *t, struct rseq_ids *ids,
--			     u32 node_id, u64 *csaddr)
-+bool rseq_set_ids_get_csaddr(struct task_struct *t, struct rseq_ids *ids, u64 *csaddr)
- {
- 	struct rseq __user *rseq = t->rseq.usrptr;
- 
--	if (static_branch_unlikely(&rseq_debug_enabled)) {
--		if (!rseq_debug_validate_ids(t))
--			return false;
--	}
--
- 	scoped_user_rw_access(rseq, efault) {
-+		/* Validate the R/O fields for debug and optimized mode */
-+		if (static_branch_unlikely(&rseq_debug_enabled) || rseq_v2(t)) {
-+			u32 cpu_id, uval;
-+
-+			unsafe_get_user(cpu_id, &rseq->cpu_id_start, efault);
-+			if (cpu_id != t->rseq.ids.cpu_id)
-+				goto die;
-+			unsafe_get_user(uval, &rseq->cpu_id, efault);
-+			if (uval != cpu_id)
-+				goto die;
-+			unsafe_get_user(uval, &rseq->node_id, efault);
-+			if (uval != t->rseq.ids.node_id)
-+				goto die;
-+			unsafe_get_user(uval, &rseq->mm_cid, efault);
-+			if (uval != t->rseq.ids.mm_cid)
-+				goto die;
+diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
+index e416ce9e2d674..2e0ce6c590485 100644
+--- a/drivers/mailbox/mailbox-test.c
++++ b/drivers/mailbox/mailbox-test.c
+@@ -404,18 +404,27 @@ static int mbox_test_probe(struct platform_device *pdev)
+ 	if (tdev->rx_channel) {
+ 		tdev->rx_buffer = devm_kzalloc(&pdev->dev,
+ 					       MBOX_MAX_MSG_LEN, GFP_KERNEL);
+-		if (!tdev->rx_buffer)
+-			return -ENOMEM;
++		if (!tdev->rx_buffer) {
++			ret = -ENOMEM;
++			goto err_free_chans;
 +		}
-+
- 		unsafe_put_user(ids->cpu_id, &rseq->cpu_id_start, efault);
- 		unsafe_put_user(ids->cpu_id, &rseq->cpu_id, efault);
--		unsafe_put_user(node_id, &rseq->node_id, efault);
-+		unsafe_put_user(ids->node_id, &rseq->node_id, efault);
- 		unsafe_put_user(ids->mm_cid, &rseq->mm_cid, efault);
- 		if (csaddr)
- 			unsafe_get_user(*csaddr, &rseq->rseq_cs, efault);
-@@ -529,10 +503,13 @@ bool rseq_set_ids_get_csaddr(struct task_struct *t, struct rseq_ids *ids,
- 
- 	rseq_slice_clear_grant(t);
- 	/* Cache the new values */
--	t->rseq.ids.cpu_cid = ids->cpu_cid;
-+	t->rseq.ids = *ids;
- 	rseq_stat_inc(rseq_stats.ids);
- 	rseq_trace_update(t, ids);
- 	return true;
-+
-+die:
-+	t->rseq.event.fatal = true;
- efault:
- 	return false;
- }
-@@ -542,11 +519,11 @@ bool rseq_set_ids_get_csaddr(struct task_struct *t, struct rseq_ids *ids,
-  * is in a critical section.
-  */
- static rseq_inline bool rseq_update_usr(struct task_struct *t, struct pt_regs *regs,
--					struct rseq_ids *ids, u32 node_id)
-+					struct rseq_ids *ids)
- {
- 	u64 csaddr;
- 
--	if (!rseq_set_ids_get_csaddr(t, ids, node_id, &csaddr))
-+	if (!rseq_set_ids_get_csaddr(t, ids, &csaddr))
- 		return false;
- 
- 	/*
-@@ -649,12 +626,12 @@ static __always_inline bool rseq_exit_user_update(struct pt_regs *regs, struct t
  	}
  
- 	struct rseq_ids ids = {
--		.cpu_id = task_cpu(t),
--		.mm_cid = task_mm_cid(t),
-+		.cpu_id	 = task_cpu(t),
-+		.mm_cid	 = task_mm_cid(t),
-+		.node_id = cpu_to_node(ids.cpu_id),
- 	};
--	u32 node_id = cpu_to_node(ids.cpu_id);
+ 	ret = mbox_test_add_debugfs(pdev, tdev);
+ 	if (ret)
+-		return ret;
++		goto err_free_chans;
  
--	return rseq_update_usr(t, regs, &ids, node_id);
-+	return rseq_update_usr(t, regs, &ids);
- efault:
- 	return false;
+ 	init_waitqueue_head(&tdev->waitq);
+ 	dev_info(&pdev->dev, "Successfully registered\n");
+ 
+ 	return 0;
++
++err_free_chans:
++	if (tdev->tx_channel)
++		mbox_free_channel(tdev->tx_channel);
++	if (tdev->rx_channel)
++		mbox_free_channel(tdev->rx_channel);
++	return ret;
  }
-diff --git a/include/linux/rseq_types.h b/include/linux/rseq_types.h
-index a469c1870849c..85739a63e85e6 100644
---- a/include/linux/rseq_types.h
-+++ b/include/linux/rseq_types.h
-@@ -66,8 +66,9 @@ struct rseq_event {
-  *		compiler emit a single compare on 64-bit
-  * @cpu_id:	The CPU ID which was written last to user space
-  * @mm_cid:	The MM CID which was written last to user space
-+ * @node_id:	The node ID which was written last to user space
-  *
-- * @cpu_id and @mm_cid are updated when the data is written to user space.
-+ * @cpu_id, @mm_cid and @node_id are updated when the data is written to user space.
-  */
- struct rseq_ids {
- 	union {
-@@ -77,6 +78,7 @@ struct rseq_ids {
- 			u32	mm_cid;
- 		};
- 	};
-+	u32			node_id;
- };
  
- /**
-diff --git a/kernel/rseq.c b/kernel/rseq.c
-index aa25753ea1350..101612027f6a3 100644
---- a/kernel/rseq.c
-+++ b/kernel/rseq.c
-@@ -263,7 +263,6 @@ static void rseq_slowpath_update_usr(struct pt_regs *regs)
- 	};
- 	struct task_struct *t = current;
- 	struct rseq_ids ids;
--	u32 node_id;
- 	bool event;
- 
- 	if (unlikely(t->flags & PF_EXITING))
-@@ -299,9 +298,9 @@ static void rseq_slowpath_update_usr(struct pt_regs *regs)
- 	if (!event)
- 		return;
- 
--	node_id = cpu_to_node(ids.cpu_id);
-+	ids.node_id = cpu_to_node(ids.cpu_id);
- 
--	if (unlikely(!rseq_update_usr(t, regs, &ids, node_id))) {
-+	if (unlikely(!rseq_update_usr(t, regs, &ids))) {
- 		/*
- 		 * Clear the errors just in case this might survive magically, but
- 		 * leave the rest intact.
+ static void mbox_test_remove(struct platform_device *pdev)
 -- 
 2.53.0
 
