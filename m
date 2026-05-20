@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251056-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UNQjEtf8DWok5QUAu9opvQ
-	(envelope-from <stable+bounces-252654-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:31 +0200
+	id uNGKDXn6DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-251056-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:16:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7F51596263
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:30 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A8D3595B0C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:16:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F3A0930FDBD1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:20:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2184C3158013
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:10:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970A33F8896;
-	Wed, 20 May 2026 18:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4897C3A3E9C;
+	Wed, 20 May 2026 17:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RXfkjXHg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yFsbkgPc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB9729B78D;
-	Wed, 20 May 2026 18:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06758331220;
+	Wed, 20 May 2026 17:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301242; cv=none; b=uLLBM2U5tNnWUtsFPkd8jBh73F9GW+wOexBrs0f5Dr2nvJJG2LJllp85G5BBekNNCUj4mb9+ZOXt9/9Ks09iVhYFpLROxaipuZUO58pi6grM1tv+TcJCnhJTEKrvn60oz4crfZftecEAicI5o9vyryWJkDZrzjOGg5aEw4Dg2Zo=
+	t=1779296987; cv=none; b=huB5X85ZnTHNpRY4/l4wdkauBwUJkewc07+jMYWXowy7njBk2gVgGfj6vYeNEK5K86pMYgF6EQ4bGfZlu12AWrfssc8BN7vJY7DcgQ/GYGjzRqExAylFQQ1vQItK3aKcOyfU1vrqvUAag4Iz31Wc+ZqEBrXiC0kRfHxZTVPaHBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301242; c=relaxed/simple;
-	bh=Y8fsoxJeAAHUI5WPshNioffQXlFDgCme+MpcKC0Scfs=;
+	s=arc-20240116; t=1779296987; c=relaxed/simple;
+	bh=cJGKH663Aijsm2u+H+TgdKl8kCBnov/+Ew4vG7/0mHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qmG3bkuiGJoki9afmPiB8FzNwnOn3TAp8dcQxF3gQpE6FXK1tLtr5giFpgpFPl3g2DIwG1A6+ndA0Qv6uSlUxBPCvsXR05aREa7SwwpYjAdDZDY6tiO0XIqKWjmeW/0TvFiQlpVjyd5rp7s3IiA5a9CEE6E4zbz7JyaPg5TxUgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RXfkjXHg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C66551F000E9;
-	Wed, 20 May 2026 18:20:40 +0000 (UTC)
+	 MIME-Version; b=D3RInWkZ5S3+gs7NprBubh3DBmitgkHM+3QDglRdUOGw3h9YuTUDKX2/L0ipbcCLxs0JK51vztSoSG8LUAehBUfgg5CW16/4ph4NMJc0gwQNo5Gz0tHDrzWrkIBTGlaMQkDvSU6kHezYzeyN/ZJxZLP5B+5BGC/fsFRi3R4eDk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yFsbkgPc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A3E1F000E9;
+	Wed, 20 May 2026 17:09:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301241;
-	bh=y07pQSOxGNYorDjZ5dQ6RL1QqNbPWOGGo/yMOTO/zYA=;
+	s=korg; t=1779296985;
+	bh=Jp+TVt7Rvi+zuzvb5xtSgENMHTCEedYDboKfUcE6lR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RXfkjXHgRLedcJb+aymyPAiRkfxHMmVzSdbxoBOLZXT0Z+HISuAWt7RrCZRHvx4F7
-	 9T/E4FE0s1hgfSqzT9b+x7iBiGQgpagdy4mZBsWQLGm6CFbPkNgnHIi7AkPaybVtCL
-	 Ik6T80xygPSZvGJ6O+Injv8o7u0QMlg/Iv808wtk=
+	b=yFsbkgPcsGVsaOi4hVE1Mk0GoyrpQfQKvFq4cJTCqG+KS9Jw+ekR66qEYTks9tLWB
+	 +mVjTnPnX7BQa3PlfGLIu0n4vWGqynovvySRBttR32BqiAZj/xXJADQrD65vw6GaTW
+	 i0EaPwyuxuRDQM9xeCOkG6k7LAD8HvVO9OyzfodQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	Shenghao Ding <shenghao-ding@ti.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 438/666] arm64: dts: imx8mp-data-modul-edm-sbc: Correct PAD settings for PMIC_nINT
-Date: Wed, 20 May 2026 18:20:49 +0200
-Message-ID: <20260520162120.767006472@linuxfoundation.org>
+Subject: [PATCH 7.0 1000/1146] ALSA: hda/tas2781: Fix incorrect bit update for non-book-zero or book 0 pages >1
+Date: Wed, 20 May 2026 18:20:50 +0200
+Message-ID: <20260520162210.865610811@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252654-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251056-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,45 +89,59 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: E7F51596263
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ti.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,suse.de:email]
+X-Rspamd-Queue-Id: 6A8D3595B0C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Shenghao Ding <shenghao-ding@ti.com>
 
-[ Upstream commit 8ff145577e93f312ff398cb950ee3bd44835f5be ]
+[ Upstream commit e052a1f7199260eda4d6ca08a59c3b98738f8491 ]
 
-PMIC_nINT is low level triggered, but the current PAD settings is
-PE=0,PUE=0,FSEL_1_FAST_SLEW_RATE=1,SION=1. So PAD needs to be configured
-as PULL UP with PULL Enable, no need SION. Correct it.
+In TAS2781 SPI mode, when accessing non-book-zero or page numbers greater
+than 1 in book 0, an additional byte must be read. The first byte in such
+cases is a dummy byte and should be ignored.
 
-Fixes: 562d222f23f0f ("arm64: dts: imx8mp: Add support for Data Modul i.MX8M Plus eDM SBC")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Fixes: 9fa6a693ad8d ("ALSA: hda/tas2781: Remove tas2781_spi_fwlib.c and leverage SND_SOC_TAS2781_FMWLIB")
+Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
+Link: https://patch.msgid.link/20260429054206.429-1-shenghao-ding@ti.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/hda/codecs/side-codecs/tas2781_hda_spi.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
-index 16078ff60ef08..fa13662ca3667 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
-@@ -900,7 +900,7 @@ MX8MP_IOMUXC_SAI3_RXFS__AUDIOMIX_PDM_BIT_STREAM00	0x0
- 	pinctrl_pmic: pmic-grp {
- 		fsl,pins = <
- 			/* PMIC_nINT */
--			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03		0x40000090
-+			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03		0x1c0
- 		>;
- 	};
+diff --git a/sound/hda/codecs/side-codecs/tas2781_hda_spi.c b/sound/hda/codecs/side-codecs/tas2781_hda_spi.c
+index f860e0eb7602a..6c736b17c9831 100644
+--- a/sound/hda/codecs/side-codecs/tas2781_hda_spi.c
++++ b/sound/hda/codecs/side-codecs/tas2781_hda_spi.c
+@@ -132,10 +132,18 @@ static int tasdevice_spi_dev_update_bits(struct tasdevice_priv *tas_priv,
+ 	int ret, val;
  
+ 	/*
+-	 * In our TAS2781 SPI mode, read/write was masked in last bit of
+-	 * address, it cause regmap_update_bits() not work as expected.
++	 * In TAS2781 SPI mode, when accessing non-book-zero or page numbers
++	 * greater than 1 in book 0, an additional byte must be read. The
++	 * first byte in such cases is a dummy byte and should be ignored.
+ 	 */
+-	ret = tasdevice_dev_read(tas_priv, chn, reg, &val);
++	if ((TASDEVICE_BOOK_ID(reg) > 0) || (TASDEVICE_PAGE_ID(reg) > 1)) {
++		unsigned char buf[2];
++
++		ret = tasdevice_dev_bulk_read(tas_priv, chn, reg, buf, 2);
++		val = buf[1];
++	} else {
++		ret = tasdevice_dev_read(tas_priv, chn, reg, &val);
++	}
+ 	if (ret < 0) {
+ 		dev_err(tas_priv->dev, "%s, E=%d\n", __func__, ret);
+ 		return ret;
 -- 
 2.53.0
 
