@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-250091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250092-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GA49HyHtDWpZ4wUAu9opvQ
-	(envelope-from <stable+bounces-250091-lists+stable=lfdr.de@vger.kernel.org>)
+	id oBtoGCHtDWo04wUAu9opvQ
+	(envelope-from <stable+bounces-250092-lists+stable=lfdr.de@vger.kernel.org>)
 	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:19:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED5E559354E
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF66959354D
 	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:19:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1CB8E358899B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:30:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2639C35889A7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:30:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F64C3AC00;
-	Wed, 20 May 2026 16:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F4D8352030;
+	Wed, 20 May 2026 16:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E7hUqPiG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZXSmRNdV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE42349AE6;
-	Wed, 20 May 2026 16:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED49936A369;
+	Wed, 20 May 2026 16:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294522; cv=none; b=ZW0mVb1mfYLxELj/ccLPSHT4aPffR0SjTUSWQgqPfsf+FFXeN+NsVIRqg/WcJeE5hxHFn8Ruvudrlk6vn5UGLlbBgVXwa/AcxiAE/RLomTg0MgzwhwE54yhGk6DG9lFU5cDHasEmcyPBh66wCOFdpU9atYJhGNMGJWnX57TREoU=
+	t=1779294524; cv=none; b=p3ktD9r9TYPogA+Fr88TKZ36oVuIycHqCKs8r+HAA5eqZuqP0AOK7CAecwuX9j2Mfzay0L3APJrZV1OHPzw5laJX2Sm9gIX4DG74xdevuNV3lcs0FnUn5wwG6qbKmkbtqE1JHMTisO6TwVRPcDY802ELafR7S/xAVpnNGEwHmwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294522; c=relaxed/simple;
-	bh=2uHg12NYZAPjSSNvsi1yy8y7FlGKD+2ZisPR5ghxVfY=;
+	s=arc-20240116; t=1779294524; c=relaxed/simple;
+	bh=S/BlO+SfMobAgRwHjwXD16PJCoCZ/t/xzBpVfvc+G+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T2TNjk5qwhVX5KwBQjuI4Qn0ZHrn5QX5iGvfH9Zzo0odNjLD1UlIe040bc8DVCkhNIErQl+9tlv40Qhcv1KKEPzUH8X1h/HUoKwmSMzCC3XYMQ0otn2bdClRfsecqzClp0zztjFd+FCmmhhoSv5vSMMrRMFNi5/L8Kj0S8IkUCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E7hUqPiG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88F221F00894;
-	Wed, 20 May 2026 16:28:38 +0000 (UTC)
+	 MIME-Version; b=LUKeI7eB/o2OyUjYW76I+aGvtFHYvj/GbcH6v4CDmMDDPtGaJcMOOnu6YGCy0eyhpg+jU5ARbFhAeDAnbdfkeCtUBmY/v8K9tTNq10Zkh6RUyPGZr8ekz7wjQCy0NxKN7H+cPTOoPk2CSh1OrTFVx8F8vajlTaQEWUfma3GhdUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZXSmRNdV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30A5F1F000E9;
+	Wed, 20 May 2026 16:28:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294519;
-	bh=8FLsqtkZWouewFdxRnq9/DGRCsU/xodzlckR07jrxvw=;
+	s=korg; t=1779294521;
+	bh=+GSAOFkwF+6hBrYl5QOYfLuzb2DcL3PDVPQL6QlQZLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=E7hUqPiG4RkG0DHWZxShhHF0HSGv7LfgUu13SWjv2u3zBS/uOWhanSkYcorZyTTYL
-	 pXepUjZpf91QAyVTJvTHAx2M+G+kmss8er04PryBlMWYIQ9iqndG26xmCAs/x8HXym
-	 +zt6TluB13zFufysI89AYAU/86spTj7J3/nSopdg=
+	b=ZXSmRNdV+nikd7SgC45+SEVXtP/sWQqhknyz+E65nqgu+t0AmBcx5widrUijVeEFI
+	 qgfc/N1qUtxdqOnMBTExTcvdacxed572ZetLnfgLlryBqiAoAGllVQM1d3WzjykKT6
+	 l8n3BkjxujdLbcJL7eH/GRCbfPLEADkBREu33wSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0069/1146] sched/rt: Skip group schedulable check with rt_group_sched=0
-Date: Wed, 20 May 2026 18:05:19 +0200
-Message-ID: <20260520162149.921042191@linuxfoundation.org>
+Subject: [PATCH 7.0 0070/1146] wifi: ath11k: fix memory leaks in beacon template setup
+Date: Wed, 20 May 2026 18:05:20 +0200
+Message-ID: <20260520162149.942568871@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -63,35 +65,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250091-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250092-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,infradead.org:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email]
-X-Rspamd-Queue-Id: ED5E559354E
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[seu.edu.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
+X-Rspamd-Queue-Id: AF66959354D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,58 +101,103 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Michal Koutný <mkoutny@suse.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit 8b016dcec9365675be81d26be88f2c09cf983bd4 ]
+[ Upstream commit ff49eba595df500e4ddccc593088c8a4ab5f2c27 ]
 
-The warning from the commit 87f1fb77d87a6 ("sched: Add RT_GROUP WARN
-checks for non-root task_groups") is wrong -- it assumes that only
-task_groups with rt_rq are traversed, however, the schedulability check
-would iterate all task_groups even when rt_group_sched=0 is disabled at
-boot time but some non-root task_groups exist.
+The functions ath11k_mac_setup_bcn_tmpl_ema() and
+ath11k_mac_setup_bcn_tmpl_mbssid() allocate memory for beacon templates
+but fail to free it when parameter setup returns an error.
 
-The schedulability check is supposed to validate:
-  a) that children don't overcommit its parent,
-  b) no RT task group overcommits global RT limit.
-but with rt_group_sched=0 there is no (non-trivial) hierarchy of RT groups,
-therefore skip the validation altogether. Otherwise, writes to the
-global sched_rt_runtime_us knob will be rejected with incorrect
-validation error.
+Since beacon templates must be released during normal execution, they
+must also be released in the error handling paths to prevent memory
+leaks.
 
-This fix is immaterial with CONFIG_RT_GROUP_SCHED=n.
+Fix this by using unified exit paths with proper cleanup in the respective
+error paths.
 
-Fixes: 87f1fb77d87a6 ("sched: Add RT_GROUP WARN checks for non-root task_groups")
-Signed-off-by: Michal Koutný <mkoutny@suse.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20260323-sched-rert_groups-v3-1-1e7d5ed6b249@suse.com
+Compile tested only. Issue found using a prototype static analysis tool
+and code review.
+
+Fixes: 3a415daa3e8b ("wifi: ath11k: add P2P IE in beacon template")
+Fixes: 335a92765d30 ("wifi: ath11k: MBSSID beacon support")
+Suggested-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260130084451.110768-1-zilin@seu.edu.cn
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/rt.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath11k/mac.c | 28 ++++++++++++++++-----------
+ 1 file changed, 17 insertions(+), 11 deletions(-)
 
-diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
-index 87462d889f199..0cbee031858a5 100644
---- a/kernel/sched/rt.c
-+++ b/kernel/sched/rt.c
-@@ -2685,9 +2685,6 @@ static int tg_rt_schedulable(struct task_group *tg, void *data)
- 	    tg->rt_bandwidth.rt_runtime && tg_has_rt_tasks(tg))
- 		return -EBUSY;
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index e4ee2ba1f669e..c06ee110a90f0 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -1557,12 +1557,15 @@ static int ath11k_mac_setup_bcn_tmpl_ema(struct ath11k_vif *arvif,
+ 	if (!beacons || !beacons->cnt) {
+ 		ath11k_warn(arvif->ar->ab,
+ 			    "failed to get ema beacon templates from mac80211\n");
+-		return -EPERM;
++		ret = -EPERM;
++		goto free;
+ 	}
  
--	if (WARN_ON(!rt_group_sched_enabled() && tg != &root_task_group))
--		return -EBUSY;
+ 	if (tx_arvif == arvif) {
+-		if (ath11k_mac_set_vif_params(tx_arvif, beacons->bcn[0].skb))
+-			return -EINVAL;
++		if (ath11k_mac_set_vif_params(tx_arvif, beacons->bcn[0].skb)) {
++			ret = -EINVAL;
++			goto free;
++		}
+ 	} else {
+ 		arvif->wpaie_present = tx_arvif->wpaie_present;
+ 	}
+@@ -1589,11 +1592,11 @@ static int ath11k_mac_setup_bcn_tmpl_ema(struct ath11k_vif *arvif,
+ 		}
+ 	}
+ 
+-	ieee80211_beacon_free_ema_list(beacons);
 -
- 	total = to_ratio(period, runtime);
+ 	if (tx_arvif != arvif && !nontx_vif_params_set)
+-		return -EINVAL; /* Profile not found in the beacons */
++		ret = -EINVAL; /* Profile not found in the beacons */
  
- 	/*
-@@ -2831,6 +2828,8 @@ long sched_group_rt_period(struct task_group *tg)
- static int sched_rt_global_constraints(void)
- {
- 	int ret = 0;
-+	if (!rt_group_sched_enabled())
-+		return ret;
++free:
++	ieee80211_beacon_free_ema_list(beacons);
+ 	return ret;
+ }
  
- 	mutex_lock(&rt_constraints_mutex);
- 	ret = __rt_schedulable(NULL, 0, 0);
+@@ -1622,19 +1625,22 @@ static int ath11k_mac_setup_bcn_tmpl_mbssid(struct ath11k_vif *arvif,
+ 	}
+ 
+ 	if (tx_arvif == arvif) {
+-		if (ath11k_mac_set_vif_params(tx_arvif, bcn))
+-			return -EINVAL;
++		if (ath11k_mac_set_vif_params(tx_arvif, bcn)) {
++			ret = -EINVAL;
++			goto free;
++		}
+ 	} else if (!ath11k_mac_set_nontx_vif_params(tx_arvif, arvif, bcn)) {
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto free;
+ 	}
+ 
+ 	ret = ath11k_wmi_bcn_tmpl(ar, arvif->vdev_id, &offs, bcn, 0);
+-	kfree_skb(bcn);
+-
+ 	if (ret)
+ 		ath11k_warn(ab, "failed to submit beacon template command: %d\n",
+ 			    ret);
+ 
++free:
++	kfree_skb(bcn);
+ 	return ret;
+ }
+ 
 -- 
 2.53.0
 
