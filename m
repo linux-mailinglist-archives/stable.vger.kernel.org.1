@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250986-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cHnuIrQgDmqI6QUAu9opvQ
-	(envelope-from <stable+bounces-251968-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:59:32 +0200
+	id 4IvgIfzwDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-250986-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:35:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02EBF59A5B5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:59:31 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F1095940D7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:35:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A716237A50E6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:49:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4427B31F6278
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 809AA3C4576;
-	Wed, 20 May 2026 17:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CB653EEAC6;
+	Wed, 20 May 2026 17:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xE5yOgpO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQq2z+iF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C7A0233933;
-	Wed, 20 May 2026 17:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C6C4352C52;
+	Wed, 20 May 2026 17:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299399; cv=none; b=XEUI8njeOydmEyk+ntmb3nAK/bWyVDRHvyjRdpZgl1WuXaYureDL3ymZYpuLO4tsRVWDiB9A3MFZtWO7IagnHe7pG8/PnhpiXEvOOTVdBZMrm8cHJwHZR9U0jV9Udj8UaquR2nE5BZ3ZJnvWNnEYzYmA2IDaSiLVANVP6SY/Two=
+	t=1779296805; cv=none; b=MnDP1zBuLqoDs2za6rY+uI3pHrJx8lJ3YsIJ1t8h8MRO2eaGdLFBJrWGT59x2UoKez1TbNTuFozKs4eoJRgTAQilvGjlqFfrn7i2UHNnJKz3fEk4eDsK9b67KFOj60SqIvc5q2Z9ICP9l0yjlmpTTap97XbE5t5ZMSycAZJGXdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299399; c=relaxed/simple;
-	bh=0c6M/HHYsquqVco3SATY95lpqGJFW270kw98kflOmVY=;
+	s=arc-20240116; t=1779296805; c=relaxed/simple;
+	bh=j4lvfqSgkHHG8KcRUSFtpV0KxvLskKJiT73kkUqcYY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R137GEbds1WCAQNoE5eDrm//VEQy2SyoCVDHgUTZMoNh8ZlcCcmTvwCFgxD2SWVXiP7eOk7SAjlJ1jMu0xkOrgBrsXaDtlMIEVV1eZCK7DZEV+TgtR1udIB5LJWcn5HHhaMOp/r+O+lNJkT5nCq7CSgrGuBHCRT6yFbN0L1gdzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xE5yOgpO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68EF31F000E9;
-	Wed, 20 May 2026 17:49:57 +0000 (UTC)
+	 MIME-Version; b=EnCWvhgDGZ7DnKOw8X1zYiDJUf3rxF2JmXE+vGFM7kv+3jZkY3DwlQtNEr3Y94E4KW3h/qgF+7yc5QFnmPKQv3nIkB1EYqJO5sbqiAz9JS1ehtfGaRNTV+dTIj520pEBsB2DPctMMBpcXxXgO34zZ80vLETI7tDe1KWuc2jwSyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQq2z+iF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 713451F000E9;
+	Wed, 20 May 2026 17:06:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299397;
-	bh=cwC3w1bvqEZwTmza7399N1adMBUeu5v77ky39beauRU=;
+	s=korg; t=1779296803;
+	bh=JWbsFHTHBH3IRdu3381vc1Mh/Be9x3w+TH+yPhng2T4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xE5yOgpOv0uNeBWmOn8ZzOE3IJNQlOh+tCI2tj+Ue5S99jI5cT+H88ZfiaEuBSyN3
-	 LfG943fO1CppJO2dg9nH7RsKn6Ffur/ALqoPQsukajx7po9LeweC+mvBBzgn7KiIDI
-	 IG2t8zc3fN0n80tMJCD4Vx+f9UINA82jl5YKcp4o=
+	b=aQq2z+iFODnXDzPWEhYYeWHvE5If94YVm8BBNKXqHf1VGPOt6Cgtli2bK1DCgZyJV
+	 8qoSc8W8ZN4EH3vHTswZtGdRLDQHrfosSeAfOQjNjcwKYx7TyR0JrthWS5LihkepUr
+	 x+mgFpLnm04MrfmcWWtxh21WbHSIcObOgMKILG68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 705/957] net: mana: Dont overwrite port probe error with add_adev result
+Subject: [PATCH 7.0 0938/1146] net: airoha: Do not read uninitialized fragment address in airoha_dev_xmit()
 Date: Wed, 20 May 2026 18:19:48 +0200
-Message-ID: <20260520162149.828577764@linuxfoundation.org>
+Message-ID: <20260520162209.464093976@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,103 +68,102 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251968-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250986-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 02EBF59A5B5
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 2F1095940D7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit a7fdaf069bd031fcc234581fa6a580be11bf2175 ]
+[ Upstream commit bde34e84edc8b5571fbde7e941e175a4293ee1eb ]
 
-In mana_probe(), if mana_probe_port() fails for any port, the error
-is stored in 'err' and the loop breaks. However, the subsequent
-unconditional 'err = add_adev(gd, "eth")' overwrites this error.
-If add_adev() succeeds, mana_probe() returns success despite ports
-being left in a partially initialized state (ac->ports[i] == NULL).
+The transmit loop in airoha_dev_xmit() reads fragment address and length
+during its final iteration, when the loop index equals
+skb_shinfo(skb)->nr_frags, at which point the fragment data is
+uninitialized. While these values are never consumed, the read itself is
+unsafe and may trigger a page fault. Fix this by avoiding the fragment
+read on the last iteration.
+Additionally, move the skb pointer from the first to the last used packet
+descriptor, so that airoha_qdma_tx_napi_poll() defers freeing the skb
+until the final descriptor is processed.
 
-Only call add_adev() when there is no prior error, so the probe
-correctly fails and triggers mana_remove() cleanup.
-
-Fixes: a69839d4327d ("net: mana: Add support for auxiliary device")
-Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-Link: https://patch.msgid.link/20260420124741.1056179-5-ernis@linux.microsoft.com
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 23020f0493270 ("net: airoha: Introduce ethernet support for EN7581 SoC")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20260424-airoha-xmit-fix-read-frag-v1-1-fdc0a83c79e8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microsoft/mana/mana_en.c | 17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/airoha/airoha_eth.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index b0d411ab1067f..02090edbd103f 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -3548,10 +3548,9 @@ int mana_probe(struct gdma_dev *gd, bool resuming)
- 	if (!resuming) {
- 		for (i = 0; i < ac->num_ports; i++) {
- 			err = mana_probe_port(ac, i, &ac->ports[i]);
--			/* we log the port for which the probe failed and stop
--			 * probes for subsequent ports.
--			 * Note that we keep running ports, for which the probes
--			 * were successful, unless add_adev fails too
-+			/* Log the port for which the probe failed, stop probing
-+			 * subsequent ports, and skip add_adev.
-+			 * mana_remove() will clean up already-probed ports.
- 			 */
- 			if (err) {
- 				dev_err(dev, "Probe Failed for port %d\n", i);
-@@ -3563,10 +3562,9 @@ int mana_probe(struct gdma_dev *gd, bool resuming)
- 			rtnl_lock();
- 			err = mana_attach(ac->ports[i]);
- 			rtnl_unlock();
--			/* we log the port for which the attach failed and stop
--			 * attach for subsequent ports
--			 * Note that we keep running ports, for which the attach
--			 * were successful, unless add_adev fails too
-+			/* Log the port for which the attach failed, stop
-+			 * attaching subsequent ports, and skip add_adev.
-+			 * mana_remove() will clean up already-attached ports.
- 			 */
- 			if (err) {
- 				dev_err(dev, "Attach Failed for port %d\n", i);
-@@ -3575,7 +3573,8 @@ int mana_probe(struct gdma_dev *gd, bool resuming)
- 		}
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index f9e6406ca55da..3e406d880c0cd 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -2005,8 +2005,8 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
+ 	struct netdev_queue *txq;
+ 	struct airoha_queue *q;
+ 	LIST_HEAD(tx_list);
++	int i = 0, qid;
+ 	void *data;
+-	int i, qid;
+ 	u16 index;
+ 	u8 fport;
+ 
+@@ -2065,7 +2065,7 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
+ 			     list);
+ 	index = e - q->entry;
+ 
+-	for (i = 0; i < nr_frags; i++) {
++	while (true) {
+ 		struct airoha_qdma_desc *desc = &q->desc[index];
+ 		skb_frag_t *frag = &skb_shinfo(skb)->frags[i];
+ 		dma_addr_t addr;
+@@ -2077,7 +2077,7 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
+ 			goto error_unmap;
+ 
+ 		list_move_tail(&e->list, &tx_list);
+-		e->skb = i ? NULL : skb;
++		e->skb = i == nr_frags - 1 ? skb : NULL;
+ 		e->dma_addr = addr;
+ 		e->dma_len = len;
+ 
+@@ -2096,6 +2096,9 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
+ 		WRITE_ONCE(desc->msg1, cpu_to_le32(msg1));
+ 		WRITE_ONCE(desc->msg2, cpu_to_le32(0xffff));
+ 
++		if (++i == nr_frags)
++			break;
++
+ 		data = skb_frag_address(frag);
+ 		len = skb_frag_size(frag);
  	}
- 
--	err = add_adev(gd, "eth");
-+	if (!err)
-+		err = add_adev(gd, "eth");
- 
- 	INIT_DELAYED_WORK(&ac->gf_stats_work, mana_gf_stats_work_handler);
- 	schedule_delayed_work(&ac->gf_stats_work, MANA_GF_STATS_PERIOD);
 -- 
 2.53.0
 
