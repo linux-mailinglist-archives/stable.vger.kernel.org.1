@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-253199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252104-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8B8DAS0ODmqe5wUAu9opvQ
-	(envelope-from <stable+bounces-253199-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:40:29 +0200
+	id iAxpBzEiDmr26QUAu9opvQ
+	(envelope-from <stable+bounces-252104-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:05:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07D07598948
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:40:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89CF459A715
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:05:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8D5E831F4A1E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:50:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3AC3A38A52AC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:56:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD98409601;
-	Wed, 20 May 2026 18:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE253F54C7;
+	Wed, 20 May 2026 17:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ADpxIiK0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zuYSNTnA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85CD409116;
-	Wed, 20 May 2026 18:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAAEE3F39EE;
+	Wed, 20 May 2026 17:56:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302660; cv=none; b=KnFLwEvdMcC+eLyJumbZ1Va4zWXWRSCtI/+TZAWG1HZ1N12T7lSI/rUeAK8Vr7xtrOHxJotRYbx/Cr7Qnnl9DHFGcLxWwDCyLETlngAT4dQsxi18uIGBKWl1DANhMWkzeY4KodfWS/qb4XBa/gYtx5c0FFvdvNXvHGWUxPwhN5w=
+	t=1779299801; cv=none; b=mDwi/ovwowLtI5K6rrHOGNjBeIkozk97slfNzXFVHPGGy2A853fAMu+3Ohh2WknjEiujYOZGGPq+krK0oxyQQ2ruzGp4XyeJAbOtS/SJ+LpZXx03bushhgg6iZGcU6BldB+WOcieHc3343c5OkEBwIlNOu8rXSOsyquU/W6aqhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302660; c=relaxed/simple;
-	bh=WlRT7YoI8bfdOkPL+L3LGtr2cJ3a7059tN7TpKGFiks=;
+	s=arc-20240116; t=1779299801; c=relaxed/simple;
+	bh=QDZ8K/CI3zm/4jwGmq9nvpDMnvV6uoQ7yzAFIeid2fY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T2NYal1fQtYKliVDgnEL0cNATMXxv+rknEKDum23yGofobR+XpEvufyBsM79YMkMje9ioTi5XMWvjWkB34wJBGnzMvUBVHDqpO+2DcW9xdyce9NcUL9FKT6QawV5EdJq2v4E61gLBlmm7Iz4EJO26/9UlhmoE4I20OH3nQiSpqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ADpxIiK0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B61E41F000E9;
-	Wed, 20 May 2026 18:44:18 +0000 (UTC)
+	 MIME-Version; b=XMCJrTkYwEbJiGx6Z8ReeiqXvELXPf30io6tCpHbL7jOSnDd/fChtY0ldtE54jIfpSpzy+FSieJVlC4QPjOoN4wjXACvC/wiJhm2uIR5RJhX6Rta0HnQJ78oAj1OiNTUiOw3ryjkjZUH8h2I2YQcWvuarNFp5SG7+RouOKApFWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zuYSNTnA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB141F00893;
+	Wed, 20 May 2026 17:56:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302659;
-	bh=t03AgFH47eWJ6Fc026Ey3mNR5DGzNrLd2xQrjeP2aEM=;
+	s=korg; t=1779299799;
+	bh=h/CGFMlNDT8f9Mx2iafijMlFo7r1Q6Lv+tLxaLH+RX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ADpxIiK0vC3pAv0kOuTl95yoSGOSv+UDj8Hj4V4K2iFeGYbDyFt1gNZ56LXW38ped
-	 Gk4tB2eYccoqoAjLcoruUHsLh2N1sUEPH+iMtFKmgXz6uu22dbzoIxyRH0y0gTzNZ3
-	 9mxwxyufcTIgOjyHScS2GRjlFFDvG+BEJwbZ3vD4=
+	b=zuYSNTnAHXpDEhvHk72mOi5hnDFIzQBdJoeF5lIvHpQ9lShUsA1SC7bP9idIsjG2Z
+	 3SCmiC8MMSxw0R/NKkVyubMf0OVqZwVkAsJAZDh/HaAwV6cfnU+4IPv/6S//DdD601
+	 akVj5724Qze2Q7I+LxPl97ipikkO7AfT+86msY8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 344/508] ksmbd: scope conn->binding slowpath to bound sessions only
+	Ricardo Robaina <rrobaina@redhat.com>,
+	Sergio Correia <scorreia@redhat.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 6.18 884/957] audit: fix incorrect inheritable capability in CAPSET records
 Date: Wed, 20 May 2026 18:22:47 +0200
-Message-ID: <20260520162106.087136445@linuxfoundation.org>
+Message-ID: <20260520162153.739194936@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,94 +66,79 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
-	TAGGED_FROM(0.00)[bounces-253199-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-252104-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 07D07598948
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 89CF459A715
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Sergio Correia <scorreia@redhat.com>
 
-[ Upstream commit b0da97c034b6107d14e537e212d4ce8b22109a58 ]
+commit e4a640475e43f406fdfd56d370b1f34b0cbbc18d upstream.
 
-When the binding SESSION_SETUP sets conn->binding = true, the flag stays
-set after the call so that the global session lookup in
-ksmbd_session_lookup_all() can find the session, which was not added to
-conn->sessions. Because the flag is connection-wide, the global lookup
-path will also resolve any other session by id if asked.
+__audit_log_capset() records the effective capability set into the
+inheritable field due to a copy-paste error. Every CAPSET audit
+record therefore reports cap_pi (process inheritable) with the value
+of cap_effective instead of cap_inheritable.
 
-Tighten the global lookup so that the returned session must have this
-connection registered in its channel xarray (sess->ksmbd_chann_list).
-The channel entry is installed by the existing binding_session path in
-ntlm_authenticate()/krb5_authenticate() when a SESSION_SETUP completes
-successfully, so this condition is a strict equivalent of "this
-connection has been accepted as a channel of this session". Connections
-that have not bound to a given session cannot reach it via the global
-table.
+This silently corrupts audit data used for compliance and forensic
+analysis: an attacker who modifies inheritable capabilities to
+prepare for a privilege-escalating exec would have the change masked
+in the audit trail.
 
-The existing conn->binding gate for entering the slowpath is preserved
-so that non-binding connections keep the fast-path-only behavior, and
-the session->state check is unchanged.
+The bug has been present since the original introduction of CAPSET
+audit records in 2008.
 
-Fixes: f5a544e3bab7 ("ksmbd: add support for SMB3 multichannel")
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: e68b75a027bb ("When the capset syscall is used it is not possible for audit to record the actual capbilities being added/removed.  This patch adds a new record type which emits the target pid and the eff, inh, and perm cap sets.")
+Reviewed-by: Ricardo Robaina <rrobaina@redhat.com>
+Assisted-by: Claude:claude-opus-4-6
+Signed-off-by: Sergio Correia <scorreia@redhat.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/mgmt/user_session.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ kernel/auditsc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/mgmt/user_session.c b/fs/smb/server/mgmt/user_session.c
-index d0a13a5cccece..6c7fbd589087e 100644
---- a/fs/smb/server/mgmt/user_session.c
-+++ b/fs/smb/server/mgmt/user_session.c
-@@ -323,8 +323,13 @@ struct ksmbd_session *ksmbd_session_lookup_all(struct ksmbd_conn *conn,
- 	struct ksmbd_session *sess;
+--- a/kernel/auditsc.c
++++ b/kernel/auditsc.c
+@@ -2814,7 +2814,7 @@ void __audit_log_capset(const struct cre
  
- 	sess = ksmbd_session_lookup(conn, id);
--	if (!sess && conn->binding)
-+	if (!sess && conn->binding) {
- 		sess = ksmbd_session_lookup_slowpath(id);
-+		if (sess && !xa_load(&sess->ksmbd_chann_list, (long)conn)) {
-+			ksmbd_user_session_put(sess);
-+			sess = NULL;
-+		}
-+	}
- 	if (sess && sess->state != SMB2_SESSION_VALID) {
- 		ksmbd_user_session_put(sess);
- 		sess = NULL;
--- 
-2.53.0
-
+ 	context->capset.pid = task_tgid_nr(current);
+ 	context->capset.cap.effective   = new->cap_effective;
+-	context->capset.cap.inheritable = new->cap_effective;
++	context->capset.cap.inheritable = new->cap_inheritable;
+ 	context->capset.cap.permitted   = new->cap_permitted;
+ 	context->capset.cap.ambient     = new->cap_ambient;
+ 	context->type = AUDIT_CAPSET;
 
 
 
