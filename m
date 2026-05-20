@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251184-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id INA9DkIIDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-252786-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:15:14 +0200
+	id SHmxBQsYDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251184-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:22:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45256598052
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:15:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 722BD599813
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:22:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BA74332B57EE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:26:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 561A6322C284
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9590D3A453B;
-	Wed, 20 May 2026 18:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E1293F6619;
+	Wed, 20 May 2026 17:15:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gYcDGHoL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xFr3naOt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E285332EBD;
-	Wed, 20 May 2026 18:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2EB63F4124;
+	Wed, 20 May 2026 17:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301587; cv=none; b=TiOAK56pLtdk7E9y8iefdlRYIF68hlZ0MunOkjST7djdd5ecGS73JqDYNyih99My3v87c0DM+v+UJE/Nvim/JTdU3vmBFpEaoTmi/5EF8kzXc5rjcFwVhxMc79rNlUGJyEO5pptQe7rrzJyaA5JKLqMwx17B5MQmx79geHjBSDE=
+	t=1779297318; cv=none; b=Rww74pJmqj1hMwiWvhfeTYBB8Nv35T7gwo3jUAvcVFTXDnE5EAVqWWvcodpSgW8eTHYvo1UE795hPkh5jDXZJP839+d1wCxsxaZ3KWLhiq/Smbu6cNAo0r3MIO60ao+yTvG9yK+iJqI8yFuf0XOyalZ48nd8PO8etNI3zrC2l1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301587; c=relaxed/simple;
-	bh=K20viUbBKYd862XGCRFxkmgprOSrEuPHMqvxzNGwvS4=;
+	s=arc-20240116; t=1779297318; c=relaxed/simple;
+	bh=JbuXwgGM7CEtYNX51LrVaWIh2KOkoDFbuJOVQS1AMp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ooeo6YhU+7g3sFySAh59cHaKUi0F5x8vTmy7qvAKu5hNkrj34StWJdAFHq2cqZNveoUd/u/p0gxsI1FNaUMv126JZ4uNed0uznJjC3i+4CZzqHm2BQvwCEHIfe9KUQcAviJdt6luzVaj89UGp3Uw2cu7FmQqxCg2tI/BEYkqkFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gYcDGHoL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C275F1F000E9;
-	Wed, 20 May 2026 18:26:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=daHhKhBiljmuQ4RXGymWkcnIb8BoKOgPyytrr4wc4V9BC5f5CVztTyHipTIXLSDn3juo/nkJhh07Y2JqEcLUjLOQYNJPFRgiA7aKnqDLC92AQW9LwKbr/HpxIjllEs8ruJaxY4KS7eNVPBrwGxHzlgXCr4iE4cLwa/s9KKXPEv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xFr3naOt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B3BC1F000E9;
+	Wed, 20 May 2026 17:15:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301586;
-	bh=8vx0EpiQuP26oPF+xg+l0WlVS+GErXoFp5ZgAfaNU88=;
+	s=korg; t=1779297317;
+	bh=WwAqJumgLCwRlY6ufzNlvF+J2iCCUT3JTE61L5XV7lI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gYcDGHoLHm9lh2nC+GRxuhml0VzuLqXfwgszIPBwyrd1fq/oRoLhzBpRSzNRIiHBa
-	 YCIciI0ASOvBEgObjUT/2jYNTF/TxUo0yfP7HqUgNi6l9/gvaSF6dCA78f6IpY5wSm
-	 A3w0AW0J9T8rWpryx8TvyiRa3r0lk6MNajXzfGcw=
+	b=xFr3naOtwSoO/DM6ucBEyC+NVoykYxLXZZEV4oqjt0Z8hAKJTGYjhpXC7HxnJ/d3+
+	 HL1rpCQAmeb1EYGz64uKaiqx7tF+pf1hQRo2AChIhUjzn9AlQCzoy2ikvi3mM6mT96
+	 X+iyu/LeM9HXn1CcuRhZ2l3Putx/y9eUMb0LAnt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xin Long <lucien.xin@gmail.com>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 570/666] sctp: discard stale INIT after handshake completion
+	Matthew Auld <matthew.auld@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 7.0 1131/1146] drm/xe/dma-buf: fix UAF with retry loop
 Date: Wed, 20 May 2026 18:23:01 +0200
-Message-ID: <20260520162123.623777454@linuxfoundation.org>
+Message-ID: <20260520162213.845393082@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,84 +66,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252786-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251184-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 45256598052
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+X-Rspamd-Queue-Id: 722BD599813
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Matthew Auld <matthew.auld@intel.com>
 
-[ Upstream commit 8a92cb475ca90d84db769e4d4383e631ace0d6e5 ]
+commit 155a372a1cc50fa93387c5d3cdfd614a61e1afd1 upstream.
 
-After an association reaches ESTABLISHED, the peer’s init_tag is already
-known from the handshake. Any subsequent INIT with the same init_tag is
-not a valid restart, but a delayed or duplicate INIT.
+Retry doesn't work here, since bo will be freed on error, leading to
+UAF. However, now that we do the alloc & init before the attach, we can
+now combine this as one unit and have the init do the alloc for us. This
+should make the retry safe.
 
-Drop such INIT chunks in sctp_sf_do_unexpected_init() instead of
-processing them as new association attempts.
+Reported by Sashiko.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Acked-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-Link: https://patch.msgid.link/5788c76c1ee122a3ed00189e88dcf9df1fba226c.1777214801.git.lucien.xin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+v2: Fix up the error unwind (CI)
+
+Closes: https://sashiko.dev/#/patchset/20260506184332.86743-2-matthew.auld%40intel.com
+Fixes: eb289a5f6cc6 ("drm/xe: Convert xe_dma_buf.c for exhaustive eviction")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: <stable@vger.kernel.org> # v6.18+
+Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Link: https://patch.msgid.link/20260508102635.149172-4-matthew.auld@intel.com
+(cherry picked from commit 479669418253e0f27f8cf5db01a731352ea592e7)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sctp/sm_statefuns.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/xe/xe_dma_buf.c |   49 +++++++++-------------------------------
+ 1 file changed, 12 insertions(+), 37 deletions(-)
 
-diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-index 966bd6a44594a..376d4ce5ebb3c 100644
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -1556,6 +1556,12 @@ static enum sctp_disposition sctp_sf_do_unexpected_init(
- 	/* Tag the variable length parameters.  */
- 	chunk->param_hdr.v = skb_pull(chunk->skb, sizeof(struct sctp_inithdr));
+--- a/drivers/gpu/drm/xe/xe_dma_buf.c
++++ b/drivers/gpu/drm/xe/xe_dma_buf.c
+@@ -238,16 +238,8 @@ struct dma_buf *xe_gem_prime_export(stru
+ 	return buf;
+ }
  
-+	if (asoc->state >= SCTP_STATE_ESTABLISHED) {
-+		/* Discard INIT matching peer vtag after handshake completion (stale INIT). */
-+		if (ntohl(chunk->subh.init_hdr->init_tag) == asoc->peer.i.init_tag)
-+			return sctp_sf_pdiscard(net, ep, asoc, type, arg, commands);
-+	}
-+
- 	/* Verify the INIT chunk before processing it. */
- 	err_chunk = NULL;
- 	if (!sctp_verify_init(net, ep, asoc, chunk->chunk_hdr->type,
--- 
-2.53.0
-
+-/*
+- * Takes ownership of @storage: on success it is transferred to the returned
+- * drm_gem_object; on failure it is freed before returning the error.
+- * This matches the contract of xe_bo_init_locked() which frees @storage on
+- * its error paths, so callers need not (and must not) free @storage after
+- * this call.
+- */
+ static struct drm_gem_object *
+-xe_dma_buf_init_obj(struct drm_device *dev, struct xe_bo *storage,
+-		    struct dma_buf *dma_buf)
++xe_dma_buf_create_obj(struct drm_device *dev, struct dma_buf *dma_buf)
+ {
+ 	struct dma_resv *resv = dma_buf->resv;
+ 	struct xe_device *xe = to_xe_device(dev);
+@@ -258,10 +250,8 @@ xe_dma_buf_init_obj(struct drm_device *d
+ 	int ret = 0;
+ 
+ 	dummy_obj = drm_gpuvm_resv_object_alloc(&xe->drm);
+-	if (!dummy_obj) {
+-		xe_bo_free(storage);
++	if (!dummy_obj)
+ 		return ERR_PTR(-ENOMEM);
+-	}
+ 
+ 	dummy_obj->resv = resv;
+ 	xe_validation_guard(&ctx, &xe->val, &exec, (struct xe_val_flags) {}, ret) {
+@@ -270,8 +260,7 @@ xe_dma_buf_init_obj(struct drm_device *d
+ 		if (ret)
+ 			break;
+ 
+-		/* xe_bo_init_locked() frees storage on error */
+-		bo = xe_bo_init_locked(xe, storage, NULL, resv, NULL, dma_buf->size,
++		bo = xe_bo_init_locked(xe, NULL, NULL, resv, NULL, dma_buf->size,
+ 				       0, /* Will require 1way or 2way for vm_bind */
+ 				       ttm_bo_type_sg, XE_BO_FLAG_SYSTEM, &exec);
+ 		drm_exec_retry_on_contention(&exec);
+@@ -322,7 +311,6 @@ struct drm_gem_object *xe_gem_prime_impo
+ 	const struct dma_buf_attach_ops *attach_ops;
+ 	struct dma_buf_attachment *attach;
+ 	struct drm_gem_object *obj;
+-	struct xe_bo *bo;
+ 
+ 	if (dma_buf->ops == &xe_dmabuf_ops) {
+ 		obj = dma_buf->priv;
+@@ -337,22 +325,14 @@ struct drm_gem_object *xe_gem_prime_impo
+ 		}
+ 	}
+ 
+-	bo = xe_bo_alloc();
+-	if (IS_ERR(bo))
+-		return ERR_CAST(bo);
+-
+ 	/*
+-	 * xe_dma_buf_init_obj() takes ownership of the raw bo, so do not touch
+-	 * on fail, since it will already take care of cleanup. On success we
+-	 * still need to drop the ref, if something later fails.
+-	 *
+-	 * In addition this needs to happen before the attach, since
+-	 * it will create a new attachment for this, and add it to the list of
+-	 * attachments, at which point it is globally visible, and at any point
+-	 * the export side can call into on invalidate_mappings callback, which
+-	 * require a working object.
++	 * This needs to happen before the attach, since it will create a new
++	 * attachment for this, and add it to the list of attachments, at which
++	 * point it is globally visible, and at any point the export side can
++	 * call into on invalidate_mappings callback, which require a working
++	 * object.
+ 	 */
+-	obj = xe_dma_buf_init_obj(dev, bo, dma_buf);
++	obj = xe_dma_buf_create_obj(dev, dma_buf);
+ 	if (IS_ERR(obj))
+ 		return obj;
+ 
+@@ -362,20 +342,15 @@ struct drm_gem_object *xe_gem_prime_impo
+ 		attach_ops = test->attach_ops;
+ #endif
+ 
+-	attach = dma_buf_dynamic_attach(dma_buf, dev->dev, attach_ops, &bo->ttm.base);
++	attach = dma_buf_dynamic_attach(dma_buf, dev->dev, attach_ops, obj);
+ 	if (IS_ERR(attach)) {
+-		obj = ERR_CAST(attach);
+-		goto out_err;
++		xe_bo_put(gem_to_xe_bo(obj));
++		return ERR_CAST(attach);
+ 	}
+ 
+ 	get_dma_buf(dma_buf);
+ 	obj->import_attach = attach;
+ 	return obj;
+-
+-out_err:
+-	xe_bo_put(bo);
+-
+-	return obj;
+ }
+ 
+ #if IS_ENABLED(CONFIG_DRM_XE_KUNIT_TEST)
 
 
 
