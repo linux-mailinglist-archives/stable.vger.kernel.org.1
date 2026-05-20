@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-252037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251108-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gDEiE1H5DWq75AUAu9opvQ
-	(envelope-from <stable+bounces-252037-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:29 +0200
+	id yCZzAjXvDWqa4wUAu9opvQ
+	(envelope-from <stable+bounces-251108-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:28:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E57ED595809
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:11:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98DBD593C2E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:28:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EE819315D90B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:53:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 511C7310AA21
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:13:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D2943F5BE1;
-	Wed, 20 May 2026 17:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD08E3F20FA;
+	Wed, 20 May 2026 17:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pu0k2h4N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t4ECMjRF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA1A3F4DC0;
-	Wed, 20 May 2026 17:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA933F1AD6;
+	Wed, 20 May 2026 17:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299582; cv=none; b=IEMfbH4F8/5DZtWHQn2skqrwloJBiSNRV6/+FNKgD2WNEkPvgJ7u0tEDdwrN60NX/qrF6JTGACy7PrrkqJCRZ18/27OaHW5vFIPq4zbbVsiw4xV51oRlkMy0LHYAZ0gqwcQ5XlElOu3ix07IRqcIaKWxHKbyuaXVBmAKr6LqMZc=
+	t=1779297118; cv=none; b=FpIFAY8J9+1WCU6m4i7mlMtXrHBfoPmH/eUM/sHLzEvrvS85s2AnPZ2j1JR4tQe9HVibqgDl8/KV/D3zUn4VrysoMhBGVW7AiYNSA7NS0vhXJpsF6Wwmnejgfu3fm5mk1Dqk1hNKnr5CjwJgqz2Tkx8xta6aNbMJfrUClkHz5bU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299582; c=relaxed/simple;
-	bh=5YPheWmDFDXtVupUi/JLXk0OT0gHYcrkkasSv3TfNmk=;
+	s=arc-20240116; t=1779297118; c=relaxed/simple;
+	bh=JLK3EkVII0NPrpfZ8vw0l5umiGyjFBLMAZVhKbrl1zA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hu+htWip4K5TIdBP3C/pchxTRBjpJjjuXYJcbp739rggJ/hBzekFlI+uCThd12G6sJk4Le8vryE5glYNf/7kLQw4LWzWbWf9HjMVaoFgIDnFCsiu8YJVKhgLh9R3+4IFMxJVpc9ZxNGhswdeaVP4f/giS2+gf2fyxvWnG+VIoVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pu0k2h4N; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F317B1F000E9;
-	Wed, 20 May 2026 17:52:58 +0000 (UTC)
+	 MIME-Version; b=KZhj6vytWQxC4ispOddRz68WR2fJpK5j93FdJ5go7h2UsJYirjTM7ZuTg0QvKXFWW9rxdNbgEeZF5Vxflj1PxxiE0WGC1EVMItCrMrZH/GMndPGmT80rUbbObyOFQxylLLfJiGgBjGQBv7odtC6fDwVq16z5u4H6ceX/KlqWefw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t4ECMjRF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F28E11F000E9;
+	Wed, 20 May 2026 17:11:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299579;
-	bh=l6/2VSPdepYx7ZuvKOGMX3vQqsdaDln/0cusH+MBjco=;
+	s=korg; t=1779297117;
+	bh=PSq1vCrU7NO11Uo8CTUnsQtkn3SSjffvbsXkb6mqmJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pu0k2h4NuYmpwilv7sAlOwO3RJFY8Myqka2P9Sehc3polC85O3RgQwzITOnSKbpFL
-	 B584w2Ljnoxa1iEK2oHcP/k+4HBpDI38s4S7Lz305OhMFarOZboAhOY+C9Q7ZBaasq
-	 jj1dGrJjKexjxURdhVUUmMFF1r9lqshQDrYlz1EQ=
+	b=t4ECMjRFpgDzI+Kca7axx529b+3iB5KHHJXPAIT15IznHD4XvQM1DKcHFoXcV28Gy
+	 2/H98H6jFTtZZnWolAoFSgsywq0MwEOZ25tE9YVld18DKMZ7WyhYqF0tWUrQihrs7I
+	 yyaGBFkeB4eWvlXJyOzGR7p1Dnb9Yi2dXmuOOaFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <error27@gmail.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 825/957] ALSA: hda: cs35l56: Fix uninitialized value in cs35l56_hda_read_acpi()
+	Aaron Sacks <contact@xchglabs.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 7.0 1058/1146] KVM: Reject wrapped offset in kvm_reset_dirty_gfn()
 Date: Wed, 20 May 2026 18:21:48 +0200
-Message-ID: <20260520162152.460177823@linuxfoundation.org>
+Message-ID: <20260520162212.176395520@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,127 +67,107 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,opensource.cirrus.com,suse.de,kernel.org];
-	TAGGED_FROM(0.00)[bounces-252037-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-251108-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,cirrus.com:email]
-X-Rspamd-Queue-Id: E57ED595809
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,xchglabs.com:email]
+X-Rspamd-Queue-Id: 98DBD593C2E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Aaron Sacks <contact@xchglabs.com>
 
-[ Upstream commit 90df4957a3271adf391b3432cd76a40887cf3273 ]
+commit 577a8d3bae0531f0e5ccfac919cd8192f920a804 upstream.
 
-Eliminate the uninitialized 'nval' in cs35l56_hda_read_acpi() if a
-system-specific quirk overrides processing of the dev-index property.
-The value is now stored in a new 'num_amps' member of struct cs35l56_hda
-so that the quirk handler can set the value.
+kvm_reset_dirty_gfn() guards the gfn range with
 
-The quirk for the Lenovo Yoga Book 9i GenX  replaces the values from the
-dev-index property with hardcoded indexes. So cs35l56_hda_read_acpi() would
-then skip reading the property. But this left the 'nval' local variable
-uninitialized when it is later passed to cirrus_scodec_get_speaker_id().
+	if (!memslot || (offset + __fls(mask)) >= memslot->npages)
+		return;
 
-Fixes: 40b1c2f9b299 ("ALSA: hda/cs35l56: Workaround bad dev-index on Lenovo Yoga Book 9i GenX")
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/linux-sound/aenFesLAStjrVNy8@stanley.mountain/T/#u
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://patch.msgid.link/20260428130531.169600-1-rf@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+but offset is u64 and the addition is unchecked.  The check can be
+silently bypassed by a u64 wrap.
+
+The dirty ring backing those entries is MAP_SHARED at
+KVM_DIRTY_LOG_PAGE_OFFSET of the vcpu fd, so the VMM can rewrite the
+slot and offset fields of any entry between when the kernel pushes
+them and when KVM_RESET_DIRTY_RINGS consumes them.  On reset,
+kvm_dirty_ring_reset() re-reads the values via READ_ONCE() and feeds
+them straight back into this check; only the flags handshake is
+treated as the handover, the slot/offset payload is taken on trust.
+
+Crafting two entries
+
+	entry[i].offset   = 0xffffffffffffffc1
+	entry[i+1].offset = 0
+
+makes the coalescing loop in kvm_dirty_ring_reset() compute
+
+	delta = (s64)(0 - 0xffffffffffffffc1) = 63
+
+which falls in [0, BITS_PER_LONG), so it folds entry[i+1] into the
+existing mask by setting bit 63.  The trailing kvm_reset_dirty_gfn()
+call then sees offset = 0xffffffffffffffc1 and __fls(mask) = 63;
+the sum is 0 in u64 and the bounds check passes.
+
+That offset propagates into kvm_arch_mmu_enable_log_dirty_pt_masked()
+unchanged.  On the legacy MMU path -- kvm_memslots_have_rmaps() ==
+true, i.e. shadow paging, any VM that has allocated shadow roots, or
+a write-tracked slot -- it reaches gfn_to_rmap(), which indexes
+slot->arch.rmap[0][] with a near-U64_MAX gfn.  That is an
+out-of-bounds load of a kvm_rmap_head, followed by a conditional
+clear of PT_WRITABLE_MASK in whatever the loaded pointer points at.
+The path is reachable from any process holding /dev/kvm.
+
+Range-check offset on its own first, so the addition cannot wrap.
+memslot->npages is bounded well below U64_MAX, so once offset <
+npages holds, offset + __fls(mask) (with __fls(mask) < BITS_PER_LONG)
+stays in range.
+
+Fixes: fb04a1eddb1a ("KVM: X86: Implement ring-based dirty memory tracking")
+Cc: stable@vger.kernel.org
+Signed-off-by: Aaron Sacks <contact@xchglabs.com>
+Link: https://patch.msgid.link/20260512060742.1628959-1-contact@xchglabs.com/
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/hda/codecs/side-codecs/cs35l56_hda.c | 12 +++++++-----
- sound/hda/codecs/side-codecs/cs35l56_hda.h |  1 +
- 2 files changed, 8 insertions(+), 5 deletions(-)
+ virt/kvm/dirty_ring.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/hda/codecs/side-codecs/cs35l56_hda.c b/sound/hda/codecs/side-codecs/cs35l56_hda.c
-index 82b7352e7ea97..79c15e21d4bcb 100644
---- a/sound/hda/codecs/side-codecs/cs35l56_hda.c
-+++ b/sound/hda/codecs/side-codecs/cs35l56_hda.c
-@@ -884,6 +884,7 @@ static int cs35l56_hda_system_resume(struct device *dev)
- static int cs35l56_hda_fixup_yoga9(struct cs35l56_hda *cs35l56, int *bus_addr)
- {
- 	/* The cirrus,dev-index property has the wrong values */
-+	cs35l56->num_amps = 2;
- 	switch (*bus_addr) {
- 	case 0x30:
- 		cs35l56->index = 1;
-@@ -933,7 +934,6 @@ static int cs35l56_hda_read_acpi(struct cs35l56_hda *cs35l56, int hid, int id)
- 	char hid_string[8];
- 	struct acpi_device *adev;
- 	const char *property, *sub;
--	size_t nval;
- 	int i, ret;
+--- a/virt/kvm/dirty_ring.c
++++ b/virt/kvm/dirty_ring.c
+@@ -63,7 +63,8 @@ static void kvm_reset_dirty_gfn(struct k
  
- 	/*
-@@ -969,13 +969,14 @@ static int cs35l56_hda_read_acpi(struct cs35l56_hda *cs35l56, int hid, int id)
- 			ret = -EINVAL;
- 			goto err;
- 		}
--		nval = ret;
-+		cs35l56->num_amps = ret;
+ 	memslot = id_to_memslot(__kvm_memslots(kvm, as_id), id);
  
--		ret = device_property_read_u32_array(cs35l56->base.dev, property, values, nval);
-+		ret = device_property_read_u32_array(cs35l56->base.dev, property, values,
-+						     cs35l56->num_amps);
- 		if (ret)
- 			goto err;
+-	if (!memslot || (offset + __fls(mask)) >= memslot->npages)
++	if (!memslot || offset >= memslot->npages ||
++	    offset + __fls(mask) >= memslot->npages)
+ 		return;
  
--		for (i = 0; i < nval; i++) {
-+		for (i = 0; i < cs35l56->num_amps; i++) {
- 			if (values[i] == id) {
- 				cs35l56->index = i;
- 				break;
-@@ -998,7 +999,8 @@ static int cs35l56_hda_read_acpi(struct cs35l56_hda *cs35l56, int hid, int id)
- 			 "Read ACPI _SUB failed(%ld): fallback to generic firmware\n",
- 			 PTR_ERR(sub));
- 	} else {
--		ret = cirrus_scodec_get_speaker_id(cs35l56->base.dev, cs35l56->index, nval, -1);
-+		ret = cirrus_scodec_get_speaker_id(cs35l56->base.dev, cs35l56->index,
-+						   cs35l56->num_amps, -1);
- 		if (ret == -ENOENT) {
- 			cs35l56->system_name = sub;
- 		} else if (ret >= 0) {
-diff --git a/sound/hda/codecs/side-codecs/cs35l56_hda.h b/sound/hda/codecs/side-codecs/cs35l56_hda.h
-index 38d94fb213a50..0074e8f5f18cb 100644
---- a/sound/hda/codecs/side-codecs/cs35l56_hda.h
-+++ b/sound/hda/codecs/side-codecs/cs35l56_hda.h
-@@ -25,6 +25,7 @@ struct cs35l56_hda {
- 	struct work_struct dsp_work;
- 
- 	int index;
-+	int num_amps;
- 	const char *system_name;
- 	const char *amp_name;
- 
--- 
-2.53.0
-
+ 	KVM_MMU_LOCK(kvm);
 
 
 
