@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-252405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252864-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cN09GqAkDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252405-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:16:16 +0200
+	id mJVGGHIYDmp96AUAu9opvQ
+	(envelope-from <stable+bounces-252864-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:24:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF2DF59AA02
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:16:15 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85059599897
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:24:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6385B380F57E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:09:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3224B31A6CB8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:29:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16F1C3DC4DA;
-	Wed, 20 May 2026 18:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0154368968;
+	Wed, 20 May 2026 18:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H8dUDdf7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nk9YFl/e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB6D33A6B6D;
-	Wed, 20 May 2026 18:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7673D1CC6;
+	Wed, 20 May 2026 18:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300589; cv=none; b=pL05mR9YvpdE8FL0EwgvJrJ0BZtN6dg7CHer/cVVA1/+tKk9lDgUu7j5HSdxT/AIFH0IZ90cjSUqaebSj8k3Cg9FQ67SMktqrRam8PqectQ10YUZhxXWxHabqHWTvZV9rQtDOmrZLV5m96dZ5MvBDCejp+hnFi4FdXDFPvTz2mw=
+	t=1779301788; cv=none; b=Hw/1qqCT9fzyfPkB3qq4DN1Bz2URi6J4FiSbrmjsxym6uwrjIx7UKHX++9LuNrPNwIGHqK1AysSsAa+TjDlDOuzNpgRPN+/10XssV+HbuwyIyGZVwiyE6amywjyjwDmefsQ4yILf6nzvJQ4x2d5lW2IxZF7am67myYA2nOWyoEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300589; c=relaxed/simple;
-	bh=bgXaWkJkRKZJqpeJ2M75/YLQXnfX1I0p32x8O089NCk=;
+	s=arc-20240116; t=1779301788; c=relaxed/simple;
+	bh=L8dRkdbJxlnM7Q+VlV+m/UtX6uR9s486JMM34FGbgPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vA/5Js6wQDMTD4aUtu4yAAsbf/WvmgPpGrNSEiw4ouOD3Eq4VMU1TFhLwbj8OXZWEbdSkpGOi/4QC7g+juvSLr2t+hQBK79R5mSIcas6686x3poG40kpsUMlyoD/tDeG6rPDVMV/l60+6T81Dxi+cvFVKLRhXukVxrHEZ+loPX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H8dUDdf7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE8EE1F000E9;
-	Wed, 20 May 2026 18:09:47 +0000 (UTC)
+	 MIME-Version; b=i8B5ZnzKvOH2m6sd5jeQZ6Nt1Tq8qbjwBYyZWdPRfy3acsf5pYYNtgsfbn9emWa/QcD4atQQ9tzr2Y73XJRu/fCrEieKJZ93IFTt17/xuFwLrebzp9cn0x/59+sdFV18UmmGrLlJ/5OsxE2/V/YKEfauib6D4eYtOF4bZ/bOv8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nk9YFl/e; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ACC71F000E9;
+	Wed, 20 May 2026 18:29:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300588;
-	bh=bb+4hzwpeBM7CFzld1Q5RxPzlwEDJ3NksGfAfQ2ayiw=;
+	s=korg; t=1779301787;
+	bh=q3aJXUl0XPcZNoyYWwiGbh9D/NjCPA/UVq0W3FJ8uds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=H8dUDdf7wpyTIDSpvU0yh2tX2b1yIgXy2ZP8puDsRQOSajtoJGEDq1sew8x6wjROT
-	 nGfDJA28ejQPrn0RZijk3C8Vmd2AglHAgDXtVlhOtu7iuBJ7bP0VkJFvtP+ikp0+K1
-	 4JdE1NhTYw3euoHCWzy41O1YX21otuxJAuitmras=
+	b=nk9YFl/eDIfeEMAsc/PAoa9GKL0uNbBY7UTmnsZ1PvBcjN5DDxYWNunxCT3n/SPz5
+	 fZ2/Gpjd4EJq3yshjiaQtXtQfqH5RlqAeAYAcEiASd1LoBqCT4HzwFTJzJqczTC6HY
+	 Fkg2CeiKzWgif8qubN3by681MBeDECueBCgUUiTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vidya Sagar <vidyas@nvidia.com>,
-	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 232/666] PCI: tegra194: Fix polling delay for L2 state
+Subject: [PATCH 6.6 020/508] hrtimer: Reduce trace noise in hrtimer_start()
 Date: Wed, 20 May 2026 18:17:23 +0200
-Message-ID: <20260520162116.241900654@linuxfoundation.org>
+Message-ID: <20260520162059.027058555@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,91 +66,248 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252405-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252864-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
-X-Rspamd-Queue-Id: EF2DF59AA02
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 85059599897
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vidya Sagar <vidyas@nvidia.com>
+From: Thomas Gleixner <tglx@kernel.org>
 
-[ Upstream commit adaffed907f14f954096555665ad6af2ae724d83 ]
+[ Upstream commit f2e388a019e4cf83a15883a3d1f1384298e9a6aa ]
 
-As per PCIe r7.0, sec 5.3.3.2.1, after sending PME_Turn_Off message, Root
-Port should wait for 1-10 msec for PME_TO_Ack message. Currently, driver is
-polling for 10 msec with 1 usec delay which is aggressive.  Use existing
-macro PCIE_PME_TO_L2_TIMEOUT_US to poll for 10 msec with 1 msec delay.
-Since this function is used in non-atomic context only, use non-atomic poll
-function.
+hrtimer_start() when invoked with an already armed timer traces like:
 
-Fixes: 56e15a238d92 ("PCI: tegra: Add Tegra194 PCIe support")
-Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
-Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://patch.msgid.link/20260324190755.1094879-2-mmaddireddy@nvidia.com
+ <comm>-..   [032] d.h2. 5.002263: hrtimer_cancel: hrtimer= ....
+ <comm>-..   [032] d.h1. 5.002263: hrtimer_start: hrtimer= ....
+
+Which is incorrect as the timer doesn't get canceled. Just the expiry time
+changes. The internal dequeue operation which is required for that is not
+really interesting for trace analysis. But it makes it tedious to keep real
+cancellations and the above case apart.
+
+Remove the cancel tracing in hrtimer_start() and add a 'was_armed'
+indicator to the hrtimer start tracepoint, which clearly indicates what the
+state of the hrtimer is when hrtimer_start() is invoked:
+
+<comm>-..   [032] d.h1. 6.200103: hrtimer_start: hrtimer= .... was_armed=0
+ <comm>-..   [032] d.h1. 6.200558: hrtimer_start: hrtimer= .... was_armed=1
+
+Fixes: c6a2a1770245 ("hrtimer: Add tracepoint for hrtimers")
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://patch.msgid.link/20260224163430.208491877@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ include/trace/events/timer.h | 11 +++++----
+ kernel/time/hrtimer.c        | 43 +++++++++++++++++-------------------
+ 2 files changed, 27 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index c2d626b090e3c..8f2f60fc032eb 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -198,8 +198,6 @@
- #define CAP_SPCIE_CAP_OFF_USP_TX_PRESET0_MASK	GENMASK(11, 8)
- #define CAP_SPCIE_CAP_OFF_USP_TX_PRESET0_SHIFT	8
+diff --git a/include/trace/events/timer.h b/include/trace/events/timer.h
+index b4bc2828fa09f..ec8d0de1ad225 100644
+--- a/include/trace/events/timer.h
++++ b/include/trace/events/timer.h
+@@ -198,12 +198,13 @@ TRACE_EVENT(hrtimer_init,
+  * hrtimer_start - called when the hrtimer is started
+  * @hrtimer:	pointer to struct hrtimer
+  * @mode:	the hrtimers mode
++ * @was_armed:	Was armed when hrtimer_start*() was invoked
+  */
+ TRACE_EVENT(hrtimer_start,
  
--#define PME_ACK_TIMEOUT 10000
--
- #define LTSSM_TIMEOUT 50000	/* 50ms */
+-	TP_PROTO(struct hrtimer *hrtimer, enum hrtimer_mode mode),
++	TP_PROTO(struct hrtimer *hrtimer, enum hrtimer_mode mode, bool was_armed),
  
- #define GEN3_GEN4_EQ_PRESET_INIT	5
-@@ -1570,9 +1568,10 @@ static int tegra_pcie_try_link_l2(struct tegra_pcie_dw *pcie)
- 	val |= APPL_PM_XMT_TURNOFF_STATE;
- 	appl_writel(pcie, val, APPL_RADM_STATUS);
+-	TP_ARGS(hrtimer, mode),
++	TP_ARGS(hrtimer, mode, was_armed),
  
--	return readl_poll_timeout_atomic(pcie->appl_base + APPL_DEBUG, val,
--				 val & APPL_DEBUG_PM_LINKST_IN_L2_LAT,
--				 1, PME_ACK_TIMEOUT);
-+	return readl_poll_timeout(pcie->appl_base + APPL_DEBUG, val,
-+				  val & APPL_DEBUG_PM_LINKST_IN_L2_LAT,
-+				  PCIE_PME_TO_L2_TIMEOUT_US/10,
-+				  PCIE_PME_TO_L2_TIMEOUT_US);
+ 	TP_STRUCT__entry(
+ 		__field( void *,	hrtimer		)
+@@ -211,6 +212,7 @@ TRACE_EVENT(hrtimer_start,
+ 		__field( s64,		expires		)
+ 		__field( s64,		softexpires	)
+ 		__field( enum hrtimer_mode,	mode	)
++		__field( bool,		was_armed	)
+ 	),
+ 
+ 	TP_fast_assign(
+@@ -219,13 +221,14 @@ TRACE_EVENT(hrtimer_start,
+ 		__entry->expires	= hrtimer_get_expires(hrtimer);
+ 		__entry->softexpires	= hrtimer_get_softexpires(hrtimer);
+ 		__entry->mode		= mode;
++		__entry->was_armed	= was_armed;
+ 	),
+ 
+ 	TP_printk("hrtimer=%p function=%ps expires=%llu softexpires=%llu "
+-		  "mode=%s", __entry->hrtimer, __entry->function,
++		  "mode=%s was_armed=%d", __entry->hrtimer, __entry->function,
+ 		  (unsigned long long) __entry->expires,
+ 		  (unsigned long long) __entry->softexpires,
+-		  decode_hrtimer_mode(__entry->mode))
++		  decode_hrtimer_mode(__entry->mode), __entry->was_armed)
+ );
+ 
+ /**
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index 3bc3111ca5317..d3071b81c0640 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -499,17 +499,10 @@ debug_init(struct hrtimer *timer, clockid_t clockid,
+ 	trace_hrtimer_init(timer, clockid, mode);
  }
  
- static void tegra_pcie_dw_pme_turnoff(struct tegra_pcie_dw *pcie)
+-static inline void debug_activate(struct hrtimer *timer,
+-				  enum hrtimer_mode mode)
++static inline void debug_activate(struct hrtimer *timer, enum hrtimer_mode mode, bool was_armed)
+ {
+ 	debug_hrtimer_activate(timer, mode);
+-	trace_hrtimer_start(timer, mode);
+-}
+-
+-static inline void debug_deactivate(struct hrtimer *timer)
+-{
+-	debug_hrtimer_deactivate(timer);
+-	trace_hrtimer_cancel(timer);
++	trace_hrtimer_start(timer, mode, was_armed);
+ }
+ 
+ static struct hrtimer_clock_base *
+@@ -1102,9 +1095,9 @@ EXPORT_SYMBOL_GPL(hrtimer_forward);
+  * Returns true when the new timer is the leftmost timer in the tree.
+  */
+ static bool enqueue_hrtimer(struct hrtimer *timer, struct hrtimer_clock_base *base,
+-			    enum hrtimer_mode mode)
++			    enum hrtimer_mode mode, bool was_armed)
+ {
+-	debug_activate(timer, mode);
++	debug_activate(timer, mode, was_armed);
+ 	WARN_ON_ONCE(!base->cpu_base->online);
+ 
+ 	base->cpu_base->active_bases |= 1 << base->index;
+@@ -1164,6 +1157,8 @@ remove_hrtimer(struct hrtimer *timer, struct hrtimer_clock_base *base,
+ 	if (state & HRTIMER_STATE_ENQUEUED) {
+ 		bool reprogram;
+ 
++		debug_hrtimer_deactivate(timer);
++
+ 		/*
+ 		 * Remove the timer and force reprogramming when high
+ 		 * resolution mode is active and the timer is on the current
+@@ -1172,7 +1167,6 @@ remove_hrtimer(struct hrtimer *timer, struct hrtimer_clock_base *base,
+ 		 * reprogramming happens in the interrupt handler. This is a
+ 		 * rare case and less expensive than a smp call.
+ 		 */
+-		debug_deactivate(timer);
+ 		reprogram = base->cpu_base == this_cpu_ptr(&hrtimer_bases);
+ 
+ 		/*
+@@ -1239,15 +1233,15 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
+ {
+ 	struct hrtimer_cpu_base *this_cpu_base = this_cpu_ptr(&hrtimer_bases);
+ 	struct hrtimer_clock_base *new_base;
+-	bool force_local, first;
++	bool force_local, first, was_armed;
+ 
+ 	/*
+ 	 * If the timer is on the local cpu base and is the first expiring
+ 	 * timer then this might end up reprogramming the hardware twice
+-	 * (on removal and on enqueue). To avoid that by prevent the
+-	 * reprogram on removal, keep the timer local to the current CPU
+-	 * and enforce reprogramming after it is queued no matter whether
+-	 * it is the new first expiring timer again or not.
++	 * (on removal and on enqueue). To avoid that prevent the reprogram
++	 * on removal, keep the timer local to the current CPU and enforce
++	 * reprogramming after it is queued no matter whether it is the new
++	 * first expiring timer again or not.
+ 	 */
+ 	force_local = base->cpu_base == this_cpu_base;
+ 	force_local &= base->cpu_base->next_timer == timer;
+@@ -1269,7 +1263,7 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
+ 	 * avoids programming the underlying clock event twice (once at
+ 	 * removal and once after enqueue).
+ 	 */
+-	remove_hrtimer(timer, base, true, force_local);
++	was_armed = remove_hrtimer(timer, base, true, force_local);
+ 
+ 	if (mode & HRTIMER_MODE_REL)
+ 		tim = ktime_add_safe(tim, base->get_time());
+@@ -1286,7 +1280,7 @@ static int __hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
+ 		new_base = base;
+ 	}
+ 
+-	first = enqueue_hrtimer(timer, new_base, mode);
++	first = enqueue_hrtimer(timer, new_base, mode, was_armed);
+ 
+ 	/*
+ 	 * If the hrtimer interrupt is running, then it will reevaluate the
+@@ -1390,8 +1384,11 @@ int hrtimer_try_to_cancel(struct hrtimer *timer)
+ 
+ 	base = lock_hrtimer_base(timer, &flags);
+ 
+-	if (!hrtimer_callback_running(timer))
++	if (!hrtimer_callback_running(timer)) {
+ 		ret = remove_hrtimer(timer, base, false, false);
++		if (ret)
++			trace_hrtimer_cancel(timer);
++	}
+ 
+ 	unlock_hrtimer_base(timer, &flags);
+ 
+@@ -1771,7 +1768,7 @@ static void __run_hrtimer(struct hrtimer_cpu_base *cpu_base,
+ 	 */
+ 	if (restart != HRTIMER_NORESTART &&
+ 	    !(timer->state & HRTIMER_STATE_ENQUEUED))
+-		enqueue_hrtimer(timer, base, HRTIMER_MODE_ABS);
++		enqueue_hrtimer(timer, base, HRTIMER_MODE_ABS, false);
+ 
+ 	/*
+ 	 * Separate the ->running assignment from the ->state assignment.
+@@ -2253,7 +2250,7 @@ static void migrate_hrtimer_list(struct hrtimer_clock_base *old_base,
+ 	while ((node = timerqueue_getnext(&old_base->active))) {
+ 		timer = container_of(node, struct hrtimer, node);
+ 		BUG_ON(hrtimer_callback_running(timer));
+-		debug_deactivate(timer);
++		debug_hrtimer_deactivate(timer);
+ 
+ 		/*
+ 		 * Mark it as ENQUEUED not INACTIVE otherwise the
+@@ -2270,7 +2267,7 @@ static void migrate_hrtimer_list(struct hrtimer_clock_base *old_base,
+ 		 * sort out already expired timers and reprogram the
+ 		 * event device.
+ 		 */
+-		enqueue_hrtimer(timer, new_base, HRTIMER_MODE_ABS);
++		enqueue_hrtimer(timer, new_base, HRTIMER_MODE_ABS, true);
+ 	}
+ }
+ 
 -- 
 2.53.0
 
