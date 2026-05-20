@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-250939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252506-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yGTHFZXrDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250939-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:12:53 +0200
+	id iFS6Nhj9DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-252506-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA669593150
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:12:52 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 814F159635C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4BB9E3014536
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:06:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0AC1231BBCD5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:14:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 426B737D101;
-	Wed, 20 May 2026 17:04:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8567D3F8704;
+	Wed, 20 May 2026 18:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXsc83BG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uXb6yY0+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11C6372EED;
-	Wed, 20 May 2026 17:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282943A6B6D;
+	Wed, 20 May 2026 18:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296684; cv=none; b=N4qPKGvugLRa62UWIpg3hZjf/vQq50RLxxyVLhFOYCDgoSeSlDVV+qy0TeWmsDlBqfiDIq6LYRh9WkL78d6gkJDWCV/C/AE/JsDLUPAVLEEK2Oq+tqCijXosnkqEdDjNbRRJ4gpChazMgpiYwcrn9/Je28EK07ESIH5u87VpesE=
+	t=1779300852; cv=none; b=mxbwTkEAd4SZorcS1r2iKW65zobMWCQW9ulcTimEh3XBJB/hUXuRobLWqgNTEANqU6oH3SwF5bf+KW5hq4k51+Fz7J+EMiHhCmPDfDHb5qpwkhMJtyIyNGKA6xL0Dis37TUmjlElcLWQI9Fzo0v+qgOn1fcjymjj0Juiq2F6mXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296684; c=relaxed/simple;
-	bh=2Szc7FPMLFT5fHGMTaBAhaEISoAn7ab/+4ykPVpFdQs=;
+	s=arc-20240116; t=1779300852; c=relaxed/simple;
+	bh=3K97AO9+2bMQC8m8l30SgXHpsdS9vyHKi2JxIg0GbrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a+gXs4hIn/Z0F5Krg2qOTTOkxr97SgpKKdVQUNX3gw/p8DgSF5HxtTiU5Q0C0r+zsdrZHJXZ9RLUMKWBdgw8Q9CGjDYYXy4auCYGcdiQxDOXg7pdzKt5hdcL6pnkYl8+ZiUDI0cI8c+aCoMxHeIj/PCOl5eqViaA2PKuvOcn9RE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXsc83BG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 587B31F000E9;
-	Wed, 20 May 2026 17:04:42 +0000 (UTC)
+	 MIME-Version; b=FSmvR4nTCNAEgW8BFJmw0n5rmoROBrb0yYuBOLK6cbyXyB9wX8qIhQ7Uxrz0gz+NuCaJccPSgVvGoyG20hbm19lHy17Avx3HRPc6jx3Nj79VYYHRSPOOs51Dtcv6dckXlq76NfuMjRxNT6uS1K7vIK40MyBnG7m8cSL9jnM3Ozk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uXb6yY0+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 419981F000E9;
+	Wed, 20 May 2026 18:14:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296682;
-	bh=4p9llpOg209ZEu/s/731oqVD54QrMWxowYmh2he8kLo=;
+	s=korg; t=1779300850;
+	bh=7bCN2JZnZaUfQDrEKIxNGR8bNmguvA2Rh5np0/Dizgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IXsc83BGJOOwsz2X7T/Q09IHZK7yQ8YepIZOb9UDU0sKJJHJcsvqCv55d935w59L/
-	 o6ACiCFxD6JSpxcahm39qrNTOCqDwUNrfnPKLByk1NTymiZJtVi07Cs0FbYjVC9wou
-	 M9N46jqXsT9RybX0CR23EHgEflDmdoEedagCmJA8=
+	b=uXb6yY0+d1wdwRMdAW+gSc3y08fvpZ4HRvtKlbyOhjnftwVtPhC56BT+rA3gpYOsR
+	 yOvmIXIHbz/NLDXQabhA+EKC/Vrc2w5VgtGvuuDMdXSQMmhIQimIwL9v99LflbwpGi
+	 rDjYXlibK1UJh6IuD2kcQrzoH3zd9Q2lMFWpeBS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Mark Harmstone <mark@harmstone.com>,
-	David Sterba <dsterba@suse.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0892/1146] btrfs: fix double-decrement of bytes_may_use in submit_one_async_extent()
+Subject: [PATCH 6.12 331/666] ima_fs: get rid of lookup-by-dentry stuff
 Date: Wed, 20 May 2026 18:19:02 +0200
-Message-ID: <20260520162208.422968194@linuxfoundation.org>
+Message-ID: <20260520162118.404032891@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,76 +68,201 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250939-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252506-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.com:email]
-X-Rspamd-Queue-Id: CA669593150
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linux.org.uk:email]
+X-Rspamd-Queue-Id: 814F159635C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Harmstone <mark@harmstone.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 82323b1a7088b7a5c3e528a5d634bff447fa286f ]
+[ Upstream commit d15ffbbf4d32a9007c4a339a9fecac90ce30432a ]
 
-submit_one_async_extent() calls btrfs_reserve_extent(), which decrements
-bytes_may_use. If the call btrfs_create_io_em() fails, we jump to
-out_free_reserve, which calls extent_clear_unlock_delalloc().
+lookup_template_data_hash_algo() machinery is used to locate the
+matching ima_algo_array[] element at read time; securityfs
+allows to stash that into inode->i_private at object creation
+time, so there's no need to bother
 
-Because we're specifying EXTENT_DO_ACCOUNTING, i.e.
-EXTENT_CLEAR_META_RESV | EXTENT_CLEAR_DATA_RESV, this decreases
-bytes_may_use again. This can lead to problems later on, as an initial
-write can fail only for the writeback to silently ENOSPC.
-
-Fix this by replacing EXTENT_DO_ACCOUNTING with EXTENT_CLEAR_META_RESV.
-This parallels a4fe134fc1d8eb ("btrfs: fix a double release on reserved
-extents in cow_one_range()"), which is the same fix in cow_one_range().
-
-Fixes: 151a41bc46df ("Btrfs: fix what bits we clear when erroring out from delalloc")
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Mark Harmstone <mark@harmstone.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Acked-by: Mimi Zohar <zohar@linux.ibm.com>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Stable-dep-of: d7bd8cf0b348 ("ima_fs: Correctly create securityfs files for unsupported hash algos")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ security/integrity/ima/ima_fs.c | 82 +++++++--------------------------
+ 1 file changed, 16 insertions(+), 66 deletions(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index c5b291ddb4776..dc2b22e65bad5 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -1245,7 +1245,7 @@ static void submit_one_async_extent(struct async_chunk *async_chunk,
- 				     NULL, &cached,
- 				     EXTENT_LOCKED | EXTENT_DELALLOC |
- 				     EXTENT_DELALLOC_NEW |
--				     EXTENT_DEFRAG | EXTENT_DO_ACCOUNTING,
-+				     EXTENT_DEFRAG | EXTENT_CLEAR_META_RESV,
- 				     PAGE_UNLOCK | PAGE_START_WRITEBACK |
- 				     PAGE_END_WRITEBACK);
- 	if (async_extent->cb)
+diff --git a/security/integrity/ima/ima_fs.c b/security/integrity/ima/ima_fs.c
+index 88421e8895c44..87045b09f1206 100644
+--- a/security/integrity/ima/ima_fs.c
++++ b/security/integrity/ima/ima_fs.c
+@@ -116,28 +116,6 @@ void ima_putc(struct seq_file *m, void *data, int datalen)
+ 		seq_putc(m, *(char *)data++);
+ }
+ 
+-static struct dentry **ascii_securityfs_measurement_lists __ro_after_init;
+-static struct dentry **binary_securityfs_measurement_lists __ro_after_init;
+-static int securityfs_measurement_list_count __ro_after_init;
+-
+-static void lookup_template_data_hash_algo(int *algo_idx, enum hash_algo *algo,
+-					   struct seq_file *m,
+-					   struct dentry **lists)
+-{
+-	struct dentry *dentry;
+-	int i;
+-
+-	dentry = file_dentry(m->file);
+-
+-	for (i = 0; i < securityfs_measurement_list_count; i++) {
+-		if (dentry == lists[i]) {
+-			*algo_idx = i;
+-			*algo = ima_algo_array[i].algo;
+-			break;
+-		}
+-	}
+-}
+-
+ /* print format:
+  *       32bit-le=pcr#
+  *       char[n]=template digest
+@@ -160,9 +138,10 @@ int ima_measurements_show(struct seq_file *m, void *v)
+ 	algo_idx = ima_sha1_idx;
+ 	algo = HASH_ALGO_SHA1;
+ 
+-	if (m->file != NULL)
+-		lookup_template_data_hash_algo(&algo_idx, &algo, m,
+-					       binary_securityfs_measurement_lists);
++	if (m->file != NULL) {
++		algo_idx = (unsigned long)file_inode(m->file)->i_private;
++		algo = ima_algo_array[algo_idx].algo;
++	}
+ 
+ 	/* get entry */
+ 	e = qe->entry;
+@@ -256,9 +235,10 @@ static int ima_ascii_measurements_show(struct seq_file *m, void *v)
+ 	algo_idx = ima_sha1_idx;
+ 	algo = HASH_ALGO_SHA1;
+ 
+-	if (m->file != NULL)
+-		lookup_template_data_hash_algo(&algo_idx, &algo, m,
+-					       ascii_securityfs_measurement_lists);
++	if (m->file != NULL) {
++		algo_idx = (unsigned long)file_inode(m->file)->i_private;
++		algo = ima_algo_array[algo_idx].algo;
++	}
+ 
+ 	/* get entry */
+ 	e = qe->entry;
+@@ -412,57 +392,33 @@ static const struct seq_operations ima_policy_seqops = {
+ };
+ #endif
+ 
+-static void __init remove_securityfs_measurement_lists(struct dentry **lists)
+-{
+-	kfree(lists);
+-}
+-
+ static int __init create_securityfs_measurement_lists(void)
+ {
+-	char file_name[NAME_MAX + 1];
+-	struct dentry *dentry;
+-	u16 algo;
+-	int i;
+-
+-	securityfs_measurement_list_count = NR_BANKS(ima_tpm_chip);
++	int count = NR_BANKS(ima_tpm_chip);
+ 
+ 	if (ima_sha1_idx >= NR_BANKS(ima_tpm_chip))
+-		securityfs_measurement_list_count++;
++		count++;
+ 
+-	ascii_securityfs_measurement_lists =
+-	    kcalloc(securityfs_measurement_list_count, sizeof(struct dentry *),
+-		    GFP_KERNEL);
+-	if (!ascii_securityfs_measurement_lists)
+-		return -ENOMEM;
+-
+-	binary_securityfs_measurement_lists =
+-	    kcalloc(securityfs_measurement_list_count, sizeof(struct dentry *),
+-		    GFP_KERNEL);
+-	if (!binary_securityfs_measurement_lists)
+-		return -ENOMEM;
+-
+-	for (i = 0; i < securityfs_measurement_list_count; i++) {
+-		algo = ima_algo_array[i].algo;
++	for (int i = 0; i < count; i++) {
++		u16 algo = ima_algo_array[i].algo;
++		char file_name[NAME_MAX + 1];
++		struct dentry *dentry;
+ 
+ 		sprintf(file_name, "ascii_runtime_measurements_%s",
+ 			hash_algo_name[algo]);
+ 		dentry = securityfs_create_file(file_name, S_IRUSR | S_IRGRP,
+-						ima_dir, NULL,
++						ima_dir, (void *)(uintptr_t)i,
+ 						&ima_ascii_measurements_ops);
+ 		if (IS_ERR(dentry))
+ 			return PTR_ERR(dentry);
+ 
+-		ascii_securityfs_measurement_lists[i] = dentry;
+-
+ 		sprintf(file_name, "binary_runtime_measurements_%s",
+ 			hash_algo_name[algo]);
+ 		dentry = securityfs_create_file(file_name, S_IRUSR | S_IRGRP,
+-						ima_dir, NULL,
++						ima_dir, (void *)(uintptr_t)i,
+ 						&ima_measurements_ops);
+ 		if (IS_ERR(dentry))
+ 			return PTR_ERR(dentry);
+-
+-		binary_securityfs_measurement_lists[i] = dentry;
+ 	}
+ 
+ 	return 0;
+@@ -543,9 +499,6 @@ int __init ima_fs_init(void)
+ 	struct dentry *dentry;
+ 	int ret;
+ 
+-	ascii_securityfs_measurement_lists = NULL;
+-	binary_securityfs_measurement_lists = NULL;
+-
+ 	ima_dir = securityfs_create_dir("ima", integrity_dir);
+ 	if (IS_ERR(ima_dir))
+ 		return PTR_ERR(ima_dir);
+@@ -600,9 +553,6 @@ int __init ima_fs_init(void)
+ 
+ 	return 0;
+ out:
+-	remove_securityfs_measurement_lists(ascii_securityfs_measurement_lists);
+-	remove_securityfs_measurement_lists(binary_securityfs_measurement_lists);
+-	securityfs_measurement_list_count = 0;
+ 	securityfs_remove(ima_symlink);
+ 	securityfs_remove(ima_dir);
+ 
 -- 
 2.53.0
 
