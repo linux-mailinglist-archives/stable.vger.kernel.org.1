@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-251945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252557-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eE8mKwn5DWqq5AUAu9opvQ
-	(envelope-from <stable+bounces-251945-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:10:17 +0200
+	id cJA7Ga0mDmr26QUAu9opvQ
+	(envelope-from <stable+bounces-252557-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:25:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95FCC595739
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:10:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C21E459AD04
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:25:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1B2E030B9FAA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:49:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9716D31C63AA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:16:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B33BF3859FA;
-	Wed, 20 May 2026 17:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8BAE34DCE4;
+	Wed, 20 May 2026 18:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ItkIMsdM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LlEESlmS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9F4370D43;
-	Wed, 20 May 2026 17:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578BB347515;
+	Wed, 20 May 2026 18:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299341; cv=none; b=rYoOraMUf2x+3SX/mYSQ8quzXNHAu0iLVo7pA9DOYlVATRV2MutYjJjD5SojLHerPGiYHkronW0XnLY+ePFyhrv/oLwHpF1f1M5lYnZiGqPOwFh/ue3xyx8JKFnoiLkTFv7cSk8d43UCauHml6ISV3BB3sZcz96haSn+cQwMZIQ=
+	t=1779300987; cv=none; b=latFmajXTy6Guq2FHJqNxQr115MiHW3cxbj1+TBBaiSDr2AYKytoSXjp4qi3KSaexM4f/evL8UjPYqqzKIlz+8hvZHGYY3bO1US7wiAdd/W0Ud2UMyrdxeMlCf/OeRbRuCjdHs21N5XD+auvqLI5w55L/gD0q6s4yUXyB2wtwuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299341; c=relaxed/simple;
-	bh=3Wt0teP7F1jU8VxZNGvBtOkFYp9NvS+al4i9HfbUL38=;
+	s=arc-20240116; t=1779300987; c=relaxed/simple;
+	bh=/S6oqG/n8Fe1MtoAx6jxl0ne9uC4JN/8yVRodifPPI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c+baKZI53F/MORYB4ErTAAmjMoxUJao8mNrZI8l2yqL+Zys93H6tvSTf5l9/xvpB7g0NhpCPtPtaJkxU8/7I47CXZ+ijGfWYo5KA3il66NPqEaTvyyZZBvQLs6sFesPgCPfxrCTK7T73CVfI5DsF16aWr+Lu2ZvtD1+4ObwkavQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ItkIMsdM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 938511F000E9;
-	Wed, 20 May 2026 17:48:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Z22INZqr5nrupoy04k9vfidxDqvq5TcLELNSTBK7z63aPsg7kXARlAMMjaJ6TS7Kydf5Vq/tN72G+Kh3/nHdQV9P3Wr7OzFHwRhfuF0VoFqAmf+GMxtZ7swOevXK/m/Y8d0SdMAYEcE79FWFgM3fe8ju+M0WR1Zag8+I/lYTJv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LlEESlmS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65AEE1F000E9;
+	Wed, 20 May 2026 18:16:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299340;
-	bh=Ugk8sj6GXL0ZUKBKibatNisiB+1jAnExJdCzCn73YJ0=;
+	s=korg; t=1779300985;
+	bh=/v0elAincpo1KRufQNgVp/9L08BJyeH97aNQkHHDzZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ItkIMsdMtn5NYmX2EanMMa8OuMy9x6YA0bXv7FOdo5bNW/qEldfLh1Blg2GvOyF3d
-	 5uFjtMPCeDoRhMgiydB4eWXv3XDM4yAXH/uA2rnK7E9L0XvBobXgBtZISLvUa+rZpk
-	 hZVlCSrcnXf7GqAl1GSnSr9dNFGkRBeGha2eW8C8=
+	b=LlEESlmSMwh4FJOP2HC2Z1qPo+yiH3SNI+bam4UJIV+hUdXhvEnu6TH+mr68Te4zx
+	 +yDiotrP6524rC9ggoEHvADrts7uvnqcYOQt+ViTUoyxdzVkAAiRksiIQGRXhDvyCQ
+	 1aISOda+Ad/cKHJeJENGCVRemHU82JlCmHFFyy1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 708/957] net: mana: Implement ndo_tx_timeout and serialize queue resets per port.
-Date: Wed, 20 May 2026 18:19:51 +0200
-Message-ID: <20260520162149.896141785@linuxfoundation.org>
+Subject: [PATCH 6.12 381/666] reset: Add devres helpers to request pre-deasserted reset controls
+Date: Wed, 20 May 2026 18:19:52 +0200
+Message-ID: <20260520162119.510742200@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,267 +63,352 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251945-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252557-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,broadcom.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 95FCC595739
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,baylibre.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C21E459AD04
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dipayaan Roy <dipayanroy@linux.microsoft.com>
+From: Philipp Zabel <p.zabel@pengutronix.de>
 
-[ Upstream commit 3b194343c25084a8d2fa0c0f2c9e80f3080fd732 ]
+[ Upstream commit d872bed85036f5e60c66b0dd0994346b4ea6470c ]
 
-Implement .ndo_tx_timeout for MANA so any stalled TX queue can be detected
-and a device-controlled port reset for all queues can be scheduled to a
-ordered workqueue. The reset for all queues on stall detection is
-recomended by hardware team.
+Add devres helpers
 
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-Signed-off-by: Dipayaan Roy <dipayanroy@linux.microsoft.com>
-Link: https://patch.msgid.link/20260112130552.GA11785@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 65267c9c4f28 ("net: mana: Fix EQ leak in mana_remove on NULL port")
+ - devm_reset_control_bulk_get_exclusive_deasserted
+ - devm_reset_control_bulk_get_optional_exclusive_deasserted
+ - devm_reset_control_bulk_get_optional_shared_deasserted
+ - devm_reset_control_bulk_get_shared_deasserted
+ - devm_reset_control_get_exclusive_deasserted
+ - devm_reset_control_get_optional_exclusive_deasserted
+ - devm_reset_control_get_optional_shared_deasserted
+ - devm_reset_control_get_shared_deasserted
+
+to request and immediately deassert reset controls. During cleanup,
+reset_control_assert() will be called automatically on the returned
+reset controls.
+
+Acked-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/20240925-reset-get-deasserted-v2-2-b3601bbd0458@pengutronix.de
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+Stable-dep-of: bef1eef66718 ("i3c: master: dw-i3c: Fix missing reset assertion in remove() callback")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microsoft/mana/mana_en.c | 77 ++++++++++++++++++-
- include/net/mana/gdma.h                       |  7 +-
- include/net/mana/mana.h                       |  3 +-
- 3 files changed, 84 insertions(+), 3 deletions(-)
+ drivers/reset/core.c  |  48 +++++++++++++++++-
+ include/linux/reset.h | 113 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 159 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index b9cab61d0afe2..12952f7273eb6 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -299,6 +299,39 @@ static int mana_get_gso_hs(struct sk_buff *skb)
- 	return gso_hs;
+diff --git a/drivers/reset/core.c b/drivers/reset/core.c
+index 682d61812852b..22f67fc77ae53 100644
+--- a/drivers/reset/core.c
++++ b/drivers/reset/core.c
+@@ -1236,23 +1236,46 @@ static void devm_reset_control_release(struct device *dev, void *res)
+ 	reset_control_put(*(struct reset_control **)res);
  }
  
-+static void mana_per_port_queue_reset_work_handler(struct work_struct *work)
++static void devm_reset_control_release_deasserted(struct device *dev, void *res)
 +{
-+	struct mana_port_context *apc = container_of(work,
-+						     struct mana_port_context,
-+						     queue_reset_work);
-+	struct net_device *ndev = apc->ndev;
-+	int err;
++	struct reset_control *rstc = *(struct reset_control **)res;
 +
-+	rtnl_lock();
-+
-+	/* Pre-allocate buffers to prevent failure in mana_attach later */
-+	err = mana_pre_alloc_rxbufs(apc, ndev->mtu, apc->num_queues);
-+	if (err) {
-+		netdev_err(ndev, "Insufficient memory for reset post tx stall detection\n");
-+		goto out;
-+	}
-+
-+	err = mana_detach(ndev, false);
-+	if (err) {
-+		netdev_err(ndev, "mana_detach failed: %d\n", err);
-+		goto dealloc_pre_rxbufs;
-+	}
-+
-+	err = mana_attach(ndev);
-+	if (err)
-+		netdev_err(ndev, "mana_attach failed: %d\n", err);
-+
-+dealloc_pre_rxbufs:
-+	mana_pre_dealloc_rxbufs(apc);
-+out:
-+	rtnl_unlock();
++	reset_control_assert(rstc);
++	reset_control_put(rstc);
 +}
 +
- netdev_tx_t mana_start_xmit(struct sk_buff *skb, struct net_device *ndev)
+ struct reset_control *
+ __devm_reset_control_get(struct device *dev, const char *id, int index,
+ 			 enum reset_control_flags flags)
  {
- 	enum mana_tx_pkt_format pkt_fmt = MANA_SHORT_PKT_FMT;
-@@ -847,6 +880,23 @@ static int mana_change_mtu(struct net_device *ndev, int new_mtu)
- 	return err;
+ 	struct reset_control **ptr, *rstc;
++	bool deasserted = flags & RESET_CONTROL_FLAGS_BIT_DEASSERTED;
+ 
+-	ptr = devres_alloc(devm_reset_control_release, sizeof(*ptr),
++	ptr = devres_alloc(deasserted ? devm_reset_control_release_deasserted :
++			   devm_reset_control_release, sizeof(*ptr),
+ 			   GFP_KERNEL);
+ 	if (!ptr)
+ 		return ERR_PTR(-ENOMEM);
+ 
++	flags &= ~RESET_CONTROL_FLAGS_BIT_DEASSERTED;
++
+ 	rstc = __reset_control_get(dev, id, index, flags);
+ 	if (IS_ERR_OR_NULL(rstc)) {
+ 		devres_free(ptr);
+ 		return rstc;
+ 	}
+ 
++	if (deasserted) {
++		int ret;
++
++		ret = reset_control_deassert(rstc);
++		if (ret) {
++			reset_control_put(rstc);
++			devres_free(ptr);
++			return ERR_PTR(ret);
++		}
++	}
++
+ 	*ptr = rstc;
+ 	devres_add(dev, ptr);
+ 
+@@ -1272,24 +1295,45 @@ static void devm_reset_control_bulk_release(struct device *dev, void *res)
+ 	reset_control_bulk_put(devres->num_rstcs, devres->rstcs);
  }
  
-+static void mana_tx_timeout(struct net_device *netdev, unsigned int txqueue)
++static void devm_reset_control_bulk_release_deasserted(struct device *dev, void *res)
 +{
-+	struct mana_port_context *apc = netdev_priv(netdev);
-+	struct mana_context *ac = apc->ac;
-+	struct gdma_context *gc = ac->gdma_dev->gdma_context;
++	struct reset_control_bulk_devres *devres = res;
 +
-+	/* Already in service, hence tx queue reset is not required.*/
-+	if (gc->in_service)
-+		return;
-+
-+	/* Note: If there are pending queue reset work for this port(apc),
-+	 * subsequent request queued up from here are ignored. This is because
-+	 * we are using the same work instance per port(apc).
-+	 */
-+	queue_work(ac->per_port_queue_reset_wq, &apc->queue_reset_work);
++	reset_control_bulk_assert(devres->num_rstcs, devres->rstcs);
++	reset_control_bulk_put(devres->num_rstcs, devres->rstcs);
 +}
 +
- static int mana_shaper_set(struct net_shaper_binding *binding,
- 			   const struct net_shaper *shaper,
- 			   struct netlink_ext_ack *extack)
-@@ -932,6 +982,7 @@ static const struct net_device_ops mana_devops = {
- 	.ndo_bpf		= mana_bpf,
- 	.ndo_xdp_xmit		= mana_xdp_xmit,
- 	.ndo_change_mtu		= mana_change_mtu,
-+	.ndo_tx_timeout		= mana_tx_timeout,
- 	.net_shaper_ops         = &mana_shaper_ops,
+ int __devm_reset_control_bulk_get(struct device *dev, int num_rstcs,
+ 				  struct reset_control_bulk_data *rstcs,
+ 				  enum reset_control_flags flags)
+ {
+ 	struct reset_control_bulk_devres *ptr;
++	bool deasserted = flags & RESET_CONTROL_FLAGS_BIT_DEASSERTED;
+ 	int ret;
+ 
+-	ptr = devres_alloc(devm_reset_control_bulk_release, sizeof(*ptr),
++	ptr = devres_alloc(deasserted ? devm_reset_control_bulk_release_deasserted :
++			   devm_reset_control_bulk_release, sizeof(*ptr),
+ 			   GFP_KERNEL);
+ 	if (!ptr)
+ 		return -ENOMEM;
+ 
++	flags &= ~RESET_CONTROL_FLAGS_BIT_DEASSERTED;
++
+ 	ret = __reset_control_bulk_get(dev, num_rstcs, rstcs, flags);
+ 	if (ret < 0) {
+ 		devres_free(ptr);
+ 		return ret;
+ 	}
+ 
++	if (deasserted) {
++		ret = reset_control_bulk_deassert(num_rstcs, rstcs);
++		if (ret) {
++			reset_control_bulk_put(num_rstcs, rstcs);
++			devres_free(ptr);
++			return ret;
++		}
++	}
++
+ 	ptr->num_rstcs = num_rstcs;
+ 	ptr->rstcs = rstcs;
+ 	devres_add(dev, ptr);
+diff --git a/include/linux/reset.h b/include/linux/reset.h
+index 30edaea2c8fb8..0ae6e9030d346 100644
+--- a/include/linux/reset.h
++++ b/include/linux/reset.h
+@@ -29,6 +29,7 @@ struct reset_control_bulk_data {
+ #define RESET_CONTROL_FLAGS_BIT_SHARED		BIT(0)	/* not exclusive */
+ #define RESET_CONTROL_FLAGS_BIT_OPTIONAL	BIT(1)
+ #define RESET_CONTROL_FLAGS_BIT_ACQUIRED	BIT(2)	/* iff exclusive, not released */
++#define RESET_CONTROL_FLAGS_BIT_DEASSERTED	BIT(3)
+ 
+ /**
+  * enum reset_control_flags - Flags that can be passed to the reset_control_get functions
+@@ -36,21 +37,35 @@ struct reset_control_bulk_data {
+  *                    These values cannot be OR'd.
+  *
+  * @RESET_CONTROL_EXCLUSIVE:				exclusive, acquired,
++ * @RESET_CONTROL_EXCLUSIVE_DEASSERTED:			exclusive, acquired, deasserted
+  * @RESET_CONTROL_EXCLUSIVE_RELEASED:			exclusive, released,
+  * @RESET_CONTROL_SHARED:				shared
++ * @RESET_CONTROL_SHARED_DEASSERTED:			shared, deasserted
+  * @RESET_CONTROL_OPTIONAL_EXCLUSIVE:			optional, exclusive, acquired
++ * @RESET_CONTROL_OPTIONAL_EXCLUSIVE_DEASSERTED:	optional, exclusive, acquired, deasserted
+  * @RESET_CONTROL_OPTIONAL_EXCLUSIVE_RELEASED:		optional, exclusive, released
+  * @RESET_CONTROL_OPTIONAL_SHARED:			optional, shared
++ * @RESET_CONTROL_OPTIONAL_SHARED_DEASSERTED:		optional, shared, deasserted
+  */
+ enum reset_control_flags {
+ 	RESET_CONTROL_EXCLUSIVE				= RESET_CONTROL_FLAGS_BIT_ACQUIRED,
++	RESET_CONTROL_EXCLUSIVE_DEASSERTED		= RESET_CONTROL_FLAGS_BIT_ACQUIRED |
++							  RESET_CONTROL_FLAGS_BIT_DEASSERTED,
+ 	RESET_CONTROL_EXCLUSIVE_RELEASED		= 0,
+ 	RESET_CONTROL_SHARED				= RESET_CONTROL_FLAGS_BIT_SHARED,
++	RESET_CONTROL_SHARED_DEASSERTED			= RESET_CONTROL_FLAGS_BIT_SHARED |
++							  RESET_CONTROL_FLAGS_BIT_DEASSERTED,
+ 	RESET_CONTROL_OPTIONAL_EXCLUSIVE		= RESET_CONTROL_FLAGS_BIT_OPTIONAL |
+ 							  RESET_CONTROL_FLAGS_BIT_ACQUIRED,
++	RESET_CONTROL_OPTIONAL_EXCLUSIVE_DEASSERTED	= RESET_CONTROL_FLAGS_BIT_OPTIONAL |
++							  RESET_CONTROL_FLAGS_BIT_ACQUIRED |
++							  RESET_CONTROL_FLAGS_BIT_DEASSERTED,
+ 	RESET_CONTROL_OPTIONAL_EXCLUSIVE_RELEASED	= RESET_CONTROL_FLAGS_BIT_OPTIONAL,
+ 	RESET_CONTROL_OPTIONAL_SHARED			= RESET_CONTROL_FLAGS_BIT_OPTIONAL |
+ 							  RESET_CONTROL_FLAGS_BIT_SHARED,
++	RESET_CONTROL_OPTIONAL_SHARED_DEASSERTED	= RESET_CONTROL_FLAGS_BIT_OPTIONAL |
++							  RESET_CONTROL_FLAGS_BIT_SHARED |
++							  RESET_CONTROL_FLAGS_BIT_DEASSERTED,
  };
  
-@@ -3319,6 +3370,8 @@ static int mana_probe_port(struct mana_context *ac, int port_idx,
- 	ndev->min_mtu = ETH_MIN_MTU;
- 	ndev->needed_headroom = MANA_HEADROOM;
- 	ndev->dev_port = port_idx;
-+	/* Recommended timeout based on HW FPGA re-config scenario. */
-+	ndev->watchdog_timeo = 15 * HZ;
- 	SET_NETDEV_DEV(ndev, gc->dev);
+ #ifdef CONFIG_RESET_CONTROLLER
+@@ -597,6 +612,25 @@ __must_check devm_reset_control_get_exclusive(struct device *dev,
+ 	return __devm_reset_control_get(dev, id, 0, RESET_CONTROL_EXCLUSIVE);
+ }
  
- 	netif_set_tso_max_size(ndev, GSO_MAX_SIZE);
-@@ -3335,6 +3388,10 @@ static int mana_probe_port(struct mana_context *ac, int port_idx,
- 	if (err)
- 		goto reset_apc;
- 
-+	/* Initialize the per port queue reset work.*/
-+	INIT_WORK(&apc->queue_reset_work,
-+		  mana_per_port_queue_reset_work_handler);
++/**
++ * devm_reset_control_get_exclusive_deasserted - resource managed
++ *                                    reset_control_get_exclusive() +
++ *                                    reset_control_deassert()
++ * @dev: device to be reset by the controller
++ * @id: reset line name
++ *
++ * Managed reset_control_get_exclusive() + reset_control_deassert(). For reset
++ * controllers returned from this function, reset_control_assert() +
++ * reset_control_put() is called automatically on driver detach.
++ *
++ * See reset_control_get_exclusive() for more information.
++ */
++static inline struct reset_control * __must_check
++devm_reset_control_get_exclusive_deasserted(struct device *dev, const char *id)
++{
++	return __devm_reset_control_get(dev, id, 0, RESET_CONTROL_EXCLUSIVE_DEASSERTED);
++}
 +
- 	netdev_lockdep_set_classes(ndev);
+ /**
+  * devm_reset_control_bulk_get_exclusive - resource managed
+  *                                         reset_control_bulk_get_exclusive()
+@@ -713,6 +747,25 @@ static inline struct reset_control *devm_reset_control_get_shared(
+ 	return __devm_reset_control_get(dev, id, 0, RESET_CONTROL_SHARED);
+ }
  
- 	ndev->hw_features = NETIF_F_SG | NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM;
-@@ -3524,6 +3581,7 @@ int mana_probe(struct gdma_dev *gd, bool resuming)
- {
- 	struct gdma_context *gc = gd->gdma_context;
- 	struct mana_context *ac = gd->driver_data;
-+	struct mana_port_context *apc = NULL;
- 	struct device *dev = gc->dev;
- 	u8 bm_hostmode = 0;
- 	u16 num_ports = 0;
-@@ -3581,6 +3639,14 @@ int mana_probe(struct gdma_dev *gd, bool resuming)
- 	if (ac->num_ports > MAX_PORTS_IN_MANA_DEV)
- 		ac->num_ports = MAX_PORTS_IN_MANA_DEV;
- 
-+	ac->per_port_queue_reset_wq =
-+		create_singlethread_workqueue("mana_per_port_queue_reset_wq");
-+	if (!ac->per_port_queue_reset_wq) {
-+		dev_err(dev, "Failed to allocate per port queue reset workqueue\n");
-+		err = -ENOMEM;
-+		goto out;
-+	}
++/**
++ * devm_reset_control_get_shared_deasserted - resource managed
++ *                                            reset_control_get_shared() +
++ *                                            reset_control_deassert()
++ * @dev: device to be reset by the controller
++ * @id: reset line name
++ *
++ * Managed reset_control_get_shared() + reset_control_deassert(). For reset
++ * controllers returned from this function, reset_control_assert() +
++ * reset_control_put() is called automatically on driver detach.
++ *
++ * See devm_reset_control_get_shared() for more information.
++ */
++static inline struct reset_control * __must_check
++devm_reset_control_get_shared_deasserted(struct device *dev, const char *id)
++{
++	return __devm_reset_control_get(dev, id, 0, RESET_CONTROL_SHARED_DEASSERTED);
++}
 +
- 	if (!resuming) {
- 		for (i = 0; i < ac->num_ports; i++) {
- 			err = mana_probe_port(ac, i, &ac->ports[i]);
-@@ -3596,6 +3662,8 @@ int mana_probe(struct gdma_dev *gd, bool resuming)
- 	} else {
- 		for (i = 0; i < ac->num_ports; i++) {
- 			rtnl_lock();
-+			apc = netdev_priv(ac->ports[i]);
-+			enable_work(&apc->queue_reset_work);
- 			err = mana_attach(ac->ports[i]);
- 			rtnl_unlock();
- 			/* Log the port for which the attach failed, stop
-@@ -3652,13 +3720,15 @@ void mana_remove(struct gdma_dev *gd, bool suspending)
+ /**
+  * devm_reset_control_bulk_get_shared - resource managed
+  *                                      reset_control_bulk_get_shared()
+@@ -733,6 +786,28 @@ devm_reset_control_bulk_get_shared(struct device *dev, int num_rstcs,
+ 	return __devm_reset_control_bulk_get(dev, num_rstcs, rstcs, RESET_CONTROL_SHARED);
+ }
  
- 	for (i = 0; i < ac->num_ports; i++) {
- 		ndev = ac->ports[i];
--		apc = netdev_priv(ndev);
- 		if (!ndev) {
- 			if (i == 0)
- 				dev_err(dev, "No net device to remove\n");
- 			goto out;
- 		}
- 
-+		apc = netdev_priv(ndev);
-+		disable_work_sync(&apc->queue_reset_work);
++/**
++ * devm_reset_control_bulk_get_shared_deasserted - resource managed
++ *                                                 reset_control_bulk_get_shared() +
++ *                                                 reset_control_bulk_deassert()
++ * @dev: device to be reset by the controller
++ * @num_rstcs: number of entries in rstcs array
++ * @rstcs: array of struct reset_control_bulk_data with reset line names set
++ *
++ * Managed reset_control_bulk_get_shared() + reset_control_bulk_deassert(). For
++ * reset controllers returned from this function, reset_control_bulk_assert() +
++ * reset_control_bulk_put() are called automatically on driver detach.
++ *
++ * See devm_reset_control_bulk_get_shared() for more information.
++ */
++static inline int __must_check
++devm_reset_control_bulk_get_shared_deasserted(struct device *dev, int num_rstcs,
++					      struct reset_control_bulk_data *rstcs)
++{
++	return __devm_reset_control_bulk_get(dev, num_rstcs, rstcs,
++					     RESET_CONTROL_SHARED_DEASSERTED);
++}
 +
- 		/* All cleanup actions should stay after rtnl_lock(), otherwise
- 		 * other functions may access partially cleaned up data.
- 		 */
-@@ -3685,6 +3755,11 @@ void mana_remove(struct gdma_dev *gd, bool suspending)
+ /**
+  * devm_reset_control_get_optional_exclusive - resource managed
+  *                                             reset_control_get_optional_exclusive()
+@@ -751,6 +826,25 @@ static inline struct reset_control *devm_reset_control_get_optional_exclusive(
+ 	return __devm_reset_control_get(dev, id, 0, RESET_CONTROL_OPTIONAL_EXCLUSIVE);
+ }
  
- 	mana_destroy_eq(ac);
- out:
-+	if (ac->per_port_queue_reset_wq) {
-+		destroy_workqueue(ac->per_port_queue_reset_wq);
-+		ac->per_port_queue_reset_wq = NULL;
-+	}
++/**
++ * devm_reset_control_get_optional_exclusive_deasserted - resource managed
++ *                                                        reset_control_get_optional_exclusive() +
++ *                                                        reset_control_deassert()
++ * @dev: device to be reset by the controller
++ * @id: reset line name
++ *
++ * Managed reset_control_get_optional_exclusive() + reset_control_deassert().
++ * For reset controllers returned from this function, reset_control_assert() +
++ * reset_control_put() is called automatically on driver detach.
++ *
++ * See devm_reset_control_get_optional_exclusive() for more information.
++ */
++static inline struct reset_control *
++devm_reset_control_get_optional_exclusive_deasserted(struct device *dev, const char *id)
++{
++	return __devm_reset_control_get(dev, id, 0, RESET_CONTROL_OPTIONAL_EXCLUSIVE_DEASSERTED);
++}
 +
- 	mana_gd_deregister_device(gd);
+ /**
+  * devm_reset_control_bulk_get_optional_exclusive - resource managed
+  *                                                  reset_control_bulk_get_optional_exclusive()
+@@ -790,6 +884,25 @@ static inline struct reset_control *devm_reset_control_get_optional_shared(
+ 	return __devm_reset_control_get(dev, id, 0, RESET_CONTROL_OPTIONAL_SHARED);
+ }
  
- 	if (suspending)
-diff --git a/include/net/mana/gdma.h b/include/net/mana/gdma.h
-index eaa27483f99b2..a59bd4035a992 100644
---- a/include/net/mana/gdma.h
-+++ b/include/net/mana/gdma.h
-@@ -598,6 +598,10 @@ enum {
- 
- /* Driver can self reset on FPGA Reconfig EQE notification */
- #define GDMA_DRV_CAP_FLAG_1_HANDLE_RECONFIG_EQE BIT(17)
++/**
++ * devm_reset_control_get_optional_shared_deasserted - resource managed
++ *                                                     reset_control_get_optional_shared() +
++ *                                                     reset_control_deassert()
++ * @dev: device to be reset by the controller
++ * @id: reset line name
++ *
++ * Managed reset_control_get_optional_shared() + reset_control_deassert(). For
++ * reset controllers returned from this function, reset_control_assert() +
++ * reset_control_put() is called automatically on driver detach.
++ *
++ * See devm_reset_control_get_optional_shared() for more information.
++ */
++static inline struct reset_control *
++devm_reset_control_get_optional_shared_deasserted(struct device *dev, const char *id)
++{
++	return __devm_reset_control_get(dev, id, 0, RESET_CONTROL_OPTIONAL_SHARED_DEASSERTED);
++}
 +
-+/* Driver detects stalled send queues and recovers them */
-+#define GDMA_DRV_CAP_FLAG_1_HANDLE_STALL_SQ_RECOVERY BIT(18)
-+
- #define GDMA_DRV_CAP_FLAG_1_HW_VPORT_LINK_AWARE BIT(6)
- 
- /* Driver supports linearizing the skb when num_sge exceeds hardware limit */
-@@ -621,7 +625,8 @@ enum {
- 	 GDMA_DRV_CAP_FLAG_1_HW_VPORT_LINK_AWARE | \
- 	 GDMA_DRV_CAP_FLAG_1_PERIODIC_STATS_QUERY | \
- 	 GDMA_DRV_CAP_FLAG_1_SKB_LINEARIZE | \
--	 GDMA_DRV_CAP_FLAG_1_PROBE_RECOVERY)
-+	 GDMA_DRV_CAP_FLAG_1_PROBE_RECOVERY | \
-+	 GDMA_DRV_CAP_FLAG_1_HANDLE_STALL_SQ_RECOVERY)
- 
- #define GDMA_DRV_CAP_FLAGS2 0
- 
-diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
-index 9fadff78568ea..e199f1d44c8e3 100644
---- a/include/net/mana/mana.h
-+++ b/include/net/mana/mana.h
-@@ -480,7 +480,7 @@ struct mana_context {
- 	struct mana_ethtool_hc_stats hc_stats;
- 	struct mana_eq *eqs;
- 	struct dentry *mana_eqs_debugfs;
--
-+	struct workqueue_struct *per_port_queue_reset_wq;
- 	/* Workqueue for querying hardware stats */
- 	struct delayed_work gf_stats_work;
- 	bool hwc_timeout_occurred;
-@@ -495,6 +495,7 @@ struct mana_context {
- struct mana_port_context {
- 	struct mana_context *ac;
- 	struct net_device *ndev;
-+	struct work_struct queue_reset_work;
- 
- 	u8 mac_addr[ETH_ALEN];
- 
+ /**
+  * devm_reset_control_bulk_get_optional_shared - resource managed
+  *                                               reset_control_bulk_get_optional_shared()
 -- 
 2.53.0
 
