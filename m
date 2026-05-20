@@ -1,77 +1,59 @@
-Return-Path: <stable+bounces-252521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252939-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CHoJLn77DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-252521-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:20:46 +0200
+	id 6PKdNvAqDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252939-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:43:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36FF1595D9F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:20:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 473B359B3A8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:43:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 37FF03106943
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:14:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0C817322FA8E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:33:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC5F3F789B;
-	Wed, 20 May 2026 18:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB9AD3DA5B6;
+	Wed, 20 May 2026 18:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IeR9gkii"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uO1W9TDT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78023EAC82;
-	Wed, 20 May 2026 18:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40AED3D1CA0;
+	Wed, 20 May 2026 18:33:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300891; cv=none; b=jNPvrwjF7aFr+fqawvmy/kK++CnYVB+rwpkAvMarbFNPI9+T8vsFHwqwHPJjK8DOiC8GpkAUALpABvvm50azo5UQF+BJq6/rttvEYBnuuKa1NzMavkY2k7D/CBm03UKFdZocv0+fwWrhnwuR8px4/CCfeKu2IsZpUW+2taL89XE=
+	t=1779301985; cv=none; b=oHXlS7cjpktm6eV5jOQD69k7sSQqmigIrhn5pazbcSLjmDyolK1Z51KgM/baJAAX+REsiCIcjCs1qVnKqsc5fqVtFG3E0cEoYN8S1DlNl7vhW7jSdLeLVxajR6zj9g60r8L8jYwrbBZ2DLaiZs3m8M/Y6sOMWKvZc39dcO316jY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300891; c=relaxed/simple;
-	bh=UO4HBjaRzRF83C+l6Ehwn6p2G06IYbvbx4ydyw4ciAw=;
+	s=arc-20240116; t=1779301985; c=relaxed/simple;
+	bh=Tp4w6JTeGIKqSdM1obEC60f5AxqRXCLBYvm8j+xB63Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eA0x6wQphOpQ24l8bBx5zSN/t/dp1x4izJqRs4LkWpN+23Q6wRCE+Xd/U2KzFkcovHPEH0btDXTfGrn3KiPbNT7wB1vGFaOXGVJiqJkmN2AlNdZJaVzt+4+fjxw/HznSYW4NOKkpaj/Rg1+kn0QUypiAhoFr4HFti/WmIA8+zOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IeR9gkii; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2A071F000E9;
-	Wed, 20 May 2026 18:14:49 +0000 (UTC)
+	 MIME-Version; b=o6Q/+UhI0RsD0ey4JmoZ2i8qNs0rA+j801EON8xYi8TEUe66j0M5AfewExSUznaBWKp46rUN1XMy+HRKoLe/HOfZSGHMPhSLLTTiucx7ikgdJkmG/0Hwf3vbAjDyPBBMYJDXyl4frOMKkpFN8wy/uI/a4DYAO5OzOs0AYqgnJMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uO1W9TDT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C2A91F00893;
+	Wed, 20 May 2026 18:33:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300890;
-	bh=vx3qJtWiWSYMRlrbtNi+jpgQ5lDyao/FJ6/mSaQNvV0=;
+	s=korg; t=1779301982;
+	bh=z6ALsnKOLfQyO657F/ybn5oQdgzybOHuSByBlp2Z0os=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IeR9gkiiwMqA+LW4AZu85nnL6/Iid2Hj+Li7DdyGBJrm0sZ+LJkVf9LJriN/FyzxG
-	 lRyjdXsDDpwoupUrw46KE/GqxVjw/0QetdnXDIiTyhMY3fWVq3fZS7ZoaWPDr9Fp6k
-	 K7i4D5i0iMnA8yH4ya+fPNp4QKDPZBZW8hqRefTE=
+	b=uO1W9TDTpbdwmSzDQNC9PZjZIEmNMl5Y7XEb0cM5eilioEi6ZB4vp0TypN/b0GqxJ
+	 xZMm+0picUtz+XI6jRoMhAZuGXzfZi0FTHB0tmg5OuDDDpdpc5Fw+ZRqkFWhT3/ZzJ
+	 uVFOpByQKs75ZfATPl0qoRS5khnU3zUVhFMI6O7U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Grzedzicki <mge@meta.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Alexey Gladkov (Intel)" <legion@kernel.org>,
-	Ben Segall <bsegall@google.com>,
-	David Hildenbrand <david@kernel.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Kees Cook <kees@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	Mel Gorman <mgorman@suse.de>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 306/666] unshare: fix nsproxy leak in ksys_unshare() on set_cred_ucounts() failure
-Date: Wed, 20 May 2026 18:18:37 +0200
-Message-ID: <20260520162117.853261730@linuxfoundation.org>
+Subject: [PATCH 6.6 095/508] dm cache: fix concurrent write failure in passthrough mode
+Date: Wed, 20 May 2026 18:18:38 +0200
+Message-ID: <20260520162100.672922024@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -84,121 +66,116 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252939-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252521-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[24];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 36FF1595D9F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 473B359B3A8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Grzedzicki <mge@meta.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-[ Upstream commit a98621a0f187a934c115dcfe79a49520ae892111 ]
+[ Upstream commit e4f66341779d0cf4c83c74793753a84094286d9e ]
 
-When set_cred_ucounts() fails in ksys_unshare() new_nsproxy is leaked.
+When bio prison cell lock acquisition fails due to concurrent writes to
+the same block in passthrough mode, dm-cache incorrectly returns an I/O
+error instead of properly handling the concurrency. This can occur in
+both process and workqueue contexts when invalidate_lock() is called for
+exclusive access to a data block. Fix this by deferring the write bios
+to ensure proper block device behavior.
 
-Let's call put_nsproxy() if that happens.
+Reproduce steps:
 
-Link: https://lkml.kernel.org/r/20260213193959.2556730-1-mge@meta.com
-Fixes: 905ae01c4ae2 ("Add a reference to ucounts for each cred")
-Signed-off-by: Michal Grzedzicki <mge@meta.com>
-Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: Alexey Gladkov (Intel) <legion@kernel.org>
-Cc: Ben Segall <bsegall@google.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Juri Lelli <juri.lelli@redhat.com>
-Cc: Kees Cook <kees@kernel.org>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Valentin Schneider <vschneid@redhat.com>
-Cc: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+1. Create a cache device
+
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
+dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
+dmsetup create cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+
+2. Promote the first data block into cache
+
+fio --filename=/dev/mapper/cache --name=populate --rw=write --bs=4k \
+--direct=1 --size=64k
+
+3. Reload the cache into passthrough mode
+
+dmsetup suspend cache
+dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 passthrough smq 0"
+dmsetup resume cache
+
+4. Write to the first cached block concurrently. Sometimes one of the
+   processes will receive I/O errors.
+
+fio --filename=/dev/mapper/cache --name test --rw=randwrite --bs=4k \
+--randrepeat=0 --direct=1 --numjobs=2 --size 64k
+
+ <snip>
+ fio-3.41
+ fio: io_u error on file /dev/mapper/cache: Input/output error: write offset=4096, buflen=4096
+ fio: pid=106, err=5/file:io_u.c:2008, func=io_u error, error=Input/output error
+ test: (groupid=0, jobs=1): err= 0: pid=105
+ test: (groupid=0, jobs=1): err= 5 (file:io_u.c:2008, func=io_u error, error=Input/output error): pid=106
+ <snip>
+
+Fixes: b29d4986d0da ("dm cache: significant rework to leverage dm-bio-prison-v2")
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/fork.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/md/dm-cache-target.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index c6415bb0abf59..c4955cffcb6f4 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -3348,11 +3348,10 @@ int ksys_unshare(unsigned long unshare_flags)
- 					 new_cred, new_fs);
- 	if (err)
- 		goto bad_unshare_cleanup_cred;
--
- 	if (new_cred) {
- 		err = set_cred_ucounts(new_cred);
- 		if (err)
--			goto bad_unshare_cleanup_cred;
-+			goto bad_unshare_cleanup_nsproxy;
- 	}
- 
- 	if (new_fs || new_fd || do_sysvsem || new_cred || new_nsproxy) {
-@@ -3368,8 +3367,10 @@ int ksys_unshare(unsigned long unshare_flags)
- 			shm_init_task(current);
- 		}
- 
--		if (new_nsproxy)
-+		if (new_nsproxy) {
- 			switch_task_namespaces(current, new_nsproxy);
-+			new_nsproxy = NULL;
+diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
+index a3a8623eff297..65ae94f64c11b 100644
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -1557,6 +1557,15 @@ static int invalidate_lock(struct dm_cache_migration *mg)
+ 			    READ_WRITE_LOCK_LEVEL, prealloc, &mg->cell);
+ 	if (r < 0) {
+ 		free_prison_cell(cache, prealloc);
++
++		/* Defer the bio for retrying the cell lock */
++		if (mg->overwrite_bio) {
++			struct bio *bio = mg->overwrite_bio;
++
++			mg->overwrite_bio = NULL;
++			defer_bio(cache, bio);
 +		}
- 
- 		task_lock(current);
- 
-@@ -3398,13 +3399,15 @@ int ksys_unshare(unsigned long unshare_flags)
- 
- 	perf_event_namespaces(current);
- 
-+bad_unshare_cleanup_nsproxy:
-+	if (new_nsproxy)
-+		put_nsproxy(new_nsproxy);
- bad_unshare_cleanup_cred:
- 	if (new_cred)
- 		put_cred(new_cred);
- bad_unshare_cleanup_fd:
- 	if (new_fd)
- 		put_files_struct(new_fd);
--
- bad_unshare_cleanup_fs:
- 	if (new_fs)
- 		free_fs_struct(new_fs);
++
+ 		invalidate_complete(mg, false);
+ 		return r;
+ 	}
 -- 
 2.53.0
 
