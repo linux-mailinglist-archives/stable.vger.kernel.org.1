@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-252719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253180-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YEFsC7AoDmpq6gUAu9opvQ
-	(envelope-from <stable+bounces-252719-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:33:36 +0200
+	id iBwFMwkODmo35wUAu9opvQ
+	(envelope-from <stable+bounces-253180-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:39:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6612A59B036
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:33:34 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09CD2598901
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:39:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 796B0371023C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:24:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6107A31AFF64
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E6B63FF8B5;
-	Wed, 20 May 2026 18:23:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7593C3F20FA;
+	Wed, 20 May 2026 18:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GwKAbTo9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z3ENoor5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F392400E02;
-	Wed, 20 May 2026 18:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1228D407CF0;
+	Wed, 20 May 2026 18:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301411; cv=none; b=uQdbV2uEbhDyBIfBSLKhbun1UbCtActfnAadekM51rKRhch6Ttsr9myLNma9cGhLWLAGwVFGAsvigk+8Fx4LMLFpKedAMvkGFQhmIhqZa24vcZaIrEpKWGWj8yw/4xq0IrQeVFqlOpGNNhxpJ0fujgIdUsBUPG/rfEqMES+npFU=
+	t=1779302613; cv=none; b=jxJrXWMSgRzg5Awb0vikgoiVF19ire1L6ZTMx6RoGCt86QhcGxNZpodKnExMvqaz0ao4mN3dtq7feQWzAeyCJlWMswd9XHs//KGSswtKhZEGXiWTOiqlqL6KILbv3ylSsEIP6sfxJIXWk7NdS5gDIxVx5e+jXi++1LwixFm97X0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301411; c=relaxed/simple;
-	bh=ILPQK2T8roAdwGZcHh3GvPgbmD4zpi7RisekRsbTbpQ=;
+	s=arc-20240116; t=1779302613; c=relaxed/simple;
+	bh=WPZVaFA3kPyOWzEf2vNxVBq83OQk3BT6t1bTsvybffI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EI+99KWOXQzOCDotlaDzOuRSyrEiiPQ71ga4vpQpvAoW6ySgC0pN5Z157ZaQqa2xXZU8XEcUCk3yFacYLCNuLrN508BGQReo9JU3gXwnWh0DuLsBi3GjtvVn0D+zfHkaG9rmvtED5w8M/WBt+sHEVAHsYj6mIdnyNBZdxt9zVL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GwKAbTo9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D071F000E9;
-	Wed, 20 May 2026 18:23:29 +0000 (UTC)
+	 MIME-Version; b=pXI6QQOpldTs+khcKfRG45y5RbPE08gI3urUaoQxvT7eN6Djlb/0YRbCnFPG7UaZ9MiRFsBPOTeVDZZcqQbUwhLiGvU+BZzAzXCUNSOWCyhJp5RP7ryXFS/TuBCJMp5tTw/wxSOnBrLXKsUzqgrHbesW16kcDnCOfVphZPqYebw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z3ENoor5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 774F61F000E9;
+	Wed, 20 May 2026 18:43:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301409;
-	bh=oHWUTkVGmdVjsKk8OdNzi8wVuuTi/Xl+Ytb8B2Ng0fw=;
+	s=korg; t=1779302612;
+	bh=fXjaICxhT+c/gXwzIc8xOOaS/DT+AYMs6RKTZT2dZnE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GwKAbTo90C3ZOTNWFWEMpkeX9jPGUUu+GOfyH11takaB8zE5pZ95/Vdp++G+74FO0
-	 5p2YdKJJCGcaB5dUxV8qNIcfXcKzjF8hXnqGTiUQwJcD/y6jsVUkuOTB2hK28H+hpG
-	 7GrYOQhuijHUFpyzkrs1O6F9JovGKdAVFtP6gya0=
+	b=Z3ENoor5nFEJuzr9YLechCYSqwab+dmmjq+y/SKnK1VzfftNO74+l9pLiJkAuPgEc
+	 63lfYASiKRKaE8w0DeTX5Mcx8p0s0eCRPqxnsOKK7t3/qVvj3x6SmClmQBZe+R2wla
+	 9BosJYDEvvv0/e2PP9xqtjZ/GSQHvkrzoCj3efFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Kito Xu (veritas501)" <hxzene@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 544/666] neigh: let neigh_xmit take skb ownership
+Subject: [PATCH 6.6 332/508] netfilter: xtables: restrict several matches to inet family
 Date: Wed, 20 May 2026 18:22:35 +0200
-Message-ID: <20260520162123.061211995@linuxfoundation.org>
+Message-ID: <20260520162105.826875678@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,105 +66,239 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252719-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253180-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,netfilter.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,nvidia.com:email]
-X-Rspamd-Queue-Id: 6612A59B036
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 09CD2598901
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 4438113be604ee67a7bf4f81da6e1cca41332ce4 ]
+[ Upstream commit b6fe26f86a1649f84e057f3f15605b08eda15497 ]
 
-neigh_xmit always releases the skb, except when no neighbour table is
-found. But even the first added user of neigh_xmit (mpls) relied on
-neigh_xmit to release the skb (or queue it for tx).
+This is a partial revert of:
 
-sashiko reported:
- If neigh_xmit() is called with an uninitialized neighbor table (for
- example, NEIGH_ND_TABLE when IPv6 is disabled), it returns -EAFNOSUPPORT
- and bypasses its internal out_kfree_skb error path.  Because the return
- value of neigh_xmit() is ignored here, does this leak the SKB?
+  commit ab4f21e6fb1c ("netfilter: xtables: use NFPROTO_UNSPEC in more extensions")
 
-Assume full ownership and remove the last code path that doesn't
-xmit or free skb.
+to allow ipv4 and ipv6 only.
 
-Fixes: 4fd3d7d9e868 ("neigh: Add helper function neigh_xmit")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260424145843.74055-1-fw@strlen.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+- xt_mac
+- xt_owner
+- xt_physdev
+
+These extensions are not used by ebtables in userspace.
+
+Moreover, xt_realm is only for ipv4, since dst->tclassid is ipv4
+specific.
+
+Fixes: ab4f21e6fb1c ("netfilter: xtables: use NFPROTO_UNSPEC in more extensions")
+Reported-by: "Kito Xu (veritas501)" <hxzene@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/neighbour.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ net/netfilter/xt_mac.c     | 34 +++++++++++++++++++++++-----------
+ net/netfilter/xt_owner.c   | 37 +++++++++++++++++++++++++------------
+ net/netfilter/xt_physdev.c | 29 +++++++++++++++++++----------
+ net/netfilter/xt_realm.c   |  2 +-
+ 4 files changed, 68 insertions(+), 34 deletions(-)
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 96786016dbb4e..bf07438d6dfa5 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -3161,8 +3161,10 @@ int neigh_xmit(int index, struct net_device *dev,
- 
- 		rcu_read_lock();
- 		tbl = rcu_dereference(neigh_tables[index]);
--		if (!tbl)
--			goto out_unlock;
-+		if (!tbl) {
-+			rcu_read_unlock();
-+			goto out_kfree_skb;
-+		}
- 		if (index == NEIGH_ARP_TABLE) {
- 			u32 key = *((u32 *)addr);
- 
-@@ -3178,7 +3180,6 @@ int neigh_xmit(int index, struct net_device *dev,
- 			goto out_kfree_skb;
- 		}
- 		err = READ_ONCE(neigh->output)(neigh, skb);
--out_unlock:
- 		rcu_read_unlock();
- 	}
- 	else if (index == NEIGH_LINK_TABLE) {
-@@ -3188,11 +3189,10 @@ int neigh_xmit(int index, struct net_device *dev,
- 			goto out_kfree_skb;
- 		err = dev_queue_xmit(skb);
- 	}
--out:
- 	return err;
- out_kfree_skb:
- 	kfree_skb(skb);
--	goto out;
-+	return err;
+diff --git a/net/netfilter/xt_mac.c b/net/netfilter/xt_mac.c
+index 81649da57ba5d..bd2354760895d 100644
+--- a/net/netfilter/xt_mac.c
++++ b/net/netfilter/xt_mac.c
+@@ -38,25 +38,37 @@ static bool mac_mt(const struct sk_buff *skb, struct xt_action_param *par)
+ 	return ret;
  }
- EXPORT_SYMBOL(neigh_xmit);
+ 
+-static struct xt_match mac_mt_reg __read_mostly = {
+-	.name      = "mac",
+-	.revision  = 0,
+-	.family    = NFPROTO_UNSPEC,
+-	.match     = mac_mt,
+-	.matchsize = sizeof(struct xt_mac_info),
+-	.hooks     = (1 << NF_INET_PRE_ROUTING) | (1 << NF_INET_LOCAL_IN) |
+-	             (1 << NF_INET_FORWARD),
+-	.me        = THIS_MODULE,
++static struct xt_match mac_mt_reg[] __read_mostly = {
++	{
++		.name		= "mac",
++		.family		= NFPROTO_IPV4,
++		.match		= mac_mt,
++		.matchsize	= sizeof(struct xt_mac_info),
++		.hooks		= (1 << NF_INET_PRE_ROUTING) |
++				  (1 << NF_INET_LOCAL_IN) |
++				  (1 << NF_INET_FORWARD),
++		.me		= THIS_MODULE,
++	},
++	{
++		.name		= "mac",
++		.family		= NFPROTO_IPV6,
++		.match		= mac_mt,
++		.matchsize	= sizeof(struct xt_mac_info),
++		.hooks		= (1 << NF_INET_PRE_ROUTING) |
++				  (1 << NF_INET_LOCAL_IN) |
++				  (1 << NF_INET_FORWARD),
++		.me		= THIS_MODULE,
++	},
+ };
+ 
+ static int __init mac_mt_init(void)
+ {
+-	return xt_register_match(&mac_mt_reg);
++	return xt_register_matches(mac_mt_reg, ARRAY_SIZE(mac_mt_reg));
+ }
+ 
+ static void __exit mac_mt_exit(void)
+ {
+-	xt_unregister_match(&mac_mt_reg);
++	xt_unregister_matches(mac_mt_reg, ARRAY_SIZE(mac_mt_reg));
+ }
+ 
+ module_init(mac_mt_init);
+diff --git a/net/netfilter/xt_owner.c b/net/netfilter/xt_owner.c
+index 50332888c8d23..7be2fe22b067e 100644
+--- a/net/netfilter/xt_owner.c
++++ b/net/netfilter/xt_owner.c
+@@ -127,26 +127,39 @@ owner_mt(const struct sk_buff *skb, struct xt_action_param *par)
+ 	return true;
+ }
+ 
+-static struct xt_match owner_mt_reg __read_mostly = {
+-	.name       = "owner",
+-	.revision   = 1,
+-	.family     = NFPROTO_UNSPEC,
+-	.checkentry = owner_check,
+-	.match      = owner_mt,
+-	.matchsize  = sizeof(struct xt_owner_match_info),
+-	.hooks      = (1 << NF_INET_LOCAL_OUT) |
+-	              (1 << NF_INET_POST_ROUTING),
+-	.me         = THIS_MODULE,
++static struct xt_match owner_mt_reg[] __read_mostly = {
++	{
++		.name       = "owner",
++		.revision   = 1,
++		.family     = NFPROTO_IPV4,
++		.checkentry = owner_check,
++		.match      = owner_mt,
++		.matchsize  = sizeof(struct xt_owner_match_info),
++		.hooks      = (1 << NF_INET_LOCAL_OUT) |
++			      (1 << NF_INET_POST_ROUTING),
++		.me         = THIS_MODULE,
++	},
++	{
++		.name       = "owner",
++		.revision   = 1,
++		.family     = NFPROTO_IPV6,
++		.checkentry = owner_check,
++		.match      = owner_mt,
++		.matchsize  = sizeof(struct xt_owner_match_info),
++		.hooks      = (1 << NF_INET_LOCAL_OUT) |
++			      (1 << NF_INET_POST_ROUTING),
++		.me         = THIS_MODULE,
++	}
+ };
+ 
+ static int __init owner_mt_init(void)
+ {
+-	return xt_register_match(&owner_mt_reg);
++	return xt_register_matches(owner_mt_reg, ARRAY_SIZE(owner_mt_reg));
+ }
+ 
+ static void __exit owner_mt_exit(void)
+ {
+-	xt_unregister_match(&owner_mt_reg);
++	xt_unregister_matches(owner_mt_reg, ARRAY_SIZE(owner_mt_reg));
+ }
+ 
+ module_init(owner_mt_init);
+diff --git a/net/netfilter/xt_physdev.c b/net/netfilter/xt_physdev.c
+index 343e65f377d44..130842c35c6fa 100644
+--- a/net/netfilter/xt_physdev.c
++++ b/net/netfilter/xt_physdev.c
+@@ -115,24 +115,33 @@ static int physdev_mt_check(const struct xt_mtchk_param *par)
+ 	return 0;
+ }
+ 
+-static struct xt_match physdev_mt_reg __read_mostly = {
+-	.name       = "physdev",
+-	.revision   = 0,
+-	.family     = NFPROTO_UNSPEC,
+-	.checkentry = physdev_mt_check,
+-	.match      = physdev_mt,
+-	.matchsize  = sizeof(struct xt_physdev_info),
+-	.me         = THIS_MODULE,
++static struct xt_match physdev_mt_reg[] __read_mostly = {
++	{
++		.name		= "physdev",
++		.family		= NFPROTO_IPV4,
++		.checkentry	= physdev_mt_check,
++		.match		= physdev_mt,
++		.matchsize	= sizeof(struct xt_physdev_info),
++		.me		= THIS_MODULE,
++	},
++	{
++		.name		= "physdev",
++		.family		= NFPROTO_IPV6,
++		.checkentry	= physdev_mt_check,
++		.match		= physdev_mt,
++		.matchsize	= sizeof(struct xt_physdev_info),
++		.me		= THIS_MODULE,
++	},
+ };
+ 
+ static int __init physdev_mt_init(void)
+ {
+-	return xt_register_match(&physdev_mt_reg);
++	return xt_register_matches(physdev_mt_reg, ARRAY_SIZE(physdev_mt_reg));
+ }
+ 
+ static void __exit physdev_mt_exit(void)
+ {
+-	xt_unregister_match(&physdev_mt_reg);
++	xt_unregister_matches(physdev_mt_reg, ARRAY_SIZE(physdev_mt_reg));
+ }
+ 
+ module_init(physdev_mt_init);
+diff --git a/net/netfilter/xt_realm.c b/net/netfilter/xt_realm.c
+index 6df485f4403d0..61b2f1e58d150 100644
+--- a/net/netfilter/xt_realm.c
++++ b/net/netfilter/xt_realm.c
+@@ -33,7 +33,7 @@ static struct xt_match realm_mt_reg __read_mostly = {
+ 	.matchsize	= sizeof(struct xt_realm_info),
+ 	.hooks		= (1 << NF_INET_POST_ROUTING) | (1 << NF_INET_FORWARD) |
+ 			  (1 << NF_INET_LOCAL_OUT) | (1 << NF_INET_LOCAL_IN),
+-	.family		= NFPROTO_UNSPEC,
++	.family		= NFPROTO_IPV4,
+ 	.me		= THIS_MODULE
+ };
  
 -- 
 2.53.0
