@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-251957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252591-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4OHZBHD9DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-251957-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:29:04 +0200
+	id +KipChAnDmr26QUAu9opvQ
+	(envelope-from <stable+bounces-252591-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:26:40 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 174425964C0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:29:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6357159AD99
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:26:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E489D31B81EF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:49:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 339B73318DA7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:17:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7385A3C4576;
-	Wed, 20 May 2026 17:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 977C9368968;
+	Wed, 20 May 2026 18:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oV713FIn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2k+DGtHR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A23F63F54D1;
-	Wed, 20 May 2026 17:49:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA923F23C5;
+	Wed, 20 May 2026 18:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299371; cv=none; b=sKlUEGLvMpofVXZ7uaK8+E5dxzAf7KavAWohOub0b36hMSKsyaSYpJLpXfrQ5QWl2EM8D3pqm9Nqub6vmcggn33gqvTa6MAslouk+/FxeNCfm5/0s+uaXTCVm0d2kY5jdTksMYD5EceDzzpUzLqnry8xteh9Y7E5uwyjEygLrRQ=
+	t=1779301076; cv=none; b=gY8pMC4FMsjk7tnABMFkmTA27VR/1+GrcWofXTtHSrqDTyOfRtR59zBxrc1B/aPY4/L5KJEa/u9Q8ulyiP77/CseEROaZV0VO4TgpBqEF3BIqOK4z7PfcuE9FHiA3JMKhS6jzhSRF94xe2R7gpw8o1TYwx8EFbxcegyeq7Svdqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299371; c=relaxed/simple;
-	bh=sI2afuQrscMNutrt/h8EKF5QG2AL5nwIPDB3U66v5LQ=;
+	s=arc-20240116; t=1779301076; c=relaxed/simple;
+	bh=uEm+g9YunSQYtmpRNDKQ0uSBGWc2rvxwd+zzYVt9O+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nIeg3wlmsqJfo2b39tEyLbsX/XNyckxxB+Argj7Cr8Owb2Uu8SUvTTgdPRBev5SPWe8a+1atrgoTZZkgfrBobl+4U5gC8fmH8DPXFpNHvLd9vmWBTkIznen3uWgbJYp134+Ij/drMz7nh5TuLPcZywZ+T4wbq2VswKDMsvtjjw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oV713FIn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D703C1F000E9;
-	Wed, 20 May 2026 17:49:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UByiCEEUdy7BwFpG2vOKFRlc5YAxN4E/QTZG415MOTljx/ik9st9zMKkYxspB5fxhv3wUwNKSPlyYnOUWplLDwIKJrLXRR1dDXz5NxhG8DbtjVX60fbTLa7R6xnViFejU94ir88kwjyuqDlyYwA1S/Bn1IHrzXAlIx+pp1hb7A8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2k+DGtHR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C31801F000E9;
+	Wed, 20 May 2026 18:17:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299366;
-	bh=rMgjEdwFqFZYh5g9jHsXSBBHwKUnRJtWTKx3V+IA2JQ=;
+	s=korg; t=1779301075;
+	bh=atJg9WthQOb7Y+yTv/wQFiBDGfYqzSv8sB14KJkJMIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oV713FInC5aL6BtN7O8V2OdlEY6FWbfJtCSL4LM9P1jGOdqiUrgeMn/bwi9aBOTfx
-	 m044jIhdufjJdiZRfIMLah9AYsp1+5inve1zPUqCAhgMKYb8Y/Xhz9axBFLpc3kek1
-	 Wf/GHAOgve2VC/kUJDMWaHmjMAaVvc4sDFJdbfAQ=
+	b=2k+DGtHR/FiYsZxBnXKktXtGZLZAXzv8bDldFgQJCX8yhlHvHHyTqUKUThU4sHUxf
+	 YEsXY2/SRq/HQAzFjUgNjJXZECQAnJVZDl1j6PDdJ35MTYnRBYsSrC5ATxc4JfE6H+
+	 dQ+xryRUQnJ1T9Y3OqpEFs8guoRyWIt240sJohw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Yunje Shin <ioerts@kookmin.ac.kr>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Keith Busch <kbusch@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 744/957] nvmet-tcp: propagate nvmet_tcp_build_pdu_iovec() errors to its callers
+Subject: [PATCH 6.12 416/666] x86/um: fix vDSO installation
 Date: Wed, 20 May 2026 18:20:27 +0200
-Message-ID: <20260520162150.695254848@linuxfoundation.org>
+Message-ID: <20260520162120.281377166@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,195 +63,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251957-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252591-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,kookmin.ac.kr:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 174425964C0
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,intel.com:email,vdso.so:url,weissschuh.net:email]
+X-Rspamd-Queue-Id: 6357159AD99
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit ea8e356acb165cb1fd75537a52e1f66e5e76c538 ]
+[ Upstream commit d1895c15fc7d90a615bc8c455feb02acaf08ef1e ]
 
-Currently, when nvmet_tcp_build_pdu_iovec() detects an out-of-bounds
-PDU length or offset, it triggers nvmet_tcp_fatal_error(cmd->queue)
-and returns early. However, because the function returns void, the
-callers are entirely unaware that a fatal error has occurred and
-that the cmd->recv_msg.msg_iter was left uninitialized.
+The generic vDSO installation logic used by 'make vdso_install' requires
+that $(vdso-install-y) is defined by the top-level architecture Makefile
+and that it contains a path relative to the root of the tree.
+For UML neither of these is satisfied.
 
-Callers such as nvmet_tcp_handle_h2c_data_pdu() proceed to blindly
-overwrite the queue state with queue->rcv_state = NVMET_TCP_RECV_DATA
-Consequently, the socket receiving loop may attempt to read incoming
-network data into the uninitialized iterator.
+Move the definition of $(vdso-install-y) to a place which is included by
+the arch/um/Makefile and use the full relative path.
 
-Fix this by shifting the error handling responsibility to the callers.
-
-Fixes: 52a0a9854934 ("nvmet-tcp: add bounds checks in nvmet_tcp_build_pdu_iovec")
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Yunje Shin <ioerts@kookmin.ac.kr>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: f1c2bb8b9964 ("um: implement a x86_64 vDSO")
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://patch.msgid.link/20260318-um-vdso-install-v1-1-26a4ca5c4210@weissschuh.net
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/tcp.c | 51 ++++++++++++++++++++++-----------------
- 1 file changed, 29 insertions(+), 22 deletions(-)
+ arch/x86/Makefile.um      | 2 ++
+ arch/x86/um/vdso/Makefile | 2 --
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index 3d8810b42e9dc..97d8c1d3545b0 100644
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -351,7 +351,7 @@ static void nvmet_tcp_free_cmd_buffers(struct nvmet_tcp_cmd *cmd)
+diff --git a/arch/x86/Makefile.um b/arch/x86/Makefile.um
+index c86cbd9cbba38..19c13afa474e9 100644
+--- a/arch/x86/Makefile.um
++++ b/arch/x86/Makefile.um
+@@ -60,4 +60,6 @@ ELF_FORMAT := elf64-x86-64
+ LINK-$(CONFIG_LD_SCRIPT_DYN_RPATH) += -Wl,-rpath,/lib64
+ LINK-y += -m64
  
- static void nvmet_tcp_fatal_error(struct nvmet_tcp_queue *queue);
- 
--static void nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
-+static int nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
- {
- 	struct bio_vec *iov = cmd->iov;
- 	struct scatterlist *sg;
-@@ -364,22 +364,19 @@ static void nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
- 	offset = cmd->rbytes_done;
- 	cmd->sg_idx = offset / PAGE_SIZE;
- 	sg_offset = offset % PAGE_SIZE;
--	if (!cmd->req.sg_cnt || cmd->sg_idx >= cmd->req.sg_cnt) {
--		nvmet_tcp_fatal_error(cmd->queue);
--		return;
--	}
-+	if (!cmd->req.sg_cnt || cmd->sg_idx >= cmd->req.sg_cnt)
-+		return -EPROTO;
++vdso-install-y += arch/x86/um/vdso/vdso.so.dbg
 +
- 	sg = &cmd->req.sg[cmd->sg_idx];
- 	sg_remaining = cmd->req.sg_cnt - cmd->sg_idx;
+ endif
+diff --git a/arch/x86/um/vdso/Makefile b/arch/x86/um/vdso/Makefile
+index b3dfd60619e8a..bde42fac402ca 100644
+--- a/arch/x86/um/vdso/Makefile
++++ b/arch/x86/um/vdso/Makefile
+@@ -3,8 +3,6 @@
+ # Building vDSO images for x86.
+ #
  
- 	while (length) {
--		if (!sg_remaining) {
--			nvmet_tcp_fatal_error(cmd->queue);
--			return;
--		}
--		if (!sg->length || sg->length <= sg_offset) {
--			nvmet_tcp_fatal_error(cmd->queue);
--			return;
--		}
-+		if (!sg_remaining)
-+			return -EPROTO;
-+
-+		if (!sg->length || sg->length <= sg_offset)
-+			return -EPROTO;
-+
- 		u32 iov_len = min_t(u32, length, sg->length - sg_offset);
+-vdso-install-y += vdso.so
+-
+ # files to link into the vdso
+ vobjs-y := vdso-note.o um_vdso.o
  
- 		bvec_set_page(iov, sg_page(sg), iov_len,
-@@ -394,6 +391,7 @@ static void nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
- 
- 	iov_iter_bvec(&cmd->recv_msg.msg_iter, ITER_DEST, cmd->iov,
- 		      nr_pages, cmd->pdu_len);
-+	return 0;
- }
- 
- static void nvmet_tcp_fatal_error(struct nvmet_tcp_queue *queue)
-@@ -958,7 +956,7 @@ static int nvmet_tcp_handle_icreq(struct nvmet_tcp_queue *queue)
- 	return 0;
- }
- 
--static void nvmet_tcp_handle_req_failure(struct nvmet_tcp_queue *queue,
-+static int nvmet_tcp_handle_req_failure(struct nvmet_tcp_queue *queue,
- 		struct nvmet_tcp_cmd *cmd, struct nvmet_req *req)
- {
- 	size_t data_len = le32_to_cpu(req->cmd->common.dptr.sgl.length);
-@@ -974,19 +972,23 @@ static void nvmet_tcp_handle_req_failure(struct nvmet_tcp_queue *queue,
- 	if (!nvme_is_write(cmd->req.cmd) || !data_len ||
- 	    data_len > cmd->req.port->inline_data_size) {
- 		nvmet_prepare_receive_pdu(queue);
--		return;
-+		return 0;
- 	}
- 
- 	ret = nvmet_tcp_map_data(cmd);
- 	if (unlikely(ret)) {
- 		pr_err("queue %d: failed to map data\n", queue->idx);
- 		nvmet_tcp_fatal_error(queue);
--		return;
-+		return -EPROTO;
- 	}
- 
- 	queue->rcv_state = NVMET_TCP_RECV_DATA;
--	nvmet_tcp_build_pdu_iovec(cmd);
- 	cmd->flags |= NVMET_TCP_F_INIT_FAILED;
-+	ret = nvmet_tcp_build_pdu_iovec(cmd);
-+	if (unlikely(ret))
-+		pr_err("queue %d: failed to build PDU iovec\n", queue->idx);
-+
-+	return ret;
- }
- 
- static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
-@@ -1038,7 +1040,10 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
- 		goto err_proto;
- 	}
- 	cmd->pdu_recv = 0;
--	nvmet_tcp_build_pdu_iovec(cmd);
-+	if (unlikely(nvmet_tcp_build_pdu_iovec(cmd))) {
-+		pr_err("queue %d: failed to build PDU iovec\n", queue->idx);
-+		goto err_proto;
-+	}
- 	queue->cmd = cmd;
- 	queue->rcv_state = NVMET_TCP_RECV_DATA;
- 
-@@ -1101,8 +1106,7 @@ static int nvmet_tcp_done_recv_pdu(struct nvmet_tcp_queue *queue)
- 			le32_to_cpu(req->cmd->common.dptr.sgl.length),
- 			le16_to_cpu(req->cqe->status));
- 
--		nvmet_tcp_handle_req_failure(queue, queue->cmd, req);
--		return 0;
-+		return nvmet_tcp_handle_req_failure(queue, queue->cmd, req);
- 	}
- 
- 	ret = nvmet_tcp_map_data(queue->cmd);
-@@ -1119,8 +1123,11 @@ static int nvmet_tcp_done_recv_pdu(struct nvmet_tcp_queue *queue)
- 	if (nvmet_tcp_need_data_in(queue->cmd)) {
- 		if (nvmet_tcp_has_inline_data(queue->cmd)) {
- 			queue->rcv_state = NVMET_TCP_RECV_DATA;
--			nvmet_tcp_build_pdu_iovec(queue->cmd);
--			return 0;
-+			ret = nvmet_tcp_build_pdu_iovec(queue->cmd);
-+			if (unlikely(ret))
-+				pr_err("queue %d: failed to build PDU iovec\n",
-+					queue->idx);
-+			return ret;
- 		}
- 		/* send back R2T */
- 		nvmet_tcp_queue_response(&queue->cmd->req);
 -- 
 2.53.0
 
