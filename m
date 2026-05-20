@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-250858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252467-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mN/JDtL0DWoF5AUAu9opvQ
-	(envelope-from <stable+bounces-250858-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:52:18 +0200
+	id eLGaDmcCDmra5QUAu9opvQ
+	(envelope-from <stable+bounces-252467-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:50:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58B27594C83
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:52:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 998295974A4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:50:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9F54D3042952
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:02:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2BB72397B804
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:12:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ADE4348C7B;
-	Wed, 20 May 2026 17:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CC423F86F4;
+	Wed, 20 May 2026 18:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ht6uaheA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MVhshatu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB9A2D7386;
-	Wed, 20 May 2026 17:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF3D2F363F;
+	Wed, 20 May 2026 18:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296492; cv=none; b=XoxeSRfHAUZNo9aQkJGegu6iaxTt+BFVhfnVAELt92Vx3g7jS6Gf/Niuj/OXUZa6TqEV6aoStd9+GiMVwBxQUPw8ZCRrCcMLPrgZatw8Ri0oaTp1UcnX61xsjXfvn8F/Qm5RMvR6kbkU/2r/0ZODhEDN0dT1iBztpPz/sWAP7hg=
+	t=1779300750; cv=none; b=hoLWQ5jLqdUpsrG3+pON7niXNss+3/lqO8yLW+ixjWNI4I6SgMc/c2Y8hGfaFkquzxNiQKxq8TfYPdz1nNdqbmftM4gs8obFbpQXz4X+3P5rF+oKcOr4nI7MLYPF12DGz4dLwDfHz6JYJOadelLdlR04yY/oQxAorAkHm06DlBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296492; c=relaxed/simple;
-	bh=7DHXMu441o7DCTdBFNtdtrh7beXmcDToVT1u8Msxhts=;
+	s=arc-20240116; t=1779300750; c=relaxed/simple;
+	bh=DDqhgfn7gGkmXZ0A+EGYeJF2vvJfNnuNAFUBaYfTZOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U+8zkL6ntQDJHCBlJYGtHeZOpSYwEH891V9q8XHag2MhcN6Oh0H4qILKoxTTaPdmX5/e21aH2mDy75ZWGfEqTWlKpffIr79TekwJM40WmJc0HqO5tpSyzqDh7FRkrzr5FNJTM4r9IaST6egUqg1z3tZaxUoOvG00jTufYOSVF4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ht6uaheA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A22F41F00899;
-	Wed, 20 May 2026 17:01:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LqsUMj6bdO7jY92/KnA0SwcciOoX++I23mzbqeZy0U38xiaMcWpePtKb3kqtZ95PfXnnAYH6atBD2cVAiVOBqXu7zhDGHIETXphRdurbzI2rhzgR2aOsFMW2+V1+jlPuEJTYwlVQtn2SvK5bKFcvTsA5wMi6Lur4KIngMN2jsTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVhshatu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 642F21F000E9;
+	Wed, 20 May 2026 18:12:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296490;
-	bh=BE1JoWpr0xzWm3VR8aZgTL0ONAlYAktGdMxLbScktUI=;
+	s=korg; t=1779300748;
+	bh=iXnkP4VNN66miwBu2nL3i/OF6xdxwQrUflUdkHKYgpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ht6uaheAenilyZPHjpQHEUwnCelq5Fx352bqraayTp37TnO04hA4bb7uo1+XwHMVX
-	 593ULQS0PexTdLpqfvr0zfH2k8fZiyCNJgT7Ftz0u28gKCZM695xsjS2fQxhV3KCJZ
-	 BzxJI09vaHMmZ5K0tN54j1R3U9MghA5T4d/8/Rig=
+	b=MVhshatuT2/G4zeKRdW24P8iYsAEZysXRTJBsMf8foZOPp0foYFwnOy0IHOmS+290
+	 krwxhKAgoc5LF7bOrzyaaqvQWOLI5unOhh/cQgYEE1chQ/DckCoORj8zg7gOy1zaeH
+	 vAwtaN1HrSeMcKmQyQUP+7HkIbFimDqE+4on4I1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
+	John Hawley <warthog9@eaglescrag.net>,
+	Andrea Righi <arighi@nvidia.com>,
+	Marcos Paulo de Souza <mpdesouza@suse.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
 	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Pedro Falcato <pfalcato@suse.de>,
+	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0817/1146] netfilter: nfnetlink_osf: fix out-of-bounds read on option matching
+Subject: [PATCH 6.12 256/666] ktest: Honor empty per-test option overrides
 Date: Wed, 20 May 2026 18:17:47 +0200
-Message-ID: <20260520162206.715541293@linuxfoundation.org>
+Message-ID: <20260520162116.764353928@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,134 +69,111 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250858-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252467-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,strlen.de:email,netfilter.org:email]
-X-Rspamd-Queue-Id: 58B27594C83
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[eaglescrag.net:email,goodmis.org:email,suse.com:email,suse.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 998295974A4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Ricardo B. Marlière <rbm@suse.com>
 
-[ Upstream commit f5ca450087c3baf3651055e7a6de92600f827af3 ]
+[ Upstream commit a2de57a3c8192dcd67cccaff6c341b93748d799b ]
 
-In nf_osf_match(), the nf_osf_hdr_ctx structure is initialized once
-and passed by reference to nf_osf_match_one() for each fingerprint
-checked. During TCP option parsing, nf_osf_match_one() advances the
-shared ctx->optp pointer.
+A per-test override can clear an inherited default option by assigning an
+empty value, but __set_test_option() still used option_defined() to decide
+whether a per-test key existed. That turned an empty per-test assignment
+back into "fall back to the default", so tests still could not clear
+inherited settings.
 
-If a fingerprint perfectly matches, the function returns early without
-restoring ctx->optp to its initial state. If the user has configured
-NF_OSF_LOGLEVEL_ALL, the loop continues to the next fingerprint.
-However, because ctx->optp was not restored, the next call to
-nf_osf_match_one() starts parsing from the end of the options buffer.
-This causes subsequent matches to read garbage data and fail
-immediately, making it impossible to log more than one match or logging
-incorrect matches.
+For example:
 
-Instead of using a shared ctx->optp pointer, pass the context as a
-constant pointer and use a local pointer (optp) for TCP option
-traversal. This makes nf_osf_match_one() strictly stateless from the
-caller's perspective, ensuring every fingerprint check starts at the
-correct option offset.
+  DEFAULTS
+  (...)
+  LOG_FILE = /tmp/ktest-empty-override.log
+  CLEAR_LOG = 1
+  ADD_CONFIG = /tmp/.config
 
-Fixes: 1a6a0951fc00 ("netfilter: nfnetlink_osf: add missing fmatch check")
-Suggested-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+  TEST_START
+  TEST_TYPE = build
+  BUILD_TYPE = nobuild
+  ADD_CONFIG =
+
+This would run the test with ADD_CONFIG[1] = /tmp/.config
+
+Fix by checking whether the per-test key exists before falling back. If it
+does exist but is empty, treat it as unset for that test and stop the
+fallback chain there.
+
+Cc: John Hawley <warthog9@eaglescrag.net>
+Cc: Andrea Righi <arighi@nvidia.com>
+Cc: Marcos Paulo de Souza <mpdesouza@suse.com>
+Cc: Matthieu Baerts <matttbe@kernel.org>
+Cc: Fernando Fernandez Mancera <fmancera@suse.de>
+Cc: Pedro Falcato <pfalcato@suse.de>
+Link: https://patch.msgid.link/20260307-ktest-fixes-v1-4-565d412f4925@suse.com
+Fixes: 22c37a9ac49d ("ktest: Allow tests to undefine default options")
+Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nfnetlink_osf.c | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ tools/testing/ktest/ktest.pl | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nfnetlink_osf.c b/net/netfilter/nfnetlink_osf.c
-index 70172ca078585..3e0ccb6d9dc7e 100644
---- a/net/netfilter/nfnetlink_osf.c
-+++ b/net/netfilter/nfnetlink_osf.c
-@@ -64,9 +64,9 @@ struct nf_osf_hdr_ctx {
- static bool nf_osf_match_one(const struct sk_buff *skb,
- 			     const struct nf_osf_user_finger *f,
- 			     int ttl_check,
--			     struct nf_osf_hdr_ctx *ctx)
-+			     const struct nf_osf_hdr_ctx *ctx)
- {
--	const __u8 *optpinit = ctx->optp;
-+	const __u8 *optp = ctx->optp;
- 	unsigned int check_WSS = 0;
- 	int fmatch = FMATCH_WRONG;
- 	int foptsize, optnum;
-@@ -95,17 +95,17 @@ static bool nf_osf_match_one(const struct sk_buff *skb,
- 	check_WSS = f->wss.wc;
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index b18ea351c8b16..777ab6790d5db 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -4127,7 +4127,8 @@ sub __set_test_option {
  
- 	for (optnum = 0; optnum < f->opt_num; ++optnum) {
--		if (f->opt[optnum].kind == *ctx->optp) {
-+		if (f->opt[optnum].kind == *optp) {
- 			__u32 len = f->opt[optnum].length;
--			const __u8 *optend = ctx->optp + len;
-+			const __u8 *optend = optp + len;
+     my $option = "$name\[$i\]";
  
- 			fmatch = FMATCH_OK;
+-    if (option_defined($option)) {
++    if (exists($opt{$option})) {
++	return undef if (!option_defined($option));
+ 	return $opt{$option};
+     }
  
--			switch (*ctx->optp) {
-+			switch (*optp) {
- 			case OSFOPT_MSS:
--				mss = ctx->optp[3];
-+				mss = optp[3];
- 				mss <<= 8;
--				mss |= ctx->optp[2];
-+				mss |= optp[2];
- 
- 				mss = ntohs((__force __be16)mss);
- 				break;
-@@ -113,7 +113,7 @@ static bool nf_osf_match_one(const struct sk_buff *skb,
- 				break;
- 			}
- 
--			ctx->optp = optend;
-+			optp = optend;
- 		} else
- 			fmatch = FMATCH_OPT_WRONG;
- 
-@@ -156,9 +156,6 @@ static bool nf_osf_match_one(const struct sk_buff *skb,
- 		}
+@@ -4135,7 +4136,8 @@ sub __set_test_option {
+ 	if ($i >= $test &&
+ 	    $i < $test + $repeat_tests{$test}) {
+ 	    $option = "$name\[$test\]";
+-	    if (option_defined($option)) {
++	    if (exists($opt{$option})) {
++		return undef if (!option_defined($option));
+ 		return $opt{$option};
+ 	    }
  	}
- 
--	if (fmatch != FMATCH_OK)
--		ctx->optp = optpinit;
--
- 	return fmatch == FMATCH_OK;
- }
- 
 -- 
 2.53.0
 
