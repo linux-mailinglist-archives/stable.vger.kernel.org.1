@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250617-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0AWCGzPyDWrj4wUAu9opvQ
-	(envelope-from <stable+bounces-251593-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:07 +0200
+	id qEZDANX0DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-250617-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:52:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 208D6594486
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:41:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59949594C99
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:52:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1D92E3080CD2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:33:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E28C3353B798
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:51:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4404136C9D2;
-	Wed, 20 May 2026 17:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3016C372691;
+	Wed, 20 May 2026 16:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VHFpjVCC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UNabVAnf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9C8359A6F;
-	Wed, 20 May 2026 17:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D110436B059;
+	Wed, 20 May 2026 16:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298385; cv=none; b=UHhPEXosjF7h3HzsGRe8d5EXKvtgT27gurLJgzO0yzBFhZfnDrfFOBQzfFbvXMbUKqL89vkMmKez+/wfQkAdxn/5xh0hzBox7XutV2cisnA+FyJgwT7q4e+WOufgL1CByx0a7DcNmGXvOCH0fiX6jQNbTnZL1XapShdAAd2NAOA=
+	t=1779295879; cv=none; b=hm4CdSgNv7PeMk76YXYuGJD4Cz0Ip6ly2244OABw81vOYQ6mAkoRVosVJ4NkejtyWI/2lgUj6sXfafF2R3PGXoUKqoQE7V9VYyE7c2iIhC05kU/Zcwnha4U42NEATt/CEGOCwiJ4felvDpiEc5A7jRSWYlheTG9E5Rc129POWrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298385; c=relaxed/simple;
-	bh=YdDCVFDRrMxGwCK0LHYW/ME6uo0d6/fLxbmbK5Oy/o8=;
+	s=arc-20240116; t=1779295879; c=relaxed/simple;
+	bh=7A6eL/buVAUrBev7i0lnfkxSW5aMURaiwU7yMU+QepI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WC2jZmB/RqnOmIBq7lh86+GCDSC3/r0s6FniBRZbpVuWk9RRZIwBl30d9qsBonXLJo1ZL08jBQ/YDmA2xkHEflE8ff54oW2sGuQEwyQZMrnzrwaGvO8zcaYyzQdj09RorGOQCoJJ1UlIFBTXJuGbxY2bnNUY+vUG7vXxJLi1gWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VHFpjVCC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F72E1F000E9;
-	Wed, 20 May 2026 17:33:03 +0000 (UTC)
+	 MIME-Version; b=dR1YDUtr+dHLmIgzAetrAJHAmlEGJWrZZXjXJsrgvfSMLyk9b5AvWk7oT7Df4qn/sZj6uHgYg3wMPmIRO4rLBvo1f6ThS+flcLBcf8B8Bf1nl/L9Ylun7FAHshCxwWcMkJR0UrIBfgOWyFK1SVkBxkLMBB92WbY+3h0RtowgOdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UNabVAnf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42AD41F000E9;
+	Wed, 20 May 2026 16:51:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298383;
-	bh=1T+uoeduzESvfSaGfCimT1i2IwScA5hHHTbOUbu4A5w=;
+	s=korg; t=1779295878;
+	bh=+3FNuC4LmVl4c5S2AOEmIzeCuRpRnexLXMi4q6y79jw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VHFpjVCCxZ9mbaXIWQEqbgbyQ+al9o5JLNk5JHfxI1Tot+QWCtMsjexj82oZrJ827
-	 JJKLybybfS67oerTqQ5KHjLwZFyCO6iDG1atPd/F5IzyK+/4SYP2HEXWkBGTG/hTR6
-	 /hk35ZP3x9XmojFwayWqXYxlCCtAwoPPw4AxCtTQ=
+	b=UNabVAnffA0YQVu/SuTEykKRGk1nURhzoQAOGgcnrKhH47HZNPQpjO7idR1Ep1Z/a
+	 H0M/OLWNAckZrm/uWYZgn2iGmfTFtE45nyuT8oFkWP8n9wYJKsxpZAF3RqkSSyXR0r
+	 55hWNtPdKp75/it35kY59gqztt7Y1phcS/wQ8MJU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wander Lairson Costa <wander@redhat.com>,
-	Tomas Glozar <tglozar@redhat.com>,
+	Denis Benato <denis.benato@linux.dev>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 353/957] rtla/utils: Fix resource leak in set_comm_sched_attr()
-Date: Wed, 20 May 2026 18:13:56 +0200
-Message-ID: <20260520162142.185829300@linuxfoundation.org>
+Subject: [PATCH 7.0 0587/1146] HID: asus: do not abort probe when not necessary
+Date: Wed, 20 May 2026 18:13:57 +0200
+Message-ID: <20260520162201.462892818@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251593-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250617-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,72 +89,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 208D6594486
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email,suse.com:email]
+X-Rspamd-Queue-Id: 59949594C99
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wander Lairson Costa <wander@redhat.com>
+From: Denis Benato <denis.benato@linux.dev>
 
-[ Upstream commit 5b6dc659ad792c72b3ff1be8039ae2945e030928 ]
+[ Upstream commit 7253091766ded0fd81fe8d8be9b8b835495b06e8 ]
 
-The set_comm_sched_attr() function opens the /proc directory via
-opendir() but fails to call closedir() on its successful exit path.
-If the function iterates through all processes without error, it
-returns 0 directly, leaking the DIR stream pointer.
+In order to avoid dereferencing a NULL pointer asus_probe is aborted early
+and control of some asus devices is transferred over hid-generic after
+erroring out even when such NULL dereference cannot happen: only early
+abort when the NULL dereference can happen.
 
-Fix this by refactoring the function to use a single exit path. A
-retval variable is introduced to track the success or failure status.
-All exit points now jump to a unified out label that calls closedir()
-before the function returns, ensuring the resource is always freed.
+Also make the code shorter and more adherent to coding standards
+removing square brackets enclosing single-line if-else statements.
 
-Fixes: dada03db9bb19 ("rtla: Remove procps-ng dependency")
-Signed-off-by: Wander Lairson Costa <wander@redhat.com>
-Link: https://lore.kernel.org/r/20260309195040.1019085-18-wander@redhat.com
-Signed-off-by: Tomas Glozar <tglozar@redhat.com>
+Fixes: d3af6ca9a8c3 ("HID: asus: fix UAF via HID_CLAIMED_INPUT validation")
+Signed-off-by: Denis Benato <denis.benato@linux.dev>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/tracing/rtla/src/utils.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/hid/hid-asus.c | 25 ++++++++++---------------
+ 1 file changed, 10 insertions(+), 15 deletions(-)
 
-diff --git a/tools/tracing/rtla/src/utils.c b/tools/tracing/rtla/src/utils.c
-index 6b7717fcd142b..bf20077cca742 100644
---- a/tools/tracing/rtla/src/utils.c
-+++ b/tools/tracing/rtla/src/utils.c
-@@ -347,22 +347,23 @@ int set_comm_sched_attr(const char *comm_prefix, struct sched_attr *attr)
+diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
+index d29e002c3af17..b2332efabeb57 100644
+--- a/drivers/hid/hid-asus.c
++++ b/drivers/hid/hid-asus.c
+@@ -1312,22 +1312,17 @@ static int asus_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ 	 * were freed during registration due to no usages being mapped,
+ 	 * leaving drvdata->input pointing to freed memory.
+ 	 */
+-	if (!drvdata->input || !(hdev->claimed & HID_CLAIMED_INPUT)) {
+-		hid_err(hdev, "Asus input not registered\n");
+-		ret = -ENOMEM;
+-		goto err_stop_hw;
+-	}
+-
+-	if (drvdata->tp) {
+-		drvdata->input->name = "Asus TouchPad";
+-	} else {
+-		drvdata->input->name = "Asus Keyboard";
+-	}
++	if (drvdata->input && (hdev->claimed & HID_CLAIMED_INPUT)) {
++		if (drvdata->tp)
++			drvdata->input->name = "Asus TouchPad";
++		else
++			drvdata->input->name = "Asus Keyboard";
  
- 		if (strtoi(proc_entry->d_name, &pid)) {
- 			err_msg("'%s' is not a valid pid", proc_entry->d_name);
--			goto out_err;
-+			retval = 1;
-+			goto out;
- 		}
- 		/* procfs_is_workload_pid confirmed it is a pid */
- 		retval = __set_sched_attr(pid, attr);
- 		if (retval) {
- 			err_msg("Error setting sched attributes for pid:%s\n", proc_entry->d_name);
--			goto out_err;
-+			goto out;
- 		}
- 
- 		debug_msg("Set sched attributes for pid:%s\n", proc_entry->d_name);
+-	if (drvdata->tp) {
+-		ret = asus_start_multitouch(hdev);
+-		if (ret)
+-			goto err_stop_hw;
++		if (drvdata->tp) {
++			ret = asus_start_multitouch(hdev);
++			if (ret)
++				goto err_stop_hw;
++		}
  	}
--	return 0;
  
--out_err:
-+	retval = 0;
-+out:
- 	closedir(procfs);
--	return 1;
-+	return retval;
- }
- 
- #define INVALID_VAL	(~0L)
+ 	return 0;
 -- 
 2.53.0
 
