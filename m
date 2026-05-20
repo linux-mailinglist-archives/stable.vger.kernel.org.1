@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-250869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252477-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yHJUDKX5DWq75AUAu9opvQ
-	(envelope-from <stable+bounces-250869-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:53 +0200
+	id SK7aFWL9DWoo5QUAu9opvQ
+	(envelope-from <stable+bounces-252477-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:28:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1306559590F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:51 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 103C2596469
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:28:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 462CD35C7258
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:02:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 28CFA305C68A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:13:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F6223E0C70;
-	Wed, 20 May 2026 17:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D845A3F789B;
+	Wed, 20 May 2026 18:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oPYwwhbH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQmPpmxd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C573EEAED;
-	Wed, 20 May 2026 17:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906FC3C140F;
+	Wed, 20 May 2026 18:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296517; cv=none; b=tYkVhoMLiwA9aRjP3SUjZ9/mOEFeEqQ4T9B4BxRx8PLx16N42Zv5KqyiKcYkocVVeaH5EEty+NIOMYyfaDFlbo0mWEjpjRLjcgebXqf5DiXWOHWGdNZ+CDzIqY4l83G9/YHDG00Q8iAtISe02zl5k2mQPLYpOnND2vMd1TzIMvc=
+	t=1779300776; cv=none; b=RF0JUWvbot5aoc3opn7GziwBlooZCAsR/u+X/4TQrExPwJa9icBDlFu430J7ogEJRFY2U0omjVEaSfAtQoPaGO2n8oeE+RPziOo7IkgAY1I8oiAIgwjGzwmt7S5d3I8P21pap1z63YBH66HG1v5ambIMNTINRAAgMT4N2DKH11k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296517; c=relaxed/simple;
-	bh=5p3VAnXXHlnHqjUQY7wCe50HgfNUfmoLhNqUOojkzNw=;
+	s=arc-20240116; t=1779300776; c=relaxed/simple;
+	bh=VpNS4egkkJeoB9wzrPYbhA7xndhI13SXr8yjjLzLhyY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eMuy3eREGkoqsWtuOf157HJ+CRYuDumyUm+BUglzDD1UiywhHXEkG9jXXSUVpRI9eDAhG1c34aRJ6MNTMQiDNgl4c9Dmdrp+LCWcdh/EJCyc5WW9xrtYpRbNiCUxobXyk0upRtDTh0dbYdvcmJr2L3Bjcaqi/tgDBucLxAPuEmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oPYwwhbH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 243D81F000E9;
-	Wed, 20 May 2026 17:01:55 +0000 (UTC)
+	 MIME-Version; b=h6HA1sxvEqp5jv55J78zcX9jdoOkphNeyQxdggJd9P8m9SWfe5JybxYuNY7Pi44x2F+eNXtNhrHfFik/mhusUOuBNMQu/ZhTo2yd9dt+yUTWMQfau7lzjYQGTK8/jSxL54tXVt/WKz3kf5nWatfCWWmzQv7e+CIF62BG5nVJOEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQmPpmxd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF9D01F000E9;
+	Wed, 20 May 2026 18:12:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296516;
-	bh=L2QVtkX6ejzk5ahFkFTE/kttV1AzIeo+nx+NUEpbRQU=;
+	s=korg; t=1779300775;
+	bh=pHZXJWZjm/bYrA/O1IkGcAl9iiuSq6iJfLCTDWKwDqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oPYwwhbHaxmheedaRITLM6iN/mzrchreDrT8KSYZwkMSGWSqOT+GJjx738D5Wrr3s
-	 NhbattgRojbbJvbcZdEDFhwbv9mh+01pan7aaJBikta6Zju++aGTrOJSIslNRThQEX
-	 2HspYl9szYa3TU6jG2VV5ACgBVHD5GyvQVokYXmw=
+	b=EQmPpmxdE4XAOQcG8euRXSq5zhmZ6MS22wCCrPAskA3w4UXiAK00asD8aBFfp0Hxt
+	 2HkprSaypPUg8ClI/LsD6/KJ7x5E/jNDb1t23wqjw2bjogS5rjBHcDUYP+62IjX6hT
+	 syuUrpvKSn3i+NasDHbRrK3TFF0LMqI6dUs1xrHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anand Moon <linux.amoon@gmail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Thomas Huth <thuth@redhat.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0822/1146] arm64: dts: amlogic: meson-axg: Add missing cache information to cpu0
+Subject: [PATCH 6.12 261/666] efi/capsule-loader: fix incorrect sizeof in phys array reallocation
 Date: Wed, 20 May 2026 18:17:52 +0200
-Message-ID: <20260520162206.834183383@linuxfoundation.org>
+Message-ID: <20260520162116.875132742@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +64,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250869-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linaro.org,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252477-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,0.0.0.0:email]
-X-Rspamd-Queue-Id: 1306559590F
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 103C2596469
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anand Moon <linux.amoon@gmail.com>
+From: Thomas Huth <thuth@redhat.com>
 
-[ Upstream commit 918273be0885362a9a00615b46e03f15f8b55667 ]
+[ Upstream commit 48a428215782321b56956974f23593e40ce84b7a ]
 
-Add missing L1 data and instruction cache parameters to the CPU node 0
-for the Cortex-A53 caches on the Meson AXG SoC.
+The krealloc() call for cap_info->phys in __efi_capsule_setup_info() uses
+sizeof(phys_addr_t *) instead of sizeof(phys_addr_t), which might be
+causing an undersized allocation.
 
-Fixes: 3b6ad2a43367 ("arm64: dts: amlogic: Add cache information to the Amlogic AXG SoCS")
-Signed-off-by: Anand Moon <linux.amoon@gmail.com>
-Link: https://patch.msgid.link/20260219103548.18392-1-linux.amoon@gmail.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+The allocation is also inconsistent with the initial array allocation in
+efi_capsule_open() that allocates one entry with sizeof(phys_addr_t),
+and the efi_capsule_write() function that stores phys_addr_t values (not
+pointers) via page_to_phys().
+
+On 64-bit systems where sizeof(phys_addr_t) == sizeof(phys_addr_t *), this
+goes unnoticed. On 32-bit systems with PAE where phys_addr_t is 64-bit but
+pointers are 32-bit, this allocates half the required space, which might
+lead to a heap buffer overflow when storing physical addresses.
+
+This is similar to the bug fixed in commit fccfa646ef36 ("efi/capsule-loader:
+fix incorrect allocation size") which fixed the same issue at the initial
+allocation site.
+
+Fixes: f24c4d478013 ("efi/capsule-loader: Reinstate virtual capsule mapping")
+Assisted-by: Claude:claude-sonnet-4-5
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/amlogic/meson-axg.dtsi | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/firmware/efi/capsule-loader.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/amlogic/meson-axg.dtsi b/arch/arm64/boot/dts/amlogic/meson-axg.dtsi
-index cc72491eaf6f5..f1f53fd98ae25 100644
---- a/arch/arm64/boot/dts/amlogic/meson-axg.dtsi
-+++ b/arch/arm64/boot/dts/amlogic/meson-axg.dtsi
-@@ -72,6 +72,12 @@ cpu0: cpu@0 {
- 			compatible = "arm,cortex-a53";
- 			reg = <0x0 0x0>;
- 			enable-method = "psci";
-+			d-cache-line-size = <32>;
-+			d-cache-size = <0x8000>;
-+			d-cache-sets = <32>;
-+			i-cache-line-size = <32>;
-+			i-cache-size = <0x8000>;
-+			i-cache-sets = <32>;
- 			next-level-cache = <&l2>;
- 			clocks = <&scpi_dvfs 0>;
- 			dynamic-power-coefficient = <140>;
+diff --git a/drivers/firmware/efi/capsule-loader.c b/drivers/firmware/efi/capsule-loader.c
+index 0c17bdd388e12..bbddeb6a09552 100644
+--- a/drivers/firmware/efi/capsule-loader.c
++++ b/drivers/firmware/efi/capsule-loader.c
+@@ -67,7 +67,7 @@ int __efi_capsule_setup_info(struct capsule_info *cap_info)
+ 	cap_info->pages = temp_page;
+ 
+ 	temp_page = krealloc(cap_info->phys,
+-			     pages_needed * sizeof(phys_addr_t *),
++			     pages_needed * sizeof(phys_addr_t),
+ 			     GFP_KERNEL | __GFP_ZERO);
+ 	if (!temp_page)
+ 		return -ENOMEM;
 -- 
 2.53.0
 
