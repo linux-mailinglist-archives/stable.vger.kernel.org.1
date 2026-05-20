@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-253154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252060-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6C4fC5MGDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-253154-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:08:03 +0200
+	id IHOvCF4EDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-252060-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:58:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 835C8597CFA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:08:02 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A5705977F5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:58:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D35253310722
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 348B830DF5A6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:54:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3570403EAE;
-	Wed, 20 May 2026 18:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99DA53F23BF;
+	Wed, 20 May 2026 17:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ED/riI4e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qjLWr3H9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9499E371CEA;
-	Wed, 20 May 2026 18:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333A43F0A83;
+	Wed, 20 May 2026 17:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302547; cv=none; b=tUBMSybEgC0gMNDvzkKtwePPSOci4YrxNy9tDA/tl0rS+OPM0iKsEIt5dIFx79zaAWlAyfd7PI+cM23C0BOXHy3+UiXsnpxQvcWn2RRNxybURX0Kv7rWY2T78qCrW6+bkkMe0OwLqZ4B4f7+x1ykSmpSTnMo6QXYvW8HXhmMoco=
+	t=1779299641; cv=none; b=Dsm1T/HYHkFyRp2Uj4VHvdOfh1npcpjqaqTwFmqtaHQv2MeqlGNZPBAgwYTgWWbhKgZ8A0sSsRAPDJB4qU/YVNwAlAIXgod7K3Hu69N5GwLSmQQhGLhQTMJ50hyqNc43gfMPnsQrUReXVnigOXZNGDPTC8l9sWtp+Mp4n031qzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302547; c=relaxed/simple;
-	bh=Dq2PEbjNXpT4Et48/EOJdqzEb9oanR/oQ3Xb3ysBOhM=;
+	s=arc-20240116; t=1779299641; c=relaxed/simple;
+	bh=yP/XEz9ecwlfmrcV49803PMwyAg5osuCv1qLc8sPyZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d+ahNhfz37F55HeieNVP1oJpPpt4hYgm/zK/8AXsyz0DTkDZ2KVh4rqP1uuGfiLaOzHqFl+mchZJhU3kadqp1wgYODWrPS3TIjcanHsWscezXqb3NEtajYnWWj2FM0sIP176oQvgo1nPWcPSWwtoSQqfb6ZT6ikmWub87sTIHdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ED/riI4e; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5C401F000E9;
-	Wed, 20 May 2026 18:42:25 +0000 (UTC)
+	 MIME-Version; b=EvuGUFBFKYkrQI40KC2GOzYrGpJgIoxuKw21btn157XN0cAUuInRv98XTot3egU78tvRZgoSM74jwqrfm3v823lwADGVxgp/llgsp2mJb7DKgW1ZcVPOcsrG2tcANp42nU1beSPeZFKEGxSB4uNMdp5hh7FTexnpj3nOeG9I4Xo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qjLWr3H9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DDE71F000E9;
+	Wed, 20 May 2026 17:53:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302546;
-	bh=hF75MiiwmDUvzv/SpX99PsHYQHLXDkZYzbLN3HGDO8E=;
+	s=korg; t=1779299640;
+	bh=WilhthEtvYuyhCY2xznTlv8pjMAibqXl/X3mu8MKkTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ED/riI4eFUYx+NmlaVJnwXWDDwJ400xI6O+qaa4L+ZmpyrZjf5eUFiAQYo/DSz1z4
-	 C76M4C+AzkP7PSt3nu0ST7d5W/HPHRzuMY0AL0CypeoQbuEKPSKOLFUbs726dau00s
-	 lphYhjgabAwvR2oY1nZ/0xWvuzQ70euwtN322b+I=
+	b=qjLWr3H9iHx/IdLotq38bAvn/pqwA9K7UGIdVWp8iPNflc2mWxNMGsmgfHh/4SYzf
+	 OmqzLesSkpN8y/Xx2N3Dgs+/P1M4JGwVLDk+FCY+o2scd4P5ncF9g8OUKNyrRIKOjf
+	 rlLwTYQpWK2y5twG+/E41D98r4HSjOeUWEQ9shXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Ivan Vecera <ivecera@redhat.com>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 309/508] arm64: dts: imx8mn-tqma8mqnl: Correct PAD settings for PMIC_nINT
-Date: Wed, 20 May 2026 18:22:12 +0200
-Message-ID: <20260520162105.336343230@linuxfoundation.org>
+Subject: [PATCH 6.18 850/957] dpll: Allow associating dpll pin with a firmware node
+Date: Wed, 20 May 2026 18:22:13 +0200
+Message-ID: <20260520162153.000252364@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,69 +69,206 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253154-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-252060-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email]
-X-Rspamd-Queue-Id: 835C8597CFA
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 1A5705977F5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Ivan Vecera <ivecera@redhat.com>
 
-[ Upstream commit 0fb37990774113afd943eaa91323679388584b6d ]
+[ Upstream commit d0f4771e2befbe8de3a16a564c6bbd1d5502cec3 ]
 
-With commit 5d0efaf47ee90 ("regulator: pca9450: Correct interrupt type"),
-there might be interrupt storm for this board. Need to set PAD PUE and PU
-together to make pull up work properly.
+Extend the DPLL core to support associating a DPLL pin with a firmware
+node. This association is required to allow other subsystems (such as
+network drivers) to locate and request specific DPLL pins defined in
+the Device Tree or ACPI.
 
-Fixes: 3e56e354db6d3 ("arm64: dts: freescale: add initial device tree for TQMa8MQNL with i.MX8MN")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+* Add a .fwnode field to the struct dpll_pin
+* Introduce dpll_pin_fwnode_set() helper to allow the provider driver
+  to associate a pin with a fwnode after the pin has been allocated
+* Introduce fwnode_dpll_pin_find() helper to allow consumers to search
+  for a registered DPLL pin using its associated fwnode handle
+* Ensure the fwnode reference is properly released in dpll_pin_put()
+
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Link: https://patch.msgid.link/20260203174002.705176-2-ivecera@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 9e5dead140af ("ice: add dpll peer notification for paired SMA and U.FL pins")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dpll/dpll_core.c | 49 ++++++++++++++++++++++++++++++++++++++++
+ drivers/dpll/dpll_core.h |  2 ++
+ include/linux/dpll.h     | 11 +++++++++
+ 3 files changed, 62 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi
-index 78aaa04ebbc08..ca02f7ff37645 100644
---- a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi
-@@ -284,7 +284,7 @@ pinctrl_i2c1_gpio: i2c1gpiogrp {
- 	};
+diff --git a/drivers/dpll/dpll_core.c b/drivers/dpll/dpll_core.c
+index 8879a72351561..f04ed7195cadd 100644
+--- a/drivers/dpll/dpll_core.c
++++ b/drivers/dpll/dpll_core.c
+@@ -10,6 +10,7 @@
  
- 	pinctrl_pmic: pmicgrp {
--		fsl,pins = <MX8MN_IOMUXC_GPIO1_IO08_GPIO1_IO8	0x84>;
-+		fsl,pins = <MX8MN_IOMUXC_GPIO1_IO08_GPIO1_IO8	0x1c4>;
- 	};
+ #include <linux/device.h>
+ #include <linux/err.h>
++#include <linux/property.h>
+ #include <linux/slab.h>
+ #include <linux/string.h>
  
- 	pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
+@@ -595,12 +596,60 @@ void dpll_pin_put(struct dpll_pin *pin)
+ 		xa_destroy(&pin->parent_refs);
+ 		xa_destroy(&pin->ref_sync_pins);
+ 		dpll_pin_prop_free(&pin->prop);
++		fwnode_handle_put(pin->fwnode);
+ 		kfree_rcu(pin, rcu);
+ 	}
+ 	mutex_unlock(&dpll_lock);
+ }
+ EXPORT_SYMBOL_GPL(dpll_pin_put);
+ 
++/**
++ * dpll_pin_fwnode_set - set dpll pin firmware node reference
++ * @pin: pointer to a dpll pin
++ * @fwnode: firmware node handle
++ *
++ * Set firmware node handle for the given dpll pin.
++ */
++void dpll_pin_fwnode_set(struct dpll_pin *pin, struct fwnode_handle *fwnode)
++{
++	mutex_lock(&dpll_lock);
++	fwnode_handle_put(pin->fwnode); /* Drop fwnode previously set */
++	pin->fwnode = fwnode_handle_get(fwnode);
++	mutex_unlock(&dpll_lock);
++}
++EXPORT_SYMBOL_GPL(dpll_pin_fwnode_set);
++
++/**
++ * fwnode_dpll_pin_find - find dpll pin by firmware node reference
++ * @fwnode: reference to firmware node
++ *
++ * Get existing object of a pin that is associated with given firmware node
++ * reference.
++ *
++ * Context: Acquires a lock (dpll_lock)
++ * Return:
++ * * valid dpll_pin pointer on success
++ * * NULL when no such pin exists
++ */
++struct dpll_pin *fwnode_dpll_pin_find(struct fwnode_handle *fwnode)
++{
++	struct dpll_pin *pin, *ret = NULL;
++	unsigned long index;
++
++	mutex_lock(&dpll_lock);
++	xa_for_each(&dpll_pin_xa, index, pin) {
++		if (pin->fwnode == fwnode) {
++			ret = pin;
++			refcount_inc(&ret->refcount);
++			break;
++		}
++	}
++	mutex_unlock(&dpll_lock);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(fwnode_dpll_pin_find);
++
+ static int
+ __dpll_pin_register(struct dpll_device *dpll, struct dpll_pin *pin,
+ 		    const struct dpll_pin_ops *ops, void *priv, void *cookie)
+diff --git a/drivers/dpll/dpll_core.h b/drivers/dpll/dpll_core.h
+index 8ce969bbeb64e..d3e17ff0ecef0 100644
+--- a/drivers/dpll/dpll_core.h
++++ b/drivers/dpll/dpll_core.h
+@@ -42,6 +42,7 @@ struct dpll_device {
+  * @pin_idx:		index of a pin given by dev driver
+  * @clock_id:		clock_id of creator
+  * @module:		module of creator
++ * @fwnode:		optional reference to firmware node
+  * @dpll_refs:		hold referencees to dplls pin was registered with
+  * @parent_refs:	hold references to parent pins pin was registered with
+  * @ref_sync_pins:	hold references to pins for Reference SYNC feature
+@@ -54,6 +55,7 @@ struct dpll_pin {
+ 	u32 pin_idx;
+ 	u64 clock_id;
+ 	struct module *module;
++	struct fwnode_handle *fwnode;
+ 	struct xarray dpll_refs;
+ 	struct xarray parent_refs;
+ 	struct xarray ref_sync_pins;
+diff --git a/include/linux/dpll.h b/include/linux/dpll.h
+index 562f520b23c27..f0c31a111c304 100644
+--- a/include/linux/dpll.h
++++ b/include/linux/dpll.h
+@@ -16,6 +16,7 @@
+ struct dpll_device;
+ struct dpll_pin;
+ struct dpll_pin_esync;
++struct fwnode_handle;
+ 
+ struct dpll_device_ops {
+ 	int (*mode_get)(const struct dpll_device *dpll, void *dpll_priv,
+@@ -173,6 +174,8 @@ void dpll_netdev_pin_clear(struct net_device *dev);
+ size_t dpll_netdev_pin_handle_size(const struct net_device *dev);
+ int dpll_netdev_add_pin_handle(struct sk_buff *msg,
+ 			       const struct net_device *dev);
++
++struct dpll_pin *fwnode_dpll_pin_find(struct fwnode_handle *fwnode);
+ #else
+ static inline void
+ dpll_netdev_pin_set(struct net_device *dev, struct dpll_pin *dpll_pin) { }
+@@ -188,6 +191,12 @@ dpll_netdev_add_pin_handle(struct sk_buff *msg, const struct net_device *dev)
+ {
+ 	return 0;
+ }
++
++static inline struct dpll_pin *
++fwnode_dpll_pin_find(struct fwnode_handle *fwnode)
++{
++	return NULL;
++}
+ #endif
+ 
+ struct dpll_device *
+@@ -213,6 +222,8 @@ void dpll_pin_unregister(struct dpll_device *dpll, struct dpll_pin *pin,
+ 
+ void dpll_pin_put(struct dpll_pin *pin);
+ 
++void dpll_pin_fwnode_set(struct dpll_pin *pin, struct fwnode_handle *fwnode);
++
+ int dpll_pin_on_pin_register(struct dpll_pin *parent, struct dpll_pin *pin,
+ 			     const struct dpll_pin_ops *ops, void *priv);
+ 
 -- 
 2.53.0
 
