@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252315-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yHK9OWQdDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251675-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:45:24 +0200
+	id uJauL8z6DWrh5AUAu9opvQ
+	(envelope-from <stable+bounces-252315-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:17:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AB9B59A0F2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:45:24 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83716595BB4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:17:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B24513733780
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:36:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D6DA6313B272
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:06:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB57F3D524A;
-	Wed, 20 May 2026 17:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B8983F871A;
+	Wed, 20 May 2026 18:05:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1D9aolqu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jfKHfrqp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679203C870E;
-	Wed, 20 May 2026 17:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F293D75C7;
+	Wed, 20 May 2026 18:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298600; cv=none; b=keAwMp6sETZaqxlGmI5AyBQXdbYQjlIE40ynzZ6WgGxdYF7e0BbyLctEuw4mNZEssO6BMbixtAniUVtLt5LAQIPlL9gzf/Yuki7vJfVq8eEDCYc7GqWa3DDxWN466+CGrdtQcs6/eDttrON1xHPBbt5tK7QpdArmNwTE/bwaLBc=
+	t=1779300354; cv=none; b=qihW+HC9VfytD2bQOLv4AcHx2rWMIVBVZmj1Xbob1PSRuuIldfATq4BMYM+/Pld2YX3fV/7/gYDOGLr0WJegZU9Th+vgPtPMRCwor95XGiyjJn6GmvmFvHGKxugzi7YYNCDQ4/8cKaD9pAyBzwRLp4F0WvthjzkwpA2C2f1aXSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298600; c=relaxed/simple;
-	bh=Kj4ppoJCVBIUMj7Q86a+RhmQ+5q7FZWggXNC1CvGaz4=;
+	s=arc-20240116; t=1779300354; c=relaxed/simple;
+	bh=wSE3MeLHBM0RJN8Dic/7Igy1DZD3pA9/PtgDNL1LyQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YcRCTVHGufcQxV744p3cYBAC/g7z7l7HBU4ye/1ejHju6CoISETb/auK/5LR875ipS6OlAq86QSfq0thnFUch+SKxmZrUTpUAurm0uSJ7QDwX3US3mYitw/Rkn+A05E2zqXM/oIfNU7hVepELOunmHdXNXJS0KyzCC3YPfSU1tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1D9aolqu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91B051F000E9;
-	Wed, 20 May 2026 17:36:38 +0000 (UTC)
+	 MIME-Version; b=s/2cS0IK4QoBvRo804doV5IFteARJe60do/AJ5Atrj21XvDYWrZxhkr4yGSXNRSxFBzQJ0qk0JaqNP6F2KxPTFLKgdakbibby/V/8y8qFuMuUuxsL5eyH3uW5eqV9Rg7g3++2vHHBe97Vs1eh2Qj3JS4Bk5BreJnZv66FWNfCp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jfKHfrqp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 464D01F000E9;
+	Wed, 20 May 2026 18:05:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298599;
-	bh=ET+YKICmtQGuygXNrrvar2Cr4B0Ez3sUGJm8IdqRtsg=;
+	s=korg; t=1779300353;
+	bh=hYhMBDpBSfthNMPUQ3TAKzc5Ih9KKY4LHfRDW4dIRG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1D9aolqualLylb/flAtdt4UkF/oOE08Z8oWxXSjfUP0Qg1nZNJQWFNJNcHw3AS2RT
-	 y3QPXmCBSQe7IMx2X31cSwqEh1mwOBFBiWycDq+iabZ9dGN1HAkW47SanVIFjFIwV7
-	 +odFrXo41ozyOPopw0HRX0FegqThSta1YtNLZW1A=
+	b=jfKHfrqpSmiV/e/yKrGgpCodvL3vfluYpxOoIQuAVCufubQy9inaHuC0TtjeNpKDY
+	 /ejnLUjeVt+oMyZpN9Fy+MRzNlWI0N2D82Fm69eoEJCUv2wyEeZ/M/QmfVerxCBlbh
+	 xzORr0IFLfzYsKxHEZLXgVfYkcbtZxeYymqfDueo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
-	Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 471/957] mtd: parsers: ofpart: call of_node_get() for dedicated subpartitions
+Subject: [PATCH 6.12 143/666] spi: nxp-fspi: Use reinit_completion() for repeated operations
 Date: Wed, 20 May 2026 18:15:54 +0200
-Message-ID: <20260520162144.739276389@linuxfoundation.org>
+Message-ID: <20260520162114.308167416@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,93 +65,90 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251675-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252315-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nxp.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,4.196.207.88:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,renesas.com:email,0.0.0.0:email]
-X-Rspamd-Queue-Id: 5AB9B59A0F2
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,nxp.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 83716595BB4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-[ Upstream commit e882626c1747653f1f01ea9d12e278e613b11d0f ]
+[ Upstream commit 68c8c93fdb0de7e528dc3dfb1d17eb0f652259b8 ]
 
-In order to parse sub-partitions, add_mtd_partitions() calls
-parse_mtd_partitions() for all previously found partitions.
+The driver currently calls init_completion() during every spi_mem_op.
+Tchnically it may work, but it's not the recommended pattern.
 
-Each partition will end up being passed to parse_fixed_partitions(), and
-its of_node will be treated as the ofpart_node.
+According to the kernel documentation: Calling init_completion() on
+the same completion object twice is most likely a bug as it
+re-initializes the queue to an empty queue and enqueued tasks
+could get "lost" - use reinit_completion() in that case, but be
+aware of other races.
 
-Commit 7cce81df7d26 ("mtd: parsers: ofpart: fix OF node refcount leak in
-parse_fixed_partitions()") added of_node_put() calls for ofpart_node on
-all exit paths.
+So moves the initial initialization to probe function and uses
+reinit_completion() for subsequent operations.
 
-In the case where the partition passed to parse_fixed_partitions() has a
-parent, it is treated as a dedicated partitions node, and of_node_put()
-is wrongly called for it, even if of_node_get() was not called
-explicitly.
-
-On repeated bind / unbinds of the MTD, the extra of_node_put() ends up
-decrementing the refcount down to 0, which should never happen,
-resulting in the following error:
-
-OF: ERROR: of_node_release() detected bad of_node_put() on
-/soc/spi@80007000/flash@0/partitions/partition@0
-
-Call of_node_get() to balance the call to of_node_put() done for
-dedicated partitions nodes.
-
-Fixes: 7cce81df7d26 ("mtd: parsers: ofpart: fix OF node refcount leak in parse_fixed_partitions()")
-Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-Tested-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: a5356aef6a90 ("spi: spi-mem: Add driver for NXP FlexSPI controller")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
+Link: https://patch.msgid.link/20260304-spi-nxp-v2-2-cd7d7726a27e@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/parsers/ofpart_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-nxp-fspi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/parsers/ofpart_core.c b/drivers/mtd/parsers/ofpart_core.c
-index a5ba78c6723ee..321002a1d0cae 100644
---- a/drivers/mtd/parsers/ofpart_core.c
-+++ b/drivers/mtd/parsers/ofpart_core.c
-@@ -71,7 +71,7 @@ static int parse_fixed_partitions(struct mtd_info *master,
- 			dedicated = false;
- 		}
- 	} else { /* Partition */
--		ofpart_node = mtd_node;
-+		ofpart_node = of_node_get(mtd_node);
- 	}
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index 67bcc6d351326..b7dbc015d88fa 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -907,7 +907,7 @@ static int nxp_fspi_do_op(struct nxp_fspi *f, const struct spi_mem_op *op)
+ 	reg = reg | FSPI_IPRXFCR_CLR;
+ 	fspi_writel(f, reg, base + FSPI_IPRXFCR);
  
- 	of_id = of_match_node(parse_ofpart_match_table, ofpart_node);
+-	init_completion(&f->c);
++	reinit_completion(&f->c);
+ 
+ 	fspi_writel(f, op->addr.val, base + FSPI_IPCR0);
+ 	/*
+@@ -1267,6 +1267,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 	if (ret < 0)
+ 		return dev_err_probe(dev, ret, "Failed to disable clock");
+ 
++	init_completion(&f->c);
+ 	ret = devm_request_irq(dev, irq,
+ 			nxp_fspi_irq_handler, 0, pdev->name, f);
+ 	if (ret)
 -- 
 2.53.0
 
