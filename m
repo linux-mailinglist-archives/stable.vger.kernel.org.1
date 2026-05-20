@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-251373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251423-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gEQ0DOIZDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251373-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:30:26 +0200
+	id 6IQdAgT+DWok5QUAu9opvQ
+	(envelope-from <stable+bounces-251423-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:31:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93DD6599B3F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:30:25 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D1955966FE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:31:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 885D3362CD04
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:23:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1B2CE30A7B28
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:26:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D505F36CE19;
-	Wed, 20 May 2026 17:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B355C3F7874;
+	Wed, 20 May 2026 17:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jb3lzj1g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wK/Mn97A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93DD6364E89;
-	Wed, 20 May 2026 17:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A1C3FB05D;
+	Wed, 20 May 2026 17:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297810; cv=none; b=QVWhf95CWyoLCs5Xcaijz1OJUhqicHfN9XSJKc7HRUHRdaXcXzHlYGuuhgexkO6P9VQw9FZ4m/G4REizYRueYnroIOzp3Hv+Q+pwwtNtMR3we3lKV5icUY/gfYzuvgQTd8emQB6HMeuamC4U0M6pVRW7OUTFYxNi2yUh0rnQxc4=
+	t=1779297942; cv=none; b=lT/e6+Lf1WOXcNdVDcFlTJGUDuBiL/kKxaiKXVKp+6gNNRuyCjruC0JeNNmdZKaPWBfnM+P4mYobhKFl8gijC8LHLWznh1jkXnq5Ex3DkNV/oAYCxxo8CpR5qSAl7cOKBNyV1u4Y12tDgKOADMarzWu62JNnvbnOlZYl9eHpLTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297810; c=relaxed/simple;
-	bh=Ylyuydj0sHMzJKL8hfAQnyV/1IWZEzmNJ0VEVW6t6gM=;
+	s=arc-20240116; t=1779297942; c=relaxed/simple;
+	bh=EFW9YTvtEs80j8eJFAyQQc8QQMRjCE09joqT6VAeD/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jsz1tjvSxGb0FRE9GFIMjchR1b138pX1UFfEXmO8UMQHg8lR1/6QkPg83OaLz4AybkPjWQkKBB467mwiWdd8E7EFJjQviV0rP9HFgDEDpHeemzoCw67gCpKUci9LMPuDjzyyNn6qz0syH0dxVq4cLdyIHH2PTgkmf+y8om2apTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jb3lzj1g; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0498D1F000E9;
-	Wed, 20 May 2026 17:23:28 +0000 (UTC)
+	 MIME-Version; b=FSDINYIOW5kt9rZv448E6oJcyBjzi8TRMloLYTD4L3FyUpmKk3Sw//Fo2IQLAhLJqyu7GccdIgZFAIXhK0lUhvalQo+KpI6A9Kj0HFdu5pwqkvE1z8Ql6F/2W29c3QqRFkcnD90Bc46FxieoqZPnQMnme/9C98Pbo3Y7k4s68XQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wK/Mn97A; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F7D21F000E9;
+	Wed, 20 May 2026 17:25:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297809;
-	bh=lz9sD+WN1e6JJv5Wp63F9aB2HkArT52Fi4KjQme6qAY=;
+	s=korg; t=1779297941;
+	bh=9sboOangNf4onDnHDFg6EDOPYxbTbmsL+Jiqu5YGn4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Jb3lzj1gZba3+Z6A10XcRhtf5yLfH3jMG+NSoED5OEtm/ViAbbh3ce1HLjfUgMpAy
-	 aIUl026ClOJVA7VNZLHJiOf7XpWAuEw0oDLHNBB+P2PxEEqbjDhqP0sZxbBTS7fd8B
-	 /4piednSTE07vpnrn8UB+4K3svnbMB8GIB42FF5A=
+	b=wK/Mn97ASO1HGWsoIxX5oCfe2hIYY61W5pxUmAnP6elg7NbNJVjYS2N5YSaTwsnY/
+	 1LkVIT41U1rYo2BMhgrXWmLUvvm/SNv0vUxl4xmEHYtEDQlhpZc8cQlTLTXEgTw8nt
+	 kGcEcyxTmpERjgBgDwTW3tMWXITldwNZ3v9rs+DM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Perry <charles.perry@microchip.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Gal Pressman <gal@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 170/957] net: phy: fix a return path in get_phy_c45_ids()
-Date: Wed, 20 May 2026 18:10:53 +0200
-Message-ID: <20260520162138.240914373@linuxfoundation.org>
+Subject: [PATCH 6.18 171/957] net/mlx5e: Fix features not applied during netdev registration
+Date: Wed, 20 May 2026 18:10:54 +0200
+Message-ID: <20260520162138.261850066@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
 References: <20260520162134.554764788@linuxfoundation.org>
@@ -66,36 +66,34 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251373-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-251423-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,kernel];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lunn.ch:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,microchip.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 93DD6599B3F
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 3D1955966FE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,42 +101,61 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Charles Perry <charles.perry@microchip.com>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit 6f533abe7bbad2eef1e42c639b6bb9dad2b02362 ]
+[ Upstream commit 9994ad4df82d64e57135c0f0906897685f5a9e87 ]
 
-The return value of phy_c45_probe_present() is stored in "ret", not
-"phy_reg", fix this. "phy_reg" always has a positive value if we reach
-this return path (since it would have returned earlier otherwise), which
-means that the original goal of the patch of not considering -ENODEV
-fatal wasn't achieved.
+mlx5e_fix_features() returns early when the netdevice is not present.
+This is correct during profile transitions where priv is cleared, but it
+also incorrectly blocks feature fixups during register_netdev(), when
+the device is also not yet present.
 
-Fixes: 17b447539408 ("net: phy: c45 scanning: Don't consider -ENODEV fatal")
-Signed-off-by: Charles Perry <charles.perry@microchip.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/20260409133654.3203336-1-charles.perry@microchip.com
+It is not trivial to distinguish between both cases as we cannot use
+priv to carry state, and in both cases reg_state == NETREG_REGISTERED.
+
+Force a netdev features update after register_netdev() completes, where
+the device is present and fix_features() can actually work.
+
+This is not a pretty solution, as it results in an additional features
+update call (register_netdevice() already calls
+__netdev_update_features() internally), but it is the simplest,
+cleanest, and most robust way I found to fix this issue after multiple
+attempts.
+
+This fixes an issue on systems where CQE compression is enabled by
+default, RXHASH remains enabled after registration despite the two
+features being mutually exclusive.
+
+Fixes: ab4b01bfdaa6 ("net/mlx5e: Verify dev is present for fix features ndo")
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260409202852.158059-2-tariqt@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/phy_device.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 2353d6eced68d..dea8b94286d15 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -963,8 +963,8 @@ static int get_phy_c45_ids(struct mii_bus *bus, int addr,
- 				/* returning -ENODEV doesn't stop bus
- 				 * scanning
- 				 */
--				return (phy_reg == -EIO ||
--					phy_reg == -ENODEV) ? -ENODEV : -EIO;
-+				return (ret == -EIO ||
-+					ret == -ENODEV) ? -ENODEV : -EIO;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index cb993ad2d9ad9..a696fb88dbef9 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -6740,6 +6740,14 @@ static int _mlx5e_probe(struct auxiliary_device *adev)
+ 		goto err_resume;
+ 	}
  
- 			if (!ret)
- 				continue;
++	/* mlx5e_fix_features() returns early when the device is not present
++	 * to avoid dereferencing cleared priv during profile changes.
++	 * This also causes it to be a no-op during register_netdev(), where
++	 * the device is not yet present.
++	 * Trigger an additional features update that will actually work.
++	 */
++	mlx5e_update_features(netdev);
++
+ 	mlx5e_dcbnl_init_app(priv);
+ 	mlx5_core_uplink_netdev_set(mdev, netdev);
+ 	mlx5e_params_print_info(mdev, &priv->channels.params);
 -- 
 2.53.0
 
