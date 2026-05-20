@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250998-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IGwpIjT8DWoK5QUAu9opvQ
-	(envelope-from <stable+bounces-252578-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:48 +0200
+	id ME3KFyn2DWry4wUAu9opvQ
+	(envelope-from <stable+bounces-250998-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:58:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A02659601A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:48 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77CCD594FD5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:58:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5C261302ACED
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:17:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5D0663019DAA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:08:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2CD0347515;
-	Wed, 20 May 2026 18:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A2013F0A83;
+	Wed, 20 May 2026 17:07:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jGKyTtfA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GeW5Kcqz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 654DA368968;
-	Wed, 20 May 2026 18:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64673E120A;
+	Wed, 20 May 2026 17:07:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301042; cv=none; b=LiO15Kaq4w1OEwsb52VKifTFfmb1QiZiT6puZgASqa08y8Auz5+UqR24DHWczardxM7e1x2w+wBHo3STdC/vTKljReHTKBhDMG30ROyrCfDIcw6aPWT71OSTgKPfNsfj251tcVk/SjfyXu5AnDdzhm0E2BI7bCCbv1xybbzyoeo=
+	t=1779296837; cv=none; b=G6HQwfFrzvcuIqBSSZAiNoUSYAE4N91mc3o5yg9bXQuQr/J+QQ51WLhj0U/7lN3HdwEcZJszLQDUFS9ZDAfBACAeH6grN06zMW5X4uWOg+XyR0TVqhdKZW0djd4XrjKPBC/4f6QOag/wDOLWz62I+cHDq7AN0KZc61f1ryNZnLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301042; c=relaxed/simple;
-	bh=kn80hw5KykiJo7m8IxqhbiE0MO/nmZJ8xVbtvukwuqI=;
+	s=arc-20240116; t=1779296837; c=relaxed/simple;
+	bh=56pwM5rWVhP5bXdM8xvP+lKxFcsDqx5Rf1QWtViqiSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GplZumBzqAIfjA4uP7a2BTz0xS/s9jFtbEVW5RhyZ937hvzeR1kKQ68rs3vSQMm3/oWoMoSqxEraDH6TKq8o+o2CAtXYmADZOnnLCpxlWz9jE1eFOsumdJsxUx0SwYkEtYXKLzRGETYjew7NE5I2zxnYm/AEYx9+T9bRY95dxao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jGKyTtfA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94BE81F000E9;
-	Wed, 20 May 2026 18:17:20 +0000 (UTC)
+	 MIME-Version; b=S8IbQcuWH+TpSgPtQ2hEM06Wc5A0z8CJzELtZ2BFCa4qypxmDkNdvYiAXur45bY0K8NuYvfW+40pmvS51bVFwOdXj7cJFdje3Xk6FTmD2oaMrWX0dxavccrnRXLimaCEfj/O/A3Vf+40OkRz9W2kGGOBcrqV+JtvA6kBzfPOits=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GeW5Kcqz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1410A1F000E9;
+	Wed, 20 May 2026 17:07:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301041;
-	bh=PAF33XAigsWEJGlU27fIAmSrFO/6iyYbSrwy74jvhkQ=;
+	s=korg; t=1779296835;
+	bh=XuIylzQnWMSbLaf2LRDewZ2a6PS/pZJUp847g8mqXpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jGKyTtfAjqgexnOseyspQWav2AktH09AJE+x8r1XJdEwABd8v3skdNuyfzHWTGynd
-	 7jFiW6YaN48Wljfi+21GnySEXwZZTd+Tcx7ZkQp8ng1ra0mQF5cD436fOB8hWHGb4d
-	 9qZwTocqUk+y3XlwsfjpT+ZkGVLxMS/jfSKluUqo=
+	b=GeW5Kcqzzss5RI15sYflYQdVjuyfiUU+7zx/CZJodtq2eQNLv0deIcTM8fQQotmUc
+	 1gRBoHLN7HoasVpMfV0gwNSo5CtoQf/MvrG5qrzUsgGD24G0CNj0bpMheuIKooUFye
+	 DXFWEgdh8Ua04S5+IGwgx6v82lZ5X+wL7OkRvvfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Altan Hacigumus <ahacigu.linux@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 387/666] platform/surface: surfacepro3_button: Drop wakeup source on remove
-Date: Wed, 20 May 2026 18:19:58 +0200
-Message-ID: <20260520162119.642540884@linuxfoundation.org>
+Subject: [PATCH 7.0 0949/1146] tcp: make probe0 timer handle expired user timeout
+Date: Wed, 20 May 2026 18:19:59 +0200
+Message-ID: <20260520162209.710385689@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +64,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252578-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250998-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 3A02659601A
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 77CCD594FD5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Altan Hacigumus <ahacigu.linux@gmail.com>
 
-[ Upstream commit 1410a228ab2d36fe2b383415a632ae12048d4f3a ]
+[ Upstream commit 2b9f6f7065d4cfb65ba19126e0b35ac4544c3f3a ]
 
-The wakeup source added by device_init_wakeup() in surface_button_add()
-needs to be dropped during driver removal, so update the driver to do
-that.
+tcp_clamp_probe0_to_user_timeout() computes remaining time in jiffies
+using subtraction with an unsigned lvalue.  If elapsed probing time
+exceeds the configured TCP_USER_TIMEOUT, the underflow yields a large
+value.
 
-Fixes: 19351f340765 ("platform/x86: surfacepro3: Support for wakeup from suspend-to-idle")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/4368848.1IzOArtZ34@rafael.j.wysocki
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+This ends up re-arming the probe timer for a full backoff interval
+instead of expiring immediately, delaying connection teardown beyond
+the configured timeout.
+
+Fix this by preventing underflow so user-set timeout expiration is
+handled correctly without extending the probe timer.
+
+Fixes: 344db93ae3ee ("tcp: make TCP_USER_TIMEOUT accurate for zero window probes")
+Link: https://lore.kernel.org/r/20260414013634.43997-1-ahacigu.linux@gmail.com
+Signed-off-by: Altan Hacigumus <ahacigu.linux@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260424014639.54110-1-ahacigu.linux@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/surface/surfacepro3_button.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/tcp_timer.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/surface/surfacepro3_button.c b/drivers/platform/surface/surfacepro3_button.c
-index 2755601f979cd..7c7622f8f8716 100644
---- a/drivers/platform/surface/surfacepro3_button.c
-+++ b/drivers/platform/surface/surfacepro3_button.c
-@@ -243,6 +243,7 @@ static void surface_button_remove(struct acpi_device *device)
+diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
+index 153c5888580ca..61631a2dcea7f 100644
+--- a/net/ipv4/tcp_timer.c
++++ b/net/ipv4/tcp_timer.c
+@@ -50,7 +50,8 @@ static u32 tcp_clamp_rto_to_user_timeout(const struct sock *sk)
+ u32 tcp_clamp_probe0_to_user_timeout(const struct sock *sk, u32 when)
  {
- 	struct surface_button *button = acpi_driver_data(device);
+ 	const struct inet_connection_sock *icsk = inet_csk(sk);
+-	u32 remaining, user_timeout;
++	u32 user_timeout;
++	s32 remaining;
+ 	s32 elapsed;
  
-+	device_init_wakeup(&device->dev, false);
- 	input_unregister_device(button->input);
- 	kfree(button);
+ 	user_timeout = READ_ONCE(icsk->icsk_user_timeout);
+@@ -61,7 +62,7 @@ u32 tcp_clamp_probe0_to_user_timeout(const struct sock *sk, u32 when)
+ 	if (unlikely(elapsed < 0))
+ 		elapsed = 0;
+ 	remaining = msecs_to_jiffies(user_timeout) - elapsed;
+-	remaining = max_t(u32, remaining, TCP_TIMEOUT_MIN);
++	remaining = max_t(int, remaining, TCP_TIMEOUT_MIN);
+ 
+ 	return min_t(u32, remaining, when);
  }
 -- 
 2.53.0
