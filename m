@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251065-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4KiSB+b9DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-251996-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:31:02 +0200
+	id OF2xHXDuDWpb4wUAu9opvQ
+	(envelope-from <stable+bounces-251065-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:25:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81A745966A1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:31:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 064E0593977
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:25:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 468253345BAE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:51:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7099031675FF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:10:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C41723F20F9;
-	Wed, 20 May 2026 17:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3A083EAC9B;
+	Wed, 20 May 2026 17:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1mNHlZNl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xp56E5Ls"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBA939B483;
-	Wed, 20 May 2026 17:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1054231842;
+	Wed, 20 May 2026 17:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299472; cv=none; b=XAM9rJTPcHY6T1JbV2dConrSGSVayKkQoid90v4z/piziAMskbcH6s8RIIy4BSrULzhXfZLSHCrOa5prnMBcxT94XNDCYrREOfdsx87icXi87p67iWl2iqrz9v0Etrt3MmtXXgcy7YRdgg9ViEWTr5selAbmsG5OwgBvP4JqpKU=
+	t=1779297010; cv=none; b=pVf0k+j7HpLIy9m+v2kF7UnfqrGMZbA+fEsgwTjrPvZRZ2AAMz0FvSJKtibuutpkYYbjbV1s3b5sWDLs2CAH3YNWl62Qf7/RNJaHakxGFpP3gGgiBWbRG9FWaYyJNefUsCWiaxOoxrzURVC3Xq9vgO0GNdjCpD2gf6IcZU2hoWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299472; c=relaxed/simple;
-	bh=ArerDv50s1M/cxsPbFrG5erB1HO4KDkM+J1voFI7oXM=;
+	s=arc-20240116; t=1779297010; c=relaxed/simple;
+	bh=FWynegx31euydPh2JlkNlV/FGJ3Qp9IFKVqwYxc6Wms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rg/kJ3QmvV/Orlc96a4UJEJelqP77S8d9F+aoAQGG1bLUYXwKua31o4za1cfGJiS3mmzVZuXJrvsYB9EYwPYv2fO6k0kYXA9fCiqfF8fZA5JOkYZB+syY60UzSmpVr5sC3J4H2ohF1bOPQw2qCUSyECh+NRajwngSSGlEOGQF/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1mNHlZNl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F07841F000E9;
-	Wed, 20 May 2026 17:51:10 +0000 (UTC)
+	 MIME-Version; b=CGze3vcGzD0hp0M0MH9+T9TRE5dtL7duYLYCEtHyIBJfc5VL6N7z2rqK/RKJTnQYqQP4cgRRbtmk5ua0e3SV10Mq68h54VeFH5zYHNPUVo8HomP427xgdNRWqr7+76mRpDA0XzNSUmvCj/j+bnqXvOmSKZfG72oVU9CLw+f6Fuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xp56E5Ls; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22D1F1F000E9;
+	Wed, 20 May 2026 17:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299471;
-	bh=+sMW4AmYGyrdzF7FS88hIinsKbfz1bU1ITXOeEgBcYo=;
+	s=korg; t=1779297009;
+	bh=7C2aNz0JgS71lOJson9pSzolRV8+3H+GkHjv41Zk0PU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1mNHlZNl5hFntCTzuSereAKkDDFP8ROFbZ9nzS7jVytx9bYEmFySrnDj6vvk43gid
-	 s+98HI1+HIhzDTHpHiT0t/zeVZpnUwtKISHLTJwYMbdbgnhTnco6GWVsi+XFzQFkgY
-	 PNuez8OgIIHiBOdSBy36FJ4JjZpt+HEmLY2Eattk=
+	b=xp56E5Lsvbjqm4Sbg9c1AH6u+DEu+QymrrSJaYmfVcSwExtMzM0l8rwjUS2UmQEci
+	 2NPFB1GTQFDCSjQYePpfXPbfLrw2RRi4WHqDBqK+o7WR2sNAM+7Y2tSGti3FwTM8uY
+	 8n7PIEyP6X52IC/4H3v0zoZZFHMKdMs5TwpI5QFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Altan Hacigumus <ahacigu.linux@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 784/957] tcp: make probe0 timer handle expired user timeout
+Subject: [PATCH 7.0 1017/1146] bonding: print churn state via netlink
 Date: Wed, 20 May 2026 18:21:07 +0200
-Message-ID: <20260520162151.563213576@linuxfoundation.org>
+Message-ID: <20260520162211.247422735@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,93 +64,99 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-251065-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-251996-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 81A745966A1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 064E0593977
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Altan Hacigumus <ahacigu.linux@gmail.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 2b9f6f7065d4cfb65ba19126e0b35ac4544c3f3a ]
+[ Upstream commit 4916f2e2f3fc9aef289fcd07949301e5c29094c2 ]
 
-tcp_clamp_probe0_to_user_timeout() computes remaining time in jiffies
-using subtraction with an unsigned lvalue.  If elapsed probing time
-exceeds the configured TCP_USER_TIMEOUT, the underflow yields a large
-value.
+Currently, the churn state is printed only in sysfs. Add netlink support
+so users could get the state via netlink.
 
-This ends up re-arming the probe timer for a full backoff interval
-instead of expiring immediately, delaying connection teardown beyond
-the configured timeout.
-
-Fix this by preventing underflow so user-set timeout expiration is
-handled correctly without extending the probe timer.
-
-Fixes: 344db93ae3ee ("tcp: make TCP_USER_TIMEOUT accurate for zero window probes")
-Link: https://lore.kernel.org/r/20260414013634.43997-1-ahacigu.linux@gmail.com
-Signed-off-by: Altan Hacigumus <ahacigu.linux@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260424014639.54110-1-ahacigu.linux@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20260224020215.6012-1-liuhangbin@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: c4f050ce06c5 ("bonding: 3ad: implement proper RCU rules for port->aggregator")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_timer.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/bonding/bond_netlink.c | 9 +++++++++
+ include/uapi/linux/if_link.h       | 2 ++
+ 2 files changed, 11 insertions(+)
 
-diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
-index b2e5848b6980a..1e6d7d90371a9 100644
---- a/net/ipv4/tcp_timer.c
-+++ b/net/ipv4/tcp_timer.c
-@@ -49,7 +49,8 @@ static u32 tcp_clamp_rto_to_user_timeout(const struct sock *sk)
- u32 tcp_clamp_probe0_to_user_timeout(const struct sock *sk, u32 when)
- {
- 	const struct inet_connection_sock *icsk = inet_csk(sk);
--	u32 remaining, user_timeout;
-+	u32 user_timeout;
-+	s32 remaining;
- 	s32 elapsed;
- 
- 	user_timeout = READ_ONCE(icsk->icsk_user_timeout);
-@@ -60,7 +61,7 @@ u32 tcp_clamp_probe0_to_user_timeout(const struct sock *sk, u32 when)
- 	if (unlikely(elapsed < 0))
- 		elapsed = 0;
- 	remaining = msecs_to_jiffies(user_timeout) - elapsed;
--	remaining = max_t(u32, remaining, TCP_TIMEOUT_MIN);
-+	remaining = max_t(int, remaining, TCP_TIMEOUT_MIN);
- 
- 	return min_t(u32, remaining, when);
+diff --git a/drivers/net/bonding/bond_netlink.c b/drivers/net/bonding/bond_netlink.c
+index 286f11c517f76..ea1a80e658aeb 100644
+--- a/drivers/net/bonding/bond_netlink.c
++++ b/drivers/net/bonding/bond_netlink.c
+@@ -29,6 +29,8 @@ static size_t bond_get_slave_size(const struct net_device *bond_dev,
+ 		nla_total_size(sizeof(u16)) +	/* IFLA_BOND_SLAVE_AD_PARTNER_OPER_PORT_STATE */
+ 		nla_total_size(sizeof(s32)) +	/* IFLA_BOND_SLAVE_PRIO */
+ 		nla_total_size(sizeof(u16)) +	/* IFLA_BOND_SLAVE_ACTOR_PORT_PRIO */
++		nla_total_size(sizeof(u8)) +	/* IFLA_BOND_SLAVE_AD_CHURN_ACTOR_STATE */
++		nla_total_size(sizeof(u8)) +	/* IFLA_BOND_SLAVE_AD_CHURN_PARTNER_STATE */
+ 		0;
  }
+ 
+@@ -77,6 +79,13 @@ static int bond_fill_slave_info(struct sk_buff *skb,
+ 					IFLA_BOND_SLAVE_AD_PARTNER_OPER_PORT_STATE,
+ 					ad_port->partner_oper.port_state))
+ 				goto nla_put_failure;
++
++			if (nla_put_u8(skb, IFLA_BOND_SLAVE_AD_CHURN_ACTOR_STATE,
++				       ad_port->sm_churn_actor_state))
++				goto nla_put_failure;
++			if (nla_put_u8(skb, IFLA_BOND_SLAVE_AD_CHURN_PARTNER_STATE,
++				       ad_port->sm_churn_partner_state))
++				goto nla_put_failure;
+ 		}
+ 
+ 		if (nla_put_u16(skb, IFLA_BOND_SLAVE_ACTOR_PORT_PRIO,
+diff --git a/include/uapi/linux/if_link.h b/include/uapi/linux/if_link.h
+index e9b5f79e1ee17..83a96c56b8cad 100644
+--- a/include/uapi/linux/if_link.h
++++ b/include/uapi/linux/if_link.h
+@@ -1568,6 +1568,8 @@ enum {
+ 	IFLA_BOND_SLAVE_AD_PARTNER_OPER_PORT_STATE,
+ 	IFLA_BOND_SLAVE_PRIO,
+ 	IFLA_BOND_SLAVE_ACTOR_PORT_PRIO,
++	IFLA_BOND_SLAVE_AD_CHURN_ACTOR_STATE,
++	IFLA_BOND_SLAVE_AD_CHURN_PARTNER_STATE,
+ 	__IFLA_BOND_SLAVE_MAX,
+ };
+ 
 -- 
 2.53.0
 
