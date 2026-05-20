@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-252260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251621-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gFPOJtIjDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252260-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:12:50 +0200
+	id sCx8OLfyDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251621-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0793759A8B8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:12:49 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53A27594632
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5FD4E3940C07
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:03:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 12FD930ABB18
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:34:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 255EF3F4DD6;
-	Wed, 20 May 2026 18:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38F6536C9D2;
+	Wed, 20 May 2026 17:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jGrhD3gk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CsTvN6GJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F173E95A4;
-	Wed, 20 May 2026 18:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B46312825;
+	Wed, 20 May 2026 17:34:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300209; cv=none; b=MbsiN/rpUhq5AGPvzFyAuvTHmRZkOpYYxIL0XQvFiWQL6jAcN4LWX44Bl/RVeNtU/5DQhoLC4/hGFlbPAPPvGaJJjpCpgBssKwimMCgM37ZttovdNFcRlrRZlgsnVNhQRlbPwgfzRuTrKkSMteSqTpwf6g/NCtBikGOFmr35Fks=
+	t=1779298459; cv=none; b=lw9pxa0LsH+ECIId90vwgPDwuOqZPMyscGP9k1lp2X44y5K8ZmxY2VgNdVVCKfrQEZTYNUEHNm9MHzHM9UJN8tyuh1hq1OeYvvvPL+wptIUKvVprX71JTkUo9wFgM52PU0ShicBtMxuE1F/iu6fUlJyn/MZZ59XZ0OqiBizDB+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300209; c=relaxed/simple;
-	bh=TANEXezBMwMpI2mPl4jmf+FcTViImnfV8yhn+bN8AJk=;
+	s=arc-20240116; t=1779298459; c=relaxed/simple;
+	bh=HUb5vJdyIUrF0aljrzfdPwSTpyFAyv5+rPacrOYc/Q4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eIwEVbAW0MHDKbw11Yc+5FnH6bLcSJ9JLRpOjfWAObTNnatNnokyKt4l6i0hOezmPZ0BUzzMkWIR6F2+QXcJidi997lRW0yEW48l2aObKHN8rTUwDSGaiBv8o/UQoOblIuZMiAmb3B6DpQ/smYoLv8cMUwKLXm4ewDiBhdbVfao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jGrhD3gk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A341F00893;
-	Wed, 20 May 2026 18:03:28 +0000 (UTC)
+	 MIME-Version; b=W5fvjvimForQSWHInbetkz0raIGNq01XhViBhMJPxCp4Xba7ucva4c+rlmUDO4GYUF/yiqNLFBrlypwMkxsso3d2EwT/f0IvDQ9Xpo6GaM6hPif52joE2ZrC21AlXuJT9BWbnZymnRfbiyZQfGMH+pzsBbv8K5HPTrn4CURv40U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CsTvN6GJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 490061F00893;
+	Wed, 20 May 2026 17:34:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300208;
-	bh=fwvRBmwCFInE4S4/MxvPYokjmr8XgG+Xm5kj1Itm0Ws=;
+	s=korg; t=1779298457;
+	bh=kFvH5Ein2bHsOfFVtjRQTSeBk343P60/OSb8etKFJeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jGrhD3gkhWNhhm0spP3cAFToEU+nnmQ33b4REEAR0BfTCUahnEv0yPdq0iUWtwlsv
-	 e8KabJX5E8XzULEKifaBWwEvqesS0wi/8quyPOvQBMmov/CS5sZpPY942N4BEEdU04
-	 hXYop4E+z57TxG/E2eI7BNtds4FR7xyTrFof4/4o=
+	b=CsTvN6GJVPJZhkk1DITeIbS5vmqoy+YhCWeuadgW5KDoUqB8xcZlAgRUfkFuXw/xJ
+	 MGOevoL6+tManyXiJTcbCsE0aNlXSKAIk1VRT9DOeu2sPJwMEL9Ywty/3MToRO644V
+	 45V8luFokziRpqyXaslBl0GFgdYhFe9YUjwIJbkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 089/666] selftests/bpf: fix __jited_unpriv tag name
-Date: Wed, 20 May 2026 18:15:00 +0200
-Message-ID: <20260520162113.156846657@linuxfoundation.org>
+Subject: [PATCH 6.18 418/957] arm64: dts: imx8dxl-evk: Use audio-graph-card2 for wm8960-2 and wm8960-3
+Date: Wed, 20 May 2026 18:15:01 +0200
+Message-ID: <20260520162143.587375509@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,70 +68,217 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252260-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.dev,kernel.org,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251621-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 0793759A8B8
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[0.0.0.1:email,nxp.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,0.0.0.2:email,1a:email]
+X-Rspamd-Queue-Id: 53A27594632
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit cdd54fe98c00549264a92613af6bb0e9a5fd0d1c ]
+[ Upstream commit e8341b0245736619f8d6a2cc311c9e8ad8e82390 ]
 
-__jited_unpriv was using "test_jited=" as its tag name, same as the
-priv variant __jited. Fix by using "test_jited_unpriv=".
+The sound card wm8960-2 and wm8960-3 only support capture mode for the
+reason of connection on the EVK board. But fsl-asoc-card don't support
+capture_only setting, the sound card creation will fail.
 
-Fixes: 7d743e4c759c ("selftests/bpf: __jited test tag to check disassembly after jit")
-Acked-by: Ihor Solodrai <ihor.solodrai@linux.dev>
-Reviewed-by: Puranjay Mohan <puranjay@kernel.org>
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20260410-selftests-global-tags-ordering-v2-1-c566ec9781bf@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+fsl-sai 59060000.sai: Missing dma channel for stream: 0
+fsl-sai 59060000.sai: ASoC error (-22): at snd_soc_pcm_component_new() on 59060000.sai
+fsl-sai 59070000.sai: Missing dma channel for stream: 0
+fsl-sai 59070000.sai: ASoC error (-22): at snd_soc_pcm_component_new() on 59070000.sai
+
+so switch to use audio-graph-card2 which supports 'capture_only'
+property for wm8960-2 and wm8960-3 cards.
+
+Fixes: b41c45eb990a ("arm64: dts: imx8dxl-evk: add audio nodes")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/progs/bpf_misc.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx8dxl-evk.dts | 114 ++++++++++++++----
+ 1 file changed, 90 insertions(+), 24 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/progs/bpf_misc.h b/tools/testing/selftests/bpf/progs/bpf_misc.h
-index eccaf955e3947..9c0d71f0b3cc3 100644
---- a/tools/testing/selftests/bpf/progs/bpf_misc.h
-+++ b/tools/testing/selftests/bpf/progs/bpf_misc.h
-@@ -115,7 +115,7 @@
- #define __description(desc)	__attribute__((btf_decl_tag("comment:test_description=" desc)))
- #define __msg_unpriv(msg)	__attribute__((btf_decl_tag("comment:test_expect_msg_unpriv=" XSTR(__COUNTER__) "=" msg)))
- #define __xlated_unpriv(msg)	__attribute__((btf_decl_tag("comment:test_expect_xlated_unpriv=" XSTR(__COUNTER__) "=" msg)))
--#define __jited_unpriv(msg)	__attribute__((btf_decl_tag("comment:test_jited=" XSTR(__COUNTER__) "=" msg)))
-+#define __jited_unpriv(msg)	__attribute__((btf_decl_tag("comment:test_jited_unpriv=" XSTR(__COUNTER__) "=" msg)))
- #define __failure_unpriv	__attribute__((btf_decl_tag("comment:test_expect_failure_unpriv")))
- #define __success_unpriv	__attribute__((btf_decl_tag("comment:test_expect_success_unpriv")))
- #define __log_level(lvl)	__attribute__((btf_decl_tag("comment:test_log_level="#lvl)))
+diff --git a/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts b/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
+index 25a77cac6f0b5..b75ab1e010f0c 100644
+--- a/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
++++ b/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
+@@ -259,33 +259,37 @@ sound-wm8960-1 {
+ 	};
+ 
+ 	sound-wm8960-2 {
+-		compatible = "fsl,imx-audio-wm8960";
+-		model = "wm8960-audio-2";
+-		audio-cpu = <&sai2>;
+-		audio-codec = <&wm8960_2>;
+-		audio-routing = "Headphone Jack", "HP_L",
+-				"Headphone Jack", "HP_R",
+-				"Ext Spk", "SPK_LP",
+-				"Ext Spk", "SPK_LN",
+-				"Ext Spk", "SPK_RP",
+-				"Ext Spk", "SPK_RN",
+-				"LINPUT1", "Mic Jack",
+-				"Mic Jack", "MICB";
++		compatible = "audio-graph-card2";
++		label = "wm8960-audio-2";
++		links = <&sai2_port2>;
++		routing = "Headphones", "HP_L",
++			"Headphones", "HP_R",
++			"Ext Spk", "SPK_LP",
++			"Ext Spk", "SPK_LN",
++			"Ext Spk", "SPK_RP",
++			"Ext Spk", "SPK_RN",
++			"LINPUT1", "Mic Jack",
++			"Mic Jack", "MICB";
++		widgets = "Headphone", "Headphones",
++			"Speaker", "Ext Spk",
++			"Microphone", "Mic Jack";
+ 	};
+ 
+ 	sound-wm8960-3 {
+-		compatible = "fsl,imx-audio-wm8960";
+-		model = "wm8960-audio-3";
+-		audio-cpu = <&sai3>;
+-		audio-codec = <&wm8960_3>;
+-		audio-routing = "Headphone Jack", "HP_L",
+-				"Headphone Jack", "HP_R",
+-				"Ext Spk", "SPK_LP",
+-				"Ext Spk", "SPK_LN",
+-				"Ext Spk", "SPK_RP",
+-				"Ext Spk", "SPK_RN",
+-				"LINPUT1", "Mic Jack",
+-				"Mic Jack", "MICB";
++		compatible = "audio-graph-card2";
++		label = "wm8960-audio-3";
++		links = <&sai3_port2>;
++		routing = "Headphones", "HP_L",
++			"Headphones", "HP_R",
++			"Ext Spk", "SPK_LP",
++			"Ext Spk", "SPK_LN",
++			"Ext Spk", "SPK_RP",
++			"Ext Spk", "SPK_RN",
++			"LINPUT1", "Mic Jack",
++			"Mic Jack", "MICB";
++		widgets = "Headphone", "Headphones",
++			"Speaker", "Ext Spk",
++			"Microphone", "Mic Jack";
+ 	};
+ };
+ 
+@@ -481,6 +485,16 @@ wm8960_2: audio-codec@1a {
+ 				DCVDD-supply = <&reg_audio_1v8>;
+ 				SPKVDD1-supply = <&reg_audio_5v>;
+ 				SPKVDD2-supply = <&reg_audio_5v>;
++
++				port {
++					capture-only;
++
++					wm8960_2_ep: endpoint {
++						bitclock-master;
++						frame-master;
++						remote-endpoint = <&sai2_endpoint2>;
++					};
++				};
+ 			};
+ 		};
+ 
+@@ -510,6 +524,16 @@ wm8960_3: audio-codec@1a {
+ 				DCVDD-supply = <&reg_audio_1v8>;
+ 				SPKVDD1-supply = <&reg_audio_5v>;
+ 				SPKVDD2-supply = <&reg_audio_5v>;
++
++				port {
++					capture-only;
++
++					wm8960_3_ep: endpoint {
++						bitclock-master;
++						frame-master;
++						remote-endpoint = <&sai3_endpoint2>;
++					};
++				};
+ 			};
+ 		};
+ 
+@@ -695,6 +719,27 @@ &sai2 {
+ 	pinctrl-0 = <&pinctrl_sai2>;
+ 	fsl,sai-asynchronous;
+ 	status = "okay";
++
++	ports {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		sai2_port1: port@1 {
++			reg = <1>;
++			endpoint { /* not used */ };
++		};
++
++		sai2_port2: port@2 {
++			reg = <2>;
++			capture-only;
++
++			sai2_endpoint2: endpoint {
++				dai-format = "i2s";
++				remote-endpoint = <&wm8960_2_ep>;
++				system-clock-direction-out;
++			};
++		};
++	};
+ };
+ 
+ &sai3 {
+@@ -707,6 +752,27 @@ &sai3 {
+ 	pinctrl-0 = <&pinctrl_sai3>;
+ 	fsl,sai-asynchronous;
+ 	status = "okay";
++
++	ports {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		sai3_port1: port@1 {
++			reg = <1>;
++			endpoint { /* not used */ };
++		};
++
++		sai3_port2: port@2 {
++			reg = <2>;
++			capture-only;
++
++			sai3_endpoint2: endpoint {
++				dai-format = "i2s";
++				remote-endpoint = <&wm8960_3_ep>;
++				system-clock-direction-out;
++			};
++		};
++	};
+ };
+ 
+ &thermal_zones {
 -- 
 2.53.0
 
