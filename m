@@ -1,230 +1,219 @@
-Return-Path: <stable+bounces-249906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249907-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cH8WMVetDWq51QUAu9opvQ
-	(envelope-from <stable+bounces-249906-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 14:47:19 +0200
+	id sJN0M8auDWr21QUAu9opvQ
+	(envelope-from <stable+bounces-249907-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 14:53:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0A3158E21D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 14:47:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50A9758E43C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 14:53:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0146B3033A5E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 12:46:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2858D30845B6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 12:47:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685563E1CFD;
-	Wed, 20 May 2026 12:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B918F3E0C4D;
+	Wed, 20 May 2026 12:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZJDcfzLi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pi7IKK24"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF003E1232;
-	Wed, 20 May 2026 12:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C99D3DDDB6;
+	Wed, 20 May 2026 12:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779281178; cv=none; b=ly7kTB8NIQ2RxXe5jxhyhY+sy/TIYD5ERQqvbXcqfiUM/xw1S2G0Vm8jrudXd4MErMHdiwHbGKRzIvLDN6wyR6q5cu5HlhaDptpdtClPdowoe1L5Q08QRahkb4xr7b+YBXSY3fgNsxhv7AUtZBWXhhP0k6LWCobnHFBPLRih1jU=
+	t=1779281221; cv=none; b=WW/aJpq6MebsREUN+xY9o1wkWiBEqonoUAdErPi33yY8TVn8q0r0QAKJd9vK0G6M3fx74PJ3W2yKOS1Mj+UBeCCqJHmlAC9huQGQYta2DBsfJIJEKWPdMYE/10l/fB61YSn25feEDkK8Y7bPcByi2Auy+pUHu0Ks7z4gRnQXaqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779281178; c=relaxed/simple;
-	bh=UW1L0gVMS5PXHtlP2FSbkLQVtQNmBkwEQaK2o2VZo/A=;
+	s=arc-20240116; t=1779281221; c=relaxed/simple;
+	bh=3/Un1eOoGYRy096NF5teMY/O3oMt370yJJNe4tNDORE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gTkD7/f7vYbENhmEs6v64yLV5LGIj1ojQkBQ8jFdV0RRM2nO+EWHeEzWxzS5htgDKNe4lpKnYjHDdDHD3rTVE55McXpxkdrsnOo6WFLPhzpQ62sCowZUprxftFlfnnarYR/iKESh0yijeGN7mDF98UfoGEfCRii8xgtH1RRzZ0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZJDcfzLi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4007F1F000E9;
-	Wed, 20 May 2026 12:46:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779281176;
-	bh=kskmG5Ux8kxJLRcreVT9An1Xq94EuhLrlQ5Y5quP13Y=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=eODvKvGivwgdMCEklWk1gunwTlhaN7gcwfUrf6xh8UICw2zy8JvVHzQW60+LBCgnXBZxhHt26v6Uk5JXjRwYdU53QbiXnWWsWeiqfuALEAUWC2TZ/aSri+59E9s2hCP2u4jysTdu9Iup6RokwqqQvidBFJoU/zqp8pfhqXk0F7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pi7IKK24; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 630991F000E9;
+	Wed, 20 May 2026 12:46:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1779281219;
+	bh=8BtRnQV9ve1mRwTxt1keynXJeLz4QoTeDa0cQ9uPH5Q=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ZJDcfzLibpI18YnttQqfv2qTv7nGluvH+8+CUcYFvIHoRWg6JxjrmX6fWd8Hfm5rF
-	 RSV4Si8XPBPVV+YtGitM361GMBUAEl7qX7s858WBzcxzv+WHdrxpaF15NIUqHz6kKG
-	 Waijex4rWcgvlPQZsSYSPHvxoweTUHHxmcDO0CfvEpAYY8x2nfq2Ay7stoxEWd3WzT
-	 BtmD+5An+mZ7lYKlFKbhwPeGFMBhBe5sW74UUQZ4G5YLUXEaqUSnCdlV5S+6T/xCcG
-	 8jzSzUvqHckdwsz43ikSYPnLc+NzzZBTYDC5n3GK1JpvsEtyhqLgEJOxYHuFnOcUlD
-	 OIk65PZW7WwRw==
-Date: Wed, 20 May 2026 13:46:10 +0100
-From: Lee Jones <lee@kernel.org>
-To: Benjamin Tissoires <bentiss@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Kosina <jikos@kernel.org>,
-	Filipe =?iso-8859-1?Q?La=EDns?= <lains@riseup.net>,
-	Bastien Nocera <hadess@hadess.net>,
-	Ping Cheng <ping.cheng@wacom.com>,
-	Jason Gerecke <jason.gerecke@wacom.com>,
-	Viresh Kumar <vireshk@kernel.org>, Johan Hovold <johan@kernel.org>,
-	Alex Elder <elder@kernel.org>, Icenowy Zheng <uwu@icenowy.me>,
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-	greybus-dev@lists.linaro.org, linux-staging@lists.linux.dev,
-	linux-usb@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3 0/4] HID: Proper fix for OOM in hid-core
-Message-ID: <20260520124610.GZ305027@google.com>
-References: <20260504-wip-fix-core-v3-0-ce1f11f4968f@kernel.org>
- <20260506091606.GB305027@google.com>
- <20260512101723.GU305027@google.com>
- <20260519111723.GU305027@google.com>
- <agxbD6k60vQYrJ6T@beelink>
- <2026051937-hefty-registry-37b2@gregkh>
- <agxswzzCNMcxRN1n@beelink>
+	b=pi7IKK24E+1k8wRaaR2f/X9TDdtTLnfP2kXkrZ3uGFKw3myHS3arznZZMxizR1ZCN
+	 vCUigAxoM6uVGskN+bYHz9IZtlwOHe9bNmEznSkZ1DB5dTkPLBgtL/nC3vrsrwvwfN
+	 EFbQSC3yHnBih6e1G7Hh6eiJ2ioajZKEFgXLxORA=
+Date: Wed, 20 May 2026 14:47:03 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: August Wikerfors <git@augustwikerfors.se>
+Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Thorsten Leemhuis <regressions@leemhuis.info>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	Sasha Levin <sashal@kernel.org>, linux-bluetooth@vger.kernel.org,
+	netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+	Linux kernel regressions list <regressions@lists.linux.dev>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [GIT PULL] bluetooth 2026-05-14
+Message-ID: <2026052026-barber-espresso-1d9a@gregkh>
+References: <20260514172340.1515042-1-luiz.dentz@gmail.com>
+ <f5cf1c30-48a4-4102-ae00-b74cf02e639e@leemhuis.info>
+ <4946f5f3-b7e2-4949-89f7-6427015027c6@leemhuis.info>
+ <2026051954-revision-sierra-6bb4@gregkh>
+ <eb5301f9-3133-4fe3-b358-61f14d1ffa5b@leemhuis.info>
+ <2026051909-impurity-nemesis-2f65@gregkh>
+ <CABBYNZKKbTXc-okp9P2OncMYXHX9C1XC+pRC7XWOhv-8nPNZ5A@mail.gmail.com>
+ <2026051942-uproar-drainpipe-6370@gregkh>
+ <CABBYNZKzWgL3nmeA=CtN9s80LRyDiJ97aQXgvfSm9vYUBw_SpA@mail.gmail.com>
+ <e666c332-e2aa-4525-a208-a4a08742d2e0@augustwikerfors.se>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <agxswzzCNMcxRN1n@beelink>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e666c332-e2aa-4525-a208-a4a08742d2e0@augustwikerfors.se>
+X-Spamd-Result: default: False [3.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249906-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249907-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,leemhuis.info,vger.kernel.org,kernel.org,davemloft.net,lists.linux.dev,linux-foundation.org];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lee@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: F0A3158E21D
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 50A9758E43C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, 19 May 2026, Benjamin Tissoires wrote:
-
-> On May 19 2026, Greg Kroah-Hartman wrote:
-> > On Tue, May 19, 2026 at 02:46:13PM +0200, Benjamin Tissoires wrote:
-> > > On May 19 2026, Lee Jones wrote:
-> > > > On Tue, 12 May 2026, Lee Jones wrote:
-> > > > 
-> > > > > On Wed, 06 May 2026, Lee Jones wrote:
-> > > > > 
-> > > > > > On Mon, 04 May 2026, Benjamin Tissoires wrote:
-> > > > > > 
-> > > > > > > Commit 0a3fe972a7cb ("HID: core: Mitigate potential OOB by removing
-> > > > > > > bogus memset()") enforced the provided data to be at least the size of
-> > > > > > > the declared buffer in the report descriptor to prevent a buffer
-> > > > > > > overflow.
-> > > > > > > 
-> > > > > > > We only had corner cases of malicious devices exposing the OOM because
-> > > > > > > in most cases, the buffer provided by the transport layer needs to be
-> > > > > > > allocated at probe time and is large enough to handle all the possible
-> > > > > > > reports.
-> > > > > > > 
-> > > > > > > However, the patch from above, which enforces the spec a little bit more
-> > > > > > > introduced both regressions for devices not following the spec (not
-> > > > > > > necesserally malicious), but also a stream of errors for those devices.
-> > > > > > > 
-> > > > > > > Let's revert to the old behavior by giving more information to HID core
-> > > > > > > to be able to decide whether it can or not memset the rest of the buffer
-> > > > > > > to 0 and continue the processing.
-> > > > > > > 
-> > > > > > > Note that the first commit makes an API change, but the callers are
-> > > > > > > relatively limited, so it should be fine on its own. The second patch
-> > > > > > > can't really make the same kind of API change because we have too many
-> > > > > > > callers in various subsystems. We can switch them one by one to the safe
-> > > > > > > approach when needed.
-> > > > > > > 
-> > > > > > > The last 2 patches are small cleanups I initially put together with the
-> > > > > > > 2 first patches, but they can be applied on their own and don't need to
-> > > > > > > be pulled in stable like the first 2.
-> > > > > > > 
-> > > > > > > Cheers,
-> > > > > > > Benjamin
-> > > > > > > 
-> > > > > > > Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-> > > > > > > ---
-> > > > > > > Changes in v3:
-> > > > > > > - fixed ghib -> ghid in greybus
-> > > > > > > - fixed i386 size_t debug size reported by kernel-bot
-> > > > > > > - Link to v2: https://lore.kernel.org/r/20260416-wip-fix-core-v2-0-be92570e5627@kernel.org
-> > > > > > > 
-> > > > > > > Changes in v2:
-> > > > > > > - added a small blurb explaining the difference between the safe and the
-> > > > > > >   non safe version of hid_safe_input_report
-> > > > > > > - Link to v1: https://lore.kernel.org/r/20260415-wip-fix-core-v1-0-ed3c4c823175@kernel.org
-> > > > > > > 
-> > > > > > > ---
-> > > > > > > Benjamin Tissoires (4):
-> > > > > > >       HID: pass the buffer size to hid_report_raw_event
-> > > > > > >       HID: core: introduce hid_safe_input_report()
-> > > > > > >       HID: multitouch: use __free(kfree) to clean up temporary buffers
-> > > > > > >       HID: wacom: use __free(kfree) to clean up temporary buffers
-> > > > > > > 
-> > > > > > >  drivers/hid/bpf/hid_bpf_dispatch.c |  6 ++--
-> > > > > > >  drivers/hid/hid-core.c             | 67 ++++++++++++++++++++++++++++++--------
-> > > > > > >  drivers/hid/hid-gfrm.c             |  4 +--
-> > > > > > >  drivers/hid/hid-logitech-hidpp.c   |  2 +-
-> > > > > > >  drivers/hid/hid-multitouch.c       | 18 ++++------
-> > > > > > >  drivers/hid/hid-primax.c           |  2 +-
-> > > > > > >  drivers/hid/hid-vivaldi-common.c   |  2 +-
-> > > > > > >  drivers/hid/i2c-hid/i2c-hid-core.c |  7 ++--
-> > > > > > >  drivers/hid/usbhid/hid-core.c      | 11 ++++---
-> > > > > > >  drivers/hid/wacom_sys.c            | 46 +++++++++-----------------
-> > > > > > >  drivers/staging/greybus/hid.c      |  2 +-
-> > > > > > >  include/linux/hid.h                |  6 ++--
-> > > > > > >  include/linux/hid_bpf.h            | 14 +++++---
-> > > > > > >  13 files changed, 109 insertions(+), 78 deletions(-)
-> > > > > > 
-> > > > > > What's the plan for this set Benjamin? -rcs or -next?
-> > > > > 
-> > > > > Are there any updates on this set please?
-> > > > > 
-> > > > > FYI, this set is still important to us.
-> > > > > 
-> > > > > Ideally, if all is well, it would go into the -rcs for v7.1.
-> > > > 
-> > > > I'm still actively tracking these.
-> > > > 
-> > > > It looks like Mark has been reverting them from -next and I'm getting
-> > > > complaints from the Stable folks that they are causing build errors.
-> > > > 
-> > > >   drivers/hid/hid-core.c: In function 'hid_safe_input_report':
-> > > >   drivers/hid/hid-core.c:2195:16: error: too many arguments to function '__hid_input_report'
-> > > >     2195 |         return __hid_input_report(hid, type, data, bufsize, size, interrupt, 0,
-> > > > 
-> > > > Are you folks still working on this set?
-> > > 
-> > > Well, everything is in Linus' tree:
-> > > 
-> > > not yet in a released rc (taken yesterday by Linus directly):
-> > > 
-> > > 4d3a2a466b8d HID: core: Fix size_t specifier in hid_report_raw_event()
-> > > 
-> > > Already in 7.1-rc4:
-> > > 
-> > > 206342541fc8 HID: core: introduce hid_safe_input_report()
-> > > 2c85c61d1332 HID: pass the buffer size to hid_report_raw_event
-> > > 
-> > > Not sure why the patches don't apply to stable, but from an upstream
-> > > subsystem point of view, everything is in order.
+On Tue, May 19, 2026 at 07:37:35PM +0200, August Wikerfors wrote:
+> On 2026-05-19 17:49, Luiz Augusto von Dentz wrote:
+> > Hi Greg,
 > > 
-> > We dropped them from stable because of the build breakage :(
+> > On Tue, May 19, 2026 at 11:19 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+> > > 
+> > > On Tue, May 19, 2026 at 09:44:39AM -0400, Luiz Augusto von Dentz wrote:
+> > > > Hi Greg,
+> > > > 
+> > > > On Tue, May 19, 2026 at 8:07 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+> > > > > 
+> > > > > On Tue, May 19, 2026 at 12:53:49PM +0200, Thorsten Leemhuis wrote:
+> > > > > > On 5/19/26 12:30, Greg KH wrote:
+> > > > > > > On Tue, May 19, 2026 at 09:04:38AM +0200, Thorsten Leemhuis wrote:
+> > > > > > > > On 5/15/26 17:10, Thorsten Leemhuis wrote:
+> > > > > > > > > On 5/14/26 19:23, Luiz Augusto von Dentz wrote:
+> > > > > > > > > 
+> > > > > > > > > > The following changes since commit c78bdba7b9666020c0832150a4fc4c0aebc7c6ac:
+> > > > > > > > > >    net: phy: DP83TC811: add reading of abilities (2026-05-14 15:17:12 +0200)
+> > > > > > > > > > 
+> > > > > > > > > > are available in the Git repository at:
+> > > > > > > > > > 
+> > > > > > > > > >    git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2026-05-14
+> > > > > > > > > > 
+> > > > > > > > > > for you to fetch changes up to 375ba7484132662a4a8c7547d088fb6275c00282:
+> > > > > > > > > > 
+> > > > > > > > > >    Bluetooth: hci_qca: Convert timeout from jiffies to ms (2026-05-14 09:58:08 -0400)
+> > > > > > > > > 
+> > > > > > > > > It seems this PR sadly came too late for this week's net PR to mainline
+> > > > > > > > > that was merged yesterday.
+> > > > > > > > > 
+> > > > > > > > > TWIMC, from my point of view, it would be great if we somehow could
+> > > > > > > > > still get the changes from this PR or at least the btmtk fix it
+> > > > > > > > > contains[1] to mainline this week before -rc4, as it is fixing a
+> > > > > > > > > regression known since 2026-04-24 that at least five people encountered
+> > > > > > > > > with mainline since -rc3 due to 634a4408c0615c ("Bluetooth: btmtk:
+> > > > > > > > > validate WMT event SKB length before struct access") [006b9943b982 in
+> > > > > > > > > -next].
+> > > > > > > > 
+> > > > > > > > Greg, Sasha, that [1] fix I was talking about now reached -next as
+> > > > > > > > 162b1adeb057d2 ("Bluetooth: btmtk: accept too short WMT FUNC_CTRL
+> > > > > > > > events") and will likely hit mainline on Thursday or so with the weekly
+> > > > > > > > -net PR to -mainline. If that's good enough for you, I'd say it would be
+> > > > > > > > good to pick this up for the next round of stable kernels.
+> > > > > > > 
+> > > > > > > That "Fixes:" tag is referring to something that is also not in any
+> > > > > > > tree, but that commit does have a cc: stable in it.  So do we need both
+> > > > > > > of these:
+> > > > > > 
+> > > > > > Valid question, as yes, there is a slight mixup here:
+> > > > > > 
+> > > > > > > 041e88fb0c08 ("Bluetooth: btmtk: validate WMT event SKB length before struct access")
+> > > > > > 
+> > > > > > That is already in v7.0.7, v6.18.30, v6.12.88, as 041e88fb0c08 is the
+> > > > > > -next commit-id for mainline commit-id 634a4408c0615c ("Bluetooth:
+> > > > > > btmtk: validate WMT event SKB length before struct access") -- the one
+> > > > > > that is causing the regression that I want to get fixed. So we now only
+> > > > > > need:
+> > > > > > 
+> > > > > > > 162b1adeb057 ("Bluetooth: btmtk: accept too short WMT FUNC_CTRL events")
+> > > > > 
+> > > > > Ok, but that "Fixes:" tag pointing to an invalid commit is going to be a
+> > > > > nightmare to track over time, ugh.
+> > > > 
+> > > > Hmm, did we get the wrong hash or something? Usually, that would show
+> > > > up in the verify-fixes.sh, but perhaps it didn't capture it this time
+> > > > for some reason, perhaps I'm running an outdated version or something
+> > > > similar.
+> > > 
+> > > Something went wrong if we ended up with a patch in the stable trees,
+> > > yet this fix is referring to it as a different git sha.  Don't know
+> > > where the disconnect happend :(
 > > 
+> > 041e88fb0c08 ("Bluetooth: btmtk: validate WMT event SKB length before
+> > struct access")
+> > 
+> > I don't have that in any of our tree either, this is actually
+> > 634a4408c061 on all trees in the chain:
+> > 
+> > https://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git/commit/?id=634a4408c061
+> > https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit/?id=634a4408c061
+> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=634a4408c061
+> > 
+> > Or actually that was the hash before it got rebased on bluetooth-next tree:
+> > 
+> > https://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth-next.git/commit/?id=041e88fb0c08
+> > 
+> > But I didn't send the PR from that three so perhaps somebody else sent
+> > it to stable with the wrong fixes tag?
+> I believe the confusion comes from "Bluetooth: btmtk: accept too short WMT
+> FUNC_CTRL events" itself currently having different commit hashes in
+> bluetooth (e3ac0d9f1a20) and bluetooth-next (162b1adeb057). The former
+> correctly refers to "Bluetooth: btmtk: validate WMT event SKB length before
+> struct access" as 634a4408c061 in the Fixes tag and was merged into net
+> yesterday heading for 7.1-rc5. The latter still refers to it as
+> 041e88fb0c08. Both are now in next-20260519 but only the latter was in
+> next-20260518 which was the latest at the time of Thorsten's message.
 > 
-> If that was just the i386 size_t issue, then it has been fixed in Linus'
-> tree. Could you try retaking them? Please?
+> Greg, this means picking e3ac0d9f1a20 instead of 162b1adeb057 should result
+> in a valid Fixes tag.
 
-Thanks for following-up on this, I really appreciate it.
+Ok, now done.  Be careful of duplicate commits in different branches
+that are marked for backporting with different ids.  It can cause
+massive confusion (i.e. don't be like the drm tree...)
 
-It looks as though these are no longer reverted from today's -next. \o/
+thanks,
 
--- 
-Lee Jones
+greg k-h
 
