@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250844-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aGeoHh8ZDmqA6AUAu9opvQ
-	(envelope-from <stable+bounces-252927-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:27:11 +0200
+	id EGAzKtkUDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-250844-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:08:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA9AC599994
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:27:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F1225992FD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:08:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1E22A3252B27
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:32:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8DC1B330EF0C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:02:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38EE5333441;
-	Wed, 20 May 2026 18:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE12A3F54C9;
+	Wed, 20 May 2026 17:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qe43p2+/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rNhxY9ib"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E8D285CBA;
-	Wed, 20 May 2026 18:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D1A3164C3;
+	Wed, 20 May 2026 17:00:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301955; cv=none; b=I28jVWDTT1UJQVKpYPDmSMg0A0hQpYI4IZq6x9sDPgF5AocXGYNq9r6a9Lj2iTPDjK/Mrdr7r4gYRFX7gBRxkm00xM0TOR1q14CrClw6fqcS3sUL1enwdE3rR4Po/cbXpg6cPqTHyJ+AzJqOftQ2r2F5xO163RPpIFkW5RV74Lk=
+	t=1779296454; cv=none; b=DRXQ2qKQMgNIeeYrNjWDbpqZX9lSg7oW6+NhkgnBXdqj8KEBK+QqcrrespE9m+VbNa0VYBHnAO3Mf9UL/CqMtC/C3FiQN9YWtw9Rc824osT/JRhCkF0BgXEIxKedqwByGgRRoAk+fJzp1W9Noa+Tm5cDq/rCBfAErWYmHYLykTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301955; c=relaxed/simple;
-	bh=rN2XnANR8011/FqVej+XTFR9mtplqJmKIFygKr92ZNc=;
+	s=arc-20240116; t=1779296454; c=relaxed/simple;
+	bh=oBc1RLvNvb2ezckIL+kDLCFj4NAme7dNIK0+VS80uqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ppIh5ehAIZZTPKhhcu8HQCfDoohKWQSqdu2tkalLHyh/FVjlcJ9CjWdF9ngTOx8/ynUfpNXAmx0va919jgKe2vN8L4lQ2I7URBRz8ibjJKwCks2tEb+6PwE0SDO5RY1n8yuu5+eltQ5I2OV0oLIzTR5Z5cUnplg03cGDFavE4m8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qe43p2+/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A651F000E9;
-	Wed, 20 May 2026 18:32:33 +0000 (UTC)
+	 MIME-Version; b=gk2rENUm5uhluOeoclzU4yZujYsmH33JRQ+R1OrF4o3dJeTVDoMOteP4DkKNQP45nC0cYH7gf8Yt2gOZnld9BUzAleBBb96m+aSFtWvhdBPGY/B3sQpILgkXaTIoNhyZWOh56FINpqJ9vUxnNi8ggl/1bztTA1iJnYsw4SU1MxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rNhxY9ib; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB6F01F000E9;
+	Wed, 20 May 2026 17:00:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301953;
-	bh=5+5Qas/7QWUZYB1ig9502XsCKY8W5BMIwZQ3RV4mzDA=;
+	s=korg; t=1779296453;
+	bh=1jFRtaWWXbNvs6CXItHJ1qRxN6GZo/UlSxdzbieGzqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qe43p2+/B/oujCryPehJ0uxJgpqS//N1lcSogupLDLS4+VmPqTN7G0jaYwNHn50C0
-	 wPwQuf9FtLj+3I8cn4TvAN45heszh4dM8XTrAXjP8fciQFVrm4clRS9D5LxIqS6xzm
-	 dBVtscof36b0fTlMPefWBFCmUY+/JzNADQbOw6HE=
+	b=rNhxY9ibfaX1U3RO4b9rgw26Y0ltn/NVTC7jdlikd02SGP5agxZEKXudUBpuGXkNq
+	 soOPU6k+jULpVFWLNPRiOre3ZXoy3wmj2D6aiyE3fU6T9atRv0rzHokzr8IIqzKoGW
+	 mcGhKzvXcu3ORDS+Tyuaqz281C9wwqjfyjjhBwbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
+	Xingyu Jin <xingyuj@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 031/508] module: Fix freeing of charp module parameters when CONFIG_SYSFS=n
-Date: Wed, 20 May 2026 18:17:34 +0200
-Message-ID: <20260520162059.264893893@linuxfoundation.org>
+Subject: [PATCH 7.0 0805/1146] af_unix: Drop all SCM attributes for SOCKMAP.
+Date: Wed, 20 May 2026 18:17:35 +0200
+Message-ID: <20260520162206.444604788@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,154 +67,211 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252927-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-250844-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: AA9AC599994
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 0F1225992FD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Pavlu <petr.pavlu@suse.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit deffe1edba626d474fef38007c03646ca5876a0e ]
+[ Upstream commit 965dc93481d1b80d341bdd16c27b16fe197175ee ]
 
-When setting a charp module parameter, the param_set_charp() function
-allocates memory to store a copy of the input value. Later, when the module
-is potentially unloaded, the destroy_params() function is called to free
-this allocated memory.
+SOCKMAP can hide inflight fd from AF_UNIX GC.
 
-However, destroy_params() is available only when CONFIG_SYSFS=y, otherwise
-only a dummy variant is present. In the unlikely case that the kernel is
-configured with CONFIG_MODULES=y and CONFIG_SYSFS=n, this results in
-a memory leak of charp values when a module is unloaded.
+When a socket in SOCKMAP receives skb with inflight fd,
+sk_psock_verdict_data_ready() looks up the mapped socket and
+enqueue skb to its psock->ingress_skb.
 
-Fix this issue by making destroy_params() always available when
-CONFIG_MODULES=y. Rename the function to module_destroy_params() to clarify
-that it is intended for use by the module loader.
+Since neither the old nor the new GC can inspect the psock
+queue, the hidden skb leaks the inflight sockets.  Note that
+this cannot be detected via kmemleak because inflight sockets
+are linked to a global list.
 
-Fixes: e180a6b7759a ("param: fix charp parameters set via sysfs")
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+In addition, SOCKMAP redirect breaks the Tarjan-based GC's
+assumption that unix_edge.successor is always alive, which
+is no longer true once skb is redirected, resulting in
+use-after-free below. [0]
+
+Moreover, SOCKMAP does not call scm_stat_del() properly,
+so unix_show_fdinfo() could report an incorrect fd count.
+
+sk_msg_recvmsg() does not support any SCM attributes in the
+first place.
+
+Let's drop all SCM attributes before passing skb to the
+SOCKMAP layer.
+
+[0]:
+BUG: KASAN: slab-use-after-free in unix_del_edges (net/unix/garbage.c:118 net/unix/garbage.c:181 net/unix/garbage.c:251)
+Read of size 8 at addr ffff888125362670 by task kworker/56:1/496
+
+CPU: 56 UID: 0 PID: 496 Comm: kworker/56:1 Not tainted 7.0.0-rc7-00263-gb9d8b856689d #3 PREEMPT(lazy)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
+Workqueue: events sk_psock_backlog
+Call Trace:
+ <TASK>
+ dump_stack_lvl (lib/dump_stack.c:122)
+ print_report (mm/kasan/report.c:379)
+ kasan_report (mm/kasan/report.c:597)
+ unix_del_edges (net/unix/garbage.c:118 net/unix/garbage.c:181 net/unix/garbage.c:251)
+ unix_destroy_fpl (net/unix/garbage.c:317)
+ unix_destruct_scm (./include/net/scm.h:80 ./include/net/scm.h:86 net/unix/af_unix.c:1976)
+ sk_psock_backlog (./include/linux/skbuff.h:?)
+ process_scheduled_works (kernel/workqueue.c:?)
+ worker_thread (kernel/workqueue.c:?)
+ kthread (kernel/kthread.c:438)
+ ret_from_fork (arch/x86/kernel/process.c:164)
+ ret_from_fork_asm (arch/x86/entry/entry_64.S:258)
+ </TASK>
+
+Allocated by task 955:
+ kasan_save_track (mm/kasan/common.c:58 mm/kasan/common.c:78)
+ __kasan_slab_alloc (mm/kasan/common.c:369)
+ kmem_cache_alloc_noprof (mm/slub.c:4539)
+ sk_prot_alloc (net/core/sock.c:2240)
+ sk_alloc (net/core/sock.c:2301)
+ unix_create1 (net/unix/af_unix.c:1099)
+ unix_create (net/unix/af_unix.c:1169)
+ __sock_create (net/socket.c:1606)
+ __sys_socketpair (net/socket.c:1811)
+ __x64_sys_socketpair (net/socket.c:1863 net/socket.c:1860 net/socket.c:1860)
+ do_syscall_64 (arch/x86/entry/syscall_64.c:?)
+ entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+
+Freed by task 496:
+ kasan_save_track (mm/kasan/common.c:58 mm/kasan/common.c:78)
+ kasan_save_free_info (mm/kasan/generic.c:587)
+ __kasan_slab_free (mm/kasan/common.c:287)
+ kmem_cache_free (mm/slub.c:6165)
+ __sk_destruct (net/core/sock.c:2282 net/core/sock.c:2384)
+ sk_psock_destroy (./include/net/sock.h:?)
+ process_scheduled_works (kernel/workqueue.c:?)
+ worker_thread (kernel/workqueue.c:?)
+ kthread (kernel/kthread.c:438)
+ ret_from_fork (arch/x86/kernel/process.c:164)
+ ret_from_fork_asm (arch/x86/entry/entry_64.S:258)
+
+Fixes: c63829182c37 ("af_unix: Implement ->psock_update_sk_prot()")
+Fixes: 77462de14a43 ("af_unix: Add read_sock for stream socket types")
+Reported-by: Xingyu Jin <xingyuj@google.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260415184830.3988432-1-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/moduleparam.h | 11 +++--------
- kernel/module/main.c        |  4 ++--
- kernel/params.c             | 27 ++++++++++++++++++---------
- 3 files changed, 23 insertions(+), 19 deletions(-)
+ net/unix/af_unix.c | 35 +++++++++++++++++++++++++++--------
+ 1 file changed, 27 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/moduleparam.h b/include/linux/moduleparam.h
-index 061e19c94a6bc..f73ca4d62683b 100644
---- a/include/linux/moduleparam.h
-+++ b/include/linux/moduleparam.h
-@@ -392,14 +392,9 @@ extern char *parse_args(const char *name,
- 				     const char *doing, void *arg));
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 660c7c441e0db..001f6602a6659 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -1964,16 +1964,19 @@ static void unix_peek_fds(struct scm_cookie *scm, struct sk_buff *skb)
  
- /* Called by module remove. */
--#ifdef CONFIG_SYSFS
--extern void destroy_params(const struct kernel_param *params, unsigned num);
--#else
--static inline void destroy_params(const struct kernel_param *params,
--				  unsigned num)
--{
--}
--#endif /* !CONFIG_SYSFS */
-+#ifdef CONFIG_MODULES
-+void module_destroy_params(const struct kernel_param *params, unsigned int num);
-+#endif
- 
- /* All the helper functions */
- /* The macros to do compile-time type checking stolen from Jakub
-diff --git a/kernel/module/main.c b/kernel/module/main.c
-index 76d90c20de674..ac528fbb62824 100644
---- a/kernel/module/main.c
-+++ b/kernel/module/main.c
-@@ -1261,7 +1261,7 @@ static void free_module(struct module *mod)
- 	module_unload_free(mod);
- 
- 	/* Free any allocated parameters. */
--	destroy_params(mod->kp, mod->num_kp);
-+	module_destroy_params(mod->kp, mod->num_kp);
- 
- 	if (is_livepatch_module(mod))
- 		free_module_elf(mod);
-@@ -2998,7 +2998,7 @@ static int load_module(struct load_info *info, const char __user *uargs,
- 	mod_sysfs_teardown(mod);
-  coming_cleanup:
- 	mod->state = MODULE_STATE_GOING;
--	destroy_params(mod->kp, mod->num_kp);
-+	module_destroy_params(mod->kp, mod->num_kp);
- 	blocking_notifier_call_chain(&module_notify_list,
- 				     MODULE_STATE_GOING, mod);
- 	klp_module_going(mod);
-diff --git a/kernel/params.c b/kernel/params.c
-index 2cfa12404ed0b..9d09ea99363fc 100644
---- a/kernel/params.c
-+++ b/kernel/params.c
-@@ -744,15 +744,6 @@ void module_param_sysfs_remove(struct module *mod)
- }
- #endif
- 
--void destroy_params(const struct kernel_param *params, unsigned num)
--{
--	unsigned int i;
--
--	for (i = 0; i < num; i++)
--		if (params[i].ops->free)
--			params[i].ops->free(params[i].arg);
--}
--
- struct module_kobject * __init_or_module
- lookup_or_create_module_kobject(const char *name)
+ static void unix_destruct_scm(struct sk_buff *skb)
  {
-@@ -987,3 +978,21 @@ static int __init param_sysfs_builtin_init(void)
- late_initcall(param_sysfs_builtin_init);
+-	struct scm_cookie scm;
++	struct scm_cookie scm = {};
++
++	swap(scm.pid, UNIXCB(skb).pid);
  
- #endif /* CONFIG_SYSFS */
-+
-+#ifdef CONFIG_MODULES
-+
-+/*
-+ * module_destroy_params - free all parameters for one module
-+ * @params: module parameters (array)
-+ * @num: number of module parameters
-+ */
-+void module_destroy_params(const struct kernel_param *params, unsigned int num)
-+{
-+	unsigned int i;
-+
-+	for (i = 0; i < num; i++)
-+		if (params[i].ops->free)
-+			params[i].ops->free(params[i].arg);
+-	memset(&scm, 0, sizeof(scm));
+-	scm.pid = UNIXCB(skb).pid;
+ 	if (UNIXCB(skb).fp)
+ 		unix_detach_fds(&scm, skb);
+ 
+-	/* Alas, it calls VFS */
+-	/* So fscking what? fput() had been SMP-safe since the last Summer */
+ 	scm_destroy(&scm);
 +}
 +
-+#endif /* CONFIG_MODULES */
++static void unix_wfree(struct sk_buff *skb)
++{
++	unix_destruct_scm(skb);
+ 	sock_wfree(skb);
+ }
+ 
+@@ -1989,7 +1992,7 @@ static int unix_scm_to_skb(struct scm_cookie *scm, struct sk_buff *skb, bool sen
+ 	if (scm->fp && send_fds)
+ 		err = unix_attach_fds(scm, skb);
+ 
+-	skb->destructor = unix_destruct_scm;
++	skb->destructor = unix_wfree;
+ 	return err;
+ }
+ 
+@@ -2066,6 +2069,13 @@ static void scm_stat_del(struct sock *sk, struct sk_buff *skb)
+ 	}
+ }
+ 
++static void unix_orphan_scm(struct sock *sk, struct sk_buff *skb)
++{
++	scm_stat_del(sk, skb);
++	unix_destruct_scm(skb);
++	skb->destructor = sock_wfree;
++}
++
+ /*
+  *	Send AF_UNIX data.
+  */
+@@ -2679,10 +2689,16 @@ static int unix_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
+ 	int err;
+ 
+ 	mutex_lock(&u->iolock);
++
+ 	skb = skb_recv_datagram(sk, MSG_DONTWAIT, &err);
+-	mutex_unlock(&u->iolock);
+-	if (!skb)
++	if (!skb) {
++		mutex_unlock(&u->iolock);
+ 		return err;
++	}
++
++	unix_orphan_scm(sk, skb);
++
++	mutex_unlock(&u->iolock);
+ 
+ 	return recv_actor(sk, skb);
+ }
+@@ -2882,6 +2898,9 @@ static int unix_stream_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
+ #endif
+ 
+ 	spin_unlock(&queue->lock);
++
++	unix_orphan_scm(sk, skb);
++
+ 	mutex_unlock(&u->iolock);
+ 
+ 	return recv_actor(sk, skb);
 -- 
 2.53.0
 
