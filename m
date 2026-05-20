@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-251435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250481-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iIWpNAL1DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251435-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:06 +0200
+	id AEOXIDnzDWry4wUAu9opvQ
+	(envelope-from <stable+bounces-250481-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:45:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AE3F594D1C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:53:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E868A5947BA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:45:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 51B6E3228F73
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:26:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 80A393793767
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:45:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4664D2046BA;
-	Wed, 20 May 2026 17:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10155369D6E;
+	Wed, 20 May 2026 16:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xrGBxLTx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NIlDtzj+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00952363C6F;
-	Wed, 20 May 2026 17:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA8030567F;
+	Wed, 20 May 2026 16:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297974; cv=none; b=hwpvsAJ1bQQyVQ3RAgfQovkKc2IXKs1U3B3G6Kz+44OzshMNa6ri24cAD0yYk6DU2XNenJlVJK/cEjfv0AEafC0o0gH6vn/b0ivY4uD0roASMk7FkYrIik1QY3Vg7rQG9w1+iJAsKQSAb4jtdxQwlSdfHlhIrVsmoNyw054jUUA=
+	t=1779295522; cv=none; b=GRV+kA2sdsE5/A1xbhsrz4SDAHUt+nB8fTedxvuH0lO0komqkLGlg+xdev3sGCGjm2gB7ksHVlO8XcxgT1Vpl2uogvHx6cmxHR8rmzCoWkqNJtjvdl12lHAA+tS63dUmoMWMb5boDn5xFQN20gSNFeoDQtVZzH/Oq5lJ6R9J4Fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297974; c=relaxed/simple;
-	bh=Z+UmjIEqWx++c/1DGZuZHDoaZKQUgboENWJ17IReK4U=;
+	s=arc-20240116; t=1779295522; c=relaxed/simple;
+	bh=0erGHXYNKhQg98VrRFdnCrNJKt4Xi4BktqnsIbAhNg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jeT5mykWKmJov5qEbi668WteCqviQuNWBBdc4nXFE2qxdY7g4ZCRN3FTz2fHWzT3Qi76BUDejkDEy/WUmSkQlj3fpB+z7SqMCMvHH/QnmTzr0GLPE0cuZO6S/AU09DiDr7GltLPzzkHMDegLnhlBeeY6h7SEYu4qay6aYfeNaKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xrGBxLTx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CFE21F000E9;
-	Wed, 20 May 2026 17:26:11 +0000 (UTC)
+	 MIME-Version; b=eO6jwUY5J8AXt6x+21y7GnxKsdOlSL9lvwqzIlyGQF3r1TChNNUNtiag8h9r/bOspCaMQdAUnRIhq3fNgwgaUuMZ395vQVf81B4b1g6ttq65z7APzSADQ1mSa8d03Nbg7rlF9WcacfPdVkmcRzqp+2ovyqHq+AHh/XtWBxW3fRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NIlDtzj+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED46C1F000E9;
+	Wed, 20 May 2026 16:45:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297972;
-	bh=J5xmJJLRprqNQFSVX9+vo3CfYb+Hq1kBEZheXc7x7uI=;
+	s=korg; t=1779295521;
+	bh=VqtYGTv5AjPKb2h2EPjKXQG7tRJdnB537DUGOyq4eRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xrGBxLTxmynOth26hx6F0HwiVj2hBtypm+a7P1ON6G+6BWyoS2bJN7SfIy4P1eoqg
-	 Y803Vp+/WFdQPACOj9cqM0w97xgJtA3Kish4tSwq2wV3zfS5Hv/g7uyMyyLKvK1LfN
-	 lHD1gTU8i0PA9ZPym5lC2AbJacuDXbVI+9GiY0uI=
+	b=NIlDtzj+dwqbXSIgBY+4+IzQy57uDI12Z32PHWToLkarLivoPS31q077bjWYPJH7p
+	 BkdOKPmLueYAC/C9BFdqUDH5gRgO8pJPfN6cMFYYXSdpRH1TtcbMUQlq0jOA1C4gmU
+	 +vfuwdwLHhBr2P2b0kgFAZ3u8ysbr7pNu3EW64JY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Alex Mastro <amastro@fb.com>,
+	David Matlack <dmatlack@google.com>,
+	Yuan Yao <yaoyuan@linux.alibaba.com>,
+	Alex Williamson <alex@shazbot.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 217/957] media: i2c: og01a1b: Fix V4L2 subdevice data initialization on probe
-Date: Wed, 20 May 2026 18:11:40 +0200
-Message-ID: <20260520162139.246470010@linuxfoundation.org>
+Subject: [PATCH 7.0 0451/1146] vfio: selftests: fix crash in vfio_dma_mapping_mmio_test
+Date: Wed, 20 May 2026 18:11:41 +0200
+Message-ID: <20260520162158.404873972@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,105 +66,76 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-251435-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250481-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,huawei];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email,intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 9AE3F594D1C
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,shazbot.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: E868A5947BA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+From: Alex Mastro <amastro@fb.com>
 
-[ Upstream commit 535b7f106991c7d8f0e5b8e1769bfb8b1ce9d3d6 ]
+[ Upstream commit f183963891b4b0126f19aa0993ed931f3f3f9520 ]
 
-It's necessary to finalize the camera sensor subdevice initialization on
-driver probe and clean V4L2 subdevice data up on error paths and driver
-removal.
+Remove the __iommu_unmap() call on a region that was never mapped.
+When __iommu_map() fails (expected for MMIO vaddrs in non-VFIO
+modes), the region is not added to the dma_regions list, leaving its
+list_head zero-initialized. If the unmap ioctl returns success,
+__iommu_unmap() calls list_del_init() on this zeroed node and crashes.
 
-The change fixes a previously reported by v4l2-compliance issue of
-the failed VIDIOC_(UN)SUBSCRIBE_EVENT/DQEVENT test:
+This fixes the iommufd_compat_type1 and iommufd_compat_type1v2
+test variants.
 
-  fail: v4l2-test-controls.cpp(1104): subscribe event for control 'User Controls' failed
-
-Fixes: 472377febf84 ("media: Add a driver for the og01a1b camera sensor")
-Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Fixes: 080723f4d4c3 ("vfio: selftests: Add vfio_dma_mapping_mmio_test")
+Signed-off-by: Alex Mastro <amastro@fb.com>
+Reviewed-by: David Matlack <dmatlack@google.com>
+Reviewed-by: Yuan Yao <yaoyuan@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20260303-fix-mmio-test-v1-1-78b4a9e46a4e@fb.com
+Signed-off-by: Alex Williamson <alex@shazbot.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/og01a1b.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ tools/testing/selftests/vfio/vfio_dma_mapping_mmio_test.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/media/i2c/og01a1b.c b/drivers/media/i2c/og01a1b.c
-index c7184de6251ae..7b892b26203c0 100644
---- a/drivers/media/i2c/og01a1b.c
-+++ b/drivers/media/i2c/og01a1b.c
-@@ -1042,6 +1042,7 @@ static void og01a1b_remove(struct i2c_client *client)
- 	struct og01a1b *og01a1b = to_og01a1b(sd);
- 
- 	v4l2_async_unregister_subdev(sd);
-+	v4l2_subdev_cleanup(&og01a1b->sd);
- 	media_entity_cleanup(&sd->entity);
- 	v4l2_ctrl_handler_free(sd->ctrl_handler);
- 	pm_runtime_disable(og01a1b->dev);
-@@ -1153,11 +1154,18 @@ static int og01a1b_probe(struct i2c_client *client)
- 		goto probe_error_v4l2_ctrl_handler_free;
+diff --git a/tools/testing/selftests/vfio/vfio_dma_mapping_mmio_test.c b/tools/testing/selftests/vfio/vfio_dma_mapping_mmio_test.c
+index 957a89ce7b3a0..d7f25ef776715 100644
+--- a/tools/testing/selftests/vfio/vfio_dma_mapping_mmio_test.c
++++ b/tools/testing/selftests/vfio/vfio_dma_mapping_mmio_test.c
+@@ -100,7 +100,6 @@ static void do_mmio_map_test(struct iommu *iommu,
+ 		iommu_unmap(iommu, &region);
+ 	} else {
+ 		VFIO_ASSERT_NE(__iommu_map(iommu, &region), 0);
+-		VFIO_ASSERT_NE(__iommu_unmap(iommu, &region, NULL), 0);
  	}
- 
-+	ret = v4l2_subdev_init_finalize(&og01a1b->sd);
-+	if (ret < 0) {
-+		dev_err_probe(og01a1b->dev, ret,
-+			      "failed to finalize subdevice init\n");
-+		goto probe_error_media_entity_cleanup;
-+	}
-+
- 	ret = v4l2_async_register_subdev_sensor(&og01a1b->sd);
- 	if (ret < 0) {
- 		dev_err(og01a1b->dev, "failed to register V4L2 subdev: %d",
- 			ret);
--		goto probe_error_media_entity_cleanup;
-+		goto probe_error_v4l2_subdev_cleanup;
- 	}
- 
- 	/* Enable runtime PM and turn off the device */
-@@ -1167,6 +1175,9 @@ static int og01a1b_probe(struct i2c_client *client)
- 
- 	return 0;
- 
-+probe_error_v4l2_subdev_cleanup:
-+	v4l2_subdev_cleanup(&og01a1b->sd);
-+
- probe_error_media_entity_cleanup:
- 	media_entity_cleanup(&og01a1b->sd.entity);
+ }
  
 -- 
 2.53.0
