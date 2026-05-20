@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-253065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252623-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wHzGLtIaDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-253065-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:34:26 +0200
+	id mKAdInv8DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-252623-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB135599CA2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:34:25 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 046C059610E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 58BD232F9E3D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:38:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7585B307C4F9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:19:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA6B3CB2F8;
-	Wed, 20 May 2026 18:38:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 289963FB7FC;
+	Wed, 20 May 2026 18:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ASZMgUBH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1YEVuK2R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E65CDF59;
-	Wed, 20 May 2026 18:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA26D3E123F;
+	Wed, 20 May 2026 18:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302312; cv=none; b=fv7uWB8I4t/Qj7Z5Ag7fNxkzR+1NmHd3GAnuaiqfk2T3HYhuidLPcxDIwagUCHBHsF0P8QOFHwIyiCj9diHJEfQIEq3JWLgddPpeNQq+0dhTTOnLTFIdUmJMoRvYEbF2TFDeI781+0a+9lHIE8Vm6kD7Y0Vg8BIL3llDZhp7pTI=
+	t=1779301160; cv=none; b=NIAdoL7Q6jdbzkN9p0xzyDdX8WqNUy51cABeLmFpEe/cJuOCLXKdzrFfB8BL8qpYBtxp7XLcCalaTL5NAGWWTHS4e7D/et2WiNQhN6KL+kUoJM/C4ew3q1AHHHwsSrJAPewGCUgWkwn5cTggWFWCF/80UEJNcJ/Zz84Fho2AUvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302312; c=relaxed/simple;
-	bh=xtHawHFTHO6Q8aMeicIF+R+RJbLSwAk9MqSG0mK/7Sg=;
+	s=arc-20240116; t=1779301160; c=relaxed/simple;
+	bh=2+LjpUsJkjcNe2YX067Z+ofMOlyMeNF2z+qrd3GcSOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pJPQKVjyOruT7Z/WrFEEx4fKBlVV1NABKoasiQAvAZhQ6gX9Zwe0LwHREiNpjGba4PArag/8Rhp1doZACUPk5ltcxnBnCVoUsv8XyVbCOo+8Rw47opiSldhi1iQ3B0fynlasxmuCK6V0yEWQIDEgKxyGoVM2mHHqpMysx6Cw7Uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ASZMgUBH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 013D41F000E9;
-	Wed, 20 May 2026 18:38:30 +0000 (UTC)
+	 MIME-Version; b=l1FwSEsDq8ucgwyuQqbmTtKiiBhchec4ZdwEHVi8EYn41xFVuzotFmK8w+zMt8QJpbMBjvvAIXIyZS+BaLN6z3D5AcbupnX9x5gqX0/B0kRPlyHlidiJeut09ps3ARyYUND/2mNiHcc4u731PPO5Q/tVempa1LwEWRfRKkghnio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1YEVuK2R; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3566B1F000E9;
+	Wed, 20 May 2026 18:19:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302311;
-	bh=M8jhjWHgmwbGmcwrOi0FIbnWG2w+pW7lAE1dTUVa1MI=;
+	s=korg; t=1779301159;
+	bh=MixuNpONV3Z/Ayw+h64YLLvnDlHzkYnu1s3ojimKIw0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ASZMgUBH5v4DMvPa1yzBVtz4IRaoKayOgc1N5nwAYGfdP5ij0Wc4Zs4lx2rigR6hT
-	 eSRJjKWv9F8oMyC9LX7Ew7YOHy7xmgooquojQecXHHoD6e+e9Cfq9W3dPgQKs4Jqvv
-	 DTubRaFfZNsy61Ld/OakmKbJHUsk6hge4rFmsoXA=
+	b=1YEVuK2RJ3cpmt+ffYYU74Bk8hKYGECIoL0osqDd0GetwrU3fo9nUIyu0IaXgrV07
+	 L9vWU8aS2dTpJh9VOId3IORWJC656gFgipe/8yaz4hBZBvZk9FrPz4vTibWbqX/nst
+	 gBu8jhPHR9LRvFlwfpqUr9egu8FgHcfnGk/JiCAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Zanussi <zanussi@kernel.org>,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 220/508] tracing: Rebuild full_name on each hist_field_name() call
+Subject: [PATCH 6.12 432/666] erofs: unify lcn as u64 for 32-bit platforms
 Date: Wed, 20 May 2026 18:20:43 +0200
-Message-ID: <20260520162103.407637260@linuxfoundation.org>
+Message-ID: <20260520162120.635142010@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,86 +67,144 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253065-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252623-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,goodmis.org:email,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: BB135599CA2
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,alibaba.com:email,sashiko.dev:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 046C059610E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit 5ec1d1e97de134beed3a5b08235a60fc1c51af96 ]
+[ Upstream commit 2d8c7edcb661812249469f4a5b62e9339118846f ]
 
-hist_field_name() uses a static MAX_FILTER_STR_VAL buffer for fully
-qualified variable-reference names, but it currently appends into that
-buffer with strcat() without rebuilding it first. As a result, repeated
-calls append a new "system.event.field" name onto the previous one,
-which can eventually run past the end of full_name.
+As sashiko reported [1], `lcn` was typed as `unsigned long` (or
+`unsigned int` sometimes), which is only 32 bits wide on 32-bit
+platforms, which causes `(lcn << lclusterbits)` to be truncated
+at 4 GiB.
 
-Build the name with snprintf() on each call and return NULL if the fully
-qualified name does not fit in MAX_FILTER_STR_VAL.
+In order to consolidate the logic, just use `u64` consistently
+around the codebase.
 
-Link: https://patch.msgid.link/20260401112224.85582-1-pengpeng@iscas.ac.cn
-Fixes: 067fe038e70f ("tracing: Add variable reference handling to hist triggers")
-Reviewed-by: Tom Zanussi <zanussi@kernel.org>
-Tested-by: Tom Zanussi <zanussi@kernel.org>
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+[1] https://sashiko.dev/r/20260420034612.1899973-1-hsiangkao%40linux.alibaba.com
+
+Fixes: 152a333a5895 ("staging: erofs: add compacted compression indexes support")
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_hist.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ fs/erofs/zmap.c | 19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
-diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
-index 19b3d388fbc69..597f47397c726 100644
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -1349,12 +1349,14 @@ static const char *hist_field_name(struct hist_field *field,
- 		 field->flags & HIST_FIELD_FL_VAR_REF) {
- 		if (field->system) {
- 			static char full_name[MAX_FILTER_STR_VAL];
-+			int len;
-+
-+			len = snprintf(full_name, sizeof(full_name), "%s.%s.%s",
-+				       field->system, field->event_name,
-+				       field->name);
-+			if (len >= sizeof(full_name))
-+				return NULL;
+diff --git a/fs/erofs/zmap.c b/fs/erofs/zmap.c
+index d0371ca374ce2..af1046908c626 100644
+--- a/fs/erofs/zmap.c
++++ b/fs/erofs/zmap.c
+@@ -10,7 +10,7 @@
+ struct z_erofs_maprecorder {
+ 	struct inode *inode;
+ 	struct erofs_map_blocks *map;
+-	unsigned long lcn;
++	u64 lcn;
+ 	/* compression extent information gathered */
+ 	u8  type, headtype;
+ 	u16 clusterofs;
+@@ -20,8 +20,7 @@ struct z_erofs_maprecorder {
+ 	bool partialref;
+ };
  
--			strcat(full_name, field->system);
--			strcat(full_name, ".");
--			strcat(full_name, field->event_name);
--			strcat(full_name, ".");
--			strcat(full_name, field->name);
- 			field_name = full_name;
- 		} else
- 			field_name = field->name;
+-static int z_erofs_load_full_lcluster(struct z_erofs_maprecorder *m,
+-				      unsigned long lcn)
++static int z_erofs_load_full_lcluster(struct z_erofs_maprecorder *m, u64 lcn)
+ {
+ 	struct inode *const inode = m->inode;
+ 	struct erofs_inode *const vi = EROFS_I(inode);
+@@ -94,7 +93,7 @@ static int get_compacted_la_distance(unsigned int lobits,
+ }
+ 
+ static int z_erofs_load_compact_lcluster(struct z_erofs_maprecorder *m,
+-					 unsigned long lcn, bool lookahead)
++					 u64 lcn, bool lookahead)
+ {
+ 	struct inode *const inode = m->inode;
+ 	struct erofs_inode *const vi = EROFS_I(inode);
+@@ -234,7 +233,7 @@ static int z_erofs_load_compact_lcluster(struct z_erofs_maprecorder *m,
+ }
+ 
+ static int z_erofs_load_lcluster_from_disk(struct z_erofs_maprecorder *m,
+-					   unsigned int lcn, bool lookahead)
++					   u64 lcn, bool lookahead)
+ {
+ 	struct erofs_inode *vi = EROFS_I(m->inode);
+ 	int err;
+@@ -249,7 +248,7 @@ static int z_erofs_load_lcluster_from_disk(struct z_erofs_maprecorder *m,
+ 		return err;
+ 
+ 	if (m->type >= Z_EROFS_LCLUSTER_TYPE_MAX) {
+-		erofs_err(m->inode->i_sb, "unknown type %u @ lcn %u of nid %llu",
++		erofs_err(m->inode->i_sb, "unknown type %u @ lcn %llu of nid %llu",
+ 			  m->type, lcn, EROFS_I(m->inode)->nid);
+ 		DBG_BUGON(1);
+ 		return -EOPNOTSUPP;
+@@ -269,7 +268,7 @@ static int z_erofs_extent_lookback(struct z_erofs_maprecorder *m,
+ 	const unsigned int lclusterbits = vi->z_lclusterbits;
+ 
+ 	while (m->lcn >= lookback_distance) {
+-		unsigned long lcn = m->lcn - lookback_distance;
++		u64 lcn = m->lcn - lookback_distance;
+ 		int err;
+ 
+ 		err = z_erofs_load_lcluster_from_disk(m, lcn, false);
+@@ -287,7 +286,7 @@ static int z_erofs_extent_lookback(struct z_erofs_maprecorder *m,
+ 			return 0;
+ 		}
+ 	}
+-	erofs_err(sb, "bogus lookback distance %u @ lcn %lu of nid %llu",
++	erofs_err(sb, "bogus lookback distance %u @ lcn %llu of nid %llu",
+ 		  lookback_distance, m->lcn, vi->nid);
+ 	DBG_BUGON(1);
+ 	return -EFSCORRUPTED;
+@@ -301,7 +300,7 @@ static int z_erofs_get_extent_compressedlen(struct z_erofs_maprecorder *m,
+ 	struct erofs_inode *vi = EROFS_I(inode);
+ 	bool bigpcl1 = vi->z_advise & Z_EROFS_ADVISE_BIG_PCLUSTER_1;
+ 	bool bigpcl2 = vi->z_advise & Z_EROFS_ADVISE_BIG_PCLUSTER_2;
+-	unsigned long lcn = m->lcn + 1;
++	u64 lcn = m->lcn + 1;
+ 	int err;
+ 
+ 	DBG_BUGON(m->type == Z_EROFS_LCLUSTER_TYPE_NONHEAD);
+@@ -332,7 +331,7 @@ static int z_erofs_get_extent_compressedlen(struct z_erofs_maprecorder *m,
+ 		  m->type == Z_EROFS_LCLUSTER_TYPE_NONHEAD);
+ 
+ 	if (m->type == Z_EROFS_LCLUSTER_TYPE_NONHEAD && m->delta[0] != 1) {
+-		erofs_err(sb, "bogus CBLKCNT @ lcn %lu of nid %llu", lcn, vi->nid);
++		erofs_err(sb, "bogus CBLKCNT @ lcn %llu of nid %llu", lcn, vi->nid);
+ 		DBG_BUGON(1);
+ 		return -EFSCORRUPTED;
+ 	}
 -- 
 2.53.0
 
