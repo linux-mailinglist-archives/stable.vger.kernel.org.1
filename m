@@ -1,286 +1,317 @@
-Return-Path: <stable+bounces-249932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249933-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8CpQIYC+DWr32wUAu9opvQ
-	(envelope-from <stable+bounces-249932-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:00:32 +0200
+	id IOugHKW+DWrH2wUAu9opvQ
+	(envelope-from <stable+bounces-249933-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:01:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id AECA458F382
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:00:31 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 614B858F3B4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:01:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6382D3038062
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:56:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 23CB9301954E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 14:00:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD3F53DB311;
-	Wed, 20 May 2026 13:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA593E16A9;
+	Wed, 20 May 2026 14:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ndufresne-ca.20251104.gappssmtp.com header.i=@ndufresne-ca.20251104.gappssmtp.com header.b="enZIu5UC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fEnWpFHO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+Received: from mail-yx1-f54.google.com (mail-yx1-f54.google.com [74.125.224.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF0F3D75A0
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 13:56:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779285407; cv=none; b=nfEijac/fmLzs+czj5+kJQnB9Y/xu4v2dvtRtj57IguJX5GAeYXqEnpNLcBPuihhAIj347pyTOVlowXWdVHVpNJeobsYGPUsDKKv8JOzEo+7Hmr3UvdWygv0D2wHBPi8OxgCfoDVmh8+sNLOObFxgiNOucu/moU4IxvBiQo6ep0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779285407; c=relaxed/simple;
-	bh=ts3U0DRr6d9NnETLjnGWPaUJgDNKvjqhIRhVTqEgvZw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=oGTPobKFbypgx5sc4Z1QYbRsdcVIxYDhPO1WA+qCeppeFRLD05pGTYC2tLB7jCvzWRCJWif/Kv+iT5lQDI6xdQHBc4+jhDB+F3U+HhrUnr9MOZSbAwz8YBHbEv0O/sRtggLu0WxX3uOLemZNC27HrEzjgZNFT+N9CSSWts5AILo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20251104.gappssmtp.com header.i=@ndufresne-ca.20251104.gappssmtp.com header.b=enZIu5UC; arc=none smtp.client-ip=209.85.222.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndufresne.ca
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-91173f20ccdso222358485a.0
-        for <stable@vger.kernel.org>; Wed, 20 May 2026 06:56:45 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B34153E5EF2
+	for <stable@vger.kernel.org>; Wed, 20 May 2026 14:00:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779285638; cv=pass; b=Pw5ZAPjgyZLdBL3i2ajNU86YI2X8Dj4N40m/1vFW48N7yk/zgNVWp7hs0poIXKDm41LFexVW0lM99/Yf07RBJd5W4MOsNrN30wzxwj03GK6SrEvVIpqkbp6pnaxZiFV7zXevLKyMAeLyhH6zAznsW1/8zK5GW9h71iY3FNK0Dq4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779285638; c=relaxed/simple;
+	bh=a6iXobOed3sRPLM97RG69+W2Ae5HzR387KOzpzYwEYE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hpCZ8N63wW/1GVoSA/LW/7wrXVQRL59dS3mIYgDUY891qH8QzOI+ndUF0t8XPrXguG1DE+N6Bymifr10DyVkea16B78chu76rh+H/RLhqoGO6lNIhctAn9cefDKRZQ7yGFX479Ua+6pLjQiY3oM5PM3DAP/5jOHjnWEgox3R0Gs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fEnWpFHO; arc=pass smtp.client-ip=74.125.224.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-65c7492a2ceso4208170d50.3
+        for <stable@vger.kernel.org>; Wed, 20 May 2026 07:00:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779285633; cv=none;
+        d=google.com; s=arc-20240605;
+        b=BBvA0zKHcHTMCZC0r8L4XncMor/uAuUlLovREpRMC7IseUt/gNozQfBC+ptg6sKA/m
+         H3j7HEvtJgEplboW1d5H36ZTfyz6d8io/kbK+PXygTtVabsplKGa7GGoOVyI2GCmrbgR
+         kxHsahx3We461slFdftdWtfArkSZz/WfWDI73vflkUV2XI3rNqK44hQUmrvYxUCDB7qy
+         EKAe3cxN5iYVx5uOEvrPwiFeKfdQeJQWKT5Bi2UdcgnHBVVNR4ijtH7qQ6p5G65I0Kni
+         cFkSzAjOmqYlPNaykJ4IikS65XJDaYgqEvH9eTSmdSBmrnkrxBrAhQvC/HuyQ++AiCnH
+         ruog==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=/7oaXQ1qryt8g+zZj0bxtOQOINmT0mwFoGI1KqRN0Ws=;
+        fh=Bqn5QoaQN+nccJtN9/5JlWCONeF6CNu0kHxk0diL+6Y=;
+        b=jGAWS+75FjcU6MNR37lUkRuldR0I3NJbtvZvhHXczMeQhzdZfl+rTXq0oVaEwK2MFA
+         hx982/A0B3lpiqvNWlO88/eCwPCZuXxGMo54ZDvGA12dx5WMrt2RCdyVGkovnlIyXWvt
+         N5AQhiTbHjDqib2UpxqgOZ1G3jtOZXmMzxOeGIaMgzJWzgar6N0jbYmRD6GsMcxuZnB2
+         4FyvQ0QMtOHqupd3UmTdr3xs8Se+GEzbPVCDK1d73ip4yyvrB6Tww3kAUbCekbKPsALo
+         2u8VM8rp5z6roZAov1bOSxpBjay8z2IDHS9E4EE+bVpZdAVTC3otYQ4p3JLmTSsGBGRV
+         EoqA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20251104.gappssmtp.com; s=20251104; t=1779285405; x=1779890205; darn=vger.kernel.org;
-        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
-         :from:subject:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=6AoVqM70l4U+qYVnKG6rb2UkmbXX7bAvSah0+zZjZcs=;
-        b=enZIu5UCXb4MDCvEGooihHC8H3sSl2LVwCsfsOj4WbN8ZHyXiV5z2TBecc9nwqNvyl
-         uJFYjTBjjL8Kx+LCF30SxZHTCi0huMPbzDHKl6NYYwE7Kb+iS/xID0Yt8LsWr5RfQqoD
-         T5sEZc2HW2hAVf3UPhuTVp5++VrDMM88SjlGtG9WuMVxRH+eY+tH9pGqSafDZQzjW2bn
-         CLTYCvq9IWl9z6Z9+nw0yID1B/xOnTPz5ehI3qMic4ppVTNZAEx64DoVdj+SNYRGZLct
-         QPHWEqSKp1ammXkHBE5HUdk0G5IvvwtPOxiY3w6fTFVIfHSzROpK0MGykHfv6ovhWXc8
-         rSEw==
+        d=gmail.com; s=20251104; t=1779285633; x=1779890433; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/7oaXQ1qryt8g+zZj0bxtOQOINmT0mwFoGI1KqRN0Ws=;
+        b=fEnWpFHO7e2e/VG5DchH7LlYMbMdAfAmL3bznExqaIWg6YvPBBaQtm8fTLKHkukjiQ
+         v7DZMO1fGA7ywqfhOKgWbL1/p/3t78DMj2sFb7cwigEZtmcJmVb3C0zcM1xV/3RHAgOY
+         Mv1ooeFagkOhWQfeMaFiLJ3GjpZgCf3XEdc95ihRfUMJL6tBW/7EtPvDYGWQBh2rH33Z
+         rFHzjbpldgkgchoYwUEOP5cCmkYSpLjQ3+0ZJscxLcu+3Y9CWcOh+1yeCyzYf3YjH0kQ
+         ed7bBOiwf70tpeX7qjuDr2CeMGjUph1GcmuriSf/JaqILD5I4TUGi0A0aBmHVFNxCMMs
+         XVgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779285405; x=1779890205;
-        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
-         :from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6AoVqM70l4U+qYVnKG6rb2UkmbXX7bAvSah0+zZjZcs=;
-        b=Mrp5rZoZDBRg9ljZo+UcNEVr4rBaY7CNZpnMzOORo44RfRcQ67p6PDhX+CCQOuOUOm
-         +Mf2dzhHbvVe7UaScT5hrMxD5THIWoJgyFdiJbUC+zbr7znjWVjv9vYCMwG/ra3V/97E
-         S92SshzwsFpJFSXU/8rjyVIngnVWFvn3nzYhkB4x8r+joMubH3p5RqNChzTZJ8rjch8y
-         alah0vzpg58L635FW5p9884pE4pR+tXhfJkPV0jeMGxpwcQZqc5oo5weE+4SkptoqmX4
-         gWfMBTIhBK+jHhwAem7H6tNhXj2S1FOaso8FWI5qqft+LYz9mF/zKRHHRH4RpOeP181k
-         R/OA==
-X-Gm-Message-State: AOJu0YyXi8SetT0JDdKO5JWzIfdlM8vyMBuBeVDhPxcCTu9L4Di6rQwH
-	mQJqjtwMlfF3PtLNBiUyfB61EH12gE6Jk/coYvQIPCJqSGkS0Is55SN2+pn1VgViDLqXwzzBYzY
-	wXYO+Vmk=
-X-Gm-Gg: Acq92OHKqWg9ME96g6jbJLbKmH0Q0BKCPT7xG4VXcImxa7bX4odzIaa6TZ77bnwmOA0
-	BdycpCtNi/SMJFCCkuyeQBcqlsDYiE2Nu1T758CTJhU9W2pN7xxAGBxLYgwfnsXTw69AmXXg+GJ
-	5UFTsQgbKlY3QmpzquSTROt6kwhzmIsRIU4mAeY68NUasQeAPQ3/M/XKzMI1UNUO06Jzs5p8u5w
-	mX7j3uWVE+u2AVW7S4KQqQSYEx5bGfymH5bDyuGmDLHmzlGeimZP+APSTsxR6k19kKdo3D8PPaw
-	eeUVwkhXDP5uBYUC5qg1h+E4ITUAFYcyS3AJWGnnbDEK6bdvwsfDs4Qctl+8WG4fBlkSPizmyLI
-	nVC26ct4Vayi9Yaq037KjunHHcMyCCJ9sNPbvhpy2zE+KxBaeKfCraXMP5+rzxhgTPlPaKLEiNa
-	rAMHN13M1TXabXI+UC5PkTf2DcTznwb3BQJ6lh2auxArTgi1PR13yJe6aHLNaFRrKov/Et
-X-Received: by 2002:a05:620a:4611:b0:912:c0b3:7d9b with SMTP id af79cd13be357-912c0b37ec9mr3183101085a.24.1779285404810;
-        Wed, 20 May 2026 06:56:44 -0700 (PDT)
-Received: from ?IPv6:2606:6d00:15:e06b:3a7c:76ff:fea1:2ac0? ([2606:6d00:15:e06b:3a7c:76ff:fea1:2ac0])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-910ba182535sm2144742585a.8.2026.05.20.06.56.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 May 2026 06:56:43 -0700 (PDT)
-Message-ID: <cae1117b91eb2df890c79b8f914628a38df0e2ce.camel@ndufresne.ca>
-Subject: Re: [PATCHv2 2/2] media: vivid: check for vb2_is_busy() when
- toggling caps
-From: Nicolas Dufresne <nicolas@ndufresne.ca>
-To: Hans Verkuil <hverkuil+cisco@kernel.org>, linux-media@vger.kernel.org
-Cc: stable@vger.kernel.org, 
-	syzbot+dac8f5eaa46837e97b89@syzkaller.appspotmail.com
-Date: Wed, 20 May 2026 09:56:43 -0400
-In-Reply-To: <ba02852937616394e2f5de34ee2effa0944d7c88.1779266182.git.hverkuil+cisco@kernel.org>
-References: <cover.1779266182.git.hverkuil+cisco@kernel.org>
-	 <ba02852937616394e2f5de34ee2effa0944d7c88.1779266182.git.hverkuil+cisco@kernel.org>
-Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
- keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
- /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
- cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
- CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
- abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
- nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
- AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
- smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
- AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
- iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
- ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
- bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-BnYdjJtgzWi/l7jlWyDC"
-User-Agent: Evolution 3.60.1 (3.60.1-1.fc44) 
+        d=1e100.net; s=20251104; t=1779285633; x=1779890433;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=/7oaXQ1qryt8g+zZj0bxtOQOINmT0mwFoGI1KqRN0Ws=;
+        b=lhGe4+oNQGHoZiFjOx/1t2j1mZoCiuMzzkZKPAbrKt8UXJxJkgCjsOZvRMLjDu071X
+         7Q2JjEXhkHJdu2GZzYgCOf4K2A7ahfXPPrJp1LTp53wFihMEN9/bEdMfXU+yuw53ziI9
+         rsvrIU6KQdWvj1blYyaDCFByLW/juTlY/os9UYkNrsjSv+Mt7RZJCDaM0W5JczzTV0Rt
+         s+cCL6I0JTx2+fUsf8xRqgUR4xcQ/elCLfptp+e4cGURO/edrvnNZVjkuiKCoJ2fzSmW
+         yKcV5FVCJuJQtNA32oNx9j8n8oaAUqP7QvEKZc6XdTmq4Bs8D2VUXl3/vfGPMTecEJrQ
+         BlCQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8Nz+m5+NtJWHmu1mc6fSjj5p7wa22CoAuyFZBZjbfylHPHaXpaEZ+75g66LK6iDWwk7XpDJRs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPGwiwGYs9ZpFu8aggWVezrHy4EsEKgYCNJMm+B20aS7AGvYJn
+	zdLjELMwqVoRG8iRzkdKZJyti0FfAwh+xLJ2UDSV4WHIuiGcKVUibFSfsT/35n4GwUUzwnN3Hey
+	Rc3JezUyhTwbBwirxBqxLAV0Tla+3nn0=
+X-Gm-Gg: Acq92OEr38hKAiAlqhCLnt8LXJ5SocF5JFGmXRNFQWzw1J1XvHJ81IwYcB+srEx1E7N
+	g1fuGz43PkIS3P9BsrGV3RT8NpiSiMgeK+XVT1fFag8qVYPOjcs2XvES0H4EMl1LpZyNRltTU5w
+	3rCQgChW2GOt6w7Ttl8cQCBIaJA7d56qfzkQ9bP0emjD4By9V4uaXl+NMWjQ3/fi6UjlA54pMIJ
+	U4Z2Gn3Gk6mkjVmOXSMTuCyPqJqsnN4WbKGl9rWU7UdmI+/RH0AwqwZwPOsBe1eYArGgg6ug6kG
+	kRC3kj/zvES0nqfa+ezX0nAgAu10qbBpKb6aAXBHOI965l25NSM3ZBOU3m2DoFUGR6Ztpg==
+X-Received: by 2002:a05:690e:2502:10b0:656:30a1:70e3 with SMTP id
+ 956f58d0204a3-65e228469fcmr20278863d50.53.1779285633031; Wed, 20 May 2026
+ 07:00:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[ndufresne-ca.20251104.gappssmtp.com:s=20251104];
+References: <20260520135034.1060859-1-michael.bommarito@gmail.com>
+In-Reply-To: <20260520135034.1060859-1-michael.bommarito@gmail.com>
+From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Date: Wed, 20 May 2026 10:00:21 -0400
+X-Gm-Features: AVHnY4IdFrVeMyCQglDoLVCdIs5UC3o9rHcSrMblsA2cwCBRrhR-fiJEvzNPD_M
+Message-ID: <CABBYNZLLw=VFfjaF_TXA=5ZgDt7rw=XgUULoc4JudMpUBf_BWg@mail.gmail.com>
+Subject: Re: [PATCH v2] Bluetooth: L2CAP: reject BR/EDR signaling packets over MTUsig
+To: Michael Bommarito <michael.bommarito@gmail.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[ndufresne.ca : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249932-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[ndufresne-ca.20251104.gappssmtp.com:+];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	TAGGED_FROM(0.00)[bounces-249933-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nicolas@ndufresne.ca,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RSPAMD_EMAILBL_FAIL(0.00)[luizdentz.gmail.com:query timed out];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,cisco,dac8f5eaa46837e97b89];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,syzkaller.appspot.com:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,collabora.com:email,ndufresne-ca.20251104.gappssmtp.com:dkim]
-X-Rspamd-Queue-Id: AECA458F382
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[luizdentz@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 614B858F3B4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Hi Michael,
 
---=-BnYdjJtgzWi/l7jlWyDC
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-Le mercredi 20 mai 2026 =C3=A0 10:36 +0200, Hans Verkuil a =C3=A9crit=C2=A0=
-:
-> The vivid_update_format_cap/out() functions must only be called if the
-> capture/output queue are not busy. But for the controls that select
-> the CROP/COMPOSE/SCALE capability that is not checked.
->=20
-> Only when streaming starts will they be set to 'grabbed' and it is
-> impossible to change the control, but between REQBUFS and STREAMON you
-> are still allowed to set these controls. Since vivid_update_format_cap/ou=
-t
-> will change the format, this can cause unexpected results.
->=20
-> Besides adding these checks, also add a WARN_ON in
-> vivid_update_format_cap/out() if the queue is busy.
->=20
-> I'm 90% certain that this is the cause of this syzbot bug:
->=20
-> https://syzkaller.appspot.com/bug?extid=3Ddac8f5eaa46837e97b89
->=20
-> But since we never have reproducers, it is hard to be certain. In any cas=
-e,
-> these checks are needed regardless.
->=20
-> Fixes: 73c3f48230cd ("[media] vivid: add the control handling code")
+On Wed, May 20, 2026 at 9:50=E2=80=AFAM Michael Bommarito
+<michael.bommarito@gmail.com> wrote:
+>
+> net/bluetooth/l2cap_core.c:l2cap_sig_channel() accepts BR/EDR
+> signaling packets up to the channel MTU and dispatches each command
+> without enforcing the signaling MTU (MTUsig). A Bluetooth BR/EDR peer
+> within radio range can send a fixed-channel CID 0x0001 packet that is
+> larger than MTUsig and contains many L2CAP_ECHO_REQ commands before
+> pairing.
+>
+> In a real-radio stock-kernel run, one 681-byte signaling
+> packet containing 168 zero-length ECHO_REQ commands made the target
+> transmit 168 ECHO_RSP frames over about 220 ms.
+>
+> Define Linux's BR/EDR signaling MTU as the spec minimum of 48 bytes and
+> reject larger signaling packets before dispatching their commands. When
+> the over-MTUsig packet contains a request command, send one
+> L2CAP_COMMAND_REJECT_RSP with L2CAP_REJ_MTU_EXCEEDED and the first
+> request identifier; packets for which no valid request command is found
+> are dropped.
+>
 > Cc: stable@vger.kernel.org
-> Reported-by: syzbot+dac8f5eaa46837e97b89@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=3Ddac8f5eaa46837e97b89
-> Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-
+> Suggested-by: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+> Link: https://lore.kernel.org/r/20260518002800.1361430-1-michael.bommarit=
+o@gmail.com
+> Assisted-by: Claude:claude-opus-4-7
+> Assisted-by: Codex:gpt-5-5-xhigh
+> Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
 > ---
-> =C2=A0drivers/media/test-drivers/vivid/vivid-ctrls.c=C2=A0=C2=A0 | 12 +++=
-+++++++++
-> =C2=A0drivers/media/test-drivers/vivid/vivid-vid-cap.c |=C2=A0 6 ++++++
-> =C2=A0drivers/media/test-drivers/vivid/vivid-vid-out.c |=C2=A0 6 ++++++
-> =C2=A03 files changed, 24 insertions(+)
->=20
-> diff --git a/drivers/media/test-drivers/vivid/vivid-ctrls.c b/drivers/med=
-ia/test-drivers/vivid/vivid-ctrls.c
-> index 1077445f5772..a8a134b36720 100644
-> --- a/drivers/media/test-drivers/vivid/vivid-ctrls.c
-> +++ b/drivers/media/test-drivers/vivid/vivid-ctrls.c
-> @@ -613,14 +613,20 @@ static int vivid_vid_cap_s_ctrl(struct v4l2_ctrl *c=
-trl)
-> =C2=A0			vivid_update_reduced_fps(dev);
-> =C2=A0		break;
-> =C2=A0	case VIVID_CID_HAS_CROP_CAP:
-> +		if (vb2_is_busy(&dev->vb_vid_cap_q))
-> +			return -EBUSY;
-> =C2=A0		dev->has_crop_cap =3D ctrl->val;
-> =C2=A0		vivid_update_format_cap(dev, true);
-> =C2=A0		break;
-> =C2=A0	case VIVID_CID_HAS_COMPOSE_CAP:
-> +		if (vb2_is_busy(&dev->vb_vid_cap_q))
-> +			return -EBUSY;
-> =C2=A0		dev->has_compose_cap =3D ctrl->val;
-> =C2=A0		vivid_update_format_cap(dev, true);
-> =C2=A0		break;
-> =C2=A0	case VIVID_CID_HAS_SCALER_CAP:
-> +		if (vb2_is_busy(&dev->vb_vid_cap_q))
-> +			return -EBUSY;
-> =C2=A0		dev->has_scaler_cap =3D ctrl->val;
-> =C2=A0		vivid_update_format_cap(dev, true);
-> =C2=A0		break;
-> @@ -1117,14 +1123,20 @@ static int vivid_vid_out_s_ctrl(struct v4l2_ctrl =
-*ctrl)
-> =C2=A0
-> =C2=A0	switch (ctrl->id) {
-> =C2=A0	case VIVID_CID_HAS_CROP_OUT:
-> +		if (vb2_is_busy(&dev->vb_vid_out_q))
-> +			return -EBUSY;
-> =C2=A0		dev->has_crop_out =3D ctrl->val;
-> =C2=A0		vivid_update_format_out(dev);
-> =C2=A0		break;
-> =C2=A0	case VIVID_CID_HAS_COMPOSE_OUT:
-> +		if (vb2_is_busy(&dev->vb_vid_out_q))
-> +			return -EBUSY;
-> =C2=A0		dev->has_compose_out =3D ctrl->val;
-> =C2=A0		vivid_update_format_out(dev);
-> =C2=A0		break;
-> =C2=A0	case VIVID_CID_HAS_SCALER_OUT:
-> +		if (vb2_is_busy(&dev->vb_vid_out_q))
-> +			return -EBUSY;
-> =C2=A0		dev->has_scaler_out =3D ctrl->val;
-> =C2=A0		vivid_update_format_out(dev);
-> =C2=A0		break;
-> diff --git a/drivers/media/test-drivers/vivid/vivid-vid-cap.c b/drivers/m=
-edia/test-drivers/vivid/vivid-vid-cap.c
-> index 76e0b161c049..e20449084709 100644
-> --- a/drivers/media/test-drivers/vivid/vivid-vid-cap.c
-> +++ b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
-> @@ -391,6 +391,12 @@ void vivid_update_format_cap(struct vivid_dev *dev, =
-bool keep_controls)
-> =C2=A0	struct v4l2_bt_timings *bt =3D &dev->dv_timings_cap[dev->input].bt=
+> I reproduced the stock behavior with a real-radio BR/EDR ACL link and a
+> harness that sends a single fixed-channel signaling packet containing
+> packed zero-length ECHO_REQ commands. The patched code builds for
+> net/bluetooth/l2cap_core.o on x86_64 defconfig. There are no in-tree
+> Bluetooth selftests that reference l2cap_sig_channel(), L2CAP_SIG_MTU,
+> or L2CAP_ECHO_REQ.
+>
+> The unrestricted BR/EDR signaling parser and ECHO_REQ response path both
+> trace to the initial git import; no later introducing commit is
+> available for a Fixes tag.
+>
+> Changes in v2:
+> - Replace the per-PDU echo-count cap with the MTUsig direction from
+>   review.
+> - Reject the whole over-MTUsig signaling packet with one
+>   L2CAP_REJ_MTU_EXCEEDED command reject.
+> - Add L2CAP_SIG_MTU and drop over-MTUsig packets when no valid request
+>   command identifier is found.
+>
+> v1: https://lore.kernel.org/r/20260518002800.1361430-1-michael.bommarito@=
+gmail.com
+> ---
+>  include/net/bluetooth/l2cap.h |  1 +
+>  net/bluetooth/l2cap_core.c    | 60 +++++++++++++++++++++++++++++++++++
+>  2 files changed, 61 insertions(+)
+>
+> diff --git a/include/net/bluetooth/l2cap.h b/include/net/bluetooth/l2cap.=
+h
+> index 5172afee54943..e0a1f2293679a 100644
+> --- a/include/net/bluetooth/l2cap.h
+> +++ b/include/net/bluetooth/l2cap.h
+> @@ -33,6 +33,7 @@
+>  /* L2CAP defaults */
+>  #define L2CAP_DEFAULT_MTU              672
+>  #define L2CAP_DEFAULT_MIN_MTU          48
+> +#define L2CAP_SIG_MTU                  48      /* BR/EDR signaling MTU *=
+/
+>  #define L2CAP_DEFAULT_FLUSH_TO         0xFFFF
+>  #define L2CAP_EFS_DEFAULT_FLUSH_TO     0xFFFFFFFF
+>  #define L2CAP_DEFAULT_TX_WINDOW                63
+> diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+> index 77dec104a9c36..5417e3cb0636d 100644
+> --- a/net/bluetooth/l2cap_core.c
+> +++ b/net/bluetooth/l2cap_core.c
+> @@ -5626,6 +5626,55 @@ static inline void l2cap_sig_send_rej(struct l2cap=
+_conn *conn, u16 ident)
+>         l2cap_send_cmd(conn, ident, L2CAP_COMMAND_REJ, sizeof(rej), &rej)=
 ;
-> =C2=A0	u32 dims[V4L2_CTRL_MAX_DIMS] =3D {};
-> =C2=A0
-> +	/*
-> +	 * This resets the format, so must never be called while vb2_is_busy().
-> +	 */
-> +	if (WARN_ON(vb2_is_busy(&dev->vb_vid_cap_q)))
-> +		return;
+>  }
+>
+> +static bool l2cap_sig_cmd_is_req(u8 code)
+> +{
+> +       switch (code) {
+> +       case L2CAP_CONN_REQ:
+> +       case L2CAP_CONF_REQ:
+> +       case L2CAP_DISCONN_REQ:
+> +       case L2CAP_ECHO_REQ:
+> +       case L2CAP_INFO_REQ:
+> +       case L2CAP_CONN_PARAM_UPDATE_REQ:
+> +       case L2CAP_LE_CONN_REQ:
+> +       case L2CAP_ECRED_CONN_REQ:
+> +       case L2CAP_ECRED_RECONF_REQ:
+> +               return true;
+> +       }
 > +
-> =C2=A0	switch (dev->input_type[dev->input]) {
-> =C2=A0	case WEBCAM:
-> =C2=A0	default:
-> diff --git a/drivers/media/test-drivers/vivid/vivid-vid-out.c b/drivers/m=
-edia/test-drivers/vivid/vivid-vid-out.c
-> index 8c037b90833e..23e1d5a189ee 100644
-> --- a/drivers/media/test-drivers/vivid/vivid-vid-out.c
-> +++ b/drivers/media/test-drivers/vivid/vivid-vid-out.c
-> @@ -214,6 +214,12 @@ void vivid_update_format_out(struct vivid_dev *dev)
-> =C2=A0	unsigned size, p;
-> =C2=A0	u64 pixelclock;
-> =C2=A0
-> +	/*
-> +	 * This resets the format, so must never be called while vb2_is_busy().
-> +	 */
-> +	if (WARN_ON(vb2_is_busy(&dev->vb_vid_out_q)))
-> +		return;
+> +       return false;
+> +}
 > +
-> =C2=A0	switch (dev->output_type[dev->output]) {
-> =C2=A0	case SVID:
-> =C2=A0	default:
+> +static u8 l2cap_sig_first_req_ident(const struct sk_buff *skb)
+> +{
+> +       const u8 *data =3D skb->data;
+> +       unsigned int len =3D skb->len;
+> +
+> +       while (len >=3D L2CAP_CMD_HDR_SIZE) {
+> +               const struct l2cap_cmd_hdr *cmd =3D (const void *)data;
+> +               u16 cmd_len =3D le16_to_cpu(cmd->len);
+> +
+> +               if (cmd->ident && l2cap_sig_cmd_is_req(cmd->code))
+> +                       return cmd->ident;
+> +
+> +               if (cmd_len > len - L2CAP_CMD_HDR_SIZE)
+> +                       break;
+> +
+> +               data +=3D L2CAP_CMD_HDR_SIZE + cmd_len;
+> +               len -=3D L2CAP_CMD_HDR_SIZE + cmd_len;
+> +       }
 
---=-BnYdjJtgzWi/l7jlWyDC
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
+Weird, does the AI come up with this? The id is actually _not_
+important because the error code will essentially indicate that the
+entire packet was rejected. Therefore, it doesn't matter if the id is
+for a request or a response, it still needs rejection if it exceeds
+the MTU, so this seems overengineered.
 
------BEGIN PGP SIGNATURE-----
+> +       return 0;
+> +}
+> +
+> +static inline void l2cap_sig_send_mtu_rej(struct l2cap_conn *conn, u8 id=
+ent)
+> +{
+> +       struct l2cap_cmd_rej_mtu rej;
+> +
+> +       rej.reason =3D cpu_to_le16(L2CAP_REJ_MTU_EXCEEDED);
+> +       rej.max_mtu =3D cpu_to_le16(L2CAP_SIG_MTU);
+> +       l2cap_send_cmd(conn, ident, L2CAP_COMMAND_REJ, sizeof(rej), &rej)=
+;
+> +}
+> +
+>  static inline void l2cap_sig_channel(struct l2cap_conn *conn,
+>                                      struct sk_buff *skb)
+>  {
+> @@ -5638,6 +5687,17 @@ static inline void l2cap_sig_channel(struct l2cap_=
+conn *conn,
+>         if (hcon->type !=3D ACL_LINK)
+>                 goto drop;
+>
+> +       if (skb->len > L2CAP_SIG_MTU) {
+> +               u8 ident =3D l2cap_sig_first_req_ident(skb);
+> +
+> +               BT_DBG("signaling packet exceeds MTU");
+> +
+> +               if (ident)
+> +                       l2cap_sig_send_mtu_rej(conn, ident);
+> +
+> +               goto drop;
+> +       }
+> +
+>         while (skb->len >=3D L2CAP_CMD_HDR_SIZE) {
+>                 u16 len;
+>
+> --
+> 2.53.0
+>
 
-iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCag29mwAKCRDZQZRRKWBy
-9BrOAQDKrHnTjk3eMBXGWR0ThQbDvPgqB619//sIz2aIseBNVQD/cKgdId+LpSva
-HIpSWby4TPk3Oi1KCvkA3DjiUCuFsQM=
-=w5Kf
------END PGP SIGNATURE-----
 
---=-BnYdjJtgzWi/l7jlWyDC--
+--=20
+Luiz Augusto von Dentz
 
