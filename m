@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-250708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251671-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YN1dHrb2DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-250708-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:00:22 +0200
+	id ELbXL+PyDWry4wUAu9opvQ
+	(envelope-from <stable+bounces-251671-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB83059514D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:00:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 309BF5946BD
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 05DFD302B3BF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:56:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2B8B430EEEE7
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:36:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DC6C3EAC82;
-	Wed, 20 May 2026 16:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34328370D54;
+	Wed, 20 May 2026 17:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vwnnakwu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sZ7BNikb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C973EAC8F;
-	Wed, 20 May 2026 16:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE843D75C7;
+	Wed, 20 May 2026 17:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296108; cv=none; b=rV0XyYH7AGL8DllE7jExT4FIF0UOAihTmJZHZvpxZH2V+izzut0244TrrALWf2C5szZqwX4gcx/ddlg33awdbRXp2DEwDI0QypVz4yqcv2diugwWkFd8lnK3GXEijw4t1GTfSjX6ofd1+FV3mrpSBcwyCPrT9PtMsG4new3f1PM=
+	t=1779298590; cv=none; b=Goi/cDyfIXgwZHbl+2/vVQwdlgDYk5Q+kkMqbiSSbYeo6CSnyrhd1UtPVOCFY6Tan+VXXFm1IrOJDoZjAL8B/eI9HtcIeMPxtqz+sjEjCim4q5Kz0WhwOWPqcLsijVAnj9/AgVqoe+U0k28dWnU/Mxs1ZXpFuOy7KBgvZeJA7Ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296108; c=relaxed/simple;
-	bh=MPdeHy2lVFimsy3digCUR+j22FPjWG7dyvTt4PLoYRw=;
+	s=arc-20240116; t=1779298590; c=relaxed/simple;
+	bh=pK/VjP0qrmOV1HQBvSOMwYRdTH/a8X/3bJBpqr9shl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UABh6Da/aSF5VQ/QUJfBMQu1aHeCl17Kwq3Rk9yrjUbwrfIvyvB68sBMZ/+rid//ECvMH9MfjT8KGp+Nf8MBWzbdSzeTw8qaPzZVhmTmekh2H635yAQMVLUxOR5OuTLOVmfiDmfwo4x0t4V7X942Ze4sNF1Cfj8lZpFqTowW+Cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vwnnakwu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BFCC1F000E9;
-	Wed, 20 May 2026 16:55:07 +0000 (UTC)
+	 MIME-Version; b=nfVnya4i15ZdKQK22PAx29YNfdtvrOmqGdVZyR4pgMF1jK/353OYcCrhQCoGNMcAyJKp17QdLb4zhUWzW+pEjFZI3LadY+cuDHTFyWwDGLDO/wSjku41UbBRa9Dtl0T0iOGrfRcBP7nerpW44eBAHcWz4qESkt+ZZetDGuQB9kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sZ7BNikb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AEA41F000E9;
+	Wed, 20 May 2026 17:36:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296107;
-	bh=JijRQzudNvro19WmR1BiM/j6GTDozbHeZbHurvfJ+oY=;
+	s=korg; t=1779298588;
+	bh=YfHrCT4zrFeR7ZEzMk87L2kmsomqhW/4JNa+UQZoNWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VwnnakwunTwi9W1WPVStVTVjxCwN7cWCKFXojbWKSR7DwUB4CvDyStuycvV5coFUi
-	 7qNk3eAvBI/cslqTOCMqnS8RsxHbHa3QDPYHp3MHt1wWYcm8fjDC4s69fXWBD9PhTE
-	 czFAqnrTKBatVlIxxsQTDcPnsRQquBKcUDdjKIvs=
+	b=sZ7BNikbW3tYDF56YMqM83Q6pYi9bkxZicixqG9MP/R+1UNbEmaP7Lk99N20unrIs
+	 N10ShHGDx0VogTV5i+F0+pLQEp47V3sC3nCYvxk3j34z+h8bl+/VrZxKW+KAz8GAUO
+	 VzYEvKK6ly8fFxk4UPAmkWaXIOA8gnmPEQ4vm5/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anna Schumaker <anna.schumkaer@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Sebastian Ene <sebastianene@google.com>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0674/1146] nfs/blocklayout: Fix compilation error (`make W=1`) in bl_write_pagelist()
+Subject: [PATCH 6.18 441/957] firmware: arm_ffa: Use the correct buffer size during RXTX_MAP
 Date: Wed, 20 May 2026 18:15:24 +0200
-Message-ID: <20260520162203.441060680@linuxfoundation.org>
+Message-ID: <20260520162144.084581056@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,86 +68,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250708-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251671-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oracle.com:email]
-X-Rspamd-Queue-Id: CB83059514D
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 309BF5946BD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Sebastian Ene <sebastianene@google.com>
 
-[ Upstream commit f83c8dda456ce4863f346aa26d88efa276eda35d ]
+[ Upstream commit 83210251fd70d5f96bcdc8911e15f7411a6b2463 ]
 
-Clang compiler is not happy about set but unused variable
-(when dprintk() is no-op):
+Don't use the discovered buffer size from an FFA_FEATURES call directly
+since we can run on a system that has the PAGE_SIZE larger than the
+returned size which makes the alloc_pages_exact for the buffer to be
+rounded up.
 
-.../blocklayout/blocklayout.c:384:9: error: variable 'count' set but not used [-Werror,-Wunused-but-set-variable]
-
-Remove a leftover from the previous cleanup.
-
-Fixes: 3a6fd1f004fc ("pnfs/blocklayout: remove read-modify-write handling in bl_write_pagelist")
-Acked-by: Anna Schumaker <anna.schumkaer@oracle.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 61824feae5c0 ("firmware: arm_ffa: Fetch the Rx/Tx buffer size using ffa_features()")
+Signed-off-by: Sebastian Ene <sebastianene@google.com>
+Link: https://patch.msgid.link/20260402113939.930221-1-sebastianene@google.com
+Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/blocklayout/blocklayout.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/firmware/arm_ffa/driver.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/blocklayout/blocklayout.c b/fs/nfs/blocklayout/blocklayout.c
-index cb0a645aeb501..94e85ad9067e5 100644
---- a/fs/nfs/blocklayout/blocklayout.c
-+++ b/fs/nfs/blocklayout/blocklayout.c
-@@ -381,14 +381,13 @@ bl_write_pagelist(struct nfs_pgio_header *header, int sync)
- 	sector_t isect, extent_length = 0;
- 	struct parallel_io *par = NULL;
- 	loff_t offset = header->args.offset;
--	size_t count = header->args.count;
- 	struct page **pages = header->args.pages;
- 	int pg_index = header->args.pgbase >> PAGE_SHIFT;
- 	unsigned int pg_len;
- 	struct blk_plug plug;
- 	int i;
+diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
+index f6ceae987acbc..d71a2ef335d1c 100644
+--- a/drivers/firmware/arm_ffa/driver.c
++++ b/drivers/firmware/arm_ffa/driver.c
+@@ -2074,7 +2074,7 @@ static int __init ffa_init(void)
  
--	dprintk("%s enter, %zu@%lld\n", __func__, count, offset);
-+	dprintk("%s enter, %u@%lld\n", __func__, header->args.count, offset);
- 
- 	/* At this point, header->page_aray is a (sequential) list of nfs_pages.
- 	 * We want to write each, and if there is an error set pnfs_error
-@@ -429,7 +428,6 @@ bl_write_pagelist(struct nfs_pgio_header *header, int sync)
- 		}
- 
- 		offset += pg_len;
--		count -= pg_len;
- 		isect += (pg_len >> SECTOR_SHIFT);
- 		extent_length -= (pg_len >> SECTOR_SHIFT);
- 	}
+ 	ret = ffa_rxtx_map(virt_to_phys(drv_info->tx_buffer),
+ 			   virt_to_phys(drv_info->rx_buffer),
+-			   rxtx_bufsz / FFA_PAGE_SIZE);
++			   PAGE_ALIGN(rxtx_bufsz) / FFA_PAGE_SIZE);
+ 	if (ret) {
+ 		pr_err("failed to register FFA RxTx buffers\n");
+ 		goto free_pages;
 -- 
 2.53.0
 
