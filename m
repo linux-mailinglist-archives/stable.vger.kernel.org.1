@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-250302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251276-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2Hv/GgrmDWpz4gUAu9opvQ
-	(envelope-from <stable+bounces-250302-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:14 +0200
+	id oIRCEWn8DWoK5QUAu9opvQ
+	(envelope-from <stable+bounces-251276-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07B55592808
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:49:13 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F3735960D9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2342930FBDC2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:38:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8DEB1303BDD8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:19:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69169352C52;
-	Wed, 20 May 2026 16:37:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB06636C9D2;
+	Wed, 20 May 2026 17:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i3qam6PR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VKYcLnWs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F79E363097;
-	Wed, 20 May 2026 16:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63AAD30BF68;
+	Wed, 20 May 2026 17:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295058; cv=none; b=nqp2Lm/Sj0QH/bE8VmIfKw6b8MS0rYYLPTpfVo49wiPrCqvOJ3xYarw6L/wDP3ELEWreUcsFvyMCqMle0gKq9eJWN1mfQCds+Rxj8LLeRnWFkCAdUEAq/toXHSbDclu51t4TmkorF6Ez52YdgprWZqq8YKJ/rqInBOwNGxAoZAc=
+	t=1779297562; cv=none; b=jr/vJkDGa7DQlZh3tvRcPEjj2AJDu53ywHVun18tIJtUWBqjMTBtiXZplZz/Djxbqmdm++PfDzK4sw/69VmZWap9YNOoXUFxqLoOW/ksU6l7V8v/uzpCbtglI1x9FqDM6qbphbKgjk1/MV8gBXl+oja42lvFo+RmoxwCgamDl/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295058; c=relaxed/simple;
-	bh=lujw3PnuDE66nN/ee8/EhL/2T8lgAVV/ez5Hzlq5fIk=;
+	s=arc-20240116; t=1779297562; c=relaxed/simple;
+	bh=dTlof50b+p/OqpeBaRZOlfeCwu9rk/Yko0/UGG1EU6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F5ns7W24r0JeHTerubqCL6AZNP5LIjo1qjQugzBD9QtUytg9GYsfw7kr/K8w7mrxhzpY1D5LLTxv5RLMRWABtattE8pxbc4nyqqsusw46i+c7Y5a5ywMIrLaViFE9WalGmKpJ4zg0N6I/kuTYZIp47NlphBGJn4CXHLXANOCu5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i3qam6PR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF1D1F000E9;
-	Wed, 20 May 2026 16:37:35 +0000 (UTC)
+	 MIME-Version; b=Wl77Sh0RfJOMaMWOJ9DrsMY1xTUKC0jR/KWVoPCv4TrTYl5+D+nesRUuCOQREpmmnAIBJT6KW2LXzOh+wsYP2S8Vx4a92MOlGb1NvpvP0zrz/q71FJcQ2brVUrHCQnnD1PFR+ttWPjVNFGLdqKFlxJWAGGwD7D0to4LGvbtCZ3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VKYcLnWs; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C96E41F000E9;
+	Wed, 20 May 2026 17:19:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295055;
-	bh=Do5/Jbs8DnJeHu+F5pND/8nqh5cuVotXTEQNy+0pAeY=;
+	s=korg; t=1779297561;
+	bh=WvpeBNlIJi9o7/mA58wlqQqDfK6che3Mt5/ECyevy9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=i3qam6PR9dCfkHdcq8FCeg+xwL4LsLiOOy/Bd8C3gsBaJqFQWeRyATrR+o4Q9FdLr
-	 ixZf8IgWRMPpq5q2jU6cgXy9Iz76bN1KWSXFPfchOd9KLNsIuleim900+4b3tJd5Rh
-	 IWddtCplJGXGELSpdVJnl6yv8VRC/t37FqxlMJtk=
+	b=VKYcLnWsiU3a0sPvxLhjqEQVMxiF9vnBDSm7d5JbSAE38NRi1IIpW5Dy2kjjGKY7h
+	 cy+MYSXYVy3/axA+E17y9TYEIAxYR+D6677JlLos6SlU4xhRNK/yBw9oVIRlbIzGrD
+	 FiFVniTnaudHKSfjOASaDP/m6j76noxYs8EXH7r0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Felix Gu <ustc.gu@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Gary Guo <gary@garyguo.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0274/1146] spi: nxp-xspi: Use reinit_completion() for repeated operations
+Subject: [PATCH 6.18 041/957] rust: sync: atomic: Remove bound `T: Sync` for `Atomic::from_ptr()`
 Date: Wed, 20 May 2026 18:08:44 +0200
-Message-ID: <20260520162154.421647083@linuxfoundation.org>
+Message-ID: <20260520162135.450126279@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,84 +72,80 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-250302-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251276-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nxp.com,gmail.com,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,infradead.org,google.com,garyguo.net,kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 07B55592808
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,infradead.org:email,msgid.link:url]
+X-Rspamd-Queue-Id: 4F3735960D9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Boqun Feng <boqun.feng@gmail.com>
 
-[ Upstream commit 40f9bc646db5aa89fb85f2cda1e55a2bf9d6a30c ]
+[ Upstream commit 4a5dc632e0b603ec1cbbf87b78de86b4b6359cff ]
 
-The driver currently calls init_completion() during every spi_mem_op.
-Tchnically it may work, but it's not the recommended pattern.
+Originally, `Atomic::from_ptr()` requires `T` being a `Sync` because I
+thought having the ability to do `from_ptr()` meant multiplle
+`&Atomic<T>`s shared by different threads, which was identical (or
+similar) to multiple `&T`s shared by different threads. Hence `T` was
+required to be `Sync`. However this is not true, since `&Atomic<T>` is
+not the same at `&T`. Moreover, having this bound makes `Atomic::<*mut
+T>::from_ptr()` impossible, which is definitely not intended. Therefore
+remove the `T: Sync` bound.
 
-According to the kernel documentation: Calling init_completion() on
-the same completion object twice is most likely a bug as it
-re-initializes the queue to an empty queue and enqueued tasks
-could get "lost" - use reinit_completion() in that case, but be
-aware of other races.
+[boqun: Fix title typo spotted by Alice & Gary]
 
-So moves the initial initialization to probe function and uses
-reinit_completion() for subsequent operations.
-
-Fixes: 29c8c00d9f9d ("spi: add driver for NXP XSPI controller")
-Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Link: https://patch.msgid.link/20260304-spi-nxp-v2-1-cd7d7726a27e@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 29c32c405e53 ("rust: sync: atomic: Add generic atomics")
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Link: https://patch.msgid.link/20260120115207.55318-2-boqun.feng@gmail.com
+Link: https://patch.msgid.link/20260303201701.12204-2-boqun@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-nxp-xspi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ rust/kernel/sync/atomic.rs | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-nxp-xspi.c b/drivers/spi/spi-nxp-xspi.c
-index 06fcdf22990b8..385302a6e62f2 100644
---- a/drivers/spi/spi-nxp-xspi.c
-+++ b/drivers/spi/spi-nxp-xspi.c
-@@ -958,7 +958,7 @@ static int nxp_xspi_do_op(struct nxp_xspi *xspi, const struct spi_mem_op *op)
- 		writel(reg, base + XSPI_RBCT);
- 	}
- 
--	init_completion(&xspi->c);
-+	reinit_completion(&xspi->c);
- 
- 	/* Config the data address */
- 	writel(op->addr.val + xspi->memmap_phy, base + XSPI_SFP_TG_SFAR);
-@@ -1273,6 +1273,7 @@ static int nxp_xspi_probe(struct platform_device *pdev)
- 
- 	nxp_xspi_default_setup(xspi);
- 
-+	init_completion(&xspi->c);
- 	ret = devm_request_irq(dev, irq,
- 			nxp_xspi_irq_handler, 0, pdev->name, xspi);
- 	if (ret)
+diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
+index 016a6bcaf0807..43229f0320e92 100644
+--- a/rust/kernel/sync/atomic.rs
++++ b/rust/kernel/sync/atomic.rs
+@@ -202,10 +202,7 @@ impl<T: AtomicType> Atomic<T> {
+     /// // no data race.
+     /// unsafe { Atomic::from_ptr(foo_a_ptr) }.store(2, Release);
+     /// ```
+-    pub unsafe fn from_ptr<'a>(ptr: *mut T) -> &'a Self
+-    where
+-        T: Sync,
+-    {
++    pub unsafe fn from_ptr<'a>(ptr: *mut T) -> &'a Self {
+         // CAST: `T` and `Atomic<T>` have the same size, alignment and bit validity.
+         // SAFETY: Per function safety requirement, `ptr` is a valid pointer and the object will
+         // live long enough. It's safe to return a `&Atomic<T>` because function safety requirement
 -- 
 2.53.0
 
