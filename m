@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-250319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251255-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ANNJKXbwDWqo4wUAu9opvQ
-	(envelope-from <stable+bounces-250319-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:42 +0200
+	id 6MyxERLzDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251255-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E59FF593F46
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:33:41 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5317D59475C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5C30034B25B9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:38:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C5C6C3114696
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:18:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C2683546D0;
-	Wed, 20 May 2026 16:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24B37366075;
+	Wed, 20 May 2026 17:18:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t7NhgjXp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rF4rfOFy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE14361FFE;
-	Wed, 20 May 2026 16:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A415364E89;
+	Wed, 20 May 2026 17:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295102; cv=none; b=uPxHAq5XkpfuSr1wdKJh1WJ9g19caHxd8mRCMV/p0Gk3db/k1/5/NfydUoLrGuoAG4y2la9N6wS++LGY8c41R7IJK6MlKmcfr4eCnsU2FZ42fnF+jt5WJqzy8ERWwEEDTRLoL7/Dage9EtnIzzP83LhEAKpo563jY1WN3L2LRaY=
+	t=1779297506; cv=none; b=ZRcQKkops3nmHVuU16chNfvR8lNSN6tMHFSsx6J6FRtXev9Uto0/obKgq4hJeraweEoMwADpVr9XEYmsBR2H5+8Gbt98xuqE6/wahDWJTJDZ2YJMqmkxikBMwWHaxg1+GjPsNq5SdGDwXXgGvH9xrDI2rDkIYMuNNZNemjeKVgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295102; c=relaxed/simple;
-	bh=j5xAfxZn3ZGyI2OWXh8POXxbPecU+7e1htkHYq6AeK0=;
+	s=arc-20240116; t=1779297506; c=relaxed/simple;
+	bh=8OlpFiD3F4lRarVvfY0VGpXbUo2Iv726M2rxXRY6WYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FKdWGMjyqsbVM5UIB6D6zwSo/wy7PQDOseRRefH2TfxeMJcuVroH4pknM16hMB7uVUEbKgH9kvbRIbqCZNOQ3FM0aNZnKBeHDG7lIXhaR9nNa9D2CJhn8+jr69ZwNM/As+tc98EZVTm1fK6oT6wejBWZ3RTTcK8+XfTFxCOHSfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t7NhgjXp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B6B71F000E9;
-	Wed, 20 May 2026 16:38:20 +0000 (UTC)
+	 MIME-Version; b=cYds4bx2/JBWZ8RXOunWfA69/9XIwWUaPKHDiq6kvUmICZYWDJmt6VawgMIoquUulyeF8UL8cxaxFzSuvzUm9Ko6Qk6qfsqmt1ytGHzJruk0ku6sDZG2/rI2OgK1x8o1G6pYx5R2wdzRjcWHn30duOPOxZGXKCzcZ5N+Gv9TRac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rF4rfOFy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F5C01F000E9;
+	Wed, 20 May 2026 17:18:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295100;
-	bh=iJLlBoG4H4w9hKmUNqLMDoeOZ4DAdBfiTvk8qgjGdng=;
+	s=korg; t=1779297505;
+	bh=LJGHJZ63A8vHip+LOOe4wOxrO9lWGRGLwRIjXaqzPvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=t7NhgjXpNPzr0yz/8UzXoDITcMNxX5FxzChHjro4iK/eZwDQ9kGAzbMkaiRvrTM+S
-	 hwDfnZFX038BrwQ80qT6x9rvovi+rmUXNfpIITyrPor5N78kcedKsVyfLSxIbADIIZ
-	 LJPYyjxVjv0GainLujzkO+FuSLnaOzfH9ZOno2u4=
+	b=rF4rfOFyoyOYgUJPyxAyC91o1S+Vg7VmcNF6ET/IiDsTszhCJgv5qhQrZmYWnivOx
+	 A7Z9sN4Cb30oovJ5YDJc808VxeND2P1aaeKNTIqxSLTRIm3TEm878FuZfTunTL8rOl
+	 s/YgERwEWgE7nAhGWY55N4w3xjzGOSb4fsL40P/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yaxing Guo <guoyaxing@bosc.ac.cn>,
-	Andrew Jones <andrew.jones@oss.qualcomm.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0290/1146] iommu/riscv: Skip IRQ count check when using MSI interrupts
+Subject: [PATCH 6.18 057/957] wifi: ieee80211: split mesh definitions out
 Date: Wed, 20 May 2026 18:09:00 +0200
-Message-ID: <20260520162154.779716211@linuxfoundation.org>
+Message-ID: <20260520162135.795893836@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,95 +67,552 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250319-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251255-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,bosc.ac.cn:email]
-X-Rspamd-Queue-Id: E59FF593F46
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sourmilk.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,hut.fi:email]
+X-Rspamd-Queue-Id: 5317D59475C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yaxing Guo <guoyaxing@bosc.ac.cn>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 7217cee35aadbb07e12673bcf1dcf729e1b2f6c9 ]
+[ Upstream commit 69674282fc97fffd98a85ab5b4837edbc5898145 ]
 
-In RISC-V IOMMU platform devices that use MSI interrupts (indicated by the
-presence of 'msi-parent' in the device tree), there are no wired interrupt
-lines, so calling platform_get_irq_count() returns 0 or -ENXIO, causing the
-driver to fail during probe.
+The ieee80211.h file has gotten very long, start splitting it
+by putting mesh definitions into a separate file.
 
-However, MSI interrupts are allocated dynamically via the MSI subsystem and
-do not appear in the device tree 'interrupts' property. Therefore, the
-driver should not require a non-zero IRQ count when 'msi-parent' is present.
-
-This patch fixes the bug where probe fails when using MSI interrupts
- (which do not have an 'interrupts' property in the device tree)..
-
-Fixes: <d5f88acdd6ff> ("iommu/riscv: Add support for platform msi")
-
-Signed-off-by: Yaxing Guo <guoyaxing@bosc.ac.cn>
-Reviewed-by: Andrew Jones <andrew.jones@oss.qualcomm.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Link: https://patch.msgid.link/20251105153843.489713ca8b34.I3befb4bf6ace0315758a1794224ddd18c4652e32@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: cb0caadb64ca ("wifi: ieee80211: fix definition of EHT-MCS 15 in MRU")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/riscv/iommu-platform.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ include/linux/ieee80211-mesh.h | 230 +++++++++++++++++++++++++++++++++
+ include/linux/ieee80211.h      | 211 +-----------------------------
+ 2 files changed, 232 insertions(+), 209 deletions(-)
+ create mode 100644 include/linux/ieee80211-mesh.h
 
-diff --git a/drivers/iommu/riscv/iommu-platform.c b/drivers/iommu/riscv/iommu-platform.c
-index 83a28c83f9914..8f15b06e84997 100644
---- a/drivers/iommu/riscv/iommu-platform.c
-+++ b/drivers/iommu/riscv/iommu-platform.c
-@@ -68,12 +68,7 @@ static int riscv_iommu_platform_probe(struct platform_device *pdev)
- 	iommu->caps = riscv_iommu_readq(iommu, RISCV_IOMMU_REG_CAPABILITIES);
- 	iommu->fctl = riscv_iommu_readl(iommu, RISCV_IOMMU_REG_FCTL);
- 
--	iommu->irqs_count = platform_irq_count(pdev);
--	if (iommu->irqs_count <= 0)
--		return dev_err_probe(dev, -ENODEV,
--				     "no IRQ resources provided\n");
--	if (iommu->irqs_count > RISCV_IOMMU_INTR_COUNT)
--		iommu->irqs_count = RISCV_IOMMU_INTR_COUNT;
-+	iommu->irqs_count = RISCV_IOMMU_INTR_COUNT;
- 
- 	igs = FIELD_GET(RISCV_IOMMU_CAPABILITIES_IGS, iommu->caps);
- 	switch (igs) {
-@@ -120,6 +115,13 @@ static int riscv_iommu_platform_probe(struct platform_device *pdev)
- 		fallthrough;
- 
- 	case RISCV_IOMMU_CAPABILITIES_IGS_WSI:
-+		iommu->irqs_count = platform_irq_count(pdev);
-+		if (iommu->irqs_count <= 0)
-+			return dev_err_probe(dev, -ENODEV,
-+					     "no IRQ resources provided\n");
-+		if (iommu->irqs_count > RISCV_IOMMU_INTR_COUNT)
-+			iommu->irqs_count = RISCV_IOMMU_INTR_COUNT;
+diff --git a/include/linux/ieee80211-mesh.h b/include/linux/ieee80211-mesh.h
+new file mode 100644
+index 0000000000000..4b829bcb38b61
+--- /dev/null
++++ b/include/linux/ieee80211-mesh.h
+@@ -0,0 +1,230 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * IEEE 802.11 mesh definitions
++ *
++ * Copyright (c) 2001-2002, SSH Communications Security Corp and Jouni Malinen
++ * <jkmaline@cc.hut.fi>
++ * Copyright (c) 2002-2003, Jouni Malinen <jkmaline@cc.hut.fi>
++ * Copyright (c) 2005, Devicescape Software, Inc.
++ * Copyright (c) 2006, Michael Wu <flamingice@sourmilk.net>
++ * Copyright (c) 2013 - 2014 Intel Mobile Communications GmbH
++ * Copyright (c) 2016 - 2017 Intel Deutschland GmbH
++ * Copyright (c) 2018 - 2025 Intel Corporation
++ */
 +
- 		for (vec = 0; vec < iommu->irqs_count; vec++)
- 			iommu->irqs[vec] = platform_get_irq(pdev, vec);
++#ifndef LINUX_IEEE80211_MESH_H
++#define LINUX_IEEE80211_MESH_H
++
++#include <linux/types.h>
++#include <linux/if_ether.h>
++
++#define IEEE80211_MAX_MESH_ID_LEN	32
++
++struct ieee80211s_hdr {
++	u8 flags;
++	u8 ttl;
++	__le32 seqnum;
++	u8 eaddr1[ETH_ALEN];
++	u8 eaddr2[ETH_ALEN];
++} __packed __aligned(2);
++
++/* Mesh flags */
++#define MESH_FLAGS_AE_A4 	0x1
++#define MESH_FLAGS_AE_A5_A6	0x2
++#define MESH_FLAGS_AE		0x3
++#define MESH_FLAGS_PS_DEEP	0x4
++
++/**
++ * enum ieee80211_preq_flags - mesh PREQ element flags
++ *
++ * @IEEE80211_PREQ_PROACTIVE_PREP_FLAG: proactive PREP subfield
++ */
++enum ieee80211_preq_flags {
++	IEEE80211_PREQ_PROACTIVE_PREP_FLAG	= 1<<2,
++};
++
++/**
++ * enum ieee80211_preq_target_flags - mesh PREQ element per target flags
++ *
++ * @IEEE80211_PREQ_TO_FLAG: target only subfield
++ * @IEEE80211_PREQ_USN_FLAG: unknown target HWMP sequence number subfield
++ */
++enum ieee80211_preq_target_flags {
++	IEEE80211_PREQ_TO_FLAG	= 1<<0,
++	IEEE80211_PREQ_USN_FLAG	= 1<<2,
++};
++
++/**
++ * struct ieee80211_mesh_chansw_params_ie - mesh channel switch parameters IE
++ * @mesh_ttl: Time To Live
++ * @mesh_flags: Flags
++ * @mesh_reason: Reason Code
++ * @mesh_pre_value: Precedence Value
++ *
++ * This structure represents the payload of the "Mesh Channel Switch
++ * Parameters element" as described in IEEE Std 802.11-2020 section
++ * 9.4.2.102.
++ */
++struct ieee80211_mesh_chansw_params_ie {
++	u8 mesh_ttl;
++	u8 mesh_flags;
++	__le16 mesh_reason;
++	__le16 mesh_pre_value;
++} __packed;
++
++/**
++ * struct ieee80211_meshconf_ie - Mesh Configuration element
++ * @meshconf_psel: Active Path Selection Protocol Identifier
++ * @meshconf_pmetric: Active Path Selection Metric Identifier
++ * @meshconf_congest: Congestion Control Mode Identifier
++ * @meshconf_synch: Synchronization Method Identifier
++ * @meshconf_auth: Authentication Protocol Identifier
++ * @meshconf_form: Mesh Formation Info
++ * @meshconf_cap: Mesh Capability (see &enum mesh_config_capab_flags)
++ *
++ * This structure represents the payload of the "Mesh Configuration
++ * element" as described in IEEE Std 802.11-2020 section 9.4.2.97.
++ */
++struct ieee80211_meshconf_ie {
++	u8 meshconf_psel;
++	u8 meshconf_pmetric;
++	u8 meshconf_congest;
++	u8 meshconf_synch;
++	u8 meshconf_auth;
++	u8 meshconf_form;
++	u8 meshconf_cap;
++} __packed;
++
++/**
++ * enum mesh_config_capab_flags - Mesh Configuration IE capability field flags
++ *
++ * @IEEE80211_MESHCONF_CAPAB_ACCEPT_PLINKS: STA is willing to establish
++ *	additional mesh peerings with other mesh STAs
++ * @IEEE80211_MESHCONF_CAPAB_FORWARDING: the STA forwards MSDUs
++ * @IEEE80211_MESHCONF_CAPAB_TBTT_ADJUSTING: TBTT adjustment procedure
++ *	is ongoing
++ * @IEEE80211_MESHCONF_CAPAB_POWER_SAVE_LEVEL: STA is in deep sleep mode or has
++ *	neighbors in deep sleep mode
++ *
++ * Enumerates the "Mesh Capability" as described in IEEE Std
++ * 802.11-2020 section 9.4.2.97.7.
++ */
++enum mesh_config_capab_flags {
++	IEEE80211_MESHCONF_CAPAB_ACCEPT_PLINKS		= 0x01,
++	IEEE80211_MESHCONF_CAPAB_FORWARDING		= 0x08,
++	IEEE80211_MESHCONF_CAPAB_TBTT_ADJUSTING		= 0x20,
++	IEEE80211_MESHCONF_CAPAB_POWER_SAVE_LEVEL	= 0x40,
++};
++
++#define IEEE80211_MESHCONF_FORM_CONNECTED_TO_GATE 0x1
++
++/*
++ * mesh channel switch parameters element's flag indicator
++ *
++ */
++#define WLAN_EID_CHAN_SWITCH_PARAM_TX_RESTRICT BIT(0)
++#define WLAN_EID_CHAN_SWITCH_PARAM_INITIATOR BIT(1)
++#define WLAN_EID_CHAN_SWITCH_PARAM_REASON BIT(2)
++
++/**
++ * struct ieee80211_rann_ie - RANN (root announcement) element
++ * @rann_flags: Flags
++ * @rann_hopcount: Hop Count
++ * @rann_ttl: Element TTL
++ * @rann_addr: Root Mesh STA Address
++ * @rann_seq: HWMP Sequence Number
++ * @rann_interval: Interval
++ * @rann_metric: Metric
++ *
++ * This structure represents the payload of the "RANN element" as
++ * described in IEEE Std 802.11-2020 section 9.4.2.111.
++ */
++struct ieee80211_rann_ie {
++	u8 rann_flags;
++	u8 rann_hopcount;
++	u8 rann_ttl;
++	u8 rann_addr[ETH_ALEN];
++	__le32 rann_seq;
++	__le32 rann_interval;
++	__le32 rann_metric;
++} __packed;
++
++enum ieee80211_rann_flags {
++	RANN_FLAG_IS_GATE = 1 << 0,
++};
++
++/* Mesh action codes */
++enum ieee80211_mesh_actioncode {
++	WLAN_MESH_ACTION_LINK_METRIC_REPORT,
++	WLAN_MESH_ACTION_HWMP_PATH_SELECTION,
++	WLAN_MESH_ACTION_GATE_ANNOUNCEMENT,
++	WLAN_MESH_ACTION_CONGESTION_CONTROL_NOTIFICATION,
++	WLAN_MESH_ACTION_MCCA_SETUP_REQUEST,
++	WLAN_MESH_ACTION_MCCA_SETUP_REPLY,
++	WLAN_MESH_ACTION_MCCA_ADVERTISEMENT_REQUEST,
++	WLAN_MESH_ACTION_MCCA_ADVERTISEMENT,
++	WLAN_MESH_ACTION_MCCA_TEARDOWN,
++	WLAN_MESH_ACTION_TBTT_ADJUSTMENT_REQUEST,
++	WLAN_MESH_ACTION_TBTT_ADJUSTMENT_RESPONSE,
++};
++
++/**
++ * enum ieee80211_mesh_sync_method - mesh synchronization method identifier
++ *
++ * @IEEE80211_SYNC_METHOD_NEIGHBOR_OFFSET: the default synchronization method
++ * @IEEE80211_SYNC_METHOD_VENDOR: a vendor specific synchronization method
++ *	that will be specified in a vendor specific information element
++ */
++enum ieee80211_mesh_sync_method {
++	IEEE80211_SYNC_METHOD_NEIGHBOR_OFFSET = 1,
++	IEEE80211_SYNC_METHOD_VENDOR = 255,
++};
++
++/**
++ * enum ieee80211_mesh_path_protocol - mesh path selection protocol identifier
++ *
++ * @IEEE80211_PATH_PROTOCOL_HWMP: the default path selection protocol
++ * @IEEE80211_PATH_PROTOCOL_VENDOR: a vendor specific protocol that will
++ *	be specified in a vendor specific information element
++ */
++enum ieee80211_mesh_path_protocol {
++	IEEE80211_PATH_PROTOCOL_HWMP = 1,
++	IEEE80211_PATH_PROTOCOL_VENDOR = 255,
++};
++
++/**
++ * enum ieee80211_mesh_path_metric - mesh path selection metric identifier
++ *
++ * @IEEE80211_PATH_METRIC_AIRTIME: the default path selection metric
++ * @IEEE80211_PATH_METRIC_VENDOR: a vendor specific metric that will be
++ *	specified in a vendor specific information element
++ */
++enum ieee80211_mesh_path_metric {
++	IEEE80211_PATH_METRIC_AIRTIME = 1,
++	IEEE80211_PATH_METRIC_VENDOR = 255,
++};
++
++/**
++ * enum ieee80211_root_mode_identifier - root mesh STA mode identifier
++ *
++ * These attribute are used by dot11MeshHWMPRootMode to set root mesh STA mode
++ *
++ * @IEEE80211_ROOTMODE_NO_ROOT: the mesh STA is not a root mesh STA (default)
++ * @IEEE80211_ROOTMODE_ROOT: the mesh STA is a root mesh STA if greater than
++ *	this value
++ * @IEEE80211_PROACTIVE_PREQ_NO_PREP: the mesh STA is a root mesh STA supports
++ *	the proactive PREQ with proactive PREP subfield set to 0
++ * @IEEE80211_PROACTIVE_PREQ_WITH_PREP: the mesh STA is a root mesh STA
++ *	supports the proactive PREQ with proactive PREP subfield set to 1
++ * @IEEE80211_PROACTIVE_RANN: the mesh STA is a root mesh STA supports
++ *	the proactive RANN
++ */
++enum ieee80211_root_mode_identifier {
++	IEEE80211_ROOTMODE_NO_ROOT = 0,
++	IEEE80211_ROOTMODE_ROOT = 1,
++	IEEE80211_PROACTIVE_PREQ_NO_PREP = 2,
++	IEEE80211_PROACTIVE_PREQ_WITH_PREP = 3,
++	IEEE80211_PROACTIVE_RANN = 4,
++};
++
++#endif /* LINUX_IEEE80211_MESH_H */
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index 1f4679092e69d..ebc12d1939273 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -252,8 +252,6 @@ static inline u16 ieee80211_sn_sub(u16 sn1, u16 sn2)
  
+ #define IEEE80211_MAX_SSID_LEN		32
+ 
+-#define IEEE80211_MAX_MESH_ID_LEN	32
+-
+ #define IEEE80211_FIRST_TSPEC_TSID	8
+ #define IEEE80211_NUM_TIDS		16
+ 
+@@ -881,40 +879,6 @@ static inline u16 ieee80211_get_sn(struct ieee80211_hdr *hdr)
+ 	return le16_get_bits(hdr->seq_ctrl, IEEE80211_SCTL_SEQ);
+ }
+ 
+-struct ieee80211s_hdr {
+-	u8 flags;
+-	u8 ttl;
+-	__le32 seqnum;
+-	u8 eaddr1[ETH_ALEN];
+-	u8 eaddr2[ETH_ALEN];
+-} __packed __aligned(2);
+-
+-/* Mesh flags */
+-#define MESH_FLAGS_AE_A4 	0x1
+-#define MESH_FLAGS_AE_A5_A6	0x2
+-#define MESH_FLAGS_AE		0x3
+-#define MESH_FLAGS_PS_DEEP	0x4
+-
+-/**
+- * enum ieee80211_preq_flags - mesh PREQ element flags
+- *
+- * @IEEE80211_PREQ_PROACTIVE_PREP_FLAG: proactive PREP subfield
+- */
+-enum ieee80211_preq_flags {
+-	IEEE80211_PREQ_PROACTIVE_PREP_FLAG	= 1<<2,
+-};
+-
+-/**
+- * enum ieee80211_preq_target_flags - mesh PREQ element per target flags
+- *
+- * @IEEE80211_PREQ_TO_FLAG: target only subfield
+- * @IEEE80211_PREQ_USN_FLAG: unknown target HWMP sequence number subfield
+- */
+-enum ieee80211_preq_target_flags {
+-	IEEE80211_PREQ_TO_FLAG	= 1<<0,
+-	IEEE80211_PREQ_USN_FLAG	= 1<<2,
+-};
+-
+ /**
+  * struct ieee80211_quiet_ie - Quiet element
+  * @count: Quiet Count
+@@ -993,24 +957,6 @@ struct ieee80211_sec_chan_offs_ie {
+ 	u8 sec_chan_offs;
+ } __packed;
+ 
+-/**
+- * struct ieee80211_mesh_chansw_params_ie - mesh channel switch parameters IE
+- * @mesh_ttl: Time To Live
+- * @mesh_flags: Flags
+- * @mesh_reason: Reason Code
+- * @mesh_pre_value: Precedence Value
+- *
+- * This structure represents the payload of the "Mesh Channel Switch
+- * Parameters element" as described in IEEE Std 802.11-2020 section
+- * 9.4.2.102.
+- */
+-struct ieee80211_mesh_chansw_params_ie {
+-	u8 mesh_ttl;
+-	u8 mesh_flags;
+-	__le16 mesh_reason;
+-	__le16 mesh_pre_value;
+-} __packed;
+-
+ /**
+  * struct ieee80211_wide_bw_chansw_ie - wide bandwidth channel switch IE
+  * @new_channel_width: New Channel Width
+@@ -1051,87 +997,6 @@ struct ieee80211_tim_ie {
+ 	};
+ } __packed;
+ 
+-/**
+- * struct ieee80211_meshconf_ie - Mesh Configuration element
+- * @meshconf_psel: Active Path Selection Protocol Identifier
+- * @meshconf_pmetric: Active Path Selection Metric Identifier
+- * @meshconf_congest: Congestion Control Mode Identifier
+- * @meshconf_synch: Synchronization Method Identifier
+- * @meshconf_auth: Authentication Protocol Identifier
+- * @meshconf_form: Mesh Formation Info
+- * @meshconf_cap: Mesh Capability (see &enum mesh_config_capab_flags)
+- *
+- * This structure represents the payload of the "Mesh Configuration
+- * element" as described in IEEE Std 802.11-2020 section 9.4.2.97.
+- */
+-struct ieee80211_meshconf_ie {
+-	u8 meshconf_psel;
+-	u8 meshconf_pmetric;
+-	u8 meshconf_congest;
+-	u8 meshconf_synch;
+-	u8 meshconf_auth;
+-	u8 meshconf_form;
+-	u8 meshconf_cap;
+-} __packed;
+-
+-/**
+- * enum mesh_config_capab_flags - Mesh Configuration IE capability field flags
+- *
+- * @IEEE80211_MESHCONF_CAPAB_ACCEPT_PLINKS: STA is willing to establish
+- *	additional mesh peerings with other mesh STAs
+- * @IEEE80211_MESHCONF_CAPAB_FORWARDING: the STA forwards MSDUs
+- * @IEEE80211_MESHCONF_CAPAB_TBTT_ADJUSTING: TBTT adjustment procedure
+- *	is ongoing
+- * @IEEE80211_MESHCONF_CAPAB_POWER_SAVE_LEVEL: STA is in deep sleep mode or has
+- *	neighbors in deep sleep mode
+- *
+- * Enumerates the "Mesh Capability" as described in IEEE Std
+- * 802.11-2020 section 9.4.2.97.7.
+- */
+-enum mesh_config_capab_flags {
+-	IEEE80211_MESHCONF_CAPAB_ACCEPT_PLINKS		= 0x01,
+-	IEEE80211_MESHCONF_CAPAB_FORWARDING		= 0x08,
+-	IEEE80211_MESHCONF_CAPAB_TBTT_ADJUSTING		= 0x20,
+-	IEEE80211_MESHCONF_CAPAB_POWER_SAVE_LEVEL	= 0x40,
+-};
+-
+-#define IEEE80211_MESHCONF_FORM_CONNECTED_TO_GATE 0x1
+-
+-/*
+- * mesh channel switch parameters element's flag indicator
+- *
+- */
+-#define WLAN_EID_CHAN_SWITCH_PARAM_TX_RESTRICT BIT(0)
+-#define WLAN_EID_CHAN_SWITCH_PARAM_INITIATOR BIT(1)
+-#define WLAN_EID_CHAN_SWITCH_PARAM_REASON BIT(2)
+-
+-/**
+- * struct ieee80211_rann_ie - RANN (root announcement) element
+- * @rann_flags: Flags
+- * @rann_hopcount: Hop Count
+- * @rann_ttl: Element TTL
+- * @rann_addr: Root Mesh STA Address
+- * @rann_seq: HWMP Sequence Number
+- * @rann_interval: Interval
+- * @rann_metric: Metric
+- *
+- * This structure represents the payload of the "RANN element" as
+- * described in IEEE Std 802.11-2020 section 9.4.2.111.
+- */
+-struct ieee80211_rann_ie {
+-	u8 rann_flags;
+-	u8 rann_hopcount;
+-	u8 rann_ttl;
+-	u8 rann_addr[ETH_ALEN];
+-	__le32 rann_seq;
+-	__le32 rann_interval;
+-	__le32 rann_metric;
+-} __packed;
+-
+-enum ieee80211_rann_flags {
+-	RANN_FLAG_IS_GATE = 1 << 0,
+-};
+-
+ enum ieee80211_ht_chanwidth_values {
+ 	IEEE80211_HT_CHANWIDTH_20MHZ = 0,
+ 	IEEE80211_HT_CHANWIDTH_ANY = 1,
+@@ -3971,21 +3836,6 @@ enum ieee80211_self_protected_actioncode {
+ 	WLAN_SP_MGK_ACK = 5,
+ };
+ 
+-/* Mesh action codes */
+-enum ieee80211_mesh_actioncode {
+-	WLAN_MESH_ACTION_LINK_METRIC_REPORT,
+-	WLAN_MESH_ACTION_HWMP_PATH_SELECTION,
+-	WLAN_MESH_ACTION_GATE_ANNOUNCEMENT,
+-	WLAN_MESH_ACTION_CONGESTION_CONTROL_NOTIFICATION,
+-	WLAN_MESH_ACTION_MCCA_SETUP_REQUEST,
+-	WLAN_MESH_ACTION_MCCA_SETUP_REPLY,
+-	WLAN_MESH_ACTION_MCCA_ADVERTISEMENT_REQUEST,
+-	WLAN_MESH_ACTION_MCCA_ADVERTISEMENT,
+-	WLAN_MESH_ACTION_MCCA_TEARDOWN,
+-	WLAN_MESH_ACTION_TBTT_ADJUSTMENT_REQUEST,
+-	WLAN_MESH_ACTION_TBTT_ADJUSTMENT_RESPONSE,
+-};
+-
+ /* Unprotected WNM action codes */
+ enum ieee80211_unprotected_wnm_actioncode {
+ 	WLAN_UNPROTECTED_WNM_ACTION_TIM = 0,
+@@ -4198,65 +4048,6 @@ enum ieee80211_tdls_actioncode {
+ /* BSS Coex IE information field bits */
+ #define WLAN_BSS_COEX_INFORMATION_REQUEST	BIT(0)
+ 
+-/**
+- * enum ieee80211_mesh_sync_method - mesh synchronization method identifier
+- *
+- * @IEEE80211_SYNC_METHOD_NEIGHBOR_OFFSET: the default synchronization method
+- * @IEEE80211_SYNC_METHOD_VENDOR: a vendor specific synchronization method
+- *	that will be specified in a vendor specific information element
+- */
+-enum ieee80211_mesh_sync_method {
+-	IEEE80211_SYNC_METHOD_NEIGHBOR_OFFSET = 1,
+-	IEEE80211_SYNC_METHOD_VENDOR = 255,
+-};
+-
+-/**
+- * enum ieee80211_mesh_path_protocol - mesh path selection protocol identifier
+- *
+- * @IEEE80211_PATH_PROTOCOL_HWMP: the default path selection protocol
+- * @IEEE80211_PATH_PROTOCOL_VENDOR: a vendor specific protocol that will
+- *	be specified in a vendor specific information element
+- */
+-enum ieee80211_mesh_path_protocol {
+-	IEEE80211_PATH_PROTOCOL_HWMP = 1,
+-	IEEE80211_PATH_PROTOCOL_VENDOR = 255,
+-};
+-
+-/**
+- * enum ieee80211_mesh_path_metric - mesh path selection metric identifier
+- *
+- * @IEEE80211_PATH_METRIC_AIRTIME: the default path selection metric
+- * @IEEE80211_PATH_METRIC_VENDOR: a vendor specific metric that will be
+- *	specified in a vendor specific information element
+- */
+-enum ieee80211_mesh_path_metric {
+-	IEEE80211_PATH_METRIC_AIRTIME = 1,
+-	IEEE80211_PATH_METRIC_VENDOR = 255,
+-};
+-
+-/**
+- * enum ieee80211_root_mode_identifier - root mesh STA mode identifier
+- *
+- * These attribute are used by dot11MeshHWMPRootMode to set root mesh STA mode
+- *
+- * @IEEE80211_ROOTMODE_NO_ROOT: the mesh STA is not a root mesh STA (default)
+- * @IEEE80211_ROOTMODE_ROOT: the mesh STA is a root mesh STA if greater than
+- *	this value
+- * @IEEE80211_PROACTIVE_PREQ_NO_PREP: the mesh STA is a root mesh STA supports
+- *	the proactive PREQ with proactive PREP subfield set to 0
+- * @IEEE80211_PROACTIVE_PREQ_WITH_PREP: the mesh STA is a root mesh STA
+- *	supports the proactive PREQ with proactive PREP subfield set to 1
+- * @IEEE80211_PROACTIVE_RANN: the mesh STA is a root mesh STA supports
+- *	the proactive RANN
+- */
+-enum ieee80211_root_mode_identifier {
+-	IEEE80211_ROOTMODE_NO_ROOT = 0,
+-	IEEE80211_ROOTMODE_ROOT = 1,
+-	IEEE80211_PROACTIVE_PREQ_NO_PREP = 2,
+-	IEEE80211_PROACTIVE_PREQ_WITH_PREP = 3,
+-	IEEE80211_PROACTIVE_RANN = 4,
+-};
+-
+ /*
+  * IEEE 802.11-2007 7.3.2.9 Country information element
+  *
+@@ -6098,4 +5889,6 @@ static inline u32 ieee80211_eml_trans_timeout_in_us(u16 eml_cap)
+ #define NAN_DEV_CAPA_NDPE_SUPPORTED		0x08
+ #define NAN_DEV_CAPA_S3_SUPPORTED		0x10
+ 
++#include "ieee80211-mesh.h"
++
+ #endif /* LINUX_IEEE80211_H */
 -- 
 2.53.0
 
