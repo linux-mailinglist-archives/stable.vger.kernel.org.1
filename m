@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-251881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252562-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EIEBJ5cfDmp26QUAu9opvQ
-	(envelope-from <stable+bounces-251881-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:54:47 +0200
+	id WP5CB6AmDmpZ6gUAu9opvQ
+	(envelope-from <stable+bounces-252562-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:24:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C4D459A4CF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:54:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 707CE59ACE6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:24:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0464C33E7163
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:45:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 97CF032EE5FF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:16:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD483F1ADC;
-	Wed, 20 May 2026 17:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C6B3F9F2D;
+	Wed, 20 May 2026 18:16:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHXs3i3I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CkjZ/6bM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87EB93546C8;
-	Wed, 20 May 2026 17:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 907A03F9F2A;
+	Wed, 20 May 2026 18:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299131; cv=none; b=nqFBa+5uhLuCGP9TMrT1e52C1cv6ybODHYQsfocn9nbU5PO5KHGCOfLoJyJKgFzQ/X5bi51eRc6RvGqcEZssogiF2exQ0Yl1YjOcRXvxLdsy61AzuHcDbzoPr7Rl3Dz5L3AS4SSmUsW/0C5q/nPDEbXt9ZNwqNmMX/LDJielJbs=
+	t=1779301001; cv=none; b=PIAegM+ul+ZAQY5ybRDJaG3Le2qzQAoBkA4mJMCfyAlNAilmYwUmZ1j+INbnoJ5iQN4KtG/x5/4aqvqrc71d84BZeFYfldD0Nny3jZst1f2Qrv4riuv7Z6ZPeDN2pOurx8guVooUT6Bw/fpBKsYvLuZkc2/knDUwsWooFIXjH68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299131; c=relaxed/simple;
-	bh=rFdzNKf0EAfrJWcrRrkTPfduyNRI721JYCkDGuMQUsQ=;
+	s=arc-20240116; t=1779301001; c=relaxed/simple;
+	bh=0Y32xDc9QAOC0ZfLm683jMvl+qfruTcrqUBBY4nq9e4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HI7RUM4/spXO0WRolx96QqSAL1o2K4StV0z0wXt9iiqI8O7i62WKqAxPRZezGH0HAfdFDQhSkQ0UToLZ2Lo/BFalAzz/O+YElcVszoCpZYOm1FSBRO/xPIa5yHFt82QPm5fRC2zDlkPeICnofPpJmbTDG4GaATgUjYFTyOnAtlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GHXs3i3I; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABD461F000E9;
-	Wed, 20 May 2026 17:45:29 +0000 (UTC)
+	 MIME-Version; b=DB/fBanlf3FW/CsC4fPVR8iIszG8EQ9T72avKFn5/OW+YPC90W7c8OdZmQqQHpvSHtDcQAXSy2koFJoSCGpe6S08NzDrInmxBC/D33OJ9zoDB5C8/rk47/CEqYNfNsqxI8/arSDhr+S4hdzQRokmLK91BEKIwGROlkY1Y2mHY+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CkjZ/6bM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F3A91F00893;
+	Wed, 20 May 2026 18:16:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299130;
-	bh=9A+E1BKuYYrTZlk7q9ztke51O8w3N7EjYuw/aS+dRMI=;
+	s=korg; t=1779300999;
+	bh=dQKOTmYXomD1LmLXQA7HQhL+WsxG0tXLfAKtMa51goU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GHXs3i3Iwv5DJIbi6+St8A+hTn29nD+NoIeB38O98q6Ke7Hgj7rLab8iQH2Xchh46
-	 ktO8avBT8LX5zgjMnF4JCUN0Q500m8YzPv+MBfrLL2ra+RjTGziX1LBU76eoTDpQA0
-	 l8YhbiPRvTxVKiHMdEcGO6YBvB122d7BM88hSBps=
+	b=CkjZ/6bM2L0qWJXtnqMoTMemrau7q6S3m2W3+vFO2NWXp+xWEcodVV00R3L8kIghr
+	 6G8ypACXbSVHTBwHCfA30y8mFTBkG4Q0CqK+OCggf/FqQyMZk49JHNmW5QauZ/yEQy
+	 uHdy1fH7oY0f5aDp2ZugTCemjdO5KSQzwWij8kx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	DaeMyung Kang <charsyam@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Michal Luczaj <mhal@rbox.co>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 675/957] ksmbd: destroy async_ida in ksmbd_conn_free()
+Subject: [PATCH 6.12 347/666] bpf, sockmap: Fix af_unix iter deadlock
 Date: Wed, 20 May 2026 18:19:18 +0200
-Message-ID: <20260520162149.176411628@linuxfoundation.org>
+Message-ID: <20260520162118.750705247@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,79 +77,125 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251881-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252562-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 3C4D459A4CF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linux.dev:email]
+X-Rspamd-Queue-Id: 707CE59ACE6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: DaeMyung Kang <charsyam@gmail.com>
+From: Michal Luczaj <mhal@rbox.co>
 
-[ Upstream commit b32c8db48212a34998c36d0bbc05b29d5c407ef5 ]
+[ Upstream commit 4d328dd695383224aa750ddee6b4ad40c0f8d205 ]
 
-When per-connection async_ida was converted from a dynamically
-allocated ksmbd_ida to an embedded struct ida, ksmbd_ida_free() was
-removed from the connection teardown path but no matching
-ida_destroy() was added.  The connection is therefore freed with the
-IDA's backing xarray still intact.
+bpf_iter_unix_seq_show() may deadlock when lock_sock_fast() takes the fast
+path and the iter prog attempts to update a sockmap. Which ends up spinning
+at sock_map_update_elem()'s bh_lock_sock():
 
-The kernel IDA API expects ida_init() and ida_destroy() to be paired
-over an object's lifetime, so add the missing cleanup before the
-connection is freed.
+WARNING: possible recursive locking detected
+test_progs/1393 is trying to acquire lock:
+ffff88811ec25f58 (slock-AF_UNIX){+...}-{3:3}, at: sock_map_update_elem+0xdb/0x1f0
 
-No leak has been observed in testing; this is a pairing fix to match
-the IDA lifetime rules, not a response to a reproduced regression.
+but task is already holding lock:
+ffff88811ec25f58 (slock-AF_UNIX){+...}-{3:3}, at: __lock_sock_fast+0x37/0xe0
 
-Fixes: d40012a83f87 ("cifsd: declare ida statically")
-Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+other info that might help us debug this:
+ Possible unsafe locking scenario:
+
+       CPU0
+       ----
+  lock(slock-AF_UNIX);
+  lock(slock-AF_UNIX);
+
+ *** DEADLOCK ***
+
+ May be due to missing lock nesting notation
+
+4 locks held by test_progs/1393:
+ #0: ffff88814b59c790 (&p->lock){+.+.}-{4:4}, at: bpf_seq_read+0x59/0x10d0
+ #1: ffff88811ec25fd8 (sk_lock-AF_UNIX){+.+.}-{0:0}, at: bpf_seq_read+0x42c/0x10d0
+ #2: ffff88811ec25f58 (slock-AF_UNIX){+...}-{3:3}, at: __lock_sock_fast+0x37/0xe0
+ #3: ffffffff85a6a7c0 (rcu_read_lock){....}-{1:3}, at: bpf_iter_run_prog+0x51d/0xb00
+
+Call Trace:
+ dump_stack_lvl+0x5d/0x80
+ print_deadlock_bug.cold+0xc0/0xce
+ __lock_acquire+0x130f/0x2590
+ lock_acquire+0x14e/0x2b0
+ _raw_spin_lock+0x30/0x40
+ sock_map_update_elem+0xdb/0x1f0
+ bpf_prog_2d0075e5d9b721cd_dump_unix+0x55/0x4f4
+ bpf_iter_run_prog+0x5b9/0xb00
+ bpf_iter_unix_seq_show+0x1f7/0x2e0
+ bpf_seq_read+0x42c/0x10d0
+ vfs_read+0x171/0xb20
+ ksys_read+0xff/0x200
+ do_syscall_64+0x6b/0x3a0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Fixes: 2c860a43dd77 ("bpf: af_unix: Implement BPF iterator for UNIX domain socket.")
+Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
+Suggested-by: Martin KaFai Lau <martin.lau@linux.dev>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260414-unix-proto-update-null-ptr-deref-v4-2-2af6fe97918e@rbox.co
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/connection.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ net/unix/af_unix.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/fs/smb/server/connection.c b/fs/smb/server/connection.c
-index b4ef62b9e660c..a03132adcc1e5 100644
---- a/fs/smb/server/connection.c
-+++ b/fs/smb/server/connection.c
-@@ -41,6 +41,15 @@ void ksmbd_conn_free(struct ksmbd_conn *conn)
- 	kfree(conn->preauth_info);
- 	kfree(conn->mechToken);
- 	if (atomic_dec_and_test(&conn->refcnt)) {
-+		/*
-+		 * async_ida is embedded in struct ksmbd_conn, so pair
-+		 * ida_destroy() with the final kfree() rather than with
-+		 * the unconditional field teardown above.  This keeps
-+		 * the IDA valid for the entire lifetime of the struct,
-+		 * even while other refcount holders (oplock / vfs
-+		 * durable handles) still reference the connection.
-+		 */
-+		ida_destroy(&conn->async_ida);
- 		conn->transport->ops->free_transport(conn->transport);
- 		kfree(conn);
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index fd7f161e6e396..a796cd648f446 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -3621,15 +3621,14 @@ static int bpf_iter_unix_seq_show(struct seq_file *seq, void *v)
+ 	struct bpf_prog *prog;
+ 	struct sock *sk = v;
+ 	uid_t uid;
+-	bool slow;
+ 	int ret;
+ 
+ 	if (v == SEQ_START_TOKEN)
+ 		return 0;
+ 
+-	slow = lock_sock_fast(sk);
++	lock_sock(sk);
+ 
+-	if (unlikely(sk_unhashed(sk))) {
++	if (unlikely(sock_flag(sk, SOCK_DEAD))) {
+ 		ret = SEQ_SKIP;
+ 		goto unlock;
  	}
+@@ -3639,7 +3638,7 @@ static int bpf_iter_unix_seq_show(struct seq_file *seq, void *v)
+ 	prog = bpf_iter_get_info(&meta, false);
+ 	ret = unix_prog_seq_show(prog, &meta, v, uid);
+ unlock:
+-	unlock_sock_fast(sk, slow);
++	release_sock(sk);
+ 	return ret;
+ }
+ 
 -- 
 2.53.0
 
