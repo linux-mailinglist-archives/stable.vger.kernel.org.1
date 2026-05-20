@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-252197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251599-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iM2rCEsjDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252197-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:10:35 +0200
+	id oAj4BCXyDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251599-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:40:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90DFB59A842
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:10:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCFE559443C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:40:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BA6C438E426E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:00:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 10E38312B76A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:33:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA333F6C5F;
-	Wed, 20 May 2026 18:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A23A3A3825;
+	Wed, 20 May 2026 17:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t5zfWo7f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ly13JKSj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1289F3F54C7;
-	Wed, 20 May 2026 18:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E48369D7E;
+	Wed, 20 May 2026 17:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300046; cv=none; b=DiCUnwdbX9p+YMCoHKoPfN0P4lBx+hvtodGEocGw3a82Y88O7dm5h6QKTtO6OO7KCFeAuiMDTEZrkksAX2br00b9jhE9wXQVn9nLKmz/NT1KIl3612ktI/j2AOmhZlRyK4lX4GO+jQ6D2v0VC2VE3X2duEofVng6scY7TfLxOKM=
+	t=1779298400; cv=none; b=Ppyt7ZlhumsyiL18XW3kf8lGV2/FBnR8izKU5u580p1C9V1ii/6Z4y0Lh+qdwLPoxYANsWQABP/Qhj5sN+SOI1kt7+VKqDiM7cK8H4cfFZspQo4Bary7/LhWIGLXa8Gm6F9YTCd5YdeuSycXbG1/DWPZ7MdgPNR9Xsxpwx8UVDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300046; c=relaxed/simple;
-	bh=e0R9ELe3iVb0RJ8VcJyv5ErqxZ8zVU3zZyLgF/RDs7Q=;
+	s=arc-20240116; t=1779298400; c=relaxed/simple;
+	bh=uEiBYne8AqzX11+RmBuyW13DIAP8J6WhLbRYMROOjWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aGocyxMywgnCUnBjyW1ppAqiCwu2fiQsiBWN0cwd0RDydCU2WVf3vTnVCv0cGaQz5ROGqQJD761iRS8G9mL0aZi9LnARHKZoH+ZMdZDOOIr4Pk1dHqi/BjuO/6EKVN/UEQAA3sL7Nze7sr/noarmEpj45n5fUGHRW5r2enYgAwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t5zfWo7f; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C871F000E9;
-	Wed, 20 May 2026 18:00:44 +0000 (UTC)
+	 MIME-Version; b=ca8r5pk+LW7vC5lPi4kYh0ap49ubWaNfd+xO9KreXIvwO3AP/6/V8fIY8ZqrFWEZb3vco+VB3jYYp0vAN02wpRcb88Qk37s1n4IdA1a0VPEBEI1WWcQqIWu+zKP08ReuwS63TuTPInC4FPdTklPSmI7F/ZxAEopwNACHEuQIbG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ly13JKSj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48A471F000E9;
+	Wed, 20 May 2026 17:33:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300045;
-	bh=Us6hUJTHqYuGn4+zinbYBb/Rw1jtMWATdH0EU4q10yw=;
+	s=korg; t=1779298399;
+	bh=UX3iAwtyv6RXDO8m3GtDgN9pArH9QBa3xF6/Nw65Hg0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=t5zfWo7fYz898b/nkJVx9FVqrWkTGtmSQpbuc//xLxcO1DGJK4HS25S6zbWwi6y2/
-	 HYXvWGCpW7OHjFPLr3p0w5SoL/RpHck/IqhObXZa27Z3e+t2k66pOIMC/+YJHLe9jb
-	 H3jMkMof7tu8d8pIIcq+tmyGRvnGaEG2tHAlxda8=
+	b=ly13JKSjsaEl0U11BWlRwhAYCrzVqlBUVKd1WXeEGbO/b98/GT0X+dXQYcqJJEunO
+	 3WOdSfLyouD8wqFemdQAzt7YXpCyDwz64NDZSGPSp+rK1hZBzLfj8NvznkAQSO5ZfM
+	 U1XwlXsdf4VkLZ1AGD2jm4BkjOCBBu0BBIJyGpso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Masney <bmasney@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 026/666] irqchip/irq-pic32-evic: Address warning related to wrong printf() formatter
+Subject: [PATCH 6.18 354/957] gfs2: less aggressive low-memory log flushing
 Date: Wed, 20 May 2026 18:13:57 +0200
-Message-ID: <20260520162111.801800613@linuxfoundation.org>
+Message-ID: <20260520162142.206802549@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252197-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251599-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 90DFB59A842
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: BCFE559443C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Masney <bmasney@redhat.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit 86be659415b0ddefebc3120e309091aa215a9064 ]
+[ Upstream commit 7288185ce87ec70133b7bc3b694b0f74bf46a0ee ]
 
-This driver is currently only build on 32 bit MIPS systems. When building
-it on x86_64, the following warning occurs:
+It turns out that for some workloads, the fix in commit b74cd55aa9a9d
+("gfs2: low-memory forced flush fixes") causes the number of forced log
+flushes to increase to a degree that the overall filesystem performance
+drops significantly.  Address that by forcing a log flush only when
+gfs2_writepages cannot make any progress rather than when it cannot make
+"enough" progress.
 
-    drivers/irqchip/irq-pic32-evic.c: In function ‘pic32_ext_irq_of_init’:
-    ./include/linux/kern_levels.h:5:25: error: format ‘%d’ expects argument of type
-     ‘int’, but argument 2 has type ‘long unsigned int’ [-Werror=format=]
-
-Update the printf() formatter in preparation for allowing this driver to
-be compiled on all architectures.
-
-Fixes: aaa8666ada780 ("IRQCHIP: irq-pic32-evic: Add support for PIC32 interrupt controller")
-Signed-off-by: Brian Masney <bmasney@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Link: https://patch.msgid.link/20260222-irqchip-pic32-v1-1-37f50d1f14af@redhat.com
+Fixes: b74cd55aa9a9d ("gfs2: low-memory forced flush fixes")
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-pic32-evic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/gfs2/aops.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/irqchip/irq-pic32-evic.c b/drivers/irqchip/irq-pic32-evic.c
-index eb6ca516a1664..9b309d8ec20c3 100644
---- a/drivers/irqchip/irq-pic32-evic.c
-+++ b/drivers/irqchip/irq-pic32-evic.c
-@@ -196,7 +196,7 @@ static void __init pic32_ext_irq_of_init(struct irq_domain *domain)
+diff --git a/fs/gfs2/aops.c b/fs/gfs2/aops.c
+index 47d74afd63ac9..eafe0488b10d4 100644
+--- a/fs/gfs2/aops.c
++++ b/fs/gfs2/aops.c
+@@ -159,6 +159,7 @@ static int gfs2_writepages(struct address_space *mapping,
+ 			   struct writeback_control *wbc)
+ {
+ 	struct gfs2_sbd *sdp = gfs2_mapping2sbd(mapping);
++	long initial_nr_to_write = wbc->nr_to_write;
+ 	struct iomap_writepage_ctx wpc = {
+ 		.inode		= mapping->host,
+ 		.wbc		= wbc,
+@@ -167,13 +168,13 @@ static int gfs2_writepages(struct address_space *mapping,
+ 	int ret;
  
- 	of_property_for_each_u32(node, pname, hwirq) {
- 		if (i >= ARRAY_SIZE(priv->ext_irqs)) {
--			pr_warn("More than %d external irq, skip rest\n",
-+			pr_warn("More than %zu external irq, skip rest\n",
- 				ARRAY_SIZE(priv->ext_irqs));
- 			break;
- 		}
+ 	/*
+-	 * Even if we didn't write enough pages here, we might still be holding
++	 * Even if we didn't write any pages here, we might still be holding
+ 	 * dirty pages in the ail. We forcibly flush the ail because we don't
+ 	 * want balance_dirty_pages() to loop indefinitely trying to write out
+ 	 * pages held in the ail that it can't find.
+ 	 */
+ 	ret = iomap_writepages(&wpc);
+-	if (ret == 0 && wbc->nr_to_write > 0)
++	if (ret == 0 && wbc->nr_to_write == initial_nr_to_write)
+ 		set_bit(SDF_FORCE_AIL_FLUSH, &sdp->sd_flags);
+ 	return ret;
+ }
 -- 
 2.53.0
 
