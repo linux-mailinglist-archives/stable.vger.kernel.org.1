@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-250435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251402-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UByZO33yDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-250435-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:42:22 +0200
+	id wGYMHWUaDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251402-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:32:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F9CD5945AF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:42:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7998599BED
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:32:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2584F340F46D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:44:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4A5D03432269
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:25:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70BB7370AF4;
-	Wed, 20 May 2026 16:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C89F3F4DC0;
+	Wed, 20 May 2026 17:24:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FqT1GsMx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kALoV5jQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA7436EAB8;
-	Wed, 20 May 2026 16:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6C03F44EA;
+	Wed, 20 May 2026 17:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295407; cv=none; b=UXSlq29UsbW9Ie2NIknogqfjpDHT/KyBC4J5BpSZ3kVzI3hB9npVH0+7w3B7p4zzGucRoBZQ/m1FTAnVfG2A8vWkheklya1gj/kKBp3RRLDmALT3u3Lk1ERzB1lR3vU9DMEJ+UQ634Otw3vPxYRVOjmheSiZhyt9ygY3C4yup0o=
+	t=1779297887; cv=none; b=qUzOFdskMk6UkMywBXITsdLQUlZVWqIgKJ05iduYBvrSFr9K8ImuGOAXBUVW5u7CKDbIArJ2assA24MhPFguQacbd2F/qJqIEJt7lG2wYxZcz81PyJkUW0/4KHuHD7VfHaTnxWhybha8PxnBcTUshPlZk85nlbb4fYwKptYBecA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295407; c=relaxed/simple;
-	bh=KquaecswzJ6ATd1bXKKZm/Hp4ASTaPyjR5H82kKdUPg=;
+	s=arc-20240116; t=1779297887; c=relaxed/simple;
+	bh=bA5DwWhqmOcGGPCIB4CcA0j21l3gu6bgiOJM3GYwXFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ENTgBp4WykIrPoYw15eYqfJwjXE0tCZdFh1At5TIZBoOkugcTKQrqzw+8thXCws6eEFVI3nanHNzncNZeatu5h4F7RLume4VI6Y0q/Hq53TgMRakbAzLmgF9oh59ySkSEhhfLroC/yMKhmdc0v98AcxkQjyCGGArzLHb5Xivzfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FqT1GsMx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 796F91F000E9;
-	Wed, 20 May 2026 16:43:25 +0000 (UTC)
+	 MIME-Version; b=rTS/EvKSRnWOeltVjOFV+uC5WhczM5NOAb+TexUO+JSwtt1EsJ7KjYzy38kwtzEDyxo2dzm2qQMQkDIwbfUaBWkhjZ0NXdKKsr6bbkyXyuyNed2EuTqDPQolslICslWyBE+mvkCprj0Y8xAqz5gGbsHHFbrhXQqiL+RlUjdRVwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kALoV5jQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C42B1F000E9;
+	Wed, 20 May 2026 17:24:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295406;
-	bh=1grX5NXIPAwcA3WYVHDLkvkhx/BWbl/2cD/ZTGhANC4=;
+	s=korg; t=1779297885;
+	bh=/2InMUfeqVQMRpj1VS71YET1+PmDcCtn9mqUJFz4aBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FqT1GsMxVXx3LJq2snpDFDifjHQhWHkRJNqhKzxEGDPuls7BQzehb0TcTr1VwkIRq
-	 NUVDF7R5AIbnimsTrcS33kCRdJOJ/sAxGdRt9fGBM0cH+/EEXGiNfEcF3pMxexHH0D
-	 +ppjO6HnWvBA6ckMOmgKZIvgBZcqnmVW8ueHqr9c=
+	b=kALoV5jQCEp1efMoUxEqAcqPRuCHqBjmX/hizoxDrqq8cbUJAVgZI9S1Q3eBUc/+x
+	 r5QExa2rQjs3TlZCtI1R43LnhY6Se7Q74SZ9RjPbifjTbSUr5r0DWVnLgjHP6lAeJ+
+	 jR8e4AOmh+xlenN205mprCWjhclhUTCvO4Ffcd2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ravi Hothi <ravi.hothi@oss.qualcomm.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0407/1146] ASoC: qcom: audioreach: explicitly enable speaker protection modules
+Subject: [PATCH 6.18 174/957] Bluetooth: L2CAP: Fix printing wrong information if SDU length exceeds MTU
 Date: Wed, 20 May 2026 18:10:57 +0200
-Message-ID: <20260520162157.409439341@linuxfoundation.org>
+Message-ID: <20260520162138.327260173@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,76 +66,69 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251402-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250435-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 8F9CD5945AF
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,mpg.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C7998599BED
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ravi Hothi <ravi.hothi@oss.qualcomm.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit b481eabe5a193ba8499f446c2ab7e0ac042f8776 ]
+[ Upstream commit 15bf35a660eb82a49f8397fc3d3acada8dae13db ]
 
-Speaker protection and VI feedback modules are disabled by default.
-Explicitly enable them when configuring speaker protection.
+The code was printing skb->len and sdu_len in the places where it should
+be sdu_len and chan->imtu respectively to match the if conditions.
 
-Fixes: 3e43a8c033c3 ("ASoC: qcom: audioreach: Add support for VI Sense module")
-Fixes: 0db76f5b2235 ("ASoC: qcom: audioreach: Add support for Speaker Protection module")
-Signed-off-by: Ravi Hothi <ravi.hothi@oss.qualcomm.com>
-Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260326113531.3144998-1-ravi.hothi@oss.qualcomm.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/linux-bluetooth/20260315132013.75ab40c5@kernel.org/T/#m1418f9c82eeff8510c1beaa21cf53af20db96c06
+Fixes: e1d9a6688986 ("Bluetooth: LE L2CAP: Disconnect if received packet's SDU exceeds IMTU")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/qcom/qdsp6/audioreach.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/bluetooth/l2cap_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/qcom/qdsp6/audioreach.c b/sound/soc/qcom/qdsp6/audioreach.c
-index 241c3b4479c6f..ff8cd55b0d898 100644
---- a/sound/soc/qcom/qdsp6/audioreach.c
-+++ b/sound/soc/qcom/qdsp6/audioreach.c
-@@ -1365,9 +1365,14 @@ int audioreach_set_media_format(struct q6apm_graph *graph,
- 	case MODULE_ID_SPEAKER_PROTECTION:
- 		rc = audioreach_speaker_protection(graph, module,
- 						   PARAM_ID_SP_OP_MODE_NORMAL);
-+		if (!rc)
-+			rc = audioreach_module_enable(graph, module, true);
-+
- 		break;
- 	case MODULE_ID_SPEAKER_PROTECTION_VI:
- 		rc = audioreach_speaker_protection_vi(graph, module, cfg);
-+		if (!rc)
-+			rc = audioreach_module_enable(graph, module, true);
- 		break;
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 29e23f20dc438..7664723a34d0a 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -6733,7 +6733,7 @@ static int l2cap_ecred_data_rcv(struct l2cap_chan *chan, struct sk_buff *skb)
  
- 	default:
+ 		if (sdu_len > chan->imtu) {
+ 			BT_ERR("Too big LE L2CAP SDU length: len %u > %u",
+-			       skb->len, sdu_len);
++			       sdu_len, chan->imtu);
+ 			l2cap_send_disconn_req(chan, ECONNRESET);
+ 			err = -EMSGSIZE;
+ 			goto failed;
 -- 
 2.53.0
 
