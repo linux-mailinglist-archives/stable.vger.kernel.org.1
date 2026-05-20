@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250624-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eKeCNVr7DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-252230-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:20:10 +0200
+	id iFUXJC0SDmoJ6AUAu9opvQ
+	(envelope-from <stable+bounces-250624-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:57:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EA5A595D5E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:20:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B8E5598EF2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:57:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A4C133043A78
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:02:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5D72133E6FF3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:51:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE4093A3E79;
-	Wed, 20 May 2026 18:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C064634216C;
+	Wed, 20 May 2026 16:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oLesDluB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aGV4jde3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DEEC340A57;
-	Wed, 20 May 2026 18:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F7023B61B;
+	Wed, 20 May 2026 16:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300133; cv=none; b=T/wR66/fGmB1bTKPMsZRYKYQfU3NJoif3vMVya1/nT2H/tFyEXAEk0E10PTSEvnEv1I9+tIgHPJOIO0n+k4e/blfnTo5FzOumwe3iEviPKcp+TVfdY1WwmwcxtVqicn/Wceidf6rRV7BVFLNiM5ngDCMca1Lg5Vx0NKCYK9vo8w=
+	t=1779295898; cv=none; b=og3QKFKRuF6bGr79XaVDrOernK+igIuhma49q8I5sQUJiassRhLT1Otgcjmr8K+kp1HDSwJcybVQuZOW56JpduuhMRARNyuAekjayutL29AG/aZ2x1wboOX2hE3NJ4DEtyYor7HoZeyd1eliG9aVW1FV3a7/bD3Jr+e/8Q6nqeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300133; c=relaxed/simple;
-	bh=iu3jBR5gpuarm5VDPybVfUsehpc7wgWcpVj2cHnPqiE=;
+	s=arc-20240116; t=1779295898; c=relaxed/simple;
+	bh=knfMAbMjCoOFG9iCcFkGo7Hge54R6k61Ftj6jRSyG58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nQoOBhcIX31K00QH69ZKC9i/Aex/q2/mbpoZaTe3evu9c8XxL9PhZVrrB8y8IHhqWHCKW2jKZFlQ4oYISW9uwQFzS8QpMtHrdEFbIXpvskiMnHJmII2cYULh0Lf7f6OlVxna+c4/HASpI92AJ4BtnpEBch85o4s9VnDa69pgp1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oLesDluB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01BB1F000E9;
-	Wed, 20 May 2026 18:02:11 +0000 (UTC)
+	 MIME-Version; b=dRREZ2fxNIyM6ULLYvhRDpBDZ+siNd/yfr+d1PGIc8IAw+kBwd007mf14BhYRAvv/K8dcFcRpfVUSKXKet3tt87I38W3Ch3/5YpoP+eTrsTT/IYK+7oUFc6zjPWmJqegmkG07zVlClp71yaVGRRQFOvfcpPbZHlUSJc+u0ZS9Do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aGV4jde3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAE321F000E9;
+	Wed, 20 May 2026 16:51:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300132;
-	bh=3MRalDC0MgJ7pXsdrBwaQZ9M6anFYxFLhj2blt5P2kM=;
+	s=korg; t=1779295897;
+	bh=m2xbqkonBKHj9CdxnWLARnKMtbZYmj4vbLaB4O4iYnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oLesDluBxU+t+IEo+WuHMhoMWwCNT5WNXjP3b4I5YlKVhgDGgagm227NNMZA8VL1f
-	 riYbpOono3gN0rApydA+D2MnKosGIBAP8BrEtkP7aIsW61yWXmslYYiRBZXfekhSqL
-	 R7y0q6r81FZrDhDNLxdYroB+3tozRUbxbmx/kkvw=
+	b=aGV4jde3cBOgxJEghDGElQn0RW0ulb7PoUy7H5NBORkcoVpAe33/fAkO3Jcfg/qGC
+	 9pJbKxx5oG/e1KOoO/vC9QaJ8WsW7tJj7WAS0gPlIgVki3MjT5Vn1Ddoq9OKJgAXYK
+	 sszZTuWQO5ofTZTRM0sKFBXU9xTzrkHm0/2LtF+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Marc Zyngier <maz@kernel.org>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 032/666] locking: Fix rwlock support in <linux/spinlock_up.h>
+Subject: [PATCH 7.0 0593/1146] dt-bindings: interrupt-controller: arm,gic-v3: Fix EPPI range
 Date: Wed, 20 May 2026 18:14:03 +0200
-Message-ID: <20260520162111.930433043@linuxfoundation.org>
+Message-ID: <20260520162201.597882352@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,108 +65,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252230-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250624-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,infradead.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,acm.org:email]
-X-Rspamd-Queue-Id: 7EA5A595D5E
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,glider.be:email,arm.com:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 1B8E5598EF2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 756a0e011cfca0b45a48464aa25b05d9a9c2fb0b ]
+[ Upstream commit 15cfc8984defc17e5e4de1f58db7b993240fcbda ]
 
-Architecture support for rwlocks must be available whether or not
-CONFIG_DEBUG_SPINLOCK has been defined. Move the definitions of the
-arch_{read,write}_{lock,trylock,unlock}() macros such that these become
-visbile if CONFIG_DEBUG_SPINLOCK=n.
+According to the "Arm Generic Interrupt Controller (GIC) Architecture
+Specification, v3 and v4", revision H.b[1], there can be only 64
+Extended PPI interrupts.
 
-This patch prepares for converting do_raw_{read,write}_trylock() into
-inline functions. Without this patch that conversion triggers a build
-failure for UP architectures, e.g. arm-ep93xx. I used the following
-kernel configuration to build the kernel for that architecture:
+[1] https://developer.arm.com/documentation/ihi0069/hb/
 
-	CONFIG_ARCH_MULTIPLATFORM=y
-	CONFIG_ARCH_MULTI_V7=n
-	CONFIG_ATAGS=y
-	CONFIG_MMU=y
-	CONFIG_ARCH_MULTI_V4T=y
-	CONFIG_CPU_LITTLE_ENDIAN=y
-	CONFIG_ARCH_EP93XX=y
-
-Fixes: fb1c8f93d869 ("[PATCH] spinlock consolidation")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20260313171510.230998-2-bvanassche@acm.org
+Fixes: 4b049063e0bcbfd3 ("dt-bindings: interrupt-controller: arm,gic-v3: Describe EPPI range support")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Brain-farted-by: Marc Zyngier <maz@kernel.org>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Link: https://patch.msgid.link/3e49a63c6b2b6ee48e3737adee87781f9c136c5f.1772792753.git.geert+renesas@glider.be
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/spinlock_up.h | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ .../devicetree/bindings/interrupt-controller/arm,gic-v3.yaml    | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/spinlock_up.h b/include/linux/spinlock_up.h
-index c87204247592f..a132fc562297a 100644
---- a/include/linux/spinlock_up.h
-+++ b/include/linux/spinlock_up.h
-@@ -48,16 +48,6 @@ static inline void arch_spin_unlock(arch_spinlock_t *lock)
- 	lock->slock = 1;
- }
+diff --git a/Documentation/devicetree/bindings/interrupt-controller/arm,gic-v3.yaml b/Documentation/devicetree/bindings/interrupt-controller/arm,gic-v3.yaml
+index bfd30aae682bf..360a0643a0b56 100644
+--- a/Documentation/devicetree/bindings/interrupt-controller/arm,gic-v3.yaml
++++ b/Documentation/devicetree/bindings/interrupt-controller/arm,gic-v3.yaml
+@@ -50,7 +50,7 @@ properties:
+       The 2nd cell contains the interrupt number for the interrupt type.
+       SPI interrupts are in the range [0-987]. PPI interrupts are in the
+       range [0-15]. Extended SPI interrupts are in the range [0-1023].
+-      Extended PPI interrupts are in the range [0-127].
++      Extended PPI interrupts are in the range [0-63].
  
--/*
-- * Read-write spinlocks. No debug version.
-- */
--#define arch_read_lock(lock)		do { barrier(); (void)(lock); } while (0)
--#define arch_write_lock(lock)		do { barrier(); (void)(lock); } while (0)
--#define arch_read_trylock(lock)	({ barrier(); (void)(lock); 1; })
--#define arch_write_trylock(lock)	({ barrier(); (void)(lock); 1; })
--#define arch_read_unlock(lock)		do { barrier(); (void)(lock); } while (0)
--#define arch_write_unlock(lock)	do { barrier(); (void)(lock); } while (0)
--
- #else /* DEBUG_SPINLOCK */
- #define arch_spin_is_locked(lock)	((void)(lock), 0)
- /* for sched/core.c and kernel_lock.c: */
-@@ -68,4 +58,14 @@ static inline void arch_spin_unlock(arch_spinlock_t *lock)
- 
- #define arch_spin_is_contended(lock)	(((void)(lock), 0))
- 
-+/*
-+ * Read-write spinlocks. No debug version.
-+ */
-+#define arch_read_lock(lock)		do { barrier(); (void)(lock); } while (0)
-+#define arch_write_lock(lock)		do { barrier(); (void)(lock); } while (0)
-+#define arch_read_trylock(lock)	({ barrier(); (void)(lock); 1; })
-+#define arch_write_trylock(lock)	({ barrier(); (void)(lock); 1; })
-+#define arch_read_unlock(lock)		do { barrier(); (void)(lock); } while (0)
-+#define arch_write_unlock(lock)	do { barrier(); (void)(lock); } while (0)
-+
- #endif /* __LINUX_SPINLOCK_UP_H */
+       The 3rd cell is the flags, encoded as follows:
+       bits[3:0] trigger type and level flags.
 -- 
 2.53.0
 
