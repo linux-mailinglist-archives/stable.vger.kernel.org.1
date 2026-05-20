@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-253133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252038-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QB0KL9cDDmoD5gUAu9opvQ
-	(envelope-from <stable+bounces-253133-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:56:23 +0200
+	id uAHtOpL5DWq75AUAu9opvQ
+	(envelope-from <stable+bounces-252038-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E83A35976CA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:56:22 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FC315958D6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:12:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 62AA230E3EAF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2FBB83129C60
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:53:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2547A402B8C;
-	Wed, 20 May 2026 18:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E6B43F44CD;
+	Wed, 20 May 2026 17:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QbrU43Uf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LsamIue1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D73FE3FBEC0;
-	Wed, 20 May 2026 18:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8483F58D6;
+	Wed, 20 May 2026 17:53:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302491; cv=none; b=r8+8uJhjDjpdhL+QB1iRFlfXjOOAeA92ZJfFTaj0HFA6isSLxUZsQWJp9J6GoovKrWjHsK71ONj9KY0hPgSkcGnFmA4vosHrvUvHkAVTqeWKJ96Zk+7dV0a0QTJBR4fmwmZVlkF/3E5dX+YKAyQxSOM6OeHoAmrXOKZUcvw6EC0=
+	t=1779299583; cv=none; b=MH7/HMEtpzU4L6hThhqgSXYJJVzAfFcATPxxchwqXgWbnywsZgJs8pU92NRgYpjIPxahF+p6YlQGgeF6Tn+mnMsglCMcwUugzTzpPLvD2bFYBdum1iX/kdFhkgtv+mzNx3+c3lXAei3tjSrsY4OAigNLREqcZGs0xNzkquF3gPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302491; c=relaxed/simple;
-	bh=2NVOIGLM49XTsMAv+uXv5xA/RK79ziLcP1Dbm7Vdado=;
+	s=arc-20240116; t=1779299583; c=relaxed/simple;
+	bh=t76zTtSlyT5AuTZi+KZl4p0DlQVfti1xQRoJC6OYAkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MqZRppfiuajmQP6qMi4bvaN7GcQeiiUKzcwd9LdbNZmINj98laqZbVclyk1ht/gAbKKItFw0JN63W1AKqu45f8BQfbUHPlqsmGJMD6V8OhBaIraPoDZ59ggfqakhclz44pjKr/c1ZiGOWB7SibbzUKIgXvdWBiXjPXxLrGqFXS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QbrU43Uf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 492A71F000E9;
-	Wed, 20 May 2026 18:41:30 +0000 (UTC)
+	 MIME-Version; b=HvZAllFZ47BVQLp1Zdw8Sa3EYeFTD7AhE8uXq5WKyM9BhcDLbwDfZZQ/3vnU4iMxHhh+XaVmIDEc33kw2FFnhpLh6eAf081H1C5E2+kxm9lV9JGrCd12R1sWlizvnlgF82tW9Ud1gzQVmol4r86DGeODxvZ/ibe9dD1NerO8Ogc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LsamIue1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A433A1F00893;
+	Wed, 20 May 2026 17:53:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302490;
-	bh=7gOi9haTN+XuP7UirlaMHA5acOKmT53COBshtn9BIG8=;
+	s=korg; t=1779299582;
+	bh=VdtuFvi+Z+5yYKN9HDbMwvHofcEteo0H8wZllkMNjMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QbrU43Uf2IqXaszXJ7eOr2471SGfyo8BLf85Tl6yC4eXaLGHYcocOiw33SPALwV69
-	 WYV1esYvC/tEWDg6mNzux6tpyFZOWFzncQ44F+gXFIeYxHLZb3KDHXpiHuSYvPFvUw
-	 uEO6xTpkGRYdRpRfbgN+gyrSFhGN5qE3/x3vVGDk=
+	b=LsamIue1XCXctEBUKLLDjEdwAuCmCA0jdSSO13IKJcNFSCZdPGi/o8XUTxjE0+iEb
+	 SRZnO542+m7AmEXvjgy42ekrdwIVOUWWMwdclqNnATAR0qst1REhwPULn8Z4OrxKYL
+	 rJIHS5eWgOfbBqHkC6XwQ+7ejcBSiJffswCuKNkg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
-	Peng Fan <peng.fan@nxp.com>,
-	Abel Vesa <abel.vesa@oss.qualcomm.com>,
+	Shenghao Ding <shenghao-ding@ti.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 286/508] clk: imx8mq: Correct the CSI PHY sels
+Subject: [PATCH 6.18 826/957] ALSA: hda/tas2781: Fix incorrect bit update for non-book-zero or book 0 pages >1
 Date: Wed, 20 May 2026 18:21:49 +0200
-Message-ID: <20260520162104.840271015@linuxfoundation.org>
+Message-ID: <20260520162152.481303952@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,79 +68,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253133-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252038-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[i.mx:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:email,nxp.com:email]
-X-Rspamd-Queue-Id: E83A35976CA
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ti.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email]
+X-Rspamd-Queue-Id: 0FC315958D6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+From: Shenghao Ding <shenghao-ding@ti.com>
 
-[ Upstream commit d16f57caa78776e6e8a88b96cb2597797b376138 ]
+[ Upstream commit e052a1f7199260eda4d6ca08a59c3b98738f8491 ]
 
-According to i.MX 8M Quad Reference Manual (Section 5.1.2 Table 5-1)
-MIPI_CSI1_PHY_REF_CLK_ROOT and MIPI_CSI2_PHY_REF_CLK_ROOT have
-SYSTEM_PLL2_DIV3 available as their second source, which corresponds
-to sys2_pll_333m rather than sys2_pll_125m.
+In TAS2781 SPI mode, when accessing non-book-zero or page numbers greater
+than 1 in book 0, an additional byte must be read. The first byte in such
+cases is a dummy byte and should be ignored.
 
-Fixes: b80522040cd3 ("clk: imx: Add clock driver for i.MX8MQ CCM")
-Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Link: https://patch.msgid.link/20260128-imx8mq-csi-clk-v1-1-ac028ed26e8c@puri.sm
-Signed-off-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+Fixes: 9fa6a693ad8d ("ALSA: hda/tas2781: Remove tas2781_spi_fwlib.c and leverage SND_SOC_TAS2781_FMWLIB")
+Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
+Link: https://patch.msgid.link/20260429054206.429-1-shenghao-ding@ti.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx8mq.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/hda/codecs/side-codecs/tas2781_hda_spi.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-imx8mq.c b/drivers/clk/imx/clk-imx8mq.c
-index f70ed231b92d6..cedc8a02aa1f0 100644
---- a/drivers/clk/imx/clk-imx8mq.c
-+++ b/drivers/clk/imx/clk-imx8mq.c
-@@ -237,7 +237,7 @@ static const char * const imx8mq_dsi_esc_sels[] = {"osc_25m", "sys2_pll_100m", "
- static const char * const imx8mq_csi1_core_sels[] = {"osc_25m", "sys1_pll_266m", "sys2_pll_250m", "sys1_pll_800m",
- 					      "sys2_pll_1000m", "sys3_pll_out", "audio_pll2_out", "video_pll1_out", };
+diff --git a/sound/hda/codecs/side-codecs/tas2781_hda_spi.c b/sound/hda/codecs/side-codecs/tas2781_hda_spi.c
+index 488e35dac9524..a64f2c899d50c 100644
+--- a/sound/hda/codecs/side-codecs/tas2781_hda_spi.c
++++ b/sound/hda/codecs/side-codecs/tas2781_hda_spi.c
+@@ -135,10 +135,18 @@ static int tasdevice_spi_dev_update_bits(struct tasdevice_priv *tas_priv,
+ 	int ret, val;
  
--static const char * const imx8mq_csi1_phy_sels[] = {"osc_25m", "sys2_pll_125m", "sys2_pll_100m", "sys1_pll_800m",
-+static const char * const imx8mq_csi1_phy_sels[] = {"osc_25m", "sys2_pll_333m", "sys2_pll_100m", "sys1_pll_800m",
- 					     "sys2_pll_1000m", "clk_ext2", "audio_pll2_out", "video_pll1_out", };
- 
- static const char * const imx8mq_csi1_esc_sels[] = {"osc_25m", "sys2_pll_100m", "sys1_pll_80m", "sys1_pll_800m",
-@@ -246,7 +246,7 @@ static const char * const imx8mq_csi1_esc_sels[] = {"osc_25m", "sys2_pll_100m",
- static const char * const imx8mq_csi2_core_sels[] = {"osc_25m", "sys1_pll_266m", "sys2_pll_250m", "sys1_pll_800m",
- 					      "sys2_pll_1000m", "sys3_pll_out", "audio_pll2_out", "video_pll1_out", };
- 
--static const char * const imx8mq_csi2_phy_sels[] = {"osc_25m", "sys2_pll_125m", "sys2_pll_100m", "sys1_pll_800m",
-+static const char * const imx8mq_csi2_phy_sels[] = {"osc_25m", "sys2_pll_333m", "sys2_pll_100m", "sys1_pll_800m",
- 					     "sys2_pll_1000m", "clk_ext2", "audio_pll2_out", "video_pll1_out", };
- 
- static const char * const imx8mq_csi2_esc_sels[] = {"osc_25m", "sys2_pll_100m", "sys1_pll_80m", "sys1_pll_800m",
+ 	/*
+-	 * In our TAS2781 SPI mode, read/write was masked in last bit of
+-	 * address, it cause regmap_update_bits() not work as expected.
++	 * In TAS2781 SPI mode, when accessing non-book-zero or page numbers
++	 * greater than 1 in book 0, an additional byte must be read. The
++	 * first byte in such cases is a dummy byte and should be ignored.
+ 	 */
+-	ret = tasdevice_dev_read(tas_priv, chn, reg, &val);
++	if ((TASDEVICE_BOOK_ID(reg) > 0) || (TASDEVICE_PAGE_ID(reg) > 1)) {
++		unsigned char buf[2];
++
++		ret = tasdevice_dev_bulk_read(tas_priv, chn, reg, buf, 2);
++		val = buf[1];
++	} else {
++		ret = tasdevice_dev_read(tas_priv, chn, reg, &val);
++	}
+ 	if (ret < 0) {
+ 		dev_err(tas_priv->dev, "%s, E=%d\n", __func__, ret);
+ 		return ret;
 -- 
 2.53.0
 
