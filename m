@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-252609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251931-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iC46AEMnDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252609-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:27:31 +0200
+	id CAs9Hh79DWok5QUAu9opvQ
+	(envelope-from <stable+bounces-251931-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 549B759ADFD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:27:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7ECA596372
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F25AB3447D35
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:18:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F15C6325D612
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:48:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70E733CCFB0;
-	Wed, 20 May 2026 18:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7AB03E5ECF;
+	Wed, 20 May 2026 17:48:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QL6Gm9bU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="obt3au2V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11EB3368968;
-	Wed, 20 May 2026 18:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995E03859FA;
+	Wed, 20 May 2026 17:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301124; cv=none; b=UPoHixIl3EmjvI86Grk4V8HYdtv4TVW6qigtwYwESPWjj9TbctYky7CC/cKo/hPX/POSylGCAchn/3H/cKQKAMW+hkddRTGrj8Os3+e3Lu1nKpiJrlViiAJYS/9v3rEDzuaFTqld1QRvF1YHnm9lQELrWTi7yLYEXWzu6cfZKo8=
+	t=1779299304; cv=none; b=q6fj6x6z0xCX7Qes4dVr+8nR+vIX1YzlliQ4lBMpkkgmCFdG1oGrOimC+ARZnYb0Q6IvSZPfg8DuRfkGf80zjc312D+SsMT5tcRnQvbimXKwhMzcFeH/Mv9MacicRjdiWLFme/jDJT/GsbP+QTUXxm+mJrYDL7klYVOas/szV2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301124; c=relaxed/simple;
-	bh=bRwKmMn+0xCtFpJXSojiV1FMhUpojdIkp/dVO2gWONI=;
+	s=arc-20240116; t=1779299304; c=relaxed/simple;
+	bh=K2MwOvqock+M/iGY2s7QabffbkvGAzVOf2zMN3SZ1MQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Am9Hk2A2Y0GYd4p3glaMSgbkgohm68eWsz+DhvcxNto2aB3atd/Mwgnxa/KbHRoX1ZPoeaGvIenlpP4lP33wiKNg4akVYhyA0rO/YTDTLF5/TEJ6Ix7rlBK/czi+iRPvFfeW7pEAqpS5j1wdhv1gZLwZ5V7UAafcngqsIWJZQ0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QL6Gm9bU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439151F000E9;
-	Wed, 20 May 2026 18:18:42 +0000 (UTC)
+	 MIME-Version; b=BYMi4HuffH9X0PjD3FNDhhsPPgeHVTFr7VmofqK8cxPgSC2h8zWyCho8NoXOxLzewTvviX+7q340T7VEOixY8QIy8AOk9HajcufM+ESBTrak/dpQjvgpvfYRhs7OVWoIrzIt3uqJKVoV+GRJF8LJnSh0A5KpHjZ5Wd/zscIbWyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=obt3au2V; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B747A1F000E9;
+	Wed, 20 May 2026 17:48:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301122;
-	bh=r2F6ZSXGuXhwGhE/Ax2WzN3Lu2Iu3yrYczHKrobiiVA=;
+	s=korg; t=1779299303;
+	bh=j69j3J3kZ4qfdLaXFouiBMBxRmB2imSHhVP+uVHef2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QL6Gm9bUus6k3b9cY9FcYF4Uq2JNYc+yFbGKIjIsgnoXw3rX78/KaX/NLG01CgtCn
-	 pfb9k5iMt7U+tKZ98niMxSmdQKj1K8I1NJMBkIQ3/lf5FP386h9vRYhpTbImMtW8bN
-	 rJ2oHkKF071KwZVQt0X7mp/WLBO9k39z/xDZJGWA=
+	b=obt3au2Vthlum47us3kMX0JJosy3IkSCD06PFpjHYO+zeyhKlW0K/pOdnHO+9RilR
+	 nRL+we+AXQj0VXZtfm4gE6hhOovLj0msoetAd7u5jEmBb03C9arg2agUrbY46p8cL9
+	 ET/xP5+8dpKzVil2sqNM+atn8TpYKhOmFQhBTOys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Benato <denis.benato@linux.dev>,
-	Luke Jones <luke@ljones.dev>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Jaeyoung Chung <jjy600901@snu.ac.kr>,
+	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 393/666] platform/x86: asus-wmi: adjust screenpad power/brightness handling
-Date: Wed, 20 May 2026 18:20:04 +0200
-Message-ID: <20260520162119.775665898@linuxfoundation.org>
+Subject: [PATCH 6.18 722/957] eventpoll: fix ep_remove struct eventpoll / struct file UAF
+Date: Wed, 20 May 2026 18:20:05 +0200
+Message-ID: <20260520162150.207912740@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,113 +63,133 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252609-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251931-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,linux.dev:email,ljones.dev:email,msgid.link:url]
-X-Rspamd-Queue-Id: 549B759ADFD
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,snu.ac.kr:email]
+X-Rspamd-Queue-Id: C7ECA596372
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Benato <denis.benato@linux.dev>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit 130d29c5627cd50e786e926ad7ef66322c5a0c09 ]
+[ Upstream commit a6dc643c69311677c574a0f17a3f4d66a5f3744b ]
 
-Fix illogical screen off control by hardcoding 0 and 1 depending on the
-requested brightness and also do not rely on the last screenpad power
-state to issue screen brightness commands.
+ep_remove() (via ep_remove_file()) cleared file->f_ep under
+file->f_lock but then kept using @file inside the critical section
+(is_file_epoll(), hlist_del_rcu() through the head, spin_unlock).
+A concurrent __fput() taking the eventpoll_release() fastpath in
+that window observed the transient NULL, skipped
+eventpoll_release_file() and ran to f_op->release / file_free().
 
-Fixes: 2c97d3e55b70 ("platform/x86: asus-wmi: add support for ASUS screenpad")
-Signed-off-by: Denis Benato <denis.benato@linux.dev>
-Signed-off-by: Luke Jones <luke@ljones.dev>
-Link: https://patch.msgid.link/20260302174431.349816-2-denis.benato@linux.dev
-Link: https://patch.msgid.link/20260326231154.856729-2-ethantidmore06@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+For the epoll-watches-epoll case, f_op->release is
+ep_eventpoll_release() -> ep_clear_and_put() -> ep_free(), which
+kfree()s the watched struct eventpoll. Its embedded ->refs
+hlist_head is exactly where epi->fllink.pprev points, so the
+subsequent hlist_del_rcu()'s "*pprev = next" scribbles into freed
+kmalloc-192 memory.
+
+In addition, struct file is SLAB_TYPESAFE_BY_RCU, so the slot
+backing @file could be recycled by alloc_empty_file() --
+reinitializing f_lock and f_ep -- while ep_remove() is still
+nominally inside that lock. The upshot is an attacker-controllable
+kmem_cache_free() against the wrong slab cache.
+
+Pin @file via epi_fget() at the top of ep_remove() and gate the
+critical section on the pin succeeding. With the pin held @file
+cannot reach refcount zero, which holds __fput() off and
+transitively keeps the watched struct eventpoll alive across the
+hlist_del_rcu() and the f_lock use, closing both UAFs.
+
+If the pin fails @file has already reached refcount zero and its
+__fput() is in flight. Because we bailed before clearing f_ep,
+that path takes the eventpoll_release() slow path into
+eventpoll_release_file() and blocks on ep->mtx until the waiter
+side's ep_clear_and_put() drops it. The bailed epi's share of
+ep->refcount stays intact, so the trailing ep_refcount_dec_and_test()
+in ep_clear_and_put() cannot free the eventpoll out from under
+eventpoll_release_file(); the orphaned epi is then cleaned up
+there.
+
+A successful pin also proves we are not racing
+eventpoll_release_file() on this epi, so drop the now-redundant
+re-check of epi->dying under f_lock. The cheap lockless
+READ_ONCE(epi->dying) fast-path bailout stays.
+
+Fixes: 58c9b016e128 ("epoll: use refcount to reduce ep_mutex contention")
+Reported-by: Jaeyoung Chung <jjy600901@snu.ac.kr>
+Link: https://patch.msgid.link/20260423-work-epoll-uaf-v1-6-2470f9eec0f5@kernel.org
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/asus-wmi.c | 34 +++++++++++++--------------------
- 1 file changed, 13 insertions(+), 21 deletions(-)
+ fs/eventpoll.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
-index 92ce975d900d0..2e03d63708a7c 100644
---- a/drivers/platform/x86/asus-wmi.c
-+++ b/drivers/platform/x86/asus-wmi.c
-@@ -4130,32 +4130,24 @@ static int read_screenpad_brightness(struct backlight_device *bd)
- 
- static int update_screenpad_bl_status(struct backlight_device *bd)
+diff --git a/fs/eventpoll.c b/fs/eventpoll.c
+index df6994943e59f..e9e6938f7184a 100644
+--- a/fs/eventpoll.c
++++ b/fs/eventpoll.c
+@@ -912,22 +912,26 @@ static bool ep_remove_epi(struct eventpoll *ep, struct epitem *epi)
+  */
+ static void ep_remove_safe(struct eventpoll *ep, struct epitem *epi)
  {
--	struct asus_wmi *asus = bl_get_data(bd);
--	int power, err = 0;
--	u32 ctrl_param;
-+	u32 ctrl_param = bd->props.brightness;
-+	int err = 0;
+-	struct file *file = epi->ffd.file;
++	struct file *file __free(fput) = NULL;
  
--	power = read_screenpad_backlight_power(asus);
--	if (power < 0)
--		return power;
-+	if (bd->props.power) {
-+		err = asus_wmi_set_devstate(ASUS_WMI_DEVID_SCREENPAD_POWER, 1, NULL);
-+		if (err < 0)
-+			return err;
+ 	lockdep_assert_irqs_enabled();
+ 	lockdep_assert_held(&ep->mtx);
  
--	if (bd->props.power != power) {
--		if (power != BACKLIGHT_POWER_ON) {
--			/* Only brightness > 0 can power it back on */
--			ctrl_param = asus->driver->screenpad_brightness - ASUS_SCREENPAD_BRIGHT_MIN;
--			err = asus_wmi_set_devstate(ASUS_WMI_DEVID_SCREENPAD_LIGHT,
--						    ctrl_param, NULL);
--		} else {
--			err = asus_wmi_set_devstate(ASUS_WMI_DEVID_SCREENPAD_POWER, 0, NULL);
--		}
--	} else if (power == BACKLIGHT_POWER_ON) {
--		/* Only set brightness if powered on or we get invalid/unsync state */
--		ctrl_param = bd->props.brightness + ASUS_SCREENPAD_BRIGHT_MIN;
- 		err = asus_wmi_set_devstate(ASUS_WMI_DEVID_SCREENPAD_LIGHT, ctrl_param, NULL);
-+		if (err < 0)
-+			return err;
- 	}
+ 	ep_unregister_pollwait(ep, epi);
  
--	/* Ensure brightness is stored to turn back on with */
--	if (err == 0)
--		asus->driver->screenpad_brightness = bd->props.brightness + ASUS_SCREENPAD_BRIGHT_MIN;
-+	if (!bd->props.power) {
-+		err = asus_wmi_set_devstate(ASUS_WMI_DEVID_SCREENPAD_POWER, 0, NULL);
-+		if (err < 0)
-+			return err;
-+	}
+-	/* sync with eventpoll_release_file() */
++	/* cheap sync with eventpoll_release_file() */
+ 	if (unlikely(READ_ONCE(epi->dying)))
+ 		return;
  
- 	return err;
- }
+-	spin_lock(&file->f_lock);
+-	if (epi->dying) {
+-		spin_unlock(&file->f_lock);
++	/*
++	 * If we manage to grab a reference it means we're not in
++	 * eventpoll_release_file() and aren't going to be.
++	 */
++	file = epi_fget(epi);
++	if (!file)
+ 		return;
+-	}
++
++	spin_lock(&file->f_lock);
+ 	ep_remove_file(ep, epi, file);
+ 
+ 	if (ep_remove_epi(ep, epi))
 -- 
 2.53.0
 
