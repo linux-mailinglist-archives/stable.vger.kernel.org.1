@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-253144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252684-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CGDHFsoNDmqe5wUAu9opvQ
-	(envelope-from <stable+bounces-253144-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:38:50 +0200
+	id Gmf7A60WDmpn6AUAu9opvQ
+	(envelope-from <stable+bounces-252684-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:16:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 590C65988B7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:38:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97030599614
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:16:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C47BF3161D70
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 54E18315C605
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:22:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 240BE403E84;
-	Wed, 20 May 2026 18:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2C9B3F23A4;
+	Wed, 20 May 2026 18:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i4GX5ylX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bh01b+N6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDBB93E2AAD;
-	Wed, 20 May 2026 18:41:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976A03D88FC;
+	Wed, 20 May 2026 18:21:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302520; cv=none; b=XLuq8vM6+SAv+pLKNjsAj/Kgp7lrBcta6McGkzWg354aDbwGX7fBnfT4dVjCjk5m+oj3rZmwqNcv9FpmRAdICjo26QatrUrPFHmxcPDua/Fn9S24TvEr8SavdWEW+kiYyhgMa0bKECH5ttr2qixiJyCZ9029PTQKNGEVp9UP9GY=
+	t=1779301318; cv=none; b=rCsGCosaof2Z9lnADAm06Hi7o8BRpx6hn4bH/H+pqhNh3lqMw0ZD5VO9ELLxsGqMiFtB7chPfjZXhIN6xdBQKhoCDvv2iQjUWEEvVw81rVka46NGqzLQ66S4wg3X8SKpy2S2cAL7eN0EVx4P4S2wbLgUuBg9ihne+C8GvoFoBCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302520; c=relaxed/simple;
-	bh=I3G534GRBGS/AX2Iwz7AViu+ajCD7qwloZwAue26O1M=;
+	s=arc-20240116; t=1779301318; c=relaxed/simple;
+	bh=I6ncKxnLxOZdj8TypzcEq+gsKWv/RYETF4qd7Ohkv/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SX7BYRU7srfG3JHYH2vGUtmcHwWL1tWEDoZEqTMfO9JSNQknZen0lihH55iFs+gTx4tdeaq9xys4YSqCYpYEe2f9XlT6Oj6sVpOHLJYcOOxu0Dnq6t+c4ikGgisp2vWMYUcCINmcnSWPf8qjbnS/zKJHAC72jQML2Qqc0MP1OEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i4GX5ylX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA2A1F000E9;
-	Wed, 20 May 2026 18:41:59 +0000 (UTC)
+	 MIME-Version; b=HB0y51apnJFLDGSnl9aWXy/X9TEw+Pc4qbBwiXoX7LPePyOPd8L5whkilSAqm9SMSgjkSBvL8Lsct+TBfQ/FU0UfHtE2epTcmLESMMAIhnGdHxdpCqIRzQdMQ7nf8i4W67Y/bSNHaEf3ATqvv1FUwnLgPsStA6J1czS238l+nVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bh01b+N6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 071771F000E9;
+	Wed, 20 May 2026 18:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302519;
-	bh=h/hBajvDbwye39xt9jtO32/BK4WLJ3lcFhYWRxq941Q=;
+	s=korg; t=1779301317;
+	bh=z5eLktjGi2EElqa6yvN3+zNiGh8OKoQP9CG40ZQ/kSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=i4GX5ylXI0/TrvfU1HU9XV0YtSW8ZlxpS8+vkuMCMVaNrz8ADd/a1FiWH6fld3Wx4
-	 0QG6pWsNbGdEU8fJ6EcpLbb2Jh3psttG4gSc7m4NNswU9c/p8Yy0yTaYQ2gLr2NvbL
-	 LPHdjlY3GZ4gjgpagYN626DZlIWtmsKnTcuovjP8=
+	b=bh01b+N6wpRHyAnb4fO761ib0uIn4xmvkUkmOi+Qf9gmCffI7mO4mRuGUAz4ou8kg
+	 Q2oZiEySJdHJxzbN3Wp3maDivHOYF1XwjkgUtEv0HE1rFhI+XqmBEozeDjfaYXo0oF
+	 PqGUsu9i1mfTktyoCdFJ+neZLTq7OHElsgVSnDHY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jani Nikula <jani.nikula@intel.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 296/508] drm/i915: Simplify watermark state checker calling convention
+Subject: [PATCH 6.12 508/666] mailbox: mailbox-test: dont free the reused channel
 Date: Wed, 20 May 2026 18:21:59 +0200
-Message-ID: <20260520162105.057773774@linuxfoundation.org>
+Message-ID: <20260520162122.273677917@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,112 +63,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253144-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TAGGED_FROM(0.00)[bounces-252684-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sang-engineering.com,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,renesas];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,patchwork.freedesktop.org:url,intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 590C65988B7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,sang-engineering.com:email]
+X-Rspamd-Queue-Id: 97030599614
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 8f0994d47e89711e654df4e31eabb8881079880a ]
+[ Upstream commit 88ebadbf0deefdaccdab868b44ff70a0a257f473 ]
 
-There is never any reason to pass in both the crtc and its state
-as one can always dig out the crtc from its state. But for more
-consistency across the whole state checker let's just pass the
-overall atomic state+crtc here as well.
+The RX channel can be aliased to the TX channel if it has a different
+MMIO. This special case needs to be handled when freeing the channels
+otherwise a double-free occurs.
 
-v2: Also pass state+crtc here (Jani)
-
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231005122713.3531-1-ville.syrjala@linux.intel.com
-Stable-dep-of: a97c88a176b6 ("drm/i915/wm: Verify the correct plane DDB entry")
+Fixes: 8ea4484d0c2b ("mailbox: Add generic mechanism for testing Mailbox Controllers")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_modeset_verify.c | 2 +-
- drivers/gpu/drm/i915/display/skl_watermark.c        | 8 +++++---
- drivers/gpu/drm/i915/display/skl_watermark.h        | 4 ++--
- 3 files changed, 8 insertions(+), 6 deletions(-)
+ drivers/mailbox/mailbox-test.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_modeset_verify.c b/drivers/gpu/drm/i915/display/intel_modeset_verify.c
-index 138144a65a457..6e65b867137e7 100644
---- a/drivers/gpu/drm/i915/display/intel_modeset_verify.c
-+++ b/drivers/gpu/drm/i915/display/intel_modeset_verify.c
-@@ -234,7 +234,7 @@ void intel_modeset_verify_crtc(struct intel_crtc *crtc,
- 	    !intel_crtc_needs_fastset(new_crtc_state))
- 		return;
+diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
+index 2e0ce6c590485..30b0a230a3e28 100644
+--- a/drivers/mailbox/mailbox-test.c
++++ b/drivers/mailbox/mailbox-test.c
+@@ -422,7 +422,7 @@ static int mbox_test_probe(struct platform_device *pdev)
+ err_free_chans:
+ 	if (tdev->tx_channel)
+ 		mbox_free_channel(tdev->tx_channel);
+-	if (tdev->rx_channel)
++	if (tdev->rx_channel && tdev->rx_channel != tdev->tx_channel)
+ 		mbox_free_channel(tdev->rx_channel);
+ 	return ret;
+ }
+@@ -435,7 +435,7 @@ static void mbox_test_remove(struct platform_device *pdev)
  
--	intel_wm_state_verify(crtc, new_crtc_state);
-+	intel_wm_state_verify(state, crtc);
- 	verify_connector_state(state, crtc);
- 	verify_crtc_state(crtc, old_crtc_state, new_crtc_state);
- 	intel_shared_dpll_state_verify(crtc, old_crtc_state, new_crtc_state);
-diff --git a/drivers/gpu/drm/i915/display/skl_watermark.c b/drivers/gpu/drm/i915/display/skl_watermark.c
-index 8a82576ca0289..d77e598deb2d9 100644
---- a/drivers/gpu/drm/i915/display/skl_watermark.c
-+++ b/drivers/gpu/drm/i915/display/skl_watermark.c
-@@ -3132,10 +3132,12 @@ static void skl_wm_get_hw_state_and_sanitize(struct drm_i915_private *i915)
- 	skl_wm_sanitize(i915);
+ 	if (tdev->tx_channel)
+ 		mbox_free_channel(tdev->tx_channel);
+-	if (tdev->rx_channel)
++	if (tdev->rx_channel && tdev->rx_channel != tdev->tx_channel)
+ 		mbox_free_channel(tdev->rx_channel);
  }
  
--void intel_wm_state_verify(struct intel_crtc *crtc,
--			   const struct intel_crtc_state *new_crtc_state)
-+void intel_wm_state_verify(struct intel_atomic_state *state,
-+			   struct intel_crtc *crtc)
- {
--	struct drm_i915_private *i915 = to_i915(crtc->base.dev);
-+	struct drm_i915_private *i915 = to_i915(state->base.dev);
-+	const struct intel_crtc_state *new_crtc_state =
-+		intel_atomic_get_new_crtc_state(state, crtc);
- 	struct skl_hw_state {
- 		struct skl_ddb_entry ddb[I915_MAX_PLANES];
- 		struct skl_ddb_entry ddb_y[I915_MAX_PLANES];
-diff --git a/drivers/gpu/drm/i915/display/skl_watermark.h b/drivers/gpu/drm/i915/display/skl_watermark.h
-index 3aa138d387900..c7de2b3b2f915 100644
---- a/drivers/gpu/drm/i915/display/skl_watermark.h
-+++ b/drivers/gpu/drm/i915/display/skl_watermark.h
-@@ -38,8 +38,8 @@ bool skl_ddb_allocation_overlaps(const struct skl_ddb_entry *ddb,
- 				 const struct skl_ddb_entry *entries,
- 				 int num_entries, int ignore_idx);
- 
--void intel_wm_state_verify(struct intel_crtc *crtc,
--			   const struct intel_crtc_state *new_crtc_state);
-+void intel_wm_state_verify(struct intel_atomic_state *state,
-+			   struct intel_crtc *crtc);
- 
- void skl_watermark_ipc_init(struct drm_i915_private *i915);
- void skl_watermark_ipc_update(struct drm_i915_private *i915);
 -- 
 2.53.0
 
