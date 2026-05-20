@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-251414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250473-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6I4xLyj7DWrO5AUAu9opvQ
-	(envelope-from <stable+bounces-251414-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:19:20 +0200
+	id 4MJuL8noDWrr4gUAu9opvQ
+	(envelope-from <stable+bounces-250473-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:00:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22541595CDA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:19:20 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B8B9592CD0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:00:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 40D5B3345982
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:25:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 36DA5301643C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:45:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD08F3D8137;
-	Wed, 20 May 2026 17:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 098A83D3CE2;
+	Wed, 20 May 2026 16:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EppXOpjM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GnTgGp4S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C1333BBAF;
-	Wed, 20 May 2026 17:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33613546D9;
+	Wed, 20 May 2026 16:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297918; cv=none; b=rLY/6f+/bMTWPzkKbGwgIUetGJ7w8e8eqFEMIg9fgxKIsuAoxWzjmEf4AvmxFy8F92QVPQvQFI0jMNv6Grbru56SJ2HvgVGCbl70HWmzinLdhnnWldmqEELk0WeAoVQlo7x+5MGj7P1lTX/VHhvvMbyaErQLyPLPOn5QjU+S/g8=
+	t=1779295501; cv=none; b=hIsdaQadDTmaLVtSK1Y2cL3C3ZVLUAmugT1nyy5+gfANl8zVdLSgIGzaF4pvv3e72yucxMVeqmvljlsBI9ElcnPcivVCA3c3OA+V5Yzj7ZyCj8ESAPo3e08Ly3b+XzL/kY6LL8Ok5zW8FOP+De/wzz+9NBaotb+SXoQYkYk/k0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297918; c=relaxed/simple;
-	bh=K4pECAQNcgcEBlYYQIMmuM4etyvtMySDAfjs4ngjEOI=;
+	s=arc-20240116; t=1779295501; c=relaxed/simple;
+	bh=XifkKyNTYQs6QgV3iVMJKRZXtk9C92ojaJwqFB0eqXU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UTwCXGMuywj48rvkj8Y74+fRU88Sb6ZQ9igtIXaUOLR3u+EvDRau4WLaZ7l3L5F88ZwNWtXgY9370L9eDdY7tzl92lkox6hx1jkgQFcXSlfFQgM/m0L/kaWQHUeJvMWzdCIBI+mLgfDOuRYygvCtXVtT4mtydyszfTLekw134xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EppXOpjM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA5001F000E9;
-	Wed, 20 May 2026 17:25:16 +0000 (UTC)
+	 MIME-Version; b=dLym7ynfoTRcflvsLZFR155PLCpMgvL8Aj8nIPZlioSvGBTe+Myw3IICzmkqZUTRSgYLu3DQXh7pxZZMLCotB4nUxf9AKEXSaHjk+373535FtS1UcxI5SGg6NCrZKoUtmQQqLHn9y72/K0UX/t5sXFaA3FP9VU7JD8snDDna9Dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GnTgGp4S; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A3D1F000E9;
+	Wed, 20 May 2026 16:44:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297917;
-	bh=JHJstVRzKueY+PHV0v7PvA0V0Xgv/EC7QdVvDIRWjro=;
+	s=korg; t=1779295500;
+	bh=ehiHBCdYl6OH4EnTClmuJhll00FHMMS+EWLrqlC7UCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EppXOpjMkiKdWmXvQC9GIl7aCj25WRth216CPHv2qfBblbpraITq4YcRgQwXAiRVB
-	 e+hQU0mg/D/MsfmhV3lFF5GWrt67/xDvZuJSyYE9UiFNYSLaRYRqtiKGEL/254s6P5
-	 8ps1lJLtbCpqu3/Nu6rConJrV7Pk/EMEvKechl20=
+	b=GnTgGp4S3D0jKm8zzk4BbtxqgqZIhSnP4FpP0jrwfRqbe99SeRjxekrteOQmUoKqB
+	 +HBsI7dlk53I+toi3zKMIN3MjG/aW4Qgqar+VzSPrVd5MpTkfo+JBwKfFL2Zo3bbJt
+	 w550erTg97pl4ZsNS6Ia9CC0s0mBp1giaLvCXw88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 211/957] iopoll: fix function parameter names in read_poll_timeout_atomic()
+Subject: [PATCH 7.0 0444/1146] fanotify: avoid/silence premature LSM capability checks
 Date: Wed, 20 May 2026 18:11:34 +0200
-Message-ID: <20260520162139.115173220@linuxfoundation.org>
+Message-ID: <20260520162158.246488041@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,85 +70,106 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,paul-moore.com,gmail.com,suse.cz,kernel.org];
+	TAGGED_FROM(0.00)[bounces-250473-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251414-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,infradead.org:email]
-X-Rspamd-Queue-Id: 22541595CDA
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,paul-moore.com:email]
+X-Rspamd-Queue-Id: 6B8B9592CD0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Ondrej Mosnacek <omosnace@redhat.com>
 
-[ Upstream commit 878004e2852bc22ce0687c5597d6fe3909fb59f3 ]
+[ Upstream commit 0d5ee3373426395478c355f3e93ba4b1118a04e9 ]
 
-Correct the function parameter names to avoid kernel-doc warnings
-and to emphasize this function is atomic (non-sleeping).
+Make sure calling capable()/ns_capable() actually leads to access denied
+when false is returned, because these functions emit an audit record
+when a Linux Security Module denies the capability, which makes it
+difficult to avoid allowing/silencing unnecessary permissions in
+security policies (namely with SELinux).
 
-Warning: include/linux/iopoll.h:169 function parameter 'sleep_us' not
- described in 'read_poll_timeout_atomic'
-Warning: ../include/linux/iopoll.h:169 function parameter
- 'sleep_before_read' not described in 'read_poll_timeout_atomic'
+Where the return value just used to set a flag, use the non-auditing
+ns_capable_noaudit() instead.
 
-Fixes: 9df8043a546d ("iopoll: Generalize read_poll_timeout() into poll_timeout_us()")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patch.msgid.link/20260306221033.2357305-1-rdunlap@infradead.org
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Fixes: 7cea2a3c505e ("fanotify: support limited functionality for unprivileged users")
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+Reviewed-by: Paul Moore <paul@paul-moore.com>
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Link: https://patch.msgid.link/20260216150625.793013-2-omosnace@redhat.com
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/iopoll.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/notify/fanotify/fanotify_user.c | 25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/include/linux/iopoll.h b/include/linux/iopoll.h
-index bdd2e0652bc30..53edd69acb9bd 100644
---- a/include/linux/iopoll.h
-+++ b/include/linux/iopoll.h
-@@ -159,7 +159,7 @@
-  *
-  * This macro does not rely on timekeeping.  Hence it is safe to call even when
-  * timekeeping is suspended, at the expense of an underestimation of wall clock
-- * time, which is rather minimal with a non-zero delay_us.
-+ * time, which is rather minimal with a non-zero @delay_us.
-  *
-  * When available, you'll probably want to use one of the specialized
-  * macros defined below rather than this macro directly.
-@@ -167,9 +167,9 @@
-  * Returns: 0 on success and -ETIMEDOUT upon a timeout. In either
-  * case, the last read value at @args is stored in @val.
-  */
--#define read_poll_timeout_atomic(op, val, cond, sleep_us, timeout_us, \
--				 sleep_before_read, args...) \
--	poll_timeout_us_atomic((val) = op(args), cond, sleep_us, timeout_us, sleep_before_read)
-+#define read_poll_timeout_atomic(op, val, cond, delay_us, timeout_us, \
-+				 delay_before_read, args...) \
-+	poll_timeout_us_atomic((val) = op(args), cond, delay_us, timeout_us, delay_before_read)
+diff --git a/fs/notify/fanotify/fanotify_user.c b/fs/notify/fanotify/fanotify_user.c
+index c2dcb25151deb..5d030fbb2dffe 100644
+--- a/fs/notify/fanotify/fanotify_user.c
++++ b/fs/notify/fanotify/fanotify_user.c
+@@ -1615,17 +1615,18 @@ SYSCALL_DEFINE2(fanotify_init, unsigned int, flags, unsigned int, event_f_flags)
+ 	pr_debug("%s: flags=%x event_f_flags=%x\n",
+ 		 __func__, flags, event_f_flags);
  
- /**
-  * readx_poll_timeout - Periodically poll an address until a condition is met or a timeout occurs
+-	if (!capable(CAP_SYS_ADMIN)) {
+-		/*
+-		 * An unprivileged user can setup an fanotify group with
+-		 * limited functionality - an unprivileged group is limited to
+-		 * notification events with file handles or mount ids and it
+-		 * cannot use unlimited queue/marks.
+-		 */
+-		if ((flags & FANOTIFY_ADMIN_INIT_FLAGS) ||
+-		    !(flags & (FANOTIFY_FID_BITS | FAN_REPORT_MNT)))
+-			return -EPERM;
++	/*
++	 * An unprivileged user can setup an fanotify group with limited
++	 * functionality - an unprivileged group is limited to notification
++	 * events with file handles or mount ids and it cannot use unlimited
++	 * queue/marks.
++	 */
++	if (((flags & FANOTIFY_ADMIN_INIT_FLAGS) ||
++	     !(flags & (FANOTIFY_FID_BITS | FAN_REPORT_MNT))) &&
++	    !capable(CAP_SYS_ADMIN))
++		return -EPERM;
+ 
++	if (!ns_capable_noaudit(&init_user_ns, CAP_SYS_ADMIN)) {
+ 		/*
+ 		 * Setting the internal flag FANOTIFY_UNPRIV on the group
+ 		 * prevents setting mount/filesystem marks on this group and
+@@ -1990,8 +1991,8 @@ static int do_fanotify_mark(int fanotify_fd, unsigned int flags, __u64 mask,
+ 	 * A user is allowed to setup sb/mount/mntns marks only if it is
+ 	 * capable in the user ns where the group was created.
+ 	 */
+-	if (!ns_capable(group->user_ns, CAP_SYS_ADMIN) &&
+-	    mark_type != FAN_MARK_INODE)
++	if (mark_type != FAN_MARK_INODE &&
++	    !ns_capable(group->user_ns, CAP_SYS_ADMIN))
+ 		return -EPERM;
+ 
+ 	/*
 -- 
 2.53.0
 
