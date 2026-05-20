@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-252223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250643-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CEnOEkb7DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-252223-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:19:50 +0200
+	id kOxhNQ3rDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250643-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:10:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0B88595D31
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:19:49 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D90059307F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:10:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9B8F930A5DC5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:01:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D3AD730B4AF6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:52:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E71173A3E79;
-	Wed, 20 May 2026 18:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1982F373BEB;
+	Wed, 20 May 2026 16:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n/k4Fjdh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ETCm7UFI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E021A340A57;
-	Wed, 20 May 2026 18:01:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DC631F9BE;
+	Wed, 20 May 2026 16:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300115; cv=none; b=ZWBrx/PUxAJHjuUEviUevSVcdSxgkHlsSSwtLXxfyTX6kzxwtgjFxqD4FwPuTQ1etWIkN2NcAlHylG7vUUTDuabLqNBoMr8a3ooAU7gnG0qsKANyMCz9AKiwmKx6afmwsGiLPDC3cLujpwDxX0Ld3Q7YXU4tRAsbn7Mzye7ulVc=
+	t=1779295945; cv=none; b=R6jpzeFuIJT9llfQMJCxzYoeGSMLe3Em6hxngc9hgQkEYGiVhUlclmgluCXdbQ7/X7cx2bJw2EuVct616qmh2wL3AwnlS+ScysWhEbfA1wl36HsfKaceo7RKD7F9+uMj7lmKmd8jJFrQ2WJpUenpwR00pkI6Mt2IJLRd0TFbTgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300115; c=relaxed/simple;
-	bh=jUR5tZTZC9msgWco17VWGu9LA/uQuaWSNG3PiWvrCj0=;
+	s=arc-20240116; t=1779295945; c=relaxed/simple;
+	bh=9DcucnhM7InrR2rx4Dbbp2S94vi5JRLtCqFeWEb9hAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NkuwORTftPovVMbvtLFwjq9A9SlaQ4WyFnekpdm7CgQi6MszrpqLgM9vzbpiF3plUGMqAtZkOk7QYRa7cndwFVe9p+1nyEq/1F7u4VyDzgbkGLwNE1nH80fil77sdw96F98v2GVe0gcN5jvgptoi3vf6jOzbKm4REksFb544mvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n/k4Fjdh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 795801F000E9;
-	Wed, 20 May 2026 18:01:53 +0000 (UTC)
+	 MIME-Version; b=DK1JRpU4pPqMTQ/1b0C9PCv07oeqaNJ00t9lO5AiKoQkyPwkOlr3qmjBnCVM7e2ye7si8bIHrdKto9TJEZH/7df4J6avfI7ph3CybCnrF13Cr6PLgCSj7z1odH9smdwImApEzKl9IUjfMjZ6W58SJWsRck9V18/63pcmHEiB0bY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ETCm7UFI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B511F000E9;
+	Wed, 20 May 2026 16:52:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300113;
-	bh=NtrRMvKRVQ0RiRshimCYXh3WFGwtn0Nn+zb0N4CrdNo=;
+	s=korg; t=1779295944;
+	bh=HR2vHLdmp58WWThi7s07Alp2yGS9GlAFBoMooBnwr0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=n/k4FjdhfJNrV5RWs+Dx6NmvFBsmeUYlAcFLryPJzRNT/Fica0FhDyZ2Gn0P9jayY
-	 zYEZ6nHraMxgftZB1Gil+13sUDeKcFiMYhzBh+d0z0i2SUvTjTlRpbZflX61pkfH4n
-	 r9ll2b3ULDhhTNbHqW+eq/VDXJXX3oMFhQNM1byc=
+	b=ETCm7UFIW5U4dFq9nsn328tp8zGs0JkqV3Tl2rky2rsrcD8/8KyEkyqeRLByCsH93
+	 dWWNx1l5HpdTL2vaBNJcPj3Vz6j3XLEWrkaGBCiUbYc1DyIxR168rzIAxlSwK7rUfz
+	 Q+pw1jzMN6607Qa0sDtCXII7CnCo1flMIpK2i4c8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Felix Fietkau <nbd@nbd.name>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Michal Luczaj <mhal@rbox.co>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 052/666] wifi: mt76: mt7915: fix use-after-free bugs in mt7915_mac_dump_work()
+Subject: [PATCH 7.0 0613/1146] bpf, sockmap: Fix af_unix iter deadlock
 Date: Wed, 20 May 2026 18:14:23 +0200
-Message-ID: <20260520162112.366984874@linuxfoundation.org>
+Message-ID: <20260520162202.055704729@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,82 +71,130 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250643-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252223-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,nbd.name:email]
-X-Rspamd-Queue-Id: E0B88595D31
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,rbox.co:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 8D90059307F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Michal Luczaj <mhal@rbox.co>
 
-[ Upstream commit 1146d0946b5358fad24812bd39d68f31cd40cc34 ]
+[ Upstream commit 4d328dd695383224aa750ddee6b4ad40c0f8d205 ]
 
-When the mt7915 pci chip is detaching, the mt7915_crash_data is
-released in mt7915_coredump_unregister(). However, the work item
-dump_work may still be running or pending, leading to UAF bugs
-when the already freed crash_data is dereferenced again in
-mt7915_mac_dump_work().
+bpf_iter_unix_seq_show() may deadlock when lock_sock_fast() takes the fast
+path and the iter prog attempts to update a sockmap. Which ends up spinning
+at sock_map_update_elem()'s bh_lock_sock():
 
-The race condition can occur as follows:
+WARNING: possible recursive locking detected
+test_progs/1393 is trying to acquire lock:
+ffff88811ec25f58 (slock-AF_UNIX){+...}-{3:3}, at: sock_map_update_elem+0xdb/0x1f0
 
-CPU 0 (removal path)               | CPU 1 (workqueue)
-mt7915_pci_remove()                | mt7915_sys_recovery_set()
- mt7915_unregister_device()        |  mt7915_reset()
-  mt7915_coredump_unregister()     |   queue_work()
-   vfree(dev->coredump.crash_data) | mt7915_mac_dump_work()
-                                   |  crash_data-> // UAF
+but task is already holding lock:
+ffff88811ec25f58 (slock-AF_UNIX){+...}-{3:3}, at: __lock_sock_fast+0x37/0xe0
 
-Fix this by ensuring dump_work is properly canceled before
-the crash_data is deallocated. Add cancel_work_sync() in
-mt7915_unregister_device() to synchronize with any pending
-or executing dump work.
+other info that might help us debug this:
+ Possible unsafe locking scenario:
 
-Fixes: 4dbcb9125cc3 ("wifi: mt76: mt7915: enable coredump support")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Link: https://patch.msgid.link/20260130145759.84272-1-duoming@zju.edu.cn
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+       CPU0
+       ----
+  lock(slock-AF_UNIX);
+  lock(slock-AF_UNIX);
+
+ *** DEADLOCK ***
+
+ May be due to missing lock nesting notation
+
+4 locks held by test_progs/1393:
+ #0: ffff88814b59c790 (&p->lock){+.+.}-{4:4}, at: bpf_seq_read+0x59/0x10d0
+ #1: ffff88811ec25fd8 (sk_lock-AF_UNIX){+.+.}-{0:0}, at: bpf_seq_read+0x42c/0x10d0
+ #2: ffff88811ec25f58 (slock-AF_UNIX){+...}-{3:3}, at: __lock_sock_fast+0x37/0xe0
+ #3: ffffffff85a6a7c0 (rcu_read_lock){....}-{1:3}, at: bpf_iter_run_prog+0x51d/0xb00
+
+Call Trace:
+ dump_stack_lvl+0x5d/0x80
+ print_deadlock_bug.cold+0xc0/0xce
+ __lock_acquire+0x130f/0x2590
+ lock_acquire+0x14e/0x2b0
+ _raw_spin_lock+0x30/0x40
+ sock_map_update_elem+0xdb/0x1f0
+ bpf_prog_2d0075e5d9b721cd_dump_unix+0x55/0x4f4
+ bpf_iter_run_prog+0x5b9/0xb00
+ bpf_iter_unix_seq_show+0x1f7/0x2e0
+ bpf_seq_read+0x42c/0x10d0
+ vfs_read+0x171/0xb20
+ ksys_read+0xff/0x200
+ do_syscall_64+0x6b/0x3a0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Fixes: 2c860a43dd77 ("bpf: af_unix: Implement BPF iterator for UNIX domain socket.")
+Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
+Suggested-by: Martin KaFai Lau <martin.lau@linux.dev>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260414-unix-proto-update-null-ptr-deref-v4-2-2af6fe97918e@rbox.co
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/init.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/unix/af_unix.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index 83f062fb95d5a..b2220ff7d6758 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -1275,6 +1275,7 @@ int mt7915_register_device(struct mt7915_dev *dev)
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 09d43b4813b1a..b1ec96512bf72 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -3734,15 +3734,14 @@ static int bpf_iter_unix_seq_show(struct seq_file *seq, void *v)
+ 	struct bpf_prog *prog;
+ 	struct sock *sk = v;
+ 	uid_t uid;
+-	bool slow;
+ 	int ret;
  
- void mt7915_unregister_device(struct mt7915_dev *dev)
- {
-+	cancel_work_sync(&dev->dump_work);
- 	mt7915_unregister_ext_phy(dev);
- 	mt7915_coredump_unregister(dev);
- 	mt7915_unregister_thermal(&dev->phy);
+ 	if (v == SEQ_START_TOKEN)
+ 		return 0;
+ 
+-	slow = lock_sock_fast(sk);
++	lock_sock(sk);
+ 
+-	if (unlikely(sk_unhashed(sk))) {
++	if (unlikely(sock_flag(sk, SOCK_DEAD))) {
+ 		ret = SEQ_SKIP;
+ 		goto unlock;
+ 	}
+@@ -3752,7 +3751,7 @@ static int bpf_iter_unix_seq_show(struct seq_file *seq, void *v)
+ 	prog = bpf_iter_get_info(&meta, false);
+ 	ret = unix_prog_seq_show(prog, &meta, v, uid);
+ unlock:
+-	unlock_sock_fast(sk, slow);
++	release_sock(sk);
+ 	return ret;
+ }
+ 
 -- 
 2.53.0
 
