@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252362-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +KqLCGDzDWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251721-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:46:08 +0200
+	id wLj3OYoTDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-252362-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:03:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89527594817
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:46:07 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E8EA5990DC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:03:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EAC5431218A2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:38:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D07223093DAA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:08:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79D233ED3A4;
-	Wed, 20 May 2026 17:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A28553F4DC0;
+	Wed, 20 May 2026 18:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gDAs1yYh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n1dmFNne"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E473F20E5;
-	Wed, 20 May 2026 17:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1CE36CE19;
+	Wed, 20 May 2026 18:07:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298718; cv=none; b=JnlC17DZosmtKDSI/bDQAp6QlUBKVUIsu0G4ALzd9QHrPWNu5t/b52ZWFt8nXDfrJ1Z/gKe7jGLftN3eZYjbWhJfXSYpjUdU0Ge4PgtBisaYQLeO1dbydXGSHHQniyFSppS90Zr3BHLmIMsjCz0nKeMv+L3wST+z5Jv4AqvrU2M=
+	t=1779300476; cv=none; b=qvlcLOCE0AWNeKQ8ZWwWbvSgGyy64xAglsKtl9A1cdvVDGxq8oTkUK/T4SJKCAcbXK0axbBWuc0rXM1k3kkAvEoJO/o7NosIkiPmmtp9G1ZK9XnA9vZMovioeLk96nsvwROBlWcJLpxoefm0/YOiQa1Er4WRBo+KmoLmrebNWZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298718; c=relaxed/simple;
-	bh=lc0DmCzLpvM+yjNf8jDXgWNtlNeLQyNdtsAqAiQz5SY=;
+	s=arc-20240116; t=1779300476; c=relaxed/simple;
+	bh=HjQy2g2RVzw8PT4gu6Hky8yUTpDOC/gxSCPBqpivqk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JX70INnaWZokhNivyAxjuuDjMSTuqymV5B3riw1TYO2EsHhOj1s4ECSUR9tFxPcwyVaaABc75WDfbC1k3YqRprP/BGCQObB5aWfo4U8OjVreNN0XKWpvpLezIXdDpRdRdqFeYJk+DlsP1Z4Mnayn5ouy3hisv7XockeVKvw3jTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gDAs1yYh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD8B1F000E9;
-	Wed, 20 May 2026 17:38:36 +0000 (UTC)
+	 MIME-Version; b=Cu8tCSZpM+QlszffnQEhoW6VqFwu6zEqE3Z5c00+zyrEnkPRtq6AwsP3izt6NrZViv7Hm4baY5RUx+2Y5HiDrfxGg8NwQKwOCFskvfKz+Vj0igpSmtuuNQMSuDIiHJLff0SVJayZ86eoQDEjp7qKBt00w0WzloMCQL5QSDjxvpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n1dmFNne; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0BC61F000E9;
+	Wed, 20 May 2026 18:07:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298717;
-	bh=aU3i8r08yoRW6tPJEz/QrGgBxG0lVLXkKnPQkKQBEBg=;
+	s=korg; t=1779300475;
+	bh=jJ5j8WLKTdoOzh7UJbZAOwFaQO29eZSWaVT3XMYqsCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gDAs1yYhVxumEzvo7LmoWnNqBkVNL7M7FnoVyTvuUmyisGXyO7MjqOOHUbiV5M2jX
-	 KrSGU67X42TEMHIuGpqOqUA9Lvw+gZ8baYtyi0qZoWSvkZgDKKiGJ9lPF/AP+J6zjn
-	 qVsYnyzALRzpPAp06bMRmgdWSI61P/8oJoJOo12o=
+	b=n1dmFNne1OYk8oC4/E+GWKhAc2XsoV1afsE5JuIlPHTzJ5ep9kavzU6kD1ytAhhxu
+	 cFot2t0v4uy6EwRcEu+m0w1loCBxgm/N4GEg/C55ieQIg0bYwlqJ8Oifku3/Gl+28M
+	 u4Lv5I0LJ2wcvfstuNi7Lt32M+tsupq0/HCQ/YYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Zhang <zhangjian.3032@bytedance.com>,
-	Corey Minyard <corey@minyard.net>,
+	Lei Huang <huanglei@kylinos.cn>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 516/957] ipmi: ssif_bmc: change log level to dbg in irq callback
-Date: Wed, 20 May 2026 18:16:39 +0200
-Message-ID: <20260520162145.724676374@linuxfoundation.org>
+Subject: [PATCH 6.12 189/666] ALSA: hda/realtek: fix code style (ERROR: else should follow close brace })
+Date: Wed, 20 May 2026 18:16:40 +0200
+Message-ID: <20260520162115.298186126@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,145 +66,76 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252362-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251721-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,bytedance.com:email,minyard.net:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 89527594817
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email]
+X-Rspamd-Queue-Id: 1E8EA5990DC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian Zhang <zhangjian.3032@bytedance.com>
+From: Lei Huang <huanglei@kylinos.cn>
 
-[ Upstream commit c9c99b7b7051eb7121b3224bfce181fb023b0269 ]
+[ Upstream commit d1888bf848ade6a9e71c7ba516fd215aa1bd8d65 ]
 
-Long-running tests indicate that this logging can occasionally disrupt
-timing and lead to request/response corruption.
+Fix checkpatch code style errors:
 
-Irq handler need to be executed as fast as possible,
-most I2C slave IRQ implementations are byte-level, logging here
-can significantly affect transfer behavior and timing. It is recommended
-to use dev_dbg() for these messages.
+  ERROR: else should follow close brace '}'
+  #2300: FILE: sound/hda/codecs/realtek/alc269.c:2300:
+  +       }
+  +       else
 
-Fixes: dd2bc5cc9e25 ("ipmi: ssif_bmc: Add SSIF BMC driver")
-Signed-off-by: Jian Zhang <zhangjian.3032@bytedance.com>
-Message-ID: <20260403090603.3988423-4-zhangjian.3032@bytedance.com>
-Signed-off-by: Corey Minyard <corey@minyard.net>
+Fixes: 31278997add6 ("ALSA: hda/realtek - Add headset quirk for Dell DT")
+Signed-off-by: Lei Huang <huanglei@kylinos.cn>
+Link: https://patch.msgid.link/20260331075405.78148-1-huanglei814@163.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/ipmi/ssif_bmc.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ sound/pci/hda/patch_realtek.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/char/ipmi/ssif_bmc.c b/drivers/char/ipmi/ssif_bmc.c
-index ca185793cf978..a45e80d13e10e 100644
---- a/drivers/char/ipmi/ssif_bmc.c
-+++ b/drivers/char/ipmi/ssif_bmc.c
-@@ -569,7 +569,7 @@ static void process_request_part(struct ssif_bmc_ctx *ssif_bmc)
- 		len = ssif_bmc->request.len + part->length;
- 		/* Do the bound check here, not allow the request len exceed 254 bytes */
- 		if (len > IPMI_SSIF_PAYLOAD_MAX) {
--			dev_warn(&ssif_bmc->client->dev,
-+			dev_dbg(&ssif_bmc->client->dev,
- 				 "Warn: Request exceeded 254 bytes, aborting");
- 			/* Request too long, aborting */
- 			ssif_bmc->aborting =  true;
-@@ -615,7 +615,7 @@ static void on_read_requested_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
- 	    ssif_bmc->state == SSIF_START ||
- 	    ssif_bmc->state == SSIF_REQ_RECVING ||
- 	    ssif_bmc->state == SSIF_RES_SENDING) {
--		dev_warn(&ssif_bmc->client->dev,
-+		dev_dbg(&ssif_bmc->client->dev,
- 			 "Warn: %s unexpected READ REQUESTED in state=%s\n",
- 			 __func__, state_to_string(ssif_bmc->state));
- 		ssif_bmc->state = SSIF_ABORTING;
-@@ -624,7 +624,7 @@ static void on_read_requested_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 4cab9696fdab0..c420cf5d87e99 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -6428,9 +6428,9 @@ static void alc_fixup_headset_mode_alc255_no_hp_mic(struct hda_codec *codec,
+ 		struct alc_spec *spec = codec->spec;
+ 		spec->parse_flags |= HDA_PINCFG_HEADSET_MIC;
+ 		alc255_set_default_jack_type(codec);
+-	}
+-	else
++	} else {
+ 		alc_fixup_headset_mode(codec, fix, action);
++	}
+ }
  
- 	} else if (ssif_bmc->state == SSIF_SMBUS_CMD) {
- 		if (!supported_read_cmd(ssif_bmc->part_buf.smbus_cmd)) {
--			dev_warn(&ssif_bmc->client->dev, "Warn: Unknown SMBus read command=0x%x",
-+			dev_dbg(&ssif_bmc->client->dev, "Warn: Unknown SMBus read command=0x%x",
- 				 ssif_bmc->part_buf.smbus_cmd);
- 			ssif_bmc->aborting = true;
- 		}
-@@ -659,7 +659,7 @@ static void on_read_processed_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
- 	    ssif_bmc->state == SSIF_START ||
- 	    ssif_bmc->state == SSIF_REQ_RECVING ||
- 	    ssif_bmc->state == SSIF_SMBUS_CMD) {
--		dev_warn(&ssif_bmc->client->dev,
-+		dev_dbg(&ssif_bmc->client->dev,
- 			 "Warn: %s unexpected READ PROCESSED in state=%s\n",
- 			 __func__, state_to_string(ssif_bmc->state));
- 		ssif_bmc->state = SSIF_ABORTING;
-@@ -684,7 +684,7 @@ static void on_write_requested_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
- 	} else if (ssif_bmc->state == SSIF_START ||
- 		   ssif_bmc->state == SSIF_REQ_RECVING ||
- 		   ssif_bmc->state == SSIF_RES_SENDING) {
--		dev_warn(&ssif_bmc->client->dev,
-+		dev_dbg(&ssif_bmc->client->dev,
- 			 "Warn: %s unexpected WRITE REQUEST in state=%s\n",
- 			 __func__, state_to_string(ssif_bmc->state));
- 		ssif_bmc->state = SSIF_ABORTING;
-@@ -699,7 +699,7 @@ static void on_write_received_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
- {
- 	if (ssif_bmc->state == SSIF_READY ||
- 	    ssif_bmc->state == SSIF_RES_SENDING) {
--		dev_warn(&ssif_bmc->client->dev,
-+		dev_dbg(&ssif_bmc->client->dev,
- 			 "Warn: %s unexpected WRITE RECEIVED in state=%s\n",
- 			 __func__, state_to_string(ssif_bmc->state));
- 		ssif_bmc->state = SSIF_ABORTING;
-@@ -709,7 +709,7 @@ static void on_write_received_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
- 
- 	} else if (ssif_bmc->state == SSIF_SMBUS_CMD) {
- 		if (!supported_write_cmd(ssif_bmc->part_buf.smbus_cmd)) {
--			dev_warn(&ssif_bmc->client->dev, "Warn: Unknown SMBus write command=0x%x",
-+			dev_dbg(&ssif_bmc->client->dev, "Warn: Unknown SMBus write command=0x%x",
- 				 ssif_bmc->part_buf.smbus_cmd);
- 			ssif_bmc->aborting = true;
- 		}
-@@ -738,7 +738,7 @@ static void on_stop_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
- 	    ssif_bmc->state == SSIF_START ||
- 	    ssif_bmc->state == SSIF_SMBUS_CMD ||
- 	    ssif_bmc->state == SSIF_ABORTING) {
--		dev_warn(&ssif_bmc->client->dev,
-+		dev_dbg(&ssif_bmc->client->dev,
- 			 "Warn: %s unexpected SLAVE STOP in state=%s\n",
- 			 __func__, state_to_string(ssif_bmc->state));
- 		ssif_bmc->state = SSIF_READY;
-@@ -805,7 +805,7 @@ static int ssif_bmc_cb(struct i2c_client *client, enum i2c_slave_event event, u8
- 		break;
- 
- 	default:
--		dev_warn(&ssif_bmc->client->dev, "Warn: Unknown i2c slave event\n");
-+		dev_dbg(&ssif_bmc->client->dev, "Warn: Unknown i2c slave event\n");
- 		break;
- 	}
- 
+ static void alc288_update_headset_jack_cb(struct hda_codec *codec,
 -- 
 2.53.0
 
