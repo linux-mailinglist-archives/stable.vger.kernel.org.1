@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250908-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0BmpDQ8eDmro6AUAu9opvQ
-	(envelope-from <stable+bounces-251798-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:48:15 +0200
+	id yOrNM2TqDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250908-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:07:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 801BC59A209
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:48:13 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7804D592F3E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:07:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BDD5934775E0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:41:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 499363070393
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:04:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DE1E3E123F;
-	Wed, 20 May 2026 17:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026D83F54AB;
+	Wed, 20 May 2026 17:03:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SHcWQe+s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q8yeocA6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A06A36405A;
-	Wed, 20 May 2026 17:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C1028DC4;
+	Wed, 20 May 2026 17:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298918; cv=none; b=g89eKEyHHNI1j5bOcnq/WZcpDbptm9/tf+9m2lySn9JRxAcscmUVhlUR/FUaNQPbauaAIWbYXJgw0sUT++i6ZEe1hNrVjdIHIwYQkwA4Z9wULnae2Rw5+uVRxXlMwVqgiPDIgep5ieysFoAmKCLZzTSaQYupx/YmJDR5tauuDy4=
+	t=1779296620; cv=none; b=Uzw63MpHi+IxGk6d7EuxWAf8x7OevX+5aWwYHwuanRhlmUFxUY66KmuMwXGbpNSOqWDMquCjtocc8QnmaC0aV+QwhsKImoxPCOcdgNc/habNCbS+4iOkSQ3Obt0R6DT+Q42RM+/c54VFY3APO216Jpq5KJuVf36LLB0TTTNdvcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298918; c=relaxed/simple;
-	bh=fsk/6RBIqL1vfxzi8f+S4iKzqOh7JYGsnN4jWvQ7aeo=;
+	s=arc-20240116; t=1779296620; c=relaxed/simple;
+	bh=sJAkGCkb+FPp1zhBfgRMWzRp6LvJDNEcQWvDTyrEWWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jXwkAWP4hm5QPLMyH1iG5DrwJMadJSFVFr0f4MMSO8jYnL49eZlHXJwfpLduJ8Zgi7rJ8/ITQ4BTXucjnTHiU6utxIIcpRPkf+xOrP+rUC44rF5HOhtYIZIsVnp9RmcCJSZb+0cSp41m5kuTmHeCOAx5rAwnAy8NDRBgXAR4hi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SHcWQe+s; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91CC51F000E9;
-	Wed, 20 May 2026 17:41:56 +0000 (UTC)
+	 MIME-Version; b=NkWoa4p16lQNlLMk54pLG72I8LL4s78THXirWcbH6DF624LngXodG+Ksx8v49e/XwJd/cb5589T3/Ms+ua+iFqEx7usRCzI0exJTJ8Bjn308UYkP4IjMu66633SeWEmxWn/f4SbepvovTyGapIsS6XfSGpSSZq5NwjhOuHDw9eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q8yeocA6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B55C1F000E9;
+	Wed, 20 May 2026 17:03:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298917;
-	bh=E1rKJGp1NKJ+qF6Hab+3Zl8WinLyxiG2YFjHnRLOExo=;
+	s=korg; t=1779296619;
+	bh=dyVD/lU3UiGkHtf2lDvFRDcbI4NG+Zijt4rvXXDI2xE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SHcWQe+s9kYWiCZ20qju3rZ7/9z5vQxUd+zyqIpac9pFDChOPz2BF7aikeEpZUju8
-	 ET/OIwA/OH4dTVn33wHFQwxD/nfv7ZffToW7WluF/x6tDuNK+6Reo3YQvSyxwKvhtz
-	 6utJhivLuNqDDuxwEsuFfL8GaB21Zb2BReVp8jO4=
+	b=Q8yeocA6DpRY0SutM1iv18W19/yPuckgu/cg3/OVo5suO5DrAkuBTBukf62aDM6iw
+	 GjpOJgq+CcPHdM40RJ9oJUre6YquPLGwr6xdnyElr5RUvTIZJAzIlWW/YhZKg/Lsm5
+	 sFeNEXsSlkuIn5aPIST20O/KUvXN1A1w7ZG5LJcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksander Jan Bajkowski <olek2@wp.pl>,
-	Kenneth Kasilag <kenneth@kasilag.me>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	DaeMyung Kang <charsyam@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 593/957] crypto: eip93 - fix hmac setkey algo selection
+Subject: [PATCH 7.0 0826/1146] ksmbd: destroy tree_conn_ida in ksmbd_session_destroy()
 Date: Wed, 20 May 2026 18:17:56 +0200
-Message-ID: <20260520162147.389770206@linuxfoundation.org>
+Message-ID: <20260520162206.925036330@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,124 +69,101 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251798-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	TAGGED_FROM(0.00)[bounces-250908-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,wp.pl,kasilag.me,gondor.apana.org.au,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,kasilag.me:email]
-X-Rspamd-Queue-Id: 801BC59A209
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 7804D592F3E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksander Jan Bajkowski <olek2@wp.pl>
+From: DaeMyung Kang <charsyam@gmail.com>
 
-[ Upstream commit 3ba3b02f897b14e34977e1886d95ffe64d907204 ]
+[ Upstream commit c049ee14eb4343b69b6f7755563f961f5e153423 ]
 
-eip93_hmac_setkey() allocates a temporary ahash transform for
-computing HMAC ipad/opad key material. The allocation uses the
-driver-specific cra_driver_name (e.g. "sha256-eip93") but passes
-CRYPTO_ALG_ASYNC as the mask, which excludes async algorithms.
+When per-session tree_conn_ida was converted from a dynamically
+allocated ksmbd_ida to an embedded struct ida, ksmbd_ida_free() was
+removed from ksmbd_session_destroy() but no matching ida_destroy()
+was added.  The session is therefore freed with the IDA's backing
+xarray still intact.
 
-Since the EIP93 hash algorithms are the only ones registered
-under those driver names and they are inherently async, the
-lookup is self-contradictory and always fails with -ENOENT.
+The kernel IDA API expects ida_init() and ida_destroy() to be paired
+over an object's lifetime, so add the missing cleanup before the
+enclosing session is freed.
 
-When called from the AEAD setkey path, this failure leaves the
-SA record partially initialized with zeroed digest fields. A
-subsequent crypto operation then dereferences a NULL pointer in
-the request context, resulting in a kernel panic:
+Also move ida_init() to right after the session is allocated so that
+it is always paired with the destroy call even on the early error
+paths of __session_create() (ksmbd_init_file_table() or
+__init_smb2_session() failures), both of which jump to the error
+label and invoke ksmbd_session_destroy() on a partially initialised
+session.
 
-```
-  pc : eip93_aead_handle_result+0xc8c/0x1240 [crypto_hw_eip93]
-  lr : eip93_aead_handle_result+0xbec/0x1240 [crypto_hw_eip93]
-  sp : ffffffc082feb820
-  x29: ffffffc082feb820 x28: ffffff8011043980 x27: 0000000000000000
-  x26: 0000000000000000 x25: ffffffc078da0bc8 x24: 0000000091043980
-  x23: ffffff8004d59e50 x22: ffffff8004d59410 x21: ffffff8004d593c0
-  x20: ffffff8004d593c0 x19: ffffff8004d4f300 x18: 0000000000000000
-  x17: 0000000000000000 x16: 0000000000000000 x15: 0000007fda7aa498
-  x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
-  x11: 0000000000000000 x10: fffffffff8127a80 x9 : 0000000000000000
-  x8 : ffffff8004d4f380 x7 : 0000000000000000 x6 : 000000000000003f
-  x5 : 0000000000000040 x4 : 0000000000000008 x3 : 0000000000000009
-  x2 : 0000000000000008 x1 : 0000000028000003 x0 : ffffff8004d388c0
-  Code: 910142b6 f94012e0 f9002aa0 f90006d3 (f9400740)
-```
+No leak has been observed in testing; this is a pairing fix to match
+the IDA lifetime rules, not a response to a reproduced regression.
 
-The reported symbol eip93_aead_handle_result+0xc8c is a
-resolution artifact from static functions being merged under
-the nearest exported symbol. Decoding the faulting sequence:
-
-```
-  910142b6  ADD  X22, X21, #0x50
-  f94012e0  LDR  X0, [X23, #0x20]
-  f9002aa0  STR  X0, [X21, #0x50]
-  f90006d3  STR  X19, [X22, #0x8]
-  f9400740  LDR  X0, [X26, #0x8]
-```
-
-The faulting LDR at [X26, #0x8] is loading ctx->flags
-(offset 8 in eip93_hash_ctx), where ctx has been resolved
-to NULL from a partially initialized or unreachable
-transform context following the failed setkey.
-
-Fix this by dropping the CRYPTO_ALG_ASYNC mask from the
-crypto_alloc_ahash() call. The code already handles async
-completion correctly via crypto_wait_req(), so there is no
-requirement to restrict the lookup to synchronous algorithms.
-
-Note that hashing a single 64-byte block through the hardware
-is likely slower than doing it in software due to the DMA
-round-trip overhead, but offloading it may still spare CPU
-cycles on the slower embedded cores where this IP is found.
-
-Fixes: 9739f5f93b78 ("crypto: eip93 - Add Inside Secure SafeXcel EIP-93 crypto engine support")
-Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
-[Detailed investigation report of this bug]
-Signed-off-by: Kenneth Kasilag <kenneth@kasilag.me>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: d40012a83f87 ("cifsd: declare ida statically")
+Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/inside-secure/eip93/eip93-common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/mgmt/user_session.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/inside-secure/eip93/eip93-common.c b/drivers/crypto/inside-secure/eip93/eip93-common.c
-index 66153aa2493f2..43a2df542583b 100644
---- a/drivers/crypto/inside-secure/eip93/eip93-common.c
-+++ b/drivers/crypto/inside-secure/eip93/eip93-common.c
-@@ -731,7 +731,7 @@ int eip93_hmac_setkey(u32 ctx_flags, const u8 *key, unsigned int keylen,
- 		return -EINVAL;
- 	}
+diff --git a/fs/smb/server/mgmt/user_session.c b/fs/smb/server/mgmt/user_session.c
+index a86589408835b..0dd9e6c976ac0 100644
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -391,6 +391,7 @@ void ksmbd_session_destroy(struct ksmbd_session *sess)
+ 	free_channel_list(sess);
+ 	kfree(sess->Preauth_HashValue);
+ 	ksmbd_release_id(&session_ida, sess->id);
++	ida_destroy(&sess->tree_conn_ida);
+ 	kfree(sess);
+ }
  
--	ahash_tfm = crypto_alloc_ahash(alg_name, 0, CRYPTO_ALG_ASYNC);
-+	ahash_tfm = crypto_alloc_ahash(alg_name, 0, 0);
- 	if (IS_ERR(ahash_tfm))
- 		return PTR_ERR(ahash_tfm);
+@@ -665,6 +666,8 @@ static struct ksmbd_session *__session_create(int protocol)
+ 	if (!sess)
+ 		return NULL;
  
++	ida_init(&sess->tree_conn_ida);
++
+ 	if (ksmbd_init_file_table(&sess->file_table))
+ 		goto error;
+ 
+@@ -684,8 +687,6 @@ static struct ksmbd_session *__session_create(int protocol)
+ 	if (ret)
+ 		goto error;
+ 
+-	ida_init(&sess->tree_conn_ida);
+-
+ 	down_write(&sessions_table_lock);
+ 	hash_add(sessions_table, &sess->hlist, sess->id);
+ 	up_write(&sessions_table_lock);
 -- 
 2.53.0
 
