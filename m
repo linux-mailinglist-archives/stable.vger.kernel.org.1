@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251067-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gJr7IKn4DWqq5AUAu9opvQ
-	(envelope-from <stable+bounces-251978-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:08:41 +0200
+	id MO5HF9LsDWo04wUAu9opvQ
+	(envelope-from <stable+bounces-251067-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:18:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 614E659562C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:08:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE4AC593469
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:18:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 08A22307FBEC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:50:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F172E3167732
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:10:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A36FD3C4576;
-	Wed, 20 May 2026 17:50:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6375F3EF0D7;
+	Wed, 20 May 2026 17:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ew7cGxC6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Fkm9U9o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B083F23BF;
-	Wed, 20 May 2026 17:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE775231842;
+	Wed, 20 May 2026 17:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299425; cv=none; b=N3Dez+BwxCOmsAnphmxJnaDKncCa6le4laIzIvCP9VTOD8A5p4zqdnBnju5ZPnTxQSSadw6RUGH0nniSN/cAMGa0vPKdh6mQ46wWy44CHgfU4+imiIQNsJtt2sEPp5JTpkqF4eWUlgSCa3dO54Lll0HFehNXuekokJ2sjZKDprw=
+	t=1779297016; cv=none; b=rFMlS+lPPonq9BMITjZoygmDIT1uxK6HyGRR1DyO0YtRGPO7ghbqL2+SuQpwNs8zrllbohWwD/2apt2TMzAn8tNact9iCyjd0ZGb8o98AwG9z5NWJiX3RMxJfWz3RPClz8nCiw/68Zl/7/8o8ftGb+SNL1+KWjOodrsya3/tEB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299425; c=relaxed/simple;
-	bh=2YNiOURkchvV+4m7XpmvQYs+TEqKHHft4fHry9w0lnY=;
+	s=arc-20240116; t=1779297016; c=relaxed/simple;
+	bh=B6/YJxuXHrs4Cpr/MeW21gxj6QN22aiDjVo028KzYU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uF/eo6i+si/kyd+bgqOekYVmuz3v0om4xmQlZwhv63kanidzFYsS4/Vxch1Xw+rwCA8nvmBCjP/rOr1q2po4zJ+8G6l21qkDeks2151eZzBX49BAw6L8OPlQHK4epaYTCv6K8UD6bTvLCWCRLhOlwMlo48mx+edivpma4mZx43c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ew7cGxC6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAE531F000E9;
-	Wed, 20 May 2026 17:50:23 +0000 (UTC)
+	 MIME-Version; b=ZgiAsWL5YVA4mz9DTVSjxqGxDz6+tpLUZ22++s62VVqjYkf2qfe5owJ8vUuliy7tlS8VnFsgcWKPLvmJwPMySstHRy3jf5guHbRdAqveZ25nocDoXNM63Yv0ZREVJM5vm5f19OoVsDoo7og5eAAgY5Id043BslLkWM7Rr9uIIk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Fkm9U9o; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FFD51F00893;
+	Wed, 20 May 2026 17:10:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299424;
-	bh=/ETgaT6JWEgAD54VIvxPgnLvw3n47HSgkhV87qk//VI=;
+	s=korg; t=1779297014;
+	bh=h7RW88bCE9DR4E5HLOd2nrU7HQQ1RyutvVD8nMY+tus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ew7cGxC6XHPDPOSLuA+xWjfsnwHL6bEiYXm0JNFRKsQmRbB3hp06ZfDtyPgUmUL86
-	 DYHGDmeKM7fWgj3HDlw8MDBm0go/veaSBB+0bt3D4hOdlHc6gL/8WLLl1P14Qt+O7+
-	 +MZSmGSQDnuo2FTaQRYXey9j2KH/AokrxJbd0PCI=
+	b=1Fkm9U9o1J3FsnrDSgn3fkOT7EbE41c2OiEzH7a+IN5vBEFjTXH4pFa7YqwuDDNgu
+	 cP5Xfoc7Slvgk+8gRfDxPVdwTO0lFXYRWZOFrwZkFc+ZZ4UFeNGQc61ZVAC/8bpKRw
+	 tDya00VorttRkO7vYTTc69+0jjrwyDYGT2Lwze3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Moritz Klammler <Moritz.Klammler@ferchau.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Thomas Gleixner <tglx@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 768/957] net/sched: netem: validate slot configuration
+Subject: [PATCH 7.0 1001/1146] futex: Prevent lockup in requeue-PI during signal/ timeout wakeup
 Date: Wed, 20 May 2026 18:20:51 +0200
-Message-ID: <20260520162151.218146510@linuxfoundation.org>
+Message-ID: <20260520162210.887550220@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251978-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251067-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,98 +86,112 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,networkplumber.org:email]
-X-Rspamd-Queue-Id: 614E659562C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linutronix.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,ferchau.com:email]
+X-Rspamd-Queue-Id: CE4AC593469
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Hemminger <stephen@networkplumber.org>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit 01801c359a74737b9b1aa28568b60374d857241a ]
+[ Upstream commit bc7304f3ae20972d11db6e0b1b541c63feda5f05 ]
 
-Reject slot configurations that have no defensible meaning:
+During wait-requeue-pi (task A) and requeue-PI (task B) the following
+race can happen:
 
-  - negative min_delay or max_delay
-  - min_delay greater than max_delay
-  - negative dist_delay or dist_jitter
-  - negative max_packets or max_bytes
+     Task A                             Task B
+  futex_wait_requeue_pi()
+    futex_setup_timer()
+    futex_do_wait()
+                                   futex_requeue()
+                                        CLASS(hb, hb1)(&key1);
+                                        CLASS(hb, hb2)(&key2);
+        *timeout*
+    futex_requeue_pi_wakeup_sync()
+        requeue_state = Q_REQUEUE_PI_IGNORE
 
-Negative or out-of-order delays underflow in get_slot_next(),
-producing garbage intervals. Negative limits trip the per-slot
-accounting (packets_left/bytes_left <= 0) on the first packet of
-every slot, defeating the rate-limiting half of the slot feature.
+    *blocks on hb->lock*
 
-Note that dist_jitter has been silently coerced to its absolute
-value by get_slot() since the feature was introduced; rejecting
-negatives here converts that silent coercion into -EINVAL. The
-abs() can be removed in a follow-up.
+                                        futex_proxy_trylock_atomic()
+                                          futex_requeue_pi_prepare()
+                                            Q_REQUEUE_PI_IGNORE => -EAGAIN
+                                        double_unlock_hb(hb1, hb2)
+                                         *retry*
 
-Fixes: 836af83b54e3 ("netem: support delivering packets in delayed time slots")
-Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260418032027.900913-5-stephen@networkplumber.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Task B acquires both hb locks and attempts to acquire the PI-lock of the
+top most waiter (task B). Task A is leaving early due to a signal/
+timeout and started removing itself from the queue. It updates its
+requeue_state but can not remove it from the list because this requires
+the hb lock which is owned by task B.
+
+Usually task A is able to swoop the lock after task B unlocked it.
+However if task B is of higher priority then task A may not be able to
+wake up in time and acquire the lock before task B gets it again.
+Especially on a UP system where A is never scheduled.
+
+As a result task A blocks on the lock and task B busy loops, trying to
+make progress but live locks the system instead. Tragic.
+
+This can be fixed by removing the top most waiter from the list in this
+case. This allows task B to grab the next top waiter (if any) in the
+next iteration and make progress.
+
+Remove the top most waiter if futex_requeue_pi_prepare() fails.
+Let the waiter conditionally remove itself from the list in
+handle_early_requeue_pi_wakeup().
+
+Fixes: 07d91ef510fb1 ("futex: Prevent requeue_pi() lock nesting issue on RT")
+Reported-by: Moritz Klammler <Moritz.Klammler@ferchau.com>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Link: https://patch.msgid.link/20260428103425.dywXyPd3@linutronix.de
+Closes: https://lore.kernel.org/all/VE1PR06MB6894BE61C173D802365BE19DFF4CA@VE1PR06MB6894.eurprd06.prod.outlook.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_netem.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ kernel/futex/requeue.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index 4bf65fcdaff02..41d60e904090d 100644
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -826,6 +826,29 @@ static int get_dist_table(struct disttable **tbl, const struct nlattr *attr)
- 	return 0;
- }
+diff --git a/kernel/futex/requeue.c b/kernel/futex/requeue.c
+index d818b4d47f1ba..b597cb3d17fc1 100644
+--- a/kernel/futex/requeue.c
++++ b/kernel/futex/requeue.c
+@@ -319,8 +319,11 @@ futex_proxy_trylock_atomic(u32 __user *pifutex, struct futex_hash_bucket *hb1,
+ 		return -EINVAL;
  
-+static int validate_slot(const struct nlattr *attr, struct netlink_ext_ack *extack)
-+{
-+	const struct tc_netem_slot *c = nla_data(attr);
-+
-+	if (c->min_delay < 0 || c->max_delay < 0) {
-+		NL_SET_ERR_MSG_ATTR(extack, attr, "negative slot delay");
-+		return -EINVAL;
+ 	/* Ensure that this does not race against an early wakeup */
+-	if (!futex_requeue_pi_prepare(top_waiter, NULL))
++	if (!futex_requeue_pi_prepare(top_waiter, NULL)) {
++		plist_del(&top_waiter->list, &hb1->chain);
++		futex_hb_waiters_dec(hb1);
+ 		return -EAGAIN;
 +	}
-+	if (c->min_delay > c->max_delay) {
-+		NL_SET_ERR_MSG_ATTR(extack, attr, "slot min delay greater than max delay");
-+		return -EINVAL;
-+	}
-+	if (c->dist_delay < 0 || c->dist_jitter < 0) {
-+		NL_SET_ERR_MSG_ATTR(extack, attr, "negative dist delay");
-+		return -EINVAL;
-+	}
-+	if (c->max_packets < 0 || c->max_bytes < 0) {
-+		NL_SET_ERR_MSG_ATTR(extack, attr, "negative slot limit");
-+		return -EINVAL;
-+	}
-+	return 0;
-+}
-+
- static void get_slot(struct netem_sched_data *q, const struct nlattr *attr)
- {
- 	const struct tc_netem_slot *c = nla_data(attr);
-@@ -1039,6 +1062,12 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
- 			goto table_free;
- 	}
  
-+	if (tb[TCA_NETEM_SLOT]) {
-+		ret = validate_slot(tb[TCA_NETEM_SLOT], extack);
-+		if (ret)
-+			goto table_free;
+ 	/*
+ 	 * Try to take the lock for top_waiter and set the FUTEX_WAITERS bit
+@@ -722,10 +725,12 @@ int handle_early_requeue_pi_wakeup(struct futex_hash_bucket *hb,
+ 
+ 	/*
+ 	 * We were woken prior to requeue by a timeout or a signal.
+-	 * Unqueue the futex_q and determine which it was.
++	 * Conditionally unqueue the futex_q and determine which it was.
+ 	 */
+-	plist_del(&q->list, &hb->chain);
+-	futex_hb_waiters_dec(hb);
++	if (!plist_node_empty(&q->list)) {
++		plist_del(&q->list, &hb->chain);
++		futex_hb_waiters_dec(hb);
 +	}
-+
- 	sch_tree_lock(sch);
- 	/* backup q->clg and q->loss_model */
- 	old_clg = q->clg;
+ 
+ 	/* Handle spurious wakeups gracefully */
+ 	ret = -EWOULDBLOCK;
 -- 
 2.53.0
 
