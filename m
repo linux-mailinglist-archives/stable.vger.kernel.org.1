@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-250390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251358-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0IPrBvfxDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-250390-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:40:07 +0200
+	id uFQIDnX7DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-251358-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:20:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55E9C5943B1
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:40:06 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52B16595D74
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:20:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B41D33758364
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BE3493080BC5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:23:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8FA3B6349;
-	Wed, 20 May 2026 16:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EE013BE165;
+	Wed, 20 May 2026 17:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dDo67t9J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HuhE/SM1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E25FB3A3E60;
-	Wed, 20 May 2026 16:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E01036A376;
+	Wed, 20 May 2026 17:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295289; cv=none; b=eVKpHMNZtM5bM2mBgSW2dNmPot0ATUCZri0mBPICWzF1UPGSD7DzT0qteo3eON+MbIGfV+NwWJTNtI6MpHxitYUtINm2TOrVlkpd7ed9q8cwEHABoLyfd/K+VjQ3De2OI4QPxzO+jhM2Mr059tRLHxqzW2tYja8tnQ6y7BQxD5M=
+	t=1779297771; cv=none; b=As4xnqvTmO+SD5Bv5+cNb0lxObpyB6gZaf6yrGumkXyEqOajPCazCNnB+56IQhVdDzDGc19TcRw7xn27YTQm2TG9HNosKs8xW+eySvZlAlhXdT6vz/ghMHa/NedE8VW8+Fop2lszBllkgQQvtlkgXPq6WvovDxlAl/rpc3yh/Gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295289; c=relaxed/simple;
-	bh=Nz0dWmBTHgqQvwZZNloLaUvpJE1yeN34JdDKpWnv+U0=;
+	s=arc-20240116; t=1779297771; c=relaxed/simple;
+	bh=OOp+Z3URAoTKcDJiU3WXbFnpkY5MfaP6j7GDGuxtvo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rBwJg9txJ40ksmfWoRa2+G9s4pdT/8TOi4tdLM9EO5uw9i+8pH3m0fwqE39nWzJ52NkVVFFtIPQKJuy7BZsuwTxEJ543QTx6KHvTtJdeAc2YdL08DtKOC650cJpf6NUcvMQ+ilMMD+MR7EzezdNxDUOtRHct2ihdmt8a8Aog6rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dDo67t9J; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 542951F000E9;
-	Wed, 20 May 2026 16:41:27 +0000 (UTC)
+	 MIME-Version; b=SKLaJSp7V61lEjiFjBdh+m02yKOoJWKRkQv6vGnA9gw7HygFD1t1zsW+qahb2nkcghT9Z0ALq4LyroSVt4ce5or7b4EZqKyIaYA2bULfTPvsjZ/p31oeSfOlEWmFEMQ+GY7t/tNx536i0KhJlj/Q33LXf9AZPzIndIjQ++zrIRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HuhE/SM1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7B21F000E9;
+	Wed, 20 May 2026 17:22:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295287;
-	bh=A881U0GJvmLom40owVgxyB4la3qQoWbw1dqo/urxLpk=;
+	s=korg; t=1779297769;
+	bh=+0/ueQUHhpE/n8yYT9+CdnCczkAh31EhYn2/ncYyH+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dDo67t9JAtLV4ITJSSdh1Bayj59dwfgyP3JDNMAhekYHL9INQyETLsqmZ0XeekG4N
-	 0cNgRm7bbC7gQASiw8KM/1Y+9FhpCIBj16td8GAvgLTvWVydZJXUVZntex4Ewe8VR3
-	 vMhw01I+z80xY7wAfYi//Nw3pcGcEf9JwGl3a6IY=
+	b=HuhE/SM18NIJNktPP8tsqFejwjYXqLewQERnkepdX3EPiJVSUkZ91eEq8aRCc6hky
+	 Dn8d4gjgmXt1U6NlKWbcxyJ2LfkHsDqhjDv7s/ci3/I8Cjf6GyYvdogCi6Fxl6gqMM
+	 qAp1vd4jZJZA5eLQJh0yt7FYtdDAPeQdSVp7IvBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Puranjay Mohan <puranjay@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0362/1146] drm/msm/adreno: Implement gx_is_on() for A8x
-Date: Wed, 20 May 2026 18:10:12 +0200
-Message-ID: <20260520162156.393934306@linuxfoundation.org>
+Subject: [PATCH 6.18 130/957] bpf: Support negative offsets, BPF_SUB, and alu32 for linked register tracking
+Date: Wed, 20 May 2026 18:10:13 +0200
+Message-ID: <20260520162137.374873895@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,227 +69,199 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-251358-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250390-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[patchwork.freedesktop.org:url,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 55E9C5943B1
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 52B16595D74
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+From: Puranjay Mohan <puranjay@kernel.org>
 
-[ Upstream commit ae25e6e9cdcac4cfef102b9d6de8bff13ca4d13b ]
+[ Upstream commit 7a433e519364c3c19643e5c857f4fbfaebec441c ]
 
-A8x has a diverged enough for a separate implementation of gx_is_on()
-check. Add that and move them to the adreno func table.
+Previously, the verifier only tracked positive constant deltas between
+linked registers using BPF_ADD. This limitation meant patterns like:
 
-Fixes: 288a93200892 ("drm/msm/adreno: Introduce A8x GPU Support")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/714661/
-Message-ID: <20260327-a8xx-gpu-batch2-v2-5-2b53c38d2101@oss.qualcomm.com>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+  r1 = r0;
+  r1 += -4;
+  if r1 s>= 0 goto l0_%=;   // r1 >= 0 implies r0 >= 4
+  // verifier couldn't propagate bounds back to r0
+  if r0 != 0 goto l0_%=;
+	r0 /= 0; // Verifier thinks this is reachable
+  l0_%=:
+
+Similar limitation exists for 32-bit registers.
+
+With this change, the verifier can now track negative deltas in reg->off
+enabling bound propagation for the above pattern.
+
+For alu32, we make sure the destination register has the upper 32 bits
+as 0s before creating the link. BPF_ADD_CONST is split into
+BPF_ADD_CONST64 and BPF_ADD_CONST32, the latter is used in case of alu32
+and sync_linked_regs uses this to zext the result if known_reg has this
+flag.
+
+Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20260204151741.2678118-2-puranjay@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Stable-dep-of: d7f14173c0d5 ("bpf: Fix linked reg delta tracking when src_reg == dst_reg")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gmu.c       | 42 +++++++++++++++++++--
- drivers/gpu/drm/msm/adreno/a6xx_gmu.h       |  5 ++-
- drivers/gpu/drm/msm/adreno/a6xx_gpu.c       |  6 ++-
- drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c |  4 +-
- drivers/gpu/drm/msm/adreno/adreno_gpu.h     |  1 +
- 5 files changed, 50 insertions(+), 8 deletions(-)
+ include/linux/bpf_verifier.h                  |  6 ++-
+ kernel/bpf/verifier.c                         | 50 +++++++++++++++----
+ .../selftests/bpf/progs/verifier_bounds.c     |  2 +-
+ 3 files changed, 45 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-index 690d3e53e2738..b41dbca1ebc63 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-@@ -91,10 +91,10 @@ bool a6xx_gmu_sptprac_is_on(struct a6xx_gmu *gmu)
- }
- 
- /* Check to see if the GX rail is still powered */
--bool a6xx_gmu_gx_is_on(struct a6xx_gmu *gmu)
-+bool a6xx_gmu_gx_is_on(struct adreno_gpu *adreno_gpu)
- {
--	struct a6xx_gpu *a6xx_gpu = container_of(gmu, struct a6xx_gpu, gmu);
--	struct adreno_gpu *adreno_gpu = &a6xx_gpu->base;
-+	struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
-+	struct a6xx_gmu *gmu = &a6xx_gpu->gmu;
- 	u32 val;
- 
- 	/* This can be called from gpu state code so make sure GMU is valid */
-@@ -117,6 +117,40 @@ bool a6xx_gmu_gx_is_on(struct a6xx_gmu *gmu)
- 		A6XX_GMU_SPTPRAC_PWR_CLK_STATUS_GX_HM_CLK_OFF));
- }
- 
-+bool a7xx_gmu_gx_is_on(struct adreno_gpu *adreno_gpu)
-+{
-+	struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
-+	struct a6xx_gmu *gmu = &a6xx_gpu->gmu;
-+	u32 val;
-+
-+	/* This can be called from gpu state code so make sure GMU is valid */
-+	if (!gmu->initialized)
-+		return false;
-+
-+	val = gmu_read(gmu, REG_A6XX_GMU_SPTPRAC_PWR_CLK_STATUS);
-+
-+	return !(val &
-+		(A7XX_GMU_SPTPRAC_PWR_CLK_STATUS_GX_HM_GDSC_POWER_OFF |
-+		A7XX_GMU_SPTPRAC_PWR_CLK_STATUS_GX_HM_CLK_OFF));
-+}
-+
-+bool a8xx_gmu_gx_is_on(struct adreno_gpu *adreno_gpu)
-+{
-+	struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
-+	struct a6xx_gmu *gmu = &a6xx_gpu->gmu;
-+	u32 val;
-+
-+	/* This can be called from gpu state code so make sure GMU is valid */
-+	if (!gmu->initialized)
-+		return false;
-+
-+	val = gmu_read(gmu, REG_A8XX_GMU_PWR_CLK_STATUS);
-+
-+	return !(val &
-+		(A8XX_GMU_PWR_CLK_STATUS_GX_HM_GDSC_POWER_OFF |
-+		 A8XX_GMU_PWR_CLK_STATUS_GX_HM_CLK_OFF));
-+}
-+
- void a6xx_gmu_set_freq(struct msm_gpu *gpu, struct dev_pm_opp *opp,
- 		       bool suspended)
- {
-@@ -240,7 +274,7 @@ static bool a6xx_gmu_check_idle_level(struct a6xx_gmu *gmu)
- 
- 	if (val == local) {
- 		if (gmu->idle_level != GMU_IDLE_STATE_IFPC ||
--			!a6xx_gmu_gx_is_on(gmu))
-+			!adreno_gpu->funcs->gx_is_on(adreno_gpu))
- 			return true;
+diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.h
+index 4c497e839526a..4867b0e8b5d9d 100644
+--- a/include/linux/bpf_verifier.h
++++ b/include/linux/bpf_verifier.h
+@@ -147,8 +147,12 @@ struct bpf_reg_state {
+ 	 * registers. Example:
+ 	 * r1 = r2;    both will have r1->id == r2->id == N
+ 	 * r1 += 10;   r1->id == N | BPF_ADD_CONST and r1->off == 10
++	 * r3 = r2;    both will have r3->id == r2->id == N
++	 * w3 += 10;   r3->id == N | BPF_ADD_CONST32 and r3->off == 10
+ 	 */
+-#define BPF_ADD_CONST (1U << 31)
++#define BPF_ADD_CONST64 (1U << 31)
++#define BPF_ADD_CONST32 (1U << 30)
++#define BPF_ADD_CONST (BPF_ADD_CONST64 | BPF_ADD_CONST32)
+ 	u32 id;
+ 	/* PTR_TO_SOCKET and PTR_TO_TCP_SOCK could be a ptr returned
+ 	 * from a pointer-cast helper, bpf_sk_fullsock() and
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 0d1ec2b5d469a..6cf8b13db301b 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -15787,6 +15787,13 @@ static int adjust_reg_min_max_vals(struct bpf_verifier_env *env,
+ 		verbose(env, "verifier internal error: no src_reg\n");
+ 		return -EFAULT;
  	}
++	/*
++	 * For alu32 linked register tracking, we need to check dst_reg's
++	 * umax_value before the ALU operation. After adjust_scalar_min_max_vals(),
++	 * alu32 ops will have zero-extended the result, making umax_value <= U32_MAX.
++	 */
++	u64 dst_umax = dst_reg->umax_value;
++
+ 	err = adjust_scalar_min_max_vals(env, insn, dst_reg, *src_reg);
+ 	if (err)
+ 		return err;
+@@ -15796,26 +15803,44 @@ static int adjust_reg_min_max_vals(struct bpf_verifier_env *env,
+ 	 * r1 += 0x1
+ 	 * if r2 < 1000 goto ...
+ 	 * use r1 in memory access
+-	 * So for 64-bit alu remember constant delta between r2 and r1 and
+-	 * update r1 after 'if' condition.
++	 * So remember constant delta between r2 and r1 and update r1 after
++	 * 'if' condition.
+ 	 */
+ 	if (env->bpf_capable &&
+-	    BPF_OP(insn->code) == BPF_ADD && !alu32 &&
+-	    dst_reg->id && is_reg_const(src_reg, false)) {
+-		u64 val = reg_const_value(src_reg, false);
++	    (BPF_OP(insn->code) == BPF_ADD || BPF_OP(insn->code) == BPF_SUB) &&
++	    dst_reg->id && is_reg_const(src_reg, alu32)) {
++		u64 val = reg_const_value(src_reg, alu32);
++		s32 off;
++
++		if (!alu32 && ((s64)val < S32_MIN || (s64)val > S32_MAX))
++			goto clear_id;
++
++		if (alu32 && (dst_umax > U32_MAX))
++			goto clear_id;
  
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.h b/drivers/gpu/drm/msm/adreno/a6xx_gmu.h
-index 2af074c8e8cfa..9f09daf45ab2b 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.h
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.h
-@@ -10,6 +10,7 @@
- #include <linux/notifier.h>
- #include <linux/soc/qcom/qcom_aoss.h>
- #include "msm_drv.h"
-+#include "adreno_gpu.h"
- #include "a6xx_hfi.h"
+-		if ((dst_reg->id & BPF_ADD_CONST) ||
+-		    /* prevent overflow in sync_linked_regs() later */
+-		    val > (u32)S32_MAX) {
++		off = (s32)val;
++
++		if (BPF_OP(insn->code) == BPF_SUB) {
++			/* Negating S32_MIN would overflow */
++			if (off == S32_MIN)
++				goto clear_id;
++			off = -off;
++		}
++
++		if (dst_reg->id & BPF_ADD_CONST) {
+ 			/*
+ 			 * If the register already went through rX += val
+ 			 * we cannot accumulate another val into rx->off.
+ 			 */
++clear_id:
+ 			dst_reg->off = 0;
+ 			dst_reg->id = 0;
+ 		} else {
+-			dst_reg->id |= BPF_ADD_CONST;
+-			dst_reg->off = val;
++			if (alu32)
++				dst_reg->id |= BPF_ADD_CONST32;
++			else
++				dst_reg->id |= BPF_ADD_CONST64;
++			dst_reg->off = off;
+ 		}
+ 	} else {
+ 		/*
+@@ -16888,7 +16913,7 @@ static void sync_linked_regs(struct bpf_verifier_state *vstate, struct bpf_reg_s
+ 			u32 saved_id = reg->id;
  
- struct a6xx_gmu_bo {
-@@ -231,7 +232,9 @@ void a6xx_hfi_stop(struct a6xx_gmu *gmu);
- int a6xx_hfi_send_prep_slumber(struct a6xx_gmu *gmu);
- int a6xx_hfi_set_freq(struct a6xx_gmu *gmu, u32 perf_index, u32 bw_index);
+ 			fake_reg.type = SCALAR_VALUE;
+-			__mark_reg_known(&fake_reg, (s32)reg->off - (s32)known_reg->off);
++			__mark_reg_known(&fake_reg, (s64)reg->off - (s64)known_reg->off);
  
--bool a6xx_gmu_gx_is_on(struct a6xx_gmu *gmu);
-+bool a6xx_gmu_gx_is_on(struct adreno_gpu *adreno_gpu);
-+bool a7xx_gmu_gx_is_on(struct adreno_gpu *adreno_gpu);
-+bool a8xx_gmu_gx_is_on(struct adreno_gpu *adreno_gpu);
- bool a6xx_gmu_sptprac_is_on(struct a6xx_gmu *gmu);
- void a6xx_sptprac_disable(struct a6xx_gmu *gmu);
- int a6xx_sptprac_enable(struct a6xx_gmu *gmu);
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-index 4e0d67e3acb7e..9327ecf94386e 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-@@ -1643,7 +1643,7 @@ static void a6xx_recover(struct msm_gpu *gpu)
- 
- 	adreno_dump_info(gpu);
- 
--	if (a6xx_gmu_gx_is_on(&a6xx_gpu->gmu)) {
-+	if (adreno_gpu->funcs->gx_is_on(adreno_gpu)) {
- 		/* Sometimes crashstate capture is skipped, so SQE should be halted here again */
- 		gpu_write(gpu, REG_A6XX_CP_SQE_CNTL, 3);
- 
-@@ -2763,6 +2763,7 @@ const struct adreno_gpu_funcs a6xx_gpu_funcs = {
- 	.get_timestamp = a6xx_gmu_get_timestamp,
- 	.bus_halt = a6xx_bus_clear_pending_transactions,
- 	.mmu_fault_handler = a6xx_fault_handler,
-+	.gx_is_on = a6xx_gmu_gx_is_on,
- };
- 
- const struct adreno_gpu_funcs a6xx_gmuwrapper_funcs = {
-@@ -2795,6 +2796,7 @@ const struct adreno_gpu_funcs a6xx_gmuwrapper_funcs = {
- 	.get_timestamp = a6xx_get_timestamp,
- 	.bus_halt = a6xx_bus_clear_pending_transactions,
- 	.mmu_fault_handler = a6xx_fault_handler,
-+	.gx_is_on = a6xx_gmu_gx_is_on,
- };
- 
- const struct adreno_gpu_funcs a7xx_gpu_funcs = {
-@@ -2829,6 +2831,7 @@ const struct adreno_gpu_funcs a7xx_gpu_funcs = {
- 	.get_timestamp = a6xx_gmu_get_timestamp,
- 	.bus_halt = a6xx_bus_clear_pending_transactions,
- 	.mmu_fault_handler = a6xx_fault_handler,
-+	.gx_is_on = a7xx_gmu_gx_is_on,
- };
- 
- const struct adreno_gpu_funcs a8xx_gpu_funcs = {
-@@ -2856,4 +2859,5 @@ const struct adreno_gpu_funcs a8xx_gpu_funcs = {
- 	.get_timestamp = a8xx_gmu_get_timestamp,
- 	.bus_halt = a8xx_bus_clear_pending_transactions,
- 	.mmu_fault_handler = a8xx_fault_handler,
-+	.gx_is_on = a8xx_gmu_gx_is_on,
- };
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-index e9a23d471f374..791623ddb67c9 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-@@ -1251,7 +1251,7 @@ static void a6xx_get_gmu_registers(struct msm_gpu *gpu,
- 		_a6xx_get_gmu_registers(gpu, a6xx_state, &a6xx_gpucc_reg,
- 			&a6xx_state->gmu_registers[2], false);
- 
--	if (!a6xx_gmu_gx_is_on(&a6xx_gpu->gmu))
-+	if (!adreno_gpu->funcs->gx_is_on(adreno_gpu))
- 		return;
- 
- 	/* Set the fence to ALLOW mode so we can access the registers */
-@@ -1607,7 +1607,7 @@ struct msm_gpu_state *a6xx_gpu_state_get(struct msm_gpu *gpu)
+ 			/* reg = known_reg; reg += delta */
+ 			copy_register_state(reg, known_reg);
+@@ -16903,6 +16928,9 @@ static void sync_linked_regs(struct bpf_verifier_state *vstate, struct bpf_reg_s
+ 			scalar32_min_max_add(reg, &fake_reg);
+ 			scalar_min_max_add(reg, &fake_reg);
+ 			reg->var_off = tnum_add(reg->var_off, fake_reg.var_off);
++			if (known_reg->id & BPF_ADD_CONST32)
++				zext_32_to_64(reg);
++			reg_bounds_sync(reg);
+ 		}
  	}
- 
- 	/* If GX isn't on the rest of the data isn't going to be accessible */
--	if (!a6xx_gmu_gx_is_on(&a6xx_gpu->gmu))
-+	if (!adreno_gpu->funcs->gx_is_on(adreno_gpu))
- 		return &a6xx_state->base;
- 
- 	/* Halt SQE first */
-diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.h b/drivers/gpu/drm/msm/adreno/adreno_gpu.h
-index c08725ed54c4f..29097e6b42535 100644
---- a/drivers/gpu/drm/msm/adreno/adreno_gpu.h
-+++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.h
-@@ -82,6 +82,7 @@ struct adreno_gpu_funcs {
- 	u64 (*get_timestamp)(struct msm_gpu *gpu);
- 	void (*bus_halt)(struct adreno_gpu *adreno_gpu, bool gx_off);
- 	int (*mmu_fault_handler)(void *arg, unsigned long iova, int flags, void *data);
-+	bool (*gx_is_on)(struct adreno_gpu *adreno_gpu);
- };
- 
- struct adreno_reglist {
+ }
+diff --git a/tools/testing/selftests/bpf/progs/verifier_bounds.c b/tools/testing/selftests/bpf/progs/verifier_bounds.c
+index e772ae430915f..ea5db79da40ef 100644
+--- a/tools/testing/selftests/bpf/progs/verifier_bounds.c
++++ b/tools/testing/selftests/bpf/progs/verifier_bounds.c
+@@ -1477,7 +1477,7 @@ __naked void sub64_full_overflow(void)
+ SEC("socket")
+ __description("64-bit subtraction, partial overflow, result in unbounded reg")
+ __success __log_level(2)
+-__msg("3: (1f) r3 -= r2 {{.*}} R3=scalar()")
++__msg("3: (1f) r3 -= r2 {{.*}} R3=scalar(id=1-1)")
+ __retval(0)
+ __naked void sub64_partial_overflow(void)
+ {
 -- 
 2.53.0
 
