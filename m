@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-252209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250632-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mNmhAGAjDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252209-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:10:56 +0200
+	id mD2zKxHrDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250632-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:10:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DDC959A849
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:10:55 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7165459308E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:10:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0F45733E3A3A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:01:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id ACB4430A9784
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:52:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 735B53F7AA6;
-	Wed, 20 May 2026 18:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9465933AD9C;
+	Wed, 20 May 2026 16:51:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQoabKZT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NfW/lNIa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5613F8704;
-	Wed, 20 May 2026 18:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59760318EC7;
+	Wed, 20 May 2026 16:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300081; cv=none; b=LDzriD7fHLFil3RzY2GMpP2h7sduEXVVI0AZNsJRqOw/EZ4nLU0mcbMU5lEt0zSmYd6CjcIk2aMTBteCwAh01HxeonF/1SUvtN6aKd8y9hXB37bA/bcgXfSE+kKg+Dul0j/57mcepu/eFO+VfyJRPc4Byrv3GdDL6lw09HlkeQY=
+	t=1779295919; cv=none; b=TCd5ciA/OgEuTxUE6pHj/33VBEWbxPGZUrvIncaxt+4+HVGngCuPtXOtsTH4rZXgklPShHKp++1OkCUz/ocrwhfs9mjryKXjq9jyXgeolqoQtpaf9S5/QhJbYlPui4X7zb4B5oHu4G+BuQzIjrF1dM6hgiR2aMl9+lEJ4gMyyDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300081; c=relaxed/simple;
-	bh=Y5CyflNgtIv7yyh4dB4TwDt+1xtzR0xVStjKIiv3t8Q=;
+	s=arc-20240116; t=1779295919; c=relaxed/simple;
+	bh=FfeUc7z8XBoBn+6EN8naX2hWzZsB8DfZ/YE+8JFzJ+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HQfEjhIu2SLCo7CxkKTiRh6qMki0dlUNzq+amwVAUvUqoTwJUTIwwvEiA2IUn4+uY2/3UJbrfCen5hl/eUpyFYKqnlyYfQqihrMuQdekLu4H+udwMQBeIlelpIQyxsqR+TeI1BoroYesHR21vYiKSK+V6uCfglJUYL3UD0G/IpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQoabKZT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97BAF1F00894;
-	Wed, 20 May 2026 18:01:16 +0000 (UTC)
+	 MIME-Version; b=GXmP2JiC57gVLOLzBe7Tg+4MMxjxmOoOEnq5ouVFD+AZRdZmZLilx58tPouViSDD7QfOQApwFmKCrTnEYuUOyal3jnjDVCOYAamrsza3jWBhS++rrTAIp5X2pe+ugZ+6FJ2982sLbUdD3q/xuRVeVqvAGbt6YKBOYvodZ4ULO6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NfW/lNIa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFB161F000E9;
+	Wed, 20 May 2026 16:51:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300077;
-	bh=7I/vBGcudozeOrqimsf2J3z0gbOFLp3oGFTE1kfAO4c=;
+	s=korg; t=1779295918;
+	bh=0K7uFWk5rUk/x3MH0Kkik6AW1XiZFS4hmYjUXNtTKL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iQoabKZTIcUNvc4ANGKFtNdbPklQHBMQfydQGvETiQJSHEuysKTt/lJsTMyvzFBUM
-	 +Vs92RYZ9vPfFLmydhfPdEqHDJHxzUhgBRl6SJlRIjZv/2tO2URUYegNiohGko1CBF
-	 4OVA56Nbd1pIIv5ydYj+l1h7v9RMk2P/GnGFtFOU=
+	b=NfW/lNIag1Y9wq/3zM/sc+lx00RZYtGV1hoUNT/VSrnbddiooC6jC2v5EaGwN0WJ2
+	 KtsNA9C01WyADlGgzDiOCKHaUnKql4xWpFq2+QzYHyTIGnMV+Cnuu3f6T3ORoL7xfV
+	 pLSFbeUTztw2SwxN1tn8xPL8MYWU7vqEaCItkLEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hari Bathini <hbathini@linux.ibm.com>,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Li Ming <ming.li@zohomail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 039/666] s390/bpf: Zero-extend bpf prog return values and kfunc arguments
+Subject: [PATCH 7.0 0600/1146] cxl/pci: Check memdev driver binding status in cxl_reset_done()
 Date: Wed, 20 May 2026 18:14:10 +0200
-Message-ID: <20260520162112.085297787@linuxfoundation.org>
+Message-ID: <20260520162201.757244349@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,137 +65,82 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	SEM_URIBL(3.50)[zohomail.com:email];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252209-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250632-lists,stable=lfdr.de];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_SPAM(0.00)[1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email]
-X-Rspamd-Queue-Id: 3DDC959A849
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c09:e001:a7::/64:c];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 7165459308E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: Li Ming <ming.li@zohomail.com>
 
-[ Upstream commit 202e42e4aa890172366354b233c42c73107a3f59 ]
+[ Upstream commit e8069c66d09309579e53567be8ddfa6ccb2f452a ]
 
-s390x ABI requires callers to zero-extend unsigned arguments and
-sign-extend signed arguments, and callees to zero-extend unsigned
-return values and sign-extend signed return values.
+cxl_reset_done() accesses the endpoint of the corresponding CXL memdev
+without endpoint validity checking. By default, cxlmd->endpoint is
+initialized to -ENXIO, if cxl_reset_done() is triggered after the
+corresponding CXL memdev probing failed, this results in access to an
+invalid endpoint.
 
-s390 BPF JIT currently implements only sign extension. Fix this
-omission and implement zero extension too.
+CXL subsystem can always check CXL memdev driver binding status to
+confirm its endpoint validity. So adding the CXL memdev driver checking
+inside cxl_reset_done() to avoid accessing an invalid endpoint.
 
-Fixes: 528eb2cb87bc ("s390/bpf: Implement arch_prepare_bpf_trampoline()")
-Reported-by: Hari Bathini <hbathini@linux.ibm.com>
-Closes: https://lore.kernel.org/bpf/20260312080113.843408-1-hbathini@linux.ibm.com/
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Tested-by: Ihor Solodrai <ihor.solodrai@linux.dev>
-Link: https://lore.kernel.org/r/20260313174807.581826-1-iii@linux.ibm.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 934edcd436dc ("cxl: Add post-reset warning if reset results in loss of previously committed HDM decoders")
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Li Ming <ming.li@zohomail.com>
+Link: https://patch.msgid.link/20260314-fix_access_endpoint_without_drv_check-v2-4-4c09edf2e1db@zohomail.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/net/bpf_jit_comp.c | 39 ++++++++++++++++++++++--------------
- 1 file changed, 24 insertions(+), 15 deletions(-)
+ drivers/cxl/pci.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/s390/net/bpf_jit_comp.c b/arch/s390/net/bpf_jit_comp.c
-index f305cb42070df..c3ad3cf86ca64 100644
---- a/arch/s390/net/bpf_jit_comp.c
-+++ b/arch/s390/net/bpf_jit_comp.c
-@@ -842,25 +842,34 @@ static int bpf_jit_probe_post(struct bpf_jit *jit, struct bpf_prog *fp,
- }
- 
- /*
-- * Sign-extend the register if necessary
-+ * Sign- or zero-extend the register if necessary
-  */
--static int sign_extend(struct bpf_jit *jit, int r, u8 size, u8 flags)
-+static int sign_zero_extend(struct bpf_jit *jit, int r, u8 size, u8 flags)
- {
--	if (!(flags & BTF_FMODEL_SIGNED_ARG))
--		return 0;
--
- 	switch (size) {
- 	case 1:
--		/* lgbr %r,%r */
--		EMIT4(0xb9060000, r, r);
-+		if (flags & BTF_FMODEL_SIGNED_ARG)
-+			/* lgbr %r,%r */
-+			EMIT4(0xb9060000, r, r);
-+		else
-+			/* llgcr %r,%r */
-+			EMIT4(0xb9840000, r, r);
- 		return 0;
- 	case 2:
--		/* lghr %r,%r */
--		EMIT4(0xb9070000, r, r);
-+		if (flags & BTF_FMODEL_SIGNED_ARG)
-+			/* lghr %r,%r */
-+			EMIT4(0xb9070000, r, r);
-+		else
-+			/* llghr %r,%r */
-+			EMIT4(0xb9850000, r, r);
- 		return 0;
- 	case 4:
--		/* lgfr %r,%r */
--		EMIT4(0xb9140000, r, r);
-+		if (flags & BTF_FMODEL_SIGNED_ARG)
-+			/* lgfr %r,%r */
-+			EMIT4(0xb9140000, r, r);
-+		else
-+			/* llgfr %r,%r */
-+			EMIT4(0xb9160000, r, r);
- 		return 0;
- 	case 8:
- 		return 0;
-@@ -1802,9 +1811,9 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp,
- 				return -1;
- 
- 			for (j = 0; j < m->nr_args; j++) {
--				if (sign_extend(jit, BPF_REG_1 + j,
--						m->arg_size[j],
--						m->arg_flags[j]))
-+				if (sign_zero_extend(jit, BPF_REG_1 + j,
-+						     m->arg_size[j],
-+						     m->arg_flags[j]))
- 					return -1;
- 			}
- 		}
-@@ -2551,7 +2560,7 @@ static int invoke_bpf_prog(struct bpf_tramp_jit *tjit,
- 	call_r1(jit);
- 	/* stg %r2,retval_off(%r15) */
- 	if (save_ret) {
--		if (sign_extend(jit, REG_2, m->ret_size, m->ret_flags))
-+		if (sign_zero_extend(jit, REG_2, m->ret_size, m->ret_flags))
- 			return -1;
- 		EMIT6_DISP_LH(0xe3000000, 0x0024, REG_2, REG_0, REG_15,
- 			      tjit->retval_off);
+diff --git a/drivers/cxl/pci.c b/drivers/cxl/pci.c
+index fbb300a018302..a5922116db2a8 100644
+--- a/drivers/cxl/pci.c
++++ b/drivers/cxl/pci.c
+@@ -1043,6 +1043,9 @@ static void cxl_reset_done(struct pci_dev *pdev)
+ 	 * that no longer exists.
+ 	 */
+ 	guard(device)(&cxlmd->dev);
++	if (!cxlmd->dev.driver)
++		return;
++
+ 	if (cxlmd->endpoint &&
+ 	    cxl_endpoint_decoder_reset_detected(cxlmd->endpoint)) {
+ 		dev_crit(dev, "SBR happened without memory regions removal.\n");
 -- 
 2.53.0
 
