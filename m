@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-251559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250568-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eOTbIRL2DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251559-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:57:38 +0200
+	id qHwbGoQRDmrw5wUAu9opvQ
+	(envelope-from <stable+bounces-250568-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:54:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35F82594FC0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:57:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEB5F598DFC
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:54:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 10BE03032553
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:31:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1ECB6325966E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:49:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE65A34F462;
-	Wed, 20 May 2026 17:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2784B37269C;
+	Wed, 20 May 2026 16:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ku4SHrqz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZFWIT79R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5715D28DC4;
-	Wed, 20 May 2026 17:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8C13164C3;
+	Wed, 20 May 2026 16:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298295; cv=none; b=rur8F+dKIPUK5h7uxWY0FZnMSnv0d8+usdeFIHbPTEpMnFt0LTbZnxFMIsTN8oh7KlAb+9klmp9L+aQKs7ZR4W9uRCUNzEfwMpoyE/k9JqHEFOJN1D+AxmBeZb3aloK/GQrLMwob6RCwWCO3HKZDxKnNuY+XjfCMZmdbblDop+Q=
+	t=1779295751; cv=none; b=faicwcqQS+v8sb9yw9OZ1mQlbvOEUW5k5Cuigql56xGk2ummAMBIJji3y0qg0OQzj+iTBfMnIAg4yOMxa2N6mxtzfE3jE2E9PsKFy7VtieUp+0YwCOGd+WpWpKI5Z94GQsXFHXrl0ewMSWtWQSke/tniKQeAa/QLwg0YK13nZ/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298295; c=relaxed/simple;
-	bh=KB9EfXtjr5MXy0ieWesGoi4fIz9jVB1CEMBMSdZi0bk=;
+	s=arc-20240116; t=1779295751; c=relaxed/simple;
+	bh=Ko57DA91ke64pLzkzDt5eTviw7owB7m/MYqnl92kNGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pm3+Q/5UFovRuHSWw/rxorJjsizC1SgntAXSAm8I1fwI4mo9F1EyoSnH/FBx3C1XRJyA4wNYIB0HaOXWYt6Z56Zp4c7zhtzVkrxdkDYl8vgtKAUFveLCp240utHB65iog1BsiZ6kUJVZZAZlsKpuKX/fmCmf7cVC8AfIqEb//b8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ku4SHrqz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE0E51F000E9;
-	Wed, 20 May 2026 17:31:33 +0000 (UTC)
+	 MIME-Version; b=CLTQxYFcpQZ8BX1XAPq81slFSovFh/+VhVSGTBq2+a1OgidACFnVZmQlJRGYgEaWXNkeHg3iZrDtmy67PsDuis2+8DPXkwxmGqp40bQPXHL03OuWMQvakklzfvM/XmyFDIx75+LZn4BfUZWJE6bmImCfce7sr5Cdxe9TZGHO524=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZFWIT79R; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD981F00893;
+	Wed, 20 May 2026 16:49:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298294;
-	bh=hkZUrUFiXpM6nmuaiDi+YOREslJGOEUiU9mzf8xCRDk=;
+	s=korg; t=1779295750;
+	bh=M12T00R5Ulzz/FRaYxuAPs3OlONhEYvEPLMdRckB890=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ku4SHrqzWhlCdsMfzpuMAivrZDTIciWlU8e13EJkRcKBv5RCD9m77CnHW49qmAai0
-	 BV5U1/Fcc5p1Bc2FUfdtpKOEheFbqfhqzSgcVJIKyyfRi6R1GmzGHixgWc6ozrobBx
-	 LnZWPHjO/LpUbfeXxV0lSiU0ytx86np70RsiIvnc=
+	b=ZFWIT79RVYqxbwfigkBZZF1V15PfdmAZquXkbY2+ryez0zvsYePo6hUEt2OSueqGi
+	 h4gN9seop5PmgXBWgMth+ia4zaIS9xSUIkT+K+HiyA8KXj7+a541XSXcsKv87N7k8V
+	 YUnbM6GE7XzaLtNZ0juWQLZae19w8nmo+G+jpzgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Schmidt <alexs@linux.ibm.com>,
-	Gerd Bayer <gbayer@linux.ibm.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Annette Kobou <annette.kobou@kontron.de>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 305/957] PCI: Enable AtomicOps only if Root Port supports them
+Subject: [PATCH 7.0 0538/1146] arm64: dts: imx8mp-kontron: Fix boot order for PMIC and RTC
 Date: Wed, 20 May 2026 18:13:08 +0200
-Message-ID: <20260520162141.145646985@linuxfoundation.org>
+Message-ID: <20260520162200.356395858@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,131 +77,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251559-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-250568-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_PROHIBIT(0.00)[0.0.0.52:email];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 35F82594FC0
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,kontron.de:email]
+X-Rspamd-Queue-Id: CEB5F598DFC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gerd Bayer <gbayer@linux.ibm.com>
+From: Annette Kobou <annette.kobou@kontron.de>
 
-[ Upstream commit 1ae8c4ce157037e266184064a182af9ef9af278b ]
+[ Upstream commit 130d90114c5255a7a729158da8fd8298a02017f1 ]
 
-When inspecting the config space of a Connect-X physical function in an
-s390 system after it was initialized by the mlx5_core device driver, we
-found the function to be enabled to request AtomicOps despite the Root Port
-lacking support for completing them:
+The PMIC provides a level-shifter for the I2C lines to the RTC. As the
+level shifter needs to be enabled before the RTC can be accessed, make sure
+that the PMIC driver is probed first.
 
-  00:00.1 Ethernet controller: Mellanox Technologies MT2894 Family [ConnectX-6 Lx]
-          Subsystem: Mellanox Technologies Device 0002
-          DevCtl2: Completion Timeout: 50us to 50ms, TimeoutDis-
-                   AtomicOpsCtl: ReqEn+
+As the PMIC also provides the supply voltage for the RTC through the 3.3V
+regulator, simply express this in the DT to create the required dependency.
 
-On s390 and many virtualized guests, the Endpoint is visible but the Root
-Port is not.  In this case, pci_enable_atomic_ops_to_root() previously
-enabled AtomicOps in the Endpoint even though it can't tell whether the
-Root Port supports them as a completer.
+Avoid sporadic boot hangs that occurred when the RTC was accessed before
+the level-shifter was enabled.
 
-Change pci_enable_atomic_ops_to_root() to fail if there's no Root Port or
-the Root Port doesn't support AtomicOps.
-
-Fixes: 430a23689dea ("PCI: Add pci_enable_atomic_ops_to_root()")
-Reported-by: Alexander Schmidt <alexs@linux.ibm.com>
-Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
-[bhelgaas: commit log, check RP first to simplify flow]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20260330-fix_pciatops-v7-2-f601818417e8@linux.ibm.com
+Fixes: 946ab10e3f40f ("arm64: dts: Add support for Kontron OSM-S i.MX8MP SoM and BL carrier board")
+Signed-off-by: Annette Kobou <annette.kobou@kontron.de>
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci.c | 41 ++++++++++++++++++++---------------------
- 1 file changed, 20 insertions(+), 21 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mp-kontron-osm-s.dtsi | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index a62ed5560c68f..0b6a23405f167 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -3818,8 +3818,7 @@ int pci_rebar_set_size(struct pci_dev *pdev, int bar, int size)
-  */
- int pci_enable_atomic_ops_to_root(struct pci_dev *dev, u32 cap_mask)
- {
--	struct pci_bus *bus = dev->bus;
--	struct pci_dev *bridge;
-+	struct pci_dev *root, *bridge;
- 	u32 cap, ctl2;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-kontron-osm-s.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-kontron-osm-s.dtsi
+index b97bfeb1c30f8..bc1a261bb000e 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-kontron-osm-s.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-kontron-osm-s.dtsi
+@@ -330,6 +330,12 @@ rv3028: rtc@52 {
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_rtc>;
+ 		interrupts-extended = <&gpio3 24 IRQ_TYPE_LEVEL_LOW>;
++		/*
++		 * While specifying the vdd-supply is normally not strictly necessary,
++		 * here it also makes sure that the PMIC driver enables the level-
++		 * shifter for the RTC before the RTC is probed.
++		 */
++		vdd-supply = <&reg_vdd_3v3>;
+ 	};
+ };
  
- 	/*
-@@ -3849,35 +3848,35 @@ int pci_enable_atomic_ops_to_root(struct pci_dev *dev, u32 cap_mask)
- 		return -EINVAL;
- 	}
- 
--	while (bus->parent) {
--		bridge = bus->self;
-+	root = pcie_find_root_port(dev);
-+	if (!root)
-+		return -EINVAL;
- 
--		pcie_capability_read_dword(bridge, PCI_EXP_DEVCAP2, &cap);
-+	pcie_capability_read_dword(root, PCI_EXP_DEVCAP2, &cap);
-+	if ((cap & cap_mask) != cap_mask)
-+		return -EINVAL;
- 
-+	bridge = pci_upstream_bridge(dev);
-+	while (bridge != root) {
- 		switch (pci_pcie_type(bridge)) {
--		/* Ensure switch ports support AtomicOp routing */
- 		case PCI_EXP_TYPE_UPSTREAM:
--		case PCI_EXP_TYPE_DOWNSTREAM:
--			if (!(cap & PCI_EXP_DEVCAP2_ATOMIC_ROUTE))
--				return -EINVAL;
--			break;
--
--		/* Ensure root port supports all the sizes we care about */
--		case PCI_EXP_TYPE_ROOT_PORT:
--			if ((cap & cap_mask) != cap_mask)
--				return -EINVAL;
--			break;
--		}
--
--		/* Ensure upstream ports don't block AtomicOps on egress */
--		if (pci_pcie_type(bridge) == PCI_EXP_TYPE_UPSTREAM) {
-+			/* Upstream ports must not block AtomicOps on egress */
- 			pcie_capability_read_dword(bridge, PCI_EXP_DEVCTL2,
- 						   &ctl2);
- 			if (ctl2 & PCI_EXP_DEVCTL2_ATOMIC_EGRESS_BLOCK)
- 				return -EINVAL;
-+			fallthrough;
-+
-+		/* All switch ports need to route AtomicOps */
-+		case PCI_EXP_TYPE_DOWNSTREAM:
-+			pcie_capability_read_dword(bridge, PCI_EXP_DEVCAP2,
-+						   &cap);
-+			if (!(cap & PCI_EXP_DEVCAP2_ATOMIC_ROUTE))
-+				return -EINVAL;
-+			break;
- 		}
- 
--		bus = bus->parent;
-+		bridge = pci_upstream_bridge(bridge);
- 	}
- 
- 	pcie_capability_set_word(dev, PCI_EXP_DEVCTL2,
 -- 
 2.53.0
 
