@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-252553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253019-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gOmGGe37DWoK5QUAu9opvQ
-	(envelope-from <stable+bounces-252553-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:37 +0200
+	id 6NxaJucADmo95QUAu9opvQ
+	(envelope-from <stable+bounces-253019-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E069595ECA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:22:36 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 411D159719F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2622B3133EBC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:16:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E7B623028EC4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1A3D368968;
-	Wed, 20 May 2026 18:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DFEB369D7A;
+	Wed, 20 May 2026 18:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzeIUw+P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oSR0ehpY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7881734DB46;
-	Wed, 20 May 2026 18:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA92272E56;
+	Wed, 20 May 2026 18:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300976; cv=none; b=VQD2kBgSyLNDt2j1ODKuw985whNRZI9OYCtimCTcFFr36yRjznjlsi7CbAescNAhHZ+Ym4JMXHdZyZPL/jmFGYJ3cE9UwX5gCqi/77dr5zxM/lmunDq2jgqFlCrKlXqoMFDq9n8YcjjLLx37yS9FCL3evUYEGORtBOrhUTOPLUo=
+	t=1779302192; cv=none; b=Io3uhmVhxmMrMgCMFnFMJhEvyMPIYau6oQxh+4w5DIU/cwmsmrEexn16cDDBrgHq8HObljepMlkOgEO7pbh6lUJUiH4qI+RoDre8ScKV/w1pKWGOxpAU8AUgB/nde7Fk44DhtsqXjLlLIS5iwk+fvMG24HasBb3ig1VE8dPEWuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300976; c=relaxed/simple;
-	bh=az1a5O8Ryf7lGDzAk1wzh+E249jm8nBN/4hAaTyAkSc=;
+	s=arc-20240116; t=1779302192; c=relaxed/simple;
+	bh=yu9BDYruO//a0hday1UWtMS1v9PklUBI7m8R919xYdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=npyMcun345qf0sFazyVAXWLaP6vGIaCX9MVfnhta6prMtdZ6oA27i8txWr7g3ZizT59MBlF/8iXjyx/r2wDD2ntLd8V5omOEEiXvMQSATagGjilbJ6N8kpJpZrXjAAy2bZsv2Q+fNz/30uqMTlWUWH92bZD1v+xqsy0ifcVjxOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzeIUw+P; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F4D21F000E9;
-	Wed, 20 May 2026 18:16:14 +0000 (UTC)
+	 MIME-Version; b=BuKYncGgUHxOEDfaYFXuZ4MfEeFr8zJWQUsmEdJ+RhGUepv8js5C7x0kOfw8enq79kt1xLvA7TIG9gSZ1eemxTaVmjLS+mtwy5g9PK6RYXP0X8p8rZkAWCIvrq4hRnpCnnpYgR3+wWMbkxpf4JDW1ptlIIIXMFALuyPXsA2G/n4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oSR0ehpY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 437411F000E9;
+	Wed, 20 May 2026 18:36:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300975;
-	bh=ZqlTYexCcirVvt9LB518PCp+W74Tx1TlrV8sZCNpGtE=;
+	s=korg; t=1779302190;
+	bh=Sy5C7SiXcYG0hhpiefSzO9Ej+BT0Vw9tizMCrpOZfpg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WzeIUw+PLMEConjUrInF9eqPT2p8LTN8H+89N+XZ3y9mgzGfR6n+Gfq+5YKxSu/04
-	 jjHFe7qikPtzix0uIyvdZizBmUzjEI2wrbxEd7xI5yJ0DL6sf4NQVw3IyDJH7bhFri
-	 qsQE48WF8k67nghf2OYjdE5Fh9T1nB7UOE1UUE/4=
+	b=oSR0ehpYrgkdqwGYq26CnxFp0QlWbe78rggoKgxlotoZfRApithJarJ9j+Cj+NF9N
+	 +u2NgxloK1OWRf3HxP/6XEFCu9ROVM5XbxeFSJCtMWwn590763YGHMYSNC04P38RE4
+	 Xf6GABPmkhMC11yp7pvCrMPc+THX0j8xmm//9Zko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Vidya Sagar <vidyas@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 378/666] perf maps: Fix copy_from that can break sorted by name order
+Subject: [PATCH 6.6 166/508] PCI: dwc: Apply ECRC workaround to DesignWare 5.00a as well
 Date: Wed, 20 May 2026 18:19:49 +0200
-Message-ID: <20260520162119.443770238@linuxfoundation.org>
+Message-ID: <20260520162102.236581511@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,76 +71,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253019-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252553-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 1E069595ECA
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 411D159719F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Manikanta Maddireddy <mmaddireddy@nvidia.com>
 
-[ Upstream commit f552b132e4d5248715828e7e5c2bf7889bf05b2e ]
+[ Upstream commit 40805f32dceadebb7381d911003100bec7b8cd51 ]
 
-When an parent is copied into a child the name array is populated in
-address not name order. Make sure the name array isn't flagged as sorted.
+The ECRC (TLP digest) workaround was originally added for DesignWare
+version 4.90a. Tegra234 SoC has 5.00a DWC HW version, which has the same
+ATU TD override behaviour, so apply the workaround for 5.00a too.
 
-Fixes: 659ad3492b91 ("perf maps: Switch from rbtree to lazily sorted array for addresses")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: a54e19073718 ("PCI: tegra194: Add Tegra234 PCIe support")
+Signed-off-by: Manikanta Maddireddy <mmaddireddy@nvidia.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
+Link: https://patch.msgid.link/20260324190755.1094879-13-mmaddireddy@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/maps.c | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+ drivers/pci/controller/dwc/pcie-designware.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/tools/perf/util/maps.c b/tools/perf/util/maps.c
-index 67133b60b03cd..7b8f48677c318 100644
---- a/tools/perf/util/maps.c
-+++ b/tools/perf/util/maps.c
-@@ -989,16 +989,9 @@ int maps__copy_from(struct maps *dest, struct maps *parent)
- 				map__put(new);
- 		}
- 		maps__set_maps_by_address_sorted(dest, maps__maps_by_address_sorted(parent));
--		if (!err) {
--			RC_CHK_ACCESS(dest)->last_search_by_name_idx =
--				RC_CHK_ACCESS(parent)->last_search_by_name_idx;
--			maps__set_maps_by_name_sorted(dest,
--						dest_maps_by_name &&
--						maps__maps_by_name_sorted(parent));
--		} else {
--			RC_CHK_ACCESS(dest)->last_search_by_name_idx = 0;
--			maps__set_maps_by_name_sorted(dest, false);
--		}
-+		RC_CHK_ACCESS(dest)->last_search_by_name_idx = 0;
-+		/* Values were copied into the name array in address order. */
-+		maps__set_maps_by_name_sorted(dest, false);
- 	} else {
- 		/* Unexpected copying to a maps containing entries. */
- 		for (unsigned int i = 0; !err && i < n; i++) {
+diff --git a/drivers/pci/controller/dwc/pcie-designware.c b/drivers/pci/controller/dwc/pcie-designware.c
+index 46b12e157bebe..504450a8b6a45 100644
+--- a/drivers/pci/controller/dwc/pcie-designware.c
++++ b/drivers/pci/controller/dwc/pcie-designware.c
+@@ -426,13 +426,13 @@ static inline void dw_pcie_writel_atu_ob(struct dw_pcie *pci, u32 index, u32 reg
+ static inline u32 dw_pcie_enable_ecrc(u32 val)
+ {
+ 	/*
+-	 * DesignWare core version 4.90A has a design issue where the 'TD'
+-	 * bit in the Control register-1 of the ATU outbound region acts
+-	 * like an override for the ECRC setting, i.e., the presence of TLP
+-	 * Digest (ECRC) in the outgoing TLPs is solely determined by this
+-	 * bit. This is contrary to the PCIe spec which says that the
+-	 * enablement of the ECRC is solely determined by the AER
+-	 * registers.
++	 * DWC versions 0x3530302a and 0x3536322a have a design issue where
++	 * the 'TD' bit in the Control register-1 of the ATU outbound
++	 * region acts like an override for the ECRC setting, i.e., the
++	 * presence of TLP Digest (ECRC) in the outgoing TLPs is solely
++	 * determined by this bit. This is contrary to the PCIe spec which
++	 * says that the enablement of the ECRC is solely determined by the
++	 * AER registers.
+ 	 *
+ 	 * Because of this, even when the ECRC is enabled through AER
+ 	 * registers, the transactions going through ATU won't have TLP
+@@ -502,7 +502,7 @@ static int __dw_pcie_prog_outbound_atu(struct dw_pcie *pci, u8 func_no,
+ 	if (upper_32_bits(limit_addr) > upper_32_bits(cpu_addr) &&
+ 	    dw_pcie_ver_is_ge(pci, 460A))
+ 		val |= PCIE_ATU_INCREASE_REGION_SIZE;
+-	if (dw_pcie_ver_is(pci, 490A))
++	if (dw_pcie_ver_is(pci, 490A) || dw_pcie_ver_is(pci, 500A))
+ 		val = dw_pcie_enable_ecrc(val);
+ 	dw_pcie_writel_atu_ob(pci, index, PCIE_ATU_REGION_CTRL1, val);
+ 
 -- 
 2.53.0
 
