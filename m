@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-252430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252874-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WDBRJt38DWok5QUAu9opvQ
-	(envelope-from <stable+bounces-252430-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:37 +0200
+	id uAWVEfYIDmrY5gUAu9opvQ
+	(envelope-from <stable+bounces-252874-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:18:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CB6559627A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:37 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BB24598171
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:18:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BD76D313D198
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:10:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5781B32D3388
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:30:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A73003C140F;
-	Wed, 20 May 2026 18:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B59234EEF7;
+	Wed, 20 May 2026 18:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJIyOeHt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JS6N06z0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435F93F54D1;
-	Wed, 20 May 2026 18:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE99333441;
+	Wed, 20 May 2026 18:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300652; cv=none; b=MfHQhRuvT0NWpK6xWkmY492Vt1Dtz/jbYSCYA2Y0eMGl9A7b4zDlOHM4LAFyp8iDe05xyFwkUjIqXcWjyG7XAcYJEq2f2FfcWvPE0C8YmRVffp8Rf0RRVciXz6HE/NSy9QKtKboSNGuvyLENEdCsebOeYe2MDog9Kz2unuWIAwg=
+	t=1779301814; cv=none; b=Q5/N7yZFJa5WMSsoXxBPAZDo5q6QR/8w1AYd/ueMSfx8P1QliDDeZTJeWCZmWa2r6f66bMaz5r0vPb5T9gGDJblv6rJpoZp93KVshP2uGl51hodM7N/a4lJvItMLvwNI0iTz46rkZFMufMRgYhTTP2uJzA/M4mi7Ki7bSk5oTIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300652; c=relaxed/simple;
-	bh=/G6B9+9cpwbYrTWBj6L2lpfWGcVaIz0OV3Ffz0jjdyI=;
+	s=arc-20240116; t=1779301814; c=relaxed/simple;
+	bh=b9IJivf9QNQ7zmuTg/rJb/pmaWaahTgbV9y8TnSPkJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oyphkq34bVx5W8wEZlPSYnJO9iCNAuv1IKjigH6I5oiUsYhJAnvsKt6uoMCfcWOrMz7JmNEQZGxrYmp1ACTrIC28ctNBDQfPJLU8k4qy091dAomlkOoz6m8KnRGzn1oCL39Qxuf4r0CXsuR+6GxBAdQDhz5rQWvRxXVrbWy4k9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJIyOeHt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A84741F000E9;
-	Wed, 20 May 2026 18:10:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=axRuUG9B5jUbBeKWxzaq7FQBXeuF664KjIXABNG2QxUoXP4J+g4YVBmwohe72Vo4oJu7nrnNqsfvjPXO4fvplAiW+4P1MKnTo0tQXxcsVhvPKt4bWgU2lhsBJCLY63obtkqSNTLerrz6XjtV0gkSBIOQjBYW4gva4ckpBgMUUkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JS6N06z0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A6E91F000E9;
+	Wed, 20 May 2026 18:30:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300651;
-	bh=DdI76JqD67D2metYncayb+tSFjMCa+CZ1/CZ8MsMTQU=;
+	s=korg; t=1779301813;
+	bh=sLwgRBkXpzWmSJaM6eWF1BDTed7+Mufe7E2kMlDsiuU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SJIyOeHtkOzfq5T9HSd6ohPVsuZlSYe1DiWqrc1uDeSJ1EjFsCPr3epK/lPgNWANe
-	 2uF1RTiJpfQzTmgsB1Ik+p5PbHjgWamqRyeJaoAEZSqqIwMuFljwHuO7yz8MGM9Wcb
-	 2d/ZToyuz/ykGlBnue05LmJTmVZToaiHc5oa6k8I=
+	b=JS6N06z0oK2+wDCwHECpEaog6IaCZpfkdRiyV32/eqBd7lkO0cpOQDibA38sexa5D
+	 m+JtT0yqvi0XRhbUurVY5ctMsBcgd8ITucTJS6GYTyQ2F2UdAt1lN5sAgwHyD21Ag/
+	 GcStJ/JkCbib5sDhHeh3BxEDbCIxb5Waf693rpZo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	=?UTF-8?q?Christoph=20B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 215/666] iommu/amd: Introduce helper function get_dte256()
+Subject: [PATCH 6.6 003/508] drbd: Balance RCU calls in drbd_adm_dump_devices()
 Date: Wed, 20 May 2026 18:17:06 +0200
-Message-ID: <20260520162115.868583764@linuxfoundation.org>
+Message-ID: <20260520162058.652855024@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,179 +66,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252430-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-252874-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,amd.com:email,nvidia.com:email,suse.de:email]
-X-Rspamd-Queue-Id: 6CB6559627A
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,kernel.dk:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,lst.de:email,acm.org:email]
+X-Rspamd-Queue-Id: 3BB24598171
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit a2ce608a1eb65c2af99c58b63eae557165a0da87 ]
+[ Upstream commit 2b31e86387e60b3689339f0f0fbb4d3623d9d494 ]
 
-And use it in clone_alias() along with update_dte256().
-Also use get_dte256() in dump_dte_entry().
+Make drbd_adm_dump_devices() call rcu_read_lock() before
+rcu_read_unlock() is called. This has been detected by the Clang
+thread-safety analyzer.
 
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Link: https://lore.kernel.org/r/20241118054937.5203-7-suravee.suthikulpanit@amd.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Stable-dep-of: faad224fe0f0 ("iommu/amd: Fix clone_alias() to use the original device's devid")
+Tested-by: Christoph Böhmwalder <christoph.boehmwalder@linbit.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Cc: Andreas Gruenbacher <agruenba@redhat.com>
+Fixes: a55bbd375d18 ("drbd: Backport the "status" command")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20260326214054.284593-1-bvanassche@acm.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/iommu.c | 62 ++++++++++++++++++++++++++++++++-------
- 1 file changed, 51 insertions(+), 11 deletions(-)
+ drivers/block/drbd/drbd_nl.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index e5c6cf57439c9..3e28aefdc6a02 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -79,6 +79,8 @@ static void set_dte_entry(struct amd_iommu *iommu,
- 
- static void iommu_flush_dte_sync(struct amd_iommu *iommu, u16 devid);
- 
-+static struct iommu_dev_data *find_dev_data(struct amd_iommu *iommu, u16 devid);
-+
- /****************************************************************************
-  *
-  * Helper functions
-@@ -196,6 +198,21 @@ static void update_dte256(struct amd_iommu *iommu, struct iommu_dev_data *dev_da
- 	spin_unlock_irqrestore(&dev_data->dte_lock, flags);
- }
- 
-+static void get_dte256(struct amd_iommu *iommu, struct iommu_dev_data *dev_data,
-+		      struct dev_table_entry *dte)
-+{
-+	unsigned long flags;
-+	struct dev_table_entry *ptr;
-+	struct dev_table_entry *dev_table = get_dev_table(iommu);
-+
-+	ptr = &dev_table[dev_data->devid];
-+
-+	spin_lock_irqsave(&dev_data->dte_lock, flags);
-+	dte->data128[0] = ptr->data128[0];
-+	dte->data128[1] = ptr->data128[1];
-+	spin_unlock_irqrestore(&dev_data->dte_lock, flags);
-+}
-+
- static inline bool pdom_is_v2_pgtbl_mode(struct protection_domain *pdom)
- {
- 	return (pdom && (pdom->pd_mode == PD_MODE_V2));
-@@ -367,9 +384,11 @@ static struct iommu_dev_data *search_dev_data(struct amd_iommu *iommu, u16 devid
- 
- static int clone_alias(struct pci_dev *pdev, u16 alias, void *data)
- {
-+	struct dev_table_entry new;
- 	struct amd_iommu *iommu;
--	struct dev_table_entry *dev_table;
-+	struct iommu_dev_data *dev_data, *alias_data;
- 	u16 devid = pci_dev_id(pdev);
-+	int ret = 0;
- 
- 	if (devid == alias)
- 		return 0;
-@@ -378,13 +397,27 @@ static int clone_alias(struct pci_dev *pdev, u16 alias, void *data)
- 	if (!iommu)
- 		return 0;
- 
--	amd_iommu_set_rlookup_table(iommu, alias);
--	dev_table = get_dev_table(iommu);
--	memcpy(dev_table[alias].data,
--	       dev_table[devid].data,
--	       sizeof(dev_table[alias].data));
-+	/* Copy the data from pdev */
-+	dev_data = dev_iommu_priv_get(&pdev->dev);
-+	if (!dev_data) {
-+		pr_err("%s : Failed to get dev_data for 0x%x\n", __func__, devid);
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+	get_dte256(iommu, dev_data, &new);
- 
--	return 0;
-+	/* Setup alias */
-+	alias_data = find_dev_data(iommu, alias);
-+	if (!alias_data) {
-+		pr_err("%s : Failed to get alias dev_data for 0x%x\n", __func__, alias);
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+	update_dte256(iommu, alias_data, &new);
-+
-+	amd_iommu_set_rlookup_table(iommu, alias);
-+out:
-+	return ret;
- }
- 
- static void clone_aliases(struct amd_iommu *iommu, struct device *dev)
-@@ -657,6 +690,12 @@ static int iommu_init_device(struct amd_iommu *iommu, struct device *dev)
- 		return -ENOMEM;
- 
- 	dev_data->dev = dev;
-+
-+	/*
-+	 * The dev_iommu_priv_set() needes to be called before setup_aliases.
-+	 * Otherwise, subsequent call to dev_iommu_priv_get() will fail.
-+	 */
-+	dev_iommu_priv_set(dev, dev_data);
- 	setup_aliases(iommu, dev);
- 
- 	/*
-@@ -670,8 +709,6 @@ static int iommu_init_device(struct amd_iommu *iommu, struct device *dev)
- 		dev_data->flags = pdev_get_caps(to_pci_dev(dev));
+diff --git a/drivers/block/drbd/drbd_nl.c b/drivers/block/drbd/drbd_nl.c
+index d3538bd83fb3b..1ba81a5e77215 100644
+--- a/drivers/block/drbd/drbd_nl.c
++++ b/drivers/block/drbd/drbd_nl.c
+@@ -3368,8 +3368,10 @@ int drbd_adm_dump_devices(struct sk_buff *skb, struct netlink_callback *cb)
+ 		if (resource_filter) {
+ 			retcode = ERR_RES_NOT_KNOWN;
+ 			resource = drbd_find_resource(nla_data(resource_filter));
+-			if (!resource)
++			if (!resource) {
++				rcu_read_lock();
+ 				goto put_result;
++			}
+ 			cb->args[0] = (long)resource;
+ 		}
  	}
- 
--	dev_iommu_priv_set(dev, dev_data);
--
- 	return 0;
- }
- 
-@@ -718,10 +755,13 @@ static void amd_iommu_uninit_device(struct device *dev)
- static void dump_dte_entry(struct amd_iommu *iommu, u16 devid)
- {
- 	int i;
--	struct dev_table_entry *dev_table = get_dev_table(iommu);
-+	struct dev_table_entry dte;
-+	struct iommu_dev_data *dev_data = find_dev_data(iommu, devid);
-+
-+	get_dte256(iommu, dev_data, &dte);
- 
- 	for (i = 0; i < 4; ++i)
--		pr_err("DTE[%d]: %016llx\n", i, dev_table[devid].data[i]);
-+		pr_err("DTE[%d]: %016llx\n", i, dte.data[i]);
- }
- 
- static void dump_command(unsigned long phys_addr)
+@@ -3618,8 +3620,10 @@ int drbd_adm_dump_peer_devices(struct sk_buff *skb, struct netlink_callback *cb)
+ 		if (resource_filter) {
+ 			retcode = ERR_RES_NOT_KNOWN;
+ 			resource = drbd_find_resource(nla_data(resource_filter));
+-			if (!resource)
++			if (!resource) {
++				rcu_read_lock();
+ 				goto put_result;
++			}
+ 		}
+ 		cb->args[0] = (long)resource;
+ 	}
 -- 
 2.53.0
 
