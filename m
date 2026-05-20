@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-250835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251749-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uNQoE/7sDWo04wUAu9opvQ
-	(envelope-from <stable+bounces-250835-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:18:54 +0200
+	id MNnEIuwdDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251749-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:47:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E57325934E8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:18:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0461359A1C5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:47:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B83E03174229
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:01:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 19D5E32FEDE0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:39:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EFAC3D8129;
-	Wed, 20 May 2026 17:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC1153EFD3D;
+	Wed, 20 May 2026 17:39:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rrPcvY/E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xqWw54dI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E74331220;
-	Wed, 20 May 2026 17:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2390C3F23A4;
+	Wed, 20 May 2026 17:39:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296431; cv=none; b=KnMfCJoGknHlwsVqwFoAF9ZAJotV6PhG7EcCtZbk8vDPtQPlLM6bUoCsXHmGKxoA7rkckL+21S1Wvg0ZLooRYeoIq4fY82cyyKtlwEAAUKWTn/R4Sh1Z05Dk2gZYUpQOnVMrQu9nFv1Rp2+VXyKWseQI9wqpn5RbdAFGJqqfpS4=
+	t=1779298793; cv=none; b=kn4IBkeVxQ0M8xZuN2kDB4omvfGHs1sjs/LT0Z7TA+jYD39fiyag6dkYxkMMycRRPzWuydkI2xLCaQHcBYjiupl69gVH70xVow3TPifm1Iu8kveQOad1eJE7pMeJvHhof6Ay/8neYKIrFMXysgo+ebro3nzvQVpnrACl3p7QrUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296431; c=relaxed/simple;
-	bh=C1t+ABc+O/zACDdA5naC1IEZfgmIa2z80yla8+ft2OI=;
+	s=arc-20240116; t=1779298793; c=relaxed/simple;
+	bh=1ZfYt5RkjVXzxVHGxEihnIlBoD31ygtyrTZH9QWFrZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MQhlTEvgmxhueVyYmGpMd0rZpdupqum4EUqpmHqJICvjVeck/v6zKUx+LSweaS7FqU6aRKJoXmbN7SzRxDdD+Ax62BNK4CyqLdx3tK2O1rxVqK7NmZ2ERcqUmQ+jJbVGVqPl3x5sG6jMbWyWk/SYwha17jrRuNggmcjhamfTwxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rrPcvY/E; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 481CC1F000E9;
-	Wed, 20 May 2026 17:00:29 +0000 (UTC)
+	 MIME-Version; b=AuKriaxp+/dpIhHIDlvUYHpFjZRc7hjasEktM4Dh86DG0UkkwfjlCLZK81LfUHiGBZkllg++p2A22gC0ophWuP/pXZ/h/x1Y70L8wHzDBzlPR/Y9Exu24In0Pkk0/C+zgV5o6SVAUx/SSmEqk9FflUgNxa4aROT8wP+4xvJcnbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xqWw54dI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 374941F00893;
+	Wed, 20 May 2026 17:39:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296429;
-	bh=70J+rOjdQlaR2Rsumglu/egxVoYQOeTbf8gH+idFwk4=;
+	s=korg; t=1779298790;
+	bh=HFs2Se2Q0r4Rf+ZEuKSv0rZosOQmnlDWxTn8ina2jhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rrPcvY/ETQB7s3lvOcysXxVPsGTuQFOBpta08Eeo/cscePkoYJVfUY5FI5CdVmTWz
-	 rd18lB+QQqxbYbZkoUxYNr6/Nj7mFu9fn87CXlq5SsEejcAho3uLQ4Z71EsuDVPSso
-	 +gi8rVYhR9y547Yxl2Nu3JjUjzWjkw5BKFDB2ZCk=
+	b=xqWw54dIsPHDZL9gFPrAmfytB/K4DjE2DcL3ZeOlOviFu0mfwI7raC1TdgdX0RenS
+	 Oej6yJTU0/aaXbnVNnwhfvNyqQfa4/e7jM6UHBX1ulQdoFFxS5sWJOWUtjxkPpGlmE
+	 wL35zeJFLcMZSING15ZsAt6DkIpMFjU/1ux+AjiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0779/1146] tcp: inline tcp_chrono_start()
+Subject: [PATCH 6.18 546/957] RDMA/core: Prefer NLA_NUL_STRING
 Date: Wed, 20 May 2026 18:17:09 +0200
-Message-ID: <20260520162205.844743032@linuxfoundation.org>
+Message-ID: <20260520162146.373621294@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,142 +66,88 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251749-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250835-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: E57325934E8
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email]
+X-Rspamd-Queue-Id: 0461359A1C5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit d6d4ff335db2d9242937ca474d292010acd35c38 ]
+[ Upstream commit 6ed3d14fc45d3da6025e7fe4a6a09066856698e2 ]
 
-tcp_chrono_start() is small enough, and used in TCP sendmsg()
-fast path (from tcp_skb_entail()).
+These attributes are evaluated as c-string (passed to strcmp), but
+NLA_STRING doesn't check for the presence of a \0 terminator.
 
-Note clang is already inlining it from functions in tcp_output.c.
+Either this needs to switch to nla_strcmp() and needs to adjust printf fmt
+specifier to not use plain %s, or this needs to use NLA_NUL_STRING.
 
-Inlining it improves performance and reduces bloat :
+As the code has been this way for long time, it seems to me that userspace
+does include the terminating nul, even tough its not enforced so far, and
+thus NLA_NUL_STRING use is the simpler solution.
 
-$ scripts/bloat-o-meter -t vmlinux.old vmlinux.new
-add/remove: 0/2 grow/shrink: 1/0 up/down: 1/-84 (-83)
-Function                                     old     new   delta
-tcp_skb_entail                               280     281      +1
-__pfx_tcp_chrono_start                        16       -     -16
-tcp_chrono_start                              68       -     -68
-Total: Before=25192434, After=25192351, chg -0.00%
-
-Note that tcp_chrono_stop() is too big.
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Neal Cardwell <ncardwell@google.com>
-Link: https://patch.msgid.link/20260308123549.2924460-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 267bf3cf9a6f ("tcp: annotate data-races in tcp_get_info_chrono_stats()")
+Fixes: 30dc5e63d6a5 ("RDMA/core: Add support for iWARP Port Mapper user space service")
+Link: https://patch.msgid.link/r/20260330122742.13315-1-fw@strlen.de
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/tcp.h     | 25 ++++++++++++++++++++++++-
- net/ipv4/tcp_output.c | 24 ------------------------
- 2 files changed, 24 insertions(+), 25 deletions(-)
+ drivers/infiniband/core/iwpm_msg.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 978eea2d5df04..905587114d444 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -2156,7 +2156,30 @@ enum tcp_chrono {
- 	__TCP_CHRONO_MAX,
+diff --git a/drivers/infiniband/core/iwpm_msg.c b/drivers/infiniband/core/iwpm_msg.c
+index 3c9a9869212bb..feb09008eb9ca 100644
+--- a/drivers/infiniband/core/iwpm_msg.c
++++ b/drivers/infiniband/core/iwpm_msg.c
+@@ -365,9 +365,9 @@ int iwpm_remove_mapping(struct sockaddr_storage *local_addr, u8 nl_client)
+ /* netlink attribute policy for the received response to register pid request */
+ static const struct nla_policy resp_reg_policy[IWPM_NLA_RREG_PID_MAX] = {
+ 	[IWPM_NLA_RREG_PID_SEQ]     = { .type = NLA_U32 },
+-	[IWPM_NLA_RREG_IBDEV_NAME]  = { .type = NLA_STRING,
++	[IWPM_NLA_RREG_IBDEV_NAME]  = { .type = NLA_NUL_STRING,
+ 					.len = IWPM_DEVNAME_SIZE - 1 },
+-	[IWPM_NLA_RREG_ULIB_NAME]   = { .type = NLA_STRING,
++	[IWPM_NLA_RREG_ULIB_NAME]   = { .type = NLA_NUL_STRING,
+ 					.len = IWPM_ULIBNAME_SIZE - 1 },
+ 	[IWPM_NLA_RREG_ULIB_VER]    = { .type = NLA_U16 },
+ 	[IWPM_NLA_RREG_PID_ERR]     = { .type = NLA_U16 }
+@@ -677,7 +677,7 @@ int iwpm_remote_info_cb(struct sk_buff *skb, struct netlink_callback *cb)
+ 
+ /* netlink attribute policy for the received request for mapping info */
+ static const struct nla_policy resp_mapinfo_policy[IWPM_NLA_MAPINFO_REQ_MAX] = {
+-	[IWPM_NLA_MAPINFO_ULIB_NAME] = { .type = NLA_STRING,
++	[IWPM_NLA_MAPINFO_ULIB_NAME] = { .type = NLA_NUL_STRING,
+ 					.len = IWPM_ULIBNAME_SIZE - 1 },
+ 	[IWPM_NLA_MAPINFO_ULIB_VER]  = { .type = NLA_U16 }
  };
- 
--void tcp_chrono_start(struct sock *sk, const enum tcp_chrono type);
-+static inline void tcp_chrono_set(struct tcp_sock *tp, const enum tcp_chrono new)
-+{
-+	const u32 now = tcp_jiffies32;
-+	enum tcp_chrono old = tp->chrono_type;
-+
-+	if (old > TCP_CHRONO_UNSPEC)
-+		tp->chrono_stat[old - 1] += now - tp->chrono_start;
-+	tp->chrono_start = now;
-+	tp->chrono_type = new;
-+}
-+
-+static inline void tcp_chrono_start(struct sock *sk, const enum tcp_chrono type)
-+{
-+	struct tcp_sock *tp = tcp_sk(sk);
-+
-+	/* If there are multiple conditions worthy of tracking in a
-+	 * chronograph then the highest priority enum takes precedence
-+	 * over the other conditions. So that if something "more interesting"
-+	 * starts happening, stop the previous chrono and start a new one.
-+	 */
-+	if (type > tp->chrono_type)
-+		tcp_chrono_set(tp, type);
-+}
-+
- void tcp_chrono_stop(struct sock *sk, const enum tcp_chrono type);
- 
- /* This helper is needed, because skb->tcp_tsorted_anchor uses
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index 326b58ff1118d..7b8a2c8213e18 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -2878,30 +2878,6 @@ static bool tcp_small_queue_check(struct sock *sk, const struct sk_buff *skb,
- 	return false;
- }
- 
--static void tcp_chrono_set(struct tcp_sock *tp, const enum tcp_chrono new)
--{
--	const u32 now = tcp_jiffies32;
--	enum tcp_chrono old = tp->chrono_type;
--
--	if (old > TCP_CHRONO_UNSPEC)
--		tp->chrono_stat[old - 1] += now - tp->chrono_start;
--	tp->chrono_start = now;
--	tp->chrono_type = new;
--}
--
--void tcp_chrono_start(struct sock *sk, const enum tcp_chrono type)
--{
--	struct tcp_sock *tp = tcp_sk(sk);
--
--	/* If there are multiple conditions worthy of tracking in a
--	 * chronograph then the highest priority enum takes precedence
--	 * over the other conditions. So that if something "more interesting"
--	 * starts happening, stop the previous chrono and start a new one.
--	 */
--	if (type > tp->chrono_type)
--		tcp_chrono_set(tp, type);
--}
--
- void tcp_chrono_stop(struct sock *sk, const enum tcp_chrono type)
- {
- 	struct tcp_sock *tp = tcp_sk(sk);
 -- 
 2.53.0
 
