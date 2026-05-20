@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-251045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251972-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SFiUKrPsDWo04wUAu9opvQ
-	(envelope-from <stable+bounces-251045-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:17:39 +0200
+	id iHq1GsAgDmqI6QUAu9opvQ
+	(envelope-from <stable+bounces-251972-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:59:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F33B593427
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:17:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E41AD59A5CB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:59:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C2A1D3159D8C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:10:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 32ECA37A5C01
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:50:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 665813F4124;
-	Wed, 20 May 2026 17:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7E073E5ECF;
+	Wed, 20 May 2026 17:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OVStVMlb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u1sqYAEy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 065CC370D54;
-	Wed, 20 May 2026 17:09:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77AF0233933;
+	Wed, 20 May 2026 17:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296958; cv=none; b=AKCyDLAcL2qYC4g6OZK4dhV0Dvgj7+ygmE7aVm+qwpRV+m9r8QPRMcg40Dt+3xSa8M/YgEjk5ikvEqvAhklDHrtbr3mcNepOcRLf2zWM2WE3Hvm/Cqmilw4F+Y0bM6KQ+v2IxHVnf6tQs3q3pY+xu9E2XymX20BUkMOKhhpsLW8=
+	t=1779299409; cv=none; b=Md1sHaRjPStVFvZEQUkk/1+x2eHUXFAlyP62yv7xns/GGgIkI+cMz3gQYgBO8B31iFlGd11wi2N6Knb1Q6dAmbB4qVHRjjyIzDkPhUomDg3A4sUjjpQMKQUa3vh0pxCdUjCqOXjNpp3V0UH0oxbZ7Eeo9c0jcsn7EzZhXctkc5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296958; c=relaxed/simple;
-	bh=mzp89KiHoyjre3jYD7VwsP4Q7aYFGZQaOlKBJCDWhuA=;
+	s=arc-20240116; t=1779299409; c=relaxed/simple;
+	bh=zXODaSm2KyzCbjLgbCODiLVEhMxjV9jo1XsPL+LBBYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PbsVApvW5hAJhkAASC1fprstdj6qVKMoTOF9DBKRBxPlvZlLaDOQ7CZhNaE44Vj4x2Agj8Ds8VZzu8L9Oxsgy0Ch8yCO7blnjzsepfJ4/Zk0hYvGK5GXes4Edr2CNTn5MalLaw1bLmG25n4ycx4OwvogEHFCaf4mGXLOB88zGTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OVStVMlb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A64C1F00893;
-	Wed, 20 May 2026 17:09:16 +0000 (UTC)
+	 MIME-Version; b=ajbdCvOaNedJiEJBlU+Fb1ZzsjTkYjZhTE4O0yWo5YxtfJ6HEKtRcoMppsUCvFQBHReTAPCVQjtr/QeUBmUHero1F4vFqG8kqZEim68PFzm6e4vx+hi4IwQN172YmgXz7UifUhR8JvJ3Z4AovgX6j3D49jqmujVi7iiBP2kVyaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u1sqYAEy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C491F000E9;
+	Wed, 20 May 2026 17:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296956;
-	bh=apdbwlXN1M0jhpLwwRajSIQ6MliS55PfLfb/hNgs6z8=;
+	s=korg; t=1779299408;
+	bh=I6RltGYRRWLIYFvGKWvNIYF6CkLsHCy8n5tSp/0Ep7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OVStVMlb4f2nW2JCAFSS7HjtFexvdrc0/YaGpNU6eSejuaKhg4vYxvdsXbXW9FVfj
-	 CUbg84J5r4WrQRGp/4rOEUMgnBOQ0LO5ITe2MojEClJ5dDmsWnIVFIA74UJi+YDlr/
-	 5s43/sdD1LAFLrujIzCJGVWsAVLImaw9THLKK7FA=
+	b=u1sqYAEyz+66ClStSLLrrzygfaPdqEUhBxnHlDxLaUp6UisIkaAK0lRP4JS0QPflf
+	 DJgx+gEjdjcevfrg9dO9QHkMtf2E8qNXEeSC1hzi18gClB5z9v+fmHNatFwF9Qu6dj
+	 031KvplwYAlBYOoIVbJrOm1Q9idbO9p75ZA8U82U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Breno Leitao <leitao@debian.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	sashiko <sashiko@sashiko.dev>,
+	Herman Li <herman.li@intel.com>,
+	Tony Luck <tony.luck@intel.com>,
+	"Lai, Yi1" <yi1.lai@intel.com>,
+	Jiaqi Yan <jiaqiyan@google.com>,
+	Zaid Alali <zaidal@os.amperecomputing.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0994/1146] netconsole: return count instead of strnlen(buf, count) from store callbacks
-Date: Wed, 20 May 2026 18:20:44 +0200
-Message-ID: <20260520162210.727504177@linuxfoundation.org>
+Subject: [PATCH 6.18 762/957] ACPI: APEI: EINJ: Fix EINJV2 memory error injection
+Date: Wed, 20 May 2026 18:20:45 +0200
+Message-ID: <20260520162151.088767870@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,198 +73,165 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251045-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251972-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 3F33B593427
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sashiko.dev:url,sashiko.dev:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amperecomputing.com:email,msgid.link:url,intel.com:email]
+X-Rspamd-Queue-Id: E41AD59A5CB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Tony Luck <tony.luck@intel.com>
 
-[ Upstream commit d62c6f2df5c0e1390b9a1f45b1b52689e3f234f0 ]
+[ Upstream commit 0c00cfbcfcffa7085e4f0c7fd7a4caada4e7a90f ]
 
-Several configfs store callbacks in netconsole end with:
+Error types in EINJV2 use different bit positions for each flavor of
+injection from legacy EINJ.
 
-	ret = strnlen(buf, count);
+Two issues:
 
-This under-reports the number of bytes consumed when the input
-contains an embedded NUL within count, telling the VFS that fewer
-bytes were written than userspace actually handed in. A conformant
-partial-write loop would then retry the trailing bytes against a
-callback that has already accepted them.
+ 1) The address sanity checks in einj_error_inject() were skipped for
+    EINJV2 injections. Noted by sashiko[1]
+ 2) __einj_error_trigger() failed to drop the entry of the target
+    physical address from the list of resources that need to be
+    requested.
 
-Every other configfs driver in the tree returns count directly from
-its store callbacks once parsing has succeeded, including
-drivers/nvme/target/configfs.c, drivers/gpio/gpio-sim.c,
-drivers/most/configfs.c, drivers/block/null_blk/main.c,
-drivers/pci/endpoint/pci-ep-cfs.c, and the rest of the configfs
-users. netconsole was the outlier (along with
-drivers/infiniband/core/cma_configfs.c, which has the same latent
-issue).
+Add a helper function that checks if an injection is to memory and use it
+to solve each of these issues.
 
-Align netconsole with the rest of the configfs ecosystem: return
-count once the parser/validator has accepted the input. The numeric
-and boolean parsers (kstrtobool, kstrtou16, mac_pton,
-netpoll_parse_ip_addr) have already validated the meaningful prefix;
-any trailing bytes are padding and should simply be reported as
-consumed.
+Note that the old test in __einj_error_trigger() checked that param2 was
+not zero. This isn't needed because the sanity checks in einj_error_inject()
+reject memory injections with param2 == 0.
 
-Fixes: 0bcc1816188e ("[NET] netconsole: Support dynamic reconfiguration using configfs")
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20260427-netconsole_ai_fixes-v2-1-59965f29d9cc@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: b47610296d17 ("ACPI: APEI: EINJ: Enable EINJv2 error injections")
+Reported-by: sashiko <sashiko@sashiko.dev>
+Reported-by: Herman Li <herman.li@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Tested-by: "Lai, Yi1" <yi1.lai@intel.com>
+Link: https://sashiko.dev/#/patchset/20260415163620.12957-1-tony.luck%40intel.com # [1]
+Reviewed-by: Jiaqi Yan <jiaqiyan@google.com>
+Reviewed-by: Zaid Alali <zaidal@os.amperecomputing.com>
+Link: https://patch.msgid.link/20260421150216.11666-3-tony.luck@intel.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/netconsole.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ drivers/acpi/apei/einj-core.c | 45 +++++++++++++++++++----------------
+ 1 file changed, 25 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-index 205384dab89a6..76d7fbf9e1883 100644
---- a/drivers/net/netconsole.c
-+++ b/drivers/net/netconsole.c
-@@ -752,7 +752,7 @@ static ssize_t enabled_store(struct config_item *item,
- 		unregister_netcons_consoles();
- 	}
+diff --git a/drivers/acpi/apei/einj-core.c b/drivers/acpi/apei/einj-core.c
+index 305c240a303f6..02b81b7b5a2e2 100644
+--- a/drivers/acpi/apei/einj-core.c
++++ b/drivers/acpi/apei/einj-core.c
+@@ -401,8 +401,18 @@ static struct acpi_generic_address *einj_get_trigger_parameter_region(
  
--	ret = strnlen(buf, count);
-+	ret = count;
- 	/* Deferred cleanup */
- 	netconsole_process_cleanups();
- out_unlock:
-@@ -781,7 +781,7 @@ static ssize_t release_store(struct config_item *item, const char *buf,
- 
- 	nt->release = release;
- 
--	ret = strnlen(buf, count);
-+	ret = count;
- out_unlock:
- 	dynamic_netconsole_mutex_unlock();
- 	return ret;
-@@ -807,7 +807,7 @@ static ssize_t extended_store(struct config_item *item, const char *buf,
- 		goto out_unlock;
- 
- 	nt->extended = extended;
--	ret = strnlen(buf, count);
-+	ret = count;
- out_unlock:
- 	dynamic_netconsole_mutex_unlock();
- 	return ret;
-@@ -830,7 +830,7 @@ static ssize_t dev_name_store(struct config_item *item, const char *buf,
- 	trim_newline(nt->np.dev_name, IFNAMSIZ);
- 
- 	dynamic_netconsole_mutex_unlock();
--	return strnlen(buf, count);
-+	return count;
+ 	return NULL;
  }
++
++static bool is_memory_injection(u32 type, u32 flags)
++{
++	if (flags & SETWA_FLAGS_EINJV2)
++		return !!(type & ACPI_EINJV2_MEMORY);
++	if (type & ACPI5_VENDOR_BIT)
++		return !!(vendor_flags & SETWA_FLAGS_MEM);
++	return !!(type & MEM_ERROR_MASK) || !!(flags & SETWA_FLAGS_MEM);
++}
++
+ /* Execute instructions in trigger error action table */
+-static int __einj_error_trigger(u64 trigger_paddr, u32 type,
++static int __einj_error_trigger(u64 trigger_paddr, u32 type, u32 flags,
+ 				u64 param1, u64 param2)
+ {
+ 	struct acpi_einj_trigger trigger_tab;
+@@ -480,7 +490,7 @@ static int __einj_error_trigger(u64 trigger_paddr, u32 type,
+ 	 * This will cause resource conflict with regular memory.  So
+ 	 * remove it from trigger table resources.
+ 	 */
+-	if ((param_extension || acpi5) && (type & MEM_ERROR_MASK) && param2) {
++	if ((param_extension || acpi5) && is_memory_injection(type, flags)) {
+ 		struct apei_resources addr_resources;
  
- static ssize_t local_port_store(struct config_item *item, const char *buf,
-@@ -849,7 +849,7 @@ static ssize_t local_port_store(struct config_item *item, const char *buf,
- 	ret = kstrtou16(buf, 10, &nt->np.local_port);
- 	if (ret < 0)
- 		goto out_unlock;
--	ret = strnlen(buf, count);
-+	ret = count;
- out_unlock:
- 	dynamic_netconsole_mutex_unlock();
- 	return ret;
-@@ -871,7 +871,7 @@ static ssize_t remote_port_store(struct config_item *item,
- 	ret = kstrtou16(buf, 10, &nt->np.remote_port);
- 	if (ret < 0)
- 		goto out_unlock;
--	ret = strnlen(buf, count);
-+	ret = count;
- out_unlock:
- 	dynamic_netconsole_mutex_unlock();
- 	return ret;
-@@ -896,7 +896,7 @@ static ssize_t local_ip_store(struct config_item *item, const char *buf,
- 		goto out_unlock;
- 	nt->np.ipv6 = !!ipv6;
+ 		apei_resources_init(&addr_resources);
+@@ -660,7 +670,7 @@ static int __einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2,
+ 		return rc;
+ 	trigger_paddr = apei_exec_ctx_get_output(&ctx);
+ 	if (notrigger == 0) {
+-		rc = __einj_error_trigger(trigger_paddr, type, param1, param2);
++		rc = __einj_error_trigger(trigger_paddr, type, flags, param1, param2);
+ 		if (rc)
+ 			return rc;
+ 	}
+@@ -718,35 +728,30 @@ int einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2, u64 param3,
+ 		      SETWA_FLAGS_PCIE_SBDF | SETWA_FLAGS_EINJV2)))
+ 		return -EINVAL;
  
--	ret = strnlen(buf, count);
-+	ret = count;
- out_unlock:
- 	dynamic_netconsole_mutex_unlock();
- 	return ret;
-@@ -921,7 +921,7 @@ static ssize_t remote_ip_store(struct config_item *item, const char *buf,
- 		goto out_unlock;
- 	nt->np.ipv6 = !!ipv6;
++	/*
++	 * Injections targeting a CXL 1.0/1.1 port have to be injected
++	 * via the einj_cxl_rch_error_inject() path as that does the proper
++	 * validation of the given RCRB base (MMIO) address.
++	 */
++	if (einj_is_cxl_error_type(type) && (flags & SETWA_FLAGS_MEM))
++		return -EINVAL;
++
+ 	/* check if type is a valid EINJv2 error type */
+ 	if (is_v2) {
+ 		if (!(type & available_error_type_v2))
+ 			return -EINVAL;
+ 	}
+-	/*
+-	 * We need extra sanity checks for memory errors.
+-	 * Other types leap directly to injection.
+-	 */
  
--	ret = strnlen(buf, count);
-+	ret = count;
- out_unlock:
- 	dynamic_netconsole_mutex_unlock();
- 	return ret;
-@@ -957,7 +957,7 @@ static ssize_t remote_mac_store(struct config_item *item, const char *buf,
- 		goto out_unlock;
- 	memcpy(nt->np.remote_mac, remote_mac, ETH_ALEN);
+ 	/* ensure param1/param2 existed */
+ 	if (!(param_extension || acpi5))
+ 		goto inject;
  
--	ret = strnlen(buf, count);
-+	ret = count;
- out_unlock:
- 	dynamic_netconsole_mutex_unlock();
- 	return ret;
-@@ -1133,7 +1133,7 @@ static ssize_t sysdata_msgid_enabled_store(struct config_item *item,
- 		disable_sysdata_feature(nt, SYSDATA_MSGID);
+-	/* ensure injection is memory related */
+-	if (type & ACPI5_VENDOR_BIT) {
+-		if (vendor_flags != SETWA_FLAGS_MEM)
+-			goto inject;
+-	} else if (!(type & MEM_ERROR_MASK) && !(flags & SETWA_FLAGS_MEM)) {
+-		goto inject;
+-	}
+-
+ 	/*
+-	 * Injections targeting a CXL 1.0/1.1 port have to be injected
+-	 * via the einj_cxl_rch_error_inject() path as that does the proper
+-	 * validation of the given RCRB base (MMIO) address.
++	 * We need extra sanity checks for memory errors.
++	 * Other types leap directly to injection.
+ 	 */
+-	if (einj_is_cxl_error_type(type) && (flags & SETWA_FLAGS_MEM))
+-		return -EINVAL;
++	if (!is_memory_injection(type, flags))
++		goto inject;
  
- unlock_ok:
--	ret = strnlen(buf, count);
-+	ret = count;
- 	dynamic_netconsole_mutex_unlock();
- 	mutex_unlock(&netconsole_subsys.su_mutex);
- 	return ret;
-@@ -1162,7 +1162,7 @@ static ssize_t sysdata_release_enabled_store(struct config_item *item,
- 		disable_sysdata_feature(nt, SYSDATA_RELEASE);
- 
- unlock_ok:
--	ret = strnlen(buf, count);
-+	ret = count;
- 	dynamic_netconsole_mutex_unlock();
- 	mutex_unlock(&netconsole_subsys.su_mutex);
- 	return ret;
-@@ -1191,7 +1191,7 @@ static ssize_t sysdata_taskname_enabled_store(struct config_item *item,
- 		disable_sysdata_feature(nt, SYSDATA_TASKNAME);
- 
- unlock_ok:
--	ret = strnlen(buf, count);
-+	ret = count;
- 	dynamic_netconsole_mutex_unlock();
- 	mutex_unlock(&netconsole_subsys.su_mutex);
- 	return ret;
-@@ -1225,7 +1225,7 @@ static ssize_t sysdata_cpu_nr_enabled_store(struct config_item *item,
- 		disable_sysdata_feature(nt, SYSDATA_CPU_NR);
- 
- unlock_ok:
--	ret = strnlen(buf, count);
-+	ret = count;
- 	dynamic_netconsole_mutex_unlock();
- 	mutex_unlock(&netconsole_subsys.su_mutex);
- 	return ret;
+ 	/*
+ 	 * Disallow crazy address masks that give BIOS leeway to pick
 -- 
 2.53.0
 
