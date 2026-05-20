@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-252304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250770-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QNE5NwL6DWq75AUAu9opvQ
-	(envelope-from <stable+bounces-252304-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:14:26 +0200
+	id sISMJbT3DWpd5AUAu9opvQ
+	(envelope-from <stable+bounces-250770-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:04:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B81B595A00
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:14:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4313595393
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:04:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CE57B310C678
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:06:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2C52D3592477
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:58:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 647A93FE34E;
-	Wed, 20 May 2026 18:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD53374178;
+	Wed, 20 May 2026 16:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HUEiiE09"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ntjJZyAz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8FEB3EAC82;
-	Wed, 20 May 2026 18:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A7C3BBA0E;
+	Wed, 20 May 2026 16:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300326; cv=none; b=e/1FwdCdGitpymh52Of0KI4dAPzBZ2IFixB3jBp/eZu2V50bikNxYje9e9mlLM1IkRQV2GZ0rCKjbq8wxpzZB2ol/tb2nwSgQ+18HWpqGhrXelLo/a+zVBzd7pVYNcXViDnzYFivRM+QX+BkTAoG8V+2Nzl2RbLnOw/CF3LqF8k=
+	t=1779296269; cv=none; b=RDZ3c/f98QiNlvjwiK5b1liAWopGlzuEBjFgFni1Euw1DZymVHHU590y+KCHVQkxNW+jyUWf2AjPQFVSDAWRZpbrdkBG3XdeyLeQ5WRzoYbP+s+Hghk0YHvsr2H1e40A+GCELs0hCu0BSwaEKprxkl4nK8p/Kk1mc8l/Tp8CD4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300326; c=relaxed/simple;
-	bh=dSUYuF8DWphRrkc9fzSv1+tSFxa0kTQph7eYwNoARTk=;
+	s=arc-20240116; t=1779296269; c=relaxed/simple;
+	bh=tvWxVgHsbCbG3R1XCLS4Qpub7pKpACDjmQ2p2tSFuSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MII+EyyY4dzgGkRHf9e8ilZLI+7hYyfCOLw+CIn2w8yksOBiXm9ttl4A7emz5aGV2WAxPA95n+ryTX9LNTcjlLiuly0DlGPi21qyVIZ46Rc4XkT8nwMeo7xhW0heDOigtpsf1F8JSXt2ulZ9Q4GbISnlHGYxRr+G2zwTG1+QdMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HUEiiE09; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42BCE1F000E9;
-	Wed, 20 May 2026 18:05:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=J/dIgPkQBZ/UTY8GUnB3FIRqzr7r/RQyl0bGd8beW/X7G2DVw3rSUnnfAxxbdDHcbSoipz0Zlo/g2vUmXwslXIPc8kqOPl1f1jfo05V5S57IiqIThkPtwM+VW36dhmnfacCinFN8FkcVak7uvZ50dIPGosUNoCu5QYeF8hY3KK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ntjJZyAz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D95241F000E9;
+	Wed, 20 May 2026 16:57:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300324;
-	bh=8+RgxKkvYryLYJJ4FYWl6brN7sSB0lFkYF7bWnLRUpU=;
+	s=korg; t=1779296268;
+	bh=KaDzNgLm2U5hEOD7Rh6vL+3TrDaWWwE9FLKn2djVhu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HUEiiE09HMbljOcSjMijaRAkzAZ5gss6bsm0ciyLGu0uJfOgDG7WiWrm9HMca96QH
-	 sBaWN6VAKa640KRNFNBBI/Dbj0kJxBDkNJIHeGhv0IxZbiF/VaOEr54Bx4sjWfdu5b
-	 gyfVP6Dl7H8N79sqy1fMwCMe3Z8R4gMY9Av07bPw=
+	b=ntjJZyAztPCLe198H6EcQ4dw+eU8hjIj3Ktsw/KcS2nyOxmGKkx7651tkQbUiX7ak
+	 S4U3JHnNeYctl2lQ38Z9jpj1/BXDDi6aUkf1rqMLFoswjA27Ob8WsVStwz1GXSdmGy
+	 qrupu+dQozgCwwcfcpB3U3spRlNHWZEwZkF79fUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sasha Levin <sashal@kernel.org>,
-	stable+noautosel@kernel.org
-Subject: [PATCH 6.12 133/666] PCI: endpoint: Align pci_epc_set_msix(), pci_epc_ops::set_msix() nr_irqs encoding
+	Krishna Chomal <krishna.chomal108@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 0694/1146] platform/x86: hp-wmi: fix fan table parsing
 Date: Wed, 20 May 2026 18:15:44 +0200
-Message-ID: <20260520162114.094862659@linuxfoundation.org>
+Message-ID: <20260520162203.894771584@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,223 +63,148 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-252304-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250770-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com,kernel.org];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,noautosel];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 7B81B595A00
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: E4313595393
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Krishna Chomal <krishna.chomal108@gmail.com>
 
-[ Upstream commit de0321bcc5fdd83631f0c2a6fdebfe0ad4e23449 ]
+[ Upstream commit 9d317a54e46d3b6420567dc5b63e9d7ff5c064a3 ]
 
-The kdoc for pci_epc_set_msix() says:
-"Invoke to set the required number of MSI-X interrupts."
+For Victus S devices, the BIOS fan table header was being incorrectly
+parsed as:
+struct {
+	u8 unknown;
+	u8 num_entries;
+}
 
-The kdoc for the callback pci_epc_ops->set_msix() says:
-"ops to set the requested number of MSI-X interrupts in the MSI-X
-capability register"
+The first field should be num_fans and the second should be unknown. It
+is pure coincidence that interpreting an "unknown" field as "num_entries"
+worked on multiple device, however for board 8D87 (in an upcoming patch),
+this assumption fails, and the hp-wmi driver fails to load.
 
-pci_epc_ops::set_msix() does however expect the parameter 'interrupts' to
-be in the encoding as defined by the Table Size field. Nowhere in the
-kdoc does it say that the number of interrupts should be in Table Size
-encoding.
+We fix this by correcting the header definition and compensating for
+num_entries by parsing each entry of the fan table until an all-NULL row
+is obtained, mirroring the behavior of OMEN Gaming Hub on Windows.
 
-It is very confusing that the API pci_epc_set_msix() and the callback
-function pci_epc_ops::set_msix() both take a parameter named 'interrupts',
-but they expect completely different encodings.
-
-Clean up the API and the callback function to have the same semantics,
-i.e. the parameter represents the number of interrupts, regardless of the
-internal encoding of that value.
-
-Also rename the parameter 'interrupts' to 'nr_irqs', in both the wrapper
-function and the callback function, such that the name is unambiguous.
-
-[bhelgaas: more specific subject]
-
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable+noautosel@kernel.org # this is simply a cleanup
-Link: https://patch.msgid.link/20250514074313.283156-14-cassel@kernel.org
-Stable-dep-of: 271d0b1f058a ("PCI: dwc: ep: Fix MSI-X Table Size configuration in dw_pcie_ep_set_msix()")
+Fixes: 46be1453e6e6 ("platform/x86: hp-wmi: add manual fan control for Victus S models")
+Signed-off-by: Krishna Chomal <krishna.chomal108@gmail.com>
+Link: https://patch.msgid.link/20260410191039.125659-2-krishna.chomal108@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/cadence/pcie-cadence-ep.c |  8 +++-----
- drivers/pci/controller/dwc/pcie-designware-ep.c  |  7 +++----
- drivers/pci/endpoint/pci-epc-core.c              | 11 +++++------
- include/linux/pci-epc.h                          |  6 +++---
- 4 files changed, 14 insertions(+), 18 deletions(-)
+ drivers/platform/x86/hp/hp-wmi.c | 41 +++++++++++++++++++++++++-------
+ 1 file changed, 33 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/pci/controller/cadence/pcie-cadence-ep.c b/drivers/pci/controller/cadence/pcie-cadence-ep.c
-index f700e8c490822..55bd13a2496e5 100644
---- a/drivers/pci/controller/cadence/pcie-cadence-ep.c
-+++ b/drivers/pci/controller/cadence/pcie-cadence-ep.c
-@@ -285,21 +285,19 @@ static int cdns_pcie_ep_get_msix(struct pci_epc *epc, u8 func_no, u8 vfunc_no)
- }
+diff --git a/drivers/platform/x86/hp/hp-wmi.c b/drivers/platform/x86/hp/hp-wmi.c
+index 851056bee6146..75682bb4cc52a 100644
+--- a/drivers/platform/x86/hp/hp-wmi.c
++++ b/drivers/platform/x86/hp/hp-wmi.c
+@@ -468,14 +468,14 @@ struct hp_wmi_hwmon_priv {
+ };
  
- static int cdns_pcie_ep_set_msix(struct pci_epc *epc, u8 fn, u8 vfn,
--				 u16 interrupts, enum pci_barno bir,
--				 u32 offset)
-+				 u16 nr_irqs, enum pci_barno bir, u32 offset)
- {
- 	struct cdns_pcie_ep *ep = epc_get_drvdata(epc);
- 	struct cdns_pcie *pcie = &ep->pcie;
- 	u32 cap = CDNS_PCIE_EP_FUNC_MSIX_CAP_OFFSET;
- 	u32 val, reg;
--	u16 actual_interrupts = interrupts + 1;
+ struct victus_s_fan_table_header {
++	u8 num_fans;
+ 	u8 unknown;
+-	u8 num_entries;
+ } __packed;
  
- 	fn = cdns_pcie_get_fn_from_vfn(pcie, fn, vfn);
+ struct victus_s_fan_table_entry {
+ 	u8 cpu_rpm;
+ 	u8 gpu_rpm;
+-	u8 unknown;
++	u8 noise_db;
+ } __packed;
  
- 	reg = cap + PCI_MSIX_FLAGS;
- 	val = cdns_pcie_ep_fn_readw(pcie, fn, reg);
- 	val &= ~PCI_MSIX_FLAGS_QSIZE;
--	val |= interrupts; /* 0's based value */
-+	val |= nr_irqs - 1; /* encoded as N-1 */
- 	cdns_pcie_ep_fn_writew(pcie, fn, reg, val);
+ struct victus_s_fan_table {
+@@ -2562,7 +2562,9 @@ static int hp_wmi_setup_fan_settings(struct hp_wmi_hwmon_priv *priv)
+ 	u8 fan_data[128] = { 0 };
+ 	struct victus_s_fan_table *fan_table;
+ 	u8 min_rpm, max_rpm;
+-	int gpu_delta, ret;
++	u8 cpu_rpm, gpu_rpm, noise_db;
++	int gpu_delta, i, num_entries, ret;
++	size_t header_size, entry_size;
  
- 	/* Set MSIX BAR and offset */
-@@ -309,7 +307,7 @@ static int cdns_pcie_ep_set_msix(struct pci_epc *epc, u8 fn, u8 vfn,
+ 	/* Default behaviour on hwmon init is automatic mode */
+ 	priv->mode = PWM_MODE_AUTO;
+@@ -2577,13 +2579,36 @@ static int hp_wmi_setup_fan_settings(struct hp_wmi_hwmon_priv *priv)
+ 		return ret;
  
- 	/* Set PBA BAR and offset.  BAR must match MSIX BAR */
- 	reg = cap + PCI_MSIX_PBA;
--	val = (offset + (actual_interrupts * PCI_MSIX_ENTRY_SIZE)) | bir;
-+	val = (offset + (nr_irqs * PCI_MSIX_ENTRY_SIZE)) | bir;
- 	cdns_pcie_ep_fn_writel(pcie, fn, reg, val);
- 
- 	return 0;
-diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-index 189675747b2bc..a23af31d1e2c3 100644
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -406,13 +406,12 @@ static int dw_pcie_ep_get_msix(struct pci_epc *epc, u8 func_no, u8 vfunc_no)
- }
- 
- static int dw_pcie_ep_set_msix(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
--			       u16 interrupts, enum pci_barno bir, u32 offset)
-+			       u16 nr_irqs, enum pci_barno bir, u32 offset)
- {
- 	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
- 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
- 	struct dw_pcie_ep_func *ep_func;
- 	u32 val, reg;
--	u16 actual_interrupts = interrupts + 1;
- 
- 	ep_func = dw_pcie_ep_get_func_from_ep(ep, func_no);
- 	if (!ep_func || !ep_func->msix_cap)
-@@ -423,7 +422,7 @@ static int dw_pcie_ep_set_msix(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
- 	reg = ep_func->msix_cap + PCI_MSIX_FLAGS;
- 	val = dw_pcie_ep_readw_dbi(ep, func_no, reg);
- 	val &= ~PCI_MSIX_FLAGS_QSIZE;
--	val |= interrupts; /* 0's based value */
-+	val |= nr_irqs - 1; /* encoded as N-1 */
- 	dw_pcie_writew_dbi(pci, reg, val);
- 
- 	reg = ep_func->msix_cap + PCI_MSIX_TABLE;
-@@ -431,7 +430,7 @@ static int dw_pcie_ep_set_msix(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
- 	dw_pcie_ep_writel_dbi(ep, func_no, reg, val);
- 
- 	reg = ep_func->msix_cap + PCI_MSIX_PBA;
--	val = (offset + (actual_interrupts * PCI_MSIX_ENTRY_SIZE)) | bir;
-+	val = (offset + (nr_irqs * PCI_MSIX_ENTRY_SIZE)) | bir;
- 	dw_pcie_ep_writel_dbi(ep, func_no, reg, val);
- 
- 	dw_pcie_dbi_ro_wr_dis(pci);
-diff --git a/drivers/pci/endpoint/pci-epc-core.c b/drivers/pci/endpoint/pci-epc-core.c
-index 75c6688290034..03d6949447141 100644
---- a/drivers/pci/endpoint/pci-epc-core.c
-+++ b/drivers/pci/endpoint/pci-epc-core.c
-@@ -382,29 +382,28 @@ EXPORT_SYMBOL_GPL(pci_epc_get_msix);
-  * @epc: the EPC device on which MSI-X has to be configured
-  * @func_no: the physical endpoint function number in the EPC device
-  * @vfunc_no: the virtual endpoint function number in the physical function
-- * @interrupts: number of MSI-X interrupts required by the EPF
-+ * @nr_irqs: number of MSI-X interrupts required by the EPF
-  * @bir: BAR where the MSI-X table resides
-  * @offset: Offset pointing to the start of MSI-X table
-  *
-  * Invoke to set the required number of MSI-X interrupts.
-  */
--int pci_epc_set_msix(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
--		     u16 interrupts, enum pci_barno bir, u32 offset)
-+int pci_epc_set_msix(struct pci_epc *epc, u8 func_no, u8 vfunc_no, u16 nr_irqs,
-+		     enum pci_barno bir, u32 offset)
- {
- 	int ret;
- 
- 	if (!pci_epc_function_is_valid(epc, func_no, vfunc_no))
+ 	fan_table = (struct victus_s_fan_table *)fan_data;
+-	if (fan_table->header.num_entries == 0 ||
+-	    sizeof(struct victus_s_fan_table_header) +
+-	    sizeof(struct victus_s_fan_table_entry) * fan_table->header.num_entries > sizeof(fan_data))
++	if (fan_table->header.num_fans == 0)
++		return -EINVAL;
++
++	header_size = sizeof(struct victus_s_fan_table_header);
++	entry_size = sizeof(struct victus_s_fan_table_entry);
++	num_entries = (sizeof(fan_data) - header_size) / entry_size;
++	min_rpm = U8_MAX;
++	max_rpm = 0;
++
++	for (i = 0 ; i < num_entries ; i++) {
++		cpu_rpm = fan_table->entries[i].cpu_rpm;
++		gpu_rpm = fan_table->entries[i].gpu_rpm;
++		noise_db = fan_table->entries[i].noise_db;
++
++		/*
++		 * On some devices, the fan table is truncated with an all-zero row,
++		 * hence we stop parsing here.
++		 */
++		if (cpu_rpm == 0 && gpu_rpm == 0 && noise_db == 0)
++			break;
++
++		if (cpu_rpm < min_rpm)
++			min_rpm = cpu_rpm;
++		if (cpu_rpm > max_rpm)
++			max_rpm = cpu_rpm;
++	}
++
++	if (min_rpm == U8_MAX || max_rpm == 0)
  		return -EINVAL;
  
--	if (interrupts < 1 || interrupts > 2048)
-+	if (nr_irqs < 1 || nr_irqs > 2048)
- 		return -EINVAL;
- 
- 	if (!epc->ops->set_msix)
- 		return 0;
- 
- 	mutex_lock(&epc->lock);
--	ret = epc->ops->set_msix(epc, func_no, vfunc_no, interrupts - 1, bir,
--				 offset);
-+	ret = epc->ops->set_msix(epc, func_no, vfunc_no, nr_irqs, bir, offset);
- 	mutex_unlock(&epc->lock);
- 
- 	return ret;
-diff --git a/include/linux/pci-epc.h b/include/linux/pci-epc.h
-index de8cc3658220b..8a275df496fb3 100644
---- a/include/linux/pci-epc.h
-+++ b/include/linux/pci-epc.h
-@@ -103,7 +103,7 @@ struct pci_epc_ops {
- 			   u8 interrupts);
- 	int	(*get_msi)(struct pci_epc *epc, u8 func_no, u8 vfunc_no);
- 	int	(*set_msix)(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
--			    u16 interrupts, enum pci_barno, u32 offset);
-+			    u16 nr_irqs, enum pci_barno, u32 offset);
- 	int	(*get_msix)(struct pci_epc *epc, u8 func_no, u8 vfunc_no);
- 	int	(*raise_irq)(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
- 			     unsigned int type, u16 interrupt_num);
-@@ -283,8 +283,8 @@ void pci_epc_unmap_addr(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
- int pci_epc_set_msi(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
- 		    u8 interrupts);
- int pci_epc_get_msi(struct pci_epc *epc, u8 func_no, u8 vfunc_no);
--int pci_epc_set_msix(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
--		     u16 interrupts, enum pci_barno, u32 offset);
-+int pci_epc_set_msix(struct pci_epc *epc, u8 func_no, u8 vfunc_no, u16 nr_irqs,
-+		     enum pci_barno, u32 offset);
- int pci_epc_get_msix(struct pci_epc *epc, u8 func_no, u8 vfunc_no);
- int pci_epc_map_msi_irq(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
- 			phys_addr_t phys_addr, u8 interrupt_num,
+-	min_rpm = fan_table->entries[0].cpu_rpm;
+-	max_rpm = fan_table->entries[fan_table->header.num_entries - 1].cpu_rpm;
+ 	gpu_delta = fan_table->entries[0].gpu_rpm - fan_table->entries[0].cpu_rpm;
+ 	priv->min_rpm = min_rpm;
+ 	priv->max_rpm = max_rpm;
 -- 
 2.53.0
 
