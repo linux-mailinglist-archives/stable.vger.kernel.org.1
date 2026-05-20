@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-250052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250053-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IGKEIWLnDWqm4gUAu9opvQ
-	(envelope-from <stable+bounces-250052-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:54:58 +0200
+	id qH30HH3rDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250053-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:12:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B1695929FF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:54:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7E5C593134
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:12:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 82279318B920
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:28:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 944233056869
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:28:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CF693D75BA;
-	Wed, 20 May 2026 16:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 101173DCD9A;
+	Wed, 20 May 2026 16:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ix1ojPMy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ipoRWg3W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 152CE3D7D7E;
-	Wed, 20 May 2026 16:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD29C3D7D7E;
+	Wed, 20 May 2026 16:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294417; cv=none; b=oSQErAN0C98kzAQnuLdlz0Vxw1Nu1/Or1M7lpFZCBSYWLtmRzicZPJQTLEUQePZGLePeTeL5EP0qkdEpn7TdOQnWiDc9b7VtNnvwjPqF+g2FnLHipAZUX5JqzGBEMUc5UrxgCBOxIGn8jmxNtaFyEE5wRhf2nAKYfskhA7Uuz6s=
+	t=1779294419; cv=none; b=rMU394rQcwAvOvOFhlSGQspF7Etr3CoGhzLJ1GFFb77CUzMKLorqCyzCWl2a1gmrLrLnYHF3d97D0sJEgLA7w/YBIEUFxl6Mefy771Y5jIuNCSFXkgmS/8EzjwH+txbo0bIyVkTcTmCv2/jUtPfnc6Kd0T5g/pBYqO1bpc2OowY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294417; c=relaxed/simple;
-	bh=zpPBqMd0JNk2V4YwWA0FIGk1yt7NfDw7IA0BUYlAiSs=;
+	s=arc-20240116; t=1779294419; c=relaxed/simple;
+	bh=fy/C/QT3DjylKkWlXGvzBvU7tNeAG2wt+pOWRn2hi5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kdz9wcZ3ktLL/wddACVx0TtsjH6/HAENFztYUeQtRhHoELnKwt6AeTFQ6vBjelkEeXDs0JlfH5i9Gz7JupWDRjFjpqSgl1l3qYE7pLBVjUyfdiPlQM4zKnmBi0lwfekqayYZ8Y0zFEmV0Fkt9zlcvkZ4NRuTMdTAfmr+sa7TNh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ix1ojPMy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B1D71F000E9;
-	Wed, 20 May 2026 16:26:55 +0000 (UTC)
+	 MIME-Version; b=JY/M0IX95hcacrXXpijt1uvmXP2p8pQcAy4HfdSzaCjin0MjvF0bu+edKIUUPCWu8jfRgBdi0I4I6dg1dPzdr24AD7bw1vmt3DzfL+AXCJLYeAE8iQOgax0kTpycX5yzQF6JLV2+Gs1pSyWlx9ABishJ2FFz7PNStRiPTyMvKOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ipoRWg3W; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C21D1F000E9;
+	Wed, 20 May 2026 16:26:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294416;
-	bh=fVNVHpmK/iXeGfuGmQJFSFRb6TPBoxyRBNFsMyKsCVs=;
+	s=korg; t=1779294418;
+	bh=PNqPWyqQvhsqFNaOQ7BIvTz7JQg+6NurpsRo+JNnhE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ix1ojPMyYipGkIXJgperv8KSDHcCz4SCI+CmaRkUyzA7Qwk66XbjHmX2yQKSU5kPV
-	 wj26nQzYwlzDopL5CCdpSKLRy1PRJLmxV1woxUoyk1DhoAra8CX4xDKiOwOe63onrt
-	 IbWO5e8kYlkN67cJShesnSmrszBDzRrNevzrZqQ4=
+	b=ipoRWg3WqOC7eoKqGZ818LI8oVSqkuoEjO42rwlyYx8ThAzxA41SUjc+n6CKlRB9g
+	 N/mZBkASF1C1unVSQHHlHcEx5p7RN7qpE2/JwtGi7Qf+FybKZMMtHAt9++9hUY3cyY
+	 3n7MaPwyzA8D0qLOg8VvwiRyCb/axsIRu/uuZBy0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gopi Krishna Menon <krishnagopi487@gmail.com>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Lukasz Luba <lukasz.luba@arm.com>,
+	yangshiguang <yangshiguang@xiaomi.com>,
+	Gui-Dong Han <hanguidong02@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0030/1146] thermal/drivers/spear: Fix error condition for reading st,thermal-flags
-Date: Wed, 20 May 2026 18:04:40 +0200
-Message-ID: <20260520162149.065847026@linuxfoundation.org>
+Subject: [PATCH 7.0 0031/1146] debugfs: check for NULL pointer in debugfs_create_str()
+Date: Wed, 20 May 2026 18:04:41 +0200
+Message-ID: <20260520162149.088271124@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -68,33 +66,33 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,nxp.com,arm.com];
-	TAGGED_FROM(0.00)[bounces-250052-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250053-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,xiaomi.com,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,arm.com:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 9B1695929FF
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,xiaomi.com:email]
+X-Rspamd-Queue-Id: E7E5C593134
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,39 +100,50 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Gopi Krishna Menon <krishnagopi487@gmail.com>
+From: Gui-Dong Han <hanguidong02@gmail.com>
 
-[ Upstream commit da2c4f332a0504d9c284e7626a561d343c8d6f57 ]
+[ Upstream commit 31de83980d3764d784f79ff1bc93c42b324f4013 ]
 
-of_property_read_u32 returns 0 on success. The current check returns
--EINVAL if the property is read successfully.
+Passing a NULL pointer to debugfs_create_str() leads to a NULL pointer
+dereference when the debugfs file is read. Following upstream
+discussions, forbid the creation of debugfs string files with NULL
+pointers. Add a WARN_ON() to expose offending callers and return early.
 
-Fix the check by removing ! from of_property_read_u32
-
-Fixes: b9c7aff481f1 ("drivers/thermal/spear_thermal.c: add Device Tree probing capability")
-Signed-off-by: Gopi Krishna Menon <krishnagopi487@gmail.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@kernel.org>
-Suggested-by: Daniel Baluta <daniel.baluta@nxp.com>
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-Link: https://patch.msgid.link/20260327090526.59330-1-krishnagopi487@gmail.com
+Fixes: 9af0440ec86e ("debugfs: Implement debugfs_create_str()")
+Reported-by: yangshiguang <yangshiguang@xiaomi.com>
+Closes: https://lore.kernel.org/lkml/2025122221-gag-malt-75ba@gregkh/
+Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Link: https://patch.msgid.link/20260323085930.88894-2-hanguidong02@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/spear_thermal.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/debugfs/file.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/thermal/spear_thermal.c b/drivers/thermal/spear_thermal.c
-index 603dadcd3df58..5e3e9c1f32f8e 100644
---- a/drivers/thermal/spear_thermal.c
-+++ b/drivers/thermal/spear_thermal.c
-@@ -93,7 +93,7 @@ static int spear_thermal_probe(struct platform_device *pdev)
- 	struct device_node *np = pdev->dev.of_node;
- 	int ret = 0, val;
- 
--	if (!np || !of_property_read_u32(np, "st,thermal-flags", &val)) {
-+	if (!np || of_property_read_u32(np, "st,thermal-flags", &val)) {
- 		dev_err(&pdev->dev, "Failed: DT Pdata not passed\n");
- 		return -EINVAL;
- 	}
+diff --git a/fs/debugfs/file.c b/fs/debugfs/file.c
+index 3376ab6a519d1..a941d73251b06 100644
+--- a/fs/debugfs/file.c
++++ b/fs/debugfs/file.c
+@@ -1127,7 +1127,7 @@ static const struct file_operations fops_str_wo = {
+  *          directory dentry if set.  If this parameter is %NULL, then the
+  *          file will be created in the root of the debugfs filesystem.
+  * @value: a pointer to the variable that the file should read to and write
+- *         from.
++ *         from. This pointer and the string it points to must not be %NULL.
+  *
+  * This function creates a file in debugfs with the given name that
+  * contains the value of the variable @value.  If the @mode variable is so
+@@ -1136,6 +1136,9 @@ static const struct file_operations fops_str_wo = {
+ void debugfs_create_str(const char *name, umode_t mode,
+ 			struct dentry *parent, char **value)
+ {
++	if (WARN_ON(!value || !*value))
++		return;
++
+ 	debugfs_create_mode_unsafe(name, mode, parent, value, &fops_str,
+ 				   &fops_str_ro, &fops_str_wo);
+ }
 -- 
 2.53.0
 
