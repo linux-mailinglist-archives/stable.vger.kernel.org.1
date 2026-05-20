@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-252779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252781-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iIOqJnj+DWo95QUAu9opvQ
-	(envelope-from <stable+bounces-252779-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:33:28 +0200
+	id oFlLKSgEDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-252781-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:57:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 409CC5968CD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:33:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 134E6597796
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:57:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C6CCF3189FB6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:26:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8B1C730B92E5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:26:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 508293FBEB3;
-	Wed, 20 May 2026 18:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66EC13FBEDA;
+	Wed, 20 May 2026 18:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iuucoxwa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1zRKjL1r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA4383F9F21;
-	Wed, 20 May 2026 18:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C8AF3F9280;
+	Wed, 20 May 2026 18:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301569; cv=none; b=qk5PI6RkP3+8l6fjsO/Lr9wk+LMqwGXOwXXWHYyz2PTAP9yy1k/HiA+bONlRvvQ4YvGbpmneYzXaeT/bQmJ73NYWIHgN8ktJvCrdxKSIpMBkF1rqf67fAuiS4Ol7iIp9/3g+yARurWyLehcUfLTORu+BEx40DOw3zvBVycwTSnM=
+	t=1779301574; cv=none; b=O3A8Msocjsfl8xnuDkXtnWYXrb0A8dX/CVuLr2OeZuV3/QJoSx3TGi5+7DlmJwQJEv0brsxpf9K8cBXI4DvnPzNLkWqv//0LSVmk7LeGL8VlFMEP6g4C5Ugommd/gvjwXDb1M+Jvara3ZQhMnHUrdfwXiCMlMw06Qe7Me41c0QE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301569; c=relaxed/simple;
-	bh=UWfVY/ZUYkkVx3NhhK1nR/42bNXJbLDzKTb4FTDHHyE=;
+	s=arc-20240116; t=1779301574; c=relaxed/simple;
+	bh=gQrgyyx41IEBQ+tjIv7b7P5F6Beg1RVLyKm2xuL1LOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MIijohU7PN7xJgiiK1fNbA+uKF0DZvsmd3URT+3ouiDfrFTdr4d4DVJ6LyJ8JrD+4u225hKzfe3tSZPT2eICIOKVAOITuuRdv96cEUi0W8vQo1+QNe8cd0jrNIX0QvDeBgAgbxUxWbcKvHVJYkrY8Jge1JBvRiNsroexcS/+GYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iuucoxwa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ACDF1F000E9;
-	Wed, 20 May 2026 18:26:07 +0000 (UTC)
+	 MIME-Version; b=qAmMG9g6ToSkWpyLfU/Z/WwbLjJ2xnHRVv7Sx1mLvs2XDIktDSDBom7nDgfz1lCR0jZopqFztRrkNpRvz3jhW/bgNcJBVhYWbTWqGr9B8kiE7NUhehG2keA3hRVlXSewqc6NGMi2Uu7NuYbYhXTIfgWksznk6EcS6oGTMjRIdHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1zRKjL1r; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81E491F000E9;
+	Wed, 20 May 2026 18:26:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301567;
-	bh=EjdaP7OaWpv+e3AM9vbsHIp3noK1PrgK347YlsiTarE=;
+	s=korg; t=1779301573;
+	bh=NtVIoEo18iV9ifysk3f5a8XP7Y6h2doZWwAnewp6t/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IuucoxwaB5Gfml7PE3UxrI//qeNtfrm7iDeS981i3EMV+C6IY/tdixaBCxttZub/z
-	 jM/4pITVy/gXhMxJf9ZKIFse9hgRwVT97j5i3c3YytpFLWR9GpihGxf4oSsemT6CPp
-	 BOTvuMteaeS2907flDQ8iJTOdqZZGFvJfG55lRgo=
+	b=1zRKjL1rNC7bxkCEvnmXDPzel3QEyeWXVjfs9rQefqhWGDSWHIaV3jJs4ohB5qr3A
+	 t7WQe+Z/Jz0EYV187NYxh40EoPJcyu+5Ln+qh40L4cv1kUpPQpfsaNFJia7iwEoMQq
+	 k07wOHgxElUFfU48vnIfGTcwtD8ZHBGBG1L2pfqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasant Hegde <vasant.hegde@amd.com>,
 	Jason Gunthorpe <jgg@nvidia.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
 	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 603/666] iommu/amd: Reorder attach device code
-Date: Wed, 20 May 2026 18:23:34 +0200
-Message-ID: <20260520162124.337699951@linuxfoundation.org>
+Subject: [PATCH 6.12 604/666] iommu/amd: Put list_add/del(dev_data) back under the domain->lock
+Date: Wed, 20 May 2026 18:23:35 +0200
+Message-ID: <20260520162124.359505810@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
 References: <20260520162111.222830634@linuxfoundation.org>
@@ -69,30 +69,31 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252779-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252781-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,suse.de:email]
-X-Rspamd-Queue-Id: 409CC5968CD
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email,amd.com:email]
+X-Rspamd-Queue-Id: 134E6597796
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,160 +101,68 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Vasant Hegde <vasant.hegde@amd.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 0b136493d3ffa1358783dcf5b9f866ceef2ff122 ]
+[ Upstream commit 4a552f7890f0870f6d9fd4fbc6c05cea7bfd4503 ]
 
-Ideally in attach device path, it should take dev_data lock before
-making changes to device data including IOPF enablement. So far dev_data
-was using spinlock and it was hitting lock order issue when it tries to
-enable IOPF. Hence Commit 526606b0a199 ("iommu/amd: Fix Invalid wait
-context issue") moved IOPF enablement outside dev_data->lock.
+The list domain->dev_list is protected by the domain->lock spinlock.
+Any iteration, addition or removal must be under the lock.
 
-Previous patch converted dev_data lock to mutex. Now its safe to call
-amd_iommu_iopf_add_device() with dev_data->mutex. Hence move back PCI
-device capability enablement (ATS, PRI, PASID) and IOPF enablement code
-inside the lock. Also in attach_device(), update 'dev_data->domain' at
-the end so that error handling becomes simple.
+Move the list_del() up into the critical section. pdom_is_sva_capable(),
+and destroy_gcr3_table() do not interact with the list element.
 
-Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/20241030063556.6104-11-vasant.hegde@amd.com
+Wrap the list_add() in a lock, it would make more sense if this was under
+the same critical section as adjusting the refcounts earlier, but that
+requires more complications.
+
+Fixes: d6b47dec3684 ("iommu/amd: Reduce domain lock scope in attach device path")
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Link: https://lore.kernel.org/r/1-v1-3b9edcf8067d+3975-amd_dev_list_locking_jgg@nvidia.com
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Stable-dep-of: 4a552f7890f0 ("iommu/amd: Put list_add/del(dev_data) back under the domain->lock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/iommu.c | 65 +++++++++++++++++----------------------
- 1 file changed, 29 insertions(+), 36 deletions(-)
+ drivers/iommu/amd/iommu.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index a5adc4714f5c9..6f2ce142dff7a 100644
+index 6f2ce142dff7a..65d61b9c7382c 100644
 --- a/drivers/iommu/amd/iommu.c
 +++ b/drivers/iommu/amd/iommu.c
-@@ -2291,6 +2291,7 @@ static int attach_device(struct device *dev,
- {
+@@ -2292,6 +2292,7 @@ static int attach_device(struct device *dev,
  	struct iommu_dev_data *dev_data = dev_iommu_priv_get(dev);
  	struct amd_iommu *iommu = get_amd_iommu_from_dev_data(dev_data);
-+	struct pci_dev *pdev;
+ 	struct pci_dev *pdev;
++	unsigned long flags;
  	int ret = 0;
  
  	mutex_lock(&dev_data->mutex);
-@@ -2300,10 +2301,6 @@ static int attach_device(struct device *dev,
- 		goto out;
- 	}
+@@ -2332,7 +2333,9 @@ static int attach_device(struct device *dev,
  
--	/* Update data structures */
--	dev_data->domain = domain;
--	list_add(&dev_data->list, &domain->dev_list);
--
- 	/* Do reference counting */
- 	ret = pdom_attach_iommu(iommu, domain);
- 	if (ret)
-@@ -2318,6 +2315,28 @@ static int attach_device(struct device *dev,
- 		}
- 	}
+ 	/* Update data structures */
+ 	dev_data->domain = domain;
++	spin_lock_irqsave(&domain->lock, flags);
+ 	list_add(&dev_data->list, &domain->dev_list);
++	spin_unlock_irqrestore(&domain->lock, flags);
  
-+	pdev = dev_is_pci(dev_data->dev) ? to_pci_dev(dev_data->dev) : NULL;
-+	if (pdev && pdom_is_sva_capable(domain)) {
-+		pdev_enable_caps(pdev);
-+
-+		/*
-+		 * Device can continue to function even if IOPF
-+		 * enablement failed. Hence in error path just
-+		 * disable device PRI support.
-+		 */
-+		if (amd_iommu_iopf_add_device(iommu, dev_data))
-+			pdev_disable_cap_pri(pdev);
-+	} else if (pdev) {
-+		pdev_enable_cap_ats(pdev);
-+	}
-+
-+	/* Update data structures */
-+	dev_data->domain = domain;
-+	list_add(&dev_data->list, &domain->dev_list);
-+
-+	/* Update device table */
-+	dev_update_dte(dev_data, true);
-+
- out:
- 	mutex_unlock(&dev_data->mutex);
+ 	/* Update device table */
+ 	dev_update_dte(dev_data, true);
+@@ -2379,6 +2382,7 @@ static void detach_device(struct device *dev)
+ 	/* Flush IOTLB and wait for the flushes to finish */
+ 	spin_lock_irqsave(&domain->lock, flags);
+ 	amd_iommu_domain_flush_all(domain);
++	list_del(&dev_data->list);
+ 	spin_unlock_irqrestore(&domain->lock, flags);
  
-@@ -2332,7 +2351,6 @@ static void detach_device(struct device *dev)
- 	struct iommu_dev_data *dev_data = dev_iommu_priv_get(dev);
- 	struct amd_iommu *iommu = get_amd_iommu_from_dev_data(dev_data);
- 	struct protection_domain *domain = dev_data->domain;
--	bool ppr = dev_data->ppr;
- 	unsigned long flags;
+ 	/* Clear GCR3 table */
+@@ -2387,7 +2391,6 @@ static void detach_device(struct device *dev)
  
- 	mutex_lock(&dev_data->mutex);
-@@ -2346,13 +2364,15 @@ static void detach_device(struct device *dev)
- 	if (WARN_ON(!dev_data->domain))
- 		goto out;
+ 	/* Update data structures */
+ 	dev_data->domain = NULL;
+-	list_del(&dev_data->list);
  
--	if (ppr) {
-+	/* Remove IOPF handler */
-+	if (dev_data->ppr) {
- 		iopf_queue_flush_dev(dev);
--
--		/* Updated here so that it gets reflected in DTE */
--		dev_data->ppr = false;
-+		amd_iommu_iopf_remove_device(iommu, dev_data);
- 	}
- 
-+	if (dev_is_pci(dev))
-+		pdev_disable_caps(to_pci_dev(dev));
-+
- 	/* Clear DTE and flush the entry */
- 	dev_update_dte(dev_data, false);
- 
-@@ -2374,14 +2394,6 @@ static void detach_device(struct device *dev)
- 
- out:
- 	mutex_unlock(&dev_data->mutex);
--
--	/* Remove IOPF handler */
--	if (ppr)
--		amd_iommu_iopf_remove_device(iommu, dev_data);
--
--	if (dev_is_pci(dev))
--		pdev_disable_caps(to_pci_dev(dev));
--
- }
- 
- static struct iommu_device *amd_iommu_probe_device(struct device *dev)
-@@ -2670,7 +2682,6 @@ static int amd_iommu_attach_device(struct iommu_domain *dom,
- 	struct iommu_dev_data *dev_data = dev_iommu_priv_get(dev);
- 	struct protection_domain *domain = to_pdomain(dom);
- 	struct amd_iommu *iommu = get_amd_iommu_from_dev(dev);
--	struct pci_dev *pdev;
- 	int ret;
- 
- 	/*
-@@ -2703,24 +2714,6 @@ static int amd_iommu_attach_device(struct iommu_domain *dom,
- 	}
- #endif
- 
--	pdev = dev_is_pci(dev_data->dev) ? to_pci_dev(dev_data->dev) : NULL;
--	if (pdev && pdom_is_sva_capable(domain)) {
--		pdev_enable_caps(pdev);
--
--		/*
--		 * Device can continue to function even if IOPF
--		 * enablement failed. Hence in error path just
--		 * disable device PRI support.
--		 */
--		if (amd_iommu_iopf_add_device(iommu, dev_data))
--			pdev_disable_cap_pri(pdev);
--	} else if (pdev) {
--		pdev_enable_cap_ats(pdev);
--	}
--
--	/* Update device table */
--	dev_update_dte(dev_data, true);
--
- 	return ret;
- }
- 
+ 	/* decrease reference counters - needs to happen after the flushes */
+ 	pdom_detach_iommu(iommu, domain);
 -- 
 2.53.0
 
