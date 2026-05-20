@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253249-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QAifNuj3DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-252151-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:05:28 +0200
+	id wL9UElUHDmp25gUAu9opvQ
+	(envelope-from <stable+bounces-253249-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:11:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55A1659542B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:05:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C258A597E50
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:11:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4C1763104F0C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:59:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B0B3C3643689
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:51:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB5AA3F44CD;
-	Wed, 20 May 2026 17:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B27533FFAC3;
+	Wed, 20 May 2026 18:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fuvh3d/q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eD/HFN8b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DC03FE36C;
-	Wed, 20 May 2026 17:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784133546F0;
+	Wed, 20 May 2026 18:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299926; cv=none; b=SQyxqvBBWcWqgd6DItSe50tsbM/MWVvQJa25+sO7Nm5bhRaDOuc7R59jP7qmrFyAXAn6slauy2/1DjbygjXRL7URXXmaS6eBKMeXEgK1jhlW0KsY68dvlO9bdakZGTUKLhiPaZCW4pJC8anRo3+nCcyhM/E/K4dEI0eWFoXr4Rc=
+	t=1779302784; cv=none; b=ngecaP9+70dCXeEBDohpWhexxsTPnWiPlUHXWyjBjqipkcTiUlQU9w5rZ+0Mg9e5iG+HliaW57VbsSija/ZXwHLMuwDpRnMWh7/ssB3WS5TyPKKiPc0tw879MepQUT+LyKqRliKXm8rQ77PCvnmaeL+8UECmS6gSsIVw/vfnxYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299926; c=relaxed/simple;
-	bh=dnOoFixhGd22cAx795Nld9mzIIAtv0m7mFg2QXVwtSY=;
+	s=arc-20240116; t=1779302784; c=relaxed/simple;
+	bh=P9O7iPj79XImCSaKuAyTxZYjKssZOwscHSyw9rdk/Wo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NDjDO3AnPBugSbtV+qFRwLPYZ+r6UfKiw0UyZWURKFiwAMskFIdItiXy9LAlBY4W9CvsVfx60DY1tiIfwrgixyH9+BYf6KRJ9PyRL37g1naupvKgMhXx8OTKV00PXrnr1/cXsLUtPqbTXxK40dHbRExV1lOkb7Y3K+aKDNUBADI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fuvh3d/q; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E41CD1F00893;
-	Wed, 20 May 2026 17:58:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=k2fln6vMPgZKh/EkzMhyRffYZ75+1tW38FURcR8r1ObbXaI54KJurf0lnMInyfhqHKezl/jfNfBVIPKf7qqISmSN24kz3LvKM/Ba3+1lwuPQA/npj4OMI6lClfHPV7CPyRgQoMREyb8Ad3YPDUCMyCJwm2Klw9QrKaINikx0OQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eD/HFN8b; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A5BD1F000E9;
+	Wed, 20 May 2026 18:46:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299923;
-	bh=ZWLG0Pa8tySJzrdhtbf34rYosEouEQkdlKjZVoJUQj0=;
+	s=korg; t=1779302783;
+	bh=ceuxewqm7lB7Htfwf76ngctdbocgiKqHDXNkufV0OOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Fuvh3d/qf/+6Vt2tzcwS+lufE4HOB453tPOfIgxxAfonFxzwxAoJT8RvcE8Rayztl
-	 jEY8lJm+G3rUenKHwHr+qM/lS6tuHdz9skFI1eETANc0rXgd9Y3/QQhL2zf9o/7QGK
-	 39g166lCsneViOsTRHjGPum6GB+wRyG5hHxUHdDk=
+	b=eD/HFN8bh52VQ+73E7NOG8T0M2OjZpVM+7RNhQcs+U65Cp4EPWQl0611xjRz/raH5
+	 GDdzV6P54ql3LtyN+oE/egy04iVAyJAT3sDChNUGeKjozj2ZPcatKjHmiCxQBcm6et
+	 +M3w2cGoMZCUO9u3BiL94uhmL4XgYLGXqS0aCHl8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Tian <kevin.tian@intel.com>,
-	Zhenzhong Duan <zhenzhong.duan@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.18 939/957] iommu/vt-d: Avoid NULL pointer dereference or refcount corruption
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Yinjie Yao <yinjie.yao@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 399/508] drm/amdgpu/vcn: set no_user_fence for VCN v2.0 enc/dec rings
 Date: Wed, 20 May 2026 18:23:42 +0200
-Message-ID: <20260520162154.961152981@linuxfoundation.org>
+Message-ID: <20260520162107.258139045@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,100 +64,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252151-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-253249-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,amd.com:email,intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 55A1659542B
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: C258A597E50
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+From: Yinjie Yao <yinjie.yao@amd.com>
 
-commit 79ea2feb917b05366b49d85573c9c5331f043b2c upstream.
+[ Upstream commit 8d80b293b41fcb5e9396db93e788b0f4ebcbafb7 ]
 
-Commit 60f030f7418d ("iommu/vt-d: Avoid use of NULL after WARN_ON_ONCE")
-fixed a NULL pointer dereference in an unlikely situation partly.
+VCN encoder and decoder rings do not support 64-bit user fence writes,
+reject CS submissions with user fences.
 
-If dev_pasid is not found in the dev_pasids list, it remains NULL.
-However, the teardown operations are executed unconditionally, this lead
-to a NULL pointer dereference or refcount corruption.
-
-If the domain was never attached to this IOMMU, info will be NULL, which
-would cause an immediate dereference when checking --info->refcnt.
-
-Even if info is not NULL, decrementing the refcount without having removed
-a valid PASID might unbalance the count. This could lead to premature
-dropping of the refcount to 0, potentially causing a use-after-free for the
-remaining active devices sharing the domain.
-
-Fix it by returning early if dev_pasid is NULL, before executing the
-teardown operations.
-
-Issue found by AI review and suggested by Kevin Tian.
-https://sashiko.dev/#/patchset/20260421031347.1408890-1-zhenzhong.duan%40intel.com
-
-Fixes: 60f030f7418d ("iommu/vt-d: Avoid use of NULL after WARN_ON_ONCE")
-Cc: stable@vger.kernel.org
-Suggested-by: Kevin Tian <kevin.tian@intel.com>
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20260422033538.95000-1-zhenzhong.duan@intel.com
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1b61de45dfaf ("drm/amdgpu: add initial VCN2.0 support (v2)")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit e2b5499fca55f1a32960a311bbb62e35891eaf73)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/iommu.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -4083,12 +4083,13 @@ void domain_remove_dev_pasid(struct iomm
- 	}
- 	spin_unlock_irqrestore(&dmar_domain->lock, flags);
- 
-+	if (WARN_ON_ONCE(!dev_pasid))
-+		return;
-+
- 	cache_tag_unassign_domain(dmar_domain, dev, pasid);
- 	domain_detach_iommu(dmar_domain, iommu);
--	if (!WARN_ON_ONCE(!dev_pasid)) {
--		intel_iommu_debugfs_remove_dev_pasid(dev_pasid);
--		kfree(dev_pasid);
--	}
-+	intel_iommu_debugfs_remove_dev_pasid(dev_pasid);
-+	kfree(dev_pasid);
- }
- 
- static int blocking_domain_set_dev_pasid(struct iommu_domain *domain,
+diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c b/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c
+index 2505951ad06a0..1a9c8e9e854df 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c
+@@ -2014,6 +2014,7 @@ static const struct amd_ip_funcs vcn_v2_0_ip_funcs = {
+ static const struct amdgpu_ring_funcs vcn_v2_0_dec_ring_vm_funcs = {
+ 	.type = AMDGPU_RING_TYPE_VCN_DEC,
+ 	.align_mask = 0xf,
++	.no_user_fence = true,
+ 	.secure_submission_supported = true,
+ 	.get_rptr = vcn_v2_0_dec_ring_get_rptr,
+ 	.get_wptr = vcn_v2_0_dec_ring_get_wptr,
+@@ -2045,6 +2046,7 @@ static const struct amdgpu_ring_funcs vcn_v2_0_enc_ring_vm_funcs = {
+ 	.type = AMDGPU_RING_TYPE_VCN_ENC,
+ 	.align_mask = 0x3f,
+ 	.nop = VCN_ENC_CMD_NO_OP,
++	.no_user_fence = true,
+ 	.get_rptr = vcn_v2_0_enc_ring_get_rptr,
+ 	.get_wptr = vcn_v2_0_enc_ring_get_wptr,
+ 	.set_wptr = vcn_v2_0_enc_ring_set_wptr,
+-- 
+2.53.0
+
 
 
 
