@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-250721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252260-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +GNuNUvsDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250721-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:15:55 +0200
+	id gFPOJtIjDmr26QUAu9opvQ
+	(envelope-from <stable+bounces-252260-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:12:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A712959330F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:15:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0793759A8B8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:12:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DC20C304995F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:57:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5FD4E3940C07
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:03:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7950B3EF0C1;
-	Wed, 20 May 2026 16:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 255EF3F4DD6;
+	Wed, 20 May 2026 18:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MU0eBIvL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jGrhD3gk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FEF73A383C;
-	Wed, 20 May 2026 16:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F173E95A4;
+	Wed, 20 May 2026 18:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296143; cv=none; b=M6BVUwMyZvZpl+XKbQj/c/LCQgNxle8TsNKbmpe9Sta6GRKRJ+1VXtuZk/M9HRpuVW9n9S0rZuhzKIv8aSiNqm5Z1ceVowTMOB5uw/WCYLiGpv3kTI3UnRM6vpopSCnj2vtsxPjmFktr5fXOqnxLaDoNR7inQyTAbG8NoqRSFtI=
+	t=1779300209; cv=none; b=MbsiN/rpUhq5AGPvzFyAuvTHmRZkOpYYxIL0XQvFiWQL6jAcN4LWX44Bl/RVeNtU/5DQhoLC4/hGFlbPAPPvGaJJjpCpgBssKwimMCgM37ZttovdNFcRlrRZlgsnVNhQRlbPwgfzRuTrKkSMteSqTpwf6g/NCtBikGOFmr35Fks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296143; c=relaxed/simple;
-	bh=8Ez8ukCe8TAUfrIC6BBoi1N5kPB+48RSinNNVbLyyD4=;
+	s=arc-20240116; t=1779300209; c=relaxed/simple;
+	bh=TANEXezBMwMpI2mPl4jmf+FcTViImnfV8yhn+bN8AJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JGEKLUbPRYZlEh6ZsatXJnoese4zvyWKDyEZp5hxTy8X0MqaS4F1qaWMV7L1WxagBhSUl2ieNujBmHdUZJ3aGDfdw9rnMAsUsHKDTZDR3tG83mff4OJaQYXQsAJEgTpKcelLkDwSEFu+U7bqNuaeW8Bbini2UEZgvqWfEJCHxUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MU0eBIvL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 844D11F000E9;
-	Wed, 20 May 2026 16:55:41 +0000 (UTC)
+	 MIME-Version; b=eIwEVbAW0MHDKbw11Yc+5FnH6bLcSJ9JLRpOjfWAObTNnatNnokyKt4l6i0hOezmPZ0BUzzMkWIR6F2+QXcJidi997lRW0yEW48l2aObKHN8rTUwDSGaiBv8o/UQoOblIuZMiAmb3B6DpQ/smYoLv8cMUwKLXm4ewDiBhdbVfao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jGrhD3gk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A341F00893;
+	Wed, 20 May 2026 18:03:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296142;
-	bh=v68j0a7C5BFlAFxgaRO2di+TJdAmyssvb3gunoTMuXg=;
+	s=korg; t=1779300208;
+	bh=fwvRBmwCFInE4S4/MxvPYokjmr8XgG+Xm5kj1Itm0Ws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MU0eBIvLnF/1DpKkVcM1mD5OdZiBmlGN76LMUh/i1bOixRhqyUkktlS7EyazCXEFi
-	 FNcO4dz+awlnhncn9XNs7w2dt8KD7kT5HG5p+UEBnOTMaHRy+XXyBc/H0AAK5cVcOq
-	 z5KaCa1thhYHeB0TFPJJ9wXiD4wqkap7DgCjlPLw=
+	b=jGrhD3gkhWNhhm0spP3cAFToEU+nnmQ33b4REEAR0BfTCUahnEv0yPdq0iUWtwlsv
+	 e8KabJX5E8XzULEKifaBWwEvqesS0wi/8quyPOvQBMmov/CS5sZpPY942N4BEEdU04
+	 hXYop4E+z57TxG/E2eI7BNtds4FR7xyTrFof4/4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Sun Jian <sun.jian.kdev@gmail.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Puranjay Mohan <puranjay@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0650/1146] perf cgroup: Update metric leader in evlist__expand_cgroup
+Subject: [PATCH 6.12 089/666] selftests/bpf: fix __jited_unpriv tag name
 Date: Wed, 20 May 2026 18:15:00 +0200
-Message-ID: <20260520162202.894899531@linuxfoundation.org>
+Message-ID: <20260520162113.156846657@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,129 +66,74 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-250721-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252260-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.dev,kernel.org,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A712959330F
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 0793759A8B8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-[ Upstream commit c9ef786c0970991578397043f1c819229e2b7197 ]
+[ Upstream commit cdd54fe98c00549264a92613af6bb0e9a5fd0d1c ]
 
-When the evlist is expanded the metric leader wasn't being updated. As
-the original evsel is deleted this creates a use-after-free in
-stat-shadow's prepare_metric. This was detected running the "perf stat
---bpf-counters --for-each-cgroup test" with sanitizers.
+__jited_unpriv was using "test_jited=" as its tag name, same as the
+priv variant __jited. Fix by using "test_jited_unpriv=".
 
-The change itself puts the copied evsel into the priv field (known
-unused because of evsel__clone use) and then in a second pass over the
-list updates the copied values using the priv pointer.
-
-Fixes: d1c5a0e86a4e ("perf stat: Add --for-each-cgroup option")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Acked-by: Sun Jian <sun.jian.kdev@gmail.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 7d743e4c759c ("selftests/bpf: __jited test tag to check disassembly after jit")
+Acked-by: Ihor Solodrai <ihor.solodrai@linux.dev>
+Reviewed-by: Puranjay Mohan <puranjay@kernel.org>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20260410-selftests-global-tags-ordering-v2-1-c566ec9781bf@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/cgroup.c | 30 +++++++++++++++++++++++-------
- 1 file changed, 23 insertions(+), 7 deletions(-)
+ tools/testing/selftests/bpf/progs/bpf_misc.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/cgroup.c b/tools/perf/util/cgroup.c
-index 040eb75f08048..1b5664d1481f5 100644
---- a/tools/perf/util/cgroup.c
-+++ b/tools/perf/util/cgroup.c
-@@ -417,7 +417,6 @@ static bool has_pattern_string(const char *str)
- int evlist__expand_cgroup(struct evlist *evlist, const char *str, bool open_cgroup)
- {
- 	struct evlist *orig_list, *tmp_list;
--	struct evsel *pos, *evsel, *leader;
- 	struct rblist orig_metric_events;
- 	struct cgroup *cgrp = NULL;
- 	struct cgroup_name *cn;
-@@ -452,6 +451,7 @@ int evlist__expand_cgroup(struct evlist *evlist, const char *str, bool open_cgro
- 		goto out_err;
- 
- 	list_for_each_entry(cn, &cgroup_list, list) {
-+		struct evsel *pos;
- 		char *name;
- 
- 		if (!cn->used)
-@@ -467,21 +467,37 @@ int evlist__expand_cgroup(struct evlist *evlist, const char *str, bool open_cgro
- 		if (cgrp == NULL)
- 			continue;
- 
--		leader = NULL;
-+		/* copy the list and set to the new cgroup. */
- 		evlist__for_each_entry(orig_list, pos) {
--			evsel = evsel__clone(/*dest=*/NULL, pos);
-+			struct evsel *evsel = evsel__clone(/*dest=*/NULL, pos);
-+
- 			if (evsel == NULL)
- 				goto out_err;
- 
-+			/* stash the copy during the copying. */
-+			pos->priv = evsel;
- 			cgroup__put(evsel->cgrp);
- 			evsel->cgrp = cgroup__get(cgrp);
- 
--			if (evsel__is_group_leader(pos))
--				leader = evsel;
--			evsel__set_leader(evsel, leader);
--
- 			evlist__add(tmp_list, evsel);
- 		}
-+		/* update leader information using stashed pointer to copy. */
-+		evlist__for_each_entry(orig_list, pos) {
-+			struct evsel *evsel = pos->priv;
-+
-+			if (evsel__leader(pos))
-+				evsel__set_leader(evsel, evsel__leader(pos)->priv);
-+
-+			if (pos->metric_leader)
-+				evsel->metric_leader = pos->metric_leader->priv;
-+
-+			if (pos->first_wildcard_match)
-+				evsel->first_wildcard_match = pos->first_wildcard_match->priv;
-+		}
-+		/* the stashed copy is no longer used. */
-+		evlist__for_each_entry(orig_list, pos)
-+			pos->priv = NULL;
-+
- 		/* cgroup__new() has a refcount, release it here */
- 		cgroup__put(cgrp);
- 		nr_cgroups++;
+diff --git a/tools/testing/selftests/bpf/progs/bpf_misc.h b/tools/testing/selftests/bpf/progs/bpf_misc.h
+index eccaf955e3947..9c0d71f0b3cc3 100644
+--- a/tools/testing/selftests/bpf/progs/bpf_misc.h
++++ b/tools/testing/selftests/bpf/progs/bpf_misc.h
+@@ -115,7 +115,7 @@
+ #define __description(desc)	__attribute__((btf_decl_tag("comment:test_description=" desc)))
+ #define __msg_unpriv(msg)	__attribute__((btf_decl_tag("comment:test_expect_msg_unpriv=" XSTR(__COUNTER__) "=" msg)))
+ #define __xlated_unpriv(msg)	__attribute__((btf_decl_tag("comment:test_expect_xlated_unpriv=" XSTR(__COUNTER__) "=" msg)))
+-#define __jited_unpriv(msg)	__attribute__((btf_decl_tag("comment:test_jited=" XSTR(__COUNTER__) "=" msg)))
++#define __jited_unpriv(msg)	__attribute__((btf_decl_tag("comment:test_jited_unpriv=" XSTR(__COUNTER__) "=" msg)))
+ #define __failure_unpriv	__attribute__((btf_decl_tag("comment:test_expect_failure_unpriv")))
+ #define __success_unpriv	__attribute__((btf_decl_tag("comment:test_expect_success_unpriv")))
+ #define __log_level(lvl)	__attribute__((btf_decl_tag("comment:test_log_level="#lvl)))
 -- 
 2.53.0
 
