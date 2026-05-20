@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253142-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OIffKZkHDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-252682-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:12:25 +0200
+	id yPrcN4AGDmqy5gUAu9opvQ
+	(envelope-from <stable+bounces-253142-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:07:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD021597EF8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:12:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7344E597CCE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:07:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 981D93286E09
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:21:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9F1783967720
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97A2E372B31;
-	Wed, 20 May 2026 18:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF505403E8C;
+	Wed, 20 May 2026 18:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MoBLteRj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fAbW6pmO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566D13D1CC6;
-	Wed, 20 May 2026 18:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8548634EEF7;
+	Wed, 20 May 2026 18:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301313; cv=none; b=k7UwRltHfIqbCQDVWKjmvpARUMe+dk1P3v5s53jMYe7j92ZV54cjY2/P2Opd0eSuSeJ1o5mwguMeNTEJrhBNrZiwRrELPBlBiuFYIbyn31rqNx8mL0YOjt6VQRZKrpzzT41MGuRzg6O0dP82jJ1tgOn/y68ILrbON/7TQxTynFw=
+	t=1779302515; cv=none; b=YNSBd60l088umoTW3Td2eex+bvrDoLEFUdneFCnlJIHeqbleND7vWpV4IHE9GlAAQO2voK06GhCH0CYmUJwE/p6a0HIUnIwyg7BXATsYp9yjwXC1QGLIkpZk2VbjDKX4PGp56KwQX0IhUKiRwqwLtyGcReyKV2/lz3xOHqXG6O0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301313; c=relaxed/simple;
-	bh=klJQDkh4QaQ3UEwCCL1mO1mLQtDWgvaI1AHHoAzWCCE=;
+	s=arc-20240116; t=1779302515; c=relaxed/simple;
+	bh=UngvQd5qgJy3YgVy227pA8aaMXWOH+aLYeDvbpjOJi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DnA68TKN3pTjazgD+PC348ZbWcVplomCf1vJi0C4NEYJBNS76xEl4C2wrgChI31z6HwaDbLNeMSA6wy4LfD4Lf2iSGRE/W57lXBa/N6Irml1bnOeOK5UUBeN0joRdFwJOxqZVZxrRsNXkLos4Vz+b7ey1R4B5DtdXKJUMm1g+Sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MoBLteRj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC9471F00893;
-	Wed, 20 May 2026 18:21:51 +0000 (UTC)
+	 MIME-Version; b=uctTaXzmkVWx2VmxZi5Sf2errg75vGCWU5/qs4KNqXGhLroPbhZlm8YwhvajOjv4zSVIhZBnMtoZ1SMoaVSr51KlRbgNfp1tdcUb7y3h5o2TmB2ZiQC4urzTU5mfPsolxPjPPtRSoHgvfFFzkMY+AmPmWCuWDX2LR93BemZpaNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fAbW6pmO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECA541F000E9;
+	Wed, 20 May 2026 18:41:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301312;
-	bh=B1rAajSTlimMwgMnmEXybhTNXE64nNERqkslCMR2Ii4=;
+	s=korg; t=1779302514;
+	bh=Y2IBCAJhWkdCcBuvST3ByhjAoJsJ/KvtpAZRfHS2ZM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MoBLteRjOI3vDW3CdM59U5mCx0ABwfW4bnUtSMz9TcSV9ztYVNgHgv1Vm5XGc0dz9
-	 ROJVRdezQi4R1MDkTHrPg35q5ZTrKgwzcyIEB2CYtWXOTyPuhIHKrXnKCxt6luRgkC
-	 fY2snHNoAUsCb/89v/H/FcDQawEJApNlWGGflhG0=
+	b=fAbW6pmOxcbO1xiSbzh25s2yJgnzOcO5RORvM9aQmXgP6p/UcIvtB0GRm4kgJbYQi
+	 B8LY1HK/pSNw9A3LlVVcry6cOgHsd5d4SGmBDFWbogLf49QhexbVly9eZwaKxTrL4Y
+	 QdkgbwveuTdw/kdQt6T5m3hrT+fqOH9QAIuxcVtA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	cuitao <cuitao@kylinos.cn>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Tejun Heo <tj@kernel.org>,
+	Yongpeng Yang <yangyongpeng@xiaomi.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 506/666] cgroup/rdma: fix integer overflow in rdmacg_try_charge()
+Subject: [PATCH 6.6 294/508] f2fs: protect extension_list reading with sb_lock in f2fs_sbi_show()
 Date: Wed, 20 May 2026 18:21:57 +0200
-Message-ID: <20260520162122.228199025@linuxfoundation.org>
+Message-ID: <20260520162105.016359415@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +64,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252682-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-253142-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,kylinos.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email]
-X-Rspamd-Queue-Id: CD021597EF8
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,xiaomi.com:email]
+X-Rspamd-Queue-Id: 7344E597CCE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: cuitao <cuitao@kylinos.cn>
+From: Yongpeng Yang <yangyongpeng@xiaomi.com>
 
-[ Upstream commit c802f460dd485c1332b5a35e7adcfb2bc22536a2 ]
+[ Upstream commit 5909bedbed38c558bee7cb6758ceedf9bc3a9194 ]
 
-The expression `rpool->resources[index].usage + 1` is computed in int
-arithmetic before being assigned to s64 variable `new`. When usage equals
-INT_MAX (the default "max" value), the addition overflows to INT_MIN.
-This negative value then passes the `new > max` check incorrectly,
-allowing a charge that should be rejected and corrupting usage to
-negative.
+In f2fs_sbi_show(), the extension_list, extension_count and
+hot_ext_count are read without holding sbi->sb_lock. If a concurrent
+sysfs store modifies the extension list via f2fs_update_extension_list(),
+the show path may read inconsistent count and array contents, potentially
+leading to out-of-bounds access or displaying stale data.
 
-Fix by casting usage to s64 before the addition so the arithmetic is
-done in 64-bit.
+Fix this by holding sb_lock around the entire extension list read
+and format operation.
 
-Fixes: 39d3e7584a68 ("rdmacg: Added rdma cgroup controller")
-Signed-off-by: cuitao <cuitao@kylinos.cn>
-Reviewed-by: Michal Koutný <mkoutny@suse.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: b6a06cbbb5f7 ("f2fs: support hot file extension")
+Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/rdma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/sysfs.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/cgroup/rdma.c b/kernel/cgroup/rdma.c
-index ef5878fb20057..d544a747f3954 100644
---- a/kernel/cgroup/rdma.c
-+++ b/kernel/cgroup/rdma.c
-@@ -283,7 +283,7 @@ int rdmacg_try_charge(struct rdma_cgroup **rdmacg,
- 			ret = PTR_ERR(rpool);
- 			goto err;
- 		} else {
--			new = rpool->resources[index].usage + 1;
-+			new = (s64)rpool->resources[index].usage + 1;
- 			if (new > rpool->resources[index].max) {
- 				ret = -EAGAIN;
- 				goto err;
+diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
+index 7d377da9c2631..4cd2d4bde217a 100644
+--- a/fs/f2fs/sysfs.c
++++ b/fs/f2fs/sysfs.c
+@@ -318,10 +318,12 @@ static ssize_t f2fs_sbi_show(struct f2fs_attr *a,
+ 	if (!strcmp(a->attr.name, "extension_list")) {
+ 		__u8 (*extlist)[F2FS_EXTENSION_LEN] =
+ 					sbi->raw_super->extension_list;
+-		int cold_count = le32_to_cpu(sbi->raw_super->extension_count);
+-		int hot_count = sbi->raw_super->hot_ext_count;
++		int cold_count, hot_count;
+ 		int len = 0, i;
+ 
++		f2fs_down_read(&sbi->sb_lock);
++		cold_count = le32_to_cpu(sbi->raw_super->extension_count);
++		hot_count = sbi->raw_super->hot_ext_count;
+ 		len += sysfs_emit_at(buf, len, "cold file extension:\n");
+ 		for (i = 0; i < cold_count; i++)
+ 			len += sysfs_emit_at(buf, len, "%s\n", extlist[i]);
+@@ -329,6 +331,7 @@ static ssize_t f2fs_sbi_show(struct f2fs_attr *a,
+ 		len += sysfs_emit_at(buf, len, "hot file extension:\n");
+ 		for (i = cold_count; i < cold_count + hot_count; i++)
+ 			len += sysfs_emit_at(buf, len, "%s\n", extlist[i]);
++		f2fs_up_read(&sbi->sb_lock);
+ 
+ 		return len;
+ 	}
 -- 
 2.53.0
 
