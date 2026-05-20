@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-250839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251773-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2NMrLb3vDWpu4wUAu9opvQ
-	(envelope-from <stable+bounces-250839-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:30:37 +0200
+	id yN70GBgBDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-251773-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 706DC593D6B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:30:37 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6699759727F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:44:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 017B9302F9C0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:01:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 213FF3229AE1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:40:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC7F3F39EE;
-	Wed, 20 May 2026 17:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29956376A0C;
+	Wed, 20 May 2026 17:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UVBQo8nR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kU1ezhm3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58729372EDE;
-	Wed, 20 May 2026 17:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E472736D9EA;
+	Wed, 20 May 2026 17:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296441; cv=none; b=RyY8AySEdqn76iLQQUuRIM/5FbPfw1uCihAVJ8E2iofq5YNyxubnCVhVVk1jttXqbxW0w8/n7RDlI6mrSg6IIdzYzFJgxWuXaCeHrAwwngzEXrXDvXK2yDsQQFWYgbpU2ZCvQZbkKjUtAKTrmho4NJodVewE0m9/38uLsXxJDys=
+	t=1779298855; cv=none; b=pa3143g5n6SogiKeHdb2hCsGo14Ky1/mJ3lN8jgiWII3Hap79jFp7HOtYPvICRbo/K+g5dMslV92gtAp+rS4cGPPdgWzuWXr6G5+/9Jjq78whrlk+f21xWZs3sPUW3EU+H7EkacfHJmqBGKB+fM3jWIBIP7BhjrMLC4Y5Vs9coY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296441; c=relaxed/simple;
-	bh=SJjrahMoCKN6GVCsfLvVmLFdHLPXMugwL1Pxz5Cpwzo=;
+	s=arc-20240116; t=1779298855; c=relaxed/simple;
+	bh=sdfQXAWWM4iSyUODaXPfH/rTYbN/jfmJ7/IvAztQQ2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n5detk0QDcKgqm1OGfdAXP8vVBm+/q3fG3HM0SDjYDKZU6U93JpRLZjED95bENZZ51AgoGbNulu9bFNV4I9ALS/hh7azrZtMCmmzNFR+YFdwJYC3WLcE6a2t5GJVCfmujyf6xLYdxeUx8umhSLJzeo8+o2ig6o47yzWzV0r7dAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UVBQo8nR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C27321F000E9;
-	Wed, 20 May 2026 17:00:39 +0000 (UTC)
+	 MIME-Version; b=LapsfskxSCFfwoWu44k0mUlplMM7zTaOSQZLZrUo0uLhpe/k9uDdOzu12upASMd6vuIPIrsAHYVuneZzyC5yNNF2BSVDcGtcoqf1h5FV0SfG1z+ExbsoLllQomT9t/2BIfUp9UrDppj84PW2Wu36yPQeMcjk8z79cP3VFers8/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kU1ezhm3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56AB21F000E9;
+	Wed, 20 May 2026 17:40:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296440;
-	bh=O1m5iIefo/7+sHvs1gkE+2XG0MOi8tiyB3s3DIp3b8E=;
+	s=korg; t=1779298853;
+	bh=D4ju9tXMvdpmBibWu0f/EG6xHBOAAqlQdhSFjXmxh1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UVBQo8nRsroT6O9s93mJ4ShQdmPazUkzBbmu4YW0VbZuCLsL3GyfxqqXOgPpMFamc
-	 27nM1Ef4XC15PrWQsGnEpYjVshWD1rkijq/MqlpS/ZFmPocCgi7Eq1EijY0/8ctltW
-	 25JRdo+gYG11g66IUk8SVKZYRu9A2CBe+wjk+TZ4=
+	b=kU1ezhm3CT2m2nq9dtpejpTn7bEllHJy3ujf4iXnuAGcVdgszQm4OMCPC8oL8gr59
+	 dpsYyQDJMpN2dqjbTpwt+DVpVjucOIBPBR5nXBd/mNqL1gDVeK+rgpCgJae6hhimQK
+	 FYqCBjAJC1EgNe7aEHsCnWtdzCEC8dIQ6UwdL0vM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Enju <kohei@enjuk.jp>,
-	Paul Greenwalt <paul.greenwalt@intel.com>,
-	Rinitha S <sx.rinitha@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Val Packett <val@packett.cool>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0800/1146] ice: fix potential NULL pointer deref in error path of ice_set_ringparam()
+Subject: [PATCH 6.18 567/957] clk: qcom: gcc-sc8180x: Use retention for USB power domains
 Date: Wed, 20 May 2026 18:17:30 +0200
-Message-ID: <20260520162206.331289266@linuxfoundation.org>
+Message-ID: <20260520162146.825636722@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,82 +70,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250839-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251773-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,enjuk.jp:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 706DC593D6B
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,packett.cool:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 6699759727F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <kohei@enjuk.jp>
+From: Val Packett <val@packett.cool>
 
-[ Upstream commit fa28351f970fa5138c7c5dedfe5dea480a0ee065 ]
+[ Upstream commit 25bc96f26cd6c19dde13a0b9859183e531d6fbfc ]
 
-ice_set_ringparam nullifies tstamp_ring of temporary tx_rings, without
-clearing ICE_TX_RING_FLAGS_TXTIME bit.
-When ICE_TX_RING_FLAGS_TXTIME is set and the subsequent
-ice_setup_tx_ring() call fails, a NULL pointer dereference could happen
-in the unwinding sequence:
+The USB subsystem does not expect to lose its state on suspend:
 
-ice_clean_tx_ring()
--> ice_is_txtime_cfg() == true (ICE_TX_RING_FLAGS_TXTIME is set)
--> ice_free_tx_tstamp_ring()
-  -> ice_free_tstamp_ring()
-    -> tstamp_ring->desc (NULL deref)
+    xhci-hcd xhci-hcd.0.auto: xHC error in resume, USBSTS 0x401, Reinit
+    usb usb1: root hub lost power or was reset
 
-Clear ICE_TX_RING_FLAGS_TXTIME bit to avoid the potential issue.
+(The reinitialization usually succeeds, but it does slow down resume.)
 
-Note that this potential issue is found by manual code review.
-Compile test only since unfortunately I don't have E830 devices.
+To maintain state during suspend, the relevant GDSCs need to stay in
+retention mode, like they do on other similar SoCs. Change the mode to
+PWRSTS_RET_ON to fix.
 
-Fixes: ccde82e90946 ("ice: add E830 Earliest TxTime First Offload support")
-Signed-off-by: Kohei Enju <kohei@enjuk.jp>
-Reviewed-by: Paul Greenwalt <paul.greenwalt@intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20260416-iwl-net-submission-2026-04-14-v2-8-686c33c9828d@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 4433594bbe5d ("clk: qcom: gcc: Add global clock controller driver for SC8180x")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Val Packett <val@packett.cool>
+Link: https://lore.kernel.org/r/20260312112321.370983-4-val@packett.cool
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_ethtool.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/qcom/gcc-sc8180x.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-index e6a20af6f63de..f28416a707d77 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -3290,6 +3290,7 @@ ice_set_ringparam(struct net_device *netdev, struct ethtool_ringparam *ring,
- 		tx_rings[i].desc = NULL;
- 		tx_rings[i].tx_buf = NULL;
- 		tx_rings[i].tstamp_ring = NULL;
-+		clear_bit(ICE_TX_RING_FLAGS_TXTIME, tx_rings[i].flags);
- 		tx_rings[i].tx_tstamps = &pf->ptp.port.tx;
- 		err = ice_setup_tx_ring(&tx_rings[i]);
- 		if (err) {
+diff --git a/drivers/clk/qcom/gcc-sc8180x.c b/drivers/clk/qcom/gcc-sc8180x.c
+index 55dabf6259b29..b116a9c0b2d94 100644
+--- a/drivers/clk/qcom/gcc-sc8180x.c
++++ b/drivers/clk/qcom/gcc-sc8180x.c
+@@ -4172,7 +4172,7 @@ static struct gdsc usb30_sec_gdsc = {
+ 	.pd = {
+ 		.name = "usb30_sec_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ 	.flags = POLL_CFG_GDSCR,
+ };
+ 
+@@ -4190,7 +4190,7 @@ static struct gdsc usb30_prim_gdsc = {
+ 	.pd = {
+ 		.name = "usb30_prim_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ 	.flags = POLL_CFG_GDSCR,
+ };
+ 
+@@ -4262,7 +4262,7 @@ static struct gdsc usb30_mp_gdsc = {
+ 	.pd = {
+ 		.name = "usb30_mp_gdsc",
+ 	},
+-	.pwrsts = PWRSTS_OFF_ON,
++	.pwrsts = PWRSTS_RET_ON,
+ 	.flags = POLL_CFG_GDSCR,
+ };
+ 
 -- 
 2.53.0
 
