@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-251276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250303-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oIRCEWn8DWoK5QUAu9opvQ
-	(envelope-from <stable+bounces-251276-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:41 +0200
+	id UCvoI8TmDWqm4gUAu9opvQ
+	(envelope-from <stable+bounces-250303-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F3735960D9
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:24:40 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51260592904
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8DEB1303BDD8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:19:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5BC6730B36C2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:38:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB06636C9D2;
-	Wed, 20 May 2026 17:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3968367B69;
+	Wed, 20 May 2026 16:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VKYcLnWs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GPOSL++z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63AAD30BF68;
-	Wed, 20 May 2026 17:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B6236404E;
+	Wed, 20 May 2026 16:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297562; cv=none; b=jr/vJkDGa7DQlZh3tvRcPEjj2AJDu53ywHVun18tIJtUWBqjMTBtiXZplZz/Djxbqmdm++PfDzK4sw/69VmZWap9YNOoXUFxqLoOW/ksU6l7V8v/uzpCbtglI1x9FqDM6qbphbKgjk1/MV8gBXl+oja42lvFo+RmoxwCgamDl/A=
+	t=1779295059; cv=none; b=TWvRzurY3qrHzYRHDLVzMc0Bhc4urD5kmhWsS7qQkRw5XuNRDgjzDYK43ID+DMRagi/JbYcs+dU/lVkHdVI/Rxh2VSKgrJ3BCAqs8yrzjvg8EHDJeRjxlTbAxXQfm+NzNr0hLllevywJbXRPJAq1XB1W/rfzX9gu/+5c3d/PSmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297562; c=relaxed/simple;
-	bh=dTlof50b+p/OqpeBaRZOlfeCwu9rk/Yko0/UGG1EU6c=;
+	s=arc-20240116; t=1779295059; c=relaxed/simple;
+	bh=A3sTNWwYjPeA7cgkIQGAzD2IgxgNkVDRJkE2Hf6Wfr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wl77Sh0RfJOMaMWOJ9DrsMY1xTUKC0jR/KWVoPCv4TrTYl5+D+nesRUuCOQREpmmnAIBJT6KW2LXzOh+wsYP2S8Vx4a92MOlGb1NvpvP0zrz/q71FJcQ2brVUrHCQnnD1PFR+ttWPjVNFGLdqKFlxJWAGGwD7D0to4LGvbtCZ3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VKYcLnWs; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C96E41F000E9;
-	Wed, 20 May 2026 17:19:20 +0000 (UTC)
+	 MIME-Version; b=Z0E8fmJErJmwxpfP36ltksi9PQmy1DY8ZcyUMXq45QJgsu2bUS14TSSvTn2qc7MiAYtoYYJdE4MbMc/OFdTcGO0qKpAPD995LbYINfTZ70B0cgfS3PEyj6AFLCbvL3DmvcDt05LqoU0dKY0nwA9vq4b3mlekH0ei7fUPAxy7Dj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GPOSL++z; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 038F51F00893;
+	Wed, 20 May 2026 16:37:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297561;
-	bh=WvpeBNlIJi9o7/mA58wlqQqDfK6che3Mt5/ECyevy9k=;
+	s=korg; t=1779295058;
+	bh=mIPZOvR3grj9gHbCgW9fbO4iVcGI/OZkxv7Eb6TY+Fk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VKYcLnWsiU3a0sPvxLhjqEQVMxiF9vnBDSm7d5JbSAE38NRi1IIpW5Dy2kjjGKY7h
-	 cy+MYSXYVy3/axA+E17y9TYEIAxYR+D6677JlLos6SlU4xhRNK/yBw9oVIRlbIzGrD
-	 FiFVniTnaudHKSfjOASaDP/m6j76noxYs8EXH7r0=
+	b=GPOSL++zV2w6eBWrVlI+u0K4bvdSkKNPWBdlUzMJDZjgoRn6LjW3UmJ11h51zajAa
+	 XIYuL8cfRHMNNtjxzOzYzvcFRIWiRvpDDCRDyBd7iCCO78slxf6BRz0RrY5jxZyuOT
+	 FCNkmxANvT0SBEl+9zLpwOe+ZkaniIAIfZVV7VkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boqun Feng <boqun.feng@gmail.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Gary Guo <gary@garyguo.net>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 041/957] rust: sync: atomic: Remove bound `T: Sync` for `Atomic::from_ptr()`
-Date: Wed, 20 May 2026 18:08:44 +0200
-Message-ID: <20260520162135.450126279@linuxfoundation.org>
+Subject: [PATCH 7.0 0275/1146] spi: nxp-fspi: Use reinit_completion() for repeated operations
+Date: Wed, 20 May 2026 18:08:45 +0200
+Message-ID: <20260520162154.443699493@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,80 +71,84 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-251276-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250303-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,infradead.org,google.com,garyguo.net,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nxp.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,infradead.org:email,msgid.link:url]
-X-Rspamd-Queue-Id: 4F3735960D9
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email]
+X-Rspamd-Queue-Id: 51260592904
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boqun Feng <boqun.feng@gmail.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-[ Upstream commit 4a5dc632e0b603ec1cbbf87b78de86b4b6359cff ]
+[ Upstream commit 68c8c93fdb0de7e528dc3dfb1d17eb0f652259b8 ]
 
-Originally, `Atomic::from_ptr()` requires `T` being a `Sync` because I
-thought having the ability to do `from_ptr()` meant multiplle
-`&Atomic<T>`s shared by different threads, which was identical (or
-similar) to multiple `&T`s shared by different threads. Hence `T` was
-required to be `Sync`. However this is not true, since `&Atomic<T>` is
-not the same at `&T`. Moreover, having this bound makes `Atomic::<*mut
-T>::from_ptr()` impossible, which is definitely not intended. Therefore
-remove the `T: Sync` bound.
+The driver currently calls init_completion() during every spi_mem_op.
+Tchnically it may work, but it's not the recommended pattern.
 
-[boqun: Fix title typo spotted by Alice & Gary]
+According to the kernel documentation: Calling init_completion() on
+the same completion object twice is most likely a bug as it
+re-initializes the queue to an empty queue and enqueued tasks
+could get "lost" - use reinit_completion() in that case, but be
+aware of other races.
 
-Fixes: 29c32c405e53 ("rust: sync: atomic: Add generic atomics")
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Link: https://patch.msgid.link/20260120115207.55318-2-boqun.feng@gmail.com
-Link: https://patch.msgid.link/20260303201701.12204-2-boqun@kernel.org
+So moves the initial initialization to probe function and uses
+reinit_completion() for subsequent operations.
+
+Fixes: a5356aef6a90 ("spi: spi-mem: Add driver for NXP FlexSPI controller")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
+Link: https://patch.msgid.link/20260304-spi-nxp-v2-2-cd7d7726a27e@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/sync/atomic.rs | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/spi/spi-nxp-fspi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
-index 016a6bcaf0807..43229f0320e92 100644
---- a/rust/kernel/sync/atomic.rs
-+++ b/rust/kernel/sync/atomic.rs
-@@ -202,10 +202,7 @@ impl<T: AtomicType> Atomic<T> {
-     /// // no data race.
-     /// unsafe { Atomic::from_ptr(foo_a_ptr) }.store(2, Release);
-     /// ```
--    pub unsafe fn from_ptr<'a>(ptr: *mut T) -> &'a Self
--    where
--        T: Sync,
--    {
-+    pub unsafe fn from_ptr<'a>(ptr: *mut T) -> &'a Self {
-         // CAST: `T` and `Atomic<T>` have the same size, alignment and bit validity.
-         // SAFETY: Per function safety requirement, `ptr` is a valid pointer and the object will
-         // live long enough. It's safe to return a `&Atomic<T>` because function safety requirement
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index 320b3d93df571..1e36ae084dd86 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -996,7 +996,7 @@ static int nxp_fspi_do_op(struct nxp_fspi *f, const struct spi_mem_op *op)
+ 	reg = reg | FSPI_IPRXFCR_CLR;
+ 	fspi_writel(f, reg, base + FSPI_IPRXFCR);
+ 
+-	init_completion(&f->c);
++	reinit_completion(&f->c);
+ 
+ 	fspi_writel(f, op->addr.val, base + FSPI_IPCR0);
+ 	/*
+@@ -1365,6 +1365,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 	if (ret < 0)
+ 		return dev_err_probe(dev, ret, "Failed to disable clock");
+ 
++	init_completion(&f->c);
+ 	ret = devm_request_irq(dev, irq,
+ 			nxp_fspi_irq_handler, 0, pdev->name, f);
+ 	if (ret)
 -- 
 2.53.0
 
