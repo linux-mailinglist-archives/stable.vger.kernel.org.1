@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-252215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251576-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uCquMmgjDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252215-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:11:04 +0200
+	id 4DPADRj/DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-251576-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 339C459A850
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:11:04 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 376A0596B85
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:36:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6E82537FEE68
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:01:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 344633030EA0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:32:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4163F54D1;
-	Wed, 20 May 2026 18:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A02EF3A3825;
+	Wed, 20 May 2026 17:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ewl+VdUG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mWXinUMq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07815370D54;
-	Wed, 20 May 2026 18:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A86B36F421;
+	Wed, 20 May 2026 17:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300094; cv=none; b=MVRMK/1Yjn6vxedeNx27CoJO10+EbC2nUs1M0CVLHeDHu5p9WLie+YAZiXWwvXkiBE0pff/moa04brQq17FNOtBTrDWUqrBjGEdcM1LNpTlZhR5FpXp9q+JxC7A11ZSMQo8NqlmFl7uQSXPi6Z+VLz6ZJKIj9mmoiiW+LYOYmw0=
+	t=1779298340; cv=none; b=np15dy0pUyoX7/CVOUIGiusamLU3LGyerLMlKWk8s6nzT5svg6im1Zb+hD4Z289/ztPyNv4eeBQNScZre0MzACZLo2ScvteIvOj8CRXVjLooQKdoRZLm5U7UmZ1eQFLharX2dHlGRKxQgNgHCi/hYJ2apM2rP5eWnSUjVYtJXOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300094; c=relaxed/simple;
-	bh=BSxCAoywXB1rw2lZCbjCFsPNhHvqxXlzl5cC3PG4AnM=;
+	s=arc-20240116; t=1779298340; c=relaxed/simple;
+	bh=9OkMiJOjc6EsW3AWhBMGc6DA7yqk+Y0aUzWADRQahxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jHETe2WXERsznDBGXZpuKvReQ38k7OaAkHCYh0NvZV4T6NquOgjWLkcMfnuB07bMdf2xPs1QlVsBtO5GEmEzvHlT/MQIzwiOjmp6Qwnh5Op7BLSMzVjKK/fc8fY6L4NHe9pB2GBawFGfDkAm47J9AlRRanwyB/Icv1Cf7xw0eFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ewl+VdUG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 655A01F00894;
-	Wed, 20 May 2026 18:01:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qn7DPOG8hZOhYuiXZrTHt264KXuYrE64mxZMuH7Pvd0kIjAqaZahkjv/m92ThnGRqqN/4LV9Ka5XQm797EPb9mUa99rRrvpR6MobueDPnuv+eesbLgshKuE2pebYiyVCGOki0kZXlgDSTImUJ2N22ADFzLg6kY8IUc9WWibLgvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mWXinUMq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93B1E1F000E9;
+	Wed, 20 May 2026 17:32:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300092;
-	bh=Zm177iyR75L+XkXX98WVoJP454qJrkXT2LNFC84zxh0=;
+	s=korg; t=1779298339;
+	bh=NXLvWZhYJRJhqtRektTN4pkYVB7JD+TZQ6YyBhZolck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ewl+VdUG8Swwx/OW2Ilgv9RGXa9WcsooKjaF5A0bgu492aU5dh5derN+rj88uo2GT
-	 Ey3YLKpGovZ7RMufhYduSkho61d9xthuBXq0koAExhlgcRo4XeGSFvxq7p94edCcqM
-	 52k8L8FQHFMjgC5DIIf57OHWu0jgQ8VbAwX2w2Vs=
+	b=mWXinUMqa1LV1JdQgtImkg1Vh9ukoarS8Ecn73HPfUCT/fjlRTkEnda2DD8OjcuUi
+	 +9+IiiyVD4EPzaaZ4HG8lP5McoTqHUakHENlbsTXw0vt9tgUmudgbacwX9A1OHeC5H
+	 TooaVDxVIL0OTIY/8TOE5MmtemCgVCJM9t1Bv+Jg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryder Lee <ryder.lee@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 045/666] wifi: mt76: mt7915: fix use_cts_prot support
+Subject: [PATCH 6.18 373/957] arm64: dts: qcom: sm6125-xiaomi-ginkgo: Remove extcon
 Date: Wed, 20 May 2026 18:14:16 +0200
-Message-ID: <20260520162112.216003660@linuxfoundation.org>
+Message-ID: <20260520162142.617483949@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,230 +65,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252215-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-251576-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_PROHIBIT(0.00)[3.171.241.0:email];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nbd.name:email,mediatek.com:email]
-X-Rspamd-Queue-Id: 339C459A850
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email,mainlining.org:email]
+X-Rspamd-Queue-Id: 376A0596B85
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryder Lee <ryder.lee@mediatek.com>
+From: Barnabás Czémán <barnabas.czeman@mainlining.org>
 
-[ Upstream commit 8b2c26562b95c6397e132d21f2bd3d73aaee0c0a ]
+[ Upstream commit 79664600fd3ed3972ad9321e13d1f80267730447 ]
 
-With this fix, when driver needs to adjust its behavior for compatibility,
-especially concerning older 11g/n devices, by enabling or disabling CTS
-protection frames, often for hidden SSIDs or to manage legacy clients.
+GPIO pin 102 is related to DisplayPort what is not supported
+by this device and it is also disabled at downstream,
+remove the unnecessary extcon-usb node.
 
-Fixes: 150b91419d3d ("wifi: mt76: mt7915: enable use_cts_prot support")
-Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
-Link: https://patch.msgid.link/eb8db4d0bf1c89b7486e89facb788ae3e510dd8b.1768879119.git.ryder.lee@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 9b1a6c925c88 ("arm64: dts: qcom: sm6125: Initial support for xiaomi-ginkgo")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+Link: https://lore.kernel.org/r/20260126-xiaomi-willow-v3-4-aad7b106c311@mainlining.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7915/mac.c   | 13 ----
- .../net/wireless/mediatek/mt76/mt7915/main.c  |  7 ++-
- .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 62 +++++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7915/mcu.h   | 11 ++++
- .../wireless/mediatek/mt76/mt7915/mt7915.h    |  4 ++
- 5 files changed, 81 insertions(+), 16 deletions(-)
+ arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index 799e8d2cc7e6e..ab31a350ca735 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -235,19 +235,6 @@ static void mt7915_mac_sta_poll(struct mt7915_dev *dev)
- 	rcu_read_unlock();
- }
+diff --git a/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts b/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts
+index d5e5abdb3b2ff..418cfe67a2da8 100644
+--- a/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts
++++ b/arch/arm64/boot/dts/qcom/sm6125-xiaomi-ginkgo.dts
+@@ -77,11 +77,6 @@ ramoops@61600000 {
+ 		};
+ 	};
  
--void mt7915_mac_enable_rtscts(struct mt7915_dev *dev,
--			      struct ieee80211_vif *vif, bool enable)
--{
--	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
--	u32 addr;
+-	extcon_usb: extcon-usb {
+-		compatible = "linux,extcon-usb-gpio";
+-		id-gpios = <&tlmm 102 GPIO_ACTIVE_HIGH>;
+-	};
 -
--	addr = mt7915_mac_wtbl_lmac_addr(dev, mvif->sta.wcid.idx, 5);
--	if (enable)
--		mt76_set(dev, addr, BIT(5));
--	else
--		mt76_clear(dev, addr, BIT(5));
--}
+ 	gpio-keys {
+ 		compatible = "gpio-keys";
+ 
+@@ -304,7 +299,3 @@ &tlmm {
+ &usb3 {
+ 	status = "okay";
+ };
 -
- static void
- mt7915_wed_check_ppe(struct mt7915_dev *dev, struct mt76_queue *q,
- 		     struct mt7915_sta *msta, struct sk_buff *skb,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index 8c0d63cebf3e1..f49dcdde3f2c6 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -68,7 +68,7 @@ int mt7915_run(struct ieee80211_hw *hw)
- 	if (ret)
- 		goto out;
- 
--	ret = mt76_connac_mcu_set_rts_thresh(&dev->mt76, 0x92b,
-+	ret = mt76_connac_mcu_set_rts_thresh(&dev->mt76, MT7915_RTS_LEN_THRES,
- 					     phy->mt76->band_idx);
- 	if (ret)
- 		goto out;
-@@ -630,8 +630,9 @@ static void mt7915_bss_info_changed(struct ieee80211_hw *hw,
- 	if (set_sta == 1)
- 		mt7915_mcu_add_sta(dev, vif, NULL, CONN_STATE_PORT_SECURE, false);
- 
--	if (changed & BSS_CHANGED_ERP_CTS_PROT)
--		mt7915_mac_enable_rtscts(dev, vif, info->use_cts_prot);
-+	if (changed & BSS_CHANGED_HT || changed & BSS_CHANGED_ERP_CTS_PROT)
-+		mt7915_mcu_set_protection(phy, vif, info->ht_operation_mode,
-+					  info->use_cts_prot);
- 
- 	if (changed & BSS_CHANGED_ERP_SLOT) {
- 		int slottime = info->use_short_slot ? 9 : 20;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 7b481aea76b6c..2489364110d6e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -3799,6 +3799,68 @@ int mt7915_mcu_get_rx_rate(struct mt7915_phy *phy, struct ieee80211_vif *vif,
- 	return ret;
- }
- 
-+int mt7915_mcu_set_protection(struct mt7915_phy *phy, struct ieee80211_vif *vif,
-+			      u8 ht_mode, bool use_cts_prot)
-+{
-+	struct mt7915_dev *dev = phy->dev;
-+	int len = sizeof(struct sta_req_hdr) + sizeof(struct bss_info_prot);
-+	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
-+	struct bss_info_prot *prot;
-+	struct sk_buff *skb;
-+	struct tlv *tlv;
-+	enum {
-+		PROT_NONMEMBER	 = BIT(1),
-+		PROT_20MHZ	 = BIT(2),
-+		PROT_NONHT_MIXED = BIT(3),
-+		PROT_LEGACY_ERP	 = BIT(5),
-+		PROT_NONGF_STA	 = BIT(7),
-+	};
-+	u32 rts_threshold;
-+
-+	skb = __mt76_connac_mcu_alloc_sta_req(&dev->mt76, &mvif->mt76,
-+					      NULL, len);
-+	if (IS_ERR(skb))
-+		return PTR_ERR(skb);
-+
-+	tlv = mt76_connac_mcu_add_tlv(skb, BSS_INFO_PROTECT_INFO,
-+				      sizeof(*prot));
-+	prot = (struct bss_info_prot *)tlv;
-+
-+	switch (ht_mode & IEEE80211_HT_OP_MODE_PROTECTION) {
-+	case IEEE80211_HT_OP_MODE_PROTECTION_NONMEMBER:
-+		prot->prot_mode = cpu_to_le32(PROT_NONMEMBER);
-+		break;
-+	case IEEE80211_HT_OP_MODE_PROTECTION_20MHZ:
-+		prot->prot_mode = cpu_to_le32(PROT_20MHZ);
-+		break;
-+	case IEEE80211_HT_OP_MODE_PROTECTION_NONHT_MIXED:
-+		prot->prot_mode = cpu_to_le32(PROT_NONHT_MIXED);
-+		break;
-+	}
-+
-+	if (ht_mode & IEEE80211_HT_OP_MODE_NON_GF_STA_PRSNT)
-+		prot->prot_mode |= cpu_to_le32(PROT_NONGF_STA);
-+
-+	if (use_cts_prot)
-+		prot->prot_mode |= cpu_to_le32(PROT_LEGACY_ERP);
-+
-+	/* reuse current RTS setting */
-+	rts_threshold = phy->mt76->hw->wiphy->rts_threshold;
-+	if (rts_threshold == (u32)-1)
-+		prot->rts_len_thres = cpu_to_le32(MT7915_RTS_LEN_THRES);
-+	else
-+		prot->rts_len_thres = cpu_to_le32(rts_threshold);
-+
-+	prot->rts_pkt_thres = 0x2;
-+
-+	prot->he_rts_thres = cpu_to_le16(vif->bss_conf.frame_time_rts_th);
-+	if (!prot->he_rts_thres)
-+		prot->he_rts_thres = cpu_to_le16(DEFAULT_HE_DURATION_RTS_THRES);
-+
-+	return mt76_mcu_skb_send_msg(&dev->mt76, skb,
-+				     MCU_EXT_CMD(BSS_INFO_UPDATE), true);
-+}
-+
- int mt7915_mcu_update_bss_color(struct mt7915_dev *dev, struct ieee80211_vif *vif,
- 				struct cfg80211_he_bss_color *he_bss_color)
- {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-index 49476a4182fd1..b7e26c2409444 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-@@ -399,6 +399,17 @@ struct bss_info_inband_discovery {
- 	__le16 prob_rsp_len;
- } __packed __aligned(4);
- 
-+struct bss_info_prot {
-+	__le16 tag;
-+	__le16 len;
-+	__le32 prot_type;
-+	__le32 prot_mode;
-+	__le32 rts_len_thres;
-+	__le16 he_rts_thres;
-+	u8 rts_pkt_thres;
-+	u8 rsv[5];
-+} __packed;
-+
- enum {
- 	BSS_INFO_BCN_CSA,
- 	BSS_INFO_BCN_BCC,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-index 5fe872ef2e939..f49d6b2f81e42 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
-@@ -83,6 +83,8 @@
- #define MT7915_CRIT_TEMP		110
- #define MT7915_MAX_TEMP			120
- 
-+#define MT7915_RTS_LEN_THRES		0x92b
-+
- struct mt7915_vif;
- struct mt7915_sta;
- struct mt7915_dfs_pulse;
-@@ -458,6 +460,8 @@ int mt7915_mcu_add_inband_discov(struct mt7915_dev *dev, struct ieee80211_vif *v
- 				 u32 changed);
- int mt7915_mcu_add_beacon(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			  int enable, u32 changed);
-+int mt7915_mcu_set_protection(struct mt7915_phy *phy, struct ieee80211_vif *vif,
-+			      u8 ht_mode, bool use_cts_prot);
- int mt7915_mcu_add_obss_spr(struct mt7915_phy *phy, struct ieee80211_vif *vif,
- 			    struct ieee80211_he_obss_pd *he_obss_pd);
- int mt7915_mcu_add_rate_ctrl(struct mt7915_dev *dev, struct ieee80211_vif *vif,
+-&usb3_dwc3 {
+-	extcon = <&extcon_usb>;
+-};
 -- 
 2.53.0
 
