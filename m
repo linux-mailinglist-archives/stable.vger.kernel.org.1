@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-251008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252993-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GPcBJhfxDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-251008-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:23 +0200
+	id yBYVIHoJDmru5gUAu9opvQ
+	(envelope-from <stable+bounces-252993-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:20:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A005594161
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:23 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E42B59827D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:20:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9C7F931A0189
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4F981323D1F0
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F5033F23A1;
-	Wed, 20 May 2026 17:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF1263FB072;
+	Wed, 20 May 2026 18:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHF1ssKI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n3I3bU0n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEEEF17A309;
-	Wed, 20 May 2026 17:07:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9351C3F8704;
+	Wed, 20 May 2026 18:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296863; cv=none; b=RG6iQoH1gEXPzGcTAnsaq0y0pSaQtzN9ib+rS66/huXdcp4erI/rrgsnFGqo4z+rtQvUOXuvflb/c8m68LJIxqsHdynwC4C3z2MPkI/sjUhWjN5U5UVR9c6geKbZEvPA9O/Vw+cv1jWTBPF4r0ZzSrTrr0Bc3gjLuCtc/8jhE2E=
+	t=1779302123; cv=none; b=IH6RMEVbC2gsl79XRmSUpck315CApgM570uqmH+DY4HU+b7vh1qzfIKirp6g1zRU8tg2eBNatRZM1QSYFj2QFfoV+R0K6GIwcXKU1/h8hf+0b5aYcWNvOHcP6I/VWD7vb5LC8HUC4br+k84SnN1IbS9mElOdpEAWEeJofJBwbb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296863; c=relaxed/simple;
-	bh=zG9rACfisyJHL5JLBVHccXzWGcP4869hZSS1Ud0pB/M=;
+	s=arc-20240116; t=1779302123; c=relaxed/simple;
+	bh=Q+v/oamsfqLTnP5sA6cc4yW+Qqa/kmplzE0YcGYmM8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sVqLm2yYa2bif2mTE091MkBH+Vy07ZQ/h2L3YxqdQNHOuUNnpTtMAorQ7PcK5RHlll1tHlr76MahHrAey/dXvbRXCTouoIR1+r5aW+d50NRl5Petx4NqiAnn5m6oZ8FyCYzeqUouZW0lHd4lW82X1DDvniS6U+3v0JldEfaENEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mHF1ssKI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A2CF1F000E9;
-	Wed, 20 May 2026 17:07:41 +0000 (UTC)
+	 MIME-Version; b=UZxuclvMHaO3ePTgUteRg3WPmqI0HrvQvTlsIbVsThCIdKfB97SKysVu+vbuUQgM1wJ7oSbGo/uFY4VFaewlvHDtJs+DYlMelca6XjqyVXSOuciiQKQzx+slBUqHU0gqXLxQIcfF6yIZf40s/ZVrFqN+Pe4QpOzkhGekmQefGMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n3I3bU0n; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 041391F000E9;
+	Wed, 20 May 2026 18:35:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296861;
-	bh=yuvUXtqp5Wm5hZPH/axVnj+RG+pzFnB/QNLPEfriKKI=;
+	s=korg; t=1779302122;
+	bh=6DOqR1biFMVFPcwxQ+5vLdQ2CCn9jo9DtZhV7RTHRWY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mHF1ssKIp4g4hJLSKsL/QISOumJpSm3SGiVwL4px0q8u+sclvD0r0OvrSxCZblbdn
-	 92xSN5CfOTSnUc7npjvjsUWq5ubrDloVWqdO9Olaf1XoAbFONQUve9W8hVEiCHW4t3
-	 dhcGULCNI2JMBTd7gW3nCdp4QKnU7VXOZCTQ715U=
+	b=n3I3bU0n9MtX6RiT51OG3l8SHc+TmSEEslXhPdOmDBfBxEKWMWezA1yIagqVfW2Mk
+	 nc9SpIn9KDXo1arFLaKA+OSO+/wji25+6JcSIfW4TnkY+vgEaiZbdU5NoPDoCu1oI8
+	 91efZlcapUtEHTFtkEGAOH34gtQoIO9lZlMowAoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Mark Brown <broonie@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0919/1146] spi: spi-mem: Add a packed command operation
-Date: Wed, 20 May 2026 18:19:29 +0200
-Message-ID: <20260520162209.038953227@linuxfoundation.org>
+Subject: [PATCH 6.6 147/508] crypto: qat - use swab32 macro
+Date: Wed, 20 May 2026 18:19:30 +0200
+Message-ID: <20260520162101.815378725@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,74 +69,112 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252993-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251008-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,bootlin.com:email]
-X-Rspamd-Queue-Id: 5A005594161
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 7E42B59827D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 
-[ Upstream commit f79ee9e4b23244e77b28d176ce99a2d84d813ac5 ]
+[ Upstream commit 35ecb77ae0749a2f1b04872c9978d9d7ddbbeb79 ]
 
-Instead of repeating the command opcode twice, some flash devices try to
-pack command and address bits. In this case, the second opcode byte
-being sent (LSB) is free to be used. The input data must be ANDed to
-only provide the relevant bits.
+Replace __builtin_bswap32() with swab32 in icp_qat_hw_20_comp.h to fix
+the following build errors on architectures without native byte-swap
+support:
 
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://patch.msgid.link/20260410-winbond-6-19-rc1-oddr-v1-2-2ac4827a3868@bootlin.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 8d655748aba1 ("mtd: spinand: winbond: Set the packed page read flag to W35N02/04JW")
+   alpha-linux-ld: drivers/crypto/intel/qat/qat_common/adf_gen4_hw_data.o: in function `adf_gen4_build_decomp_block':
+   drivers/crypto/intel/qat/qat_common/icp_qat_hw_20_comp.h:141:(.text+0xeec): undefined reference to `__bswapsi2'
+   alpha-linux-ld: drivers/crypto/intel/qat/qat_common/icp_qat_hw_20_comp.h:141:(.text+0xef8): undefined reference to `__bswapsi2'
+   alpha-linux-ld: drivers/crypto/intel/qat/qat_common/adf_gen4_hw_data.o: in function `adf_gen4_build_comp_block':
+   drivers/crypto/intel/qat/qat_common/icp_qat_hw_20_comp.h:57:(.text+0xf64): undefined reference to `__bswapsi2'
+   alpha-linux-ld: drivers/crypto/intel/qat/qat_common/icp_qat_hw_20_comp.h:57:(.text+0xf7c): undefined reference to `__bswapsi2'
+
+Fixes: 5b14b2b307e4 ("crypto: qat - enable deflate for QAT GEN4")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202603290259.Ig9kDOmI-lkp@intel.com/
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/spi/spi-mem.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ .../crypto/intel/qat/qat_common/icp_qat_hw_20_comp.h   | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index 5774e554c0f02..f54c708f4c506 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -28,6 +28,14 @@
- 		.dtr = true,					\
- 	}
+diff --git a/drivers/crypto/intel/qat/qat_common/icp_qat_hw_20_comp.h b/drivers/crypto/intel/qat/qat_common/icp_qat_hw_20_comp.h
+index 7ea8962272f2f..d28732225c9e0 100644
+--- a/drivers/crypto/intel/qat/qat_common/icp_qat_hw_20_comp.h
++++ b/drivers/crypto/intel/qat/qat_common/icp_qat_hw_20_comp.h
+@@ -3,6 +3,8 @@
+ #ifndef _ICP_QAT_HW_20_COMP_H_
+ #define _ICP_QAT_HW_20_COMP_H_
  
-+#define SPI_MEM_DTR_OP_PACKED_CMD(__opcode, __addr, __buswidth)	\
-+	{							\
-+		.nbytes = 2,					\
-+		.opcode = __opcode << 8 | __addr,		\
-+		.buswidth = __buswidth,				\
-+		.dtr = true,					\
-+	}
++#include <linux/swab.h>
 +
- #define SPI_MEM_OP_ADDR(__nbytes, __val, __buswidth)		\
- 	{							\
- 		.nbytes = __nbytes,				\
+ #include "icp_qat_hw_20_comp_defs.h"
+ #include "icp_qat_fw.h"
+ 
+@@ -54,7 +56,7 @@ ICP_QAT_FW_COMP_20_BUILD_CONFIG_LOWER(struct icp_qat_hw_comp_20_config_csr_lower
+ 	QAT_FIELD_SET(val32, csr.abd, ICP_QAT_HW_COMP_20_CONFIG_CSR_ABD_BITPOS,
+ 		      ICP_QAT_HW_COMP_20_CONFIG_CSR_ABD_MASK);
+ 
+-	return __builtin_bswap32(val32);
++	return swab32(val32);
+ }
+ 
+ struct icp_qat_hw_comp_20_config_csr_upper {
+@@ -106,7 +108,7 @@ ICP_QAT_FW_COMP_20_BUILD_CONFIG_UPPER(struct icp_qat_hw_comp_20_config_csr_upper
+ 		      ICP_QAT_HW_COMP_20_CONFIG_CSR_NICE_PARAM_BITPOS,
+ 		      ICP_QAT_HW_COMP_20_CONFIG_CSR_NICE_PARAM_MASK);
+ 
+-	return __builtin_bswap32(val32);
++	return swab32(val32);
+ }
+ 
+ struct icp_qat_hw_decomp_20_config_csr_lower {
+@@ -138,7 +140,7 @@ ICP_QAT_FW_DECOMP_20_BUILD_CONFIG_LOWER(struct icp_qat_hw_decomp_20_config_csr_l
+ 		      ICP_QAT_HW_DECOMP_20_CONFIG_CSR_LZ4_BLOCK_CHECKSUM_PRESENT_BITPOS,
+ 		      ICP_QAT_HW_DECOMP_20_CONFIG_CSR_LZ4_BLOCK_CHECKSUM_PRESENT_MASK);
+ 
+-	return __builtin_bswap32(val32);
++	return swab32(val32);
+ }
+ 
+ struct icp_qat_hw_decomp_20_config_csr_upper {
+@@ -158,7 +160,7 @@ ICP_QAT_FW_DECOMP_20_BUILD_CONFIG_UPPER(struct icp_qat_hw_decomp_20_config_csr_u
+ 		      ICP_QAT_HW_DECOMP_20_CONFIG_CSR_MINI_CAM_CONTROL_BITPOS,
+ 		      ICP_QAT_HW_DECOMP_20_CONFIG_CSR_MINI_CAM_CONTROL_MASK);
+ 
+-	return __builtin_bswap32(val32);
++	return swab32(val32);
+ }
+ 
+ #endif
 -- 
 2.53.0
 
