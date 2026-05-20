@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-251361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250462-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CHJlEVH6DWq75AUAu9opvQ
-	(envelope-from <stable+bounces-251361-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:15:45 +0200
+	id EMM5B67oDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250462-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:00:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2555595AB7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:15:44 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64E5E592C8D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:00:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C7C1F333AE96
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:23:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 689BE310AB87
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:45:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21CE43DC4DA;
-	Wed, 20 May 2026 17:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC13F342CBA;
+	Wed, 20 May 2026 16:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RCkkv2oj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fMpdVMaH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04153A4526;
-	Wed, 20 May 2026 17:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64D83370AE5;
+	Wed, 20 May 2026 16:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297778; cv=none; b=QTAOFXR36fAomSFDTxWEOFUS3GNzhn6giuT0i5AzZIPkDy3DgBaHYQFX7dUeXCQkcNufMXrxVdDUOjI27LhXX/B8Nsa90O9h/oTPEf7egUAXDpnXeS5MusHys9KYkJF7/uqh328CoCWt0C1FVWb0v0QjMP42Rsjx29K5Tr8ODSI=
+	t=1779295475; cv=none; b=aAsurBpwKd97s/w880nv9zWNT5rNdgHOuyH1+UcBpZ7BCyMO6RrVnISsTKG0OOGLkwAL8WKYKLApl7GjixTKbngCJWaC0w+ulaj1b3YXqOGRLJajRbRJtidGEwdtZx+ePcCogS8NeNwGZMidAEkYU590x5QalXouDsl1gE+O5Xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297778; c=relaxed/simple;
-	bh=af78msRUnOj3Gm7baFO69QMjDuPUBb/l/kCwrJaIncw=;
+	s=arc-20240116; t=1779295475; c=relaxed/simple;
+	bh=ZM5+D/8DfVgBEEGAOQ2Pggf76laI8WoSp2T6QNDirjI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FvYcmgDVFBICFqVQk5fsDUqHUvsFUC2nv+7kn1zx9mdZp/705UA8BqevDhBDEhkR7V1ko73sgmNzkVpWyBSi81HMcHa/GFqlKTZf4MSkCevy5Cd6i/vfwoIV0lRgzZvfnadhCpwrLxGFZqJM+xlkQBiyWnFQyMJXhYu5ThOP0Hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RCkkv2oj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 523181F000E9;
-	Wed, 20 May 2026 17:22:57 +0000 (UTC)
+	 MIME-Version; b=ShHBhHfCY7R5gJhE/bBK37w0ouQyNbfHfy4lasf6/1bm0KDoBB8c5tUY1MnN6RN4wkPSPYH7r1z2n6cCTgUmQ8/LNpfiQVVBNCRr1QH6Ahb5EJCiR7J9Dz6eNnIFlUlmxF+wanvx/pkb7RoEiWziEr0Z+u0M/16jP11DZkZKWHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fMpdVMaH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB0111F000E9;
+	Wed, 20 May 2026 16:44:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297777;
-	bh=Q14yXiqkRor6tdBKWT/czMv3D1w2IMLiVtfoHdc9iMs=;
+	s=korg; t=1779295474;
+	bh=LD8AtAAMItB8tw1CFP+vgGFTPiIwh1yE032oC9X0FhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RCkkv2ojVmX62Vwei+15LlCz/8OmrRRLFXt+9SpytE65phy2GLjCnWMEK8nYEa2JU
-	 ludsZ6lB/8U9+9XJxj5eq1RfJSmFmCLb1ZZza3jnJLAngqLiA0NtVsUYz4jB+aidBv
-	 Y7LnBpDO/JzsBXkaNtfrPMXvAqDukPcwH8SGygLo=
+	b=fMpdVMaHjgJiCm9jHT2rDAc0Lx7Ob8rMJK8AP5uqlPaA1cwUnst7THhMCMECum0kB
+	 QHplNldGTsRkEmrQU56hKZe+ZnpIlNE3Q4tM6eEiaFBSpKxWVNF67jMkHL0r9wmS0P
+	 2y44bTe+S0YLGS3g/uU5AfbjM8sYUkT9UbgEp/K8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 159/957] net: mana: Move current_speed debugfs file to mana_init_port()
-Date: Wed, 20 May 2026 18:10:42 +0200
-Message-ID: <20260520162137.998302034@linuxfoundation.org>
+Subject: [PATCH 7.0 0393/1146] PCI: imx6: Keep Root Port MSI capability with iMSI-RX to work around hardware bug
+Date: Wed, 20 May 2026 18:10:43 +0200
+Message-ID: <20260520162157.093572938@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251361-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250462-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,63 +87,128 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: C2555595AB7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email]
+X-Rspamd-Queue-Id: 64E5E592C8D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+From: Richard Zhu <hongxing.zhu@nxp.com>
 
-[ Upstream commit 3b7c7fc97aea7b4048001d12f45777201c74a17f ]
+[ Upstream commit 3a4e8302e72f83fd5cc8a916fc6f5c8fe5c8690e ]
 
-Move the current_speed debugfs file creation from mana_probe_port() to
-mana_init_port(). The file was previously created only during initial
-probe, but mana_cleanup_port_context() removes the entire vPort debugfs
-directory during detach/attach cycles. Since mana_init_port() recreates
-the directory on re-attach, moving current_speed here ensures it survives
-these cycles.
+On NXP i.MX7D, i.MX8MM, and i.MX8MQ chipsets, MSIs from the endpoints won't
+be received by the iMSI-RX MSI controller if the Root Port MSI capability
+is disabled.
 
-Fixes: 75cabb46935b ("net: mana: Add support for net_shaper_ops")
-Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260408081224.302308-3-ernis@linux.microsoft.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Even though the Root Port MSIs won't be received by the iMSI-RX controller
+due to design, these chipsets have some weird hardware bug that prevents
+the endpoint MSIs from reaching when the Root Port MSI capability is
+disabled.
+
+Hence, introduce a new flag, 'dw_pcie_rp::keep_rp_msi_en', set it for the
+above mentioned SoCs, and always keep the Root Port MSI capability when
+this flag is set.
+
+Note that by keeping Root Port MSI capability, Root Port MSIs such as AER,
+PME and others won't be received by default. So users need to use
+workarounds such as passing 'pcie_pme=nomsi' cmdline param.
+
+Fixes: f5cd8a929c825 ("PCI: dwc: Remove MSI/MSIX capability for Root Port if iMSI-RX is used as MSI controller")
+Suggested-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+[mani: commit log]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+[bhelgaas: fix typos]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20260331085252.1243108-1-hongxing.zhu@nxp.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microsoft/mana/mana_en.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/controller/dwc/pci-imx6.c             | 7 +++++++
+ drivers/pci/controller/dwc/pcie-designware-host.c | 2 +-
+ drivers/pci/controller/dwc/pcie-designware.h      | 1 +
+ 3 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 8277a1ac0ad74..c770fb86fd2d3 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -3038,6 +3038,8 @@ static int mana_init_port(struct net_device *ndev)
- 	eth_hw_addr_set(ndev, apc->mac_addr);
- 	sprintf(vport, "vport%d", port_idx);
- 	apc->mana_port_debugfs = debugfs_create_dir(vport, gc->mana_pci_debugfs);
-+	debugfs_create_u32("current_speed", 0400, apc->mana_port_debugfs,
-+			   &apc->speed);
- 	return 0;
+diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+index 2aa5467d5400a..0a494c9dd6aa1 100644
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -117,6 +117,8 @@ enum imx_pcie_variants {
+ #define IMX_PCIE_FLAG_HAS_LUT			BIT(10)
+ #define IMX_PCIE_FLAG_8GT_ECN_ERR051586		BIT(11)
+ #define IMX_PCIE_FLAG_SKIP_L23_READY		BIT(12)
++/* Preserve MSI capability for platforms that require it */
++#define IMX_PCIE_FLAG_KEEP_MSI_CAP		BIT(13)
  
- reset_apc:
-@@ -3310,8 +3312,6 @@ static int mana_probe_port(struct mana_context *ac, int port_idx,
+ #define imx_check_flag(pci, val)	(pci->drvdata->flags & val)
  
- 	netif_carrier_on(ndev);
+@@ -1830,6 +1832,8 @@ static int imx_pcie_probe(struct platform_device *pdev)
+ 	} else {
+ 		if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_SKIP_L23_READY))
+ 			pci->pp.skip_l23_ready = true;
++		if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_KEEP_MSI_CAP))
++			pci->pp.keep_rp_msi_en = true;
+ 		pci->pp.use_atu_msg = true;
+ 		ret = dw_pcie_host_init(&pci->pp);
+ 		if (ret < 0)
+@@ -1908,6 +1912,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
+ 	[IMX7D] = {
+ 		.variant = IMX7D,
+ 		.flags = IMX_PCIE_FLAG_SUPPORTS_SUSPEND |
++			 IMX_PCIE_FLAG_KEEP_MSI_CAP |
+ 			 IMX_PCIE_FLAG_HAS_APP_RESET |
+ 			 IMX_PCIE_FLAG_SKIP_L23_READY |
+ 			 IMX_PCIE_FLAG_HAS_PHY_RESET,
+@@ -1920,6 +1925,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
+ 	[IMX8MQ] = {
+ 		.variant = IMX8MQ,
+ 		.flags = IMX_PCIE_FLAG_HAS_APP_RESET |
++			 IMX_PCIE_FLAG_KEEP_MSI_CAP |
+ 			 IMX_PCIE_FLAG_HAS_PHY_RESET |
+ 			 IMX_PCIE_FLAG_SUPPORTS_SUSPEND,
+ 		.gpr = "fsl,imx8mq-iomuxc-gpr",
+@@ -1934,6 +1940,7 @@ static const struct imx_pcie_drvdata drvdata[] = {
+ 	[IMX8MM] = {
+ 		.variant = IMX8MM,
+ 		.flags = IMX_PCIE_FLAG_SUPPORTS_SUSPEND |
++			 IMX_PCIE_FLAG_KEEP_MSI_CAP |
+ 			 IMX_PCIE_FLAG_HAS_PHYDRV |
+ 			 IMX_PCIE_FLAG_HAS_APP_RESET,
+ 		.gpr = "fsl,imx8mm-iomuxc-gpr",
+diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+index c3c2dec728eea..6adde3fc32be9 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-host.c
++++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+@@ -1171,7 +1171,7 @@ int dw_pcie_setup_rc(struct dw_pcie_rp *pp)
+ 	 * the MSI and MSI-X capabilities of the Root Port to allow the drivers
+ 	 * to fall back to INTx instead.
+ 	 */
+-	if (pp->use_imsi_rx) {
++	if (pp->use_imsi_rx && !pp->keep_rp_msi_en) {
+ 		dw_pcie_remove_capability(pci, PCI_CAP_ID_MSI);
+ 		dw_pcie_remove_capability(pci, PCI_CAP_ID_MSIX);
+ 	}
+diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+index ae6389dd9caa5..b12c5334552c7 100644
+--- a/drivers/pci/controller/dwc/pcie-designware.h
++++ b/drivers/pci/controller/dwc/pcie-designware.h
+@@ -421,6 +421,7 @@ struct dw_pcie_host_ops {
  
--	debugfs_create_u32("current_speed", 0400, apc->mana_port_debugfs, &apc->speed);
--
- 	return 0;
- 
- free_indir:
+ struct dw_pcie_rp {
+ 	bool			use_imsi_rx:1;
++	bool			keep_rp_msi_en:1;
+ 	bool			cfg0_io_shared:1;
+ 	u64			cfg0_base;
+ 	void __iomem		*va_cfg0_base;
 -- 
 2.53.0
 
