@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252966-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iFS6Nhj9DWru5AUAu9opvQ
-	(envelope-from <stable+bounces-252506-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:36 +0200
+	id eIUeFv7/DWo95QUAu9opvQ
+	(envelope-from <stable+bounces-252966-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 814F159635C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:27:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5B7A596F18
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0AC1231BBCD5
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:14:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CE996307C415
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:34:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8567D3F8704;
-	Wed, 20 May 2026 18:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4259734EEF7;
+	Wed, 20 May 2026 18:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uXb6yY0+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="az54V+x1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282943A6B6D;
-	Wed, 20 May 2026 18:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00136370AEE;
+	Wed, 20 May 2026 18:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300852; cv=none; b=mxbwTkEAd4SZorcS1r2iKW65zobMWCQW9ulcTimEh3XBJB/hUXuRobLWqgNTEANqU6oH3SwF5bf+KW5hq4k51+Fz7J+EMiHhCmPDfDHb5qpwkhMJtyIyNGKA6xL0Dis37TUmjlElcLWQI9Fzo0v+qgOn1fcjymjj0Juiq2F6mXk=
+	t=1779302055; cv=none; b=Apn9mGptU0Q/r5y+Sh6dfjdhcfUqe1PrxNt5BWSBtDTGy407HhkbO/zggsPpkZVQsek6Ke1eQ1+kgFVkV/sjtP7a2poz8gIawWXslaGe14uEHWGCke5wouUH21YcxYc9zkhbTagb3ekOKX853HVeaNWiRSRc+Gxa/ieAKPcJQJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300852; c=relaxed/simple;
-	bh=3K97AO9+2bMQC8m8l30SgXHpsdS9vyHKi2JxIg0GbrU=;
+	s=arc-20240116; t=1779302055; c=relaxed/simple;
+	bh=0eqiMnkI3tkSFrP0xANNbPlOjfcHJpTqlbxtE2bGW6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FSmvR4nTCNAEgW8BFJmw0n5rmoROBrb0yYuBOLK6cbyXyB9wX8qIhQ7Uxrz0gz+NuCaJccPSgVvGoyG20hbm19lHy17Avx3HRPc6jx3Nj79VYYHRSPOOs51Dtcv6dckXlq76NfuMjRxNT6uS1K7vIK40MyBnG7m8cSL9jnM3Ozk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uXb6yY0+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 419981F000E9;
-	Wed, 20 May 2026 18:14:10 +0000 (UTC)
+	 MIME-Version; b=WOWQLD9I5PyzTu8ZVm0CtBBJK4vREE9FFJoeAI7s6zWzkKypkc6I3gKAs/5rrtgT8TUl7Cby4Z1riPJ3SmSFCbuM1Z6rMKsoKFFldfYBVyvclBYnq/hlXJZKPbTCDTBSCQUh0tJSTqTi8wOzN+qyLdVO6R2bDsfExfxk/0uS4Do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=az54V+x1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D6D1F000E9;
+	Wed, 20 May 2026 18:34:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300850;
-	bh=7bCN2JZnZaUfQDrEKIxNGR8bNmguvA2Rh5np0/Dizgs=;
+	s=korg; t=1779302053;
+	bh=qQ+80lnGJQMnXys+0mHwTgQ2C9ehN5hIB5Vq2DMw36E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uXb6yY0+d1wdwRMdAW+gSc3y08fvpZ4HRvtKlbyOhjnftwVtPhC56BT+rA3gpYOsR
-	 yOvmIXIHbz/NLDXQabhA+EKC/Vrc2w5VgtGvuuDMdXSQMmhIQimIwL9v99LflbwpGi
-	 rDjYXlibK1UJh6IuD2kcQrzoH3zd9Q2lMFWpeBS0=
+	b=az54V+x1DryWWHj3tk2ul7dwYN36GDdV2omQCTalce5YsRZqs0zCyjsvNWhjmEKpD
+	 XUTpyWyF8MJbGhSiByriZIeOGQd0HRL2oL2wdvXxzzAj2ORWehJavzyQWGEf0iO9yO
+	 qjvxJEttprQKQvvw73WtIlFn/c6+SeAOqGTzJ6ok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 331/666] ima_fs: get rid of lookup-by-dentry stuff
+Subject: [PATCH 6.6 119/508] drm/panel: sharp-ls043t1le01: make use of prepare_prev_first
 Date: Wed, 20 May 2026 18:19:02 +0200
-Message-ID: <20260520162118.404032891@linuxfoundation.org>
+Message-ID: <20260520162101.206195854@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,201 +69,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252966-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-252506-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linux.org.uk:email]
-X-Rspamd-Queue-Id: 814F159635C
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,chromium.org:email]
+X-Rspamd-Queue-Id: E5B7A596F18
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit d15ffbbf4d32a9007c4a339a9fecac90ce30432a ]
+[ Upstream commit c222177d7c7e1b2e0433d9e47ec2da7015345d50 ]
 
-lookup_template_data_hash_algo() machinery is used to locate the
-matching ima_algo_array[] element at read time; securityfs
-allows to stash that into inode->i_private at object creation
-time, so there's no need to bother
+The DSI link must be powered up to let panel driver to talk to the panel
+during prepare() callback execution. Set the prepare_prev_first flag to
+guarantee this.
 
-Acked-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Stable-dep-of: d7bd8cf0b348 ("ima_fs: Correctly create securityfs files for unsupported hash algos")
+Fixes: 9e15123eca79 ("drm/msm/dsi: Stop unconditionally powering up DSI hosts at modeset")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patch.msgid.link/20260323-panel-fix-v1-1-9f12b09161e8@oss.qualcomm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/integrity/ima/ima_fs.c | 82 +++++++--------------------------
- 1 file changed, 16 insertions(+), 66 deletions(-)
+ drivers/gpu/drm/panel/panel-sharp-ls043t1le01.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/security/integrity/ima/ima_fs.c b/security/integrity/ima/ima_fs.c
-index 88421e8895c44..87045b09f1206 100644
---- a/security/integrity/ima/ima_fs.c
-+++ b/security/integrity/ima/ima_fs.c
-@@ -116,28 +116,6 @@ void ima_putc(struct seq_file *m, void *data, int datalen)
- 		seq_putc(m, *(char *)data++);
- }
+diff --git a/drivers/gpu/drm/panel/panel-sharp-ls043t1le01.c b/drivers/gpu/drm/panel/panel-sharp-ls043t1le01.c
+index 855e64444daa6..58f201720e699 100644
+--- a/drivers/gpu/drm/panel/panel-sharp-ls043t1le01.c
++++ b/drivers/gpu/drm/panel/panel-sharp-ls043t1le01.c
+@@ -224,6 +224,7 @@ static int sharp_nt_panel_add(struct sharp_nt_panel *sharp_nt)
  
--static struct dentry **ascii_securityfs_measurement_lists __ro_after_init;
--static struct dentry **binary_securityfs_measurement_lists __ro_after_init;
--static int securityfs_measurement_list_count __ro_after_init;
--
--static void lookup_template_data_hash_algo(int *algo_idx, enum hash_algo *algo,
--					   struct seq_file *m,
--					   struct dentry **lists)
--{
--	struct dentry *dentry;
--	int i;
--
--	dentry = file_dentry(m->file);
--
--	for (i = 0; i < securityfs_measurement_list_count; i++) {
--		if (dentry == lists[i]) {
--			*algo_idx = i;
--			*algo = ima_algo_array[i].algo;
--			break;
--		}
--	}
--}
--
- /* print format:
-  *       32bit-le=pcr#
-  *       char[n]=template digest
-@@ -160,9 +138,10 @@ int ima_measurements_show(struct seq_file *m, void *v)
- 	algo_idx = ima_sha1_idx;
- 	algo = HASH_ALGO_SHA1;
+ 	drm_panel_init(&sharp_nt->base, &sharp_nt->dsi->dev,
+ 		       &sharp_nt_panel_funcs, DRM_MODE_CONNECTOR_DSI);
++	sharp_nt->base.prepare_prev_first = true;
  
--	if (m->file != NULL)
--		lookup_template_data_hash_algo(&algo_idx, &algo, m,
--					       binary_securityfs_measurement_lists);
-+	if (m->file != NULL) {
-+		algo_idx = (unsigned long)file_inode(m->file)->i_private;
-+		algo = ima_algo_array[algo_idx].algo;
-+	}
- 
- 	/* get entry */
- 	e = qe->entry;
-@@ -256,9 +235,10 @@ static int ima_ascii_measurements_show(struct seq_file *m, void *v)
- 	algo_idx = ima_sha1_idx;
- 	algo = HASH_ALGO_SHA1;
- 
--	if (m->file != NULL)
--		lookup_template_data_hash_algo(&algo_idx, &algo, m,
--					       ascii_securityfs_measurement_lists);
-+	if (m->file != NULL) {
-+		algo_idx = (unsigned long)file_inode(m->file)->i_private;
-+		algo = ima_algo_array[algo_idx].algo;
-+	}
- 
- 	/* get entry */
- 	e = qe->entry;
-@@ -412,57 +392,33 @@ static const struct seq_operations ima_policy_seqops = {
- };
- #endif
- 
--static void __init remove_securityfs_measurement_lists(struct dentry **lists)
--{
--	kfree(lists);
--}
--
- static int __init create_securityfs_measurement_lists(void)
- {
--	char file_name[NAME_MAX + 1];
--	struct dentry *dentry;
--	u16 algo;
--	int i;
--
--	securityfs_measurement_list_count = NR_BANKS(ima_tpm_chip);
-+	int count = NR_BANKS(ima_tpm_chip);
- 
- 	if (ima_sha1_idx >= NR_BANKS(ima_tpm_chip))
--		securityfs_measurement_list_count++;
-+		count++;
- 
--	ascii_securityfs_measurement_lists =
--	    kcalloc(securityfs_measurement_list_count, sizeof(struct dentry *),
--		    GFP_KERNEL);
--	if (!ascii_securityfs_measurement_lists)
--		return -ENOMEM;
--
--	binary_securityfs_measurement_lists =
--	    kcalloc(securityfs_measurement_list_count, sizeof(struct dentry *),
--		    GFP_KERNEL);
--	if (!binary_securityfs_measurement_lists)
--		return -ENOMEM;
--
--	for (i = 0; i < securityfs_measurement_list_count; i++) {
--		algo = ima_algo_array[i].algo;
-+	for (int i = 0; i < count; i++) {
-+		u16 algo = ima_algo_array[i].algo;
-+		char file_name[NAME_MAX + 1];
-+		struct dentry *dentry;
- 
- 		sprintf(file_name, "ascii_runtime_measurements_%s",
- 			hash_algo_name[algo]);
- 		dentry = securityfs_create_file(file_name, S_IRUSR | S_IRGRP,
--						ima_dir, NULL,
-+						ima_dir, (void *)(uintptr_t)i,
- 						&ima_ascii_measurements_ops);
- 		if (IS_ERR(dentry))
- 			return PTR_ERR(dentry);
- 
--		ascii_securityfs_measurement_lists[i] = dentry;
--
- 		sprintf(file_name, "binary_runtime_measurements_%s",
- 			hash_algo_name[algo]);
- 		dentry = securityfs_create_file(file_name, S_IRUSR | S_IRGRP,
--						ima_dir, NULL,
-+						ima_dir, (void *)(uintptr_t)i,
- 						&ima_measurements_ops);
- 		if (IS_ERR(dentry))
- 			return PTR_ERR(dentry);
--
--		binary_securityfs_measurement_lists[i] = dentry;
- 	}
- 
- 	return 0;
-@@ -543,9 +499,6 @@ int __init ima_fs_init(void)
- 	struct dentry *dentry;
- 	int ret;
- 
--	ascii_securityfs_measurement_lists = NULL;
--	binary_securityfs_measurement_lists = NULL;
--
- 	ima_dir = securityfs_create_dir("ima", integrity_dir);
- 	if (IS_ERR(ima_dir))
- 		return PTR_ERR(ima_dir);
-@@ -600,9 +553,6 @@ int __init ima_fs_init(void)
- 
- 	return 0;
- out:
--	remove_securityfs_measurement_lists(ascii_securityfs_measurement_lists);
--	remove_securityfs_measurement_lists(binary_securityfs_measurement_lists);
--	securityfs_measurement_list_count = 0;
- 	securityfs_remove(ima_symlink);
- 	securityfs_remove(ima_dir);
- 
+ 	ret = drm_panel_of_backlight(&sharp_nt->base);
+ 	if (ret)
 -- 
 2.53.0
 
