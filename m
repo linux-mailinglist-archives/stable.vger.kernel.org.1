@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-252751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251201-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GEA6LHIXDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-252751-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:20:02 +0200
+	id qICuMgsWDmpT6AUAu9opvQ
+	(envelope-from <stable+bounces-251201-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:14:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E45A59974B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:20:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EEB6599508
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:14:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BD9833043F43
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:25:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 69E4D325E46C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:16:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F2DC3FC5C7;
-	Wed, 20 May 2026 18:24:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E950D3D5642;
+	Wed, 20 May 2026 17:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oHW4ybRH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nPFWexVv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C81B29B8D0;
-	Wed, 20 May 2026 18:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9C63403F4;
+	Wed, 20 May 2026 17:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301495; cv=none; b=NnT5064bJgdGAFy1+MDbwPsT1+yylCDnWbobunWzp5wnoOJFkJJ1MyZl9V+VGicAn6skdM30rLjPf88k4D4ozmxyxa1sm1ApWExSa7nr3BZfI8MHiBHxJ0BJuhQz+PSOR6us32t+h4/0JwMczE9bvrSRonCpyAhqf0q9BMy7llQ=
+	t=1779297363; cv=none; b=vDOupNluHflfiQqzpdPayb/GxbGjE5ilKd+fHlDDKmiIn8sOGHIILaAKExQexWMHFvsXDxOKLhmZ/yyth0rvvgkBYGmLVdy6SbJBP4Roeg1TU1kH7s4nbS1tJq6q08B7F3OyOSlc2HcvwzpUfoR8L2A3Ds6N3SqBgAXfxheS0OI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301495; c=relaxed/simple;
-	bh=3P4lfpQL9Wz2qOHqEPFA0Sfk+e+DZmomP7M+PwRObqg=;
+	s=arc-20240116; t=1779297363; c=relaxed/simple;
+	bh=G4wAl3WnJsZr401/KP2eKV0YuTU5CUbUqHxiRw5Opvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dyq2ZGD1rpHF/DBEos5EnqHrG5pa+pMHj4z3KMMz+PB4Mjmcme1hsYOBsTVccZCR23ZxmAey28o+DgL5cdnOwclTEE10X0AG9Vx5CyslLqIn65qEC1ZNRZ1QDj/gcmCvzmD7XNQ7h9e4xztJzC/tPc1f++RoJSk9Q6WcKVoeWhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oHW4ybRH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A0E1F000E9;
-	Wed, 20 May 2026 18:24:53 +0000 (UTC)
+	 MIME-Version; b=AQjGz+p5R+nXWXTImUHrUwCIAHhiU0a9l4/Kw3uVN+eirUMKMJSJ0xiMj7tfaFz3IEWiSDN1aSEz343/BsIccaVQgKVF+zd262LmuLma0QlqKZDj3RXRqlc6/AiJrzOk2KEwCMA7iQnUobf7BNgO7/vDR2zCp+UAzAXRKhLjAEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nPFWexVv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E466C1F00893;
+	Wed, 20 May 2026 17:16:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301494;
-	bh=/w8xr8WDzD/cu3hZkWQyY8b5c8aaUgPmECaYca8jtqs=;
+	s=korg; t=1779297362;
+	bh=fUMk6SAn0I47liXss3PZ+mxajIOBfv9EdsNRldcDx1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oHW4ybRHR+WOezQYwtjzj4RL3fnFv0N9TnDS+wG4DdWpZUYWoM3DhEYPqwQkLUok8
-	 f8f1RQT2NtaFpxW8gPPywefvba5mXvcnY8ZRYwyk8AzWe8k1JnI1qUqfERqnNhE2gX
-	 EL7YjMFxhFZC60sIgTFRAA/1RpkE9GN2m6IUlwPI=
+	b=nPFWexVvOC+ANdb0SxJI38fh6SL5WAwiqkWtjm0+tMjolA11cDBI3gpq06iOy4KNQ
+	 2uVPBD04WjcRTrrgAwdS9K0P0TGkH53CTy79eTAXSk8pk9ByPbg+kVpNwOfQE+4Yjy
+	 8Znx/2bGBPuYYNRTQIv2iUm9xEfUo3vEJaCQxd3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moritz Klammler <Moritz.Klammler@ferchau.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 577/666] futex: Prevent lockup in requeue-PI during signal/ timeout wakeup
+	Ben Horgan <ben.horgan@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 7.0 1138/1146] arm_mpam: Pretend that NRDY is always hardware managed
 Date: Wed, 20 May 2026 18:23:08 +0200
-Message-ID: <20260520162123.773092756@linuxfoundation.org>
+Message-ID: <20260520162214.008487833@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,135 +66,211 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252751-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251201-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linutronix.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 0E45A59974B
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,arm.com:email]
+X-Rspamd-Queue-Id: 0EEB6599508
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Ben Horgan <ben.horgan@arm.com>
 
-[ Upstream commit bc7304f3ae20972d11db6e0b1b541c63feda5f05 ]
+commit 4387970bbd84fd14e0c49c3089c5061ccd86b98a upstream.
 
-During wait-requeue-pi (task A) and requeue-PI (task B) the following
-race can happen:
+Rule ZTXDS of the MPAM specification, IHI009 version B.b, states: "If a
+monitor does not support automatic updates of NRDY, software can use that
+bit for any purpose."
 
-     Task A                             Task B
-  futex_wait_requeue_pi()
-    futex_setup_timer()
-    futex_do_wait()
-                                   futex_requeue()
-                                        CLASS(hb, hb1)(&key1);
-                                        CLASS(hb, hb2)(&key2);
-        *timeout*
-    futex_requeue_pi_wakeup_sync()
-        requeue_state = Q_REQUEUE_PI_IGNORE
+As software is not reliably informed whether or not the monitor supports
+automatic updates of NRDY always assume that hardware may manage NRDY but
+don't rely on it. When NRDY is truly untouched by hardware then, as it is
+written to 0 on configuration, it will always read 0.
 
-    *blocks on hb->lock*
+At probe it's checked if MSMON_CSU.NRDY and MSMON_MBWU.NRDY are hardware
+managed but not MSMON_MBWU_L.NDRY. Specialize the checking for hardware
+managed NRDY to CSU counters as this is the only case where hardware
+management makes sense. Continue to inform the user if MSMON_CSU.NRDY
+appears to be hardware managed but the firmware doesn't provide the
+associated time limit for the automatic clearing of NRDY. Remove the NRDY
+feature flags as they are now unused.
 
-                                        futex_proxy_trylock_atomic()
-                                          futex_requeue_pi_prepare()
-                                            Q_REQUEUE_PI_IGNORE => -EAGAIN
-                                        double_unlock_hb(hb1, hb2)
-                                         *retry*
-
-Task B acquires both hb locks and attempts to acquire the PI-lock of the
-top most waiter (task B). Task A is leaving early due to a signal/
-timeout and started removing itself from the queue. It updates its
-requeue_state but can not remove it from the list because this requires
-the hb lock which is owned by task B.
-
-Usually task A is able to swoop the lock after task B unlocked it.
-However if task B is of higher priority then task A may not be able to
-wake up in time and acquire the lock before task B gets it again.
-Especially on a UP system where A is never scheduled.
-
-As a result task A blocks on the lock and task B busy loops, trying to
-make progress but live locks the system instead. Tragic.
-
-This can be fixed by removing the top most waiter from the list in this
-case. This allows task B to grab the next top waiter (if any) in the
-next iteration and make progress.
-
-Remove the top most waiter if futex_requeue_pi_prepare() fails.
-Let the waiter conditionally remove itself from the list in
-handle_early_requeue_pi_wakeup().
-
-Fixes: 07d91ef510fb1 ("futex: Prevent requeue_pi() lock nesting issue on RT")
-Reported-by: Moritz Klammler <Moritz.Klammler@ferchau.com>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Link: https://patch.msgid.link/20260428103425.dywXyPd3@linutronix.de
-Closes: https://lore.kernel.org/all/VE1PR06MB6894BE61C173D802365BE19DFF4CA@VE1PR06MB6894.eurprd06.prod.outlook.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8c90dc68a5de ("arm_mpam: Probe the hardware features resctrl supports")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Ben Horgan <ben.horgan@arm.com>
+Reviewed-by: James Morse <james.morse@arm.com>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/futex/requeue.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/resctrl/mpam_devices.c  |   53 ++++++++++++----------------------------
+ drivers/resctrl/mpam_internal.h |    2 -
+ 2 files changed, 17 insertions(+), 38 deletions(-)
 
-diff --git a/kernel/futex/requeue.c b/kernel/futex/requeue.c
-index 559aae55792c6..f4a69942780f6 100644
---- a/kernel/futex/requeue.c
-+++ b/kernel/futex/requeue.c
-@@ -309,8 +309,11 @@ futex_proxy_trylock_atomic(u32 __user *pifutex, struct futex_hash_bucket *hb1,
- 		return -EINVAL;
+--- a/drivers/resctrl/mpam_devices.c
++++ b/drivers/resctrl/mpam_devices.c
+@@ -632,7 +632,7 @@ static struct mpam_msc_ris *mpam_get_or_
+  * Try and see what values stick in this bit. If we can write either value,
+  * its probably not implemented by hardware.
+  */
+-static bool _mpam_ris_hw_probe_hw_nrdy(struct mpam_msc_ris *ris, u32 mon_reg)
++static bool mpam_ris_hw_probe_csu_nrdy(struct mpam_msc_ris *ris)
+ {
+ 	u32 now;
+ 	u32 mon_sel;
+@@ -646,21 +646,18 @@ static bool _mpam_ris_hw_probe_hw_nrdy(s
+ 		  FIELD_PREP(MSMON_CFG_MON_SEL_RIS, ris->ris_idx);
+ 	mpam_write_monsel_reg(msc, CFG_MON_SEL, mon_sel);
  
- 	/* Ensure that this does not race against an early wakeup */
--	if (!futex_requeue_pi_prepare(top_waiter, NULL))
-+	if (!futex_requeue_pi_prepare(top_waiter, NULL)) {
-+		plist_del(&top_waiter->list, &hb1->chain);
-+		futex_hb_waiters_dec(hb1);
- 		return -EAGAIN;
-+	}
+-	_mpam_write_monsel_reg(msc, mon_reg, MSMON___NRDY);
+-	now = _mpam_read_monsel_reg(msc, mon_reg);
++	_mpam_write_monsel_reg(msc, MSMON_CSU, MSMON___NRDY);
++	now = _mpam_read_monsel_reg(msc, MSMON_CSU);
+ 	can_set = now & MSMON___NRDY;
  
- 	/*
- 	 * Try to take the lock for top_waiter and set the FUTEX_WAITERS bit
-@@ -711,10 +714,12 @@ int handle_early_requeue_pi_wakeup(struct futex_hash_bucket *hb,
+-	_mpam_write_monsel_reg(msc, mon_reg, 0);
+-	now = _mpam_read_monsel_reg(msc, mon_reg);
++	_mpam_write_monsel_reg(msc, MSMON_CSU, 0);
++	now = _mpam_read_monsel_reg(msc, MSMON_CSU);
+ 	can_clear = !(now & MSMON___NRDY);
+ 	mpam_mon_sel_unlock(msc);
  
- 	/*
- 	 * We were woken prior to requeue by a timeout or a signal.
--	 * Unqueue the futex_q and determine which it was.
-+	 * Conditionally unqueue the futex_q and determine which it was.
- 	 */
--	plist_del(&q->list, &hb->chain);
--	futex_hb_waiters_dec(hb);
-+	if (!plist_node_empty(&q->list)) {
-+		plist_del(&q->list, &hb->chain);
-+		futex_hb_waiters_dec(hb);
-+	}
+ 	return (!can_set || !can_clear);
+ }
  
- 	/* Handle spurious wakeups gracefully */
- 	ret = -EWOULDBLOCK;
--- 
-2.53.0
-
+-#define mpam_ris_hw_probe_hw_nrdy(_ris, _mon_reg)			\
+-	_mpam_ris_hw_probe_hw_nrdy(_ris, MSMON_##_mon_reg)
+-
+ static void mpam_ris_hw_probe(struct mpam_msc_ris *ris)
+ {
+ 	int err;
+@@ -770,20 +767,18 @@ static void mpam_ris_hw_probe(struct mpa
+ 					mpam_set_feature(mpam_feat_msmon_csu_xcl, props);
+ 
+ 				/* Is NRDY hardware managed? */
+-				hw_managed = mpam_ris_hw_probe_hw_nrdy(ris, CSU);
+-				if (hw_managed)
+-					mpam_set_feature(mpam_feat_msmon_csu_hw_nrdy, props);
+-			}
++				hw_managed = mpam_ris_hw_probe_csu_nrdy(ris);
+ 
+-			/*
+-			 * Accept the missing firmware property if NRDY appears
+-			 * un-implemented.
+-			 */
+-			if (err && mpam_has_feature(mpam_feat_msmon_csu_hw_nrdy, props))
+-				dev_err_once(dev, "Counters are not usable because not-ready timeout was not provided by firmware.");
++				/*
++				 * Accept the missing firmware property if NRDY appears
++				 * un-implemented.
++				 */
++				if (err && hw_managed)
++					dev_err_once(dev, "Counters are not usable because not-ready timeout was not provided by firmware.");
++			}
+ 		}
+ 		if (FIELD_GET(MPAMF_MSMON_IDR_MSMON_MBWU, msmon_features)) {
+-			bool has_long, hw_managed;
++			bool has_long;
+ 			u32 mbwumon_idr = mpam_read_partsel_reg(msc, MBWUMON_IDR);
+ 
+ 			props->num_mbwu_mon = FIELD_GET(MPAMF_MBWUMON_IDR_NUM_MON, mbwumon_idr);
+@@ -802,16 +797,6 @@ static void mpam_ris_hw_probe(struct mpa
+ 				} else {
+ 					mpam_set_feature(mpam_feat_msmon_mbwu_31counter, props);
+ 				}
+-
+-				/* Is NRDY hardware managed? */
+-				hw_managed = mpam_ris_hw_probe_hw_nrdy(ris, MBWU);
+-				if (hw_managed)
+-					mpam_set_feature(mpam_feat_msmon_mbwu_hw_nrdy, props);
+-
+-				/*
+-				 * Don't warn about any missing firmware property for
+-				 * MBWU NRDY - it doesn't make any sense!
+-				 */
+ 			}
+ 		}
+ 	}
+@@ -1078,7 +1063,6 @@ static void __ris_msmon_read(void *arg)
+ 	bool reset_on_next_read = false;
+ 	struct mpam_msc_ris *ris = m->ris;
+ 	struct msmon_mbwu_state *mbwu_state;
+-	struct mpam_props *rprops = &ris->props;
+ 	struct mpam_msc *msc = m->ris->vmsc->msc;
+ 	u32 mon_sel, ctl_val, flt_val, cur_ctl, cur_flt;
+ 
+@@ -1134,8 +1118,7 @@ static void __ris_msmon_read(void *arg)
+ 	switch (m->type) {
+ 	case mpam_feat_msmon_csu:
+ 		now = mpam_read_monsel_reg(msc, CSU);
+-		if (mpam_has_feature(mpam_feat_msmon_csu_hw_nrdy, rprops))
+-			nrdy = now & MSMON___NRDY;
++		nrdy = now & MSMON___NRDY;
+ 		now = FIELD_GET(MSMON___VALUE, now);
+ 		break;
+ 	case mpam_feat_msmon_mbwu_31counter:
+@@ -1143,8 +1126,7 @@ static void __ris_msmon_read(void *arg)
+ 	case mpam_feat_msmon_mbwu_63counter:
+ 		if (m->type != mpam_feat_msmon_mbwu_31counter) {
+ 			now = mpam_msc_read_mbwu_l(msc);
+-			if (mpam_has_feature(mpam_feat_msmon_mbwu_hw_nrdy, rprops))
+-				nrdy = now & MSMON___L_NRDY;
++			nrdy = now & MSMON___L_NRDY;
+ 
+ 			if (m->type == mpam_feat_msmon_mbwu_63counter)
+ 				now = FIELD_GET(MSMON___LWD_VALUE, now);
+@@ -1152,8 +1134,7 @@ static void __ris_msmon_read(void *arg)
+ 				now = FIELD_GET(MSMON___L_VALUE, now);
+ 		} else {
+ 			now = mpam_read_monsel_reg(msc, MBWU);
+-			if (mpam_has_feature(mpam_feat_msmon_mbwu_hw_nrdy, rprops))
+-				nrdy = now & MSMON___NRDY;
++			nrdy = now & MSMON___NRDY;
+ 			now = FIELD_GET(MSMON___VALUE, now);
+ 		}
+ 
+--- a/drivers/resctrl/mpam_internal.h
++++ b/drivers/resctrl/mpam_internal.h
+@@ -167,14 +167,12 @@ enum mpam_device_features {
+ 	mpam_feat_msmon_csu,
+ 	mpam_feat_msmon_csu_capture,
+ 	mpam_feat_msmon_csu_xcl,
+-	mpam_feat_msmon_csu_hw_nrdy,
+ 	mpam_feat_msmon_mbwu,
+ 	mpam_feat_msmon_mbwu_31counter,
+ 	mpam_feat_msmon_mbwu_44counter,
+ 	mpam_feat_msmon_mbwu_63counter,
+ 	mpam_feat_msmon_mbwu_capture,
+ 	mpam_feat_msmon_mbwu_rwbw,
+-	mpam_feat_msmon_mbwu_hw_nrdy,
+ 	mpam_feat_partid_nrw,
+ 	MPAM_FEATURE_LAST
+ };
 
 
 
