@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-252159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252795-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yGlAGhAjDmr26QUAu9opvQ
-	(envelope-from <stable+bounces-252159-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:09:36 +0200
+	id qIPhH6v+DWpV5QUAu9opvQ
+	(envelope-from <stable+bounces-252795-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D12EF59A7FF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:09:35 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EDE05969F5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:34:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 33E7737F23FA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:59:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D8144304B12B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:26:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE2F3F6C4C;
-	Wed, 20 May 2026 17:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B53193EFFB8;
+	Wed, 20 May 2026 18:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZBU2N3Ds"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j8AehUis"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E765E1B7910;
-	Wed, 20 May 2026 17:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6856B3FA5EB;
+	Wed, 20 May 2026 18:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299946; cv=none; b=CIpyY84yl8qhurmL9cA10fW3xoy3MGdFilbb05POo01OHkiRD/IOXZIA8wn9MPg83r/LSZmzvUcKmQVnxhEQHKd7+eXym63XT59OIq+HpkWUtEdLerQbIG3xIQVMM32dP9/78MdxAU5XV6vlrEPSlpP1zvcLzqwmS01Dwr6FPGU=
+	t=1779301608; cv=none; b=oIWBvxZcp+hI/KWgk8Jgeeb35Af6b7+9HsLhccZMfwzQGbnruh6hJoaOAQ6Ol9x2unONXHQ1YWpYwfRSO4qMQZKVE0jwZlB+2jMFjb8P9kjXZLVpsN8x213yC5KQgeXX1XDdLgScsm/UTyhGOdx8uWIv4Sair9w+9w7877WDs+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299946; c=relaxed/simple;
-	bh=w+WQoKlGXaJGlANn2dFwLHL3l9Uc5XSTWVxNGYzOQUA=;
+	s=arc-20240116; t=1779301608; c=relaxed/simple;
+	bh=tOsD8sugrIc823wibGroUi8hzTUm3yOMvp8Rl9fuu2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MJscj1iEnCH/niozgDCNnx1yhJadyvlQNTDCcRefl7YYzL7boKlY1XscaIl+44yj3/oIu1QSROph9/TwPFJrBO7/VAusa8WI/YfRA77OwVIQmc5SMVD4mY7zH09f2XIpwz77i/tN01xBT58TdiWLW8x3bNYlR6EriOOzMZsdKls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZBU2N3Ds; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0748B1F000E9;
-	Wed, 20 May 2026 17:59:03 +0000 (UTC)
+	 MIME-Version; b=m2rIfPR6giRmGmihnh1qsRFrhMaKbSLvUNqyfYi41sIvO3iQTJTueRADL9rar/eAM+27AHoLIO16WvOc+MK4+mMRa1qulzEJKTS/tD4gW/+JZZYK31cZBgGAGcLtUtMBVp4GesxLerESOBq8FdNh5NsW9kaJLIQU/a5VvzjAHqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j8AehUis; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB6E81F000E9;
+	Wed, 20 May 2026 18:26:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299944;
-	bh=IFjfZprQ1B4jOGlbq0fpL7SKBsAjwbV5odAwTunRHxo=;
+	s=korg; t=1779301607;
+	bh=trUw5WfNsftrJ64VPCPJyQMu8T9/apsMrhE/rIhOJZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZBU2N3Ds1gNnK8fqTsJ9logenh17X3bkdA0b8r08Ai22JERbWhxFJCga62YAlf+Co
-	 TjvR6wFYv/ii6QlBGn5J+xAWjWZng1B2fD5bN90yAFpLP0ghnXrRujyYvS7Qa9ZN5/
-	 evzLZBCTHNZbL4Pjd9vDVgI7/xgzILQUgxqSrGus=
+	b=j8AehUisqUYGZ3Glzoxw/1w2AHs5Fx5Q9kCbTofbojnzgHX8/omP04NL4C+ySMBor
+	 n3xu742Q3HvxCa872LD7EXW0vxaLcqH5JpApoRahNEll1+YHclZbbHFiBvwFU5GEnx
+	 G1QW0YgBLdM04HpL5ZRg1qE8G0KcV8d2ybCdDkNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Subject: [PATCH 6.18 947/957] drm/gma500/oaktrail_lvds: fix i2c adapter leaks on init
-Date: Wed, 20 May 2026 18:23:50 +0200
-Message-ID: <20260520162155.137382422@linuxfoundation.org>
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Matthew Rosato <mjrosato@linux.ibm.com>
+Subject: [PATCH 6.12 620/666] KVM: s390: pci: fix GAIT table indexing due to double-scaling pointer arithmetic
+Date: Wed, 20 May 2026 18:23:51 +0200
+Message-ID: <20260520162124.710480355@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +65,107 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TAGGED_FROM(0.00)[bounces-252159-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,linux.ibm.com];
+	TAGGED_FROM(0.00)[bounces-252795-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: D12EF59A7FF
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,outlook.com:email]
+X-Rspamd-Queue-Id: 2EDE05969F5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-commit 84d1c9b416d54afe760ca4c378bd95c89261254c upstream.
+commit 16d990a15491cf76cd6eef0846e1b4100e63261a upstream.
 
-The LVDS init code looks up an I2C adapter using i2c_get_adapter() and
-tries to read the EDID before falling back to allocating and registering
-its own adapter.
+kvm_s390_pci_aif_enable(), kvm_s390_pci_aif_disable(), and
+aen_host_forward() index the GAIT by manually multiplying the index
+with sizeof(struct zpci_gaite).
 
-Make sure to drop the references taken by i2c_get_adapter() when falling
-back to allocating an adapter as well as on late errors to allow the
-looked up adapter to be deregistered.
+Since aift->gait is already a struct zpci_gaite pointer, this
+double-scales the offset, accessing element aisb*16 instead of aisb.
 
-Fixes: 1b082ccf5901 ("gma500: Add Oaktrail support")
-Cc: stable@vger.kernel.org	# 3.3
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Link: https://patch.msgid.link/20260508144446.59722-4-johan@kernel.org
+This causes out-of-bounds accesses when aisb >= 32 (with
+ZPCI_NR_DEVICES=512)
+
+Fix by removing the erroneous sizeof multiplication.
+
+Fixes: 3c5a1b6f0a18 ("KVM: s390: pci: provide routines for enabling/disabling interrupt forwarding")
+Fixes: 73f91b004321 ("KVM: s390: pci: enable host forwarding of Adapter Event Notifications")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Tested-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/gma500/oaktrail_lvds.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/s390/kvm/interrupt.c |    3 +--
+ arch/s390/kvm/pci.c       |    6 ++----
+ 2 files changed, 3 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/gma500/oaktrail_lvds.c
-+++ b/drivers/gpu/drm/gma500/oaktrail_lvds.c
-@@ -366,6 +366,8 @@ void oaktrail_lvds_init(struct drm_devic
- 	if (edid == NULL && dev_priv->lpc_gpio_base) {
- 		ddc_bus = oaktrail_lvds_i2c_init(dev);
- 		if (!IS_ERR(ddc_bus)) {
-+			if (i2c_adap)
-+				i2c_put_adapter(i2c_adap);
- 			i2c_adap = &ddc_bus->base;
- 			edid = drm_get_edid(connector, i2c_adap);
- 		}
-@@ -422,6 +424,8 @@ err_unlock:
- 	mutex_unlock(&dev->mode_config.mutex);
- 	if (!IS_ERR_OR_NULL(ddc_bus))
- 		gma_i2c_destroy(ddc_bus);
-+	else if (i2c_adap)
-+		i2c_put_adapter(i2c_adap);
- 	drm_encoder_cleanup(encoder);
- err_connector_cleanup:
- 	drm_connector_cleanup(connector);
+--- a/arch/s390/kvm/interrupt.c
++++ b/arch/s390/kvm/interrupt.c
+@@ -3329,8 +3329,7 @@ static void aen_host_forward(unsigned lo
+ 	struct zpci_gaite *gaite;
+ 	struct kvm *kvm;
+ 
+-	gaite = (struct zpci_gaite *)aift->gait +
+-		(si * sizeof(struct zpci_gaite));
++	gaite = aift->gait + si;
+ 	if (gaite->count == 0)
+ 		return;
+ 	if (gaite->aisb != 0)
+--- a/arch/s390/kvm/pci.c
++++ b/arch/s390/kvm/pci.c
+@@ -292,8 +292,7 @@ static int kvm_s390_pci_aif_enable(struc
+ 				    phys_to_virt(fib->fmt0.aibv));
+ 
+ 	spin_lock_irq(&aift->gait_lock);
+-	gaite = (struct zpci_gaite *)aift->gait + (zdev->aisb *
+-						   sizeof(struct zpci_gaite));
++	gaite = aift->gait + zdev->aisb;
+ 
+ 	/* If assist not requested, host will get all alerts */
+ 	if (assist)
+@@ -359,8 +358,7 @@ static int kvm_s390_pci_aif_disable(stru
+ 	if (zdev->kzdev->fib.fmt0.aibv == 0)
+ 		goto out;
+ 	spin_lock_irq(&aift->gait_lock);
+-	gaite = (struct zpci_gaite *)aift->gait + (zdev->aisb *
+-						   sizeof(struct zpci_gaite));
++	gaite = aift->gait + zdev->aisb;
+ 	isc = gaite->gisc;
+ 	gaite->count--;
+ 	if (gaite->count == 0) {
 
 
 
