@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-252960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251863-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KCfVDe7/DWpV5QUAu9opvQ
-	(envelope-from <stable+bounces-252960-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:42 +0200
+	id UCjOHR73DWpd5AUAu9opvQ
+	(envelope-from <stable+bounces-251863-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:02:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6E01596ECA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:39:41 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BE2F595251
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:02:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0AD97300767E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:34:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1B11E30C65AA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:44:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0047333441;
-	Wed, 20 May 2026 18:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 317F03451CC;
+	Wed, 20 May 2026 17:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YnmGAy+t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="obbgOBV7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7214417A2FC;
-	Wed, 20 May 2026 18:33:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58FB1C3BFC;
+	Wed, 20 May 2026 17:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302039; cv=none; b=F1AITyKrm0r/Lj+mORD79N0FeE/9K/m1pO2diI2rtW8W84RAopXxd5+5b0PDLhfDTcR7dxv5pc1oVJswzXnJEm19NESAdvaqM5eLurfC2dMIJtbZ7ff3m0m1V4UT9DTmW+3sloxxgNBKYW3BIJGz30oHTLPod83gDVZ2aU/xTwE=
+	t=1779299084; cv=none; b=JBZyEf+AOxvrNTbu2TbdsGMV7hgDaRu6Z0zQMXCHi1ZeAEhtc1JEso3NDPLA2HYHHIAWUuxM2paAu0itpAQYsCHoe8BDz624GWMlI1v9aaVDPBWyzHYQVeQns4k1swPOPS4MBJQK7fva0s6yXpr7K+Zlfn6lPrD9ynSepsmlokU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302039; c=relaxed/simple;
-	bh=keh/4Hj0xmB7G257dy2n2RueLaKcKorHg/T+hfgYbFg=;
+	s=arc-20240116; t=1779299084; c=relaxed/simple;
+	bh=VGo7tLB2i2ZBiTHdSJkRy7l49rRo+neqEEFctFtNBtw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kALThfRJBpHIkOdxMw+5bwn0zWRIoq3u8l7t3vbhh8hPpJdRi6TICMk9Nox8vqtXlJpQys3smdNRBtldvBanALQvQ32D9l6fqij8/DLujA+vm6SjUWsFD9bcevhhnNgIGLFU/wnS4FszK2qBa7FpF3IyJKbbRiXxI/HxhfoIBZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YnmGAy+t; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93EE61F000E9;
-	Wed, 20 May 2026 18:33:57 +0000 (UTC)
+	 MIME-Version; b=o7QYANmaZnBbFpkwyQDMsHwe9KkN3Kq6S4iRaoWDoIJNy+OwhyoUgyEzyDWT67OzQY9BexS/3uNkHjyX7n8+cQTV3zVhcaFiofDgz2gWfuBJwbzl5elMAgcEABWEH9m1WYlWyOATPwKOFvDgrD1XeGyccBaRtSP18H9lw2RGZRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=obbgOBV7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 575F81F000E9;
+	Wed, 20 May 2026 17:44:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302038;
-	bh=VR67rIaUfetI5n5isBmPVKrdYrjuy7sn83uaTVb5oI0=;
+	s=korg; t=1779299082;
+	bh=c7Cu3OBw4UVC2rQSWiKwOBTYcrLNmKzdf1+EFq1wCv4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YnmGAy+tvUGtDf12bL1qX/cdj/tZv1ydhkvi9BHNwkBTFzUAiLyvTFSTtQUYdv4k0
-	 aJjtc9qgtXiXxBR/6NHgSlPCLHabl5CLja1GUlVB/JebpTR+uCBsRjfUTnnfHNJmV2
-	 jZC5I2y0rpDBukJa9TB4bqvugaEr0mGujoFHnQmQ=
+	b=obbgOBV75m0KGSoBHnRDD2P2mzIYZpL6uX4VYrsSKsDmWZJ7WvU4ELGGOs24/JPF+
+	 WUa331oSPmbfZJOh8cbEgy2OKg7JJTCCuJroNZwxK7bg00CtFlWeHQat2/y8uf+0fJ
+	 Ylji80yeHuySkjAHTBOYmPdEHgnWScDTdjdPR/WA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 114/508] drm/amdgpu/gfx10: look at the right prop for gfx queue priority
-Date: Wed, 20 May 2026 18:18:57 +0200
-Message-ID: <20260520162101.098008221@linuxfoundation.org>
+Subject: [PATCH 6.18 655/957] sctp: fix OOB write to userspace in sctp_getsockopt_peer_auth_chunks
+Date: Wed, 20 May 2026 18:18:58 +0200
+Message-ID: <20260520162148.737436068@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +64,104 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252960-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251863-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: C6E01596ECA
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 4BE2F595251
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit 355d96cdec5c61fd83f7eb54f1a28e38809645d6 ]
+[ Upstream commit 0cf004ffb61cd32d140531c3a84afe975f9fc7ea ]
 
-Look at hqd_queue_priority rather than hqd_pipe_priority.
-In practice, it didn't matter as both were always set for
-kernel queues, but that will change in the future.
+sctp_getsockopt_peer_auth_chunks() checks that the caller's optval
+buffer is large enough for the peer AUTH chunk list with
 
-Fixes: b07d1d73b09e ("drm/amd/amdgpu: Enable high priority gfx queue")
-Reviewed-by：Jesse Zhang <jesse.zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+    if (len < num_chunks)
+            return -EINVAL;
+
+but then writes num_chunks bytes to p->gauth_chunks, which lives
+at offset offsetof(struct sctp_authchunks, gauth_chunks) == 8
+inside optval.  The check is missing the sizeof(struct
+sctp_authchunks) = 8-byte header.  When the caller supplies
+len == num_chunks (for any num_chunks > 0) the test passes but
+copy_to_user() writes sizeof(struct sctp_authchunks) = 8 bytes
+past the declared buffer.
+
+The sibling function sctp_getsockopt_local_auth_chunks() at the
+next line already has the correct check:
+
+    if (len < sizeof(struct sctp_authchunks) + num_chunks)
+            return -EINVAL;
+
+Align the peer variant with its sibling.
+
+Reproducer confirms on v7.0-13-generic: an unprivileged userspace
+caller that opens a loopback SCTP association with AUTH enabled,
+queries num_chunks with a short optval, then issues the real
+getsockopt with len == num_chunks and sentinel bytes painted past
+the buffer observes those sentinel bytes overwritten with the
+peer's AUTH chunk type.  The bytes written are under the peer's
+control but land in the caller's own userspace; this is not a
+kernel memory corruption, but it is a kernel-side contract
+violation that can silently corrupt adjacent userspace data.
+
+Fixes: 65b07e5d0d09 ("[SCTP]: API updates to suport SCTP-AUTH extensions.")
+Assisted-by: Claude:claude-opus-4-6
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20260416031903.1447072-1-michael.bommarito@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 2 +-
+ net/sctp/socket.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-index 1c29b4d04a2ca..afa9eb7050751 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-@@ -6338,7 +6338,7 @@ static void gfx_v10_0_gfx_mqd_set_priority(struct amdgpu_device *adev,
- 	/* set up default queue priority level
- 	 * 0x0 = low priority, 0x1 = high priority
- 	 */
--	if (prop->hqd_pipe_priority == AMDGPU_GFX_PIPE_PRIO_HIGH)
-+	if (prop->hqd_queue_priority == AMDGPU_GFX_QUEUE_PRIORITY_MAXIMUM)
- 		priority = 1;
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index c57a53192beef..2c5ad53984906 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -6990,7 +6990,7 @@ static int sctp_getsockopt_peer_auth_chunks(struct sock *sk, int len,
  
- 	tmp = RREG32_SOC15(GC, 0, mmCP_GFX_HQD_QUEUE_PRIORITY);
+ 	/* See if the user provided enough room for all the data */
+ 	num_chunks = ntohs(ch->param_hdr.length) - sizeof(struct sctp_paramhdr);
+-	if (len < num_chunks)
++	if (len < sizeof(struct sctp_authchunks) + num_chunks)
+ 		return -EINVAL;
+ 
+ 	if (copy_to_user(to, ch->chunks, num_chunks))
 -- 
 2.53.0
 
