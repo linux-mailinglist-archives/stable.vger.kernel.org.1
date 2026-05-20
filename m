@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-251681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252322-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CBdHHPvyDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-251681-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:27 +0200
+	id oMgpNiL8DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-252322-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 311B7594736
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:44:27 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA365595FE1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 99D4D3040C5F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:36:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8FEBB31486D5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:06:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 312CD3ED5C5;
-	Wed, 20 May 2026 17:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 930993FBB4D;
+	Wed, 20 May 2026 18:06:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WXnWZnGR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I+f0NPe3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9B13ED5C8;
-	Wed, 20 May 2026 17:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594C03A6B6D;
+	Wed, 20 May 2026 18:06:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298618; cv=none; b=AcHRVaYFxCMhgDjvesHbM4Fv/yZZ7r3XHPQPuMBlkBacmoep4P8N6CWpR/Y/EkSU+AGkfm7BhRLM6Zcdwi4llaHqD6hwrYpgsvUIqLbly0Z/9nyBvBsc7V6liTweupSKOJrjhXMlQAwIT5I4+ZR24O6hBLAiT4ajbVoVlcABoDA=
+	t=1779300373; cv=none; b=SUu0ndqNCkiBi2NaignSjC8S9vBnHk1yAc4a8oI7kXdKfbHeW1FX10A8etT1DWkze1oLDmncNM7yaCP7xyc0Sms5ffI1vqiFncfsV7HxDR8fEZ4+8pIKsMG5ofE61dXH2L6O5PbGDIwB+wD+2S2pFp06x9t4Yq4MfGec63r8vxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298618; c=relaxed/simple;
-	bh=1jnKUWFbPjNrr9BGXsMkQMHOaYG2eNtNjenmz9tZGCY=;
+	s=arc-20240116; t=1779300373; c=relaxed/simple;
+	bh=PoeZznUwDOHp/GHLd5oRkjHUVnS6u/O8SGsRyOO02k4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OsiYtCyNHlDtgInQwJ/ZU/AdrSJYcFocrFyb/Et8mDEtb2p4L1m4Gm2pi1qP1I5u7Mq6XziMS1Gl48kYBGqsBYjQZGmgbD/IGN/qGyFXIdr5AwU5gvU3MdiAfJ0bK9ns+QF4XjwKjEvCtNS3UwV5NATUdm42CkUeGhKXJoZ8QHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WXnWZnGR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67E2F1F00893;
-	Wed, 20 May 2026 17:36:54 +0000 (UTC)
+	 MIME-Version; b=C16k9KenFxSB8n/hDS+5952LyIU67oqlPXtHRt+0CKJaWXA5oZRINGX0wX9nrtzZ/tXKaWgN1BvgzczB62ydKN0yI1r5L4PjH0XsJrBK1jbrK4dETI3mz2JYk0KiBc8uT5hI+g9/IWppJ18yhQZVqSdRYqxE8QVWedFYGlVMhqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I+f0NPe3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFB8D1F00893;
+	Wed, 20 May 2026 18:06:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298614;
-	bh=HA3Zw8+x2lfSJkx7o4C19ufPrpfv+CQw4Xi6BL7aq7I=;
+	s=korg; t=1779300372;
+	bh=hyrAlD3xi1RqfxV46vF2VWVudjHo14ibPQBg/bEQZLc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WXnWZnGRPwv9MEmrN4Ce3ULxWUhMTEkI7OScd1sQ/A6WCCCxSzkGkcAzj50NTHhg8
-	 maNH+Jv4Of3WpUQ1hlVUoX2pIgioR/Edx4hbyhwBHQknEX6tFsW6V1PD7e0hKJluOq
-	 c5VjuDgoRwMfhZ+IHBv2WTvuM6u3ZJA8X4bfDyTk=
+	b=I+f0NPe3HaNl1QFpl/yhCeluaXgtyeqMzoEIbsdQgk6YFiKjUkO6JsG8IczLUQGic
+	 4Bf9wb0x4J1jLNeF2eK91YuMeFn5kiVRHQualx2YEdn/UsNlLcl2C0F1bMJtAIJuRH
+	 K1n82ogW45aLKvITyhhghtOsxJwwm/ud6J5AztCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Ethan Tidmore <ethantidmore06@gmail.com>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 477/957] mtd: spinand: winbond: Rename IO_MODE register macro
+Subject: [PATCH 6.12 149/666] drm/sun4i: Fix resource leaks
 Date: Wed, 20 May 2026 18:16:00 +0200
-Message-ID: <20260520162144.871458418@linuxfoundation.org>
+Message-ID: <20260520162114.438038215@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +65,76 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251681-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252322-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 311B7594736
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: BA365595FE1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Ethan Tidmore <ethantidmore06@gmail.com>
 
-[ Upstream commit 57e1015cc9a96372f330195abe32a904ec8d1eab ]
+[ Upstream commit 127367ad2e0f4870de60c6d719ae82ecf68d674c ]
 
-Suffix the macro name with *_REG to align with the rest of the driver.
+Three clocks are not being released in devm_regmap_init_mmio() error
+path.
 
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Stable-dep-of: 25a915fad503 ("mtd: spinand: winbond: Clarify when to enable the HS bit")
+Add proper goto and set ret to the error code.
+
+Fixes: 8270249fbeaf0 ("drm/sun4i: backend: Create regmap after access is possible")
+Signed-off-by: Ethan Tidmore <ethantidmore06@gmail.com>
+Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Link: https://patch.msgid.link/20260226163836.10335-1-ethantidmore06@gmail.com
+Signed-off-by: Chen-Yu Tsai <wens@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/spi/winbond.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/sun4i/sun4i_backend.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
-index b389c9ee58508..2361109101727 100644
---- a/drivers/mtd/nand/spi/winbond.c
-+++ b/drivers/mtd/nand/spi/winbond.c
-@@ -22,7 +22,7 @@
- #define W25N0XJW_SR4			0xD0
- #define W25N0XJW_SR4_HS			BIT(2)
+diff --git a/drivers/gpu/drm/sun4i/sun4i_backend.c b/drivers/gpu/drm/sun4i/sun4i_backend.c
+index a7c256e2c632b..329e2a2384e89 100644
+--- a/drivers/gpu/drm/sun4i/sun4i_backend.c
++++ b/drivers/gpu/drm/sun4i/sun4i_backend.c
+@@ -880,7 +880,8 @@ static int sun4i_backend_bind(struct device *dev, struct device *master,
+ 						     &sun4i_backend_regmap_config);
+ 	if (IS_ERR(backend->engine.regs)) {
+ 		dev_err(dev, "Couldn't create the backend regmap\n");
+-		return PTR_ERR(backend->engine.regs);
++		ret = PTR_ERR(backend->engine.regs);
++		goto err_disable_ram_clk;
+ 	}
  
--#define W35N01JW_VCR_IO_MODE			0x00
-+#define W35N01JW_VCR_IO_MODE_REG	0x00
- #define W35N01JW_VCR_IO_MODE_SINGLE_SDR		0xFF
- #define W35N01JW_VCR_IO_MODE_OCTAL_SDR		0xDF
- #define W35N01JW_VCR_IO_MODE_OCTAL_DDR_DS	0xE7
-@@ -368,7 +368,7 @@ static int w35n0xjw_vcr_cfg(struct spinand_device *spinand)
- 	else
- 		return -EINVAL;
- 
--	ret = w35n0xjw_write_vcr(spinand, W35N01JW_VCR_IO_MODE, io_mode);
-+	ret = w35n0xjw_write_vcr(spinand, W35N01JW_VCR_IO_MODE_REG, io_mode);
- 	if (ret)
- 		return ret;
- 
+ 	list_add_tail(&backend->engine.list, &drv->engine_list);
 -- 
 2.53.0
 
