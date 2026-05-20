@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251949-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6LYSOoDsDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-251018-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:16:48 +0200
+	id ALInOkn9DWok5QUAu9opvQ
+	(envelope-from <stable+bounces-251949-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:28:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A21059339C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:16:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CA0C5963F5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:28:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3CB1730942DC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C7A97352E219
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:49:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD3353EFD05;
-	Wed, 20 May 2026 17:08:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B24FB3E5ECF;
+	Wed, 20 May 2026 17:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rQ6qCpFU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QhaaWlPk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6462E3D75A0;
-	Wed, 20 May 2026 17:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9224F3F20FA;
+	Wed, 20 May 2026 17:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296889; cv=none; b=RMnBqA3PQf9KeCTBbYj70StZPhPrDi0bXeqFLTLBiFddk3/Rh4ZjuMAoJVc/edXWyhUeDu5kYwaENzuyz7jzr4N7ro3AZC1vQMm5sSEqlkWAaUkEAzFkfhySqLHZLP8injtevu50ziFVLoXvWtfgo3RPzNwHkRiISwI+fW1X6Lc=
+	t=1779299353; cv=none; b=jMPI+kmSIc4S/+dmGDuxDAX/iUCYSWGT+8gGp5MXOFlDFcxD0Gbem2MZZR8y1uaF++eTByt9gGAjJ1qN/2iWwWHeop13sxz1FcbfW/XT0gr4tGM212+YHzTTiYm8dYpqWPL4A4PkizL2K6tObwT0auwyCwQYkFjYgRdAk7wrXRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296889; c=relaxed/simple;
-	bh=KaTlvSJq77jEwMLh7WJY8bSF5JP54dIpHssxXVgHpNY=;
+	s=arc-20240116; t=1779299353; c=relaxed/simple;
+	bh=fsCbya3z+6RjHKUnDSQZznLRga0qnx01sZ+RO2PFfHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IOaP7KICspIRWf4FF/9f7z3aMA56bFxHWOtZKnA0gE4L1CRry33DY2XtBRsAzIbyGUamnjlUuvlSg+vRhtEn5uU37LBvBPQeoJlWJj+kyQ7RBF/yzNgEhKlKm6pgDTnd9R3OuLdF6OKesz7bx72rTgAOjAixBwYsqJmdTxIkK4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rQ6qCpFU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8D301F00893;
-	Wed, 20 May 2026 17:08:07 +0000 (UTC)
+	 MIME-Version; b=rx+0XRVCkaDOmY20E+VyGRt24XQFMh3Tpu7AD4Z/6bxW2IzopVEcRzx6jFj9S8snGFyY1Ma/7kdyqqViVSlCa78WPPDfhnwrxCGlLmrUFnsTh7ZYwoyxGxcxYUs0Si2vUU3W2Ty7ZZppPsxSkgE7g7g013LAubNz2K1ixzi9QF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QhaaWlPk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 153121F000E9;
+	Wed, 20 May 2026 17:49:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296888;
-	bh=jHjt8hJXfjlZGsNbuoOklGe59wgeIRaL0O3bEP4RalA=;
+	s=korg; t=1779299350;
+	bh=CI9O1GpfPa0ODSFhN/C2QaZb+jx94c78U+OyEvm+vkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rQ6qCpFUPCSP4Gh9/RiwziBFzbCbZumMf90hU6I5GtfuRfuHEUt6lOz4SqVbeOAFg
-	 ObIbZvG5Qd5vESUrnmhZNym7xuaEVfuNiXg5dLVQZRhpa3WdjrgPyW4ek53QjTcBtf
-	 oIXhoINMBsLnImBvvyUzLRUBJ3BR6howu3KxYb+A=
+	b=QhaaWlPkgWl8At7Rr6fXdosdRWY/npCdocLxCGAvigiNRRIQMGkcDNDt2kQErYdyd
+	 Z4NKrK/OV5b5yCbjYbbcAGBwTBCZxAd3btIKPdEY/5jUTogldiuZ6SfVok9cXAJjyb
+	 vhm0FdUo9/e7K1/p7HgM6mfp7IwxiOrBldbyzSjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Yinjie Yao <yinjie.yao@amd.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0971/1146] drm/amdgpu/jpeg: set no_user_fence for JPEG v2.0 ring
+Subject: [PATCH 6.18 738/957] mailbox: mailbox-test: initialize struct earlier
 Date: Wed, 20 May 2026 18:20:21 +0200
-Message-ID: <20260520162210.205378094@linuxfoundation.org>
+Message-ID: <20260520162150.564704819@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +63,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-251018-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-251949-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,sang-engineering.com,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,renesas];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 6A21059339C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sang-engineering.com:email]
+X-Rspamd-Queue-Id: 8CA0C5963F5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yinjie Yao <yinjie.yao@amd.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit e5f612dc91650561fe2b5b76dd6d2898ec9ad480 ]
+[ Upstream commit bbcf9af68bfedb3d9cc3c7eae62f5c844d8b78b9 ]
 
-JPEG rings do not support 64-bit user fence writes, reject CS
-submissions with user fences.
+The waitqueue must be initialized before the debugfs files are created
+because from that time, requests from userspace can already be made.
+Similarily, drvdata and spinlock needs to be initialized before we
+request the channel, otherwise dangling irqs might run into problems
+like a NULL pointer exception.
 
-Fixes: 6ac27241106b ("drm/amdgpu: add JPEG v2.0 function supports")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 96179da0c6b059eb31706a0abe8dd6381c533143)
+Fixes: 8ea4484d0c2b ("mailbox: Add generic mechanism for testing Mailbox Controllers")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/jpeg_v2_0.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mailbox/mailbox-test.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/jpeg_v2_0.c b/drivers/gpu/drm/amd/amdgpu/jpeg_v2_0.c
-index 9fe8d10ab2705..cffb1e6bab353 100644
---- a/drivers/gpu/drm/amd/amdgpu/jpeg_v2_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v2_0.c
-@@ -802,6 +802,7 @@ static const struct amd_ip_funcs jpeg_v2_0_ip_funcs = {
- static const struct amdgpu_ring_funcs jpeg_v2_0_dec_ring_vm_funcs = {
- 	.type = AMDGPU_RING_TYPE_VCN_JPEG,
- 	.align_mask = 0xf,
-+	.no_user_fence = true,
- 	.get_rptr = jpeg_v2_0_dec_ring_get_rptr,
- 	.get_wptr = jpeg_v2_0_dec_ring_get_wptr,
- 	.set_wptr = jpeg_v2_0_dec_ring_set_wptr,
+diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
+index 210f6077f475c..a0a7908c9cc26 100644
+--- a/drivers/mailbox/mailbox-test.c
++++ b/drivers/mailbox/mailbox-test.c
+@@ -366,6 +366,12 @@ static int mbox_test_probe(struct platform_device *pdev)
+ 	if (!tdev)
+ 		return -ENOMEM;
+ 
++	tdev->dev = &pdev->dev;
++	spin_lock_init(&tdev->lock);
++	mutex_init(&tdev->mutex);
++	init_waitqueue_head(&tdev->waitq);
++	platform_set_drvdata(pdev, tdev);
++
+ 	/* It's okay for MMIO to be NULL */
+ 	tdev->tx_mmio = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+ 	if (PTR_ERR(tdev->tx_mmio) == -EBUSY) {
+@@ -395,12 +401,6 @@ static int mbox_test_probe(struct platform_device *pdev)
+ 	if (!tdev->rx_channel && (tdev->rx_mmio != tdev->tx_mmio))
+ 		tdev->rx_channel = tdev->tx_channel;
+ 
+-	tdev->dev = &pdev->dev;
+-	platform_set_drvdata(pdev, tdev);
+-
+-	spin_lock_init(&tdev->lock);
+-	mutex_init(&tdev->mutex);
+-
+ 	if (tdev->rx_channel) {
+ 		tdev->rx_buffer = devm_kzalloc(&pdev->dev,
+ 					       MBOX_MAX_MSG_LEN, GFP_KERNEL);
+@@ -414,7 +414,6 @@ static int mbox_test_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto err_free_chans;
+ 
+-	init_waitqueue_head(&tdev->waitq);
+ 	dev_info(&pdev->dev, "Successfully registered\n");
+ 
+ 	return 0;
 -- 
 2.53.0
 
