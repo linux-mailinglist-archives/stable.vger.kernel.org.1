@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-250733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252311-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0Jq6ER73DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-250733-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:02:06 +0200
+	id aGNoDRf8DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-252311-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C21F859524F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:02:05 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01018595FA5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:23:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EF2243576912
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:57:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B9668310A078
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:06:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15A753F20F0;
-	Wed, 20 May 2026 16:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC808371CEA;
+	Wed, 20 May 2026 18:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DRo2Zilv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1R9OUTK/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF253D8138;
-	Wed, 20 May 2026 16:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536503F660B;
+	Wed, 20 May 2026 18:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296174; cv=none; b=Vto5yLcy1Fr28zx52lDfDUwlcEd9MuOqa1Gps7mm83CxKMBnk6BUj0hgfeqJNIeN+LUrQKPpm6v+H2GHrm6cOVHNHdU2YIspWA6pC7HpbnsaNVrRGznOVJwVxHbAAcgFEILlG1oTeHLzI0ajpsxTfOzFAl3gUKig78WxPbfa2UU=
+	t=1779300344; cv=none; b=G6OGwtQZbeAe/VwfIttiejFqh7PL5yf5l8CAuwM/WeSoN6FLKD20lik9btJx4lgIn0uIgOenAWOMsZ/OBwBkdHelMy40wSln1ylLnNH6BstIVmRwiPBcGuRDFukbg1HHOfxs3iA2GzscyXC6yYlsyOPSK63opcmkFMitw3bjc1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296174; c=relaxed/simple;
-	bh=B8OMBAiiF/Lhvis4u/41ql6Bi+EGdyO0/MslyWguzuQ=;
+	s=arc-20240116; t=1779300344; c=relaxed/simple;
+	bh=9UqwEvIDG8If6DgS7pHeZHVky7s+5rWT9J3nejlYnHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VT4uzuCXb+j/YTC5R8n7ZRCjbqlekx2FuhA/p69eovQkLsarOcL5yePYJxTj+9Ci70I6vDPeCIqHmy9NH5iOyL5K/Rdxjj63CidVcqx7VXHt26SiCR9dwXpQXm0HgH9Q/AySp+DFpZ3GQiSsCb35gWwitaL4/OIqvHW4YS1Ntkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DRo2Zilv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E04A1F000E9;
-	Wed, 20 May 2026 16:56:13 +0000 (UTC)
+	 MIME-Version; b=lnglPu/mnRCpXzPAdiWc3hegZ2+444eWltQXk+7GetVm1LU47iQ8q+5lEymVfV1QZbIlt3QBr+g35EkVN23K+FGVfmHzEqE3iHTmAgGwhxN3UvYkp3XD7mdHZ5ExNvH/WHHo5YoVjhuzZAXC/7xDfMjoOfNXjGFUzmeoaIy7ggs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1R9OUTK/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B96261F000E9;
+	Wed, 20 May 2026 18:05:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296173;
-	bh=5GvMhaQadQRKeDnukRPosRr8CfnXD7LxukbkdkyD0yc=;
+	s=korg; t=1779300343;
+	bh=NNGaGhl2EpnSpVzkV3AKlG77xt3FfNhYMdZCEqXPRgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DRo2ZilvQouJ8O2sTv2qmAe0H6MlwYzpMdLxs2pmkcKXntMkebQTfy8f3g+GfbQhd
-	 qP6kpUOYWtpNCYmyHEQZ/IKB/9WFZt0kxwgqvyETHQeSxGv796rGV7ugPz6wwkKJKm
-	 kabhbp8Q/o2UsEPYnqAzcQHWMZzyX/qOKa8tNArc=
+	b=1R9OUTK/6qtkdBMUDuyyFNKP1LQepaMD/Nq3toDthKKt9sef/A1dTHTxpKXyQrH1W
+	 0BeK9LyQ7FtbD8u+7e/wzU1uUB72KExyvQ6ShFKO/IUpEiv6RznMi97F4X4I6uiztc
+	 28WNNbyXWTc6x15pbXrX+k42Y0hy5IloeLcVYkKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Jayesh Choudhary <j-choudhary@ti.com>,
+	Harikrishna Shenoy <h-shenoy@ti.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0700/1146] clk: renesas: r9a09g056: Fix ordering of module clocks array
+Subject: [PATCH 6.12 139/666] drm/bridge: cadence: cdns-mhdp8546-core: Set the mhdp connector earlier in atomic_enable()
 Date: Wed, 20 May 2026 18:15:50 +0200
-Message-ID: <20260520162204.033723407@linuxfoundation.org>
+Message-ID: <20260520162114.223955951@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,114 +66,228 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-250733-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252311-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[glider.be:email,renesas.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: C21F859524F
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,ideasonboard.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,ti.com:email,bootlin.com:email]
+X-Rspamd-Queue-Id: 01018595FA5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+From: Jayesh Choudhary <j-choudhary@ti.com>
 
-[ Upstream commit dc71d92f0d36dcb68fcf0ef126131a2dedef9393 ]
+[ Upstream commit 43d6508ddbf9fb974fbc359a033154f78c9d4c8b ]
 
-The r9a09g056_mod_clks array is sorted by CPG_CLKON register number and
-bit position.  Move the RSPI 0/1/2 module clock entries to their correct
-position to restore the array sort order.
+In case if we get errors in cdns_mhdp_link_up() or cdns_mhdp_reg_read()
+in atomic_enable, we will go to cdns_mhdp_modeset_retry_fn() and will hit
+NULL pointer while trying to access the mutex. We need the connector to
+be set before that. Unlike in legacy cases with flag
+!DRM_BRIDGE_ATTACH_NO_CONNECTOR, we do not have connector initialised
+in bridge_attach(), so add the mhdp->connector_ptr in device structure
+to handle both cases with DRM_BRIDGE_ATTACH_NO_CONNECTOR and
+!DRM_BRIDGE_ATTACH_NO_CONNECTOR, set it in atomic_enable() earlier to
+avoid possible NULL pointer dereference in recovery paths like
+modeset_retry_fn() with the DRM_BRIDGE_ATTACH_NO_CONNECTOR flag set.
 
-Fixes: 1f76689d1715 ("clk: renesas: r9a09g056: Add entries for RSCIs")
-Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20260125192706.27099-2-ovidiu.panait.rb@renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fixes: c932ced6b585 ("drm/tidss: Update encoder/bridge chain connect model")
+Signed-off-by: Jayesh Choudhary <j-choudhary@ti.com>
+Signed-off-by: Harikrishna Shenoy <h-shenoy@ti.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patch.msgid.link/20251209120332.3559893-2-h-shenoy@ti.com
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/r9a09g056-cpg.c | 36 ++++++++++++++---------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+ .../drm/bridge/cadence/cdns-mhdp8546-core.c   | 29 ++++++++++---------
+ .../drm/bridge/cadence/cdns-mhdp8546-core.h   |  1 +
+ .../drm/bridge/cadence/cdns-mhdp8546-hdcp.c   | 18 +++++++++---
+ 3 files changed, 30 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/clk/renesas/r9a09g056-cpg.c b/drivers/clk/renesas/r9a09g056-cpg.c
-index fead173cae8b2..70de6bb929b91 100644
---- a/drivers/clk/renesas/r9a09g056-cpg.c
-+++ b/drivers/clk/renesas/r9a09g056-cpg.c
-@@ -289,6 +289,24 @@ static const struct rzv2h_mod_clk r9a09g056_mod_clks[] __initconst = {
- 						BUS_MSTOP(5, BIT(13))),
- 	DEF_MOD("wdt_3_clk_loco",		CLK_QEXTAL, 5, 2, 2, 18,
- 						BUS_MSTOP(5, BIT(13))),
-+	DEF_MOD("rspi_0_pclk",			CLK_PLLCLN_DIV8, 5, 4, 2, 20,
-+						BUS_MSTOP(11, BIT(0))),
-+	DEF_MOD("rspi_0_pclk_sfr",		CLK_PLLCLN_DIV8, 5, 5, 2, 21,
-+						BUS_MSTOP(11, BIT(0))),
-+	DEF_MOD("rspi_0_tclk",			CLK_PLLCLN_DIV8, 5, 6, 2, 22,
-+						BUS_MSTOP(11, BIT(0))),
-+	DEF_MOD("rspi_1_pclk",			CLK_PLLCLN_DIV8, 5, 7, 2, 23,
-+						BUS_MSTOP(11, BIT(1))),
-+	DEF_MOD("rspi_1_pclk_sfr",		CLK_PLLCLN_DIV8, 5, 8, 2, 24,
-+						BUS_MSTOP(11, BIT(1))),
-+	DEF_MOD("rspi_1_tclk",			CLK_PLLCLN_DIV8, 5, 9, 2, 25,
-+						BUS_MSTOP(11, BIT(1))),
-+	DEF_MOD("rspi_2_pclk",			CLK_PLLCLN_DIV8, 5, 10, 2, 26,
-+						BUS_MSTOP(11, BIT(2))),
-+	DEF_MOD("rspi_2_pclk_sfr",		CLK_PLLCLN_DIV8, 5, 11, 2, 27,
-+						BUS_MSTOP(11, BIT(2))),
-+	DEF_MOD("rspi_2_tclk",			CLK_PLLCLN_DIV8, 5, 12, 2, 28,
-+						BUS_MSTOP(11, BIT(2))),
- 	DEF_MOD("rsci0_pclk",			CLK_PLLCLN_DIV16, 5, 13, 2, 29,
- 						BUS_MSTOP(11, BIT(3))),
- 	DEF_MOD("rsci0_tclk",			CLK_PLLCLN_DIV16, 5, 14, 2, 30,
-@@ -389,24 +407,6 @@ static const struct rzv2h_mod_clk r9a09g056_mod_clks[] __initconst = {
- 						BUS_MSTOP(11, BIT(12))),
- 	DEF_MOD("rsci9_ps_ps1_n",		CLK_PLLCLN_DIV64, 8, 14, 4, 14,
- 						BUS_MSTOP(11, BIT(12))),
--	DEF_MOD("rspi_0_pclk",			CLK_PLLCLN_DIV8, 5, 4, 2, 20,
--						BUS_MSTOP(11, BIT(0))),
--	DEF_MOD("rspi_0_pclk_sfr",		CLK_PLLCLN_DIV8, 5, 5, 2, 21,
--						BUS_MSTOP(11, BIT(0))),
--	DEF_MOD("rspi_0_tclk",			CLK_PLLCLN_DIV8, 5, 6, 2, 22,
--						BUS_MSTOP(11, BIT(0))),
--	DEF_MOD("rspi_1_pclk",			CLK_PLLCLN_DIV8, 5, 7, 2, 23,
--						BUS_MSTOP(11, BIT(1))),
--	DEF_MOD("rspi_1_pclk_sfr",		CLK_PLLCLN_DIV8, 5, 8, 2, 24,
--						BUS_MSTOP(11, BIT(1))),
--	DEF_MOD("rspi_1_tclk",			CLK_PLLCLN_DIV8, 5, 9, 2, 25,
--						BUS_MSTOP(11, BIT(1))),
--	DEF_MOD("rspi_2_pclk",			CLK_PLLCLN_DIV8, 5, 10, 2, 26,
--						BUS_MSTOP(11, BIT(2))),
--	DEF_MOD("rspi_2_pclk_sfr",		CLK_PLLCLN_DIV8, 5, 11, 2, 27,
--						BUS_MSTOP(11, BIT(2))),
--	DEF_MOD("rspi_2_tclk",			CLK_PLLCLN_DIV8, 5, 12, 2, 28,
--						BUS_MSTOP(11, BIT(2))),
- 	DEF_MOD("scif_0_clk_pck",		CLK_PLLCM33_DIV16, 8, 15, 4, 15,
- 						BUS_MSTOP(3, BIT(14))),
- 	DEF_MOD("i3c_0_pclkrw",			CLK_PLLCLN_DIV16, 9, 0, 4, 16,
+diff --git a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
+index b18bdb2daddf8..d718a908208f5 100644
+--- a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
++++ b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.c
+@@ -810,7 +810,7 @@ static void cdns_mhdp_fw_cb(const struct firmware *fw, void *context)
+ 	bridge_attached = mhdp->bridge_attached;
+ 	spin_unlock(&mhdp->start_lock);
+ 	if (bridge_attached) {
+-		if (mhdp->connector.dev)
++		if (mhdp->connector_ptr)
+ 			drm_kms_helper_hotplug_event(mhdp->bridge.dev);
+ 		else
+ 			drm_bridge_hpd_notify(&mhdp->bridge, cdns_mhdp_detect(mhdp));
+@@ -1706,6 +1706,7 @@ static int cdns_mhdp_connector_init(struct cdns_mhdp_device *mhdp)
+ 		return ret;
+ 	}
+ 
++	mhdp->connector_ptr = conn;
+ 	drm_connector_helper_add(conn, &cdns_mhdp_conn_helper_funcs);
+ 
+ 	ret = drm_display_info_set_bus_formats(&conn->display_info,
+@@ -1985,17 +1986,25 @@ static void cdns_mhdp_atomic_enable(struct drm_bridge *bridge,
+ 	struct drm_atomic_state *state = bridge_state->base.state;
+ 	struct cdns_mhdp_bridge_state *mhdp_state;
+ 	struct drm_crtc_state *crtc_state;
+-	struct drm_connector *connector;
+ 	struct drm_connector_state *conn_state;
+ 	struct drm_bridge_state *new_state;
+ 	const struct drm_display_mode *mode;
+ 	u32 resp;
+-	int ret;
++	int ret = 0;
+ 
+ 	dev_dbg(mhdp->dev, "bridge enable\n");
+ 
+ 	mutex_lock(&mhdp->link_mutex);
+ 
++	mhdp->connector_ptr = drm_atomic_get_new_connector_for_encoder(state,
++								       bridge->encoder);
++	if (WARN_ON(!mhdp->connector_ptr))
++		goto out;
++
++	conn_state = drm_atomic_get_new_connector_state(state, mhdp->connector_ptr);
++	if (WARN_ON(!conn_state))
++		goto out;
++
+ 	if (mhdp->plugged && !mhdp->link_up) {
+ 		ret = cdns_mhdp_link_up(mhdp);
+ 		if (ret < 0)
+@@ -2015,15 +2024,6 @@ static void cdns_mhdp_atomic_enable(struct drm_bridge *bridge,
+ 	cdns_mhdp_reg_write(mhdp, CDNS_DPTX_CAR,
+ 			    resp | CDNS_VIF_CLK_EN | CDNS_VIF_CLK_RSTN);
+ 
+-	connector = drm_atomic_get_new_connector_for_encoder(state,
+-							     bridge->encoder);
+-	if (WARN_ON(!connector))
+-		goto out;
+-
+-	conn_state = drm_atomic_get_new_connector_state(state, connector);
+-	if (WARN_ON(!conn_state))
+-		goto out;
+-
+ 	if (mhdp->hdcp_supported &&
+ 	    mhdp->hw_state == MHDP_HW_READY &&
+ 	    conn_state->content_protection ==
+@@ -2100,6 +2100,7 @@ static void cdns_mhdp_atomic_disable(struct drm_bridge *bridge,
+ 	if (mhdp->info && mhdp->info->ops && mhdp->info->ops->disable)
+ 		mhdp->info->ops->disable(mhdp);
+ 
++	mhdp->connector_ptr = NULL;
+ 	mutex_unlock(&mhdp->link_mutex);
+ }
+ 
+@@ -2365,7 +2366,7 @@ static void cdns_mhdp_modeset_retry_fn(struct work_struct *work)
+ 
+ 	mhdp = container_of(work, typeof(*mhdp), modeset_retry_work);
+ 
+-	conn = &mhdp->connector;
++	conn = mhdp->connector_ptr;
+ 
+ 	/* Grab the locks before changing connector property */
+ 	mutex_lock(&conn->dev->mode_config.mutex);
+@@ -2442,7 +2443,7 @@ static void cdns_mhdp_hpd_work(struct work_struct *work)
+ 	int ret;
+ 
+ 	ret = cdns_mhdp_update_link_status(mhdp);
+-	if (mhdp->connector.dev) {
++	if (mhdp->connector_ptr) {
+ 		if (ret < 0)
+ 			schedule_work(&mhdp->modeset_retry_work);
+ 		else
+diff --git a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.h b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.h
+index bad2fc0c73066..a76775c768956 100644
+--- a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.h
++++ b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-core.h
+@@ -376,6 +376,7 @@ struct cdns_mhdp_device {
+ 	struct mutex link_mutex;
+ 
+ 	struct drm_connector connector;
++	struct drm_connector *connector_ptr;
+ 	struct drm_bridge bridge;
+ 
+ 	struct cdns_mhdp_link link;
+diff --git a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.c b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.c
+index 31832ba4017f1..3c8532d7f7841 100644
+--- a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.c
++++ b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.c
+@@ -394,7 +394,7 @@ static int _cdns_mhdp_hdcp_disable(struct cdns_mhdp_device *mhdp)
+ 	int ret;
+ 
+ 	dev_dbg(mhdp->dev, "[%s:%d] HDCP is being disabled...\n",
+-		mhdp->connector.name, mhdp->connector.base.id);
++		mhdp->connector_ptr->name, mhdp->connector_ptr->base.id);
+ 
+ 	ret = cdns_mhdp_hdcp_set_config(mhdp, 0, false);
+ 
+@@ -436,6 +436,10 @@ static int cdns_mhdp_hdcp_check_link(struct cdns_mhdp_device *mhdp)
+ 	int ret = 0;
+ 
+ 	mutex_lock(&mhdp->hdcp.mutex);
++
++	if (!mhdp->connector_ptr)
++		goto out;
++
+ 	if (mhdp->hdcp.value == DRM_MODE_CONTENT_PROTECTION_UNDESIRED)
+ 		goto out;
+ 
+@@ -445,7 +449,7 @@ static int cdns_mhdp_hdcp_check_link(struct cdns_mhdp_device *mhdp)
+ 
+ 	dev_err(mhdp->dev,
+ 		"[%s:%d] HDCP link failed, retrying authentication\n",
+-		mhdp->connector.name, mhdp->connector.base.id);
++		mhdp->connector_ptr->name, mhdp->connector_ptr->base.id);
+ 
+ 	ret = _cdns_mhdp_hdcp_disable(mhdp);
+ 	if (ret) {
+@@ -487,13 +491,19 @@ static void cdns_mhdp_hdcp_prop_work(struct work_struct *work)
+ 	struct cdns_mhdp_device *mhdp = container_of(hdcp,
+ 						     struct cdns_mhdp_device,
+ 						     hdcp);
+-	struct drm_device *dev = mhdp->connector.dev;
++	struct drm_device *dev = NULL;
+ 	struct drm_connector_state *state;
+ 
++	if (mhdp->connector_ptr)
++		dev = mhdp->connector_ptr->dev;
++
++	if (!dev)
++		return;
++
+ 	drm_modeset_lock(&dev->mode_config.connection_mutex, NULL);
+ 	mutex_lock(&mhdp->hdcp.mutex);
+ 	if (mhdp->hdcp.value != DRM_MODE_CONTENT_PROTECTION_UNDESIRED) {
+-		state = mhdp->connector.state;
++		state = mhdp->connector_ptr->state;
+ 		state->content_protection = mhdp->hdcp.value;
+ 	}
+ 	mutex_unlock(&mhdp->hdcp.mutex);
 -- 
 2.53.0
 
