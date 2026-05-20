@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-252588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251953-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +JrxL90mDmpq6gUAu9opvQ
-	(envelope-from <stable+bounces-252588-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:25:49 +0200
+	id YOhZDVH9DWok5QUAu9opvQ
+	(envelope-from <stable+bounces-251953-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:28:33 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B28959AD3F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:25:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9A99596421
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:28:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7A749324387D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:17:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A012D35301B4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:49:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB78B347515;
-	Wed, 20 May 2026 18:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A797F3F23B7;
+	Wed, 20 May 2026 17:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mTApXUes"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vg2WH32Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2E3368968;
-	Wed, 20 May 2026 18:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3784B3F1AB8;
+	Wed, 20 May 2026 17:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301068; cv=none; b=YE86hyZRjSgOgMNpguKj23cN3CXZW1B9JMqdoogIhCv026oeNSsq1tMCPhz8TR3BJjMtCmyAzsLTvbZXs8GktJf89iVql3ZoGUYXnA7xcFd8fvNx0PXhNMq7Tab6EmZy1vsjpyjMq+dwLdgtoTsmHdovIBfB5xxvhEGRISoS6Mo=
+	t=1779299362; cv=none; b=tvu7s0R8/oJ89/+AKMOTOuq0MY1iMuiQB8W20Lwn765Ja1Gwlk7xDz2TqRu95jfK9lgJdRqQk4yFdROFmpXFAR2yYCNSKnyMxLKrCeGjE8RZWIcnrLs3ygv6krihy/SgxnWr0mNjITDijhubVv7GhCViFbJ0yYOrzWf7bNhEC/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301068; c=relaxed/simple;
-	bh=rpaZVQ+U71uicrdcdapwVqBy0v6IJ0bFYDvVdOxaxoc=;
+	s=arc-20240116; t=1779299362; c=relaxed/simple;
+	bh=QFQibX+VW2DskrmCHnIILuT8eOuEQ81rifW+k4dZV/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nfXphfTRz51SXJ1B3Kn8rrnZDkTwe9eRkXMt5Mh1GeIXid953lcrOWaR0BqQ+C8wxlwcv/DSyGpDC0zKmIt92JJIAsjCu6luMDwlA6KruFMLhV4zGo6LLnD7p4Jr9nSd3MLGmryJXXPfyn6t/L2ikgO2ci/aObREKv0Hac7j/Jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mTApXUes; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E51AC1F000E9;
-	Wed, 20 May 2026 18:17:46 +0000 (UTC)
+	 MIME-Version; b=Afr81jIEUSwpatLb2Acz0j56ABkPyikBmgZLAyVcP5Df0F2SVJtXNdGn32BaOVzOrXvRiPn+V4bFymq7E7LiMIteGl3a8ab6MDUOdnU2KZ8uUy7gVyUrSDVGfstBLPHd+9AEyY1XfV0s8O2qFf5vYm+Y0wTK55QnNSwoLz1PVWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vg2WH32Q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DA1B1F000E9;
+	Wed, 20 May 2026 17:49:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301067;
-	bh=DB/FAgiixtfo69qq8+8WLJrDABTDv5KTAAOtzTMD/yI=;
+	s=korg; t=1779299361;
+	bh=OFUXq6YMdiQWR1QDwUyMiXRAe/9RvuSSnS8UZUNHr8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mTApXUesLrr0jEofBxmy5Djk1DuLDvqg5ecAxe/pG3igQAnPrCvdl3GI7Gz74kDQJ
-	 CNNloK8fxHK4olF5Kf4WDwY4vaAe4hDtx3MqIPK03wLxacNI8bjva/xaSdt4BzoqPH
-	 o2X67dE/wgJLBnt68YXsmG3K56RASNhN6jIrTMmc=
+	b=Vg2WH32QUF18uR/7zlRNnv0h9MaEUXu7voyO72JsosTukIziTfjbhHn0kWXiV720I
+	 5OzqudxAFSsq8tZo3sc8I+aTR4kn7coF15d21k3N9GIaH9jT9ndo+DltMhNbzbRXZU
+	 1dEPgbgITck15NRBCQa72jT9PMVw+Whg4QbbMjBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
-	Peng Fan <peng.fan@nxp.com>,
-	Abel Vesa <abel.vesa@oss.qualcomm.com>,
+	Petr Malat <oss@malat.biz>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 414/666] clk: imx8mq: Correct the CSI PHY sels
+Subject: [PATCH 6.18 742/957] cgroup: Increment nr_dying_subsys_* from rmdir context
 Date: Wed, 20 May 2026 18:20:25 +0200
-Message-ID: <20260520162120.236698645@linuxfoundation.org>
+Message-ID: <20260520162150.651796650@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,74 +73,100 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252588-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-251953-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,qualcomm.com:email,nxp.com:email,i.mx:url]
-X-Rspamd-Queue-Id: 2B28959AD3F
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,malat.biz:email]
+X-Rspamd-Queue-Id: A9A99596421
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+From: Petr Malat <oss@malat.biz>
 
-[ Upstream commit d16f57caa78776e6e8a88b96cb2597797b376138 ]
+[ Upstream commit 13e786b64bd3fd81c7eb22aa32bf8305c32f2ccf ]
 
-According to i.MX 8M Quad Reference Manual (Section 5.1.2 Table 5-1)
-MIPI_CSI1_PHY_REF_CLK_ROOT and MIPI_CSI2_PHY_REF_CLK_ROOT have
-SYSTEM_PLL2_DIV3 available as their second source, which corresponds
-to sys2_pll_333m rather than sys2_pll_125m.
+Incrementing nr_dying_subsys_* in offline_css(), which is executed by
+cgroup_offline_wq worker, leads to a race where user can see the value
+to be 0 if he reads cgroup.stat after calling rmdir and before the worker
+executes. This makes the user wrongly expect resources released by the
+removed cgroup to be available for a new assignment.
 
-Fixes: b80522040cd3 ("clk: imx: Add clock driver for i.MX8MQ CCM")
-Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Link: https://patch.msgid.link/20260128-imx8mq-csi-clk-v1-1-ac028ed26e8c@puri.sm
-Signed-off-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+Increment nr_dying_subsys_* from kill_css(), which is called from the
+cgroup_rmdir() context.
+
+Fixes: ab0312526867 ("cgroup: Show # of subsystem CSSes in cgroup.stat")
+Signed-off-by: Petr Malat <oss@malat.biz>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx8mq.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/cgroup/cgroup.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-imx8mq.c b/drivers/clk/imx/clk-imx8mq.c
-index f70ed231b92d6..cedc8a02aa1f0 100644
---- a/drivers/clk/imx/clk-imx8mq.c
-+++ b/drivers/clk/imx/clk-imx8mq.c
-@@ -237,7 +237,7 @@ static const char * const imx8mq_dsi_esc_sels[] = {"osc_25m", "sys2_pll_100m", "
- static const char * const imx8mq_csi1_core_sels[] = {"osc_25m", "sys1_pll_266m", "sys2_pll_250m", "sys1_pll_800m",
- 					      "sys2_pll_1000m", "sys3_pll_out", "audio_pll2_out", "video_pll1_out", };
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index b60fc0b2c6036..1239bff9a994c 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -5773,16 +5773,6 @@ static void offline_css(struct cgroup_subsys_state *css)
+ 	RCU_INIT_POINTER(css->cgroup->subsys[ss->id], NULL);
  
--static const char * const imx8mq_csi1_phy_sels[] = {"osc_25m", "sys2_pll_125m", "sys2_pll_100m", "sys1_pll_800m",
-+static const char * const imx8mq_csi1_phy_sels[] = {"osc_25m", "sys2_pll_333m", "sys2_pll_100m", "sys1_pll_800m",
- 					     "sys2_pll_1000m", "clk_ext2", "audio_pll2_out", "video_pll1_out", };
+ 	wake_up_all(&css->cgroup->offline_waitq);
+-
+-	css->cgroup->nr_dying_subsys[ss->id]++;
+-	/*
+-	 * Parent css and cgroup cannot be freed until after the freeing
+-	 * of child css, see css_free_rwork_fn().
+-	 */
+-	while ((css = css->parent)) {
+-		css->nr_descendants--;
+-		css->cgroup->nr_dying_subsys[ss->id]++;
+-	}
+ }
  
- static const char * const imx8mq_csi1_esc_sels[] = {"osc_25m", "sys2_pll_100m", "sys1_pll_80m", "sys1_pll_800m",
-@@ -246,7 +246,7 @@ static const char * const imx8mq_csi1_esc_sels[] = {"osc_25m", "sys2_pll_100m",
- static const char * const imx8mq_csi2_core_sels[] = {"osc_25m", "sys1_pll_266m", "sys2_pll_250m", "sys1_pll_800m",
- 					      "sys2_pll_1000m", "sys3_pll_out", "audio_pll2_out", "video_pll1_out", };
+ /**
+@@ -6094,6 +6084,8 @@ static void css_killed_ref_fn(struct percpu_ref *ref)
+  */
+ static void kill_css(struct cgroup_subsys_state *css)
+ {
++	struct cgroup_subsys *ss = css->ss;
++
+ 	lockdep_assert_held(&cgroup_mutex);
  
--static const char * const imx8mq_csi2_phy_sels[] = {"osc_25m", "sys2_pll_125m", "sys2_pll_100m", "sys1_pll_800m",
-+static const char * const imx8mq_csi2_phy_sels[] = {"osc_25m", "sys2_pll_333m", "sys2_pll_100m", "sys1_pll_800m",
- 					     "sys2_pll_1000m", "clk_ext2", "audio_pll2_out", "video_pll1_out", };
+ 	if (css->flags & CSS_DYING)
+@@ -6130,6 +6122,16 @@ static void kill_css(struct cgroup_subsys_state *css)
+ 	 * css is confirmed to be seen as killed on all CPUs.
+ 	 */
+ 	percpu_ref_kill_and_confirm(&css->refcnt, css_killed_ref_fn);
++
++	css->cgroup->nr_dying_subsys[ss->id]++;
++	/*
++	 * Parent css and cgroup cannot be freed until after the freeing
++	 * of child css, see css_free_rwork_fn().
++	 */
++	while ((css = css->parent)) {
++		css->nr_descendants--;
++		css->cgroup->nr_dying_subsys[ss->id]++;
++	}
+ }
  
- static const char * const imx8mq_csi2_esc_sels[] = {"osc_25m", "sys2_pll_100m", "sys1_pll_80m", "sys1_pll_800m",
+ /**
 -- 
 2.53.0
 
