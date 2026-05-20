@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-252784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253288-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cEyfJn3+DWpV5QUAu9opvQ
-	(envelope-from <stable+bounces-252784-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:33:33 +0200
+	id MNfcJcgHDmp25gUAu9opvQ
+	(envelope-from <stable+bounces-253288-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:13:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F8B85968F2
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:33:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 151C9597F73
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:13:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F0ED73100A89
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:26:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7B629399F351
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 653E93F8896;
-	Wed, 20 May 2026 18:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07842401A16;
+	Wed, 20 May 2026 18:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQj4LG+2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EiuwbmpM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15559371048;
-	Wed, 20 May 2026 18:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D49400E0D;
+	Wed, 20 May 2026 18:48:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301582; cv=none; b=EvaioPJ84Q7iOVYooEYbEBt7YkvOYyaSoMsWqGfQdHtSlL1r+aZMw4E/neLW7x632fdwxLj4jyo6I/TlrAs7CRI6xQ07KEcu4e2fATnH7E8A6hpwDrr2DG35gAOH6QmkmCYWi/WGH41hBQbaWFyGVQ2LGNPlD6tj8+JvjqVslsk=
+	t=1779302886; cv=none; b=r+fbne4VkwyogBIUazrugY9tIqcXkyNfHzmEyjlGfVXhmfGq26zKkFWYaMQjDQSH/x8w6lIDTjmXWo0QdNCmT1aNSo1AL8m5oXEO2rpdknP5tDgdsd1jXFyX47N3/QxveltXyPlEftw1/1hJLuCKwoiVFrYEuxnVFL5W4D0wZT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301582; c=relaxed/simple;
-	bh=XPv4AmUbp4V6m4JUO8swVpUwv73Y965yICTo8ubQkZ0=;
+	s=arc-20240116; t=1779302886; c=relaxed/simple;
+	bh=wbk+14nutiIPNxn1Z2zLN03NPQp070XgxRRRvVXpoiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o1UFdKGdpf6y077u5Gu+Nt2WxpQX0mOHiwSUB7TdZ2qSDkGyEAaSefpIXtMtB6+eqa4Vb/X0hojmsyulh4tZN+e7/Ge1Rehqz4BnoBsX+sJKGyOXmtBT6YYwXBppptXOtfPuQwcNe3vEx0q8MywWS0FxGGFvVnS5XkVxWMp/9Uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQj4LG+2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 790481F00894;
-	Wed, 20 May 2026 18:26:20 +0000 (UTC)
+	 MIME-Version; b=Cu8tHWuE1K5syZA+WSziy4ApdM1JL1B56k2yx+7fbz3giP+EZ6NoxOGN2AYYekZXdpd8Qkke9NQRGo9h+gPBL0awY7LJgYDce7Jf0fK+v5s0ml6cvDhG2A05cEx0ntZ+1VeCAgoN3w03tKGvjo1IjTdsYx+hAJ5+b11e3GhLKMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EiuwbmpM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C6211F000E9;
+	Wed, 20 May 2026 18:48:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301581;
-	bh=tOTA3E3CvzzvCVfO7CIRr7RFytFZBBTer4HEmotKIOw=;
+	s=korg; t=1779302885;
+	bh=bMkoKxhnOE9tMDmVttFABNgVZ+0ki9XD9tvpAYI9BpY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yQj4LG+2KHSlJlu+lmfPYcl0fmrdKs0nClGeJb4iQUqiZhD7ZVy0ioaCm30+rwGQs
-	 VxcElIcClYEWngJacSgSq4j4LEwlgBm4RPwVo6XU6YGlHFJ7eXNlPz3r1vyWwB4mLX
-	 kha9Y57tt7GhnLQAdEbPqZiqngLdgbjIUhlrgP3E=
+	b=EiuwbmpMQ//2h8zEyTkH5v+3nehiEcu2VHXjKBoB9H4Vttpt8QZ0PpJz52abQqSJv
+	 2bOpPC7nv6G7ew+7CGrO2ou/7fwn9EYj0oAntnXWcprNmdQQXJFNgQHBV1c3iJfbN2
+	 xKFEe/TqRTh4OSfw9i2y+zFQz8fJdN9OmASELIU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Simon Horman <horms@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Ido Schimmel <idosch@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 607/666] netpoll: Extract IPv6 address retrieval function
+Subject: [PATCH 6.6 395/508] neigh: let neigh_xmit take skb ownership
 Date: Wed, 20 May 2026 18:23:38 +0200
-Message-ID: <20260520162124.425612704@linuxfoundation.org>
+Message-ID: <20260520162107.173946337@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,158 +70,104 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252784-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253288-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 4F8B85968F2
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,strlen.de:email,nvidia.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 151C9597F73
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 6ad7969a361cbec5822285fb39203678ff462b64 ]
+[ Upstream commit 4438113be604ee67a7bf4f81da6e1cca41332ce4 ]
 
-Extract the IPv6 address retrieval logic from netpoll_setup() into
-a dedicated helper function netpoll_take_ipv6() to improve code
-organization and readability.
+neigh_xmit always releases the skb, except when no neighbour table is
+found. But even the first added user of neigh_xmit (mpls) relied on
+neigh_xmit to release the skb (or queue it for tx).
 
-The function handles obtaining the local IPv6 address from the
-network device, including proper address type matching between
-local and remote addresses (link-local vs global), and includes
-appropriate error handling when IPv6 is not supported or no
-suitable address is available.
+sashiko reported:
+ If neigh_xmit() is called with an uninitialized neighbor table (for
+ example, NEIGH_ND_TABLE when IPv6 is disabled), it returns -EAFNOSUPPORT
+ and bypasses its internal out_kfree_skb error path.  Because the return
+ value of neigh_xmit() is ignored here, does this leak the SKB?
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250618-netpoll_ip_ref-v1-3-c2ac00fe558f@debian.org
+Assume full ownership and remove the last code path that doesn't
+xmit or free skb.
+
+Fixes: 4fd3d7d9e868 ("neigh: Add helper function neigh_xmit")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260424145843.74055-1-fw@strlen.de
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 76b93a810757 ("netpoll: pass buffer size to egress_dev() to avoid MAC truncation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/netpoll.c | 76 +++++++++++++++++++++++++++-------------------
- 1 file changed, 44 insertions(+), 32 deletions(-)
+ net/core/neighbour.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index b754341db50fe..59cb4d4d28e10 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -721,6 +721,47 @@ static void netpoll_wait_carrier(struct netpoll *np, struct net_device *ndev,
- 	}
- }
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index 8f45692265ce3..bc9690a3d60e9 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -3164,8 +3164,10 @@ int neigh_xmit(int index, struct net_device *dev,
  
-+/*
-+ * Take the IPv6 from ndev and populate local_ip structure in netpoll
-+ */
-+static int netpoll_take_ipv6(struct netpoll *np, struct net_device *ndev)
-+{
-+	char buf[MAC_ADDR_STR_LEN + 1];
-+	int err = -EDESTADDRREQ;
-+	struct inet6_dev *idev;
-+
-+	if (!IS_ENABLED(CONFIG_IPV6)) {
-+		np_err(np, "IPv6 is not supported %s, aborting\n",
-+		       egress_dev(np, buf));
-+		return -EINVAL;
-+	}
-+
-+	idev = __in6_dev_get(ndev);
-+	if (idev) {
-+		struct inet6_ifaddr *ifp;
-+
-+		read_lock_bh(&idev->lock);
-+		list_for_each_entry(ifp, &idev->addr_list, if_list) {
-+			if (!!(ipv6_addr_type(&ifp->addr) & IPV6_ADDR_LINKLOCAL) !=
-+				!!(ipv6_addr_type(&np->remote_ip.in6) & IPV6_ADDR_LINKLOCAL))
-+				continue;
-+			/* Got the IP, let's return */
-+			np->local_ip.in6 = ifp->addr;
-+			err = 0;
-+			break;
+ 		rcu_read_lock();
+ 		tbl = rcu_dereference(neigh_tables[index]);
+-		if (!tbl)
+-			goto out_unlock;
++		if (!tbl) {
++			rcu_read_unlock();
++			goto out_kfree_skb;
 +		}
-+		read_unlock_bh(&idev->lock);
-+	}
-+	if (err) {
-+		np_err(np, "no IPv6 address for %s, aborting\n",
-+		       egress_dev(np, buf));
-+		return err;
-+	}
-+
-+	np_info(np, "local IPv6 %pI6c\n", &np->local_ip.in6);
-+	return 0;
-+}
-+
- /*
-  * Take the IPv4 from ndev and populate local_ip structure in netpoll
-  */
-@@ -815,41 +856,12 @@ int netpoll_setup(struct netpoll *np)
- 			err = netpoll_take_ipv4(np, ndev);
- 			if (err)
- 				goto put;
--			ip_overwritten = true;
- 		} else {
--#if IS_ENABLED(CONFIG_IPV6)
--			struct inet6_dev *idev;
--
--			err = -EDESTADDRREQ;
--			idev = __in6_dev_get(ndev);
--			if (idev) {
--				struct inet6_ifaddr *ifp;
--
--				read_lock_bh(&idev->lock);
--				list_for_each_entry(ifp, &idev->addr_list, if_list) {
--					if (!!(ipv6_addr_type(&ifp->addr) & IPV6_ADDR_LINKLOCAL) !=
--					    !!(ipv6_addr_type(&np->remote_ip.in6) & IPV6_ADDR_LINKLOCAL))
--						continue;
--					np->local_ip.in6 = ifp->addr;
--					ip_overwritten = true;
--					err = 0;
--					break;
--				}
--				read_unlock_bh(&idev->lock);
--			}
--			if (err) {
--				np_err(np, "no IPv6 address for %s, aborting\n",
--				       egress_dev(np, buf));
-+			err = netpoll_take_ipv6(np, ndev);
-+			if (err)
- 				goto put;
--			} else
--				np_info(np, "local IPv6 %pI6c\n", &np->local_ip.in6);
--#else
--			np_err(np, "IPv6 is not supported %s, aborting\n",
--			       egress_dev(np, buf));
--			err = -EINVAL;
--			goto put;
--#endif
- 		}
-+		ip_overwritten = true;
- 	}
+ 		if (index == NEIGH_ARP_TABLE) {
+ 			u32 key = *((u32 *)addr);
  
- 	err = __netpoll_setup(np, ndev);
+@@ -3181,7 +3183,6 @@ int neigh_xmit(int index, struct net_device *dev,
+ 			goto out_kfree_skb;
+ 		}
+ 		err = READ_ONCE(neigh->output)(neigh, skb);
+-out_unlock:
+ 		rcu_read_unlock();
+ 	}
+ 	else if (index == NEIGH_LINK_TABLE) {
+@@ -3191,11 +3192,10 @@ int neigh_xmit(int index, struct net_device *dev,
+ 			goto out_kfree_skb;
+ 		err = dev_queue_xmit(skb);
+ 	}
+-out:
+ 	return err;
+ out_kfree_skb:
+ 	kfree_skb(skb);
+-	goto out;
++	return err;
+ }
+ EXPORT_SYMBOL(neigh_xmit);
+ 
 -- 
 2.53.0
 
