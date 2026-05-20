@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-252302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250753-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gOJbDxkTDmoW6AUAu9opvQ
-	(envelope-from <stable+bounces-252302-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:01:29 +0200
+	id MEtmBYbsDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-250753-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:16:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65A5859906A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:01:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4A635933B1
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:16:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6596C321EAAC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:06:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7836A307D5CA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:57:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA813FC5A9;
-	Wed, 20 May 2026 18:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B99373CAE61;
+	Wed, 20 May 2026 16:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OK6mZRfd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oA9N09jR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96DC436CE19;
-	Wed, 20 May 2026 18:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6673539C00B;
+	Wed, 20 May 2026 16:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300320; cv=none; b=VIMzOp3BhOzeJCT/zC5wuFkZohLB4Ar7Zvm3hcGNTFw36CaEuvoSBVjvfDzC5V5nVF3aaSkuo54UP+F2f39zAhF6DIfki7BnTdaglQEiwzQl/Uo75sca2YCqPOfjy4KpRQmcEZ2TT9H8DzltkUcDHDrpbN3mbSWiTh5L+n0Xr44=
+	t=1779296227; cv=none; b=dGdayWM6HgawT2TOqMksJ9fYB0qtic5LI/u3rVkCzbAJDZ4VyGpBVoAjliIF4Pt9lI2idFVCNwLnaO8W0e3DDo7v144cGno+WmYufJHxexQnE9PsKrHY7Vd493cw8wIWXJFeXmPW9phaRhfvcBrwunJ0Pum434CawPU2gAMoO3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300320; c=relaxed/simple;
-	bh=URsdik23wF4Qa4aZGptMFA3dLUPw8l2li6pyCH1ko50=;
+	s=arc-20240116; t=1779296227; c=relaxed/simple;
+	bh=bxo+D5yr3QtRyJ3jRAJ5DnoTAv5OcJjLAXbqOUOur7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eSzD3q3c6qButPMXF3Z7fWHubzu6QotuRy8nhsu/jahwI6rzcZp+1WMbD5cjkNbRLqLeJLMTtDDEluYr3OXz8ZD3lN6+O3mZUYOJXbA4qQlisu34cGI2fDxgquFjiIBrfrLAZQwgp3OA79pkweexSXn7sDRxxoqUN7eHwuJd+Uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OK6mZRfd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 098B81F000E9;
-	Wed, 20 May 2026 18:05:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ssKcUnqT9QyFZEBXcNYIY8XAN0Km4B1oQH1exqtwVmXzqbRg6htR+LZkgI5wZajDEGO32jDpDMB2sdE/4Eo5CTKDmu0zyaIIIbuSHbr8ZQCUtRKPjdl30mDiifDRBNNMSWtf5Jrg5DW5P9ALQdctXwL5o5SMjkws8MUoyfs7Yik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oA9N09jR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC72B1F000E9;
+	Wed, 20 May 2026 16:57:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300319;
-	bh=0+bdgk1xrAyl4PDoeUDkOGWlBwB9V/fBzWLOmkGoEjI=;
+	s=korg; t=1779296226;
+	bh=EcBDjIJd1Bni1l4IR0Xf0wBgxw+oI36fSonpUNEMwCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OK6mZRfdjqq5B/oXS718qolTrQVEAlJzOvw0WTGFX2iPDu0I2GxnzDpvZEUtqoZUo
-	 MQxfK+9idED2IdKFZa504wRbWxDR3waaqUjtckcpLkylyKQ30pHs2MYMhpeGCVyZMe
-	 VFjUD7+WLZu5Tmw8Cmg+HrYiX446w3ptMvtT5J1o=
+	b=oA9N09jRsKFDvDBuZFdYWx9FhlLeKENFRSNsELnwBGTZGmeGFijCjgVKid81+RUeT
+	 tJP08I2kbPXiobiYjYsPKZnMipZ4lfNErJq+xYdzA49jU7/y/74+IA0ms60029s6y4
+	 BwNq0FVzcUw0K4XOpei31OoyMbqJaQXxe8S4RAQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 131/666] dm cache: fix dirty mapping checking in passthrough mode switching
+Subject: [PATCH 7.0 0692/1146] platform/x86: dell-wmi-sysman: bound enumeration string aggregation
 Date: Wed, 20 May 2026 18:15:42 +0200
-Message-ID: <20260520162114.052079104@linuxfoundation.org>
+Message-ID: <20260520162203.849171861@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,186 +63,130 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252302-lists,stable=lfdr.de];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250753-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 65A5859906A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,iscas.ac.cn:email,msgid.link:url]
+X-Rspamd-Queue-Id: B4A635933B1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-[ Upstream commit 322586745bd1a0e5f3559fd1635fdeb4dbd1d6b8 ]
+[ Upstream commit 3c34471c26abc52a37f5ad90949e2e4b8027eb14 ]
 
-As mentioned in commit 9b1cc9f251af ("dm cache: share cache-metadata
-object across inactive and active DM tables"), dm-cache assumed table
-reload occurs after suspension, while LVM's table preload breaks this
-assumption. The dirty mapping check for passthrough mode was designed
-around this assumption and is performed during table creation, causing
-the check to fail with preload while metadata updates are ongoing. This
-risks loading dirty mappings into passthrough mode, resulting in data
-loss.
+populate_enum_data() aggregates firmware-provided value-modifier
+and possible-value strings into fixed 512-byte struct members.
+The current code bounds each individual source string but then
+appends every string and separator with raw strcat() and no
+remaining-space check.
 
-Reproduce steps:
+Switch the aggregation loops to a bounded append helper and
+reject enumeration packages whose combined strings do not fit
+in the destination buffers.
 
-1. Create a writeback cache with zero migration_threshold to produce
-   dirty mappings
-
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 131072 linear /dev/sdc 8192"
-dmsetup create corig --table "0 262144 linear /dev/sdc 262144"
-dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-dmsetup create cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writeback smq \
-2 migration_threshold 0"
-
-2. Preload a table in passthrough mode
-
-dmsetup reload cache --table "0 262144 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 passthrough smq 0"
-
-3. Write to the first cache block to make it dirty
-
-fio --filename=/dev/mapper/cache --name=populate --rw=write --bs=4k \
---direct=1 --size=64k
-
-4. Resume the inactive table. Now it's possible to load the dirty block
-   into passthrough mode.
-
-dmsetup resume cache
-
-Fix by moving the checks to the preresume phase to support table
-preloading. Also remove the unused function dm_cache_metadata_all_clean.
-
-Fixes: 2ee57d587357 ("dm cache: add passthrough mode")
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: e8a60aa7404b ("platform/x86: Introduce support for Systems Management Driver over WMI for Dell Systems")
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Link: https://patch.msgid.link/20260408084501.1-dell-wmi-sysman-v2-pengpeng@iscas.ac.cn
+[ij: add include]
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-cache-metadata.c | 11 -----------
- drivers/md/dm-cache-metadata.h |  5 -----
- drivers/md/dm-cache-target.c   | 25 ++++++++-----------------
- 3 files changed, 8 insertions(+), 33 deletions(-)
+ .../dell/dell-wmi-sysman/enum-attributes.c    | 34 +++++++++++++++----
+ 1 file changed, 28 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/md/dm-cache-metadata.c b/drivers/md/dm-cache-metadata.c
-index 24cd87fddf752..4447679cfc471 100644
---- a/drivers/md/dm-cache-metadata.c
-+++ b/drivers/md/dm-cache-metadata.c
-@@ -1747,17 +1747,6 @@ int dm_cache_write_hints(struct dm_cache_metadata *cmd, struct dm_cache_policy *
- 	return r;
- }
- 
--int dm_cache_metadata_all_clean(struct dm_cache_metadata *cmd, bool *result)
--{
--	int r;
--
--	READ_LOCK(cmd);
--	r = blocks_are_unmapped_or_clean(cmd, 0, cmd->cache_blocks, result);
--	READ_UNLOCK(cmd);
--
--	return r;
--}
--
- void dm_cache_metadata_set_read_only(struct dm_cache_metadata *cmd)
- {
- 	WRITE_LOCK_VOID(cmd);
-diff --git a/drivers/md/dm-cache-metadata.h b/drivers/md/dm-cache-metadata.h
-index 57afc70479472..24e4af14fcca4 100644
---- a/drivers/md/dm-cache-metadata.h
-+++ b/drivers/md/dm-cache-metadata.h
-@@ -138,11 +138,6 @@ void dm_cache_dump(struct dm_cache_metadata *cmd);
+diff --git a/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c b/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c
+index 09996fbdc7074..a85639d8a076f 100644
+--- a/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c
++++ b/drivers/platform/x86/dell/dell-wmi-sysman/enum-attributes.c
+@@ -6,10 +6,32 @@
+  *  Copyright (c) 2020 Dell Inc.
   */
- int dm_cache_write_hints(struct dm_cache_metadata *cmd, struct dm_cache_policy *p);
  
--/*
-- * Query method.  Are all the blocks in the cache clean?
-- */
--int dm_cache_metadata_all_clean(struct dm_cache_metadata *cmd, bool *result);
--
- int dm_cache_metadata_needs_check(struct dm_cache_metadata *cmd, bool *result);
- int dm_cache_metadata_set_needs_check(struct dm_cache_metadata *cmd);
- void dm_cache_metadata_set_read_only(struct dm_cache_metadata *cmd);
-diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
-index c9a7fd97b7304..68751841e124f 100644
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -2506,23 +2506,8 @@ static int cache_create(struct cache_args *ca, struct cache **result)
- 		goto bad;
++#include <linux/bug.h>
++
+ #include "dell-wmi-sysman.h"
+ 
+ get_instance_id(enumeration);
+ 
++static int append_enum_string(char *dest, const char *src)
++{
++	size_t dest_len = strlen(dest);
++	ssize_t copied;
++
++	if (WARN_ON_ONCE(dest_len >= MAX_BUFF))
++		return -EINVAL;
++
++	copied = strscpy(dest + dest_len, src, MAX_BUFF - dest_len);
++	if (copied < 0)
++		return -EINVAL;
++
++	dest_len += copied;
++	copied = strscpy(dest + dest_len, ";", MAX_BUFF - dest_len);
++	if (copied < 0)
++		return -EINVAL;
++
++	return 0;
++}
++
+ static ssize_t current_value_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf)
+ {
+ 	int instance_id = get_enumeration_instance_id(kobj);
+@@ -176,9 +198,9 @@ int populate_enum_data(union acpi_object *enumeration_obj, int instance_id,
+ 			return -EINVAL;
+ 		if (check_property_type(enumeration, next_obj, ACPI_TYPE_STRING))
+ 			return -EINVAL;
+-		strcat(wmi_priv.enumeration_data[instance_id].dell_value_modifier,
+-			enumeration_obj[next_obj++].string.pointer);
+-		strcat(wmi_priv.enumeration_data[instance_id].dell_value_modifier, ";");
++		if (append_enum_string(wmi_priv.enumeration_data[instance_id].dell_value_modifier,
++				       enumeration_obj[next_obj++].string.pointer))
++			return -EINVAL;
  	}
  
--	if (passthrough_mode(cache)) {
--		bool all_clean;
--
--		r = dm_cache_metadata_all_clean(cache->cmd, &all_clean);
--		if (r) {
--			*error = "dm_cache_metadata_all_clean() failed";
--			goto bad;
--		}
--
--		if (!all_clean) {
--			*error = "Cannot enter passthrough mode unless all blocks are clean";
--			r = -EINVAL;
--			goto bad;
--		}
--
-+	if (passthrough_mode(cache))
- 		policy_allow_migrations(cache->policy, false);
--	}
+ 	if (next_obj >= enum_property_count)
+@@ -193,9 +215,9 @@ int populate_enum_data(union acpi_object *enumeration_obj, int instance_id,
+ 			return -EINVAL;
+ 		if (check_property_type(enumeration, next_obj, ACPI_TYPE_STRING))
+ 			return -EINVAL;
+-		strcat(wmi_priv.enumeration_data[instance_id].possible_values,
+-			enumeration_obj[next_obj++].string.pointer);
+-		strcat(wmi_priv.enumeration_data[instance_id].possible_values, ";");
++		if (append_enum_string(wmi_priv.enumeration_data[instance_id].possible_values,
++				       enumeration_obj[next_obj++].string.pointer))
++			return -EINVAL;
+ 	}
  
- 	spin_lock_init(&cache->lock);
- 	bio_list_init(&cache->deferred_bios);
-@@ -2848,6 +2833,12 @@ static int load_mapping(void *context, dm_oblock_t oblock, dm_cblock_t cblock,
- 	struct cache *cache = context;
- 
- 	if (dirty) {
-+		if (passthrough_mode(cache)) {
-+			DMERR("%s: cannot enter passthrough mode unless all blocks are clean",
-+			      cache_device_name(cache));
-+			return -EBUSY;
-+		}
-+
- 		set_bit(from_cblock(cblock), cache->dirty_bitset);
- 		atomic_inc(&cache->nr_dirty);
- 	} else
-@@ -3081,7 +3072,7 @@ static int cache_preresume(struct dm_target *ti)
- 					   load_filtered_mapping, cache);
- 		if (r) {
- 			DMERR("%s: could not load cache mappings", cache_device_name(cache));
--			if (r != -EFBIG)
-+			if (r != -EFBIG && r != -EBUSY)
- 				metadata_operation_failed(cache, "dm_cache_load_mappings", r);
- 			return r;
- 		}
+ 	return sysfs_create_group(attr_name_kobj, &enumeration_attr_group);
 -- 
 2.53.0
 
