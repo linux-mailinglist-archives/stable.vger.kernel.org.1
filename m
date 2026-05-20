@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-253274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252811-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ODvyIWgvDmoK7wUAu9opvQ
-	(envelope-from <stable+bounces-253274-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:02:16 +0200
+	id UK4RHXwEDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-252811-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:59:08 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BDC159BA07
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:02:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE513597863
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:59:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A2F8B39A0D34
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:52:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5192A39ECF10
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662824014A8;
-	Wed, 20 May 2026 18:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D930E3F8706;
+	Wed, 20 May 2026 18:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pimbME0o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uVL4HJCa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBECD401490;
-	Wed, 20 May 2026 18:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8633FBEAA;
+	Wed, 20 May 2026 18:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302850; cv=none; b=FYlD2W3HJVOeMo2ONfLe9I34QZ8BRuVkgiQFP9ofSGh5B6azNf2ExNxW9cBYlBOVd85z1H+sr4oo7NR2DGoMSN2+iCN62Rb5RfVTNDftWA9ANbPXV3jBVycMyvx2ff2O+LCa4dppJ1z1Zztcfs4DCLGceZ6ibx7NZp4v5CBX9ag=
+	t=1779301650; cv=none; b=OWlU9WvY7Ni1Rg6GOl7uMfh76G//khkgkSfIeVIPCaNIuT7atCxZ0N3TatZX6uZdGVCIryFMgyfYjhPIun2tO2FLf0Sg+dKyAaN8ZD+HdET82mU0qsQiiuKtKEOKxBxXfboZuJpDHhBKsh32kYZotBgwG8TVtGUBCO+xtjodGZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302850; c=relaxed/simple;
-	bh=/h7XzYpi3FHxpJQYUrVoaD4MUUaOe98talq+ud7nUZU=;
+	s=arc-20240116; t=1779301650; c=relaxed/simple;
+	bh=tHAdUK2UxvQ2Kc3uWVYMCGos1bftNf4FfWY8xDHn1mM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RK1o2rQlZLQWtqb3J1Gfbx8UFZPh4iuteWebg6UhCwr3Us/utj48ArKKh8q52nhI1FIw+Z6akgx6lEXNgq5GdcdtdKy2iM3vq8L70682LmfOHH4FECJJoCKIyhdxcQjA3dbf0OQAHD/ZOVEoC4L4ni2Zrbxnt2UUJprRXU7LRro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pimbME0o; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F08F1F000E9;
-	Wed, 20 May 2026 18:47:28 +0000 (UTC)
+	 MIME-Version; b=QqELPvO3fjErrwfaQMU9fwntA1UF53lQBFT+hW6ZOwmb/+MAmMCKWptjr3TD4rzp1ni26H9wjzeet0svc4lkVsHYNekuHpSkIs7Spw5fwHm7OIPp9/UKu5FRNJKgc5rvLMDDuwMNlCv9adONPGqyCnol0HxLgh8VVsKDnHOe+Oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uVL4HJCa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05C5A1F000E9;
+	Wed, 20 May 2026 18:27:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302848;
-	bh=ODrAxk1Q1Aqaa6wBCgX8E9j3LKAR7JzZ+8RZvJpd4us=;
+	s=korg; t=1779301649;
+	bh=L79EUcUgtYn8NmDj1xQxiOcPJrgpxbOHQNAS2k3SJhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pimbME0opVjClnkWfVs7y3MSO3nu95Q+EzmOHqWlHmHbFAv5fHNHp9dNEw8qcGaTQ
-	 mZGtFD3CTESf3aj1bX5oyo859RSi+kZO18Z9JERzqc4je1FWqBp0N7+6H/Y+kF34dn
-	 4LcfSUvNVtNrDIqlKEXTynVMVthCS6rGTqWJAC8o=
+	b=uVL4HJCaiyzfiAIaBW2VQy3XP8HiAPA4zs+utwoM64049J/9VdORukfR5jIrGKwhq
+	 o+rUf1Dj6TAKo2mW7GHUlqwuh9FMvjVYihJNdC8kMTByU1khphH7OSEocx5GFOOKrP
+	 ILxJ7+slLOtb9MLsDLsX+iDNczlV8hhMkBMpqBY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moritz Klammler <Moritz.Klammler@ferchau.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 422/508] futex: Prevent lockup in requeue-PI during signal/ timeout wakeup
-Date: Wed, 20 May 2026 18:24:05 +0200
-Message-ID: <20260520162107.747079713@linuxfoundation.org>
+	Yong-Xuan Wang <yongxuan.wang@sifive.com>,
+	Thomas Gleixner <tglx@kernel.org>
+Subject: [PATCH 6.12 635/666] irqchip/riscv-imsic: Clear interrupt move state during CPU offlining
+Date: Wed, 20 May 2026 18:24:06 +0200
+Message-ID: <20260520162125.038322269@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,135 +65,88 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253274-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252811-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 2BDC159BA07
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sifive.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: EE513597863
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
 
-[ Upstream commit bc7304f3ae20972d11db6e0b1b541c63feda5f05 ]
+commit cefafbd561402b0fe6447449364a30315b9b1570 upstream.
 
-During wait-requeue-pi (task A) and requeue-PI (task B) the following
-race can happen:
+Affinity changes of IMSIC interrupts have to be careful to not lose an
+interrupt in the process. Each vector keeps track of an affinity change in
+progress with two pointers in struct imsic_vector.
 
-     Task A                             Task B
-  futex_wait_requeue_pi()
-    futex_setup_timer()
-    futex_do_wait()
-                                   futex_requeue()
-                                        CLASS(hb, hb1)(&key1);
-                                        CLASS(hb, hb2)(&key2);
-        *timeout*
-    futex_requeue_pi_wakeup_sync()
-        requeue_state = Q_REQUEUE_PI_IGNORE
+imsic_vector::move_prev points to the previous CPU target data and
+imsic_vector::move_next to the designated new CPU target data.
 
-    *blocks on hb->lock*
+imsic_vector::move_prev on the new CPU can only be cleared after the
+previous CPU has cleared imsic_vector::move_next, which ususally happens in
+__imsic_remote_sync().
 
-                                        futex_proxy_trylock_atomic()
-                                          futex_requeue_pi_prepare()
-                                            Q_REQUEUE_PI_IGNORE => -EAGAIN
-                                        double_unlock_hb(hb1, hb2)
-                                         *retry*
+In case of CPU hot-unplug __imsic_remote_sync() is not invoked because the
+CPU is already marked offline. That means imsic_vector::move_prev becomes
+stale until the CPU is onlined again.
 
-Task B acquires both hb locks and attempts to acquire the PI-lock of the
-top most waiter (task B). Task A is leaving early due to a signal/
-timeout and started removing itself from the queue. It updates its
-requeue_state but can not remove it from the list because this requires
-the hb lock which is owned by task B.
+The stale pointer prevents further affinity changes for the affected
+interrupts.
 
-Usually task A is able to swoop the lock after task B unlocked it.
-However if task B is of higher priority then task A may not be able to
-wake up in time and acquire the lock before task B gets it again.
-Especially on a UP system where A is never scheduled.
+Solve this by clearing the imsic_vector::move_prev pointers in the CPU
+hotplug offline path.
 
-As a result task A blocks on the lock and task B busy loops, trying to
-make progress but live locks the system instead. Tragic.
+[ tglx: Replace word salad in change log ]
 
-This can be fixed by removing the top most waiter from the list in this
-case. This allows task B to grab the next top waiter (if any) in the
-next iteration and make progress.
-
-Remove the top most waiter if futex_requeue_pi_prepare() fails.
-Let the waiter conditionally remove itself from the list in
-handle_early_requeue_pi_wakeup().
-
-Fixes: 07d91ef510fb1 ("futex: Prevent requeue_pi() lock nesting issue on RT")
-Reported-by: Moritz Klammler <Moritz.Klammler@ferchau.com>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Fixes: 0f67911e821c ("irqchip/riscv-imsic: Separate next and previous pointers in IMSIC vector")
+Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Link: https://patch.msgid.link/20260428103425.dywXyPd3@linutronix.de
-Closes: https://lore.kernel.org/all/VE1PR06MB6894BE61C173D802365BE19DFF4CA@VE1PR06MB6894.eurprd06.prod.outlook.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260508-imsic-v2-1-e9f08dd46cf5@sifive.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/futex/requeue.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/irqchip/irq-riscv-imsic-early.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/futex/requeue.c b/kernel/futex/requeue.c
-index 7e43839ca7b05..60b08247b07dd 100644
---- a/kernel/futex/requeue.c
-+++ b/kernel/futex/requeue.c
-@@ -307,8 +307,11 @@ futex_proxy_trylock_atomic(u32 __user *pifutex, struct futex_hash_bucket *hb1,
- 		return -EINVAL;
+--- a/drivers/irqchip/irq-riscv-imsic-early.c
++++ b/drivers/irqchip/irq-riscv-imsic-early.c
+@@ -139,6 +139,8 @@ static int imsic_dying_cpu(unsigned int
+ 	/* Cleanup IPIs */
+ 	imsic_ipi_dying_cpu();
  
- 	/* Ensure that this does not race against an early wakeup */
--	if (!futex_requeue_pi_prepare(top_waiter, NULL))
-+	if (!futex_requeue_pi_prepare(top_waiter, NULL)) {
-+		plist_del(&top_waiter->list, &hb1->chain);
-+		futex_hb_waiters_dec(hb1);
- 		return -EAGAIN;
-+	}
++	imsic_local_sync_all(false);
++
+ 	/* Mark per-CPU IMSIC state as offline */
+ 	imsic_state_offline();
  
- 	/*
- 	 * Try to take the lock for top_waiter and set the FUTEX_WAITERS bit
-@@ -707,10 +710,12 @@ int handle_early_requeue_pi_wakeup(struct futex_hash_bucket *hb,
- 
- 	/*
- 	 * We were woken prior to requeue by a timeout or a signal.
--	 * Unqueue the futex_q and determine which it was.
-+	 * Conditionally unqueue the futex_q and determine which it was.
- 	 */
--	plist_del(&q->list, &hb->chain);
--	futex_hb_waiters_dec(hb);
-+	if (!plist_node_empty(&q->list)) {
-+		plist_del(&q->list, &hb->chain);
-+		futex_hb_waiters_dec(hb);
-+	}
- 
- 	/* Handle spurious wakeups gracefully */
- 	ret = -EWOULDBLOCK;
--- 
-2.53.0
-
 
 
 
