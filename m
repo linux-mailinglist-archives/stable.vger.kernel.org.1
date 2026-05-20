@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-251132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252101-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qPBKCMHuDWpu4wUAu9opvQ
-	(envelope-from <stable+bounces-251132-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:26:25 +0200
+	id sBXkD+r5DWrO5AUAu9opvQ
+	(envelope-from <stable+bounces-252101-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:14:02 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAD13593A9C
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:26:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D0A15959BF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:14:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A2AD8308A91F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:14:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2142F3078DE8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:56:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B1C3F8892;
-	Wed, 20 May 2026 17:13:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C8B53F44CD;
+	Wed, 20 May 2026 17:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S92TGUzi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VmVsWJ4k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1E73F86FB;
-	Wed, 20 May 2026 17:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378DB1684BE;
+	Wed, 20 May 2026 17:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297182; cv=none; b=ZWPkFPVRmuNvZH7szo0NrnAVPmDfucmqChutXvfu09jREtXwsEZQAtucHFcl1dUOkqnOeKtYM2JofoyFrBhJhCQibEh8crZtf7nI+VrXFDqrvp1MkkLavUXrfw3I8jEfjbSPcQsQPRrdjutL83pJ983/0Z55ibv4o4XWbj9Klfg=
+	t=1779299793; cv=none; b=Dzuwaed+Ww1V6TQ13T8f9W8Aawqx66esOVYUUXxrjFK0QcGYMKfsyjEzHkP0cW5KrBP02OOkx4CqEhF4v5OvcD04WWstj+iJAcTiHXlFNQef2VXOQuQedX0VieA8jz57Ok8yzUTSIMc1+6N6zI9Mc8muf35C4/hfl52KWSLChJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297182; c=relaxed/simple;
-	bh=yHhXkLitJJ7CRXd3TzsJK1pHL1NGlW3jiUoUie9JgtA=;
+	s=arc-20240116; t=1779299793; c=relaxed/simple;
+	bh=Dgo0CewfoW4m0GBksQlajvnXYRHjC4VrGZfRh9fHVVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rCu/9tixue9X5csz/2Wl97Lf1AIf6Q5yKuuykHnSVmrOL1Nrvo2OYq6r1vekvKcYtKPzyACd0tfXOXxEWLmD9+F5Ebdvw08SQ5xgomoxSiPVXC5GqKqgvSKa4rZUccFTXi+ymwtTglQ3sJmvc/i+5rrjhgMoTEUe7fiqdlBaXPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S92TGUzi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 405F01F000E9;
-	Wed, 20 May 2026 17:13:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qhyG4cuMadbyTMHucCtYY3Mgj3XDkE7hebv/KHSObic6zVdORYng52MkzebaNZ9uq1wRN1TzxahncOOBrNEGpY5saPsoN/wAZCJ7yuESLd3HFWHatEdtSn7/cXb9h0pUxP9ff4sHt1HMyd6AtzxIqnUHqTmi1rG/0Q1uuCpHswA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VmVsWJ4k; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B19F1F000E9;
+	Wed, 20 May 2026 17:56:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297180;
-	bh=ti6qtQvMgB4BrGqvadbN6WUPuN93eLZsYBlbihfK5kE=;
+	s=korg; t=1779299791;
+	bh=pjfEQRWKu2apwmLPJvgMrAbhLpqtqdwoAlyMiAP9gRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=S92TGUzi7JJnCBuRN8qZ+qkNcYy3xZiVlXeW7KLzgWZut0nuNYyPDeUv2d9nYSSyV
-	 xaxQuK+sY0MG2k0Fmd9zX57PXkK2u1fLx+Tu0lO7cbUEl2hl9PdvRCEOBK/nYcA7be
-	 Bxk9DovJjRhI+WyrApvC61OOAq7xTa+D9CT9HA6Y=
+	b=VmVsWJ4k83Hmj75IbOLr0oAQl5t9D4x5MvAERZEYgmc5Y94D6qW28WKZGkD602C7w
+	 ugD9O4HLp1Y3ry97T2WeKgmsQNekbUEsn5j7b8l4Cj0QQqIomL9gRkFApFJ+rRZ7FT
+	 K3yGFqPsFVgvd/Sii3YP5SLO6W2dTTaiHEfrA+no=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	Rong Zhang <i@rong.moe>,
-	"Derek J. Clark" <derekjohn.clark@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 7.0 1080/1146] platform/x86: lenovo-wmi-helpers: Fix memory leak in lwmi_dev_evaluate_int()
+	Petr Oros <poros@redhat.com>,
+	Ivan Vecera <ivecera@redhat.com>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Alexander Nowlin <alexander.nowlin@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 847/957] ice: fix missing SMA pin initialization in DPLL subsystem
 Date: Wed, 20 May 2026 18:22:10 +0200
-Message-ID: <20260520162212.679347304@linuxfoundation.org>
+Message-ID: <20260520162152.933577918@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,89 +69,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,squebb.ca,rong.moe,gmail.com,linux.intel.com];
-	TAGGED_FROM(0.00)[bounces-251132-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-252101-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sashiko.dev:url,intel.com:email]
-X-Rspamd-Queue-Id: BAD13593A9C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 0D0A15959BF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rong Zhang <i@rong.moe>
+From: Petr Oros <poros@redhat.com>
 
-commit 0c3887a134f191723b53e2a47e501b534c8723ee upstream.
+[ Upstream commit 56a643aed0f0af5c29ebb4593d4917b78344dd48 ]
 
-lwmi_dev_evaluate_int() leaks output.pointer when retval == NULL (found
-by sashiko.dev [1]).
+The DPLL SMA/U.FL pin redesign introduced ice_dpll_sw_pin_frequency_get()
+which gates frequency reporting on the pin's active flag. This flag is
+determined by ice_dpll_sw_pins_update() from the PCA9575 GPIO expander
+state. Before the redesign, SMA pins were exposed as direct HW
+input/output pins and ice_dpll_frequency_get() returned the CGU
+frequency unconditionally — the PCA9575 state was never consulted.
 
-Fix it by moving `ret_obj = output.pointer' outside of the `if (retval)'
-block so that it is always freed by the __free cleanup callback.
+The PCA9575 powers on with all outputs high, setting ICE_SMA1_DIR_EN,
+ICE_SMA1_TX_EN, ICE_SMA2_DIR_EN and ICE_SMA2_TX_EN. Nothing in the
+driver writes the register during initialization, so
+ice_dpll_sw_pins_update() sees all pins as inactive and
+ice_dpll_sw_pin_frequency_get() permanently returns 0 Hz for every
+SW pin.
 
-No functional change intended.
+Fix this by writing a default SMA configuration in
+ice_dpll_init_info_sw_pins(): clear all SMA bits, then set SMA1 and
+SMA2 as active inputs (DIR_EN=0) with U.FL1 output and U.FL2 input
+disabled. Each SMA/U.FL pair shares a physical signal path so only
+one pin per pair can be active at a time. U.FL pins still report
+frequency 0 after this fix: U.FL1 (output-only) is disabled by
+ICE_SMA1_TX_EN which keeps the TX output buffer off, and U.FL2
+(input-only) is disabled by ICE_SMA2_UFL2_RX_DIS. They can be
+activated by changing the corresponding SMA pin direction via dpll
+netlink.
 
-Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Fixes: e521d16e76cd ("platform/x86: Add lenovo-wmi-helpers")
-Cc: stable@vger.kernel.org
-Link: https://sashiko.dev/#/patchset/20260331181208.421552-1-derekjohn.clark%40gmail.com [1]
-Signed-off-by: Rong Zhang <i@rong.moe>
-Signed-off-by: Derek J. Clark <derekjohn.clark@gmail.com>
-Link: https://patch.msgid.link/20260510042546.436874-2-derekjohn.clark@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2dd5d03c77e2 ("ice: redesign dpll sma/u.fl pins control")
+Signed-off-by: Petr Oros <poros@redhat.com>
+Reviewed-by: Ivan Vecera <ivecera@redhat.com>
+Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260427-jk-iwl-net-petr-oros-fixes-v1-7-cdcb48303fd8@intel.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/lenovo/wmi-helpers.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_dpll.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
---- a/drivers/platform/x86/lenovo/wmi-helpers.c
-+++ b/drivers/platform/x86/lenovo/wmi-helpers.c
-@@ -46,7 +46,6 @@ int lwmi_dev_evaluate_int(struct wmi_dev
- 			  unsigned char *buf, size_t size, u32 *retval)
- {
- 	struct acpi_buffer output = { ACPI_ALLOCATE_BUFFER, NULL };
--	union acpi_object *ret_obj __free(kfree) = NULL;
- 	struct acpi_buffer input = { size, buf };
- 	acpi_status status;
+diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
+index 53b54e395a2ed..c2ad39bfe177d 100644
+--- a/drivers/net/ethernet/intel/ice/ice_dpll.c
++++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
+@@ -3545,6 +3545,7 @@ static int ice_dpll_init_info_sw_pins(struct ice_pf *pf)
+ 	struct ice_dpll_pin *pin;
+ 	u32 phase_adj_max, caps;
+ 	int i, ret;
++	u8 data;
  
-@@ -55,8 +54,9 @@ int lwmi_dev_evaluate_int(struct wmi_dev
- 	if (ACPI_FAILURE(status))
- 		return -EIO;
- 
-+	union acpi_object *ret_obj __free(kfree) = output.pointer;
+ 	if (pf->hw.device_id == ICE_DEV_ID_E810C_QSFP)
+ 		input_idx_offset = ICE_E810_RCLK_PINS_NUM;
+@@ -3604,6 +3605,22 @@ static int ice_dpll_init_info_sw_pins(struct ice_pf *pf)
+ 		}
+ 		ice_dpll_phase_range_set(&pin->prop.phase_range, phase_adj_max);
+ 	}
 +
- 	if (retval) {
--		ret_obj = output.pointer;
- 		if (!ret_obj)
- 			return -ENODATA;
- 
++	/* Initialize the SMA control register to a known-good default state.
++	 * Without this write the PCA9575 GPIO expander retains its power-on
++	 * default (all outputs high) which makes all SW pins appear inactive.
++	 * Set SMA1 and SMA2 as active inputs, disable U.FL1 output and
++	 * U.FL2 input.
++	 */
++	ret = ice_read_sma_ctrl(&pf->hw, &data);
++	if (ret)
++		return ret;
++	data &= ~ICE_ALL_SMA_MASK;
++	data |= ICE_SMA1_TX_EN | ICE_SMA2_TX_EN | ICE_SMA2_UFL2_RX_DIS;
++	ret = ice_write_sma_ctrl(&pf->hw, data);
++	if (ret)
++		return ret;
++
+ 	ret = ice_dpll_pin_state_update(pf, pin, ICE_DPLL_PIN_TYPE_SOFTWARE,
+ 					NULL);
+ 	if (ret)
+-- 
+2.53.0
+
 
 
 
