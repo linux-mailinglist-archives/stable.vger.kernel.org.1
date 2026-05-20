@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250948-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0DG7My4HDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-252515-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:10:38 +0200
+	id aJ9GEVn1DWoz5AUAu9opvQ
+	(envelope-from <stable+bounces-250948-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:54:33 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D430C597E03
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:10:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61D86594E72
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:54:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E6F7B322D3E0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:14:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AF95F31C2412
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:06:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113733F9267;
-	Wed, 20 May 2026 18:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 025D617A309;
+	Wed, 20 May 2026 17:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BD3lszTH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MdpKQP6/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA0C73769E0;
-	Wed, 20 May 2026 18:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A77583F20F0;
+	Wed, 20 May 2026 17:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300875; cv=none; b=qPYlE9wZ8EpuBawwm11flDlcC1fK0kPba9EB68BPwH0aUR9SP7/oIfOtdC382DbaWn4XkQdSw1CQwtm4OOESGFGCHjZIe6fIc5Vyx46OBsky3utfoMiT1zEHetl9fKN+AZfNCm7J/4tAEdKvkyuPXYDIIZ/ANMYPjaSW9B4YvlA=
+	t=1779296707; cv=none; b=k+NxigVXgmBJpo3E6ioR339UTHZ0liNJMrrmhAFa4b9wVyluA0nDKxHpTSyU0oGffpcDJUferUGO1u/xfxFNiuwBo4i6qE7w8+2nOG3uMpXAwcDbVUP6SyT3vqQRV6E3adrOQIiDSuR4vWncQQoIR1LCQH6PfkmLOpGwZL8AAOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300875; c=relaxed/simple;
-	bh=lVYiZpZyep7UI2wW9bjaIoWrjQCNDnbqYPiuZZspI+8=;
+	s=arc-20240116; t=1779296707; c=relaxed/simple;
+	bh=xBRu8gQqbs28eze0o8goWQPyASksOTKAlFNi3AuVBqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JypcNFKn7V/97wwM+JeoQdD0LPm0IwdLBIU1SQDe7TWuSrZj2zSqeVDnwt8KirUvPxaKpoRBD8XTqwzNcxRXeW7H521v1+D1mzTVqabyESgt62E5HItCyuQknBtkANYRDjqyTldc4rjyK8SijSJ59rrXXHozqXqSizcKUbZxZC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BD3lszTH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B6791F00893;
-	Wed, 20 May 2026 18:14:33 +0000 (UTC)
+	 MIME-Version; b=uVYvxzWr1f2ft4UHq9v2mYy3UCHFg5G6OYO8jPktZ8tMTok0hrQGhjCHuiwPu1ZmSfPivANJFlpeLTnRIXfoRPNnlYqt903rE18hJe2eC1yqWzCN/Y/f/8IGj4B9mVFXRkHUcIQPu/bp/3DXWRAEY/axdCUwk04kN16l9Oq7hRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MdpKQP6/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 174331F000E9;
+	Wed, 20 May 2026 17:05:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300874;
-	bh=aG8XPZUaSDlFbcNSnLpoAEvWxpaJrYshgXyMMWIvLxI=;
+	s=korg; t=1779296706;
+	bh=I4D4TJZ0gEUCkL69ouBM94wrPlwPkbwOdt7iBd4Zdmg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BD3lszTHBw7fkma+FPWmrRkHuKoCGmf30xcLF+s5KppilSJoidz6V1OxE6TzQXbvl
-	 71giPZkZv+/xYMenWl06e/ytqoWkvJ8Jyzf1GEY8XP/MgN3K8q+UEZx44pNfXJrXUt
-	 3ODLunINzuijwA2lUD5iXTYVHHz/QxmlHJmYHdoI=
+	b=MdpKQP6/CHQI/ZfvuF/4z+/6+hqQT0Ps4NxpkhkYB29urUp+R4QN5JjMjfOjY11IQ
+	 FCkRNHlf2h0rZ/W+bcKXJ8J7K/aPWMljFQFnrsyjO3Hko3KCwHag6VV0F6vivARVif
+	 MDTqhfvqsI4ma7gepHpJhSjI4+2JFiIsi8/hrZ10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
-	Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Kanchan Joshi <joshi.k@samsung.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 339/666] mtd: parsers: ofpart: call of_node_put() only in ofpart_fail path
+Subject: [PATCH 7.0 0900/1146] nvme-pci: fix missed admin queue sq doorbell write
 Date: Wed, 20 May 2026 18:19:10 +0200
-Message-ID: <20260520162118.581173511@linuxfoundation.org>
+Message-ID: <20260520162208.603221747@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,73 +74,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252515-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250948-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,bootlin.com:email]
-X-Rspamd-Queue-Id: D430C597E03
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,samsung.com:email,lst.de:email]
+X-Rspamd-Queue-Id: 61D86594E72
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 0c87dea1aab86116211cb37387c404c9e9231c39 ]
+[ Upstream commit 1cc4cdae2a3b7730d462d69e30f213fd2efe7807 ]
 
-ofpart_none can only be reached after the for_each_child_of_node() loop
-finishes. for_each_child_of_node() correctly calls of_node_put() for all
-device nodes it iterates over as long as we don't break or jump out of
-the loop.
+We can batch admin commands submitted through io_uring_cmd passthrough,
+which means bd->last may be false and skips the doorbell write to
+aggregate multiple commands per write. If a subsequent command can't be
+dispatched for whatever reason, we have to provide the blk-mq ops'
+commit_rqs callback in order to ensure we properly update the doorbell.
 
-Calling of_node_put() inside the ofpart_none path will wrongly decrement
-the ref count of the last node in the for_each_child_of_node() loop.
-
-Move the call to of_node_put() under the ofpart_fail label to fix this.
-
-Fixes: ebd5a74db74e ("mtd: ofpart: Check availability of reg property instead of name property")
-Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-Tested-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: 58e5bdeb9c2b ("nvme: enable uring-passthrough for admin commands")
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/parsers/ofpart_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mtd/parsers/ofpart_core.c b/drivers/mtd/parsers/ofpart_core.c
-index 09961c6f39496..a5ba78c6723ee 100644
---- a/drivers/mtd/parsers/ofpart_core.c
-+++ b/drivers/mtd/parsers/ofpart_core.c
-@@ -191,11 +191,11 @@ static int parse_fixed_partitions(struct mtd_info *master,
- ofpart_fail:
- 	pr_err("%s: error parsing ofpart partition %pOF (%pOF)\n",
- 	       master->name, pp, mtd_node);
-+	of_node_put(pp);
- 	ret = -EINVAL;
- ofpart_none:
- 	if (dedicated)
- 		of_node_put(ofpart_node);
--	of_node_put(pp);
- 	kfree(parts);
- 	return ret;
- }
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index db5fc9bf66272..4c052ed18cb8d 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -2241,6 +2241,7 @@ static int nvme_create_queue(struct nvme_queue *nvmeq, int qid, bool polled)
+ static const struct blk_mq_ops nvme_mq_admin_ops = {
+ 	.queue_rq	= nvme_queue_rq,
+ 	.complete	= nvme_pci_complete_rq,
++	.commit_rqs	= nvme_commit_rqs,
+ 	.init_hctx	= nvme_admin_init_hctx,
+ 	.init_request	= nvme_pci_init_request,
+ 	.timeout	= nvme_timeout,
 -- 
 2.53.0
 
