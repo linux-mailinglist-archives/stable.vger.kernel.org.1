@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-252903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252444-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aPvSBYD/DWpV5QUAu9opvQ
-	(envelope-from <stable+bounces-252903-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:37:52 +0200
+	id CLj/JikCDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-252444-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:49:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94EC9596CEA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:37:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C4FD597411
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:49:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EE8E73162CFB
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:31:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EC426396FF88
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:11:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D7DB3CD8B8;
-	Wed, 20 May 2026 18:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F1233F9F2A;
+	Wed, 20 May 2026 18:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Br/JFrg3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hs3U/Wka"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B9C343880;
-	Wed, 20 May 2026 18:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC2E3DC4DA;
+	Wed, 20 May 2026 18:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301892; cv=none; b=LqqAJCvkAFmhBrPaExnhuoaDXv7QnARmq/7MwZ8WzUUz72iqawVjv2+/uAdwJ3S1RSPgUBwpFh19UnjYkDUSImpROiJmXfeB3K9jCrb6+clKL9pgL7r5iiMxHCuHOrngL+xemATroP937LSyBb6fXNuXzHjEi/k7oYU8eHFAIGc=
+	t=1779300689; cv=none; b=qeiZ6Be6lM3H9UsBcaswAONjTWUTlnwimyJZP4osNBYp1FMH7k5WVj246mfhjKECwqrZXq65TMVTkOu3D3JSR33s78ye5X5kvGe1mMv5HBmFyu8iv9oF1QZv93PNJXnElbQOBwgkcoXhilDJXcNOhpzeAmXqETv5hripIH+Nee0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301892; c=relaxed/simple;
-	bh=4uaSP/QzAoTxJVBV6mg6r4Ew29TJzTwa7QdgXQm8Gpg=;
+	s=arc-20240116; t=1779300689; c=relaxed/simple;
+	bh=yfByzIFQ4E0hBa+wdLHsTocPb2KCOogil/Y4lN5N+Vo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AJr/Hq1cRFIsI4R3vwP/qPdLMO7PCX2E38bLMVT8mInEZJiAa+gccPXvpRvqgoKA1yUoPoyrGywpWILv1+RuXIDAagwCxmbS7pchwHuFYopf6BQZn5j0LyM5bKuLidV8u2qGpLMdS2zbU9EQCR2oNejkcCijoNkQ2EDoLpBWcvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Br/JFrg3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF82A1F000E9;
-	Wed, 20 May 2026 18:31:29 +0000 (UTC)
+	 MIME-Version; b=r0Iuz6MyP/lv3oSjimaiM5+RlRuE7xQHm40Hc9nG+ipNjKoqfysAcGspTl6uq7jWf8g6f/33mDCxafJ0EfIZ/+DD55DKcUtGhjI2hYc79q626VZmKfYMCkXcUa/c2yyNq6Xa0pRj2tD+jH78grQ+xfjp4U+gOOiuux/l89YC70c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hs3U/Wka; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C26B81F000E9;
+	Wed, 20 May 2026 18:11:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301890;
-	bh=PIJswl3d/urilH81Y4cZ0+yHO4e+zdw8kztXOo0WYe0=;
+	s=korg; t=1779300688;
+	bh=vKgAlEoDMGPASXZodvmmNI4H701jP1mQ+K2LFXZFYlg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Br/JFrg35JsXeZ0QPhyqkl7z7pSVCOmWuoafJEAn0lKFokrKOF/NkRXqsilBhevW7
-	 WynZpB7BW1A0Fg2iy9AfFtCn4XRdNksVXcRESxcCIKWeyaIVv2hLwFgJIJfLEqm/v8
-	 1QmUu/p75c878jimqjBbYi7vhRMzdoo2jxW28UzA=
+	b=Hs3U/WkaW60swfKRQFTj1/BR81N5dbiKX9I5DhxhSPTbznvo3NSTaiFLllmUCqTZz
+	 hReoZ2mtM4i18/NAiivmxoIwxs3WguEVZxjz5jGbhY4quDzgTkXxLyP9t1IjUmDUuY
+	 6iNHaGp1nu4DvTNhOSmHJf9jCnNohqimtEXyPnbs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zak Kemble <zakkemble@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Akari Tsuyukusa <akkun11.open@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 059/508] net: bcmgenet: switch to use 64bit statistics
+Subject: [PATCH 6.12 271/666] arm64: dts: mediatek: mt6795: Fix gpio-ranges pin count
 Date: Wed, 20 May 2026 18:18:02 +0200
-Message-ID: <20260520162059.878245312@linuxfoundation.org>
+Message-ID: <20260520162117.089815077@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,561 +64,74 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,broadcom.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-252903-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,broadcom.com:email,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 94EC9596CEA
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-252444-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,collabora.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	DBL_PROHIBIT(0.00)[0.152.170.8:email];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 9C4FD597411
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zak Kemble <zakkemble@gmail.com>
+From: Akari Tsuyukusa <akkun11.open@gmail.com>
 
-[ Upstream commit 59aa6e3072aa7e51e9040e8c342d0c0825c5f48f ]
+[ Upstream commit c4c4823c8a5baa10b8100b01f49d7c3f4a871689 ]
 
-Update the driver to use ndo_get_stats64, rtnl_link_stats64 and
-u64_stats_t counters for statistics.
+The gpio-ranges in the MT6795 pinctrl node were incorrectly defined,
+therefore, GPIO196 cannot be used.
+Correct the range count to match the driver.
 
-Signed-off-by: Zak Kemble <zakkemble@gmail.com>
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20250519113257.1031-2-zakkemble@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 5393b2b5bee2 ("net: bcmgenet: fix racing timeout handler")
+Fixes: b888886a4536 ("arm64: dts: mediatek: mt6795: Add pinctrl controller node")
+Signed-off-by: Akari Tsuyukusa <akkun11.open@gmail.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/broadcom/genet/bcmgenet.c    | 246 ++++++++++++------
- .../net/ethernet/broadcom/genet/bcmgenet.h    |  29 ++-
- 2 files changed, 187 insertions(+), 88 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt6795.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index de15243c52a62..a5166582e0ab7 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -950,12 +950,13 @@ static int bcmgenet_set_pauseparam(struct net_device *dev,
- 
- /* standard ethtool support functions. */
- enum bcmgenet_stat_type {
--	BCMGENET_STAT_NETDEV = -1,
-+	BCMGENET_STAT_RTNL = -1,
- 	BCMGENET_STAT_MIB_RX,
- 	BCMGENET_STAT_MIB_TX,
- 	BCMGENET_STAT_RUNT,
- 	BCMGENET_STAT_MISC,
- 	BCMGENET_STAT_SOFT,
-+	BCMGENET_STAT_SOFT64,
- };
- 
- struct bcmgenet_stats {
-@@ -965,13 +966,15 @@ struct bcmgenet_stats {
- 	enum bcmgenet_stat_type type;
- 	/* reg offset from UMAC base for misc counters */
- 	u16 reg_offset;
-+	/* sync for u64 stats counters */
-+	int syncp_offset;
- };
- 
--#define STAT_NETDEV(m) { \
-+#define STAT_RTNL(m) { \
- 	.stat_string = __stringify(m), \
--	.stat_sizeof = sizeof(((struct net_device_stats *)0)->m), \
--	.stat_offset = offsetof(struct net_device_stats, m), \
--	.type = BCMGENET_STAT_NETDEV, \
-+	.stat_sizeof = sizeof(((struct rtnl_link_stats64 *)0)->m), \
-+	.stat_offset = offsetof(struct rtnl_link_stats64, m), \
-+	.type = BCMGENET_STAT_RTNL, \
- }
- 
- #define STAT_GENET_MIB(str, m, _type) { \
-@@ -981,6 +984,14 @@ struct bcmgenet_stats {
- 	.type = _type, \
- }
- 
-+#define STAT_GENET_SOFT_MIB64(str, s, m) { \
-+	.stat_string = str, \
-+	.stat_sizeof = sizeof(((struct bcmgenet_priv *)0)->s.m), \
-+	.stat_offset = offsetof(struct bcmgenet_priv, s.m), \
-+	.type = BCMGENET_STAT_SOFT64, \
-+	.syncp_offset = offsetof(struct bcmgenet_priv, s.syncp), \
-+}
-+
- #define STAT_GENET_MIB_RX(str, m) STAT_GENET_MIB(str, m, BCMGENET_STAT_MIB_RX)
- #define STAT_GENET_MIB_TX(str, m) STAT_GENET_MIB(str, m, BCMGENET_STAT_MIB_TX)
- #define STAT_GENET_RUNT(str, m) STAT_GENET_MIB(str, m, BCMGENET_STAT_RUNT)
-@@ -995,18 +1006,18 @@ struct bcmgenet_stats {
- }
- 
- #define STAT_GENET_Q(num) \
--	STAT_GENET_SOFT_MIB("txq" __stringify(num) "_packets", \
--			tx_rings[num].packets), \
--	STAT_GENET_SOFT_MIB("txq" __stringify(num) "_bytes", \
--			tx_rings[num].bytes), \
--	STAT_GENET_SOFT_MIB("rxq" __stringify(num) "_bytes", \
--			rx_rings[num].bytes),	 \
--	STAT_GENET_SOFT_MIB("rxq" __stringify(num) "_packets", \
--			rx_rings[num].packets), \
--	STAT_GENET_SOFT_MIB("rxq" __stringify(num) "_errors", \
--			rx_rings[num].errors), \
--	STAT_GENET_SOFT_MIB("rxq" __stringify(num) "_dropped", \
--			rx_rings[num].dropped)
-+	STAT_GENET_SOFT_MIB64("txq" __stringify(num) "_packets", \
-+			tx_rings[num].stats64, packets), \
-+	STAT_GENET_SOFT_MIB64("txq" __stringify(num) "_bytes", \
-+			tx_rings[num].stats64, bytes), \
-+	STAT_GENET_SOFT_MIB64("rxq" __stringify(num) "_bytes", \
-+			rx_rings[num].stats64, bytes),	 \
-+	STAT_GENET_SOFT_MIB64("rxq" __stringify(num) "_packets", \
-+			rx_rings[num].stats64, packets), \
-+	STAT_GENET_SOFT_MIB64("rxq" __stringify(num) "_errors", \
-+			rx_rings[num].stats64, errors), \
-+	STAT_GENET_SOFT_MIB64("rxq" __stringify(num) "_dropped", \
-+			rx_rings[num].stats64, dropped)
- 
- /* There is a 0xC gap between the end of RX and beginning of TX stats and then
-  * between the end of TX stats and the beginning of the RX RUNT
-@@ -1018,15 +1029,15 @@ struct bcmgenet_stats {
-  */
- static const struct bcmgenet_stats bcmgenet_gstrings_stats[] = {
- 	/* general stats */
--	STAT_NETDEV(rx_packets),
--	STAT_NETDEV(tx_packets),
--	STAT_NETDEV(rx_bytes),
--	STAT_NETDEV(tx_bytes),
--	STAT_NETDEV(rx_errors),
--	STAT_NETDEV(tx_errors),
--	STAT_NETDEV(rx_dropped),
--	STAT_NETDEV(tx_dropped),
--	STAT_NETDEV(multicast),
-+	STAT_RTNL(rx_packets),
-+	STAT_RTNL(tx_packets),
-+	STAT_RTNL(rx_bytes),
-+	STAT_RTNL(tx_bytes),
-+	STAT_RTNL(rx_errors),
-+	STAT_RTNL(tx_errors),
-+	STAT_RTNL(rx_dropped),
-+	STAT_RTNL(tx_dropped),
-+	STAT_RTNL(multicast),
- 	/* UniMAC RSV counters */
- 	STAT_GENET_MIB_RX("rx_64_octets", mib.rx.pkt_cnt.cnt_64),
- 	STAT_GENET_MIB_RX("rx_65_127_oct", mib.rx.pkt_cnt.cnt_127),
-@@ -1114,6 +1125,20 @@ static const struct bcmgenet_stats bcmgenet_gstrings_stats[] = {
- 
- #define BCMGENET_STATS_LEN	ARRAY_SIZE(bcmgenet_gstrings_stats)
- 
-+#define BCMGENET_STATS64_ADD(stats, m, v) \
-+	do { \
-+		u64_stats_update_begin(&stats->syncp); \
-+		u64_stats_add(&stats->m, v); \
-+		u64_stats_update_end(&stats->syncp); \
-+	} while (0)
-+
-+#define BCMGENET_STATS64_INC(stats, m) \
-+	do { \
-+		u64_stats_update_begin(&stats->syncp); \
-+		u64_stats_inc(&stats->m); \
-+		u64_stats_update_end(&stats->syncp); \
-+	} while (0)
-+
- static void bcmgenet_get_drvinfo(struct net_device *dev,
- 				 struct ethtool_drvinfo *info)
- {
-@@ -1197,8 +1222,9 @@ static void bcmgenet_update_mib_counters(struct bcmgenet_priv *priv)
- 
- 		s = &bcmgenet_gstrings_stats[i];
- 		switch (s->type) {
--		case BCMGENET_STAT_NETDEV:
-+		case BCMGENET_STAT_RTNL:
- 		case BCMGENET_STAT_SOFT:
-+		case BCMGENET_STAT_SOFT64:
- 			continue;
- 		case BCMGENET_STAT_RUNT:
- 			offset += BCMGENET_STAT_OFFSET;
-@@ -1236,28 +1262,40 @@ static void bcmgenet_get_ethtool_stats(struct net_device *dev,
- 				       u64 *data)
- {
- 	struct bcmgenet_priv *priv = netdev_priv(dev);
-+	struct rtnl_link_stats64 stats64;
-+	struct u64_stats_sync *syncp;
-+	unsigned int start;
- 	int i;
- 
- 	if (netif_running(dev))
- 		bcmgenet_update_mib_counters(priv);
- 
--	dev->netdev_ops->ndo_get_stats(dev);
-+	dev_get_stats(dev, &stats64);
- 
- 	for (i = 0; i < BCMGENET_STATS_LEN; i++) {
- 		const struct bcmgenet_stats *s;
- 		char *p;
- 
- 		s = &bcmgenet_gstrings_stats[i];
--		if (s->type == BCMGENET_STAT_NETDEV)
--			p = (char *)&dev->stats;
--		else
--			p = (char *)priv;
--		p += s->stat_offset;
--		if (sizeof(unsigned long) != sizeof(u32) &&
--		    s->stat_sizeof == sizeof(unsigned long))
--			data[i] = *(unsigned long *)p;
--		else
--			data[i] = *(u32 *)p;
-+		p = (char *)priv;
-+
-+		if (s->type == BCMGENET_STAT_SOFT64) {
-+			syncp = (struct u64_stats_sync *)(p + s->syncp_offset);
-+			do {
-+				start = u64_stats_fetch_begin(syncp);
-+				data[i] = u64_stats_read((u64_stats_t *)(p + s->stat_offset));
-+			} while (u64_stats_fetch_retry(syncp, start));
-+		} else {
-+			if (s->type == BCMGENET_STAT_RTNL)
-+				p = (char *)&stats64;
-+
-+			p += s->stat_offset;
-+			if (sizeof(unsigned long) != sizeof(u32) &&
-+				s->stat_sizeof == sizeof(unsigned long))
-+				data[i] = *(unsigned long *)p;
-+			else
-+				data[i] = *(u32 *)p;
-+		}
- 	}
- }
- 
-@@ -1835,6 +1873,7 @@ static struct sk_buff *bcmgenet_free_rx_cb(struct device *dev,
- static unsigned int __bcmgenet_tx_reclaim(struct net_device *dev,
- 					  struct bcmgenet_tx_ring *ring)
- {
-+	struct bcmgenet_tx_stats64 *stats = &ring->stats64;
- 	struct bcmgenet_priv *priv = netdev_priv(dev);
- 	unsigned int txbds_processed = 0;
- 	unsigned int bytes_compl = 0;
-@@ -1875,8 +1914,10 @@ static unsigned int __bcmgenet_tx_reclaim(struct net_device *dev,
- 	ring->free_bds += txbds_processed;
- 	ring->c_index = c_index;
- 
--	ring->packets += pkts_compl;
--	ring->bytes += bytes_compl;
-+	u64_stats_update_begin(&stats->syncp);
-+	u64_stats_add(&stats->packets, pkts_compl);
-+	u64_stats_add(&stats->bytes, bytes_compl);
-+	u64_stats_update_end(&stats->syncp);
- 
- 	netdev_tx_completed_queue(netdev_get_tx_queue(dev, ring->index),
- 				  pkts_compl, bytes_compl);
-@@ -1962,8 +2003,10 @@ static void bcmgenet_tx_reclaim_all(struct net_device *dev)
-  * the transmit checksum offsets in the descriptors
-  */
- static struct sk_buff *bcmgenet_add_tsb(struct net_device *dev,
--					struct sk_buff *skb)
-+					struct sk_buff *skb,
-+					struct bcmgenet_tx_ring *ring)
- {
-+	struct bcmgenet_tx_stats64 *stats = &ring->stats64;
- 	struct bcmgenet_priv *priv = netdev_priv(dev);
- 	struct status_64 *status = NULL;
- 	struct sk_buff *new_skb;
-@@ -1980,7 +2023,7 @@ static struct sk_buff *bcmgenet_add_tsb(struct net_device *dev,
- 		if (!new_skb) {
- 			dev_kfree_skb_any(skb);
- 			priv->mib.tx_realloc_tsb_failed++;
--			dev->stats.tx_dropped++;
-+			BCMGENET_STATS64_INC(stats, dropped);
- 			return NULL;
- 		}
- 		dev_consume_skb_any(skb);
-@@ -2068,7 +2111,7 @@ static netdev_tx_t bcmgenet_xmit(struct sk_buff *skb, struct net_device *dev)
- 	GENET_CB(skb)->bytes_sent = skb->len;
- 
- 	/* add the Transmit Status Block */
--	skb = bcmgenet_add_tsb(dev, skb);
-+	skb = bcmgenet_add_tsb(dev, skb, ring);
- 	if (!skb) {
- 		ret = NETDEV_TX_OK;
- 		goto out;
-@@ -2210,6 +2253,7 @@ static struct sk_buff *bcmgenet_rx_refill(struct bcmgenet_priv *priv,
- static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 				     unsigned int budget)
- {
-+	struct bcmgenet_rx_stats64 *stats = &ring->stats64;
- 	struct bcmgenet_priv *priv = ring->priv;
- 	struct net_device *dev = priv->dev;
- 	struct enet_cb *cb;
-@@ -2232,7 +2276,7 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 		   DMA_P_INDEX_DISCARD_CNT_MASK;
- 	if (discards > ring->old_discards) {
- 		discards = discards - ring->old_discards;
--		ring->errors += discards;
-+		BCMGENET_STATS64_ADD(stats, errors, discards);
- 		ring->old_discards += discards;
- 
- 		/* Clear HW register when we reach 75% of maximum 0xFFFF */
-@@ -2258,7 +2302,7 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 		skb = bcmgenet_rx_refill(priv, cb);
- 
- 		if (unlikely(!skb)) {
--			ring->dropped++;
-+			BCMGENET_STATS64_INC(stats, dropped);
- 			goto next;
- 		}
- 
-@@ -2285,8 +2329,7 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 
- 		if (unlikely(len > RX_BUF_LENGTH)) {
- 			netif_err(priv, rx_status, dev, "oversized packet\n");
--			dev->stats.rx_length_errors++;
--			dev->stats.rx_errors++;
-+			BCMGENET_STATS64_INC(stats, length_errors);
- 			dev_kfree_skb_any(skb);
- 			goto next;
- 		}
-@@ -2294,7 +2337,7 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 		if (unlikely(!(dma_flag & DMA_EOP) || !(dma_flag & DMA_SOP))) {
- 			netif_err(priv, rx_status, dev,
- 				  "dropping fragmented packet!\n");
--			ring->errors++;
-+			BCMGENET_STATS64_INC(stats, errors);
- 			dev_kfree_skb_any(skb);
- 			goto next;
- 		}
-@@ -2307,15 +2350,22 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 						DMA_RX_RXER))) {
- 			netif_err(priv, rx_status, dev, "dma_flag=0x%x\n",
- 				  (unsigned int)dma_flag);
-+			u64_stats_update_begin(&stats->syncp);
- 			if (dma_flag & DMA_RX_CRC_ERROR)
--				dev->stats.rx_crc_errors++;
-+				u64_stats_inc(&stats->crc_errors);
- 			if (dma_flag & DMA_RX_OV)
--				dev->stats.rx_over_errors++;
-+				u64_stats_inc(&stats->over_errors);
- 			if (dma_flag & DMA_RX_NO)
--				dev->stats.rx_frame_errors++;
-+				u64_stats_inc(&stats->frame_errors);
- 			if (dma_flag & DMA_RX_LG)
--				dev->stats.rx_length_errors++;
--			dev->stats.rx_errors++;
-+				u64_stats_inc(&stats->length_errors);
-+			if ((dma_flag & (DMA_RX_CRC_ERROR |
-+						DMA_RX_OV |
-+						DMA_RX_NO |
-+						DMA_RX_LG |
-+						DMA_RX_RXER)) == DMA_RX_RXER)
-+				u64_stats_inc(&stats->errors);
-+			u64_stats_update_end(&stats->syncp);
- 			dev_kfree_skb_any(skb);
- 			goto next;
- 		} /* error packet */
-@@ -2335,10 +2385,13 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 
- 		/*Finish setting up the received SKB and send it to the kernel*/
- 		skb->protocol = eth_type_trans(skb, priv->dev);
--		ring->packets++;
--		ring->bytes += len;
-+
-+		u64_stats_update_begin(&stats->syncp);
-+		u64_stats_inc(&stats->packets);
-+		u64_stats_add(&stats->bytes, len);
- 		if (dma_flag & DMA_RX_MULT)
--			dev->stats.multicast++;
-+			u64_stats_inc(&stats->multicast);
-+		u64_stats_update_end(&stats->syncp);
- 
- 		/* Notify kernel */
- 		napi_gro_receive(&ring->napi, skb);
-@@ -3439,7 +3492,7 @@ static void bcmgenet_timeout(struct net_device *dev, unsigned int txqueue)
- 
- 	netif_trans_update(dev);
- 
--	dev->stats.tx_errors++;
-+	BCMGENET_STATS64_INC((&priv->tx_rings[txqueue].stats64), errors);
- 
- 	netif_tx_wake_all_queues(dev);
- }
-@@ -3528,39 +3581,68 @@ static int bcmgenet_set_mac_addr(struct net_device *dev, void *p)
- 	return 0;
- }
- 
--static struct net_device_stats *bcmgenet_get_stats(struct net_device *dev)
-+static void bcmgenet_get_stats64(struct net_device *dev,
-+				 struct rtnl_link_stats64 *stats)
- {
- 	struct bcmgenet_priv *priv = netdev_priv(dev);
--	unsigned long tx_bytes = 0, tx_packets = 0;
--	unsigned long rx_bytes = 0, rx_packets = 0;
--	unsigned long rx_errors = 0, rx_dropped = 0;
--	struct bcmgenet_tx_ring *tx_ring;
--	struct bcmgenet_rx_ring *rx_ring;
-+	struct bcmgenet_tx_stats64 *tx_stats;
-+	struct bcmgenet_rx_stats64 *rx_stats;
-+	u64 rx_length_errors, rx_over_errors;
-+	u64 rx_crc_errors, rx_frame_errors;
-+	u64 tx_errors, tx_dropped;
-+	u64 rx_errors, rx_dropped;
-+	u64 tx_bytes, tx_packets;
-+	u64 rx_bytes, rx_packets;
-+	unsigned int start;
- 	unsigned int q;
-+	u64 multicast;
- 
- 	for (q = 0; q <= priv->hw_params->tx_queues; q++) {
--		tx_ring = &priv->tx_rings[q];
--		tx_bytes += tx_ring->bytes;
--		tx_packets += tx_ring->packets;
-+		tx_stats = &priv->tx_rings[q].stats64;
-+		do {
-+			start = u64_stats_fetch_begin(&tx_stats->syncp);
-+			tx_bytes = u64_stats_read(&tx_stats->bytes);
-+			tx_packets = u64_stats_read(&tx_stats->packets);
-+			tx_errors = u64_stats_read(&tx_stats->errors);
-+			tx_dropped = u64_stats_read(&tx_stats->dropped);
-+		} while (u64_stats_fetch_retry(&tx_stats->syncp, start));
-+
-+		stats->tx_bytes += tx_bytes;
-+		stats->tx_packets += tx_packets;
-+		stats->tx_errors += tx_errors;
-+		stats->tx_dropped += tx_dropped;
- 	}
- 
- 	for (q = 0; q <= priv->hw_params->rx_queues; q++) {
--		rx_ring = &priv->rx_rings[q];
--
--		rx_bytes += rx_ring->bytes;
--		rx_packets += rx_ring->packets;
--		rx_errors += rx_ring->errors;
--		rx_dropped += rx_ring->dropped;
-+		rx_stats = &priv->rx_rings[q].stats64;
-+		do {
-+			start = u64_stats_fetch_begin(&rx_stats->syncp);
-+			rx_bytes = u64_stats_read(&rx_stats->bytes);
-+			rx_packets = u64_stats_read(&rx_stats->packets);
-+			rx_errors = u64_stats_read(&rx_stats->errors);
-+			rx_dropped = u64_stats_read(&rx_stats->dropped);
-+			rx_length_errors = u64_stats_read(&rx_stats->length_errors);
-+			rx_over_errors = u64_stats_read(&rx_stats->over_errors);
-+			rx_crc_errors = u64_stats_read(&rx_stats->crc_errors);
-+			rx_frame_errors = u64_stats_read(&rx_stats->frame_errors);
-+			multicast = u64_stats_read(&rx_stats->multicast);
-+		} while (u64_stats_fetch_retry(&rx_stats->syncp, start));
-+
-+		rx_errors += rx_length_errors;
-+		rx_errors += rx_crc_errors;
-+		rx_errors += rx_frame_errors;
-+
-+		stats->rx_bytes += rx_bytes;
-+		stats->rx_packets += rx_packets;
-+		stats->rx_errors += rx_errors;
-+		stats->rx_dropped += rx_dropped;
-+		stats->rx_missed_errors += rx_errors;
-+		stats->rx_length_errors += rx_length_errors;
-+		stats->rx_over_errors += rx_over_errors;
-+		stats->rx_crc_errors += rx_crc_errors;
-+		stats->rx_frame_errors += rx_frame_errors;
-+		stats->multicast += multicast;
- 	}
--
--	dev->stats.tx_bytes = tx_bytes;
--	dev->stats.tx_packets = tx_packets;
--	dev->stats.rx_bytes = rx_bytes;
--	dev->stats.rx_packets = rx_packets;
--	dev->stats.rx_errors = rx_errors;
--	dev->stats.rx_missed_errors = rx_errors;
--	dev->stats.rx_dropped = rx_dropped;
--	return &dev->stats;
- }
- 
- static int bcmgenet_change_carrier(struct net_device *dev, bool new_carrier)
-@@ -3588,7 +3670,7 @@ static const struct net_device_ops bcmgenet_netdev_ops = {
- 	.ndo_set_mac_address	= bcmgenet_set_mac_addr,
- 	.ndo_eth_ioctl		= phy_do_ioctl_running,
- 	.ndo_set_features	= bcmgenet_set_features,
--	.ndo_get_stats		= bcmgenet_get_stats,
-+	.ndo_get_stats64	= bcmgenet_get_stats64,
- 	.ndo_change_carrier	= bcmgenet_change_carrier,
- };
- 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.h b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-index f3a1139cb7108..94957dfa55b6f 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-@@ -155,6 +155,27 @@ struct bcmgenet_mib_counters {
- 	u32	tx_realloc_tsb_failed;
- };
- 
-+struct bcmgenet_tx_stats64 {
-+	struct u64_stats_sync syncp;
-+	u64_stats_t	packets;
-+	u64_stats_t	bytes;
-+	u64_stats_t	errors;
-+	u64_stats_t	dropped;
-+};
-+
-+struct bcmgenet_rx_stats64 {
-+	struct u64_stats_sync syncp;
-+	u64_stats_t	bytes;
-+	u64_stats_t	packets;
-+	u64_stats_t	errors;
-+	u64_stats_t	dropped;
-+	u64_stats_t	multicast;
-+	u64_stats_t	length_errors;
-+	u64_stats_t	over_errors;
-+	u64_stats_t	crc_errors;
-+	u64_stats_t	frame_errors;
-+};
-+
- #define UMAC_MIB_START			0x400
- 
- #define UMAC_MDIO_CMD			0x614
-@@ -513,8 +534,7 @@ struct bcmgenet_skb_cb {
- struct bcmgenet_tx_ring {
- 	spinlock_t	lock;		/* ring lock */
- 	struct napi_struct napi;	/* NAPI per tx queue */
--	unsigned long	packets;
--	unsigned long	bytes;
-+	struct bcmgenet_tx_stats64 stats64;
- 	unsigned int	index;		/* ring index */
- 	struct enet_cb	*cbs;		/* tx ring buffer control block*/
- 	unsigned int	size;		/* size of each tx ring */
-@@ -538,10 +558,7 @@ struct bcmgenet_net_dim {
- 
- struct bcmgenet_rx_ring {
- 	struct napi_struct napi;	/* Rx NAPI struct */
--	unsigned long	bytes;
--	unsigned long	packets;
--	unsigned long	errors;
--	unsigned long	dropped;
-+	struct bcmgenet_rx_stats64 stats64;
- 	unsigned int	index;		/* Rx ring index */
- 	struct enet_cb	*cbs;		/* Rx ring buffer control block */
- 	unsigned int	size;		/* Rx ring size */
+diff --git a/arch/arm64/boot/dts/mediatek/mt6795.dtsi b/arch/arm64/boot/dts/mediatek/mt6795.dtsi
+index e5e269a660b11..5dd822d470e89 100644
+--- a/arch/arm64/boot/dts/mediatek/mt6795.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt6795.dtsi
+@@ -372,7 +372,7 @@ pio: pinctrl@10005000 {
+ 				     <GIC_SPI 154 IRQ_TYPE_LEVEL_HIGH>;
+ 			gpio-controller;
+ 			#gpio-cells = <2>;
+-			gpio-ranges = <&pio 0 0 196>;
++			gpio-ranges = <&pio 0 0 197>;
+ 			interrupt-controller;
+ 			#interrupt-cells = <2>;
+ 		};
 -- 
 2.53.0
 
