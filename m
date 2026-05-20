@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-252603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251039-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6MCtEjEnDmpq6gUAu9opvQ
-	(envelope-from <stable+bounces-252603-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:27:13 +0200
+	id oDm3CqLsDWrM4gUAu9opvQ
+	(envelope-from <stable+bounces-251039-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:17:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A601159ADDE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:27:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B63BF5933F9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:17:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9AB64339C25F
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:18:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A9E0A30A9A73
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:09:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B7D3F8706;
-	Wed, 20 May 2026 18:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EBD6231842;
+	Wed, 20 May 2026 17:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wta1FfFk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OeCpMUgy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB883F23C5;
-	Wed, 20 May 2026 18:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20DFF37754D;
+	Wed, 20 May 2026 17:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301108; cv=none; b=X/pPrvcuoBClgnkLaxDCw5DaQIBo5G1iFnDZvLbVIOPVbKxfj3p+7Roy+x+IXVvZTgJjEPugSctSBhb1ESjJFGYK9n0w+zEM8aCwytJ5B45Ou/qKbmJLneBFa/3xwpzGBaK7L80vwcmws6CDRa8drFLbf5o9dKXrp9uvKIXPQe0=
+	t=1779296942; cv=none; b=iSGmVaT7pbzHhuELCTdAUOskdhbueCMKTF/q3ASmFJd9bcURsPENYCoqn+AUAgISVvWmSFWClFxTanXFqv8fcDc9se5pWktv+sl9VQJxcLvBYdzDYixo2V2Z7axWg8N/hwM4tmuD+Dx1aW5Ano5Fk533rnaoPb8xQkOeFymWO64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301108; c=relaxed/simple;
-	bh=irF7/Wual0BRRs9qdm+V+wU487vGovF03cVY89Jj1J4=;
+	s=arc-20240116; t=1779296942; c=relaxed/simple;
+	bh=suITRy1kBr/HpxfUWm2cY+Rb8eMPN6wx5WZDgEac2+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=arcFvy6Xzil8KKT7OvvhiiPlSLsEc4t4styGDY9YHojiTT0UEBkzJUPqGNH6KLm7bEIMXhEz7DYxFgUYUfNu42q+4EBsy4I8e3b3yoTnbDoMjuqJQdcSNOejj0owadaB3t7KFEY1EV5pBPWWMapVOsCaKLm3F54gqXL0YbEtrjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wta1FfFk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C9FA1F000E9;
-	Wed, 20 May 2026 18:18:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZbkP7FFSuBgOszgQfY4/yNhRzw177vtHT4A33NLMjNtXM08OHAGhckVh0VVlxfPsvqINIc2cWVJsErqLCc+k5BG/p+XSneZ6gU/ecwodW0R0fKqxJckAvSHkcVNxh3aK5y/WVEmsNfxhKD2gP6Ck/AA7GZQT3ab7NOzj7gNd6G4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OeCpMUgy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AECDA1F000E9;
+	Wed, 20 May 2026 17:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301106;
-	bh=sCx1jS3t99y3GNx+uu0G7pDuiQ3aezCayBlZ+BBL3eU=;
+	s=korg; t=1779296941;
+	bh=uHnrM70um2b/0qjO6h+AUupfzMMZAFPQf8ycqonXsIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Wta1FfFkODHJ+0pt2KDa+8xRbbe1hzx1XXdGtPsS8UzH0rFvh4NCy7wbLY10+i1ta
-	 Ba0jf66V1enCJgtddLvEYi0EA3J8dkAWsmD9gybAJ1Y2oMHG0Bw/5bbLLCrcr9UvjX
-	 6/v0BfJOTv1jGaBirac741QKe2Tg6dG4ejMS8Yy4=
+	b=OeCpMUgy9TJQYzXrciq3GSsAJI52oc1vbE/N9qiTfrlDyoewPJyr1fKrrJPu2ZQ0O
+	 97kyS6EH4h/uGM6vGawpS1BfeA0I/QWcfRW6D+qHxBxvvJiObmomQjX8R2euK8gvHk
+	 O8QCgq6pyggD9JgHA7H2iIZqLU0AVmk+geeI73vk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	T Pratham <t-pratham@ti.com>,
-	Manorit Chawdhry <m-chawdhry@ti.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Eric Dumazet <edumazet@google.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 427/666] crypto: sa2ul - Fix AEAD fallback algorithm names
-Date: Wed, 20 May 2026 18:20:38 +0200
-Message-ID: <20260520162120.527071032@linuxfoundation.org>
+Subject: [PATCH 7.0 0989/1146] net/sched: sch_cake: annotate data-races in cake_dump_stats() (I)
+Date: Wed, 20 May 2026 18:20:39 +0200
+Message-ID: <20260520162210.614190797@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +64,187 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-251039-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252603-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,apana.org.au:email]
-X-Rspamd-Queue-Id: A601159ADDE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,toke.dk:email]
+X-Rspamd-Queue-Id: B63BF5933F9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: T Pratham <t-pratham@ti.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 8451ab6ad686ffdcdf9ddadaa446a79ab48e5590 ]
+[ Upstream commit 44967ac3785ebef6442377708925181d4a0eb1c8 ]
 
-For authenc AEAD algorithms, sa2ul is trying to register very specific
--ce version as a fallback. This causes registration failure on SoCs
-which do not have ARMv8-CE enabled/available. Change the fallback
-algorithm from the specific driver name to generic algorithm name so
-that the kernel can allocate any available fallback.
+cake_dump_stats() runs without qdisc spinlock being held.
 
-Fixes: d2c8ac187fc92 ("crypto: sa2ul - Add AEAD algorithm support")
-Signed-off-by: T Pratham <t-pratham@ti.com>
-Reviewed-by: Manorit Chawdhry <m-chawdhry@ti.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+In this first patch, I add READ_ONCE()/WRITE_ONCE() annotations
+for the following fields:
+
+- way_hits
+- way_misses
+- way_collisions
+- sparse_flow_count
+- decaying_flow_count
+
+Other annotations are added in following patches, to ease code review.
+
+Fixes: 046f6fd5daef ("sched: Add Common Applications Kept Enhanced (cake) qdisc")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: "Toke Høiland-Jørgensen" <toke@toke.dk>
+Link: https://patch.msgid.link/20260427083606.459355-2-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sa2ul.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/sched/sch_cake.c | 42 +++++++++++++++++++++---------------------
+ 1 file changed, 21 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/crypto/sa2ul.c b/drivers/crypto/sa2ul.c
-index 461eca40e8789..d1c2d129ad418 100644
---- a/drivers/crypto/sa2ul.c
-+++ b/drivers/crypto/sa2ul.c
-@@ -1775,13 +1775,13 @@ static int sa_cra_init_aead(struct crypto_aead *tfm, const char *hash,
- static int sa_cra_init_aead_sha1(struct crypto_aead *tfm)
- {
- 	return sa_cra_init_aead(tfm, "sha1",
--				"authenc(hmac(sha1-ce),cbc(aes-ce))");
-+				"authenc(hmac(sha1),cbc(aes))");
- }
+diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
+index 4ac6c36ca6e41..ac82fe7aafcb3 100644
+--- a/net/sched/sch_cake.c
++++ b/net/sched/sch_cake.c
+@@ -813,7 +813,7 @@ static u32 cake_hash(struct cake_tin_data *q, const struct sk_buff *skb,
+ 		     i++, k = (k + 1) % CAKE_SET_WAYS) {
+ 			if (q->tags[outer_hash + k] == flow_hash) {
+ 				if (i)
+-					q->way_hits++;
++					WRITE_ONCE(q->way_hits, q->way_hits + 1);
  
- static int sa_cra_init_aead_sha256(struct crypto_aead *tfm)
- {
- 	return sa_cra_init_aead(tfm, "sha256",
--				"authenc(hmac(sha256-ce),cbc(aes-ce))");
-+				"authenc(hmac(sha256),cbc(aes))");
- }
+ 				if (!q->flows[outer_hash + k].set) {
+ 					/* need to increment host refcnts */
+@@ -831,7 +831,7 @@ static u32 cake_hash(struct cake_tin_data *q, const struct sk_buff *skb,
+ 		for (i = 0; i < CAKE_SET_WAYS;
+ 			 i++, k = (k + 1) % CAKE_SET_WAYS) {
+ 			if (!q->flows[outer_hash + k].set) {
+-				q->way_misses++;
++				WRITE_ONCE(q->way_misses, q->way_misses + 1);
+ 				allocate_src = cake_dsrc(flow_mode);
+ 				allocate_dst = cake_ddst(flow_mode);
+ 				goto found;
+@@ -841,7 +841,7 @@ static u32 cake_hash(struct cake_tin_data *q, const struct sk_buff *skb,
+ 		/* With no empty queues, default to the original
+ 		 * queue, accept the collision, update the host tags.
+ 		 */
+-		q->way_collisions++;
++		WRITE_ONCE(q->way_collisions, q->way_collisions + 1);
+ 		allocate_src = cake_dsrc(flow_mode);
+ 		allocate_dst = cake_ddst(flow_mode);
  
- static void sa_exit_tfm_aead(struct crypto_aead *tfm)
+@@ -1917,11 +1917,11 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		if (!flow->set) {
+ 			list_add_tail(&flow->flowchain, &b->new_flows);
+ 		} else {
+-			b->decaying_flow_count--;
++			WRITE_ONCE(b->decaying_flow_count, b->decaying_flow_count - 1);
+ 			list_move_tail(&flow->flowchain, &b->new_flows);
+ 		}
+ 		flow->set = CAKE_SET_SPARSE;
+-		b->sparse_flow_count++;
++		WRITE_ONCE(b->sparse_flow_count, b->sparse_flow_count + 1);
+ 
+ 		flow->deficit = cake_get_flow_quantum(b, flow, q->config->flow_mode);
+ 	} else if (flow->set == CAKE_SET_SPARSE_WAIT) {
+@@ -1929,7 +1929,7 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		 * in the bulk rotation.
+ 		 */
+ 		flow->set = CAKE_SET_BULK;
+-		b->sparse_flow_count--;
++		WRITE_ONCE(b->sparse_flow_count, b->sparse_flow_count - 1);
+ 		b->bulk_flow_count++;
+ 
+ 		cake_inc_srchost_bulk_flow_count(b, flow, q->config->flow_mode);
+@@ -2149,7 +2149,7 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
+ 		 */
+ 		if (flow->set == CAKE_SET_SPARSE) {
+ 			if (flow->head) {
+-				b->sparse_flow_count--;
++				WRITE_ONCE(b->sparse_flow_count, b->sparse_flow_count - 1);
+ 				b->bulk_flow_count++;
+ 
+ 				cake_inc_srchost_bulk_flow_count(b, flow, q->config->flow_mode);
+@@ -2192,27 +2192,27 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
+ 					cake_dec_srchost_bulk_flow_count(b, flow, q->config->flow_mode);
+ 					cake_dec_dsthost_bulk_flow_count(b, flow, q->config->flow_mode);
+ 
+-					b->decaying_flow_count++;
++					WRITE_ONCE(b->decaying_flow_count, b->decaying_flow_count + 1);
+ 				} else if (flow->set == CAKE_SET_SPARSE ||
+ 					   flow->set == CAKE_SET_SPARSE_WAIT) {
+-					b->sparse_flow_count--;
+-					b->decaying_flow_count++;
++					WRITE_ONCE(b->sparse_flow_count, b->sparse_flow_count - 1);
++					WRITE_ONCE(b->decaying_flow_count, b->decaying_flow_count + 1);
+ 				}
+ 				flow->set = CAKE_SET_DECAYING;
+ 			} else {
+ 				/* remove empty queue from the flowchain */
+ 				list_del_init(&flow->flowchain);
+ 				if (flow->set == CAKE_SET_SPARSE ||
+-				    flow->set == CAKE_SET_SPARSE_WAIT)
+-					b->sparse_flow_count--;
+-				else if (flow->set == CAKE_SET_BULK) {
++				    flow->set == CAKE_SET_SPARSE_WAIT) {
++					WRITE_ONCE(b->sparse_flow_count, b->sparse_flow_count - 1);
++				} else if (flow->set == CAKE_SET_BULK) {
+ 					b->bulk_flow_count--;
+ 
+ 					cake_dec_srchost_bulk_flow_count(b, flow, q->config->flow_mode);
+ 					cake_dec_dsthost_bulk_flow_count(b, flow, q->config->flow_mode);
+-				} else
+-					b->decaying_flow_count--;
+-
++				} else {
++					WRITE_ONCE(b->decaying_flow_count, b->decaying_flow_count - 1);
++				}
+ 				flow->set = CAKE_SET_NONE;
+ 			}
+ 			goto begin;
+@@ -3050,12 +3050,12 @@ static int cake_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+ 		PUT_TSTAT_U32(BASE_DELAY_US,
+ 			      ktime_to_us(ns_to_ktime(b->base_delay)));
+ 
+-		PUT_TSTAT_U32(WAY_INDIRECT_HITS, b->way_hits);
+-		PUT_TSTAT_U32(WAY_MISSES, b->way_misses);
+-		PUT_TSTAT_U32(WAY_COLLISIONS, b->way_collisions);
++		PUT_TSTAT_U32(WAY_INDIRECT_HITS, READ_ONCE(b->way_hits));
++		PUT_TSTAT_U32(WAY_MISSES, READ_ONCE(b->way_misses));
++		PUT_TSTAT_U32(WAY_COLLISIONS, READ_ONCE(b->way_collisions));
+ 
+-		PUT_TSTAT_U32(SPARSE_FLOWS, b->sparse_flow_count +
+-					    b->decaying_flow_count);
++		PUT_TSTAT_U32(SPARSE_FLOWS, READ_ONCE(b->sparse_flow_count) +
++					    READ_ONCE(b->decaying_flow_count));
+ 		PUT_TSTAT_U32(BULK_FLOWS, b->bulk_flow_count);
+ 		PUT_TSTAT_U32(UNRESPONSIVE_FLOWS, b->unresponsive_flow_count);
+ 		PUT_TSTAT_U32(MAX_SKBLEN, b->max_skblen);
 -- 
 2.53.0
 
