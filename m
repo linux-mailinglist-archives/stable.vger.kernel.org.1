@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-251245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250310-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +Js9C34WDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-251245-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:15:58 +0200
+	id 6Li7AoLmDWqm4gUAu9opvQ
+	(envelope-from <stable+bounces-250310-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:51:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE8E45995D4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:15:57 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DE555928B3
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:51:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2DEFB3397196
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:18:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 577C131163D9
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:38:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF8F372B58;
-	Wed, 20 May 2026 17:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4E433D75BA;
+	Wed, 20 May 2026 16:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+ffn1jV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hww0axJ/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F0C331220;
-	Wed, 20 May 2026 17:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F21D3D6CA5;
+	Wed, 20 May 2026 16:37:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297480; cv=none; b=d7jRjFfA3ah9tmFCdgc8v24W45z0XHOAJC5XghmDA0cxFpKm3104mLP1mRvRRt5Ro59ypthP46PFMJLKefAJ6pFo/tF3KsMvVamQvu7Kzxhmppm8BGDElDinSrXAmqHHn6fdzdYxtIDllULDywKx6UHIEOB30XhUEH3c4VAdv8A=
+	t=1779295078; cv=none; b=TwqZ70p6LLVXYcNLbwFBTWrmF1x64ECNJrtn/YJ7vddIE5Mud3Samd40jDm2ovZrhkFOIFu8Wu11845phtOepCwHw68HQpOxQIxXgVf5MdSVNHs8a5i4H6rTcXOAOiAXM0IHCi6udoSao7o3gtgEhEmMqwObgBLCtNiH1EV2tM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297480; c=relaxed/simple;
-	bh=35UotdP/CVm65DKulhvfBxjUESnRJL6q1LHLfyNVIcE=;
+	s=arc-20240116; t=1779295078; c=relaxed/simple;
+	bh=7VGdNyMgn8efsaoWOZ7lFUQuOZxepuG5LTaNfuFPjWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XO+sxajCYPqAsDBR8n/WlUo9YfvGSOncvbkPyuBuHKXgE+SEkyhb6aMKweBFbggBdr5HKWeoHASWNhsXoTQeJ1NOkkIbiuf8CHSJaF2iifKGJWcPRy7EYCVW6Q7gQJyjiqIgm0JlYNL/GSxdNSUQ6g84sqvhRDeMSl5xOXkSxo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+ffn1jV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A43C1F000E9;
-	Wed, 20 May 2026 17:17:58 +0000 (UTC)
+	 MIME-Version; b=PX2uSEUF0e1COy4pk1sU5TD0lz7A2Dps+HumA+jk4kIvz0gonKZoafRE0mmkf3CeHQGpOZxNtm32fIgpAVl9mXDOrw9/JSmkCs06zwnCfxDx6gGWC2HYHOpH7DxppLQoa1NFpQi0TtONU/i5dh2tz1KEgObGiYlyxfqGv5f2jIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hww0axJ/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E88C1F000E9;
+	Wed, 20 May 2026 16:37:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297478;
-	bh=i2ma8Cue9u9nl5Qak5s6BLkscLerSVZPBSZI0BK2xNw=;
+	s=korg; t=1779295076;
+	bh=N1zTPwrQScrai0NqInlBo6qpMVAl8wya+eiLJGEUw0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=l+ffn1jVd1K4cj3Oao7VTdMWhh9w2WD3y+AdKU2jAwEIkTmyCZeuf0kFc3sX+58t3
-	 FEUeAd5CcygXX6zvg2J63qSGLpTZ6LYxLr3JE57mbDzp+pwGIkaryQS8/4X0cYFNwB
-	 h8eff4Y1OrnPKueZugrjDLio8nuHIjL0zn/3B/tU=
+	b=Hww0axJ/Qf/3zW/zVe32u2zqKvcIOM/6t7mFeywnlg4WImP7uoFuUPomeFV6xL+xr
+	 1ld3ddnIGbA2Zxjk/zFCaPRaXJiAj22JbKohoO85ZdE7qgQDonXKW4QvQ66e99gOe3
+	 4aVtBNFMKnKh9Qw4O4lgaHgmlF1rzBN2+UrJGJJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ahmed S. Darwish" <darwi@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
+	David Carlier <devnexen@gmail.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 048/957] ASoC: Intel: avs: Check maximum valid CPUID leaf
-Date: Wed, 20 May 2026 18:08:51 +0200
-Message-ID: <20260520162135.600130105@linuxfoundation.org>
+Subject: [PATCH 7.0 0282/1146] selftests/sched_ext: Add missing error check for exit__load()
+Date: Wed, 20 May 2026 18:08:52 +0200
+Message-ID: <20260520162154.599273312@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,94 +66,70 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251245-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250310-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linutronix.de:email]
-X-Rspamd-Queue-Id: AE8E45995D4
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 9DE555928B3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmed S. Darwish <darwi@linutronix.de>
+From: David Carlier <devnexen@gmail.com>
 
-[ Upstream commit 93a1f0e61329f538cfc7122d7fa0e7a1803e326d ]
+[ Upstream commit 1d02346fec8d13b05e54296ddc6ae29b7e1067df ]
 
-The Intel AVS driver queries CPUID(0x15) before checking if the CPUID leaf
-is available.  Check the maximum-valid CPU standard leaf beforehand.
+exit__load(skel) was called without checking its return value.
+Every other test in the suite wraps the load call with
+SCX_FAIL_IF(). Add the missing check to be consistent with the
+rest of the test suite.
 
-Use the CPUID_LEAF_TSC macro instead of the custom local one for the
-CPUID(0x15) leaf number.
-
-Fixes: cbe37a4d2b3c ("ASoC: Intel: avs: Configure basefw on TGL-based platforms")
-Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://patch.msgid.link/20260327021645.555257-2-darwi@linutronix.de
+Fixes: a5db7817af78 ("sched_ext: Add selftests")
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/avs/tgl.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ tools/testing/selftests/sched_ext/exit.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/avs/tgl.c b/sound/soc/intel/avs/tgl.c
-index afb0665161010..4649d749b41e0 100644
---- a/sound/soc/intel/avs/tgl.c
-+++ b/sound/soc/intel/avs/tgl.c
-@@ -11,8 +11,6 @@
- #include "debug.h"
- #include "messages.h"
- 
--#define CPUID_TSC_LEAF 0x15
--
- static int avs_tgl_dsp_core_power(struct avs_dev *adev, u32 core_mask, bool power)
- {
- 	core_mask &= AVS_MAIN_CORE_MASK;
-@@ -49,7 +47,11 @@ static int avs_tgl_config_basefw(struct avs_dev *adev)
- 	unsigned int ecx;
- 
- #include <asm/cpuid/api.h>
--	ecx = cpuid_ecx(CPUID_TSC_LEAF);
-+
-+	if (boot_cpu_data.cpuid_level < CPUID_LEAF_TSC)
-+		goto no_cpuid;
-+
-+	ecx = cpuid_ecx(CPUID_LEAF_TSC);
- 	if (ecx) {
- 		ret = avs_ipc_set_fw_config(adev, 1, AVS_FW_CFG_XTAL_FREQ_HZ, sizeof(ecx), &ecx);
- 		if (ret)
-@@ -57,6 +59,7 @@ static int avs_tgl_config_basefw(struct avs_dev *adev)
- 	}
- #endif
- 
-+no_cpuid:
- 	hwid.device = pci->device;
- 	hwid.subsystem = pci->subsystem_vendor | (pci->subsystem_device << 16);
- 	hwid.revision = pci->revision;
+diff --git a/tools/testing/selftests/sched_ext/exit.c b/tools/testing/selftests/sched_ext/exit.c
+index ee25824b1cbe6..b987611789d16 100644
+--- a/tools/testing/selftests/sched_ext/exit.c
++++ b/tools/testing/selftests/sched_ext/exit.c
+@@ -33,7 +33,7 @@ static enum scx_test_status run(void *ctx)
+ 		skel = exit__open();
+ 		SCX_ENUM_INIT(skel);
+ 		skel->rodata->exit_point = tc;
+-		exit__load(skel);
++		SCX_FAIL_IF(exit__load(skel), "Failed to load skel");
+ 		link = bpf_map__attach_struct_ops(skel->maps.exit_ops);
+ 		if (!link) {
+ 			SCX_ERR("Failed to attach scheduler");
 -- 
 2.53.0
 
