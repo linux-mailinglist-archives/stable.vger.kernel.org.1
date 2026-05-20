@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-250819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252349-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6HhTIxz0DWoF5AUAu9opvQ
-	(envelope-from <stable+bounces-250819-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:49:16 +0200
+	id cCswLzn6DWq75AUAu9opvQ
+	(envelope-from <stable+bounces-252349-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:15:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90A91594A7B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:49:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F3EB595A74
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:15:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4980930A9C9B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:01:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BB33F3127917
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:07:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 086E53E314D;
-	Wed, 20 May 2026 16:59:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1171F3EAC82;
+	Wed, 20 May 2026 18:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gdH/gPqC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lo0GSzf4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B953D88FC;
-	Wed, 20 May 2026 16:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0A6331220;
+	Wed, 20 May 2026 18:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296388; cv=none; b=JHddcRiVoODUWQ2QAOyLUgkutyqmgxT+XiVEFUqlrZ12Ta8lT+kvQmn7UwOyrJPjLLmJ2aSg4ILj75K5o9tVM8BUiPHmEd1SVzoHZpBtctm8Oiv5lLJnuq/xrxlQHwkmgobKpDpka6ogK7jGjbjvZQxywFERP4K+UZIjjO2Y3aE=
+	t=1779300444; cv=none; b=lQ1g66a7BvVws8FBxWcVGreeogyPLD9JlRxWM5kAYCDqkPNRdQnyleDkBrpp/QK6WunRStQ+leT0nqatipdFoMWcEnt09jQMLDQbw45iiPOXL8lYOuGXbPnMc433ZSclX8b670wwmSibUXU2+Xu2ouenI+jDEWLuro82ONPk40o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296388; c=relaxed/simple;
-	bh=Q3eKWhE39JT/oYF86mu6wWQgD5fQBPiCDlo2UnNp+Rg=;
+	s=arc-20240116; t=1779300444; c=relaxed/simple;
+	bh=V6WxFEFhnGQQiqprbQ0Y6oGBbUGI+OU1FJTvzkvH74c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ITVjR25of5P1fSOoazC6YcxK/xEJngXPKF9Qh4b1UO4S4ntWprI7CPhqE8qCQtTNfVl/u8N3o3X4+6QiTkLbaRPkMgdKrUwwM6nfyeqpIuA7Qf7vBkxAGvgzvE/BV8CQhkn2/yFzP1eni7dLy91iBtBVSlVFIWP3m6JWZvIKJ/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gdH/gPqC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D30471F000E9;
-	Wed, 20 May 2026 16:59:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=P73Zv8xOY/qMc3y+h3S4AsSmaUNOU47vSuGfwR8cIsxx5Sl/ZA40v0B0dC2Lcf3Kyqfq77sA3Q8FHGf8chNBVVa7TpPM8Ou3VqcxrTookk1YGm5rr7OFSLIjiyPaaORfIy+TsqjEv+jkX89IepVHUw1Z6CEoSADk480Ji++ozPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lo0GSzf4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C5251F000E9;
+	Wed, 20 May 2026 18:07:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296387;
-	bh=z1dr55nGzsKR8qk9dObsQCVKL9aWRFEJsxXg/e9Non4=;
+	s=korg; t=1779300443;
+	bh=Xf2PnMgrB1th2XuMUTBFVlpqE2N8HDgEPneCIU79f+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gdH/gPqCz9F2kN41/H1BR3ZADVGAmB6GScWNAazvaYiOxCjfCZ7mCGCxt25DwH2N9
-	 VJ9TibU2SvSfEj6PCyylbiwL7hek9gKbFIe/OHXQ38wLcwVYco0WEQA+8oxtjsaEZJ
-	 ewTU4MytvTy+jzkbMcYU7poRcgh3gFQslFlR0dLA=
+	b=Lo0GSzf4ySzmGxTIo9rxsLxTf1vZ6ZEoi+SKSazvZ/d9azO6l1bple0YCYDzzeaLh
+	 S15xybz9f3XZxEnTAs7FsCNCMb/QAHJXr1zVkaXsBQcvSDN4gONzy4cUzwEmpYN9GF
+	 OKTNrGupnsEzDnoYAsDMO+gM5w46bda+ScRdkLWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongpeng Yang <yangyongpeng@xiaomi.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0739/1146] f2fs: protect extension_list reading with sb_lock in f2fs_sbi_show()
+Subject: [PATCH 6.12 178/666] drm/amd/pm/smu7: Fix SMU7 voltage dependency on display clock
 Date: Wed, 20 May 2026 18:16:29 +0200
-Message-ID: <20260520162204.932548568@linuxfoundation.org>
+Message-ID: <20260520162115.059329295@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +63,225 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250819-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-252349-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,xiaomi.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 90A91594A7B
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,amd.com:email]
+X-Rspamd-Queue-Id: 7F3EB595A74
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongpeng Yang <yangyongpeng@xiaomi.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 5909bedbed38c558bee7cb6758ceedf9bc3a9194 ]
+[ Upstream commit 0138610c14130425be53423b35336561829965e0 ]
 
-In f2fs_sbi_show(), the extension_list, extension_count and
-hot_ext_count are read without holding sbi->sb_lock. If a concurrent
-sysfs store modifies the extension list via f2fs_update_extension_list(),
-the show path may read inconsistent count and array contents, potentially
-leading to out-of-bounds access or displaying stale data.
+The DCE (display controller engine) requires a minimum voltage
+in order to function correctly, depending on which clock level
+it currently uses.
 
-Fix this by holding sb_lock around the entire extension list read
-and format operation.
+Add a new table that contains display clock frequency levels
+and the corresponding required voltages. The clock frequency
+levels are taken from DC (and the old radeon driver's voltage
+dependency table for CI in cases where its values were lower).
+The voltage levels are taken from the following function:
+phm_initializa_dynamic_state_adjustment_rule_settings().
+Furthermore, in case of CI, call smu7_patch_vddc() on the new
+table to account for leakage voltage (like in radeon).
 
-Fixes: b6a06cbbb5f7 ("f2fs: support hot file extension")
-Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Use the display clock value from amd_pp_display_configuration
+to look up the voltage level needed by the DCE. Send the
+voltage to the SMU via the PPSMC_MSG_VddC_Request command.
+
+The previous implementation of this feature was non-functional
+because it relied on a "dal_power_level" field which was never
+assigned; and it was not at all implemented for CI ASICs.
+
+I verified this on a Radeon R9 M380 which previously booted to
+a black screen with DC enabled (default since Linux 6.19), but
+now works correctly.
+
+Fixes: 599a7e9fe1b6 ("drm/amd/powerplay: implement smu7 hwmgr to manager asics with smu ip version 7.")
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/sysfs.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ .../drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c   | 88 ++++++++++++++++++-
+ drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h  |  1 +
+ 2 files changed, 86 insertions(+), 3 deletions(-)
 
-diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
-index cd1921edb59ef..0d05ecd64ca03 100644
---- a/fs/f2fs/sysfs.c
-+++ b/fs/f2fs/sysfs.c
-@@ -379,10 +379,12 @@ static ssize_t f2fs_sbi_show(struct f2fs_attr *a,
- 	if (!strcmp(a->attr.name, "extension_list")) {
- 		__u8 (*extlist)[F2FS_EXTENSION_LEN] =
- 					sbi->raw_super->extension_list;
--		int cold_count = le32_to_cpu(sbi->raw_super->extension_count);
--		int hot_count = sbi->raw_super->hot_ext_count;
-+		int cold_count, hot_count;
- 		int len = 0, i;
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+index 3018e294673a5..c8dc40197a730 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+@@ -2802,6 +2802,10 @@ static int smu7_patch_dependency_tables_with_leakage(struct pp_hwmgr *hwmgr)
+ 	if (tmp)
+ 		return -EINVAL;
  
-+		f2fs_down_read(&sbi->sb_lock);
-+		cold_count = le32_to_cpu(sbi->raw_super->extension_count);
-+		hot_count = sbi->raw_super->hot_ext_count;
- 		len += sysfs_emit_at(buf, len, "cold file extension:\n");
- 		for (i = 0; i < cold_count; i++)
- 			len += sysfs_emit_at(buf, len, "%s\n", extlist[i]);
-@@ -390,6 +392,7 @@ static ssize_t f2fs_sbi_show(struct f2fs_attr *a,
- 		len += sysfs_emit_at(buf, len, "hot file extension:\n");
- 		for (i = cold_count; i < cold_count + hot_count; i++)
- 			len += sysfs_emit_at(buf, len, "%s\n", extlist[i]);
-+		f2fs_up_read(&sbi->sb_lock);
++	tmp = smu7_patch_vddc(hwmgr, hwmgr->dyn_state.vddc_dependency_on_display_clock);
++	if (tmp)
++		return -EINVAL;
++
+ 	tmp = smu7_patch_vce_vddc(hwmgr, hwmgr->dyn_state.vce_clock_voltage_dependency_table);
+ 	if (tmp)
+ 		return -EINVAL;
+@@ -2885,6 +2889,8 @@ static int smu7_hwmgr_backend_fini(struct pp_hwmgr *hwmgr)
+ {
+ 	kfree(hwmgr->dyn_state.vddc_dep_on_dal_pwrl);
+ 	hwmgr->dyn_state.vddc_dep_on_dal_pwrl = NULL;
++	kfree(hwmgr->dyn_state.vddc_dependency_on_display_clock);
++	hwmgr->dyn_state.vddc_dependency_on_display_clock = NULL;
+ 	kfree(hwmgr->backend);
+ 	hwmgr->backend = NULL;
  
- 		return len;
+@@ -2955,6 +2961,51 @@ static int smu7_update_edc_leakage_table(struct pp_hwmgr *hwmgr)
+ 	return ret;
+ }
+ 
++static int smu7_init_voltage_dependency_on_display_clock_table(struct pp_hwmgr *hwmgr)
++{
++	struct phm_clock_voltage_dependency_table *table;
++
++	if (!amdgpu_device_ip_get_ip_block(hwmgr->adev, AMD_IP_BLOCK_TYPE_DCE))
++		return 0;
++
++	table = kzalloc(struct_size(table, entries, 4), GFP_KERNEL);
++	if (!table)
++		return -ENOMEM;
++
++	if (hwmgr->chip_id >= CHIP_POLARIS10) {
++		table->entries[0].clk = 38918;
++		table->entries[1].clk = 45900;
++		table->entries[2].clk = 66700;
++		table->entries[3].clk = 113200;
++
++		table->entries[0].v = 700;
++		table->entries[1].v = 740;
++		table->entries[2].v = 800;
++		table->entries[3].v = 900;
++	} else {
++		if (hwmgr->chip_family == AMDGPU_FAMILY_CZ) {
++			table->entries[0].clk = 35200;
++			table->entries[1].clk = 35200;
++			table->entries[2].clk = 46700;
++			table->entries[3].clk = 64300;
++		} else {
++			table->entries[0].clk = 0;
++			table->entries[1].clk = 35200;
++			table->entries[2].clk = 54000;
++			table->entries[3].clk = 62500;
++		}
++
++		table->entries[0].v = 0;
++		table->entries[1].v = 720;
++		table->entries[2].v = 810;
++		table->entries[3].v = 900;
++	}
++
++	table->count = 4;
++	hwmgr->dyn_state.vddc_dependency_on_display_clock = table;
++	return 0;
++}
++
+ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
+ {
+ 	struct amdgpu_device *adev = hwmgr->adev;
+@@ -2983,6 +3034,10 @@ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
+ 		smu7_get_elb_voltages(hwmgr);
  	}
+ 
++	result = smu7_init_voltage_dependency_on_display_clock_table(hwmgr);
++	if (result)
++		goto fail;
++
+ 	if (hwmgr->pp_table_version == PP_TABLE_V1) {
+ 		smu7_complete_dependency_tables(hwmgr);
+ 		smu7_set_private_data_based_on_pptable_v1(hwmgr);
+@@ -3079,13 +3134,40 @@ static int smu7_force_dpm_highest(struct pp_hwmgr *hwmgr)
+ 	return 0;
+ }
+ 
++static uint32_t smu7_lookup_vddc_from_dispclk(struct pp_hwmgr *hwmgr)
++{
++	const struct amd_pp_display_configuration *cfg = hwmgr->display_config;
++	const struct phm_clock_voltage_dependency_table *vddc_dep_on_dispclk =
++			hwmgr->dyn_state.vddc_dependency_on_display_clock;
++	uint32_t i;
++
++	if (!vddc_dep_on_dispclk || !vddc_dep_on_dispclk->count ||
++	    !cfg || !cfg->num_display || !cfg->display_clk)
++		return 0;
++
++	/* Start from 1 because ClocksStateUltraLow should not be used according to DC. */
++	for (i = 1; i < vddc_dep_on_dispclk->count; ++i)
++		if (vddc_dep_on_dispclk->entries[i].clk >= cfg->display_clk)
++			return vddc_dep_on_dispclk->entries[i].v;
++
++	return vddc_dep_on_dispclk->entries[vddc_dep_on_dispclk->count - 1].v;
++}
++
++static void smu7_apply_minimum_dce_voltage_request(struct pp_hwmgr *hwmgr)
++{
++	uint32_t req_vddc = smu7_lookup_vddc_from_dispclk(hwmgr);
++
++	smum_send_msg_to_smc_with_parameter(hwmgr,
++			PPSMC_MSG_VddC_Request,
++			req_vddc * VOLTAGE_SCALE,
++			NULL);
++}
++
+ static int smu7_upload_dpm_level_enable_mask(struct pp_hwmgr *hwmgr)
+ {
+ 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
+ 
+-	if (hwmgr->pp_table_version == PP_TABLE_V1)
+-		phm_apply_dal_min_voltage_request(hwmgr);
+-/* TO DO  for v0 iceland and Ci*/
++	smu7_apply_minimum_dce_voltage_request(hwmgr);
+ 
+ 	if (!data->sclk_dpm_key_disabled) {
+ 		if (data->dpm_level_enable_mask.sclk_dpm_enable_mask)
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h b/drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h
+index 227bf0e84a130..d829121d29fbc 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h
++++ b/drivers/gpu/drm/amd/pm/powerplay/inc/hwmgr.h
+@@ -632,6 +632,7 @@ struct phm_dynamic_state_info {
+ 	struct phm_clock_voltage_dependency_table *vddci_dependency_on_mclk;
+ 	struct phm_clock_voltage_dependency_table *vddc_dependency_on_mclk;
+ 	struct phm_clock_voltage_dependency_table *mvdd_dependency_on_mclk;
++	struct phm_clock_voltage_dependency_table *vddc_dependency_on_display_clock;
+ 	struct phm_clock_voltage_dependency_table *vddc_dep_on_dal_pwrl;
+ 	struct phm_clock_array                    *valid_sclk_values;
+ 	struct phm_clock_array                    *valid_mclk_values;
 -- 
 2.53.0
 
