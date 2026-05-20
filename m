@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-252502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251865-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OGR3IyEHDmp25gUAu9opvQ
-	(envelope-from <stable+bounces-252502-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:10:25 +0200
+	id wCPUATkCDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-251865-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:49:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90E2A597DEC
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:10:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03B70597443
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:49:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 78427313660A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:14:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7911C31A9F49
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:44:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 183FD3F789B;
-	Wed, 20 May 2026 18:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 853F63451CC;
+	Wed, 20 May 2026 17:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0fthHDjy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sZxwowGp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537AA3FB060;
-	Wed, 20 May 2026 18:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F391C3BFC;
+	Wed, 20 May 2026 17:44:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300841; cv=none; b=dnirJuB0iTbnf3fUPmJYwuOCAdCAHwyaKxy/S//qGMZ5FUO5tmnQNZTI3Esr/uhzSNniH8Cq9oAe48SgEF7iFOU7i/X+tVvK1uR6qSLsZXl0MfH+T+vRLrZEghiJwl8csUf6hYI3Xl9AS+Qbnib2gizx41AwpGA/67TtqcZ8mN4=
+	t=1779299089; cv=none; b=PHGFzhCKIL7kV5WjZvhQ/f0S2RvoE9WmW6g9BO/3iqOg6D9wcPVevIZ9xnXowIJKGjI2xSiUU2qV4tSUyHtNR+MOIqQR7jJzT6GWL6wixS1KCvkInNShb17YIUtAdatTVCp1KeQ313YaKWCe1TVvPxK/G48fg8cQnLrb/YszNRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300841; c=relaxed/simple;
-	bh=BiztyTxfZJgzl0SXH8nY5ZrOt+hbyeHyGVbebca5Oks=;
+	s=arc-20240116; t=1779299089; c=relaxed/simple;
+	bh=izHDFFXT9eArpBO7JORJDP6XdMrEa666SFSJAMlUFlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gKSV8V3X0WYf8if1qN3b2YVdl+X5vJQYadrOqsTAFuQuoj91yHmj7m0uig/Jx3ye3owMliWDrAdS2ji/5YIab08xyqT16F/4P2sL38089RyIiaJvACyEblS0Td+UqsNge/OhC1pUZfA8XLfiMZTSLHdeAYfzqYluMmZP9Mf1cTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0fthHDjy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9D571F000E9;
-	Wed, 20 May 2026 18:13:59 +0000 (UTC)
+	 MIME-Version; b=FrBQcYaz60erhlpulCyBeXb1IfHZmYMWDYTYyvLv3Lxbei3VCeDW2rUXa3uXDcOFdAf+XqOV+AE8p4cXAOh8fIrMZoUAxqNQDVBz1rcfmBeQQz1QR8vXEip0e2pEFFnKXsh8zm6WkakJBqmmauYSW24sUNO3gDz0UIvNNLMvqNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sZxwowGp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ED791F000E9;
+	Wed, 20 May 2026 17:44:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300840;
-	bh=TaPVugcrLUDe1RZC62sL2qCTl3g2tB0drTfBcJPZb24=;
+	s=korg; t=1779299088;
+	bh=D5aZGY6fyIK0yqooXj3FCM2D31dhDeNi39WLNNLuTx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0fthHDjysfxUEMGYnhrEsPSby9oqlPJvT2dVyoKV6I9WoLw77gx+HcS6v4QHFRf/V
-	 5p+Bzr1mn9e5dhqGrHM7DidIsadJoeg5P+JugVYbFpWangCDtwEmjHTCTduIHjhC55
-	 MjbCTsis+68g3/rvyverSCtNuoz4uB4gDnIMuYQs=
+	b=sZxwowGp1U8K/oH/wRyACs0zSOJby295Ep5iDcqQPBKcDIzzUKm7XCv/QadFw2TTa
+	 xaEvTbWL7fVu4YyYoubeMuF6JOlUlt3JfmVzGQwOmGiEILf2aCvF1TCwXIM4uhm9TT
+	 JJQ88H8tsD63I5S4PVrZ7Rl0jjh5L+eoht0EibGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Benato <denis.benato@linux.dev>,
-	Jiri Kosina <jkosina@suse.com>,
+	Qingfang Deng <qingfang.deng@linux.dev>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 327/666] HID: asus: make asus_resume adhere to linux kernel coding standards
-Date: Wed, 20 May 2026 18:18:58 +0200
-Message-ID: <20260520162118.315483893@linuxfoundation.org>
+Subject: [PATCH 6.18 656/957] pppoe: drop PFC frames
+Date: Wed, 20 May 2026 18:18:59 +0200
+Message-ID: <20260520162148.758807104@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,69 +67,144 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252502-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-251865-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,suse.com:email]
-X-Rspamd-Queue-Id: 90E2A597DEC
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email]
+X-Rspamd-Queue-Id: 03B70597443
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Benato <denis.benato@linux.dev>
+From: Qingfang Deng <qingfang.deng@linux.dev>
 
-[ Upstream commit 51d33b42b8ae23da92819d28439fdd5636c45186 ]
+[ Upstream commit cc1ff87bce1ccd38410ab10960f576dcd17db679 ]
 
-Linux kernel coding standars requires functions opening brackets to be in
-a newline: move the opening bracket of asus_resume in its own line.
+RFC 2516 Section 7 states that Protocol Field Compression (PFC) is NOT
+RECOMMENDED for PPPoE. In practice, pppd does not support negotiating
+PFC for PPPoE sessions, and the current PPPoE driver assumes an
+uncompressed (2-byte) protocol field. However, the generic PPP layer
+function ppp_input() is not aware of the negotiation result, and still
+accepts PFC frames.
 
-Fixes: 546edbd26cff ("HID: hid-asus: reset the backlight brightness level on resume")
-Signed-off-by: Denis Benato <denis.benato@linux.dev>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+If a peer with a broken implementation or an attacker sends a frame with
+a compressed (1-byte) protocol field, the subsequent PPP payload is
+shifted by one byte. This causes the network header to be 4-byte
+misaligned, which may trigger unaligned access exceptions on some
+architectures.
+
+To reduce the attack surface, drop PPPoE PFC frames. Introduce
+ppp_skb_is_compressed_proto() helper function to be used in both
+ppp_generic.c and pppoe.c to avoid open-coding.
+
+Fixes: 7fb1b8ca8fa1 ("ppp: Move PFC decompression to PPP generic layer")
+Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260415022456.141758-2-qingfang.deng@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-asus.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ppp/ppp_generic.c |  2 +-
+ drivers/net/ppp/pppoe.c       |  8 +++++++-
+ include/linux/ppp_defs.h      | 16 ++++++++++++++++
+ 3 files changed, 24 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
-index b2788bb0477f0..cba383ccfc74c 100644
---- a/drivers/hid/hid-asus.c
-+++ b/drivers/hid/hid-asus.c
-@@ -1092,7 +1092,8 @@ static int asus_start_multitouch(struct hid_device *hdev)
- 	return 0;
+diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
+index 7ad6c241c3295..507d216256c0d 100644
+--- a/drivers/net/ppp/ppp_generic.c
++++ b/drivers/net/ppp/ppp_generic.c
+@@ -2240,7 +2240,7 @@ ppp_do_recv(struct ppp *ppp, struct sk_buff *skb, struct channel *pch)
+  */
+ static void __ppp_decompress_proto(struct sk_buff *skb)
+ {
+-	if (skb->data[0] & 0x01)
++	if (ppp_skb_is_compressed_proto(skb))
+ 		*(u8 *)skb_push(skb, 1) = 0x00;
  }
  
--static int __maybe_unused asus_resume(struct hid_device *hdev) {
-+static int __maybe_unused asus_resume(struct hid_device *hdev)
-+{
- 	struct asus_drvdata *drvdata = hid_get_drvdata(hdev);
- 	int ret = 0;
+diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
+index 4ac6afce267b9..dc6d139432387 100644
+--- a/drivers/net/ppp/pppoe.c
++++ b/drivers/net/ppp/pppoe.c
+@@ -424,7 +424,7 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
+ 	if (skb_mac_header_len(skb) < ETH_HLEN)
+ 		goto drop;
  
+-	if (!pskb_may_pull(skb, sizeof(struct pppoe_hdr)))
++	if (!pskb_may_pull(skb, PPPOE_SES_HLEN))
+ 		goto drop;
+ 
+ 	ph = pppoe_hdr(skb);
+@@ -434,6 +434,12 @@ static int pppoe_rcv(struct sk_buff *skb, struct net_device *dev,
+ 	if (skb->len < len)
+ 		goto drop;
+ 
++	/* skb->data points to the PPP protocol header after skb_pull_rcsum.
++	 * Drop PFC frames.
++	 */
++	if (ppp_skb_is_compressed_proto(skb))
++		goto drop;
++
+ 	if (pskb_trim_rcsum(skb, len))
+ 		goto drop;
+ 
+diff --git a/include/linux/ppp_defs.h b/include/linux/ppp_defs.h
+index b7e57fdbd4139..b1d1f46d7d3be 100644
+--- a/include/linux/ppp_defs.h
++++ b/include/linux/ppp_defs.h
+@@ -8,6 +8,7 @@
+ #define _PPP_DEFS_H_
+ 
+ #include <linux/crc-ccitt.h>
++#include <linux/skbuff.h>
+ #include <uapi/linux/ppp_defs.h>
+ 
+ #define PPP_FCS(fcs, c) crc_ccitt_byte(fcs, c)
+@@ -25,4 +26,19 @@ static inline bool ppp_proto_is_valid(u16 proto)
+ 	return !!((proto & 0x0101) == 0x0001);
+ }
+ 
++/**
++ * ppp_skb_is_compressed_proto - checks if PPP protocol in a skb is compressed
++ * @skb: skb to check
++ *
++ * Check if the PPP protocol field is compressed (the least significant
++ * bit of the most significant octet is 1). skb->data must point to the PPP
++ * protocol header.
++ *
++ * Return: Whether the PPP protocol field is compressed.
++ */
++static inline bool ppp_skb_is_compressed_proto(const struct sk_buff *skb)
++{
++	return unlikely(skb->data[0] & 0x01);
++}
++
+ #endif /* _PPP_DEFS_H_ */
 -- 
 2.53.0
 
