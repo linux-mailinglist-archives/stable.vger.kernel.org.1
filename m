@@ -1,197 +1,215 @@
-Return-Path: <stable+bounces-253402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253403-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oKn3GJ8wDmoK7wUAu9opvQ
-	(envelope-from <stable+bounces-253402-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:07:27 +0200
+	id 2OszK6I9Dmqr9AUAu9opvQ
+	(envelope-from <stable+bounces-253403-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 01:02:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0722159BC13
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:07:26 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A32159C83D
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 01:02:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BF6B43035337
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:05:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 72A773017FBF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:57:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8AA3438A3;
-	Wed, 20 May 2026 22:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58A223C13F1;
+	Wed, 20 May 2026 22:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OjZptnA2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SC/CUCJt"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDA12C11CF;
-	Wed, 20 May 2026 22:05:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1DD1A682E
+	for <stable@vger.kernel.org>; Wed, 20 May 2026 22:57:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779314716; cv=none; b=u8TishljjPIZ6MzId1SmFGADfU5mjj0CsvO2ZEruQOZHwhTmdZJ7q328STfW+7ySjrBCfbiFk5HunAV3oUVIFVpXnEE6Apm/ljGx4dx7dslIt7QDX4CWkAJ7mx1qk6Dj/NyIGWpRX29aK726tduKmAnTlop5BlCgwzvT3AYtTIM=
+	t=1779317842; cv=none; b=nDEvX5/Z1OPnBrA+By6oA79f/4rx4xJmTsBuI1BRLskpp8c8fs6MAB/pwCqwwvkXxZlzgzSz364Y3iUYRC2CmHTbxMCAkKlxL9V3YinkOEriehAxrtbfXND8DQnDy72o0fU4fmonwxRKuvnq7gjIa2Rjac0Sx+hG3uxJGn2E3Sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779314716; c=relaxed/simple;
-	bh=E7xfMtcSd732QE5ywnqmiYLayCoQaITmMAbE0+Ia9Vo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dtJuryvKIbNs/HgDVsXb9C1lzJgpFyb4N6nS4HMg0JchvRIAdBPFMWgvvqzZFuRuXntNE5MEJlHwm3CIB6JXOrdkFeXziGl4daU0tkSnvzV4d1LpH0b8L6Fjm3gonLQd1oBOEpWIWBTCL1EudSkhTYNxJFO0mFbwYBH08KMK920=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OjZptnA2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C55E1F000E9;
-	Wed, 20 May 2026 22:05:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779314714;
-	bh=oq9Mw1eKArGqNiiPPS6OfCCiC3moAy62JaIiwg4FYGw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=OjZptnA2p7MwDsZqUia/e0Ldxb0S2eKL9tftaz8UoeriRZQwV8nzWf9ZZHU31Bbrm
-	 dDsE6mDoprCn0JRJNfP/RDiJfxuReIOKBtU8RbzZa7CC1l8Rqi7TwfISLPCxHe/YEY
-	 wu8E93XzdOT6Qdi8vXnEW8QNo+wHKmFWpcEkvTHbx2MqTYS4k+hPq3pBsVEeJI6/gO
-	 CrKed2ZivtRm2CNqxHAXm8HpuldELoc6BLy7pl7XieADC4PADe7ByAxR4GHZ0rLkqo
-	 VoJP3o+1I8KmcIEe1pMrmQPn/We54ZFzaq6sCW0SjJTShFB0QTv5uZ6JYfslnrjNtA
-	 OMOks5OTaTomQ==
-Message-ID: <9344c408-af6a-4ca7-b481-1c26c9491b64@kernel.org>
-Date: Thu, 21 May 2026 00:05:09 +0200
+	s=arc-20240116; t=1779317842; c=relaxed/simple;
+	bh=9WDmz4mIk7d37pNF+Jf3V82CnN2ksLJhxTsJcZyYoPA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pp03E3SK31CeqALWy/iZXoBLT67cuw0PLoLDjs0UNaE+sp40wGIissPhPUs8YdsxGwa++ngDPdplfn4NaHhCA0XJIiJDDKa22g83G0ZsW2j419cKzal10wlWk00jFoNqB65jzW0GhSr6y1JI5aOt9aCdeIP59lNhAE1ouKIkU0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SC/CUCJt; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-bdbac72ac1fso86984666b.3
+        for <stable@vger.kernel.org>; Wed, 20 May 2026 15:57:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779317839; x=1779922639; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=O5LTi7OvRi2audUUcgHNeX3CP0k1T7QcTMVWKqi+l/s=;
+        b=SC/CUCJtKH32blGUdu8kFVrjcjBGb45otHujNLAnY0itPJHnV7NEcWihQUoVZiDAyS
+         tmxfhH2uLd18VS/c636hFzr60VDqmibXz3eZRh/QLhamHy1NCzTKHdlYNtJOlDpeq1TE
+         4oulgBryY4e7e2mLvZhA2IsnMPzkDjbgFY1H6eH17cq1RBG+k5/KUE5uFQi521eXwuCn
+         zu924dxshEHNdL0rC1MoUQYMCOUGY0uYUlyHMoqWRT+vYs2A0L+i6Y4CKTSJrhJFAn/H
+         z211wZlr5KHqIHiJIrB+0DagwsjwNVW3eQUo0dW2JjDUgk/uD0GKa5xXqEnvBBGJpEHV
+         xaqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779317839; x=1779922639;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=O5LTi7OvRi2audUUcgHNeX3CP0k1T7QcTMVWKqi+l/s=;
+        b=i5KlxdUAX69VbyFs6iSJQv8OenVnrWaqNVFEZfTumGtsnTmEf/K0GbCqcfsNL+j4ct
+         Hu/BYJKcLbz/X8VHscaiopOLP1UgMC7mFPya8aab2w8k0Ef6JkJ3tDmgd3eeN5J46IhW
+         a6aVGB9fBjZQcIoAe8yTWKpeSmDVoYFngy9oPYIC7d6R4aS4SiqEgxKeSkBubTE5wdjZ
+         vLSK4HEMojTJR1Bk+fBWBzeyN3uB4H6YdSmkrFYDIb7lN8FPV4QKK4MBKAtdAmhsKbpz
+         4HSbOvs1COyKnDPWf1YyqGKroYwKxZU+Cqqa/iMVNfP3/n9xm8MfPuFgu89zlGfhu8r4
+         GotA==
+X-Forwarded-Encrypted: i=1; AFNElJ8Z2cWseeWPj63QItlhxlD4ditAqw0Aj6SLQtpagQnQgeHxbpFEeAnD2bn22sfE2JuuP9n4+s4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyzKIAsaPV9x0qMNrpSNg8d0MoOGrWbFn+mjmna5arl/+r4LRgc
+	O3mjs6WSVPNlvKCj8fRQKajSN8FMJHwYI36tQC+1SqqVw1YooqB9Vl6S
+X-Gm-Gg: Acq92OGTLsHIaJJqG/BSbhzeGXWOdPyijaChKD6WPML7ucYhq6b1SCC7Y2M4cn3tmvL
+	CZusNnUfdNUGyQUVjHiwletbL1xxkWEJdnhvGi6d2RhwLG+UTiMcpQhLumUNZpyFSdjcyMjOu6y
+	L9tDHMKBJCez8xzkRAwmBZXG/veb1cMURJu1JHehex6Ry8fHUaB3FT8lMvY7sElxljQexifsESA
+	3FQX1CEODaILohLwHss66Ul+pK3uo/64mQVZEkf0YKQdMURyNIZr50qIOOznJK+5BR9govlaqf0
+	GwWdZVIKU7aNoyIfezs4zBoYoJHgthEW/JkDJ2I5UQSCdAkl2mVe/vjDg4U8llfh+Toe8po1Pw+
+	85eW2ZTVF6foCzcSyzeob+LiW9pej5lWrA1CXPBVG9Yu1nZKdWf2qymBrMTLwA4enpw5ZEVtUW+
+	k6naa5LLiaSCbUTBAV0KauVhMM9PN1LTEs0AYGj+pteKgi5s3Rv7rqPWiFt+H0/wSSxUU/I3r+T
+	PkvFQ==
+X-Received: by 2002:a17:907:3faa:b0:bae:d29c:4e28 with SMTP id a640c23a62f3a-bdc12aa6420mr10795366b.12.1779317838922;
+        Wed, 20 May 2026 15:57:18 -0700 (PDT)
+Received: from node ([202.47.63.86])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bd4f4ded99dsm903754266b.30.2026.05.20.15.57.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 May 2026 15:57:18 -0700 (PDT)
+From: Muhammad Bilal <meatuni001@gmail.com>
+To: linux-bluetooth@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	stable@vger.kernel.org,
+	Muhammad Bilal <meatuni001@gmail.com>
+Subject: [PATCH v3] Bluetooth: HIDP: fix missing length checks in hidp_input_report()
+Date: Wed, 20 May 2026 18:56:43 -0400
+Message-ID: <20260520225643.35683-1-meatuni001@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <CABBYNZ+Oc=LU6d8_xK9_a9yk-TFyaE=0KsNvAwKbNZVs1EJpWg@mail.gmail.com>
+References: <CABBYNZ+Oc=LU6d8_xK9_a9yk-TFyaE=0KsNvAwKbNZVs1EJpWg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc: define __LITTLE_ENDIAN and __BIG_ENDIAN for
- math-emu
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Mingcong Bai <jeffbai@aosc.io>, linux-kernel@vger.kernel.org,
- Xi Ruoyao <xry111@xry111.site>, Kexy Biscuit <kexybiscuit@aosc.io>,
- stable@vger.kernel.org, kernel test robot <lkp@intel.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- linuxppc-dev@lists.ozlabs.org
-References: <20260517041423.71243-1-jeffbai@aosc.io>
- <20260517145421.2d1ac77c@pumpkin>
- <eb93d563-7042-458e-a5c0-b5389343d41b@kernel.org>
- <20260520194301.06d96a5f@pumpkin>
-Content-Language: fr-FR
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <20260520194301.06d96a5f@pumpkin>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-253402-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[aosc.io,vger.kernel.org,xry111.site,intel.com,linux.ibm.com,ellerman.id.au,gmail.com,lists.ozlabs.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,holtmann.org,gmail.com];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253403-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[meatuni001@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chleroy@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,aosc.io:email,outlook.com:url,gnu.org:url]
-X-Rspamd-Queue-Id: 0722159BC13
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 2A32159C83D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+hidp_input_report() reads keyboard and mouse payload data from an skb
+without first verifying that skb->len contains enough data.
 
+hidp_recv_intr_frame() pulls the 1-byte HIDP header before dispatching
+to hidp_input_report(). If a paired device sends a truncated packet,
+the handler reads beyond the valid skb data, resulting in an
+out-of-bounds read of skb data. The OOB bytes may be interpreted as
+phantom key presses or spurious mouse movement.
 
-Le 20/05/2026 à 20:43, David Laight a écrit :
-> On Wed, 20 May 2026 15:14:40 +0200
-> "Christophe Leroy (CS GROUP)" <chleroy@kernel.org> wrote:
-> 
->> Le 17/05/2026 à 15:54, David Laight a écrit :
->>> On Sun, 17 May 2026 12:14:21 +0800
->>> Mingcong Bai <jeffbai@aosc.io> wrote:
->>>    
->>>> Similar to commit b929926f01f2 ("sh: define __BIG_ENDIAN for math-emu"),
->>>> define __LITTLE_ENDIAN and __BIG_ENDIAN as 0 to mitigate build-time
->>>> warnings:
->>>>
->>>>     ./include/math-emu/double.h:59:21: error: ‘__BIG_ENDIAN’ is not defined, evaluates to ‘0’ [-Werror=undef]
->>>>        59 | #if __BYTE_ORDER == __BIG_ENDIAN
->>>>           |
->>>>
->>>> Cc: stable@vger.kernel.org
->>>> Fixes: 13da9e200fe4 ("Revert "endian: #define __BYTE_ORDER"")
->>>> Reported-by: kernel test robot <lkp@intel.com>
->>>> Closes: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Foe-kbuild-all%2F202507301656.7FEX6J5W-lkp%40intel.com%2F&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C3ed26b8c3d6449fdc29608deb69fac66%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639148994069314641%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=FfFnXxMPXXxoOMM8fYU4df5gMjk3B2dPgQsjwUagaNA%3D&reserved=0
->>>> Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
->>>> ---
->>>>    arch/powerpc/include/asm/sfp-machine.h | 4 +++-
->>>>    1 file changed, 3 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/arch/powerpc/include/asm/sfp-machine.h b/arch/powerpc/include/asm/sfp-machine.h
->>>> index 8b957aabb826d..db8525605c026 100644
->>>> --- a/arch/powerpc/include/asm/sfp-machine.h
->>>> +++ b/arch/powerpc/include/asm/sfp-machine.h
->>>> @@ -319,10 +319,12 @@
->>>>    #define abort()								\
->>>>    	return 0
->>>>    
->>>> -#ifdef __BIG_ENDIAN
->>>> +#ifdef __BIG_ENDIAN__
->>>>    #define __BYTE_ORDER __BIG_ENDIAN
->>>> +#define __LITTLE_ENDIAN 0
->>>>    #else
->>>>    #define __BYTE_ORDER __LITTLE_ENDIAN
->>>> +#define __BIG_ENDIAN 0
->>>>    #endif
->>>
->>> I thought the expected/correct value for __BYTE_ORDER__ was either 1234 or 4321.
->>> (apart from pdp11's 2143).
->>
->> That's the case, in include/linux/kconfig.h we have:
->>
->> #ifdef CONFIG_CPU_BIG_ENDIAN
->> #define __BIG_ENDIAN 4321
->> #else
->> #define __LITTLE_ENDIAN 1234
->> #endif
->>
->> But as far as I understand the problem is that math-emu expects
->> __BIG_ENDIAN to be defined at all time as it has tests like:
->>
->> #if __BYTE_ORDER == __BIG_ENDIAN
-> 
-> The gcc docs have (https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgcc.gnu.org%2Fonlinedocs%2Fcpp%2FCommon-Predefined-Macros.html&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C3ed26b8c3d6449fdc29608deb69fac66%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639148994069350793%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=D0BlZT73XnqHXHN2ukPFFUQw5lCCwaKfkmp6vMHz0Gk%3D&reserved=0):
->       
-> __BYTE_ORDER__
-> __ORDER_LITTLE_ENDIAN__
-> __ORDER_BIG_ENDIAN__
-> __ORDER_PDP_ENDIAN__
-> 
->      __BYTE_ORDER__ is defined to one of the values __ORDER_LITTLE_ENDIAN__, __ORDER_BIG_ENDIAN__, or __ORDER_PDP_ENDIAN__ to reflect the layout of multi-byte and multi-word quantities in memory. If __BYTE_ORDER__ is equal to __ORDER_LITTLE_ENDIAN__ or __ORDER_BIG_ENDIAN__, then multi-byte and multi-word quantities are laid out identically: the byte (word) at the lowest address is the least significant or most significant byte (word) of the quantity, respectively. If __BYTE_ORDER__ is equal to __ORDER_PDP_ENDIAN__, then bytes in 16-bit words are laid out in a little-endian fashion, whereas the 16-bit subwords of a 32-bit quantity are laid out in big-endian fashion.
-> 
->      You should use these macros for testing like this:
-> 
->      /* Test for a little-endian machine */
->      #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-> 
-> The doc doesn't mention the value, but __ORDER_BIG_ENDIAN__ is 4321 (decimal).
-> 
-> So the math-emu code is neither following gcc's rules or the kernel ones.
-> 
-> Your change will break anything that currently does:
-> #ifdef __BIG_ENDIAN
-> 
-> Any change would have to be limited to code that is implementing math-emu.
+Replace the open-coded length tracking and pointer arithmetic with
+skb_pull_data() calls. skb_pull_data() returns NULL if the requested
+bytes are not present, eliminating the need for a manual size variable
+and the separate skb->len guard.
 
-asm/sfp-machine.h is only included by math-emu it seems, so the change 
-should be safe.
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
+---
+v3:
+ - Replace manual length checks and pointer arithmetic with
+   skb_pull_data() per Luiz's review
+v2:
+ - Add Cc: stable@vger.kernel.org per Greg KH's note
+---
+ net/bluetooth/hidp/core.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-Apparently math-emu predates git history, not sure where it comes from.
+diff --git a/net/bluetooth/hidp/core.c b/net/bluetooth/hidp/core.c
+index 976f91eeb..70344bd32 100644
+--- a/net/bluetooth/hidp/core.c
++++ b/net/bluetooth/hidp/core.c
+@@ -179,12 +179,21 @@ static void hidp_input_report(struct hidp_session *session, struct sk_buff *skb)
+ {
+ 	struct input_dev *dev = session->input;
+ 	unsigned char *keys = session->keys;
+-	unsigned char *udata = skb->data + 1;
+-	signed char *sdata = skb->data + 1;
+-	int i, size = skb->len - 1;
++	unsigned char *udata;
++	signed char *sdata;
++	u8 *hdr;
++	int i;
++
++	hdr = skb_pull_data(skb, 1);
++	if (!hdr)
++		return;
+ 
+-	switch (skb->data[0]) {
++	switch (*hdr) {
+ 	case 0x01:	/* Keyboard report */
++		udata = skb_pull_data(skb, 8);
++		if (!udata)
++			break;
++
+ 		for (i = 0; i < 8; i++)
+ 			input_report_key(dev, hidp_keycode[i + 224], (udata[0] >> i) & 1);
+ 
+@@ -213,6 +222,10 @@ static void hidp_input_report(struct hidp_session *session, struct sk_buff *skb)
+ 		break;
+ 
+ 	case 0x02:	/* Mouse report */
++		sdata = skb_pull_data(skb, 3);
++		if (!sdata)
++			break;
++
+ 		input_report_key(dev, BTN_LEFT,   sdata[0] & 0x01);
+ 		input_report_key(dev, BTN_RIGHT,  sdata[0] & 0x02);
+ 		input_report_key(dev, BTN_MIDDLE, sdata[0] & 0x04);
+@@ -222,7 +235,7 @@ static void hidp_input_report(struct hidp_session *session, struct sk_buff *skb)
+ 		input_report_rel(dev, REL_X, sdata[1]);
+ 		input_report_rel(dev, REL_Y, sdata[2]);
+ 
+-		if (size > 3)
++		if (skb->len > 0)
+ 			input_report_rel(dev, REL_WHEEL, sdata[3]);
+ 		break;
+ 	}
+-- 
+2.54.0
 
-Christophe
 
