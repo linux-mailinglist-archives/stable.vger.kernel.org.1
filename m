@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-252347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250813-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IIhII+H6DWrO5AUAu9opvQ
-	(envelope-from <stable+bounces-252347-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:18:09 +0200
+	id 6GmgIezsDWo04wUAu9opvQ
+	(envelope-from <stable+bounces-250813-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:18:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C627595BEF
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:18:09 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27A065934B5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:18:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 77A4B316A5BE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:07:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D3FDC3166C2D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:00:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E74C3F6C5F;
-	Wed, 20 May 2026 18:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7685136D4E1;
+	Wed, 20 May 2026 16:59:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qW94XVDJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IHyZPmdK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584503EAC82;
-	Wed, 20 May 2026 18:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C493DE451;
+	Wed, 20 May 2026 16:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300439; cv=none; b=AAM+eG7mu8UqRu6kONLmK5i6JxjHsw28bWcaDoGJVM8SLdOZ1ilrH8bAHV8s6FN70S1YcWRpNlqsQMwxTv81q9HD1MmqPtfMClkkMoRe0qWrVmyntYB5tK4YcRtT/sjXWqPE6lSaY2mQIIb6luAQ7yKs/7ReGcO/lj/c8y4a7fg=
+	t=1779296374; cv=none; b=ZHWR8V0T16z+/Cdoq4IKIAViowgsE08ertFRSUfCNeq5474cXxTPeZtDdPc18M6Zudl9gnkefAfg2X7/833ST/ldq6F/UrG3CUNkCiihK0JGKR34OHllVfi60fO4wEWgWbfunQY+4QPI9QUcz6AZvWHE/AXmNK1uTBA5CvTGs74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300439; c=relaxed/simple;
-	bh=3inSXnkAT4pzwba11Y4moWJvty9HZJbO8J1Cs1LLl44=;
+	s=arc-20240116; t=1779296374; c=relaxed/simple;
+	bh=GkmhKlt8UzOYdIRndopWU6EC4BnMimNDE5pLgXwOKn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Go3p5Rcjpvb2CXvhiQuedoyj3OmOyNd3e9wpPZjuM+bQl6ClEdRa2tkgEkPGvrKp0J4SR+fpBGGzgeHcLqbHkIisnaxlbV0bW8gEapYNtSRNOLo1xxJhUwqpS6PxPvg/L1jbaElp7zt/xuV6BvJdONUYcOBrH9ilFjI+IbaDkWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qW94XVDJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE2B21F000E9;
-	Wed, 20 May 2026 18:07:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IpRtf9ZBj17g0VNRQOe9gTSFta2M8Yjm7rHFPi+TeqsqZgXbbsBW5NKvjui0ckF6ffGCvl7kxnQZQJZeKV+vFJsdA+nVhYyeLSrOg9E0Y0tfxcH6vgfg2Cy9otOHlmNzplpk5KnmfevJBZ7lDvfxhcpYvyWz6xmdhinUNEsDmvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IHyZPmdK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8F501F000E9;
+	Wed, 20 May 2026 16:59:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300438;
-	bh=lt0sOoz6dB5wAxJSzgKhB8RmrTEteKfWXu6qian1vak=;
+	s=korg; t=1779296371;
+	bh=9XCbJ/6LUzLo1ndm/FC+ba0+fAD1qr+KaD76eTLBcck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qW94XVDJ7KljLEaPOkLwi9rJp9igrjwnw4ln5EC0WrwlEoVnoZHhOr420ss7zVswd
-	 yRzu39o1rbkAHG6QLYGC1baOzjuELsRps4kZCOkFiUjEvGzXaKJFECkrdorYr1++OT
-	 fbximdY1+kYWA+Ow9g+e2IyJLLhzQecwBtI/wZs8=
+	b=IHyZPmdKgyuJNSUCUP0bEZy4GAN7Nx49L4ZMlWKimlocGHNXZapivM0m/t5JhWo3W
+	 pFM/21+uNPGD/74flG9AeQLfebKiS7vQma6HV35HRIEKq7DkUDU+L5UE5sOTBd2Msc
+	 9teVvYf4X9CTn9JGdgK1LHz+XpBhhIt8e/gX/Veg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Brian Masney <bmasney@redhat.com>,
+	=?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@bootlin.com>,
+	Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 176/666] drm/amd/pm/ci: Use highest MCLK on CI when MCLK DPM is disabled
+Subject: [PATCH 7.0 0737/1146] clk: visconti: pll: initialize clk_init_data to zero
 Date: Wed, 20 May 2026 18:16:27 +0200
-Message-ID: <20260520162115.016711979@linuxfoundation.org>
+Message-ID: <20260520162204.885814051@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,78 +67,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252347-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250813-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,amd.com:email]
-X-Rspamd-Queue-Id: 4C627595BEF
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sashiko.dev:url,bootlin.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,mail.toshiba:email]
+X-Rspamd-Queue-Id: 27A065934B5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Brian Masney <bmasney@redhat.com>
 
-[ Upstream commit 894f0d34d66cb47fe718fe2ae5c18729d22c5218 ]
+[ Upstream commit 1603cbb64173a0e9fa7500f2a686f4aa011c58b9 ]
 
-When MCLK DPM is disabled for any reason, populate the MCLK
-table with the highest MCLK DPM level, so that the ASIC can
-use the highest possible memory clock to get good performance
-even when MCLK DPM is disabled.
+Sashiko reported the following:
 
-Fixes: 9f4b35411cfe ("drm/amd/powerplay: add CI asics support to smumgr (v3)")
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> The struct clk_init_data init is declared on the stack without being
+> fully zero-initialized. While fields like name, flags, parent_names,
+> num_parents, and ops are explicitly assigned, the parent_data and
+> parent_hws fields are left containing stack garbage.
+
+clk_core_populate_parent_map() currently prefers the parent names over
+the parent data and hws, so this isn't a problem at the moment. If that
+ordering ever changed in the future, then this could lead to some
+unexpected crashes. Let's just go ahead and make sure that the struct
+clk_init_data is initialized to zero as a good practice.
+
+Fixes: b4cbe606dc367 ("clk: visconti: Add support common clock driver and reset driver")
+Link: https://sashiko.dev/#/patchset/20260326042317.122536-1-rosenp%40gmail.com
+Signed-off-by: Brian Masney <bmasney@redhat.com>
+Reviewed-by: Benoît Monin <benoit.monin@bootlin.com>
+Reviewed-by: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/clk/visconti/pll.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-index 0cb7eaaba3844..71b1dad34926e 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/ci_smumgr.c
-@@ -1322,6 +1322,14 @@ static int ci_populate_all_memory_levels(struct pp_hwmgr *hwmgr)
- 			return result;
- 	}
- 
-+	if (data->mclk_dpm_key_disabled && dpm_table->mclk_table.count) {
-+		/* Populate the table with the highest MCLK level when MCLK DPM is disabled */
-+		for (i = 0; i < dpm_table->mclk_table.count - 1; i++) {
-+			levels[i] = levels[dpm_table->mclk_table.count - 1];
-+			levels[i].DisplayWatermark = PPSMC_DISPLAY_WATERMARK_HIGH;
-+		}
-+	}
-+
- 	smu_data->smc_state_table.MemoryLevel[0].EnabledForActivity = 1;
- 
- 	dev_id = adev->pdev->device;
+diff --git a/drivers/clk/visconti/pll.c b/drivers/clk/visconti/pll.c
+index 6fd02c4b641ed..805b954812817 100644
+--- a/drivers/clk/visconti/pll.c
++++ b/drivers/clk/visconti/pll.c
+@@ -249,7 +249,7 @@ static struct clk_hw *visconti_register_pll(struct visconti_pll_provider *ctx,
+ 					    const struct visconti_pll_rate_table *rate_table,
+ 					    spinlock_t *lock)
+ {
+-	struct clk_init_data init;
++	struct clk_init_data init = {};
+ 	struct visconti_pll *pll;
+ 	struct clk_hw *pll_hw_clk;
+ 	size_t len;
 -- 
 2.53.0
 
