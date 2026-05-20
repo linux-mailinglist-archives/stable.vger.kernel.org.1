@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-252820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253335-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yNLLNP0XDmpT6AUAu9opvQ
-	(envelope-from <stable+bounces-252820-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:22:21 +0200
+	id QJDoLaIIDmrY5gUAu9opvQ
+	(envelope-from <stable+bounces-253335-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:16:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D491E599804
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:22:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24CC959811C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:16:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1FCFB30C8E64
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:28:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 089BE39CA362
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:54:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4F033F660B;
-	Wed, 20 May 2026 18:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 564E843E9D2;
+	Wed, 20 May 2026 18:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eckaEkCo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="or3gJFW8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 539763F39EE;
-	Wed, 20 May 2026 18:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C141C409119;
+	Wed, 20 May 2026 18:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301674; cv=none; b=dQhZyH0HvnFC1sf0kDiRYNPKVROEk2+u3Cz91zPEJXDPuplIg3o0JYX4uDq/O6BG2FoK+yAEYZozHmWRrOdAB2W0XGnabXLrvsyXrL0BDxeEhz1MzQe1pDLSBI6QqR6WCQ7LLPd2T8F1+0m0epvzOYQklpMo5/6E+Oi8EmX7s0k=
+	t=1779303014; cv=none; b=VujARSu5IueoL1yvBubIEWk3i3NKZCXIJC+lQ1meQL1Zj4n/Fp/ZPU9wbM54PIq6zKKRFs5LXTZeCXGcrkz6kWNGgZmSEDHDCx9e6H9BvPxRn4R6RIuWQjqBE8VaJxAyIc/4ZfccgkWXzeCI2MrXgPl7o7XrKZC8GUeJ/Ig8zj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301674; c=relaxed/simple;
-	bh=/B622kb1yau5UFiYmLq0S6XQLCF6+1sk0eevppwY+nk=;
+	s=arc-20240116; t=1779303014; c=relaxed/simple;
+	bh=2/ZhHano9BlimXRK8X+QaHydPtwBLWKjwLMnjgYvif4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pHuL/35/GXBUi67kOxkMiH5JShEJ2m9JSM9IZctFF33YmmYsTQNRRbuyAyDijj/13Z99JpNhy8u1IhdgRnFcrcZq4nZuayuUp5pQ+za/HLzIg8VdmN5euVzMU7ZnnJ6dw0LMVHDjUy0h9NZmwTdEwQWeHlxOBsdHBu80t3UXM4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eckaEkCo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA52E1F000E9;
-	Wed, 20 May 2026 18:27:52 +0000 (UTC)
+	 MIME-Version; b=SAvj9GleO15AqXjDZ1AovWD6AjFfVEYRscyhZo5wHwfMmmRzWRggiIQ/07MUSCo5mrneFynETzrOVWZEzCItIoAFBe5ZkXpJR3zXKjTwsc3Hon/TvWwmq6+dvp9A7BBE/lXi+ch9FmMgwQ4oLf84TewdF3K29yWxrWcYm+Se+V4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=or3gJFW8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A5C1F00893;
+	Wed, 20 May 2026 18:50:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779301673;
-	bh=vgltbbhQ7Sy2MyhO7GW+uVd99WDzO2AXsOHW2IKTICk=;
+	s=korg; t=1779303009;
+	bh=S8BZr294jsWrM8qmR6SYH+hKomlYYQGxDv4diyYn3Gk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eckaEkCo9/DIZTH3ghJLKzJq3AqvP+xse8zCjA+i+LmvoeABCm8Pt5G7PaGKluk6P
-	 lrxMf9YCT4QcU/ntYU0vkeGyoV0z8CQLVmDInw5DK24E2uSUKI6lNzNIQ5UDO75O/S
-	 QZixHcy6XfMKwwXq+nw5Q07g8zSZLKD/mIHqlI0I=
+	b=or3gJFW8GmhYASmhFWILsgJyvDtCvXeXV51lUrRM0XQtYgvqC/ypPpe3AgDrFAEqG
+	 jp3JAGtxV7y2ryxZArOHZWWMrL7JdWV1gHF1UdTDIoG9EjEGiCk5tChwrW9nOFtse4
+	 KHYHnClggpvVNSB6EPb3pyaBrRu2inOL0B/m2W2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.12 643/666] drm/xe/dma-buf: handle empty bo and UAF races
-Date: Wed, 20 May 2026 18:24:14 +0200
-Message-ID: <20260520162125.215631302@linuxfoundation.org>
+	Petr Oros <poros@redhat.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 432/508] iavf: wait for PF confirmation before removing VLAN filters
+Date: Wed, 20 May 2026 18:24:15 +0200
+Message-ID: <20260520162107.961534727@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,152 +67,227 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-252820-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-253335-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,gitlab.freedesktop.org:url]
-X-Rspamd-Queue-Id: D491E599804
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,intel.com:email]
+X-Rspamd-Queue-Id: 24CC959811C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Petr Oros <poros@redhat.com>
 
-commit 981bedbbe61364fcc3a3b87ebaf648a66cd07108 upstream.
+[ Upstream commit bbcbe4ed70dea948849549af7edf44bd42bbd695 ]
 
-There look to be some nasty races here when triggering the
-invalidate_mappings hook:
+The VLAN filter DELETE path was asymmetric with the ADD path: ADD
+waits for PF confirmation (ADD -> ADDING -> ACTIVE), but DELETE
+immediately frees the filter struct after sending the DEL message
+without waiting for the PF response.
 
-1) We do xe_bo_alloc() followed by the attach, before the actual full bo
-   init step in xe_dma_buf_init_obj(). However the bo is visible on the
-   attachments list after the attach.  This is bad since exporter driver,
-   say amdgpu, can at any time call back into our invalidate_mappings hook,
-   with an empty/bogus bo, leading to potential bugs/crashes.
+This is problematic because:
+ - If the PF rejects the DEL, the filter remains in HW but the driver
+   has already freed the tracking structure, losing sync.
+ - Race conditions between DEL pending and other operations
+   (add, reset) cannot be properly resolved if the filter struct
+   is already gone.
 
-2) Similar to 1) but here we get a UAF, when the invalidate_mappings
-   hook is triggered. For example, we get as far as xe_bo_init_locked()
-   but this fails in some way. But here the bo will be freed on error, but
-   we still have it attached from dma-buf pov, so if the
-   invalidate_mappings is now triggered then the bo we access is gone and
-   we trigger UAF and more bugs/crashes.
+Add IAVF_VLAN_REMOVING state to make the DELETE path symmetric:
 
-To fix this, move the attach step until after we actually have a fully
-set up buffer object. Note that the bo is not published to userspace
-until later, so not sure what the comment "Don't publish the bo
-until we have a valid attachment", is referring to.
+  REMOVE -> REMOVING (send DEL) -> PF confirms -> kfree
+                                -> PF rejects  -> ACTIVE
 
-We have at least two different customers reporting hitting a NULL ptr
-deref in evict_flags when importing something from amdgpu, followed by
-triggering the evict flow. Hit rate is also pretty low, which would
-hint at some kind of race, so something like 1) or 2) might explain
-this.
+In iavf_del_vlans(), transition filters from REMOVE to REMOVING
+instead of immediately freeing them. The new DEL completion handler
+in iavf_virtchnl_completion() frees filters on success or reverts
+them to ACTIVE on error.
 
-v2:
-  - Shuffle the order of the ops slightly (no functional change)
-  - Improve the comment to better explain the ordering (Matt B)
+Update iavf_add_vlan() to handle the REMOVING state: if a DEL is
+pending and the user re-adds the same VLAN, queue it for ADD so
+it gets re-programmed after the PF processes the DEL.
 
-Assisted-by: Gemini:gemini-3 #debug
-Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/7903
-Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/4055
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <stable@vger.kernel.org> # v6.8+
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Acked-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Link: https://patch.msgid.link/20260508102635.149172-3-matthew.auld@intel.com
-(cherry picked from commit af1f2ad0c59fe4e2f924c526f66e968289d77971)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The !VLAN_FILTERING_ALLOWED early-exit path still frees filters
+directly since no PF message is sent in that case.
+
+Also update iavf_del_vlan() to skip filters already in REMOVING
+state: DEL has been sent to PF and the completion handler will
+free the filter when PF confirms. Without this guard, the sequence
+DEL(pending) -> user-del -> second DEL could cause the PF to return
+an error for the second DEL (filter already gone), causing the
+completion handler to incorrectly revert a deleted filter back to
+ACTIVE.
+
+Fixes: 968996c070ef ("iavf: Fix VLAN_V2 addition/rejection")
+Signed-off-by: Petr Oros <poros@redhat.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20260427-jk-iwl-net-petr-oros-fixes-v1-3-cdcb48303fd8@intel.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_dma_buf.c |   31 ++++++++++++++++---------------
- 1 file changed, 16 insertions(+), 15 deletions(-)
+ drivers/net/ethernet/intel/iavf/iavf.h        |  1 +
+ drivers/net/ethernet/intel/iavf/iavf_main.c   | 13 ++++---
+ .../net/ethernet/intel/iavf/iavf_virtchnl.c   | 37 +++++++++++++------
+ 3 files changed, 34 insertions(+), 17 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_dma_buf.c
-+++ b/drivers/gpu/drm/xe/xe_dma_buf.c
-@@ -278,15 +278,25 @@ struct drm_gem_object *xe_gem_prime_impo
+diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
+index d1f39befc8b8c..c9553fa475ae1 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf.h
++++ b/drivers/net/ethernet/intel/iavf/iavf.h
+@@ -161,6 +161,7 @@ enum iavf_vlan_state_t {
+ 	IAVF_VLAN_ADDING,	/* ADD sent to PF, waiting for response */
+ 	IAVF_VLAN_ACTIVE,	/* PF confirmed, filter is in HW */
+ 	IAVF_VLAN_REMOVE,	/* filter queued for DEL from PF */
++	IAVF_VLAN_REMOVING,	/* DEL sent to PF, waiting for response */
+ };
+ 
+ struct iavf_vlan_filter {
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index c7fecd7261140..b9b855a35fc85 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -802,10 +802,10 @@ iavf_vlan_filter *iavf_add_vlan(struct iavf_adapter *adapter,
+ 		adapter->num_vlan_filters++;
+ 		iavf_schedule_aq_request(adapter, IAVF_FLAG_AQ_ADD_VLAN_FILTER);
+ 	} else if (f->state == IAVF_VLAN_REMOVE) {
+-		/* Re-add the filter since we cannot tell whether the
+-		 * pending delete has already been processed by the PF.
+-		 * A duplicate add is harmless.
+-		 */
++		/* DEL not yet sent to PF, cancel it */
++		f->state = IAVF_VLAN_ACTIVE;
++	} else if (f->state == IAVF_VLAN_REMOVING) {
++		/* DEL already sent to PF, re-add after completion */
+ 		f->state = IAVF_VLAN_ADD;
+ 		iavf_schedule_aq_request(adapter,
+ 					 IAVF_FLAG_AQ_ADD_VLAN_FILTER);
+@@ -836,11 +836,14 @@ static void iavf_del_vlan(struct iavf_adapter *adapter, struct iavf_vlan vlan)
+ 			list_del(&f->list);
+ 			kfree(f);
+ 			adapter->num_vlan_filters--;
+-		} else {
++		} else if (f->state != IAVF_VLAN_REMOVING) {
+ 			f->state = IAVF_VLAN_REMOVE;
+ 			iavf_schedule_aq_request(adapter,
+ 						 IAVF_FLAG_AQ_DEL_VLAN_FILTER);
  		}
++		/* If REMOVING, DEL is already sent to PF; completion
++		 * handler will free the filter when PF confirms.
++		 */
  	}
  
--	/*
--	 * Don't publish the bo until we have a valid attachment, and a
--	 * valid attachment needs the bo address. So pre-create a bo before
--	 * creating the attachment and publish.
--	 */
- 	bo = xe_bo_alloc();
- 	if (IS_ERR(bo))
- 		return ERR_CAST(bo);
+ 	spin_unlock_bh(&adapter->mac_vlan_list_lock);
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+index 1d03cc452df2c..4a197bc4b86a7 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+@@ -836,12 +836,10 @@ void iavf_del_vlans(struct iavf_adapter *adapter)
  
-+	/*
-+	 * xe_dma_buf_init_obj() takes ownership of the raw bo, so do not touch
-+	 * on fail, since it will already take care of cleanup. On success we
-+	 * still need to drop the ref, if something later fails.
-+	 *
-+	 * In addition this needs to happen before the attach, since
-+	 * it will create a new attachment for this, and add it to the list of
-+	 * attachments, at which point it is globally visible, and at any point
-+	 * the export side can call into on invalidate_mappings callback, which
-+	 * require a working object.
-+	 */
-+	obj = xe_dma_buf_init_obj(dev, bo, dma_buf);
-+	if (IS_ERR(obj))
-+		return obj;
+ 		vvfl->vsi_id = adapter->vsi_res->vsi_id;
+ 		vvfl->num_elements = count;
+-		list_for_each_entry_safe(f, ftmp, &adapter->vlan_filter_list, list) {
++		list_for_each_entry(f, &adapter->vlan_filter_list, list) {
+ 			if (f->state == IAVF_VLAN_REMOVE) {
+ 				vvfl->vlan_id[i] = f->vlan.vid;
+-				list_del(&f->list);
+-				kfree(f);
+-				adapter->num_vlan_filters--;
++				f->state = IAVF_VLAN_REMOVING;
+ 				i++;
+ 				if (i == count)
+ 					break;
+@@ -877,7 +875,7 @@ void iavf_del_vlans(struct iavf_adapter *adapter)
+ 
+ 		vvfl_v2->vport_id = adapter->vsi_res->vsi_id;
+ 		vvfl_v2->num_elements = count;
+-		list_for_each_entry_safe(f, ftmp, &adapter->vlan_filter_list, list) {
++		list_for_each_entry(f, &adapter->vlan_filter_list, list) {
+ 			if (f->state == IAVF_VLAN_REMOVE) {
+ 				struct virtchnl_vlan_supported_caps *filtering_support =
+ 					&adapter->vlan_v2_caps.filtering.filtering_support;
+@@ -892,9 +890,7 @@ void iavf_del_vlans(struct iavf_adapter *adapter)
+ 				vlan->tci = f->vlan.vid;
+ 				vlan->tpid = f->vlan.tpid;
+ 
+-				list_del(&f->list);
+-				kfree(f);
+-				adapter->num_vlan_filters--;
++				f->state = IAVF_VLAN_REMOVING;
+ 				i++;
+ 				if (i == count)
+ 					break;
+@@ -2019,10 +2015,6 @@ void iavf_virtchnl_completion(struct iavf_adapter *adapter,
+ 			ether_addr_copy(adapter->hw.mac.addr, netdev->dev_addr);
+ 			wake_up(&adapter->vc_waitqueue);
+ 			break;
+-		case VIRTCHNL_OP_DEL_VLAN:
+-			dev_err(&adapter->pdev->dev, "Failed to delete VLAN filter, error %s\n",
+-				iavf_stat_str(&adapter->hw, v_retval));
+-			break;
+ 		case VIRTCHNL_OP_DEL_ETH_ADDR:
+ 			dev_err(&adapter->pdev->dev, "Failed to delete MAC filter, error %s\n",
+ 				iavf_stat_str(&adapter->hw, v_retval));
+@@ -2505,6 +2497,27 @@ void iavf_virtchnl_completion(struct iavf_adapter *adapter,
+ 		spin_unlock_bh(&adapter->mac_vlan_list_lock);
+ 		}
+ 		break;
++	case VIRTCHNL_OP_DEL_VLAN:
++	case VIRTCHNL_OP_DEL_VLAN_V2: {
++		struct iavf_vlan_filter *f, *ftmp;
 +
- 	attach_ops = &xe_dma_buf_attach_ops;
- #if IS_ENABLED(CONFIG_DRM_XE_KUNIT_TEST)
- 	if (test)
-@@ -299,21 +309,12 @@ struct drm_gem_object *xe_gem_prime_impo
- 		goto out_err;
- 	}
- 
--	/*
--	 * xe_dma_buf_init_obj() takes ownership of bo on both success
--	 * and failure, so we must not touch bo after this call.
--	 */
--	obj = xe_dma_buf_init_obj(dev, bo, dma_buf);
--	if (IS_ERR(obj)) {
--		dma_buf_detach(dma_buf, attach);
--		return obj;
--	}
- 	get_dma_buf(dma_buf);
- 	obj->import_attach = attach;
- 	return obj;
- 
- out_err:
--	xe_bo_free(bo);
-+	xe_bo_put(bo);
- 
- 	return obj;
- }
++		spin_lock_bh(&adapter->mac_vlan_list_lock);
++		list_for_each_entry_safe(f, ftmp, &adapter->vlan_filter_list,
++					 list) {
++			if (f->state == IAVF_VLAN_REMOVING) {
++				if (v_retval) {
++					/* PF rejected DEL, keep filter */
++					f->state = IAVF_VLAN_ACTIVE;
++				} else {
++					list_del(&f->list);
++					kfree(f);
++					adapter->num_vlan_filters--;
++				}
++			}
++		}
++		spin_unlock_bh(&adapter->mac_vlan_list_lock);
++		}
++		break;
+ 	case VIRTCHNL_OP_ENABLE_VLAN_STRIPPING:
+ 		/* PF enabled vlan strip on this VF.
+ 		 * Update netdev->features if needed to be in sync with ethtool.
+-- 
+2.53.0
+
 
 
 
