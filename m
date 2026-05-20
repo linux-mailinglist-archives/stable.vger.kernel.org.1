@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-250706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251649-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GHa0KzXqDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250706-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:07:01 +0200
+	id 2NCDFNTyDWrA4wUAu9opvQ
+	(envelope-from <stable+bounces-251649-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 575E8592EDD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:07:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA964594676
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:43:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 38392315D2F8
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:56:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 80B5630DC94D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:35:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E5913EA953;
-	Wed, 20 May 2026 16:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 899EA370AC3;
+	Wed, 20 May 2026 17:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s3Ih7RIY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cB9gAzvM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4033EAC8F;
-	Wed, 20 May 2026 16:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B0F22609FD;
+	Wed, 20 May 2026 17:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296103; cv=none; b=owDGUlsq0jkLW2LKx/7J55p2g9FcGQImucxFC2pLz/r0KIATe2v2YZin34mCZnldT7u/WZse7j0sDUSeCNhnOzeqfdhuu4KIPrDW7m2Gp1v0mWgvM866YMiKynBjIY2sT3AYeKnmAYKoGAfOHc3cI0lLnqUs/Y6cNZRwpno3l/s=
+	t=1779298532; cv=none; b=Z5uFH6/RDGLL4ezky2yv7A2iZYqgmOMgVwv2u8rVcLpjvZgmY8+1UoQumvuqwaIw+wwokQ8acOERdI8/+HI48o+Lf/kg/n+wHn2cpFSR2UabsLJvsKeBPUOHY7XS1W0eACUuaAPFTfd9Q4tmpjmHtTt2t5JtAXsUH7c78wihamE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296103; c=relaxed/simple;
-	bh=E13KsS+ghHiDyaQvJUAVmGAOGAUKeom2lrKYeG0pPVc=;
+	s=arc-20240116; t=1779298532; c=relaxed/simple;
+	bh=9wghZ+C8Z+R80eMPwVGcbMolE3/rYPSU3WqjRW49JAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RAuzgGzNnMSoI5/d6BRqJWHAxQI+TLGk+A1c/x+g8iBFcRk/wVcHW2kT5vLa+vloPU/xtoABZz/jWJPDYnBKtEa3HyTHWlJ1oUAEmXMKqzLAvqjqu9/xD4E6br2qIFynhj2PTMgQH477Wnk8WQw5RdcUgzNSlsgrcqk+ICPRONw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s3Ih7RIY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 248D81F000E9;
-	Wed, 20 May 2026 16:55:01 +0000 (UTC)
+	 MIME-Version; b=F79eWuM7C7Yc1PikUlLpf9CE/GTnvokC76S8+2RQWxSTxQE8ZzHFW3XOhnAOCD6+C2zajedLUrMYmurfoXcyrzMoqd4LPPHBOFyiTpiPMzZ5QZsmSb62GuEg9R4nDxeWzYHv8H3rfE83SNd5Y0pHSrRjKKetym/AcPAHDpEH7kI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cB9gAzvM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96F4B1F000E9;
+	Wed, 20 May 2026 17:35:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296102;
-	bh=tXUj1hFOjQKlz+Z4M9caHixF8lTqW0bwU2kUWd/ZG8s=;
+	s=korg; t=1779298531;
+	bh=gebNyAdEEye7AvWTpZJhZ2NNa9Lsr2jxHv7M2aihF6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=s3Ih7RIYg/BpeRcoWSvUE729nhp8XmPuiXSaKjIqWIEG61epw+ASvGLcJkqOym2wP
-	 sJT5OU4AgYQ78+LTcVY73TFidhq1D+6gk+o5tVGCEQfTdEaGIROh/jTiFXH1stK9Qa
-	 ha1grxEUOLqueiaWLYvnvNSg/V9n+7IM3lU/elvs=
+	b=cB9gAzvMwOAclsVtzq7qI/IKnGQu3F5I5zjehtjWQgvdGUEp5mEDbz7COg8Vmo2Dv
+	 SJf1BpYg7DqI6088uUSAgOLiqd9sOYyQdrpvTWseIOR/bsNwfb09NnsnCH4H7tB5TF
+	 wm8Czq2TUfH6QhxQzR+B8BuNidX9qOiWYNJXBrQA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c1e9aedbd913fadad617@syzkaller.appspotmail.com,
-	Deepanshu Kartikey <Kartikey406@gmail.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	David Howells <dhowells@redhat.com>,
+	David Gow <davidgow@google.com>,
+	Kees Cook <kees@kernel.org>,
+	Petr Mladek <pmladek@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0672/1146] fs/ntfs3: fix missing run load for vcn0 in attr_data_get_block_locked()
+Subject: [PATCH 6.18 439/957] lib: kunit_iov_iter: fix memory leaks
 Date: Wed, 20 May 2026 18:15:22 +0200
-Message-ID: <20260520162203.393748646@linuxfoundation.org>
+Message-ID: <20260520162144.042073535@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,107 +68,118 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-250706-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,paragon-software.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,c1e9aedbd913fadad617];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251649-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,syzkaller.appspot.com:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,appspotmail.com:email]
-X-Rspamd-Queue-Id: 575E8592EDD
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,linux-foundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.com:email,c--e.de:email]
+X-Rspamd-Queue-Id: BA964594676
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-[ Upstream commit d7ea8495fd307b58f8867acd81a1b40075b1d3ba ]
+[ Upstream commit 0b49c7d0ae697fcecd7377cb7dda220f7cd096ff ]
 
-When a compressed or sparse attribute has its clusters frame-aligned,
-vcn is rounded down to the frame start using cmask, which can result
-in vcn != vcn0. In this case, vcn and vcn0 may reside in different
-attribute segments.
+Use vfree() instead of vunmap() to free the buffer allocated by
+iov_kunit_create_buffer() because vunmap() does not honour
+VM_MAP_PUT_PAGES.  In order for this to work the page array itself must
+not be managed by kunit.
 
-The code already handles the case where vcn is in a different segment
-by loading its runs before allocation. However, it fails to load runs
-for vcn0 when vcn0 resides in a different segment than vcn. This causes
-run_lookup_entry() to return SPARSE_LCN for vcn0 since its segment was
-never loaded into the in-memory run list, triggering the WARN_ON(1).
+Remove the folio_put() when destroying a folioq.  This is handled by
+vfree(), now.
 
-Fix this by adding a missing check for vcn0 after the existing vcn
-segment check. If vcn0 falls outside the current segment range
-[svcn, evcn1), find and load the attribute segment containing vcn0
-before performing the run lookup.
+Pointed out by sashiko.dev on a previous iteration of this series.
 
-The following scenario triggers the bug:
-  attr_data_get_block_locked()
-    vcn = vcn0 & cmask        <- vcn != vcn0 after frame alignment
-    load runs for vcn segment <- vcn0 segment not loaded!
-    attr_allocate_clusters()  <- allocation succeeds
-    run_lookup_entry(vcn0)    <- vcn0 not in run -> SPARSE_LCN
-    WARN_ON(1)                <- bug fires here!
+Tested by running the kunit test 10000 times in a loop.
 
-Reported-by: syzbot+c1e9aedbd913fadad617@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c1e9aedbd913fadad617
-Fixes: c380b52f6c57 ("fs/ntfs3: Change new sparse cluster processing")
-Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Link: https://lkml.kernel.org/r/20260326214905.818170-4-lk@c--e.de
+Fixes: 2d71340ff1d4 ("iov_iter: Kunit tests for copying to/from an iterator")
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Cc: David Howells <dhowells@redhat.com>
+Cc: David Gow <davidgow@google.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/attrib.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ lib/tests/kunit_iov_iter.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/fs/ntfs3/attrib.c b/fs/ntfs3/attrib.c
-index 6cb9bc5d605c2..76e581d3961d0 100644
---- a/fs/ntfs3/attrib.c
-+++ b/fs/ntfs3/attrib.c
-@@ -1152,6 +1152,21 @@ int attr_data_get_block_locked(struct ntfs_inode *ni, CLST vcn, CLST clen,
- 			if (err)
- 				goto out;
- 		}
-+
-+		if (vcn0 < svcn || evcn1 <= vcn0) {
-+			struct ATTRIB *attr2;
-+
-+			attr2 = ni_find_attr(ni, attr_b, &le_b, ATTR_DATA, NULL,
-+					       0, &vcn0, &mi);
-+			if (!attr2) {
-+				err = -EINVAL;
-+				goto out;
-+			}
-+			err = attr_load_runs(attr2, ni, run, NULL);
-+			if (err)
-+				goto out;
-+		}
-+
- 		da = false; /* no delalloc for compressed file. */
+diff --git a/lib/tests/kunit_iov_iter.c b/lib/tests/kunit_iov_iter.c
+index 48342736d0164..43e63bf4c0956 100644
+--- a/lib/tests/kunit_iov_iter.c
++++ b/lib/tests/kunit_iov_iter.c
+@@ -42,7 +42,7 @@ static inline u8 pattern(unsigned long x)
+ 
+ static void iov_kunit_unmap(void *data)
+ {
+-	vunmap(data);
++	vfree(data);
+ }
+ 
+ static void *__init iov_kunit_create_buffer(struct kunit *test,
+@@ -53,17 +53,22 @@ static void *__init iov_kunit_create_buffer(struct kunit *test,
+ 	unsigned long got;
+ 	void *buffer;
+ 
+-	pages = kunit_kcalloc(test, npages, sizeof(struct page *), GFP_KERNEL);
+-        KUNIT_ASSERT_NOT_ERR_OR_NULL(test, pages);
++	pages = kzalloc_objs(struct page *, npages, GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, pages);
+ 	*ppages = pages;
+ 
+ 	got = alloc_pages_bulk(GFP_KERNEL, npages, pages);
+ 	if (got != npages) {
+ 		release_pages(pages, got);
++		kvfree(pages);
+ 		KUNIT_ASSERT_EQ(test, got, npages);
  	}
  
+ 	buffer = vmap(pages, npages, VM_MAP | VM_MAP_PUT_PAGES, PAGE_KERNEL);
++	if (buffer == NULL) {
++		release_pages(pages, got);
++		kvfree(pages);
++	}
+         KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buffer);
+ 
+ 	kunit_add_action_or_reset(test, iov_kunit_unmap, buffer);
+@@ -369,9 +374,6 @@ static void iov_kunit_destroy_folioq(void *data)
+ 
+ 	for (folioq = data; folioq; folioq = next) {
+ 		next = folioq->next;
+-		for (int i = 0; i < folioq_nr_slots(folioq); i++)
+-			if (folioq_folio(folioq, i))
+-				folio_put(folioq_folio(folioq, i));
+ 		kfree(folioq);
+ 	}
+ }
 -- 
 2.53.0
 
