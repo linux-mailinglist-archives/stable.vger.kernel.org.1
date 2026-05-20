@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-253061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253020-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uMPZMVIBDmqs5QUAu9opvQ
-	(envelope-from <stable+bounces-253061-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:45:38 +0200
+	id iDEqDd4ADmo95QUAu9opvQ
+	(envelope-from <stable+bounces-253020-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:42 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51B345972F7
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:45:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6D2B597182
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:43:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5A046315E59D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:38:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 462F13136333
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:36:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 689053D1CA0;
-	Wed, 20 May 2026 18:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF5613A3E90;
+	Wed, 20 May 2026 18:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NxK4Z4uc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oYYrNhr/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16689371CEA;
-	Wed, 20 May 2026 18:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F057DF59;
+	Wed, 20 May 2026 18:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302302; cv=none; b=CTcaqFq4p/o+FHiBU/PhSFqF1CuHvKg54eswZrpQzu/9gumbiiMIiu7KplH2ymGNbJRBWHnKxZHe9xc7rnc1B7vdwxET03gRxJaoEkrlsb/geq7clzqdsc1rdR9IGBwY6rjaYsWmst/wHGDdCjsFSF7uHo98ah/H9iHSZulKRto=
+	t=1779302194; cv=none; b=FjcMudoFHRKsVkQ9nN7Hs0p4mbkXVlUrxT1Eq4fUiPOsnqKmjjfxqlEYnydoaX3Jtp/b0xSQZ49PFlz9KGMO9bw7WLDDEtUwDXN00sE/Vwath6AFA1tufMz9zBHi++Kwczii0u0jNrCc+0JLgd0Uxnt28AVJcBCePw+KK/FG6es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302302; c=relaxed/simple;
-	bh=BNXH+elWxFBEOMLrusUykcbQlyy4mbFjY1yG8KLSyjs=;
+	s=arc-20240116; t=1779302194; c=relaxed/simple;
+	bh=ehvze0AOlahPoUikkqesDFnS5VryVx/KKMjO8iqomwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lH7O07Pwv2sfr1cmoI4Wn3l8uXuQWeYr+8WI7JEUjgiNsav394uLfBMENx4IdLsh0xt3sw6Tx8KqQaqLnfW/eLspiKXYCvs+qpo2RTOyYoJxQyXWQm0Q07jyPa3l5o/bQWsJ3ZaJxoF83b5SH/kKqLFwNYsXaOQrQidJRaIQuG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NxK4Z4uc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 836E61F000E9;
-	Wed, 20 May 2026 18:38:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uDNLQTYmQUWfxUbJ2rDkd4wZYGGOlibete6WTd9pWghQcnqZ4N5w3vPuDJP+3b/FJvKnwNOhc9ugnw0UVE4LHgFLoJTeCSciFm0vfYsgfBfYeFaFwFrKEl8H8zkltt2+sP5m3I6C37Q99T/7P5DpK20lIOYjXUuQ969COvWgxOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oYYrNhr/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DADE71F000E9;
+	Wed, 20 May 2026 18:36:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302301;
-	bh=HZ108OrMHe2C8RT2E0R+0dyc0mw2tbBqxZAGZk+Ev/M=;
+	s=korg; t=1779302193;
+	bh=ZkpWCQlIrmhXI7h4RmDSPBCwiKxPZG1KbtZTbdwriow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NxK4Z4ucjji/PZTAcH7QwnmRq+1bJyKB/6ijljQPr4Hk166OGQmI46reiUQKAVNHH
-	 AVvCojXJJUpeIqk6vum672WivlWcUaL5rk6M5KGdSjBvYV9ta1ujSZFQ/BBO82o7dF
-	 RZlPHHuBW3QKQeXQNAkk/A91CxEnmv4coudkZ300=
+	b=oYYrNhr/8B8BqifaCTnjY+7G8R/+3RZwjzL3uoLtalzxxDdL6Ga0QSEHVEz4YzqL1
+	 BsdEql4jrg2sVMXFpRii5+FdQMIoLFR7/2kw0hu8Q0bF4WnPt8f1Qq/wSXd8GLNyg9
+	 Vye+JfcWyFSjZLP9ZJg9oIFP+LdWGSnadmRZECRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -54,9 +54,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
 	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 174/508] ktest: Honor empty per-test option overrides
-Date: Wed, 20 May 2026 18:19:57 +0200
-Message-ID: <20260520162102.409204748@linuxfoundation.org>
+Subject: [PATCH 6.6 175/508] ktest: Run POST_KTEST hooks on failure and cancellation
+Date: Wed, 20 May 2026 18:19:58 +0200
+Message-ID: <20260520162102.430685860@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
 References: <20260520162058.573354582@linuxfoundation.org>
@@ -83,7 +83,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCVD_COUNT_THREE(0.00)[4];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253061-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253020-lists,stable=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
@@ -97,8 +97,8 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nvidia.com:email,goodmis.org:email,msgid.link:url,suse.com:email,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 51B345972F7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,goodmis.org:email,msgid.link:url,eaglescrag.net:email,suse.com:email,suse.de:email,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: B6D2B597182
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -108,32 +108,16 @@ X-Rspamd-Server: lfdr
 
 From: Ricardo B. Marlière <rbm@suse.com>
 
-[ Upstream commit a2de57a3c8192dcd67cccaff6c341b93748d799b ]
+[ Upstream commit bc6e165a452da909cef0efbc286e6695624db372 ]
 
-A per-test override can clear an inherited default option by assigning an
-empty value, but __set_test_option() still used option_defined() to decide
-whether a per-test key existed. That turned an empty per-test assignment
-back into "fall back to the default", so tests still could not clear
-inherited settings.
+PRE_KTEST can be useful for setting up the environment and POST_KTEST to
+tear it down, however POST_KTEST only runs on the normal end-of-run path.
+It is skipped when ktest exits through dodie() or cancel_test(). Final
+cleanup hooks are skipped.
 
-For example:
-
-  DEFAULTS
-  (...)
-  LOG_FILE = /tmp/ktest-empty-override.log
-  CLEAR_LOG = 1
-  ADD_CONFIG = /tmp/.config
-
-  TEST_START
-  TEST_TYPE = build
-  BUILD_TYPE = nobuild
-  ADD_CONFIG =
-
-This would run the test with ADD_CONFIG[1] = /tmp/.config
-
-Fix by checking whether the per-test key exists before falling back. If it
-does exist but is empty, treat it as unset for that test and stop the
-fallback chain there.
+Factor the final hook execution into run_post_ktest(), call it from the
+normal exit path and from the early exit paths, and guard it so the hook
+runs at most once.
 
 Cc: John Hawley <warthog9@eaglescrag.net>
 Cc: Andrea Righi <arighi@nvidia.com>
@@ -141,39 +125,81 @@ Cc: Marcos Paulo de Souza <mpdesouza@suse.com>
 Cc: Matthieu Baerts <matttbe@kernel.org>
 Cc: Fernando Fernandez Mancera <fmancera@suse.de>
 Cc: Pedro Falcato <pfalcato@suse.de>
-Link: https://patch.msgid.link/20260307-ktest-fixes-v1-4-565d412f4925@suse.com
-Fixes: 22c37a9ac49d ("ktest: Allow tests to undefine default options")
+Link: https://patch.msgid.link/20260307-ktest-fixes-v1-8-565d412f4925@suse.com
+Fixes: 921ed4c7208e ("ktest: Add PRE/POST_KTEST and TEST options")
 Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
 Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/ktest/ktest.pl | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tools/testing/ktest/ktest.pl | 27 ++++++++++++++++++++++-----
+ 1 file changed, 22 insertions(+), 5 deletions(-)
 
 diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
-index 4eca66310d9b4..13686e7629c4d 100755
+index 13686e7629c4d..d78d5f3b0a55e 100755
 --- a/tools/testing/ktest/ktest.pl
 +++ b/tools/testing/ktest/ktest.pl
-@@ -4113,7 +4113,8 @@ sub __set_test_option {
+@@ -98,6 +98,7 @@ my $test_type;
+ my $build_type;
+ my $build_options;
+ my $final_post_ktest;
++my $post_ktest_done = 0;
+ my $pre_ktest;
+ my $post_ktest;
+ my $pre_test;
+@@ -1537,6 +1538,24 @@ sub get_test_name() {
+     return $name;
+ }
  
-     my $option = "$name\[$i\]";
- 
--    if (option_defined($option)) {
-+    if (exists($opt{$option})) {
-+	return undef if (!option_defined($option));
- 	return $opt{$option};
++sub run_post_ktest {
++    my $cmd;
++
++    return if ($post_ktest_done);
++
++    if (defined($final_post_ktest)) {
++	$cmd = $final_post_ktest;
++    } elsif (defined($post_ktest)) {
++	$cmd = $post_ktest;
++    } else {
++	return;
++    }
++
++    my $cp_post_ktest = eval_kernel_version($cmd);
++    run_command $cp_post_ktest;
++    $post_ktest_done = 1;
++}
++
+ sub dodie {
+     # avoid recursion
+     return if ($in_die);
+@@ -1596,6 +1615,7 @@ sub dodie {
+     if (defined($post_test)) {
+ 	run_command $post_test;
      }
++    run_post_ktest;
  
-@@ -4121,7 +4122,8 @@ sub __set_test_option {
- 	if ($i >= $test &&
- 	    $i < $test + $repeat_tests{$test}) {
- 	    $option = "$name\[$test\]";
--	    if (option_defined($option)) {
-+	    if (exists($opt{$option})) {
-+		return undef if (!option_defined($option));
- 		return $opt{$option};
- 	    }
- 	}
+     die @_, "\n";
+ }
+@@ -4230,6 +4250,7 @@ sub cancel_test {
+ 	send_email("KTEST: Your [$name] test was cancelled",
+ 	    "Your test started at $script_start_time was cancelled: sig int");
+     }
++    run_post_ktest;
+     die "\nCaught Sig Int, test interrupted: $!\n"
+ }
+ 
+@@ -4540,11 +4561,7 @@ for (my $i = 1; $i <= $opt{"NUM_TESTS"}; $i++) {
+     success $i;
+ }
+ 
+-if (defined($final_post_ktest)) {
+-
+-    my $cp_final_post_ktest = eval_kernel_version $final_post_ktest;
+-    run_command $cp_final_post_ktest;
+-}
++run_post_ktest;
+ 
+ if ($opt{"POWEROFF_ON_SUCCESS"}) {
+     halt;
 -- 
 2.53.0
 
