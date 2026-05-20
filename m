@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-250388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251334-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uKh2I+3xDWrA4wUAu9opvQ
-	(envelope-from <stable+bounces-250388-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:39:57 +0200
+	id UN7fI/DzDWoF5AUAu9opvQ
+	(envelope-from <stable+bounces-251334-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:48:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 640BD594395
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:39:56 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A01E5949E8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:48:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 15C603212182
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:43:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D249230EDC76
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:21:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CE0C3A4526;
-	Wed, 20 May 2026 16:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2497B3A4526;
+	Wed, 20 May 2026 17:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zeW39Ql1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuDKfK3E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6A7372B31;
-	Wed, 20 May 2026 16:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1D12DC76C;
+	Wed, 20 May 2026 17:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295283; cv=none; b=nfcr8hs76oWaRgxVxtcVIpUsrTGrdxWZUYUkR0uC3SXIipQ4Bf6if85Q2en8qxAFKKPGyg2tnvRhd573qV+YPTIcbHxHKnqfwjjSSgDiP/3+10WIoDkaH1fy82xImzbjBBsTf35O6G4MHeRbteoV5lLUt6nLHxwlxTladtHkGAg=
+	t=1779297712; cv=none; b=cCWS7k6mHivdupD4Q/S2hGw4Y26swlVlo8/HgbaUaQhxXlDxRS2foyCwp5CbNAmVUCPRdKG011Rk+nTGl/uIQC8JyilnBmStiCSC875gxGpmWZBN03/y3qg7IjLKK+Qri0yFtXteeo/aPQ8nnuFbfSmEQKBE9DdFt0/76paaIdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295283; c=relaxed/simple;
-	bh=MyPls/gySHitaSjVyym3xRlC7v51WZqH/GF84C153Q8=;
+	s=arc-20240116; t=1779297712; c=relaxed/simple;
+	bh=e2VzfnZX6viPxKKXuabAYq5x/sMBvN1BMVlWUPHvNFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XRd1L0EG0uCZ0ZL6bCflqXNO2/EPn0MhD1hV7xP6CVEj3+N3CI8g6SvPLLu+aW9pqyyIGK5zRy4XgLfGlSbD+6N3G85x6sgjU7IyPevovF6/I7UqocHIkBsZjN8f3ryq6p7QpEFDe0XUM48zsSWifG9w2HYFr2w1vHYHH/X6e+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zeW39Ql1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EACC1F000E9;
-	Wed, 20 May 2026 16:41:21 +0000 (UTC)
+	 MIME-Version; b=rWAJ4QH7xUP/Rb8ulnPijrhveM4VtOOxXHnFz/uEregdAfXMcPXoGKvJujHYlVVur+pyPzJlKzC7rUNlIcYnWRLbhkkByG2qiXkpDiTuYtKJC2WHyPyQLE+k6vQnLqMrUz93lbJvaKCeM3bl2uoWFXbFA7i4ParWTnjpklbIQ6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuDKfK3E; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 428AD1F000E9;
+	Wed, 20 May 2026 17:21:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295282;
-	bh=I32KpGJqADVRlRD7mBbvZ1OhtNHhPoqNi0HmoKAJD94=;
+	s=korg; t=1779297711;
+	bh=RnduVIsa8MVcxRsf0HZ04KZH1z3cdPIFyaQGd0e5wQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zeW39Ql1f1zl3C36bElH6CxpETm5ywQYbkyL6nuCHi87AGGLuF0mYlNWRf4BDsdwx
-	 /HkrHdVN782JjLSj14rKIcziQlvSrV9LkBQoQ6G5fZxl+yZdfTTqfE/ZOXNBuP1evP
-	 +etAQCn5Az78cbR6BpwEMQIoNbJTdjQOlvH1hldY=
+	b=JuDKfK3EFPqIWLpf7TKW3JyckUGgcR9h4uQYI1i/TjCJ6XJX1n6zWN99T5OEQZiXd
+	 0RFyvWGOKdpZ1AQyYJzuCeg4XeLjc4lbFchcOWr9/Kce6OwvckGVh/GzFkrjtNyAPu
+	 0PaMy6SNlVxyhHcCCAXLCiW535jrzNBgA7F25Swc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0360/1146] drm/msm/a6xx: Switch to preemption safe AO counter
-Date: Wed, 20 May 2026 18:10:10 +0200
-Message-ID: <20260520162156.348320201@linuxfoundation.org>
+Subject: [PATCH 6.18 128/957] bpf: reject negative CO-RE accessor indices in bpf_core_parse_spec()
+Date: Wed, 20 May 2026 18:10:11 +0200
+Message-ID: <20260520162137.331906003@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,117 +67,109 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250388-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-251334-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,etsalapatis.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[patchwork.freedesktop.org:url,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 640BD594395
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,etsalapatis.com:email]
+X-Rspamd-Queue-Id: 2A01E5949E8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit 0c59f258ffd4c9c2a6bd37d71a0ade1db8bc03b7 ]
+[ Upstream commit 1c22483a2c4bbf747787f328392ca3e68619c4dc ]
 
-CP_ALWAYS_ON_COUNTER is not save-restored during preemption, so it won't
-provide accurate data about the 'submit' when preemption is enabled.
-Switch to CP_ALWAYS_ON_CONTEXT which is preemption safe.
+CO-RE accessor strings are colon-separated indices that describe a path
+from a root BTF type to a target field, e.g. "0:1:2" walks through
+nested struct members. bpf_core_parse_spec() parses each component with
+sscanf("%d"), so negative values like -1 are silently accepted.  The
+subsequent bounds checks (access_idx >= btf_vlen(t)) only guard the
+upper bound and always pass for negative values because C integer
+promotion converts the __u16 btf_vlen result to int, making the
+comparison (int)(-1) >= (int)(N) false for any positive N.
 
-Fixes: e7ae83da4a28 ("drm/msm/a6xx: Implement preemption for a7xx targets")
-Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/714657/
-Message-ID: <20260327-a8xx-gpu-batch2-v2-3-2b53c38d2101@oss.qualcomm.com>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+When -1 reaches btf_member_bit_offset() it gets cast to u32 0xffffffff,
+producing an out-of-bounds read far past the members array.  A crafted
+BPF program with a negative CO-RE accessor on any struct that exists in
+vmlinux BTF (e.g. task_struct) crashes the kernel deterministically
+during BPF_PROG_LOAD on any system with CONFIG_DEBUG_INFO_BTF=y
+(default on major distributions).  The bug is reachable with CAP_BPF:
+
+ BUG: unable to handle page fault for address: ffffed11818b6626
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ Oops: Oops: 0000 [#1] SMP KASAN NOPTI
+ CPU: 0 UID: 0 PID: 85 Comm: poc Not tainted 7.0.0-rc6 #18 PREEMPT(full)
+ RIP: 0010:bpf_core_parse_spec (tools/lib/bpf/relo_core.c:354)
+ RAX: 00000000ffffffff
+ Call Trace:
+  <TASK>
+  bpf_core_calc_relo_insn (tools/lib/bpf/relo_core.c:1321)
+  bpf_core_apply (kernel/bpf/btf.c:9507)
+  check_core_relo (kernel/bpf/verifier.c:19475)
+  bpf_check (kernel/bpf/verifier.c:26031)
+  bpf_prog_load (kernel/bpf/syscall.c:3089)
+  __sys_bpf (kernel/bpf/syscall.c:6228)
+  </TASK>
+
+CO-RE accessor indices are inherently non-negative (struct member index,
+array element index, or enumerator index), so reject them immediately
+after parsing.
+
+Fixes: ddc7c3042614 ("libbpf: implement BPF CO-RE offset relocation algorithm")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+Acked-by: Paul Chaignon <paul.chaignon@gmail.com>
+Link: https://lore.kernel.org/r/20260404161221.961828-2-bestswngs@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ tools/lib/bpf/relo_core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-index 4fe2b86e7a839..eeecde88e549f 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-@@ -347,7 +347,7 @@ static void a6xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
- 	 * GPU registers so we need to add 0x1a800 to the register value on A630
- 	 * to get the right value from PM4.
- 	 */
--	get_stats_counter(ring, REG_A6XX_CP_ALWAYS_ON_COUNTER,
-+	get_stats_counter(ring, REG_A6XX_CP_ALWAYS_ON_CONTEXT,
- 		rbmemptr_stats(ring, index, alwayson_start));
- 
- 	/* Invalidate CCU depth and color */
-@@ -388,7 +388,7 @@ static void a6xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
- 
- 	get_stats_counter(ring, REG_A6XX_RBBM_PERFCTR_CP(0),
- 		rbmemptr_stats(ring, index, cpcycles_end));
--	get_stats_counter(ring, REG_A6XX_CP_ALWAYS_ON_COUNTER,
-+	get_stats_counter(ring, REG_A6XX_CP_ALWAYS_ON_CONTEXT,
- 		rbmemptr_stats(ring, index, alwayson_end));
- 
- 	/* Write the fence to the scratch register */
-@@ -457,7 +457,7 @@ static void a7xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
- 	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
- 	struct a6xx_gpu *a6xx_gpu = to_a6xx_gpu(adreno_gpu);
- 	struct msm_ringbuffer *ring = submit->ring;
--	u32 rbbm_perfctr_cp0, cp_always_on_counter;
-+	u32 rbbm_perfctr_cp0, cp_always_on_context;
- 	unsigned int i, ibs = 0;
- 
- 	adreno_check_and_reenable_stall(adreno_gpu);
-@@ -480,14 +480,14 @@ static void a7xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
- 
- 	if (adreno_is_a8xx(adreno_gpu)) {
- 		rbbm_perfctr_cp0 = REG_A8XX_RBBM_PERFCTR_CP(0);
--		cp_always_on_counter = REG_A8XX_CP_ALWAYS_ON_COUNTER;
-+		cp_always_on_context = REG_A8XX_CP_ALWAYS_ON_CONTEXT;
- 	} else {
- 		rbbm_perfctr_cp0 = REG_A7XX_RBBM_PERFCTR_CP(0);
--		cp_always_on_counter = REG_A6XX_CP_ALWAYS_ON_COUNTER;
-+		cp_always_on_context = REG_A6XX_CP_ALWAYS_ON_CONTEXT;
- 	}
- 
- 	get_stats_counter(ring, rbbm_perfctr_cp0, rbmemptr_stats(ring, index, cpcycles_start));
--	get_stats_counter(ring, cp_always_on_counter, rbmemptr_stats(ring, index, alwayson_start));
-+	get_stats_counter(ring, cp_always_on_context, rbmemptr_stats(ring, index, alwayson_start));
- 
- 	OUT_PKT7(ring, CP_THREAD_CONTROL, 1);
- 	OUT_RING(ring, CP_SET_THREAD_BOTH);
-@@ -535,7 +535,7 @@ static void a7xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
- 	}
- 
- 	get_stats_counter(ring, rbbm_perfctr_cp0, rbmemptr_stats(ring, index, cpcycles_end));
--	get_stats_counter(ring, cp_always_on_counter, rbmemptr_stats(ring, index, alwayson_end));
-+	get_stats_counter(ring, cp_always_on_context, rbmemptr_stats(ring, index, alwayson_end));
- 
- 	/* Write the fence to the scratch register */
- 	if (adreno_is_a8xx(adreno_gpu)) {
+diff --git a/tools/lib/bpf/relo_core.c b/tools/lib/bpf/relo_core.c
+index 6eea5edba58a5..0ccc8f548cbaa 100644
+--- a/tools/lib/bpf/relo_core.c
++++ b/tools/lib/bpf/relo_core.c
+@@ -292,6 +292,8 @@ int bpf_core_parse_spec(const char *prog_name, const struct btf *btf,
+ 			++spec_str;
+ 		if (sscanf(spec_str, "%d%n", &access_idx, &parsed_len) != 1)
+ 			return -EINVAL;
++		if (access_idx < 0)
++			return -EINVAL;
+ 		if (spec->raw_len == BPF_CORE_SPEC_MAX_LEN)
+ 			return -E2BIG;
+ 		spec_str += parsed_len;
 -- 
 2.53.0
 
