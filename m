@@ -1,227 +1,186 @@
-Return-Path: <stable+bounces-249922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-249923-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yIqWKh20DWoT2QUAu9opvQ
-	(envelope-from <stable+bounces-249922-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 15:16:13 +0200
+	id QEdRIv63DWrC2QUAu9opvQ
+	(envelope-from <stable+bounces-249923-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 15:32:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 348C858EA03
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 15:16:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E051958EC92
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 15:32:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4C918301135A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:15:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2881A3008D38
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 13:28:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12B8A3DA5B5;
-	Wed, 20 May 2026 13:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEAA03D8106;
+	Wed, 20 May 2026 13:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pfjIpnZD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W2LQJP4r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E74318A92F;
-	Wed, 20 May 2026 13:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681BB3CBE71
+	for <stable@vger.kernel.org>; Wed, 20 May 2026 13:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779282899; cv=none; b=qdlBWuPqHxnNhsIW8DVVKZn7FozgMIkQLdHNhTeVH3C5PdJETahqBSFxCmmWWjQUXZz2ftMSXEBgk8/2spl9khbylr+j91SfsbE3MW/2NZSj9SeuXiggmyydCftWwO2oWPY8/9qz6gFvaEhz+fOzpXbIdf4gyhHmMbHZxTL/u0g=
+	t=1779283716; cv=none; b=YFmDSpyfSuvEEiUy8r48swvw1NCgg+zMOI/5AHc/oWqMgaDYDutAPiFMPdWqmgpZokgjnYS2C0YH3n/R1tbGax5RWNQ2g+KLWwsWix0kazfHhXqxUTsUlrCB0vco8e+bWZ3boqbyYyKSEUS2jT3DaejnHbJZkaulG3rznRdCKjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779282899; c=relaxed/simple;
-	bh=332yNbiHDYC/q9L/Y5HE8KnpnzR9GFg1YT2UZ6XlgcE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I0ArusyJ09DcNqCLDaSz4aeTX/QbcPihmGmJTPlnMUaI0r3Uk5WmmXFQgejS4R1q41mYhZUYx/GvGiIVKpTcN7H3QOE1ycGtpPehO/HMVa6YY5oyDbgolj6YMKJTMl7tEbvfZpZlcHXMOzCsyKlBABtVfMXSU/5uj8i2uAQDKUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pfjIpnZD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5EA31F00894;
-	Wed, 20 May 2026 13:14:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779282898;
-	bh=0QKNnksfj1AdZlcvGjbO9ONmdIYwgP155TcW3tFuYBk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=pfjIpnZDDTzdBq1CciBSb6qLL0OSY1mgfkIi87Qsdh/qJk2G0dcwH5LNpaK4YQmCp
-	 3oBlSlfNxcCdGOBxEKTAeeJF/ch8dkcwba7wAqrTu5KrEM6EKUsZ25U72aOpEgByq1
-	 wCMr9cZxgtiCf/URM350vXXm6I6fiGkstwbAx3MA=
-Date: Wed, 20 May 2026 15:15:01 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: August Wikerfors <git@augustwikerfors.se>,
-	Thorsten Leemhuis <regressions@leemhuis.info>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Sasha Levin <sashal@kernel.org>, linux-bluetooth@vger.kernel.org,
-	netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
-	Linux kernel regressions list <regressions@lists.linux.dev>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [GIT PULL] bluetooth 2026-05-14
-Message-ID: <2026052047-silica-grub-0bb2@gregkh>
-References: <4946f5f3-b7e2-4949-89f7-6427015027c6@leemhuis.info>
- <2026051954-revision-sierra-6bb4@gregkh>
- <eb5301f9-3133-4fe3-b358-61f14d1ffa5b@leemhuis.info>
- <2026051909-impurity-nemesis-2f65@gregkh>
- <CABBYNZKKbTXc-okp9P2OncMYXHX9C1XC+pRC7XWOhv-8nPNZ5A@mail.gmail.com>
- <2026051942-uproar-drainpipe-6370@gregkh>
- <CABBYNZKzWgL3nmeA=CtN9s80LRyDiJ97aQXgvfSm9vYUBw_SpA@mail.gmail.com>
- <e666c332-e2aa-4525-a208-a4a08742d2e0@augustwikerfors.se>
- <2026052026-barber-espresso-1d9a@gregkh>
- <CABBYNZJ4woc+unpYN6_dzMLtxhFVUd5+ccv2+EQbDMkYuXQ12A@mail.gmail.com>
+	s=arc-20240116; t=1779283716; c=relaxed/simple;
+	bh=JzUkDHHpfuGXgzMqqTqGpm2PfLaWnj6Zg7WqptDAaRc=;
+	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=uolE4Yw3G3kDMDxcZauovGw1n3f/H+siPiM/GD0Tbb9J8NKeBqVdoqE5mn23gGj06LQAsr8wT53W80GXjTLCJstMU3et5I9ZoNcC3WvmG9SbyQx9wDc69Tfsxj0eRiQhx/s2qC5r2Jx3AMEDovLT2cxmu1BdMv6lR5jgx9mrKhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W2LQJP4r; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5162B1F000E9;
+	Wed, 20 May 2026 13:28:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779283712;
+	bh=5EXSsL7Wg/GZcxdzw1+T0MSQLvgg7X0bMBenEi3/jgI=;
+	h=Date:From:To:Cc:Subject;
+	b=W2LQJP4rtCLbDcFyQl2L+WWx+8xA1Q2Uqjtoz/yJPb3MBSXgjb4INTyLJVGbjgy1c
+	 TkQmkRew1pH4CqmvvpzgIjkt0VMtbVCSCPbbWP2MRYz/6f486ZEpSvFz3wdYteNlKR
+	 WkpDZeXAa9RrH6ELxOSKBOs8bx3F2JWjVkwbzkTKZ2oh70RWlcFcEYYV7KcXH/PzXp
+	 PCt+0X6gK3uKu1RtUvEELYCi0FKcE9OymIGPJR+Ldy7AXmDHXr+BoxZ+mS8LBKNNGh
+	 c46o1E2xhtJ7yqxel0TjafvnpUtC1Nc2YjI9pi3XnMFLTMHyFpYsYDSE+lc8YxHfIL
+	 SlvBcIFdvBrFQ==
+Message-ID: <c059d010-19c8-4891-9b12-a9658ff59b21@kernel.org>
+Date: Wed, 20 May 2026 23:28:28 +1000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABBYNZJ4woc+unpYN6_dzMLtxhFVUd5+ccv2+EQbDMkYuXQ12A@mail.gmail.com>
-X-Spamd-Result: default: False [3.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+User-Agent: Mozilla Thunderbird Beta
+From: Matthieu Baerts <matttbe@kernel.org>
+Content-Language: fr
+To: Sasha Levin <sashal@kernel.org>, Greg KH <gregkh@linuxfoundation.org>
+Cc: stable <stable@vger.kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>
+Subject: [5.15.y] build issue when building the queue
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-249922-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	TO_DN_ALL(0.00)[];
+	TAGGED_FROM(0.00)[bounces-249923-lists,stable=lfdr.de];
+	HAS_ORG_HEADER(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 348C858EA03
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: E051958EC92
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, May 20, 2026 at 09:11:42AM -0400, Luiz Augusto von Dentz wrote:
-> Hi Greg,
-> 
-> On Wed, May 20, 2026 at 8:47 AM Greg KH <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Tue, May 19, 2026 at 07:37:35PM +0200, August Wikerfors wrote:
-> > > On 2026-05-19 17:49, Luiz Augusto von Dentz wrote:
-> > > > Hi Greg,
-> > > >
-> > > > On Tue, May 19, 2026 at 11:19 AM Greg KH <gregkh@linuxfoundation.org> wrote:
-> > > > >
-> > > > > On Tue, May 19, 2026 at 09:44:39AM -0400, Luiz Augusto von Dentz wrote:
-> > > > > > Hi Greg,
-> > > > > >
-> > > > > > On Tue, May 19, 2026 at 8:07 AM Greg KH <gregkh@linuxfoundation.org> wrote:
-> > > > > > >
-> > > > > > > On Tue, May 19, 2026 at 12:53:49PM +0200, Thorsten Leemhuis wrote:
-> > > > > > > > On 5/19/26 12:30, Greg KH wrote:
-> > > > > > > > > On Tue, May 19, 2026 at 09:04:38AM +0200, Thorsten Leemhuis wrote:
-> > > > > > > > > > On 5/15/26 17:10, Thorsten Leemhuis wrote:
-> > > > > > > > > > > On 5/14/26 19:23, Luiz Augusto von Dentz wrote:
-> > > > > > > > > > >
-> > > > > > > > > > > > The following changes since commit c78bdba7b9666020c0832150a4fc4c0aebc7c6ac:
-> > > > > > > > > > > >    net: phy: DP83TC811: add reading of abilities (2026-05-14 15:17:12 +0200)
-> > > > > > > > > > > >
-> > > > > > > > > > > > are available in the Git repository at:
-> > > > > > > > > > > >
-> > > > > > > > > > > >    git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2026-05-14
-> > > > > > > > > > > >
-> > > > > > > > > > > > for you to fetch changes up to 375ba7484132662a4a8c7547d088fb6275c00282:
-> > > > > > > > > > > >
-> > > > > > > > > > > >    Bluetooth: hci_qca: Convert timeout from jiffies to ms (2026-05-14 09:58:08 -0400)
-> > > > > > > > > > >
-> > > > > > > > > > > It seems this PR sadly came too late for this week's net PR to mainline
-> > > > > > > > > > > that was merged yesterday.
-> > > > > > > > > > >
-> > > > > > > > > > > TWIMC, from my point of view, it would be great if we somehow could
-> > > > > > > > > > > still get the changes from this PR or at least the btmtk fix it
-> > > > > > > > > > > contains[1] to mainline this week before -rc4, as it is fixing a
-> > > > > > > > > > > regression known since 2026-04-24 that at least five people encountered
-> > > > > > > > > > > with mainline since -rc3 due to 634a4408c0615c ("Bluetooth: btmtk:
-> > > > > > > > > > > validate WMT event SKB length before struct access") [006b9943b982 in
-> > > > > > > > > > > -next].
-> > > > > > > > > >
-> > > > > > > > > > Greg, Sasha, that [1] fix I was talking about now reached -next as
-> > > > > > > > > > 162b1adeb057d2 ("Bluetooth: btmtk: accept too short WMT FUNC_CTRL
-> > > > > > > > > > events") and will likely hit mainline on Thursday or so with the weekly
-> > > > > > > > > > -net PR to -mainline. If that's good enough for you, I'd say it would be
-> > > > > > > > > > good to pick this up for the next round of stable kernels.
-> > > > > > > > >
-> > > > > > > > > That "Fixes:" tag is referring to something that is also not in any
-> > > > > > > > > tree, but that commit does have a cc: stable in it.  So do we need both
-> > > > > > > > > of these:
-> > > > > > > >
-> > > > > > > > Valid question, as yes, there is a slight mixup here:
-> > > > > > > >
-> > > > > > > > > 041e88fb0c08 ("Bluetooth: btmtk: validate WMT event SKB length before struct access")
-> > > > > > > >
-> > > > > > > > That is already in v7.0.7, v6.18.30, v6.12.88, as 041e88fb0c08 is the
-> > > > > > > > -next commit-id for mainline commit-id 634a4408c0615c ("Bluetooth:
-> > > > > > > > btmtk: validate WMT event SKB length before struct access") -- the one
-> > > > > > > > that is causing the regression that I want to get fixed. So we now only
-> > > > > > > > need:
-> > > > > > > >
-> > > > > > > > > 162b1adeb057 ("Bluetooth: btmtk: accept too short WMT FUNC_CTRL events")
-> > > > > > >
-> > > > > > > Ok, but that "Fixes:" tag pointing to an invalid commit is going to be a
-> > > > > > > nightmare to track over time, ugh.
-> > > > > >
-> > > > > > Hmm, did we get the wrong hash or something? Usually, that would show
-> > > > > > up in the verify-fixes.sh, but perhaps it didn't capture it this time
-> > > > > > for some reason, perhaps I'm running an outdated version or something
-> > > > > > similar.
-> > > > >
-> > > > > Something went wrong if we ended up with a patch in the stable trees,
-> > > > > yet this fix is referring to it as a different git sha.  Don't know
-> > > > > where the disconnect happend :(
-> > > >
-> > > > 041e88fb0c08 ("Bluetooth: btmtk: validate WMT event SKB length before
-> > > > struct access")
-> > > >
-> > > > I don't have that in any of our tree either, this is actually
-> > > > 634a4408c061 on all trees in the chain:
-> > > >
-> > > > https://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git/commit/?id=634a4408c061
-> > > > https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit/?id=634a4408c061
-> > > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=634a4408c061
-> > > >
-> > > > Or actually that was the hash before it got rebased on bluetooth-next tree:
-> > > >
-> > > > https://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth-next.git/commit/?id=041e88fb0c08
-> > > >
-> > > > But I didn't send the PR from that three so perhaps somebody else sent
-> > > > it to stable with the wrong fixes tag?
-> > > I believe the confusion comes from "Bluetooth: btmtk: accept too short WMT
-> > > FUNC_CTRL events" itself currently having different commit hashes in
-> > > bluetooth (e3ac0d9f1a20) and bluetooth-next (162b1adeb057). The former
-> > > correctly refers to "Bluetooth: btmtk: validate WMT event SKB length before
-> > > struct access" as 634a4408c061 in the Fixes tag and was merged into net
-> > > yesterday heading for 7.1-rc5. The latter still refers to it as
-> > > 041e88fb0c08. Both are now in next-20260519 but only the latter was in
-> > > next-20260518 which was the latest at the time of Thorsten's message.
-> > >
-> > > Greg, this means picking e3ac0d9f1a20 instead of 162b1adeb057 should result
-> > > in a valid Fixes tag.
-> >
-> > Ok, now done.  Be careful of duplicate commits in different branches
-> > that are marked for backporting with different ids.  It can cause
-> > massive confusion (i.e. don't be like the drm tree...)
-> 
-> Noted. I guess I need to dig into how other trees do to avoid that.
-> The problem seem related to using 2 trees: bluetooth->net (fixes only,
-> rebased on each RC) versus bluetooth-next->net-next (development,
-> rebased once per release).
+Hi Sasha, Greg,
 
-Just never rebase any public tree please.
+(+cc Kuniyuki)
+
+Our CI at MPTCP cannot build the patches being queued for v5.15:
+
+
+  net/unix/af_unix.c: In function 'bpf_iter_unix_hold_batch':
+  net/unix/af_unix.c:3352:22: error: 'unix_table_locks' undeclared
+(first use in this function); did you mean 'unix_table_lock'?
+   3352 |         spin_unlock(&unix_table_locks[start_sk->sk_hash]);
+        |                      ^~~~~~~~~~~~~~~~
+        |                      unix_table_lock
+
+  net/unix/af_unix.c: In function 'bpf_iter_unix_batch':
+  net/unix/af_unix.c:3397:14: error: implicit declaration of function
+'unix_get_first'; did you mean 'unix_get_socket'?
+[-Werror=implicit-function-declaration]
+   3397 |         sk = unix_get_first(seq, pos);
+        |              ^~~~~~~~~~~~~~
+        |              unix_get_socket
+
+
+https://github.com/multipath-tcp/mptcp_net-next/actions/runs/26156680393/job/76937788263#step:9:2175
+
+For the first one, unix_table_locks has been introduced in afd20b9290e1
+("af_unix: Replace the big lock with small locks."). Before, the version
+without 's' (unix_table_lock) was used.
+
+For the second one, unix_get_first has been introduced in 4408d55a6467
+("af_unix: Refactor unix_next_socket().").
+
+It looks like these errors are due to:
+
+  bpf-af_unix-use-batching-algorithm-in-bpf-unix-iter.patch
+
+This backport of 855d8e77ffb0 ("bpf: af_unix: Use batching algorithm in
+bpf unix iter.") is needed for 4d328dd69538 ("bpf, sockmap: Fix af_unix
+iter deadlock") apparently.
+
+I'm not sure how you want to fix this in v5.15: backporting new
+improvements, or adapting. But maybe easier to drop the faulty patch for
+the moment, and bpf-sockmap-fix-af_unix-iter-deadlock.patch I suppose.
+
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
+
 
