@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-251436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250500-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qKlBCN78DWok5QUAu9opvQ
-	(envelope-from <stable+bounces-251436-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:38 +0200
+	id GJlpOoTzDWoF5AUAu9opvQ
+	(envelope-from <stable+bounces-250500-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:46:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25F9E596279
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57450594899
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:46:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 687E1320D86A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:26:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BCBE0379BF1F
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:46:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7B2B3EF0D7;
-	Wed, 20 May 2026 17:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E80D22C15AB;
+	Wed, 20 May 2026 16:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C9BPzblE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OrHKX8hf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A682701C4;
-	Wed, 20 May 2026 17:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE1236D4E1;
+	Wed, 20 May 2026 16:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297976; cv=none; b=N9d7tVf4tWfFDcF47eySVL1kMR7EEye1NHg4KZSjGRvaeihBG6ZK24uYlrGf/8tx+JjUMBUBA6kyW6OJOAFk9Sc+vd3p/5cPyeik6HDp0ThBjGk1QyPXZjSQVBDQ7xStnedf0poBfhMKX54dTssNgbB4ApqzTKH5R4OnY2tBtAQ=
+	t=1779295572; cv=none; b=Jv9VdcmxxBofin8JjrObYIXtxNU7xAEoTPSGNP/TsgCU1P1BsC44hDDA5+Vdo4rRDOa/L0n7QAFRufknsOvJik57kMwdz+Q+MnhnY9QGWqDX1xkji0pHt0QBmnuSovFHYuU9qfVhqtlMJZ5NtNZIX05im8Z4tgkrp8L5MaNhhW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297976; c=relaxed/simple;
-	bh=oPoXA0yr6BMBy1k4U5PZyijCn77cA49NbCOTTDwtQkA=;
+	s=arc-20240116; t=1779295572; c=relaxed/simple;
+	bh=YsUZizXiRHNB0uMhgbR8uEPvFTcARZU3kqL4F+6ptV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iszvk88IPGnHUWW6sbXcvXOf3Vqgl3BI3gK1zVw0+G0YikSxUMbU4Jd1qIJjE09Ifoe8fbLUIF91fO6RKOypZj5MWWmKRakk8sHV/hPd+A4yoZfv3cc1SnUm4Hw2uGmzIKmLnrGFLsfoJVuAab+4ZruNK3iyAF10xMS0h3nRc7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C9BPzblE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD9B61F000E9;
-	Wed, 20 May 2026 17:26:14 +0000 (UTC)
+	 MIME-Version; b=mAuNopXZs0vsVjXuaUPD6s9pzA5SqCbi0+wgXB7t04cnQcsaQoSoUFqq5+GbopFFPeOHcwESQpLBuL4Yc9rxljh95Pd7t8XlOjKtfKRZs0TeqZOnCpjpLkd8E1BhSZdCWe5M/laFHS5aVKGSdKl3nFl5j64uNB7pGpWvD5Eu8No=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OrHKX8hf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E18351F000E9;
+	Wed, 20 May 2026 16:46:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297975;
-	bh=gZgobUeXYZnm+5TkKrCF8/gQaPMTpJIAUMljYDS334E=;
+	s=korg; t=1779295571;
+	bh=QXstX8ribzRIUoBebAksI6onnxigtBjGIQgOaSDKNdA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=C9BPzblE2DlEVcdZ2/mgOLOJe6csFeD+mOPdHEmJlxAOcPtaxi61ShBgu361GVOiP
-	 MyH+W2QJMcttLih2bbFAFhUjNFIzsf09NUjRPEs3YIJBvHl1maJrUj5p6HfEdbi9iR
-	 FEIBa69rXgpBc/Pbna+hpK0isYTPl8faN66SMSms=
+	b=OrHKX8hfmCiKw3Pixia18uD6bsxRuOXG9SyWM9Z/ziObcammLsrf3jEC2THvQ+afz
+	 WKnLQyY+lnmNgOnh7gqvvO+kUogqD+PMsB7dHSxg0kys3b9rtd8sEYWPgvhEAIGat5
+	 0cEJCdeLMj6IqfkmaYLxg9lzVugQwTEPAeIz717c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 235/957] drm/amdgpu/gfx10: look at the right prop for gfx queue priority
+Subject: [PATCH 7.0 0468/1146] memory: tegra124-emc: Fix dll_change check
 Date: Wed, 20 May 2026 18:11:58 +0200
-Message-ID: <20260520162139.635745059@linuxfoundation.org>
+Message-ID: <20260520162158.785601218@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +63,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251436-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-250500-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 25F9E596279
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 57450594899
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Mikko Perttunen <mperttunen@nvidia.com>
 
-[ Upstream commit 355d96cdec5c61fd83f7eb54f1a28e38809645d6 ]
+[ Upstream commit 9597ab9a8296ab337e6820f8a717ff621078b632 ]
 
-Look at hqd_queue_priority rather than hqd_pipe_priority.
-In practice, it didn't matter as both were always set for
-kernel queues, but that will change in the future.
+The code checking whether the specified memory timing enables DLL
+in the EMRS register was reversed. DLL is enabled if bit A0 is low.
+Fix the check.
 
-Fixes: b07d1d73b09e ("drm/amd/amdgpu: Enable high priority gfx queue")
-Reviewed-by：Jesse Zhang <jesse.zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 73a7f0a90641 ("memory: tegra: Add EMC (external memory controller) driver")
+Signed-off-by: Mikko Perttunen <mperttunen@nvidia.com>
+Link: https://patch.msgid.link/20260126-fix-emc-dllchange-v1-1-47ad3bb63262@nvidia.com
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 2 +-
+ drivers/memory/tegra/tegra124-emc.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-index 003bcece715eb..234753a10361f 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-@@ -6751,7 +6751,7 @@ static void gfx_v10_0_gfx_mqd_set_priority(struct amdgpu_device *adev,
- 	/* set up default queue priority level
- 	 * 0x0 = low priority, 0x1 = high priority
- 	 */
--	if (prop->hqd_pipe_priority == AMDGPU_GFX_PIPE_PRIO_HIGH)
-+	if (prop->hqd_queue_priority == AMDGPU_GFX_QUEUE_PRIORITY_MAXIMUM)
- 		priority = 1;
+diff --git a/drivers/memory/tegra/tegra124-emc.c b/drivers/memory/tegra/tegra124-emc.c
+index ff26815e51f17..5cfbc169c5f98 100644
+--- a/drivers/memory/tegra/tegra124-emc.c
++++ b/drivers/memory/tegra/tegra124-emc.c
+@@ -608,7 +608,7 @@ static int tegra124_emc_prepare_timing_change(struct tegra_emc *emc,
  
- 	tmp = RREG32_SOC15(GC, 0, mmCP_GFX_HQD_QUEUE_PRIORITY);
+ 	if ((last->emc_mode_1 & 0x1) == (timing->emc_mode_1 & 0x1))
+ 		dll_change = DLL_CHANGE_NONE;
+-	else if (timing->emc_mode_1 & 0x1)
++	else if (!(timing->emc_mode_1 & 0x1))
+ 		dll_change = DLL_CHANGE_ON;
+ 	else
+ 		dll_change = DLL_CHANGE_OFF;
 -- 
 2.53.0
 
