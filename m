@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-250997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-251922-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kDH0OgrxDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-250997-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:10 +0200
+	id 4D4ZLO78DWru5AUAu9opvQ
+	(envelope-from <stable+bounces-251922-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC9CA59412E
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:36:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 142645962B5
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:26:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4F53930CFD2D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:08:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 80C15351A931
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:47:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C4EA3F44D9;
-	Wed, 20 May 2026 17:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C483A543E;
+	Wed, 20 May 2026 17:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tRHbhctR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fh4+tlCb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 458683E120A;
-	Wed, 20 May 2026 17:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B4A349AFF;
+	Wed, 20 May 2026 17:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296834; cv=none; b=GlYKvVIv/0/KvdXqpcoEqgVtkMxrzm2Hz9sJ+YgAAqmQYsn9jVZw8A4FHjo6YMFsKbaL35+ElsY1SPMYjCl0L9BI6nl5ieIjh9EYZqDx4GoFGqcArBdT5AYGivS3CVBT5iKkFuy7Wvd6oW1sNDouk35dkim82Zi/1XhDIw6EOME=
+	t=1779299236; cv=none; b=nYsKxH095uCqU7KMZwbBKApz91z6din7XdtCRyyfm67ZpFl7YSJkGuqquWiJ0gzUcCMswZ9UHfmvc9EKp9vEO+OGuMqI1+N12sGNZzg7yZplHS6Jbq57KtSRZWasYKx0GqGsyoawQpt+rMifT9nMSTo9Y4VpgqrUZR3t9SJHZ8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296834; c=relaxed/simple;
-	bh=SDxH1Sav63f4JtB4BbyNj+dClnNg3HadiyVjW71kvcA=;
+	s=arc-20240116; t=1779299236; c=relaxed/simple;
+	bh=H3SiyVuJm65tGoN0tfifXwWlhL4iYGKqvGT6mSkIY6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XVjzI6PjH/cp+yQz8bqT0XdcEk+ZXli9tExtMSw1Ydt58iKxhAYw64RfGiq04NkSIPO5Qp1LD/zQBhm3FCa2ooqS1iIL7XWSx12QIpaEAbokE34lEKHa4zM2ZEJrfbbFWK3t0HEPQYuUz7vefHFIrxsbDqFsagOovggnDuPlOB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tRHbhctR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 702CB1F00893;
-	Wed, 20 May 2026 17:07:12 +0000 (UTC)
+	 MIME-Version; b=Um4U+p/sSVUOt86jJ5fOzdYvNRCU1wQK/K5LLJ5eb6JAPOPVuixdkKs5WGssMQHIwm4VBJl4t/EspWu2YIp2kE8tU7r+YpgpXQ3ka63CCDPFTa/BDelDELG+3Bzqct+xDVzIdn7gBNAyDCcPD1E9EbauYp2FUDsuehefU7MmdMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fh4+tlCb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E43A51F000E9;
+	Wed, 20 May 2026 17:47:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296832;
-	bh=cwTSPPrqj9t8X5/pdqji1y+qpy7S1TlCWSGRPVjgq5s=;
+	s=korg; t=1779299235;
+	bh=rvC3xNqEylWqkJo3tOswJeyoOWpkf927SnNEPe4HDb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tRHbhctRRSfSgR6X6Vy3glbKjx5r5qnhm8hZEqJiBdZ0xZolesOsxHxoiuMJT2ezY
-	 qVLvpLUNIVFTtAbNab3l0uB92wLvK6dKMeuQ21TVdUhUxZ4SeN9lDVVqlpmxMqEqbh
-	 yerUtYmleFf398mwV/oG/Q1B/VhxZRre+sMq/n1s=
+	b=Fh4+tlCbTY29jk57pbN1pmRFu5nCWzrmTSkb9NO8LkqEvafVvaVLdoJIU4/mIoaqN
+	 Kb0mQ0wkxKQsJYcTYWg/s8RSmXAzF1FXiW37QxndYdyVRl4zQtcFUjFEjrFZGcUwdw
+	 k6gS6VGLDKfVWQLXXMXiygdD6O0llPPBffaJIk3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Ido Schimmel <idosch@nvidia.com>,
+	syzbot+6985cb8e543ea90ba8ee@syzkaller.appspotmail.com,
+	Kohei Enju <kohei@enjuk.jp>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0948/1146] neigh: let neigh_xmit take skb ownership
+Subject: [PATCH 6.18 715/957] vhost_net: fix sleeping with preempt-disabled in vhost_net_busy_poll()
 Date: Wed, 20 May 2026 18:19:58 +0200
-Message-ID: <20260520162209.688744807@linuxfoundation.org>
+Message-ID: <20260520162150.054035147@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,107 +66,97 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-251922-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250997-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,nvidia.com:email,strlen.de:email]
-X-Rspamd-Queue-Id: BC9CA59412E
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,6985cb8e543ea90ba8ee];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,appspotmail.com:email,enjuk.jp:email]
+X-Rspamd-Queue-Id: 142645962B5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Kohei Enju <kohei@enjuk.jp>
 
-[ Upstream commit 4438113be604ee67a7bf4f81da6e1cca41332ce4 ]
+[ Upstream commit e08a9fac5cf8c3fecf4755e7e3ac059f78b8f83d ]
 
-neigh_xmit always releases the skb, except when no neighbour table is
-found. But even the first added user of neigh_xmit (mpls) relied on
-neigh_xmit to release the skb (or queue it for tx).
+syzbot reported "sleeping function called from invalid context" in
+vhost_net_busy_poll().
 
-sashiko reported:
- If neigh_xmit() is called with an uninitialized neighbor table (for
- example, NEIGH_ND_TABLE when IPv6 is disabled), it returns -EAFNOSUPPORT
- and bypasses its internal out_kfree_skb error path.  Because the return
- value of neigh_xmit() is ignored here, does this leak the SKB?
+Commit 030881372460 ("vhost_net: basic polling support") introduced a
+busy-poll loop and preempt_{disable,enable}() around it, where each
+iteration calls a sleepable function inside the loop.
 
-Assume full ownership and remove the last code path that doesn't
-xmit or free skb.
+The purpose of disabling preemption was to keep local_clock()-based
+timeout accounting on a single CPU, rather than as a requirement of
+busy-poll itself:
 
-Fixes: 4fd3d7d9e868 ("neigh: Add helper function neigh_xmit")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260424145843.74055-1-fw@strlen.de
+https://lore.kernel.org/1448435489-5949-4-git-send-email-jasowang@redhat.com
+
+>From this perspective, migrate_disable() is sufficient here, so replace
+preempt_disable() with migrate_disable(), avoiding sleepable accesses
+from a preempt-disabled context.
+
+Fixes: 030881372460 ("vhost_net: basic polling support")
+Tested-by: syzbot+6985cb8e543ea90ba8ee@syzkaller.appspotmail.com
+Reported-by: syzbot+6985cb8e543ea90ba8ee@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/69e6a414.050a0220.24bfd3.002d.GAE@google.com/T/
+Signed-off-by: Kohei Enju <kohei@enjuk.jp>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/neighbour.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/vhost/net.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index c56a4e7bf790c..5a9cc7268521c 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -3211,8 +3211,10 @@ int neigh_xmit(int index, struct net_device *dev,
+diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
+index 1e77c0482b849..e11b46a1c9374 100644
+--- a/drivers/vhost/net.c
++++ b/drivers/vhost/net.c
+@@ -562,7 +562,7 @@ static void vhost_net_busy_poll(struct vhost_net *net,
+ 	busyloop_timeout = poll_rx ? rvq->busyloop_timeout:
+ 				     tvq->busyloop_timeout;
  
- 		rcu_read_lock();
- 		tbl = rcu_dereference(neigh_tables[index]);
--		if (!tbl)
--			goto out_unlock;
-+		if (!tbl) {
-+			rcu_read_unlock();
-+			goto out_kfree_skb;
-+		}
- 		if (index == NEIGH_ARP_TABLE) {
- 			u32 key = *((u32 *)addr);
+-	preempt_disable();
++	migrate_disable();
+ 	endtime = busy_clock() + busyloop_timeout;
  
-@@ -3228,7 +3230,6 @@ int neigh_xmit(int index, struct net_device *dev,
- 			goto out_kfree_skb;
- 		}
- 		err = READ_ONCE(neigh->output)(neigh, skb);
--out_unlock:
- 		rcu_read_unlock();
+ 	while (vhost_can_busy_poll(endtime)) {
+@@ -579,7 +579,7 @@ static void vhost_net_busy_poll(struct vhost_net *net,
+ 		cpu_relax();
  	}
- 	else if (index == NEIGH_LINK_TABLE) {
-@@ -3238,11 +3239,10 @@ int neigh_xmit(int index, struct net_device *dev,
- 			goto out_kfree_skb;
- 		err = dev_queue_xmit(skb);
- 	}
--out:
- 	return err;
- out_kfree_skb:
- 	kfree_skb(skb);
--	goto out;
-+	return err;
- }
- EXPORT_SYMBOL(neigh_xmit);
  
+-	preempt_enable();
++	migrate_enable();
+ 
+ 	if (poll_rx || sock_has_rx_data(sock))
+ 		vhost_net_busy_poll_try_queue(net, vq);
 -- 
 2.53.0
 
