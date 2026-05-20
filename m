@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-250942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252973-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oJckEtHrDWo04wUAu9opvQ
-	(envelope-from <stable+bounces-250942-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:13:53 +0200
+	id QHfGIogqDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252973-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:41:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3E1C5931E6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:13:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD93859B348
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:41:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 22C6330475C6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:06:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C859E37B27DA
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:34:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01188373BEB;
-	Wed, 20 May 2026 17:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B456933DEE5;
+	Wed, 20 May 2026 18:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="We8RtHI5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/J7VA83"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB7828DC4;
-	Wed, 20 May 2026 17:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6471130DEAC;
+	Wed, 20 May 2026 18:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296692; cv=none; b=KnwFmxmkR0tMwXyOg75/LkS/ol+pX+QzihRAsSnFmTZDgb1s+jR9DWamtMivbv4jJ1ouNMvZAHK6BzIxZs7x4eeDuooruJuDCUm2wq2TuZmbjVp9HiKbTR4UKGGOuc+mIiUYhQA0tGoNs7MhaUP9lTCVzbFptzaTFT3lIVkLbMc=
+	t=1779302073; cv=none; b=bvoMivNDhMqZ1D2s/hWL0lq80dRN05mLJzl8T/84FELaQV4KnV2ysNMrxhGkEWXbX8knpgM65jtStMBiPjFsolqmZqqA1LDVddy6Ec+SS13ObYoK+v/Uo4kNW/sizK0kvKv9ZNoO6k/8ZYCalPS2PVhySreMJ+hOWDx3O9/b1OA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296692; c=relaxed/simple;
-	bh=KRvhk81l1RhaXXOCN2OBjMEOcMfDa8i0QgYe8xBNWzE=;
+	s=arc-20240116; t=1779302073; c=relaxed/simple;
+	bh=P6KHpKWfxr0jdV4wzJ8dnwvOldgFGk2K4vkBDH5CwdA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YaEUnhcDg3NlYCQnx+qA4MT8QpegQH3chDwCj5nRpfHYA9g0A0DU0BHUHKzknbXKav7QI8VMJor9jzhNIpPl8KiyxPq4BSh7xkGUHSEhQFLdkZ/EoS+rSSGOS8gWA9GXvLBKDieHKA8WE5yD1RQ9Kqee/8m3zDK1GIvrA3GYVKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=We8RtHI5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD511F000E9;
-	Wed, 20 May 2026 17:04:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nYha7P9cjqX2oviv4v4RsI/eBTb9GwQAUDJVA/CXDLNcsitjvi4B2M5hL/xk5MTLCC9y/1/a8NijuC64PmY+0uLnEJQkRD0VJZA0GKzACxfvvP4gByBznp4DdIEmVEWNtrepxnanDWiuJx8dSIh6e6RjGxLfxcZbmecb7h+5ycw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/J7VA83; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA5A01F000E9;
+	Wed, 20 May 2026 18:34:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296688;
-	bh=+53VKXuqinZ0Eg1KXy9GPCQEGIPiTrfJj2rG+W9SqME=;
+	s=korg; t=1779302072;
+	bh=TR3Q5dS/IHqh0nu7re2WNZBHhd5y9yQthYZ3LL19aMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=We8RtHI5aVdam4yD6/NefrpCHX5Da6R7n4sTyqW2zLvErzgzw5aCtoBRFg5qWHK5S
-	 ujerQHwzp7ni5vGqdOar6kBgoOWQWRv/I2R2TfRGfXxL2EahjR9nB2bqW3Q1W4QBhE
-	 jgaNK0/87BJ2gAmSiL0RCzv5nTkz4BAE3r5ciWcQ=
+	b=S/J7VA83GXjOHxpU1OcXsbNNMpT1GvCk7NnyO8rsey5K/zYlp5iMBhMvhU4hirIy0
+	 LLRWfDwOYZW4BZy4J8xmY2h9C0tu3OtHH5oL1XAbUq0//hcqT/1Jw22rS19T/mQ+dX
+	 OlBAg6MCZ1UpZkAd4202hfWkD4GBqm1niYwUqwyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Yunje Shin <ioerts@kookmin.ac.kr>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Keith Busch <kbusch@kernel.org>,
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0894/1146] nvmet-tcp: propagate nvmet_tcp_build_pdu_iovec() errors to its callers
+Subject: [PATCH 6.6 121/508] ALSA: core: Validate compress device numbers without dynamic minors
 Date: Wed, 20 May 2026 18:19:04 +0200
-Message-ID: <20260520162208.468953416@linuxfoundation.org>
+Message-ID: <20260520162101.251343649@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,195 +63,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-250942-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-252973-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,kernel.org];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,kookmin.ac.kr:email,suse.de:email]
-X-Rspamd-Queue-Id: C3E1C5931E6
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: CD93859B348
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-[ Upstream commit ea8e356acb165cb1fd75537a52e1f66e5e76c538 ]
+[ Upstream commit 796e119e9b14763be905ad0d023c71a14bc2e931 ]
 
-Currently, when nvmet_tcp_build_pdu_iovec() detects an out-of-bounds
-PDU length or offset, it triggers nvmet_tcp_fatal_error(cmd->queue)
-and returns early. However, because the function returns void, the
-callers are entirely unaware that a fatal error has occurred and
-that the cmd->recv_msg.msg_iter was left uninitialized.
+Without CONFIG_SND_DYNAMIC_MINORS, ALSA reserves only two fixed minors
+for compress devices on each card: comprD0 and comprD1.
 
-Callers such as nvmet_tcp_handle_h2c_data_pdu() proceed to blindly
-overwrite the queue state with queue->rcv_state = NVMET_TCP_RECV_DATA
-Consequently, the socket receiving loop may attempt to read incoming
-network data into the uninitialized iterator.
+snd_find_free_minor() currently computes the compress minor as
+type + dev without validating dev first, so device numbers greater than
+1 spill into the HWDEP minor range instead of failing registration.
 
-Fix this by shifting the error handling responsibility to the callers.
+ASoC passes rtd->id to snd_compress_new(), so this can happen on real
+non-dynamic-minor builds.
 
-Fixes: 52a0a9854934 ("nvmet-tcp: add bounds checks in nvmet_tcp_build_pdu_iovec")
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Yunje Shin <ioerts@kookmin.ac.kr>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Add a dedicated fixed-minor check for SNDRV_DEVICE_TYPE_COMPRESS in
+snd_find_free_minor() and reject out-of-range device numbers with
+-EINVAL before constructing the minor.
+
+Also remove the stale TODO in compress_offload.c that still claims
+multiple compress nodes are missing.
+
+Fixes: 3eafc959b32f ("ALSA: core: add support for compressed devices")
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260325-alsa-compress-static-minors-v1-1-0628573bee1c@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/tcp.c | 51 ++++++++++++++++++++++-----------------
- 1 file changed, 29 insertions(+), 22 deletions(-)
+ sound/core/compress_offload.c | 7 -------
+ sound/core/sound.c            | 7 +++++++
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index 255ebd948dfe1..dc65894696ad9 100644
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -351,7 +351,7 @@ static void nvmet_tcp_free_cmd_buffers(struct nvmet_tcp_cmd *cmd)
+diff --git a/sound/core/compress_offload.c b/sound/core/compress_offload.c
+index 619371aa9964d..8545c7bbc58e3 100644
+--- a/sound/core/compress_offload.c
++++ b/sound/core/compress_offload.c
+@@ -40,13 +40,6 @@
+ #define COMPR_CODEC_CAPS_OVERFLOW
+ #endif
  
- static void nvmet_tcp_fatal_error(struct nvmet_tcp_queue *queue);
- 
--static void nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
-+static int nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
- {
- 	struct bio_vec *iov = cmd->iov;
- 	struct scatterlist *sg;
-@@ -364,22 +364,19 @@ static void nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
- 	offset = cmd->rbytes_done;
- 	cmd->sg_idx = offset / PAGE_SIZE;
- 	sg_offset = offset % PAGE_SIZE;
--	if (!cmd->req.sg_cnt || cmd->sg_idx >= cmd->req.sg_cnt) {
--		nvmet_tcp_fatal_error(cmd->queue);
--		return;
--	}
-+	if (!cmd->req.sg_cnt || cmd->sg_idx >= cmd->req.sg_cnt)
-+		return -EPROTO;
-+
- 	sg = &cmd->req.sg[cmd->sg_idx];
- 	sg_remaining = cmd->req.sg_cnt - cmd->sg_idx;
- 
- 	while (length) {
--		if (!sg_remaining) {
--			nvmet_tcp_fatal_error(cmd->queue);
--			return;
--		}
--		if (!sg->length || sg->length <= sg_offset) {
--			nvmet_tcp_fatal_error(cmd->queue);
--			return;
--		}
-+		if (!sg_remaining)
-+			return -EPROTO;
-+
-+		if (!sg->length || sg->length <= sg_offset)
-+			return -EPROTO;
-+
- 		u32 iov_len = min_t(u32, length, sg->length - sg_offset);
- 
- 		bvec_set_page(iov, sg_page(sg), iov_len,
-@@ -394,6 +391,7 @@ static void nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
- 
- 	iov_iter_bvec(&cmd->recv_msg.msg_iter, ITER_DEST, cmd->iov,
- 		      nr_pages, cmd->pdu_len);
-+	return 0;
- }
- 
- static void nvmet_tcp_fatal_error(struct nvmet_tcp_queue *queue)
-@@ -957,7 +955,7 @@ static int nvmet_tcp_handle_icreq(struct nvmet_tcp_queue *queue)
- 	return 0;
- }
- 
--static void nvmet_tcp_handle_req_failure(struct nvmet_tcp_queue *queue,
-+static int nvmet_tcp_handle_req_failure(struct nvmet_tcp_queue *queue,
- 		struct nvmet_tcp_cmd *cmd, struct nvmet_req *req)
- {
- 	size_t data_len = le32_to_cpu(req->cmd->common.dptr.sgl.length);
-@@ -973,19 +971,23 @@ static void nvmet_tcp_handle_req_failure(struct nvmet_tcp_queue *queue,
- 	if (!nvme_is_write(cmd->req.cmd) || !data_len ||
- 	    data_len > cmd->req.port->inline_data_size) {
- 		nvmet_prepare_receive_pdu(queue);
--		return;
-+		return 0;
- 	}
- 
- 	ret = nvmet_tcp_map_data(cmd);
- 	if (unlikely(ret)) {
- 		pr_err("queue %d: failed to map data\n", queue->idx);
- 		nvmet_tcp_fatal_error(queue);
--		return;
-+		return -EPROTO;
- 	}
- 
- 	queue->rcv_state = NVMET_TCP_RECV_DATA;
--	nvmet_tcp_build_pdu_iovec(cmd);
- 	cmd->flags |= NVMET_TCP_F_INIT_FAILED;
-+	ret = nvmet_tcp_build_pdu_iovec(cmd);
-+	if (unlikely(ret))
-+		pr_err("queue %d: failed to build PDU iovec\n", queue->idx);
-+
-+	return ret;
- }
- 
- static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
-@@ -1037,7 +1039,10 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
- 		goto err_proto;
- 	}
- 	cmd->pdu_recv = 0;
--	nvmet_tcp_build_pdu_iovec(cmd);
-+	if (unlikely(nvmet_tcp_build_pdu_iovec(cmd))) {
-+		pr_err("queue %d: failed to build PDU iovec\n", queue->idx);
-+		goto err_proto;
-+	}
- 	queue->cmd = cmd;
- 	queue->rcv_state = NVMET_TCP_RECV_DATA;
- 
-@@ -1100,8 +1105,7 @@ static int nvmet_tcp_done_recv_pdu(struct nvmet_tcp_queue *queue)
- 			le32_to_cpu(req->cmd->common.dptr.sgl.length),
- 			le16_to_cpu(req->cqe->status));
- 
--		nvmet_tcp_handle_req_failure(queue, queue->cmd, req);
--		return 0;
-+		return nvmet_tcp_handle_req_failure(queue, queue->cmd, req);
- 	}
- 
- 	ret = nvmet_tcp_map_data(queue->cmd);
-@@ -1118,8 +1122,11 @@ static int nvmet_tcp_done_recv_pdu(struct nvmet_tcp_queue *queue)
- 	if (nvmet_tcp_need_data_in(queue->cmd)) {
- 		if (nvmet_tcp_has_inline_data(queue->cmd)) {
- 			queue->rcv_state = NVMET_TCP_RECV_DATA;
--			nvmet_tcp_build_pdu_iovec(queue->cmd);
--			return 0;
-+			ret = nvmet_tcp_build_pdu_iovec(queue->cmd);
-+			if (unlikely(ret))
-+				pr_err("queue %d: failed to build PDU iovec\n",
-+					queue->idx);
-+			return ret;
- 		}
- 		/* send back R2T */
- 		nvmet_tcp_queue_response(&queue->cmd->req);
+-/* TODO:
+- * - add substream support for multiple devices in case of
+- *	SND_DYNAMIC_MINORS is not used
+- * - Multiple node representation
+- *	driver should be able to register multiple nodes
+- */
+-
+ struct snd_compr_file {
+ 	unsigned long caps;
+ 	struct snd_compr_stream stream;
+diff --git a/sound/core/sound.c b/sound/core/sound.c
+index df5571d986295..f3bb0adf37cce 100644
+--- a/sound/core/sound.c
++++ b/sound/core/sound.c
+@@ -219,9 +219,16 @@ static int snd_find_free_minor(int type, struct snd_card *card, int dev)
+ 	case SNDRV_DEVICE_TYPE_RAWMIDI:
+ 	case SNDRV_DEVICE_TYPE_PCM_PLAYBACK:
+ 	case SNDRV_DEVICE_TYPE_PCM_CAPTURE:
++		if (snd_BUG_ON(!card))
++			return -EINVAL;
++		minor = SNDRV_MINOR(card->number, type + dev);
++		break;
+ 	case SNDRV_DEVICE_TYPE_COMPRESS:
+ 		if (snd_BUG_ON(!card))
+ 			return -EINVAL;
++		if (dev < 0 ||
++		    dev >= SNDRV_MINOR_HWDEP - SNDRV_MINOR_COMPRESS)
++			return -EINVAL;
+ 		minor = SNDRV_MINOR(card->number, type + dev);
+ 		break;
+ 	default:
 -- 
 2.53.0
 
