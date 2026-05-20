@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-250660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252239-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cCHSN07rDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250660-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:11:42 +0200
+	id +AZTCGEEDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-252239-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:58:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B40AB5930CE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:11:42 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 547AC59781A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:58:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D44E230EBA74
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:53:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C40D53100F68
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:02:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44CFD372EED;
-	Wed, 20 May 2026 16:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4244E3F6C5F;
+	Wed, 20 May 2026 18:02:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dh/FDawG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OUoY7ZhX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9851B37D101;
-	Wed, 20 May 2026 16:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B7F3D75C7;
+	Wed, 20 May 2026 18:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295989; cv=none; b=K+b9Xp8e2gng4HZVUQOIitl45qtSL15EtvD9ST5PQXt2ABvoiKdm0u4k/bm8KxijqQ5Y/1EsMY8Cmn4/IE2CTarANW7vl4wdXo6ORgj+JP4rWsjQiYOv6ixrXykuoT+5YkvJZW0oqJP0MpNyCkTQwr5HAOU8iJzur8+XmZhWmRc=
+	t=1779300157; cv=none; b=ijYcagwnz6KcQG8cbTkxie89MY4iGdxamMcCMEZqZtnERbZHh6uJFIxDrmTFYwnFsR/pxerelBjzWcjSfm426aUe+vuzEi1AKkI8fgRPzh48WxkA+ReTWFaUg5PAgPCmBHYdvbYQoul9C1STqeac03hIwNjqRvi7dWJgLf+wyK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295989; c=relaxed/simple;
-	bh=8rB5vJvhhbH2aMlHDzM8RmSZU0cMq5AlzOGwTCad4/8=;
+	s=arc-20240116; t=1779300157; c=relaxed/simple;
+	bh=E00V3Rzyu/nHtgphMOR/f2YKlS9fNphLJgbZaL62MrE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FzBuvH59D5OU6LiHijLDNKUMcb8GOTeMHiABZAK4tgriN1EauIbFbquKkAJ+T5DE6xX8tuEelscVvFIlTtS2z3SEZtShGCpYPCUsFMRWk0CQGsOlpSk7spq5APUFxUwKhda6z2hG4iwa9MF5UO5gAZEC/YIwaJPiBf+gaHR88GY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dh/FDawG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25CC91F00894;
-	Wed, 20 May 2026 16:53:05 +0000 (UTC)
+	 MIME-Version; b=nRH07Svj1E4sHuJrDWznJooDM69DBme8xB0fF25Pla8MOuK5mKp9kdOOndWZck28fYDgaNtN+EcMs76ZLM6NS/nzHNCG+ie9fG5ZhEgloFx05IqMKJhAryADXYS6EWLJDfBjG3vOFMTNRTtrNBgxW9771FpLBK1jec+WAq4qtgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OUoY7ZhX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D2191F000E9;
+	Wed, 20 May 2026 18:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295986;
-	bh=7RAzuAiBc+Xjm77H5rv/RkFl84ivbxJKt+3vpsAH85A=;
+	s=korg; t=1779300155;
+	bh=Nl5zLXFYBNg9ipm2MdQZ8ZpQZkHHk6E2QnRtt6JJlc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dh/FDawGJRGp1ivSFAiDVxwGSgl92RzJWi9xK2F9KKuRbGyRjpf2Li/gnaDOwDatV
-	 eJH4BHZKEqILkMgo2+34wLNVnrIdBdAH0NR9oAOtGNoQ4KBjjLq/yJ3ju6NfN5fOp2
-	 Dv03TpQKbUEyziQGatrdWlJwkvgZ+J3vbUJudro4=
+	b=OUoY7ZhX4m6pCZI+EHjv8kXaHhPEyXUWDHfxTO+KeBlhXyIiczY3okt6fnFoeKTBl
+	 MqeqtYImbO48i2x0WMLET4PZRY9g7MFbh8HgoPXIFsLJ5H1JDxHWf0/qFzJW/lwpN1
+	 ThCJRTBmQTfdBiPy7crH4SByEf5OjVxFGN0Jvob0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Linus Walleij <linusw@kernel.org>,
+	Nicolas Escande <nico.escande@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0628/1146] pinctrl: cy8c95x0: remove duplicate error message
+Subject: [PATCH 6.12 067/666] wifi: mac80211: handle VHT EXT NSS in ieee80211_determine_our_sta_mode()
 Date: Wed, 20 May 2026 18:14:38 +0200
-Message-ID: <20260520162202.397131930@linuxfoundation.org>
+Message-ID: <20260520162112.682731417@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +64,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250660-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TAGGED_FROM(0.00)[bounces-252239-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email]
-X-Rspamd-Queue-Id: B40AB5930CE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 547AC59781A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Nicolas Escande <nico.escande@gmail.com>
 
-[ Upstream commit 970dacb3b9f0fedbbbcfd7dbf1f4f22340b3f359 ]
+[ Upstream commit b5b8e295973083abf823fb66647a7c702a8db8a7 ]
 
-The pin control core is covered to report any error via message.
-The devm_request_threaded_irq() already prints an error message.
-Remove the duplicates.
+A station which has a NSS ratio on the number of streams it is capable of
+in 160MHz VHT operation is supposed to use the 'Extended NSS BW Support'
+as defined by section '9.4.2.156.2 VHT Capabilities Information field'.
 
-While at it, drop the info message as the same information about
-an IRQ in use can be retrieved differently.
+This was missing in ieee80211_determine_our_sta_mode() and so we would
+wrongfully downgrade our bandwidth when connecting to an AP that supported
+160MHz with messages such as:
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
-Stable-dep-of: 5ad32c3607cf ("pinctrl: cy8c95x0: Avoid returning positive values to user space")
+	[   37.638346] wlan1: AP XX:XX:XX:XX:XX:XX changed bandwidth in assoc response, new used config is 5280.000 MHz, width 3 (5290.000/0 MHz)
+
+Fixes: 310c8387c638 ("wifi: mac80211: clean up connection process")
+Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
+Link: https://patch.msgid.link/20260327100256.3101348-1-nico.escande@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-cy8c95x0.c | 21 +++++----------------
- 1 file changed, 5 insertions(+), 16 deletions(-)
+ net/mac80211/mlme.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/pinctrl-cy8c95x0.c b/drivers/pinctrl/pinctrl-cy8c95x0.c
-index 5c055d344ac9d..c0f1d964f8397 100644
---- a/drivers/pinctrl/pinctrl-cy8c95x0.c
-+++ b/drivers/pinctrl/pinctrl-cy8c95x0.c
-@@ -1310,6 +1310,7 @@ static int cy8c95x0_irq_setup(struct cy8c95x0_pinctrl *chip, int irq)
- {
- 	struct gpio_irq_chip *girq = &chip->gpio_chip.irq;
- 	DECLARE_BITMAP(pending_irqs, MAX_LINE);
-+	struct device *dev = chip->dev;
- 	int ret;
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 835316fd3cd76..20e5f513a27a3 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -5304,7 +5304,8 @@ ieee80211_determine_our_sta_mode(struct ieee80211_sub_if_data *sdata,
  
- 	mutex_init(&chip->irq_lock);
-@@ -1336,17 +1337,9 @@ static int cy8c95x0_irq_setup(struct cy8c95x0_pinctrl *chip, int irq)
- 	girq->handler = handle_simple_irq;
- 	girq->threaded = true;
- 
--	ret = devm_request_threaded_irq(chip->dev, irq,
--					NULL, cy8c95x0_irq_handler,
--					IRQF_ONESHOT | IRQF_SHARED,
--					dev_name(chip->dev), chip);
--	if (ret) {
--		dev_err(chip->dev, "failed to request irq %d\n", irq);
--		return ret;
--	}
--	dev_info(chip->dev, "Registered threaded IRQ\n");
--
--	return 0;
-+	return devm_request_threaded_irq(dev, irq, NULL, cy8c95x0_irq_handler,
-+					 IRQF_ONESHOT | IRQF_SHARED,
-+					 dev_name(chip->dev), chip);
- }
- 
- static int cy8c95x0_setup_pinctrl(struct cy8c95x0_pinctrl *chip)
-@@ -1362,11 +1355,7 @@ static int cy8c95x0_setup_pinctrl(struct cy8c95x0_pinctrl *chip)
- 	pd->owner = THIS_MODULE;
- 
- 	chip->pctldev = devm_pinctrl_register(chip->dev, pd, chip);
--	if (IS_ERR(chip->pctldev))
--		return dev_err_probe(chip->dev, PTR_ERR(chip->pctldev),
--			"can't register controller\n");
--
--	return 0;
-+	return PTR_ERR_OR_ZERO(chip->pctldev);
- }
- 
- static int cy8c95x0_detect(struct i2c_client *client,
+ 	if (is_5ghz &&
+ 	    !(vht_cap.cap & (IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ |
+-			     IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ))) {
++			     IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160_80PLUS80MHZ |
++			     IEEE80211_VHT_CAP_EXT_NSS_BW_MASK))) {
+ 		conn->bw_limit = IEEE80211_CONN_BW_LIMIT_80;
+ 		mlme_link_id_dbg(sdata, link_id,
+ 				 "no VHT 160 MHz capability on 5 GHz, limiting to 80 MHz");
 -- 
 2.53.0
 
