@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-250344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250355-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0GRpIAIPDmrB5wUAu9opvQ
-	(envelope-from <stable+bounces-250344-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:44:02 +0200
+	id sDeDOiMPDmrc5wUAu9opvQ
+	(envelope-from <stable+bounces-250355-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:44:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CABEB598AA4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:44:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50898598B0C
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:44:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3842C34C7D0B
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:39:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 185B934D07F2
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:39:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEBBE2F0C62;
-	Wed, 20 May 2026 16:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA84532B123;
+	Wed, 20 May 2026 16:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qj6tVmNu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6iY4NtJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5566136167E;
-	Wed, 20 May 2026 16:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5B7221F2F;
+	Wed, 20 May 2026 16:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295169; cv=none; b=mHLSAdfKngShITSYXoV81JWYlsosroQNHhfg3ZKbqfT/aCLS+A8g4a7dy3jx7+4Eh6R2P+s3J3ImaoENDYWY9SsdcgD9pE29km0rVgrVKoDKuEykCGh84WAeiMDTpLqTwDWOGyyE4w5HUMmbB0EucYaEvdnRTCMPVm6m6Fy9kbY=
+	t=1779295196; cv=none; b=oZWR42Wt4l6hFfEktKUTVBLkXpZUceM01HG4FdMYhzxkmR0dV1RTca6gsrWHAPZhI/p0Bch85GD5d2w4zKZWXc2EK8w6UniO9rWqWT/1ORfWbZORx0J4Li3zVKn5kdp5XCuiopUHa/Yb+Sl0zbFP00Yhw64OiWdtJPdpdOG0sWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295169; c=relaxed/simple;
-	bh=+rhQBkLwLiREU6PiwksAbDCI3y4rM20PcFC7dx660gY=;
+	s=arc-20240116; t=1779295196; c=relaxed/simple;
+	bh=gjWT0C+qquBlWgQk5So8qar7c9nYav3KApgyxe7dkw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Nh9SRPWapQm2SN3EFz44PY6xsLc8ex8FWcilz72MMxiK5AfW7nwmptrbysFKeWPQSRrdv44vzEcKk4qnxfyRXdMdii4epG7qcLPbkAggGhwRck4OLA4yIgnp+9IEsd7zNIOhbR0T/ke6D+7pM8HOXGItFENN9U9TH1OxQblzq3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qj6tVmNu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F28B11F00899;
-	Wed, 20 May 2026 16:39:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RAZIjPVKh647l+rXt8tSVSvRdYgMIUsGvCEAXZ44aioyP1+2FEtHeKHW/4u9Wujx1oP7VKB10y9cpnh3P7mCsDpySxRERPYt8MqKBy3KvzRFKuwf6XvMSfx0Gha/8O7SlQqfSkuzwxdDbmMHCpPjq/Bz/RVbpO6WJbGaktJHPjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6iY4NtJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 043B91F000E9;
+	Wed, 20 May 2026 16:39:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295166;
-	bh=xjEag+hWZ54trM99PlKvbveD6sF1pLWWRONC/71+YZY=;
+	s=korg; t=1779295195;
+	bh=qtVXUu6Of3P93hnL//HpA1qlQz7RzZeO/PB6XXKujN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qj6tVmNuubOyL3kSpS2pfd3s+0WIsxiUk/FqfFtkHOvcPjGT4vmjsG+4NkgEOZnQr
-	 +e++qyZXCxOnKBQUp4qIsmIEEud/0dtsZ7svB9bdVyr15Ba8O1GrjdHLX4CYF3quz8
-	 26rz71NxhKhvKUKfMq5M+/FGEGza0rsZPEBloJ9k=
+	b=j6iY4NtJMpcQX/LX8kCsPAqc8qzUGEB5tVQiElBQ+UvQ8evDyk5xQKDQ/GtcvWPqN
+	 tB9+bQj1s1Pmjxtp86OLuAwJrfhOlE6gTwu+uEmA/kDqryRL/uzeIXzbUT7yb0a4ec
+	 OW1TuMCwmOnbk0S1Lw5rbnwZ9Edv1qzwBCJ6QK/0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
 	Dan Carpenter <dan.carpenter@linaro.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Jesse Zhang <jesse.zhang@amd.com>,
+	Ellen Pan <yunru.pan@amd.com>,
 	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Bokun Zhang <bokun.zhang@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0299/1146] drm/amdgpu: Drop redundant queue NULL check in hang detect worker
-Date: Wed, 20 May 2026 18:09:09 +0200
-Message-ID: <20260520162154.977689939@linuxfoundation.org>
+Subject: [PATCH 7.0 0300/1146] drm/amdgpu: Remove dead negative offset check in amdgpu_virt_init_critical_region()
+Date: Wed, 20 May 2026 18:09:10 +0200
+Message-ID: <20260520162154.999434316@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -73,12 +73,12 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-250344-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-250355-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
@@ -91,13 +91,13 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linaro.org:email,amd.com:email]
-X-Rspamd-Queue-Id: CABEB598AA4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amd.com:email,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 50898598B0C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -107,47 +107,50 @@ X-Rspamd-Server: lfdr
 
 From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 9a62a097a7f8d223d722b9e9b557a792d30600ca ]
+[ Upstream commit 4fce3dfab54d60ebaff1c7a9020a730a0708b705 ]
 
-amdgpu_userq_hang_detect_work() retrieves the queue pointer using
-container_of() from the embedded work item.
+amdgpu_virt_init_critical_region() stores init_hdr_offset as u64.
+The subsequent check for init_hdr_offset < 0 is therefore always false.
 
-Since the work structure is part of struct amdgpu_usermode_queue,
-the returned queue pointer cannot be NULL in normal execution.
+Drop the unreachable validation and rely on the existing
+check_add_overflow() and VRAM end bounds check for offset validation.
 
-Remove the redundant !queue check and keep the validation for
-queue->userq_mgr.
+This resolves the Smatch warning about comparing an unsigned value
+against zero.
 
-Fixes the below:
-drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c:159 amdgpu_userq_hang_detect_work() warn: can 'queue' even be NULL?
+drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c:953 amdgpu_virt_init_critical_region() warn: unsigned 'init_hdr_offset' is never less than zero.
 
-Fixes: 290f46cf5726 ("drm/amdgpu: Implement user queue reset functionality")
-Cc: Jesse Zhang <Jesse.Zhang@amd.com>
+Fixes: 07009df6494d ("drm/amdgpu: Introduce SRIOV critical regions v2 during VF init")
 Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Christian König <christian.koenig@amd.com>
+Cc: Ellen Pan <yunru.pan@amd.com>
+Cc: Lijo Lazar <lijo.lazar@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
 Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Acked-by: Jesse Zhang <jesse.zhang@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Bokun Zhang <bokun.zhang@amd.com>
+Reviewed-by: Ellen Pan <yunru.pan@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
-index 0a1b93259887a..caca0c4aeefe7 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
-@@ -156,7 +156,7 @@ static void amdgpu_userq_hang_detect_work(struct work_struct *work)
- 	struct dma_fence *fence;
- 	struct amdgpu_userq_mgr *uq_mgr;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+index 275745aa58292..1e284ecad2170 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+@@ -950,11 +950,6 @@ int amdgpu_virt_init_critical_region(struct amdgpu_device *adev)
+ 	if (adev->virt.req_init_data_ver != GPU_CRIT_REGION_V2)
+ 		return 0;
  
--	if (!queue || !queue->userq_mgr)
-+	if (!queue->userq_mgr)
- 		return;
- 
- 	uq_mgr = queue->userq_mgr;
+-	if (init_hdr_offset < 0) {
+-		dev_err(adev->dev, "Invalid init header offset\n");
+-		return -EINVAL;
+-	}
+-
+ 	vram_size = RREG32(mmRCC_CONFIG_MEMSIZE);
+ 	if (!vram_size || vram_size == U32_MAX)
+ 		return -EINVAL;
 -- 
 2.53.0
 
