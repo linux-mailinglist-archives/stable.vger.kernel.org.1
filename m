@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-251842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252941-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QOY/K4z0DWry4wUAu9opvQ
-	(envelope-from <stable+bounces-251842-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:51:08 +0200
+	id sG/OJfYqDmpq6gUAu9opvQ
+	(envelope-from <stable+bounces-252941-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:43:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 458D2594BDE
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:51:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19C4559B3AF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:43:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F34A33039C7D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:43:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E2B9A342228D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:33:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C34F13D75D3;
-	Wed, 20 May 2026 17:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99EA33A5426;
+	Wed, 20 May 2026 18:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EnxFhU4J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EeK8g6DW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CEEC36405A;
-	Wed, 20 May 2026 17:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB383D5647;
+	Wed, 20 May 2026 18:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779299031; cv=none; b=LHr18qOhPP38LGRHdcWl7EF+l1DGFmWDz+7tc5jSDGFMiziqJIX2z3Hi7umrRQdeFNA0AZBFviB+K9dDq4fJNAjbychxgWcJTZmjv8M1fRV/VNGCHV597ta8VjmN8tRKJy8y0w2V4JLXRkQLsM3J8/qY4JsuDER9RrTckcWOYjU=
+	t=1779301990; cv=none; b=nVHeKhGmvAOsh467PBzxPlX8B+kqclRR4gbU8g+04T5De5xd7ya/WzWoZe9nLemfcdi4eItcdu5mBVDcnlTj0JFHE9phzv5tijIsDpC6KVIShQacOLQRRS8sB+dAJNI3LG7AgouwDPld5P26PugAvxYd7OFS23AGX12D9773x+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779299031; c=relaxed/simple;
-	bh=2gO06vcAnlkapVWG3+wlDus7AC+LrBevt4Y5SHTh1m8=;
+	s=arc-20240116; t=1779301990; c=relaxed/simple;
+	bh=gXpQGaHOpay4vOSdXWPbS/YA3sdKxLYc+FCRrGaVfIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W7sTPOfI2vy5x1s3I46z4Q+U+l5cc3LBH7RU9vF63kwwUcl6KAXhDeGltLiOHLuzmBOGj4cp0hWMswHKoPyTaJFLIUZKDm89D33TcfOhvwOm8RuZL8DnToj/0q4OdNm5fmlP1Nje4JNpYUqWr4K1yicJGmBDJJHbr6UQzq7E7xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EnxFhU4J; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E24171F000E9;
-	Wed, 20 May 2026 17:43:49 +0000 (UTC)
+	 MIME-Version; b=RH7PyXiZ1yeMu+wG/rweHShh/13q/Jlo//6IVZlY8pbxXz50pgOLkXOltlN/GHtXXbuKZM9PlQiAKPwtMRFgDhmykp1Tum5fK6/6q/jNQ2OgYu4YLIfmEQXgvJIPA8wxc8HvlA/ehrWAEbBSOFa4HvEL248vfg/sRTEG53Tob/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EeK8g6DW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD911F000E9;
+	Wed, 20 May 2026 18:33:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779299030;
-	bh=l96v1ft4dYDOMOD/gBmUiKqdoTCuHe7ddu0TdjL+Jz4=;
+	s=korg; t=1779301987;
+	bh=cZg4PS7CaK7yMfe9E1iohtk1moeVVVFn1r7pdYSp+XY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EnxFhU4J7+j+iFDdxQUvlK6FnzO7u57L+ZspJo8sU4RBdEOFasi1m+qicsrrxyYgN
-	 73ZZV3mK5m/AIK056344BhL0np/0eCNKX6Cn0fVtw/4yaJqF0uiOWwSPy8/qHvINfK
-	 kInLNvJ6ewqtwKjKlG5d9S2u/TI/OOAyvRkuHKfI=
+	b=EeK8g6DW/1CY2LRNqoi/fA6ZSzmpG8lnzQ93+F7RmsXchWLiLWj+ZIyVSt5z8d2KW
+	 kbhhrlURpnNG5F5Qh/SzWLABjTcMuspJzs3XbwHky3o6Es/BBazrSmADSNNAOtOTeH
+	 umuIujvMs5TJis42tFniv/ybLrt6yTmk6vwNA3Ks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 636/957] tcp: add data-race annotations for TCP_NLA_SNDQ_SIZE
+Subject: [PATCH 6.6 096/508] dm cache: support shrinking the origin device
 Date: Wed, 20 May 2026 18:18:39 +0200
-Message-ID: <20260520162148.321380891@linuxfoundation.org>
+Message-ID: <20260520162100.695503468@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
+References: <20260520162058.573354582@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,107 +66,229 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252941-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-251842-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 458D2594BDE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 19C4559B3AF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-[ Upstream commit 124199444de467767175a9004e1574dc42523e62 ]
+[ Upstream commit c2662b1544cbd8ea3181381bb899b8e681dfedc7 ]
 
-tcp_get_timestamping_opt_stats() intentionally runs lockless, we must
-add READ_ONCE() and WRITE_ONCE() annotations to keep KCSAN happy.
+This patch introduces formal support for shrinking the cache origin by
+reducing the cache target length via table reloads. Cache blocks mapped
+beyond the new target length must be clean and are invalidated during
+preresume. If any dirty blocks exist in the area being removed, the
+preresume operation fails without setting the NEEDS_CHECK flag in
+superblock, and the resume ioctl returns EFBIG. The cache device remains
+suspended until a table reload with target length that fits existing
+mappings is performed.
 
-Fixes: 87ecc95d81d9 ("tcp: add send queue size stat in SCM_TIMESTAMPING_OPT_STATS")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260416200319.3608680-7-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Without this patch, reducing the cache target length could result in
+io errors (RHBZ: 2134334), out-of-bounds memory access to the discard
+bitset, and security concerns regarding data leakage.
+
+Verification steps:
+
+1. create a cache metadata with some cached blocks mapped to the tail
+   of the origin device. Here we use cache_restore v1.0 to build a
+   metadata with one clean block mapped to the last origin block.
+
+cat <<EOF >> cmeta.xml
+<superblock uuid="" block_size="128" nr_cache_blocks="512" \
+policy="smq" hint_width="4">
+  <mappings>
+    <mapping cache_block="0" origin_block="4095" dirty="false"/>
+  </mappings>
+</superblock>
+EOF
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+cache_restore -i cmeta.xml -o /dev/mapper/cmeta --metadata-version=2
+dmsetup remove cmeta
+
+2. bring up the cache whilst shrinking the cache origin by one block:
+
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
+dmsetup create corig --table "0 524160 linear /dev/sdc 262144"
+dmsetup create cache --table "0 524160 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+
+3. check the number of cached data blocks via dmsetup status. It is
+   expected to be zero.
+
+dmsetup status cache | cut -d ' ' -f 7
+
+In addition to the script above, this patch can be verified using the
+"cache/resize" tests in dmtest-python:
+
+./dmtest run --rx cache/resize/shrink_origin --result-set default
+
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Stable-dep-of: 322586745bd1 ("dm cache: fix dirty mapping checking in passthrough mode switching")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp.c        | 4 +++-
- net/ipv4/tcp_input.c  | 4 ++--
- net/ipv4/tcp_output.c | 2 +-
- 3 files changed, 6 insertions(+), 4 deletions(-)
+ drivers/md/dm-cache-target.c | 72 ++++++++++++++++++++++++++++++++++--
+ 1 file changed, 69 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 515313ef0c642..0d6e991155c95 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -4408,7 +4408,9 @@ struct sk_buff *tcp_get_timestamping_opt_stats(const struct sock *sk,
- 	nla_put_u32(stats, TCP_NLA_DELIVERED, READ_ONCE(tp->delivered));
- 	nla_put_u32(stats, TCP_NLA_DELIVERED_CE, READ_ONCE(tp->delivered_ce));
+diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
+index 65ae94f64c11b..77953a171860e 100644
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -407,6 +407,12 @@ struct cache {
+ 	mempool_t migration_pool;
  
--	nla_put_u32(stats, TCP_NLA_SNDQ_SIZE, tp->write_seq - tp->snd_una);
-+	nla_put_u32(stats, TCP_NLA_SNDQ_SIZE,
-+		    max_t(int, 0,
-+			  READ_ONCE(tp->write_seq) - READ_ONCE(tp->snd_una)));
- 	nla_put_u8(stats, TCP_NLA_CA_STATE, inet_csk(sk)->icsk_ca_state);
+ 	struct bio_set bs;
++
++	/*
++	 * Cache_size entries. Set bits indicate blocks mapped beyond the
++	 * target length, which are marked for invalidation.
++	 */
++	unsigned long *invalid_bitset;
+ };
  
- 	nla_put_u64_64bit(stats, TCP_NLA_BYTES_SENT, tp->bytes_sent,
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index b5a3c7ca2605d..3e29134a54b19 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -3694,7 +3694,7 @@ static void tcp_snd_una_update(struct tcp_sock *tp, u32 ack)
- 	sock_owned_by_me((struct sock *)tp);
- 	tp->bytes_acked += delta;
- 	tcp_snd_sne_update(tp, ack);
--	tp->snd_una = ack;
-+	WRITE_ONCE(tp->snd_una, ack);
+ struct per_bio_data {
+@@ -1958,6 +1964,9 @@ static void __destroy(struct cache *cache)
+ 	if (cache->discard_bitset)
+ 		free_bitset(cache->discard_bitset);
+ 
++	if (cache->invalid_bitset)
++		free_bitset(cache->invalid_bitset);
++
+ 	if (cache->copier)
+ 		dm_kcopyd_client_destroy(cache->copier);
+ 
+@@ -2546,6 +2555,13 @@ static int cache_create(struct cache_args *ca, struct cache **result)
+ 	}
+ 	clear_bitset(cache->discard_bitset, from_dblock(cache->discard_nr_blocks));
+ 
++	cache->invalid_bitset = alloc_bitset(from_cblock(cache->cache_size));
++	if (!cache->invalid_bitset) {
++		*error = "could not allocate bitset for invalid blocks";
++		goto bad;
++	}
++	clear_bitset(cache->invalid_bitset, from_cblock(cache->cache_size));
++
+ 	cache->copier = dm_kcopyd_client_create(&dm_kcopyd_throttle);
+ 	if (IS_ERR(cache->copier)) {
+ 		*error = "could not create kcopyd client";
+@@ -2844,6 +2860,24 @@ static int load_mapping(void *context, dm_oblock_t oblock, dm_cblock_t cblock,
+ 	return policy_load_mapping(cache->policy, oblock, cblock, dirty, hint, hint_valid);
  }
  
- static void tcp_rcv_sne_update(struct tcp_sock *tp, u32 seq)
-@@ -7035,7 +7035,7 @@ tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
- 		if (sk->sk_socket)
- 			sk_wake_async(sk, SOCK_WAKE_IO, POLL_OUT);
++static int load_filtered_mapping(void *context, dm_oblock_t oblock, dm_cblock_t cblock,
++				 bool dirty, uint32_t hint, bool hint_valid)
++{
++	struct cache *cache = context;
++
++	if (from_oblock(oblock) >= from_oblock(cache->origin_blocks)) {
++		if (dirty) {
++			DMERR("%s: unable to shrink origin; cache block %u is dirty",
++			      cache_device_name(cache), from_cblock(cblock));
++			return -EFBIG;
++		}
++		set_bit(from_cblock(cblock), cache->invalid_bitset);
++		return 0;
++	}
++
++	return load_mapping(context, oblock, cblock, dirty, hint, hint_valid);
++}
++
+ /*
+  * The discard block size in the on disk metadata is not
+  * necessarily the same as we're currently using.  So we have to
+@@ -2998,6 +3032,24 @@ static int resize_cache_dev(struct cache *cache, dm_cblock_t new_size)
+ 	return 0;
+ }
  
--		tp->snd_una = TCP_SKB_CB(skb)->ack_seq;
-+		WRITE_ONCE(tp->snd_una, TCP_SKB_CB(skb)->ack_seq);
- 		tp->snd_wnd = ntohs(th->window) << tp->rx_opt.snd_wscale;
- 		tcp_init_wl(tp, TCP_SKB_CB(skb)->seq);
++static int truncate_oblocks(struct cache *cache)
++{
++	uint32_t nr_blocks = from_cblock(cache->cache_size);
++	uint32_t i;
++	int r;
++
++	for_each_set_bit(i, cache->invalid_bitset, nr_blocks) {
++		r = dm_cache_remove_mapping(cache->cmd, to_cblock(i));
++		if (r) {
++			DMERR_LIMIT("%s: invalidation failed; couldn't update on disk metadata",
++				    cache_device_name(cache));
++			return r;
++		}
++	}
++
++	return 0;
++}
++
+ static int cache_preresume(struct dm_target *ti)
+ {
+ 	int r = 0;
+@@ -3022,11 +3074,25 @@ static int cache_preresume(struct dm_target *ti)
+ 	}
  
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index 3c25292ae72d8..e6aa54d2335c0 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -4089,7 +4089,7 @@ static void tcp_connect_init(struct sock *sk)
- 	tp->snd_wnd = 0;
- 	tcp_init_wl(tp, 0);
- 	tcp_write_queue_purge(sk);
--	tp->snd_una = tp->write_seq;
-+	WRITE_ONCE(tp->snd_una, tp->write_seq);
- 	tp->snd_sml = tp->write_seq;
- 	tp->snd_up = tp->write_seq;
- 	WRITE_ONCE(tp->snd_nxt, tp->write_seq);
+ 	if (!cache->loaded_mappings) {
++		/*
++		 * The fast device could have been resized since the last
++		 * failed preresume attempt.  To be safe we start by a blank
++		 * bitset for cache blocks.
++		 */
++		clear_bitset(cache->invalid_bitset, from_cblock(cache->cache_size));
++
+ 		r = dm_cache_load_mappings(cache->cmd, cache->policy,
+-					   load_mapping, cache);
++					   load_filtered_mapping, cache);
+ 		if (r) {
+ 			DMERR("%s: could not load cache mappings", cache_device_name(cache));
+-			metadata_operation_failed(cache, "dm_cache_load_mappings", r);
++			if (r != -EFBIG)
++				metadata_operation_failed(cache, "dm_cache_load_mappings", r);
++			return r;
++		}
++
++		r = truncate_oblocks(cache);
++		if (r) {
++			metadata_operation_failed(cache, "dm_cache_remove_mapping", r);
+ 			return r;
+ 		}
+ 
+@@ -3492,7 +3558,7 @@ static void cache_io_hints(struct dm_target *ti, struct queue_limits *limits)
+ 
+ static struct target_type cache_target = {
+ 	.name = "cache",
+-	.version = {2, 2, 0},
++	.version = {2, 3, 0},
+ 	.module = THIS_MODULE,
+ 	.ctr = cache_ctr,
+ 	.dtr = cache_dtr,
 -- 
 2.53.0
 
