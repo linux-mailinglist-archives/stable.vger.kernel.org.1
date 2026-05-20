@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-251178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252105-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kAK4LTHwDWqo4wUAu9opvQ
-	(envelope-from <stable+bounces-251178-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:32:33 +0200
+	id eCkPIhYFDmpO5gUAu9opvQ
+	(envelope-from <stable+bounces-252105-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:01:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46A94593E69
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:32:33 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F04759797D
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:01:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ED62231E3B19
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:15:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 971313119AAB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:56:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A86E3EDACC;
-	Wed, 20 May 2026 17:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC1583F39C9;
+	Wed, 20 May 2026 17:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CYesiGwV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="npBrjNTZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327EA3E6385;
-	Wed, 20 May 2026 17:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8511C36D4E1;
+	Wed, 20 May 2026 17:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297303; cv=none; b=MRDTtlaJfxqRKJVWFVjkX5N1HtRco6Dnp4bQZp2RYQAiQGFHzkktNHeWpwntQ1b/3bW42IEucey2ZC7Aq8HiKzbAXStdKMHjOTNDuA2qk00faHiFkfR0z+ZjM/iFwsQeYq/3gdDEbncL20+5VXtWjKIbMLhES1bA9J4DjuOFePw=
+	t=1779299803; cv=none; b=USFM8/JO9GB6KVJOUksJu/WAH2OQWVPot672ezzd7jXJGl0eXD4sjgT+l0B5lU7spqEceB/5vjszj4NvckSVBYWBDaoa5nqCEPU/d0nbuNh+LCxjAnoLJe/dV1D+azXF+2eE+Sg5swcE33loKRvLEewRjC6NihU1qlCb7n5TRMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297303; c=relaxed/simple;
-	bh=tHVk5pvOzn6LyFpSGHOp/1v1rDaoRmk0p6aF0i3qHEQ=;
+	s=arc-20240116; t=1779299803; c=relaxed/simple;
+	bh=n8ARWI7WQAHfQQoDL9r4gqlJn5Nt3KfeP0v+xfonZR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jqPVBzuixR1d4Hz9Ufdot7V5ldU7HUDfOHq7G7ecrkbwUfQDyeHNjLKUQo0OCwyIKLxHApvWQarNvf+UqFcm3Tc2cBI6P/6Admp0if95tHd7x5/wFrIy1+cnQe3vGDWJJ0hH06sn9mPZBdkEcMsKvUzs6ypB6QC13kKg56s1X18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CYesiGwV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64BA11F000E9;
-	Wed, 20 May 2026 17:15:01 +0000 (UTC)
+	 MIME-Version; b=NB68gCEqYARc7Wl2nVvEdKjARkaphPT4o4q70vGORrVR4Ni+/msXawgWBOgC3ooNoj+oFgBVlYkFCA0m7DxjicJ3HBVEKw134+L701MW50gl0RtoHgByXiaRW3ewUeDJuoOq6O7/UN0Sas0GVinBJiOpLdXIgfHXj7UrKhxE664=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=npBrjNTZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3BDA1F00893;
+	Wed, 20 May 2026 17:56:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779297301;
-	bh=rKubk8PR2XWijCZE0mPl1qeaFUYSpwmNUgT8qSf0Nkc=;
+	s=korg; t=1779299802;
+	bh=JaDkP2oZFujutY8gRkA0drzAHmzCfhqNf4OuY4QQmnQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CYesiGwViJnYio4mXqHBj3ANtQpngt1BusgVksE5DiV7eonu9S7DtG4KRXr8Znz7e
-	 +KHJbmDel3t0mloAJ9CHKWqHxcWpEgqM9bDgWRGjTvG0Q5/N/6a5LBfLAIIvB3FRBO
-	 pyzw3AqhxiPMPSqHuGRkEKXi8wdq4xcWiky8Rs6c=
+	b=npBrjNTZjXu9/5QFZNhYjDIj+ajJ0nCWO8zThhBZLARtEHuD9pVj34qWKWrlnk5f/
+	 kUqGvnjL3s0glnBXG4pUc6HoZamh8e8sqZ2e0ZPoKQbm1uZRYrzvGr4olJqC3ptIqx
+	 3tOLw5pWRujsQgX9p/fiG1d99neFdJsvxibDRE3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 7.0 1126/1146] iommu: Fix nested pci_dev_reset_iommu_prepare/done()
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Matthew Rosato <mjrosato@linux.ibm.com>
+Subject: [PATCH 6.18 893/957] KVM: s390: pci: fix GAIT table indexing due to double-scaling pointer arithmetic
 Date: Wed, 20 May 2026 18:22:56 +0200
-Message-ID: <20260520162213.728055130@linuxfoundation.org>
+Message-ID: <20260520162153.937797239@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,125 +69,104 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251178-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252105-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,linux.ibm.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,amd.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nvidia.com:email,alibaba.com:email]
-X-Rspamd-Queue-Id: 46A94593E69
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,outlook.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 8F04759797D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-commit 0d5fd7a9323ce6bedd170e21e1e90b8904917c75 upstream.
+commit 16d990a15491cf76cd6eef0846e1b4100e63261a upstream.
 
-Shuai found that cxl_reset_bus_function() calls pci_reset_bus_function()
-internally while both are calling pci_dev_reset_iommu_prepare/done().
+kvm_s390_pci_aif_enable(), kvm_s390_pci_aif_disable(), and
+aen_host_forward() index the GAIT by manually multiplying the index
+with sizeof(struct zpci_gaite).
 
-As pci_dev_reset_iommu_prepare() doesn't support re-entry, the inner call
-will trigger a WARN_ON and return -EBUSY, resulting in failing the entire
-device reset.
+Since aift->gait is already a struct zpci_gaite pointer, this
+double-scales the offset, accessing element aisb*16 instead of aisb.
 
-On the other hand, removing the outer calls in the PCI callers is unsafe.
-As pointed out by Kevin, device-specific quirks like reset_hinic_vf_dev()
-execute custom firmware waits after their inner pcie_flr() completes. If
-the IOMMU protection relies solely on the inner reset, the IOMMU will be
-unblocked prematurely while the device is still resetting.
+This causes out-of-bounds accesses when aisb >= 32 (with
+ZPCI_NR_DEVICES=512)
 
-Instead, fix this by making pci_dev_reset_iommu_prepare/done() reentrant.
+Fix by removing the erroneous sizeof multiplication.
 
-Introduce gdev->reset_depth to handle the re-entries on the same device.
-
-Fixes: c279e83953d9 ("iommu: Introduce pci_dev_reset_iommu_prepare/done()")
+Fixes: 3c5a1b6f0a18 ("KVM: s390: pci: provide routines for enabling/disabling interrupt forwarding")
+Fixes: 73f91b004321 ("KVM: s390: pci: enable host forwarding of Adapter Event Notifications")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
 Cc: stable@vger.kernel.org
-Reported-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Closes: https://lore.kernel.org/all/absKsk7qQOwzhpzv@Asurada-Nvidia/
-Suggested-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Tested-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/iommu.c |   19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ arch/s390/kvm/interrupt.c |    3 +--
+ arch/s390/kvm/pci.c       |    6 ++----
+ 2 files changed, 3 insertions(+), 6 deletions(-)
 
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -82,6 +82,7 @@ struct group_device {
- 	 *  - Device is undergoing a reset
- 	 */
- 	bool blocked;
-+	unsigned int reset_depth;
- };
+--- a/arch/s390/kvm/interrupt.c
++++ b/arch/s390/kvm/interrupt.c
+@@ -3334,8 +3334,7 @@ static void aen_host_forward(unsigned lo
+ 	struct zpci_gaite *gaite;
+ 	struct kvm *kvm;
  
- /* Iterate over each struct group_device in a struct iommu_group */
-@@ -4015,20 +4016,23 @@ int pci_dev_reset_iommu_prepare(struct p
- 	if (WARN_ON(!gdev))
- 		return -ENODEV;
- 
--	/* Re-entry is not allowed */
--	if (WARN_ON(gdev->blocked))
--		return -EBUSY;
-+	if (gdev->reset_depth++)
-+		return 0;
- 
- 	ret = __iommu_group_alloc_blocking_domain(group);
--	if (ret)
-+	if (ret) {
-+		gdev->reset_depth--;
- 		return ret;
-+	}
- 
- 	/* Stage RID domain at blocking_domain while retaining group->domain */
- 	if (group->domain != group->blocking_domain) {
- 		ret = __iommu_attach_device(group->blocking_domain, &pdev->dev,
- 					    group->domain);
--		if (ret)
-+		if (ret) {
-+			gdev->reset_depth--;
- 			return ret;
-+		}
- 	}
- 
- 	/*
-@@ -4088,7 +4092,10 @@ void pci_dev_reset_iommu_done(struct pci
- 	if (WARN_ON(!gdev))
+-	gaite = (struct zpci_gaite *)aift->gait +
+-		(si * sizeof(struct zpci_gaite));
++	gaite = aift->gait + si;
+ 	if (gaite->count == 0)
  		return;
+ 	if (gaite->aisb != 0)
+--- a/arch/s390/kvm/pci.c
++++ b/arch/s390/kvm/pci.c
+@@ -291,8 +291,7 @@ static int kvm_s390_pci_aif_enable(struc
+ 				    phys_to_virt(fib->fmt0.aibv));
  
--	if (!gdev->blocked)
-+	/* Unbalanced done() calls would underflow the counter */
-+	if (WARN_ON(gdev->reset_depth == 0))
-+		return;
-+	if (--gdev->reset_depth)
- 		return;
+ 	spin_lock_irq(&aift->gait_lock);
+-	gaite = (struct zpci_gaite *)aift->gait + (zdev->aisb *
+-						   sizeof(struct zpci_gaite));
++	gaite = aift->gait + zdev->aisb;
  
- 	if (WARN_ON(!group->blocking_domain))
+ 	/* If assist not requested, host will get all alerts */
+ 	if (assist)
+@@ -358,8 +357,7 @@ static int kvm_s390_pci_aif_disable(stru
+ 	if (zdev->kzdev->fib.fmt0.aibv == 0)
+ 		goto out;
+ 	spin_lock_irq(&aift->gait_lock);
+-	gaite = (struct zpci_gaite *)aift->gait + (zdev->aisb *
+-						   sizeof(struct zpci_gaite));
++	gaite = aift->gait + zdev->aisb;
+ 	isc = gaite->gisc;
+ 	gaite->count--;
+ 	if (gaite->count == 0) {
 
 
 
