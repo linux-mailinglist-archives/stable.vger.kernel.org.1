@@ -1,59 +1,79 @@
-Return-Path: <stable+bounces-250982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252549-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yLOgAQPuDWpu4wUAu9opvQ
-	(envelope-from <stable+bounces-250982-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:15 +0200
+	id QJwQJ3oVDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-252549-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:11:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACF7F59381A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:23:14 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C90705993DF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:11:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C7B2D3111975
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:08:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1EEE931574CB
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:16:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCB733F0762;
-	Wed, 20 May 2026 17:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A2833D1CC6;
+	Wed, 20 May 2026 18:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hgO2LYgi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PsH6PD7N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C61D28DC4;
-	Wed, 20 May 2026 17:06:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDD081AA8;
+	Wed, 20 May 2026 18:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296794; cv=none; b=LSF7mLrW1XAhk5IpcXOYqT2kJdU6ttpk9srW8/bcNYQTCIqPvchWwtU+cwoTpCFrjY/aBKO8eRO4EYtPMkcXgb/W4OSx0uN4tyBFWTJdcUIrGXgFG09wQkGSvJvrmt0ItC3E4qfRRA0n/BfAm0cskNCVZf+pZzZF5//lri3MXFQ=
+	t=1779300966; cv=none; b=WtIJxnSgWucHwfBXmNZ98i6mZe68q24R+Ab4Ou/QVNrmY5mCQDSU8SV49hcbQGmUiysrcQtrWq7FFwPCv2CtRxiBNnO/grp1Qwy2tKXttoOqf664tMj3h6FXdSUZ7ZzhFnm5yJfXO6iPfwAOCX1hQXZ0GpetvbtvkHcAVs7PDG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296794; c=relaxed/simple;
-	bh=y20OK16J2SIOBUue0Jd3DncTICFE3aU+imEX2RImsbU=;
+	s=arc-20240116; t=1779300966; c=relaxed/simple;
+	bh=bJvRYxGg+sCF+sl6aK13H1VMXi3TbE/z1bVq/NZojpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dUG3jOTscXpLIRbpSl8lHEuidy41mf9UFLiz4zTZHw1EG9ARRgtec7SH7yrtopY2MvFj8sChyhV4BNS6PMOEt+J5Hgf5NFJdTIht4AYT5i9hANIs0K1QtcIMJaqanPlur2eZE/wKBI7fl6OnTRC8zrYBUdzLEcUM4KV7Ot+8/B4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hgO2LYgi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1C6B1F000E9;
-	Wed, 20 May 2026 17:06:32 +0000 (UTC)
+	 MIME-Version; b=m3h7KkPpSOEBPzu1HdGzAmCtuxWT5P2pE8LBVbc6BAFkjGp8vmjMpA72h7H/8urnfA7x1gJSQ4oiiFhkwiqt0xYGws1SJYaW+efV+udlN2z9BYZLugmjTUW8FFEJeiR3nlKUASsf7Qopsc9CDuxH0SRLOC5LDWhMLbHbKwKr8FU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PsH6PD7N; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C46F71F000E9;
+	Wed, 20 May 2026 18:16:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296793;
-	bh=L8EvwecYNzHovF4tkl2MA4E0kJ0b66ebMiASLpRqrdc=;
+	s=korg; t=1779300964;
+	bh=UgcLbSrBKuO7Czz/jvrTIK9os0X3q1gvwJzeC8PEHDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hgO2LYgiTVOXqkig6wgOfsnOmkY3IYi6PVLWBrJbxLki9XNot4rL8UhVlTQMdNDjl
-	 0AfjzAkhgA61SxB7FN55WLIuFNe+iIgq5cfgzKj0/cf1w1iaxW8kjPuXnEzYkNoiLa
-	 5XPZuildR4BzC871tM0ks3kdoc3A63gcEx2yffhk=
+	b=PsH6PD7NKfxVxJDXIIVfCmZkq72x3q4N2gCLO5bQ6MfHzo4N3P264MyqlVzuZdIQt
+	 YrAChDM+f6v2882RgMtbewsySkF+JWoA8Rs0jXavUdz4oCR69scWujhjf+ar4jDwoq
+	 YYJrkZMzGF8LSVP1YdbV+dUnuCUXq+sVFicoCqus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	James Clark <james.clark@linaro.org>,
+	Yang Jihong <yangjihong@bytedance.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Colin Ian King <colin.i.king@gmail.com>,
+	Howard Chu <howardchu95@gmail.com>,
+	Yunseong Kim <yskelg@gmail.com>,
+	Ze Gao <zegao2021@gmail.com>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Weilin Wang <weilin.wang@intel.com>,
+	Will Deacon <will@kernel.org>,
+	Mike Leach <mike.leach@linaro.org>,
+	Jing Zhang <renyu.zj@linux.alibaba.com>,
+	Yang Li <yang.lee@linux.alibaba.com>,
+	Leo Yan <leo.yan@linux.dev>,
+	ak@linux.intel.com,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Sun Haiyong <sunhaiyong@loongson.cn>,
+	John Garry <john.g.garry@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0934/1146] net: airoha: fix BQL imbalance in TX path
-Date: Wed, 20 May 2026 18:19:44 +0200
-Message-ID: <20260520162209.372261798@linuxfoundation.org>
+Subject: [PATCH 6.12 374/666] perf evsel: Add alternate_hw_config and use in evsel__match
+Date: Wed, 20 May 2026 18:19:45 +0200
+Message-ID: <20260520162119.352944682@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,102 +84,499 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TAGGED_FROM(0.00)[bounces-252549-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[26];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,google.com,linux.intel.com,linaro.org,bytedance.com,codewreck.org,gmail.com,hisilicon.com,intel.com,linux.alibaba.com,linux.dev,linux.vnet.ibm.com,lists.infradead.org,loongson.cn,oracle.com];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250982-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: ACF7F59381A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: C90705993DF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 2d9f5a118205da2683ffcec78b9347f1f01a820e ]
+[ Upstream commit 22a4db3c36034e2b034c5b88414680857fc59cf4 ]
 
-Fix a possible BQL imbalance in airoha_dev_xmit(), where inflight
-packets are accounted only for the AIROHA_NUM_TX_RING netdev TX
-queues. The queue index is computed as:
+There are cases where we want to match events like instructions and
+cycles with legacy hardware values, in particular in stat-shadow's
+hard coded metrics. An evsel's name isn't a good point of reference as
+it gets altered, strstr would be too imprecise and re-parsing the
+event from its name is silly. Instead, hold the legacy hardware event
+name, determined during parsing, in the evsel for this matching case.
 
-    qid = skb_get_queue_mapping(skb) % ARRAY_SIZE(qdma->q_tx)
-    txq = netdev_get_tx_queue(dev, qid);
+Inline evsel__match2 that is only used in builtin-diff.
 
-However, airoha_qdma_tx_napi_poll() accounts completions across all
-netdev TX queues (num_tx_queues), leading to inconsistent BQL
-accounting.
-
-Also reset all netdev TX queues in the ndo_stop callback.
-
-Fixes: 1d304174106c ("net: airoha: Implement BQL support")
-Fixes: c9f947769b77 ("net: airoha: Reset BQL stopping the netdevice")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20260421-airoha-fix-bql-v1-1-f135afe4275b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Acked-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: James Clark <james.clark@linaro.org>
+Cc: Yang Jihong <yangjihong@bytedance.com>
+Cc: Dominique Martinet <asmadeus@codewreck.org>
+Cc: Colin Ian King <colin.i.king@gmail.com>
+Cc: Howard Chu <howardchu95@gmail.com>
+Cc: Yunseong Kim <yskelg@gmail.com>
+Cc: Ze Gao <zegao2021@gmail.com>
+Cc: Yicong Yang <yangyicong@hisilicon.com>
+Cc: Weilin Wang <weilin.wang@intel.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Mike Leach <mike.leach@linaro.org>
+Cc: Jing Zhang <renyu.zj@linux.alibaba.com>
+Cc: Yang Li <yang.lee@linux.alibaba.com>
+Cc: Leo Yan <leo.yan@linux.dev>
+Cc: ak@linux.intel.com
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: Sun Haiyong <sunhaiyong@loongson.cn>
+Cc: John Garry <john.g.garry@oracle.com>
+Link: https://lore.kernel.org/r/20240926144851.245903-2-james.clark@linaro.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Stable-dep-of: c9ef786c0970 ("perf cgroup: Update metric leader in evlist__expand_cgroup")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/airoha/airoha_eth.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ tools/perf/builtin-diff.c      |  6 ++--
+ tools/perf/util/evsel.c        | 21 ++++++++++++
+ tools/perf/util/evsel.h        | 19 ++---------
+ tools/perf/util/parse-events.c | 59 +++++++++++++++++++++-------------
+ tools/perf/util/parse-events.h |  8 ++++-
+ tools/perf/util/parse-events.y |  2 +-
+ tools/perf/util/pmu.c          |  6 +++-
+ tools/perf/util/pmu.h          |  2 +-
+ 8 files changed, 77 insertions(+), 46 deletions(-)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index 1bdf90b311060..a73c224d65755 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -929,10 +929,9 @@ static int airoha_qdma_tx_napi_poll(struct napi_struct *napi, int budget)
- 		q->queued--;
+diff --git a/tools/perf/builtin-diff.c b/tools/perf/builtin-diff.c
+index 23326dd203339..82fb7773e03e6 100644
+--- a/tools/perf/builtin-diff.c
++++ b/tools/perf/builtin-diff.c
+@@ -469,13 +469,13 @@ static int diff__process_sample_event(const struct perf_tool *tool,
  
- 		if (skb) {
--			u16 queue = skb_get_queue_mapping(skb);
- 			struct netdev_queue *txq;
+ static struct perf_diff pdiff;
  
--			txq = netdev_get_tx_queue(skb->dev, queue);
-+			txq = skb_get_tx_queue(skb->dev, skb);
- 			netdev_tx_completed_queue(txq, 1, skb->len);
- 			dev_kfree_skb_any(skb);
+-static struct evsel *evsel_match(struct evsel *evsel,
+-				      struct evlist *evlist)
++static struct evsel *evsel_match(struct evsel *evsel, struct evlist *evlist)
+ {
+ 	struct evsel *e;
+ 
+ 	evlist__for_each_entry(evlist, e) {
+-		if (evsel__match2(evsel, e))
++		if ((evsel->core.attr.type == e->core.attr.type) &&
++		    (evsel->core.attr.config == e->core.attr.config))
+ 			return e;
+ 	}
+ 
+diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
+index dda107b12b8c6..6e8d70ec05bad 100644
+--- a/tools/perf/util/evsel.c
++++ b/tools/perf/util/evsel.c
+@@ -299,6 +299,7 @@ void evsel__init(struct evsel *evsel,
+ 	evsel->pmu_name      = NULL;
+ 	evsel->group_pmu_name = NULL;
+ 	evsel->skippable     = false;
++	evsel->alternate_hw_config = PERF_COUNT_HW_MAX;
+ }
+ 
+ struct evsel *evsel__new_idx(struct perf_event_attr *attr, int idx)
+@@ -445,6 +446,8 @@ struct evsel *evsel__clone(struct evsel *orig)
+ 	if (evsel__copy_config_terms(evsel, orig) < 0)
+ 		goto out_err;
+ 
++	evsel->alternate_hw_config = orig->alternate_hw_config;
++
+ 	return evsel;
+ 
+ out_err:
+@@ -1856,6 +1859,24 @@ static int evsel__read_tool(struct evsel *evsel, int cpu_map_idx, int thread)
+ 	return 0;
+ }
+ 
++bool __evsel__match(const struct evsel *evsel, u32 type, u64 config)
++{
++
++	u32 e_type = evsel->core.attr.type;
++	u64 e_config = evsel->core.attr.config;
++
++	if (e_type != type) {
++		return type == PERF_TYPE_HARDWARE && evsel->pmu && evsel->pmu->is_core &&
++			evsel->alternate_hw_config == config;
++	}
++
++	if ((type == PERF_TYPE_HARDWARE || type == PERF_TYPE_HW_CACHE) &&
++	    perf_pmus__supports_extended_type())
++		e_config &= PERF_HW_EVENT_MASK;
++
++	return e_config == config;
++}
++
+ int evsel__read_counter(struct evsel *evsel, int cpu_map_idx, int thread)
+ {
+ 	if (evsel__is_tool(evsel))
+diff --git a/tools/perf/util/evsel.h b/tools/perf/util/evsel.h
+index 26574a33a7250..dc0d300776f16 100644
+--- a/tools/perf/util/evsel.h
++++ b/tools/perf/util/evsel.h
+@@ -102,6 +102,7 @@ struct evsel {
+ 		int			bpf_fd;
+ 		struct bpf_object	*bpf_obj;
+ 		struct list_head	config_terms;
++		u64			alternate_hw_config;
+ 	};
+ 
+ 	/*
+@@ -395,26 +396,10 @@ u64 format_field__intval(struct tep_format_field *field, struct perf_sample *sam
+ struct tep_format_field *evsel__field(struct evsel *evsel, const char *name);
+ struct tep_format_field *evsel__common_field(struct evsel *evsel, const char *name);
+ 
+-static inline bool __evsel__match(const struct evsel *evsel, u32 type, u64 config)
+-{
+-	if (evsel->core.attr.type != type)
+-		return false;
+-
+-	if ((type == PERF_TYPE_HARDWARE || type == PERF_TYPE_HW_CACHE)  &&
+-	    perf_pmus__supports_extended_type())
+-		return (evsel->core.attr.config & PERF_HW_EVENT_MASK) == config;
+-
+-	return evsel->core.attr.config == config;
+-}
++bool __evsel__match(const struct evsel *evsel, u32 type, u64 config);
+ 
+ #define evsel__match(evsel, t, c) __evsel__match(evsel, PERF_TYPE_##t, PERF_COUNT_##c)
+ 
+-static inline bool evsel__match2(struct evsel *e1, struct evsel *e2)
+-{
+-	return (e1->core.attr.type == e2->core.attr.type) &&
+-	       (e1->core.attr.config == e2->core.attr.config);
+-}
+-
+ int evsel__read_counter(struct evsel *evsel, int cpu_map_idx, int thread);
+ 
+ int __evsel__read_on_cpu(struct evsel *evsel, int cpu_map_idx, int thread, bool scale);
+diff --git a/tools/perf/util/parse-events.c b/tools/perf/util/parse-events.c
+index 9a8be1e46d674..fcc4dab618bee 100644
+--- a/tools/perf/util/parse-events.c
++++ b/tools/perf/util/parse-events.c
+@@ -228,7 +228,7 @@ __add_event(struct list_head *list, int *idx,
+ 	    bool init_attr,
+ 	    const char *name, const char *metric_id, struct perf_pmu *pmu,
+ 	    struct list_head *config_terms, bool auto_merge_stats,
+-	    struct perf_cpu_map *cpu_list)
++	    struct perf_cpu_map *cpu_list, u64 alternate_hw_config)
+ {
+ 	struct evsel *evsel;
+ 	struct perf_cpu_map *cpus = perf_cpu_map__is_empty(cpu_list) && pmu ? pmu->cpus : cpu_list;
+@@ -264,6 +264,7 @@ __add_event(struct list_head *list, int *idx,
+ 	evsel->auto_merge_stats = auto_merge_stats;
+ 	evsel->pmu = pmu;
+ 	evsel->pmu_name = pmu ? strdup(pmu->name) : NULL;
++	evsel->alternate_hw_config = alternate_hw_config;
+ 
+ 	if (name)
+ 		evsel->name = strdup(name);
+@@ -286,16 +287,19 @@ struct evsel *parse_events__add_event(int idx, struct perf_event_attr *attr,
+ {
+ 	return __add_event(/*list=*/NULL, &idx, attr, /*init_attr=*/false, name,
+ 			   metric_id, pmu, /*config_terms=*/NULL,
+-			   /*auto_merge_stats=*/false, /*cpu_list=*/NULL);
++			   /*auto_merge_stats=*/false, /*cpu_list=*/NULL,
++			   /*alternate_hw_config=*/PERF_COUNT_HW_MAX);
+ }
+ 
+ static int add_event(struct list_head *list, int *idx,
+ 		     struct perf_event_attr *attr, const char *name,
+-		     const char *metric_id, struct list_head *config_terms)
++		     const char *metric_id, struct list_head *config_terms,
++		     u64 alternate_hw_config)
+ {
+ 	return __add_event(list, idx, attr, /*init_attr*/true, name, metric_id,
+ 			   /*pmu=*/NULL, config_terms,
+-			   /*auto_merge_stats=*/false, /*cpu_list=*/NULL) ? 0 : -ENOMEM;
++			   /*auto_merge_stats=*/false, /*cpu_list=*/NULL,
++			   alternate_hw_config) ? 0 : -ENOMEM;
+ }
+ 
+ static int add_event_tool(struct list_head *list, int *idx,
+@@ -315,7 +319,8 @@ static int add_event_tool(struct list_head *list, int *idx,
+ 	evsel = __add_event(list, idx, &attr, /*init_attr=*/true, /*name=*/NULL,
+ 			    /*metric_id=*/NULL, /*pmu=*/NULL,
+ 			    /*config_terms=*/NULL, /*auto_merge_stats=*/false,
+-			    cpu_list);
++			    cpu_list,
++			    /*alternate_hw_config=*/PERF_COUNT_HW_MAX);
+ 	perf_cpu_map__put(cpu_list);
+ 	if (!evsel)
+ 		return -ENOMEM;
+@@ -450,7 +455,7 @@ bool parse_events__filter_pmu(const struct parse_events_state *parse_state,
+ static int parse_events_add_pmu(struct parse_events_state *parse_state,
+ 				struct list_head *list, struct perf_pmu *pmu,
+ 				const struct parse_events_terms *const_parsed_terms,
+-				bool auto_merge_stats);
++				bool auto_merge_stats, u64 alternate_hw_config);
+ 
+ int parse_events_add_cache(struct list_head *list, int *idx, const char *name,
+ 			   struct parse_events_state *parse_state,
+@@ -476,7 +481,8 @@ int parse_events_add_cache(struct list_head *list, int *idx, const char *name,
+ 			 */
+ 			ret = parse_events_add_pmu(parse_state, list, pmu,
+ 						   parsed_terms,
+-						   perf_pmu__auto_merge_stats(pmu));
++						   perf_pmu__auto_merge_stats(pmu),
++						   /*alternate_hw_config=*/PERF_COUNT_HW_MAX);
+ 			if (ret)
+ 				return ret;
+ 			continue;
+@@ -507,7 +513,8 @@ int parse_events_add_cache(struct list_head *list, int *idx, const char *name,
+ 
+ 		if (__add_event(list, idx, &attr, /*init_attr*/true, config_name ?: name,
+ 				metric_id, pmu, &config_terms, /*auto_merge_stats=*/false,
+-				/*cpu_list=*/NULL) == NULL)
++				/*cpu_list=*/NULL,
++				/*alternate_hw_config=*/PERF_COUNT_HW_MAX) == NULL)
+ 			return -ENOMEM;
+ 
+ 		free_config_terms(&config_terms);
+@@ -772,7 +779,7 @@ int parse_events_add_breakpoint(struct parse_events_state *parse_state,
+ 	name = get_config_name(head_config);
+ 
+ 	return add_event(list, &parse_state->idx, &attr, name, /*mertic_id=*/NULL,
+-			 &config_terms);
++			&config_terms, /*alternate_hw_config=*/PERF_COUNT_HW_MAX);
+ }
+ 
+ static int check_type_val(struct parse_events_term *term,
+@@ -1072,6 +1079,7 @@ static int config_term_pmu(struct perf_event_attr *attr,
+ 		if (perf_pmu__have_event(pmu, term->config)) {
+ 			term->type_term = PARSE_EVENTS__TERM_TYPE_USER;
+ 			term->no_value = true;
++			term->alternate_hw_config = true;
+ 		} else {
+ 			attr->type = PERF_TYPE_HARDWARE;
+ 			attr->config = term->val.num;
+@@ -1384,8 +1392,9 @@ static int __parse_events_add_numeric(struct parse_events_state *parse_state,
+ 	name = get_config_name(head_config);
+ 	metric_id = get_config_metric_id(head_config);
+ 	ret = __add_event(list, &parse_state->idx, &attr, /*init_attr*/true, name,
+-			metric_id, pmu, &config_terms, /*auto_merge_stats=*/false,
+-			/*cpu_list=*/NULL) ? 0 : -ENOMEM;
++			  metric_id, pmu, &config_terms, /*auto_merge_stats=*/false,
++			  /*cpu_list=*/NULL, /*alternate_hw_config=*/PERF_COUNT_HW_MAX
++		) == NULL ? -ENOMEM : 0;
+ 	free_config_terms(&config_terms);
+ 	return ret;
+ }
+@@ -1443,7 +1452,7 @@ static bool config_term_percore(struct list_head *config_terms)
+ static int parse_events_add_pmu(struct parse_events_state *parse_state,
+ 				struct list_head *list, struct perf_pmu *pmu,
+ 				const struct parse_events_terms *const_parsed_terms,
+-				bool auto_merge_stats)
++				bool auto_merge_stats, u64 alternate_hw_config)
+ {
+ 	struct perf_event_attr attr;
+ 	struct perf_pmu_info info;
+@@ -1480,7 +1489,7 @@ static int parse_events_add_pmu(struct parse_events_state *parse_state,
+ 				    /*init_attr=*/true, /*name=*/NULL,
+ 				    /*metric_id=*/NULL, pmu,
+ 				    /*config_terms=*/NULL, auto_merge_stats,
+-				    /*cpu_list=*/NULL);
++				    /*cpu_list=*/NULL, alternate_hw_config);
+ 		return evsel ? 0 : -ENOMEM;
+ 	}
+ 
+@@ -1501,7 +1510,8 @@ static int parse_events_add_pmu(struct parse_events_state *parse_state,
+ 
+ 	/* Look for event names in the terms and rewrite into format based terms. */
+ 	if (perf_pmu__check_alias(pmu, &parsed_terms,
+-				  &info, &alias_rewrote_terms, err)) {
++				  &info, &alias_rewrote_terms,
++				  &alternate_hw_config, err)) {
+ 		parse_events_terms__exit(&parsed_terms);
+ 		return -EINVAL;
+ 	}
+@@ -1546,7 +1556,8 @@ static int parse_events_add_pmu(struct parse_events_state *parse_state,
+ 	evsel = __add_event(list, &parse_state->idx, &attr, /*init_attr=*/true,
+ 			    get_config_name(&parsed_terms),
+ 			    get_config_metric_id(&parsed_terms), pmu,
+-			    &config_terms, auto_merge_stats, /*cpu_list=*/NULL);
++			    &config_terms, auto_merge_stats, /*cpu_list=*/NULL,
++			    alternate_hw_config);
+ 	if (!evsel) {
+ 		parse_events_terms__exit(&parsed_terms);
+ 		return -ENOMEM;
+@@ -1567,7 +1578,7 @@ static int parse_events_add_pmu(struct parse_events_state *parse_state,
+ }
+ 
+ int parse_events_multi_pmu_add(struct parse_events_state *parse_state,
+-			       const char *event_name,
++			       const char *event_name, u64 hw_config,
+ 			       const struct parse_events_terms *const_parsed_terms,
+ 			       struct list_head **listp, void *loc_)
+ {
+@@ -1620,7 +1631,7 @@ int parse_events_multi_pmu_add(struct parse_events_state *parse_state,
+ 
+ 		auto_merge_stats = perf_pmu__auto_merge_stats(pmu);
+ 		if (!parse_events_add_pmu(parse_state, list, pmu,
+-					  &parsed_terms, auto_merge_stats)) {
++					  &parsed_terms, auto_merge_stats, hw_config)) {
+ 			struct strbuf sb;
+ 
+ 			strbuf_init(&sb, /*hint=*/ 0);
+@@ -1633,7 +1644,7 @@ int parse_events_multi_pmu_add(struct parse_events_state *parse_state,
+ 
+ 	if (parse_state->fake_pmu) {
+ 		if (!parse_events_add_pmu(parse_state, list, perf_pmus__fake_pmu(), &parsed_terms,
+-					  /*auto_merge_stats=*/true)) {
++					  /*auto_merge_stats=*/true, hw_config)) {
+ 			struct strbuf sb;
+ 
+ 			strbuf_init(&sb, /*hint=*/ 0);
+@@ -1674,13 +1685,15 @@ int parse_events_multi_pmu_add_or_add_pmu(struct parse_events_state *parse_state
+ 	/* Attempt to add to list assuming event_or_pmu is a PMU name. */
+ 	pmu = perf_pmus__find(event_or_pmu);
+ 	if (pmu && !parse_events_add_pmu(parse_state, *listp, pmu, const_parsed_terms,
+-					/*auto_merge_stats=*/false))
++					 /*auto_merge_stats=*/false,
++					 /*alternate_hw_config=*/PERF_COUNT_HW_MAX))
+ 		return 0;
+ 
+ 	if (parse_state->fake_pmu) {
+ 		if (!parse_events_add_pmu(parse_state, *listp, perf_pmus__fake_pmu(),
+ 					  const_parsed_terms,
+-					  /*auto_merge_stats=*/false))
++					  /*auto_merge_stats=*/false,
++					  /*alternate_hw_config=*/PERF_COUNT_HW_MAX))
+ 			return 0;
+ 	}
+ 
+@@ -1693,7 +1706,8 @@ int parse_events_multi_pmu_add_or_add_pmu(struct parse_events_state *parse_state
+ 
+ 			if (!parse_events_add_pmu(parse_state, *listp, pmu,
+ 						  const_parsed_terms,
+-						  auto_merge_stats)) {
++						  auto_merge_stats,
++						  /*alternate_hw_config=*/PERF_COUNT_HW_MAX)) {
+ 				ok++;
+ 				parse_state->wild_card_pmus = true;
+ 			}
+@@ -1704,7 +1718,8 @@ int parse_events_multi_pmu_add_or_add_pmu(struct parse_events_state *parse_state
+ 
+ 	/* Failure to add, assume event_or_pmu is an event name. */
+ 	zfree(listp);
+-	if (!parse_events_multi_pmu_add(parse_state, event_or_pmu, const_parsed_terms, listp, loc))
++	if (!parse_events_multi_pmu_add(parse_state, event_or_pmu, PERF_COUNT_HW_MAX,
++					const_parsed_terms, listp, loc))
+ 		return 0;
+ 
+ 	if (asprintf(&help, "Unable to find PMU or event on a PMU of '%s'", event_or_pmu) < 0)
+diff --git a/tools/perf/util/parse-events.h b/tools/perf/util/parse-events.h
+index 10cc9c433116d..2b52f8d6aa29a 100644
+--- a/tools/perf/util/parse-events.h
++++ b/tools/perf/util/parse-events.h
+@@ -127,6 +127,12 @@ struct parse_events_term {
+ 	 * value is assumed to be 1. An event name also has no value.
+ 	 */
+ 	bool no_value;
++	/**
++	 * @alternate_hw_config: config is the event name but num is an
++	 * alternate PERF_TYPE_HARDWARE config value which is often nice for the
++	 * sake of quick matching.
++	 */
++	bool alternate_hw_config;
+ };
+ 
+ struct parse_events_error {
+@@ -238,7 +244,7 @@ struct evsel *parse_events__add_event(int idx, struct perf_event_attr *attr,
+ 				      struct perf_pmu *pmu);
+ 
+ int parse_events_multi_pmu_add(struct parse_events_state *parse_state,
+-			       const char *event_name,
++			       const char *event_name, u64 hw_config,
+ 			       const struct parse_events_terms *const_parsed_terms,
+ 			       struct list_head **listp, void *loc);
+ 
+diff --git a/tools/perf/util/parse-events.y b/tools/perf/util/parse-events.y
+index b3c51f06cbdc4..dcf47fabdfdd7 100644
+--- a/tools/perf/util/parse-events.y
++++ b/tools/perf/util/parse-events.y
+@@ -292,7 +292,7 @@ PE_NAME sep_dc
+ 	struct list_head *list;
+ 	int err;
+ 
+-	err = parse_events_multi_pmu_add(_parse_state, $1, NULL, &list, &@1);
++	err = parse_events_multi_pmu_add(_parse_state, $1, PERF_COUNT_HW_MAX, NULL, &list, &@1);
+ 	if (err < 0) {
+ 		struct parse_events_state *parse_state = _parse_state;
+ 		struct parse_events_error *error = parse_state->error;
+diff --git a/tools/perf/util/pmu.c b/tools/perf/util/pmu.c
+index 8b4e346808b4c..8885998c19530 100644
+--- a/tools/perf/util/pmu.c
++++ b/tools/perf/util/pmu.c
+@@ -1606,7 +1606,7 @@ static int check_info_data(struct perf_pmu *pmu,
+  */
+ int perf_pmu__check_alias(struct perf_pmu *pmu, struct parse_events_terms *head_terms,
+ 			  struct perf_pmu_info *info, bool *rewrote_terms,
+-			  struct parse_events_error *err)
++			  u64 *alternate_hw_config, struct parse_events_error *err)
+ {
+ 	struct parse_events_term *term, *h;
+ 	struct perf_pmu_alias *alias;
+@@ -1638,6 +1638,7 @@ int perf_pmu__check_alias(struct perf_pmu *pmu, struct parse_events_terms *head_
+ 						NULL);
+ 			return ret;
  		}
-@@ -1735,7 +1734,7 @@ static int airoha_dev_stop(struct net_device *dev)
- 	if (err)
- 		return err;
++
+ 		*rewrote_terms = true;
+ 		ret = check_info_data(pmu, alias, info, err, term->err_term);
+ 		if (ret)
+@@ -1646,6 +1647,9 @@ int perf_pmu__check_alias(struct perf_pmu *pmu, struct parse_events_terms *head_
+ 		if (alias->per_pkg)
+ 			info->per_pkg = true;
  
--	for (i = 0; i < ARRAY_SIZE(qdma->q_tx); i++)
-+	for (i = 0; i < dev->num_tx_queues; i++)
- 		netdev_tx_reset_subqueue(dev, i);
++		if (term->alternate_hw_config)
++			*alternate_hw_config = term->val.num;
++
+ 		list_del_init(&term->list);
+ 		parse_events_term__delete(term);
+ 	}
+diff --git a/tools/perf/util/pmu.h b/tools/perf/util/pmu.h
+index bcd278b9b546f..0222124b86b92 100644
+--- a/tools/perf/util/pmu.h
++++ b/tools/perf/util/pmu.h
+@@ -220,7 +220,7 @@ __u64 perf_pmu__format_bits(struct perf_pmu *pmu, const char *name);
+ int perf_pmu__format_type(struct perf_pmu *pmu, const char *name);
+ int perf_pmu__check_alias(struct perf_pmu *pmu, struct parse_events_terms *head_terms,
+ 			  struct perf_pmu_info *info, bool *rewrote_terms,
+-			  struct parse_events_error *err);
++			  u64 *alternate_hw_config, struct parse_events_error *err);
+ int perf_pmu__find_event(struct perf_pmu *pmu, const char *event, void *state, pmu_event_callback cb);
  
- 	if (atomic_dec_and_test(&qdma->users)) {
-@@ -2037,7 +2036,7 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
- 
- 	spin_lock_bh(&q->lock);
- 
--	txq = netdev_get_tx_queue(dev, qid);
-+	txq = skb_get_tx_queue(dev, skb);
- 	nr_frags = 1 + skb_shinfo(skb)->nr_frags;
- 
- 	if (q->queued + nr_frags >= q->ndesc) {
+ void perf_pmu_format__set_value(void *format, int config, unsigned long *bits);
 -- 
 2.53.0
 
