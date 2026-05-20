@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-250633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252210-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YK2CLnzoDWrM4gUAu9opvQ
-	(envelope-from <stable+bounces-250633-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:59:40 +0200
+	id qHM3IKb4DWqR5AUAu9opvQ
+	(envelope-from <stable+bounces-252210-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:08:38 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 613FB592C74
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:59:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26A4E595617
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:08:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 81A3130CC5DA
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:52:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E3953309BFE6
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:01:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4752F31F9BE;
-	Wed, 20 May 2026 16:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0242A3F4DDB;
+	Wed, 20 May 2026 18:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s8p3oVKh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NPqs67Ib"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9419351C2F;
-	Wed, 20 May 2026 16:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A243F88B5;
+	Wed, 20 May 2026 18:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779295922; cv=none; b=g/dP1n3AOH2B+A4hph6M/i727Bf4LFB77CkAerVIn6JToqXdwx8dKkmoO4GYhErhXOJhu90x2LEH+FIx/S73368QItWbb5dC55Gz91L/96xZ4a7T0xY/hEz27S38ASFG7MchdvCJCxrauC+v0Tq2w4FLJ49kH/y8m8eX6OLh1dY=
+	t=1779300082; cv=none; b=eLe5XbWH4i7RyxcNvr0X1hY36hJW1j3VbllwG1TLTIOmdClrmev6RK5gTFdpcG0xIoCr6mxwVfpXG3QmzwrIngm/UscA4G4iTyVpfl49sKPjSCJR8KFdkmZeawb/BVcb5ftXs0dT1vS8S9t8T+TCSNZebhO128BG4Fcn4/yEyYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779295922; c=relaxed/simple;
-	bh=vW2DCJXPWkL2VJr6ULJgK9N1P6UQ93mWxicDZ71cngc=;
+	s=arc-20240116; t=1779300082; c=relaxed/simple;
+	bh=+/m2jaKgOwC5N1VTIpmnxQ8YObtlqmq+iVh1fnh6FKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CasVXOAy/V4LEJLLM5Emr4JmjJyz3nRKHhb0JO38wn8eFvSmfa6ZsG1ZAhlSv7PzOUMJE5YH00s3nXpruV4of1fRd2lKOMiWsEYU4CHMQYssOZqQ5nw804kxXZxVSh2bL2EYGsFeAhhzjrXBGsCiwZtyyNGaUSKtufBQv5dQmxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s8p3oVKh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 829DC1F000E9;
-	Wed, 20 May 2026 16:52:00 +0000 (UTC)
+	 MIME-Version; b=g6ACitIzIlyZ+roC8LqLDUCBS4MTWE/XbKpZbpN2kWsQBLdXoJ+G0ISuRol/v0UXXvqVunDjAqPODNhLKB0pUMYkBprypNKWXS+v8olNtOcYh3R3bt9aTGwQlkLD9VnQ0YB6j0L51iSGhToua3FTUgc4cC2qJy6mzWpJ14ie9BQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NPqs67Ib; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B4241F00893;
+	Wed, 20 May 2026 18:01:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779295920;
-	bh=xshfqJ7fuD0/K6PV71k3tpiT0WhDOkpn3C3QoxNvJsc=;
+	s=korg; t=1779300079;
+	bh=RkZba11OqC47P0zCQDWsevQJvbz+6NsH+K4VvYWSFsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=s8p3oVKhlIIvoBEA/7i9VLElNdU3gNiYwTTQLl4Bs2Vng2Dsf01pQKpEmz3+IyG4j
-	 SyariklG7ASWjUKB+EcKLGFuGP1KbBasu1DwH2NyBdGk4Y4aIyUeTHRIuL3e5uN/3e
-	 4Yy5MCdoB4nFg91BftpDoXbsFgvkqxXzxXW5XFLo=
+	b=NPqs67IbqLzDEyzK4oA7yR8j0mOdLKMR12gcGdVpfrzmemYN/GEoexskiLx2GhCpZ
+	 EvlvgyADWZvXvzcHTIDwMabdlIjpsxSFuTrXg9X2svP5fSpv4Fy0UaforO7Z/FLkwA
+	 bwUCkrJoJ5yQubc1hDZ5NIBMVuUDm82w1rnVoV6w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Richard Genoud <richard.genoud@bootlin.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0601/1146] mtd: rawnand: sunxi: fix sunxi_nfc_hw_ecc_read_extra_oob
+Subject: [PATCH 6.12 040/666] params: Replace __modinit with __init_or_module
 Date: Wed, 20 May 2026 18:14:11 +0200
-Message-ID: <20260520162201.780580867@linuxfoundation.org>
+Message-ID: <20260520162112.107129846@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,101 +66,100 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-250633-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252210-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 613FB592C74
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,atomlin.com:email]
+X-Rspamd-Queue-Id: 26A4E595617
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Genoud <richard.genoud@bootlin.com>
+From: Petr Pavlu <petr.pavlu@suse.com>
 
-[ Upstream commit 848c13996c55fe4ea6bf5acc3ce6c8c5c944b5f6 ]
+[ Upstream commit 3cb0c3bdea5388519bc1bf575dca6421b133302b ]
 
-When dumping the OOB, the bytes at the end where actually copied from
-the beginning of the OOB instead of current_offset.
+Remove the custom __modinit macro from kernel/params.c and instead use the
+common __init_or_module macro from include/linux/module.h. Both provide the
+same functionality.
 
-That leads to something like:
-OOB: ff ff ff ff ff ff ff ff ea 19 00 3a 83 db aa 8d
-OOB: 99 09 c8 9a 90 36 35 7d aa 15 13 07 3d 97 b2 a4
-OOB: a8 bb 19 b3 07 e9 f6 25 52 d7 1a 23 e2 7e 0a e4
-OOB: 52 8a 09 d2 1a 86 3d cf b4 99 43 13 d3 90 33 0b
-OOB: ff ff ff ff ff ff ff ff ea 19 00 3a 83 db aa 8d
-OOB: 99 09 c8 9a 90 36 35 7d aa 15 13 07 3d 97 b2 a4
-OOB: a8 bb 19 b3 07 e9 f6 25 52 d7 1a 23 e2 7e 0a e4
-OOB: 52 8a 09 d2 1a 86 3d cf b4 99 43 13 d3 90 33 0b
-instead of:
-OOB: ff ff ff ff ff ff ff ff ea 19 00 3a 83 db aa 8d
-OOB: 99 09 c8 9a 90 36 35 7d aa 15 13 07 3d 97 b2 a4
-OOB: a8 bb 19 b3 07 e9 f6 25 52 d7 1a 23 e2 7e 0a e4
-OOB: 52 8a 09 d2 1a 86 3d cf b4 99 43 13 d3 90 33 0b
-OOB: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-OOB: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-OOB: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-OOB: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-(example with BCH16, user data [8,0], no scrambling)
-
-*cur_off (offset from the beginning of the page) was compared to offset
-(offset from the beginning of the OOB), and then, the
-nand_change_read_column_op() sets the current position to the beginning
-of the OOB instead of OOB+offset
-
-Fixes: 15d6f118285f ("mtd: rawnand: sunxi: Stop supporting ECC_HW_SYNDROME mode")
-Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Signed-off-by: Richard Genoud <richard.genoud@bootlin.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Reviewed-by: Aaron Tomlin <atomlin@atomlin.com>
+Reviewed-by: Daniel Gomez <da.gomez@samsung.com>
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+Stable-dep-of: deffe1edba62 ("module: Fix freeing of charp module parameters when CONFIG_SYSFS=n")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/sunxi_nand.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ kernel/params.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/sunxi_nand.c b/drivers/mtd/nand/raw/sunxi_nand.c
-index e66adfcca7cd6..85b869041a37f 100644
---- a/drivers/mtd/nand/raw/sunxi_nand.c
-+++ b/drivers/mtd/nand/raw/sunxi_nand.c
-@@ -1048,9 +1048,9 @@ static void sunxi_nfc_hw_ecc_read_extra_oob(struct nand_chip *nand,
- 	if (len <= 0)
- 		return;
+diff --git a/kernel/params.c b/kernel/params.c
+index 9935ff599356b..2be5a083f9399 100644
+--- a/kernel/params.c
++++ b/kernel/params.c
+@@ -595,12 +595,6 @@ static ssize_t param_attr_store(struct module_attribute *mattr,
+ }
+ #endif
  
--	if (!cur_off || *cur_off != offset)
--		nand_change_read_column_op(nand, mtd->writesize, NULL, 0,
--					   false);
-+	if (!cur_off || *cur_off != (offset + mtd->writesize))
-+		nand_change_read_column_op(nand, mtd->writesize + offset,
-+					   NULL, 0, false);
+-#ifdef CONFIG_MODULES
+-#define __modinit
+-#else
+-#define __modinit __init
+-#endif
+-
+ #ifdef CONFIG_SYSFS
+ void kernel_param_lock(struct module *mod)
+ {
+@@ -625,9 +619,9 @@ EXPORT_SYMBOL(kernel_param_unlock);
+  * create file in sysfs.  Returns an error on out of memory.  Always cleans up
+  * if there's an error.
+  */
+-static __modinit int add_sysfs_param(struct module_kobject *mk,
+-				     const struct kernel_param *kp,
+-				     const char *name)
++static __init_or_module int add_sysfs_param(struct module_kobject *mk,
++					    const struct kernel_param *kp,
++					    const char *name)
+ {
+ 	struct module_param_attrs *new_mp;
+ 	struct attribute **new_attrs;
+@@ -763,7 +757,8 @@ void destroy_params(const struct kernel_param *params, unsigned num)
+ 			params[i].ops->free(params[i].arg);
+ }
  
- 	if (!randomize)
- 		sunxi_nfc_read_buf(nand, oob + offset, len);
+-struct module_kobject __modinit * lookup_or_create_module_kobject(const char *name)
++struct module_kobject * __init_or_module
++lookup_or_create_module_kobject(const char *name)
+ {
+ 	struct module_kobject *mk;
+ 	struct kobject *kobj;
 -- 
 2.53.0
 
