@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-253238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252775-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EAhHN+QFDmqv5gUAu9opvQ
-	(envelope-from <stable+bounces-253238-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:05:08 +0200
+	id UPCgLRsEDmqs5QUAu9opvQ
+	(envelope-from <stable+bounces-252775-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:57:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ADC4597B51
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:05:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ED7F597779
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:57:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9C14C31CB187
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:51:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8FB7A39E3D99
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:26:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD344421A19;
-	Wed, 20 May 2026 18:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD5E368968;
+	Wed, 20 May 2026 18:25:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q8EYiFK9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aqO2oDjk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6583FF891;
-	Wed, 20 May 2026 18:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474533CCFB0;
+	Wed, 20 May 2026 18:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302758; cv=none; b=Mh8LzKLSHKwlLEClZhSjjMGTGOefsfuimvsW5aaTWazYu4IsTtr9dYPmlsD4kziqiib2IuMj3u6ag64ek5f+whjl9k/NeFGZSPy+7D5NjOndFsOIApqjs7NX4JW49KFLLuwqu8hAGU46sgfYLmMZYQsE3GCqeQAHSQn4IB+S1Bw=
+	t=1779301558; cv=none; b=lsfyO0nMbGmKGdFpTHiM0GlRFjm0i3npRWbGdU9jKchevjFGnZxr8rzgtx8bPquorJH4Gzk1f3VHSrEJABtXgn1XKSOFzY4dsGyXMJnOo4i3sUumNLGVV0+SpvCGLakJuFM+zO1S87JYnUeYTIdCBBAm6Ks6Mvn3iUgou498sEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302758; c=relaxed/simple;
-	bh=cJd5xLO2wJzzae71NzmZFwQq0JZONLiAb9dyBXeg95Q=;
+	s=arc-20240116; t=1779301558; c=relaxed/simple;
+	bh=g8eIklV/5JUTVCUF/HdKqi+DXHih8avnU50lzgGNE/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EJfQIs0hiSMMPeE6c1lpIZ+tfDQtKjcpLVeUpINuwlbLiZ4bWyBYBNupgj93FXgVkSlXT17Ef+iuBkwQ9Y0be4Dk2mVZgD4OyLRnlLo7Aupr1JCWSTirEjCbdQRpULtgYgylNlNnH2SZUepcq3hLExthO4/94FnHQ1Qxn/BuDQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q8EYiFK9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 300951F000E9;
-	Wed, 20 May 2026 18:45:56 +0000 (UTC)
+	 MIME-Version; b=j0lweLOuZRSByyoQQkj1TSKx7FS3CiWw3yQf6dKEfccqGyrWo3H6OKc+bC01p55Q3G2TArE9eT6iNwVsFj9NY4K5frZYd/Tf4RQSR5xeVy0l/JAPsZ0eRSLuekwHmxcyrJJeOzEtmR8451e5saYJJmih/3tUrmNhy2AlQDb2muM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aqO2oDjk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4B141F000E9;
+	Wed, 20 May 2026 18:25:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302756;
-	bh=HbgulPpWh70ybfRSWAYWTjlmMWLNlKXSAByE4tbeHWs=;
+	s=korg; t=1779301557;
+	bh=A71B8ffHnKOkDnGYKex79H6RdK5lsQfVgPoS+Ujao10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Q8EYiFK9BpqlWT102XEZFpdhu642WnI//5UeFxexD5erxKKBuUDarEs30f2/D0zqD
-	 DA3cX4RaMy0dMVExYVNf1QNIevyKaz1Jr/XYC2EdooZeiBqrWpQoNZCiIEBwpMs+Dr
-	 0i9OXk11ptlhJL6tJBs5SAEcwZEk1cb3r9DUNMh4=
+	b=aqO2oDjkaZiSOxexdvoF5TRn+KGOdoNvu0Z9NkbVYlX67GgIJLNNcGIb0fm9IEhvk
+	 waq0sjJ2D1XXunVbynQK3XtosM8F0iZTCQeRVU4DT0IrIKFZ6Ufqj+bzAsubIW3lOK
+	 ZwyG0LwNDYY5Ga/L+9fSTjqMp/SECGv2nEbbAFBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 386/508] net/sched: netem: check for negative latency and jitter
-Date: Wed, 20 May 2026 18:23:29 +0200
-Message-ID: <20260520162106.982298136@linuxfoundation.org>
+Subject: [PATCH 6.12 599/666] PCI: Initialize temporary device in new_id_store()
+Date: Wed, 20 May 2026 18:23:30 +0200
+Message-ID: <20260520162124.250030633@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,13 +69,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253238-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-252775-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
@@ -83,7 +83,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -92,80 +92,97 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,networkplumber.org:email]
-X-Rspamd-Queue-Id: 7ADC4597B51
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,qemu.org:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 0ED7F597779
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Hemminger <stephen@networkplumber.org>
+From: Samiullah Khawaja <skhawaja@google.com>
 
-[ Upstream commit 90be9fedb218ee95a1cf59050d1306fbfb0e8b87 ]
+[ Upstream commit f45a49a2380a47332817b7248c61a0ebbc6f0d00 ]
 
-Reject requests with negative latency or jitter.
-A negative value added to current timestamp (u64) wraps
-to an enormous time_to_send, disabling dequeue.
-The original UAPI used u32 for these values; the conversion to 64-bit
-time values via TCA_NETEM_LATENCY64 and TCA_NETEM_JITTER64
-allowed signed values to reach the kernel without validation.
+When setting new_id of a PCI device driver using sysfs a lockdep splat
+occurs. This is because new_id_store() builds a temporary pci_dev for
+pci_match_device(), which calls device_match_driver_override().  That
+depends on the driver_override.lock added by cb3d1049f4ea ("driver core:
+generalize driver_override in struct device").
 
-Jitter is already silently clamped by an abs() in netem_change();
-that abs() can be removed in a follow-up once this rejection is in
-place.
+The new driver_override.lock was not initialized in the temporary pci_dev,
+resulting in this lockdep splat.
 
-Fixes: 99803171ef04 ("netem: add uapi to express delay and jitter in nanoseconds")
-Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260418032027.900913-7-stephen@networkplumber.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Initialize the temporary pci_dev to fix this.
+
+Repro:
+
+  Build with CONFIG_LOCKDEP=y, boot with QEMU, and add a new ID:
+
+  # echo "8086 10f5" > /sys/bus/pci/drivers/e1000e/new_id
+
+  INFO: trying to register non-static key.
+  The code is fine but needs lockdep annotation, or maybe
+  you didn't initialize this object before use?
+  turning off the locking correctness validator.
+  CPU: 2 UID: 0 PID: 177 Comm: liveupdate-iomm Not tainted 7.0.0+ #9 PREEMPT(full)
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x5d/0x80
+   register_lock_class+0x77e/0x790
+   lock_acquire+0xbf/0x2e0
+   pci_match_device+0x24/0x180
+   new_id_store+0x189/0x1d0
+   kernfs_fop_write_iter+0x14f/0x210
+   vfs_write+0x263/0x5e0
+   ksys_write+0x79/0xf0
+   do_syscall_64+0x117/0xf80
+
+Fixes: 10a4206a2401 ("PCI: use generic driver_override infrastructure")
+Fixes: 8895d3bcb8ba ("PCI: Fail new_id for vendor/device values already built into driver")
+Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+[bhelgaas: add commit log details and repro, trim backtrace]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patch.msgid.link/20260505234327.716630-1-skhawaja@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_netem.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ drivers/pci/pci-driver.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index b632e6678881a..f8c5c50618085 100644
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -824,6 +824,16 @@ static int get_dist_table(struct disttable **tbl, const struct nlattr *attr)
- 	return 0;
+diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+index 860d80787d9b1..f0fbe45bfb9a1 100644
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -179,6 +179,11 @@ static const struct pci_device_id *pci_match_device(struct pci_driver *drv,
+ 	return NULL;
  }
  
-+static int validate_time(const struct nlattr *attr, const char *name,
-+			 struct netlink_ext_ack *extack)
++static void _pci_free_device(struct device *dev)
 +{
-+	if (nla_get_s64(attr) < 0) {
-+		NL_SET_ERR_MSG_ATTR_FMT(extack, attr, "negative %s", name);
-+		return -EINVAL;
-+	}
-+	return 0;
++	kfree(to_pci_dev(dev));
 +}
 +
- static int validate_slot(const struct nlattr *attr, struct netlink_ext_ack *extack)
- {
- 	const struct tc_netem_slot *c = nla_data(attr);
-@@ -1066,6 +1076,18 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
- 			goto table_free;
- 	}
+ /**
+  * new_id_store - sysfs frontend to pci_add_dynid()
+  * @driver: target device driver
+@@ -214,11 +219,13 @@ static ssize_t new_id_store(struct device_driver *driver, const char *buf,
+ 		pdev->subsystem_vendor = subvendor;
+ 		pdev->subsystem_device = subdevice;
+ 		pdev->class = class;
++		pdev->dev.release = _pci_free_device;
  
-+	if (tb[TCA_NETEM_LATENCY64]) {
-+		ret = validate_time(tb[TCA_NETEM_LATENCY64], "latency", extack);
-+		if (ret)
-+			goto table_free;
-+	}
-+
-+	if (tb[TCA_NETEM_JITTER64]) {
-+		ret = validate_time(tb[TCA_NETEM_JITTER64], "jitter", extack);
-+		if (ret)
-+			goto table_free;
-+	}
-+
- 	sch_tree_lock(sch);
- 	/* backup q->clg and q->loss_model */
- 	old_clg = q->clg;
++		device_initialize(&pdev->dev);
+ 		if (pci_match_device(pdrv, pdev))
+ 			retval = -EEXIST;
+ 
+-		kfree(pdev);
++		put_device(&pdev->dev);
+ 
+ 		if (retval)
+ 			return retval;
 -- 
 2.53.0
 
