@@ -1,60 +1,66 @@
-Return-Path: <stable+bounces-252204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250598-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2Cv0JU4ADmp+5QUAu9opvQ
-	(envelope-from <stable+bounces-252204-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:41:18 +0200
+	id 0ADeMvARDmoJ6AUAu9opvQ
+	(envelope-from <stable+bounces-250598-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:56:32 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5066596FD6
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:41:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 210E1598EA8
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:56:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 55B0A356FB7A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:01:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AE7B537A95DF
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:50:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 228B53F7AA9;
-	Wed, 20 May 2026 18:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D32A43A453B;
+	Wed, 20 May 2026 16:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IEEsDZu/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ndD5gVZ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70283769E0;
-	Wed, 20 May 2026 18:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F91F3A4526;
+	Wed, 20 May 2026 16:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300064; cv=none; b=Mj+0QsErDcRhIFiahB4OUiEJhAeVSqMe6KaTf7izDQZAaBIGsRKdyS3DVl1tERVdu7TsHeooPJajprEBlDlIVpp5UcUTGYmrqKSOBJqudsgvHVnqAAoH2u90E2z46goJtY+cjOAki1j4GVW86nao7Vtg2itmiOs9PqOGGag7pxU=
+	t=1779295830; cv=none; b=VeDCfe43tXPnapYV9a/wN3ug7hKMSPL9uZLbrRAX8YezrypU6BYQcOCQAM+cVw0qvljl8kcsmkr9XIxT/QtKBUmAag+PRV4oqP2ZqRvziulaDXmvwcbT/qfFlje24bzXSAV8A2NI8PlLfBusrnmnnSqBaI2hM32fFLsmuq0ZCeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300064; c=relaxed/simple;
-	bh=CHIHinllgzW1rle7f8oA7F1FZCPdfWsEPHlAt20zE2o=;
+	s=arc-20240116; t=1779295830; c=relaxed/simple;
+	bh=Bj5mrrONu76spvZeOnWZSZA0maoyibBppvvRpe3uud8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=irl33tu8HYZabezdsXtbvHYZh3zjSAhtE3WrRMm4BsoRSYoJ8pTLWoT5ThNUmckI/sJvReoZPtZeSbUFRF/hEhdvFiJRIy+AlnfiUips00BF6asrXQWzLcD4Qq25Wz9Rmjxngnd2aTrnOEA7emeLqeBE4+rT198Hy3ODx/CdUX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IEEsDZu/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3A801F000E9;
-	Wed, 20 May 2026 18:01:02 +0000 (UTC)
+	 MIME-Version; b=lQQvJCh6/AAVBy26UAGKj+Aoe4YIASbmEKMR5d356VPC/w2FjhIiY15/qG4XoGy3DMDMXyMhXvdVWBykD7ifuLg8WO5GkLMwOGQL9VLKGs1oWCahwKyVnVnFEt89XoFxw2eiVx6DRlP+j633fhWK3KdX2THBVT6LZ5XBIz+UYJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ndD5gVZ8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBAD31F000E9;
+	Wed, 20 May 2026 16:50:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779300063;
-	bh=RZHwfq17Vf0X9DZJQgF1UNJTT5ynwD7YOfzltHQdchY=;
+	s=korg; t=1779295829;
+	bh=wv4pOq0ZFZ4ZhJG02RQZp2L1t3XRc146wSwHle5jJIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IEEsDZu/Qk2tCEoEr6dVpTguLFEDNTtzX+Oid9zJnksfrsBgpP1wyRQQfBnML9gk/
-	 FJCPzzSYhkW7+jtXq8djPYC42yFr0obwb+eCf6RpYi0WI18ZyiXdR5Wn6mLBTlgjxU
-	 N2P1I7RuoK7IbjuRAZfImd3xxoeUZtAiG9YMu7dE=
+	b=ndD5gVZ8svU84Lo8Lb9+JgE8IFjEEq07IZ1kLYFqgujQWiRevP5SGu5YsoL9+iZ0M
+	 UzqFttzmBx0EPgl3zn6Jv8shL7ydsMS8PAMFI4z4MSCkgGVh4lccjPtFSYt5ac53OA
+	 d3OijCR1mwUv2SWSER4EZYRNM1X8xpXg77KRe+Ao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daan De Meyer <daan@amutable.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	ZhengYuan Huang <gality369@gmail.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 007/666] loop: fix partition scan race between udev and loop_reread_partitions()
-Date: Wed, 20 May 2026 18:13:38 +0200
-Message-ID: <20260520162111.392043001@linuxfoundation.org>
+Subject: [PATCH 7.0 0569/1146] ocfs2: fix listxattr handling when the buffer is full
+Date: Wed, 20 May 2026 18:13:39 +0200
+Message-ID: <20260520162201.061665964@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-References: <20260520162111.222830634@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,118 +73,122 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-252204-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-250598-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,amutable.com:email,kernel.dk:email,msgid.link:url]
-X-Rspamd-Queue-Id: A5066596FD6
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,oracle.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,live.cn:email]
+X-Rspamd-Queue-Id: 210E1598EA8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daan De Meyer <daan.j.demeyer@gmail.com>
+From: ZhengYuan Huang <gality369@gmail.com>
 
-[ Upstream commit 267ec4d7223a783f029a980f41b93c39b17996da ]
+[ Upstream commit d12f558e6200b3f47dbef9331ed6d115d2410e59 ]
 
-When LOOP_CONFIGURE is called with LO_FLAGS_PARTSCAN, the following
-sequence occurs:
+[BUG]
+If an OCFS2 inode has both inline and block-based xattrs, listxattr()
+can return a size larger than the caller's buffer when the inline names
+consume that buffer exactly.
 
-  1. disk_force_media_change() sets GD_NEED_PART_SCAN
-  2. Uevent suppression is lifted and a KOBJ_CHANGE uevent is sent
-  3. loop_global_unlock() releases the lock
-  4. loop_reread_partitions() calls bdev_disk_changed() to scan
+kernel BUG at mm/usercopy.c:102!
+Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+RIP: 0010:usercopy_abort+0xb7/0xd0 mm/usercopy.c:102
+Call Trace:
+ __check_heap_object+0xe3/0x120 mm/slub.c:8243
+ check_heap_object mm/usercopy.c:196 [inline]
+ __check_object_size mm/usercopy.c:250 [inline]
+ __check_object_size+0x5c5/0x780 mm/usercopy.c:215
+ check_object_size include/linux/ucopysize.h:22 [inline]
+ check_copy_size include/linux/ucopysize.h:59 [inline]
+ copy_to_user include/linux/uaccess.h:219 [inline]
+ listxattr+0xb0/0x170 fs/xattr.c:926
+ filename_listxattr fs/xattr.c:958 [inline]
+ path_listxattrat+0x137/0x320 fs/xattr.c:988
+ __do_sys_listxattr fs/xattr.c:1001 [inline]
+ __se_sys_listxattr fs/xattr.c:998 [inline]
+ __x64_sys_listxattr+0x7f/0xd0 fs/xattr.c:998
+ ...
 
-There is a race between steps 2 and 4: when udev receives the uevent
-and opens the device before loop_reread_partitions() runs,
-blkdev_get_whole() in bdev.c sees GD_NEED_PART_SCAN set and calls
-bdev_disk_changed() for a first scan. Then loop_reread_partitions()
-does a second scan. The open_mutex serializes these two scans, but
-does not prevent both from running.
+[CAUSE]
+Commit 936b8834366e ("ocfs2: Refactor xattr list and remove
+ocfs2_xattr_handler().") replaced the old per-handler list accounting
+with ocfs2_xattr_list_entry(), but it kept using size == 0 to detect
+probe mode.
 
-The second scan in bdev_disk_changed() drops all partition devices
-from the first scan (via blk_drop_partitions()) before re-adding
-them, causing partition block devices to briefly disappear. This
-breaks any systemd unit with BindsTo= on the partition device: systemd
-observes the device going dead, fails the dependent units, and does
-not retry them when the device reappears.
+That assumption stops being true once ocfs2_listxattr() finishes the
+inline-xattr pass. If the inline names fill the caller buffer exactly,
+the block-xattr pass runs with a non-NULL buffer and a remaining size of
+zero. ocfs2_xattr_list_entry() then skips the bounds check, keeps
+counting block names, and returns a positive size larger than the
+supplied buffer.
 
-Fix this by removing the GD_NEED_PART_SCAN set from
-disk_force_media_change() entirely. None of the current callers need
-the lazy on-open partition scan triggered by this flag:
+[FIX]
+Detect probe mode by testing whether the destination buffer pointer is
+NULL instead of whether the remaining size is zero.
 
-  - floppy: sets GENHD_FL_NO_PART, so disk_has_partscan() is always
-    false and GD_NEED_PART_SCAN has no effect.
-  - loop (loop_configure, loop_change_fd): when LO_FLAGS_PARTSCAN is
-    set, loop_reread_partitions() performs an explicit scan. When not
-    set, GD_SUPPRESS_PART_SCAN prevents the lazy scan path.
-  - loop (__loop_clr_fd): calls bdev_disk_changed() explicitly if
-    LO_FLAGS_PARTSCAN is set.
-  - nbd (nbd_clear_sock_ioctl): capacity is set to zero immediately
-    after; nbd manages GD_NEED_PART_SCAN explicitly elsewhere.
+That restores the pre-refactor behavior and matches the OCFS2 getxattr
+helpers. Once the remaining buffer reaches zero while more names are
+left, the block-xattr pass now returns -ERANGE instead of reporting a
+size larger than the allocated list buffer.
 
-With GD_NEED_PART_SCAN no longer set by disk_force_media_change(),
-udev opening the loop device after the uevent no longer triggers a
-redundant scan in blkdev_get_whole(), and only the single explicit
-scan from loop_reread_partitions() runs.
-
-A regression test for this bug has been submitted to blktests:
-https://github.com/linux-blktests/blktests/pull/240.
-
-Fixes: 9f65c489b68d ("loop: raise media_change event")
-Signed-off-by: Daan De Meyer <daan@amutable.com>
-Acked-by: Christian Brauner <brauner@kernel.org>
-Link: https://patch.msgid.link/20260331105130.1077599-1-daan@amutable.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Link: https://lkml.kernel.org/r/20260410040339.3837162-1-gality369@gmail.com
+Fixes: 936b8834366e ("ocfs2: Refactor xattr list and remove ocfs2_xattr_handler().")
+Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/disk-events.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/ocfs2/xattr.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/block/disk-events.c b/block/disk-events.c
-index 2f697224386aa..868823915bdc6 100644
---- a/block/disk-events.c
-+++ b/block/disk-events.c
-@@ -290,13 +290,14 @@ EXPORT_SYMBOL(disk_check_media_change);
-  * Should be called when the media changes for @disk.  Generates a uevent
-  * and attempts to free all dentries and inodes and invalidates all block
-  * device page cache entries in that case.
-+ *
-+ * Callers that need a partition re-scan should arrange for one explicitly.
-  */
- void disk_force_media_change(struct gendisk *disk)
- {
- 	disk_event_uevent(disk, DISK_EVENT_MEDIA_CHANGE);
- 	inc_diskseq(disk);
- 	bdev_mark_dead(disk->part0, true);
--	set_bit(GD_NEED_PART_SCAN, &disk->state);
- }
- EXPORT_SYMBOL_GPL(disk_force_media_change);
+diff --git a/fs/ocfs2/xattr.c b/fs/ocfs2/xattr.c
+index 42ee5db362d3e..b9a6bdbf596c2 100644
+--- a/fs/ocfs2/xattr.c
++++ b/fs/ocfs2/xattr.c
+@@ -911,8 +911,8 @@ static int ocfs2_xattr_list_entry(struct super_block *sb,
+ 	total_len = prefix_len + name_len + 1;
+ 	*result += total_len;
  
+-	/* we are just looking for how big our buffer needs to be */
+-	if (!size)
++	/* No buffer means we are only looking for the required size. */
++	if (!buffer)
+ 		return 0;
+ 
+ 	if (*result > size)
 -- 
 2.53.0
 
