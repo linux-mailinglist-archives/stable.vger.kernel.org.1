@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-251785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250855-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6FIdNDL0DWoF5AUAu9opvQ
-	(envelope-from <stable+bounces-251785-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:49:38 +0200
+	id 6KxKKuQUDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-250855-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:09:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AD7C594ADD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:49:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C368599304
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:09:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DF1553023E22
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:41:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B450C3357E3A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:02:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 158293ED3A4;
-	Wed, 20 May 2026 17:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9CA235950;
+	Wed, 20 May 2026 17:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ue656zcW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OYGMxD6q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E86136D9EA;
-	Wed, 20 May 2026 17:41:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C940347512;
+	Wed, 20 May 2026 17:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298886; cv=none; b=g3BmmJGPGbENx4JpKoK/b+mh5XrUa06Td/WihnK1PRLiPuIy8IwHjqwShRKTjrKK1qkRwWW3RpZsmgNXfDR6RjQ5s4jMqRC15K5LVVxX8AY1n+jLxSFHDSjwqkUsD0MVNxTmtTKmnDj4O6ExoOVdrIm9lkk/7CczfyGDoG/FOMI=
+	t=1779296483; cv=none; b=Ce+CJsQ60iOJ0xT7LTaztahxQ8F8OfKxIG9EEP/eiwCNcWqApRoIYs+v8Tpqqit6n9+3jNjaC6RmXL5P6LAJQLb+51QNG3To5nfbsaUdbGe8ACdkOGPiwMYbOD5pAenM90Q1esj3NEjFTJC0zPJHZFxvFTo/uCVWPQdmRlhoakg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298886; c=relaxed/simple;
-	bh=0hE2ThKPmysHhnzzSGtaOrXCWtiU0QqJw5LGUrkA4JM=;
+	s=arc-20240116; t=1779296483; c=relaxed/simple;
+	bh=zWICowioXNflianshNaJCjmWnntuduGQAZq7DeiXrOE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bbcdveP0oLoSYVH/GUZ8EekmilOWOSwgOjdIOXS8yR6DaErjNdIwlRvveAuCew75ZWvhxTOPcIX0CRBKbeMCZJ45Xipqb7tu4/PT4kde8U8auQhkKpVUMPAOIreTq+s1B72Rv4ySgpQW31Wp9UyHtJzwgQ1WS9GLkwciNUJpNeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ue656zcW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00CE41F00893;
-	Wed, 20 May 2026 17:41:24 +0000 (UTC)
+	 MIME-Version; b=SUWjHm93jqnJDRKncF/NQQkG+jVwS7tSSjY5njZfiFwKX/4XO4XWSGsxm4iSxpgA2YkZwmTeG4d1I1U40U5ngFcX6ibrtm8ohXGARsg1KfXaW/hFBEK7vnhqiTRfcW2XByWzBV/xe9Ksu3LJziN52zDWAsAQKGgyxccOud4b/dU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OYGMxD6q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C28E41F000E9;
+	Wed, 20 May 2026 17:01:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779298885;
-	bh=dNNVo1aIPYOfltmSFV1CZH2rJf/7kGYUxkJQN3ZqAfE=;
+	s=korg; t=1779296482;
+	bh=SDMzWEafZLqLVtRdpoQeL3Fj7W5kKrrxPNwutDRt5AE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ue656zcWl7f+XRBpM/k04QEEcAb91ocu8LxgyE+kKC4UhZbtpOqW68NmpCASG6iy6
-	 HFvuBdKixK700k0dDUrJkYstkVjf4DFGD50wCWl9IlGo17ohDvXjCPwWkDoq1u4mTk
-	 shkU+zBDZhPhiyZHkpem7SLM1E8jZajJUAQGZe4Y=
+	b=OYGMxD6qZp0Jsp95rjTvp/ACDUe3R6pDd/VbWMcprD/4dtFqlQUewoEw9rgyckMsV
+	 fJhr6jWv5MgZQfRsInz5tvk/HvpOrwVE4PtidacQTUkjp+Ts6AFeQ+mdSKLu24kPPE
+	 tKNVvGtwYiA4JvH9cMk7HA5qdEZ4RGArkdky2zM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianan Huang <huangjianan@xiaomi.com>,
-	Sheng Yong <shengyong1@xiaomi.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 582/957] f2fs: avoid reading already updated pages during GC
+Subject: [PATCH 7.0 0815/1146] netfilter: nat: use kfree_rcu to release ops
 Date: Wed, 20 May 2026 18:17:45 +0200
-Message-ID: <20260520162147.152290612@linuxfoundation.org>
+Message-ID: <20260520162206.670449673@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
-References: <20260520162134.554764788@linuxfoundation.org>
+In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
+References: <20260520162148.390695140@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,126 +65,146 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250855-lists,stable=lfdr.de];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-251785-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,syzkaller.appspot.com:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,xiaomi.com:email]
-X-Rspamd-Queue-Id: 4AD7C594ADD
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,netfilter.org:email]
+X-Rspamd-Queue-Id: 2C368599304
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianan Huang <huangjianan@xiaomi.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 570e2ccc7cb35fe720106964e65060602d3d2ac4 ]
+[ Upstream commit 6eda0d771f94267f73f57c94630aa47e90957915 ]
 
-We found the following issue during fuzz testing:
+Florian Westphal says:
 
-page: refcount:3 mapcount:0 mapping:00000000b6e89c65 index:0x18b2dc pfn:0x161ba9
-memcg:f8ffff800e269c00
-aops:f2fs_meta_aops ino:2
-flags: 0x52880000000080a9(locked|waiters|uptodate|lru|private|zone=1|kasantag=0x4a)
-raw: 52880000000080a9 fffffffec6e17588 fffffffec0ccc088 a7ffff8067063618
-raw: 000000000018b2dc 0000000000000009 00000003ffffffff f8ffff800e269c00
-page dumped because: VM_BUG_ON_FOLIO(folio_test_uptodate(folio))
-page_owner tracks the page as allocated
- post_alloc_hook+0x58c/0x5ec
- prep_new_page+0x34/0x284
- get_page_from_freelist+0x2dcc/0x2e8c
- __alloc_pages_noprof+0x280/0x76c
- __folio_alloc_noprof+0x18/0xac
- __filemap_get_folio+0x6bc/0xdc4
- pagecache_get_page+0x3c/0x104
- do_garbage_collect+0x5c78/0x77a4
- f2fs_gc+0xd74/0x25f0
- gc_thread_func+0xb28/0x2930
- kthread+0x464/0x5d8
- ret_from_fork+0x10/0x20
-------------[ cut here ]------------
-kernel BUG at mm/filemap.c:1563!
- folio_end_read+0x140/0x168
- f2fs_finish_read_bio+0x5c4/0xb80
- f2fs_read_end_io+0x64c/0x708
- bio_endio+0x85c/0x8c0
- blk_update_request+0x690/0x127c
- scsi_end_request+0x9c/0xb8c
- scsi_io_completion+0xf0/0x250
- scsi_finish_command+0x430/0x45c
- scsi_complete+0x178/0x6d4
- blk_mq_complete_request+0xcc/0x104
- scsi_done_internal+0x214/0x454
- scsi_done+0x24/0x34
+"Historically this is not an issue, even for normal base hooks: the data
+path doesn't use the original nf_hook_ops that are used to register the
+callbacks.
 
-which is similar to the problem reported by syzbot:
-https://syzkaller.appspot.com/bug?extid=3686758660f980b402dc
+However, in v5.14 I added the ability to dump the active netfilter
+hooks from userspace.
 
-This case is consistent with the description in commit 9bf1a3f
-("f2fs: avoid GC causing encrypted file corrupted"):
-Page 1 is moved from blkaddr A to blkaddr B by move_data_block, and after
-being written it is marked as uptodate. Then, Page 1 is moved from blkaddr
-B to blkaddr C, VM_BUG_ON_FOLIO was triggered in the endio initiated by
-ra_data_block.
+This code will peek back into the nf_hook_ops that are available
+at the tail of the pointer-array blob used by the datapath.
 
-There is no need to read Page 1 again from blkaddr B, since it has already
-been updated. Therefore, avoid initiating I/O in this case.
+The nat hooks are special, because they are called indirectly from
+the central nat dispatcher hook. They are currently invisible to
+the nfnl hook dump subsystem though.
 
-Fixes: 6aa58d8ad20a ("f2fs: readahead encrypted block during GC")
-Signed-off-by: Jianan Huang <huangjianan@xiaomi.com>
-Signed-off-by: Sheng Yong <shengyong1@xiaomi.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+But once that changes the nat ops structures have to be deferred too."
+
+Update nf_nat_register_fn() to deal with partial exposition of the hooks
+from error path which can be also an issue for nfnetlink_hook.
+
+Fixes: e2cf17d3774c ("netfilter: add new hook nfnl subsystem")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/gc.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/ipv4/netfilter/iptable_nat.c  |  4 ++--
+ net/ipv6/netfilter/ip6table_nat.c |  4 ++--
+ net/netfilter/nf_nat_core.c       | 10 ++++++----
+ 3 files changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
-index 5647e76c6bdb0..3d9f326ae840a 100644
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -1222,7 +1222,7 @@ static int ra_data_block(struct inode *inode, pgoff_t index)
- 		.encrypted_page = NULL,
- 		.in_list = 0,
- 	};
--	int err;
-+	int err = 0;
+diff --git a/net/ipv4/netfilter/iptable_nat.c b/net/ipv4/netfilter/iptable_nat.c
+index a5db7c67d61be..625a1ca13b1ba 100644
+--- a/net/ipv4/netfilter/iptable_nat.c
++++ b/net/ipv4/netfilter/iptable_nat.c
+@@ -79,7 +79,7 @@ static int ipt_nat_register_lookups(struct net *net)
+ 			while (i)
+ 				nf_nat_ipv4_unregister_fn(net, &ops[--i]);
  
- 	folio = f2fs_grab_cache_folio(mapping, index, true);
- 	if (IS_ERR(folio))
-@@ -1275,6 +1275,9 @@ static int ra_data_block(struct inode *inode, pgoff_t index)
+-			kfree(ops);
++			kfree_rcu(ops, rcu);
+ 			return ret;
+ 		}
+ 	}
+@@ -100,7 +100,7 @@ static void ipt_nat_unregister_lookups(struct net *net)
+ 	for (i = 0; i < ARRAY_SIZE(nf_nat_ipv4_ops); i++)
+ 		nf_nat_ipv4_unregister_fn(net, &ops[i]);
  
- 	fio.encrypted_page = &efolio->page;
+-	kfree(ops);
++	kfree_rcu(ops, rcu);
+ }
  
-+	if (folio_test_uptodate(efolio))
-+		goto put_encrypted_page;
-+
- 	err = f2fs_submit_page_bio(&fio);
- 	if (err)
- 		goto put_encrypted_page;
+ static int iptable_nat_table_init(struct net *net)
+diff --git a/net/ipv6/netfilter/ip6table_nat.c b/net/ipv6/netfilter/ip6table_nat.c
+index e119d4f090cc8..5be723232df8f 100644
+--- a/net/ipv6/netfilter/ip6table_nat.c
++++ b/net/ipv6/netfilter/ip6table_nat.c
+@@ -81,7 +81,7 @@ static int ip6t_nat_register_lookups(struct net *net)
+ 			while (i)
+ 				nf_nat_ipv6_unregister_fn(net, &ops[--i]);
+ 
+-			kfree(ops);
++			kfree_rcu(ops, rcu);
+ 			return ret;
+ 		}
+ 	}
+@@ -102,7 +102,7 @@ static void ip6t_nat_unregister_lookups(struct net *net)
+ 	for (i = 0; i < ARRAY_SIZE(nf_nat_ipv6_ops); i++)
+ 		nf_nat_ipv6_unregister_fn(net, &ops[i]);
+ 
+-	kfree(ops);
++	kfree_rcu(ops, rcu);
+ }
+ 
+ static int ip6table_nat_table_init(struct net *net)
+diff --git a/net/netfilter/nf_nat_core.c b/net/netfilter/nf_nat_core.c
+index 3b5434e4ec9c1..b30ca94c2bb7f 100644
+--- a/net/netfilter/nf_nat_core.c
++++ b/net/netfilter/nf_nat_core.c
+@@ -1228,9 +1228,11 @@ int nf_nat_register_fn(struct net *net, u8 pf, const struct nf_hook_ops *ops,
+ 		ret = nf_register_net_hooks(net, nat_ops, ops_count);
+ 		if (ret < 0) {
+ 			mutex_unlock(&nf_nat_proto_mutex);
+-			for (i = 0; i < ops_count; i++)
+-				kfree(nat_ops[i].priv);
+-			kfree(nat_ops);
++			for (i = 0; i < ops_count; i++) {
++				priv = nat_ops[i].priv;
++				kfree_rcu(priv, rcu_head);
++			}
++			kfree_rcu(nat_ops, rcu);
+ 			return ret;
+ 		}
+ 
+@@ -1294,7 +1296,7 @@ void nf_nat_unregister_fn(struct net *net, u8 pf, const struct nf_hook_ops *ops,
+ 		}
+ 
+ 		nat_proto_net->nat_hook_ops = NULL;
+-		kfree(nat_ops);
++		kfree_rcu(nat_ops, rcu);
+ 	}
+ unlock:
+ 	mutex_unlock(&nf_nat_proto_mutex);
 -- 
 2.53.0
 
