@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-250187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250243-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gP2bDvvuDWpb4wUAu9opvQ
-	(envelope-from <stable+bounces-250187-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:27:23 +0200
+	id qA/jFMHkDWpN4gUAu9opvQ
+	(envelope-from <stable+bounces-250243-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:43:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89FFD593B53
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:27:22 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D778959256B
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:43:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0AECD33ADBC4
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:33:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E116F307653E
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DEDB3A383C;
-	Wed, 20 May 2026 16:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B157B3B6349;
+	Wed, 20 May 2026 16:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fDw25ALW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z/p1EjjO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3973A3833;
-	Wed, 20 May 2026 16:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604C33BD63C;
+	Wed, 20 May 2026 16:35:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294773; cv=none; b=l5vP43XP+XhCMYvACJLS0MqgF8o3cBYt8w1y+aw2CYdeAed6KVCLV2GxQDEbKfLhTDyIQo6GwadPGKZVbp1O39ERM+ycDoung6wMr0htG2FuOnmQgu7Z/tsF2yd9Yqk2P9KEtTtizDRQZsHjLSBKmk91m6ycr66wXOY/oHc9KJw=
+	t=1779294905; cv=none; b=J3/DEqy+ET3uw9ceb/VOBukYgLJk0uXI0oxMpN/DQzkYK397a7tmv4ECgiAkdDTHJKkxp3qiveJljwmEteTkbwiLqQeMjxut/EY7B+GW6dW+JryFduPqq9E60mBr5+xtZy1hH5LM+K/5/QtkMacSDajtuwjBwV3vwgTdhn811Dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294773; c=relaxed/simple;
-	bh=8JF4la62F/cQmUC6jkzsBbiIX+X2sRA0fi+6p1BPOm4=;
+	s=arc-20240116; t=1779294905; c=relaxed/simple;
+	bh=VQKi9IxRDb/ULUQnL9cFNXY2pMucMoXT7wB6Jtew/vo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aMKB2KYgga07SiBB9M2N02QLN/BV5rpMdfJzFYitUGqi1GvhHMVDU9qj4STaSpSeJa8aOI4rGJEi2t/Il+OJoCYKnuGk5eHXCXj3Gu82rjrCaZ5gQcPxWyVYUqMOTpQF1yi6HFnAWs4akzv0aTXfb1VDuU6vkI4qWPoRo8SveMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fDw25ALW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4245B1F000E9;
-	Wed, 20 May 2026 16:32:51 +0000 (UTC)
+	 MIME-Version; b=EPDOosi9CSLzUeR1g7bvBnmnJbDi7pntjfJCvIaklDaBPrLXs5Gks9mOjLAyF1rHrm0T9BUvVGN8Lz1mCk//cJ5He/3NdItToW8q4c65IWe4E6FJvd16QeHSvLVee2eEo23KryRGi9/rSmc34iNiOuwViocy3J2B/Bu2dJoP0Ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/p1EjjO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9420F1F000E9;
+	Wed, 20 May 2026 16:35:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294771;
-	bh=Wg2bF5FO2l2thSR+k3PnYKEVvnKUPff9WrmmM7UO9JE=;
+	s=korg; t=1779294903;
+	bh=2pj7VcDUxjD68h7Fl2vNva2SxByewJ3ffTRRICRcaFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fDw25ALWBwieedJYoD7cmxr26FrZTrenibgMp0rBLTlWx9SNei/+YJl6nerfBHxGy
-	 1ujA93ACrN7S7zIKi4n0A430uZ7FRqjx/RCp/0xDBlVyN7OhD3Z/uJFy7mV5Sh7n8R
-	 XOBT7PXYlyjPTBLEpj6lITV7KftQm3XcBh2+p6ho=
+	b=Z/p1EjjOTOZq2BzHGX7Y0A2vgeRJ6HIsEhhff7Drs92b5AMHmGS70moeA8FEWfWMC
+	 r6PpAh5zeSDtfQg4dpaRin5UMD6ALa+aMdQOr2MfGqR0arDl18SMWXRq8RKFNY3X7Q
+	 VHYrwM5ZSbvPrJPznNMaTuBGJ42uJMmlYRRZeklY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ada Couprie Diaz <ada.coupriediaz@arm.com>,
-	Vladimir Murzin <vladimir.murzin@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Will Deacon <will@kernel.org>,
+	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
+	Haoyu Lu <hechushiguitu666@gmail.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
 	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0164/1146] arm64: entry: Dont preempt with SError or Debug masked
-Date: Wed, 20 May 2026 18:06:54 +0200
-Message-ID: <20260520162152.003964201@linuxfoundation.org>
+Subject: [PATCH 7.0 0165/1146] ACPI: AGDI: fix missing newline in error message
+Date: Wed, 20 May 2026 18:06:55 +0200
+Message-ID: <20260520162152.025706034@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -75,30 +70,31 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,os.amperecomputing.com,gmail.com,huawei.com,arm.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-250243-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250187-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[13];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 89FFD593B53
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email]
+X-Rspamd-Queue-Id: D778959256B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -106,85 +102,38 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Haoyu Lu <hechushiguitu666@gmail.com>
 
-[ Upstream commit 2371bd83b3df9d833191fe58dadb0e69a794a1cd ]
+[ Upstream commit b178330b67abb7293b6de28b2a49d49c83962db5 ]
 
-On arm64, involuntary kernel preemption has been subtly broken since the
-move to the generic irqentry code. When preemption occurs, the new task
-may run with SError and Debug exceptions masked unexpectedly, leading to
-a loss of RAS events, breakpoints, watchpoints, and single-step
-exceptions.
+Add the missing trailing newline to the dev_err() message
+printed when SDEI event registration fails.
 
-Prior to moving to the generic irqentry code, involuntary preemption of
-kernel mode would only occur when returning from regular interrupts, in
-a state where interrupts were masked and all other arm64-specific
-exceptions (SError, Debug, and pseudo-NMI) were unmasked. This is the
-only state in which it is valid to switch tasks.
+This keeps the error output as a properly terminated log line.
 
-As part of moving to the generic irqentry code, the involuntary
-preemption logic was moved such that involuntary preemption could occur
-when returning from any (non-NMI) exception. As most exception handlers
-mask all arm64-specific exceptions before this point, preemption could
-occur in a state where arm64-specific exceptions were masked. This is
-not a valid state to switch tasks, and resulted in the loss of
-exceptions described above.
-
-As a temporary bodge, avoid the loss of exceptions by avoiding
-involuntary preemption when SError and/or Debug exceptions are masked.
-Practically speaking this means that involuntary preemption will only
-occur when returning from regular interrupts, as was the case before
-moving to the generic irqentry code.
-
-Fixes: 99eb057ccd67 ("arm64: entry: Move arm64_preempt_schedule_irq() into __exit_to_kernel_mode()")
-Reported-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-Reported-by: Vladimir Murzin <vladimir.murzin@arm.com>
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Jinjie Ruan <ruanjinjie@huawei.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Reviewed-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Fixes: a2a591fb76e6 ("ACPI: AGDI: Add driver for Arm Generic Diagnostic Dump and Reset device")
+Reviewed-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+Signed-off-by: Haoyu Lu <hechushiguitu666@gmail.com>
+Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
 Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/entry-common.h | 21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
+ drivers/acpi/arm64/agdi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/include/asm/entry-common.h b/arch/arm64/include/asm/entry-common.h
-index cab8cd78f6938..20f0a7c7bde15 100644
---- a/arch/arm64/include/asm/entry-common.h
-+++ b/arch/arm64/include/asm/entry-common.h
-@@ -29,14 +29,19 @@ static __always_inline void arch_exit_to_user_mode_work(struct pt_regs *regs,
+diff --git a/drivers/acpi/arm64/agdi.c b/drivers/acpi/arm64/agdi.c
+index feb4b2cb4618e..0c2d9d6c160be 100644
+--- a/drivers/acpi/arm64/agdi.c
++++ b/drivers/acpi/arm64/agdi.c
+@@ -36,7 +36,7 @@ static int agdi_sdei_probe(struct platform_device *pdev,
  
- static inline bool arch_irqentry_exit_need_resched(void)
- {
--	/*
--	 * DAIF.DA are cleared at the start of IRQ/FIQ handling, and when GIC
--	 * priority masking is used the GIC irqchip driver will clear DAIF.IF
--	 * using gic_arch_enable_irqs() for normal IRQs. If anything is set in
--	 * DAIF we must have handled an NMI, so skip preemption.
--	 */
--	if (system_uses_irq_prio_masking() && read_sysreg(daif))
--		return false;
-+	if (system_uses_irq_prio_masking()) {
-+		/*
-+		 * DAIF.DA are cleared at the start of IRQ/FIQ handling, and when GIC
-+		 * priority masking is used the GIC irqchip driver will clear DAIF.IF
-+		 * using gic_arch_enable_irqs() for normal IRQs. If anything is set in
-+		 * DAIF we must have handled an NMI, so skip preemption.
-+		 */
-+		if (read_sysreg(daif))
-+			return false;
-+	} else {
-+		if (read_sysreg(daif) & (PSR_D_BIT | PSR_A_BIT))
-+			return false;
-+	}
- 
- 	/*
- 	 * Preempting a task from an IRQ means we leave copies of PSTATE
+ 	err = sdei_event_register(adata->sdei_event, agdi_sdei_handler, pdev);
+ 	if (err) {
+-		dev_err(&pdev->dev, "Failed to register for SDEI event %d",
++		dev_err(&pdev->dev, "Failed to register for SDEI event %d\n",
+ 			adata->sdei_event);
+ 		return err;
+ 	}
 -- 
 2.53.0
 
