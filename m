@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-250812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252411-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WNpHHIvvDWp+4wUAu9opvQ
-	(envelope-from <stable+bounces-250812-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:29:47 +0200
+	id QEW+AhEUDmoW6AUAu9opvQ
+	(envelope-from <stable+bounces-252411-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:05:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D27A593D19
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:29:46 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 085B45991C4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 22:05:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A862F3166C11
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:00:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6817B3089B44
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:10:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 544CF3E2AAD;
-	Wed, 20 May 2026 16:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C38F3E5ECF;
+	Wed, 20 May 2026 18:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WcDpgwPh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZaxYnVzw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2EE03D8103;
-	Wed, 20 May 2026 16:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ADB0331220;
+	Wed, 20 May 2026 18:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779296371; cv=none; b=tsUAi+ZkO6Bnf3bdoItlDQPJzcDYqNqSsIfWm6cS6LechMY828ag/CPv08Rr6q/0HDh5iolA0Y16cXfD6YIp0ZVXfrayDM2MnulfGmtE71K+qpfmUS61nKzOjz0PIBP8D2nc+XNePOX36dMErxmvxU9cvL/tcz9K8I1zUmX32zQ=
+	t=1779300605; cv=none; b=YTYnYy+D0zy6oC9X2TdZGpNyW1Rv0be0QHigVGWcjRcz+Tb26+PYasfne+n3UBPDxlr7zF7udDe+IQ4ikBf2AVBrqSupb06HQFgXRxBSbBp0ZRgva4cIaJCVGGVzQA3ZphrqzerC/Aop2NqyZ24UvFIq6UvAYRy+zeLQQKEA5rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779296371; c=relaxed/simple;
-	bh=tQyXqC3eMGGF30iD6oZmmtjXEY1BaCaHYPR2t+Q1Fa8=;
+	s=arc-20240116; t=1779300605; c=relaxed/simple;
+	bh=dmlDzF3RTWBrloxU+6BcZNYwKBam/ldq6LUKMT3qW0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cnA1CdFXnl9lcEbDFIyXUU9NKbtpXjvLSNjGIAD5BRM2A8tXcF/hQ1UHi8V0DaPrKo/luH+kXM5dNZ2vK8aZbIYT/pfrQm5UVwM9EdwtwJuHQdLiP7d0/xE9dQ+ZadOSQrCW58gPsN7iwTYXroejNAM3edVQoHbvdZj1O9RqddA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WcDpgwPh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BD501F00893;
-	Wed, 20 May 2026 16:59:28 +0000 (UTC)
+	 MIME-Version; b=lp+crXWwekTd/R49fgw2JhFYE4hVRtMBf8d63EwiKhnsYaYzdwOLQkkPuHgbgZqgVazWt+lklL06L+gt6r16Ia285zhYVr+wO5wj9Wn/EI6oFYJJiCls031DwsARye+iL3OQeHm6kDYVhAbekEWoBMFjAEnS2DchJZbaOhtcyBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZaxYnVzw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A83F11F000E9;
+	Wed, 20 May 2026 18:10:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779296368;
-	bh=Vp6dMVB9k0yIIyuv12o8z0MjyP2JAJ09B5ZyaU/SVmg=;
+	s=korg; t=1779300604;
+	bh=TfoDkPBCG6DLaJxZ9jXCyNuOIxNBV+YUQ5wjgAuOuvA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WcDpgwPhUThm36Vtd+LGEXErMD7lnjn0NSUl0+DfGXXpillzYx4P3E9Kw89kMxYhB
-	 jstPXQ98jtqjS4eedY3OnMNyGOq9QtEGt99s1JSMDw1ojsghGPc3moLsyeUfK1HKX1
-	 WUNh/Ve00VeqkYZHUp6sjrHy2RUdHWEwU2jtr/X4=
+	b=ZaxYnVzwb0/qjVWaWWaGIRJCOBnjqs5DvMqf6/7jzvY5xLlUhItBdEsnmqHVEc6Wq
+	 Z/xNW2bdqw3mUzvxe6iSGvsbFrWGZqMJZ6ItGK7r7jxT6W9DGbVokZjn7DgyF/FxAo
+	 kA+nQtujMYqMrPwyBjRcGHZaJMV5Jy2ObcVSrlUQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0772/1146] net: airoha: Wait for NPU PPE configuration to complete in airoha_ppe_offload_setup()
+Subject: [PATCH 6.12 211/666] iommu/amd: Reduce domain lock scope in attach device path
 Date: Wed, 20 May 2026 18:17:02 +0200
-Message-ID: <20260520162205.689588973@linuxfoundation.org>
+Message-ID: <20260520162115.778249205@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
-References: <20260520162148.390695140@linuxfoundation.org>
+In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
+References: <20260520162111.222830634@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,101 +69,216 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-252411-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-250812-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 1D27A593D19
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 085B45991C4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Vasant Hegde <vasant.hegde@amd.com>
 
-[ Upstream commit f3206328bb52c2787197d80d7cbd687946047d5f ]
+[ Upstream commit d6b47dec368400a62d2b9d44c8e136fc15eac72c ]
 
-In order to properly enable flowtable hw offloading, poll
-REG_PPE_FLOW_CFG register in airoha_ppe_offload_setup routine and
-wait for NPU PPE configuration triggered by ppe_init callback to complete
-before running airoha_ppe_hw_init().
+Currently attach device path takes protection domain lock followed by
+dev_data lock. Most of the operations in this function is specific to
+device data except pdom_attach_iommu() where it updates protection
+domain structure. Hence reduce the scope of protection domain lock.
 
-Fixes: 00a7678310fe3 ("net: airoha: Introduce flowtable offload support")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20260414-airoha-wait-for-npu-config-offload-setup-v2-1-5a9bf6d43aee@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Note that this changes the locking order. Now it takes device lock
+before taking doamin lock (group->mutex -> dev_data->lock ->
+pdom->lock). dev_data->lock is used only in device attachment path.
+So changing order is fine. It will not create any issue.
+
+Finally move numa node assignment to pdom_attach_iommu().
+
+Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/20241030063556.6104-8-vasant.hegde@amd.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Stable-dep-of: faad224fe0f0 ("iommu/amd: Fix clone_alias() to use the original device's devid")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/airoha/airoha_ppe.c | 28 ++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ drivers/iommu/amd/iommu.c | 52 ++++++++++++++++++++++-----------------
+ 1 file changed, 30 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
-index 62cfffb4f0e55..684c8ae9576f1 100644
---- a/drivers/net/ethernet/airoha/airoha_ppe.c
-+++ b/drivers/net/ethernet/airoha/airoha_ppe.c
-@@ -1335,6 +1335,29 @@ static struct airoha_npu *airoha_ppe_npu_get(struct airoha_eth *eth)
- 	return npu;
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index 799e1a1adfc32..3ac8f64a21475 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -2057,16 +2057,23 @@ static int pdom_attach_iommu(struct amd_iommu *iommu,
+ 			     struct protection_domain *pdom)
+ {
+ 	struct pdom_iommu_info *pdom_iommu_info, *curr;
++	struct io_pgtable_cfg *cfg = &pdom->iop.pgtbl.cfg;
++	unsigned long flags;
++	int ret = 0;
++
++	spin_lock_irqsave(&pdom->lock, flags);
+ 
+ 	pdom_iommu_info = xa_load(&pdom->iommu_array, iommu->index);
+ 	if (pdom_iommu_info) {
+ 		pdom_iommu_info->refcnt++;
+-		return 0;
++		goto out_unlock;
+ 	}
+ 
+ 	pdom_iommu_info = kzalloc(sizeof(*pdom_iommu_info), GFP_ATOMIC);
+-	if (!pdom_iommu_info)
+-		return -ENOMEM;
++	if (!pdom_iommu_info) {
++		ret = -ENOMEM;
++		goto out_unlock;
++	}
+ 
+ 	pdom_iommu_info->iommu = iommu;
+ 	pdom_iommu_info->refcnt = 1;
+@@ -2075,43 +2082,52 @@ static int pdom_attach_iommu(struct amd_iommu *iommu,
+ 			  NULL, pdom_iommu_info, GFP_ATOMIC);
+ 	if (curr) {
+ 		kfree(pdom_iommu_info);
+-		return -ENOSPC;
++		ret = -ENOSPC;
++		goto out_unlock;
+ 	}
+ 
+-	return 0;
++	/* Update NUMA Node ID */
++	if (cfg->amd.nid == NUMA_NO_NODE)
++		cfg->amd.nid = dev_to_node(&iommu->dev->dev);
++
++out_unlock:
++	spin_unlock_irqrestore(&pdom->lock, flags);
++	return ret;
  }
  
-+static int airoha_ppe_wait_for_npu_init(struct airoha_eth *eth)
-+{
-+	int err;
-+	u32 val;
-+
-+	/* PPE_FLOW_CFG default register value is 0. Since we reset FE
-+	 * during the device probe we can just check the configured value
-+	 * is not 0 here.
-+	 */
-+	err = read_poll_timeout(airoha_fe_rr, val, val, USEC_PER_MSEC,
-+				100 * USEC_PER_MSEC, false, eth,
-+				REG_PPE_PPE_FLOW_CFG(0));
-+	if (err)
-+		return err;
-+
-+	if (airoha_ppe_is_enabled(eth, 1))
-+		err = read_poll_timeout(airoha_fe_rr, val, val, USEC_PER_MSEC,
-+					100 * USEC_PER_MSEC, false, eth,
-+					REG_PPE_PPE_FLOW_CFG(1));
-+
-+	return err;
-+}
-+
- static int airoha_ppe_offload_setup(struct airoha_eth *eth)
+ static void pdom_detach_iommu(struct amd_iommu *iommu,
+ 			      struct protection_domain *pdom)
  {
- 	struct airoha_npu *npu = airoha_ppe_npu_get(eth);
-@@ -1348,6 +1371,11 @@ static int airoha_ppe_offload_setup(struct airoha_eth *eth)
- 	if (err)
- 		goto error_npu_put;
- 
-+	/* Wait for NPU PPE configuration to complete */
-+	err = airoha_ppe_wait_for_npu_init(eth);
-+	if (err)
-+		goto error_npu_put;
+ 	struct pdom_iommu_info *pdom_iommu_info;
++	unsigned long flags;
 +
- 	ppe_num_stats_entries = airoha_ppe_get_total_num_stats_entries(ppe);
- 	if (ppe_num_stats_entries > 0) {
- 		err = npu->ops.ppe_init_stats(npu, ppe->foe_stats_dma,
++	spin_lock_irqsave(&pdom->lock, flags);
+ 
+ 	pdom_iommu_info = xa_load(&pdom->iommu_array, iommu->index);
+-	if (!pdom_iommu_info)
++	if (!pdom_iommu_info) {
++		spin_unlock_irqrestore(&pdom->lock, flags);
+ 		return;
++	}
+ 
+ 	pdom_iommu_info->refcnt--;
+ 	if (pdom_iommu_info->refcnt == 0) {
+ 		xa_erase(&pdom->iommu_array, iommu->index);
+ 		kfree(pdom_iommu_info);
+ 	}
++
++	spin_unlock_irqrestore(&pdom->lock, flags);
+ }
+ 
+ static int do_attach(struct iommu_dev_data *dev_data,
+ 		     struct protection_domain *domain)
+ {
+ 	struct amd_iommu *iommu = get_amd_iommu_from_dev_data(dev_data);
+-	struct io_pgtable_cfg *cfg = &domain->iop.pgtbl.cfg;
+ 	int ret = 0;
+ 
+ 	/* Update data structures */
+ 	dev_data->domain = domain;
+ 	list_add(&dev_data->list, &domain->dev_list);
+ 
+-	/* Update NUMA Node ID */
+-	if (cfg->amd.nid == NUMA_NO_NODE)
+-		cfg->amd.nid = dev_to_node(dev_data->dev);
+-
+ 	/* Do reference counting */
+ 	ret = pdom_attach_iommu(iommu, domain);
+ 	if (ret)
+@@ -2133,12 +2149,15 @@ static void do_detach(struct iommu_dev_data *dev_data)
+ {
+ 	struct protection_domain *domain = dev_data->domain;
+ 	struct amd_iommu *iommu = get_amd_iommu_from_dev_data(dev_data);
++	unsigned long flags;
+ 
+ 	/* Clear DTE and flush the entry */
+ 	dev_update_dte(dev_data, false);
+ 
+ 	/* Flush IOTLB and wait for the flushes to finish */
++	spin_lock_irqsave(&domain->lock, flags);
+ 	amd_iommu_domain_flush_all(domain);
++	spin_unlock_irqrestore(&domain->lock, flags);
+ 
+ 	/* Clear GCR3 table */
+ 	if (pdom_is_sva_capable(domain))
+@@ -2160,11 +2179,8 @@ static int attach_device(struct device *dev,
+ 			 struct protection_domain *domain)
+ {
+ 	struct iommu_dev_data *dev_data;
+-	unsigned long flags;
+ 	int ret = 0;
+ 
+-	spin_lock_irqsave(&domain->lock, flags);
+-
+ 	dev_data = dev_iommu_priv_get(dev);
+ 
+ 	spin_lock(&dev_data->lock);
+@@ -2179,8 +2195,6 @@ static int attach_device(struct device *dev,
+ out:
+ 	spin_unlock(&dev_data->lock);
+ 
+-	spin_unlock_irqrestore(&domain->lock, flags);
+-
+ 	return ret;
+ }
+ 
+@@ -2190,13 +2204,9 @@ static int attach_device(struct device *dev,
+ static void detach_device(struct device *dev)
+ {
+ 	struct iommu_dev_data *dev_data = dev_iommu_priv_get(dev);
+-	struct protection_domain *domain = dev_data->domain;
+ 	struct amd_iommu *iommu = get_amd_iommu_from_dev_data(dev_data);
+-	unsigned long flags;
+ 	bool ppr = dev_data->ppr;
+ 
+-	spin_lock_irqsave(&domain->lock, flags);
+-
+ 	spin_lock(&dev_data->lock);
+ 
+ 	/*
+@@ -2220,8 +2230,6 @@ static void detach_device(struct device *dev)
+ out:
+ 	spin_unlock(&dev_data->lock);
+ 
+-	spin_unlock_irqrestore(&domain->lock, flags);
+-
+ 	/* Remove IOPF handler */
+ 	if (ppr)
+ 		amd_iommu_iopf_remove_device(iommu, dev_data);
 -- 
 2.53.0
 
