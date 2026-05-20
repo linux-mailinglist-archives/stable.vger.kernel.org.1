@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-253141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-252036-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cLq9F8YNDmqe5wUAu9opvQ
-	(envelope-from <stable+bounces-253141-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:38:46 +0200
+	id cDLIElX4DWqR5AUAu9opvQ
+	(envelope-from <stable+bounces-252036-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:07:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6353F5988B0
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 21:38:44 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0321759556A
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 20:07:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CD3B931641CD
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:48:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 41EC03162C74
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 17:52:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E51E3FC5A1;
-	Wed, 20 May 2026 18:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 265C23F0A83;
+	Wed, 20 May 2026 17:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kqoxq4+O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TJirtHLe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1704834EEF7;
-	Wed, 20 May 2026 18:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0FA53F1AD9;
+	Wed, 20 May 2026 17:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779302513; cv=none; b=UC5mNoiCs4WVPv584ae5hOoNbIMflTAgH3W0HFUGKuVjFyaxg3J1posQPjIRaeWOGYTlTZFFBv9Vvtg90zELPiTKCzxjHXzyff3b/TnH+NA4jtzZg6BTaVZdcrDW0Z+OvU2Ol4KzL7mvn061KWXbdS+Hbq3JGl74bChzzLFjl6E=
+	t=1779299577; cv=none; b=J2Gu5uHc0fxTZfn+WGw/2oHL0bpS8GLVnJzpgbgR9EymDB4OQ3+6gO85H3eygZFYJcjgmng2tTSMXhIN/3BpSUaZbN++NeBxJecflBrA7rl1nnUDsZqrvxPV3W7ACc1A//pANBRj6YA0FJwae0p2KGRTNsuyTtITFXbPhi4WTbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779302513; c=relaxed/simple;
-	bh=iTFmew2ifSlInJw8J8f8qX1GlmvKViku1/xp2FekjaE=;
+	s=arc-20240116; t=1779299577; c=relaxed/simple;
+	bh=9WTdIIw6W/arQBVn6rUZoPO1wNo2S149QWaCz+6nmH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D1Ps0+xkMPnOBQNnkpZZSBuT1YvAFu9CMnfxAZh4yPzg7fmgVIhBppPPyaqJ+We+A/sZCFyDz1bfAXgor2iStUCcCiBChRi+5Is2UvlYs0KMBrS2IAUjA1T+5S7siRyVg02V7rdJX4TGg7bFryvWJGWYAfEsQTzUlKMu27lFj8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kqoxq4+O; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 560C01F000E9;
-	Wed, 20 May 2026 18:41:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EWBy+az7rTSNBaI3Qm4dsl1yt7qJiHJ6QH31LD25t7IgNo16MBGw41EADxsrhhuU2h3n3MEe9jU7QoIbIStNrvwG+qR5UngpHf0rm4GuBnAfNQ11LvF9BmvudKw++CSY7SJRvq/0QNzKvJ3mBWPcMBE0iDgwTXROq1sqRpAI2oA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TJirtHLe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 529741F000E9;
+	Wed, 20 May 2026 17:52:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779302511;
-	bh=sNpR3Q0vE5/tXnCr1PAFAad+vFOHCtcNrpDLO6CZl2E=;
+	s=korg; t=1779299576;
+	bh=V3gL7yQ1zytJKO4OiZB384DR0aipPT4SXGLuJ9weTvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kqoxq4+ObirxzLEg+EqXye2MYqeVa2sL16eCw4GqA4c33AmKnMWXllU2Vg4litXJz
-	 P1BVUlnx1auP8ypNbUypJ4dr+ARGUu/7R1Bhfzd+JCnDMc54F3Z3q0OOV7i4jTLqnl
-	 0kL915awRCXdo+aA6tT5e4mUyadpsAyn+SSnaXi8=
+	b=TJirtHLesgFvvtTqIOHM0BMpkx4qJRYM7N3Cvcs03G2ytR9LVjeWee9ztSkWL6hKU
+	 nDfo0ARje5mlO6sOJtmsOwmIVegxH824b5bqNO09SHyZ05tbzukpSzJO/k24e/mPZB
+	 6hWDM2i5pIHIiu8uIGUwUmCdP8+majGD44/aRBRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Jorge Marques <jorge.marques@analog.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Yinjie Yao <yinjie.yao@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 258/508] i3c: master: Fix error codes at send_ccc_cmd
+Subject: [PATCH 6.18 798/957] drm/amdgpu/vcn: set no_user_fence for VCN v2.0 enc/dec rings
 Date: Wed, 20 May 2026 18:21:21 +0200
-Message-ID: <20260520162104.236146409@linuxfoundation.org>
+Message-ID: <20260520162151.869491333@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-References: <20260520162058.573354582@linuxfoundation.org>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+References: <20260520162134.554764788@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,160 +64,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253141-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-252036-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:email,intel.com:email,msgid.link:url,analog.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linaro.org:email]
-X-Rspamd-Queue-Id: 6353F5988B0
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 0321759556A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jorge Marques <jorge.marques@analog.com>
+From: Yinjie Yao <yinjie.yao@amd.com>
 
-[ Upstream commit ef8b5229348f0719aca557c4ca5530630ae4d134 ]
+[ Upstream commit 8d80b293b41fcb5e9396db93e788b0f4ebcbafb7 ]
 
-i3c_master_send_ccc_cmd_locked() would propagate cmd->err (positive,
-Mx codes) to the ret variable, cascading down multiple methods until
-reaching methods that explicitly stated they would return 0 on success
-or negative error code. For example, the call chain:
+VCN encoder and decoder rings do not support 64-bit user fence writes,
+reject CS submissions with user fences.
 
-  i3c_device_enable_ibi <- i3c_dev_enable_ibi_locked <-
-  master->ops.enable_ibi <- i3c_master_enec_locked <-
-  i3c_master_enec_disec_locked <- i3c_master_send_ccc_cmd_locked
-
-Fix this by returning the ret value, callers can still read the cmd->err
-value if ret is negative.
-
-All corner cases where the Mx codes do need to be handled individually,
-are resolved in previous commits. Those corner cases are all scenarios
-when I3C_ERROR_M2 is expected and acceptable.
-The prerequisite patches for the fix are:
-
-  i3c: master: Move rstdaa error suppression
-  i3c: master: Move entdaa error suppression
-  i3c: master: Move bus_init error suppression
-
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/linux-iio/aYXvT5FW0hXQwhm_@stanley.mountain/
-Fixes: 3a379bbcea0a ("i3c: Add core I3C infrastructure")
-Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Jorge Marques <jorge.marques@analog.com>
-Link: https://patch.msgid.link/20260323-ad4062-positive-error-fix-v3-4-30bdc68004be@analog.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 1b61de45dfaf ("drm/amdgpu: add initial VCN2.0 support (v2)")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit e2b5499fca55f1a32960a311bbb62e35891eaf73)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master.c | 32 +++++++++++++-------------------
- 1 file changed, 13 insertions(+), 19 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-index f74ef65d257d7..84fe0de5a9bc7 100644
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -792,11 +792,17 @@ static void i3c_ccc_cmd_init(struct i3c_ccc_cmd *cmd, bool rnw, u8 id,
- 	cmd->err = I3C_ERROR_UNKNOWN;
- }
- 
-+/**
-+ * i3c_master_send_ccc_cmd_locked() - send a CCC (Common Command Codes)
-+ * @master: master used to send frames on the bus
-+ * @cmd: command to send
-+ *
-+ * Return: 0 in case of success, or a negative error code otherwise.
-+ *         I3C Mx error codes are stored in cmd->err.
-+ */
- static int i3c_master_send_ccc_cmd_locked(struct i3c_master_controller *master,
- 					  struct i3c_ccc_cmd *cmd)
- {
--	int ret;
--
- 	if (!cmd || !master)
- 		return -EINVAL;
- 
-@@ -814,15 +820,7 @@ static int i3c_master_send_ccc_cmd_locked(struct i3c_master_controller *master,
- 	    !master->ops->supports_ccc_cmd(master, cmd))
- 		return -ENOTSUPP;
- 
--	ret = master->ops->send_ccc_cmd(master, cmd);
--	if (ret) {
--		if (cmd->err != I3C_ERROR_UNKNOWN)
--			return cmd->err;
--
--		return ret;
--	}
--
--	return 0;
-+	return master->ops->send_ccc_cmd(master, cmd);
- }
- 
- static struct i2c_dev_desc *
-@@ -926,8 +924,7 @@ static int i3c_master_rstdaa_locked(struct i3c_master_controller *master,
-  *
-  * This function must be called with the bus lock held in write mode.
-  *
-- * Return: 0 in case of success, a positive I3C error code if the error is
-- * one of the official Mx error codes, and a negative error code otherwise.
-+ * Return: 0 in case of success, or a negative error code otherwise.
-  */
- int i3c_master_entdaa_locked(struct i3c_master_controller *master)
- {
-@@ -979,8 +976,7 @@ static int i3c_master_enec_disec_locked(struct i3c_master_controller *master,
-  *
-  * This function must be called with the bus lock held in write mode.
-  *
-- * Return: 0 in case of success, a positive I3C error code if the error is
-- * one of the official Mx error codes, and a negative error code otherwise.
-+ * Return: 0 in case of success, or a negative error code otherwise.
-  */
- int i3c_master_disec_locked(struct i3c_master_controller *master, u8 addr,
- 			    u8 evts)
-@@ -1000,8 +996,7 @@ EXPORT_SYMBOL_GPL(i3c_master_disec_locked);
-  *
-  * This function must be called with the bus lock held in write mode.
-  *
-- * Return: 0 in case of success, a positive I3C error code if the error is
-- * one of the official Mx error codes, and a negative error code otherwise.
-+ * Return: 0 in case of success, or a negative error code otherwise.
-  */
- int i3c_master_enec_locked(struct i3c_master_controller *master, u8 addr,
- 			   u8 evts)
-@@ -1026,8 +1021,7 @@ EXPORT_SYMBOL_GPL(i3c_master_enec_locked);
-  *
-  * This function must be called with the bus lock held in write mode.
-  *
-- * Return: 0 in case of success, a positive I3C error code if the error is
-- * one of the official Mx error codes, and a negative error code otherwise.
-+ * Return: 0 in case of success, or a negative error code otherwise.
-  */
- int i3c_master_defslvs_locked(struct i3c_master_controller *master)
- {
+diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c b/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c
+index e35fae9cdaf66..0442bfcfd384d 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c
+@@ -2113,6 +2113,7 @@ static const struct amd_ip_funcs vcn_v2_0_ip_funcs = {
+ static const struct amdgpu_ring_funcs vcn_v2_0_dec_ring_vm_funcs = {
+ 	.type = AMDGPU_RING_TYPE_VCN_DEC,
+ 	.align_mask = 0xf,
++	.no_user_fence = true,
+ 	.secure_submission_supported = true,
+ 	.get_rptr = vcn_v2_0_dec_ring_get_rptr,
+ 	.get_wptr = vcn_v2_0_dec_ring_get_wptr,
+@@ -2145,6 +2146,7 @@ static const struct amdgpu_ring_funcs vcn_v2_0_enc_ring_vm_funcs = {
+ 	.type = AMDGPU_RING_TYPE_VCN_ENC,
+ 	.align_mask = 0x3f,
+ 	.nop = VCN_ENC_CMD_NO_OP,
++	.no_user_fence = true,
+ 	.get_rptr = vcn_v2_0_enc_ring_get_rptr,
+ 	.get_wptr = vcn_v2_0_enc_ring_get_wptr,
+ 	.set_wptr = vcn_v2_0_enc_ring_set_wptr,
 -- 
 2.53.0
 
