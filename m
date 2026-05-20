@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-250233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-250238-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wHWOO0zkDWpN4gUAu9opvQ
-	(envelope-from <stable+bounces-250233-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:41:49 +0200
+	id MDmLKV/tDWpb4wUAu9opvQ
+	(envelope-from <stable+bounces-250238-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:20:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69F4359242A
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 18:41:48 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2AA15935FE
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 19:20:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 53E49306B578
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:36:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AC0C6304E7D4
+	for <lists+stable@lfdr.de>; Wed, 20 May 2026 16:36:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8EFC3B27D8;
-	Wed, 20 May 2026 16:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F53E3A383C;
+	Wed, 20 May 2026 16:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oOmH7WMz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LXc/TjM5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0FD36A37D;
-	Wed, 20 May 2026 16:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C6E5335BBB;
+	Wed, 20 May 2026 16:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779294878; cv=none; b=k90C85RA3/XRtERmJz1Z82Z8QoYSeAXsK59F97dB5ngPNZQaBaIvAXROBfrU91g4g57ZepWiLO6nNGtNNu33R/B/4pBER7qW8eHH57gdfpn513MDMA45KpGvD2sQ8i9hUmxjT+U8+TyF/jXqZgoVvGtNIQF2HrDnK/ycXon4Z+8=
+	t=1779294891; cv=none; b=YY9XBnuecUiMNqJWXGHm20XQAgiAbicHxt1Ov3ig+eOwUScdA9LuREfivRdL1gQQtKRrZrGwFav5gC7SMEfuJanh6KWpTtZ16h4tuBaatWOCYOSxBZmxPixmBy9gqrR9Z2KFO5DsQTMQJW5cF4JHZk35PR5TrGk+qR7QqQOIq/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779294878; c=relaxed/simple;
-	bh=H+QPOWCIaEZb9zz4277qJ2a6/Auw0Bb8NvAGcXxpUIY=;
+	s=arc-20240116; t=1779294891; c=relaxed/simple;
+	bh=6kxe5JcAPeRX8cfEX+SwGzloNLWS1ie+q2oE++cFJFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QIXK9U89XDJ20RjKCtzuLbhD8h6TWyJMKU1+mMumMxL5FNztNVbQqtCNpbSu1Worb4nv7Akszyew1NDI2JFritdgXJJfsvO14sGBI+7qa8hdrdgGVyIA5YkBfEunwM0h+4Jm2iyibKvF8QiYcYAfIi362m+49+o0BfewMhERkgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oOmH7WMz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F3261F000E9;
-	Wed, 20 May 2026 16:34:36 +0000 (UTC)
+	 MIME-Version; b=hcszMY6T1SXTimCui05nlomcYSwcbPBxtg13Ys6/4fXCILivt6kllghZDHMrCOAZ8mVr4Vi2H/XS4dD/zv5DsFeou13L76MgEbloH7TuO+czqEAFrk3I6OxXC3Fa8K7D6p+njKTVJMQ6kWbY2/TWziy19zMrjElreryKaszTMDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LXc/TjM5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 702FF1F000E9;
+	Wed, 20 May 2026 16:34:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779294876;
-	bh=xwNbSoZTlDwiNjMl7ePOu9U2LFbVCKi54b1j1/F0iCs=;
+	s=korg; t=1779294889;
+	bh=3fk6HIo8yT2clCTDFMsgjf0wTnsAGEutiQCwAIDewnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oOmH7WMzE1uSnFyaxlsXXFdPwRFVop5ZMc2FcgtAHPpn08OUdFdQ+NuSNwzQXmX63
-	 dxehsqSm7oHOvIPcFA9lXAEHoQyQBXbfzC0E+MPbualxpURAnhYDMt5Lle2IiXh1/m
-	 Xavzj6wvH+smTXxSspTInMDpVIDTCe+o47ojDDI0=
+	b=LXc/TjM5iSCAXuJGU3Bk6PBRVPLbEfZzTypVrBsm6jTiHvclJtBkxFrhOrlzPVi+d
+	 uJa/L2P+Apl70AVek58kLIRdXrUCN/F1L4IhfT4rwyLcUzF9+E7ykq0qd38tij4juk
+	 SIHoGhmmR7gJkcXGztzJcCxkRr6sokPqpVffOV+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Anton Protopopov <a.s.protopopov@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 0169/1146] bpf: Remove static qualifier from local subprog pointer
-Date: Wed, 20 May 2026 18:06:59 +0200
-Message-ID: <20260520162152.114127361@linuxfoundation.org>
+Subject: [PATCH 7.0 0170/1146] mptcp: better mptcp-level RTT estimator
+Date: Wed, 20 May 2026 18:07:00 +0200
+Message-ID: <20260520162152.136492440@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260520162148.390695140@linuxfoundation.org>
 References: <20260520162148.390695140@linuxfoundation.org>
@@ -65,36 +66,34 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-250233-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,iogearbox.net,gmail.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-250238-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 69F4359242A
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: E2AA15935FE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,50 +101,266 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 9dba0ae973e75051b63cbdd5b3532bb24aa63b3f ]
+[ Upstream commit d2000361e4ddf5047d660a902a3b0ed7520be1e5 ]
 
-The local subprog pointer in create_jt() and visit_abnormal_return_insn()
-was declared static.
+The current MPTCP-level RTT estimator has several issues. On high speed
+links, the MPTCP-level receive buffer auto-tuning happens with a
+frequency well above the TCP-level's one. That in turn can cause
+excessive/unneeded receive buffer increase.
 
-It is unconditionally assigned via bpf_find_containing_subprog() before
-every use. Thus, the static qualifier serves no purpose and rather creates
-confusion. Just remove it.
+On such links, the initial rtt_us value is considerably higher than the
+actual delay, and the current mptcp_rcv_space_adjust() updates
+msk->rcvq_space.rtt_us with a period equal to the such field previous
+value. If the initial rtt_us is 40ms, its first update will happen after
+40ms, even if the subflows see actual RTT orders of magnitude lower.
 
-Fixes: e40f5a6bf88a ("bpf: correct stack liveness for tail calls")
-Fixes: 493d9e0d6083 ("bpf, x86: add support for indirect jumps")
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Anton Protopopov <a.s.protopopov@gmail.com>
-Link: https://lore.kernel.org/r/20260408191242.526279-3-daniel@iogearbox.net
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Additionally:
+- setting the msk RTT to the maximum among all the subflows RTTs makes
+  DRS constantly overshooting the rcvbuf size when a subflow has
+  considerable higher latency than the other(s).
+
+- during unidirectional bulk transfers with multiple active subflows,
+  the TCP-level RTT estimator occasionally sees considerably higher
+  value than the real link delay, i.e. when the packet scheduler reacts
+  to an incoming ACK on given subflow pushing data on a different
+  subflow.
+
+- currently inactive but still open subflows (i.e. switched to backup
+  mode) are always considered when computing the msk-level RTT.
+
+Address the all the issues above with a more accurate RTT estimation
+strategy: the MPTCP-level RTT is set to the minimum of all the subflows
+actually feeding data into the MPTCP receive buffer, using a small
+sliding window.
+
+While at it, also use EWMA to compute the msk-level scaling_ratio, to
+that MPTCP can avoid traversing the subflow list is
+mptcp_rcv_space_adjust().
+
+Use some care to avoid updating msk and ssk level fields too often.
+
+Fixes: a6b118febbab ("mptcp: add receive buffer auto-tuning")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260407-net-next-mptcp-reduce-rbuf-v2-1-0d1d135bf6f6@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/trace/events/mptcp.h |  2 +-
+ net/mptcp/protocol.c         | 63 ++++++++++++++++++++----------------
+ net/mptcp/protocol.h         | 37 ++++++++++++++++++++-
+ 3 files changed, 72 insertions(+), 30 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 71c078d18683a..bf5e146692e0a 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -18764,7 +18764,7 @@ static struct bpf_iarray *jt_from_subprog(struct bpf_verifier_env *env,
- static struct bpf_iarray *
- create_jt(int t, struct bpf_verifier_env *env)
- {
--	static struct bpf_subprog_info *subprog;
-+	struct bpf_subprog_info *subprog;
- 	int subprog_start, subprog_end;
- 	struct bpf_iarray *jt;
- 	int i;
-@@ -18839,7 +18839,7 @@ static int visit_gotox_insn(int t, struct bpf_verifier_env *env)
-  */
- static int visit_abnormal_return_insn(struct bpf_verifier_env *env, int t)
- {
--	static struct bpf_subprog_info *subprog;
-+	struct bpf_subprog_info *subprog;
- 	struct bpf_iarray *jt;
+diff --git a/include/trace/events/mptcp.h b/include/trace/events/mptcp.h
+index 269d949b20254..04521acba4832 100644
+--- a/include/trace/events/mptcp.h
++++ b/include/trace/events/mptcp.h
+@@ -219,7 +219,7 @@ TRACE_EVENT(mptcp_rcvbuf_grow,
+ 		__be32 *p32;
  
- 	if (env->insn_aux_data[t].jt)
+ 		__entry->time = time;
+-		__entry->rtt_us = msk->rcvq_space.rtt_us >> 3;
++		__entry->rtt_us = mptcp_rtt_us_est(msk) >> 3;
+ 		__entry->copied = msk->rcvq_space.copied;
+ 		__entry->inq = mptcp_inq_hint(sk);
+ 		__entry->space = msk->rcvq_space.space;
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 1a73d2461c7b9..8ef967aa80a0b 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -879,6 +879,32 @@ static bool move_skbs_to_msk(struct mptcp_sock *msk, struct sock *ssk)
+ 	return moved;
+ }
+ 
++static void mptcp_rcv_rtt_update(struct mptcp_sock *msk,
++				 struct mptcp_subflow_context *subflow)
++{
++	const struct tcp_sock *tp = tcp_sk(subflow->tcp_sock);
++	u32 rtt_us = tp->rcv_rtt_est.rtt_us;
++	int id;
++
++	/* Update once per subflow per rcvwnd to avoid touching the msk
++	 * too often.
++	 */
++	if (!rtt_us || tp->rcv_rtt_est.seq == subflow->prev_rtt_seq)
++		return;
++
++	subflow->prev_rtt_seq = tp->rcv_rtt_est.seq;
++
++	/* Pairs with READ_ONCE() in mptcp_rtt_us_est(). */
++	id = msk->rcv_rtt_est.next_sample;
++	WRITE_ONCE(msk->rcv_rtt_est.samples[id], rtt_us);
++	if (++msk->rcv_rtt_est.next_sample == MPTCP_RTT_SAMPLES)
++		msk->rcv_rtt_est.next_sample = 0;
++
++	/* EWMA among the incoming subflows */
++	msk->scaling_ratio = ((msk->scaling_ratio << 3) - msk->scaling_ratio +
++			     tp->scaling_ratio) >> 3;
++}
++
+ void mptcp_data_ready(struct sock *sk, struct sock *ssk)
+ {
+ 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
+@@ -892,6 +918,7 @@ void mptcp_data_ready(struct sock *sk, struct sock *ssk)
+ 		return;
+ 
+ 	mptcp_data_lock(sk);
++	mptcp_rcv_rtt_update(msk, subflow);
+ 	if (!sock_owned_by_user(sk)) {
+ 		/* Wake-up the reader only for in-sequence data */
+ 		if (move_skbs_to_msk(msk, ssk) && mptcp_epollin_ready(sk))
+@@ -2077,7 +2104,6 @@ static void mptcp_rcv_space_init(struct mptcp_sock *msk, const struct sock *ssk)
+ 
+ 	msk->rcvspace_init = 1;
+ 	msk->rcvq_space.copied = 0;
+-	msk->rcvq_space.rtt_us = 0;
+ 
+ 	/* initial rcv_space offering made to peer */
+ 	msk->rcvq_space.space = min_t(u32, tp->rcv_wnd,
+@@ -2088,15 +2114,15 @@ static void mptcp_rcv_space_init(struct mptcp_sock *msk, const struct sock *ssk)
+ 
+ /* receive buffer autotuning.  See tcp_rcv_space_adjust for more information.
+  *
+- * Only difference: Use highest rtt estimate of the subflows in use.
++ * Only difference: Use lowest rtt estimate of the subflows in use, see
++ * mptcp_rcv_rtt_update() and mptcp_rtt_us_est().
+  */
+ static void mptcp_rcv_space_adjust(struct mptcp_sock *msk, int copied)
+ {
+ 	struct mptcp_subflow_context *subflow;
+ 	struct sock *sk = (struct sock *)msk;
+-	u8 scaling_ratio = U8_MAX;
+-	u32 time, advmss = 1;
+-	u64 rtt_us, mstamp;
++	u32 time, rtt_us;
++	u64 mstamp;
+ 
+ 	msk_owned_by_me(msk);
+ 
+@@ -2111,29 +2137,8 @@ static void mptcp_rcv_space_adjust(struct mptcp_sock *msk, int copied)
+ 	mstamp = mptcp_stamp();
+ 	time = tcp_stamp_us_delta(mstamp, READ_ONCE(msk->rcvq_space.time));
+ 
+-	rtt_us = msk->rcvq_space.rtt_us;
+-	if (rtt_us && time < (rtt_us >> 3))
+-		return;
+-
+-	rtt_us = 0;
+-	mptcp_for_each_subflow(msk, subflow) {
+-		const struct tcp_sock *tp;
+-		u64 sf_rtt_us;
+-		u32 sf_advmss;
+-
+-		tp = tcp_sk(mptcp_subflow_tcp_sock(subflow));
+-
+-		sf_rtt_us = READ_ONCE(tp->rcv_rtt_est.rtt_us);
+-		sf_advmss = READ_ONCE(tp->advmss);
+-
+-		rtt_us = max(sf_rtt_us, rtt_us);
+-		advmss = max(sf_advmss, advmss);
+-		scaling_ratio = min(tp->scaling_ratio, scaling_ratio);
+-	}
+-
+-	msk->rcvq_space.rtt_us = rtt_us;
+-	msk->scaling_ratio = scaling_ratio;
+-	if (time < (rtt_us >> 3) || rtt_us == 0)
++	rtt_us = mptcp_rtt_us_est(msk);
++	if (rtt_us == U32_MAX || time < (rtt_us >> 3))
+ 		return;
+ 
+ 	if (msk->rcvq_space.copied <= msk->rcvq_space.space)
+@@ -3000,6 +3005,7 @@ static void __mptcp_init_sock(struct sock *sk)
+ 	msk->timer_ival = TCP_RTO_MIN;
+ 	msk->scaling_ratio = TCP_DEFAULT_SCALING_RATIO;
+ 	msk->backlog_len = 0;
++	mptcp_init_rtt_est(msk);
+ 
+ 	WRITE_ONCE(msk->first, NULL);
+ 	inet_csk(sk)->icsk_sync_mss = mptcp_sync_mss;
+@@ -3446,6 +3452,7 @@ static int mptcp_disconnect(struct sock *sk, int flags)
+ 	msk->bytes_retrans = 0;
+ 	msk->rcvspace_init = 0;
+ 	msk->fastclosing = 0;
++	mptcp_init_rtt_est(msk);
+ 
+ 	/* for fallback's sake */
+ 	WRITE_ONCE(msk->ack_seq, 0);
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index ec15e503da8b7..d19c54761c27a 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -268,6 +268,13 @@ struct mptcp_data_frag {
+ 	struct page *page;
+ };
+ 
++/* Arbitrary compromise between as low as possible to react timely to subflow
++ * close event and as big as possible to avoid being fouled by biased large
++ * samples due to peer sending data on a different subflow WRT to the incoming
++ * ack.
++ */
++#define MPTCP_RTT_SAMPLES	5
++
+ /* MPTCP connection sock */
+ struct mptcp_sock {
+ 	/* inet_connection_sock must be the first member */
+@@ -340,11 +347,17 @@ struct mptcp_sock {
+ 				 */
+ 	struct mptcp_pm_data	pm;
+ 	struct mptcp_sched_ops	*sched;
++
++	/* Most recent rtt_us observed by in use incoming subflows. */
++	struct {
++		u32	samples[MPTCP_RTT_SAMPLES];
++		u32	next_sample;
++	} rcv_rtt_est;
++
+ 	struct {
+ 		int	space;	/* bytes copied in last measurement window */
+ 		int	copied; /* bytes copied in this measurement window */
+ 		u64	time;	/* start time of measurement window */
+-		u64	rtt_us; /* last maximum rtt of subflows */
+ 	} rcvq_space;
+ 	u8		scaling_ratio;
+ 	bool		allow_subflows;
+@@ -422,6 +435,27 @@ static inline struct mptcp_data_frag *mptcp_send_head(const struct sock *sk)
+ 	return msk->first_pending;
+ }
+ 
++static inline void mptcp_init_rtt_est(struct mptcp_sock *msk)
++{
++	int i;
++
++	for (i = 0; i < MPTCP_RTT_SAMPLES; ++i)
++		msk->rcv_rtt_est.samples[i] = U32_MAX;
++	msk->rcv_rtt_est.next_sample = 0;
++	msk->scaling_ratio = TCP_DEFAULT_SCALING_RATIO;
++}
++
++static inline u32 mptcp_rtt_us_est(const struct mptcp_sock *msk)
++{
++	u32 rtt_us = READ_ONCE(msk->rcv_rtt_est.samples[0]);
++	int i;
++
++	/* Lockless access of collected samples. */
++	for (i = 1; i < MPTCP_RTT_SAMPLES; ++i)
++		rtt_us = min(rtt_us, READ_ONCE(msk->rcv_rtt_est.samples[i]));
++	return rtt_us;
++}
++
+ static inline struct mptcp_data_frag *mptcp_send_next(struct sock *sk)
+ {
+ 	struct mptcp_sock *msk = mptcp_sk(sk);
+@@ -523,6 +557,7 @@ struct mptcp_subflow_context {
+ 	u32	map_data_len;
+ 	__wsum	map_data_csum;
+ 	u32	map_csum_len;
++	u32	prev_rtt_seq;
+ 	u32	request_mptcp : 1,  /* send MP_CAPABLE */
+ 		request_join : 1,   /* send MP_JOIN */
+ 		request_bkup : 1,
 -- 
 2.53.0
 
