@@ -1,157 +1,199 @@
-Return-Path: <stable+bounces-253509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253510-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SPBoO8XxDmqmDQYAu9opvQ
-	(envelope-from <stable+bounces-253509-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 13:51:33 +0200
+	id uH2pNBXyDmqmDQYAu9opvQ
+	(envelope-from <stable+bounces-253510-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 13:52:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EAEB5A442C
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 13:51:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 839775A446F
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 13:52:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C9B91304DAEC
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 11:45:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BAF9E305875D
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 11:47:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92B153C5827;
-	Thu, 21 May 2026 11:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313913C5845;
+	Thu, 21 May 2026 11:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="YlZVLkwU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iyEqW6MM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF78C3BFE4D;
-	Thu, 21 May 2026 11:45:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.128
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB9333AD9D;
+	Thu, 21 May 2026 11:47:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779363910; cv=none; b=eG8ZpiPVN/kSpgnH6d0ufrj4gJwu/8+GAzJH/e96/IuP0Gz98ULjCU+CmuxDCOf0PhFbhYnmjYEcd3GJULlVfXgZgkxPA2kgkIS/oYiaFqiwMilZZ6E2vZdscMWj5/R7IW6d9ebnKzidQ4oCGupm0SFVWSAK5ZNisqbRquaGAGg=
+	t=1779364037; cv=none; b=NduD840F8eyQrq7UiZmAA3f2LxMB5RDjlxirS6eOQyzmmSqtYmCjNwJfmob39hHs+wKmcuxSd8D7SrcLXHRDrWcsOAsPcgLMIvE7otJK9Fwj93aPuNBFtIEkmXll1DunkvMOLNuscGezQgMKWT7YN6ahdh2Ewx/9mWLIE9orvl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779363910; c=relaxed/simple;
-	bh=7h37GX1wcmywvJ3Wzq3s1EKqDrJo/hFwIrKJhy7/0rY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sVWuRWu/zLTw8dDIdRKzcqrCcLOxIqXbwrOe/lhmvw+jU+rJBkXFuK+KLXwS/W/hiAljC1ERc5ho4kf33X6tCHlC2jyBi3QF71x4OAD1kf1xjEhzrNH6HKXCu8P4t7LbBzj5WV9KCs4rGoUQ7yfNEk9kRyjvh8INRwPGAhEZROE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=YlZVLkwU; arc=none smtp.client-ip=54.254.200.128
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1779363822;
-	bh=Mg94N7FQgywmG02cYGRlFlcn0lX/r90w5Bzk+bIY0p0=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=YlZVLkwUBG+O7m4WewrBymBNanpk2MeUYq2r2YThsZ/Kayz0ZlByVo25+2qCBQ/+t
-	 8KqeNUw9mZAzYNsMJy8mJIsoeUPQXDZrycSqPXwCvuApDeoRRwQROp+usW/8GMPjEj
-	 8VT7ok1QN4/wuOYzPSbrOBLfYcU5JfEvdqCx8qmI=
-X-QQ-mid: zesmtpgz8t1779363816t1905b49e
-X-QQ-Originating-IP: E4V5oVKH4h9VuNW3JnH52ZODYyn7jcOt/9iCo0lNCIU=
-Received: from localhost.localdomain ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 21 May 2026 19:43:33 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 7367027533482139346
-EX-QQ-RecipientCnt: 21
-From: Wentao Guan <guanwentao@uniontech.com>
-To: gregkh@linuxfoundation.org
-Cc: achill@achill.org,
-	akpm@linux-foundation.org,
-	broonie@kernel.org,
-	conor@kernel.org,
-	f.fainelli@gmail.com,
-	hargar@microsoft.com,
-	jonathanh@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	linux@roeck-us.net,
-	lkft-triage@lists.linaro.org,
-	patches@kernelci.org,
-	patches@lists.linux.dev,
-	pavel@nabladev.com,
-	rwarsow@gmx.de,
-	shuah@kernel.org,
-	sr@sladewatkins.com,
-	stable@vger.kernel.org,
-	sudipm.mukherjee@gmail.com,
-	torvalds@linux-foundation.org,
-	Wentao Guan <guanwentao@uniontech.com>
-Subject: Re: [PATCH 6.6 000/474] 6.6.140-rc1 review
-Date: Thu, 21 May 2026 19:41:49 +0800
-Message-Id: <20260521114148.1195326-1-guanwentao@uniontech.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20260515154715.053014143@linuxfoundation.org>
-References: <20260515154715.053014143@linuxfoundation.org>
+	s=arc-20240116; t=1779364037; c=relaxed/simple;
+	bh=wjDDuXm6lRHzIfTgKnUcxIbVfI88qnABg9fUBKpi6T4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KYFmI2i9fl2WVmhijE7eqIXviBaTau5oKLCL+IubmAKd3TmGhrPHRry+xOpbU/fr5cuz+7Sk3pS8bSUi0GItJQ8t6X/Qgyq4DiWTm4KkLsXWw+f5MrwtyhQV0xgJepBE0pLJG5haBXmVViCGl4v6M8LLnP/Q/CTLDZR345YUvTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iyEqW6MM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509051F000E9;
+	Thu, 21 May 2026 11:47:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779364035;
+	bh=KdJOxnT31Y8Esk9ERzVherPF9L0muzqHiiXC+LpqWW4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=iyEqW6MM3LKwURXJBylBpaDn4toeZ4v80p+KbeRnoVx0OdZXAcCHnHx4wmCOOGTnn
+	 ZSIomndell9eSfreFE+SrRyjrxVBSqYYDQ7qegMu8e4JX5LmqE3XnwPeTM1h0LX/5l
+	 B6fUi3CEO/EONCH/irn/LKCwgILiMiYlBUm1DXNU2TUdhrFGkqCpo9DES6MMGggUAu
+	 E0T+n1vfKsfD8HAi3JQ3DNQeIORIt4y5h8YlMFeMq9fYsFUYCNQGAd+pdNqh7QMHnu
+	 BUEKijWlevY6/Re/G3UWcQoue04N6o1yN4b1TRxBMciHSqDo9/I6N+REOVo/GUaxqH
+	 wZ6W1vFB+1xow==
+Date: Thu, 21 May 2026 12:47:08 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Li Xinyu <xinyuili@126.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linusw@kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3] iio: gyro: mpu3050: fix missing
+ iio_trigger_unregister and irq cleanup
+Message-ID: <20260521124708.177ac09b@jic23-huawei>
+In-Reply-To: <20260520152236.2308686-1-xinyuili@126.com>
+References: <20260520024153.1647951-1-xinyuili@126.com>
+	<20260520152236.2308686-1-xinyuili@126.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: NbAqzpwV8myl6G0oQv4muJuiK97uKZ4I9dPP87W2NnlzUpHekHCgPI4t
-	3XIvOpknQtE6AUfJwITBIL25GGR8iegcjLfizu8q2dKOKc8C2UtuxMOFniZ1q6liRDfaJpB
-	UQOEB+7+YUCawCb/nEYBjkd/GwyDdgV+SXX78ocz4c9oeqCgK5wGnzubzbx7tj99xjvmdMr
-	vXj5vd9JvONj88BvC1B/NHL5b/QJLtJvCcwoB+xgfH2zM/uQ8RvsWTVWfjT+4zenIfBDGkt
-	b976eqwSdnyAjFbhpPoZOY7ujNSmKogjh6QbXe2n/y7tuhicpBrbazG+bvRoimruuO5VxSb
-	VXTt5xtU0qUKjIqPAK3vNN9AJtnaawruAbvDF/Nk2dJpfRxD32wA638FEcYqdbzIk1AQXQZ
-	MoakHpHKOOpmeyozIWyY2zCA9Otd9D+w17RED0fUyZCGDqMCEMAnPEuibesvuqpQF1SgeO0
-	WjNoMIh4gH/CR5vmIkhoAxny3H5noqe3nHqbelgiBpAY/l+BZCnLLMkbrwsbERq2k8hy7ym
-	Jk6gP/lcY/U4OBsti1w3e4wZpXmwEVqrBBFGDzMLcAwcstGfApmwnjlN5uExC2isM/Oq28n
-	fmhAc/FySp5OSgAj88ounx2+WJjAC8WcT6wi8ZWqiftuoQ9iw2jn5Mtuw16t6Ik9nlvQDRe
-	FkrHUpWNzrb0hkEZmbnEY6yfFAA+eWfkCCi93fs/UsMNtIXio7c8iyJiaBje2IP20oq2qcd
-	WkZUmDojC279Nml73A2mHDHwMOqW902/HcccELDN7lrB2amyQ2rYtriuKQGSW+u0KgnN7EB
-	Eg1foB5YVEvxLvhg9PswuDJLxrfw6aRgAd03Sa/D/692CHJxH6jrkaxzgRVejT6BT/rYaXn
-	TTvEm0KzKLxcFr9OCHoWO5qadCUnkmGa2EFNc3oNnPGWPuqG5bSi6kV5Bnz2RDPhJZ4qIkE
-	mHJyFEEyUiSh2hmh+pupStWG1vzhXEQMYuWzV/MorTUm+X8LQmaPe77lXL3rSm59xu3eYDh
-	+CYrcyd58MdviLWPBseQBITw1dHP0TH4MT7gCLKeWMAo6M6PpVWo9x4LPlmSM1ZYaRh0VTU
-	KOjdtMGQqgZ
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
-X-QQ-RECHKSPAM: 0
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-253509-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[uniontech.com:+];
+	FREEMAIL_TO(0.00)[126.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com,uniontech.com];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-253510-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 8EAEB5A442C
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jic23@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 839775A446F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Build tested in our x86,arm64,loongarch config successfully without error.
+On Wed, 20 May 2026 23:22:36 +0800
+Li Xinyu <xinyuili@126.com> wrote:
 
-Failed in riscv config,
-you can revert af7b502c916a4950d697b67f5e39c19cfeb5da4b to build ok. 
-Tested-by: Wentao Guan <guanwentao@uniontech.com>
+> mpu3050_trigger_probe() registers the DRDY trigger with
+> iio_trigger_register() but neither mpu3050_common_remove() nor
+> the error path in mpu3050_common_probe() calls
+> iio_trigger_unregister(). On module unload or probe failure the
+> trigger remains in the global trigger list while its memory is
+> freed by devm, leaving a dangling entry.
+> 
+> Also fix a use-after-free risk: when iio_trigger_register() fails,
+> mpu3050->irq remained set to a non-zero value, which would cause
+> mpu3050_common_remove() to attempt a double-free of the IRQ and
+> an unregister of a never-registered trigger. Clear mpu3050->irq
+> in the error path to prevent this.
+> 
+> Revert the v2 devm approach as requested by Jonathan: the driver
+> mixes devm and non-devm resource management, so the minimal fix
+> is to add the missing unregister calls and keep the existing
+> manual resource management style.
+> 
+> Fixes: 3904b28efb2c ("iio: gyro: Add driver for the MPU-3050 gyroscope")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Li Xinyu <xinyuili@126.com>
+> ---
+> Changes in v3:
+> - Thanks Jonathan for the feedback on v2. Instead of mixing devm
+>   with non-devm resource management in probe, revert to plain
+>   iio_trigger_register() and add the missing iio_trigger_unregister()
+>   calls in the error path and remove callback.
+> - Also noticed that mpu3050->irq was set but not cleared when
+>   iio_trigger_register() fails in trigger_probe, which would
+>   cause a double-free on module unload. Set mpu3050->irq = 0
+>   in the error path to prevent this.
 
-BRs
-Wentao Guan
+This is interesting. I wonder why we paper over the failed trigger
+registration.   Generally that's an error case that should
+result in the driver not loading.
 
+The mix of devm and non devm in iio_trigger_register() is also
+nasty.
 
-Log:
-arch/riscv/net/bpf_jit_comp64.c: In function ‘arch_prepare_bpf_trampoline’:
-arch/riscv/net/bpf_jit_comp64.c:1064:9: error: implicit declaration of function ‘bpf_flush_icache’ [-Werror=implicit-function-declaration]
- 1064 |         bpf_flush_icache(ctx.insns, ctx.insns + ctx.ninsns);
-      |         ^~~~~~~~~~~~~~~~
-cc1: some warnings being treated as errors
+Linus W, I think this was your code, any idea if we actually need
+to do that and can't just fail?  If we can modify it to fail
+I'd rather do that and avoid using ->irq as a flag to indicate
+if we successfully registered or not
+
+> 
+> Changes in v2:
+> - Fixed the name format in Signed-off-by. Thanks Maxime for
+>   catching this.
+> ---
+>  drivers/iio/gyro/mpu3050-core.c | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/iio/gyro/mpu3050-core.c b/drivers/iio/gyro/mpu3050-core.c
+> index bcfa83a46737..459d02aa3d18 100644
+> --- a/drivers/iio/gyro/mpu3050-core.c
+> +++ b/drivers/iio/gyro/mpu3050-core.c
+> @@ -1127,7 +1127,7 @@ static int mpu3050_trigger_probe(struct iio_dev *indio_dev, int irq)
+>  	mpu3050->trig->ops = &mpu3050_trigger_ops;
+>  	iio_trigger_set_drvdata(mpu3050->trig, indio_dev);
+>  
+> -	ret = devm_iio_trigger_register(mpu3050->dev, mpu3050->trig);
+> +	ret = iio_trigger_register(mpu3050->trig);
+>  	if (ret)
+>  		goto err_iio_trigger;
+>  
+> @@ -1137,6 +1137,7 @@ static int mpu3050_trigger_probe(struct iio_dev *indio_dev, int irq)
+>  
+>  err_iio_trigger:
+>  	free_irq(mpu3050->irq, mpu3050->trig);
+> +	mpu3050->irq = 0;
+>  
+>  	return ret;
+>  }
+> @@ -1260,8 +1261,10 @@ int mpu3050_common_probe(struct device *dev,
+>  	pm_runtime_get_sync(dev);
+>  	pm_runtime_put_noidle(dev);
+>  	pm_runtime_disable(dev);
+> -	if (irq)
+> +	if (mpu3050->irq) {
+> +		iio_trigger_unregister(mpu3050->trig);
+>  		free_irq(mpu3050->irq, mpu3050->trig);
+> +	}
+>  	iio_triggered_buffer_cleanup(indio_dev);
+>  err_power_down:
+>  	mpu3050_power_down(mpu3050);
+> @@ -1278,8 +1281,10 @@ void mpu3050_common_remove(struct device *dev)
+>  	pm_runtime_get_sync(dev);
+>  	pm_runtime_put_noidle(dev);
+>  	pm_runtime_disable(dev);
+> -	if (mpu3050->irq)
+> +	if (mpu3050->irq) {
+> +		iio_trigger_unregister(mpu3050->trig);
+>  		free_irq(mpu3050->irq, mpu3050->trig);
+> +	}
+>  	iio_triggered_buffer_cleanup(indio_dev);
+>  	mpu3050_power_down(mpu3050);
+>  }
+
 
