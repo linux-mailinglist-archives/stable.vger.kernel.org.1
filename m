@@ -1,120 +1,163 @@
-Return-Path: <stable+bounces-253491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253492-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SLZKEVXQDmrOCQYAu9opvQ
-	(envelope-from <stable+bounces-253491-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 11:28:53 +0200
+	id IMrGIeDVDmr2CQYAu9opvQ
+	(envelope-from <stable+bounces-253492-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 11:52:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A88565A2545
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 11:28:52 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D44F5A2B32
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 11:52:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2924A30104B3
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 09:22:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 761DB30262E6
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 09:38:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC7536827E;
-	Thu, 21 May 2026 09:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 298F1377ED4;
+	Thu, 21 May 2026 09:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DPKbTav5"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="AmGn4Vjx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7573B3603D3;
-	Thu, 21 May 2026 09:22:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB9737756E
+	for <stable@vger.kernel.org>; Thu, 21 May 2026 09:37:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779355368; cv=none; b=blvV2MJPrCxKIjcn44AUbkoi/l1216MoeTubkQ9MvgLUB5SgLpTjVO0N4lf88cOgaGXZeudNVNQ/1pT5INjX7MVoLpxE4/g+zzvjo4vASUw/iFUdKh/YEFDJczXPY3hSajnwggCJKpShkg72AzOh8N8/sMnMqhCwR3gMS0vFhKg=
+	t=1779356275; cv=none; b=hO6/6h2mDVQ11dB/hrbyZQJaUrKgSoSbSdbTMNtdAqfoXWmYJ+klwX7O7dnRxqmmB1qgplsCV3NxCYehHjXY99d90+C6t8d6lIFQQWC0hN2asUFl+xn13N4NB0VMneAGyKGZjuRBUtmXbo8L/fZR6/9k6lugdj3xlgDBj3kPWeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779355368; c=relaxed/simple;
-	bh=3A6mIhmiPbTjFnkP8sK3cBDQRcntHVUyGfVZQzb9mL8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UacICMQDWQ6Lad+VGef4Oo7yGNElYuYPWckTJZJdjwBAN4OxFQotmyVavTJswZZMysqEoW+ukflurFzYHAzC4pdZUFM34apR6bMQF/tIXvLvhSCisYEtnLvGhsvyF619Ckh2nTLcdwR00SUkyhk/oBXw593zN29e4qnCT/KluTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DPKbTav5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B1D71F000E9;
-	Thu, 21 May 2026 09:22:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779355367;
-	bh=VzfAW+zwXfiknFx1cDoY0zHG5uJfaAfTzqgYO0QDee4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=DPKbTav5rdmqLfqnEW2A0Kat6i37bTHZ3mTdWMGdbmCEJOaQ++W6Y070QjEwkN3PS
-	 3SGY+Jk2wZuPaOylMGDfyEN8Vt1b6g7MvxMdZCBYTwOvHtzacVqkXZh4SN/Sdnzic+
-	 x1kVbD9VdrJZzNO09rM/l2K4Mnijn+IdfybPYoVY=
-Date: Thu, 21 May 2026 11:22:50 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: luka.gejak@linux.dev
-Cc: linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v6] staging: rtl8723bs: fix remote heap info disclosure
- and OOB reads
-Message-ID: <2026052142-impart-triumph-e4bd@gregkh>
-References: <20260514090525.6161-1-luka.gejak@linux.dev>
+	s=arc-20240116; t=1779356275; c=relaxed/simple;
+	bh=YqAQytJbYhQ39t3pkKct2Su+5H1G5e6obzCJjhI+d9o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GY+U18wJfD2VublsGBGFitwlIu3LmgXHMR0Lr1Cx7nGtPplq1MbxSEPENhgu86cu2zpLAfE3fdp8tkH8IlXArgyWG5OSI75VUNBV1BoYqBJU2W8KHWHDepE85Uf+awxae5ySRCqyXMjMDAs9mfp5VOuqyUSut5wkI5+rig8bFMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=AmGn4Vjx; arc=none smtp.client-ip=95.215.58.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779356271;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=q3HkDah9G3ZXvEMnDoovHGjAyQRejsoiaP7BkJegKqo=;
+	b=AmGn4Vjx+ulywScrk174lQ9+slQRI44UuUrK6HoHiI7FCvmgM4IwlrI7kqPz9osUiBHyUw
+	+vAbVgu1S+fgSxgjVQPsO2TqZI6YN39OY0dLoUgkxBYUEJz9bPKHyPPj95zMahsNY2+QdP
+	C1nO9gLpynXyZk1MDuKTzisQB087umM=
+From: Thorsten Blum <thorsten.blum@linux.dev>
+To: Peter Huewe <peterhuewe@gmx.de>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Colin Ian King <colin.i.king@gmail.com>,
+	Harald Hoyer <harald@redhat.com>
+Cc: Thorsten Blum <thorsten.blum@linux.dev>,
+	stable@vger.kernel.org,
+	linux-integrity@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] tpm: fix event_size output in tpm1_binary_bios_measurements_show
+Date: Thu, 21 May 2026 11:36:39 +0200
+Message-ID: <20260521093639.162095-3-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260514090525.6161-1-luka.gejak@linux.dev>
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2280; i=thorsten.blum@linux.dev; h=from:subject; bh=YqAQytJbYhQ39t3pkKct2Su+5H1G5e6obzCJjhI+d9o=; b=owGbwMvMwCUWt7pQ4caZUj3G02pJDFl8lzQqb4pMZlNfHqsd2PR358Oiuxtke1uvKP7/+2jlC ebcRcvrOkpZGMS4GGTFFFkezPoxw7e0pnKTScROmDmsTCBDGLg4BWAiHEaMDN+E4n9JzL96yibx 8OnVwSWyWmKXt/AZ28y3f/XRuuFT5idGht5v6S+VL+z1mNUiH5LzZVOyZhj3NeO8yzNrFrmvK16 mwwsA
+X-Developer-Key: i=thorsten.blum@linux.dev; a=openpgp; fpr=1D60735E8AEF3BE473B69D84733678FD8DFEEAD4
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253491-lists,stable=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_TO(0.00)[gmx.de,kernel.org,ziepe.ca,gmail.com,redhat.com];
+	TAGGED_FROM(0.00)[bounces-253492-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+]
-X-Rspamd-Queue-Id: A88565A2545
+	RCVD_COUNT_THREE(0.00)[3];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linux.dev:mid,linux.dev:dkim]
+X-Rspamd-Queue-Id: 7D44F5A2B32
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, May 14, 2026 at 11:05:25AM +0200, luka.gejak@linux.dev wrote:
-> From: Luka Gejak <luka.gejak@linux.dev>
-> 
-> When building an association request frame, the driver iterates over
-> the ies received from the ap. In three places, the driver trusts the
-> attacker-controlled pIE->length without validating that it meets the
-> minimum expected size for the respective ie.
-> 
-> For WLAN_EID_HT_CAPABILITY, this causes an oob read of adjacent heap
-> memory which is then transmitted over the air (remote heap information
-> disclosure). For WLAN_EID_VENDOR_SPECIFIC, it causes two separate oob
-> reads: one when checking the 4-byte oui, and another when copying the
-> 14-byte wps ie.
-> 
-> Fix these issues by adding upper-bound checks at the start of the loop
-> to ensure the ie fits within the buffer, and explicit lower-bound
-> checks to return a failure if the length is insufficient. For
-> HT_CAPABILITY, also clamp the length passed to rtw_set_ie() to the
-> struct size.
-> 
-> Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
+Commit 186d124f07da ("tpm_eventlog.c: fix binary_bios_measurements")
+split the output to write the endian-converted event header first and
+then the variable-length event data.
 
-More comments:
-	https://sashiko.dev/#/patchset/20260514090525.6161-1-luka.gejak@linux.dev
+However, the split was at sizeof(struct tcpa_event) - 1, even though
+event_data was a zero-length array, and later a flexible array member,
+both of which already excluded the event data.
 
+Therefore, the current code writes the first three bytes of event_size
+from the endian-converted header and then the last byte from the raw
+header, which can emit a corrupted event_size on PPC64, where
+do_endian_conversion() maps to be32_to_cpu().
+
+Use seq_write() to write the full endian-converted header, followed by
+the variable-length event->event_data.
+
+Drop the obvious comment while at it.
+
+Fixes: 186d124f07da ("tpm_eventlog.c: fix binary_bios_measurements")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+---
+ drivers/char/tpm/eventlog/tpm1.c | 16 ++--------------
+ 1 file changed, 2 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/char/tpm/eventlog/tpm1.c b/drivers/char/tpm/eventlog/tpm1.c
+index e7913b2853d5..291720e89d91 100644
+--- a/drivers/char/tpm/eventlog/tpm1.c
++++ b/drivers/char/tpm/eventlog/tpm1.c
+@@ -224,29 +224,17 @@ static int tpm1_binary_bios_measurements_show(struct seq_file *m, void *v)
+ {
+ 	struct tcpa_event *event = v;
+ 	struct tcpa_event temp_event;
+-	char *temp_ptr;
+-	int i;
+ 
+ 	memcpy(&temp_event, event, sizeof(struct tcpa_event));
+ 
+-	/* convert raw integers for endianness */
+ 	temp_event.pcr_index = do_endian_conversion(event->pcr_index);
+ 	temp_event.event_type = do_endian_conversion(event->event_type);
+ 	temp_event.event_size = do_endian_conversion(event->event_size);
+ 
+-	temp_ptr = (char *) &temp_event;
+-
+-	for (i = 0; i < (sizeof(struct tcpa_event) - 1) ; i++)
+-		seq_putc(m, temp_ptr[i]);
+-
+-	temp_ptr = (char *) v;
+-
+-	for (i = (sizeof(struct tcpa_event) - 1);
+-	     i < (sizeof(struct tcpa_event) + temp_event.event_size); i++)
+-		seq_putc(m, temp_ptr[i]);
++	seq_write(m, &temp_event, sizeof(temp_event));
++	seq_write(m, event->event_data, temp_event.event_size);
+ 
+ 	return 0;
+-
+ }
+ 
+ static int tpm1_ascii_bios_measurements_show(struct seq_file *m, void *v)
 
