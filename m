@@ -1,68 +1,69 @@
-Return-Path: <stable+bounces-253620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253622-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +EbJOIZBD2qcIQYAu9opvQ
-	(envelope-from <stable+bounces-253620-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 19:31:50 +0200
+	id OEruAllAD2qcIQYAu9opvQ
+	(envelope-from <stable+bounces-253622-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 19:26:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B08F5AA4A3
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 19:31:49 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 781B25AA340
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 19:26:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 96A173131634
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 17:07:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 46B6F32C21C4
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 17:14:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A777C3812DE;
-	Thu, 21 May 2026 17:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1FE53B8BD8;
+	Thu, 21 May 2026 17:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SViPrI0D"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="j1tyKYl+"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.102])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1795139A4B3
-	for <stable@vger.kernel.org>; Thu, 21 May 2026 17:07:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30B43C7693;
+	Thu, 21 May 2026 17:14:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779383237; cv=none; b=C8ZIrvzsu9gnjkTBqcCgu03W1u7RgwMGKNNjorBy8jmhIfMoHJ7MtzWM4fDAd2iYmc17Xj85oZbUc0OFMps9hSP4dffQPoXG8GO13WoTYg1k+91PVFIGSxSey/XM+lWOQSrvxU9XC9fQizOkrIh61foPzgaCG5D22YkiAgRXpDo=
+	t=1779383665; cv=none; b=Q2JhbR/VdZZUkhZOsX7GH3GLOcgjeWUd/QmMbZSqtL1G7nAUdqcQpWdoLdCIVK+/HxyeSLYEcOs+67e1voT9Yytkro22BFxcgiQEC8XhlQ1T5VCHQ+6l2trCcJWbkpL0TZp+jcTRcRuIZbwc4NJuWPUO6T5ZI9PIlIrtqVehndk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779383237; c=relaxed/simple;
-	bh=ugbeN2jtHUSTcQ497xSY4KAxjDkxiNhaARCuk08QBEs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QRAuJkn6vOPDgBDno5ESc/QTFYbBBT4R5baGufLd5LDyWAlkGZh/dPZ/yCpQ96G9JTD/aihO2J060mu4NYIjN/qBmqB+aCZvgv/+O/EjmsII5lodU6R0I3WCgFXdFncvt0DsUNJ62/p4lpLeimj+X44UDqHvpkBUzvMOm372oRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SViPrI0D; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779383237; x=1810919237;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ugbeN2jtHUSTcQ497xSY4KAxjDkxiNhaARCuk08QBEs=;
-  b=SViPrI0D8GqzTlN7aXTrcczhNLBA128vwBifChLRrdAp2wMdmxD3LqLm
-   5KnWUge5tIs6cijH75NugY8FFbr5gGB2YEIjkPL76YeVSrhytFc2uFXVR
-   W2kn/51nNTuShhBl24mJATYJqFePJrc9hPFLEpgeFRlSPUcuuDHOD15Hv
-   mJ4BPLP9x+Opax8wayydQivri+6jcETYbQudwq2J5siTojxnPormOA/xq
-   VqEjqYDj4YXIMbrRoFwyya0AXDfi3Bb5C2CtxVlz4/JLmwBZPBmUIBMik
-   dVaieRt6gDqZSU2qRxxf12NdoFPU29Kp9u5M3vJnpBtckOQfLQXmlQc59
-   A==;
-X-CSE-ConnectionGUID: K+GikGYmSTmSw2WFQ4j2ag==
-X-CSE-MsgGUID: UbQqb0E0TmOe0SFHfkVebA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11793"; a="80363602"
-X-IronPort-AV: E=Sophos;i="6.24,160,1774335600"; 
-   d="scan'208";a="80363602"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2026 10:07:16 -0700
-X-CSE-ConnectionGUID: xAqh50h4QeWOIBV8DqqUew==
-X-CSE-MsgGUID: 1Xz14Tt4SG6KA8vHCv3sIg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,160,1774335600"; 
-   d="scan'208";a="239561269"
-Received: from klitkey1-mobl1.ger.corp.intel.com (HELO [10.245.244.79]) ([10.245.244.79])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2026 10:07:14 -0700
-Message-ID: <2ffc43e3-560e-406a-9bb6-5dde24b1f897@intel.com>
-Date: Thu, 21 May 2026 18:07:12 +0100
+	s=arc-20240116; t=1779383665; c=relaxed/simple;
+	bh=1JfhlI9j9Ev8vm/JRmww/78tVWL7ZzROTXoUdT9ttM8=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Sypu+dvjaDCHYCNnBLf/0ket1DSHGx+kydWSfJSE7GkaTHLYRXf1HOFm2AS4LGFXvAR9bI4FaLBqNFnbUlUCzlCh2WcrXiuizraaHU0hlqx5Z3EiSEoqYY4kz1t6BghbuxYgr3vmWdZlBno5N7Onr+ffo8Jo7lERqjrhvJBi6yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=j1tyKYl+; arc=none smtp.client-ip=188.68.63.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+Received: from mors-relay-2502.netcup.net (localhost [127.0.0.1])
+	by mors-relay-2502.netcup.net (Postfix) with ESMTPS id 4gLw4Q18rGz6DnQ;
+	Thu, 21 May 2026 19:14:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1779383654;
+	bh=1JfhlI9j9Ev8vm/JRmww/78tVWL7ZzROTXoUdT9ttM8=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=j1tyKYl+Q6sDQvzpfpJk9+MGfBdZWHnZIzXfRvjBaKOrQvPJzViUJhx6jb1cM2sHA
+	 ukZBDSd7g0qYwkYKj3nLZ5+a/ejwer8Tnjmlv6DmkgL0Q3lSiQbiV+Q8JZUqroNoXa
+	 SQ31JX05O7jZCiw7mOjT/9fCVCfAlLije+dwb7uXcYWIC8xnXY3hU2fBwwO5j49/v3
+	 caOu96ZGsS+H4cczi4G66e/VhpGcP/DbI+nJtsoNLlrWUJ0GXe6OVAN7CWcM3YQkLI
+	 INo+/kfQUUQWrgdiHLJAXog7/o6TCTjB/aa2IJMj+vA4bYfqipxVF1QEhS2wJzwzEL
+	 +dMACApiUKJCQ==
+Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
+	by mors-relay-2502.netcup.net (Postfix) with ESMTPS id 4gLw3s24N0z4xVY;
+	Thu, 21 May 2026 19:13:45 +0200 (CEST)
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4gLw3r07b6z8sWT;
+	Thu, 21 May 2026 19:13:43 +0200 (CEST)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 4BFF761835;
+	Thu, 21 May 2026 19:13:43 +0200 (CEST)
+Authentication-Results: mxe9fb;
+        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <d5495e4c-7fc1-4747-a876-3adb27a13537@leemhuis.info>
+Date: Thu, 21 May 2026 19:13:42 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,103 +71,110 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/xe: Use PDE mask for 2M page reclaim entries
-To: Brian Nguyen <brian3.nguyen@intel.com>, intel-xe@lists.freedesktop.org
-Cc: stable@vger.kernel.org, Zongyao Bai <zongyao.bai@intel.com>
-References: <20260520234946.1055572-2-brian3.nguyen@intel.com>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20260520234946.1055572-2-brian3.nguyen@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+Subject: Re: [GIT PULL] bluetooth 2026-05-14
+To: Greg KH <gregkh@linuxfoundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+ August Wikerfors <git@augustwikerfors.se>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ Sasha Levin <sashal@kernel.org>, linux-bluetooth@vger.kernel.org,
+ netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ Linux kernel regressions list <regressions@lists.linux.dev>
+References: <4946f5f3-b7e2-4949-89f7-6427015027c6@leemhuis.info>
+ <2026051954-revision-sierra-6bb4@gregkh>
+ <eb5301f9-3133-4fe3-b358-61f14d1ffa5b@leemhuis.info>
+ <2026051909-impurity-nemesis-2f65@gregkh>
+ <CABBYNZKKbTXc-okp9P2OncMYXHX9C1XC+pRC7XWOhv-8nPNZ5A@mail.gmail.com>
+ <2026051942-uproar-drainpipe-6370@gregkh>
+ <CABBYNZKzWgL3nmeA=CtN9s80LRyDiJ97aQXgvfSm9vYUBw_SpA@mail.gmail.com>
+ <e666c332-e2aa-4525-a208-a4a08742d2e0@augustwikerfors.se>
+ <2026052026-barber-espresso-1d9a@gregkh>
+ <CABBYNZJ4woc+unpYN6_dzMLtxhFVUd5+ccv2+EQbDMkYuXQ12A@mail.gmail.com>
+ <2026052047-silica-grub-0bb2@gregkh>
+ <CABBYNZKnrqHyASMOah795i9eteY7S5AfN3tCWssSRgqBXZwRMw@mail.gmail.com>
+ <CAHk-=whwq2_iaf7pTuzVXEcJmng_exwae_bKtgSDdm4BQivGHg@mail.gmail.com>
+Content-Language: de-DE, en-US
+In-Reply-To: 
+ <CAHk-=whwq2_iaf7pTuzVXEcJmng_exwae_bKtgSDdm4BQivGHg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-PPP-Message-ID: <177938362370.2111016.2361743921988470192@mxe9fb.netcup.net>
+X-NC-CID: 9iTMYurzv0DZJzvTeWRcZIDP+x4QYv4LApIwPs2dxn/9YprpU54=
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
+	TAGGED_FROM(0.00)[bounces-253622-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,augustwikerfors.se,vger.kernel.org,kernel.org,davemloft.net,lists.linux.dev];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253620-lists,stable=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[leemhuis.info];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	DKIM_TRACE(0.00)[leemhuis.info:+];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,leemhuis.info:mid,leemhuis.info:dkim];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matthew.auld@intel.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[regressions@leemhuis.info,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:mid,intel.com:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 4B08F5AA4A3
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 781B25AA340
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 21/05/2026 00:49, Brian Nguyen wrote:
-> 2M pages use PDE encoding where the physical address occupies bits [51:21],
-> but generate_reclaim_entry() uses XE_PTE_ADDR_MASK (bits [51:12]) for all
-> leaf entries. Add XE_PDE_ADDR_MASK and select the correct mask based on
-> whether the entry is a 2M PDE.
-
-Are you not also missing the PDE 64K handling? AFACT there is only PS64? 
-Does it not incorrectly treat it as 4K? With PDE 64K the pt is_compact, 
-IIRC so you have like 32 entries for the entire thing, which each entry 
-being 64K. So I think here you are only reclaming 4K from each entry? I 
-might have missed something though.
-
+On 5/20/26 21:32, Linus Torvalds wrote:
+> On Wed, 20 May 2026 at 08:53, Luiz Augusto von Dentz
+> <luiz.dentz@gmail.com> wrote:
+>>> Just never rebase any public tree please.
+>> I guess the alternative is to do merges, right?
+> No. Back-merges are bad too, unless they have a really damn solid
+> reason for them, and some "keep up with other peoples work" is not
+> that.
 > 
-> Fixes: 83b914f972bb ("drm/xe: Fix page reclaim entry handling for large pages")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Zongyao Bai <zongyao.bai@intel.com>
-> Signed-off-by: Brian Nguyen <brian3.nguyen@intel.com>
-> ---
->   drivers/gpu/drm/xe/regs/xe_gtt_defs.h | 1 +
->   drivers/gpu/drm/xe/xe_pt.c            | 8 ++++++--
->   2 files changed, 7 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/xe/regs/xe_gtt_defs.h b/drivers/gpu/drm/xe/regs/xe_gtt_defs.h
-> index 4d83461e538b..22a6c197ed96 100644
-> --- a/drivers/gpu/drm/xe/regs/xe_gtt_defs.h
-> +++ b/drivers/gpu/drm/xe/regs/xe_gtt_defs.h
-> @@ -10,6 +10,7 @@
->   #define XELPG_GGTT_PTE_PAT1	BIT_ULL(53)
->   
->   #define XE_PTE_ADDR_MASK	GENMASK_ULL(51, 12)
-> +#define XE_PDE_ADDR_MASK	GENMASK_ULL(51, 21)
->   #define GGTT_PTE_VFID		GENMASK_ULL(11, 2)
->   
->   #define GUC_GGTT_TOP		0xFEE00000
-> diff --git a/drivers/gpu/drm/xe/xe_pt.c b/drivers/gpu/drm/xe/xe_pt.c
-> index 2669ff5ee747..ae5ed0370d72 100644
-> --- a/drivers/gpu/drm/xe/xe_pt.c
-> +++ b/drivers/gpu/drm/xe/xe_pt.c
-> @@ -1615,7 +1615,11 @@ static int generate_reclaim_entry(struct xe_tile *tile,
->   {
->   	struct xe_gt *gt = tile->primary_gt;
->   	struct xe_guc_page_reclaim_entry *reclaim_entries = prl->entries;
-> -	u64 phys_addr = pte & XE_PTE_ADDR_MASK;
-> +	bool is_2m = xe_child->level == 1 && (pte & XE_PDE_PS_2M);
-> +	/* 2M pages are encoded as PDEs, other reclaimable pages use PTE encoding */
-> +	u64 addr_mask = is_2m ? XE_PDE_ADDR_MASK : XE_PTE_ADDR_MASK;
-> +	u64 phys_addr = pte & addr_mask;
-> +	/* Page address is relative to 4K page regardless of entry level */
->   	u64 phys_page = phys_addr >> XE_PTE_SHIFT;
->   	int num_entries = prl->num_entries;
->   	u32 reclamation_size;
-> @@ -1641,7 +1645,7 @@ static int generate_reclaim_entry(struct xe_tile *tile,
->   		xe_gt_stats_incr(gt, XE_GT_STATS_ID_PRL_64K_ENTRY_COUNT, 1);
->   		reclamation_size = COMPUTE_RECLAIM_ADDRESS_MASK(SZ_64K); /* reclamation_size = 4 */
->   		xe_tile_assert(tile, phys_addr % SZ_64K == 0);
-> -	} else if (xe_child->level == 1 && pte & XE_PDE_PS_2M) {
-> +	} else if (is_2m) {
->   		xe_gt_stats_incr(gt, XE_GT_STATS_ID_PRL_2M_ENTRY_COUNT, 1);
->   		reclamation_size = COMPUTE_RECLAIM_ADDRESS_MASK(SZ_2M);  /* reclamation_size = 9 */
->   		xe_tile_assert(tile, phys_addr % SZ_2M == 0);
+> The primary model should be that you care about your own work, and
+> make sure that that is as stable as possible. Do *NOT* try to chase
+> other people's work. Not with merges, not with rebases. [...]
+> [...]
+> Sometimes you have to rebase because of a mistake. Sometimes you need
+> to do back-merges. But you should damn well have *reasons* for both
+> that aren't "that's just how we work".
 
+Speaking of mistakes, one happens occasionally that you afaics did not
+cover here. And it's one where I'd be interested in your opinion (and
+maybe Greg's from the stable perspective, too):
+
+How to deal with cases where one fix was merged to a public -next branch
+for merging in the next cycle (and thus was mixed up with many
+non-fixes) but then turns out should be mainlined this cycle?
+
+I notice such situations a few times per month. I just had exactly that
+case for a patch fixing a 7.0 regression. And the answer I got was round
+about "sorry, the fix is already in our -next tree, we thus can't merge
+it this cycle"[1]. And that seemed wrong to me, which is why I argued
+for cherry-picking in that case, but it seems I was not convincing.
+
+And yes, I understand that cherry-picking causes pain (especially for
+the stable team) and thus is best avoided -- but mistakes like that will
+always happen, so it might be best to know what to do in that case.
+
+> [...]
+
+Ciao, Thorsten
+
+[1] it's for a regression introduced in the 7.0 cycle:
+https://lore.kernel.org/all/29a93dc3d9d24b3a809310694ffc5d34@realtek.com/
+-- the tree in question afaics is not even in -next, as I can't see the
+fix there
 
