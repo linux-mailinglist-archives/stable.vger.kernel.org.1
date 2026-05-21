@@ -1,166 +1,156 @@
-Return-Path: <stable+bounces-253625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253629-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WElXDB1ID2r5IgYAu9opvQ
-	(envelope-from <stable+bounces-253625-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 19:59:57 +0200
+	id mPglOpFOD2r7IwYAu9opvQ
+	(envelope-from <stable+bounces-253629-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 20:27:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8C095AAB4A
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 19:59:56 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 901DA5AB09C
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 20:27:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 81DC63004621
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 17:59:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D04AF30055A9
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 18:27:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89110368D7A;
-	Thu, 21 May 2026 17:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A91833C456D;
+	Thu, 21 May 2026 18:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kv3phExO"
+	dkim=pass (2048-bit key) header.d=mariushoch.de header.i=@mariushoch.de header.b="EXuGrg2m"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37533F54B7
-	for <stable@vger.kernel.org>; Thu, 21 May 2026 17:59:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779386385; cv=pass; b=ioXDbxak2uEvo3lXuOGNlBZBdH6CJi5phKRZ4ta2jRxHbu04qB0bm/3nRAatTy4nRDCFvmWrAV4/bZr4PHkXkD1giQNxgNKoJ1QuhFXfwRV2AZYxtdBBv6YmQV29g0DHJjDi3mH3EJOgmVm2gZQWaDy66k8U6bAgpS2dIaZylEQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779386385; c=relaxed/simple;
-	bh=2XlcrqYwh/tcTuBrkPI/x13X9seNIkqUvfrzLePc1OM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YN3ulWoTcH3U/Uv/zVHJW4LU2qC+E3/k5gy8H7tP0haASp9jxr6NMAUR8viNCnrGSrRlz8J1YSGhe2prHgNhEApj7yxIluNRTt8s7msmZQBxLkGVtOaZRQCxKwGI0+S9gzXyZswq7sVou/C6LCG1eRbKpGVMAPzuQiqAuI2gXSQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kv3phExO; arc=pass smtp.client-ip=74.125.82.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-1353c2f35cfso19028833c88.1
-        for <stable@vger.kernel.org>; Thu, 21 May 2026 10:59:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779386381; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Xi7npjum2dKSrI5kJPu3ZCrjfYgwRjvLNgaoZyq1lScrY2IbG7yXMYMa76bTr1lR+M
-         0jTltM6rCKV173wRK+2YMNPVzd2AgNgk5YfsXV2CNoVAiBJCgDMawU0TOuEnP/LpJAjl
-         jtRiRkMMuTYpdyb+m0ZfCY9WgtxZNxs2qsDMAHOzDKYk+6ut332UlLIxYKcm7l4QcxCU
-         qz4RQnPQv8LkAI5FQ/Saa2+3xAQtvmpTugXtj/UtlpuP8WUnyHAMErXj5+39IveAAs4t
-         E3UDcJcdSmQTMEJZ+XR+hMOdrq94RjQBQXtliAOzNknMb/doCUyaHMpZKrGouDU7BbE4
-         2/Kg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=2XlcrqYwh/tcTuBrkPI/x13X9seNIkqUvfrzLePc1OM=;
-        fh=A2XY8r+xd+yI6ksxatOEAJwLQaqi+BmHzBIBkhN3RS4=;
-        b=Yty6hpwdk9aO4mNCknlHbTyIVdFvO6uygBktJZCwv4VzBhNolZweWajHMcnA9O7Gyy
-         cojH7wdl0HiuOUi0b0hoRd/aAFgMS3psEZurS1EyMHYTw4I3Gjj71B0fJr+S+aP0Vg3G
-         reQ92TkFgDS0ZA0bdnihaULJq4KjC0dIplWtWcPq+zflK8KBwcS+iriLnzyRMpK2BeB1
-         pdL9Ru0PzF4qa4+fOZhBPe8RBgM2kLbhh/xOcEbKt4JEkqWYVLBremR7Y0af8zCzzzRC
-         GGbWb3uLqxX1nilIcwe23KeKvx/TZHJCL3PwGqmR0uyUVVoo9wW0TYja4k9K6kmtKAXj
-         MT5w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779386381; x=1779991181; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2XlcrqYwh/tcTuBrkPI/x13X9seNIkqUvfrzLePc1OM=;
-        b=kv3phExO1m1VF2JL+2poDoL04F7pLIXx2QC1l9OUC4WNWj87+cDJJ3dKWTs2sMkALH
-         ZHIzVlsDqZRLATk7HOjZm46UahAGY8tP3DCKal67M3yoXyrALQspwgD1D8t9air0LkHc
-         UZVxeXOUw4WQJHKgO5MQuinWq6nRP/Ao2+dNWSjM0/DexiDiuK3mFEsaHU4tlrot3B7U
-         +MBWXFeqbTuR29Kl/gihTdo+4FjdFI+eSE6t1UBlwNR5oJ+lMsukp4U8vSCb8gtCYTjE
-         hldG9nYDhpXsDrkIov5TYbqHYnlTxB423PADIBz3GI8gxtKZPTN34YZrXwuRo4Kzwh56
-         HHOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779386381; x=1779991181;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=2XlcrqYwh/tcTuBrkPI/x13X9seNIkqUvfrzLePc1OM=;
-        b=LyoE6tSBoj49/iuHi5gkFCdgfypOfB4lF1p1EHfScrnnSNqQSBk8f8LNnOHMBs3R/L
-         MTWOCjwSIayIyz0K9va6zkdt+O4KGIPWtQ1shdzhI87myY4cNvvZE6C2RdKQTXNmmK85
-         vvX1lY9KqdSgg/J6yFrqxZTKtpJd3lGh+tcFLl4RufDz939xBY5VetLuBaGAewBe1gqt
-         bxW+nXYwsgbqRwJCgIDvxovUaMDzYmt1cEKsZw9wE4wqewyCchiON/oidy7pSUZGDxFf
-         0X2ASBcLO0pyXLVoPF6YpqklLAlpimwOgYCAXBGP8YrxzQbone1y7m8L3icRh+T4nou6
-         IN7A==
-X-Forwarded-Encrypted: i=1; AFNElJ+8MR8TiajPFsdiOXTL7ZKLp3YVn/jFrhUsKcvQSqyubiEs72gMSQRze82VijCTWzlq0JXCvxY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyhn3KsIxkDgZfMDESvEc669/prmTJqwV9fki9p/PrXa7ylT6c1
-	ogGYxW3Ir7vR03jr8IOfiEvuETDo/dsSWMARP5C2wBiSHgE6NOXprCX+Ps02oGQid33HQH1cdhI
-	p49fffZYJdN7H/08/Xdi8jVdBZGkTcvwzKSNBhIc=
-X-Gm-Gg: Acq92OG/MB88n4f097TzC8CgNEaZmz/NuN62lkj29MLyvhWraEYEJetlvStoumiTzOO
-	Br/3W8GL1P+OmPvOAnh0SncMWknxsHgKDIRV/HixXkHniyedGizKZmIZBkSq2sxCAonyOVvbjyw
-	jAhsixMT1NHUviIIKVhZ0n85JRVrj8vPu3hvYTt9dbCXq3B43kU55plfJ6EOO1FIrmDp92IRjTQ
-	SSf97Gv2pvUJNuh9f+lTFx8+5yH25KyQJfExvKGyHFSJcLOJ02nPBHJq9XdHvsqWEdhUixMKhmc
-	+vbpLZPZs0m+Vt4P5rjSbETywgJVZ4uWuVm58/LNR9dgZ/VFJPg/IaRQXPad/b12lMgzLvwE+Zx
-	xfb23H9Yixh9h2I9d19/dio1nXX823A6kXPH0bowulc7jPg==
-X-Received: by 2002:a05:7022:f908:b0:12c:6da8:856d with SMTP id
- a92af1059eb24-1365fb53575mr16057c88.26.1779386380625; Thu, 21 May 2026
- 10:59:40 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF0F3911B2;
+	Thu, 21 May 2026 18:27:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779388038; cv=none; b=ngOZKeWJMqm/915hNt4eswA0mtuesMHJs3OgpX+w/EeTWq+oML5oQl3vC3KBSPrgv87o7GTX8C8JvijWbAl4KoY6DzmHlv44A3wbao8x3t7bceVQtroajgB37pJQ2E75Ndx4Seh6qkZdmjMOid7la0Eu2LrKNFy29xbe/fWectE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779388038; c=relaxed/simple;
+	bh=A3BNSUMwsfIMr+beJtpFVWODqCytvU1Ncr0xSyoqKnE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YG/CgjARkByXLtL+Avlt9z2AbbbfEZ7zKAxVTdDiWKI2Yf5juqz7gX1CBwXuS1XK7hZn04AxuTny6P8Ng/sweFjwSLDfixGHJ9TNZzs2B13KBuBfHiPfxoYv9D857fshKHiTXGq/v1dENQz8LPHKiCytvZc3oYWe+YK0znIwurg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mariushoch.de; spf=pass smtp.mailfrom=mariushoch.de; dkim=pass (2048-bit key) header.d=mariushoch.de header.i=@mariushoch.de header.b=EXuGrg2m; arc=none smtp.client-ip=80.241.56.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mariushoch.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mariushoch.de
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4gLxhP28rTz9vLF;
+	Thu, 21 May 2026 20:27:01 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mariushoch.de;
+	s=MBO0001; t=1779388021;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=GYkf84zKQ1koXdJ8sJbWorRHXORylD9/JuNrnSRVhMk=;
+	b=EXuGrg2mnXNU2e83JRMVB5I2K3ncTReK933T4sXH6nAcQLJ+oDRgYS9VRO5qcCohfvUsHV
+	9QdC39z76pint1GOoMOjOmwPjupiX6Y0aSyap+yX5LUcchK2Lx8dGBCipWJ2PkcJj81+vN
+	TBxmNdbCldjXqXxXb3+/LPpmqt7XpGpO+9k1w7p0RCnhEeCrgWpXDZlkM0rqQSRme4G5wR
+	sy+B6gohE941vLOREpIsnqZRvEVQtzy+tTko9hTLjnn6lQbmbNv8NSaB+Htf65RP+tGs+g
+	8rCNO7jjrOHdqJpu2huEPhGKvurez37TrzVB/RvXGPKe2kuvTwus3osZZRMtOQ==
+From: Marius Hoch <mail@mariushoch.de>
+To: linux-kernel@vger.kernel.org
+Cc: Marius Hoch <mail@mariushoch.de>,
+	stable@vger.kernel.org,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Joe Perches <joe@perches.com>,
+	Mika Kahola <mika.kahola@intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	intel-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH] drm/i915: Don't set min_cdclk in the initial crtc_state
+Date: Thu, 21 May 2026 20:07:12 +0200
+Message-ID: <20260521180722.328317-2-mail@mariushoch.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260520162134.554764788@linuxfoundation.org> <20260520162135.687777470@linuxfoundation.org>
- <CANDhNCpZWMk6GWubK8+E0rxKUqtuhOtrjqxunS=Kmho-UbR0UA@mail.gmail.com> <20260521-sched-proxy-6.18-drop-sashal@kernel.org>
-In-Reply-To: <20260521-sched-proxy-6.18-drop-sashal@kernel.org>
-From: John Stultz <jstultz@google.com>
-Date: Thu, 21 May 2026 10:59:28 -0700
-X-Gm-Features: AVHnY4L2di6RLsg6hTSyZtoiuJUxzmHc2ryKHNDbKyp5-1JHqVFZiuqAbMqAzb8
-Message-ID: <CANDhNCo2qx4fHB6sKUyYLjBDuWpL_i_6b_6odg5_q5rjn9m-rw@mail.gmail.com>
-Subject: Re: [PATCH 6.18 052/957] sched: Make class_schedulers avoid pushing
- current, and get rid of proxy_tag_curr()
-To: Sasha Levin <sashal@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
-	patches@lists.linux.dev, K Prateek Nayak <kprateek.nayak@amd.com>, 
-	Peter Zijlstra <peterz@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[mariushoch.de:s=MBO0001];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253629-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253625-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_CC(0.00)[mariushoch.de,vger.kernel.org,linux.intel.com,intel.com,ursulin.net,gmail.com,ffwll.ch,perches.com,lists.freedesktop.org];
+	DMARC_NA(0.00)[mariushoch.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jstultz@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[mail@mariushoch.de,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[mariushoch.de:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: D8C095AAB4A
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 901DA5AB09C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, May 21, 2026 at 5:56=E2=80=AFAM Sasha Levin <sashal@kernel.org> wro=
-te:
-> On Wed, May 20, 2026 at 11:32:26AM -0700, John Stultz wrote:
-> > Eh, I'm not sure of the urgency of this going back to 6.18-stable, and
-> > I'm not sure its worth the churn.
-> > [...]
-> > So I'm just not sure this is worth the churn/risk.
->
-> Dropped from the 6.18 queue.
->
-> Note we have it queued for 7.0 as well; since your note here only
-> named 6.18 I'm leaving 7.0 alone for now -- shout if you'd like that
-> dropped too.
+Setting the min_cdclk this early means that intel_cdclk_atomic_check
+(called via intel_atomic_check) will not pick up the initial min_cdclk, as
+there is no change between the old and new atomic states. This is
+problematic, especially on Gemini Lake, where the picture gets unstable if
+the CDCLK is too low (see vlv_dsi_min_cdclk).
 
-I'm ambivalent there. I think it is fine for 7.0 and that has a
-shorter lifetime, so the risk is bounded better.
+This was introduced in 7a8d9cfa6db0, which states that the min_cdclk must
+be set before calling intel_compute_global_watermarks. However, as the
+only place that calls intel_compute_global_watermarks is
+intel_atomic_check, right after setting the min_cdclk on new_crtc_state,
+there is no need to set the min_cdclk initially.
 
-thanks
--john
+This surfaced as a bug on my IdeaPad Duet 3 after ba91b9eecb47, leading
+to the screen output being completely garbled initially (when asking for
+the dm-crypt passphrase). It recovers after the passphrase prompt, as this
+only affects the initial state.
+
+Tested on an IdeaPad Duet 3 10IGL5-LTE (with UHD Graphics 605).
+
+Cc: stable@vger.kernel.org
+Fixes: 7a8d9cfa6db0 ("drm/i915: Compute per-crtc min_cdclk earlier")
+Signed-off-by: Marius Hoch <mail@mariushoch.de>
+---
+ drivers/gpu/drm/i915/display/intel_modeset_setup.c | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/drivers/gpu/drm/i915/display/intel_modeset_setup.c b/drivers/gpu/drm/i915/display/intel_modeset_setup.c
+index 4086f16a12bf..9278856375e9 100644
+--- a/drivers/gpu/drm/i915/display/intel_modeset_setup.c
++++ b/drivers/gpu/drm/i915/display/intel_modeset_setup.c
+@@ -865,11 +865,6 @@ static void intel_modeset_readout_hw_state(struct intel_display *display)
+ 				    crtc_state->plane_min_cdclk[plane->id]);
+ 		}
+ 
+-		crtc_state->min_cdclk = intel_crtc_min_cdclk(crtc_state);
+-
+-		drm_dbg_kms(display->drm, "[CRTC:%d:%s] min_cdclk %d kHz\n",
+-			    crtc->base.base.id, crtc->base.name, crtc_state->min_cdclk);
+-
+ 		intel_pmdemand_update_port_clock(display, pmdemand_state, pipe,
+ 						 crtc_state->port_clock);
+ 	}
+-- 
+2.54.0
+
 
