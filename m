@@ -1,263 +1,182 @@
-Return-Path: <stable+bounces-253617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253618-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aOJnGytLD2ptIgYAu9opvQ
-	(envelope-from <stable+bounces-253617-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 20:12:59 +0200
+	id 0PCwM85MD2ptIgYAu9opvQ
+	(envelope-from <stable+bounces-253618-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 20:19:58 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7024E5AADFF
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 20:12:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F052F5AAF62
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 20:19:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9274F3245077
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 16:47:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5C2E63057888
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 16:48:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29E493BF680;
-	Thu, 21 May 2026 16:46:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BFC737DAAA;
+	Thu, 21 May 2026 16:48:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hAiFXflX"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Vlw8U4vd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C35C5383304
-	for <stable@vger.kernel.org>; Thu, 21 May 2026 16:46:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063D42C3268
+	for <stable@vger.kernel.org>; Thu, 21 May 2026 16:48:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779382000; cv=none; b=anv8z3Gl+ZY0VzktW8V9+4N71Ii7X3hgaMI3g/bUAVH8+JvlGCO9CmlyaKYE2FaIfoKVxrhR4MrKbiBxAwfL3gwEmnriVBrzEUEqxNe/3cmDKHyC4nrLfyDw/5ecJGw1vEl4FcJkQOv2SXvmk8aVRbZKluC4FdpFnhSZbwe6bHk=
+	t=1779382093; cv=none; b=G6ofz6S73a2Jrkv7PPUs4ElvZK0DE03Edp1HcpqxUjzFNy8MqYH5DJyZbMjFIfPRJoU2fkHA4fdfC+2V772tIQctmr6/wuPe3F3jhZXUWr0qucR9NTrdsprxKzy3ls9K8GCK/y7ZP5OBY34k5xZXQr9OiLzBYwRqT/rzVo3vcnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779382000; c=relaxed/simple;
-	bh=55HpdrZ1XWqM3uwC+a47+vakAvshOA/Toys7NpGVJzc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LP3Yop5iXcI+xc/vYXgK/hCBa7PAWdOQLPE2JAcibmkws/H+TWIJHQjV7MhOITPljVAGMGtNG3e1mPrwiCs4+kcOJrPVoKRAkFAp14xxhnwWId8Qx4zwLayvLSvZMQNtpc++0t0muNgfCFnvuRZgCCOHCKqBUA8jAu+5X0OYOhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hAiFXflX; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-490388fd0dbso8750185e9.0
-        for <stable@vger.kernel.org>; Thu, 21 May 2026 09:46:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779381995; x=1779986795; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NA/nM16UoxaTsk3A7SWQL7q3HkgK647mNtY2rDcRyyc=;
-        b=hAiFXflXTEbRl6U5Air/vBGryJ1P7DUwv5y5hFcBfrvyOOjvwLAPWk6boHEMfrP+03
-         djrSF/MmhRRc4oKAARffcHojm9lrMfH/yxDwEmaCsT4BFCL3flmfjoZXGq6TFSC3TeHl
-         JsiTufiR6et1mz+pI8XV2U+9x+ymMfxMCAW0bX+y+95+67AVxLZvt8B0iLXkU9d/aiqe
-         9TLZTYgekPiyf54s88p+J1C3j1Lc4MyofWrYIv5jQC1MQsWTxKDTJulTH9sW3bkKM6Er
-         8ENfEnS8Rye+RBlr7U5dk7H7qISkWK2Sz6IRcVfJFcdljcS2gaAHhL/dDTECxI2slWnI
-         yang==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779381995; x=1779986795;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NA/nM16UoxaTsk3A7SWQL7q3HkgK647mNtY2rDcRyyc=;
-        b=VpAcHzeBRiDXzASxl6s+R1hgo15LFfgEXb3iUlF3IITV6eOye50WWwKMs73mKh39oU
-         dK8Kr3l7bBg+JtO+gkL1K7EMuQaTcA/UffYsVvL0gqjKPX3cLTD7jDwtRvMLB6kw7brl
-         BuPanLMpG/++dsy4pQLAgdy2aLz+1Rj9EWtKda2mazqI6iX/t71fr0hc4Fonw/imrUrv
-         IrPAKFBTCigyl1m4HPlfOMSfFG2uZbL3tIMzeo3YbCafhshsgywg/tiQy1gQ9WdsXKWm
-         +zioMogyc7FNzhDWJ2Nmw+VESLXrhTl5GmyI/68bAc2+fpkvUnc9hEr4X3n0CPehsISh
-         yFxg==
-X-Forwarded-Encrypted: i=1; AFNElJ8gAYCFIhysE69bfJwjDcrvy/9ZdhH0mspBBvb5DstSuGQzaRsThjSVgNDzx0OkUD3/mBYD4jI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjTgbE3LYkJgRaTX+XPyLfUpK2Rga7yJLbUyVI2eUmy9J8LMIh
-	LpP8ZEyMPkjZqwf3nmp87XYAKjtDgSLZMRoVLjdC9/DL9eTFjYUODtuy
-X-Gm-Gg: Acq92OEnES9pb/tLuZZgKSgw2eljO+BDA7pofflw5Uz9md1NEXV1I8I/4daZodFMpGB
-	R/LQ2+i8E9bgZQREA6XlcXD44kNZIfL7xCXKL/l4QeLr7EojUKnTKSUt5jdn+LDNwgJiS2xo+Gg
-	ZkT3K0yzRMKvzBPsQlPKLbCMcLYwj5qVC1gCFMVNKxnSiw1iZl6Rzy4knwiUqs+Y0oBHJ14F5SA
-	ALfPbHuWPLTJ1UT7ByfrjrI0aXcQsvxgK5sxhiDCJANoYyBa4LPUCJU5A+WrewEjs4GtJeMXjcm
-	7WByXVErrklZHgN2qAOhy/FwYWVJuUJ0u8QpwCJQ22BvFm/miRveHYb1cjpELhfkIhvaqcGKI+3
-	0RKXqL/93NjgPkId8xW/we9MK3dVuqRcBo77NjzAg7KNK1AAApaoWMGF0vwjXy+giQgvFiN/0wu
-	RhlQVA8grSZKjydmOGGbl8KMmcygQdQkGUvXhONt+BXD4Xqv/HALybnfll3jiQeMdH
-X-Received: by 2002:a05:600c:45c6:b0:488:ac01:72de with SMTP id 5b1f17b1804b1-49036033502mr53623425e9.5.1779381994891;
-        Thu, 21 May 2026 09:46:34 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49035ecac15sm31613075e9.6.2026.05.21.09.46.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 May 2026 09:46:34 -0700 (PDT)
-Date: Thu, 21 May 2026 17:46:31 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Kees Cook <kees@kernel.org>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Pengpeng Hou
- <pengpeng@iscas.ac.cn>, stable@vger.kernel.org, Petr Pavlu
- <petr.pavlu@suse.com>, Richard Weinberger <richard@nod.at>, Anton Ivanov
- <anton.ivanov@cambridgegreys.com>, Johannes Berg
- <johannes@sipsolutions.net>, "Rafael J. Wysocki" <rafael@kernel.org>, Len
- Brown <lenb@kernel.org>, Corey Minyard <corey@minyard.net>, Gabriel Somlo
- <somlo@cmu.edu>, "Michael S. Tsirkin" <mst@redhat.com>, Jani Nikula
- <jani.nikula@linux.intel.com>, Joonas Lahtinen
- <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Bart Van Assche <bvanassche@acm.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, Laurent
- Pinchart <laurent.pinchart@ideasonboard.com>, Hans de Goede
- <hansg@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, Bjorn
- Helgaas <bhelgaas@google.com>, Hannes Reinecke <hare@suse.de>, "James E.J.
- Bottomley" <James.Bottomley@HansenPartnership.com>, "Martin K. Petersen"
- <martin.petersen@oracle.com>, Daniel Lezcano <daniel.lezcano@kernel.org>,
- Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby
- <jirislaby@kernel.org>, Alan Stern <stern@rowland.harvard.edu>, Jason Wang
- <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio
- =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>, Jason Baron
- <jbaron@akamai.com>, Jim Cromie <jim.cromie@gmail.com>, Tiwei Bie
- <tiwei.btw@antgroup.com>, Benjamin Berg <benjamin.berg@intel.com>, Ilpo
- =?UTF-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, "David E. Box"
- <david.e.box@linux.intel.com>, "Maciej W. Rozycki" <macro@orcam.me.uk>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Peter Zijlstra
- <peterz@infradead.org>, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik
- <gor@linux.ibm.com>, Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
- <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, Vinod Koul <vkoul@kernel.org>, Frank Li
- <Frank.Li@kernel.org>, Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen
- <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, Alexander
- Potapenko <glider@google.com>, Marco Elver <elver@google.com>, Dmitry
- Vyukov <dvyukov@google.com>, Andrew Morton <akpm@linux-foundation.org>,
- John Johansen <john.johansen@canonical.com>, Paul Moore
- <paul@paul-moore.com>, James Morris <jmorris@namei.org>, "Serge E. Hallyn"
- <serge@hallyn.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Georgia Garcia <georgia.garcia@canonical.com>, kvm@vger.kernel.org,
- dmaengine@vger.kernel.org, linux-modules@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-mm@kvack.org, apparmor@lists.ubuntu.com,
- linux-security-module@vger.kernel.org, linux-um@lists.infradead.org,
- linux-acpi@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
- qemu-devel@nongnu.org, intel-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org,
- linux-media@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-scsi@vger.kernel.org, linux-pm@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-serial@vger.kernel.org,
- linux-usb@vger.kernel.org, usb-storage@lists.one-eyed-alien.net,
- virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-arch@vger.kernel.org, netdev@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH 01/11] params: bound array element output to the
- caller's page buffer
-Message-ID: <20260521174631.71a06440@pumpkin>
-In-Reply-To: <20260521133326.2465264-1-kees@kernel.org>
-References: <20260521133315.work.845-kees@kernel.org>
-	<20260521133326.2465264-1-kees@kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	s=arc-20240116; t=1779382093; c=relaxed/simple;
+	bh=mAmTb2T8ftHOy6iLTScZ+I7+R10Qp/w9R5fTtaFOSbk=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=a+MXeqWWG8XAswU3Nu3q1czUF7syqYBhXwbEBAXryck4FULXrAMixJHj46Ac4kPqCIrctV/B4mH2sli0jbLT7AtiLyaSlJjtkBU/274+p/CsH9Olb34ZUNOUAZS3FtAaSx9KREzSVno4yEQG6eYx7agkrvRaqTqhsuM7oXyel+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Vlw8U4vd; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E52DC40E01B5;
+	Thu, 21 May 2026 16:48:01 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id uO4u8UBMyGfc; Thu, 21 May 2026 16:47:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1779382071; bh=mAmTb2T8ftHOy6iLTScZ+I7+R10Qp/w9R5fTtaFOSbk=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=Vlw8U4vdtKDLsh94rsswITcuGZ/DE4DSuYalZyWh+Re4pwwgzx2o4hgh1BZyOjDeu
+	 2OF1HE2iFFPOejHRa2jTwWTldG4uqpiyVxfnrJSpuzLH/1ml6MfO4bVe0tm0quXY2+
+	 SZ2GG+GmEAabLlfjw0vPCRLWr6oYfWcanYJ4ZIGvwCuyX0tmI+uxcLRCM5IEA73RP0
+	 A5gNTeQn/xa4iwSmWmCRY0BLrWGQ5m9BRMSGQJDkC7SXjkcZ/TrZKxRCYLXf+MoshM
+	 TtJtLR1bTHoJN1pFac6eGIN57L2caIVTCWHbLtmoOd59UQfQB/x3P9S5zacXs05f4P
+	 YtUifdXkz2V6815IxvOqp6IPB2hRvBMMU/u8bmFKjizf84zn2o9xM9d3maEJ7H947G
+	 sV/hncdT4g9dsyQPK/3pa6HffpHxT0oDvTinIkL0mgLNtq0H+FORMJrT3GRMwH4Piz
+	 itcu/WL4zefvMfVw/gFXURncccEKP7lM9j/8BNLm6O2KquTk4XaKup4L3W7Jv9CfWL
+	 vBW58d3uTRHOZzSVClVRX/rnU58f95I3q8GSzlaVixuuchim+vFkwX1Z6U4zHNd4f+
+	 Bfv9rWAOIEWbGWhN3FvnCSxgCgKnx9vDeXC7bwAe6ItV2VnOxdLMLYZVV7aP3pCv2x
+	 LAFoGClVr1RnxQd4uLA/YBbU=
+Received: from ehlo.thunderbird.net (unknown [IPv6:2600:1700:38ca:c00:41e0:d6b9:36c2:bff7])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id BE2ED40E01B3;
+	Thu, 21 May 2026 16:47:47 +0000 (UTC)
+Date: Thu, 21 May 2026 16:47:43 +0000
+From: Borislav Petkov <bp@alien8.de>
+To: Uros Bizjak <ubizjak@gmail.com>, Jan Ingvoldstad <frettled@gmail.com>
+CC: stable@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_Linux_5=2E15_bug_in_vdso=5Frea?=
+ =?US-ASCII?Q?d=5Fcpunode=28=29_in_segment=2Eh_introd?=
+ =?US-ASCII?Q?uced_in_2025=2C_commit_ac9c408ed?=
+ =?US-ASCII?Q?19d535289ca59200dd6a44a6a2d6036?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <DB2B5B4C-200F-4C0C-B14F-F58E0CF4078F@alien8.de>
+References: <CAEffzkxUELNHBzABxVmekE2C_MFuPyfbsvO33MXZy46pNRU7xQ@mail.gmail.com> <CAFULd4Z5vE7v37+4J5MLCttnG=cF0XX+Y_T0p1yeY36dL6i5Kw@mail.gmail.com> <DB2B5B4C-200F-4C0C-B14F-F58E0CF4078F@alien8.de>
+Message-ID: <F51A475F-F50A-4DE2-A098-871047496301@alien8.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-0.96 / 15.00];
+	SUBJ_EXCESS_QP(1.20)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[alien8.de,none];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_DKIM_ALLOW(-0.20)[alien8.de:s=alien8];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,iscas.ac.cn,vger.kernel.org,suse.com,nod.at,cambridgegreys.com,sipsolutions.net,minyard.net,cmu.edu,redhat.com,linux.intel.com,intel.com,ursulin.net,gmail.com,ffwll.ch,acm.org,ziepe.ca,ideasonboard.com,google.com,suse.de,HansenPartnership.com,oracle.com,arm.com,linuxfoundation.org,rowland.harvard.edu,linux.alibaba.com,akamai.com,antgroup.com,orcam.me.uk,infradead.org,linux.ibm.com,alien8.de,zytor.com,atomlin.com,linux-foundation.org,canonical.com,paul-moore.com,namei.org,hallyn.com,googlegroups.com,kvack.org,lists.ubuntu.com,lists.infradead.org,lists.sourceforge.net,nongnu.org,lists.freedesktop.org,lists.ozlabs.org,lists.one-eyed-alien.net,lists.linux.dev];
-	TAGGED_FROM(0.00)[bounces-253617-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_HAS_DN(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253618-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[alien8.de:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCPT_COUNT_GT_50(0.00)[100];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[bp@alien8.de,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
 	NEURAL_HAM(-0.00)[-1.000];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,iscas.ac.cn:email,suse.com:email]
-X-Rspamd-Queue-Id: 7024E5AADFF
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: F052F5AAF62
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, 21 May 2026 06:33:14 -0700
-Kees Cook <kees@kernel.org> wrote:
+On May 21, 2026 4:46:11 PM UTC, Borislav Petkov <bp@alien8=2Ede> wrote:
+>+ stable
 
-> From: Pengpeng Hou <pengpeng@iscas.ac.cn>
-> 
-> param_array_get() appends each element's string representation into the
-> shared sysfs page buffer by passing buffer + off to the element getter.
-> 
-> That works for getters that only write a small bounded string, but
-> param_get_charp() and similar helpers format against PAGE_SIZE from the
-> pointer they receive. Once off is non-zero, an element getter can
-> therefore write past the end of the original sysfs page buffer.
-> 
-> Collect each element into a temporary PAGE_SIZE buffer first and then
-> copy only the remaining space into the caller's page buffer.
+Now for real!
 
-Should this be using a 4k buffer on all architectures?
-Initially perhaps just using a different name for the constant until
-all the associated PAGE_SIZE limits have been removed.
+>
+>
+>On May 21, 2026 10:07:45 AM UTC, Uros Bizjak <ubizjak@gmail=2Ecom> wrote:
+>>Please see [1]=2E Patch 2/2 was not backportable, but was backported
+>>after it was merged with 1/2 nevertheless=2E
+>>
+>>[1] https://lore=2Ekernel=2Eorg/lkml/CAFULd4aZYEi02cKeS1RAL66Qs149nLys8S=
+JfTvfHuPH3FMXJeA@mail=2Egmail=2Ecom/
+>>
+>>Uros=2E
+>>
+>>On Thu, May 21, 2026 at 10:06=E2=80=AFAM Jan Ingvoldstad <frettled@gmail=
+=2Ecom> wrote:
+>>>
+>>> Hello,
+>>>
+>>> In the following commit, a bug was introduced for older systems withou=
+t older binutils versions:
+>>>
+>>> https://git=2Ekernel=2Eorg/pub/scm/linux/kernel/git/stable/linux=2Egit=
+/commit/arch/x86/include/asm/segment=2Eh?id=3Dac9c408ed19d535289ca59200dd6a=
+44a6a2d6036
+>>>
+>>> The commit states:
+>>>
+>>> =C2=ABUse RDPID insn mnemonic while at it as the minimum binutils vers=
+ion of 2=2E30 supports it=2E=C2=BB
+>>>
+>>> This statement is incorrect, and results in a build error on older sys=
+tems:
+>>>
+>>> =2E/arch/x86/include/asm/segment=2Eh:272: Error: no such instruction: =
+`rdpid %rax'
+>>>
+>>> For Linux 5=2E15, the required minimum binutils version is 2=2E23, not=
+ 2=2E30 (https://www=2Ekernel=2Eorg/doc/html/v5=2E15/process/changes=2Ehtml=
+); the requirement for 2=2E30 exists from 6=2E18 and up, so this bug likely=
+ affects all longterm releases before 6=2E18=2E
+>>>
+>>> While reversing the patch does result in a successful build, I am conc=
+erned that doing so introduces other bugs=2E Based on the commit descriptio=
+n, it seems that the change *could* have been limited to changing "p" from =
+int to long, and using the %k operand prefix?
+>>>
+>>> Could you please have a look at how your patch may be modified to be c=
+ompatible with systems using the actual minimal binutils versions for 5=2E1=
+0, 5=2E15, 6=2E1, 6=2E6, and 6=2E12?
+>>> --
+>>> Kind regards,
+>>> Jan
+>
+>So why was the patch backported in the first place??
+>
+>
 
--- David
 
-> 
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
-> Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-> Signed-off-by: Kees Cook <kees@kernel.org>
-> ---
->  kernel/params.c | 26 ++++++++++++++++++++------
->  1 file changed, 20 insertions(+), 6 deletions(-)
-> 
-> diff --git a/kernel/params.c b/kernel/params.c
-> index 74d620bc2521..752721922a15 100644
-> --- a/kernel/params.c
-> +++ b/kernel/params.c
-> @@ -475,22 +475,36 @@ static int param_array_set(const char *val, const struct kernel_param *kp)
->  static int param_array_get(char *buffer, const struct kernel_param *kp)
->  {
->  	int i, off, ret;
-> +	char *elem_buf;
->  	const struct kparam_array *arr = kp->arr;
->  	struct kernel_param p = *kp;
->  
-> +	elem_buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
-> +	if (!elem_buf)
-> +		return -ENOMEM;
-> +
->  	for (i = off = 0; i < (arr->num ? *arr->num : arr->max); i++) {
-> -		/* Replace \n with comma */
-> -		if (i)
-> -			buffer[off - 1] = ',';
->  		p.arg = arr->elem + arr->elemsize * i;
->  		check_kparam_locked(p.mod);
-> -		ret = arr->ops->get(buffer + off, &p);
-> +		ret = arr->ops->get(elem_buf, &p);
->  		if (ret < 0)
-> -			return ret;
-> +			goto out;
-> +		ret = min(ret, (int)(PAGE_SIZE - 1 - off));
-> +		if (!ret)
-> +			break;
-> +		/* Replace the previous element's trailing newline with a comma. */
-> +		if (i)
-> +			buffer[off - 1] = ',';
-> +		memcpy(buffer + off, elem_buf, ret);
->  		off += ret;
-> +		if (off == PAGE_SIZE - 1)
-> +			break;
->  	}
->  	buffer[off] = '\0';
-> -	return off;
-> +	ret = off;
-> +out:
-> +	kfree(elem_buf);
-> +	return ret;
->  }
->  
->  static void param_array_free(void *arg)
-
+--=20
+Small device=2E Typos and formatting crap
 
