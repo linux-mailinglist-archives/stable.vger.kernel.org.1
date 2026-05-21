@@ -1,131 +1,114 @@
-Return-Path: <stable+bounces-253636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253637-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YMQ6KHVkD2rlKAYAu9opvQ
-	(envelope-from <stable+bounces-253636-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 22:00:53 +0200
+	id gIhHAH1nD2pKKgYAu9opvQ
+	(envelope-from <stable+bounces-253637-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 22:13:49 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB6145ABA09
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 22:00:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54C8C5ABACE
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 22:13:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 770043037F5B
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 20:00:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1878F3037695
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 20:13:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4586325491;
-	Thu, 21 May 2026 20:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C8DD3E6389;
+	Thu, 21 May 2026 20:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eRK37Qwu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PwjWJcJa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0AC315D49;
-	Thu, 21 May 2026 20:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03FFF33B6F8;
+	Thu, 21 May 2026 20:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779393635; cv=none; b=X4hNYHJi1+o82tLVky5IWq6mq97vk8G+YmlIuchJBb0INAuQ0jbj19aM06xF0+qn02JJ0tJ/lU5uwIoqqUufil8GHN4C1RYl+yTmVA+h6ymw1wB0xeZhJszqs96iJ/icbppTePMyrrZH5gdPXN9E2s6Qo95IpjbxaZ2iP3PcEVA=
+	t=1779394394; cv=none; b=J18ZwghVbvrs63XfwUdX97gbUW044njzlhEA9/a4QZCsHWHDMu4FkdklYF1Iz5qJHvDzkDxxDdqukFBfuInhWmvvCbcECB+fZADGVQuIUZrnWN+LYC/+ioVbJ4X/X7FOLJb1NvAZQQHOlhYJdXvwyKHgT0UoZ9NrLGQXY+hlnx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779393635; c=relaxed/simple;
-	bh=c2Az/z2J5ed0gK0/nMJ95pVrul5HOJrTuKItgstNfKY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A9SjPYUmh6+Fb4KIzTM/vGVambRvlsv3JaqEA7Tx1wKmVsXSo+UR8O5krTFe7Rw13zJz4XZxEJxBExvpnhcCH5JsZBHjKBOiin41wq1sZCcIpPqXCwaFUB+zEbTn4XHsIA4m4L99ID7NkBsbN5QWjDLtVJf4ZcBsN3ruvSTH9sQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eRK37Qwu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C3B31F000E9;
-	Thu, 21 May 2026 20:00:32 +0000 (UTC)
+	s=arc-20240116; t=1779394394; c=relaxed/simple;
+	bh=PhHT+5qWBxKn0OTE/mSREssg/kXNSb41+uZbkc+pqh0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=i2F/ZsbMwfWICpWng6X/J2YxrWAvJAIh19EhxwoGe6rzdS/9m60aQrfRlPk1OMvBuKL+tedzYR+6am+KD65SuRN2q/CFVtnMqJ56SBaXt8fJrF3ryE1iCsGBLVPy/Z6ogF4emgeNBd1ZqoY5JJdOI7FOTwcb5jDPcaeiK4QXAV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PwjWJcJa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 6F6561F000E9;
+	Thu, 21 May 2026 20:13:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779393634;
-	bh=j/DX9tzj17cH+4JYY+xUTz3dvQYv8t8Q+8qiTIJL/ts=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=eRK37QwuuN0mBD13B+Ix1I8nTnO/vKhD3xpvSoaBaLLAy4o/PU7TiNwK6I4EZtb0B
-	 zuOuuhNUMT/0Yk9CPxGS+T2K9OcWq/TpyOlGPervGwtU8K3PCP/S8TA9s4YH1tm9SD
-	 g+yNPlDO21azWGKtn7bqiZ9pSpabbh5kw9IjPSqVSz1CqPDeYOr4l0H2A3744Rqmke
-	 BWwJ64blk1NLmHO4q7esa8eM0F8h4jrVQZU0tPbp2zBUnY82MH/jMoohkRVUISgJW0
-	 Bq65Nu7UKF8hGAYkNH929gRB0m2jKdd5mn8osSj4KSnZLbCDJE/VZwp/1FX1Roaeyw
-	 aN2fR8FlsGhKw==
-Date: Fri, 22 May 2026 04:00:28 +0800
-From: Gao Xiang <xiang@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, Amir Goldstein <amir73il@gmail.com>,
-	Chunhai Guo <guochunhai@vivo.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Gao Xiang <xiang@kernel.org>
-Subject: Re: [PATCH 7.0 0013/1146] erofs: verify metadata accesses for
- file-backed mounts
-Message-ID: <ag9kXOAZd4GwHAC1@debian>
-References: <20260520162148.390695140@linuxfoundation.org>
- <20260520162148.691068692@linuxfoundation.org>
- <ag3qlMOcTYM2FBUQ@debian>
- <20260521-erofs-7.0-drop-sashal@kernel.org>
+	s=k20260515; t=1779394393;
+	bh=2mkrp+7CFhzJFOg4LD6CsVexg7gtohVBtM5IptpBMRQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To;
+	b=PwjWJcJagMbdil30Xk4OPToTglPieM1u8DMgZFULIdF60JW13wB+lpvgVl2GySvnu
+	 J4mNcc1XAqMXONGmP4Kvcsdtx1ai75jHY2pTKerhKCpjkw8ERI4zXrFowb0RkGCr1/
+	 dBCZZxka3VZcrb6JBddQmZ7eqI8aSRWmD3LRkectKPgWKX1gBQaI5ec3qWOi8GpVFJ
+	 A+X6+5SUfJK1wchhrwtbT1DSGqJM0LT11HB2eBe3gF3KaLYeCjoPD8FFguOG3d/dlC
+	 8IYoJNFKObDLbhZ3EL3bONTTVSQ33u0ZjX+v3k7zbhoNBj2QZbnfeOkMlkQ6gkY3sp
+	 7d/VOEHcPhcpg==
+Date: Thu, 21 May 2026 15:13:12 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: "Ionut Nechita (Wind River)" <ionut.nechita@windriver.com>
+Cc: linux-pci@vger.kernel.org, bhelgaas@google.com, sebott@linux.ibm.com,
+	schnelle@linux.ibm.com, bblock@linux.ibm.com, linux@roeck-us.net,
+	lukas@wunner.de, stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org, intel-xe@lists.freedesktop.org,
+	matthew.brost@intel.com, michal.wajdeczko@intel.com,
+	piotr.piorkowski@intel.com, dtatulea@nvidia.com, mani@kernel.org,
+	kbusch@kernel.org, lkml@mageta.org, alifm@linux.ibm.com,
+	julianr@linux.ibm.com, ionut_n2001@yahoo.com,
+	sunlightlinux@gmail.com
+Subject: Re: [PATCH v14 0/2] PCI/IOV: Fix SR-IOV locking races and AB-BA
+ deadlock
+Message-ID: <20260521201312.GA182641@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260521-erofs-7.0-drop-sashal@kernel.org>
+In-Reply-To: <cover.1776839248.git.ionut.nechita@windriver.com>
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,vger.kernel.org,lists.linux.dev,gmail.com,vivo.com,linux.alibaba.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-253636-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253637-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xiang@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	FREEMAIL_CC(0.00)[vger.kernel.org,google.com,linux.ibm.com,roeck-us.net,wunner.de,lists.freedesktop.org,intel.com,nvidia.com,kernel.org,mageta.org,yahoo.com,gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[helgaas@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: DB6145ABA09
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 54C8C5ABACE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Sasha,
-
-On Thu, May 21, 2026 at 08:55:50AM -0400, Sasha Levin wrote:
-> On Thu, May 21, 2026 at 01:08:36AM +0800, Gao Xiang wrote:
-> > Please help dropping this patch from auto-backporting flow
-> > since this fix commit needs another fix, but Christoph
-> > doesn't like that fix so it never gets upstream:
-> >
-> > https://lore.kernel.org/all/agF0wJSFRAEcRP8M@infradead.org/T/#u
-> >
-> > Since it impacts Android use cases (SELinux), I will
-> > backport this manually later, and for now not backporting
-> > this won't impact any.
+On Wed, Apr 22, 2026 at 09:32:40AM +0300, Ionut Nechita (Wind River) wrote:
+> Hi Bjorn,
 > 
-> Dropped from the 7.0, 6.18, and 6.12 queues. Please ping us when the
-> follow-up fix lands and you're ready for the manual backport.
+> This is v14 of the fix for the SR-IOV race between driver .remove()
+> and concurrent hotplug events.
 
-Ok, thanks a lot!
+Thanks for your persistence on this!
 
-Thanks,
-Gao Xiang
+Can you take a look at the sashiko feedback and see whether there's
+any merit to it?
 
-> 
-> Thanks.
-> 
-> --
-> Thanks,
-> Sasha
+https://sashiko.dev/#/patchset/cover.1776839248.git.ionut.nechita%40windriver.com
 
