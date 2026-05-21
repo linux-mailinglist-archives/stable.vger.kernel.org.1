@@ -1,91 +1,91 @@
-Return-Path: <stable+bounces-253548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253549-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KEQBM6oFD2pzEQYAu9opvQ
-	(envelope-from <stable+bounces-253548-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 15:16:26 +0200
+	id QAW7J+oFD2qFEQYAu9opvQ
+	(envelope-from <stable+bounces-253549-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 15:17:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B11975A585F
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 15:16:26 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5514B5A58D6
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 15:17:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6AD5D3078519
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 13:04:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4DBDA32A578E
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 13:04:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A73F33CC7DC;
-	Thu, 21 May 2026 13:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 533DA3D5C26;
+	Thu, 21 May 2026 13:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mrg9S2iT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JdOpJgFJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071713D45F8
-	for <stable@vger.kernel.org>; Thu, 21 May 2026 13:04:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1AE13D567B
+	for <stable@vger.kernel.org>; Thu, 21 May 2026 13:04:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779368648; cv=none; b=ZQ3RP5VC5JsIj+rXi4bNWw6t4Fpk/3fI71AiJs7aXLEIK73v6rDjcr82ysEdTjdqeCa9P5MCPfkc2hxB6M96btHq2urIAhIJjrt8JSdzgND/lLdoc4cK2hGo9xUIJvWnoo8RMtfAi3XTDsWrA3k4/aMKKAygQbWfHVyHbQo35tw=
+	t=1779368649; cv=none; b=WV+qo3fBPAcPN7sFi1pWHS094InIGdh49hW3ifYzzSut7GoXF6msXE2d9AMiY3KUV0Sk3HrmBRKdvClvueUdfmZiIl+pwBkpjdkOS0NBxIapewJidZfxmDhydp3Pa9Sh1+bpaHVyqBqtbWzDZ1cdwuhZK00tPwwsf6ShN+AhZQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779368648; c=relaxed/simple;
-	bh=9A4jVnzDv/usUlFeq3EuOnxuhB9rRPwyxJzmHvtAJ74=;
+	s=arc-20240116; t=1779368649; c=relaxed/simple;
+	bh=7SsrYMKDh9rt+9N6EF+fS9nQeI4YX7vkrI18oJQsNRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sgGE++SEsClsRmehaJR7WAIBzC3FsTdN372kETc4VpqjbGmi/srbrD+WmrVRAAkzZMJALW17AmG004/cKy5mJQ4AGlPBumlcuDDTLxwkSz64z5dBp+5TornF74cazVuyw3UR3w/Be+fPKVf91AH2kgo2FUUWRtKwC87GrSzY2Gg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mrg9S2iT; arc=none smtp.client-ip=209.85.218.52
+	 MIME-Version; b=dGHf86Czsh+67XYqNSUz80c2GwvDGBmEp2SJFhORAICk7ZNwGA+A4+xKrl8DKodeHQ+Dr1IuzGa8BVv4JIYe7rIhVvjHIVqJ+ftS4BzXugPbndQrAZobbul4wDu5eVWGvGzljYA1V/NyWWsNtTp/opq+LFWfZ54MT9MYnflpp6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JdOpJgFJ; arc=none smtp.client-ip=209.85.208.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-bd8f9889a8cso665481066b.1
-        for <stable@vger.kernel.org>; Thu, 21 May 2026 06:04:06 -0700 (PDT)
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-68707d88626so4806903a12.0
+        for <stable@vger.kernel.org>; Thu, 21 May 2026 06:04:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779368645; x=1779973445; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1779368646; x=1779973446; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=S4lmM74WsQVb7gsWrSGGOh3OWSwYycbJASwr5KvwFMI=;
-        b=mrg9S2iTlu5n/X/w1ITzN+GLqaRG9Q+p5tCrOoDZX0lpu299M4Y7iyC2HiwPYt/fDi
-         75y9GU++hAZfoMYqBhBZ98OJZKIsbRVMkRE0KACvWYqNebt+1ieZwi2yvasXlHYLsg2X
-         nNMcynMuDoFVqdfUCPjU+yDCwNbPhU/gyocgyH9RWMXz1g2LS+Wq0Wjiz4Nd5GUvyMEl
-         h8fLZBeyvLKNdHTHNjQug+IDDq+DBRHWD/YA2yIWYm2o0HRhawZxzwvSxbyyb3uTQN1+
-         rMe+M+g0flPy0NwFibmOZ4R6dxeo2bfCLggjFDrlWjnkUHjB5GG6PR3lUJ48AV6L2AnF
-         y7Dw==
+        bh=KMABQ2lm+8Apo5qMdLPjApIQTOzncW9oYRbW/a64Ly8=;
+        b=JdOpJgFJMinAGANFUcibtUZsCHD8XjLxEd7/xBTedsI06fPvdvqYebzGJXXVb5Sh+3
+         JsDu1Gwi0PYPtCmPZyNvbJNbe1gixemUVuTKjOdmZNNL/vPIv05QWG5Nwz+cv2W3+gbJ
+         8I/xKtwxeDrzf0Pq+Np1KOq9KsKdHoRUTALR2p2hKPZWYIMGp+DMKNPUTrb/MNnSmXnE
+         X2BaGvGiRb1HJfZxBfuUaLaOGXp5TTIL4ncFJHNDfgceIh1DQC/REDvwN3nPiM4uHDYR
+         goO0INIsrxuib7mbpuqm6WKIPS07Cw1RCMzct4dvuc/5szNFtEZEsO9iBFjqMUaBPQnZ
+         utHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779368645; x=1779973445;
+        d=1e100.net; s=20251104; t=1779368646; x=1779973446;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=S4lmM74WsQVb7gsWrSGGOh3OWSwYycbJASwr5KvwFMI=;
-        b=N43sC3zcFtoyHv9huRsIh3qN7p6geYJDpQt7azAVLp4KlK65F0RUlz5rcc4bWn7YRc
-         rj4UMqvOkFsLA48HLb49pUXqH8ei0hMWg7OZcU5l+n9BAA5TchyZi5oQbfXUncmv29zF
-         3mBMoTHgqBhWRldwvb7/rqZ4okEaOseY5y9jI6PYbg3FqUOOVLEBEi1LDIOS0akyicDA
-         uWrG2ZXI7EXzvn46c+v+90nI+e+Js6tjX6CxGDGHMRujzUQSTdQDjw5vOv2RCAzSGu2K
-         rF+3mfrzmCX/8oDxBuig5qcqU/UlRP4i892dhvxoJHTBhxIiCqDW7CJmyvCD1pDM0e71
-         2A0A==
-X-Forwarded-Encrypted: i=1; AFNElJ/JosemeCDUsiuWz4dUl+W22hflG0Bx9Y4U4aZTQQxUSZbQO8ws75R1hp6AiZsEC4L3NXTTrLk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrXxEVpZoYl17niStzPLDyPnXXousaiK8ArjiMhJigQwhR+ANI
-	aplGUbdTp0acLGGQX/LOtReihK8jRWE5i9QAGSKfkVH4kpG+/VnF7D37
-X-Gm-Gg: Acq92OG95WomWVJJ66X/Nz2rKRdHk55dyHuZLwnC1l2hKaHnIK8N50aiSzBQQkGKddQ
-	KxQSblAwlOEsyqq1iAF6b6p5liDRutIcs/+Xf5FCMkDGKSfY2WWrGiEeEJa2t9t2HSziQGXNBIf
-	Ezo407O8mLAlzPCQaiNiwGYGcIW4Qc63wlOxo4RmY2f/gT9fK/l511bMRLUn3Vx089ICBtV9ch9
-	nIyaPaTh37Gv2Hshn0mEoEP1qEv83ie8HJvbs6lZBScovhjzPs1fxLNOCMY0JYSje4Ho5YAJWd1
-	Z5QC2dKUfO1JLo40te5tty+RnOlSVC1SEswcHMkXsCtwMwagIwpQwwyNS9aH9VTy1D0hTEyYPqj
-	9eWskIjse4lEN5wJxoUJeI54d8Oi12J+i/AR4kGEmNdxsqgsEDQ6ND2Fn/lcGN8vqQiVsu6IB6I
-	xnve+MylcT8orin7CGA+q5P8bjuVX4+VAkUIifZYq7ZHxzoEinBJwRITcUcWmw4/u4wa3NGA2+G
-	Un6MbrU0Iei8swhdvLg5tK3hkB2uVuiQHKJqZH5Aq5CypeEEbhKRXu+VDkfiEoeuvVmfOsX9uVR
-	V9BbMo4QolGtvgG1SrGXsC22ZL7n
-X-Received: by 2002:a17:907:7ba5:b0:bce:4be4:cb9e with SMTP id a640c23a62f3a-bdc13e7e9c4mr162388266b.24.1779368645114;
+        bh=KMABQ2lm+8Apo5qMdLPjApIQTOzncW9oYRbW/a64Ly8=;
+        b=sygNgAb8PB6QZg/+I0U9E8F9trKkux4/OWCde6qSiUG32UXstkt2zv/n7aETQcIIAc
+         xTSWUmLOUcUFxMMuz0LTF5GYhTAh+nmRdu7eBFfEPwa+NQfoWFBL/2b2HjPSVKSua1Dh
+         VqCtI6BpRNM71Gxwp7H44/1GwTqVzSHgmEC2BWmKlmTM8mHILI+8MI9F7C9I8ohWAL8G
+         Ud7ZaWPhhYf8/FqVz8EU0O3ehYRxtHbCkK2N45/NtFDJxa8AUMqevJ/C2A8GLEydIy6f
+         Y7WjSUICHkL1mzcxs55RnoxB1y8dX7wDjSBgZxSEWSLbGx/ykwVnuzI0yGPPb9N7Mv72
+         B4MA==
+X-Forwarded-Encrypted: i=1; AFNElJ/VSJztLYjEnttYD7ko1r1Iqrc4NFXRW4aEAXD8jZ53lEPqxhCJKy/ZoiYQxnML+UgWsSCdfsk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEgHevNbZg/M5LfABXCCDQPcqALCyMVL0/BBSE6M2n61VlZnKT
+	pudMn4vkeN/IOWC603AsDR3i+30FxaUB0ioEg6JroPNIyVTVS7CFWKWp
+X-Gm-Gg: Acq92OE/rFF3KB6g7+3Io5nkcb+7H5PgnOTBoPQGIckuRJ4NyIz21s1XfmD3JX8q+8p
+	Pyv8d4uAL/Vwij2dIS960RprkLzbSN2a61o69w4umj0qmyeuizt8zC31IGdGv+eiPtAVlKzqgDT
+	2CVTSjsDdrO6k+FH3N4Pz18aQVDQN6HR5yYekzCxw/Upq+QvxpWNOuo+ABx4GKzbQhvNopKhQP3
+	XAglf0l2ZH0+LOs6U2VPNhiFZLtnR+cQhOsjBqo6bpm9NW+eGddjQcP1XkjClNNvtzK914Ycz3G
+	9pZ+BRqNMKdeYFlk5lO2itVeoR4pp2a/UP8Kg8HbHWWnJCb195R7Xreu1zXnAdRrfjMp/JLrv6A
+	kho2CAvb8FgEv6mjhxfK+SyiCtlByk8drpQwO9GSUuc7ErAK583J/p8ZbGzpKookHXE276Qqjq5
+	JBAq6D3+tZb322NoSaWh/aTyrcjPrii0rBs6uyHLVQSJftr02CVLLqbEBEcKSCns5QD9zasSHJ0
+	mWV5wjewJfMOqVkgl9SN1FrX3PaFQzlZq5eEClvFbsSNEUGUPpGHFn5HfmBhJVLwNksv5MHWWUE
+	Hvfy1fWzRwt8vbjFt6zVL9jlRhKLiufeAIzoA/g=
+X-Received: by 2002:a17:907:86a8:b0:ba6:8f34:b419 with SMTP id a640c23a62f3a-bdc12f85f54mr164286466b.13.1779368645816;
         Thu, 21 May 2026 06:04:05 -0700 (PDT)
 Received: from ahossu.localdomain (ip-217-105-56-94.ip.prioritytelecom.net. [217.105.56.94])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bdc8a505905sm43766266b.37.2026.05.21.06.04.04
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bdc8a505905sm43766266b.37.2026.05.21.06.04.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 May 2026 06:04:04 -0700 (PDT)
+        Thu, 21 May 2026 06:04:05 -0700 (PDT)
 From: Alexandru Hossu <hossu.alexandru@gmail.com>
 To: gregkh@linuxfoundation.org
 Cc: linux-staging@lists.linux.dev,
 	stable@vger.kernel.org,
 	hossu.alexandru@gmail.com
-Subject: [PATCH v6 5/7] staging: rtl8723bs: fix OOB read in OnAssocRsp() IE loop
-Date: Thu, 21 May 2026 15:03:28 +0200
-Message-ID: <20260521130330.754181-6-hossu.alexandru@gmail.com>
+Subject: [PATCH v6 6/7] staging: rtl8723bs: fix OOB reads in is_ap_in_tkip() IE loop
+Date: Thu, 21 May 2026 15:03:29 +0200
+Message-ID: <20260521130330.754181-7-hossu.alexandru@gmail.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260521130330.754181-1-hossu.alexandru@gmail.com>
 References: <20260521130330.754181-1-hossu.alexandru@gmail.com>
@@ -102,12 +102,12 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253548-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253549-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,gmail.com];
@@ -124,49 +124,74 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: B11975A585F
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 5514B5A58D6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The IE parsing loop in OnAssocRsp() advances by (pIE->length + 2) each
-iteration but only guards on i < pkt_len. When a malicious AP sends an
-AssocResponse whose last IE has only one byte remaining in the frame
-(the element_id byte lands at pkt_len-1), the loop reads pIE->length
-from pframe[pkt_len], which is one byte past the allocated receive buffer.
+The loop in is_ap_in_tkip() iterates over IEs without verifying that
+enough bytes remain before dereferencing the IE header or its payload:
 
-Additionally, even when the header bytes are in bounds, pIE->length
-itself can extend the data window beyond pkt_len, silently passing a
-truncated IE to the handler functions.
+- pIE->element_id and pIE->length are read without checking that
+  i + sizeof(*pIE) <= ie_length, so a truncated IE at the end of the
+  buffer causes an OOB read.
 
-Add two guards at the top of the loop body:
-  1. Break if fewer than sizeof(*pIE) bytes remain (can't read header).
-  2. Break if the IE's declared data extends past pkt_len.
+- For WLAN_EID_VENDOR_SPECIFIC the code compares pIE->data + 12,
+  which requires pIE->length >= 16.  For WLAN_EID_RSN it compares
+  pIE->data + 8, requiring pIE->length >= 12.  Neither requirement
+  is checked.
+
+Add the missing IE header and payload bounds checks and guard each
+data access with an explicit pIE->length minimum, matching the
+pattern established in update_beacon_info().
 
 Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
 Cc: stable@vger.kernel.org
 Signed-off-by: Alexandru Hossu <hossu.alexandru@gmail.com>
 ---
- drivers/staging/rtl8723bs/core/rtw_mlme_ext.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/staging/rtl8723bs/core/rtw_wlan_util.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-index c646dc2a1741..68ce422305ed 100644
---- a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-@@ -1406,7 +1406,11 @@ unsigned int OnAssocRsp(struct adapter *padapter, union recv_frame *precv_frame)
- 	/* to handle HT, WMM, rate adaptive, update MAC reg */
- 	/* for not to handle the synchronous IO in the tasklet */
- 	for (i = (6 + WLAN_HDR_A3_LEN); i < pkt_len;) {
-+		if (i + sizeof(*pIE) > pkt_len)
-+			break;
- 		pIE = (struct ndis_80211_var_ie *)(pframe + i);
-+		if (i + sizeof(*pIE) + pIE->length > pkt_len)
-+			break;
+diff --git a/drivers/staging/rtl8723bs/core/rtw_wlan_util.c b/drivers/staging/rtl8723bs/core/rtw_wlan_util.c
+index dd34f229df12..94bbe7ac13ac 100644
+--- a/drivers/staging/rtl8723bs/core/rtw_wlan_util.c
++++ b/drivers/staging/rtl8723bs/core/rtw_wlan_util.c
+@@ -1335,15 +1335,23 @@ unsigned int is_ap_in_tkip(struct adapter *padapter)
+ 		for (i = sizeof(struct ndis_802_11_fix_ie); i < pmlmeinfo->network.ie_length;) {
+ 			pIE = (struct ndis_80211_var_ie *)(pmlmeinfo->network.ies + i);
  
- 		switch (pIE->element_id) {
- 		case WLAN_EID_VENDOR_SPECIFIC:
++			if (i + sizeof(*pIE) > pmlmeinfo->network.ie_length)
++				break;
++			if (i + sizeof(*pIE) + pIE->length > pmlmeinfo->network.ie_length)
++				break;
++
+ 			switch (pIE->element_id) {
+ 			case WLAN_EID_VENDOR_SPECIFIC:
+-				if ((!memcmp(pIE->data, RTW_WPA_OUI, 4)) && (!memcmp((pIE->data + 12), WPA_TKIP_CIPHER, 4)))
++				if (pIE->length >= 16 &&
++				    !memcmp(pIE->data, RTW_WPA_OUI, 4) &&
++				    !memcmp((pIE->data + 12), WPA_TKIP_CIPHER, 4))
+ 					return true;
+ 
+ 				break;
+ 
+ 			case WLAN_EID_RSN:
+-				if (!memcmp((pIE->data + 8), RSN_TKIP_CIPHER, 4))
++				if (pIE->length >= 12 &&
++				    !memcmp((pIE->data + 8), RSN_TKIP_CIPHER, 4))
+ 					return true;
+ 				break;
+ 
+@@ -1351,7 +1359,7 @@ unsigned int is_ap_in_tkip(struct adapter *padapter)
+ 				break;
+ 			}
+ 
+-			i += (pIE->length + 2);
++			i += sizeof(*pIE) + pIE->length;
+ 		}
+ 
+ 		return false;
 -- 
 2.54.0
 
