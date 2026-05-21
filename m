@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-253634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253636-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6GlHG6hgD2ojJwYAu9opvQ
-	(envelope-from <stable+bounces-253634-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 21:44:40 +0200
+	id YMQ6KHVkD2rlKAYAu9opvQ
+	(envelope-from <stable+bounces-253636-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 22:00:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CD655AB88F
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 21:44:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB6145ABA09
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 22:00:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8E40C3009F3E
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 19:44:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 770043037F5B
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 20:00:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D83D93FE34B;
-	Thu, 21 May 2026 19:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4586325491;
+	Thu, 21 May 2026 20:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Hs0Vwz6a"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eRK37Qwu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7973E16B1
-	for <stable@vger.kernel.org>; Thu, 21 May 2026 19:44:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0AC315D49;
+	Thu, 21 May 2026 20:00:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779392671; cv=none; b=IQxu0oaBYH+9sZSaGgTZrYojSqwkrmv480E0RaXJOgYFDhRkf6M88R5pxU/byRRzQeKhfuFXJALLD7c6e7XpgjxDs3oECVr9inPjmemS0vMD7DcJ5FYSQqj0exSK7Aa/2sBZ2gYfNl2Eti3GzpLr3J2fkVkJHrfDsP5bFHnSavg=
+	t=1779393635; cv=none; b=X4hNYHJi1+o82tLVky5IWq6mq97vk8G+YmlIuchJBb0INAuQ0jbj19aM06xF0+qn02JJ0tJ/lU5uwIoqqUufil8GHN4C1RYl+yTmVA+h6ymw1wB0xeZhJszqs96iJ/icbppTePMyrrZH5gdPXN9E2s6Qo95IpjbxaZ2iP3PcEVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779392671; c=relaxed/simple;
-	bh=bz3ie3tUW5ADUzrio3mf5l1+FhMVysQLUjpPFUKQpR4=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dLsp7uG/E38OhuyBNU5sYndsO6AcWPVxnROEKYzPbvqk4lkzeAlE/o/vkWDfEjoROSk3L0Z1Vc2edv/wjUHbtLSYy2pfrZn8O3zmuO+YLZUD43nodibwWr5DkM/oooGY+BA8x7r5JHJci6oweev9o652YWmdp6JOh3vdS5wyT8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Hs0Vwz6a; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1779392662; x=1779651862;
-	bh=qQmrYv/9HECiCjJmzvuoYE6+vChbYZ+McS7rb3j1BWs=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=Hs0Vwz6a8N64C50rt29cd8RcocCoq1SBtsdmDXcx7HHOuyNFZKVVXb0m83n9+PdEO
-	 XtxVUoEi6n3tSWJY0D1ib3dSsw6cNZe2myzdBCTSY+M2mmEm/7YP0iU8HNUHJKL8Wq
-	 mPyOzFfEwt6BhijbghxzJoUdYbtrX2M3o9FgTR4u20uVc4l6oEAGqVee/KEc632/7H
-	 snDESoTYzvxPj+4JNdQ4kumpF6jjQGInVr6XuFPnwCJxmZA+7DbwFtUg8wGJmVaZA+
-	 W24OavWUKsFxnoYMxF4gjwqxTe48IXMSzsktoKvhGAbOzM75+nKD+WQmueamk4CSbG
-	 vM9DkIMra78Mg==
-Date: Thu, 21 May 2026 19:44:19 +0000
-To: linux-rdma@vger.kernel.org
-From: Tymbark7372 <tymbark7372@proton.me>
-Cc: zyjzyj2000@gmail.com, jgg@nvidia.com, leonro@nvidia.com, stable@vger.kernel.org, Tymbark7372 <tymbark7372@proton.me>
-Subject: [PATCH 4/4] RDMA/rxe: Fix u64 addr+length overflow in rxe_check_bind_mw
-Message-ID: <20260521194402.811-5-tymbark7372@proton.me>
-In-Reply-To: <20260521194402.811-1-tymbark7372@proton.me>
-References: <20260521194402.811-1-tymbark7372@proton.me>
-Feedback-ID: 184352754:user:proton
-X-Pm-Message-ID: a5e40ec1f35fc811286c100d5b2d61b1c69339be
+	s=arc-20240116; t=1779393635; c=relaxed/simple;
+	bh=c2Az/z2J5ed0gK0/nMJ95pVrul5HOJrTuKItgstNfKY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A9SjPYUmh6+Fb4KIzTM/vGVambRvlsv3JaqEA7Tx1wKmVsXSo+UR8O5krTFe7Rw13zJz4XZxEJxBExvpnhcCH5JsZBHjKBOiin41wq1sZCcIpPqXCwaFUB+zEbTn4XHsIA4m4L99ID7NkBsbN5QWjDLtVJf4ZcBsN3ruvSTH9sQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eRK37Qwu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C3B31F000E9;
+	Thu, 21 May 2026 20:00:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779393634;
+	bh=j/DX9tzj17cH+4JYY+xUTz3dvQYv8t8Q+8qiTIJL/ts=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=eRK37QwuuN0mBD13B+Ix1I8nTnO/vKhD3xpvSoaBaLLAy4o/PU7TiNwK6I4EZtb0B
+	 zuOuuhNUMT/0Yk9CPxGS+T2K9OcWq/TpyOlGPervGwtU8K3PCP/S8TA9s4YH1tm9SD
+	 g+yNPlDO21azWGKtn7bqiZ9pSpabbh5kw9IjPSqVSz1CqPDeYOr4l0H2A3744Rqmke
+	 BWwJ64blk1NLmHO4q7esa8eM0F8h4jrVQZU0tPbp2zBUnY82MH/jMoohkRVUISgJW0
+	 Bq65Nu7UKF8hGAYkNH929gRB0m2jKdd5mn8osSj4KSnZLbCDJE/VZwp/1FX1Roaeyw
+	 aN2fR8FlsGhKw==
+Date: Fri, 22 May 2026 04:00:28 +0800
+From: Gao Xiang <xiang@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Amir Goldstein <amir73il@gmail.com>,
+	Chunhai Guo <guochunhai@vivo.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Gao Xiang <xiang@kernel.org>
+Subject: Re: [PATCH 7.0 0013/1146] erofs: verify metadata accesses for
+ file-backed mounts
+Message-ID: <ag9kXOAZd4GwHAC1@debian>
+References: <20260520162148.390695140@linuxfoundation.org>
+ <20260520162148.691068692@linuxfoundation.org>
+ <ag3qlMOcTYM2FBUQ@debian>
+ <20260521-erofs-7.0-drop-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,87 +66,66 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Disposition: inline
+In-Reply-To: <20260521-erofs-7.0-drop-sashal@kernel.org>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[proton.me,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[proton.me:s=protonmail];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,nvidia.com,vger.kernel.org,proton.me];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,vger.kernel.org,lists.linux.dev,gmail.com,vivo.com,linux.alibaba.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-253636-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253634-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tymbark7372@proton.me,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[proton.me:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,proton.me:email,proton.me:mid,proton.me:dkim]
-X-Rspamd-Queue-Id: 7CD655AB88F
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[xiang@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: DB6145ABA09
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-rxe_check_bind_mw() validates that a Type 2 memory window's range
-[addr, addr + length) is contained within its parent MR's range
-[mr->ibmr.iova, mr->ibmr.iova + mr->ibmr.length).  Both end-addition
-sums wrap modulo 2^64.  An attacker can bind a memory window whose
-nominal range exceeds the parent MR by wrapping the comparison sum
-to a value below the parent's iova.
+Hi Sasha,
 
-This is the same wrap class as patch 1 of this series; it was found
-by sibling-site grep against the other rxe iova checks and is not on
-the OOB-write path of the three primary bugs.  I have not
-demonstrated a downstream OOB primitive that uses this specific
-escape, so it is filed here as a defensive sibling fix rather than as
-a separate exploitable bug.  Folding it into the same series keeps
-the wrap-class fixes together.
+On Thu, May 21, 2026 at 08:55:50AM -0400, Sasha Levin wrote:
+> On Thu, May 21, 2026 at 01:08:36AM +0800, Gao Xiang wrote:
+> > Please help dropping this patch from auto-backporting flow
+> > since this fix commit needs another fix, but Christoph
+> > doesn't like that fix so it never gets upstream:
+> >
+> > https://lore.kernel.org/all/agF0wJSFRAEcRP8M@infradead.org/T/#u
+> >
+> > Since it impacts Android use cases (SELinux), I will
+> > backport this manually later, and for now not backporting
+> > this won't impact any.
+> 
+> Dropped from the 7.0, 6.18, and 6.12 queues. Please ping us when the
+> follow-up fix lands and you're ready for the manual backport.
 
-Use check_add_overflow() on both ends.
+Ok, thanks a lot!
 
-Fixes: 8700e3e7c485 ("Soft RoCE driver")
-Cc: stable@vger.kernel.org # v4.8+
-Reported-by: Tymbark7372 <tymbark7372@proton.me>
-Signed-off-by: Tymbark7372 <tymbark7372@proton.me>
-Assisted-by: Claude:claude-opus-4-7
----
- drivers/infiniband/sw/rxe/rxe_mw.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+Thanks,
+Gao Xiang
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_mw.c b/drivers/infiniband/sw/rxe=
-/rxe_mw.c
---- a/drivers/infiniband/sw/rxe/rxe_mw.c
-+++ b/drivers/infiniband/sw/rxe/rxe_mw.c
-@@ -120,9 +120,14 @@
- =09=09=09return -EINVAL;
- =09=09}
- =09} else {
--=09=09if (unlikely((wqe->wr.wr.mw.addr < mr->ibmr.iova) ||
--=09=09=09     ((wqe->wr.wr.mw.addr + wqe->wr.wr.mw.length) >
--=09=09=09      (mr->ibmr.iova + mr->ibmr.length)))) {
-+=09=09u64 mw_end, mr_end;
-+
-+=09=09if (unlikely(check_add_overflow(wqe->wr.wr.mw.addr,
-+=09=09=09=09=09=09wqe->wr.wr.mw.length, &mw_end) ||
-+=09=09=09     check_add_overflow(mr->ibmr.iova,
-+=09=09=09=09=09=09mr->ibmr.length, &mr_end) ||
-+=09=09=09     wqe->wr.wr.mw.addr < mr->ibmr.iova ||
-+=09=09=09     mw_end > mr_end)) {
- =09=09=09rxe_dbg_mw(mw,
- =09=09=09=09"attempt to bind a VA MW outside of the MR\n");
- =09=09=09return -EINVAL;
---
-2.43.0
-
+> 
+> Thanks.
+> 
+> --
+> Thanks,
+> Sasha
 
