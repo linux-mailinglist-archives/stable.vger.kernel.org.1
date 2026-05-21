@@ -1,199 +1,210 @@
-Return-Path: <stable+bounces-253453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253454-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SFrjAemWDmr+AQYAu9opvQ
-	(envelope-from <stable+bounces-253453-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 07:23:53 +0200
+	id tnyuNnWXDmotAgYAu9opvQ
+	(envelope-from <stable+bounces-253454-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 07:26:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 607EC59F075
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 07:23:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A1B459F094
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 07:26:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 76433303BB1B
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 05:22:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 758F6304F246
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 05:26:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 907DB349CD2;
-	Thu, 21 May 2026 05:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D415C357D05;
+	Thu, 21 May 2026 05:26:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="jVg8gNRf"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="pFlw+ubX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83A8531E859;
-	Thu, 21 May 2026 05:22:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7397318B9C;
+	Thu, 21 May 2026 05:26:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779340973; cv=none; b=g1idyC/hz45qNj4kRErYn+uLKaGczwwRLzCKiwyh0YGbGT6B6df4yQDQtyFF1mKq31wZorGp0Sc5HDRnV4sCQPnXiyXQwV/XQQsfCHz/++zBPeZMNrXbsK1PheEc/HBwXHcT+mlSPDjs98LKm8zxaZrQ5Taetlm2mvIsNTzcmq0=
+	t=1779341170; cv=none; b=HhSoBKzH9mxrH8ksBkh6AVlnQAyW7wMPgj6MFv6m6Gwel6eJETpRMvUI/setwTrD2vdqNUzyuTokzDC0Zso0fjL/z12IBsQK7Cq+ocpvIp3hWeAiRl+lR35FGaMroIpEipo/TK7xhHgxYzmQB5CHnzr/B3sG09ftFeIcUijLl5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779340973; c=relaxed/simple;
-	bh=JzjhQdJ2WgnOTIYI7H88AKQ7aD2wbhUZ3OX+v23TmnQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XgHJboAhsYpnaPkJ3rHLChRjVW2mEEO5GcyXVsTrCgL4uWq3vjfPtCJ1tjeH+081rLwMB0szxZdFPm53qmodCdJn69krkNp3SDDRvSb2E7xsB4k7KU82iKbw19aB/zuOx9mVDnjy5wq+Qf85g1FR7BgrP/ZnFoEc2vNVa1TnQ2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=jVg8gNRf; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Received: from francesco-nb (93-38-208-55.ip72.fastwebnet.it [93.38.208.55])
-	by mail11.truemail.it (Postfix) with ESMTPA id 2CB2C1F8CB;
-	Thu, 21 May 2026 07:22:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1779340969;
-	bh=o15KSxT+zAGeSPqW9VYkK8ANSMHwXJq4h0W9cEQevFU=; h=From:To:Subject;
-	b=jVg8gNRf5T4Lp4uNflr4KPo2IycmYls0Y63zFxmAbQC11juTp0R62Z8Xbw/wgNFIj
-	 xf3bSV0iWS7p5cADA7Ikluk2jqAxn5mHXFvQwOBfNYeHo2k/9Qp2GNyUv+x+neAxV8
-	 GFi76tRWQS/lADP7X7nj+0i2+qValEkWPKzMhj7hlDApOKmYQIbWrXW+vgMs87KvXu
-	 0BmiSKqaWwmzPKpzaLROaPYqU7N7jERVitaydc176WpSP29a/zNLzhrpMXSLlho14H
-	 jN6UEWkoWvfg1v523HvtUZCS0ZU4gpnN5dct5j2UmbXWKBdFDOqz7O6C3tXE9FR77N
-	 65zUEfg5wafnA==
-Date: Thu, 21 May 2026 07:22:41 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Francesco Dolcini <francesco@dolcini.it>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	sr@sladewatkins.com
-Subject: Re: [PATCH 6.6 000/508] 6.6.141-rc1 review
-Message-ID: <20260521052241.GA8766@francesco-nb>
-References: <20260520162058.573354582@linuxfoundation.org>
- <20260521051542.GA6866@francesco-nb>
+	s=arc-20240116; t=1779341170; c=relaxed/simple;
+	bh=e/4MsCDQRselIYvZ3uaUq+llmN01dyasIeL3er1gv74=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TNIMccQLU2BY7VitpzpvxcMeDeAa9/lCnKePX9/U3IAuyrDUEB+oQG8wK0RWiD8jG2ihMsJFIqp6pTDb4BJYH7BZgU2cu3qZW/gz4vTSxUzs2Rt8YKuunnjwMpe5ymFyHzcHYiisUY22UedoBil29tKJ0u6wrp87IjYjsu43vvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=qti.qualcomm.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=pFlw+ubX; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=qti.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64L2mOxM446688;
+	Thu, 21 May 2026 05:26:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=wjuCR4CwmsQ+B9oSh0hO7FF06UDUgaiGPs5
+	HL06tM68=; b=pFlw+ubXRMFZHFGxx6lx0i6iGyMGRSAsOyJQfPiKkPSfCtmvlOy
+	U6/koccsrswmx8lNiOTxKTxz9rwbkzD361wK+xrLOSMO99UJkWJXxFTXJSqIykPH
+	w7/zQqoWen/Dzwv/1emBCP6XuSrZrf00QUU7yCk/Ok2mu2DbkC4LvCufTyuH1HJC
+	nH0FTtYVpeRRMp7muvgTXzg6ihojlwCYdkwCxaepHFvakHpugSBuhO8cURAg68Xf
+	XyXjDjqmKtPe38aavVTlcu9UJvc+eC6sPtd1CZK+26Wuuzq+ZKA/QGI9LPpRK5fJ
+	r7HVMUQEaVvrf09K79wVyiG7CjF5HC3rfWA==
+Received: from aptaippmta02.qualcomm.com (tpe-colo-wan-fw-bordernet.qualcomm.com [103.229.16.4])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e9anrm5ah-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 21 May 2026 05:26:05 +0000 (GMT)
+Received: from pps.filterd (APTAIPPMTA02.qualcomm.com [127.0.0.1])
+	by APTAIPPMTA02.qualcomm.com (8.18.1.7/8.18.1.7) with ESMTP id 64L5Q2AA001795;
+	Thu, 21 May 2026 05:26:02 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by APTAIPPMTA02.qualcomm.com (PPS) with ESMTPS id 4e713jev5e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 21 May 2026 05:26:02 +0000 (GMT)
+Received: from APTAIPPMTA02.qualcomm.com (APTAIPPMTA02.qualcomm.com [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 64L5Q2nU001786;
+	Thu, 21 May 2026 05:26:02 GMT
+Received: from shuaz-gv.ap.qualcomm.com (smtphost-taiwan.qualcomm.com [10.249.136.33])
+	by APTAIPPMTA02.qualcomm.com (PPS) with ESMTPS id 64L5Q2UU001776
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 21 May 2026 05:26:02 +0000 (GMT)
+Received: by shuaz-gv.ap.qualcomm.com (Postfix, from userid 4467449)
+	id D74044C4; Thu, 21 May 2026 13:26:01 +0800 (CST)
+From: Shuai Zhang <shuaz@qti.qualcomm.com>
+To: Marcel Holtmann <marcel@holtmann.org>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, cheng.jiang@oss.qualcomm.com,
+        quic_chezhou@quicinc.com, wei.deng@oss.qualcomm.com,
+        jinwang.li@oss.qualcomm.com, mengshi.wu@oss.qualcomm.com,
+        shuai.zhang@oss.qualcomm.com, stable@vger.kernel.org
+Subject: [PATCH v3] Bluetooth: btusb: Allow firmware re-download when version matches
+Date: Thu, 21 May 2026 13:25:47 +0800
+Message-Id: <20260521052547.2862803-1-shuaz@qti.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260521051542.GA6866@francesco-nb>
-X-Spamd-Result: default: False [-0.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-GUID: JLPL_EvC0htQoetiVAo_KNKvD8qRoKla
+X-Proofpoint-ORIG-GUID: JLPL_EvC0htQoetiVAo_KNKvD8qRoKla
+X-Authority-Analysis: v=2.4 cv=UuJT8ewB c=1 sm=1 tr=0 ts=6a0e976d cx=c_pps
+ a=nuhDOHQX5FNHPW3J6Bj6AA==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=yx91gb_oNiZeI1HMLzn7:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=8BPzjUuknQ10mGxUWxoA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIxMDA0OSBTYWx0ZWRfX3aLwJzDKH1mQ
+ t4x99ed8VnROtYa0V9xb7f/a2edeyKusVM7eyzVjXImhsEi7BLJPYZ+gjo/3dwADhwcMPcaaUKf
+ C3yIb+7lEQ2mmgkgFKSNxHarLce1YmVRatOl/4cf5NCPouKecn/wpcQXmc696lX88Kd/ozhk15i
+ sEDELAst1+jV7xqxd6fWc+72H/d6Ez6u4OJgNtP570Ia2sEeF/2Lp7uf/HBwkRMVh63Cvn4YihD
+ QYQr9xAeeDZJ7KrXecTruVGwuGd4FpR9SlFnAFfefRtlvkt65rUEsAvG4Tw4EhaHdIq7zjJV3oG
+ 3NrC7STf412Its050vraQtHVau80NNOMkf/guko24ou1OqFNSuGig5fvHJGzFV9xZ1DLuBSfzVG
+ Hg0ibVULR7PDp3ixL1lHwyHX6niTs7KWqo69Ud+3Kw8MZhNsWoWM0CM2ingoaBdxJrIUaMOvQKO
+ 6hScgofU+eGFVm3FdhQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-20_03,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 clxscore=1011 lowpriorityscore=0 impostorscore=0
+ priorityscore=1501 suspectscore=0 spamscore=0 malwarescore=0 bulkscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605130000
+ definitions=main-2605210049
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[dolcini.it,none];
-	R_DKIM_ALLOW(-0.20)[dolcini.it:s=default];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-253453-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[holtmann.org,gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253454-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[21];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[francesco@dolcini.it,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[dolcini.it:+];
+	FROM_NEQ_ENVFROM(0.00)[shuaz@qti.qualcomm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[qualcomm.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qti.qualcomm.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:email,qualcomm.com:dkim];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dolcini.it:dkim,toradex.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 607EC59F075
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[10]
+X-Rspamd-Queue-Id: 8A1B459F094
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello Greg,
+From: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
 
-On Thu, May 21, 2026 at 07:15:42AM +0200, Francesco Dolcini wrote:
-> On Wed, May 20, 2026 at 06:17:03PM +0200, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 6.6.141 release.
-> > There are 508 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> 
-> Tested-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+The Bluetooth host decides whether to download firmware by reading the
+controller firmware download completion flag and firmware version
+information.
 
-I had another look, and despite my test passing there are warnings
+If a USB error occurs during the firmware download process (for example
+due to a USB disconnect), the download is aborted immediately. An
+incomplete firmware transfer does not cause the controller to set the
+download completion flag, but the firmware version information may be
+updated at an early stage of the download process.
 
+In this case, after USB reconnection, the host attempts to re-download
+the firmware because the download completion flag is not set. However,
+since the controller reports the same firmware version as the target
+firmware, the download is skipped. This ultimately results in the
+firmware not being properly updated on the controller.
 
-kern  :info  : [    0.593597] pci 0000:01:00.0: BAR 4 [io  0x1000-0x101f]: assigned
-kern  :info  : [    0.593629] pci 0000:01:00.0: BAR 0 [io  0x1020-0x1027]: assigned
-kern  :info  : [    0.593660] pci 0000:01:00.0: BAR 2 [io  0x1028-0x102f]: assigned
-kern  :info  : [    0.593692] pci 0000:01:00.0: BAR 1 [io  0x1030-0x1033]: assigned
-kern  :info  : [    0.593722] pci 0000:01:00.0: BAR 3 [io  0x1034-0x1037]: assigned
-kern  :info  : [    0.593753] pci 0000:00:00.0: PCI bridge to [bus 01-ff]
-kern  :info  : [    0.593767] pci 0000:00:00.0:   bridge window [io  0x1000-0x1fff]
-kern  :info  : [    0.593781] pci 0000:00:00.0:   bridge window [mem 0x01100000-0x011fffff]
-kern  :info  : [    0.593795] pci 0000:00:00.0:   bridge window [mem 0x01200000-0x012fffff pref]
-kern  :warn  : [    0.593856] sysfs: cannot create duplicate filename '/devices/platform/soc/1ffc000.pcie/pci0000:00/0000:00:00.0/resource0'
-kern  :warn  : [    0.593875] CPU: 1 PID: 28 Comm: kworker/u5:1 Not tainted 6.6.141-rc1-7.7.0-devel #1
-kern  :warn  : [    0.593891] Hardware name: Freescale i.MX6 Quad/DualLite (Device Tree)
-kern  :warn  : [    0.593904] Workqueue: events_unbound async_run_entry_fn
-kern  :warn  : [    0.593959]  unwind_backtrace from show_stack+0x10/0x14
-kern  :warn  : [    0.594004]  show_stack from dump_stack_lvl+0x40/0x4c
-kern  :warn  : [    0.594040]  dump_stack_lvl from sysfs_warn_dup+0x58/0x64
-kern  :warn  : [    0.594080]  sysfs_warn_dup from sysfs_add_bin_file_mode_ns+0xbc/0xcc
-kern  :warn  : [    0.594112]  sysfs_add_bin_file_mode_ns from sysfs_create_bin_file+0xac/0xb4
-kern  :warn  : [    0.594144]  sysfs_create_bin_file from pci_create_resource_files+0x84/0x13c
-kern  :warn  : [    0.594181]  pci_create_resource_files from pci_bus_add_device+0x24/0x94
-kern  :warn  : [    0.594220]  pci_bus_add_device from pci_bus_add_devices+0x2c/0x70
-kern  :warn  : [    0.594250]  pci_bus_add_devices from pci_host_probe+0x40/0x90
-kern  :warn  : [    0.594276]  pci_host_probe from dw_pcie_host_init+0x3e4/0x614
-kern  :warn  : [    0.594309]  dw_pcie_host_init from imx6_pcie_probe+0x414/0x6ec
-kern  :warn  : [    0.594340]  imx6_pcie_probe from platform_probe+0x5c/0xb0
-kern  :warn  : [    0.594375]  platform_probe from really_probe+0xd0/0x3c8
-kern  :warn  : [    0.594415]  really_probe from __driver_probe_device+0x98/0x20c
-kern  :warn  : [    0.594448]  __driver_probe_device from driver_probe_device+0x30/0xc0
-kern  :warn  : [    0.594482]  driver_probe_device from __driver_attach_async_helper+0x50/0xd8
-kern  :warn  : [    0.594515]  __driver_attach_async_helper from async_run_entry_fn+0x30/0x144
-kern  :warn  : [    0.594548]  async_run_entry_fn from process_one_work+0x144/0x2cc
-kern  :warn  : [    0.594584]  process_one_work from worker_thread+0x18c/0x3b8
-kern  :warn  : [    0.594611]  worker_thread from kthread+0x110/0x12c
-kern  :warn  : [    0.594647]  kthread from ret_from_fork+0x14/0x28
-kern  :warn  : [    0.594670] Exception stack(0xf08edfb0 to 0xf08edff8)
-kern  :warn  : [    0.594683] dfa0:                                     00000000 00000000 00000000 00000000
-kern  :warn  : [    0.594697] dfc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-kern  :warn  : [    0.594709] dfe0: 00000000 00000000 00000000 00000000 00000013 00000000
-kern  :info  : [    0.594873] mmc0: SDHCI controller on 2198000.mmc [2198000.mmc] using ADMA
-kern  :info  : [    0.594997] mmc1: SDHCI controller on 2190000.mmc [2190000.mmc] using ADMA
-kern  :info  : [    0.595838] pcieport 0000:00:00.0: PME: Signaling with IRQ 291
-kern  :info  : [    0.596396] pcieport 0000:00:00.0: AER: enabled with IRQ 291
-kern  :warn  : [    0.596583] sysfs: cannot create duplicate filename '/devices/platform/soc/1ffc000.pcie/pci0000:00/0000:00:00.0/0000:01:00.0/resource0'
-kern  :warn  : [    0.596598] CPU: 1 PID: 28 Comm: kworker/u5:1 Not tainted 6.6.141-rc1-7.7.0-devel #1
-kern  :warn  : [    0.596614] Hardware name: Freescale i.MX6 Quad/DualLite (Device Tree)
-kern  :warn  : [    0.596626] Workqueue: events_unbound async_run_entry_fn
-kern  :warn  : [    0.596659]  unwind_backtrace from show_stack+0x10/0x14
-kern  :warn  : [    0.596702]  show_stack from dump_stack_lvl+0x40/0x4c
-kern  :warn  : [    0.596738]  dump_stack_lvl from sysfs_warn_dup+0x58/0x64
-kern  :warn  : [    0.596772]  sysfs_warn_dup from sysfs_add_bin_file_mode_ns+0xbc/0xcc
-kern  :warn  : [    0.596804]  sysfs_add_bin_file_mode_ns from sysfs_create_bin_file+0xac/0xb4
-kern  :warn  : [    0.596836]  sysfs_create_bin_file from pci_create_resource_files+0x84/0x13c
-kern  :warn  : [    0.596872]  pci_create_resource_files from pci_bus_add_device+0x24/0x94
-kern  :warn  : [    0.596907]  pci_bus_add_device from pci_bus_add_devices+0x2c/0x70
-kern  :warn  : [    0.596938]  pci_bus_add_devices from pci_bus_add_devices+0x60/0x70
-kern  :warn  : [    0.596968]  pci_bus_add_devices from pci_host_probe+0x40/0x90
-kern  :warn  : [    0.596994]  pci_host_probe from dw_pcie_host_init+0x3e4/0x614
-kern  :warn  : [    0.597022]  dw_pcie_host_init from imx6_pcie_probe+0x414/0x6ec
-kern  :warn  : [    0.597048]  imx6_pcie_probe from platform_probe+0x5c/0xb0
-kern  :warn  : [    0.597074]  platform_probe from really_probe+0xd0/0x3c8
-kern  :warn  : [    0.597105]  really_probe from __driver_probe_device+0x98/0x20c
-kern  :warn  : [    0.597138]  __driver_probe_device from driver_probe_device+0x30/0xc0
-kern  :warn  : [    0.597170]  driver_probe_device from __driver_attach_async_helper+0x50/0xd8
-kern  :warn  : [    0.597202]  __driver_attach_async_helper from async_run_entry_fn+0x30/0x144
-kern  :warn  : [    0.597232]  async_run_entry_fn from process_one_work+0x144/0x2cc
-kern  :warn  : [    0.597261]  process_one_work from worker_thread+0x18c/0x3b8
-kern  :warn  : [    0.597288]  worker_thread from kthread+0x110/0x12c
-kern  :warn  : [    0.597315]  kthread from ret_from_fork+0x14/0x28
-kern  :warn  : [    0.597335] Exception stack(0xf08edfb0 to 0xf08edff8)
-kern  :warn  : [    0.597350] dfa0:                                     00000000 00000000 00000000 00000000
-kern  :warn  : [    0.597364] dfc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-kern  :warn  : [    0.597376] dfe0: 00000000 00000000 00000000 00000000 00000013 00000000
-kern  :info  : [    0.631336] mmc1: new high speed SDXC card at address 0001
-kern  :info  : [    0.632908] mmcblk1: mmc1:0001 SD64G 58.2 GiB
-kern  :info  : [    0.642235] fec 2188000.ethernet eth0: registered PHC device 0
-kern  :info  : [    0.643162] imx_thermal 20c8000.anatop:tempmon: Industrial CPU temperature grade - max:105C critical:105C passive:95C
+This change removes the restriction that skips firmware download when
+the versions are equal. It covers scenarios where the USB connection
+can be disconnected at any time and ensures that firmware download can
+be retriggered after USB reconnection, allowing the Bluetooth firmware
+to be correctly and completely updated.
 
+Fixes: 3267c884cefa ("Bluetooth: btusb: Add support for QCA ROME chipset family")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
+---
+Changes v3:
+- Add Fixes tag pointing to the commit that introduced the version
+  comparison.
+- Link v2
+  https://lore.kernel.org/all/20260429121207.1306526-1-shuai.zhang@oss.qualcomm.com/
+
+Changes v2:
+- Update code comments and commit message to reflect the correct logic.
+- Align the commit title with upstream conventions.
+- Link v1
+  https://lore.kernel.org/all/20260108074353.1027877-1-shuai.zhang@oss.qualcomm.com/
+
+ drivers/bluetooth/btusb.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 572091e60..70abbabea 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -3550,7 +3550,13 @@ static int btusb_setup_qca_load_rampatch(struct hci_dev *hdev,
+ 		    "firmware rome 0x%x build 0x%x",
+ 		    rver_rom, rver_patch, ver_rom, ver_patch);
+ 
+-	if (rver_rom != ver_rom || rver_patch <= ver_patch) {
++	/* Allow rampatch when the patch version equals the firmware version.
++	 * A firmware download may be aborted by a transient USB error (e.g.
++	 * disconnect) after the controller updates version info but before
++	 * completion.
++	 * Allowing equal versions enables re-flashing during recovery.
++	 */
++	if (rver_rom != ver_rom || rver_patch < ver_patch) {
+ 		bt_dev_err(hdev, "rampatch file version did not match with firmware");
+ 		err = -EINVAL;
+ 		goto done;
+-- 
+2.34.1
 
 
