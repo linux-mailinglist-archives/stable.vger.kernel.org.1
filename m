@@ -1,163 +1,175 @@
-Return-Path: <stable+bounces-253642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253643-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GOmkJ1yAD2pdMwYAu9opvQ
-	(envelope-from <stable+bounces-253642-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 23:59:56 +0200
+	id 0MnSJEqID2qnNAYAu9opvQ
+	(envelope-from <stable+bounces-253643-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 00:33:46 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07C605AC410
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 23:59:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E984E5AC613
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 00:33:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 64E67302335A
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 21:57:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 997DB3041A77
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 22:31:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD85E35AC16;
-	Thu, 21 May 2026 21:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1712F332919;
+	Thu, 21 May 2026 22:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="eUjIKRC6"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ZBAzQY83"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 237FE351C2E
-	for <stable@vger.kernel.org>; Thu, 21 May 2026 21:57:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C741C862D;
+	Thu, 21 May 2026 22:31:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779400625; cv=none; b=P+XwTSZrbVgDnK7H+AwcxWP4V+QG2E47lAMN1zRB4BjRvF+I5rSTBvKHVJbh215qiFmQQt9yuwxRboSol751sXO8mJETPx65C9Nv1RfY1424G9AAmFUc1PPe7TbALm4f3PkZlFih9Y6AZyIOAXNcYFA85XTeNbX+r3+g9bgfogc=
+	t=1779402707; cv=none; b=ZPZHLKlu1xTVJ2CrPX7/R9Jnd+VCyeXeIk/St820obTtLDI8cXAmGXHCjwBMBO2tCmDyQJxxDe9K97EF2kPoxuSNayShHueUR972nxpUivNN05EOcZvwMdqbRXCofDWF28D35822SfWWDWoczwSYJW+L1KZy/HomnRc17vLPy8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779400625; c=relaxed/simple;
-	bh=r2BUZgk2Np+Scsj4X8RP/J60+Fp7770Dl1HSTOiDzHs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nfdEO5RijYeWnHIserx2QDiuhtzNlsi7/3OFXhTBp7gBjck/uw7RrcKh8kETJ/Pu17KYXh1CGlGFTFALAqZ3YwDpxfZvBvp74IYdZbnWtCL6EvKswocbIRwPUmHLrx5qpcT+WKmf/DEO8KU2goxNismCrlmKfIetBGRPSaWV74w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=eUjIKRC6; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4903cbfad68so7221645e9.0
-        for <stable@vger.kernel.org>; Thu, 21 May 2026 14:57:03 -0700 (PDT)
+	s=arc-20240116; t=1779402707; c=relaxed/simple;
+	bh=qyGBdGyQ/CWefK2oqbQlOgQZiEgYgkcpCY23OGa3SPE=;
+	h=Date:To:From:Subject:Message-Id; b=D1oCYQwjC+GzrRpLAB5ohQ05uGmLgz9JA9t1P++9HcRg3cBwiRGObdR2lVX4Nkg2GSE6cBqqvuUiQ+oXshgvZaaGnm35hLzIMCaqV95QchqpWaDyKpHoUmUhIPcL5fCF22S5rmCgJ1m79pKX4MBxUX22DR2KKQWYXYCf/1VyFts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ZBAzQY83; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 312AF1F000E9;
+	Thu, 21 May 2026 22:31:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20251104; t=1779400622; x=1780005422; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xLSU/8udiAk6jgR2mMglLiCQL8WPD5iNK8szBRkUXEo=;
-        b=eUjIKRC6QLnfjnJqlolhuKrn3/rB7TdFIWIEokb08kE4lA9MA8qAWZPauLKXBCD+ps
-         wQSMby2dPlGoRUhPw3x27nO+wX8rBZvlgoPnz42UbyRBSNNQn+yTE3EN5H2oNDKDwZ2Z
-         MivuJUdosUPv0W0FaaxM1HDpDh5hlIgtugt/btmIIcFNg4dU7ncw8tvTGmIAwOlRxCEh
-         pkInUH4WGFTqDi+WmsMhnQo/FRX0BfELIZ5JjMtGU4nLiYM4P/aL3lhygphwi3bPfSJ4
-         p0x47L2xDGREmMrVkw+EMPa7dpkaLkkckLqnVLTomteFosgr19HPF3v9SWM91NLq8Myk
-         cMHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779400622; x=1780005422;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xLSU/8udiAk6jgR2mMglLiCQL8WPD5iNK8szBRkUXEo=;
-        b=A45DO3vcc+uoS4VBARNaVhakvgNSrmi0zO8Cy7nwlCGVq3amh993WxrVAq33ewpXRt
-         eXojlQJ5w4yl/mDmvFheF7nvzT1NHO5l3gw0bwrNKTBmG+KXDLFCBW/WPtSLk8FzRYUc
-         WQGCBqQrAkmFHB3L9Knj/034ITT/fl5wIOfzJ6t5m0m5C9E4YocaKj/EWdi20ZnwvoMu
-         ciZ6zTQgf3gKKWQYTOtrpIR5dNlRqjSopMz4PdJoh5o9XDHcQXhvv+BdND8CY1G3a4Cq
-         DDxd5dZJ6yvZWXhpDHpt9oEJHS84uEHhJJFIFTR5sCYciwM+h32bYZp3W+eLxDbIea9W
-         6Gxw==
-X-Forwarded-Encrypted: i=1; AFNElJ8WICsxnzkndM26zwpLP2z+piC7FrwWuilnkx1cM3+7egSR49ABiq8yGFU59WATF4LTD8AgI4k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzt1tzTfJtmoy7FDOjX95m9XwGL1DyF4k+8C0M1d5TCbZAosHV6
-	FObptK4U+8Ir1vm8o4tB4J7X/QrG4IncEas70VEQ6MRmZ4zone485sw=
-X-Gm-Gg: Acq92OGQR02toDQv16uTul4Hn1CqGHabOMgBjOwnyYmWhmY+p/fglby5oMN4BMAS9ml
-	nN+kpfb43uaVNhTCl5F+rAh8QoIqQl/+IQ1CtNOlQ04KbtKM17r9r41riYk5ofDjsMd3DaRaT1L
-	NavrJBc+syJbSQV5A/JfIJ7SKWWHuQe5D49mpmw6E/XfLdE5fNnF+aSgyBaAG8s7Fl2KUoJKOeg
-	HQPRXUWpFoRpIyHVBQzJn7Z713DeJAvM0Xd9gWZIQoKwCSucc5u5sYQjk2HmueMllROhCwLA+D7
-	njAcPRyBJPci5MzACAUjGhmYQMLqe/HQhdcixOO3mNAuzUL/LuJD2r4pqUH/y1wXr+Lh279zpKr
-	JopyEdT+yRH1FFwh3AbUmU0sbE7q+fHdkFbHeTfOnkUuTy0jNByftXOfcn5xZk2S7CNkP+6pEcj
-	m+6ScvT6h7lOwGd/PtKzF/HWKlZbVivqjzr8tc0B7t1X015985TaeRw0Id+H0VvChHIUs4B6pfN
-	EI=
-X-Received: by 2002:a05:600d:6446:20b0:48f:c649:e6fa with SMTP id 5b1f17b1804b1-49035f6841amr49593295e9.15.1779400622409;
-        Thu, 21 May 2026 14:57:02 -0700 (PDT)
-Received: from [192.168.1.3] (p5b05786a.dip0.t-ipconnect.de. [91.5.120.106])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eb4ac3174sm123306f8f.17.2026.05.21.14.57.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 May 2026 14:57:01 -0700 (PDT)
-Message-ID: <e6e128a4-5dd9-43cc-ab87-b7132ef0a0a8@googlemail.com>
-Date: Thu, 21 May 2026 23:57:00 +0200
+	d=linux-foundation.org; s=korg; t=1779402706;
+	bh=/pWeIqweOvhX+3g8Hmdaoiw17MzRQZInKbDVAdFNJ34=;
+	h=Date:To:From:Subject;
+	b=ZBAzQY83OqWZ7UsZoSeQYoIpCFVyXiP7RpOyVPBzaPTtdS1YgsLZ6SDLL1MY8UAuT
+	 0Wc+SE0RF5K0kwNpJBoAkWqGnI6KEJPDxiiauqQzO+LmNCFULXoM3T4ih4a+v06Kxb
+	 qoZqAU0QHBQGTIdCaPNdNHwhr6EPccAH26WTlv5Q=
+Date: Thu, 21 May 2026 15:31:45 -0700
+To: mm-commits@vger.kernel.org,will@kernel.org,stable@vger.kernel.org,david@kernel.org,catalin.marinas@arm.com,apopple@nvidia.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + arm64-mm-call-pagetable-dtor-when-freeing-hot-removed-page-tables.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260521223146.312AF1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.6 000/508] 6.6.141-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260520162058.573354582@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20260520162058.573354582@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.65 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[googlemail.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20251104];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-253642-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[googlemail.com];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	TAGGED_FROM(0.00)[bounces-253643-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[linux-foundation.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pschneider1968@googlemail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[googlemail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,peters-netzplatz.de:url]
-X-Rspamd-Queue-Id: 07C605AC410
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,arm.com:email,nvidia.com:email,linux-foundation.org:email,linux-foundation.org:dkim]
+X-Rspamd-Queue-Id: E984E5AC613
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Am 20.05.2026 um 18:17 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.6.141 release.
-> There are 508 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
 
+The patch titled
+     Subject: arm64: mm: call pagetable dtor when freeing hot-removed page tables
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     arm64-mm-call-pagetable-dtor-when-freeing-hot-removed-page-tables.patch
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/arm64-mm-call-pagetable-dtor-when-freeing-hot-removed-page-tables.patch
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-Beste Grüße,
-Peter Schneider
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+------------------------------------------------------
+From: Alistair Popple <apopple@nvidia.com>
+Subject: arm64: mm: call pagetable dtor when freeing hot-removed page tables
+Date: Thu, 21 May 2026 13:27:30 +1000
+
+Since 5e8eb9aeeda3 ("arm64: mm: always call PTE/PMD ctor in
+__create_pgd_mapping()") page-table allocation on ARM64 always calls
+pagetable_{pte,pmd,pud,p4d}_ctor().  This sets the page_type to
+PGTY_table, increments NR_PAGETABLE and possible allocates a PTL.  However
+the matching pagetable_dtor() calls were never added.
+
+With DEBUG_VM enabled on kernel versions prior to v6.17 without
+2dfcd1608f3a9 ("mm/page_alloc: let page freeing clear any set page type")
+this leads to the following warning when freeing these pages due to
+page->page_type sharing page->_mapcount:
+
+  BUG: Bad page state in process ... pfn:284fbb
+  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x284fbb
+  flags: 0x17fffc000000000(node=0|zone=2|lastcpupid=0x1ffff)
+  page_type: f2(table)
+  page dumped because: nonzero mapcount
+  Call trace:
+   bad_page+0x13c/0x160
+   __free_frozen_pages+0x6cc/0x860
+   ___free_pages+0xf4/0x180
+   free_pages+0x54/0x80
+   free_hotplug_page_range.part.0+0x58/0x90
+   free_empty_tables+0x438/0x500
+   __remove_pgd_mapping.constprop.0+0x60/0xa8
+   arch_remove_memory+0x48/0x80
+   try_remove_memory+0x158/0x1d8
+   offline_and_remove_memory+0x138/0x180
+
+It can also lead to leaking the ptl allocation if ALLOC_SPLIT_PTLOCKS is
+defined and incorrect NR_PAGETABLE stats.  Fix this by calling
+pagetable_dtor() in free_hotplug_pgtable_page() prior to freeing the page
+to undo the effects of calling pagetable_*_ctor().
+
+Link: https://lore.kernel.org/20260521032730.2104017-1-apopple@nvidia.com
+Fixes: 5e8eb9aeeda3 ("arm64: mm: always call PTE/PMD ctor in __create_pgd_mapping()")
+Signed-off-by: Alistair Popple <apopple@nvidia.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ arch/arm64/mm/mmu.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+--- a/arch/arm64/mm/mmu.c~arm64-mm-call-pagetable-dtor-when-freeing-hot-removed-page-tables
++++ a/arch/arm64/mm/mmu.c
+@@ -1441,6 +1441,7 @@ static void free_hotplug_page_range(stru
+ 
+ static void free_hotplug_pgtable_page(struct page *page)
+ {
++	pagetable_dtor(page_ptdesc(page));
+ 	free_hotplug_page_range(page, PAGE_SIZE, NULL);
+ }
+ 
+_
+
+Patches currently in -mm which might be from apopple@nvidia.com are
+
+arm64-mm-call-pagetable-dtor-when-freeing-hot-removed-page-tables.patch
+
 
