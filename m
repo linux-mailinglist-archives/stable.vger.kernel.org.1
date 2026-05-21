@@ -1,267 +1,163 @@
-Return-Path: <stable+bounces-253494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253495-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0FPDDqbYDmr2CQYAu9opvQ
-	(envelope-from <stable+bounces-253494-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 12:04:22 +0200
+	id sLYANDjXDmr2CQYAu9opvQ
+	(envelope-from <stable+bounces-253495-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 11:58:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34C765A2E4A
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 12:04:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F3395A2D04
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 11:58:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7E3C3307BA14
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 09:50:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 43ECB303D549
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 09:52:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03CC037E300;
-	Thu, 21 May 2026 09:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1090370AC1;
+	Thu, 21 May 2026 09:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="dZKFvA7/"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="lUCSX6jN"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC6737CD3E;
-	Thu, 21 May 2026 09:50:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.118
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30654352C4F
+	for <stable@vger.kernel.org>; Thu, 21 May 2026 09:52:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779357039; cv=none; b=paBMX91tOnhLxEbpTyW+a+Q4SIszZOpiPIrmXnhWQbZNcL0QqufgLZRY1PwYzvB1FXnf+EMGC13oyUxMw4ps04PeDa0XmTKEowaI1DQTeEUR8z4BaqgIgd3k+WP1VVPG0JzTBWDtUZ6SWG+FqEy8cPKhx+CjNUjKUby9aeEgOVM=
+	t=1779357164; cv=none; b=cMSYAw3SRNHgYDtHXZAJ0YYpaJHTe/VuEjfTP5dMchjxKCofVqSNqGx0u/anrWURS4/+wpX+24S9wtbEJ2dhWjr8gGn9eOwKkGTvlp1UBS/qy4JjT36H5OaPyWJWnhQ/Z8jyYWX1rDVNDAPZfZa08zBbLPnnctEzNj7ckcGZA/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779357039; c=relaxed/simple;
-	bh=3rcJfuxrYgXQHfgx9OasIboFgqJGybAc4F2etKUHlig=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FluAfrJfkfEifUzrsFO+iLpVvsKtAsn5kyO9u9VaimY39avRMQygGmWoWnMpbH+axsUi8lPshXUtu8aoVTjhwJJKB4s0yb9efz/KZHJsZaRhHe98i4zIj35fCu4yrEcME1EZVvwvKZQpBSNQmqWLPmLqjDP2+gidT2foHX+rk+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=dZKFvA7/; arc=none smtp.client-ip=115.124.30.118
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1779357030; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=J6ETTwMgFFcgsydN1Iah3JeGRk9qugvowEPUDsgsXn4=;
-	b=dZKFvA7/IHOcCnO+RplSTyNw7drgrbZUdRsUSrJMxvArXqDTxPiFkfVZu0uec15DDvsXSteQoinh6T9qtELwArnbK802pjomMwvPUdNNNaIa2pqOkS5gMtu35YiY1Dfe9jUJzMAobjg5WNkFD0kYax899kkC67jGRCHpSvDoSzk=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=libaokun@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0X3LSGLA_1779357029;
-Received: from x31h02109.sqa.na131.tbsite.net(mailfrom:libaokun@linux.alibaba.com fp:SMTPD_---0X3LSGLA_1779357029 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 21 May 2026 17:50:29 +0800
-From: Baokun Li <libaokun@linux.alibaba.com>
-To: linux-fsdevel@vger.kernel.org
-Cc: viro@zeniv.linux.org.uk,
-	brauner@kernel.org,
-	jack@suse.cz,
-	tj@kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v4 1/3] writeback: fix race between cgroup_writeback_umount() and inode_switch_wbs()
-Date: Thu, 21 May 2026 17:50:14 +0800
-Message-ID: <20260521095016.2791354-2-libaokun@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260521095016.2791354-1-libaokun@linux.alibaba.com>
-References: <20260521095016.2791354-1-libaokun@linux.alibaba.com>
+	s=arc-20240116; t=1779357164; c=relaxed/simple;
+	bh=0QyioV7LZG/XafwqGzx1VCMm/RXybvPP5wY/7llNAPs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fOpn+Ic8C4kZphOOZd3OupzNU4pgYE9g4phJN4LLzd2QaOPd1tGZ+hAgMl1xHPFEky3Az5CBMoDltM+FR/v/EDq63a5u9hO3miqBbXEmPYHzdggrM8QoIS/IwCILrIPD/UuvtzLAJ6lJMlDe8jSS+ODzm3xTKqwxc5w1zfWH7SA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=lUCSX6jN; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-48896199cbaso46053625e9.1
+        for <stable@vger.kernel.org>; Thu, 21 May 2026 02:52:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20251104; t=1779357161; x=1779961961; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=LHV1Tr2qVkGaZPG2Ty6FXE6k+T/1YKEQK/jgqv8RQxo=;
+        b=lUCSX6jNUGAw7qsED5YInsBzcLIKGeWhpaOvniuvZWHY9xXqWKW+Flc2V2aQNqB262
+         z6M/JXoNmym0W1mf/ATWbg3rR6sFjWmUMNgSvcMXg2+Bzbi4kRKAK8zLIfPknhi4HdzY
+         cLXJ+0CIxunmVxoW3fnmDA1EDuOcr2KD/awKodzkE/gsPNSBU9a2jfWxg7fjPic6OZmL
+         ZrKYDhBul33/JZ4S3xANmyDMnJ8vZnwXQCYF8EdYh9JxqHkDcftcHFrcDySWiCjwRDAn
+         FfIx4/+3avE8znqpyB+Wo48EaePrpVpCP4/aBOsalZgKrCi6DbUp5lKfdMvFNHdLppHx
+         Mr8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779357161; x=1779961961;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LHV1Tr2qVkGaZPG2Ty6FXE6k+T/1YKEQK/jgqv8RQxo=;
+        b=kKU0s2qr69WNypxa2lnPN6xysZLqqY78bkHQqHWPj7ixIW5nO4qA25jjCwn8nHNGl3
+         MKbXhG6sEn6tLo6nufWhYJUbKafarUA2OvPerehoNyvKciQFWqrl73i0yllSAsAlw3nT
+         nrYfUZ0pjXG8rYg0YGQqBiQVobuIDDZfcXjHQ/nFv0ER4/cGuURJ6IH01tJDJuRpYu+J
+         JO2Ai9c3MPp3XUoWRIM2+l8uaXMIaHs5mGQUmh98SGmAnnOMIQsmXILaxAyPJx0l5vJ+
+         nfQAeeZdT2wymxx1IA3f7A8IJwqjgSYQK4NOSSq0HZomhoMs6dLcTQV2Sh0T2zzS7Q0u
+         wZHg==
+X-Forwarded-Encrypted: i=1; AFNElJ/ky+ew18S+/902I3rlcOkwq+S6hI0be1NoHVuEHV+yje8VwAgducNurUvuQ4YPYTSS2bWJXu8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxlSFH932o4jVSAmR6ZmB8Tx17NxflVvzUcY/46OFIsAQS0bydC
+	TRHjFzz/B+wYVbPj3AgUaSoWlsAxz60hnR2cR6K0Tpl8B6s5P3IjesGaGlZu
+X-Gm-Gg: Acq92OHDRwSpQqli5Ypj41nQtReRrB0hmpdeyCeTfJE7SSaUnCvR1Ns4ci642vRCSj7
+	PmbVElolBuYnrBVa6SAhTckI7CY0pVJoRwchauCKfhu6V7/XDbVNjNYLILQPhJSgO/AJiVGk+nl
+	7BLV6K+KnDxdc8sBTa15lJtkpuNhHuNEYa2TRbQD65SZe3NQpioZGIuVnl2KafM9/iUjPiVGomY
+	OnQ7fHKHFO3wI3SyQK/9ISWOwxJ6HU5GQ62nsEYGSt3PCnJC0T+xhPlCnqdH8vGJ0ZPNsIvUU7x
+	mcoPkjCech+7gc2czxAUI4qUkXOXJmXlEKabAQGNTjgIl9uEPS1NuUQeIU/2cBJE5HK0UuoUTii
+	olmgABXzvJz0te9tapjTkxhh3f3fXYTyHtFqJijiEkzs0j8EC9I/9ZcnMsxaVDKk2yw9fKJ4jYC
+	DOEmZmI6+7krpZEUF7nx1ETfMehp1MvmH3Se/zG3iXqHxd+KsDvaHrXcUDc93EiOxcBvbjRyj+4
+	TirEZVedhVMGQ==
+X-Received: by 2002:a05:600c:2d8b:b0:48a:906b:14ca with SMTP id 5b1f17b1804b1-490360a53dbmr17287135e9.20.1779357161328;
+        Thu, 21 May 2026 02:52:41 -0700 (PDT)
+Received: from [192.168.1.3] (p5b05786a.dip0.t-ipconnect.de. [91.5.120.106])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eaa93d29csm1604352f8f.37.2026.05.21.02.52.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 21 May 2026 02:52:41 -0700 (PDT)
+Message-ID: <7014b6c8-ed0e-45bb-876a-93ce4511fbbc@googlemail.com>
+Date: Thu, 21 May 2026 11:52:40 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.18 000/957] 6.18.32-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260520162134.554764788@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-7.66 / 15.00];
-	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
+X-Spamd-Result: default: False [-0.65 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[googlemail.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-253494-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[libaokun@linux.alibaba.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linux.alibaba.com:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_NONE(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253495-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[googlemail.com];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,alibaba.com:email,linux.alibaba.com:mid,linux.alibaba.com:dkim,suse.cz:email]
-X-Rspamd-Queue-Id: 34C765A2E4A
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pschneider1968@googlemail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[googlemail.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,googlemail.com:mid,googlemail.com:dkim,mailvelope.com:url,peters-netzplatz.de:url]
+X-Rspamd-Queue-Id: 5F3395A2D04
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When a container exits, the following BUG_ON() is occasionally triggered:
+Am 20.05.2026 um 18:08 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.18.32 release.
+> There are 957 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-==================================================================
- VFS: Busy inodes after unmount of sdb (ext4)
- ------------[ cut here ]------------
- kernel BUG at fs/super.c:695!
- CPU: 3 PID: 6 Comm: containerd-shim Tainted: G OE K 6.6 #1
- pstate: 63400009 (nZCv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
- pc : generic_shutdown_super+0xf0/0x100
- lr : generic_shutdown_super+0xf0/0x100
- Call trace:
-  generic_shutdown_super+0xf0/0x100
-  kill_block_super+0x20/0x48
-  ext4_kill_sb+0x28/0x60
-  deactivate_locked_super+0x54/0x130
-  deactivate_super+0x84/0xa0
-  cleanup_mnt+0xa4/0x140
-  __cleanup_mnt+0x18/0x28
-  task_work_run+0x78/0xe0
-  do_notify_resume+0x204/0x240
-==================================================================
+6.18.33-rc1 builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions 
+found.
 
-The root cause is a race between cgroup_writeback_umount() and
-inode_switch_wbs()/cleanup_offline_cgwb(). There is a window between
-inode_prepare_wbs_switch() returning true and the subsequent
-wb_queue_isw() call. Following is the process that triggers the issue:
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-      CPU A (umount)           |          CPU B (writeback)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                                 inode_switch_wbs/cleanup_offline_cgwb
-                                  atomic_inc(&isw_nr_in_flight)
-                                  inode_prepare_wbs_switch
-                                   -> passes SB_ACTIVE check
-                                   __iget(inode)
- generic_shutdown_super
-  sb->s_flags &= ~SB_ACTIVE
-  cgroup_writeback_umount(sb)
-   smp_mb()
-   atomic_read(&isw_nr_in_flight)
-   rcu_barrier()
-    -> no pending RCU callbacks
-   flush_workqueue(isw_wq)
-    -> nothing queued, returns
-  evict_inodes(sb)
-   -> Inode skipped as isw still holds a ref.
-  sop->put_super(sb)
-   /* destroys percpu counters */
-  -> VFS: Busy inodes after unmount!
-                                  wb_queue_isw()
-                                   queue_work(isw_wq, ...)
-                                  /* later in work function */
-                                  inode_switch_wbs_work_fn
-                                   process_inode_switch_wbs
-                                    iput() -> evict
-                                     percpu_counter_dec() // UAF!
 
-Fix this by extending the RCU read-side critical section in
-inode_switch_wbs() and cleanup_offline_cgwb() to cover from
-inode_prepare_wbs_switch() through wb_queue_isw().  Since there is
-no sleep in this window, rcu_read_lock() can be used.  Then add a
-synchronize_rcu() in cgroup_writeback_umount() before the existing
-rcu_barrier(), so that all in-flight switchers that have passed the
-SB_ACTIVE check have completed queue_work() before flush_workqueue()
-is called.
+Beste Grüße,
+Peter Schneider
 
-The existing rcu_barrier() is intentionally retained so this fix can
-be backported unchanged to stable kernels (5.10.y, 6.6.y, ...) that
-still queue switches via queue_rcu_work(). It is a no-op on current
-mainline (since commit e1b849cfa6b6 ("writeback: Avoid contention on
-wb->list_lock when switching inodes")) and is removed in a follow-up
-patch.
-
-Fixes: a1a0e23e4903 ("writeback: flush inode cgroup wb switches instead of pinning super_block")
-Cc: stable@vger.kernel.org
-Suggested-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/all/mxnjq2l6guusfchvauxr3v7c4bwjasybxlleqbbh4efloeqspz@iqylk76ohufz
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Baokun Li <libaokun@linux.alibaba.com>
----
- fs/fs-writeback.c | 31 +++++++++++++++++++++++++++++--
- 1 file changed, 29 insertions(+), 2 deletions(-)
-
-diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-index a65694cbfe68..6766de9f9d75 100644
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -660,12 +660,19 @@ static void inode_switch_wbs(struct inode *inode, int new_wb_id)
- 
- 	atomic_inc(&isw_nr_in_flight);
- 
--	/* find and pin the new wb */
-+	/*
-+	 * Paired with synchronize_rcu() in cgroup_writeback_umount():
-+	 * holding rcu_read_lock across inode_prepare_wbs_switch()
-+	 * (covering the SB_ACTIVE check and the inode grab) and
-+	 * wb_queue_isw() ensures synchronize_rcu() cannot return until
-+	 * the work is queued, so the subsequent flush_workqueue() will
-+	 * wait for the switch.
-+	 */
- 	rcu_read_lock();
-+	/* find and pin the new wb */
- 	memcg_css = css_from_id(new_wb_id, &memory_cgrp_subsys);
- 	if (memcg_css && !css_tryget(memcg_css))
- 		memcg_css = NULL;
--	rcu_read_unlock();
- 	if (!memcg_css)
- 		goto out_free;
- 
-@@ -681,9 +688,11 @@ static void inode_switch_wbs(struct inode *inode, int new_wb_id)
- 
- 	trace_inode_switch_wbs_queue(inode->i_wb, new_wb, 1);
- 	wb_queue_isw(new_wb, isw);
-+	rcu_read_unlock();
- 	return;
- 
- out_free:
-+	rcu_read_unlock();
- 	atomic_dec(&isw_nr_in_flight);
- 	if (new_wb)
- 		wb_put(new_wb);
-@@ -741,6 +750,14 @@ bool cleanup_offline_cgwb(struct bdi_writeback *wb)
- 		new_wb = &wb->bdi->wb; /* wb_get() is noop for bdi's wb */
- 
- 	nr = 0;
-+	/*
-+	 * Paired with synchronize_rcu() in cgroup_writeback_umount().
-+	 * Holding rcu_read_lock across the SB_ACTIVE check, the inode grab
-+	 * and wb_queue_isw() ensures synchronize_rcu() cannot return until
-+	 * the work is queued, so the subsequent flush_workqueue() will wait
-+	 * for the switch.
-+	 */
-+	rcu_read_lock();
- 	spin_lock(&wb->list_lock);
- 	/*
- 	 * In addition to the inodes that have completed writeback, also switch
-@@ -758,6 +775,7 @@ bool cleanup_offline_cgwb(struct bdi_writeback *wb)
- 
- 	/* no attached inodes? bail out */
- 	if (nr == 0) {
-+		rcu_read_unlock();
- 		atomic_dec(&isw_nr_in_flight);
- 		wb_put(new_wb);
- 		kfree(isw);
-@@ -766,6 +784,7 @@ bool cleanup_offline_cgwb(struct bdi_writeback *wb)
- 
- 	trace_inode_switch_wbs_queue(wb, new_wb, nr);
- 	wb_queue_isw(new_wb, isw);
-+	rcu_read_unlock();
- 
- 	return restart;
- }
-@@ -1221,6 +1240,14 @@ void cgroup_writeback_umount(struct super_block *sb)
- 	smp_mb();
- 
- 	if (atomic_read(&isw_nr_in_flight)) {
-+		/*
-+		 * Paired with rcu_read_lock() in inode_switch_wbs() and
-+		 * cleanup_offline_cgwb().  synchronize_rcu() waits for any
-+		 * in-flight switcher that already passed the SB_ACTIVE check
-+		 * to finish queueing its work, so flush_workqueue() below
-+		 * will then drain it.
-+		 */
-+		synchronize_rcu();
- 		/*
- 		 * Use rcu_barrier() to wait for all pending callbacks to
- 		 * ensure that all in-flight wb switches are in the workqueue.
 -- 
-2.43.7
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
