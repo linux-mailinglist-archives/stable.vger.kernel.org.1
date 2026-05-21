@@ -1,119 +1,151 @@
-Return-Path: <stable+bounces-253568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253569-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UCNoAeYVD2qVFQYAu9opvQ
-	(envelope-from <stable+bounces-253568-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 16:25:42 +0200
+	id GIq3I9UdD2ocGAYAu9opvQ
+	(envelope-from <stable+bounces-253569-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 16:59:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 786BA5A7378
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 16:25:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 101EF5A7CA6
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 16:59:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E1091318BB31
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 13:52:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 42BE23393DB0
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 13:55:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D214A2C11EE;
-	Thu, 21 May 2026 13:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 570123ECBF3;
+	Thu, 21 May 2026 13:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KU+L1bhn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JQhlhfy4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A627225B088;
-	Thu, 21 May 2026 13:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E13023E1714
+	for <stable@vger.kernel.org>; Thu, 21 May 2026 13:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779371454; cv=none; b=NtNnYZ05dosy1JRtBno5z3BOYpajiXn+C8C1Y/Zl/qX9F/qO6C9Vr1vOQ17cOyt3YYHcbxwDtq6dsK4o84zn/my6yLlUZDi6P3d8GZCNK1QlMo2Oywuj5e8OCwcyu/A0ysTjXawr1eHZv6lxkWSxPX0ma/6RjxaISoMrl7Q58n0=
+	t=1779371642; cv=none; b=Rb75MnWPQvXeUqVgbkaC7rMMYKJMcwHVUdxhv+QujXdo8Dz4KJ8owcSPr5YfwXbQkHzerP273BwqeS540ktnWOwWZlHqtfuz5S4UMfzCOUELS3hobuj+loZ9bwGKh+8ffDq5unID8Ny49KwcO1FerpK/FwM4CWHIdcey0wI/Y6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779371454; c=relaxed/simple;
-	bh=40lnbX/B4TmZrLxtLmrUvKA+bAtTrq5zUrcmu01Pr18=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E9Rg68mbGPkkl8Mjb2zglYHJdPtp5XGZkQlRNfQnYEXQIAasvzjNmsnNAv/BbSgFMf58ybIn7PkX+vDrUqICddEtB6h7Ch8ek9HbhveK2pigDRG2axVNb06gQWxVIkxxTQV9yzOvFWnkZcbmHHJDbAN+wAAt3gJ77O/mC0oBpOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KU+L1bhn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F2431F000E9;
-	Thu, 21 May 2026 13:50:53 +0000 (UTC)
+	s=arc-20240116; t=1779371642; c=relaxed/simple;
+	bh=VZe5Y7OcO2wmhuOtc1kZX5bb2Smp1K/ilQY7Hv4OO3U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GAQdHwWIqpf8EQDz6LpyC1tNUty6lYzJVYmCF3dUdMTu+GXSZ0Whw/MekBkiENYBU+2qK9pzSRkUOnghqR3NF+AjR6yEZi0VfpzEekJfU0KUR+D/ppdsDUVWTOosmKauT7yRHCtqe3FL5ZsKy5NzZC6w+QmLOANWf/MocP3gPqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JQhlhfy4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C802F1F00A3D;
+	Thu, 21 May 2026 13:53:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779371453;
-	bh=T5hUWqoBcetWurFLT+WqKkXg5w0LR6aXBSY+HmvYLjY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KU+L1bhnkhJo/MV32/XO49EHNota5MiSQTx1Oho3nvbRjIneiUuzV9T1KvRs3UzWv
-	 POaTH4viRB4gKePFpkcdETzOTfHI4PQgQOegI1huOrOkyfb/s+dnBJvofHtIL+Pp/Y
-	 kArxZHDsWup0p9xyM/dAJ8iH+GLxYL55pMPdj1e2WFPONwUtlzgB5b9mxTy41/so2y
-	 JbmgvUgCk69QQLSBsGL+vVmi55Kt2NKPdNj07oUsgguhbnuzyA1Ny5LWrhnAjSIekg
-	 gXOwKYvtCWzBfmfbT5Nd7yI4LSPrtF1zYv838vxPQgnQs9BDS72HRE91OQ8SvqnsdD
-	 mz7aRlS0nPS0Q==
-Date: Thu, 21 May 2026 09:50:51 -0400
+	s=k20260515; t=1779371640;
+	bh=rAG3J1i1IuFwBGPtKIZLa7BjulHtcp2mfMZsJMf8GHI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=JQhlhfy4U2KNpKpqwSgGHI9anLwPUHNlhCOt6lu5CYE9LjkHEQ+jgw3VNAyofGvF5
+	 k7fPb74wz+ucCuJwImQyNAooKCwgzvCVecPAiHmOZg+oVk+KEGKW74Fb3hwV1cmBQV
+	 Fu1WVH6WTH/r+TfrRT81fWVl6K7O64nfxAp57PPOF9gEQbLeRGJl/9mt+MBMDj+fiu
+	 3uEvsuPnmFXgVpokoNmdzXiArMbK55qg7ho/HUmKBNGV9yK2aQL+y2ZNRjvzYxtBWz
+	 Aadrr/NPcvzO33kA8DQNXRg05iaW4AcTr8hgIYEWwmvc0k1l+ubQYNEr5dwlQgh9/x
+	 o5ooPLImGTdSA==
 From: Sasha Levin <sashal@kernel.org>
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: patches@lists.linux.dev, stable@vger.kernel.org,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 7.0-5.10] arm64: cputype: Add C1-Pro definitions
-Message-ID: <ag8NuyPjvHmz8K5Q@laps>
-References: <20260428104133.2858589-1-sashal@kernel.org>
- <20260428104133.2858589-51-sashal@kernel.org>
- <afCWPTqKxIqGPe1r@J2N7QTR9R3>
+To: stable@vger.kernel.org
+Cc: Samuele Mariotti <smariotti@disroot.org>,
+	Paolo Valente <paolo.valente@unimore.it>,
+	Andrea Righi <arighi@nvidia.com>,
+	Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18.y 1/2] sched_ext: Fix missing warning in scx_set_task_state() default case
+Date: Thu, 21 May 2026 09:53:57 -0400
+Message-ID: <20260521135358.1280483-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026051526-vastness-flattop-e72e@gregkh>
+References: <2026051526-vastness-flattop-e72e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <afCWPTqKxIqGPe1r@J2N7QTR9R3>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253568-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-253569-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,arm.com:email]
-X-Rspamd-Queue-Id: 786BA5A7378
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email]
+X-Rspamd-Queue-Id: 101EF5A7CA6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Apr 28, 2026 at 12:13:01PM +0100, Mark Rutland wrote:
->On Tue, Apr 28, 2026 at 06:41:02AM -0400, Sasha Levin wrote:
->> From: Catalin Marinas <catalin.marinas@arm.com>
->>
->> [ Upstream commit 2c99561016c591f4c3d5ad7d22a61b8726e79735 ]
->>
->> Add cputype definitions for C1-Pro. These will be used for errata
->> detection in subsequent patches.
->
->This definition is only needed for a workaround which is only applicable
->to v6.18+ (and the downstream android16-6.12 tree).
->
->We needn't backport this patch to v5.1.0.y unless there's something that
->depends upon it.
+From: Samuele Mariotti <smariotti@disroot.org>
 
-I'll drop it, thanks.
+[ Upstream commit b905ee77d5f557a83a485b4146210f54f13365fc ]
 
+In scx_set_task_state(), the default case was setting the
+warn flag, but then returning immediately. This is problematic
+because the only purpose of the warn flag is to trigger
+WARN_ONCE, but the early return prevented it from ever firing,
+leaving invalid task states undetected and untraced.
+
+To fix this, a WARN_ONCE call is now added directly in the
+default case.
+
+The fix addresses two aspects:
+
+ - Guarantees the invalid task states are properly logged
+   and traced.
+
+ - Provides a distinct warning message
+   ("sched_ext: Invalid task state") specifically for
+   states outside the defined scx_task_state enum values,
+   making it easier to distinguish from other transition
+   warnings.
+
+This ensures proper detection and reporting of invalid states.
+
+Signed-off-by: Samuele Mariotti <smariotti@disroot.org>
+Signed-off-by: Paolo Valente <paolo.valente@unimore.it>
+Reviewed-by: Andrea Righi <arighi@nvidia.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Stable-dep-of: 9a415cc53711 ("sched_ext: Avoid UAF in scx_root_enable_workfn() init failure path")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ kernel/sched/ext.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
+index 177bbf31116d0..54621f6226886 100644
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -2800,7 +2800,8 @@ static void scx_set_task_state(struct task_struct *p, enum scx_task_state state)
+ 		warn = prev_state != SCX_TASK_READY;
+ 		break;
+ 	default:
+-		warn = true;
++		WARN_ONCE(1, "sched_ext: Invalid task state %d -> %d for %s[%d]",
++			  prev_state, state, p->comm, p->pid);
+ 		return;
+ 	}
+ 
 -- 
-Thanks,
-Sasha
+2.53.0
+
 
