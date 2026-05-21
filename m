@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-253539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253540-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eA8TKbMND2qSEgYAu9opvQ
-	(envelope-from <stable+bounces-253539-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 15:50:43 +0200
+	id +EE4OLcED2pDEQYAu9opvQ
+	(envelope-from <stable+bounces-253540-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 15:12:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 056A85A64CD
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 15:50:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 658875A572F
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 15:12:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 79B823152B01
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 12:58:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A49B831538DE
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 12:58:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 346AA3806AA;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE3AB3D966A;
 	Thu, 21 May 2026 12:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="icZsd+w/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YOVVbfMO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D1B3D8902
-	for <stable@vger.kernel.org>; Thu, 21 May 2026 12:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41C973D810D
+	for <stable@vger.kernel.org>; Thu, 21 May 2026 12:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779368299; cv=none; b=pykmA0hA9eIE0JPUy9b3yh08dwHI34BtCBiEhX9dpDmNmsuMC6DNzFx/1LC42sCS3MM2BKk8CJn0AcpC4SeoBPSrQYVBYPDJEsQqrH0dRrT0gdWedRUigew+BTTKzsvA6elb8U/Fujw0tDYqDAp20sXNRiOMG9l1s6C6bjwRhXo=
+	t=1779368299; cv=none; b=ZApkUCkcy80WV63PwfHaqLe4ucR+6EV4PlcLRhMAUEhAvxahgCuaAwuBXDgVHOuDbMrsV7v7FXVF0xfUvCsdaSoPBZl6HP5s2faUqJJq8yNuJ/6c2uEPgEZsWAm1Bq2b6iTYK6BORJie5VszURIvsw0I0EPiIdS3WSzKOYJhX6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779368299; c=relaxed/simple;
-	bh=S/6ZBDu603/U5YEj8nY14SyPO/8Gis+LchfYmlLmkO8=;
+	bh=D5tGNd1AkvThj6N2CtTHK53eDjyLead5huOHrY4CdTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CFZOCPwsCj6K46SVpmlvDChlLP05TrU6GpLZv9l4MKNd+TTWK4HZZyAyXhR4/MCTTNgH8CUDPU+uEggVIQY1IEtYIUD7OMkx3NEiKWQAFDppwZFHEPoxvliy4o4JLEgK/0HuOYebUHzUrlEzG4u/5nAAkEs1OemUhEMdA48API8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=icZsd+w/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1200E1F000E9;
-	Thu, 21 May 2026 12:58:16 +0000 (UTC)
+	 MIME-Version; b=iBX8GYhIqMKgoaLtc5wyOfzYhEDo9t2qdWPehgkG3ksLA81r2AM/yZTUCxFaTyDD6euowYMiH89F7BoGOwFd+82BNo7149yH2QMK0kE279qr/77xoi9GgvXa1kDx0RFWLlZk8Wtzw0HjVnNSGBRGi0AH3UQViWAtR50XmVmFQvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YOVVbfMO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B77761F00A3D;
+	Thu, 21 May 2026 12:58:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779368297;
-	bh=QYdNcop6jfthN0hLK+9amSwFt1aDYnFP7pVg57SOGGo=;
+	s=k20260515; t=1779368298;
+	bh=Ae5V62XolFsvNzaDL4hkWWy3PdtKVelwW1BlEhXP2aU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=icZsd+w/SwX5v8/bFZywlh/I0rJ9gsdCl23FeIfmuYnf/8pZpJTOjbhC6J72I+uM2
-	 Je5cKmUhaLow0QBEpoPrxVtCU5sIt9O36g0TRJ71XNI1ckCplRsVlpYEtrEVPpiuhH
-	 cSz+FDJDpRZzDDefyYfoLce/maC+q+CLOD6/8G47b83ia8Z3Jn0LOk1IpklFJD7b5/
-	 AMfXXxGTZMUt0+rDttwtuLErA9MAX+NlkTopWN40fI70PCsGwO8uPu4PNrm7Xv0jR9
-	 dOuOAj7G+gnE3TNrGl5kRfV45f+WFgUw+worH9Qxqb6KaLEFs8QKfT77Upa4u4eAv0
-	 BoYYegAoa4NAQ==
+	b=YOVVbfMObpjlfWFYT5zy4pLJQgHaQXWOL/n8kWkSupiIMev1MSQ3JMR8Gk3ZFvGMZ
+	 5CRopR8BhlAmoiYZG3tlxgAiNuRi+PITroZsN7M8vVV1ZsHQYGKL7e86eBQPtCVhBl
+	 DEOhulLhzV0uS0LAxAuHN++iHo6/6diU/ufzRbCoVUWwKkUhTH/HKMEy3gyWnhsFXc
+	 qxLrP6k5p109UtXJWg8mvnOga9I+HFNqbDZF5dre5e6JL6GptunfzZZ24UnfdQHI+r
+	 6oYtWCG0WkX+ETI/17HUsXReF8YM0ATy3tCOjt6rel7ji+eUpv3tqGMFJoSk3PSeAU
+	 s/8Kc8v3HCtkg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y 3/4] tracing/fprobe: Avoid kcalloc() in rcu_read_lock section
-Date: Thu, 21 May 2026 08:58:12 -0400
-Message-ID: <20260521125813.1165339-3-sashal@kernel.org>
+Subject: [PATCH 6.18.y 4/4] tracing/fprobe: Check the same type fprobe on table as the unregistered one
+Date: Thu, 21 May 2026 08:58:13 -0400
+Message-ID: <20260521125813.1165339-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260521125813.1165339-1-sashal@kernel.org>
 References: <2026051547-headless-mutilated-277a@gregkh>
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -77,8 +77,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253539-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-253540-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -88,192 +88,211 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sashiko.dev:url]
-X-Rspamd-Queue-Id: 056A85A64CD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 658875A572F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
 
-[ Upstream commit aa72812b49104bb5a38272fc9541feb62ca6fd32 ]
+[ Upstream commit 0ac0058a74ac5765c7ce09ea630f4fdeaf4d80fa ]
 
-fprobe_remove_node_in_module() is called under RCU read locked, but
-this invokes kcalloc() if there are more than 8 fprobes installed
-on the module. Sashiko warns it because kcalloc() can sleep [1].
+Commit 2c67dc457bc6 ("tracing: fprobe: optimization for entry only case")
+introduced a different ftrace_ops for entry-only fprobes.
 
- [1] https://sashiko.dev/#/patchset/177552432201.853249.5125045538812833325.stgit%40mhiramat.tok.corp.google.com
+However, when unregistering an fprobe, the kernel only checks if another
+fprobe exists at the same address, without checking which type of fprobe
+it is.
+If different fprobes are registered at the same address, the same address
+will be registered in both fgraph_ops and ftrace_ops, but only one of
+them will be deleted when unregistering. (the one removed first will not
+be deleted from the ops).
 
-To fix this issue, expand the batch size to 128 and do not expand
-the fprobe_addr_list, but just cancel walking on fprobe_ip_table,
-update fgraph/ftrace_ops and retry the loop again.
+This results in junk entries remaining in either fgraph_ops or ftrace_ops.
+For example:
+ =======
+ cd /sys/kernel/tracing
 
-Link: https://lore.kernel.org/all/177669367206.132053.1493637946869032744.stgit@mhiramat.tok.corp.google.com/
+ # 'Add entry and exit events on the same place'
+ echo 'f:event1 vfs_read' >> dynamic_events
+ echo 'f:event2 vfs_read%return' >> dynamic_events
 
-Fixes: 0de4c70d04a4 ("tracing: fprobe: use rhltable for fprobe_ip_table")
+ # 'Enable both of them'
+ echo 1 > events/fprobes/enable
+ cat enabled_functions
+vfs_read (2)            ->arch_ftrace_ops_list_func+0x0/0x210
+
+ # 'Disable and remove exit event'
+ echo 0 > events/fprobes/event2/enable
+ echo -:event2 >> dynamic_events
+
+ # 'Disable and remove all events'
+ echo 0 > events/fprobes/enable
+ echo > dynamic_events
+
+ # 'Add another event'
+ echo 'f:event3 vfs_open%return' > dynamic_events
+ cat dynamic_events
+f:fprobes/event3 vfs_open%return
+
+ echo 1 > events/fprobes/enable
+ cat enabled_functions
+vfs_open (1)            tramp: 0xffffffffa0001000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60    subops: {ent:fprobe_fgraph_entry+0x0/0x620 ret:fprobe_return+0x0/0x150}
+vfs_read (1)            tramp: 0xffffffffa0001000 (ftrace_graph_func+0x0/0x60) ->ftrace_graph_func+0x0/0x60    subops: {ent:fprobe_fgraph_entry+0x0/0x620 ret:fprobe_return+0x0/0x150}
+ =======
+
+As you can see, an entry for the vfs_read remains.
+
+To fix this issue, when unregistering, the kernel should also check if
+there is the same type of fprobes still exist at the same address, and
+if not, delete its entry from either fgraph_ops or ftrace_ops.
+
+Link: https://lore.kernel.org/all/177669367993.132053.10553046138528674802.stgit@mhiramat.tok.corp.google.com/
+
+Fixes: 2c67dc457bc6 ("tracing: fprobe: optimization for entry only case")
 Cc: stable@vger.kernel.org
 Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Stable-dep-of: 0ac0058a74ac ("tracing/fprobe: Check the same type fprobe on table as the unregistered one")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/fprobe.c | 92 +++++++++++++++++++++----------------------
- 1 file changed, 45 insertions(+), 47 deletions(-)
+ kernel/trace/fprobe.c | 82 ++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 65 insertions(+), 17 deletions(-)
 
 diff --git a/kernel/trace/fprobe.c b/kernel/trace/fprobe.c
-index 574f2886cc9e3..37a4352efb4da 100644
+index 37a4352efb4da..6419c8d772731 100644
 --- a/kernel/trace/fprobe.c
 +++ b/kernel/trace/fprobe.c
-@@ -344,11 +344,10 @@ static bool fprobe_is_ftrace(struct fprobe *fp)
+@@ -92,11 +92,8 @@ static int insert_fprobe_node(struct fprobe_hlist_node *node, struct fprobe *fp)
+ 	return ret;
  }
  
- #ifdef CONFIG_MODULES
--static void fprobe_set_ips(unsigned long *ips, unsigned int cnt, int remove,
--			   int reset)
-+static void fprobe_remove_ips(unsigned long *ips, unsigned int cnt)
+-/* Return true if there are synonims */
+-static bool delete_fprobe_node(struct fprobe_hlist_node *node)
++static void delete_fprobe_node(struct fprobe_hlist_node *node)
  {
--	ftrace_set_filter_ips(&fprobe_graph_ops.ops, ips, cnt, remove, reset);
--	ftrace_set_filter_ips(&fprobe_ftrace_ops, ips, cnt, remove, reset);
-+	ftrace_set_filter_ips(&fprobe_graph_ops.ops, ips, cnt, 1, 0);
-+	ftrace_set_filter_ips(&fprobe_ftrace_ops, ips, cnt, 1, 0);
- }
- #endif
- #else
-@@ -367,10 +366,9 @@ static bool fprobe_is_ftrace(struct fprobe *fp)
- }
- 
- #ifdef CONFIG_MODULES
--static void fprobe_set_ips(unsigned long *ips, unsigned int cnt, int remove,
--			   int reset)
-+static void fprobe_remove_ips(unsigned long *ips, unsigned int cnt)
- {
--	ftrace_set_filter_ips(&fprobe_graph_ops.ops, ips, cnt, remove, reset);
-+	ftrace_set_filter_ips(&fprobe_graph_ops.ops, ips, cnt, 1, 0);
- }
- #endif
- #endif /* !CONFIG_DYNAMIC_FTRACE_WITH_ARGS && !CONFIG_DYNAMIC_FTRACE_WITH_REGS */
-@@ -543,7 +541,7 @@ static void fprobe_graph_remove_ips(unsigned long *addrs, int num)
- 
- #ifdef CONFIG_MODULES
- 
--#define FPROBE_IPS_BATCH_INIT 8
-+#define FPROBE_IPS_BATCH_INIT 128
- /* instruction pointer address list */
- struct fprobe_addr_list {
- 	int index;
-@@ -551,45 +549,24 @@ struct fprobe_addr_list {
- 	unsigned long *addrs;
- };
- 
--static int fprobe_addr_list_add(struct fprobe_addr_list *alist, unsigned long addr)
-+static int fprobe_remove_node_in_module(struct module *mod, struct fprobe_hlist_node *node,
-+					 struct fprobe_addr_list *alist)
- {
--	unsigned long *addrs;
+-	bool ret;
 -
--	/* Previously we failed to expand the list. */
--	if (alist->index == alist->size)
--		return -ENOSPC;
+ 	lockdep_assert_held(&fprobe_mutex);
+ 
+ 	/* Avoid double deleting and non-inserted nodes */
+@@ -105,13 +102,6 @@ static bool delete_fprobe_node(struct fprobe_hlist_node *node)
+ 		rhltable_remove(&fprobe_ip_table, &node->hlist,
+ 				fprobe_rht_params);
+ 	}
 -
--	alist->addrs[alist->index++] = addr;
--	if (alist->index < alist->size)
-+	if (!within_module(node->addr, mod))
+-	rcu_read_lock();
+-	ret = !!rhltable_lookup(&fprobe_ip_table, &node->addr,
+-				fprobe_rht_params);
+-	rcu_read_unlock();
+-
+-	return ret;
+ }
+ 
+ /* Check existence of the fprobe */
+@@ -343,6 +333,32 @@ static bool fprobe_is_ftrace(struct fprobe *fp)
+ 	return !fp->exit_handler;
+ }
+ 
++static bool fprobe_exists_on_hash(unsigned long ip, bool ftrace)
++{
++	struct rhlist_head *head, *pos;
++	struct fprobe_hlist_node *node;
++	struct fprobe *fp;
++
++	guard(rcu)();
++	head = rhltable_lookup(&fprobe_ip_table, &ip,
++				fprobe_rht_params);
++	if (!head)
++		return false;
++	/* We have to check the same type on the list. */
++	rhl_for_each_entry_rcu(node, pos, head, hlist) {
++		if (node->addr != ip)
++			break;
++		fp = READ_ONCE(node->fp);
++		if (likely(fp)) {
++			if ((!ftrace && fp->exit_handler) ||
++			    (ftrace && !fp->exit_handler))
++				return true;
++		}
++	}
++
++	return false;
++}
++
+ #ifdef CONFIG_MODULES
+ static void fprobe_remove_ips(unsigned long *ips, unsigned int cnt)
+ {
+@@ -365,6 +381,29 @@ static bool fprobe_is_ftrace(struct fprobe *fp)
+ 	return false;
+ }
+ 
++static bool fprobe_exists_on_hash(unsigned long ip, bool ftrace __maybe_unused)
++{
++	struct rhlist_head *head, *pos;
++	struct fprobe_hlist_node *node;
++	struct fprobe *fp;
++
++	guard(rcu)();
++	head = rhltable_lookup(&fprobe_ip_table, &ip,
++				fprobe_rht_params);
++	if (!head)
++		return false;
++	/* We only need to check fp is there. */
++	rhl_for_each_entry_rcu(node, pos, head, hlist) {
++		if (node->addr != ip)
++			break;
++		fp = READ_ONCE(node->fp);
++		if (likely(fp))
++			return true;
++	}
++
++	return false;
++}
++
+ #ifdef CONFIG_MODULES
+ static void fprobe_remove_ips(unsigned long *ips, unsigned int cnt)
+ {
+@@ -552,18 +591,25 @@ struct fprobe_addr_list {
+ static int fprobe_remove_node_in_module(struct module *mod, struct fprobe_hlist_node *node,
+ 					 struct fprobe_addr_list *alist)
+ {
++	lockdep_assert_in_rcu_read_lock();
++
+ 	if (!within_module(node->addr, mod))
  		return 0;
  
--	/* Expand the address list */
--	addrs = kcalloc(alist->size * 2, sizeof(*addrs), GFP_KERNEL);
--	if (!addrs)
--		return -ENOMEM;
--
--	memcpy(addrs, alist->addrs, alist->size * sizeof(*addrs));
--	alist->size *= 2;
--	kfree(alist->addrs);
--	alist->addrs = addrs;
-+	if (delete_fprobe_node(node))
-+		return 0;
-+	/* If no address list is available, we can't track this address. */
-+	if (!alist->addrs)
-+		return 0;
+-	if (delete_fprobe_node(node))
+-		return 0;
++	delete_fprobe_node(node);
+ 	/* If no address list is available, we can't track this address. */
+ 	if (!alist->addrs)
+ 		return 0;
++	/*
++	 * Don't care the type here, because all fprobes on the same
++	 * address must be removed eventually.
++	 */
++	if (!rhltable_lookup(&fprobe_ip_table, &node->addr, fprobe_rht_params)) {
++		alist->addrs[alist->index++] = node->addr;
++		if (alist->index == alist->size)
++			return -ENOSPC;
++	}
  
-+	alist->addrs[alist->index++] = node->addr;
-+	if (alist->index == alist->size)
-+		return -ENOSPC;
+-	alist->addrs[alist->index++] = node->addr;
+-	if (alist->index == alist->size)
+-		return -ENOSPC;
  	return 0;
  }
  
--static void fprobe_remove_node_in_module(struct module *mod, struct fprobe_hlist_node *node,
--					 struct fprobe_addr_list *alist)
--{
--	if (!within_module(node->addr, mod))
--		return;
--	if (delete_fprobe_node(node))
--		return;
--	/*
--	 * If failed to update alist, just continue to update hlist.
--	 * Therefore, at list user handler will not hit anymore.
--	 */
--	fprobe_addr_list_add(alist, node->addr);
--}
--
- /* Handle module unloading to manage fprobe_ip_table. */
- static int fprobe_module_callback(struct notifier_block *nb,
- 				  unsigned long val, void *data)
-@@ -598,29 +575,50 @@ static int fprobe_module_callback(struct notifier_block *nb,
- 	struct fprobe_hlist_node *node;
- 	struct rhashtable_iter iter;
- 	struct module *mod = data;
-+	bool retry;
- 
- 	if (val != MODULE_STATE_GOING)
- 		return NOTIFY_DONE;
- 
- 	alist.addrs = kcalloc(alist.size, sizeof(*alist.addrs), GFP_KERNEL);
--	/* If failed to alloc memory, we can not remove ips from hash. */
--	if (!alist.addrs)
--		return NOTIFY_DONE;
-+	/*
-+	 * If failed to alloc memory, ftrace_ops will not be able to remove ips from
-+	 * hash, but we can still remove nodes from fprobe_ip_table, so we can avoid
-+	 * the potential wrong callback. So just print a warning here and try to
-+	 * continue without address list.
-+	 */
-+	WARN_ONCE(!alist.addrs,
-+		"Failed to allocate memory for fprobe_addr_list, ftrace_ops will not be updated");
- 
- 	mutex_lock(&fprobe_mutex);
-+again:
-+	retry = false;
-+	alist.index = 0;
- 	rhltable_walk_enter(&fprobe_ip_table, &iter);
- 	do {
- 		rhashtable_walk_start(&iter);
- 
- 		while ((node = rhashtable_walk_next(&iter)) && !IS_ERR(node))
--			fprobe_remove_node_in_module(mod, node, &alist);
-+			if (fprobe_remove_node_in_module(mod, node, &alist) < 0) {
-+				retry = true;
-+				break;
-+			}
- 
- 		rhashtable_walk_stop(&iter);
--	} while (node == ERR_PTR(-EAGAIN));
-+	} while (node == ERR_PTR(-EAGAIN) && !retry);
- 	rhashtable_walk_exit(&iter);
-+	/* Remove any ips from hash table(s) */
-+	if (alist.index > 0) {
-+		fprobe_remove_ips(alist.addrs, alist.index);
-+		/*
-+		 * If we break rhashtable walk loop except for -EAGAIN, we need
-+		 * to restart looping from start for safety. Anyway, this is
-+		 * not a hotpath.
-+		 */
-+		if (retry)
-+			goto again;
-+	}
- 
--	if (alist.index > 0)
--		fprobe_set_ips(alist.addrs, alist.index, 1, 0);
- 	mutex_unlock(&fprobe_mutex);
- 
- 	kfree(alist.addrs);
+@@ -934,7 +980,9 @@ static int unregister_fprobe_nolock(struct fprobe *fp)
+ 	/* Remove non-synonim ips from table and hash */
+ 	count = 0;
+ 	for (i = 0; i < hlist_array->size; i++) {
+-		if (!delete_fprobe_node(&hlist_array->array[i]) && addrs)
++		delete_fprobe_node(&hlist_array->array[i]);
++		if (addrs && !fprobe_exists_on_hash(hlist_array->array[i].addr,
++						    fprobe_is_ftrace(fp)))
+ 			addrs[count++] = hlist_array->array[i].addr;
+ 	}
+ 	del_fprobe_hash(fp);
 -- 
 2.53.0
 
