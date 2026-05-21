@@ -1,218 +1,294 @@
-Return-Path: <stable+bounces-253408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253409-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4A/kCN9NDmrL9gUAu9opvQ
-	(envelope-from <stable+bounces-253408-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 02:12:15 +0200
+	id iEnHB5dMDmrL9gUAu9opvQ
+	(envelope-from <stable+bounces-253409-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 02:06:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7724059D332
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 02:12:14 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 909C959D26D
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 02:06:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DB624315A72D
-	for <lists+stable@lfdr.de>; Wed, 20 May 2026 23:58:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4A17230BEEBB
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:06:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD42E3BED66;
-	Wed, 20 May 2026 23:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0AD3EA66;
+	Thu, 21 May 2026 00:06:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Is8k7vIz";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="cSYjkTbu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZdKfB16T"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282FE39A7E7
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 23:58:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAFC11386C9
+	for <stable@vger.kernel.org>; Thu, 21 May 2026 00:06:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779321528; cv=none; b=GfOoGGGEee5oKYEEDquFQ4VbZaXC90nJUnYRIB/PoYStRm38jL0S81wvEN3x/U1NSvo7vnUjzruuCoREH1df4KpCNdKVrEN7MBwqP6mWOKfDJDsJ1GbVmvQWopbpyuiJ3unoFKDYRbobKjvIzxG1kgTYGyaT0nnqIO1OJJQ7clg=
+	t=1779321972; cv=none; b=UUMuTtlctXK6v0jtTQZCRbMPhpLSAYtQpbJ7K+udL5NFlCQVmW1o7vO05fEuW52fCV4cHhAoYxqCruUTcjBwUGFawKFZRjSFXSgYgxMGamF5s7FqHYoiPilmebjD/nerpy37vsq8gexSQhq5uz9alB2Pb1ldRlqrJ/QynlbIvkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779321528; c=relaxed/simple;
-	bh=uOOiRD/C+EHFgynyt39wxQXM82SqV00R2YSRUShCnmg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oCtTxcDwd1C5/mBnqIEGW17BBw+m+/AzFr2HLHqTBOkMVjZc+24iFwT3P0TXOGkRar8POOQH/AK8Ez9qHldZmVnYnlo+cBSq14PfuzwQG+WKOa9geA++UVracJFshh+70LTsjA9vjgiVpJAomWCiS/f7gxlOT2AaRSujyFeUOiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Is8k7vIz; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=cSYjkTbu; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64KG2LnL446712
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 23:58:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=xslQDtl6G93vlsd/+8QfWRHF
-	e5YOMqqj6g8oprL6TDI=; b=Is8k7vIzj9HFkHlalVxgYbkv/a5RbqeQBDLxixxS
-	M0KirKPoxqByptR3SK9JoyuI+zJ8TYOWwxAtvLbLWS33d3N5MN2KgvwIbllHv0Sb
-	9AHE11oqwf4Uxg1JkTmJrwuatOoSAM0HdDTrfhD/Aphmm5w0dvprWgrU2QW8EOUe
-	aitNdxcPW/8yI8rZ9W+Gu9PSB1Z7/L21kSvqDzQBJha/TiZs+G1KPW8v/XVkNH9V
-	n2rsy2LJGeMeL94PRS8y4nGLGDrvCKgKopABUt9yEQkaTysXPRSiLNGddofYZvgo
-	ClhKzBMBZAuMhvsjxOegOrKR214CUwAcjQNTYKlDpTMkYw==
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e9anrk4vr-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Wed, 20 May 2026 23:58:45 +0000 (GMT)
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-50fb3c7b989so105500761cf.0
-        for <stable@vger.kernel.org>; Wed, 20 May 2026 16:58:45 -0700 (PDT)
+	s=arc-20240116; t=1779321972; c=relaxed/simple;
+	bh=zahVRzkLToA6oMFieq+LNgXnW2Tf/2BUPcvcXVza/7Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=D6TxpyhwyDhoX7LZcFN3s2EMxq9n57UX20d/jb+bYk8nIpwAhkNxhlTYOplKcWcFIvdyaw5OsneyeCKfB+t94UAoeXwpA6KARH+mHRJP4spnlgMjfK0tQ2takaS+2omAVT3Aj6jHKSi+d+k8Xo6fu6820c54hhqiF+1P1BmyPHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZdKfB16T; arc=none smtp.client-ip=209.85.222.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-902deb2412fso681330185a.3
+        for <stable@vger.kernel.org>; Wed, 20 May 2026 17:06:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1779321525; x=1779926325; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xslQDtl6G93vlsd/+8QfWRHFe5YOMqqj6g8oprL6TDI=;
-        b=cSYjkTbuteBoT9NErIP5Tyf+SmYqiNEcENlA+LA6CtDs055xNEhRt/F3M5RK8ygVGb
-         DObBxe+njEmgl6N13U37DutffX7+p1ggXGKzi8X9C4acUDoJbZuNdXKlwE4rFRLRT09B
-         lpG71cnyhfIjBBHXQZhSDJbWzo8C4nwy6H0Xhl5d5HukEOuk+I9XrI0ZwBjIJ6p2gPDO
-         SIIaT+Nc+bxNWJwSmvLmJwYoW578zxisL7bTdyJ3miNt7Gw0hXgnD+ouIjC57pvfsQDH
-         qZNX5cVxr5bbvtqo/d/Tilbm0SS3U2Gg9/+T6BTbf+5ypQwSa2c6dvSTbLvTBDc0GOPx
-         wahw==
+        d=gmail.com; s=20251104; t=1779321970; x=1779926770; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2ZNvk1BovRx97OnCimNnt74dFamxA5DuthwM7CtyImQ=;
+        b=ZdKfB16TSYpDIZbZ0DLkuPoClmrOk0o8zUySVIJcBkr6zLq/QhJUEBU9xrmh1/TppG
+         B4iIpo5WdElfingawitMeD8dNulFNSCEa2Ez8QSD5f9eMkEVeyI7a6C3vKAHZJahpMhm
+         V6amTfRI74lQaQ62d0TqoIMlRAM2X82na8FfeRWcQPLCsV3WlRkWcifhiy9RJ76EOoBG
+         NGUpEoOO8jhqDmimROmmsYX5ZvqZ3mWnhHH1RiG5ZKjqHTO0EItwpo63UavzGd6/o5or
+         0dXXbvdl7XAddPdUwFl5v2VM2K5K2dplVs7bW4s/WJRWgEa4mETWc8Vf+OLG7HukpdIS
+         YZXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779321525; x=1779926325;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xslQDtl6G93vlsd/+8QfWRHFe5YOMqqj6g8oprL6TDI=;
-        b=CycOcQeMzZSRxsJfXqQrYeYI0rnKeHpkwxpBtSGmjBHeEvlwY7Rci+9qVLCdsOg3Yl
-         ELrPke3S4Q4LsLxiM6hdgPG5JCq3zg/ehDfCFFCkpaZMqlev7+ePk1HiKVgQN2jJUaHQ
-         UKNxViCoZQKt1GwMdgzHuEhHFGBEe1aGZxo6bi6C1YxRL1pdA8q6vSYYzRHwGuNbZDNP
-         yJ8Lpt02P97PhjGpyBJoQIkSe0Khf7/YmgDuGfH1RrnF75v9qJLX2WWH7QiGmYfkyK2p
-         zAvzx/AUFO2RVnI0EjttysHdXpn+VuHkf9Bk7DpVVI9J28CbLzVAvEdIQyI68n5xn1p6
-         mylg==
-X-Forwarded-Encrypted: i=1; AFNElJ/l2J4TOSX9B8qlctMPGTQcmbvvP6kvpORGeI51YKLUmopWny6R9UJtGg/5uy4ixOqQ7vP6GzI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRuutVhDAm9tbhxJkeuIvPfIQdOLE6+tshE/Ng9sAT9OznqZer
-	KWn13ICEmhfKPVs72A6Mds9PZXcz+h1sBkoutr2r5iAVQUl+Qx2CldFIprumExRIXVsVtDjebOH
-	PuTzjGIl1znsnUHQhSClPtbWePtM2bJl0WuhgU7pQzllz5I4g7SeObWsjvCM=
-X-Gm-Gg: Acq92OFCxf6uMVj7xvyBe0XaTblqP6plXuBzaJHoLIjfPccbKoHoKSEk2bD52emdVmE
-	z0yk/EcuIsvNlrmjTC8420huRdn+9+TiH0qDqAq8XrK8O3wQ98SpNtcSxdEUuI5gRJGyvU/UR7U
-	ZVArnNDMbgYnsd92Pbbeg/NzZi0CD8GAlI0lLacOaa5Xfp6UZkjdwVQrZgs6irI/k9zLU05C1MT
-	9Q7xyRtbXCJc8tZmR+mTxil8xuD205yMnEljk76EjuXrpZZ6XYsZ6Yiv9P8FeCrYbP/ssIbIyat
-	6zvKE7LnBdpeGS+btDotyv599uxABN9fjT2EOxWlB/m8YmG/GC4YVaN8EjdMxtBVAwP/G/HrPHK
-	Epa+YwkslnJ9N1XlS7aVkuP2yGFxHtRj83FBv6YJQOB7xUFOv7b2Q701yudRzqBtGgRtTRwJPUf
-	zs3eBBLUOn+APuPcg55YgohYv/QMTF1T4CoVs=
-X-Received: by 2002:a05:622a:1b90:b0:50f:b17d:7e57 with SMTP id d75a77b69052e-516c54d32ffmr9945281cf.24.1779321525357;
-        Wed, 20 May 2026 16:58:45 -0700 (PDT)
-X-Received: by 2002:a05:622a:1b90:b0:50f:b17d:7e57 with SMTP id d75a77b69052e-516c54d32ffmr9944971cf.24.1779321524875;
-        Wed, 20 May 2026 16:58:44 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a9164bc20fsm5302758e87.43.2026.05.20.16.58.41
+        d=1e100.net; s=20251104; t=1779321970; x=1779926770;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=2ZNvk1BovRx97OnCimNnt74dFamxA5DuthwM7CtyImQ=;
+        b=clEJY8/FmIHBwzsOl2vCRLGirZf8zJTIvLS0WcWdcDCGZ+53ZynueyZUvoo/ve9+1O
+         sb3pj0rqZFjY8przzedwAa6jwAV/Mcy0LAH+QmUbvgMRFqg7QjyAgzyB1s4mLtKtig73
+         riFvLGPEK5QIS0XHMANg/fAqKwVQXolh/SICfCZJ7vgQqAdhWmFj29Eedwf/nkLKvJpd
+         qIPhqXBPOEWJBImsRcbQutRQpwaiLAzm96IWV7a+bKJMVMoN0tBKn2BnB/tf+6a0trLD
+         Mg7SaYFlOGHSMBUgMwr2x5EZDYXT6rdmhqoYAQS54KwRVlO9iKmQQ+MVBZl30gNZJ1AF
+         wNFQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/sSmMO12W4JH81tgM23YtS30ylcLlvPJNsGV1yvL/+xcNs6FqsTQYmHIbQhL/oms2zthvDFPE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTzgVwI8ODe5iIMNo4mvSpvIimVo6M2XMNIvS1W2nGi/dPUpiu
+	I+/tdHoZ3wGCbH4yAqisD0JXsTIDdapaCFieXvjK/E1Fv0DYFZawl+Ae
+X-Gm-Gg: Acq92OF7qBJj1yCpqU3CQmtMtZh/wPma9yxMLQAB790TIZ+6X54JxzLMtVTO8w8kW/S
+	1nMGQfV83vZ1mEUvsGdtdSi5CpEMMdCdLbdk8rVxncjF0O20UIiJHHoWOfmCFgMrZykl5Vx9ezl
+	aDTp17r7qxwf0UwKFht854VIhKq/EUWlCSdxMYAqLXY1F5b8vS/AhWLpPe82hMvEPCdyJIORPia
+	DHQ7yqW1j4IUXzlOo5iBJwLf4aPrlNDK7Hr79Ua1kmHNWzmyUGOLMFBXuSVx3LWmmHk8jI+uJPs
+	8LnLQjAjQQg7GT85VHcwXS7Uy1WrC6wYDQzBh+UIHxfGfXhkQDL/exhfx6WCpFi4Z6r5wPluR1W
+	1xkF7mdIIEOF8VDebM5aJVbTW1B0OGV5M3rMikWDf9DxpGZz9IxUkboOTZiBalfgtfV9M2Uh4NB
+	v6OjzP2y6tQIAOZZ1roxrd7ZC4JrltWBQqNzNQ16vuTjJQee1BZ7O6OCRI5B0e8MwC78cO+/Apl
+	g0Q8z7g7ojgDH4iXguU963uiqxEzF8=
+X-Received: by 2002:a05:620a:19a0:b0:912:5d2a:4baf with SMTP id af79cd13be357-914a2e507e2mr67313885a.61.1779321969362;
+        Wed, 20 May 2026 17:06:09 -0700 (PDT)
+Received: from server0 (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-910bcf353b9sm2360405085a.35.2026.05.20.17.06.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 May 2026 16:58:42 -0700 (PDT)
-Date: Thu, 21 May 2026 02:58:39 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Cc: Georgi Djakov <djakov@kernel.org>,
-        Raviteja Laggyshetty <quic_rlaggysh@quicinc.com>,
-        Konrad Dybcio <konradybcio@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, sashiko-bot@kernel.org
-Subject: Re: [PATCH] interconnect: qcom: icc-rpmh: Fix resource leak in case
- of missing QoS clocks
-Message-ID: <vhpgkyasgtckugbf75vkidzacda2tg5qbqrgvg6rwcsjfqzy4w@pwf6wkoze327>
-References: <20260520191953.190564-2-krzysztof.kozlowski@oss.qualcomm.com>
+        Wed, 20 May 2026 17:06:08 -0700 (PDT)
+From: Michael Bommarito <michael.bommarito@gmail.com>
+To: Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-bluetooth@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v3] Bluetooth: L2CAP: reject BR/EDR signaling packets over MTUsig
+Date: Wed, 20 May 2026 20:05:55 -0400
+Message-ID: <20260521000555.3712030-1-michael.bommarito@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260520135034.1060859-1-michael.bommarito@gmail.com>
+References: <20260520135034.1060859-1-michael.bommarito@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260520191953.190564-2-krzysztof.kozlowski@oss.qualcomm.com>
-X-Proofpoint-GUID: qO4lqrJQQWWIGiz3KdvEBWg1pZZymN6V
-X-Proofpoint-ORIG-GUID: qO4lqrJQQWWIGiz3KdvEBWg1pZZymN6V
-X-Authority-Analysis: v=2.4 cv=UuJT8ewB c=1 sm=1 tr=0 ts=6a0e4ab5 cx=c_pps
- a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22 a=VwQbUJbxAAAA:8
- a=EUspDBNiAAAA:8 a=efQzfd3GQAiEoQBuJ0gA:9 a=CjuIK1q_8ugA:10
- a=dawVfQjAaf238kedN5IG:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIwMDIzNSBTYWx0ZWRfX+ymzTDuFcoQX
- Z5uleGQCHCiw01yAreMDr7FzGxN4GimikbWOXy2DtW0B3kDAKsg5+jFsxHjNQyfeWKiVCBqZJxp
- Xi0CnV9BmJKVzRtxjl2KwpsJEFiYVzEh6EvLVA6q4grr+gXk2mKMANRa0eiWdSxFzCK7s3X5NOF
- WFFf3qVgoO3m4LKXJeTLtLvhWMRtGoCqDyTRYONd519qg4p2KnhwB6YFC+UyzPOY5y2lJ07k5lC
- x/DBFGjVygTNN+1B3Hmvq/Zyhxu21FynHc5XfM3eTzvro/Sq2DOng8slJxn4JYI8I8R5en5czei
- OgsqbBKtpyo+N+vd6HJl8P83v+j61VaYbDh7NL0KaYfoXlJ5rR+2FwLkbS5ZWRqkswSlgvEsfQn
- Lg/hyOmPCFu0dCTGQp8gNpNQ6S0wbxYfnBzDGHF8Kp8jjtwGD1E6ErLAwMxy48vEFTxGmTyL/0B
- 5/ZCvyHbYlhII3VJXLA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-20_03,2026-05-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 clxscore=1015 lowpriorityscore=0 impostorscore=0
- priorityscore=1501 suspectscore=0 spamscore=0 malwarescore=0 bulkscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605130000
- definitions=main-2605200235
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253408-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oss.qualcomm.com:dkim,qualcomm.com:email,qualcomm.com:dkim];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dmitry.baryshkov@oss.qualcomm.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-253409-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[holtmann.org,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 7724059D332
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 909C959D26D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, May 20, 2026 at 09:19:54PM +0200, Krzysztof Kozlowski wrote:
-> Driver defers probe if getting clocks for interconnect providers with
-> QoS returns -EPROBE_DEFER, but it fails to cleanup in such case leading
-> to both resource leak and potential use-after-free, since the ICC nodes
-> are stored in static driver data.
-> 
-> Cc: <stable@vger.kernel.org>
-> Fixes: 05123e3299dd ("interconnect: qcom: icc-rpmh: probe defer incase of missing QoS clock dependency")
-> Reported-by: sashiko-bot@kernel.org
-> Closes: https://lore.kernel.org/r/20260520190807.509871F000E9@smtp.kernel.org/
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-> ---
->  drivers/interconnect/qcom/icc-rpmh.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/interconnect/qcom/icc-rpmh.c b/drivers/interconnect/qcom/icc-rpmh.c
-> index 3b445acefece..56512989d1af 100644
-> --- a/drivers/interconnect/qcom/icc-rpmh.c
-> +++ b/drivers/interconnect/qcom/icc-rpmh.c
-> @@ -324,8 +324,10 @@ int qcom_icc_rpmh_probe(struct platform_device *pdev)
->  		}
->  
->  		qp->num_clks = devm_clk_bulk_get_all(qp->dev, &qp->clks);
-> -		if (qp->num_clks == -EPROBE_DEFER)
-> -			return dev_err_probe(dev, qp->num_clks, "Failed to get QoS clocks\n");
-> +		if (qp->num_clks == -EPROBE_DEFER) {
-> +			ret = dev_err_probe(dev, qp->num_clks, "Failed to get QoS clocks\n");
-> +			goto err_remove_nodes;
+net/bluetooth/l2cap_core.c:l2cap_sig_channel() accepts BR/EDR
+signaling packets up to the channel MTU and dispatches each command
+without enforcing the signaling MTU (MTUsig). A Bluetooth BR/EDR peer
+within radio range can send a fixed-channel CID 0x0001 packet that is
+larger than MTUsig and contains many L2CAP_ECHO_REQ commands before
+pairing. In a real-radio stock-kernel run, one 681-byte signaling
+packet containing 168 zero-length ECHO_REQ commands made the target
+transmit 168 ECHO_RSP frames over about 220 ms.
 
-Well... this can race with another driver probing at the same time and
-using the nodes which will be removed. 
+Impact: a Bluetooth BR/EDR peer within radio range, before pairing, can
+force 168 ECHO_RSP frames from one 681-byte fixed-channel signaling
+packet containing packed ECHO_REQ commands.
 
-> +		}
->  
->  		if (qp->num_clks < 0 || (!qp->num_clks && desc->qos_requires_clocks)) {
->  			dev_info(dev, "Skipping QoS, failed to get clk: %d\n", qp->num_clks);
-> -- 
-> 2.53.0
-> 
+Define Linux's BR/EDR signaling MTU as the spec minimum of 48 bytes and
+reject any larger signaling packet with one L2CAP_COMMAND_REJECT_RSP
+carrying L2CAP_REJ_MTU_EXCEEDED before any command is dispatched.
 
+The Bluetooth Core spec wording for MTUExceeded says the reject
+identifier shall match the first request command in the packet, and
+that packets containing only responses shall be silently discarded.
+Linux intentionally deviates from that prescription: silently
+discarding desynchronizes the peer because the remote stack never
+learns its responses were dropped, and locating the first request
+command requires walking command headers past MTUsig, i.e. processing
+bytes from a packet we have already decided is too large to process.
+We therefore always emit one reject and use the identifier from the
+first command header (a single fixed-offset byte read), falling back
+to zero when the packet is too short to carry a header at all.
+
+The unrestricted BR/EDR signaling parser and ECHO_REQ response path both
+trace to the initial git import; no later introducing commit is
+available for a Fixes tag.
+
+Cc: stable@vger.kernel.org
+Suggested-by: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Link: https://lore.kernel.org/r/20260518002800.1361430-1-michael.bommarito@gmail.com
+Link: https://lore.kernel.org/r/20260520135034.1060859-1-michael.bommarito@gmail.com
+Assisted-by: Claude:claude-opus-4-7
+Assisted-by: Codex:gpt-5-5-xhigh
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+---
+I reproduced the stock behavior with a real-radio BR/EDR ACL link and a
+harness that sends a single fixed-channel signaling packet containing
+packed zero-length ECHO_REQ commands, and confirmed on a patched kernel
+that the same packet now produces one L2CAP_REJ_MTU_EXCEEDED command
+reject and zero ECHO_RSP frames. The patched code builds for
+net/bluetooth/l2cap_core.o on x86_64 defconfig with W=1. There are no
+in-tree Bluetooth selftests that reference l2cap_sig_channel(),
+L2CAP_SIG_MTU, or L2CAP_ECHO_REQ.
+
+Changes in v3:
+- Drop l2cap_sig_cmd_is_req() and l2cap_sig_first_req_ident(); the
+  reject is now unconditional and uses only the first command
+  header's identifier byte at a fixed offset. Per Luiz, the spec's
+  "match the first request command identifier" rule would require
+  parsing past MTUsig, and the spec's "silently discard if only
+  responses" rule desynchronizes the peer.
+- Replace the v2 walk with a verbose comment quoting the relevant
+  Bluetooth Core section and documenting why Linux deviates.
+
+Changes in v2:
+- Replace the per-PDU echo-count cap with the MTUsig direction from
+  review.
+- Reject the whole over-MTUsig signaling packet with one
+  L2CAP_REJ_MTU_EXCEEDED command reject.
+- Add L2CAP_SIG_MTU and drop over-MTUsig packets when no valid request
+  command identifier is found.
+
+v1: https://lore.kernel.org/r/20260518002800.1361430-1-michael.bommarito@gmail.com
+v2: https://lore.kernel.org/r/20260520135034.1060859-1-michael.bommarito@gmail.com
+---
+ include/net/bluetooth/l2cap.h |  1 +
+ net/bluetooth/l2cap_core.c    | 47 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 48 insertions(+)
+
+diff --git a/include/net/bluetooth/l2cap.h b/include/net/bluetooth/l2cap.h
+index 5172afee54943..e0a1f2293679a 100644
+--- a/include/net/bluetooth/l2cap.h
++++ b/include/net/bluetooth/l2cap.h
+@@ -33,6 +33,7 @@
+ /* L2CAP defaults */
+ #define L2CAP_DEFAULT_MTU		672
+ #define L2CAP_DEFAULT_MIN_MTU		48
++#define L2CAP_SIG_MTU			48	/* BR/EDR signaling MTU */
+ #define L2CAP_DEFAULT_FLUSH_TO		0xFFFF
+ #define L2CAP_EFS_DEFAULT_FLUSH_TO	0xFFFFFFFF
+ #define L2CAP_DEFAULT_TX_WINDOW		63
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 7701528f11677..0b1e062057695 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -5618,6 +5618,15 @@ static inline void l2cap_sig_send_rej(struct l2cap_conn *conn, u16 ident)
+ 	l2cap_send_cmd(conn, ident, L2CAP_COMMAND_REJ, sizeof(rej), &rej);
+ }
+ 
++static inline void l2cap_sig_send_mtu_rej(struct l2cap_conn *conn, u8 ident)
++{
++	struct l2cap_cmd_rej_mtu rej;
++
++	rej.reason = cpu_to_le16(L2CAP_REJ_MTU_EXCEEDED);
++	rej.max_mtu = cpu_to_le16(L2CAP_SIG_MTU);
++	l2cap_send_cmd(conn, ident, L2CAP_COMMAND_REJ, sizeof(rej), &rej);
++}
++
+ static inline void l2cap_sig_channel(struct l2cap_conn *conn,
+ 				     struct sk_buff *skb)
+ {
+@@ -5630,6 +5639,44 @@ static inline void l2cap_sig_channel(struct l2cap_conn *conn,
+ 	if (hcon->type != ACL_LINK)
+ 		goto drop;
+ 
++	/*
++	 * Bluetooth Core v5.4, Vol 3, Part A, Section 4: the BR/EDR
++	 * signaling channel has a fixed signaling MTU (MTUsig) whose
++	 * minimum and default is 48 octets.  Section 4.1 says that on
++	 * an MTUExceeded command reject the identifier "shall match
++	 * the first request command in the L2CAP packet" and that
++	 * packets containing only response commands "shall be
++	 * silently discarded".
++	 *
++	 * Linux intentionally deviates from that prescription:
++	 *
++	 *   1. Silently discarding desynchronizes the peer.  The
++	 *      remote stack never learns its responses were dropped,
++	 *      so any state machine waiting on a paired response
++	 *      stalls until its own timer fires.
++	 *
++	 *   2. Locating "the first request command" requires walking
++	 *      command headers past MTUsig, i.e. processing bytes
++	 *      from a packet we have already decided is too large to
++	 *      process.
++	 *
++	 * Reject every over-MTUsig signaling packet with one
++	 * L2CAP_REJ_MTU_EXCEEDED command reject.  The reject's
++	 * reason field is what tells the peer that the whole packet
++	 * was discarded; the identifier value is informational, so
++	 * we use the identifier from the first command header (a
++	 * single fixed-offset byte read) or zero when the packet is
++	 * too short to carry even one header.
++	 */
++	if (skb->len > L2CAP_SIG_MTU) {
++		u8 ident = (skb->len >= L2CAP_CMD_HDR_SIZE) ?
++			   skb->data[1] : 0;
++
++		BT_DBG("signaling packet exceeds MTU");
++		l2cap_sig_send_mtu_rej(conn, ident);
++		goto drop;
++	}
++
+ 	while (skb->len >= L2CAP_CMD_HDR_SIZE) {
+ 		u16 len;
+ 
 -- 
-With best wishes
-Dmitry
+2.53.0
+
 
