@@ -1,168 +1,219 @@
-Return-Path: <stable+bounces-253417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253418-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aB6UEkVVDmrl9wUAu9opvQ
-	(envelope-from <stable+bounces-253417-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 02:43:49 +0200
+	id 9vUGEdVXDmo4+AUAu9opvQ
+	(envelope-from <stable+bounces-253418-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 02:54:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B860C59D607
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 02:43:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7852959D6CA
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 02:54:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A246E3040DA2
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:43:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E74413037141
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:51:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95FC22690F9;
-	Thu, 21 May 2026 00:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E71F274B53;
+	Thu, 21 May 2026 00:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="chDufqv5"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="T2f4YxCa"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16592257459
-	for <stable@vger.kernel.org>; Thu, 21 May 2026 00:43:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3702566E9;
+	Thu, 21 May 2026 00:51:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779324224; cv=none; b=hU3Qh1jjKET1F0sKt581NMz/pnZGBfgu875i51fBwdyK7Hydb0ZM6NqUog3keZc+0osXlOJWN5gmUmpG4xRkYYPnEXTv9TfzUmECSmYYXmLQb9n4DgqG7GnD2bAuVCnanAEtz/A65/44U2feOl1x8OwNrgwk+6qNNq7x0I+vvr0=
+	t=1779324681; cv=none; b=AArJxX5Gvv5YdmT4uKpdaH15Rngz/A28OFsaiGeqogYUCOgl0rh5sO8eH8/Nw11QBocSfbJxtltvxfWGi8WYAWq1Ll/LA4fKcGWHvnd35eWOQtuLIit/EHKaB/6TEkO3QvGtMqxAwtNjZa4n7Kevv9+hEacbEfyufHoAkE7S0MQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779324224; c=relaxed/simple;
-	bh=IEIzvlRRqDl+bWvL9H8iIJCwiKrUdTUr0U3EgaWDVWo=;
-	h=Message-ID:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fIxEBLK+2R6b8VB9gSXKOXCUiIZKLVvU0ebdWhvzQQG8Tb7PKF1P3KH+qiuR0oeJULWmhNcuwbv5v9rjNJ8hUOevVbuMOcv9dOpekz/PNUTj6ZWurnxKdyp6+4nGPHoVtbzpot643FzUzRc0xPjdKd7Ut8wJWUaZBbm1Jt9gMrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=chDufqv5; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-bd4f8260e4eso1082421566b.1
-        for <stable@vger.kernel.org>; Wed, 20 May 2026 17:43:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779324220; x=1779929020; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:references:in-reply-to
-         :subject:cc:to:from:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=D+uQ3Q0GrDaAUefTv9AQLXze2AquCr/DP4u2vUROxGQ=;
-        b=chDufqv5kulo53fezyEyTxtb2SL3xMz0aYVAukaG4fJKB4kIZzLE5nFXg9LquI2Smw
-         z6Uj2B/GoNAeoWLyWXzMfEtGm5kEEQ/Q67fSv88ueH10oZFldfQqNNbD4OiP2W3Ogb9H
-         sQhm6u8ic3wJHdyU5xARAvYMkQnN+RpJywI/2xiRgW/Ti1GJg+8ygjX9bQz44mbgHfgD
-         lUjfnitFCq6Qzca4B9iwfPefsMQmuJYHEjdo4AnAvn1P+zFgwMJTCRcr8GvRciRaIjsL
-         A/2A1f2VV+YrPPP9upn0DC3NriKPWSqHb6fsHdyGpTURNh80goha954gjX+Qs3qOzFz0
-         1QwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779324220; x=1779929020;
-        h=mime-version:content-transfer-encoding:references:in-reply-to
-         :subject:cc:to:from:date:message-id:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=D+uQ3Q0GrDaAUefTv9AQLXze2AquCr/DP4u2vUROxGQ=;
-        b=HXnReGGDB3jkxdpXymjtcO/wg+FX3X5a4P1jfkXANXzYYyi6GyrQOJJaHIP62SlDyS
-         8f3pAtV8+WDC2B4Vmco/WuIcVDIv58WfdxN9TCMpbOYDNZQBIyAUhScj2vBKOgTKaJH3
-         4kVQPKNnEtGvCb07zDdxboK0WbiMj4ZidUBDYQMigEVvy/wsnVjImOYgy6YMPZL+oFmw
-         0yHNDttKSBgY7J5/qhJAX1c3MkuBgqRRDq3kjHQfu7bznz7IwWt0I7oit/Qd56LmXNKd
-         VCGZ0DDnjNQl3V9sOYJiAlMh5ZmNbJfWi+UGEARZx5fro25jGuduEUOa652xCKI46Bq3
-         KSxQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+QyXcoJA3v8RugeBmOFGadWao7x5f9FwoZtWyUt3cXBqj6NLQBVhdXLT0qsf9c7RvT/oPVp10=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKg0ClLEtx403PuhCia2pzLfALjjErmoe23HI8xy3r/Eg8IKQ3
-	NUGr+NK8fYpYUy1Kl5594Hj7ZOUFtf5Kzs7g4xzQDVixUbToOKeU2YmB
-X-Gm-Gg: Acq92OHEfqk9ny2SPNLuzhdSdT1YlA2vTfYBvRWW3xqiv6mSHQC3a49x6ThuH5MdgFT
-	ILEODnezkcIjDZ1I5E4SSkpTcuF1qK82PjHt0pNM9THxijZ5b/FxJDoF91jylzWCtcQxfPSWhwj
-	q7rBzj6zQ3CpKM42v0hYx2MAcb3s2Oh/qZmlIh8Kz5dwyKYk22/b9ETLeCu2QzFcaY/qVMnErm8
-	ZRGOaDq/e8X1FxQuTruagcqfUh91dqAHEGC0Fe4OPjlkoLgH0vyG6a/4cCxI0vCnDx+UtJ9x98z
-	5n9IgwOwapMetugFft/R7ZYIRRoqpG7pGy5ABqb9aMCwz4gg9G7TiM08U+pi4S/tA1BDfga2zUR
-	0CdSMqY1BR30H0bRpXckVrqDJf+ur0FFB86U3eSb3oxVtqyBuaLMvdwnDWiwj619+t3kbWOg7q/
-	jhOf8xRqyYgBZXwJLKd9QVaTFYtyUSnLgu1qpzFYvF6bPiOOC8nCiUtnFcCITIQ0Q9oNdglgdYp
-	JULBKztPEja7/KgX+tdH463iFvzGEGU7LuMmxQk6uEfcibXzwTRjW4DDxg29UTJcPYicFd65OVr
-	79c59NRFw2Q3bVh9ZKBaPjczOJRq
-X-Received: by 2002:a17:907:3c95:b0:bc3:c6f5:1d47 with SMTP id a640c23a62f3a-bdc12f857c9mr22479466b.11.1779324219917;
-        Wed, 20 May 2026 17:43:39 -0700 (PDT)
-Received: from ahossu.localdomain (ip-217-105-56-94.ip.prioritytelecom.net. [217.105.56.94])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bd4f4dea94bsm919213866b.33.2026.05.20.17.43.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 May 2026 17:43:38 -0700 (PDT)
-Message-ID: <6a0e553a.010ccaa2.2ab173.fc09@mx.google.com>
-Date: Wed, 20 May 2026 17:43:38 -0700 (PDT)
-From: Alexandru Hossu <hossu.alexandru@gmail.com>
-To: d.bogdanov@yadro.com
-Cc: mlombard@arkamax.eu, martin.petersen@oracle.com, bvanassche@acm.org,
- ddiss@suse.de, target-devel@vger.kernel.org, linux-scsi@vger.kernel.org,
- stable@vger.kernel.org, hossu.alexandru@gmail.com
-Subject: Re: [PATCH v2] scsi: target: iscsi: validate CHAP_R length before
- base64 decode
-In-Reply-To: <20260520180204.GA15940@yadro.com>
-References: <20260518121811.385350-1-hossu.alexandru@gmail.com>
- <20260518235040.48647-1-hossu.alexandru@gmail.com>
- <DINMKOIB4PRJ.1Y571RHF6NAQJ@arkamax.eu> <20260520180204.GA15940@yadro.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1779324681; c=relaxed/simple;
+	bh=arSk2JLb7QUS+XlkRypR39OwcccG3078jR5uHlxGM/k=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=nVjBwzoKGNHdEKblWGRnXCS7lGDMRAKeyXDMVBM2FPpL+okg94/D13UpEMc67ilk95BGDE6v0Kcf2HM2XoZlzL7LoQiCS7VbHLAFRO/Rgfm9bWy8M8I4obfMA8Cl1WxbSx+KpeY1cuWcbSuSt6LmekV1cG+grd8bcwX4uUS+H1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=T2f4YxCa; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1779324677;
+	bh=arSk2JLb7QUS+XlkRypR39OwcccG3078jR5uHlxGM/k=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=T2f4YxCa1yBlYqFhB5tknvzvZ/liruTCLp8Vlzk35NLTNUxzOTDTuuzoQnp8XCsWe
+	 Ghikn3Lf74f2Uj3rnqv4EOw5AXbAl1QSsE5EeivXDMokOjeAmhNTjvsMb7qbEDSfVl
+	 5/OL3fssk9U/qY5ShtJll1TE/6L8uXBWNN+xloTsZGQbfTAmTBiYo8siQ9Uuh5plOl
+	 /YyhJ7G0vnfHZbcPclW5Jgye2ufDD1mgz1yEialk6oR4pmapM9NCd6UKnuMPDVEVFD
+	 ryPHtLx1syLKd6hf25XWjY2yaVqJo27yLI9QJz8p05rBsVAp7JXW/mGiVUKh9810Ug
+	 TeSTMvc8Oqw1w==
+Received: from [100.64.0.214] (unknown [100.64.0.214])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: nicolas)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 750AD17E0234;
+	Thu, 21 May 2026 02:51:16 +0200 (CEST)
+Message-ID: <f9e63fbbd99c11f303ac8e8f5aec6b2bd528cf99.camel@collabora.com>
+Subject: Re: [PATCH v2] media: rkvdec: fix PM runtime teardown ordering in
+ remove
+From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+To: Francesco Saverio Pavone <pavone.lawyer@gmail.com>, jonas@kwiboo.se, 
+	detlev.casanova@collabora.com, hverkuil@kernel.org, mchehab@kernel.org
+Cc: ezequiel@vanguardiasur.com.ar, heiko@sntech.de, stable@vger.kernel.org, 
+	linux-media@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Date: Wed, 20 May 2026 20:51:14 -0400
+In-Reply-To: <20260518145414.64514-1-pavone.lawyer@gmail.com>
+References: <20260518105413.42147-1-pavone.lawyer@gmail.com>
+	 <20260518145414.64514-1-pavone.lawyer@gmail.com>
+Autocrypt: addr=nicolas.dufresne@collabora.com; prefer-encrypt=mutual;
+ keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
+ /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
+ cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
+ CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
+ abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
+ nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
+ AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
+ smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
+ AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
+ iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
+ ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
+ bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
+Organization: Collabora Canada
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-9/VsCBjDISjI7Lc8ZtP/"
+User-Agent: Evolution 3.60.1 (3.60.1-1.fc44) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	DMARC_POLICY_ALLOW(-0.50)[collabora.com,none];
+	R_DKIM_ALLOW(-0.20)[collabora.com:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[arkamax.eu,oracle.com,acm.org,suse.de,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-253417-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253418-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,kwiboo.se,collabora.com,kernel.org];
+	HAS_ORG_HEADER(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hossualexandru@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_NEQ_ENVFROM(0.00)[nicolas.dufresne@collabora.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[collabora.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,mx.google.com:mid,yadro.com:email]
-X-Rspamd-Queue-Id: B860C59D607
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,collabora.com:email,collabora.com:mid,collabora.com:dkim,kwiboo.se:email]
+X-Rspamd-Queue-Id: 7852959D6CA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, May 20, 2026, Dmitry Bogdanov <d.bogdanov@yadro.com> wrote:
-> Yes, the length of Base64 decoded string is not deterministic.
-> Moreover, length of Base64 encoded string must be divisible by 4. Which
-> is biger that 4/3 of decoded.
->
-> | MD5_SIGNATURE_SIZE      | 16   | 21,33333 | 22       | 24                =
-   |
-> | SHA256_SIGNATURE_SIZE   | 32   | 42,66667 | 43       | 44                =
-   |
->
-> So, that formula is not correct and will break all iscsi authentication.
 
-v3 (sent about an hour before your email) already handles this. Trailing
-'=3D' are stripped before the comparison, so the check is applied only to
-the data characters:
+--=-9/VsCBjDISjI7Lc8ZtP/
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-	while (r_len > 0 && chap_r[r_len - 1] =3D=3D '=3D')
-		r_len--;
-	if (r_len > DIV_ROUND_UP(chap->digest_size * 4, 3)) {
+Le lundi 18 mai 2026 =C3=A0 16:54 +0200, Francesco Saverio Pavone a =C3=A9c=
+rit=C2=A0:
+> From: Jonas Karlman <jonas@kwiboo.se>
+>=20
+> The current remove() path calls rkvdec_v4l2_cleanup() and
+> pm_runtime_disable() before pm_runtime_dont_use_autosuspend(), and
+> frees the empty IOMMU domain after that. With autosuspend still
+> armed when the domain goes away, the VDPU381 can be left in a dirty
+> state across module reload and suspend/resume cycles.
+>=20
+> On RK3588 this surfaces as a VP9 inter-prediction bug: from the
+> second ALTREF frame onward, motion blocks decode with U=3DV=3D0 (BT.709
+> green), while intra and static blocks stay correct. Reordering the
+> teardown to dont_use_autosuspend() -> iommu_domain_free() ->
+> pm_runtime_disable() -> v4l2_cleanup() makes the symptom go away.
+>=20
+> Tested on a Radxa Rock 5B+ (RK3588, 8 GB LPDDR5) with both the
+> libva-v4l2-request mpv pipeline and Chromium's V4L2 stateless
+> decoder. With the fix, 300 random pixel samples on VP9 Profile 0
+> clips at 1080p and 1440p match a libvpx software reference exactly
+> (worst delta 0). Without it, the same 1080p sample at frame 4,
+> pixel (960, 270) reads HW=3D(0,112,0) vs SW=3D(204,147,116). HEVC and
+> H.264 stateless decoding via mpv keep running on hardware with no
+> fallback.
+>=20
+> Fixes: ff8c5622f9f7 ("media: rkvdec: Restore iommu addresses on errors")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+> Tested-by: Francesco Saverio Pavone <pavone.lawyer@gmail.com>
+> Signed-off-by: Francesco Saverio Pavone <pavone.lawyer@gmail.com>
 
-Using your table as input:
+Tested-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 
-  MD5 padded:     "data=3D=3D" -> r_len =3D 24-2 =3D 22, 22 <=3D 22 =E2=9C=93
-  SHA-256 padded: "data=3D"  -> r_len =3D 44-1 =3D 43, 43 <=3D 43 =E2=9C=93
+cheers,
+Nicolas
 
-> Alexandru, may be better just to change size of client_diggest variable
-> to match it with chap_r like for initiatorchg and initiatorchg_binhex?
+> ---
+> Changes in v2:
+> =C2=A0- Add Cc: <stable@vger.kernel.org>; media-CI flagged that the
+> =C2=A0=C2=A0 Fixes: target (ff8c5622f9f7) is present in the 6.17, 6.18, 6=
+.19
+> =C2=A0=C2=A0 and 7.0 stable branches, so the fix should reach them too.
+> =C2=A0=C2=A0 Link to v1:
+> https://lore.kernel.org/all/20260518105413.42147-1-pavone.lawyer@gmail.co=
+m/
+> =C2=A0=C2=A0 Media-CI report:
+> https://linux-media.pages.freedesktop.org/-/users/patchwork/-/jobs/100124=
+849/artifacts/report.htm
+>=20
+> =C2=A0drivers/media/platform/rockchip/rkvdec/rkvdec.c | 5 +++--
+> =C2=A01 file changed, 3 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/media/platform/rockchip/rkvdec/rkvdec.c
+> b/drivers/media/platform/rockchip/rkvdec/rkvdec.c
+> index 6f5f0422d317..bb95b090a25b 100644
+> --- a/drivers/media/platform/rockchip/rkvdec/rkvdec.c
+> +++ b/drivers/media/platform/rockchip/rkvdec/rkvdec.c
+> @@ -2066,12 +2066,13 @@ static void rkvdec_remove(struct platform_device
+> *pdev)
+> =C2=A0
+> =C2=A0	cancel_delayed_work_sync(&rkvdec->watchdog_work);
+> =C2=A0
+> -	rkvdec_v4l2_cleanup(rkvdec);
+> -	pm_runtime_disable(&pdev->dev);
+> =C2=A0	pm_runtime_dont_use_autosuspend(&pdev->dev);
+> =C2=A0
+> =C2=A0	if (rkvdec->empty_domain)
+> =C2=A0		iommu_domain_free(rkvdec->empty_domain);
+> +
+> +	pm_runtime_disable(&pdev->dev);
+> +	rkvdec_v4l2_cleanup(rkvdec);
+> =C2=A0}
+> =C2=A0
+> =C2=A0#ifdef CONFIG_PM
 
-That also prevents the overflow. The length check is preferred for
-consistency with the HEX branch, which validates input length before
-calling the decoder rather than relying on a larger destination buffer.
+--=-9/VsCBjDISjI7Lc8ZtP/
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
 
-Alexandru
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCag5XAgAKCRDZQZRRKWBy
+9NU5APwMFBluL6g6766QU+uMgGgxwYcXppMNPnkJlEEwmSVQ4QD/R4746MdSuHfn
+HqsiVSwonz4lYaPyLE/WF53aDG1G5QU=
+=9djU
+-----END PGP SIGNATURE-----
+
+--=-9/VsCBjDISjI7Lc8ZtP/--
 
