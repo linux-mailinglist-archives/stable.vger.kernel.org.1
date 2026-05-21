@@ -1,158 +1,145 @@
-Return-Path: <stable+bounces-253448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253449-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id COErIgqKDmp0/QUAu9opvQ
-	(envelope-from <stable+bounces-253448-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 06:28:58 +0200
+	id KOLFB+WRDmq8AAYAu9opvQ
+	(envelope-from <stable+bounces-253449-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 07:02:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8B2B59ECF6
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 06:28:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EEAA59EEC6
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 07:02:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DF01C302D111
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 04:28:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EB8003027958
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 05:01:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6232934889F;
-	Thu, 21 May 2026 04:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BC0436CDE9;
+	Thu, 21 May 2026 05:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="j+5JhcKT"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="atBJk9hP"
 X-Original-To: stable@vger.kernel.org
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06DD325DB12
-	for <stable@vger.kernel.org>; Thu, 21 May 2026 04:28:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4503321AA
+	for <stable@vger.kernel.org>; Thu, 21 May 2026 05:01:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779337721; cv=none; b=WR1b3tobXGK7F126if/Icm++bKP/+QhqLiMXjsYdSfr5jEbnCLyjgpkCsLasZCIdUmRoEvprTG1k2mn9zjzzM1CqAEh3d5ut0A33YtowtLx1C427sQ8OujaADNSlvCfekNNPfrdf+pj5JTszsbAaV01Xm5SQx5WrJBxQIoA25j8=
+	t=1779339690; cv=none; b=rRFoeQq2w/M1dis/NRoIUaYSPmlsArS9sdGvGLwqbhXruE53G6k6p/pVQvuSFLtu1rYvP801/hwvWJBsbmUVVD6Iaui6GBhEClKOlf7wU6MRG4hLrAF242UMdYpCOWlTOqEofi/VreARd7e1Ifts9vbTizCRgj20xRu1kQ38Pp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779337721; c=relaxed/simple;
-	bh=1fn8nNIfAciVYywUEDqcLHwnewpkWRfNE2Jm7RnUmr4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oC88lVIE5d1eXNq4FDykugMIkZGo2Hyk3S8wAHmARy1Dtr23fDBw/NPq6xJGUZuqnVCBWItuq9cZdIC5HExa6YV1CSrbM74GAQBj3QWoSl2A9YZEb/nIm2y8xIG+/N8QCHLRN1wtqfhrxgiYHHC92nzGH3dmkS8ggi0AJdKYikk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=j+5JhcKT; arc=none smtp.client-ip=91.218.175.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
-Message-ID: <ffe27d38-5627-4201-ab6f-72656f5188a6@packett.cool>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
-	s=key1; t=1779337707;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l0Mbqj52klJDaYVrqr1HbvDq6wUyKpixCsk5uYYS4F8=;
-	b=j+5JhcKTMjPxoUC95Kz4ElJaqjQUSuzJHi6aj64lHfnS50ZbSIYktmGl372tbEL79RTofN
-	Nh1suA+1ruN6eq8riu6dLM6xdrX04zvx5nNkrTDg1UYWIFfDfDOFfifwWh+f+IWysIzoxT
-	LU/a/OHrOl5+mbuk/yHlVBvvIq0qQB5/0+Wh48+4E3pDjVUQCx7bvx+4mmF5MMFekqlhYX
-	NNFKcFeDjfskZTBH69uO1aG/mzybsdAsxks4vUObfgcU3MjNA0aH73HePwBUm7KaHGR1MK
-	itCFy+IG+gUZYDlj/AP0mj5tqj4nIsOIIk7crQ3O3ZzaCU3IX3V+h2x5Wc4iMA==
-Date: Thu, 21 May 2026 01:28:16 -0300
+	s=arc-20240116; t=1779339690; c=relaxed/simple;
+	bh=iVLb5e1ifsXgBUkhpZ1VHH+Nx2xXMNQ3qtSGYR82lwg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c1LbjGxWG4GQwpisIoMKn+/MEx+5GDEfRlgi+2kz0HHa2ZT0ucTTXztiUpHF0MQvUc3x2sbxc0CHKi3UjkA4L8UIRy/4j/KtpndkO+jt5CgSBO/Nq8gloeQiiow8y3+LToubFVjAOoCuJlZSC9fyNfFvM8gVuqrwx25yC6xFxFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=atBJk9hP; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2ba3e3c4f87so57549085ad.3
+        for <stable@vger.kernel.org>; Wed, 20 May 2026 22:01:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1779339686; x=1779944486; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=BvJuHVv9eiYWj3ZSTMQfkj6w3gQGBBgxZXCsxd2MBno=;
+        b=atBJk9hPCkjE15Fuzo2k62aG/L5W5EjuiRNsxOPYObo3YKqK2qnn9OO+x4GvbP3Qfr
+         3NjBslILg7jHOjLu3FhEM6XHOA+fkHwJUh6MQ4Xyt/Jr8dpPNS2GpdDnK9j+oUmeh3jt
+         QpWUNIJiYA3KwDpX9/+63VI3LBVQii30OSGjs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779339686; x=1779944486;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BvJuHVv9eiYWj3ZSTMQfkj6w3gQGBBgxZXCsxd2MBno=;
+        b=DaOjsJu6kpQHxNaERYHOLTbZ9YWutM849nJGQ+QhXus34OcyG7xEz6nVVzMEXRqHOf
+         CoWN+U4AOvoCYczlm7r4n0/cGC13FR8TDstE08SOPqTTnNRw05Cx3IdrliENzKCGeUCT
+         FicXNB7BOpYHcCBxOruQxRHH6wW50inW+s1Dy3UVt33yOCzmQP+e1vk0S+g2dJKqAZtD
+         DG6Caj7+A4T4BldP8f+ClftCHKIJnTVjG6uP1skvlch2kojsjNGe0Iu/Id57ZOpcaBje
+         QDYFcIzgpaqDqElvEfRq3YdyTx4zwsIrniH5E+J2XFWyzJzLiPz53lBkM6X1Xyzfmzuo
+         U11A==
+X-Forwarded-Encrypted: i=1; AFNElJ+zfxqdbaMMkwa8R0x7AyOG+l22EVJeTUm8YPY+0XUBSP5mP/ebJPkefc+NObFqzJb8SbPjDpE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YypqLkKbJuvz7gWmChT1mdaLtHlRxv7NHLjU8ILWxEZqVEBLtPM
+	I+jck53fubGWLRqud58pOHdeBZxGFXTUyqVVmbTWLjc+4lFFt2sIGSFY4aynJDhmBw==
+X-Gm-Gg: Acq92OGmG8KauOSYq38LeMtAjLKGQ0l0EDfPDsE6q5qQJyEUjvygjAn7IP+FUgad8Wp
+	UXsj7EPKNSfzoz+8Hzbaim62jifwLxfoV5Fa8VXTmlEwddfQy8zABf/Q+HKkPM+/siHjisZ91uk
+	zxoEZ7PQRdpUdUU6FHyYHGm1haXN7jlh6JrtN7SVZJByGeXUccSullafWrewKZlfPvavS16LqXo
+	R21hXygUbxNong1fjBZD4+GpsMwehaFWA4Rjd0UZBQVcBY/UkQI1PqXDTk/1IG8UHtQMfjATA5H
+	KHnViOITi4wItPE4mRJtreSPSKv3xF/6Jpp46U6nRkbN5t53a2hIj2XxWjP6uoo70DCM4bDNMK+
+	6M1zdDaNqN88YdhJYsCxb/6PEE+8aW2djPiyS7+xd2qH+CDbQ/wI+utiU8w/72OXlGlxILiiGHJ
+	ly2ouSHkPE7rU4Om0kYIOhz7pR3aMveoFvlqAyObObXExnjMMF8XSn6+xzzOEVBhw=
+X-Received: by 2002:a17:903:4b30:b0:2bd:646b:2ddc with SMTP id d9443c01a7336-2bea32fa53cmr12402805ad.12.1779339686016;
+        Wed, 20 May 2026 22:01:26 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2031:6:9e89:7571:583c:e885])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5cfe49c9sm242838115ad.49.2026.05.20.22.01.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 May 2026 22:01:25 -0700 (PDT)
+Date: Thu, 21 May 2026 14:01:21 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] usb: typec: ucsi: Check if power role change
+ actually happened before handling
+Message-ID: <ag6LPTDYc3p-hmOV@google.com>
+References: <20260519-ucsi-fix-2-v1-0-6f1239535187@qtmlabs.xyz>
+ <20260519-ucsi-fix-2-v1-1-6f1239535187@qtmlabs.xyz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 3/4] arm64: dts: qcom: x1-dell-thena: mark l12b and
- l15b always-on
-To: Michael Scott <mike.scott@oss.qualcomm.com>, linux-arm-msm@vger.kernel.org
-Cc: vkoul@kernel.org, neil.armstrong@linaro.org,
- dmitry.baryshkov@oss.qualcomm.com, wesley.cheng@oss.qualcomm.com,
- abelvesa@kernel.org, faisal.hassan@oss.qualcomm.com,
- linux-phy@lists.infradead.org, andersson@kernel.org, konradybcio@kernel.org,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- devicetree@vger.kernel.org, bryan.odonoghue@linaro.org,
- laurentiu.tudor1@dell.com, alex.vinarskis@gmail.com,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260521010935.1333494-1-mike.scott@oss.qualcomm.com>
- <20260521010935.1333494-4-mike.scott@oss.qualcomm.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Val Packett <val@packett.cool>
-In-Reply-To: <20260521010935.1333494-4-mike.scott@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260519-ucsi-fix-2-v1-1-6f1239535187@qtmlabs.xyz>
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[packett.cool,quarantine];
-	R_DKIM_ALLOW(-0.20)[packett.cool:s=key1];
+	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253448-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,linaro.org,oss.qualcomm.com,lists.infradead.org,vger.kernel.org,dell.com,gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[chromium.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253449-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[val@packett.cool,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[packett.cool:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable,dt];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,packett.cool:email,packett.cool:mid,packett.cool:dkim]
-X-Rspamd-Queue-Id: E8B2B59ECF6
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[senozhatsky@chromium.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:url,chromium.org:email,chromium.org:dkim,qtmlabs.xyz:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 6EEAA59EEC6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On (26/05/19 18:41), Myrrh Periwinkle wrote:
+> The CrOS EC may send a connector status change event with the power
+> direction changed flag set even if the power direction hasn't actually
+> changed after initiating a SET_PDR command internally [1]. In practice
+> this happens on every system suspend due to other changes performed by
+> the EC [2][3][4], causing suspend to fail.
+> 
+> Fix this by checking if the power role change actually happened before
+> handling it.
+> 
+> [1]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=1689;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
+> [2]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=3923;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
+> [3]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=5094;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
+> [4]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=2229;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 7616f006db07 ("usb: typec: ucsi: Update power_supply on power role change")
+> Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
 
-On 5/20/26 10:09 PM, Michael Scott wrote:
-> The l12b and l15b supplies are used by components that are not (fully)
-> described (and some never will be) and must never be disabled.
->
-> Mark the regulators as always-on to prevent them from being disabled,
-> for example, when consumers probe defer or suspend.
->
-> Note that these supplies currently have no consumers described in
-> mainline for dell-thena beyond the audio codec (vdd-buck/vdd-rxtx/
-> vdd-io on wcd938x), which can release them when the codec goes idle.
-> The board-level gpio-fixed regulators that feed the Type-C retimer's
-> VDDIO and other rails are not described with a vin-supply link, so
-> the kernel cannot keep their parent LDOs alive on its own.
->
-> This mirrors the same change Johan Hovold applied to every other
-> X1E80100 board in a March 2025 series; commit 63169c07d740
-> ("arm64: dts: qcom: x1e80100-dell-xps13-9345: mark l12b and l15b always-on")
-> is representative. The dell-thena board file was introduced four months
-> later and did not inherit that change; this patch closes the gap.
-
-Acked-by: Val Packett <val@packett.cool>
-
-
-Asked a friend who has totally legitimate access to the XPS schematics 
-about what those components are:
-
-L12B: IO_1P2/275mA
-- MOSFETs and pullups on a bunch of I2C, PCIe CLKREQ/WAKE, etc.
-- VDDIO for WSA speakers
-- NVME_PLN_N_1P2 (Power Loss Notification?)
-- bunch of VDD_PX pins on the SoC
-
-
-L15B: IO_1P8/1.09A
-- MOSFETs and pullups on eDP HPD, bunch of I2C, PCIe CLKREQ/WAKE, some 
-INTR#/RESET#, SSD Load Switch, etc.
-- VIN for Load Switch outputting retimer's VDDIO
-- VDD_1P8 for WSA speakers
-- VDDIO for power monitor ICs on IR_I2C
-
-
-Yeahhh.. I think the load switches could potentially be modeled but the 
-huge bunch of random pullups not so much. I wonder how Windows handles 
-this. Maybe it could be in low-power mode when speakers are idle?
-
-~val
-
-
+Reported-and-tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 
