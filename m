@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-253632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253631-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iDmMNJ5gD2ojJwYAu9opvQ
-	(envelope-from <stable+bounces-253632-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 21:44:30 +0200
+	id eKB2EZlgD2ojJwYAu9opvQ
+	(envelope-from <stable+bounces-253631-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 21:44:25 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B57D5AB879
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 21:44:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE7055AB866
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 21:44:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D1ABF3038D06
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 19:44:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0F7AF303A64A
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 19:44:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEAE13FE34B;
-	Thu, 21 May 2026 19:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D243839AC;
+	Thu, 21 May 2026 19:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="WER0l7bH"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Gk/0lcBy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-106119.protonmail.ch (mail-106119.protonmail.ch [79.135.106.119])
+Received: from mail-106121.protonmail.ch (mail-106121.protonmail.ch [79.135.106.121])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652953EC2EB
-	for <stable@vger.kernel.org>; Thu, 21 May 2026 19:44:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.119
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30E63E16B1
+	for <stable@vger.kernel.org>; Thu, 21 May 2026 19:44:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.121
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779392662; cv=none; b=guyA/jkTSR5XM7L3q5AEOFWWz4QEahm7oNmY6HjB7OIRkIx8F/gvmhPI9O/eoFxfF0ycFTxXY45bdfTmWpetcekcmL6N05U30Hf64PilbAjv+WrzaFd4QpQ++7bHxvAfm6L2gGCdP2gKv3W933RLuYWxxWsCHQBp6GKMYFoATUo=
+	t=1779392659; cv=none; b=QOFtkIgdbvOeWi/Eh67OozlF64a7COtkdZ5xu/EXEDQbx6Eh1zNFi1b7d/ZOx33+Es1mpFjK6ypcauJWxvEk+Dvo8zN2Uy+za7K2Fj1Ir9bXcjd1DnVRLanfXPjwTrLUt2pWHkaWtWUo4K+WMAxGK2Rf2PWQJuUGOO2siYB1z3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779392662; c=relaxed/simple;
-	bh=S0zD82UOtyNbYArboFpgOM3W7EIL7Ds9nxaDoT4GrDk=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=G7y8+GZyMd455zbpwCX5GGbVG5IbjkNUP1gwWsNV+UWoajuQ3g3HL+IbPle881N22hGSq7QMEyh28C9MGlZ/f6bnUNilca9b57sB5WNVCUIcUcnL3j+iUodioH4ucF0w1I5p32RHv3EoLZC5PPCX8yAbRInSVUPuG2hYD4bv9E4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=WER0l7bH; arc=none smtp.client-ip=79.135.106.119
+	s=arc-20240116; t=1779392659; c=relaxed/simple;
+	bh=/jVx6DgJWdmFRCpDe1p1tUHTZzQJF37r/8KThwnzvbQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eqeSoX6pBdHfncEfVx2GJDYWxl1qn/k5dkEUvdQJbHGuGmG5trTJZxBMlef0EknM8SrwQgeG3JtIjEv6Sbky8VbQH00BLvkbbPbBV3iVDzk6H2uWxjy3Q3My2IC/jCPUp0Irp+nqjJlLN8uzP0/4lukfVFEx8HtUcI8IMq+/nvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Gk/0lcBy; arc=none smtp.client-ip=79.135.106.121
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=2nedo43tvncnvoqtvrn25i3k4e.protonmail; t=1779392651; x=1779651851;
-	bh=iM7i+o9/Pw51wLNo8UkLfCANA1lvdkwy3KKbApvfauk=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=WER0l7bHQ/6atfj9BHoBIb7SjJOGg1OfRdTS/Cza9pvf2Fa12d1EY9O+B1j0xfg1o
-	 ohfkMpewl/Ur3FwvH4QEBDuu4rK3reicqaALUww9QC9J6x6Dj7H6gNFQMIQPHs7Zii
-	 Q+ergCxqfHSKFUBou/R6IXOgW6xg+396xDHlahLj1y+H/dp2/otS9rjrZQv9cqAvhc
-	 RPiRybMYB4QfgIHy3Rr54LRfrWq+2zXuQHjsmi+LkasZwUow5BwjnZTmEWgFiOBCCe
-	 ExJRdE8n7yuPR4EWS+fjoNZZolSEV2DMNokmp4n74E8VcyZHXrqH8dtJWLIy7mjwgl
-	 Ptz7xNcgOWYtg==
-Date: Thu, 21 May 2026 19:44:05 +0000
+	s=protonmail; t=1779392653; x=1779651853;
+	bh=n4hrv0Ymlp2Uanz+ze7k7ucGfOqgi1atWwF61pMB24U=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=Gk/0lcBy03tsgsY/Q2MNuMd9COM755k8+CcrNqopmsBvyXbMUiqIpSe5xUjUc8x47
+	 HRtRJq7wBZ72p5Gk7OAJwhDt8+/fIIO/4/eQN53LbSguEAHZ6/9/jUt3o5f/ESadCE
+	 bZDKv9msbR6JfhkrEL9dzpOVxOy1D29c4I6b4tvXD2SYgKdGyiwcdA/1ChpgzqV9sq
+	 JkCG5QIWx/JX5w+9ZuFCctoskxXnoSD5zTSBDnJ8ORsv7hbaLM5abgYIwbxm5V2dK6
+	 oeEo3x+6BdUiH0dxGYKuSfOtvKEaHyUWG2L3MeWjQhTdkzfVAucEzzjrXofL/d8eO0
+	 +bX79UhNRI8hQ==
+Date: Thu, 21 May 2026 19:44:08 +0000
 To: linux-rdma@vger.kernel.org
 From: Tymbark7372 <tymbark7372@proton.me>
 Cc: zyjzyj2000@gmail.com, jgg@nvidia.com, leonro@nvidia.com, stable@vger.kernel.org, Tymbark7372 <tymbark7372@proton.me>
-Subject: [PATCH 0/4] RDMA/rxe: Fix u64 iova-overflow family in MR/ODP/RESP/MW paths
-Message-ID: <20260521194402.811-1-tymbark7372@proton.me>
+Subject: [PATCH 1/4] RDMA/rxe: Fix u64 iova+length overflow in mr_check_range
+Message-ID: <20260521194402.811-2-tymbark7372@proton.me>
+In-Reply-To: <20260521194402.811-1-tymbark7372@proton.me>
+References: <20260521194402.811-1-tymbark7372@proton.me>
 Feedback-ID: 184352754:user:proton
-X-Pm-Message-ID: 1feda32e6a092f4983e23dbe1b709f0b96c717e9
+X-Pm-Message-ID: 557a0e50bb990c1a0c06b03a9bd96850fae6fa84
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,13 +69,13 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[proton.me,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[proton.me:s=2nedo43tvncnvoqtvrn25i3k4e.protonmail];
+	R_DKIM_ALLOW(-0.20)[proton.me:s=protonmail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FREEMAIL_CC(0.00)[gmail.com,nvidia.com,vger.kernel.org,proton.me];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253632-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253631-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[3];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -86,98 +90,79 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[proton.me:mid,proton.me:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 8B57D5AB879
+	DBL_BLOCKED_OPENRESOLVER(0.00)[proton.me:email,proton.me:mid,proton.me:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: BE7055AB866
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-This patchset fixes a family of u64 overflow bugs in the rxe Soft-RoCE
-driver.  All four sites share one root cause: addition of an
-attacker-influenced iova/addr (u64) with an attacker-influenced
-length/resid (size_t/u32/int promoted to u64), without overflow
-check, leading to an OOB read/write primitive in the rxe responder
-workqueue.
+In mr_check_range(), the IB_MR_TYPE_USER and IB_MR_TYPE_MEM_REG case
+computes both iova + length and mr->ibmr.iova + mr->ibmr.length without
+overflow check.  Both iova (u64) and length (size_t) are 64-bit on
+64-bit platforms.  An attacker setting iova =3D 0xFFFFFFFFFFFFFC00 and
+length =3D 0x400 wraps the sum to 0, so the bound check
+"iova + length > mr->ibmr.iova + mr->ibmr.length" passes.
 
-I originally reported these to security@kernel.org.  Jason Gunthorpe
-confirmed that rxe and siw are development-only drivers without
-embargo handling and asked me to send patches publicly, so I'm
-posting here per his direction.  security@kernel.org is intentionally
-not in Cc per Jason's instruction.
+After the bypass, rxe_mr_iova_to_index() computes a huge index value;
+WARN_ON(idx >=3D mr->nbuf) fires but does not abort, and
+rxe_mr_copy_xarray() then dereferences page_info[huge_idx], an
+attacker-controlled out-of-bounds slot.  In the RXE_TO_MR_OBJ
+direction this becomes an OOB write of attacker payload bytes through
+info->page + info->offset.
 
-This is a resend of the patches I sent earlier today as attachments.
-Zhu Yanjun pointed out attachments aren't the convention and asked
-for inline format via git send-email.
+Use check_add_overflow() on both ends to reject any iova/length pair
+that wraps.  Also explicitly scope the local declarations introduced
+by the helper variables.
 
-Patches:
+Reachable from any unprivileged local process with
+/dev/infiniband/uverbs0 open (world-rw on distros that ship the
+rdma-core udev rules) and from an unauthenticated remote peer over
+UDP/4791 (RoCEv2) when the target rkey/QPN are known.  Reproduced on
+v7.1.0-rc3 + KASAN with a single ibv_post_send(IBV_WR_RDMA_WRITE) and
+the wrap iova above; the kernel oopses in rxe_mr_copy+0x20d after
+WARN at rxe_mr_iova_to_index+0x135.
 
-  1/4: rxe_mr.c mr_check_range
-       The USER/MEM_REG case computes iova + length and compares to
-       mr->ibmr.iova + mr->ibmr.length.  Both additions wrap in u64.
-       Use check_add_overflow() for both ends.
+Site A in rxe_resp.c (check_rkey()) reaches mr_check_range() with
+attacker iova as well, so this patch also closes that path; Site B
+(duplicate_request, also in rxe_resp.c) has an independent inline
+check that wraps and is fixed in patch 3 of this series.
 
-  2/4: rxe_odp.c rxe_check_pagefault
-       Loop condition addr < iova + length wraps when iova is near
-       U64_MAX and length is positive.  Compute iova_end with
-       check_add_overflow() once and use it in the loop condition.
+Fixes: 8700e3e7c485 ("Soft RoCE driver")
+Cc: stable@vger.kernel.org # v4.8+
+Reported-by: Tymbark7372 <tymbark7372@proton.me>
+Signed-off-by: Tymbark7372 <tymbark7372@proton.me>
+Assisted-by: Claude:claude-opus-4-7
+---
+ drivers/infiniband/sw/rxe/rxe_mr.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-  3/4: rxe_resp.c duplicate_request
-       Third clause iova + resid > res->read.va_org + res->read.length
-       has u64 wrap on both sides.  Use check_add_overflow() for both
-       ends.  (Site A in check_rkey, also in rxe_resp.c, calls into
-       mr_check_range and is closed by patch 1.)
+diff --git a/drivers/infiniband/sw/rxe/rxe_mr.c b/drivers/infiniband/sw/rxe=
+/rxe_mr.c
+--- a/drivers/infiniband/sw/rxe/rxe_mr.c
++++ b/drivers/infiniband/sw/rxe/rxe_mr.c
+@@ -30,13 +30,19 @@ int mr_check_range(struct rxe_mr *mr, u64 iova, size_t =
+length)
+ =09=09return 0;
 
-  4/4: rxe_mw.c rxe_check_bind_mw
-       Same wrap class as patch 1.  Found by sibling-site grep; not on
-       the OOB-write path of the three primary bugs but a
-       structurally-identical u64 wrap that would let an attacker bind
-       a memory window outside its parent MR's range.
+ =09case IB_MR_TYPE_USER:
+-=09case IB_MR_TYPE_MEM_REG:
+-=09=09if (iova < mr->ibmr.iova ||
+-=09=09    iova + length > mr->ibmr.iova + mr->ibmr.length) {
++=09case IB_MR_TYPE_MEM_REG: {
++=09=09u64 iova_end, mr_end;
++
++=09=09if (check_add_overflow(iova, length, &iova_end) ||
++=09=09    check_add_overflow(mr->ibmr.iova, mr->ibmr.length,
++=09=09=09=09       &mr_end) ||
++=09=09    iova < mr->ibmr.iova ||
++=09=09    iova_end > mr_end) {
+ =09=09=09rxe_dbg_mr(mr, "iova/length out of range\n");
+ =09=09=09return -EINVAL;
+ =09=09}
+ =09=09return 0;
++=09}
 
-Verification:
-
-Each of the three primary sibling triggers (patches 1, 2, 3) has been
-exercised on v7.1.0-rc3 + KASAN in QEMU as the OOB-write case.
-Patches 1 and 3 produce a single-page-fault Oops in rxe_mr_copy after
-the wrap.  Patch 2 produces a single-page-fault Oops in
-rxe_odp_mr_copy.  All three are triggered by a single ibv_post_send
-from an unprivileged local user with /dev/infiniband/uverbs0 open.
-A working LPE exploit demonstrated end-to-end privilege escalation
-via the rxe_odp path under the verification config (KASAN dev-build,
-selinux=3D0, nokaslr).  Full PoC and writeup were attached to the
-original security@kernel.org submission.
-
-After applying all four patches, the same triggers no longer fire;
-the wrap checks correctly reject the attacker iova.  Re-tested in the
-same QEMU+KASAN configuration.
-
-The trigger PoCs are simple libibverbs programs (one per sibling)
-that I am happy to provide on request.
-
-Fixes / stable:
-
-  1/4: Fixes 8700e3e7c485 ("Soft RoCE driver"), v4.8+
-  2/4: Fixes 2fae67ab63db ("RDMA/rxe: Add support for Send/Recv/Write/Read =
-with ODP"), v6.15+
-  3/4: Fixes 8700e3e7c485 ("Soft RoCE driver"), v4.8+
-  4/4: Fixes 8700e3e7c485 ("Soft RoCE driver"), v4.8+
-
-Pre-f04d5b3d916c LTS branches carry the older wrap form
-  iova > mr->ibmr.iova + mr->ibmr.length - length
-instead of the current `iova + length > ...` shape.  Patches 1, 3, 4
-will need a backport variant for those branches; I can provide on
-request.
-
-Tymbark7372 (4):
-  RDMA/rxe: Fix u64 iova+length overflow in mr_check_range
-  RDMA/rxe: Fix u64 iova+length overflow in rxe_check_pagefault
-  RDMA/rxe: Fix u64 iova+resid overflow in duplicate_request
-  RDMA/rxe: Fix u64 addr+length overflow in rxe_check_bind_mw
-
- drivers/infiniband/sw/rxe/rxe_mr.c   | 12 +++++++++---
- drivers/infiniband/sw/rxe/rxe_odp.c  | 10 ++++++++--
- drivers/infiniband/sw/rxe/rxe_resp.c | 11 ++++++++---
- drivers/infiniband/sw/rxe/rxe_mw.c   | 11 ++++++++---
- 4 files changed, 33 insertions(+), 11 deletions(-)
-
+ =09default:
+ =09=09rxe_dbg_mr(mr, "mr type not supported\n");
 --
 2.43.0
 
