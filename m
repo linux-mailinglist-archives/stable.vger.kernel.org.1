@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-253588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253589-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CLGHFBMpD2paHQYAu9opvQ
-	(envelope-from <stable+bounces-253588-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 17:47:31 +0200
+	id aCbaFHc4D2qIHwYAu9opvQ
+	(envelope-from <stable+bounces-253589-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 18:53:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id F18E95A89DA
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 17:47:30 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 518795A9A8C
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 18:53:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D2BC530B1B59
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 14:55:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A5A633355B05
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 14:55:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2F6D3368AA;
-	Thu, 21 May 2026 14:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7084025B0A0;
+	Thu, 21 May 2026 14:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dIv9h6d6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QSytyQjD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29BED33A9CB
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B6233A708
 	for <stable@vger.kernel.org>; Thu, 21 May 2026 14:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779375135; cv=none; b=sssaF8HEZvwL/qWE2h2EN+4e48Rf5WMbQhKcDLYRnl/Pq8EopHRBeH/AsFadzZh80dzpevELcA93TNR1k1/oirzi2rs1djvFW0/3n4eJ+OEWQzqGjDEj59NFdP+o22Zm8RyauP9OAHjLoG2JuBgIdArrV7Decv1/Cs+6jQZMPfk=
+	t=1779375136; cv=none; b=SkyJ17BpLnaCD/sWdiTQL+2BWXohnUjNZzu8T327RlFlQ7EIhNu/xsgONyP7h15tSqy50CjyqkUG1Dd03dMaQRxfwx58oB8pmHkeOwk2OXpqlGq7rZppLfc8GL+7ah8LKyQfp7NLA1KjgdL8yCeHp6cFzZeJ00pTvoD8MMrufP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779375135; c=relaxed/simple;
-	bh=g5MB9b9V64F2MzPGAoOP3hNO7TQQDB6DNrn8hpPw8LM=;
+	s=arc-20240116; t=1779375136; c=relaxed/simple;
+	bh=pZUlxb97jxLUErfJJvlpP4ZEoq304nxzgDkQ+rKjT/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YdnrvA7Bo8Oj6FHlPf+FDiobBJ7F2P7X4Q1B5Egyl7v/NkM0YK0+cFAhmjeYGD9S2aK1aVN6HEoHG+uu6ko7ISvmnvHjxvgJg/ybpXCYAs2dJJ6HzSIxtChUEnYqXHF/4vWOe4tVSXNSTgbJz43WM4vO0GGHOu5mwIkkAaTIFeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dIv9h6d6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 662851F000E9;
-	Thu, 21 May 2026 14:52:13 +0000 (UTC)
+	 MIME-Version; b=rwcMJ8ShlMzn1j3pq0m77+4VIEeMdZZyq8lSi6kX1vdJm6rBVEhVgAZDWE0kEUSvsm2dMXVZqueXiC8gUF6zqDB92bCY7EwBNjoXyNxSZclZCalPEOCdyaORSTprcZmCbvUdGuh2JHJrBd9VmfEXQdcatxDoiUJzNY/1Goi0QMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QSytyQjD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 514801F00A3D;
+	Thu, 21 May 2026 14:52:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1779375134;
-	bh=eQDMPm8APc71Ypyx5iwusVkGKrZg1WV6xqZ/TDWzEws=;
+	bh=javepyaLx8zADndMYOPh4V8vNOaRySKDLZukay1UIzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dIv9h6d6kmkbjEistJziUlvwNVMvkt2kDWxgud0bzTBN26XVUXr6EYVD6TPW/mRKu
-	 c0YVEq8BjywNlOySCWW316pJQJVpxrMoyU1P3IAI7oZTrYtS3ZtJcogRLMbqZc2ZCv
-	 9dth6QGd1SIir1cmAahvPIHPfzKWg7ZYUBhI1uXO/C5VRKAqbwgjIqUNf9koN3xZtn
-	 GM3tQMs4Jmm5XabE8luLhEsXvlftudtYJUs7vqwBPdnFZqSIGJa22UAOlA38s155Uw
-	 O4ISwUPMQWUguWSHyPNgVqvWvcUnzMl/dKUtJqSNUm+w39R39I7pj5OgYbEi3sfd4R
-	 3EIF7RTENx8BA==
+	b=QSytyQjDOSNsD1i99WO9lOVZcEj+lqK74qxDC3uyPBNDZBS3142GazX18E6COw8Bk
+	 YRdlxrFt9jm8+NkSZ0rc1AEZdi9GsvQ6LLpKlu9SNmDWzs+Q/WE/XGGvLLLyGTt6ms
+	 nPr6mhD2aGSqt/ye/jhQ/EwG/e/UJg9chx6tz9R/zrFfyAcVFJ8+LSNC1on84TeWrZ
+	 1lsSIoTtjX3fyAQkoXQL8ZJBuG+NNasxuUVi2JzNaifuapY25NPlWEYVQp9ST17Zk6
+	 D7CjLWpZnepDIPyzyxfkGKFji7xaorv3q9i3AiSMs3qtXWvzrlogBwgwdSOuulbeEI
+	 m/NgaVyCx0aKA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Samuele Mariotti <smariotti@disroot.org>,
-	Paolo Valente <paolo.valente@unimore.it>,
-	Andrea Righi <arighi@nvidia.com>,
-	Tejun Heo <tj@kernel.org>,
+Cc: Tejun Heo <tj@kernel.org>,
+	Sashiko <sashiko-bot@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 1/2] sched_ext: Fix missing warning in scx_set_task_state() default case
-Date: Thu, 21 May 2026 10:52:10 -0400
-Message-ID: <20260521145211.1316611-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y 2/2] sched_ext: Avoid UAF in scx_root_enable_workfn() init failure path
+Date: Thu, 21 May 2026 10:52:11 -0400
+Message-ID: <20260521145211.1316611-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026051527-snort-dawn-9645@gregkh>
+In-Reply-To: <20260521145211.1316611-1-sashal@kernel.org>
 References: <2026051527-snort-dawn-9645@gregkh>
+ <20260521145211.1316611-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,19 +68,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253588-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253589-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -89,61 +88,49 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,unimore.it:email]
-X-Rspamd-Queue-Id: F18E95A89DA
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 518795A9A8C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Samuele Mariotti <smariotti@disroot.org>
+From: Tejun Heo <tj@kernel.org>
 
-[ Upstream commit b905ee77d5f557a83a485b4146210f54f13365fc ]
+[ Upstream commit 9a415cc53711f2238e0f0ca8a6bcc796c003b127 ]
 
-In scx_set_task_state(), the default case was setting the
-warn flag, but then returning immediately. This is problematic
-because the only purpose of the warn flag is to trigger
-WARN_ONCE, but the early return prevented it from ever firing,
-leaving invalid task states undetected and untraced.
+In scx_root_enable_workfn(), put_task_struct(p) is called before scx_error()
+dereferences p->comm and p->pid. If the iterator's reference is the last
+drop, the task is freed synchronously and the deref becomes a UAF.
 
-To fix this, a WARN_ONCE call is now added directly in the
-default case.
+Move put_task_struct() past scx_error().
 
-The fix addresses two aspects:
-
- - Guarantees the invalid task states are properly logged
-   and traced.
-
- - Provides a distinct warning message
-   ("sched_ext: Invalid task state") specifically for
-   states outside the defined scx_task_state enum values,
-   making it easier to distinguish from other transition
-   warnings.
-
-This ensures proper detection and reporting of invalid states.
-
-Signed-off-by: Samuele Mariotti <smariotti@disroot.org>
-Signed-off-by: Paolo Valente <paolo.valente@unimore.it>
-Reviewed-by: Andrea Righi <arighi@nvidia.com>
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://lore.kernel.org/all/20260511214031.AF5E9C2BCB0@smtp.kernel.org/
+Fixes: f0e1a0643a59 ("sched_ext: Implement BPF extensible scheduler class")
+Cc: stable@vger.kernel.org # v6.12+
 Signed-off-by: Tejun Heo <tj@kernel.org>
-Stable-dep-of: 9a415cc53711 ("sched_ext: Avoid UAF in scx_root_enable_workfn() init failure path")
+[ adapted fix to pre-refactor scx_ops_enable_workfn() with scx_task_iter_relock() instead of upstream scx_root_enable_workfn() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/ext.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/sched/ext.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
-index 25df16aed142a..e55e0db83400f 100644
+index e55e0db83400f..1b66cca7b5fce 100644
 --- a/kernel/sched/ext.c
 +++ b/kernel/sched/ext.c
-@@ -3637,7 +3637,8 @@ static void scx_set_task_state(struct task_struct *p, enum scx_task_state state)
- 		warn = prev_state != SCX_TASK_READY;
- 		break;
- 	default:
--		warn = true;
-+		WARN_ONCE(1, "sched_ext: Invalid task state %d -> %d for %s[%d]",
-+			  prev_state, state, p->comm, p->pid);
- 		return;
- 	}
+@@ -5406,11 +5406,11 @@ static void scx_ops_enable_workfn(struct kthread_work *work)
+ 
+ 		ret = scx_ops_init_task(p, task_group(p), false);
+ 		if (ret) {
+-			put_task_struct(p);
+ 			scx_task_iter_relock(&sti);
+ 			scx_task_iter_stop(&sti);
+ 			scx_ops_error("ops.init_task() failed (%d) for %s[%d]",
+ 				      ret, p->comm, p->pid);
++			put_task_struct(p);
+ 			goto err_disable_unlock_all;
+ 		}
  
 -- 
 2.53.0
