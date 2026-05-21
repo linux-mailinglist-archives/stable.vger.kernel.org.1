@@ -1,164 +1,172 @@
-Return-Path: <stable+bounces-253647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253648-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SLPnK92cD2rBNwYAu9opvQ
-	(envelope-from <stable+bounces-253647-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 02:01:33 +0200
+	id mCLxF/+cD2rBNwYAu9opvQ
+	(envelope-from <stable+bounces-253648-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 02:02:07 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FEAF5AD312
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 02:01:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A95345AD325
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 02:02:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C26593037885
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 23:52:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 74450302B74C
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 23:55:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B9733A453B;
-	Thu, 21 May 2026 23:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 687B13AEB38;
+	Thu, 21 May 2026 23:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="vFMWU/Tq"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Bxn9gjTR"
 X-Original-To: stable@vger.kernel.org
-Received: from omta40.uswest2.a.cloudfilter.net (omta40.uswest2.a.cloudfilter.net [35.89.44.39])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA34739EF1C
-	for <stable@vger.kernel.org>; Thu, 21 May 2026 23:52:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056553AE1B1;
+	Thu, 21 May 2026 23:55:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779407532; cv=none; b=oPpxUj/ux9XElL7E8dQEZLft0owlsf0vcBvYpfE+2J2sOzJLGG8EfSIiCu9yT0Ne2Bumxbeb/8P+mguyLj0+Jt0c3iiW3A5luyhSWGrrmaKe0zRNWFNkCUjAf67EAbVEj7JYYkDjlZUEYqw20NPiFA6CEAk7CjRokcR4a4Ihef8=
+	t=1779407740; cv=none; b=qkBALQDl0VkZh66dfkJavZrSc1c2mXCSg3rn6ws/fr34HesWsvemXms8Pkk+LqKJXozvBu7qLpKk2/1CgKz94krm7fmpKKH3M1bZY4r8djn3cDYZdbBLfr4pXuB3QS09k2rN1Y2cPd7QdgXfI9VyEoHFZ7ItrANI+p8lF3Ehx/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779407532; c=relaxed/simple;
-	bh=5ORcsWI+/o59l2MeWQuQT+6CSuAIRccqf8+EhkqYgrM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Hpa6hJFf7nXiRO6WLoEhuolvkeLSdgt0uTBnAj68bWfAODWe/kOyJDH71RmTPjeOH50Fd0NuDb5sEPuTYzKii0qf60GwvaDrcs37ehZkPnIdkfnpTmUEecAkC61n6JAUO9GueDaExMc/tpwIwUMXpApfrq4Dy1zkRA12sE4ZzUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=vFMWU/Tq; arc=none smtp.client-ip=35.89.44.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-5004b.ext.cloudfilter.net ([10.0.29.208])
-	by cmsmtp with ESMTPS
-	id Q2yiwPRfQjgweQDBEwhI6n; Thu, 21 May 2026 23:51:56 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id QDBDwFtT5nfJUQDBDwAHWw; Thu, 21 May 2026 23:51:55 +0000
-X-Authority-Analysis: v=2.4 cv=KajSsRYD c=1 sm=1 tr=0 ts=6a0f9a9b
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=D5Foq0rKzPGK6zS8BC8A:9 a=QEXdDO2ut3YA:10 a=L5EjiQpGQaFGZdqT14z7:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=/VmwogYc8DQ9QSp5NC0pd4a7yFKP3ImNYVPoNre9uhM=; b=vFMWU/Tqf49bT+71vaJ3wTagSP
-	91sDAG4KQ6nFYOEsC1Wt9C8T3GiPpb9vYOuOAB61+wc58XWAoNPOjBV3/GNriG2YWJyVJeUBjYL0G
-	iwoa5LcOJKGawPBBxpDhw5BBNb2VI+SBKbE9i0crgdnyp+RvlJ8Fh7yu5w1dNRah8+ocgZi2bSMPq
-	h5QT2HvdHn35zjsStwuw1kNsOz90hcl5FN9hopQYZNnJ0HGBtFvHixoOn1gHoGRZgsMydyUW8RRq8
-	azM+CzOAmPeCgYHdL2mxgZ2pTlvWAgM/aiRdKNqnqogGms1NYNpuX9ngpKFmPZmO9dXT+WB93PKpD
-	pL0fhqCg==;
-Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:54898 helo=[10.0.1.180])
-	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.99.2)
-	(envelope-from <re@w6rz.net>)
-	id 1wQDBC-00000001xo3-28mN;
-	Thu, 21 May 2026 17:51:54 -0600
-Message-ID: <a605b3c6-99e9-4cef-b93a-ad4d272ba809@w6rz.net>
-Date: Thu, 21 May 2026 16:51:52 -0700
+	s=arc-20240116; t=1779407740; c=relaxed/simple;
+	bh=dhyUXiB2ZhDq63IpjY62aARgjqWSY8Me0llVup90P4s=;
+	h=Date:To:From:Subject:Message-Id; b=F6ay0c8eU28ggRmmO8Xwche2jH+HPQrAYb7pUY+ch9ZL0dlN0c4fcvPj6Jhz0RSOsYSvxFM7UaEIlcL9rzQYkofFSeJIQ9xaC5ByJ1S2JmLWURNhTuo+KQFGbCPMzNuFIPOvPxmaihkSx0VlwPdCwod3sSq74yVTGvCcW+GErHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Bxn9gjTR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1909C1F000E9;
+	Thu, 21 May 2026 23:55:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1779407733;
+	bh=u4oR8z/pfRd47RpMQjTQ/Koe578zCVBqyZlw8FktE/s=;
+	h=Date:To:From:Subject;
+	b=Bxn9gjTROjyW/KmbDUuF45JmuCw9GpgEvab5mHg6CO9BlMmfEochJ35Na2FItDoOf
+	 kXUTOBRTGV4pKdcj965bmvT6hiJ/36H52HJhOoqLqs+Uh6ytLQhGNwjvpurlctW99v
+	 L7rGhDm2rDK1ZQotS4J9F0HpZ4aYfjI/YhjWlfZA=
+Date: Thu, 21 May 2026 16:55:32 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,roman.gushchin@linux.dev,muchun.song@linux.dev,mhocko@kernel.org,harry@kernel.org,hannes@cmpxchg.org,shakeel.butt@linux.dev,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + memcg-use-round-robin-victim-selection-in-refill_stock.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260521235533.1909C1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 000/666] 6.12.91-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260520162111.222830634@linuxfoundation.org>
-Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20260520162111.222830634@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.162.206.103
-X-Source-L: No
-X-Exim-ID: 1wQDBC-00000001xo3-28mN
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net ([10.0.1.180]) [73.162.206.103]:54898
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 19
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfDLGNmuaAf4FVDLSCFBeMBjmO35Aga7RRyTLXIoIx8qpu95Qnmokr9SbEZHqVMaX0hv4Rh1yUo/RgsX3EIv3OduXlUKRV8WqzODH8dYsR/ZTxnTcMjqn
- MMwViiL1W2rJ6yfvtLI7Y+WQeWQoyvCF6ij4C4jQ50t8NgEvVrVb8PSKsDjSsvm8T9QJWBjhn3hFpQ==
-X-Spamd-Result: default: False [1.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	R_DKIM_REJECT(1.00)[w6rz.net:s=default];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253647-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[w6rz.net];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	HAS_X_SOURCE(0.00)[];
-	HAS_X_ANTIABUSE(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[re@w6rz.net,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[w6rz.net:-];
-	NEURAL_HAM(-0.00)[-0.977];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	TAGGED_FROM(0.00)[bounces-253648-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[linux-foundation.org];
+	MISSING_XM_UA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,w6rz.net:mid]
-X-Rspamd-Queue-Id: 0FEAF5AD312
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux-foundation.org:email,linux-foundation.org:dkim,linux.dev:email]
+X-Rspamd-Queue-Id: A95345AD325
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 5/20/26 09:13, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.91 release.
-> There are 666 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 22 May 2026 16:20:16 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.91-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
-The build fails on RISC-V RV64. Reverting commit "
-bpf, riscv: Remove redundant bpf_flush_icache() after pack allocator finalize
-" commit id fcbec4603139755942d21547774a6b6b390368f3 resolves the issue.
+
+The patch titled
+     Subject: memcg: use round-robin victim selection in refill_stock
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     memcg-use-round-robin-victim-selection-in-refill_stock.patch
+
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/memcg-use-round-robin-victim-selection-in-refill_stock.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Shakeel Butt <shakeel.butt@linux.dev>
+Subject: memcg: use round-robin victim selection in refill_stock
+Date: Thu, 21 May 2026 15:37:51 -0700
+
+Harry Yoo reported that get_random_u32_below() is not safe to call in the
+nmi context and memcg charge draining can happen in nmi context.
+
+More specifically get_random_u32_below() is neither reentrant- nor
+NMI-safe: it acquires a per-cpu local_lock via local_lock_irqsave() on the
+batched_entropy_u32 state.  An NMI that lands on a CPU mid-update of the
+ChaCha batch state and recurses into the random subsystem would corrupt
+that state.  The memcg_stock local_trylock prevents re-entry on the percpu
+stock itself, but cannot protect an unrelated subsystem's per-cpu lock.
+
+Replace the random pick with a per-cpu round-robin counter stored in
+memcg_stock_pcp and serialized by the same local_trylock that already
+guards cached[] and nr_pages[].  No atomics, no random calls, no extra
+locks needed.
+
+Link: https://lore.kernel.org/20260521223751.3794625-1-shakeel.butt@linux.dev
+Fixes: f735eebe55f8f ("memcg: multi-memcg percpu charge cache")
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+Reported-by: Harry Yoo <harry@kernel.org>
+Closes: https://lore.kernel.org/4e20f643-6983-4b6e-b12d-c6c4eb20ae0c@kernel.org/
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/memcontrol.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+--- a/mm/memcontrol.c~memcg-use-round-robin-victim-selection-in-refill_stock
++++ a/mm/memcontrol.c
+@@ -2031,6 +2031,7 @@ struct memcg_stock_pcp {
+ 
+ 	struct work_struct work;
+ 	unsigned long flags;
++	uint8_t drain_idx;
+ };
+ 
+ static DEFINE_PER_CPU_ALIGNED(struct memcg_stock_pcp, memcg_stock) = {
+@@ -2214,7 +2215,9 @@ static void refill_stock(struct mem_cgro
+ 	if (!success) {
+ 		i = empty_slot;
+ 		if (i == -1) {
+-			i = get_random_u32_below(NR_MEMCG_STOCK);
++			i = stock->drain_idx++;
++			if (stock->drain_idx == NR_MEMCG_STOCK)
++				stock->drain_idx = 0;
+ 			drain_stock(stock, i);
+ 		}
+ 		css_get(&memcg->css);
+_
+
+Patches currently in -mm which might be from shakeel.butt@linux.dev are
+
+memcg-cache-obj_stock-by-memcg-not-by-objcg-pointer.patch
+memcg-use-round-robin-victim-selection-in-refill_stock.patch
+
 
