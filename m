@@ -1,175 +1,200 @@
-Return-Path: <stable+bounces-253595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253596-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aONNB1UpD2paHQYAu9opvQ
-	(envelope-from <stable+bounces-253595-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 17:48:37 +0200
+	id QKt7NM0uD2r+HQYAu9opvQ
+	(envelope-from <stable+bounces-253596-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 18:11:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5F7F5A8A01
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 17:48:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FB8E5A8F73
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 18:11:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9667630327E3
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 15:08:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 42CA2306AB7B
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 15:11:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FB342EA173;
-	Thu, 21 May 2026 15:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73DA431283E;
+	Thu, 21 May 2026 15:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YoALMLLa"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BTZBQTa8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E9123BCEE;
-	Thu, 21 May 2026 15:08:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779376111; cv=none; b=WEXtWcWOcabrQUcqv95QsyvI4gs3nyc3DwLkds+DwhzK+czxOKHy5xQuPEXGs7oo4W/91cmVGs3YOrvCDkbLD4VIHRIYO7j3+Udr7IkBkRGMuFCUVSRbfaiw9OVSFhZqt4Rg7TIoCsdiLRCHS2luV/XWWHtFg8S85+NXZI+lvH0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779376111; c=relaxed/simple;
-	bh=jb34L8VcwgEauQgJyCRvP26vEIKsWar8YNnCNAzos48=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XmU7iYQZ1FTYqj0pUjgFoh3zdsCJRqb6Ut3rpN6jRENob90buoeMGFaJo6B7+40CT0XAkmIgNv+OU/nePiUIccqeWitFkbegssTXk6m39CZZA5SktgWchxHBP7ZSHctFnd2e5pC4QAqjVO4PnlWrS6FhUr/0emwtEfSQ9gKJ/FY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YoALMLLa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B7D31F000E9;
-	Thu, 21 May 2026 15:08:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779376109;
-	bh=wsI2JSu5ZVhkCKTuqMWxdeMbkee5Xrcr6HitnmGytsQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YoALMLLayXF0ALUJvhkhFGoFdVzju9pBQKZMMfkOBY48EHv/+PMq+wOzBeBqkMvC0
-	 jEGDLzN8o0T7QQ3GUJMV4ikUHeahRD4XwiXH92JXVwOjph81ijCfSWUwgcg3cvsKyK
-	 Y2geeg1mQ6qS6kum/uKa3560VFHIx7G0blOOAX7SK1NowOLYgaVbTZyrjRF2k7PzkW
-	 B7EypWUyjFPpZt78Ef8xaKU+2f/XK+YqCeThLk6NoFXjUIFakoLvcIkSssGZL67w5W
-	 ix6zomjqCftYvNKIywzx+6rQbCy+KEhxLYNot1coSDpeC/lvV+7GqgrU2TE3070n5i
-	 A9qkc1KqCRB7Q==
-From: Jakub Kicinski <kuba@kernel.org>
-To: nihaal@cse.iitm.ac.in
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	loic.poulain@oss.qualcomm.com,
-	ryazanov.s.a@gmail.com,
-	johannes@sipsolutions.net,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] net: wwan: iosm: fix potential use after free in ipc_imem_cleanup()
-Date: Thu, 21 May 2026 08:08:28 -0700
-Message-ID: <20260521150828.851544-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260519064028.60992-1-nihaal@cse.iitm.ac.in>
-References: <20260519064028.60992-1-nihaal@cse.iitm.ac.in>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFEF13043B2
+	for <stable@vger.kernel.org>; Thu, 21 May 2026 15:11:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779376264; cv=pass; b=Wh6uFQ8OYeVXmbOKp/AmoAs7wm4uz8pZsMMtYYZbzWTHVWopI0RG1tkpdUQI7JTukloocy+zlpXTk9KWwx6UtgSrgxzBXxWW0zXljUeXyBB1M5KUxGXtOlYvGtWxLfs4f62hM/HuBIcGiA2mITVIn4La+wG7ZcpVMcKhAuogs/I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779376264; c=relaxed/simple;
+	bh=ILfPKmm6WIP8+pTKfALGk8orSX2OR5gYrWIIqKa6xG8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nFdSUDmIKimxmYxoE3l36w+ywXxQdbGTc9pedKxqLvTtjkQL8WA5Z7X9cPuZedxO0zCfxSdxrKEpXN2IEiOrf9coVyFW2tNQmnQ0t02/R6m0hbM4x16cW5HTdq8XRcCKE7iq0unmzMliyIKAo1wptOQRiwrsZA/xIc6EPIXYor8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BTZBQTa8; arc=pass smtp.client-ip=74.125.82.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-2c156c4a9efso8820370eec.1
+        for <stable@vger.kernel.org>; Thu, 21 May 2026 08:11:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779376262; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Tc/VMi2aBKHy2HcWzIiLoKsVaJnsePI+p8tze6zILB51rod2/vHTnBtf0pmYNAV+yh
+         XjKCkSiCtcRXUK+Cjaesko581OV3UbO+Y7dbRxrV3ZPk7J05xpvdJUk1L5UF1J5V3B24
+         cvVoBTDBcUgJXY76H/fkcQhEEj0cE6y+OxJcRiyUYdXSKQe4LEEJQHhn6/RC9DTvgWxM
+         3NOGUwojlYuO/S24v7MI7CtiAegE9hgSmni7F2oV+kKnwXCo/qPNv0tKZ/zdb2E4bZUa
+         0LjXlLf8TqCr+9QCO+Pr2tT050kR9FFU/s/R5KO6ixgFnbIavHIr5DTYmvUpw+fLxC3k
+         RE7g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=/zKjoIM90nBhcCHwQGZzjnKjYO07HjblWjtUDxE6Lnw=;
+        fh=jXPLrAGSwxP6MLXwXr7aVZQ/hwIpeRp3ERhKIN8FGh4=;
+        b=VJt3jYKQPz4XHz8eb2p5mH51zkIdpdyyFRZt+7bQeebyDYQhHRrB+U9IOfgbjmSplo
+         2z/R/9NGaEEWZW9xC1aIqWo+0A/Sjkwq1n5Usfn11349//PbDtdMom8GnnBAn+tbkHg+
+         F0RA7KAbijpJXq6sxO70AoAj3VUCFxmvrOuDOefs8ADfHjTrHoyOvSw6+b+pGRSLCXuy
+         fTmGYcK82wCURLWaQknqS4EglPo7EpNrrne4Fo0LtHGQ7/oEBAlZmQhVYQINl5NtZRUJ
+         iDfGoLr94iKjDk1bQM9CkkdFY4xy8lBmrn0vNiy6m9Vz0t/EthxbDnYbY0nQ3TqxklrC
+         GIdQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779376262; x=1779981062; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=/zKjoIM90nBhcCHwQGZzjnKjYO07HjblWjtUDxE6Lnw=;
+        b=BTZBQTa8De88wQAXrxTIk4INGe85Az9ZvybgZdud7cOtr/j0BgIj76D9Lu+f7VslLk
+         VL23FdfNzqse5Fh/Bh7OAg4u3rjwbNlLRwtM30BuGQVQeZYHCPo2lyCuAihpt2zGODT/
+         4qnh8iQa5vk+/BuV9jEQFsKVSYwcYVUp6TGBRwdfA64NvGUvT3XLXSBzb/N5GlPgby6H
+         6Vwcp5Hz9hP0RhdjpP0EIh0WeJBZ1a+XOkn9dPUQVyH8dxSe+A4YWzChciOvh66IXCjd
+         1IODIyIz90OUzRVUvWF/p3vJHUqDHCxn4AUy/lVNO7LUAAlXqBn4bqTCWtRBZ1uOH21N
+         wrzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779376262; x=1779981062;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/zKjoIM90nBhcCHwQGZzjnKjYO07HjblWjtUDxE6Lnw=;
+        b=DRKm62iWK3C49zdSJOc+9PSFaT3n9gMUg9Sw2kSskIWyIzlmOhQru4btPo2RnzQ2V5
+         HBs45ELTUU2LDWAaxglww+65TBoZ9coxjVOQ/I3RtYANJIB10FVG6s3kn3fGofBsmj7F
+         RkEfYo8CgpzrENtK12mp6QMyLPqthVxb4pTpyJUsg6GWu+BOANwwV0+VHpyPWEkIg0q7
+         WCs4nbPoyXnC47sccNSOD8EZxl9CVuZxE1vZ56BweHRfjNMy+uEByRy6MVD5oo7OKXhE
+         KtxBg9sb34zms/4jL5OvrwJwsEfnb/00x5Xt3tbws2UqNQJyIRQ9x53Mt1FkuS3mU3+I
+         t9MA==
+X-Forwarded-Encrypted: i=1; AFNElJ/x7m8gKTf87yGDXXwBOE8Skas7eqDZfF6s9R/xuF26m2UgqENr9gkMisWclqdusndm/PyVbHU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzq6TFTaRTLmRkpNEPRz70bAuFymMWh7nsh69O97nfv+H/yNw5/
+	Ij7BER7T0pGFciWbf+a2N/uQnKFP24a+0M/eTm+8h6wjaezkk2r7kX6qlVDU3+BY7XjLRkZ1N0h
+	lUA73tqKehcfbGzl96SXNeV9NuoyCD/k=
+X-Gm-Gg: Acq92OGcb5bKwo9mH5Lg4yoUlaq+NbPrHO01K/3pU6z5KxQMSHLakOzc32zBY+F6ldw
+	tbftmT+9vgNu5uCGzFihW29h0j/np056j+7zSBAd8QJBdKJbNxe+RxRClbw9lV7uzXIXVEnQQPJ
+	lLB+plsdSsg5qvSx3HaMtn25M0m/JzE1nlFzmjuHnaU8adCTyQDMpa8jUqX5UXWHnHKm7aPR96d
+	kPEg16froh7rS7gjU3OJdX0jg6TC/N3X+BgDqAdZIlM0AFSSRpXeF0RDwvrYr8UwQ5bVgEHf/HC
+	FdD+mr5QodQQ5pkY1p+FB2aJJu/ucDUe0kA1SP7oJkIxJYs+qE7cXT9MpQEYoSe7QFVv+lPAbDr
+	PGbFB4oJ75ciG/lsi4/3Jt1WxUXxzuzGRwJp7D2XNSpgLhrqoMZEUmfcYT/sb5ZJRHxQRpeBLKF
+	Zgee250LisJClDnuSOQLeCOS9AdBfqLBOb1e/jIQ==
+X-Received: by 2002:a05:7301:e2a:b0:2c4:61be:1d33 with SMTP id
+ 5a478bee46e88-3042f48021fmr1929829eec.6.1779376261938; Thu, 21 May 2026
+ 08:11:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
+References: <20260520162148.390695140@linuxfoundation.org> <0d67203ea22a7e63018ec8faf64ed2926a35b217.camel@polito.it>
+In-Reply-To: <0d67203ea22a7e63018ec8faf64ed2926a35b217.camel@polito.it>
+From: Luna Jernberg <droidbittin@gmail.com>
+Date: Thu, 21 May 2026 17:10:48 +0200
+X-Gm-Features: AVHnY4I0z_lnmAtyJSTYF4yO7FwKP_QbNXUE4-v__QJHCIyrlaCcdQay2R76stQ
+Message-ID: <CADo9pHhq41HL66NxeFBoPZjhmowJuDPOn39zw4n=KLzuAwrwhA@mail.gmail.com>
+Subject: Re: [PATCH 7.0 0000/1146] 7.0.10-rc1 review
+To: Enrico Bravi <enrico.bravi@polito.it>
+Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, "jonathanh@nvidia.com" <jonathanh@nvidia.com>, 
+	"shuah@kernel.org" <shuah@kernel.org>, 
+	"torvalds@linux-foundation.org" <torvalds@linux-foundation.org>, 
+	"patches@lists.linux.dev" <patches@lists.linux.dev>, "pavel@nabladev.com" <pavel@nabladev.com>, 
+	"sudipm.mukherjee@gmail.com" <sudipm.mukherjee@gmail.com>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"patches@kernelci.org" <patches@kernelci.org>, "conor@kernel.org" <conor@kernel.org>, 
+	"lkft-triage@lists.linaro.org" <lkft-triage@lists.linaro.org>, "sr@sladewatkins.com" <sr@sladewatkins.com>, 
+	"linux@roeck-us.net" <linux@roeck-us.net>, "hargar@microsoft.com" <hargar@microsoft.com>, 
+	"achill@achill.org" <achill@achill.org>, "f.fainelli@gmail.com" <f.fainelli@gmail.com>, 
+	"rwarsow@gmx.de" <rwarsow@gmx.de>, "broonie@kernel.org" <broonie@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,oss.qualcomm.com,gmail.com,sipsolutions.net,lunn.ch,davemloft.net,google.com,redhat.com,vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253596-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-253595-lists,stable=lfdr.de];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,vger.kernel.org,nvidia.com,kernel.org,linux-foundation.org,lists.linux.dev,nabladev.com,gmail.com,kernelci.org,lists.linaro.org,sladewatkins.com,roeck-us.net,microsoft.com,achill.org,gmx.de];
+	RCPT_COUNT_TWELVE(0.00)[21];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kuba@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[droidbittin@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: E5F7F5A8A01
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mail.gmail.com:mid,inet.se:url]
+X-Rspamd-Queue-Id: 3FB8E5A8F73
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-net: wwan: iosm: fix potential use after free in ipc_imem_cleanup()
+Tested-by: Luna Jernberg <droidbittin@gmail.com>
 
-This commit reorders ipc_imem_cleanup() so that ipc_task_deinit() runs
-before ipc_protocol_deinit(), so a tasklet observed mid-flight does not
-dereference protocol memory that has already been freed.
+AMD Ryzen 5 5600 6-Core Processor:
+https://www.inet.se/produkt/5304697/amd-ryzen-5-5600-3-5-ghz-35mb on a
+https://www.gigabyte.com/Motherboard/B550-AORUS-ELITE-V2-rev-12
+https://www.inet.se/produkt/1903406/gigabyte-b550-aorus-elite-v2
+motherboard :)
 
-> diff --git a/drivers/net/wwan/iosm/iosm_ipc_imem.c b/drivers/net/wwan/iosm/iosm_ipc_imem.c
-> index 1b7bc7d63a2e..a3353af6960c 100644
-> --- a/drivers/net/wwan/iosm/iosm_ipc_imem.c
-> +++ b/drivers/net/wwan/iosm/iosm_ipc_imem.c
-> @@ -1256,8 +1256,8 @@ void ipc_imem_cleanup(struct iosm_imem *ipc_imem)
->  	ipc_imem_device_ipc_uninit(ipc_imem);
->  	ipc_imem_channel_reset(ipc_imem);
->  
-> -	ipc_protocol_deinit(ipc_imem->ipc_protocol);
->  	ipc_task_deinit(ipc_imem->ipc_task);
-> +	ipc_protocol_deinit(ipc_imem->ipc_protocol);
-
-[High]
-Does this reorder fully close the cleanup race, or only the narrow window
-between the tasklet and ipc_protocol?
-
-The MSI handler ipc_msi_interrupt() remains registered throughout
-ipc_imem_cleanup(); ipc_release_irq() / free_irq() is only invoked later,
-from ipc_pcie_resources_release() after ipc_imem_cleanup() has returned.
-
-Once ipc_task_deinit() returns, ipc_imem->ipc_task->ipc_tasklet has been
-kfree()'d:
-
-void ipc_task_deinit(struct ipc_task *ipc_task)
-{
-	tasklet_kill(ipc_task->ipc_tasklet);
-
-	kfree(ipc_task->ipc_tasklet);
-	...
-}
-
-If the modem fires an MSI in the window between ipc_task_deinit() and
-ipc_release_irq(), can the path
-
-  ipc_msi_interrupt()
-    -> ipc_imem_irq_process()
-      -> ipc_task_queue_send_task()
-        -> ipc_task_queue_add_task()
-
-still dereference ipc_imem->ipc_task->ipc_tasklet (now freed) and call
-tasklet_schedule() on it? Once kfree(ipc_imem->ipc_task) executes, the
-q_lock and queue array are also freed.
-
-The only attempt to quiesce the IRQ producer before this point is
-ipc_imem_device_ipc_uninit(), which is best-effort: it is skipped when
-ipc_pcie_check_data_link_active() returns false, has roughly a 30 ms
-timeout, and does not call synchronize_irq().
-
-This race appears to predate the patch (the freed-tasklet use-after-free
-after ipc_task_deinit() was already reachable from the live IRQ handler),
-so it is not introduced by the reorder. Would it be worth calling
-ipc_release_irq() (or free_irq() / synchronize_irq()) before
-ipc_task_deinit() / ipc_protocol_deinit() so that no MSI can schedule new
-work against freed resources?
-
->  
->  	kfree(ipc_imem->ipc_task);
->  	kfree(ipc_imem->mmio);
--- 
-pw-bot: cr
+Den tors 21 maj 2026 kl 15:52 skrev Enrico Bravi <enrico.bravi@polito.it>:
+>
+> Hi,
+>
+> On Wed, 2026-05-20 at 18:04 +0200, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 7.0.10 release.
+> > There are 1146 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Fri, 22 May 2026 16:20:16 +0000.
+> > Anything received after that time might be too late.
+> >
+> > The whole patch series can be found in one patch at:
+> >
+> > https://www.kernel.org/pub/linux/kernel/v7.x/stable-review/patch-7.0.10-rc1.gz
+> > or in the git tree and branch at:
+> >       git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-
+> > rc.git linux-7.0.y
+> > and the diffstat can be found below.
+> >
+> > thanks,
+> >
+> > greg k-h
+>
+> kernel builds and boots with no regressions. Tested on x86_64 (13th Gen Intel(R)
+> Core(TM) i9-13900H).
+>
+> Tested-by: Enrico Bravi <enrico.bravi@polito.it>
+>
+> Best regards,
+>
+> Enrico
 
