@@ -1,228 +1,247 @@
-Return-Path: <stable+bounces-253421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253422-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2GDoKSRcDmo4+AUAu9opvQ
-	(envelope-from <stable+bounces-253421-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 03:13:08 +0200
+	id wOQCMJ1bDmo4+AUAu9opvQ
+	(envelope-from <stable+bounces-253422-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 03:10:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 553DC59D8FF
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 03:13:08 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3AF159D8A5
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 03:10:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0492F30CF541
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 01:10:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A8767301E378
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 01:10:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C24D32C237E;
-	Thu, 21 May 2026 01:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 297182D0C97;
+	Thu, 21 May 2026 01:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="RvtUmOFa";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="XEgEIMtU"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="HtzBzzzn"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112152C3257
-	for <stable@vger.kernel.org>; Thu, 21 May 2026 01:10:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 411C62D0C82;
+	Thu, 21 May 2026 01:10:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779325803; cv=none; b=SWOL/Y/p+ERfElZRgKPzVONXpD9rBfboXbvJRNyeDRkAINfXZ2YgU3Z2MdAGGVytnnmIG7QLo2a6LTjD0hFgvHj81M1Kuh+KvlZhL6QRo5+KQeDAhjYjiJ1foNEsTu4wZUob/+KoBK+5EuiZiolCk+aP+QheRPEEF6/k/Smo3/A=
+	t=1779325808; cv=none; b=pmVxJahPlaNBmrD9Zs4Wiz1knRw0HXW5nsOgcjkaL2sZw5JNCKa9ZZU8EKg6iUrpe/B2Coa2mo4ZxhJFT5OcjA9nuHXO0KtJBI6Zy70o7gGzTRbn2QQhqPAi2YGWduTi9/MijoczFqCDE/4lhgNGVIL/NEuLDvW4X9qyxV5sIvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779325803; c=relaxed/simple;
-	bh=sHaXDiFQgCt9FlMExLxzDgxjno95mKMkDP35FvdVBDw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JHNMX8UE4no6VS95TtxOrgdyLJ8sjnvzssSXa74GjlkAAYA+rUno3kDsOFj9s9uLtl2/Mz/kFeFNoqNYbVYTa7ytCnqP6zWQmSQ8DPz/XMEBN1FA2PdcIk9snFnXCsBV4Sd4H+EMd7us/yxtwkxFBwXvc77qvipirDfPyiWbs4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=RvtUmOFa; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=XEgEIMtU; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64KKlYZ62157726
-	for <stable@vger.kernel.org>; Thu, 21 May 2026 01:10:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=6dRmKU+5SKA
-	eTGqRwOTPOTFNGFIlyQSi7HHIupFI5YQ=; b=RvtUmOFagx+eHfpxxq6rjUTfilI
-	euKm7aBxgbzV3OT0CzQHG41jKBf3tmXSeJpOqcbEkZRVWNEE68GMiOWAf5UpvPC4
-	Y4DC72ITFVnisxFwPmHcGC3u7MTborwBg0CjY67UV8ox6E7Yzx7mv8/MAAwLtiFJ
-	jzTTE0qaDui360rDvUh5uIsVP/gPkCK5KFRAc5am9HodzF091HDqb+ZbOzsOvNJZ
-	Jy1i//VZW11+brqSO4IDNkclNsHarFAwFi5iQWgXxPwt/UEq99n4n9GM7qYdP+oc
-	rq2Eju3JxMo4cejU+UQ1kWXaQUbAuAtTKpRszrjajfRwCZlysDM+wWP9VHg==
-Received: from mail-yx1-f71.google.com (mail-yx1-f71.google.com [74.125.224.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e9ma40qcp-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Thu, 21 May 2026 01:10:01 +0000 (GMT)
-Received: by mail-yx1-f71.google.com with SMTP id 956f58d0204a3-65d8d110fe4so13322304d50.0
-        for <stable@vger.kernel.org>; Wed, 20 May 2026 18:10:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1779325800; x=1779930600; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6dRmKU+5SKAeTGqRwOTPOTFNGFIlyQSi7HHIupFI5YQ=;
-        b=XEgEIMtUcquy9MFM0oxEXfZSZww63VusKKrerY10ZF+POQghArIrBnMhYGfTfG5qWS
-         kL8d9A5EiMqlB9k2+igUdhZhXsTxte7OF8/h1xH6WsArzRb77vFcCPON2gKeBWHbMsMS
-         JMddp7AI+s4lirQyUFF6xaHQfVbI8g9DRMjz6UPYR8jkmVScEhWFk+eImoVRf3iuF9m+
-         IIavycYnq/75L19NGtvsRKvF+K9rigLLnOdwZH32mcDM5ExxsSInWcBFId0yScyVetfL
-         ekNDnfcc1QwKLrYnMviv3DMPE7I+5I8GbJB0v20dMuijKrSVNyEZy9Nc2P0PXFL1VJX4
-         y++Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779325800; x=1779930600;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=6dRmKU+5SKAeTGqRwOTPOTFNGFIlyQSi7HHIupFI5YQ=;
-        b=jvrvg+uaZ0tbjmCqT/l9kH0T3OifnOjpWjR8ChBVtpnULO7jSkbkF3fj/kcRNaVGou
-         eeW9I5k9TeQTeA36CfHSZQ6ZoaHo8sIfZrmJieKLV0+w5JJ/vgIyUp+QHaErxpo1clyP
-         JXCL+Zwq7dldpLsLsN9/g8yldoS1ylAOXUNgWyoAX33q4NzW8ei7zdjrgTlBS43hRVIj
-         8DMOjEx7n9SN8IOvCkEGGPlxxhrI1NqNkmJhQ3DV/C57h4qlvVvfueBghXuyz89Pq5LI
-         XPED8m8N6lIlXIl8vNTWGwz7wFp6cJhgryiro7VSJl5WyqKeX5L38BAWZ4lEi4OUdBpv
-         DLeQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8NgeaDhLuUgXNok2c0v1Wx+KsTC5QU4X+zIqDHqzbvgp9QueEYm2mBIC13RRGPZeldlSRgv3w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwX+ka2wzTz8+yDsJtyZtw5fHEv94HjtSWmGKWOnAW2lR38Cqvl
-	vg6VCjfkGkBtJm+sotnk2CHm3VxVfDBQO6Xcs0zVvqI5HYXbE8JxgzEUWH8DJ/7xsLibKHv88G+
-	z/cuyBorRsKOFumTamq2V2H7M76muGlYi7ViswCaG5Erea2/bH3yCvR3Xags=
-X-Gm-Gg: Acq92OFRr2/C5OuisMSgLwpOL+V3yrEfyihPBlkf9SaeQvcwuZl4FMBwF1rIoQ60ZXe
-	OIcOf1ulJubhj8JQTf7WhwOdwRDzHx3e03hYlcPs6faj7r6raJyyyBNYb3nDHhkk85mSJG33RrY
-	I3Q28f0eb8Z51Dr3AHtFWpQQwh2OAfa2FoQguHt0LQ/EjPglQsFWwY1sm18S/3N93nx8YjlKqcI
-	4QP/Dk6vqQ8BZrotDYJl5EZVK6CyFSDE44uDEVWNyTmODDGyfQIONSC/dqysoTUkCpVNMD89wdS
-	pC5w5DWmcQDZI3nOqF9DGthbmHLBJkgtY/wBRPbO2uDIYQh8as7iN3jRSH2qwslrfcx9DfFsixe
-	bn7RFcAQTWUwcwubNAclqRMv1hpHf9upNzTtgm9a9xdPX3KFu2FewP8iSBvnXd0M0rBh0vIMozU
-	BoqDwGJduHT1S6+nY=
-X-Received: by 2002:a05:690c:9990:b0:7bf:b4a:179b with SMTP id 00721157ae682-7d20d50e192mr7151187b3.18.1779325800432;
-        Wed, 20 May 2026 18:10:00 -0700 (PDT)
-X-Received: by 2002:a05:690c:9990:b0:7bf:b4a:179b with SMTP id 00721157ae682-7d20d50e192mr7150837b3.18.1779325800058;
-        Wed, 20 May 2026 18:10:00 -0700 (PDT)
-Received: from scottml-Latitude-7455 (107-198-5-8.lightspeed.irvnca.sbcglobal.net. [107.198.5.8])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7cc991c98d9sm60851307b3.10.2026.05.20.18.09.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 May 2026 18:09:59 -0700 (PDT)
-From: Michael Scott <mike.scott@oss.qualcomm.com>
-To: linux-arm-msm@vger.kernel.org
-Cc: vkoul@kernel.org, neil.armstrong@linaro.org,
-        dmitry.baryshkov@oss.qualcomm.com, wesley.cheng@oss.qualcomm.com,
-        abelvesa@kernel.org, faisal.hassan@oss.qualcomm.com,
-        linux-phy@lists.infradead.org, andersson@kernel.org,
-        konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-        conor+dt@kernel.org, devicetree@vger.kernel.org, val@packett.cool,
-        bryan.odonoghue@linaro.org, laurentiu.tudor1@dell.com,
-        alex.vinarskis@gmail.com, linux-kernel@vger.kernel.org,
-        Michael Scott <mike.scott@oss.qualcomm.com>, stable@vger.kernel.org
-Subject: [PATCH v2 3/4] arm64: dts: qcom: x1-dell-thena: mark l12b and l15b always-on
-Date: Wed, 20 May 2026 18:09:34 -0700
-Message-ID: <20260521010935.1333494-4-mike.scott@oss.qualcomm.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260521010935.1333494-1-mike.scott@oss.qualcomm.com>
-References: <20260521010935.1333494-1-mike.scott@oss.qualcomm.com>
+	s=arc-20240116; t=1779325808; c=relaxed/simple;
+	bh=vwvK/qSv/aZAl1CPofiDoXpIyBZsN7vdh8/5gMr7JTk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=N6Y9lqLHgbOt1qS/U1bKW8TMz5I6MTAAW5RgIyDv2ch0ne01JXdqP5ZNgNXCF56KnLQVOoQBPY5mhp+vFEHExGviya+b9uUSs1nDq87TjICHVyrMhFkWIjIWRpEO2WywhEbxMuRIYss85GrV1LY8vT/Gi7VnOQqco0CwhNAWlaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=HtzBzzzn; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1779325803;
+	bh=vwvK/qSv/aZAl1CPofiDoXpIyBZsN7vdh8/5gMr7JTk=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=HtzBzzznFfrhb4+KNwEuwqKGzcI//vla6E0jju3dgGSDGkcC1GPQUlofR0fVJrzWk
+	 D4/Dtz+yEub6GACCxzxCZZUMH4eeM2e1hZ6+Mx0pjTkrPgRHqmSt28MSD9cqusRNwO
+	 GeWMoQjBcjJFH9ScMM0YWyCpqyP7PjGqdJDBxfVVqgXtoBmDAFrY/grsGBRvvBlCcP
+	 f0hhSgiJEERSJNvy5ZaRq0CvtN8DeiCsF4JxeEBFIYiuP57D3uKVm3w7ET/3zOP2LV
+	 YhybF8NvOxlHpHfAeyubEQdOBlqq6qSgfgRc2uMQijjQrnT2ehEft1rQF6o2ni+Lsi
+	 FtRhJB+jNDzLg==
+Received: from [100.64.0.214] (unknown [100.64.0.214])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: nicolas)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id E876217E05B5;
+	Thu, 21 May 2026 03:10:01 +0200 (CEST)
+Message-ID: <9c9857f2dff60d536de6d201cdc9f68afec5be38.camel@collabora.com>
+Subject: Re: [PATCH v2] media: rkvdec: fix PM runtime teardown ordering in
+ remove
+From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+To: Francesco Saverio Pavone <pavone.lawyer@gmail.com>, jonas@kwiboo.se, 
+	detlev.casanova@collabora.com, hverkuil@kernel.org, mchehab@kernel.org
+Cc: ezequiel@vanguardiasur.com.ar, heiko@sntech.de, stable@vger.kernel.org, 
+	linux-media@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Date: Wed, 20 May 2026 21:10:00 -0400
+In-Reply-To: <f9e63fbbd99c11f303ac8e8f5aec6b2bd528cf99.camel@collabora.com>
+References: <20260518105413.42147-1-pavone.lawyer@gmail.com>
+		 <20260518145414.64514-1-pavone.lawyer@gmail.com>
+	 <f9e63fbbd99c11f303ac8e8f5aec6b2bd528cf99.camel@collabora.com>
+Autocrypt: addr=nicolas.dufresne@collabora.com; prefer-encrypt=mutual;
+ keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
+ /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
+ cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
+ CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
+ abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
+ nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
+ AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
+ smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
+ AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
+ iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
+ ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
+ bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
+Organization: Collabora Canada
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-a/Niwa1gTf9973ZgRNez"
+User-Agent: Evolution 3.60.1 (3.60.1-1.fc44) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=K9kS2SWI c=1 sm=1 tr=0 ts=6a0e5b69 cx=c_pps
- a=ngMg22mHWrP7m7pwYf9JkA==:117 a=cdagev08qavQYXHyx3V8vg==:17
- a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22 a=VwQbUJbxAAAA:8
- a=EUspDBNiAAAA:8 a=CbK1FIr4-MOfYfEwsVEA:9 a=yHXA93iunegOHmWoMUFd:22
-X-Proofpoint-GUID: tlFTqI601Plwfe8UencGjzYRxw_a6yfA
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIxMDAwOCBTYWx0ZWRfX1yErG5yKwV+6
- BZ1laImSIKpL74SZ7WR/cusbG+c8MbDzDDOKMXHO9hGQKyB5jynGZLmC0F5OE2VQgU/MnphZAzt
- Vl3y2sZuGzsGy0/gyIXrMGvNCZQ1X+YQJU5RduJhtyoGIOFG5YUbIUBottL41xaLH2SXmZarooS
- Psxm66ASxiA74VhZscn9Z7ehTwHXRBgLuUvNdZj3vrIgH7EJVUCkTSE6fQsfb5JoGdRMsT5INK0
- MdJ9wzzNSpW534jS9tsD8E3seYBbMdAuN6CHD49TVRAUhNRZJM5+cfWgBQzBEJuR3eiDM+vGxG6
- alGaxUqDv6HyzezT5A8fvqJYkqN0zKJI4d0eRa747cOTJF/pGXmJpVbtKiIE4CB5dCY3amH4jCq
- t+mX839oxYEzcLISaDqRfGff/7Hi2hHR95gQHoe42gdW77Ibjp/BxKF+6l7iymAxdH0xGEL8iZ/
- yeI4eCU+gHR1pWJInxg==
-X-Proofpoint-ORIG-GUID: tlFTqI601Plwfe8UencGjzYRxw_a6yfA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-20_03,2026-05-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0 bulkscore=0 adultscore=0 priorityscore=1501
- impostorscore=0 malwarescore=0 spamscore=0 clxscore=1015 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605210008
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [-2.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[collabora.com,none];
+	R_DKIM_ALLOW(-0.20)[collabora.com:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,linaro.org,oss.qualcomm.com,lists.infradead.org,vger.kernel.org,packett.cool,dell.com,gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-253421-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-253422-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,kwiboo.se,collabora.com,kernel.org];
+	HAS_ORG_HEADER(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mike.scott@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[nicolas.dufresne@collabora.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oss.qualcomm.com:mid,oss.qualcomm.com:dkim];
-	TAGGED_RCPT(0.00)[stable,dt];
+	DKIM_TRACE(0.00)[collabora.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 553DC59D8FF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,kwiboo.se:email,collabora.com:email,collabora.com:mid,collabora.com:dkim,pages.freedesktop.org:url,sashiko.dev:url]
+X-Rspamd-Queue-Id: B3AF159D8A5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The l12b and l15b supplies are used by components that are not (fully)
-described (and some never will be) and must never be disabled.
 
-Mark the regulators as always-on to prevent them from being disabled,
-for example, when consumers probe defer or suspend.
+--=-a/Niwa1gTf9973ZgRNez
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Note that these supplies currently have no consumers described in
-mainline for dell-thena beyond the audio codec (vdd-buck/vdd-rxtx/
-vdd-io on wcd938x), which can release them when the codec goes idle.
-The board-level gpio-fixed regulators that feed the Type-C retimer's
-VDDIO and other rails are not described with a vin-supply link, so
-the kernel cannot keep their parent LDOs alive on its own.
+Le mercredi 20 mai 2026 =C3=A0 20:51 -0400, Nicolas Dufresne a =C3=A9crit=
+=C2=A0:
+> Le lundi 18 mai 2026 =C3=A0 16:54 +0200, Francesco Saverio Pavone a =C3=
+=A9crit=C2=A0:
+> > From: Jonas Karlman <jonas@kwiboo.se>
+> >=20
+> > The current remove() path calls rkvdec_v4l2_cleanup() and
+> > pm_runtime_disable() before pm_runtime_dont_use_autosuspend(), and
+> > frees the empty IOMMU domain after that. With autosuspend still
+> > armed when the domain goes away, the VDPU381 can be left in a dirty
+> > state across module reload and suspend/resume cycles.
+> >=20
+> > On RK3588 this surfaces as a VP9 inter-prediction bug: from the
+> > second ALTREF frame onward, motion blocks decode with U=3DV=3D0 (BT.709
+> > green), while intra and static blocks stay correct. Reordering the
+> > teardown to dont_use_autosuspend() -> iommu_domain_free() ->
+> > pm_runtime_disable() -> v4l2_cleanup() makes the symptom go away.
+> >=20
+> > Tested on a Radxa Rock 5B+ (RK3588, 8 GB LPDDR5) with both the
+> > libva-v4l2-request mpv pipeline and Chromium's V4L2 stateless
+> > decoder. With the fix, 300 random pixel samples on VP9 Profile 0
+> > clips at 1080p and 1440p match a libvpx software reference exactly
+> > (worst delta 0). Without it, the same 1080p sample at frame 4,
+> > pixel (960, 270) reads HW=3D(0,112,0) vs SW=3D(204,147,116). HEVC and
+> > H.264 stateless decoding via mpv keep running on hardware with no
+> > fallback.
+> >=20
+> > Fixes: ff8c5622f9f7 ("media: rkvdec: Restore iommu addresses on errors"=
+)
+> > Cc: <stable@vger.kernel.org>
+> > Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+> > Tested-by: Francesco Saverio Pavone <pavone.lawyer@gmail.com>
+> > Signed-off-by: Francesco Saverio Pavone <pavone.lawyer@gmail.com>
+>=20
+> Tested-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+> Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+>=20
+> cheers,
+> Nicolas
+>=20
+> > ---
+> > Changes in v2:
+> > =C2=A0- Add Cc: <stable@vger.kernel.org>; media-CI flagged that the
+> > =C2=A0=C2=A0 Fixes: target (ff8c5622f9f7) is present in the 6.17, 6.18,=
+ 6.19
+> > =C2=A0=C2=A0 and 7.0 stable branches, so the fix should reach them too.
+> > =C2=A0=C2=A0 Link to v1:
+> > https://lore.kernel.org/all/20260518105413.42147-1-pavone.lawyer@gmail.=
+com/
+> > =C2=A0=C2=A0 Media-CI report:
+> > https://linux-media.pages.freedesktop.org/-/users/patchwork/-/jobs/1001=
+24849/artifacts/report.htm
+> >=20
+> > =C2=A0drivers/media/platform/rockchip/rkvdec/rkvdec.c | 5 +++--
+> > =C2=A01 file changed, 3 insertions(+), 2 deletions(-)
+> >=20
+> > diff --git a/drivers/media/platform/rockchip/rkvdec/rkvdec.c
+> > b/drivers/media/platform/rockchip/rkvdec/rkvdec.c
+> > index 6f5f0422d317..bb95b090a25b 100644
+> > --- a/drivers/media/platform/rockchip/rkvdec/rkvdec.c
+> > +++ b/drivers/media/platform/rockchip/rkvdec/rkvdec.c
+> > @@ -2066,12 +2066,13 @@ static void rkvdec_remove(struct platform_devic=
+e
+> > *pdev)
+> > =C2=A0
+> > =C2=A0	cancel_delayed_work_sync(&rkvdec->watchdog_work);
+> > =C2=A0
+> > -	rkvdec_v4l2_cleanup(rkvdec);
+> > -	pm_runtime_disable(&pdev->dev);
+> > =C2=A0	pm_runtime_dont_use_autosuspend(&pdev->dev);
+> > =C2=A0
+> > =C2=A0	if (rkvdec->empty_domain)
+> > =C2=A0		iommu_domain_free(rkvdec->empty_domain);
+> > +
+> > +	pm_runtime_disable(&pdev->dev);
+> > +	rkvdec_v4l2_cleanup(rkvdec);
 
-This mirrors the same change Johan Hovold applied to every other
-X1E80100 board in a March 2025 series; commit 63169c07d740
-("arm64: dts: qcom: x1e80100-dell-xps13-9345: mark l12b and l15b always-on")
-is representative. The dell-thena board file was introduced four months
-later and did not inherit that change; this patch closes the gap.
+After consulting the sashiko.dev report, this made me reconsider the fix. A
+problem that pre-existed it seems, but made a little worse. Basically, user=
+space
+can still open and call into the API until rkvdec_v4l2_cleanup() is called.
 
-Fixes: e7733b42111c ("arm64: dts: qcom: Add support for Dell Inspiron 7441 / Latitude 7455")
-Cc: stable@vger.kernel.org
-Signed-off-by: Michael Scott <mike.scott@oss.qualcomm.com>
----
- arch/arm64/boot/dts/qcom/x1-dell-thena.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+Didn't research too much, but may you can extract:
 
-diff --git a/arch/arm64/boot/dts/qcom/x1-dell-thena.dtsi b/arch/arm64/boot/dts/qcom/x1-dell-thena.dtsi
-index db291730130c..d6de4da02dcd 100644
---- a/arch/arm64/boot/dts/qcom/x1-dell-thena.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1-dell-thena.dtsi
-@@ -589,6 +589,7 @@ vreg_l12b_1p2: ldo12 {
- 			regulator-min-microvolt = <1200000>;
- 			regulator-max-microvolt = <1200000>;
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-+			regulator-always-on;
- 		};
- 
- 		vreg_l13b_3p0: ldo13 {
-@@ -610,6 +611,7 @@ vreg_l15b_1p8: ldo15 {
- 			regulator-min-microvolt = <1800000>;
- 			regulator-max-microvolt = <1800000>;
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-+			regulator-always-on;
- 		};
- 	};
- 
--- 
-2.53.0
+	media_device_unregister(&rkvdec->mdev);
+	video_unregister_device(&rkvdec->vdev);
 
+And move this at the top of the remove function. This will prevent further
+access by userspace, avoiding races. While at it, remove useless
+rkvdec_v4l2_cleanup() helper and merge it in, its only used once.
+
+For the rest of your report, I'm under the impression remove won't be calle=
+d
+unless all the open devices has been closed, which will call
+v4l2_m2m_ctx_release(), which synchronously abort any pending job.
+
+https://sashiko.dev/#/patchset/20260518145414.64514-1-pavone.lawyer%40gmail=
+.com
+
+> > =C2=A0}
+> > =C2=A0
+> > =C2=A0#ifdef CONFIG_PM
+
+--=-a/Niwa1gTf9973ZgRNez
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCag5baAAKCRDZQZRRKWBy
+9PuoAP9gtGPvLxa4W9L5+xumxe/MkgDxKRvK3bcntdSpVRuoywEA9Q2fu/BulsAq
+W94NZMxGfEsscd/Nfk469D3oxF6mrQU=
+=U/NF
+-----END PGP SIGNATURE-----
+
+--=-a/Niwa1gTf9973ZgRNez--
 
