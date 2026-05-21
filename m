@@ -1,108 +1,89 @@
-Return-Path: <stable+bounces-253583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253584-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8HMGEx0mD2paGgYAu9opvQ
-	(envelope-from <stable+bounces-253583-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 17:34:53 +0200
+	id 2PbJKjYlD2paGgYAu9opvQ
+	(envelope-from <stable+bounces-253584-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 17:31:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3808B5A8728
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 17:34:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1254F5A8616
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 17:31:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B4EE13043F78
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 14:45:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6C38D3168802
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 14:48:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B6C3FFAC8;
-	Thu, 21 May 2026 14:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B5FC3446C7;
+	Thu, 21 May 2026 14:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="nD7/scCW";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="SbZbVWH4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OgIn6fhM"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FBA93DC875;
-	Thu, 21 May 2026 14:39:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 707DA3431E3
+	for <stable@vger.kernel.org>; Thu, 21 May 2026 14:45:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779374377; cv=none; b=OUfcRXnmHImyET6FM/aBi9zjWUVXIsl1YF3b3aNCl5vf7wI7y9GPHi+sqn0hiQqN1E1fzl9Bl6s/zYHsabKWTNso++/riCCweeSoNrFaCu2uYenussOYoJBrRe2w/2xYmYluWHUGrZSCcirK+m2ndEUKnfr30dUAq7Ckp/hVoG4=
+	t=1779374739; cv=none; b=jTI2ctpdqI97u5vIVWl/hAcngIYg9XWu4lpI2DFa3Fm1qDhMLo8L+BqmcL/bUD2NZJ/npAqAUN+NUPbYILMAMBUkUx3nbZKHv58BV7WWn/w3XbJTS2LRPZlwkBkQOianl/vhzfSAQohBNNLJ9zEtKIs4hxg97yEDweVNAQ6o6+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779374377; c=relaxed/simple;
-	bh=roB8K90pZdJLjtNA8L+9YNNxQDDBDXi36h+2ABWO5Aw=;
+	s=arc-20240116; t=1779374739; c=relaxed/simple;
+	bh=1FDax2ITlPGkK9GWM4Kk5hh5Iu9Jo/XTctQgyZ3HFd0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bj9qPy9DQdUf6nADmz3BgGwIgA4G8qnazeRyVzg6Lx+hxC2SRQGJKhgdPA3TwlfCsavuyF+HDw/Z+Bya7oa0ktTrEhHI9ypW0+BDPCmObZzxjt/X8CUgruU2Uku5pmK6Vw55kXMSW1KMQ/6Kq5KwW98TZI8TwP0y9oMKOiy1NE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=nD7/scCW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=SbZbVWH4; arc=none smtp.client-ip=202.12.124.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfout.stl.internal (Postfix) with ESMTP id 1BA591D00095;
-	Thu, 21 May 2026 10:39:34 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-09.internal (MEProxy); Thu, 21 May 2026 10:39:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1779374373; x=
-	1779460773; bh=icCV10FL3VV6bt0ffyB2QjNC3KhIKFtGh4koyNHlte8=; b=n
-	D7/scCWxW/F5K7DgViOywccXizPwH6dpty77uoB0zVHa4nge+ibyUHegYoHWZpAo
-	GL7Dj43VcHUBN8SgA5owHFwJQFp2uCS4QX+Vr1/uslsbiLbFdOMOhqMtiBvRoCJb
-	xQLycYxgP75x5F6SQH6HJo9b4nuTu2jaaE6eiOXKjyUVJB9Zl4IUBYzY4Ds6rcRI
-	YC73AMY39OVzBcgaY4hNgra6P/7BlrBILSrZYmfuYwxmJSagqVSVXhf1TYhkr+90
-	TpFXC8ByPBEhBzzT02ortz/l0OBXUIYrx7ayhual04/hjiIyNlAmF1u4tfiPEh6V
-	4/FvZs6HJX2fykPSt0+Zw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1779374373; x=1779460773; bh=icCV10FL3VV6bt0ffyB2QjNC3KhIKFtGh4k
-	oyNHlte8=; b=SbZbVWH4isnHFfA57kY0P+1nh/wnvG/EY6I0249sJuelmmAzsWh
-	/RKTKxbLr2up8916cWcfZxq5lquibeVB1Zw02ilrfifEK+bkgl2OeeDxubvMPPNS
-	fbsZbQHrJi08l8qgFohGYgt9zpTTEmmbKxEosM54rtBsBA4lVZSAqUmSXlu5ZbSk
-	UgiStuFDqewNyrMcSIHTBvAE8V/fk2mxsOXmsGcvdljGovGvjBse3fH6DcIaXvZL
-	F7go65nrnYKGQb4GrmF6+Ds4iocghMMbH9zBdZRWLfDXjqWXlM33XQKbTpG5J6aZ
-	3cjOQFn2xdcjXXTHh+en7d4OCOeOTb+brBg==
-X-ME-Sender: <xms:JBkPao05RU3zrquL2XP3S2Eh51Q8QQFYoyyVplnvMN404cf_Xd9lqw>
-    <xme:JBkParQ_nC4gAxkHwIn1HJKuh_DLx-7EtBnHT8MMiJkcnSrnWntp_vAbLFPhJpGXq
-    KZ9CDnpAU0xQnj-hod6Z59JLwHtQDNu2xlUdOnP5Ge1u7WiutacoQ>
-X-ME-Received: <xmr:JBkPaseZLZWPFJgRMR68iZESxMk0CKH68m1aQp5RqoQdfrk66TzAEkkUhUcW43FV5ZPw5C8Jm_j6a5chnllRYlU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddugeejjeejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtjeenucfhrhhomhepufgrsghrihhn
-    rgcuffhusghrohgtrgcuoehsugesqhhuvggrshihshhnrghilhdrnhgvtheqnecuggftrf
-    grthhtvghrnhepuefhhfffgfffhfefueeiudegtdefhfekgeetheegheeifffguedvueff
-    fefgudffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epshgusehquhgvrghshihsnhgrihhlrdhnvghtpdhnsggprhgtphhtthhopedutddpmhho
-    uggvpehsmhhtphhouhhtpdhrtghpthhtoheprggrrhhonhduvghsrghusehgmhgrihhlrd
-    gtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhr
-    tghpthhtohepshhtvghffhgvnhdrkhhlrghsshgvrhhtsehsvggtuhhnvghtrdgtohhmpd
-    hrtghpthhtohephhgvrhgsvghrthesghhonhguohhrrdgrphgrnhgrrdhorhhgrdgruhdp
-    rhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepvg
-    guuhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehkuhgsrgeskhgvrhhn
-    vghlrdhorhhgpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtghomhdprhgtph
-    htthhopehhohhrmhhssehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:JBkPasfJfzRzNXBEZY-kyO2-FX2fZE2v15OaJ3Ufa5QCDZYzS3aX1A>
-    <xmx:JBkPam33c7YdfTb8QEiOxcdozCFlnAMnANlg7mtqFulwWqlbHzx4yQ>
-    <xmx:JBkPak8aDXW0E2ygpc8fGfUdojHFxIlH1n6RZ08lWa1gVrRfjyf7SA>
-    <xmx:JBkPar5I1i6muHHylBqwjHkxDrGJq-P2K2aZ-DF8RI3lOlOBK60MLA>
-    <xmx:JRkPahJByw9VQY2jo6ExZTykmT52uiliWDEHBRixKKREHvYPHIhXmbax>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 21 May 2026 10:39:31 -0400 (EDT)
-Date: Thu, 21 May 2026 16:39:29 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Aaron Esau <aaron1esau@gmail.com>
-Cc: netdev@vger.kernel.org, steffen.klassert@secunet.com,
-	herbert@gondor.apana.org.au,
-	"David S . Miller" <davem@davemloft.net>, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] xfrm: espintcp: fix sg.size corruption on partial send
- error
-Message-ID: <ag8ZIQuxvJa0DFvX@krikkit>
-References: <20260518032109.616327-1-aaron1esau@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=aExYs5xkLutCzTSDN9BB5zpZd76iRyRGNSwawflXw90NBvwYSosmydiAUtFsSc43cpS0Z9y+Mp9hsMfoeefqPO0F1Tis2en3PFhzrfuco5IQIEvCNpzx4DDL3CV8E9lyTmVfVZJdFUeHiadH2V1xr3BWm93qrrxWh0BPFcOWCPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OgIn6fhM; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-48fe26a177cso47090415e9.1
+        for <stable@vger.kernel.org>; Thu, 21 May 2026 07:45:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779374737; x=1779979537; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=kIWgYSgSur7+TFprKVyhVWjT/8EMs0z3uzklm4FTqYA=;
+        b=OgIn6fhMMtxL5dR/Ife+0IdHFexxa8j1dKQ/YRPGSkVGvAKgnqMu95v6kAam1OYWlW
+         w8Cu3Pxl7nxqKpW5hgElRKsu8iiKyIGd8NlI3q4dErLwn1FzDi/mNUGYyHZyEIp3+FmO
+         aNt+81ELjVONAB72TZ9tpgY5yDngxcSsvXUk+iFPh5yOjSJPk7WOZ0KaJ+0hxe+OwDXT
+         6/afSbsBvIGAbhi4xYmU1u073v+zSKjW8vYY6d8BjyIFWcjylzltizNw0qVqyEmix1Qm
+         tX6OvGb8he4fSj2KmtqpmCP6meGKX5uXedNdTyqMAH5ikbXJkQcNVMVG57/IIx5wUHul
+         R8JA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779374737; x=1779979537;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kIWgYSgSur7+TFprKVyhVWjT/8EMs0z3uzklm4FTqYA=;
+        b=Vk0lxBj5zltxt/SIokYNEhSWhuWUEEUFK/qvOqj5OOfPfSM4t2hi0E5lQS9oLCE7hl
+         ny1XNFI86V4gy7hksyksnXp+gojcHInLlnKZXlt06moz5Mg75IeMBqx2V1Zj/AjPAcGe
+         S47Gx/kD8q4MZ3gIqQk+4ccTVjGQKFTajVeE7XjQqLocP6kEMSzFf9M/S135IcE2nxxs
+         xcrpkzXjk2PrlQlPtOcyJH51GvYLsVthiJdvP1SXV1uCGYjNITyCrBWR+zLHyR2JiIhI
+         0Eq72VQNahCmlYN93w2gV10CqZYc0L4TlGaLey0HtiaB9dXaDiqwnA8UaSHoUOzotLN7
+         WWoA==
+X-Forwarded-Encrypted: i=1; AFNElJ/rFl50sdo8GtOK0XOnAfgANijNsyOfZ7BHh3AaYvpibCC4evtoRl0yqwnRbQ8VF+JDv018vsU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxT3s238mdsW/MdgOXi/VLs/d1SMTAvikxfO3wmj3AqZnby5yTR
+	HFyD1HfLPzK5p4qdEnTZJvvNGRUEguvwVJT1CtIIsApR784B6goGHdw7
+X-Gm-Gg: Acq92OEGnVGerBepEiu82yPqA5RCFYCB9VHUTm7OSavbyBxrAcDN8K/tok5VkzTkpOC
+	lAtSapBIDoB5xGtQ+a779a33PneQ1mbod6kUc5DR8bcy1MTBAcmiC5rslsXnbDbGuKIuX+V41GZ
+	Pa0iY3NQepT3e/H/cDUEr0inlOtD8FQhtlrs7NWtS4IO5dtOAn+dYLSlMxIP8iwNPrhAxkK5+HO
+	SPkoqTR9LRL0cmVyqE2fmDLgWg6mbRVVndBgQHoVm3bL7r64jUi8x9iCok/bO8a7R54r9E7k1Ry
+	Hv0wmyWLREDO4EjSy2SSkrWDhAkAi1zpTG3tg8WfBPYJZLAEwPGn+34sAz384drKdJ3MiHknTuC
+	2WYuZjh6uQ43FqJGlZPXD2Yth106c+W7DlWf1s1lC8qVKe1D/pPOkuidFBwdw/PHazMKJ5W/4Nh
+	OWHQ7WK3D9Ikfk76zwXZdEEqMrSwSWfvu/s8GeoiT9kuiEgYSkuOfza/GHTP5dpEuc56zR/gQ=
+X-Received: by 2002:a05:600c:37c4:b0:489:1f08:91b with SMTP id 5b1f17b1804b1-490360a87a0mr49352355e9.16.1779374736601;
+        Thu, 21 May 2026 07:45:36 -0700 (PDT)
+Received: from f (cst-prg-92-135.cust.vodafone.cz. [46.135.92.135])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4903cadc125sm24701585e9.10.2026.05.21.07.45.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 May 2026 07:45:36 -0700 (PDT)
+Date: Thu, 21 May 2026 16:45:28 +0200
+From: Mateusz Guzik <mjguzik@gmail.com>
+To: Hongling Zeng <zenghongling@kylinos.cn>
+Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, 
+	thomas.weissschuh@linutronix.de, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	zhongling0719@126.com, stable@vger.kernel.org
+Subject: Re: [PATCH] fs: Fix lock leak in replace_fd()
+Message-ID: <m3xus4s4xup32v7ijjolq6p3tlrj3bpwettldpqwxcwxanfvyt@5ihbtgch7liv>
+References: <20260521074934.49256-1-zenghongling@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -111,145 +92,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260518032109.616327-1-aaron1esau@gmail.com>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+In-Reply-To: <20260521074934.49256-1-zenghongling@kylinos.cn>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[queasysnail.net:s=fm1,messagingengine.com:s=fm3];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-253583-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253584-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[zeniv.linux.org.uk,kernel.org,suse.cz,linutronix.de,vger.kernel.org,126.com];
 	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[queasysnail.net];
-	FREEMAIL_TO(0.00)[gmail.com];
-	DKIM_TRACE(0.00)[queasysnail.net:+,messagingengine.com:+];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sd@queasysnail.net,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mjguzik@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,queasysnail.net:dkim]
-X-Rspamd-Queue-Id: 3808B5A8728
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 1254F5A8616
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-2026-05-18, 12:21:09 +0900, Aaron Esau wrote:
-> espintcp_sendskmsg_locked() calls put_page() and sk_mem_uncharge() for
-> each scatterlist element it successfully sends, but never decrements
-> sg.size. If tcp_sendmsg_locked() then fails partway through, the error
-> path advances sg.start past the freed elements while sg.size still
-> accounts for them. A subsequent sk_msg_free() in espintcp_close() loops
-> until sg.size reaches zero, overshoots sg.end, hits zeroed entries with
-> NULL pages, and crashes in put_page().
+On Thu, May 21, 2026 at 03:49:34PM +0800, Hongling Zeng wrote:
+> In replace_fd(), the function acquires files->file_lock but then has
+> two return paths that don't release the lock:
+> - When do_dup2() fails (returns negative error)
+> - When do_dup2() succeeds (returns 0)
 > 
-> Fix this by decrementing sg.size as each element is freed. Also use
-> sk_msg_iter_var_next() instead of raw addition for sg.start, so it
-> wraps at NR_MSG_FRAG_IDS.
+> Both of these paths return directly without unlocking files->file_lock,
+> causing a lock leak and potential deadlock.
+> 
+> Fix this by making both error and success paths go through the
+> out_unlock label to ensure the lock is always released.
 
-(wrapping shouldn't be an issue since I don't think we can have start
-!= 0 in espintcp)
+do_dup2 always releases the lock regardless of return value, so this
+patch cannot be correct.
 
-> Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
+that aside, there is another consumer which would also need patching if
+the issue was real
+
+> 
+> Fixes: 708c04a5c2b7 ("fs: always return zero on success from replace_fd()")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Aaron Esau <aaron1esau@gmail.com>
+> Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
 > ---
->  net/xfrm/espintcp.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+>  fs/file.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 > 
-> diff --git a/net/xfrm/espintcp.c b/net/xfrm/espintcp.c
-> index e1b11ab59..6755f6df6 100644
-> --- a/net/xfrm/espintcp.c
-> +++ b/net/xfrm/espintcp.c
-> @@ -237,7 +237,8 @@ static int espintcp_sendskmsg_locked(struct sock *sk,
->  		ret = tcp_sendmsg_locked(sk, &msghdr, size);
->  		if (ret < 0) {
->  			emsg->offset = offset - sg->offset;
-> -			skmsg->sg.start += done;
-> +			while (done--)
-> +				sk_msg_iter_var_next(skmsg->sg.start);
->  			return ret;
->  		}
+> diff --git a/fs/file.c b/fs/file.c
+> index 2c81c0b162d0..d0f019fb0568 100644
+> --- a/fs/file.c
+> +++ b/fs/file.c
+> @@ -1361,8 +1361,7 @@ int replace_fd(unsigned fd, struct file *file, unsigned flags)
+>  		goto out_unlock;
+>  	err = do_dup2(files, file, fd, flags);
+>  	if (err < 0)
+> -		return err;
+> -	return 0;
+> +		goto out_unlock;
 >  
-> @@ -250,6 +251,7 @@ static int espintcp_sendskmsg_locked(struct sock *sk,
->  		done++;
->  		put_page(p);
->  		sk_mem_uncharge(sk, sg->length);
-> +		skmsg->sg.size -= sg->length;
->  		sg = sg_next(sg);
->  	} while (sg);
-
-Or maybe switch to using sk_msg_free_partial()? It should fix the
-issue and clean up the code at the same time. The diff looks a bit
-nasty but this boils down to "remove all the custom
-size/offset/partial send handling":
-
--------- 8< --------
-diff --git a/net/xfrm/espintcp.c b/net/xfrm/espintcp.c
-index a2756186e13a..4802b68a833d 100644
---- a/net/xfrm/espintcp.c
-+++ b/net/xfrm/espintcp.c
-@@ -212,43 +212,23 @@ static int espintcp_sendskmsg_locked(struct sock *sk,
- 	struct sk_msg *skmsg = &emsg->skmsg;
- 	bool more = flags & MSG_MORE;
- 	struct scatterlist *sg;
--	int done = 0;
- 	int ret;
- 
--	sg = &skmsg->sg.data[skmsg->sg.start];
- 	do {
- 		struct bio_vec bvec;
--		size_t size = sg->length - emsg->offset;
--		int offset = sg->offset + emsg->offset;
--		struct page *p;
--
--		emsg->offset = 0;
- 
-+		sg = &skmsg->sg.data[skmsg->sg.start];
- 		if (sg_is_last(sg) && !more)
- 			msghdr.msg_flags &= ~MSG_MORE;
- 
--		p = sg_page(sg);
--retry:
--		bvec_set_page(&bvec, p, size, offset);
--		iov_iter_bvec(&msghdr.msg_iter, ITER_SOURCE, &bvec, 1, size);
--		ret = tcp_sendmsg_locked(sk, &msghdr, size);
--		if (ret < 0) {
--			emsg->offset = offset - sg->offset;
--			skmsg->sg.start += done;
-+		bvec_set_page(&bvec, sg_page(sg), sg->length, sg->offset);
-+		iov_iter_bvec(&msghdr.msg_iter, ITER_SOURCE, &bvec, 1, sg->length);
-+		ret = tcp_sendmsg_locked(sk, &msghdr, sg->length);
-+		if (ret < 0)
- 			return ret;
--		}
--
--		if (ret != size) {
--			offset += ret;
--			size -= ret;
--			goto retry;
--		}
- 
--		done++;
--		put_page(p);
--		sk_mem_uncharge(sk, sg->length);
--		sg = sg_next(sg);
--	} while (sg);
-+		sk_msg_free_partial(sk, skmsg, ret);
-+	} while (skmsg->sg.size);
- 
- 	memset(emsg, 0, sizeof(*emsg));
- 
--- 
-Sabrina
+>  out_unlock:
+>  	spin_unlock(&files->file_lock);
+> -- 
+> 2.25.1
+> 
 
