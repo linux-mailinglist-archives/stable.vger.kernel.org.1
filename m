@@ -1,114 +1,168 @@
-Return-Path: <stable+bounces-253416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253417-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IP1sOTxWDmry9wUAu9opvQ
-	(envelope-from <stable+bounces-253416-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 02:47:56 +0200
+	id aB6UEkVVDmrl9wUAu9opvQ
+	(envelope-from <stable+bounces-253417-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 02:43:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9653559D64E
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 02:47:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B860C59D607
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 02:43:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 854003028ED9
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:42:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A246E3040DA2
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 00:43:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBF5B24BBFD;
-	Thu, 21 May 2026 00:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95FC22690F9;
+	Thu, 21 May 2026 00:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QmBkn7+6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="chDufqv5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1851EE01A;
-	Thu, 21 May 2026 00:42:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16592257459
+	for <stable@vger.kernel.org>; Thu, 21 May 2026 00:43:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779324130; cv=none; b=IlUpjEZu0jd0LoropH28b5hJO0wMEewTLMDEHUJViQy58x40Uh29iKsKtxgYdPSkjY7x8mjwBhHZHqhsL1sQW2WgXH78WNlSTJmkgZvNRaEbBAN5Y8Hv4u+/iHY5SDWE2jdgRrqpU02FknUJNKR9Fwx0cIQy7tIAnmKzVbEuQGU=
+	t=1779324224; cv=none; b=hU3Qh1jjKET1F0sKt581NMz/pnZGBfgu875i51fBwdyK7Hydb0ZM6NqUog3keZc+0osXlOJWN5gmUmpG4xRkYYPnEXTv9TfzUmECSmYYXmLQb9n4DgqG7GnD2bAuVCnanAEtz/A65/44U2feOl1x8OwNrgwk+6qNNq7x0I+vvr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779324130; c=relaxed/simple;
-	bh=gE2xu90fi77DNXjCGh+yn+KWReZ7OnfCt+9yTRURpRk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GvZyjF8ErT97+1PhXce1d47FjpAYGcMWZoMk2d+I6W3QFkC1yJf1blYi0/hZGXyVGkV1jq73cLuOCdaY0ldBYW0te9BRsk7EUY9m06Ow4ZXGvfB2bC458hGfBocPP8DBeYLyBVtSbpMdW8OBy9AOx4jn32h8oEy6VJtZqnkNfdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QmBkn7+6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98DB1F000E9;
-	Thu, 21 May 2026 00:42:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779324129;
-	bh=gE2xu90fi77DNXjCGh+yn+KWReZ7OnfCt+9yTRURpRk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=QmBkn7+61GhGmw2KAVBy8s2DUtwB5RjOdZaq3seCTfWxUTSye7DdCg8ugFvciRRXE
-	 tQOmvOfknd+6q5n42PENujyZtIFkZDmb2gDezQizIMRmzr7qP7LM6yu32e2r6A7Pu4
-	 XLBuPxWgj2UB5NugiXjsXevon+xwkTQRXnCgu3HxByi312TKQtJxgxkjBcqDOHkXRg
-	 yfaNAK5w6zyKoJmHdV13dMSn5Fl5FjsbvEF8qLJCYd20il7fOxFx+aVm3DMb9vVseP
-	 L6HXd/Jy3rN7hYAJ6z8BcCoKBNS6jfrVNQyLEc5H/61oPW4eTSb1JBRZYsVXTtxZgG
-	 SNGz+NWA2E+eg==
-Date: Wed, 20 May 2026 17:42:07 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Michael Bommarito <michael.bommarito@gmail.com>
-Cc: Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz
- <luiz.dentz@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, linux-bluetooth@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH v3] Bluetooth: L2CAP: reject BR/EDR signaling packets
- over MTUsig
-Message-ID: <20260520174207.5f8f26c0@kernel.org>
-In-Reply-To: <CAJJ9bXy1xQsfRd_DBiFjTj6GjkDDVFU3w_5xjXvZmp8CXnkz5g@mail.gmail.com>
-References: <20260521001327.3729880-1-michael.bommarito@gmail.com>
-	<20260520172609.3034337f@kernel.org>
-	<CAJJ9bXy1xQsfRd_DBiFjTj6GjkDDVFU3w_5xjXvZmp8CXnkz5g@mail.gmail.com>
+	s=arc-20240116; t=1779324224; c=relaxed/simple;
+	bh=IEIzvlRRqDl+bWvL9H8iIJCwiKrUdTUr0U3EgaWDVWo=;
+	h=Message-ID:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=fIxEBLK+2R6b8VB9gSXKOXCUiIZKLVvU0ebdWhvzQQG8Tb7PKF1P3KH+qiuR0oeJULWmhNcuwbv5v9rjNJ8hUOevVbuMOcv9dOpekz/PNUTj6ZWurnxKdyp6+4nGPHoVtbzpot643FzUzRc0xPjdKd7Ut8wJWUaZBbm1Jt9gMrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=chDufqv5; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-bd4f8260e4eso1082421566b.1
+        for <stable@vger.kernel.org>; Wed, 20 May 2026 17:43:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779324220; x=1779929020; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:references:in-reply-to
+         :subject:cc:to:from:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=D+uQ3Q0GrDaAUefTv9AQLXze2AquCr/DP4u2vUROxGQ=;
+        b=chDufqv5kulo53fezyEyTxtb2SL3xMz0aYVAukaG4fJKB4kIZzLE5nFXg9LquI2Smw
+         z6Uj2B/GoNAeoWLyWXzMfEtGm5kEEQ/Q67fSv88ueH10oZFldfQqNNbD4OiP2W3Ogb9H
+         sQhm6u8ic3wJHdyU5xARAvYMkQnN+RpJywI/2xiRgW/Ti1GJg+8ygjX9bQz44mbgHfgD
+         lUjfnitFCq6Qzca4B9iwfPefsMQmuJYHEjdo4AnAvn1P+zFgwMJTCRcr8GvRciRaIjsL
+         A/2A1f2VV+YrPPP9upn0DC3NriKPWSqHb6fsHdyGpTURNh80goha954gjX+Qs3qOzFz0
+         1QwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779324220; x=1779929020;
+        h=mime-version:content-transfer-encoding:references:in-reply-to
+         :subject:cc:to:from:date:message-id:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=D+uQ3Q0GrDaAUefTv9AQLXze2AquCr/DP4u2vUROxGQ=;
+        b=HXnReGGDB3jkxdpXymjtcO/wg+FX3X5a4P1jfkXANXzYYyi6GyrQOJJaHIP62SlDyS
+         8f3pAtV8+WDC2B4Vmco/WuIcVDIv58WfdxN9TCMpbOYDNZQBIyAUhScj2vBKOgTKaJH3
+         4kVQPKNnEtGvCb07zDdxboK0WbiMj4ZidUBDYQMigEVvy/wsnVjImOYgy6YMPZL+oFmw
+         0yHNDttKSBgY7J5/qhJAX1c3MkuBgqRRDq3kjHQfu7bznz7IwWt0I7oit/Qd56LmXNKd
+         VCGZ0DDnjNQl3V9sOYJiAlMh5ZmNbJfWi+UGEARZx5fro25jGuduEUOa652xCKI46Bq3
+         KSxQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+QyXcoJA3v8RugeBmOFGadWao7x5f9FwoZtWyUt3cXBqj6NLQBVhdXLT0qsf9c7RvT/oPVp10=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKg0ClLEtx403PuhCia2pzLfALjjErmoe23HI8xy3r/Eg8IKQ3
+	NUGr+NK8fYpYUy1Kl5594Hj7ZOUFtf5Kzs7g4xzQDVixUbToOKeU2YmB
+X-Gm-Gg: Acq92OHEfqk9ny2SPNLuzhdSdT1YlA2vTfYBvRWW3xqiv6mSHQC3a49x6ThuH5MdgFT
+	ILEODnezkcIjDZ1I5E4SSkpTcuF1qK82PjHt0pNM9THxijZ5b/FxJDoF91jylzWCtcQxfPSWhwj
+	q7rBzj6zQ3CpKM42v0hYx2MAcb3s2Oh/qZmlIh8Kz5dwyKYk22/b9ETLeCu2QzFcaY/qVMnErm8
+	ZRGOaDq/e8X1FxQuTruagcqfUh91dqAHEGC0Fe4OPjlkoLgH0vyG6a/4cCxI0vCnDx+UtJ9x98z
+	5n9IgwOwapMetugFft/R7ZYIRRoqpG7pGy5ABqb9aMCwz4gg9G7TiM08U+pi4S/tA1BDfga2zUR
+	0CdSMqY1BR30H0bRpXckVrqDJf+ur0FFB86U3eSb3oxVtqyBuaLMvdwnDWiwj619+t3kbWOg7q/
+	jhOf8xRqyYgBZXwJLKd9QVaTFYtyUSnLgu1qpzFYvF6bPiOOC8nCiUtnFcCITIQ0Q9oNdglgdYp
+	JULBKztPEja7/KgX+tdH463iFvzGEGU7LuMmxQk6uEfcibXzwTRjW4DDxg29UTJcPYicFd65OVr
+	79c59NRFw2Q3bVh9ZKBaPjczOJRq
+X-Received: by 2002:a17:907:3c95:b0:bc3:c6f5:1d47 with SMTP id a640c23a62f3a-bdc12f857c9mr22479466b.11.1779324219917;
+        Wed, 20 May 2026 17:43:39 -0700 (PDT)
+Received: from ahossu.localdomain (ip-217-105-56-94.ip.prioritytelecom.net. [217.105.56.94])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bd4f4dea94bsm919213866b.33.2026.05.20.17.43.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 May 2026 17:43:38 -0700 (PDT)
+Message-ID: <6a0e553a.010ccaa2.2ab173.fc09@mx.google.com>
+Date: Wed, 20 May 2026 17:43:38 -0700 (PDT)
+From: Alexandru Hossu <hossu.alexandru@gmail.com>
+To: d.bogdanov@yadro.com
+Cc: mlombard@arkamax.eu, martin.petersen@oracle.com, bvanassche@acm.org,
+ ddiss@suse.de, target-devel@vger.kernel.org, linux-scsi@vger.kernel.org,
+ stable@vger.kernel.org, hossu.alexandru@gmail.com
+Subject: Re: [PATCH v2] scsi: target: iscsi: validate CHAP_R length before
+ base64 decode
+In-Reply-To: <20260520180204.GA15940@yadro.com>
+References: <20260518121811.385350-1-hossu.alexandru@gmail.com>
+ <20260518235040.48647-1-hossu.alexandru@gmail.com>
+ <DINMKOIB4PRJ.1Y571RHF6NAQJ@arkamax.eu> <20260520180204.GA15940@yadro.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[holtmann.org,gmail.com,davemloft.net,google.com,redhat.com,kernel.org,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-253416-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kuba@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[arkamax.eu,oracle.com,acm.org,suse.de,vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-253417-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hossualexandru@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 9653559D64E
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,mx.google.com:mid,yadro.com:email]
+X-Rspamd-Queue-Id: B860C59D607
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, 20 May 2026 20:32:28 -0400 Michael Bommarito wrote:
-> On Wed, May 20, 2026 at 8:26=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> =
-wrote:
-> > Please (tell your bot to) use the get_maintainer script. =20
->=20
-> It (and I) did, but I think this is because net/bluetooth/ matches net/, =
-right?
+On Wed, May 20, 2026, Dmitry Bogdanov <d.bogdanov@yadro.com> wrote:
+> Yes, the length of Base64 decoded string is not deterministic.
+> Moreover, length of Base64 encoded string must be divisible by 4. Which
+> is biger that 4/3 of decoded.
+>
+> | MD5_SIGNATURE_SIZE      | 16   | 21,33333 | 22       | 24                =
+   |
+> | SHA256_SIGNATURE_SIZE   | 32   | 42,66667 | 43       | 44                =
+   |
+>
+> So, that formula is not correct and will break all iscsi authentication.
 
-Looks like we're missing an X, sorry.
+v3 (sent about an hour before your email) already handles this. Trailing
+'=3D' are stripped before the comparison, so the check is applied only to
+the data characters:
+
+	while (r_len > 0 && chap_r[r_len - 1] =3D=3D '=3D')
+		r_len--;
+	if (r_len > DIV_ROUND_UP(chap->digest_size * 4, 3)) {
+
+Using your table as input:
+
+  MD5 padded:     "data=3D=3D" -> r_len =3D 24-2 =3D 22, 22 <=3D 22 =E2=9C=93
+  SHA-256 padded: "data=3D"  -> r_len =3D 44-1 =3D 43, 43 <=3D 43 =E2=9C=93
+
+> Alexandru, may be better just to change size of client_diggest variable
+> to match it with chap_r like for initiatorchg and initiatorchg_binhex?
+
+That also prevents the overflow. The length check is preferred for
+consistency with the HEX branch, which validates input length before
+calling the decoder rather than relying on a larger destination buffer.
+
+Alexandru
 
