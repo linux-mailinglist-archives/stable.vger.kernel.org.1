@@ -1,151 +1,228 @@
-Return-Path: <stable+bounces-253487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253488-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SJQaE5PODmpoCQYAu9opvQ
-	(envelope-from <stable+bounces-253487-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 11:21:23 +0200
+	id 4OCfJsXPDmrOCQYAu9opvQ
+	(envelope-from <stable+bounces-253488-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 11:26:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E30455A236C
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 11:21:22 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16D5A5A24D8
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 11:26:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9536C3064BB5
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 09:15:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B6E383101F43
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 09:19:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43523403F9;
-	Thu, 21 May 2026 09:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 135E7374E4C;
+	Thu, 21 May 2026 09:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tecnico.ulisboa.pt header.i=@tecnico.ulisboa.pt header.b="IKogwvfV"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="D1qgFyM7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp1.tecnico.ulisboa.pt (smtp1.tecnico.ulisboa.pt [193.136.128.21])
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012018.outbound.protection.outlook.com [40.93.195.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D69E36A036;
-	Thu, 21 May 2026 09:15:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.136.128.21
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779354911; cv=none; b=fRBMuuHnPxCQw88HtBmcy5vSo8Icj0WXQK6JK0IpQ33HVuKtyx9yY84H0sZo41/8b7QN9rH1dswm2Bkil0qJ+OQZKWzUO3llm4faELilXne+q60+KTBoVAlUJOLDwHLKrBDWEMAKZYB9M27MLHGkcv49CxufZOSAyg5bDv9F1U4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779354911; c=relaxed/simple;
-	bh=nUKuWNBiWhCdVz2rqw7fsH7QNaSazP392m7J6xx94wo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nsEPJINzS7kzaF0RsE7NqnhQKfwstmo+hBY1JqD7MveebZTgb3vgBbCtVBbWLn1ERfmN3CmzUNK0XKh+ReuyHBvku8ROhsj+2dU2fIeDEG7aEdtGd+Mt12ZFwAm85UeHnZDpxrQvRB2ZRw7/EGZ/5rXPUpbI6TJOwYkBqIIShkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tecnico.ulisboa.pt; spf=pass smtp.mailfrom=tecnico.ulisboa.pt; dkim=pass (2048-bit key) header.d=tecnico.ulisboa.pt header.i=@tecnico.ulisboa.pt header.b=IKogwvfV; arc=none smtp.client-ip=193.136.128.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tecnico.ulisboa.pt
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tecnico.ulisboa.pt
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by smtp1.tecnico.ulisboa.pt (Postfix) with ESMTP id 6C8F46005403;
-	Thu, 21 May 2026 10:15:04 +0100 (WEST)
-X-Virus-Scanned: by amavis-2.13.0 (20230106) (Debian) at tecnico.ulisboa.pt
-Received: from smtp1.tecnico.ulisboa.pt ([127.0.0.1])
- by localhost (smtp1.tecnico.ulisboa.pt [127.0.0.1]) (amavis, port 10025)
- with LMTP id Cqj6B6mdGItx; Thu, 21 May 2026 10:15:02 +0100 (WEST)
-Received: from mail1.tecnico.ulisboa.pt (mail1.ist.utl.pt [193.136.128.10])
-	by smtp1.tecnico.ulisboa.pt (Postfix) with ESMTPS id 69C4F6005408;
-	Thu, 21 May 2026 10:15:01 +0100 (WEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tecnico.ulisboa.pt;
-	s=mail2; t=1779354901;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=myizXeQq+JV57MgRLAo4GSps27tWvx61wJ4rnoZ+ifg=;
-	b=IKogwvfVGysD4oioV2P40t4MKEAUudRff+/8WQTV69J6TU670i1ZYHBulMgQ4eulUbOtpn
-	osVcwvfG05/KGG98QZ6At4OaYWD+LVaGAnZbj8QB9sqD2wZV7zQlkN/E0yD2PmOMkIhrVM
-	s2VXChjVRQLg1vEaarB2UGww2fgAkgcJt/R6zZVko5AKlWdq04m50DQvr136lXEHtEQhSz
-	FKEmFedH3UcML9alnb6zUUvLtlOqIGhC5btb8gaCwmfL5f/kKpH20yAuN2LfQbIt3hcQFm
-	k3LfK1QZ5r2iC2fcpxwKTHDbWyf8/kp47fuSPRK/cg5iwczcX1Aq/yfI9LFSNw==
-Received: from [192.168.96.1] (unknown [89.214.153.114])
-	(Authenticated sender: ist187313)
-	by mail1.tecnico.ulisboa.pt (Postfix) with ESMTPSA id 1B00D360228;
-	Thu, 21 May 2026 10:14:59 +0100 (WEST)
-Message-ID: <9686be2b-8f9a-48e2-bb9b-b1e895f8772c@tecnico.ulisboa.pt>
-Date: Thu, 21 May 2026 11:14:54 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7674E2D7D27;
+	Thu, 21 May 2026 09:19:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779355141; cv=fail; b=lme3cHpcXJxy59VsV4oq7NLx5S03MkEuGlAyQfepRhVR8/pxvaWveyf+/WBCOMkeJgfoaZE5jfR8fgL0btgAwDi6i8FyyW6MTx5e9Q5xe6DwUJ+VDsoiXnHz+kkaMLcDbR79r9qgR6jBKparmCU+WE4Qi5eMeG7acbARxVkiYh8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779355141; c=relaxed/simple;
+	bh=CuCIgDibJojUjZHOfl/xEN78oYrWKT2+v6B62K4kL2w=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Z4HRPAWQO1YQkndiWM03cb0KTEcbzbL9dq+KbSe+wfj1C/XEelddvxOD3IT6+ek8xvlouV5QkvMbeD52JCh2mM1+fA2on1C43Oc8tNU9+0MTY4rFobhmtEXXXt06Zf+AO/nUlsUkPny/y/oHogO4CJgUQ7a2qo5Pl2ZCvKoomSQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=D1qgFyM7; arc=fail smtp.client-ip=40.93.195.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=a6Ee0mxBdcnZX+q2hsW9kLkx9IQM/ANWSxyfoy/Sm/hjWrZQHykq1BJOGmyyBTWBsPERm8HPbw9sJ4aOupttM+BcOCbcGBrH3Fy7GXDaqe6VTV14KVlYJmoMBwSDiMiXeNWxjb1qIAmpSaOeBFe0azzlHjZfixnnt53T+KYlOeZBQVXNTV0QwAR09Wuhp3DUnWYXnzxD1nsySN2IaJfHFSAtRjqNWtturoyjz2OzIqGbaIHDvQLC4GVZiJ1HCvQbJaGrkmpyujshA6zyzV9oRA/1ijs55BuXhV2aIyHKVwWerw6wR+LHtWZ4aRdJRxhlmhFHKdiHKpDh2iEPuZ1g1w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=N5TXRUS7NaBx0RdYzS85Q/0rrSyXCc4xq53bP15r/ew=;
+ b=j5b2DWkv/5f+jyXwjQLdVGDyIFrlq1Sdlm1jknnbNuBDmYX6hzHF3stRt6Sidwx1R4r663a2/AFin0Jj2uaJ0ZEfRuwKE/NEba5LVJLLGgtr1w6NQrE1l2De9wNBss/ZiLe0hls5qES2OW3vd1qGycdtXx5vFl9ZDlfUVq5gLo5KN3UILcVTwtF2//7/Z4knudOe0MEMjoYoykc8OMiez2x3p27l+idfMDj9nWoIRKP8ZaY8WUrY2YrdHYxBgr4aFSmtJKAoHTjWQy8JPgKK6/Y7KzeWJ20Ouefe3YXRu5zs0EwVgb5C25y62yNLrSAW78suBy4SopAuILXPuAJVDA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=N5TXRUS7NaBx0RdYzS85Q/0rrSyXCc4xq53bP15r/ew=;
+ b=D1qgFyM7IcbnPSV7ZVaDf6o5jYyVOI0BOcsUYMng4yfHM6dTSNuyoKZNHPG/gwdE4cPL9ZLCp+blsRukVZjG2ozZvzGRChblUyKYq1WScp3HUTCU4mudpeONcFZlS2ybMGmAlahvCWQgNfKeOMBntjdLJiUGiWsfOvlZr9vO+XJ+yqxKXrQcRyNPtKOznOofSBPOok3g60BBDzfxz9FytLReDNvagCs5SKZk7N9v4S1wTl4FcnObhhKtbnZ5zMG8R4cVgQ4Givt2NPPC9LkIhmA02phc1+hfT67+HaLCvqgOcQgxoTbzueBeyxaX1hy0LwhgCPd5KycB8j2SK0QbOw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS2PR12MB9750.namprd12.prod.outlook.com (2603:10b6:8:2b0::12)
+ by SJ0PR12MB6989.namprd12.prod.outlook.com (2603:10b6:a03:448::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.14; Thu, 21 May
+ 2026 09:18:55 +0000
+Received: from DS2PR12MB9750.namprd12.prod.outlook.com
+ ([fe80::56a8:d6bf:e24c:b391]) by DS2PR12MB9750.namprd12.prod.outlook.com
+ ([fe80::56a8:d6bf:e24c:b391%6]) with mapi id 15.21.0048.016; Thu, 21 May 2026
+ 09:18:55 +0000
+Message-ID: <f0858c30-40df-457b-a2c6-820600800f76@nvidia.com>
+Date: Thu, 21 May 2026 10:18:48 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.18 000/957] 6.18.32-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, f.fainelli@gmail.com,
+ sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com,
+ "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
+References: <20260520162134.554764788@linuxfoundation.org>
+From: Jon Hunter <jonathanh@nvidia.com>
+Content-Language: en-US
+In-Reply-To: <20260520162134.554764788@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR2P281CA0138.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:9e::7) To DS2PR12MB9750.namprd12.prod.outlook.com
+ (2603:10b6:8:2b0::12)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mfd: max77620: Avoid regmap mutex deadlock in power-off
- handler
-To: Mark Brown <broonie@kernel.org>, Lee Jones <lee@kernel.org>
-Cc: Dmitry Osipenko <digetx@gmail.com>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260520-max77620_poweroff-v1-1-9186a3bcbe9e@tecnico.ulisboa.pt>
- <c8d16352-63a3-4512-b90c-a79e7e96dd3c@gmail.com>
- <38f5201a-6b52-4f18-bbbe-775171a3f147@tecnico.ulisboa.pt>
- <20260520161900.GM2767592@google.com>
- <3b2b25f9-3ab5-4811-9945-f317b8788484@sirena.org.uk>
-Content-Language: en-US
-From: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
-In-Reply-To: <3b2b25f9-3ab5-4811-9945-f317b8788484@sirena.org.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[tecnico.ulisboa.pt,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[tecnico.ulisboa.pt:s=mail2];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS2PR12MB9750:EE_|SJ0PR12MB6989:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6bc84d85-c508-424e-209e-08deb719fb2a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|22082099003|56012099003|18002099003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	IvfS+tAcmak4T0Srr+lEwi2FekiYlh9znu7OplzwEVzt9D+WMvcjeoMqbKpdN7xIPYdKCD6NtWVkTs6dTeeBtljVOwP4ifx7mEGTLcuP1ZbWEBuR2SgX0stnjmVIGLhazy/LqD3Yexd61HMYb6+aFgCaxjIF98dlJX8aMTlw2sh14yxDtVyeXtKxc/t+uoZ3COL5FTWc0ieCqHKt9a0UH4fIfiLOoRfBFlxYq+Np9Tw2yLUfV50t8jVDkii886xJvkeawtIYMZTCIwWkNcDAwYNyMAJjISdh7cMiuMOZ5JDUmEhFsK2UT5/v5o+r+gqVNzF5VqeX1kXGOgY3tUtCulkv+YW8IcppXoMIvcUzKO1k4xFvzB59w+1FFYNOox079M97iSm51mIV/LAKhpKzvzn6EYhdwygw44JKnUYYq9jpydDcRx47NvAPleFcGOabCgXscuqgx+Xo3AavsxQZi44yeLFrkqrC7yFjalVze9K5iiavUsU3lvzIRpq2TriV3aywZIW44wwIe8FHhEdLg3HQMFPJyM6JQhwlExYq8lgB/gK3gbYZ66omDoz8aankoRQElEaESS9Wp9uXnLsV72RwSev3QwGc2ouy0ZEfvoqEx34VYcNdIKhL5cXiJAa6QDzlTc9jXD2V+aZStuRf9KjomIvGR1v88NX3EIzzKlQe5EpuVm4Hohp5Idar8R8VcS9ZebdifLa23I207zQqjA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS2PR12MB9750.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(22082099003)(56012099003)(18002099003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Q3NhQit1VXEvUEk2OHJONkl5UUtDSFhYUmFKZlRraVBhak5nWTFQNTR0Y0dn?=
+ =?utf-8?B?SjAwbWpYSXdWc3EvTFJiaGM2OUY3ajBJeFJ1U1pXMUd5WjkrN25GcStlbHVR?=
+ =?utf-8?B?TEVlZVBRQ2ZqUk41V0ZicmZLZjlXTitiS1dIaElEekNTajExUFNKRmliOHNn?=
+ =?utf-8?B?TjlRNHg0cjFoVmlueWViRkdUdy9pcGJxS1RNckhYdXUwczNOUS85MG93SVVk?=
+ =?utf-8?B?OU8zMVNHNkFOazczenpkWGhlQk9PaGxGY1orUWQ3L3o1QlRmZk9SMnYxWkJn?=
+ =?utf-8?B?cGN2ZTFvU0VHQUp6SVp3clgzYUdVL2tDL2hPYkJaQWh1UDMvV2ZobDl0QVMw?=
+ =?utf-8?B?MTlYREt1d3VQTWdZK0RYbkw5NEVkUWQ5cExpSEViaVRyd2VCK3Y1RnJ4NFRu?=
+ =?utf-8?B?RG9rOHRwTEhYMnd6K1Ryb2l0UEJuWENKS0NYNWdlNkJTd0IrQnB3SjFXL2FJ?=
+ =?utf-8?B?THF4T3BIMTlHNDZwNS8xQ2ZDY3RRWVF0SFBLYWM2REllcXhVRXF2MWJhQXNo?=
+ =?utf-8?B?dVgvNzBMeXNpS3BFYVA5RUF2aEx0RjJqUzRDdm1VZkwweGRxSHJpZ3ZTLzRk?=
+ =?utf-8?B?VjNDQklwSzlDWWdBUTZDUjVsKzBwSzhRc3dKdHQxNjR3a1NKenR6VDJDYVRn?=
+ =?utf-8?B?MDBkSEpEQ2s3SVloVmVVbUFtQ3QxaUJnSkNKd2Jkc0t3VXNVUlVJSElzZ09m?=
+ =?utf-8?B?WE9uTk90bzI0SkZwd1JVWXhxYmd5SEFOcXU5SWw1NFBTMi8vQllGWUZFQllX?=
+ =?utf-8?B?dldKQlJDVVpYZjltUVI0UFVYMzdzNXZIa0luU0k2Y2kzNW95L1dra3BhQnlU?=
+ =?utf-8?B?TVlJWGl0RG5YR1I3YndpMnI1SjFzNElMNlp3M3NXcXVUZzVxQnluWFJPWXBX?=
+ =?utf-8?B?Y3lUU29rT1BvYkpjcmswYkZLZHJPUW9LK2J2YzMrNVFwSjQzNlFwb1cya1p6?=
+ =?utf-8?B?dC9xM05UZ09iOHhJTG0xeVB5dENDeDhFVDBaV2ZldG1jN3Y2RDB2N2FtNGFp?=
+ =?utf-8?B?Ym9VL0tuSWdRbVdrUzdIVW8rQ3FPT0dpaVQ2ZHNIZHM1VGZneGxTYnFNNnU0?=
+ =?utf-8?B?YkNMaGlBNVBia290SFFSMWxDclJlSVVyMWQvZytLZG1mS0MvMURjQ1RjV3g5?=
+ =?utf-8?B?ay9QR2ZjaXN1UjdYMnBmeStEY2lxL0p0d0pua01UUUY0WDhidm5UaTgxYjZ2?=
+ =?utf-8?B?U0VnNmszQWtZdm9heXRwWG1OUE5GQlZuT3czMWo1ek9YUlRxdjhYd3J4dGt5?=
+ =?utf-8?B?UkJ1TlpaZHI1Q1loTGt2aHRlZVpUcWo3TGdnNE16dmxFbG9Cb1dabDg4ZS82?=
+ =?utf-8?B?ZlBLd0k2NE16UFU5QXhjWVIvUFFnc04xN3I1TFZPMmJKR3Uvc04wN2o0ZHl4?=
+ =?utf-8?B?bG1EMUsxazZ0U05Kc09qZDNyR0lzQ0hTQTJta3JOWlpETURhb3BtdzZ3amJp?=
+ =?utf-8?B?NkU5SThxc2Y1RkR4WFhtbXRiZGFnRmRUQ29XUW5jWUhXTDlMMFI2K2V5RzFw?=
+ =?utf-8?B?VTg2MmM4bUY4Mno5OFlYYnM0cHpNVDdkRncwcXZ0NmMyVng4NnBrZ3ZjdW5j?=
+ =?utf-8?B?cEVFOEJRU1lXZkZHbnlmY1ZmVUZVdlBlbUllZjlMa0hBQTBleFRvNDE2eHdY?=
+ =?utf-8?B?Y3pxWkljdVdFbTFSSjJWZW9MZVgvd0plaDZjOXI3dTJaRGxZZS9yZ01KSzA4?=
+ =?utf-8?B?WGYzUnNiekhhMXA0U3hhcUpON2x4cW5ZOFJENDg3a2JHVWlVUWs1L1E0OU5h?=
+ =?utf-8?B?dUZ3SnN1NFlyVTlsTzQrUFJlT0p2ZUtzQmRlMUMyQVVUQTRHUlVUdGYvQWU2?=
+ =?utf-8?B?MEFsOGpFT2FwWEU3UVZUV25uS1V5L2krdDcyeUNVRUtIWllyWW9HalpHdU9H?=
+ =?utf-8?B?bjd0bmQxV3NWSm0wQWRTSkxEdFExSnhZaFR0bG13SEROWTZicTZ6OE1kMGo3?=
+ =?utf-8?B?ZzZQRzlHMHRqK25ZczB2eWZlTjFnMUJtOGpzeDdrZ2lXT3dabTdSSVZKK1Fh?=
+ =?utf-8?B?VVlOSHNpTHM4RkFobW5tVCtxSnVlRzdTbCt1UDlKTzZQSEdRU3RGTEVsOWNj?=
+ =?utf-8?B?a3NmRlhwNHhmMHh5TWloWFFTbnVnL2Fla0YxWUFiaXZNeWRQejRwcnM5cVBp?=
+ =?utf-8?B?MURWS3U2M0Y0MkcvUGI2aE1qMmgxWDliTWxmRnJiK21ZZE5QK2tWUyttYW5F?=
+ =?utf-8?B?blpjVzBpRllvTHB4Zi9rS0J1dzcxY3F3VU9mcGRBMXNQTVAxaitCaUhTb3RP?=
+ =?utf-8?B?SEFPYVA1SjFKMVZadFZFU1ZKTnFhUjlPZVBGaVFodkQ1MWgraHpZRVJJZkN2?=
+ =?utf-8?B?VnFpWFUrWElRRVJDbUxIUEdmK1c1RHpLeUcweDdHc0hhSlArbVkwZz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6bc84d85-c508-424e-209e-08deb719fb2a
+X-MS-Exchange-CrossTenant-AuthSource: DS2PR12MB9750.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2026 09:18:55.1070
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: a+x+ZXxH+DFxU3+iQ2HqB+Ngp8BCZ2P54pj62kak5A2JMbig6DhTU+s9hDhRy40dkFSwzWRY0bLUPuBtKijaxw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6989
+X-Spamd-Result: default: False [1.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253487-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253488-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[diogo.ivo@tecnico.ulisboa.pt,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[tecnico.ulisboa.pt:+];
+	FROM_NEQ_ENVFROM(0.00)[jonathanh@nvidia.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: E30455A236C
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 16D5A5A24D8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-
-On 5/20/26 18:23, Mark Brown wrote:
-> On Wed, May 20, 2026 at 05:19:00PM +0100, Lee Jones wrote:
->> On Wed, 20 May 2026, Diogo Ivo wrote:
+On 20/05/2026 17:08, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.18.32 release.
+> There are 957 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
->>> This patch was motivated by the Sashiko review I got in [1]. Its point
->>> here is that there is a possibility for a deadlock scenario in which
->>> a secondary CPU obtains the mutex for the regmap and then smp_send_stop()
->>> is called before this secondary CPU gets a chance to release the mutex,
->>> making it so that when the primary CPU tries to acquire it to issue the
->>> write it hangs. Is there something that I am misunderstanding here?
->>>
+> Responses should be made by Fri, 22 May 2026 16:20:16 +0000.
+> Anything received after that time might be too late.
 > 
->> It's my understanding that using the Regmap wrappers _prevents_ locking
->> issues, rather than causes them.
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.32-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
+> and the diffstat can be found below.
 > 
-> In the case where the CPU is being powered off during a regmap write
-> there is a potential issue - as Diogo says if we're in the middle of
-> holding the lock and we power off the CPU that owns the lock then it
-> will never be able to release the lock.  I would expect the same issue
-> to apply to a bus like I2C or SPI though, they'll hold a lock while
-> they're in the middle of doing bus I/O unless you use some special API.
+> thanks,
+> 
+> greg k-h
 
-In that case can we call __i2c_smbus_xfer() directy from
-max77620_pm_power_off()? Or is that unsafe because it can interfere with
-an ongoing transfer? In essence my question is what can we do about
-this, Sashiko suggested to move the handler to 
-SYS_OFF_MODE_POWER_OFF_PREPARE
-but I believe that that would/could be too soon.
 
-Best regards,
-Diogo
+All tests passing for Tegra ...
+
+Test results for stable-v6.18:
+     10 builds:	10 pass, 0 fail
+     28 boots:	28 pass, 0 fail
+     158 tests:	158 pass, 0 fail
+
+Linux version:	6.18.32-rc1-gb7adc4ce3f26
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                 tegra186-p3509-0000+p3636-0001, tegra194-p2972-0000,
+                 tegra194-p3509-0000+p3668-0000, tegra20-ventana,
+                 tegra210-p2371-2180, tegra210-p3450-0000,
+                 tegra234-p3737-0000+p3701-0000,
+                 tegra234-p3768-0000+p3767-0005, tegra30-cardhu-a04
+
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+
+Jon
+
+-- 
+nvpublic
+
 
