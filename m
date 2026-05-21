@@ -1,191 +1,195 @@
-Return-Path: <stable+bounces-253555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253557-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qJSJB3cJD2rREQYAu9opvQ
-	(envelope-from <stable+bounces-253555-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 15:32:39 +0200
+	id CH5WKHsKD2omEgYAu9opvQ
+	(envelope-from <stable+bounces-253557-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 15:36:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B24755A5D8F
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 15:32:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 913375A603E
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 15:36:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E7F5B314F2F1
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 13:15:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1DDC732B5B31
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 13:17:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D78203E5EE7;
-	Thu, 21 May 2026 13:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE7993E1712;
+	Thu, 21 May 2026 13:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="V9VLScIj";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="gzUwknpy"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="UxJRVosp"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 591EF3C8C62
-	for <stable@vger.kernel.org>; Thu, 21 May 2026 13:09:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122FC3DB318;
+	Thu, 21 May 2026 13:13:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779368985; cv=none; b=IuM4XFncWs/S2uhZW1KHUTrwY6Tg10fEW4qvSBNKw6u+7ZQj7GW0FZD5D+b5m8dneSveVl9QRVH5xSM9xGc3NhfRFuI5xCKxPl/WahvjmQCTP6uEVOBg3unrLxwjxiVnMGeME0OR+BnDtuta77GEPM6Kl9/mncU4uRkgGu0MHSA=
+	t=1779369235; cv=none; b=HDKKn3OTqqpPbEBryNwl+X6XpGSruLq1pxH5muF2hv/4d06kqJDqpMu8A80fgCV5Kux7RKor2IgeDQGFov9MyTH6Z1oiXa2b0dW8khXal8OvSZ8MqU1kM+yotNq+pXGPXtdbLuZ9XgeWyE/Z4IDR1EuvGV9VIvFSsFIlf9or57A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779368985; c=relaxed/simple;
-	bh=Jdm389GpaXuX2GWxlZhF6BpB83Vj3ksApFOhdPl2pZE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QCJMyuX1JWfoxUaep9Cr6KnoDo/f+SrTCTykGJgISpWwWfXYgGW7K2AL5SaLJmEd2OVZA7bxMuuey0qRigsXta1V2VH3QuLXTbhyvN4U3np+Vi/3yYa2RwAhWJn2pAHhXYJ0wxtZ4g6n/ZJ3xTK41SlSRcVrsyt3I4QlDasQONo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=V9VLScIj; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=gzUwknpy; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779368983;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=E1vW/XPFrOLYW0lggR7O8cskrXPHeM9SnYmkXYtZE2U=;
-	b=V9VLScIjN+NhBKis4WUCTC2eyMjIRWjSwj2roLaAjHk8+GhLBsQy0RF1x7wi0vjDhb/apA
-	78TIbboWCWPAs0V37GtcSQoagELJTvQbNi1bLCHuBQNUpUz1u8RZpASjjpP6AidYZL9Zku
-	RN8P/o4o1OuzVIPg05g9S56TYHuUFvQ=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-339-2RTnOczcNgOM71mZSmZrLQ-1; Thu, 21 May 2026 09:09:40 -0400
-X-MC-Unique: 2RTnOczcNgOM71mZSmZrLQ-1
-X-Mimecast-MFC-AGG-ID: 2RTnOczcNgOM71mZSmZrLQ_1779368980
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-44a71109b94so4565625f8f.3
-        for <stable@vger.kernel.org>; Thu, 21 May 2026 06:09:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1779368979; x=1779973779; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=E1vW/XPFrOLYW0lggR7O8cskrXPHeM9SnYmkXYtZE2U=;
-        b=gzUwknpykZJdMmq0ET5kHWWnIm59z8iScuw46XJl9HO4MtMct0S31JS9VQIqQS2Qmt
-         qBI8bstnFhn27TxXDNzbtmsdowmCgKD/zzRC1Q4GtV3i7YFEWUyPcdp0V9CyN0tAu3lY
-         rIXs7R3AKxDLQ7tw+s1Cm79+5P8EJ2WFsD3QGV2AMlxnkNVTV9hM233SYz0LvOgfxn8X
-         kE8NdwFXAeyknjLtTifPCUm8ixQI578I4ZOsjrifkaf704+49owwj15NJRm5CdiuAcL8
-         efD6eBJ65vXfLmHZAIZ4zgN/Utp5GvP2yeryupHCCarB9JLxDysDCkFq8yg0GMo4ltfy
-         f6QQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779368979; x=1779973779;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=E1vW/XPFrOLYW0lggR7O8cskrXPHeM9SnYmkXYtZE2U=;
-        b=JzvyZcMqrsKAeCLVVCaC2DRBdF357syxZ2+JdWlX8yurp8M2ImoURnUYlce32Zgakd
-         G/Hw5nCrQaDgAjXIaIuCVM64gA/QL2Hp69SdlWbf1ZtGI/QY42t05vhuqmw1T5xsGALe
-         tk7kBUmUyZdeOhF/n8oXmLvD9nHK0GIpboA4AqO1rZiXGDQSUw+t09F3TFanD3Re5MAD
-         coAagCUi1H90MYjw9BtWGxrrgB2TdrtPsS0dd56MqxbPz26WNIu1EcC6m37/asy/h2+s
-         EU/hN+fdXl0GgF6C5wWDICjFgBXaFbbTp8YUJQTJGsB7b144H2z6PGUIGonybdSG02Kx
-         G92A==
-X-Forwarded-Encrypted: i=1; AFNElJ/sYVvlU33VUQ68kxQnac078pB2uyYt99Zr0Jq56BSKDAC5wj5A352duzfydDB4dOts2V5Ph2s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrBTam47U9Db3hrwy1MF/+QttiFgEJQm3wOTKGuFsKlEv0BK9r
-	abpXbuqWoMJyP1H9PkDTeWnh+85HN0wz+rAVCk9LfM4LbrrdiQIwXTHp6shWyxzIFjupcS3apVe
-	xXs4D5/D1mVhENIY2Dw4ThEHoaDI2REwrHckZ+yvxoKvZ6OVyqFfKUG2uEg==
-X-Gm-Gg: Acq92OGDT9xTt2KgFRfhQXO3MiVyGBU6m9E0dv5RGY1bQewZccde3j26FCMpQh8GqhJ
-	uaS9uIu48pxZtX8NpV5L1Lns85BslgEblErp5XWtjxnMcfnE1lGlh3xeaqk0Z7cOj0ZaSMItxLt
-	z/QN0mMl6VnS5X5NYu4SPAfD7uvBIm3Rel1bCUsT3haezS7Ig+RCoeuqzu83XJWcoRlmoaERtID
-	TrkfKHYr1g8D3Qa7Aj+Eg7cpltS0iOv4fZ8bvnFQSrcVjqYBh59+Wazmjx5vof0REeN8bTJX/6f
-	nxU4aJcJiKevxHWrtwPxwEivyAaOiUayRz0gY7JlWMEit/cTsAJUCaJUqcoCiwWLJGeYqZAiF7o
-	KsIDOmqcuLKbdEq0HjBNPnuB5ttUpR9UarwCUt+iKQqQ=
-X-Received: by 2002:a05:600c:a15:b0:490:3cef:bd90 with SMTP id 5b1f17b1804b1-4903cefbe6emr23446875e9.26.1779368979411;
-        Thu, 21 May 2026 06:09:39 -0700 (PDT)
-X-Received: by 2002:a05:600c:a15:b0:490:3cef:bd90 with SMTP id 5b1f17b1804b1-4903cefbe6emr23445975e9.26.1779368978717;
-        Thu, 21 May 2026 06:09:38 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-25-45.inter.net.il. [80.230.25.45])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49035edd7cfsm15236405e9.27.2026.05.21.06.09.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 May 2026 06:09:38 -0700 (PDT)
-Date: Thu, 21 May 2026 09:09:33 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: netdev@vger.kernel.org, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Simon Horman <horms@kernel.org>, virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jason Wang <jasowang@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Eric Dumazet <edumazet@google.com>, stable@vger.kernel.org
-Subject: Re: [PATCH net] vsock/virtio: fix skb overhead overflow on 32-bit
- builds
-Message-ID: <20260521090927-mutt-send-email-mst@kernel.org>
-References: <20260521124732.125771-1-sgarzare@redhat.com>
+	s=arc-20240116; t=1779369235; c=relaxed/simple;
+	bh=68K++VHTZNynhrRM/dCu5n6ucdedCbWyaLyp29QCAzw=;
+	h=Date:From:To:Cc:Subject:References:Mime-Version:Message-ID:
+	 Content-Type; b=HTuhDHsCXeUvToVS8i3pVLq5toUWXk3FzZ3XAPENihdm7q/3EFgwESLyilAj11QFaVO+iDuRflygrYgpnXSv1sOUkmE9tJQSRvKH2K5Nvj8s2ecOeT0/d4I9f/dMdtapkUF82fF0T4PikkSWdU8hxqQM0BIy1PYSNHX63Vi9R/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=UxJRVosp; arc=none smtp.client-ip=54.92.39.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1779369209;
+	bh=68K++VHTZNynhrRM/dCu5n6ucdedCbWyaLyp29QCAzw=;
+	h=Date:From:To:Subject:Mime-Version:Message-ID;
+	b=UxJRVospi7J/b3XY47FlwLtMEMlSnnPbdD4QxMh6He5BgsSQGPvRYojIXsAeGSbVc
+	 IAOXk1+kzzyD36naMez594ZYwnSFfwh+I0+S3jdVo5e5o/Gfj5/+z7dskBqnGqu3II
+	 XdGbL14aDyNhO6kXPLvqDzqoLhmeWTuadpz/UgDI=
+X-QQ-mid: zesmtpsz4t1779369200tb62852e2
+X-QQ-Originating-IP: lW8mg4gRaaz3/0T85ijHdttNqk9n9OK3iYiv0i6XsHI=
+Received: from PEN002676 ( [1.202.39.170])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 21 May 2026 21:13:18 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 3165683158295094582
+Date: Thu, 21 May 2026 21:13:19 +0800
+From: =?GB2312?B?1dS98MP3?= <zhaojinming@uniontech.com>
+To: ilpo.jarvinen <ilpo.jarvinen@linux.intel.com>
+Cc: srinivas.pandruvada <srinivas.pandruvada@linux.intel.com>, 
+	hansg <hansg@kernel.org>, 
+	platform-driver-x86 <platform-driver-x86@vger.kernel.org>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, 
+	stable <stable@vger.kernel.org>
+Subject: Re: Re: [PATCH 1/2] platform/x86/intel/tpmi: use cleanup helpers in mem_write()
+References: <9de7a91f-2dfa-7a99-9580-378c7a044bce@linux.intel.com>, 
+	<20260521035623.1426374-1-zhaojinming@uniontech.com>, 
+	<20260521035623.1426374-2-zhaojinming@uniontech.com>, 
+	<35a143db-461b-7d2a-2641-4d526bcb4af4@linux.intel.com>
+X-Priority: 3
+X-GUID: A9BBB1C6-C6FF-4617-80A2-8BD1B93FB183
+X-Has-Attach: no
+X-Mailer: Foxmail 7.2.25.542[cn]
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260521124732.125771-1-sgarzare@redhat.com>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Mime-Version: 1.0
+Message-ID: <A3B52F4C6600D94E+2026052121131812291323@uniontech.com>
+Content-Type: text/plain;
+	charset="GB2312"
+Content-Transfer-Encoding: base64
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
+X-QQ-XMAILINFO: OKkKo7I1HxIeyaBlqlzqbxV3g37/WTkBNgjE9N9lXN2BU4sMuT3ILdC+
+	CYv88EtfZxKdJUJM03Ocf6SVAMqiRTLk4xlud6P4UdNcyva/RVZi+0hz1sfp+hpwttyVIvQ
+	kZsIc10dhGZctqHpiDAxELYTv5yKhdhQdmh8PD6C8eJSV/RR0/zns524JJ01Uts3PRpqix2
+	FnN/W0nrpYeVd2ZSBgqNaVInClAl6f9+1D4jKtui/fjf0AqH98MhFQ5XW1vD/38Iudsjnp2
+	q3CHCbFtx0SMmskJqySd1j3eGSOY2tScF1oWZyF3ueKCDbnaiZXJNk6TiT1WqYVeO5OHgID
+	fNw2WdXOGTdXqSkEILLJVI8APFkpeKVH14et/i4sS1v0PScqfRZjwGhkmUR54zDf+RGEnIQ
+	E2PYd2jaagA1hkHomasgA7wzzZt0NeKlOfOB15TvA7+XhQ8m0xfBxKl9O7mvKki8uBJqbNg
+	+oWroExoDt5NHzredIE1ojcSW+I/NCf52mG36jkx9a44mYB644BklEgeCuXvj0CZFT6jtM1
+	3PYMLzKRD7dQDU6HbytEU2zYhkAdhsoe5B/Yb0qnopTYeuFKDwRQj9gPbTjpEB+gmpnzqEO
+	NxBAcsaWRzICKmD42xoEUCX1tD2P29yky3WUJ4IXPoNrW7TbDe1Ms2NKsN/DCHmFa3yXpd2
+	V1iiZ68b9tzrYnOoy/lq6bcCieDOp9a26OUj8+rKGNhgubeQTNLxwvLhYOxzYiis1A27Y/M
+	M2LzAu8Vibg4hKM8tiDC3dpQrsjSAxGhsVRQzp/vDBo8n/3BcntIeGz3IFy3DTbqyHHVglQ
+	hcUtVXfjqEeybXEO41q8Suk8v9+03l+X9aaCNUUxhqDCag3Wt0GUqZ/VkboKYvUrPhSqLbo
+	Sj+J+RNF46HkfNclMBp5ccViJwjQ156sSWIw898fbSIVdJFGG6tQgoN/9Bpzz0ubntnL1D8
+	SxdbBQgvCqim6gEh5wAAZ13lCslviZcm9OoZ8DD+4eyeFQ1iA6CtzuhlT7aXFIL7pohf2J2
+	l0zs53HB3e03lZZRfrJHMuyW/E1PpXTLqjGnVe4w==
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+X-QQ-RECHKSPAM: 0
+X-Spamd-Result: default: False [-0.56 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	MIME_BASE64_TEXT_BOGUS(1.00)[];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
+	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
+	MIME_BASE64_TEXT(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-253555-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_ALL(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-253557-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[uniontech.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mst@redhat.com,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[zhaojinming@uniontech.com,stable@vger.kernel.org];
+	HAS_X_PRIO_THREE(0.00)[3];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: B24755A5D8F
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,uniontech.com:email,uniontech.com:mid,uniontech.com:dkim]
+X-Rspamd-Queue-Id: 913375A603E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, May 21, 2026 at 02:47:32PM +0200, Stefano Garzarella wrote:
-> From: Stefano Garzarella <sgarzare@redhat.com>
-> 
-> On 32-bit architectures, both skb_queue_len() and SKB_TRUESIZE(0) evaluate
-> to 32-bit values. The multiplication can overflow before being assigned to
-> the u64 skb_overhead variable, making the skb overhead check ineffective.
-> 
-> Cast skb_queue_len() to u64 so the multiplication is always performed in
-> 64-bit arithmetic.
-> 
-> This issue was reported by Sashiko while reviewing another patch.
-> 
-> Fixes: 059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb queue")
-> Closes: https://sashiko.dev/#/patchset/20260518090656.134588-1-sgarzare%40redhat.com
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-
-> ---
->  net/vmw_vsock/virtio_transport_common.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-> index df3b418e0392..71198bf23fc4 100644
-> --- a/net/vmw_vsock/virtio_transport_common.c
-> +++ b/net/vmw_vsock/virtio_transport_common.c
-> @@ -417,7 +417,7 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->  static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
->  					u32 len)
->  {
-> -	u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
-> +	u64 skb_overhead = ((u64)skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
->  
->  	/* Allow at most buf_alloc * 2 total budget (payload + overhead),
->  	 * similar to how SO_RCVBUF is doubled to reserve space for sk_buff
-> -- 
-> 2.54.0
+CgoKCj5PbiBUaHUsIDIxIE1heSAyMDI2LCBaaGFvSmlubWluZyB3cm90ZToKCgoKPgoKCgo+PiBJ
+biBtZW1fd3JpdGUoKSwgdGhlIHRlbXBvcmFyeSBhcnJheSByZXR1cm5lZCBieQoKCgo+PiBwYXJz
+ZV9pbnRfYXJyYXlfdXNlcigpIG11c3QgYmUgcmVsZWFzZWQgb24gYWxsIGV4aXQgcGF0aHMuCgoK
+Cj4+IENvbnZlcnQgdGhlIGFycmF5IHZhcmlhYmxlIHRvIHVzZSBjbGVhbnVwLmggc2NvcGUtYmFz
+ZWQKCgoKPj4gY2xlYW51cCBzbyBpdCBpcyBmcmVlZCBhdXRvbWF0aWNhbGx5IG9uIHJldHVybi4K
+CgoKPj4gCgoKCj4+IFRoaXMgYWxzbyBtb3ZlcyB0aGUgYXJyYXkgZGVjbGFyYXRpb24gbmV4dCB0
+bwoKCgo+PiBwYXJzZV9pbnRfYXJyYXlfdXNlcigpIGFzIHJlcXVpcmVkIGJ5IGNsZWFudXAuaCB1
+c2FnZQoKCgo+PiBndWlkZWxpbmVzLgoKCgo+CgoKCj5Ob3cgeW91IG1hZGUgdGhlc2UgbXVjaCBz
+aG9ydGVyIHRoYW4gNzIgY2hhcnMuIDotKAoKCgo+CgoKCj4+IEZpeGVzOiA4ZTBhMmZjNjhlYzMg
+KCJwbGF0Zm9ybS94ODYvaW50ZWwvdHBtaTogVXNlIDMyIGJpdCBhbGlnbmVkIGFkZHJlc3MgZm9y
+IGRlYnVnZnMgbWVtIHdyaXRlIikKCgoKPj4gQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcKCgoK
+Pj4gU2lnbmVkLW9mZi1ieTogWmhhb0ppbm1pbmcgPHpoYW9qaW5taW5nQHVuaW9udGVjaC5jb20+
+CgoKCj4+IC0tLQoKCgo+Pj8gZHJpdmVycy9wbGF0Zm9ybS94ODYvaW50ZWwvdnNlY190cG1pLmMg
+fCAyNSArKysrKysrKystLS0tLS0tLS0tLS0tLS0tCgoKCj4+PyAxIGZpbGUgY2hhbmdlZCwgOSBp
+bnNlcnRpb25zKCspLCAxNiBkZWxldGlvbnMoLSkKCgoKPj4gCgoKCj4+IGRpZmYgLS1naXQgYS9k
+cml2ZXJzL3BsYXRmb3JtL3g4Ni9pbnRlbC92c2VjX3RwbWkuYyBiL2RyaXZlcnMvcGxhdGZvcm0v
+eDg2L2ludGVsL3ZzZWNfdHBtaS5jCgoKCj4+IGluZGV4IDE2ZmQ3YWE0MWYyMC4uODhmMTRkMGFk
+NDEwIDEwMDY0NAoKCgo+PiAtLS0gYS9kcml2ZXJzL3BsYXRmb3JtL3g4Ni9pbnRlbC92c2VjX3Rw
+bWkuYwoKCgo+PiArKysgYi9kcml2ZXJzL3BsYXRmb3JtL3g4Ni9pbnRlbC92c2VjX3RwbWkuYwoK
+Cgo+PiBAQCAtNTAsNiArNTAsNyBAQAoKCgo+Pj8gI2luY2x1ZGUgPGxpbnV4L2F1eGlsaWFyeV9i
+dXMuaD4KCgoKPj4/ICNpbmNsdWRlIDxsaW51eC9iaXRmaWVsZC5oPgoKCgo+Pj8gI2luY2x1ZGUg
+PGxpbnV4L2RlYnVnZnMuaD4KCgoKPj4gKyNpbmNsdWRlIDxsaW51eC9jbGVhbnVwLmg+CgoKCj4+
+PyAjaW5jbHVkZSA8bGludXgvZGVsYXkuaD4KCgoKPj4/ICNpbmNsdWRlIDxsaW51eC9pbnRlbF90
+cG1pLmg+CgoKCj4+PyAjaW5jbHVkZSA8bGludXgvaW50ZWxfdnNlYy5oPgoKCgo+PiBAQCAtNDcz
+LDcgKzQ3NCw3IEBAIHN0YXRpYyBzc2l6ZV90IG1lbV93cml0ZShzdHJ1Y3QgZmlsZSAqZmlsZSwg
+Y29uc3QgY2hhciBfX3VzZXIgKnVzZXJidWYsIHNpemVfdCBsCgoKCj4+PyAJc3RydWN0IHNlcV9m
+aWxlICptID0gZmlsZS0+cHJpdmF0ZV9kYXRhOwoKCgo+Pj8gCXN0cnVjdCBpbnRlbF90cG1pX3Bt
+X2ZlYXR1cmUgKnBmcyA9IG0tPnByaXZhdGU7CgoKCj4+PyAJdTMyIGFkZHIsIHZhbHVlLCBwdW5p
+dCwgc2l6ZTsKCgoKPj4gLQl1MzIgbnVtX2VsZW1zLCAqYXJyYXk7CgoKCj4+ICsJdTMyIG51bV9l
+bGVtczsKCgoKPj4/IAl2b2lkIF9faW9tZW0gKm1lbTsKCgoKPj4/IAlpbnQgcmV0OwoKCgo+Pj8g
+CgoKCj4+IEBAIC00ODEsMTUgKzQ4MiwxNCBAQCBzdGF0aWMgc3NpemVfdCBtZW1fd3JpdGUoc3Ry
+dWN0IGZpbGUgKmZpbGUsIGNvbnN0IGNoYXIgX191c2VyICp1c2VyYnVmLCBzaXplX3QgbAoKCgo+
+Pj8gCWlmICghc2l6ZSkKCgoKPj4/IAkJcmV0dXJuIC1FSU87CgoKCj4+PyAKCgoKPj4gKwl1MzIg
+KmFycmF5IF9fZnJlZShrZnJlZSkgPSBOVUxMOwoKCgo+Pj8gCXJldCA9IHBhcnNlX2ludF9hcnJh
+eV91c2VyKHVzZXJidWYsIGxlbiwgKGludCAqKikmYXJyYXkpOwoKCgo+Pj8gCWlmIChyZXQgPCAw
+KQoKCgo+Pj8gCQlyZXR1cm4gcmV0OwoKCgo+Pj8gCgoKCj4+PyAJbnVtX2VsZW1zID0gKmFycmF5
+OwoKCgo+PiAtCWlmIChudW1fZWxlbXMgIT0gMykgewoKCgo+PiAtCQlyZXQgPSAtRUlOVkFMOwoK
+Cgo+PiAtCQlnb3RvIGV4aXRfd3JpdGU7CgoKCj4+IC0JfQoKCgo+PiArCWlmIChudW1fZWxlbXMg
+IT0gMykKCgoKPj4gKwkJcmV0dXJuIC1FSU5WQUw7CgoKCj4+PyAKCgoKPj4/IAlwdW5pdCA9IGFy
+cmF5WzFdOwoKCgo+Pj8gCWFkZHIgPSBhcnJheVsyXTsKCgoKPj4gQEAgLTQ5OCwxNSArNDk4LDEx
+IEBAIHN0YXRpYyBzc2l6ZV90IG1lbV93cml0ZShzdHJ1Y3QgZmlsZSAqZmlsZSwgY29uc3QgY2hh
+ciBfX3VzZXIgKnVzZXJidWYsIHNpemVfdCBsCgoKCj4+PyAJaWYgKCFJU19BTElHTkVEKGFkZHIs
+IHNpemVvZih1MzIpKSkKCgoKPj4/IAkJcmV0dXJuIC1FSU5WQUw7CgoKCj4+PyAKCgoKPj4gLQlp
+ZiAocHVuaXQgPj0gcGZzLT5wZnNfaGVhZGVyLm51bV9lbnRyaWVzKSB7CgoKCj4+IC0JCXJldCA9
+IC1FSU5WQUw7CgoKCj4+IC0JCWdvdG8gZXhpdF93cml0ZTsKCgoKPj4gLQl9CgoKCj4+ICsJaWYg
+KHB1bml0ID49IHBmcy0+cGZzX2hlYWRlci5udW1fZW50cmllcykKCgoKPj4gKwkJcmV0dXJuIC1F
+SU5WQUw7CgoKCj4+PyAKCgoKPj4gLQlpZiAoYWRkciA+PSBzaXplKSB7CgoKCj4+IC0JCXJldCA9
+IC1FSU5WQUw7CgoKCj4+IC0JCWdvdG8gZXhpdF93cml0ZTsKCgoKPj4gLQl9CgoKCj4+ICsJaWYg
+KGFkZHIgPj0gc2l6ZSkKCgoKPj4gKwkJcmV0dXJuIC1FSU5WQUw7CgoKCj4+PyAKCgoKPj4/IAlt
+dXRleF9sb2NrKCZ0cG1pX2Rldl9sb2NrKTsKCgoKPj4/IAoKCgo+PiBAQCAtNTI1LDkgKzUyMSw2
+IEBAIHN0YXRpYyBzc2l6ZV90IG1lbV93cml0ZShzdHJ1Y3QgZmlsZSAqZmlsZSwgY29uc3QgY2hh
+ciBfX3VzZXIgKnVzZXJidWYsIHNpemVfdCBsCgoKCj4+PyB1bmxvY2tfbWVtX3dyaXRlOgoKCgo+
+Pj8gCW11dGV4X3VubG9jaygmdHBtaV9kZXZfbG9jayk7CgoKCj4+PyAKCgoKPj4gLWV4aXRfd3Jp
+dGU6CgoKCj4+IC0Ja2ZyZWUoYXJyYXkpOwoKCgo+PiAtCgoKCj4+PyAJcmV0dXJuIHJldDsKCgoK
+Pj4/IH0KCgoKPj4/IAoKCgo+PiAKCgoKPgoKCgo+VGhlIGNvZGUgY2hhbmdlIGxvb2tzIG9rYXkg
+bm93LgoKCgo+CgoKCj5CVVQsIHBsZWFzZSBzZW5kIHRoZSBuZXh0IHZlcnNpb24gcHJvcGVybHkg
+dmVyc2lvbmVkIChpdCAidjQiIG9yIHNvIGluIAoKCgo+aXQncyBzdWJqZWN0LCBJIHRoaW5rKSBh
+bmQgaW4gYSBmcmVzaCB0aHJlYWQuIEFzIGlzLCBiNCBnZXRzIGNvbmZ1c2VkIAoKCgo+d2hpY2gg
+cGF0Y2hlcyBhcmUgdGhlIGxhdGVzdCB2ZXJzaW9uIHNvIEkgY2Fubm90IGFwcGx5IHRoZXNlIHdp
+dGggbXkgCgoKCj5tYWludGFpbmVyIHRvb2xzLgoKCgo+CgpUaGFua3MgZm9yIHlvdXIgcmVwbHku
+CkkndmUgc2VudCB0aGUgdjQgcGF0Y2hlcyBpbiBhIG5ldyB0aHJlYWQuCgoKPi0tIAoKCgo+IGku
+CgoKCj4KCgoKPgoKCg==
 
 
