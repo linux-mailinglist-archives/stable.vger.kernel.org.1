@@ -1,179 +1,183 @@
-Return-Path: <stable+bounces-253621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253623-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KM3jDVxCD2qcIQYAu9opvQ
-	(envelope-from <stable+bounces-253621-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 19:35:24 +0200
+	id oP4+MTs/D2pNIQYAu9opvQ
+	(envelope-from <stable+bounces-253623-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 19:22:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A3485AA59B
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 19:35:23 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6752B5AA202
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 19:22:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CD7F2305F147
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 17:14:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E76713017474
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 17:18:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8D483D9041;
-	Thu, 21 May 2026 17:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3D38381B02;
+	Thu, 21 May 2026 17:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nzBH2mki"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OpAQ/8z3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7674237DEA9
-	for <stable@vger.kernel.org>; Thu, 21 May 2026 17:13:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75686285061;
+	Thu, 21 May 2026 17:18:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779383635; cv=none; b=CbRH0OFPRYHCCpEDMmoxeGPeREKgcWN1z5eZpuQsygT9JShQcwjQl0CC767UNZ1wS/DKnSod+H2e538z6ykC6iGOVnyAX+vgfv+ZfE9PE+oa3lHt8Eu9LkRqRfa+qZRxl26447TUEgEioiRXMx900P7rbLg5jWB3r+jicjdPqg0=
+	t=1779383906; cv=none; b=bEk8/gLKd3zWKimFBDlOMwaCTVlxGL1o6chtnrd01J4uwLI0OfV/7yN8RXiGfj+4lsaUBiV8M6p7KBD1zszTCvn7MGIUqPm+FjaWU5csFQwAukAHKTYt1m+D+vEZOopVq7a08dD2EYGH/fSrO0YFfHuCnqgrFSa42IfUgMqN9e0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779383635; c=relaxed/simple;
-	bh=X9MG1kwNUf8O8KAK/Sm8SuGe/dZdaTwPaR1MzEF3AHg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ClvOkvRb4agSCPyWdJsGm6QqAkYOy951O5m0mlQg8pgMS7fmchSXqypyuQCLRuKmaaZQaEiBqJ3D3KCkCon3N+vl+v5Piwf33WDo1PdscwLnKfTHNGudLSZEeeZQY7iVdgzy+UhHU4HcCljdwkE28G07jcu4OAjRy913bXzLws4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nzBH2mki; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-488b0e1b870so89652105e9.2
-        for <stable@vger.kernel.org>; Thu, 21 May 2026 10:13:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779383631; x=1779988431; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zIuChPU1JlP7AlPyeu7nnCYpBOhiwGUpJRXAIqjmuvM=;
-        b=nzBH2mkicctXAN/292q5htBM8uJbtgNpVclJmeiZKdI2qZBJzQP7W0t8OkfXqX86a+
-         U9FNJkbdGMFuH1WuT5mjjd+aXL57+dA3HUPOPJrdtueEf8H/PeHL0dfOiBJdv5ZdbUEc
-         DEEd6F5mW+px4Cqdq3Z4sWqqWrHweRIdrrYt8k6W735dfAkvHALNt/obFyNQnGDjTwam
-         DKE5qj2VWkcmqngZnzjza3NOZoIjJHPK5GDe/CQnpCNJJJ9h6JdmWI67EqhKVibqNKPT
-         Z0100IzuYtrGo5eGLQMg7cgIc46ZruFAZAvLfMipIL0nLAsXeq8fTQRgHMTfwqNE6MMu
-         bkSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779383631; x=1779988431;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=zIuChPU1JlP7AlPyeu7nnCYpBOhiwGUpJRXAIqjmuvM=;
-        b=Jmh5UPDz4mPgb1wTkgaG8JAXzyhG01Ejg7/35G0Hsy2b1MPz7SESfFCwapOZX0PU9h
-         TEbeGW1dqnWPRRLL2ZyUwSjSGWTNLM0YHKFrZ/TOf7WFWOcVJ2vXD38TXqNCQFHiIXEn
-         5qbw+ECdjtS+mr1B/fchF3jp5t2oYJJqZdJDLVS1kVOLj1VpXubvPPuqsgUJB4MExGaM
-         19QdekRnNTQlG2eleOPL5vgjMWue1ElJp31QJuRWM5MUKtlkmDqLUIfB/FgUyKiXoTO2
-         Hv05LNX8ABpm17QDg7tlEl7QbDB7uCe9InyxKXO6BQy6kDDVPYkA/uwxMVwweFfhyYH9
-         Lj9g==
-X-Forwarded-Encrypted: i=1; AFNElJ/Xrf5NvqpqYFC1quQSZe2zo5QdwrspxBW1fRzM628ixiZgGB0UAeVUpqUazqH1hPZDAc1K9l0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxW0LleCXEze95sy/k8cTfBtoKTKRsg27iKZRqGUFJOu1Sb6qJz
-	VpWtYBgomN0nBSK18eVqKnhiPWfX1/6UF7zzs9y4xVvY1qGmLV2MRdkF
-X-Gm-Gg: Acq92OF+ormHk0IqFsfCYUixpLTl+vZroMHF7OUFhbs4IEB354Kq0BxM90e0PnvvlL/
-	4d+DYXHwa8pyrhnT+gmdcyGoMsdaCGgvWKrobkjsVXXOkE7/2NsnoLA7O65mYPGl247Whk2FMKl
-	0voncYMsJWI828WetWBVyD3YF6N2R3T82ptB7igMxOiFXiOQ4m8T3QCmCEwaQW8KZD6/bdiUiA0
-	1PtECQ/43W78OthHOh7SOZF6CDLllUTFtnR96SodNGuQcT42fhMJg4RKkMmwxKte0+RbzrjzTDB
-	Cx6IPkGDTkCMpgDH1Ai5YrI/zmPh+/P9MtSL3ka7hyXHQ+x4r8Kfz/3RR5hYmWGLoMrYETPZgsP
-	tjAm2hlz+euezImyc4oniIIQlNotmCds6u/2MGarBnjlkuiaY+aV1GXsQjqVY9xCyxhChSNLfWv
-	aatmVJe9QUzlq/pVpdtLtmiFqNzu2dDvQVX7ZMy5L3rElqoRepayREYoLQxZCJYlAZ
-X-Received: by 2002:a05:600c:828c:b0:485:4eaf:eb53 with SMTP id 5b1f17b1804b1-4903606b5b2mr58827015e9.19.1779383630691;
-        Thu, 21 May 2026 10:13:50 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eaa7cf23bsm4086708f8f.5.2026.05.21.10.13.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 May 2026 10:13:50 -0700 (PDT)
-Date: Thu, 21 May 2026 18:13:48 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: netdev@vger.kernel.org, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Simon
- Horman <horms@kernel.org>, virtualization@lists.linux.dev,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Jakub Kicinski
- <kuba@kernel.org>, Eugenio =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>,
- Paolo Abeni <pabeni@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- "David S. Miller" <davem@davemloft.net>, Jason Wang <jasowang@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Eric Dumazet <edumazet@google.com>,
- stable@vger.kernel.org
-Subject: Re: [PATCH net] vsock/virtio: fix skb overhead overflow on 32-bit
- builds
-Message-ID: <20260521181348.3d61858e@pumpkin>
-In-Reply-To: <20260521124732.125771-1-sgarzare@redhat.com>
-References: <20260521124732.125771-1-sgarzare@redhat.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	s=arc-20240116; t=1779383906; c=relaxed/simple;
+	bh=1FFzbSET8Jfr0Rj/ispWGpVvBj4/otDQTXU2PVdHJqU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=D21Sknj011ufSR1Mk1UJY/z7W5QTA2EB80KIvXfO/mVVi1uqOzmhGlnMCmUmtXbQUBTu9PHC4xXr79GkNA0ZGxx+nEGtTfmNKwfBQhEb2ZyEivANDzT12SLcce5T+RDHwW+sEpzyQG013HP9JCPoaWAnUNHcebk0xW11bO0eZgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OpAQ/8z3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E800C1F000E9;
+	Thu, 21 May 2026 17:18:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779383905;
+	bh=utOrpvAt2DIKWC27h0eoljunYtuvUSFFvSGKLfKbA4M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=OpAQ/8z3b/0T/j75g6RvTPaFxzwduoCyRSu1Hv8cP67INeH/04GdK8etCF7aGOji6
+	 ygSp77cLfon8klBEj8iSODK2HcW3qfCCZSvpymcHCsw27JkuAEBjSN7AhPNXiZcNdF
+	 d26qqNzYl+bKpq6pQk8XDSEo2U95d994KkETuxXSbDf6cmwT6AxSbMbNG8ezkPnfd9
+	 EovetmmdzoArAwceHaCwF3Lw1KYhk1dZBhKCYZgXbdyGgUWs6VObgOW0a4/rSWuQpT
+	 pVA4NPxXOFU9kkB5tr1Up4V/l7Z71tQrdMp6uVHklLVlm+gPZEM9GsGt+/Xp2UWhrq
+	 NknTsa+QaX8xg==
+Date: Thu, 21 May 2026 07:18:24 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Baokun Li <libaokun@linux.alibaba.com>
+Cc: linux-fsdevel@vger.kernel.org, viro@zeniv.linux.org.uk,
+	brauner@kernel.org, jack@suse.cz, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v4 1/3] writeback: fix race between
+ cgroup_writeback_umount() and inode_switch_wbs()
+Message-ID: <ag8-YOCHsfySqcdH@slm.duckdns.org>
+References: <20260521095016.2791354-1-libaokun@linux.alibaba.com>
+ <20260521095016.2791354-2-libaokun@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260521095016.2791354-2-libaokun@linux.alibaba.com>
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-253623-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-253621-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[16];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 8A3485AA59B
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tj@kernel.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,alibaba.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 6752B5AA202
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, 21 May 2026 14:47:32 +0200
-Stefano Garzarella <sgarzare@redhat.com> wrote:
-
-> From: Stefano Garzarella <sgarzare@redhat.com>
+On Thu, May 21, 2026 at 05:50:14PM +0800, Baokun Li wrote:
+> When a container exits, the following BUG_ON() is occasionally triggered:
 > 
-> On 32-bit architectures, both skb_queue_len() and SKB_TRUESIZE(0) evaluate
-> to 32-bit values. The multiplication can overflow before being assigned to
-> the u64 skb_overhead variable, making the skb overhead check ineffective.
+> ==================================================================
+>  VFS: Busy inodes after unmount of sdb (ext4)
+>  ------------[ cut here ]------------
+>  kernel BUG at fs/super.c:695!
+>  CPU: 3 PID: 6 Comm: containerd-shim Tainted: G OE K 6.6 #1
+>  pstate: 63400009 (nZCv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
+>  pc : generic_shutdown_super+0xf0/0x100
+>  lr : generic_shutdown_super+0xf0/0x100
+>  Call trace:
+>   generic_shutdown_super+0xf0/0x100
+>   kill_block_super+0x20/0x48
+>   ext4_kill_sb+0x28/0x60
+>   deactivate_locked_super+0x54/0x130
+>   deactivate_super+0x84/0xa0
+>   cleanup_mnt+0xa4/0x140
+>   __cleanup_mnt+0x18/0x28
+>   task_work_run+0x78/0xe0
+>   do_notify_resume+0x204/0x240
+> ==================================================================
 > 
-> Cast skb_queue_len() to u64 so the multiplication is always performed in
-> 64-bit arithmetic.
+> The root cause is a race between cgroup_writeback_umount() and
+> inode_switch_wbs()/cleanup_offline_cgwb(). There is a window between
+> inode_prepare_wbs_switch() returning true and the subsequent
+> wb_queue_isw() call. Following is the process that triggers the issue:
 > 
-> This issue was reported by Sashiko while reviewing another patch.
+>       CPU A (umount)           |          CPU B (writeback)
+> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>                                  inode_switch_wbs/cleanup_offline_cgwb
+>                                   atomic_inc(&isw_nr_in_flight)
+>                                   inode_prepare_wbs_switch
+>                                    -> passes SB_ACTIVE check
+>                                    __iget(inode)
+>  generic_shutdown_super
+>   sb->s_flags &= ~SB_ACTIVE
+>   cgroup_writeback_umount(sb)
+>    smp_mb()
+>    atomic_read(&isw_nr_in_flight)
+>    rcu_barrier()
+>     -> no pending RCU callbacks
+>    flush_workqueue(isw_wq)
+>     -> nothing queued, returns
+>   evict_inodes(sb)
+>    -> Inode skipped as isw still holds a ref.
+>   sop->put_super(sb)
+>    /* destroys percpu counters */
+>   -> VFS: Busy inodes after unmount!
+>                                   wb_queue_isw()
+>                                    queue_work(isw_wq, ...)
+>                                   /* later in work function */
+>                                   inode_switch_wbs_work_fn
+>                                    process_inode_switch_wbs
+>                                     iput() -> evict
+>                                      percpu_counter_dec() // UAF!
 > 
-> Fixes: 059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb queue")
-> Closes: https://sashiko.dev/#/patchset/20260518090656.134588-1-sgarzare%40redhat.com
+> Fix this by extending the RCU read-side critical section in
+> inode_switch_wbs() and cleanup_offline_cgwb() to cover from
+> inode_prepare_wbs_switch() through wb_queue_isw().  Since there is
+> no sleep in this window, rcu_read_lock() can be used.  Then add a
+> synchronize_rcu() in cgroup_writeback_umount() before the existing
+> rcu_barrier(), so that all in-flight switchers that have passed the
+> SB_ACTIVE check have completed queue_work() before flush_workqueue()
+> is called.
+> 
+> The existing rcu_barrier() is intentionally retained so this fix can
+> be backported unchanged to stable kernels (5.10.y, 6.6.y, ...) that
+> still queue switches via queue_rcu_work(). It is a no-op on current
+> mainline (since commit e1b849cfa6b6 ("writeback: Avoid contention on
+> wb->list_lock when switching inodes")) and is removed in a follow-up
+> patch.
+> 
+> Fixes: a1a0e23e4903 ("writeback: flush inode cgroup wb switches instead of pinning super_block")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-> ---
->  net/vmw_vsock/virtio_transport_common.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-> index df3b418e0392..71198bf23fc4 100644
-> --- a/net/vmw_vsock/virtio_transport_common.c
-> +++ b/net/vmw_vsock/virtio_transport_common.c
-> @@ -417,7 +417,7 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->  static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
->  					u32 len)
->  {
-> -	u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
-> +	u64 skb_overhead = ((u64)skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
+> Suggested-by: Jan Kara <jack@suse.cz>
+> Link: https://lore.kernel.org/all/mxnjq2l6guusfchvauxr3v7c4bwjasybxlleqbbh4efloeqspz@iqylk76ohufz
+> Reviewed-by: Jan Kara <jack@suse.cz>
+> Signed-off-by: Baokun Li <libaokun@linux.alibaba.com>
 
-I was thinking this should use mul_u32_u32().
-But that is all moot.
-'skb_overhead' is a memory size in bytes, 'unsigned long' it more than big enough.
-No need for 64bit maths on 32bit.
+Acked-by: Tejun Heo <tj@kernel.org>
 
--- David
+Thanks.
 
->  
->  	/* Allow at most buf_alloc * 2 total budget (payload + overhead),
->  	 * similar to how SO_RCVBUF is doubled to reserve space for sk_buff
-
+-- 
+tejun
 
