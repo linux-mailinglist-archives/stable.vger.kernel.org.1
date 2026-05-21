@@ -1,175 +1,117 @@
-Return-Path: <stable+bounces-253643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253644-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0MnSJEqID2qnNAYAu9opvQ
-	(envelope-from <stable+bounces-253643-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 00:33:46 +0200
+	id 8EtsEYKMD2oWNQYAu9opvQ
+	(envelope-from <stable+bounces-253644-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 00:51:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E984E5AC613
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 00:33:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A50CD5AC77A
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 00:51:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 997DB3041A77
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 22:31:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2AA19303749B
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 22:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1712F332919;
-	Thu, 21 May 2026 22:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7631536604F;
+	Thu, 21 May 2026 22:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ZBAzQY83"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Omx52bTv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C741C862D;
-	Thu, 21 May 2026 22:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4C52F3632;
+	Thu, 21 May 2026 22:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779402707; cv=none; b=ZPZHLKlu1xTVJ2CrPX7/R9Jnd+VCyeXeIk/St820obTtLDI8cXAmGXHCjwBMBO2tCmDyQJxxDe9K97EF2kPoxuSNayShHueUR972nxpUivNN05EOcZvwMdqbRXCofDWF28D35822SfWWDWoczwSYJW+L1KZy/HomnRc17vLPy8A=
+	t=1779403862; cv=none; b=uDn7457n8iaz+toAvKs24NHFtaT7O3FZ1SvtMl5A6qjh0knX8ORiP5BruVsCjCOy7orGyOWQm9sEEGHcKPGZ71Rfp5rfKtMH2mmCpMWbwsE7q1X1QAaBcO8RpP5EIxotNFRyOygqDxQcA6u5RFQTvoAgfx0DtNhC+tAUCT5zuTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779402707; c=relaxed/simple;
-	bh=qyGBdGyQ/CWefK2oqbQlOgQZiEgYgkcpCY23OGa3SPE=;
-	h=Date:To:From:Subject:Message-Id; b=D1oCYQwjC+GzrRpLAB5ohQ05uGmLgz9JA9t1P++9HcRg3cBwiRGObdR2lVX4Nkg2GSE6cBqqvuUiQ+oXshgvZaaGnm35hLzIMCaqV95QchqpWaDyKpHoUmUhIPcL5fCF22S5rmCgJ1m79pKX4MBxUX22DR2KKQWYXYCf/1VyFts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ZBAzQY83; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 312AF1F000E9;
-	Thu, 21 May 2026 22:31:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1779402706;
-	bh=/pWeIqweOvhX+3g8Hmdaoiw17MzRQZInKbDVAdFNJ34=;
-	h=Date:To:From:Subject;
-	b=ZBAzQY83OqWZ7UsZoSeQYoIpCFVyXiP7RpOyVPBzaPTtdS1YgsLZ6SDLL1MY8UAuT
-	 0Wc+SE0RF5K0kwNpJBoAkWqGnI6KEJPDxiiauqQzO+LmNCFULXoM3T4ih4a+v06Kxb
-	 qoZqAU0QHBQGTIdCaPNdNHwhr6EPccAH26WTlv5Q=
-Date: Thu, 21 May 2026 15:31:45 -0700
-To: mm-commits@vger.kernel.org,will@kernel.org,stable@vger.kernel.org,david@kernel.org,catalin.marinas@arm.com,apopple@nvidia.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + arm64-mm-call-pagetable-dtor-when-freeing-hot-removed-page-tables.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260521223146.312AF1F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1779403862; c=relaxed/simple;
+	bh=E1rQoLyDWZQ8G6wbTgaRgLl2iqPjzbMspKatsIlFJOA=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=fhAh0ou7+MBQ8MNUNX1uIDlNVBmkRt/LLNLRoZhB4+TtnUMksKZt/sgrRuKUR0LKgSsMBLb9ehaC8bu//q6ZiYsWFFxprf7ZpjyqYuRXGZq/QYpFi5ukV2RHavUAUlAnbvcqnkqV/ornWSeYDdIdE/QnphSCjgr2P8daDZsUZQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Omx52bTv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 801711F000E9;
+	Thu, 21 May 2026 22:50:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779403860;
+	bh=WPWjKtDA7kQDjj6GVIm6c5sZdcY7OZ9bfxBSLXp/6JY=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References;
+	b=Omx52bTv46z1LIS3lyH0XFiNG3p/8XF7Q3lFu9dPnmH3je16l9C1quavnLLlhXMJo
+	 e+QmqmY4yC7HYsf2ij+z1RAi6YxKBgY9IxSZtQpxK7RrjGTa9z7ORPlw9dU11mHVcI
+	 goSUlhrRHbJnjxPmaWHsVYy2Zh8X2xjpdhXck3F4M2KMWE5A7fdxOn7DI+7TJI+A0v
+	 lcFgfuA2jPe68v4qs1KXKod4LW5DWj2hEp9b0lLDczrV5WsoH5+Nh0RKdjbZA3Y5kq
+	 uOqGHswOIzABZppypN4cBAujhckNKBugJAVoKE6CKUgxMj5JN4ulfD2I0b2PmD+N/B
+	 mqQIfNB3PlEuw==
+Date: Thu, 21 May 2026 16:50:58 -0600 (MDT)
+From: Paul Walmsley <pjw@kernel.org>
+To: Zishun Yi <vulab@iscas.ac.cn>
+cc: pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
+    linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+    alex@ghiti.fr, atish.patra@linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH v2] riscv: cacheinfo: Fix node reference leak in
+ populate_cache_leaves
+In-Reply-To: <20260509074040.1747800-1-vulab@iscas.ac.cn>
+Message-ID: <58b50dc5-7307-c38d-3cdf-46343052bafe@kernel.org>
+References: <20260509074040.1747800-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_FROM(0.00)[bounces-253644-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	TAGGED_FROM(0.00)[bounces-253643-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[linux-foundation.org];
 	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pjw@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,arm.com:email,nvidia.com:email,linux-foundation.org:email,linux-foundation.org:dkim]
-X-Rspamd-Queue-Id: E984E5AC613
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: A50CD5AC77A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Sat, 9 May 2026, Zishun Yi wrote:
 
-The patch titled
-     Subject: arm64: mm: call pagetable dtor when freeing hot-removed page tables
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     arm64-mm-call-pagetable-dtor-when-freeing-hot-removed-page-tables.patch
+> Currently, the while loop drops the reference to prev in each iteration.
+> If the loop terminates early due to a break, the final of_node_put(np)
+> correctly drops the reference to the current node.
+> 
+> However, if the loop terminates naturally because np == NULL, calling
+> of_node_put(np) is a no-op. This leaves the last valid node stored in
+> prev without its reference dropped, resulting in a node reference leak.
+> 
+> Fix this by changing the final `of_node_put(np)` to `of_node_put(prev)`.
+> 
+> Fixes: 94f9bf118f1e ("RISC-V: Fix of_node_* refcount")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Gemini:gemini-3.1-pro
+> Signed-off-by: Zishun Yi <vulab@iscas.ac.cn>
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/arm64-mm-call-pagetable-dtor-when-freeing-hot-removed-page-tables.patch
+Thanks, queued for v7.1-rc.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Alistair Popple <apopple@nvidia.com>
-Subject: arm64: mm: call pagetable dtor when freeing hot-removed page tables
-Date: Thu, 21 May 2026 13:27:30 +1000
-
-Since 5e8eb9aeeda3 ("arm64: mm: always call PTE/PMD ctor in
-__create_pgd_mapping()") page-table allocation on ARM64 always calls
-pagetable_{pte,pmd,pud,p4d}_ctor().  This sets the page_type to
-PGTY_table, increments NR_PAGETABLE and possible allocates a PTL.  However
-the matching pagetable_dtor() calls were never added.
-
-With DEBUG_VM enabled on kernel versions prior to v6.17 without
-2dfcd1608f3a9 ("mm/page_alloc: let page freeing clear any set page type")
-this leads to the following warning when freeing these pages due to
-page->page_type sharing page->_mapcount:
-
-  BUG: Bad page state in process ... pfn:284fbb
-  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x284fbb
-  flags: 0x17fffc000000000(node=0|zone=2|lastcpupid=0x1ffff)
-  page_type: f2(table)
-  page dumped because: nonzero mapcount
-  Call trace:
-   bad_page+0x13c/0x160
-   __free_frozen_pages+0x6cc/0x860
-   ___free_pages+0xf4/0x180
-   free_pages+0x54/0x80
-   free_hotplug_page_range.part.0+0x58/0x90
-   free_empty_tables+0x438/0x500
-   __remove_pgd_mapping.constprop.0+0x60/0xa8
-   arch_remove_memory+0x48/0x80
-   try_remove_memory+0x158/0x1d8
-   offline_and_remove_memory+0x138/0x180
-
-It can also lead to leaking the ptl allocation if ALLOC_SPLIT_PTLOCKS is
-defined and incorrect NR_PAGETABLE stats.  Fix this by calling
-pagetable_dtor() in free_hotplug_pgtable_page() prior to freeing the page
-to undo the effects of calling pagetable_*_ctor().
-
-Link: https://lore.kernel.org/20260521032730.2104017-1-apopple@nvidia.com
-Fixes: 5e8eb9aeeda3 ("arm64: mm: always call PTE/PMD ctor in __create_pgd_mapping()")
-Signed-off-by: Alistair Popple <apopple@nvidia.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- arch/arm64/mm/mmu.c |    1 +
- 1 file changed, 1 insertion(+)
-
---- a/arch/arm64/mm/mmu.c~arm64-mm-call-pagetable-dtor-when-freeing-hot-removed-page-tables
-+++ a/arch/arm64/mm/mmu.c
-@@ -1441,6 +1441,7 @@ static void free_hotplug_page_range(stru
- 
- static void free_hotplug_pgtable_page(struct page *page)
- {
-+	pagetable_dtor(page_ptdesc(page));
- 	free_hotplug_page_range(page, PAGE_SIZE, NULL);
- }
- 
-_
-
-Patches currently in -mm which might be from apopple@nvidia.com are
-
-arm64-mm-call-pagetable-dtor-when-freeing-hot-removed-page-tables.patch
-
+- Paul
 
