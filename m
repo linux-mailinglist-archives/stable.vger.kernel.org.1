@@ -1,163 +1,136 @@
-Return-Path: <stable+bounces-253492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253493-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IMrGIeDVDmr2CQYAu9opvQ
-	(envelope-from <stable+bounces-253492-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 11:52:32 +0200
+	id sEuYL1TYDmqfCgYAu9opvQ
+	(envelope-from <stable+bounces-253493-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 12:03:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D44F5A2B32
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 11:52:31 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A91525A2DE7
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 12:02:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 761DB30262E6
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 09:38:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 155CD3004D06
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 09:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 298F1377ED4;
-	Thu, 21 May 2026 09:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE2B937AA6D;
+	Thu, 21 May 2026 09:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="AmGn4Vjx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DRYbInq/"
 X-Original-To: stable@vger.kernel.org
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB9737756E
-	for <stable@vger.kernel.org>; Thu, 21 May 2026 09:37:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B2937BE60;
+	Thu, 21 May 2026 09:49:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779356275; cv=none; b=hO6/6h2mDVQ11dB/hrbyZQJaUrKgSoSbSdbTMNtdAqfoXWmYJ+klwX7O7dnRxqmmB1qgplsCV3NxCYehHjXY99d90+C6t8d6lIFQQWC0hN2asUFl+xn13N4NB0VMneAGyKGZjuRBUtmXbo8L/fZR6/9k6lugdj3xlgDBj3kPWeI=
+	t=1779356996; cv=none; b=f8MoV2fHnu9Vb8yjNam2XpKiWwmrBpEhkpmFFuCLoeMeoqjuaueTjekhkTZ3iWbwhHMWXppRW1raiYL1Iy0BmRwhxqluIBy8dLJm86p9a/eg/26pr76opxDtzjrKt4iekQmMvd8mv3cdF4Eu68gU6qwTxWqfK5ZD9Hz/g8foDwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779356275; c=relaxed/simple;
-	bh=YqAQytJbYhQ39t3pkKct2Su+5H1G5e6obzCJjhI+d9o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GY+U18wJfD2VublsGBGFitwlIu3LmgXHMR0Lr1Cx7nGtPplq1MbxSEPENhgu86cu2zpLAfE3fdp8tkH8IlXArgyWG5OSI75VUNBV1BoYqBJU2W8KHWHDepE85Uf+awxae5ySRCqyXMjMDAs9mfp5VOuqyUSut5wkI5+rig8bFMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=AmGn4Vjx; arc=none smtp.client-ip=95.215.58.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779356271;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=q3HkDah9G3ZXvEMnDoovHGjAyQRejsoiaP7BkJegKqo=;
-	b=AmGn4Vjx+ulywScrk174lQ9+slQRI44UuUrK6HoHiI7FCvmgM4IwlrI7kqPz9osUiBHyUw
-	+vAbVgu1S+fgSxgjVQPsO2TqZI6YN39OY0dLoUgkxBYUEJz9bPKHyPPj95zMahsNY2+QdP
-	C1nO9gLpynXyZk1MDuKTzisQB087umM=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Peter Huewe <peterhuewe@gmx.de>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Harald Hoyer <harald@redhat.com>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	stable@vger.kernel.org,
-	linux-integrity@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] tpm: fix event_size output in tpm1_binary_bios_measurements_show
-Date: Thu, 21 May 2026 11:36:39 +0200
-Message-ID: <20260521093639.162095-3-thorsten.blum@linux.dev>
+	s=arc-20240116; t=1779356996; c=relaxed/simple;
+	bh=HTKoM62XzHAkVnGdFSshqg8uG1E2BDoZM80JQvmfFhE=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=oG6Ux1F8dMZ9f4QErpqAhX2QX+x9BbJx0mEmRvgoEJyZ2gEPAzaEoPudjMiwvw5/ujiXPFhUcOiJuLN4cKfKYWAlexvz/iCjyHiwHQUZV3I/PAY90GOdIA8XKchv9WNDZYPWx4SdY/Ow9a+xWYNyutZu+rt9r8fYLPZvXORjcRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DRYbInq/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D2251F000E9;
+	Thu, 21 May 2026 09:49:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779356995;
+	bh=QX9iO5UfA8lFU9S3G/bX3+/LNHn4Gm1KTOMQQAuGHeM=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=DRYbInq/PiPR0vAKiZhQWKeeqo9IXTLJBybKkhLrQDxKjxzHQrhjC78sovy9PO3Gu
+	 0pGjZJfx/+p7RIYm/1fdpI/BJKxyPF/4yQqTHSn4C2mXhP5dl9xxR3aon3cF92ohcu
+	 J+QGbnutifrEjyzao/qNtNIgBE5BzUlHYxuZO1gAgf2vqpAUb25l0g03+5HIf8QzZ6
+	 O8kNZhNOcjc7S6oUFsarUQb1Gx/rK2VB7qMB3E4lv51Tp87qVH8JgUJJZty7GYKdEJ
+	 dsrS+IRWCOI+AzWUYnA/P4iLyAwpcKY2EdFf4mOI68/ubNsUTXJzdFXpKX+Xk+wXCm
+	 UNVa22pYXumNQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9396C3930D21;
+	Thu, 21 May 2026 09:50:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2280; i=thorsten.blum@linux.dev; h=from:subject; bh=YqAQytJbYhQ39t3pkKct2Su+5H1G5e6obzCJjhI+d9o=; b=owGbwMvMwCUWt7pQ4caZUj3G02pJDFl8lzQqb4pMZlNfHqsd2PR358Oiuxtke1uvKP7/+2jlC ebcRcvrOkpZGMS4GGTFFFkezPoxw7e0pnKTScROmDmsTCBDGLg4BWAiHEaMDN+E4n9JzL96yibx 8OnVwSWyWmKXt/AZ28y3f/XRuuFT5idGht5v6S+VL+z1mNUiH5LzZVOyZhj3NeO8yzNrFrmvK16 mwwsA
-X-Developer-Key: i=thorsten.blum@linux.dev; a=openpgp; fpr=1D60735E8AEF3BE473B69D84733678FD8DFEEAD4
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Subject: Re: [PATCH net v5] net: skbuff: propagate shared-frag marker through
+ frag-transfer helpers
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177935700540.4004798.18308856421484516932.git-patchwork-notify@kernel.org>
+Date: Thu, 21 May 2026 09:50:05 +0000
+References: <ageeJfJHwgzmKXbh@v4bel>
+In-Reply-To: <ageeJfJHwgzmKXbh@v4bel>
+To: Hyunwoo Kim <imv4bel@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, kerneljasonxing@gmail.com,
+ kuniyu@google.com, mhal@rbox.co, jiayuan.chen@linux.dev,
+ steffen.klassert@secunet.com, ben@decadent.org.uk,
+ herbert@gondor.apana.org.au, dsahern@kernel.org, sultan@kerneltoast.com,
+ sd@queasysnail.net, malin89@huawei.com, tanjingguo@huawei.com,
+ aaron1esau@gmail.com, netdev@vger.kernel.org, stable@vger.kernel.org
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[davemloft.net,google.com,kernel.org,redhat.com,gmail.com,rbox.co,linux.dev,secunet.com,decadent.org.uk,gondor.apana.org.au,kerneltoast.com,queasysnail.net,huawei.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-253493-lists,stable=lfdr.de,netdevbpf];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmx.de,kernel.org,ziepe.ca,gmail.com,redhat.com];
-	TAGGED_FROM(0.00)[bounces-253492-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linux.dev:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linux.dev:mid,linux.dev:dkim]
-X-Rspamd-Queue-Id: 7D44F5A2B32
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: A91525A2DE7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Commit 186d124f07da ("tpm_eventlog.c: fix binary_bios_measurements")
-split the output to write the endian-converted event header first and
-then the variable-length event data.
+Hello:
 
-However, the split was at sizeof(struct tcpa_event) - 1, even though
-event_data was a zero-length array, and later a flexible array member,
-both of which already excluded the event data.
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Therefore, the current code writes the first three bytes of event_size
-from the endian-converted header and then the last byte from the raw
-header, which can emit a corrupted event_size on PPC64, where
-do_endian_conversion() maps to be32_to_cpu().
+On Sat, 16 May 2026 07:28:53 +0900 you wrote:
+> Two frag-transfer helpers (__pskb_copy_fclone() and skb_shift()) fail
+> to propagate the SKBFL_SHARED_FRAG bit in skb_shinfo()->flags when
+> moving frags from source to destination.  __pskb_copy_fclone() defers
+> the rest of the shinfo metadata to skb_copy_header() after copying
+> frag descriptors, but that helper only carries over gso_{size,segs,
+> type} and never touches skb_shinfo()->flags; skb_shift() moves frag
+> descriptors directly and leaves flags untouched.  As a result, the
+> destination skb keeps a reference to the same externally-owned or
+> page-cache-backed pages while reporting skb_has_shared_frag() as
+> false.
+> 
+> [...]
 
-Use seq_write() to write the full endian-converted header, followed by
-the variable-length event->event_data.
+Here is the summary with links:
+  - [net,v5] net: skbuff: propagate shared-frag marker through frag-transfer helpers
+    https://git.kernel.org/netdev/net/c/48f6a5356a33
 
-Drop the obvious comment while at it.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Fixes: 186d124f07da ("tpm_eventlog.c: fix binary_bios_measurements")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
----
- drivers/char/tpm/eventlog/tpm1.c | 16 ++--------------
- 1 file changed, 2 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/char/tpm/eventlog/tpm1.c b/drivers/char/tpm/eventlog/tpm1.c
-index e7913b2853d5..291720e89d91 100644
---- a/drivers/char/tpm/eventlog/tpm1.c
-+++ b/drivers/char/tpm/eventlog/tpm1.c
-@@ -224,29 +224,17 @@ static int tpm1_binary_bios_measurements_show(struct seq_file *m, void *v)
- {
- 	struct tcpa_event *event = v;
- 	struct tcpa_event temp_event;
--	char *temp_ptr;
--	int i;
- 
- 	memcpy(&temp_event, event, sizeof(struct tcpa_event));
- 
--	/* convert raw integers for endianness */
- 	temp_event.pcr_index = do_endian_conversion(event->pcr_index);
- 	temp_event.event_type = do_endian_conversion(event->event_type);
- 	temp_event.event_size = do_endian_conversion(event->event_size);
- 
--	temp_ptr = (char *) &temp_event;
--
--	for (i = 0; i < (sizeof(struct tcpa_event) - 1) ; i++)
--		seq_putc(m, temp_ptr[i]);
--
--	temp_ptr = (char *) v;
--
--	for (i = (sizeof(struct tcpa_event) - 1);
--	     i < (sizeof(struct tcpa_event) + temp_event.event_size); i++)
--		seq_putc(m, temp_ptr[i]);
-+	seq_write(m, &temp_event, sizeof(temp_event));
-+	seq_write(m, event->event_data, temp_event.event_size);
- 
- 	return 0;
--
- }
- 
- static int tpm1_ascii_bios_measurements_show(struct seq_file *m, void *v)
 
