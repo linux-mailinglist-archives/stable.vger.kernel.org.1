@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-253442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253443-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UIbLDW18DmpY/AUAu9opvQ
-	(envelope-from <stable+bounces-253442-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 05:30:53 +0200
+	id CG6WAnR8DmpY/AUAu9opvQ
+	(envelope-from <stable+bounces-253443-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 05:31:00 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9C1959E765
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 05:30:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78A2159E76D
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 05:30:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0F4973065697
+	by tor.lore.kernel.org (Postfix) with ESMTP id B5D943067F9A
 	for <lists+stable@lfdr.de>; Thu, 21 May 2026 03:28:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38E0E3822B4;
-	Thu, 21 May 2026 03:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9A7237C925;
+	Thu, 21 May 2026 03:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="njpVL7g0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gQiC+2xR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC85360EDA;
-	Thu, 21 May 2026 03:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77145358381;
+	Thu, 21 May 2026 03:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779334129; cv=none; b=XVtsGKOMIqO6TxRYNXFn8YDpMDFGygNk8clIrBTvRB+qboBoNAT4l8RPTgSFA9l4tb5Yy+iEJe2NoHOLRL4o4bZkCuhJJ3RSxNFNUKUItaoxgfGBhQH8ytFyRFHas3LCkod9nEEXmlxZtW2f86j/htTXetQXGZVoeHBjG0R7Cdo=
+	t=1779334130; cv=none; b=ZVT+RLpdvxwN0kmcVgyvOb1OYwEmsmYzR+zgw2tX06fXBfSa4fLMTExhuBNZ/arfrdtk0ulfpxt6d7eRyN2hPpgvSB8k/91scQjTywvYI7X8vwXAaNrsxBSGlFMXfraA2EJVFRz9doQebpFsNRMNXYFBO4/qjavTfdqmdFT+jmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779334129; c=relaxed/simple;
-	bh=ormrvSzueMuYKSsgTMU9bd3BI7psozozyihQjVHLiik=;
+	s=arc-20240116; t=1779334130; c=relaxed/simple;
+	bh=dedVbwFEs6+83NrjuCtR/O9WvWYy5d0Fs9aM3EiTf1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IcrpaaTAaV149+Sw/L5jI9Q2ok2ZnD1adEeTSoMOrp63XVGryyr9l4+QQSowtIV4pYBoNEY5mL7aFGBQyttiMfV/hO4ocTlxU2yZNMssokDhN3TKjjhGt7m0UbRIDxhYIkHpicGWLC92fkaVavciZFMnJG5vLdN+0iEUBSetQWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=njpVL7g0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BEDE1F00A3E;
-	Thu, 21 May 2026 03:28:46 +0000 (UTC)
+	 MIME-Version; b=FrRYkuuRpwp3sz5z6Vw4AsvBI+7A0J/n71tl/3xVo3nDAWGJTwBF+lUd8ZnOC0TdTHv2eJOAWgi7aHy7ovihfdvgUnlUx6zBxbcI3MYzX3ecui3VS/95fAIvj875Y187+nOpdXcKBYGbNlwcfIBg2sh088Kx/LziCDsYB/TbYaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gQiC+2xR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A7251F00A3B;
+	Thu, 21 May 2026 03:28:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779334127;
-	bh=JDwWEszVW0ozbfE62J6M/b2AIbeh5w1dxkRwQ9+6H3U=;
+	s=k20260515; t=1779334129;
+	bh=6tpKhbl7/XP4g0sNUV4dMb7sk1SW+jcxNTcYkt/07i8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=njpVL7g0BsTXfQ/yXtOUFYMkJKtHoPOZyp/4OezpNBYt6vpSIOeK7+xHEtgIHcB21
-	 6zKD+tfa0TNbILeTuzhXKo2Y9DADiRHYJFgInpiYUBujWeB1AoZjpSiSrF6tAwGK5p
-	 5//AWnC73I1hzROXZ5/YJjQvC+00xtiBXa/qn50S2AfZU0DimOVjPos02JOidCGTnF
-	 opZZUouJrYgM2Fly9Dsipz0M9J7BfynxiutQFNcYDNgxTJO84A98pX7+u7q9YAF3ok
-	 sRDyOFsK8HOg/yt79ZnuqAMcGUprPp6Nl2wIpE0hL1Z9NJf2rJeqYACRYnB66sDbiV
-	 VmviofOjyMxeg==
+	b=gQiC+2xRgk40ytP2JM/ufg2/GN1+jRLHhiNJ0KyLhzI0hKTC0lYeqCyc8ubfcy7CS
+	 FDEOElKmZeNVxO/vI+Mwk+t8Wfs9Ao122+bfCmKRp/yL6C5zPN4KDu0xDasqjIZoPB
+	 eDhXFG1jF5XjitYDkA3xmdubIFaT8RluoOwnztZGj6CRvaunOlaSGQMv0sYVikcoQN
+	 /JajP5KHNXpEI7mIyYrK2d+u9iThQjbcvQlXheWVxcqGmChP4CDaTF1GF6pArW07s+
+	 gIJlI1w7Mbo9HlrnOO+z46IAqO9rtJWndxs9tLCNx15yPp5Tok9vcrPPVLrx7rFDCJ
+	 FLVfdZgzDbmsQ==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 To: mptcp@lists.linux.dev,
 	stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
-Cc: Gang Yan <yangang@kylinos.cn>,
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	sashal@kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 6.6.y 1/4] mptcp: sync the msk->sndbuf at accept() time
-Date: Thu, 21 May 2026 05:19:08 +0200
-Message-ID: <20260521031906.740857-7-matttbe@kernel.org>
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6.y 2/4] mptcp: pm: ADD_ADDR rtx: allow ID 0
+Date: Thu, 21 May 2026 05:19:09 +0200
+Message-ID: <20260521031906.740857-8-matttbe@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260521031906.740857-6-matttbe@kernel.org>
 References: <20260521031906.740857-6-matttbe@kernel.org>
@@ -64,7 +64,7 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2562; i=matttbe@kernel.org; h=from:subject; bh=qDRSdub3sv4BWfBJw9DcEvzI4fbL9JeAWuiAfUv8qiM=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGLL4Kvd0HDk5SWCznlikb4iJ1vsfM9+WXX5nyCJikXnip p2EYVFHRykLgxgXg6yYIot0W2T+zOdVvCVefhYwc1iZQIYwcHEKwER40hgZVnIdtYmblzg/tHjy Og3208FL9vUtf2SyyK1LUc/7zOWprIwMTffSljiyGe0/lmzqWD15sY767W2LlvMuCOR6fHmfv/h ZDgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1332; i=matttbe@kernel.org; h=from:subject; bh=dedVbwFEs6+83NrjuCtR/O9WvWYy5d0Fs9aM3EiTf1A=; b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGLL4Kk9c8Re54bn2muGVlNA/Xpwl7s3P/FvVf/ktir129 F/WXf2sjlIWBjEuBlkxRRbptsj8mc+reEu8/Cxg5rAygQxh4OIUgIm8+8TI0KPN//T1I4lJq4Vn /r9sWRzy+lbiwqJ/q+s+pofl+i/TZ2L4p9uqv+bMomfVscXihTG6uUfWsTOfecObtqgzvDXf+3w eDwA=
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253442-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253443-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -93,74 +93,46 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,kylinos.cn:email]
-X-Rspamd-Queue-Id: A9C1959E765
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 78A2159E76D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Gang Yan <yangang@kylinos.cn>
+commit 03f324f3f1f7619a47b9c91282cb12775ab0a2f1 upstream.
 
-commit fcf04b14334641f4b0b8647824480935e9416d52 upstream.
+ADD_ADDR can be sent for the ID 0, which corresponds to the local
+address and port linked to the initial subflow.
 
-On passive MPTCP connections, the msk sndbuf is not updated correctly.
+Indeed, this address could be removed, and re-added later on, e.g. what
+is done in the "delete re-add signal" MPTCP Join selftests. So no reason
+to ignore it.
 
-The root cause is an order issue in the accept path:
-
-- tcp_check_req() -> subflow_syn_recv_sock() -> mptcp_sk_clone_init()
-  calls __mptcp_propagate_sndbuf() to copy the ssk sndbuf into msk
-
-- Later, tcp_child_process() -> tcp_init_transfer() ->
-  tcp_sndbuf_expand() grows the ssk sndbuf.
-
-So __mptcp_propagate_sndbuf() runs before the ssk sndbuf has been
-expanded and the msk ends up with a much smaller sndbuf than the
-subflow:
-
-  MPTCP: msk->sndbuf:20480, msk->first->sndbuf:2626560
-
-Fix this by moving the __mptcp_propagate_sndbuf() call from
-mptcp_sk_clone_init() -- the ssk sndbuf is not yet finalized there -- to
-__mptcp_propagate_sndbuf() at accept() time, when the ssk sndbuf has
-been fully expanded by tcp_sndbuf_expand().
-
-Fixes: 8005184fd1ca ("mptcp: refactor sndbuf auto-tuning")
+Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
 Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/602
-Signed-off-by: Gang Yan <yangang@kylinos.cn>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260420-net-mptcp-sync-sndbuf-accept-v1-1-e3523e3aeb44@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ No conflicts, but move __mptcp_propagate_sndbuf() above the for-loop
-  (mptcp_for_each_subflow()) present in this version, which will modify
-  'subflow' used by __mptcp_propagate_sndbuf() in this new patch. ]
+Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-2-fca8091060a4@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ applied to net/mptcp/pm_netlink.c instead of upstream's pm_kernel.c ]
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- net/mptcp/protocol.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/mptcp/pm_netlink.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index aed6c04c7de6..ff1632d03a96 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -3451,7 +3451,6 @@ struct sock *mptcp_sk_clone_init(const struct sock *sk,
- 	 * uses the correct data
- 	 */
- 	mptcp_copy_inaddrs(nsk, ssk);
--	__mptcp_propagate_sndbuf(nsk, ssk);
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index 4a5802126c8e..23aef214f30d 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -305,9 +305,6 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
+ 	if (inet_sk_state_load(sk) == TCP_CLOSE)
+ 		return;
  
- 	mptcp_rcv_space_init(msk, ssk);
- 	msk->rcvq_space.time = mptcp_stamp();
-@@ -4064,6 +4063,8 @@ static int mptcp_stream_accept(struct socket *sock, struct socket *newsock,
- 		msk = mptcp_sk(newsk);
- 		msk->in_accept_queue = 0;
- 
-+		__mptcp_propagate_sndbuf(newsk, mptcp_subflow_tcp_sock(subflow));
-+
- 		/* set ssk->sk_socket of accept()ed flows to mptcp socket.
- 		 * This is needed so NOSPACE flag can be set from tcp stack.
- 		 */
+-	if (!entry->addr.id)
+-		return;
+-
+ 	bh_lock_sock(sk);
+ 	if (sock_owned_by_user(sk)) {
+ 		/* Try again later. */
 -- 
 2.53.0
 
