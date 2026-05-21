@@ -1,204 +1,227 @@
-Return-Path: <stable+bounces-253581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253582-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 1h3oMrsjD2paGgYAu9opvQ
-	(envelope-from <stable+bounces-253581-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 17:24:43 +0200
+	id eLl5NlAvD2pSHgYAu9opvQ
+	(envelope-from <stable+bounces-253582-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 18:14:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78D2E5A8428
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 17:24:43 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 533505A9046
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 18:14:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 49EA53171D29
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 14:36:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A7DB231A384C
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 14:43:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96BF43FE375;
-	Thu, 21 May 2026 14:32:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 453613E5587;
+	Thu, 21 May 2026 14:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SoJ3dQj5"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="1HQGcChP";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="y9oia7Ur";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="1HQGcChP";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="y9oia7Ur"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8723F2116;
-	Thu, 21 May 2026 14:32:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66AD43E316F
+	for <stable@vger.kernel.org>; Thu, 21 May 2026 14:38:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779373934; cv=none; b=jKNuaEPP5RqCRkDi1qwPPSIHlogUPLdQGGgs7MJvoM8Npsj9FaiPDMYhm58rncMnMhJSM6dj00PLk7gJMIgTKT6LxByBMQDdBSJvaKCmlmRVppYO47RdH4Sktk6r1yTF5gEBqlprtpgzfaHGa8iQe19pmGeiph6CkmpIO0RfVl8=
+	t=1779374300; cv=none; b=oLeZZ8DLl9tK8cnrih74v5E5PfnOxdHycDSkToiywSpDSHjn4x5uIae8heZFemdl1JLN8NzkzSqW3LkQksmLJaTDi2alIeSEQPWMxK4w53cv52I27HYPV5Y5l/yLBYGlAvEZ9b9HUf4HQZzjYIT1VWOxAzdcvXHLqDI+xoPPGGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779373934; c=relaxed/simple;
-	bh=BFdbOeIUfFzEDhhP2G6vWlxCKkOGZ5BR/SbsDCbBNb8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=AQF3B0+RlKKNYBqn1jLR1SWAzN9mTVa6DjjERBbz3oO/Xg695tIEf7/OrppVYRFmMczX76wsEcRBcNptwxDbSm4PyIDxcU6WKLSDUitK1q4zhovuILs3iiNRnhueCTNyccNg12l38UKLx+0gV3biaAfoes3/5B1bYgHu0ZsoXrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SoJ3dQj5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 549211F00A3C;
-	Thu, 21 May 2026 14:32:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779373933;
-	bh=Tx8F2WcFDPxfdR1g7mgTFINv/FVpoK7UpdHHDkEOOVE=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=SoJ3dQj5sqQ/ZAWIzXbs/E9q3de1k5xEq6phQasCtzPSF9cNGaf/lo/ALWzrawxcv
-	 /Kv+REMzGr61fGVAFtahbWqZ/y92FlyOXsG4Ciu4y9gZa5jK8Xve6QCeVeJUYFct+f
-	 r5rE4E2JszKrMx0x70YiYMskuUiVnx760dXuKvkuUDvpXKqM2VjmJSrt4bIN20lA07
-	 QIliCVgOPES0CN9KgALVx7A2IJvJeLsT4tSXyE0pevlRerV/8L5BfnT39bmuEe+9dh
-	 fv98x5MA9z/nzW1voReyXTyogWZ9EtxE+ADTLZ/LhDiNznM0/xCOSEvrA2KJTb1j1f
-	 7Ur6QgTG3JQrQ==
-Message-ID: <96c5286c68aa8d2e6e2528e1a8522ff3a90f4990.camel@kernel.org>
-Subject: Re: [PATCH] nfsd: fix inverted cp_ttl check in async copy reaper
-From: Jeff Layton <jlayton@kernel.org>
-To: Paulo Alcantara <pc@manguebit.org>, Chuck Lever
- <chuck.lever@oracle.com>,  NeilBrown <neil@brown.name>, Olga Kornievskaia
- <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>,  Tom Talpey
- <tom@talpey.com>
-Cc: linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Chris Mason <clm@meta.com>
-Date: Thu, 21 May 2026 10:32:09 -0400
-In-Reply-To: <5967be753a797fa05c00cd76d20d37c8@manguebit.org>
-References: 
-	<20260521-async_copy_reaper_cp_ttl_inverted-v1-1-66b87cb1bf64@kernel.org>
-	 <5967be753a797fa05c00cd76d20d37c8@manguebit.org>
-Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
- keydata=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
- QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.1 (3.60.1-1.fc44) 
+	s=arc-20240116; t=1779374300; c=relaxed/simple;
+	bh=rZuVIoGZYamVlEqOMuVjKVBF6ilJFycF2rJ7oyrctv4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kwnKtGAOQVHM3KaHWalmLouYuSCSNrQF9LY1OyLMEmGbR398+LQnEOkjFtIBv7KtGnBSM+LPor14HHd1dy0JzqUNpMzlLTQ3SovuMBp9Lx1Sau14nbbrerVGBSG4Bop4S0Nkkdw+tFaiWZODIRpShg9fkGN1t3S+RAequbaiEsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=1HQGcChP; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=y9oia7Ur; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=1HQGcChP; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=y9oia7Ur; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 9D24A6B699;
+	Thu, 21 May 2026 14:38:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1779374296; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JcDLsvIMH3on9Kq7hVKZzUxcZKYt8Cyp90fVMi3NqaE=;
+	b=1HQGcChPYSguxJWQiKrLEM7q9/hTEFw2g0b7tPMpgcUYZOTDcbFSCuY5MzG9pIWbH0IhmP
+	l5GlG1gRR3vD9g9Hex8tvEJqM5vcBdo0EcUb1163uguuT8bCf1I+hVpdZlcGtuWHjZVCOe
+	KZB/Xy7Hc5y77HysjQ73EGEcHcv+yyI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1779374296;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JcDLsvIMH3on9Kq7hVKZzUxcZKYt8Cyp90fVMi3NqaE=;
+	b=y9oia7UrupXSHUBkVw/ishDk6mxRbIBd9dgqqwJP0XK1IqV/aUYdE370aPkvvPfUiA4mhW
+	cHXwNMABJFYrfACw==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1HQGcChP;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=y9oia7Ur
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1779374296; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JcDLsvIMH3on9Kq7hVKZzUxcZKYt8Cyp90fVMi3NqaE=;
+	b=1HQGcChPYSguxJWQiKrLEM7q9/hTEFw2g0b7tPMpgcUYZOTDcbFSCuY5MzG9pIWbH0IhmP
+	l5GlG1gRR3vD9g9Hex8tvEJqM5vcBdo0EcUb1163uguuT8bCf1I+hVpdZlcGtuWHjZVCOe
+	KZB/Xy7Hc5y77HysjQ73EGEcHcv+yyI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1779374296;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JcDLsvIMH3on9Kq7hVKZzUxcZKYt8Cyp90fVMi3NqaE=;
+	b=y9oia7UrupXSHUBkVw/ishDk6mxRbIBd9dgqqwJP0XK1IqV/aUYdE370aPkvvPfUiA4mhW
+	cHXwNMABJFYrfACw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 10774593AC;
+	Thu, 21 May 2026 14:38:13 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id wjfrLtUYD2qiWAAAD6G6ig
+	(envelope-from <ddiss@suse.de>); Thu, 21 May 2026 14:38:13 +0000
+Date: Fri, 22 May 2026 00:38:00 +1000
+From: David Disseldorp <ddiss@suse.de>
+To: Alexandru Hossu <hossu.alexandru@gmail.com>
+Cc: martin.petersen@oracle.com, bvanassche@acm.org, mlombard@arkamax.eu,
+ target-devel@vger.kernel.org, linux-scsi@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v3] scsi: target: iscsi: validate CHAP_R length before
+ base64 decode
+Message-ID: <20260522003800.2323e11a.ddiss@suse.de>
+In-Reply-To: <20260520165259.272808-1-hossu.alexandru@gmail.com>
+References: <20260518121811.385350-1-hossu.alexandru@gmail.com>
+	<20260520165259.272808-1-hossu.alexandru@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Score: -2.01
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-253581-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253582-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jlayton@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ddiss@suse.de,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 78D2E5A8428
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.de:mid,suse.de:dkim]
+X-Rspamd-Queue-Id: 533505A9046
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, 2026-05-21 at 11:28 -0300, Paulo Alcantara wrote:
-> Jeff Layton <jlayton@kernel.org> writes:
->=20
-> > nfsd4_async_copy_reaper() is supposed to keep completed async copy
-> > state around for NFSD_COPY_INITIAL_TTL (10) laundromat ticks so
-> > that OFFLOAD_STATUS can report the result, then reap the state once
-> > the countdown expires.
-> >=20
-> > The TTL predicate is inverted: `if (--copy->cp_ttl)` is true while
-> > ticks remain and false when the counter reaches zero.  This causes
-> > the copy to be reaped on the very first tick (cp_ttl goes from 10
-> > to 9, which is non-zero) instead of after all 10 ticks elapse.
-> > Once reaped, OFFLOAD_STATUS returns NFS4ERR_BAD_STATEID because
-> > the copy state has already been freed.
-> >=20
-> > A secondary consequence: if cp_ttl ever reached zero (not possible
-> > with the current initial value of 10 since the copy is reaped at
-> > 9), the copy would never be added to the reaplist and would leak
-> > indefinitely on clp->async_copies.
-> >=20
-> > Fix by negating the test so that cleanup runs when the TTL expires.
-> >=20
-> > Fixes: 26e6e6939369 ("NFSD: Add nfsd4_copy time-to-live")
->=20
-> Wouldn't aa0ebd21df9c be the correct commit id?
+On Wed, 20 May 2026 18:52:59 +0200, Alexandru Hossu wrote:
 
-Thanks, yes it would. The other commit id is correct for a copy in my
-tree, but aa0ebd21df9c is the correct upstream one.
---=20
-Jeff Layton <jlayton@kernel.org>
+> chap_server_compute_hash() allocates client_digest as
+> kzalloc(chap->digest_size) and then, for BASE64-encoded responses,
+> passes chap_r directly to chap_base64_decode() without checking whether
+> the input length could produce more than digest_size bytes of output.
+> 
+> chap_base64_decode() writes to the destination unconditionally as long
+> as there is input to consume. With MAX_RESPONSE_LENGTH set to 128 and
+> the "0b" prefix stripped by extract_param(), up to 127 base64 characters
+> can reach the decoder. 127 characters decode to 95 bytes. For SHA-256
+> (digest_size=32) this overflows client_digest by 63 bytes; for MD5
+> (digest_size=16) the overflow is 79 bytes.
+> 
+> The length check at line 344 fires after the write has already happened.
+> 
+> The HEX branch in the same switch statement already validates the length
+> up front. Apply the same approach to the BASE64 branch: strip trailing
+> base64 padding characters, then reject any input whose data length
+> exceeds DIV_ROUND_UP(digest_size * 4, 3) before calling the decoder.
+> 
+> Stripping trailing '=' before the comparison handles both padded and
+> unpadded encodings. chap_base64_decode() already returns early on '=',
+> so the full original string is still passed to the decoder unchanged.
+> 
+> Fixes: 1e5733883421 ("scsi: target: iscsi: Support base64 in CHAP")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Alexandru Hossu <hossu.alexandru@gmail.com>
+> ---
+> v3: strip trailing '=' before length check to handle padded encodings
+>     (reported by Maurizio Lombardi)
+> v2: use DIV_ROUND_UP(digest_size * 4, 3) as suggested by David Disseldorp
+> 
+>  drivers/target/iscsi/iscsi_target_auth.c | 11 ++++++++++-
+>  1 file changed, 10 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/target/iscsi/iscsi_target_auth.c b/drivers/target/iscsi/iscsi_target_auth.c
+> index c46c69a..00487d0 100644
+> --- a/drivers/target/iscsi/iscsi_target_auth.c
+> +++ b/drivers/target/iscsi/iscsi_target_auth.c
+> @@ -340,13 +340,22 @@ static int chap_server_compute_hash(
+>  			goto out;
+>  		}
+>  		break;
+> -	case BASE64:
+> +	case BASE64: {
+> +		size_t r_len = strlen(chap_r);
+> +
+> +		while (r_len > 0 && chap_r[r_len - 1] == '=')
+> +			r_len--;
+> +		if (r_len > DIV_ROUND_UP(chap->digest_size * 4, 3)) {
+> +			pr_err("Malformed CHAP_R: base64 payload too long\n");
+> +			goto out;
+> +		}
+>  		if (chap_base64_decode(client_digest, chap_r, strlen(chap_r)) !=
+>  		    chap->digest_size) {
+>  			pr_err("Malformed CHAP_R: invalid BASE64\n");
+>  			goto out;
+>  		}
+>  		break;
+> +	}
+>  	default:
+>  		pr_err("Could not find CHAP_R\n");
+>  		goto out;
+
+
+This looks a bit fragile, but moving the overflow check into
+chap_base64_decode() probably won't make it any cleaner. I'd like to see
+a comment or build-time assert in the mutual CHAP path as to why the
+length check can be skipped there. Aside from that I think it makes
+sense to merge this.
+
+FWIW, I've added some base64 CHAP coverage to the libiscsi test suite
+over at https://github.com/sahlberg/libiscsi/pull/469 .
+
+Thanks, David
 
