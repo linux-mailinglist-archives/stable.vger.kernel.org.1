@@ -1,267 +1,238 @@
-Return-Path: <stable+bounces-253562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253563-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aJMxAKoXD2qVFQYAu9opvQ
-	(envelope-from <stable+bounces-253562-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 16:33:14 +0200
+	id GGZNDJEaD2qeFwYAu9opvQ
+	(envelope-from <stable+bounces-253563-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 16:45:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B8985A7574
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 16:33:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 872B85A78DE
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 16:45:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A2D49308627B
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 13:34:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8FC923248866
+	for <lists+stable@lfdr.de>; Thu, 21 May 2026 13:45:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3CF93E00B6;
-	Thu, 21 May 2026 13:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B1353F65EF;
+	Thu, 21 May 2026 13:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j4CDviTd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XNOi/xyE"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E3773D7D80;
-	Thu, 21 May 2026 13:33:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35AEF3F54DA
+	for <stable@vger.kernel.org>; Thu, 21 May 2026 13:40:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779370408; cv=none; b=hKW9kln1PLK9mSTd0Ce7XrTssVlcSMyJCXs6/9mt9jzIiFvGUCdN49g9onMb9QgkjHqLgWd4AUcqIIjNQdb5fO1mJWX6ZPf9VkJiaQFkNsx+TZ8/QPqUcGZ0txesFbL+TqH3POBRYF+dEoOzvQeytL6IWm/rKyF4MetdB1W1ii0=
+	t=1779370837; cv=none; b=JY9vLc9MhS90pZDzcd1vFxQ+qiAfygKoLBSAeX5aFksw2Ub3DlL44qRvqYNFHKJ6AifAbbmCVHDfuCyOihyK5UbvvCsytIMuzKSxr7cmwiL+uzjCOZXDyrs31L8xDymTxZaDWQrtcxj3KBoNt4egYH7/CRNyarOHWKd/fgTKHOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779370408; c=relaxed/simple;
-	bh=5uv+CTbn8AcIcVue/GiaGr9BSc0U2Of/hQLri15LfLg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=j0thK6dLeDJ7ZgeB1y2FqTzEs33VjwJL8PzvLZBZQjdECQNPRI5QxRhmQn6yzv7Jk6LuoYKoPPiaTTiJvlpGprjysEn7NmDNZATRN19IbexzGsrVvaIv9J81CfQkvvm/5wcX9MDldl5wKCgscIIW9hkAyvmvP+M/jEqCKJfKJJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j4CDviTd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 664AA1F00A3C;
-	Thu, 21 May 2026 13:33:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779370406;
-	bh=ezV5ICAM2va0jVjd8iAniGdLxBSb69xxnF1gv2JwpSY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=j4CDviTd6M6LDTj5r6sQRqgJ6ESa9aWMu37zRV8mtOcXrJiE1zLL6x/OVHUw7taNB
-	 jl6ETIYiu8JAkRBqc4Wuv2aB534ln8Hu69MX1fb2GFClu2Mmurr/zb532bCHmICyRT
-	 bW4gGDuRH21kbO4Mt3QzAC1BgrPy+si2Rjb35ZfN4nboZAY9y9toARiousj3e/bp3M
-	 OhVS9wgD8OvUpe6jIOQ+pq818okRHEEM5Lah2/H+GkNEe7+pCkBUV/HEs3jXEYS4f4
-	 MtCRjjIGdmkPubfqUsmmCsve0nsahQ5jfKPmPGh0P3LHoWU280OP0E1I4NEEZgAN1h
-	 MDV3MyE2qhaxQ==
-From: Kees Cook <kees@kernel.org>
-To: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Kees Cook <kees@kernel.org>,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	stable@vger.kernel.org,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Corey Minyard <corey@minyard.net>,
-	Gabriel Somlo <somlo@cmu.edu>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Hannes Reinecke <hare@suse.de>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Zhang Rui <rui.zhang@intel.com>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Jason Baron <jbaron@akamai.com>,
-	Jim Cromie <jim.cromie@gmail.com>,
-	Tiwei Bie <tiwei.btw@antgroup.com>,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	"David E. Box" <david.e.box@linux.intel.com>,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Frank Li <Frank.Li@kernel.org>,
-	Daniel Gomez <da.gomez@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Aaron Tomlin <atomlin@atomlin.com>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	John Johansen <john.johansen@canonical.com>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Georgia Garcia <georgia.garcia@canonical.com>,
-	kvm@vger.kernel.org,
-	dmaengine@vger.kernel.org,
-	linux-modules@vger.kernel.org,
-	kasan-dev@googlegroups.com,
-	linux-mm@kvack.org,
-	apparmor@lists.ubuntu.com,
-	linux-security-module@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	linux-acpi@vger.kernel.org,
-	openipmi-developer@lists.sourceforge.net,
-	qemu-devel@nongnu.org,
-	intel-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-rdma@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-scsi@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-serial@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	usb-storage@lists.one-eyed-alien.net,
-	virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: [PATCH 01/11] params: bound array element output to the caller's page buffer
-Date: Thu, 21 May 2026 06:33:14 -0700
-Message-Id: <20260521133326.2465264-1-kees@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260521133315.work.845-kees@kernel.org>
-References: <20260521133315.work.845-kees@kernel.org>
+	s=arc-20240116; t=1779370837; c=relaxed/simple;
+	bh=lgt6bZGowrk+/hgFO04EGKXbDtatCeP4h9JOVGEXa8s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oVv7r+VlPkN0sgIeCVWDDTe7MFgzVsv59R/CYhrjNSgysFYFpYLGPqHWMjks64KSQCAf6Lz2zMzN3OZTc9sebIr9nGH2wplld5CLn1A1eoYhrnGxI8OIKpLlaZn2llRkPpiC6+sT54lWsLXX4gBxr5KFDkJtz4xrt4Jx0wrZqh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XNOi/xyE; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-45e6a4d0be0so2680845f8f.1
+        for <stable@vger.kernel.org>; Thu, 21 May 2026 06:40:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779370833; x=1779975633; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6pliLjQCX38qV7kmxGlug+pl/y15gveH2ePBs5elqDA=;
+        b=XNOi/xyEjMAKYE7DMZ1mULUcWDZZuOE3IazV1nasAwyFcBWwCUyE49xk+fBB2JQ/4Z
+         ObiSwbZGoxfm8cVPj7Sjk3LzdGOp0dZ6a0+mwGzaDHgubVzOIA+HmQ4w44UWFxKwQVsn
+         2yT/7FkZ6Hj7RKV11iBkNHKaI29r27t01r/x4bAeuue7g6DpRr3EguS/DfRzGI72kSvm
+         pWMQqT8bx7+AcMnaiQbqjq765IvjEpxTVoaGuLEqtr/MjpyGbT0B1JXxm3BotpA2Ziv9
+         FfyYigl6yvBnf697TwQqCyE7NNGnuKvIBGCxN0fRz5iWonFhuYUOHSb6IS9+xk8uvaj+
+         ckew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779370833; x=1779975633;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6pliLjQCX38qV7kmxGlug+pl/y15gveH2ePBs5elqDA=;
+        b=ez/4OhpCMZgJiQIsMYVYFsKYrskW19skOgBuZKMzBGXzYNxvsesz/AybjEWB+tJsdC
+         kJgg7g1BPnNjooo6x7Sd2H3L5Fiya47l2qgMdgZyg8qneW63bVGIJ6nhGu5ZyDU2AHfz
+         5ECTobvlYAykfEnVEszNFYdkan1L+Bmwd7Y+APJ9x4bjU7Y1Y2fs+skfPnWg16bY9ob/
+         VT2Mz1v0aatGifOaYA0WAufgFAurgkG0dEN+28vrgHuqSFPVhUnYN1x6vzstuIFjpj6g
+         onAXSakndjFntbBmrpvSNL8U3aMP5mt6HWpeGFZU+6NyYWxm56hWgMZc1LrjqVjtb4YH
+         To2w==
+X-Gm-Message-State: AOJu0YyISIhH49CSDfS9I95dRkXn9VbqMTjEHlnoj8D6fbQSOdsvofTM
+	KQddvFutcuy6m6AyMrhewBb+Bqz+PZfpQCntqozU/hponETRU2Ikk1ot
+X-Gm-Gg: Acq92OHzHpg7MEJSyVsGaQPPHUiXLeU9ZRRYZbiYKXTwnllNeS/28tVsSmvP/SKbsXY
+	Q3YvlZgRTHnee65Zyea3QYgXqk2J41BhTK8a3oRoXIbZWMCVL5KaN01FJ4WDvqeJEGGRPxIIDG9
+	QaCJboSXvNGSCeTYr5p/kVbKuoAvNdWVCamjnvCVVWCXnQ89k9i1cNdVVdmK67ItgIjv8V8A7lX
+	hl1tUVBlOOkzSZydJeuO60KHS4LG5gYK5I/JhTZswao5mbY0hfKslc7Wfv46HVBz3B2QeBl6S0t
+	lAX63esWu8/UNrvcmyu/zMAYgvLEfwfICiiI6yXkt9KWYUOJRjEZXg9k8qu1x73Laj7LwsLKlIs
+	M18f3uxgnV5bMLV8sqm9b6jyhITdLEpYzIE5RwEkvJBSAS2MUUk8cdyZ2YpfyGlKWQofOXztE1O
+	HONMKelxzoy/WWFgj2hAlnxYjN6yArcyQqaxtlep7bbn3PzW4D3X6HaPL2NhWjs8a/1KSs+0jkf
+	nBYYE5F+cGCVk92yR/7RSEK4Xc+KYgTkRbNj3nPkeBXzk8hZyTMEZZdkW5C42NE6PheHU01juWC
+	FMMZHi1rixQoV3Pz7b4aW6/HTXuRxrb3jj8SUxHE35QzX7beswYl
+X-Received: by 2002:a05:6000:4027:b0:45b:d891:4ef1 with SMTP id ffacd0b85a97d-45ea3beccb2mr4601148f8f.34.1779370833098;
+        Thu, 21 May 2026 06:40:33 -0700 (PDT)
+Received: from mail.gmail.com (2a01cb0889497e00f2ad02214c8b26a8.ipv6.abo.wanadoo.fr. [2a01:cb08:8949:7e00:f2ad:221:4c8b:26a8])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eaa7cd815sm4355733f8f.6.2026.05.21.06.40.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 May 2026 06:40:32 -0700 (PDT)
+Date: Thu, 21 May 2026 15:40:30 +0200
+From: Paul Chaignon <paul.chaignon@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Nathan Chancellor <nathan@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Jon Hunter <jonathanh@nvidia.com>, Chen Yu <yu.c.chen@intel.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: Re: [PATCH 6.18 046/957] sched/topology: Fix sched_domain_span()
+Message-ID: <ag8LTnOjVcrKlUs0@mail.gmail.com>
+References: <20260520162134.554764788@linuxfoundation.org>
+ <20260520162135.557884097@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2143; i=kees@kernel.org; h=from:subject; bh=3eO38ZdE0rbljlF5l/QfEOapKDQ3GxlJmKbxHXugskI=; b=owGbwMvMwCVmps19z/KJym7G02pJDFn8nAtqmS7cf3B//69jZ5rrq6va9p3fNOGM7h2Jd74Pn JTCV6u3dZSyMIhxMciKKbIE2bnHuXi8bQ93n6sIM4eVCWQIAxenAEzEYiojw//ne8uu9YZ9+sWp mJ7czDyrP2Afv+2f21+/99yL9Jp+OI2RYVNeQ9witS6BzPe55aerW/eveRmS81ixc8XMVftPpj7 OZQAA
-X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260520162135.557884097@linuxfoundation.org>
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,iscas.ac.cn,vger.kernel.org,suse.com,nod.at,cambridgegreys.com,sipsolutions.net,minyard.net,cmu.edu,redhat.com,linux.intel.com,intel.com,ursulin.net,gmail.com,ffwll.ch,acm.org,ziepe.ca,ideasonboard.com,google.com,suse.de,HansenPartnership.com,oracle.com,arm.com,linuxfoundation.org,rowland.harvard.edu,linux.alibaba.com,akamai.com,antgroup.com,orcam.me.uk,infradead.org,linux.ibm.com,alien8.de,zytor.com,atomlin.com,linux-foundation.org,canonical.com,paul-moore.com,namei.org,hallyn.com,googlegroups.com,kvack.org,lists.ubuntu.com,lists.infradead.org,lists.sourceforge.net,nongnu.org,lists.freedesktop.org,lists.ozlabs.org,lists.one-eyed-alien.net,lists.linux.dev];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253562-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kees@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_GT_50(0.00)[100];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-253563-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[paulchaignon@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,suse.com:email]
-X-Rspamd-Queue-Id: 7B8985A7574
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email,intel.com:email,gnu.org:url]
+X-Rspamd-Queue-Id: 872B85A78DE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+On Wed, May 20, 2026 at 06:08:49PM +0200, Greg Kroah-Hartman wrote:
+> 6.18-stable review patch.  If anyone has any objections, please let me know.
 
-param_array_get() appends each element's string representation into the
-shared sysfs page buffer by passing buffer + off to the element getter.
+No objection, but commit aacee214d5763 ("selftests/bpf: Remove
+test_access_variable_array") will also need to be backported or the BPF
+selftests fail with:
 
-That works for getters that only write a small bounded string, but
-param_get_charp() and similar helpers format against PAGE_SIZE from the
-pointer they receive. Once off is non-zero, an element getter can
-therefore write past the end of the original sysfs page buffer.
+  progs/test_access_variable_array.c:14:13: error: no member named 'span' in 'struct sched_domain'
+    CLNG-BPF [test_progs] test_check_mtu.bpf.o
+     14 |         span = sd->span[0];
+        |                ~~  ^
 
-Collect each element into a temporary PAGE_SIZE buffer first and then
-copy only the remaining space into the caller's page buffer.
-
-Cc: stable@vger.kernel.org
-Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Signed-off-by: Kees Cook <kees@kernel.org>
----
- kernel/params.c | 26 ++++++++++++++++++++------
- 1 file changed, 20 insertions(+), 6 deletions(-)
-
-diff --git a/kernel/params.c b/kernel/params.c
-index 74d620bc2521..752721922a15 100644
---- a/kernel/params.c
-+++ b/kernel/params.c
-@@ -475,22 +475,36 @@ static int param_array_set(const char *val, const struct kernel_param *kp)
- static int param_array_get(char *buffer, const struct kernel_param *kp)
- {
- 	int i, off, ret;
-+	char *elem_buf;
- 	const struct kparam_array *arr = kp->arr;
- 	struct kernel_param p = *kp;
- 
-+	elem_buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
-+	if (!elem_buf)
-+		return -ENOMEM;
-+
- 	for (i = off = 0; i < (arr->num ? *arr->num : arr->max); i++) {
--		/* Replace \n with comma */
--		if (i)
--			buffer[off - 1] = ',';
- 		p.arg = arr->elem + arr->elemsize * i;
- 		check_kparam_locked(p.mod);
--		ret = arr->ops->get(buffer + off, &p);
-+		ret = arr->ops->get(elem_buf, &p);
- 		if (ret < 0)
--			return ret;
-+			goto out;
-+		ret = min(ret, (int)(PAGE_SIZE - 1 - off));
-+		if (!ret)
-+			break;
-+		/* Replace the previous element's trailing newline with a comma. */
-+		if (i)
-+			buffer[off - 1] = ',';
-+		memcpy(buffer + off, elem_buf, ret);
- 		off += ret;
-+		if (off == PAGE_SIZE - 1)
-+			break;
- 	}
- 	buffer[off] = '\0';
--	return off;
-+	ret = off;
-+out:
-+	kfree(elem_buf);
-+	return ret;
- }
- 
- static void param_array_free(void *arg)
--- 
-2.34.1
-
+> 
+> ------------------
+> 
+> From: Peter Zijlstra <peterz@infradead.org>
+> 
+> [ Upstream commit e379dce8af11d8d6040b4348316a499bfd174bfb ]
+> 
+> Commit 8e8e23dea43e ("sched/topology: Compute sd_weight considering
+> cpuset partitions") ends up relying on the fact that structure
+> initialization should not touch the flexible array.
+> 
+> However, the official GCC specification for "Arrays of Length Zero"
+> [*] says:
+> 
+>   Although the size of a zero-length array is zero, an array member of
+>   this kind may increase the size of the enclosing type as a result of
+>   tail padding.
+> 
+> Additionally, structure initialization will zero tail padding. With
+> the end result that since offsetof(*type, member) < sizeof(*type),
+> array initialization will clobber the flex array.
+> 
+> Luckily, the way flexible array sizes are calculated is:
+> 
+>   sizeof(*type) + count * sizeof(*type->member)
+> 
+> This means we have the complete size of the flex array *outside* of
+> sizeof(*type), so use that instead of relying on the broken flex array
+> definition.
+> 
+> [*] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
+> 
+> Fixes: 8e8e23dea43e ("sched/topology: Compute sd_weight considering cpuset partitions")
+> Reported-by: Nathan Chancellor <nathan@kernel.org>
+> Debugged-by: K Prateek Nayak <kprateek.nayak@amd.com>
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Tested-by: Jon Hunter <jonathanh@nvidia.com>
+> Tested-by: Chen Yu <yu.c.chen@intel.com>
+> Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
+> Tested-by: Nathan Chancellor <nathan@kernel.org>
+> Link: https://patch.msgid.link/20260323093627.GY3738010@noisy.programming.kicks-ass.net
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  include/linux/sched/topology.h | 24 ++++++++++++++++++------
+>  1 file changed, 18 insertions(+), 6 deletions(-)
+> 
+> diff --git a/include/linux/sched/topology.h b/include/linux/sched/topology.h
+> index 45c0022b91ced..6f8a4ae860da8 100644
+> --- a/include/linux/sched/topology.h
+> +++ b/include/linux/sched/topology.h
+> @@ -141,18 +141,30 @@ struct sched_domain {
+>  
+>  	unsigned int span_weight;
+>  	/*
+> -	 * Span of all CPUs in this domain.
+> +	 * See sched_domain_span(), on why flex arrays are broken.
+>  	 *
+> -	 * NOTE: this field is variable length. (Allocated dynamically
+> -	 * by attaching extra space to the end of the structure,
+> -	 * depending on how many CPUs the kernel has booted up with)
+> -	 */
+>  	unsigned long span[];
+> +	 */
+>  };
+>  
+>  static inline struct cpumask *sched_domain_span(struct sched_domain *sd)
+>  {
+> -	return to_cpumask(sd->span);
+> +	/*
+> +	 * Turns out that C flexible arrays are fundamentally broken since it
+> +	 * is allowed for offsetof(*sd, span) < sizeof(*sd), this means that
+> +	 * structure initialzation *sd = { ... }; which writes every byte
+> +	 * inside sizeof(*type), will over-write the start of the flexible
+> +	 * array.
+> +	 *
+> +	 * Luckily, the way we allocate sched_domain is by:
+> +	 *
+> +	 *   sizeof(*sd) + cpumask_size()
+> +	 *
+> +	 * this means that we have sufficient space for the whole flex array
+> +	 * *outside* of sizeof(*sd). So use that, and avoid using sd->span.
+> +	 */
+> +	unsigned long *bitmap = (void *)sd + sizeof(*sd);
+> +	return to_cpumask(bitmap);
+>  }
+>  
+>  extern void partition_sched_domains(int ndoms_new, cpumask_var_t doms_new[],
+> -- 
+> 2.53.0
+> 
+> 
+> 
 
