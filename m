@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-253693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253694-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oODUBIvgD2ocRAYAu9opvQ
-	(envelope-from <stable+bounces-253693-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 06:50:19 +0200
+	id aKc5DA3mD2poRQYAu9opvQ
+	(envelope-from <stable+bounces-253694-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 07:13:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89B495AEC78
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 06:50:17 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D5235AF052
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 07:13:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4F049302A6A1
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 04:45:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 93F093016493
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 05:13:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37577359A90;
-	Fri, 22 May 2026 04:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17A3F379C4D;
+	Fri, 22 May 2026 05:13:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ox9os61X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OsCAsiYZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE92E1A2545;
-	Fri, 22 May 2026 04:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33D31D63F3;
+	Fri, 22 May 2026 05:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779425130; cv=none; b=BmC7kcNxq+zUGwUmVRSwJ0avpsX7o77qxIeAke1tEhnqOdUCoWJ9mJ7Zfkxc3fZLws0WHv/AU7kHbIN3JQ9Zb/Y5tFAwyNwY6kSJ+nn1cyODxaA3yVoY4KscmH65v8UCYza/9AuUF0V18SHdIU+WTwpBSJqnpGax7Fa5Frezh7o=
+	t=1779426825; cv=none; b=pYHS1XLD5/hGheMC9WxjqUOWSILigZFLxSCn6HaXkC0NaSWLUjgl+6zCglUcvE0GmG/Ss4bU9YuUM7MqL22GFZLcDG5q6PjYMTXPOHr8WnI/J9oAOMxLeIw/ned5HpRB0Dr4lRdQp9FKdnqxUJZjY4EgGeu6szbj56i7Xs6mxyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779425130; c=relaxed/simple;
-	bh=8p6iBNtk8angBKBKqbsbPWFI+lK9qFn54AQTeK+Lc6g=;
+	s=arc-20240116; t=1779426825; c=relaxed/simple;
+	bh=aB5b1JHbRduyPzrFWTdq1pI8pxXMS3m1G3NNgfOE5Mk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kstl50aqE1qFmrWaDkJpfwhYM6n8gZTqri0ZMVAHUJUuW5HgDtZmelKIYtMM6YXiU9AOW3ehNxfa9d5IT14YA2nGxbSbk5TqF5tZkUOjYPo0OLJuObPguRwg/SaQfwNY+42D5i0Ze3iVDgwptaUcBUaQvtQ2fM5RSYpsbqBmwZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ox9os61X; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D3921F000E9;
-	Fri, 22 May 2026 04:45:27 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=EKVkxuI0SH6gHFiqgCS4Z5Sh/R/Rq+aGwYczJj1cSk0+TTHasJGVida2paPdxO6a/dW4Zgo684fCqPKqerOAlr5n0AUFy8J4WqcX76cuMfAVldOCQoPrbvA9+3z1HnagGoRIxw6qkA3z5lXpLwX2Rrt3FpNBz9/XgwmG+KupQ5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OsCAsiYZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F02B01F000E9;
+	Fri, 22 May 2026 05:13:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779425128;
-	bh=5zZBaruX0Piz4UoErSW+hQ/KWw5I5ffCqqnYncPENuM=;
+	s=korg; t=1779426824;
+	bh=CuN3NPWL8JRPwPmzdvch38kRGm+W8e4/QvzBbCjPUu0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ox9os61XqtCkTk4YemKO2DIwEW63EngHLfgEgHj0U5fprQoD2jc4ckcC69y592/UU
-	 1I/auMAVFfFrBbcxfsygQ2FFarFCS2z2SmE5KKBhhGpxUkle31j4TvoIu6CzSFQjbQ
-	 H9dBxb8rR7RYbaLQI0LhAdMrgcWSWnXpKPQEVf4Y=
-Date: Fri, 22 May 2026 06:45:31 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Wentao Guan <guanwentao@uniontech.com>
-Cc: oneukum <oneukum@suse.com>, carvsdriver <carvsdriver@gmail.com>,
-	linux-usb <linux-usb@vger.kernel.org>,
-	linux-kernel <linux-kernel@vger.kernel.org>,
-	stable <stable@vger.kernel.org>
-Subject: Re: [PATCH RFC] USB: cdc-acm: Fix bit overlap and move quirk
- definitions to header
-Message-ID: <2026052217-willfully-snowplow-1f80@gregkh>
-References: <20260506093213.1473262-1-guanwentao@uniontech.com>
- <2026052144-unwritten-washing-df27@gregkh>
- <tencent_59BCDC255EB2B97F0CAB385D@qq.com>
+	b=OsCAsiYZ9Eg618O/ZGhQFizSQPaz0tiffmFCIvAuEZOqvHohWaXDQOmnDIhD/tOeL
+	 Q5tUQfGhmRVg32uwpVZ6Cwx9/l3jXUbO3iJFZfDpJpH8ZM6XwAhjymdKcpqQVYUpeB
+	 vB7ynlbwe+aVsTlxXAk/jq1reZbygtYPXp9fwPSg=
+Date: Fri, 22 May 2026 07:12:56 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Goetz Goerisch <ggoerisch@gmail.com>
+Cc: Paul Louvel <paul.louvel@bootlin.com>, herve.codina@bootlin.com,
+	miquel.raynal@bootlin.com, stable@vger.kernel.org,
+	thomas.petazzoni@bootlin.com,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	linux-crypto@vger.kernel.org, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH] crypto: talitos - fix rename first/last to
+ first_desc/last_desc
+Message-ID: <2026052212-aged-amply-7bd8@gregkh>
+References: <142603430.61540.1779296295550@app.mailbox.org>
+ <DIO9YUHO5VGT.3BLGH04NVJNHP@bootlin.com>
+ <DIOA24QU02W5.2RSVK05RE7BJK@bootlin.com>
+ <1464270648.58006.1779377119607@app.mailbox.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,58 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <tencent_59BCDC255EB2B97F0CAB385D@qq.com>
+In-Reply-To: <1464270648.58006.1779377119607@app.mailbox.org>
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_ALL(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253693-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253694-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[suse.com,gmail.com,vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	NEURAL_HAM(-0.00)[-0.964];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 89B495AEC78
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 9D5235AF052
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, May 21, 2026 at 11:03:02PM +0800, Wentao Guan wrote:
-> > On Wed, May 06, 2026 at 05:32:13PM +0800, Wentao Guan wrote:
-> > > The VENDOR_CLASS_DATA_IFACE and ALWAYS_POLL_CTRL quirk flags added in
-> > > commit f58752ebcb35 ("USB: cdc-acm: Add quirks for Yoga Book 9 14IAH10
-> > > INGENIC touchscreen") were placed inside the acm_ctrl_msg() function
-> > > rather than in the header with the other quirk flags.  Then, their
-> > > values (BIT(9) and BIT(10)) collided with NO_UNION_12 which is already
-> > > BIT(9).
-> > >
-> > > Move the definitions to drivers/usb/class/cdc-acm.h where they belong
-> > > and shift them to BIT(10) and BIT(11) to avoid the overlap.
-> > >
-> > > Fixes: f58752ebcb35 ("USB: cdc-acm: Add quirks for Yoga Book 9 14IAH10 INGENIC touchscreen")
-> > > Cc: stable@vger.kernel.org
-> >
-> > Why is this needed for stable?  What bug does this "fix"?
-> I see that there is a bug that NO_UNION_12 and VENDOR_CLASS_DATA_IFACE use same bit.
+On Thu, May 21, 2026 at 05:25:18PM +0200, Goetz Goerisch wrote:
+> Dear Paul,
+> 
+> Thank you for this review and feedback.
+> 
+> > > Instead of renaming req_ctx->last, commit 9826d1d6ed5f8 ("crypto: talitos - stop
+> > > using crypto_ahash::init") should be applied. Ideally before commit
+> > > 655ef638a2bc ("crypto: talitos - fix SEC1 32k ahash request limitation") to
+> > > avoid any compilation breakage and ensure correctness of the code.
+> > 
+> > Small correction:
+> > 
+> > Ideally before commit 00463d5f864a ("crypto: talitos - fix SEC1 32k ahash
+> > request limitation") to avoid any compilation breakage and ensure correctness of
+> > the code.
+> 
+> I can confirm your recommendation. Appyling this commit before, fixes the problem. Please disregard my patch.
+> 
+> Greg could you please backport the mentioned commit to 6.6.y in the correct order for the next update?
 
-Then send this as a non-RFC patch, as obviously we can not take RFC
-patches :)
+Can you send a series of backported patches in the correct order for us
+to apply, so we know to get them correct?  Trying to dig out from an
+email like this is usually quite easy to get wrong :)
+
+thanks,
+
+greg k-h
 
