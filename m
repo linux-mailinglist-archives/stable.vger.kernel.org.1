@@ -1,152 +1,152 @@
-Return-Path: <stable+bounces-253677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253678-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YGK3CBS7D2qCPAYAu9opvQ
-	(envelope-from <stable+bounces-253677-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 04:10:28 +0200
+	id ePWCHh67D2qCPAYAu9opvQ
+	(envelope-from <stable+bounces-253678-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 04:10:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BF8E5ADE50
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 04:10:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E16585ADE58
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 04:10:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 64A5B303D33B
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 02:07:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 605693040209
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 02:07:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2154D2DC350;
-	Fri, 22 May 2026 02:07:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C61E2DC350;
+	Fri, 22 May 2026 02:07:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="pSSo+9LC"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="duXbEwSH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B017F23393F;
-	Fri, 22 May 2026 02:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1007D1FE47B;
+	Fri, 22 May 2026 02:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779415625; cv=none; b=Hv8AQNFBLhn8jgtcx61/iYTfMs6A5Fb9RbbL9pkXVAubCgNVg+3zXeQ9OvCDpkdPOYPJkS5fT3O/34ss0k3lKzTM75qg5S66WRmXFZLy6B1TzS+oIITLYxthp9FmggtHZMN94ul8c/wFpDKwwGrbyrHSR3nBJqSENC5lIeRR4HY=
+	t=1779415628; cv=none; b=pvnUrYlC8Z9xhJKSUmm/qo+SyjpVTyQamzMhxf6S80llkt+/8Mpfq4Fwr7wOykml2cYrt0khLg37i1yBw/PPW95MlpYFPfRAHuZUwFyTFJeXLMZtaOY2El51qlyt6mEs3C/qnywz8mqOn5iYr9Wr6/3i2WyWoEnqLSk4kOvjy/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779415625; c=relaxed/simple;
-	bh=tR5J228uT8stCRZYgt0EZw0z7D5p4iJml8gYdS7lkyw=;
-	h=Date:To:From:Subject:Message-Id; b=ItCdhYAzonSHolpprizvbBTtoZ7snEu/5IxrBVZloCJj1yqhMm4z00uyitPuHznvIW4/s1QHZSM/lhitw8czEnQMkAHKMA97KYcD6uZD14iuXYcOil5S82gmwPdcfxklFQIaFbF+XzrVJD8LUddzcEvSlHl33MOrIoLhy/YRtf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=pSSo+9LC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5176B1F00A3D;
-	Fri, 22 May 2026 02:07:04 +0000 (UTC)
+	s=arc-20240116; t=1779415628; c=relaxed/simple;
+	bh=J82F+S/ib+mJjVxwYZqJuv7nMMAOHyN1q2KS/tRm7Ck=;
+	h=Date:To:From:Subject:Message-Id; b=YcvbeXyW+e8kRSTIzLoBFRDGlnzhoMdTaM7wl7GbY7fINEjy2WrGS8oBk1/943aswS+WaQMLwoNaphfzKSy9wj9SuuXQVoiV8uUUhYvnn0SqV8lUimrYbWUW9oUFpwLV9S0AFTCvwEOfRQi4cWBFJHPXxP0FyJKjlymPQUwHZ+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=duXbEwSH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D75761F00A3D;
+	Fri, 22 May 2026 02:07:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1779415624;
-	bh=3GlUrVpYhAtx2bSFMxzm4STWLSexb2wc2Z9ZrVAj7UA=;
+	d=linux-foundation.org; s=korg; t=1779415627;
+	bh=bQ8jYZmbxlVEAKywPoIoYmbSwMsPvLw2bo3hGlcuqZE=;
 	h=Date:To:From:Subject;
-	b=pSSo+9LCWDKucaGypZzS9NopfeR021RL3x123nnB/2V5x1fSmR8w5Dwt5x+GkFpMC
-	 Cfu22MEKQP/nesWxp3fvC3a6t71ZLI9Wn5pWgE0eNXK/ngz3sVq/xPYyITTxx9PtTP
-	 HZ6GqAAT3phBPT3WiicTeQWZ0WetGg/6aHixKTMI=
-Date: Thu, 21 May 2026 19:07:03 -0700
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,ying.huang@linux.alibaba.com,stable@vger.kernel.org,rakie.kim@sk.com,matthew.brost@intel.com,joshua.hahnjy@gmail.com,gourry@gourry.net,david@kernel.org,byungchul@sk.com,balbirs@nvidia.com,apopple@nvidia.com,nueralspacetech@gmail.com,akpm@linux-foundation.org
+	b=duXbEwSHUn3uAW5jdkZgVi4+13OH2qYVFDN9ht/VAYLvleqW8Y3tiOXJ2O9duHQv8
+	 onIkl42Ds+Ic2m/jTWPjSp4ZTr6j8KITRJF8YvUgbXmjGxEWPP3yWgdhFGHmeNsiuW
+	 HwylaFuSd82SKoxJ3c7JZ3EF8xeie5pJabZE/kv4=
+Date: Thu, 21 May 2026 19:07:06 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,idosch@nvidia.com,baoquan.he@linux.dev,urezki@gmail.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-migrate_device-fix-pgtable-leak-in-migrate_vma_insert_huge_pmd_page.patch removed from -mm tree
-Message-Id: <20260522020704.5176B1F00A3D@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-vmalloc-do-not-trigger-bug-on-bh-disabled-context.patch removed from -mm tree
+Message-Id: <20260522020706.D75761F00A3D@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253677-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-253678-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[linux-foundation.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[vger.kernel.org,nvidia.com,linux.alibaba.com,sk.com,intel.com,gmail.com,gourry.net,kernel.org,linux-foundation.org];
-	DMARC_NA(0.00)[linux-foundation.org];
+	FREEMAIL_TO(0.00)[vger.kernel.org,nvidia.com,linux.dev,gmail.com,linux-foundation.org];
 	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.989];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[smtp.kernel.org:mid,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,alibaba.com:email,sk.com:email,nvidia.com:email]
-X-Rspamd-Queue-Id: 7BF8E5ADE50
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,smtp.kernel.org:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,linux-foundation.org:email,linux-foundation.org:dkim]
+X-Rspamd-Queue-Id: E16585ADE58
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
 The quilt patch titled
-     Subject: mm/migrate_device: fix pgtable leak in migrate_vma_insert_huge_pmd_page
+     Subject: mm/vmalloc: do not trigger BUG() on BH disabled context
 has been removed from the -mm tree.  Its filename was
-     mm-migrate_device-fix-pgtable-leak-in-migrate_vma_insert_huge_pmd_page.patch
+     mm-vmalloc-do-not-trigger-bug-on-bh-disabled-context.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Sunny Patel <nueralspacetech@gmail.com>
-Subject: mm/migrate_device: fix pgtable leak in migrate_vma_insert_huge_pmd_page
-Date: Fri, 1 May 2026 17:21:16 +0530
+From: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Subject: mm/vmalloc: do not trigger BUG() on BH disabled context
+Date: Fri, 15 May 2026 17:30:09 +0200
 
-When migrate_vma_insert_huge_pmd_page() jumps to unlock_abort due
-to a PMD check failure, the pgtable allocated earlier via
-pte_alloc_one() is never freed, causing a memory leak.
+__get_vm_area_node() currently triggers a BUG() if in_interrupt() returns
+true.  However, in_interrupt() also reports true when BH are disabled.
 
-Added free_abort label to release the pgtable in error path.
+The bridge code can call rhashtable_lookup_insert_fast() with bottom
+halves disabled:
 
-Link: https://lore.kernel.org/20260501115122.23288-1-nueralspacetech@gmail.com
-Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
-Signed-off-by: Sunny Patel <nueralspacetech@gmail.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Balbir Singh <balbirs@nvidia.com>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: Gregory Price <gourry@gourry.net>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Rakie Kim <rakie.kim@sk.com>
-Cc: Zi Yan <ziy@nvidia.com>
+__vlan_add()
+ -> br_fdb_add_local()
+  spin_lock_bh(&br->hash_lock); <-- Disable BH
+   -> fdb_add_local()
+    -> fdb_create()
+     -> rhashtable_lookup_insert_fast()
+      -> kvmalloc()
+       -> vmalloc()
+        -> __get_vm_area_node()
+         -> BUG_ON(in_interrupt())
+  spin_unlock_bh(&br->hash_lock)
+
+this triggers the BUG() despite the caller not being in NMI or
+hard IRQ context.
+
+Replace the in_interrupt() check with in_nmi() || in_hardirq().
+
+Link: https://lore.kernel.org/20260515153009.2296191-1-urezki@gmail.com
+Fixes: c6307674ed82 ("mm: kvmalloc: add non-blocking support for vmalloc")
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Cc: Ido Schimmel <idosch@nvidia.com>
+Reported-by: syzbot+8b12fc6e0fb139765b58@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/69ff8c7c.050a0220.1036b8.000b.GAE@google.com/
+Reviewed-by: Baoquan He <baoquan.he@linux.dev>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/migrate_device.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ mm/vmalloc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/migrate_device.c~mm-migrate_device-fix-pgtable-leak-in-migrate_vma_insert_huge_pmd_page
-+++ a/mm/migrate_device.c
-@@ -840,7 +840,7 @@ static int migrate_vma_insert_huge_pmd_p
- 	} else {
- 		if (folio_is_zone_device(folio) &&
- 		    !folio_is_device_coherent(folio)) {
--			goto abort;
-+			goto free_abort;
- 		}
- 		entry = folio_mk_pmd(folio, vma->vm_page_prot);
- 		if (vma->vm_flags & VM_WRITE)
-@@ -893,6 +893,8 @@ static int migrate_vma_insert_huge_pmd_p
+--- a/mm/vmalloc.c~mm-vmalloc-do-not-trigger-bug-on-bh-disabled-context
++++ a/mm/vmalloc.c
+@@ -3203,7 +3203,7 @@ struct vm_struct *__get_vm_area_node(uns
+ 	struct vm_struct *area;
+ 	unsigned long requested_size = size;
  
- unlock_abort:
- 	spin_unlock(ptl);
-+free_abort:
-+	pte_free(vma->vm_mm, pgtable);
- abort:
- 	for (i = 0; i < HPAGE_PMD_NR; i++)
- 		src[i] &= ~MIGRATE_PFN_MIGRATE;
+-	BUG_ON(in_interrupt());
++	BUG_ON(in_nmi() || in_hardirq());
+ 	size = ALIGN(size, 1ul << shift);
+ 	if (unlikely(!size))
+ 		return NULL;
 _
 
-Patches currently in -mm which might be from nueralspacetech@gmail.com are
+Patches currently in -mm which might be from urezki@gmail.com are
 
-mm-migrate_device-cleanup-up-pmd-checks-and-warnings.patch
 
 
