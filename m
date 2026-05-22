@@ -1,180 +1,158 @@
-Return-Path: <stable+bounces-253826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253827-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qKEjKWWgEGpuawYAu9opvQ
-	(envelope-from <stable+bounces-253826-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 20:28:53 +0200
+	id gHA9LNyjEGqYbwYAu9opvQ
+	(envelope-from <stable+bounces-253827-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 20:43:40 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F25AC5B90AC
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 20:28:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 138A75B9214
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 20:43:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 367CE306886B
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 18:21:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 89C50300694C
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 18:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04E7A372048;
-	Fri, 22 May 2026 18:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 124F8372070;
+	Fri, 22 May 2026 18:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="FYP8CXrL"
+	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="p2ekR4DK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619F9257459;
-	Fri, 22 May 2026 18:21:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC763644C1;
+	Fri, 22 May 2026 18:43:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779474092; cv=none; b=puOcEW/l2+OE5XFKuNGh+jB6k6vkwoGFfB0wb/1tuAgoAAAgJ1sSa26BqcKtlyymlU2S/FIgFl9d7CaJ4+6F3RYNcAkpjC1NVOZRcFM5EkJohUPMC/2EqjLrBFBYfgvUdRU+p9sQxy9h5ct7rrKiyDx68q1byRprxI5hq5j4iKI=
+	t=1779475411; cv=none; b=HYLdFIjeXlI/6Zyccqrbq0GFPXNbNl8PKTElhXrDgLyZYPMi/a2kLEdgLAgOI58d1Tg99HJlspreBlhH3T5itKfw0qvpUGFlm+hvrSj0CYEF5UqHT53HgkdLR8965uhHXaQSy5DvR15wyF8M3EYhi4DD08+mc03Xdsx+zvWhX8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779474092; c=relaxed/simple;
-	bh=eRl4shUEi5QLvdF4zeGSMq/iaU0zgIS1NjbRqiaWmb0=;
-	h=Date:To:From:Subject:Message-Id; b=HeWmD07c/ySFgu6nclH4HlEjg5s+p3p875RLySQew3/ZkLf4bouWP92p8i7ZFugakHtV5ggSpqU1cXId7M4Ckh4XdX/wL06sIkgZoqVieHD/iZfFyMfzRL4goG0aw5M1+21ioBCRj1JyGwtHRowSB4IBEoWIz4ridm0SAQwJNgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=FYP8CXrL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14B2F1F00ADE;
-	Fri, 22 May 2026 18:21:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1779474091;
-	bh=pBJ6FuyFlFt6o7BJE2eMhBkzUApGogFrBeTLh6e1KzE=;
-	h=Date:To:From:Subject;
-	b=FYP8CXrLx+ash+bhjMHq0jr4yToX1KebD+eM//xTQPv/BLyZmL+cpQiV3ZSsVXL6T
-	 x/eTSgodcMPJfuSs2Gkuo4PKP0QBC4fc4gCrxw8GeBiS7bKhUJCb64zGWpFAFtcWHH
-	 PUY7hZ3CtERNbWIEOfWNQ6cFmN2JBXFVi6HQI+P0=
-Date: Fri, 22 May 2026 11:21:30 -0700
-To: mm-commits@vger.kernel.org,vbabka@kernel.org,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,mhocko@suse.com,ljs@kernel.org,liam@infradead.org,fvdl@google.com,david@kernel.org,songmuchun@bytedance.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-cma-fix-reserved-page-leak-on-activation-failure.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260522182131.14B2F1F00ADE@smtp.kernel.org>
+	s=arc-20240116; t=1779475411; c=relaxed/simple;
+	bh=4Hu/47ALj1TFYHMqlVUelSx0EjTjIuZzdGwlJ2yzKAg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TLpiF1CrKEE7B7JBw+aeRBTqkqe4vLARfoo/Ny7oryccNYKbsKL+YP4lNQrOEZUj+Uq7pX9MFrahzq1QV0oFz1j9ulYLpy11t6axTLZuespVZfeM1i3HecR+FghwBN9lUzMgvBEAmY3t32RJkrR8C+KJOrwxcisYlqLRti6u+Po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=p2ekR4DK; arc=none smtp.client-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
+	s=gloria202408; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:
+	Subject:Cc:To:From:Reply-To:Content-Type:In-Reply-To:References;
+	bh=CnSgnNA0hMubCrJhiT7jVUAm7Vyf++O7TFQWPZMuzJA=; b=p2ekR4DKpYWIAobDNwopGJBeGQ
+	D/Kh6/wKWBwyxMcJwp1ZgBj4gK5AIFZfN1aulnX1Z8w4hSD9YCkFwpEVs2JeuKrROdJP6ek94el1f
+	W9oUzwsUSXvp4ZNHvNeA7Q5dpIATU0aHOkGOc71MWOCsjkxYBMFWHJCQvquGo6kOY6LwA/82JUv3g
+	Pv1hWCQ6L1V5vjkEEvQTvJOXfiMnxv93r2GUcqf4lNHPuZrSp8y0g15ov4tC5vUPUAh+xFMZXbMNF
+	AepjagtA8rzxG0r1GfX9MpccglvI2Fk4i1UlMJK3YLbXpd+YRX2d6fJTwVccj/EsYz00+hkFC8QPL
+	f3c9QZrQ==;
+From: Heiko Stuebner <heiko@sntech.de>
+To: ulfh@kernel.org,
+	shawn.lin@rock-chips.com,
+	jh80.chung@samsung.com
+Cc: heiko@sntech.de,
+	linux-mmc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] mmc: dw_mmc-rockchip: Add missing private data for very old controllers
+Date: Fri, 22 May 2026 20:43:07 +0200
+Message-ID: <20260522184307.2979579-1-heiko@sntech.de>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[sntech.de,quarantine];
 	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_DKIM_ALLOW(-0.20)[sntech.de:s=gloria202408];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-253826-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253827-lists,stable=lfdr.de];
 	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[heiko@sntech.de,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[sntech.de:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[smtp.kernel.org:mid,linux-foundation.org:email,linux-foundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,bytedance.com:email]
-X-Rspamd-Queue-Id: F25AC5B90AC
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sntech.de:email,sntech.de:mid,sntech.de:dkim]
+X-Rspamd-Queue-Id: 138A75B9214
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+The really old controllers (rk2928, rk3066, rk3188) do not support UHS
+speeds at all, and thus never handled phase data.
 
-The patch titled
-     Subject: mm/cma: fix reserved page leak on activation failure
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-cma-fix-reserved-page-leak-on-activation-failure.patch
+For that reason it never had a parse_dt callback and no driver private
+data at all.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-cma-fix-reserved-page-leak-on-activation-failure.patch
+Commit ff6f0286c896 ("mmc: dw_mmc-rockchip: Add memory clock auto-gating
+support") makes the private data sort of mandatory, because the init
+function checks whether phases are configured internally or through the
+clock controller.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+This results in the old SoCs then experiencing NULL-pointer dereferences
+when they try to access that private-data struct.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+While we could have if (priv) conditionals in all places, it's way less
+cluttery to just give the old types their private-data struct.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Muchun Song <songmuchun@bytedance.com>
-Subject: mm/cma: fix reserved page leak on activation failure
-Date: Fri, 22 May 2026 14:26:58 +0800
-
-If cma_activate_area() fails after allocating only part of the range
-bitmaps, its cleanup path frees the bitmaps for the ranges below
-allocrange and then releases reserved pages using the same bound.
-
-That bound is only correct for bitmap freeing.  Pages in ranges that did
-not reach bitmap allocation are still reserved and should also be returned
-to the buddy when CMA_RESERVE_PAGES_ON_ERROR is clear.  As a result, a
-partial bitmap allocation failure can permanently leak the reserved pages
-from the failed range and all later ranges.
-
-Fix this by releasing reserved pages for all ranges.  For ranges whose
-bitmap allocation succeeded, use the early_pfn[] snapshot saved before the
-bitmap pointer overwrote the union field.  For later ranges, continue to
-use cmr->early_pfn directly.
-
-Link: https://lore.kernel.org/20260522062658.4095405-1-songmuchun@bytedance.com
-Fixes: c009da4258f9 ("mm, cma: support multiple contiguous ranges, if requested")
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Frank van der Linden <fvdl@google.com>
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: ff6f0286c896 ("mmc: dw_mmc-rockchip: Add memory clock auto-gating support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 ---
+ drivers/mmc/host/dw_mmc-rockchip.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
- mm/cma.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
---- a/mm/cma.c~mm-cma-fix-reserved-page-leak-on-activation-failure
-+++ a/mm/cma.c
-@@ -188,10 +188,13 @@ cleanup:
+diff --git a/drivers/mmc/host/dw_mmc-rockchip.c b/drivers/mmc/host/dw_mmc-rockchip.c
+index c6eece4ec3fd..75c82ff20f17 100644
+--- a/drivers/mmc/host/dw_mmc-rockchip.c
++++ b/drivers/mmc/host/dw_mmc-rockchip.c
+@@ -441,6 +441,22 @@ static int dw_mci_common_parse_dt(struct dw_mci *host)
+ 	return 0;
+ }
  
- 	/* Expose all pages to the buddy, they are useless for CMA. */
- 	if (!test_bit(CMA_RESERVE_PAGES_ON_ERROR, &cma->flags)) {
--		for (r = 0; r < allocrange; r++) {
-+		for (r = 0; r < cma->nranges; r++) {
-+			unsigned long start_pfn;
++static int dw_mci_rk2928_parse_dt(struct dw_mci *host)
++{
++	struct dw_mci_rockchip_priv_data *priv;
++	int err;
 +
- 			cmr = &cma->ranges[r];
-+			start_pfn = r < allocrange ? early_pfn[r] : cmr->early_pfn;
- 			end_pfn = cmr->base_pfn + cmr->count;
--			for (pfn = early_pfn[r]; pfn < end_pfn; pfn++)
-+			for (pfn = start_pfn; pfn < end_pfn; pfn++)
- 				free_reserved_page(pfn_to_page(pfn));
- 		}
- 	}
-_
-
-Patches currently in -mm which might be from songmuchun@bytedance.com are
-
-mm-cma_debug-fix-invalid-accesses-for-inactive-cma-areas.patch
-mm-cma-fix-reserved-page-leak-on-activation-failure.patch
-mm-sparse-remove-sparse-buffer-pre-allocation-mechanism.patch
-mm-sparse-vmemmap-fix-vmemmap-accounting-underflow.patch
-mm-memory_hotplug-fix-incorrect-altmap-passing-in-error-path.patch
-mm-sparse-vmemmap-pass-pgmap-argument-to-memory-deactivation-paths.patch
-mm-sparse-vmemmap-fix-dax-vmemmap-accounting-with-optimization.patch
-mm-mm_init-fix-pageblock-migratetype-for-zone_device-compound-pages.patch
-mm-mm_init-fix-uninitialized-struct-pages-for-zone_device.patch
-mm-memory_hotplug-factor-out-altmap-freeing-checks.patch
-drivers-base-memory-make-memory-block-get-put-explicit.patch
++	err = dw_mci_common_parse_dt(host);
++	if (err)
++		return err;
++
++	priv = host->priv;
++
++	priv->internal_phase = false;
++
++	return 0;
++}
++
+ static int dw_mci_rk3288_parse_dt(struct dw_mci *host)
+ {
+ 	struct dw_mci_rockchip_priv_data *priv;
+@@ -514,6 +530,7 @@ static int dw_mci_rockchip_init(struct dw_mci *host)
+ 
+ static const struct dw_mci_drv_data rk2928_drv_data = {
+ 	.init			= dw_mci_rockchip_init,
++	.parse_dt		= dw_mci_rk2928_parse_dt,
+ };
+ 
+ static const struct dw_mci_drv_data rk3288_drv_data = {
+-- 
+2.47.3
 
 
