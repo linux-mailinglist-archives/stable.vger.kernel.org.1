@@ -1,144 +1,184 @@
-Return-Path: <stable+bounces-253759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253760-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YKmgN702EGoaVAYAu9opvQ
-	(envelope-from <stable+bounces-253759-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 12:58:05 +0200
+	id MEhcJmE8EGrUVAYAu9opvQ
+	(envelope-from <stable+bounces-253760-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 13:22:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A85CD5B2987
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 12:58:05 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B16995B2EA4
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 13:22:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F14CD300F74F
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 10:57:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 02572300CF15
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 11:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1171C3D5C3A;
-	Fri, 22 May 2026 10:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A8DB3B442B;
+	Fri, 22 May 2026 11:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T7cjX7ay"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G2ama/YN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C36063D4131
-	for <stable@vger.kernel.org>; Fri, 22 May 2026 10:56:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779447407; cv=none; b=JVd8QMInHvmgxxBqU2T+qZWdUFBQS/bIpMSV471nFKc3FrN6Iq6TR7TCnm3duxcK3kiwxt1NKHW5ZSJDQvyIrt65LdkuEmNGadFfmm6h/5KNa9ANHJzh9JRBturs6IsSX6eFAJDIY52pJvsxmW3bmhkI2fuu4HWWAcA+WsygRXM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779447407; c=relaxed/simple;
-	bh=IplJtbl/QldYTz6VRXsIkthKDuMKnQtV4ggd55jk5LE=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E111E3D4126
+	for <stable@vger.kernel.org>; Fri, 22 May 2026 11:01:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779447696; cv=pass; b=DA9GErtp55tWRpNIQ3cy5xuR99cgMsUghR2WxCIDge9OHkn5et+RGMpjblKCqGV1Ppf+J6ea0sDPIydOXfwaXzotlUkJQJ8/27QOvSWVNypi4p8HqMQPFaLJETq+tFyj32/bAYpQ9e6TAtLJrDBJ99fuuTPqlIkQ+xfid0dvxrw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779447696; c=relaxed/simple;
+	bh=0RyR3TKKWIpuE5do03Aczoxc8RftN/xDiBn9xSJHGIs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DuIKE3RPIM5UOlBZ55iSJ9YaUwqV8rz8kyf1z6wrue4Ra8pMDp9yZspqzpYvCm6LP2zxj0Qg5cyD8rsb+1akzBZLiDt9ZUDknLNB7LnX8p1Lzf824wVLLarEAJ2uH2yYHBw7ivJjzw3hUe9tSOZmCv9F81Y4ZLIB/fwVofAcOo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T7cjX7ay; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC5D1F00ADF
-	for <stable@vger.kernel.org>; Fri, 22 May 2026 10:56:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779447406;
-	bh=IplJtbl/QldYTz6VRXsIkthKDuMKnQtV4ggd55jk5LE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=T7cjX7ay+IjCo/XvaXXaL/4uoUBZOhZifB2I962uL148es7f5VNeXtmJYl74Y8Tnf
-	 LHsrTq+/wUWMGrp7sE0R1xTJ0T5vVVO7FQl0Mj95KgV9vZ7SeWxTez/7ft8uU4t569
-	 4jp1QHxQ493MWIAG1eHnb7uJtghdxHilu/r4nFpLK1saXx5ov+F2eQTj7DVQ5p/XiD
-	 PrIjm6W6DZaENehgd2IEPDIL+/+/PvRR1SbxQWi67rOnjwmeAyS810VcMnFwPBZHzW
-	 Z3SiozJGJZtAwPGkfvgiPXZzuFWtk3+nDXSJ64+G7KuvARAPKKfLBI1+dl5Z/Ldpe4
-	 g0GtK3nxCnMig==
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-393c40246afso82637451fa.1
-        for <stable@vger.kernel.org>; Fri, 22 May 2026 03:56:46 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/A8Z0Hfs7vrivg2aKdhzCP3bkeiEkJDiNQu+msv/ZLEQG+4x/pm8MZFLP8nz7KD3Io79G4Aww=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxTzEyR/7/6VHm7597g+kDGzRGJY5apVZBQJnh0St6am158JyC
-	zIbCaAhQTnrwA4hoVKnRGkVsdSNp/YuIKHoN4Uey6Ou2lW9Vz24mRlAZ8/0pdNWVudTNhIoC6Hx
-	/ywhN70VF1LiGwGJxp2KvHTJMGMSV6JJ4rSDwS+yV2A==
-X-Received: by 2002:a05:651c:154e:b0:393:903c:2262 with SMTP id
- 38308e7fff4ca-395d89a4254mr10396261fa.15.1779447405284; Fri, 22 May 2026
- 03:56:45 -0700 (PDT)
+	 To:Cc:Content-Type; b=qISum5eZ/WRwy6dcgILXaucplcLvEGB5VQd4Vxpdmo+WBFFtRVRkHaNEK4VggcEpZZ/2JhY5gp0toShqut1BQJKD4thyaucPYuwB37OmOobIEU2b9P0JG1Ui2wsYtsSiGNuXq7rE5dY+8Prh80vTn21ypKCU3AmImlLLTX4G/3k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G2ama/YN; arc=pass smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-48d146705b4so77670615e9.3
+        for <stable@vger.kernel.org>; Fri, 22 May 2026 04:01:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779447692; cv=none;
+        d=google.com; s=arc-20240605;
+        b=A9jNwREk0kKHt0DT5fdad4yNF2dgeQKCQ7/ZBVYGdKGpWj52qKCdubSen7VusqxkRO
+         MZVK2QitOn34Oc6TdEn27fWTcNarPkL7/filBqsA/Ru0/5PawMDNI19cbtY2NHC49ltX
+         rw/VTjrs055StbugWhNQj6vhxs9d0aFLc+jGEgqO9CqNkKyQQCgDkCIpub87l1efSTK5
+         C0jVP93Ead0xTYXXoysvw6VrCRNdToaoem2h/OogjW6DRffvACnTwDyLzLOVtvAnK/hr
+         RvO1Oa2oG8uIIojWT0OORG+eN2ZaC+fwrVdAmfxTQxeRdR/jxZhmbzypFTwLZ+mrU3b+
+         qt9A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=0RyR3TKKWIpuE5do03Aczoxc8RftN/xDiBn9xSJHGIs=;
+        fh=Kfw7Bsjud0rm6JO6LRYxRfbzYxTICpdUhrCe7/4E10k=;
+        b=HrROwOa2vGyhWbteW01ig/NuDaRINu9a73UF0V1HreySUB+cSko20EqF+T2Hiw6OWb
+         Ks7vQyRxEea576qUcEcLMsFZOqXofguzpl4HZh3eudA/43wYslmBpWKVUoIcApphZUGq
+         TsQ4CEpq9kj03NGoSFZHtmdjWS7H/fHfYGX4AikTqDmZupSrOdsKdl6yH+PJRzzLw4rW
+         dqCJ2vxuA2hK3smAR6gAjk6d/o33DdBb25TAXSA1yZbiSiEZ0VVEkKvR1h0VivM8qBWZ
+         uU3o9KiUe046v5lxnjB3bmTWmf8iFYTpoOQBqSyeQcrGxAno6oJNMnzDaVLuT+5sm15X
+         3o4A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779447692; x=1780052492; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=0RyR3TKKWIpuE5do03Aczoxc8RftN/xDiBn9xSJHGIs=;
+        b=G2ama/YN6BqHHD92rLtnUgboNyaSdbPx5JeuIYG9tWEucIiPkW/3VQ6S+P7jX/pk+c
+         +WrIPSFm54dy4POtO1vQgh+uIieWMcMrMFm+5wdEQVcla167KBsu4sx6m58FFGX40lOF
+         LEnlpO9mbUafc5Pa2hDlLpjLdlNIxsOB034HCBmADKlDUkbXDwgBr4ibBdHuGQaVfs4E
+         hjiB9p7W/L5qvoc9aVqvHKFb4pwSmRkQWq5y1Zzd+oaGiZPcq0kWkwsyh8/3dhMGj9Ln
+         nNnVTZqHsa6/ypQG9cvLKVfx/MFdATO0ooBFJuaPiU1TDj9EGBkGuyd0+SATSThc4S5z
+         ZDNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779447692; x=1780052492;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0RyR3TKKWIpuE5do03Aczoxc8RftN/xDiBn9xSJHGIs=;
+        b=R2AnHdkNcu23HMp8pPXUWv2vrl/3wrschqRt9qGdmBjb8jI2yLV/JSX5UwabWULDKI
+         1GR4I2gjfHhvrWtvtu5SwDL904viqaGlQ6VD+dAyNFAmmjN3JVEBX3EGp5xmkqvZBCL+
+         fVW3xnW/AX7CbBPRdwgCAbsRaSA+yBCwFGcuFvJjGoYWitiKEWWiu0Q4MLiAlPigNj8h
+         uBqO12BSJkvoiYPBkgx2dLuTrji5WVT9L1CHttAg+SkvHei2nZ0cfkERoochnu3hONbh
+         7v1dR9y/R63O/UGAV6lBDj33sqYGriVROf1UK2JtRItsMRHVbeSJM18eI4PUa7obNtY1
+         G99Q==
+X-Forwarded-Encrypted: i=1; AFNElJ8MzZp2+N3HfRRTwaVQTP72X9/uHXmsyP8Ot/5KBLNL7g/VjWduzBWU5Ywe0dvXfcRoLy/pKYE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YySnbFxpZSq34YW8XlJA0PjtQc3F0RpNPocOOt515VnyW3jn7LN
+	1fHOhn1g8YoHJpyLr1c6/uBUZdfllKgK+VVz94KFf7OLv8uAzwqRT6ZMscnl4himcf3Djspz+RW
+	bmD+KKpZN71VHqiNDgI/078hA5COPZDo=
+X-Gm-Gg: Acq92OEL5rka0s/GkGtrUmVJYj/wa4Q43UuYdI7jdDfnTtV7EGMJ2HvFTKaDb0Mm9df
+	UJk4B28tbA1HFKNInGgB1LZ3RLW2MNMY7QuHqjJGVhEmrwbHccO1n5gEcDeX0TMpuzuplHa7nem
+	1AJv3RbxXWkmI4CMS9EOzgx/hA7cMexWWKqfs371jnq1X7BzyJ79xl9yZBrZe3ktmxCDFhFacQO
+	jSAvPJyUh5L03UqnmklaLRW9Qgf5fXIDlf51Gs9h7KHT5fk5KkzpEgUm1ru6aQdsefgSOZEwmg1
+	85AqH+mH
+X-Received: by 2002:a05:600d:6409:20b0:489:1a3a:9e45 with SMTP id
+ 5b1f17b1804b1-490426d4292mr30314705e9.26.1779447691467; Fri, 22 May 2026
+ 04:01:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260506115701.23035-1-bartosz.golaszewski@oss.qualcomm.com>
- <DICUSYTHZ339.3DW3CRNZ32K6U@kernel.org> <2026052254-rug-mug-24cd@gregkh>
- <3888011e-789a-40e9-b222-c5522a6b7037@kernel.org> <1ee68533-144c-42f2-94c8-d6ef7c1dc644@kernel.org>
- <2026052215-motto-cartridge-1370@gregkh>
-In-Reply-To: <2026052215-motto-cartridge-1370@gregkh>
-From: Bartosz Golaszewski <brgl@kernel.org>
-Date: Fri, 22 May 2026 12:56:32 +0200
-X-Gmail-Original-Message-ID: <CAMRc=Mf4onnNjRTdHJjC_pvXWfTe-etp-uHioqU_FXFUazomTg@mail.gmail.com>
-X-Gm-Features: AVHnY4K3KnsfdOfeuEzcRWhkfakIzGSm1td1H6CfzALrBO5gFUHUDx-sf6Vm7QA
-Message-ID: <CAMRc=Mf4onnNjRTdHJjC_pvXWfTe-etp-uHioqU_FXFUazomTg@mail.gmail.com>
-Subject: Re: [PATCH] device property: set fwnode->secondary to NULL in fwnode_init()
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, 
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Daniel Scally <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>, driver-core@lists.linux.dev, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
+References: <20260519123547.2055911-1-maoyixie.tju@gmail.com>
+ <20260519123547.2055911-3-maoyixie.tju@gmail.com> <CABAhCOSEP1voA-g16sHK+C+84rcQZvX9CWJs1hNaSk-ygbbD1A@mail.gmail.com>
+ <CAHPEe=GX7wsLetw7rnOpeSkc05Jgi3h5y56e0RGYa4dszK1E4Q@mail.gmail.com> <CABAhCOSzP1vaThGV35_VnsRCb=87_CPjPVsTHbq905k8A+BuUg@mail.gmail.com>
+In-Reply-To: <CABAhCOSzP1vaThGV35_VnsRCb=87_CPjPVsTHbq905k8A+BuUg@mail.gmail.com>
+From: Maoyi Xie <maoyixie.tju@gmail.com>
+Date: Fri, 22 May 2026 19:01:20 +0800
+X-Gm-Features: AVHnY4I0Fvyme3rhgKLHLJz5BAKgNMgi22LPqHMxJDUysTWcY-y0ZIQ1DE4YnIE
+Message-ID: <CAHPEe=GQpn75GcRM9C_Y+EOSQWhER9DM6o0E3NG_hgobBB0dLQ@mail.gmail.com>
+Subject: Re: [PATCH net v3 2/2] ip6: vti: Use ip6_tnl.net in vti6_siocdevprivate().
+To: Xiao Liang <shaw.leon@gmail.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
+	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>, 
+	David Ahern <dsahern@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Steffen Klassert <steffen.klassert@secunet.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-253759-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,oss.qualcomm.com,linux.intel.com,gmail.com,lists.linux.dev,vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[brgl@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-253760-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,mail.gmail.com:mid,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: A85CD5B2987
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.990];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[maoyixietju@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: B16995B2EA4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, May 22, 2026 at 12:52=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Fri, May 22, 2026 at 12:43:00PM +0200, Danilo Krummrich wrote:
-> > On 5/22/26 12:40 PM, Danilo Krummrich wrote:
-> > > On 5/22/26 12:24 PM, Greg Kroah-Hartman wrote:
-> > >> Sure, but for now I'll go take this one.
-> > > The follow-up commit 7eba000621ff ("device property: initialize the r=
-emaining
-> > > fields of fwnode_handle in fwnode_init()") is already in driver-core-=
-next.
-> >
-> > s/follow-up/v2/
-> >
-> > https://lore.kernel.org/all/20260511074927.9473-1-bartosz.golaszewski@o=
-ss.qualcomm.com/
-> >
->
-> Ugh, ok, we will have a merge conflict, but at least the bugfix will
-> propagate to stable trees :)
->
-> thanks,
->
-> greg "digging out from a huge email backlog" k-h
+Hi Xiao,
 
-There's no need for you to queue this one, the v2 Danilo linked
-contains this change and some more hardening on top for consistency.
+You are right. I wrote a PoC and confirmed it on v4.
 
-Bart
+I used the same setup as the v4 test, just swapped the
+SIOCCHGTUNNEL ioctl for `ip link set <name> type vti6 remote X
+local Y` from inside the migrated netns. The ip command sends
+RTM_NEWLINK with IFLA_INFO_DATA and no IFLA_LINK_NETNSID, so
+rtnl_newlink() only checks the attacker's own user_ns. The
+message lands in vti6_changelink(), vti6_update() inserts the
+device into init_net's hash, and a SIOCGETTUNNEL in init_net for
+the new params resolves to the migrated device. The primitive is
+the same one v4 2/2 closes for the ioctl path. Only the entry
+point differs.
+
+For a fix I tried a small hunk in __rtnl_newlink(), before the
+rtnl_changelink() dispatch. The hunk derives the link netns
+through dev->rtnl_link_ops->get_link_net() when that callback
+exists. If the link netns differs from tgt_net, it requires
+netlink_ns_capable() against link_net->user_ns. I put it there
+instead of in vti6_changelink() because the same gap applies to
+other link_types with get_link_net (ipip, gre, sit, ip6_tnl),
+and one site covers them all. link_types without get_link_net
+would see no behaviour change.
+
+I re-ran the PoC on v4 with that hunk applied. It returns
+"Operation not permitted" and init_net's hash is unchanged.
+
+I'd like to send this as a follow-up after v4 lands, since the
+fix lives in net/core/rtnetlink.c rather than in vti6. v4 would
+stay scoped to the ioctl path. Would that work for you?
+
+Thanks again,
+Maoyi
 
