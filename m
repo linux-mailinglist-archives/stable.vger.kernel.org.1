@@ -1,94 +1,96 @@
-Return-Path: <stable+bounces-253648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253649-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mCLxF/+cD2rBNwYAu9opvQ
-	(envelope-from <stable+bounces-253648-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 02:02:07 +0200
+	id AEZLNzujD2ocOQYAu9opvQ
+	(envelope-from <stable+bounces-253649-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 02:28:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A95345AD325
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 02:02:06 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0C9B5AD6E6
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 02:28:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 74450302B74C
-	for <lists+stable@lfdr.de>; Thu, 21 May 2026 23:55:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D2B8F3007A5C
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 00:28:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 687B13AEB38;
-	Thu, 21 May 2026 23:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 442511E1E16;
+	Fri, 22 May 2026 00:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Bxn9gjTR"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="hzQOpGRQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056553AE1B1;
-	Thu, 21 May 2026 23:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7447195811;
+	Fri, 22 May 2026 00:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779407740; cv=none; b=qkBALQDl0VkZh66dfkJavZrSc1c2mXCSg3rn6ws/fr34HesWsvemXms8Pkk+LqKJXozvBu7qLpKk2/1CgKz94krm7fmpKKH3M1bZY4r8djn3cDYZdbBLfr4pXuB3QS09k2rN1Y2cPd7QdgXfI9VyEoHFZ7ItrANI+p8lF3Ehx/E=
+	t=1779409716; cv=none; b=DUrBVr+3KXyAVMQtmjQBK7jD3JWP7GRxXOKndYLT7fgQih72jhZiE9ZBz5+WFXTzd1Hnap/d9+j7lXzqKh6bkhB4IcwFcAarsR0eQIIVDTud1H214XY2LJE0SzScdId9p/4k4UEYHBhZEVAfbPoMfozdu8tXoIq9D78e0Zr7ds4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779407740; c=relaxed/simple;
-	bh=dhyUXiB2ZhDq63IpjY62aARgjqWSY8Me0llVup90P4s=;
-	h=Date:To:From:Subject:Message-Id; b=F6ay0c8eU28ggRmmO8Xwche2jH+HPQrAYb7pUY+ch9ZL0dlN0c4fcvPj6Jhz0RSOsYSvxFM7UaEIlcL9rzQYkofFSeJIQ9xaC5ByJ1S2JmLWURNhTuo+KQFGbCPMzNuFIPOvPxmaihkSx0VlwPdCwod3sSq74yVTGvCcW+GErHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Bxn9gjTR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1909C1F000E9;
-	Thu, 21 May 2026 23:55:33 +0000 (UTC)
+	s=arc-20240116; t=1779409716; c=relaxed/simple;
+	bh=xEJoFcEwS0toFyn0Y5JzJR8hSh/bsMrJVV5If7HUaWc=;
+	h=Date:To:From:Subject:Message-Id; b=kMrvPqebE7SbHfc5Id2n2XJ3IpFVYNhFm/06VbmuGALahNb4cicfOEyrYqoheozul5KsCEhwszxi/EH629Sia1R01cSFRdWcXLekgdRyS1bj31WLrorPtj/iAH6pT35ixwJw5oHi8rQbbK3qlNsTAoBCGRk24E8DK3mugYgKFAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=hzQOpGRQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E93F1F000E9;
+	Fri, 22 May 2026 00:28:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1779407733;
-	bh=u4oR8z/pfRd47RpMQjTQ/Koe578zCVBqyZlw8FktE/s=;
+	d=linux-foundation.org; s=korg; t=1779409714;
+	bh=/ntJ++zzNW9gl05EL9fGgRT3Po0YIne7WeYxqnUz6/c=;
 	h=Date:To:From:Subject;
-	b=Bxn9gjTROjyW/KmbDUuF45JmuCw9GpgEvab5mHg6CO9BlMmfEochJ35Na2FItDoOf
-	 kXUTOBRTGV4pKdcj965bmvT6hiJ/36H52HJhOoqLqs+Uh6ytLQhGNwjvpurlctW99v
-	 L7rGhDm2rDK1ZQotS4J9F0HpZ4aYfjI/YhjWlfZA=
-Date: Thu, 21 May 2026 16:55:32 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,roman.gushchin@linux.dev,muchun.song@linux.dev,mhocko@kernel.org,harry@kernel.org,hannes@cmpxchg.org,shakeel.butt@linux.dev,akpm@linux-foundation.org
+	b=hzQOpGRQdSobOd5O6U5OX2AqkfsFVU77TndTUsixR3y7UGHkMK2Hw3dTR+NGdXmpd
+	 HhVI7vOcSLzrwOA+f3n+HKqMV63Fx/VXnkxq0tlt+yDzt0AXyiWlISntC5icjg7KQE
+	 mWCPpnV6iww2ikCDYCifTBooMLdrH//Ez74o+Al8=
+Date: Thu, 21 May 2026 17:28:33 -0700
+To: mm-commits@vger.kernel.org,vbabka@kernel.org,surenb@google.com,stefan.strogin@gmail.com,stable@vger.kernel.org,rppt@kernel.org,osalvador@kernel.org,mina86@mina86.com,mhocko@suse.com,ljs@kernel.org,liam@infradead.org,fvdl@google.com,david@kernel.org,0x7f454c46@gmail.com,songmuchun@bytedance.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + memcg-use-round-robin-victim-selection-in-refill_stock.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260521235533.1909C1F000E9@smtp.kernel.org>
+Subject: + mm-cma_debug-fix-invalid-accesses-for-inactive-cma-areas.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260522002834.5E93F1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	TAGGED_FROM(0.00)[bounces-253648-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[linux-foundation.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253649-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[vger.kernel.org,kernel.org,google.com,gmail.com,mina86.com,suse.com,infradead.org,bytedance.com,linux-foundation.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux-foundation.org:email,linux-foundation.org:dkim,linux.dev:email]
-X-Rspamd-Queue-Id: A95345AD325
+	NEURAL_HAM(-0.00)[-0.976];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,mina86.com:email,linux-foundation.org:email,linux-foundation.org:dkim,smtp.kernel.org:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: E0C9B5AD6E6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
 The patch titled
-     Subject: memcg: use round-robin victim selection in refill_stock
+     Subject: mm/cma_debug: fix invalid accesses for inactive CMA areas
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     memcg-use-round-robin-victim-selection-in-refill_stock.patch
+     mm-cma_debug-fix-invalid-accesses-for-inactive-cma-areas.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/memcg-use-round-robin-victim-selection-in-refill_stock.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-cma_debug-fix-invalid-accesses-for-inactive-cma-areas.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -106,67 +108,76 @@ branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there most days
 
 ------------------------------------------------------
-From: Shakeel Butt <shakeel.butt@linux.dev>
-Subject: memcg: use round-robin victim selection in refill_stock
-Date: Thu, 21 May 2026 15:37:51 -0700
+From: Muchun Song <songmuchun@bytedance.com>
+Subject: mm/cma_debug: fix invalid accesses for inactive CMA areas
+Date: Wed, 20 May 2026 14:10:25 +0800
 
-Harry Yoo reported that get_random_u32_below() is not safe to call in the
-nmi context and memcg charge draining can happen in nmi context.
+cma_activate_area() can fail after allocating range bitmaps.  Its cleanup
+path frees those bitmaps, but only clears cma->count and
+cma->available_count.  It leaves cma->nranges and each range's count in
+place, so cma_debugfs_init() can still register debugfs files for an area
+that never activated successfully.
 
-More specifically get_random_u32_below() is neither reentrant- nor
-NMI-safe: it acquires a per-cpu local_lock via local_lock_irqsave() on the
-batched_entropy_u32 state.  An NMI that lands on a CPU mid-update of the
-ChaCha batch state and recurses into the random subsystem would corrupt
-that state.  The memcg_stock local_trylock prevents re-entry on the percpu
-stock itself, but cannot protect an unrelated subsystem's per-cpu lock.
+That exposes two problems.  Reading the bitmap file can make debugfs walk
+a freed range bitmap and trigger an invalid memory access.  Reading
+maxchunk can also take cma->lock even though that lock is initialized only
+on the successful activation path.
 
-Replace the random pick with a per-cpu round-robin counter stored in
-memcg_stock_pcp and serialized by the same local_trylock that already
-guards cached[] and nr_pages[].  No atomics, no random calls, no extra
-locks needed.
+Fix this by creating debugfs entries only for CMA areas that reached
+CMA_ACTIVATED.
 
-Link: https://lore.kernel.org/20260521223751.3794625-1-shakeel.butt@linux.dev
-Fixes: f735eebe55f8f ("memcg: multi-memcg percpu charge cache")
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-Reported-by: Harry Yoo <harry@kernel.org>
-Closes: https://lore.kernel.org/4e20f643-6983-4b6e-b12d-c6c4eb20ae0c@kernel.org/
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
+c009da4258f9 introduced the invalid access to bitmap file.  2e32b947606d
+introduced the invalid access to cma->lock.  This change applies to both
+issues.  So I added two Fixes tags.
+
+Link: https://lore.kernel.org/20260520061025.3971821-1-songmuchun@bytedance.com
+Fixes: c009da4258f9 ("mm, cma: support multiple contiguous ranges, if requested")
+Fixes: 2e32b947606d ("mm: cma: add functions to get region pages counters")
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Cc: Dmitry Safonov <0x7f454c46@gmail.com>
+Cc: Frank van der Linden <fvdl@google.com>
+Cc: Liam R. Howlett <liam@infradead.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Michal Nazarewicz <mina86@mina86.com>
+Cc: Stefan Strogin <stefan.strogin@gmail.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/memcontrol.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ mm/cma_debug.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/mm/memcontrol.c~memcg-use-round-robin-victim-selection-in-refill_stock
-+++ a/mm/memcontrol.c
-@@ -2031,6 +2031,7 @@ struct memcg_stock_pcp {
+--- a/mm/cma_debug.c~mm-cma_debug-fix-invalid-accesses-for-inactive-cma-areas
++++ a/mm/cma_debug.c
+@@ -205,7 +205,8 @@ static int __init cma_debugfs_init(void)
+ 	cma_debugfs_root = debugfs_create_dir("cma", NULL);
  
- 	struct work_struct work;
- 	unsigned long flags;
-+	uint8_t drain_idx;
- };
+ 	for (i = 0; i < cma_area_count; i++)
+-		cma_debugfs_add_one(&cma_areas[i], cma_debugfs_root);
++		if (test_bit(CMA_ACTIVATED, &cma_areas[i].flags))
++			cma_debugfs_add_one(&cma_areas[i], cma_debugfs_root);
  
- static DEFINE_PER_CPU_ALIGNED(struct memcg_stock_pcp, memcg_stock) = {
-@@ -2214,7 +2215,9 @@ static void refill_stock(struct mem_cgro
- 	if (!success) {
- 		i = empty_slot;
- 		if (i == -1) {
--			i = get_random_u32_below(NR_MEMCG_STOCK);
-+			i = stock->drain_idx++;
-+			if (stock->drain_idx == NR_MEMCG_STOCK)
-+				stock->drain_idx = 0;
- 			drain_stock(stock, i);
- 		}
- 		css_get(&memcg->css);
+ 	return 0;
+ }
 _
 
-Patches currently in -mm which might be from shakeel.butt@linux.dev are
+Patches currently in -mm which might be from songmuchun@bytedance.com are
 
-memcg-cache-obj_stock-by-memcg-not-by-objcg-pointer.patch
-memcg-use-round-robin-victim-selection-in-refill_stock.patch
+mm-cma_debug-fix-invalid-accesses-for-inactive-cma-areas.patch
+mm-sparse-remove-sparse-buffer-pre-allocation-mechanism.patch
+mm-sparse-vmemmap-fix-vmemmap-accounting-underflow.patch
+mm-memory_hotplug-fix-incorrect-altmap-passing-in-error-path.patch
+mm-sparse-vmemmap-pass-pgmap-argument-to-memory-deactivation-paths.patch
+mm-sparse-vmemmap-fix-dax-vmemmap-accounting-with-optimization.patch
+mm-mm_init-fix-pageblock-migratetype-for-zone_device-compound-pages.patch
+mm-mm_init-fix-uninitialized-struct-pages-for-zone_device.patch
+mm-memory_hotplug-factor-out-altmap-freeing-checks.patch
+drivers-base-memory-make-memory-block-get-put-explicit.patch
 
 
