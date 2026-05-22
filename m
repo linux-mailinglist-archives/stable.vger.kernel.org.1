@@ -1,276 +1,451 @@
-Return-Path: <stable+bounces-253841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253842-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8PrJDnS0EGoUcwYAu9opvQ
-	(envelope-from <stable+bounces-253841-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 21:54:28 +0200
+	id gDdRC+W0EGohcwYAu9opvQ
+	(envelope-from <stable+bounces-253842-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 21:56:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 862EE5B9B5C
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 21:54:26 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFEB05B9BE4
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 21:56:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5DAAD3007F61
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 19:46:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EA235300EDA0
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 19:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4C237BE62;
-	Fri, 22 May 2026 19:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3372B37BE62;
+	Fri, 22 May 2026 19:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="eLyZlubn"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="Y3vPT+oY";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="nFgfNLHY"
 X-Original-To: stable@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8AF37D123
-	for <stable@vger.kernel.org>; Fri, 22 May 2026 19:46:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779479189; cv=none; b=HVvirxg+mv5N3rY63onwtulqBcfNFOrWVkJ4bcF1V7gMnpdyrYjGuxPJTIGNnf7nzqn+bvHS8viQ2SBut3zFqIyRrmTkiQyURtqFX8lmXCA+RSEL7VMBiWEFtYtqkASgpY/gKAHVpGslM4tNwa4Nzxh6b4HkNcCQLxPoHsqm9hU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779479189; c=relaxed/simple;
-	bh=htFZLhL7I6dFV1rc+Ese4K7tBrtgrFEYBa72mL6qFw8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Nr/mhy5J464vy/q8zbXrlBw33LqS5W+U+TrPi5K0MaJsVsFYdP4ZNsiuJ+FVk6fXTsT0F9umOrrVr6ddU65PwHUi1AF/P7+XNUaW8TpIJBtZeO6Xp7yINZ/IBnmLppLjo6/CkPpEtDfKZMZHlbVEcEz54mtSU8RxsK2sCbV9kto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=eLyZlubn; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:References;
-	bh=/wASEH4XR11VGlWEYf85t2UsWJAd/XcpMDsIkVwgRBA=; b=eLyZlubnoxuIxgbqpnjE6BFGKU
-	7aBi4Be8kwAYXMZ2FLfNwVpDOhYhKeSKPUf4uTpIno/tVXmB+GR09aEWMVY+G+QfQolhr8apu+op/
-	7W+HFrHvGSO8ATcv74XYwbjfKuNTDFwfroNQH4RpUkDIjbTdFeqNhfxpuGQ5fyB/ssOTGXC4wh7YR
-	aea51WA4PAWrPPFMBCqadUmxCr1tdxShlUYdjspOF13gUdYRX+Harvk8t5hhRy/qGex+Q9mRH/KsO
-	aNnV+NZH8OTTvAOG4anBVjCaa2Mg/cFRIGyNUZS1z2jb4VqJnxiQ2NZYdNI88piv9Q22vwTzik3Hf
-	rKvFENUw==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <benh@debian.org>)
-	id 1wQVov-004to6-0m;
-	Fri, 22 May 2026 19:46:10 +0000
-Date: Fri, 22 May 2026 21:46:07 +0200
-From: Ben Hutchings <benh@debian.org>
-To: gregkh@linuxfoundation.org
-Cc: imv4bel@gmail.com, aaron1esau@gmail.com, ben@decadent.org.uk,
-	malin89@huawei.com, pabeni@redhat.com, rajat.gupta@oss.qualcomm.com,
-	sd@queasysnail.net, sultan@kerneltoast.com, tanjingguo@huawei.com,
-	stable@vger.kernel.org
-Subject: [PATCH 5.15] net: skbuff: propagate shared-frag marker through
- frag-transfer helpers
-Message-ID: <ahCyf28nWFO49oDZ@decadent.org.uk>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338A122ACEB
+	for <stable@vger.kernel.org>; Fri, 22 May 2026 19:48:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779479308; cv=fail; b=dY4KkSHfxaGt4sRRtk62Fxi6cMdudmt0FZ+veWiFcNKtSuSMCFz1Yt7Nl4hUpCNmV/Ne7TfYBaL7W0WsI3XDs828mQiYKcIA9sQLPuLSd4s6d3XPqJoQod5vLt9MlfAUNYwP8e3bnagyPlH6M4DZ+X+hP0J+bvJmIPFyEwWKwgg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779479308; c=relaxed/simple;
+	bh=iRcGIUjvl2h4R5VtLjlTiygqoOrnZVi33gMP3UgmCBU=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=HngmwF3OzwHYGgBYu308vDpjxdT8hpygKP0YNmZn6mjrdLsH4yKV5HBNRSQIq2MHIfTCKbzp70v9Ylb4WDMnzeR2EjUv3Q/3bCuREvuZCUEZMDSF84gd8eeEvjvKgIDjuZ1rsfrJim0X6x4HsoKGeLsxtFi5M4MdLBirBjecaxA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=Y3vPT+oY; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=nFgfNLHY; arc=fail smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64MCbm8h3752874;
+	Fri, 22 May 2026 19:48:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=cl7eIOOhqFTqVhUWZrTlZyc24ntrhYjyZ8DaT7vBo2M=; b=
+	Y3vPT+oYvbfjVE3xG91zIRwKNTCHDF3LTmwdJ9MRjSnwfB727lxBAuK3B0XJAW53
+	VwIy0X1gHRaVVR4PyqyYfpN7Xm0CyZP7SqV/hKG/zJGcmq9mOIjBD+U3uu/WCn4o
+	J15bw0piLzTCNQLvs8EfEiBZ8vyC/Skm5pIkzDDnSNvK7u2LHKseE5NsZbkvybJg
+	twSBj0zKRQw/2+gXHMLUku0+CmMyObhGxzxxUVIKHpBAbod+7y0QXh4fXA1XL0/J
+	QT0AZv40YtB+BdFuqsZAwkpyQ1lbbGkCcktiD4sm9yGHO9+QrqQVpMcPpHddhyLP
+	1EnBdOomHbHLopHWbmHGeQ==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4e6h1t3gcu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 22 May 2026 19:48:08 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 64MJjnaF026767;
+	Fri, 22 May 2026 19:48:07 GMT
+Received: from sa9pr02cu001.outbound.protection.outlook.com (mail-southcentralusazon11013021.outbound.protection.outlook.com [40.93.196.21])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4eau1u5ydx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 22 May 2026 19:48:07 +0000 (GMT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=D58Gvdq84ihTsNK7V20rX3t3EZyGiuE9CGgvyUGv5w1pe2cl4i80YLbXAItzDeYL5npPAVLUXD/lXDCGM89ycCRgZWzvlplnda56HtwvKEjhfsmR4Y7gAxVZschrd4J7B0/U/p6wo/zbGUsPfpk+qucRffHPxgmy1FIwGps05Q2cV2vti/rQJcQAZqjy1ZW3iacNOBgg5VYilKzuQ+7WYT66ZDmMcv1B0p45Om+k49146Y6Bxm07c6r9kTyGZGf4hlAiiZ60TxrKWK9rG8pYZDvQDaywPILBgu0qey/2+81hda+fpDb9tkxjjRH+cNQM4M33sCHddKEaqeDg6KkiqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cl7eIOOhqFTqVhUWZrTlZyc24ntrhYjyZ8DaT7vBo2M=;
+ b=XKe8QPi5YXdJIQh15uQbrw8DgrNcT/8kLm8+MMUJlW8eV2ygfutcvi9OrCuHGb0NADPHcOgCC0EWg6I+g70YSZ0kFqNuFiDTMfZOZSgF2AXM4TEahLoy4MC1rga0LZzd0Si10H6dAhZoJpLhmie0OtaH/2cE3vzY9LPG89d47SxrO1tGMgYzj+BoEa3kLiYfulUNmgB12lCBBW2q7sBPGUOQGSwm37Fhmqvr8J/qv6sgnGBJbmUVE8bOL5ZCwVE03XUHJZ/kc2tDzOJN6b/0eSi/ywIZRhHgqF7pc5gzBiaNSoQf8hR9nrB0DGNNIjd3cUNMr9ysP4TNwm3qGrRH/Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cl7eIOOhqFTqVhUWZrTlZyc24ntrhYjyZ8DaT7vBo2M=;
+ b=nFgfNLHYcR31okZLcIJJkY6YUYQF96QX80GwsYdJe22IC6CAwFqjjLXhTYbVaPquwXSwuq8Zk/R1XMAQPQpW+H/p+7k20bMhRwzAGWFnH4+IGJ3xNogtE6HRV5uowkT1PeFxGWGirx5qwK+0c9k55bBFOyh1OWPwZ8dQZGqR6m8=
+Received: from DS3PR10MB997700.namprd10.prod.outlook.com (2603:10b6:8:347::19)
+ by LV8PR10MB7726.namprd10.prod.outlook.com (2603:10b6:408:1e8::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.17; Fri, 22 May
+ 2026 19:48:04 +0000
+Received: from DS3PR10MB997700.namprd10.prod.outlook.com
+ ([fe80::4c1c:3bb:c4c9:8e7a]) by DS3PR10MB997700.namprd10.prod.outlook.com
+ ([fe80::4c1c:3bb:c4c9:8e7a%7]) with mapi id 15.21.0048.016; Fri, 22 May 2026
+ 19:48:04 +0000
+Message-ID: <8a06c5c3-8f7a-4252-a3b1-0c0d812e2654@oracle.com>
+Date: Sat, 23 May 2026 01:17:57 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 505/666] sched/psi: fix race between file release and
+ pressure write
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev,
+        syzbot+33e571025d88efd1312c@syzkaller.appspotmail.com,
+        Edward Adam Davis <eadavis@qq.com>,
+        Chen Ridong
+ <chenridong@huaweicloud.com>, Tejun Heo <tj@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+References: <20260520162111.222830634@linuxfoundation.org>
+ <20260520162122.206605865@linuxfoundation.org>
+Content-Language: en-US
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+In-Reply-To: <20260520162122.206605865@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0216.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:e4::20) To DS3PR10MB997700.namprd10.prod.outlook.com
+ (2603:10b6:8:347::19)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="iVwi7WFUgcrvEKmC"
-Content-Disposition: inline
-In-Reply-To: <2026052230-kilogram-proving-cd58@gregkh>
-X-Debian-User: benh
-X-Spamd-Result: default: False [-4.26 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[debian.org,none];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS3PR10MB997700:EE_|LV8PR10MB7726:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8bacc1b6-6f4d-4a24-08e9-08deb83b0a0b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|366016|18002099003|22082099003|56012099003|6133799003|4143699003|5023799004;
+X-Microsoft-Antispam-Message-Info:
+	iyEhVBprSdZhv+5CVeCAfXkGJ2/OYTjI5M/JvvEx8I3rgpTO50zGfoe+nbwZ/9Cix262FQWb1CKfDilE/YOOjaDuJuoDezuPSamIhtv5KwdQG7pZOJBe085Fmy7P6pPZSKNwVEatMGI3Gp0p5Knj8YvX0UCQPEyFl9MKs4eAGJb/knHNgFPyIaLKk7z9hrr6YlHAqypgpKrlsVuKtXjk9rE1Qo7an+fzc7vOl7u7HX93U75D/hIsW9zg91fu8CiFYDY9GZFkpJ4tMCA/blcagO+A9rzqjAMpkmWQeEGlYwb4mAIsyvHOlY1PCU3iTLffD/WcoSG1xaNPhSkVDU3O5bmDf1Qk+M6TwmKBJ+BixYgQt8AmFxi1btmIt5RnjbrVe3TmHElcsrx1KwwYNf4J3pMowrmTWt9v6RhI0rrIccKiuzIEEt96ihATmmVjbRwxEXzOys2YAkRNY8mqO3c1aBnguiz2yeDN43LnJAcXXxI8YpecZBoaPS2dPTa5soaRl2jgctfT0OeRSe0HUhEelMSKwRK1U0yndZD+zKGyeAncYys/r/fUUqcZBgVncrg9yLcLxCQM4AJmnjQzqvW+uQsu1r5XSAA3c4OIkeRy7FDzDyHWqgrj5415YuW7kIQ0k5qJANVVww/3eLrS6ykLjg==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS3PR10MB997700.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(18002099003)(22082099003)(56012099003)(6133799003)(4143699003)(5023799004);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?a1UxYlhKRGtUMG9UNTRaaHdleWx0cEVLejVIOU5ib1hhbDIvMDNoNytsNkMz?=
+ =?utf-8?B?L0NGY2NTMmVBZktCWHJ3MWUrUE9GNytVMlQybU83UmpWODdIeUF4MmRwdHRp?=
+ =?utf-8?B?SWhpbEJwTnlvaWhUTzdZLzA2SS9vTEptSEhKS04ydjc3aUtxOHlxSzNUaEFQ?=
+ =?utf-8?B?dHlOSzloQjIyeHZNak1qcW5Za0drZ1k4WGptZHpxVnAwUzNWU1ZuVURya2g3?=
+ =?utf-8?B?QVpORittZEFBZXFaT3ZBellRangxbXdIeFV2ZU1IcnBqKzVJdDBnTWVrWnRY?=
+ =?utf-8?B?SzR0dTg5VU9nYjhaWHJINitTSm1USTB1eTU1dk5HUnMzV3Q0emcxVmlMYkdQ?=
+ =?utf-8?B?aVloSkh4UlArM2FWZGMvY2JuS1JJMnFzWDYvR0d1ZFFldnRTZHluZFdhT2JD?=
+ =?utf-8?B?bDNKT0pIeGl2QzNQOCs4Nkd5bWM4SDQycXNDY0hXQVZxUzZOczdqeVgxWXlr?=
+ =?utf-8?B?eG5nMW9sM1EvWG1CbHZkbjl4NGd1SXpvdmY2OGVJRzJlbk1OTXh3NWhseVRk?=
+ =?utf-8?B?VXkwcXViNjB4aEZMRVIzRVN0a2cxekR2YjArckxWUUxoQ2c1Znl6cHpyeUN1?=
+ =?utf-8?B?OU9POFZkcE1rb2ZHUXk4dFhxNXhNZitIQUp6Tk5XRnNnKzVpNXFhZ1lSUnhV?=
+ =?utf-8?B?RTNBQktSM25tTCtIRlNWQWYrT1hiaVJSOXZXc1EwR1g3Y1NqbWRYOS9IM2Jr?=
+ =?utf-8?B?ekE0MUQwTENhcG56U1dreVpLa0tWWHdNWUxrdit6UnlYNlh1VjZ2U3A4N1Jo?=
+ =?utf-8?B?RkFJZTFHcFhlazVtbkM5MlRtY011ZlowQkNtZkhad0x2WGtSdW9uNmZmSnJZ?=
+ =?utf-8?B?VVFORkdQVGo3TlRaYTVLSjY1Q3VQbmlJZnJlZytJaTVvV05MSUw0aytrOXZQ?=
+ =?utf-8?B?NE56anFTQm8wY1FicDRueHpYMzA4WjVveDdKUk5VdUYxUUdrb29qbi9zajlk?=
+ =?utf-8?B?QWQzVzA1NlRaTlg1aDZQUmo2RTRCKzRGS1JVRHZ6amRvSlpYblRWcDBoOXoz?=
+ =?utf-8?B?QU9iZFBQL3JMN08wdmxQRk9LRi93MTZKTE9CcmNERjFHN2tCMXVKdXdPZzZL?=
+ =?utf-8?B?eEMxeG1HbkwrZWExVTJOSkVBQVZlU2Z2bWRUc096eWhJSEtMV09rZnpEVWdI?=
+ =?utf-8?B?RmY1c3lWM2Z2NjZpUHgxdXFoRGRMYlljV0pNSVd2NVFNb0JwOWIyeHRDSnl1?=
+ =?utf-8?B?a3ZReDZpL0FnZGNra05KM3ZGV1BKUHk2aHB6OTNIZWQ0WkVXTXRvYzdnWmZu?=
+ =?utf-8?B?YVpPcTY4ZDIyc0JObStzS2plTnJlSGhYRnRiazJlbXdzTENLNmdQdklFK2ZX?=
+ =?utf-8?B?bjJFQThjOUczN3pxZFRraURDWG9Ob1RrQS8ydVplNHZpV1duNVBKYStpQU5B?=
+ =?utf-8?B?QUlZQ1lkMVZmaGV0Y3Eyd0ZZTFhSOGpYdlJvNTAxSWZPRjNuallYa0ZGbXVq?=
+ =?utf-8?B?ekhGaVdvRmc3V1M1eFRKMVdOamo2VkFZZExQM0pqMS91dDJYMjlwY1ZFZ0JZ?=
+ =?utf-8?B?cE1aSU0wNFhsRkxhdUdqRVVEazhqZ1VySW0yTjlRdW4weVVpOGJjVFU0UVlO?=
+ =?utf-8?B?SzhLOEU5Q0hpTXZFeEdndzRJWHlXR1dIWndkUTJmUWhUWFVWVlYzQnBwMVRV?=
+ =?utf-8?B?Y2dBUVB2MEVuYlJjbEJnQlZyYU80K3JQeDNNMWp4K0d4Ukk5VHYrMC9jVTZ4?=
+ =?utf-8?B?cGZSK0ZoN093TUp5MmxySlNpRGpEdXYrOEl5VXFreUdkcE81R0NYTEk1V1lk?=
+ =?utf-8?B?Zm1IWFZKbURqVmwvZmZwSDFQRkk2MWJFbVpQelpQMUFsRmVtU1NkQzByc1pr?=
+ =?utf-8?B?Wjh3amkzUGt4eDIrV0NmOVl0bzFaMDl0bmVQZE5LTUg0NjVsNG95TFk4c0g0?=
+ =?utf-8?B?cmNsbnlDODdUcUQ1S1U3eXQxY3dXOG00dnJHT2UrdVJqaEd6cVQ0WjlocDRO?=
+ =?utf-8?B?eG1TMFVCM2xJVDVvUS9xaEt2anlreGNMbG9lazdCYjErR0ZKK05HOUN3NU93?=
+ =?utf-8?B?MStXNndZWVhOREpFWmlWbkEzZ3ppOXFZRzRSdDBtNjBVNFgvZ0lDRlhEYjlt?=
+ =?utf-8?B?b3ZMZ0E5Q2FZQTdnUzZoZ25DYU1OSVY4Z3hPTFkzck1DWFppVytGZjczcUQr?=
+ =?utf-8?B?RFQ1NEZkTm40N0YzRitHelUzNHRVcDBxVStGZUtNUDFPSUE1aThpbEEzbWhC?=
+ =?utf-8?B?aTNtNDNLcFl5eit0TE9rVXNIZ3JuWEt3Q3JpWitKMWhHSm0xWEJ6N0djSCtP?=
+ =?utf-8?B?YzRTUk1RRmVBeFd0L29qVjZud1MvYUVWbVlUc0c3M2kzb3JLSWVvTHU2b1Qz?=
+ =?utf-8?B?SDdlZkZ5cVRqZmYvNnBqcmZTa0tkZHlmMWVVWXE2N3lwOFVOalo2VnNnblF6?=
+ =?utf-8?Q?I1Hp061DHq4xRBMQATxA4y0HptQPhpo9dy6lV?=
+X-Exchange-RoutingPolicyChecked:
+	IADdZIQxAJ4STyKDWSHTQ9+YM4aqkNRx6s34h79H5rxdabckfaaTVoTRdOoWoyO7dR8B+nZPGheJMbpwdv7dGYoysuRy1J4iXEMrFKxlGgqRfzkRg+7CXq2UeyF2uo9Qto8i433wrGY/JN9HgH16snI1Nb2qcJhkLnoKlLG27duFpzDuL2W6aJXtdLeuEnoCAvtG3nQyFZJAtGAFm2Be+bnh/BSQSdHB8t+NmBOP6xnA8lzlZ7kMokPlv7+QffxcO/8ArnsfDj9tPjM5rUyXD81c6cVq9D2bZsyxBkG/RLemJCeJSYJDdE+/eL5D6l3C1quW9mDpaOvbO6WDTrepkA==
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	A5gIz9MoIYguxBrz8N2KlwhlQX6u7wWjTU/eThSJX8kA+dx7ubN8pQUYlL9m08AiN1jhJLUZKIyV7LxOKEkqvSSDeoGotDzNW6PkC7+SEKgVgIvQXQRRFhVte3u+9Kj22HhteDZSpGHoLQLwizlQgQ4Yw4AfVEzZ9T57eLnFS5ULyfYxPb2DihDpe69WNVPS65obPR0qkpeGLn7dw1iW62YwMN8ZUdD4PnOSORm+JXOj2qIhkW47V7rJGEUw93i0IMCbe8xOw6WXpmskN9LMU1cWZd5/hp7vCCWisXur3FlC6h4eeplNy4fVSi4SahIby4qsSpqamTsaVWDM8M2IxyZ0fcIS4gSgcGramvZThLNsnh5Hc3N4tsCv+Mfl7vakJ/RghGgCy+YETJ43IXU4kIjARHxyImQdedLt5ek6Ba/OmlAStJ/BKZDtgf37CcMyselDU441G3rbLA9GJ8RXlNwMkmn7wOJEP97hlVNdUzq6NNS7ARFR9JUhQTqPYQqwhJnDgbdkekFXzdOPZsa+iRrCF64whCagYrY1lz7CvyJ5fxM/I94avh5jEDNYw7J3WspOvopDzw4vMsWypyIS7SNcC3+G9Fs6BIr+zzhf6Lo=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8bacc1b6-6f4d-4a24-08e9-08deb83b0a0b
+X-MS-Exchange-CrossTenant-AuthSource: DS3PR10MB997700.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2026 19:48:04.5397
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zGXKFcYSRurx86sY327Zp7v/IGa/qAHNyw+QHG4FPoDlghRfZFNcsGcj+/Ha6l4jOuQTfp9RWYBjAX0qtjgG8QL8ltmzi59k38KnpgCrCKLOo921FAdqZZO9QzByxe2H
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR10MB7726
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-22_05,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ mlxscore=0 malwarescore=0 lowpriorityscore=0 phishscore=0 mlxlogscore=999
+ spamscore=0 suspectscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2605130000 definitions=main-2605220197
+X-Proofpoint-ORIG-GUID: lgSHWNuOPodHUMuCoRwZ8sGVHNh7NAI3
+X-Authority-Analysis: v=2.4 cv=aoKCzyZV c=1 sm=1 tr=0 ts=6a10b2f8 b=1 cx=c_pps
+ a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=NGcC8JguVDcA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=jiCTI4zE5U7BLdzWsZGv:22 a=o5oIOnhZENCTenyL_yNV:22 a=edf1wS77AAAA:8
+ a=dZbOZ2KzAAAA:8 a=hSkVLCK3AAAA:8 a=AiHppB-aAAAA:8 a=VwQbUJbxAAAA:8
+ a=pQkuGY2LVspxzYj3u7cA:9 a=QEXdDO2ut3YA:10 a=DcSpbTIhAlouE1Uv7lRv:22
+ a=cQPPKAXgyycSBL8etih5:22 a=5yU3S35YU4bGjq-dph-N:22 a=Bho9c0fBagfJEIQBS7DQ:22
+ cc=ntf awl=host:13835
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIyMDE5NiBTYWx0ZWRfX6Oj2fO1DS5fx
+ sTh+S0O1+kYRnBeFizk1CAWvcjqMOeNvkOuDpUzRpDf5WoFrAP+0WPd4J75VrYn4nuGmbL3UziR
+ N3hzdxrYy+HDSXaBEj1RihBlGN+If+YwhP8Ho7V9CH7y3SkhV1RTVhxi9T3ToNcIH9UeEfVtxeu
+ 7Z8zXExk3FkLzGDDD7vDVzjKeGym4Q5kDwBIe02BwiZh8ckHVGR0UA/nxhGnlctAXe5CGgAdtsa
+ u3UWryiy/s3bM3RC9samAldIPswbR25t4lGsa73OIQH9rPwxjOcD1+Im3rDglTevseergnotTtO
+ GRCBkRPTF3Df0c6yDzox/7on9P18ITCFSBLOf7y3oBE/SaC+1rp0rIFF1JO2Nvj+0vTR5ZdZv5R
+ 622DpOaDyZrU4Butr+5wTqAbAajy4vxBj+yWeEjiSY6DYyBmeFz/W2vaGwkqcB/VFbKjgOXMbpZ
+ eaIikOL138M5fts+TxdaGtudqGZdSwlTX+IpWP9I=
+X-Proofpoint-GUID: lgSHWNuOPodHUMuCoRwZ8sGVHNh7NAI3
+X-Spamd-Result: default: False [5.84 / 15.00];
+	SEM_URIBL(3.50)[huaweicloud.com:email];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[debian.org:+];
-	FREEMAIL_CC(0.00)[gmail.com,decadent.org.uk,huawei.com,redhat.com,oss.qualcomm.com,queasysnail.net,kerneltoast.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-253842-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:mid,oracle.com:dkim,appspotmail.com:email,qq.com:email,syzkaller.appspot.com:url,huaweicloud.com:email];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253841-lists,stable=lfdr.de];
+	R_DKIM_ALLOW(0.00)[oracle.com:s=corp-2025-04-25,oracle.onmicrosoft.com:s=selector2-oracle-onmicrosoft-com];
+	GREYLIST(0.00)[pass,body];
+	FREEMAIL_CC(0.00)[lists.linux.dev,syzkaller.appspotmail.com,qq.com,huaweicloud.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[oracle.com,reject];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_NONE(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[benh@debian.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,kerneltoast.com:email,decadent.org.uk:mid,decadent.org.uk:email]
-X-Rspamd-Queue-Id: 862EE5B9B5C
+	NEURAL_HAM(-0.00)[-0.990];
+	FROM_NEQ_ENVFROM(0.00)[harshit.m.mogalapalli@oracle.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[oracle.com:+,oracle.onmicrosoft.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,33e571025d88efd1312c];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	R_SPF_ALLOW(0.00)[+ip4:172.232.135.74:c];
+	RCVD_COUNT_SEVEN(0.00)[9]
+X-Rspamd-Queue-Id: BFEB05B9BE4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Hi Greg/Sasha,
 
---iVwi7WFUgcrvEKmC
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 20/05/26 21:51, Greg Kroah-Hartman wrote:
+> 6.12-stable review patch.  If anyone has any objections, please let me know.
+> 
+> ------------------
+> 
+> From: Edward Adam Davis <eadavis@qq.com>
+> 
+> [ Upstream commit a5b98009f16d8a5fb4a8ff9a193f5735515c38fa ]
+> 
+> A potential race condition exists between pressure write and cgroup file
+> release regarding the priv member of struct kernfs_open_file, which
+> triggers the uaf reported in [1].
+> 
+> Consider the following scenario involving execution on two separate CPUs:
+> 
+>     CPU0					CPU1
+>     ====					====
+> 					vfs_rmdir()
+> 					kernfs_iop_rmdir()
+> 					cgroup_rmdir()
+> 					cgroup_kn_lock_live()
+> 					cgroup_destroy_locked()
+> 					cgroup_addrm_files()
+> 					cgroup_rm_file()
+> 					kernfs_remove_by_name()
+> 					kernfs_remove_by_name_ns()
+>   vfs_write()				__kernfs_remove()
+>   new_sync_write()			kernfs_drain()
+>   kernfs_fop_write_iter()		kernfs_drain_open_files()
+>   cgroup_file_write()			kernfs_release_file()
+>   pressure_write()			cgroup_file_release()
+>   ctx = of->priv;
+> 					kfree(ctx);
+>   					of->priv = NULL;
+> 					cgroup_kn_unlock()
+>   cgroup_kn_lock_live()
+>   cgroup_get(cgrp)
+>   cgroup_kn_unlock()
+>   if (ctx->psi.trigger)  // here, trigger uaf for ctx, that is of->priv
+> 
+> The cgroup_rmdir() is protected by the cgroup_mutex, it also safeguards
+> the memory deallocation of of->priv performed within cgroup_file_release().
+> However, the operations involving of->priv executed within pressure_write()
+> are not entirely covered by the protection of cgroup_mutex. Consequently,
+> if the code in pressure_write(), specifically the section handling the
+> ctx variable executes after cgroup_file_release() has completed, a uaf
+> vulnerability involving of->priv is triggered.
+> 
+> Therefore, the issue can be resolved by extending the scope of the
+> cgroup_mutex lock within pressure_write() to encompass all code paths
+> involving of->priv, thereby properly synchronizing the race condition
+> occurring between cgroup_file_release() and pressure_write().
+> 
+> And, if an live kn lock can be successfully acquired while executing
+> the pressure write operation, it indicates that the cgroup deletion
+> process has not yet reached its final stage; consequently, the priv
+> pointer within open_file cannot be NULL. Therefore, the operation to
+> retrieve the ctx value must be moved to a point *after* the live kn
+> lock has been successfully acquired.
+> 
+> In another situation, specifically after entering cgroup_kn_lock_live()
+> but before acquiring cgroup_mutex, there exists a different class of
+> race condition:
+> 
+> CPU0: write memory.pressure               CPU1: write cgroup.pressure=0
+> ===========================		  =============================
+> 
+> kernfs_fop_write_iter()
+>   kernfs_get_active_of(of)
+>   pressure_write()
+>     cgroup_kn_lock_live(memory.pressure)
+>       cgroup_tryget(cgrp)
+>       kernfs_break_active_protection(kn)
+>       ... blocks on cgroup_mutex
+> 
+>                                       	  cgroup_pressure_write()
+>                                       	  cgroup_kn_lock_live(cgroup.pressure)
+>                                       	  cgroup_file_show(memory.pressure, false)
+>                                       	    kernfs_show(false)
+>                                       	      kernfs_drain_open_files()
+>                                       	        cgroup_file_release(of)
+>                                       	          kfree(ctx)
+>                                       	            of->priv = NULL
+>                                       	  cgroup_kn_unlock()
+> 
+>     ... acquires cgroup_mutex
+>     ctx = of->priv;        // may now be NULL
+>     if (ctx->psi.trigger)  // NULL dereference
+> 
+> Consequently, there is a possibility that of->priv is NULL, the pressure
+> write needs to check for this.
+> 
+> Now that the scope of the cgroup_mutex has been expanded, the original
+> explicit cgroup_get/put operations are no longer necessary, this is
+> because acquiring/releasing the live kn lock inherently executes a
+> cgroup get/put operation.
+> 
+> [1]
+> BUG: KASAN: slab-use-after-free in pressure_write+0xa4/0x210 kernel/cgroup/cgroup.c:4011
+> Call Trace:
+>   pressure_write+0xa4/0x210 kernel/cgroup/cgroup.c:4011
+>   cgroup_file_write+0x36f/0x790 kernel/cgroup/cgroup.c:4311
+>   kernfs_fop_write_iter+0x3b0/0x540 fs/kernfs/file.c:352
+> 
+> Allocated by task 9352:
+>   cgroup_file_open+0x90/0x3a0 kernel/cgroup/cgroup.c:4256
+>   kernfs_fop_open+0x9eb/0xcb0 fs/kernfs/file.c:724
+>   do_dentry_open+0x83d/0x13e0 fs/open.c:949
+> 
+> Freed by task 9353:
+>   cgroup_file_release+0xd6/0x100 kernel/cgroup/cgroup.c:4283
+>   kernfs_release_file fs/kernfs/file.c:764 [inline]
+>   kernfs_drain_open_files+0x392/0x720 fs/kernfs/file.c:834
+>   kernfs_drain+0x470/0x600 fs/kernfs/dir.c:525
+> 
+> Fixes: 0e94682b73bf ("psi: introduce psi monitor")
+> Reported-by: syzbot+33e571025d88efd1312c@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=33e571025d88efd1312c
+> Tested-by: syzbot+33e571025d88efd1312c@syzkaller.appspotmail.com
+> Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+> Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
+> Signed-off-by: Tejun Heo <tj@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>   kernel/cgroup/cgroup.c | 24 ++++++++++++++++--------
+>   1 file changed, 16 insertions(+), 8 deletions(-)
+> 
+> diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+> index 046f671532b04..0914a1a189ee1 100644
+> --- a/kernel/cgroup/cgroup.c
+> +++ b/kernel/cgroup/cgroup.c
+> @@ -3876,33 +3876,41 @@ static int cgroup_cpu_pressure_show(struct seq_file *seq, void *v)
+>   static ssize_t pressure_write(struct kernfs_open_file *of, char *buf,
+>   			      size_t nbytes, enum psi_res res)
+>   {
+> -	struct cgroup_file_ctx *ctx = of->priv;
+> +	struct cgroup_file_ctx *ctx;
+>   	struct psi_trigger *new;
+>   	struct cgroup *cgrp;
+>   	struct psi_group *psi;
+> +	ssize_t ret = 0;
+>   
+>   	cgrp = cgroup_kn_lock_live(of->kn, false);
+>   	if (!cgrp)
+>   		return -ENODEV;
+>   
+> -	cgroup_get(cgrp);
+> -	cgroup_kn_unlock(of->kn);
+> +	ctx = of->priv;
+> +	if (!ctx) {
+> +		ret = -ENODEV;
+> +		goto out_unlock;
+> +	}
+>   
 
-=46rom: Hyunwoo Kim <imv4bel@gmail.com>
+I have run an AI assisted backport review and it spotted an issue: I
+have taken a look and the issues goes like:
 
-commit 48f6a5356a33dd78e7144ae1faef95ffc990aae0 upstream.
+Upstream has:
 
-Two frag-transfer helpers (__pskb_copy_fclone() and skb_shift()) fail
-to propagate the SKBFL_SHARED_FRAG bit in skb_shinfo()->flags when
-moving frags from source to destination.  __pskb_copy_fclone() defers
-the rest of the shinfo metadata to skb_copy_header() after copying
-frag descriptors, but that helper only carries over gso_{size,segs,
-type} and never touches skb_shinfo()->flags; skb_shift() moves frag
-descriptors directly and leaves flags untouched.  As a result, the
-destination skb keeps a reference to the same externally-owned or
-page-cache-backed pages while reporting skb_has_shared_frag() as
-false.
+static void cgroup_file_release(struct kernfs_open_file *of)
+{
+         struct cftype *cft = of_cft(of);
+         struct cgroup_file_ctx *ctx = of->priv;
 
-The mismatch is harmful in any in-place writer that uses
-skb_has_shared_frag() to decide whether shared pages must be detoured
-through skb_cow_data().  ESP input is one such writer (esp4.c,
-esp6.c), and a single nft 'dup to <local>' rule -- or any other
-nf_dup_ipv4() / xt_TEE caller -- is enough to land a pskb_copy()'d
-skb in esp_input() with the marker stripped, letting an unprivileged
-user write into the page cache of a root-owned read-only file via
-authencesn-ESN stray writes.
+         if (cft->release)
+                 cft->release(of);
+         put_cgroup_ns(ctx->ns);
+         kfree(ctx);
+         of->priv = NULL;
+}
 
-Set SKBFL_SHARED_FRAG on the destination whenever frag descriptors
-were actually moved from the source.  skb_copy() and skb_copy_expand()
-share skb_copy_header() too but linearize all paged data into freshly
-allocated head storage and emerge with nr_frags =3D=3D 0, so
-skb_has_shared_frag() returns false on its own; they need no change.
 
-The same omission exists in skb_gro_receive() and skb_gro_receive_list().
-The former moves the incoming skb's frag descriptors into the
-accumulator's last sub-skb via two paths (a direct frag-move loop and
-the head_frag + memcpy path); the latter chains the incoming skb whole
-onto p's frag_list.  Downstream skb_segment() reads only
-skb_shinfo(p)->flags, and skb_segment_list() reuses each sub-skb's
-shinfo as the nskb -- both p and lp must carry the marker.
 
-The same omission also exists in tcp_clone_payload(), which builds an
-MTU probe skb by moving frag descriptors from skbs on sk_write_queue
-into a freshly allocated nskb.  The helper falls into the same family
-and warrants the same fix for consistency; no TCP TX-side in-place
-writer is currently known to reach a user page through this gap, but
-a future consumer depending on the marker would regress silently.
+On 6.12.y:
 
-The same omission exists in skb_segment(): the per-iteration flag
-merge takes only head_skb's flag, and the inner switch that rebinds
-frag_skb to list_skb on head_skb-frags exhaustion does not fold the
-new frag_skb's flag into nskb.  Fold frag_skb's flag at both sites
-so segments drawing frags from frag_list members carry the marker.
+static void cgroup_file_release(struct kernfs_open_file *of)
+{
+         struct cftype *cft = of_cft(of);
+         struct cgroup_file_ctx *ctx = of->priv;
 
-Fixes: cef401de7be8 ("net: fix possible wrong checksum generation")
-Fixes: f4c50a4034e6 ("xfrm: esp: avoid in-place decrypt on shared skb frags=
-")
-Suggested-by: Sabrina Dubroca <sd@queasysnail.net>
-Suggested-by: Sultan Alsawaf <sultan@kerneltoast.com>
-Suggested-by: Ben Hutchings <ben@decadent.org.uk>
-Suggested-by: Lin Ma <malin89@huawei.com>
-Suggested-by: Jingguo Tan <tanjingguo@huawei.com>
-Suggested-by: Aaron Esau <aaron1esau@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Tested-by: Rajat Gupta <rajat.gupta@oss.qualcomm.com>
-Link: https://patch.msgid.link/ageeJfJHwgzmKXbh@v4bel
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[bwh: Backported to 5.15:
- - skb_gro_receive() and skb_gro_receive_list() are in skbuff.c here
- - Drop change to tcp_clone_payload(), which does not exist here
- - Adjust context in skb_shift()
-]
-Signed-off-by: Ben Hutchings <benh@debian.org>
----
- net/core/skbuff.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+         if (cft->release)
+                 cft->release(of);
+         put_cgroup_ns(ctx->ns);
+         kfree(ctx);
+}
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index aadb87aa5e7e..a8d09eff26f1 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -1661,6 +1661,7 @@ struct sk_buff *__pskb_copy_fclone(struct sk_buff *sk=
-b, int headroom,
- 			skb_frag_ref(skb, i);
- 		}
- 		skb_shinfo(n)->nr_frags =3D i;
-+		skb_shinfo(n)->flags |=3D skb_shinfo(skb)->flags & SKBFL_SHARED_FRAG;
- 	}
-=20
- 	if (skb_has_frag_list(skb)) {
-@@ -3650,6 +3651,8 @@ int skb_shift(struct sk_buff *tgt, struct sk_buff *sk=
-b, int shiftlen)
- 	tgt->ip_summed =3D CHECKSUM_PARTIAL;
- 	skb->ip_summed =3D CHECKSUM_PARTIAL;
-=20
-+	skb_shinfo(tgt)->flags |=3D skb_shinfo(skb)->flags & SKBFL_SHARED_FRAG;
-+
- 	/* Yak, is it really working this way? Some helper please? */
- 	skb->len -=3D shiftlen;
- 	skb->data_len -=3D shiftlen;
-@@ -4017,6 +4020,8 @@ int skb_gro_receive_list(struct sk_buff *p, struct sk=
-_buff *skb)
- 	p->truesize +=3D skb->truesize;
- 	p->len +=3D skb->len;
-=20
-+	skb_shinfo(p)->flags |=3D skb_shinfo(skb)->flags & SKBFL_SHARED_FRAG;
-+
- 	NAPI_GRO_CB(skb)->same_flow =3D 1;
-=20
- 	return 0;
-@@ -4251,7 +4256,8 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
- 		skb_copy_from_linear_data_offset(head_skb, offset,
- 						 skb_put(nskb, hsize), hsize);
-=20
--		skb_shinfo(nskb)->flags |=3D skb_shinfo(head_skb)->flags &
-+		skb_shinfo(nskb)->flags |=3D (skb_shinfo(head_skb)->flags |
-+					    skb_shinfo(frag_skb)->flags) &
- 					   SKBFL_SHARED_FRAG;
-=20
- 		if (skb_zerocopy_clone(nskb, frag_skb, GFP_ATOMIC))
-@@ -4268,6 +4274,9 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
- 				nfrags =3D skb_shinfo(list_skb)->nr_frags;
- 				frag =3D skb_shinfo(list_skb)->frags;
- 				frag_skb =3D list_skb;
-+
-+				skb_shinfo(nskb)->flags |=3D skb_shinfo(frag_skb)->flags & SKBFL_SHARE=
-D_FRAG;
-+
- 				if (!skb_headlen(list_skb)) {
- 					BUG_ON(!nfrags);
- 				} else {
-@@ -4490,10 +4499,12 @@ int skb_gro_receive(struct sk_buff *p, struct sk_bu=
-ff *skb)
- 	p->data_len +=3D len;
- 	p->truesize +=3D delta_truesize;
- 	p->len +=3D len;
-+	skb_shinfo(p)->flags |=3D skbinfo->flags & SKBFL_SHARED_FRAG;
- 	if (lp !=3D p) {
- 		lp->data_len +=3D len;
- 		lp->truesize +=3D delta_truesize;
- 		lp->len +=3D len;
-+		skb_shinfo(lp)->flags |=3D skbinfo->flags & SKBFL_SHARED_FRAG;
- 	}
- 	NAPI_GRO_CB(skb)->same_flow =3D 1;
- 	return 0;
+On 6.12.y, cgroup_file_release() frees ctx but does not clear of->priv. 
+The posted backport adds
+	ctx = of->priv;
+	if (!ctx)
 
---iVwi7WFUgcrvEKmC
-Content-Type: application/pgp-signature; name="signature.asc"
+in pressure_write(), but that only works if release turns of->priv into 
+NULL. In the pressure_write() vs cgroup_pressure_write() race from the 
+commit message, 6.12.y still leaves a dangling pointer there, so this 
+backport alone is incomplete and can still hit UAF.
 
------BEGIN PGP SIGNATURE-----
+So upstream has commit: 94a4acfec146 ("cgroup/psi: Set of->priv to NULL 
+upon file release") which might be needed here as well, without that I 
+would suggest a drop.
 
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmoQsnsACgkQ57/I7JWG
-EQmi6xAAgK6tGyTGriQZ3Vyud2x4S1D5aiKojhS4fvYaiVs4El8DlYhweLF3daVm
-hWwR4S4cZUOm/PuEMCPDnoSUb44XtPn+jh3RyY/S49mS/omseT8BYTu9SiEFQpm5
-BheEZzpc9cGwPH6T257+Ly50/uv5nJey9lPedvbdA0wINcUMHwA7bVIi98RNFV89
-udG1yjzyaKUaZkGAlBsyseUjzYcC/suHvrGPlwARPoCFtr7/95pKlMvaJcNPqtXr
-j1S802zoP2Y1r3VW35628ieQHOWGooD6brgoYvvFMOOlFVmeyxUF+glQfHrUTR2E
-ukrM+GxNcxJFlJ2qWWv9cb7NjRSZwTp5VNu8HlSQpLfWxAWXo9URQnijKcj3LCiq
-cZGUzxBEx8lxPUwXM+1OJRlDBRJsAcSGvGv7kXjfeRQ9HdhQtpAvopDaUjoJjgTT
-DOjDMRqWWdEngGZG+mp9dce2Tu7SlgewpcV47iujxlrAOZtRycgyNZL1botEN3y5
-IvERjoskVKkrTfRxFO/p8in/XxeF9QlAoYRv0qd63f3zSNP6q9Z7/8Cl49aJDlwB
-24LJc5t1fUMN0/Ua/sgZZ+W1+n5tx0RSI4+p9HQdyb37DdEMXgLUEisB83kx6pPm
-tcWrg4++Iz635ERRjkBE7Ho+R6i0zKPrVVE+fi4aAZvEtwxTt8U=
-=G3m5
------END PGP SIGNATURE-----
 
---iVwi7WFUgcrvEKmC--
+Thanks,
+Harshit
+
 
