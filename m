@@ -1,253 +1,180 @@
-Return-Path: <stable+bounces-253825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253826-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2KGyCpCcEGpuawYAu9opvQ
-	(envelope-from <stable+bounces-253825-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 20:12:32 +0200
+	id qKEjKWWgEGpuawYAu9opvQ
+	(envelope-from <stable+bounces-253826-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 20:28:53 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C1775B8DFD
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 20:12:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F25AC5B90AC
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 20:28:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 92A46306DEEF
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 18:03:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 367CE306886B
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 18:21:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFE6C3655E4;
-	Fri, 22 May 2026 18:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04E7A372048;
+	Fri, 22 May 2026 18:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ONrH+9gV"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="FYP8CXrL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF744368D78
-	for <stable@vger.kernel.org>; Fri, 22 May 2026 18:03:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619F9257459;
+	Fri, 22 May 2026 18:21:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779473004; cv=none; b=Hu+wCTW25HDKpqQpEhEWxAvDyQREvO4m+hl3ozjd0XCFCFteQcdV+sF9wSsNcEReMuZUfyPSgS0SiJezUR3ZIB2KKWSpnGYghRlN4fyxStIqqYrC1aD7DUwdlMgGtNWjPfzXx0FvOEnoxTLFP3OOP0MYmtRbw9BRhIqsCkzz4xo=
+	t=1779474092; cv=none; b=puOcEW/l2+OE5XFKuNGh+jB6k6vkwoGFfB0wb/1tuAgoAAAgJ1sSa26BqcKtlyymlU2S/FIgFl9d7CaJ4+6F3RYNcAkpjC1NVOZRcFM5EkJohUPMC/2EqjLrBFBYfgvUdRU+p9sQxy9h5ct7rrKiyDx68q1byRprxI5hq5j4iKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779473004; c=relaxed/simple;
-	bh=vuAaDfjQeHNl6Zj3qXdqkRjeEaOE1QoCrBFPUsVtH7M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZTjXi/aJPgkW4WN9XOOhISoJl2PUpnkX0ST4iTsAJ65QvSfUdbtcTGO3Eovip4oIqWNCZm1d1wmZcwpP9FP8gyoLVcvD2WeK2AQ9LUhuKXgy/wiE5WxOw/mtWXV+tzkw43xBYlY5eLS8iQQ3CR08VjkluJs/TfZaWS3OU9sk6ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ONrH+9gV; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-368889be63aso497347a91.3
-        for <stable@vger.kernel.org>; Fri, 22 May 2026 11:03:21 -0700 (PDT)
+	s=arc-20240116; t=1779474092; c=relaxed/simple;
+	bh=eRl4shUEi5QLvdF4zeGSMq/iaU0zgIS1NjbRqiaWmb0=;
+	h=Date:To:From:Subject:Message-Id; b=HeWmD07c/ySFgu6nclH4HlEjg5s+p3p875RLySQew3/ZkLf4bouWP92p8i7ZFugakHtV5ggSpqU1cXId7M4Ckh4XdX/wL06sIkgZoqVieHD/iZfFyMfzRL4goG0aw5M1+21ioBCRj1JyGwtHRowSB4IBEoWIz4ridm0SAQwJNgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=FYP8CXrL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14B2F1F00ADE;
+	Fri, 22 May 2026 18:21:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779473000; x=1780077800; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fCdmkF6WduLVMBtQaxleAhh6Xnep5Du7Xg157ClvxtA=;
-        b=ONrH+9gVOd53kNEn+6UOxGg2PfW4M3g0FbxyOazK1nBufrBj8H0khWORyXELUVVmu3
-         hjGQiSnXaokjz2jT1Lq11ztbKy3PCoqMYseP+ZujI1NCBkCoAgj5NpknBC1DVyLVFkfR
-         9I2LndHmbPwjxMVZAz3vgq+aatqojciWgQ39buymLlc585Mf14J8yc3UKPxJi4H/jg39
-         BR45e5opl21JAHwfuzv0y+GLfih253vJkzuxGBNCU/wSqniParRO8a/bH8zNUsWECRhR
-         qT0dw+9h+eCnZrkDKu3sxLkpLo27o1tSDuvQDEUvlyAi4EWYVcnpm4F8av2aCW/TgE+A
-         3JLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779473000; x=1780077800;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fCdmkF6WduLVMBtQaxleAhh6Xnep5Du7Xg157ClvxtA=;
-        b=f06Pg3B4UAZjhktDQeC4RLDaP8sJuvleO0amKqDb7sjPytq2l3XXgDHW3M96qveobR
-         JpPMlnuwJAQJt8aC3WarB0B4CwAjXp8R271pkV8V8Y/Grxr+Iqu3ZENM2foX85pevqP2
-         DnHoRkDPJIEnxQe+gNPlEv0LRxLGUPi+B7FKBIkfgszHrUPHsb4I4stkAYt0Uj6yODFG
-         o3mjjhd0pC+bBJWO2lOCR9Je9QCswj1YW1TnlVLbEn5QUIJLNnPkNtuIao67sQbgITK4
-         V6IUBCuqCRFTAJH3t29XMH9ZLp+acxmNF5gFVjIfB/v7rL5FD/DWLsexfxk6QFrFS8gF
-         LB7Q==
-X-Forwarded-Encrypted: i=1; AFNElJ8Gi1lFwBCYGC/h8xy1GE7Fja9Wk6feztrLAhekZUFHGpvNe1pWQA5Fa4L3AIlNILpQp5yRROE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzF5hjsUCiL/dtjFsepLJ6slXiny0h6YL6VHC6LHTYFEfx7XHFe
-	L878CZ+rLdNEqIblm/+R8IIXhoHGemBoa50bH/f725hQgsrR2YBPsSRl
-X-Gm-Gg: Acq92OFMsEWRDGo1V6K+mh2cAk2lGby3ozfCf7d3z7jhLm6vDEcVTO96KHF9Jc5dQtQ
-	dGVIdYvH70n9Qj5TsRWydYReWdT4snBM4PYjOOlVj2Q+33/8BswJJknTFjsK780nwpEIy9M4DuR
-	+myiY2gr0t5uR/zLEusS2vBMwwK99Cc/OJrzRbnyg27xUM78vC+9qdiaKT7GNxHPO8S1lEUo9qJ
-	OezzvezG2vgWxtN+UTmE4npfVr7/D9ou5TS5VbVD8BSkLioeeXdy62fUvFHhTQqrnUYsYgQcN+/
-	8AcYjvQWBjRxvZP9MahiU5NFFRvYxkytjsCmPlAeB8iPypMDZA9JlYli/Ech5NpXc284UnZrH53
-	SpAglm78U4JtZe9KjPvmL0akbJccDqi/iMtLNJCpJ6DKEe7swyZUEZv3NCzOTPmmHMHH+NDsess
-	xRj6oay7Kb83dA5U3K+p6Wy1PRFgA=
-X-Received: by 2002:a17:90b:2584:b0:369:a719:6747 with SMTP id 98e67ed59e1d1-36a676022aamr2210097a91.3.1779473000192;
-        Fri, 22 May 2026 11:03:20 -0700 (PDT)
-Received: from kali ([2402:e280:3d7c:a2:536a:b505:93f5:9d5d])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36a6ec5a287sm1608403a91.0.2026.05.22.11.03.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 May 2026 11:03:19 -0700 (PDT)
-From: Pavitra Jha <jhapavitra98@gmail.com>
-To: idryomov@gmail.com
-Cc: amarkuze@redhat.com,
-	slava@dubeyko.com,
-	ceph-devel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Pavitra Jha <jhapavitra98@gmail.com>
-Subject: [PATCH] ceph: fix OOB read in ceph_osdc_list_watchers via uncapped outdata_len
-Date: Fri, 22 May 2026 14:02:30 -0400
-Message-ID: <20260522180231.406895-1-jhapavitra98@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	d=linux-foundation.org; s=korg; t=1779474091;
+	bh=pBJ6FuyFlFt6o7BJE2eMhBkzUApGogFrBeTLh6e1KzE=;
+	h=Date:To:From:Subject;
+	b=FYP8CXrLx+ash+bhjMHq0jr4yToX1KebD+eM//xTQPv/BLyZmL+cpQiV3ZSsVXL6T
+	 x/eTSgodcMPJfuSs2Gkuo4PKP0QBC4fc4gCrxw8GeBiS7bKhUJCb64zGWpFAFtcWHH
+	 PUY7hZ3CtERNbWIEOfWNQ6cFmN2JBXFVi6HQI+P0=
+Date: Fri, 22 May 2026 11:21:30 -0700
+To: mm-commits@vger.kernel.org,vbabka@kernel.org,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,mhocko@suse.com,ljs@kernel.org,liam@infradead.org,fvdl@google.com,david@kernel.org,songmuchun@bytedance.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-cma-fix-reserved-page-leak-on-activation-failure.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260522182131.14B2F1F00ADE@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[redhat.com,dubeyko.com,vger.kernel.org,gmail.com];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253826-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253825-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jhapavitra98@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 6C1775B8DFD
+	RCPT_COUNT_TWELVE(0.00)[12];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[smtp.kernel.org:mid,linux-foundation.org:email,linux-foundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,bytedance.com:email]
+X-Rspamd-Queue-Id: F25AC5B90AC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The OSD reply header field op->payload_len is wire-controlled and is
-copied directly into m->outdata_len[i] without any bounds check:
 
-  m->outdata_len[i] = le32_to_cpu(op->payload_len);
+The patch titled
+     Subject: mm/cma: fix reserved page leak on activation failure
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-cma-fix-reserved-page-leak-on-activation-failure.patch
 
-This value propagates unchecked to req->r_ops[0].outdata_len and is
-then used to set the decode boundary in ceph_osdc_list_watchers():
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-cma-fix-reserved-page-leak-on-activation-failure.patch
 
-  void *const end = p + req->r_ops[0].outdata_len;
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-The actual data allocation is always exactly one page:
-  ceph_alloc_page_vector(1, GFP_NOIO)
-  ceph_osd_data_pages_init(..., PAGE_SIZE, ...)
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-The messenger caps the copy to PAGE_SIZE bytes, but the decode window
-end is set from the uncapped wire value. A malicious OSD can send
-outdata_len=0x10000, causing _safe decoder boundary checks to pass
-while the physical reads cross the slab allocation boundary.
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-KASAN report (kernel 7.0.0-rc7, QEMU/x86_64, KASLR disabled):
-  ==================================================================
-  BUG: KASAN: slab-out-of-bounds in ceph_oob2_init+0x23d/0xff0 [ceph_oob2_poc]
-  Read of size 4 at addr ffff88800a229f9e by task insmod/57
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
 
-  CPU: 0 UID: 0 PID: 57 Comm: insmod Tainted: G           O        7.0.0-rc7-g9c2abf69da83-dirty #15 PREEMPT(lazy)
-  Tainted: [O]=OOT_MODULE
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x4d/0x70
-   print_report+0x170/0x4f3
-   ? __pfx__raw_spin_lock_irqsave+0x10/0x10
-   kasan_report+0xda/0x110
-   ? ceph_oob2_init+0x23d/0xff0 [ceph_oob2_poc]
-   ? ceph_oob2_init+0x23d/0xff0 [ceph_oob2_poc]
-   ? __pfx_ceph_oob2_init+0x10/0x10 [ceph_oob2_poc]
-   ceph_oob2_init+0x23d/0xff0 [ceph_oob2_poc]
-   do_one_initcall+0x9a/0x3a0
-   ? __pfx_do_one_initcall+0x10/0x10
-   ? kasan_unpoison+0x44/0x70
-   do_init_module+0x27c/0x790
-   ? __pfx_do_init_module+0x10/0x10
-   ? __kasan_slab_free+0x47/0x70
-   ? kfree+0x15f/0x3b0
-   load_module+0x4a9a/0x6350
-   ? __pfx_load_module+0x10/0x10
-   ? security_file_permission+0x24/0x50
-   ? kernel_read_file+0x2ed/0x770
-   ? init_module_from_file+0x15c/0x180
-   init_module_from_file+0x15c/0x180
-   ? __pfx_init_module_from_file+0x10/0x10
-   ? tick_nohz_handler+0x2a3/0x640
-   ? _raw_spin_lock+0x7e/0xd0
-   idempotent_init_module+0x21f/0x750
-   ? __pfx_idempotent_init_module+0x10/0x10
-   ? fdget+0x4e/0x4a0
-   ? fdget+0x4e/0x4a0
-   __x64_sys_finit_module+0xba/0x120
-   do_syscall_64+0xe2/0x570
-   ? exc_page_fault+0x66/0xb0
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+------------------------------------------------------
+From: Muchun Song <songmuchun@bytedance.com>
+Subject: mm/cma: fix reserved page leak on activation failure
+Date: Fri, 22 May 2026 14:26:58 +0800
 
-  Allocated by task 57:
-   kasan_save_stack+0x30/0x50
-   kasan_save_track+0x14/0x30
-   __kasan_kmalloc+0x7f/0x90
-   ceph_oob2_init+0x44/0xff0 [ceph_oob2_poc]
-   do_one_initcall+0x9a/0x3a0
-   do_init_module+0x27c/0x790
-   load_module+0x4a9a/0x6350
-   init_module_from_file+0x15c/0x180
-   idempotent_init_module+0x21f/0x750
-   __x64_sys_finit_module+0xba/0x120
-   do_syscall_64+0xe2/0x570
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+If cma_activate_area() fails after allocating only part of the range
+bitmaps, its cleanup path frees the bitmaps for the ranges below
+allocrange and then releases reserved pages using the same bound.
 
-  The buggy address belongs to the object at ffff88800a229000
-   which belongs to the cache kmalloc-4k of size 4096
-  The buggy address is located 3998 bytes inside of
-   allocated 4000-byte region [ffff88800a229000, ffff88800a229fa0)
+That bound is only correct for bitmap freeing.  Pages in ranges that did
+not reach bitmap allocation are still reserved and should also be returned
+to the buddy when CMA_RESERVE_PAGES_ON_ERROR is clear.  As a result, a
+partial bitmap allocation failure can permanently leak the reserved pages
+from the failed range and all later ranges.
 
-  Memory state around the buggy address:
-   ffff88800a229e80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-   ffff88800a229f00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  >ffff88800a229f80: 00 00 00 00 fc fc fc fc fc fc fc fc fc fc fc fc
-                                 ^
-   ffff88800a22a000: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-   ffff88800a22a080: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-  ==================================================================
+Fix this by releasing reserved pages for all ranges.  For ranges whose
+bitmap allocation succeeded, use the early_pfn[] snapshot saved before the
+bitmap pointer overwrote the union field.  For later ranges, continue to
+use cmr->early_pfn directly.
 
-  val=0xccccaaaa (OOB garbage from KASAN redzone)
-
-Fix by capping the decode window end to PAGE_SIZE, matching the
-actual allocation size.
-
-Attacker model: a malicious or compromised OSD in a multi-tenant
-Ceph deployment can trigger this against any client issuing
-CEPH_OSD_OP_LIST_WATCHERS without further privileges beyond OSD
-session establishment.
-
-Fixes: a4ed38d7a180 ("libceph: support for CEPH_OSD_OP_LIST_WATCHERS")
-Cc: stable@vger.kernel.org
-Signed-off-by: Pavitra Jha <jhapavitra98@gmail.com>
+Link: https://lore.kernel.org/20260522062658.4095405-1-songmuchun@bytedance.com
+Fixes: c009da4258f9 ("mm, cma: support multiple contiguous ranges, if requested")
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Frank van der Linden <fvdl@google.com>
+Cc: Liam R. Howlett <liam@infradead.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- net/ceph/osd_client.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ceph/osd_client.c b/net/ceph/osd_client.c
-index 0148e4c40..a67093cf4 100644
---- a/net/ceph/osd_client.c
-+++ b/net/ceph/osd_client.c
-@@ -5091,7 +5091,7 @@ int ceph_osdc_list_watchers(struct ceph_osd_client *osdc,
- 	ret = ceph_osdc_wait_request(osdc, req);
- 	if (ret >= 0) {
- 		void *p = page_address(pages[0]);
--		void *const end = p + req->r_ops[0].outdata_len;
-+		void *const end = p + min_t(u32, req->r_ops[0].outdata_len, PAGE_SIZE);
+ mm/cma.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+--- a/mm/cma.c~mm-cma-fix-reserved-page-leak-on-activation-failure
++++ a/mm/cma.c
+@@ -188,10 +188,13 @@ cleanup:
  
- 		ret = decode_watchers(&p, end, watchers, num_watchers);
+ 	/* Expose all pages to the buddy, they are useless for CMA. */
+ 	if (!test_bit(CMA_RESERVE_PAGES_ON_ERROR, &cma->flags)) {
+-		for (r = 0; r < allocrange; r++) {
++		for (r = 0; r < cma->nranges; r++) {
++			unsigned long start_pfn;
++
+ 			cmr = &cma->ranges[r];
++			start_pfn = r < allocrange ? early_pfn[r] : cmr->early_pfn;
+ 			end_pfn = cmr->base_pfn + cmr->count;
+-			for (pfn = early_pfn[r]; pfn < end_pfn; pfn++)
++			for (pfn = start_pfn; pfn < end_pfn; pfn++)
+ 				free_reserved_page(pfn_to_page(pfn));
+ 		}
  	}
--- 
-2.53.0
+_
+
+Patches currently in -mm which might be from songmuchun@bytedance.com are
+
+mm-cma_debug-fix-invalid-accesses-for-inactive-cma-areas.patch
+mm-cma-fix-reserved-page-leak-on-activation-failure.patch
+mm-sparse-remove-sparse-buffer-pre-allocation-mechanism.patch
+mm-sparse-vmemmap-fix-vmemmap-accounting-underflow.patch
+mm-memory_hotplug-fix-incorrect-altmap-passing-in-error-path.patch
+mm-sparse-vmemmap-pass-pgmap-argument-to-memory-deactivation-paths.patch
+mm-sparse-vmemmap-fix-dax-vmemmap-accounting-with-optimization.patch
+mm-mm_init-fix-pageblock-migratetype-for-zone_device-compound-pages.patch
+mm-mm_init-fix-uninitialized-struct-pages-for-zone_device.patch
+mm-memory_hotplug-factor-out-altmap-freeing-checks.patch
+drivers-base-memory-make-memory-block-get-put-explicit.patch
 
 
