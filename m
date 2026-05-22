@@ -1,252 +1,120 @@
-Return-Path: <stable+bounces-253652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253653-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0KM9MPSkD2ocOQYAu9opvQ
-	(envelope-from <stable+bounces-253652-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 02:36:04 +0200
+	id qEv9DuKlD2ocOQYAu9opvQ
+	(envelope-from <stable+bounces-253653-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 02:40:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 637475AD7BB
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 02:36:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82A845AD82E
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 02:40:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 550EE3011EBE
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 00:36:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 34C6E301A711
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 00:37:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6B5B2749DF;
-	Fri, 22 May 2026 00:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E7F1E1E16;
+	Fri, 22 May 2026 00:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="DEH1rL0w"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="z5SgS/6S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 618CB26B742;
-	Fri, 22 May 2026 00:35:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663AD24E4C3;
+	Fri, 22 May 2026 00:37:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779410155; cv=none; b=tlQByydeCD2dwdBUpE8YTPI8S1XDsLB0UFjrcTjOHYp5cIYxKjVatDhFQUeGfXSSHh2D8DDs0O+wyFHB3CACZfqpG+wYNN3I5b6vPPcnKJrb/LoAmkFUTc9+DOoWlYG8ka82tVPElGc3j4xZSiRYbjjfC10Uh6e4x3aEhDCp29w=
+	t=1779410245; cv=none; b=jMkJlAkjym/5QT2YBbq25OfUZyNAPc7EuTalee8JBLkGLntx0wZd5Bu6POwRZxNfZ6wpgxiK3n/vlMlpBYNmkq+kiR7P8wZUutP7tdO3HBps3wEE0iJDONfzPYW7eZL65ffXQX9u8Jyn0344BOP+BDH6ehK53t3numaTcCyiVYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779410155; c=relaxed/simple;
-	bh=KerMBDD7WYfWU1HwOOsGCdqCx8q7BMU7cgFhf7f72Wk=;
-	h=Date:To:From:Subject:Message-Id; b=BVXGUV2XuEZlmyZArTLRYPqpGSUjtIzT3wRVkIg4D+ltzYbnbkgT0YSkjGXn1juZqD/QorrgP5CH4h1XSo1lDSlK+P8xWrndgDPpeayu9JFvtpJSzNB5Nn3T/DB5my8VEKwtsvEnStHjUBqQyRZ+28o1Q0OgKXrIODgz8IYN7r0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=DEH1rL0w; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D56D1F000E9;
-	Fri, 22 May 2026 00:35:54 +0000 (UTC)
+	s=arc-20240116; t=1779410245; c=relaxed/simple;
+	bh=PQlWfCYvLnhIfnTG3bXKLYMYsmGiuaS1LK0za3FsnpA=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=U0lm2cZn23xYI50idSS23vLntzWdLCPLhKp/lumNc5KAPc5dNGStkRc0s0xBIZm6wxQvEhhsz6hCe2TBibRChh2ru+A7+LoZHSq/kFNFHJz+kR9lF2Zk/0kH+KRU4G6uQIJHcCDTYWpqftvxdxyiIhZ3jMNEfOjdCKjra74Hecw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=z5SgS/6S; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 876041F000E9;
+	Fri, 22 May 2026 00:37:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1779410154;
-	bh=YZQCqjgDTSxlUlXkrXyZVmPyvun4eFc92QLq+IKpN4s=;
-	h=Date:To:From:Subject;
-	b=DEH1rL0wzSobvx/1up/h5GfQ1liGRzj6Y1XR2YGUOAGBFxZkIzdC/EQzC+8+yY6vf
-	 TnA66E9u52EJu8LjFAmcK+19Sx2ukLPWKXwu1cztab3uFSlecBSA1Xu9LpoCeLtkPx
-	 FYfWP+WRCc8aTexr5Y6h5eErrd84AjfQajjONSNI=
-Date: Thu, 21 May 2026 17:35:53 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,rppt@kernel.org,peterz@infradead.org,mingo@redhat.com,luto@kernel.org,lance.yang@linux.dev,jgg@ziepe.ca,hpa@zytor.com,dave.hansen@linux.intel.com,bp@alien8.de,baolu.lu@linux.intel.com,david@kernel.org,akpm@linux-foundation.org
+	d=linux-foundation.org; s=korg; t=1779410244;
+	bh=vb/NSjxWzcfzykw7RUnxGmgm9FcNB+S5bWotyUmGLbs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=z5SgS/6Scs6gzwAzXAZZj1I45LFxR/DzznVoUZCb+cdL3nccZjKp7KpekCUjegkEd
+	 /20d6Ebtmf0sLshuUdhOu+VOqnZDAk67uMPWyLjF8bNcvmYBlxAW2ifoZUHhoXwIQo
+	 x9V50ZEJUNAglos3nfAHHnv0vxWhBq3joMNAgv6I=
+Date: Thu, 21 May 2026 17:37:23 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + x86-mm-fix-freeing-of-pmd-sized-vmemmap-pages.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260522003554.1D56D1F000E9@smtp.kernel.org>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Juhyung Park
+ <qkrwngud825@gmail.com>, linux-mm@kvack.org, stable@vger.kernel.org, Lu
+ Baolu <baolu.lu@linux.intel.com>, Jason Gunthorpe <jgg@nvidia.com>,
+ "Mike Rapoport (Microsoft)" <rppt@kernel.org>, Oscar Salvador
+ <osalvador@suse.de>, Dave Hansen <dave.hansen@linux.intel.com>, Andy
+ Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Thomas
+ Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+ <bp@alien8.de>, Dan Williams <djbw@kernel.org>, Dave Jiang
+ <dave.jiang@intel.com>, Vishal Verma <vishal.l.verma@intel.com>,
+ linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev
+Subject: Re: [PATCH] x86/mm: fix vmemmap leak on memory hot-remove
+Message-Id: <20260521173723.ab1637d13848fcd2738be480@linux-foundation.org>
+In-Reply-To: <78ef8003-9c86-4969-95b9-589127b30be2@intel.com>
+References: <20260519151008.1399226-1-qkrwngud825@gmail.com>
+	<e9a08bed-3d5f-4606-8d17-80a16a4c82f1@kernel.org>
+	<CAD14+f316+wMZNm_sJF6ULRDUD9EbkdecdDwhGQKcsu70Bdp0w@mail.gmail.com>
+	<9c0e3e53-d284-4675-89d8-943f93436e07@kernel.org>
+	<78ef8003-9c86-4969-95b9-589127b30be2@intel.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-253652-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253653-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[linux-foundation.org];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,kvack.org,vger.kernel.org,linux.intel.com,nvidia.com,suse.de,infradead.org,redhat.com,alien8.de,intel.com,lists.linux.dev];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,linux-foundation.org:email,linux-foundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 637475AD7BB
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux-foundation.org:mid,linux-foundation.org:dkim]
+X-Rspamd-Queue-Id: 82A845AD82E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Wed, 20 May 2026 14:54:30 -0700 Dave Hansen <dave.hansen@intel.com> wrote:
 
-The patch titled
-     Subject: x86/mm: fix freeing of PMD-sized vmemmap pages
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     x86-mm-fix-freeing-of-pmd-sized-vmemmap-pages.patch
+> On 5/20/26 14:52, David Hildenbrand (Arm) wrote:
+> > On 5/20/26 12:33, Juhyung Park wrote:
+> >> Neat. Any sign of it getting merged?
+> > I hope it will catch the attention of more x86 maintainers soon 🙂
+> 
+> David, thanks a ton for that patch. It's in the queue behind a couple of
+> other things, but I'll definitely take a look.
+> 
+> Attention caught, I promise! ;)
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/x86-mm-fix-freeing-of-pmd-sized-vmemmap-pages.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Subject: x86/mm: fix freeing of PMD-sized vmemmap pages
-Date: Wed, 29 Apr 2026 12:49:14 +0200
-
-In commit bf9e4e30f353 ("x86/mm: use pagetable_free()"), we switched from
-freeing non-boot page tables through __free_pages() to pagetable_free().
-
-However, the function is also called to free vmemmap pages.
-
-Given that vmemmap pages are not page tables, already the
-page_ptdesc(page) is wrong.  But worse, pagetable_free() calls
-
-	__free_pages(page, compound_order(page));
-
-As vmemmap pages are not compound pages (see vmemmap_alloc_block()) --
-except for HVO, which doesn't apply here -- we will only free the first
-page when freeing a PMD-sized vmemmap page, leaking the other ones.
-
-Fix it by properly decoupling pagetable and vmemmap freeing. 
-free_pagetable() no longer has to mess with SECTION_INFO, as only the
-vmemmap is marked like that in register_page_bootmem_memmap().
-
-The indentation in remove_pmd_table() is messed up, let's fix that while
-touching it.
-
-Note that we'll try to get rid of that bootmem info handling soon.  For
-now, we'll handle it similar to free_pagetable(), just avoiding the ifdef.
-
-Link: https://lore.kernel.org/20260429-vmemmap-v2-1-8dfcacffd877@kernel.org
-Fixes: bf9e4e30f353 ("x86/mm: use pagetable_free()")
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-Tested-by: Lance Yang <lance.yang@linux.dev>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Baolu Lu <baolu.lu@linux.intel.com>
-Cc: "Borislav Petkov (AMD)" <bp@alien8.de>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- arch/x86/mm/init_64.c |   40 ++++++++++++++++++++++++++--------------
- 1 file changed, 26 insertions(+), 14 deletions(-)
-
---- a/arch/x86/mm/init_64.c~x86-mm-fix-freeing-of-pmd-sized-vmemmap-pages
-+++ a/arch/x86/mm/init_64.c
-@@ -1014,7 +1014,7 @@ static void __meminit free_pagetable(str
- #ifdef CONFIG_HAVE_BOOTMEM_INFO_NODE
- 		enum bootmem_type type = bootmem_type(page);
- 
--		if (type == SECTION_INFO || type == MIX_SECTION_INFO) {
-+		if (type == MIX_SECTION_INFO) {
- 			while (nr_pages--)
- 				put_page_bootmem(page++);
- 		} else {
-@@ -1028,13 +1028,24 @@ static void __meminit free_pagetable(str
- 	}
- }
- 
--static void __meminit free_hugepage_table(struct page *page,
-+static void __meminit free_vmemmap_pages(struct page *page, unsigned int order,
- 		struct vmem_altmap *altmap)
- {
--	if (altmap)
--		vmem_altmap_free(altmap, PMD_SIZE / PAGE_SIZE);
--	else
--		free_pagetable(page, get_order(PMD_SIZE));
-+	unsigned long nr_pages = 1u << order;
-+
-+	if (altmap) {
-+		vmem_altmap_free(altmap, nr_pages);
-+	} else if (PageReserved(page)) {
-+		if (IS_ENABLED(CONFIG_HAVE_BOOTMEM_INFO_NODE) &&
-+		    bootmem_type(page) == SECTION_INFO) {
-+			while (nr_pages--)
-+				put_page_bootmem(page++);
-+		} else {
-+			free_reserved_pages(page, nr_pages);
-+		}
-+	} else {
-+		__free_pages(page, order);
-+	}
- }
- 
- static void __meminit free_pte_table(pte_t *pte_start, pmd_t *pmd)
-@@ -1118,7 +1129,8 @@ remove_pte_table(pte_t *pte_start, unsig
- 			return;
- 
- 		if (!direct)
--			free_pagetable(pte_page(*pte), 0);
-+			/* We never populate base pages from the altmap. */
-+			free_vmemmap_pages(pte_page(*pte), 0, NULL);
- 
- 		spin_lock(&init_mm.page_table_lock);
- 		pte_clear(&init_mm, addr, pte);
-@@ -1153,19 +1165,19 @@ remove_pmd_table(pmd_t *pmd_start, unsig
- 			if (IS_ALIGNED(addr, PMD_SIZE) &&
- 			    IS_ALIGNED(next, PMD_SIZE)) {
- 				if (!direct)
--					free_hugepage_table(pmd_page(*pmd),
--							    altmap);
-+					free_vmemmap_pages(pmd_page(*pmd),
-+							   PMD_ORDER, altmap);
- 
- 				spin_lock(&init_mm.page_table_lock);
- 				pmd_clear(pmd);
- 				spin_unlock(&init_mm.page_table_lock);
- 				pages++;
- 			} else if (vmemmap_pmd_is_unused(addr, next)) {
--					free_hugepage_table(pmd_page(*pmd),
--							    altmap);
--					spin_lock(&init_mm.page_table_lock);
--					pmd_clear(pmd);
--					spin_unlock(&init_mm.page_table_lock);
-+				free_vmemmap_pages(pmd_page(*pmd), PMD_ORDER,
-+						   altmap);
-+				spin_lock(&init_mm.page_table_lock);
-+				pmd_clear(pmd);
-+				spin_unlock(&init_mm.page_table_lock);
- 			}
- 			continue;
- 		}
-_
-
-Patches currently in -mm which might be from david@kernel.org are
-
-x86-mm-fix-freeing-of-pmd-sized-vmemmap-pages.patch
-sh-use-folio_mapped-instead-of-page_mapped-in-sh4_flush_cache_page.patch
-bpf-arena-use-page_ref_count-instead-of-page_mapped-in-arena_free_pages.patch
-mm-remove-page_mapped.patch
-sparc-mm-remove-register_page_bootmem_info.patch
-mm-bootmem_info-drop-initialization-of-page-lru.patch
-mm-bootmem_info-stop-using-pg_private.patch
-mm-bootmem_info-remove-call-to-kmemleak_free_part_phys.patch
-mm-bootmem_info-stop-marking-the-pgdat-as-node_info.patch
-mm-bootmem_info-stop-marking-mem_section_usage-as-mix_section_info.patch
-s390-mm-use-free_reserved_page-in-vmem_free_pages.patch
-powerpc-mm-remove-config_have_bootmem_info_node.patch
-
+Oh, there it is.  I'll add a note to my copy reminding myself that
+it'll be upstreamed via the x86 tree.
 
