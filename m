@@ -1,131 +1,111 @@
-Return-Path: <stable+bounces-253651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253652-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ENNlG/CkD2ocOQYAu9opvQ
-	(envelope-from <stable+bounces-253651-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 02:36:00 +0200
+	id 0KM9MPSkD2ocOQYAu9opvQ
+	(envelope-from <stable+bounces-253652-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 02:36:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D8205AD7B4
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 02:35:59 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 637475AD7BB
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 02:36:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 60EE63007AC5
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 00:35:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 550EE3011EBE
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 00:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 504E124BD03;
-	Fri, 22 May 2026 00:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6B5B2749DF;
+	Fri, 22 May 2026 00:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="NdIPAQ7w"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="DEH1rL0w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA10E1A6830;
-	Fri, 22 May 2026 00:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 618CB26B742;
+	Fri, 22 May 2026 00:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779410152; cv=none; b=lopw6qtafISX/ZLzXTCMzAa+SuT30ULETNQySjmkPCeOosZYpJsJ15pSA325RH7v18qJYQ4b7v7YFuQlaN8j/28k2lgSDM1xDwFC9QODyYRFvzsqd9uE1LVtr47Oc64bc0+0cglXsTFZRERZIOa5sX7TYtqx7IeETPZrTFNxRk8=
+	t=1779410155; cv=none; b=tlQByydeCD2dwdBUpE8YTPI8S1XDsLB0UFjrcTjOHYp5cIYxKjVatDhFQUeGfXSSHh2D8DDs0O+wyFHB3CACZfqpG+wYNN3I5b6vPPcnKJrb/LoAmkFUTc9+DOoWlYG8ka82tVPElGc3j4xZSiRYbjjfC10Uh6e4x3aEhDCp29w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779410152; c=relaxed/simple;
-	bh=AD9aedaG6MP6W9sNDJYHBG1IbeFXeavDmpWvGiggHzE=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=aug46d1Vd221JdMBtN4iOmSAUh7IktNK9DtWubYNGC1ClPNjGSZ+Az617gKdX7giGqY8zGbwRxSnm3k3gYOjYnc7X4HGLTEpQKm073YdK4hsQRIV3mQZryuuSwILVnUT9oAzR/n88fkslElnyn/OK9vojrpKEvLJX9rl+32StFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=NdIPAQ7w; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0714C1F000E9;
-	Fri, 22 May 2026 00:35:49 +0000 (UTC)
+	s=arc-20240116; t=1779410155; c=relaxed/simple;
+	bh=KerMBDD7WYfWU1HwOOsGCdqCx8q7BMU7cgFhf7f72Wk=;
+	h=Date:To:From:Subject:Message-Id; b=BVXGUV2XuEZlmyZArTLRYPqpGSUjtIzT3wRVkIg4D+ltzYbnbkgT0YSkjGXn1juZqD/QorrgP5CH4h1XSo1lDSlK+P8xWrndgDPpeayu9JFvtpJSzNB5Nn3T/DB5my8VEKwtsvEnStHjUBqQyRZ+28o1Q0OgKXrIODgz8IYN7r0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=DEH1rL0w; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D56D1F000E9;
+	Fri, 22 May 2026 00:35:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1779410150;
-	bh=yljY8YQyXmVtcHk2rKuFniU/EGNik4faj4r2Y5gPpNE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=NdIPAQ7wkTRT8DsRoisNUDzR0BsNKEEoUpDrQYPem0wQskvvSQQN6y+EEHdjh+w5p
-	 RTyTwMbZWwUA/FIlWMPQvS4gcbIV8a3CpDPkRWPTV342je1rucse2JApFOeRssfP3/
-	 IOWujqDHkDEXnezGBWbRuDWc/a61l6X6xW4hxIG0=
-Date: Thu, 21 May 2026 17:35:49 -0700
+	d=linux-foundation.org; s=korg; t=1779410154;
+	bh=YZQCqjgDTSxlUlXkrXyZVmPyvun4eFc92QLq+IKpN4s=;
+	h=Date:To:From:Subject;
+	b=DEH1rL0wzSobvx/1up/h5GfQ1liGRzj6Y1XR2YGUOAGBFxZkIzdC/EQzC+8+yY6vf
+	 TnA66E9u52EJu8LjFAmcK+19Sx2ukLPWKXwu1cztab3uFSlecBSA1Xu9LpoCeLtkPx
+	 FYfWP+WRCc8aTexr5Y6h5eErrd84AjfQajjONSNI=
+Date: Thu, 21 May 2026 17:35:53 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,rppt@kernel.org,peterz@infradead.org,mingo@redhat.com,luto@kernel.org,lance.yang@linux.dev,jgg@ziepe.ca,hpa@zytor.com,dave.hansen@linux.intel.com,bp@alien8.de,baolu.lu@linux.intel.com,david@kernel.org,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>, Dave Hansen
- <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, Thomas
- Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
- <bp@alien8.de>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- "Mike Rapoport (Microsoft)" <rppt@kernel.org>, Jason Gunthorpe
- <jgg@ziepe.ca>, Lu Baolu <baolu.lu@linux.intel.com>, Lance Yang
- <lance.yang@linux.dev>, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH v2] x86/mm: fix freeing of PMD-sized vmemmap pages
-Message-Id: <20260521173549.d5aa510a710b4d77c3f7afeb@linux-foundation.org>
-In-Reply-To: <32fc4c35-acdb-4202-8369-ac0fe00c5b86@kernel.org>
-References: <20260429-vmemmap-v2-1-8dfcacffd877@kernel.org>
-	<0c20d1e6-1a39-42c5-8c94-9bd2222fb6b3@kernel.org>
-	<20260508092341.GP3126523@noisy.programming.kicks-ass.net>
-	<32fc4c35-acdb-4202-8369-ac0fe00c5b86@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Subject: + x86-mm-fix-freeing-of-pmd-sized-vmemmap-pages.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260522003554.1D56D1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-253652-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253651-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[linux-foundation.org];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 6D8205AD7B4
+	RCPT_COUNT_TWELVE(0.00)[14];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,linux-foundation.org:email,linux-foundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 637475AD7BB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, 8 May 2026 12:51:31 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
 
-> >>> Tested-by: Lance Yang <lance.yang@linux.dev>
-> >>> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> >>> Fixes: bf9e4e30f353 ("x86/mm: use pagetable_free()")
-> >>> Cc: stable@vger.kernel.org
-> >>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> >>> ---
-> >>> Reproduced and tested with a simple VM with a virtio-mem device,
-> >>> repeatedly adding and removing memory.
-> >>>
-> >>> Found by code inspection while working on bootmem_info removal.
-> >>> ---
-> >>
-> >> @x86 maintainers, do you want to take this through your tree or should we merge
-> >> this through the MM tree?
-> >>
-> >> I have another MM series coming up that will touch this code (no fixes, though).
-> > 
-> > I'm thinking this should go in rather more urgent, yes?
-> 
-> Yes, please :)
+The patch titled
+     Subject: x86/mm: fix freeing of PMD-sized vmemmap pages
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     x86-mm-fix-freeing-of-pmd-sized-vmemmap-pages.patch
 
-I'm not seeing this in linux-next so I (re) queued it in mm.git's
-mm-hotfixes-unstble queue, for a 7.1-rcX merge.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/x86-mm-fix-freeing-of-pmd-sized-vmemmap-pages.patch
 
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Subject: x86/mm: fix freeing of PMD-sized vmemmap pages
 Date: Wed, 29 Apr 2026 12:49:14 +0200
@@ -253,5 +233,20 @@ Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
  			continue;
  		}
 _
+
+Patches currently in -mm which might be from david@kernel.org are
+
+x86-mm-fix-freeing-of-pmd-sized-vmemmap-pages.patch
+sh-use-folio_mapped-instead-of-page_mapped-in-sh4_flush_cache_page.patch
+bpf-arena-use-page_ref_count-instead-of-page_mapped-in-arena_free_pages.patch
+mm-remove-page_mapped.patch
+sparc-mm-remove-register_page_bootmem_info.patch
+mm-bootmem_info-drop-initialization-of-page-lru.patch
+mm-bootmem_info-stop-using-pg_private.patch
+mm-bootmem_info-remove-call-to-kmemleak_free_part_phys.patch
+mm-bootmem_info-stop-marking-the-pgdat-as-node_info.patch
+mm-bootmem_info-stop-marking-mem_section_usage-as-mix_section_info.patch
+s390-mm-use-free_reserved_page-in-vmem_free_pages.patch
+powerpc-mm-remove-config_have_bootmem_info_node.patch
 
 
