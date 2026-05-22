@@ -1,151 +1,152 @@
-Return-Path: <stable+bounces-253676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253677-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +JHxEAm7D2qCPAYAu9opvQ
-	(envelope-from <stable+bounces-253676-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 04:10:17 +0200
+	id YGK3CBS7D2qCPAYAu9opvQ
+	(envelope-from <stable+bounces-253677-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 04:10:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98BF65ADE49
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 04:10:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BF8E5ADE50
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 04:10:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A1EED303AF3A
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 02:07:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 64A5B303D33B
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 02:07:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 727AD2DC332;
-	Fri, 22 May 2026 02:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2154D2DC350;
+	Fri, 22 May 2026 02:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="0RuPWwpU"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="pSSo+9LC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD760226D18;
-	Fri, 22 May 2026 02:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B017F23393F;
+	Fri, 22 May 2026 02:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779415623; cv=none; b=uT4lLjbkK+jOyzr9Et8yLMlRarGmO5RwxE5Ff0psh1yL7M6BIAHBWCAJopp0AYkRZHlfMoucngG7bcHDVmPjRfAEt6Makn2nEw2S/j6zzrkmJzXF9XMnYL9+ga8DFOlARAfoY4clwmx5xV4eIXqF84GwP/rJogwH06IBYf+zOi8=
+	t=1779415625; cv=none; b=Hv8AQNFBLhn8jgtcx61/iYTfMs6A5Fb9RbbL9pkXVAubCgNVg+3zXeQ9OvCDpkdPOYPJkS5fT3O/34ss0k3lKzTM75qg5S66WRmXFZLy6B1TzS+oIITLYxthp9FmggtHZMN94ul8c/wFpDKwwGrbyrHSR3nBJqSENC5lIeRR4HY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779415623; c=relaxed/simple;
-	bh=tV8NyCmrY9M4giHJDPFvQj9ku+iLzGu5KNAlWsirQdg=;
-	h=Date:To:From:Subject:Message-Id; b=GGLY0hzDpelVOmmilB+ejLGH3UOhHKyt5MvQISofxKiyLUCJDVfmrXbhvl8sp7UPZvuL5FPGdp5ROZD9+p0xvycjv7L/rJuim6FUM/Ylkq3CCHKqWR189eormXGOzB5HbE6WK0D2+qGQvd+2Ujx+n5kDu04DWPfj2jdzrMNh6zE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=0RuPWwpU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4DF31F00A3D;
-	Fri, 22 May 2026 02:07:01 +0000 (UTC)
+	s=arc-20240116; t=1779415625; c=relaxed/simple;
+	bh=tR5J228uT8stCRZYgt0EZw0z7D5p4iJml8gYdS7lkyw=;
+	h=Date:To:From:Subject:Message-Id; b=ItCdhYAzonSHolpprizvbBTtoZ7snEu/5IxrBVZloCJj1yqhMm4z00uyitPuHznvIW4/s1QHZSM/lhitw8czEnQMkAHKMA97KYcD6uZD14iuXYcOil5S82gmwPdcfxklFQIaFbF+XzrVJD8LUddzcEvSlHl33MOrIoLhy/YRtf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=pSSo+9LC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5176B1F00A3D;
+	Fri, 22 May 2026 02:07:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1779415621;
-	bh=KidLR2GeTUcBfeUAl5CiajVLqytmYcioqV38A3Cb4hg=;
+	d=linux-foundation.org; s=korg; t=1779415624;
+	bh=3GlUrVpYhAtx2bSFMxzm4STWLSexb2wc2Z9ZrVAj7UA=;
 	h=Date:To:From:Subject;
-	b=0RuPWwpU2zSRLPBHZJ6pSDev3bBS3mqaOtF8Qx2EtmHyK3m+dHPWz3tmWArttn5ox
-	 gIhCzzkmPR4QKTlAWfF8AI798uaAUfJmjM9TyhMhVr3tfcMk+uLRbqcHxTtwe63YFW
-	 WKfOkKAk8bs2pjFODw6xkArqOC/NNftEJv8VeuU0=
-Date: Thu, 21 May 2026 19:07:01 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shakeel.butt@linux.dev,roman.gushchin@linux.dev,muchun.song@linux.dev,mhocko@kernel.org,harry@kernel.org,hannes@cmpxchg.org,alex@ghiti.fr,akpm@linux-foundation.org
+	b=pSSo+9LCWDKucaGypZzS9NopfeR021RL3x123nnB/2V5x1fSmR8w5Dwt5x+GkFpMC
+	 Cfu22MEKQP/nesWxp3fvC3a6t71ZLI9Wn5pWgE0eNXK/ngz3sVq/xPYyITTxx9PtTP
+	 HZ6GqAAT3phBPT3WiicTeQWZ0WetGg/6aHixKTMI=
+Date: Thu, 21 May 2026 19:07:03 -0700
+To: mm-commits@vger.kernel.org,ziy@nvidia.com,ying.huang@linux.alibaba.com,stable@vger.kernel.org,rakie.kim@sk.com,matthew.brost@intel.com,joshua.hahnjy@gmail.com,gourry@gourry.net,david@kernel.org,byungchul@sk.com,balbirs@nvidia.com,apopple@nvidia.com,nueralspacetech@gmail.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-memcontrol-propagate-nmi-slab-stats-to-memcg-vmstats.patch removed from -mm tree
-Message-Id: <20260522020701.B4DF31F00A3D@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-migrate_device-fix-pgtable-leak-in-migrate_vma_insert_huge_pmd_page.patch removed from -mm tree
+Message-Id: <20260522020704.5176B1F00A3D@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	TAGGED_FROM(0.00)[bounces-253676-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[linux-foundation.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253677-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[vger.kernel.org,nvidia.com,linux.alibaba.com,sk.com,intel.com,gmail.com,gourry.net,kernel.org,linux-foundation.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[smtp.kernel.org:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux-foundation.org:email,linux-foundation.org:dkim,linux.dev:email,cmpxchg.org:email,ghiti.fr:email]
-X-Rspamd-Queue-Id: 98BF65ADE49
+	NEURAL_HAM(-0.00)[-0.989];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[smtp.kernel.org:mid,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,alibaba.com:email,sk.com:email,nvidia.com:email]
+X-Rspamd-Queue-Id: 7BF8E5ADE50
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
 The quilt patch titled
-     Subject: mm: memcontrol: propagate NMI slab stats to memcg vmstats
+     Subject: mm/migrate_device: fix pgtable leak in migrate_vma_insert_huge_pmd_page
 has been removed from the -mm tree.  Its filename was
-     mm-memcontrol-propagate-nmi-slab-stats-to-memcg-vmstats.patch
+     mm-migrate_device-fix-pgtable-leak-in-migrate_vma_insert_huge_pmd_page.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Alexandre Ghiti <alex@ghiti.fr>
-Subject: mm: memcontrol: propagate NMI slab stats to memcg vmstats
-Date: Mon, 18 May 2026 10:28:19 +0200
+From: Sunny Patel <nueralspacetech@gmail.com>
+Subject: mm/migrate_device: fix pgtable leak in migrate_vma_insert_huge_pmd_page
+Date: Fri, 1 May 2026 17:21:16 +0530
 
-flush_nmi_stats() drains per-node NMI slab atomics into the per-node
-lruvec_stats, but does not propagate them to the memcg-level vmstats.
+When migrate_vma_insert_huge_pmd_page() jumps to unlock_abort due
+to a PMD check failure, the pgtable allocated earlier via
+pte_alloc_one() is never freed, causing a memory leak.
 
-For non NMI case, account_slab_nmi_safe() calls mod_memcg_lruvec_state()
-which updates both per-node lruvec_stats and memcg-level vmstats, so
-flush_nmi_stats() needs to flush to per-node lruvec_stats as well as
-memcg-level vmstats.
+Added free_abort label to release the pgtable in error path.
 
-So fix this by flushing to the memcg-level vmstats for NMI too.
-
-Link: https://lore.kernel.org/20260518082830.599102-1-alex@ghiti.fr
-Fixes: 940b01fc8dc1 ("memcg: nmi safe memcg stats for specific archs")
-Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Link: https://lore.kernel.org/20260501115122.23288-1-nueralspacetech@gmail.com
+Fixes: a30b48bf1b24 ("mm/migrate_device: implement THP migration of zone device pages")
+Signed-off-by: Sunny Patel <nueralspacetech@gmail.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Balbir Singh <balbirs@nvidia.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Gregory Price <gourry@gourry.net>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Rakie Kim <rakie.kim@sk.com>
+Cc: Zi Yan <ziy@nvidia.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/memcontrol.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ mm/migrate_device.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/mm/memcontrol.c~mm-memcontrol-propagate-nmi-slab-stats-to-memcg-vmstats
-+++ a/mm/memcontrol.c
-@@ -4352,6 +4352,9 @@ static void flush_nmi_stats(struct mem_c
- 			lstats->state[index] += slab;
- 			if (plstats)
- 				plstats->state_pending[index] += slab;
-+			memcg->vmstats->state[index] += slab;
-+			if (parent)
-+				parent->vmstats->state_pending[index] += slab;
+--- a/mm/migrate_device.c~mm-migrate_device-fix-pgtable-leak-in-migrate_vma_insert_huge_pmd_page
++++ a/mm/migrate_device.c
+@@ -840,7 +840,7 @@ static int migrate_vma_insert_huge_pmd_p
+ 	} else {
+ 		if (folio_is_zone_device(folio) &&
+ 		    !folio_is_device_coherent(folio)) {
+-			goto abort;
++			goto free_abort;
  		}
- 		if (atomic_read(&pn->slab_unreclaimable)) {
- 			int slab = atomic_xchg(&pn->slab_unreclaimable, 0);
-@@ -4360,6 +4363,9 @@ static void flush_nmi_stats(struct mem_c
- 			lstats->state[index] += slab;
- 			if (plstats)
- 				plstats->state_pending[index] += slab;
-+			memcg->vmstats->state[index] += slab;
-+			if (parent)
-+				parent->vmstats->state_pending[index] += slab;
- 		}
- 	}
- }
+ 		entry = folio_mk_pmd(folio, vma->vm_page_prot);
+ 		if (vma->vm_flags & VM_WRITE)
+@@ -893,6 +893,8 @@ static int migrate_vma_insert_huge_pmd_p
+ 
+ unlock_abort:
+ 	spin_unlock(ptl);
++free_abort:
++	pte_free(vma->vm_mm, pgtable);
+ abort:
+ 	for (i = 0; i < HPAGE_PMD_NR; i++)
+ 		src[i] &= ~MIGRATE_PFN_MIGRATE;
 _
 
-Patches currently in -mm which might be from alex@ghiti.fr are
+Patches currently in -mm which might be from nueralspacetech@gmail.com are
 
+mm-migrate_device-cleanup-up-pmd-checks-and-warnings.patch
 
 
