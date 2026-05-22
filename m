@@ -1,83 +1,83 @@
-Return-Path: <stable+bounces-253658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253659-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WFGpDIOnD2rCOQYAu9opvQ
-	(envelope-from <stable+bounces-253658-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 02:46:59 +0200
+	id 0Ga7NaKnD2rCOQYAu9opvQ
+	(envelope-from <stable+bounces-253659-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 02:47:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC4525AD895
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 02:46:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B5F55AD8C1
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 02:47:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C8102302445E
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 00:46:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 455A0304B8BC
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 00:46:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27360282F34;
-	Fri, 22 May 2026 00:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1656265606;
+	Fri, 22 May 2026 00:46:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dOmiqFM3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SAVaMJwW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680DD289367
-	for <stable@vger.kernel.org>; Fri, 22 May 2026 00:46:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3D9298CAB
+	for <stable@vger.kernel.org>; Fri, 22 May 2026 00:46:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779410774; cv=none; b=dJibHp+VKRv+WIa0prwX40QACRpgNM8v0qMtFlhvJE756mDyCLgrp/7DiZDqie+3vzz1kRI7Cg3m37cFmwYm7ZOWvsU5WnC9qGGQmaa7uNPuMuo6pmafW98TRfU3mqfGFdB6P3OLrWFP5lwC6eFCyQIHg5IW+0c9fvwc/G4/dj4=
+	t=1779410779; cv=none; b=axuJuccnmdrSNzdvhTfNGMV9LFT1ydmIIcQ590s+m4+fReSFPsGaRPxJKnrl4cTyMJSzYyLs8F03uNnKmbc5GBm85OXcQi4weZBkLyEl8Tm2ViEfL2v4aoEb3eVMsMAHKlmAx2qHJDsER09pCWiym0K6ukESXhL/GSQdXUjbkRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779410774; c=relaxed/simple;
-	bh=HrGZAnQwY9MJbd/wv7fd5eZFlQP7idEHOmDb1AkwUaE=;
+	s=arc-20240116; t=1779410779; c=relaxed/simple;
+	bh=yUxFQRX3bCKLw0bbag7Nni+E3AhTdqJzZfswOngAcC8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AtTMBkkVUEDATa0WsnKU9DpAGHh0LxCdhifexCFYfNNNfDaGZMtHylo32sS2aMC+FZxkCdDCR7ETctHaBmSOC/sJn/cdGLCi2tWj97sSJp5wUVj++kMFqGYBayWx+/7lewGU4/hpqZQdQKMvR556xdxug0ulvxhLzrcvQMyw8EE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dOmiqFM3; arc=none smtp.client-ip=209.85.208.46
+	 MIME-Version; b=lS9Y30xMCAJxIhxneYBLIf7D6/j+HPSvH3HFylVerIzTepcFu9DaNIEqb6vhb5/0kjGbtxkUC/sZNzIVD97UhLBeeg9MlVKZVMRikZ+jv3lOFhgcBKwr5tiwjx08Cdw3pX4yEB4+anOWAVFaPQV0QfEKHl8ZS2oZUy/e7PxhDL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SAVaMJwW; arc=none smtp.client-ip=209.85.208.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-68852b58d87so2007500a12.3
-        for <stable@vger.kernel.org>; Thu, 21 May 2026 17:46:13 -0700 (PDT)
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-678a16429c6so11379440a12.1
+        for <stable@vger.kernel.org>; Thu, 21 May 2026 17:46:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779410772; x=1780015572; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1779410776; x=1780015576; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GuMzZ0oPIB63SQlMEwBPtCu4kk4sfKKOYS1JICO/Nwc=;
-        b=dOmiqFM3lj29GWbIcJQ01h1f5w7HS30Ctx3zmow+b4R63it57Y8Dl8zZLNX2IgE0Ck
-         SyVG1HNUnxH/SUwChPyBDgzj7F9+9xg0z0C5271E41WOicknE9IhVH5LMgA+pljC6S5Y
-         QI8grfUcOskL/dDO3tNB9k82OJRQaHL2bv4VbHqPs/oumlqWx/4+0eqTYIIoxT8qpl27
-         HfJ8eugfIvETMMIX64c/f/lvlcEB+mVpT4naHZDECnYby1d0ImYG0vzTWINnm/wmjHVO
-         smmwDcStmduLLYDxnq0KV8XhawvO4WyeYc4krJJ3kr3tUbbYR7jDGDlfh6JROWozvqvx
-         RPCA==
+        bh=GB1lAvDGjs+DHw89Q6x35AxewQHrMJlNyOlZUD/w82c=;
+        b=SAVaMJwWIS8c3oAkYVxzI2s1pqIWQ1YN+i5zE8qwfoENQm6wVx7hXmKU4NBHtKnG3I
+         pFeaYs2Lf2oK/GyImwo1pTsn+lF9SOYUMugu+NfZF0wuUSG1m2LxwEYbAXaPLfdMDL+z
+         moSQ3RXTRExIB1/GiuOyKm7qmL7L64+Q2iYyrBT9q+LXXdAFcSOJqnTP/6MlSwRiLThr
+         l//PfUoraWOQJw4kK7a+jfCm3/78fW8gTBhZfdpCxXii6VfMfSVYGqBzu6XRciVv09dT
+         FFNLecoKsaOD6IHtvZVN/pAtF5Q5LNyC9KKKAvtvKYnWdn5zyS95W55BoeFJdFQ7mryA
+         YFSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779410772; x=1780015572;
+        d=1e100.net; s=20251104; t=1779410776; x=1780015576;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=GuMzZ0oPIB63SQlMEwBPtCu4kk4sfKKOYS1JICO/Nwc=;
-        b=a8rzWHxwmRrDlPHc0/CEwmfzpCHUFX6UK5/JzIVBn7c1Sle6lyFmmj3ePs27ZdVJGP
-         sCftgj5FenV4KDFI7v+3yKSYVx0duKB7/uVShFGVbE0P3ejphoR6JcqY/I8dK9G7iAcl
-         aXhLV9XZdVEweH1riak46g+pcjOUVQNAXDcH3F29KzFhLncOg8hxIdGDFwAJLv7x9WO6
-         EJQ+eDfIUs+SZJOaBXyVhcjHSgdb/I74eaVZE4ywu/MICu2pRfZA13uBWqRPIqsZqXjX
-         ia9mN9/NKUf6MV1K55G9ZSEwl3R1T1CkKZGYRDI5F1jhFli/uMupqdd+ZfkIJxSFi247
-         ZK6Q==
-X-Forwarded-Encrypted: i=1; AFNElJ87PTNaQegmE47/vIwNOIRLbBk2NyYKR4pieG6blmp4FTz+KkMTksIfvIrhseGKa1lFNN0xSys=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxg6qmE8WMT2bJHgTUASdb2bRfP5k0vT11MQRiBQxseWIoz/ioQ
-	9BAzPo6JXpTpDdgCWCswLWdteXwzfCUILf3IcR9YhuSdmOIjy5poezH8
-X-Gm-Gg: Acq92OEUu8giU8Qd/XEVPl52ZGyP5OdAcRsjPQFxSPzeOUdxn3QoC5eLDD8nw/FfHWh
-	0haXEMH4LGZI/2mCT8cdghYOAm411THv2crJIcRDeoc9Jsy92R6i9Z1fMJ2m+xhJMWkdVLD4yHK
-	iyzYYPlVXv4mx3tG7whtpWsqXMipympzAowLcuvQrJ4SJTZ6+/VK4yMOirQglo8TpSkJzkozQs5
-	hQKAnTry8w3GFbNLBmjy07l1/0TdkZLSJsNuiZtXaYLfPqclteKeF4GLZnkcSimRNpmcSbpWZLp
-	+d6buLQJ0jkXMCo6cQdVjLgeHWA0YGTk/RrFaItcSYvCMDP/2kmRDBNCD35jc/XI7BMphURQ3co
-	vsrxs7eno1QA/ehz0LcazhREwvI/XGMBgxGmuqSPbYzJSx9NiFYxAubv0Sj5/g1rSfWRPakn3PN
-	SPt6zvEDTw/JCz4NnYosKetCHxmnlK32R5fjsDlMv8WEOutfVaa0soYgnwSDhkSlRwpMEsQuG16
-	J8Whm94trgSwr8vMoIlWGBDqs9Qrmg4BEW43KoW3PPHbnlc2AdqOY45EOauQZ3gXGvWzjgS0wut
-	/Ffc9ek2dA0YVjmtoqRhGJ/B14fX
-X-Received: by 2002:a05:6402:4495:b0:672:bdaa:3e75 with SMTP id 4fb4d7f45d1cf-6889c432190mr513119a12.9.1779410771911;
-        Thu, 21 May 2026 17:46:11 -0700 (PDT)
+        bh=GB1lAvDGjs+DHw89Q6x35AxewQHrMJlNyOlZUD/w82c=;
+        b=fzliA80BkIo1pzWDJV2wWeniEUQaEpAEji6qo+GUT5+oHCu4pbPumxxWA9T7AuM0Q0
+         jjYuvQLn3f+scng/L47Hib2icx84+pJYD4eBt1O/Uwear/AI/lB8j1g7S/WvYhbPGJdz
+         EZuTthAIUx+GlT2rij0rQ7jW8tyAy08vqXME+EikRq7KHHZ64rGbKkcRa9oHkuV+n2Tb
+         nZzkTQbhjtJXrFEa1YBE/dVclUlZXyw8JyeFtPJ3zpT10KG6t2nhcEZYI1JzhZjsmx5D
+         xTK0m7qDjBBq8ABZfzlo2CzfgH1Vk3Qa2PGcVa26zWYP7cFd8B7sgkMrTKEaYrdSc5i4
+         bCiQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/8vWAhKM5m5Nm4+dwlX0YdNJoPRxTJtYayt1HkApxzm59JnDml2P4fuL4gBe8TaIIskEGCIY4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHa6nCdGM/UjUTvw/a8VpEr4Qik5zkjt4fbWDJWSWgN2YWAKos
+	Ex4EQhMNlH361b1aUJ22tCIAKEUNwcEBNu/xx4ufB0U8rVngcDAexo3q
+X-Gm-Gg: Acq92OG/sO+DVPifbvMuronEC1CKgy1y8349c0obt56Wuthe9kteTjo8+KzgUEsxCNr
+	3mW9lKbtkyCiie5/Xwk5n9YG9cxVDWHwC+w5g+0BGnw3zhfFC2lyX8uFTiUCmgDuCSU8gBm8/SH
+	A8awas4Cm/0tE3siuqYWDGvdYAsvD0xM42ap1a0BOm18niX9TeX5aRES+WZ5zh35MSEVvT8HM18
+	GBGtQT7LRh1tJjUElCasGxdLD8IRmcBWQCW2RIglUySJS54i7eqpx7X2t5Xh5M9mEaWaPamsBTz
+	wOP5rXMFFpSWqhpYz5mI6yzrptt9ANdZ2jfNPe2MapECONL6x2oJmpBazXLH1pzfhG92styYbza
+	6V6WoYpQ6ywyqbp1PjRnbjJbxJTRg9Cne58omGGdFxKLkTB59QnXN+T7Wth8d+7ckxoJGZdEbh9
+	I39ku/wFquuzqsBdBQQwyLPbQ2oe7KDniMiX61Xr90DWxovNmRyoJlx0PMxY7pKFT+9a81mnrnO
+	+bazyNUQI8irg1JKfz9OpAZZm6czOwgq3ciZm+nW27NPyW6maHLLJc+Ez6abJ13v3S95CTKxf3J
+	WGbIs38Mju/OcEDGvTGWOEYuqHeG
+X-Received: by 2002:a50:ee08:0:b0:671:9dec:ba3 with SMTP id 4fb4d7f45d1cf-6882efedec4mr1462732a12.13.1779410775672;
+        Thu, 21 May 2026 17:46:15 -0700 (PDT)
 Received: from ahossu.localdomain (ip-217-105-56-94.ip.prioritytelecom.net. [217.105.56.94])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-688b72cbbf3sm3535a12.0.2026.05.21.17.46.08
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-688b72cbbf3sm3535a12.0.2026.05.21.17.46.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 May 2026 17:46:10 -0700 (PDT)
+        Thu, 21 May 2026 17:46:13 -0700 (PDT)
 From: Alexandru Hossu <hossu.alexandru@gmail.com>
 To: gregkh@linuxfoundation.org
 Cc: linux-staging@lists.linux.dev,
@@ -85,9 +85,9 @@ Cc: linux-staging@lists.linux.dev,
 	luka.gejak@linux.dev,
 	Alexandru Hossu <hossu.alexandru@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v7 2/7] staging: rtl8723bs: fix OOB reads in IE loops in issue_assocreq() and join_cmd_hdl()
-Date: Fri, 22 May 2026 02:45:26 +0200
-Message-ID: <20260522004531.1038924-3-hossu.alexandru@gmail.com>
+Subject: [PATCH v7 3/7] staging: rtl8723bs: fix heap buffer overflow in rtw_cfg80211_set_wpa_ie()
+Date: Fri, 22 May 2026 02:45:27 +0200
+Message-ID: <20260522004531.1038924-4-hossu.alexandru@gmail.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260522004531.1038924-1-hossu.alexandru@gmail.com>
 References: <20260521130330.754181-1-hossu.alexandru@gmail.com>
@@ -114,7 +114,7 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux.dev,gmail.com];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253658-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253659-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
@@ -129,64 +129,62 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linux.dev:email]
-X-Rspamd-Queue-Id: BC4525AD895
+X-Rspamd-Queue-Id: 6B5F55AD8C1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Two IE parsing loops are missing the header bounds checks before they
-dereference pIE->length:
+supplicant_ie is a 256-byte array in struct security_priv. The WPA and
+WPA2 IE copy paths use:
 
- - issue_assocreq() walks pmlmeinfo->network.ies to build the
-   association request. If the stored IE data ends with only an
-   element_id byte and no length byte, pIE->length is read one byte
-   past the end of the buffer.
+    memcpy(padapter->securitypriv.supplicant_ie, &pwpa[0], wpa_ielen + 2);
 
- - join_cmd_hdl() walks pnetwork->ies during station join and has
-   the same problem under the same conditions.
+where wpa_ielen is the raw IE length field (u8, 0-255). When a local user
+supplies a connect request via nl80211 with a crafted WPA IE of length 255,
+wpa_ielen + 2 equals 257, overflowing the 256-byte buffer by one byte into
+the adjacent last_mic_err_time field.
 
-Both buffers are filled from AP beacon and probe-response frames, so a
-malicious AP that sends a truncated final IE can trigger the issue.
+rtw_parse_wpa_ie() does not prevent this: its length consistency check
+compares *(wpa_ie+1) against (u8)(wpa_ie_len-2), which is (u8)(255) == 255
+when wpa_ie_len = 257, so the check passes silently.
 
-Apply the two-guard pattern established in update_beacon_info():
-  1. Break if fewer than sizeof(*pIE) bytes remain.
-  2. Break if the IE's declared data extends past the buffer end.
+Add explicit bounds checks for both the WPA and WPA2 paths before the
+memcpy, rejecting any IE whose total size (wpa_ielen + 2) exceeds the
+supplicant_ie buffer.
 
 Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
 Cc: stable@vger.kernel.org
 Reviewed-by: Luka Gejak <luka.gejak@linux.dev>
 Signed-off-by: Alexandru Hossu <hossu.alexandru@gmail.com>
 ---
- drivers/staging/rtl8723bs/core/rtw_mlme_ext.c | 8 ++++++++
+ drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c | 8 ++++++++
  1 file changed, 8 insertions(+)
 
-diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-index 884cd39ec756..c646dc2a1741 100644
---- a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-@@ -2931,7 +2931,11 @@ void issue_assocreq(struct adapter *padapter)
+diff --git a/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c b/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
+index 098456e97c96..3d930d9af184 100644
+--- a/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
++++ b/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
+@@ -1443,6 +1443,10 @@ static int rtw_cfg80211_set_wpa_ie(struct adapter *padapter, u8 *pie, size_t iel
  
- 	/* vendor specific IE, such as WPA, WMM, WPS */
- 	for (i = sizeof(struct ndis_802_11_fix_ie); i < pmlmeinfo->network.ie_length;) {
-+		if (i + sizeof(*pIE) > pmlmeinfo->network.ie_length)
-+			break;
- 		pIE = (struct ndis_80211_var_ie *)(pmlmeinfo->network.ies + i);
-+		if (i + sizeof(*pIE) + pIE->length > pmlmeinfo->network.ie_length)
-+			break;
+ 	pwpa = rtw_get_wpa_ie(buf, &wpa_ielen, ielen);
+ 	if (pwpa && wpa_ielen > 0) {
++		if (wpa_ielen + 2 > sizeof(padapter->securitypriv.supplicant_ie)) {
++			ret = -EINVAL;
++			goto exit;
++		}
+ 		if (rtw_parse_wpa_ie(pwpa, wpa_ielen + 2, &group_cipher, &pairwise_cipher, NULL) == _SUCCESS) {
+ 			padapter->securitypriv.dot11AuthAlgrthm = dot11AuthAlgrthm_8021X;
+ 			padapter->securitypriv.ndisauthtype = Ndis802_11AuthModeWPAPSK;
+@@ -1452,6 +1456,10 @@ static int rtw_cfg80211_set_wpa_ie(struct adapter *padapter, u8 *pie, size_t iel
  
- 		switch (pIE->element_id) {
- 		case WLAN_EID_VENDOR_SPECIFIC:
-@@ -5324,7 +5328,11 @@ u8 join_cmd_hdl(struct adapter *padapter, u8 *pbuf)
- 
- 	/* sizeof(struct ndis_802_11_fix_ie) */
- 	for (i = _FIXED_IE_LENGTH_; i < pnetwork->ie_length;) {
-+		if (i + sizeof(*pIE) > pnetwork->ie_length)
-+			break;
- 		pIE = (struct ndis_80211_var_ie *)(pnetwork->ies + i);
-+		if (i + sizeof(*pIE) + pIE->length > pnetwork->ie_length)
-+			break;
- 
- 		switch (pIE->element_id) {
- 		case WLAN_EID_VENDOR_SPECIFIC:/* Get WMM IE. */
+ 	pwpa2 = rtw_get_wpa2_ie(buf, &wpa2_ielen, ielen);
+ 	if (pwpa2 && wpa2_ielen > 0) {
++		if (wpa2_ielen + 2 > sizeof(padapter->securitypriv.supplicant_ie)) {
++			ret = -EINVAL;
++			goto exit;
++		}
+ 		if (rtw_parse_wpa2_ie(pwpa2, wpa2_ielen + 2, &group_cipher, &pairwise_cipher, NULL) == _SUCCESS) {
+ 			padapter->securitypriv.dot11AuthAlgrthm = dot11AuthAlgrthm_8021X;
+ 			padapter->securitypriv.ndisauthtype = Ndis802_11AuthModeWPA2PSK;
 -- 
 2.54.0
 
