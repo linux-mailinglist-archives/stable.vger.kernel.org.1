@@ -1,141 +1,202 @@
-Return-Path: <stable+bounces-253680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253681-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YGx+LfHED2qJPgYAu9opvQ
-	(envelope-from <stable+bounces-253680-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 04:52:33 +0200
+	id +NNcJ5jFD2qJPgYAu9opvQ
+	(envelope-from <stable+bounces-253681-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 04:55:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 180205AE2A5
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 04:52:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03F255AE2F4
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 04:55:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4599130166DD
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 02:52:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C0A5E3016ECB
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 02:54:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CFA130FF05;
-	Fri, 22 May 2026 02:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE6D7335BA;
+	Fri, 22 May 2026 02:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ii4G48o2"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="OgH5s+bh"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD8823395F
-	for <stable@vger.kernel.org>; Fri, 22 May 2026 02:52:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 862B730F52A
+	for <stable@vger.kernel.org>; Fri, 22 May 2026 02:54:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779418344; cv=none; b=OgLtnjDFcJ9zgCbdjS+ngm7rdZS35AUsP5tacuOPeg19vestsUz8kS8abBTLqb0jWMBhPTnOxo6FsOXQ6iLa6rv8pQnbkQ3SV9T4L5mxwkXvHdgogWagdimVKGfkY34SVSx7AuzyauVcy1FpQRZsNzKE0vWBfkpZ0L1oqoc1DeU=
+	t=1779418484; cv=none; b=TL3qfj1F4DEvewW2vVz8AfD8/WIi1B63oabtLAb2RO5iyplKVDTcxXWet6hjsCc7MQTI/BiSCbapWDJWP5M/acthGiluLUodpT7WWOWEYclQi5Z+DJosTAPmHyEK2aClOKfjSRbz+wwhXmPYwnO8HS2zvw5eolvbRIAWLfiXTH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779418344; c=relaxed/simple;
-	bh=ox6bxPIZcQ9pA2poXV11dQdhfB6hdnT42WTbPpl769k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nGAeiqWDJ7aXxH746sCrL8zlLGH2ZLiuWkWwfP9AV0zQBehnnv9xRnDBlkRYPa0ihR0u+xvFOtMK52JzV7WHO62yCYcq0dBMjSDG8q/fxJ8lX1y9TYDf1HkIVdFsFRrInhT3+5j64MVPaXWxmjv28RmUGiw54kBgboZKxs02Z4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ii4G48o2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AFF31F0155D
-	for <stable@vger.kernel.org>; Fri, 22 May 2026 02:52:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779418343;
-	bh=add7O784fB7u3KgFvBd8EhJRw2Ch/7z+5srxbj+5fbU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Ii4G48o2zZI0d+oJlEwHvSxRmvlU88HXjsXH6k5Z8BAkXNvanS+hWZTiP0FmlqNnd
-	 0GMLQaQQcqxbMvo6e9tqFjBPe6bb17QES5OzuI/nJxp6yDfeou9tEfmiYWOoJmctWm
-	 XWV7zMWD2ZJ6HJE/LaqVDv4HN34aYzyZlLescXqFd4aJIh4SggNK5gl2JQ9tY6k4gn
-	 T6ha1XiYcQDBRm5XF6vxK5oRB/0BoVpfTSyAt1wklhmA0NTPOfSORvKmr2ACzTuVxL
-	 25j95+UXnrHGI5jioLLVtli9pHDrazqSmjYcaZBIwttUIt/nw9Tlt1BdE/9QH5vruh
-	 kwXmnM9kRX+nA==
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-bcc9fdc959cso1269952066b.2
-        for <stable@vger.kernel.org>; Thu, 21 May 2026 19:52:22 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/OngKwSf3h5RhvQd0itezgwJ39PhtdoTaibtLsrC+ac/wtKFOZVLyNgtsEzPO2H0XPnbUJegc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwLOaLTV25d8WA1bhKLF9Y28GZ4oDuy39RdMqiKne9lCUlCJA3s
-	Ovvdm6bB4H7/VWy4xLo+BFG59g5EacRcXtkSHyFM9iT/6yu9d+SBususHYHNb4GGzKuZZbw/9s+
-	iMQkIinVBPYFu2Bx6e934Oq6Im2cBbPI=
-X-Received: by 2002:a17:906:fe02:b0:bd3:1a18:cc64 with SMTP id
- a640c23a62f3a-bdd2580c51cmr104098866b.31.1779418341722; Thu, 21 May 2026
- 19:52:21 -0700 (PDT)
+	s=arc-20240116; t=1779418484; c=relaxed/simple;
+	bh=9sNDWp4eJAN4hGKgG1/vCZXkYZij+jtvh3me80wz+Jw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qzlstLg55ulHskd7pGawy++Ss1GzHiF6bAfXWUMOnUh43AClOFbgZ3RDqdtWH0tj6IiewU4s8wF5CKSvvihnChx/H5WgWJSEuF0+8SjFxpkIM4hDaJ8WZYNA0KN2jCc7XVhVj3qNj/vwbaWDdTJ9q/oN8z7UtRHRj/EYN3uub34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=OgH5s+bh; arc=none smtp.client-ip=95.215.58.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <55f7f791-d573-4009-a3ec-68b7e54483d9@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779418478;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PIwzmKCKWaTnt+GnpbaGIGstb9WVL0Zsa54wKJPDKwo=;
+	b=OgH5s+bhF8PxVeziGIwGv4CtjbHIg4SZ3M/Jr/cpF+uH6XdrW/i0C9+E5qq0buaKTH69uN
+	Cy4ukcWxdAPIgCRAb884rgi6foFkAt5effnAe5H8OmV6+WoPg+7PZR4jJXTUd7s61TbWXa
+	C4/F6Bf6N9XHII/uHqGlBj6/uQBzRME=
+Date: Thu, 21 May 2026 19:54:31 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260522022525.12976-1-ebiggers@kernel.org>
-In-Reply-To: <20260522022525.12976-1-ebiggers@kernel.org>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Fri, 22 May 2026 10:52:42 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H5cDnWKxBobwRErRyvG8671e6VXsBe6w1RkX9rfn7CVFA@mail.gmail.com>
-X-Gm-Features: AVHnY4LY-TOi84C9U6iPkvfzojtdl72PfdB391W9bREXD-FyusIkwq7iXYp_NFY
-Message-ID: <CAAhV-H5cDnWKxBobwRErRyvG8671e6VXsBe6w1RkX9rfn7CVFA@mail.gmail.com>
-Subject: Re: [PATCH] crypto: loongson - Select CRYPTO_RNG
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: linux-crypto@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>, 
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
-	Qunqin Zhao <zhaoqunqin@loongson.cn>, Yinggang Gu <guyinggang@loongson.cn>, 
-	Lee Jones <lee@kernel.org>, kernel test robot <lkp@intel.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 0/4] RDMA/rxe: Fix u64 iova-overflow family in
+ MR/ODP/RESP/MW paths
+To: Tymbark7372 <tymbark7372@proton.me>, linux-rdma@vger.kernel.org,
+ "yanjun.zhu@linux.dev" <yanjun.zhu@linux.dev>
+Cc: zyjzyj2000@gmail.com, jgg@nvidia.com, leonro@nvidia.com,
+ stable@vger.kernel.org
+References: <20260521194402.811-1-tymbark7372@proton.me>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
+In-Reply-To: <20260521194402.811-1-tymbark7372@proton.me>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253680-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253681-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,nvidia.com,vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chenhuacai@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[yanjun.zhu@linux.dev,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 180205AE2A5
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:mid,linux.dev:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 03F255AE2F4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, May 22, 2026 at 10:26=E2=80=AFAM Eric Biggers <ebiggers@kernel.org>=
- wrote:
->
-> This driver registers a rng_alg, so it requires CRYPTO_RNG.
->
-> Fixes: 766b2d724c8d ("crypto: loongson - add Loongson RNG driver support"=
-)
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202605201622.qWOiiZTV-lkp@i=
-ntel.com/
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
-> ---
->  drivers/crypto/loongson/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/crypto/loongson/Kconfig b/drivers/crypto/loongson/Kc=
-onfig
-> index 15475da8fc11..f4e1544ffbb4 100644
-> --- a/drivers/crypto/loongson/Kconfig
-> +++ b/drivers/crypto/loongson/Kconfig
-> @@ -1,5 +1,6 @@
->  config CRYPTO_DEV_LOONGSON_RNG
->         tristate "Support for Loongson RNG Driver"
->         depends on MFD_LOONGSON_SE
-> +       select CRYPTO_RNG
->         help
->           Support for Loongson RNG Driver.
->
-> base-commit: 6c9dddeb582fde005360f4fe02c760d45ca05fb5
+在 2026/5/21 12:44, Tymbark7372 写道:
+> This patchset fixes a family of u64 overflow bugs in the rxe Soft-RoCE
+> driver.  All four sites share one root cause: addition of an
+> attacker-influenced iova/addr (u64) with an attacker-influenced
+> length/resid (size_t/u32/int promoted to u64), without overflow
+> check, leading to an OOB read/write primitive in the rxe responder
+> workqueue.
+
+The core premise of these commits is that a user-space program can 
+arbitrarily set the IOVA via /dev/infiniband/uverbs0. I am still 
+skeptical about this, as my understanding was that the IOVA is managed 
+by the subsystem and difficult for a user to modify. If it is indeed 
+possible for a user to control or change this IOVA, then I am completely 
+fine with this patchset.
+
+Thanks a lot.
+Zhu Yanjun
+
+> 
+> I originally reported these to security@kernel.org.  Jason Gunthorpe
+> confirmed that rxe and siw are development-only drivers without
+> embargo handling and asked me to send patches publicly, so I'm
+> posting here per his direction.  security@kernel.org is intentionally
+> not in Cc per Jason's instruction.
+> 
+> This is a resend of the patches I sent earlier today as attachments.
+> Zhu Yanjun pointed out attachments aren't the convention and asked
+> for inline format via git send-email.
+> 
+> Patches:
+> 
+>    1/4: rxe_mr.c mr_check_range
+>         The USER/MEM_REG case computes iova + length and compares to
+>         mr->ibmr.iova + mr->ibmr.length.  Both additions wrap in u64.
+>         Use check_add_overflow() for both ends.
+> 
+>    2/4: rxe_odp.c rxe_check_pagefault
+>         Loop condition addr < iova + length wraps when iova is near
+>         U64_MAX and length is positive.  Compute iova_end with
+>         check_add_overflow() once and use it in the loop condition.
+> 
+>    3/4: rxe_resp.c duplicate_request
+>         Third clause iova + resid > res->read.va_org + res->read.length
+>         has u64 wrap on both sides.  Use check_add_overflow() for both
+>         ends.  (Site A in check_rkey, also in rxe_resp.c, calls into
+>         mr_check_range and is closed by patch 1.)
+> 
+>    4/4: rxe_mw.c rxe_check_bind_mw
+>         Same wrap class as patch 1.  Found by sibling-site grep; not on
+>         the OOB-write path of the three primary bugs but a
+>         structurally-identical u64 wrap that would let an attacker bind
+>         a memory window outside its parent MR's range.
+> 
+> Verification:
+> 
+> Each of the three primary sibling triggers (patches 1, 2, 3) has been
+> exercised on v7.1.0-rc3 + KASAN in QEMU as the OOB-write case.
+> Patches 1 and 3 produce a single-page-fault Oops in rxe_mr_copy after
+> the wrap.  Patch 2 produces a single-page-fault Oops in
+> rxe_odp_mr_copy.  All three are triggered by a single ibv_post_send
+> from an unprivileged local user with /dev/infiniband/uverbs0 open.
+> A working LPE exploit demonstrated end-to-end privilege escalation
+> via the rxe_odp path under the verification config (KASAN dev-build,
+> selinux=0, nokaslr).  Full PoC and writeup were attached to the
+> original security@kernel.org submission.
+> 
+> After applying all four patches, the same triggers no longer fire;
+> the wrap checks correctly reject the attacker iova.  Re-tested in the
+> same QEMU+KASAN configuration.
+> 
+> The trigger PoCs are simple libibverbs programs (one per sibling)
+> that I am happy to provide on request.
+> 
+> Fixes / stable:
+> 
+>    1/4: Fixes 8700e3e7c485 ("Soft RoCE driver"), v4.8+
+>    2/4: Fixes 2fae67ab63db ("RDMA/rxe: Add support for Send/Recv/Write/Read with ODP"), v6.15+
+>    3/4: Fixes 8700e3e7c485 ("Soft RoCE driver"), v4.8+
+>    4/4: Fixes 8700e3e7c485 ("Soft RoCE driver"), v4.8+
+> 
+> Pre-f04d5b3d916c LTS branches carry the older wrap form
+>    iova > mr->ibmr.iova + mr->ibmr.length - length
+> instead of the current `iova + length > ...` shape.  Patches 1, 3, 4
+> will need a backport variant for those branches; I can provide on
+> request.
+> 
+> Tymbark7372 (4):
+>    RDMA/rxe: Fix u64 iova+length overflow in mr_check_range
+>    RDMA/rxe: Fix u64 iova+length overflow in rxe_check_pagefault
+>    RDMA/rxe: Fix u64 iova+resid overflow in duplicate_request
+>    RDMA/rxe: Fix u64 addr+length overflow in rxe_check_bind_mw
+> 
+>   drivers/infiniband/sw/rxe/rxe_mr.c   | 12 +++++++++---
+>   drivers/infiniband/sw/rxe/rxe_odp.c  | 10 ++++++++--
+>   drivers/infiniband/sw/rxe/rxe_resp.c | 11 ++++++++---
+>   drivers/infiniband/sw/rxe/rxe_mw.c   | 11 ++++++++---
+>   4 files changed, 33 insertions(+), 11 deletions(-)
+> 
 > --
-> 2.54.0
->
+> 2.43.0
+> 
+
 
