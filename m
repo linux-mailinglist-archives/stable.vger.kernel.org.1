@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-253786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253787-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8KQfCmGGEGqEYwYAu9opvQ
-	(envelope-from <stable+bounces-253786-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 18:37:53 +0200
+	id UK/LOQNbEGqDWgYAu9opvQ
+	(envelope-from <stable+bounces-253787-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 15:32:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B1E75B7A66
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 18:37:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C920A5B5331
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 15:32:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7890130A137A
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 13:03:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 56B443147511
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 13:12:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1663839478B;
-	Fri, 22 May 2026 13:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27BB939DBF1;
+	Fri, 22 May 2026 13:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S1Wj369p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X3e8y0WZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA63D395AC5
-	for <stable@vger.kernel.org>; Fri, 22 May 2026 13:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDFD939DBDF;
+	Fri, 22 May 2026 13:12:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779454986; cv=none; b=Q9ZMryM+sq/EgzzTox05XfacTMLrh8R+uPm+bYXR5sEFUbrZdJ8pfi9Sw185eiphHxxXbchTCMXHBLdv7zYHKtAQWhgniw6oaZwRwC4HJD4wmzRU6Td8Gf9X+yJLYuZ9a9SSiiUAX5VrTHaZdLPXrmmh9yWmebWPchqrJhr49Xg=
+	t=1779455561; cv=none; b=QZ958GULR8MlID/GUbwtOHi36Sg8lVbcXbcvCIVTvy6rHym8JtXcW83Z9bx4k4hrQrzTJQWMF0lldi3RviycWEA+IuoV3ohquNy3vDzv3zlmuDnPzc9Yeqoib1p0Ovyu/BTjL7tdvWMOG2RflXpIHhcYQuF1GzOFrJfg1b1CD3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779454986; c=relaxed/simple;
-	bh=z/EJ8UdSaVGA1/bVLFyThiJBQkcsDaXRaFZjvMTtTgU=;
+	s=arc-20240116; t=1779455561; c=relaxed/simple;
+	bh=qZlXcp2FMSX4eFyArqwAC4vZ730OFDvZrN+MAyaMbE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mrLb2cp9WTPE4h//dfLzrm8IvYFrygJXM4yYhLTLq3IQLveMjwBaODcN9l+J8nQLD5E+S8i0jzeOaBWCH4asRtkgWGZsI8pewRV8+st1/rRDBJ5MrEUD2qfrazrfD/gyUNZnjWTbDsiZ+GhrYSgijvdxhjmiQK/nCTWWeZUz17Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S1Wj369p; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E51251F00A3D;
-	Fri, 22 May 2026 13:03:04 +0000 (UTC)
+	 MIME-Version; b=YD/swPlDF+GHP3H8shejfeEQ2kNymH5/KzDr/t3RXxspMk87ifgLgMBegFkGk3o4JMMUd02GEYdI0N7Ut8QMiSRFOP1VL1785fVoTvscA6Lkj4JiPK4D0rhd8i74gZFIKxeZXUMfnnrLH4NIXOmay+LK9aRxVqHazL04xij5d+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X3e8y0WZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A37501F000E9;
+	Fri, 22 May 2026 13:12:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779454985;
-	bh=OkjnoivwQFzZ8fRhJNmVrVhqTGPPR+/fgIZ1ByTHi2I=;
+	s=k20260515; t=1779455560;
+	bh=qZlXcp2FMSX4eFyArqwAC4vZ730OFDvZrN+MAyaMbE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=S1Wj369pgXy9/8H1XypsXshtmo31L3g0agFBg2qa/3MuJjWza07pmJP0T2vMlNHY0
-	 17uK5HkvB1A14VYYqjO+c+gDgIP8xvldmYOSya8USKdwpb47qeuJok9BcqsNX0Y5ck
-	 XBlvd/eEAFEzvX06YMt1z61KZ8AbnKKcA0ztyDJDm/LzcxuE1+eVD1WX5idHQKo5Rc
-	 gp1pkakO5lGiihupoxIvVeBNeMu/vd3HxNrGj0U61Tf+wtm+oYqTSruAEvt2cHVwMS
-	 NChlBKNdhvNqXy+9O4WHIFw0zpYIPt+QTBaNaSXsMA5mTl6KWHVbIFlptM90YGG0n1
-	 d23B6I2W3r/6Q==
+	b=X3e8y0WZqzVql1aQmV4KI0rBhSw1Eg1zLpCZLOzG+rqbKkiPyczNYYvrLOvutihPF
+	 qhuKYwDP5zgHWbZdXFNNCp5BCA0Eblqxha1Y8UcsLpsIpwRL56c8XLTrm4jyQdSHMR
+	 DuXzLSv4Ol21RP9EZeHKGBduKMsdNc7zL73b2vYUCxuDm/gGCMI1Vdr7uJPHJfzivt
+	 H2mOMHcvJ5itv2pDpBOa65EQnh5LJ4mdgbGahAkH7h40buy/fVy1UBWXH8nY0gNL0y
+	 NkjCQMMG9nRy3LUvYtj4QjzL2X8bHjvliI2RiOOUKvHEy0FmbRVzLReoRySW4YyTkH
+	 Dd6Q6698FGNSw==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Guopeng Zhang <zhangguopeng@kylinos.cn>,
-	Tejun Heo <tj@kernel.org>,
-	Chen Ridong <chenridong@huaweicloud.com>,
-	Waiman Long <longman@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] cgroup/cpuset: Reset DL migration state on can_attach() failure
-Date: Fri, 22 May 2026 09:03:03 -0400
-Message-ID: <20260522130303.3869136-1-sashal@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Sasha Levin <sashal@kernel.org>,
+	stable@vger.kernel.org,
+	patches@lists.linux.dev,
+	Horst Birthelmer <hbirthelmer@ddn.com>,
+	Jingbo Xu <jefflexu@linux.alibaba.com>,
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Joanne Koong <joannelkoong@gmail.com>
+Subject: Re: [PATCH 7.0 0446/1146] fuse: fix premature writetrhough request for large folio
+Date: Fri, 22 May 2026 09:12:25 -0400
+Message-ID: <20260522123641.rc-drop-5223e0470e7b@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026051951-crisped-scared-d8c0@gregkh>
-References: <2026051951-crisped-scared-d8c0@gregkh>
+In-Reply-To: <CAJnrk1bWJfT5hswsJ3X5HMZ=XLz5MO3pYXg6WkuYYvZ6ccS0Nw@mail.gmail.com>
+References: <20260520162148.390695140@linuxfoundation.org> <20260520162158.293493405@linuxfoundation.org> <CAJnrk1bWJfT5hswsJ3X5HMZ=XLz5MO3pYXg6WkuYYvZ6ccS0Nw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,104 +66,45 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [4.84 / 15.00];
-	SEM_URIBL(3.50)[huaweicloud.com:email];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-253786-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	R_DKIM_ALLOW(0.00)[kernel.org:s=k20260515];
-	GREYLIST(0.00)[pass,body];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-0.969];
+	TAGGED_FROM(0.00)[bounces-253787-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,lists.linux.dev,ddn.com,linux.alibaba.com,redhat.com,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c15:e001:75::/64:c];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,huaweicloud.com:email]
-X-Rspamd-Queue-Id: 2B1E75B7A66
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: C920A5B5331
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Guopeng Zhang <zhangguopeng@kylinos.cn>
+On Wed, May 20, 2026 at 11:03:05AM -0700, Joanne Koong wrote:
+> I don't think this is needed for 7.0-stable or 6.18-stable as the bug
+> isn't triggerable until large folios are enabled, which fuse doesn't
+> support yet [1].
 
-[ Upstream commit 4a39eda5fdd867fc39f3c039714dd432cee00268 ]
+Dropped from the 7.0 and 6.18 queues, thanks.
 
-cpuset_can_attach() accumulates temporary SCHED_DEADLINE migration
-state in the destination cpuset while walking the taskset.
-
-If a later task_can_attach() or security_task_setscheduler() check
-fails, cgroup_migrate_execute() treats cpuset as the failing subsystem
-and does not call cpuset_cancel_attach() for it. The partially
-accumulated state is then left behind and can be consumed by a later
-attach, corrupting cpuset DL task accounting and pending DL bandwidth
-accounting.
-
-Reset the pending DL migration state from the common error exit when
-ret is non-zero. Successful can_attach() keeps the state for
-cpuset_attach() or cpuset_cancel_attach().
-
-Fixes: 2ef269ef1ac0 ("cgroup/cpuset: Free DL BW in case can_attach() fails")
-Cc: stable@vger.kernel.org # v6.10+
-Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Reviewed-by: Chen Ridong <chenridong@huaweicloud.com>
-Reviewed-by: Waiman Long <longman@redhat.com>
-[ omitted upstream context line `cs->dl_bw_cpu = cpu;` ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- kernel/cgroup/cpuset.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index 77b07548c3027..3f0804794b98d 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -2996,16 +2996,13 @@ static int cpuset_can_attach(struct cgroup_taskset *tset)
- 		int cpu = cpumask_any_and(cpu_active_mask, cs->effective_cpus);
- 
- 		if (unlikely(cpu >= nr_cpu_ids)) {
--			reset_migrate_dl_data(cs);
- 			ret = -EINVAL;
- 			goto out_unlock;
- 		}
- 
- 		ret = dl_bw_alloc(cpu, cs->sum_migrate_dl_bw);
--		if (ret) {
--			reset_migrate_dl_data(cs);
-+		if (ret)
- 			goto out_unlock;
--		}
- 	}
- 
- out_success:
-@@ -3014,7 +3011,10 @@ static int cpuset_can_attach(struct cgroup_taskset *tset)
- 	 * changes which zero cpus/mems_allowed.
- 	 */
- 	cs->attach_in_progress++;
-+
- out_unlock:
-+	if (ret)
-+		reset_migrate_dl_data(cs);
- 	mutex_unlock(&cpuset_mutex);
- 	return ret;
- }
--- 
-2.53.0
-
+--
+Thanks,
+Sasha
 
