@@ -1,155 +1,152 @@
-Return-Path: <stable+bounces-253729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253730-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yN8NO9ghEGpzUAYAu9opvQ
-	(envelope-from <stable+bounces-253729-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 11:28:56 +0200
+	id mB26COEiEGqsUAYAu9opvQ
+	(envelope-from <stable+bounces-253730-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 11:33:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B78E45B12DB
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 11:28:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79D155B13F5
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 11:33:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4C79A3045A99
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 09:25:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8FA5D30FBFB6
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 09:25:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 756FA3C3BFA;
-	Fri, 22 May 2026 09:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E607E3BED78;
+	Fri, 22 May 2026 09:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="iCYWYN5l"
+	dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20251104.gappssmtp.com header.i=@rajagiritech-edu-in.20251104.gappssmtp.com header.b="X6vF6cKX"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A65D3C583E;
-	Fri, 22 May 2026 09:24:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.9
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779441880; cv=none; b=hvpfKwyimqSKNAvgdeD+2aQ68m1gSMfCx0GpJ+5mbx7b2oKp2huyCcIAGMhewcQCd8kUxOvD/z78M0EUxyTVkWXRCpLA4JJOCtMb1TUD0zC/Yov9mxadw2uDKYzrRDM4wZdE5/8eG4UopSgUe15ulTTVWv9FSYf4s9fCiCWcx24=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779441880; c=relaxed/simple;
-	bh=IlIT09SoPl+Nbv6R7Drfam2i2Sx2BotaTLGM67AHgfU=;
-	h=Message-ID:Date:From:MIME-Version:To:CC:Subject:References:
-	 In-Reply-To:Content-Type; b=kgcRvgvTGspCM11DySfDc+nXMj6M+dlQk1KNixcgS6o9ntrzIMuH49BQJfQ/3gQ6uZu8dcjQBAE+G9vXQypmskUlIMVqDJH2VidvEldEamoPR0g/KEGLs+NcxOXwXrow2/QuZtZJLJ8xtnNcTgjmshc99kKL6nC2VDpwnOxsTOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=iCYWYN5l; arc=none smtp.client-ip=117.135.210.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=Message-ID:Date:From:MIME-Version:To:Subject:
-	Content-Type; bh=Yvz3W8qeDJQgLOm+dd/eWz+WbU65vy7qaLT2vCMPAXU=;
-	b=iCYWYN5lR0jexGLxqsVqBYZdfRd+zfafKN7tINhrq1uC8PDedc6yC2bNKeHZ2A
-	CNB4t+gzSXe9vlVTbOv4tIVQTQvedR6p0m0S+XxzZgaBNNejn8JWz9pAEWu4hqtZ
-	6FFm4gj7WUwbqipoWIHtkrpu4Jg/KuzPyNN5k3PBsWhJk=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD3F4iXIBBqe8hBAA--.15141S2;
-	Fri, 22 May 2026 17:23:36 +0800 (CST)
-Message-ID: <6A10209C.9000602@126.com>
-Date: Fri, 22 May 2026 17:23:40 +0800
-From: Hongling Zeng <zhongling0719@126.com>
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CEC5346E7D
+	for <stable@vger.kernel.org>; Fri, 22 May 2026 09:24:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779441894; cv=pass; b=fHX6By7DGU857isCg0Hzy44Z/WKq/q9YNTQDmo07cfbcY0o1QfhxoUiT7mFtzkw2BQxScgcQJ+MrEQBN5qANG5T6NKptRxwOk2frNZaMXgoXKJ61C3mV82h6A8+TwebZcs5RPJ2MicFP8lVCrOmC3BYBA5CD+VvXKVtXQj4iQEA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779441894; c=relaxed/simple;
+	bh=IZF7VWTEkxD+pJZjqgXH9QW6HzII5dJLvwjpAdoSmuQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kW7IAb3jIr5n6YH7pr+nS2yGSCJHTZ6lldFpyDbMbYTX7rpXv7r+S/ZMwVk1yPAGxdly4v+vw57XXwFQkc3hoqtDfzun56Gx6an2Wheh+5mKOsW2gnG0KYzUw4Q1KeTqq7Q8jJsZ+pHIwAFaa9KP9BmMjg0O6kqvCFn90LE5TUA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in; spf=none smtp.mailfrom=rajagiritech.edu.in; dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20251104.gappssmtp.com header.i=@rajagiritech-edu-in.20251104.gappssmtp.com header.b=X6vF6cKX; arc=pass smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=rajagiritech.edu.in
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-bd56d108454so1349398966b.2
+        for <stable@vger.kernel.org>; Fri, 22 May 2026 02:24:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779441892; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Q4g5w6zPRfoXvj0JUuupRTKZ0OSMIJH92AagEyVWY8Jsr6v49+QhVZGkMUd1bTPN7g
+         Dc1XpJ/a7M7zVpZoUUa2wIPszYPEKDNLI5rYuuIXIHAU8Uv2YSTV21FHou5ibjzIcgep
+         W4xhaEChjdFCfbCRPIdYreIcVvgc2xlGz/m+qVDLlyVIIubpDrJICaH6H+bOBcUyF+HR
+         Cxc0WiErKBTyeudJEfKr6Dc5NY1qNbx7EoAXp3BaRcbvR8XuY+E3blCUvegI2NbuDVYJ
+         ZEsIpLhfCBjag11QJavLCkJLstqb+4EfYu9SQ91GU4OeiN2hmII6QJ/npXTnjQ4PbRkE
+         IdZQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=mGl6OXIZjtxEF7piXmOH4UUqJJTESaRkqOGGFe/ZsnI=;
+        fh=Wz8J5UEBOCqQDV8EGy7SaS7auVxYFAJQ5oaobiGaD9E=;
+        b=WlopGwnt30kKGgzJIqpDK/6Ti4XnQwGdX/qgiyxGSf4/RqNI93o60Ap9qpTT4jCGl5
+         nW70BGFjiu4U7hBB8eYA/gv1czW/DwURUCRMx4eLrQKfC0uIRUmhr+GdNowjyP+YQgMN
+         WEeEvrZaeIk09b0UqGwe/zvOqzS69K7k949LAJ5pfiHIORUKprrgsm0IKVA6ue7dFKuB
+         8amfDDhGd8oAx49OCUyFBDpxmcen1NGbc1Bp8/6IJivW4vR0OSM1k+lByWneu0Hxh7+c
+         Yy3F+z1K6KdO7Gu9/C7y0Ttbdx3sMdTGo9Lsy0EZiB0n/AbBeWeEcAjKPh1i4RWUi1wd
+         VXFg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rajagiritech-edu-in.20251104.gappssmtp.com; s=20251104; t=1779441892; x=1780046692; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=mGl6OXIZjtxEF7piXmOH4UUqJJTESaRkqOGGFe/ZsnI=;
+        b=X6vF6cKXHfz1U79+RVULo4hJNLSuz22/vcBotNJJfjIpYTr7ms5pBxJ2LDCblLrUPM
+         PuHl21pLel8qara9XEJIkajHzLOw+6EJLmyQUsLrZnFWlC447VgIqoQkkVrLu4//RAWz
+         dQdasD0NpD7CX0bntBLX0Us52R2HiOS3gMUtDHHmTtaPTdsTLnKXBf4AihbmZ+gr4Mxb
+         U3oZYkGQ3HCamyS/90xz+aDUkQLZQDwYXc7rmC2kYTw/ooZN7XiK56CtIkmSrLiigicM
+         l/8aj0Tz5QZXQ0URZ4FOTnXCaz77EBRSJhdzMkkWgx42rotFjnmQkQeuqO8z/Bfmn8GL
+         Bdug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779441892; x=1780046692;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mGl6OXIZjtxEF7piXmOH4UUqJJTESaRkqOGGFe/ZsnI=;
+        b=cZaWFt2sPEDf1AUJidLFngVmPHZVvCxuR10xCknaG/rqtO3Gtv/b9reII8W/eCRsQc
+         p2IafcwhSHHdDMlsB3cs8neDbFhgSC3yktnFS3mezdlI2jC32//NK6jIFkYof9sB3mwT
+         0uWMB5fK8D4xWhFUW03iUCxi8LcihUdZ2/q0Y69XJzJ9JDCZaNe9Jnl2AhirNJf6k0/2
+         lJN2e7qw1QfUkp0DDVSKmImuZ9/YHSezJzAcotLLHB5ZD6P8njgDGavBa8hf89n7eisC
+         Cf8fILo2w+tkdK0wiX6v89iuBkOr6NJzhxGL96/kMWXx9i1MAXoYTFwRHFcaJfYZfiAj
+         BulQ==
+X-Gm-Message-State: AOJu0Ywoh3M0WYdfK+agf+z1wK0JwG/XMza9Pd8OpgnhskMcLHKL3ebR
+	qeZnDLhjgljtEb6eh6hhbAWLp3Cq7p/mpNZej45HYKttd3Gi1xGZ+2pap9uncnCX5uKwdFoKS2l
+	YOoOb/GeVNQ8FwjrW47ONBFYW4oP138Ozh8ZcH113Lw==
+X-Gm-Gg: Acq92OHCYYFVqhDvtabjgqwgVximrW4v1Ppbus55C0PeBvwTtUzZwBduXYOMcgt7znP
+	dMdnsRlo+0tZIIpwTGB9ZTgbTgl+P2/s7MUtPE8aM5L99pAiG7bRKAmIezKKiML0dWclcqCuCbt
+	RrufOKMKDYNtwQnToYo/moZHUEFAAXUFMlffFM7oWPG4Adn0XMkeqAzJ8CwL3//qhRHq0YZPMkj
+	YtgfPvBlAP4LZo7G8JYkWrCMMSFGndahxLQZFYUbtqDxTXOrTfw3lJlC0GVSGFSTiJDgnyFb8Tp
+	rvtRZpY+EKRyXXtgzm+4k+LoERCm24Rx3zQ3JBztIlRFV6M++SJ1k6q2nAJZaIlqt6gQVaKzawe
+	NXgccrA==
+X-Received: by 2002:a17:907:60cb:b0:bd7:bbae:2002 with SMTP id
+ a640c23a62f3a-bdd22a3d558mr171790466b.7.1779441891775; Fri, 22 May 2026
+ 02:24:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-To: Mateusz Guzik <mjguzik@gmail.com>, 
- Hongling Zeng <zenghongling@kylinos.cn>
-CC: viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, 
- thomas.weissschuh@linutronix.de, linux-fsdevel@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] fs: Fix lock leak in replace_fd()
-References: <20260521074934.49256-1-zenghongling@kylinos.cn> <m3xus4s4xup32v7ijjolq6p3tlrj3bpwettldpqwxcwxanfvyt@5ihbtgch7liv>
-In-Reply-To: <m3xus4s4xup32v7ijjolq6p3tlrj3bpwettldpqwxcwxanfvyt@5ihbtgch7liv>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3F4iXIBBqe8hBAA--.15141S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7tw1kJF13JF1DWrW3XFyrZwb_yoW8Ww43pr
-	yFgayvkr4UK39rXwnru3W5X3WFv3sxJr45Xr1Fq3WrCFyrurnYgFW5Krn09ryIqrn7CFWF
-	qr4qqFW3ZryDZw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j4Q6LUUUUU=
-X-CM-SenderInfo: x2kr0wpolqwiqxrzqiyswou0bp/xtbBrxjMnWoQIJjxmQAA3M
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[126.com,none];
-	R_DKIM_ALLOW(-0.20)[126.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+References: <20260520162148.390695140@linuxfoundation.org> <CAG=yYw=zUeUFxBvLhAvhbhaSv=H0qUi+CFkcN1D+Oxxw6fW58A@mail.gmail.com>
+In-Reply-To: <CAG=yYw=zUeUFxBvLhAvhbhaSv=H0qUi+CFkcN1D+Oxxw6fW58A@mail.gmail.com>
+From: Jeffrin Thalakkottoor <jeffrin@rajagiritech.edu.in>
+Date: Fri, 22 May 2026 14:54:14 +0530
+X-Gm-Features: AVHnY4JkxCN04TKCulppq6Xi8XeZ872LpbUc0lIeILi89vXoCyM1TV6E1paAoTU
+Message-ID: <CAG=yYwmZExpLR5DY73s4c2iQ1cQq=7UcTWO9W2saaad_fzu1UQ@mail.gmail.com>
+Subject: Re: [PATCH 7.0 0000/1146] 7.0.10-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@nabladev.com, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	R_DKIM_ALLOW(-0.20)[rajagiritech-edu-in.20251104.gappssmtp.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com,kylinos.cn];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[rajagiritech.edu.in];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253729-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253730-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[rajagiritech-edu-in.20251104.gappssmtp.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zhongling0719@126.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[126.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jeffrin@rajagiritech.edu.in,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	FREEMAIL_FROM(0.00)[126.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,kylinos.cn:email]
-X-Rspamd-Queue-Id: B78E45B12DB
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 79D155B13F5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-   You're right - I missed the __releases(&files->file_lock) annotation
-   on do_dup2(). My patch would cause a double-unlock bug.
+ hello,
 
-   Thanks for the correction. I'll verify warnings more carefully next
-time.
-
-   Sorry for the noise.
-
-   Hongling
-在 2026年05月21日 22:45, Mateusz Guzik 写道:
-> On Thu, May 21, 2026 at 03:49:34PM +0800, Hongling Zeng wrote:
->> In replace_fd(), the function acquires files->file_lock but then has
->> two return paths that don't release the lock:
->> - When do_dup2() fails (returns negative error)
->> - When do_dup2() succeeds (returns 0)
->>
->> Both of these paths return directly without unlocking files->file_lock,
->> causing a lock leak and potential deadlock.
->>
->> Fix this by making both error and success paths go through the
->> out_unlock label to ensure the lock is always released.
-> do_dup2 always releases the lock regardless of return value, so this
-> patch cannot be correct.
->
-> that aside, there is another consumer which would also need patching if
-> the issue was real
->
->> Fixes: 708c04a5c2b7 ("fs: always return zero on success from replace_fd()")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
->> ---
->>   fs/file.c | 3 +--
->>   1 file changed, 1 insertion(+), 2 deletions(-)
->>
->> diff --git a/fs/file.c b/fs/file.c
->> index 2c81c0b162d0..d0f019fb0568 100644
->> --- a/fs/file.c
->> +++ b/fs/file.c
->> @@ -1361,8 +1361,7 @@ int replace_fd(unsigned fd, struct file *file, unsigned flags)
->>   		goto out_unlock;
->>   	err = do_dup2(files, file, fd, flags);
->>   	if (err < 0)
->> -		return err;
->> -	return 0;
->> +		goto out_unlock;
->>   
->>   out_unlock:
->>   	spin_unlock(&files->file_lock);
->> -- 
->> 2.25.1
->>
-
+when i  did " make install "  for perf.
+then rerun  "./perf test" have changed output.
 
