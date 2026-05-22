@@ -1,285 +1,231 @@
-Return-Path: <stable+bounces-253832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253833-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YEU0MEeqEGrKcAYAu9opvQ
-	(envelope-from <stable+bounces-253832-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 21:11:03 +0200
+	id GLSqJK2qEGrKcAYAu9opvQ
+	(envelope-from <stable+bounces-253833-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 21:12:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 196625B947C
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 21:11:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 348E65B9494
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 21:12:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 49992300AB22
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 19:10:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F33ED3010C0F
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 19:11:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80747374E67;
-	Fri, 22 May 2026 19:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24FFE379C43;
+	Fri, 22 May 2026 19:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="Sx3Jsk5o"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="CSQlT28g"
 X-Original-To: stable@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011021.outbound.protection.outlook.com [52.101.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D4837267B
-	for <stable@vger.kernel.org>; Fri, 22 May 2026 19:10:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779477058; cv=none; b=fE8hR2m21SVY5gsVWUMbShXf+evP91eVItrevq652Icj6QYN7sD3vodOJ6cXbJNMBwvhLVonGdNVw9ITjej7Vk5xzc8VqCJoTao1sOslaMF24fHK++L9q5yOgbs7nq68xnyWP1xcGHcut57YdCN0sW9r/HhkULSdFq1wZqaSNkw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779477058; c=relaxed/simple;
-	bh=l3Vaifya65BWqJD6uwYveWZb2/fVpqBHZe6uKHVHBg8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=iran8hNOUQEVBlNGGWUSzCTLN2HGjgTj7SjQLQ2G5RW7uUaFsKrgUmHBZzr3K/FmT9XyRUK8O1E8IX+LnGCfeU2IPeSJjWxvNd6tPzhMHbKotOCKifXVSEW1NzApjMijSJ+vjdN1qmAq1v43qqg57ITxkxC2go08msO/c874kGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=Sx3Jsk5o; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:References;
-	bh=pLW6vqa2lPA2cvKTuwYeI0BWmivvcBCBj7L1OOLpd8k=; b=Sx3Jsk5osdlYE2xLqYXMN+/5nb
-	ZraAMrmDzQ/g43s1UtB+CPp0pPm2nGsvZY9BQ2tVj4G5WsIySZXSDzSjd1Yvj3jlnKz5TMRzxa20x
-	KayAvYJ3rWmBoitfXoHb+G2M+KRAPLZm1u4y6JIWIt1QZkA/iipgdfAZCqUEMa/16JG1ObE0P38J3
-	spErkTI+9Pm9xY9mKJV9XaYVZnn6jiu0jMkzMKqhcRgnOn0RdQtFWl9G7HtBUvie9us5iMyRWum81
-	YQuZW7rr6g4muTLUAfi9iZo2vnDpmkqB1Q0AzYb+IfkGUZzv3RNSHho2BZn3vv8sOObMlqUAIPJvO
-	miD3kiZg==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <benh@debian.org>)
-	id 1wQVGS-004saf-1V;
-	Fri, 22 May 2026 19:10:33 +0000
-Date: Fri, 22 May 2026 21:10:30 +0200
-From: Ben Hutchings <benh@debian.org>
-To: gregkh@linuxfoundation.org
-Cc: imv4bel@gmail.com, aaron1esau@gmail.com, ben@decadent.org.uk,
-	malin89@huawei.com, pabeni@redhat.com, rajat.gupta@oss.qualcomm.com,
-	sd@queasysnail.net, sultan@kerneltoast.com, tanjingguo@huawei.com,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672FB2BF3F4;
+	Fri, 22 May 2026 19:11:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.21
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779477090; cv=fail; b=FMCDl+5JTQMlTAYYMuXAc7bF+dZlUcFvk8frPBitlBjVGwHnM9n7g8JE60pWi/FZpQ4LCR46x7AE8MPqxOecemgMCqcMf2jlJdw1KvhowF14I5b+NufrkboO6HULwt9nnbDB5Y72YqkuQXZqJO8K3zM1+eq2EItZMCPXfEJDPaI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779477090; c=relaxed/simple;
+	bh=q7F+Nvr33OR/t5GsI37Z8quC4TPkCueL5RW7kdFOlRs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=fRZIfFyUtlt9PwoOmYnMICftIJd+hRiIeyyyK2g9Kr4VXzMyUxnS7g131Oa+0mT4kSzSCe1vL1Lmy3t6xbaSNWC8NRHm1hTC3+BCeiMKRlU5hXV+aE3tTD2jqd1BLcvsylHupB4qMnEJmCCBkX3x/KF04Pov8l/bM1adm4kGgYY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=CSQlT28g; arc=fail smtp.client-ip=52.101.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ih29QXDvM2iD7+WHTTBquSQzUoP+AGGILnfts+5p6cYDG1ANWt4K9L93lMAEKC3K1438tO7WK/JJQuuklJyYESDk7Q5x41qnJsHtCYNNwn+1OCbFu9WvtiKmqtC4GyeJkSe0oycC0CqYm8RJMHKagomns4Fv08rFt01KG+OBB/XCrZwx4iV5HwsMyiECSPcTUltzULg25B0Vpyte0Jduceq8yIv8N/15YrfA2KrWX5StL0kEy2MRs7YFtSfSBkvAFzV4IPEN4HvGwNSH9ng2iIQpiuw651g/95K3nnEA8JZNCOEuHNB64bZqTTheW42uX4ITmumbsoevKo+aObbvxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DbncGWTYuVAT+iZMRao8S3m9b2JF9eQyAAb3VM8KmqQ=;
+ b=bQhZA6tdHY+2bXg9QzCZJCT4IaLa8MzfNTRKznoPoYTSFCAdRu8M4dbF8pn/WfMzNiarUTz+fJWNtdKrh3axxQtM48aY8bgfipj+zwc4FasAcbrGMNhLiD9/lPeWgBsHZqs8OiV90GX//Lq1Qyb59nmT48oy35IfpAWXO+8yuk0Gx8zsXDXskTlrtiviQfhhje+WwkBGUVyuZe/SaxaEdLESHBaiob/hKXuAuMNAmNRIm0sCMd8CNJkMwXN99vwQxpJAqfFMSj3lbWL341ZE92Vmz370s1sxj6zxzs0mRwxNE2w0irjsWeODyyzy1X2KOHz4ufWZrJ9EXlMFxovBuA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DbncGWTYuVAT+iZMRao8S3m9b2JF9eQyAAb3VM8KmqQ=;
+ b=CSQlT28gFKQ3nQT+NBSfSmZx8jVXriE8yzC0uJs/4sThWJRTaIaq3uMx1HbiU3NM4k7rJbJio8shmuCCyYeIZrJuKwy+mVWNbchY/CFKnYSXh6EKifAD16ZCeQL95r31S3aHEkDo/yxU5QwKyWTnQTmbiZj9Z+9LDkZjbTgfZC02P3TXWU5G509C5Ve0Qk+ayQFEDJCbwb1NKndwFpJUyk5jb8DvhQwBisvNtydHU4liLiA4dF5iWH7K8vNb8Y9tQGmi7A4Bb1c2/iJq/qunSLOQpEiQNtbHLWN5wVTy3Gf/iikYJdyY8Ofj/NcWiYB9w/LzC4gXdQMZrZWivHoVRg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by VI0PR04MB10300.eurprd04.prod.outlook.com (2603:10a6:800:218::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.17; Fri, 22 May
+ 2026 19:11:26 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%3]) with mapi id 15.21.0048.016; Fri, 22 May 2026
+ 19:11:26 +0000
+Date: Fri, 22 May 2026 15:11:20 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Claudiu Beznea <claudiu.beznea@kernel.org>
+Cc: wsa+renesas@sang-engineering.com, tommaso.merciai.xr@bp.renesas.com,
+	alexandre.belloni@bootlin.com, p.zabel@pengutronix.de,
+	claudiu.beznea@tuxon.dev, linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 6.1] net: skbuff: propagate shared-frag marker through
- frag-transfer helpers
-Message-ID: <ahCqJlqexPCiB0P9@decadent.org.uk>
+Subject: Re: [PATCH 04/17] i3c: renesas: Follow the reset deassert order used
+ in probe
+Message-ID: <ahCqWABV7Li4ZqSq@lizhi-Precision-Tower-5810>
+References: <20260522101815.1722909-1-claudiu.beznea@kernel.org>
+ <20260522101815.1722909-5-claudiu.beznea@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260522101815.1722909-5-claudiu.beznea@kernel.org>
+X-ClientProxiedBy: SA9PR13CA0005.namprd13.prod.outlook.com
+ (2603:10b6:806:21::10) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="jvVrsJBQudFFlcg+"
-Content-Disposition: inline
-In-Reply-To: <2026052229-surpass-savanna-6757@gregkh>
-X-Debian-User: benh
-X-Spamd-Result: default: False [-4.26 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[debian.org,none];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|VI0PR04MB10300:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9ae73f12-d92c-44bf-ed3d-08deb835ebad
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|19092799006|52116014|376014|7416014|22082099003|56012099003|18002099003|38350700014|4143699003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	Xl22BjtownezqfADzI2bDJMTqEhBkla4nBnwCBIg0beZktTp8GDbwWkJCzf3A1m/LtQ0XuGEt+g7zNtKbvPP8fm1mdR+0iKMtK7MoOW54hBi3xSMKYq/D97DLRnv6ET0fChX8CfplUjusLzgFTFou/B7hL5g+fXEQHLJ58xwi1ZBdhI8pZg5joqJWfWFpJ8PI6LgGsjIWZ4RUEt1HB688PZn5doaCmGwAXKzCIa8xenZuBKUQsn9jM8jnVvuoBIsqu+j8gHFwouirr0jDarzI5UIzuywFVk0ebfcjgsEo8jy24qjK/44rXvzL82TLMrs2w8u9cjh/TD2pEBfDNthQtV78//26CBwSEuk5ef3mkozvUeuLmfhSXTXrO60TiibtvJwqTfyHqoD3pFJzuRlUvynCMnEqw+SbE4IJv8rMp7GxRH7BTKF7hglluyJBPhkBIdHGVztRuehvrHVtok6OEJYNF3GkuVfKqjO3ShKkxqrglT2G4h4OYxmrvIERrbye4lvQc5YOBYBBB/rOQS6JM6Trsto/XS3Wvxb67JPeWajOdSe5LfzmPgomExXLATwfk91MaQlkjnaT4tKkSRR8Ady4V/MqowU4KTM7TwwkER61aOEHjdLfVbKWToe1LpwN2dMDKCvWLfUsskLrxX3UJXjoDyocasZSNumoX3f0KCNkqjm6d25czXltRnL2meroNtlXcbmfVS9ZtmLljVpPfLBCNJ9ueXDPuKbMtckV07bIhUN2cgBgGRDzVPuJokZ
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(52116014)(376014)(7416014)(22082099003)(56012099003)(18002099003)(38350700014)(4143699003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?IohoBjhc2ftW9HbJCeVJ+XnGufaNOdgiI4rhTflvHUTcLvBGkEYVu2PV0c8+?=
+ =?us-ascii?Q?SvkbSiw4j8bcAP6sXkzzoKdxOkI21Au9/KRVw2QToB4884z5QjJGUkZ2uAVZ?=
+ =?us-ascii?Q?0YKEZYynceMxK9Uv1wMBewgAUSC3PqFVaBHDKc27roSfehPvSpUD2P2UO8bg?=
+ =?us-ascii?Q?gDHClXMJyJ3N8oGYOK5VeTF5ldNwbIj8X2xeXuLm8ghKghGXJDIYdFaA4wnM?=
+ =?us-ascii?Q?QaSpHnoJrI9a6GsRsm8hnt/bpX+oxXo/+l8ql/ztiBSMIp6+d8EqOE1K2Tq7?=
+ =?us-ascii?Q?hO6GgyR7aTJUhWQy13txxWnx7MMXkrochTlBG2flDhX/uPCAiCYeNa3Qxf0j?=
+ =?us-ascii?Q?D+gHeZG9f8w0Vu+h8nAQ90repb0jYFwxSpbPPqHlbNY0A09fsHQZF2TO2m03?=
+ =?us-ascii?Q?N1iYTi3V7MC1LlhfMq0vDYNBUOef9M1FEzf7HIc4AoGUxwBwRjJ+7ryEAJTN?=
+ =?us-ascii?Q?UBqOpiA2LOlHcFWzE7Mv27z5RUqwgII+wzPUU49VD2cbGkAeuG87AzsjsO0u?=
+ =?us-ascii?Q?rcWs99W95iqjOz+xXluWJclkdV4gsfXQtYOqJrhpwlXtS7lM+mKCKRsHimkx?=
+ =?us-ascii?Q?5GCnSVKGmW/Skm3znY4HGibFwaPyT+J7HZOzgb7SFygHAvMp3vhUz7DewOaH?=
+ =?us-ascii?Q?B1NNu5Z22mFynvXR5bu4CX2B1+5caJaNUNFlTXLAWBOU2EWz+MD7pCTcvE6P?=
+ =?us-ascii?Q?XaRz0cBLERgmfIMHvteokCoEnctEjaS0gjtOYEy5/wamlAyncWJBeYuwvmWw?=
+ =?us-ascii?Q?Mbrzvx/DSrR7qyNfHizL/lXMU8EhCTd1eaVOC0zU2pbf0ISZ2yEqUdQtWVsv?=
+ =?us-ascii?Q?3cib29YvgBYnLUZP4AiSYyZLNtrYHR1yfcNAw9hPw5X5C6qXqg0yNvC+5ATe?=
+ =?us-ascii?Q?1mS4769Luty/sxWU3WXzguW/u4NPJuk6QxB4JvzRyN+sHvm51KKy4zgHTVaD?=
+ =?us-ascii?Q?gX0cgA/y5keJyQISF55wkk87TgxecbVbDpHi7K65kINyDR3NdMHhuye5ci3D?=
+ =?us-ascii?Q?oCOuQU5xTHYwJje8U62ce/+tJBHYMi13HHUJailowUkuxAZ6mQ9pIr3hOmIq?=
+ =?us-ascii?Q?RN3dfkoijT4PoLZFWSNCDvNh16feWl32p9eaHMTwn4woyZis2WbC1mUcRKCt?=
+ =?us-ascii?Q?XFd3mMoRNeSKuwpCGvy4Ns+5LQucwOhjCU11DgaYWJ25mrH52qGVJMOSuJCh?=
+ =?us-ascii?Q?qZblCRK13Vh+PLQGO+tYlUs9XU8l9amHIDecdw1nEH3sEGwtMjuZ7RsUaNVE?=
+ =?us-ascii?Q?r2C2l3KuVgQRwSJWzT5yXlmyjkXuSHGLlIfnco9thO9DT6l31vrIN+W9JM30?=
+ =?us-ascii?Q?5QHRZhI+ywiern/kK0BvGYpN+eWH1sQiWbpz/Lc2p5nG/G7xtqX9HgB+IMTU?=
+ =?us-ascii?Q?Rs/XOi4PzjyEZL4RujbuAY8y15OOhLckwsWbZ9LZWos+ki7KOS5uKIZmkszk?=
+ =?us-ascii?Q?8VZai9dLo+8/cEyIXTCB3oCz/A4LTus4R7KeO9oi1V25BS61yPxfslZlEgR0?=
+ =?us-ascii?Q?jpF+V0opZY0R82xcyeVXWsFVWbXy4mTbT6j127pwUz+TLvpEsO6jgZAQkjlZ?=
+ =?us-ascii?Q?T+SDS5+tpUGtNugCT/R2/WDk+o3teHr2fycmuMJ63PgH1nLTFeuLIp7ta56g?=
+ =?us-ascii?Q?dM81acWmOgMp0uIN2B8oi3RsimQkJEKwAvlfM8uN08AlTATDTN8AiG22komr?=
+ =?us-ascii?Q?99ty9vQBv1GRdd1xcRwBhntN1/FoVk3CECvc26OJL0mSqh6k6DOtY9Nqk62l?=
+ =?us-ascii?Q?9odmyw9AFw=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9ae73f12-d92c-44bf-ed3d-08deb835ebad
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2026 19:11:26.1180
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ym+AtHqts58qJq2Z3FE5pfRRLWcFsenS/YmzkPP4E6GfVz/fh+SU16h7MAWwmgYxL1nNGK8svI3l1+aHMC3wHg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10300
+X-Spamd-Result: default: False [1.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[nxp.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[nxp.com:s=selector1];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[debian.org:+];
-	FREEMAIL_CC(0.00)[gmail.com,decadent.org.uk,huawei.com,redhat.com,oss.qualcomm.com,queasysnail.net,kerneltoast.com,vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253832-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253833-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[benh@debian.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[nxp.com:+];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[Frank.li@nxp.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable,renesas];
 	RCPT_COUNT_SEVEN(0.00)[11];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email]
-X-Rspamd-Queue-Id: 196625B947C
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nxp.com:email,nxp.com:dkim,renesas.com:email]
+X-Rspamd-Queue-Id: 348E65B9494
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Fri, May 22, 2026 at 01:18:02PM +0300, Claudiu Beznea wrote:
+> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+>
+> Use the same reset deassert order in the resume and probe paths to avoid
+> potential failures due to ordering differences.
+>
+> Fixes: e7218986319b ("i3c: renesas: Add suspend/resume support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+> ---
 
---jvVrsJBQudFFlcg+
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-=46rom: Hyunwoo Kim <imv4bel@gmail.com>
-
-commit 48f6a5356a33dd78e7144ae1faef95ffc990aae0 upstream.
-
-Two frag-transfer helpers (__pskb_copy_fclone() and skb_shift()) fail
-to propagate the SKBFL_SHARED_FRAG bit in skb_shinfo()->flags when
-moving frags from source to destination.  __pskb_copy_fclone() defers
-the rest of the shinfo metadata to skb_copy_header() after copying
-frag descriptors, but that helper only carries over gso_{size,segs,
-type} and never touches skb_shinfo()->flags; skb_shift() moves frag
-descriptors directly and leaves flags untouched.  As a result, the
-destination skb keeps a reference to the same externally-owned or
-page-cache-backed pages while reporting skb_has_shared_frag() as
-false.
-
-The mismatch is harmful in any in-place writer that uses
-skb_has_shared_frag() to decide whether shared pages must be detoured
-through skb_cow_data().  ESP input is one such writer (esp4.c,
-esp6.c), and a single nft 'dup to <local>' rule -- or any other
-nf_dup_ipv4() / xt_TEE caller -- is enough to land a pskb_copy()'d
-skb in esp_input() with the marker stripped, letting an unprivileged
-user write into the page cache of a root-owned read-only file via
-authencesn-ESN stray writes.
-
-Set SKBFL_SHARED_FRAG on the destination whenever frag descriptors
-were actually moved from the source.  skb_copy() and skb_copy_expand()
-share skb_copy_header() too but linearize all paged data into freshly
-allocated head storage and emerge with nr_frags =3D=3D 0, so
-skb_has_shared_frag() returns false on its own; they need no change.
-
-The same omission exists in skb_gro_receive() and skb_gro_receive_list().
-The former moves the incoming skb's frag descriptors into the
-accumulator's last sub-skb via two paths (a direct frag-move loop and
-the head_frag + memcpy path); the latter chains the incoming skb whole
-onto p's frag_list.  Downstream skb_segment() reads only
-skb_shinfo(p)->flags, and skb_segment_list() reuses each sub-skb's
-shinfo as the nskb -- both p and lp must carry the marker.
-
-The same omission also exists in tcp_clone_payload(), which builds an
-MTU probe skb by moving frag descriptors from skbs on sk_write_queue
-into a freshly allocated nskb.  The helper falls into the same family
-and warrants the same fix for consistency; no TCP TX-side in-place
-writer is currently known to reach a user page through this gap, but
-a future consumer depending on the marker would regress silently.
-
-The same omission exists in skb_segment(): the per-iteration flag
-merge takes only head_skb's flag, and the inner switch that rebinds
-frag_skb to list_skb on head_skb-frags exhaustion does not fold the
-new frag_skb's flag into nskb.  Fold frag_skb's flag at both sites
-so segments drawing frags from frag_list members carry the marker.
-
-Fixes: cef401de7be8 ("net: fix possible wrong checksum generation")
-Fixes: f4c50a4034e6 ("xfrm: esp: avoid in-place decrypt on shared skb frags=
-")
-Suggested-by: Sabrina Dubroca <sd@queasysnail.net>
-Suggested-by: Sultan Alsawaf <sultan@kerneltoast.com>
-Suggested-by: Ben Hutchings <ben@decadent.org.uk>
-Suggested-by: Lin Ma <malin89@huawei.com>
-Suggested-by: Jingguo Tan <tanjingguo@huawei.com>
-Suggested-by: Aaron Esau <aaron1esau@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Tested-by: Rajat Gupta <rajat.gupta@oss.qualcomm.com>
-Link: https://patch.msgid.link/ageeJfJHwgzmKXbh@v4bel
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[bwh: Backported to 6.1:
- - skb_gro_receive_list() is in net/ipv4/udp_offload.c here
- - Drop change to tcp_clone_payload(), which does not exist here
-]
-Signed-off-by: Ben Hutchings <benh@debian.org>
----
- net/core/gro.c         | 2 ++
- net/core/skbuff.c      | 9 ++++++++-
- net/ipv4/udp_offload.c | 2 ++
- 3 files changed, 12 insertions(+), 1 deletion(-)
-
-diff --git a/net/core/gro.c b/net/core/gro.c
-index 52b91cfb3bf1..ea6571c01faa 100644
---- a/net/core/gro.c
-+++ b/net/core/gro.c
-@@ -281,10 +281,12 @@ int skb_gro_receive(struct sk_buff *p, struct sk_buff=
- *skb)
- 	p->data_len +=3D len;
- 	p->truesize +=3D delta_truesize;
- 	p->len +=3D len;
-+	skb_shinfo(p)->flags |=3D skbinfo->flags & SKBFL_SHARED_FRAG;
- 	if (lp !=3D p) {
- 		lp->data_len +=3D len;
- 		lp->truesize +=3D delta_truesize;
- 		lp->len +=3D len;
-+		skb_shinfo(lp)->flags |=3D skbinfo->flags & SKBFL_SHARED_FRAG;
- 	}
- 	NAPI_GRO_CB(skb)->same_flow =3D 1;
- 	return 0;
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index fd743051c898..8bc4b26de5e5 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -1798,6 +1798,7 @@ struct sk_buff *__pskb_copy_fclone(struct sk_buff *sk=
-b, int headroom,
- 			skb_frag_ref(skb, i);
- 		}
- 		skb_shinfo(n)->nr_frags =3D i;
-+		skb_shinfo(n)->flags |=3D skb_shinfo(skb)->flags & SKBFL_SHARED_FRAG;
- 	}
-=20
- 	if (skb_has_frag_list(skb)) {
-@@ -3789,6 +3790,8 @@ int skb_shift(struct sk_buff *tgt, struct sk_buff *sk=
-b, int shiftlen)
- 	tgt->ip_summed =3D CHECKSUM_PARTIAL;
- 	skb->ip_summed =3D CHECKSUM_PARTIAL;
-=20
-+	skb_shinfo(tgt)->flags |=3D skb_shinfo(skb)->flags & SKBFL_SHARED_FRAG;
-+
- 	skb_len_add(skb, -shiftlen);
- 	skb_len_add(tgt, shiftlen);
-=20
-@@ -4362,7 +4365,8 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
- 		skb_copy_from_linear_data_offset(head_skb, offset,
- 						 skb_put(nskb, hsize), hsize);
-=20
--		skb_shinfo(nskb)->flags |=3D skb_shinfo(head_skb)->flags &
-+		skb_shinfo(nskb)->flags |=3D (skb_shinfo(head_skb)->flags |
-+					    skb_shinfo(frag_skb)->flags) &
- 					   SKBFL_SHARED_FRAG;
-=20
- 		if (skb_zerocopy_clone(nskb, frag_skb, GFP_ATOMIC))
-@@ -4379,6 +4383,9 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
- 				nfrags =3D skb_shinfo(list_skb)->nr_frags;
- 				frag =3D skb_shinfo(list_skb)->frags;
- 				frag_skb =3D list_skb;
-+
-+				skb_shinfo(nskb)->flags |=3D skb_shinfo(frag_skb)->flags & SKBFL_SHARE=
-D_FRAG;
-+
- 				if (!skb_headlen(list_skb)) {
- 					BUG_ON(!nfrags);
- 				} else {
-diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-index 58cabb2bb32a..35c014e10f24 100644
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -546,6 +546,8 @@ static int skb_gro_receive_list(struct sk_buff *p, stru=
-ct sk_buff *skb)
- 	p->truesize +=3D skb->truesize;
- 	p->len +=3D skb->len;
-=20
-+	skb_shinfo(p)->flags |=3D skb_shinfo(skb)->flags & SKBFL_SHARED_FRAG;
-+
- 	NAPI_GRO_CB(skb)->same_flow =3D 1;
-=20
- 	return 0;
-
---jvVrsJBQudFFlcg+
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmoQqiEACgkQ57/I7JWG
-EQngBg//UCpx4E9Fj5Wrz9xevNGlllCTXIYKJ+5PeUmvs7GC5KQTuQkedC56l1wu
-tgisrQjW58hbsVuUcmkTOvY24oMXeWpAHJJ4EIR4sBYzzpVCyMjfkRr7KDp9RuKz
-MG6L37lwp9UDMVNzsd0k8v+YI8c9bHJ2HXeQsP+3ky9bwvm4Uwx8O6+0sfCcH7sO
-NLgsf2yjmITnWXBtU/T5617awHlffOeiDmuY4Y+5S8YxquSPcH50wzJTNDtn+mrg
-nomUjn2iQDMsldQdVcrOsXIzEUjd0fToEMrFf1mkpWbvn9b3HQ7EdXi5WC6j96km
-ellKO0hD1aourlonjcaEDcWvTZiL3R7NoOs7ZGJ4bxldh8ldxFFyKfzQZIOBPO2I
-QRTR0xiCpWp9stjpFWyLgtQnjJV8qptYHENyYXuzlyZDuQsqEs5x016ZtBdxZLWf
-aNsbahEP4WF8VJKVDJyVdcArnm0BFgx1i6NuTdj1Lp494tmUj+bIG9w0uaUzukl9
-CbwWO65ppp7sN/KqgRDB/Krz9yl6UeUNX3n6448MFrsLCzrQGc1rCyxzF75MAWg6
-hiaQ0bi/0FdpBJXyokoTBNc01vKs0p87FdOV36rFl77YJY2/5/mrrVmxxsX3uANw
-9nyJnECPqWyCv+R6z2saDBC4hqIbfA60yNDaNAb3cN5oY73Ek7U=
-=vGIF
------END PGP SIGNATURE-----
-
---jvVrsJBQudFFlcg+--
+>  drivers/i3c/master/renesas-i3c.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/i3c/master/renesas-i3c.c b/drivers/i3c/master/renesas-i3c.c
+> index 6c23f956ad2a..d2f29ed0b6ed 100644
+> --- a/drivers/i3c/master/renesas-i3c.c
+> +++ b/drivers/i3c/master/renesas-i3c.c
+> @@ -1434,17 +1434,17 @@ static int renesas_i3c_resume_noirq(struct device *dev)
+>  	struct renesas_i3c *i3c = dev_get_drvdata(dev);
+>  	int i, ret;
+>
+> -	ret = reset_control_deassert(i3c->presetn);
+> +	ret = reset_control_deassert(i3c->tresetn);
+>  	if (ret)
+>  		return ret;
+>
+> -	ret = reset_control_deassert(i3c->tresetn);
+> +	ret = reset_control_deassert(i3c->presetn);
+>  	if (ret)
+> -		goto err_presetn;
+> +		goto err_tresetn;
+>
+>  	ret = clk_bulk_enable(i3c->num_clks, i3c->clks);
+>  	if (ret)
+> -		goto err_tresetn;
+> +		goto err_presetn;
+>
+>  	/* Re-store I3C registers value. */
+>  	renesas_writel(i3c->regs, STDBR, i3c->i3c_STDBR);
+> @@ -1465,10 +1465,10 @@ static int renesas_i3c_resume_noirq(struct device *dev)
+>
+>  	return 0;
+>
+> -err_tresetn:
+> -	reset_control_assert(i3c->tresetn);
+>  err_presetn:
+>  	reset_control_assert(i3c->presetn);
+> +err_tresetn:
+> +	reset_control_assert(i3c->tresetn);
+>  	return ret;
+>  }
+>
+> --
+> 2.43.0
+>
 
