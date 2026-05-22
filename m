@@ -1,193 +1,155 @@
-Return-Path: <stable+bounces-253728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253729-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qMmfL/EiEGqsUAYAu9opvQ
-	(envelope-from <stable+bounces-253728-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 11:33:37 +0200
+	id yN8NO9ghEGpzUAYAu9opvQ
+	(envelope-from <stable+bounces-253729-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 11:28:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C15745B140C
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 11:33:36 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B78E45B12DB
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 11:28:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1EF033058D9E
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 09:24:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4C79A3045A99
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 09:25:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B20F339DBDD;
-	Fri, 22 May 2026 09:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 756FA3C3BFA;
+	Fri, 22 May 2026 09:24:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CXZQTs1Q"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="iCYWYN5l"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7C803BADB7;
-	Fri, 22 May 2026 09:23:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A65D3C583E;
+	Fri, 22 May 2026 09:24:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779441796; cv=none; b=cNaBLCyBacFH4Znzwdq9ixYcEMUVSUayMvCGwQYATg3NiChR1QDdGrlgMtO+5m68FXpemH0mTBYTgYcMbuGKcEC58DKcbBiheclsfBiy0QH7ydoZg6WUUnku43WPNSALHGSdp9cG3BH0Y8aWl+Ng/546NkFRNCXJHM6ipA+J0Ws=
+	t=1779441880; cv=none; b=hvpfKwyimqSKNAvgdeD+2aQ68m1gSMfCx0GpJ+5mbx7b2oKp2huyCcIAGMhewcQCd8kUxOvD/z78M0EUxyTVkWXRCpLA4JJOCtMb1TUD0zC/Yov9mxadw2uDKYzrRDM4wZdE5/8eG4UopSgUe15ulTTVWv9FSYf4s9fCiCWcx24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779441796; c=relaxed/simple;
-	bh=zpUx7pgE7dGZ1EgENSHHQ/pITq/AWUQDi5Wy33xEqmA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZS36T7Y76XYM+z26dehx6HzRKIkUgLFaQTiZzMTswWMkpFq9ZumEiHkQwk2xX8MEV6OUAMZh6QnBip5nYZLgFUVNYQV9AN2DPd2Y4d77UxVVcTxoa6RMpd/gy3CXfBCly2FsZjwF8HOujjuS8u2bUi70twWULcsnuHbp7QSCrEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CXZQTs1Q; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779441795; x=1810977795;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=zpUx7pgE7dGZ1EgENSHHQ/pITq/AWUQDi5Wy33xEqmA=;
-  b=CXZQTs1QY696dFdkMByzo3ATQdqwgM9Em6p3pdYfRBTFSQSPcrQve4rN
-   auOIERSTvggYZj24+yeuwL+XLgnWr9vnug78wxTETmaAkhVniu0kXD0OS
-   qk0WeEYgjjYRkekibye8iiSk7SLD4SxW4YGqzXMa086ZmwLnrZ7J52zh/
-   xXA2cU/WbWM00d/xzcr6DvWHx0zh5+wg/jXAHDlv+YqB76NzyRk62gLz4
-   OxKnDUtGfFUOQbnpzYHzfOjQqHDDdfP/okcM1Dy7NlPaCoI65LuI0MLc2
-   HTAni9Mf4eADZZgX3u25VAKrkDRVI06x6gKY8SluoYdLy3svaF4GIVNOf
-   Q==;
-X-CSE-ConnectionGUID: sPYP0ierTNGhqCrA9Awm6A==
-X-CSE-MsgGUID: mEk8g2I+RAmNk6uwJy41hA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11793"; a="80549990"
-X-IronPort-AV: E=Sophos;i="6.24,162,1774335600"; 
-   d="scan'208";a="80549990"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2026 02:23:14 -0700
-X-CSE-ConnectionGUID: iJlfCes5T+GmhH3xgtuE/Q==
-X-CSE-MsgGUID: W1uz+iWWRj2reco7DY28hQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,162,1774335600"; 
-   d="scan'208";a="234512805"
-Received: from abityuts-desk.ger.corp.intel.com (HELO [10.245.244.203]) ([10.245.244.203])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2026 02:23:12 -0700
-Message-ID: <874533c1-716d-4c96-aa6f-87ab04c5f617@linux.intel.com>
-Date: Fri, 22 May 2026 11:23:03 +0200
+	s=arc-20240116; t=1779441880; c=relaxed/simple;
+	bh=IlIT09SoPl+Nbv6R7Drfam2i2Sx2BotaTLGM67AHgfU=;
+	h=Message-ID:Date:From:MIME-Version:To:CC:Subject:References:
+	 In-Reply-To:Content-Type; b=kgcRvgvTGspCM11DySfDc+nXMj6M+dlQk1KNixcgS6o9ntrzIMuH49BQJfQ/3gQ6uZu8dcjQBAE+G9vXQypmskUlIMVqDJH2VidvEldEamoPR0g/KEGLs+NcxOXwXrow2/QuZtZJLJ8xtnNcTgjmshc99kKL6nC2VDpwnOxsTOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=iCYWYN5l; arc=none smtp.client-ip=117.135.210.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Message-ID:Date:From:MIME-Version:To:Subject:
+	Content-Type; bh=Yvz3W8qeDJQgLOm+dd/eWz+WbU65vy7qaLT2vCMPAXU=;
+	b=iCYWYN5lR0jexGLxqsVqBYZdfRd+zfafKN7tINhrq1uC8PDedc6yC2bNKeHZ2A
+	CNB4t+gzSXe9vlVTbOv4tIVQTQvedR6p0m0S+XxzZgaBNNejn8JWz9pAEWu4hqtZ
+	6FFm4gj7WUwbqipoWIHtkrpu4Jg/KuzPyNN5k3PBsWhJk=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD3F4iXIBBqe8hBAA--.15141S2;
+	Fri, 22 May 2026 17:23:36 +0800 (CST)
+Message-ID: <6A10209C.9000602@126.com>
+Date: Fri, 22 May 2026 17:23:40 +0800
+From: Hongling Zeng <zhongling0719@126.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:31.0) Gecko/20100101 Thunderbird/31.2.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/client: check whether CRTC is active before waiting
- for vblank
-To: Icenowy Zheng <uwu@icenowy.me>, Jani Nikula
- <jani.nikula@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Sam Ravnborg <sam@ravnborg.org>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260519092420.1124348-1-zhengxingda@iscas.ac.cn>
- <889a09d63c62d88a85d8a31a85feb8bbc178534c@intel.com>
- <7b49ae842c07a0437e6851aae944003785ef31a3.camel@icenowy.me>
-Content-Language: en-US
-From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-In-Reply-To: <7b49ae842c07a0437e6851aae944003785ef31a3.camel@icenowy.me>
-Content-Type: text/plain; charset=UTF-8
+To: Mateusz Guzik <mjguzik@gmail.com>, 
+ Hongling Zeng <zenghongling@kylinos.cn>
+CC: viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, 
+ thomas.weissschuh@linutronix.de, linux-fsdevel@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] fs: Fix lock leak in replace_fd()
+References: <20260521074934.49256-1-zenghongling@kylinos.cn> <m3xus4s4xup32v7ijjolq6p3tlrj3bpwettldpqwxcwxanfvyt@5ihbtgch7liv>
+In-Reply-To: <m3xus4s4xup32v7ijjolq6p3tlrj3bpwettldpqwxcwxanfvyt@5ihbtgch7liv>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3F4iXIBBqe8hBAA--.15141S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7tw1kJF13JF1DWrW3XFyrZwb_yoW8Ww43pr
+	yFgayvkr4UK39rXwnru3W5X3WFv3sxJr45Xr1Fq3WrCFyrurnYgFW5Krn09ryIqrn7CFWF
+	qr4qqFW3ZryDZw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j4Q6LUUUUU=
+X-CM-SenderInfo: x2kr0wpolqwiqxrzqiyswou0bp/xtbBrxjMnWoQIJjxmQAA3M
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[126.com,none];
+	R_DKIM_ALLOW(-0.20)[126.com:s=s110527];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-253728-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[icenowy.me,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch,ravnborg.org];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com,kylinos.cn];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253729-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maarten.lankhorst@linux.intel.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[zhongling0719@126.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[126.com:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linux.intel.com:mid,iscas.ac.cn:email,intel.com:dkim]
-X-Rspamd-Queue-Id: C15745B140C
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FREEMAIL_FROM(0.00)[126.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,kylinos.cn:email]
+X-Rspamd-Queue-Id: B78E45B12DB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hey,
+   You're right - I missed the __releases(&files->file_lock) annotation
+   on do_dup2(). My patch would cause a double-unlock bug.
 
-Den 2026-05-19 kl. 13:29, skrev Icenowy Zheng:
-> 在 2026-05-19二的 12:41 +0300，Jani Nikula写道：
->> On Tue, 19 May 2026, Icenowy Zheng <zhengxingda@iscas.ac.cn> wrote:
->>> Currently the implementaion of drm_client_modeset_wait_for_vblank()
->>> assumes drm_vblank_get() will fail when the CRTC isn't active.
->>> However
->>> it seems that this is not true, and running fbcon on a device with
->>> the
->>> first CRTC inactive will lead to kernel warning in some cases
->>> (which
->>> could be reproduced with the loongson driver).
->>>
->>> Change the implementation to add a check for the active state
->>> (atomic) /
->>> enabled state (non-atomic) before calling drm_vblank_get(). As the
->>> assumption of drm_vblank_get() failing for inactive CRTC isn't met,
->>> the
->>> error status of drm_vblank_get() can now be exported too.
->>>
->>> Cc: stable@vger.kernel.org
->>> Fixes: d8c4bddcd8bc ("drm/fb-helper: Synchronize dirty worker with
->>> vblank")
->>> Signed-off-by: Icenowy Zheng <zhengxingda@iscas.ac.cn>
->>> ---
->>>  drivers/gpu/drm/drm_client_modeset.c | 13 +++++++++++--
->>>  1 file changed, 11 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/drivers/gpu/drm/drm_client_modeset.c
->>> b/drivers/gpu/drm/drm_client_modeset.c
->>> index bb49b8361271a..1b03bf351256e 100644
->>> --- a/drivers/gpu/drm/drm_client_modeset.c
->>> +++ b/drivers/gpu/drm/drm_client_modeset.c
->>> @@ -1310,7 +1310,7 @@ int drm_client_modeset_wait_for_vblank(struct
->>> drm_client_dev *client, unsigned i
->>>  {
->>>  	struct drm_device *dev = client->dev;
->>>  	struct drm_crtc *crtc;
->>> -	int ret;
->>> +	int ret = 0;
->>>  
->>>  	/*
->>>  	 * Rate-limit update frequency to vblank. If there's a DRM
->>> master
->>> @@ -1326,15 +1326,24 @@ int
->>> drm_client_modeset_wait_for_vblank(struct drm_client_dev *client,
->>> unsigned i
->>>  	 * Only wait for a vblank event if the CRTC is enabled,
->>> otherwise
->>>  	 * just don't do anything, not even report an error.
->>>  	 */
+   Thanks for the correction. I'll verify warnings more carefully next
+time.
+
+   Sorry for the noise.
+
+   Hongling
+在 2026年05月21日 22:45, Mateusz Guzik 写道:
+> On Thu, May 21, 2026 at 03:49:34PM +0800, Hongling Zeng wrote:
+>> In replace_fd(), the function acquires files->file_lock but then has
+>> two return paths that don't release the lock:
+>> - When do_dup2() fails (returns negative error)
+>> - When do_dup2() succeeds (returns 0)
 >>
->> I'll dodge the question whether the change below is right or not, but
->> for sure the comment above needs to be amended to match the change.
-> 
-> If the change is right, it perfectly matches what the comment above is
-> saying -- it's the current behavior that does not match the comment.
-> 
-> Thanks,
-> Icenowy
-I would rather have expected drm_fb_helper_ioctl to fail like you mention.
-Probably needs a fbcon_is_active() there to prevent it.
+>> Both of these paths return directly without unlocking files->file_lock,
+>> causing a lock leak and potential deadlock.
+>>
+>> Fix this by making both error and success paths go through the
+>> out_unlock label to ensure the lock is always released.
+> do_dup2 always releases the lock regardless of return value, so this
+> patch cannot be correct.
+>
+> that aside, there is another consumer which would also need patching if
+> the issue was real
+>
+>> Fixes: 708c04a5c2b7 ("fs: always return zero on success from replace_fd()")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
+>> ---
+>>   fs/file.c | 3 +--
+>>   1 file changed, 1 insertion(+), 2 deletions(-)
+>>
+>> diff --git a/fs/file.c b/fs/file.c
+>> index 2c81c0b162d0..d0f019fb0568 100644
+>> --- a/fs/file.c
+>> +++ b/fs/file.c
+>> @@ -1361,8 +1361,7 @@ int replace_fd(unsigned fd, struct file *file, unsigned flags)
+>>   		goto out_unlock;
+>>   	err = do_dup2(files, file, fd, flags);
+>>   	if (err < 0)
+>> -		return err;
+>> -	return 0;
+>> +		goto out_unlock;
+>>   
+>>   out_unlock:
+>>   	spin_unlock(&files->file_lock);
+>> -- 
+>> 2.25.1
+>>
 
-The damage helper should not be triggered if no CRTC is active, so that means
-the check here is slightly too late.
-
-Can you fix it at a different level, like damage helper or its callers instead?
-
-I believe when the client gets suspended, all the pending damage is flushed before
-suspend.
-
-Kind regards,
-~Maarten Lankhorst
 
