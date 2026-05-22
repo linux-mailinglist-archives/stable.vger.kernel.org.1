@@ -1,281 +1,348 @@
-Return-Path: <stable+bounces-253846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253847-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mO1yKlq5EGqzcwYAu9opvQ
-	(envelope-from <stable+bounces-253846-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 22:15:22 +0200
+	id qOf/M227EGomdAYAu9opvQ
+	(envelope-from <stable+bounces-253847-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 22:24:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 046B95B9F10
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 22:15:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FA235B9FA2
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 22:24:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4E725301E3CD
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 20:12:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 23646301159B
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 20:23:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C43DE366560;
-	Fri, 22 May 2026 20:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CCBD382F1A;
+	Fri, 22 May 2026 20:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="I/wfxB4c"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="UFFZ4vGi";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="beEFEdw4"
 X-Original-To: stable@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B945A30EF90
-	for <stable@vger.kernel.org>; Fri, 22 May 2026 20:12:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779480767; cv=none; b=b76hDLQOgC6QBO/MJQTwPRAt1Hiesk9L7mGT1jym6JR9QodplOLLV8eBRWw4jkCQ8++Rk9xu5UuuEaBEQgtYbftL4UkoUKrxbymO65YBKLX+rwAtUWMn+Xqz4ayK4UszQNp3auosAhckR5sImbIYlJgWcGjgwjvg1nYIVce7mQI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779480767; c=relaxed/simple;
-	bh=2qB0GvAemKbj1nT/4r+z632EgR++a6cGUvXz3YzEfdw=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=r8BGWSVfJEfxkfPsXdZA1Z1sZAUjqfpLJi4nO8fvQXejf1nO6x4hVxftscIExeF8zqtyITVUnSO0R+MqPwtmwYmRe8oMhpqwjzZvOtsIRqmrKzwifoxw8+v99fQzoSKHBm1ylUSyDZLO7qHmjxdLgHHewco04gpRqEVQYCnZqDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=I/wfxB4c; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:References;
-	bh=1V+weDWRJLHVkUSFGCiTcGqJtkWmyWKWbKnbBI7YdQs=; b=I/wfxB4cmqdJ3sXxaQ0dLiNSO6
-	NPfpuMP0HEb4x6C9u5KJWKh1C+sN56v4wIxlGpIJOxLmcnF2Ro2YzH0jvZptXShpgLa0oVi5ol6Lg
-	OW1WpRnq1D5BI28r/4cRKY5kt5uou3NEzCnHE10Gx8YOmV3mzH5NspKGikwldq8C+raDyWsgayA1J
-	70Mc2xZhqdHJ7/twsj13OCdTBJKKqgJ5RgrgPtPDvo9ZgVqHG4pLKBHv/U5gSPKG0nJ0KXg5vwzz2
-	TNZoX5xC5rxsrlVZaNmxTA2BJ2ieobujJ3Wbrt2OaYyQTzYCnKBZzR7BWQ0h9fC5dhbTYTP5Rm8hj
-	h9w2oPyw==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <benh@debian.org>)
-	id 1wQWEM-004ueA-0A;
-	Fri, 22 May 2026 20:12:27 +0000
-Date: Fri, 22 May 2026 22:12:24 +0200
-From: Ben Hutchings <benh@debian.org>
-To: gregkh@linuxfoundation.org
-Cc: imv4bel@gmail.com, aaron1esau@gmail.com, ben@decadent.org.uk,
-	malin89@huawei.com, pabeni@redhat.com, rajat.gupta@oss.qualcomm.com,
-	sd@queasysnail.net, sultan@kerneltoast.com, tanjingguo@huawei.com,
-	stable@vger.kernel.org
-Subject: [PATCH 5.10] net: skbuff: propagate shared-frag marker through
- frag-transfer helpers
-Message-ID: <ahC4qNfoeifA-enJ@decadent.org.uk>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA7C934CFAB;
+	Fri, 22 May 2026 20:23:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779481435; cv=fail; b=ZqUkcqq2L+4OKvB0jdK2w14vJHny+ARTKqMuy0M/lPn/ucShyTSjY1GTAAMoUIh34zC+/McpFEPeVXx5bhfl43GiMJidnnct5AC3e9PXCRXVS/hwjtUbAJoixA+UB8FY3tP8DCYk16Z8GIQd82fCQWLLgIt/5ZHXHKbhU0kUV6M=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779481435; c=relaxed/simple;
+	bh=3B2R85IuKmg1+hi0V0yMNqz6PwIMFpbPdquyJOtVACU=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=ujFu3zeKPD98JXEAfqgKe3PekOXxwdKm5Pc6PqHZh2fsmqdbTJBoSO/pycp0P2vcK6MsTdnsBHx/xBoEbC2C4w/vu/4hx24ww1Rsg6TIaL556cjHks71yYiiBD89Q4r0OWl3PZNnX6yqMNc18NifnVyp8OnE/ZEKSTKSkRx+c+8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=UFFZ4vGi; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=beEFEdw4; arc=fail smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64MD7Qa71808735;
+	Fri, 22 May 2026 20:23:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=vW5EnLK0CDM8MyyNM/abwOp9FtRoNlrxzp+utCGw4sk=; b=
+	UFFZ4vGi2oEB2Gzy0RS+pMB8m0x7sH0p9JRTP0PlmXSAHoy0C/xwICBZ9eDRf6x+
+	i7Ny6Ry03NVrly5lfTk6aantGqwEhCMaH3cMu4A866XLxIjjLpLW9iZyPGzkEO2C
+	Em1YjABp+UTod1Y1VzETRuqUcVXJe0iEG1F7M7veqMPMI0fW6fWjvensnoQLxgQq
+	8n28dUZTrajWmLow+nNbfAE4Zl8AqkfKz3YcrYTv5lWcnrMXaSe6n2xhhGEXZ9HK
+	Artj1/IIaiGePSqiL51LmVZ7Q4B7lxWa3nfMq7Ylqa18vjB8f/aleIkeuFjrC8v4
+	e42TG1TBRcQoSUjS0Uqy8w==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4e6h1t3rs3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 22 May 2026 20:23:27 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 64MKEh34018582;
+	Fri, 22 May 2026 20:23:26 GMT
+Received: from dm1pr04cu001.outbound.protection.outlook.com (mail-centralusazon11010066.outbound.protection.outlook.com [52.101.61.66])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4e6f1fcsy8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 22 May 2026 20:23:26 +0000 (GMT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XV8XSVxKfdGEme7WaecYCIbXiGL+mLMU5IonoA303S+setK/zeo6BGP1wYd99RxSnST23b5zfMuTjZGa3iKfp8MFL5pxLLZrai+k97CBvGSKfAL74oGzEOmgdXY+6JbN4vSZeKsjoBkp7jIWx2ns05DUX6KtwiFuyrC5keN+3riqBTvvE/8HpWprJUQeKMysqx3cyw28Bbkotk/3qwsXWUoki4XLH/jaSX1zjEhfS6Is0T2I8bAVTelQnrcIHo2s+W8LaVJ7WBFt9ojJcZfREbPYz534/1o8f0uKpARav3rixUjD5VUFs9530bRz6iP63TcHPuS/N/IHdEC6vJD8xA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vW5EnLK0CDM8MyyNM/abwOp9FtRoNlrxzp+utCGw4sk=;
+ b=anRL6jRATJ+/x83b/lLG5FELit19kAY5h4KvP5ze7LGy/PY32gA908b4gyQ7yskZ9odYirDuCx+A/21ykNbZI+zwIdCmSC1bLekZqfgZWYjwJpA0FQqwVKLkYsh+ZhtcRpVvCsOzp3vHsQsGkoBil+3jfhT2jDRHulKHgNgcXEP02zyKlsUGC/aGfSaA3ZyfXKcTiZ0TgRUPCQR944JQ4zzpp3+mf5LnJd5VnnPPDXGOykLeGhHQZGmS3swVRl0gYUFxW5CAlDXy23/xHOIVSIdKZFRPSTmtr/rLN74+qQ8SJWXdAav8rFyAIB3mHSh5UXzkFOEQIJ2u4Elg98FITw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vW5EnLK0CDM8MyyNM/abwOp9FtRoNlrxzp+utCGw4sk=;
+ b=beEFEdw4o9yFvfMOUhQSGy2optWHoglIdwShNsHRcc8gBIvV8YVfmVfgiqS+z6J2HvxX69Te7382P0XfBp3BdKQNh8+IiV7sz7fDnQpTXihVrhM/7hbQMmghb/znjl7KAaSv+W1CrD7XlVCr7EajshUelGHjYxe2HkMzRz+B+/w=
+Received: from DS3PR10MB997700.namprd10.prod.outlook.com (2603:10b6:8:347::19)
+ by DS4PPFFE8543B68.namprd10.prod.outlook.com (2603:10b6:f:fc00::d5b) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.17; Fri, 22 May
+ 2026 20:23:22 +0000
+Received: from DS3PR10MB997700.namprd10.prod.outlook.com
+ ([fe80::4c1c:3bb:c4c9:8e7a]) by DS3PR10MB997700.namprd10.prod.outlook.com
+ ([fe80::4c1c:3bb:c4c9:8e7a%7]) with mapi id 15.21.0048.016; Fri, 22 May 2026
+ 20:23:22 +0000
+Message-ID: <7ed573be-1df9-43ee-bfef-4499af0767b4@oracle.com>
+Date: Sat, 23 May 2026 01:53:15 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 634/666] netfs: fix error handling in
+ netfs_extract_user_iter()
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Xiaoli Feng <xifeng@redhat.com>,
+        "Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+        David Howells <dhowells@redhat.com>, netfs@lists.linux.dev,
+        linux-cifs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        Christian Brauner <brauner@kernel.org>
+References: <20260520162111.222830634@linuxfoundation.org>
+ <20260520162125.016902019@linuxfoundation.org>
+Content-Language: en-US
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+In-Reply-To: <20260520162125.016902019@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BMXPR01CA0091.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:b00:54::31) To DS3PR10MB997700.namprd10.prod.outlook.com
+ (2603:10b6:8:347::19)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="WHlcoJyxPOzr5VkP"
-Content-Disposition: inline
-In-Reply-To: <2026052230-consonant-contented-9dae@gregkh>
-X-Debian-User: benh
-X-Spamd-Result: default: False [-4.26 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[debian.org,none];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS3PR10MB997700:EE_|DS4PPFFE8543B68:EE_
+X-MS-Office365-Filtering-Correlation-Id: f1d0071f-5f3d-4310-19cf-08deb83ff873
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|4143699003|5023799004|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	LEiXEkW8Wu4rTvUTBLX+VlWoWka4ILSnYte1UAlW3B3X6dQmA6sxF3hj1YYcOqQd638z8jel4juSPimKyqSj8E93Y54N80gJOkC5DtmnV7KJ7So4PsQNs03Dq7pR4K6Ufe2Xx0LshTKyrFKN9fpxWFM5S5NOBkb5yuiOWHOVAtusc4QpIuy7a7+L6DzYDdo6aBWioPBNQywOImJ+vggY95uOdF2vR071yfbiO7Ai+caN4tFrdNOKOvFnggfi35LdX4eMLr3HHr8CxFbPjzW0mkkRYaBUIsgKT+2nIsn4QCD9o08H+DAN3YMwnArTxO2nZZr0NY14lvZ1ctAhs8F/guRXQ999SdUKlp+XaebQLThQSqC7X+a+KqomNYTAuZEsuNHUwTX041KUEACRG9p5xTwPYm9nE6GSlhFw24DLPs/YEbt2LwnyJyFEi78emP46begTa2tgDdPA2UmjKdKMjaHPGkglDF2y7h2Ke+muT3UruhzTJRWKsiJ701CD4DfebfVgJ0nDbU17ad2KjR2ePSXQP74deuCUcW9QddJk11olWBgbqxN2v6oYYiNC9WcUfDWbP1VMe2bmoO8t11PaxpbqPM9zfkTGitQp5FkfuR84BmMUg1GInPN5jzz51Fp3h0/1JW0IngyvvVKmYDNt3g==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS3PR10MB997700.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(4143699003)(5023799004)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TUJMMDNTbHZ2SDRMaURYT2lNc2VINmhKNnBGR0h1RiswUHdBRm5qRG55NTBD?=
+ =?utf-8?B?aGhicG1iRDA2bFlibUJlZ3pjVDBBaDV0N25ISVZVWVpCSWJOUVh2TjVIakI1?=
+ =?utf-8?B?NUROelNPN3AyOWFNQXF2RldtTEtGWXVLOXF1REk2b2dNM2dsY2RqLy9McGEv?=
+ =?utf-8?B?SXpCZHBBNUg0K1NmekxtYzZKa0dQb1k5Mkg2L0xOSkFOUTNKWDE1eFNaNkNS?=
+ =?utf-8?B?MllyQ295a2NBYkdmakhjUzlVZkhhdGZaOEJWSENQc0swSkIzMUt1eFhYcXlu?=
+ =?utf-8?B?VzQ5aWU4TURNMlJGNU9SM0ttWk0xWUZScEVJK3Zrd3ZOWnAvMGlGRndYV25C?=
+ =?utf-8?B?NGpRd0pUeW9lQWUyQlNDbHIvMTJFdWdEQmFoWkVTU2ZUY3YxQnNLbGY3Y0ZS?=
+ =?utf-8?B?bjl1bURoRUFGZFJkUXZlNFNBbjJvZnVYanNKSjBGckVtNU9mTGNzbmVRZTQ0?=
+ =?utf-8?B?cFFQMHNlVVU1V1l5eXdIZlhNVGdlNEE3UXAxRjJuRFVRSWFtWFBSWC9KdUZu?=
+ =?utf-8?B?VnRuWGJBdEZpMXdvcUFlQWhKVlQySlQxQ2xtc0p3VXhXY1JvRXBZOW9OUmtq?=
+ =?utf-8?B?TTNzTUdOZjBwTVpGcDN1M1BoTHpnRWhPUFcvTEF3Nmoza25TMitWdS9GWlFh?=
+ =?utf-8?B?dFh1VzZrdmI5aHhiSnpEWUZqMHpGOW13RXVyZ3dielpma0NaNHdWVCtsU0lB?=
+ =?utf-8?B?cmRWSE1PZWFsZ1Q5VkJ3TDlLSkxwTVkybWlBVDMzSlk2WkRjRUhya294WXRj?=
+ =?utf-8?B?cG1iQUdMUlVJOWhra3hCWTZNWmpLRHB4RUZCZzBUQWJLa2QwN21jYzRoWXp2?=
+ =?utf-8?B?ZVQ4Q1ovTGhVbnJLYWZFSzJQL0FFYUF5Nnl1VzRyRDlNMCtZVTlOd2MrM05x?=
+ =?utf-8?B?UXg2bHlocU1sWGFqZ1luV1o5aGxVdDRlYVAxYTVMMUY1RDhHa2ZlZ0tUME9q?=
+ =?utf-8?B?SEtWbCtpY3ppaHlIYU9sV3ZnVE0rZTdtUDRWSExiUnpOZUZ1L1AzbytsUTZN?=
+ =?utf-8?B?OXZvcnBOeFVHcnNkc2JuNDJPUmxWdmIwczZUY0puODVaNlVLeDhBa05FSGRF?=
+ =?utf-8?B?ZzdtUVhwR0hGMHZJdDNSS1poYjJOSVZnY29WemQ3T2c1UDBCaWppYlFKend6?=
+ =?utf-8?B?Q0ZUOTdPSFNJSy9nR3Y0b3o4aGhyWEJ1Z1c3RHpDZUROdHg5eVA1TTJqK204?=
+ =?utf-8?B?OUtMcWpzazZXNVZNNkZDaW5lTVN2UFRqZnRpcHZDRkJYdTdXeUNZdjA2cVN0?=
+ =?utf-8?B?ZE9mUm1OeUo3eHZmRlYyelI4alU1dERkZHBETXdqd1k1T0s3YmFUTlpZMERD?=
+ =?utf-8?B?OGllaXN3SHFEWVlZOHdTVUpMREpjMzd0SWJoSk9FajBWY0lzLzBRUDBGMkpO?=
+ =?utf-8?B?N1F2NmRob2lDdldlay9xVmVhWTVqUzAwaDlkdEt1Snp1TWl2TlAzeHRzRjJZ?=
+ =?utf-8?B?UWhYMGM0RjJTT0w5UnFWSDJDb0tWaGRvQi9tbHFiemExR0pCeDlhWmx1T2N1?=
+ =?utf-8?B?WDBaS3VqbUdOMFNkU0V4WnJpQXUrNW1RdGxTUEF6OUowV205N2dFVWlXUC9u?=
+ =?utf-8?B?eXluM1BEc2JQSnRCYXRnSlA3Yjc5alI2K3JGVHdLVVNESWdDZnp3OWhyVVk3?=
+ =?utf-8?B?QzRqRWJhRmFLY2FtSzdQbE92SUxxTUEyTkVpaXlPeEJtS0pBU0xLWFhHRTZq?=
+ =?utf-8?B?bHNVMGZIWFlWUnEyUE50VHRWam1hdGtxZDF3VUl1SFg3VlFGZUJuQ3cvM1Bw?=
+ =?utf-8?B?U3hmNHRLQ1ltSmZNOWRFU3U4R1hIR21kbHFLOG1vaGlxMkF6b0I5azRFNUZv?=
+ =?utf-8?B?MlF5U3NSZ25USmlnWE9hM1NORW9kWFZVMFk0WGRJOE5za0NySnhQS1hDUjJE?=
+ =?utf-8?B?b3ZIOGpCNVZaYnI0M1B3dFY0Q3kyMVQ4YWJnM2d3TVRlNFdYVFlYL1puaWpS?=
+ =?utf-8?B?TFB3dTExamNqaERDeDlHMi9IZDJKOGpMd0VuVXB6V2pLY0RIbWp4TmJ0bzlt?=
+ =?utf-8?B?MHpYb0t1c3RndGF4QXlZU3BvNFVoc2hpRnFmMG1ONnM4TzBOQmk4b2NMWHE0?=
+ =?utf-8?B?SDBPb2RoMnJBZFBKaXVCK0srZlRleGVrVjBhUjhBeHdMTHVWREd4enF5R1o5?=
+ =?utf-8?B?UzN3SVYvNXExazJ1V21USEw4QWJNektSY0ZFbWY4VE5FczlneGdEei9jNm5W?=
+ =?utf-8?B?Rm5HanNnOGVpc3R6Q3kwd3pjaVNSNy9WUjV0ZlRhUko3SWhvdjZqWnlOdDYx?=
+ =?utf-8?B?SDgzbUhWK0VoK2lncU8rL0FKOXVSZWJXd01WTDJyaDZBWnAwT0pFZXlwTHJF?=
+ =?utf-8?B?ek1TR21zZ3RkR3l2SERPbmluVWhsVEp5TnFOT25sdWZKOXBiQ1R0MEN0clVS?=
+ =?utf-8?Q?RnSdfLFCzv6RXO2ZO71bTOIcwLGErUV4VyI1v?=
+X-Exchange-RoutingPolicyChecked:
+	d/efc80us4yey490STJYY4D16pFfSm2Ebsz9sR6A3B5Ym4ulJQWOau6QykHQrmZpcI1ZuU+2u697j21YLU434Kxau9vOS1u18Okd/0NOLDRgRgHSbCC07SFDz7ZyZwdIw70F8iMeAJrmTt3UpXM/OLKdnvwMIxhU6MDnj4JngGccOBh5GgUv4IEv+ihE6j6E5+TNXcjuWxkzDBB0dRiyzTS8R17ZeAWaTJnshByk6wNMQLGGTEq0J2GUkZ+sBJbwSg42trcSN7iE2IrV1F26U95lfo/szyVwoGas6NB4/V0SGFFFNIBjdTe/ZuBLgASzylqsUOHmc2FpOxmEwx6PHg==
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	hh3EtgHtq4IU8YMveWUiwYrUIgLJQXn83bazJHm27QIFptigakFY+OPFymkBCbYM4t08d5Ob7TqBXumH3KPcIC1XtBkR6olldV/ghgJmn2J0fgiO+B1oIjQjN+xh2wOtWcKKcb2LPSDo9I9jrehWmJiU3Jumx1g0GmV/9saV1+td+4w/aILZOjYIQmD9KQfHDug8axLjQRkRVq+JH4M5uIV5TOMrKp7MsnNIfou2TYLUREd71eiCsHkP55mA4n3j89GTpptmRcmgIJ78oHK65nqryRmrlfkcW2awQUuIMvYMZfaD54YzGRs88NdeDuKcq9nDZCoJEvVXCfAmGJDXJINtm8qLPOGqosGe3FJmMe8jnZETlRDcp/kSGA+6PDhHa5ARra9pCCU0hDUxC/0y8l8xl+P4AF163MNr1XKCoOWyoayoSlbGLI/L8f6pn20gbNQZC8y5uzk8m9VLd8Qom6xFJRdva0zlTdZ0GXe0CafKJkrHBXYyuDhA3H9P5QrBWMWpXn0YzNiF2fyL9xKtBGfwPqmuHpO2qgh4eOpCsass/ZCiXqSQluPWMxQdkqqjzK4lCuiHQfsibzlYQUtlArX0BaCflulmbXVFVSLeqeA=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f1d0071f-5f3d-4310-19cf-08deb83ff873
+X-MS-Exchange-CrossTenant-AuthSource: DS3PR10MB997700.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2026 20:23:22.7165
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uWiTgUWHUYko+fjElL+U2X96qDnUfhz47IbeKTZw4+5Fr2PCj6c9WFCWb+yp3nzc3RhlqQE0r2PD6KiqahAT+AV4TRbH8sdcL/ijx+dxfhQvts7zMGXX+4WAQuu5un9r
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPFFE8543B68
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-22_05,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ malwarescore=0 mlxlogscore=999 adultscore=0 mlxscore=0 suspectscore=0
+ lowpriorityscore=0 phishscore=0 spamscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2605130000 definitions=main-2605220202
+X-Proofpoint-GUID: rX7zauaEEzFDHaRyDp9pgXuMXU9B_MaP
+X-Authority-Analysis: v=2.4 cv=d9jFDxjE c=1 sm=1 tr=0 ts=6a10bb3f cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=NGcC8JguVDcA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=jiCTI4zE5U7BLdzWsZGv:22 a=BqU2WV_vvsyTyxaotp0D:22 a=bC-a23v3AAAA:8
+ a=20KFwNOVAAAA:8 a=tAGQbYHnAAAA:8 a=VwQbUJbxAAAA:8 a=ag1SF4gXAAAA:8
+ a=k5tvX0q1aSgfgFQQrR4A:9 a=QEXdDO2ut3YA:10 a=FO4_E8m0qiDe52t0p3_H:22
+ a=lXWXidlrYx5KKt6n-8sY:22 a=Yupwre4RP9_Eg_Bd0iYG:22
+X-Proofpoint-ORIG-GUID: rX7zauaEEzFDHaRyDp9pgXuMXU9B_MaP
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIyMDIwMiBTYWx0ZWRfX3uBCCKFVsxJa
+ KoQyWKuIJ4tG/7DSEGdCUZ4w8hwv4RO0+N5Xn6idzWVX/pTDPl3MsXbOR1jNdmZq1ABXBKKdqCS
+ IayoPBCSIQq/Q6mvi+Bsc3I/8dWZXs/Aw9Y8psgwqj8VRAjxf0zQxNH0yAPVXR2tyhl1yeSJ6UC
+ FDObEFgNtixVR9qFLiI5CCqUUSFZJaoVXyW19XGpZLMbLnrCLiyFlta4VDbdJaPVMqrgNR5/FIz
+ bKZpgMdLUMRbrmI0MOtpErJPXh5oPdS+rRTwbwWL8ELdi2Lr/R43zJZuBbGg80NmgSkqwwcgD0/
+ ZVCT1SIhw0PbDVIN4aQD8HqXy7lTH0CMSq7iN7xCe7b2006fi0m0P/f1sGrF5u+MfoV0skLzexe
+ llqlYeu7xRlqpwERFat6b8ZUC17DiZDiESgw7Y/julGORQiDHnVDznGKe9KHlP9ojlOM8VGUf8s
+ y0Crm+OU36mvpMhx37A==
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25,oracle.onmicrosoft.com:s=selector2-oracle-onmicrosoft-com];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[debian.org:+];
-	FREEMAIL_CC(0.00)[gmail.com,decadent.org.uk,huawei.com,redhat.com,oss.qualcomm.com,queasysnail.net,kerneltoast.com,vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-253847-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[oracle.com:+,oracle.onmicrosoft.com:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253846-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_NONE(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,manguebit.org:email,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oracle.com:mid,oracle.com:dkim];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[benh@debian.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[harshit.m.mogalapalli@oracle.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,decadent.org.uk:mid,decadent.org.uk:email,kerneltoast.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email]
-X-Rspamd-Queue-Id: 046B95B9F10
+	RCVD_COUNT_SEVEN(0.00)[9]
+X-Rspamd-Queue-Id: 2FA235B9FA2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Hi Greg/Sasha,
 
---WHlcoJyxPOzr5VkP
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 20/05/26 21:54, Greg Kroah-Hartman wrote:
+> 6.12-stable review patch.  If anyone has any objections, please let me know.
+> 
+> ------------------
+> 
+> From: Paulo Alcantara <pc@manguebit.org>
+> 
+> commit 0aad5704c6b4d14007d4eab15883e8524e4310f4 upstream.
+> 
+> In netfs_extract_user_iter(), if iov_iter_extract_pages() failed to
+> extract user pages, bail out on -ENOMEM, otherwise return the error
+> code only if @npages == 0, allowing short DIO reads and writes to be
+> issued.
+> 
+> This fixes mmapstress02 from LTP tests against CIFS.
+> 
+> Fixes: 85dd2c8ff368 ("netfs: Add a function to extract a UBUF or IOVEC into a BVEC iterator")
+> Reported-by: Xiaoli Feng <xifeng@redhat.com>
+> Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> Link: https://patch.msgid.link/20260512123404.719402-10-dhowells@redhat.com
+> Cc: netfs@lists.linux.dev
+> Cc: stable@vger.kernel.org
+> Cc: linux-cifs@vger.kernel.org
+> Cc: linux-fsdevel@vger.kernel.org
+> Signed-off-by: Christian Brauner <brauner@kernel.org>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>   fs/netfs/iterator.c |   13 ++++++++++---
+>   1 file changed, 10 insertions(+), 3 deletions(-)
+> 
+> --- a/fs/netfs/iterator.c
+> +++ b/fs/netfs/iterator.c
+> @@ -22,7 +22,7 @@
+>    *
+>    * Extract the page fragments from the given amount of the source iterator and
+>    * build up a second iterator that refers to all of those bits.  This allows
+> - * the original iterator to disposed of.
+> + * the original iterator to be disposed of.
+>    *
+>    * @extraction_flags can have ITER_ALLOW_P2PDMA set to request peer-to-peer DMA be
+>    * allowed on the pages extracted.
+> @@ -67,8 +67,8 @@ ssize_t netfs_extract_user_iter(struct i
+>   		ret = iov_iter_extract_pages(orig, &pages, count,
+>   					     max_pages - npages, extraction_flags,
+>   					     &offset);
+> -		if (ret < 0) {
+> -			pr_err("Couldn't get user pages (rc=%zd)\n", ret);
+> +		if (unlikely(ret <= 0)) {
+> +			ret = ret ?: -EIO;
+>   			break;
+>   		}
+>   
+> @@ -97,6 +97,13 @@ ssize_t netfs_extract_user_iter(struct i
+>   		npages += cur_npages;
+>   	}
+>   
+> +	if (ret < 0 && (ret == -ENOMEM || npages == 0)) {
+> +		for (i = 0; i < npages; i++)
+> +			unpin_user_page(bv[i].bv_page);
+> +		kvfree(bv);
+> +		return ret;
+> +	}
+> +
 
-=46rom: Hyunwoo Kim <imv4bel@gmail.com>
+I have run an AI assisted backport review and it spotted an issue: I
+have taken a look and the issues goes like:
 
-commit 48f6a5356a33dd78e7144ae1faef95ffc990aae0 upstream.
+Upstream has:
 
-Two frag-transfer helpers (__pskb_copy_fclone() and skb_shift()) fail
-to propagate the SKBFL_SHARED_FRAG bit in skb_shinfo()->flags when
-moving frags from source to destination.  __pskb_copy_fclone() defers
-the rest of the shinfo metadata to skb_copy_header() after copying
-frag descriptors, but that helper only carries over gso_{size,segs,
-type} and never touches skb_shinfo()->flags; skb_shift() moves frag
-descriptors directly and leaves flags untouched.  As a result, the
-destination skb keeps a reference to the same externally-owned or
-page-cache-backed pages while reporting skb_has_shared_frag() as
-false.
 
-The mismatch is harmful in any in-place writer that uses
-skb_has_shared_frag() to decide whether shared pages must be detoured
-through skb_cow_data().  ESP input is one such writer (esp4.c,
-esp6.c), and a single nft 'dup to <local>' rule -- or any other
-nf_dup_ipv4() / xt_TEE caller -- is enough to land a pskb_copy()'d
-skb in esp_input() with the marker stripped, letting an unprivileged
-user write into the page cache of a root-owned read-only file via
-authencesn-ESN stray writes.
 
-Set SKBFL_SHARED_FRAG on the destination whenever frag descriptors
-were actually moved from the source.  skb_copy() and skb_copy_expand()
-share skb_copy_header() too but linearize all paged data into freshly
-allocated head storage and emerge with nr_frags =3D=3D 0, so
-skb_has_shared_frag() returns false on its own; they need no change.
+ssize_t ret = 0;
 
-The same omission exists in skb_gro_receive() and skb_gro_receive_list().
-The former moves the incoming skb's frag descriptors into the
-accumulator's last sub-skb via two paths (a direct frag-move loop and
-the head_frag + memcpy path); the latter chains the incoming skb whole
-onto p's frag_list.  Downstream skb_segment() reads only
-skb_shinfo(p)->flags, and skb_segment_list() reuses each sub-skb's
-shinfo as the nskb -- both p and lp must carry the marker.
+...
+if (ret < 0 && (ret == -ENOMEM || npages == 0)) {
+         for (i = 0; i < npages; i++)
+                 unpin_user_page(bv[i].bv_page);
+         kvfree(bv);
+         return ret;
+}
 
-The same omission also exists in tcp_clone_payload(), which builds an
-MTU probe skb by moving frag descriptors from skbs on sk_write_queue
-into a freshly allocated nskb.  The helper falls into the same family
-and warrants the same fix for consistency; no TCP TX-side in-place
-writer is currently known to reach a user page through this gap, but
-a future consumer depending on the marker would regress silently.
+6.12.y has:
 
-The same omission exists in skb_segment(): the per-iteration flag
-merge takes only head_skb's flag, and the inner switch that rebinds
-frag_skb to list_skb on head_skb-frags exhaustion does not fold the
-new frag_skb's flag into nskb.  Fold frag_skb's flag at both sites
-so segments drawing frags from frag_list members carry the marker.
+ssize_t ret;
 
-Fixes: cef401de7be8 ("net: fix possible wrong checksum generation")
-Fixes: f4c50a4034e6 ("xfrm: esp: avoid in-place decrypt on shared skb frags=
-")
-Suggested-by: Sabrina Dubroca <sd@queasysnail.net>
-Suggested-by: Sultan Alsawaf <sultan@kerneltoast.com>
-Suggested-by: Ben Hutchings <ben@decadent.org.uk>
-Suggested-by: Lin Ma <malin89@huawei.com>
-Suggested-by: Jingguo Tan <tanjingguo@huawei.com>
-Suggested-by: Aaron Esau <aaron1esau@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Tested-by: Rajat Gupta <rajat.gupta@oss.qualcomm.com>
-Link: https://patch.msgid.link/ageeJfJHwgzmKXbh@v4bel
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[bwh: Backported to 5.10:
- - Set the SKBTX_SHARED_FRAG flag in skb_shared_info::tx_flags,
-   instead of SKBFL_SHARED_FRAG in skb_shared_info::flags
- - skb_gro_receive() and skb_gro_receive_list() are in skbuff.c here
- - Drop change to tcp_clone_payload(), which does not exist here
- - Adjust context in skb_shift()
-]
-Signed-off-by: Ben Hutchings <benh@debian.org>
----
- net/core/skbuff.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+...
+if (ret < 0 && (ret == -ENOMEM || npages == 0)) {
+         for (i = 0; i < npages; i++)
+                 unpin_user_page(bv[i].bv_page);
+         kvfree(bv);
+         return ret;
+}
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index c195107434b8..f7100f5af37c 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -1596,6 +1596,7 @@ struct sk_buff *__pskb_copy_fclone(struct sk_buff *sk=
-b, int headroom,
- 			skb_frag_ref(skb, i);
- 		}
- 		skb_shinfo(n)->nr_frags =3D i;
-+		skb_shinfo(n)->tx_flags |=3D skb_shinfo(skb)->tx_flags & SKBTX_SHARED_FR=
-AG;
- 	}
-=20
- 	if (skb_has_frag_list(skb)) {
-@@ -3502,6 +3503,8 @@ int skb_shift(struct sk_buff *tgt, struct sk_buff *sk=
-b, int shiftlen)
- 	tgt->ip_summed =3D CHECKSUM_PARTIAL;
- 	skb->ip_summed =3D CHECKSUM_PARTIAL;
-=20
-+	skb_shinfo(tgt)->tx_flags |=3D skb_shinfo(skb)->tx_flags & SKBTX_SHARED_F=
-RAG;
-+
- 	/* Yak, is it really working this way? Some helper please? */
- 	skb->len -=3D shiftlen;
- 	skb->data_len -=3D shiftlen;
-@@ -3843,6 +3846,8 @@ int skb_gro_receive_list(struct sk_buff *p, struct sk=
-_buff *skb)
- 	p->truesize +=3D skb->truesize;
- 	p->len +=3D skb->len;
-=20
-+	skb_shinfo(p)->tx_flags |=3D skb_shinfo(skb)->tx_flags & SKBTX_SHARED_FRA=
-G;
-+
- 	NAPI_GRO_CB(skb)->same_flow =3D 1;
-=20
- 	return 0;
-@@ -4076,7 +4081,8 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
- 		skb_copy_from_linear_data_offset(head_skb, offset,
- 						 skb_put(nskb, hsize), hsize);
-=20
--		skb_shinfo(nskb)->tx_flags |=3D skb_shinfo(head_skb)->tx_flags &
-+		skb_shinfo(nskb)->tx_flags |=3D (skb_shinfo(head_skb)->tx_flags |
-+					       skb_shinfo(frag_skb)->tx_flags) &
- 					      SKBTX_SHARED_FRAG;
-=20
- 		if (skb_zerocopy_clone(nskb, frag_skb, GFP_ATOMIC))
-@@ -4093,6 +4099,9 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
- 				nfrags =3D skb_shinfo(list_skb)->nr_frags;
- 				frag =3D skb_shinfo(list_skb)->frags;
- 				frag_skb =3D list_skb;
-+
-+				skb_shinfo(nskb)->tx_flags |=3D skb_shinfo(frag_skb)->tx_flags & SKBTX=
-_SHARED_FRAG;
-+
- 				if (!skb_headlen(list_skb)) {
- 					BUG_ON(!nfrags);
- 				} else {
-@@ -4309,10 +4318,12 @@ int skb_gro_receive(struct sk_buff *p, struct sk_bu=
-ff *skb)
- 	p->data_len +=3D len;
- 	p->truesize +=3D delta_truesize;
- 	p->len +=3D len;
-+	skb_shinfo(p)->tx_flags |=3D skbinfo->tx_flags & SKBTX_SHARED_FRAG;
- 	if (lp !=3D p) {
- 		lp->data_len +=3D len;
- 		lp->truesize +=3D delta_truesize;
- 		lp->len +=3D len;
-+		skb_shinfo(lp)->tx_flags |=3D skbinfo->tx_flags & SKBTX_SHARED_FRAG;
- 	}
- 	NAPI_GRO_CB(skb)->same_flow =3D 1;
- 	return 0;
+I think 6.12.y misses commit: 7e3d8db899d5 ("netfs: Fix potential 
+uninitialised var in netfs_extract_user_iter()") so backport might not 
+be complete, thoughts ?
 
---WHlcoJyxPOzr5VkP
-Content-Type: application/pgp-signature; name="signature.asc"
+thanks,
+Harshit
 
------BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmoQuKgACgkQ57/I7JWG
-EQl1/xAAgFuK/o+ammHT0lM7u850uh3hCJO9IcC09emcX3X0zQUPXC6ZsRGY584J
-lDM9QH/aLXsOc/SWHgWYIB9f+2w3klzjQkIb5XAD52PwhfnX6/LRTAVyA4JtfzEM
-A7nmbCLlHTKh/hNUnkgi44WBE/ZFWvQ5FxEDm0XCDxSlJt0BhHMGzOAvKqwMIcI0
-pD6jzBg0VAZJcof5NFxLlBjzjIJ+urEC477cnqRNdTnprpEOSBfApZyoaPolT0ic
-WhL0Z42/fSRd5DRFRgrOUr528ZgHgsIEHhY2FyIheSYc0mA3XL8ZmnkUdEVgX/me
-nODImIpe/4It20QqikWT/HiectNkCqDxmLrOqTu/9FX8QbEFNNqbqiqStMPpq1IO
-LHcAVWRkBHn3t/xdPmfZE2lHfwc08MJ4kF7n395RbLxTXttJapztqHvJ5x6CQkCp
-g/KPrPlRZHa43lV4sv4QEDwFh+/LxySwQSkQBZJZUrc7UyndKMTsDQKqyWep4ATT
-HFLEg44MGujUdujBJjOzeeWNMOGx5Y+Ux7acM5s1HOIxBPuBhsgy4Maqj9ULHXTc
-gfNQXe1jEsg+pgybLoswtW40TZOJdizQ8sYhEMg20gVTxLLVq6b4uAKkZwy8d979
-pZjvdO7ErzVy5hRLvxPZbQcVl1NZFRoPq4rokxs5mUcAuJ7747c=
-=3WBL
------END PGP SIGNATURE-----
+>   	iov_iter_bvec(new, orig->data_source, bv, npages, orig_len - count);
+>   	return npages;
+>   }
+> 
+> 
+> 
 
---WHlcoJyxPOzr5VkP--
 
