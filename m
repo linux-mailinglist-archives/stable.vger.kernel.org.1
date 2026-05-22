@@ -1,115 +1,215 @@
-Return-Path: <stable+bounces-253790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253791-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YCtENUZbEGqDWgYAu9opvQ
-	(envelope-from <stable+bounces-253790-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 15:33:58 +0200
+	id SArMDkVYEGocWgYAu9opvQ
+	(envelope-from <stable+bounces-253791-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 15:21:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53D075B5378
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 15:33:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63C945B509E
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 15:21:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6685A310D9DD
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 13:13:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F38B530CA1E6
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 13:13:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC3B3A48DB;
-	Fri, 22 May 2026 13:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B2AB39989D;
+	Fri, 22 May 2026 13:13:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OLtxUYmM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hX9VqTDl"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EEE635675F;
-	Fri, 22 May 2026 13:12:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE2A39D3C1;
+	Fri, 22 May 2026 13:13:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779455565; cv=none; b=JjHL+HhhF9jXacCifky/wPq66E881kVTxqi+beB8nUVsQaANPLrQDARuuyMKnlVsnt6Sg39bkzxTNLsrQ3GB4936WFJvKZgnHKPbpwBnofo8RSVFvjv6cLy6Wmx2rNG5uVDRHBBhvk4weAibNT09y/WnDLIwVUmTMeDHEgpnwmw=
+	t=1779455606; cv=none; b=DicnG6Ff+qpFLXijBA9J23j7rllzxz63oIym0qVIezXHXf6JLh50ED3AXp2dnaA/0JT9Eb+A/MjqpiSesB+w6CgFyvXiIDp+WwkaqcboS6UjKSe+3ocUtSlv/NbiTTN/TmoF0WB9XvdKX+KILe74lLLylAPdN7StoDVVn1GKWso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779455565; c=relaxed/simple;
-	bh=xHP99JOSb7QXdOdGYHj8nJnQwp268iIMFoEmZ1tmNZs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IcYXhpqNGlrw0ExsMBo8BQecWlrX+CGkKQD9LgnCIF6LQg8k5que3GpSiB1aGiTFaYWf4aEtVdOmjL64xt8z7WvNxJwGmmlzfrwY/DIRvgtHn1Y4kiQyokfXUBVFuA2O3kWTSE9CMVbEyazcz8xVYU/EN86MMK7LWxYRDelHaw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OLtxUYmM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B9901F000E9;
-	Fri, 22 May 2026 13:12:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779455564;
-	bh=xHP99JOSb7QXdOdGYHj8nJnQwp268iIMFoEmZ1tmNZs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OLtxUYmMZY0TnFtclx7kgoRGfX/ERw6VL6tZbcUEh5Nc4yPnahQCPB8xiwQjeF+bU
-	 KKGikSBu26knMFZZRQjZMVaaG9qAQInyeaXHke6UjtJZcYIWyPmPl5qD2ybupiMq29
-	 GWY5FQftWcvKidivgEWkV4jh9SQYf7w+A484UgzffOmTs6zIIm18B3b/7mhLLTWNza
-	 1Wwzgn1O1cBGAQJBITKCXwxHYeVueOTiPMG3MsuSyhM3J+3mL0PKdke1yqof4SRPWw
-	 +mDth16krBOcbwZFSz1eQI0B+ZaOLZ6pxkAwhpEMAHS47NT0w+tyWH/aLrpWtl2c9W
-	 yMMtDYDu8+a4g==
-From: Sasha Levin <sashal@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	s=arc-20240116; t=1779455606; c=relaxed/simple;
+	bh=XGUCGxnEA4kj79DA+8/vsKuNs1lZvHw/84Eetaa9NPI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GyBawXRnRtVXQ+PKMjBlUGDBjJMAPweiGVhgOkzIxaoGxlxajBWiv9kM4rA/OBceXiTCwpziQjxGZU9ShgSognlZ1+zqISMfiLsOf1Z8QrQGE4tqOyXxUT3Opxy7L0B11pZUmR8bwCxvFRiJHLwAKp/LkhsCkhkcjsTW76YuhQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hX9VqTDl; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779455603; x=1810991603;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=XGUCGxnEA4kj79DA+8/vsKuNs1lZvHw/84Eetaa9NPI=;
+  b=hX9VqTDlscuAD/lg3qzifERxVaOfFQWF0LM6IpV8aVY1R/iMBAKKgKxL
+   SFB0TzMv4FgWRZf5TQlnqEpIqvEqMlxXl/Rl/VPOwcc2TXZmCxcB0DSkJ
+   3iWvZ+KVG+HxPmmU+3m2KX6YpIpGHAwCTcxBYLOALlIqfG6KHsVjPehUO
+   6hYOB4+4Rhkf/10O2dlpp0sn4FZrL2go3KlVgFiraPKG+gUoivvhKrbSD
+   ubgkGY2tuwJG3CxRyAvqVkblGHKQh6dYZy74cplN2nv+Q8gP8ClRyMdiH
+   ANh8Gdft6iD+bXua0OACaj88xuD9TjBV0qp3RThx9SA7/ffePak8be5Qp
+   A==;
+X-CSE-ConnectionGUID: 6E+wUM3TQyWEjlrTn3W64w==
+X-CSE-MsgGUID: zqFhqZWCT/mOxPWggMLysQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11794"; a="80353687"
+X-IronPort-AV: E=Sophos;i="6.24,162,1774335600"; 
+   d="scan'208";a="80353687"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2026 06:13:21 -0700
+X-CSE-ConnectionGUID: HFH30V+WS5O0kcta+kn0sw==
+X-CSE-MsgGUID: FB9kCSnSRSmU+NtgPu13lQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,162,1774335600"; 
+   d="scan'208";a="236689704"
+Received: from amilburn-desk.amilburn-desk (HELO localhost) ([10.245.244.187])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2026 06:13:18 -0700
+Date: Fri, 22 May 2026 16:13:15 +0300
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Icenowy Zheng <zhengxingda@iscas.ac.cn>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Sam Ravnborg <sam@ravnborg.org>, dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org, Icenowy Zheng <uwu@icenowy.me>,
 	stable@vger.kernel.org
-Cc: Sasha Levin <sashal@kernel.org>,
-	patches@lists.linux.dev,
-	Song Liu <song@kernel.org>,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Pu Lehui <pulehui@huawei.com>,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: Re: [PATCH 6.12 346/666] bpf, riscv: Remove redundant bpf_flush_icache() after pack allocator finalize
-Date: Fri, 22 May 2026 09:12:28 -0400
-Message-ID: <20260522123641.rc-drop-46ee1342b887@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <b8ef921f-e2ab-4cfb-b75c-89e4277214cf@oracle.com>
-References: <20260520162111.222830634@linuxfoundation.org> <20260520162118.730164877@linuxfoundation.org> <b8ef921f-e2ab-4cfb-b75c-89e4277214cf@oracle.com>
+Subject: Re: [PATCH] drm/client: check whether CRTC is active before waiting
+ for vblank
+Message-ID: <ahBWayIcQUHuAt4i@intel.com>
+References: <20260519092420.1124348-1-zhengxingda@iscas.ac.cn>
+ <ee86cb43-e5df-4946-a957-931a73dde752@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+In-Reply-To: <ee86cb43-e5df-4946-a957-931a73dde752@suse.de>
+X-Patchwork-Hint: comment
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+X-Spamd-Result: default: False [-1.53 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_MIXED_CHARSET(0.63)[subject];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,lists.linux.dev,huawei.com,gmail.com,oracle.com];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_FROM(0.00)[bounces-253790-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	HAS_ORG_HEADER(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
 	MIME_TRACE(0.00)[0:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[iscas.ac.cn,linux.intel.com,kernel.org,gmail.com,ffwll.ch,ravnborg.org,lists.freedesktop.org,vger.kernel.org,icenowy.me];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253791-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[ville.syrjala@linux.intel.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 53D075B5378
+	FORGED_SENDER_MAILLIST(0.00)[]
+X-Rspamd-Queue-Id: 63C945B509E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, May 22, 2026 at 03:27:13PM +0530, Harshit Mogalapalli wrote:
-> Upstream doesn't have this problem because this call is removed in
-> commit: 6798668ab195 ("riscv, bpf: Remove duplicated
-> bpf_flush_icache()") but this is not present in 6.12.91 so I think it is
-> incorrect to backport this, should we drop this ?
+On Fri, May 22, 2026 at 01:55:59PM +0200, Thomas Zimmermann wrote:
+> Hi
+> 
+> Am 19.05.26 um 11:24 schrieb Icenowy Zheng:
+> > Currently the implementaion of drm_client_modeset_wait_for_vblank()
+> > assumes drm_vblank_get() will fail when the CRTC isn't active. However
+> > it seems that this is not true, and running fbcon on a device with the
+> > first CRTC inactive will lead to kernel warning in some cases (which
+> > could be reproduced with the loongson driver).
+> >
+> > Change the implementation to add a check for the active state (atomic) /
+> > enabled state (non-atomic) before calling drm_vblank_get(). As the
+> > assumption of drm_vblank_get() failing for inactive CRTC isn't met, the
+> > error status of drm_vblank_get() can now be exported too.
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: d8c4bddcd8bc ("drm/fb-helper: Synchronize dirty worker with vblank")
+> > Signed-off-by: Icenowy Zheng <zhengxingda@iscas.ac.cn>
+> > ---
+> >   drivers/gpu/drm/drm_client_modeset.c | 13 +++++++++++--
+> >   1 file changed, 11 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/gpu/drm/drm_client_modeset.c b/drivers/gpu/drm/drm_client_modeset.c
+> > index bb49b8361271a..1b03bf351256e 100644
+> > --- a/drivers/gpu/drm/drm_client_modeset.c
+> > +++ b/drivers/gpu/drm/drm_client_modeset.c
+> > @@ -1310,7 +1310,7 @@ int drm_client_modeset_wait_for_vblank(struct drm_client_dev *client, unsigned i
+> >   {
+> >   	struct drm_device *dev = client->dev;
+> >   	struct drm_crtc *crtc;
+> > -	int ret;
+> > +	int ret = 0;
+> >   
+> >   	/*
+> >   	 * Rate-limit update frequency to vblank. If there's a DRM master
+> > @@ -1326,15 +1326,24 @@ int drm_client_modeset_wait_for_vblank(struct drm_client_dev *client, unsigned i
+> >   	 * Only wait for a vblank event if the CRTC is enabled, otherwise
+> >   	 * just don't do anything, not even report an error.
+> >   	 */
+> > +	if (drm_drv_uses_atomic_modeset(dev)) {
+> > +		if (!crtc->state || !crtc->state->active)
+> > +			goto out;
+> > +	} else {
+> > +		if (!crtc->enabled)
+> > +			goto out;
+> > +	}
+> > +
+> 
+> This part is good.
 
-Dropped from the 6.12 and 6.6 queues â€” 6.6 has the same missing
-prerequisite. Thanks for the report.
+Locking is missing.
 
---
-Thanks,
-Sasha
+> 
+> >   	ret = drm_crtc_vblank_get(crtc);
+> >   	if (!ret) {
+> >   		drm_crtc_wait_one_vblank(crtc);
+> >   		drm_crtc_vblank_put(crtc);
+> >   	}
+> >   
+> > +out:
+> >   	drm_master_internal_release(dev);
+> >   
+> > -	return 0;
+> > +	return ret;
+> 
+> But this isn't. There can be CRTCs without any vblank at all. We still 
+> want to fail silently for them. So we still have to return 0 here.
+> 
+> Having set this, fixing this helper is only partially what you want. 
+> Since your device has vblanking, the emulation should check on the 
+> correct CRTC. IOW you need to pass the right CRTC index at
+> 
+> https://elixir.bootlin.com/linux/v7.1-rc1/source/drivers/gpu/drm/drm_fb_helper.c#L237
+> https://elixir.bootlin.com/linux/v7.1-rc1/source/drivers/gpu/drm/drm_fb_helper.c#L920
+> 
+> I'm not quite sure how to support this. The CRTC is under 
+> fb_helper->client.modesets.crtc. You'd have to figure out which is the 
+> relevant one and use that. But that's also not so great, as fbdev ioctls 
+> only support CRTC 0. Doing internal re-mappings only complicates matters.
+> 
+> But why does your HW use CRTC 1 in the first place.
+
+Could be eg. the enabled outputs can't be driven with CRTC 0.
+
+I guess what you want to do is pick the first crtc from modesets[]
+which is enabled. Or perhaps even "pick the Nth enabled crtc from
+modesets[] based on the ioctl argument".
+
+-- 
+Ville Syrjälä
+Intel
 
