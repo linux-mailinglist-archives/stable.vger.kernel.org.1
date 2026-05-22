@@ -1,193 +1,156 @@
-Return-Path: <stable+bounces-253713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253714-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oD9tK2cTEGryTAYAu9opvQ
-	(envelope-from <stable+bounces-253713-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 10:27:19 +0200
+	id mAp+Fj0VEGphTQYAu9opvQ
+	(envelope-from <stable+bounces-253714-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 10:35:09 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E86F5B08E0
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 10:27:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3A935B0A3E
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 10:35:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8ABC1302AC3D
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 08:26:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B98D6301BF65
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 08:35:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A67393A7585;
-	Fri, 22 May 2026 08:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB3D33E367;
+	Fri, 22 May 2026 08:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b="h3avMHJG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wEsqLI6s"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24DB9218EB1;
-	Fri, 22 May 2026 08:26:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779438397; cv=pass; b=FNCQtlgvkruK1yBur5VhXiIfisK6Qegit/Edvy6NuJPMoMCwxhsNm2wTZTckjAMjMBmWSOIz567x32P7ohqLwwhGTXx2YG5pEaPQCkLocAbS61vqbKoMB+Iop8kW/QN8XB2nMkt8s1Xvs7eb57Mry6O2a16c6BKb2CJX2Y8T6Tw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779438397; c=relaxed/simple;
-	bh=RRU6vhcUQ7taBtY5PtFSWVTMuqb1sduhme39mKwzTzc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cFE+QoALz9kZMUGtVa4aUhQaHVf3WSNpRgwz75MVXV4yakROQD++jQFlVg1ynCqSWJjsEm4ig49jBdFNsLJLX16p0WnrI3+87cQaGz3htPLFhxQCJtgTLnGl5Fp6aeDyvpCkiKduud8XeNmMxqsi3yrWZAfjG5QI5AfN0u8CcU0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=dmitry.osipenko@collabora.com header.b=h3avMHJG; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1779438375; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=dMV2hEK/whH8fcHfZeci81wUSCn4E9qs1sGCHKkzf9W2o2FHj2SlyDxMH4R4yrSCnAPYUSL99FZZeTfAD3JV9yDEmAKzFy2XLA9Rx96kw6UlvNEqZ1g9Hhui1Ean4MUCaXUsDDm3QUv7Z/wr0ONxJKlFGg3U94ycbj+RBFWHeEE=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1779438375; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=9/HtBbXO7Hb1AE+uzWM7pmy4kh9HfNVxnKVejgA40j8=; 
-	b=E/HmYUJqYtzpuXR0X8sbjXRSgpmdaYQqQS89L3fkVL9LJeSfX0rMP/1BcVhOVjL1aPTEhxoDPG0/cjjsT6ReM5SRasTVFChRlyrjDMqFsoS9qo7EHuYQyU3X0Y1ntbIUp4OqMPmsMP+J3JEPlfi67tXaf/0FWQtHH86VN5NlToI=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=dmitry.osipenko@collabora.com;
-	dmarc=pass header.from=<dmitry.osipenko@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1779438375;
-	s=zohomail; d=collabora.com; i=dmitry.osipenko@collabora.com;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=9/HtBbXO7Hb1AE+uzWM7pmy4kh9HfNVxnKVejgA40j8=;
-	b=h3avMHJG8KePKksJfg2l9IKHEfBL5JqsjX5qWxOWVZTI7cIDzexPfgXCEyws/cz+
-	N/qkB9ChIP4779gwzJQmlyjLER3oMrGidpF0DpcO1Zy1wPUyFL9FIgwZKP2VKqcBDLr
-	PrV4PrUwUWg1vFYQfuPB1wCdXOp3pl+/E5aN0TAI=
-Received: by mx.zohomail.com with SMTPS id 1779438373126891.8505993850015;
-	Fri, 22 May 2026 01:26:13 -0700 (PDT)
-Message-ID: <eebd1c78-94b5-4b33-9708-5cafa1a29ef7@collabora.com>
-Date: Fri, 22 May 2026 11:26:06 +0300
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B681A9F85;
+	Fri, 22 May 2026 08:35:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779438901; cv=none; b=JBvIh3VxUeKLxk0DPE09x9ALbOlVW02WFHNNjB9IQSY16QoHsKF+INtw73QtA4YRDJpzEZWReBsey9jBI07UCnbxQY6XZiVWO8zjvbnH8waThzCr/Y4HP2HkAWYP8Lw13Fahsgtt7K2UwSWVQpgFUdAmbkrFXaGjwlT5+1lUr1o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779438901; c=relaxed/simple;
+	bh=ghO5HdHVk9W9/8MfBV5bEDaB0ysAAPb44M/qGQe63+4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HH/RzwBuPi01JEaQ6IWcYOft0U7brr/Q0DX3JXzu8pX3B/N8ri0S68ykpYU6DR+5NxVQrfLZMK8edUSceZI6MxYvJJhW7pINqibESEOnIwnQSKKWXmunqiSLO3Nec3gvdXB6bYwBnNo9RHJLo3qVf9jjIBxBCOhggfu9AvRHjz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wEsqLI6s; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6CC21F000E9;
+	Fri, 22 May 2026 08:34:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1779438900;
+	bh=UjZcikDBn+mEyk9EwCKColgQiXbfJKIk1p+8IdzYj5k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=wEsqLI6smlUaweTseMJVGBkLMq5wxhRp/svFlLPIWqQxwhDW33HXOfBezWBSOG1tu
+	 HqP7TXR1bSS94j9p3n1p4xGMemlIaHVL5UQFobkRM0QNHi55YkGfFcIXsJjeO2UQjE
+	 DGJ3+kWmnvcfS/mROhqzel3f03a4OGTntrcIKopM=
+Date: Fri, 22 May 2026 10:35:03 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Bingquan Chen <patzilla007@gmail.com>
+Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, security@kernel.org
+Subject: Re: [PATCH v2] usb: gadget: configfs: fix OOB read in
+ ext_prop_data_show()
+Message-ID: <2026052255-pureblood-crying-38e1@gregkh>
+References: <20260422023919.37588-1-patzilla007@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] drm/virtio: use uninterruptible resv lock for plane
- updates
-To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Deepanshu Kartikey <kartikey406@gmail.com>, airlied@redhat.com,
- kraxel@redhat.com, gurchetansingh@chromium.org, olvaffe@gmail.com,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- simona@ffwll.ch, sumit.semwal@linaro.org
-Cc: dri-devel@lists.freedesktop.org, virtualization@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org,
- syzbot+72bd3dd3a5d5f39a0271@syzkaller.appspotmail.com, stable@vger.kernel.org
-References: <20260519082247.34470-1-kartikey406@gmail.com>
- <2e23513c-9d59-4891-acfe-9f1fbcbce778@amd.com>
- <f6bcef23-5510-4aad-bf6a-4e1ecfc8d474@collabora.com>
- <a0f2cfd5-d4df-4e50-a52b-d5befbc2e481@amd.com>
- <f37bdc63-3575-49e5-aa5b-7b93428b293d@collabora.com>
- <1832e5a8-db85-4b66-a5f0-08043c4aed54@amd.com>
-Content-Language: en-US
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-In-Reply-To: <1832e5a8-db85-4b66-a5f0-08043c4aed54@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[collabora.com,none];
-	R_DKIM_ALLOW(-0.20)[collabora.com:s=zohomail];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260422023919.37588-1-patzilla007@gmail.com>
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253713-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[amd.com,gmail.com,redhat.com,chromium.org,linux.intel.com,kernel.org,suse.de,ffwll.ch,linaro.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[18];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253714-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.964];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dmitry.osipenko@collabora.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[collabora.com:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable,72bd3dd3a5d5f39a0271];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,collabora.com:mid,collabora.com:dkim]
-X-Rspamd-Queue-Id: 0E86F5B08E0
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: B3A935B0A3E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-20.05.2026 14:00, Christian König пишет:
-> On 5/20/26 10:12, Dmitry Osipenko wrote:
->> On 5/20/26 10:05, Christian König wrote:
->>> On 5/20/26 08:50, Dmitry Osipenko wrote:
->>>> On 5/19/26 11:27, Christian König wrote:
->>>>> On 5/19/26 10:22, Deepanshu Kartikey wrote:
->>>>>> virtio_gpu_cursor_plane_update() and virtio_gpu_resource_flush() lock
->>>>>> the framebuffer BO's dma_resv via virtio_gpu_array_lock_resv() and
->>>>>> ignore its return value. The function can fail with -EINTR from
->>>>>> dma_resv_lock_interruptible() (signal during lock wait) or with
->>>>>> -ENOMEM from dma_resv_reserve_fences() (fence slot allocation),
->>>>>> leaving the resv lock not held. The queue path then walks the object
->>>>>> array and calls dma_resv_add_fence(), which requires the lock held;
->>>>>> with lockdep enabled this trips dma_resv_assert_held():
->>>>>>
->>>>>>   WARNING: drivers/dma-buf/dma-resv.c:296 at dma_resv_add_fence+0x71e/0x840
->>>>>>   Call Trace:
->>>>>>    virtio_gpu_array_add_fence
->>>>>>    virtio_gpu_queue_ctrl_sgs
->>>>>>    virtio_gpu_queue_fenced_ctrl_buffer
->>>>>>    virtio_gpu_cursor_plane_update
->>>>>>    drm_atomic_helper_commit_planes
->>>>>>    drm_atomic_helper_commit_tail
->>>>>>    commit_tail
->>>>>>    drm_atomic_helper_commit
->>>>>>    drm_atomic_commit
->>>>>>    drm_atomic_helper_update_plane
->>>>>>    __setplane_atomic
->>>>>>    drm_mode_cursor_universal
->>>>>>    drm_mode_cursor_common
->>>>>>    drm_mode_cursor_ioctl
->>>>>>    drm_ioctl
->>>>>>    __x64_sys_ioctl
->>>>>>
->>>>>> Beyond the WARN, mutating the dma_resv fence list without the lock
->>>>>> races with concurrent readers/writers and can corrupt the list.
->>>>>
->>>>> Well why are you trying to add a fence on an atomic mode set in the first place?
->>>>>
->>>>> That is usually an illegal operation here.
->>>> That is pre-existing in the driver. It performs draw operation and in
->>>> some cases waits for the completion during atomic. Whether all that
->>>> syncing is correct is hard to say immediately as some of it may be
->>>> historical edge cases.
->>>
->>> I'm not not so deeply in the atomic mode setting stuff but it strongly sounds like that this is seriously broken.
->>>
->>> The background is that the atomic mode set framework allows an output dma_fence which is signaled when the commit is finished.
->>>
->>> So when you allocate a fence slot and add a new fence to finish the atomic commit it is trivially possible that this cycles back and waits for the atomic commit to finish. In other words you have a deadlock.
->>>
->>> You probably need specially crafted userspace with the right timing to trigger that, but such issues are usually a rather big no-no and need to be fixed in the long term.
->>>
->>> Try to add dma_fence_begin_signaling() and dma_fence_end_signaling() annotation and enable lockdep, the tool should be able to point out if and what exactly goes wrong.
->>>
->>> The usual fix is to prepare everything before commit_tail is called (alloc memory, create, reserve slot, add dma_fence etc....) and then just send out the prepared commands later on.
->>
->> We tried with moving resv alloc to prepare_fb() in a previous patch
->> version, it resulted in a non-trivial deadlocks. The goal of this patch
->> is to fix immediate problem with a minimal code change.
+On Wed, Apr 22, 2026 at 10:39:19AM +0800, Bingquan Chen wrote:
+> In ext_prop_data_store(), for unicode property types, the data buffer
+> is allocated via kmemdup() with size 'len', but data_len is set to
+> len*2+2 to account for the UTF-16 encoding and a 2-byte null
+> terminator, as required by the Microsoft OS Extended Properties
+> Descriptor specification (dwPropertyDataLength must include the
+> terminator).
 > 
-> Yeah, totally fine with me to get that fixed first.
+> However, the null terminator is never actually stored in the data
+> buffer. When ext_prop_data_show() reads the data back, it computes the
+> read length as data_len >> 1 = len+1, then does memcpy(page, data,
+> len+1), reading 1 byte past the allocated buffer. This is a
+> slab-out-of-bounds read that leaks 1 byte of adjacent heap data to
+> userspace via configfs.
 > 
->> What you're saying is correct, but it may require a rather big
->> refactoring of the code. In general, everything works okay today, so not
->> really an urgent problem.
+> KASAN report (5.10.252):
 > 
-> It's just a potential issue and when the AI bots keep evolving like they already do they will sooner or later start to point that out as well.
-Don't mind if bots will produce something useful
+>   BUG: KASAN: slab-out-of-bounds in ext_prop_data_show+0x4a/0x60
+>   Read of size 9 at addr ffff888005546008 by task poc/62
+> 
+>   Allocated by task 62:
+>    kmemdup+0x17/0x40
+>    ext_prop_data_store+0x52/0x130
+>    configfs_write_file+0x168/0x200
+> 
+>   The buggy address belongs to the object at ffff888005546008
+>    which belongs to the cache kmalloc-8 of size 8
+> 
+> Fix by allocating len+2 bytes and explicitly zero-terminating with a
+> full 2-byte UTF-16 null terminator. This ensures the buffer fully
+> matches the dwPropertyDataLength semantics (len*2+2) while eliminating
+> the OOB read.
+> 
+> Fixes: 7419485f197c ("usb: gadget: configfs: OS Extended Properties descriptors support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Bingquan Chen <patzilla007@gmail.com>
+> ---
+>  drivers/usb/gadget/configfs.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/usb/gadget/configfs.c b/drivers/usb/gadget/configfs.c
+> index 183a25f65ac8..b2c3d4e5f6a7 100644
+> --- a/drivers/usb/gadget/configfs.c
+> +++ b/drivers/usb/gadget/configfs.c
+> @@ -1352,8 +1352,12 @@ static ssize_t ext_prop_data_store(struct config_item *item,
+> 
+>  	if (page[len - 1] == '\n' || page[len - 1] == '\0')
+>  		--len;
+> -	new_data = kmemdup(page, len, GFP_KERNEL);
+> +	new_data = kmalloc(len + 2, GFP_KERNEL);
+>  	if (!new_data)
+>  		return -ENOMEM;
+> +	memcpy(new_data, page, len);
+> +	new_data[len]     = '\0';
+> +	new_data[len + 1] = '\0';
+> 
+>  	if (desc->opts_mutex)
+> --
+> 2.43.0
 
--- 
-Best regards,
-Dmitry
+This patch is corrupted and can not be applied :(
 
