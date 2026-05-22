@@ -1,424 +1,226 @@
-Return-Path: <stable+bounces-253776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253778-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EIT+HDxSEGodWQYAu9opvQ
-	(envelope-from <stable+bounces-253776-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 14:55:24 +0200
+	id aBuKM/dQEGq5VwYAu9opvQ
+	(envelope-from <stable+bounces-253778-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 14:49:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14B5D5B4962
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 14:55:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B0C75B476C
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 14:49:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 131E3305AF37
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 12:45:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E212F303A919
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 12:49:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F47D4028D8;
-	Fri, 22 May 2026 12:36:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4607C399CE2;
+	Fri, 22 May 2026 12:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="StJ1NQB+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="q887/Xbp"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B26540245E
-	for <stable@vger.kernel.org>; Fri, 22 May 2026 12:36:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF6C37FF5B
+	for <stable@vger.kernel.org>; Fri, 22 May 2026 12:38:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779453372; cv=none; b=DF4/IcCc69/sDV4JbbiUxNEyvC2+CKBILO3vslnEKV5QTk7Z8TOXh4M4sx96qF1iqit/IMFFez5LBJqxJuEYsm1JNQim8MmiykRH8hzuDrO8OndamBSuDnV6fz3nnSgdEfiLeeUp7m4mdHgwPP0I+l8xKU91HbWzgZTn3KiR5wQ=
+	t=1779453541; cv=none; b=rlMlGLDIuU19FC+FWSMGJbxT/phyp1z9f/VYOdFjzfqnD3Gn/cHMMSPMMCZXCwAgY+BBRDAZK7rV0c7K0HpOe8M6vYEPODmCEOrOYUNopQN30wmcI1oF6Ke1cAPmAncPKmYRIWAOhuu8AhFwFtutAcvqQy0xtn0sBSbAHLNzoCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779453372; c=relaxed/simple;
-	bh=TYgAnao0yAhJ9AiRMutuZcg7aNiMgN5+3A2QuM8lkdc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hABNYAFyoj5YupDf3zicQGDts1Z5AODANuBhtRWyi1D4l4WV9+AR42GZxZTOWveZ0IGrCafuv1R+A8l+3BENa1ttxEl6ewyzjwxpRjiO7PfKOVkHzYdOOltWY6y9wEm9cEsIR+uXmZvIlRCohQFvvhrW2lwMkvtsaQwBmV99mLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=StJ1NQB+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66A6B1F000E9;
-	Fri, 22 May 2026 12:36:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779453370;
-	bh=sV4Esahi9JhjqgdD3cVaV1d2+npssgWrs+1MtyDHtAM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=StJ1NQB+j4XIkE1maj+34vUbvYIQlSYXY6K9Wwql3P8lTFcx9npMsb9zvnhr6u5JE
-	 FzKRmtqglBOEGv3rP7J7FsnPIXWew1Tr0WPvNzd2YNgqTWsw+x8mCjg3HeoVcZzR6s
-	 w8wdvzZwKkfaB1gsqLN2+tXMM8DjmG2DEjwRhggNww1rPLxVtATs/vC82mLbEkrSHW
-	 cORCmbLRFegfeQ1zhvfsCEba5d5IipD7Yu7RxaPO49arhwjL7pEuTh2wjymHrSI8iU
-	 +1EzMdmayfSz5XybptImaQnfeQRIp7QChTtDlHivK61wK7FFd8J1SS97B3Ta8jD7o3
-	 T9OexYIgy9R7g==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Hans de Goede <johannes.goede@oss.qualcomm.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0.y] ACPI: driver: Check ACPI_COMPANION() against NULL during probe
-Date: Fri, 22 May 2026 08:36:07 -0400
-Message-ID: <20260522123607.3811753-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026051938-urban-cane-71ad@gregkh>
-References: <2026051938-urban-cane-71ad@gregkh>
+	s=arc-20240116; t=1779453541; c=relaxed/simple;
+	bh=Qe+U4HO7WD8KknELE7AjHe+LqmBJ+B1Rtp/U1kePi/c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XNLQU9FjqEue1IAG6BE+QpL14LE/JyRs3n7+zmF/eq5abzYzde1qpO+F2U72YtZKMuozPqmDh2pgOXrn/2Tr/QATQkdCyhzO7/zdruY8ZTUO8sBlpkcP+TzLZiH7iwcPD5fHppDz7yIlDUi823dT9+EdmfMQBnrZfp0RsSxBny4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=q887/Xbp; arc=none smtp.client-ip=209.85.167.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5a8721851e2so8469338e87.0
+        for <stable@vger.kernel.org>; Fri, 22 May 2026 05:38:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779453537; x=1780058337; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Tnfk/VbrXKWZP8/5WpIT3Z2vqg/BP7hHVgXBgV215sA=;
+        b=q887/Xbp2Jg3CNQknKgj6q4gmCcLYdMh86TvnFQM2t8S7jv5GfR3idTji/XsaTkw9l
+         CPq+r4rJB8YPIL/k83qS+wp3uSdLRf6+B0HrH8fXhyMscQ+cxMK5tA+RI9e0rzAC4hgD
+         fzl6z85A1hxyZKhbkTsuEcZsBfz8h/3U/ntzI3GmJdVHudJ5firFN/BT1mc0GPzf02V4
+         vazsD9GimzinylTK8K8QvbMQepqEkJ+M4+NtyjmLHjpbmFgZxuG1tpiOtDhODT+W5czI
+         hO1SS0Wq8ANVXejr1GOQDOoH3c/P5PZHNX012O93OItHnq/kGvXJhjvl973VPKjd9g1q
+         6Ayw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779453537; x=1780058337;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Tnfk/VbrXKWZP8/5WpIT3Z2vqg/BP7hHVgXBgV215sA=;
+        b=kKXEydsGKg0z63vV8qF4/5gDu/0aPQoYtl6kxHah/qpIym3r8lc8RfgOtrPL8HVN5R
+         us0aUywLkO9BCfs9cKlJmwh07qVI7pksjxglvb9hwmhZmD1sTSaGUtjeo6IXYDhkHlwm
+         oIUnEZRryF7FHjOEbtv8fflCBfCfIOqe7Z+XzK2PgVWwtHbPFQ+1HxaxlkuAVLbvkjAn
+         Q3Bpxkx28DXPVL12pNxg9JlUpxhv1474hGYUN0Mus2FRrQCZj8Aj9JPyirmte3pO9yS9
+         ymncOKjNdsB32C6UwZgHtaHClkvhHzMq8W+MRSEI9xs3VwuyXAfuHY1a4TslvYJRXbb2
+         XSzg==
+X-Forwarded-Encrypted: i=1; AFNElJ/eTKiBwXW5yNy8TeZdkLSMdZxdFqWOT0fCSgFheaxS2dNfXhaM75pR3xFY4caS5/ifOqQQ8TA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfZOAlQdXDOE3124s0EJJYJihO606UyvpTu64o54j8fY7DSZ/4
+	MVNudnr/W9nSkJQ4Abpngujy8Hugc0UbwX/dNDVKB2uRado5fSdOTl3J
+X-Gm-Gg: Acq92OGkZVtEoqywk+huQ8xJIWuLyDSELH87h4yEk87q/eERfix3LW3Qrlf+QVlxCtW
+	dnxBpLklZM0HpjuSWTcgbO17cDPM5aJs/bdqvh+wYmcL5JpQzetlpIRs0pUSEtrBk4fgx8mcscR
+	YHznoe/d/xmlpjfm/up4ppw57snPJ1xmgJ0xJgqGIB8qwN6MdeiE+MnlPVlV799rxeXVtI5d9AC
+	jheClcxsE2i6rCY7UKE8EyQPSwhDRWxg0Mo3/jRvIecQro3vDVcyaUe0tSSsbEq5F8djZGDYACW
+	ru4Xj1bWyX9MWSbl+eeVVdrVYdR0Ag/jwm/ySH0peJyhDbFJn4jNxuLIloJHaQ2C1RNgJGAzJuv
+	uqFjXxWbLUjn8Z7bddli1hMjcFnygq7Ae3X4/2DzsjOpvhX59s2O7W7+lqXwG0MRd/GWHBTQ3qQ
+	R8ETScsJrdpT3aD3LGjnQQHoYyGWmaJk65YidmaaRL6dbb9Jgw00VyD0EDQgFM36oHtgWXrdRhu
+	ELnC9If
+X-Received: by 2002:a05:6512:31c5:b0:5a8:f04d:573a with SMTP id 2adb3069b0e04-5aa3232b465mr1276360e87.17.1779453537271;
+        Fri, 22 May 2026 05:38:57 -0700 (PDT)
+Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5aa32cbaaf2sm404364e87.33.2026.05.22.05.38.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 22 May 2026 05:38:56 -0700 (PDT)
+Message-ID: <0d58842a-aa5c-4d12-9435-3264070038cc@gmail.com>
+Date: Fri, 22 May 2026 15:38:55 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] iio: pressure: rohm-bm1390: notify trigger on all
+ error paths
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Stepan Ionichev <sozdayvek@gmail.com>, dlechner@baylibre.com,
+ nuno.sa@analog.com, andy@kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260517160801.269-1-sozdayvek@gmail.com>
+ <20260518094238.1986-1-sozdayvek@gmail.com>
+ <20260518161516.53f21777@jic23-huawei>
+ <61d9cec3-6aed-416f-9604-94fe94cb2e3b@gmail.com>
+ <20260520120822.351aa58f@jic23-huawei>
+Content-Language: en-US, en-AU, en-GB, en-BW
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20260520120822.351aa58f@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253776-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,baylibre.com,analog.com,kernel.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-253778-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mazziesaccount@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,qualcomm.com:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 14B5D5B4962
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 7B0C75B476C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+On 20/05/2026 14:08, Jonathan Cameron wrote:
+> On Tue, 19 May 2026 08:48:13 +0300
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> 
+>> Thanks Jonathan,
+>>
+>> Your post give me something to think about ;)
+> 
+> This is a can of worms.  More below.
+> 
+> I'm unconcerned as long as (and ideally someone should check it)
+> we can get of being stuck by unbind/rebind of driver.  Anything
+> else is best effort.
+> 
+> 
+>>
+>> On 18/05/2026 18:15, Jonathan Cameron wrote:
+>>> On Mon, 18 May 2026 14:42:38 +0500
+>>> Stepan Ionichev <sozdayvek@gmail.com> wrote:
+>>>    
+>>>> bm1390_trigger_handler() returns from three error paths without
+>>>> calling iio_trigger_notify_done(). The success path at the end
+>>>> does, so on a single transient regmap or read failure the trigger
+>>>> use_count is never decremented, and the !atomic_read(&trig->use_count)
+>>>> guard in iio_trigger_poll_chained() drops every subsequent dispatch.
+>>>> The buffered-data flow stays wedged until the trigger is detached.
+>>>>
+>>>> Funnel all returns through a single done label that calls
+>>>> iio_trigger_notify_done() and reports the outcome via IRQ_RETVAL().
+>>>>
+>>>> Fixes: 81ca5979b6ed ("iio: pressure: Support ROHM BU1390")
+>>>> Cc: stable@vger.kernel.org
+>>>> Signed-off-by: Stepan Ionichev <sozdayvek@gmail.com>
+>>>
+>>> These error path 'fixes' are fixes for hardware failure - so if anything
+>>> they are hardending  against a possible error condition. I don't mind
+>>> that bit it's not a bug to not do this so fixes tag an stable are not
+>>> appropriate for any of these.
+>>>
+>>> Note however that hardening against these conditions is not this simple.
+>>> It takes careful analysis of exactly how the hardware behaves and what
+>>> each error condition 'might' mean.  Whilst they are probably harmless
+>>> I'm also very dubious about taking them without comprehensive testing
+>>> on the particular device.
+>>>    
+>>>> ---
 
-[ Upstream commit e4865a56d013e86e46ea6acea15bb6eae01898ff ]
+//snip
 
-Since every platform driver can be forced to match a device that doesn't
-match its list of device IDs because of device_match_driver_override(),
-platform drivers that rely on the existence of a device's ACPI companion
-object should verify its presence.
+>>>>    
+>>>> @@ -639,7 +642,8 @@ static irqreturn_t bm1390_trigger_handler(int irq, void *p)
+>>>>    		ret = bm1390_pressure_read(data, &data->buf.pressure);
+>>>>    		if (ret) {
+>>>>    			dev_warn(data->dev, "sample read failed %d\n", ret);
+>>>> -			return IRQ_NONE;
+>>>> +			handled = false;
+>>>> +			goto done;
+>>>
+>>> Hopefully all this stuff is unrelated to the trigger.  For these it is fair to
+>>> ack the trigger and the interrupt.  Curiously the driver does it partly for the
+>>> next one (IRQ_HANDLED).
+>>
+>> I would keep the IRQ_NONE here because, if we keep constantly failing
+>> the reads, then the bus is likely to be unerliable - and disabling the
+>> useless IRQ is probably very sane thing to do. It should help debugging.
+>> What comes to acking the trigger - I am starting to agree with Stepan,
+>> we should probably ack the trigger in any case. If we don't ack the
+>> trigger, then the IRQ_NONE does not serve the purpose it is intended for.
+> 
+> The interrupt that we'd get spurious detection on here would not be the device
+> one it would be the software emulated one deep in the iio trigger stuff.
+> 
+> Might still be useful for debug. Anyone fancy hacking an error in and reporting
+> back what we actually get from the debug hardware?  (with that trigger acked
+> as you suggest?)
 
-Accordingly, add requisite ACPI_COMPANION() or ACPI_HANDLE() checks
-against NULL to 13 platform drivers handling core ACPI devices.
+No promises but I'll see if I can try out something next week...
 
-Also change the value returned by the ACPI thermal zone driver when
-the device's ACPI companion is not present to -ENODEV for consistency
-with the other drivers.
+Yours,
+	-- Matti
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/4516068.ejJDZkT8p0@rafael.j.wysocki
-Cc: 7.0+ <stable@vger.kernel.org> # 7.0+
-[ reordered variable declaration to add NULL check before pre-existing stable-only code that dereferences the pointer ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/acpi/ac.c                | 6 +++++-
- drivers/acpi/acpi_pad.c          | 6 +++++-
- drivers/acpi/acpi_tad.c          | 6 +++++-
- drivers/acpi/battery.c           | 6 +++++-
- drivers/acpi/button.c            | 9 +++++++--
- drivers/acpi/ec.c                | 6 +++++-
- drivers/acpi/hed.c               | 6 +++++-
- drivers/acpi/nfit/core.c         | 6 +++++-
- drivers/acpi/pfr_telemetry.c     | 6 +++++-
- drivers/acpi/pfr_update.c        | 6 +++++-
- drivers/acpi/sbs.c               | 6 +++++-
- drivers/acpi/sbshc.c             | 6 +++++-
- drivers/acpi/thermal.c           | 2 +-
- drivers/acpi/tiny-power-button.c | 6 +++++-
- 14 files changed, 68 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/acpi/ac.c b/drivers/acpi/ac.c
-index c5d77c3cb4bce..56783af6239b1 100644
---- a/drivers/acpi/ac.c
-+++ b/drivers/acpi/ac.c
-@@ -203,11 +203,15 @@ static const struct dmi_system_id ac_dmi_table[]  __initconst = {
- 
- static int acpi_ac_probe(struct platform_device *pdev)
- {
--	struct acpi_device *adev = ACPI_COMPANION(&pdev->dev);
- 	struct power_supply_config psy_cfg = {};
-+	struct acpi_device *adev;
- 	struct acpi_ac *ac;
- 	int result;
- 
-+	adev = ACPI_COMPANION(&pdev->dev);
-+	if (!adev)
-+		return -ENODEV;
-+
- 	ac = kzalloc_obj(struct acpi_ac);
- 	if (!ac)
- 		return -ENOMEM;
-diff --git a/drivers/acpi/acpi_pad.c b/drivers/acpi/acpi_pad.c
-index c9a0bcaba2e4c..dea7b2b4e5445 100644
---- a/drivers/acpi/acpi_pad.c
-+++ b/drivers/acpi/acpi_pad.c
-@@ -426,9 +426,13 @@ static void acpi_pad_notify(acpi_handle handle, u32 event,
- 
- static int acpi_pad_probe(struct platform_device *pdev)
- {
--	struct acpi_device *adev = ACPI_COMPANION(&pdev->dev);
-+	struct acpi_device *adev;
- 	acpi_status status;
- 
-+	adev = ACPI_COMPANION(&pdev->dev);
-+	if (!adev)
-+		return -ENODEV;
-+
- 	strscpy(acpi_device_name(adev), ACPI_PROCESSOR_AGGREGATOR_DEVICE_NAME);
- 	strscpy(acpi_device_class(adev), ACPI_PROCESSOR_AGGREGATOR_CLASS);
- 
-diff --git a/drivers/acpi/acpi_tad.c b/drivers/acpi/acpi_tad.c
-index 6d870d97ada65..49e0710ac5ca3 100644
---- a/drivers/acpi/acpi_tad.c
-+++ b/drivers/acpi/acpi_tad.c
-@@ -593,12 +593,16 @@ static void acpi_tad_remove(struct platform_device *pdev)
- static int acpi_tad_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
--	acpi_handle handle = ACPI_HANDLE(dev);
- 	struct acpi_tad_driver_data *dd;
-+	acpi_handle handle;
- 	acpi_status status;
- 	unsigned long long caps;
- 	int ret;
- 
-+	handle = ACPI_HANDLE(dev);
-+	if (!handle)
-+		return -ENODEV;
-+
- 	ret = acpi_install_cmos_rtc_space_handler(handle);
- 	if (ret < 0) {
- 		dev_info(dev, "Unable to install space handler\n");
-diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index 8fbad8bc46503..c965b930a3902 100644
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -1215,10 +1215,14 @@ static void sysfs_battery_cleanup(struct acpi_battery *battery)
- 
- static int acpi_battery_probe(struct platform_device *pdev)
- {
--	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
- 	struct acpi_battery *battery;
-+	struct acpi_device *device;
- 	int result;
- 
-+	device = ACPI_COMPANION(&pdev->dev);
-+	if (!device)
-+		return -ENODEV;
-+
- 	if (device->dep_unmet)
- 		return -EPROBE_DEFER;
- 
-diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
-index 97b05246efab6..ff30f993b1506 100644
---- a/drivers/acpi/button.c
-+++ b/drivers/acpi/button.c
-@@ -531,15 +531,20 @@ static int acpi_lid_input_open(struct input_dev *input)
- 
- static int acpi_button_probe(struct platform_device *pdev)
- {
--	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
- 	acpi_notify_handler handler;
-+	struct acpi_device *device;
- 	struct acpi_button *button;
- 	struct input_dev *input;
--	const char *hid = acpi_device_hid(device);
- 	acpi_status status;
- 	char *name, *class;
-+	const char *hid;
- 	int error = 0;
- 
-+	device = ACPI_COMPANION(&pdev->dev);
-+	if (!device)
-+		return -ENODEV;
-+
-+	hid = acpi_device_hid(device);
- 	if (!strcmp(hid, ACPI_BUTTON_HID_LID) &&
- 	     lid_init_state == ACPI_BUTTON_LID_INIT_DISABLED)
- 		return -ENODEV;
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 6f0065257a77c..2d94bae5c4d15 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -1679,10 +1679,14 @@ static int acpi_ec_setup(struct acpi_ec *ec, struct acpi_device *device, bool ca
- 
- static int acpi_ec_probe(struct platform_device *pdev)
- {
--	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
-+	struct acpi_device *device;
- 	struct acpi_ec *ec;
- 	int ret;
- 
-+	device = ACPI_COMPANION(&pdev->dev);
-+	if (!device)
-+		return -ENODEV;
-+
- 	strscpy(acpi_device_name(device), ACPI_EC_DEVICE_NAME);
- 	strscpy(acpi_device_class(device), ACPI_EC_CLASS);
- 
-diff --git a/drivers/acpi/hed.c b/drivers/acpi/hed.c
-index 4d5e12ed6f3c2..060e8d670f5d3 100644
---- a/drivers/acpi/hed.c
-+++ b/drivers/acpi/hed.c
-@@ -50,9 +50,13 @@ static void acpi_hed_notify(acpi_handle handle, u32 event, void *data)
- 
- static int acpi_hed_probe(struct platform_device *pdev)
- {
--	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
-+	struct acpi_device *device;
- 	int err;
- 
-+	device = ACPI_COMPANION(&pdev->dev);
-+	if (!device)
-+		return -ENODEV;
-+
- 	/* Only one hardware error device */
- 	if (hed_handle)
- 		return -EINVAL;
-diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-index d13264fb9e026..9304ac996d41a 100644
---- a/drivers/acpi/nfit/core.c
-+++ b/drivers/acpi/nfit/core.c
-@@ -3341,12 +3341,16 @@ static int acpi_nfit_probe(struct platform_device *pdev)
- 	struct acpi_buffer buf = { ACPI_ALLOCATE_BUFFER, NULL };
- 	struct acpi_nfit_desc *acpi_desc;
- 	struct device *dev = &pdev->dev;
--	struct acpi_device *adev = ACPI_COMPANION(dev);
- 	struct acpi_table_header *tbl;
-+	struct acpi_device *adev;
- 	acpi_status status = AE_OK;
- 	acpi_size sz;
- 	int rc = 0;
- 
-+	adev = ACPI_COMPANION(&pdev->dev);
-+	if (!adev)
-+		return -ENODEV;
-+
- 	rc = acpi_dev_install_notify_handler(adev, ACPI_DEVICE_NOTIFY,
- 					     acpi_nfit_notify, dev);
- 	if (rc)
-diff --git a/drivers/acpi/pfr_telemetry.c b/drivers/acpi/pfr_telemetry.c
-index 32bdf8cbe8f23..2387376832a1b 100644
---- a/drivers/acpi/pfr_telemetry.c
-+++ b/drivers/acpi/pfr_telemetry.c
-@@ -360,10 +360,14 @@ static void pfrt_log_put_idx(void *data)
- 
- static int acpi_pfrt_log_probe(struct platform_device *pdev)
- {
--	acpi_handle handle = ACPI_HANDLE(&pdev->dev);
- 	struct pfrt_log_device *pfrt_log_dev;
-+	acpi_handle handle;
- 	int ret;
- 
-+	handle = ACPI_HANDLE(&pdev->dev);
-+	if (!handle)
-+		return -ENODEV;
-+
- 	if (!acpi_has_method(handle, "_DSM")) {
- 		dev_dbg(&pdev->dev, "Missing _DSM\n");
- 		return -ENODEV;
-diff --git a/drivers/acpi/pfr_update.c b/drivers/acpi/pfr_update.c
-index 11b1c28280052..6283105bb0e8b 100644
---- a/drivers/acpi/pfr_update.c
-+++ b/drivers/acpi/pfr_update.c
-@@ -538,10 +538,14 @@ static void pfru_put_idx(void *data)
- 
- static int acpi_pfru_probe(struct platform_device *pdev)
- {
--	acpi_handle handle = ACPI_HANDLE(&pdev->dev);
- 	struct pfru_device *pfru_dev;
-+	acpi_handle handle;
- 	int ret;
- 
-+	handle = ACPI_HANDLE(&pdev->dev);
-+	if (!handle)
-+		return -ENODEV;
-+
- 	if (!acpi_has_method(handle, "_DSM")) {
- 		dev_dbg(&pdev->dev, "Missing _DSM\n");
- 		return -ENODEV;
-diff --git a/drivers/acpi/sbs.c b/drivers/acpi/sbs.c
-index bbd3938f7b524..e32d424ff3e18 100644
---- a/drivers/acpi/sbs.c
-+++ b/drivers/acpi/sbs.c
-@@ -631,11 +631,15 @@ static void acpi_sbs_callback(void *context)
- 
- static int acpi_sbs_probe(struct platform_device *pdev)
- {
--	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
-+	struct acpi_device *device;
- 	struct acpi_sbs *sbs;
- 	int result = 0;
- 	int id;
- 
-+	device = ACPI_COMPANION(&pdev->dev);
-+	if (!device)
-+		return -ENODEV;
-+
- 	sbs = kzalloc_obj(struct acpi_sbs);
- 	if (!sbs) {
- 		result = -ENOMEM;
-diff --git a/drivers/acpi/sbshc.c b/drivers/acpi/sbshc.c
-index 36850831910bc..4b2a3ef835739 100644
---- a/drivers/acpi/sbshc.c
-+++ b/drivers/acpi/sbshc.c
-@@ -240,11 +240,15 @@ static int smbus_alarm(void *context)
- 
- static int acpi_smbus_hc_probe(struct platform_device *pdev)
- {
--	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
-+	struct acpi_device *device;
- 	int status;
- 	unsigned long long val;
- 	struct acpi_smb_hc *hc;
- 
-+	device = ACPI_COMPANION(&pdev->dev);
-+	if (!device)
-+		return -ENODEV;
-+
- 	status = acpi_evaluate_integer(device->handle, "_EC", NULL, &val);
- 	if (ACPI_FAILURE(status)) {
- 		pr_err("error obtaining _EC.\n");
-diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
-index 64356b004a57d..a7bb550a71856 100644
---- a/drivers/acpi/thermal.c
-+++ b/drivers/acpi/thermal.c
-@@ -790,7 +790,7 @@ static int acpi_thermal_probe(struct platform_device *pdev)
- 	int i;
- 
- 	if (!device)
--		return -EINVAL;
-+		return -ENODEV;
- 
- 	tz = kzalloc_obj(struct acpi_thermal);
- 	if (!tz)
-diff --git a/drivers/acpi/tiny-power-button.c b/drivers/acpi/tiny-power-button.c
-index 531e65b01bcbe..92516ef84b021 100644
---- a/drivers/acpi/tiny-power-button.c
-+++ b/drivers/acpi/tiny-power-button.c
-@@ -38,9 +38,13 @@ static u32 acpi_tiny_power_button_event(void *not_used)
- 
- static int acpi_tiny_power_button_probe(struct platform_device *pdev)
- {
--	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
-+	struct acpi_device *device;
- 	acpi_status status;
- 
-+	device = ACPI_COMPANION(&pdev->dev);
-+	if (!device)
-+		return -ENODEV;
-+
- 	if (device->device_type == ACPI_BUS_TYPE_POWER_BUTTON) {
- 		status = acpi_install_fixed_event_handler(ACPI_EVENT_POWER_BUTTON,
- 							  acpi_tiny_power_button_event,
 -- 
-2.53.0
+---
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
 
+~~ When things go utterly wrong vim users can always type :help! ~~
 
