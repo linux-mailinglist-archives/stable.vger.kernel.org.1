@@ -1,225 +1,341 @@
-Return-Path: <stable+bounces-253735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253736-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ELjNADgpEGpQUQYAu9opvQ
-	(envelope-from <stable+bounces-253735-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 12:00:24 +0200
+	id GF8aLQQqEGpQUQYAu9opvQ
+	(envelope-from <stable+bounces-253736-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 12:03:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A173E5B1924
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 12:00:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23B0E5B19FE
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 12:03:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 399CE3032F63
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 09:56:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1E749302BBBA
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 09:57:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 502083905E4;
-	Fri, 22 May 2026 09:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D46043B52E1;
+	Fri, 22 May 2026 09:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="BW84dCJB"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="sBVZZGje";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="hH9GpRZC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747AB3BB132
-	for <stable@vger.kernel.org>; Fri, 22 May 2026 09:56:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779443802; cv=none; b=qb4rJuc/77rWmQRffq9yOyZ7oXkXQUlSM2/sY93H4jLzzxDarTjS6JSPqRZP2R2fPFtBmkrX/satWJCuJgAsYj9WiL0mhy6IMMtzeInmXI28S63PxXp6m3qfR1tl+zHoJvhjkMQBBZfXu/tzGO/Yh8kuy/IwZR3VkbftYl/G8qM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779443802; c=relaxed/simple;
-	bh=+9CkvQvwITcHVUaiqsGONkFkiD8T7xTmKd6scWLoWao=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=m3kMbDgubdA9nGzbjACXtDA97jhKyyU1MFaOYqaM3rOwAm6RpNaA07/XV68QMwETTP6cQGuUrf3WbzNNOsMOcLf98WjQwy/OG4Do0L36nMOPFpYxBqnvVTDx8QlbFvRHyLnebXyB1pfOMGNaMCNxzCNMTWoRq69b60M4T07Yh9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=BW84dCJB; arc=none smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-38e97e73234so63108861fa.1
-        for <stable@vger.kernel.org>; Fri, 22 May 2026 02:56:40 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189523BAD95;
+	Fri, 22 May 2026 09:57:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779443857; cv=fail; b=OjqtqzvDihcHe6stZPPcdGqYK7qRJtzlrj9DiWblpn1F5SW5jK3eQuaSBYcDyrWjb7hkQheCrj3+m7ojJGNicwafDiLYL6cyPIb31i8E15xctQ6v1Yj98qxjCCd4d9/wdCaX4PzeJ/PrF58dv0ZdMNjtoxPhYaToh8n7ND2LOU8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779443857; c=relaxed/simple;
+	bh=/fRsqaRu0GsJCAnPrOeaOxxAWxtkh9MBf1chbEZn5gI=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=S7eLIa5of0cYycYi4E+Lk7Ew+nD8ywTqhIKRbD+w0VD698nnX+tE40URWQ09nwFdCUVIpBOkDYuKtpPJtSJz4GjpKd6tVA6BuHzOSQvcIOfxGM63TGK1B9SUM8vQuGvjVbMGw9NAaz+s9lbmHMux/r0nUmnEkrSFR+SU1twmb04=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=sBVZZGje; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=hH9GpRZC; arc=fail smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64LJfajc3527414;
+	Fri, 22 May 2026 09:57:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=qDsVDpg4JZVXw29OLsRuVksNVQu6QTd/BGArj0ygCOg=; b=
+	sBVZZGjeuhEQ2/ZRXFi+3zgip0wmcp4/JV6nIqsYTRjQiavW1zdRbCeXQE2JNvli
+	e821ULBAIfC/Hqcqu4xqwiemINHsI/xeeWkNgxIRdrwQlB++xVuocVw18c43lmmk
+	9bkbHr9SOkL2fe75oc0vqePPT53AKM5Wu1F07IyuSGj0/mVSEMaZvpNpj7FZZ25f
+	2xf/ZuP0ilSpRpKmW7HkN2k2s9S2ttCh83DwQhb8JqfbTWytBlAl8xObapWyIsLD
+	hSUVTQtBBeGMk7PiqMY2guZQxF6edbfgzELtWmmd4/+Aak9r1ac/jXOGw0KEoBIm
+	yBvyDMxVYInBQFbNX1YOWw==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4e6gxx2r3r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 22 May 2026 09:57:25 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 64M9nkH2038086;
+	Fri, 22 May 2026 09:57:24 GMT
+Received: from ch1pr05cu001.outbound.protection.outlook.com (mail-northcentralusazon11010035.outbound.protection.outlook.com [52.101.193.35])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4e6f1ku5cr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 22 May 2026 09:57:24 +0000 (GMT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mjXAXo3a4X5mOnqv7fjspZqPPnAc9EdbsQAgScmahBDnyT586x1/B0PeZVcxsTMrkfTwSG8qNpcH6sBV4PtDipEhOX3ue57RFGa0tqn7Eqe4+Cx8UwFziBiyckeAtP8mXXg7MhHWd7ty9qx2VISai1yj/ppuINv5UVyrg4c+xDRCOGaGjS6/WwvKlsXoirgh3sgPCwEmTrrHmXRX6LVXH/vwTZs6vsQH+jWwPk+XQevtVNQCc6ApuGvRZQxyYtlBpYVQ34k7XmCe4p2dXpM9tnnRHNvePOOy3fzrJwSV7AoTwES+y1ySnB3fgJlGz2FgcbfL7QiLfks4Ru+3kxUJ6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qDsVDpg4JZVXw29OLsRuVksNVQu6QTd/BGArj0ygCOg=;
+ b=b0MgEDBuc8GWmmxa676hpbsxHnvRewlK+qNEG7r50xASpUO+PNsb/qEzy+AQIZds+2GDc4sok2Vdl766b4OTDgC5cUf/YwzTmKtvOa/H7Tyz0oe+uOrqssIOrGWt6Bq2Qsa5ZLS86nuTKnBC0AN6a4pG5mn+/IbE7Gg0/rKpHBWRe3lSpqAGb8ZGnVZZCKEJXqUXAkbi262kYa5qqQb8sQCNrFHaDhDDfdEgqt8dn+iPv/Q7jjx04f7DZrbBP1gSpVwNiWL2ymlxytJw3V/fnrbQh/BmwK4koY3m+qjIl+PyA4qfiesuwYJ3TxYQQsAxqNWtPWFt6CSnZ1rop2x8JQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1779443798; x=1780048598; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=u8y63JRIZrYdcs199ekWdJMzEhRGTikpYaZ3eKttq4U=;
-        b=BW84dCJBX1gMHJS+u1ZDWod+KbJ0Eo5R5ziRIeKClZ4tRGBdQP1zH4vgPhkx/hIEBn
-         hsbaexZCSuURDhXycLRNRDJcm8PmDve3M+Oq+VNaOX8yElHr6agHKiDTCyQeubO3yURM
-         QiTJ5vdwFhR5cebj6MpJIMd/cz367C9teECI0TbeipFadJw5xkB4NxOyD98KJ50KJWSU
-         tPXRkWeAGw1p6YYnulCAuMqe3xfX8HgmGYpvV23m8ZZr9lZrejl65LERVZAlD6TlrW5Y
-         4YsdzKVouHrMl+X17ukvywJG2haLCZOE/hlZNdze5AAQEbHz69OXfGhZsR8nTDk5yw/8
-         3v1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779443798; x=1780048598;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=u8y63JRIZrYdcs199ekWdJMzEhRGTikpYaZ3eKttq4U=;
-        b=JQ3ALuAWy0tUevh2AzlOHVGvzbuMkPIaB2ExSO2kbv+CiY6to6AjLBCVSOx62CrPIg
-         6YiMhjYeQnwromLroO0ClhnqQhtPLF8cs0/VQLqvNncbzUi49Mmi6M+tzXz66lHsRbea
-         un96OpccjPVnhIE0uf//JovPQk2Ih1gQhcCb+XYrxdpHhrnSTtDvp4ralxgd8pVbLXLE
-         4fxXZPm4aGTbAp/DzBTpHE9QtiDnMSTC9wi9clVz1man4S+/SuMUUO0rAThVK2TJ6WM9
-         Zirb51hSFqtQbmXYXmTVgCoD93SmY3eIPDwmCb4p0KghDPdGSIYShjJDWgsWELdLS223
-         CDAQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/6o+X/ske61ha8/Txj9Ms5AbcgO4lzlFCIM8ra2yIXhfvf9C8RzugEOki3uXa31xQoAm2cPys=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxK5v1YAtrn7Fe7gRt+vyvZ8VcGS6PVXj2pUVYSgdo2OGU0uDp1
-	8WaEJwxT1BY57rWDxM9dHWYGVOdm9QPbvGhhyi/wG/Y69ziH8rovLrgpgi4aJTvZvNc=
-X-Gm-Gg: Acq92OFD9JzBfbIKduoBFvVflurnxQGCm7/BythNgcn3vTqSDAP8ARzcQnhbDADDL1F
-	6yPKb5IcGugz+WsKuQa/bYNUgF3yQYwec/ViAVpL7nVj1XisqwQ9kYB9WtGwxVh8Ni3UaqghyQI
-	/SP6LtIgR49D0rrcRkjumJWyQXDeLGja3eWw4MZ+RxWM2/vtFVh/raZBtuzPVY2cGM15rjlWene
-	h6VL1cDVtAH+5UTBTGviOdqhLoalxA9oUeAwts7BdzPwYcRGInuqI+3spLLMXQH/t2PMFzXHoL5
-	XOcOvsOFKIQ/5D6GUyj1Bxp2gHxHlMF11QRC+IhB2t7CBdq9BgzeivS9Qn0GZwYx/IwS6A0tHp5
-	QkkGVEFGttzsxosGrPjciwXIIyK5ZrxQhDnQKeCi6d7XNQWGeYSJra6mxv4kvVxoYJudX1C0VF0
-	IrJLDG3R1KY3aofKuP7zXS5YEtFFqS78IQf/cDn12xMgQKZCt+FzgKHu5OF1hnJAJ3eqhf+Bxyt
-	SVeecNDnY2uRdu4
-X-Received: by 2002:a05:6512:694:b0:5aa:30d8:3281 with SMTP id 2adb3069b0e04-5aa3237d71amr867452e87.32.1779443798393;
-        Fri, 22 May 2026 02:56:38 -0700 (PDT)
-Received: from [100.64.15.206] (h-158-174-93-34.NA.cust.bahnhof.se. [158.174.93.34])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5aa32cf95c9sm298531e87.78.2026.05.22.02.56.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 22 May 2026 02:56:38 -0700 (PDT)
-Message-ID: <430612f0-53f6-49bc-acd5-e69df3b330da@suse.com>
-Date: Fri, 22 May 2026 11:56:37 +0200
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qDsVDpg4JZVXw29OLsRuVksNVQu6QTd/BGArj0ygCOg=;
+ b=hH9GpRZCWwFSnLI4cbtzzkU5YzFrh4L+ZyD1bl9mpOD0JII1ofroWWqW+Vc/xeBbIZVA0GUSPCkBhTAqfeI4bTcJajMIb5pnwWvj/8k9WUepQStfNA2meLizjCYu/wKeUgN1DpEksG2zPoPHHDqiLElPbdMG+0aNITlVXwX5Beg=
+Received: from DS3PR10MB997700.namprd10.prod.outlook.com (2603:10b6:8:347::19)
+ by EAYPR10MB997927.namprd10.prod.outlook.com (2603:10b6:303:2d4::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.17; Fri, 22 May
+ 2026 09:57:22 +0000
+Received: from DS3PR10MB997700.namprd10.prod.outlook.com
+ ([fe80::4c1c:3bb:c4c9:8e7a]) by DS3PR10MB997700.namprd10.prod.outlook.com
+ ([fe80::4c1c:3bb:c4c9:8e7a%7]) with mapi id 15.21.0048.016; Fri, 22 May 2026
+ 09:57:22 +0000
+Message-ID: <b8ef921f-e2ab-4cfb-b75c-89e4277214cf@oracle.com>
+Date: Fri, 22 May 2026 15:27:13 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 346/666] bpf, riscv: Remove redundant
+ bpf_flush_icache() after pack allocator finalize
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Song Liu <song@kernel.org>,
+        Puranjay Mohan <puranjay@kernel.org>, Pu Lehui <pulehui@huawei.com>,
+        Paul Chaignon <paul.chaignon@gmail.com>,
+        Alexei Starovoitov
+ <ast@kernel.org>, Sasha Levin <sashal@kernel.org>
+References: <20260520162111.222830634@linuxfoundation.org>
+ <20260520162118.730164877@linuxfoundation.org>
+Content-Language: en-US
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+In-Reply-To: <20260520162118.730164877@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BM1P287CA0009.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:b00:40::17) To DS3PR10MB997700.namprd10.prod.outlook.com
+ (2603:10b6:8:347::19)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] scsi: target: iscsi: validate CHAP_R length before
- base64 decode
-To: David Disseldorp <ddiss@suse.de>,
- Alexandru Hossu <hossu.alexandru@gmail.com>
-Cc: martin.petersen@oracle.com, bvanassche@acm.org, mlombard@arkamax.eu,
- target-devel@vger.kernel.org, linux-scsi@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260518121811.385350-1-hossu.alexandru@gmail.com>
- <20260520165259.272808-1-hossu.alexandru@gmail.com>
- <20260522003800.2323e11a.ddiss@suse.de>
-Content-Language: en-US
-From: Hannes Reinecke <hare@suse.com>
-In-Reply-To: <20260522003800.2323e11a.ddiss@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS3PR10MB997700:EE_|EAYPR10MB997927:EE_
+X-MS-Office365-Filtering-Correlation-Id: 42a1debc-dcb7-4e41-6d27-08deb7e884a1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|366016|18002099003|56012099003|22082099003|3023799007|5023799004|4143699003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	Y7lM3sVyUnMBXawxxudTXRd4CvPb00jf+XptI5XisN4i3a09SDa/uGc4cTzv97Npr8jISBKUz/TgqkUfuowYoUh5zrSgHu+ZMxB/uFQwQ+7uC+VTUs6xabkV/Jf1K7yFqxFZepjQt9JLWHfWwxXQIr0PRG+lvHUiLqKe9PchmUaeU6SYBBDsS9jM7EIXXbiZqy44ApEeUKcANKFb8hZWLjH5vL+hEznCcA/79l7lF7O1DEZPn7YgcD0/3yEC6gZuduRu7BjgYfIhHniHUHV11Ylc5KdnpeZyr7m0cPcfTNzpLKNBinSuv7xNQQpKbN+4nBOPEDit08m76Km08V4+hQiCiabqjtEfHooTtkz58Pgy36ghHTee2uZ3NsLkBjpwUv9VBS8i5VfZ0U/iXH1deQ2Kir+5IvD9bLZlRzALlLOE6Fi0d3ul8nI1k57mMyFsVNnOOj8fPr6gEH1qx2JV9ti/P/oj1XbI91UsChS7tdueIKrO2AqhuyfGd/NEg2gupFg2OVQO+CpuZsyb70CUWdzFwjCQi27+/RJENvlCFrEYV5NGbQIHlcmHQS2pYODvl0xO8bRGioU4SId2HkanF6Q6ykeSGxKobocwBbl3nd72RJPYqfxz7BJuyw2RuQ+JZFri5h1YvGPoQ1DzOJL13YKkVzV4Y0OCbXHMTTdZg0Vm996/6KqDVOYOf0FJhCeSKNdhwWOpjywMtEwcEBLsjA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS3PR10MB997700.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(18002099003)(56012099003)(22082099003)(3023799007)(5023799004)(4143699003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SmdqcWtQZm9FSEdPd0JNaXNjOTJkaFZGUkwyWVh4RVF5L3R2UkZaYUV3WjZ3?=
+ =?utf-8?B?cy93WEZwZEp6ZndCT3BPSkRFaGkvc0hYMmFsY0VXZ2VCSllZTjZXdFNDNnhQ?=
+ =?utf-8?B?TEE5UmZHZG5xYndhM2d4R0RiamdFQlpnMmpSVFZTVDAwQzhKdVZYN1FGVm16?=
+ =?utf-8?B?MW80Q2FtS1V0S3ZWVVlYaEtKMmtseWt6eklEOTMwdzlJQzBnaGpwcDJpdDRC?=
+ =?utf-8?B?MmxvemtFUXVUclRKbDFka25vcE1oSVRDNjhJUlRYcXpkT1lQUm93cXV0bkwv?=
+ =?utf-8?B?c2duT2p2RzNJL2VhVnpGUXFUTDd3c1Q3VGpyWG9FSEtQVGRjQkRzdm9hdGlE?=
+ =?utf-8?B?akIyU3kwWThQa1BOZUxNeVUrVm1Mc1JWcFJWdzB6bnY4anVnNU93TGM5YzdR?=
+ =?utf-8?B?RVo4QWwrcXZVbkpYcC9XdERlV2wzejZ2YjRvcTkrV2c1d2VpWkdwLzQyelRv?=
+ =?utf-8?B?aEFzaWQyZ2JPYWxrZncxL3NRQnNFWU9DVzhTd2svSkV5TFY1dWtYZEZPcGta?=
+ =?utf-8?B?VWdETnpFMEZyMWxvdExRN0dDeHVyUmt3SmptMU52WW41QUNoZEQxS01ERjRO?=
+ =?utf-8?B?S1F3QkdtS2Z0eE5CTDZ1RVdKRkVYWmc0Qm5xa25rMENFZHNJM1RTWVNHRHdw?=
+ =?utf-8?B?Zk94clNUSVYrYnBoQW9ESHlXRU1ZbVRVWXlzbUZtd1ZzdGtuTEpMNmx3dzFT?=
+ =?utf-8?B?UzlyTW53WXdTL2tXMDNoWEppL2xHM1dqNFd4Y3VyOWhJRDZWUzZ4V0liUjJI?=
+ =?utf-8?B?MkFHZFdnRmVMRy8vWHZuMFYwZnVFT0dNa25qejZ6dVErVWllK1BLODVFVlVY?=
+ =?utf-8?B?NzBDZzFLTVlva0laYysrNnB4ejY4Qmlyd1NqT2lkK2tPSWFhMFpydHo0VytQ?=
+ =?utf-8?B?ZzJRUCtpUHNQTEp5T0VMQ1p6bFVqV3RzY0xSS0hDU2t6Y3NuOStJZDZZN0to?=
+ =?utf-8?B?RTBzbXRpQ25qcHUxTFozeUNqTUlXdEJVUFZ2eHB1eUZKR3dQZHplMGJFWlRW?=
+ =?utf-8?B?Z3I2LzhCQ05TT010MWZ1cm9TUEc3ZktORGJKQTY0ekhyTUx3MnJZemJqZ2R2?=
+ =?utf-8?B?MVpMN01GOXZ5OVIrL1VQa25QQzRPZmxkQkVBQXUrOHJ5WHp1Sjc3OG9ubFJI?=
+ =?utf-8?B?TG1vWElhN0xnQ1l2U1ZRSHFHdHM0cWNwakpBdVdyQmpXN2Npd1hWUGw1Yytj?=
+ =?utf-8?B?TXYyQ3F2RzYvU29GZVloNWh3eFBPNStxQkpEZ3lGZnZuUUhnaVllYUM4RUIw?=
+ =?utf-8?B?bHZoNlFCbnF5by9nWWJQN2s5cUUvbktsRVBaTXpIR1pHblRkWjBhRXhUVXZk?=
+ =?utf-8?B?blpudGhHdEF5OUN6ZC9pY3lVVmVNTkZwQk9EUitRM3NxMFRiSWFvY0xScGZv?=
+ =?utf-8?B?ZktVWWtWZWRhdDBSY0hpWngwd2h1RkFsWDcrOVZmTXZPUlZrK1RXRmtrc002?=
+ =?utf-8?B?SHdraE9pV0ZUNmpBWmlqL0lqRUh5NG1GTUV0QzJVSzRpbFRCV2xoT2pNOUo1?=
+ =?utf-8?B?M0RHM2JNd3ZWT1E2RmZtQ2xaVVJrYzVnRFZQcHJ4TFpZbnZXbGRiYm5DalM1?=
+ =?utf-8?B?ZCsyYi9ROUgzb3RCOVpGN0FKWE0xcW1zWjU2SE9leGZBU2ZOa2gwWlJzVWlu?=
+ =?utf-8?B?cGdQN1pCczFZa2VUQnhQdWxBSW1vdzFuOXJCbUxWV3ZUeEp1em1uWUdpSEcz?=
+ =?utf-8?B?MVZOd3ZlTFhlN09RTHBoaXh5QjFOQ0tKK3ZiRXhrdUZjUXNWK2I4c0ZiQ3BJ?=
+ =?utf-8?B?YTVZOXZReFRqckJoelZXcXlTY2VhbTRxanlWUHFqSjhoRWcrdW1HZkZscXA2?=
+ =?utf-8?B?ZlJqTHdUZWNjZGsxNTFzaUJLRHVCZWcxemg3RmhBU09OazRQQk0wOWhpTjVS?=
+ =?utf-8?B?cGFhVVBrQ3M2MktEa1JtVkRYWU41L0FuOEZYWkR4dDU4Z0JRNS9RYzFlbHVW?=
+ =?utf-8?B?RzhET2ZhbkhuZEExcmQ0aG1KamFWS0Jpb0Nya05vaFpjTll3UUdOaTB5NjN1?=
+ =?utf-8?B?R2J0cHoxTWZJcVd4UVB5bGt5S2dsbHBHZkh3WHhldU5XMncxeEdNTWVjM3BP?=
+ =?utf-8?B?Rjh6L3hwK0ZIcnN2aFdzZlZVV0FkVkpHQzkwTkJHbmhyUXBlajNUbzltbGJJ?=
+ =?utf-8?B?UDVCTm01M0d6WlRZR3ZUbUJJVTgyMDZzT3hROHFwd1huME9QSkdHd0Q5UklP?=
+ =?utf-8?B?cm5IZlZSTWZkUk5VclZUZi9obWx2VFB0YTluMmlZZm5QdjBhUUNaQjQ5c05v?=
+ =?utf-8?B?cHVabHppNXB5YUpEbFdDWlhxNlYyMDh1OHBwek54WExIUTBWT2Z0VWJxRTFn?=
+ =?utf-8?B?cjZFeENpeEZYWFcwV21jeDVUYytZejNIOFdlOHd3OFozSENNbC9FenpVb0tZ?=
+ =?utf-8?Q?3LPMkn/t3eWo9kE+lYUYS6gh4cABi/o3on3wF?=
+X-Exchange-RoutingPolicyChecked:
+	AuuDvnonvBW70vsc0oNG4LwRCKVbzcTTU7a+V28+TJjrHL9WdW28vy09TgaEFd4UznI4Mm8AZ7KuU26haV0vrIMtXb2ijDiEJvalv7BlcQBs2TR+Zai1KTBpTCtLPQTr4n6m/1HhTG55Mw3nTnwDSOUzr1sH4DMGIdiod3EtLy0SFRy62h/1myZ83HIftmZ8luKDq4VdjQgraf3h3wegQn6xhh4sH4RfE3v7JBA9B/y2IpAXLmC8QjObaj8GmBPGm9mibNYQ8hKYQ6LdPMVR2RXDzE09CqOhJ5rClIDu4qsEUVuR/Nk59g1mRYeWP134EmF8q1RYcXu9M8SJDhbiyw==
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	+1eNccxLe6lPK9omGSZLSx2kFWP69NcpfLkGuI2wzCe/0Snj0Om7JYbMdAHrLxu9THfQaeEiVd3fC6UMK1PCBzZf80dzg3oXGocwT1/ym6/dKrCxQtQgQabN0pt4Z1P9N1RxjlLTvkq+fmjqdfz5ZqB6TjUTNZ74MOdA8F5piFcOpQ2mMlTbhjtn3v3VeAzXTVOiKLYLvbJkl/lETANGWFcAJfHg02tij4l/95/4cYqs7ZohWVoJZeIXXDhD1bewvUR6b77pKpdE7l2+RsihT9fZYl1wtIoqcqBHzAblDU2xQxCEkxsbEzTuZVRZeSPSl46nT6zJJ2zXnPU3QEJ6TCPlDBofH7tPitw2kvY71d5qRCPUZqhXtdhgXo4tsqK4Mz+8QIIRLfzY2ZY5UNiLpFSXl59RuT4PL6ZtpRhqeVtaKn0aMyqq5EBwfY30krc7tdFM48bvHOQ3aMX+0Y6w/VETBfaud2EG5i4FIEUR+F7BhRb3RkFP1ru9T9TUxu5U0aQ0pzFirY0gK/HFNjDGEUzFSVCV1bR9PTjmJueumkCSHP5LKZdyH7Ae3FCT0YSkGeoscEEeVA8MSMO2GXgTi1vNfnNTRz1qBGJWNkQrS2Y=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 42a1debc-dcb7-4e41-6d27-08deb7e884a1
+X-MS-Exchange-CrossTenant-AuthSource: DS3PR10MB997700.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2026 09:57:22.2119
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: r57q5OsXrJWKYsY/d1TypPMugvhlQ7zZy1Wi2Sogkk8o1mDfzALkucmhr+A9nCHN7v6F5JBU4KQN6z/W844xnDqOPQSA1+RKGVsOSK/XQyq61XvX3scDOxDd1SGg528m
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: EAYPR10MB997927
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-22_02,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ spamscore=0 bulkscore=0 lowpriorityscore=0 suspectscore=0 phishscore=0
+ mlxscore=0 mlxlogscore=999 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2605130000 definitions=main-2605220097
+X-Authority-Analysis: v=2.4 cv=UOjt2ify c=1 sm=1 tr=0 ts=6a102885 b=1 cx=c_pps
+ a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=NGcC8JguVDcA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=jiCTI4zE5U7BLdzWsZGv:22 a=3I1J8UUJPc9JN9BFgKH3:22 a=VwQbUJbxAAAA:8
+ a=i0EeH86SAAAA:8 a=pGLkceISAAAA:8 a=HvvHtwdB2HOY62bBbaYA:9 a=QEXdDO2ut3YA:10
+ a=5yU3S35YU4bGjq-dph-N:22 a=Bho9c0fBagfJEIQBS7DQ:22 cc=ntf awl=host:12299
+X-Proofpoint-ORIG-GUID: a3TzTdzpI6IJ3AKqXL1JTspNrrsUWwiH
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIyMDA5OCBTYWx0ZWRfXz3Bl1rfQRth9
+ MgntV4gLBHOqchVUkfzB6v7O3/hCceS1B/dzXGUS860w50Lx4DG5VTF6vPpzNnQInyZ1AB2KXSn
+ tAhQHu/PEbAdqJqqfGTM6sgjErX6ErCoQVOkSOHBZvBFjQ5k2LyfNkJRZ+yuF/nazfX4NN9oiUm
+ H6b/uI+iksxmr/KJW4ywlIjVHfgyOZnGoUb3YdLsQChag45T8zoMbQU7E4hRCSmHH+EId10e59h
+ +8cvDD6gH8Frnwi2wqx+bhnJmG8p8GGd58E7kASf1zKObhg3xqbFdOOwvNTpf0A8nT8qW5edhL1
+ rG8jCkLhUZHUuBOJhejpUnl01FQ0658098G2S49jAn5pJrWH/Xd5rMnG9acGBTMA/QuNo5VJrkH
+ UCgFs8v6urX6hcmFT0q3xJye2YTxDe8gG98vMS9lkLzQRVgT5XAZQT+8JLUJs92Ni0dSwrH82E4
+ 86dD7dPyrSLYQA4DpUjfOJSZoxMFnO/73rUG7lL4=
+X-Proofpoint-GUID: a3TzTdzpI6IJ3AKqXL1JTspNrrsUWwiH
+X-Spamd-Result: default: False [1.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
+	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25,oracle.onmicrosoft.com:s=selector2-oracle-onmicrosoft-com];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[suse.de,gmail.com];
-	TAGGED_FROM(0.00)[bounces-253735-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[suse.com:+];
+	FREEMAIL_CC(0.00)[lists.linux.dev,kernel.org,huawei.com,gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,huawei.com:email,oracle.com:mid,oracle.com:dkim];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hare@suse.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253736-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[oracle.com:+,oracle.onmicrosoft.com:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[harshit.m.mogalapalli@oracle.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.com:email,suse.com:mid,suse.com:dkim]
-X-Rspamd-Queue-Id: A173E5B1924
+	RCVD_COUNT_SEVEN(0.00)[9]
+X-Rspamd-Queue-Id: 23B0E5B19FE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 5/21/26 16:38, David Disseldorp wrote:
-> On Wed, 20 May 2026 18:52:59 +0200, Alexandru Hossu wrote:
-> 
->> chap_server_compute_hash() allocates client_digest as
->> kzalloc(chap->digest_size) and then, for BASE64-encoded responses,
->> passes chap_r directly to chap_base64_decode() without checking whether
->> the input length could produce more than digest_size bytes of output.
->>
->> chap_base64_decode() writes to the destination unconditionally as long
->> as there is input to consume. With MAX_RESPONSE_LENGTH set to 128 and
->> the "0b" prefix stripped by extract_param(), up to 127 base64 characters
->> can reach the decoder. 127 characters decode to 95 bytes. For SHA-256
->> (digest_size=32) this overflows client_digest by 63 bytes; for MD5
->> (digest_size=16) the overflow is 79 bytes.
->>
->> The length check at line 344 fires after the write has already happened.
->>
->> The HEX branch in the same switch statement already validates the length
->> up front. Apply the same approach to the BASE64 branch: strip trailing
->> base64 padding characters, then reject any input whose data length
->> exceeds DIV_ROUND_UP(digest_size * 4, 3) before calling the decoder.
->>
->> Stripping trailing '=' before the comparison handles both padded and
->> unpadded encodings. chap_base64_decode() already returns early on '=',
->> so the full original string is still passed to the decoder unchanged.
->>
->> Fixes: 1e5733883421 ("scsi: target: iscsi: Support base64 in CHAP")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Alexandru Hossu <hossu.alexandru@gmail.com>
->> ---
->> v3: strip trailing '=' before length check to handle padded encodings
->>      (reported by Maurizio Lombardi)
->> v2: use DIV_ROUND_UP(digest_size * 4, 3) as suggested by David Disseldorp
->>
->>   drivers/target/iscsi/iscsi_target_auth.c | 11 ++++++++++-
->>   1 file changed, 10 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/target/iscsi/iscsi_target_auth.c b/drivers/target/iscsi/iscsi_target_auth.c
->> index c46c69a..00487d0 100644
->> --- a/drivers/target/iscsi/iscsi_target_auth.c
->> +++ b/drivers/target/iscsi/iscsi_target_auth.c
->> @@ -340,13 +340,22 @@ static int chap_server_compute_hash(
->>   			goto out;
->>   		}
->>   		break;
->> -	case BASE64:
->> +	case BASE64: {
->> +		size_t r_len = strlen(chap_r);
->> +
->> +		while (r_len > 0 && chap_r[r_len - 1] == '=')
->> +			r_len--;
->> +		if (r_len > DIV_ROUND_UP(chap->digest_size * 4, 3)) {
->> +			pr_err("Malformed CHAP_R: base64 payload too long\n");
->> +			goto out;
->> +		}
->>   		if (chap_base64_decode(client_digest, chap_r, strlen(chap_r)) !=
->>   		    chap->digest_size) {
->>   			pr_err("Malformed CHAP_R: invalid BASE64\n");
->>   			goto out;
->>   		}
->>   		break;
->> +	}
->>   	default:
->>   		pr_err("Could not find CHAP_R\n");
->>   		goto out;
-> 
-> 
-> This looks a bit fragile, but moving the overflow check into
-> chap_base64_decode() probably won't make it any cleaner. I'd like to see
-> a comment or build-time assert in the mutual CHAP path as to why the
-> length check can be skipped there. Aside from that I think it makes
-> sense to merge this.
-> 
-Please, no.
-The length check should be part of the chap_base64_decode() function,
-which should reject inputs with the wrong length. _And_ you need
-to add a 'length' argument for 'client_digest' such that the function
-nows the size of the output buffer and can avoid precisely these
-issues.
+Hi Greg,
 
-Cheers,
+On 20/05/26 21:49, Greg Kroah-Hartman wrote:
+> 6.12-stable review patch.  If anyone has any objections, please let me know.
+> 
+> ------------------
+> 
+> From: Puranjay Mohan <puranjay@kernel.org>
+> 
+> [ Upstream commit 46ee1342b887c9387a933397d846ff6c9584322c ]
+> 
+> bpf_flush_icache() calls flush_icache_range() to clean the data cache
+> and invalidate the instruction cache for the JITed code region. However,
+> since commit 48a8f78c50bd ("bpf, riscv: use prog pack allocator in the
+> BPF JIT"), this flush is redundant.
+> 
+> bpf_jit_binary_pack_finalize() copies the JITed instructions to the ROX
+> region via bpf_arch_text_copy() -> patch_text_nosync(), and
+> patch_text_nosync() already calls flush_icache_range() on the written
+> range. The subsequent bpf_flush_icache() repeats the same cache
+> maintenance on an overlapping range.
+> 
+> Remove the redundant bpf_flush_icache() call and its now-unused
+> definition.
+> 
+> Fixes: 48a8f78c50bd ("bpf, riscv: use prog pack allocator in the BPF JIT")
+> Acked-by: Song Liu <song@kernel.org>
+> Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
+> Reviewed-by: Pu Lehui <pulehui@huawei.com>
+> Tested-by: Paul Chaignon <paul.chaignon@gmail.com>
+> Link: https://lore.kernel.org/r/20260413191111.3426023-3-puranjay@kernel.org
+> Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>   arch/riscv/net/bpf_jit.h      | 6 ------
+>   arch/riscv/net/bpf_jit_core.c | 7 -------
+>   2 files changed, 13 deletions(-)
+> 
+> diff --git a/arch/riscv/net/bpf_jit.h b/arch/riscv/net/bpf_jit.h
+> index 1d1c78d4cff1e..f87bad9a0578c 100644
+> --- a/arch/riscv/net/bpf_jit.h
+> +++ b/arch/riscv/net/bpf_jit.h
+> @@ -11,7 +11,6 @@
+>   
+>   #include <linux/bpf.h>
+>   #include <linux/filter.h>
+> -#include <asm/cacheflush.h>
+>   
+>   static inline bool rvc_enabled(void)
+>   {
+> @@ -109,11 +108,6 @@ static inline void bpf_fill_ill_insns(void *area, unsigned int size)
+>   	memset(area, 0, size);
+>   }
+>   
+> -static inline void bpf_flush_icache(void *start, void *end)
+> -{
+> -	flush_icache_range((unsigned long)start, (unsigned long)end);
+> -}
+> -
 
-Hannes
--- 
-Dr. Hannes Reinecke                  Kernel Storage Architect
-hare@suse.com                               +49 911 74053 688
-SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
-HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
+I have run an AI assisted backport review and it spotted an issue: I
+have taken a look and the issues goes like:
+
+
+
+on 6.12.
+$ git grep bpf_flush_icache arch/riscv/
+arch/riscv/net/bpf_jit_comp64.c:        bpf_flush_icache(ro_image, 
+ro_image_end);
+
+Upstream doesn't have this problem because this call is removed in 
+commit: 6798668ab195 ("riscv, bpf: Remove duplicated 
+bpf_flush_icache()") but this is not present in 6.12.91 so I think it is 
+incorrect to backport this, should we drop this ?
+
+I didn't try compiling this on risv.
+
+thanks,
+Harshit
+
+
+>   /* Emit a 4-byte riscv instruction. */
+>   static inline void emit(const u32 insn, struct rv_jit_context *ctx)
+>   {
+> diff --git a/arch/riscv/net/bpf_jit_core.c b/arch/riscv/net/bpf_jit_core.c
+> index 6de753c667f42..fe362030ed2a9 100644
+> --- a/arch/riscv/net/bpf_jit_core.c
+> +++ b/arch/riscv/net/bpf_jit_core.c
+> @@ -184,13 +184,6 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
+>   			prog = orig_prog;
+>   			goto out_offset;
+>   		}
+> -		/*
+> -		 * The instructions have now been copied to the ROX region from
+> -		 * where they will execute.
+> -		 * Write any modified data cache blocks out to memory and
+> -		 * invalidate the corresponding blocks in the instruction cache.
+> -		 */
+> -		bpf_flush_icache(jit_data->ro_header, ctx->ro_insns + ctx->ninsns);
+>   		for (i = 0; i < prog->len; i++)
+>   			ctx->offset[i] = ninsns_rvoff(ctx->offset[i]);
+>   		bpf_prog_fill_jited_linfo(prog, ctx->offset);
+
 
