@@ -1,184 +1,187 @@
-Return-Path: <stable+bounces-253760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253761-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MEhcJmE8EGrUVAYAu9opvQ
-	(envelope-from <stable+bounces-253760-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 13:22:09 +0200
+	id AFftH9g6EGqeVAYAu9opvQ
+	(envelope-from <stable+bounces-253761-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 13:15:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B16995B2EA4
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 13:22:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C77735B2D1E
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 13:15:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 02572300CF15
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 11:01:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E10D9301CA57
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 11:09:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A8DB3B442B;
-	Fri, 22 May 2026 11:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23E67356756;
+	Fri, 22 May 2026 11:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G2ama/YN"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="cz1ikoaQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E111E3D4126
-	for <stable@vger.kernel.org>; Fri, 22 May 2026 11:01:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779447696; cv=pass; b=DA9GErtp55tWRpNIQ3cy5xuR99cgMsUghR2WxCIDge9OHkn5et+RGMpjblKCqGV1Ppf+J6ea0sDPIydOXfwaXzotlUkJQJ8/27QOvSWVNypi4p8HqMQPFaLJETq+tFyj32/bAYpQ9e6TAtLJrDBJ99fuuTPqlIkQ+xfid0dvxrw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779447696; c=relaxed/simple;
-	bh=0RyR3TKKWIpuE5do03Aczoxc8RftN/xDiBn9xSJHGIs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qISum5eZ/WRwy6dcgILXaucplcLvEGB5VQd4Vxpdmo+WBFFtRVRkHaNEK4VggcEpZZ/2JhY5gp0toShqut1BQJKD4thyaucPYuwB37OmOobIEU2b9P0JG1Ui2wsYtsSiGNuXq7rE5dY+8Prh80vTn21ypKCU3AmImlLLTX4G/3k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G2ama/YN; arc=pass smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-48d146705b4so77670615e9.3
-        for <stable@vger.kernel.org>; Fri, 22 May 2026 04:01:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779447692; cv=none;
-        d=google.com; s=arc-20240605;
-        b=A9jNwREk0kKHt0DT5fdad4yNF2dgeQKCQ7/ZBVYGdKGpWj52qKCdubSen7VusqxkRO
-         MZVK2QitOn34Oc6TdEn27fWTcNarPkL7/filBqsA/Ru0/5PawMDNI19cbtY2NHC49ltX
-         rw/VTjrs055StbugWhNQj6vhxs9d0aFLc+jGEgqO9CqNkKyQQCgDkCIpub87l1efSTK5
-         C0jVP93Ead0xTYXXoysvw6VrCRNdToaoem2h/OogjW6DRffvACnTwDyLzLOVtvAnK/hr
-         RvO1Oa2oG8uIIojWT0OORG+eN2ZaC+fwrVdAmfxTQxeRdR/jxZhmbzypFTwLZ+mrU3b+
-         qt9A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=0RyR3TKKWIpuE5do03Aczoxc8RftN/xDiBn9xSJHGIs=;
-        fh=Kfw7Bsjud0rm6JO6LRYxRfbzYxTICpdUhrCe7/4E10k=;
-        b=HrROwOa2vGyhWbteW01ig/NuDaRINu9a73UF0V1HreySUB+cSko20EqF+T2Hiw6OWb
-         Ks7vQyRxEea576qUcEcLMsFZOqXofguzpl4HZh3eudA/43wYslmBpWKVUoIcApphZUGq
-         TsQ4CEpq9kj03NGoSFZHtmdjWS7H/fHfYGX4AikTqDmZupSrOdsKdl6yH+PJRzzLw4rW
-         dqCJ2vxuA2hK3smAR6gAjk6d/o33DdBb25TAXSA1yZbiSiEZ0VVEkKvR1h0VivM8qBWZ
-         uU3o9KiUe046v5lxnjB3bmTWmf8iFYTpoOQBqSyeQcrGxAno6oJNMnzDaVLuT+5sm15X
-         3o4A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779447692; x=1780052492; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=0RyR3TKKWIpuE5do03Aczoxc8RftN/xDiBn9xSJHGIs=;
-        b=G2ama/YN6BqHHD92rLtnUgboNyaSdbPx5JeuIYG9tWEucIiPkW/3VQ6S+P7jX/pk+c
-         +WrIPSFm54dy4POtO1vQgh+uIieWMcMrMFm+5wdEQVcla167KBsu4sx6m58FFGX40lOF
-         LEnlpO9mbUafc5Pa2hDlLpjLdlNIxsOB034HCBmADKlDUkbXDwgBr4ibBdHuGQaVfs4E
-         hjiB9p7W/L5qvoc9aVqvHKFb4pwSmRkQWq5y1Zzd+oaGiZPcq0kWkwsyh8/3dhMGj9Ln
-         nNnVTZqHsa6/ypQG9cvLKVfx/MFdATO0ooBFJuaPiU1TDj9EGBkGuyd0+SATSThc4S5z
-         ZDNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779447692; x=1780052492;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0RyR3TKKWIpuE5do03Aczoxc8RftN/xDiBn9xSJHGIs=;
-        b=R2AnHdkNcu23HMp8pPXUWv2vrl/3wrschqRt9qGdmBjb8jI2yLV/JSX5UwabWULDKI
-         1GR4I2gjfHhvrWtvtu5SwDL904viqaGlQ6VD+dAyNFAmmjN3JVEBX3EGp5xmkqvZBCL+
-         fVW3xnW/AX7CbBPRdwgCAbsRaSA+yBCwFGcuFvJjGoYWitiKEWWiu0Q4MLiAlPigNj8h
-         uBqO12BSJkvoiYPBkgx2dLuTrji5WVT9L1CHttAg+SkvHei2nZ0cfkERoochnu3hONbh
-         7v1dR9y/R63O/UGAV6lBDj33sqYGriVROf1UK2JtRItsMRHVbeSJM18eI4PUa7obNtY1
-         G99Q==
-X-Forwarded-Encrypted: i=1; AFNElJ8MzZp2+N3HfRRTwaVQTP72X9/uHXmsyP8Ot/5KBLNL7g/VjWduzBWU5Ywe0dvXfcRoLy/pKYE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YySnbFxpZSq34YW8XlJA0PjtQc3F0RpNPocOOt515VnyW3jn7LN
-	1fHOhn1g8YoHJpyLr1c6/uBUZdfllKgK+VVz94KFf7OLv8uAzwqRT6ZMscnl4himcf3Djspz+RW
-	bmD+KKpZN71VHqiNDgI/078hA5COPZDo=
-X-Gm-Gg: Acq92OEL5rka0s/GkGtrUmVJYj/wa4Q43UuYdI7jdDfnTtV7EGMJ2HvFTKaDb0Mm9df
-	UJk4B28tbA1HFKNInGgB1LZ3RLW2MNMY7QuHqjJGVhEmrwbHccO1n5gEcDeX0TMpuzuplHa7nem
-	1AJv3RbxXWkmI4CMS9EOzgx/hA7cMexWWKqfs371jnq1X7BzyJ79xl9yZBrZe3ktmxCDFhFacQO
-	jSAvPJyUh5L03UqnmklaLRW9Qgf5fXIDlf51Gs9h7KHT5fk5KkzpEgUm1ru6aQdsefgSOZEwmg1
-	85AqH+mH
-X-Received: by 2002:a05:600d:6409:20b0:489:1a3a:9e45 with SMTP id
- 5b1f17b1804b1-490426d4292mr30314705e9.26.1779447691467; Fri, 22 May 2026
- 04:01:31 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA0D3CFF5D;
+	Fri, 22 May 2026 11:08:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779448139; cv=none; b=TBrd0qM9oeVC2AI38/PgoAAccl8SyV6uICS8i2IcyeOIjrhM+C6ctAOjz7h10GyM40cbfhRQYO5x5rf41U/XE5zw1AexY6bLbIkmvCuV2u+1cGj+Pok8ou16rEWtC2j8llMUMb3aJzKAL2pooJ0AAvbh2rBVYiNOh495qKXDpH0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779448139; c=relaxed/simple;
+	bh=i1OgZQEXIpJ4gFsrJh9ccSR2bnQ4kvlChGJ1Nq/eXwU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sQAvm+wZsrX7XMzy8EjTpbYmemelqpBA0UoHqxRYr7UVkc1dyZKya6xNsQAGfh94MP0QweAdRcqjtr6uE7bE5FWDM6hmI9wTt+jaRXFteeSJpRjpFFRA4CX4e1Zd7oBpNF+bt7TmeFwmcTu8SMdViMr5mZIOgUAmdftDaaJVvqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=cz1ikoaQ; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64M98iBb1816103;
+	Fri, 22 May 2026 11:08:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=WlFlTevV7pugW98Ow0Dv1MNdLVqFSLaps+d
+	D8LEsf98=; b=cz1ikoaQCVb/bWs4HCdqQchl4rHhScTN97+PrdI2gBAQ6ojTf+j
+	MmWu5p5eV1ayfOKJ9UYGLe9Pg49XlwTPrq6Rh9jtzN/0sUztxZFxoP1yh/xVQUhq
+	XciFWSyCeN+CDTmk8RgN8SQyI6UDXXFxKpOdjdl991N+cXOILKTQ/AYwE768Lqq2
+	Julb4emA1nSv5YuutPStpz1RXZbUvUwRlSv0MOnem5iZKXqTuyeBGDrBZTCubO0P
+	m/xKVP4PF1nb2acpxGf96xNyG0cVKR1EFY4E/TaJuEE9QjmEAW5kCM2HCOJ5otSa
+	kLUD3zBZC4suDWSiQ+0GxMHosXbTeknWm0w==
+Received: from aptaippmta01.qualcomm.com (tpe-colo-wan-fw-bordernet.qualcomm.com [103.229.16.4])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4eafrm1nwy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 May 2026 11:08:52 +0000 (GMT)
+Received: from pps.filterd (APTAIPPMTA01.qualcomm.com [127.0.0.1])
+	by APTAIPPMTA01.qualcomm.com (8.18.1.7/8.18.1.7) with ESMTP id 64MB8nut010787;
+	Fri, 22 May 2026 11:08:49 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by APTAIPPMTA01.qualcomm.com (PPS) with ESMTPS id 4e716s25dg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 May 2026 11:08:49 +0000 (GMT)
+Received: from APTAIPPMTA01.qualcomm.com (APTAIPPMTA01.qualcomm.com [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 64MB8n6Q010780;
+	Fri, 22 May 2026 11:08:49 GMT
+Received: from shuaz-gv.ap.qualcomm.com (smtphost-taiwan.qualcomm.com [10.249.136.33])
+	by APTAIPPMTA01.qualcomm.com (PPS) with ESMTPS id 64MB8mP8010777
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 May 2026 11:08:49 +0000 (GMT)
+Received: by shuaz-gv.ap.qualcomm.com (Postfix, from userid 4467449)
+	id 172306ED; Fri, 22 May 2026 19:08:48 +0800 (CST)
+From: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
+To: Bartosz Golaszewski <brgl@kernel.org>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+        linux-kernel@vger.kernel.org, cheng.jiang@oss.qualcomm.com,
+        quic_chezhou@quicinc.com, wei.deng@oss.qualcomm.com,
+        jinwang.li@oss.qualcomm.com, mengshi.wu@oss.qualcomm.com,
+        shuai.zhang@oss.qualcomm.com, stable@vger.kernel.org
+Subject: [PATCH v1] Bluetooth: hci_qca: Increase SSR delay for rampatch and NVM loading
+Date: Fri, 22 May 2026 19:08:38 +0800
+Message-Id: <20260522110838.1158643-1-shuai.zhang@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260519123547.2055911-1-maoyixie.tju@gmail.com>
- <20260519123547.2055911-3-maoyixie.tju@gmail.com> <CABAhCOSEP1voA-g16sHK+C+84rcQZvX9CWJs1hNaSk-ygbbD1A@mail.gmail.com>
- <CAHPEe=GX7wsLetw7rnOpeSkc05Jgi3h5y56e0RGYa4dszK1E4Q@mail.gmail.com> <CABAhCOSzP1vaThGV35_VnsRCb=87_CPjPVsTHbq905k8A+BuUg@mail.gmail.com>
-In-Reply-To: <CABAhCOSzP1vaThGV35_VnsRCb=87_CPjPVsTHbq905k8A+BuUg@mail.gmail.com>
-From: Maoyi Xie <maoyixie.tju@gmail.com>
-Date: Fri, 22 May 2026 19:01:20 +0800
-X-Gm-Features: AVHnY4I0Fvyme3rhgKLHLJz5BAKgNMgi22LPqHMxJDUysTWcY-y0ZIQ1DE4YnIE
-Message-ID: <CAHPEe=GQpn75GcRM9C_Y+EOSQWhER9DM6o0E3NG_hgobBB0dLQ@mail.gmail.com>
-Subject: Re: [PATCH net v3 2/2] ip6: vti: Use ip6_tnl.net in vti6_siocdevprivate().
-To: Xiao Liang <shaw.leon@gmail.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
-	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>, 
-	David Ahern <dsahern@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Steffen Klassert <steffen.klassert@secunet.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-ORIG-GUID: oM22Sdkr8Q30GZP6zG0DdFL0KQ2T5aDt
+X-Authority-Analysis: v=2.4 cv=Zekt8MVA c=1 sm=1 tr=0 ts=6a103944 cx=c_pps
+ a=nuhDOHQX5FNHPW3J6Bj6AA==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=yx91gb_oNiZeI1HMLzn7:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=SK-ELO-gduZh6qpZz3UA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIyMDExMSBTYWx0ZWRfXwZcazCe8Abjm
+ waarRxJEsWjKvz0qUGWgaAQR3fgy2CAUgLwN7kNbEyAsFhVphqXoP11BHN4C2972eilfoCZekbA
+ z6jGzlK+wCPGKPIyU/FTPP9VOVrN4lpQTnhYqaOKg7Kc8hTN7+hnBlKb025jh5MeEfCA4xkHiSs
+ IgLTKa8bCOwfROOD+etQiHSUZFqBkVf4y4JZBNmVw/ofA1HICQ8hfM/NyCMqBaKFCz3RItmPQgs
+ 7hYdxy+kCeJ8Wm7swe/1CGZaM2GtSirUQdSsjDIURkpPzAJZXNeMx1loL1LVGveKGNFEvV57gZ/
+ AYJBSL+4XAyOpv3u1GnjuvPdhprBrRGREbFInD+KuhoknHboK5hGJdosHEIdOxEmVNqQfMUG1h9
+ J+5ZWkHqxSprjtbwPwabfOKr/x+6urDrXCN0xRfCOHcdBEJ6sKqMxc7WPt8W5aj+ofaH7meJZj0
+ QJpHl6CUm1cbzq7g/Jw==
+X-Proofpoint-GUID: oM22Sdkr8Q30GZP6zG0DdFL0KQ2T5aDt
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-22_02,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 malwarescore=0 adultscore=0 lowpriorityscore=0 phishscore=0
+ suspectscore=0 spamscore=0 bulkscore=0 clxscore=1011 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605220111
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_TO(0.00)[kernel.org,holtmann.org,gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253760-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-253761-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.990];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maoyixietju@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[shuai.zhang@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[qualcomm.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email,qualcomm.com:dkim,oss.qualcomm.com:mid];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: B16995B2EA4
+	NEURAL_HAM(-0.00)[-0.985];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[10]
+X-Rspamd-Queue-Id: C77735B2D1E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Xiao,
+When bt_en is pulled high by hardware, the host does not re-download
+the firmware after SSR. The controller loads the rampatch and NVM
+internally.
 
-You are right. I wrote a PoC and confirmed it on v4.
+On HMT chip, due to the large firmware file size, the
+loading process takes approximately 70ms. The previous 50ms delay is
+too short, causing the controller to not respond to the reset command
+sent by the host, which leads to BT initialization failure.
 
-I used the same setup as the v4 test, just swapped the
-SIOCCHGTUNNEL ioctl for `ip link set <name> type vti6 remote X
-local Y` from inside the migrated netns. The ip command sends
-RTM_NEWLINK with IFLA_INFO_DATA and no IFLA_LINK_NETNSID, so
-rtnl_newlink() only checks the attacker's own user_ns. The
-message lands in vti6_changelink(), vti6_update() inserts the
-device into init_net's hash, and a SIOCGETTUNNEL in init_net for
-the new params resolves to the migrated device. The primitive is
-the same one v4 2/2 closes for the ioctl path. Only the entry
-point differs.
+Increase the delay to 100ms to ensure the controller has finished
+loading the firmware before the host sends commands.
 
-For a fix I tried a small hunk in __rtnl_newlink(), before the
-rtnl_changelink() dispatch. The hunk derives the link netns
-through dev->rtnl_link_ops->get_link_net() when that callback
-exists. If the link netns differs from tgt_net, it requires
-netlink_ns_capable() against link_net->user_ns. I put it there
-instead of in vti6_changelink() because the same gap applies to
-other link_types with get_link_net (ipip, gre, sit, ip6_tnl),
-and one site covers them all. link_types without get_link_net
-would see no behaviour change.
+Steps to reproduce:
+1. Trigger SSR and wait for SSR to complete:
+   hcitool cmd 0x3f 0c 26
+2. Run "bluetoothctl power on" and observe that BT fails to start.
 
-I re-ran the PoC on v4 with that hunk applied. It returns
-"Operation not permitted" and init_net's hash is unchanged.
+Fixes: fce1a9244a0f ("Bluetooth: hci_qca: Fix SSR (SubSystem Restart) fail when BT_EN is pulled up by hw")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
+---
+ drivers/bluetooth/hci_qca.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-I'd like to send this as a follow-up after v4 lands, since the
-fix lives in net/core/rtnetlink.c rather than in vti6. v4 would
-stay scoped to the ioctl path. Would that work for you?
+diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+index ed280399b..184f52f9c 100644
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -1680,8 +1680,8 @@ static void qca_hw_error(struct hci_dev *hdev, u8 code)
+ 		mod_timer(&qca->tx_idle_timer, jiffies +
+ 				  msecs_to_jiffies(qca->tx_idle_delay));
+ 
+-		/* Controller reset completion time is 50ms */
+-		msleep(50);
++		/* Wait for the controller to load the rampatch and NVM.*/
++		msleep(100);
+ 
+ 		clear_bit(QCA_SSR_TRIGGERED, &qca->flags);
+ 		clear_bit(QCA_IBS_DISABLED, &qca->flags);
+-- 
+2.34.1
 
-Thanks again,
-Maoyi
 
