@@ -1,83 +1,83 @@
-Return-Path: <stable+bounces-253659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253660-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0Ga7NaKnD2rCOQYAu9opvQ
-	(envelope-from <stable+bounces-253659-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 02:47:30 +0200
+	id mIf2AounD2rCOQYAu9opvQ
+	(envelope-from <stable+bounces-253660-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 02:47:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B5F55AD8C1
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 02:47:29 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4AF85AD8A3
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 02:47:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 455A0304B8BC
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 00:46:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BD21D301BEE4
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 00:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1656265606;
-	Fri, 22 May 2026 00:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73043282F34;
+	Fri, 22 May 2026 00:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SAVaMJwW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kaFU/UeB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3D9298CAB
-	for <stable@vger.kernel.org>; Fri, 22 May 2026 00:46:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DDCE2BE05A
+	for <stable@vger.kernel.org>; Fri, 22 May 2026 00:46:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779410779; cv=none; b=axuJuccnmdrSNzdvhTfNGMV9LFT1ydmIIcQ590s+m4+fReSFPsGaRPxJKnrl4cTyMJSzYyLs8F03uNnKmbc5GBm85OXcQi4weZBkLyEl8Tm2ViEfL2v4aoEb3eVMsMAHKlmAx2qHJDsER09pCWiym0K6ukESXhL/GSQdXUjbkRE=
+	t=1779410782; cv=none; b=Ft15BHxhusVjIZusHyeihmzEUw30t3RVz5MSYsz0Nq2noMcVF3Zk1EaVpT8q4NAV8ggPViW9btvawKGq382DYkNAjgts9ozxT/hjxwQMuI3E+GRXRsg+XIky0L7F8T0bgtwCN6NepWGJcqgBY6CRwNSJzaqmkv2IGhW8PY4f/tQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779410779; c=relaxed/simple;
-	bh=yUxFQRX3bCKLw0bbag7Nni+E3AhTdqJzZfswOngAcC8=;
+	s=arc-20240116; t=1779410782; c=relaxed/simple;
+	bh=11XpadIVbnWDgGbnLsDIYuVi8q6V/iekBQR9d9ytC84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lS9Y30xMCAJxIhxneYBLIf7D6/j+HPSvH3HFylVerIzTepcFu9DaNIEqb6vhb5/0kjGbtxkUC/sZNzIVD97UhLBeeg9MlVKZVMRikZ+jv3lOFhgcBKwr5tiwjx08Cdw3pX4yEB4+anOWAVFaPQV0QfEKHl8ZS2oZUy/e7PxhDL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SAVaMJwW; arc=none smtp.client-ip=209.85.208.43
+	 MIME-Version; b=PBuPzjdYnkbR+SmmeoiH5DmYl/tmRtgxjVIyaRxJ8m70bJBxK2317IM6Rl0m7a6dCx8kThOvQQXzgBlamffcpuYYmrzBuXJOtBYbr3ju+vui1/y0Z1mxBMNvrvJQhEI/r3H74ImCZjLgfCjrHEGsl4//9awvFJUxLNuGpHIegmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kaFU/UeB; arc=none smtp.client-ip=209.85.208.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-678a16429c6so11379440a12.1
-        for <stable@vger.kernel.org>; Thu, 21 May 2026 17:46:17 -0700 (PDT)
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-678a16429c6so11379475a12.1
+        for <stable@vger.kernel.org>; Thu, 21 May 2026 17:46:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779410776; x=1780015576; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1779410779; x=1780015579; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GB1lAvDGjs+DHw89Q6x35AxewQHrMJlNyOlZUD/w82c=;
-        b=SAVaMJwWIS8c3oAkYVxzI2s1pqIWQ1YN+i5zE8qwfoENQm6wVx7hXmKU4NBHtKnG3I
-         pFeaYs2Lf2oK/GyImwo1pTsn+lF9SOYUMugu+NfZF0wuUSG1m2LxwEYbAXaPLfdMDL+z
-         moSQ3RXTRExIB1/GiuOyKm7qmL7L64+Q2iYyrBT9q+LXXdAFcSOJqnTP/6MlSwRiLThr
-         l//PfUoraWOQJw4kK7a+jfCm3/78fW8gTBhZfdpCxXii6VfMfSVYGqBzu6XRciVv09dT
-         FFNLecoKsaOD6IHtvZVN/pAtF5Q5LNyC9KKKAvtvKYnWdn5zyS95W55BoeFJdFQ7mryA
-         YFSQ==
+        bh=MMhZs4Eu6gRgBabm++8DBCSAa+Wm8K3ZfuFNhzHSur8=;
+        b=kaFU/UeBlIss72GXiYaegATgs/Oc7Yezh60PQPfKv3fNgmkRB4u7DgYZ/mZpmN5vio
+         l6+yXwa7yll2A84LR0SMs0wwcHL0WbH3YGK44xyKHQAu0RUr5cTvSYt2m+pZHkQRnoH2
+         zkI6e4bGm5QFPkmlW4eGLOah7SXpzHE2sQpHmzrYpDWtW1DkCJPL5RDmK1ShWJZreMuU
+         7FtnrGMwa2fV7S0cnsW3DogbAK2gAwZiccgttSbAwu+yMMW/c2hHipFGGlZR6tdq3Xfv
+         mdd2Wd1mafZk3rcYqajevsR2/k2K7/nwpY7eGb03NhtrZuAOSaVK6V7UPzLK26TbChMr
+         rmeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779410776; x=1780015576;
+        d=1e100.net; s=20251104; t=1779410779; x=1780015579;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=GB1lAvDGjs+DHw89Q6x35AxewQHrMJlNyOlZUD/w82c=;
-        b=fzliA80BkIo1pzWDJV2wWeniEUQaEpAEji6qo+GUT5+oHCu4pbPumxxWA9T7AuM0Q0
-         jjYuvQLn3f+scng/L47Hib2icx84+pJYD4eBt1O/Uwear/AI/lB8j1g7S/WvYhbPGJdz
-         EZuTthAIUx+GlT2rij0rQ7jW8tyAy08vqXME+EikRq7KHHZ64rGbKkcRa9oHkuV+n2Tb
-         nZzkTQbhjtJXrFEa1YBE/dVclUlZXyw8JyeFtPJ3zpT10KG6t2nhcEZYI1JzhZjsmx5D
-         xTK0m7qDjBBq8ABZfzlo2CzfgH1Vk3Qa2PGcVa26zWYP7cFd8B7sgkMrTKEaYrdSc5i4
-         bCiQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/8vWAhKM5m5Nm4+dwlX0YdNJoPRxTJtYayt1HkApxzm59JnDml2P4fuL4gBe8TaIIskEGCIY4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHa6nCdGM/UjUTvw/a8VpEr4Qik5zkjt4fbWDJWSWgN2YWAKos
-	Ex4EQhMNlH361b1aUJ22tCIAKEUNwcEBNu/xx4ufB0U8rVngcDAexo3q
-X-Gm-Gg: Acq92OG/sO+DVPifbvMuronEC1CKgy1y8349c0obt56Wuthe9kteTjo8+KzgUEsxCNr
-	3mW9lKbtkyCiie5/Xwk5n9YG9cxVDWHwC+w5g+0BGnw3zhfFC2lyX8uFTiUCmgDuCSU8gBm8/SH
-	A8awas4Cm/0tE3siuqYWDGvdYAsvD0xM42ap1a0BOm18niX9TeX5aRES+WZ5zh35MSEVvT8HM18
-	GBGtQT7LRh1tJjUElCasGxdLD8IRmcBWQCW2RIglUySJS54i7eqpx7X2t5Xh5M9mEaWaPamsBTz
-	wOP5rXMFFpSWqhpYz5mI6yzrptt9ANdZ2jfNPe2MapECONL6x2oJmpBazXLH1pzfhG92styYbza
-	6V6WoYpQ6ywyqbp1PjRnbjJbxJTRg9Cne58omGGdFxKLkTB59QnXN+T7Wth8d+7ckxoJGZdEbh9
-	I39ku/wFquuzqsBdBQQwyLPbQ2oe7KDniMiX61Xr90DWxovNmRyoJlx0PMxY7pKFT+9a81mnrnO
-	+bazyNUQI8irg1JKfz9OpAZZm6czOwgq3ciZm+nW27NPyW6maHLLJc+Ez6abJ13v3S95CTKxf3J
-	WGbIs38Mju/OcEDGvTGWOEYuqHeG
-X-Received: by 2002:a50:ee08:0:b0:671:9dec:ba3 with SMTP id 4fb4d7f45d1cf-6882efedec4mr1462732a12.13.1779410775672;
-        Thu, 21 May 2026 17:46:15 -0700 (PDT)
+        bh=MMhZs4Eu6gRgBabm++8DBCSAa+Wm8K3ZfuFNhzHSur8=;
+        b=aSVExV2HPUJ0v5rdm6HQHDtRJ3qD1ZD9NAtw/SUf3Yzaz5OLKvB/rK4atRYM4h5/fU
+         BNkIvZMCRbDo2eqo5zyv0VQmgXGlNpICL2C2oAjdOAiAWa66bK3QwY6T7snR6bPryrME
+         SsSd/qMFmwDvUomjlmVDeSvdoX6ovqdKqnsE6kjx3A3ZLGuk7QCpfQTktQ6GeaadMCOb
+         sGR4vaB5JMXEUfbW4DZYOD91+8af4wcmTutmnogzrjGCXr4pxvK4cZwbZCoqk/z6uckH
+         JbgjeoV5tMa60l+viDnYvaCwrIvUEwVqL9olPAjVgIM3a2TcJvsR94ZROkJXgckgjFPg
+         LQZQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/BpJkgxqT2b8kDLxpeDchI0AfMCHTZTl+wxGwf/Drkqok2lO1jqkLB8NJBuaf2V4DHy09/KkU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzs+q5O3wgr6h+0vGg4vHJ5MEogXzdTYTbDZBMPLMz0A+2nFbuj
+	0dq+/Nw4KabBMWYMidhoz01SZ2lq2HDoi+kZ4QW9+Lp/CHSUIIon6g9L
+X-Gm-Gg: Acq92OGqQ1xYYKOgoJZf2i2iabuWYcCe6MJWvZOQD9ePAH0tYPoZALrGeyP7LIGZMUs
+	QsQUqa6GbRBHmqK+2CZQVc9G5Kz8WyIXavlMYiJtCxWg+dPvYKvh9VBgbCf51zMgc+HsTEwHk8J
+	/IK09D5Kbc3p9YIGeaTbrbXwqIgZE2b4NOKg0qpkmbhQ6xSI+dGtnKPEhddYn1M5w/BeTQ0UCrk
+	lT/Et9Vn23MhMJam+M2olGb5yNwUCQyjZtxmBS7aekQVKkDpGl3hqcw0L2JBxX4rsUzVjoVouyL
+	JnHa0MkP42rLRKkwD+h8ngHdYD9J45Ensad7aD3lfQc2zTsdv0w5QOpL/pSr9IjK6cGn1ThrWcX
+	qmTqpZwqbHt+QXr1D6slGrIVF16AHC4a6OynjxouvBhfny2FNqUypvoOHoMsRLvqWs5R03Egr7w
+	hQUfLJT1FOjpC/r031GzqJ8O6zwANg6RxswUZuNy1uYovqc2ldpYxT8se7oVUfGpJjSkeMbJnzx
+	IQKrPB3cBn/KHfsXDx82UmV+j+BW7RGLy5heptUNpmVVcd3nnNxlVEBpWm32ybI4pZTh5VzUb/H
+	x7731KGMOxGZk+9FQaf86Cfn3RBVGyWiJQeqCpY=
+X-Received: by 2002:a05:6402:510e:b0:682:c363:d96f with SMTP id 4fb4d7f45d1cf-6889c44e129mr462567a12.10.1779410778851;
+        Thu, 21 May 2026 17:46:18 -0700 (PDT)
 Received: from ahossu.localdomain (ip-217-105-56-94.ip.prioritytelecom.net. [217.105.56.94])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-688b72cbbf3sm3535a12.0.2026.05.21.17.46.11
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-688b72cbbf3sm3535a12.0.2026.05.21.17.46.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 May 2026 17:46:13 -0700 (PDT)
+        Thu, 21 May 2026 17:46:17 -0700 (PDT)
 From: Alexandru Hossu <hossu.alexandru@gmail.com>
 To: gregkh@linuxfoundation.org
 Cc: linux-staging@lists.linux.dev,
@@ -85,9 +85,9 @@ Cc: linux-staging@lists.linux.dev,
 	luka.gejak@linux.dev,
 	Alexandru Hossu <hossu.alexandru@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v7 3/7] staging: rtl8723bs: fix heap buffer overflow in rtw_cfg80211_set_wpa_ie()
-Date: Fri, 22 May 2026 02:45:27 +0200
-Message-ID: <20260522004531.1038924-4-hossu.alexandru@gmail.com>
+Subject: [PATCH v7 4/7] staging: rtl8723bs: fix OOB write in HT_caps_handler()
+Date: Fri, 22 May 2026 02:45:28 +0200
+Message-ID: <20260522004531.1038924-5-hossu.alexandru@gmail.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260522004531.1038924-1-hossu.alexandru@gmail.com>
 References: <20260521130330.754181-1-hossu.alexandru@gmail.com>
@@ -104,7 +104,7 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -114,10 +114,10 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux.dev,gmail.com];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253659-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253660-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[hossualexandru@gmail.com,stable@vger.kernel.org];
@@ -128,63 +128,47 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	NEURAL_HAM(-0.00)[-0.996];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linux.dev:email]
-X-Rspamd-Queue-Id: 6B5F55AD8C1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: A4AF85AD8A3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-supplicant_ie is a 256-byte array in struct security_priv. The WPA and
-WPA2 IE copy paths use:
+HT_caps_handler() iterates pIE->length bytes and writes into
+HT_caps.u.HT_cap[], which is a fixed 26-byte array (sizeof struct
+HT_caps_element). Because pIE->length is a raw u8 from an over-the-air
+802.11 AssocResponse frame and is never validated, a malicious AP can
+set it up to 255, causing up to 229 bytes of out-of-bounds writes into
+adjacent fields of struct mlme_ext_info.
 
-    memcpy(padapter->securitypriv.supplicant_ie, &pwpa[0], wpa_ielen + 2);
-
-where wpa_ielen is the raw IE length field (u8, 0-255). When a local user
-supplies a connect request via nl80211 with a crafted WPA IE of length 255,
-wpa_ielen + 2 equals 257, overflowing the 256-byte buffer by one byte into
-the adjacent last_mic_err_time field.
-
-rtw_parse_wpa_ie() does not prevent this: its length consistency check
-compares *(wpa_ie+1) against (u8)(wpa_ie_len-2), which is (u8)(255) == 255
-when wpa_ie_len = 257, so the check passes silently.
-
-Add explicit bounds checks for both the WPA and WPA2 paths before the
-memcpy, rejecting any IE whose total size (wpa_ielen + 2) exceeds the
-supplicant_ie buffer.
+Truncate the iteration count to the size of HT_caps.u.HT_cap using
+umin() so that data from a longer-than-expected IE is silently ignored
+rather than written out of bounds, preserving interoperability with APs
+that pad the element. An early return on oversized IEs was considered
+but rejected: it would bypass the pmlmeinfo->HT_caps_enable = 1
+assignment that precedes the loop, silently disabling HT mode for APs
+that append extra bytes to the HT Capabilities IE.
 
 Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
 Cc: stable@vger.kernel.org
-Reviewed-by: Luka Gejak <luka.gejak@linux.dev>
 Signed-off-by: Alexandru Hossu <hossu.alexandru@gmail.com>
 ---
- drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/staging/rtl8723bs/core/rtw_wlan_util.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c b/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
-index 098456e97c96..3d930d9af184 100644
---- a/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
-+++ b/drivers/staging/rtl8723bs/os_dep/ioctl_cfg80211.c
-@@ -1443,6 +1443,10 @@ static int rtw_cfg80211_set_wpa_ie(struct adapter *padapter, u8 *pie, size_t iel
+diff --git a/drivers/staging/rtl8723bs/core/rtw_wlan_util.c b/drivers/staging/rtl8723bs/core/rtw_wlan_util.c
+index e0d73c267786..dd34f229df12 100644
+--- a/drivers/staging/rtl8723bs/core/rtw_wlan_util.c
++++ b/drivers/staging/rtl8723bs/core/rtw_wlan_util.c
+@@ -936,7 +936,8 @@ void HT_caps_handler(struct adapter *padapter, struct ndis_80211_var_ie *pIE)
  
- 	pwpa = rtw_get_wpa_ie(buf, &wpa_ielen, ielen);
- 	if (pwpa && wpa_ielen > 0) {
-+		if (wpa_ielen + 2 > sizeof(padapter->securitypriv.supplicant_ie)) {
-+			ret = -EINVAL;
-+			goto exit;
-+		}
- 		if (rtw_parse_wpa_ie(pwpa, wpa_ielen + 2, &group_cipher, &pairwise_cipher, NULL) == _SUCCESS) {
- 			padapter->securitypriv.dot11AuthAlgrthm = dot11AuthAlgrthm_8021X;
- 			padapter->securitypriv.ndisauthtype = Ndis802_11AuthModeWPAPSK;
-@@ -1452,6 +1456,10 @@ static int rtw_cfg80211_set_wpa_ie(struct adapter *padapter, u8 *pie, size_t iel
+ 	pmlmeinfo->HT_caps_enable = 1;
  
- 	pwpa2 = rtw_get_wpa2_ie(buf, &wpa2_ielen, ielen);
- 	if (pwpa2 && wpa2_ielen > 0) {
-+		if (wpa2_ielen + 2 > sizeof(padapter->securitypriv.supplicant_ie)) {
-+			ret = -EINVAL;
-+			goto exit;
-+		}
- 		if (rtw_parse_wpa2_ie(pwpa2, wpa2_ielen + 2, &group_cipher, &pairwise_cipher, NULL) == _SUCCESS) {
- 			padapter->securitypriv.dot11AuthAlgrthm = dot11AuthAlgrthm_8021X;
- 			padapter->securitypriv.ndisauthtype = Ndis802_11AuthModeWPA2PSK;
+-	for (i = 0; i < (pIE->length); i++) {
++	for (i = 0; i < umin(pIE->length,
++			     sizeof(pmlmeinfo->HT_caps.u.HT_cap)); i++) {
+ 		if (i != 2) {
+ 			/* Commented by Albert 2010/07/12 */
+ 			/* Got the endian issue here. */
 -- 
 2.54.0
 
