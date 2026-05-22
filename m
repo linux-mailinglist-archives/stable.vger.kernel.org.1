@@ -1,160 +1,309 @@
-Return-Path: <stable+bounces-253813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253814-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IP7ZKjd5EGrdXwYAu9opvQ
-	(envelope-from <stable+bounces-253813-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 17:41:43 +0200
+	id yAjXB2GAEGrdXwYAu9opvQ
+	(envelope-from <stable+bounces-253814-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 18:12:17 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D1D75B70EF
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 17:41:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B2525B76BE
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 18:12:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DA4C9301D333
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 15:37:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 26967300DA46
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 16:06:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C43D9400E1B;
-	Fri, 22 May 2026 15:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72085403EA5;
+	Fri, 22 May 2026 16:06:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EU5A9joZ"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rO2z7vgM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7DEC25B092
-	for <stable@vger.kernel.org>; Fri, 22 May 2026 15:37:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF553911CE;
+	Fri, 22 May 2026 16:06:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779464223; cv=none; b=JS0vG1+OavaFPfbLu5O+0dwWidSftU5T1VeRC94LINpEF/bT0t5+eTGC46gJnE5Bls/w+4isQ0xSJXUGmUAMgxTlrxXoajtobjPw6qxL8akdHeYttjyX0Umqa52BXVUy7sRCiESlXphidZOzvB66xSU9dszsxJlDGbdx3mjbiIk=
+	t=1779465973; cv=none; b=bFfTxPAQ3u+xhEPEAm9L/I0gehAs4jXHL7RU92IPZ/KXj4ntyPf3I7phksGhObtgYF4J5SgpaETmg245vAOXQd0mLtYxbniKP9aB6lZZwCdZgtFDpCB30AcmhzfJqo8n8nI6rl6mZAxzCY7lqJHGha7Rbn2NX9Zh/CelI0UwfLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779464223; c=relaxed/simple;
-	bh=blIuKFRRZ/S9hllh14+ij0KgbBT9ffoG3ne56sPhK4Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ba2qCqRIZHxagfsdUXLk+Jp46XZG7KeNih40OxJJw3zoX4xfGwkhovFdNaVbpc94ZNqkR46FVVoItHpZjMqCcwkcoOBH+cGO5STX3n6dWMFgKzv/YTnph+Vx+x5yRAYS5w8rVUnG3Hi/lnpvSlEUdGrIZyG5/iWgY1BEs5bOHwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EU5A9joZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B4AE1F00A3F
-	for <stable@vger.kernel.org>; Fri, 22 May 2026 15:37:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779464221;
-	bh=fSEYojMIkK+mhSE0dEiQW354SP1JJUcLILA8KCWkd/g=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=EU5A9joZJsFi8kKGr8QpLspqgCgCb2r/7H5Gf/ZzVEw/W3/MUWy0QZBqh89CGogSR
-	 J80MrJBvgayzOgeSg4ojSXNXyZvHLcomL4XoWel1QHbDfbBxTXoD+qdJwDsXKKVDBO
-	 qKH+3Po1EdXOajcGFMvzFJanN6sHA9cop8MSNXiRD+zIBchaakobIb+9NpVtqR7Zxi
-	 uhBCK/e3kukaQT+x7PvitzEojLauqs99v07fBeYQwiEj/Hs3Gtp1yOgAxUm6ZixWJY
-	 cYf3bXKRHz9lyhChPDQtpo1V7GVhcDRg6B6gYgHsStWCosnpvOQQOrYiD+vQZJeoSL
-	 dZORhCpfuOV3g==
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5a40b2bc96dso2119668e87.3
-        for <stable@vger.kernel.org>; Fri, 22 May 2026 08:37:01 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9ivkAdQkn0fmscp8slItjmnE2LGtPAFaRxRBlR3ZtL5AvtJ5kfoCdLvB01AmYuMWi2KAX3WOA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCdOla8AWFmY+U2HgSEGJ1eP4gSkULBK1i/LyFZQHbJ24EedRn
-	AEsTEs4RdZErlnicwjl1DQrBlMk7169alUuPqseRTM62jb7qsWFlrEl4mdXjHAoybN7YJPJLsox
-	ANOaoeeCoAtIj8atoF4A2nxt59oV3NW8=
-X-Received: by 2002:a05:6512:6cf:b0:5a4:52d:4abc with SMTP id
- 2adb3069b0e04-5aa32369e9dmr1294375e87.8.1779464219911; Fri, 22 May 2026
- 08:36:59 -0700 (PDT)
+	s=arc-20240116; t=1779465973; c=relaxed/simple;
+	bh=VEseHeESDTqPqpZ+vXnSAU2mOHaLLoZ8cNZRCc/rvjA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fjiGwnl9edv4kWTrNi7E4/kY8Lo9mmT2a5n36ihqXEwrIurIjA5fg5ccLioSiro7WQFN2+RK7l95/R/HrFhxBlZ3abfyIC++htn9WW22JrX7kPvlPP5o5zK3pf62wxPP6jOKQglXDk0yLPLbdNnyLXpOcZSv1GbwuXO4sLnJTAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rO2z7vgM; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64MFW1Qd980011;
+	Fri, 22 May 2026 16:05:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:sender:subject:to; s=pp1;
+	 bh=f2n9myvSSTBDKKfIeShW1Ra3D3ow85NLWqGBUox//uI=; b=rO2z7vgMIYla
+	KApWOWzlu+MxuZkut7WzoB2w5b/O7w11R1n/28p7JLAwbcGq0WT7T4M7o+2VZ1jR
+	hj8lt18Uq3UmaEBV3orm7XGSI0s6XVOny2ZcsM/uauATLSG2FVcwOEHSrf3y6gh7
+	/YacnCHyPiR9IAuigFzgUrX1wdkLiidwZBLhWzTl+uxGhFsbVfc3ypvg+XP4wTji
+	Lql35rehYqGGggp4kSZCxROI6UetYlxOnnOvYxwV5XL0oUz6r0ytxWl9J+W1xQuK
+	bcfmDSnI+xgoP2Wp8OD8Bjk3IYyV+ALDiLI0UNvQaWFQ8cMKTNrEoiflMzWS5aJC
+	VSN9TPYfzA==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6h8n4rh8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 May 2026 16:05:50 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64MFs5Tf013158;
+	Fri, 22 May 2026 16:05:49 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4e74dj1hgb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 May 2026 16:05:49 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64MG5hXw29885022
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 22 May 2026 16:05:43 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9D5042004B;
+	Fri, 22 May 2026 16:05:43 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 86A5820040;
+	Fri, 22 May 2026 16:05:43 +0000 (GMT)
+Received: from p1gen4-pw042f0m (unknown [9.52.223.163])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 22 May 2026 16:05:43 +0000 (GMT)
+Received: from bblock by p1gen4-pw042f0m with local (Exim 4.99.2)
+	(envelope-from <bblock@linux.ibm.com>)
+	id 1wQSNb-0000000HS0j-1204;
+	Fri, 22 May 2026 18:05:43 +0200
+Date: Fri, 22 May 2026 18:05:43 +0200
+From: Benjamin Block <bblock@linux.ibm.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: "Ionut Nechita (Wind River)" <ionut.nechita@windriver.com>,
+        linux-pci@vger.kernel.org, bhelgaas@google.com, sebott@linux.ibm.com,
+        schnelle@linux.ibm.com, linux@roeck-us.net, lukas@wunner.de,
+        stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+        intel-xe@lists.freedesktop.org, matthew.brost@intel.com,
+        michal.wajdeczko@intel.com, piotr.piorkowski@intel.com,
+        dtatulea@nvidia.com, mani@kernel.org, kbusch@kernel.org,
+        lkml@mageta.org, alifm@linux.ibm.com, julianr@linux.ibm.com,
+        ionut_n2001@yahoo.com, sunlightlinux@gmail.com
+Subject: Re: [PATCH v14 0/2] PCI/IOV: Fix SR-IOV locking races and AB-BA
+ deadlock
+Message-ID: <20260522160543.GE206464@p1gen4-pw042f0m>
+References: <cover.1776839248.git.ionut.nechita@windriver.com>
+ <20260521201312.GA182641@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260520032119.30615-1-fushuai.wang@linux.dev>
-In-Reply-To: <20260520032119.30615-1-fushuai.wang@linux.dev>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 22 May 2026 17:36:47 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gsSF6Pm6Okpn_PhoQBhuUgixdQ7x5P3LNyMZOaNw91PA@mail.gmail.com>
-X-Gm-Features: AVHnY4J90RT3PhOA0pL979XaxWsKq14VNBxXEt8ZkS8nTZHz126tBIYUsWEZnGs
-Message-ID: <CAJZ5v0gsSF6Pm6Okpn_PhoQBhuUgixdQ7x5P3LNyMZOaNw91PA@mail.gmail.com>
-Subject: Re: [PATCH v2] cpufreq: intel_pstate: Sync policy->cur when setting
- min pstate during CPU offline
-To: Fushuai Wang <fushuai.wang@linux.dev>
-Cc: srinivas.pandruvada@linux.intel.com, lenb@kernel.org, rafael@kernel.org, 
-	viresh.kumar@linaro.org, currojerez@riseup.net, linux-pm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, wangfushuai@baidu.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260521201312.GA182641@bhelgaas>
+Sender: Benjamin Block <bblock@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: PxM4KYMojAWJnU1ACjWRWUqvvF1rO36m
+X-Authority-Analysis: v=2.4 cv=GYMnWwXL c=1 sm=1 tr=0 ts=6a107ede cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=8nJEP1OIZ-IA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=c92rfblmAAAA:8
+ a=t7CeM3EgAAAA:8 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=-mVaU32sIrbP48RIxBgA:9
+ a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10 a=GvGzcOZaWPEFPQC_NcjD:22
+ a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-ORIG-GUID: 3g2Gaj7-UuMoG97Us30-BrpRfDObhRmJ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIyMDE1NiBTYWx0ZWRfXxLYniXntxEcN
+ wYbhNTtYegC/P1dThxhXenSki4TtwccLiv65FDYF97i5w6a7hVifQ0tUb49WkUTESC5boEUL3fU
+ 9I6R4aLdP0RN8p1obeX2fOW25NA/HzCiAaSDxMTYOnkMMC1SA7xlRZzSwL/3/WJVYLq7HB7JHiW
+ mtQNwqRJG6NE9yakaSvT+TLrRR336Uf69dQukT4S/ChVEWMVUa0HKWZU7xkq4iWbx033zIdIhsM
+ AsWeIlIA4IOD3VHVakvfwv8mkSuayBWNK5D0oKn37qmOjwbqnRkkiTZrzmyV8jlbcWSVLkQTtBH
+ 65D0e6Bdfj9VNWPLDOPwbS+M2D5XRThIRd4Us6TcDUOdS2yDBtoiZj6Zx+CEcuMDECWO4lwEUHw
+ Zx9glGU9mLbTC8l3D9CeAqXm10fdZDZsze/eaIHM1NQ6c0H5jWXBvlvei0gBpAeoTDDYCoeB7IT
+ 8vO+mgjy7E4WkM2/vTw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-22_04,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 malwarescore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0
+ adultscore=0 suspectscore=0 spamscore=0 clxscore=1015 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605220156
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FREEMAIL_CC(0.00)[windriver.com,vger.kernel.org,google.com,linux.ibm.com,roeck-us.net,wunner.de,lists.freedesktop.org,intel.com,nvidia.com,kernel.org,mageta.org,yahoo.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-253814-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253813-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_TWELVE(0.00)[22];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rafael@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[bblock@linux.ibm.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_TWELVE(0.00)[12];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,mail.gmail.com:mid,linux.dev:email]
-X-Rspamd-Queue-Id: 5D1D75B70EF
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 8B2525B76BE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, May 20, 2026 at 5:22=E2=80=AFAM Fushuai Wang <fushuai.wang@linux.de=
-v> wrote:
->
-> From: Fushuai Wang <wangfushuai@baidu.com>
->
-> When a CPU goes offline with HWP disabled, intel_pstate_set_min_pstate()
-> sets the MSR_IA32_PERF_CTL to minimum frequency to prevent SMT siblings
-> from being restricted. However, the policy->cur value was not updated,
-> leaving it at the previous value.
->
-> When the CPU comes back online, governor->limits() checks if target_freq
-> equals policy->cur and skips the frequency adjustment if they match. Sinc=
-e
-> policy->cur still holds the previous value, the governor does not call
-> cpufreq_driver->target to update MSR_IA32_PERF_CTL.
->
-> Fix this by synchronizing policy->cur with the hardware state when settin=
-g
-> minimum pstate during CPU offline.
->
-> Fixes: bb18008f8086 ("intel_pstate: Set core to min P state during core o=
-ffline")
-> Cc: stable@vger.kernel.org # 3.15+
-> Suggested-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> Signed-off-by: Fushuai Wang <wangfushuai@baidu.com>
-> ---
->  drivers/cpufreq/intel_pstate.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstat=
-e.c
-> index 1292da53e5fc..11db1c887c80 100644
-> --- a/drivers/cpufreq/intel_pstate.c
-> +++ b/drivers/cpufreq/intel_pstate.c
-> @@ -2984,10 +2984,12 @@ static int intel_cpufreq_cpu_offline(struct cpufr=
-eq_policy *policy)
->          * from getting to lower performance levels, so force the minimum
->          * performance on CPU offline to prevent that from happening.
->          */
-> -       if (hwp_active)
-> +       if (hwp_active) {
->                 intel_pstate_hwp_offline(cpu);
-> -       else
-> +       } else {
->                 intel_pstate_set_min_pstate(cpu);
-> +               policy->cur =3D cpu->pstate.min_freq;
-> +       }
->
->         intel_pstate_exit_perf_limits(policy);
->
-> --
+On Thu, May 21, 2026 at 03:13:12PM -0500, Bjorn Helgaas wrote:
+> On Wed, Apr 22, 2026 at 09:32:40AM +0300, Ionut Nechita (Wind River) wrote:
+> > This is v14 of the fix for the SR-IOV race between driver .remove()
+> > and concurrent hotplug events.
+> 
+> Can you take a look at the sashiko feedback and see whether there's
+> any merit to it?
+> 
+> https://sashiko.dev/#/patchset/cover.1776839248.git.ionut.nechita%40windriver.com
 
-Applied as 7.1-rc material, thanks!
+IIRC Ionut already responded to several of the findings a few patch versions
+back:
+https://lore.kernel.org/linux-pci/20260319202755.16081-1-ionut.nechita%40windriver.com/
+
+Patch 01:
+
+> > --- a/drivers/pci/iov.c
+> > +++ b/drivers/pci/iov.c
+> [ ... ]
+> > @@ -633,15 +629,18 @@ static int sriov_add_vfs(struct pci_dev *dev, u16 num_vfs)
+> >  	if (dev->no_vf_scan)
+> >  		return 0;
+> >  
+> > +	pci_lock_rescan_remove();
+> Does moving this lock acquisition here create an ABBA deadlock? 
+> Looking at sriov_numvfs_store(), the kernel acquires device_lock(&pdev->dev)
+> before invoking the driver's sriov_configure() callback, which eventually
+> reaches this point and calls pci_lock_rescan_remove(). This establishes a
+> dependency of device_lock followed by pci_rescan_remove_lock.
+> During a PCI hotplug event or sysfs remove_store, the subsystem first acquires
+> pci_rescan_remove_lock, then calls pci_stop_and_remove_bus_device() which
+> invokes device_release_driver() and takes device_lock(&pdev->dev). This
+> creates the reverse dependency.
+> Will an SR-IOV sysfs configuration racing with a hot-unplug event result in a
+> deadlock? I understand this regression is fixed later in the patch series by
+> commit 'PCI: Fix AB-BA deadlock between device_lock and pci_rescan_remove_lock
+> in remove_store', but wanted to point out the interaction here.
+
+This is already addressed in Patch 02.
+
+> > diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+> > index b63cd0c310bc0..91f1dae6943b6 100644
+> > --- a/drivers/pci/probe.c
+> > +++ b/drivers/pci/probe.c
+> [ ... ]
+> > @@ -3513,16 +3513,30 @@ EXPORT_SYMBOL_GPL(pci_rescan_bus);
+> >   * routines should always be executed under this mutex.
+> >   */
+> >  DEFINE_MUTEX(pci_rescan_remove_lock);
+> > +static const struct task_struct *pci_rescan_remove_owner;
+> > +static unsigned int pci_rescan_remove_depth;
+> >  
+> >  void pci_lock_rescan_remove(void)
+> >  {
+> > -	mutex_lock(&pci_rescan_remove_lock);
+> > +	if (pci_rescan_remove_owner == current) {
+>
+> Can this read cause a data race?
+> This reads pci_rescan_remove_owner outside of the mutex critical section.
+> Concurrently, another thread executing this same function can acquire the
+> mutex and write to this shared variable.
+>
+> > +		pci_rescan_remove_depth++;
+> > +	} else {
+> > +		mutex_lock(&pci_rescan_remove_lock);
+> > +		pci_rescan_remove_owner = current;
+>
+> Could the compiler optimize or tear these unprotected accesses? Should these
+> reads and writes use READ_ONCE() and WRITE_ONCE() to safely perform the
+> lockless accesses and avoid triggering warnings in tools like KCSAN?
+>
+> > +		pci_rescan_remove_depth = 1;
+> > +	}
+> >  }
+
+Those two are wrong. `pci_rescan_remove_depth` is only modified when we
+already own the mutex `pci_rescan_remove_owner == current`, so the writes are
+safe. The reads are safe because, again, the relevant case is when the current
+thread already owns the mutex, and then we already have the lock; when we
+don't already have the lock we gonna try to take it, but this is also safe
+because nobody gonna change the owner to us other than we ourself, and only
+once we have taken the lock.
+
+Patch 02:
+
+> > diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
+> > --- a/drivers/pci/pci-sysfs.c
+> > +++ b/drivers/pci/pci-sysfs.c
+> > @@ -521,8 +521,36 @@ static ssize_t remove_store(struct device *dev, struct device_attribute *attr,
+> [ ... ]
+> > +		 * By unbinding first, the driver's .remove() callback
+> > +		 * (including any SR-IOV VF cleanup) completes before
+> > +		 * pci_rescan_remove_lock is acquired, ensuring both
+> > +		 * paths take locks in the same order.
+> > +		 */
+> > +		device_release_driver(dev);
+>
+> Does calling device_release_driver() here violate the bottom-up teardown
+> guarantee if this device is a bridge?
+>
+> If the device is a PCIe bridge, unbinding the pcieport driver will call
+> pci_disable_device(). Because child devices do not increment the parent
+> bridge's enable_cnt during probe, the bridge's enable_cnt will drop to zero
+> and clear the PCI_COMMAND_MASTER bit.
+>
+> This disables bus-mastering for the bridge while its child devices are still
+> fully active. When they are later unbound during removal, their drivers might
+> fail to communicate with the hardware, leading to master aborts, PCIe AER
+> errors, and timeouts on DMA flushes.
+
+Ionut previously addressed this in the post I linked above; identifying it as
+false-positive.
+
+> > 		pci_stop_and_remove_bus_device_locked(to_pci_dev(dev));
+>
+> Does this leave child devices vulnerable to the exact same AB-BA deadlock?
+>
+> When pci_stop_and_remove_bus_device_locked() executes, it acquires the
+> pci_rescan_remove_lock and unbinds child devices recursively:
+>
+> pci_stop_and_remove_bus_device_locked()
+>   pci_stop_bus_device()
+>     pci_stop_dev(child)
+>       device_release_driver(&child->dev)
+>
+> This attempts to acquire device_lock(&child->dev) while already holding
+> pci_rescan_remove_lock.
+>
+> If a concurrent unbind_store() happens on the child device, it will acquire
+> device_lock(&child->dev) first and then wait for pci_rescan_remove_lock,
+> reproducing the original circular dependency.ecause then we can't concurrently change the state to `current`.
+
+This is a false positive; we marked the device as "killed" and unbound the
+device driver. So, when the concurrent unbind_store() is called `dev->driver`
+is NULL and so it never gonna call device_driver_detach() and take the lock.
+Or rather, it wouldn't even be called, because unbind_store() is supposedly
+only called when some driver binds the device, which would not be the case
+here.
+
+At least thats my take on those latest findings.
+
+-- 
+Best Regards, Benjamin Block        /        Linux on IBM Z Kernel Development
+IBM Deutschland Research & Development GmbH    /   https://www.ibm.com/privacy
+Vors. Aufs.-R.: Wolfgang Wendt         /        Geschäftsführung: David Faller
+Sitz der Ges.: Ehningen     /     Registergericht: AmtsG Stuttgart, HRB 243294
 
