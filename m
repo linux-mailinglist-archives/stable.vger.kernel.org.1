@@ -1,145 +1,135 @@
-Return-Path: <stable+bounces-253688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253689-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qCNoIZnRD2r0PwYAu9opvQ
-	(envelope-from <stable+bounces-253688-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 05:46:33 +0200
+	id sOkmDfXUD2rIQAYAu9opvQ
+	(envelope-from <stable+bounces-253689-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 06:00:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89F265AE644
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 05:46:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99AD75AE6F0
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 06:00:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 83063300BC81
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 03:46:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2683B3012C6C
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 04:00:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D59D34F48A;
-	Fri, 22 May 2026 03:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 486A4330B2E;
+	Fri, 22 May 2026 04:00:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 792E032E151;
-	Fri, 22 May 2026 03:46:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from out28-170.mail.aliyun.com (out28-170.mail.aliyun.com [115.124.28.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD2722157B;
+	Fri, 22 May 2026 04:00:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779421586; cv=none; b=ujYUOCfzgaTkjeZz/4I1jW11/Gkzii/+xRXqoP9rxF4iILelrETrq5p9tlcZY8y8EIvz54MaUru2vjc3+LU9QXcR9ujjTIiOWAeyZT50pq+i/jMj7MdoBOKmCY3493jHxEFBmdMXZZ/6Xg1vTrkSHHFHLuQUq0EA50wJC0ZquX4=
+	t=1779422444; cv=none; b=JLJoPAo18RplABCNaIoUcWFl0K4V2HWt9Lo13j1Ma2rxlFHuXb//sYDOVE2YYSvtg09uwBi7tina3fU+MaWEf3TwSsVgbL6BuE2Gr9AZdZ58VpG2D0F0hJxpq3tX1wJO3UqiT5ku9P9PBK2paGTjYy4OzzyfiluaEglSf2vGYvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779421586; c=relaxed/simple;
-	bh=M0XmnJv53KNUcwwsi7tWGFt+AcUS34x3Doz/+8739w0=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=RE6P4ZZra5oT/Xa3VlBQrt0Sll3Bh04yymgSd9lKJA/TdBPOnXRZIT1BG/OSWKwnqlZaDF9mcTybDh9TOvAv6xzlM+TN00nVVQdN/BOv/AOC/XEj8C07a1IvxjwkzgFCHQsYcqLyUuRw4oIWY7+3ezdcz3ouXqvqCZlJSVFWnGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.164])
-	by gateway (Coremail) with SMTP id _____8AxX+uI0Q9qNUMMAA--.35516S3;
-	Fri, 22 May 2026 11:46:16 +0800 (CST)
-Received: from [10.20.42.164] (unknown [10.20.42.164])
-	by front1 (Coremail) with SMTP id qMiowJBxrsKB0Q9qvjyMAA--.62394S2;
-	Fri, 22 May 2026 11:46:11 +0800 (CST)
-Subject: Re: [PATCH] crypto: loongson - Select CRYPTO_RNG
-To: Eric Biggers <ebiggers@kernel.org>, Huacai Chen <chenhuacai@kernel.org>
-Cc: linux-crypto@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
- linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
- Yinggang Gu <guyinggang@loongson.cn>, Lee Jones <lee@kernel.org>,
- kernel test robot <lkp@intel.com>, stable@vger.kernel.org
-References: <20260522022525.12976-1-ebiggers@kernel.org>
- <CAAhV-H5cDnWKxBobwRErRyvG8671e6VXsBe6w1RkX9rfn7CVFA@mail.gmail.com>
- <20260522025722.GD5937@quark>
-From: Qunqin Zhao <zhaoqunqin@loongson.cn>
-Message-ID: <d71adfa1-8895-e741-b72f-c5e99d5fb9e6@loongson.cn>
-Date: Fri, 22 May 2026 11:41:15 +0800
-User-Agent: Mozilla/5.0 (X11; Linux mips64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1779422444; c=relaxed/simple;
+	bh=QbZUKjdjRuQXtzg05CzVoq/5DiFTpb7F9GvwPGCiV3g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KfOHfhN/jVMah8V3dKqjdH8VnrnuXiXttOyzeodf9UdFOsSwxvKYa4DkonGz4Lt5M6y6Kr0lJwGxWT82pOtPUmzNSpwMich9g533JRHcW3n38+BuDvjw6GaD+xpmgIzN+96/FtjWpFxmjndaNuPnNMBM3H000PC+8G0pMN2T+qY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.2013519|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.091802-0.00767594-0.900522;FP=8872141843517162851|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam011083013073;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---.hdi.OM-_1779422418;
+Received: from localhost.localdomain(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.hdi.OM-_1779422418 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Fri, 22 May 2026 12:00:29 +0800
+From: Tina Zhang <zhang_wei@open-hieco.net>
+To: kvm@vger.kernel.org
+Cc: seanjc@google.com,
+	pbonzini@redhat.com,
+	mlevitsk@redhat.com,
+	naveen@kernel.org,
+	linux-kernel@vger.kernel.org,
+	Tina Zhang <zhang_wei@open-hieco.net>,
+	stable@vger.kernel.org
+Subject: [PATCH] KVM: SVM: Disable AVIC IPI virtualization on Hygon Family 18h (erratum #1235)
+Date: Fri, 22 May 2026 12:00:14 +0800
+Message-ID: <20260522040014.3380201-1-zhang_wei@open-hieco.net>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20260522025722.GD5937@quark>
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID:qMiowJBxrsKB0Q9qvjyMAA--.62394S2
-X-CM-SenderInfo: 52kd01pxqtx0o6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoWrKF13CrW8AF4ktryxJw1rKrX_yoW8Jry3pa
-	y3G3WUCFs8GrWfCanFg3Wxuas0kws3ZrW3KFWUC34Yvrs0vr1UXr1IgFZxWa4qyryFkrW7
-	Kr98t3yY9a4UCacCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUB0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6r4j6r4UJwAaw2AFwI0_Jrv_JF1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0c
-	Ia020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_
-	JF1lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrw
-	CYjI0SjxkI62AI1cAE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j
-	6r4UMxCIbckI1I0E14v26r126r1DMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwV
-	AFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv2
-	0xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4
-	v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AK
-	xVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU2MKZDUUUU
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:mid,loongson.cn:email,intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	MID_RHS_MATCH_FROM(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	R_DKIM_NA(0.00)[];
-	DMARC_NA(0.00)[loongson.cn];
-	FROM_NEQ_ENVFROM(0.00)[zhaoqunqin@loongson.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253688-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-253689-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: 89F265AE644
+	DMARC_NA(0.00)[open-hieco.net];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[zhang_wei@open-hieco.net,stable@vger.kernel.org];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.967];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 99AD75AE6F0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Hygon Family 18h CPUs are derived from AMD Family 17h (Zen1) silicon and
+share the same erratum #1235: hardware may read a stale IsRunning=1 bit
+during ICR write emulation and silently fail to generate an
+AVIC_IPI_FAILURE_TARGET_NOT_RUNNING VM-Exit on the sending vCPU.
 
-在 2026/5/22 上午10:57, Eric Biggers 写道:
-> On Fri, May 22, 2026 at 10:52:42AM +0800, Huacai Chen wrote:
->> On Fri, May 22, 2026 at 10:26 AM Eric Biggers <ebiggers@kernel.org> wrote:
->>> This driver registers a rng_alg, so it requires CRYPTO_RNG.
->>>
->>> Fixes: 766b2d724c8d ("crypto: loongson - add Loongson RNG driver support")
->>> Reported-by: kernel test robot <lkp@intel.com>
->>> Closes: https://lore.kernel.org/oe-kbuild-all/202605201622.qWOiiZTV-lkp@intel.com/
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
->> Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
->>> ---
->>>   drivers/crypto/loongson/Kconfig | 1 +
->>>   1 file changed, 1 insertion(+)
->>>
-> By the way, do any of the loongson people have any comment on what they
-> think the point of this driver is?  It's not registered with the actual
+The absence of the VM-Exit causes KVM to miss the required wakeup of
+blocking target vCPUs, leading to hung vCPUs and unbounded delays in
+guest execution.
 
-To provide an AF_ALG-based random number generation interface for other 
-modules and user-space programs.
+Extend the existing AMD Family 17h erratum #1235 workaround to also cover
+Hygon Family 18h.  With IPI virtualization disabled, KVM never sets
+IsRunning=1 in the Physical ID table, so every non-self IPI generates a
+VM-Exit and is correctly emulated.
 
-Thanks,
+Fixes: 8de4a1c8164e ("KVM: SVM: Disable (x2)AVIC IPI virtualization if CPU has erratum #1235")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Tina Zhang <zhang_wei@open-hieco.net>
+---
+ arch/x86/kvm/svm/avic.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-Qunqin
-
-> hwrng subsystem, but rather the pointless crypto_rng system which no one
-> uses.  So if it was intended to provide entropy for /dev/urandom etc.,
-> that isn't what it's doing.
-
->
-> Can we just delete this driver?
->
-> - Eric
+diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
+index adf211860949..993b551180fe 100644
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -1300,12 +1300,14 @@ bool __init avic_hardware_setup(void)
+ 	}
+ 
+ 	/*
+-	 * Disable IPI virtualization for AMD Family 17h CPUs (Zen1 and Zen2)
+-	 * due to erratum 1235, which results in missed VM-Exits on the sender
+-	 * and thus missed wake events for blocking vCPUs due to the CPU
+-	 * failing to see a software update to clear IsRunning.
++	 * Disable IPI virtualization for AMD Family 17h (Zen1 and Zen2) and
++	 * Hygon Family 18h (derived from AMD Zen1) CPUs due to erratum 1235,
++	 * which results in missed VM-Exits on the sender and thus missed wake
++	 * events for blocking vCPUs due to the CPU failing to see a software
++	 * update to clear IsRunning.
+ 	 */
+-	enable_ipiv = enable_ipiv && boot_cpu_data.x86 != 0x17;
++	if (boot_cpu_data.x86 == 0x17 || boot_cpu_data.x86 == 0x18)
++		enable_ipiv = false;
+ 
+ 	amd_iommu_register_ga_log_notifier(&avic_ga_log_notifier);
+ 
+-- 
+2.43.7
 
 
