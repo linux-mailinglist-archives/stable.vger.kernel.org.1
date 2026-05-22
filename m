@@ -1,143 +1,145 @@
-Return-Path: <stable+bounces-253687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253688-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KOlOLLHPD2rHPwYAu9opvQ
-	(envelope-from <stable+bounces-253687-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 05:38:25 +0200
+	id qCNoIZnRD2r0PwYAu9opvQ
+	(envelope-from <stable+bounces-253688-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 05:46:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B9355AE5DC
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 05:38:24 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89F265AE644
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 05:46:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D2DFC3019521
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 03:38:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 83063300BC81
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 03:46:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFA5328850D;
-	Fri, 22 May 2026 03:38:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="XAAerBj4"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D59D34F48A;
+	Fri, 22 May 2026 03:46:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87E23438BE;
-	Fri, 22 May 2026 03:38:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 792E032E151;
+	Fri, 22 May 2026 03:46:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779421097; cv=none; b=D1guUe8NuheQSoNVljBgwKoORD17s0zxVJhRp5L13eX5yZ0c827PP6qJ5Tl4un04Cg1mO1VOVOAVDe+VYUNjuONhH49NWfW9sXnWYO9JEQK90S12h/evrInFySVkYTjeUXTKoJdeyJCCe7QChHf/r3FWcn1VzyCyaPe1mW98R/M=
+	t=1779421586; cv=none; b=ujYUOCfzgaTkjeZz/4I1jW11/Gkzii/+xRXqoP9rxF4iILelrETrq5p9tlcZY8y8EIvz54MaUru2vjc3+LU9QXcR9ujjTIiOWAeyZT50pq+i/jMj7MdoBOKmCY3493jHxEFBmdMXZZ/6Xg1vTrkSHHFHLuQUq0EA50wJC0ZquX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779421097; c=relaxed/simple;
-	bh=qc2fMa6n9sD9Hhbu80rmC7L/gSX83lEikgoOFmfmJS8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SymV97MV4sB2KBOAF6eol9UVb7vbXYKeVLazJe+T0MQJ8mPBkNS6zIpz6j6IKCM+WMSB80iPLpTMiWIEXvKO5V6dsNGtj4M0gPdr4XiUXHzvhUCVH0mt189YaMIdqa26pG5q250xm5ubqSDBOHQ9GTGhHryFAVtTzFdkllRhjTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=XAAerBj4; arc=none smtp.client-ip=45.254.49.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
-Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [221.228.238.82])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 3f63bb888;
-	Fri, 22 May 2026 11:32:57 +0800 (GMT+08:00)
-From: Dawei Feng <dawei.feng@seu.edu.cn>
-To: alexander.deucher@amd.com
-Cc: christian.koenig@amd.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	Dawei Feng <dawei.feng@seu.edu.cn>,
-	stable@vger.kernel.org,
-	Zilin Guan <zilin@seu.edu.cn>
-Subject: [PATCH] drm/radeon: Use kvfree instead of kfree in radeon_gpu_reset
-Date: Fri, 22 May 2026 11:32:54 +0800
-Message-Id: <20260522033254.3602281-1-dawei.feng@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1779421586; c=relaxed/simple;
+	bh=M0XmnJv53KNUcwwsi7tWGFt+AcUS34x3Doz/+8739w0=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=RE6P4ZZra5oT/Xa3VlBQrt0Sll3Bh04yymgSd9lKJA/TdBPOnXRZIT1BG/OSWKwnqlZaDF9mcTybDh9TOvAv6xzlM+TN00nVVQdN/BOv/AOC/XEj8C07a1IvxjwkzgFCHQsYcqLyUuRw4oIWY7+3ezdcz3ouXqvqCZlJSVFWnGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.164])
+	by gateway (Coremail) with SMTP id _____8AxX+uI0Q9qNUMMAA--.35516S3;
+	Fri, 22 May 2026 11:46:16 +0800 (CST)
+Received: from [10.20.42.164] (unknown [10.20.42.164])
+	by front1 (Coremail) with SMTP id qMiowJBxrsKB0Q9qvjyMAA--.62394S2;
+	Fri, 22 May 2026 11:46:11 +0800 (CST)
+Subject: Re: [PATCH] crypto: loongson - Select CRYPTO_RNG
+To: Eric Biggers <ebiggers@kernel.org>, Huacai Chen <chenhuacai@kernel.org>
+Cc: linux-crypto@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
+ linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
+ Yinggang Gu <guyinggang@loongson.cn>, Lee Jones <lee@kernel.org>,
+ kernel test robot <lkp@intel.com>, stable@vger.kernel.org
+References: <20260522022525.12976-1-ebiggers@kernel.org>
+ <CAAhV-H5cDnWKxBobwRErRyvG8671e6VXsBe6w1RkX9rfn7CVFA@mail.gmail.com>
+ <20260522025722.GD5937@quark>
+From: Qunqin Zhao <zhaoqunqin@loongson.cn>
+Message-ID: <d71adfa1-8895-e741-b72f-c5e99d5fb9e6@loongson.cn>
+Date: Fri, 22 May 2026 11:41:15 +0800
+User-Agent: Mozilla/5.0 (X11; Linux mips64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <20260522025722.GD5937@quark>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9e4dbe4a6e03a2kunma43dd79261302
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCSBlJVhpIHh8ZS0pPH0hKHVYeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUpVSUlDVUlIQ1VDSVlXWRYaDxIVHRRZQVlPS0hVSktJSE
-	5DQ1VKS0tVS1kG
-DKIM-Signature: a=rsa-sha256;
-	b=XAAerBj4UO150YsFWbPnbkZhMrbQTXJwizec3Wkq69Ho74iOHFV0p5Xd291/8vm5XadLKLeclBN3AsIgvGralV4mf6hFPuRPjFNkVxbLfdNy5+HNEMfGgL2+qsfJiJ4eL8kg7X6vxQu7ts+RscOBqJ4kJGuOdxaNxWnCyIb5ez8=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
-	bh=t85wgIYDJDkRWKpC2Gn2UjV3gwyPjPlbrb7Fn29A06U=;
-	h=date:mime-version:subject:message-id:from;
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Language: en-US
+X-CM-TRANSID:qMiowJBxrsKB0Q9qvjyMAA--.62394S2
+X-CM-SenderInfo: 52kd01pxqtx0o6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoWrKF13CrW8AF4ktryxJw1rKrX_yoW8Jry3pa
+	y3G3WUCFs8GrWfCanFg3Wxuas0kws3ZrW3KFWUC34Yvrs0vr1UXr1IgFZxWa4qyryFkrW7
+	Kr98t3yY9a4UCacCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUB0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6r4j6r4UJwAaw2AFwI0_Jrv_JF1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0c
+	Ia020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_
+	JF1lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrw
+	CYjI0SjxkI62AI1cAE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j
+	6r4UMxCIbckI1I0E14v26r126r1DMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwV
+	AFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv2
+	0xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4
+	v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AK
+	xVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU2MKZDUUUU
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
-	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[amd.com,gmail.com,ffwll.ch,lists.freedesktop.org,vger.kernel.org,seu.edu.cn];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253687-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[seu.edu.cn:+];
-	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:mid,loongson.cn:email,intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	MID_RHS_MATCH_FROM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	R_DKIM_NA(0.00)[];
+	DMARC_NA(0.00)[loongson.cn];
+	FROM_NEQ_ENVFROM(0.00)[zhaoqunqin@loongson.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:dkim]
-X-Rspamd-Queue-Id: 2B9355AE5DC
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253688-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[]
+X-Rspamd-Queue-Id: 89F265AE644
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-radeon_ring_backup() internally allocates ring_data buffers using
-kvmalloc_array(), which may use vmalloc() for large allocations. Using
-kfree() to release vmalloc-backed ring_data buffers in
-radeon_gpu_reset() will lead to memory corruption.
 
-Use kvfree() to safely handle both kmalloc and vmalloc allocations.
+在 2026/5/22 上午10:57, Eric Biggers 写道:
+> On Fri, May 22, 2026 at 10:52:42AM +0800, Huacai Chen wrote:
+>> On Fri, May 22, 2026 at 10:26 AM Eric Biggers <ebiggers@kernel.org> wrote:
+>>> This driver registers a rng_alg, so it requires CRYPTO_RNG.
+>>>
+>>> Fixes: 766b2d724c8d ("crypto: loongson - add Loongson RNG driver support")
+>>> Reported-by: kernel test robot <lkp@intel.com>
+>>> Closes: https://lore.kernel.org/oe-kbuild-all/202605201622.qWOiiZTV-lkp@intel.com/
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+>> Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
+>>> ---
+>>>   drivers/crypto/loongson/Kconfig | 1 +
+>>>   1 file changed, 1 insertion(+)
+>>>
+> By the way, do any of the loongson people have any comment on what they
+> think the point of this driver is?  It's not registered with the actual
 
-The bug was first flagged by an experimental analysis tool we are
-developing for kernel memory-management bugs while analyzing
-v6.13-rc1. The tool is still under development and is not yet publicly
-available. Manual inspection confirms that the bug is still
-present in v7.1-rc3.
+To provide an AF_ALG-based random number generation interface for other 
+modules and user-space programs.
 
-Runtime validation was not attempted because a targeted reproducer for
-this GPU reset error path was not available. Compile-tested only.
+Thanks,
 
-Fixes: 2098105ec65c ("drm: drop drm_[cm]alloc* helpers")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
----
- drivers/gpu/drm/radeon/radeon_device.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Qunqin
 
-diff --git a/drivers/gpu/drm/radeon/radeon_device.c b/drivers/gpu/drm/radeon/radeon_device.c
-index 705c012fcf9e..1f0f0d0eb673 100644
---- a/drivers/gpu/drm/radeon/radeon_device.c
-+++ b/drivers/gpu/drm/radeon/radeon_device.c
-@@ -1800,7 +1800,7 @@ int radeon_gpu_reset(struct radeon_device *rdev)
- 					    ring_sizes[i], ring_data[i]);
- 		} else {
- 			radeon_fence_driver_force_completion(rdev, i);
--			kfree(ring_data[i]);
-+			kvfree(ring_data[i]);
- 		}
- 	}
- 
--- 
-2.34.1
+> hwrng subsystem, but rather the pointless crypto_rng system which no one
+> uses.  So if it was intended to provide entropy for /dev/urandom etc.,
+> that isn't what it's doing.
+
+>
+> Can we just delete this driver?
+>
+> - Eric
 
 
