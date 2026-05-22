@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-253787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253788-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UK/LOQNbEGqDWgYAu9opvQ
-	(envelope-from <stable+bounces-253787-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 15:32:51 +0200
+	id eKyMDZ5dEGqDWgYAu9opvQ
+	(envelope-from <stable+bounces-253788-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 15:43:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C920A5B5331
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 15:32:51 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47DC35B5680
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 15:43:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 56B443147511
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 13:12:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9B53A309975C
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 13:12:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27BB939DBF1;
-	Fri, 22 May 2026 13:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AF8039DBDF;
+	Fri, 22 May 2026 13:12:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X3e8y0WZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="itaOmdus"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDFD939DBDF;
-	Fri, 22 May 2026 13:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9AD83976A9;
+	Fri, 22 May 2026 13:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779455561; cv=none; b=QZ958GULR8MlID/GUbwtOHi36Sg8lVbcXbcvCIVTvy6rHym8JtXcW83Z9bx4k4hrQrzTJQWMF0lldi3RviycWEA+IuoV3ohquNy3vDzv3zlmuDnPzc9Yeqoib1p0Ovyu/BTjL7tdvWMOG2RflXpIHhcYQuF1GzOFrJfg1b1CD3M=
+	t=1779455562; cv=none; b=g+P02Ps7hwNZlsDvFIHuT3UIfGMQ4VBYdWKxWjx0gHEw4itMZ3XX9gre8sQyb5HovAqYbkWFXMIPiZLKyw06CSIIVrIhBYHUADYCZjIjWgP+ViqwJdUI9ff0vwJMY6yJkd37CDUrBtpmDNC5wNkk4v3UTZjOPjTX1FDSOtqgmhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779455561; c=relaxed/simple;
-	bh=qZlXcp2FMSX4eFyArqwAC4vZ730OFDvZrN+MAyaMbE4=;
+	s=arc-20240116; t=1779455562; c=relaxed/simple;
+	bh=ysdnmHVWjGUIiunZs4maSqn+r06fskNsFzN+h9M6jeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YD/swPlDF+GHP3H8shejfeEQ2kNymH5/KzDr/t3RXxspMk87ifgLgMBegFkGk3o4JMMUd02GEYdI0N7Ut8QMiSRFOP1VL1785fVoTvscA6Lkj4JiPK4D0rhd8i74gZFIKxeZXUMfnnrLH4NIXOmay+LK9aRxVqHazL04xij5d+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X3e8y0WZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A37501F000E9;
-	Fri, 22 May 2026 13:12:39 +0000 (UTC)
+	 MIME-Version; b=HTN6epP/Z66bCc6k58kh00SqlZ8YzvD6hzVnVOf9s2JFaM5RSq+NQv5m5wWHrbwalYzUR0gevx5pCInRKBfHx6U6gmPR5Ne/LqcPD9eTql3q8CvXXg/+E/r4jp/nx8aGoMKAa8/cMeNKe4Y7QIEHu2yxmydVgdvnRrCC6FPCBaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=itaOmdus; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C19631F00A3D;
+	Fri, 22 May 2026 13:12:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779455560;
-	bh=qZlXcp2FMSX4eFyArqwAC4vZ730OFDvZrN+MAyaMbE4=;
+	s=k20260515; t=1779455561;
+	bh=SmszCWV+hCwCqQjgQsYP3m3X46OQkxfIJvf+z35Qg8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=X3e8y0WZqzVql1aQmV4KI0rBhSw1Eg1zLpCZLOzG+rqbKkiPyczNYYvrLOvutihPF
-	 qhuKYwDP5zgHWbZdXFNNCp5BCA0Eblqxha1Y8UcsLpsIpwRL56c8XLTrm4jyQdSHMR
-	 DuXzLSv4Ol21RP9EZeHKGBduKMsdNc7zL73b2vYUCxuDm/gGCMI1Vdr7uJPHJfzivt
-	 H2mOMHcvJ5itv2pDpBOa65EQnh5LJ4mdgbGahAkH7h40buy/fVy1UBWXH8nY0gNL0y
-	 NkjCQMMG9nRy3LUvYtj4QjzL2X8bHjvliI2RiOOUKvHEy0FmbRVzLReoRySW4YyTkH
-	 Dd6Q6698FGNSw==
+	b=itaOmdusvOugDvtk2zf7PYU/+U+HcAjc45uLKQ/RkNhwzCpMPCEbnm6KVwvJHnd4C
+	 k7wlDcwE94jY2w4RKrG0cBc51vKmyk9vRVwqjskEN2dlL/hRBwA+cC7KCwEUPAoqVW
+	 SYqY1gLVApB0mF5APvV7bKd4cv9ve/GsCIspjj6FbwFfPReq8i++4aopEV6kTFzVXJ
+	 hv9e9n5fSypbfhG3w4t3Yj/dJig5ZyPQhRiPIW3boMKqhuIL5CQikTsMmOFeA+xwrE
+	 XrBX0QORh1urla9OzLd574KaO9g6w76jZbbolhTa4kXSihK+BysGXtmCqdOVy2Wx6Q
+	 pTlO/Zs43fhHg==
 From: Sasha Levin <sashal@kernel.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: Sasha Levin <sashal@kernel.org>,
 	stable@vger.kernel.org,
 	patches@lists.linux.dev,
-	Horst Birthelmer <hbirthelmer@ddn.com>,
-	Jingbo Xu <jefflexu@linux.alibaba.com>,
-	Miklos Szeredi <mszeredi@redhat.com>,
-	Joanne Koong <joannelkoong@gmail.com>
-Subject: Re: [PATCH 7.0 0446/1146] fuse: fix premature writetrhough request for large folio
-Date: Fri, 22 May 2026 09:12:25 -0400
-Message-ID: <20260522123641.rc-drop-5223e0470e7b@kernel.org>
+	Luis Henriques <luis@igalia.com>,
+	Miklos Szeredi <mszeredi@redhat.com>
+Subject: Re: [PATCH 6.18 346/957] fuse: new work queue to periodically invalidate expired dentries
+Date: Fri, 22 May 2026 09:12:26 -0400
+Message-ID: <20260522123641.rc-drop-ab84ad597386@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <CAJnrk1bWJfT5hswsJ3X5HMZ=XLz5MO3pYXg6WkuYYvZ6ccS0Nw@mail.gmail.com>
-References: <20260520162148.390695140@linuxfoundation.org> <20260520162158.293493405@linuxfoundation.org> <CAJnrk1bWJfT5hswsJ3X5HMZ=XLz5MO3pYXg6WkuYYvZ6ccS0Nw@mail.gmail.com>
+In-Reply-To: <CAOssrKcqmVW3kJ131tRF3LCJVQUtdRB31B5HENDfpgrq6r=jEA@mail.gmail.com>
+References: <20260520162134.554764788@linuxfoundation.org> <20260520162142.034488466@linuxfoundation.org> <CAOssrKcqmVW3kJ131tRF3LCJVQUtdRB31B5HENDfpgrq6r=jEA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,41 +66,49 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-253787-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,lists.linux.dev,ddn.com,linux.alibaba.com,redhat.com,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-253788-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: C920A5B5331
+X-Rspamd-Queue-Id: 47DC35B5680
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, May 20, 2026 at 11:03:05AM -0700, Joanne Koong wrote:
-> I don't think this is needed for 7.0-stable or 6.18-stable as the bug
-> isn't triggerable until large folios are enabled, which fuse doesn't
-> support yet [1].
+On Wed, May 20, 2026 at 08:45:09PM +0200, Miklos Szeredi wrote:
+> This is not stable material, and I don't think the dependency is real.
+>
+> Just need to resolve the trivial conflict when applying 5a6baf204610
+> ("fuse: fix uninit-value in fuse_dentry_revalidate()")
 
-Dropped from the 7.0 and 6.18 queues, thanks.
+Dropped from the 6.18 queue along with the following Stable-dep-of /
+Fixes-of patches that no longer apply without it:
+
+  - dcache: export shrink_dentry_list() and add new helper d_dispose_if_unused()
+  - fuse: fix uninit-value in fuse_dentry_revalidate()
+  - fuse: fix race when disposing stale dentries
+  - fuse: make sure dentry is evicted if stale
+
+If anyone wants to send a backport of 5a6baf204610, we can apply it.
 
 --
 Thanks,
