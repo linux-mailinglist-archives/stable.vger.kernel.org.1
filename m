@@ -1,244 +1,167 @@
-Return-Path: <stable+bounces-253794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253795-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aEVnDsZiEGphWwYAu9opvQ
-	(envelope-from <stable+bounces-253794-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 16:05:58 +0200
+	id kFhMDHlgEGobWwYAu9opvQ
+	(envelope-from <stable+bounces-253795-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 15:56:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B44C5B5CFD
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 16:05:57 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF03C5B5A02
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 15:56:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id F100F3022679
-	for <lists+stable@lfdr.de>; Fri, 22 May 2026 13:28:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A56083109E93
+	for <lists+stable@lfdr.de>; Fri, 22 May 2026 13:30:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5ECF3AE188;
-	Fri, 22 May 2026 13:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CB253BB69A;
+	Fri, 22 May 2026 13:30:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Jp5MlugV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XfYe2Dbu"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4873A4524;
-	Fri, 22 May 2026 13:28:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 049313BD62E
+	for <stable@vger.kernel.org>; Fri, 22 May 2026 13:30:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779456508; cv=none; b=ZzhnqIn75zokVoO/H6NGqv7Y/BKm91qUv2dKvWbzXXSGl5JIE7kd2jDO4LCWTvDlyzWFgTAxANggCUQ6mXPt2UckUi5kVh5KxDu7kV9s1RZ+oHnSCchspTbt7kLY5vWSno7UGv4ztyJIWEoB8Dze3ECCl9UhY83nIHtnO4xpwis=
+	t=1779456643; cv=none; b=rcJLWSDCpkepyksiRYq68zPL47UplZoqtRZtBdrqo/ZOo3+YxXISSrHPxtLNDmppkN29oZn0erIlN1x3ALFIQatjd+KvRHSkhhP9de+y5n/Tyhg7jX47/affv7SoyU6u+6PuN504akBqhcoZcEO6kAIgeONwBEBrSxiSA1tNy30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779456508; c=relaxed/simple;
-	bh=vMCnx8a+02wpW1v2x3Gaju1pVGV683eSmQkhfp/4j3U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jViV1GusmUvcfOSWPSF+bTpd/AigyE0IbWgd89rZZu5pgKguH4Ga541M/nKBpfXlXs2pmmn8E072lAvNOGP/WiRrrGbkxf5IUANuegkzAvFah2OTPp4JNDJYGMHCzgCB8uACZLO48v5fu1cp5XW/RQQjI38nYLG3M57tPzCN3T0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Jp5MlugV; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779456506; x=1810992506;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=vMCnx8a+02wpW1v2x3Gaju1pVGV683eSmQkhfp/4j3U=;
-  b=Jp5MlugV/BBp62w6fFZ7ISWyUR2bJZqFZWZ2m6M3QjCXU7ovamz5M6iW
-   PWdr7uskW0YtrjPUJaP7/s7W6LtWforpw/nY2ThyeVuLuMrGFoSZmk/9e
-   2uRkQ9zamuNI+fN9avVwEWiL+6TEBdPqwlJBtmFK/tGV7ydU98h7EnDxp
-   X5ROz6ZwnWYN3Zbzo1lgAy4MH1aE6fWwBdMezZnU4nKc7lpmWt+c3hC+5
-   UNkgkHRDIFnUIZSzPuaP5mCZUTlI1lkF/Jh5DEq6q8TTuGkcL6Pj8JTnc
-   zvws7v0gkgY1oDuBMft+d5c85fLCyA7hCasmpmfs6hWXzLydc7m3z0DUc
-   Q==;
-X-CSE-ConnectionGUID: 7vlGKRXwRbCjs8EzuGwa+A==
-X-CSE-MsgGUID: 3kpDVoEXR/m/uQpJvT+Ayg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11794"; a="80236689"
-X-IronPort-AV: E=Sophos;i="6.24,162,1774335600"; 
-   d="scan'208";a="80236689"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2026 06:28:25 -0700
-X-CSE-ConnectionGUID: q+1wd2RyQXCYQ84bgdaVhA==
-X-CSE-MsgGUID: LG5P5DgUT5uXTJP5dpOaXg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,162,1774335600"; 
-   d="scan'208";a="241143308"
-Received: from amilburn-desk.amilburn-desk (HELO localhost) ([10.245.244.187])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2026 06:28:22 -0700
-Date: Fri, 22 May 2026 16:28:18 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Icenowy Zheng <zhengxingda@iscas.ac.cn>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Sam Ravnborg <sam@ravnborg.org>, dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org, Icenowy Zheng <uwu@icenowy.me>,
+	s=arc-20240116; t=1779456643; c=relaxed/simple;
+	bh=50z5aLe/utRyMRS+DG9tTAyot6zu9u8aqp2TcBzvdwU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j2+9xI9UjuPS0Vm4eyGH3J7YBAJY5xzgVG1y41ICzyWZ20Sdoyo5d5ySJyWsdz3+owXgnRXcj/ip146hmVUGLmeI/YQkaxH8krlulmGJdw+Le/NHPjTNDEPbz5n+55YMbuuQx9H7SsBe/3dkESRzyPJWR0wyKN2GwHuO/1NvrEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XfYe2Dbu; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3698e34a567so6449782a91.2
+        for <stable@vger.kernel.org>; Fri, 22 May 2026 06:30:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779456641; x=1780061441; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XCbc6evCAnW5/Lk0bejiMZ9J5LObQXJ3ouBPH/v5c+8=;
+        b=XfYe2DbuB34FZb8SQXY4wpNoPLDesRoVUR4xPnZFLs+eQ8DA7SpBzNDsFTUJaZHzGf
+         zFUsoIN30IGqV7ub0vN382Zq84aLiW50NcxLuJfg4kgQAkTiXQIj0ZWd5mVi6Tqz9V7t
+         T+roTdbpH3NuvqWQiBBdtiUSvNcSEtJwRSr/JhCjlB44zrx1Z70Nb6zZXA3Pk516FK4T
+         oFfUPU8aRjdm55ZBVGUOFkBgVMXOxwCLyBHbZkewiopcrfOV1KI/6W88Bg+kLh2kCiix
+         lZzmCOoo5E42Bhh9Vbh3r1tCK8K0THHMWHRqcyuJKMlQPEeX+ZphLtZpVVgjQs5CzmZ9
+         +IVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779456641; x=1780061441;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XCbc6evCAnW5/Lk0bejiMZ9J5LObQXJ3ouBPH/v5c+8=;
+        b=e0TmPM8MhauMVYrJu4ZPlKhF+OoIDxR2X9VlV30T87WzR4BUKiOgciwOFxGsY6BCnB
+         0Gw2Rcp3Tqt46ysM6zHhMbUJi0zSNYhkK+lfO51MgUSjx5s7wA8AB4HQ9zxb5qLOSjSY
+         dAWYev5vAgJDeZRkxijGRm14QjPbLsoXBx5xbBjj9y7/PcDAEtKxXXI1ZtQgi0QXupFP
+         ++EaOLbGpB6CCnLvmWSIgHAiTaiLTNg+Nerbq/rgEVAtuvEvI1iD4SGqPYnnbdCvl/l2
+         7xZ9ZCbyNzROxsd3Tx4ncUkqC7zn8nwUcQCRwpg6y2NYgv/ToZJQAoK880QqjzsT/QJC
+         AUJQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9UuMZMPUjEwWhScRNgLGsL45h8TOWOBOqN78hMfUgUOQX+Yub+P586XaGIlB+MfuZfp24nQGs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTiCH7lmZC0TzK6MwAHKtI49dPTYYI6KU2J44kfgqv2RqEm5/v
+	lcNhgDKJ8Ix/Fot1a5HX8aeksFemnwOMkkbo7vt/wqhLYehYZhg+QL/R
+X-Gm-Gg: Acq92OGHcuVs1xRdVmwc2E57UoAlOn2W2nG3Lbo9Ggiw3tR3ZfGN5tLlz5Z7jQQZgDv
+	wUQYFpGkNfeBcFVnS7r3PAOqeEfjzPU37bpzrDU8mZGqobnihdurjD2DEO/VLF3g7nFXq/PKbsr
+	rRBro5QIXBTgXJkmxMsh8NXiNXLFioExkABl+j4C7ce4gSpZLW7QQgbJj1fgm0j0nkJgibHbSO/
+	6LbaWVAtLu+s0JYLu3AHZ3wBHCAfMQrkhr35u8SIAK9Ojlr9fTm8fVgHzoDnDQoGf4Q9uLMropg
+	CWtTdNQKyC8GutAf2gYh0jHeGO9qSrzrcIqsrP9hV5f79kiRSh3CQW4Q8xgCOGo+H+E8masc19r
+	pH46koii8xZBDJxmykkjR/n99Jzhg63kgFX3FPI17KDjfKDqsN+i8+8sbcn0s2u2dgE9Vm7Jqj+
+	0JBLZdIRjqYiTxkSBaAwmgMOR222MaRPly4zWl2+kl0UsatjkBPniQGOTzjHtQwCmIjZn6B/FpT
+	HwbJ6I=
+X-Received: by 2002:a17:902:ce84:b0:2bd:3bfd:74f2 with SMTP id d9443c01a7336-2beb0593137mr38054985ad.10.1779456641134;
+        Fri, 22 May 2026 06:30:41 -0700 (PDT)
+Received: from buffalo-ssd.taila54753.ts.net (M014013071096.v4.enabler.ne.jp. [14.13.71.96])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb5695f05sm25147605ad.6.2026.05.22.06.30.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 May 2026 06:30:40 -0700 (PDT)
+From: Akari Tsuyukusa <akkun11.open@gmail.com>
+To: mturquette@baylibre.com,
+	sboyd@kernel.org,
+	bmasney@redhat.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	wenst@chromium.org,
+	laura.nao@collabora.com
+Cc: linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Akari Tsuyukusa <akkun11.open@gmail.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] drm/client: check whether CRTC is active before waiting
- for vblank
-Message-ID: <ahBZ8nIqR4qESLZg@intel.com>
-References: <20260519092420.1124348-1-zhengxingda@iscas.ac.cn>
- <ee86cb43-e5df-4946-a957-931a73dde752@suse.de>
- <ahBWayIcQUHuAt4i@intel.com>
- <b4b2e8cb-dd7c-42c2-88b7-0a2ab95a90ee@suse.de>
+Subject: [PATCH] clk: mediatek: mt8196: Select REGMAP_MMIO for vlpckgen
+Date: Fri, 22 May 2026 22:30:23 +0900
+Message-ID: <20260522133023.355404-1-akkun11.open@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <b4b2e8cb-dd7c-42c2-88b7-0a2ab95a90ee@suse.de>
-X-Patchwork-Hint: comment
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-X-Spamd-Result: default: False [-1.53 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MIXED_CHARSET(0.63)[subject];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[iscas.ac.cn,linux.intel.com,kernel.org,gmail.com,ffwll.ch,ravnborg.org,lists.freedesktop.org,vger.kernel.org,icenowy.me];
-	TAGGED_FROM(0.00)[bounces-253794-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[ville.syrjala@linux.intel.com,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253795-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[baylibre.com,kernel.org,redhat.com,gmail.com,collabora.com,chromium.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akkun11open@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-0.988];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,iscas.ac.cn:email,suse.com:url,bootlin.com:url]
-X-Rspamd-Queue-Id: 3B44C5B5CFD
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: AF03C5B5A02
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, May 22, 2026 at 03:24:05PM +0200, Thomas Zimmermann wrote:
-> Hi
-> 
-> Am 22.05.26 um 15:13 schrieb Ville Syrjälä:
-> > On Fri, May 22, 2026 at 01:55:59PM +0200, Thomas Zimmermann wrote:
-> >> Hi
-> >>
-> >> Am 19.05.26 um 11:24 schrieb Icenowy Zheng:
-> >>> Currently the implementaion of drm_client_modeset_wait_for_vblank()
-> >>> assumes drm_vblank_get() will fail when the CRTC isn't active. However
-> >>> it seems that this is not true, and running fbcon on a device with the
-> >>> first CRTC inactive will lead to kernel warning in some cases (which
-> >>> could be reproduced with the loongson driver).
-> >>>
-> >>> Change the implementation to add a check for the active state (atomic) /
-> >>> enabled state (non-atomic) before calling drm_vblank_get(). As the
-> >>> assumption of drm_vblank_get() failing for inactive CRTC isn't met, the
-> >>> error status of drm_vblank_get() can now be exported too.
-> >>>
-> >>> Cc: stable@vger.kernel.org
-> >>> Fixes: d8c4bddcd8bc ("drm/fb-helper: Synchronize dirty worker with vblank")
-> >>> Signed-off-by: Icenowy Zheng <zhengxingda@iscas.ac.cn>
-> >>> ---
-> >>>    drivers/gpu/drm/drm_client_modeset.c | 13 +++++++++++--
-> >>>    1 file changed, 11 insertions(+), 2 deletions(-)
-> >>>
-> >>> diff --git a/drivers/gpu/drm/drm_client_modeset.c b/drivers/gpu/drm/drm_client_modeset.c
-> >>> index bb49b8361271a..1b03bf351256e 100644
-> >>> --- a/drivers/gpu/drm/drm_client_modeset.c
-> >>> +++ b/drivers/gpu/drm/drm_client_modeset.c
-> >>> @@ -1310,7 +1310,7 @@ int drm_client_modeset_wait_for_vblank(struct drm_client_dev *client, unsigned i
-> >>>    {
-> >>>    	struct drm_device *dev = client->dev;
-> >>>    	struct drm_crtc *crtc;
-> >>> -	int ret;
-> >>> +	int ret = 0;
-> >>>    
-> >>>    	/*
-> >>>    	 * Rate-limit update frequency to vblank. If there's a DRM master
-> >>> @@ -1326,15 +1326,24 @@ int drm_client_modeset_wait_for_vblank(struct drm_client_dev *client, unsigned i
-> >>>    	 * Only wait for a vblank event if the CRTC is enabled, otherwise
-> >>>    	 * just don't do anything, not even report an error.
-> >>>    	 */
-> >>> +	if (drm_drv_uses_atomic_modeset(dev)) {
-> >>> +		if (!crtc->state || !crtc->state->active)
-> >>> +			goto out;
-> >>> +	} else {
-> >>> +		if (!crtc->enabled)
-> >>> +			goto out;
-> >>> +	}
-> >>> +
-> >> This part is good.
-> > Locking is missing.
-> 
-> Ok
-> 
-> >
-> >>>    	ret = drm_crtc_vblank_get(crtc);
-> >>>    	if (!ret) {
-> >>>    		drm_crtc_wait_one_vblank(crtc);
-> >>>    		drm_crtc_vblank_put(crtc);
-> >>>    	}
-> >>>    
-> >>> +out:
-> >>>    	drm_master_internal_release(dev);
-> >>>    
-> >>> -	return 0;
-> >>> +	return ret;
-> >> But this isn't. There can be CRTCs without any vblank at all. We still
-> >> want to fail silently for them. So we still have to return 0 here.
-> >>
-> >> Having set this, fixing this helper is only partially what you want.
-> >> Since your device has vblanking, the emulation should check on the
-> >> correct CRTC. IOW you need to pass the right CRTC index at
-> >>
-> >> https://elixir.bootlin.com/linux/v7.1-rc1/source/drivers/gpu/drm/drm_fb_helper.c#L237
-> >> https://elixir.bootlin.com/linux/v7.1-rc1/source/drivers/gpu/drm/drm_fb_helper.c#L920
-> >>
-> >> I'm not quite sure how to support this. The CRTC is under
-> >> fb_helper->client.modesets.crtc. You'd have to figure out which is the
-> >> relevant one and use that. But that's also not so great, as fbdev ioctls
-> >> only support CRTC 0. Doing internal re-mappings only complicates matters.
-> >>
-> >> But why does your HW use CRTC 1 in the first place.
-> > Could be eg. the enabled outputs can't be driven with CRTC 0.
-> >
-> > I guess what you want to do is pick the first crtc from modesets[]
-> > which is enabled. Or perhaps even "pick the Nth enabled crtc from
-> > modesets[] based on the ioctl argument".
-> 
-> The enable-status of each CRTC could change later on, which might lead 
-> to problems.
+The MediaTek MT8196 vlpckgen clock driver uses
+__devm_regmap_init_mmio_clk() by devm_regmap_init_mmio(),
+which is defined in drivers/base/regmap/regmap-mmio.c.
+However, the driver's Kconfig entry does not select REGMAP_MMIO.
+This causes a linker error when REGMAP_MMIO is not enabled.
 
-Sound like a locking issue if someone is changing the configuration
-at the same time we're trying to do the vblank wait here.
+Fix this by selecting REGMAP_MMIO in the Kconfig entry.
 
-> Picking the one CRTC/output with the lowest spec and 
-> mirroring it to the others might work. This CRTC would then be the one 
-> to wait for.
-> 
-> Best regards
-> Thomas
-> 
-> >
-> 
-> -- 
-> --
-> Thomas Zimmermann
-> Graphics Driver Developer
-> SUSE Software Solutions Germany GmbH
-> Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-> GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
-> 
+Fixes: 2f8b3ae6f0cb ("clk: mediatek: Add MT8196 vlpckgen clock support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Akari Tsuyukusa <akkun11.open@gmail.com>
+---
+ drivers/clk/mediatek/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
+diff --git a/drivers/clk/mediatek/Kconfig b/drivers/clk/mediatek/Kconfig
+index 2c09fd729bab..fd8440122ec2 100644
+--- a/drivers/clk/mediatek/Kconfig
++++ b/drivers/clk/mediatek/Kconfig
+@@ -1006,6 +1006,7 @@ config COMMON_CLK_MT8196
+ 	tristate "Clock driver for MediaTek MT8196"
+ 	depends on ARM64 || COMPILE_TEST
+ 	select COMMON_CLK_MEDIATEK
++	select REGMAP_MMIO
+ 	default ARCH_MEDIATEK
+ 	help
+ 	  This driver supports MediaTek MT8196 basic clocks.
 -- 
-Ville Syrjälä
-Intel
+2.54.0
+
 
