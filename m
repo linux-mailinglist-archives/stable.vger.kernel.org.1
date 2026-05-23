@@ -1,151 +1,219 @@
-Return-Path: <stable+bounces-253908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253909-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qPJQAPBhEWpclQYAu9opvQ
-	(envelope-from <stable+bounces-253908-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 10:14:40 +0200
+	id YEMvI0dlEWr7lQYAu9opvQ
+	(envelope-from <stable+bounces-253909-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 10:28:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A1DD5BDD31
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 10:14:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B1CB5BDDA2
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 10:28:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 12AA43011872
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 08:14:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B94C0301FA52
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 08:28:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF22631F9BD;
-	Sat, 23 May 2026 08:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 842F634DB46;
+	Sat, 23 May 2026 08:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="khtrc05z"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HfkhPQr/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9718A2032D;
-	Sat, 23 May 2026 08:14:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D6F3537E8
+	for <stable@vger.kernel.org>; Sat, 23 May 2026 08:28:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779524068; cv=none; b=sIsvvCL7MfTibUn8dYSFzsjC19emS3w4dwGIkZZ1xMkF4gaXESvQF3XtYXmHwuSupAVb3UZl0J5OPu0d8ASPzUpBQecUjYHam48sqO44nBsT0X8qSalZIVuaF2hwTWrELvxkj1JG18dnz96szdbfnDCMPZokUEsAF3GIjq4FE1Q=
+	t=1779524904; cv=none; b=CfE1hQc0V2K/ZSXttlDrfYiuPYjtvVMFcnOj5quiZUiRoW6WMBvSGhDxzpaGcD7mxOp7J6xcpu4+OkTA6Q8bj7yEtDAbckLkemLc6MyFZYLjl7QSIuH8vGacRtntNDS6URVIiIEbWCA3WHdod0acV5z9f1TqalM7Hxg1Du0vr8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779524068; c=relaxed/simple;
-	bh=csdmdrcuxLpdXVOAhfP7zCvOPa4UhfDvh9jpsP3A2Po=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Jcjv63l5zciHhVzKZ5SbQMJjd6aqxCCqXOkd3rVMaMzqhiFHxxKuv/j1qTbN+lL4TlwQldnvLlZaW0ehls0RN+JCcBGdbMGc4SgN8RJDvi6ORXL2dX9wuJ/RWaJR5XHjBDBWzvATlqt3kGIYu6RJyaF1/Qe2CjT37EsoDMLmwNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=khtrc05z; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C637B1F000E9;
-	Sat, 23 May 2026 08:14:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779524067;
-	bh=GL+RzpSO6B/WqNvCitg5GgJC9+53s7fBCUotsbLyogc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=khtrc05zufZUSXhAft3+tmNq2hcjhNoTUEt7Y225qTSTtcZtrfnOVKAD8I8p2XmAl
-	 9UG02p1KkaXVyYZUQCCpy7/5fI1zpJjRUYrMkQ3vGrGczxDvWQ91uNujrVNdb2HV28
-	 lAbAenWkAUeHMLH7yGDzPFoVp/A+QzroKg11bCmSQtY9OWZNcd0r37i7Ot/k+MjU2P
-	 zrasUeseBU1Lw/t/ZYOkFR7d4CE1fUizMwyAUkOojQwupS7BJUUQ1MzstNoHU2mdVI
-	 EvBMrbuZNIEgBx5e+LoKP091QQgqmtcmXMvqweR7ELpKAmho+kZ9a2fp0ZjesxjD8Y
-	 g1aeTZa5k88oA==
-Message-ID: <67bd230e-df9a-47fa-bdd7-d8b1e2ff1649@kernel.org>
-Date: Sat, 23 May 2026 11:14:22 +0300
+	s=arc-20240116; t=1779524904; c=relaxed/simple;
+	bh=SJYthm/hJjyvZnHoxcP0FN011OD9BRe6ay27b+7gC+U=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jiXAhbWs0V3Jd4QQCPuZ2rIh+C5JMrRjpqRvFV7VD8suYGajfD0AA2nF3TmuyIRr0uvQNbc0eujUsgZ739fJqwpvO37y3QuIXkSqg4Fw8/siTEgtit7WHs+uTCPeShcfWv5QyDJwDPZnBGk5IaK7f1PXV/clsQEuP+BnsE+B5+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HfkhPQr/; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5aa21fa024cso5712341e87.2
+        for <stable@vger.kernel.org>; Sat, 23 May 2026 01:28:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779524901; x=1780129701; darn=vger.kernel.org;
+        h=mime-version:references:in-reply-to:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=EhmWhWD9464Uoh3KFvCuWff7V4Zp2a8qUYWAxJoJ59c=;
+        b=HfkhPQr/smgQ0JTETyFkjiCEB5kJoXcBpyiy/8c58BQPRHfZ56uC5Afv9aSLcdlk7l
+         qgCahylv+/WUSGOrrAGwuSEhKgWhbqlfQfEn29B+5K90EymTLQCcbdujzBxHzMiwKaN5
+         8mKWSnJNXr/c7tQ/gbAOm8vrAs4uiVwBalq5Sz2BSoe3WcqxUpzIgsr/tljV682k08ug
+         UiML6DUfxehgEo2bjKvnylPIqBWvSJy1CJCa2g6gVk41bwN2nrYKZPuYWxQ+474I0Luz
+         gteiU5XXn+4jhBYRMaENtrUxm8ZjwWZLt06sypgyTE703erJAl/8ynM3c8twBiuiAUd9
+         kBgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779524901; x=1780129701;
+        h=mime-version:references:in-reply-to:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EhmWhWD9464Uoh3KFvCuWff7V4Zp2a8qUYWAxJoJ59c=;
+        b=VHWz/cLTwqCMBfIs2aNmSBTraWkA9O/21gitEoNPg0/agUDHj+JQ6ZekwF1mIjWAkc
+         wlWvQP2TodNTxlnRQrxFcxhWiBXV1iXfWTwtSozVhuJrx7D1atZmBQYgkeGHGpKRUzyY
+         L5mgliSLaBrTQdw3MXgyNHAhts87tUtWykSZNQyy2PrA+W6VSmGoD0iRjTsiO6IjSt6j
+         M5cv+4nWHFCQe9wzt4O9Wj8dwCPe/eNDkcOE/jR82bxML8K3c+ncVvc90ZuPtPTRWKfK
+         K+4I4LO+MsxEApzJkZ3rrktSkmfgvdiGC4N1goJC8IrhcvwM96uRR4RhmABZ1vgyasxa
+         ZbKQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/dyGeU93zE7AvJTJtcnD1RzXTO/KnZbwnUrCh3+hnMSo9Ugx/wWwZDicYy15knNnelaWHFw40=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyek/pIUWxwDVcNHNB6QJwCIoD/c26qpqG2nD7aTjHqhRAOQ84F
+	dpQtMeuyT+8pv3lzTIHEEt2CxnTbpb+WATbSOEYIyVZVg8OWcVAfMZPx
+X-Gm-Gg: Acq92OEDLZ/DFawkUeLgaFrROEYpelC5OruhdOq/g8rPB6Rf00Ek2HCmUMJGdWy0P44
+	1qdxnBXi58jsZX41yjYYfEOzdl4bM5YsmYgvhf+/cFU3a57bTnN1eeQtK/LigcrLlHC60NfpYlx
+	4je9YfOFFRlEAhk6j/Meov3Tn8eZbzJDZ8P3AcWuoD9lLS/8Mk5OQhsX7ex4PGQJ+bijms4Tqkp
+	kaA2EEtuu2aIZVV1waoMw/gseFhWQmHs+rEOoOBzQAtyVz+N4zN1at2RWrPAuWNzluOSdYt3jOG
+	aIC1BFYwHiRG/x9TRyj+JKgfvXZGEdiYqWjX7JZHGWU7M42yrib6K/qXKqmqKIQeR93dE54kXp4
+	ktsg1sE+RmPmH7r49SO+ZvhwsCGjCeRKKpgR1doc6n/E5ZYX4r4uC3ZBb0aGIGJ2tghQKp0nntA
+	meydJC4xcJTu/dW09vCwJ7nCJSmd3V7cQN
+X-Received: by 2002:ac2:5446:0:b0:5aa:126b:4504 with SMTP id 2adb3069b0e04-5aa323c4508mr1870160e87.23.1779524900655;
+        Sat, 23 May 2026 01:28:20 -0700 (PDT)
+Received: from foxbook (bfk48.neoplus.adsl.tpnet.pl. [83.28.48.48])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5aa32ceb27dsm995789e87.45.2026.05.23.01.28.19
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Sat, 23 May 2026 01:28:20 -0700 (PDT)
+Date: Sat, 23 May 2026 10:28:15 +0200
+From: Michal Pecio <michal.pecio@gmail.com>
+To: Desnes Nunes <desnesn@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+ gregkh@linuxfoundation.org, mathias.nyman@intel.com, stable@vger.kernel.org
+Subject: Re: [PATCH RFT RFC] usb: xhci: Kill hosts with HCE or HSE on
+ command timeout
+Message-ID: <20260523102815.5c05c70a.michal.pecio@gmail.com>
+In-Reply-To: <CACaw+exPdwXVsJc5Xr=vN1WJt8XR46=X0-8PP=+5dWY5zUrKeQ@mail.gmail.com>
+References: <20260430014817.2006885-1-desnesn@redhat.com>
+	<CACaw+ewwM_5eqyGW5=+THwHsYPs7u3NT096AFQdt6x4E6HcWtA@mail.gmail.com>
+	<20260502114644.76e6b5a3.michal.pecio@gmail.com>
+	<CACaw+eyKh7buHDoDyTOe8O65FP5cSXYdzCcQvwqKw=1DwX26oA@mail.gmail.com>
+	<20260502235517.089ba5bf.michal.pecio@gmail.com>
+	<CACaw+ewOTVh49tnkz+cRr0SD_Z-LmYrMWhFUrsik6YF83mPBtA@mail.gmail.com>
+	<20260503071749.6abda137.michal.pecio@gmail.com>
+	<CACaw+ew8uV5g1G-6qZGtVBEYZ3k+fvFrOq3XMyq-Nuhbq5mdnA@mail.gmail.com>
+	<20260503213111.117db3a1.michal.pecio@gmail.com>
+	<20260504093118.615ff480.michal.pecio@gmail.com>
+	<20260518083339.507e24bd.michal.pecio@gmail.com>
+	<CACaw+ewSWTo72fSk2Q7ZzCM8pNuyrX5ua+qA=SZOQuNNMKSA5Q@mail.gmail.com>
+	<20260522110328.0d3eecd8.michal.pecio@gmail.com>
+	<CACaw+ezqEO_PgjGeYCLq5hA2eKczFXgmZLa8qjPtVJZCGwsdsg@mail.gmail.com>
+	<20260523022944.59799d83.michal.pecio@gmail.com>
+	<CACaw+exPdwXVsJc5Xr=vN1WJt8XR46=X0-8PP=+5dWY5zUrKeQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/17] i3c: renesas: Use the divider 128
-To: Frank Li <Frank.li@nxp.com>
-Cc: wsa+renesas@sang-engineering.com, tommaso.merciai.xr@bp.renesas.com,
- alexandre.belloni@bootlin.com, p.zabel@pengutronix.de,
- claudiu.beznea@tuxon.dev, linux-i3c@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>, stable@vger.kernel.org
-References: <20260522101815.1722909-1-claudiu.beznea@kernel.org>
- <20260522101815.1722909-3-claudiu.beznea@kernel.org>
- <ahCpQUIH9_8mB0CP@lizhi-Precision-Tower-5810>
-Content-Language: en-US
-From: Claudiu Beznea <claudiu.beznea@kernel.org>
-In-Reply-To: <ahCpQUIH9_8mB0CP@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: multipart/mixed; boundary="MP_/8AsFH90U3UhJQJ44ORrK+_/"
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	MIME_GOOD(-0.10)[multipart/mixed,text/plain,text/x-patch];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253908-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253909-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	HAS_ATTACHMENT(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[claudiu.beznea@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[michalpecio@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 8A1DD5BDD31
+X-Rspamd-Queue-Id: 1B1CB5BDDA2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+--MP_/8AsFH90U3UhJQJ44ORrK+_/
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 
+On Sat, 23 May 2026 00:47:28 -0300, Desnes Nunes wrote:
+> Hello Michal,
+>=20
+> On Fri, May 22, 2026 at 9:29=E2=80=AFPM Michal Pecio <michal.pecio@gmail.=
+com> wrote:
+> > Sorry, I forgot about the most important thing: crash kernel log,
+> > or at least the IOMMU fault message showing the bad address. =20
+>
+> I was indeed intrigued and almost sent it without you asking for it :-)
+>=20
+> The crashkernel's fault address is shown latter on down below, but now
+> I have attached the full kexec dmesg too.
+>=20
+> PS: Note that the debugfs file 'memory' from before contains the
+> addresses of the main kernel, not crashkernel's addresses:
+>     - From main dmesg:
+> [    6.728105] xhci_hcd 0000:80:14.0: Device context base array
+> address =3D 0x000000010a958000 (DMA), 00000000f542e3ba (virt)
+> [    6.737602] xhci_hcd 0000:80:14.0: ERST deq =3D 64'h10a95a000
 
-On 5/22/26 22:06, Frank Li wrote:
-> On Fri, May 22, 2026 at 01:18:00PM +0300, Claudiu Beznea wrote:
->> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
->>
->> The REFCKCTL.IREFCKS field is 3 bits wide, and setting it to 7 selects a
->> divider of 128 for the internal reference clock. Use this divider value.
-> 
-> This doesnot reflect what your change, code add one more search for clks = 7
+Neither debugfs dump corresponds to this dmesg, addresses don't match.
+And it doesn't look like the guard pages patch is working here.=20
 
-cks is later written in the renesas_i3c_bus_init() to the REFCKCTL.IREFCKS. The 
-following lines are from the renesas_i3c_bus_init() function:
+But maybe it doesn't matter. Your "memory" files show a clear pattern
+of consecutive page-sized allocations (example from after.zip):
 
-	renesas_writel(i3c->regs, REFCKCTL, REFCKCTL_IREFCKS(cks));
-	i3c->refclk_div = cks;
+102fb6000 DCBAA
+102fb7000 CR
+102fb8000 ER segmnet 0
+102fb9000 ER segment 1
+102fba000 ERST=20
 
-> 
-> Frank
-> 
->>
->> Fixes: d028219a9f14 ("i3c: master: Add basic driver for the Renesas I3C controller")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
->> ---
->>   drivers/i3c/master/renesas-i3c.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/i3c/master/renesas-i3c.c b/drivers/i3c/master/renesas-i3c.c
->> index 36e3ccbe66b0..1917549cf6d5 100644
->> --- a/drivers/i3c/master/renesas-i3c.c
->> +++ b/drivers/i3c/master/renesas-i3c.c
->> @@ -559,7 +559,7 @@ static int renesas_i3c_bus_init(struct i3c_master_controller *m)
->>
->>   	i2c_parse_fw_timings(&m->dev, &t, true);
->>
->> -	for (cks = 0; cks < 7; cks++) {
->> +	for (cks = 0; cks <= 7; cks++) {
->>   		/* SCL low-period calculation in Open-drain mode */
->>   		od_low_ticks = ((i2c_total_ticks * 6) / 10);
->>
->> --
->> 2.43.0
->>
+We can make a guess that the faulting address is the ERST, which
+definitely should be accessible to the host controller.
 
--- 
-Thank you,
-Claudiu
+This simple patch logs ERST allocation and freeing; as far as I see
+nothing else touches that mapping.
 
+If the ERST is somehow freed before starting the HC, that's a bug.
+Otherwise, it seems you were right that you have some IOMMU problem.
+
+Regards,
+Michal
+
+--MP_/8AsFH90U3UhJQJ44ORrK+_/
+Content-Type: text/x-patch
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename=xhci-erst-alloc.patch
+
+diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
+index e76e321e119f..3f1e25bcb7ee 100644
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -1815,6 +1815,7 @@ static int xhci_alloc_erst(struct xhci_hcd *xhci,
+ 					   size, &erst->erst_dma_addr, flags);
+ 	if (!erst->entries)
+ 		return -ENOMEM;
++	xhci_info(xhci, "alloc ERST at %pad\n", &erst->erst_dma_addr);
+ 
+ 	erst->num_entries = evt_ring->num_segs;
+ 
+@@ -1867,6 +1868,7 @@ xhci_free_interrupter(struct xhci_hcd *xhci, struct xhci_interrupter *ir)
+ 				  ir->erst.entries,
+ 				  ir->erst.erst_dma_addr);
+ 	ir->erst.entries = NULL;
++	xhci_info(xhci, "free ERST at %pad\n", &ir->erst.erst_dma_addr);
+ 
+ 	/* free interrupter event ring */
+ 	if (ir->event_ring)
+
+--MP_/8AsFH90U3UhJQJ44ORrK+_/--
 
