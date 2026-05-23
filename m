@@ -1,135 +1,151 @@
-Return-Path: <stable+bounces-253907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253908-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4IvVDnNgEWodlQYAu9opvQ
-	(envelope-from <stable+bounces-253907-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 10:08:19 +0200
+	id qPJQAPBhEWpclQYAu9opvQ
+	(envelope-from <stable+bounces-253908-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 10:14:40 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F02B5BDD05
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 10:08:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A1DD5BDD31
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 10:14:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F314F300F9EC
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 08:08:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 12AA43011872
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 08:14:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC58A322C67;
-	Sat, 23 May 2026 08:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF22631F9BD;
+	Sat, 23 May 2026 08:14:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="khtrc05z"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43DD21B3925;
-	Sat, 23 May 2026 08:08:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9718A2032D;
+	Sat, 23 May 2026 08:14:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779523688; cv=none; b=tT2UuBEiI+tB+HiNW+NcSgo0C4wZ8QPm/B9Jn2n4vKRw7DZ2CGtjK4gPOuOGRzm7MSzsl4gLll8rSjE9gN46iaWbWKZ6Teb9lumMoWDEdqW2zuT0RgCx2eHod/y/zfcz8PFFXIydDzjClqK0FEefvJ5awiwgdEKHQNYh68lBaDQ=
+	t=1779524068; cv=none; b=sIsvvCL7MfTibUn8dYSFzsjC19emS3w4dwGIkZZ1xMkF4gaXESvQF3XtYXmHwuSupAVb3UZl0J5OPu0d8ASPzUpBQecUjYHam48sqO44nBsT0X8qSalZIVuaF2hwTWrELvxkj1JG18dnz96szdbfnDCMPZokUEsAF3GIjq4FE1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779523688; c=relaxed/simple;
-	bh=LyawpjhZl9GCH5zY6H4UOZ0mwLlqk0SGr+1OYbajx+M=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=d0ABxMBT5uRDVfFZxxLbVUr/Bzx4Ae5rhYFb3PF50osPu0RyCALqVxnIvgjmIViCq/FOUrEEzOziJcKSCaTlkvGc/ga8O8qNhbFcadJDQooKhP1UF4WijK92oarH9idWQzi+zXUiu36nqxFTUPhE7EbT/P49+OvlzNcYULF8MYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-01 (Coremail) with SMTP id qwCowABH7GdhYBFqB7FDEQ--.3178S2;
-	Sat, 23 May 2026 16:08:01 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: linus.walleij@linaro.org
-Cc: linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] pinctrl: pinconf-generic: fix of_node reference count leak in dt_node_to_map_pinmux
-Date: Sat, 23 May 2026 08:07:58 +0000
-Message-Id: <20260523080758.1375830-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1779524068; c=relaxed/simple;
+	bh=csdmdrcuxLpdXVOAhfP7zCvOPa4UhfDvh9jpsP3A2Po=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Jcjv63l5zciHhVzKZ5SbQMJjd6aqxCCqXOkd3rVMaMzqhiFHxxKuv/j1qTbN+lL4TlwQldnvLlZaW0ehls0RN+JCcBGdbMGc4SgN8RJDvi6ORXL2dX9wuJ/RWaJR5XHjBDBWzvATlqt3kGIYu6RJyaF1/Qe2CjT37EsoDMLmwNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=khtrc05z; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C637B1F000E9;
+	Sat, 23 May 2026 08:14:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779524067;
+	bh=GL+RzpSO6B/WqNvCitg5GgJC9+53s7fBCUotsbLyogc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=khtrc05zufZUSXhAft3+tmNq2hcjhNoTUEt7Y225qTSTtcZtrfnOVKAD8I8p2XmAl
+	 9UG02p1KkaXVyYZUQCCpy7/5fI1zpJjRUYrMkQ3vGrGczxDvWQ91uNujrVNdb2HV28
+	 lAbAenWkAUeHMLH7yGDzPFoVp/A+QzroKg11bCmSQtY9OWZNcd0r37i7Ot/k+MjU2P
+	 zrasUeseBU1Lw/t/ZYOkFR7d4CE1fUizMwyAUkOojQwupS7BJUUQ1MzstNoHU2mdVI
+	 EvBMrbuZNIEgBx5e+LoKP091QQgqmtcmXMvqweR7ELpKAmho+kZ9a2fp0ZjesxjD8Y
+	 g1aeTZa5k88oA==
+Message-ID: <67bd230e-df9a-47fa-bdd7-d8b1e2ff1649@kernel.org>
+Date: Sat, 23 May 2026 11:14:22 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowABH7GdhYBFqB7FDEQ--.3178S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7JF4DJF4rWr45CF18ur43Awb_yoWkWwbEkF
-	WrWry7JryUGa93WrnFgw1xZFyvka1UWr1ktr4vqa43C342va1xt34rWF98Z348WrWrWFZ8
-	Ga45Zry8tryUXjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUb48FF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26F4UJV
-	W0owAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
-	AVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
-	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkG
-	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4U
-	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7VUjuHq7UUUU
-	U==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAcQA2oRHTpomQAAs1
-X-Spamd-Result: default: False [0.04 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 02/17] i3c: renesas: Use the divider 128
+To: Frank Li <Frank.li@nxp.com>
+Cc: wsa+renesas@sang-engineering.com, tommaso.merciai.xr@bp.renesas.com,
+ alexandre.belloni@bootlin.com, p.zabel@pengutronix.de,
+ claudiu.beznea@tuxon.dev, linux-i3c@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>, stable@vger.kernel.org
+References: <20260522101815.1722909-1-claudiu.beznea@kernel.org>
+ <20260522101815.1722909-3-claudiu.beznea@kernel.org>
+ <ahCpQUIH9_8mB0CP@lizhi-Precision-Tower-5810>
+Content-Language: en-US
+From: Claudiu Beznea <claudiu.beznea@kernel.org>
+In-Reply-To: <ahCpQUIH9_8mB0CP@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	RCVD_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253907-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253908-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.964];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[claudiu.beznea@kernel.org,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 1F02B5BDD05
+X-Rspamd-Queue-Id: 8A1DD5BDD31
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-of_get_parent() acquires a reference on pnode, but the reference is never
-released on any return path.  Add of_node_put(pnode) in the exit label and
-before the early return path.
 
-Cc: stable@vger.kernel.org
-Fixes: 7112c05fff83 ("pinctrl: pinconf-generic: Add API for pinmux propertity in DTS file")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- drivers/pinctrl/pinconf-generic.c | 2 ++
- 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pinctrl/pinconf-generic.c b/drivers/pinctrl/pinconf-generic.c
-index d67838afb085..a5016f522889 100644
---- a/drivers/pinctrl/pinconf-generic.c
-+++ b/drivers/pinctrl/pinconf-generic.c
-@@ -390,6 +390,7 @@ int pinconf_generic_dt_node_to_map_pinmux(struct pinctrl_dev *pctldev,
- 					      &num_configs);
- 	if (ret < 0) {
- 		dev_err(dev, "%pOF: could not parse node property\n", np);
-+		of_node_put(pnode);
- 		return ret;
- 	}
- 
-@@ -420,6 +421,7 @@ int pinconf_generic_dt_node_to_map_pinmux(struct pinctrl_dev *pctldev,
- 	kfree(configs);
- 	if (ret)
- 		pinctrl_utils_free_map(pctldev, *map, *num_maps);
-+	of_node_put(pnode);
- 
- 	return ret;
- }
+On 5/22/26 22:06, Frank Li wrote:
+> On Fri, May 22, 2026 at 01:18:00PM +0300, Claudiu Beznea wrote:
+>> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+>>
+>> The REFCKCTL.IREFCKS field is 3 bits wide, and setting it to 7 selects a
+>> divider of 128 for the internal reference clock. Use this divider value.
+> 
+> This doesnot reflect what your change, code add one more search for clks = 7
+
+cks is later written in the renesas_i3c_bus_init() to the REFCKCTL.IREFCKS. The 
+following lines are from the renesas_i3c_bus_init() function:
+
+	renesas_writel(i3c->regs, REFCKCTL, REFCKCTL_IREFCKS(cks));
+	i3c->refclk_div = cks;
+
+> 
+> Frank
+> 
+>>
+>> Fixes: d028219a9f14 ("i3c: master: Add basic driver for the Renesas I3C controller")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+>> ---
+>>   drivers/i3c/master/renesas-i3c.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/i3c/master/renesas-i3c.c b/drivers/i3c/master/renesas-i3c.c
+>> index 36e3ccbe66b0..1917549cf6d5 100644
+>> --- a/drivers/i3c/master/renesas-i3c.c
+>> +++ b/drivers/i3c/master/renesas-i3c.c
+>> @@ -559,7 +559,7 @@ static int renesas_i3c_bus_init(struct i3c_master_controller *m)
+>>
+>>   	i2c_parse_fw_timings(&m->dev, &t, true);
+>>
+>> -	for (cks = 0; cks < 7; cks++) {
+>> +	for (cks = 0; cks <= 7; cks++) {
+>>   		/* SCL low-period calculation in Open-drain mode */
+>>   		od_low_ticks = ((i2c_total_ticks * 6) / 10);
+>>
+>> --
+>> 2.43.0
+>>
+
 -- 
-2.34.1
+Thank you,
+Claudiu
 
 
