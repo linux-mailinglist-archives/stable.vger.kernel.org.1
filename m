@@ -1,165 +1,158 @@
-Return-Path: <stable+bounces-253875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253876-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QA4QJFYYEWqvhAYAu9opvQ
-	(envelope-from <stable+bounces-253875-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 05:00:38 +0200
+	id iI84D9AbEWq+hQYAu9opvQ
+	(envelope-from <stable+bounces-253876-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 05:15:28 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E883E5BCD62
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 05:00:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8A195BCE12
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 05:15:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E6C8B3011C6A
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 02:56:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1D8B13011C7D
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 03:15:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 185902BEC27;
-	Sat, 23 May 2026 02:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04FAC2C21FD;
+	Sat, 23 May 2026 03:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="JgmS8NBN"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="HhuzrYiL"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86F376025;
-	Sat, 23 May 2026 02:56:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 708D3B672;
+	Sat, 23 May 2026 03:15:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779504999; cv=none; b=GhxwTa4+1mBPnr+LZIqtvQkH/1Od1DOdCqmxfZ5YlW835647sMQMppJJb9g2jLebG6oLVwk03Y73sYcLmS0zKTLaNolaObpH6zwUjM49mNyRk2bUv6AQ6UJAXIqiPP9koWhUfIDWcAt/2BjQxWMYPizTv6ge+opc8VrQAN28QX0=
+	t=1779506119; cv=none; b=pyl7TiXhVykB6DQHlmQ0rVi/Ux28LE7wR6RxYAPDoli8W5sk3MfMmMWGkYWQqSLh+OkHThvou8ezTAhS+h7egndCtSD044RoNGKHva0TNBFPn2wgST3436vo/vvatl6Giw+ZiBywD6jADdVQ0UbpH46wW6KAWzQOMZBouPtTizI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779504999; c=relaxed/simple;
-	bh=GQzWw35zrqinDylvGH03fx1AQCiTiKXE5635iwV3taw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=JK++YsvxvPSU3ddL0nO849kWQDLcIEAwEVxhflnT5/1h7fi68ZADVPBjXUELf6vJbl+262kZdkkxTCEDeiYc+htkIHbUYcV6mTTLkzmOBixsyrZfFDDEqyd7bmMtqYuASU5zqHx+VVNcq/mMYW85BnmCoemrJxo4iTHZUWrWrEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=JgmS8NBN; arc=none smtp.client-ip=220.197.31.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=iZ
-	Q+09JvOw3FhUhCj63h5crYb6sZ7MTeftkWrJHDQkE=; b=JgmS8NBNb/vhbstIKo
-	2AvacCfgxIHZMBg/6gjFgDeORXUguI/FLSXz9Ms+fT7+9+uxruxhLV0b1kTMEAQr
-	vYR1/GKGgdEhbUmswXSI8N00I3Oart58+8SG7YtzRFHq9CIM1DHbZLTELlok6DaD
-	ms3Dx2im/Zae2ZqJazviSdI3g=
-Received: from 163.com (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wCn74P5FhFqeFviCw--.57260S2;
-	Sat, 23 May 2026 10:55:05 +0800 (CST)
-From: w15303746062@163.com
-To: maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch
-Cc: zack.rusin@broadcom.com,
-	bcm-kernel-feedback-list@broadcom.com,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Mingyu Wang <25181214217@stu.xidian.edu.cn>
-Subject: [PATCH v2] drm/vblank: Reject 0-period timers to prevent hrtimer storm
-Date: Sat, 23 May 2026 10:54:47 +0800
-Message-Id: <20260523025447.581709-1-w15303746062@163.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <fa91ccc0-7660-44fc-92a8-ab569ebe3a7c@suse.de>
-References: <fa91ccc0-7660-44fc-92a8-ab569ebe3a7c@suse.de>
+	s=arc-20240116; t=1779506119; c=relaxed/simple;
+	bh=DwZNuwY0fKeIzTDsvOHyLoubTPnvEKV2FhPuRoxNRLQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Zi1uI2e7rlSizjQda7xZ2o2+qdAivMRG0p04vIrSadaLHhUAWH7UMdFxn7xU3Sht0ifV917G7vw5v6DaN2TNEjKMkETFKoCnMyr9WtlUOPrGdcgSQUGqtMIS4MfmkGTuyq81uhejRsxetPSJmzNSMXG/XFhiEuBmoq1hU+Z8sR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=HhuzrYiL; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64N39cKn2840870;
+	Sat, 23 May 2026 03:15:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=uIoEv4UmIiGEbZhoQl6JdVYiEdEkre16sHyRRg4BmAI=; b=
+	HhuzrYiL1usAaiPTSCdtdCT/LQrOEEwVLOvHARr9dypQbvfRuZmCmK8WZR1YFoSR
+	Tvj4B3bWzLi/+zzVUOr02uwN2DhQei8/tFWPnmsnFDW9WSFAI17OAvEm59KRrEqF
+	I4SEOXOoPTjWpkqGw7PrwdobXZgHKOeJ6irvwcyRGcnDXPZYql0d/O3Uw5JJT/g7
+	kvkgrbYgvinZXpSIfPmyg6EiV9eR2bN0XzCdLO9Ow26I6yk7jbM/qBUoWueGXsGm
+	Stq7TjUpGxTLMIHZ+eqVkQRzjkxgt79NMp7CkHXMNRmAXc+ZSCrePqqTT8jqiA47
+	MwbA2DpTBXm9QVQrtHZi/Q==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4eb3us80d2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 23 May 2026 03:15:14 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 64N3F6w2032342;
+	Sat, 23 May 2026 03:15:13 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4eb2p6hse2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 23 May 2026 03:15:13 +0000 (GMT)
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 64N3F9e0032824;
+	Sat, 23 May 2026 03:15:13 GMT
+Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4eb2p6hs6k-4;
+	Sat, 23 May 2026 03:15:13 +0000 (GMT)
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+To: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Evgenii Burenchev <evg28bur@yandex.ru>
+Cc: "Martin K . Petersen" <martin.petersen@oracle.com>, kartilak@cisco.com,
+        nmusini@cisco.com, sebaddel@cisco.com,
+        James.Bottomley@HansenPartnership.com, linux-scsi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] snic/vnic_dev: Remove dead store in vnic_dev_discover_res()
+Date: Fri, 22 May 2026 23:14:18 -0400
+Message-ID: <177913641762.1181900.9483130298257376269.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260429095212.11251-1-evg28bur@yandex.ru>
+References: <20260429095212.11251-1-evg28bur@yandex.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wCn74P5FhFqeFviCw--.57260S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Cw4UKry7tF4xZw1rur47CFg_yoW5JF1kpr
-	s7Gryayry0yF4agFnrA3Z3ZFyFkasYqF4xKFyDGw43Aw1DKFy2yr1FkFW3KF47GrsrAw4a
-	q3Z3XF4ruas8CFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j5EfOUUUUU=
-X-CM-SenderInfo: jzrvjiatxuliiws6il2tof0z/xtbC-wmmimoRFwmBcQAA3P
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-23_01,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ suspectscore=0 malwarescore=0 spamscore=0 phishscore=0 lowpriorityscore=0
+ mlxlogscore=999 bulkscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2605130000 definitions=main-2605230029
+X-Authority-Analysis: v=2.4 cv=Zewt8MVA c=1 sm=1 tr=0 ts=6a111bc2 cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=jiCTI4zE5U7BLdzWsZGv:22 a=3I1J8UUJPc9JN9BFgKH3:22 a=VwQbUJbxAAAA:8
+ a=obzxcOSibZW-SFeEL7EA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: Ajv3yf3uqpezbkuOXZ7_gu8DfZ26__dg
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIzMDAyOSBTYWx0ZWRfX0DkjzegDShKu
+ 4/jXjnPBV4pCCgByxhVs6l7YjHQQb6ElUevonrFIJqIIymD9FtzRgej6TFGq3YVIhL8qL8RHZvE
+ 6xY4O1lmaE1SoF3ehwZeehQWh8waFdGMx8LjvBqDxG/1NCjDXThGApAyDNbDnNU8Wu2XKq3ecI2
+ Ww/sP8jCXb/d66Kl9MdEwhQ00cm5I3KSIFX/SDu2x4bBylzKuYbOgmPYLOE2clUh7EPoOOuqGsn
+ P2Jq5ahO1yhGEluRUPePAP80yefNphdh08AiW528GeRk3ep600cudbK4Fvf8KO4TsShMJLXVbzU
+ MmQj9/mUGARswssAr8XNiMsMLW56U5gYmtY1cFI0n+z/xbfEBgNdp94qjpAKM7L9+g36M0n4Tcu
+ JJV7Z/jTu5OQIaDpWuo0cm7ZnRKXWa9mn/1MusQeWoI8zKzgOTjWgslBABOGB7zeIE4nFFccSSh
+ cDnPjIDyVOUUA7Y7Glg==
+X-Proofpoint-ORIG-GUID: Ajv3yf3uqpezbkuOXZ7_gu8DfZ26__dg
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-253875-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch];
+	TAGGED_FROM(0.00)[bounces-253876-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[vger.kernel.org,linuxfoundation.org,yandex.ru];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[oracle.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
-	NEURAL_HAM(-0.00)[-0.998];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[w15303746062@163.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[163.com:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FROM_NEQ_ENVFROM(0.00)[martin.petersen@oracle.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[xidian.edu.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: E883E5BCD62
+	RCVD_COUNT_SEVEN(0.00)[9]
+X-Rspamd-Queue-Id: D8A195BCE12
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+On Wed, 29 Apr 2026 12:52:12 +0300, Evgenii Burenchev wrote:
 
-Fuzzers like Syzkaller can submit extremely malicious display modes
-through DRM_IOCTL_MODE_SETCRTC. If userspace passes a mode with a
-massive pixel clock (crtc_clock) and small resolution (htotal/vtotal),
-the integer division in drm_calc_timestamping_constants() truncates
-the resulting frame duration (vblank->framedur_ns) to 0.
+> The assignment 'len = count' for RES_TYPE_INTR_PBA_LEGACY,
+> RES_TYPE_DEVCMD, and RES_TYPE_DEVCMD2 cases is never used.
+> 
+> Drop the unused assignments to fix the following static analyzer warning.
+> 
+> No functional change.
+> 
+> [...]
 
-When virtual display drivers (such as vmwgfx or vkms) rely on the DRM
-core's software vblank simulation, drm_crtc_vblank_start_timer() is
-called. It blindly converts this 0-ns framedur_ns into a ktime interval
-and starts the hrtimer. An hrtimer with a 0-period fires instantly and
-continuously. Since hrtimer_forward_now() cannot advance time for a
-0-period, the CPU gets locked in an infinite hard-IRQ loop, starving
-the system and causing massive RCU stalls.
+Applied to 7.2/scsi-queue, thanks!
 
-Fix this DoS vulnerability by adding a defensive sanity check in
-drm_crtc_vblank_start_timer() to reject a 0-ns frame duration, allowing
-the DRM core to gracefully reject the malicious mode.
+[1/1] snic/vnic_dev: Remove dead store in vnic_dev_discover_res()
+      https://git.kernel.org/mkp/scsi/c/195254adeddc
 
-Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
----
-Changes in v2:
-- Moved the defensive check from vmwgfx to drm_vblank.c. The timer
-  logic was refactored into the DRM core, so placing the check here
-  protects all drivers relying on the core software vblank timer.
-- Dropped WARN_ON_ONCE() to prevent unprivileged userspace from easily
-  triggering kernel panics on systems with panic_on_warn enabled.
-
- drivers/gpu/drm/drm_vblank.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/drivers/gpu/drm/drm_vblank.c b/drivers/gpu/drm/drm_vblank.c
-index f90fb2d13e42..b38d0b30a651 100644
---- a/drivers/gpu/drm/drm_vblank.c
-+++ b/drivers/gpu/drm/drm_vblank.c
-@@ -2241,6 +2241,16 @@ int drm_crtc_vblank_start_timer(struct drm_crtc *crtc)
- 
- 	drm_calc_timestamping_constants(crtc, &crtc->mode);
- 
-+	/*
-+	 * DEFENSIVE CHECK:
-+	 * drm_calc_timestamping_constants() truncates framedur_ns to 0 if
-+	 * userspace provides a malicious mode with a huge crtc_clock and
-+	 * small htotal/vtotal. Prevent an infinite hard-IRQ loop from a
-+	 * 0-period hrtimer by rejecting such modes.
-+	 */
-+	if (unlikely(vblank->framedur_ns == 0))
-+		return -EINVAL;
-+
- 	spin_lock_irqsave(&vtimer->interval_lock, flags);
- 	vtimer->interval = ns_to_ktime(vblank->framedur_ns);
- 	spin_unlock_irqrestore(&vtimer->interval_lock, flags);
 -- 
-2.34.1
-
+Martin K. Petersen
 
