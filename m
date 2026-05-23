@@ -1,82 +1,84 @@
-Return-Path: <stable+bounces-253871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253872-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +Io1M/gFEWp+ggYAu9opvQ
-	(envelope-from <stable+bounces-253871-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 03:42:16 +0200
+	id mAW+CAUGEWp+ggYAu9opvQ
+	(envelope-from <stable+bounces-253872-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 03:42:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9102B5BC620
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 03:42:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 916065BC62A
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 03:42:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B450E301FD7C
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 01:41:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 83EA1301AAB6
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 01:42:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37E5A279329;
-	Sat, 23 May 2026 01:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 998EC271441;
+	Sat, 23 May 2026 01:42:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ivusw1vd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VYYwZH1A"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 687B125DB1A
-	for <stable@vger.kernel.org>; Sat, 23 May 2026 01:41:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C717B23B62B
+	for <stable@vger.kernel.org>; Sat, 23 May 2026 01:42:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779500478; cv=none; b=p8BAtA6ojJg7CJg0bdI+peo/0l3b6JwBJJcGK0axpqKFPTMu99Prh/sIsiZE+Wwgdr5QqMmYdInmTOKtMnEQI+2gvvgCWJn8sKzgcy341+d8LOuA6yc2tvn5yP1TKtMIs4gThs78i4JKPAAiflRxxaBRqjfUa0d9xENYIFApgfs=
+	t=1779500531; cv=none; b=VubNiYWvfDdaSMsGtw3y97zpURUOctfiqRqhKkW977nF+68bFsq+n8bJibbJn9+4z2zkYhgXsFfrM4mDWdviCGpQ69dzT7bODMspHgMVGfRXdLXG1Kxpjk4pbWTNB8hzNfUn691pcINjYdtQmaLXMFrYY4ma+3UnuO74WQzNeFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779500478; c=relaxed/simple;
-	bh=NKmTmNXZNUVsawrzyHgxo886ekn2OAXS4D0rn9JgprE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qSk4inywCLw7U8GxQYP0GwVjjeNWAE9r+dNYeU8gYainDslEI2BNGhFK51O80YO3GuVtYgwGXbg2mxauj+PE4XGTgmLVnPGyW6fNcdZyZZlqW4ENwSVHRLindvJduHhsTET0fW3C7PAXqTxsKrY3Lgzfdxv/ncDgKw4cppuuUiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ivusw1vd; arc=none smtp.client-ip=209.85.160.175
+	s=arc-20240116; t=1779500531; c=relaxed/simple;
+	bh=o2q4kvQvXzLlPBHCT1CFmRRF08gGuBL3GfqAu8UepH8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cMNVpDmzFUsbVbph2/xiIaFC2ZUgJ0CpTGDF/WHhCOZdcEnudjSHzqEdG/xijKQb/2Du/qnnsXLkOZUnbUe3pQeNopSct5UY+7Ul9zTETHMyeJpQ9NR6KgmY7jcgY9Ghp5k9Gf58vLrS4Yrd6srmRbj7b/cUY0+8Yu0TToRrCjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VYYwZH1A; arc=none smtp.client-ip=209.85.222.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-51306c9f2a8so93582971cf.1
-        for <stable@vger.kernel.org>; Fri, 22 May 2026 18:41:15 -0700 (PDT)
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-9106ea78cd8so1249903785a.3
+        for <stable@vger.kernel.org>; Fri, 22 May 2026 18:42:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779500474; x=1780105274; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1779500529; x=1780105329; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=NznA/de/GNUvCfqwNzu7QISNK1Z1Xgcm290xHganHVE=;
-        b=ivusw1vdQ5H+u5YVsniLG9/Z3lk6ixweGutLAPmpZFPTeKGnAaI8fnLH/SECIPcCg1
-         MBtEj1OSrQS7on/laAe2GdQEtLcs2FVkEaoczNzTXsXjfaQsokYfEtIVsCy7YPin/q9Y
-         vHPAQb2QJcqew5zeT7YYpZa7oOtikVsakMNxwlXyWDfHvJ6vZS5vdMGaZzPZEbZZobHD
-         qr+lBf5iXM3VbsiBDZ4/Vd6fap2rQVct59IyciA+J+0N1myGcFQe/8zL6putrUUvFluY
-         6RQFDUr4dOsIZN5hFPX2AmXZ7YjkzIOeqXABXy21Q+xNNmRIVqg3Lm+p1HuQfvns+Hqu
-         ABSA==
+        bh=ojp1jufJnHXpy70948CVqK0ijPBwOg1yOqO14HsqH1o=;
+        b=VYYwZH1AA8deo520tO6Y7c1OCyJIifRh3ZqoNDGJLRihyDTPmHNJ+9FtS+9H7cGyYo
+         LjqcPrInEs/Rd84kZjJZGToyhocstZu3CtOoHeb0o7mA6SB2ORtBMSGaLGh669T0FA6M
+         KrkdfuUVgElouCN6GNjQbWogYURzV+7WZCGKnQJR33EZ5JbzM0tjACyQmQahBBdbs6Vg
+         Nin7VvBv5Pds1KCzGf5yTdahrJQz1ec5D0I6nxP4IvcBRtvJyrkPvobf/LbVZa6rTGEh
+         CRsW5i0dmHvC9cCzfzS7K7DfWrGbnIQseimznOIRii8iS5MlwntCysvhWF61re2ZAD4c
+         uuDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779500474; x=1780105274;
+        d=1e100.net; s=20251104; t=1779500529; x=1780105329;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NznA/de/GNUvCfqwNzu7QISNK1Z1Xgcm290xHganHVE=;
-        b=nw7QerYF837PBegciD62G35va8GRUeegx9UNPFdL7epXAKoT1+ydxHT9ws9L3S5Mo6
-         ptWH2uU/b3v+AIxMmB+U/eUFrFIJ9n70jsH/D8OULUHgC/ZRl1RXA4Z9tPPCF9p+NpJy
-         rivCHmzikzYn28NJlF1EBr2p61FOiagV2j8wXtWgiOBllCnEdLBGxkzUO5t8SQPbSQqK
-         WjH/tPBq9Ya87p2s/fQzlXsW0JwBt7nBDSYO0jR8zzx1sMuacFiSbmAcU9Fl5KobXx9Y
-         8xK8Yl3WxAVM7SDLmDA06P/w/8p+NEc+w55K690XTCu4c6EPD/LJcCGutwkLLiUofd+P
-         43MQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8NUMVq0uiqsvAH9wtfVwg1qMRpmaeH3Cr8GzJThoM/5piTvr2wJ70GY1PcRGxZgeapaFK2Eek=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwmwOzh3lvG63itAROrJWwEj9zKFsK5kjb1GZuSglG9R5RJ3Fno
-	FnWN32wOnLcpwvtFa3NFx9su6IDGIATgY+9mryAGgnQwXLH6ui9gdfe7
-X-Gm-Gg: Acq92OHQjV46/x5nzmXsMu+hdXPlJF95ItSKzEU2KNK0vGR4gTr0Xo6DD6rvIMSKPzy
-	Em7iLc2b062V36IT0PTjPLgn1KYd5KEFOigEOYD93MzZBHtfO7D+UU04bLFduNdMa905+DMOEhA
-	l9PvImujCchx9sToQ1vK4+LT6V5JqCzU0N5YTdj87GJ07RYTtFote7DB3+UPJkY98bNVVqgQwZf
-	Hq3L/o8Lsmkaed2jyFFPQQmgSOZGixM4IT8ySfDRah+2y0sUyo9V3LaMX481pONhb7vWMS6fMvt
-	HiDRzzs/CZAk/DJptt9Zqe61/J+7HVuWvKwIDVmN4EwyP/M+ckGxTTND/SxFrtQLoUgHkjHtL0/
-	pAzY5b4wKhb36NqsKkgjfi/oB9oaCqLwYMm5CNa9xqux42wPqfq3FQk1CQsD+UeoNuv+xpCxL85
-	u4HNrt0IV7MX1DDyt0zcSin4LxnJklkvR8QxLJCw5F4rxuXzwbMHSx/1uJjq8n+O1wbOPTM2zqp
-	g25jgZpry+8+AAOxZjwzJY9VYrf7uE=
-X-Received: by 2002:a05:622a:5906:b0:50f:b9e6:e058 with SMTP id d75a77b69052e-516d444cb4dmr90035591cf.25.1779500474184;
-        Fri, 22 May 2026 18:41:14 -0700 (PDT)
+        bh=ojp1jufJnHXpy70948CVqK0ijPBwOg1yOqO14HsqH1o=;
+        b=fMLtXFhWUNQhYBo6metem7y/XYwmm6Xuiwz9hspkXGCQ/hfN+pgY3aTwf0R/IFmdRi
+         Umowm5Q72KcWpMxZdCpBqRXuC/lj+djeFRjQgHQp/+NOKpsuzQVm5ZLIPyhNMt3tturh
+         YOpegxQobcll7dDVZuCEtQedg4ZbKUoA3yMEORwiXckanyYEHPcNAiSP4p0ir4z7lC2Q
+         NsNsmtwT606AipuCm/bW/aIB3E7BeH6WC+5k3pRdKTzTBAYjgROlqAAuoWYXyh2l4bLU
+         84x8sLcG2WdQniMNsIXzhYske/tA6uNnmBGnMGZFMF1vWj3/TMrEvhDh6WfgdZQpSMCZ
+         Vitg==
+X-Forwarded-Encrypted: i=1; AFNElJ+72s+ZoojD5MwCnrOlUSna2WlTgfvIHC96aLsc2cwhGshOlQFofpK8RHhJkn8Fsr2ZG9jvqFA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy776/7cj9AU1bFJnqtlCvprb5lBoocSfFDnOOgIusXY2HXZHZv
+	UV9o9XGNEY1eEHmRNnddSUG7hd6ov7m48gC1WzPQpounIL4mfEJYzfc/
+X-Gm-Gg: Acq92OGDFnqScCySAb/WwZi3tRhDguXpAwK7kX8a8jC93np7Dn1+nCisTdSsP2xAJFZ
+	ggY5uZ4T6fSQfNPdVeUO6Ccn/TWfZWk+8n7UopdLHPSIkIUONNB1ubu5B7blBxVXVxDW2W8rRDQ
+	A12DLWu7sbmj9b1LwWlEu1pCv1PudxCLLMIpLivaGg3RnHu9cfQGv+kqmx+9UPa4oCe3anX3LgJ
+	ty3Rptvu9s36G3Fz2GQJZlrBBPWv1j0MLm8QmbS6GK+kit1/YMjQTkWCNM3mHcl6o3vHTXKHopf
+	+qnRiY3OHuOXNwNrPNH6r3duiz3W526MGWs/d9V0sKonu08+VLeMcucoRz479j6YOgbFD0calsZ
+	6vgD4vkv6OfK+5JTN+mVm0OTWk7mZ3rMWsAaionb37ml0wYV2EPLADMg7qo2To6u202SvNgjmFd
+	iHcMyNwwTbeYjuITfyIOlsbVpEG9QE1d9jwbNQsIcTN8wAU9+ZBjt8gscjmLCl/PV8FK32XYJwZ
+	glsu9C96vwDU3hDgcgl
+X-Received: by 2002:a05:620a:649b:b0:914:c53f:4d51 with SMTP id af79cd13be357-914c53f5006mr189756285a.53.1779500528669;
+        Fri, 22 May 2026 18:42:08 -0700 (PDT)
 Received: from server0 (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-516d8b24cecsm32445651cf.9.2026.05.22.18.41.13
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-914bb8cd286sm283616985a.3.2026.05.22.18.42.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 May 2026 18:41:13 -0700 (PDT)
+        Fri, 22 May 2026 18:42:08 -0700 (PDT)
 From: Michael Bommarito <michael.bommarito@gmail.com>
-To: Chuck Lever <chuck.lever@oracle.com>,
+To: Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Jeff Layton <jlayton@kernel.org>
 Cc: NeilBrown <neil@brown.name>,
 	Olga Kornievskaia <okorniev@redhat.com>,
@@ -85,9 +87,9 @@ Cc: NeilBrown <neil@brown.name>,
 	linux-nfs@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH] NFSD: restart ssc_expire_umount walk after dropping nfsd_ssc_lock
-Date: Fri, 22 May 2026 21:41:07 -0400
-Message-ID: <20260523014107.2460863-1-michael.bommarito@gmail.com>
+Subject: [PATCH] lockd: pin next file across nlm_inspect_file lock-drop
+Date: Fri, 22 May 2026 21:42:03 -0400
+Message-ID: <20260523014203.2462827-1-michael.bommarito@gmail.com>
 X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -100,12 +102,12 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_FROM(0.00)[bounces-253871-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-253872-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -117,153 +119,164 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 9102B5BC620
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,f_list.next:url]
+X-Rspamd-Queue-Id: 916065BC62A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-nfsd4_ssc_expire_umount() walks nn->nfsd_ssc_mount_list with
-list_for_each_entry_safe(ni, tmp, ...).  For each expired entry it
-sets nsui_busy = true, drops nfsd_ssc_lock to run mntput() on the
-source vfsmount, then reacquires the lock to list_del + kfree the
-entry and continue iterating via the macro's saved tmp pointer.
+nlm_traverse_files() walks each nlm_files[] hash bucket with
+hlist_for_each_entry_safe(file, next, ...). For each matching file
+it bumps f_count, drops nlm_file_mutex to run nlm_inspect_file()
+(which may sleep walking blocks, shares, and the inode lock list),
+then reacquires the mutex and decrements f_count before continuing
+to the saved next.
 
-The nsui_busy flag protects the current ni from concurrent
-nfsd4_ssc_setup_dul() finders during the lock-drop window, but it
-does not pin tmp.  Another nfsd RPC thread that fails its source-
-server mount and reaches nfsd4_ssc_cancel_dul() will, during that
-same window, take nfsd_ssc_lock, list_del + kfree its own ssc_umount
-item, and release the lock.  If that item is the saved tmp of the
-expire walk, the next iteration dereferences a freed
-nfsd4_ssc_umount_item.
+The f_count bump pins the current file across the lock-drop, but
+nothing pins next. Any nlmsvc thread that holds the last reference
+on the file at next will, during that window, call
+nlm_release_file() -> nlm_delete_file() under nlm_file_mutex,
+hlist_del() it from the bucket, and kfree() it. When
+nlm_traverse_files() reacquires the mutex and the macro reads the
+next entry's f_list.next on the following iteration, the read lands
+in the freed slab.
 
-Reachability: triggered by any authenticated NFSv4.2 client that
-can issue OP_COPY with cna_src.nl4_type = NL4_SERVER to a destination
-nfsd built with CONFIG_NFSD_V4_2_INTER_SSC=y and started with
-inter_copy_offload_enable=Y.  The client chooses the source-server
-netaddr and can pick one that fails vfs_kern_mount() (unreachable,
-RST after EXCHANGE_ID, etc.) to drive nfsd4_ssc_cancel_dul() into
-the laundromat's lock-drop window.  Default Linux nfsd ships with
-inter_copy_offload_enable=N, so the bug is reachable only on servers
-where the administrator has explicitly opted into inter-SSC offload.
+A naive restart-on-action variant would deadlock-spin against an
+nlm_release_file holder: nlm_inspect_file() does not always drain
+the file (it can return 1 with an RPC still holding f_count above
+the cleanup threshold), and the outer predicate is_failover_file()
+matches static attributes of the file, so a restart can keep
+re-finding the same un-cleanable file until the external RPC ref
+drops.
 
-Restart the walk from the head after the mntput() unlock window so
-no saved next pointer survives the lock-drop.  The list is bounded
-by the number of active inter-server source mounts (typically small)
-and the expire delayed-work runs periodically rather than per-IO,
-so the restart is cheap.
+Pin the neighbour explicitly instead. Walk the bucket with two
+locally-pinned cursors at a time: file (current, pinned by the
+prior iteration's next bump) and next (one ahead). Drop file's pin
+at the end of each iteration, then advance to next, which is still
+alive because we hold its f_count above zero across the unlock.
+This bounds the walk at O(N) per bucket and never observes a freed
+neighbour. Factor the f_count/list/share/lock cleanup into a
+helper so the no-match path also drops a stale empty file rather
+than leaving it in the table.
 
 Cc: stable@vger.kernel.org
-Fixes: f4e44b393389 ("NFSD: delay unmount source's export after inter-server copy completed.")
+Fixes: 01df9c5e918a ("LOCKD: Fix a deadlock in nlm_traverse_files()")
 Assisted-by: Claude:claude-opus-4-7
 Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
 ---
- fs/nfsd/nfs4state.c | 45 ++++++++++++++++++++++++++-------------------
- 1 file changed, 26 insertions(+), 19 deletions(-)
+ fs/lockd/svcsubs.c | 61 +++++++++++++++++++++++++++++++---------------
+ 1 file changed, 42 insertions(+), 19 deletions(-)
 
-Reproduced under QEMU/KVM with KASAN, three nfsd network namespaces
-on a single host so the kernel client treats them as distinct
-servers, and Linux fault injection forcing vfs_kern_mount allocations
-inside the destination nfsd to fail.  This drives nfsd4_ssc_cancel_dul
-into a tight loop concurrent with the laundromat workqueue.
+Reproduced under UML + KASAN with a loopback NFSv3 mount, 768
+concurrent POSIX fcntl(F_SETLKW) holders, and parallel writes to
+/proc/fs/nfsd/unlock_filesystem forcing nlmsvc_unlock_all_by_sb()
+to walk the table while clients churn locks.
 
 Stock kernel:
 
-  BUG: KASAN: slab-use-after-free in laundromat_main+0x1756/0x1be0
-  Read of size 8 at addr ffff88800ce9b200 by task kworker/u16:3
-  Workqueue: nfsd4 laundromat_main
+  BUG: KASAN: slab-use-after-free in nlm_traverse_files+0x71d/0x9d0
+  Read of size 8 at addr 0000000070314800 by task nlm-init-...
 
-  Allocated by task 229:
-   nfsd4_interssc_connect+0x3f5/0xd90    (nfsd4_ssc_setup_dul, inlined)
-   nfsd4_copy+0x117d/0x1a30
-   nfsd4_proc_compound+0xbe9/0x23f0
+  Allocated by: nlm_lookup_file via nlm4svc_proc_lock
+  Freed by:     another nlm_traverse_files instance freeing a
+                file whose f_count dropped to zero during the
+                nlm_inspect_file() unlock window
 
-  Freed by task 229:
-   kfree+0x18f/0x520
-   nfsd4_interssc_connect+0xaff/0xd90    (nfsd4_ssc_cancel_dul, inlined)
-   nfsd4_copy+0x117d/0x1a30
+Patched UML kernel ran the same harness silently.
 
-  The buggy address belongs to the cache kmalloc-128 of size 128.
-  Kernel panic - not syncing: Fatal exception
-
-Patched kernel ran the equivalent workload to completion with the
-inter-SSC code path exercised 21-22 times per run and no KASAN
-report.
-
-The fault-injection knobs are standard Linux testing infrastructure
-(see Documentation/fault-injection/) exercising the existing failure
-path in nfsd; no kernel source was modified.  The same primitive
-class was previously addressed by the OPEN-error path fix in
-__nfs42_ssc_open(); this patch closes the corresponding hole in
-the laundromat-driven delayed-unmount path.
+Pin-next was chosen over restart-on-action because the latter can
+livelock when nlm_inspect_file() returns 1 with an RPC reference
+still holding the file above the cleanup threshold and the outer
+is_failover_file() predicate matching static attributes.
 
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 6b9c399b89dfb..03582f15e3e7e 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -6728,30 +6728,37 @@ static void nfsd4_ssc_shutdown_umount(struct nfsd_net *nn)
- static void nfsd4_ssc_expire_umount(struct nfsd_net *nn)
+diff --git a/fs/lockd/svcsubs.c b/fs/lockd/svcsubs.c
+index dd0214dcb6950..2bfa32207f10c 100644
+--- a/fs/lockd/svcsubs.c
++++ b/fs/lockd/svcsubs.c
+@@ -295,36 +295,59 @@ static void nlm_close_files(struct nlm_file *file)
+ /*
+  * Loop over all files in the file table.
+  */
++static void nlm_file_release(struct nlm_file *file)
++{
++	if (list_empty(&file->f_blocks) && !file->f_locks
++	    && !file->f_shares && !file->f_count) {
++		hlist_del(&file->f_list);
++		nlm_close_files(file);
++		kfree(file);
++	}
++}
++
+ static int
+ nlm_traverse_files(void *data, nlm_host_match_fn_t match,
+ 		int (*is_failover_file)(void *data, struct nlm_file *file))
  {
- 	bool do_wakeup = false;
--	struct nfsd4_ssc_umount_item *ni = NULL;
--	struct nfsd4_ssc_umount_item *tmp;
-+	struct nfsd4_ssc_umount_item *ni;
+-	struct hlist_node *next;
+-	struct nlm_file	*file;
++	struct nlm_file *file, *next;
+ 	int i, ret = 0;
  
-+restart:
- 	spin_lock(&nn->nfsd_ssc_lock);
--	list_for_each_entry_safe(ni, tmp, &nn->nfsd_ssc_mount_list, nsui_list) {
--		if (time_after(jiffies, ni->nsui_expire)) {
--			if (refcount_read(&ni->nsui_refcnt) > 1)
+ 	mutex_lock(&nlm_file_mutex);
+ 	for (i = 0; i < FILE_NRHASH; i++) {
+-		hlist_for_each_entry_safe(file, next, &nlm_files[i], f_list) {
+-			if (is_failover_file && !is_failover_file(data, file))
 -				continue;
-+	list_for_each_entry(ni, &nn->nfsd_ssc_mount_list, nsui_list) {
-+		if (!time_after(jiffies, ni->nsui_expire))
-+			break;
-+		if (refcount_read(&ni->nsui_refcnt) > 1)
-+			continue;
++		file = hlist_entry_safe(nlm_files[i].first,
++					struct nlm_file, f_list);
++		if (file)
+ 			file->f_count++;
+-			mutex_unlock(&nlm_file_mutex);
+-
+-			/* Traverse locks, blocks and shares of this file
+-			 * and update file->f_locks count */
+-			if (nlm_inspect_file(data, file, match))
+-				ret = 1;
++		while (file) {
++			/*
++			 * Pin the next neighbour before we drop the mutex
++			 * for nlm_inspect_file(); a concurrent
++			 * nlm_release_file() under the same mutex would
++			 * otherwise be free to unlink and kfree it during
++			 * the unlock window, leaving us to dereference a
++			 * freed slab when we walked to next afterwards.
++			 */
++			next = hlist_entry_safe(file->f_list.next,
++						struct nlm_file, f_list);
++			if (next)
++				next->f_count++;
++
++			if (!is_failover_file || is_failover_file(data, file)) {
++				mutex_unlock(&nlm_file_mutex);
++
++				/*
++				 * Traverse locks, blocks and shares of this
++				 * file and update file->f_locks count.
++				 */
++				if (nlm_inspect_file(data, file, match))
++					ret = 1;
++
++				mutex_lock(&nlm_file_mutex);
++			}
  
--			/* mark being unmount */
--			ni->nsui_busy = true;
--			spin_unlock(&nn->nfsd_ssc_lock);
--			mntput(ni->nsui_vfsmount);
--			spin_lock(&nn->nfsd_ssc_lock);
-+		/* mark being unmount */
-+		ni->nsui_busy = true;
-+		spin_unlock(&nn->nfsd_ssc_lock);
-+		mntput(ni->nsui_vfsmount);
-+		spin_lock(&nn->nfsd_ssc_lock);
- 
--			/* waiters need to start from begin of list */
--			list_del(&ni->nsui_list);
--			kfree(ni);
-+		/* waiters need to start from begin of list */
-+		list_del(&ni->nsui_list);
-+		kfree(ni);
- 
--			/* wakeup ssc_connect waiters */
--			do_wakeup = true;
--			continue;
--		}
--		break;
-+		/* wakeup ssc_connect waiters */
-+		do_wakeup = true;
-+		/*
-+		 * The list_for_each_entry_safe() saved-next pointer was
-+		 * not pinned across the spin_unlock() above: a concurrent
-+		 * nfsd4_ssc_cancel_dul() can free the next item under the
-+		 * same spinlock while mntput() runs.  Restart the walk
-+		 * from the head so no stale next is dereferenced.
-+		 */
-+		spin_unlock(&nn->nfsd_ssc_lock);
-+		goto restart;
+-			mutex_lock(&nlm_file_mutex);
+ 			file->f_count--;
+-			/* No more references to this file. Let go of it. */
+-			if (list_empty(&file->f_blocks) && !file->f_locks
+-			 && !file->f_shares && !file->f_count) {
+-				hlist_del(&file->f_list);
+-				nlm_close_files(file);
+-				kfree(file);
+-			}
++			nlm_file_release(file);
++			file = next;
+ 		}
  	}
- 	if (do_wakeup)
- 		wake_up_all(&nn->nfsd_ssc_waitq);
+ 	mutex_unlock(&nlm_file_mutex);
 -- 
 2.53.0
 
