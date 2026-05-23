@@ -1,284 +1,147 @@
-Return-Path: <stable+bounces-253959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253960-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oF4fCtLJEWqEpwYAu9opvQ
-	(envelope-from <stable+bounces-253959-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 17:37:54 +0200
+	id sDr3Md3WEWoorQYAu9opvQ
+	(envelope-from <stable+bounces-253960-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 18:33:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1EE35BFB1C
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 17:37:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C1ED5BFD74
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 18:33:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0F786300E3C5
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 15:37:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D93FF300B9C2
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 16:32:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 452CE30F958;
-	Sat, 23 May 2026 15:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C84930CDAE;
+	Sat, 23 May 2026 16:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ADnozeJ0"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="C9AORopB"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E684233EF
-	for <stable@vger.kernel.org>; Sat, 23 May 2026 15:37:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E0A303A04
+	for <stable@vger.kernel.org>; Sat, 23 May 2026 16:32:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779550667; cv=none; b=NV5wAEdxnxB8Rvjbt6+MS6oYhFcNWcBF5DwK+CuZXDB4V4a6ffy7rBRJc6xyXDYpFrRO6uggF9KEVGYkP27G8GjeZDNLleVYO2yWQ53c8DTNc4k20aQjFUMvyFtxqrbpHmLfFcoXD4q71oz5JtUOcVwfoQNIyeJjItGGEHWFKbo=
+	t=1779553959; cv=none; b=Ge5Uxt7bagx2YpNKHUNVEp+4lYBskhKdb5xPsTXhgsx/3ixl0fvnkqpKsZzgD/A1AH54fRs6x1dIeNp798iMLoWjwYrS9as2+XXb+8ki3ftiSpmg6wrU6W0H1NBdKn+J/XTo22OFceskzVXCITMSgLiUtcSjzEvDClTqe/ponVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779550667; c=relaxed/simple;
-	bh=nuMhY67j2kXpkCL6F1g8rN7Lw63fswI+AVXZSRraKXw=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=R/7vNNSSdYFeaF1GeNpLMAl288JEVlD/+EksIOkVlg+KA9hd5dj36IL6LeOUvdMq+X69LRTqL/imYjy1/QBXIoZpC3HKAu1y0FN9hJfv+XQKaYWR16FQMjvxEl/FghfnB3JtSF6+Pr9e3S/RolKBWPrgZtwuBMzAng9HqsuCHKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ADnozeJ0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D2E81F00A3A;
-	Sat, 23 May 2026 15:37:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779550664;
-	bh=b59jaKuT2GEGtCUAJvouyB/kv9iV89Owv4NA+3ki6tI=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=ADnozeJ0cpvfkZuUx3kYhoPovs41zzcBK1mPuxV+AWPvvxWssmMQyrdI5oNPcSbrC
-	 fBPdnxtHQjis0oi8RnwI3kCCJGmehjNzsgyDTGVOwyzZ2zNXBKyVoJ4XlOb+xz6dr4
-	 yRwndDP69d25jBm9VXqPqqBjp9Q5LtFk/N/HJo9BBmYSbdOT/d85NQESYMtCDQ11RS
-	 8f5oQljuZPXjoTToPnkLz3l2w5vA0Eru2UQvysaiYn6Ltw+FowP3re9PSLyQG/g5kO
-	 PFxbqp6h6k23kQpy/YaCvL4PDCn1X9nxxTlg3NsdqMocTqOpaaZceUz0MwXOVB5vEb
-	 vT1HWziXX+7bw==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 8B8CCF40068;
-	Sat, 23 May 2026 11:37:43 -0400 (EDT)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Sat, 23 May 2026 11:37:43 -0400
-X-ME-Sender: <xms:x8kRau0weq4OmJ1dz0OL_XvZ7DWKFIxWvBXNkan83Sr4XltOh_2TDQ>
-    <xme:x8kRar6WBo73PSGa3ZaDOvbKJcUw1M2gc_u_uvT0DiGgEPmY_0PTUGrQILCKdfsHY
-    xFpiROOfdjNcjSoMTXZ7QOjWF7cIhV2Elz4c8Mn7JQ4CJcWN46d18g>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduheefgeegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedfvehhuhgt
-    khcunfgvvhgvrhdfuceotggvlheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
-    hnpedtleejheethfelgefhjefgteeiteehudfgieevffegkeejkeevvdelieegvdeujeen
-    ucffohhmrghinhepshgrshhhihhkohdruggvvhenucevlhhushhtvghrufhiiigvpedtne
-    curfgrrhgrmhepmhgrihhlfhhrohhmpegthhhutghklhgvvhgvrhdomhgvshhmthhprghu
-    thhhphgvrhhsohhnrghlihhthidqudeifeegleelleehledqfedvleekgeegvdefqdgtvg
-    hlpeepkhgvrhhnvghlrdhorhhgsehfrghsthhmrghilhdrtghomhdpnhgspghrtghpthht
-    ohepuddvpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehnvghilhessghrohifnh
-    drnhgrmhgvpdhrtghpthhtohepmhhitghhrggvlhdrsghomhhmrghrihhtohesghhmrghi
-    lhdrtghomhdprhgtphhtthhopegrnhhnrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
-    epjhhlrgihthhonheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhrohhnughmhies
-    khgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrihdrnhhgohesohhrrggtlhgvrdgtoh
-    hmpdhrtghpthhtoheptghhuhgtkhdrlhgvvhgvrhesohhrrggtlhgvrdgtohhmpdhrtghp
-    thhtohepohhkohhrnhhivghvsehrvgguhhgrthdrtghomhdprhgtphhtthhopehtohhmse
-    htrghlphgvhidrtghomh
-X-ME-Proxy: <xmx:x8kRamyssrTWUF2EfeABmNiMiYB2RhKjPZRSwBuk0xsWpBaohtHehg>
-    <xmx:x8kRaorw9mTvljt4paLlplObD2sDda5a4QJE63ojoSGd9Sc3kXbPdQ>
-    <xmx:x8kRakmIaMFtZty_LZ2vv4Z4y1bbafnMDT6dOQ-_3hTap374XbZ7DA>
-    <xmx:x8kRaqU8rZrbvxaP78Ys8zKxDjs4Tr5IKWIN4bmeKJ-0CR8Y3YPiNQ>
-    <xmx:x8kRagobRRdNemRCljJ4W_7rB9rD79-NkGarJOfbkiWIUXZymefipBcF>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 6251C780070; Sat, 23 May 2026 11:37:43 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1779553959; c=relaxed/simple;
+	bh=Z/HVvTp6bqeMXElqfXJMQx4Qn8o/8xX7lEdmUSvDFMU=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=rK7vFGgMA/vgS4vez70OtM+Qopy4Y8h6CQAFxkOkAo0lVyU0Yqe0Ro70wQsPeViWvI2FBgZVxn7k307JzZ+hI/1/E8CUR6FywzF/PLYhdKlrAR++y5kg/00cIETLkh7uzoZ2Q5ZBbrk237a6FXj/IKt0wSjmzJK/gd2DM+xSoUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=C9AORopB; arc=none smtp.client-ip=91.218.175.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Sat, 23 May 2026 18:32:22 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779553945;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XPpBMNYf+uBqXA5a79fqc+GgHVjilTO/Qdq9uXK2cug=;
+	b=C9AORopBVxMs4VAZys4RbOh04zs1m0BSF6jeq1L+DOzbrvGg/0fiWO0srYIEecYSFBsVt9
+	jQJDYw7ZOuiYW7kQd0fbivFwX7v+hp4+x8iKNmsY3sPluaNI97zOPjxK+sMujQNqGWwjUx
+	qXUI48VyrrwkhaCRwjI0SMdh5Z63lLY=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Luka Gejak <luka.gejak@linux.dev>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, luka.gejak@linux.dev
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v7=5D_staging=3A_rtl8723bs=3A_fix_r?=
+ =?US-ASCII?Q?emote_heap_info_disclosure_and_OOB_reads?=
+In-Reply-To: <2026052313-magnetism-platinum-7ee6@gregkh>
+References: <20260523131331.69768-1-luka.gejak@linux.dev> <2026052313-magnetism-platinum-7ee6@gregkh>
+Message-ID: <8973C298-B4EF-4DE0-97EB-A6F11BF565DC@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AtPzEyN-PPL-
-Date: Sat, 23 May 2026 11:37:22 -0400
-From: "Chuck Lever" <cel@kernel.org>
-To: "Michael Bommarito" <michael.bommarito@gmail.com>,
- "Trond Myklebust" <trondmy@kernel.org>, "Anna Schumaker" <anna@kernel.org>,
- "Chuck Lever" <chuck.lever@oracle.com>, "Jeff Layton" <jlayton@kernel.org>
-Cc: NeilBrown <neil@brown.name>, "Olga Kornievskaia" <okorniev@redhat.com>,
- "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom Talpey" <tom@talpey.com>,
- linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Message-Id: <b30903a7-6edc-457b-8099-5242f26d9e42@app.fastmail.com>
-In-Reply-To: <20260523123053.3480369-1-michael.bommarito@gmail.com>
-References: <20260523123053.3480369-1-michael.bommarito@gmail.com>
-Subject: Re: [PATCH v2] lockd: pin next file across nlm_inspect_file lock-drop
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.65 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Migadu-Flow: FLOW_OUT
+X-Spamd-Result: default: False [-0.96 / 15.00];
+	SUBJ_EXCESS_QP(1.20)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-253959-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org,oracle.com];
+	TAGGED_FROM(0.00)[bounces-253960-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,sashiko.dev:url,app.fastmail.com:mid];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cel@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.982];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[luka.gejak@linux.dev,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: D1EE35BFB1C
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,linux.dev:mid,linux.dev:dkim]
+X-Rspamd-Queue-Id: 3C1ED5BFD74
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Hi Greg,
+On May 23, 2026 3:44:58 PM GMT+02:00, Greg Kroah-Hartman <gregkh@linuxfoun=
+dation=2Eorg> wrote:
+>On Sat, May 23, 2026 at 03:13:31PM +0200, luka=2Egejak@linux=2Edev wrote:
+>> From: Luka Gejak <luka=2Egejak@linux=2Edev>
 
-On Sat, May 23, 2026, at 8:30 AM, Michael Bommarito wrote:
-> nlm_traverse_files() pins the current file with f_count++ across
-> a mutex_unlock for nlm_inspect_file(), but nothing pins the saved
-> next pointer.  A concurrent nlm_release_file() can kfree the next
-> file during the unlock window, and the iterator dereferences freed
-> memory on the next loop step.
->
-> Pin both current and next before the lock-drop.  Advance by
-> swapping the pinned cursors at the end of each iteration so next
-> is always held alive across the unlock.
->
-> Only call nlm_file_release() for files that matched the predicate
-> and were inspected.  Skipped files just get f_count-- to undo the
-> iteration pin; their f_locks is stale and must not drive cleanup.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 01df9c5e918a ("LOCKD: Fix a deadlock in nlm_traverse_files()")
-> Assisted-by: Claude:claude-opus-4-7
-> Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-> ---
->  fs/lockd/svcsubs.c | 64 +++++++++++++++++++++++++++++++---------------
->  1 file changed, 44 insertions(+), 20 deletions(-)
->
->
-> Changes since v1:
->  - Fixed premature kfree of non-matching files: nlm_file_release()
->    is now called only for files that matched the predicate and were
->    inspected.  Non-matching files just get f_count-- to undo the
->    iteration pin.  (Spotted by sashiko.dev automated review.)
->
-> Reproduced under UML + KASAN with 768 concurrent POSIX holders and
-> parallel /proc/fs/nfsd/unlock_filesystem writes.
->
-> Stock kernel:
->
->   BUG: KASAN: slab-use-after-free in nlm_traverse_files+0x71d/0x9d0
->
->   Allocated by: nlm_lookup_file via nlm4svc_proc_lock
->   Freed by:     another nlm_traverse_files instance
->
-> Patched v2 UML kernel ran the same harness silently.
->
-> diff --git a/fs/lockd/svcsubs.c b/fs/lockd/svcsubs.c
-> index dd0214dcb6950..0b38125cf86ab 100644
-> --- a/fs/lockd/svcsubs.c
-> +++ b/fs/lockd/svcsubs.c
-> @@ -295,36 +295,60 @@ static void nlm_close_files(struct nlm_file *file)
->  /*
->   * Loop over all files in the file table.
->   */
-> +static void nlm_file_release(struct nlm_file *file)
-> +{
-> +	if (list_empty(&file->f_blocks) && !file->f_locks
-> +	    && !file->f_shares && !file->f_count) {
-> +		hlist_del(&file->f_list);
-> +		nlm_close_files(file);
-> +		kfree(file);
-> +	}
-> +}
-> +
->  static int
->  nlm_traverse_files(void *data, nlm_host_match_fn_t match,
->  		int (*is_failover_file)(void *data, struct nlm_file *file))
->  {
-> -	struct hlist_node *next;
-> -	struct nlm_file	*file;
-> +	struct nlm_file *file, *next;
->  	int i, ret = 0;
-> 
->  	mutex_lock(&nlm_file_mutex);
->  	for (i = 0; i < FILE_NRHASH; i++) {
-> -		hlist_for_each_entry_safe(file, next, &nlm_files[i], f_list) {
-> -			if (is_failover_file && !is_failover_file(data, file))
-> -				continue;
-> +		file = hlist_entry_safe(nlm_files[i].first,
-> +					struct nlm_file, f_list);
-> +		if (file)
->  			file->f_count++;
-> -			mutex_unlock(&nlm_file_mutex);
-> -
-> -			/* Traverse locks, blocks and shares of this file
-> -			 * and update file->f_locks count */
-> -			if (nlm_inspect_file(data, file, match))
-> -				ret = 1;
-> -
-> -			mutex_lock(&nlm_file_mutex);
-> -			file->f_count--;
-> -			/* No more references to this file. Let go of it. */
-> -			if (list_empty(&file->f_blocks) && !file->f_locks
-> -			 && !file->f_shares && !file->f_count) {
-> -				hlist_del(&file->f_list);
-> -				nlm_close_files(file);
-> -				kfree(file);
-> +		while (file) {
-> +			/*
-> +			 * Pin the next neighbour before we drop the mutex
-> +			 * for nlm_inspect_file(); a concurrent
-> +			 * nlm_release_file() under the same mutex would
-> +			 * otherwise be free to unlink and kfree it during
-> +			 * the unlock window, leaving us to dereference a
-> +			 * freed slab when we walked to next afterwards.
-> +			 */
-> +			next = hlist_entry_safe(file->f_list.next,
-> +						struct nlm_file, f_list);
-> +			if (next)
-> +				next->f_count++;
-> +
-> +			if (!is_failover_file || is_failover_file(data, file)) {
-> +				mutex_unlock(&nlm_file_mutex);
-> +
-> +				/*
-> +				 * Traverse locks, blocks and shares of this
-> +				 * file and update file->f_locks count.
-> +				 */
-> +				if (nlm_inspect_file(data, file, match))
-> +					ret = 1;
-> +
-> +				mutex_lock(&nlm_file_mutex);
-> +				file->f_count--;
-> +				nlm_file_release(file);
-> +			} else {
-> +				file->f_count--;
->  			}
-> +			file = next;
->  		}
->  	}
->  	mutex_unlock(&nlm_file_mutex);
-> -- 
-> 2.53.0
+=2E=2E=2E
 
-Codex (gpt-5.5 xhigh) review reports:
+>> Also fix three additional issues discovered during review:
+>> - Missing free of pmgntframe and its xmitbuf before jumping to exit
+>>   in the WLAN_EID_VENDOR_SPECIFIC lower-bound checks=2E
+>> - In is_ap_in_tkip(), add missing lower-bound checks for the RSN and
+>>   vendor-specific IE data accesses (pre-existing bug)=2E
+>> - Move rtw_buf_update() before dump_mgntframe() to avoid a potential
+>>   use-after-free of pwlanhdr, which points into the mgmt frame buffer
+>>   (pre-existing bug)=2E
+>
+>When you say "also" that implies you need to break this patch up into
+>smaller pieces, right?  Please do so=2E
+>
 
-> When nlmsvc_unlock_all_by_sb() skips a file from another superblock,
-> this branch can be handling an entry that was already pinned as the
-> previous file's saved next. If that entry's last real nlm_release_file()
-> ran while the traversal pin was held, it saw f_count > 0 and skipped
-> nlm_file_inuse()/deletion; this decrement then takes f_count to zero
-> without any cleanup, leaving the nlm_file and its open f_file
-> references hashed indefinitely.
+Well, I just addressed sashiko comments on my patch, so I thought to=20
+keep it one patch as it was review of if=2E
 
-It appears that sashiko identified the same issue:
+>>=20
+>> Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
+>> Cc: stable@vger=2Ekernel=2Eorg
+>> Signed-off-by: Luka Gejak <luka=2Egejak@linux=2Edev>
+>> ---
+>> Changes in v7:
+>>  - Address new sashiko comments=2E
+>>=20
+>
+>That does not say _what_ you did, only that you did _something_=2E  Pleas=
+e
+>be more specific=2E
 
-https://sashiko.dev/#/patchset/20260523123053.3480369-1-michael.bommarito@gmail.com?part=1
+"Also" part is what was changed due to sashiko's request=2E Should I=20
+move it here, provide link to sashiko or write it here completely=2E
 
+>
+>thanks,
+>
+>greg k-h
 
--- 
-Chuck Lever
+Best regards,
+Luka Gejak
+
 
