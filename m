@@ -1,242 +1,182 @@
-Return-Path: <stable+bounces-253969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253970-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GJ+lG9HiEWqWrgYAu9opvQ
-	(envelope-from <stable+bounces-253969-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 19:24:33 +0200
+	id fTmxNJ/uEWpfsAYAu9opvQ
+	(envelope-from <stable+bounces-253970-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 20:14:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9ACA5C002F
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 19:24:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 477325C04DA
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 20:14:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A61E03020A6D
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 17:23:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2340530156C1
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 18:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E5BC3128D9;
-	Sat, 23 May 2026 17:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09433360EFB;
+	Sat, 23 May 2026 18:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sMHogzmz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QEC7+VqS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E76311583
-	for <stable@vger.kernel.org>; Sat, 23 May 2026 17:23:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500673090C1
+	for <stable@vger.kernel.org>; Sat, 23 May 2026 18:14:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779557019; cv=none; b=bh0NQuxaLUO5+pIrhj3/j969pHqTRya5Q5Aq3S+IRzE6knIvdZhUh8L2lEyKhbBBEjMDXsxA0WUu3TF7CVaXG80c56nAkEC3Isuh68XL9lVWsLnOx6kFx8NpDWLbH0uC+nB9i3UF+I/uLYIjJaBQjwcAEembwxricHYJdiLELLQ=
+	t=1779560092; cv=none; b=tsC48QRwo7c6FzUhJ1SxZk7AGCfy0InJ2lmACPtMtXKo3sykCg24RWMvw/g4jvIYB8jY7XLxis0dQajujSsEeP2dF1mMgDecW+aCXWQmCkNNNMa1trkUIB8Rwvf7r5XIpaiU8I5z8DZDz2gHPsFaqpuoEUejarI93Fa1IU/RMeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779557019; c=relaxed/simple;
-	bh=Fi4+ue6MQehKHGj6eR0P1A4AvxISsRbzoo/k8cV2AcM=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=g9zQM2Ap2gk9YiUdNHplAOfhr5e6yPVuHwbpCO6053Bli+BAI3gKryIRQVtGZuEGYFuMFJyhfrKQ6g3dzXkqos6HJ0r9hw3kprla7oRDU/vUyXUm6Lxc9NEuTYZxqIRevln2qdcSeeklbEfsVuDuCax7WkfZ4ERjgwvvhpaNwV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sMHogzmz; arc=none smtp.client-ip=209.85.128.177
+	s=arc-20240116; t=1779560092; c=relaxed/simple;
+	bh=mm5xjnozPR6r5jkIAcvDPU4KbucjiTawPGqvlrw3/Kc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hr/+HxXnMFT2AyHfVqzUkZGDzJ0DHK6KgW+kx7YDh1O0SX4XjMuN8zy2dgX8eFTZT7igT8MJrMKGjy/v1U2DPMxCuilr132QRtSMj0RGbuYtY9mHnwXndB6NA0JrOPvESA6/QewT+LxYndQ1iFvj1z075gOh8pgqestj9bLfuMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QEC7+VqS; arc=none smtp.client-ip=209.85.221.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-7bdc947aa88so68199617b3.3
-        for <stable@vger.kernel.org>; Sat, 23 May 2026 10:23:37 -0700 (PDT)
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-449de065cb3so8000526f8f.2
+        for <stable@vger.kernel.org>; Sat, 23 May 2026 11:14:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779557016; x=1780161816; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AH8I42OgtO38xei/x0QO150kONrNvsRLDU4qo5q/+2g=;
-        b=sMHogzmzUJr8JJlpxA8s//WIx7vaBLTM9NzlUkjRZeUnKNhoTMpnOALbyta8inDD7+
-         Qxhtjuj+JBMMBcV1VWXPqbKfJqzKgNYSgIfvGpESFmDGvN8Pr3qgIQRFsy0gWAlO83aw
-         UvSqezG/QoErvh125dEH22JycHa16nXHWtAW2PVGdQZuDQH8wElottWeXXqrGKKfgjM3
-         3Sm5euB5reTP3UkS0otK9/AKJAP7gYJUctyTS8bWytb+TA6rhHb5mRDqrsOCnTmiMtBb
-         884t+fsL7jJoP5ZK1W4LKu4/L5Sk3EYlN/14b+mDaA5VP46i1QoR8IXASlrgOUhjDmbq
-         T6xQ==
+        d=gmail.com; s=20251104; t=1779560090; x=1780164890; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=PKrZA3SQ6hneCPeQUwipbEL8KL38eo+epb8OIzHcMbI=;
+        b=QEC7+VqSx6/ImnjTGUnEN0N1GUTdFsb6mosbHAA+8PQBS00xAjx5p/j9mNjP+9NtYt
+         8y1w/oQ0qylmGsQ3yiL/YByhN8BRu7bkNpy7pnHDsJpef3auF/RTSsL+OYPn+3pOqN7y
+         KhsHN4oy4IpMR0T5eSmcsLRIhQTkb7+Eh6PV/Rqkwtu6kS3UDCIDLQ4jrkAL9+LrUE3Y
+         5rjZz+4jwYs/evwwdk8ZjfanEw+wpsasi3KfEAHVnQhVd+qBAiLpgVMC3TByh892G4JL
+         PPE7CO70JMj6Dg/ZMxsXfn2G1tY18cLCp0glkhIS9pDZqRewfbrzgFt8+r9gKP6LV262
+         fpPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779557016; x=1780161816;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AH8I42OgtO38xei/x0QO150kONrNvsRLDU4qo5q/+2g=;
-        b=a/oA+Gb91mOZ4OLgRodTfA2Gf60ZKlmi2Pms9tli7J4DKv8hgRdUG67JvECv680x8S
-         9Ba0NP47ZigRmkYRFBiMuY+SddGch6kT0SUwKsu0kbi1TORRRqbE+zPrNkJ1iArfctiF
-         v7vk4SmCZW6onSKMvIZ73+RqXNwG4KseuLkJSb8vc4ULa0bENKYJ3FTYOzs1bWFdKHRe
-         fAr/CpeQoBEtvR9P85/Jg+I2iYMwIoZerJAFKTaO9sIsMSXW/39XJzfHpsmcktXu8oqk
-         kBdvt36C3j5WNt4eVzKqKlV9j29ERI60Jj7s/fzaW1Lj+K4jMbe7MFBu7YCRo31tNtCm
-         0vLg==
-X-Forwarded-Encrypted: i=1; AFNElJ+u/9PWiEiiRoxqbEOp5knRb3TouPbpSMmuePYMr1OSI7pFeJXoBCYSXildMUQtcOHejC4ppaY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWJt/faydkzbbsj0pz8yIV2JIa8Z/HBdIBTd00aru5p+rIXcte
-	J+eE8V272u+BZHe1p6cAcyBXXc9qS7uNcLA5MqP0C5Cuwc2dm7OAEy+w
-X-Gm-Gg: Acq92OF1A8o664N621CuTBvEK0plBtLXTOxVChAa58Ts9mq5xMkktvtF26UcUxVwLV7
-	26X6byu7chZ3cWjXq+d8H0N1pWjiYxjx1Wlz1RUSCnBdLr9GdHZj9rF3fLSqs+OrDg1b40cJNoI
-	B3BZK15+TMlE1fAUNKPQ7uqiGARSsPsvNEDUdnze37CkT5giBZxHHu32S1L3I6eL6FS7yO8Cxou
-	3wm3ATkZlvkIXmedcPxWfT/NC/cVJnA2rrj9AMJbtfYWyglLOqqo/yHjmbSsYQhjJUDqE/ldI/0
-	216SCqe4VUCrC4F7OJTz5v15ySWMsu/MCxziz+VNjXpqcSLEPShJPWUjvxjVcK+M8NnBYRDHHIi
-	jZvGv3UWTsAgNKryRDer8mHUWLHOnSXKmQqyEmKWY09vY9guB1TP5PeOPuLBhhLZS9UDOH3AlRu
-	aRFsLoajZz0xLsii8bWN5s7mzccua8RGQvGPZGSOW2wJox6I6b5DWrW97/+G1W4FZHC7R9qDEUM
-	KSOu8GL8Q2C1R/9HA==
-X-Received: by 2002:a05:690c:d1d:b0:7b4:dc3a:79c5 with SMTP id 00721157ae682-7d3340d954amr105142577b3.12.1779557016220;
-        Sat, 23 May 2026 10:23:36 -0700 (PDT)
-Received: from gmail.com (141.139.145.34.bc.googleusercontent.com. [34.145.139.141])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7d389d17ffbsm23895387b3.14.2026.05.23.10.23.34
+        d=1e100.net; s=20251104; t=1779560090; x=1780164890;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PKrZA3SQ6hneCPeQUwipbEL8KL38eo+epb8OIzHcMbI=;
+        b=oE0vsVafuTRGGGSi4e2qhhG+vhI+ubn355QGLQd49YCypD3vdUKjViROF6zzEE7fdm
+         Y35YeLv9VHpRka5tYBVFHJ5Y15xGTWE/cx6HyzuCOoY23tUrtTze+JClVnQOo0k8FkRE
+         wGV6Eyek5IKvwykUF0VQENkbzki0R6YWsuFVVMPlid40V+hfjeo+bEONvMezBjwnLOzu
+         N6v3T1sBKRl5uFkMQGHwmzV2tWmvHFLsVU56g0MJUJpIEyJIKiqR64FJr+7QT0sEqr45
+         714jZRdkZgSl+VeFm1Me6+BZrKE8m9LMpYVviDHRIMGXU1+8WODuV1Q4I77bToYoDFmu
+         5Hag==
+X-Forwarded-Encrypted: i=1; AFNElJ9D+5hb69wjPJxlrIMkwEdlgizFmx+W2x58isH4bCyaDtwc91j4cMJOA8eQFORSg6hd0CrYFLs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxaxxKa7AMWAISRN8ixof3Z0hAcPqJn1yeaHjBxV3aekqNLXxox
+	AUH+eoufPFVbrrTrK192mSXGqvf7Xw458BALXx4fPbvYa5ce0KNFJmuf
+X-Gm-Gg: Acq92OED7hYAkBhCInjgVdvSoIXCZEns9bPUodvhFOuMCQtDhtcTzPZFxxTXiy7rIpX
+	sD+KHry9zAIdWR12F20lWGjKaP+qE/CTnzr16fwMLlUmGdrJIWjq/CUeODmDunx++9re3QVwW7D
+	jYXCkLwi7QnJOqAlhrn2zsGzOnJccN0BGvGxQT16ayGPpyTU6pXX3v9wD1jCzn0EAXhQORnblng
+	DF22KX9/owiU8KNQlg87yMBSrS1ielgQThswUwa6+p7XCl5wNHiRt/0HxOg89g8pM+j9tZZbn1G
+	VeSiKN6mjanlytNldqBzLwSD+JfhfsEiBwJ8sqZUYI8A7o1gjMgFzGVbkkK69Vkpwln+4W23lO5
+	dBMsJOQrfRjXNN/NvL8ytZ+3HBrnbollcdZB/fINnYdiPE8GExrq5IpdyWtczkbqsHuorCGWlKF
+	p1zpyLDJr7tCUmHkZvk3yHcitzdPZN/JpBGdQ5FW6j90PvdZLK5u1gBq1r0N1XuJ6C3OkIjgJHa
+	b5DkhxcboA=
+X-Received: by 2002:a05:6000:41fa:b0:45a:c0e1:37b with SMTP id ffacd0b85a97d-45eb389fdedmr13444344f8f.32.1779560089580;
+        Sat, 23 May 2026 11:14:49 -0700 (PDT)
+Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eb6d4850dsm13042447f8f.17.2026.05.23.11.14.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 May 2026 10:23:35 -0700 (PDT)
-Date: Sat, 23 May 2026 13:23:34 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Qi Tang <tpluszz77@gmail.com>, 
- davem@davemloft.net, 
- kuba@kernel.org, 
- pabeni@redhat.com, 
- edumazet@google.com, 
- David Ahern <dsahern@kernel.org>, 
- Simon Horman <horms@kernel.org>
-Cc: willemdebruijn.kernel@gmail.com, 
- netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Qi Tang <tpluszz77@gmail.com>, 
- stable@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.1d8a1f48355f5@gmail.com>
-In-Reply-To: <20260523143245.2281415-1-tpluszz77@gmail.com>
-References: <20260523143245.2281415-1-tpluszz77@gmail.com>
-Subject: Re: [PATCH net v5] ipv6: validate extension header length before
- copying to cmsg
+        Sat, 23 May 2026 11:14:49 -0700 (PDT)
+From: David Carlier <devnexen@gmail.com>
+To: Sumit Semwal <sumit.semwal@linaro.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Cc: gaoxiang17@xiaomi.com,
+	linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+7f4987d0afb97dd090cb@syzkaller.appspotmail.com,
+	David Carlier <devnexen@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] dma-buf: fix UAF in dma_buf_fd() tracepoint
+Date: Sat, 23 May 2026 19:14:46 +0100
+Message-ID: <20260523181446.69525-1-devnexen@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-253969-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[xiaomi.com,vger.kernel.org,lists.freedesktop.org,lists.linaro.org,syzkaller.appspotmail.com,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_TO(0.00)[gmail.com,davemloft.net,kernel.org,redhat.com,google.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-253970-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[devnexen@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[willemdebruijnkernel@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-0.362];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: C9ACA5C002F
+	TAGGED_RCPT(0.00)[stable,7f4987d0afb97dd090cb];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,appspotmail.com:email]
+X-Rspamd-Queue-Id: 477325C04DA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Qi Tang wrote:
-> ip6_datagram_recv_specific_ctl() builds IPV6_{HOPOPTS,DSTOPTS,RTHDR}
-> cmsgs (and their IPV6_2292* legacy counterparts) by trusting the
-> on-wire hdrlen byte (ptr[1]) when computing the put_cmsg() length.
-> The length was validated only at parse time (ipv6_parse_hopopts(),
-> etc.).  An nftables payload-write expression can rewrite hdrlen after
-> parsing and before the skb reaches recvmsg; the write itself is
-> in-bounds but put_cmsg() then reads up to ((hdrlen+1) << 3) = 2040
-> bytes from an 8-byte header.  nftables is reachable from an
-> unprivileged user namespace, so this is an unprivileged
-> slab-out-of-bounds read:
-> 
->   BUG: KASAN: slab-out-of-bounds in put_cmsg+0x3ac/0x540
->    put_cmsg+0x3ac/0x540
->    udpv6_recvmsg+0xca0/0x1250
->    sock_recvmsg+0xdf/0x190
->    ____sys_recvmsg+0x1b1/0x620
-> 
-> Add ipv6_get_exthdr_len() which validates that at least two bytes
-> are accessible before reading the hdrlen field, then checks the
-> computed length against skb_tail_pointer(skb), returning 0 on
-> failure.  Extension headers are kept in the linear skb area by
-> pskb_may_pull() during input, so skb_tail_pointer() is the correct
-> bound.
-> 
-> Use ipv6_get_exthdr_len() at all non-AH call sites: the five
-> standalone cmsg blocks (HbH, 2292HbH, 2292DSTOPTS x2, 2292RTHDR)
-> and the three standard cases in the extension-header walk loop
-> (DSTOPTS, ROUTING, default).  AH retains an inline bounds check
-> because its length formula differs ((ptr[1]+2)<<2).
-> 
-> The walk loop also gets a pre-read bounds check at the top to
-> validate ptr before any case accesses ptr[0] or ptr[1].
-> 
-> When the walk loop detects a corrupted header, return from the
-> function instead of continuing to process later socket options.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Signed-off-by: Qi Tang <tpluszz77@gmail.com>
+Once FD_ADD() returns, the fd is live in the file descriptor table
+and a thread sharing that table can close() it before DMA_BUF_TRACE()
+runs. The close drops the last reference, __fput() frees the dma_buf,
+and the tracepoint then dereferences dmabuf to take dmabuf->name_lock
+-- slab-use-after-free.
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+Split FD_ADD() back into get_unused_fd_flags() + fd_install() and
+emit the tracepoint between them. While the fdtable slot is reserved
+with a NULL file pointer, a racing close() returns -EBADF without
+entering __fput(), so the dma_buf stays alive across the trace. Same
+approach as commit 2d76319c4cbb ("dma-buf: fix UAF in dma_buf_put()
+tracepoint").
 
-> ---
-> Changes v4 -> v5 (Jakub Kicinski):
->   - Switch (ptr + len <= tail) to (len <= tail - ptr) form in
->     ipv6_get_exthdr_len() to avoid pointer arithmetic concerns.
+This undoes the FD_ADD() conversion done in commit 34dfce523c90
+("dma: convert dma_buf_fd() to FD_ADD()"); FD_ADD() has no place to
+hook the tracepoint safely.
 
-Please do send the net-next patch replacing the open constants with
-offsetof and such.
+Reported-by: syzbot+7f4987d0afb97dd090cb@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7f4987d0afb97dd090cb
+Fixes: 281a22631423 ("dma-buf: add some tracepoints to debug.")
+Cc: stable@vger.kernel.org # 7.0.x
+Signed-off-by: David Carlier <devnexen@gmail.com>
+---
+ drivers/dma-buf/dma-buf.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-
-> @@ -664,26 +679,37 @@ void ip6_datagram_recv_specific_ctl(struct sock *sk, struct msghdr *msg,
->  			unsigned int len;
->  			u8 *ptr = nh + off;
->  
-> +			if (ptr + 2 > skb_tail_pointer(skb))
-> +				return;
-> +
->  			switch (nexthdr) {
->  			case IPPROTO_DSTOPTS:
->  				nexthdr = ptr[0];
-> -				len = (ptr[1] + 1) << 3;
-> +				len = ipv6_get_exthdr_len(skb, ptr);
-> +				if (!len)
-> +					return;
->  				if (np->rxopt.bits.dstopts)
->  					put_cmsg(msg, SOL_IPV6, IPV6_DSTOPTS, len, ptr);
->  				break;
->  			case IPPROTO_ROUTING:
->  				nexthdr = ptr[0];
-> -				len = (ptr[1] + 1) << 3;
-> +				len = ipv6_get_exthdr_len(skb, ptr);
-> +				if (!len)
-> +					return;
-
-Optional: instead of return, jump out of the while loop and continue
-processing other cmsg not based on exthdrs.
-
->  				if (np->rxopt.bits.srcrt)
->  					put_cmsg(msg, SOL_IPV6, IPV6_RTHDR, len, ptr);
->  				break;
->  			case IPPROTO_AH:
->  				nexthdr = ptr[0];
->  				len = (ptr[1] + 2) << 2;
-> +				if (ptr + len > skb_tail_pointer(skb))
-> +					return;
->  				break;
->  			default:
->  				nexthdr = ptr[0];
-> -				len = (ptr[1] + 1) << 3;
-> +				len = ipv6_get_exthdr_len(skb, ptr);
-> +				if (!len)
-> +					return;
->  				break;
->  			}
->  
+diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
+index 71f37544a5c6..d504c636dc29 100644
+--- a/drivers/dma-buf/dma-buf.c
++++ b/drivers/dma-buf/dma-buf.c
+@@ -792,9 +792,13 @@ int dma_buf_fd(struct dma_buf *dmabuf, int flags)
+ 	if (!dmabuf || !dmabuf->file)
+ 		return -EINVAL;
+ 
+-	fd = FD_ADD(flags, dmabuf->file);
++	fd = get_unused_fd_flags(flags);
++	if (fd < 0)
++		return fd;
++
+ 	DMA_BUF_TRACE(trace_dma_buf_fd, dmabuf, fd);
+ 
++	fd_install(fd, dmabuf->file);
+ 	return fd;
+ }
+ EXPORT_SYMBOL_NS_GPL(dma_buf_fd, "DMA_BUF");
+-- 
+2.53.0
 
 
