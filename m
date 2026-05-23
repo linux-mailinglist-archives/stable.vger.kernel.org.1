@@ -1,185 +1,141 @@
-Return-Path: <stable+bounces-253978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253979-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4HKaHEgfEmpVvQYAu9opvQ
-	(envelope-from <stable+bounces-253978-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 23:42:32 +0200
+	id 6OxQCY4lEmoNvwYAu9opvQ
+	(envelope-from <stable+bounces-253979-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 24 May 2026 00:09:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCCD55C0D2F
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 23:42:31 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14ECC5C0D7F
+	for <lists+stable@lfdr.de>; Sun, 24 May 2026 00:09:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3446A3012BFE
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 21:42:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1BA733007223
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 22:09:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1063030BB80;
-	Sat, 23 May 2026 21:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A488C2C15B0;
+	Sat, 23 May 2026 22:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ahPpe13O"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oT6oQzUd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80DCD50276;
-	Sat, 23 May 2026 21:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7196D222580
+	for <stable@vger.kernel.org>; Sat, 23 May 2026 22:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779572548; cv=none; b=VIBQQvGxn2FVlkehUvv6a8CEqNI9mxFSbi+vtyXYoEG5pqyVv+1ZLSQp9ddmm1NgCWTJh7VwJqtRpGp6+nGMBpxVp6Sr0VpaXz5eiFHrLln8nEtyhdchGf8gq7xD+1Z2PA4wKyXSS/Pt27I7SSX7SXP0dEarm8ZWzFVQ0X0/xFE=
+	t=1779574151; cv=none; b=oFenNfEL5gK4VI+5aWITFoMG75pg1+wmNqV0KZhWGUhDlNm/lkIOksmCL4y9hNrrkQZQsIA/0TcdwnVhZmblfC6713eeiqK9KjBADgXhtgGquSpQ+de/YggR1rlDE7jWqnRPPfzFW11kEuoGDsC+q7bESH0jq7aDrnQM8D6uBMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779572548; c=relaxed/simple;
-	bh=4St5n7uQpnLLZS4wy/1KrtoZ9sgr/sulNBs3hSwXy88=;
-	h=Date:To:From:Subject:Message-Id; b=Pv8QTa7to5QCmlFVUrTc8On17o2RPtXrKoPHqEBo2gSGDKIR/xtzEzrgScL65T6Qtsa6faGcmZSWl0sXToT0iqhck+9QKZT8J++0iCXjatU/Smn0OKh6/HfTjQ3MLCeEA8qs2vilMV2YTvph4Haubu3IccKf2RXnXTPXEK09f2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ahPpe13O; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EA531F000E9;
-	Sat, 23 May 2026 21:42:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1779572547;
-	bh=qeTQNXknogBa/HDC88qmLwfZ8zL+XhnZR6yL7/uVDGM=;
-	h=Date:To:From:Subject;
-	b=ahPpe13OGzXnV0Fdwi3ydXXdaMV2A+p7uIZRJEZaAZ+rD2Ej5eQNJn13e9gpJ0+i9
-	 QcfRu/HK3k+OWaC3wLejYyY9x6C6hczJuVADfYOEPJNq73aa2Q8v8UtvE7SHj41/oG
-	 4O799p5XWSSraHucBIogutHtss8+4OAk5iW4r4no=
-Date: Sat, 23 May 2026 14:42:26 -0700
-To: mm-commits@vger.kernel.org,vbabka@kernel.org,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,mhocko@suse.com,ljs@kernel.org,liam@infradead.org,fvdl@google.com,david@kernel.org,songmuchun@bytedance.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-cma-fix-reserved-page-leak-on-activation-failure.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260523214227.1EA531F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1779574151; c=relaxed/simple;
+	bh=FauhWCHdm3QbqR41TxQKQTmbT4QL2fekNcK4Edjc/jM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OYhgSsSEDIfF/S+DHJSxY0LKNUCFP7TSE+6da3kOlAHtqPIMyPKp2FxcQPNSRJ9+ZnKA3YRlZB3QOQTL3OWT0+u4xd0Qpw9E1QsBe7CROejPr3xCRgJvRxjhtRSM4OdYX+/1N+hY8JE8Lq/HV+PN2BtcLqBdFOWM8QFyIy3chrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oT6oQzUd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35E2C1F00A3D
+	for <stable@vger.kernel.org>; Sat, 23 May 2026 22:09:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779574150;
+	bh=UFdUeExBEjH5ijJ0zDmAfHWE+UBuwNzNMUtP3mLlz8w=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=oT6oQzUdr5AeK/JN4DJQB/dziTq4R37qKQ5/9WM+ZEYiQgbaJPhk1h5xWwy6YbS0A
+	 CKOVpY1BL79O9+ExzbeiqsLxsWdpuBm1Y7pEivSN4Z8zNm5ekXFKN9MXAxoj80BwX7
+	 MMjIYznN6VPzFQbnQ0zYN5seExllUAFy6pWlYuM/Ft3ie+XC3DgW6yEA+l3vhdBgmA
+	 RgojvXdOi13P024d4gJS5LjNZ4PuHwJhQ8mpv6ZsfAAAGsxE07Zs1yxVu4wSuwECkd
+	 tX9z2qjhqvZUrTdJLQ7U74Y0wKumGBH5vNejSWk0/tSMAajS2rfuL0fGHbE35GHINe
+	 GrdMu5pc93w9w==
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5a8891f0c51so8726528e87.1
+        for <stable@vger.kernel.org>; Sat, 23 May 2026 15:09:10 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ9g9EsudCDXSWHUoiNt3PROPOu370P1bHsvYn08FG6kHy2LCgFh0j+GbFeTOyjKoB0/Y271gz8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3v5fRD7G5ppKEklhOx90Dj38I/ZeQQ0Rkb2i7/dxv69UE065H
+	9PymxRRWamk74ke7H67bKy0IhxGWmvpxDxLC8TUeF422Df1J7jghSP4mxtHtFEC38/jVzO8g7Bs
+	FQi5aEAP43Ml7tGhc9elCXtV47fkwriE=
+X-Received: by 2002:a05:6512:3ca8:b0:5aa:36cf:50dc with SMTP id
+ 2adb3069b0e04-5aa36cf52cemr1235604e87.3.1779574148955; Sat, 23 May 2026
+ 15:09:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+MIME-Version: 1.0
+References: <20260522211503.25219-1-kmehltretter@gmail.com>
+In-Reply-To: <20260522211503.25219-1-kmehltretter@gmail.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Sun, 24 May 2026 00:08:57 +0200
+X-Gmail-Original-Message-ID: <CAD++jLnhONOMn=7hG-EC_uB80nxXfAnRMuZC2xoJjf2Xzcaiuw@mail.gmail.com>
+X-Gm-Features: AVHnY4Lm8j4LfVLse8nnW32OdEBydMEMB1TPyp8J7ez8zpJEa_9lBm3aqPnEUR8
+Message-ID: <CAD++jLnhONOMn=7hG-EC_uB80nxXfAnRMuZC2xoJjf2Xzcaiuw@mail.gmail.com>
+Subject: Re: [PATCH] ARM: entry: use byte load for KASAN VMAP stack shadow
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: Russell King <linux@armlinux.org.uk>, 
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-253979-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253978-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linusw@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: CCCD55C0D2F
+	TAGGED_RCPT(0.00)[stable,kernel];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: 14ECC5C0D7F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Fri, May 22, 2026 at 11:15=E2=80=AFPM Karl Mehltretter
+<kmehltretter@gmail.com> wrote:
 
-The patch titled
-     Subject: mm/cma: fix reserved page leak on activation failure
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-cma-fix-reserved-page-leak-on-activation-failure.patch
+> Commit 44e9a3bb76e5 ("ARM: 9430/1: entry: Do a dummy read from
+> VMAP shadow") added a dummy read from the KASAN VMAP stack shadow in
+> __switch_to(). The read uses ldr, but KASAN shadow memory is
+> byte-granular and the computed shadow address is not guaranteed to be
+> word aligned.
+>
+> Booting the QEMU versatilepb machine with an ARM926EJ-S CPU and
+> CONFIG_KASAN=3Dy, CONFIG_KASAN_VMALLOC=3Dy and CONFIG_VMAP_STACK=3Dy faul=
+ts
+> before init:
+>
+>   Unhandled fault: alignment exception (0x001) at 0xb91037f6
+>   PC is at __switch_to+0x64/0x88
+>
+> Use ldrb for the dummy shadow access. The code only needs to fault if
+> the shadow mapping is missing, so a byte load is sufficient and matches
+> the granularity of KASAN shadow memory.
+>
+> Fixes: 44e9a3bb76e5 ("ARM: 9430/1: entry: Do a dummy read from VMAP shado=
+w")
+> Cc: stable@vger.kernel.org # v6.13+
+> Assisted-by: Codex:gpt-5
+> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-cma-fix-reserved-page-leak-on-activation-failure.patch
+Good catch!
+Reviewed-by: Linus Walleij <linusw@kernel.org>
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Please put this patch into Russell's patch tracker.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Muchun Song <songmuchun@bytedance.com>
-Subject: mm/cma: fix reserved page leak on activation failure
-Date: Sat, 23 May 2026 14:01:23 +0800
-
-If cma_activate_area() fails after allocating only part of the range
-bitmaps, the cleanup path still has to release the reserved pages when
-CMA_RESERVE_PAGES_ON_ERROR is clear.
-
-That is still worth doing even in this __init path.  A bitmap_zalloc()
-failure does not necessarily mean the system cannot make further progress:
-freeing the reserved CMA pages can return a substantial amount of memory
-to the buddy allocator and may relieve the temporary memory shortage that
-caused the allocation failure in the first place.
-
-However, the cleanup path currently uses the bitmap-freeing bound for page
-release as well.  That is only correct for ranges whose bitmap allocation
-already succeeded.  The failed range and all later ranges still keep their
-reserved pages, so a partial bitmap allocation failure can permanently
-leak them.
-
-Fix this by releasing reserved pages for all ranges.  Use the saved
-early_pfn[] value for ranges whose bitmap allocation already succeeded and
-for the failed range, and use cmr->early_pfn for later ranges whose bitmap
-allocation was never attempted.
-
-Link: https://lore.kernel.org/20260523060123.2207992-1-songmuchun@bytedance.com
-Fixes: c009da4258f9 ("mm, cma: support multiple contiguous ranges, if requested")
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Frank van der Linden <fvdl@google.com>
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/cma.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
---- a/mm/cma.c~mm-cma-fix-reserved-page-leak-on-activation-failure
-+++ a/mm/cma.c
-@@ -188,10 +188,13 @@ cleanup:
- 
- 	/* Expose all pages to the buddy, they are useless for CMA. */
- 	if (!test_bit(CMA_RESERVE_PAGES_ON_ERROR, &cma->flags)) {
--		for (r = 0; r < allocrange; r++) {
-+		for (r = 0; r < cma->nranges; r++) {
-+			unsigned long start_pfn;
-+
- 			cmr = &cma->ranges[r];
-+			start_pfn = r <= allocrange ? early_pfn[r] : cmr->early_pfn;
- 			end_pfn = cmr->base_pfn + cmr->count;
--			for (pfn = early_pfn[r]; pfn < end_pfn; pfn++)
-+			for (pfn = start_pfn; pfn < end_pfn; pfn++)
- 				free_reserved_page(pfn_to_page(pfn));
- 		}
- 	}
-_
-
-Patches currently in -mm which might be from songmuchun@bytedance.com are
-
-mm-cma_debug-fix-invalid-accesses-for-inactive-cma-areas.patch
-mm-cma-fix-reserved-page-leak-on-activation-failure.patch
-mm-sparse-remove-sparse-buffer-pre-allocation-mechanism.patch
-mm-sparse-vmemmap-fix-vmemmap-accounting-underflow.patch
-mm-memory_hotplug-fix-incorrect-altmap-passing-in-error-path.patch
-mm-sparse-vmemmap-pass-pgmap-argument-to-memory-deactivation-paths.patch
-mm-sparse-vmemmap-fix-dax-vmemmap-accounting-with-optimization.patch
-mm-mm_init-fix-pageblock-migratetype-for-zone_device-compound-pages.patch
-mm-mm_init-fix-uninitialized-struct-pages-for-zone_device.patch
-mm-memory_hotplug-factor-out-altmap-freeing-checks.patch
-drivers-base-memory-make-memory-block-get-put-explicit.patch
-
+Yours,
+Linus Walleij
 
