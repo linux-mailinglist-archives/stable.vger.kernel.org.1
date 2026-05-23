@@ -1,162 +1,255 @@
-Return-Path: <stable+bounces-253879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253880-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MGWhMu8dEWrIhQYAu9opvQ
-	(envelope-from <stable+bounces-253879-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 05:24:31 +0200
+	id 1m9bEsshEWqXhgYAu9opvQ
+	(envelope-from <stable+bounces-253880-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 05:40:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36A095BCFBE
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 05:24:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98C4B5BD022
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 05:40:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 14CB73082CCB
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 03:17:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 31509301907B
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 03:40:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D599633F5AF;
-	Sat, 23 May 2026 03:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F6C2E2665;
+	Sat, 23 May 2026 03:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="jKpe+0b8"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="bTevuCxh"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BAAF344023;
-	Sat, 23 May 2026 03:16:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7A91E7660;
+	Sat, 23 May 2026 03:40:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779506170; cv=none; b=VMo87Dts379Gq6BVXzlvR4e4nd6eeE2kM6LznnqM2EXy4QQwBojWbksxR5wAKrB0fa+n1asuVqrm0Q9K7hzZMn+OKLUFxdidz64rZh/bRZmeaEY/iU3hbvOz09jWIqai3NFZZOEni3avyiomSXHoEmPP5RFaS82Tgo8yg2PGNrU=
+	t=1779507655; cv=none; b=tzFDzaO4FgNHYki5uzTNXtaMS4vznxJ38+Xxnu2KacdQ+qlIAvI3mZI9PceBcRPfqf91r+Hh2YXEbqhjBUOCOJN/ot1dlbr24MWpzZ5Gm3+saiKszS4THTQZDRYsLuZ8BhWWzn1IMCi6VjeP7EVfAAvZs1sl5FOW/096DTBCal8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779506170; c=relaxed/simple;
-	bh=OPAz2Y0BF2mtliKYBhVjFTFdRd/hRrHEsoY8IjmWbCA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mYFrTD9LTj1QU3fXLSKsbtgyxnNVE95+l7vUzuXctz6RGqgGRQ2eWRYYUq7vrT/uYb1HhDj77vexXGEZwDEsZl/byPAWp6dcWBT/epVs2bMoOw3/pVHGLF8dRAFpTIOiDJABmSfgT1NqRzaBt5XslqJ5JokslaMpXrCpwDae8m8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=jKpe+0b8; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64N3ChTx1944381;
-	Sat, 23 May 2026 03:16:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=ogFu9mwGGgFKS9MjuLerYjJWZD9UcsKhg/TOlhzpNf0=; b=
-	jKpe+0b8vBUdAo3IdVzKZmC+x6Oz7yMitXSLs6ZvMLqb0d8zTQ4XkJ5Cqc1lfIN/
-	T7ZDFPWou8q7e6p2X+Ra5R6hpsZejmqUos60eLNPNJJu5z5iCIQRxNWrP5JJkK0U
-	bVgoet8Gnb61gXN69adWSong3NV0ghpCJZdPE5XcqBSAIGRneHGqE7Cmj6cH1r3C
-	QIcpkNPDQWUTY9mKoSrQeBsZR1Lb5Mzq0tv0pDBTQXnz6EeUqf+zpKLCGPUxJymi
-	/yp4GhZeLvms0Iz/hOI8HHnoR1kgF3DJxpFxYkc4TjSMYl2aTwL7BGTPlLJGqMO6
-	e+48cqI9GvphpqbrPtrEBQ==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4eb447g05n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 23 May 2026 03:16:00 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 64N3F69K032365;
-	Sat, 23 May 2026 03:16:00 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4eb2p6hsu5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 23 May 2026 03:16:00 +0000 (GMT)
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 64N3FvRM035132;
-	Sat, 23 May 2026 03:15:59 GMT
-Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4eb2p6hstd-4;
-	Sat, 23 May 2026 03:15:59 +0000 (GMT)
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: Alexandru Hossu <hossu.alexandru@gmail.com>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>, bvanassche@acm.org,
-        mlombard@arkamax.eu, ddiss@suse.de, target-devel@vger.kernel.org,
-        linux-scsi@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v4] scsi: target: iscsi: validate CHAP_R length before base64 decode
-Date: Fri, 22 May 2026 23:15:50 -0400
-Message-ID: <177950426869.1557613.4511172889873596665.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260521151121.808477-1-hossu.alexandru@gmail.com>
-References: <20260521151121.808477-1-hossu.alexandru@gmail.com>
+	s=arc-20240116; t=1779507655; c=relaxed/simple;
+	bh=Tfol4kz5HdsfjL6lF/Is2I0/Kjwb88VmHTVNbabFDEk=;
+	h=Date:To:From:Subject:Message-Id; b=r+oygmD4eeYbbHBttj5UB0FxNGi5V0gC+hHzKimwNWPC4QpCH7o17lG8UJVMTA/Oao4Q5oCxqTP98l7FNvG6G8Ph/UcGWU3i+HxSP/bKI1LxsCD6Ghg+4PHa3FYUAYOIgoqksp8/qAY6cliNjruyfdgjxQaldEzc8JCdGhzr0R8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=bTevuCxh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 436E91F000E9;
+	Sat, 23 May 2026 03:40:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1779507653;
+	bh=PhA0nas5UAXIeviwEYHdhYqW+i0kkZdjAZH560d/VVg=;
+	h=Date:To:From:Subject;
+	b=bTevuCxhSbPSG+VMLQbbxDAQihSgqYh4KYrPamhjOPPKbAUlLaFU1MYmGqW8lKxhh
+	 jlENle6bj5u0ayrvHXLGQUZ1kKvlEtB2MPZFjOxe5J+K0mkicXlLc20bEXUTpoucRN
+	 Mk5rh1iqhbb8M8y05+Cp0QDVQsa6ci6tpT6tL7Ag=
+Date: Fri, 22 May 2026 20:40:52 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-damon-core-trace-esz-at-first-setup.patch added to mm-new branch
+Message-Id: <20260523034053.436E91F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-23_01,2026-05-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- suspectscore=0 malwarescore=0 spamscore=0 phishscore=0 lowpriorityscore=0
- mlxlogscore=865 bulkscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2605130000 definitions=main-2605230029
-X-Authority-Analysis: v=2.4 cv=Ecn4hvmC c=1 sm=1 tr=0 ts=6a111bf0 cx=c_pps
- a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=jiCTI4zE5U7BLdzWsZGv:22 a=EIcjfB9IiI4px24ztqRk:22 a=VwQbUJbxAAAA:8
- a=Tq2vKD9PR_ByvZOGbd8A:9 a=QEXdDO2ut3YA:10 a=zgiPjhLxNE0A:10
-X-Proofpoint-ORIG-GUID: 4T_DwIaPuLkbciG5tYsTKdnx2d0cdaus
-X-Proofpoint-GUID: 4T_DwIaPuLkbciG5tYsTKdnx2d0cdaus
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIzMDAyOCBTYWx0ZWRfX6L+TkKafcm9a
- l4G7xwJQz4OdCqiMEO78IdVTeBhCDCgCzAAJjj6zixAyMNFMYh688I2IT4DOVBRvWfE4o6lCGX9
- F1d+dP/tHC3oXB1IPWKKs9snHLyPrn2VMVNJg7ZG3Qs7VMbbmLxvxOZTWE4l5eP7CWiOhzZJJJy
- lZIoOopPWUb0GMGDes8qsKP25OAtCSUzDgvqAAKK4Xnsuc0cmBttvq8R7OzBREZU4P9fMVDVktH
- y/uuMkA2njaTIDSGe9/AlQouidd4ppUOcYuH94YNBgJuEgRSTSMr2fQr7pJnG0+sLGOhTokRGJo
- SPD+DCJdgBKTJxVZt2WhII5kIYEHWB2SRWarI7BdvaeR1up4ZwZtTbZhNVX8GreH0BQM9Se6b1g
- 0JOufwMP53+gFEl/71YznWKaF+fw0Fk4Tq6Et9hvO/rJ79AIxEqpL0DNwTFKagOiKhJwG1GDZ7x
- tMHKQ6SqDIduxOnLLpQ==
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-253879-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[oracle.com:+];
+	TAGGED_FROM(0.00)[bounces-253880-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oracle.com:mid,oracle.com:dkim];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[martin.petersen@oracle.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[9]
-X-Rspamd-Queue-Id: 36A095BCFBE
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linux-foundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 98C4B5BD022
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, 21 May 2026 17:11:21 +0200, Alexandru Hossu wrote:
 
-> chap_server_compute_hash() allocates client_digest as
-> kzalloc(chap->digest_size) and then, for BASE64-encoded responses,
-> passes chap_r directly to chap_base64_decode() without checking whether
-> the input length could produce more than digest_size bytes of output.
-> 
-> chap_base64_decode() writes to the destination unconditionally as long
-> as there is input to consume. With MAX_RESPONSE_LENGTH set to 128 and
-> the "0b" prefix stripped by extract_param(), up to 127 base64 characters
-> can reach the decoder. 127 characters decode to 95 bytes. For SHA-256
-> (digest_size=32) this overflows client_digest by 63 bytes; for MD5
-> (digest_size=16) the overflow is 79 bytes.
-> 
-> [...]
+The patch titled
+     Subject: mm/damon/core: trace esz at first setup
+has been added to the -mm mm-new branch.  Its filename is
+     mm-damon-core-trace-esz-at-first-setup.patch
 
-Applied to 7.1/scsi-fixes, thanks!
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-core-trace-esz-at-first-setup.patch
 
-[1/1] scsi: target: iscsi: validate CHAP_R length before base64 decode
-      https://git.kernel.org/mkp/scsi/c/85db7391310b
+This patch will later appear in the mm-new branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
--- 
-Martin K. Petersen
+Note, mm-new is a provisional staging ground for work-in-progress
+patches, and acceptance into mm-new is a notification for others take
+notice and to finish up reviews.  Please do not hesitate to respond to
+review feedback and post updated versions to replace or incrementally
+fixup patches in mm-new.
+
+The mm-new branch of mm.git is not included in linux-next
+
+If a few days of testing in mm-new is successful, the patch will me moved
+into mm.git's mm-unstable branch, which is included in linux-next
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: SeongJae Park <sj@kernel.org>
+Subject: mm/damon/core: trace esz at first setup
+Date: Wed, 20 May 2026 08:03:10 -0700
+
+DAMON traces effective size quota from the second update, only if a change
+has been made by the update.  Tracing only changed updates was an
+intentional decision to avoid unnecessary same value tracing.  Always
+skipping the first value is just an unintended mistake.
+
+The mistake makes the tracepoint based investigation incomplete, because
+the first effective size quota is never traced.  It is not a big issue
+when the 'consist' quota tuner is used, because it keeps changing the
+quota in the usual setup.
+
+However, when the 'temporal' tuner is used, the quota value is not changed
+before the goal achievement status is completely changed.  For example, if
+the DAMOS scheme is started with an under-achieved goal, the quota is set
+to the maximum value, and kept the same value until the goal is achieved. 
+Because DAMON skips the first value, the user cannot know what effective
+quota the current scheme is using.  Only after the goal is achieved, the
+effective quota is changed to zero, and traced.
+
+Unconditionally trace the initial quota value to fix this problem.
+
+Note that the 'temporal' quota tuner was introduced by commit af738a6a00c1
+("mm/damon/core: introduce DAMOS_QUOTA_GOAL_TUNER_TEMPORAL"), which was
+added to 7.1-rc1.  But even with the 'consist' quota tuner, the tracing is
+unintentionally incomplete.  Hence this commit marks the introduction of
+the trace event as the broken commit.
+
+Link: https://lore.kernel.org/20260520150311.80925-1-sj@kernel.org
+Fixes: a86d695193bf ("mm/damon: add trace event for effective size quota")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org> # 6.17.x
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/damon/core.c |    2 ++
+ 1 file changed, 2 insertions(+)
+
+--- a/mm/damon/core.c~mm-damon-core-trace-esz-at-first-setup
++++ a/mm/damon/core.c
+@@ -2899,6 +2899,8 @@ static void damos_adjust_quota(struct da
+ 	if (!quota->total_charged_sz && !quota->charged_from) {
+ 		quota->charged_from = jiffies;
+ 		damos_set_effective_quota(c, s);
++		if (trace_damos_esz_enabled())
++			damos_trace_esz(c, s, quota);
+ 	}
+ 
+ 	/* New charge window starts */
+_
+
+Patches currently in -mm which might be from sj@kernel.org are
+
+mm-damon-core-make-charge_addr_from-aware-of-end-address-exclusivity.patch
+mm-damon-core-handle-min_region_sz-remaining-quota-as-empty.patch
+mm-damon-core-merge-regions-after-applying-damos-schemes.patch
+mm-damon-core-introduce-failed-region-quota-charge-ratio.patch
+mm-damon-sysfs-schemes-implement-fail_charge_numdenom-files.patch
+docs-mm-damon-design-document-fail_charge_numdenom.patch
+docs-admin-guide-mm-damon-usage-document-fail_charge_numdenom-files.patch
+docs-abi-damon-document-fail_charge_numdenom.patch
+mm-damon-tests-core-kunit-test-fail_charge_numdenom-committing.patch
+selftests-damon-_damon_sysfs-support-failed-region-quota-charge-ratio.patch
+selftests-damon-drgn_dump_damon_status-support-failed-region-quota-charge-ratio.patch
+selftests-damon-sysfspy-test-failed-region-quota-charge-ratio.patch
+docs-mm-damon-maintainer-profile-add-ai-review-usage-guideline.patch
+mm-damon-core-introduce-damon_ctx-paused.patch
+mm-damon-sysfs-add-pause-file-under-context-dir.patch
+docs-mm-damon-design-update-for-context-pause-resume-feature.patch
+docs-admin-guide-mm-damon-usage-update-for-pause-file.patch
+docs-abi-damon-update-for-pause-sysfs-file.patch
+mm-damon-tests-core-kunit-test-pause-commitment.patch
+selftests-damon-_damon_sysfs-support-pause-file-staging.patch
+selftests-damon-drgn_dump_damon_status-dump-pause.patch
+selftests-damon-sysfspy-check-pause-on-assert_ctx_committed.patch
+selftests-damon-sysfspy-pause-damon-before-dumping-status.patch
+mm-damon-introduce-damon_set_region_system_rams_default.patch
+mm-damon-reclaim-cover-all-system-rams.patch
+mm-damon-lru_sort-cover-all-system-rams.patch
+mm-damon-core-remove-damon_set_region_biggest_system_ram_default.patch
+mm-damon-stat-use-damon_set_region_system_rams_default.patch
+docs-admin-guide-mm-damon-reclaim-update-for-entire-memory-monitoring.patch
+docs-admin-guide-mm-damon-lru_sort-update-for-entire-memory-monitoring.patch
+docs-admin-guide-mm-damon-usage-mark-scheme-filters-sysfs-dir-as-deprecated.patch
+docs-abi-damon-mark-schemes-s-filters-deprecated.patch
+mm-damon-reclaim-add-autotune_monitoring_intervals-parameter.patch
+docs-admin-guide-mm-damon-reclaim-update-for-autotune_monitoring_intervals.patch
+mm-damon-stat-add-a-parameter-for-reading-kdamond-pid.patch
+docs-admin-guide-mm-damon-stat-document-kdamond_pid-parameter.patch
+mm-damon-core-introduce-struct-damon_probe.patch
+mm-damon-core-embed-damon_probe-objects-in-damon_ctx.patch
+mm-damon-core-introduce-damon_filter.patch
+mm-damon-core-commit-probes.patch
+mm-damon-core-introduce-damon_region-probe_hits.patch
+mm-damon-core-introduce-damon_ops-apply_probes.patch
+mm-damon-core-do-data-attributes-monitoring.patch
+mm-damon-paddr-support-data-attributes-monitoring.patch
+mm-damon-sysfs-implement-probes-dir.patch
+mm-damon-sysfs-implement-probe-dir.patch
+mm-damon-sysfs-implement-filters-directory.patch
+mm-damon-sysfs-implement-filter-dir.patch
+mm-damon-sysfs-implement-filter-dir-files.patch
+mm-damon-sysfs-setup-probes-on-damon-core-api-parameters.patch
+mm-damon-sysfs-schemes-implement-tried_regions-r-probes.patch
+mm-damon-sysfs-schemes-implement-probe-dir.patch
+mm-damon-sysfs-schemes-implement-probe-hits-file.patch
+mm-damon-trace-probe_hits.patch
+selftests-damon-sysfssh-test-probes-dir.patch
+docs-mm-damon-design-document-data-attributes-monitoring.patch
+docs-admin-guide-mm-damon-usage-document-data-attributes-monitoring.patch
+mm-damon-core-introduce-damon_filter_type_memcg.patch
+mm-damon-paddr-support-damon_filter_type_memcg.patch
+mm-damon-sysfs-add-filters-f-path-file.patch
+mm-damon-sysfs-schemes-move-memcg_path_to_id-to-sysfs-common.patch
+mm-damon-sysfs-setup-damon_filter-memcg_id-from-path.patch
+docs-mm-damon-design-update-for-memcg-damon-filter.patch
+docs-admin-guide-mm-damon-usage-update-for-memcg-damon-filter.patch
+mm-damon-core-safely-handle-no-region-case-in-damon_set_regions.patch
+mm-damon-core-do-not-use-region-out-of-a-loop-in-damon_set_regions.patch
+samples-damon-mtier-replace-damon_add_region-with-damon_set_regions.patch
+mm-damon-tests-vaddr-kunit-replace-damon_add_region-with-damon_set_regions.patch
+mm-damon-core-hide-damon_add_region.patch
+mm-damon-core-hide-damon_insert_region.patch
+mm-damon-core-hide-damon_destroy_region.patch
+mm-damon-core-add-kdamond_call-debug_sanity-check.patch
+mm-damon-core-remove-damon_verify_nr_regions.patch
+mm-damon-tests-core-kunit-add-damon_set_regions-test-cases.patch
+selftests-damon-sysfspy-stop-kdamonds-before-failing.patch
+selftests-damon-sysfssh-test-monitoring-intervals-goal-dir.patch
+selftests-damon-sysfssh-test-addr_unit-file-existence.patch
+selftests-damon-sysfssh-test-pause-file-existence.patch
+mm-damon-core-trace-esz-at-first-setup.patch
+
 
