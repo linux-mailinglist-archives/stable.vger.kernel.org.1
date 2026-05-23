@@ -1,82 +1,87 @@
-Return-Path: <stable+bounces-253876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253877-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iI84D9AbEWq+hQYAu9opvQ
-	(envelope-from <stable+bounces-253876-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 05:15:28 +0200
+	id EM5KMXQcEWrIhQYAu9opvQ
+	(envelope-from <stable+bounces-253877-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 05:18:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8A195BCE12
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 05:15:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F65D5BCECA
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 05:18:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1D8B13011C7D
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 03:15:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1CDA13037B8E
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 03:15:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04FAC2C21FD;
-	Sat, 23 May 2026 03:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB84D3064B5;
+	Sat, 23 May 2026 03:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="HhuzrYiL"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="V9ew2Sum"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 708D3B672;
-	Sat, 23 May 2026 03:15:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA56306D3F;
+	Sat, 23 May 2026 03:15:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779506119; cv=none; b=pyl7TiXhVykB6DQHlmQ0rVi/Ux28LE7wR6RxYAPDoli8W5sk3MfMmMWGkYWQqSLh+OkHThvou8ezTAhS+h7egndCtSD044RoNGKHva0TNBFPn2wgST3436vo/vvatl6Giw+ZiBywD6jADdVQ0UbpH46wW6KAWzQOMZBouPtTizI=
+	t=1779506128; cv=none; b=tW9zgcjacE0nhohIAz+eS4PkckwO7yeyr81xp7xb4e7q1TvyyXWGKCPZm3jWvvCyRQ2RNulQU0rey9tJBGQ4bGe915y1TId+9zWttmcUBdviiIxsNx/fIHWbWJ7xeesOsgY9NJw93PrxOmFlCmKXeQpIG5YRENONPsHmclTejLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779506119; c=relaxed/simple;
-	bh=DwZNuwY0fKeIzTDsvOHyLoubTPnvEKV2FhPuRoxNRLQ=;
+	s=arc-20240116; t=1779506128; c=relaxed/simple;
+	bh=5QymYsdVfV9hz8sP5vrLy0HZQgQAJD5wMtmwi6bHoRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zi1uI2e7rlSizjQda7xZ2o2+qdAivMRG0p04vIrSadaLHhUAWH7UMdFxn7xU3Sht0ifV917G7vw5v6DaN2TNEjKMkETFKoCnMyr9WtlUOPrGdcgSQUGqtMIS4MfmkGTuyq81uhejRsxetPSJmzNSMXG/XFhiEuBmoq1hU+Z8sR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=HhuzrYiL; arc=none smtp.client-ip=205.220.177.32
+	 MIME-Version:Content-Type; b=dM9ktwnjCkY/VhCW7s5W9YSzwB9viuo9xHwBl2XEBKq/0uOTySeXQdrnLCohSExS+utO7E2/GFVfWQrYFo/DiINpAY1b6h1DDD7ml1QFvoHg8wcx9BpJMG0N4FX/z7VPj9ViNTgrl1sFRarCNc9aOm6ThGkPHj08so1JdV5+V+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=V9ew2Sum; arc=none smtp.client-ip=205.220.165.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64N39cKn2840870;
-	Sat, 23 May 2026 03:15:15 GMT
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64N1bpSg406848;
+	Sat, 23 May 2026 03:15:22 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=uIoEv4UmIiGEbZhoQl6JdVYiEdEkre16sHyRRg4BmAI=; b=
-	HhuzrYiL1usAaiPTSCdtdCT/LQrOEEwVLOvHARr9dypQbvfRuZmCmK8WZR1YFoSR
-	Tvj4B3bWzLi/+zzVUOr02uwN2DhQei8/tFWPnmsnFDW9WSFAI17OAvEm59KRrEqF
-	I4SEOXOoPTjWpkqGw7PrwdobXZgHKOeJ6irvwcyRGcnDXPZYql0d/O3Uw5JJT/g7
-	kvkgrbYgvinZXpSIfPmyg6EiV9eR2bN0XzCdLO9Ow26I6yk7jbM/qBUoWueGXsGm
-	Stq7TjUpGxTLMIHZ+eqVkQRzjkxgt79NMp7CkHXMNRmAXc+ZSCrePqqTT8jqiA47
-	MwbA2DpTBXm9QVQrtHZi/Q==
+	corp-2025-04-25; bh=4YCrH2y9aZIpADHKddxuZLqpk1yXiyb6dwiFzJl9kZ8=; b=
+	V9ew2SumnNGjcZox64m5+oZ98d4M2WpvPEtgCX12NQbjXwwkCurnHISZLG3gK/6J
+	reNiPVTsN94l7zwTRrbooxDpGHQf/XHIfs/ZD4yJhfxUhJcIct3ILgzEglQ7eITs
+	aHLnz/jQnv9QBg6TWi08ZbVTEB5PzUyRy1Q4ti7EjTTkohUmgSrG3RkmOae1qxTD
+	n0qtOgY8VlQRTxanPGD163yBeHvy4d1QxJk+GB9OZC/nDwoiL0wHcNkEM5Puny3j
+	907wbT9+xhJGYv9svswhVWby+ZuEQbhyOWwtBgo5yR+bL/sLAa/2QcAzZZPVWc/R
+	Sciy11+S1F0oLvkhWiqKQw==
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4eb3us80d2-1
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4e6h4qcct3-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 23 May 2026 03:15:14 +0000 (GMT)
+	Sat, 23 May 2026 03:15:22 +0000 (GMT)
 Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 64N3F6w2032342;
-	Sat, 23 May 2026 03:15:13 GMT
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 64N3F6hw032311;
+	Sat, 23 May 2026 03:15:21 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4eb2p6hse2-1
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4eb2p6hsh4-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 23 May 2026 03:15:13 +0000 (GMT)
+	Sat, 23 May 2026 03:15:21 +0000 (GMT)
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 64N3F9e0032824;
-	Sat, 23 May 2026 03:15:13 GMT
+	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 64N3F9eE032824;
+	Sat, 23 May 2026 03:15:20 GMT
 Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4eb2p6hs6k-4;
-	Sat, 23 May 2026 03:15:13 +0000 (GMT)
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4eb2p6hs6k-11;
+	Sat, 23 May 2026 03:15:20 +0000 (GMT)
 From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Evgenii Burenchev <evg28bur@yandex.ru>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>, kartilak@cisco.com,
-        nmusini@cisco.com, sebaddel@cisco.com,
-        James.Bottomley@HansenPartnership.com, linux-scsi@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] snic/vnic_dev: Remove dead store in vnic_dev_discover_res()
-Date: Fri, 22 May 2026 23:14:18 -0400
-Message-ID: <177913641762.1181900.9483130298257376269.b4-ty@oracle.com>
+To: James Bottomley <James.Bottomley@HansenPartnership.com>,
+        Jack Wang <jinpu.wang@cloud.ionos.com>,
+        Sagar Biradar <sagar.biradar@microchip.com>
+Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi <linux-scsi@vger.kernel.org>, stable@vger.kernel.org,
+        Brian King <brking@linux.vnet.ibm.com>,
+        Don Brace <don.brace@microchip.com>, Raja VS <raja.vs@microchip.com>,
+        Kumar Meiyappan <kumar.meiyappan@microchip.com>,
+        Abhinav Kuchibhotla <abhinav.kuchibhotla@microchip.com>,
+        Uday kumar Bagam <udaykumar.bagam@microchip.com>,
+        Advait Churi <advait.churi@microchip.com>
+Subject: Re: [PATCH] scsi: pm8001: reject firmware update in fatal error state
+Date: Fri, 22 May 2026 23:14:25 -0400
+Message-ID: <177913641791.1181900.14663720936303186596.b4-ty@oracle.com>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260429095212.11251-1-evg28bur@yandex.ru>
-References: <20260429095212.11251-1-evg28bur@yandex.ru>
+In-Reply-To: <20260416153757.414896-1-sagar.biradar@microchip.com>
+References: <20260416153757.414896-1-sagar.biradar@microchip.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -92,66 +97,66 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
  suspectscore=0 malwarescore=0 spamscore=0 phishscore=0 lowpriorityscore=0
  mlxlogscore=999 bulkscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.19.0-2605130000 definitions=main-2605230029
-X-Authority-Analysis: v=2.4 cv=Zewt8MVA c=1 sm=1 tr=0 ts=6a111bc2 cx=c_pps
+X-Authority-Analysis: v=2.4 cv=NdnWEWD4 c=1 sm=1 tr=0 ts=6a111bca cx=c_pps
  a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
  a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=jiCTI4zE5U7BLdzWsZGv:22 a=3I1J8UUJPc9JN9BFgKH3:22 a=VwQbUJbxAAAA:8
- a=obzxcOSibZW-SFeEL7EA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: Ajv3yf3uqpezbkuOXZ7_gu8DfZ26__dg
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIzMDAyOSBTYWx0ZWRfX0DkjzegDShKu
- 4/jXjnPBV4pCCgByxhVs6l7YjHQQb6ElUevonrFIJqIIymD9FtzRgej6TFGq3YVIhL8qL8RHZvE
- 6xY4O1lmaE1SoF3ehwZeehQWh8waFdGMx8LjvBqDxG/1NCjDXThGApAyDNbDnNU8Wu2XKq3ecI2
- Ww/sP8jCXb/d66Kl9MdEwhQ00cm5I3KSIFX/SDu2x4bBylzKuYbOgmPYLOE2clUh7EPoOOuqGsn
- P2Jq5ahO1yhGEluRUPePAP80yefNphdh08AiW528GeRk3ep600cudbK4Fvf8KO4TsShMJLXVbzU
- MmQj9/mUGARswssAr8XNiMsMLW56U5gYmtY1cFI0n+z/xbfEBgNdp94qjpAKM7L9+g36M0n4Tcu
- JJV7Z/jTu5OQIaDpWuo0cm7ZnRKXWa9mn/1MusQeWoI8zKzgOTjWgslBABOGB7zeIE4nFFccSSh
- cDnPjIDyVOUUA7Y7Glg==
-X-Proofpoint-ORIG-GUID: Ajv3yf3uqpezbkuOXZ7_gu8DfZ26__dg
+ a=jiCTI4zE5U7BLdzWsZGv:22 a=7Gl3-_t3PgB9XO-mQDs3:22 a=VwQbUJbxAAAA:8
+ a=R5KDo11Cz1VF5HMyZIAA:9 a=QEXdDO2ut3YA:10 a=zgiPjhLxNE0A:10
+X-Proofpoint-GUID: jWLjxmFzrwl5QPAlEquJmbohHyBiXb7-
+X-Proofpoint-ORIG-GUID: jWLjxmFzrwl5QPAlEquJmbohHyBiXb7-
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIzMDAyOSBTYWx0ZWRfX0xq43l0cAPJH
+ raClauBlM4yaoaANDT245f67QiIybqFoB7teEMKH5nXTxA8t6SVocQdgaTfuT4T7IdlRMLiN2Td
+ Lm7fi1zkEhX80H8TtB/FCEi0BnEnLPKxMSAA00j9OwXLoNmsE/K0Ewut+my5Fr0Xhve7zWlgG97
+ S1Nj5hZO87omI6IRnCLBqAp7IaSNGqbDSaOfrW9xMAbpJm7ch5kKF25+yFmzp5Ly8S9Qp6ryre+
+ 2MEpeehTxihAt1pADFCdXPtGzS0JoC/qHoAxeLPtMuF5GsnwBYzFGlhkD1qIfqhfAEFqOnUL4XV
+ H3H47qkxOtWssFZXsj7naufOspicX3BTJJ4z3w4aYXj9Pw0QDlJHqFcRCV5fYsFvBMwNMY3y15k
+ x6YNr73wVNIA/x/LCTxvFCks/4gS33dQhZlE8/QkLqcmjXDGcbNl33xrYGPqiWcJMx1J+lFd56U
+ tI8UJsxzDZZUMThzOiA==
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-253876-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[vger.kernel.org,linuxfoundation.org,yandex.ru];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-253877-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[oracle.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,oracle.com:mid,oracle.com:dkim];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[martin.petersen@oracle.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	RCVD_COUNT_SEVEN(0.00)[9]
-X-Rspamd-Queue-Id: D8A195BCE12
+X-Rspamd-Queue-Id: 6F65D5BCECA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, 29 Apr 2026 12:52:12 +0300, Evgenii Burenchev wrote:
+On Thu, 16 Apr 2026 15:37:57 +0000, Sagar Biradar wrote:
 
-> The assignment 'len = count' for RES_TYPE_INTR_PBA_LEGACY,
-> RES_TYPE_DEVCMD, and RES_TYPE_DEVCMD2 cases is never used.
+> pm8001_store_update_fw() allows a firmware update request even
+> when the controller has already entered a fatal error state.
 > 
-> Drop the unused assignments to fix the following static analyzer warning.
-> 
-> No functional change.
+> Firmware update is not valid once the controller is in that state,
+> and attempting it can lead to a call trace. Reject the request
+> early by checking controller_fatal_error, set the firmware
+> status to FAIL_PARAMETERS, and return -EINVAL.
 > 
 > [...]
 
 Applied to 7.2/scsi-queue, thanks!
 
-[1/1] snic/vnic_dev: Remove dead store in vnic_dev_discover_res()
-      https://git.kernel.org/mkp/scsi/c/195254adeddc
+[1/1] scsi: pm8001: reject firmware update in fatal error state
+      https://git.kernel.org/mkp/scsi/c/2a8fbcfb04aa
 
 -- 
 Martin K. Petersen
