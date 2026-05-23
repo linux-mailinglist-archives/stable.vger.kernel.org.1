@@ -1,170 +1,199 @@
-Return-Path: <stable+bounces-253949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253950-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sPkRF7W/EWoNpgYAu9opvQ
-	(envelope-from <stable+bounces-253949-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 16:54:45 +0200
+	id ACuUNvy/EWoNpgYAu9opvQ
+	(envelope-from <stable+bounces-253950-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 16:55:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA3725BF7B0
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 16:54:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DA4C5BF7D4
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 16:55:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C892B3024137
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 14:53:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2138A3002E61
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 14:55:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3372B184;
-	Sat, 23 May 2026 14:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3271E304BDE;
+	Sat, 23 May 2026 14:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lUQod8IG"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b="Moo/DtEY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B79F1E8826
-	for <stable@vger.kernel.org>; Sat, 23 May 2026 14:53:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C993033EC
+	for <stable@vger.kernel.org>; Sat, 23 May 2026 14:55:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779548018; cv=none; b=SgnZkFpJk7u3xDV58RZKjfH5qRqfDsAVo5yZA9mW6jn1ZCUtuyh1jxhpT+EarQLPFpk3UK+IYs132+ux/5lKlebP06H2TbnnsAN/t/K6sZ/Qn0neL6gkpWQVu7KvQqFpIhG0w/D6meP7MVCXrAhu3XxGNyBZL5QBb7AJQmXeqbg=
+	t=1779548150; cv=none; b=u/F16OR+NzStHxOHCec7o48hLiU/LKjH2Pu+Iy2v09i/RZNxSXMlzQCf7qL67jZZva3i3O/cYcBK2xNsvyrW+KiWBrBVc6Ks4d7SUZc96qz6aB1VmzL15A4uRTdLSeu4z6FMbZmMfGa8qc/yfZJIxHEc9Nz64fF+wgW903NnvYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779548018; c=relaxed/simple;
-	bh=yyyr4Ie6lPu+jIbRXSP0Mil/Vfh89VQwXsVF98DJms4=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=dbtXBFxOeR9K0s6X/ysJnzcA9eSQ6m31yqY4NtVTni4Bc7bqlbqu+cJCXYutBaAG+BL39Mez4dsk5jfYechSW3kFs4j9+E4Bxxl5v6dVE7O8R1VSYyi2sdzZn3qr7a1HktIKKgcneEKdziZBd8oBGBePwz8BjvsXXHnBiGoPoBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lUQod8IG; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c8025500cc7so6258423a12.1
-        for <stable@vger.kernel.org>; Sat, 23 May 2026 07:53:35 -0700 (PDT)
+	s=arc-20240116; t=1779548150; c=relaxed/simple;
+	bh=MOtTruu7oCpPtDhl/HWaJcw1a1JNAc9mlPuGoIepHx8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Gieu0SEsT4lNRiNwvV/2wDiCFebuoR1BIOs0K8MOKY6gm1Bygxt0SwKx9mIYKCLwjGG8ehcED6XHZeEIMNZ+DKfSMyXsRJ2hBB9o6bJF42P7/US+a8gTDd/5UWgUYQlmo56eGpsckRCHBaOCH3a6BVLvk9qH1+H0Qbo2rFb2HMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b=Moo/DtEY; arc=none smtp.client-ip=209.85.210.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7e4de538f83so4774888a34.1
+        for <stable@vger.kernel.org>; Sat, 23 May 2026 07:55:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779548015; x=1780152815; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dqryLwyecP7XdFRP1fnNAzkgGZpfDJiUeUJsd1fBfx0=;
-        b=lUQod8IGEOUGlco2J64NEi5RYJ7nrN58yUbUNg1hRHyNsc0UmACG3lOXGaMGDBhMVi
-         KRDZgCfChV0vV1ha4GoOF/hyGwJ7ANpsxtloWbLNInwFboGeYZK8jIgyeHU3ZBZEoJII
-         LDSvwSf490Q0XUHQtrPxCRrb4mNmB2KfxEJgK9mJ5JTrOTdkr1ej5BMk8iV8z7I6aBdf
-         58Yv7dfs9/z1asCB9KYFq5J5pZyG2dXdBI7gHDkkbm9aEeTAejUfuzsWTpG4fszslRFX
-         QKd0naNzoBoe7b9q1JLvOeWQ+pjk6lf7DxJi/m5S80kbTRjwuFxnDI8LjeyMhPbmeZsQ
-         LrXA==
+        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1779548146; x=1780152946; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GfL9Mnhn6RS/dK9GHgYTlaEa86j6tsYvdObuz5oD1iU=;
+        b=Moo/DtEYzp432jVgesyu+21Tih+zq9Lh+pZhqKVcgkAOBZs07TFQw3s7FmvEf1E9gh
+         JOiQL4t4+eFeMLeDHvjZsED7tlmP1kO8AZtUQcK3zPHlGvkythlzSfgNZg6EO5RBlKfz
+         T/XDmGQCkMRkLTpK7O491b+pQdxXG5fawYEbN/I4hQ7ERxa7abWD5/HAKOr/BjyYQ2+f
+         snDrjTOs+4etr2Smtbo30CTpu4MXTVP7dIQasgzovrEHOtOs1CLTikLiAv2ra5HkU4Oi
+         BhMKiUNqL17JLzyZ6XxjZ2wtTxBIt0a4ALavTNXyfwqSlgHhZ32ps1VYoGrZ5lBD6wVF
+         GI9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779548015; x=1780152815;
-        h=mime-version:content-transfer-encoding:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dqryLwyecP7XdFRP1fnNAzkgGZpfDJiUeUJsd1fBfx0=;
-        b=luE7SpUi/zWuqDJ3F8hXNUEdAEbZUvf9+qx/5R45Bbd3LtakLY36X0/DZWW8bmUXh0
-         IYdbo5EdsYBhcGn8eMpeORloXkG3jruwqAgU0kyURMPQHH68uVMyMXxBN1nH1fJEO7eR
-         Ri3M+VDi4RjY7i7IBHiIZ4GcPKAWa6UWX3jaBhnLZpNd57ucBJVnxq3KKbJuw1zr+F+9
-         uElNEor1smL/ucqZj6qQlf5r/7SxmZareS4Q5geqbjdjOsQsWkBxFvl/9ZYjc2TK9UgS
-         N7WRtu3zOI1+ld/3XZgu/9TmgvwBQJRDN+MSsN7udazKG7UMjBFOxFlKH8yi8C3SA0E9
-         WjgA==
-X-Forwarded-Encrypted: i=1; AFNElJ8DouWwQYEApCeJBfaotEo/w2LA029NuzNZldDvJQHBCfB4e8pDLBTChlMuGlq0oohs165UxGs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhqwPQugpofwZWNPfK/LF5Ec1pqbDbN/j3iiqQka+FRoRO2MGA
-	OO3OUHsAIxWNnVNWx6vqSqlbTrmuaZpW9BOE7vi5CYLZlCY8m1qtJLwR
-X-Gm-Gg: Acq92OF6P7al4G6IeJB0h/FHZhHybTuEaOlI+Hxz0FKw2qHpGHxtwaL03vyiZnOKYyX
-	8/uRvsCaau5pg2I7JHIsheeIFyKA1MdMSj/U+UdBUy3WOy8YX+jio2qhUBW3tqNLSlzhY2NIJd9
-	ULiez1WVJS0JXE5HwzZ4iMdhhDRIJBdO8ELu1d4Va/s2ipQjg0ortx1eLqLOxt1yD+3W6cJOQMM
-	Iou1/LQnkLVdlk9pm12VZXnRduve2aVtFBl2waBcWguKt8jph7XXzPJBdsvO3dy9gm9zxlWEyb2
-	/yQIkhLQqYDYzLT7cQ56C4lX/Dyncj9UED129pcTwcuyjokK3QXfdIstWpbichjDgqVRzuHgm10
-	XdodKbY0NEsH8eeftkNWMGSHQV6m3NcE21pOcYtkCbhgaAEJXDuojkQnQoKgUNIi5WB5EWljPrN
-	37q61TqSLZSOnMBaz5nP0Dn3/SgxZX2atvKHrBKrlOeG1t6aK3sYAAuRqUnbZzAytQ65DFtgGIg
-	YIrwZI82iUnWC3UDIiJ234SxwI4hu5L2A==
-X-Received: by 2002:a05:6a21:b8a:b0:398:6ea8:21d8 with SMTP id adf61e73a8af0-3b328cabaa7mr7949186637.15.1779548014578;
-        Sat, 23 May 2026 07:53:34 -0700 (PDT)
-Received: from 1.0.0.127.in-addr.arpa ([103.129.134.204])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c85202902a6sm3974345a12.3.2026.05.23.07.53.30
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 23 May 2026 07:53:34 -0700 (PDT)
-From: Shuvam Pandey <shuvampandey1@gmail.com>
-To: Antonio Quartulli <antonio@openvpn.net>,
- Sabrina Dubroca <sd@queasysnail.net>, netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, David S. Miller <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: [PATCH net] ovpn: hold peer before scheduling keepalive work
-Date: Sat, 23 May 2026 20:38:27 +0545
-Message-ID: <177954800752.73238.12097994883239164708@gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+        d=1e100.net; s=20251104; t=1779548146; x=1780152946;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GfL9Mnhn6RS/dK9GHgYTlaEa86j6tsYvdObuz5oD1iU=;
+        b=ZuSAY+pIkVpp2b/RIz4Vr4UWqOSf00LOR77gYuTc5W/A68u1oyh7iIyi6kKwCpLsqV
+         q/6Xy66La9GHHolR3LXUdAtQpZDV1FlfO4gV7gz0R7KSNth9l7kdBzS1VwQNs2bJrRTM
+         /F+BsuyuHWLlEyl4Srzk1TKeAZYN9Paq0Ao9Dewkc6BgXPTQvzMA2oBGNhCmpaKgcAUX
+         2E9CKxF66pPkjM+uyx3pQrYA+2a4lAjLAQKhpv9PkGkip9dP1zsoSVkG6fm7F73lIhKB
+         WaLhmRAOgaPaXCvQB2EU/dW1IiQlpow42daw+DcOqQadFCQ50LdREYtOpMjivxKSmpIA
+         Kf9g==
+X-Forwarded-Encrypted: i=1; AFNElJ91wXH7/ntIEcGRllUBxwyLlzx05qOXkBQvWXjepM4jJnZMSM0zYb9idviCP/1u+PhF+PVzzTk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOp0D73MbzdLwtIqYcwmmcaDrA++zjWsKMSUExoIMi3mSzLYl1
+	FL+M8LWw+pw8lfKe2CqZl6GwAeNCsLKmwcIvrw925+NM0D6u5U/WT5GUO+kQahbWhhk=
+X-Gm-Gg: Acq92OH5cAb1BSCrjcUTuuIaPOzpC+UAsMbN+3XGiBerGbGYzbYjUNYb60au1t96ii5
+	A0BWkr8LtuPFJgpvvm7FBLaNjejkum5v2BMkHAdWAsFq6n7+ES/eMf628eVXEtYnwaefye9I4QN
+	I+Q6TEoYHuM5QO3IJzy/r7P0tVS2kNRdqSSStnY1NiDCNS/uiqbNCVy6uq4oUPyL66wREhXQ/WP
+	ydXDfPh0nANKG5Le0/fM721LX89mp4yJkHH8lA0AzsoJshW5eivEpLSaejjBb610p3aOkV2afAY
+	4JoXYpkJReaazi67FwtHUymvzld2+ooTDlTUFvPc90mTaIJZhD5/30bU5Zej4oxpcsO0n1CpVZg
+	BRjRLy9GENCRgxat1PtnVAuGkAuW++5erCaopUCL2oi6eH4GGcnEb749vIvAuZdrAGxbs3uq8+i
+	RNWOAxI9Io8OvPWsmbh/bHXtSVy8qXNrpJzEjCs3UkKocGIbiOdVIF7WtXmYfaM/gbkh2c9BRSb
+	hvGDF8mRA==
+X-Received: by 2002:a05:6820:180e:b0:69d:6696:846e with SMTP id 006d021491bc7-69d7ec2609fmr3926788eaf.29.1779548145739;
+        Sat, 23 May 2026 07:55:45 -0700 (PDT)
+Received: from [192.168.1.150] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-43b62e4211fsm4959511fac.0.2026.05.23.07.55.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 23 May 2026 07:55:45 -0700 (PDT)
+Message-ID: <afe1ad86-3454-4092-88d0-bd9753a1b2c8@kernel.dk>
+Date: Sat, 23 May 2026 08:55:43 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Spamd-Result: default: False [-0.66 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH AUTOSEL 7.0] io_uring/wait: honour caller's time namespace
+ for IORING_ENTER_ABS_TIMER
+To: Sasha Levin <sashal@kernel.org>
+Cc: patches@lists.linux.dev, stable@vger.kernel.org,
+ Maoyi Xie <maoyixie.tju@gmail.com>, Pavel Begunkov <asml.silence@gmail.com>,
+ Maoyi Xie <maoyi.xie@ntu.edu.sg>, io-uring@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260520111944.3424570-1-sashal@kernel.org>
+ <20260520111944.3424570-26-sashal@kernel.org>
+ <5a50c3f5-a5ef-4b2b-821c-5858d8b1ac13@kernel.dk>
+ <8e853555-604e-46e5-8e25-a5f80b88e51c@kernel.dk> <ahG9meYUQ-YLDwHN@laps>
+Content-Language: en-US
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <ahG9meYUQ-YLDwHN@laps>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel-dk.20251104.gappssmtp.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,gmail.com,ntu.edu.sg];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253950-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253949-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[kernel.dk];
+	DKIM_TRACE(0.00)[kernel-dk.20251104.gappssmtp.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shuvampandey1@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.997];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: BA3725BF7B0
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:mid,kernel-dk.20251104.gappssmtp.com:dkim]
+X-Rspamd-Queue-Id: 9DA4C5BF7D4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-ovpn_peer_keepalive_send() passes its peer reference to
-ovpn_xmit_special(), which ultimately drops it. The keepalive scheduler
-currently queues the work first and takes the reference only after
-schedule_work() reports that the work was queued.
+On 5/23/26 8:45 AM, Sasha Levin wrote:
+> On Sat, May 23, 2026 at 08:23:13AM -0600, Jens Axboe wrote:
+>> On 5/20/26 5:40 AM, Jens Axboe wrote:
+>>> On 5/20/26 5:18 AM, Sasha Levin wrote:
+>>>> From: Maoyi Xie <maoyixie.tju@gmail.com>
+>>>>
+>>>> [ Upstream commit 45d2b37a37ab98484693533496395c610a2cab96 ]
+>>>>
+>>>> io_uring_enter() with IORING_ENTER_ABS_TIMER takes an absolute
+>>>> timespec from the caller via ext_arg->ts. It arms an ABS mode
+>>>> hrtimer in __io_cqring_wait_schedule(). The conversion path in
+>>>> io_uring/wait.c parses ext_arg->ts inline rather than going
+>>>> through io_parse_user_time(). It therefore does not pick up the
+>>>> time namespace conversion added by the previous patch.
+>>>
+>>> Once again - If you auto-pick this one, please also do the other one in
+>>> the series, 9cc6bac1bebf8310d2950d1411a91479e86d69a1. Makes no sense to
+>>> do just one of them.
+>>
+>> And once again, no reply. What is going on with stable these days?
+> 
+> Jens, as I've mentioned in the previous mail, I handle the AUTOSEL
+> mails weeks after I originally sent them out for reviews.
 
-Once schedule_work() queues the item, another CPU may run the worker
-before the caller gets to ovpn_peer_hold(). In that case the worker can
-consume a reference that was not acquired for it, corrupting the peer
-lifetime accounting.
+And you think that's working fine? I would suggest that's a terrible
+process. How are maintainers supposed to deal with that? Patches x and y
+are autoselected and an email is sent out. Maintainers react to that,
+either saying "no don't pick X" or "if you pick Y, please also do Z".
+The expectation would then be a reply that says "ok, doing that" or
+whatever might be appropriate there. Instead, it's just silence. And now
+I have to follow-up MULTIPLE times to ensure the right thing is being
+done. We're about 2 weeks into this particular incidence, and
+hilariously, I still have no idea what the state is on your end. Did it
+get dropped? Did the other one I asked for get picked up? Nobody knows!
 
-Take the peer reference before queueing the work and drop it again when
-the work was already pending.
+At least Greg actually promptly replies for the non-autosel stuff he
+does. Which is the ONLY thing that makes Fixes tags and CC stable
+actually work. The AUTOSEL stuff, it does not. When it happens to pick
+the right patches, yeah all is good. But when there's a problem, the
+process is terrible, as evidenced by this particular patch.
 
-Fixes: 3ecfd9349f40 ("ovpn: implement keepalive mechanism")
-Cc: stable@vger.kernel.org
-Signed-off-by: Shuvam Pandey <shuvampandey1@gmail.com>
----
- drivers/net/ovpn/peer.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+> The volume of mails and patches makes it really difficult to give
+> prompt answers here. I have no idea if
+> 9cc6bac1bebf8310d2950d1411a91479e86d69a1 applies cleanly, whether I
+> need to ask for a backport, or whether I should just drop
+> 45d2b37a37ab9848 until I sit down and get to this batch of AUTOSEL
+> commits.
 
-diff --git a/drivers/net/ovpn/peer.c b/drivers/net/ovpn/peer.c
-index a09d61296..4e6cd2b69 100644
---- a/drivers/net/ovpn/peer.c
-+++ b/drivers/net/ovpn/peer.c
-@@ -1285,8 +1285,10 @@ static time64_t ovpn_peer_keepalive_work_single(struct=
- ovpn_peer *peer,
- 		netdev_dbg(peer->ovpn->dev,
- 			   "sending keepalive to peer %u\n",
- 			   peer->id);
--		if (schedule_work(&peer->keepalive_work))
--			ovpn_peer_hold(peer);
-+		if (WARN_ON(!ovpn_peer_hold(peer)))
-+			return 0;
-+		if (!schedule_work(&peer->keepalive_work))
-+			ovpn_peer_put(peer);
- 	}
-=20
- 	if (next_run1 < next_run2)
+If you can't handle basic replies when running AUTOSEL, then I don't
+think you should have that process in the first place.
 
---=20
-2.50.1
+> If this process doesn't work well for you, I'm happy top skip all
+> non-stable-tagged commits for io_uring. This is supposed to be only a
+> best effort attempt to catch commits that slipped through the cracks.
+
+Please don't do AUTOSEL for any patches for any subsystem that I am a
+maintainer or co-maintainer of. Until this part of the stable tree
+process can be improved, it's a net negative.
+
+-- 
+Jens Axboe
 
