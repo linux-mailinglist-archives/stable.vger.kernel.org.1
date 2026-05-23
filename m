@@ -1,281 +1,196 @@
-Return-Path: <stable+bounces-253882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253883-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8Mm3AUAkEWrfhgYAu9opvQ
-	(envelope-from <stable+bounces-253882-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 05:51:28 +0200
+	id EHOUAV4oEWrYhwYAu9opvQ
+	(envelope-from <stable+bounces-253883-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 06:09:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70D8C5BD08C
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 05:51:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E5935BD100
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 06:09:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6CDDA301C121
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 03:51:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 024EF301905A
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 04:08:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84BA81E5B88;
-	Sat, 23 May 2026 03:51:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="DTPIISkR"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 868B82D73A1;
+	Sat, 23 May 2026 04:08:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.gentoo.org (woodpecker.gentoo.org [140.211.166.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047432472AE;
-	Sat, 23 May 2026 03:51:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC549263F34;
+	Sat, 23 May 2026 04:08:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779508282; cv=none; b=jv7AMYgBcWYr71QUYOwii4VPzpgAJ5TlJhf66JQtgarPCJhIfopHNifH5WzI6Ta8Ee8sIHBB8mKBp5zuJncQYFcn/aDmeoMzx6MrZFSJYxop5tyR6rGyBDemH7B+qnuESdumrcx5mQZgHx5Jcr99qwzOdOb8nhvXuE0FEQ/ctQo=
+	t=1779509336; cv=none; b=MUFUK5LITgZXBFq11X+jsShwuxedWTYVkI4Zrr3YSNkD9ydUI9XeygUVPJT/keqA6hCZPS5aO7PSJvvDRI/tZ97AI3Gy8RxX9F7h9PRxu+LiHFs1yykYTAAqX3NrwiPltEPXfd2kwyePxIqGgKgkhi0OhFEpRF2SGqjOv+DY0LY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779508282; c=relaxed/simple;
-	bh=MbwYG3m4P+Wg8VrdOAf6j7phR/7KApfFc7qTClC79kQ=;
-	h=Date:To:From:Subject:Message-Id; b=Oi6NIiiVMZWhx31BRHuAGiOv51hw+NwuP0Bmd131WG6nO02gvm9SLfl17Jn16qvj6R/sMkv9GdC+r4v+DpGpJKlvTlO1dMAqUKW+rLzby4v2lyvadu6ihOn+c18fQl2d4yaaxagl7o4Uc5rVvSjJZfF0ZtxVQCAl7O7L6hrxBYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=DTPIISkR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A8811F000E9;
-	Sat, 23 May 2026 03:51:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1779508280;
-	bh=R8Zz8u1pKIhXHlCl/I1EIInQubYsTZTrAqqKmbPaJuw=;
-	h=Date:To:From:Subject;
-	b=DTPIISkRGmDcuXaB0FLBBSUrEj0RJhQti0wUkZqv4w7w910bBeN8oHY+cDotgC0FA
-	 xqJ+2J0o6GBmK1or0F1Km0AfyR+uVturDlWPDOfETc9V5XYiHFmXzMJVmaZuagXvHc
-	 aoWe2cZ17Q7u7/Mw5jog1eGItoiT3ChusKEah1J8=
-Date: Fri, 22 May 2026 20:51:20 -0700
-To: mm-commits@vger.kernel.org,wangkefeng.wang@huawei.com,vbabka@kernel.org,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,osalvador@kernel.org,nao.horiguchi@gmail.com,muchun.song@linux.dev,mhocko@suse.com,ljs@kernel.org,linmiaohe@huawei.com,liam.howlett@oracle.com,david@kernel.org,mawupeng1@huawei.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-memory-failure-fix-hugetlb_lock-aa-deadlock-in-get_huge_page_for_hwpoison.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260523035120.9A8811F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1779509336; c=relaxed/simple;
+	bh=OaKAv+W9psRinPgP5Amv5ZAVRTdaoK1RAb56Tk9gPuA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HOGyvR9KpKn8JwWE0aks7AkSGW/S4ZETJqnVsXCjJ91L7VSbxeA1xUWgbQtAH22K8uTNFDp/jCFZWetRsj7kHOQjzQKugIlp2uQPxH9dQudkIxpBi+KhoBmGZjPzm2nlrkHWJEoODNbSGbuqv2VJoO+C0Y8xVnZFmXYfGN9KENk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org; spf=pass smtp.mailfrom=gentoo.org; arc=none smtp.client-ip=140.211.166.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentoo.org
+Received: from localhost (1.5.5.2.4.d.e.f.f.f.5.f.9.d.6.0.a.5.c.d.c.d.9.1.0.b.8.0.1.0.0.2.ip6.arpa [IPv6:2001:8b0:19dc:dc5a:6d9:f5ff:fed4:2551])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: sam@gentoo.org)
+	by smtp.gentoo.org (Postfix) with ESMTPSA id EE14E34250E;
+	Sat, 23 May 2026 04:08:50 +0000 (UTC)
+From: Sam James <sam@gentoo.org>
+To: =?UTF-8?q?Breno=20Leit=C3=A3o?= <leitao@debian.org>,
+	Nayna Jain <nayna@linux.ibm.com>,
+	Paulo Flabiano Smorigo <pfsmorigo@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Eric Biggers <ebiggers@google.com>
+Cc: Sam James <sam@gentoo.org>,
+	Eric Biggers <ebiggers@kernel.org>,
+	stable@vger.kernel.org,
+	Calvin Buckley <calvin@cmpct.info>,
+	Brad Spengler <brad.spengler@opensrcsec.com>,
+	linux-crypto@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] crypto: nx: fix nx_crypto_ctx_exit argument
+Date: Sat, 23 May 2026 05:08:09 +0100
+Message-ID: <b8b1b6fe740187c70349cd04a820d57324e0f70c.1779509289.git.sam@gentoo.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260522184403.GA35544@quark>
+References: <20260522184403.GA35544@quark>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [0.14 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[gentoo.org : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253882-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[vger.kernel.org,huawei.com,kernel.org,google.com,gmail.com,linux.dev,suse.com,oracle.com,linux-foundation.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253883-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[debian.org,linux.ibm.com,gmail.com,ellerman.id.au,kernel.org,gondor.apana.org.au,davemloft.net,google.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sam@gentoo.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
+	NEURAL_HAM(-0.00)[-0.386];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.978];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	R_DKIM_NA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,suse.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,smtp.kernel.org:mid,linux-foundation.org:email,linux-foundation.org:dkim]
-X-Rspamd-Queue-Id: 70D8C5BD08C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,opensrcsec.com:email]
+X-Rspamd-Queue-Id: 5E5935BD100
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+nx_crypto_ctx_shash_exit calls nx_crypto_ctx_exit with crypto_shash_ctx(...)
+but crypto_shash_ctx gives a nx_crypto_ctx *, not a crypto_tfm *.
 
-The patch titled
-     Subject: mm/memory-failure: fix hugetlb_lock AA deadlock in get_huge_page_for_hwpoison
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-memory-failure-fix-hugetlb_lock-aa-deadlock-in-get_huge_page_for_hwpoison.patch
+Fix the type in nx_crypto_ctx_exit and drop the bogus crypto_tfm_ctx
+call.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-memory-failure-fix-hugetlb_lock-aa-deadlock-in-get_huge_page_for_hwpoison.patch
+This fixes the following oops:
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+  BUG: Unable to handle kernel data access at 0xc0403effffffffc8
+  Faulting instruction address: 0xc000000000396cb4
+  Oops: Kernel access of bad area, sig: 11 [#15]
+  Call Trace:
+   nx_crypto_ctx_shash_exit+0x24/0x60
+   crypto_shash_exit_tfm+0x28/0x40
+   crypto_destroy_tfm+0x98/0x140
+   crypto_exit_ahash_using_shash+0x20/0x40
+   crypto_destroy_tfm+0x98/0x140
+   hash_release+0x1c/0x30
+   alg_sock_destruct+0x38/0x60
+   __sk_destruct+0x48/0x2b0
+   af_alg_release+0x58/0xb0
+   __sock_release+0x68/0x150
+   sock_close+0x20/0x40
+   __fput+0x110/0x3a0
+   sys_close+0x48/0xa0
+   system_call_exception+0x140/0x2d0
+   system_call_common+0xf4/0x258
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+.. which came from hardlink(1) opportunistically using AF_ALG.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+The same problem exists with nx_crypto_ctx_skcipher_exit getting a context
+it wasn't expecting, but apparently nobody hit that for years.
 
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Wupeng Ma <mawupeng1@huawei.com>
-Subject: mm/memory-failure: fix hugetlb_lock AA deadlock in get_huge_page_for_hwpoison
-Date: Fri, 22 May 2026 09:03:05 +0800
-
-Two concurrent madvise(MADV_HWPOISON) calls on the same hugetlb page can
-trigger a recursive spinlock self-deadlock (AA deadlock) on hugetlb_lock
-when racing with a concurrent unmap:
-
-  thread#0                              thread#1
-  --------                              --------
-  madvise(folio, MADV_HWPOISON)
-    -> poisons the folio successfully
-  madvise(folio, MADV_HWPOISON)         unmap(folio)
-    try_memory_failure_hugetlb
-      get_huge_page_for_hwpoison
-        spin_lock_irq(&hugetlb_lock)    <- held
-        __get_huge_page_for_hwpoison
-          hugetlb_update_hwpoison()
-            -> MF_HUGETLB_FOLIO_PRE_POISONED
-          goto out:
-            folio_put()
-              refcount: 1 -> 0
-              free_huge_folio()
-                spin_lock_irqsave(&hugetlb_lock)
-                  -> AA DEADLOCK!
-
-The out: path in __get_huge_page_for_hwpoison() calls folio_put() to drop
-the GUP reference while the hugetlb_lock is still held by the hugetlb.c
-wrapper get_huge_page_for_hwpoison().  If concurrent unmap has released
-the page table mapping reference, folio_put() drops the folio refcount to
-zero, triggering free_huge_folio() which attempts to re-acquire the
-non-recursive hugetlb_lock.
-
-Fix this by moving hugetlb_lock acquisition from the hugetlb.c wrapper
-into get_huge_page_for_hwpoison().  Place spin_unlock_irq() before the
-folio_put() at the out: label so the folio is always released outside the
-lock.
-
-Link: https://lore.kernel.org/20260522010305.4099834-1-mawupeng1@huawei.com
-Fixes: 405ce051236c ("mm/hwpoison: fix race between hugetlb free/demotion and memory_failure_hugetlb()")
-Signed-off-by: Wupeng Ma <mawupeng1@huawei.com>
-Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
-Acked-by: Muchun Song <muchun.song@linux.dev>
-Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: Eric Biggers <ebiggers@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: bfd9efddf990 ("crypto: nx - convert AES-ECB to skcipher API")
+Fixes: 9420e628e7d8 ("crypto: nx - Use API partial block handling")
+Reviewed-by: Eric Biggers <ebiggers@kernel.org>
+Reported-by: Calvin Buckley <calvin@cmpct.info>
+Tested-by: Calvin Buckley <calvin@cmpct.info>
+Suggested-by: Brad Spengler <brad.spengler@opensrcsec.com>
+Signed-off-by: Sam James <sam@gentoo.org>
 ---
+v2: Add stable cc, fix doc for tfm param.
 
- include/linux/hugetlb.h |    8 --------
- include/linux/mm.h      |    8 --------
- mm/hugetlb.c            |   11 -----------
- mm/memory-failure.c     |    8 ++++----
- 4 files changed, 4 insertions(+), 31 deletions(-)
+ drivers/crypto/nx/nx.c | 6 ++----
+ drivers/crypto/nx/nx.h | 2 +-
+ 2 files changed, 3 insertions(+), 5 deletions(-)
 
---- a/include/linux/hugetlb.h~mm-memory-failure-fix-hugetlb_lock-aa-deadlock-in-get_huge_page_for_hwpoison
-+++ a/include/linux/hugetlb.h
-@@ -153,8 +153,6 @@ long hugetlb_unreserve_pages(struct inod
- 						long freed);
- bool folio_isolate_hugetlb(struct folio *folio, struct list_head *list);
- int get_hwpoison_hugetlb_folio(struct folio *folio, bool *hugetlb, bool unpoison);
--int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
--				bool *migratable_cleared);
- void folio_putback_hugetlb(struct folio *folio);
- void move_hugetlb_state(struct folio *old_folio, struct folio *new_folio, int reason);
- void hugetlb_fix_reserve_counts(struct inode *inode);
-@@ -420,12 +418,6 @@ static inline int get_hwpoison_hugetlb_f
- {
- 	return 0;
- }
--
--static inline int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
--					bool *migratable_cleared)
--{
--	return 0;
--}
- 
- static inline void folio_putback_hugetlb(struct folio *folio)
- {
---- a/include/linux/mm.h~mm-memory-failure-fix-hugetlb_lock-aa-deadlock-in-get_huge_page_for_hwpoison
-+++ a/include/linux/mm.h
-@@ -4975,8 +4975,6 @@ extern int soft_offline_page(unsigned lo
-  */
- extern const struct attribute_group memory_failure_attr_group;
- extern void memory_failure_queue(unsigned long pfn, int flags);
--extern int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
--					bool *migratable_cleared);
- void num_poisoned_pages_inc(unsigned long pfn);
- void num_poisoned_pages_sub(unsigned long pfn, long i);
- #else
-@@ -4984,12 +4982,6 @@ static inline void memory_failure_queue(
- {
- }
- 
--static inline int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
--					bool *migratable_cleared)
--{
--	return 0;
--}
--
- static inline void num_poisoned_pages_inc(unsigned long pfn)
- {
- }
---- a/mm/hugetlb.c~mm-memory-failure-fix-hugetlb_lock-aa-deadlock-in-get_huge_page_for_hwpoison
-+++ a/mm/hugetlb.c
-@@ -7161,17 +7161,6 @@ int get_hwpoison_hugetlb_folio(struct fo
- 	return ret;
- }
- 
--int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
--				bool *migratable_cleared)
--{
--	int ret;
--
--	spin_lock_irq(&hugetlb_lock);
--	ret = __get_huge_page_for_hwpoison(pfn, flags, migratable_cleared);
--	spin_unlock_irq(&hugetlb_lock);
--	return ret;
--}
--
+diff --git a/drivers/crypto/nx/nx.c b/drivers/crypto/nx/nx.c
+index 78135fb13f5c..f4bc947086f8 100644
+--- a/drivers/crypto/nx/nx.c
++++ b/drivers/crypto/nx/nx.c
+@@ -714,15 +714,13 @@ int nx_crypto_ctx_aes_xcbc_init(struct crypto_shash *tfm)
  /**
-  * folio_putback_hugetlb - unisolate a hugetlb folio
-  * @folio: the isolated hugetlb folio
---- a/mm/memory-failure.c~mm-memory-failure-fix-hugetlb_lock-aa-deadlock-in-get_huge_page_for_hwpoison
-+++ a/mm/memory-failure.c
-@@ -1966,10 +1966,7 @@ void folio_clear_hugetlb_hwpoison(struct
- 	folio_free_raw_hwp(folio, true);
- }
- 
--/*
-- * Called from hugetlb code with hugetlb_lock held.
-- */
--int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
-+static int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
- 				 bool *migratable_cleared)
+  * nx_crypto_ctx_exit - destroy a crypto api context
+  *
+- * @tfm: the crypto transform pointer for the context
++ * @tfm: the crypto api context
+  *
+  * As crypto API contexts are destroyed, this exit hook is called to free the
+  * memory associated with it.
+  */
+-void nx_crypto_ctx_exit(struct crypto_tfm *tfm)
++void nx_crypto_ctx_exit(struct nx_crypto_ctx *nx_ctx)
  {
- 	struct page *page = pfn_to_page(pfn);
-@@ -1977,6 +1974,7 @@ int __get_huge_page_for_hwpoison(unsigne
- 	bool count_increased = false;
- 	int ret, rc;
- 
-+	spin_lock_irq(&hugetlb_lock);
- 	if (!folio_test_hugetlb(folio)) {
- 		ret = MF_HUGETLB_NON_HUGEPAGE;
- 		goto out;
-@@ -2013,8 +2011,10 @@ int __get_huge_page_for_hwpoison(unsigne
- 		*migratable_cleared = true;
- 	}
- 
-+	spin_unlock_irq(&hugetlb_lock);
- 	return ret;
- out:
-+	spin_unlock_irq(&hugetlb_lock);
- 	if (count_increased)
- 		folio_put(folio);
- 	return ret;
-_
+-	struct nx_crypto_ctx *nx_ctx = crypto_tfm_ctx(tfm);
+-
+ 	kfree_sensitive(nx_ctx->kmem);
+ 	nx_ctx->csbcpb = NULL;
+ 	nx_ctx->csbcpb_aead = NULL;
+diff --git a/drivers/crypto/nx/nx.h b/drivers/crypto/nx/nx.h
+index 36974f08490a..6dfabfbf8192 100644
+--- a/drivers/crypto/nx/nx.h
++++ b/drivers/crypto/nx/nx.h
+@@ -153,7 +153,7 @@ int nx_crypto_ctx_aes_ctr_init(struct crypto_skcipher *tfm);
+ int nx_crypto_ctx_aes_cbc_init(struct crypto_skcipher *tfm);
+ int nx_crypto_ctx_aes_ecb_init(struct crypto_skcipher *tfm);
+ int nx_crypto_ctx_sha_init(struct crypto_shash *tfm);
+-void nx_crypto_ctx_exit(struct crypto_tfm *tfm);
++void nx_crypto_ctx_exit(struct nx_crypto_ctx *nx_ctx);
+ void nx_crypto_ctx_skcipher_exit(struct crypto_skcipher *tfm);
+ void nx_crypto_ctx_aead_exit(struct crypto_aead *tfm);
+ void nx_crypto_ctx_shash_exit(struct crypto_shash *tfm);
 
-Patches currently in -mm which might be from mawupeng1@huawei.com are
-
-mm-memory-failure-fix-hugetlb_lock-aa-deadlock-in-get_huge_page_for_hwpoison.patch
+base-commit: 758c807bb943138f887d42d986b645e12446ba9c
+-- 
+2.54.0
 
 
