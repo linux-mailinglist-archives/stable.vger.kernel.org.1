@@ -1,94 +1,100 @@
-Return-Path: <stable+bounces-253966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253967-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4M7eHOvbEWq+rQYAu9opvQ
-	(envelope-from <stable+bounces-253966-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 18:55:07 +0200
+	id kGLfD8vcEWq+rQYAu9opvQ
+	(envelope-from <stable+bounces-253967-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 18:58:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E48DA5BFEA8
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 18:55:06 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C6FC5BFF1A
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 18:58:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 010A4302DF52
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 16:54:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B94C5300FB0F
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 16:57:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1B3C322B8C;
-	Sat, 23 May 2026 16:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D0431E839;
+	Sat, 23 May 2026 16:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eBzvroCc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FxqkILx6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08DAB1FE471
-	for <stable@vger.kernel.org>; Sat, 23 May 2026 16:54:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB94431E83A
+	for <stable@vger.kernel.org>; Sat, 23 May 2026 16:57:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779555244; cv=none; b=bMV9KN6DFwNviV/l4JkuKu9xKHB2baZjUSrVlWufAtMCk2DaYxKx0h6EjEXD8EYsgFMNksfz9KdWSfuh88lozgHtfdA96CdZDvOc0xnVngdxhsoiJxRlTQ7rWPBA3iyq+0QSME6PHm8MCHSS5P+TEEfBLywXyIn0RMXJNSSeJCM=
+	t=1779555458; cv=none; b=kbY1gpJ0zZcBu3qDd9butBCTE4q9UZo2h5iXSg9Z9u9fvkHZe7BtWx8Q+sX048AheiUzPpX3r3V/WNUhEFNVLNPUzFSsVyXOrHvn9+zPdbn2LO/yvkW7Uo5Gv0TE0t55Zkf4DLcQNdETk4sOHplmZiYbWsVBa4ktq86WcWqvr/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779555244; c=relaxed/simple;
-	bh=0MwoAX/J5bzYEqSgxGhyDDvWiurQkDJFryudRPqqyec=;
+	s=arc-20240116; t=1779555458; c=relaxed/simple;
+	bh=lCl0yF0ww855jeIH3gsLh7TbeXfdKeQ8X5P5XfRSJpg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FU38Q4PXGVjAcC30IHkPYBg3+4eGjqOLguKH144Y/Sh6cXaaybF+dqFRqJQhrk2ydh0Ry/Rflm0gqFFgM0DQgzrGNE3CtFJIea9TtYBahnMG7ADXPbTLFTpaSzpiHkJOsCWdiaUE0gdyAIylfiAHpnTnE8QsMHbLwRyhXjIHGXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eBzvroCc; arc=none smtp.client-ip=209.85.208.178
+	 MIME-Version; b=cea4qgvp5HiZLm3Yu6PLO514leYrnvtPK3m1TMMalMMLfV9boekF9AoA224gIkzFhOdh76J/BCyzPSTAYTvfgerRFzanQDC+YEVokGkDPWD6Zu1rwQmmTqUpX22uRhl8nT81g+MTW1kSlnQOSfn2N68LbaAx+qLYghXiPKPssF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FxqkILx6; arc=none smtp.client-ip=209.85.215.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-393a44854d2so74104281fa.3
-        for <stable@vger.kernel.org>; Sat, 23 May 2026 09:54:02 -0700 (PDT)
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-c80170db7d6so3444126a12.0
+        for <stable@vger.kernel.org>; Sat, 23 May 2026 09:57:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779555241; x=1780160041; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1779555456; x=1780160256; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dUFxLs9xayiDL27YZLOgJaat3erm/tdOdPXhQ8ySemg=;
-        b=eBzvroCcbMaioE1zTmmGAAnKkWj4XziwtoppjBPSUBHNYHhg3qi9Gr7E4g8wZFVOI4
-         ALMeVu73nA43EsF/pRe4mkwoV994r0VTNuts1NXsKIn954nW7koCN3vxRMpvbfxKu80w
-         xycee3g/DQ1wJdk4Gvggg52Tl9GCgp8uVcKV9GpDx75STxoWMmYaDC2wZcyDaF3lWv1u
-         HKsOR6yusvCSw1CCgHUg7opcGZmaKT68NehG9qh7dRmTS/4FcDL1vSHCbeM2H3zuF2Z4
-         BncHO7uvwvCjdO2C56tEpR/7QGuJKE9ES6B+NsFSwfxMnyVJ+EWtvOPLHiilwP4Rjg3b
-         cBRg==
+        bh=XhLvA3TfrJzOyIZPC1ppqWVZ5nG/suASGnYJNqiPlkY=;
+        b=FxqkILx6R/DjzLgxIeX83sv7RSVulO3oY9AFm4rQQb7ww48ZQ8igzMsBWRKVFbvxK5
+         xoH4oYOuKyyvohSG+z+e+3+R+qutvAjAAn5Vx8akp7yuqqJhwi64R6hqpAXxK+2t2l0K
+         UiXsqwIfZvdbTOYGG7ZSMIAhOPlldhuvzAGEMy4NJdAUHpZF6JnIr8Z0RuQ5DCHcvkSG
+         0n4pypYLNTTDdvZUoFl2+yvrKC104/lX019MvGnn4dsj4R3zi7LgKhck5oRrHk3jweJ5
+         0t0D3lc3b1O33K6lxtM84uAsRfM03tUPZE7LHeNoCdDKYmcVae9WHdZYkDz2Jbid4A8a
+         5o1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779555241; x=1780160041;
+        d=1e100.net; s=20251104; t=1779555456; x=1780160256;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=dUFxLs9xayiDL27YZLOgJaat3erm/tdOdPXhQ8ySemg=;
-        b=E4Tyfwd6fmdhiZdNgN+ScW+VZ8ZvIxcjKZgzjv6pvf+y2hUwH1z8Ow45IsRT4Svma2
-         F7M8Z+kNcXmbLhHHtN4Bkl1JpCijt5zOMWYKErX6eXPKigulLTXn2PvoJmu62nX6pcEO
-         OUT7RS1/V/Q6DXNl3nLlK/SJ+MiOYSBAEBVYLS+kYaiaavT0lGAMvOJutEdvB+3risGg
-         9wMf6MUhqM7CIoodL7XIEc+qwL5MVp+TBZB6Spy+oxIBD2fjHG7Av8o5sjozCZfWTdNo
-         uUwJTMyaHrv6iFw99xw0xfTO+uO4miFd+B0revOwyfcPln70fWYqQ6I19k1A3O9MoCYb
-         ULTg==
-X-Forwarded-Encrypted: i=1; AFNElJ9YLt7V6VMzjkPCDxK3ktfMlWyCgoqMQmNr72lW9RfS3ZHSMnyS/I2zV4qHzrwzziN5HPqvsdk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmsLUGMZwi93iGZ+3Rr7iLcYbzUvm+sjKlj2IxMZn8rpgfrBMV
-	2b1fHqIjazrxMePJ1UgFaZv98dx49xkAe9pOkC5RUe9NioxnEP9blgpV
-X-Gm-Gg: Acq92OHWDCGgAFDk8+g3FHU60juU+jSZnw7yPWs3kG6yVZdADwinwMeaSphyHALxMxI
-	DlOKSYQavGoXbazQPPrw4OemGon9QmoN+IvolJ/i8Iv9pQ/v8p5W0NHMdlQLBsglhUQFFQEP1em
-	/yzUUXcML7rEMnzaN71AQGXnh/Ww0gIhmNDvOMfyl3s+/TLOu+1mgO8HX+n6RpqYILI9fZmx3hC
-	fhCdTYdfrT+seMEDiU3K6jIW0ERjl9jTa2+gYkSpooo40kek2xnPWwL9zi2PAN1PhLY+oH0vBGA
-	xRJVaSQJ+MWZxYvgWC1Z2Hd+LTDSEg1TGSJceoZ6RUO39HUUPYfzXmQK9zYov7D7Q+BKHsWgLxl
-	3M3EO2C7MqBuI3dyKxOHdtMwjDMZE4DrSgUIZo6w0z+o4ezHQ4YjYVAj5B0TG7S1eOaSpPUc/iW
-	baQnYPEiJvTRsw1u5RsLrcIkI2je3ngFbsB0/iZDr48p88ddpd4TNG49Uh+e9jqNrMogNe0g==
-X-Received: by 2002:a05:651c:222c:b0:393:a4f5:3e0f with SMTP id 38308e7fff4ca-395d8c35f3fmr27895731fa.2.1779555241189;
-        Sat, 23 May 2026 09:54:01 -0700 (PDT)
-Received: from va-HP-Pavilion-Desktop-595-p0xxx.mshome.net ([193.0.150.248])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-395dcc2c6efsm12092981fa.29.2026.05.23.09.54.00
+        bh=XhLvA3TfrJzOyIZPC1ppqWVZ5nG/suASGnYJNqiPlkY=;
+        b=Hf8uIYNLzpe5KEnb0vcmVcGc6TJaTsxiBhm4XMBAST8dYBpf7l3urdYlZuHhVFUwqy
+         zDgVTe/UBH80IKwtgkK67m8eKD747Yn5Bo/pvWH2cot/YxWaWLL2KZdf0qs4mvrfIiDu
+         AMS3dkNPwGLT4TR1047qRHiMEd+wUvA8hypVb6UbX4tjoOo5MTUSmqu7xWorXK7zwx9b
+         DAoWz+RanI5o8QA/4/OU/x3AKn5jqjuCME134gG3nN0C6I1GgCwQ8mb3n+u0C3G+AbNk
+         72gZPcHxmJjle7xGR2Wf7faB1ICPk92ccqi3eL19keGv1fmJwUVxfAfZsaDMNIPYUc8S
+         rndw==
+X-Forwarded-Encrypted: i=1; AFNElJ8GHCyEL/vgS0mqeG7FKzNtgkwAQk7H8i9xG0IuXQqEKZAZWOtN1gs8ivOZxLcJEnPcib0iETw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzViTuHbmbfxSLO8Zvhl8fmEikYlFFsUGEb8YYUltqHxFabz7Pn
+	ykglxR4bJo9dUqJnVI90pZnBNXJs2EWvHposGRxZ30UtYXwUWYVHLLHE
+X-Gm-Gg: Acq92OFL3btCwk3Swc9ky5en9qaF7sEheQ+kmKzFeIhcso2j/RakfwTVwc17m6jGcfI
+	OHy0TBnFJ1zT41ZUBtP7jMyFGPviFDF4U1m6zNvEfbPVlRyCj1+4PSmyJDCdxSXBbS7AMhUO8PD
+	9x5wumF3JzV5lIC4y4USLie8HDb5mLeNW2wT6uo0PVDKaAxguimkrGtJXFBBMqc0FEryMCJvVXL
+	AbgjCrEo9CR1ATnnuQgyARfTXUrqXUipd/Gw52bRJq0TXjmIwFOGTkukijt/wXg3vLghhIFRdRu
+	kXEx6MZMRxbur3DwHoTcazT7eUoIm6GlM4qKUcoEnQxYr//gdlPUFEKfkwpe0Xqmm0+HMKSSRfB
+	ndTQs5a2UNZK4n6PGES4sZr4PiavKtD8vANEjk8iEfFku5eX7Js/VXCsqDJQM9ijKWYVRhiIFeG
+	NUHRU7nHWYAnr9kDtfxoickdwasHixYarFxZm5Vgdfbkm0TjW1iym32Wr3ESGaMmY5p8UjNj2xP
+	xuX+BY4RMy4HCVfqOwyr/njBq7TngFcMdLfBWb+tPjLPwOmKivmLPlEYNn9HNrAABTzoOJmdOzY
+	N623RdA8WSA=
+X-Received: by 2002:a17:903:2b0c:b0:2ae:825b:49a5 with SMTP id d9443c01a7336-2beb0582ba0mr82866055ad.0.1779555456134;
+        Sat, 23 May 2026 09:57:36 -0700 (PDT)
+Received: from codespaces-78f0a7.mimvmn1ww3huhhjmzljqefhnig.rx.internal.cloudapp.net ([4.240.39.193])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb58c69a0sm47832065ad.59.2026.05.23.09.57.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 May 2026 09:54:00 -0700 (PDT)
-From: Valery Borovsky <vebohr@gmail.com>
-To: mchehab@kernel.org,
-	crope@iki.fi
-Cc: hverkuil+cisco@kernel.org,
-	linux-media@vger.kernel.org,
+        Sat, 23 May 2026 09:57:35 -0700 (PDT)
+From: Muhammad Bilal <meatuni001@gmail.com>
+To: Felix.Kuehling@amd.com
+Cc: alexander.deucher@amd.com,
+	christian.koenig@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] media: rtl2832_sdr: release URBs and stream buffers on start_streaming() failure
-Date: Sat, 23 May 2026 19:53:58 +0300
-Message-ID: <20260523165358.286293-1-vebohr@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260513055733.146905-1-vebohr@gmail.com>
-References: <20260513055733.146905-1-vebohr@gmail.com>
+	Muhammad Bilal <meatuni001@gmail.com>
+Subject: [PATCH] drm/amdkfd: fix NULL dereference in get_queue_ids()
+Date: Sat, 23 May 2026 16:56:46 +0000
+Message-ID: <20260523165646.25645-1-meatuni001@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260523142645.39102-1-meatuni001@gmail.com>
+References: <20260523142645.39102-1-meatuni001@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -101,97 +107,70 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-253966-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[amd.com,gmail.com,ffwll.ch,lists.freedesktop.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-253967-lists,stable=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FROM_NEQ_ENVFROM(0.00)[vebohr@gmail.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[meatuni001@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable,cisco];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: E48DA5BFEA8
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 4C6FC5BFF1A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-rtl2832_sdr_start_streaming() calls rtl2832_sdr_alloc_stream_bufs(),
-rtl2832_sdr_alloc_urbs() and rtl2832_sdr_submit_urbs() in sequence and
-shares a single err: label that only unlocks the mutex and returns.
-When alloc_urbs() succeeds but submit_urbs() fails, or when alloc_urbs()
-itself returns -ENOMEM after alloc_stream_bufs() has already succeeded,
-the URBs and/or the coherent DMA stream buffers stay allocated while
-streaming reports failure to vb2. Two latent defects follow on the next
-VIDIOC_STREAMON:
+When usr_queue_id_array is NULL and num_queues is non-zero,
+get_queue_ids() returns NULL. The callers check only IS_ERR() on the
+return value; since IS_ERR(NULL) == false the check passes, and
+suspend_queues() calls q_array_invalidate() which immediately
+dereferences NULL while iterating num_queues times.
 
-1) rtl2832_sdr_alloc_stream_bufs() unconditionally resets dev->buf_num
-   to 0 and overwrites dev->buf_list[]/dev->dma_addr[], permanently
-   leaking the coherent DMA memory allocated by the previous attempt.
+Userspace can trigger this via kfd_ioctl_set_debug_trap() by supplying
+num_queues > 0 with a zero queue_array_ptr, causing a kernel panic.
 
-2) rtl2832_sdr_alloc_urbs() never resets dev->urbs_initialized and only
-   increments it. After a second successful pass urbs_initialized can
-   exceed MAX_BULK_BUFS, so the subsequent rtl2832_sdr_free_urbs() walks
-   from urbs_initialized - 1 down to 0 and reads past the end of
-   dev->urb_list[], passing garbage pointers to usb_free_urb().
+A NULL usr_queue_id_array with num_queues == 0 is a legitimate no-op
+(q_array_invalidate never executes, and resume_queues already guards
+all queue_ids dereferences behind a NULL check). Return ERR_PTR(-EINVAL)
+only when num_queues is non-zero and the pointer is absent; both callers
+already propagate IS_ERR() returns correctly to userspace.
 
-Mirror the teardown that stop_streaming() already performs: on the error
-path call rtl2832_sdr_free_urbs() and rtl2832_sdr_free_stream_bufs()
-before unlocking. Both helpers are idempotent (free_urbs kills and zeros
-urbs_initialized; free_stream_bufs is gated on URB_BUF and clears the
-buf_num counter), so partial-failure paths and the no-allocation paths
-remain safe.
-
-Issue identified by automated review of the INV-003 series at
-https://sashiko.dev/
-
-Fixes: 771138920eaf ("[media] rtl2832_sdr: Realtek RTL2832 SDR driver module")
+Fixes: a70a93fa568b ("drm/amdkfd: add debug suspend and resume process queues operation")
 Cc: stable@vger.kernel.org
-Signed-off-by: Valery Borovsky <vebohr@gmail.com>
+Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
 ---
-Changes since v1
-(https://lore.kernel.org/linux-media/20260513055733.146905-1-vebohr@gmail.com/):
-- Rebased on media-committers/next. The err: label in
-  rtl2832_sdr_start_streaming() now also calls
-  rtl2832_sdr_cleanup_queued_bufs(dev, VB2_BUF_STATE_QUEUED) from
-  commit 33ca0aab6f4b ("media: rtl2832_sdr: Return queued buffers on
-  start_streaming() failure"); free_urbs()/free_stream_bufs() are placed
-  before that cleanup, matching the order in stop_streaming(). No
-  semantic change to v1.
+ drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- drivers/media/dvb-frontends/rtl2832_sdr.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/media/dvb-frontends/rtl2832_sdr.c b/drivers/media/dvb-frontends/rtl2832_sdr.c
-index c564485e3bbb..036b67a17b7a 100644
---- a/drivers/media/dvb-frontends/rtl2832_sdr.c
-+++ b/drivers/media/dvb-frontends/rtl2832_sdr.c
-@@ -906,9 +906,12 @@ static int rtl2832_sdr_start_streaming(struct vb2_queue *vq, unsigned int count)
- 		goto err;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
+index c08ad718dbd7..8488b3a6c2ba 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
+@@ -3312,7 +3312,7 @@ static uint32_t *get_queue_ids(uint32_t num_queues, uint32_t *usr_queue_id_array
+ 	size_t array_size;
  
- 	mutex_unlock(&dev->v4l2_lock);
-+
- 	return 0;
+ 	if (!usr_queue_id_array)
+-		return NULL;
++		return num_queues ? ERR_PTR(-EINVAL) : NULL;
  
- err:
-+	rtl2832_sdr_free_urbs(dev);
-+	rtl2832_sdr_free_stream_bufs(dev);
- 	rtl2832_sdr_cleanup_queued_bufs(dev, VB2_BUF_STATE_QUEUED);
- 	mutex_unlock(&dev->v4l2_lock);
- 
+ 	if (check_mul_overflow((size_t)num_queues, sizeof(uint32_t), &array_size))
+ 		return ERR_PTR(-EINVAL);
 -- 
-2.51.0
+2.53.0
 
 
