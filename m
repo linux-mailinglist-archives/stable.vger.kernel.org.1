@@ -1,140 +1,170 @@
-Return-Path: <stable+bounces-253948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253949-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qO3zIKS9EWq2pQYAu9opvQ
-	(envelope-from <stable+bounces-253948-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 16:45:56 +0200
+	id sPkRF7W/EWoNpgYAu9opvQ
+	(envelope-from <stable+bounces-253949-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 16:54:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C1C05BF77A
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 16:45:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA3725BF7B0
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 16:54:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 83B943016ED7
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 14:45:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C892B3024137
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 14:53:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 944841D6DB5;
-	Sat, 23 May 2026 14:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3372B184;
+	Sat, 23 May 2026 14:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Av/FM2N4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lUQod8IG"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677AD184;
-	Sat, 23 May 2026 14:45:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B79F1E8826
+	for <stable@vger.kernel.org>; Sat, 23 May 2026 14:53:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779547548; cv=none; b=bsCnzJ35dX+iup28WCk88G3eai/jzuK02t6RfyOAqzdtGhjZ8aHZ0+/U+lWUIcwInAAFqwHtrGRU1tOGlx/eA4DkILCm7Eq9n6ZfbW8uzz7FW3DyqvQ30uAqktUxtRrEVDbfRaA7XfVS0sWx1uKfnVnf3jYQJ/S2fHCHleyjwzA=
+	t=1779548018; cv=none; b=SgnZkFpJk7u3xDV58RZKjfH5qRqfDsAVo5yZA9mW6jn1ZCUtuyh1jxhpT+EarQLPFpk3UK+IYs132+ux/5lKlebP06H2TbnnsAN/t/K6sZ/Qn0neL6gkpWQVu7KvQqFpIhG0w/D6meP7MVCXrAhu3XxGNyBZL5QBb7AJQmXeqbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779547548; c=relaxed/simple;
-	bh=3KapAMEhFbW5iLotfVFfoK5rgjJsRu0/xq6ZpIlmZqM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ag4/YgPz5Ls3jDTCbiPWub4IQDqbwicU8BmZDl6yUBLgjp1pM+nJV3MgcrWlnAAoRnf3gCD8NxmB4v6riWpSMt1Ermr0WcirDdtEwpV2/p+PXyQUnELLL/6i/LBT2rC9lvTQpdTPmOgVNuQZx49jtI4Zp1gZE0eswhLV6iUzPKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Av/FM2N4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B87FA1F000E9;
-	Sat, 23 May 2026 14:45:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779547547;
-	bh=ugrIX6lHrkiGVRyINmdCm7JBkpTewfM03MXVkmbj1XI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Av/FM2N4AsXd0kq/E2I3mhcFi0q49y3XDqsqFiaaK5r45vAYS5KaOtYDRhK3a7E8J
-	 yFaGzFyJQH4XdiZReOzhS4gE3mq9PkXnJoduY5jauXy2ak2Ud3Yngv87RXsQy1xW4H
-	 4kH+ABpK8lx6SwLNjjlak1J4b7nDM1hK98ufV8N1sdFdnGDjMiQ3C2GUuKrcTrfW5q
-	 3DDgpYAvKcWuTiBjB+XgWY9PQaOgOFKtLaj8zcO8moUWf/efM4QbAE8djSJW1aFdUl
-	 qqKHjIFRtvGQAnXAm9I6z5zx/NEu8AgYhFf/U3cQ4wZlz8zX0iKWBevpv5CRurhq8s
-	 js5E0ZtA+K/Dg==
-Date: Sat, 23 May 2026 10:45:45 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Jens Axboe <axboe@kernel.dk>
-Cc: patches@lists.linux.dev, stable@vger.kernel.org,
-	Maoyi Xie <maoyixie.tju@gmail.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Maoyi Xie <maoyi.xie@ntu.edu.sg>, io-uring@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 7.0] io_uring/wait: honour caller's time
- namespace for IORING_ENTER_ABS_TIMER
-Message-ID: <ahG9meYUQ-YLDwHN@laps>
-References: <20260520111944.3424570-1-sashal@kernel.org>
- <20260520111944.3424570-26-sashal@kernel.org>
- <5a50c3f5-a5ef-4b2b-821c-5858d8b1ac13@kernel.dk>
- <8e853555-604e-46e5-8e25-a5f80b88e51c@kernel.dk>
+	s=arc-20240116; t=1779548018; c=relaxed/simple;
+	bh=yyyr4Ie6lPu+jIbRXSP0Mil/Vfh89VQwXsVF98DJms4=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=dbtXBFxOeR9K0s6X/ysJnzcA9eSQ6m31yqY4NtVTni4Bc7bqlbqu+cJCXYutBaAG+BL39Mez4dsk5jfYechSW3kFs4j9+E4Bxxl5v6dVE7O8R1VSYyi2sdzZn3qr7a1HktIKKgcneEKdziZBd8oBGBePwz8BjvsXXHnBiGoPoBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lUQod8IG; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c8025500cc7so6258423a12.1
+        for <stable@vger.kernel.org>; Sat, 23 May 2026 07:53:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779548015; x=1780152815; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=dqryLwyecP7XdFRP1fnNAzkgGZpfDJiUeUJsd1fBfx0=;
+        b=lUQod8IGEOUGlco2J64NEi5RYJ7nrN58yUbUNg1hRHyNsc0UmACG3lOXGaMGDBhMVi
+         KRDZgCfChV0vV1ha4GoOF/hyGwJ7ANpsxtloWbLNInwFboGeYZK8jIgyeHU3ZBZEoJII
+         LDSvwSf490Q0XUHQtrPxCRrb4mNmB2KfxEJgK9mJ5JTrOTdkr1ej5BMk8iV8z7I6aBdf
+         58Yv7dfs9/z1asCB9KYFq5J5pZyG2dXdBI7gHDkkbm9aEeTAejUfuzsWTpG4fszslRFX
+         QKd0naNzoBoe7b9q1JLvOeWQ+pjk6lf7DxJi/m5S80kbTRjwuFxnDI8LjeyMhPbmeZsQ
+         LrXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779548015; x=1780152815;
+        h=mime-version:content-transfer-encoding:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dqryLwyecP7XdFRP1fnNAzkgGZpfDJiUeUJsd1fBfx0=;
+        b=luE7SpUi/zWuqDJ3F8hXNUEdAEbZUvf9+qx/5R45Bbd3LtakLY36X0/DZWW8bmUXh0
+         IYdbo5EdsYBhcGn8eMpeORloXkG3jruwqAgU0kyURMPQHH68uVMyMXxBN1nH1fJEO7eR
+         Ri3M+VDi4RjY7i7IBHiIZ4GcPKAWa6UWX3jaBhnLZpNd57ucBJVnxq3KKbJuw1zr+F+9
+         uElNEor1smL/ucqZj6qQlf5r/7SxmZareS4Q5geqbjdjOsQsWkBxFvl/9ZYjc2TK9UgS
+         N7WRtu3zOI1+ld/3XZgu/9TmgvwBQJRDN+MSsN7udazKG7UMjBFOxFlKH8yi8C3SA0E9
+         WjgA==
+X-Forwarded-Encrypted: i=1; AFNElJ8DouWwQYEApCeJBfaotEo/w2LA029NuzNZldDvJQHBCfB4e8pDLBTChlMuGlq0oohs165UxGs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyhqwPQugpofwZWNPfK/LF5Ec1pqbDbN/j3iiqQka+FRoRO2MGA
+	OO3OUHsAIxWNnVNWx6vqSqlbTrmuaZpW9BOE7vi5CYLZlCY8m1qtJLwR
+X-Gm-Gg: Acq92OF6P7al4G6IeJB0h/FHZhHybTuEaOlI+Hxz0FKw2qHpGHxtwaL03vyiZnOKYyX
+	8/uRvsCaau5pg2I7JHIsheeIFyKA1MdMSj/U+UdBUy3WOy8YX+jio2qhUBW3tqNLSlzhY2NIJd9
+	ULiez1WVJS0JXE5HwzZ4iMdhhDRIJBdO8ELu1d4Va/s2ipQjg0ortx1eLqLOxt1yD+3W6cJOQMM
+	Iou1/LQnkLVdlk9pm12VZXnRduve2aVtFBl2waBcWguKt8jph7XXzPJBdsvO3dy9gm9zxlWEyb2
+	/yQIkhLQqYDYzLT7cQ56C4lX/Dyncj9UED129pcTwcuyjokK3QXfdIstWpbichjDgqVRzuHgm10
+	XdodKbY0NEsH8eeftkNWMGSHQV6m3NcE21pOcYtkCbhgaAEJXDuojkQnQoKgUNIi5WB5EWljPrN
+	37q61TqSLZSOnMBaz5nP0Dn3/SgxZX2atvKHrBKrlOeG1t6aK3sYAAuRqUnbZzAytQ65DFtgGIg
+	YIrwZI82iUnWC3UDIiJ234SxwI4hu5L2A==
+X-Received: by 2002:a05:6a21:b8a:b0:398:6ea8:21d8 with SMTP id adf61e73a8af0-3b328cabaa7mr7949186637.15.1779548014578;
+        Sat, 23 May 2026 07:53:34 -0700 (PDT)
+Received: from 1.0.0.127.in-addr.arpa ([103.129.134.204])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c85202902a6sm3974345a12.3.2026.05.23.07.53.30
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Sat, 23 May 2026 07:53:34 -0700 (PDT)
+From: Shuvam Pandey <shuvampandey1@gmail.com>
+To: Antonio Quartulli <antonio@openvpn.net>,
+ Sabrina Dubroca <sd@queasysnail.net>, netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, David S. Miller <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: [PATCH net] ovpn: hold peer before scheduling keepalive work
+Date: Sat, 23 May 2026 20:38:27 +0545
+Message-ID: <177954800752.73238.12097994883239164708@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <8e853555-604e-46e5-8e25-a5f80b88e51c@kernel.dk>
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-253948-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,gmail.com,ntu.edu.sg];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-253949-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[shuvampandey1@gmail.com,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.997];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 1C1C05BF77A
+X-Rspamd-Queue-Id: BA3725BF7B0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sat, May 23, 2026 at 08:23:13AM -0600, Jens Axboe wrote:
->On 5/20/26 5:40 AM, Jens Axboe wrote:
->> On 5/20/26 5:18 AM, Sasha Levin wrote:
->>> From: Maoyi Xie <maoyixie.tju@gmail.com>
->>>
->>> [ Upstream commit 45d2b37a37ab98484693533496395c610a2cab96 ]
->>>
->>> io_uring_enter() with IORING_ENTER_ABS_TIMER takes an absolute
->>> timespec from the caller via ext_arg->ts. It arms an ABS mode
->>> hrtimer in __io_cqring_wait_schedule(). The conversion path in
->>> io_uring/wait.c parses ext_arg->ts inline rather than going
->>> through io_parse_user_time(). It therefore does not pick up the
->>> time namespace conversion added by the previous patch.
->>
->> Once again - If you auto-pick this one, please also do the other one in
->> the series, 9cc6bac1bebf8310d2950d1411a91479e86d69a1. Makes no sense to
->> do just one of them.
->
->And once again, no reply. What is going on with stable these days?
+ovpn_peer_keepalive_send() passes its peer reference to
+ovpn_xmit_special(), which ultimately drops it. The keepalive scheduler
+currently queues the work first and takes the reference only after
+schedule_work() reports that the work was queued.
 
-Jens, as I've mentioned in the previous mail, I handle the AUTOSEL mails weeks
-after I originally sent them out for reviews.
+Once schedule_work() queues the item, another CPU may run the worker
+before the caller gets to ovpn_peer_hold(). In that case the worker can
+consume a reference that was not acquired for it, corrupting the peer
+lifetime accounting.
 
-The volume of mails and patches makes it really difficult to give prompt
-answers here. I have no idea if 9cc6bac1bebf8310d2950d1411a91479e86d69a1
-applies cleanly, whether I need to ask for a backport, or whether I should just
-drop 45d2b37a37ab9848 until I sit down and get to this batch of AUTOSEL
-commits.
+Take the peer reference before queueing the work and drop it again when
+the work was already pending.
 
-If this process doesn't work well for you, I'm happy top skip all
-non-stable-tagged commits for io_uring. This is supposed to be only a best
-effort attempt to catch commits that slipped through the cracks.
+Fixes: 3ecfd9349f40 ("ovpn: implement keepalive mechanism")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shuvam Pandey <shuvampandey1@gmail.com>
+---
+ drivers/net/ovpn/peer.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
--- 
-Thanks,
-Sasha
+diff --git a/drivers/net/ovpn/peer.c b/drivers/net/ovpn/peer.c
+index a09d61296..4e6cd2b69 100644
+--- a/drivers/net/ovpn/peer.c
++++ b/drivers/net/ovpn/peer.c
+@@ -1285,8 +1285,10 @@ static time64_t ovpn_peer_keepalive_work_single(struct=
+ ovpn_peer *peer,
+ 		netdev_dbg(peer->ovpn->dev,
+ 			   "sending keepalive to peer %u\n",
+ 			   peer->id);
+-		if (schedule_work(&peer->keepalive_work))
+-			ovpn_peer_hold(peer);
++		if (WARN_ON(!ovpn_peer_hold(peer)))
++			return 0;
++		if (!schedule_work(&peer->keepalive_work))
++			ovpn_peer_put(peer);
+ 	}
+=20
+ 	if (next_run1 < next_run2)
+
+--=20
+2.50.1
 
