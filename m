@@ -1,123 +1,177 @@
-Return-Path: <stable+bounces-253951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253952-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AA7lEeLCEWpDpgYAu9opvQ
-	(envelope-from <stable+bounces-253951-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 17:08:18 +0200
+	id MBJ2OL/DEWpDpgYAu9opvQ
+	(envelope-from <stable+bounces-253952-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 17:11:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCD7D5BF8EF
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 17:08:17 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89E4A5BF934
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 17:11:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C321B3022FAA
-	for <lists+stable@lfdr.de>; Sat, 23 May 2026 15:06:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A65FD3006447
+	for <lists+stable@lfdr.de>; Sat, 23 May 2026 15:11:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0720D2FF164;
-	Sat, 23 May 2026 15:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B8E5303A0D;
+	Sat, 23 May 2026 15:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KcSsfNO1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kyS8qk7+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D54472DD60E;
-	Sat, 23 May 2026 15:06:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D852F7AD2
+	for <stable@vger.kernel.org>; Sat, 23 May 2026 15:11:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779548798; cv=none; b=hHbz3FLk59fTQX3ZQ96KrdN1go7dkXKiz+WU3/l8JwE4nBLa12x/tyTeElC9qE4sslk0544mk+kUQMrq8C9UYrDKfwGW/erUvfBhZGyqsnjWV40LrggMHsrNSHPMwlw7jWaXnL91BR9irSR/Xo/fesihQKxw+2Pej4Fx8vsI078=
+	t=1779549114; cv=none; b=kCXvbdDYN1pqQ2c/t0+5kyPasZ3NqqsuTuPGtHPjgXuvxifyGfHP1SmUlhscixuc0eZRqJzyy7/AhcmXV2Z11alwrCE7lpak4mpBYtn3/voY2Q0EgAcVx+lixxnY2D5l7AXsV3/S7N/hw2OAHx8z0mk0kGolWtI+93WPTMNyU+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779548798; c=relaxed/simple;
-	bh=B9RUdiwMUvVpyTyngeko2hK+Go+qLZ9XOs0d9+AYWnc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IMTXntBf4Q+PbhCxfhx0xpWLKjiCxp2U7KS7+e4wkUMa0N+qnsDMaUIZWYG4Mnqp5bsUuk2ajwoX8lXWoDzTFRvrAex8xm2TltczXY/K22HYku/RRzP4MqMIV8d0DnOmS3WeHpQdaOTgSwKIDHq51UOGogBesHKdpQD5yuFvTns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KcSsfNO1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 452C31F000E9;
-	Sat, 23 May 2026 15:06:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779548797;
-	bh=Lo5mzrnw6xRO8SH8THh7b6AdtAje0PAtslvjS4AABo4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KcSsfNO1kNOGPN7/qyK5okuZuf3ears130p7CkHgIufjMBhUpHqVvzfPCEgg692iQ
-	 rnfKBNO8oX9Eraw4F6H//GHcp42/qyktgraEwJN6lyYO/CEbPSqKy4dcROkDglypwx
-	 6t4ddrEKP0dDHWW0ODjWHPYI88ACbTMzwSoPCPMpnRZT5TPS2FAx5f7IayceY2Q1o7
-	 yulBWxTnbh0l1Ev6bXPReDmggbzTS7VTAgsvuwHuOBVSCUn2S8/zFYC9pGlnK7f2uJ
-	 Tdb465/fMWm1fFNc49kBKOrL6XsLOT7MDrtSovlDYfeM+boy0okLedCWMHjt/+uaLO
-	 pPDAqzaNed1MA==
-Date: Sat, 23 May 2026 11:06:36 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Jens Axboe <axboe@kernel.dk>
-Cc: patches@lists.linux.dev, stable@vger.kernel.org,
-	Maoyi Xie <maoyixie.tju@gmail.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Maoyi Xie <maoyi.xie@ntu.edu.sg>, io-uring@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 7.0] io_uring/wait: honour caller's time
- namespace for IORING_ENTER_ABS_TIMER
-Message-ID: <ahHCfBzDuCRCdTDB@laps>
-References: <20260520111944.3424570-1-sashal@kernel.org>
- <20260520111944.3424570-26-sashal@kernel.org>
- <5a50c3f5-a5ef-4b2b-821c-5858d8b1ac13@kernel.dk>
- <8e853555-604e-46e5-8e25-a5f80b88e51c@kernel.dk>
- <ahG9meYUQ-YLDwHN@laps>
- <afe1ad86-3454-4092-88d0-bd9753a1b2c8@kernel.dk>
+	s=arc-20240116; t=1779549114; c=relaxed/simple;
+	bh=JJhs7PUZUuC935hqyCTc38KzzpT0bwtRxfLZ6/wYq/c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hcfqhbjkUwkPcdtNxgeT66TT8KN5Zp78MYS/3njTuiaLYuWi08NnASU6JVdFTt4hD8vZmSe4iEEu7OVLh4L16HVYXRhNyXkPvcFgcNhRj2PORBOeCa8/3lcrXRa8/Vf7zIWE/aoh1u2ZmGYgYLRBPgtR+fGbQXfMEy+ys+v0xns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kyS8qk7+; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-45e8a834cc2so4216109f8f.1
+        for <stable@vger.kernel.org>; Sat, 23 May 2026 08:11:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779549109; x=1780153909; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GVuj8i39CNd2OnE6+LZlzBZ3d9svD8GeaE/Z5pzjuck=;
+        b=kyS8qk7+e+/jh9vT5X4AsJ80OeRe0Y9IYHdvMqsXgKipx3NBGg5dS+T0IiM3MajzxV
+         0uglI1yMF453tk3OSI6z22xjchQbJQsl4q2L9pV6xW5uD+c+qYM3XEsBdjHy/qouLTiQ
+         CywY/VlNfSHdl7fRj/yJz/cVQfR03uXWSNqD+WXSN9b2gelmbP+JSxktPvafQyEdMfoZ
+         DgJKChEmqYv4qBGAvRNZACbRkZXXz9P2LHA38KwVJOJvnAmPYjWEE/jXYL6VSoVaXEt5
+         fR1Fx10DtVy1IsoDtBg1l5AvdukIVGSMPK3aEireQW5R0haZiSjbI4lDMSAHGTkLOixu
+         Wy5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779549109; x=1780153909;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=GVuj8i39CNd2OnE6+LZlzBZ3d9svD8GeaE/Z5pzjuck=;
+        b=jBsCJ0vrYtu7xk+2tpUwpSwOVID1UWjcp1Ovb8TJ/JdrVVX4JwNjdYzRqSo59lG2us
+         lq2EUcIubd7UxnI1hwzY5x0VYV7OI1/Ed5s9zgRkSJmZHpbHrEdFR2w7q4zbb/sR6ZSO
+         EBvmtXkCcJyHs1T9fDCkTkdKJLIBZDghwn4E/5PKrvgu5AzKAQ3s8p5avThkiJocg/nL
+         RGfljE0nEawSQ9UeiZ7KAbSwxNQwErrJEU8Aji8Ol6dDFy0CcI5hKxyg0z8jynh+bu20
+         GkYVjj7PbwsMbErt1GZqLOfjLkj7eH7hX+nhOguWeijpf6KFi/fBa4e+wzdWngsxOKLU
+         3BXg==
+X-Forwarded-Encrypted: i=1; AFNElJ///xFzE9QQYemQ7BxTavH1M4RsXDQAxubKzmhcVMYF1/xbGWJpdxGZYeic4Fc8hKfk7MZsThI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsRvYMcATZ0iEnHnSKJTWo378+rMuUzPp7+y24CZPsh+VrfrLv
+	VrfYrq+tGic33z2+pSyIcqMFT7pZNlof7TA5u2vSfjUV5hSG11wYtFL7
+X-Gm-Gg: Acq92OGCMS8YIGraOYqfbVJrwxvTu381BbvmZXUbF6qA2szzDR7YrKo5Cf+y8qzeql4
+	nW49YYz+gjD61WqA+8NjfoZJXCUfewEkz5sDwoJsRSxW41vx1WjFHfXWHCdREp5Rfxxb/+i9/+/
+	cP5OvuJl/4sV5BgfEl5OrqlGYFL3uGs5trPdvLcRwHOsebttpKwf/N/e84LnToAgtS4LhOudrLs
+	UpvVnyNeoCBsEX676CVzfcFDeUVv1Gcy0kJlV4sfW88bMRv8Eg1CAykn+5CljzgoYThZJetuopV
+	t836AbuBeGeoIJpLE2J0D9nry2Zu1Uh+OZRPjV1duKuogOWQ7p0OucK63p5ZINzBmnp2hlb3d85
+	/3t4/nptoOk+jiWtJ1zDoNOdYlT7IuF1cw5nAfgHAbG2gFdDl9veDZZm62LVs7qIU9hPVlbaJEI
+	4/jafY1RXLtDLtz0Gicyn99duhiXaN9Ev/
+X-Received: by 2002:a05:6000:26c3:b0:45d:b14b:23fb with SMTP id ffacd0b85a97d-45eb369c7abmr13363260f8f.11.1779549109378;
+        Sat, 23 May 2026 08:11:49 -0700 (PDT)
+Received: from mini.main.internal ([2a02:908:c211:cd18:36:c98d:902c:348d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eb6d7167dsm12629156f8f.35.2026.05.23.08.11.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 23 May 2026 08:11:48 -0700 (PDT)
+From: Goetz Goerisch <ggoerisch@gmail.com>
+To: gregkh@linuxfoundation.org
+Cc: ggoerisch@gmail.com,
+	herbert@gondor.apana.org.au,
+	herve.codina@bootlin.com,
+	linux-crypto@vger.kernel.org,
+	miquel.raynal@bootlin.com,
+	paul.louvel@bootlin.com,
+	sashal@kernel.org,
+	stable@vger.kernel.org,
+	thomas.petazzoni@bootlin.com
+Subject: [PATCH 0/5] crypto: talitos - fix rename first/last to first_desc/last_desc
+Date: Sat, 23 May 2026 17:10:43 +0200
+Message-ID: <20260523151048.14914-1-ggoerisch@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <2026052212-aged-amply-7bd8@gregkh>
+References: <2026052212-aged-amply-7bd8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <afe1ad86-3454-4092-88d0-bd9753a1b2c8@kernel.dk>
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-253951-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,gmail.com,ntu.edu.sg];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-253952-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,gondor.apana.org.au,bootlin.com,vger.kernel.org,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ggoerisch@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: DCD7D5BF8EF
+	RCPT_COUNT_SEVEN(0.00)[10];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 89E4A5BF934
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sat, May 23, 2026 at 08:55:43AM -0600, Jens Axboe wrote:
->On 5/23/26 8:45 AM, Sasha Levin wrote:
->> The volume of mails and patches makes it really difficult to give
->> prompt answers here. I have no idea if
->> 9cc6bac1bebf8310d2950d1411a91479e86d69a1 applies cleanly, whether I
->> need to ask for a backport, or whether I should just drop
->> 45d2b37a37ab9848 until I sit down and get to this batch of AUTOSEL
->> commits.
->
->If you can't handle basic replies when running AUTOSEL, then I don't
->think you should have that process in the first place.
+Commit a1b80018b8cec27fc06a8b04a7f8b5f6cfe86eae
+was backported to 6.6.y with a866e2b1c65edaee2e1bb1024ee2c761ced335f8
+It renames last to last_desc but misses one occurrence which leads to compile errors on mpc85xx
 
-You know, you're probably right. I'll just take a break from AUTOSEL for now.
+drivers/crypto/talitos.c: In function 'ahash_digest':
+drivers/crypto/talitos.c:2204:16: error: 'struct talitos_ahash_req_ctx' has no member named 'last'
+ 2204 | req_ctx->last = 1;
+      |        ^~~~
+
+Instead of renaming req_ctx->last, commit 9826d1d6ed5f8 ("crypto: talitos - stop
+using crypto_ahash::init") should be applied.
+Ideally before commit 00463d5f864a ("crypto: talitos - fix SEC1 32k ahash
+request limitation") to avoid any compilation breakage and ensure correctness of
+the code.
+ 
+> > Greg could you please backport the mentioned commit to 6.6.y in the correct order for the next update?
+
+> Can you send a series of backported patches in the correct order for us
+> to apply, so we know to get them correct?  Trying to dig out from an
+> email like this is usually quite easy to get wrong :)
+
+Hope this is correct.
+Goetz
+
+Eric Biggers (1):
+  crypto: talitos - stop using crypto_ahash::init
+
+Goetz Goerisch (2):
+  Revert "crypto: talitos - rename first/last to first_desc/last_desc"
+  Revert "crypto: talitos - fix SEC1 32k ahash request limitation"
+
+Paul Louvel (2):
+  crypto: talitos - fix SEC1 32k ahash request limitation
+  crypto: talitos - rename first/last to first_desc/last_desc
+
+ drivers/crypto/talitos.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
 -- 
-Thanks,
-Sasha
+2.54.0
+
 
