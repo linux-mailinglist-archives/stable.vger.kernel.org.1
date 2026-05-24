@@ -1,93 +1,100 @@
-Return-Path: <stable+bounces-254041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254043-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id J2mEOfIfE2on8AYAu9opvQ
-	(envelope-from <stable+bounces-254041-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 24 May 2026 17:57:38 +0200
+	id kMr2Ky4iE2qv8AYAu9opvQ
+	(envelope-from <stable+bounces-254043-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 24 May 2026 18:07:10 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 497925C303A
-	for <lists+stable@lfdr.de>; Sun, 24 May 2026 17:57:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AD615C3099
+	for <lists+stable@lfdr.de>; Sun, 24 May 2026 18:07:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EE597300A62B
-	for <lists+stable@lfdr.de>; Sun, 24 May 2026 15:57:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 15B91300A743
+	for <lists+stable@lfdr.de>; Sun, 24 May 2026 16:07:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E53239A058;
-	Sun, 24 May 2026 15:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53E683A63EC;
+	Sun, 24 May 2026 16:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k/c3vlIp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LBzNKn6R"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A6202F39C7
-	for <stable@vger.kernel.org>; Sun, 24 May 2026 15:57:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F22E023D297
+	for <stable@vger.kernel.org>; Sun, 24 May 2026 16:07:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779638253; cv=none; b=FgklFg6N31beWes/PM6rkHfzBkynOB6BF/y2CfV1QyRU6xJky1rb4h4F+6zRkXAXzN1RDmoxCvJzQ3lFUHrAGjH99H7pzl+7suLm8tV2Y23e/YyFliUszvT1y1JS0BlQSspMrUEw+B7pwkPlI2CYFMgfzCEVlvmhlqtikC5+Pl8=
+	t=1779638826; cv=none; b=kMbY4CGt6zFMVXN1XozA/zna5HlVOdD5pStcO/YLHd1uz4vkik3cpLpCYu6pjqk6ww4YVs9tQXI+viQaZtHFk/shcd6LVS9gX2YJtvyCQEpfKylcO5Uk0/Nrxws82ltDmcn6liTTvz38lJCdfBt8FaKbZ/jw51gzDfzMMVjhVOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779638253; c=relaxed/simple;
-	bh=B0H12NhIO374kTIfEBVb6LhF2mHBdABLnBNkL2lfe+w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CrlUEa1ioPnbxOtDYhzajnqmWQDNJqmPIxb/b37ok4deePfZthvuffjysmPbOADQIMvy5rQik4glGzeXdLoRe08gQ9kvKGwfPM5NtB95saynGsQ9O1Blu8eVZReRCpctWAxrBBvKeAvUeRyQh/2KvMVIGzWUf3o6tyIhXgh1/Qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k/c3vlIp; arc=none smtp.client-ip=209.85.216.46
+	s=arc-20240116; t=1779638826; c=relaxed/simple;
+	bh=oFecsmdHD5Cq5W5MDU8nNRtON2oDakO8PkdvCnvCWfY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=V++rQ9qYMJHmV5yF86c3hKIiZXpO/488mORSawaGF7hTIyxRKFYj0rn7bKzrepku+4J7uK1LvUOexarGyJTu4/+gxOJDPA1KdsPBQmpZIEJxc428TBGMFAB9kf0K6mZyCBgV2KkwjMtsEDWcchjU+k9u5RpcHNVVaihn6g0arLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LBzNKn6R; arc=none smtp.client-ip=209.85.216.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-367d88b9940so5849108a91.1
-        for <stable@vger.kernel.org>; Sun, 24 May 2026 08:57:32 -0700 (PDT)
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-36936dcf19dso4310482a91.0
+        for <stable@vger.kernel.org>; Sun, 24 May 2026 09:07:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779638252; x=1780243052; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1779638824; x=1780243624; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5pGO8hezM1yTgC77jiIpPHRz4G800mj82NUOkgOlqoc=;
-        b=k/c3vlIpFKmmv//bD17jCi28kw3y1ZlyuDuYgNOCkaBUOTzrIyMTzaZsnaw0Pr1DjF
-         vv3QVElAeYnfvOTXIvRnkzcnFZLtXI6lL/zmTkkR5lBSoF7QHbuFyOOwoElKVPunmU8N
-         r4YZ2eZ4SBdVd6N15rTcmgxDGPCZiLiP22a1bNLst+Gpx1ezDnz851EXFR6NJY/Z/bAo
-         8QoslhZZ8MhQJPNXgMhh9Q3iC+teOL4DhCbfa5TFT98EXnF50lP50uzAgewSdrilwdSO
-         HH+Opz9KQlaPI30r/TUQT6QJdQ3RG+DEGPuLSeRSLbWAXPhWZEKON3N/uYPzklv4w54N
-         J/7g==
+        bh=18MxIR0tdVmzmTTCjfqveL+dgh6nwJgg/2YQDWJQQr8=;
+        b=LBzNKn6Rl+YurdChLp+7qoPPZUGzmmxtMB4CQsSnh7eM1jaafMZ94USmZDxs4JFEg7
+         1wEkqusXooU7zIMRgsqr4VCbEi28VKNw9XqUuZh6MRFY8J6Cg24MhvtcvAZSe8QZcbaq
+         ejGt34bV08cJG90EBssiNPqfrckxJcX2lBqKwryypTHWeyN/jcwWWZBe9cZHYPFIM6Vw
+         +Oze503Rv1v1kSPDtHjppQnIJoBf7/PTOwG5I6/zBcRVils3t/TotaYGXRZ4qTr8HVve
+         k8sYWESwOnKMbcRPOq9YKiqR949YXKFMT9NK41fubkkNJwPg+dfxgGMDcYbcDTVdLkHF
+         aydg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779638252; x=1780243052;
+        d=1e100.net; s=20251104; t=1779638824; x=1780243624;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5pGO8hezM1yTgC77jiIpPHRz4G800mj82NUOkgOlqoc=;
-        b=l0uErHUMccxp5yRVyM4IWJktDMRdNe7kfifucXaHWSpUAf3S0D+XyRjo5kBF7hm4o0
-         8rJsx3yJOA7ZyjVrPaDC7997XlLf3tRPJxjQyy4OByDlb5i6IfCCjXdjhmGCXUUnvnWG
-         9lWr0cWheW1Dj4FyZN2IWY/kcBomGUVNi3SnLRxqLUpI27BboX59JF00i152a5PBcjuk
-         Kh6bwMy1Fx6IhIZ1TcCtv5eriMa9m0nK4ipnKCIJxw2sjRc22bK6bQx8zlT1pPWZI28N
-         48h0Yyb7LATw7xczASlCAn+x0ooWdD7GUmznozC1ARCBQPsFGZMfQv8RmpNmRSZuXfyQ
-         INmA==
-X-Forwarded-Encrypted: i=1; AFNElJ/C1MFe3Qbeo9Np03qo4ocd/ZPhSeaWaTMuEHZNQgnhVmUuM6NZcQxNBLe2QOEdut677Hhgl8o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6qx5sMif3WMCJzDNDgNN68WdZ2SfeymeDOeOLvUlmLa7h/9K2
-	utLj1SVv/FfQs2Mn73mn0XIpj6Iot3JGr+Cy4OBYHgWVJZ/WLfDBcJ7x
-X-Gm-Gg: Acq92OGO9c2a9vKENIfSfocoawFE6udrRsQJG6jAObazBOED3oTWpLotUp9mr7iC9Lq
-	2dRyelATPWIZf3/3BG+q+/+qU3dy1paU+9wlMUQ+v/syHr+eAR3YiCZRtpuicnt3e47rvnxIaz8
-	zdswzEPWWC0MfxyrTfDhd+ql2T0HhEwLRlWZ6iyGgFtrL0wV8Fd3XaWe6zYn/wCOB4DS8iptyCQ
-	zmrFmtcGA1d6/VgyQ8UJYLQYB5FjhjuPS2fs3oYfjZwspMOWnRuN2QDopNklmswaYzF64sOVx6f
-	ghS0DJqbRRqxi9Z6c+qX9gGXGeLCF0EV9/ZZ+2J+VkdEMX+XAcG4maC/wxiJZ8C4h9s7+21wraK
-	fkhMcHuWrx9Z4xhXrJIw3+fz257Sm7mFbV02W2QMaCHc2b2YHCHDQcdRv00BeCFMcbuWQOt9CGB
-	1BwBmjuTV+hqc8HORclT58kzFmtE5IRmLfG3zUjr42gqCUTCIofkdoSXv3bo5iRQREFIcgaSkr8
-	ezJXkQWEuhCnRm2c56Zn+koSmc6K8jiF+7lsZbZubBfdV0Ur61HQKc0NKFwTwR1Gm7tXU/ChVjW
-	WY4q/LH9njdjWyx5LZ5NWw==
-X-Received: by 2002:a05:6300:2795:10b0:3b3:62be:3584 with SMTP id adf61e73a8af0-3b362be393dmr2496390637.11.1779638251896;
-        Sun, 24 May 2026 08:57:31 -0700 (PDT)
-Received: from codespaces-78f0a7.mimvmn1ww3huhhjmzljqefhnig.rx.internal.cloudapp.net ([4.240.39.193])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84164fbb66bsm6973381b3a.45.2026.05.24.08.57.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 24 May 2026 08:57:31 -0700 (PDT)
-From: Muhammad Bilal <meatuni001@gmail.com>
-To: tomeu@tomeuvizoso.net
-Cc: ogabbay@kernel.org,
-	jeff.hugo@oss.qualcomm.com,
+        bh=18MxIR0tdVmzmTTCjfqveL+dgh6nwJgg/2YQDWJQQr8=;
+        b=PSjC2DYkef1P0SJquAbLg5jMk7PLpChnusXF/CnXaVqrugyBVyN/ZxhvUXzF8AKS/q
+         lW980Or7UBeEW8Zy+x8WBFdLR9yFJPFHL39taQLGddm9TSFHyZL/KYVJO/kVCj2tifO3
+         NiZh0TIyPX/jk6b2TlOFf6kc2q9Mt/QhwsAHmFbjCh2lBM3Pmm4IFsNlBmSwWrxPP65a
+         Zqd+aBq0yMcjwUHXOqvUrsfKVpH3z5NPiY4OpxNz/0tSO+SMAbbff9Vvq6wOWFh4dfvR
+         f82kONLaa9cJ5tzooK5NBjT+dvcCRxP+0LzX6XnAPvhmVX53bOzCMN319hu9WCWD0NZ1
+         vV2g==
+X-Forwarded-Encrypted: i=1; AFNElJ/YZG5DRqNsJaBo5/Zw6ZLoTR7tRFrvXvjyVwRWtFQbUTVpOSj9nXNHpl6qq3Ri9xaG0riT7vM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxf0w4tmvgR16rYtiEYVfx+Px8rQMq1ON1kIiBXxNwY8vuhvq61
+	33rbV2aoRgxY/9y+hGP24uUWMVCJBxl6Eflw7SDqD5mHf2X/eTahRJc=
+X-Gm-Gg: Acq92OGBuPFVtkcXc92qyBCfm9GDb+YfffmdUBHGyAO1VOc1WQOikGuyux8OALzcgAm
+	xy5joOb4PB8Kou/hn7SRWtDGKKU9o9NrFIuMEPwheF2NLSjwsQVxSf/AtgYRS7yOz581xxbHLJM
+	LJRdCAEir386cyJgsgsdkUH+JtjYynSS0euw/VcCgHsZlHs1DufdXVUNSTMlpw+aDJEHfNxzeqF
+	0+TIEbbacoelq+bPdU8BMhSVLY4P3EdZQseYmrmYFuxMs0L7L1fKKLZDCxljWewu81uXL186O9Z
+	xdRjtAcGN23DGfJL1quklVAH2PO35ciK08//zWQUzrcL30jHwjm7fDEGI2/Bc0eUU5MMY5dwx4X
+	B75NKl93dCsG/zERgl6F2WtsFs6I2XyGwlRaZqpxlUPJ73YnSQmE/culTHsgNaHU10zz0uIoodu
+	KkjQ105D7piii1erW8TGtpq4No1BG6NrEqDH/GacCyHf2bSiWwMh4UlhRMPn+j1OQfceDk4Tc=
+X-Received: by 2002:a17:90b:2585:b0:366:3ac:f730 with SMTP id 98e67ed59e1d1-36a6788e0abmr10212406a91.25.1779638824285;
+        Sun, 24 May 2026 09:07:04 -0700 (PDT)
+Received: from localhost.localdomain ([1.226.165.54])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36aa73da32dsm2082541a91.4.2026.05.24.09.07.00
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 24 May 2026 09:07:03 -0700 (PDT)
+From: Myeonghun Pak <mhun512@gmail.com>
+To: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
 	dri-devel@lists.freedesktop.org,
+	linux-amlogic@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
+	Myeonghun Pak <mhun512@gmail.com>,
 	stable@vger.kernel.org,
-	Muhammad Bilal <meatuni001@gmail.com>
-Subject: [PATCH] accel/rocket: fix NULL dereference and integer overflow in rocket_job_push()
-Date: Sun, 24 May 2026 15:57:16 +0000
-Message-ID: <20260524155716.90955-1-meatuni001@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	Ijae Kim <ae878000@gmail.com>
+Subject: [PATCH] drm/meson: clean up KMS polling on register failure
+Date: Mon, 25 May 2026 01:01:39 +0900
+Message-ID: <20260524160657.17802-1-mhun512@gmail.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -95,117 +102,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,oss.qualcomm.com,lists.freedesktop.org,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-254041-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[meatuni001@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_CC(0.00)[linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch,baylibre.com,googlemail.com,lists.freedesktop.org,lists.infradead.org,vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	TAGGED_FROM(0.00)[bounces-254043-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mhun512@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.997];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 497925C303A
+X-Rspamd-Queue-Id: 0AD615C3099
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-rocket_job_push() allocates a temporary array to hold all input and
-output GEM object pointers:
+meson_drv_bind_master() starts the KMS polling helper before registering
+the DRM device. If drm_dev_register() fails, probe unwinds the IRQ and
+DRM device without stopping the polling helper.
 
-    bos = kvmalloc_array(job->in_bo_count + job->out_bo_count,
-                         sizeof(void *), GFP_KERNEL);
-    memcpy(bos, job->in_bos, job->in_bo_count * sizeof(void *));
-    memcpy(&bos[job->in_bo_count], job->out_bos, ...);
+Call drm_kms_helper_poll_fini() on that failure path before freeing the
+IRQ.
 
-Two bugs exist:
+This issue was identified during our ongoing static-analysis research while
+reviewing kernel code.
 
-1. Missing NULL check: if kvmalloc_array() fails, bos is NULL and
-   the subsequent memcpy() dereferences it, causing a kernel NULL
-   pointer dereference.
-
-2. Integer overflow: in_bo_count and out_bo_count are both u32, set
-   directly from userspace-supplied in_bo_handle_count and
-   out_bo_handle_count with no prior validation. Their sum is computed
-   in u32 arithmetic and can wrap to a smaller value, causing the
-   allocation count passed to kvmalloc_array() to be smaller than
-   intended. Subsequent uses still operate on the original counts when
-   copying and locking objects, which may lead to out-of-bounds accesses
-   on the temporary array.
-
-Fix by using check_add_overflow() to detect count overflow before the
-allocation, and adding a NULL check on the allocation result.
-
-Fixes: 0810d5ad88a1 ("accel/rocket: Add job submission IOCTL")
+Fixes: bbbe775ec5b5 ("drm: Add support for Amlogic Meson Graphic Controller")
 Cc: stable@vger.kernel.org
-Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
+Co-developed-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
 ---
- drivers/accel/rocket/rocket_job.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/meson/meson_drv.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/accel/rocket/rocket_job.c b/drivers/accel/rocket/rocket_job.c
-index ac51bff39833..71f64bf2bb7f 100644
---- a/drivers/accel/rocket/rocket_job.c
-+++ b/drivers/accel/rocket/rocket_job.c
-@@ -8,6 +8,7 @@
- #include <drm/drm_gem.h>
- #include <drm/rocket_accel.h>
- #include <linux/interrupt.h>
-+#include <linux/overflow.h>
- #include <linux/iommu.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
-@@ -188,14 +189,19 @@ static int rocket_job_push(struct rocket_job *job)
- 	struct rocket_device *rdev = job->rdev;
- 	struct drm_gem_object **bos;
- 	struct ww_acquire_ctx acquire_ctx;
-+	u32 bo_count;
- 	int ret = 0;
+diff --git a/drivers/gpu/drm/meson/meson_drv.c b/drivers/gpu/drm/meson/meson_drv.c
+index 49ff9f1f16..e49de5df73 100644
+--- a/drivers/gpu/drm/meson/meson_drv.c
++++ b/drivers/gpu/drm/meson/meson_drv.c
+@@ -352,12 +352,14 @@ static int meson_drv_bind_master(struct device *dev, bool has_components)
  
--	bos = kvmalloc_array(job->in_bo_count + job->out_bo_count, sizeof(void *),
--			     GFP_KERNEL);
-+	if (check_add_overflow(job->in_bo_count, job->out_bo_count, &bo_count))
-+		return -EINVAL;
-+
-+	bos = kvmalloc_array(bo_count, sizeof(*bos), GFP_KERNEL);
-+	if (!bos)
-+		return -ENOMEM;
- 	memcpy(bos, job->in_bos, job->in_bo_count * sizeof(void *));
- 	memcpy(&bos[job->in_bo_count], job->out_bos, job->out_bo_count * sizeof(void *));
- 
--	ret = drm_gem_lock_reservations(bos, job->in_bo_count + job->out_bo_count, &acquire_ctx);
-+	ret = drm_gem_lock_reservations(bos, bo_count, &acquire_ctx);
+ 	ret = drm_dev_register(drm, 0);
  	if (ret)
- 		goto err;
+-		goto uninstall_irq;
++		goto uninstall_poll;
  
-@@ -220,7 +226,7 @@ static int rocket_job_push(struct rocket_job *job)
- 	rocket_attach_object_fences(job->out_bos, job->out_bo_count, job->inference_done_fence);
+ 	drm_client_setup(drm, NULL);
  
- err_unlock:
--	drm_gem_unlock_reservations(bos, job->in_bo_count + job->out_bo_count, &acquire_ctx);
-+	drm_gem_unlock_reservations(bos, bo_count, &acquire_ctx);
- err:
- 	kvfree(bos);
+ 	return 0;
  
++uninstall_poll:
++	drm_kms_helper_poll_fini(drm);
+ uninstall_irq:
+ 	free_irq(priv->vsync_irq, drm);
+ exit_afbcd:
 -- 
-2.53.0
+2.47.1
 
 
