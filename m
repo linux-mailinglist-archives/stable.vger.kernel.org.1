@@ -1,94 +1,93 @@
-Return-Path: <stable+bounces-254026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254027-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IFSTESj3Emr25gYAu9opvQ
-	(envelope-from <stable+bounces-254026-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 24 May 2026 15:03:36 +0200
+	id SGEgCUP4Emob5wYAu9opvQ
+	(envelope-from <stable+bounces-254027-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 24 May 2026 15:08:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CFA75C270C
-	for <lists+stable@lfdr.de>; Sun, 24 May 2026 15:03:34 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CD125C2795
+	for <lists+stable@lfdr.de>; Sun, 24 May 2026 15:08:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D97D23007C8A
-	for <lists+stable@lfdr.de>; Sun, 24 May 2026 13:03:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 426613006791
+	for <lists+stable@lfdr.de>; Sun, 24 May 2026 13:07:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E7E21638D;
-	Sun, 24 May 2026 13:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E5C39733E;
+	Sun, 24 May 2026 13:07:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TDPejNea"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cFT1mcaB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D9A6FBF
-	for <stable@vger.kernel.org>; Sun, 24 May 2026 13:03:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37750396D1A
+	for <stable@vger.kernel.org>; Sun, 24 May 2026 13:07:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779627811; cv=none; b=NSrgZc4zPeld+ROM8lfUMa4IuH/+jXh/fGwVPlgH9SGoLa720+mvDCOuBByicnPGKemCEmAzSySu0jxd8eaQI7A85UjLoTWqNTIjvRw2nhAkcZ+5Rf1pX9q8J1xm3XjSrRKsO5xmLlHyvhNYovxkEGRHiBmqmIbVcV9K1UkVg0g=
+	t=1779628033; cv=none; b=ri7KbIK6qMjtyfHlfgV2isfdFbsLExS0nJnwbwF4GDKILcuLHFyXfwXoLgjH7bk4qjdTT5lWnIQpkNVPqkevMgAI3DAMPsD9PXsg7Cxm5Wlt4T8RYHF80SZJfTSd6kvkwR1Y5phER/3mPh+dbPEWoPGylPXO2VWPoQwhjr0gTo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779627811; c=relaxed/simple;
-	bh=xSoWpgG+OctKW/Xwxy2T4BFr3tC4A+2ZzOcslwz9mRc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Rtq32Y6FgFfR5/hcR6u6PPwPtV1/89T+8bumLyQdOKZAU6x5xXNiePleC9U3j2cI5ZKKffILVSpY9bIhHK96N4EYAMBP7vS3YFLP8WsU1vryvJqKxBd5cb9HpMNy4zXFztKPN9YY8WaryL4hucPC2QKF5+U8ae/HVRRNNKGClZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TDPejNea; arc=none smtp.client-ip=209.85.215.169
+	s=arc-20240116; t=1779628033; c=relaxed/simple;
+	bh=whGDVgr9DaXIVCL7I9QLzspFILVLDI6f7xiyqYli2N8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tT1BAjWbG7auJ4NySOZdJj96Kxq0/RkLNSKjOLqeZ44T95RX9gqIRo/sgO4SbKNj8SpcXo00AySyZke4zLOofRzO0SWqQF1GfRQ7Ary0OriSP5FAbOJ3c69kXULg9lBby5TzasFVrHzB1O6rRkeCLudD8wG3WClDhk0OI0xT/6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cFT1mcaB; arc=none smtp.client-ip=209.85.222.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-c6dd5b01e14so3998645a12.0
-        for <stable@vger.kernel.org>; Sun, 24 May 2026 06:03:29 -0700 (PDT)
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-914bf8abeaeso167973785a.0
+        for <stable@vger.kernel.org>; Sun, 24 May 2026 06:07:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779627809; x=1780232609; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1779628031; x=1780232831; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=kj4rwdcY67VyrdGlOu4L8pJ9Vyfha/VtjkF5I+0OLKM=;
-        b=TDPejNeaY+e3mCHT63RFVCv2YtQQqMc9u8qQwv8+sxAxvXfZ+z+sw7dzwQjjP0lmg6
-         brzmJrMVvSqDiXp2SXqvIsXUImH8jbU/A37FjWLcaMbaOdUAiYaH1VVfAO5vHPKTEYb/
-         mT8D7+O3T9+BV+PROykvFQz9/uhRWV9hyICfWP7uqxURbZlUnBxuh9s8Hg5R6zM5HwLG
-         mqlkYl0t+gMvNYnQmbCaoBJKmJCoccQI7DNGJVh1xuc1DrKC6G0rmNri6TBbe3tMfUKs
-         I8lCaWjtIORqF5ZnU0YoqoEdQdJFFcQi29MgrZTQW8ehPX2SSI5wZT3vlspIKMUu6mhC
-         8AOQ==
+        bh=wDUj+XtKVNzBDF85yQS5JKEq71LY2fdGuiqbA9Dq4O8=;
+        b=cFT1mcaBOPEIM862F7eTf21DbE0DPTiI8kP55Vh6Ac7oM6LFlsp0/d3SE48w8FW6TX
+         UMPwC62yy6xQXXAIGzQWxoJmQbXE9TrE/Wueo16J7V3CTcwS+aqdg3tqecjtTT97pK3n
+         f75KLUxRdKkVShXaNYqhVmT8WgUK9txSD/Piw5KUM+k1SiKvnJucdKq/VDWam8E+Whjo
+         Rhbtexal+1srMsQ1TdTHPVEeozAKqgU/hSCaB1Fbm0Nil1TnsGWRcdPakVyd4MIUPcYJ
+         tasNC1aH256jAu5uLQwHiKv2eobsAr4SdxqXy/EK9Oh23Dpb4jSJISk3bTnMfl0l00zm
+         jwMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779627809; x=1780232609;
+        d=1e100.net; s=20251104; t=1779628031; x=1780232831;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kj4rwdcY67VyrdGlOu4L8pJ9Vyfha/VtjkF5I+0OLKM=;
-        b=NLKroMo3hhxEVgbA8aSnwt6kMuEP1n14n+nUvQBTkY6LU8Aroqn2xF0H0s68DfjmC5
-         6NVj4UAoaazwK7IHM4GJHhRSIL2aOCLE3ndsmIKa5RKDGdjQynW11QUcWvoP1W129YVO
-         v2mlDo8DYZbSUsaibNGVT2irDgGvS66bQ57J9Y87Zov7YWS4AaPJw/Y0t2kKxmjfJdo5
-         cLjD+SpOVxOXaelexsLKHvCjd2QMQr0bgm0q4z79z8qYr4gXbZMPNPCsnisA+itecoE+
-         AVT8COvfx0yYKZF4WQdkbZ0kKv41eD7Kv27zVn354GVdn00EtfsVtn87eHPY6II0nrs7
-         uc/w==
-X-Forwarded-Encrypted: i=1; AFNElJ+JEibIKUnza6epAGx8h9P0+REIY18mRWMo8wvV/JyISPQoscIy8xKMUkMa/YqiU1mVvE6kZ4c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLojvtroR+Vuac82bxZh3Sp2poR65Fi8OpSj9O3/D6TME51l56
-	Ro9Onv725hrZTqsyEACuZeozj51W4pZyMSwjVWRfX/wvIykfYkZUAP+G
-X-Gm-Gg: Acq92OFnDCDWO0hncVUfruIbV6i1+fkm/aMV5O+KCYgU4nSC3vf7yKAsWC/fLQQvau2
-	7mDu73RiPz3ra0CxSvxQUq3ch7M/jtW5XWh3xo2my9ngPNDkfmR0Fx1bbjDH6DtUTr2ZGkGRgJs
-	cxbfU5z4HCK33zt5XPqF5uthDhl0cKaTd5++bMdAMrtmSKCwP0CY+M4Wt1BG/UV+CIeIV8+IN1S
-	edKajEQM2gE7hMBWtsoInhqum8g0OM/SzHz/2Q7C0g5kJR0wit8xC2MgrgpDOMzxNSiQsMOasHq
-	Uouo0t4vjQoS0l7sdYosA07MSjEuSz7jPV9QqxMtCiQwDQ6utY99rv96xCadsPV8M3oxaGzvomS
-	TcMJwe8pg5QzT+YgsABQTmWbGBRGxJcwItJjwfQcD3tm40AWC2SDpfCD9rZzYNIY8JnBbOsSn4H
-	0/kX7CX0g3OtIyMp5JJ1DnfMlqEN2a8aUsq+cmORNrFiuR+5z6Th3636i4Vwc/+brIieizyGWj9
-	omVApSf0jL/4RDl7lM4eigvQZQ00gf2PGYgl5QcCekYBMCM/Fo5sh0xt+Lql9+Xv9qNItbpidxJ
-	fFiG/i4hrFE=
-X-Received: by 2002:a05:6a21:4d8d:b0:3b3:241f:66c6 with SMTP id adf61e73a8af0-3b328e504b4mr10852348637.26.1779627809312;
-        Sun, 24 May 2026 06:03:29 -0700 (PDT)
-Received: from codespaces-78f0a7.mimvmn1ww3huhhjmzljqefhnig.rx.internal.cloudapp.net ([4.240.39.193])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c8520560ff8sm5759610a12.24.2026.05.24.06.03.25
+        bh=wDUj+XtKVNzBDF85yQS5JKEq71LY2fdGuiqbA9Dq4O8=;
+        b=U/yLO1QKF0K0WkScorQTDOCKxzcxURWge5bB7/zY4RllcIB9Y2etupXPwJgrdcwYbQ
+         DR7LqmsEi9TOm0xEcbHHxs/ReyZgyG1Uw+77eLukwfkvRHvZ1P67MdfC/T7QUc3nHilE
+         n5t5p54WbDgC5Fgjj1JIJ2d71Nla+7+Kaj4MYZ2hk8bL3oV/9ApsIg7MJOTDrHfFXOKg
+         6rQmYigXS3s1sGLiILwMogrYLBqqzkv7RaZy2sR8H6qfLyu5XHSsUQZ4Gg/tVdSfP2XK
+         GeZ0NhDx6Qu1Gf250Fn3fRP9976lqmqN8D39lFcwOfyD9ibxmHeuiV/xCUI8UYTvyQsv
+         oTEQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+4ur8jpWgKCMrHYNWenZNNmfOPyvcuZUrutR+Hlzvn3yY5GB15bTFEeIgOXxdg0aLqnK3uJHo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHXHMn0iyrHBGK3VIyOC7iC4CZWEFb1b/xOsmXsawuV9b4d01z
+	gVIy4ZAdmphYvn2tJK9GzGEshOIrwnSDYIDW1q5/YQqmNN52Gx0IdutK
+X-Gm-Gg: Acq92OGGrpdVLEd8rGEpAC40xsT3MDC/qaCTZEmIJ5w+BGlMPs8hJ2lawTqm6/XISRl
+	z+BLZNTn3Z0KGzXFBvCA9jRo3JJ558E4zCOrr8GxOzZa2LME0V4we/swc+P+yYuCEVDJ36jkKmB
+	sYC5Ng7w5be9jygi1GAQjH8Z22LOrsYmldBXXgUtcJrrCiwckY+ryuOIil0iaY2sVEL/hi0ye4Y
+	XtHPgO6c/dvXKc3BQ+/vO8nAH0JLlRV5oGYlTbCALb7uBwe1tWRprq21bYT8ip+Dx6FtXj2s0Jz
+	relNI58BjEjesCMKF6uQ8uoBvAt4urL6tvl3kTivbGEzbfZ4IaiBEom++F9wO8EUKhxyKtOR3TV
+	H2KF2rpNCrFqjt51WwOK1zdemmXHbDq/XiHr76X38c5MaNFQL/cp1uHaVduCX/u21PGFlk6qhn4
+	YGLJHZvvmzYyAtIYQf6DH8sU7i2tgSfuo69CQHRbbMGr30EZjpUmLwdGNi5g0VrOSvisg2eDZ8X
+	zyOQ6fc2YvW6GxWzKbH
+X-Received: by 2002:a05:620a:6504:b0:8cf:c272:9721 with SMTP id af79cd13be357-914b48b4d38mr1503642085a.6.1779628030696;
+        Sun, 24 May 2026 06:07:10 -0700 (PDT)
+Received: from server0 (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-914bb905677sm817575885a.18.2026.05.24.06.07.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 24 May 2026 06:03:28 -0700 (PDT)
-From: Muhammad Bilal <meatuni001@gmail.com>
-To: robh@kernel.org
-Cc: tomeu@tomeuvizoso.net,
-	ogabbay@kernel.org,
-	tzimmermann@suse.de,
-	Frank.Li@nxp.com,
-	dri-devel@lists.freedesktop.org,
+        Sun, 24 May 2026 06:07:09 -0700 (PDT)
+From: Michael Bommarito <michael.bommarito@gmail.com>
+To: Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>
+Cc: NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-nfs@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Muhammad Bilal <meatuni001@gmail.com>
-Subject: [PATCH] accel/ethosu: reject DMA commands with uninitialized length
-Date: Sun, 24 May 2026 13:03:19 +0000
-Message-ID: <20260524130319.12747-1-meatuni001@gmail.com>
+	stable@vger.kernel.org
+Subject: [PATCH v2] NFSD: restart ssc_expire_umount walk after dropping nfsd_ssc_lock
+Date: Sun, 24 May 2026 09:06:54 -0400
+Message-ID: <20260524130654.1924556-1-michael.bommarito@gmail.com>
 X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -96,77 +95,132 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[tomeuvizoso.net,kernel.org,suse.de,nxp.com,lists.freedesktop.org,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-254026-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[meatuni001@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254027-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 9CFA75C270C
+	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FREEMAIL_FROM(0.00)[gmail.com]
+X-Rspamd-Queue-Id: 0CD125C2795
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-cmd_state_init() initializes the command state with memset(0xff),
-leaving dma->len at U64_MAX to signal missing setup. The only setter
-is NPU_SET_DMA0_LEN; if userspace omits this command and issues
-NPU_OP_DMA_START, dma->len remains U64_MAX.
+nfsd4_ssc_expire_umount() walks nn->nfsd_ssc_mount_list with
+list_for_each_entry_safe(ni, tmp, ...).  For each expired entry it
+sets nsui_busy = true, drops nfsd_ssc_lock to run mntput() on the
+source vfsmount, then reacquires the lock to list_del + kfree the
+entry and continue iterating via the macro's saved tmp pointer.
 
-In dma_length(), a positive stride added to U64_MAX wraps to a small
-value. With size0 == 1, check_mul_overflow() does not trigger and
-dma_length() returns 0 instead of U64_MAX. The caller's U64_MAX check
-then passes, region_size[] stays 0, and the bounds check in
-ethosu_job.c is bypassed, allowing hardware to execute DMA with stale
-physical addresses.
+The nsui_busy flag protects the current ni from concurrent
+nfsd4_ssc_setup_dul() finders during the lock-drop window, but it
+does not pin tmp.  Another nfsd RPC thread that fails its source-
+server mount and reaches nfsd4_ssc_cancel_dul() will, during that
+same window, take nfsd_ssc_lock, list_del + kfree its own ssc_umount
+item, and release the lock.  If that item is the saved tmp of the
+expire walk, the next iteration dereferences a freed
+nfsd4_ssc_umount_item.
 
-Fix by checking for U64_MAX at the start of dma_length() before any
-arithmetic, consistent with the sentinel value used throughout the
-driver to detect uninitialized fields.
+Restart the walk from the head after the mntput() unlock window so
+no saved next pointer survives the lock-drop.  The list is bounded
+by the number of active inter-server source mounts (typically small)
+and the expire delayed-work runs periodically rather than per-IO,
+so the restart is cheap.
 
-Fixes: 5a5e9c0228e6 ("accel: Add Arm Ethos-U NPU driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
+Fixes: f4e44b393389 ("NFSD: delay unmount source's export after inter-server copy completed.")
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
 ---
- drivers/accel/ethosu/ethosu_gem.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/nfsd/nfs4state.c | 44 +++++++++++++++++++++++++-------------------
 
-diff --git a/drivers/accel/ethosu/ethosu_gem.c b/drivers/accel/ethosu/ethosu_gem.c
-index 8e95539da98f..3401883e207f 100644
---- a/drivers/accel/ethosu/ethosu_gem.c
-+++ b/drivers/accel/ethosu/ethosu_gem.c
-@@ -164,6 +164,9 @@ static u64 dma_length(struct ethosu_validated_cmdstream_info *info,
- 	s8 mode = dma_st->mode;
- 	u64 len = dma->len;
+Changes since v1:
+ - Rewrote the in-code comment above goto-restart to describe the
+   current code (concurrent cancel_dul can free any list item while
+   the lock is dropped) rather than referencing the removed
+   list_for_each_entry_safe() iterator.  (Chuck Lever.)
+ 1 file changed, 25 insertions(+), 19 deletions(-)
+
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 6b9c399b89dfb..33f72fcf65458 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -6728,30 +6728,36 @@ static void nfsd4_ssc_shutdown_umount(struct nfsd_net *nn)
+ static void nfsd4_ssc_expire_umount(struct nfsd_net *nn)
+ {
+ 	bool do_wakeup = false;
+-	struct nfsd4_ssc_umount_item *ni = NULL;
+-	struct nfsd4_ssc_umount_item *tmp;
++	struct nfsd4_ssc_umount_item *ni;
  
-+	if (len == U64_MAX)
-+		return U64_MAX;
-+
- 	if (mode >= 1) {
- 		if (dma->stride[0] < 0 && (u64)(-dma->stride[0]) > len)
- 			return U64_MAX;
++restart:
+ 	spin_lock(&nn->nfsd_ssc_lock);
+-	list_for_each_entry_safe(ni, tmp, &nn->nfsd_ssc_mount_list, nsui_list) {
+-		if (time_after(jiffies, ni->nsui_expire)) {
+-			if (refcount_read(&ni->nsui_refcnt) > 1)
+-				continue;
++	list_for_each_entry(ni, &nn->nfsd_ssc_mount_list, nsui_list) {
++		if (!time_after(jiffies, ni->nsui_expire))
++			break;
++		if (refcount_read(&ni->nsui_refcnt) > 1)
++			continue;
+ 
+-			/* mark being unmount */
+-			ni->nsui_busy = true;
+-			spin_unlock(&nn->nfsd_ssc_lock);
+-			mntput(ni->nsui_vfsmount);
+-			spin_lock(&nn->nfsd_ssc_lock);
++		/* mark being unmount */
++		ni->nsui_busy = true;
++		spin_unlock(&nn->nfsd_ssc_lock);
++		mntput(ni->nsui_vfsmount);
++		spin_lock(&nn->nfsd_ssc_lock);
+ 
+-			/* waiters need to start from begin of list */
+-			list_del(&ni->nsui_list);
+-			kfree(ni);
++		/* waiters need to start from begin of list */
++		list_del(&ni->nsui_list);
++		kfree(ni);
+ 
+-			/* wakeup ssc_connect waiters */
+-			do_wakeup = true;
+-			continue;
+-		}
+-		break;
++		/* wakeup ssc_connect waiters */
++		do_wakeup = true;
++		/*
++		 * Concurrent nfsd4_ssc_cancel_dul() can free any item
++		 * on the list under nfsd_ssc_lock while mntput() runs
++		 * above.  Restart from the head; the list is short and
++		 * the expire worker is periodic, so this is cheap.
++		 */
++		spin_unlock(&nn->nfsd_ssc_lock);
++		goto restart;
+ 	}
+ 	if (do_wakeup)
+ 		wake_up_all(&nn->nfsd_ssc_waitq);
 -- 
 2.53.0
 
