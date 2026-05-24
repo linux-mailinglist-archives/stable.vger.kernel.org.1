@@ -1,227 +1,170 @@
-Return-Path: <stable+bounces-254027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254028-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SGEgCUP4Emob5wYAu9opvQ
-	(envelope-from <stable+bounces-254027-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 24 May 2026 15:08:19 +0200
+	id aAAbJxv/EmrK5wYAu9opvQ
+	(envelope-from <stable+bounces-254028-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 24 May 2026 15:37:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CD125C2795
-	for <lists+stable@lfdr.de>; Sun, 24 May 2026 15:08:18 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47F095C2949
+	for <lists+stable@lfdr.de>; Sun, 24 May 2026 15:37:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 426613006791
-	for <lists+stable@lfdr.de>; Sun, 24 May 2026 13:07:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0F4573003827
+	for <lists+stable@lfdr.de>; Sun, 24 May 2026 13:37:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E5C39733E;
-	Sun, 24 May 2026 13:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73220396D2E;
+	Sun, 24 May 2026 13:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cFT1mcaB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="djlXhBzD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37750396D1A
-	for <stable@vger.kernel.org>; Sun, 24 May 2026 13:07:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06252395AE3
+	for <stable@vger.kernel.org>; Sun, 24 May 2026 13:37:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779628033; cv=none; b=ri7KbIK6qMjtyfHlfgV2isfdFbsLExS0nJnwbwF4GDKILcuLHFyXfwXoLgjH7bk4qjdTT5lWnIQpkNVPqkevMgAI3DAMPsD9PXsg7Cxm5Wlt4T8RYHF80SZJfTSd6kvkwR1Y5phER/3mPh+dbPEWoPGylPXO2VWPoQwhjr0gTo0=
+	t=1779629848; cv=none; b=PmdJnzz7eN/mphelPwuFqEIbsaSf5e34sTAMSPlKHx+1QKJdzx7DC5LKmPkV3ZL7rqe3q3kpQ1l7lox/P9bUr0KOf0PYXEMy+keWuNjSDDbv9qOtTsT0IL//vsPBJVj+vxZ5taXL7AohnKMolX+Bbz9e003sNpvqzHIIPdPEfqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779628033; c=relaxed/simple;
-	bh=whGDVgr9DaXIVCL7I9QLzspFILVLDI6f7xiyqYli2N8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tT1BAjWbG7auJ4NySOZdJj96Kxq0/RkLNSKjOLqeZ44T95RX9gqIRo/sgO4SbKNj8SpcXo00AySyZke4zLOofRzO0SWqQF1GfRQ7Ary0OriSP5FAbOJ3c69kXULg9lBby5TzasFVrHzB1O6rRkeCLudD8wG3WClDhk0OI0xT/6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cFT1mcaB; arc=none smtp.client-ip=209.85.222.170
+	s=arc-20240116; t=1779629848; c=relaxed/simple;
+	bh=P7flB7wlJlTemBMOJ1CJhIGMof7wEnYxAdHRWvkO2pE=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=j1dcKkd45/eyYBiEZ0wdZKc5BJoOmKhd5rBnKiuWUAz9LywbwipYUY0Uqw7QmUlJhUxTCZp4bbSpa6cx81kYpYWNmdjByIz8tH/6AVukAFZ98EG4S8X9fBniE3tHNDESJAlZjlsXHb0FP0cTV5lc8KM0Ev4JH5VU+NFeP4kGwRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=djlXhBzD; arc=none smtp.client-ip=74.125.224.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-914bf8abeaeso167973785a.0
-        for <stable@vger.kernel.org>; Sun, 24 May 2026 06:07:11 -0700 (PDT)
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-6530287803cso8825384d50.1
+        for <stable@vger.kernel.org>; Sun, 24 May 2026 06:37:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779628031; x=1780232831; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wDUj+XtKVNzBDF85yQS5JKEq71LY2fdGuiqbA9Dq4O8=;
-        b=cFT1mcaBOPEIM862F7eTf21DbE0DPTiI8kP55Vh6Ac7oM6LFlsp0/d3SE48w8FW6TX
-         UMPwC62yy6xQXXAIGzQWxoJmQbXE9TrE/Wueo16J7V3CTcwS+aqdg3tqecjtTT97pK3n
-         f75KLUxRdKkVShXaNYqhVmT8WgUK9txSD/Piw5KUM+k1SiKvnJucdKq/VDWam8E+Whjo
-         Rhbtexal+1srMsQ1TdTHPVEeozAKqgU/hSCaB1Fbm0Nil1TnsGWRcdPakVyd4MIUPcYJ
-         tasNC1aH256jAu5uLQwHiKv2eobsAr4SdxqXy/EK9Oh23Dpb4jSJISk3bTnMfl0l00zm
-         jwMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779628031; x=1780232831;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1779629846; x=1780234646; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wDUj+XtKVNzBDF85yQS5JKEq71LY2fdGuiqbA9Dq4O8=;
-        b=U/yLO1QKF0K0WkScorQTDOCKxzcxURWge5bB7/zY4RllcIB9Y2etupXPwJgrdcwYbQ
-         DR7LqmsEi9TOm0xEcbHHxs/ReyZgyG1Uw+77eLukwfkvRHvZ1P67MdfC/T7QUc3nHilE
-         n5t5p54WbDgC5Fgjj1JIJ2d71Nla+7+Kaj4MYZ2hk8bL3oV/9ApsIg7MJOTDrHfFXOKg
-         6rQmYigXS3s1sGLiILwMogrYLBqqzkv7RaZy2sR8H6qfLyu5XHSsUQZ4Gg/tVdSfP2XK
-         GeZ0NhDx6Qu1Gf250Fn3fRP9976lqmqN8D39lFcwOfyD9ibxmHeuiV/xCUI8UYTvyQsv
-         oTEQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+4ur8jpWgKCMrHYNWenZNNmfOPyvcuZUrutR+Hlzvn3yY5GB15bTFEeIgOXxdg0aLqnK3uJHo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHXHMn0iyrHBGK3VIyOC7iC4CZWEFb1b/xOsmXsawuV9b4d01z
-	gVIy4ZAdmphYvn2tJK9GzGEshOIrwnSDYIDW1q5/YQqmNN52Gx0IdutK
-X-Gm-Gg: Acq92OGGrpdVLEd8rGEpAC40xsT3MDC/qaCTZEmIJ5w+BGlMPs8hJ2lawTqm6/XISRl
-	z+BLZNTn3Z0KGzXFBvCA9jRo3JJ558E4zCOrr8GxOzZa2LME0V4we/swc+P+yYuCEVDJ36jkKmB
-	sYC5Ng7w5be9jygi1GAQjH8Z22LOrsYmldBXXgUtcJrrCiwckY+ryuOIil0iaY2sVEL/hi0ye4Y
-	XtHPgO6c/dvXKc3BQ+/vO8nAH0JLlRV5oGYlTbCALb7uBwe1tWRprq21bYT8ip+Dx6FtXj2s0Jz
-	relNI58BjEjesCMKF6uQ8uoBvAt4urL6tvl3kTivbGEzbfZ4IaiBEom++F9wO8EUKhxyKtOR3TV
-	H2KF2rpNCrFqjt51WwOK1zdemmXHbDq/XiHr76X38c5MaNFQL/cp1uHaVduCX/u21PGFlk6qhn4
-	YGLJHZvvmzYyAtIYQf6DH8sU7i2tgSfuo69CQHRbbMGr30EZjpUmLwdGNi5g0VrOSvisg2eDZ8X
-	zyOQ6fc2YvW6GxWzKbH
-X-Received: by 2002:a05:620a:6504:b0:8cf:c272:9721 with SMTP id af79cd13be357-914b48b4d38mr1503642085a.6.1779628030696;
-        Sun, 24 May 2026 06:07:10 -0700 (PDT)
-Received: from server0 (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-914bb905677sm817575885a.18.2026.05.24.06.07.09
+        bh=5YzZR/UW8yRfScwxVy4k+9Cx7IebnzhqtMNHTkpEuco=;
+        b=djlXhBzDweCzyq4p7iDDi1cLfxZyGhDt1ZNBnvkn+i8WQa1UVt6N9w9M1Y86PTYwxC
+         GLznfND7Jq/u35m69RY520XAg25CrHu/d4RG5rbIJWnShGT2V2prC10is7aq6K26OxjT
+         GFV4adNaVtfcKk4Urz4yCJF0Gswyk3PQ5fT70vUygD6/wOEzbC/2ePFM3K+3VIRRksq8
+         218A8S2lr/PyGGQOTo8OAqOmyX/D69DzgREWRmgluI8Nnv+754FpXp8GRX+HgnDsRH3u
+         xeZCQXFVuZCNQlKfcl6nybchf6/qzh2aGnlKUyEfQYMyhrvxG2kd2xdERuviZS7mKs7d
+         GL1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779629846; x=1780234646;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5YzZR/UW8yRfScwxVy4k+9Cx7IebnzhqtMNHTkpEuco=;
+        b=dCleWGivL/oHBeHJOkivJS2M4E/07n8qVFDFWkXRvkIPJcvOEsp4jDWFDHnL7uTjRw
+         q8JU8RZ0NK7cjyommVLwlW59Rse/CuXdjh52VwSDKKGjxxniVW+X6fTMqPfWh4CYZIeI
+         /FY5jVbiUZtz68QTkxy1Nnh+Hc/nG0+DtHRooOGeg9e4etRuNI4joSkjpAKMExIQlbwW
+         8e37h9kwqaQwV3V3m/y34jxLexC96eoenQLV4J7Gx+5TAZ2UvZyz6gADliI5M220t+bi
+         sMVmwiTxuFN7wner+o6CLYisdSZytL9/yQlcHedHSvnyZO5+N0AFSlTnA0O7sNlTF2Uq
+         M0xA==
+X-Forwarded-Encrypted: i=1; AFNElJ9bIQksfaMYJA2f6BxRyGH4KAhQrnmKaTt4/fmO4KpPXj37diHhwY8CLSANgpAJ8fyyMqfxWe4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5K6bqmgmCLbMpDEqKquoFN2p61D/DJ4cvGZ2i0wx5UdRNudoD
+	jpMD8fDg0E8fZS79/GKbBG59JVrBoyDSd3X4yx8W1sccHgfhzntHLYFG
+X-Gm-Gg: Acq92OEGaJgWev/UFcScJoJ2am6P4f5xZJ8wtp7n2+h1PWvRlsNZsl4k/mP+sYCAu5S
+	1LB0tAclB6+yNj9LslBXvXVUd6doxpND1Xsw+zQZ2vrMX+b9ihoLamqIXbHvUNsEdZgT4Wi3VBJ
+	CXI9WWl6WBWPgPxK2QiEawTwHmZTxagbAz5VweO/1xKiMLno9Qj4lltwlrex2QLeQbg25JgV9u4
+	VKanK6lraCK3IThmTLzDAoY32SEbGJcPpfKc3aZBNO+xJGHWLhCwoaxKq4b84sHITfqjjETRc84
+	StAvep/+d1xsN6NDuk153XFgnuJuKYZevecgvMgF852mG2YkQoWJM19jkw2HR/r12XqLeQ5AOSo
+	Q/c5jqqCm8g6d6do7+FdfMJeqj4mbCJvY2MGsrtb6mZhUoAhpiHTx8IyIG1BiSrqHGXfFLPxqOI
+	C7qvNq3L8iDPTobAqoyPWJIzFEFH4zrh9KfiHuDKU0PVkPGES4K3/Jl0VF2RIFlS+Jon1Bqo6tA
+	MZzQv4=
+X-Received: by 2002:a53:c04e:0:20b0:65c:65aa:df7c with SMTP id 956f58d0204a3-65ec98ea7d8mr8460898d50.33.1779629845849;
+        Sun, 24 May 2026 06:37:25 -0700 (PDT)
+Received: from gmail.com (141.139.145.34.bc.googleusercontent.com. [34.145.139.141])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-65ecfdf4bd7sm3163017d50.19.2026.05.24.06.37.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 24 May 2026 06:07:09 -0700 (PDT)
-From: Michael Bommarito <michael.bommarito@gmail.com>
-To: Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>
-Cc: NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-nfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] NFSD: restart ssc_expire_umount walk after dropping nfsd_ssc_lock
-Date: Sun, 24 May 2026 09:06:54 -0400
-Message-ID: <20260524130654.1924556-1-michael.bommarito@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        Sun, 24 May 2026 06:37:24 -0700 (PDT)
+Date: Sun, 24 May 2026 09:37:24 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: lazyming <minhnguyen.080505@gmail.com>, 
+ netdev@vger.kernel.org
+Cc: davem@davemloft.net, 
+ edumazet@google.com, 
+ kuba@kernel.org, 
+ pabeni@redhat.com, 
+ horms@kernel.org, 
+ w@1wt.eu, 
+ security@kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ lazyming <minhnguyen.080505@gmail.com>, 
+ stable@vger.kernel.org
+Message-ID: <willemdebruijn.kernel.10f46164d2a79@gmail.com>
+In-Reply-To: <20260521121628.309924-1-minhnguyen.080505@gmail.com>
+References: <20260521121628.309924-1-minhnguyen.080505@gmail.com>
+Subject: Re: [PATCH net] net: skbuff: fix missing zerocopy reference in
+ pskb_carve helpers
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254028-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254027-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[davemloft.net,google.com,kernel.org,redhat.com,1wt.eu,vger.kernel.org,gmail.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	FREEMAIL_FROM(0.00)[gmail.com]
-X-Rspamd-Queue-Id: 0CD125C2795
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[willemdebruijnkernel@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-0.369];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 47F095C2949
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-nfsd4_ssc_expire_umount() walks nn->nfsd_ssc_mount_list with
-list_for_each_entry_safe(ni, tmp, ...).  For each expired entry it
-sets nsui_busy = true, drops nfsd_ssc_lock to run mntput() on the
-source vfsmount, then reacquires the lock to list_del + kfree the
-entry and continue iterating via the macro's saved tmp pointer.
+lazyming wrote:
+> pskb_carve_inside_header() and pskb_carve_inside_nonlinear() both copy
+> the old skb_shared_info header into a new buffer via memcpy(), which
+> includes the destructor_arg pointer (uarg) for MSG_ZEROCOPY skbs.
 
-The nsui_busy flag protects the current ni from concurrent
-nfsd4_ssc_setup_dul() finders during the lock-drop window, but it
-does not pin tmp.  Another nfsd RPC thread that fails its source-
-server mount and reaches nfsd4_ssc_cancel_dul() will, during that
-same window, take nfsd_ssc_lock, list_del + kfree its own ssc_umount
-item, and release the lock.  If that item is the saved tmp of the
-expire walk, the next iteration dereferences a freed
-nfsd4_ssc_umount_item.
+These functions are not supposed to maintain zerocopy frags.
 
-Restart the walk from the head after the mntput() unlock window so
-no saved next pointer survives the lock-drop.  The list is bounded
-by the number of active inter-server source mounts (typically small)
-and the expire delayed-work runs periodically rather than per-IO,
-so the restart is cheap.
+Both call skb_orphan_frags.
 
-Cc: stable@vger.kernel.org
-Fixes: f4e44b393389 ("NFSD: delay unmount source's export after inter-server copy completed.")
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
----
- fs/nfsd/nfs4state.c | 44 +++++++++++++++++++++++++-------------------
+I think what may need to happen is to invert the order of that call
+and the memcpy. Current code:
 
-Changes since v1:
- - Rewrote the in-code comment above goto-restart to describe the
-   current code (concurrent cancel_dul can free any list item while
-   the lock is dropped) rather than referencing the removed
-   list_for_each_entry_safe() iterator.  (Chuck Lever.)
- 1 file changed, 25 insertions(+), 19 deletions(-)
+        memcpy((struct skb_shared_info *)(data + size),
+               skb_shinfo(skb), offsetof(struct skb_shared_info, frags[0]));
+        if (skb_orphan_frags(skb, gfp_mask)) {
+                skb_kfree_head(data);
+                return -ENOMEM;
+        }
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 6b9c399b89dfb..33f72fcf65458 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -6728,30 +6728,36 @@ static void nfsd4_ssc_shutdown_umount(struct nfsd_net *nn)
- static void nfsd4_ssc_expire_umount(struct nfsd_net *nn)
- {
- 	bool do_wakeup = false;
--	struct nfsd4_ssc_umount_item *ni = NULL;
--	struct nfsd4_ssc_umount_item *tmp;
-+	struct nfsd4_ssc_umount_item *ni;
- 
-+restart:
- 	spin_lock(&nn->nfsd_ssc_lock);
--	list_for_each_entry_safe(ni, tmp, &nn->nfsd_ssc_mount_list, nsui_list) {
--		if (time_after(jiffies, ni->nsui_expire)) {
--			if (refcount_read(&ni->nsui_refcnt) > 1)
--				continue;
-+	list_for_each_entry(ni, &nn->nfsd_ssc_mount_list, nsui_list) {
-+		if (!time_after(jiffies, ni->nsui_expire))
-+			break;
-+		if (refcount_read(&ni->nsui_refcnt) > 1)
-+			continue;
- 
--			/* mark being unmount */
--			ni->nsui_busy = true;
--			spin_unlock(&nn->nfsd_ssc_lock);
--			mntput(ni->nsui_vfsmount);
--			spin_lock(&nn->nfsd_ssc_lock);
-+		/* mark being unmount */
-+		ni->nsui_busy = true;
-+		spin_unlock(&nn->nfsd_ssc_lock);
-+		mntput(ni->nsui_vfsmount);
-+		spin_lock(&nn->nfsd_ssc_lock);
- 
--			/* waiters need to start from begin of list */
--			list_del(&ni->nsui_list);
--			kfree(ni);
-+		/* waiters need to start from begin of list */
-+		list_del(&ni->nsui_list);
-+		kfree(ni);
- 
--			/* wakeup ssc_connect waiters */
--			do_wakeup = true;
--			continue;
--		}
--		break;
-+		/* wakeup ssc_connect waiters */
-+		do_wakeup = true;
-+		/*
-+		 * Concurrent nfsd4_ssc_cancel_dul() can free any item
-+		 * on the list under nfsd_ssc_lock while mntput() runs
-+		 * above.  Restart from the head; the list is short and
-+		 * the expire worker is periodic, so this is cheap.
-+		 */
-+		spin_unlock(&nn->nfsd_ssc_lock);
-+		goto restart;
- 	}
- 	if (do_wakeup)
- 		wake_up_all(&nn->nfsd_ssc_waitq);
--- 
-2.53.0
 
+> Neither function calls net_zcopy_get() for the new shinfo, creating an
+> unaccounted holder: every skb_shared_info with destructor_arg set will
+> call skb_zcopy_clear() once when freed, but the corresponding
+> net_zcopy_get() was never called for the new copy. Repeated calls
+> drive uarg->refcnt to zero prematurely, freeing ubuf_info_msgzc while
+> TX skbs still hold live destructor_arg pointers.
 
