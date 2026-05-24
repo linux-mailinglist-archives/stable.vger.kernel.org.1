@@ -1,100 +1,102 @@
-Return-Path: <stable+bounces-254043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254044-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kMr2Ky4iE2qv8AYAu9opvQ
-	(envelope-from <stable+bounces-254043-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 24 May 2026 18:07:10 +0200
+	id WImgBWEpE2pE8gYAu9opvQ
+	(envelope-from <stable+bounces-254044-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 24 May 2026 18:37:53 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AD615C3099
-	for <lists+stable@lfdr.de>; Sun, 24 May 2026 18:07:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 730FC5C3298
+	for <lists+stable@lfdr.de>; Sun, 24 May 2026 18:37:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 15B91300A743
-	for <lists+stable@lfdr.de>; Sun, 24 May 2026 16:07:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4DE3D3008762
+	for <lists+stable@lfdr.de>; Sun, 24 May 2026 16:37:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53E683A63EC;
-	Sun, 24 May 2026 16:07:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2882399013;
+	Sun, 24 May 2026 16:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LBzNKn6R"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q7ZvLD1B"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F22E023D297
-	for <stable@vger.kernel.org>; Sun, 24 May 2026 16:07:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF25390989
+	for <stable@vger.kernel.org>; Sun, 24 May 2026 16:37:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779638826; cv=none; b=kMbY4CGt6zFMVXN1XozA/zna5HlVOdD5pStcO/YLHd1uz4vkik3cpLpCYu6pjqk6ww4YVs9tQXI+viQaZtHFk/shcd6LVS9gX2YJtvyCQEpfKylcO5Uk0/Nrxws82ltDmcn6liTTvz38lJCdfBt8FaKbZ/jw51gzDfzMMVjhVOI=
+	t=1779640645; cv=none; b=mkk8AUw+TiEoZAT9y4hae0QmBWrJBd8XGsNta9MXPrDBqtL/+r6W8SL8/KEoTkug4GFtdapwdl/n2kI/UjsB7bE6nGvVyvwGY2BkHc9jic6kXvXcz1vfMttcSROzDMdHEEA1CYYwrsdY/CUhdiFdMvBfWeEQQ164GpsbvV6lYRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779638826; c=relaxed/simple;
-	bh=oFecsmdHD5Cq5W5MDU8nNRtON2oDakO8PkdvCnvCWfY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=V++rQ9qYMJHmV5yF86c3hKIiZXpO/488mORSawaGF7hTIyxRKFYj0rn7bKzrepku+4J7uK1LvUOexarGyJTu4/+gxOJDPA1KdsPBQmpZIEJxc428TBGMFAB9kf0K6mZyCBgV2KkwjMtsEDWcchjU+k9u5RpcHNVVaihn6g0arLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LBzNKn6R; arc=none smtp.client-ip=209.85.216.41
+	s=arc-20240116; t=1779640645; c=relaxed/simple;
+	bh=bB3CujSeqc2lDIe/xKJczcQy7sGOZm3Ot4aNOWG6aCM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Ghc4sORxgxrEa1y3UJitU57IBJcsdZJD1kRO2Wvd+6RKSPb/MdlINKZVnRH12FUNmvBpR45R58jlsa7A9/GfTE0LDT0Ad9dhb/SeNXWWZ4vdD5pPlZ+Olih4tc/GFQU0DkY4+fEjkuaspQROxDPsuuX8oiOh5YXvBDWWTqzHaxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q7ZvLD1B; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-36936dcf19dso4310482a91.0
-        for <stable@vger.kernel.org>; Sun, 24 May 2026 09:07:04 -0700 (PDT)
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2bc763e2ba8so44436495ad.3
+        for <stable@vger.kernel.org>; Sun, 24 May 2026 09:37:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779638824; x=1780243624; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=18MxIR0tdVmzmTTCjfqveL+dgh6nwJgg/2YQDWJQQr8=;
-        b=LBzNKn6Rl+YurdChLp+7qoPPZUGzmmxtMB4CQsSnh7eM1jaafMZ94USmZDxs4JFEg7
-         1wEkqusXooU7zIMRgsqr4VCbEi28VKNw9XqUuZh6MRFY8J6Cg24MhvtcvAZSe8QZcbaq
-         ejGt34bV08cJG90EBssiNPqfrckxJcX2lBqKwryypTHWeyN/jcwWWZBe9cZHYPFIM6Vw
-         +Oze503Rv1v1kSPDtHjppQnIJoBf7/PTOwG5I6/zBcRVils3t/TotaYGXRZ4qTr8HVve
-         k8sYWESwOnKMbcRPOq9YKiqR949YXKFMT9NK41fubkkNJwPg+dfxgGMDcYbcDTVdLkHF
-         aydg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779638824; x=1780243624;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1779640644; x=1780245444; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=18MxIR0tdVmzmTTCjfqveL+dgh6nwJgg/2YQDWJQQr8=;
-        b=PSjC2DYkef1P0SJquAbLg5jMk7PLpChnusXF/CnXaVqrugyBVyN/ZxhvUXzF8AKS/q
-         lW980Or7UBeEW8Zy+x8WBFdLR9yFJPFHL39taQLGddm9TSFHyZL/KYVJO/kVCj2tifO3
-         NiZh0TIyPX/jk6b2TlOFf6kc2q9Mt/QhwsAHmFbjCh2lBM3Pmm4IFsNlBmSwWrxPP65a
-         Zqd+aBq0yMcjwUHXOqvUrsfKVpH3z5NPiY4OpxNz/0tSO+SMAbbff9Vvq6wOWFh4dfvR
-         f82kONLaa9cJ5tzooK5NBjT+dvcCRxP+0LzX6XnAPvhmVX53bOzCMN319hu9WCWD0NZ1
-         vV2g==
-X-Forwarded-Encrypted: i=1; AFNElJ/YZG5DRqNsJaBo5/Zw6ZLoTR7tRFrvXvjyVwRWtFQbUTVpOSj9nXNHpl6qq3Ri9xaG0riT7vM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxf0w4tmvgR16rYtiEYVfx+Px8rQMq1ON1kIiBXxNwY8vuhvq61
-	33rbV2aoRgxY/9y+hGP24uUWMVCJBxl6Eflw7SDqD5mHf2X/eTahRJc=
-X-Gm-Gg: Acq92OGBuPFVtkcXc92qyBCfm9GDb+YfffmdUBHGyAO1VOc1WQOikGuyux8OALzcgAm
-	xy5joOb4PB8Kou/hn7SRWtDGKKU9o9NrFIuMEPwheF2NLSjwsQVxSf/AtgYRS7yOz581xxbHLJM
-	LJRdCAEir386cyJgsgsdkUH+JtjYynSS0euw/VcCgHsZlHs1DufdXVUNSTMlpw+aDJEHfNxzeqF
-	0+TIEbbacoelq+bPdU8BMhSVLY4P3EdZQseYmrmYFuxMs0L7L1fKKLZDCxljWewu81uXL186O9Z
-	xdRjtAcGN23DGfJL1quklVAH2PO35ciK08//zWQUzrcL30jHwjm7fDEGI2/Bc0eUU5MMY5dwx4X
-	B75NKl93dCsG/zERgl6F2WtsFs6I2XyGwlRaZqpxlUPJ73YnSQmE/culTHsgNaHU10zz0uIoodu
-	KkjQ105D7piii1erW8TGtpq4No1BG6NrEqDH/GacCyHf2bSiWwMh4UlhRMPn+j1OQfceDk4Tc=
-X-Received: by 2002:a17:90b:2585:b0:366:3ac:f730 with SMTP id 98e67ed59e1d1-36a6788e0abmr10212406a91.25.1779638824285;
-        Sun, 24 May 2026 09:07:04 -0700 (PDT)
+        bh=3Bbs8ogJDyCawp6DJ+gyS+VxxLyhjXWQ/w4tp1r61OM=;
+        b=Q7ZvLD1BFVu4x0ccJqSxARE2YkVbevzKyPsLEfQyWYnUdaurCoSIlmxateKrGmTJPN
+         K5ZQmPNhhqaSVYiIhKP4q83YCAOhUSPluWvBrE+IbXZ3PFWiMMqMHEzpskgh7uZnoHPQ
+         sD4yVYZ20exry1Cd4zqMibpV+tgxKP6zG8AWuWqcKuy5YBXHke/PBjcOWyloUDJhkQA6
+         LlSVuRa+8txlz1U/1mYodwfkW+jzd3nmvh8TChZnylDWHOH+mr/rwPQtWEPi9PisEsVK
+         dKjSwVvP/XoykXgcOLZYQm2OZtpxEdpTR5blwgvW6GWbZkEf1vXeMDtA6uGB89us72Db
+         TS3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779640644; x=1780245444;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=3Bbs8ogJDyCawp6DJ+gyS+VxxLyhjXWQ/w4tp1r61OM=;
+        b=R5FCbfRPmgKrrt42luudL471tWxKq2eEBJFMmagV3FFICi8A5M/94vMh3WdVKEQDn+
+         LOUuxjwIh9SuXmKqTsFNjYo61x6Z+fpnWFJ7YNs7takiMZtMF0RuwcDB6JGeGihJv6tI
+         dws/8bz56KXnQRsnM7R6Tjc8B47M2bJFgS2qc537MGGv8CvaLytHOm5qsojAIsJetmZH
+         8Z2m2t1ItJ0vdUD8l1z5+ACvtmofdDJnM+W/S6qogkeZQxAaqJjcy7jMIA2ermzXFOGV
+         oZ65G5XAxYVbpvVgEJS2nyXP4wXsAYY4/UY4+L6y9zg+m+O0mEmqKsEJS0SvW2xN5tiN
+         Oufw==
+X-Forwarded-Encrypted: i=1; AFNElJ8DVeNJcTiSBdDPNZt04mJgHG2W5BjzkmKZ0qiGDgz7x8nYzgJP98Tq50TJGiKw0lw46XWvkus=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9w7nyO9Uy4r6hCGCWhfp1rdJspoZZFWm+T9WqbPZz9RiCpMXM
+	KXusiq5+Ltfr6jtNXQqNZHzcgneV70HVWXp26fSpk9dTe1nf2vDs+EE=
+X-Gm-Gg: Acq92OFMj7dSW8NTzKFYa3XKWETR6tlqP/dZOBMpM+Ddvy/NiHizT84WUS3Xpg/Ji1c
+	I3l1iNX1OCrsf+V/UfCz/UFzom15+QfXtVaSbc1xd44HvHY9kzTybNsAYgRa5TXCWc45QYIhaRc
+	TMgS1cA6sm8TgtcIqtlnX9sZG1L3CIHpH1IBVT/v5zq2h87U+KiJCKatKOcAnsdCTS43LZ5Nuh5
+	cLZ4gCDMd5LwnpCytdbQ2SZ+XRS+xLJrlFq8wDvmVVLK3vEi4yHbZPih8+at7kahj4o+zPl0ddt
+	2PlF3J7hXmFNPEbZN70mtIX4+jPoMzwmcNSxG2FSA/TrmKVhsusEzv7dGT8V2f8wwsXIUYNgktQ
+	1ZCcr5mT0oS96hMeYhe2EaYe17P+P9frLS76Y11nBlI9oImLA2YAQDGo7CWy7Sq7LTVa/Uy5cJX
+	fnZMoZoAblpnzCKai8zUqIlr0AO5WrQK7oOMkt1pNwahhQfA+rtYYOwnIFVF5krb7j7Nwrfnjms
+	YasCOaeww==
+X-Received: by 2002:a17:902:e548:b0:2bc:ac76:c1d3 with SMTP id d9443c01a7336-2beb0770aebmr131579575ad.29.1779640643652;
+        Sun, 24 May 2026 09:37:23 -0700 (PDT)
 Received: from localhost.localdomain ([1.226.165.54])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36aa73da32dsm2082541a91.4.2026.05.24.09.07.00
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb58b309bsm73017325ad.51.2026.05.24.09.37.20
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 24 May 2026 09:07:03 -0700 (PDT)
+        Sun, 24 May 2026 09:37:22 -0700 (PDT)
 From: Myeonghun Pak <mhun512@gmail.com>
 To: Neil Armstrong <neil.armstrong@linaro.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+Cc: Jianhua Lu <lujianhua000@gmail.com>,
+	Jessica Zhang <jesszhan0024@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 	Maxime Ripard <mripard@kernel.org>,
 	Thomas Zimmermann <tzimmermann@suse.de>,
 	David Airlie <airlied@gmail.com>,
 	Simona Vetter <simona@ffwll.ch>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
 	dri-devel@lists.freedesktop.org,
-	linux-amlogic@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Myeonghun Pak <mhun512@gmail.com>,
 	stable@vger.kernel.org,
 	Ijae Kim <ae878000@gmail.com>
-Subject: [PATCH] drm/meson: clean up KMS polling on register failure
-Date: Mon, 25 May 2026 01:01:39 +0900
-Message-ID: <20260524160657.17802-1-mhun512@gmail.com>
+Subject: [PATCH 1/2] drm/panel: boe-bf060y8m-aj0: use devm_drm_panel_add()
+Date: Mon, 25 May 2026 01:36:32 +0900
+Message-ID: <f7407c121909b6da415d4b91f62669ea250a42de.1779640137.git.mhun512@gmail.com>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <cover.1779640137.git.mhun512@gmail.com>
+References: <cover.1779640137.git.mhun512@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -102,10 +104,9 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
@@ -113,68 +114,74 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch,baylibre.com,googlemail.com,lists.freedesktop.org,lists.infradead.org,vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[gmail.com,linux.intel.com,kernel.org,suse.de,ffwll.ch,lists.freedesktop.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-254044-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	TAGGED_FROM(0.00)[bounces-254043-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[mhun512@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.997];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 0AD615C3099
+X-Rspamd-Queue-Id: 730FC5C3298
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-meson_drv_bind_master() starts the KMS polling helper before registering
-the DRM device. If drm_dev_register() fails, probe unwinds the IRQ and
-DRM device without stopping the polling helper.
+boe_bf060y8m_aj0_probe() adds the panel before attaching the DSI
+device. If mipi_dsi_attach() fails, probe returns with the panel still
+registered.
 
-Call drm_kms_helper_poll_fini() on that failure path before freeing the
-IRQ.
+drm-misc-next has devm_drm_panel_add(), so use it to register the panel
+with devres-managed cleanup. This removes the need for open-coded
+drm_panel_remove() handling on later probe failures and on the remove
+path.
 
 This issue was identified during our ongoing static-analysis research while
 reviewing kernel code.
 
-Fixes: bbbe775ec5b5 ("drm: Add support for Amlogic Meson Graphic Controller")
+Fixes: a19125a28112 ("drm/panel: Add BOE BF060Y8M-AJ0 5.99" AMOLED panel driver")
 Cc: stable@vger.kernel.org
 Co-developed-by: Ijae Kim <ae878000@gmail.com>
 Signed-off-by: Ijae Kim <ae878000@gmail.com>
 Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
 ---
- drivers/gpu/drm/meson/meson_drv.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/panel/panel-boe-bf060y8m-aj0.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/meson/meson_drv.c b/drivers/gpu/drm/meson/meson_drv.c
-index 49ff9f1f16..e49de5df73 100644
---- a/drivers/gpu/drm/meson/meson_drv.c
-+++ b/drivers/gpu/drm/meson/meson_drv.c
-@@ -352,12 +352,14 @@ static int meson_drv_bind_master(struct device *dev, bool has_components)
+diff --git a/drivers/gpu/drm/panel/panel-boe-bf060y8m-aj0.c b/drivers/gpu/drm/panel/panel-boe-bf060y8m-aj0.c
+index 84c21c62a4..a6d765b402 100644
+--- a/drivers/gpu/drm/panel/panel-boe-bf060y8m-aj0.c
++++ b/drivers/gpu/drm/panel/panel-boe-bf060y8m-aj0.c
+@@ -357,7 +357,9 @@ static int boe_bf060y8m_aj0_probe(struct mipi_dsi_device *dsi)
+ 		return dev_err_probe(dev, PTR_ERR(boe->panel.backlight),
+ 				     "Failed to create backlight\n");
  
- 	ret = drm_dev_register(drm, 0);
- 	if (ret)
--		goto uninstall_irq;
-+		goto uninstall_poll;
+-	drm_panel_add(&boe->panel);
++	ret = devm_drm_panel_add(dev, &boe->panel);
++	if (ret)
++		return ret;
  
- 	drm_client_setup(drm, NULL);
+ 	ret = mipi_dsi_attach(dsi);
+ 	if (ret < 0) {
+@@ -376,8 +378,6 @@ static void boe_bf060y8m_aj0_remove(struct mipi_dsi_device *dsi)
+ 	ret = mipi_dsi_detach(dsi);
+ 	if (ret < 0)
+ 		dev_err(&dsi->dev, "Failed to detach from DSI host: %d\n", ret);
+-
+-	drm_panel_remove(&boe->panel);
+ }
  
- 	return 0;
- 
-+uninstall_poll:
-+	drm_kms_helper_poll_fini(drm);
- uninstall_irq:
- 	free_irq(priv->vsync_irq, drm);
- exit_afbcd:
+ static const struct of_device_id boe_bf060y8m_aj0_of_match[] = {
 -- 
 2.47.1
 
