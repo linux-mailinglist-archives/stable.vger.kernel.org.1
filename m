@@ -1,126 +1,187 @@
-Return-Path: <stable+bounces-253998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253999-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kJm7EH6aEmrr1QYAu9opvQ
-	(envelope-from <stable+bounces-253998-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 24 May 2026 08:28:14 +0200
+	id 5FxRLtmaEmoG1gYAu9opvQ
+	(envelope-from <stable+bounces-253999-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 24 May 2026 08:29:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 965685C1841
-	for <lists+stable@lfdr.de>; Sun, 24 May 2026 08:28:13 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1784C5C184B
+	for <lists+stable@lfdr.de>; Sun, 24 May 2026 08:29:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D183A300D680
-	for <lists+stable@lfdr.de>; Sun, 24 May 2026 06:28:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6037630117BA
+	for <lists+stable@lfdr.de>; Sun, 24 May 2026 06:29:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14172F8EB0;
-	Sun, 24 May 2026 06:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23C5F38E8A1;
+	Sun, 24 May 2026 06:29:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hqc5GQ4U"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.chopps.org (smtp.chopps.org [54.88.81.56])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A434810F2;
-	Sun, 24 May 2026 06:28:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.88.81.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779604086; cv=none; b=JuwsVjvlv8rc1TaTfFYFdZs6Q08leaXkOpfB31w7IKcVlkjeNVAFvBf/unjSo7ym6excR0bko4nKXML+tmlwp4ml9ZAt9uT/OFzWKfICAM6euv5/Q6IFv+XmAp4o2VM1ztzveAOtydWN5PhJC57w8gzh9r0DzJ3EmhbnZwNmunU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779604086; c=relaxed/simple;
-	bh=C56XPEmyiutI6uU+IC8A8y7eRsd2kZmjmJDlh7z1wV0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ilZDvAACMM/CfWJRIf9VK2uZvFM4XerMORAyk4jCsndNGpWyGpcUCFLnuDUp5SSIEupXTR9aHZZcmWZ2mymTzHrw0LruWAQVCcNrguw9i3EuhwQXf84TLHxa6QSxKKXoIVdecsMIt5pf4vuccJfSnxE8yId9lT5XeaLjnyvXdG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chopps.org; spf=fail smtp.mailfrom=chopps.org; arc=none smtp.client-ip=54.88.81.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chopps.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=chopps.org
-Received: from ja.int.chopps.org.chopps.org (unknown [47.225.56.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by smtp.chopps.org (Postfix) with ESMTPSA id D79B37D08D;
-	Sun, 24 May 2026 06:19:54 +0000 (UTC)
-From: Christian Hopps <chopps@chopps.org>
-To: Takao Sato <takaosato1997@gmail.com>
-Cc: netdev@vger.kernel.org,  steffen.klassert@secunet.com,  w@1wt.eu,
-  davem@davemloft.net,  herbert@gondor.apana.org.au,
-  stable@vger.kernel.org
-Subject: Re: [PATCH net v3] xfrm: iptfs: preserve shared-frag marker in
- iptfs_consume_frags()
-In-Reply-To: <20260522142504.1394864-1-takaosato1997@gmail.com> (Takao Sato's
-	message of "Fri, 22 May 2026 11:25:04 -0300")
-References: <20260522142504.1394864-1-takaosato1997@gmail.com>
-User-Agent: mu4e 1.14.1; emacs 30.2
-Date: Sun, 24 May 2026 02:19:53 -0400
-Message-ID: <m2se7h1g8m.fsf@ja.int.chopps.org>
+Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5781221CFE0
+	for <stable@vger.kernel.org>; Sun, 24 May 2026 06:29:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779604180; cv=pass; b=fgZJqYWo4lnegvTr2fMZlsODTZOaSICViQnOmwLV/5w/ngm5fJ/s6D80mTbFd8mvzayFOSSBxbIYws7l+Y965F6h46FiQJWs6EeIBHfl7q23WQ+V5GGGted2RwW3KYyzcinSTN7qLDovQFrGW7QMgTfM1pziSy4fFACV4tykTIE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779604180; c=relaxed/simple;
+	bh=X6EaY0Ai1amObm64brt2FocCiJyv1z8T5Qwej2XOZZ8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HZiU2BXpPZGHzI7AO4dqtPsV9D+UnCM2nKc02ixp+uBUMvDPJ3AjNG8ExQI836/qN1EQkdyZFGpK6AdMTQq3MX4crCGjIx6zxVVf3e4kNAxYsr1dyWs/s2lHKs6Z+bsAvrzFaK4I+/cZCadnKSFl56xg78UdBIq3CU3DvLv4qdY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hqc5GQ4U; arc=pass smtp.client-ip=74.125.224.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-651c5d525f6so8632531d50.3
+        for <stable@vger.kernel.org>; Sat, 23 May 2026 23:29:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779604177; cv=none;
+        d=google.com; s=arc-20240605;
+        b=FtgqWT7TlvqtcFnQfRAceChasY0X88GuFr/QvjpF5wJuQH2oxlgHAzH3ikvnSNymSb
+         ecnH4DjKjFc2hU8S1A5bAeJYYOPnMmLBCtRX8V1B/psqG6NZRgfolTBLlAugoFBdnvrU
+         mDscrSblTBblIF+ep/nvAaA9wiEA2Rdr8aOgoZ/56eKN/XC5q2Y/Mq9uIBYbqWrD+E7H
+         peCi7JU0qZmXBSQOFg5aowJRuvOA/AJL9uXth4/4o63/IO/2gOzAOXfwIorkm6NLH+km
+         BTu5G46LURuxyy470L8EXBRzSPT+2Bi8MUV3cDOwQSxNOaFQuZPy1W7skykANeK72beA
+         Oy4g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=zYnV1rCuWZnxSIwwypty56meo5dLmcFPMrkTKYeaGD8=;
+        fh=4RkcWtJFqeh+VBai22E09g1Ix2uSo0S0fKUPqfG3wxY=;
+        b=c1ste/U4m5Lrcq6+EsUH7XFoOEw6FpKjhJDuRkz57nG6XUjG0Gqb5cyHSCPQPpoJRv
+         LwvWsgSdOrIIRmIRL+WsIWKlCz0pE0eOhDQrHMMTiJ3zoJsq1S0ocWTYM0qMM0tCeJ/O
+         TcDKRwQaUCbx809xi3piK/ENfLRRrUrGdrHZnFlUXXsg9DNZtmNNFN0TdbajxbSc3pub
+         ZdijhnBPNdZ7hD0jeiU7y+20aFyv4Eoe7DJJFSCnPoTHToUTQMlRfGjJzhiD8xloEtHa
+         +3mwBPE1U0y08DpHycKlGm7y9IeI0bcr1IJPMnts6A0MmhmhjT/eU+BgAatURO2XfDyr
+         Z3ng==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779604177; x=1780208977; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=zYnV1rCuWZnxSIwwypty56meo5dLmcFPMrkTKYeaGD8=;
+        b=Hqc5GQ4UdsmNAxZFDgVvTyRUehsRGXJPTSamRwmM+En41e3jm5EmjBAdC1QewhwYLj
+         JyaL2Vo2kBM8nbluUYM9ytYCPfZC6OiXzT2GEUO0qlW7NFB8f7iRCJoIFtTQ20LsHKw7
+         PslAVJQ6CuC9u3ZFCpWBtypB4ZY2uYcqaPAt+URuW2N3mt/LpXiv6JtkiWrudCPFDoMa
+         3fw7k9NO7UYJEYpxHY7OizSw+we6VZIQ3WUbLr5GLEWAvsWN4x7zWsW+F8zT+GWO8kDJ
+         R7RMVOCjwd7fTuvaI2mWR8CZIvA2SSZW7yWvo4Lvsbc6sR9HS3otpg8VNhDsYhhi7ooC
+         o5xQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779604177; x=1780208977;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zYnV1rCuWZnxSIwwypty56meo5dLmcFPMrkTKYeaGD8=;
+        b=PHE87W1yfZDyk2NLeQvNpyQIc+kNADsh2a2VDuAyMit7AL+syU0pA/WEwMGrZad7Fm
+         nKdzMTe35hS16acMX0rbFfhZuFkoi0pwi3qipBPgXhDFCa/TdTCzIUi8C/4Pj+EwKNCh
+         VKS1+yHKsCtN1c9buBrIgtXDxxQ/9SbS1yl18z9zo+MuUjBfrXc/ii8qsCUh6c7qGQun
+         w1Ag/WEz/bfTshQNljLs/Bnr5qY++WaTywuS7OlUu6g/yK0UIqB3sC/3/FHRkMV6+XpW
+         HcGoVpHF/LOfCZ74rY6vl6ZVAD7QZAT8cRYjY5dnj8HEsJfeTJPo8rvkodU69yI13UZq
+         V7Yw==
+X-Forwarded-Encrypted: i=1; AFNElJ9GfBw20Ynp7tOqvlUNky3RNoWMQkTUTF4cRa05w+gJco96Iz6m0EgfJqVE0cJ/qr/65Qto0XQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/etiirZrODXxMd6qnIQb/PmgQGq4DOoFu5LcTI8IpYVc9vySc
+	KqDB+ZQIzWhBrCUDEl9RNHiDiMzSQDkhLMt7ZjG9Qui8nvdanJva6UmzehzbqA+j7kikghx/eOU
+	oHahEp+1PQs3SxhTSBoS2+KwTlt2QboGN8HlAFCU=
+X-Gm-Gg: Acq92OGta6v9O7Ntfs2Ct1JSPnHRWZ3MlyCkitiXbRD3h9P8RaxPksnipRH4glCDcL1
+	PKGyxATkOswPaptZ0GSkS9cVlYT0+vV+spP7m53HyLzn45p4TOPa5LjjP8b/xdutfrYqgaXpFD1
+	fPodY3qv1pjgTNzAw/lLGjMT/7DhC1tJSipq6Ol92ZKQeIhUGzW4e0pex/tGq/YnoFb+I89sYU1
+	eErhAJ5o9vX0aaFBcogFtI/irQUk1e1ll1TVx0kG4faSe/BknkriSZqRB1KbBoaejfAyhOV0HBW
+	ZG/GqSI=
+X-Received: by 2002:a05:690e:428f:10b0:65e:449f:4e24 with SMTP id
+ 956f58d0204a3-65ec995d019mr7631677d50.47.1779604177366; Sat, 23 May 2026
+ 23:29:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed
-X-Spamd-Result: default: False [-0.96 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+References: <20260416155443.3949056-1-lgs201920130244@gmail.com> <2026052229-overspend-preoccupy-2f6f@gregkh>
+In-Reply-To: <2026052229-overspend-preoccupy-2f6f@gregkh>
+From: Guangshuo Li <lgs201920130244@gmail.com>
+Date: Sun, 24 May 2026 14:29:20 +0800
+X-Gm-Features: AVHnY4LwLl0ihbKIcHQM_fG7TsEG_idydNLp0GGjOg47Od3AjoJqLEIIgg8jW3M
+Message-ID: <CANUHTR-AGDfWgiLpqRWsBvxH=kPgxf+rD+gTOxA12yLmDrupNg@mail.gmail.com>
+Subject: Re: [PATCH] uio: fix IRQ vector leak on probe failure and remove
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Yaxing Guo <guoyaxing@bosc.ac.cn>, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-253999-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253998-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	DMARC_NA(0.00)[chopps.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.877];
-	FROM_NEQ_ENVFROM(0.00)[chopps@chopps.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,ja.int.chopps.org:mid,labn.net:email]
-X-Rspamd-Queue-Id: 965685C1841
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 1784C5C184B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Takao Sato <takaosato1997@gmail.com> writes:
+Hi Greg,
 
-> iptfs_consume_frags() transfers paged fragments from one socket buffer
-> to another but fails to propagate the SKBFL_SHARED_FRAG flag. This is
-> the same class of bug that was fixed in skb_try_coalesce() for
-> CVE-2026-46300: when fragments backed by read-only page-cache pages are
-> merged, the marker indicating their shared nature must be preserved so
-> that ESP can decide correctly whether in-place encryption is safe.
->
-> Apply the same two-line fix used in skb_try_coalesce() to
-> iptfs_consume_frags().
->
-> Fixes: b96ba312e21c ("xfrm: iptfs: share page fragments of inner packets")
-> Cc: stable@vger.kernel.org # 6.8+
-> Signed-off-by: Takao Sato <takaosato1997@gmail.com>
-> ---
->  net/xfrm/xfrm_iptfs.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-> index 97bc979e5..4db85e158 100644
-> --- a/net/xfrm/xfrm_iptfs.c
-> +++ b/net/xfrm/xfrm_iptfs.c
-> @@ -2168,6 +2168,8 @@ static void iptfs_consume_frags(struct sk_buff *to, struct sk_buff *from)
-> 	memcpy(&toi->frags[toi->nr_frags], fromi->frags,
-> 	       sizeof(fromi->frags[0]) * fromi->nr_frags);
-> 	toi->nr_frags += fromi->nr_frags;
-> +	if (fromi->nr_frags)
-> +		toi->flags |= fromi->flags & SKBFL_SHARED_FRAG;
-> 	fromi->nr_frags = 0;
-> 	from->data_len = 0;
-> 	from->len = 0;
+Thank you for reviewing the patch.
 
-LGTM, Thanks!
+On Fri, 22 May 2026 at 18:03, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Thu, Apr 16, 2026 at 11:54:43PM +0800, Guangshuo Li wrote:
+> > probe() allocates MSI/MSI-X vectors with pci_alloc_irq_vectors(), but
+> > neither the error path nor remove() releases them with
+> > pci_free_irq_vectors().
+> >
+> > Unlike drivers using pcim_enable_device(), this driver uses
+> > pci_enable_device(), so the IRQ vectors are not managed automatically
+> > and must be freed explicitly.
+> >
+> > Add pci_free_irq_vectors() to the probe error path after successful
+> > vector allocation and to remove(). The issue was identified by a
+> > static analysis tool I developed.
+> >
+> > Fixes: 3397c3cd859a ("uio: Add SVA support for PCI devices via uio_pci_generic_sva.c")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+> > ---
+> >  drivers/uio/uio_pci_generic_sva.c | 6 +++++-
+> >  1 file changed, 5 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/uio/uio_pci_generic_sva.c b/drivers/uio/uio_pci_generic_sva.c
+> > index 4a46acd994a8..ea531f9a164c 100644
+> > --- a/drivers/uio/uio_pci_generic_sva.c
+> > +++ b/drivers/uio/uio_pci_generic_sva.c
+> > @@ -62,7 +62,7 @@ static int uio_pci_sva_release(struct uio_info *info, struct inode *inode)
+> >  static int probe(struct pci_dev *pdev, const struct pci_device_id *id)
+> >  {
+> >       struct uio_pci_sva_dev *udev;
+> > -     int ret, i, irq = 0;
+> > +     int ret, i, irq = 0, have_irq_vectors = 0;
+>
+> have_irq_vectors should be a bool.
 
-Reviewed-by: Christian Hopps <chopps@labn.net>
+I will change have_irq_vectors to a bool and send a v2.
+
+Best regards,
+Guangshuo
 
