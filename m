@@ -1,110 +1,126 @@
-Return-Path: <stable+bounces-253997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-253998-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oAOQEjmWEmqt1AYAu9opvQ
-	(envelope-from <stable+bounces-253997-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 24 May 2026 08:10:01 +0200
+	id kJm7EH6aEmrr1QYAu9opvQ
+	(envelope-from <stable+bounces-253998-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 24 May 2026 08:28:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED7F05C1812
-	for <lists+stable@lfdr.de>; Sun, 24 May 2026 08:10:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 965685C1841
+	for <lists+stable@lfdr.de>; Sun, 24 May 2026 08:28:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 99B7F300EA84
-	for <lists+stable@lfdr.de>; Sun, 24 May 2026 06:09:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D183A300D680
+	for <lists+stable@lfdr.de>; Sun, 24 May 2026 06:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 926993603C9;
-	Sun, 24 May 2026 06:09:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rRmh4M1H"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14172F8EB0;
+	Sun, 24 May 2026 06:28:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362DD2AD37;
-	Sun, 24 May 2026 06:09:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from smtp.chopps.org (smtp.chopps.org [54.88.81.56])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A434810F2;
+	Sun, 24 May 2026 06:28:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.88.81.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779602991; cv=none; b=ZtCJnCyX41dc+IozsVFNqP5ZVEWVL8Xg7zcKK7UDhh3wCdx7inCFdxDNa7XqVsPCMuWQ52somh1TVwCdyXb3mCwECFu3UWMPdYj0z3lUGwQCLnBVzixbdTUf8dhbkFzA0iClfXqsmgF4Ct1OLnmZ4fmkuqodm+nv3h//fuO+mP0=
+	t=1779604086; cv=none; b=JuwsVjvlv8rc1TaTfFYFdZs6Q08leaXkOpfB31w7IKcVlkjeNVAFvBf/unjSo7ym6excR0bko4nKXML+tmlwp4ml9ZAt9uT/OFzWKfICAM6euv5/Q6IFv+XmAp4o2VM1ztzveAOtydWN5PhJC57w8gzh9r0DzJ3EmhbnZwNmunU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779602991; c=relaxed/simple;
-	bh=CU5I0O6PQRB3YYkLAsJYC50Igs914ZWHAfeiz9InDzo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LMeqZTY2VEQPS9C9rj/e9a31DZq763on0eCn8PpfBkVjwrmukH9n2Xlu450kjSwD52RIAKotwOekWLfV+geF5IfmOa9pdn/IqwDoI+Dc0tAwj6XOmMoPKQU/UpYHd+Jb8IMKe4RCz5dZq0F2ZM+GpQQxqyWPFthy25NLH7Mx6YQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rRmh4M1H; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A07D1F000E9;
-	Sun, 24 May 2026 06:09:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779602989;
-	bh=KYWJD2YdmN9SJac5G8qIRi32OQ/EkGnTIPXgpLZsq6o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=rRmh4M1HcCGMPvYYSV2E8zyFCv9FZH0Z0oMw3QTPxSrje9UuIMFltlJn7Yn7mmPFO
-	 RE9VEzcKriQzcRE04NShZN4NsSxxSszW5oe7ypg/BZpYnpE3z0slpM7hey9TJ4H1RM
-	 BopnAYgQXgicfJzMvFS4H/umjlYU5lHq2SJl8fvg=
-Date: Sun, 24 May 2026 08:09:00 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Johan Hovold <johan@kernel.org>
-Cc: Joseph Bursey <jbursey@uci.edu>, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+ad2aac2febc3bedf0962@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] USB: iowarrior: fix use-after-free on disconnect
-Message-ID: <2026052449-sappy-everglade-4e43@gregkh>
-References: <20260523170523.1074563-1-johan@kernel.org>
+	s=arc-20240116; t=1779604086; c=relaxed/simple;
+	bh=C56XPEmyiutI6uU+IC8A8y7eRsd2kZmjmJDlh7z1wV0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ilZDvAACMM/CfWJRIf9VK2uZvFM4XerMORAyk4jCsndNGpWyGpcUCFLnuDUp5SSIEupXTR9aHZZcmWZ2mymTzHrw0LruWAQVCcNrguw9i3EuhwQXf84TLHxa6QSxKKXoIVdecsMIt5pf4vuccJfSnxE8yId9lT5XeaLjnyvXdG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chopps.org; spf=fail smtp.mailfrom=chopps.org; arc=none smtp.client-ip=54.88.81.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chopps.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=chopps.org
+Received: from ja.int.chopps.org.chopps.org (unknown [47.225.56.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by smtp.chopps.org (Postfix) with ESMTPSA id D79B37D08D;
+	Sun, 24 May 2026 06:19:54 +0000 (UTC)
+From: Christian Hopps <chopps@chopps.org>
+To: Takao Sato <takaosato1997@gmail.com>
+Cc: netdev@vger.kernel.org,  steffen.klassert@secunet.com,  w@1wt.eu,
+  davem@davemloft.net,  herbert@gondor.apana.org.au,
+  stable@vger.kernel.org
+Subject: Re: [PATCH net v3] xfrm: iptfs: preserve shared-frag marker in
+ iptfs_consume_frags()
+In-Reply-To: <20260522142504.1394864-1-takaosato1997@gmail.com> (Takao Sato's
+	message of "Fri, 22 May 2026 11:25:04 -0300")
+References: <20260522142504.1394864-1-takaosato1997@gmail.com>
+User-Agent: mu4e 1.14.1; emacs 30.2
+Date: Sun, 24 May 2026 02:19:53 -0400
+Message-ID: <m2se7h1g8m.fsf@ja.int.chopps.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260523170523.1074563-1-johan@kernel.org>
-X-Spamd-Result: default: False [3.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; format=flowed
+X-Spamd-Result: default: False [-0.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-253997-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.917];
+	TAGGED_FROM(0.00)[bounces-253998-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,ad2aac2febc3bedf0962];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DMARC_NA(0.00)[chopps.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: ED7F05C1812
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.877];
+	FROM_NEQ_ENVFROM(0.00)[chopps@chopps.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,ja.int.chopps.org:mid,labn.net:email]
+X-Rspamd-Queue-Id: 965685C1841
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sat, May 23, 2026 at 07:05:23PM +0200, Johan Hovold wrote:
-> Submitted write URBs are not stopped on close() and therefore need to be
-> stopped unconditionally on disconnect() to avoid use-after-free in the
-> completion handler.
-> 
-> Fixes: b5f8d46867ca ("USB: iowarrior: fix use-after-free after driver unbind")
-> Fixes: 946b960d13c1 ("USB: add driver for iowarrior devices.")
-> Reported-by: syzbot+ad2aac2febc3bedf0962@syzkaller.appspotmail.com
-> Link: https://lore.kernel.org/all/6a0ce39b.170a0220.39a13.0007.GAE@google.com/
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Johan Hovold <johan@kernel.org>
-> ---
+Takao Sato <takaosato1997@gmail.com> writes:
 
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> iptfs_consume_frags() transfers paged fragments from one socket buffer
+> to another but fails to propagate the SKBFL_SHARED_FRAG flag. This is
+> the same class of bug that was fixed in skb_try_coalesce() for
+> CVE-2026-46300: when fragments backed by read-only page-cache pages are
+> merged, the marker indicating their shared nature must be preserved so
+> that ESP can decide correctly whether in-place encryption is safe.
+>
+> Apply the same two-line fix used in skb_try_coalesce() to
+> iptfs_consume_frags().
+>
+> Fixes: b96ba312e21c ("xfrm: iptfs: share page fragments of inner packets")
+> Cc: stable@vger.kernel.org # 6.8+
+> Signed-off-by: Takao Sato <takaosato1997@gmail.com>
+> ---
+>  net/xfrm/xfrm_iptfs.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
+> index 97bc979e5..4db85e158 100644
+> --- a/net/xfrm/xfrm_iptfs.c
+> +++ b/net/xfrm/xfrm_iptfs.c
+> @@ -2168,6 +2168,8 @@ static void iptfs_consume_frags(struct sk_buff *to, struct sk_buff *from)
+> 	memcpy(&toi->frags[toi->nr_frags], fromi->frags,
+> 	       sizeof(fromi->frags[0]) * fromi->nr_frags);
+> 	toi->nr_frags += fromi->nr_frags;
+> +	if (fromi->nr_frags)
+> +		toi->flags |= fromi->flags & SKBFL_SHARED_FRAG;
+> 	fromi->nr_frags = 0;
+> 	from->data_len = 0;
+> 	from->len = 0;
+
+LGTM, Thanks!
+
+Reviewed-by: Christian Hopps <chopps@labn.net>
 
