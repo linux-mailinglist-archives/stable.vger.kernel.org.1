@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-254009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254010-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wGmRJnbqEmpt5QYAu9opvQ
-	(envelope-from <stable+bounces-254009-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 24 May 2026 14:09:26 +0200
+	id 8D6OJJnqEmpt5QYAu9opvQ
+	(envelope-from <stable+bounces-254010-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 24 May 2026 14:10:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C11C5C248F
-	for <lists+stable@lfdr.de>; Sun, 24 May 2026 14:09:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E73685C24B4
+	for <lists+stable@lfdr.de>; Sun, 24 May 2026 14:10:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2D0AE3003822
-	for <lists+stable@lfdr.de>; Sun, 24 May 2026 12:09:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A0EE13011848
+	for <lists+stable@lfdr.de>; Sun, 24 May 2026 12:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E337352C52;
-	Sun, 24 May 2026 12:09:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AC9535B632;
+	Sun, 24 May 2026 12:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JX8kruSM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B8RjBp9T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0CE33C1B7
-	for <stable@vger.kernel.org>; Sun, 24 May 2026 12:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B7E27A12F;
+	Sun, 24 May 2026 12:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779624560; cv=none; b=M4a+JsI6uKX0yPL5ToSzlDEKloisfkWDgNWtb2J52Lg4V1woWlqUtsgHx3UiBdLltA7ZTHn4lWmyZrWQ37ysdcQ1QO71/D42Ajw/+GIQVfM+JPMj3xctseK39UQYCXllLhDTF9wYj+NpnfFyD1Y6NqWat7ufRKZd6irEbMmV7DI=
+	t=1779624564; cv=none; b=mXnmb4f8Czy8qW0Uyx7wnTKNEfblZ/wDFkwuygt/crxeS0UVwe0QTjrwtP6dX4W7fbHHJJPesK5iWIUdp/0aIRalVf99p/1r6cru7IThvyyjoy4lw6bwk/mYK1nJYcyUPrmDMHuJJnKN/8zY5CEg+t4hkuyYEPzWIPiMKLlrAsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779624560; c=relaxed/simple;
-	bh=Ws2nOWdP7jzeCxrVnFb4+tf9hnvFaBdUKLEp0rtEFZU=;
+	s=arc-20240116; t=1779624564; c=relaxed/simple;
+	bh=Fyo3h8bdk6TYJP262Df1/1BLKcyCrsLPLFcND4zSlSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u5wTl6tqqKtC3qh21yNTE4W+mvPiTSGVPL55Bo/CEpj5SFacpnllt4UHytjE9ndyrIIXTj8v+x8tB+QkibmWOVO+KEMI7a/SK1aObxl5JxuvswSU06cfgWPhR97Z86WHnSR1eyt5BahXgx9PDmpyemwLLk319yVQhnkIh31/0gg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JX8kruSM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB45C1F000E9;
-	Sun, 24 May 2026 12:09:18 +0000 (UTC)
+	 MIME-Version; b=e35vbcW6zCe86rVacQfABbuO4DFzARh8Jd7hEE6/hK/rbr2eHQ5gRd/rXdfCBgsVpaBAespm8Zv7ync5PFESYNoRYfitz2dnNy/R3bW/F8ZRoiCemuqa/7IB32UzK8VDzsuoxF/e2z/BgwF/4dDcM4EdxnzZuvZeAPwI6IkRUtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B8RjBp9T; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C76661F000E9;
+	Sun, 24 May 2026 12:09:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779624559;
-	bh=mMnYIw8MjV+d6ZBFXlZyEGs2hAJvRDoY0O1sjv3TS/c=;
+	s=k20260515; t=1779624563;
+	bh=5pApOR5X2I9xTZ0qfUnZk2+FffulHCxsGQPx04hfQ40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JX8kruSMv9kEsS02/imvbYzeOFdLhmHlwxztjcj1JUPEcnFBdJEXRy7NI8oZcHbB/
-	 hJxawS6oBhwozvAc/Tw98k31ce7WINGs3i7ByF7AuvnyzqxkKx84vS/9QePYaqI0nn
-	 n0l8tggdAFYFbhF1saRBcjUAJ/w32q/dEaHxi+0gVLhYo84YBJtGb8taFoXRSgyVs9
-	 /d4y21sQMUauKXBOvZHNmhSYTbXD8PsQ0qD2sIeb9USg+vpj8LpvcgztFFZZkHTY4t
-	 E5OACMCZP6MCdBfC9jAwPdFoihPeRTfV3I/XYZHzYYoDDX5CHSDwPWeB4UCbeqxg9n
-	 h101f4tGwGedA==
+	b=B8RjBp9TdKSsU8okMPeQs85051n+ltVhUBuRSaOfnIvooL5w9convLxSTrYhZ6sFq
+	 oB9aJ/71e8X14KcwCY7Mg+rNnqjU3x8u5gC+GaejDYEyfX7naVARdUmPWoLwkkA4sB
+	 9TlRXUPMNb17sMyXtiDV7oXcu/09dmmxDdcv6OFpBe1ilJvbRfSBJJ0+jihF49m3XB
+	 7WDAvgDuUKLOEkT3k5CBspGJJ63ChtWVkDKx5a+cwhTxcMCw/zSBys4FAKA3+ffBOx
+	 LWmFzkDGdk9ziT3qfbP9CV06ZyC6SyY91nkQjBT3WpDO7Sf/BxlGHhR/pzWP+DDzEt
+	 B/gvMaidu7HIw==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
+To: Lukas Beckmann <lbckmnn@mailbox.org>
 Cc: Sasha Levin <sashal@kernel.org>,
-	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	James Lin <pinglei.lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: Re: [PATCH 6.12.y] drm/amd/display: Wrap DCN32 phantom-plane allocation in DC_RUN_WITH_PREEMPTION_ENABLED
-Date: Sun, 24 May 2026 08:09:13 -0400
-Message-ID: <20260524-stable-item003-reply@kernel.org>
+	stable@vger.kernel.org,
+	regressions@lists.linux.dev,
+	Mike Galbraith <efault@gmx.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>
+Subject: Re: [PATCH 6.12.y 0/3] backport missing dependencies of d66792919d4f
+Date: Sun, 24 May 2026 08:09:19 -0400
+Message-ID: <20260524-stable-item004-reply@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260520212725.182308-1-mikhail.v.gavrilov@gmail.com>
-References: <2026052010-washbowl-cube-3ce9@gregkh> <20260520212725.182308-1-mikhail.v.gavrilov@gmail.com>
+In-Reply-To: <20260522213120.1205100-1-lbckmnn@mailbox.org>
+References: <20260522213120.1205100-1-lbckmnn@mailbox.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,64 +65,60 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-254009-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,amd.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,lists.linux.dev,gmx.de,infradead.org,redhat.com];
+	TAGGED_FROM(0.00)[bounces-254010-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 9C11C5C248F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: E73685C24B4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-> [How]
-> Wrap the dc_state_create_phantom_plane() call with the
-> DC_RUN_WITH_PREEMPTION_ENABLED() macro to allow preemption during
-> this memory allocation.
+> Commit d66792919d4f ("sched/deadline: Use revised wakeup rule for
+> dl_server") in the 6.12.y stable tree (upstream commit 14a857056466)
+> depends on three upstream commits that were not backported:
+>
+>   commit cccb45d7c429 ("sched/deadline: Less agressive dl_server handling")
+>   commit 4ae8d9aa9f9d ("sched/deadline: Fix dl_server getting stuck")
+>   commit a3a70caf7906 ("sched/deadline: Fix dl_server behaviour")
 
-> +#if !defined(DC_RUN_WITH_PREEMPTION_ENABLED)
-> +#define DC_RUN_WITH_PREEMPTION_ENABLED(code) code
-> +#endif
+Thanks for tracking this down. Before I queue this, the series is
+missing two more follow-up fixes that both carry "Fixes: cccb45d7c429"
+and that are needed for the dl_server logic to behave correctly:
 
-Thanks for the backport, but this isn't going to fix the BUG_ON on
-6.12.y as-is. DC_RUN_WITH_PREEMPTION_ENABLED() only gained its real
-definition in v6.16 (around the dc_fpu_preempt rework); it does not
-exist on 6.12 at all. With the "!defined(...) -> identity" fallback
-above, the wrap reduces to a plain call to dc_state_create_phantom_plane()
-on this tree, which is exactly the pre-patch code path that hits
-BUG_ON(in_interrupt()) in the vmalloc path.
+  4717432dfd99 ("sched/deadline: Fix dl_server_stopped()")
+  bb4700adc3ab ("sched/deadline: Always stop dl-server before changing parameters")
 
-So the backport as written is a no-op on 6.12.y and won't address the
-DCN32 crash you're seeing. To actually fix it on 6.12.y we need the
-underlying preempt-enabled-region mechanism, or a different
-6.12-specific fix that allows the ~335 KiB allocation outside the
-DC_FP_START()/DC_FP_END() region (for example by hoisting the
-allocation, or using a smaller/preallocated buffer).
+Without 4717432dfd99 the dl_server_stopped() check is inverted (it
+returns the wrong polarity after cccb45d7c429), and without
+bb4700adc3ab the per-rq running_bw accounting can get out of sync when
+dl-server parameters change while it is still active.
 
-Could you put together a v2 along those lines?
+Could you send a v2 that includes both follow-ups on top of the
+existing three? Then this should be safe to apply as a whole.
 
 -- 
 Thanks,
