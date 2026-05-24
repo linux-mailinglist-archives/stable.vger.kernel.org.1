@@ -1,151 +1,173 @@
-Return-Path: <stable+bounces-254049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254050-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MHdMFspTE2qB+gYAu9opvQ
-	(envelope-from <stable+bounces-254049-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 24 May 2026 21:38:50 +0200
+	id uD46KZpUE2re+gYAu9opvQ
+	(envelope-from <stable+bounces-254050-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 24 May 2026 21:42:18 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE2435C3C98
-	for <lists+stable@lfdr.de>; Sun, 24 May 2026 21:38:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1784D5C3D2B
+	for <lists+stable@lfdr.de>; Sun, 24 May 2026 21:42:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4079A3004257
-	for <lists+stable@lfdr.de>; Sun, 24 May 2026 19:37:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7E0C13004C2A
+	for <lists+stable@lfdr.de>; Sun, 24 May 2026 19:42:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7904C30FF36;
-	Sun, 24 May 2026 19:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 042A9314A98;
+	Sun, 24 May 2026 19:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="ETUP3pLB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iZb2Qfml"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8D23126B2
-	for <stable@vger.kernel.org>; Sun, 24 May 2026 19:37:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33651F4180;
+	Sun, 24 May 2026 19:42:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779651464; cv=none; b=SgUu5scydJlRW9TeMORWGVZT0U4osLgWGCB8C1m/kX71TKHNYYVy0dO4wyWHJhQj0tai5bqiMgQgR3Et9m0mtjzVLBM5tLP2QX9wSuCWtBJzG0GInv+XPIDrB7XaVxH62y0Z/dtsWenCVC3bHy3Ce+n+Dzk90+sct4Xn/AYyiDA=
+	t=1779651734; cv=none; b=V2rash17izNGsmMu5LUz2Zl6oB9p0S3cvRjmU6DWik55ip+Kak0/gRLdGxKcJBfPQR8JKHvn3VaieJxUTTQdbMEKhAqzyCiLYoF2sUwBicDIkyPAQS6LA96julaz7ximkQBxKrRfGhmZyyZiECbvN+PcqACPIjuxq0XlUvXaLPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779651464; c=relaxed/simple;
-	bh=nh9N1mVHaeTmIBzbeAuRS13fF+gBjhcjJIgjg74tg1Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=II4+SQCKc9cHbXMfv1O9NYGW3KeZ/AFxUOsBmJAmpzQzqbTzb74HvnB/fslba5fRw6uhmVPTXjntEerhImY98+KVvMKXoLuexNo55azNNDtt/O2LAa5rDQj6potvLF1COJ/L7d7YhyAXu47In0Jnqde3uOv8eD6a4v5Ml1rguCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=ETUP3pLB; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 7296B40E01B5;
-	Sun, 24 May 2026 19:37:38 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id Xvh5XFpGmKy5; Sun, 24 May 2026 19:37:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1779651448; bh=fxgEs6EFFrixRBpE9oQQIAnmN8UezPCFryJH52eTrBo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ETUP3pLBssVbmvtRY2YFmgUATFBBHKix/p9hotmgr2CnFY0ztMqV/pYiWVZm3MyQ3
-	 StJE571E41AU79GkBm35TGqC95hvKynO/EaZS3dITNWLq/RrANGPUNQ8U9RLPXZU/K
-	 tCMjkiHqwK6TxVoy4Nzj1SgxrZ9CohTqpHamVem8Ikilf7i6jFuC6Zr2orU49tAfWB
-	 sFNL9uGWD7/QzK9QKZOvLKkOyr82V6dGEC4ldk1NcSzO/+8BerH3W+mXTYOzDbdOHk
-	 mpFY403BAuJScWSyF0fvgvl4NU+VyhiG89e3pW7+4cOcn1Ec4TcJEDXTz1qtKU+vkR
-	 BxqUd2pu3eX8/KByL0c7wrrLYMRb9XiDSlGjCzHXEEr74Up676LjkOw+y8C1ooFE5V
-	 mQvFnm2QAP2Hy4M1fizISSfLDUZWT1SnZbgRmJcoVcrIRLBO1vOcUbcgG+dI9nYZMt
-	 MABs0RTaps0AIgOv7HEWGEGRieCqdMCn6HQuGdLBgxbf2n5JCR1RQwcx/KLvPcivGj
-	 trP+L9iYg9UUXmqd9ZGYUqmdEQoN5KGXJXBWhoOpW/hw72E9ICd8TdUWeNw+xZqMG2
-	 /nrJmNlfkUFyDYNc/Z/0vpEmhRSS2ZivM5FZcd81IhME5b5TG/2Vqffe5glyrDn9F7
-	 rSuUW6O+xAvSHMzUEwHSOHzE=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00:b8a3:f58e:8829:9ca6])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id ECD7E40E015A;
-	Sun, 24 May 2026 19:37:22 +0000 (UTC)
-Date: Sun, 24 May 2026 12:37:14 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Sasha Levin <sashal@kernel.org>
-Cc: Greg KH <gregkh@linuxfoundation.org>, Uros Bizjak <ubizjak@gmail.com>,
-	Jan Ingvoldstad <frettled@gmail.com>, stable@vger.kernel.org
-Subject: Re: Linux 5.15 bug in vdso_read_cpunode() in segment.h introduced in
- 2025, commit ac9c408ed19d535289ca59200dd6a44a6a2d6036
-Message-ID: <20260524193714.GAahNTaoD92atkAUdQ@fat_crate.local>
-References: <CAEffzkxUELNHBzABxVmekE2C_MFuPyfbsvO33MXZy46pNRU7xQ@mail.gmail.com>
- <CAFULd4Z5vE7v37+4J5MLCttnG=cF0XX+Y_T0p1yeY36dL6i5Kw@mail.gmail.com>
- <DB2B5B4C-200F-4C0C-B14F-F58E0CF4078F@alien8.de>
- <F51A475F-F50A-4DE2-A098-871047496301@alien8.de>
- <2026052230-obtrusive-prowler-86c2@gregkh>
- <20260524020311.GCahJcXxBMmgUUaWNv@fat_crate.local>
- <20260524150046.agent5-0001@kernel.org>
+	s=arc-20240116; t=1779651734; c=relaxed/simple;
+	bh=lthXzUytBGGEZEbaMRp/d7G3sIqZTOorIRP0QYBN0Cw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hqfzkX46mm/Lg0y2miXinJImLgz0/CgE807EYJ/shy9vnobwZJqYyFooYEqJ6fJmDE0r9hvS6ZgGa4ajsE4iIw+k22Z1etFdMK+2ScQKy4H6DVJeSCMUr1WqGb0tKmEhtbruIe3X07DN8HScgOx1LL6N2hqzWbyIzktTnIhk3MA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iZb2Qfml; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32B3E1F000E9;
+	Sun, 24 May 2026 19:42:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779651733;
+	bh=5Qbk2Js+U5TVltxF7DmfkdpZCQrfZY8VcWdcdlf8tJQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=iZb2Qfmltboafv45n9a51F+qDWhaK733kQGT2ABAw9GJv0WPs4sYPWJMkYBrMpW76
+	 84bfCmBxjpODVz4HcUDEpWrhSkXvW/D1by+hOZyX1DJaOqHhCLJxyhaYy3ZS30sDZR
+	 doJES/dfPScYEE85hYtIjEOpT6tG5WvwgwKORpvTKKPeSA6jvxFO8TlPj4qyic62Ea
+	 bzD/f5f6tcd4OnajOVxK95QqB2DR+mg2ebPTSeCXtVUUuLmDMax85rzaK+hTzG/B8E
+	 ifhiwn6cOs7ODHGxJk9ltYtrAK0KsRojltv92B7OydVVEY191AcRu0/5BmLSuDGsh3
+	 9VbImlmVHvx5w==
+Message-ID: <e9c5e57c-25d8-45f1-bc3e-696393cab4dd@kernel.org>
+Date: Sun, 24 May 2026 21:42:08 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260524150046.agent5-0001@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tty: serial: samsung: Remove redundant port lock
+ acquisition in rx helpers
+To: Tudor Ambarus <tudor.ambarus@linaro.org>,
+ Alim Akhtar <alim.akhtar@samsung.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>, Ben Dooks <ben-linux@fluff.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+ john.ogness@linutronix.d, peter.griffin@linaro.org,
+ andre.draszik@linaro.org, jyescas@google.com, kernel-team@android.com,
+ stable@vger.kernel.org, John Ogness <john.ogness@linutronix.de>
+References: <20260515-samsung-tty-flow-control-deadlock-v1-1-93255edbc9bc@linaro.org>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20260515-samsung-tty-flow-control-deadlock-v1-1-93255edbc9bc@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[alien8.de,none];
-	R_DKIM_ALLOW(-0.20)[alien8.de:s=alien8];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-254049-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254050-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[alien8.de:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bp@alien8.de,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[krzk@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: BE2435C3C98
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:email]
+X-Rspamd-Queue-Id: 1784D5C3D2B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sun, May 24, 2026 at 11:24:15AM -0400, Sasha Levin wrote:
-> > So please revert it from 5.15 - we don't really need to backport it to
-> > stable.
+On 15/05/2026 14:41, Tudor Ambarus wrote:
+> Sashiko identified a deadlock when the console flow is engaged [1].
 > 
-> Reverted from 5.15 and 5.10 (the two trees where the older binutils
-> RDPID-mnemonic concern applies). Leaving the patch in 6.1/6.6/6.12 for now
-> since you only flagged a build break on 5.15; let me know if you'd like it
-> pulled from the newer trees as well.
+> When console flow control is enabled (UPF_CONS_FLOW),
+> s3c24xx_serial_stop_tx() calls s3c24xx_serial_rx_enable() and
+> s3c24xx_serial_start_tx() calls s3c24xx_serial_rx_disable().
+> 
+> The serial core framework invokes the .stop_tx() and .start_tx()
+> callbacks with the port->lock spinlock already held. Furthermore, all
+> internal driver paths that invoke stop_tx (such as the DMA TX
+> completion handler s3c24xx_serial_tx_dma_complete() or the PIO TX IRQ
+> handler s3c24xx_serial_tx_irq()) also acquire port->lock prior to
+> calling it. (Note that s3c24xx_serial_start_tx() is only invoked by the
+> serial core).
+> 
+> However, s3c24xx_serial_rx_enable() and s3c24xx_serial_rx_disable()
+> unconditionally attempt to acquire port->lock again using
+> uart_port_lock_irqsave(). Since spinlocks are not recursive, this
+> causes a deadlock on the same CPU when console flow control is engaged.
+> 
+> Remove the redundant lock acquisition from both rx helper functions.
+> 
 
-Well, it is not really stable material at all as it doesn't fix anything
-out of the stable rules doc. I probably should've killed the stable tag when
-applying...
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-Also, 
-
-  118c40b7b503 ("kbuild: require gcc-8 and binutils-2.30")
-
-which raised the minimum binutils to 2.30 which supports the RDPID mnemonic,
-came into 6.15ish so I guess the 6.x ones should be affected too. I don't have
-the toolchain to test tho. If you do, you could run it with an older < 2.30
-binutils to confirm.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Best regards,
+Krzysztof
 
