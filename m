@@ -1,150 +1,114 @@
-Return-Path: <stable+bounces-254076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254077-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YM8xAwjjE2qkHAcAu9opvQ
-	(envelope-from <stable+bounces-254076-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 07:50:00 +0200
+	id EwzIBk7kE2rhHAcAu9opvQ
+	(envelope-from <stable+bounces-254077-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 07:55:26 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87D9B5C60ED
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 07:49:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CBAB5C613C
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 07:55:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0BB973033A8E
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 05:49:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 87822301F9AA
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 05:55:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF14C346ADE;
-	Mon, 25 May 2026 05:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA7C35BDD5;
+	Mon, 25 May 2026 05:55:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="hAQE2lrp"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="xlW8pfbL"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-111.mail.139.com (n169-111.mail.139.com [120.232.169.111])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4B8125AA;
-	Mon, 25 May 2026 05:48:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23FF9358388;
+	Mon, 25 May 2026 05:55:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779688141; cv=none; b=X+a5wtM32CD73KxKJhzj7zrJRbXgD4uaH/a7vFyExogDi/e+OAjncR3uBau9yq8WJOxejAWmJ4JItEmzFUurrYdErsEhGVF7D2NcEgRbPc86HiHtbOmKBr9BaKRMVUkyZ541u7SZ4zt+9Q9N/rDpQJcHK9b4YDbjE41UpmhDw/I=
+	t=1779688518; cv=none; b=HnIDX4t//44it7xsBsabTVZv7EfxZo2QexGOdzB64lz+HnObWFXwhyjQIHsV/cMsUZNQYTToU0ajcI4b4oOdUbL5YqDyuTEScXchHOfh3aDNjZkebRvFiftuUbSbhbLyjTDEmuECGwGWKqrGOrL9Hs2/C9YR+iUsO77ru88gn4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779688141; c=relaxed/simple;
-	bh=1KivS5QoCAdUrG5zSQuzPZujS6vFlKYxo7tDq+2xOFk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jwUtpu2NN3IeOasu2/zp8RUIvGiJu4sRb8Fy75Pmfyg03iPJw5eAtH5QCPDvuDzHT9GPU0/CDHAWa+sShguxV7r5vtv3HX905xXn9PcoAJZbM7de0tkK5hDS0S3/0a27xVsttO+Hp60DnzU6mZpRF9lZtp/OvKgicaRVxRGUIYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=hAQE2lrp; arc=none smtp.client-ip=120.232.169.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=hAQE2lrpwhHpYTxO+Uows007Z4DFXNofo3fM5qieodxlIWE5/4LKEQMmXEKrKY2vHMIO9a/pgWVoY
-	 DiM8R61glgwJTSCgQj/KzWaq72sDvFHxO2OoE6fZ13G6T9jnv7uf531rQfevczT+3Lm7nYn8pJdz4j
-	 t7Ywa7/5sbPm3J/Q=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from NTT-kernel-dev (unknown[60.247.85.88])
-	by rmsmtp-lg-appmail-18-12021 (RichMail) with SMTP id 2ef56a13e2c45fe-00606;
-	Mon, 25 May 2026 13:48:55 +0800 (CST)
-X-RM-TRANSID:2ef56a13e2c45fe-00606
-From: Li hongliang <1468888505@139.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org,
-	kartikey406@gmail.com
-Cc: patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	johannes@sipsolutions.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	johannes.berg@intel.com
-Subject: [PATCH 6.1.y] wifi: mac80211: check tdls flag in ieee80211_tdls_oper
-Date: Mon, 25 May 2026 13:48:54 +0800
-Message-Id: <20260525054854.2457807-1-1468888505@139.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1779688518; c=relaxed/simple;
+	bh=/zIwOpbitf7WLzXzmB3Euq/uS1lyI9bpSUSP2miWa70=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C0IcRiGX1n0HDMTzZAQbAEVdEu+xsQoGbL/hwXXSf9STT141EZ8wKQT787y4JaWIjCCTzBRRNr9bHG9UB/iaxLeefgi7qw9EqddL/pLZaspoNzkJ02ZUQ6T/HOT0Ko+c5Nw3aOWAZ0CFSSdq6qSamvjCc/eqNaaQ1ZwksybPgrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=xlW8pfbL; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=/zIwOpbitf7WLzXzmB3Euq/uS1lyI9bpSUSP2miWa70=; b=xlW8pfbLdj/TK2bo5zU5BLi1bi
+	jXwYk8Y8nVYNhtjUqqjt3d92LokhxVkY/NxR8seyumuHMG7iW8bK/ScSNopbOZj5pRUSnwtr3WsHP
+	gf3/rdFOt15PtkKSruX9KWpjTwi6h+ZvvnzJxrTLjfE7IaStcaX7xj/4BXCuYsPpBBUMbnhDKGu54
+	KvEpOKXXLA53tq0dssb4vb78JUFKDShhxhp4oQykeU+KAsnH3hlDqrhRK+xS3AutnIROYAdj3BHii
+	n0/1TsZzWNZPhBVyfdxUrDxo5Fk1V+e4skjVlx5HZfDmDfIj0mFT/Jp3ga1/CdC8g5jPzF4N9gL2b
+	aaPGt9RA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wROHS-0000000GMhh-4BHY;
+	Mon, 25 May 2026 05:55:14 +0000
+Date: Sun, 24 May 2026 22:55:14 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: John Hubbard <jhubbard@nvidia.com>
+Cc: Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>, linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v2] dma-buf: set SB_I_NOEXEC and SB_I_NODEV on the pseudo
+ filesystem
+Message-ID: <ahPkQgCg_52sxkYH@infradead.org>
+References: <20260523011117.121390-1-jhubbard@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [1.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260523011117.121390-1-jhubbard@nvidia.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[139.com:s=dkim];
-	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[infradead.org:s=bombadil.20210309];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-254077-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-254076-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[139.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[linuxfoundation.org,vger.kernel.org,gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[139.com];
-	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[139.com:-];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.668];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[infradead.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,139.com:mid,139.com:email,appspotmail.com:email,msgid.link:url,sipsolutions.net:email,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 87D9B5C60ED
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hch@infradead.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,infradead.org:mid,infradead.org:dkim]
+X-Rspamd-Queue-Id: 6CBAB5C613C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+On Fri, May 22, 2026 at 06:11:17PM -0700, John Hubbard wrote:
+> The dma-buf pseudo filesystem dispenses S_ANON_INODE inodes via
+> alloc_anon_inode() but never sets SB_I_NOEXEC on its superblock.
+> Since commit 1e7ab6f67824 ("anon_inode: rework assertions") in 6.17,
+> path_noexec() warns on exactly that combination, so an mmap() on any
+> dma-buf fd trips the warning:
 
-[ Upstream commit 7d73872d949c488a1d7c308031d6a9d89b5e0a8b ]
-
-When NL80211_TDLS_ENABLE_LINK is called, the code only checks if the
-station exists but not whether it is actually a TDLS station. This
-allows the operation to proceed for non-TDLS stations, causing
-unintended side effects like modifying channel context and HT
-protection before failing.
-
-Add a check for sta->sta.tdls early in the ENABLE_LINK case, before
-any side effects occur, to ensure the operation is only allowed for
-actual TDLS peers.
-
-Reported-by: syzbot+56b6a844a4ea74487b7b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=56b6a844a4ea74487b7b
-Tested-by: syzbot+56b6a844a4ea74487b7b@syzkaller.appspotmail.com
-Suggested-by: Johannes Berg <johannes@sipsolutions.net>
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Link: https://patch.msgid.link/20260313092417.520807-1-kartikey406@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Li hongliang <1468888505@139.com>
----
- net/mac80211/tdls.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
-index 1f07b598a6a1..57bd4fc8d237 100644
---- a/net/mac80211/tdls.c
-+++ b/net/mac80211/tdls.c
-@@ -1382,7 +1382,7 @@ int ieee80211_tdls_oper(struct wiphy *wiphy, struct net_device *dev,
- 
- 		mutex_lock(&local->sta_mtx);
- 		sta = sta_info_get(sdata, peer);
--		if (!sta) {
-+		if (!sta || !sta->sta.tdls) {
- 			mutex_unlock(&local->sta_mtx);
- 			ret = -ENOLINK;
- 			break;
--- 
-2.34.1
-
+Just as last time this came up, we really should set this higher up.
+There isn't really a reason why pseudofses should not set SB_I_NOEXEC
+by default.
 
 
