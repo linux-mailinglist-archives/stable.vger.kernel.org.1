@@ -1,198 +1,152 @@
-Return-Path: <stable+bounces-254181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254182-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GNeQFs53FGokNgcAu9opvQ
-	(envelope-from <stable+bounces-254181-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 18:24:46 +0200
+	id QGC8DE18FGowNwcAu9opvQ
+	(envelope-from <stable+bounces-254182-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 18:43:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B33D45CCD58
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 18:24:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 980DE5CCFE8
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 18:43:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2011B3005594
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 16:24:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 788713013EE7
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 16:43:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F7B3F20E7;
-	Mon, 25 May 2026 16:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDF383F65E6;
+	Mon, 25 May 2026 16:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b="YOM3YRRw"
+	dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b="XPuei6rd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp1-g21.free.fr (smtp1-g21.free.fr [212.27.42.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D77330662
-	for <stable@vger.kernel.org>; Mon, 25 May 2026 16:24:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F49A3F7887;
+	Mon, 25 May 2026 16:43:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.27.42.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779726283; cv=none; b=sR0Opg+3sMjlj3pNL/tmL9m0gmf4q8o2UAwYrppPQmENM3VC3Sy500vfSRM7HEo4rlZVYqZ9MtQaWuiv+MaDq76yUZoXrlvQRVMUHT93QmnXpG/e05jPhb9or73dyvaqFv6njqTK04M2boHDd2EShR72szr1iJYu2L5zuWUx2is=
+	t=1779727428; cv=none; b=mkfXI2VNHFZgn7NRbrSdkNZMwm9shaKSIU4xFHxwkbzEv7RDUO+Xkl82mHMMloNd1pRiZG3aM5VEiiXINj3PBdOfvNbGLi51HSdoRV6ynbh6OcVDscivoILt2/PY8hvEXQLmYbi0mS1eMpffqEHG203EO9SiFQlDMdxKUeCwLxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779726283; c=relaxed/simple;
-	bh=S4rxq3l4Wng2W5fVWWjrnjFgVqgExMdH6guqhx0+R30=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dKFrcCr0wWquucPJnb7/SZQrPD/adaDcZQjjZe0h2F6BGsbkmBgl7EYX11e114fx25foi1Ymm9l9qQJW2wcKnIyjvQQ5cEjgu0UHlFU3E8up1OVswrwG05i3yl2lgkjr7KDleIUTXuMC3otEPiopvEB/tAB170Jp2HBn6G3kePQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=YOM3YRRw; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0sec.ai
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-43d76dd4ee8so5513641f8f.2
-        for <stable@vger.kernel.org>; Mon, 25 May 2026 09:24:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=0sec.ai; s=google; t=1779726281; x=1780331081; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=CD2km52FcQoeNC6X1ictk/ljETOFDj0WJ4N8Yv++Si4=;
-        b=YOM3YRRw9DJLeZTBVs9Wu0FgYvbwtMxipEm013QWxCZHdmUgRJTB7h6WvZqyOo90rl
-         XtNcQNyyGFWMXVYK15c0dF+uyLIdrMeRX44H1WI8OJrtGxSYrCKn9EgcSZZK8nNhtr4Z
-         bb1Eny9eSxmUPwf5Zpv6K7luGOvd+rA289W1Ky3YifwDmJl9ZsRib8v19DBYHfOBQdkC
-         XNGqTvSmFQkkZmUsdSWQixxXYzRLZZBkPHRHXz+8lXMK6cYRyMY08rV8sfkRzm/evbrJ
-         HYFjRIfSjzfJZdN9XUjrqGsKW6g4hRKerl+z9McYUfPGFoc3DAWFXrd+rZZaOzlpOHHN
-         9fRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779726281; x=1780331081;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CD2km52FcQoeNC6X1ictk/ljETOFDj0WJ4N8Yv++Si4=;
-        b=Tg+AZcAUd9L+/PUcQsz3AoEmPFvvHFsajLNKH4Nw1oETM9H41EbJ365CWLwf3F79aP
-         yMT92qDfFUF8cD49P8/pMyGxJgr/qoO4qexyIy826KS5GWwxuYUcEcMq581hY9nrwdWe
-         a98xus2tdDRkHHtBUAExHPkbgkk/YdqFonJSNDu7A8nH222gLUEM7wMfLqW1lYQRBPYS
-         3hHIwXT4YtnEEVnAVpTX3ItCZR2WjQhsmjck2RjZKdV0xLngSqctF6UYVcLsPHk4uiV2
-         q4NQ8D7n/T00xQM1+hDARIZNbT9WtY4SWDAOGbeotF1U5va8z646E/jBhY/zZk1okpss
-         F6/A==
-X-Forwarded-Encrypted: i=1; AFNElJ+FVSBcCtQ/7zYVAEpieTj08GSgHR/tXNKR6IhDkaOhnZmiBceFJIbU7M79WIlGb+1f/BjOlxg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJFlU5UaoIy3XNOTCLT0ITLf1eYs52G7niQk5V0GHUJeHoR2V6
-	Xo9ZO/U3ORHrceKtGzoMR/KbHPekBqmU/GdsAe+upZ6enWkz1nY/qZgaj8ROwhQEQL9M
-X-Gm-Gg: Acq92OFDHYxrj8i3BHN1n9F+IS81WZe0sa65002BW+OE+Z6G2pp+OZFdPOiysoIkTmb
-	up8agiWZHexfa2+R1SOMvE/z1Tomheu2ahxPTEtUEvpCyQIZMR1sr/6mKthglrT0n94/KYnQD2A
-	LX4D66AiiOIMrrX5IERloFwkZ+MgXFsUjCJZrTgNRpjneBGXxf+9KGQSOv6FYvGtpq5JZtu+6Ph
-	9hmD/Zyl4CpYiG5SlXUWXje3bVzJjMYp/5SBH8aVZygBT2DAis8URpUnd/Lqy31O2oxWPPBk2hN
-	g4FcxfX67VaCy67QpCmHMqyPxgMY6u+KQ6F7BHqTX0Jj5ViayZBpKb30mITusGcLk1pjjR08OUw
-	ZkS3r58Qb6PvtE3CiotaOFnZ/Rbg/xMXvag2C4RqldgTqEl8McbdTQYNW0OFCGc9x5WRYLIV9It
-	tSTJOsPA1eEU68ycYbOucfsbTeKfPbbsnERTUHYdYSs8yYKwv9GEmqOfzpAor8cvvF3IEpFeZM9
-	CC8hmFa9osYgPhhE9+ywJdi4X9fHIMerpI26XV91dAW/GD5UISjSTU=
-X-Received: by 2002:a05:6000:468c:b0:43b:5b25:67f8 with SMTP id ffacd0b85a97d-45eb38b392bmr17953156f8f.20.1779726280391;
-        Mon, 25 May 2026 09:24:40 -0700 (PDT)
-Received: from PeakBook-Mini.tail8e484.ts.net ([178.197.223.24])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eb6d6ebf0sm29201800f8f.34.2026.05.25.09.24.39
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 25 May 2026 09:24:39 -0700 (PDT)
-From: Doruk Tan Ozturk <doruk@0sec.ai>
-To: marcel@holtmann.org,
-	luiz.dentz@gmail.com
-Cc: linux-bluetooth@vger.kernel.org,
-	security@kernel.org,
-	Doruk Tan Ozturk <doruk@0sec.ai>,
-	stable@vger.kernel.org
-Subject: [PATCH] Bluetooth: hci_sync: fix UAF in hci_le_create_cis_sync
-Date: Mon, 25 May 2026 18:24:38 +0200
-Message-ID: <20260525162438.96881-1-doruk@0sec.ai>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1779727428; c=relaxed/simple;
+	bh=qp1BSjiUi/5p94Cir8hjZnud1/YLhmdgzYl21op+gvc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 In-Reply-To:References:To:Cc; b=fR2JbF6G6f9/Do6K6Su9a6OsFb6k2O2H+gfJbq1o+VChw8fbEAJzVQdtmrkY9tw7E0QaYl916/pN6nuA5BRlTpGRjeU/Wv0EjifwIU7IfzB4LryT/DDQ7aGAEJYQte/qmSxO0rZPwMJIIbbypZAuT/Y7XeIFPbRDVKWvakQ6n0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr; spf=pass smtp.mailfrom=free.fr; dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b=XPuei6rd; arc=none smtp.client-ip=212.27.42.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=free.fr
+Received: from [127.0.1.1] (unknown [91.160.0.144])
+	(Authenticated sender: vjardin@free.fr)
+	by smtp1-g21.free.fr (Postfix) with ESMTPSA id 492C8B00573;
+	Mon, 25 May 2026 18:43:26 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
+	s=smtp-20201208; t=1779727424;
+	bh=qp1BSjiUi/5p94Cir8hjZnud1/YLhmdgzYl21op+gvc=;
+	h=From:Subject:Date:In-Reply-To:References:To:Cc:From;
+	b=XPuei6rdkZskA0RwtiqaThjnXqS16ATRvRhHDM6yBENsFK5U48qrhytAMF3Y5xVwm
+	 Xhi6+LQH0RofaRGbKs8diCsTqyNxQOUlZReL8HIUBHc/JpC6/1Sp/AbPbMwmZjWGlv
+	 MJCJNOwNJuVJU0JhX7nXJN9MK3KLxDrV3e9arOY1hgRG65dbWA9BqLdG45FLDKCr/m
+	 PXW42nuV9bKgkjw+l+EgQsrsi7WWR3XW/Q4ToTN5eqnR8cPj4LzJKktoKMBpTzGpbh
+	 hfvknXDufjXM8yddWNpxeL+r9An27M/tgW1c7FQ+QokbMhpiWQb+j0GW6H8+EF0N/R
+	 3tE2cQaI7E9dw==
+From: Vincent Jardin <vjardin@free.fr>
+Subject: [PATCH v2 0/2] i2c: imx: fix SMBus block-read of 0 locking the bus
+Date: Mon, 25 May 2026 18:43:14 +0200
+Message-Id: <20260525-for-upstream-i2c-lx2160-fix-v1-v2-0-26a3cc8cd055@free.fr>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACJ8FGoC/42NQQqDMBBFryKz7pQxEotd9R7iIsZJHWhVJlYs4
+ t0bPUGX7394b4PIKhzhnm2gvEiUcUhgLhn43g1PRukSgyFTkjUWw6j4meKs7N4oxuNrNXlJGGT
+ FJUfyrSNHVBVsIUkm5fScgbpJ3EucR/2evSU/1r/Vhx1DQa61RddVN/8IynwNCs2+7z/FPPq9y
+ gAAAA==
+In-Reply-To: <20260525-for-upstream-i2c-lx2160-fix-v1-v1-0-f30ab53dd97c@free.fr>
+References: <20260525-for-upstream-i2c-lx2160-fix-v1-v1-0-f30ab53dd97c@free.fr>
+To: Oleksij Rempel <o.rempel@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Andi Shyti <andi.shyti@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+ Wolfram Sang <wsa@kernel.org>, 
+ Kaushal Butala <kaushalkernelmailinglist@gmail.com>, 
+ Shawn Guo <shawn.guo@freescale.com>, 
+ Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Cc: linux-i2c@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Vincent Jardin <vjardin@free.fr>, stable@vger.kernel.org
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779727406; l=1125;
+ i=vjardin@free.fr; s=20260525; h=from:subject:message-id;
+ bh=qp1BSjiUi/5p94Cir8hjZnud1/YLhmdgzYl21op+gvc=;
+ b=/ro5eVxZjr1OWIerjlcGOqzj2R+rX0uTtmI8My9AmNtsOn4T8Sc0gaQam0AfE0a8rfwikUoZ5
+ vWZINmgOxGjAakNpEz9usWrVpOcMUv3VKjcF7tglCiCol2IrBWVCKW9
+X-Developer-Key: i=vjardin@free.fr; a=ed25519;
+ pk=hppgLeFpGpKOi7LNwGEZ4jOYofJCoGd4Jf1ltAabiLw=
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_DKIM_REJECT(1.00)[0sec.ai:s=google];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[free.fr,quarantine];
+	R_DKIM_ALLOW(-0.20)[free.fr:s=smtp-20201208];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DMARC_NA(0.00)[0sec.ai];
-	TAGGED_FROM(0.00)[bounces-254181-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[holtmann.org,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	NEURAL_SPAM(0.00)[0.129];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[doruk@0sec.ai,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[0sec.ai:-];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-254182-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[pengutronix.de,kernel.org,nxp.com,gmail.com,freescale.com,toradex.com];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[free.fr];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,lists.infradead.org,free.fr];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vjardin@free.fr,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[free.fr:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,0sec.ai:mid,0sec.ai:email]
-X-Rspamd-Queue-Id: B33D45CCD58
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 980DE5CCFE8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-hci_le_create_cis_sync() dereferences conn->conn_timeout after releasing
-both rcu_read_lock() and hci_dev_lock(hdev).  The conn pointer was
-obtained from an RCU-protected iteration over hdev->conn_hash.list and
-is not valid once these locks are dropped.  A concurrent disconnect can
-free the hci_conn between the unlock and the dereference, causing a
-use-after-free read.
+i2c-imx rejects a SMBus Block Read byte count of 0 (valid per SMBus 3.1
+6.5.7) and it returns without a NACK+STOP, leaving the target
+holding SDA so the bus is stuck until a power cycle occur.
 
-The cancellation mechanism in hci_conn_del() cannot prevent this because
-hci_le_create_cis_pending() queues hci_create_cis_sync with data=NULL:
+The same bug is occuring with two independently introduced spots, so the
+fix is two patches with their respective Fixes: tags and backport ranges:
 
-    hci_cmd_sync_queue(hdev, hci_create_cis_sync, NULL, NULL);
+  1/2  atomic/polling path       Fixes: 8e8782c71595   v3.16+
+  2/2  IRQ-driven state machine  Fixes: 5f5c2d4579ca   v6.13+
 
-While hci_conn_del() dequeues with data=conn:
-
-    hci_cmd_sync_dequeue(hdev, NULL, conn, NULL);
-
-Since NULL != conn, the lookup in _hci_cmd_sync_lookup_entry() never
-matches, and the pending work item is not cancelled.
-
-Fix this by saving conn->conn_timeout into a local variable while the
-locks are still held, so the stale conn pointer is never dereferenced
-after unlock.
-
-This is the same class of bug as the one fixed by commit 035c25007c9e
-("Bluetooth: hci_sync: Fix UAF on le_read_features_complete") which
-addressed the identical pattern in a different function.
-
-This vulnerability was identified using 0sec.ai, an open-source
-automated security auditing platform (https://github.com/0sec-labs).
-
-Fixes: c09b80be6ffc ("Bluetooth: hci_conn: Consolidate code for LE Create CIS")
-Cc: stable@vger.kernel.org
-Reported-by: Doruk Tan Ozturk <doruk@0sec.ai>
-Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
+Signed-off-by: Vincent Jardin <vjardin@free.fr>
 ---
- net/bluetooth/hci_sync.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Changes in v2:
+- Handle when count > I2C_SMBUS_BLOCK_MAX the same way as count == 0
+  Reported by the Sashiko AI review on v1.
 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index XXXXXXX..XXXXXXX 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -6700,6 +6700,7 @@ int hci_le_create_cis_sync(struct hci_dev *hdev)
- 	DEFINE_FLEX(struct hci_cp_le_create_cis, cmd, cis, num_cis, 0x1f);
- 	size_t aux_num_cis = 0;
- 	struct hci_conn *conn;
-+	u16 timeout = 0;
- 	u8 cig = BT_ISO_QOS_CIG_UNSET;
+---
+Vincent Jardin (2):
+      i2c: imx: fix locked bus on SMBus block-read of 0 (atomic)
+      i2c: imx: fix locked bus on SMBus block-read of 0 (IRQ)
 
- 	/* The spec allows only one pending LE Create CIS command at a time. If
-@@ -6773,6 +6774,7 @@ int hci_le_create_cis_sync(struct hci_dev *hdev)
- 		set_bit(HCI_CONN_CREATE_CIS, &conn->flags);
- 		cis->acl_handle = cpu_to_le16(conn->parent->handle);
- 		cis->cis_handle = cpu_to_le16(conn->handle);
-+		timeout = conn->conn_timeout;
- 		aux_num_cis++;
+ drivers/i2c/busses/i2c-imx.c | 36 +++++++++++++++++++++++++++++++++---
+ 1 file changed, 33 insertions(+), 3 deletions(-)
+---
+base-commit: 6916d5703ddf9a38f1f6c2cc793381a24ee914c6
+change-id: 20260525-for-upstream-i2c-lx2160-fix-v1-0cba0a0093e5
 
- 		if (aux_num_cis >= cmd->num_cis)
-@@ -6791,7 +6793,7 @@ int hci_le_create_cis_sync(struct hci_dev *hdev)
- 	return __hci_cmd_sync_status_sk(hdev, HCI_OP_LE_CREATE_CIS,
- 					struct_size(cmd, cis, cmd->num_cis),
- 					cmd, HCI_EVT_LE_CIS_ESTABLISHED,
--					conn->conn_timeout, NULL);
-+					timeout, NULL);
- }
+Best regards,
+-- 
+Vincent Jardin <vjardin@free.fr>
 
- int hci_le_remove_cig_sync(struct hci_dev *hdev, u8 handle)
---
-2.45.0
 
