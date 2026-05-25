@@ -1,129 +1,236 @@
-Return-Path: <stable+bounces-254187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254188-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id DIWpMgWHFGqIOAcAu9opvQ
-	(envelope-from <stable+bounces-254187-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 19:29:41 +0200
+	id mCytKY+HFGqPOAcAu9opvQ
+	(envelope-from <stable+bounces-254188-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 19:31:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2484C5CD612
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 19:29:40 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B5055CD63B
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 19:31:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 226FF300FC5A
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 17:29:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9757330054F3
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 17:31:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1311F2D9787;
-	Mon, 25 May 2026 17:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DBB82BF3D7;
+	Mon, 25 May 2026 17:31:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NX74LKJq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hxV51+2D"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8A623BD02;
-	Mon, 25 May 2026 17:29:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1AD41A38F9
+	for <stable@vger.kernel.org>; Mon, 25 May 2026 17:31:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779730174; cv=none; b=pj2HdT8yNqECLHjoQOjaLCpSHjgo3NBHTUIgldnICa5BxpygMa6v65u4uyWw9I0sz/P95PbUziDH7/xeAKkCYquNIl1EBiFEIcdoc4pTiv33150mSfj0lxYO3nPx+qr7vbw7GA3/ZhlVsYdqzZRpXe+bQKpGaWvo8dorrVhufko=
+	t=1779730317; cv=none; b=JKGsRtudU/22rUil37abM4ZmAwc22tSmys56Fek3b+zLhEwtXt9Xo8kT4BPpAFY7oORtJS3xcfgKWqovAY8lyHOdgxZobGSN3M55xT9XGFeHnvqs+XpI5/ktxG5BsSbn10JlbbSHs5GN+pbSi2sdS5cB6FivP6muEJfvPRt7WV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779730174; c=relaxed/simple;
-	bh=v6XB4mPPpGyKOjrzpe4Q6U5GbUalkA5ofLc0LmAuyMI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KYwf4BKbW0ohdoJiVw86vKa6a0YVrqt7v7qipOBhsNdJKITCcXMSv8GlibxGn/z0B32goiPVaAW1US/gBlWegM3usTtFnuKOuCVN5Goj1ZN1plReK8r1nnWiInIIi0Mz7XwKtbICnwsLv5eRhY9/hLu5uCd/ash62NW+3Ty+NuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NX74LKJq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B6A81F000E9;
-	Mon, 25 May 2026 17:29:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779730173;
-	bh=3paURfHuzbm+zxGp4fe8y83ocd0xA8H387UcFSHOVuc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NX74LKJq/IjUDVEmxYUJwJ1ISe2v0ECqFGIT4e4f0KgSYNfV9C+7CKD3fGy0nHuhL
-	 WdruTXRaEshe6RqKjS8eJHUizxDyH/k4gZNZTaDZFsOXbLU+eMlDyetEF+fTQ1a/qL
-	 /Z/IADSkxqwxWyS8KVGTZniyyEmo5vymXF7R79K/tiJUHjo4pzOo4R6qKSMJWJPSYV
-	 WpS5bOzZdSU9sqZWkqk5Rst73jagSk3nko+eO5vZedPM+zNwFfElsSOK05eODEyY60
-	 QsHkPsWTVXzxgf5UJWiQzqZJZokKKSSKUGsKtIJ42D6iKCk43AdPItdTfFWJpWlgWs
-	 V6IkYsZnlXaxg==
-Date: Mon, 25 May 2026 19:29:25 +0200
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Frank van der Linden <fvdl@google.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	muchun.song@linux.dev
-Subject: Re: [PATCH] mm/cma: fix reserved page leak on activation failure
-Message-ID: <ahSG9Wl7PVIz_Ugt@localhost.localdomain>
-References: <20260522062658.4095405-1-songmuchun@bytedance.com>
+	s=arc-20240116; t=1779730317; c=relaxed/simple;
+	bh=WzdSh1B+2qm67QydYdUWnUTv+HJ49Td2uHEwz5Mt8Zs=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=YmpwV1p2Zmz1AmJZoL3XwclWtCKg8/uS/EVQRkfhpy5EaNxp7sEu/GJfiN6ka550BYASzRK5BsMeVPZrKjIY2fP2hSQi0FSZ0errd1eLmldeL2zqHm2vJ1x9tRXYWClcSR4qoTHnTjmWcR8hZmY3GBAB+VGTsYl7p1pnSqyHxRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hxV51+2D; arc=none smtp.client-ip=209.85.128.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-7c58e6eb2c8so95106747b3.1
+        for <stable@vger.kernel.org>; Mon, 25 May 2026 10:31:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779730315; x=1780335115; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HG7IEgFs/m1oFs1/lf3+pd8kkR0y0NNeYlLItnr/YTI=;
+        b=hxV51+2DAhw75Ua02ayLeC5ZdF5p7aCKykbK2CfIhyP37OiL5AaLtjDIkViN7b34/3
+         p3IB6f/hQy7TAu2cvFPdzbZYMTgyXwcywhoK4ANru9Ao//jobh59FxoGzGgodj2mj2n8
+         SPSLqze/+GC4+x8u/hWvq8x7qc0rh6fB7Dv+cNz9Os6SxgWJN8yzerGzKJ8vQCe8sK3s
+         X6VaTQUhZYBmuZGnwVVYBbpuTWPOVwcTJ3HMml//VVeGxO8ht99h6a7/os1dr5ZG9OLc
+         fZWsiB49MunnUBUDfngpE+vqwO3EaiK4aFcJX45CKRQiuY2kIXWIVHS9SCCnVGo+PeQY
+         wq1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779730315; x=1780335115;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=HG7IEgFs/m1oFs1/lf3+pd8kkR0y0NNeYlLItnr/YTI=;
+        b=sAKopbBxQqambfBdliuewM1wQDa+jYQFG2kArAzDKbIJbKBjrSzCHboB38AG5kGKzr
+         Vh2vTV+Ykl6+xNP6tH0MT8cwTE+dw5n+orirVDh8cehUDygct+cUOtvRJuX0eVNWa3MQ
+         gwMvaK21PMhTWF29xpnXg4nGkmH6QC1wonfaJ6seuigouWXzvezsWM8P7/UWxkCA91Vz
+         iBoz9VqQorSLoiuzz6JD/1uddWHNd299zK1lmk1If5pLW/uAd1wfO8K/CDF2iQQHzVcg
+         AvuVgUHpdnOjXK5tQ8M1Mg+get895qFA+BkxKMrOWEhzREreP+ZO0buxywRxf+/n4hKI
+         pf4Q==
+X-Forwarded-Encrypted: i=1; AFNElJ8sQA1DXW6bx6tnnh99g9c6hDQ5FaYx/6dp/TYOoEtP9ZFkNPzfF2UNUy4DYVPJEqnAny8VOtI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8xCBpudsqesLB4rCI1PrP+hkN1ysRwE4dJ1So3UYUCCE0fdGO
+	10s3tl9tcHxi8mXwRgUnbbfLASXT7Xs4oD8xOBNRl2QvDnyUOlVRmV/A
+X-Gm-Gg: Acq92OFbi1RzQ+ZXgLHXeO0NooHKZbFeDi0/F45PFuzMUtiSO9Bi0Jk0qUyqZtOANS/
+	7750ydxWBE2FA/Ggm04PKB+dRh6ewfX/elKF3xBviTFg6dxBds4/1b/EeK7x0gUHAgOqdv/8u9+
+	JOxN5YzuEEKnMxRvNQpo3f1qH4Z49ZBBM7IqgZ2/mHtxZ6aqG2NUa35a4kfQWuXoa31d1HDQlqt
+	aAO2yYRm4W0HJD+bl2UycXi/Ja+4fkL+ZQwzKSzZIjCE3+OmiCIBSX9wJLT75h7MAWOMsI0L79b
+	iACzLNXsQfU0WvqaDOhjCX8aBzeWFJV7K1HPLWrOSo0AnJ2blpLsUXWNYo/24k6CVwoBK7DhuGy
+	kDmCCKVvIhtrkAs0mLyNXIhkd8Mq2oRfo5ugvaB4unDumxovxuEpTgcFvQXvPgNe8hA1jS46Qgq
+	4D87Oq18QhnQTSsHstaC35Q0501pS9+CxRMoi7N3ebx/4XGNE0LMpIxiYgZXYsjTZTiVGeOlDVo
+	Oyt21o=
+X-Received: by 2002:a05:690c:968c:b0:7d0:354c:6594 with SMTP id 00721157ae682-7d3373ac29dmr173365357b3.33.1779730314707;
+        Mon, 25 May 2026 10:31:54 -0700 (PDT)
+Received: from gmail.com (141.139.145.34.bc.googleusercontent.com. [34.145.139.141])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7d38c435b54sm48694267b3.40.2026.05.25.10.31.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 May 2026 10:31:54 -0700 (PDT)
+Date: Mon, 25 May 2026 13:31:53 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ lazyming <minhnguyen.080505@gmail.com>, 
+ netdev@vger.kernel.org
+Cc: davem@davemloft.net, 
+ edumazet@google.com, 
+ kuba@kernel.org, 
+ pabeni@redhat.com, 
+ horms@kernel.org, 
+ w@1wt.eu, 
+ security@kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ lazyming <minhnguyen.080505@gmail.com>, 
+ stable@vger.kernel.org, 
+ asml.silence@gmail.com, 
+ achender@kernel.org, 
+ mst@redhat.com, 
+ jasowang@redhat.com
+Message-ID: <willemdebruijn.kernel.2a4ec672bf2d7@gmail.com>
+In-Reply-To: <willemdebruijn.kernel.9bf2a08cffd8@gmail.com>
+References: <20260521121628.309924-1-minhnguyen.080505@gmail.com>
+ <willemdebruijn.kernel.10f46164d2a79@gmail.com>
+ <willemdebruijn.kernel.27d7990b24613@gmail.com>
+ <willemdebruijn.kernel.1ddcb33fec832@gmail.com>
+ <willemdebruijn.kernel.9bf2a08cffd8@gmail.com>
+Subject: Re: [PATCH net] net: skbuff: fix missing zerocopy reference in
+ pskb_carve helpers
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260522062658.4095405-1-songmuchun@bytedance.com>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-254188-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254187-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FREEMAIL_CC(0.00)[davemloft.net,google.com,kernel.org,redhat.com,1wt.eu,vger.kernel.org,gmail.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[osalvador@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[willemdebruijnkernel@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-0.455];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bytedance.com:email,localhost.localdomain:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 2484C5CD612
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 4B5055CD63B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, May 22, 2026 at 02:26:58PM +0800, Muchun Song wrote:
-> If cma_activate_area() fails after allocating only part of the range
-> bitmaps, its cleanup path frees the bitmaps for the ranges below
-> allocrange and then releases reserved pages using the same bound.
+Willem de Bruijn wrote:
+> Willem de Bruijn wrote:
+> > Willem de Bruijn wrote:
+> > > Willem de Bruijn wrote:
+> > > > lazyming wrote:
+> > > > > pskb_carve_inside_header() and pskb_carve_inside_nonlinear() both copy
+> > > > > the old skb_shared_info header into a new buffer via memcpy(), which
+> > > > > includes the destructor_arg pointer (uarg) for MSG_ZEROCOPY skbs.
+> > > > 
+> > > > These functions are not supposed to maintain zerocopy frags.
+> > > > 
+> > > > Both call skb_orphan_frags.
+> > > > 
+> > > > I think what may need to happen is to invert the order of that call
+> > > > and the memcpy. Current code:
+> > > > 
+> > > >         memcpy((struct skb_shared_info *)(data + size),
+> > > >                skb_shinfo(skb), offsetof(struct skb_shared_info, frags[0]));
+> > > >         if (skb_orphan_frags(skb, gfp_mask)) {
+> > > >                 skb_kfree_head(data);
+> > > >                 return -ENOMEM;
+> > > >         }
+> > > 
+> > > Never mind. This actually corresponds to the first Sashiko report you
+> > > mentioned: if zerocopy skbs are converted, then the memcpy prior to
+> > > that call will have stale state.
+> > > 
+> > > For skbs where skb_orphan_frags does not do a deep copy, we do need to
+> > > take this extra reference.
+> > > 
+> > > Reviewed-by: Willem de Bruijn <willemb@google.com>
+> > 
+> > Not sure the potential preexisting issue is reachable.
+> > 
+> > Vhost-net and other zerocopy that predates MSG_ZEROCOPY does not
+> > refcount ubuf_info. Instead it calls skb_copy_ubufs on skb_clone.
+> > 
+> > So if such an skb reaches pskb_expand_head, it should be guaranteed to
+> > not be a clone. Same for the carve methods added later.
+> > 
+> > But, the commit that added zerocopy, commit a6686f2f382b
+> > ("skbuff: skb supports zero-copy buffers"), included this 
+> > pksb_expand_head call to skb_copy_ubufs from the start. That implies
+> > that was expected to be reachable. I just don't see how yet.
+> > 
+> > If it is reachable, then all that is needed is to clear shinfo->flags.
+> > Or more neatly,
+> > 
+> >     skb_shinfo(skb)->flags &= ~SKBFL_ALL_ZEROCOPY;
 > 
-> That bound is only correct for bitmap freeing. Pages in ranges that did
-> not reach bitmap allocation are still reserved and should also be
-> returned to the buddy when CMA_RESERVE_PAGES_ON_ERROR is clear. As a
-> result, a partial bitmap allocation failure can permanently leak the
-> reserved pages from the failed range and all later ranges.
+> Also, I'm not the expert on more recent managed frags
+> (SKBFL_MANAGED_FRAG_REFS).
 > 
-> Fix this by releasing reserved pages for all ranges. For ranges whose
-> bitmap allocation succeeded, use the early_pfn[] snapshot saved before
-> the bitmap pointer overwrote the union field. For later ranges, continue
-> to use cmr->early_pfn directly.
+> That calls skb_zcopy_downgrade_managed in pskb_expand_head, but not in
+> the two other functions with memcpy before skb_copy_ubufs:
+> pskb_carve_inside_header and pskb_carve_inside_nonlinear.
 > 
-> Fixes: c009da4258f9 ("mm, cma: support multiple contiguous ranges, if requested")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> I assume because those shorten the skb, so no risk of getting mixed
+> mode refcounted and non-refcounted frags?
+> 
+> In general zerocopy can be split in refcounted and non-refcounted.
+> 
+> Refcounted zerocopy will not downgrade in these cases, so will not
+> modify shinfo->flags after memcpy.
+> 
+> Non-refcounted should always get converted to copy in skb_clone,
+> so will not enter the skb_cloned() branch here.
+> 
+> If in doubt maybe warrants a rare WARN_ON_ONCE patch.
 
-Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+I was unable to find a path also with the help of Gemini.
 
+It did spot an interesting case where a cloned unrefcounted zerocopy
+skb can be created. But it is reduced to uncloned immediately.
 
--- 
-Oscar Salvador
-SUSE Labs
+skb_morph is like skb_clone (calls __skb_clone), but skips the
+skb_orphan_frags check. Its only caller ensures that this is safe.
+But I'm inclined to send a patch to net-next that makes skb_morph
+itself safe, by orphaning as well (and updating the caller to
+gracefully handle skb_morph failure).
 
