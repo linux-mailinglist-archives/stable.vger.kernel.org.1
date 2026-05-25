@@ -1,193 +1,204 @@
-Return-Path: <stable+bounces-254100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254101-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wEU3Nor5E2puHwcAu9opvQ
-	(envelope-from <stable+bounces-254100-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 09:26:02 +0200
+	id AG1gKAz+E2quIQcAu9opvQ
+	(envelope-from <stable+bounces-254101-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 09:45:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DC2F5C71A7
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 09:26:02 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF2255C73B8
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 09:45:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 39ABA302204A
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 07:23:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B24953002D35
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 07:45:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5D183D1A8E;
-	Mon, 25 May 2026 07:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBE313D4108;
+	Mon, 25 May 2026 07:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="MC6MKfQK"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="SDKF4niB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out162-62-58-216.mail.qq.com (out162-62-58-216.mail.qq.com [162.62.58.216])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3942C26E6F3
-	for <stable@vger.kernel.org>; Mon, 25 May 2026 07:23:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176B43D410A;
+	Mon, 25 May 2026 07:45:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.58.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779693829; cv=none; b=tM+jIcHXux7vEeAmqjJ9CwmLpWZoDDy/QpNBE7QtgJDXRATz1cwNnkbIMI6sRhaF8BwjCgEN1m58qesFe14CKn0zPROl/Rduxikn1BIG6/0zv3vbPIT6lrKZICabSAmPq3d9aUg6G96dMNAR4BJcv4wzMmlvhEeByxQaM7YgJxY=
+	t=1779695111; cv=none; b=JoSbxNVUD5PM1rwDhHfT17lB5hdAl3hCRpmYA4ExIbVKO5hF+eHIi//5PiE98JGTIDC1LMCnDTd5nHgrW7kpC4rXrjgoKpTC9es+gglTPjiodd5vs7+GGVRy7hqJmkqpOS/Z+topm6ldWloEI3W3zO1F5DzuH/YXT3bE2e+JNG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779693829; c=relaxed/simple;
-	bh=/I6DuQjJrsoUlY9F1+GIOyDSOhReuOcNfTPAOcdh/LE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fbWA+qWAQ7oht1iLaJyxzbO27wr/Wk6oTEUtwzz1+b0HvMlxet6TzIfeP0vJe18H0ies4YDaL1WlgPE/e7sdJEu441wxPSuic+Ifu8MFExV0wsc3c1rSIwYuRZxuK9PuSdb1ByAfwpqfFh2H1CtxCav3gSgeapnqk/MXl+w/fOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=MC6MKfQK; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-43d7645adbdso5933813f8f.1
-        for <stable@vger.kernel.org>; Mon, 25 May 2026 00:23:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1779693826; x=1780298626; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/oKgspdXMIsoQuyBhv4V3z/r/gtDk0V0FyCighFRfYc=;
-        b=MC6MKfQKDjbWCWwDN6KK3pITqnyXZ4a/5ggmf2YOpuCObXz890BwdwOrXMy7VZ8kn0
-         xvZixyQHyoiVGRCkTLMWgKXVM2U6tyUMf8O+wTAoiaGy+Q0s/VOEDtoHiO6BGWQB6+0q
-         6MNokqpWGa+Bixjl5ZxHtpdj0bCfiqSfl6eeLWnHM/KwMfEqWh0zCkqUD0wJ/JgULZl3
-         W3S8P4PW0pWYiMvC3LIclxBYSgZExXqltlultgjLElKVbvyhDID+1fTaKlBDA9fTJqU1
-         CBqN8nfn3e0F8IKRiBnvrl1YhZPUYWrbnDSR6CeWgkD4SC3CBW+oF3AAe7887BiBNDxR
-         /VtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779693826; x=1780298626;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/oKgspdXMIsoQuyBhv4V3z/r/gtDk0V0FyCighFRfYc=;
-        b=CIKRcxmbxgzNJnwWaYNvfs6OpZcgEcrGHTClygW4hbWMKGnu5YOpjVebLEKbju8TXO
-         9sadkaKCB0+CjKZxpQXQfRiM+oR0vvlpbZdQKgY2LuxiMNoXDSvq1PllS14SmkGVUOXx
-         XF5kXLziuuG+1XLcgvRqcpb8xI2WfJEcA3pf5Xz2drVKe8GzqM0mol0oeBv+WFjfQFbr
-         U3r5VNwPUF6sgo6hhe9XCjT0d4u2X6xMW3dg2+f9F6grx0wnDbjnQBgFgg9O0RogqBiz
-         owyCXdA3YSWAn5K5fkVkJPzwpTjMhqzDIbYfyHK4nSh8SGu1cfnE4jFxvmigetssyn/u
-         QGiw==
-X-Forwarded-Encrypted: i=1; AFNElJ/6zjw2ls351U9m0F67TZyKhVU5LKUOEncTHlBwqDD7UGz1ShE628Dd9jKqZxgaHZzB0Imvdys=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfiJxZ0K+YHAGn0qXBy/2NTB0J8Zn0hEGFDIHzefnv1OxUTEmx
-	nDj7LYSs4me5Oze5LT/HbmiPL2SZQShiFVqphlazC1QMbb12cki6MVVQpyWW8Bm0wX0=
-X-Gm-Gg: Acq92OGmcgLCHZLW0+Zo4fysPmPjrwxIn4q4R12Y8N17UHmMUAsJEkzUiIdD+ZoVNvj
-	X+/oM01tbuuJ10TC0U88ZJQjTTjwsv8LXVg9C/fvumA7/ONUsrSJCU0KPXw4NUwZ7DuSzoylbO9
-	Lmjwn3pfFZ0lpmTB38E1kAcJsEwoAynD1ziL9nDJvi9GiAHPc6L50OurIiM90mzxBPoFJWBfGuI
-	flvaIQk4eYuCqrnMP9wm/cDW/6/UeX/6lp+UQt7FfdnFOkXMjCvnZCE/96mrJjiNKU+74+91mhl
-	Gi6jsYLnmaWD617yUWfWzd3umRrA6EVzTyYII8UYwlV1cD8gLRECrHPQCmb/tg85yrCbRDmKp0U
-	87UOuYfkzM/z9lrfzLMo60BrPMvVvtDLhtcuqz3YtmDvjPTMR/4X0urYhIpLaAyVoom5v1IrfiF
-	ZeXGnDJasQvm/V/vhviFn/TlQh3oCYrIFti5SQjmTBx7HSL0WoD9d1aSIXxT4jydAVSD1/k7fTi
-	sf9wi7Nz/bFlmplQzHfVRIDuXshFUihnMbzhiX4/p5Ve/LzYAFLXd08YQjA6PFl3eCMVqUfBtCe
-	hVE2
-X-Received: by 2002:a05:6000:2384:b0:45e:8526:7dc8 with SMTP id ffacd0b85a97d-45eb39e1ea2mr22077567f8f.25.1779693826624;
-        Mon, 25 May 2026 00:23:46 -0700 (PDT)
-Received: from ?IPV6:2a00:1028:838d:271e:8e3b:4aff:fe4c:a100? (dynamic-2a00-1028-838d-271e-8e3b-4aff-fe4c-a100.ipv6.o2.cz. [2a00:1028:838d:271e:8e3b:4aff:fe4c:a100])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eb6d7167dsm25062109f8f.35.2026.05.25.00.23.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 May 2026 00:23:46 -0700 (PDT)
-Message-ID: <dc0c1bff-2d1a-4863-a22b-29d14a73361e@suse.com>
-Date: Mon, 25 May 2026 09:23:44 +0200
+	s=arc-20240116; t=1779695111; c=relaxed/simple;
+	bh=TIAz4wlLKlIAPWQt9dfhOzCP7ACSiDb+V5filsopots=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=ufChhwj8WBqrEdCk1J7/JiVgsGKFLkBhgTHyLQiZ+i5Vvpur1vtRodQAFlfLPXDJZfNNeF6MzOpWPCsXYoOKlmZ0niVrxegq8FBCgxdegpSrlyfjsnA4M0XG5jj93TB6Kn+OI84aPZrg+GrVzTrF/lLCRBfDe0oAezfwST2pqlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=SDKF4niB; arc=none smtp.client-ip=162.62.58.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1779695098; bh=jGZVhuzIUBDvzr37jEcw5y55t/s7RWVAMdOgkWac4OI=;
+	h=From:To:Cc:Subject:Date;
+	b=SDKF4niBWdaf55WAMiAORXm5sDrJ7tl28anQWGAYc23HBY7qcZS4X4CfzEAWC9u9r
+	 HeceK3/wtdzK/wERMnr3zpCwqlYVfzBdPkIWd6fzm3HjLBUs8FNizjGxv71YA4KyQV
+	 SDifCJl1DHuLc5YOxQ5ZI9p9+KrLwZd24ZTwi1eI=
+Received: from NTT-kernel-dev ([60.247.85.88])
+	by newxmesmtplogicsvrszb43-0.qq.com (NewEsmtp) with SMTP
+	id B3689645; Mon, 25 May 2026 15:44:54 +0800
+X-QQ-mid: xmsmtpt1779695094tc2zzl5dk
+Message-ID: <tencent_C9D9ED71D51B177EDF71B708417942F4F206@qq.com>
+X-QQ-XMAILINFO: OIJV+wUmQOUAFbPCqhgAqlKhFTUmK401BqGnC/2AUQ0N66PdlRJPLvhh1uzbH4
+	 sDLlRr0vCPeBHnh8Q1jglZviTR5VNsHD+I+mPMkS8jN3B+JfTtcKkKEi3HoMNMVLZqKLOR2Ax0XT
+	 lWPSuuTCUZg3kjSwjrrOhLyn6F1FegzS0T4S8RokViRMHeZgi77VyDkDwRVKzK7a2bnCWy8CCKEL
+	 oqKHMolv9IbqEvT6rzCT+MYLtKj/rPHC+YwLyXcc8/wBucwVyfR3Rjulbl3pcVWhxcOrgTKEAXJ5
+	 NAm7NQqv7E+n/gq7sWdJ0z9hQoDli+qL/Pj/atv9y/1G9BWs+dwuYw7EBBrRGJp4ktFsc29Btq03
+	 xkhxssIS+mOU3+T5pM2C/QBEsjL5rwzZKQo7Lom4qx3ffaiBPhLCd0TRFsYXF6La6GBAGRJAbpFT
+	 vfoCfs7L2INhoe/Nv3Hx5rtbcj5hlSRJYb3q5t6HlbRxxchjCEcxUPxbt5w7sVDJe636sXFI4mX4
+	 MEVbY7CAmoTykVmkNYflzTn00GKcFgprWMwADBHWtZ6SiK3dERjmkQFNcY5UxPM8WitjHg6/+Bd2
+	 tmysrpEKFt3qds7APAKERq6hBhScWlDSSbClscXatsCkh6aVmNoi4OOKCpQQk5jkxgBRcUIVfagQ
+	 z+ApHJzZ83R+9ynyaHY6aRWbgF0FYLJBkBJgASxxBhzXXattcw/vfDOYmr0dNm01dPKUVKNZ/NH4
+	 9GkqAGTKMitJnCpEthfnqdYM/X5/67+3tvomuinhp5kreKDDGK0DbBxUwRWfCJUDOLk4TxXh8IKs
+	 0a1HbdzrwOeeUSVhCODa+lXAADyZqDyLrQuK4WATuUSiV5ETSRpeuJGWKWMIUqJ3WVHt+t6D4Iqc
+	 +KLGhJSe+L3o5a6/X40nCKXEbyKn7mUVrH7mcCaI6QyRESb8bh5qr0f2qb+4l53ogE2tCGBCLoXL
+	 lIWlsyOTuezJRvsoBUkHOpMns/93x7J/Xz5s+s6SedREGi4tooZm1RqbtSzpunxCf4Vd04fPMg+0
+	 cnWl8QpnHXYhqxzNmSDwOYJLK/U2k=
+X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+From: Fang Wang <32840572@qq.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	alison.schofield@intel.com
+Cc: patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	dave@stgolabs.net,
+	jonathan.cameron@huawei.com,
+	dave.jiang@intel.com,
+	vishal.l.verma@intel.com,
+	ira.weiny@intel.com,
+	dan.j.williams@intel.com,
+	ming.li@zohomail.com,
+	linux-cxl@vger.kernel.org
+Subject: [PATCH 6.6.y] cxl/port: Fix use after free of parent_port in cxl_detach_ep()
+Date: Mon, 25 May 2026 15:44:54 +0800
+X-OQ-MSGID: <20260525074454.1150115-1-32840572@qq.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] params: bound array element output to the caller's
- page buffer
-To: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Cc: Daniel Gomez <da.gomez@samsung.com>,
- Sami Tolvanen <samitolvanen@google.com>, Kees Cook <kees@kernel.org>,
- Aaron Tomlin <atomlin@atomlin.com>, Dmitry Antipov <dmantipov@yandex.ru>,
- Thorsten Blum <thorsten.blum@linux.dev>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260417075042.26632-1-pengpeng@iscas.ac.cn>
- <20260507082103.94473-1-pengpeng@iscas.ac.cn>
- <5bfa28de-9d37-45c2-8c0f-e93b36119910@suse.com>
- <20260521022854.38938-1-pengpeng@iscas.ac.cn>
-Content-Language: en-US
-From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <20260521022854.38938-1-pengpeng@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [3.84 / 15.00];
+	SEM_URIBL(3.50)[zohomail.com:email];
+	R_MISSING_CHARSET(0.50)[];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[suse.com:+];
-	FREEMAIL_CC(0.00)[samsung.com,google.com,kernel.org,atomlin.com,yandex.ru,linux.dev,vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[qq.com,quarantine];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254100-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[qq.com:+];
+	TAGGED_FROM(0.00)[bounces-254101-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	R_DKIM_ALLOW(0.00)[qq.com:s=s201512];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[petr.pavlu@suse.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_NEQ_ENVFROM(0.00)[32840572@qq.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[qq.com];
+	TO_DN_NONE(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.969];
+	R_SPF_ALLOW(0.00)[+ip4:104.64.211.4:c];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.com:mid,suse.com:dkim]
-X-Rspamd-Queue-Id: 3DC2F5C71A7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,huawei.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,qq.com:email,qq.com:mid,qq.com:dkim]
+X-Rspamd-Queue-Id: AF2255C73B8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 5/21/26 4:28 AM, Pengpeng Hou wrote:
-> Hi Petr,
-> 
-> You're right, that changelog bullet was misleading.
-> 
-> v1 already broke out of the loop once off reached PAGE_SIZE - 1, so it
-> would not enter another iteration with no remaining byte in the caller's
-> page buffer.
-> 
-> The v2 change was narrower: after the element getter returns, it clamps
-> the number of bytes to copy and only rewrites the previous '\n' separator
-> when that clamped length is non-zero. That avoids turning the previous
-> separator into ',' when the next element contributes no visible bytes
-> after clamping, or if a getter returns 0.
+From: Alison Schofield <alison.schofield@intel.com>
 
-The updated code in v2 looks as follows:
+[ Upstream commit 19d2f0b97a131198efc2c4ca3eb7f980bba8c2b4 ]
 
-	for (i = off = 0; i < (arr->num ? *arr->num : arr->max); i++) {
-		p.arg = arr->elem + arr->elemsize * i;
-		check_kparam_locked(p.mod);
-		ret = arr->ops->get(elem_buf, &p);
-		if (ret < 0)
-			goto out;
-		ret = min(ret, (int)(PAGE_SIZE - 1 - off));
-		if (!ret)
-			break;
-		/* Replace the previous element's trailing newline with a comma. */
-		if (i)
-			buffer[off - 1] = ',';
-		memcpy(buffer + off, elem_buf, ret);
-		off += ret;
-		if (off == PAGE_SIZE - 1)
-			break;
-	}
+cxl_detach_ep() is called during bottom-up removal when all CXL memory
+devices beneath a switch port have been removed. For each port in the
+hierarchy it locks both the port and its parent, removes the endpoint,
+and if the port is now empty, marks it dead and unregisters the port
+by calling delete_switch_port(). There are two places during this work
+where the parent_port may be used after freeing:
 
-The clamping is done by:
+First, a concurrent detach may have already processed a port by the
+time a second worker finds it via bus_find_device(). Without pinning
+parent_port, it may already be freed when we discover port->dead and
+attempt to unlock the parent_port. In a production kernel that's a
+silent memory corruption, with lock debug, it looks like this:
 
-ret = min(ret, (int)(PAGE_SIZE - 1 - off));
+[]DEBUG_LOCKS_WARN_ON(__owner_task(owner) != get_current())
+[]WARNING: kernel/locking/mutex.c:949 at __mutex_unlock_slowpath+0x1ee/0x310
+[]Call Trace:
+[]mutex_unlock+0xd/0x20
+[]cxl_detach_ep+0x180/0x400 [cxl_core]
+[]devm_action_release+0x10/0x20
+[]devres_release_all+0xa8/0xe0
+[]device_unbind_cleanup+0xd/0xa0
+[]really_probe+0x1a6/0x3e0
 
-My understanding is that the expression '(int)(PAGE_SIZE - 1 - off)'
-cannot return 0 because otherwise the loop would have already broken out
-in the previous iteration due to the final check
-'if (off == PAGE_SIZE - 1)'.
+Second, delete_switch_port() releases three devm actions registered
+against parent_port. The last of those is unregister_port() and it
+calls device_unregister() on the child port, which can cascade. If
+parent_port is now also empty the device core may unregister and free
+it too. So by the time delete_switch_port() returns, parent_port may
+be free, and the subsequent device_unlock(&parent_port->dev) operates
+on freed memory. The kernel log looks same as above, with a different
+offset in cxl_detach_ep().
 
-The input ret value to the min() calculation comes from the
-arr->ops->get() call. The kernel_param_ops::get() API requires the
-resulting string to be terminated by '\n', so on success the call should
-never return 0. Even if it does and we want to make param_array_get()
-tighter, I believe it should be treated as an error rather than silently
-returning success from this function.
+Both of these issues stem from the absence of a lifetime guarantee
+between a child port and its parent port.
 
+Establish a lifetime rule for ports: child ports hold a reference to
+their parent device until release. Take the reference when the port
+is allocated and drop it when released. This ensures the parent is
+valid for the full lifetime of the child and eliminates the use after
+free window in cxl_detach_ep().
+
+This is easily reproduced with a reload of cxl_acpi in QEMU with CXL
+devices present.
+
+Fixes: 2345df54249c ("cxl/memdev: Fix endpoint port removal")
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Li Ming <ming.li@zohomail.com>
+Signed-off-by: Alison Schofield <alison.schofield@intel.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Link: https://patch.msgid.link/20260226184439.1732841-1-alison.schofield@intel.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Fang Wang <32840572@qq.com>
+---
+ drivers/cxl/core/port.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
+index 7f28d1021fa9..5326150a1c64 100644
+--- a/drivers/cxl/core/port.c
++++ b/drivers/cxl/core/port.c
+@@ -527,6 +527,7 @@ static void cxl_port_release(struct device *dev)
+ 	xa_destroy(&port->dports);
+ 	xa_destroy(&port->regions);
+ 	ida_free(&cxl_port_ida, port->id);
++	put_device(dev->parent);
+ 	kfree(port);
+ }
+ 
+@@ -657,6 +658,7 @@ static struct cxl_port *cxl_port_alloc(struct device *uport_dev,
+ 		struct cxl_port *iter;
+ 
+ 		dev->parent = &parent_port->dev;
++		get_device(dev->parent);
+ 		port->depth = parent_port->depth + 1;
+ 		port->parent_dport = parent_dport;
+ 
 -- 
-Thanks,
-Petr
+2.34.1
+
 
