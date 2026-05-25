@@ -1,80 +1,80 @@
-Return-Path: <stable+bounces-254198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254199-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0FTvGPavFGqWPQcAu9opvQ
-	(envelope-from <stable+bounces-254198-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 22:24:22 +0200
+	id gFFRLf+vFGqWPQcAu9opvQ
+	(envelope-from <stable+bounces-254199-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 22:24:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD19B5CE4F2
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 22:24:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EDC45CE510
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 22:24:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 82A8E301ABB2
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 20:24:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 13CD630207FA
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 20:24:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04DC638D40F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A46A393DC0;
 	Mon, 25 May 2026 20:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gPenaiao"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YGzm+/DG"
 X-Original-To: stable@vger.kernel.org
 Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D4B629D29F
-	for <stable@vger.kernel.org>; Mon, 25 May 2026 20:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C3335F5E3
+	for <stable@vger.kernel.org>; Mon, 25 May 2026 20:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779740659; cv=none; b=CdxjM0njR+5Obrd3mqhhk2R6hyqoNoEz90ZuN7XNuYIInotboy3EU52loJ4bQ/uuXWkFwiAQT+6t/++Uk/4ohl8rCo2nIqHPXRfS1oqaET96+z2L4KmizPg3mj9DYSaR6HI6NiNy4iv0yA7tSbUsgmm1OCOSfhaNXL5Yuir5tuo=
+	t=1779740660; cv=none; b=F7sBccbGWuxI/Lx8RC87QhbWxVs5zl/SCww0oMTrCkbNiM9oCvc1BaiN/GjBgo2XEIoGj8xxxP+aimeRSuj125MSjxCraolEY8oCxip9wYaMKVl5eioaIVxFgzC46S+a0ETPl4bCULQuz9htYVsES31uxr/+ydBAVeEc9pRJ38M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779740659; c=relaxed/simple;
-	bh=mQzf0udB9WF5zu5/FBlJF1x0afDQDwFSq0CE/SAXcyk=;
+	s=arc-20240116; t=1779740660; c=relaxed/simple;
+	bh=grdFfHOkHxTLhLsS6j+FX41ur/btn/7guyqiP83xFg0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fb7smg8lELAwD/7XGNtxHrdCm4PJWCKja5s1Kc6oPgq+pTaSM6sVVn8dzA4zGGi+PpOI1IVg/6Cv7/ziBwMfR8fZ1emDzOvQzctnrEWa5dPZQbgJKlLW1fH3gmZwFxxthzbQjLPNpYRjtUrfHVdkvMNikTFKQDRirDwilQCISY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gPenaiao; arc=none smtp.client-ip=209.85.167.178
+	 MIME-Version; b=nKteUcHXeS21QwAhnk9a2MbJK1uyKXbBr+MyKo64xjePX0yIS3GeHx9NLMlFNjgxmQN366H/XlnIk8jHEX1YeiO7xbtP68sVv+7D+eC4OJrMTLZGYVP1Oa/Cx9KRFih6eYFK3mm1BympwH75YICxaAUYsnclcoLajIep7N4D5sY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YGzm+/DG; arc=none smtp.client-ip=209.85.167.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-47c7b282e21so3852358b6e.1
-        for <stable@vger.kernel.org>; Mon, 25 May 2026 13:24:18 -0700 (PDT)
+Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-4855e69a4c0so2594505b6e.1
+        for <stable@vger.kernel.org>; Mon, 25 May 2026 13:24:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779740657; x=1780345457; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1779740658; x=1780345458; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=i3w98fzDAZ74VeWHLLU7AbRT+oeZljBSAiHlsaRVO9E=;
-        b=gPenaiaoDuuOzGo1e621mFM+6om/7Qe853eoAtGh1P+B+u2xSI3WV42UUp23UBz/Gb
-         FPBfZlnypj5tiBiQ6MVWcve8E5tFZa6AziWm3iyzf/o+nfKErI+M7s08Rri38CDm/ns8
-         SUhI/Ib5DzioG5Gh2wtvKW7tvO1L+P6EaRD40WHSt/E0KiRUuZV74x5Z4EYslgA3Vt8G
-         n4GgcZXV52mQGOVZDhcuzCwrojzv2CfZuRgRJOPV/1jNP14hFDDyrRdhwcMqaToZjgur
-         ERVAghEmFFtv8OWhtJSnvhPgwHzRUzE9VsjTHrsgCCS/rgH5Taj1vILvfl5cr07X/AQC
-         2xig==
+        bh=tfK7e3u1o6Z9pLVZ7VLBuH4tZqriU9FnwEkSwlD5KZ8=;
+        b=YGzm+/DGO+PYwS4sV2FDAq6Mh7yEELHU7OMvE/LUQBQvA0FtnrzqrvpfEeRwjrrQdY
+         4eZhfV/K+JJ7cAVlA4gfLCejf0uDvgUfV9U4tuMx2J1r/9H9WYh5LvdHXIPrln01VPqO
+         kOf5FtSRJgeCRd2CKUXLj4AcOs3gaBEBTMJPx9df8fIra7FD/dLzUE3EfpxfMagyQA07
+         t5Z5GKNnCaPVzWki3cwBvyKMn7sluSfrTEe3IMXl/GRSIWpNuhYwgzme3ZA+jvEuS13q
+         FSTMkdSraAs3lLz3+F7IQRR79ppBGnhrxfsYnJBVEHxytLjlDC83HEXaWdj5QS4c/Y4F
+         hv7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779740657; x=1780345457;
+        d=1e100.net; s=20251104; t=1779740658; x=1780345458;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=i3w98fzDAZ74VeWHLLU7AbRT+oeZljBSAiHlsaRVO9E=;
-        b=TFiJNTcBVSFvuwrf2RbPg7UIgaMI0yTCw1cwp3zAhD/b3uOmbJD3a/dvbNTfLvMwPO
-         ySai1E0pcu4XH6gCMsxHdU/YA8SHzzyaUNkeHfRhPYXUQQvguGm6lE6M5EWUunifCPi+
-         vDXzeksvrpuKJ4IkGbBLQ9ZT2+Pdrp2y26i8r9Aeefgk4a0pawqyEc98OX2PuafBp8u5
-         HO9y6awOrfggJN3F4AavfDyh7kLCkDAEXfw3cw9XG8sbfzNIUPUUyxOGjLWk10pxocxe
-         VtdSPhX1o07IdCzx1QxDMIfN6Jj2Gxcfr/OdnRerZo0InNXNHaaAfCh9WE5XpmxMo5Ix
-         qIkQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/MsEjspKeYkjdyyp7+QuHTKMqIHMhPKlm0sPJEYA5HYq4PKYy0mKfMJF7shjy1W21DyASZveY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YznY+1kTaFmZIYnvmCbTZlOwejv2CUiDZp33OiEiD8ik2cTQcWK
-	OE2hx/OPqN+85h/8KHsknoyxn08+Ykg/pkS8zn195VGo1m7DOMt7EE/P
-X-Gm-Gg: Acq92OGOr6t+JAlJjE2C0W1RVDdk4EdPreCCKZDIgtUvLuDsvIG7n4lNbX9gxcdWjPN
-	LJHkFlT75fj/yezgTWNTMXVkZ1lqzGylPdGEhnHwmyRi00QHzIZG/QLERLeuW612Hej+febKSD8
-	0AIoqyR3ylvL5zrVRpMct5bF0BPHGa1oob/fJRUMtUNj9dnyQflzeiTlFs6QUyhQOJ0URuOlvnG
-	82ilbTWfyZv2oy3DmejwlVmS20B5OpsVVyuLadREze/o2xGhmyk7yr2kBwkv1vs/X1odhd3ZppJ
-	5PEp3EQ9XysabRtrc+dU7AzLQvwjOEsnNba7l0+kKHXEZUqoKiw7RNayj06o4Noz6wrn54uElVy
-	sqcBHLvUfst+vIDvRazQL5nsu1BWkyYUMx8QblPkzRM0/GiZ+wtRodDkKu6hzXm6HUT2eFF7124
-	fiwIep0bmzD65C56JV9ucENHPtPGQ+YW0PGS7Fdazx3+HmGl155znvCy6JsanR0MB1/knm8IPho
-	40lcSgPjNwxw0/PYKn+qQa1E55AMMYQFjF2pA7g/XdvEUw=
-X-Received: by 2002:a05:6808:a59c:20b0:485:5997:d38d with SMTP id 5614622812f47-4855997d8a9mr5340008b6e.29.1779740657485;
-        Mon, 25 May 2026 13:24:17 -0700 (PDT)
+        bh=tfK7e3u1o6Z9pLVZ7VLBuH4tZqriU9FnwEkSwlD5KZ8=;
+        b=Xu838Qbq+x/ERZl3wQ9Icz7+mjsCpkirKmR5THmHD1Ts1RXMLLDlkdao6hbc4KUXv1
+         mABZUPmNIfFT/7m+vNsocf6J/CJPOOisUcjQs6vYWAT2KvPmdr1bsgmTwExJRZOfmZXo
+         ty5ir0ZlZjdUvWmkQtJE2kBDx+cZUJ+zQXh8gN0xU+xEtrfm3kWj0ehnrRAH9aGouwtH
+         Dd5rCgFxJjgqsnmnIAIH5b5aspJQCIy7ZRgj8gIAMM9QrEr7QhJUarNhXjv6dQmaCnB6
+         j++Aj7PwLRquqB9jgUB3+qDFHzRv9AGektlldHFrPg+0okp7SS0o0/ARA/bxNKKz7BwE
+         fvaA==
+X-Forwarded-Encrypted: i=1; AFNElJ//v5DnWhe8OIl8obb3KdzFh7y/3FcZeGmSoCQCIwt+iT3L29LlDxxBCkTbuo4HDX9f5tuzESQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyShIrHeX1IdwOfqPKuwYpSQ9qKb+J61FxTXC/wqC8Z1mpqXRa0
+	DSG9dmF+9iDGwFrpRdqJlqh0fEi32V/IQWc46t2jsESRc4AzRc6WEQhE
+X-Gm-Gg: Acq92OGXYKMATCCtzJ/Z0TtNJlThn/0jDnHDEOS+qy7FF7M6JW39eB9JDuCLTjsalik
+	6mbNpC/sO/ojbaSDcYoNrsqcfwxtfeZ2smoL/GGyLFwwhx//xH5rwr8xgrHCNsHXzLsskgtqy6z
+	58ewXSfAtbzszBVwxBdHgQ0CbCxPPaFHe1hIxnNmwOBpprHKmFxdie+Rp0+6dZ+TKs8FtciVXI9
+	Sc7H1Q+ffnOwDKvia0gV1Mj+4aGvh45jpD3IXDnPvmRyJ9xAaaLpA4jmdhiNqCmetCGvBTkZquV
+	5AXfnQtY6xiVZbbbXvH68dqhoZeHlN7jIN5NgJrwVEdNkmXdaDTUadjWQCBe+cGGC/FLMBATeVE
+	YkpgzvxJosS6gHFJKXMw7Z159WZ6SEJb/rWAAVUxn2bxuhYbbBsPKPYQKRS1ioZJDaSe0AGHLcc
+	NYrgoIFPsXv5/fI/Vcc2fa2/1fWBbiIMmgPQ8flgf8WmtUUXuViw6M4X9bCbGA4+X5LP1fSUnj8
+	9bkh6JG5m+V28mUFdhLWm5dBBDpzTqOS4bbdZWUI7UsAb8=
+X-Received: by 2002:a05:6808:5387:b0:467:254:b90 with SMTP id 5614622812f47-48549d6e4cfmr8815138b6e.10.1779740658155;
+        Mon, 25 May 2026 13:24:18 -0700 (PDT)
 Received: from DESKTOP-J47FREO.mynetworksettings.com (171.sub-75-196-24.myvzw.com. [75.196.24.171])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-48554757d5dsm5204305b6e.15.2026.05.25.13.24.16
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-48554757d5dsm5204305b6e.15.2026.05.25.13.24.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Mon, 25 May 2026 13:24:17 -0700 (PDT)
 From: Adrian Korwel <adriank20047@gmail.com>
@@ -83,12 +83,13 @@ Cc: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org,
 	heikki.krogerus@linux.intel.com,
 	Adrian Korwel <adriank20047@gmail.com>
-Subject: [PATCH 1/4] USB: serial: io_ti: fix heap overflow in build_i2c_fw_hdr()
-Date: Mon, 25 May 2026 15:24:07 -0500
-Message-ID: <20260525202414.602-1-adriank20047@gmail.com>
+Subject: [PATCH 1/4] usb: gadget: f_uac1_legacy: fix file handle leaks in gaudio_open_snd_dev()
+Date: Mon, 25 May 2026 15:24:08 -0500
+Message-ID: <20260525202414.602-2-adriank20047@gmail.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2026052517-undergrad-reformat-44bc@gregkh>
+In-Reply-To: <20260525202414.602-1-adriank20047@gmail.com>
 References: <2026052517-undergrad-reformat-44bc@gregkh>
+ <20260525202414.602-1-adriank20047@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -102,18 +103,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,vger.kernel.org,linux.intel.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-254198-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-254199-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[adriank20047@gmail.com,stable@vger.kernel.org];
@@ -125,46 +126,60 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: CD19B5CE4F2
+X-Rspamd-Queue-Id: 1EDC45CE510
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-build_i2c_fw_hdr() allocates a fixed-size buffer of
-(16*1024 - 512) + sizeof(struct ti_i2c_firmware_rec) bytes, then
-copies le16_to_cpu(img_header->Length) bytes into it without
-validating that Length fits within the available space after the
-firmware record header.
+gaudio_open_snd_dev() opens the ALSA control device file first, then
+opens the PCM playback device. On two error paths the control file
+handle is leaked:
 
-img_header->Length is a __le16 from the firmware file and can be
-up to 65535. check_fw_sanity() validates the total firmware size
-but not img_header->Length specifically.
+When filp_open() for the playback device fails, the function returns
+immediately without closing the already-opened control file handle.
 
-Fix by rejecting images where img_header->Length exceeds the
-available destination space.
+When playback_default_hw_params() fails, its return value was ignored
+and both the playback and control file handles were leaked.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Both leaks result in gaudio_cleanup() calling filp_close() on already
+freed file objects, causing a use-after-free.
+
+Fix by closing previously opened file handles before returning on
+each error path, and by checking the return value of
+playback_default_hw_params().
+
+Fixes: d355339eecd9 ("usb: gadget: function: make current f_uac1 implementation legacy")
 Cc: stable@vger.kernel.org
 Signed-off-by: Adrian Korwel <adriank20047@gmail.com>
 ---
- drivers/usb/serial/io_ti.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/usb/gadget/function/u_uac1_legacy.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/serial/io_ti.c b/drivers/usb/serial/io_ti.c
-index a35409bd766c..afe29fdf9536 100644
---- a/drivers/usb/serial/io_ti.c
-+++ b/drivers/usb/serial/io_ti.c
-@@ -844,6 +844,11 @@ static int build_i2c_fw_hdr(u8 *header, const struct firmware *fw)
- 	/* Pointer to fw_down memory image */
- 	img_header = (struct ti_i2c_image_header *)&fw->data[4];
+diff --git a/drivers/usb/gadget/function/u_uac1_legacy.c b/drivers/usb/gadget/function/u_uac1_legacy.c
+index 01016102fa17..5bcd3afd6366 100644
+--- a/drivers/usb/gadget/function/u_uac1_legacy.c
++++ b/drivers/usb/gadget/function/u_uac1_legacy.c
+@@ -226,12 +226,20 @@ static int gaudio_open_snd_dev(struct gaudio *card)
  
-+	if (le16_to_cpu(img_header->Length) >
-+			buffer_size - sizeof(struct ti_i2c_firmware_rec)) {
-+		kfree(buffer);
+ 		ERROR(card, "No such PCM playback device: %s\n", fn_play);
+ 		snd->filp = NULL;
++		filp_close(card->control.filp, NULL);
++		card->control.filp = NULL;
+ 		return ret;
+ 	}
+ 	pcm_file = snd->filp->private_data;
+ 	snd->substream = pcm_file->substream;
+ 	snd->card = card;
+-	playback_default_hw_params(snd);
++	if (playback_default_hw_params(snd) < 0) {
++		filp_close(snd->filp, NULL);
++		snd->filp = NULL;
++		filp_close(card->control.filp, NULL);
++		card->control.filp = NULL;
 +		return -EINVAL;
 +	}
- 	memcpy(buffer + sizeof(struct ti_i2c_firmware_rec),
- 		&fw->data[4 + sizeof(struct ti_i2c_image_header)],
- 		le16_to_cpu(img_header->Length));
+ 
+ 	/* Open PCM capture device and setup substream */
+ 	snd = &card->capture;
 -- 
 2.43.0
 
