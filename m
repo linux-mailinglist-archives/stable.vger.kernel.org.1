@@ -1,219 +1,218 @@
-Return-Path: <stable+bounces-254051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254052-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qJ5MAxyQE2ofDgcAu9opvQ
-	(envelope-from <stable+bounces-254051-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 01:56:12 +0200
+	id sK7CBg2ZE2rjDwcAu9opvQ
+	(envelope-from <stable+bounces-254052-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 02:34:21 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 739225C4D4B
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 01:56:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85B7D5C50A3
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 02:34:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A6AAA300878B
-	for <lists+stable@lfdr.de>; Sun, 24 May 2026 23:56:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7F0F0300F513
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 00:34:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75F523B3C1F;
-	Sun, 24 May 2026 23:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12FC21E7C18;
+	Mon, 25 May 2026 00:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="e0FB8IU8"
+	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="GcGAq63D"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7082C08AC;
-	Sun, 24 May 2026 23:56:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0611922FD
+	for <stable@vger.kernel.org>; Mon, 25 May 2026 00:33:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779666966; cv=none; b=tfe1J3shkBRQhwy1yFAkFMLs2ymX7gmkouwhd/lThFBZAIQeuRfZSaX37UArwo+AV3NPHXSzHmZihs8AMN8W9km+sYZbYW1odLLVLepMaoOe0X92C2bH7qd5z4Ql8WQKy23/IvrOlmqcJ/HjedEi7PkZ9ly5oehPMWfJY0S0ZpU=
+	t=1779669238; cv=none; b=Nu8TU1G9nsFX6D7uS4KJJwLSDPVVcwho4jHAxqLkrHE+4BvJ4CBOLxNWwVsFqhcK0G5gOYnKteH7j7hGaNkgRcG4ICK3A+3r7RYeNTSoQteZg8o440Ah90fsfU3jhNLwBZrjrvIzJB3+zw8X2aC9IAYnQrz6A6oh3GWgBxfaykI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779666966; c=relaxed/simple;
-	bh=1GS9J34T0IrwzYq3QhcjuzMU4D7KHOn05hsKDv1eKBY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=J46eKqYqECNITdDgwWRuKPuxK4Wk90XecGq7E90g3h2qI5GXe8+rgKdmILWg092mBlix1nCu5pnUi4kXFsj79IhS1eP2eWtfDD5i86GlBUFUZz2p//isIq2g1Eo5+6c2QTcWq/3k+ONp55nHM43aMclaWxRvtVA5W9B5R7FQwOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=e0FB8IU8; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1779666958; x=1780271758; i=w_armin@gmx.de;
-	bh=DNVuB+M4SGGZEuS8nQVvzlAAQKla81JLqrODNCiqOiI=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:
-	 MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=e0FB8IU8qmpUMxLcHL3RGUW6Bj/8I/gvyz7hIVdf6fDiG8EA6HXldRbk5lu73N77
-	 tTH7N24oyyJClwljvJMAaV9sgg8ad4OGqDVoCHU7f3sH0tP7QoZcpuzxrY7QUujEU
-	 s6+006/QyNkmvaF/7WJqgwhoo7fGxhcR8TkO9j52PP4d+u7JilWR+tUUrsV4B64Jz
-	 Q07vTmfBEJDoAjYoLeiJKMJIwjS8fGmPxSEH70sNhwpNG9yjTY5Ml96Wk2uphbSeV
-	 P8HW379SsOfuEEoFB26oerfnMMt+FT1Xfa+qNmW+1dMdaFzVvMSYoiJVNe3b25mc7
-	 x3PUrIsO1fQnEFyHdQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MwwZX-1xEzyv24eh-00rSmf; Mon, 25
- May 2026 01:55:58 +0200
-From: Armin Wolf <W_Armin@gmx.de>
-To: lee@kernel.org,
-	pavel@kernel.org
-Cc: linux-leds@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] leds: uleds: Fix potential buffer overread
-Date: Mon, 25 May 2026 01:55:53 +0200
-Message-Id: <20260524235553.189134-1-W_Armin@gmx.de>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1779669238; c=relaxed/simple;
+	bh=NxBgylfGI61QezjFuHLlTPY1IY+6uc8yTNmpMIxvsRo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=txEs2LBLvpYspFyZ7RMhju65TVTWd3vuMGl2mKxSH172tRsqyuG2lWYbUZhkytDAxpJYE//n3sw0I6/5qlriYJa1S90icRaD06ZelD4Do8zWY2k873f3rF5A7hRqMXXZhOPo72/8DPV5Wy4KW7EJI0aRvcH4n4jziR/kGxHXXXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=GcGAq63D; arc=none smtp.client-ip=18.9.28.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
+Received: from macsyma.thunk.org (c-73-9-28-129.hsd1.il.comcast.net [73.9.28.129])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 64P0XMi6023089
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 24 May 2026 20:33:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1779669205; bh=WKS4775VuFwUPFf6kitgs+nNyhe3+RO9OMQko7wP3dM=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=GcGAq63D/xo2c+Y+jkbg+2iv39qVjix71xS1kqHufdIfHc7cPQ3KgCN3YwE2icNfd
+	 PIplsW6IRpJPD4jVLxV9Pf+NkryMqYH3ANwdwrid1JkxbqxMeHWNy7er/Z7WXvAXCm
+	 DvzDDARwEiHlyavlBv+hfIJ3DHmjrzR4e8EI9aLwMPaDso3nGFCQwluF9wK0yH5pqV
+	 cGU/0OPLGjQ6DSMXp0D0GqWJYS4XWLtB/Oc+0d2512kPWN97N5juM8V1mVTg/K+OGH
+	 Ca9e4hK49QND6+o9gsmwh7MTIKEU1ibADkZuf/ujot9meB8dOIYAYpt1dprpWe/nfH
+	 BDSFUoI08IeOA==
+Received: by macsyma.thunk.org (Postfix, from userid 15806)
+	id E61906A5A0DD; Sun, 24 May 2026 19:33:21 -0500 (CDT)
+Date: Sun, 24 May 2026 19:33:21 -0500
+From: "Theodore Tso" <tytso@mit.edu>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Artem S. Tashkinov" <aros@gmx.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
+Subject: Re: [RFC/PROPOSAL] Shifting the x.y.z Stable Tree to a Continuous,
+ Signed Patch-Stream Model
+Message-ID: <20260525003321.GA51941@macsyma.local>
+References: <cdb0dd2f-f331-46ed-8439-1609173f083a@gmx.com>
+ <2026052444-unlawful-eskimo-9c41@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:xYCGS+ys/Q9IZIU294lezJM/mKC4CDVLXBpnL/sbs0ypa2FBjZJ
- bqdWFWgtxxcIgB2w3IKJsDH8Ma1d5xcFGnTPwEbz48bVsPR8HilK1uV68z+nX4NJuSqa0P5
- c2eurQWZsZUPKzG+uBjobIjKCzYfPYYT9PJT0iiKiIflRsDxdXiMYVBl/SxTgoTKxbqqE6S
- ARDLZk6Bi9x6FvtWg9Stw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:Ii4/uqF+9FE=;naiKTQo78VWavdEmLpHTZsgUc2p
- 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
- UNt4gF5HK+V1UBIDtRYbmFN60uo=
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2026052444-unlawful-eskimo-9c41@gregkh>
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmx.de,quarantine];
-	R_DKIM_ALLOW(-0.20)[gmx.de:s=s31663417];
+	DMARC_POLICY_ALLOW(-0.50)[mit.edu,none];
+	R_DKIM_ALLOW(-0.20)[mit.edu:s=outgoing];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[gmx.de];
-	TAGGED_FROM(0.00)[bounces-254051-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254052-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmx.com,vger.kernel.org,kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[gmx.de:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[mit.edu:+];
+	MISSING_XM_UA(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[W_Armin@gmx.de,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tytso@mit.edu,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,gmx.de:email,gmx.de:mid,gmx.de:dkim]
-X-Rspamd-Queue-Id: 739225C4D4B
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[macsyma.local:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 85B7D5C50A3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The name string supplied by userspace is not guaranteed to be
-null-terminated, so using strchr() on it might result in a buffer
-overread. The same thing will happen when said string is used by
-the LED class device.
+On Sun, May 24, 2026 at 12:56:54PM +0200, Greg Kroah-Hartman wrote:
+> > point-release numbers can be replaced by
+> > automated, time-stamped git tags and machine-generated source snapshots cut
+> > on a strict, automated interval (e.g., every 48 hours), removing human
+> > maintainers entirely from the release timing.
+> 
+> That's probably not a good idea anyway.  Are you doing continous testing
+> of the stable queue?  If so, great, just take from there today.
+> Everyone adds patches on top of releases anyway, what's a few more if it
+> happens to resolve specific issues for a day or so before a .y release
+> can be cut?
 
-Fix this by using strnchr() instead and explicitly check that
-the name string is properly null-terminated.
+It's already the case that not all maintainers have the time to test
+the stable queue, and it's not clear that current testing of the
+weekly release is all that great.  I have seen stabilty regressions
+where an xfstest running against ext4 will cause the kernel to crash
+with the 6.1 and 6.6 LTS kernels.  It took me several days to figure
+out the 6.1 regression, and I still haven't had time to look into the
+6.6 regression, because my day job (which is not ext4, but herding
+cats for an AI infrastructure project --- it's amazing how many fellow
+developers I met at LSF/MM are actually doing AI infrastructure
+projects for $WORK, and not kernel development as their primary job
+responsibilities.)
 
-Cc: stable@vger.kernel.org
-Fixes: e381322b0190 ("leds: Introduce userspace LED class driver")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-=2D--
- drivers/leds/uleds.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+So even the weekly cadence is starting to creek a bit from a quality
+perspective.  I can't even *imagine* what a continuous, automated, "it
+builds, ship it!" would do to the quality of the stable kernel series.
 
-diff --git a/drivers/leds/uleds.c b/drivers/leds/uleds.c
-index ace71ffc0591..41942cfca705 100644
-=2D-- a/drivers/leds/uleds.c
-+++ b/drivers/leds/uleds.c
-@@ -102,7 +102,8 @@ static ssize_t uleds_write(struct file *file, const ch=
-ar __user *buffer,
-=20
- 	name =3D udev->user_dev.name;
- 	if (!name[0] || !strcmp(name, ".") || !strcmp(name, "..") ||
--	    strchr(name, '/')) {
-+	    strnchr(name, sizeof(udev->user_dev.name), '/') ||
-+	    !strnchr(name, sizeof(udev->user_dev.name), '\0')) {
- 		ret =3D -EINVAL;
- 		goto out;
- 	}
-=2D-=20
-2.39.5
+		     	  	      	  - Ted
 
+P.S.  If someone is interesting in helping to test ext4 and xfs stable
+kernel patches, talk to me.  There is partial automation to test
+updates to the stable-rc trees, but I've never had time to automate
+the rest of the test regression analysis combined with the automated
+"which patches need to be backed out to avoid the regression / kernel
+crash".  There had been a few companies contributing fractions of
+engineers to do XFS stable maintainenace, all of those resources have
+been withdrawn by their respective companies in the past year.
+
+
+
+
+> 
+> > ### Why This Benefits the Ecosystem
+> > 
+> > * **Eliminates Churn and Latency:**
+> > 
+> > When a patch introduces an edge-case regression or requires an immediate
+> > follow-up (a common reason for rapid point-release sequences), maintainers
+> > do not need to coordinate a whole new release event.
+> 
+> No real "coordination" happens here.
+> 
+> > The follow-up fix is simply patch $n+1$. Downstream CI pipelines
+> > ingest it natively via standard git fetches.
+> 
+> Again, we do that today.
+> 
+> > * **Maintains Git-Native Debugging:**
+> > 
+> > Debugging stable regressions via `git bisect` has always been patch-based,
+> > not release-based. Since point releases are meant strictly for backported
+> > bug fixes, removing the arbitrary `x.y.z` release tags changes nothing about
+> > a developer's ability to isolate a regression. If anything, it prevents
+> > downstream vendors from pulling out-of-order patches that complicate
+> > bisection across distros.
+> 
+> Who bisects across distros?
+> 
+> > * **Eases Downstream Automation:**
+> > 
+> > Modern tracking distributions (Arch, Fedora snapshotting, etc.) can switch
+> > to trunk-based intake, automatically building from the signed tip.
+> 
+> Have you asked them if they need/want this?
+> 
+> > For enterprise distributions (RHEL, Ubuntu LTS) where constant kernel
+> > packaging and reboots are untenable,
+> 
+> Why are reboots for these systems untenable?  Why not fix that root
+> problem instead?
+> 
+> > a fluid patch stream allows vendor
+> > security teams to more rapidly feed live-patching infrastructure (`kpatch`,
+> > `kgraft`), applying critical CVE fixes directly to runtime memory without
+> > changing the base package version.
+> 
+> They can do that today, and do do that today.  So again, what distro
+> needs this?
+> 
+> > * **Bridges the Compliance Gap:**
+> > 
+> > Embedded, automotive, or medical compliance pipelines
+> > that legally require a static, verifiable code artifact can validate their
+> > software against the base major release tarball ($7.0.0$) plus the
+> > cryptographically signed, append-only stable patch series manifest.
+> 
+> Do they really need that?  Again, they can have that today, nothing new
+> here.
+> 
+> > The manual compilation, testing, and cutting of sub-version tarballs is an
+> > administrative artifact of the late 1990s.
+> 
+> Weekly releases is not an artivact of the 1990s :)
+> 
+> > Shifting to an explicit, signed
+> > patch-stream architecture acknowledges the velocity of modern vulnerability
+> > research, strips away artificial latency, and frees our stable maintainers
+> > to focus on code quality rather than release management overhead.
+> 
+> Again, we have that today, on a weekly basis.
+> 
+> greg k-h
+> 
 
