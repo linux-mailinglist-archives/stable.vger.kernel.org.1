@@ -1,53 +1,98 @@
-Return-Path: <stable+bounces-254196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254197-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iGkxLWSqFGomPQcAu9opvQ
-	(envelope-from <stable+bounces-254196-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 22:00:36 +0200
+	id 4mtfAgatFGp6PQcAu9opvQ
+	(envelope-from <stable+bounces-254197-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 22:11:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58D665CE2EB
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 22:00:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCB5B5CE39F
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 22:11:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 30A0F302A69D
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 20:00:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EA157301104C
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 20:11:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF8E23947AE;
-	Mon, 25 May 2026 20:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46C683955CC;
+	Mon, 25 May 2026 20:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RhOSa7wu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R+O0xYY/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824CA388396;
-	Mon, 25 May 2026 20:00:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8792F3939B9
+	for <stable@vger.kernel.org>; Mon, 25 May 2026 20:11:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779739203; cv=none; b=FAnGCcryUAL2hAdVfY0+qq+YOFRAlMB9z/ZrBCBRr+u3mQhnGLjwjWtb49j2ucGaM2iAG9by3uv/MnwdDUT0P7i90Aun+WaAOPmhUcfpaJ3kzabLftVSQEPKobsU37CnSGTtvbyWDcTNt4Fsba1MKSQ90v7WHJx/Wh4nnJAsDdo=
+	t=1779739903; cv=none; b=jJAAOBzoKbdseWzAi/UNV2WZ2N/AVRZNgD1kOZCZ02fYUsH3sZrhFaILJTjyQDifMGOKjsybDJf/0KnoMOIa/eZIEYCl+rmxEinicH/22Aj5cHMVFukTLUp2BG/k5hlt+Izw75YkSnitAduqzDrbJ3Yo5eANi3ugrBEYvSV3hX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779739203; c=relaxed/simple;
-	bh=ZPFIPDzEcv9wCHFOa5+QxzXXniwaSfr0AReixAZV09E=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=usEL34abTgItwMMVJlO/P5tA3dD7BKlwo4WMtXpI40xIZEhu/Doa+y0J3Ue9ukqzYwv+a1gju1bVfJsb1wUiRRLXYRRo7kT3WpywGyY9nvbqmod+3YwNooMoKKugbrm5thch5DF6TJnPW8+xCP7mqbHFlPRek5WMAx0e6jrDkNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RhOSa7wu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CBDB1F00A3A;
-	Mon, 25 May 2026 20:00:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779739202;
-	bh=1/oC8rZvSb0/58rjVfNg3qIosXAwNMulf1db0rnZnrs=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=RhOSa7wu3zzCdSmYcgXeQfgPLGu2Ssydk1HMfETUvCErawiZ7DYS0OB+CaxCVTO5m
-	 Va9zv+NYuwSwDbciB81ThJ/CbBlhPFwvLPtvKQtb+JNFGVuer1Yvx4U+foT0ZhraC8
-	 CqXh9RbH/idDKBgRDI7WsDfc1b/WfJ9a8VfAy4FVPOxSFR2dCusSL9+ZGo5ZSIobre
-	 o+Cwif+5lTFmQdK2vB4FhxwFuTqPEGFeO77HNPi/tszqnMtKFJXzioZb1/6g1wyu2S
-	 AZ+mRwO9fBifYTntKFQn4layBHvaYNCN/+UNQbMTsitL1/zdEWbASa+8+87RakFxyk
-	 1Zee27BimZKJg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19BD4380AA76;
-	Mon, 25 May 2026 20:00:10 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1779739903; c=relaxed/simple;
+	bh=iPocNdP11IWJ84RYgMwB6ikmsitLUIqeZWoQumVliOg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pZ2bn4ZPj29Sbr/jqJ2+CC0oj6o7pXB3uffnGpZmNilVFwzSqyk6IUCIVRnxnbkB+ncgnjC+2ZsS/HjUaDBugXZRHxQaz/g1nr7HC4uit0CEM9JgRs+GBpH2MvQmbVBMgZk3P7uiDAP0Dd68UzX1D1ZdoAkMuuwVguiVp3kVbHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R+O0xYY/; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-49039a8851fso42917645e9.2
+        for <stable@vger.kernel.org>; Mon, 25 May 2026 13:11:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779739900; x=1780344700; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9LV2RF28IqA2a7V3wy5JIzlW5lVMgYSXDFk9zTWJsOk=;
+        b=R+O0xYY/juqjTUygtm8Yinnir6cnO/VKNSlOMRnlzX3BtHcCzZNcMLtvNjEp4pC7dq
+         Cjg4zBbHgyPln8AQO8zs6/9pPSO+dTieFG5OghW/10wImDswnKuzJODhx3Y+SCCtJREQ
+         T0wzWyOqjK9iedmENI088h9JVGEzXI6NkKyJ3Q1KWCQ/W+yHkbuOCqexJIhoXoRiLAqr
+         HGiEIwJyYe8veI6tUpXm6M7Rz7Uw5MAFKTXdQ1qjYtRarROy0PtdtlO+8qW9g8KCxOWv
+         LAZTkDrPi3etxAvU50eE2L4Vy3+e73EOsXH+VHB75oaFtmR0P1xnO/RGHQ65Z0iMyTjA
+         K7Mg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779739900; x=1780344700;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9LV2RF28IqA2a7V3wy5JIzlW5lVMgYSXDFk9zTWJsOk=;
+        b=pgnLI1aNLRokxITEQ5+4I/H1BQ9Ws9mjsDrxZKlAb7ujIZtKp+SYWps81iXZro3zJQ
+         XLFFZ2hZ7juS1I5DMRQFbPl4kC7zEEdcVUneziPU3yIfLFJTkezLzYT7Lwn+dfE5qMXm
+         8cvw8IaLtPzswSvm5lDXpwLIcKc7TnMCRWIYQoFGVF11OX7YcmujjUOKt5S6VXaB23Fv
+         sxMgdZoqthQCJ5kn5bgh6WwitoiND+cgF0yIBhcUs+JxvL3PynkwBDpyB2J0NqWKHPeG
+         WgNpLnQCHW+g7NoXIOXTaBbegyVpqkYLf1HQjwrO4zQ+XF6vIRBIWKOnhYdX02wpiObh
+         3n8w==
+X-Gm-Message-State: AOJu0YwJOLEmvZgMYevHdgoduPhbntm6rR/VKcfi6lfsjigQEhzy4bCx
+	ej0Mre5a2wRr/T8xfe9bSOF+g3iZ1kYTNRxX5T59WNoXy8I2lsexJ+f/
+X-Gm-Gg: Acq92OEOtc94KlBfy5rq4JCcC11NEIWsFzL+2YNmO2pk5YPZIH8yACm9N20BqaYECaF
+	OPVEJTC4aDPI/dWzHusb+qyDtbc9ik6E0LW6IGWGT/dSXEUnCxotwxx/N8VbhGpWscMkND7fMb0
+	2umrBa8+azlw03l5xGD3gZONHuP5cEe6H5SXyG7HofLbJ5BGb3j/hWTmD9lvepV2Re8mf/nQO1Y
+	ffBXIWwXFiqOsHEVUURp7YfMoJXmQkBIVwIas0AKHiNyfXEfFOWnPDHl3sigoqqjrD+u58fQwGX
+	j2RsT4PZwOxdpTZSG14HgFF15Lv/beLYdGUTSUnpYTls2UcmQq/pM1XHU6pmCFSNoyyG5hLms3g
+	kK0OJ6SRRjTxyhsgJXZNNvR500i4RaM3DlzTpTWDjv9/N7p4fINHHbZvxobN3JGQgcfqAkdOc82
+	HcBbH3QNGDa5x7ouUm2o8oxCSyDMD3JO0RQCpG2U2ZknJFAHNLXJU5/Gvd7b1YvxVVDsOqerwwr
+	85CWUeMSS/hKCY5ZRHI0vIQzQYgHngvpSkMMc68T5g=
+X-Received: by 2002:a05:600c:4688:b0:48f:e230:80a3 with SMTP id 5b1f17b1804b1-49042ae99afmr256122915e9.33.1779739899702;
+        Mon, 25 May 2026 13:11:39 -0700 (PDT)
+Received: from britney-pc.tail2180da.ts.net (host217-46-89-96.range217-46.btcentralplus.com. [217.46.89.96])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49059cc9a91sm52673055e9.1.2026.05.25.13.11.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 May 2026 13:11:39 -0700 (PDT)
+From: Kacper Kokot <kacper.kokot.44@gmail.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	Kacper Kokot <kacper.kokot.44@gmail.com>
+Subject: [PATCH] netfilter: TCPMSS: fix dropped packets when MSS option is unaligned
+Date: Mon, 25 May 2026 21:11:16 +0100
+Message-ID: <20260525201116.407338-2-kacper.kokot.44@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,78 +100,235 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] macsec: fix replay protection at XPN lower-PN wrap
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177973920864.3098866.2633413254433514434.git-patchwork-notify@kernel.org>
-Date: Mon, 25 May 2026 20:00:08 +0000
-References: 
- <SYBPR01MB78813FD49E58F253B989F197AF012@SYBPR01MB7881.ausprd01.prod.outlook.com>
-In-Reply-To: 
- <SYBPR01MB78813FD49E58F253B989F197AF012@SYBPR01MB7881.ausprd01.prod.outlook.com>
-To: Junrui Luo <moonafterrain@outlook.com>
-Cc: sd@queasysnail.net, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- mayflowerera@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- danisjiang@gmail.com, stable@vger.kernel.org
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254196-lists,stable=lfdr.de,netdevbpf];
-	FREEMAIL_CC(0.00)[queasysnail.net,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,gmail.com,vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[outlook.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254197-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kacperkokot44@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 58D665CE2EB
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: BCB5B5CE39F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello:
+Padding TCP options with NOPs is optional, so it is legal to send an
+MSS option that is not aligned to a word boundary and therefore not
+aligned for checksum calculation. The current TCPMSS target is not
+robust to this: when the MSS option is unaligned it produces an
+invalid checksum, and the packet is dropped.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+When the changed word is not aligned, the modified bytes straddle two
+checksum words, and using the standard incremental update helper
+(which assumes alignment) produces an invalid checksum:
 
-On Wed, 20 May 2026 11:47:55 +0800 you wrote:
-> In macsec_post_decrypt(), when pn is U32_MAX, pn + 1 overflows u32 to 0
-> and the first branch never fires. If next_pn_halves.lower is also in the
-> upper half, pn_same_half(pn, lower) is true and the XPN else-if does not
-> fire either, leaving next_pn_halves unchanged. An attacker that captures
-> the legitimate frame carrying pn == 0xFFFFFFFF on an XPN association
-> can then replay it indefinitely, since lowest_pn never rises above
-> the captured pn and macsec_decrypt() reconstructs the same IV.
-> 
-> [...]
+    | w1     | w2     |
+OLD |  a  b  |  c  d  |
+NEW |  a  b' |  c' d  |
 
-Here is the summary with links:
-  - [net] macsec: fix replay protection at XPN lower-PN wrap
-    https://git.kernel.org/netdev/net/c/e68842b33564
+Since b' and c' sit across w1 and w2, we could compute the incremental
+checksum in two operations by recalculating w1 and then w2:
 
-You are awesome, thank you!
+    C' = C - w1 + w1' - w2 + w2'
+
+But working it out:
+
+    C' = C - w1 - w2 + w1' + w2'
+       = C - (a * 2^8 + b)  - (c * 2^8 + d)
+           + (a * 2^8 + b') + (c' * 2^8 + d)
+       = C + 2^8 * (a - a + c' - c) + (b' - b + d - d)
+       = C + 2^8 * (c' - c) + (b' - b)
+       = C - (2^8 * c + b) + (2^8 * c' + b')
+
+So an unaligned incremental checksum can be done in a single operation
+by byteswapping the changed bytes before passing them to the helper.
+This patch implements that trick for unaligned MSS option updates.
+
+Signed-off-by: Kacper Kokot <kacper.kokot.44@gmail.com>
+---
+Reproduction script
+
+  #!/usr/bin/env python3
+  import argparse
+  from scapy.all import *
+  
+  parser = argparse.ArgumentParser()
+  parser.add_argument("target_ip")
+  parser.add_argument("target_port", type=int)
+  args = parser.parse_args()
+  
+  def try_handshake(options):
+    sport = RandShort()
+    ip = IP(dst=args.target_ip)
+  
+    syn = TCP(
+      sport=sport,
+      dport=args.target_port,
+      flags="S",
+      seq=1000,
+      options=options
+    )
+  
+    synack = sr1(ip/syn, timeout=2)
+  
+    print("SYNACK", synack)
+    if synack and synack.haslayer(TCP) and synack[TCP].flags == 0x12:
+      ack = TCP(
+          sport=sport,
+          dport=args.target_port,
+          flags="R",
+          seq=syn.seq + 1,
+          ack=synack.seq + 1,
+      )
+  
+      send(ip/ack)
+      print("SYN-ACK received")
+    else:
+      print("No SYN-ACK received")
+  
+  print("\n>>> MSS Aligned")
+  try_handshake([
+      ('MSS', 1460),
+      ("NOP", None),
+      ("NOP", None),
+      ('SAckOK', b''),
+      ('Timestamp', (12345, 0)),
+      ('WScale', 7)
+  ])
+  
+  print("\n>>> MSS Misaligned")
+  try_handshake([
+      ("NOP", None),
+      ('MSS', 1460),
+      ("NOP", None),
+      ('SAckOK', b''),
+      ('Timestamp', (12345, 0)),
+      ('WScale', 7)
+  ])
+
+A script to reproduce:
+
+  #!/usr/bin/env python3
+  import argparse
+  from scapy.all import *
+
+  parser = argparse.ArgumentParser()
+  parser.add_argument("target_ip")
+  parser.add_argument("target_port", type=int)
+  args = parser.parse_args()
+
+  mss_aligned_tcp_options = [
+      ('MSS', 1460),
+      ("NOP", None),
+      ("NOP", None),
+      ('SAckOK', b''),
+      ('Timestamp', (12345, 0)),
+      ('WScale', 7)
+  ]
+
+  mss_misaligned_tcp_options = [
+      ("NOP", None),
+      ('MSS', 1460),
+      ("NOP", None),
+      ('SAckOK', b''),
+      ('Timestamp', (12345, 0)),
+      ('WScale', 7)
+  ]
+
+  def try_handshake(options):
+    sport = RandShort()
+    ip = IP(dst=args.target_ip)
+
+    syn = TCP(
+      sport=sport,
+      dport=args.target_port,
+      flags="S",
+      seq=1000,
+      options=options
+    )
+
+    synack = sr1(ip/syn, timeout=2)
+
+    print("SYNACK", synack)
+
+    if synack and synack.haslayer(TCP) and synack[TCP].flags == 0x12:
+      ack = TCP(
+          sport=sport,
+          dport=args.target_port,
+          flags="R",
+          seq=syn.seq + 1,
+          ack=synack.seq + 1,
+      )
+
+      send(ip/ack)
+      print("SYN-ACK response")
+    else:
+      print("No SYN-ACK received")
+
+  print("\n>>> MSS Aligned")
+  try_handshake(mss_aligned_tcp_options)
+  print("\n>>> MSS Misaligned")
+  try_handshake(mss_misaligned_tcp_options)
+
+ net/netfilter/xt_TCPMSS.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/net/netfilter/xt_TCPMSS.c b/net/netfilter/xt_TCPMSS.c
+index 80e1634bc51f..8e409858505d 100644
+--- a/net/netfilter/xt_TCPMSS.c
++++ b/net/netfilter/xt_TCPMSS.c
+@@ -117,6 +117,7 @@ tcpmss_mangle_packet(struct sk_buff *skb,
+ 	for (i = sizeof(struct tcphdr); i <= tcp_hdrlen - TCPOLEN_MSS; i += optlen(opt, i)) {
+ 		if (opt[i] == TCPOPT_MSS && opt[i+1] == TCPOLEN_MSS) {
+ 			u_int16_t oldmss;
++			u16 csum_oldmss, csum_newmss;
+ 
+ 			oldmss = (opt[i+2] << 8) | opt[i+3];
+ 
+@@ -130,8 +131,19 @@ tcpmss_mangle_packet(struct sk_buff *skb,
+ 			opt[i+2] = (newmss & 0xff00) >> 8;
+ 			opt[i+3] = newmss & 0x00ff;
+ 
++			csum_oldmss = htons(oldmss);
++			csum_newmss = htons(newmss);
++
++			/* MSS may be unaligned; fix up the incremental checksum
++			 * to avoid an invalid checksum and a dropped packet.
++			 */
++			if (((char *)&opt[i + 2] - (char *)tcph) & 0x1 != 0) {
++				csum_oldmss = swab16(csum_oldmss);
++				csum_newmss = swab16(csum_newmss);
++			}
++
+ 			inet_proto_csum_replace2(&tcph->check, skb,
+-						 htons(oldmss), htons(newmss),
++						 csum_oldmss, csum_newmss,
+ 						 false);
+ 			return 0;
+ 		}
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.43.0
 
 
