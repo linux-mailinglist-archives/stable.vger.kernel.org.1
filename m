@@ -1,252 +1,209 @@
-Return-Path: <stable+bounces-254135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254136-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QC/rCfk/FGoXLQcAu9opvQ
-	(envelope-from <stable+bounces-254135-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 14:26:33 +0200
+	id OGj1AOVAFGo3LQcAu9opvQ
+	(envelope-from <stable+bounces-254136-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 14:30:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75A915CA74B
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 14:26:32 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94C2C5CA84C
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 14:30:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3A618301A1C9
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 12:24:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EE95A3006101
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 12:30:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4969380FED;
-	Mon, 25 May 2026 12:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C56D8381B1B;
+	Mon, 25 May 2026 12:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="cuNNAQju"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Trf40pUi"
 X-Original-To: stable@vger.kernel.org
-Received: from SY8PR01CU002.outbound.protection.outlook.com (mail-australiaeastazolkn19010021.outbound.protection.outlook.com [52.103.72.21])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E01D30C17E;
-	Mon, 25 May 2026 12:24:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.72.21
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779711871; cv=fail; b=hU7H3we6zXU7SoWebbnFn1EVLUExiF9b/S1tQbzvn0oE+d9fHNMx34CkOhmtYkj3aB6lrq4gScOXWecjgOL4JJRAECuzylsp2EWmNsfi74R1MJZxW//pg02tp9tnkkSew+5Nb2wp3P8ZWdKaWDr5s9GbLgPYKvqBgcerejw4L3Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779711871; c=relaxed/simple;
-	bh=ZZDp7b4Z1RqZXPyycoWj2Iplu1+pOaw+bC46EXTRtrw=;
-	h=From:Date:Subject:Content-Type:Message-ID:To:Cc:MIME-Version; b=KJ+4q44BCBDOt8RCejC6dqAFdnNTjapUYlBoQ/QgOiPbOaqgHVTk0hfTg5MLg90noeG6C8spADcZEV63pnXqsAWvuvhzfjM8/btffQpoGTPB1B9/qXveiZDpkqiYcj/CZ6IHrw1CsQGbr9gF/0LIZV0QzsE8WBGk/40RDvWZUSQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=cuNNAQju; arc=fail smtp.client-ip=52.103.72.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=W1mB7n6V7baKXewQZESz00ljii0LH/UQuBlJeMitk/xklUrXmIDb9wJJpjiateE4AnAAr7aLKr+q4rKYJb3ORWnBCjOu1dp9D6qWnXucFNP2i7zDLIGeKeNZGq5oEuiF24Gy14n5nMRrHvn6nXmDUicivr6BqDpYVn8Zg28xDflR62U9Hk481fNnYpG7AFMLkZ5gyLtNjnfn6k0G6xchsvR1u9MnJiC28UApyQwpPhJtYFo4Y++B4SaQNA33NPFsw5tEZAOVaRqZjuWn9elsrNpllZ/GvyvWTlLGPj8xVOusMOThedtOcHgaEIkaQM22YPwSSoSQI+14ruZt0MwF2A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4LzU9Lo3nd2tda9Sne1CGPUq7co1VPhhaNxm13u7708=;
- b=na8Pd+sd6R0THglqVBe9ottpfQyuZyvHgxObToP9ve9RUhOml4GrhcnQuVA9YCqOK0OxZNQEGUQFoQZLiSWoPdWc7KXEBJVEjXCkEbLXSE3HIMvHiHtFirTIYBpGWDLmbcHXF/Zx348U+I9ukCVG9+MsJuFvs63hOgJdrEhH0mzgcPosHD5LfqmEUTgqOXM2ZOT7sWm5QaIEUSQhnhZVxlf0kt04M8KNo8Kxx4L+QURi+DaG9rPCcpmoh/QJV40zrJQBpzAil7Wd1cTppDPEv+9MhR/3ppD9NkKgOm2iar2qk2jD4wFCUaNLdIyuvsuk9IMhd4cKP4O4USwk9YvGNQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4LzU9Lo3nd2tda9Sne1CGPUq7co1VPhhaNxm13u7708=;
- b=cuNNAQju8pElwAwhICGUppPE6gYY5r0HVwT6ba6QhrT/9YVDSyWb/+R2Zo8uo0gnU94YeyA5rSl2po33qS99xXszee2KHTQBi0uECPDoDZgyi0bMatWjPhwUdHYCofQTrvgjUF/X7xLm58XSlEW1oDiRXjGt/gT452yDnGl3J05WhBQdVGnxO318Zp+3MIwis1VTgZuHyFGTaAt5BvjOj63lezlvu3HXsZPOTUp8LX0Dss217GHbuMs0NraFC3oEpNrt7tKwWcbAo4e4B9+B5sttq41ql8/7e54frXA6srhEO5olTk3i9+qX5o6/4EWrkdFtxnMwJqhy05FFLYzAUw==
-Received: from SYBPR01MB7881.ausprd01.prod.outlook.com (2603:10c6:10:1b0::5)
- by MEYPR01MB7837.ausprd01.prod.outlook.com (2603:10c6:220:166::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.20; Mon, 25 May
- 2026 12:24:24 +0000
-Received: from SYBPR01MB7881.ausprd01.prod.outlook.com
- ([fe80::7cd2:d6e8:3fa0:5f0c]) by SYBPR01MB7881.ausprd01.prod.outlook.com
- ([fe80::7cd2:d6e8:3fa0:5f0c%3]) with mapi id 15.21.0048.016; Mon, 25 May 2026
- 12:24:24 +0000
-From: Junrui Luo <moonafterrain@outlook.com>
-Date: Mon, 25 May 2026 20:23:35 +0800
-Subject: [PATCH] wifi: iwlwifi: dvm: fix off-by-one in iwl_rx_dispatch
- command index
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID:
- <SYBPR01MB788132C407BF55CD4391C91DAF0A2@SYBPR01MB7881.ausprd01.prod.outlook.com>
-X-B4-Tracking: v=1; b=H4sIAEY/FGoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDUyNT3bTMitRi3URjo6SkVCMLcyMDEyWg2oKiVLAEUGl0bG0tALqgWz5
- XAAAA
-X-Change-ID: 20260525-fixes-a32bbe287204
-To: Miri Korenblit <miriam.rachel.korenblit@intel.com>, 
- Emmanuel Grumbach <emmanuel.grumbach@intel.com>, 
- Wey-Yi Guy <wey-yi.w.guy@intel.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Yuhao Jiang <danisjiang@gmail.com>, stable@vger.kernel.org, 
- Junrui Luo <moonafterrain@outlook.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1976;
- i=moonafterrain@outlook.com; h=from:subject:message-id;
- bh=ZZDp7b4Z1RqZXPyycoWj2Iplu1+pOaw+bC46EXTRtrw=;
- b=owJ4nJvAy8zAJVb4wiKgu++DA+NptSSGLBF7t0hPSdMD+svtpe+4Gczhnvvkn8GLgNyb5+QeZ
- LSZ2J4p/9VRysIgxsUgK6bIcrzg0jcL3y26W3y2JMPMYWUCGcLAxSkAE3kzlZHhi6/ol4n8AnOq
- VcxZjZYHOGmY9+/m9LzMuCP08Yn8yPCXjAwnQ+cFMFkHB+RoPO+r2+c2xeaEfu3ny4eKOhrfnyj
- S2M8HAAdMRvA=
-X-Developer-Key: i=moonafterrain@outlook.com; a=openpgp;
- fpr=C770D2F6384DB42DB44CB46371E838508B8EF040
-X-ClientProxiedBy: TYCP286CA0372.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:79::20) To SYBPR01MB7881.ausprd01.prod.outlook.com
- (2603:10c6:10:1b0::5)
-X-Microsoft-Original-Message-ID:
- <20260525-fixes-v1-1-3b597c1bad38@outlook.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF0F1CAA7D;
+	Mon, 25 May 2026 12:30:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779712224; cv=none; b=aDXxfinIrbRAl6bmjVFM9VcpCTsK+4zhaOZxJlqRGNXgAVC6V3xBaLJpNvHG6Uyjz6OedqgXOKRFANaiJNtdP82TD+LdKQhd7OZAnIbM7XO1o6ZrakIU95W3siHk/3hlLPKCNuUh8TK1mz/Yf07LgKqAdumGOYeLB9YyKGq7iuo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779712224; c=relaxed/simple;
+	bh=5bhexpmneKoYSiRbvSbWWrxgpggJapgRMGJ1yQI3xC8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CTTyzwx5zLFfJBecHK4AefB3flqej/fiClvjVXBg57Ww21IBjaBnPGCCpZ6sYKhfdSjYJVQ0Xk0IgA0LurBbFJgn9LMC7U0an1ToxLFS5WxJLCpHsBnsIxSc7BIT0T0HCKNH2VRIw8HFAcp4xBvIRuoRsk0KnQDQUX4wwaMJhdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Trf40pUi; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779712222; x=1811248222;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=5bhexpmneKoYSiRbvSbWWrxgpggJapgRMGJ1yQI3xC8=;
+  b=Trf40pUi3gsjs4hLE/qJB/lr9+rBl1qmgZS4VawRI05eJrUEjj7g+AaJ
+   WBHMVhpaY+i61RB0ghxRS5+BQDbxBiaUiPcSUfiXc+XzvMPwl1Hi1qVfr
+   8B4otDm1dQ185xPwWY5rnCh2sieprlbnHVF/zByIFA6gVJVtgcYzXj/hs
+   aXUY1rro/4Aiay2WCYhMCcTJ205iFK0vyWkyAPeEYlxmijb2rHB5UkjVu
+   GajeuhU5zDeoxtOTHgV86Z8czbDk4c85hYrXd42VCDNgs+vxT0cRgK1Zk
+   PNlJSp3B2vKTZGUmeaDh/dEbFkw0I0OmQaOKcx2q8n/fgE4/vgPY4ZACA
+   w==;
+X-CSE-ConnectionGUID: lQqbkE1aS+qYyyvLNZ7wRg==
+X-CSE-MsgGUID: GPLnYn7rSX6uR9UytkFXjA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11796"; a="97960959"
+X-IronPort-AV: E=Sophos;i="6.24,167,1774335600"; 
+   d="scan'208";a="97960959"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2026 05:30:21 -0700
+X-CSE-ConnectionGUID: wYfTuSWdQoe10+GbYDwJRA==
+X-CSE-MsgGUID: DrvYC+pmQ4iok4w5G6cMPQ==
+X-ExtLoop1: 1
+Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost) ([10.245.244.3])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2026 05:30:18 -0700
+Date: Mon, 25 May 2026 15:30:15 +0300
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>,
+	Icenowy Zheng <zhengxingda@iscas.ac.cn>,
+	Maxime Ripard <mripard@kernel.org>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Sam Ravnborg <sam@ravnborg.org>, dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org, Icenowy Zheng <uwu@icenowy.me>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] drm/client: check whether CRTC is active before waiting
+ for vblank
+Message-ID: <ahRA17a7JR2PVOuJ@intel.com>
+References: <20260519092420.1124348-1-zhengxingda@iscas.ac.cn>
+ <ee86cb43-e5df-4946-a957-931a73dde752@suse.de>
+ <ahBWayIcQUHuAt4i@intel.com>
+ <b4b2e8cb-dd7c-42c2-88b7-0a2ab95a90ee@suse.de>
+ <ahBZ8nIqR4qESLZg@intel.com>
+ <5fbcda92-f6b0-4de2-89e5-ea43a6248b05@suse.de>
+ <ahCw9zakihaGHLsN@intel.com>
+ <428be9d9-06f7-4bcb-807b-d351101c3c4b@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SYBPR01MB7881:EE_|MEYPR01MB7837:EE_
-X-MS-Office365-Filtering-Correlation-Id: 535d81e5-83c0-4c35-89b4-08deba588e3f
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|55001999006|15080799012|41001999006|23021999003|19110799012|12121999013|8060799015|5072599009|6090799003|5062599005|24121999003|22091999003|24021099003|51005399006|3412199025|440099028|40105399003|1710799026;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?YWlXNUZNQWdWK0hnVmlLNXJxL0VLNEcrNkg2bkQ5N2ZBN1RidUlWUGRtRGho?=
- =?utf-8?B?ZFFrUEh4cUhvUGl5Y0lPNE9aT1BuZDF1ZENtVlA1SzBYeEx0OWUvc1hXZXdS?=
- =?utf-8?B?eGtjdEhZcVBlTG1helo1NEFWTE0wRUd4TWJGcGNFdkhndnoyTlBFc3lVaWFN?=
- =?utf-8?B?WmJOTWlFSitKUVZ0WkRWSlJpamh2RWlMSGRybm5XRFhETjg4NFVYUWo2c2RK?=
- =?utf-8?B?dHRiWmw4aSthelpXMDUxLzVtQ3ZyakRIUVJpUC9qYk1WcFE1UjMwMkdvUFBM?=
- =?utf-8?B?cjFhN2EySVRUT1BaM1ZuNGR5S2NWSFo1R3QvWHBHTzVxN1EzQnE1QUJhZ0pN?=
- =?utf-8?B?dGZpeXpVa2F4MjFhb25pQ2JLU2RnaXk1QnNiYjZrcHdFL2d5NXRHYXBKRGd6?=
- =?utf-8?B?Tnh2cDl1VWd4NkVOTVJBRmJpWjRSMmpQZ2VTWjQvbkdjWGJjL2RkNzF2aEdI?=
- =?utf-8?B?bW9SVGsvWTMyWXkzUGJYNldyUUExUWswdW5KQUFQSnYyNThPaTlqTHBwbG5r?=
- =?utf-8?B?RlJKdkxOM0w3WlNSVTN2Z1dnZVNLaDRybzYzYkhHRU1JcXpMOXJJSHBiRUly?=
- =?utf-8?B?eGVlaTA0dWtpOXNoUjVrZnlFa0tPdW9aN3BIM21xcjluVG5uMDVZaEhPNnZi?=
- =?utf-8?B?QjdpZnU0SUZ6eVJJenFMeExXS2I5d0JIUmpGb29EUkV0NHgxVWlzbEI2dkpQ?=
- =?utf-8?B?TVh1cEZkcFVUTFVQVEQrMkxQVVV5NUs2T2tVa3RHQXNMMGtuUTk0allEeDhU?=
- =?utf-8?B?ajdNVXA1cWdnN2hJNTBEL0RZSFQ3K21yMmh5cVBYYXVLVzVibDJXUHNCWjF2?=
- =?utf-8?B?YitWczc2VUwwa29mSzg4V0RKNXFyZk02UmNBNkVLSWJlWmw2S2lDOE9lc2Nq?=
- =?utf-8?B?Zk15VnlCU0V6aW1wM3NYZDFOd1NRS28xbWhpWHNkbDBWbU9JY2h4bC9oaTdp?=
- =?utf-8?B?ekNacTV3dFJTWVpVc052VnlnMlBnUkxZMkxuejdhWXBNdlRsZ1kvQjhGY3Nl?=
- =?utf-8?B?NnhxTERKeDBvcGhxQkY3Vmt4d0pyNHUxMXhtZTFSTS9SOFZNRlgzM0x1YW5L?=
- =?utf-8?B?Q1FNdGdsbVBsQ1I0TitzTGU2TnFhc0N5UWx3ZDg5TjVpY1BEUUZiYitKKzVC?=
- =?utf-8?B?alhWUlpNcFdQMmc1NGZJUW1Bb0dvSUF0UWFZdTQySjRNZGhJTkRFODlDbXBp?=
- =?utf-8?B?c3lRYk1IL2l3cHVkZTNBazFmVVBleGwxUWd0RjJZN3oxU1NxVGU3bVhlSi94?=
- =?utf-8?B?cS8vaUhCaU1qRFFSS0VPczVFSnJyTGh1cnJ3elIrUUREOXI3MjgvZlM1eVdw?=
- =?utf-8?B?ZFNzTjREME1xNUpHYnpGREhnNEp0bmtleWpxRW04MzZrbHRXT3FKejhmNmt3?=
- =?utf-8?B?bngwcGNxaDJXUFBZcmJNYmFvZmY3ZFRLMERMaE9DWFZVMWNiRTg5T20yWnY4?=
- =?utf-8?B?cm9FV2pranFhSHlRQjdOMHFEYzdzWWtabFc4eENRaHl5aWZQS2ZuR0lOdXB3?=
- =?utf-8?B?ZDc4ZHpET244Q2JSQlhMK0s2TXRyRXdKRFhkWmFmWGVZZXB6b3JqeVdsYmFC?=
- =?utf-8?Q?BgPnbynFXCHlzpwb1q9qT6w2ylIrn7iB+Duxc5lLz2lwhY?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?d3FJRHhFUG45QjB4cys3Yy9vK1VxUTFUU2srTGhpSEFYYWwyUWhTdWcxTSsv?=
- =?utf-8?B?c0NtRUpXcFgydzMxT1FIMkg5Mld5K3JKQThsdjQyVndjN2U5VzlManAwS0U1?=
- =?utf-8?B?UHhZQjBuOXcybmlmZStDUnl3NjdqQmxvMFBtazBuVytmVnVybWRoNENhNklw?=
- =?utf-8?B?VVowcnd3Y3R1WnlBSE5KSkl6aEZTSWNycndRQ2kzM0RrSkxldmNNUGdOOUpF?=
- =?utf-8?B?T2lKay9xUDRCTEtlT1FIQVhSQ1U1NXlXcDF0blFDOForUjF5Q3E0RlBOYnp2?=
- =?utf-8?B?eitlSkt5dy9Ld1cxTVVSd1FLbS82RUdaZ2JQZkVOb2NhWHVhSlhKUkYvKzBK?=
- =?utf-8?B?SXNaZHlSS2Y3ZWRnc1E4aFVINGYrdEo0UWR0QXNNVjh1bjgxc05IQ1VOVGk4?=
- =?utf-8?B?OHM3RU9ma0tVcTRtWmRLZ2wweEppNmVDdkpTZlNzYlU5dUFQbVl4Y3JPZGlM?=
- =?utf-8?B?ei9sUXkwNi8yWm1YOE93SWFTb3FBK3FxMGVSWVNiVkZPNlZRc2c5MmxqYzIx?=
- =?utf-8?B?a0xxeUFmVmtpS29xWjhYKzhiTDlwdXByZ0JKUC85ZGozUTZiQytsNXhsRExX?=
- =?utf-8?B?bnFOOWJPOThaZ2FNb1lLK2l2VW1UZHpzU1dEMXVKVUxMRklhZ0FqQTQ5djJk?=
- =?utf-8?B?SlJTWUJ0b0xyTHBaVkdweWJwL1d0MGFjbkNwVnpyZ1dHYUE2RkpNNWdSQ3c2?=
- =?utf-8?B?aHdQQUkrU3M4dFlmVy9UTWxvckQxeEJoc2pVNUMwbTVOWDNVYWsrR0NIZFZ5?=
- =?utf-8?B?cFJ6VDNVckNneERzNjludUdpWFgydkFOLzcvaWowdUhBdzB3Tlg2dWtaSHJ2?=
- =?utf-8?B?SXRkTk5kamtueU5OM21lTkVHU0ZkQ0ZieWtkMnpMVGtMVHpOVU1RQ2NtKzVP?=
- =?utf-8?B?Slh0bzNIUC9Ra3NSaWc2Y2xWT3Y2RDBJdFRxdVBTMmdYZCtRZGgzdTB3L0xK?=
- =?utf-8?B?NnpZSVRDQ2hZWVdSMWlsdWtxeFVwcm5lL0ljWncvWExwQXgvdGdUL1kzV3gv?=
- =?utf-8?B?dENHMDA4ZUJQbmtkd2hldWs4Z2h5bm9yMWhSeWNjNHRnaGZuZW9uN0NJK1Y1?=
- =?utf-8?B?Ym9uTzNDRFBqbjVhbjZVZGtycldOQzhyaEp2RTcyczlwUnRlaXBhK1k5UDdz?=
- =?utf-8?B?V1hiTDRlek51YTZEbGU3NDU0V0JxTDhoY1pFdlN4TW9mVWtiaVZOYmtGRHVz?=
- =?utf-8?B?T3huMyswY3RtM2hYSmVGenJtaFM4bjM1NGVyL3FFckRZSzM4S2FjQzVSczFs?=
- =?utf-8?B?Qk93ZW14aEpDWWRCdk53MEhxREZaZm1HTGNBQ29rYTkvV0JFR1JNRFdWSnY3?=
- =?utf-8?B?UjZ1c1RhV0F4MFRiS0pXdjdYMnJ2NTl3SHJGZFB3RVg5NTN6UVE2RXVJaUlD?=
- =?utf-8?B?d1RVUHdtOFJWb2VXVG1ta2tPeE1yVFM3NW5tWDRKb2ZETmRvU0VNRm1hdCts?=
- =?utf-8?B?Slhaa1FmLzJYdklqMk9Dd3hiMWNXNGVodGtkUW8yOG4yc2l4b2hQVXFTWXRx?=
- =?utf-8?B?Yk05eFltcng3RERXMk53Yk9WWFNjb2tFYko2dFdMbXplb2d2dXcwM0MxSTBE?=
- =?utf-8?B?NEpHZG9ZNVZscmVsWm5uOEhseVREMGJCczFTbXpxdHFidWNxRUUrU0EzU3o5?=
- =?utf-8?B?VDhzZldpVzRidkptdFFYUnI4VUp1VXZlOCttNXdEUWoxZXYvUzlTdWZrTGtj?=
- =?utf-8?B?Yk5FUmwzZVFJd1RPYTJBWXN5S3N3WnQweE9ZWFljNnlFZVVPOU8vejl1ZG4x?=
- =?utf-8?B?dEgzdmlXR2FaTmxsSFBrd1pOTTlXL2xvaFl3SmNrZkorS2ZmMFUxMnovdzhY?=
- =?utf-8?B?ekV6cFFzd1oxWmJWakNxQmtIYXlmcGd6Vi9ZWjVsS2MwOHNZL3BzVTVLeGxi?=
- =?utf-8?B?U2xBRnVwaVVOemNjNk53ZkVvK0ZMM0h3Rm5jc0EzdHJIUnc9PQ==?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 535d81e5-83c0-4c35-89b4-08deba588e3f
-X-MS-Exchange-CrossTenant-AuthSource: SYBPR01MB7881.ausprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 May 2026 12:24:24.4297
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MEYPR01MB7837
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[outlook.com,none];
-	R_DKIM_ALLOW(-0.20)[outlook.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <428be9d9-06f7-4bcb-807b-d351101c3c4b@linux.intel.com>
+X-Patchwork-Hint: comment
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+X-Spamd-Result: default: False [-1.53 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MIXED_CHARSET(0.63)[subject];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,outlook.com];
-	TAGGED_FROM(0.00)[bounces-254135-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[outlook.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[outlook.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[moonafterrain@outlook.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[suse.de,iscas.ac.cn,kernel.org,gmail.com,ffwll.ch,ravnborg.org,lists.freedesktop.org,vger.kernel.org,icenowy.me];
+	TAGGED_FROM(0.00)[bounces-254136-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	HAS_ORG_HEADER(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[ville.syrjala@linux.intel.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,outlook.com:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 75A915CA74B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:mid,intel.com:dkim]
+X-Rspamd-Queue-Id: 94C2C5CA84C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-iwl_rx_dispatch() indexes priv->rx_handlers[] and priv->rx_handlers_stats[]
-by pkt->hdr.cmd without bounds checking. Both arrays are declared with
-REPLY_MAX (0xff = 255) entries, but pkt->hdr.cmd is a u8 spanning 0..255,
-so cmd == 0xff reads and writes one element past the end of each array.
+On Mon, May 25, 2026 at 10:13:57AM +0200, Maarten Lankhorst wrote:
+> Hey,
+> 
+> Den 2026-05-22 kl. 21:39, skrev Ville Syrjälä:
+> > On Fri, May 22, 2026 at 03:43:26PM +0200, Thomas Zimmermann wrote:
+> >> Hi
+> >>
+> >> Am 22.05.26 um 15:28 schrieb Ville Syrjälä:
+> >> [...]
+> >>>>>> But why does your HW use CRTC 1 in the first place.
+> >>>>> Could be eg. the enabled outputs can't be driven with CRTC 0.
+> >>>>>
+> >>>>> I guess what you want to do is pick the first crtc from modesets[]
+> >>>>> which is enabled. Or perhaps even "pick the Nth enabled crtc from
+> >>>>> modesets[] based on the ioctl argument".
+> >>>> The enable-status of each CRTC could change later on, which might lead
+> >>>> to problems.
+> >>> Sound like a locking issue if someone is changing the configuration
+> >>> at the same time we're trying to do the vblank wait here.
+> >>
+> >> I mean that the connected outputs could change at a later point or we 
+> >> could have multiple CRTCs in use. Today, someone in #intel-gfx reported 
+> >> a problem with panning if multiple CRTCs are in use.
+> >>
+> >> Therefore picking a CRTC freely could be a problem. Let's say we 
+> >> configure modes from one CRTC, but later wait/pan/flush with another 
+> >> CRTC. I would not trust this to work correctly.
+> >>
+> >> Hence, my suggestion is to select a primary CRTC during the fbdev 
+> >> client's probe and use it for all later operations until the next probe 
+> >> happens.  All other CRTCs would mirror the primary one.
+> > 
+> > Actual mirroring may not be possible due to different modes supported
+> > on each output. The whole multi-output fbdev thing in the drm fb helper
+> > is kind of a hack that's rather hard to make work 100% sensibly.
+> > 
+> > For the panning possibly the only sensible thing is to use the max of
+> > hdisplay/vdisplay of all the crtcs as the xres/yres so it's clear
+> > how much things can actually be panned. Oh and tiled displays (assuming
+> > we would actually want the fbdev stuff to tile correctly) make the
+> > situation even more complicated. I think the current support for tiled
+> > displays in the fb helper is semi-busted.´
+> 
+> I tested fbdev on a tiled DP-MST monitor.
+> It works better than my kwin's wayland compositor, as it detects both tiles
+> and presents a single image spanning both tiles.
 
-The OOB read on rx_handlers[] lands on the adjacent notif_wait field,
-whose ->next pointer is non-NULL after init, causing the function pointer
-check to pass and the kernel to call a heap address. The OOB increment on
-rx_handlers_stats[] corrupts rf_reset.reset_request_count.
+IIRC we've occasionally seen cases where it picks a non-tiled mode
+on the primary connector, and also still enables the second tile.
 
-Add a bounds check against ARRAY_SIZE(priv->rx_handlers) before indexing,
-so out-of-range commands fall through to the existing debug log branch.
+> Kwin sees both as separate
+> monitors.
+> 
+> I still see vertical tearing between both tiles, so it would be nice if
+> intel/display would support atomic updates for both crtc's directly.
+> 
+> The code's already there for bigjoiner, just needs to do the same for
+> tile joiner updates when all tiled crtc's are in the atomic update.
 
-Fixes: 1ab9f6c11b00 ("iwlagn: move the Rx dispatching to the upper layer")
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
----
- drivers/net/wireless/intel/iwlwifi/dvm/rx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+We don't have any special code for atomic updates with joiner
+currently. It just happens to work most of the time.
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/rx.c b/drivers/net/wireless/intel/iwlwifi/dvm/rx.c
-index 088302a238de..a5a58cf331d4 100644
---- a/drivers/net/wireless/intel/iwlwifi/dvm/rx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/rx.c
-@@ -1008,7 +1008,8 @@ void iwl_rx_dispatch(struct iwl_op_mode *op_mode, struct napi_struct *napi,
- 	/* Based on type of command response or notification,
- 	 *   handle those that need handling via function in
- 	 *   rx_handlers table.  See iwl_setup_rx_handlers() */
--	if (priv->rx_handlers[pkt->hdr.cmd]) {
-+	if (pkt->hdr.cmd < ARRAY_SIZE(priv->rx_handlers) &&
-+	    priv->rx_handlers[pkt->hdr.cmd]) {
- 		priv->rx_handlers_stats[pkt->hdr.cmd]++;
- 		priv->rx_handlers[pkt->hdr.cmd](priv, rxb);
- 	} else {
+With joiner the pipes will be in sync/phase, so that helps a bit.
+But we do also try to make the pipes in sync/phase also for tiled
+display via the use of the port sync. So if you see a difference
+in tearing between joiner vs. tiled then that likely means the
+problem is in userspace (as in it submits separate commits for
+each tile).
 
----
-base-commit: c369299895a591d96745d6492d4888259b004a9e
-change-id: 20260525-fixes-a32bbe287204
+I have occasionally pondered about hiding the tiled display stuff
+completely from userspace and handling it in the kernel the same
+was as joiner. But the problem is that we'd also need to cook up
+a new EDID for the display that combines both tiles, and we'd
+still need the second connector to be enabled internally (and 
+hide that fact from userspace). None of that code exists
+currently and wouldn't be entirely trivial to implement.
 
-Best regards,
 -- 
-Junrui Luo <moonafterrain@outlook.com>
-
+Ville Syrjälä
+Intel
 
