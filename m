@@ -1,110 +1,150 @@
-Return-Path: <stable+bounces-254082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254083-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GPaUEQTmE2rhHAcAu9opvQ
-	(envelope-from <stable+bounces-254082-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 08:02:44 +0200
+	id uAkkAVPmE2rhHAcAu9opvQ
+	(envelope-from <stable+bounces-254083-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 08:04:03 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0B375C6246
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 08:02:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E47C5C62C1
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 08:04:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id F35643006217
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 06:02:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E369B3006009
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 06:03:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52DC3371040;
-	Mon, 25 May 2026 06:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC2FF376469;
+	Mon, 25 May 2026 06:03:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="WhFGyqWs"
 X-Original-To: stable@vger.kernel.org
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+Received: from n169-114.mail.139.com (n169-114.mail.139.com [120.232.169.114])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19753603C2;
-	Mon, 25 May 2026 06:02:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A40358375;
+	Mon, 25 May 2026 06:03:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.114
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779688943; cv=none; b=WSydp164x80Y6mHbGt/Qwj8qG5T/qWOHWVzcgQ0eb/SqdZP+1mr24151uLSNyHw/N/M82YqBJD+IR4cnLIxFQ4sMoRJQlmwr22C+nzCMlp9C2peIRC47UXwHrWiC97iPYu83s8C2rkVncgK4gcgvq4axh7Dh5hOJYX0QDE0EaZ8=
+	t=1779689022; cv=none; b=hd6PqxlV77CC8vY6rYiFXC4W9eTcLBYH9LqoLX5lPnydactdIOW9HuXMdPimqGkkpRz6MgFyYWzk6r8IGlBO38n7MJu7VVAUBA4M8bYJoKPy+fzPZUlYvFN/cKjO7vHzT2Zv093KNh+3q8igxswET6FFzjehd9Da1X57ufZwfiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779688943; c=relaxed/simple;
-	bh=KpS1Trw6YdoMcXx6dFdGf78wMgd8htX+8RPS0nABSM4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KIZgW0M8bNL+vZcm0fZCy4uZr6HGTHOSe6dTqy9zu1HZTrGSNQU7gT1x8+TwHBfaBK9ms5pqMwImORM+yhfL4AK8EhZgxPplT2uuD0PSAzvc5OWbJ6bk/RiPCwDqjEomPgU2d3XhuFpaQIb9V7BkM0bJ/lkKNxPEXEY33ErvomE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id BF52868BEB; Mon, 25 May 2026 08:02:15 +0200 (CEST)
-Date: Mon, 25 May 2026 08:02:14 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: "Ionut Nechita (Wind River)" <ionut.nechita@windriver.com>
-Cc: James.Bottomley@HansenPartnership.com, martin.petersen@oracle.com,
-	linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, hch@lst.de, dlemoal@kernel.org,
-	robin.murphy@arm.com, john.g.garry@oracle.com, axboe@kernel.dk,
-	m.szyprowski@samsung.com, ahuang12@lenovo.com,
-	ionut_n2001@yahoo.com, sunlightlinux@gmail.com
-Subject: Re: [PATCH v8 1/1] scsi: sas: skip opt_sectors when DMA reports no
- real optimization hint
-Message-ID: <20260525060214.GA3479@lst.de>
-References: <20260519135238.373784-1-ionut.nechita@windriver.com> <20260519135238.373784-2-ionut.nechita@windriver.com>
+	s=arc-20240116; t=1779689022; c=relaxed/simple;
+	bh=M11jHMT5Ir/WrS8vwUnco3nI1PPClK1HlRkDcheaekQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CuKbB8R5CaEkJRJXueSm9QMwxpLZvOxB7gMphQnIF6rkl/mG+GuMYTzsvU2CxSo9ckLxQubETwEeDU26O6OKWChTvFSe7zapyQFl7LmZuGzAJ7vi1k7XvNkge3fkyYxCcagH25aCITeQkD2Tpue2mt5jYCEgfhTJPjLBnROO+H0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=WhFGyqWs; arc=none smtp.client-ip=120.232.169.114
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=WhFGyqWs8c1Fw3Y4hj//ST9/xHGFQ/wTux/FRY3WylPXcAHA3bJefhxebpa8vkadQi5rGBhFMTXXi
+	 1xtBMeiL8cs4hz4tf/WK1+yM26SHqUYDHQfok+qf+iT0LWrHQWaYwB402K7gpmlwz7B53A3gkiQDNr
+	 RmdYBsLC/rn7h4rk=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from NTT-kernel-dev (unknown[60.247.85.88])
+	by rmsmtp-lg-appmail-43-12057 (RichMail) with SMTP id 2f196a13e635cb3-09d6e;
+	Mon, 25 May 2026 14:03:37 +0800 (CST)
+X-RM-TRANSID:2f196a13e635cb3-09d6e
+From: Li hongliang <1468888505@139.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	kartikey406@gmail.com
+Cc: patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	johannes@sipsolutions.net,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	johannes.berg@intel.com
+Subject: [PATCH 5.15.y] wifi: mac80211: check tdls flag in ieee80211_tdls_oper
+Date: Mon, 25 May 2026 14:03:36 +0800
+Message-Id: <20260525060336.2460138-1-1468888505@139.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260519135238.373784-2-ionut.nechita@windriver.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Spamd-Result: default: False [-1.36 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [1.04 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_DKIM_REJECT(1.00)[139.com:s=dkim];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[lst.de : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254082-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[HansenPartnership.com,oracle.com,vger.kernel.org,lst.de,kernel.org,arm.com,kernel.dk,samsung.com,lenovo.com,yahoo.com,gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-254083-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[139.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[linuxfoundation.org,vger.kernel.org,gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_FROM(0.00)[139.com];
+	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hch@lst.de,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_DKIM_NA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[139.com:-];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:mid,lst.de:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: D0B375C6246
+	NEURAL_HAM(-0.00)[-0.657];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sipsolutions.net:email,appspotmail.com:email,intel.com:email,139.com:mid,139.com:email,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 0E47C5C62C1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, May 19, 2026 at 04:52:33PM +0300, Ionut Nechita (Wind River) wrote:
-> +static void sas_dma_setup_opt_sectors(struct Scsi_Host *shost)
-> +{
-> +	struct device *dma_dev = shost->dma_dev;
-> +	size_t opt, max;
-> +	unsigned int opt_sectors;
-> +
-> +	opt = dma_opt_mapping_size(dma_dev);
-> +	max = dma_max_mapping_size(dma_dev);
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-I'm almost feeling bad for suggesting more changes, but this would read
-much cleaner by doing:
+[ Upstream commit 7d73872d949c488a1d7c308031d6a9d89b5e0a8b ]
 
-	struct device *dma_dev = shost->dma_dev;
-	size_t opt = dma_opt_mapping_size(dma_dev);
-	size_t max = dma_max_mapping_size(dma_dev);
-	unsigned int opt_sectors;
+When NL80211_TDLS_ENABLE_LINK is called, the code only checks if the
+station exists but not whether it is actually a TDLS station. This
+allows the operation to proceed for non-TDLS stations, causing
+unintended side effects like modifying channel context and HT
+protection before failing.
 
-but otherwise this looks good:
+Add a check for sta->sta.tdls early in the ENABLE_LINK case, before
+any side effects occur, to ensure the operation is only allowed for
+actual TDLS peers.
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reported-by: syzbot+56b6a844a4ea74487b7b@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=56b6a844a4ea74487b7b
+Tested-by: syzbot+56b6a844a4ea74487b7b@syzkaller.appspotmail.com
+Suggested-by: Johannes Berg <johannes@sipsolutions.net>
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Link: https://patch.msgid.link/20260313092417.520807-1-kartikey406@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Li hongliang <1468888505@139.com>
+---
+ net/mac80211/tdls.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/mac80211/tdls.c b/net/mac80211/tdls.c
+index c2d7479c119a..d25dfeb347f2 100644
+--- a/net/mac80211/tdls.c
++++ b/net/mac80211/tdls.c
+@@ -1380,7 +1380,7 @@ int ieee80211_tdls_oper(struct wiphy *wiphy, struct net_device *dev,
+ 
+ 		mutex_lock(&local->sta_mtx);
+ 		sta = sta_info_get(sdata, peer);
+-		if (!sta) {
++		if (!sta || !sta->sta.tdls) {
+ 			mutex_unlock(&local->sta_mtx);
+ 			ret = -ENOLINK;
+ 			break;
+-- 
+2.34.1
+
+
 
