@@ -1,171 +1,180 @@
-Return-Path: <stable+bounces-254112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254113-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eIu4EaEOFGpeJQcAu9opvQ
-	(envelope-from <stable+bounces-254112-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 10:56:01 +0200
+	id UPyIBw4TFGpeJQcAu9opvQ
+	(envelope-from <stable+bounces-254113-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 11:14:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEC545C8315
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 10:56:00 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D53725C8676
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 11:14:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 47B863001D78
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 08:56:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 30C0D3005587
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 09:14:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF6E13E4C95;
-	Mon, 25 May 2026 08:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6C2A3E5595;
+	Mon, 25 May 2026 09:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="njjuR/c4"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="Ssm8Im1g"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from n169-110.mail.139.com (n169-110.mail.139.com [120.232.169.110])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20901212566;
-	Mon, 25 May 2026 08:55:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97BB23E51F6
+	for <stable@vger.kernel.org>; Mon, 25 May 2026 09:14:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.110
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779699356; cv=none; b=GpOVikN1p4hZGBFkDN+Yi+cbY7cueoAjlOM5KyOp4zYjX/6agiJfSaOB2TquPagtTpGD10BhTCAfbvmy07U+F/8DgIEIbWl56uK7srVmOdNBBiJnN9/BTGPoOFmKpY6AyDChYNvzf65S4Rbt8gm5ct461qbPZhsAXR6heNn7eRU=
+	t=1779700487; cv=none; b=e7Ef3xRkqIxwI5N5M8DmMYadzcUyIhs5a+MdugYjewLDHmSNpPORJkJZnejaFlPfDD1UuZdlp5xDbTfCNyB76EXt4eOnMaP+HbD/OuTar6bEZTnCqMKnY8YWWU9VPZ+49eBi3hEdb+Keu9lh8VqIAv81koqfrTH/38RKdvr9wzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779699356; c=relaxed/simple;
-	bh=QDVlHkaJzd1yhCNccg0oJiSTSQUYqwHGcctnwRzp9hY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JU1XUsu17uLdWLe5DGeUwLwZw+iGF8JxUVYE8n8/9wEDiMwHWlz5RQB7rdKACdeQ1uhnqNa2GlTWBYi5hDTlIRegT1j2gFOZHQIwh5tLKGTxUYkEnvQsU++bYD5L9ELdusuWG/uO0eQzeVL1DkzNx6A5r36Mdq9yOuM5YPnGnP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=njjuR/c4; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779699354; x=1811235354;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=QDVlHkaJzd1yhCNccg0oJiSTSQUYqwHGcctnwRzp9hY=;
-  b=njjuR/c45goQgObIEkONMk1GF73NqfGHRIkUYGs+y3vXgnnVbQqXR1H0
-   mggtZh9c0X7QMAt6uzy0Ku7ZayvPAChcDvEk8u1+MDb7gam03xz32VzIY
-   gAUiqI8J25i6X/Z0BQ6c1RijLZTdp0DiPqpI5xBuE6aGc+EJZS7mf5WSI
-   pBzBSqEz/UYBhfxfGFyXsg7UtRxjZTwarP/pp5usB+xwK5ZBPZKu5q8ZI
-   iKC1nx89w3HSSeWBmuoJRaHqHv/BZXBP7H+oepXXsfgKXvTYxlP4VbPBl
-   1hES/44SAoeT5QaND/FWtG79U5usAM5Y9BJg6VWShrCS5xwjdbKMGVosq
-   w==;
-X-CSE-ConnectionGUID: IEAedow2QDSpvom1YcsjXg==
-X-CSE-MsgGUID: Ho1rYmAATJq6Vj1+AKmCVg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11796"; a="91627068"
-X-IronPort-AV: E=Sophos;i="6.24,167,1774335600"; 
-   d="scan'208";a="91627068"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2026 01:55:51 -0700
-X-CSE-ConnectionGUID: Bknsz68oR+KLd8gP4UuJog==
-X-CSE-MsgGUID: ZUe6382PRmebDTDU7tSw+w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,167,1774335600"; 
-   d="scan'208";a="237129261"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO [10.245.245.200]) ([10.245.245.200])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2026 01:55:47 -0700
-Message-ID: <9c4a68c4-43a3-4a9b-a131-9570174c8df3@linux.intel.com>
-Date: Mon, 25 May 2026 10:55:43 +0200
+	s=arc-20240116; t=1779700487; c=relaxed/simple;
+	bh=9Z1Dw95TSg+FyI6RbZHPRi7fLSCBuzIiPhUXrCXe4iw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=aHG11zsrXZUgR0sWEXJgllDIUSTZ7vk6Ry6s0wVueo18WDfOn2oCrwa8OV8BA9fq8rKm79qjgSMLAze/VXfkoQbWbTd7P7RBBYH8A8eBEZtr1Do41dDOfcgWMlvymA6UzPOl8ps6PPM6c5hmN95XvHdLpFD666xWmjI06+zMwXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=Ssm8Im1g; arc=none smtp.client-ip=120.232.169.110
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=Ssm8Im1gdiGGwR98TU7Bs6FWxH03gVd7JZziRlraIwDEj74+V8h/pdbHAgRTuAK4zMUZmldlvj43/
+	 p9G1vE4M0OIwo2ifhUVbNd533nPFfWWkDjTgjtzppB47g2kZhGxxW3cmcF+EB8KVg2M+S7uVgq6p4P
+	 vl5jrdb7xp7YtBrA=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from NTT-kernel-dev (unknown[117.136.0.39])
+	by rmsmtp-lg-appmail-01-12079 (RichMail) with SMTP id 2f2f6a1412f29dc-88a49;
+	Mon, 25 May 2026 17:14:29 +0800 (CST)
+X-RM-TRANSID:2f2f6a1412f29dc-88a49
+From: Rajani Kantha <681739313@139.com>
+To: seanjc@google.com,
+	pbonzini@redhat.com
+Cc: stable@vger.kernel.org
+Subject: [PATCH 5.15.y] KVM: x86: Acquire SRCU in KVM_GET_MP_STATE to protect guest memory accesses
+Date: Mon, 25 May 2026 17:14:27 +0800
+Message-Id: <20260525091427.11691-1-681739313@139.com>
+X-Mailer: git-send-email 2.35.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.18.y] drm/vkms: Fix ABBA deadlock in vblank disable and
- timer callback
-To: w15303746062 <w15303746062@163.com>, Greg KH <gregkh@linuxfoundation.org>
-Cc: louis.chauvet@bootlin.com, hamohammed.sa@gmail.com, simona@ffwll.ch,
- melissa.srw@gmail.com, mripard@kernel.org, tzimmermann@suse.de,
- airlied@gmail.com, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Mingyu Wang <25181214217@stu.xidian.edu.cn>
-References: <20260515131826.388154-1-w15303746062@163.com>
- <2026051557-thermal-petite-7da0@gregkh>
- <581657f0.ba8.19e2eaaf003.Coremail.w15303746062@163.com>
- <2026051633-skyward-parrot-cdd3@gregkh>
- <397754a7.224c.19e38e42006.Coremail.w15303746062@163.com>
-Content-Language: en-US
-From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-In-Reply-To: <397754a7.224c.19e38e42006.Coremail.w15303746062@163.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [1.04 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_DKIM_REJECT(1.00)[139.com:s=dkim];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[163.com,linuxfoundation.org];
-	TAGGED_FROM(0.00)[bounces-254112-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[bootlin.com,gmail.com,ffwll.ch,kernel.org,suse.de,lists.freedesktop.org,vger.kernel.org,stu.xidian.edu.cn];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254113-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[139.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FREEMAIL_FROM(0.00)[139.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maarten.lankhorst@linux.intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_NEQ_ENVFROM(0.00)[681739313@139.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[139.com:-];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: DEC545C8315
+	NEURAL_HAM(-0.00)[-0.760];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: D53725C8676
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello Mingyu
+From: Sean Christopherson <seanjc@google.com>
 
-Den 2026-05-18 kl. 04:22, skrev w15303746062:
-> 
-> 
-> At 2026-05-16 17:51:59, "Greg KH" <gregkh@linuxfoundation.org> wrote:
->> There is no "minimal-risk policy for stable trees".  And if there was,
->> the least ammount of risk would be to take the reviewed and tested
->> patches that are already in Linus's tree, and NOT take anything that is
->> not already there, as 90% of the time that we do that, it comes back to
->> bite us hard.
->>
->> So please, just backport all the needed changes here.  Otherwise how are
->> we going to deal with the merge conflicts for the next 4 years in this
->> file?
->>
->> Or, get the maintainers of this file to agree and review this one-off
->> change that it is acceptable.  As they are going to be the ones getting
->> the bug reports and not having their patches applied over the years, not
->> anyone else :)
-> 
-> Hi Greg,
-> 
-> Got it. After looking deeper into the dependency chain, backporting the mainline commit (02e2681ffe1a) would indeed require pulling in the entire new DRM generic vblank timer infrastructure to 6.18.y. 
-> 
-> That scope is just too large and complex for this specific issue. Since a one-off patch is not the right approach either, I will just drop this patch and abandon the backport effort for 6.18.y.
-> 
-> Thanks for your time and the quick review.
-> 
-> Thanks,
-> Mingyu
-> 
+commit ef01cac401f18647d62720cf773d7bb0541827da upstream.
 
-As far as I can tell, if it's just a bug affecting vkms, all you need to do
-is only a few commits:
+Acquire a lock on kvm->srcu when userspace is getting MP state to handle a
+rather extreme edge case where "accepting" APIC events, i.e. processing
+pending INIT or SIPI, can trigger accesses to guest memory.  If the vCPU
+is in L2 with INIT *and* a TRIPLE_FAULT request pending, then getting MP
+state will trigger a nested VM-Exit by way of ->check_nested_events(), and
+emuating the nested VM-Exit can access guest memory.
 
-74afeb812850 ("drm/vblank: Add vblank timer")
-d54dbb5963bd ("drm/vblank: Add CRTC helpers for simple use cases")
-02e2681ffe1a ("drm/vkms: Convert to DRM's vblank timer")
-79ae8510b5b8 ("drm/atomic: Increase timeout in drm_atomic_helper_wait_for_vblanks()")
-3946d3ba9934 ("drm/vblank: Fix kernel docs for vblank timer")
+The splat was originally hit by syzkaller on a Google-internal kernel, and
+reproduced on an upstream kernel by hacking the triple_fault_event_test
+selftest to stuff a pending INIT, store an MSR on VM-Exit (to generate a
+memory access on VMX), and do vcpu_mp_state_get() to trigger the scenario.
 
-There's no need to convert all other drivers if it's only vkms that you're fixing.
+  =============================
+  WARNING: suspicious RCU usage
+  6.14.0-rc3-b112d356288b-vmx/pi_lockdep_false_pos-lock #3 Not tainted
+  -----------------------------
+  include/linux/kvm_host.h:1058 suspicious rcu_dereference_check() usage!
 
-But since you found this bug in one driver, it might be wise to check if others
-have the same bug and ask for backports for those too.
+  other info that might help us debug this:
 
-Kind regards,
-~Maarten Lankhorst
+  rcu_scheduler_active = 2, debug_locks = 1
+  1 lock held by triple_fault_ev/1256:
+   #0: ffff88810df5a330 (&vcpu->mutex){+.+.}-{4:4}, at: kvm_vcpu_ioctl+0x8b/0x9a0 [kvm]
+
+  stack backtrace:
+  CPU: 11 UID: 1000 PID: 1256 Comm: triple_fault_ev Not tainted 6.14.0-rc3-b112d356288b-vmx #3
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x7f/0x90
+   lockdep_rcu_suspicious+0x144/0x190
+   kvm_vcpu_gfn_to_memslot+0x156/0x180 [kvm]
+   kvm_vcpu_read_guest+0x3e/0x90 [kvm]
+   read_and_check_msr_entry+0x2e/0x180 [kvm_intel]
+   __nested_vmx_vmexit+0x550/0xde0 [kvm_intel]
+   kvm_check_nested_events+0x1b/0x30 [kvm]
+   kvm_apic_accept_events+0x33/0x100 [kvm]
+   kvm_arch_vcpu_ioctl_get_mpstate+0x30/0x1d0 [kvm]
+   kvm_vcpu_ioctl+0x33e/0x9a0 [kvm]
+   __x64_sys_ioctl+0x8b/0xb0
+   do_syscall_64+0x6c/0x170
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+   </TASK>
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20250401150504.829812-1-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+[ Based on kernel 5.15 available functions, using srcu_read_lock/srcu_read_unlock instead of
+kvm_vcpu_srcu_read_lock/kvm_vcpu_srcu_read_unlock ]
+Signed-off-by: Rajani Kantha <681739313@139.com>
+---
+ arch/x86/kvm/x86.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 785cd9b4283a..60cddddf5dbd 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -10605,6 +10605,8 @@ int kvm_arch_vcpu_ioctl_get_mpstate(struct kvm_vcpu *vcpu,
+ 	if (kvm_mpx_supported())
+ 		kvm_load_guest_fpu(vcpu);
+ 
++	vcpu->srcu_idx = srcu_read_lock(&vcpu->kvm->srcu);
++
+ 	r = kvm_apic_accept_events(vcpu);
+ 	if (r < 0)
+ 		goto out;
+@@ -10618,6 +10620,8 @@ int kvm_arch_vcpu_ioctl_get_mpstate(struct kvm_vcpu *vcpu,
+ 		mp_state->mp_state = vcpu->arch.mp_state;
+ 
+ out:
++	srcu_read_unlock(&vcpu->kvm->srcu, vcpu->srcu_idx);
++
+ 	if (kvm_mpx_supported())
+ 		kvm_put_guest_fpu(vcpu);
+ 	vcpu_put(vcpu);
+-- 
+2.35.3
+
+
 
