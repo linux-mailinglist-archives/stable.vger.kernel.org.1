@@ -1,176 +1,176 @@
-Return-Path: <stable+bounces-254163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254164-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UGeRG+ZjFGoxNAcAu9opvQ
-	(envelope-from <stable+bounces-254163-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 16:59:50 +0200
+	id kO9BG4lkFGoxNAcAu9opvQ
+	(envelope-from <stable+bounces-254164-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 17:02:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B3F65CC035
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 16:59:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC3835CC08E
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 17:02:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8FEC930055D7
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 14:59:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EC95C3008D19
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 15:02:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1AE13F39D1;
-	Mon, 25 May 2026 14:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE3823F4118;
+	Mon, 25 May 2026 15:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ng5ofvEq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OQDRGsFu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946EE387566;
-	Mon, 25 May 2026 14:59:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B7203F4115
+	for <stable@vger.kernel.org>; Mon, 25 May 2026 15:02:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779721182; cv=none; b=ij2igXElCv+KyOkBZhOOYvEvBQ4CAt1lPZ70zCRQYqacIhENLvY5JbutwCgoQXNoq0z4uos16n+UxJopKGGp0jZcunimPpKPECpGOT6HC3RSgOKQGZWpbFe2SO9C5tD03HloA8teDOjFKqW/UB3BaCuXOYz41PDs5pN147xJUGI=
+	t=1779721325; cv=none; b=PeOJ9ri/B5ofhCZoJ8ldhFT0YUHROF93tbP/jf4l4OLBwidzSXilZQZFNuQ+1mipBHS9qFokpnyqrdu+wN1CL8x80A2lYrqrxs8hHctXPsy5Bl1KAge625TnpGPrtRMDMU87gcyYLw2ZKuBtcOotRNBE8dvgERSqzOS4l7CFKSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779721182; c=relaxed/simple;
-	bh=B8wPoM4vVLoPf3Vj40P6Wp2Sn5gzPUbypAGMNGosdMU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=svfEvvTv8zKAebNhFpQ88sw6QuMDx1zUh9ukhpPlWBHjpxHi7inYM7soBMP6P5/bUSkMVhGNCjb/p6TfV1KtTV6ixUtxRbv4jz8cns24HKD4FNnmoLUv/+4Pnhn3l5qmoOb/2neT6H+NsYMhgkeHw5zSvnR1XmA/8QkGm9Ottvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ng5ofvEq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 942601F000E9;
-	Mon, 25 May 2026 14:59:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779721181;
-	bh=YgcxoFWvQzBGZlnk+prvgf7xYHShdN14BvMPoAeCOMc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Ng5ofvEqGL9n3Uw8gG4a5YNQ+LxOsnt6kGvVG1D3sLFYEj2hf4bcC/bearluhEkfd
-	 6e4dnTbEv6Y6IEEbXcqCmYwtpkgNQv2EayQ7yQsobjclJyr/u7tpLktj+5jA3dWqmJ
-	 tYpGFkclCH83kaYdhXAKvlgawHyAaroV9MMhVmdLQU+LvIRUe3kql07Iv5OF/e3of+
-	 h1xRUGKHR3egr15Uo+e6WTwXjYi1EP+Rdy36zk8u/YgfstTVaUjgjXrrZn8XWOlKL7
-	 FLHYrFWjqWQ9qZkcvO9bIkxvNtyFql9FMvu0R2OYQmgLhTEjOdQ5+JtLHMSaSMX5ME
-	 1IstRdtXZPcEg==
-Date: Mon, 25 May 2026 09:59:39 -0500
-From: Eric Biggers <ebiggers@kernel.org>
-To: Qunqin Zhao <zhaoqunqin@loongson.cn>
-Cc: Huacai Chen <chenhuacai@kernel.org>, linux-crypto@vger.kernel.org,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
-	Yinggang Gu <guyinggang@loongson.cn>, Lee Jones <lee@kernel.org>,
-	kernel test robot <lkp@intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] crypto: loongson - Select CRYPTO_RNG
-Message-ID: <20260525145939.GC2018@quark>
-References: <20260522022525.12976-1-ebiggers@kernel.org>
- <CAAhV-H5cDnWKxBobwRErRyvG8671e6VXsBe6w1RkX9rfn7CVFA@mail.gmail.com>
- <20260522025722.GD5937@quark>
- <d71adfa1-8895-e741-b72f-c5e99d5fb9e6@loongson.cn>
- <20260522040310.GF5937@quark>
- <bc3acf15-808d-4141-7f1f-4a7a7f856c6c@loongson.cn>
- <20260522174835.GA1894319@google.com>
- <4501444d-9c17-8d4b-8bfd-bd1d69d77a76@loongson.cn>
- <20260525032006.GA243157@quark>
- <05c794a7-f82d-5454-8df9-0ac543f8f8f7@loongson.cn>
+	s=arc-20240116; t=1779721325; c=relaxed/simple;
+	bh=U2wSD17q1Tc2IUTCuRB46hxgyUdkv1T/mSiaZjdQbyo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=uyQgYfaJWxqrLQkAgKI5CowEjeJOl2DjNsVxvOIeX2GQCyerm4Jns7KsnEe6iWPLf0Wp9YOg58X0DFiWdgzO2zhmZse9QCaYv3Cb5sbLX/+t1bjgKQHNEkpXeJw7jHXE2osRYdL0Q1ewmnuARVZbyapnxoA8wX2vM458QYBN+7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OQDRGsFu; arc=none smtp.client-ip=209.85.167.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-4856128f670so2006403b6e.0
+        for <stable@vger.kernel.org>; Mon, 25 May 2026 08:02:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779721323; x=1780326123; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=a4o3etUmMc83jKXzjzz8NI/vuwQndsejxWjbjMzrTj0=;
+        b=OQDRGsFujslUerswpML+vbKMpWoiYW9KX40O1i9kFJ6Q1K0InBAiaYHyjNCrmQebdw
+         WAJboDIyet/JFqZNohveyr8Ieh1yvUKOtaNK6v1g/JAWchyPem8bTQo3vrEisShfc5J5
+         Qo6s5K5CWkhg8nyp7fHaDzrCDXA1zVOBCX8blRfOgPrfGHDosaEWZsrrAv3CkghDH+Io
+         XYuCq+vUpEwKZilQVXlETbbHCkofU4G3R5aMeyi4TFSU7crvVr5SSsRJrLCl+eHrYHuB
+         9OwZh+HW8XdOmGtVr9/W0peovoj33rYHD4tQSK/TYjFF4wxspU4RNUuTwyEmdHyJJ4ES
+         Yivg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779721323; x=1780326123;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=a4o3etUmMc83jKXzjzz8NI/vuwQndsejxWjbjMzrTj0=;
+        b=klmEp1YVfi4bSD/S7/kt9Lbs90TzivunAQlms4vdITFBHrOJBPRcXj+B0AEM0SmLjT
+         i8aFnf64VZ/IICr8At2WWgoWSiZcTCBSL39txx2Kn8zGyW2JrChBJCscSv2NjxyOIobt
+         fVcRv4wn+JsaqD6fhjL9l2X+ywSGeg4m01zUyJReJ6E2jJHishfrejxkkLu/rrPo39BW
+         HZ4r3zRocPzlAZOEgyPHBB3cPjNlOrwvcpP54rVwFLlOg6CaX6PZn3f4TJdmVhp7E1gv
+         AsBq6tT+CNdUwXVF03GbAwVPr22fa9n/r2HYTXD5uJluFdFrET79OV9fcEzh/l31HPPO
+         AQWw==
+X-Forwarded-Encrypted: i=1; AFNElJ/SijGrOvZEhi6ANjhepFDaPVxo6OG/qZ+i8yX2IQFRdYJY4oncnRcv9IluFvSiK/1gx/W50uY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsocQA2rH90uio0dJtusN2IHkQQF5BsDpl54l37JQJyCE6DOUt
+	zD5KTRZIbAZVz1ZSbDyKX/jLHJ6ekxiY68GHIU7emz0lPPVm11Plzln0
+X-Gm-Gg: Acq92OGCfwByImW05k4plm+ENACap83FWG3UOgG6cSDgMwQiPzA3iV1VoyV2JRcLAkZ
+	MD8B7NA4h3avFRjeWlRLB55BacCuDfFH3QLkI/axED8CUwuEiG8p/r7TNLeIUnzvOBwxiz3E4iG
+	UCEZ32ZGGHbKWgIb25GPo3HORJO6Q+LQug74U5kROz2LbNvcwgoNyF2htTsinENndBRiGqBLw2Y
+	qE4Sm+l1kxR+R7IxxKC5WWqFC4JmkbAYsS/TvABWMEdwcgPEiKDkzwMPv0c9qsRbaqPqmkMLyZv
+	KRGxfvVEADLO5D/0JCI7RYeuD48rSFv6CoFS5CZESDUWwM+dsds00nB3bREISnci9ahp7EOPdXf
+	msRE7FE1DHQpLMNAzhkO51MkuGDqPIR9GqScf8EhPuv1L53pd/4IR357M94R5GU8+G0P59+YHsV
+	rwryuepadlPdRFSGBMcfw1AI95spM/qUUKMJtDf6efAkyZWC6VDh9ElCq5h7/I4nyRstERo208w
+	nLNqot9WwUQ8+SCaiHlp1t76AKIKlp0I6YDXBvrM85MI14Qxv8GdQ9LOg==
+X-Received: by 2002:a9d:60f9:0:b0:7e6:50dc:650f with SMTP id 46e09a7af769-7e650dc6933mr686769a34.23.1779721323019;
+        Mon, 25 May 2026 08:02:03 -0700 (PDT)
+Received: from DESKTOP-J47FREO.mynetworksettings.com (171.sub-75-196-24.myvzw.com. [75.196.24.171])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7e6060b2dffsm7353920a34.0.2026.05.25.08.02.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 May 2026 08:02:02 -0700 (PDT)
+From: Adrian Korwel <adriank20047@gmail.com>
+To: linux-usb@vger.kernel.org
+Cc: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	dave@stgolabs.net,
+	Adrian Korwel <adriank20047@gmail.com>
+Subject: [PATCH] usb: gadget: f_midi: cancel work before midi is freed
+Date: Mon, 25 May 2026 10:01:39 -0500
+Message-ID: <20260525150139.3038-1-adriank20047@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2026052509-shelter-caucus-92e5@gregkh>
+References: <2026052509-shelter-caucus-92e5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <05c794a7-f82d-5454-8df9-0ac543f8f8f7@loongson.cn>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,vger.kernel.org,stgolabs.net,gmail.com];
+	TAGGED_FROM(0.00)[bounces-254164-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254163-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,loongson:email]
-X-Rspamd-Queue-Id: 6B3F65CC035
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[adriank20047@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: DC3835CC08E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, May 25, 2026 at 04:17:25PM +0800, Qunqin Zhao wrote:
-> 
-> 在 2026/5/25 上午11:20, Eric Biggers 写道:
-> > On Mon, May 25, 2026 at 10:45:14AM +0800, Qunqin Zhao wrote:
-> > > > > To be honest, I previously assumed that the `hw_random` was designed
-> > > > > strictly and exclusively for the TRNG mode.
-> > > > > 
-> > > > > Is it architecturally acceptable or common practice for a PRNG mode to
-> > > > > utilize `hw_random` as well?
-> > > > > 
-> > > > > Thanks,
-> > > > So the Loongson RNG is a PRNG?  Where does it get its entropy from, and
-> > > > what is its security strength?
-> > > Loongson's hardware supports both TRNG and PRNG simultaneously.
-> > > 
-> > > We can locate a reseed function within loongson-rng.c, which clearly
-> > > indicates that it is a PRNG driver.
-> > That reseed function gets called with entropy from the Linux RNG.  So,
-> > it seems it's really just a PRNG seeded from the Linux RNG.  What value
-> > does that provide over just using the Linux RNG directly?
-> 
-> Alternatively,the reseed function can serve  as a stirring mechanism, where
-> the primary entropy comes from the internal hardware TRNG.
-> 
-> Or simply ignore the  entropy from the Linux RNG entirely, trigger a
-> reseeding internal.
-> 
-> 
-> The driver merely forwards the seed to the firmware; how it is utilized and
-> what kind of random numbers are returned are entirely determined by the
-> firmware implementation.
-> 
-> > 
-> > > So the core issue here is whether a PRNG driver can utilize the crypto
-> > > interface.
-> > If you're asking about crypto_rng, it can.  But the crypto_rng interface
-> > is also kind of useless.  If you're asking about hwrng, it does look
-> > like it's designed for TRNGs.  Would it be possible for this driver to
-> > use the TRNG mode?
-> 
-> I mean crypto_rng.
-> 
-> We might use the hwrng interface to add support for the TRNG in this driver.
+f_midi_disable() disables the USB endpoints but does not cancel the
+pending work item before returning. Since f_midi uses the system
+high-priority workqueue (system_highpri_wq) rather than a dedicated
+workqueue, there is no implicit draining when the function is unbound.
 
-If you can actually provide fresh entropy on each call, then yes you
-should implement hwrng.
+The work item f_midi_in_work can therefore be scheduled via
+queue_work() from f_midi_complete() or f_midi_in_trigger() and execute
+after f_midi_free() has run, resulting in a use-after-free when
+f_midi_transmit() accesses midi->in_ep, midi->transmit_lock,
+midi->in_req_fifo and midi->in_ports_array.
 
-> > 
-> > > If it cannot, does that imply the drivers listed below serve no practical
-> > > purpose? (7.1-rc1)
-> > > 
-> > > loongson@loongson:~/upstream/linux/drivers/crypto$ grep crypto_register_rng
-> > Most of the drivers in drivers/crypto/ are added by the hardware
-> > manufacturer without any regard for whether they're useful or not.
-> 
-> If we are dropping crypto-rng drivers entirely,
+This was introduced in commit 8653d71ce376 ("usb/gadget: f_midi:
+Replace tasklet with work") which converted from tasklet_hi_schedule()
+to queue_work() but omitted the cancel_work_sync() call needed to
+ensure the work is not in flight when the structure is freed. Tasklets
+did not require explicit cancellation in this path; workqueues do.
 
-We should, since they have no real point.
+Fix by calling cancel_work_sync() in f_midi_disable() after disabling
+the endpoints, ensuring no work item referencing midi can run after
+teardown begins.
 
-> I am fine with removing the Loongson driver along with the others.
-> 
-> However, targeting the Loongson driver alone is unacceptable.
+Fixes: 8653d71ce376 ("usb/gadget: f_midi: Replace tasklet with work")
+Cc: stable@vger.kernel.org
+Signed-off-by: Adrian Korwel <adriank20047@gmail.com>
+---
+ drivers/usb/gadget/function/f_midi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-We just happen to be digging into the details on this driver right now,
-since we're having to spend time fixing it.  Thanks for confirming that
-this is supported purely for parity with other drivers.
+diff --git a/drivers/usb/gadget/function/f_midi.c b/drivers/usb/gadget/function/f_midi.c
+index 4d9e4bd700d8..864527bf900c 100644
+--- a/drivers/usb/gadget/function/f_midi.c
++++ b/drivers/usb/gadget/function/f_midi.c
+@@ -430,6 +430,8 @@ static void f_midi_disable(struct usb_function *f)
+ 	usb_ep_disable(midi->in_ep);
+ 	usb_ep_disable(midi->out_ep);
+ 
++	cancel_work_sync(&midi->work);
++
+ 	/* release IN requests */
+ 	while (kfifo_get(&midi->in_req_fifo, &req))
+ 		free_ep_req(midi->in_ep, req);
+-- 
+2.43.0
 
-- Eric
 
