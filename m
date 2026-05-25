@@ -1,176 +1,182 @@
-Return-Path: <stable+bounces-254104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254106-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WMQINeAEFGpSIwcAu9opvQ
-	(envelope-from <stable+bounces-254104-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 10:14:24 +0200
+	id 8DZhCQAHFGpSIwcAu9opvQ
+	(envelope-from <stable+bounces-254106-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 10:23:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C8815C78C4
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 10:14:24 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC3DD5C7AC7
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 10:23:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 444093003E9E
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 08:14:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DA8F93014501
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 08:22:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9185A3DE454;
-	Mon, 25 May 2026 08:14:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ys/yUwb/"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 002EF3E16B4;
+	Mon, 25 May 2026 08:22:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793BC3DFC75;
-	Mon, 25 May 2026 08:14:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E26DC3E123E;
+	Mon, 25 May 2026 08:22:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779696858; cv=none; b=IahOopN4+yVy/vwl/qKsF75wRop5snr3VLe/1wsgzKLKwgnHj/hIjXR+PF5j9OcWkiw0H7JqxqMnDC8La8sNOQG8sGemLgmc115YtxW9bq3zOkZHZkwBZ4toz2ySWj/l87xO5ZjB7P/u33PGwuvhukoWVPh1CFHJLAfI90/sJyg=
+	t=1779697347; cv=none; b=dxkJnxNS5l3esGNTKgHZX/4b1K2j2WEjGyhycgRuRMoyBgTN4LFeMRPN6XkP+kSxXJhGcnnwtcMWGeIJk4kqJpFaNJIdRs0DsmDXnlp7NFq0xS8uiMjuUuKL+EDZNUpFlFDFlwZE70CccpQIWzmFt5VGW/aU3XNqBoDrOR43oqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779696858; c=relaxed/simple;
-	bh=ihsnSs4yoA0E0Ix5Jf56XQK8b2iliN3qStZX19quVX0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=J7oO3QVebTihgRBHao20Hejyi5PEuULJzn8tFJFROd5BJbmnERh4GTmqM5Vw6LvU79mvZz6zj/OBYWdvBdyHG1hy4RFNNCkqY6oNzzlSgKBQHSZEGZFLVkAjCxPf8WyuHIegQQY7vjmnBDhD0FNeXSXmxJEh6OwgsTvOoprw55Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ys/yUwb/; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779696854; x=1811232854;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ihsnSs4yoA0E0Ix5Jf56XQK8b2iliN3qStZX19quVX0=;
-  b=Ys/yUwb/mjea/zhSsAruLrzQKx6O/c0B8Ck91ZzUQxKGHuY967xN4Eoc
-   iJ1MhfCGLfwoyIyVxgSa3Wcjyw80TGrunLw728UBQZTuKlKJsYVpM+Stf
-   zTAQPvhUZUrkAySaTk4PWB8i9Rg/opcicNI8jaekHUuq6hmcs9yKwErnN
-   KsMp0LtFyocu51vFpe1Ftntwk5uLCEalIVupLIC8eCy6LAhmg2vjTJCjG
-   bb+PeX2TiUFTi+WbjoSFKxIvxG30ihbDpo2vrdMZvJYszdvSPZnqmWc0o
-   6LVJFSh3VY9dh98cyAPZaOVj3kF8GQDweLCcIZTzS8TCsU4RQ8W2rG8c0
-   A==;
-X-CSE-ConnectionGUID: i4l52IbvTmidr5z9t5e82g==
-X-CSE-MsgGUID: KFPBP3ofRSyMPBJ8D/IJZg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11796"; a="80485230"
-X-IronPort-AV: E=Sophos;i="6.24,167,1774335600"; 
-   d="scan'208";a="80485230"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2026 01:14:07 -0700
-X-CSE-ConnectionGUID: OfxSNpDTQFis4634mDkFyg==
-X-CSE-MsgGUID: SSzNXk1OSfC163ZZYQEVZA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,167,1774335600"; 
-   d="scan'208";a="241723677"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO [10.245.245.200]) ([10.245.245.200])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2026 01:14:04 -0700
-Message-ID: <428be9d9-06f7-4bcb-807b-d351101c3c4b@linux.intel.com>
-Date: Mon, 25 May 2026 10:13:57 +0200
+	s=arc-20240116; t=1779697347; c=relaxed/simple;
+	bh=G4NFmvwqppuwFg3fj04E9ibqzOf/hoxaF9CBbWAed98=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=l/cQdMTxauqfhvtXfldEaIaR+eEQNTCArP8RNB2nab6G0wdQQvI8AcJvThGVTvuAytuxFM1vdmydJ9HTqTCMuF7DTRjebgoYdUorLfXpjjXUu6qMEZRJz9hM28jDc6Kqf0XzqfyATwRKHwmH9tZmE/lvmtcHN/vrZaxmaOVVEFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.164])
+	by gateway (Coremail) with SMTP id _____8Bx+Hi+BhRqvgANAA--.12720S3;
+	Mon, 25 May 2026 16:22:22 +0800 (CST)
+Received: from [10.20.42.164] (unknown [10.20.42.164])
+	by front1 (Coremail) with SMTP id qMiowJBx58C7BhRq1i6QAA--.57128S2;
+	Mon, 25 May 2026 16:22:22 +0800 (CST)
+Subject: Re: [PATCH] crypto: loongson - Select CRYPTO_RNG
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: Huacai Chen <chenhuacai@kernel.org>, linux-crypto@vger.kernel.org,
+ Herbert Xu <herbert@gondor.apana.org.au>, linux-kernel@vger.kernel.org,
+ loongarch@lists.linux.dev, Yinggang Gu <guyinggang@loongson.cn>,
+ Lee Jones <lee@kernel.org>, kernel test robot <lkp@intel.com>,
+ stable@vger.kernel.org
+References: <20260522022525.12976-1-ebiggers@kernel.org>
+ <CAAhV-H5cDnWKxBobwRErRyvG8671e6VXsBe6w1RkX9rfn7CVFA@mail.gmail.com>
+ <20260522025722.GD5937@quark>
+ <d71adfa1-8895-e741-b72f-c5e99d5fb9e6@loongson.cn>
+ <20260522040310.GF5937@quark>
+ <bc3acf15-808d-4141-7f1f-4a7a7f856c6c@loongson.cn>
+ <20260522174835.GA1894319@google.com>
+ <4501444d-9c17-8d4b-8bfd-bd1d69d77a76@loongson.cn>
+ <20260525032006.GA243157@quark>
+From: Qunqin Zhao <zhaoqunqin@loongson.cn>
+Message-ID: <05c794a7-f82d-5454-8df9-0ac543f8f8f7@loongson.cn>
+Date: Mon, 25 May 2026 16:17:25 +0800
+User-Agent: Mozilla/5.0 (X11; Linux mips64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/client: check whether CRTC is active before waiting
- for vblank
-To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
- Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Icenowy Zheng <zhengxingda@iscas.ac.cn>,
- Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Sam Ravnborg <sam@ravnborg.org>,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- Icenowy Zheng <uwu@icenowy.me>, stable@vger.kernel.org
-References: <20260519092420.1124348-1-zhengxingda@iscas.ac.cn>
- <ee86cb43-e5df-4946-a957-931a73dde752@suse.de> <ahBWayIcQUHuAt4i@intel.com>
- <b4b2e8cb-dd7c-42c2-88b7-0a2ab95a90ee@suse.de> <ahBZ8nIqR4qESLZg@intel.com>
- <5fbcda92-f6b0-4de2-89e5-ea43a6248b05@suse.de> <ahCw9zakihaGHLsN@intel.com>
-Content-Language: en-US
-From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-In-Reply-To: <ahCw9zakihaGHLsN@intel.com>
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <20260525032006.GA243157@quark>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Language: en-US
+X-CM-TRANSID:qMiowJBx58C7BhRq1i6QAA--.57128S2
+X-CM-SenderInfo: 52kd01pxqtx0o6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoW7Cr17tw4kAw4DKr45tFyruFX_yoW8tF13pF
+	Wj9a4qkr4DJr409w18Kw48AFySyrWftrWa9r4rG3sxu3s8ua4fZryxKFZ0ka4xCFy8Gry2
+	yrW8WryUWFs8AFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUB2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
+	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
+	XVWUAwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
+	8JMxk0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_
+	Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
+	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0
+	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
+	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E
+	14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU2MKZDUUUU
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	MID_RHS_MATCH_FROM(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[iscas.ac.cn,kernel.org,gmail.com,ffwll.ch,ravnborg.org,lists.freedesktop.org,vger.kernel.org,icenowy.me];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254104-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[intel.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	R_DKIM_NA(0.00)[];
+	DMARC_NA(0.00)[loongson.cn];
+	FROM_NEQ_ENVFROM(0.00)[zhaoqunqin@loongson.cn,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maarten.lankhorst@linux.intel.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,linux.intel.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 3C8815C78C4
+	TAGGED_FROM(0.00)[bounces-254106-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[]
+X-Rspamd-Queue-Id: DC3DD5C7AC7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hey,
 
-Den 2026-05-22 kl. 21:39, skrev Ville Syrjälä:
-> On Fri, May 22, 2026 at 03:43:26PM +0200, Thomas Zimmermann wrote:
->> Hi
+在 2026/5/25 上午11:20, Eric Biggers 写道:
+> On Mon, May 25, 2026 at 10:45:14AM +0800, Qunqin Zhao wrote:
+>>>> To be honest, I previously assumed that the `hw_random` was designed
+>>>> strictly and exclusively for the TRNG mode.
+>>>>
+>>>> Is it architecturally acceptable or common practice for a PRNG mode to
+>>>> utilize `hw_random` as well?
+>>>>
+>>>> Thanks,
+>>> So the Loongson RNG is a PRNG?  Where does it get its entropy from, and
+>>> what is its security strength?
+>> Loongson's hardware supports both TRNG and PRNG simultaneously.
 >>
->> Am 22.05.26 um 15:28 schrieb Ville Syrjälä:
->> [...]
->>>>>> But why does your HW use CRTC 1 in the first place.
->>>>> Could be eg. the enabled outputs can't be driven with CRTC 0.
->>>>>
->>>>> I guess what you want to do is pick the first crtc from modesets[]
->>>>> which is enabled. Or perhaps even "pick the Nth enabled crtc from
->>>>> modesets[] based on the ioctl argument".
->>>> The enable-status of each CRTC could change later on, which might lead
->>>> to problems.
->>> Sound like a locking issue if someone is changing the configuration
->>> at the same time we're trying to do the vblank wait here.
+>> We can locate a reseed function within loongson-rng.c, which clearly
+>> indicates that it is a PRNG driver.
+> That reseed function gets called with entropy from the Linux RNG.  So,
+> it seems it's really just a PRNG seeded from the Linux RNG.  What value
+> does that provide over just using the Linux RNG directly?
+
+Alternatively,the reseed function can serve  as a stirring mechanism, 
+where the primary entropy comes from the internal hardware TRNG.
+
+Or simply ignore the  entropy from the Linux RNG entirely, trigger a 
+reseeding internal.
+
+
+The driver merely forwards the seed to the firmware; how it is utilized 
+and what kind of random numbers are returned are entirely determined by 
+the firmware implementation.
+
+>
+>> So the core issue here is whether a PRNG driver can utilize the crypto
+>> interface.
+> If you're asking about crypto_rng, it can.  But the crypto_rng interface
+> is also kind of useless.  If you're asking about hwrng, it does look
+> like it's designed for TRNGs.  Would it be possible for this driver to
+> use the TRNG mode?
+
+I mean crypto_rng.
+
+We might use the hwrng interface to add support for the TRNG in this driver.
+
+>
+>> If it cannot, does that imply the drivers listed below serve no practical
+>> purpose? (7.1-rc1)
 >>
->> I mean that the connected outputs could change at a later point or we 
->> could have multiple CRTCs in use. Today, someone in #intel-gfx reported 
->> a problem with panning if multiple CRTCs are in use.
->>
->> Therefore picking a CRTC freely could be a problem. Let's say we 
->> configure modes from one CRTC, but later wait/pan/flush with another 
->> CRTC. I would not trust this to work correctly.
->>
->> Hence, my suggestion is to select a primary CRTC during the fbdev 
->> client's probe and use it for all later operations until the next probe 
->> happens.  All other CRTCs would mirror the primary one.
-> 
-> Actual mirroring may not be possible due to different modes supported
-> on each output. The whole multi-output fbdev thing in the drm fb helper
-> is kind of a hack that's rather hard to make work 100% sensibly.
-> 
-> For the panning possibly the only sensible thing is to use the max of
-> hdisplay/vdisplay of all the crtcs as the xres/yres so it's clear
-> how much things can actually be panned. Oh and tiled displays (assuming
-> we would actually want the fbdev stuff to tile correctly) make the
-> situation even more complicated. I think the current support for tiled
-> displays in the fb helper is semi-busted.´
+>> loongson@loongson:~/upstream/linux/drivers/crypto$ grep crypto_register_rng
+> Most of the drivers in drivers/crypto/ are added by the hardware
+> manufacturer without any regard for whether they're useful or not.
 
-I tested fbdev on a tiled DP-MST monitor.
-It works better than my kwin's wayland compositor, as it detects both tiles
-and presents a single image spanning both tiles. Kwin sees both as separate
-monitors.
+If we are dropping crypto-rng drivers entirely,
 
-I still see vertical tearing between both tiles, so it would be nice if
-intel/display would support atomic updates for both crtc's directly.
+I am fine with removing the Loongson driver along with the others.
 
-The code's already there for bigjoiner, just needs to do the same for
-tile joiner updates when all tiled crtc's are in the atomic update.
+However, targeting the Loongson driver alone is unacceptable.
 
-Kind regards,
-~Maarten Lankhorst
+
+Thanks,
+
+Qunqin.
+
+>
+> - Eric
+
 
