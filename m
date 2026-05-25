@@ -1,171 +1,212 @@
-Return-Path: <stable+bounces-254059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254061-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ELkVMJS1E2ptFAcAu9opvQ
-	(envelope-from <stable+bounces-254059-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 04:36:04 +0200
+	id IkvSMgW5E2r/FAcAu9opvQ
+	(envelope-from <stable+bounces-254061-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 04:50:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78DE35C56DC
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 04:36:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42A2E5C573C
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 04:50:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 43B9E3007AC4
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 02:36:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C678D300C007
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 02:50:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6733A2253A1;
-	Mon, 25 May 2026 02:36:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="dtfltjvX"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE12D2848A1;
+	Mon, 25 May 2026 02:50:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEBD6322A
-	for <stable@vger.kernel.org>; Mon, 25 May 2026 02:35:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.226
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA49D29B20A;
+	Mon, 25 May 2026 02:50:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779676561; cv=none; b=KDOD0qoEKJy0rcRTGv8wEoQjKvyxqjtmhXvV0XxlTp0APs7DnenkPZTs445JNenQRrNTEOMrSnwtlnGhd4ALH1NBRrCNZqP4LfMOMjbpA84jcQnFL6lc9hgTxWb7vVovkrWCLm+iFVS8EfzEc+C11ap8nh56vR/jxyDRKpuhb+I=
+	t=1779677436; cv=none; b=KyNGGOAtGDBmzMrfVBQi0GNyGyXDc3jnKBhVeF0lxV3B2Nw4XiecvSGVU1BN2DdTDwe6ULww7l7PLXmlusWtraQWMoQsvEkFQlzmeT5aUgopBgqFwrrxCbj1x7SJQsek5LV1GzP+pvUrD+x7+Kr0VSEKOGEXztjs9ks7k8Yu16g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779676561; c=relaxed/simple;
-	bh=WlEkZOv5nj0ARZNqtX9/2kxG01H0k9HKinBRL/jDQrg=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M5KRS9A5yWzKMAFntc4qDGbnSXO8iEekdcxlxzeI14lZpR5ijNlyu0KiufZDXrKPPmPX50XuLdyJ0wMbWr1oYY6c1rrO3l4FxiFAcetwBJkhpSPPbk+paI0ALZ32WfYABVhG4CdKtDSkHX0R3ijwY1Dz1Bl+ynMVEL0wxnBwGEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=dtfltjvX; arc=none smtp.client-ip=113.46.200.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=kkywFzGdQQywiGFe2xfuQHQyuwWQgBARrNGTnWz1u1w=;
-	b=dtfltjvXYtDGgW3Du5vG9ZMz5AXZ5Vcocg7mTvzDJh/7dI0RQfP3H1Os28T8fCiGv5+wTy+cW
-	m9TwCy0WXvoy0fta7+smjnLZe+yjyYZoBk9I/Brfmqu5NEQPoXzIWlgh5jgkgg6RgYAf8RTT9jo
-	2OWOGr9rsZ+8WOyFm2C4JHI=
-Received: from mail.maildlp.com (unknown [172.19.163.200])
-	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4gP0D26hlFzKmVp;
-	Mon, 25 May 2026 10:28:02 +0800 (CST)
-Received: from kwepemj200003.china.huawei.com (unknown [7.202.194.15])
-	by mail.maildlp.com (Postfix) with ESMTPS id A4B6940563;
-	Mon, 25 May 2026 10:35:49 +0800 (CST)
-Received: from localhost.huawei.com (10.90.31.46) by
- kwepemj200003.china.huawei.com (7.202.194.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 25 May 2026 10:35:48 +0800
-From: Qinxin Xia <xiaqinxin@huawei.com>
-To: <patchwork@huawei.com>, <kernel@openeuler.org>
-CC: <xiaqinxin@huawei.com>, <linhongye@h-partners.com>, Balbir Singh
-	<balbirs@nvidia.com>, <stable@vger.kernel.org>, Jason Gunthorpe
-	<jgg@nvidia.com>, Jean-Philippe Brucker <jean-philippe@linaro.org>, Will
- Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Joerg Roedel
-	<joro@8bytes.org>, Jason Gunthorpe <jgg@ziepe.ca>
-Subject: [PATCH OLK-6.6 4/4] iommu/arm-smmu-v3: Fix pgsize_bit for sva domains
-Date: Mon, 25 May 2026 10:35:39 +0800
-Message-ID: <20260525023539.3587618-5-xiaqinxin@huawei.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20260525023539.3587618-1-xiaqinxin@huawei.com>
-References: <20260525023539.3587618-1-xiaqinxin@huawei.com>
+	s=arc-20240116; t=1779677436; c=relaxed/simple;
+	bh=JpEh2ZN0k8eUxzXlir3g3RGyyjHAHoSuyF3ZoZrFcRg=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=qEl922kn/QjfLvte5zOw4454xwChYS1KleLbZSvajN/XEmBz2UZsV50sViip6hXhv9wdjh3NmA7TzsADa3Eg8AAOdxidjrAK6YuZfvJdE6AObru8EMnXd5XXuTTE2wFsraoFwDe19iMQaVK8haH1CKZPBZLdyyw3nor+yEGjiTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.164])
+	by gateway (Coremail) with SMTP id _____8CxQ_DwuBNqmO0MAA--.37131S3;
+	Mon, 25 May 2026 10:50:24 +0800 (CST)
+Received: from [10.20.42.164] (unknown [10.20.42.164])
+	by front1 (Coremail) with SMTP id qMiowJCxmuDguBNqm9ePAA--.62503S2;
+	Mon, 25 May 2026 10:50:09 +0800 (CST)
+Subject: Re: [PATCH] crypto: loongson - Select CRYPTO_RNG
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: Huacai Chen <chenhuacai@kernel.org>, linux-crypto@vger.kernel.org,
+ Herbert Xu <herbert@gondor.apana.org.au>, linux-kernel@vger.kernel.org,
+ loongarch@lists.linux.dev, Yinggang Gu <guyinggang@loongson.cn>,
+ Lee Jones <lee@kernel.org>, kernel test robot <lkp@intel.com>,
+ stable@vger.kernel.org
+References: <20260522022525.12976-1-ebiggers@kernel.org>
+ <CAAhV-H5cDnWKxBobwRErRyvG8671e6VXsBe6w1RkX9rfn7CVFA@mail.gmail.com>
+ <20260522025722.GD5937@quark>
+ <d71adfa1-8895-e741-b72f-c5e99d5fb9e6@loongson.cn>
+ <20260522040310.GF5937@quark>
+ <bc3acf15-808d-4141-7f1f-4a7a7f856c6c@loongson.cn>
+ <20260522174835.GA1894319@google.com>
+From: Qunqin Zhao <zhaoqunqin@loongson.cn>
+Message-ID: <4501444d-9c17-8d4b-8bfd-bd1d69d77a76@loongson.cn>
+Date: Mon, 25 May 2026 10:45:14 +0800
+User-Agent: Mozilla/5.0 (X11; Linux mips64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <20260522174835.GA1894319@google.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemj200003.china.huawei.com (7.202.194.15)
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Language: en-US
+X-CM-TRANSID:qMiowJCxmuDguBNqm9ePAA--.62503S2
+X-CM-SenderInfo: 52kd01pxqtx0o6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoWxCw48Ar18Ar4rJF4UXryxZwc_yoWrWw15pF
+	WrCa4UKFWUJr1F9ayktw1ruFyY9343Xw43Wrs3Ca4fAwn8tr10qr4IqFyq9FyDAr48ur1j
+	vrW8trya93WDAagCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUPYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUAVWU
+	twAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
+	k0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vIr41l
+	4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxV
+	WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI
+	7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
+	1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI
+	42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07jOiSdUUUUU=
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254059-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[huawei.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xiaqinxin@huawei.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[h-partners.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,8bytes.org:email]
-X-Rspamd-Queue-Id: 78DE35C56DC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,loongson.cn:mid,loongson.cn:email];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	MID_RHS_MATCH_FROM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	R_DKIM_NA(0.00)[];
+	DMARC_NA(0.00)[loongson.cn];
+	FROM_NEQ_ENVFROM(0.00)[zhaoqunqin@loongson.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254061-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[]
+X-Rspamd-Queue-Id: 42A2E5C573C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Balbir Singh <balbirs@nvidia.com>
 
-mainline inclusion
-from mainline-v6.15-rc5
-commit 12f78021973ae422564b234136c702a305932d73
-category: bugfix
-bugzilla: https://atomgit.com/openeuler/kernel/issues/9215
-CVE: NA
+在 2026/5/23 上午1:48, Eric Biggers 写道:
+> On Fri, May 22, 2026 at 02:40:38PM +0800, Qunqin Zhao wrote:
+>> 在 2026/5/22 下午12:03, Eric Biggers 写道:
+>>> On Fri, May 22, 2026 at 11:41:15AM +0800, Qunqin Zhao wrote:
+>>>> 在 2026/5/22 上午10:57, Eric Biggers 写道:
+>>>>> On Fri, May 22, 2026 at 10:52:42AM +0800, Huacai Chen wrote:
+>>>>>> On Fri, May 22, 2026 at 10:26 AM Eric Biggers <ebiggers@kernel.org> wrote:
+>>>>>>> This driver registers a rng_alg, so it requires CRYPTO_RNG.
+>>>>>>>
+>>>>>>> Fixes: 766b2d724c8d ("crypto: loongson - add Loongson RNG driver support")
+>>>>>>> Reported-by: kernel test robot <lkp@intel.com>
+>>>>>>> Closes: https://lore.kernel.org/oe-kbuild-all/202605201622.qWOiiZTV-lkp@intel.com/
+>>>>>>> Cc: stable@vger.kernel.org
+>>>>>>> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+>>>>>> Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
+>>>>>>> ---
+>>>>>>>     drivers/crypto/loongson/Kconfig | 1 +
+>>>>>>>     1 file changed, 1 insertion(+)
+>>>>>>>
+>>>>> By the way, do any of the loongson people have any comment on what they
+>>>>> think the point of this driver is?  It's not registered with the actual
+>>>> To provide an AF_ALG-based random number generation interface for other
+>>>> modules and user-space programs.
+>>>>
+>>>> Thanks,
+>>>>
+>>>> Qunqin
+>>> AF_ALG is a userspace interface; it's not available for in-kernel use.
+>>> If you mean using crypto_rng directly, note that no kernel code actually
+>>> uses it other than the tests, the implementation of AF_ALG, and the
+>>> FIPS-specific code which uses drbg.c specifically.
+>>>
+>>> So, the first half of your justification doesn't make any sense.
+>>>
+>>> As far as the second half: why would a userspace program do that instead
+>>> of just using the regular Linux RNG (/dev/urandom)?
+> Could you answer this question?  If there's no answer to this question,
+> then there's no use case for this driver as-is.
 
-Reference: https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=12f78021973ae422564b234136c702a305932d73
+While I'm not an expert on the specific application scenarios for these,
 
-----------------------------------------------------------------------
+I believe any PRNG driver should utilize the crypto_rng subsystem.
 
-UBSan caught a bug with IOMMU SVA domains, where the reported exponent
-value in __arm_smmu_tlb_inv_range() was >= 64.
-__arm_smmu_tlb_inv_range() uses the domain's pgsize_bitmap to compute
-the number of pages to invalidate and the invalidation range. Currently
-arm_smmu_sva_domain_alloc() does not setup the iommu domain's
-pgsize_bitmap. This leads to __ffs() on the value returning 64 and that
-leads to undefined behaviour w.r.t. shift operations
+>>> AFAIK, the only reason to use a HW RNG directly is for certification
+>>> reasons.
+>>>
+>>> However, there's also already an interface for that: /dev/hw_random.
+>>>
+>>> So AF_ALG seems completely redundant for this case.
+>> To be honest, I previously assumed that the `hw_random` was designed
+>> strictly and exclusively for the TRNG mode.
+>>
+>> Is it architecturally acceptable or common practice for a PRNG mode to
+>> utilize `hw_random` as well?
+>>
+>> Thanks,
+> So the Loongson RNG is a PRNG?  Where does it get its entropy from, and
+> what is its security strength?
 
-Fix this by initializing the iommu_domain's pgsize_bitmap to PAGE_SIZE.
-Effectively the code needs to use the smallest page size for
-invalidation
+Loongson's hardware supports both TRNG and PRNG simultaneously.
 
-Cc: stable@vger.kernel.org
-Fixes: eb6c97647be2 ("iommu/arm-smmu-v3: Avoid constructing invalid range commands")
-Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Balbir Singh <balbirs@nvidia.com>
+We can locate a reseed function within loongson-rng.c, which clearly 
+indicates that it is a PRNG driver.
 
-Cc: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: Robin Murphy <robin.murphy@arm.com>
-Cc: Joerg Roedel <joro@8bytes.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/20250412002354.3071449-1-balbirs@nvidia.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Qinxin Xia <xiaqinxin@huawei.com>
-Signed-off-by: Hongye Lin <linhongye@h-partners.com>
----
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c | 6 ++++++
- 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c
-index 9342fac71801..4075ef00c4c9 100644
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c
-@@ -402,6 +402,12 @@ struct iommu_domain *arm_smmu_sva_domain_alloc(struct device *dev,
- 		return ERR_CAST(smmu_domain);
- 	smmu_domain->domain.type = IOMMU_DOMAIN_SVA;
- 	smmu_domain->domain.ops = &arm_smmu_sva_domain_ops;
-+
-+	/*
-+	 * Choose page_size as the leaf page size for invalidation when
-+	 * ARM_SMMU_FEAT_RANGE_INV is present
-+	 */
-+	smmu_domain->domain.pgsize_bitmap = PAGE_SIZE;
- 	smmu_domain->smmu = smmu;
- 
- 	ret = xa_alloc(&arm_smmu_asid_xa, &asid, smmu_domain,
--- 
-2.33.0
+So the core issue here is whether a PRNG driver can utilize the crypto 
+interface.
+
+If it cannot, does that imply the drivers listed below serve no 
+practical purpose? (7.1-rc1)
+
+loongson@loongson:~/upstream/linux/drivers/crypto$ grep 
+crypto_register_rng -r *
+allwinner/sun8i-ss/sun8i-ss-core.c:            err = 
+crypto_register_rng(&ss_algs[i].alg.rng);
+allwinner/sun8i-ce/sun8i-ce-core.c:            err = 
+crypto_register_rng(&ce_algs[i].alg.rng);
+allwinner/sun4i-ss/sun4i-ss-core.c:            err = 
+crypto_register_rng(&ss_algs[i].alg.rng);
+amcc/crypto4xx_core.c:            rc = crypto_register_rng(&alg->alg.u.rng);
+caam/caamprng.c:    ret = crypto_register_rng(&caam_prng_alg.rng);
+exynos-rng.c:    ret = crypto_register_rng(&exynos_rng_alg);
+hisilicon/trng/trng.c:        ret = crypto_register_rng(&hisi_trng_alg);
+loongson/loongson-rng.c:        ret = 
+crypto_register_rng(&loongson_rng_alg);
+qcom-rng.c:    ret = crypto_register_rng(&qcom_rng_alg);
+xilinx/xilinx-trng.c:    ret = crypto_register_rng(&xtrng_trng_alg);
+
+
+Thanks,
+
+Qunqin
+
+>
+> - Eric
 
 
