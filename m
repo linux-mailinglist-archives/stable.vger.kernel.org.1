@@ -1,103 +1,201 @@
-Return-Path: <stable+bounces-254102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254103-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YA2NADr+E2quIQcAu9opvQ
-	(envelope-from <stable+bounces-254102-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 09:46:02 +0200
+	id gMsNLuQAFGquIQcAu9opvQ
+	(envelope-from <stable+bounces-254103-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 09:57:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD1AF5C73E4
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 09:46:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 225035C759B
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 09:57:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BACAE300BC8E
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 07:45:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1D64B30107FA
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 07:57:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24B033D3492;
-	Mon, 25 May 2026 07:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 274113D5C1C;
+	Mon, 25 May 2026 07:57:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.gentoo.org (woodpecker.gentoo.org [140.211.166.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7652367B8;
-	Mon, 25 May 2026 07:45:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF585233939;
+	Mon, 25 May 2026 07:57:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779695158; cv=none; b=UrdBIKgeqdQmrROgnIOHcyrPhnoIwUEbg+zSHYsAoOu9p1rtv+UwDnGWwfD5Ya9D7BiHn4Kryh5uKXgB+FwYtBQQeuJtbJ5xDyJcLcwKi+TBAyInf1uv7WRJyugpjxA1lcUK/1t7kozicOI7zI2rrL3DAPW2JA3aiPLVgsFuWA8=
+	t=1779695836; cv=none; b=LW0JQ++3oAV1Q4cgWgO5aNS7OOiGgCpiKZDvhxivh0uc9xsK+WVeggwUt6wbe8g5JKtDtNUWhrMwnrM+SIV5lO8qe1WbgfzorG7eu1GzMxazzlSOsuq6EE8qQbn/7Br2U2GcUDIzW+W3cj3eI2AGspC6ny/M4mrxAcOZ6sFp3IQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779695158; c=relaxed/simple;
-	bh=t/cYPrdwJNXzSep824CP+QR2P+HPjArNcs9iORgSGuo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E+0CUPparkAdjY6/Mm4EId8w2HeXpHABEr3SpR8BClzZVGBzzqbCbj0TegHjaa/VEVRYYEKhqQ77N1ex/e5yZOVfJBgPY1WQw/hV429Dfmq/zNkr6nUcDkdWLxRZc9xx7OhUMkBbsnnxljEP8v8tN5pwEZjjudG29jYZeRVK8Co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 7C37968B05; Mon, 25 May 2026 09:45:52 +0200 (CEST)
-Date: Mon, 25 May 2026 09:45:51 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Aaron Esau <aaron1esau@gmail.com>
-Cc: linux-block@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-	Anuj Gupta <anuj20.g@samsung.com>,
-	Kanchan Joshi <joshi.k@samsung.com>, Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] block: fix dio leak on integrity metadata mapping
- failure
-Message-ID: <20260525074551.GA5432@lst.de>
-References: <20260518074258.1600307-1-aaron1esau@gmail.com>
+	s=arc-20240116; t=1779695836; c=relaxed/simple;
+	bh=jL9W9IsAuOxX7Y86O56g7ud6iNtlj77txAA/yd+4lyI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=oZsWqJDUtpPDdaNFD2HpSoDlbdQoJJHB2JjtsvZ7I1OLC0rn/gDikU8xM13XBRL9uU1+AEfXrV4t+PrsuRhwkV6g8gurdKOE1/hpryTWOYFz6JYXRIh7dcbq02ohj+rxu/wkXCruuWA9JjS6fB4tIubCf1ntbT1f8/LlFWNcBgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org; spf=pass smtp.mailfrom=gentoo.org; arc=none smtp.client-ip=140.211.166.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentoo.org
+Received: from localhost (1.5.5.2.4.d.e.f.f.f.5.f.9.d.6.0.a.5.c.d.c.d.9.1.0.b.8.0.1.0.0.2.ip6.arpa [IPv6:2001:8b0:19dc:dc5a:6d9:f5ff:fed4:2551])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: sam@gentoo.org)
+	by smtp.gentoo.org (Postfix) with ESMTPSA id 115E9341E5A;
+	Mon, 25 May 2026 07:57:09 +0000 (UTC)
+From: Sam James <sam@gentoo.org>
+To: =?UTF-8?q?Breno=20Leit=C3=A3o?= <leitao@debian.org>,
+	Nayna Jain <nayna@linux.ibm.com>,
+	Paulo Flabiano Smorigo <pfsmorigo@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Eric Biggers <ebiggers@google.com>
+Cc: Sam James <sam@gentoo.org>,
+	Eric Biggers <ebiggers@kernel.org>,
+	stable@vger.kernel.org,
+	Calvin Buckley <calvin@cmpct.info>,
+	Brad Spengler <brad.spengler@opensrcsec.com>,
+	linux-crypto@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3] crypto: nx: fix nx_crypto_ctx_exit argument
+Date: Mon, 25 May 2026 08:56:19 +0100
+Message-ID: <844faa8a75585e4088c95c052dd0ecd189bc3a64.1779695779.git.sam@gentoo.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <b8b1b6fe740187c70349cd04a820d57324e0f70c.1779509289.git.sam@gentoo.org>
+References: <b8b1b6fe740187c70349cd04a820d57324e0f70c.1779509289.git.sam@gentoo.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260518074258.1600307-1-aaron1esau@gmail.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Spamd-Result: default: False [-1.36 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [0.14 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[gentoo.org : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[lst.de : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254102-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-254103-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[debian.org,linux.ibm.com,gmail.com,ellerman.id.au,kernel.org,gondor.apana.org.au,davemloft.net,google.com];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hch@lst.de,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.986];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sam@gentoo.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.563];
+	TAGGED_RCPT(0.00)[stable];
 	R_DKIM_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,lst.de:mid]
-X-Rspamd-Queue-Id: BD1AF5C73E4
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,cmpct.info:email]
+X-Rspamd-Queue-Id: 225035C759B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-> +			if (unlikely(ret)) {
-> +				bio->bi_status = BLK_STS_IOERR;
-> +				bio_endio(bio);
-> +				break;
-> +			}
+nx_crypto_ctx_shash_exit calls nx_crypto_ctx_exit with crypto_shash_ctx(...)
+but crypto_shash_ctx gives a nx_crypto_ctx *, not a crypto_tfm *.
 
-AFAICS the same issue also exists for the other goto fail case,
-so we should convert the code at that label to a bio_endio().
+Fix the type in nx_crypto_ctx_exit and drop the bogus crypto_tfm_ctx
+call.
 
-I think both this and the existing -EAGAIN case and even the
--EIOCBQUEUED case leak the reference on the original bio.  Or am
-I missing something?
+This fixes the following oops:
 
-It might makes sense to stop playing games with that bio refcount
-and just have a status field in struct blkdev_dio.
+  BUG: Unable to handle kernel data access at 0xc0403effffffffc8
+  Faulting instruction address: 0xc000000000396cb4
+  Oops: Kernel access of bad area, sig: 11 [#15]
+  Call Trace:
+   nx_crypto_ctx_shash_exit+0x24/0x60
+   crypto_shash_exit_tfm+0x28/0x40
+   crypto_destroy_tfm+0x98/0x140
+   crypto_exit_ahash_using_shash+0x20/0x40
+   crypto_destroy_tfm+0x98/0x140
+   hash_release+0x1c/0x30
+   alg_sock_destruct+0x38/0x60
+   __sk_destruct+0x48/0x2b0
+   af_alg_release+0x58/0xb0
+   __sock_release+0x68/0x150
+   sock_close+0x20/0x40
+   __fput+0x110/0x3a0
+   sys_close+0x48/0xa0
+   system_call_exception+0x140/0x2d0
+   system_call_common+0xf4/0x258
+
+.. which came from hardlink(1) opportunistically using AF_ALG.
+
+The same problem exists with nx_crypto_ctx_skcipher_exit getting a context
+it wasn't expecting, but apparently nobody hit that for years.
+
+Cc: Eric Biggers <ebiggers@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: bfd9efddf990 ("crypto: nx - convert AES-ECB to skcipher API")
+Fixes: 9420e628e7d8 ("crypto: nx - Use API partial block handling")
+Acked-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Eric Biggers <ebiggers@kernel.org>
+Reported-by: Calvin Buckley <calvin@cmpct.info>
+Tested-by: Calvin Buckley <calvin@cmpct.info>
+Suggested-by: Brad Spengler <brad.spengler@opensrcsec.com>
+Signed-off-by: Sam James <sam@gentoo.org>
+---
+v3: Fix doc tag.
+v2: Add stable cc, fix doc for tfm param.
+
+v1: https://lore.kernel.org/all/a3e89c1e8342ffa415b0d29725a0571a4f355d34.1779472902.git.sam@gentoo.org/
+v2: https://lore.kernel.org/all/b8b1b6fe740187c70349cd04a820d57324e0f70c.1779509289.git.sam@gentoo.org/
+
+ drivers/crypto/nx/nx.c | 6 ++----
+ drivers/crypto/nx/nx.h | 2 +-
+ 2 files changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/crypto/nx/nx.c b/drivers/crypto/nx/nx.c
+index 78135fb13f5c..1b7509e2ce44 100644
+--- a/drivers/crypto/nx/nx.c
++++ b/drivers/crypto/nx/nx.c
+@@ -714,15 +714,13 @@ int nx_crypto_ctx_aes_xcbc_init(struct crypto_shash *tfm)
+ /**
+  * nx_crypto_ctx_exit - destroy a crypto api context
+  *
+- * @tfm: the crypto transform pointer for the context
++ * @nx_ctx: the crypto api context
+  *
+  * As crypto API contexts are destroyed, this exit hook is called to free the
+  * memory associated with it.
+  */
+-void nx_crypto_ctx_exit(struct crypto_tfm *tfm)
++void nx_crypto_ctx_exit(struct nx_crypto_ctx *nx_ctx)
+ {
+-	struct nx_crypto_ctx *nx_ctx = crypto_tfm_ctx(tfm);
+-
+ 	kfree_sensitive(nx_ctx->kmem);
+ 	nx_ctx->csbcpb = NULL;
+ 	nx_ctx->csbcpb_aead = NULL;
+diff --git a/drivers/crypto/nx/nx.h b/drivers/crypto/nx/nx.h
+index 36974f08490a..6dfabfbf8192 100644
+--- a/drivers/crypto/nx/nx.h
++++ b/drivers/crypto/nx/nx.h
+@@ -153,7 +153,7 @@ int nx_crypto_ctx_aes_ctr_init(struct crypto_skcipher *tfm);
+ int nx_crypto_ctx_aes_cbc_init(struct crypto_skcipher *tfm);
+ int nx_crypto_ctx_aes_ecb_init(struct crypto_skcipher *tfm);
+ int nx_crypto_ctx_sha_init(struct crypto_shash *tfm);
+-void nx_crypto_ctx_exit(struct crypto_tfm *tfm);
++void nx_crypto_ctx_exit(struct nx_crypto_ctx *nx_ctx);
+ void nx_crypto_ctx_skcipher_exit(struct crypto_skcipher *tfm);
+ void nx_crypto_ctx_aead_exit(struct crypto_aead *tfm);
+ void nx_crypto_ctx_shash_exit(struct crypto_shash *tfm);
+
+base-commit: 79bd2dded182b1d458b18e62684b7f82ffc682e5
+-- 
+2.54.0
+
 
