@@ -1,224 +1,266 @@
-Return-Path: <stable+bounces-254158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254159-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OERTHOVfFGqgMwcAu9opvQ
-	(envelope-from <stable+bounces-254158-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 16:42:45 +0200
+	id yKQ/HI5hFGrsMwcAu9opvQ
+	(envelope-from <stable+bounces-254159-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 16:49:50 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D33055CBD2C
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 16:42:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A3B75CBEE6
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 16:49:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D129A3029745
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 14:42:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 80E74302C904
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 14:47:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98CF93F164A;
-	Mon, 25 May 2026 14:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE44B3859D2;
+	Mon, 25 May 2026 14:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sfdu9Cqw"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UUS0y2oX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012015.outbound.protection.outlook.com [52.101.43.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEECD3F076F
-	for <stable@vger.kernel.org>; Mon, 25 May 2026 14:42:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B24282F3E;
+	Mon, 25 May 2026 14:47:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.15
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779720124; cv=pass; b=X9Sv8EtOaAqTtMRwuaGqYVy0bfizEna0D92PnI5R1wjgh6SD1AKmrb/CfGFk/VVmdDLibCAmlGKA9xNtK8UAZ08ctWe08LNj4cLjUnZkOHKmoaKokHyH+hMGJeFZWN3+XTPa8gvGP2y26jtFYB+qsi4XR28Ujy8nN/44e6uSTdg=
+	t=1779720441; cv=fail; b=WBFI2ndNmtWohzRB03Y9cRMdqZnygNgq0Fr6oVyKC0BNWjq79L8fV5OJsrafb44N+ZgVhujZZnPj42QemjsLeXMAZp7KxZUnPsO8Zwd4EdNvKTnTKUCT5mviwWZvDvnxnKeKy6RynhvkTM5AYh0LyJXzzXhpX2TWX835u6tDIww=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779720124; c=relaxed/simple;
-	bh=YTuMnBMg3svQrVT3iPgZ+7XfrkHVUtrtijddiVruEqA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=t0nrE0zuOLAuBhzbSshVolvzSOFAUjrxYlCZO6cHo43Ue+UbksFVmHy/Ly5AbQZpT2frhDKuEBdRXDaGfjRLqvfw7YtsAYVKZiggoWVCFM8gYv2UnD2MZs1KoCvnsZ44Cc1OmSOxV+Kmnk0MVcYJczVE5eGIceYI0tKbWo+s7u0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sfdu9Cqw; arc=pass smtp.client-ip=209.85.210.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-7e568ab0bc5so10498448a34.0
-        for <stable@vger.kernel.org>; Mon, 25 May 2026 07:42:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779720122; cv=none;
-        d=google.com; s=arc-20240605;
-        b=MmMcGAUzkizruvLVo1t3T8Xr+YOp4PROAoSzksC3hUQYSr2o5k+vfCTX3+rcRjU/PL
-         b+6bnm6oPGNtSbDdyxlcYOkigx9vJDOrzPj3WwW6A/l3Mp+EeQ1qI4p9j47kIh0lzIH6
-         C62hkqwqN2EWO1oupMtZBLb+tX9/smYhihWXFtuAgpzWsIPKKTHdDx4hEYhQj+NLvixY
-         LiKizY6XrsaL6Zx+NFNweSO3h1eneAQ7awFFVPCQvi5r0PcqIZjKD7Q1WO84bQXt7Tg/
-         akr9i+IF+qxI6C1iAFRfIZXXIJVzHklmZYTIriPwp3VAqz+fgx7VfhwL1vm0bSYp77gk
-         r3EQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=xMBnzwzJz296KjH5+A4Xajrymf2+B5pQp3Q83aozziE=;
-        fh=3dGVHSW8Pufo7V9+zCsKv9jcWppcmgrJogQBGXDRHlg=;
-        b=JO/xkjJ/Zt9C7yZ08xSaZn0h7kZ2FpfONoWxjKVL3fsM3uclQYULwQcVbqjF81QqyN
-         RUCN/N9nzqGoCW5eV+Hd3w7TJ3TGglr1rJmQS3GcqTWOU6yueZFGBpXKfFZhshfs3wbR
-         n6lsD27Z4mf37GwGzXTN/7qA6zMRs8PfectzSgpx9mMF0ejjN2jDyqRnDDaWVE1mrlJn
-         TTX5OIC/NhERo8gcnngdiAcyjHGk/nAkwu5SQfnWjqcnxbpjXELwEmQmjzVoNMZIDxwq
-         w6g4TVsgvMOaUvsf1WcHyl1b7Rpt/xtS8mGirUrI3O4BTNDffpIdtJBkJ674EP48Pcza
-         IqWw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779720122; x=1780324922; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xMBnzwzJz296KjH5+A4Xajrymf2+B5pQp3Q83aozziE=;
-        b=Sfdu9CqwG8xA0yypJU9OVGTEITpds9hry5IZgV2XYZLqXUjuptGJ7dADPV/f9afvKX
-         4ETAw5AozSm3uhCXm+bFf9Ls+fsjTA3y+1Tir30tLuUviGNedBfgDLrnlXX97njkqDM8
-         1rLaO8NbIPVsTG7DBx1sgV7stP41XO8FM0LUY1zk7iubbYrjZANresBZXYhhVob4Bt4T
-         6NeTW6myWO2lR6uWmdHSjrQxvW2WBt5CVUm0TWHV1Gza+YlH9NOTvGhmrwvf/puvo7iT
-         2cHWsC1/tSziDDL5uvoNqosx5ucX69WZc6D9pu/s2oLqvm9S5fnFdfBzQJZaBZkc+qle
-         MV2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779720122; x=1780324922;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xMBnzwzJz296KjH5+A4Xajrymf2+B5pQp3Q83aozziE=;
-        b=o+F3Tm4S3tYilC9cGNvaQD6R0M8/HgIQG5+L8d/UXoN406WCokuYXlLEU5HN5hdd3D
-         7hFRJ8qADG5xi3DOIN9HjSbf315OqmqrnupAcgC/uvStRmz+dgBDSvifzF54SU88MZsp
-         Sj9OvRkz6gsE0MT/UKkxyMG9JNDcqQM4ZX6xx6e8U0htEvFzLFXUKrm8FyIcNTZ4bPHW
-         FrwStvMyB3uE43K3ZWAwag4FHmaf/0ICt0BLwWI2c+EBB3Thjvnn/JO+8io3p7VK22rb
-         v36IrtgbE0HIjZtC+3PrqRQ1klxQurlM3xINUepETY4xw2wv4kIVtQo9tONUfh3JNuV2
-         Ol+g==
-X-Forwarded-Encrypted: i=1; AFNElJ8UOEja6h041mqAKH75pPC0fIIbIfJMtmScuyS09UWa8opJW7CXFV8d5DAO1yn11YtCTNAC7lI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyk/ZD9i7KaDOgB9qbZ/XWwoXSstmxVw3PCUcFV9UKVTt4y7Xwf
-	Ng4M7a7FutpgaffEQi7R8a3yS7NgAzm2Wd1XkYZAKLTHlFw8OUbiEnJrAyyAgZZd31dxZvC2vAM
-	n8QatyRNdcJ9N/V0tIeCByEssel3tHxqaDjkJFFsXPg==
-X-Gm-Gg: Acq92OH12VuUyOI+x44MSp/0AKxO/WA+vJuTMOQtBo4fbuiQKGn3zNzrRguC5tS6Qmk
-	DhYqEySrqMiutxde5qsEIV8Wp/6gsiBcgHWmF2NUIF+Mo+3W4ABqW5e+A08d2TqMhfnsckQksIB
-	AsdYBo/aXEn6RSNmB/1RH8IWlP46u+BZgjOazoBQTISVgZvzOSRZxUOpqRKls7VuinsIitBiL4k
-	3/+Ec+oHk4VsRzUfhMwhtvu0aXIZvat6l7oCx4ByJuSejxD28Eff+V/jHcWrRTCQmnBu4CppSjC
-	ZgbHh8OHfcJW3IzgLclEaw/pdOO5bOVuTPbXrVOD4vS+kT1ArQkE6Is/7505e6wYEEtVHtsb2A=
-	=
-X-Received: by 2002:a05:6830:668c:b0:7d7:e3d7:e200 with SMTP id
- 46e09a7af769-7e5ffe89160mr7589477a34.6.1779720121820; Mon, 25 May 2026
- 07:42:01 -0700 (PDT)
+	s=arc-20240116; t=1779720441; c=relaxed/simple;
+	bh=5zIFyBSpygckQR1mqVAzGdAd4PmQ7QNFKg/C3dmuFhE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=QzTJ80xR2X+VJxmgGXKi7OSmXHDAe9iWqw+qkgebIbEjqC01gT2MnVl7vdBelZXt4uSZLy4qz1bo78xfjLY2ve6FrogTWymy+5pwA/QmJhG7jIkXmNO6QZOlxUXYA2Pn3gGVFrqAsEUt10wUAOvCcii1zcyXM0RKbESQgc2yvCY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UUS0y2oX; arc=fail smtp.client-ip=52.101.43.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MB9h5ZMONRoponTJqAILzfsA6braQRUzObkz+9ViHujQc1EoYFnk0dXp6CAzsdzLihjLZEJr6gR63ONkwC4GzGIAgLO0qdascNQ7ePT6cU6MlL4uZr1C+QaNrbFDh/Q8uUxKZf+ZPFEDiCnToV9m0qjAmEYYW9cSeC0+ZWvVzdspHnr4po68R8JEP1YkFABLqKGb3DSaF+/Fan0L2CTeDIChPu9DtHJ7evphPxnzDXuBfPyJwp0yLp6kVfo0/yfSD3VgcH1gVvodWZ+AdWpdow1TirKiU2A1zf0V+sNHKISSMN3UEo+6SJhRCGeJd3rzcCR6KxQSf0TlMUi+kzBimA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=h++5jPG/NxrGGbWTPKOdmzJOOCQn3KFIXkWAJq5hgpg=;
+ b=BQEtVeUQFLeopAGpQmsXNqmxCz6KGQZlWekK4XnrGzmphjwdRzfNyJZ0BqHjmhpHUYoDnM2K9eJ6ym+Bdhtymy9rXD4mCpJmHJFBqb90KrdkdkNpP3lJPnBwZQRdOyPuFw+ts61CVRyi0Q14tAonqRw2Y1TiALmngx+2gaTL6W/UQdJcHE8SB71tVNRSxhnUqaz2vdjZWWS1ro5A1OIE7TiS+wLtP2zXKHoUvBupZAH+EP3jysJVdlPx/AhQFg2+PD+X5pu+dNLQgnRyTthYgSLKDisj1F8MTAlKt0f/ez3jS4503mBxAxqM6rcYGfA0ziQfTe3HapVHdEIKUNhE0g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=h++5jPG/NxrGGbWTPKOdmzJOOCQn3KFIXkWAJq5hgpg=;
+ b=UUS0y2oXJBVQlIciUklzFRqKk8taq1o+a1s9GXi9V9akPPoVZpxzEBXuD0MSd8867Vz5VKjvxtY8Q4ooWt0i2GZqYqGJn3Q+zPIr5+03PjJEMUq64yIUU/H4Z26yh4jxaGJWMeUGriGn9gdx1KODdpk94elluXGRr/H8EuegHV6UUZYeVwGkAR+Qs2ngSw78KccwHPUP0q0Z1uIXS/IjWuPnpaM42FcPugJJ/CZAgKSUjeHeqx7ayMkLOvjZsR612Zrp9IRSIofgLlG1gtd/HrbRXtOli0e3UYi5fLcB6Klo/QFbEs6pgP6+dkzDffGODxXr2QyZRDV51YqAakbY+A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
+ by SA1PR12MB9469.namprd12.prod.outlook.com (2603:10b6:806:45a::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.19; Mon, 25 May
+ 2026 14:47:17 +0000
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2%6]) with mapi id 15.21.0048.019; Mon, 25 May 2026
+ 14:47:16 +0000
+Date: Mon, 25 May 2026 17:47:07 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Qi Tang <tpluszz77@gmail.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+	edumazet@google.com, netdev@vger.kernel.org, fw@strlen.de,
+	lyutoon@gmail.com, stable@vger.kernel.org,
+	David Ahern <dsahern@kernel.org>, Simon Horman <horms@kernel.org>
+Subject: Re: [PATCH net v2 1/4] ipv4: validate ip_options length in
+ __ip_options_echo() against skb tail
+Message-ID: <20260525144707.GA217485@shredder>
+References: <20260524041442.2432071-1-tpluszz77@gmail.com>
+ <20260524041442.2432071-2-tpluszz77@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260524041442.2432071-2-tpluszz77@gmail.com>
+X-ClientProxiedBy: FR4P281CA0102.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:cb::9) To SA3PR12MB7901.namprd12.prod.outlook.com
+ (2603:10b6:806:306::12)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CADgB2mF95N09=gOvBZ+4ePSQ-0wCynx-rbu=aiyQecT=iDdyRw@mail.gmail.com>
- <2026052525-devotee-reclaim-7673@gregkh>
-In-Reply-To: <2026052525-devotee-reclaim-7673@gregkh>
-From: Adrian Korwel <adriank20047@gmail.com>
-Date: Mon, 25 May 2026 09:41:50 -0500
-X-Gm-Features: AVHnY4I58R9esu4tmdCiHqkJeIwjwKnMWVBW3nbv3naG6fYsTOTcmGjmyyyYvZM
-Message-ID: <CADgB2mFhLm8AUvARc3OigPDWZ1PUy+=+WJDywugrQDH3-Vhd4A@mail.gmail.com>
-Subject: Re: [PATCH] USB: serial: io_ti: fix heap overflows in
- get_manuf_info() and build_i2c_fw_hdr()
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: linux-usb@vger.kernel.org, johan@kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|SA1PR12MB9469:EE_
+X-MS-Office365-Filtering-Correlation-Id: 14584141-6739-4c5c-d7ab-08deba6c83f8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|18002099003|22082099003|56012099003|4143699003|11063799006|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	KpZ2fHRzBtUCXQM/LSQODf7m/9RQ8qLHoerWCtE6L7MoM9oe9k6Rrf4wggTVLjDdU9gnyt1M87E5Og1cbqnbl/xcBbvsdsY4KBDnwXg72XpsTpEP2TA0RCQZCRKggA6rKxQtnFKRbPeaSyNdCJaLELwgxcTf4x5SbMa/bntu2sHOwqWmu1J+FbykRl3IY5kNj0B2nkusftfTw7oXl3pEApvNUr08sU9ndDZa2SFCmYop+RS3X4Y+lZXaCRvF7fa8pRK0M6uUJYeZP3Xis9j3xvgMAjYokufK4whh/xpEfcrLPCleK1qKFir5bLxZSA9MT0tsoC9rMS40xJldHHFQF+Xl8TwHmsU3b9uc86ZhGwycSmqXkq6BmcPzhfLY4WG63WSJW5dk7zOI1j45o30aZ1WrLr12xqz/7NndfLEjoJ/tTKMVjBUqr6JFy9WJpPF5UYzWn+JnMTHLqxi7ia3nOkRvYZtJlO+imPnvxPzjtIqHlckFk5eVsSjB/oNrmjIuuGe6Scx40T6or+luv+XsWidwqbx84kjg+Wv0CtgMYtCnE6nhy3N+S6VTgIRtoWDQU2z/l1QOyk6MfhQnNMZktqgjTDCOzDTX4HkCi3JY51ylnQHRpV2HwioKdl0QNUqm8wE/KL+QM+XNps+2QTl0oJEZx69NJHt/2Wf4dpqeMr23oj+ZBQsjxUnsVf2hBDj+
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(18002099003)(22082099003)(56012099003)(4143699003)(11063799006)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?eeVZmkkqWIZnf7JLfrE1UFqAc7QvIEGg+fMlTnLtB3neSaoDgihb+nKzfOab?=
+ =?us-ascii?Q?YvRCj105CV0aPmdCLsqqzZ6CdAmlGqGJBqQua62wLFmJgEMT+9f9FRUNOlbU?=
+ =?us-ascii?Q?O82ZrYGMkwtfG1KF3h9tTOgfZnSnonZCHI7De3bzJec4v4ZvGLKckO0sBDwc?=
+ =?us-ascii?Q?8hnHvo0RoRzKSk4d//+pQQHcgfW+W+4U8Yw6St21uEkQQ6IPZFM/+IXGgir3?=
+ =?us-ascii?Q?NoSsLXKeqRvuXzXQE2LD63ECqnZnzi+eKJ67BTINyuXzBBy8fLaVU+Zwj8ep?=
+ =?us-ascii?Q?uP481mRr7gIUF7Mt8orU84H/DdZa11IyseRpIisI2fzhoQB4oTS6W0OzpLtR?=
+ =?us-ascii?Q?V/Ym4sJ7zEhSwSQrN6eoqTwAD77/+sGjkqlusEJRChENn8IlH1m0sE9NLLl3?=
+ =?us-ascii?Q?kdQWd89Rc7K3wDUfhyJe3U8YJZh2elqFwIIBTmG8YTMJ1UFL+W3oQORwkZGg?=
+ =?us-ascii?Q?SlRLV3zSzPApZa2+ZnQqCjmUfU3yolzDt/WiiZkip9itp/qVSgUj1kGs6guK?=
+ =?us-ascii?Q?mCaPPTCbK0LEaPGwBOsW5w1/7yxEkPBo7xRGs0Y1cLNKhNJs9XEMGOhEBMft?=
+ =?us-ascii?Q?DZGg01HGxp8w2CnUjvrFtBjZdx0DO0N0K3bf6zn8m3jWQuVcus2hJMeCIAn/?=
+ =?us-ascii?Q?6UJdPy29IZIAiFDyEAD9d94JfqiwBIYPgmTHyaCRq394Og6v8HH56kFeHrdf?=
+ =?us-ascii?Q?R/+wn9dcsNDm5YNQb1y9FOP/g+RTIWgbdAfdPAq/exmy3GEuaogQSafpN5mF?=
+ =?us-ascii?Q?qNFR0v3YHeBnrUT0dCZPSvfgOZRa04xr99VbvuurAUG703MDVnumojuUw6wS?=
+ =?us-ascii?Q?oQmUxI7+lVDrP96hEcQ76FPlO6eY2VULvgUKqYrYcqrRQUUPqh4reb9OGUve?=
+ =?us-ascii?Q?DQUJzwudirWcQeoge09gcCkTG8ixUo6xf4mQ+vNfb50CvIBtznqAv3B6ehb/?=
+ =?us-ascii?Q?hO2hn7jB/9l8wiTWA50LBWqSU/scwpT7eu/2av2vV/uEqI07nhc+k8D2D6aJ?=
+ =?us-ascii?Q?qPWQfI7O8+FjYETqbAQG4f35iHie08BMAhqnO9UMolmZvzL0Px7BnXHbPH/J?=
+ =?us-ascii?Q?QqtHNjaFPjnRs1wqR7M38ppnCyiVEe8CLgP0t97tcpmhz+KljpkChHU8FAEZ?=
+ =?us-ascii?Q?zop0pof3k0rD2MLxtnnmjMH2WzUmIcXXfJZ8moDfQ7pfOpvWrl3qk/a9Xs6J?=
+ =?us-ascii?Q?FeRT2auFsAQTwkec5CguMVJcz75XIl20iG/ecV6l/MrzA1rTkro7kFumg7kZ?=
+ =?us-ascii?Q?C86vjAJvIhOoURqpNkDtkZA7vUFCWMC2ZKNn7BMn7zPm8ORc90Vw4xFAoeye?=
+ =?us-ascii?Q?nMxsxyKaiutsxNoD7BkvicvnQgS3k9qetkeTYaJX+Y7D8bZ82UQ0c/iGqmP2?=
+ =?us-ascii?Q?CZyvf4QxC+LOOriGzXNPI7llXb8Z616OwCL+AfDzV6tc0vM+ABxXVzEmsAAU?=
+ =?us-ascii?Q?OLnOHiuTBvdV+PWm0KUzpXO4f93bYjbJBY/5t2TpVK9y+bobu6xZc1DwhSjK?=
+ =?us-ascii?Q?zB06FW2IthuPHJ/pata9gPmAYG2pWuD5OGwj8aSFJZSk/Ydxkx+cur/I+lse?=
+ =?us-ascii?Q?Aj/dOQey7qHxMfR2JFmKPbnKSsuu+RJAEhs1u2hoz4BVdEL/b+uDGn+rvxLd?=
+ =?us-ascii?Q?/8e90iXzQVGF9iKwmskfDh1gZt9AhJVb+p7beSWQrywXHfcKM5RXNfvssXbV?=
+ =?us-ascii?Q?/t4vmjcFB1b6qSVnjRDqVwaAOieqd3BcGlx/UR3b5vQxjwDk?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 14584141-6739-4c5c-d7ab-08deba6c83f8
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 May 2026 14:47:16.8807
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oRd8RL4nT/HIpXHV1wv87RVk22AXvmGSk84qqXb2yJw1x9C0oCZmo4/vTMgoSF+BWfiQjG6aRq2IuNI4us0a4g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB9469
+X-Spamd-Result: default: False [0.34 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254158-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-254159-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[davemloft.net,kernel.org,redhat.com,google.com,vger.kernel.org,strlen.de,gmail.com];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[adriank20047@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[idosch@nvidia.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: D33055CBD2C
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,Nvidia.com:dkim]
+X-Rspamd-Queue-Id: 1A3B75CBEE6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, May 26, 2026 at 12:57AM, Greg KH wrote:
-> Should be 2 patches, right?
-> What tool found and fixed these issues?
-> Your patch is corrupted and can not be applied :(
+On Sun, May 24, 2026 at 12:14:35PM +0800, Qi Tang wrote:
+> __ip_options_echo() re-reads each option length byte (RR/TS/SRR/CIPSO)
+> from skb->data when building the echoed options into a 40-byte
+> __data[] buffer.  __ip_options_compile() saved only the option offset
+> into IPCB(skb)->opt, not the length.  An nftables LOCAL_IN payload
+> write reachable from an unprivileged user namespace can mutate the
+> length byte between parse and recvmsg, turning a parse-time validated
+> 7-byte option into a 255-byte read.
+> 
+>   unsigned char optbuf[sizeof(struct ip_options) + 40];
+>   /* in __ip_options_echo: */
+>   optlen = sptr[sopt->rr + 1];        /* re-read; nft can mutate */
+>   memcpy(dptr, sptr + sopt->rr, optlen); /* into 40-byte buffer */
+> 
+> The destination is a stack buffer in ip_cmsg_recv_retopts() and a
+> DEFINE_RAW_FLEX() buffer in icmp.c / ip_output.c sized
+> IP_OPTIONS_DATA_FIXED_SIZE (40).  KASAN reports a stack-out-of-bounds
+> write of size 255:
+> 
+>   BUG: KASAN: stack-out-of-bounds in __ip_options_echo+0x7fc/0x1310
+>   Write of size 255 at addr ffff88800a657950
+>    __asan_memcpy+0x3c/0x60
+>    __ip_options_echo+0x7fc/0x1310
+>    ip_cmsg_recv_offset+0x58b/0xd10
+>    udp_recvmsg+0x8da/0xc20
+>    ____sys_recvmsg+0x1b1/0x620
+> 
+> Validate that each re-read option length stays within
+> skb_tail_pointer(skb) before the memcpy.
+> 
+> Cc: stable@vger.kernel.org
+> Reported-by: Qi Tang <tpluszz77@gmail.com>
+> Reported-by: Tong Liu <lyutoon@gmail.com>
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Signed-off-by: Qi Tang <tpluszz77@gmail.com>
+> ---
+>  net/ipv4/ip_options.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/net/ipv4/ip_options.c b/net/ipv4/ip_options.c
+> index be8815ce3ac24..1cc6096e6dd9d 100644
+> --- a/net/ipv4/ip_options.c
+> +++ b/net/ipv4/ip_options.c
+> @@ -91,6 +91,8 @@ int __ip_options_echo(struct net *net, struct ip_options *dopt,
+>  
+>  	if (sopt->rr) {
+>  		optlen  = sptr[sopt->rr+1];
+> +		if (sptr + sopt->rr + optlen > skb_tail_pointer(skb))
+> +			return -EINVAL;
 
-Apologies for the issues. I will send a v2 as two separate patches.
+Both Sashiko instances flag valid issues. Please go over them. The most
+obvious issues are:
 
-These issues were found by manual code review =E2=80=94 auditing USB serial
-drivers for unvalidated device-controlled length fields used in
-kmalloc or memcpy without bounds checking against the destination
-buffer size.
+1. This check only avoids reading past the skb's linear buffer. The
+memcpy() below can still overflow the destination buffer which is only
+40 bytes.
 
-No automated tool was involved.
+2. There is no validation against the original IP options length
+(sopt->optlen), so we might be echoing bytes from the skb payload (past
+the IP options).
 
-On Mon, May 25, 2026 at 12:57=E2=80=AFAM Greg KH <gregkh@linuxfoundation.or=
-g> wrote:
->
-> On Sun, May 24, 2026 at 09:20:51PM -0500, Adrian Korwel wrote:
-> > Two heap overflows exist in this driver:
-> >
-> > 1. get_manuf_info() reads le16_to_cpu(rom_desc->Size) bytes from the
-> >    device I2C EEPROM into a buffer allocated with kmalloc_obj(), which
-> >    is sizeof(struct edge_ti_manuf_descriptor) =3D 10 bytes.
-> >
-> >    The Size field comes from the device and is only validated to fit
-> >    within TI_MAX_I2C_SIZE (16384 bytes), not against the destination
-> >    buffer size. A malicious USB device can therefore set Size to any
-> >    value up to 16383, causing a heap overflow of up to 16373 bytes
-> >    when plugged into a host running this driver.
-> >
-> >    valid_csum() is called after read_rom() and also iterates
-> >    buffer[0..Size-1], compounding the out-of-bounds access.
-> >
-> >    Fix by rejecting descriptors larger than the destination struct
-> >    before calling read_rom().
-> >
-> > 2. build_i2c_fw_hdr() allocates a fixed-size buffer of
-> >    (16*1024 - 512) + sizeof(struct ti_i2c_firmware_rec) bytes, then
-> >    copies le16_to_cpu(img_header->Length) bytes into it without
-> >    validating that Length fits within the available space after the
-> >    firmware record header. img_header->Length is a __le16 from the
-> >    firmware file and can be up to 65535. check_fw_sanity() validates
-> >    the total firmware size but not img_header->Length specifically.
->
-> Should be 2 patches, right?
->
-> >
-> >    Fix by rejecting images where img_header->Length exceeds the
-> >    available destination space.
-> >
-> > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Adrian Korwel <adriank20047@gmail.com>
->
-> What tool found and fixed these issues?
->
-> > ---
-> >  drivers/usb/serial/io_ti.c | 11 +++++++++++
-> >  1 file changed, 11 insertions(+)
-> >
-> > diff --git a/drivers/usb/serial/io_ti.c b/drivers/usb/serial/io_ti.c
-> > index cb55370e036f..afe29fdf9536 100644
-> > --- a/drivers/usb/serial/io_ti.c
-> > +++ b/drivers/usb/serial/io_ti.c
-> > @@ -773,6 +773,12 @@ static int get_manuf_info(struct edgeport_serial
-> > *serial, u8 *buffer)
-> >         }
-> >
-> >         /* Read the descriptor data */
-> > +       if (le16_to_cpu(rom_desc->Size) > sizeof(struct
-> > edge_ti_manuf_descriptor)) {
->
-> Your patch is corrupted and can not be applied :(
->
-> thanks,
->
-> greg k-h
+>  		soffset = sptr[sopt->rr+2];
+>  		dopt->rr = dopt->optlen + sizeof(struct iphdr);
+>  		memcpy(dptr, sptr+sopt->rr, optlen);
+> @@ -105,6 +107,8 @@ int __ip_options_echo(struct net *net, struct ip_options *dopt,
+>  	}
+>  	if (sopt->ts) {
+>  		optlen = sptr[sopt->ts+1];
+> +		if (sptr + sopt->ts + optlen > skb_tail_pointer(skb))
+> +			return -EINVAL;
+>  		soffset = sptr[sopt->ts+2];
+>  		dopt->ts = dopt->optlen + sizeof(struct iphdr);
+>  		memcpy(dptr, sptr+sopt->ts, optlen);
+> @@ -145,6 +149,8 @@ int __ip_options_echo(struct net *net, struct ip_options *dopt,
+>  		__be32 faddr;
+>  
+>  		optlen  = start[1];
+> +		if (start + optlen > skb_tail_pointer(skb))
+> +			return -EINVAL;
+>  		soffset = start[2];
+>  		doffset = 0;
+>  		if (soffset > optlen)
+> @@ -174,6 +180,8 @@ int __ip_options_echo(struct net *net, struct ip_options *dopt,
+>  	}
+>  	if (sopt->cipso) {
+>  		optlen  = sptr[sopt->cipso+1];
+> +		if (sptr + sopt->cipso + optlen > skb_tail_pointer(skb))
+> +			return -EINVAL;
+>  		dopt->cipso = dopt->optlen+sizeof(struct iphdr);
+>  		memcpy(dptr, sptr+sopt->cipso, optlen);
+>  		dptr += optlen;
+> -- 
+> 2.47.3
+> 
 
