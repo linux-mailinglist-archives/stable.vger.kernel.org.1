@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-254170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254171-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uGSqOApsFGoTNQcAu9opvQ
-	(envelope-from <stable+bounces-254170-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 17:34:34 +0200
+	id 8K7VHEVsFGoTNQcAu9opvQ
+	(envelope-from <stable+bounces-254171-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 17:35:33 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 690955CC56F
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 17:34:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A2AB5CC595
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 17:35:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DAB863032772
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 15:33:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7B011303CFA3
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 15:33:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF5D2F1FD7;
-	Mon, 25 May 2026 15:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 350A23AD510;
+	Mon, 25 May 2026 15:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T8C0OOi2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DWmecoUh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB1234B192;
-	Mon, 25 May 2026 15:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0473EFFDE;
+	Mon, 25 May 2026 15:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779723199; cv=none; b=siUcaLtYE8kQYppwZ4Q+cKRmUQeyKrmaI1c4qEDNyDLbpzIk+9/jxoeqJyPFJ/+K4Na3zg11fo1g42rw9Ocv3ezvzI3ojsYjD7VThX4fcScML2PldXzCp/32IYTiw3/ugsD3SaiyuQTj+p4UmksyuzenHz+FNRtvDlhBFi8qNOg=
+	t=1779723201; cv=none; b=OxLdW1Kv4DVMhlCYR/1mrjfbRvlmg1qwLZMszTxH2ZqtTRc5JcwjNjtTDG16BI7mTwrWJ2nYrolsTqFucsExHikwX/w2CX8wyWBHZrtodGUde59dpeDz6pLsmmGefZX9nU07uDuLSke9nhAYAiRMDKIJxx6ioC6VDeytPj4ZEKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779723199; c=relaxed/simple;
-	bh=hyDMH52JPu4eNDnBhaQfH3N8KSWMNMOzVp62Oh72QJw=;
+	s=arc-20240116; t=1779723201; c=relaxed/simple;
+	bh=e/BbEQFQadqKlWxSW3cVYJklg4L0FK9pv2nJzfVI144=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=goo8xplS6hzTWUW7gKcuv13wALUQi1rUKVxe1hqj4eh8Hl+KV0wQan7TYBNYthLie8RQCA4tG/y19vCKYxHkra8arrN1fmNxK8XJW7GmjGTCvdT9vmApl6THNtlzhDCkUOC1ao6kEoJVo01sGbchBSFOJCXuE733Jmc26bmaNn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T8C0OOi2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C9AB1F00A3A;
-	Mon, 25 May 2026 15:33:16 +0000 (UTC)
+	 MIME-Version; b=hekeFy6USkur8JpvWVCGGseFMBzpme5Ua5cGUnIDuYXYS0EO8EFuY2H5B4DGEhtWsEiS+tpHXH3IhVh2H2Wj3XpCNkaeIDYQ0Pl+g9BNI/byfB1+QuHRbJlIXhSFg9PSxwMkFr/AXmlROe4N3fqLctQ71mkMlNroaQ1HmdKgTb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DWmecoUh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D1541F000E9;
+	Mon, 25 May 2026 15:33:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779723197;
-	bh=5UpZfGo62t3nU1GsCV4BKhn9U1AoMryC4a2OEXId5U0=;
+	s=k20260515; t=1779723199;
+	bh=esStYFOQR8NhoKDZnT5/YGxFs/hefqFxsM2v41z0o+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=T8C0OOi219kxGaWhd8Fjl279SOEhxY6DMsNeiF2a/8kYCIzgf/+s5VMyWjCeBZEtX
-	 dIVIwYEdFrShMIZ9nqFgCY1cJq6IPC1Q8XDXxEpURW84yn2oAJEfDSMwMs1M9FEqSU
-	 hpS8x9uWbcj8GQoOtphCpnkDsuOg8orubT7e4oyg3irW9yM8v0kZd58h83V9eSQzKl
-	 ti4t0hgibOLRjD3QfX058qDCjfSrq37Fjrl6ULhS1FwcsD6ah7U30RvxKCXJTJialF
-	 qnpe+r8Ot9uSFOBY3m6strjd8DuVlq4id3LawHJUjINvWf7B+bmU+EJYpuH4JpO+B+
-	 1K8L0w8yrPWGA==
+	b=DWmecoUhOrRhfDi3LaP0alxMe9hYw8eyCUiuk0EhMTeYrPFeboEB24ULpzc7lNJUl
+	 MDcj5I6vniIBEh3LHtHpeJ95sIMguueXV06siPGcfPsKPEMoq5mRqQ1I+P6qzU3oNi
+	 fwxAENal+bcPBuAGlYDYOrWIKHDnjuPCBVqZw+zCXpSiV4DAEmNSjD3Z8q0uMa7TOo
+	 cZCKDpO1bBDsrPpgFHx3F8nvkVWYO41WPdiXZNjMtvH/Jt54csuhu0XzBV3pRNeabv
+	 rEL6WTPmcJHaIVVlaXr+OuNN2BLreqWVGTm6L27A08zRQ3raHSVpmaEQwrNkVF9KiL
+	 wsDgdc9PLEPMA==
 From: Sasha Levin <sashal@kernel.org>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org,
@@ -60,12 +60,12 @@ Cc: Sasha Levin <sashal@kernel.org>,
 	netdev@vger.kernel.org,
 	johannes.berg@intel.com,
 	Li hongliang <1468888505@139.com>
-Subject: Re: [PATCH 6.6.y] wifi: mac80211: check tdls flag in ieee80211_tdls_oper
-Date: Mon, 25 May 2026 11:33:05 -0400
-Message-ID: <20260525152512.agent5-0002@kernel.org>
+Subject: Re: [PATCH 6.1.y] wifi: mac80211: check tdls flag in ieee80211_tdls_oper
+Date: Mon, 25 May 2026 11:33:06 -0400
+Message-ID: <20260525152512.agent5-0003@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260525054835.2457749-1-1468888505@139.com>
-References: <20260525054835.2457749-1-1468888505@139.com>
+In-Reply-To: <20260525054854.2457807-1-1468888505@139.com>
+References: <20260525054854.2457807-1-1468888505@139.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -84,7 +84,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[15];
-	TAGGED_FROM(0.00)[bounces-254170-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-254171-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
@@ -102,11 +102,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 690955CC56F
+X-Rspamd-Queue-Id: 3A2AB5CC595
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, May 25, 2026 at 01:48:35PM +0800, Li hongliang wrote:
+On Mon, May 25, 2026 at 01:48:54PM +0800, Li hongliang wrote:
 > From: Deepanshu Kartikey <kartikey406@gmail.com>
 >
 > [ Upstream commit 7d73872d949c488a1d7c308031d6a9d89b5e0a8b ]
@@ -114,7 +114,7 @@ On Mon, May 25, 2026 at 01:48:35PM +0800, Li hongliang wrote:
 > When NL80211_TDLS_ENABLE_LINK is called, the code only checks if the
 > station exists but not whether it is actually a TDLS station.
 
-Queued for 6.6, thanks.
+Queued for 6.1, thanks.
 
 -- 
 Thanks,
