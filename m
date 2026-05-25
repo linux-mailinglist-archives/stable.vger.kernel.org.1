@@ -1,151 +1,220 @@
-Return-Path: <stable+bounces-254177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254178-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6AmdOUdwFGqXNQcAu9opvQ
-	(envelope-from <stable+bounces-254177-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 17:52:39 +0200
+	id 4IIxNG92FGokNgcAu9opvQ
+	(envelope-from <stable+bounces-254178-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 18:18:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AFE25CC887
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 17:52:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 423195CCB80
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 18:18:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BD91F300461C
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 15:52:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 97F673013B70
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 16:18:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B1193F4105;
-	Mon, 25 May 2026 15:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E3C73ECBEE;
+	Mon, 25 May 2026 16:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kt3y9pvQ"
+	dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b="trEsvmkb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330E6262FF8;
-	Mon, 25 May 2026 15:52:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E3623F54C7
+	for <stable@vger.kernel.org>; Mon, 25 May 2026 16:18:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779724357; cv=none; b=ae+COIvxiGZbXwJuVqzdwGXM/sAvP5CO9OxMFD2++anBa1vD0D9ph4nYeb4LlyiP2KqZ4A2JWRnpfv51Oa1eRRCm089Nv8F0CXRQDpXrqWBf8bu89jUF6e5usIXwv6hqNLKutvXHEZn8U7QdxSHN+zWPa3+u32pMCmEa25y8Mok=
+	t=1779725893; cv=none; b=WjDhK+gGQQevU8oN6LXob8CeU2BYwhx4stYe8UtQaVoeNq+0usZFxOEoopEOrcqSgfPFlO/Khfh6gQvE9bO53+mGFPZEnv7kZLKgWx4sppum3Y20rfNTLkXTIKGv2z8phwwOw1n2aQLR3HoZqk2tmu6UWhTfqYS7nRxgLIVGktg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779724357; c=relaxed/simple;
-	bh=tqbA0loR2xDZXnLKfFMuf7M2BRFAVk7486HBRiTlpok=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=heiV7MTkU2UwFyuKveT6oxFSaBK13XVODUa7Wna3zSXzqqnU+EqLPKgvVKMkSwcQSnf+vDACfZpX8FsZSfnt3hQReDn0cRPnR3e23oyvHAM2R+jSTTrhlQB4eOCCrARyAOJ8lV+c7eQvVBekU23eZV5rvuKUw95wbeJwV9UBvdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kt3y9pvQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4361F00A3A;
-	Mon, 25 May 2026 15:52:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779724355;
-	bh=k/Z8pdHv+cejKJRoNdNxhQU2h7dJRvk5CmidndA10Ig=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kt3y9pvQwdSuJvSTN7r4XI5/WHegjzntVLK6Pd1S5QJhj2zIobFJYb/xhTuzCBGuL
-	 y6HSVM65kCCxp2g6iltV2ZtcmXLmgjWNXyIhIeSrZZBePRkr4YmFljRJTEFEbDlS9A
-	 a8y584fH//yWR59AYHGGrQnzb54Z2e+VZIaSZAiax5tru2UysZVas7oSUfj3vgtXMp
-	 LEpkO6WnIGt0K2FEOaHaiwSZqYLaMbnrv0rYf299gs55+VqF/Xi9wKg8P39V4ZATqj
-	 oJ2TY32irf0jqG+n64y3WOujqj5K4rEnmANxrZPN9Ag0MGo2cJOz6YvYLkpXevOawy
-	 zNIPOEAhm4E4A==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id AF47EF40068;
-	Mon, 25 May 2026 11:52:34 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Mon, 25 May 2026 11:52:34 -0400
-X-ME-Sender: <xms:QnAUaibTqZNNkpfvaTg4ESj2J48AtkXqLmiZWdG4auANFJ2EWVOC_Q>
-    <xme:QnAUaj5Jke3dVBcxUG17rltglfQusJSRkRDhJuZ-aEsi37JaVK9ZRWCvfvyEP9Ijj
-    xjbgduOFx_FwslUjVdSAlFwzVGi2r0aqfO54OmDmA2QmR_m55yFgKg>
-X-ME-Received: <xmr:QnAUajz_zW08SVZXxXiZRAVPUUfpLHW41K7kA9pRKt0MYYxlGrSKAzJ2YZJgFQ>
-X-ME-Proxy-Cause: dmFkZTFG3QYNTvlQv4dXNCn1oodIpGtSg2/FSbVjxuVpQ1UyDWtTeK1CyeqKqmJVajGwCO
-    wIChQ7Vt+BXUskOWr6LlBPn5GN5fGeqIk/NYKTa7qGi7goriiLHEOgMdCN04mw+FZtqYdg
-    XErwWFDznvfyjghz9mVLXKWox2GcuQMRU36tAor3BJtQgbKRAsNYDSm4IMOLEaZpCmNrZV
-    1Azo9HmUZBLZ/jpte6sWbkMoMVQmjwnZysrX/e7xS+6iJOK1SGB1tZpM2eqpHr33IvrFjz
-    GsC6d4gEejnCFMPKdLRWBwAG+EL3MQw/6/7pdlGjdNgxTKKiFHLJw02Nwa/LaqI65l03Tk
-    W43i4GsczMkIPAnVOQktTyqvrTxNqlwhagFQqla8GI6lpovjMMG6yECuWIAupScgIhjeC0
-    RPhDVRC4U1j/Q+x/9dF+fCmWjXKdI24pKDdslMjuFe5Angg4dk1J53w2TudjkLs1mBIyc3
-    tDx4SDYb8Ed29GaGAQcMvjGGE+ZHk3dW6BEPZkEXLOyABIBm32uBzaVDaR02mRitIGSm1S
-    cvzCpK7BEJwsMlBGMO+0PNhsvyNG5fBxc2MVprZ1HOo27C3yMO08eLPPgoH/8bAy7ImtTr
-    Sluo4QhynIVqoTPRd6qxnBH5FWbYIClaoSGfgY87TMP3ibV2pyiFBkRx9gBg
-X-ME-Proxy: <xmx:QnAUakrgu_jvN2NHAJqKMSuAa8xVZUabZMW7dk_-cPNBn67x0PQSqA>
-    <xmx:QnAUal05uHNZ3hC2Z-bRyzFqsCwDllOKhkavr-YmWWW8_DvWLoaiNw>
-    <xmx:QnAUatB47owQ_CXGPBSTWL9qLyzwkAg-QqroVDTKZpfu4ZdrUZhNNg>
-    <xmx:QnAUamNWgeC5p20LW1FXGtJBj4GConISVPQe6r69QYCdFHClPDhqRQ>
-    <xmx:QnAUahSEdPXjDDrhoQlbTnGjYSflKyAg2k5i4-uJbhdbRr94Ena6jRnz>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 25 May 2026 11:52:32 -0400 (EDT)
-Date: Mon, 25 May 2026 16:52:27 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	s=arc-20240116; t=1779725893; c=relaxed/simple;
+	bh=Z9A6BlK5sqy/y1bSlbWapeXBeb92OXQH7UFq90QBLic=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hbzXIdHPJmUO03tA31v1lgaSPAyE54+1JX2yvamMATms9V9PVjihea9murzmGHF8Ytk3ga1ps3cepC5aGJMlVeW5fpQoq/Gw05/u9HfCz+n8UdXJod4wszbDOfdAYYjhkpxmM7JFQMOWtMN8wL25ESAgrGFJsjtZI9tCooYMu2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=trEsvmkb; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0sec.ai
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-44e1ebb3122so5928610f8f.2
+        for <stable@vger.kernel.org>; Mon, 25 May 2026 09:18:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=0sec.ai; s=google; t=1779725888; x=1780330688; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=aBTZFEXLf4Ae4/qSPFb1sAKHfgjqYB9a6NWd+4a/d5E=;
+        b=trEsvmkbMpAeKGcqEmnLSnr2rlgA3Q5G6yosAfx74Uy80m5Rr5QtYP9Ui+A5KldRlr
+         JtUV49p8rFtLWnznZmn3/Uo2npvQ87wQs3PnJSKbAfhzRr9MikvBxA4KZS691JXPlciA
+         XNiNGaoMUdfza/dQzVjUqQ6iVLsp0I3PHw4ZYbYE/E5BLNnwzsko8JDWrfCZxZThEIBw
+         1S6h2g9Ri/nv+Xbk4+PC7iixXD5VUi0sPYkHmzwAx4/D38jlnSdH9ZwxW5PHCNfdlxhN
+         Sr1ZTRGAMdAJ+S/HNNAP6frxt66v/LyTrBLhMpNhnaurSauO4hlBxz886SKMBx3VXghw
+         8brg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779725888; x=1780330688;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aBTZFEXLf4Ae4/qSPFb1sAKHfgjqYB9a6NWd+4a/d5E=;
+        b=gCZlEAjMHXv3HWy63YAkbEF7EiNQUmEFQSGQP3s3+aQO+FZ7R3zMNpGabLVTkeroPG
+         r/TnENAozoPSjaNpVvrN6/vFnqV397IDBwbhxK6yby352qRs8FJF2QvT6XZpCo5TFBpC
+         a8tdagd7nWxwRuBFnfFIw1atOa3gAHlra+ODRcof2pZDY5bLfaFMa4boaFLlG+ViyBEV
+         tNyO0628dgBLlRp47KImEDUdXIAhyHL3pG0WPB+B81gaozyrpSYLaUVFvFxzA4z+ZlMw
+         nKCTf6ZoqikJMKc/JiL1fMtuzZej+ZOywzOUR0KBwN/qFhkIR6GU3khEefaeiLaov8dq
+         3DPA==
+X-Forwarded-Encrypted: i=1; AFNElJ8p6v/nVPL0KuQ1nzjmEKq+DNNbmiZN2zJEX5DW1oOqTwS+eL1GOwHU/Jt7ze+wU9EijQVIb8w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpZIyPw3BxxeQ9vva8tdMUzBPLYpBRGf00Z1GznNWJ1+ugC3W7
+	Uqe2UtaiEsaa/izHxxwPxLmEGzJNF2HGCvjLstn4fTzHWmyvurVLKQJOb/aBWyXuGLkB
+X-Gm-Gg: Acq92OE8xRug8vRTQpNBi3iy8jYoSD/7okAQhD1svKgVI4FqzPwV5vDPSOv3NBnGTnl
+	Ebg8JEaGZ7aPGNs59tY+BjZPUNjwBRzRN6ep+Lt1yflhgbscDryA9zYnfT9le5RdmEgoB785am0
+	L8T0iz6BmNpn7wMlP8G5ZosgZeprUVTRzs46LvcWHWzclYz+1Wf2P3H56YfEYkml+TM8ByGgqaq
+	Un5cNJALe8cPNwzhmIPC6twZ2f1SRUQH9L70Y3vFfgj3Sbr+4XA9DiMRGc/8B4SVO5dddNB/rVi
+	LM6rhtyLr4Qn3Ns4YaRw2OsivZnBcDEbhVKuNvm+tY1yTyJKmbrsLmHVvsQXojlYEYcuLhQhhau
+	gDiRlifOLDF8urH+3+u5oDZrVU0q14oKRNrr1t2LeyHVEYOtXbDC8Q9cBVDtbnXJazmYfPV6Ko4
+	2+tCpA3kDDQQtGvjlqG+92XvYwpPO5R4D2ADsCy8aJWyt6zdbNwHIL6e2660XhPEM9dBRl5Yyiq
+	2NC8xcE5DoiSrqzrTgY0L9Kdc8g9fdzAoUNT+hCK8iy
+X-Received: by 2002:a05:6000:25c2:b0:43c:f52b:8003 with SMTP id ffacd0b85a97d-45eb39fa851mr25720549f8f.36.1779725888100;
+        Mon, 25 May 2026 09:18:08 -0700 (PDT)
+Received: from PeakBook-Mini.tail8e484.ts.net ([178.197.223.24])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45ec7fcd7f9sm14841234f8f.37.2026.05.25.09.18.07
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 25 May 2026 09:18:07 -0700 (PDT)
+From: Doruk Tan Ozturk <doruk@0sec.ai>
+To: alex.aring@gmail.com,
+	stefan@datenfreihafen.org,
+	miquel.raynal@bootlin.com
+Cc: linux-wpan@vger.kernel.org,
+	security@kernel.org,
+	netdev@vger.kernel.org,
+	Doruk Tan Ozturk <doruk@0sec.ai>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/hugetlb_vmemmap: fix incorrect vmemmap restore in
- rollback
-Message-ID: <ahRwIo7Mg71IY_Dy@thinkstation>
-References: <20260525025213.2229628-1-songmuchun@bytedance.com>
+Subject: [PATCH] mac802154: llsec: add skb_cow_data() before in-place crypto
+Date: Mon, 25 May 2026 18:18:06 +0200
+Message-ID: <20260525161806.96158-1-doruk@0sec.ai>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260525025213.2229628-1-songmuchun@bytedance.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [2.54 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_REJECT(1.00)[0sec.ai:s=google];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254177-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,bytedance.com:email];
-	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com,datenfreihafen.org,bootlin.com];
+	TAGGED_FROM(0.00)[bounces-254178-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[0sec.ai];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[0sec.ai:-];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_SPAM(0.00)[0.092];
+	FROM_NEQ_ENVFROM(0.00)[doruk@0sec.ai,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kas@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 8AFE25CC887
+	DBL_BLOCKED_OPENRESOLVER(0.00)[0sec.ai:mid,0sec.ai:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 423195CCB80
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, May 25, 2026 at 10:52:13AM +0800, Muchun Song wrote:
-> vmemmap_restore_pte() rebuilds restored vmemmap pages from a
-> tail-page template derived from compound_head(). This is wrong when the
-> current PTE already maps a page whose contents are not tail-page
-> metadata.
-> 
-> In the rollback path of vmemmap_remap_free(), the first restored PTE is
-> backed by vmemmap_head and contains head-page metadata. Reconstructing
-> that page from a tail-page template overwrites the head-page state and
-> corrupts the restored vmemmap page.
-> 
-> Fix this by copying the full page from the page currently mapped by the
-> PTE. Also pass vmemmap_tail to the rollback walk so only PTEs backed by
-> the shared tail page are restored, while the head PTE remains mapped to
-> vmemmap_head. Add VM_WARN_ON_ONCE() checks for unexpected cases.
-> 
-> Fixes: c0b495b91a47 ("mm/hugetlb: refactor code around vmemmap_walk")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+llsec_do_encrypt_unauth(), llsec_do_encrypt_auth(),
+llsec_do_decrypt_unauth(), and llsec_do_decrypt_auth() all perform
+in-place cryptographic transformations on skb data.  They build a
+scatterlist with sg_init_one() pointing into the skb's linear data area
+and then pass the same scatterlist as both src and dst to the crypto API
+(e.g. crypto_skcipher_encrypt/decrypt, crypto_aead_encrypt/decrypt).
 
-Acked-by: Kiryl Shutsemau <kas@kernel.org>
+On the RX path, __ieee802154_rx_handle_packet() clones the received skb
+before handing it to each subscriber via ieee802154_subif_frame().  The
+cloned skb shares the same underlying data buffer via reference
+counting.  When llsec_do_decrypt() subsequently modifies this shared
+buffer in place, it corrupts data that other clones -- potentially
+belonging to other sockets or subsystems -- still reference.
 
-Thanks!
+On the TX path, similar data sharing can occur when an skb's head has
+been cloned (skb_cloned() returns true).
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+The fix is to call skb_cow_data() before performing any in-place crypto
+operation.  skb_cow_data() ensures that the skb's data area is not
+shared: if the skb head is cloned or the data spans multiple fragments,
+it copies the data into a private buffer that can be safely modified in
+place.  This is the same pattern used by:
+
+  - ESP (net/ipv4/esp4.c, net/ipv6/esp6.c)
+  - MACsec (drivers/net/macsec.c)
+  - WireGuard (drivers/net/wireguard/receive.c)
+  - TIPC (net/tipc/crypto.c)
+
+Without this guard, in-place crypto on shared skb data leads to:
+  - Silent data corruption of other skb clones
+  - Use-after-free when the crypto API scatterwalk writes through a
+    page that has already been freed by another clone's kfree_skb()
+  - Kernel crashes under concurrent 802.15.4 traffic with security
+    enabled (KASAN/KMSAN reports slab-use-after-free)
+
+This vulnerability was identified using 0sec.ai, an open-source
+automated security auditing platform (https://github.com/0sec-labs).
+
+Fixes: 4c14a2fb5d14 ("mac802154: add llsec decryption method")
+Fixes: 03556e4d0dbb ("mac802154: add llsec encryption method")
+Cc: stable@vger.kernel.org
+Reported-by: Doruk Tan Ozturk <doruk@0sec.ai>
+Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
+---
+ net/mac802154/llsec.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/net/mac802154/llsec.c b/net/mac802154/llsec.c
+index e8512578398e..b6a4a8c93d72 100644
+--- a/net/mac802154/llsec.c
++++ b/net/mac802154/llsec.c
+@@ -710,6 +710,7 @@ int mac802154_llsec_encrypt(struct mac802154_llsec *sec, struct sk_buff *skb)
+ {
+ 	struct ieee802154_hdr hdr;
+ 	int rc, authlen, hlen;
++	struct sk_buff *trailer;
+ 	struct mac802154_llsec_key *key;
+ 	u32 frame_ctr;
+
+@@ -769,6 +770,12 @@ int mac802154_llsec_encrypt(struct mac802154_llsec *sec, struct sk_buff *skb)
+ 	skb->mac_len = ieee802154_hdr_push(skb, &hdr);
+ 	skb_reset_mac_header(skb);
+
++	rc = skb_cow_data(skb, 0, &trailer);
++	if (rc < 0) {
++		llsec_key_put(key);
++		return rc;
++	}
++
+ 	rc = llsec_do_encrypt(skb, sec, &hdr, key);
+ 	llsec_key_put(key);
+
+@@ -908,6 +915,13 @@ llsec_do_decrypt(struct sk_buff *skb, const struct mac802154_llsec *sec,
+ 		 const struct ieee802154_hdr *hdr,
+ 		 struct mac802154_llsec_key *key, __le64 dev_addr)
+ {
++	struct sk_buff *trailer;
++	int err;
++
++	err = skb_cow_data(skb, 0, &trailer);
++	if (err < 0)
++		return err;
++
+ 	if (hdr->sec.level == IEEE802154_SCF_SECLEVEL_ENC)
+ 		return llsec_do_decrypt_unauth(skb, sec, hdr, key, dev_addr);
+ 	else
+--
+2.45.0
+
 
