@@ -1,197 +1,139 @@
-Return-Path: <stable+bounces-254110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254111-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kJ/MDWULFGr6JAcAu9opvQ
-	(envelope-from <stable+bounces-254110-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 10:42:13 +0200
+	id OJ5bLTUNFGo7JQcAu9opvQ
+	(envelope-from <stable+bounces-254111-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 10:49:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 232405C7EDC
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 10:42:13 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70AF15C807E
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 10:49:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8A2C53006164
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 08:42:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3E6C13056956
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 08:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0894E3E3C79;
-	Mon, 25 May 2026 08:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A9CE3E51FA;
+	Mon, 25 May 2026 08:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M2SmpWiw"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="SEPybhqM"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2A73E16B9;
-	Mon, 25 May 2026 08:42:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0929A3E5A0A;
+	Mon, 25 May 2026 08:46:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779698522; cv=none; b=tpHyglNODZzDzaWbwkN5xMrY3ZOyWFeTJiBlQ9apXAyz/97xz8qebHuqs+2zY1fO2Aocgu83uw7i/hx2kGl1DUDWatPB8v52w0xdCBdf/tjhiiFVdjBWIbF5psNDwIM7fBOqruxyN0iVijwXw1sdlCqH6Dzte7MX4DoN12rmiug=
+	t=1779698769; cv=none; b=kHEy0Xu9Gs3g7HSN1xOI+0bCVpfGh1gOKBpIYbm9zY7MDMMZbRtTDK28UFQ1oU9TKBtX67KfRquuDGFAIOGLKTaKG2HdLmuq/gGBLDfCE7T/ZdXgOgS+iwblVu9pifFXhy0T1lNiHwiG7eO7hhUHDTGF4pw0gmYVziM40z25HVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779698522; c=relaxed/simple;
-	bh=rhZeCAfuClKv/Mu8IFHZ3hmztx6GzmMheK7IXKONEDg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IZm82wG1iLYjBg7F7Ji4nMAxm12qFjUQtO312DE7C11pAdNO0E0I+h2I0BZpq8jb6hl4mn/IwFzEHHPtLdwGZ2xDgV/BgErSru6YtJcZmWvE28C1U6ysKqE7FwIQSKicvHc4gGBtSdTYyp+tEqjBPCg0bKWbO01h2D7Jecj+1BY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M2SmpWiw; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779698521; x=1811234521;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=rhZeCAfuClKv/Mu8IFHZ3hmztx6GzmMheK7IXKONEDg=;
-  b=M2SmpWiwM0cva0+rg4A5dkAa2cbJj3/y/7i8Bp/Zft2MFu1Dgj58ZVPB
-   ZzmXK+BJwKpqKVF8Xdv6oTTdT6PO/czOy54/JfrtCFI6u90NQrCCZXmIf
-   zYLk6JsJFu5gL7D4YVJtJWNI7DA6VlnMHTUptf6cb6rh52WZhAkrlE6Js
-   QVcu0vYCpViR4gJV+qsXNqvL+3sVWgVItGH4oOFzLqURDRtpKwxobUCmD
-   ViP6CA8Y3p1zKSNUcJ3uFWVE2JV9kHTcHvNAEnQW+2Ibn+ATd7xXWbdRR
-   b4q8/mUgysmxuKB2oj3xkLjQ15IhMv/f5hHLqRQxEubsxLltCpnGkw6UR
-   Q==;
-X-CSE-ConnectionGUID: QPFixwk6RUioEcpzYnBNmQ==
-X-CSE-MsgGUID: BWfETJeEQDiq0BhpT3n0Og==
-X-IronPort-AV: E=McAfee;i="6800,10657,11796"; a="80573297"
-X-IronPort-AV: E=Sophos;i="6.24,167,1774335600"; 
-   d="scan'208";a="80573297"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2026 01:42:01 -0700
-X-CSE-ConnectionGUID: kyp2uXDUTJ6ArQirl/1Tzw==
-X-CSE-MsgGUID: V03PED3bTZuB4SL2IOJGfQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,167,1774335600"; 
-   d="scan'208";a="238968451"
-Received: from gklab-003-014.igk.intel.com ([10.91.173.44])
-  by fmviesa008.fm.intel.com with ESMTP; 25 May 2026 01:41:58 -0700
-From: Przemyslaw Korba <przemyslaw.korba@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	konstantin.ilichev@intel.com,
-	aleksander.lobakin@intel.com,
-	Przemyslaw Korba <przemyslaw.korba@intel.com>,
-	stable@vger.kernel.org,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: [PATCH iwl-net] idpf: add padding to PTP virtchnl structures
-Date: Mon, 25 May 2026 10:38:03 +0200
-Message-ID: <20260525083835.481974-1-przemyslaw.korba@intel.com>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1779698769; c=relaxed/simple;
+	bh=G9Tat5XVlt3hSUrqlBT9oU7ZJpYohFdZokySMUaIDIc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VI6UuqL7pVAxsfQthq0ZPwoeBQbXzcDCJmftxVDdpYhGMXy70Mv7sxDG1Fzng4CwTjNrU5EXEFyGz1FpbJa2bzOAJKtrLsEG0q2Yey9u9sfugxjo6VyE2XvpkxCid3Gc7TGbdg/FxWEJbPmxr+RgtE088lYnrR5dyPXhcLdyRDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=SEPybhqM; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1779698766;
+	bh=G9Tat5XVlt3hSUrqlBT9oU7ZJpYohFdZokySMUaIDIc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=SEPybhqMb7/lv52S+LVmFGv3hBCKyhqYfsnBmONXkFqYIKPvVkvPRNQoZFL8anlzV
+	 Y1hqBJfSyYsfNSip+7BJcmK7QwaG9JNPVIFb1Gq5J09QVYcTaAk/j7lNw6KPUpwuet
+	 bbeQl+oLDTDknbl7Muy6sKCicTMGsU37K02KFBSv+gH7TosQytPRmtFpb+xIVfpUqJ
+	 vP3lmlMtv60LT9/0DvIC+SDzDgUUBBnEBgH5QEP/MEoo2tNLveve13CXErtmo1HQqU
+	 EVqP+9ICWwy5blUa9i3EPrJzDJ9NWgKgq/G3gJmFnLxAE0iUK5cH/nrmAfyixovqa3
+	 cJVia8ZjQdtgw==
+Received: from [100.64.1.21] (unknown [100.64.1.21])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: kholk11)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 5E05D17E0CAC;
+	Mon, 25 May 2026 10:46:05 +0200 (CEST)
+Message-ID: <1b430dea-6d84-4ba5-845f-bdea1c0fa569@collabora.com>
+Date: Mon, 25 May 2026 10:46:05 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] clk: mediatek: mt8196: Select REGMAP_MMIO for vlpckgen
+To: Akari Tsuyukusa <akkun11.open@gmail.com>, mturquette@baylibre.com,
+ sboyd@kernel.org, bmasney@redhat.com, matthias.bgg@gmail.com,
+ wenst@chromium.org, laura.nao@collabora.com
+Cc: linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ stable@vger.kernel.org
+References: <20260522133023.355404-1-akkun11.open@gmail.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Content-Language: en-US
+In-Reply-To: <20260522133023.355404-1-akkun11.open@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[collabora.com,none];
+	R_DKIM_ALLOW(-0.20)[collabora.com:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254110-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-254111-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,baylibre.com,kernel.org,redhat.com,chromium.org,collabora.com];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[przemyslaw.korba@intel.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[intel.com:+];
+	FROM_NEQ_ENVFROM(0.00)[angelogioacchino.delregno@collabora.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[collabora.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,intel.com:mid,intel.com:dkim]
-X-Rspamd-Queue-Id: 232405C7EDC
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 70AF15C807E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Add padding to virtchnl2 PTP structures to match the Control Plane
-expected message sizes:
-* virtchnl2_ptp_get_dev_clk_time: 8 -> 16 bytes
-* virtchnl2_ptp_set_dev_clk_time: 8 -> 16 bytes
-* virtchnl2_ptp_get_cross_time: 16 -> 24 bytes
+On 5/22/26 15:30, Akari Tsuyukusa wrote:
+> The MediaTek MT8196 vlpckgen clock driver uses
+> __devm_regmap_init_mmio_clk() by devm_regmap_init_mmio(),
+> which is defined in drivers/base/regmap/regmap-mmio.c.
+> However, the driver's Kconfig entry does not select REGMAP_MMIO.
+> This causes a linker error when REGMAP_MMIO is not enabled.
+> 
+> Fix this by selecting REGMAP_MMIO in the Kconfig entry.
+> 
+> Fixes: 2f8b3ae6f0cb ("clk: mediatek: Add MT8196 vlpckgen clock support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Akari Tsuyukusa <akkun11.open@gmail.com>
 
-The FW expects the above sizes and PTP negotiation fails due to the
-mismatch. Previously neither the FW nor the driver checked message/reply
-sizes strictly, so the problem appeared only after recent validation
-improvements.
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-reproduction steps:
-ptp4l -i <pf> -m
-Observe: failed to open /dev/ptp0: Permission denied
-
-Fixes: bf27283ba594 ("virtchnl: add PTP virtchnl definitions")
-Cc: stable@vger.kernel.org
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
----
- drivers/net/ethernet/intel/idpf/virtchnl2.h | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/idpf/virtchnl2.h b/drivers/net/ethernet/intel/idpf/virtchnl2.h
-index 02ae447cc24a..39fea65c075c 100644
---- a/drivers/net/ethernet/intel/idpf/virtchnl2.h
-+++ b/drivers/net/ethernet/intel/idpf/virtchnl2.h
-@@ -1572,13 +1572,15 @@ VIRTCHNL2_CHECK_STRUCT_LEN(16, virtchnl2_ptp_get_vport_tx_tstamp_latches);
-  * struct virtchnl2_ptp_get_dev_clk_time - Associated with message
-  *					   VIRTCHNL2_OP_PTP_GET_DEV_CLK_TIME.
-  * @dev_time_ns: Device clock time value in nanoseconds
-+ * @pad: Padding for future extensions
-  *
-  * PF/VF sends this message to receive the time from the main timer.
-  */
- struct virtchnl2_ptp_get_dev_clk_time {
- 	__le64 dev_time_ns;
-+	u8 pad[8];
- };
--VIRTCHNL2_CHECK_STRUCT_LEN(8, virtchnl2_ptp_get_dev_clk_time);
-+VIRTCHNL2_CHECK_STRUCT_LEN(16, virtchnl2_ptp_get_dev_clk_time);
- 
- /**
-  * struct virtchnl2_ptp_get_cross_time: Associated with message
-@@ -1586,26 +1588,30 @@ VIRTCHNL2_CHECK_STRUCT_LEN(8, virtchnl2_ptp_get_dev_clk_time);
-  * @sys_time_ns: System counter value expressed in nanoseconds, read
-  *		 synchronously with device time
-  * @dev_time_ns: Device clock time value expressed in nanoseconds
-+ * @pad: Padding for future extensions
-  *
-  * PF/VF sends this message to receive the cross time.
-  */
- struct virtchnl2_ptp_get_cross_time {
- 	__le64 sys_time_ns;
- 	__le64 dev_time_ns;
-+	u8 pad[8];
- };
--VIRTCHNL2_CHECK_STRUCT_LEN(16, virtchnl2_ptp_get_cross_time);
-+VIRTCHNL2_CHECK_STRUCT_LEN(24, virtchnl2_ptp_get_cross_time);
- 
- /**
-  * struct virtchnl2_ptp_set_dev_clk_time: Associated with message
-  *					  VIRTCHNL2_OP_PTP_SET_DEV_CLK_TIME.
-  * @dev_time_ns: Device time value expressed in nanoseconds to set
-+ * @pad: Padding for future extensions
-  *
-  * PF/VF sends this message to set the time of the main timer.
-  */
- struct virtchnl2_ptp_set_dev_clk_time {
- 	__le64 dev_time_ns;
-+	u8 pad[8];
- };
--VIRTCHNL2_CHECK_STRUCT_LEN(8, virtchnl2_ptp_set_dev_clk_time);
-+VIRTCHNL2_CHECK_STRUCT_LEN(16, virtchnl2_ptp_set_dev_clk_time);
- 
- /**
-  * struct virtchnl2_ptp_adj_dev_clk_fine: Associated with message
-
-base-commit: 4548d565aa80aad80274e2f3bff4d7cd914c703e
--- 
-2.47.3
+> ---
+>   drivers/clk/mediatek/Kconfig | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/clk/mediatek/Kconfig b/drivers/clk/mediatek/Kconfig
+> index 2c09fd729bab..fd8440122ec2 100644
+> --- a/drivers/clk/mediatek/Kconfig
+> +++ b/drivers/clk/mediatek/Kconfig
+> @@ -1006,6 +1006,7 @@ config COMMON_CLK_MT8196
+>   	tristate "Clock driver for MediaTek MT8196"
+>   	depends on ARM64 || COMPILE_TEST
+>   	select COMMON_CLK_MEDIATEK
+> +	select REGMAP_MMIO
+>   	default ARCH_MEDIATEK
+>   	help
+>   	  This driver supports MediaTek MT8196 basic clocks.
 
 
