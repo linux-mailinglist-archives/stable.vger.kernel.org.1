@@ -1,116 +1,116 @@
-Return-Path: <stable+bounces-254157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254158-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YNaFG9FeFGqgMwcAu9opvQ
-	(envelope-from <stable+bounces-254157-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 16:38:09 +0200
+	id OERTHOVfFGqgMwcAu9opvQ
+	(envelope-from <stable+bounces-254158-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 16:42:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA2245CBCCF
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 16:38:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D33055CBD2C
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 16:42:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 44EA33013A48
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 14:38:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D129A3029745
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 14:42:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AECBF382396;
-	Mon, 25 May 2026 14:38:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98CF93F164A;
+	Mon, 25 May 2026 14:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mDzM/TF/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sfdu9Cqw"
 X-Original-To: stable@vger.kernel.org
 Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A8034D394
-	for <stable@vger.kernel.org>; Mon, 25 May 2026 14:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEECD3F076F
+	for <stable@vger.kernel.org>; Mon, 25 May 2026 14:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.44
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779719886; cv=pass; b=UJVYYg0OChZNse7wHvyh9KxwPkkV+kp5Snvz0IKIKrLA/coR778yAjMko6fv616AewH6wPmV4Xjv45zpRsqLBCeIwRLONgGU3T6qUthKmJHrimoFkwJMj0rkBzaQN8VZgWlNXlaU96WynUh3Bzcgn4iOaGM8ILJyBIHCJrdWNcY=
+	t=1779720124; cv=pass; b=X9Sv8EtOaAqTtMRwuaGqYVy0bfizEna0D92PnI5R1wjgh6SD1AKmrb/CfGFk/VVmdDLibCAmlGKA9xNtK8UAZ08ctWe08LNj4cLjUnZkOHKmoaKokHyH+hMGJeFZWN3+XTPa8gvGP2y26jtFYB+qsi4XR28Ujy8nN/44e6uSTdg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779719886; c=relaxed/simple;
-	bh=G2Id5402cWyxOVLSnwdl6Q84UFGE2+M+Qt04mkCwu2Q=;
+	s=arc-20240116; t=1779720124; c=relaxed/simple;
+	bh=YTuMnBMg3svQrVT3iPgZ+7XfrkHVUtrtijddiVruEqA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Wo1u5O8VZs32mKzDUpJALPocFZlxtGhiOz9BObMD/U9bZT0mZMvr38W4vfQG6vrVx2AC8uZvuwQdgKStW6JGpZZyOQl3DPoOWtv4vnQAcaE8UPawwqBxu0buT84zAYLc6rHeXkh6cNqXo3ypZinOAlM+UvBxVbEE9QfURV+JWck=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mDzM/TF/; arc=pass smtp.client-ip=209.85.210.44
+	 To:Cc:Content-Type; b=t0nrE0zuOLAuBhzbSshVolvzSOFAUjrxYlCZO6cHo43Ue+UbksFVmHy/Ly5AbQZpT2frhDKuEBdRXDaGfjRLqvfw7YtsAYVKZiggoWVCFM8gYv2UnD2MZs1KoCvnsZ44Cc1OmSOxV+Kmnk0MVcYJczVE5eGIceYI0tKbWo+s7u0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sfdu9Cqw; arc=pass smtp.client-ip=209.85.210.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-7e61da76fd9so1435919a34.0
-        for <stable@vger.kernel.org>; Mon, 25 May 2026 07:38:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779719884; cv=none;
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-7e568ab0bc5so10498448a34.0
+        for <stable@vger.kernel.org>; Mon, 25 May 2026 07:42:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779720122; cv=none;
         d=google.com; s=arc-20240605;
-        b=gUkOnSf4LCUAbNTmrRir1YcryY9vD3L+QNbuAxA7jsBM4EkiDMQGcHr2j800Juk1+E
-         QXWLMfPghBJrLSjf86ntUf4nztjXoRQ5Ek1/miUJeejA0wYdoQWBvosd3v2fcW2Layjn
-         xOz3NNWn3rF8LOddu0BwUTU9DPjZM9ECBFXr6H5tkajOoV6D+/MoORf+zC5sqqmSA25D
-         vSJCuu/OUXm7MF7qIX3vmfu8Rn6lK17eoLlCaR7Hsw5pJfNrW0JQLLNnItzN4TGzBsft
-         /F3UjXXNhkYkdhfO2kTLOy6ivxAkL9ygU4KM2L+M9BPAdZgn80mvMXnaarmjmowRRw5+
-         N/kA==
+        b=MmMcGAUzkizruvLVo1t3T8Xr+YOp4PROAoSzksC3hUQYSr2o5k+vfCTX3+rcRjU/PL
+         b+6bnm6oPGNtSbDdyxlcYOkigx9vJDOrzPj3WwW6A/l3Mp+EeQ1qI4p9j47kIh0lzIH6
+         C62hkqwqN2EWO1oupMtZBLb+tX9/smYhihWXFtuAgpzWsIPKKTHdDx4hEYhQj+NLvixY
+         LiKizY6XrsaL6Zx+NFNweSO3h1eneAQ7awFFVPCQvi5r0PcqIZjKD7Q1WO84bQXt7Tg/
+         akr9i+IF+qxI6C1iAFRfIZXXIJVzHklmZYTIriPwp3VAqz+fgx7VfhwL1vm0bSYp77gk
+         r3EQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=GNT00E78PpyiXmC2slq/IpO4wze6gTXWVtWJlfyewm4=;
-        fh=4YLu4OVAbRDa8Do32NLF5UuIUsp9qIhnli+7JE2uDuU=;
-        b=dalp0KUpwKy2SoX7LMzWbVOHQHTQXQ/mul8i/z3UtxfH7UlXLZGs+GJSkSq2NHf0su
-         v2tmJmudS8oPYYVBr2gf9IKbK4Zrwg8ewMhIs/cLyZdjp8xi0bl4hyD1KZALluzxO5dY
-         HTzie7PQLokNjisk5NhFbRx2N+ZqsdnwiggYbbxhTuPzkLW/vM/Xj14OOX22gj/Uoizz
-         TZUwKR01B1oUFtZhkfc6ZRNilmKs2Lm697YiAIhSTsXTM+v04wyZeI1SbIcmJuYH/RDc
-         JdM1rprTj5EunrXLwF48i7deUCpncN7Qsi2s2sdkFpG6DmPED/1AomTRT98Kjbd9agcp
-         6x+g==;
+        bh=xMBnzwzJz296KjH5+A4Xajrymf2+B5pQp3Q83aozziE=;
+        fh=3dGVHSW8Pufo7V9+zCsKv9jcWppcmgrJogQBGXDRHlg=;
+        b=JO/xkjJ/Zt9C7yZ08xSaZn0h7kZ2FpfONoWxjKVL3fsM3uclQYULwQcVbqjF81QqyN
+         RUCN/N9nzqGoCW5eV+Hd3w7TJ3TGglr1rJmQS3GcqTWOU6yueZFGBpXKfFZhshfs3wbR
+         n6lsD27Z4mf37GwGzXTN/7qA6zMRs8PfectzSgpx9mMF0ejjN2jDyqRnDDaWVE1mrlJn
+         TTX5OIC/NhERo8gcnngdiAcyjHGk/nAkwu5SQfnWjqcnxbpjXELwEmQmjzVoNMZIDxwq
+         w6g4TVsgvMOaUvsf1WcHyl1b7Rpt/xtS8mGirUrI3O4BTNDffpIdtJBkJ674EP48Pcza
+         IqWw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779719884; x=1780324684; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1779720122; x=1780324922; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GNT00E78PpyiXmC2slq/IpO4wze6gTXWVtWJlfyewm4=;
-        b=mDzM/TF/GJLfzklkqdfKOp8EjHpCr48qB46uDfCp7GizqVpyl4x/KtlA7p40LwN6li
-         opGuPbeD0NdBh4iJSNLV9K7m6Man6qho6hW0ys1ZEBz3dxfo1mhRM7jgMM6wigBRFAoo
-         RPVnGmtYJ16UXaa+c+Uo+OeHfDbY89PhSOd9XJHbPoQSqIs/T+kDkICSly9FD7ePimuO
-         pZTVD6Je1Lc+gfyXMnu1BrKkzeZz0dC3lakbGgLYEuI+cPU+Uf+O0fiYdrtWpnRQQUyG
-         tPHb6G2fkvLesM1ZFKAYajZ7PrDF7wxnFj5zUMGdjXNej6e2iBG8ypl4pBIkVgT3E5wn
-         pEAg==
+        bh=xMBnzwzJz296KjH5+A4Xajrymf2+B5pQp3Q83aozziE=;
+        b=Sfdu9CqwG8xA0yypJU9OVGTEITpds9hry5IZgV2XYZLqXUjuptGJ7dADPV/f9afvKX
+         4ETAw5AozSm3uhCXm+bFf9Ls+fsjTA3y+1Tir30tLuUviGNedBfgDLrnlXX97njkqDM8
+         1rLaO8NbIPVsTG7DBx1sgV7stP41XO8FM0LUY1zk7iubbYrjZANresBZXYhhVob4Bt4T
+         6NeTW6myWO2lR6uWmdHSjrQxvW2WBt5CVUm0TWHV1Gza+YlH9NOTvGhmrwvf/puvo7iT
+         2cHWsC1/tSziDDL5uvoNqosx5ucX69WZc6D9pu/s2oLqvm9S5fnFdfBzQJZaBZkc+qle
+         MV2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779719884; x=1780324684;
+        d=1e100.net; s=20251104; t=1779720122; x=1780324922;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=GNT00E78PpyiXmC2slq/IpO4wze6gTXWVtWJlfyewm4=;
-        b=s3yx5ZfvdmStEi9aXHkKb0kgmic4rDawUiLpb2rbjQHJgTWfsiyUtxm0JKd3A2wN2a
-         qwvaOKmvU3POzXxwOCarIlYnKp/P/yRR9Tsn2X35lu16rvalA5T+Vq3KXt2SoVc47bbF
-         wJI0rwsDMzytr368UdurwW2y9pOyD+tkdvnrKw+MADZ7FucIrqjVLpDb60i0mvP1D9A3
-         zVaepn8dhMcd62/UltcXsYCvtFoXPZN10ax0WyBMeVtbxfduPWJxcFix0edoGgieSseA
-         PVWdDMGVpuwbeO/ZT3iC3lLor1g/cc/lkTPwz/BbD1tsQoXFp6oWBW3wtDytgdEYK5GZ
-         fhLg==
-X-Forwarded-Encrypted: i=1; AFNElJ9BaWKLb0VnNQg7aUDLidzYM5hxlEeIJxrMVJEpJQTYtgYkX+FKlyfSQAjze0dmCeBRe+D+tZ8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOdlCwFo3vYpB2KzObic8UslC+Pn/guSGsFhVnRXyIDrcTkWjz
-	b5A/PDKM9GeQv2L3ylxuvvkkfIFuPOzRa2H1xLydMrJRjMoV5i5jjvBO9G1lD5iFv412Y4843UZ
-	qFKaakK/7F4Brnc8diiZRAFgjokex5RqiitsABVdBYQ==
-X-Gm-Gg: Acq92OEZO+WnoXVnTnSd+U3J8DiG2sXqvgqnhWxvSBa6vtBIfoApvLEtRMoVm1c/tMY
-	VzFBwOFfiHVJv13/QF7mNo+sG/IFO5fO6tqtYuU/xLdVOJ43qilzZuxcu2Qjf8aG5ATbV3Rnz04
-	W+P5omLAGeuZIY6MbMJXKgoTrtx97FJEb/NTsEgj1ENYLEsJu7DKvnnhakxtGuXvrlk5OeiFujv
-	nOUyaCoVUNyJmJWlPMuw7WIf9RCvGZiyeYNQsICbB035zdiF1M5S+rpvxAdH1YnV2B2mr1+C18l
-	zIs/wuylwhhSPuccfVbcB9HNXyUACp3wNpPae2pGOcXR7iJSLvNoovaGdAYyjNnPD4J6ybj7fbB
-	ioAdn770u
-X-Received: by 2002:a05:6830:82fc:b0:7e1:cba6:9837 with SMTP id
- 46e09a7af769-7e5fed7ddd3mr8703872a34.6.1779719883977; Mon, 25 May 2026
- 07:38:03 -0700 (PDT)
+        bh=xMBnzwzJz296KjH5+A4Xajrymf2+B5pQp3Q83aozziE=;
+        b=o+F3Tm4S3tYilC9cGNvaQD6R0M8/HgIQG5+L8d/UXoN406WCokuYXlLEU5HN5hdd3D
+         7hFRJ8qADG5xi3DOIN9HjSbf315OqmqrnupAcgC/uvStRmz+dgBDSvifzF54SU88MZsp
+         Sj9OvRkz6gsE0MT/UKkxyMG9JNDcqQM4ZX6xx6e8U0htEvFzLFXUKrm8FyIcNTZ4bPHW
+         FrwStvMyB3uE43K3ZWAwag4FHmaf/0ICt0BLwWI2c+EBB3Thjvnn/JO+8io3p7VK22rb
+         v36IrtgbE0HIjZtC+3PrqRQ1klxQurlM3xINUepETY4xw2wv4kIVtQo9tONUfh3JNuV2
+         Ol+g==
+X-Forwarded-Encrypted: i=1; AFNElJ8UOEja6h041mqAKH75pPC0fIIbIfJMtmScuyS09UWa8opJW7CXFV8d5DAO1yn11YtCTNAC7lI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyk/ZD9i7KaDOgB9qbZ/XWwoXSstmxVw3PCUcFV9UKVTt4y7Xwf
+	Ng4M7a7FutpgaffEQi7R8a3yS7NgAzm2Wd1XkYZAKLTHlFw8OUbiEnJrAyyAgZZd31dxZvC2vAM
+	n8QatyRNdcJ9N/V0tIeCByEssel3tHxqaDjkJFFsXPg==
+X-Gm-Gg: Acq92OH12VuUyOI+x44MSp/0AKxO/WA+vJuTMOQtBo4fbuiQKGn3zNzrRguC5tS6Qmk
+	DhYqEySrqMiutxde5qsEIV8Wp/6gsiBcgHWmF2NUIF+Mo+3W4ABqW5e+A08d2TqMhfnsckQksIB
+	AsdYBo/aXEn6RSNmB/1RH8IWlP46u+BZgjOazoBQTISVgZvzOSRZxUOpqRKls7VuinsIitBiL4k
+	3/+Ec+oHk4VsRzUfhMwhtvu0aXIZvat6l7oCx4ByJuSejxD28Eff+V/jHcWrRTCQmnBu4CppSjC
+	ZgbHh8OHfcJW3IzgLclEaw/pdOO5bOVuTPbXrVOD4vS+kT1ArQkE6Is/7505e6wYEEtVHtsb2A=
+	=
+X-Received: by 2002:a05:6830:668c:b0:7d7:e3d7:e200 with SMTP id
+ 46e09a7af769-7e5ffe89160mr7589477a34.6.1779720121820; Mon, 25 May 2026
+ 07:42:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CADgB2mFBdTbad5+W=bDOMO+fe1S4jg+aCNjkgd3B3Guq0WFQdw@mail.gmail.com>
- <2026052528-resupply-fanatic-496a@gregkh> <CADgB2mH8VayssgQmuyfMJn8Vv-o8_udfL6msVGrHrL1hO9nd4g@mail.gmail.com>
-In-Reply-To: <CADgB2mH8VayssgQmuyfMJn8Vv-o8_udfL6msVGrHrL1hO9nd4g@mail.gmail.com>
+References: <CADgB2mF95N09=gOvBZ+4ePSQ-0wCynx-rbu=aiyQecT=iDdyRw@mail.gmail.com>
+ <2026052525-devotee-reclaim-7673@gregkh>
+In-Reply-To: <2026052525-devotee-reclaim-7673@gregkh>
 From: Adrian Korwel <adriank20047@gmail.com>
-Date: Mon, 25 May 2026 09:37:52 -0500
-X-Gm-Features: AVHnY4LCtHtw1vVRdklxJMBOlB7O1vYHr78coIfFTyR5_0XZytzvkR1gC1zuToY
-Message-ID: <CADgB2mFC436hPxF1FpP2OgO7iY8KVaF3igiWe1mTTB=BJFgmmw@mail.gmail.com>
-Subject: Re: [PATCH v2] usb: gadget: f_uac1_legacy: fix use-after-free in gaudio_open_snd_dev()
+Date: Mon, 25 May 2026 09:41:50 -0500
+X-Gm-Features: AVHnY4I58R9esu4tmdCiHqkJeIwjwKnMWVBW3nbv3naG6fYsTOTcmGjmyyyYvZM
+Message-ID: <CADgB2mFhLm8AUvARc3OigPDWZ1PUy+=+WJDywugrQDH3-Vhd4A@mail.gmail.com>
+Subject: Re: [PATCH] USB: serial: io_ti: fix heap overflows in
+ get_manuf_info() and build_i2c_fw_hdr()
 To: Greg KH <gregkh@linuxfoundation.org>
-Cc: linux-usb@vger.kernel.org, stable@vger.kernel.org, 
-	heikki.krogerus@linux.intel.com
+Cc: linux-usb@vger.kernel.org, johan@kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [-2.16 / 15.00];
@@ -121,7 +121,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254157-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-254158-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -139,136 +139,86 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: BA2245CBCCF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: D33055CBD2C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-[PATCH v3 4/4] usb: typec: thunderbolt: cancel work before altmode is remov=
-ed
+On Mon, May 26, 2026 at 12:57AM, Greg KH wrote:
+> Should be 2 patches, right?
+> What tool found and fixed these issues?
+> Your patch is corrupted and can not be applied :(
 
-tbt_altmode_remove() frees resources associated with the Thunderbolt
-altmode but does not cancel the pending work item before returning.
-Since tbt is allocated with devm_kzalloc(), it is freed automatically
-when the device is released after remove() returns.
+Apologies for the issues. I will send a v2 as two separate patches.
 
-The work item tbt_altmode_work() can be scheduled via schedule_work()
-from tbt_altmode_vdm(), tbt_altmode_activate(), and the probe path,
-and may still be pending or running when tbt_altmode_remove() returns.
-The work function accesses tbt->lock, tbt->state, tbt->alt, and
-tbt->plug[] =E2=80=94 all of which reside in the freed struct, resulting in
-a use-after-free.
+These issues were found by manual code review =E2=80=94 auditing USB serial
+drivers for unvalidated device-controlled length fields used in
+kmalloc or memcpy without bounds checking against the destination
+buffer size.
 
-Fix by calling cancel_work_sync() in tbt_altmode_remove() before
-releasing any resources, ensuring no work item referencing tbt can
-run after teardown begins.
+No automated tool was involved.
 
-Fixes: 100e25738659 ("usb: typec: Add driver for Thunderbolt 3 Alternate Mo=
-de")
-Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Korwel <adriank20047@gmail.com>
----
- drivers/usb/typec/altmodes/thunderbolt.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/usb/typec/altmodes/thunderbolt.c
-b/drivers/usb/typec/altmodes/thunderbolt.c
-index 32250b94262a..57c8dff0c51f 100644
---- a/drivers/usb/typec/altmodes/thunderbolt.c
-+++ b/drivers/usb/typec/altmodes/thunderbolt.c
-@@ -303,6 +303,8 @@ static void tbt_altmode_remove(struct typec_altmode *al=
-t)
- {
-        struct tbt_altmode *tbt =3D typec_altmode_get_drvdata(alt);
-+       cancel_work_sync(&tbt->work);
-+
-        for (int i =3D TYPEC_PLUG_SOP_PP; i >=3D 0; --i) {
-                if (tbt->plug[i])
-                        typec_altmode_put_plug(tbt->plug[i]);
---=20
-2.43.0
-
-On Mon, May 25, 2026 at 9:30=E2=80=AFAM Adrian Korwel <adriank20047@gmail.c=
-om> wrote:
+On Mon, May 25, 2026 at 12:57=E2=80=AFAM Greg KH <gregkh@linuxfoundation.or=
+g> wrote:
 >
-> On Mon, May 26, 2026 at 12:57AM, Greg KH wrote:
-> > Why is this not broken up into smaller patches...
-> > The "changes" go below the --- line, right?
+> On Sun, May 24, 2026 at 09:20:51PM -0500, Adrian Korwel wrote:
+> > Two heap overflows exist in this driver:
+> >
+> > 1. get_manuf_info() reads le16_to_cpu(rom_desc->Size) bytes from the
+> >    device I2C EEPROM into a buffer allocated with kmalloc_obj(), which
+> >    is sizeof(struct edge_ti_manuf_descriptor) =3D 10 bytes.
+> >
+> >    The Size field comes from the device and is only validated to fit
+> >    within TI_MAX_I2C_SIZE (16384 bytes), not against the destination
+> >    buffer size. A malicious USB device can therefore set Size to any
+> >    value up to 16383, causing a heap overflow of up to 16373 bytes
+> >    when plugged into a host running this driver.
+> >
+> >    valid_csum() is called after read_rom() and also iterates
+> >    buffer[0..Size-1], compounding the out-of-bounds access.
+> >
+> >    Fix by rejecting descriptors larger than the destination struct
+> >    before calling read_rom().
+> >
+> > 2. build_i2c_fw_hdr() allocates a fixed-size buffer of
+> >    (16*1024 - 512) + sizeof(struct ti_i2c_firmware_rec) bytes, then
+> >    copies le16_to_cpu(img_header->Length) bytes into it without
+> >    validating that Length fits within the available space after the
+> >    firmware record header. img_header->Length is a __le16 from the
+> >    firmware file and can be up to 65535. check_fw_sanity() validates
+> >    the total firmware size but not img_header->Length specifically.
 >
-> Apologies for the formatting issues. Please find v3 below as a series
-> of 4 patches. Fixes split into separate patches and changelog moved
-> below the --- line.
+> Should be 2 patches, right?
 >
-> Adrian Korwel (4):
->   usb: gadget: f_uac1_legacy: fix file handle leaks in gaudio_open_snd_de=
-v()
->   usb: gadget: f_uac1_legacy: fix use-after-free caused by bound guard
->   usb: gadget: f_uac1_legacy: cancel work in f_audio_disable()
->   usb: typec: thunderbolt: cancel work before altmode is removed
+> >
+> >    Fix by rejecting images where img_header->Length exceeds the
+> >    available destination space.
+> >
+> > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Adrian Korwel <adriank20047@gmail.com>
 >
->  drivers/usb/gadget/function/f_uac1_legacy.c | 15 +++++++--------
->  drivers/usb/gadget/function/u_uac1_legacy.c | 10 +++++++++-
->  drivers/usb/gadget/function/u_uac1_legacy.h |  1 -
->  drivers/usb/typec/altmodes/thunderbolt.c    |  2 ++
->  4 files changed, 18 insertions(+), 10 deletions(-)
+> What tool found and fixed these issues?
 >
-> On Mon, May 25, 2026 at 12:57=E2=80=AFAM Greg KH <gregkh@linuxfoundation.=
-org> wrote:
+> > ---
+> >  drivers/usb/serial/io_ti.c | 11 +++++++++++
+> >  1 file changed, 11 insertions(+)
 > >
-> > On Sun, May 24, 2026 at 11:33:21PM -0500, Adrian Korwel wrote:
-> > > Three bugs exist in this driver related to ALSA device file lifetime:
-> > >
-> > > 1. gaudio_open_snd_dev() opens the ALSA control file first, then the
-> > >    PCM playback file. If filp_open() for playback fails, the function
-> > >    returns without closing the already-opened control file handle.
-> > >
-> > > 2. playback_default_hw_params() return value was ignored. If it fails=
-,
-> > >    both the control and playback file handles are leaked, causing
-> > >    gaudio_cleanup() to call filp_close() on already-freed file object=
-s.
-> > >
-> > > 3. f_audio_bind() guards gaudio_setup() with an 'audio_opts->bound'
-> > >    flag to prevent re-initialization, but the fail: error path
-> > >    unconditionally calls gaudio_cleanup(). On repeated bind attempts
-> > >    after failure, this closes file handles that were opened in a
-> > >    previous bind invocation and already freed by RCU, causing a
-> > >    use-after-free detected by KASAN:
-> > >
-> > >    BUG: KASAN: slab-use-after-free in filp_flush+0x23/0x1b0
-> > >    Read of size 8 at addr ffff88810d5523a8 by task bash/306
-> > >    ...
-> > >    gaudio_cleanup+0x59/0x100
-> > >    f_audio_bind+0x4b0/0x590
-> > >
-> > > Fix all three issues:
-> > > - Close already-opened file handles on each error path in
-> > >   gaudio_open_snd_dev().
-> > > - Check and propagate the return value of playback_default_hw_params(=
-).
-> > > - Remove the 'bound' guard and call gaudio_setup() unconditionally in
-> > >   f_audio_bind(), making setup and cleanup a matched pair within each
-> > >   bind invocation. Remove the now-unused 'bound' field from the opts
-> > >   struct.
+> > diff --git a/drivers/usb/serial/io_ti.c b/drivers/usb/serial/io_ti.c
+> > index cb55370e036f..afe29fdf9536 100644
+> > --- a/drivers/usb/serial/io_ti.c
+> > +++ b/drivers/usb/serial/io_ti.c
+> > @@ -773,6 +773,12 @@ static int get_manuf_info(struct edgeport_serial
+> > *serial, u8 *buffer)
+> >         }
 > >
-> > Why is this not broken up into smaller patches to corrispond with each
-> > issue/fix?  Please do so.
-> >
-> >
-> > >
-> > > Additionally, f_audio_disable() was an empty stub. Add
-> > > cancel_work_sync() to ensure the playback work item is not in flight
-> > > when the function is unbound and the audio struct is freed.
-> > >
-> > > Changes since v1:
-> > > - Added removal of the 'bound' guard in f_audio_bind() which was the
-> > >   root cause of the repeated-bind UAF
-> > > - Added cancel_work_sync() to f_audio_disable()
-> > > - Removed now-unused 'bound' field from struct f_uac1_legacy_opts
-> >
-> > The "changes" go below the --- line, right?
-> >
-> > thanks,
-> >
-> > greg k-h
+> >         /* Read the descriptor data */
+> > +       if (le16_to_cpu(rom_desc->Size) > sizeof(struct
+> > edge_ti_manuf_descriptor)) {
+>
+> Your patch is corrupted and can not be applied :(
+>
+> thanks,
+>
+> greg k-h
 
