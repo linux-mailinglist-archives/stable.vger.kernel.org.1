@@ -1,125 +1,152 @@
-Return-Path: <stable+bounces-254114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254116-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qFr9GBQVFGo4JgcAu9opvQ
-	(envelope-from <stable+bounces-254114-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 11:23:32 +0200
+	id GFv4FjwWFGo4JgcAu9opvQ
+	(envelope-from <stable+bounces-254116-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 11:28:28 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1FF65C87C0
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 11:23:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B44435C8954
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 11:28:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 67B4A301693C
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 09:20:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CA5C63006783
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 09:28:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83853E3DA7;
-	Mon, 25 May 2026 09:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36AD83E5A3B;
+	Mon, 25 May 2026 09:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eFyuy8CR"
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="AGjLrCBN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3DB314B77
-	for <stable@vger.kernel.org>; Mon, 25 May 2026 09:20:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F902D77E6;
+	Mon, 25 May 2026 09:28:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779700838; cv=none; b=svBr3yiIUYCFqtBRxbiuM0SGx7FjVGv3sDk+lcO8L8hmkL93fVbf9huK1Bvpr0uSDn3FcdDEiSg+DY3s8cqx4Gh1c/jXrQtYLTwBekON1RymVEpI1lL8kPnDLnLmwZXOR56QqmT8x/Vvrq7TnkBCrLksd8LIwTycPsLQKt3Qrfo=
+	t=1779701298; cv=none; b=Hr5VZbzjHoUegrhfEvcNh7CslMJSNPUl8iJPYg6ve67yZeyurJ88G9pqE4oJXa6PBJQb0dR5e9yWh2tAz88ojVDj/97kBEH5vZqKkYnO86ZFMAHl5KsImwq5ZMguBYjBcydJFYCbGoma89krT4kRueIWDbTGp4H2HziwHlmMkJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779700838; c=relaxed/simple;
-	bh=20EON7IhXxRrup0RT+mkXIm2NM8PLPbbIEx/ylBuATc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=F1wx0fauaq53sFulqb4FAwsg2h/LlBJM9+WXaZ4ZG34uzry/BsL2Jq6lDa+DTDyUWS6ZQyKnL7OaNRank1uaGGATIJdnb1FPQGHv9dTav8EsUto4Qp+C/247mGuLtnSeFtzxxhqnNq/ZfAgYQkfhNSuHMZXuHtyEjElR5TJUjxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eFyuy8CR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 206421F00A3A
-	for <stable@vger.kernel.org>; Mon, 25 May 2026 09:20:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779700837;
-	bh=20EON7IhXxRrup0RT+mkXIm2NM8PLPbbIEx/ylBuATc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=eFyuy8CRisflDJOOtnwG8S5b1hIf5d9Fg88aAgh6rF/WrSv2Y0drtu16Xx8t58od3
-	 H53EntScbuHWF4E2lm+Z33byAf7FhltWPNMa+97dcRyFGVWM+Pbn8uf7FcFi5JJDpH
-	 V1WF+D8qL9OOrmDtnDiFduA9EjtOiQNOuQRc68dOhsknEiTx/gOVNOdmYn26uDmybD
-	 LpYM5IxK12nw9EyWxzirx98vf55WRtfk3ixkcrH8VP0W7RUF8CDhxUbpK8Jen4zk1J
-	 zc9PkZ47e6pd/pZ4gBXk+O7/phYOGPz/tS++1G+7LyCBLJMsVNY8k7WSqlZuxGO1A+
-	 QvpNepwLQmzXQ==
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5a884815606so10246296e87.0
-        for <stable@vger.kernel.org>; Mon, 25 May 2026 02:20:37 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+i3ougwsoIf9uyqx8rdH/esiruZmgvFml/mun4vBXK1kwa56mnvgCUXr2mEYZLwMRdCgjx7ss=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxeELA8uwhj7rIzBZEdMOGNvhtstSfdA2s81PRJ6VMRd83bMLJT
-	90DLRNxX0fWctVbbd++bd5wLXcFIZJcqVyxsCfDQzdmNdQyDA9Dyvsmc0eANNWOHRcIkCB6THfw
-	tGlhHdFwee89VSvsISrBCYWAjyq4zh1s=
-X-Received: by 2002:a05:6512:10c5:b0:5a8:9756:f6b8 with SMTP id
- 2adb3069b0e04-5aa323cd97emr4009620e87.35.1779700835914; Mon, 25 May 2026
- 02:20:35 -0700 (PDT)
+	s=arc-20240116; t=1779701298; c=relaxed/simple;
+	bh=MPo8QHjwE4jm7G3tCxLHiFaKJjtI78HznDljRZ/DBHs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ech7W+aqg5adNI24V0WOs+dDNcwV9TLHFsJPEDvbv1pcqUvRjQkqVc/yDOpxJWSGuOfaK6RnDHd0QTQvuGmyBo8sIsHVvciVHdZnczQAEUOcu4WxilgbkU4i/fMkNt2osoorjR0HTmiaCRhgWtsOr/+/XKzwJFHI9rLwjSoclRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=AGjLrCBN; arc=none smtp.client-ip=101.71.155.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [221.228.238.82])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 3fb4bd637;
+	Mon, 25 May 2026 17:23:01 +0800 (GMT+08:00)
+From: Dawei Feng <dawei.feng@seu.edu.cn>
+To: chehab@kernel.org
+Cc: kees@kernel.org,
+	linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	jianhao.xu@seu.edu.cn,
+	Dawei Feng <dawei.feng@seu.edu.cn>,
+	stable@vger.kernel.org,
+	Zilin Guan <zilin@seu.edu.cn>
+Subject: [PATCH] media: mantis: fix memory leak in hopper_pci_probe()
+Date: Mon, 25 May 2026 17:22:31 +0800
+Message-Id: <20260525092231.815099-1-dawei.feng@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260521-gpio-shared-free-vote-v2-1-7d948edfdbde@oss.qualcomm.com>
-In-Reply-To: <20260521-gpio-shared-free-vote-v2-1-7d948edfdbde@oss.qualcomm.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Mon, 25 May 2026 11:20:21 +0200
-X-Gmail-Original-Message-ID: <CAD++jLkLtjF0H3hxCMPdYR-XwhDk-ugFDsveemBu+Yh52dfjDA@mail.gmail.com>
-X-Gm-Features: AVHnY4INXtqksmBYCko_Zrb9fxtc3YGjRnGBV1zOmSNmVxUZdX8edKnOZ4CZl2c
-Message-ID: <CAD++jLkLtjF0H3hxCMPdYR-XwhDk-ugFDsveemBu+Yh52dfjDA@mail.gmail.com>
-Subject: Re: [PATCH v2] gpio: shared: undo the vote of the proxy on GPIO free
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Bartosz Golaszewski <brgl@kernel.org>, Marek Vasut <marex@nabladev.com>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9e5e71dd0403a2kunme0340fb0a9b67
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaShhMVhkZSxlNHx1PTkhKGVYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUpVSUlDVUlIQ1VDSVlXWRYaDxIVHRRZQVlPS0hVSktJSE
+	5DQ1VKS0tVS1kG
+DKIM-Signature: a=rsa-sha256;
+	b=AGjLrCBN0A0C3TNaSEgzVtUepeIdMtjB8P1kxfcZ8aGRejXR7ESVDUgN1Ul7rEIjy4vILrT2s8pg7XtfJCDfiFRs0tJwiIAnCFKiLu3+1tEh3Rvlzzqu3fPi5z85MkYYeymyh+gnFT80jp8Js3Gq9DwP/l8cyUlJq1bHWcxuU7Y=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=rERlZ1mfSkCbBOzn0q/OTZ9yjJk5rhyqg8nOj0+onTE=;
+	h=date:mime-version:subject:message-id:from;
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254114-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254116-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[seu.edu.cn:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linusw@kernel.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,qualcomm.com:email,sashiko.dev:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: C1FF65C87C0
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:dkim]
+X-Rspamd-Queue-Id: B44435C8954
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, May 21, 2026 at 4:22=E2=80=AFPM Bartosz Golaszewski
-<bartosz.golaszewski@oss.qualcomm.com> wrote:
+In hopper_pci_probe(), two probe-error paths jump to the wrong cleanup
+stage. If mantis_get_mac() fails after mantis_i2c_init() succeeds, the
+function skips mantis_i2c_exit() and leaves the I2C adapter registered.
+If mantis_stream_control() fails after mantis_pci_init() succeeds, the
+function frees the mantis structure without undoing the PCI setup.
 
-> When the user of a shared GPIO managed by gpio-shared-proxy calls
-> gpiod_put() to release it, we never undo the potential "vote" for
-> driving the shared line "high". In the free() callback, check if this
-> proxy voted for "high" and - if so - decrease the number of votes and
-> potentially revert the value to low if this is the last user.
->
-> Cc: stable@vger.kernel.org
-> Fixes: e992d54c6f97 ("gpio: shared-proxy: implement the shared GPIO proxy=
- driver")
-> Closes: https://sashiko.dev/#/patchset/20260513-gpio-shared-dynamic-votin=
-g-v1-1-8e1c49961b7d%40oss.qualcomm.com
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Route the affected error paths to the correct cleanup labels so that
+hopper_pci_probe() releases resources in reverse order, matching the
+cleanup flow already used by mantis_pci_probe().
 
-Reviewed-by: Linus Walleij <linusw@kernel.org>
+The bug was first flagged by an experimental analysis tool we are
+developing for kernel memory-management bugs while analyzing
+v6.13-rc1. The tool is still under development and is not yet publicly
+available. Manual inspection confirms that the bug is still
+present in v7.1-rc5.
 
-Yours,
-Linus Walleij
+An x86_64 allyesconfig build showed no new warnings. As we do
+not have a Twinhan VP-3028 DVB-T board to test with, no runtime
+testing was able to be performed.
+
+Fixes: b3b961448f702 ("V4L/DVB (13795): [Mantis/Hopper] Code overhaul, add Hopper devices into the PCI ID list")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
+---
+ drivers/media/pci/mantis/hopper_cards.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/media/pci/mantis/hopper_cards.c b/drivers/media/pci/mantis/hopper_cards.c
+index 050068308c10..b55543054727 100644
+--- a/drivers/media/pci/mantis/hopper_cards.c
++++ b/drivers/media/pci/mantis/hopper_cards.c
+@@ -175,7 +175,7 @@ static int hopper_pci_probe(struct pci_dev *pdev,
+ 	err = mantis_stream_control(mantis, STREAM_TO_HIF);
+ 	if (err < 0) {
+ 		dprintk(MANTIS_ERROR, 1, "ERROR: Mantis stream control failed <%d>", err);
+-		goto fail1;
++		goto fail2;
+ 	}
+ 
+ 	err = mantis_i2c_init(mantis);
+@@ -187,7 +187,7 @@ static int hopper_pci_probe(struct pci_dev *pdev,
+ 	err = mantis_get_mac(mantis);
+ 	if (err < 0) {
+ 		dprintk(MANTIS_ERROR, 1, "ERROR: Mantis MAC address read failed <%d>", err);
+-		goto fail2;
++		goto fail3;
+ 	}
+ 
+ 	err = mantis_dma_init(mantis);
+-- 
+2.34.1
+
 
