@@ -1,245 +1,232 @@
-Return-Path: <stable+bounces-254190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254191-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gHscC/qYFGoUOwcAu9opvQ
-	(envelope-from <stable+bounces-254190-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 20:46:18 +0200
+	id GN1ODBKbFGo0OwcAu9opvQ
+	(envelope-from <stable+bounces-254191-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 20:55:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B067D5CDC5E
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 20:46:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2A825CDD74
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 20:55:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 729EE3045CBD
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 18:44:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 716773007E2B
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 18:55:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC747375F8B;
-	Mon, 25 May 2026 18:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C661E380FE9;
+	Mon, 25 May 2026 18:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="K5ISIbgL"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="yzyHOPby"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011008.outbound.protection.outlook.com [40.93.194.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F59230C34A;
-	Mon, 25 May 2026 18:44:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779734659; cv=none; b=N6a1ri4KBU3FSW11ua3kfH7oCcM51KoA/Bz/ZPA4Go7u5quU62BfXz+DAzikAJ68RSVkV9ItH0hFwyGEOaLJwLsHmO4CHvuylL/vHcR22JLnHZyYiZtd3/3RNzJMpfCxNcvmwbvCCQrxFNJr78cY1eecNUQcukmDWSVovk4pNEY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779734659; c=relaxed/simple;
-	bh=pD/0U9/k/2uxVA7PK3GF6SV/ULb/1oeEqjNi9H+mKok=;
-	h=Date:To:From:Subject:Message-Id; b=q0nhXpUf+4qgp8MTnTD5BFHH+trGvD60619BAz3jV47WsCpaP74HAjflXVZuTUGwRK8awABHYMJ7rv4YqsMXYBGeQSyg+Y+uOqsWofOsdBd+PbC0/cJFLhFjeBAbCXnYq8W6dHaKr5LRqoZ55k05UqC3Ap0Q10mrejHecrzHCf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=K5ISIbgL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 053EA1F000E9;
-	Mon, 25 May 2026 18:44:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1779734658;
-	bh=UfYAMDtCMJMoq4kNs1ZwK56oZLsCKGRZISu6KzdSqa4=;
-	h=Date:To:From:Subject;
-	b=K5ISIbgLm47wNSDkNPMSP+egBS8eC4yIPSx6KcxqaRRFvV4F9J4XxPfUGheQ+KE4w
-	 b2nefPX56K74kGHJCHLzkPNqcUcrXxIREWAR2Cl8EwbwOts9SvvIKs8iBlEFF0bYx5
-	 GXEWDeCeS/fMhCfb8A1BQ20BxfPJp6EsQxr2pROU=
-Date: Mon, 25 May 2026 11:44:17 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sieberf@amazon.com,shakeel.butt@linux.dev,foersleo@amazon.de,sj@kernel.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-damon-ops-common-call-folio_test_lru-after-folio_get.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260525184418.053EA1F000E9@smtp.kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158902DAFBB;
+	Mon, 25 May 2026 18:55:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779735308; cv=fail; b=LBDPVDRYbv7R72f4BaXh0M3r6+m81I22jbXpeUc4i5GB9Ql3/vZZnG7q7lQeLh6U0WsJo5A6Dhn6RJetBBxD4a8xChYJRaFW5RvVtQz3gnHYKL6mNyzfX1EIu/a4YoGd+e3tkAsMgBubz4mZzX9CrxSv/h5A1QJbmcPET3bRC6g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779735308; c=relaxed/simple;
+	bh=8lD02yrwqw5zGcrXIvr1Oe+5JffrT3GCCZ094Gj8vYY=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=V318I0qHTg0WHtDWu1uozVlmcgsn4LV0M5hhP0AVfeCDP5yz6p/+KnyP25GjDK2j/mmSG0JkOMByrGw52nTEHtFYolzaepdnOuUz8hp/PD5rZoiN5ZxRMpWBvAKpYKSzrpVI3ITdvm+G5O3jMUOSg+X+0huRzbWLfKlFIgdq3ug=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=yzyHOPby; arc=fail smtp.client-ip=40.93.194.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=POBApI3OJ9wGx/ItI/I689BALHHkO8B+Z7EjT0BeKNyCfg5xuCAARePbSKgWWL62dckHJuXHufwR1o+p4X90o0OTGml6ksnMt/l6w3rq84k3sD1u8ZJx1pwDo1BPK1tsE9h1je4OJFr/xzv5qxp81CHwCEdQHXOLJngeReqQIyzW7WZSZ4KwWdgAzjdW3GM7ZzVBUzSy4dueBnz6Bni12tWdrs1s09jSRsvvcGo+Kw9BP+X24eX2xgdW6VXkTX91q9d65ay79xGiZ/Ceg76Yk5VZOMKDE+IYQzz22V3oJe6eufWBOtMWByUzwtaRa1KQgKeHUppO86zfqsiCRISgig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=l9hZCrlrXqhHs8WlMeU6jvwNDDJNIX5yhs/sQ7sjSPM=;
+ b=BoZFE6ngmOEgFAlb5TcT4ZAAKlkRYEN3wHI7FDiVOrpPP5L+lbFSoRTw0rW4Ml0oUMZQuZgw9tzWpJAuDRqZKf0X1sfhSi9b/xD1mVwMEmS6G0vxxr+CCxDCYaoQf1GPw9WEF7Hd+ge60BaDqYV9qefamnVLHQm21L0jF18aVjdGGfQVYg1G/RoVvF4CnyUvz/XCwfg9mCn4RtHmzVmGalIpCvGPjc98LcDVPiazbOZT/59nhJHkIS++Rw783TvtceUIG/7f/m8iPl8cf0KdbG0HDj8vC9cdooXFMHWfZ4z5Z/TUMVLT0/DH/wbaC35WOyMkXSdPO6FM4TE2gSB0zw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=l9hZCrlrXqhHs8WlMeU6jvwNDDJNIX5yhs/sQ7sjSPM=;
+ b=yzyHOPbyWAX9w+yr/4SgP/zgKcxvO59fdLcQwqvalHU6s5bx62i12qUU0O95phv48D0e6xy7tQpE+MiXWyhSpG8hgEorOfAdTn8Ro1nVpT08GR0pDJY9YBckFwwoWMwX/FAunBV+D9jVgAGLfXXT9i8BG9TkWennmSQyFdKkC00=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
+ by SJ2PR12MB8740.namprd12.prod.outlook.com (2603:10b6:a03:53f::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.20; Mon, 25 May
+ 2026 18:55:00 +0000
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.21.0048.016; Mon, 25 May 2026
+ 18:54:59 +0000
+Message-ID: <ae16f5c2-c6d9-4274-9a27-f87bfe931b1f@amd.com>
+Date: Mon, 25 May 2026 20:54:55 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] dma-buf: fix UAF in dma_buf_fd() tracepoint
+To: David Carlier <devnexen@gmail.com>, Sumit Semwal <sumit.semwal@linaro.org>
+Cc: gaoxiang17@xiaomi.com, linux-media@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+ linux-kernel@vger.kernel.org,
+ syzbot+7f4987d0afb97dd090cb@syzkaller.appspotmail.com, stable@vger.kernel.org
+References: <20260523181446.69525-1-devnexen@gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+In-Reply-To: <20260523181446.69525-1-devnexen@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR3P281CA0113.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:a3::12) To PH7PR12MB5685.namprd12.prod.outlook.com
+ (2603:10b6:510:13c::22)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|SJ2PR12MB8740:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5a10d7d2-d65c-4bdc-917a-08deba8f1eef
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|366016|56012099003|22082099003|18002099003|11063799006|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	lu+rO9mrlAPlCymjKLNmrMl0aqWcB/2J7fgbzF7cx31SSq/DCSpqnD1hHuXQ5lwuu+Z0E8QaIBRmBDE57XI/snCaMaU+VYVyjVPtjHO66hrl7GEcrIFtNXrvKji6ORTmfVqg1H/m14zpOdK9PDuQe4XPGDLI7eZ0Ln2zQ0SeHwYmW93niUdfTNJn1ex5/PB+bnXZPVc1NNo5q0ptcN45awMIwm1XuZKv6vDl2cPT8DuwqQhyQfShjdH2rt9zJRrvQbCz4mGXRdjP3TjPOV1fcM+J5897pYxH2nbpIv0UCOAdgt2iZIh9bR+nPwdPIvyV3cF8ysmJ0ZMoFzdrIwxMQhDqNS2d+p4BJpwrkZOzhrwniM0BEhalwDBtp3cJ567i+3h6yQrvh/KtCt+48XaYy+N05+oV/NHjgnZ/c9XfEc1ukabA17URApmesmpEvMIqd6vngI5MXrE+XtXYwKIfQFaaDIwkA/6F8kqCjDJdgzfSSzISNq5CloMM5xKDuft0odOV6bV8QGz7u4roPMwsTeChPyg8FVhcSkln60otmvabSRY19niISbzCbpbWkbn1OLpJtFUWSir340aHo9EZJIvzy7fBynZkMCAhEjf0QE70F3mKNRDTxW2T8Vqkqg57qi1sW94FBFHDY+DgZSaZKg==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(56012099003)(22082099003)(18002099003)(11063799006)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UXM1aHRWcGx4Qm11VlNvZ3N6WSthQnUvQVZPZ0NyTmJvcnlkdGlXTHR5RnNz?=
+ =?utf-8?B?WVlxWkdiRVNxcitSMWhvd2NQVkVSVERsOGNMNkFNNENZaTFFVDh2bGRHQUl4?=
+ =?utf-8?B?Q0lMOG80VzkvenZwekk1d0llMjg0L1Z3QUhLUS9rNkVQM0hNNU55N0pKTmRo?=
+ =?utf-8?B?Y3BGQ0RpTXJYMDRxN0QxNHZkTTFCL000b0MrZyszaTFzZk9HcHRpN1UwWmVh?=
+ =?utf-8?B?Smw4QXNoSkd0dXQzNkdUYzFsSFpyR1A3UGNwd01UbFBEWlNUUjlYMkFyOW9Q?=
+ =?utf-8?B?L2Q2TkNlZ0VpQ2QwTlEvTnJBWjBWODRvYUJGVDBPN2ZHaGZtc09LaG8xc01l?=
+ =?utf-8?B?ZDhYVVhVbFg5RldhdXYyNFgxZ3VLTVFaTXBhQURReUczSWJRVkJnQlh3bU1i?=
+ =?utf-8?B?c1p3ZUF1YUlSQzdTZDMrMWhKSkJydXVKcktOS1JLelhCbjFzWkxVaHhTSDB3?=
+ =?utf-8?B?L2NHS1c4VndlNkgweTFUaDdlWFJNbFk3alZ5R3B3OCs3dUR2UHlvMUh3UVho?=
+ =?utf-8?B?ZDdOSXVHRlBPSVYrRGtrYWtyNmhyZTF0OENhYzJwMnNlMC9MaGFwYjZXRjlv?=
+ =?utf-8?B?aEtoczFrNk1lNU5WVUo0eHJPdTNhNlZsS0ZISEdIZkdDVjdkSWFZK1ZQbDdZ?=
+ =?utf-8?B?aVhtbDJFSnhuRTVWeVBPa1VYamxZYjB3QnJ4Wm9Ud0Y3OGxjZDlJUFhTNmJj?=
+ =?utf-8?B?RGw0Q2tnOTNJV29iOWNjZjQzaUg0dElRdjZNVmZEcGV5djgvRlZWbzczL0d5?=
+ =?utf-8?B?NzBKWmdVZ3pPMVRySVN1T2JRVEwxL1h1dTdtVyt3UWVTZjFxajM4cEg4ejli?=
+ =?utf-8?B?bjczVUtDbGpBeWJjYXVMYmR6VUZVNlAzbzVtRnVPOGdRSmpqZkxUUjlaZ0Zo?=
+ =?utf-8?B?K3EyTmwxT2tWTGsyaVphWi93K3drWTVSV1dZM3pJYXFZOWhka3pwTGxST3pL?=
+ =?utf-8?B?eGlyZkxJblVUYTB0Uk1nczRWWjhFZ3lhOEJJdXVueVFzNVBpUjQvVVM5N1dR?=
+ =?utf-8?B?TGVWU1hndTlwcnhHdEUyVngxZGU5Rys5WStOaHQrWERGUFA2T3RNRHJVblJ2?=
+ =?utf-8?B?N1hYOW10T2NETHRFQjJqOElpUFBDNjhGK3lPUTFtbTh4eURmVVB5ZSs2YThT?=
+ =?utf-8?B?QWxiSFdDQ3IyeVp6VjJiZXBRV0VRMUJjSUdHalpwa1JjNXkrVS9ERGtVdzg2?=
+ =?utf-8?B?VXpDTmFIKzM0MUdORThlbkxwM2dRWGdFSkcvK2NOSDNwWThiRHhEdzQweVY4?=
+ =?utf-8?B?dTVHcFhzZlhWUHUyRTJKa214TlVGWjRBaGR3cGUyK3ZQd0d3cDV0aTdBL2Vz?=
+ =?utf-8?B?ejhPcDljWldlcmNWdVBaSk9tQWFKejdFSGdxMDdjQkdZc3NGVVloNitJWnlC?=
+ =?utf-8?B?eVg0V0NJOFJ6Y2U3MlU1SDFMY0ZrSU9lRjRLZGZIdDRaWHk1UmhJSTNpdmRq?=
+ =?utf-8?B?blhLc09HenN0dTgrakFHV3FVbVgwOXdwLzdUaW5uVHV0WGU5UVErN3NnRDBr?=
+ =?utf-8?B?UWJkTFJiMFVUWWp4NnJqMEczUFJqY1cwVUxET1dUNEp2MkhTamppQUc0ZjEw?=
+ =?utf-8?B?MDJTaXBpZFdhRnF1WlBCc0U5ZzJ1cHlHOGxvK1lURFU0Qng1d09CVm5qWmtF?=
+ =?utf-8?B?WVNsM1VoUi9wcFpORFBBZW1yc01HMUhTV3JEYkUvNWgwR2ZPK2pIcmZqbXZ6?=
+ =?utf-8?B?bVB2OEU5eVk5Q2JDV1QxK1FRdUIwV1N1VENDdjMyTy9jTG9PTzJ1elUwRVl6?=
+ =?utf-8?B?V3BjL2pRYi9Tb2xZR3ZHSy9WalZFM2xEZUpRREhJNWRjdElLR1d2bjI2QUp0?=
+ =?utf-8?B?emFQdDNyT3BBWkMyd0ZTeVJmM0tVVE9BeEdGV3psUDRQMjh0U2lvRUFPNWNO?=
+ =?utf-8?B?eUlnbml0UElaQ0VaR2NOVUQyQy9BMW1NOTZpUmxkUVJyR0lFMTYyZlR2WGRr?=
+ =?utf-8?B?ei9lQ1lTRUFmMENNdTZjb0pwTDhnVGZ4TVFEazlXeXpwanpvTWsxbGN6ZjFV?=
+ =?utf-8?B?M3FOY1I1YndjMlVZNEY0ZktRcVE0TUxwdjZXblFrbjR5elNBVXFrRWNIYVpB?=
+ =?utf-8?B?QjN2b3dKYlZYWHZ2Sko4Qzl2VGRiOG0ra09kUVdGMjJ5bGUrV2tOMlpLNXFE?=
+ =?utf-8?B?Tjd3WkZaYmdqaHRUUStSdVVEeGMwUy80NDJuOXZ1TElrbVNjSkZsNG1Uc0Iz?=
+ =?utf-8?B?eEJRZWo3bVl1M2tUQ3pkazU3akVhYkN6VGhrWThzS1RmT0dPVnBRV09qMFJj?=
+ =?utf-8?B?VGlIN2pPcmQvWXArSnlMbm81UXFRSS8wOHBwUFg0Wlo4a3dpMXRlVitYcFhy?=
+ =?utf-8?Q?BGyj4BIlBRSJ/UjLMR?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5a10d7d2-d65c-4bdc-917a-08deba8f1eef
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 May 2026 18:54:59.7657
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1fh4wJ+WPAgKSXTZmGDVXvlwFKZ9dg8QAgTUeCpRNdREvXZYUIYyNJTXNujYmHe2
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8740
+X-Spamd-Result: default: False [1.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254190-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-254191-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,linaro.org];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-0.999];
-	TO_DN_NONE(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[amd.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B067D5CDC5E
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[christian.koenig@amd.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,7f4987d0afb97dd090cb];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: B2A825CDD74
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On 5/23/26 20:14, David Carlier wrote:
+> Once FD_ADD() returns, the fd is live in the file descriptor table
+> and a thread sharing that table can close() it before DMA_BUF_TRACE()
+> runs. The close drops the last reference, __fput() frees the dma_buf,
+> and the tracepoint then dereferences dmabuf to take dmabuf->name_lock
+> -- slab-use-after-free.
+> 
+> Split FD_ADD() back into get_unused_fd_flags() + fd_install() and
+> emit the tracepoint between them. While the fdtable slot is reserved
+> with a NULL file pointer, a racing close() returns -EBADF without
+> entering __fput(), so the dma_buf stays alive across the trace. Same
+> approach as commit 2d76319c4cbb ("dma-buf: fix UAF in dma_buf_put()
+> tracepoint").
+> 
+> This undoes the FD_ADD() conversion done in commit 34dfce523c90
+> ("dma: convert dma_buf_fd() to FD_ADD()"); FD_ADD() has no place to
+> hook the tracepoint safely.
+> 
+> Reported-by: syzbot+7f4987d0afb97dd090cb@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=7f4987d0afb97dd090cb
+> Fixes: 281a22631423 ("dma-buf: add some tracepoints to debug.")
+> Cc: stable@vger.kernel.org # 7.0.x
+> Signed-off-by: David Carlier <devnexen@gmail.com>
 
-The patch titled
-     Subject: mm/damon/ops-common: call folio_test_lru() after folio_get()
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-damon-ops-common-call-folio_test_lru-after-folio_get.patch
+Reviewed-by: Christian König <christian.koenig@amd.com>
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-ops-common-call-folio_test_lru-after-folio_get.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: SeongJae Park <sj@kernel.org>
-Subject: mm/damon/ops-common: call folio_test_lru() after folio_get()
-Date: Mon, 25 May 2026 09:22:55 -0700
-
-damon_get_folio() speculatively calls folio_test_lru() before
-folio_try_get().  The folio can get freed and reallocated to a tail page. 
-In the case, VM_BUG_ON_PGFLAGS() in const_folio_flags() can be triggered. 
-Remove the speculative call.
-
-Also mark folio_test_lru() check right after folio_try_get() success as no
-more unlikely.
-
-The race should be rare.  Also the problem can happen only if the kernel
-has enabled CONFIG_DEBUG_VM_PGFLAGS.  No real world report of this issue
-has been made so far.  This fix is based on only theoretical analysis. 
-That said, a bug is a bug.  A similar issue was also fixed via commit
-3203b3ab0fcf ("mm/filemap: don't call folio_test_locked() without a
-reference in next_uptodate_folio()").  I don't expect this change will
-make a meaningful impact to DAMON performance in the real world, though I
-will be happy to be corrected from the real world reports.
-
-The issue was discovered [1] by Sashiko.
-
-
-Link: https://lore.kernel.org/20260525162256.8317-1-sj@kernel.org
-Link: https://lore.kernel.org/20260517234112.89245-1-sj@kernel.org [1]
-Fixes: 3f49584b262c ("mm/damon: implement primitives for the virtual memory address spaces")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Fernand Sieber <sieberf@amazon.com>
-Cc: Leonard Foerster <foersleo@amazon.de>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: <stable@vger.kernel.org> # 5.15.x
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/damon/ops-common.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
---- a/mm/damon/ops-common.c~mm-damon-ops-common-call-folio_test_lru-after-folio_get
-+++ a/mm/damon/ops-common.c
-@@ -32,9 +32,9 @@ struct folio *damon_get_folio(unsigned l
- 		return NULL;
- 
- 	folio = page_folio(page);
--	if (!folio_test_lru(folio) || !folio_try_get(folio))
-+	if (!folio_try_get(folio))
- 		return NULL;
--	if (unlikely(page_folio(page) != folio || !folio_test_lru(folio))) {
-+	if (unlikely(page_folio(page) != folio) || !folio_test_lru(folio)) {
- 		folio_put(folio);
- 		folio = NULL;
- 	}
-_
-
-Patches currently in -mm which might be from sj@kernel.org are
-
-mm-damon-ops-common-call-folio_test_lru-after-folio_get.patch
-mm-damon-core-make-charge_addr_from-aware-of-end-address-exclusivity.patch
-mm-damon-core-handle-min_region_sz-remaining-quota-as-empty.patch
-mm-damon-core-merge-regions-after-applying-damos-schemes.patch
-mm-damon-core-introduce-failed-region-quota-charge-ratio.patch
-mm-damon-sysfs-schemes-implement-fail_charge_numdenom-files.patch
-docs-mm-damon-design-document-fail_charge_numdenom.patch
-docs-admin-guide-mm-damon-usage-document-fail_charge_numdenom-files.patch
-docs-abi-damon-document-fail_charge_numdenom.patch
-mm-damon-tests-core-kunit-test-fail_charge_numdenom-committing.patch
-selftests-damon-_damon_sysfs-support-failed-region-quota-charge-ratio.patch
-selftests-damon-drgn_dump_damon_status-support-failed-region-quota-charge-ratio.patch
-selftests-damon-sysfspy-test-failed-region-quota-charge-ratio.patch
-docs-mm-damon-maintainer-profile-add-ai-review-usage-guideline.patch
-mm-damon-core-introduce-damon_ctx-paused.patch
-mm-damon-sysfs-add-pause-file-under-context-dir.patch
-docs-mm-damon-design-update-for-context-pause-resume-feature.patch
-docs-admin-guide-mm-damon-usage-update-for-pause-file.patch
-docs-abi-damon-update-for-pause-sysfs-file.patch
-mm-damon-tests-core-kunit-test-pause-commitment.patch
-selftests-damon-_damon_sysfs-support-pause-file-staging.patch
-selftests-damon-drgn_dump_damon_status-dump-pause.patch
-selftests-damon-sysfspy-check-pause-on-assert_ctx_committed.patch
-selftests-damon-sysfspy-pause-damon-before-dumping-status.patch
-mm-damon-introduce-damon_set_region_system_rams_default.patch
-mm-damon-reclaim-cover-all-system-rams.patch
-mm-damon-lru_sort-cover-all-system-rams.patch
-mm-damon-core-remove-damon_set_region_biggest_system_ram_default.patch
-mm-damon-stat-use-damon_set_region_system_rams_default.patch
-docs-admin-guide-mm-damon-reclaim-update-for-entire-memory-monitoring.patch
-docs-admin-guide-mm-damon-lru_sort-update-for-entire-memory-monitoring.patch
-docs-admin-guide-mm-damon-usage-mark-scheme-filters-sysfs-dir-as-deprecated.patch
-docs-abi-damon-mark-schemes-s-filters-deprecated.patch
-mm-damon-reclaim-add-autotune_monitoring_intervals-parameter.patch
-docs-admin-guide-mm-damon-reclaim-update-for-autotune_monitoring_intervals.patch
-mm-damon-stat-add-a-parameter-for-reading-kdamond-pid.patch
-docs-admin-guide-mm-damon-stat-document-kdamond_pid-parameter.patch
-mm-damon-core-introduce-struct-damon_probe.patch
-mm-damon-core-embed-damon_probe-objects-in-damon_ctx.patch
-mm-damon-core-introduce-damon_filter.patch
-mm-damon-core-commit-probes.patch
-mm-damon-core-introduce-damon_region-probe_hits.patch
-mm-damon-core-introduce-damon_ops-apply_probes.patch
-mm-damon-core-do-data-attributes-monitoring.patch
-mm-damon-paddr-support-data-attributes-monitoring.patch
-mm-damon-sysfs-implement-probes-dir.patch
-mm-damon-sysfs-implement-probe-dir.patch
-mm-damon-sysfs-implement-filters-directory.patch
-mm-damon-sysfs-implement-filter-dir.patch
-mm-damon-sysfs-implement-filter-dir-files.patch
-mm-damon-sysfs-setup-probes-on-damon-core-api-parameters.patch
-mm-damon-sysfs-schemes-implement-tried_regions-r-probes.patch
-mm-damon-sysfs-schemes-implement-probe-dir.patch
-mm-damon-sysfs-schemes-implement-probe-hits-file.patch
-mm-damon-trace-probe_hits.patch
-selftests-damon-sysfssh-test-probes-dir.patch
-docs-mm-damon-design-document-data-attributes-monitoring.patch
-docs-admin-guide-mm-damon-usage-document-data-attributes-monitoring.patch
-mm-damon-core-introduce-damon_filter_type_memcg.patch
-mm-damon-paddr-support-damon_filter_type_memcg.patch
-mm-damon-sysfs-add-filters-f-path-file.patch
-mm-damon-sysfs-schemes-move-memcg_path_to_id-to-sysfs-common.patch
-mm-damon-sysfs-setup-damon_filter-memcg_id-from-path.patch
-docs-mm-damon-design-update-for-memcg-damon-filter.patch
-docs-admin-guide-mm-damon-usage-update-for-memcg-damon-filter.patch
-mm-damon-core-safely-handle-no-region-case-in-damon_set_regions.patch
-mm-damon-core-do-not-use-region-out-of-a-loop-in-damon_set_regions.patch
-samples-damon-mtier-replace-damon_add_region-with-damon_set_regions.patch
-mm-damon-tests-vaddr-kunit-replace-damon_add_region-with-damon_set_regions.patch
-mm-damon-core-hide-damon_add_region.patch
-mm-damon-core-hide-damon_insert_region.patch
-mm-damon-core-hide-damon_destroy_region.patch
-mm-damon-core-add-kdamond_call-debug_sanity-check.patch
-mm-damon-core-remove-damon_verify_nr_regions.patch
-mm-damon-tests-core-kunit-add-damon_set_regions-test-cases.patch
-selftests-damon-sysfspy-stop-kdamonds-before-failing.patch
-selftests-damon-sysfssh-test-monitoring-intervals-goal-dir.patch
-selftests-damon-sysfssh-test-addr_unit-file-existence.patch
-selftests-damon-sysfssh-test-pause-file-existence.patch
-mm-damon-core-trace-esz-at-first-setup.patch
+> ---
+>  drivers/dma-buf/dma-buf.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
+> index 71f37544a5c6..d504c636dc29 100644
+> --- a/drivers/dma-buf/dma-buf.c
+> +++ b/drivers/dma-buf/dma-buf.c
+> @@ -792,9 +792,13 @@ int dma_buf_fd(struct dma_buf *dmabuf, int flags)
+>         if (!dmabuf || !dmabuf->file)
+>                 return -EINVAL;
+> 
+> -       fd = FD_ADD(flags, dmabuf->file);
+> +       fd = get_unused_fd_flags(flags);
+> +       if (fd < 0)
+> +               return fd;
+> +
+>         DMA_BUF_TRACE(trace_dma_buf_fd, dmabuf, fd);
+> 
+> +       fd_install(fd, dmabuf->file);
+>         return fd;
+>  }
+>  EXPORT_SYMBOL_NS_GPL(dma_buf_fd, "DMA_BUF");
+> --
+> 2.53.0
+> 
 
 
