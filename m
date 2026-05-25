@@ -1,300 +1,209 @@
-Return-Path: <stable+bounces-254056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254057-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OF7BAi+xE2rdEwcAu9opvQ
-	(envelope-from <stable+bounces-254056-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 04:17:19 +0200
+	id wMnKBRWyE2rdEwcAu9opvQ
+	(envelope-from <stable+bounces-254057-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 04:21:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AEE45C5629
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 04:17:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 845C25C5662
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 04:21:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7B4BA300E732
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 02:17:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EA1E5300900C
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 02:21:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C028A28313D;
-	Mon, 25 May 2026 02:17:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7729F28A3FA;
+	Mon, 25 May 2026 02:21:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NzAWbejO"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C90947E0E8;
-	Mon, 25 May 2026 02:16:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779675420; cv=none; b=iA/vwK523bHPguVwFRMvqRzxDoZ5WQJmTCpO8F6HIZGwgE/BpmSP/b1hhCtNd6O9q6qBMPmNlp4wEsq/IfcG0KglFtlHq12Yh9NIbfbRPwybfqXAXLPRW3Gt7ForoNBgCHLkYaDCiw/8MkVYTv/3qR1qqxAL1DJQ8F1LxA8qNFE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779675420; c=relaxed/simple;
-	bh=0MlUwNTZrSIk/2hjkGI0lBdXkuZUeaxuuO8v428bgSM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=r7mTlxjHCAaeYStg7En+b3lpw+6F3CXkyz/Ejbuvr+mXEgdrYHMWslavnGjlzAYlAMdWolU3e1exzu2Kqod8KuGvYI8zq49b6yvy2O/mJjLRMyNsvCGuX7gbbtxShDIou+KWhVA7z64xTt4kIpyJN8BCI65Odc07GsCI5XdgDE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.198])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4gNzyB4ndLzYQtw5;
-	Mon, 25 May 2026 10:16:02 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id D1AC340576;
-	Mon, 25 May 2026 10:16:54 +0800 (CST)
-Received: from [10.174.176.179] (unknown [10.174.176.179])
-	by APP4 (Coremail) with SMTP id gCh0CgAX31oUsRNqqrklDg--.60230S3;
-	Mon, 25 May 2026 10:16:54 +0800 (CST)
-Message-ID: <dd1ee60d-f8b9-4019-991f-0fadf776694b@huaweicloud.com>
-Date: Mon, 25 May 2026 10:16:51 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7139276050
+	for <stable@vger.kernel.org>; Mon, 25 May 2026 02:21:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779675666; cv=pass; b=WBd0HUrtb8rprZY41gO3vqLGXGO68Ejh6am1/DQQxK4bUDc3qZRcOF0Gx6gAvPTuiUh22wgAbGYgUX+G5Pw811mZE0Xzlz/3PDQJhmA2omAZIxhACTVcvp3qsBF/voEs4ELrV2Y90nO0qJQ0d3dVBnJbtUlrKwVuIzyvrUB3at8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779675666; c=relaxed/simple;
+	bh=9OF++De0qbfSaGV9kKcaQ7PVSfEbE8hrcqNBVw2etnY=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=Zzth2uo/J0kDex5PABXoN4DMoWORI/3W0NyVTzJcM/ltT/VJ+7Tim7+7pVifNNx5Q5x2ZHhlWOYceVlPVl8dTvZD0qNTrVQKjw92+NVHKdKW1w/W0rg+X4hrd4pjz54Qo+Gvba1V5+T3LsTTt8ZK0POr3GNVEjxWm0xfxwbhZVE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NzAWbejO; arc=pass smtp.client-ip=209.85.210.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7e615efd7d7so1685853a34.2
+        for <stable@vger.kernel.org>; Sun, 24 May 2026 19:21:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779675664; cv=none;
+        d=google.com; s=arc-20240605;
+        b=jMx8lPKVo0j0DyjYBNnnb6cirxc/D0vUIt8Q5N8c3FLHLTNwuNR7oTDeLxA5MHuIIU
+         01QgmlzRzZopBfFf8ao2pmuV3S6INyHmuk85cqgSzdmm+DgqN2dR6GRmuMiZZAy5cvr6
+         MJBF0Q1emSylLCReTZMwDfecZBjZi36krBX0jjqzZ/dThZw/TCcgI+Yw6m8w7UKF6gdT
+         Yym0yMxOTY+A9D11DpqPNKM7WsLMaqT080RDsRypZPjzEbtC99z2nEZw7pXTp5NFAyEi
+         9VBCv1ckhto6pLDOcAAstiCG+FXMI1LRJR9yJ6sh3s5y92UQ5428w+PRfpdf+JC3X6/2
+         gE5Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=aw1fhyGrsU8/wH2/4vYCJYAjvuo5aa1sDViZVMzFnqk=;
+        fh=rZUJXV2yHIQUOYCX9RQ6L8vmUE9JbXxB/NvCM0IAh7M=;
+        b=LcSDAPOGb5gbpD1BnCutthTqq+it7p0UfcNcLCIv2+lbNF34bmRVMAreWzk2ZWjP05
+         2fNqX2wxgx5FffuzvzES2g7vB7GIoMOzurKmp4dx0EtGcah5DpgvUEwAtCaUx23QJGQF
+         bJPJ99VdokepgoqmjuohHvd8PY4qJdIQsxkEi/RccsOwO/wVZPz2gGOekSm5qDtYYI0l
+         PqPj6aZ/FYh+MCSlX4swAvH4rZZolMyDwSWmMkz6IhYDs/XgilT/j9dmobEuvmFOXWUW
+         iNSCCdqYhCz3Nfz/t7KKrsuw/3FOT/B5257u+66gimDl1JGsUK2bcP87CR2W3oyxp7pp
+         mbbg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779675664; x=1780280464; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=aw1fhyGrsU8/wH2/4vYCJYAjvuo5aa1sDViZVMzFnqk=;
+        b=NzAWbejOlyQtXRCcNbi+JjCoZF1YSI9gz7P0VkyZyMbKiyT0ExzLaDX6xxcskgmcGp
+         3qN2GML+rlUHvaO0ImYe3/aX+BRlYqIbZCHRH/9HW4+wK2cjIinbJnpovDA+QIGO02ud
+         pVchsJcpc0K//dozybhXY2i60RqFVqarhdjJ3PA5EtagpmjhIKbwL5z0uwd727taasag
+         bD0sdT6l/89YSw9KHoqYSeGTj9xrCVz49iDdYbjj9Kafry+6/Snyj54/ntU5Y2Ei7dau
+         dRZFSM+H3jMSFMZMSo9CUUI/MjGm13Kb8BOn8pQ3ODggqlKwzpK9umdVdOfJp0b7yyRf
+         vOPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779675664; x=1780280464;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aw1fhyGrsU8/wH2/4vYCJYAjvuo5aa1sDViZVMzFnqk=;
+        b=c/XXMM4fiyL2W/NKtf3BQYEmuC/3YeTFc4GT6nAU5WDoPOeVfZ7ampEjbmYzblb20+
+         IxAkkpqh41/eDOuBYY6xu3QASuDhCcKRityU0pUNmfRdRA5CWz9TqR3pLLnA5RfH3oI+
+         MvsJsPDaZsWnldD6TC9pkEz/MGYrLT7MPZIoqNRkeT8W4ke24d3aYijOlY3qHuFc5aIL
+         Kp1zki1jvl5xlVmEHk6EAhdzwT10z4Ni6WWB3Rc6xP3WNBekILn7sTYYxWZBaEKLmbiF
+         4x0Cmqdq4eY6mBEZDIvJGkzRxy82bY1cWUZ0QRLzM934HREyyCbGiuVwUv/2JBV3mEOJ
+         R9aw==
+X-Forwarded-Encrypted: i=1; AFNElJ/6BQFPwqc8dYain0bVtgj6RsnyANcYDK/04vnT6msYu238Z/coM7jAoTrzH9eaRPZmoKWn5pY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0VYbzc82xh5kgc1kvQJAofnv11v9Sc86SUe7jrq+GXFqPVhpc
+	fx7v1t2MczB1dyD4AlKJ27LM4Wy0KEelrwihKMuNYrE4MBKhIVypOhYNaAne+KuDamSq2mfW8v6
+	bOPjzo6gfTRqhFGsbmxlYsmSJ+vtNTDbvgNc+Wc0=
+X-Gm-Gg: Acq92OHvzKDcpuunDChVDaDGVlLPCnVmNDpLQPws0sjIu0scpPZr8RSoyUfkIUbmV+7
+	LGgWHWZIf4/M3lOzGpmvcWyHnHU05JzI12fi1ViaBfbPJ1h5XV5k1t/3qG0I93y32rpOo+ySW0m
+	jbI0gJBkTQt2VIQXoNNgl4zTIJJmxF3ZVrtur/9Q+YjnEjCcPkwpUQnOLlID+hcaWEPFur2Uz4A
+	v2uoKPtCikUXdT8FrpwvLekTwLaP9YG+mA7YOSRNIrDls2BhaC+nFJtMoCfJs69+3dnt3WP0aPd
+	cfE+/TByzFnLWdy0+O3vBtQybAFO6nbDDTXKlT3QJjCvcVUfmEerBRLFrgvYute8IYT20vpa4g=
+	=
+X-Received: by 2002:a05:6830:2404:b0:7e5:f831:50a3 with SMTP id
+ 46e09a7af769-7e5fef1a50cmr7856308a34.17.1779675663643; Sun, 24 May 2026
+ 19:21:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] cifs: open files should not hold ref on superblock
-To: Steve French <smfrench@gmail.com>, Shyam Prasad N <nspmangalore@gmail.com>
-Cc: Henrique Carvalho <henrique.carvalho@suse.com>,
- linux-cifs@vger.kernel.org, pc@manguebit.com, bharathsm@microsoft.com,
- dhowells@redhat.com, Shyam Prasad N <sprasad@microsoft.com>,
- stable@vger.kernel.org, "chengzhihao1@huawei.com" <chengzhihao1@huawei.com>,
- yangerkun <yangerkun@huawei.com>, Zizhi Wo <wozizhi@huaweicloud.com>
-References: <20260304124629.1616108-1-sprasad@microsoft.com>
- <u4s57pxvrttksfxe5evylucarfoyiv3ut32d45nvfafsgmxtog@72x2iew66wrt>
- <CANT5p=rdme19zW8Dk7WuEXw68Jzdt2QsdfK-gRManJJgGWQByw@mail.gmail.com>
- <54dzktjc3vwt55dfj6wi4346la2my4fsg7wfyrtwm2apzvppip@xbi6evlur3kz>
- <CANT5p=rqgRwaADB=b_PhJkqXjtfq3SFv41SSTXSVEHnuh871pA@mail.gmail.com>
- <CAH2r5mu-3cDEhQWnBwBATq4hv4tw9aoPtGdmaDuc1+PxeiTuxA@mail.gmail.com>
-From: Zizhi Wo <wozizhi@huaweicloud.com>
-In-Reply-To: <CAH2r5mu-3cDEhQWnBwBATq4hv4tw9aoPtGdmaDuc1+PxeiTuxA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgAX31oUsRNqqrklDg--.60230S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxKFy5CF1UuF1fKw15uw13CFg_yoW3Jr18pF
-	WakasrKr4kGryfG3Z293W0qF10yw4xAa45Xr1Ygry7Arn0gryIqFs3JrWUKFyUZrs3Ww1j
-	vF48Wry7ZFWDZ37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvK14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kI
-	c2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbV
-	WUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF
-	67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42
-	IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF
-	0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxh
-	VjvjDU0xZFpf9x0JUd-B_UUUUU=
-X-CM-SenderInfo: pzr2x6tkl6x35dzhxuhorxvhhfrp/
-X-Spamd-Result: default: False [-1.46 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+From: Adrian Korwel <adriank20047@gmail.com>
+Date: Sun, 24 May 2026 21:20:51 -0500
+X-Gm-Features: AVHnY4Kfxoj-dhzRCkEkzc8-pfd6J5A5tN96IQEGMkQHqb1-0MgBCW-JEdx6GJI
+Message-ID: <CADgB2mF95N09=gOvBZ+4ePSQ-0wCynx-rbu=aiyQecT=iDdyRw@mail.gmail.com>
+Subject: [PATCH] USB: serial: io_ti: fix heap overflows in get_manuf_info()
+ and build_i2c_fw_hdr()
+To: linux-usb@vger.kernel.org
+Cc: johan@kernel.org, gregkh@linuxfoundation.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254056-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[huaweicloud.com];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-254057-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wozizhi@huaweicloud.com,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	RCVD_COUNT_FIVE(0.00)[6];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.986];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 5AEE45C5629
+	FROM_NEQ_ENVFROM(0.00)[adriank20047@gmail.com,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[4];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 845C25C5662
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi!
+Two heap overflows exist in this driver:
 
-在 2026/3/15 6:03, Steve French 写道:
-> On Sat, Mar 14, 2026 at 3:38 AM Shyam Prasad N <nspmangalore@gmail.com> wrote:
->>
->> On Sat, Mar 14, 2026 at 1:47 AM Henrique Carvalho
->> <henrique.carvalho@suse.com> wrote:
->>>
->>> On Fri, Mar 13, 2026 at 10:57:42AM +0530, Shyam Prasad N wrote:
->>>> On Fri, Mar 13, 2026 at 1:28 AM Henrique Carvalho
->>>> <henrique.carvalho@suse.com> wrote:
->>>>>
->>>>> On Wed, Mar 04, 2026 at 06:15:53PM +0530, nspmangalore@gmail.com wrote:
->>>>>> From: Shyam Prasad N <sprasad@microsoft.com>
->>>>>>
->>>>>> Today whenever we deal with a file, in addition to holding
->>>>>> a reference on the dentry, we also get a reference on the
->>>>>> superblock. This happens in two cases:
->>>>>> 1. when a new cinode is allocated
->>>>>> 2. when an oplock break is being processed
->>>>>>
->>>>>> The reasoning for holding the superblock ref was to make sure
->>>>>> that when umount happens, if there are users of inodes and
->>>>>> dentries, it does not try to clean them up and wait for the
->>>>>> last ref to superblock to be dropped by last of such users.
->>>>>>
->>>>>> But the side effect of doing that is that umount silently drops
->>>>>> a ref on the superblock and we could have deferred closes and
->>>>>> lease breaks still holding these refs.
->>>>>>
->>>>>> Ideally, we should ensure that all of these users of inodes and
->>>>>> dentries are cleaned up at the time of umount, which is what this
->>>>>> code is doing.
->>>>>>
->>>>>> This code change allows these code paths to use a ref on the
->>>>>> dentry (and hence the inode). That way, umount is
->>>>>> ensured to clean up SMB client resources when it's the last
->>>>>> ref on the superblock (For ex: when same objects are shared).
->>>>>>
->>>>>> The code change also moves the call to close all the files in
->>>>>> deferred close list to the umount code path. It also waits for
->>>>>> oplock_break workers to be flushed before calling
->>>>>> kill_anon_super (which eventually frees up those objects).
->>>>>>
->>>>>> Fixes: 24261fc23db9 ("cifs: delay super block destruction until all cifsFileInfo objects are gone")
->>>>>> Fixes: 705c79101ccf ("smb: client: fix use-after-free in cifs_oplock_break")
->>>>>> Cc: <stable@vger.kernel.org>
->>>>>> Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
->>>>>> ---
->>>>>
->>>>> Hi Shyam,
->>>>>
->>>>> So the side effect of the previous code is that the umount hangs until
->>>>> all the files are closed?
->>>>
->>>> Hi Henrique
->>>> Umount works. All it does is decrement refcount on sb.
->>>> When the last file is closed (or when the last cifs_oplock_break
->>>> processing completes) that's when cifs_kill_sb would get called.
->>>> Before that if there's another mount of the same share, it will reuse
->>>> the same session, tcon and open handles. As a result, an attempt to
->>>> delete files on the mount point may fail (which is one of first things
->>>> done by many xfstests).
->>>>
->>>
->>> Thank you for the explanation.
->>>
->>> I will wait for your v2.
->>
->> Hi Steve,
->>
->> I ran generic/694 to understand why it is failing with this change.
->> I think that this fix has just exposed a problem rather than caused it.
->>
->> The test does the following:
->> 1. either fallocates a file to 4G or pwrites to it
->> 2. calls sync
->> 3. runs stat to get number of blocks allocated for the file
->> 4. umounts the share
->> 5. mounts the share again
->> 6. runs stat to get number of blocks allocated for the file
->> 7. compares output of steps 3 and 6
-> 
-> Any chance of creating a small repro script for this that is easier to
-> debug han the xfstest was?
+1. get_manuf_info() reads le16_to_cpu(rom_desc->Size) bytes from the
+   device I2C EEPROM into a buffer allocated with kmalloc_obj(), which
+   is sizeof(struct edge_ti_manuf_descriptor) = 10 bytes.
 
-I analyzed this issue and performed a simple local reproduction using
-smb3/smb21:
+   The Size field comes from the device and is only validated to fit
+   within TI_MAX_I2C_SIZE (16384 bytes), not against the destination
+   buffer size. A malicious USB device can therefore set Size to any
+   value up to 16383, causing a heap overflow of up to 16373 bytes
+   when plugged into a host running this driver.
 
-mount /dev/sda /mnt
-mount -t cifs //127.0.0.1/share /mnt/test_mnt -o vers=3.0,guest
-# smb versions below 3 do not support fallocate;
-# generic/694 replaces it with pwrite.
-# xfs_io -ft -c "pwrite 0 4G" /mnt/test_mnt/aaa
-xfs_io -ft -c "falloc 0 4M" /mnt/test_mnt/aaa
-stat -c "%b" /mnt/test_mnt/aaa
-umount /mnt/test_mnt
-mount -t cifs //127.0.0.1/share /mnt/test_mnt -o vers=3.0,guest
-stat -c "%b" /mnt/test_mnt/aaa
+   valid_csum() is called after read_rom() and also iterates
+   buffer[0..Size-1], compounding the out-of-bounds access.
 
-> 
->> Without this change, both step 3 and 6 would return 0, since even
->> through umount/mount, the same file would remain open (since
->> superblocks will be shared).
->> With this change, step 3 would return 0. Step 6 would return the right value.
->>
->> If you use nosharesock even after reverting this change, you'll see
->> the test failing.
->> Or even with this change if actimeo=0, then this test passes.
->>
->> The real question to ask is why aren't we updating i_blocks even after
->> sync succeeds?
->> My guess is that this has something to do with attribute caching when
->> the handle is kept open.
-> 
-> That sounds an important bug to fix.  Glad this test showed it.
-> 
-> 
-> 
+   Fix by rejecting descriptors larger than the destination struct
+   before calling read_rom().
 
-xfs_io -ft -c "falloc 0 4M" /mnt/test_mnt/aaa opens the file for
-writing, which causes stat -> ... -> update_inode_info to skip updating
-inode->i_blocks, because is_size_safe_to_change() returns false.
+2. build_i2c_fw_hdr() allocates a fixed-size buffer of
+   (16*1024 - 512) + sizeof(struct ti_i2c_firmware_rec) bytes, then
+   copies le16_to_cpu(img_header->Length) bytes into it without
+   validating that Length fits within the available space after the
+   firmware record header. img_header->Length is a __le16 from the
+   firmware file and can be up to 65535. check_fw_sanity() validates
+   the total firmware size but not img_header->Length specifically.
 
-The file is only removed from the list in _cifsFileInfo_put(), but that
-call is deferred, so the value obtained in step 3 doesn't match the
-expected value. Step 6, however, does match — because after the remount
-the file has not been opened for writing.
+   Fix by rejecting images where img_header->Length exceeds the
+   available destination space.
 
-Before the patch was merged, both runs returned 0, because the second
-mount reused the sb instance and the inode instance from the first
-mount, and the interval between the two mounts was too short, causing
-cifs_dentry_needs_reval() to return false.
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Adrian Korwel <adriank20047@gmail.com>
+---
+ drivers/usb/serial/io_ti.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-SMB 2.1 behaves similarly: pwrite writes 4 GB and the size shows as
-8388608. If the server-side backing filesystem is ext4, it also
-initially shows 8388608(see ext4_file_getattr()), and only during the
-writeback path — when it's discovered that the extent count is too
-large and an additional ETB(extent tree block) is required — does it
-become 8388616(ext4_do_writepages -> ... -> ext4_ext_new_meta_block).
+diff --git a/drivers/usb/serial/io_ti.c b/drivers/usb/serial/io_ti.c
+index cb55370e036f..afe29fdf9536 100644
+--- a/drivers/usb/serial/io_ti.c
++++ b/drivers/usb/serial/io_ti.c
+@@ -773,6 +773,12 @@ static int get_manuf_info(struct edgeport_serial
+*serial, u8 *buffer)
+        }
 
-On the client side, cifs_write_end() updates inode->i_blocks but doesn't
-account for that metadata block. Although generic/694 issues a sync
-before stat, and the server flushes to disk upon receiving it, so by
-rights it should return 8388616 — it doesn't. This is because
-cifs_revalidate_dentry_attr() -> cifs_dentry_needs_reval() returns false
-directly, since CIFS_CACHE_READ evaluates to true; as a result, it
-doesn't even go to the server to fetch stat.
+        /* Read the descriptor data */
++       if (le16_to_cpu(rom_desc->Size) > sizeof(struct
+edge_ti_manuf_descriptor)) {
++               dev_err(dev, "%s - descriptor too large: %u\n", __func__,
++                       le16_to_cpu(rom_desc->Size));
++               status = -EINVAL;
++               goto exit;
++       }
+        status = read_rom(serial, start_address+sizeof(struct ti_i2c_desc),
+                                        le16_to_cpu(rom_desc->Size), buffer);
+        if (status)
+@@ -838,6 +844,11 @@ static int build_i2c_fw_hdr(u8 *header, const
+struct firmware *fw)
+        /* Pointer to fw_down memory image */
+        img_header = (struct ti_i2c_image_header *)&fw->data[4];
 
-The oplock is only cleared to 0 in _cifsFileInfo_put(), and that itself
-is a deferred release, so the stat call never picks up the actual data
-from the remote server before _cifsFileInfo_put() called.
-
-
-On the other hand, why is there no problem with cifs/smb2, and the issue
-only appears on smb21/smb3?
-
-The difference is that prior to smb21, there was no concept of leases —
-only oplocks:
-
-smb2_set_oplock_level
-   cinode->lease_granted = false
-
-smb21_set_oplock_level
-   cinode->lease_granted = true
-
-This means that on cifs/smb2, cifs_close() invokes _cifsFileInfo_put()
-immediately (rather than going through the deferred-close path), so the
-problem described above doesn't occur.
-
-
-
-I'm new to SMB, so this is very much a beginner's analysis. I hope it's
-useful to others, and I'd really appreciate it if anyone could point out
-mistakes or things I've gotten wrong.
-
-Thanks,
-Zizhi Wo
-
-
-
-
-
++       if (le16_to_cpu(img_header->Length) >
++                       buffer_size - sizeof(struct ti_i2c_firmware_rec)) {
++               kfree(buffer);
++               return -EINVAL;
++       }
+        memcpy(buffer + sizeof(struct ti_i2c_firmware_rec),
+                &fw->data[4 + sizeof(struct ti_i2c_image_header)],
+                le16_to_cpu(img_header->Length));
+-- 
+2.43.0
 
