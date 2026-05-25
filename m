@@ -1,138 +1,143 @@
-Return-Path: <stable+bounces-254129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254130-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gI8YGcgvFGqUKgcAu9opvQ
-	(envelope-from <stable+bounces-254129-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 13:17:28 +0200
+	id qIqyOJ8xFGqUKgcAu9opvQ
+	(envelope-from <stable+bounces-254130-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 13:25:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A42495C9D9C
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 13:17:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 839A65C9EA0
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 13:25:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E1BA53006794
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 11:17:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 08393301778F
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 11:24:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B25CB32B119;
-	Mon, 25 May 2026 11:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6277437F72A;
+	Mon, 25 May 2026 11:24:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="gtFRCKCA"
+	dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b="jhqCRc/P"
 X-Original-To: stable@vger.kernel.org
-Received: from out162-62-57-137.mail.qq.com (out162-62-57-137.mail.qq.com [162.62.57.137])
+Received: from smtp1-g21.free.fr (smtp1-g21.free.fr [212.27.42.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D3D53101CE;
-	Mon, 25 May 2026 11:17:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 072C437D134;
+	Mon, 25 May 2026 11:24:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.27.42.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779707845; cv=none; b=kHiDiXuQrigyexEFRWvBKO694tsgmCHh6RlStS99F9JcVaZy52ZgcwrT93YiVR0jbvSmimzdMwQPHzfwa7uU0ov70lwcwrygWrdZFyLkQ4gbwlmLfmlS7+1EEsC6qvdmokJlV0MHJ7rNBpan7CWgOsuwnVtu9TAvr/sgvmOrm8M=
+	t=1779708280; cv=none; b=ZayDhkYts6OMJ8vNrV9JhV4rX1iI1Z9F9pX2xvMaueDSY8CAn4odPDTeUsc1bXMDW0VSZoo1826ejn8bE53xZeoBp51g7mXHnDp7NFLPRKl107VLcL1sIaixdHpD6U2Ao5vcF+5X48TcvPQTlu+k45Csg+dpVsQnT6SfdB8X+3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779707845; c=relaxed/simple;
-	bh=Ltq3DgrhDN6ZWtPt0JiF9Y1wmYwtnNCB38LahL8PIgA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VdHB97RpQTu+CNfQDBpnGAHL1cqexpIsU9dFT8eWeo7T8YCcJOdfL8rxkVct0EnWBQ2jKMzSlBH9ANWteR6j+x4LSjb++BIIaRU4f2WabKAUMMVGFqQlGPH0fJZOs/bSfPWPeEq0WT+phKI7oFxXe/lQgcxj++Y7uIBL5bxWQdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=gtFRCKCA; arc=none smtp.client-ip=162.62.57.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1779707829;
-	bh=Ltq3DgrhDN6ZWtPt0JiF9Y1wmYwtnNCB38LahL8PIgA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=gtFRCKCAW8pk171s4JGcNhWwtPh6eNk3Cp1vlHUReMIsIlu7n7bmwmIqyKSFn3GOA
-	 OtKxJkSH3+aFnySDZkpB85eEwNA82dtAA1X9NDOl4LLI8Wl0EzuLlpIVNTsjTOf0W1
-	 h5kB3leJOPy4RVbXjPEXVxdU1HDv+unIwVAYYQ8k=
-Received: from [192.168.1.40] ([183.241.55.175])
-	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
-	id 4460922E; Mon, 25 May 2026 19:17:06 +0800
-X-QQ-mid: xmsmtpt1779707826tvbjogym6
-Message-ID: <tencent_2F1F1B920DD60238AD30F50D40B44F35EF08@qq.com>
-X-QQ-XMAILINFO: Nx5J06Esz7r75f79KJE/0Yvqq1I34mHh5QOS/YK5hDnKp3tlobVHfa5B4W/TEv
-	 7TTiJgtVnpiGM3G2V+Dl/WxkbRWv7gdIbs+thZ/FjPha6D91Sch27kYZHetMygH5YcfK2iNwENnp
-	 Ak6Sp1glIarfL3T5533uMLvv6zzdFofQVf2vrIiP2vG5srsQHxbnt+JICqS6OipKK5IpCtNHgx4o
-	 +arAsf9z4sRfp4GameyscIEcecKSrCT/GZPZhQrxdf7/R1/+hTbT3Umw3QxI70aoLtflj5tOHYYr
-	 PTj+RQI/n1yRvkSznFfJoOuFWHFAaI3MFGFo2310ViaEVUTYx2z99OBRsUirVGUNU7K6Z6R0NsgL
-	 h7BuQMsD3/pTmhSzUWwQysly/uLPSgKMYu7MNgSn7L4Y6Kn8WIyztK/h87D44htw4Ax+mAu81InT
-	 vS6JEouzlJJDwoCi3sFpESDUyASKyrMoPfKF8bX0w0k++I9Ad+w1osWatzFITcOb8THXF6sCyF4I
-	 TmiX33ldWrgeOtBxaBL/FDqe2zA+PZLup9ZUkR73gACIl9RKbmZ4JDqeVjmQdIMEdP6Q3/0UBPzY
-	 XOiCNGaEsNrdY88chCykTZAzHJOkOV6tGEsq7Sh9m37KVO+CP+YblIoPJHF7a8nExupCLSXPlT+b
-	 inrTwEjlF4kbSw8UF0AMvmReGI08PQib/vIBZXW2ui6Zk8ZiUliUHw8WOjoezLhaqqMao4qF5te1
-	 1SrIslQNdhx82q8ODdPny544ftRhQUeRIHBZaG7//aJhKwIVWT1kMD2RsVC7vlHFdS0H5UH4IxIk
-	 dZtymX+vQkcePAncpr7sgqbYLI59lCJijQwma7XsIirKe7PHEEs+ZHjf5mZXJlrUS/goshv+K4ay
-	 1xDok5ojPmMl4GNRxsf7tT9dRqxhZCvNH8RbJ/si0faMY9bUdBPk70Tm7c8I5dy//G9R6F4xEV+S
-	 hmdESLutHez+icnaMFIeDyrg4yK/6l5lpxdaeQGIb6dbzLzTgQ9S6kARW315DZsuCB0okLeXsWTX
-	 BmIRubKEAoK2UZtfhNViTOSHpOq1QzqVfx/PLiU04aCjeSAwTPzw/N6RO60d8cc2awJxT+Bg==
-X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
-X-OQ-MSGID: <8e2129d1-3c99-4fad-9428-1a1373c26b9b@foxmail.com>
-Date: Mon, 25 May 2026 19:17:05 +0800
+	s=arc-20240116; t=1779708280; c=relaxed/simple;
+	bh=uxLP8IbyUY1c4syNBTYNja87B/Fv7UleF8C+qDT8zMU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=r6bVbt4EM4hxDTIaXuAdHWoJqHmzi11fTGGaW1NsKjlpBkX+zUsU/G7PWVwNZCOZVmv0r45+uRUazOqxxa4O0/AOCRm8Ue3b+mrSJ7LONB//87Q6YowaNXfQV7BrKYPHG5IRq0b1H+wx80OAzXFQYtLIvtVK0dN5cv/rr/N4JfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr; spf=pass smtp.mailfrom=free.fr; dkim=pass (2048-bit key) header.d=free.fr header.i=@free.fr header.b=jhqCRc/P; arc=none smtp.client-ip=212.27.42.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=free.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=free.fr
+Received: from [127.0.1.1] (unknown [91.160.0.144])
+	(Authenticated sender: vjardin@free.fr)
+	by smtp1-g21.free.fr (Postfix) with ESMTPSA id 148BBB0051E;
+	Mon, 25 May 2026 13:24:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=free.fr;
+	s=smtp-20201208; t=1779708269;
+	bh=uxLP8IbyUY1c4syNBTYNja87B/Fv7UleF8C+qDT8zMU=;
+	h=From:Subject:Date:To:Cc:From;
+	b=jhqCRc/PehNw3nqF2B2O4/2bqBpdPkGXQP35+CUsg0a5EMGjXcVS4aNUkDmWMoip3
+	 SzX5bDpg8g5aHmBCAnAf8dnoTyi0C6xrFnNoKAjerNZJCSRjoQJnd5+jDRMUnzHSMl
+	 UH9Qcijk4KsVswkLjpxe11PfaQK2nJF2YC4x8pu7MxMNv1utSQwg6Fs0YGSUcfh46F
+	 bF/CW2Tce/lhGkCpLxOE9kUaOQj2xGu9BVXHxAy1Fy24rwcPFB2GKxT+RJQywoClKi
+	 yZeA1khX9in+kArfr89M6ejVhttRETJE2T3H1Z2rvXNeMd8Iw3ktx2JqxxfwjEAOHP
+	 AF/iXEaLdxedQ==
+From: Vincent Jardin <vjardin@free.fr>
+Subject: [PATCH 0/2] i2c: imx: fix SMBus block-read of 0 locking the bus
+Date: Mon, 25 May 2026 13:24:01 +0200
+Message-Id: <20260525-for-upstream-i2c-lx2160-fix-v1-v1-0-f30ab53dd97c@free.fr>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6.y 0/1] ksmbd: validate owner of durable handle on
- reconnect
-To: Namjae Jeon <linkinjeon@kernel.org>
-Cc: gregkh@linuxfoundation.org, sashal@kernel.org, stable@vger.kernel.org,
- linux-kernel@vger.kernel.org, stfrench@microsoft.com, d.ornaghi97@gmail.com,
- knavaneeth786@gmail.com
-References: <tencent_DE479764A6B5230E038C7F4315AD4C0DC606@qq.com>
- <CAKYAXd_dXtirA0eFx68ir_-FzdgPGNcmRQOSvaZdZABkPhH1iw@mail.gmail.com>
-From: Alva Lan <alvalan9@foxmail.com>
-Content-Language: en-US
-In-Reply-To: <CAKYAXd_dXtirA0eFx68ir_-FzdgPGNcmRQOSvaZdZABkPhH1iw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-B4-Tracking: v=1; b=H4sIAFExFGoC/x2NywqEMAwAf0VyNpBGKuiviIfajbsBX6Qqgvjvl
+ j0OAzM3JDGVBG1xg8mpSdclgysLiL+wfAX1kxmYuCbPHsfV8NjSbhJmVI44XexqwlEvPB1SHAI
+ FoqYSDzmymWTzH3T987wKnwFBcAAAAA==
+To: Oleksij Rempel <o.rempel@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Andi Shyti <andi.shyti@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+ Wolfram Sang <wsa@kernel.org>, 
+ Kaushal Butala <kaushalkernelmailinglist@gmail.com>, 
+ Shawn Guo <shawn.guo@freescale.com>, 
+ Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Cc: linux-i2c@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Vincent Jardin <vjardin@free.fr>, stable@vger.kernel.org
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779708249; l=982;
+ i=vjardin@free.fr; s=20260525; h=from:subject:message-id;
+ bh=uxLP8IbyUY1c4syNBTYNja87B/Fv7UleF8C+qDT8zMU=;
+ b=hkA59lEEOgeOFJ62bM+X3GOA+PH/x5di7iGQBCaVOjxVxUp+FZp9cFCnIJDDQxlkgi9lopr6U
+ iwT9zSFoOLtB2OVKP/wOMpRkBZp/8xxLcR0qu4nvFHYWOHzy3ctSyy9
+X-Developer-Key: i=vjardin@free.fr; a=ed25519;
+ pk=hppgLeFpGpKOi7LNwGEZ4jOYofJCoGd4Jf1ltAabiLw=
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[foxmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[foxmail.com:s=s201512];
+	DMARC_POLICY_ALLOW(-0.50)[free.fr,quarantine];
+	R_DKIM_ALLOW(-0.20)[free.fr:s=smtp-20201208];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254129-lists,stable=lfdr.de];
-	FORGED_MUA_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[foxmail.com];
+	TAGGED_FROM(0.00)[bounces-254130-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[pengutronix.de,kernel.org,nxp.com,gmail.com,freescale.com,toradex.com];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[free.fr];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,lists.infradead.org,free.fr];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alvalan9@foxmail.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,kernel.org,vger.kernel.org,microsoft.com,gmail.com];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[vjardin@free.fr,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[free.fr:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DKIM_TRACE(0.00)[foxmail.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:mid]
-X-Rspamd-Queue-Id: A42495C9D9C
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 839A65C9EA0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+i2c-imx rejects a SMBus Block Read byte count of 0 (valid per SMBus 3.1
+6.5.7) and it returns without a NACK+STOP, leaving the target
+holding SDA so the bus is stuck until a power cycle occur.
 
-On 5/24/2026 11:13 PM, Namjae Jeon wrote:
-> Hi Alva,
->
->> An additional adaptation was needed for 6.6.y: in ksmbd_free_global_file_table(),
->> the call to ksmbd_destroy_file_table(&global_ft) was replaced with
->> idr_destroy/kfree, since the function changed to take a
->> struct ksmbd_session *. This matches the approach in upstream commit
->> d484d621d40f ("ksmbd: add durable scavenger timer").
-> I think we should backport the upstream commit d484d621d40f ("ksmbd:
-> add durable scavenger timer") first, along with any subsequent bug-fix
-> patches related to it.
-> Thanks!
+The same bug is occuring with two independently introduced spots, so the
+fix is two patches with their respective Fixes: tags and backport ranges:
 
-Thanks for your review. I have sent a v2 backport.
+  1/2  atomic/polling path       Fixes: 8e8782c71595   v3.16+
+  2/2  IRQ-driven state machine  Fixes: 5f5c2d4579ca   v6.13+
 
-Alva Lan
+Signed-off-by: Vincent Jardin <vjardin@free.fr>
+---
+Vincent Jardin (2):
+      i2c: imx: fix locked bus on SMBus block-read of 0 (atomic)
+      i2c: imx: fix locked bus on SMBus block-read of 0 (IRQ)
 
+ drivers/i2c/busses/i2c-imx.c | 30 ++++++++++++++++++++++++++++--
+ 1 file changed, 28 insertions(+), 2 deletions(-)
+---
+base-commit: 6916d5703ddf9a38f1f6c2cc793381a24ee914c6
+change-id: 20260525-for-upstream-i2c-lx2160-fix-v1-0cba0a0093e5
+
+Best regards,
+-- 
+Vincent Jardin <vjardin@free.fr>
 
 
