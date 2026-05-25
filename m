@@ -1,71 +1,54 @@
-Return-Path: <stable+bounces-254174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254176-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kAh8IpZsFGoTNQcAu9opvQ
-	(envelope-from <stable+bounces-254174-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 17:36:54 +0200
+	id cFJWMt1vFGqXNQcAu9opvQ
+	(envelope-from <stable+bounces-254176-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 17:50:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A70B5CC5F1
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 17:36:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A61E5CC835
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 17:50:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A48AF304C7CF
-	for <lists+stable@lfdr.de>; Mon, 25 May 2026 15:33:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3BBAC3030283
+	for <lists+stable@lfdr.de>; Mon, 25 May 2026 15:47:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 478BF3AD510;
-	Mon, 25 May 2026 15:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76F843F58E2;
+	Mon, 25 May 2026 15:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h6N4GKRj"
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="AM6v4juS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773182E8B82;
-	Mon, 25 May 2026 15:33:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 800393F0A9B;
+	Mon, 25 May 2026 15:47:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779723207; cv=none; b=ImA/lWiwhBqqBAfi4qqo4c38q1/eOyvqY2B6YlZc2tKtVoXY4+PCBxS5PZX3xOLUjM0hRIzhNop4KxH6/dLfGYGlrLXE29FXCi278+ynj6OMHPnDOruEBoGjBqMNHeZQO3pEtVovfaiTbMwWiwShJnbPnngN9HMwANNRQKluqIA=
+	t=1779724069; cv=none; b=ml8nEGFxWhEpWqumVZBPn/VuO+UAKkTlyxU+uJFw4FwvM8+LnVO5YluZK3qkQaeymBgLBWYjvDEc8fkI6x0WVDPbUQw4nKEcUB8rnLFTPXCpW1rgCpKSOia+Sp8FIlKN1z//omZItfkz8Ol97jDRglW34H/947WsXQj4rQC3ndI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779723207; c=relaxed/simple;
-	bh=V/mMUdKG7Dw2eSh64+XrQ9nf4Ts7EfkwSJK9b/P+Ml0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bl0si3Jr0buV/OICvwzjJYG9IKVupdtp351NUgVmJoHXwxTv1SEiqMgrRhGd6tLiezuc7YqpeKN9W0xIAhFaMPPgDsTtw7rI/fi7bN0Y2WuJWDMXlA9umXRcYPaSSJi+43NFuzRgJ58Jbh/u2P1uARyj40aSeF8ofLuct4J1Zv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h6N4GKRj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C6F51F00A3E;
-	Mon, 25 May 2026 15:33:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779723205;
-	bh=q8Ikp1pIkOzEO2DqZfmRNUHDhWCAM595jcMat0Ka2jM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=h6N4GKRj/1LcuELFDVv3RmCDaA9pu4YzJGU/rW2uUphIpZLKjDJ0sW+Z++lH9iiBf
-	 LJnq5TknP0h9xFS85tVUkVbLTy5CN1CSu6fFCiNktnxpttnN8fR7lmTwo2NZ9+C4NO
-	 FOogDTBz14qc+MELfo7N1ja4YAIG08qaolLuS9sDPnKEkt/YzPrtWXxx/UwLCtVZUo
-	 X4yhrBHYDSCc0kasPoa9Svm5yPpxc4HK/huH1eLo1qCIZfx2aWGb2KSFmn79JhLgln
-	 1xTxY/TrstidfzjkPjctXMOMqwLS75X7Yq8RfrGvh6zL89UTGtq9YXQ/OxZykDMUy4
-	 Oiuk9EnLXEyBQ==
-From: Sasha Levin <sashal@kernel.org>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org,
-	alison.schofield@intel.com
-Cc: Sasha Levin <sashal@kernel.org>,
-	patches@lists.linux.dev,
+	s=arc-20240116; t=1779724069; c=relaxed/simple;
+	bh=DrnexA7je7PQWSjTQeVWmOtxj7eJT2Dst7Fjf63aG28=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EiFbknyvD+2CztqoWhZGhQUY9WJU592mK/npzEnQqcJUrXKzpVZBiTCCbKa6knhM+RCT/+3U9HnQoH16JJBifrvGAhOWSUA1eWtx0oU2pgi5WumgNmzIbo4qE9v2dOgebrMGnMfDgTrasXRAAxrOoPv/e0i7U6eq0FmlMfieeVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=AM6v4juS; arc=none smtp.client-ip=45.254.49.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [223.112.146.162])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 3fbdb7a8a;
+	Mon, 25 May 2026 23:42:30 +0800 (GMT+08:00)
+From: Dawei Feng <dawei.feng@seu.edu.cn>
+To: mchehab@kernel.org
+Cc: kees@kernel.org,
+	linux-media@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	dave@stgolabs.net,
-	jonathan.cameron@huawei.com,
-	dave.jiang@intel.com,
-	vishal.l.verma@intel.com,
-	ira.weiny@intel.com,
-	dan.j.williams@intel.com,
-	ming.li@zohomail.com,
-	linux-cxl@vger.kernel.org,
-	Fang Wang <32840572@qq.com>
-Subject: Re: [PATCH 6.6.y] cxl/port: Fix use after free of parent_port in cxl_detach_ep()
-Date: Mon, 25 May 2026 11:33:10 -0400
-Message-ID: <20260525152512.agent5-0007@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <tencent_C9D9ED71D51B177EDF71B708417942F4F206@qq.com>
-References: <tencent_C9D9ED71D51B177EDF71B708417942F4F206@qq.com>
+	jianhao.xu@seu.edu.cn,
+	Dawei Feng <dawei.feng@seu.edu.cn>,
+	stable@vger.kernel.org,
+	Zilin Guan <zilin@seu.edu.cn>
+Subject: [PATCH RESEND] media: mantis: fix memory leak in hopper_pci_probe()
+Date: Mon, 25 May 2026 23:42:29 +0800
+Message-Id: <20260525154229.928736-1-dawei.feng@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,74 +56,98 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-HM-Tid: 0a9e5fcd4a6203a2kunm9ae92e48b9d38
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaHR9NVklLGkoaSElMQk5JSFYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUhVSkpJVUpPTVVKTUlZV1kWGg8SFR0UWUFZT0tIVUpLSU
+	hOQ0NVSktLVUtZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=AM6v4juSWbvd9iN2hrwROSo6t6F6UoPiDgkiAlkaVnIBvocJiSALeWC7QH0uvPjzjIOjEC+8wwviF1wCzQnDtg9/r0BLtl5ea/l8U5jqryK4rKsFS1y2ttljDKTYXzEmBz7+Q51S6TOOJDnnOaILWocNsuvXpjTIk4cUTeTAR0g=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=DawwoEvqy/RU2x32dtGT3ZnqibUyYSLLp+FB+/EHnGU=;
+	h=date:mime-version:subject:message-id:from;
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254174-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,lists.linux.dev,vger.kernel.org,stgolabs.net,huawei.com,intel.com,zohomail.com,qq.com];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254176-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[seu.edu.cn:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email]
-X-Rspamd-Queue-Id: 0A70B5CC5F1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:dkim]
+X-Rspamd-Queue-Id: 2A61E5CC835
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, May 25, 2026 at 03:44:54PM +0800, Fang Wang wrote:
-> From: Alison Schofield <alison.schofield@intel.com>
->
-> [ Upstream commit 19d2f0b97a131198efc2c4ca3eb7f980bba8c2b4 ]
->
-> @@ -527,6 +527,7 @@ static void cxl_port_release(struct device *dev)
->  	xa_destroy(&port->dports);
->  	xa_destroy(&port->regions);
->  	ida_free(&cxl_port_ida, port->id);
-> +	put_device(dev->parent);
->  	kfree(port);
->  }
->
-> @@ -657,6 +658,7 @@ static struct cxl_port *cxl_port_alloc(struct device *uport_dev,
->  		struct cxl_port *iter;
->
->  		dev->parent = &parent_port->dev;
-> +		get_device(dev->parent);
->  		port->depth = parent_port->depth + 1;
->  		port->parent_dport = parent_dport;
+In hopper_pci_probe(), two probe-error paths jump to the wrong cleanup
+stage. If mantis_get_mac() fails after mantis_i2c_init() succeeds, the
+function skips mantis_i2c_exit() and leaves the I2C adapter registered.
+If mantis_stream_control() fails after mantis_pci_init() succeeds, the
+function frees the mantis structure without undoing the PCI setup.
 
-This isn't safe as-is for 6.6. Upstream guards the put_device() in
-cxl_port_release() with is_cxl_root(port), and only does the matching
-get_device() on the child-port path. In 6.6, struct cxl_root does not
-exist yet (it was added in v6.8 by commit 26064b3641c4 ("cxl: introduce
-cxl_root")) and the is_cxl_root() helper is absent, so dropping the
-guard means cxl_port_release() unconditionally puts dev->parent.
+Route the affected error paths to the correct cleanup labels so that
+hopper_pci_probe() releases resources in reverse order, matching the
+cleanup flow already used by mantis_pci_probe().
 
-cxl_port_alloc() in 6.6 only takes the new get_device(dev->parent) on
-the parent_dport != NULL branch; the root-port path still does
-`dev->parent = uport_dev` with no matching get. The result is an
-unbalanced put on the root port's uport_dev (typically the cxl_acpi
-host device) on every cxl_acpi unload, which is a fresh refcount
-underflow / UAF on 6.6.
+The bug was first flagged by an experimental analysis tool we are
+developing for kernel memory-management bugs while analyzing
+v6.13-rc1. The tool is still under development and is not yet publicly
+available. Manual inspection confirms that the bug is still
+present in v7.1-rc5.
 
+An x86_64 allyesconfig build showed no new warnings. As we do
+not have a Twinhan VP-3028 DVB-T board to test with, no runtime
+testing was able to be performed.
+
+Fixes: b3b961448f702 ("V4L/DVB (13795): [Mantis/Hopper] Code overhaul, add Hopper devices into the PCI ID list")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
+---
+Resend to correct the recipient email addresses.
+ drivers/media/pci/mantis/hopper_cards.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/media/pci/mantis/hopper_cards.c b/drivers/media/pci/mantis/hopper_cards.c
+index 050068308c10..b55543054727 100644
+--- a/drivers/media/pci/mantis/hopper_cards.c
++++ b/drivers/media/pci/mantis/hopper_cards.c
+@@ -175,7 +175,7 @@ static int hopper_pci_probe(struct pci_dev *pdev,
+ 	err = mantis_stream_control(mantis, STREAM_TO_HIF);
+ 	if (err < 0) {
+ 		dprintk(MANTIS_ERROR, 1, "ERROR: Mantis stream control failed <%d>", err);
+-		goto fail1;
++		goto fail2;
+ 	}
+ 
+ 	err = mantis_i2c_init(mantis);
+@@ -187,7 +187,7 @@ static int hopper_pci_probe(struct pci_dev *pdev,
+ 	err = mantis_get_mac(mantis);
+ 	if (err < 0) {
+ 		dprintk(MANTIS_ERROR, 1, "ERROR: Mantis MAC address read failed <%d>", err);
+-		goto fail2;
++		goto fail3;
+ 	}
+ 
+ 	err = mantis_dma_init(mantis);
 -- 
-Thanks,
-Sasha
+2.34.1
+
 
