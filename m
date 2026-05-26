@@ -1,121 +1,128 @@
-Return-Path: <stable+bounces-254338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254339-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mGPXHeOXFWqNWgcAu9opvQ
-	(envelope-from <stable+bounces-254338-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 14:53:55 +0200
+	id sDwyNkeZFWqNWgcAu9opvQ
+	(envelope-from <stable+bounces-254339-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 14:59:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE3755D5D53
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 14:53:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BFC75D5EF7
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 14:59:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D0E15303CD17
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 12:53:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BFB27304C9F8
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 12:54:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4FE025782A;
-	Tue, 26 May 2026 12:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE050238C36;
+	Tue, 26 May 2026 12:54:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="EKucJNjP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4999A224234;
-	Tue, 26 May 2026 12:53:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48397223702
+	for <stable@vger.kernel.org>; Tue, 26 May 2026 12:54:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779799983; cv=none; b=hU4vmyjMCrdMkFBLfBDmbY4wGj4E1h+Dn5pYRXb6j8xBUf881j3Vq94rYH6AIIAI7YL9tzmfEeI4U9e6W8+xfoK7aIel3iQrUI6RtfCl9MxwsTne2PRVF7uv/221UWZSsvpHiyCbJf3UdcaLmYBszTraAIR64aJibEHLA/dDTKw=
+	t=1779800057; cv=none; b=BbJ/vqV1vferN6a/b9GRt+jrnBWyMit58igORTuCxWJwnVLsbazWWVd6i8XDShVOsWgYcfZ+EZ2GtHHTNkmHLNITXHXZUmi4nHGikh+LvOnI5JHgwdNXW26hIBq0NHFN9nThU0UtW9ZbJwZRbE0I//D9C4zExjlO13Qdel80bxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779799983; c=relaxed/simple;
-	bh=xf2yltQCPL4KYbVDKfNIsg8mC4dPbeakx6my0quoUbs=;
+	s=arc-20240116; t=1779800057; c=relaxed/simple;
+	bh=8NFmtjNVk6yqSf59PQPhoTYEdjcxCUFRSGiq2LjpJPU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZcjSGVpFAp399Y6SSL+vkJJ7RU1oT/Ane/zNP/3ifZkbHQM43OZ2IZuWu72kc794SaUOKN8Z+RKm4tkZdASYos28kw0FOParbKejjywkXYPemthRAQ0ldeljLgqcX8JP0YFxRMrp+6jzb5KWEIiTSzovuBd31TWMairuBmo5vbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.2.5.213])
-	by gateway (Coremail) with SMTP id _____8DxrOmrlxVqGWgNAA--.36459S3;
-	Tue, 26 May 2026 20:52:59 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
-	by front1 (Coremail) with SMTP id qMiowJAxWcGplxVqbZiRAA--.1284S3;
-	Tue, 26 May 2026 20:52:59 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: kernel@xen0n.name,
-	kvm@vger.kernel.org,
-	loongarch@lists.linux.dev,
+	 MIME-Version:Content-Type; b=SOhF36ATcMaFfzF4SHe8mWWuIBW434VRO/8ba94dZLaG7Ngy0kHpK8SFMvHu8lIqCzYpGYGUiGXpCtxsYBEFnyRWjdJyqTvXMxgWDD2ow2BuaOJSzca6inso6pS/J5fLmQ1w3Ap/30rpSZ1/HswAv1nrK4rPs5F8MfURYgp0kbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=EKucJNjP; arc=none smtp.client-ip=91.218.175.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779800044;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8NFmtjNVk6yqSf59PQPhoTYEdjcxCUFRSGiq2LjpJPU=;
+	b=EKucJNjPDOyhy/Ct1wzGkugYgHG38e4JHfUiB89+kwZuDSasTGZUEoc1YDrz5Tlx3cQgBS
+	nbFBvy3MoCeQXc3AEh1D5EiRZA7JxcqK8wuhQb/KM8RElSncECRexNGouS6+eizOvOXxUG
+	BRDHXzkKV0rGmVw5LE4kz+EpbfTed0o=
+From: Lance Yang <lance.yang@linux.dev>
+To: yintirui@huawei.com
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	liam@infradead.org,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	djbw@kernel.org,
+	apopple@nvidia.com,
+	wangkefeng.wang@huawei.com,
+	chenjun102@huawei.com,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH v5 1/6] LoongArch: KVM: Check irq validility in kvm_vcpu_ioctl_interrupt()
-Date: Tue, 26 May 2026 20:52:50 +0800
-Message-Id: <20260526125256.2511876-2-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20260526125256.2511876-1-maobibo@loongson.cn>
-References: <20260526125256.2511876-1-maobibo@loongson.cn>
+Subject: Re: [PATCH] mm/huge_memory: update file PUD counter before folio_put()
+Date: Tue, 26 May 2026 20:53:51 +0800
+Message-Id: <20260526125351.58831-1-lance.yang@linux.dev>
+In-Reply-To: <20260526101355.1984244-1-yintirui@huawei.com>
+References: <20260526101355.1984244-1-yintirui@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJAxWcGplxVqbZiRAA--.1284S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
-	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
-	nUUI43ZEXa7xR_UUUUUUUUU==
-X-Spamd-Result: default: False [0.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Migadu-Flow: FLOW_OUT
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-254339-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maobibo@loongson.cn,stable@vger.kernel.org];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.967];
-	R_DKIM_NA(0.00)[];
-	DMARC_NA(0.00)[loongson.cn];
-	TAGGED_FROM(0.00)[bounces-254338-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: EE3755D5D53
+	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linux.dev:mid,linux.dev:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,huawei.com:email]
+X-Rspamd-Queue-Id: 4BFC75D5EF7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Function kvm_vcpu_ioctl_interrupt() can be called from userspace, here
-add irq validility cheking in kvm_vcpu_ioctl_interrupt().
 
-Fixes: f45ad5b8aa93 ("LoongArch: KVM: Implement vcpu interrupt operations")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
----
- arch/loongarch/kvm/vcpu.c | 5 +++++
- 1 file changed, 5 insertions(+)
+On Tue, May 26, 2026 at 06:13:55PM +0800, Yin Tirui wrote:
+>__split_huge_pud_locked() updates the file/shmem RSS counter after
+>dropping the PUD mapping's folio reference. If folio_put() drops the
+>last reference, mm_counter_file() can later read freed folio state via
+>folio_test_swapbacked().
+>
+>Move the counter update before folio_put().
+>
+>Fixes: dbe54153296d ("mm/huge_memory: add vmf_insert_folio_pud()")
+>Cc: <stable@vger.kernel.org>
+>Signed-off-by: Yin Tirui <yintirui@huawei.com>
+>---
 
-diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
-index e28084c49e68..df5be9b265e8 100644
---- a/arch/loongarch/kvm/vcpu.c
-+++ b/arch/loongarch/kvm/vcpu.c
-@@ -1487,6 +1487,11 @@ void kvm_lose_fpu(struct kvm_vcpu *vcpu)
- int kvm_vcpu_ioctl_interrupt(struct kvm_vcpu *vcpu, struct kvm_interrupt *irq)
- {
- 	int intr = (int)irq->irq;
-+	unsigned int vector;
-+
-+	vector = abs(intr);
-+	if (vector >= EXCCODE_INT_NUM)
-+		return -EINVAL;
- 
- 	if (intr > 0)
- 		kvm_queue_irq(vcpu, intr);
--- 
-2.39.3
-
+Thanks! Feel free to add:
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
