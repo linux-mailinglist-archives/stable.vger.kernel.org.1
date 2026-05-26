@@ -1,71 +1,67 @@
-Return-Path: <stable+bounces-254320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254321-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wMIfOjmFFWoSWQcAu9opvQ
-	(envelope-from <stable+bounces-254320-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 13:34:17 +0200
+	id sA7DLXWFFWoSWQcAu9opvQ
+	(envelope-from <stable+bounces-254321-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 13:35:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 610A35D4EA4
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 13:34:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32C2F5D4F03
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 13:35:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B00F130136B0
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 11:30:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1F1063028652
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 11:35:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F213E0C55;
-	Tue, 26 May 2026 11:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE6D53E0734;
+	Tue, 26 May 2026 11:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qsH856Jo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NBpmCATl"
 X-Original-To: stable@vger.kernel.org
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 049FE2E7F25
-	for <stable@vger.kernel.org>; Tue, 26 May 2026 11:30:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8EDC3E0C55;
+	Tue, 26 May 2026 11:35:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779795017; cv=none; b=nelA78317Mq7Bz7t7tE6a4xaWtJOWBsIqP8NF8rT8qnANGiXsiZ1uzMyqakinhLMsT2Tmlwp0m5GtvNVzvAqggnDsXLDYjjmLhwadYr+93DPj3yT6NuYmae3L8DStsEbXei8+sMgEjXXbGJdTv6febqaGFp+T0GslC/quuGBgC8=
+	t=1779795314; cv=none; b=nPgd0OK6v9lLTVqQyypttIe2H5LeUqUmUnUmdxjl1fgggDERr2wosjbjAizS7xZXrhJlPVrbEhCtECKFtzauC4ohh3uSSo89QoDh4iUaGGPaDhCsLu00cD4n4kAWk1GG2DdKHnOQ77D9DBYYGZYSamSPATY8p+LkTOsHOoZOXQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779795017; c=relaxed/simple;
-	bh=4xLiVHFm1xyFeVBXVIRKOvD5LbSXHXkNlgw82b/43Rk=;
+	s=arc-20240116; t=1779795314; c=relaxed/simple;
+	bh=2H3H3vnC2GwG0fDzZ6w637YY6pI9aFKfjn1RibsbrmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WZ4HZU+69VGHboiWbcsFl3UHDoA/pLLuusr880lXvnW3pPFXnImb8VaisCzvfrBy6XBsGcccsKI2rS9wNuQM8peEGahGQPKEobXSWvx0ZBQS8d8sHHdBPtFx4OlUdLAYeTgjmSpjc6YlN5fLrhxN36UfB03ycYQ3DLPynvTRimk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qsH856Jo; arc=none smtp.client-ip=91.218.175.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779795012;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=p4V098L7V8l//JQho7wEgMgtyJ6Bly+yLWxZarD+Fak=;
-	b=qsH856JoTqeGJbSH7PdfNWnqmQ0TuOwGLO8AVLU0qojv3tSxUWXuRjDTA/yruYxiNUK5aQ
-	RIQk/lj2CJbDbhdQ139djiMXWxklKgAqxux8fBK0bYLvkqNIgWU381ymTlk4LfPG5rt4l1
-	m8jgrNxASeSUNLpoqcSQqU83PJbbee4=
-From: Usama Arif <usama.arif@linux.dev>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Frank van der Linden <fvdl@google.com>,
-	linux-mm@kvack.org,
+	 MIME-Version; b=Ia5i4acpCQYzPSX2x70KB5zhTdua5sF+uDMux8riPGlLV8zT4dAuUFzpRBoubYcApPtWQhFSLdYRsjBqnwXmS/uoIsHwjDJ/LmFpV0wuauya3Lk9LxqjRu7UICzIml6r+/QRaKqsWWA5x+emY9CJuOp3yEPyNv38dRbPWUAFKoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NBpmCATl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56E051F000E9;
+	Tue, 26 May 2026 11:35:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779795313;
+	bh=XAFFB/ti5ppyZh8MzLYmcCCCoGstaLaSac5HP7Oym30=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=NBpmCATlSk82CG+IjXD3NxX/P+FXuwztclyQ9bxhPOji4foWcNghs5hT2Nif2/BhN
+	 5LEbXKSPAZC8waxhBCtNJLow5qzi0h+zq2ky3HGiRnWgexPmgC65RRbZyiONGuhcf+
+	 9PrVGuEp9e2MzpI7Cd39vB+TCS06sWLD1wReWMXQU1jCDaDiL0c5jAaDCf53KlbpX0
+	 YxM04pnnwhkrboup/wJQVcU/MYdsTzDUbiQ8ynKgbg4vFq8RRQDBGMboKR8yXugEkZ
+	 QYFNgFkyBI4jle9UBwq+82qnyYVMGKdIGq5jfTQDHbee43MdA4vSWQvHHMSQUonmEs
+	 E+WqatJb0KqQg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: Sasha Levin <sashal@kernel.org>,
+	tzimmermann@suse.de,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	louis.chauvet@bootlin.com,
+	dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	muchun.song@linux.dev
-Subject: Re: [PATCH] mm/cma: fix reserved page leak on activation failure
-Date: Tue, 26 May 2026 04:30:03 -0700
-Message-ID: <20260526113005.3610737-1-usama.arif@linux.dev>
-In-Reply-To: <20260522062658.4095405-1-songmuchun@bytedance.com>
-References: 
+	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
+	w15303746062@163.com
+Subject: Re: [PATCH 6.18.y 0/5] drm/vkms: Backport generic vblank timer to fix ABBA deadlock
+Date: Tue, 26 May 2026 07:35:05 -0400
+Message-ID: <20260525231000.agent5-0001@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260525131610.608273-1-w15303746062@163.com>
+References: <9c4a68c4-43a3-4a9b-a131-9570174c8df3@linux.intel.com> <20260525131610.608273-1-w15303746062@163.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,103 +69,73 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254320-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-254321-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,suse.de,linux.intel.com,bootlin.com,lists.freedesktop.org,vger.kernel.org,stu.xidian.edu.cn,163.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[3];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[usama.arif@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 610A35D4EA4
+X-Rspamd-Queue-Id: 32C2F5D4F03
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, 22 May 2026 14:26:58 +0800 Muchun Song <songmuchun@bytedance.com> wrote:
+> [PATCH 6.18.y 0/5] drm/vkms: Backport generic vblank timer to fix ABBA deadlock
+>
+> 1/5 drm/vblank: Add vblank timer (74afeb812850)
+> 2/5 drm/vblank: Add CRTC helpers for simple use cases (d54dbb5963bd)
+> 3/5 drm/vkms: Convert to DRM's vblank timer (02e2681ffe1a)
+> 4/5 drm/atomic: Increase timeout in drm_atomic_helper_wait_for_vblanks() (79ae8510b5b8)
+> 5/5 drm/vblank: Fix kernel docs for vblank timer (3946d3ba9934)
 
-> If cma_activate_area() fails after allocating only part of the range
-> bitmaps, its cleanup path frees the bitmaps for the ranges below
-> allocrange and then releases reserved pages using the same bound.
-> 
-> That bound is only correct for bitmap freeing. Pages in ranges that did
-> not reach bitmap allocation are still reserved and should also be
-> returned to the buddy when CMA_RESERVE_PAGES_ON_ERROR is clear. As a
-> result, a partial bitmap allocation failure can permanently leak the
-> reserved pages from the failed range and all later ranges.
-> 
-> Fix this by releasing reserved pages for all ranges. For ranges whose
-> bitmap allocation succeeded, use the early_pfn[] snapshot saved before
-> the bitmap pointer overwrote the union field. For later ranges, continue
-> to use cmr->early_pfn directly.
-> 
-> Fixes: c009da4258f9 ("mm, cma: support multiple contiguous ranges, if requested")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> ---
->  mm/cma.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/cma.c b/mm/cma.c
-> index c7ca567f4c5c..a30075507d41 100644
-> --- a/mm/cma.c
-> +++ b/mm/cma.c
-> @@ -188,10 +188,13 @@ static void __init cma_activate_area(struct cma *cma)
->  
->  	/* Expose all pages to the buddy, they are useless for CMA. */
->  	if (!test_bit(CMA_RESERVE_PAGES_ON_ERROR, &cma->flags)) {
-> -		for (r = 0; r < allocrange; r++) {
-> +		for (r = 0; r < cma->nranges; r++) {
-> +			unsigned long start_pfn;
-> +
->  			cmr = &cma->ranges[r];
-> +			start_pfn = r < allocrange ? early_pfn[r] : cmr->early_pfn;
+Thanks for putting this together.
 
-Should this be r <= allocrange?
+Looking at the five commits:
 
+  - 1/5 (74afeb812850) is the one that actually fixes the ABBA
+    deadlock you observed under Syzkaller; it adds the generic vblank
+    timer that replaces the open-coded vkms hrtimer path.
 
-For the failing range, the loop above did:
+  - 2/5 (d54dbb5963bd) adds new CRTC helpers for "simple use cases".
+    No Fixes:/Cc:stable, no described bug.
 
-		early_pfn[allocrange] = cmr->early_pfn;
-		cmr->bitmap = bitmap_zalloc(cma_bitmap_maxno(cma, cmr),
-					    GFP_KERNEL);
-		if (!cmr->bitmap)
-			goto cleanup;
+  - 3/5 (02e2681ffe1a) is a refactor that converts vkms to the new
+    helpers. No Fixes:/Cc:stable, no described bug.
 
+  - 4/5 (79ae8510b5b8) is a v7.1-rc1 timeout bump that depends on 1/5.
+    It is not yet in any released stable, so applying it to 6.18.y
+    would put it on an LTS before any LTS contains it.
 
-Since cmr->bitmap and cmr->early_pfn share a union, that NULL store
-clobbers cmr->early_pfn to 0 for index allocrange.  With r < allocrange
-the failing range reads cmr->early_pfn (now 0) and free_reserved_page()
-gets called starting from pfn 0
+  - 5/5 (3946d3ba9934) is a doc fix for 1/5.
 
->  			end_pfn = cmr->base_pfn + cmr->count;
-> -			for (pfn = early_pfn[r]; pfn < end_pfn; pfn++)
-> +			for (pfn = start_pfn; pfn < end_pfn; pfn++)
->  				free_reserved_page(pfn_to_page(pfn));
->  		}
->  	}
-> 
-> base-commit: e98d21c170b01ddef366f023bbfcf6b31509fa83
-> -- 
-> 2.54.0
-> 
-> 
+Per stable-kernel-rules, what I need to queue is the minimum set that
+fixes the bug. Could you explain, per patch, why 2/5..5/5 are required
+to make 1/5 work / are required to actually fix the deadlock? If only
+1/5 is needed, please resend just that one with your Signed-off-by
+added (the carried patches today only have Thomas's S-o-b, which
+breaks the chain of custody on a stable submission).
+
+--
+Thanks,
+Sasha
 
