@@ -1,148 +1,136 @@
-Return-Path: <stable+bounces-254328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254327-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WJXHE3uJFWqGWQcAu9opvQ
-	(envelope-from <stable+bounces-254328-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 13:52:27 +0200
+	id 2MCuMGWJFWqGWQcAu9opvQ
+	(envelope-from <stable+bounces-254327-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 13:52:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAE435D52DF
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 13:52:26 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 392DE5D52B9
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 13:52:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 160553039886
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 11:51:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C3B5230300DE
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 11:51:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58DE33F6C2F;
-	Tue, 26 May 2026 11:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181243F7865;
+	Tue, 26 May 2026 11:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="oCmtTKVj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LOI6QCiK"
 X-Original-To: stable@vger.kernel.org
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86CE43B47F7
-	for <stable@vger.kernel.org>; Tue, 26 May 2026 11:51:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8593F58CE;
+	Tue, 26 May 2026 11:51:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779796300; cv=none; b=ilb/74Yy9hAK9iunAHUeIH3GYqnLpJxkmx9tJ9BzoL2ADOgvZlhBnuApKM6nN8Ll6CHEgvEborAOlCTKEekEpMR8loBROx5CbrEC1DZb4Vw3XfIwpP6kWDnkSRXJmMDX+rlCBNHWvzCpOG9jEjReNxyvxy4nZghbWaKWvURES6U=
+	t=1779796292; cv=none; b=WhE5Aw8JXLPXXPzu1uxZHNRXT2SIVc0Zxj75mpQ3s/r6htXXCEweU4m4BlmgPAanFPMYaWSrzAkJuyLLdBAO0KGXHKCEXEj30wvecPAMRcwOUtworHMQ/0BHZQjmNr4110m27K1AHEstODg8ZdDQp+Y1ln/Eiy2qW2w5YkxmsWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779796300; c=relaxed/simple;
-	bh=KeGWwolcFFEH6R7fa5T0IRDv6gq2FEjg9XB7oEUZrJk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=logk5By7i2Oi/uap55GIJmc4yoe4BHiwdEdz2Ur+aZkpg4FKqQWud+krdaTmEYjV039VgeATJVN4br6H2y1P7QH1ngc4dXcQWzSczhPvksXY2KToWRERrHyvLbIGWtqwH1/w1r7z0xIdVlOgGejPz6796KorgO7OtPC87HV7Wtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=oCmtTKVj; arc=none smtp.client-ip=91.218.175.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <6c51fabe-5524-4857-8f23-b351f5e63e10@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779796276;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=seoM7xwshPL+GdQa7xndfUCJxVw7uD12en9S/jPI/GI=;
-	b=oCmtTKVjd5G6szWT7UR5qToOxE5sP4P2xAdpHNVURpzolULiQ1BxKuqrQC90ioLiGxDx0A
-	weJ37QJhm3sjpt+XcY3weljsY+xetVNb0F+NvqeIv5hsDlUB4MfYpResfcaWxkgaAhGnTF
-	ZIOFvr+mOdRP2hXt6JYQ4C/7+LOVl/A=
-Date: Tue, 26 May 2026 12:51:09 +0100
+	s=arc-20240116; t=1779796292; c=relaxed/simple;
+	bh=XkUbvdXXFLoifUt0Q6vsljmpmzVFdVRttB13zX9CaBU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nSV6sYMM60NI8uOXsz91t8Ov//aixEtPdZWhoda/KMQezBH8GpOdWMGYx5lB6YPZxyDXFvFvxJPyb3JOjGJ/yICmNXI5PO8ILGbv3seNuUlT7VD1NS0LnTR48lcPYpKrY6s8ECfaBETePacFwEO6d6IYyf+XHma90wsX/XAltM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LOI6QCiK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23CA31F00A3A;
+	Tue, 26 May 2026 11:51:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779796283;
+	bh=Zf3nA9b/f6KJ6opNUnUvkbE1AyejuVsXjSNIH4NC8L4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=LOI6QCiKOPAi5/pvTmUe+J2ivE0RgADm3Y0EtHjTPaGbjdyK3F39dM8lmTJ0+htsT
+	 bjs4R63fzZ/knOCYKNHUWjgzWUqO6vafbf8ADs2CxSybZph9TzGY8xjlpGTtI3dnwZ
+	 1clkTKh04k7vKFdUCBnQbPNZ9RJRgO7RDo238EAsh+dVC2PgJvL2gSgr9GmbdV2Foo
+	 ssdlGwIWt0kbNAWZAWhorUkkTo8t9AxFG1DSvTxr++RAFU3bGXc82Koykb6BBS8567
+	 OVcH25v3KUnOT1RXQpbZi5cG8leYuqpDy3LcRsuiQve6wCa+3r1zsbxAFKUI/j9jgc
+	 TWWRH2RJoLUZA==
+Date: Tue, 26 May 2026 13:51:15 +0200
+From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Muchun Song <songmuchun@bytedance.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Frank van der Linden <fvdl@google.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	muchun.song@linux.dev
+Subject: Re: [PATCH] mm/cma: fix reserved page leak on activation failure
+Message-ID: <ahWJMwG8xoQli_Q0@localhost.localdomain>
+References: <20260522062658.4095405-1-songmuchun@bytedance.com>
+ <20260526113005.3610737-1-usama.arif@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] xfrm: move policy_bydst RCU sync from per-netns .exit to
- .pre_exit
-To: Steffen Klassert <steffen.klassert@secunet.com>, stable@vger.kernel.org
-Cc: davem@davemloft.net, edumazet@google.com,
- Herbert Xu <herbert@gondor.apana.org.au>, horms@kernel.org, kuba@kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
- alexanderduyck@fb.com, enewton@meta.com, vlad.wing@gmail.com
-References: <20260521102926.2613544-1-usama.arif@linux.dev>
- <ahV1BxasOuDHX7Zy@secunet.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <ahV1BxasOuDHX7Zy@secunet.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260526113005.3610737-1-usama.arif@linux.dev>
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[davemloft.net,google.com,gondor.apana.org.au,kernel.org,vger.kernel.org,redhat.com,fb.com,meta.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-254328-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-254327-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux.dev:+];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2600:3c04:e001:36c::12fc:5321:from];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[usama.arif@linux.dev,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[osalvador@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[100.90.174.1:received,100.103.45.18:received];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[100.90.174.1:received,91.218.175.184:received];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: DAE435D52DF
+X-Rspamd-Queue-Id: 392DE5D52B9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-
-
-On 26/05/2026 11:25, Steffen Klassert wrote:
-> On Thu, May 21, 2026 at 03:29:26AM -0700, Usama Arif wrote:
->> The struct pernet_operations docstring in include/net/net_namespace.h
->> explicitly warns against blocking RCU primitives in .exit handlers:
->>
->>     Exit methods using blocking RCU primitives, such as
->>     synchronize_rcu(), should be implemented via exit_batch.
->>     [...]
->>     Please, avoid synchronize_rcu() at all, where it's possible.
->>
->>     Note that a combination of pre_exit() and exit() can
->>     be used, since a synchronize_rcu() is guaranteed between
->>     the calls.
->>
->> xfrm_policy_fini() violates this: it calls synchronize_rcu() before
->> freeing the policy_bydst hash tables (so no RCU reader is mid-
->> traversal at free time), but runs from xfrm_net_ops.exit -- once per
->> namespace -- so a cleanup_net() of N namespaces pays N full RCU
->> grace periods serially.
->>
->> Use the documented pre_exit/exit split. Move the policy flush (and
->> the workqueue drains it depends on) into a new .pre_exit handler;
->> xfrm_policy_fini() then runs in .exit and frees the hash tables
->> after the synchronize_rcu_expedited() that cleanup_net() guarantees
->> between the two phases. Providing O(1) RCU grace periods per batch
->> instead of O(N).
->>
->> Observed on Linux 6.18 with a workload doing unshare(CLONE_NEWNET)
->> at ~13/sec sustained: cleanup_net() and the netns_wq rescuer kthread
->> both stuck in xfrm_policy_fini()'s synchronize_rcu(), >300k struct
->> net accumulated in the cleanup queue, Percpu in /proc/meminfo climbed
->> to 130+ GB on 256-CPU hosts, and memcg OOMs followed. setup_net and
->> __put_net counts were balanced, ruling out a refcount leak.
->>
->> Fixes: 069daad4f2ae ("xfrm: Wait for RCU readers during policy netns exit")
->> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+On Tue, May 26, 2026 at 04:30:03AM -0700, Usama Arif wrote:
+> On Fri, 22 May 2026 14:26:58 +0800 Muchun Song <songmuchun@bytedance.com> wrote:
+...
+> > diff --git a/mm/cma.c b/mm/cma.c
+> > index c7ca567f4c5c..a30075507d41 100644
+> > --- a/mm/cma.c
+> > +++ b/mm/cma.c
+> > @@ -188,10 +188,13 @@ static void __init cma_activate_area(struct cma *cma)
+> >  
+> >  	/* Expose all pages to the buddy, they are useless for CMA. */
+> >  	if (!test_bit(CMA_RESERVE_PAGES_ON_ERROR, &cma->flags)) {
+> > -		for (r = 0; r < allocrange; r++) {
+> > +		for (r = 0; r < cma->nranges; r++) {
+> > +			unsigned long start_pfn;
+> > +
+> >  			cmr = &cma->ranges[r];
+> > +			start_pfn = r < allocrange ? early_pfn[r] : cmr->early_pfn;
 > 
-> Applied, thanks Usama!
+> Should this be r <= allocrange?
 
+Yes, I think you are right. I missed that.
 
-Thanks! Forgot to cc stable@vger.kernel.org
+early_pfn[alloc_range] holds the last assignment, so we should start
+from the next one reading cmr->early_pfn.
 
-Adding it here 
+ 
+
+-- 
+Oscar Salvador
+SUSE Labs
 
