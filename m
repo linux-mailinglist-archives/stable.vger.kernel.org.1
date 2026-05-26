@@ -1,233 +1,222 @@
-Return-Path: <stable+bounces-254376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254377-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MKlQDRezFWpxYAcAu9opvQ
-	(envelope-from <stable+bounces-254376-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 16:49:59 +0200
+	id qIdHAdO0FWqLYQcAu9opvQ
+	(envelope-from <stable+bounces-254377-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 16:57:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB6015D7EB9
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 16:49:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96CE45D8244
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 16:57:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 06E67301481C
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 14:49:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C3E9B305EAB9
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 14:51:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 263EE3FF8BA;
-	Tue, 26 May 2026 14:49:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E98F3B4423;
+	Tue, 26 May 2026 14:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F+pEue8b"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sDxCOmCz"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA703FF89D;
-	Tue, 26 May 2026 14:49:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CC53FE375
+	for <stable@vger.kernel.org>; Tue, 26 May 2026 14:50:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779806988; cv=none; b=NVTtsONtbdZINo3hVgKf1kGsF4egAu4MUNSDyWiAohYT7gkAylKlzMgdZ83PwZc1OuDVGY9jNpvzCQvI1RqpAUyabXi6wib4dE0AWRPZWLcb3y/vk/h22PPXMAR37yY1+na62CiU1r7dOB2xm7Kz98yBbvfBjfq5pKR/1tFs+yQ=
+	t=1779807058; cv=none; b=OVl29J5p/eR+amY1JxJJRoHqBphnecm/CTAEnsxUa72XDeTzrBW06l/AOObFFDge1gB+cP0XuFAhC3NhAxbCituQoBzUwJ95HCUT/Znrr0CuyVtIzzBelSPR5mUof/iPPAeD2Yk3Q/Q1+xBRkAwmmcgmq5vo61dDkZ2tMWfrq2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779806988; c=relaxed/simple;
-	bh=qmIH6yVvgzOiB5JNQwghkQLv6udJEQZaAKStIOi2Yqw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FYg2e3lnWERMDkA9DngZXzT8APMn8XLpo3NmLYUZPmQep6euvvD54/M3TswGjvP3gHQrwhTQNDEOqTbZjjMD/+czToQ8I+iCkLHCGG9FfwQttNJpF3M3ZjBup+iPZwtRgW4QHkcaT2xYCq/YeR8KDz/D/HISmyHv1dg4YZtl9xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F+pEue8b; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779806987; x=1811342987;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=qmIH6yVvgzOiB5JNQwghkQLv6udJEQZaAKStIOi2Yqw=;
-  b=F+pEue8bofEsJey3OADSo/B4VEcUVtt831I9KEVsxbeLlFj6g+ApSk0I
-   VtaIwONpPKgWDr6WljcBzjLfAYByXxTrRzmutNan4hetSsB/Q0MH8ScW2
-   YhAQmRPnpND/SDHUrPljv6UvK3EUf6DkzTM4sH4wOmTlfwRtPn+rZ6gpZ
-   ywyRo8cVbMXEFtc6NDYvYlAewN4I33Y+DTmEO1KxXJjW6q6xCTMihoNLJ
-   +lt0SEnC2osfgTz7XSkrbrKS7lbYLn+9muXH7+i8OP6cOzGhAftjf+XL2
-   J0pes4BtXWe+Nym/XLPjFWFDNxyDd03NJ7YpRLEg/hHCkr1VP1ntce3Nk
-   A==;
-X-CSE-ConnectionGUID: 9qf8O7KPQaOARr7GR0tZkA==
-X-CSE-MsgGUID: nEQXMjP1R++t1I9Ne71JTw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11797"; a="80654000"
-X-IronPort-AV: E=Sophos;i="6.24,169,1774335600"; 
-   d="scan'208";a="80654000"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 07:49:46 -0700
-X-CSE-ConnectionGUID: axrAJN43RS+bv8s9lxfbew==
-X-CSE-MsgGUID: 9WiOfvFITTCrXI3tnTV9kw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,169,1774335600"; 
-   d="scan'208";a="272274178"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.182])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 07:49:42 -0700
-Date: Tue, 26 May 2026 17:49:39 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>,
-	Icenowy Zheng <zhengxingda@iscas.ac.cn>,
-	Maxime Ripard <mripard@kernel.org>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Sam Ravnborg <sam@ravnborg.org>, dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org, Icenowy Zheng <uwu@icenowy.me>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] drm/client: check whether CRTC is active before waiting
- for vblank
-Message-ID: <ahWzA50VEsJfbyuK@intel.com>
-References: <20260519092420.1124348-1-zhengxingda@iscas.ac.cn>
- <ee86cb43-e5df-4946-a957-931a73dde752@suse.de>
- <ahBWayIcQUHuAt4i@intel.com>
- <b4b2e8cb-dd7c-42c2-88b7-0a2ab95a90ee@suse.de>
- <ahBZ8nIqR4qESLZg@intel.com>
- <5fbcda92-f6b0-4de2-89e5-ea43a6248b05@suse.de>
- <ahCw9zakihaGHLsN@intel.com>
- <428be9d9-06f7-4bcb-807b-d351101c3c4b@linux.intel.com>
- <ahRA17a7JR2PVOuJ@intel.com>
- <ce002f59-50ae-451c-8904-0caf50f5eef5@linux.intel.com>
+	s=arc-20240116; t=1779807058; c=relaxed/simple;
+	bh=F5YMabiE8O+ywnrU305U0Znz0rgWJB8UF35MQVPj76k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HHFiD8uwGjK1z7T2VYNzWtA0YqJUBEerRaZEFZuO8U2XJdC01UN5uAhJyAEQRQi6RJ/Vrbng36Kkc8iRQMsX3hoIbSo8LFd1t1P2/HehKUY6tRuJVBf10ctuo+2gYXTaXXvi0DapzRznMFb9AFG00QEKeReOwYIsNm1ZClCqdGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sDxCOmCz; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-678a16429c6so1953006a12.1
+        for <stable@vger.kernel.org>; Tue, 26 May 2026 07:50:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779807054; x=1780411854; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=AjQZn0mYVYssmLLf8Ym16szY/Tz1EKrMNloBKoyB+kw=;
+        b=sDxCOmCzfmsYyApJVRTicHNKTJncmplELdx5V2OOUIMNYtSkx29uAHcwJxPe/Viq/z
+         CSAxuit3weSUfGUTy4cdvH4E7+wSj9nKEwyGwp4k5k9FpNMzTvzy42BWN+NDJ2UrT29J
+         JKfik4TN8gJnB7SP1GpHNrKRXujJrubP9QEYXLvkDWhuHj5m9iwfOhrI/KBMR7CqSv2f
+         HO2ND/+Yf0JbPabbju5QDM1RQi0Q/ocCWoSQCrt6NwcOS7X5S6OJc49jdNshfWYnS8OF
+         vwpIR960FbmKFRRqhky+htJSP+BYHJIJfMRYr2/bWxhphbZqywKgUrCr7B4s+CzDaec8
+         7ZSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779807054; x=1780411854;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AjQZn0mYVYssmLLf8Ym16szY/Tz1EKrMNloBKoyB+kw=;
+        b=rdqXxOuHOpRSBuAw0jLAYo05Qyj/2hClOAYIERxK3101Tf9cgUIyw4mUwnkgZJ9w/w
+         1ZUxZTAZr40eoQrHTsY9FbLmDLu8ErykQAU9WUo9hqcN6SemAZiCtjXZvW9WrwdPLACd
+         7N22D+KTgmQQKOD01pz2rQFgpyWPE92Tl4pmutw00SEqcGwNA4GJ8LBapKls62uvwCgz
+         U6uSE6UEIN4zsSoSoJmIQepPvPwR/xe41zqdrD3xsAI2ak+x4EpvgJw8gfR/ZOBBE98B
+         RYj0nUXNACKtdh1/H/CB2XAcUQcJJHlKt23hUR1UutqufoJaU7GvrLq7PFvnqnHzsDlO
+         LE/Q==
+X-Forwarded-Encrypted: i=1; AFNElJ8pce7J6c14b5AErCpbUvHHTKRZ0xNqM169gp5zuJTsgPda+syHjTwtV9BNb+OkzwSXmybQNL8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwkkMYoiBOxb9DtLTPEgg8XvBYk8ValHJMfRTulTAGedx9TU0gj
+	uAzEC0DXh1tlKoVGVevJGmEXoJAeMz8/BfYfGPxbQU2w8dluVGPQnJJv
+X-Gm-Gg: Acq92OH2Rk+UD4i02UAshvJqT5ioVFyXXURrQoN15MXOM0UZ37LLxmTN7jvk7WOQ35l
+	v60xFOr+X22rRedV+O1GFKpUGbIMkinNY3GOQwLfNf9RxmoQ1K/s8SMTQWMwURb41XI6KBhtMko
+	v2aL3SCoI1BrwGpn6rAI//MX/qXw8bFoy3rv/d7n9XNdcpwIzWHhoidmf+pFYwGQL7jXYz16wST
+	BxXaEt3fn/7lfA0L/Opa3s9kJlFAJYUTioL4+f3O5nJQniJSGn8edeRV/bLy38ppVdjORjlZaHq
+	pIV9QNQLcA26eN6RS11g+QIMIA+swfCWl8scM9SU9xoIII79Kh1bDXN6BeeqQHpS+1qW3ei09fz
+	CU83xdPiNYyiMRrkprDbqNwj7q9WgEFQbuB5Gsd9ABGkLHtFAX35vNNtRdSAFQ+6Cr8/mFCxzsH
+	bT/BLMjhy0Eqk0M0YUwFxRjZrC84EraqzgZ/hqEA07y04ujmhNTlRiwMBnHwCOXaPex4EybQobu
+	6OlbWboEEUhpf1haSxFoecplHykg4TeXeP0uTnOSv3ta585KRCjZ1039DZVj30=
+X-Received: by 2002:aa7:d859:0:b0:688:9b94:65e2 with SMTP id 4fb4d7f45d1cf-6889b94691bmr6352673a12.7.1779807053827;
+        Tue, 26 May 2026 07:50:53 -0700 (PDT)
+Received: from [10.109.92.22] (82-132-212-62.dab.02.net. [82.132.212.62])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-688b9b6d287sm5221421a12.6.2026.05.26.07.50.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 26 May 2026 07:50:52 -0700 (PDT)
+Message-ID: <f2026867-c0dd-4260-ba0b-b20a2eb9bce7@gmail.com>
+Date: Tue, 26 May 2026 15:50:47 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ce002f59-50ae-451c-8904-0caf50f5eef5@linux.intel.com>
-X-Patchwork-Hint: comment
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-X-Spamd-Result: default: False [-1.53 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: skbuff: fix missing zerocopy reference in
+ pskb_carve helpers
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ lazyming <minhnguyen.080505@gmail.com>, netdev@vger.kernel.org
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, w@1wt.eu, security@kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, achender@kernel.org,
+ mst@redhat.com, jasowang@redhat.com
+References: <20260521121628.309924-1-minhnguyen.080505@gmail.com>
+ <willemdebruijn.kernel.10f46164d2a79@gmail.com>
+ <willemdebruijn.kernel.27d7990b24613@gmail.com>
+ <willemdebruijn.kernel.1ddcb33fec832@gmail.com>
+ <willemdebruijn.kernel.9bf2a08cffd8@gmail.com>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <willemdebruijn.kernel.9bf2a08cffd8@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MIXED_CHARSET(0.63)[subject];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	HAS_ORG_HEADER(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[suse.de,iscas.ac.cn,kernel.org,gmail.com,ffwll.ch,ravnborg.org,lists.freedesktop.org,vger.kernel.org,icenowy.me];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254376-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254377-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[ville.syrjala@linux.intel.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[asmlsilence@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: CB6015D7EB9
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 96CE45D8244
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, May 26, 2026 at 01:14:55PM +0200, Maarten Lankhorst wrote:
-> Hey,
+On 5/25/26 16:31, Willem de Bruijn wrote:
+> Willem de Bruijn wrote:
+>> Willem de Bruijn wrote:
+>>> Willem de Bruijn wrote:
+>>>> lazyming wrote:
+>>>>> pskb_carve_inside_header() and pskb_carve_inside_nonlinear() both copy
+>>>>> the old skb_shared_info header into a new buffer via memcpy(), which
+>>>>> includes the destructor_arg pointer (uarg) for MSG_ZEROCOPY skbs.
+>>>>
+>>>> These functions are not supposed to maintain zerocopy frags.
+>>>>
+>>>> Both call skb_orphan_frags.
+>>>>
+>>>> I think what may need to happen is to invert the order of that call
+>>>> and the memcpy. Current code:
+>>>>
+>>>>          memcpy((struct skb_shared_info *)(data + size),
+>>>>                 skb_shinfo(skb), offsetof(struct skb_shared_info, frags[0]));
+>>>>          if (skb_orphan_frags(skb, gfp_mask)) {
+>>>>                  skb_kfree_head(data);
+>>>>                  return -ENOMEM;
+>>>>          }
+>>>
+>>> Never mind. This actually corresponds to the first Sashiko report you
+>>> mentioned: if zerocopy skbs are converted, then the memcpy prior to
+>>> that call will have stale state.
+>>>
+>>> For skbs where skb_orphan_frags does not do a deep copy, we do need to
+>>> take this extra reference.
+>>>
+>>> Reviewed-by: Willem de Bruijn <willemb@google.com>
+>>
+>> Not sure the potential preexisting issue is reachable.
+>>
+>> Vhost-net and other zerocopy that predates MSG_ZEROCOPY does not
+>> refcount ubuf_info. Instead it calls skb_copy_ubufs on skb_clone.
+>>
+>> So if such an skb reaches pskb_expand_head, it should be guaranteed to
+>> not be a clone. Same for the carve methods added later.
+>>
+>> But, the commit that added zerocopy, commit a6686f2f382b
+>> ("skbuff: skb supports zero-copy buffers"), included this
+>> pksb_expand_head call to skb_copy_ubufs from the start. That implies
+>> that was expected to be reachable. I just don't see how yet.
+>>
+>> If it is reachable, then all that is needed is to clear shinfo->flags.
+>> Or more neatly,
+>>
+>>      skb_shinfo(skb)->flags &= ~SKBFL_ALL_ZEROCOPY;
 > 
-> Den 2026-05-25 kl. 14:30, skrev Ville Syrjälä:
-> > On Mon, May 25, 2026 at 10:13:57AM +0200, Maarten Lankhorst wrote:
-> >> Hey,
-> >>
-> >> Den 2026-05-22 kl. 21:39, skrev Ville Syrjälä:
-> >>> On Fri, May 22, 2026 at 03:43:26PM +0200, Thomas Zimmermann wrote:
-> >>>> Hi
-> >>>>
-> >>>> Am 22.05.26 um 15:28 schrieb Ville Syrjälä:
-> >>>> [...]
-> >>>>>>>> But why does your HW use CRTC 1 in the first place.
-> >>>>>>> Could be eg. the enabled outputs can't be driven with CRTC 0.
-> >>>>>>>
-> >>>>>>> I guess what you want to do is pick the first crtc from modesets[]
-> >>>>>>> which is enabled. Or perhaps even "pick the Nth enabled crtc from
-> >>>>>>> modesets[] based on the ioctl argument".
-> >>>>>> The enable-status of each CRTC could change later on, which might lead
-> >>>>>> to problems.
-> >>>>> Sound like a locking issue if someone is changing the configuration
-> >>>>> at the same time we're trying to do the vblank wait here.
-> >>>>
-> >>>> I mean that the connected outputs could change at a later point or we 
-> >>>> could have multiple CRTCs in use. Today, someone in #intel-gfx reported 
-> >>>> a problem with panning if multiple CRTCs are in use.
-> >>>>
-> >>>> Therefore picking a CRTC freely could be a problem. Let's say we 
-> >>>> configure modes from one CRTC, but later wait/pan/flush with another 
-> >>>> CRTC. I would not trust this to work correctly.
-> >>>>
-> >>>> Hence, my suggestion is to select a primary CRTC during the fbdev 
-> >>>> client's probe and use it for all later operations until the next probe 
-> >>>> happens.  All other CRTCs would mirror the primary one.
-> >>>
-> >>> Actual mirroring may not be possible due to different modes supported
-> >>> on each output. The whole multi-output fbdev thing in the drm fb helper
-> >>> is kind of a hack that's rather hard to make work 100% sensibly.
-> >>>
-> >>> For the panning possibly the only sensible thing is to use the max of
-> >>> hdisplay/vdisplay of all the crtcs as the xres/yres so it's clear
-> >>> how much things can actually be panned. Oh and tiled displays (assuming
-> >>> we would actually want the fbdev stuff to tile correctly) make the
-> >>> situation even more complicated. I think the current support for tiled
-> >>> displays in the fb helper is semi-busted.´
-> >>
-> >> I tested fbdev on a tiled DP-MST monitor.
-> >> It works better than my kwin's wayland compositor, as it detects both tiles
-> >> and presents a single image spanning both tiles.
-> > 
-> > IIRC we've occasionally seen cases where it picks a non-tiled mode
-> > on the primary connector, and also still enables the second tile.
-> > 
-> >> Kwin sees both as separate
-> >> monitors.
-> >>
-> >> I still see vertical tearing between both tiles, so it would be nice if
-> >> intel/display would support atomic updates for both crtc's directly.
-> >>
-> >> The code's already there for bigjoiner, just needs to do the same for
-> >> tile joiner updates when all tiled crtc's are in the atomic update.
-> > 
-> > We don't have any special code for atomic updates with joiner
-> > currently. It just happens to work most of the time.
-> > 
-> > With joiner the pipes will be in sync/phase, so that helps a bit.
-> > But we do also try to make the pipes in sync/phase also for tiled
-> > display via the use of the port sync. So if you see a difference
-> > in tearing between joiner vs. tiled then that likely means the
-> > problem is in userspace (as in it submits separate commits for
-> > each tile).
-> 
-> The only thing kernel should do is if crtc 1 and 2 are part of a
-> commit and in sync is to perform the same as bigjoiner updates for
-> crtc 1 & 2 simultaneously.
+> Also, I'm not the expert on more recent managed frags
+> (SKBFL_MANAGED_FRAG_REFS).
 
-Nothing is performed simultaneously for joiner either. The only thing
-that is guaranteed is that the joined pipes are updated back to back,
-because the pipes are always consecutive. If you have consecutive pipes
-used for a tiled display (or the pipes in between are not part of the
-commit) then there is zero difference between joiner vs. tiled display
-commit.
+For that one, pages are guaranteed to be alive as long as the
+ubuf_info is not destroyed, hence we don't hold per shinfo
+refs. IOW, the lifetime of the pages is bound to the ubuf_info.
 
+> That calls skb_zcopy_downgrade_managed in pskb_expand_head, but not in
+> the two other functions with memcpy before skb_copy_ubufs:
+> pskb_carve_inside_header and pskb_carve_inside_nonlinear.
 > 
-> That shouldn't be too much to ask from the kernel, and not hard to
-> implement.
+> I assume because those shorten the skb, so no risk of getting mixed
+> mode refcounted and non-refcounted frags?
+
+ From a quick glance, if reachable, they should "downgrade", otherwise
+they leak pages. The new data inherits SKBFL_MANAGED_FRAG_REFS and
+ubuf_info but takes additional references with skb_frag_ref(). I'll
+take a closer look.
+
+> In general zerocopy can be split in refcounted and non-refcounted.
 > 
+> Refcounted zerocopy will not downgrade in these cases, so will not
+> modify shinfo->flags after memcpy.
 > 
-> > I have occasionally pondered about hiding the tiled display stuff
-> > completely from userspace and handling it in the kernel the same
-> > was as joiner. But the problem is that we'd also need to cook up
-> > a new EDID for the display that combines both tiles, and we'd
-> > still need the second connector to be enabled internally (and 
-> > hide that fact from userspace). None of that code exists
-> > currently and wouldn't be entirely trivial to implement.
-> > 
+> Non-refcounted should always get converted to copy in skb_clone,
+> so will not enter the skb_cloned() branch here.
+> 
+> If in doubt maybe warrants a rare WARN_ON_ONCE patch.
 
 -- 
-Ville Syrjälä
-Intel
+Pavel Begunkov
+
 
