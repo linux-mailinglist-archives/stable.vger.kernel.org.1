@@ -1,276 +1,149 @@
-Return-Path: <stable+bounces-254392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254393-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4O7wJmjKFWqQbgcAu9opvQ
-	(envelope-from <stable+bounces-254392-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 18:29:28 +0200
+	id 2IveJj/IFWpNbQcAu9opvQ
+	(envelope-from <stable+bounces-254393-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 18:20:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A006C5D9B52
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 18:29:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B2C25D98F3
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 18:20:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B2FD5304E967
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 16:14:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E61B230406A4
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 16:17:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56E403B0AE9;
-	Tue, 26 May 2026 16:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E108D3B1034;
+	Tue, 26 May 2026 16:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GJt0uat0"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="Mc3LCoEV"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F1837F739;
-	Tue, 26 May 2026 16:13:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779812033; cv=fail; b=gfad6qkPDs+R9J2jTnr8z4cMJhoLPy+WrDCLWyhZxq8+uEaWmHIDmzO+xXF+x1RjhnBpbMNDeX9R7jSxzmnZKJznDcNai5qWaEJY6Oupwj50n6wwG5A1nW4yAK3SBXwmaEfxBdLo3Bi03SRsV+KgQettTRzqC09uxkn6XzlMZzI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779812033; c=relaxed/simple;
-	bh=133CtybARFZhuydgUo/i/QmU00Fn1C1jU1+RlEl90H0=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=F38LoN9mxv8I2phgCenrDEF4W6LqZIhwF956AgeKcA6psuCwooUJ2T0fl+Lj4x2QKlRbseRCGFrrP1tgZ79GTtRDEVKwp+U5N38mWyouiVb5kwKsRMAPLbl5rm5Cro+euS5VL5CSsNvdbdgzuq5QPkfp3HrCy/JyDOCLx/lrAHo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GJt0uat0; arc=fail smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779812031; x=1811348031;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=133CtybARFZhuydgUo/i/QmU00Fn1C1jU1+RlEl90H0=;
-  b=GJt0uat0KhvDCjG4P+9ESMuP7cgNzyII8dNI9w5sEKzklQYUDljEZW09
-   pMbK+URg0d0Z8crZkN7FVFlfNX9SfF5hBpK5O9GeWdQOtCzew9S6X8Hz2
-   42B58I/WxJhlfQ8xdETyKqwuoHIuK2DOGRYGCAQHZ2+FEOxGcI1zJL9eX
-   qTmQ6Do8ricJSVFci166fPAlZ4epPqpaIfpXaslHhWcvJWGgTuGr1Cd4n
-   hRXQT6JiJy+0n7fQVfWCdibVvNlQneCrbugQIw54Yzinv7sgpjw9GI7AL
-   u7XQDxjhAOMIE6cU2PODbAuhqODc/Rro9KiP1n4Bs/sI5Di6DCgNLFFtl
-   g==;
-X-CSE-ConnectionGUID: +PO9sLE/QEeKCmkboaHxDg==
-X-CSE-MsgGUID: UnFI6FQOTN617Dc0ZFQCPg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11797"; a="68153668"
-X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
-   d="scan'208";a="68153668"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 09:13:50 -0700
-X-CSE-ConnectionGUID: cqzTjLnRTZ6NKTdughKzPw==
-X-CSE-MsgGUID: JV3IKk75SbunTnAyyhdV+w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
-   d="scan'208";a="247046904"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 09:13:50 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 26 May 2026 09:13:49 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Tue, 26 May 2026 09:13:49 -0700
-Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.22) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 26 May 2026 09:13:49 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AOvZBpHT5nI/HD+F+Ys06L3O2OOj/ZneTVDj349ZeN5XIbZ34qwZ8DSrGUN/WMlJEpD5JbC4pHuoN8QySgSJGGxPayEbS7rowJsw/Xc+LD8hKfwiELmemjYKXSnFuMWdyv6m6s3BZKBwCzajPQfVOeBKboefIDKrMyP7XEwuyhsp1M4qRbMHBtpXQDkAY1/w6apCgaQGFpAylnk2528YmYM8vDuNoUl7UTOgV0zsWSRv5NaPRMA6BEe0KUGXHIY+r205Xy2BnfTwNoWIs1ipw3wF0PWFpRAH95WhFwkRBwFPQ1Xm6ReuL+dem/J3qPL5jnoGsTHRxgVb7w9AMldefA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1X14pi8QK11VEB++slEscBPVJtvLYtEH8NO8yjwxMb0=;
- b=I+l590/YU4JUJBpb7I9/N/M29hbk6rshZTtisp6ULh58doHc4pa4SXlIGZw9dDczjb6yGZwOEfS+Ifu0nxaoFGTxC/tVB6kF53DoheMsqRKtfb+yY/j7smA9K/CdLqFsHpFKf5uxolJCyccgIoGBNmat6ZvDehKcwteVDo5VZ11WlQC7Pg4sAv1H2EuUN/XVrrM/k734GaeB/WQjMKKModNI+lqu47VV1UvpF0AoSnOXAPPKFBGLKt93RcNUyE4R/YsKFmkOnluaByLEFyrGtw8MLUDa4djO7OGFjsAaJnX/obvJ/GzxszE5CpFKcypwKE8+hCXdkH+qDbhAepni4g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB8718.namprd11.prod.outlook.com (2603:10b6:8:1b9::20)
- by SJ0PR11MB5053.namprd11.prod.outlook.com (2603:10b6:a03:2af::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.11; Tue, 26 May
- 2026 16:13:47 +0000
-Received: from DS0PR11MB8718.namprd11.prod.outlook.com
- ([fe80::6aa:411d:4bfa:619c]) by DS0PR11MB8718.namprd11.prod.outlook.com
- ([fe80::6aa:411d:4bfa:619c%5]) with mapi id 15.21.0071.011; Tue, 26 May 2026
- 16:13:47 +0000
-Message-ID: <7145a02d-88c4-4065-b436-90a8159ec868@intel.com>
-Date: Tue, 26 May 2026 18:13:40 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mac802154: llsec: add skb_cow_data() before in-place
- crypto
-To: Doruk Tan Ozturk <doruk@0sec.ai>
-CC: <alex.aring@gmail.com>, <stefan@datenfreihafen.org>,
-	<miquel.raynal@bootlin.com>, <linux-wpan@vger.kernel.org>,
-	<security@kernel.org>, <netdev@vger.kernel.org>, <stable@vger.kernel.org>
-References: <20260525161806.96158-1-doruk@0sec.ai>
-Content-Language: en-US
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
-In-Reply-To: <20260525161806.96158-1-doruk@0sec.ai>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VI1PR10CA0120.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:803:28::49) To DS0PR11MB8718.namprd11.prod.outlook.com
- (2603:10b6:8:1b9::20)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783E93AFAF5;
+	Tue, 26 May 2026 16:17:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779812245; cv=none; b=OCaH8RlHAeyGaTmQ6b6E7ph4aN0ZqEaliBfhI6CLFR22UuFQjEpWaZzEEziDMrD5c977hoiKWzTMC26FMwfCdi1cL0A5AaiHRDcqREoWBRNUW6CHeTon/aXEO7XG0ZxIu3o6z96mbig/a9rrP8PEG200ntXtc0w65vWj7eoE0Bc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779812245; c=relaxed/simple;
+	bh=B1fXvmrxn+xJ9dJrYlmoayWeTadZmztpSQlgKjR61xU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CtT2EhCPlbtA7ghyFUAnF+1yrYyDHBmf4xjqkVo6TNFV4lgHi68JMMEngo/i5mb3Dez1BCM72jF3ZVUnG+3Ze32CjAWJvJttcNFSWhr8iSJ6gp72a+d6NxteEiLgqEx3UzJQexjOQR7U2C6IbG2siHpk3R8hc7+13l3qX4qUVY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=Mc3LCoEV; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from killaraus.ideasonboard.com (unknown [146.0.28.163])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 1C3FD1176;
+	Tue, 26 May 2026 18:17:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1779812224;
+	bh=B1fXvmrxn+xJ9dJrYlmoayWeTadZmztpSQlgKjR61xU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Mc3LCoEV01D+bMLgGQYxAEDMoYrGepDuJiX+BlMhJ2dqnEff7bVB3QpffALLttQCo
+	 N3qLoojUVsJzoNvuPwBW+/xMAOmtljRiUiNuzEifLtsNAYhHHSHGV2eXFero9Yj9D2
+	 BZtiPDyQCnZ+ZEkUeIcjwSDtX+7lPtbLfwPfXrMo=
+Date: Tue, 26 May 2026 18:17:21 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Hans Verkuil <hverkuil@kernel.org>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v12 1/2] media: dt-bindings: nxp,imx8-isi: Drop
+ fsl,blk-ctrl requirement for i.MX8ULP
+Message-ID: <20260526161721.GF228394@killaraus.ideasonboard.com>
+References: <20260424-csi2_imx8ulp-v12-0-da148eabc035@oss.nxp.com>
+ <20260424-csi2_imx8ulp-v12-1-da148eabc035@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB8718:EE_|SJ0PR11MB5053:EE_
-X-MS-Office365-Filtering-Correlation-Id: b1503c9c-0456-4c33-9e41-08debb41c3df
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|11063799006|3023799007|18002099003|22082099003|56012099006;
-X-Microsoft-Antispam-Message-Info: oXLybI7Nqii+H0395UH/csp+6zmPxS/FHxMk6QnStDv8v7mToScjDMvbB+jlmutfhBFpIIczDl11y1cIER2DyOleDCUCO6jXswqbmOaszsafcg/ZHw5zUmdUyu3yzylYhsfc3Px1u50bF9gT1YfQfdl1ZngKAumh2sW105u5f+BCympJxP/edGJCrZDtTQeni2tCmuVDUmQsViui+gL2PicTtneltM6vG+XlSIKAdW3G/hpk+GqoFAG41ckHcie2WYHuNoO+IbYXScY9Mny1zzgiOPAbX3+Qy7ikaRbqVZe858ELmd++9CkBRjN/Cpz+3vm3/XIbAj/+3LoG8HjVQndfnpNEYSxoYWv4rKQJYagPuu5lAihQk/2+lt9FchoFeEOEINlgjTqhRwZNpxG3PoacfsW2AO9zpPCKN6xl3MjSACBsVKNCjme/VI26ZwgJhwI6NHpAJuzziOBNy81X2mfAQE4JPnWRWtc/qeAsIyUIUqGmSd9oTCqBvsX9n8XxgCam1aUC/b9XhLik4zxNfkvpAJHqENbDFEXhXO1fzDByezQepD3+1dMgpfbjIAzeAMRvJXINHyc1Vod76NYWgx5Zaa9a1NU/Ru+F+5O3wiiOjF90UGjTqT+y3yQErjq0NSGmf2xZwAd8DKONZpdfOll4OcaxJzC1BcoZlt1/YxL7Nb+5nNEGAJEaxbtNo3gFnMXGiBuAHopDk7ldPUw2ew==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8718.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(11063799006)(3023799007)(18002099003)(22082099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YTkvZ2U5dFZEMGZyR0k3Rzh5am5tSnJOc3d2VWM3dzNjV1ByM0F0emN6VDRG?=
- =?utf-8?B?WG1TQjYybDZKT3R3ZHUwV1hIZnQ3MFZRNXVQbHdaRTM2TFhoOTdvMGMzdTZq?=
- =?utf-8?B?akJnK2xobGZIQ1NhK0d5K2FQRmh2bzRVTmozT3hTdW5sK3pWSUlPUlVxRWQ2?=
- =?utf-8?B?TDIxR0dzQlN0bnQxc3FNOXZSQW9UWkRmZHdIb0NJSmJ2cGtmaW05TmlhZUgx?=
- =?utf-8?B?RStSaHBVaTcwc2xtTFNTMTEyWkI1a1Y0NjBlMWx4aTBrcGMxMWRiN2pCN3pZ?=
- =?utf-8?B?elZ3MFU4UGxyOCs1M2toLzExVkUrRVhEc05XR1U3UU9uWHc0eDNYTWduTzR4?=
- =?utf-8?B?REVFMmdnb3IrOUVmcXAzdjQ4YURrNFhmbkFBZlNidkZ1a0dmbWF1Q2E4c3ZG?=
- =?utf-8?B?dnQ5U0pQS1NXVFRkUVY1L0l5RWhrRjBFRkFLek8wRWRER09nelZkR3ovZFdt?=
- =?utf-8?B?RDhhdzlYV2lrUzg3UExWT1JRMVFZeGNnelRqa1NNSmtQR05RSjNCUERTem9J?=
- =?utf-8?B?RWZiT1NGT2dsOExmekpHNXhPVTFBM3Q3VXVqU0NCS2pTTmR3bVBFRGxncW1Z?=
- =?utf-8?B?ZnZnMlJSdkhSTVRraFM3THNzRXRBRG84NTBaNUl3aGtDaitVUDQra2lpRUls?=
- =?utf-8?B?Rkw2MzZudUNMeGJpSmt6bllyTGN6RUFCZDU2NFNESkJKYlNkVVhhMjRDbnk0?=
- =?utf-8?B?WXp1VHA5a0FDbDhBUmpPV3g0WXRXbjVKN1RiUnE1MFpSWUx0Mml1Y2t4L1VE?=
- =?utf-8?B?Y0h1SWRmUzFJZWgxeTI4bkc1NG1mQ1JFZUt3eUM3OWNpQjA0Um5mbGdRQVdk?=
- =?utf-8?B?RlJUMGVQVkxQb3VvbHpWUzliQmNuMFJJZzVJMUVHTnNXeHFYY0QyQjd0Rkt1?=
- =?utf-8?B?UExNUm1VeFo0WXZ6Y1huN2FNUDRYaGdhTzk0MU9IZG0rdlZFVVBxd2JjTHJ0?=
- =?utf-8?B?L05kUjlSRE9iSVgzN3ZPWk5yNklBcTJHVEJPbGNqcG1nekZHRGYxOGVzOEFz?=
- =?utf-8?B?czh3U290QzgxUmVQN2oxSk9SSjM0TWN5ZnE2dllpN2xZa1lLS2hCNkNCVndz?=
- =?utf-8?B?VkFpemJGWmpJN2s4MmRYbzJqUXJmTlMxV1hQV1pzQkRqQmUxVnpxc1ppZkR6?=
- =?utf-8?B?c0lQejdaUmNzZDZWbWlZMFY3b0JydEhWcHdzWWF5eHNOSG85S2tJV01BaXlE?=
- =?utf-8?B?dFF2VGd4ZFdSM0U1aU10RXVHT213RjFCMzNqb2NMeFp0cFBQMkdXQmRISjVS?=
- =?utf-8?B?cHIvZ1lIQmlCa2FZSUlnSDAzVHNkSkZtUzBEeW4rNmU3WFNDY0FlcDM1bU15?=
- =?utf-8?B?YkFianJScFpoMHdGdDJhSmVvTjIzSDRwdjZHY3I5NnRJSmpubnl4TE5Lbkhi?=
- =?utf-8?B?djZHWFBPU0sxTjFKN05mYUhVWlM0ZThpRVdpeDFFRmEveWt2c0VYVStPb3VB?=
- =?utf-8?B?WXhraXNWajJxUTdHVjdIdVhBWnZpazY2K0RLR05BVUljL3ZNNU1VT1hCRXlD?=
- =?utf-8?B?WHZFcWIrZGxOTlhyQTRhYnlUTXVCK28zMkhJOGxsdGNpaVNyQXNVNDZFM2J4?=
- =?utf-8?B?L2NRcGlMTnZ2eDRlYjVRR2lqWmNaZlF0UmxrQkI4aDhnaFlhdEppZ1RxcFYz?=
- =?utf-8?B?dGZ1WFVNa05TQy9waU5INzgxem5pbGhlK0xNdFBKMzkxWDlYNWllSTlDOHpT?=
- =?utf-8?B?YVAzTXJhYWlwWW5MQWNzcHlwQ3lWcWZ0YmJwS05GeTArbU1TNEtjRjJvSEtW?=
- =?utf-8?B?Q0EzZ1lKa0QzS2ZMMEU3Y0Z1ZWRJMTZJRDd2WVlvdU1rL0xTS29CenlxUzU1?=
- =?utf-8?B?am1CSWpxb3BwWkZtT3ozL1pkdFN5VC8vYkZlVnJCdkhQOWhBbHNRVXIyekY5?=
- =?utf-8?B?dHlkSnMxMXdiTkxwUEhmcVZsTmxPcVJVWHpMVlV1V0RWZS9Xb1JRWTAxUWRH?=
- =?utf-8?B?M3QzblF6VWVvQ1d6Mkl3cS9DcWdXb090NTBVblZhTlZtZ09DcWtQOWFvVksy?=
- =?utf-8?B?QUMzemV1ZEZRc0dTOFhQSE1CODRxU3J5L1pTNHRrYVJZTGloekxsclg5SFBB?=
- =?utf-8?B?ajgyYitjLzdCak9YTDZpbkduZ2ZEb3U5eFFUM1ZmazVlTjhmdEczZ2toQnpZ?=
- =?utf-8?B?dE9RQS9YWnVZeFQwUUdxTkl2T3RSTGtNL1NMQnd1QWNreFcyQUpPUitIRFUx?=
- =?utf-8?B?UG05Q2U0ejdBYWdiNktRTEFScHpEVWk1YWFSR3V2VlpnSnMrc3BhTFdqRjND?=
- =?utf-8?B?ci9mSkdGZ3QzeE03RUdJZTBNdkFMZEdjQmFTcEx2Ylc5a3B5cWZkU3h1ckoy?=
- =?utf-8?B?U3FEZHhOK2pSbGhlQ2NBbWNWblJaRUdBSW9TM3BuWGdsTlJPOWNwbE9ITVk5?=
- =?utf-8?Q?LpMKvrvjldZIpP/4=3D?=
-X-Exchange-RoutingPolicyChecked: pKg3VzKgrxfRHNOhMTLmMILaj2PfHuDxlorwQ6RcjOp6Q9jAywVxV/Z+pqFkJmVk+80NpAPH0xkSxNX9+b4jyFAeaKcCRHXl5n8mNbdrD65egXR6g/ytRgFfPeMRPCSgOhnASNOPUZdIulDt65jDTg8KmDKPZDdlWoTQRa+QPADgcI3twwsGYy8bsHboMfMa9TPExjoSBFtu//iQVD06FPuWPnwUq1tLQjxKR4rK3UqDm2+CvzeHc9/ad+/c8s3hxlKRtdNAsAYP+Xx3eFEG9fmrA76Q9C+Co3P87dWgXPYQfGvB3dMTVtTFisSKcrs3fpgGG8HizFGkZk8gdsu3NA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: b1503c9c-0456-4c33-9e41-08debb41c3df
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8718.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 May 2026 16:13:46.9509
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3oe2j6re/ZRtPipQrio0RV7QfAbnCALt9vzONaXKMGwhnuNndhx5T3AOAvP42ux4XdqZN9dUXN5CR8Hum4/hneTVdxpVVNYIqjR5HP0WcEY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5053
-X-OriginatorOrg: intel.com
-X-Spamd-Result: default: False [1.34 / 15.00];
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260424-csi2_imx8ulp-v12-1-da148eabc035@oss.nxp.com>
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
+	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,datenfreihafen.org,bootlin.com,vger.kernel.org,kernel.org];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:mid,intel.com:dkim,0sec.ai:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo];
+	TAGGED_FROM(0.00)[bounces-254393-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254392-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,nxp.com,pengutronix.de,gmail.com,vger.kernel.org,lists.linux.dev,lists.infradead.org];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[aleksander.lobakin@intel.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: A006C5D9B52
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[laurent.pinchart@ideasonboard.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[ideasonboard.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,dt];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,ideasonboard.com:email,ideasonboard.com:dkim]
+X-Rspamd-Queue-Id: 1B2C25D98F3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Doruk Tan Ozturk <doruk@0sec.ai>
-Date: Mon, 25 May 2026 18:18:06 +0200
+Hi Guoniu,
 
-> [PATCH] mac802154: llsec: add skb_cow_data() before in-place crypto
+Thank you for the patch.
 
-Pls mark as "PATCH net".
-
-> llsec_do_encrypt_unauth(), llsec_do_encrypt_auth(),
-> llsec_do_decrypt_unauth(), and llsec_do_decrypt_auth() all perform
-> in-place cryptographic transformations on skb data.  They build a
-> scatterlist with sg_init_one() pointing into the skb's linear data area
-> and then pass the same scatterlist as both src and dst to the crypto API
-> (e.g. crypto_skcipher_encrypt/decrypt, crypto_aead_encrypt/decrypt).
+On Fri, Apr 24, 2026 at 02:49:50PM +0800, Guoniu Zhou wrote:
+> The i.MX8ULP variant does not require the fsl,blk-ctrl property. Add
+> fsl,imx8ulp-isi to the exception list alongside fsl,imx91-isi.
 > 
-> On the RX path, __ieee802154_rx_handle_packet() clones the received skb
-> before handing it to each subscriber via ieee802154_subif_frame().  The
-> cloned skb shares the same underlying data buffer via reference
-> counting.  When llsec_do_decrypt() subsequently modifies this shared
-> buffer in place, it corrupts data that other clones -- potentially
-> belonging to other sockets or subsystems -- still reference.
-> 
-> On the TX path, similar data sharing can occur when an skb's head has
-> been cloned (skb_cloned() returns true).
-> 
-> The fix is to call skb_cow_data() before performing any in-place crypto
-> operation.  skb_cow_data() ensures that the skb's data area is not
-> shared: if the skb head is cloned or the data spans multiple fragments,
-> it copies the data into a private buffer that can be safely modified in
-> place.  This is the same pattern used by:
-> 
->   - ESP (net/ipv4/esp4.c, net/ipv6/esp6.c)
->   - MACsec (drivers/net/macsec.c)
->   - WireGuard (drivers/net/wireguard/receive.c)
->   - TIPC (net/tipc/crypto.c)
-> 
-> Without this guard, in-place crypto on shared skb data leads to:
->   - Silent data corruption of other skb clones
->   - Use-after-free when the crypto API scatterwalk writes through a
->     page that has already been freed by another clone's kfree_skb()
->   - Kernel crashes under concurrent 802.15.4 traffic with security
->     enabled (KASAN/KMSAN reports slab-use-after-free)
-> 
-> This vulnerability was identified using 0sec.ai, an open-source
-> automated security auditing platform (https://github.com/0sec-labs).
-> 
-> Fixes: 4c14a2fb5d14 ("mac802154: add llsec decryption method")
-> Fixes: 03556e4d0dbb ("mac802154: add llsec encryption method")
+> Fixes: 288517a3c6c9 ("dt-bindings: media: nxp,imx8-isi: Add i.MX8ULP ISI compatible string")
 > Cc: stable@vger.kernel.org
-> Reported-by: Doruk Tan Ozturk <doruk@0sec.ai>
+> Signed-off-by: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
 
-Did you report this on LKML? If so, you should add
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-Closes: <link to your mail on lore>
+> ---
+> Changes in v12:
+> - New added in v12
+> ---
+>  Documentation/devicetree/bindings/media/nxp,imx8-isi.yaml | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/media/nxp,imx8-isi.yaml b/Documentation/devicetree/bindings/media/nxp,imx8-isi.yaml
+> index b59c4ce30b8b..279c9cd3034a 100644
+> --- a/Documentation/devicetree/bindings/media/nxp,imx8-isi.yaml
+> +++ b/Documentation/devicetree/bindings/media/nxp,imx8-isi.yaml
+> @@ -117,7 +117,9 @@ allOf:
+>          compatible:
+>            not:
+>              contains:
+> -              const: fsl,imx91-isi
+> +              enum:
+> +                - fsl,imx8ulp-isi
+> +                - fsl,imx91-isi
+>      then:
+>        required:
+>          - fsl,blk-ctrl
 
-right after the Reported-by.
+-- 
+Regards,
 
-> Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
-Other than that,
-
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-
-Thanks,
-Olek
+Laurent Pinchart
 
