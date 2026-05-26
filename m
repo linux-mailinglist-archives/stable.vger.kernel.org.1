@@ -1,163 +1,147 @@
-Return-Path: <stable+bounces-254426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254427-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OOy5MGzrFWogfAcAu9opvQ
-	(envelope-from <stable+bounces-254426-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 20:50:20 +0200
+	id wDwZHFXsFWogfAcAu9opvQ
+	(envelope-from <stable+bounces-254427-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 20:54:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B7E95DB90B
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 20:50:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67B6B5DB996
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 20:54:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2F6053019103
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 18:50:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 69E2B30344C4
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 18:54:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AEC73BFE2E;
-	Tue, 26 May 2026 18:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA1433C0639;
+	Tue, 26 May 2026 18:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="peaLySlH"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="oqsssk50"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9681DED49;
-	Tue, 26 May 2026 18:50:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305A733BBD7
+	for <stable@vger.kernel.org>; Tue, 26 May 2026 18:54:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779821417; cv=none; b=nBpuwYLPN+L0K7F1TNhTEMGAiLzzkZbWpksEn8lEGcKYroGmMxXkAJGuf+RXpkGJR4dA9qZLNicuWOBOcHXVBS9wM0XTFeomRBkMDv3IYYUwD6vJSbt/nqZWPbqrKFTdFpDEn2A1Vm/eLH2ZW7pQq0HZbVVNuNs+ECrzcnclo5U=
+	t=1779821650; cv=none; b=ZoVkp4YeqFu0I2DVmOlIyNdO+Bx/+/SltMCiq/bsa/IOWcIuqkI/PK080vAASOWDs17dOJvjycsF1+bhdU4Nq1BYG0xXyTVyYmbn2GZFibi3LPThRMaE+qgXmnqtKOGveulGMkJvUfd46UkA9FGBxz5I51rHCNKwvXAZJj3QJSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779821417; c=relaxed/simple;
-	bh=xOXrgx/QcDXGaQa3npDlnYZI42ZSV9MlFT9UmBCQrq4=;
-	h=Date:To:From:Subject:Message-Id; b=dr+yg/rexDtYUgz0u9Gu4NyKb34h7fBigoJzEfdEpSb5yV0CMgGcJf8T6omPrPtEb+SejkmqYZWStuZjpqFrssTu/LdU+Wiv2d2PpaGxgWIMB+piHiRBhwPmR1evF7HOB75ZRWC1O8foZesje9QiO3UmdG28BWkk6Z5Q/ETot7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=peaLySlH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC6A1F00A3D;
-	Tue, 26 May 2026 18:50:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1779821416;
-	bh=BH+zKlUABN2HrDgz32xxEgnZRuZrUUE03D6HUP/hnvA=;
-	h=Date:To:From:Subject;
-	b=peaLySlH7X1pxYHCuGMokLF+tQWe9ytay+JMWGLUcw6qWdSLHhYN4MWxB7khtvAIW
-	 WrIMom2MmUE1suHi+aGGNmB1TO8lyk52BscK03zTYCdL3D3FQ9yYZ8sY1y/rV8bb8+
-	 jwP17GXCeXlOt9Ssm2RKVW5eCrCn+pysRAyXbBAE=
-Date: Tue, 26 May 2026 11:50:15 -0700
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,yang.shi@linux.alibaba.com,wangkefeng.wang@huawei.com,vbabka@kernel.org,stable@vger.kernel.org,ryan.roberts@arm.com,npache@redhat.com,ljs@kernel.org,liam@infradead.org,lance.yang@linux.dev,dev.jain@arm.com,david@kernel.org,chenjun102@huawei.com,baolin.wang@linux.alibaba.com,baohua@kernel.org,yintirui@huawei.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-huge_memory-update-file-pmd-counter-before-folio_put.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260526185016.3AC6A1F00A3D@smtp.kernel.org>
+	s=arc-20240116; t=1779821650; c=relaxed/simple;
+	bh=FGzY0YZgR8w2b7dguwl2gBPZNAvUDtOzbOTH4ScfDGA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ryD5hEXmPmqVJ7MgE8BdTPXpcfqzL1wR0mIPp094CmlvrmBuhXit7xrJb6GG5kQ5dlOHRcevyU2/AHoIfHGvGpWwGDamjaYsbPtfdYQk0meIiXmbpkNAfjZudqt38UNNXwL7EUqq5wn3vhmIDjkJnmwio7qUjmWR4yw93Ya6ytM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=oqsssk50; arc=none smtp.client-ip=91.218.175.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <d8be2a57-c950-46c2-b9d8-120b6e53da91@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779821645;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=K3Yznr35imLD78iltYGodRDSkRLN1y+2M8xTF22MycQ=;
+	b=oqsssk50FituQxco+7g6Pay5nenbdkws/tioe59bGvqYH3CpgNFF7mxxyVB9myqiIHjfQj
+	1VwHS93IJPStk2MRBix+/PazEeLyM6rfx9ArxiX68Rzm4pJifqwTAqKbIIgVLG8z+uPvWn
+	xLpXd2s1XaQvsvv2xZ+mTu8K7ruOGE0=
+Date: Tue, 26 May 2026 20:54:02 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+MIME-Version: 1.0
+Subject: Re: [PATCH] block: blk-zoned: fix zwplug refcount leak on write error
+ path
+To: Wentao Liang <vulab@iscas.ac.cn>, Jens Axboe <axboe@kernel.dk>,
+ Damien Le Moal <dlemoal@kernel.org>
+Cc: linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260526141824.2293025-1-vulab@iscas.ac.cn>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Haris Iqbal <haris.iqbal@linux.dev>
+In-Reply-To: <20260526141824.2293025-1-vulab@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254426-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-254427-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linux.dev:+];
 	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[haris.iqbal@linux.dev,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 5B7E95DB90B
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: 67B6B5DB996
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch titled
-     Subject: mm/huge_memory: update file PMD counter before folio_put()
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-huge_memory-update-file-pmd-counter-before-folio_put.patch
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-huge_memory-update-file-pmd-counter-before-folio_put.patch
+On 5/26/26 16:18, Wentao Liang wrote:
+> blk_zone_wplug_handle_write() increments zwplug->ref via kref_get()
+> when preparing to handle a zone write. On the error path where
+> blk_zone_wplug_handle_write_noalloc() fails, the function returns
+> without calling kref_put() on zwplug->ref, leaking the reference.
+> 
+> Add kref_put(&zwplug->ref, ...) on the error path to properly release
+> the reference.
+> 
+> Fixes: dd291d77cc90 ("block: Introduce zone write plugging")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+> ---
+>   block/blk-zoned.c | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/block/blk-zoned.c b/block/blk-zoned.c
+> index 42ef830054dc..24b899663a48 100644
+> --- a/block/blk-zoned.c
+> +++ b/block/blk-zoned.c
+> @@ -1503,6 +1503,7 @@ static bool blk_zone_wplug_handle_write(struct bio *bio, unsigned int nr_segs)
+>   
+>   	if (!blk_zone_wplug_prepare_bio(zwplug, bio)) {
+>   		spin_unlock_irqrestore(&zwplug->lock, flags);
+> +		disk_put_zone_wplug(zwplug);
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+I am not sure if this is needed. The code above adds the 
+BIO_ZONE_WRITE_PLUGGING flag to the bio, which means the 
+blk_zone_write_plug_bio_endio would be called which should then call 
+disk_put_zone_wplug.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+I do wonder if there are special cases when blk_zone_bio_endio is not 
+called.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Yin Tirui <yintirui@huawei.com>
-Subject: mm/huge_memory: update file PMD counter before folio_put()
-Date: Tue, 26 May 2026 18:13:37 +0800
-
-__split_huge_pmd_locked() updates the file/shmem RSS counter after
-dropping the PMD mapping's folio reference.  If folio_put() drops the last
-reference, mm_counter_file() can later read freed folio state via
-folio_test_swapbacked().
-
-Move the counter update before folio_put().
-
-Link: https://lore.kernel.org/20260526101337.1984081-1-yintirui@huawei.com
-Fixes: fadae2953072 ("thp: use mm_file_counter to determine update which rss counter")
-Signed-off-by: Yin Tirui <yintirui@huawei.com>
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-Acked-by: David Hildenbrand (arm) <david@kernel.org>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Chen Jun <chenjun102@huawei.com>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Yang Shi <yang.shi@linux.alibaba.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/huge_memory.c |    2 ++
- 1 file changed, 2 insertions(+)
-
---- a/mm/huge_memory.c~mm-huge_memory-update-file-pmd-counter-before-folio_put
-+++ a/mm/huge_memory.c
-@@ -3133,7 +3133,9 @@ static void __split_huge_pmd_locked(stru
- 			if (!folio_test_referenced(folio) && pmd_young(old_pmd))
- 				folio_set_referenced(folio);
- 			folio_remove_rmap_pmd(folio, page, vma);
-+			add_mm_counter(mm, mm_counter_file(folio), -HPAGE_PMD_NR);
- 			folio_put(folio);
-+			return;
- 		}
- 		add_mm_counter(mm, mm_counter_file(folio), -HPAGE_PMD_NR);
- 		return;
-_
-
-Patches currently in -mm which might be from yintirui@huawei.com are
-
-mm-huge_memory-update-file-pud-counter-before-folio_put.patch
-mm-huge_memory-update-file-pmd-counter-before-folio_put.patch
+>   		bio_io_error(bio);
+>   		return true;
+>   	}
+> @@ -1511,6 +1512,7 @@ static bool blk_zone_wplug_handle_write(struct bio *bio, unsigned int nr_segs)
+>   	zwplug->flags |= BLK_ZONE_WPLUG_PLUGGED;
+>   
+>   	spin_unlock_irqrestore(&zwplug->lock, flags);
+> +	disk_put_zone_wplug(zwplug);
+>   
+>   	return false;
+>   
 
 
