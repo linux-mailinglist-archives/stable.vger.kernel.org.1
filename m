@@ -1,178 +1,276 @@
-Return-Path: <stable+bounces-254391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254392-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CBw8NibMFWqQbgcAu9opvQ
-	(envelope-from <stable+bounces-254391-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 18:36:54 +0200
+	id 4O7wJmjKFWqQbgcAu9opvQ
+	(envelope-from <stable+bounces-254392-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 18:29:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45AED5D9CDD
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 18:36:53 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A006C5D9B52
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 18:29:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6942F30B6F3E
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 16:10:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B2FD5304E967
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 16:14:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3B8C3AEF46;
-	Tue, 26 May 2026 16:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56E403B0AE9;
+	Tue, 26 May 2026 16:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VqgC/fMR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GJt0uat0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com [209.85.221.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 187E93AEF3B
-	for <stable@vger.kernel.org>; Tue, 26 May 2026 16:10:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779811805; cv=none; b=FDiLQshehahSJKPf9eXmz6ZyudKUdqT57ilGO6CMsgBO+LySSXnhvBZy6bmNF39Rjt61SQs7Dj3ctzKjAsbBPc/B7Un5fECtkeOuvQ1J8VhXkT4SxvlW3cxzhpn4sAzh6bzXV1JL2TpeN79GIdZGhFTRo1droAvUj3rhPQ69UxY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779811805; c=relaxed/simple;
-	bh=CtU3eZ1/9ucFeiYFj1sbRvl27Q7jFnsviC59r78Kot0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TsFbJuHYr/iN9clfr4/drmFqmoPqCwyTCZaynrpmQtbAffrCTVi3uq3pvONmNIdGVXgFyhjqtHot7DJbYYlMeNRH4z6nM5KP/3WT12WYZcJFPH5GkaaJOB6MRiGEP0+AxVVu4+r73e5rGoOKlpH0d21CvAXhIj9DOx60rqymNr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VqgC/fMR; arc=none smtp.client-ip=209.85.221.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-57746f02da7so7128200e0c.3
-        for <stable@vger.kernel.org>; Tue, 26 May 2026 09:10:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779811803; x=1780416603; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ar+gEVufB/yu7goDjk5NwqRP0XutqMUX6lN4uW/AcuU=;
-        b=VqgC/fMR+Wl9RYZNsSHL58z/xeCtKMJY+vKMV8wn6KudG2u0gxcoQ6w/iBdu8QT/az
-         5sWLs5nCRaIyHCL3zZZESqbgT9PfDhd3tNgZJSw2FIgvguZTq7yZx7hCzeXkioy2vDwL
-         /qb2sWrDA87XOiTeWPgtKqFr4cdMYL/YRPmM2wJ8X6lfoYXvHx32uDtWIsxqt7rJX9nq
-         N0oy2zzwFjiyMqn8RSe4DIjNQpOHzTKjP4hoxZPUcTS2VFlCLSGMyQEMcP0aQ7shBybD
-         yXGa+L+kj47UwhZH6OJQ/YtEvTGGPfk066paD4pdLYDcrUgdao7NWz1gclWzRTyUpLfb
-         3sAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779811803; x=1780416603;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ar+gEVufB/yu7goDjk5NwqRP0XutqMUX6lN4uW/AcuU=;
-        b=eiDTWizE02v6oQ6UB9Xa/LH+NysYnlNkkE1PO6ukIQNby40CT3T7eO1i7C1G3G7I92
-         6yPNlMXqskSru7IidmDSiMFktv4mlzhwRCvBPP/i58lu17AlCoXFX/CKuPDoVy1jtT0V
-         8efxfwEbSO9p6glx8LoNaFh2aW2/BgkA8QP33Btaj0IyIzDx/BB/dh7h0zjaRY0lT6Il
-         zv9YDG6bHkw13zMdoE8FiGHgSUa9RUO/bkbFTEynZCHzo+MISqFItn8YU8DrO2IHU3WF
-         xSyiDD57FW2p05kh2oHbcDRTDJjyKK0maAxo0mglTberhGUw4VTD7hWvu9YRrfDB7/oZ
-         iMFA==
-X-Forwarded-Encrypted: i=1; AFNElJ+fhNrENVMlSrHSIioH9ZLnQpDSGvssx8PPjUJPg2HsYE6l9/nKZ2DsFGjILVG0y7ntu5vd/qE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFb0dp2Tt/JJCtEsrHs7YuAm7s90WlaXEkoQFPgfLou9XUl+wK
-	Za+761CjAMdfSQm5/YqP+FeGZAF8JkkLpYMvcCCuhLEK1AWCzc5OoTvr
-X-Gm-Gg: Acq92OGCZtymz8ZpT5PfzaXCcOHsSiYS5BgLum7nFAEyLc7YHp1UbFtnr/4CJCFUedv
-	Sx9It8tmme1toIcrZdtNjmNdxSRnwKWP2iHGQIpkzapDare+yAvL7GFKL6CSdmixzWprlsZX9ii
-	8kYHwF0fPukshv8Z3Mu0UJc8nHAVg5Yt+Y6jPqg2bKt/QSTJR6ALPPv0JGY3l/U+pqldBFBIPoy
-	7Rjrne78r4tHTDOHK6oWfeljztVdx+J9sJKqOcuNyKGZB80lC4gbzzWs6qiuZqGIzQxdJjwCLwm
-	aqU0zDONLFJupEF8q8/OMrb3x/6DDWYDkW+KSohQ4P5fgh4aWOt+Yk5m3b5jp2cONw7OuuovjZO
-	zOrO4VI1ZLL1FRTS5fRNURo3jknqnQPST0SbqsnOqsvWxgYz0H5UtID/sTK+tVaoq7hRTKhJPxi
-	54p7SofBgK335kTz6IRSWcJWxG3eAem4f28uJyEcm1Z0DEVxuR+Zg22JdlJcDB0eKgidbQvQjWt
-	MVg8amD0vfsGmX29R4oeKMxIyk5Bxw4HIFxb0HzA3JYsVVEFIt8TQ==
-X-Received: by 2002:a05:6122:4d12:b0:56f:22ad:f5c9 with SMTP id 71dfb90a1353d-5865ee6c06bmr10259762e0c.2.1779811802895;
-        Tue, 26 May 2026 09:10:02 -0700 (PDT)
-Received: from sekiura-Standard-PC-i440FX-PIIX-1996.. ([186.122.244.96])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-586f2f791d1sm16704173e0c.5.2026.05.26.09.10.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 May 2026 09:10:02 -0700 (PDT)
-From: Takao Sato <takaosato1997@gmail.com>
-To: netdev@vger.kernel.org
-Cc: steffen.klassert@secunet.com,
-	w@1wt.eu,
-	davem@davemloft.net,
-	herbert@gondor.apana.org.au,
-	chopps@chopps.org,
-	pfalcato@suse.de,
-	stable@vger.kernel.org,
-	Takao Sato <takaosato1997@gmail.com>
-Subject: [PATCH net v5] xfrm: iptfs: preserve shared-frag marker in iptfs_consume_frags()
-Date: Tue, 26 May 2026 13:09:57 -0300
-Message-ID: <20260526160957.1497109-1-takaosato1997@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F1837F739;
+	Tue, 26 May 2026 16:13:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779812033; cv=fail; b=gfad6qkPDs+R9J2jTnr8z4cMJhoLPy+WrDCLWyhZxq8+uEaWmHIDmzO+xXF+x1RjhnBpbMNDeX9R7jSxzmnZKJznDcNai5qWaEJY6Oupwj50n6wwG5A1nW4yAK3SBXwmaEfxBdLo3Bi03SRsV+KgQettTRzqC09uxkn6XzlMZzI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779812033; c=relaxed/simple;
+	bh=133CtybARFZhuydgUo/i/QmU00Fn1C1jU1+RlEl90H0=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=F38LoN9mxv8I2phgCenrDEF4W6LqZIhwF956AgeKcA6psuCwooUJ2T0fl+Lj4x2QKlRbseRCGFrrP1tgZ79GTtRDEVKwp+U5N38mWyouiVb5kwKsRMAPLbl5rm5Cro+euS5VL5CSsNvdbdgzuq5QPkfp3HrCy/JyDOCLx/lrAHo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GJt0uat0; arc=fail smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779812031; x=1811348031;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=133CtybARFZhuydgUo/i/QmU00Fn1C1jU1+RlEl90H0=;
+  b=GJt0uat0KhvDCjG4P+9ESMuP7cgNzyII8dNI9w5sEKzklQYUDljEZW09
+   pMbK+URg0d0Z8crZkN7FVFlfNX9SfF5hBpK5O9GeWdQOtCzew9S6X8Hz2
+   42B58I/WxJhlfQ8xdETyKqwuoHIuK2DOGRYGCAQHZ2+FEOxGcI1zJL9eX
+   qTmQ6Do8ricJSVFci166fPAlZ4epPqpaIfpXaslHhWcvJWGgTuGr1Cd4n
+   hRXQT6JiJy+0n7fQVfWCdibVvNlQneCrbugQIw54Yzinv7sgpjw9GI7AL
+   u7XQDxjhAOMIE6cU2PODbAuhqODc/Rro9KiP1n4Bs/sI5Di6DCgNLFFtl
+   g==;
+X-CSE-ConnectionGUID: +PO9sLE/QEeKCmkboaHxDg==
+X-CSE-MsgGUID: UnFI6FQOTN617Dc0ZFQCPg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11797"; a="68153668"
+X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
+   d="scan'208";a="68153668"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 09:13:50 -0700
+X-CSE-ConnectionGUID: cqzTjLnRTZ6NKTdughKzPw==
+X-CSE-MsgGUID: JV3IKk75SbunTnAyyhdV+w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
+   d="scan'208";a="247046904"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 09:13:50 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 26 May 2026 09:13:49 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Tue, 26 May 2026 09:13:49 -0700
+Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.22) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 26 May 2026 09:13:49 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AOvZBpHT5nI/HD+F+Ys06L3O2OOj/ZneTVDj349ZeN5XIbZ34qwZ8DSrGUN/WMlJEpD5JbC4pHuoN8QySgSJGGxPayEbS7rowJsw/Xc+LD8hKfwiELmemjYKXSnFuMWdyv6m6s3BZKBwCzajPQfVOeBKboefIDKrMyP7XEwuyhsp1M4qRbMHBtpXQDkAY1/w6apCgaQGFpAylnk2528YmYM8vDuNoUl7UTOgV0zsWSRv5NaPRMA6BEe0KUGXHIY+r205Xy2BnfTwNoWIs1ipw3wF0PWFpRAH95WhFwkRBwFPQ1Xm6ReuL+dem/J3qPL5jnoGsTHRxgVb7w9AMldefA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1X14pi8QK11VEB++slEscBPVJtvLYtEH8NO8yjwxMb0=;
+ b=I+l590/YU4JUJBpb7I9/N/M29hbk6rshZTtisp6ULh58doHc4pa4SXlIGZw9dDczjb6yGZwOEfS+Ifu0nxaoFGTxC/tVB6kF53DoheMsqRKtfb+yY/j7smA9K/CdLqFsHpFKf5uxolJCyccgIoGBNmat6ZvDehKcwteVDo5VZ11WlQC7Pg4sAv1H2EuUN/XVrrM/k734GaeB/WQjMKKModNI+lqu47VV1UvpF0AoSnOXAPPKFBGLKt93RcNUyE4R/YsKFmkOnluaByLEFyrGtw8MLUDa4djO7OGFjsAaJnX/obvJ/GzxszE5CpFKcypwKE8+hCXdkH+qDbhAepni4g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB8718.namprd11.prod.outlook.com (2603:10b6:8:1b9::20)
+ by SJ0PR11MB5053.namprd11.prod.outlook.com (2603:10b6:a03:2af::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.11; Tue, 26 May
+ 2026 16:13:47 +0000
+Received: from DS0PR11MB8718.namprd11.prod.outlook.com
+ ([fe80::6aa:411d:4bfa:619c]) by DS0PR11MB8718.namprd11.prod.outlook.com
+ ([fe80::6aa:411d:4bfa:619c%5]) with mapi id 15.21.0071.011; Tue, 26 May 2026
+ 16:13:47 +0000
+Message-ID: <7145a02d-88c4-4065-b436-90a8159ec868@intel.com>
+Date: Tue, 26 May 2026 18:13:40 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mac802154: llsec: add skb_cow_data() before in-place
+ crypto
+To: Doruk Tan Ozturk <doruk@0sec.ai>
+CC: <alex.aring@gmail.com>, <stefan@datenfreihafen.org>,
+	<miquel.raynal@bootlin.com>, <linux-wpan@vger.kernel.org>,
+	<security@kernel.org>, <netdev@vger.kernel.org>, <stable@vger.kernel.org>
+References: <20260525161806.96158-1-doruk@0sec.ai>
+Content-Language: en-US
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
+In-Reply-To: <20260525161806.96158-1-doruk@0sec.ai>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: VI1PR10CA0120.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:803:28::49) To DS0PR11MB8718.namprd11.prod.outlook.com
+ (2603:10b6:8:1b9::20)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB8718:EE_|SJ0PR11MB5053:EE_
+X-MS-Office365-Filtering-Correlation-Id: b1503c9c-0456-4c33-9e41-08debb41c3df
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|11063799006|3023799007|18002099003|22082099003|56012099006;
+X-Microsoft-Antispam-Message-Info: oXLybI7Nqii+H0395UH/csp+6zmPxS/FHxMk6QnStDv8v7mToScjDMvbB+jlmutfhBFpIIczDl11y1cIER2DyOleDCUCO6jXswqbmOaszsafcg/ZHw5zUmdUyu3yzylYhsfc3Px1u50bF9gT1YfQfdl1ZngKAumh2sW105u5f+BCympJxP/edGJCrZDtTQeni2tCmuVDUmQsViui+gL2PicTtneltM6vG+XlSIKAdW3G/hpk+GqoFAG41ckHcie2WYHuNoO+IbYXScY9Mny1zzgiOPAbX3+Qy7ikaRbqVZe858ELmd++9CkBRjN/Cpz+3vm3/XIbAj/+3LoG8HjVQndfnpNEYSxoYWv4rKQJYagPuu5lAihQk/2+lt9FchoFeEOEINlgjTqhRwZNpxG3PoacfsW2AO9zpPCKN6xl3MjSACBsVKNCjme/VI26ZwgJhwI6NHpAJuzziOBNy81X2mfAQE4JPnWRWtc/qeAsIyUIUqGmSd9oTCqBvsX9n8XxgCam1aUC/b9XhLik4zxNfkvpAJHqENbDFEXhXO1fzDByezQepD3+1dMgpfbjIAzeAMRvJXINHyc1Vod76NYWgx5Zaa9a1NU/Ru+F+5O3wiiOjF90UGjTqT+y3yQErjq0NSGmf2xZwAd8DKONZpdfOll4OcaxJzC1BcoZlt1/YxL7Nb+5nNEGAJEaxbtNo3gFnMXGiBuAHopDk7ldPUw2ew==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8718.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(11063799006)(3023799007)(18002099003)(22082099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YTkvZ2U5dFZEMGZyR0k3Rzh5am5tSnJOc3d2VWM3dzNjV1ByM0F0emN6VDRG?=
+ =?utf-8?B?WG1TQjYybDZKT3R3ZHUwV1hIZnQ3MFZRNXVQbHdaRTM2TFhoOTdvMGMzdTZq?=
+ =?utf-8?B?akJnK2xobGZIQ1NhK0d5K2FQRmh2bzRVTmozT3hTdW5sK3pWSUlPUlVxRWQ2?=
+ =?utf-8?B?TDIxR0dzQlN0bnQxc3FNOXZSQW9UWkRmZHdIb0NJSmJ2cGtmaW05TmlhZUgx?=
+ =?utf-8?B?RStSaHBVaTcwc2xtTFNTMTEyWkI1a1Y0NjBlMWx4aTBrcGMxMWRiN2pCN3pZ?=
+ =?utf-8?B?elZ3MFU4UGxyOCs1M2toLzExVkUrRVhEc05XR1U3UU9uWHc0eDNYTWduTzR4?=
+ =?utf-8?B?REVFMmdnb3IrOUVmcXAzdjQ4YURrNFhmbkFBZlNidkZ1a0dmbWF1Q2E4c3ZG?=
+ =?utf-8?B?dnQ5U0pQS1NXVFRkUVY1L0l5RWhrRjBFRkFLek8wRWRER09nelZkR3ovZFdt?=
+ =?utf-8?B?RDhhdzlYV2lrUzg3UExWT1JRMVFZeGNnelRqa1NNSmtQR05RSjNCUERTem9J?=
+ =?utf-8?B?RWZiT1NGT2dsOExmekpHNXhPVTFBM3Q3VXVqU0NCS2pTTmR3bVBFRGxncW1Z?=
+ =?utf-8?B?ZnZnMlJSdkhSTVRraFM3THNzRXRBRG84NTBaNUl3aGtDaitVUDQra2lpRUls?=
+ =?utf-8?B?Rkw2MzZudUNMeGJpSmt6bllyTGN6RUFCZDU2NFNESkJKYlNkVVhhMjRDbnk0?=
+ =?utf-8?B?WXp1VHA5a0FDbDhBUmpPV3g0WXRXbjVKN1RiUnE1MFpSWUx0Mml1Y2t4L1VE?=
+ =?utf-8?B?Y0h1SWRmUzFJZWgxeTI4bkc1NG1mQ1JFZUt3eUM3OWNpQjA0Um5mbGdRQVdk?=
+ =?utf-8?B?RlJUMGVQVkxQb3VvbHpWUzliQmNuMFJJZzVJMUVHTnNXeHFYY0QyQjd0Rkt1?=
+ =?utf-8?B?UExNUm1VeFo0WXZ6Y1huN2FNUDRYaGdhTzk0MU9IZG0rdlZFVVBxd2JjTHJ0?=
+ =?utf-8?B?L05kUjlSRE9iSVgzN3ZPWk5yNklBcTJHVEJPbGNqcG1nekZHRGYxOGVzOEFz?=
+ =?utf-8?B?czh3U290QzgxUmVQN2oxSk9SSjM0TWN5ZnE2dllpN2xZa1lLS2hCNkNCVndz?=
+ =?utf-8?B?VkFpemJGWmpJN2s4MmRYbzJqUXJmTlMxV1hQV1pzQkRqQmUxVnpxc1ppZkR6?=
+ =?utf-8?B?c0lQejdaUmNzZDZWbWlZMFY3b0JydEhWcHdzWWF5eHNOSG85S2tJV01BaXlE?=
+ =?utf-8?B?dFF2VGd4ZFdSM0U1aU10RXVHT213RjFCMzNqb2NMeFp0cFBQMkdXQmRISjVS?=
+ =?utf-8?B?cHIvZ1lIQmlCa2FZSUlnSDAzVHNkSkZtUzBEeW4rNmU3WFNDY0FlcDM1bU15?=
+ =?utf-8?B?YkFianJScFpoMHdGdDJhSmVvTjIzSDRwdjZHY3I5NnRJSmpubnl4TE5Lbkhi?=
+ =?utf-8?B?djZHWFBPU0sxTjFKN05mYUhVWlM0ZThpRVdpeDFFRmEveWt2c0VYVStPb3VB?=
+ =?utf-8?B?WXhraXNWajJxUTdHVjdIdVhBWnZpazY2K0RLR05BVUljL3ZNNU1VT1hCRXlD?=
+ =?utf-8?B?WHZFcWIrZGxOTlhyQTRhYnlUTXVCK28zMkhJOGxsdGNpaVNyQXNVNDZFM2J4?=
+ =?utf-8?B?L2NRcGlMTnZ2eDRlYjVRR2lqWmNaZlF0UmxrQkI4aDhnaFlhdEppZ1RxcFYz?=
+ =?utf-8?B?dGZ1WFVNa05TQy9waU5INzgxem5pbGhlK0xNdFBKMzkxWDlYNWllSTlDOHpT?=
+ =?utf-8?B?YVAzTXJhYWlwWW5MQWNzcHlwQ3lWcWZ0YmJwS05GeTArbU1TNEtjRjJvSEtW?=
+ =?utf-8?B?Q0EzZ1lKa0QzS2ZMMEU3Y0Z1ZWRJMTZJRDd2WVlvdU1rL0xTS29CenlxUzU1?=
+ =?utf-8?B?am1CSWpxb3BwWkZtT3ozL1pkdFN5VC8vYkZlVnJCdkhQOWhBbHNRVXIyekY5?=
+ =?utf-8?B?dHlkSnMxMXdiTkxwUEhmcVZsTmxPcVJVWHpMVlV1V0RWZS9Xb1JRWTAxUWRH?=
+ =?utf-8?B?M3QzblF6VWVvQ1d6Mkl3cS9DcWdXb090NTBVblZhTlZtZ09DcWtQOWFvVksy?=
+ =?utf-8?B?QUMzemV1ZEZRc0dTOFhQSE1CODRxU3J5L1pTNHRrYVJZTGloekxsclg5SFBB?=
+ =?utf-8?B?ajgyYitjLzdCak9YTDZpbkduZ2ZEb3U5eFFUM1ZmazVlTjhmdEczZ2toQnpZ?=
+ =?utf-8?B?dE9RQS9YWnVZeFQwUUdxTkl2T3RSTGtNL1NMQnd1QWNreFcyQUpPUitIRFUx?=
+ =?utf-8?B?UG05Q2U0ejdBYWdiNktRTEFScHpEVWk1YWFSR3V2VlpnSnMrc3BhTFdqRjND?=
+ =?utf-8?B?ci9mSkdGZ3QzeE03RUdJZTBNdkFMZEdjQmFTcEx2Ylc5a3B5cWZkU3h1ckoy?=
+ =?utf-8?B?U3FEZHhOK2pSbGhlQ2NBbWNWblJaRUdBSW9TM3BuWGdsTlJPOWNwbE9ITVk5?=
+ =?utf-8?Q?LpMKvrvjldZIpP/4=3D?=
+X-Exchange-RoutingPolicyChecked: pKg3VzKgrxfRHNOhMTLmMILaj2PfHuDxlorwQ6RcjOp6Q9jAywVxV/Z+pqFkJmVk+80NpAPH0xkSxNX9+b4jyFAeaKcCRHXl5n8mNbdrD65egXR6g/ytRgFfPeMRPCSgOhnASNOPUZdIulDt65jDTg8KmDKPZDdlWoTQRa+QPADgcI3twwsGYy8bsHboMfMa9TPExjoSBFtu//iQVD06FPuWPnwUq1tLQjxKR4rK3UqDm2+CvzeHc9/ad+/c8s3hxlKRtdNAsAYP+Xx3eFEG9fmrA76Q9C+Co3P87dWgXPYQfGvB3dMTVtTFisSKcrs3fpgGG8HizFGkZk8gdsu3NA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: b1503c9c-0456-4c33-9e41-08debb41c3df
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8718.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 May 2026 16:13:46.9509
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3oe2j6re/ZRtPipQrio0RV7QfAbnCALt9vzONaXKMGwhnuNndhx5T3AOAvP42ux4XdqZN9dUXN5CR8Hum4/hneTVdxpVVNYIqjR5HP0WcEY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5053
+X-OriginatorOrg: intel.com
+X-Spamd-Result: default: False [1.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[gmail.com,datenfreihafen.org,bootlin.com,vger.kernel.org,kernel.org];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:mid,intel.com:dkim,0sec.ai:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[secunet.com,1wt.eu,davemloft.net,gondor.apana.org.au,chopps.org,suse.de,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-254391-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254392-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[takaosato1997@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_NEQ_ENVFROM(0.00)[aleksander.lobakin@intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 45AED5D9CDD
+	RCVD_COUNT_SEVEN(0.00)[10]
+X-Rspamd-Queue-Id: A006C5D9B52
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-iptfs_consume_frags() transfers paged fragments from one socket buffer
-to another but fails to propagate the SKBFL_SHARED_FRAG flag. This is
-the same class of bug that was fixed in skb_try_coalesce() for
-CVE-2026-46300: when fragments backed by read-only page-cache pages are
-merged, the marker indicating their shared nature must be preserved so
-that ESP can decide correctly whether in-place encryption is safe.
+From: Doruk Tan Ozturk <doruk@0sec.ai>
+Date: Mon, 25 May 2026 18:18:06 +0200
 
-Apply the same two-line fix used in skb_try_coalesce() to
-iptfs_consume_frags().
+> [PATCH] mac802154: llsec: add skb_cow_data() before in-place crypto
 
-Fixes: b96ba312e21c ("xfrm: iptfs: share page fragments of inner packets")
-Cc: stable@vger.kernel.org # 6.14+
-Signed-off-by: Takao Sato <takaosato1997@gmail.com>
----
-Changes since v4:
-- Rebased onto the ipsec tree, as requested by Steffen Klassert. No
-  functional changes; only the diff context was regenerated.
+Pls mark as "PATCH net".
 
-Changes since v3:
-- Corrected Cc: stable tag from "# 6.8+" to "# 6.14+". IPTFS was
-  introduced in v6.14, so earlier stable branches do not need this
-  fix. Pointed out by Pedro Falcato.
+> llsec_do_encrypt_unauth(), llsec_do_encrypt_auth(),
+> llsec_do_decrypt_unauth(), and llsec_do_decrypt_auth() all perform
+> in-place cryptographic transformations on skb data.  They build a
+> scatterlist with sg_init_one() pointing into the skb's linear data area
+> and then pass the same scatterlist as both src and dst to the crypto API
+> (e.g. crypto_skcipher_encrypt/decrypt, crypto_aead_encrypt/decrypt).
+> 
+> On the RX path, __ieee802154_rx_handle_packet() clones the received skb
+> before handing it to each subscriber via ieee802154_subif_frame().  The
+> cloned skb shares the same underlying data buffer via reference
+> counting.  When llsec_do_decrypt() subsequently modifies this shared
+> buffer in place, it corrupts data that other clones -- potentially
+> belonging to other sockets or subsystems -- still reference.
+> 
+> On the TX path, similar data sharing can occur when an skb's head has
+> been cloned (skb_cloned() returns true).
+> 
+> The fix is to call skb_cow_data() before performing any in-place crypto
+> operation.  skb_cow_data() ensures that the skb's data area is not
+> shared: if the skb head is cloned or the data spans multiple fragments,
+> it copies the data into a private buffer that can be safely modified in
+> place.  This is the same pattern used by:
+> 
+>   - ESP (net/ipv4/esp4.c, net/ipv6/esp6.c)
+>   - MACsec (drivers/net/macsec.c)
+>   - WireGuard (drivers/net/wireguard/receive.c)
+>   - TIPC (net/tipc/crypto.c)
+> 
+> Without this guard, in-place crypto on shared skb data leads to:
+>   - Silent data corruption of other skb clones
+>   - Use-after-free when the crypto API scatterwalk writes through a
+>     page that has already been freed by another clone's kfree_skb()
+>   - Kernel crashes under concurrent 802.15.4 traffic with security
+>     enabled (KASAN/KMSAN reports slab-use-after-free)
+> 
+> This vulnerability was identified using 0sec.ai, an open-source
+> automated security auditing platform (https://github.com/0sec-labs).
+> 
+> Fixes: 4c14a2fb5d14 ("mac802154: add llsec decryption method")
+> Fixes: 03556e4d0dbb ("mac802154: add llsec encryption method")
+> Cc: stable@vger.kernel.org
+> Reported-by: Doruk Tan Ozturk <doruk@0sec.ai>
 
-Changes since v2:
-- Removed security impact paragraph from commit message as requested
-  by Steffen Klassert.
+Did you report this on LKML? If so, you should add
 
- net/xfrm/xfrm_iptfs.c | 2 ++
- 1 file changed, 2 insertions(+)
+Closes: <link to your mail on lore>
 
-diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-index 6c6bbc040517..62ba828632f1 100644
---- a/net/xfrm/xfrm_iptfs.c
-+++ b/net/xfrm/xfrm_iptfs.c
-@@ -2168,6 +2168,8 @@ static void iptfs_consume_frags(struct sk_buff *to, struct sk_buff *from)
- 	memcpy(&toi->frags[toi->nr_frags], fromi->frags,
- 	       sizeof(fromi->frags[0]) * fromi->nr_frags);
- 	toi->nr_frags += fromi->nr_frags;
-+	if (fromi->nr_frags)
-+		toi->flags |= fromi->flags & SKBFL_SHARED_FRAG;
- 	fromi->nr_frags = 0;
- 	from->data_len = 0;
- 	from->len = 0;
--- 
-2.43.0
+right after the Reported-by.
 
+> Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
+Other than that,
+
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+
+Thanks,
+Olek
 
