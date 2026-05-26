@@ -1,78 +1,78 @@
-Return-Path: <stable+bounces-254433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254434-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0Jh+IgLzFWqzfwcAu9opvQ
-	(envelope-from <stable+bounces-254433-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 21:22:42 +0200
+	id qG1JMjvzFWrYfwcAu9opvQ
+	(envelope-from <stable+bounces-254434-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 21:23:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 906935DBF09
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 21:22:41 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AFB35DBF2F
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 21:23:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5D9ED3014B0E
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 19:22:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B8CEB3016B44
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 19:23:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF9D3C09FC;
-	Tue, 26 May 2026 19:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21BF43AF665;
+	Tue, 26 May 2026 19:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="o+bNKdWt"
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="sdvhjHg8"
 X-Original-To: stable@vger.kernel.org
-Received: from pdx-out-015.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-015.esa.us-west-2.outbound.mail-perimeter.amazon.com [50.112.246.219])
+Received: from pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.162.73.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295AD355F41;
-	Tue, 26 May 2026 19:22:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=50.112.246.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB49219301;
+	Tue, 26 May 2026 19:23:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.162.73.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779823350; cv=none; b=qxUiQuATkiwF/2OefOxPH3FydHwCVmoiki3YNrJlK0bWLzNgFAh4tsn7J42fL3kZwKmsnUtOvQewDbLMaOVe7xjdvJO83ZEyzdMT9h/s+7sBWQObYF9IbYyXD/4YGFp361A3m4WxQvgnvkr24nKjH0HCa1VFW1WkRefDYgC/8M8=
+	t=1779823416; cv=none; b=H+n7Ll34hALOuCDhOSJBa/GEQNtEo78H+yRaIuphPVg3LD+j5KTK5w8RjdP1PCWzU/N3+jDdD42+KvYqCfA3YGMHw5ErjAWs7Bp1RT77+4AX/lu/5Z4aepQfAOLbxF7Rc+8LIMs+fXtwmaSJki7LYbRPQKqsbshu+AsuSVUWpRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779823350; c=relaxed/simple;
-	bh=/bqTySyUk2z8GSHc+WnVZEukIbYzavqLb/630CgWYVI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fAY/u3Tk/I0yLdZ4DRhk8jjlWO0iICmmSqrUleKophLIwHa8c3wsqSXX7yS/xgbZZ29yND9h7qEJ2tuq5jdSczEMGwnDcAr/SpKwhY90C2Dyg5fW7xmGFLnarQwHaq7uJwiBAHTVZuW91RtUVuwIPp/44lQYK81ZICouIu7hQZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=o+bNKdWt; arc=none smtp.client-ip=50.112.246.219
+	s=arc-20240116; t=1779823416; c=relaxed/simple;
+	bh=xSAHuzhnv6e8U1m3dmcLOx7TglmUIAozHqyQTb713eM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=puFKFDySgqaOoMY3v1RZmk6KD3Tj7HOo8rrTTz5WLz4fHQlgxMtiEoW4jenLVzQN3+w2rKcyOfTAf0XpczFGo0FxBSCv4gwEp9kL4d+zypEGqV+lC45GZIxfJoDvwYkXQ2nQefcnzEJRajOh/5xi9N0Xx/3MLYRmVomQiECXOQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=sdvhjHg8; arc=none smtp.client-ip=35.162.73.231
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1779823348; x=1811359348;
+  t=1779823415; x=1811359415;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=O5eLYHXPiWUVaMNYOWSFQu83WWH0oZvPAPotjVN1H1Y=;
-  b=o+bNKdWt3h/IqG1P2tWd7/kgaiaWPMHGnBx/kdUwWdu3pTV0siEvCYsO
-   65dMMUBhOt3yBAw5PZEW1bM4j9xcBV1BMhawsApwSyOgPnhi9kUMTXCvN
-   /0TGrWo0aVUnMBzpUZiHuK2BGJ7K7MUq5gecoc+UJqLkOjWBTsiYMaJ2u
-   OjdWyEsJfcNXBUl4FwbOO02bgRMsdCTKrmOLJyl4uwGg5wDi1hKQEX9hm
-   yOSJwwA967cdnkuv3Q0a/Z2ZpdyELamQ4fpAGbB3V/4tH1XN5OW8Ko0Lg
-   BMqzo7dx6Ffx101HeEw1dOFDVnuTpzAqWQpRebqqDPLptn43V/ooNdxUy
-   w==;
-X-CSE-ConnectionGUID: wHD0U0d9QCueCZ/oUQhlMw==
-X-CSE-MsgGUID: kAb2Q/ncTzqGHj0qCYcJkQ==
+  bh=Sgajywb0c9W4z+XMC1HocV4U0cjHkMGlj+AS3vvfOb4=;
+  b=sdvhjHg8VTJVAg6ZcZG9oCa4ScMMplX/xtx436g8yfAWmN+KHzVZqpjI
+   8ZUHTvROk8sI9MBBafpjHzAcBQCGiVUur20mSmwj1Og/mSZl1qVxvILeV
+   qswAF5wbPd4wL6ux1PhcmnpR+342RlezmcxNiESppDOfOZKvsHoe8VwvI
+   +z5VFFhWxk6qm3jk9vV7xyOyfrmUEsf8gkfiEmdeG9zqbzMvlUJRDsJ+7
+   WVPkO/dirytJkul8GVx2qniAM/s+ep/TCJ+nmeP/3EFwGmfananPQ1Enn
+   IBIm6Xv0F9C6zTb+MmM7GpJ3zNZFCG/AAWKek+UnyLhdx9ydJeWhjfBG9
+   A==;
+X-CSE-ConnectionGUID: krsg8C1SQ8G4tS0prj+bsQ==
+X-CSE-MsgGUID: utt+6dtbQzCWytuJUknqQg==
 X-IronPort-AV: E=Sophos;i="6.24,170,1774310400"; 
-   d="scan'208";a="20317097"
-Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-015.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 19:22:27 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.178:8634]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.1.25:2525] with esmtp (Farcaster)
- id 6156bde8-f401-4c75-a1bc-4c1b991a89d3; Tue, 26 May 2026 19:22:27 +0000 (UTC)
-X-Farcaster-Flow-ID: 6156bde8-f401-4c75-a1bc-4c1b991a89d3
+   d="scan'208";a="20301064"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 19:23:35 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.182:4829]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.28.237:2525] with esmtp (Farcaster)
+ id 7977181f-585a-4c4d-8b8e-f1d45d1e5235; Tue, 26 May 2026 19:23:34 +0000 (UTC)
+X-Farcaster-Flow-ID: 7977181f-585a-4c4d-8b8e-f1d45d1e5235
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Tue, 26 May 2026 19:22:27 +0000
+ Tue, 26 May 2026 19:23:34 +0000
 Received: from dev-dsk-gyokhan-1b-83b48b3c.eu-west-1.amazon.com (10.13.234.1)
  by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Tue, 26 May 2026 19:22:24 +0000
+ Tue, 26 May 2026 19:23:32 +0000
 From: Gyokhan Kochmarla <gyokhan@amazon.de>
 To: <stable@vger.kernel.org>, <gregkh@linuxfoundation.org>
-CC: <jianbol@nvidia.com>, <saeedm@nvidia.com>, <leon@kernel.org>,
-	<tariqt@nvidia.com>, <pabeni@redhat.com>, <kuba@kernel.org>,
-	<davem@davemloft.net>, <edumazet@google.com>, <netdev@vger.kernel.org>, "Leon
- Romanovsky" <leonro@nvidia.com>, Gyokhan Kochmarla <gyokhan@amazon.de>
-Subject: [PATCH 6.12] net/mlx5e: Use ip6_dst_lookup instead of ipv6_dst_lookup_flow for MAC init
-Date: Tue, 26 May 2026 19:22:14 +0000
-Message-ID: <20260526192214.78312-1-gyokhan@amazon.de>
+CC: <jolsa@kernel.org>, <rostedt@goodmis.org>, <mhiramat@kernel.org>,
+	<tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>, <x86@kernel.org>,
+	<linux-trace-kernel@vger.kernel.org>, <bpf@vger.kernel.org>, Andrii Nakryiko
+	<andrii@kernel.org>, Gyokhan Kochmarla <gyokhan@amazon.de>
+Subject: [PATCH 6.12] x86/fgraph: Fix return_to_handler regs.rsp value
+Date: Tue, 26 May 2026 19:23:24 +0000
+Message-ID: <20260526192324.79459-1-gyokhan@amazon.de>
 X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -80,7 +80,7 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ClientProxiedBy: EX19D036UWC003.ant.amazon.com (10.13.139.214) To
+X-ClientProxiedBy: EX19D037UWB001.ant.amazon.com (10.13.138.123) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -89,17 +89,17 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[amazon.de,quarantine];
 	R_DKIM_ALLOW(-0.20)[amazon.de:s=amazoncorp2];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-254433-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-254434-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,msgid.link:url,amazon.de:email,amazon.de:mid,amazon.de:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,amazon.de:email,amazon.de:mid,amazon.de:dkim];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gyokhan@amazon.de,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -109,51 +109,68 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 906935DBF09
+X-Rspamd-Queue-Id: 6AFB35DBF2F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Jianbo Liu <jianbol@nvidia.com>
+From: Jiri Olsa <jolsa@kernel.org>
 
-commit e35d7da8dd9e55b37c3e8ab548f6793af0c2ab49 upstream.
+commit 8bc11700e0d23d4fdb7d8d5a73b2e95de427cabc upstream.
 
-Replace ipv6_stub->ipv6_dst_lookup_flow() with ip6_dst_lookup() in
-mlx5e_ipsec_init_macs() since IPsec transformations are not needed
-during Security Association setup - only basic routing information is
-required for nexthop MAC address resolution.
+The previous change (Fixes commit) messed up the rsp register value,
+which is wrong because it's already adjusted with FRAME_SIZE, we need
+the original rsp value.
 
-This resolves an issue where XfrmOutNoStates error counter would be
-incremented when xfrm policy is configured before xfrm state, as the
-IPsec-aware routing function would attempt policy checks during SA
-initialization.
+This change does not affect fprobe current kernel unwind, the !perf_hw_regs
+path perf_callchain_kernel:
 
-Fixes: 71670f766b8f ("net/mlx5e: Support routed networks during IPsec MACs initialization")
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1765284977-1363052-7-git-send-email-tariqt@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+        if (perf_hw_regs(regs)) {
+                if (perf_callchain_store(entry, regs->ip))
+                        return;
+                unwind_start(&state, current, regs, NULL);
+        } else {
+                unwind_start(&state, current, NULL, (void *)regs->sp);
+        }
+
+which uses pt_regs.sp as first_frame boundary (FRAME_SIZE shift makes
+no difference, unwind stil stops at the right frame).
+
+This change fixes the other path when we want to unwind directly from
+pt_regs sp/fp/ip state, which is coming in following change.
+
+Fixes: 20a0bc10272f ("x86/fgraph,bpf: Fix stack ORC unwind from kprobe_multi return probe")
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Link: https://lore.kernel.org/bpf/20260126211837.472802-2-jolsa@kernel.org
 Signed-off-by: Gyokhan Kochmarla <gyokhan@amazon.de>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/x86/kernel/ftrace_64.S | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-index 486f05112f5a..013383dd194a 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-@@ -348,9 +348,8 @@ static void mlx5e_ipsec_init_macs(struct mlx5e_ipsec_sa_entry *sa_entry,
- 		rt_dst_entry = &rt->dst;
- 		break;
- 	case AF_INET6:
--		rt_dst_entry = ipv6_stub->ipv6_dst_lookup_flow(
--			dev_net(netdev), NULL, &fl6, NULL);
--		if (IS_ERR(rt_dst_entry))
-+		if (!IS_ENABLED(CONFIG_IPV6) ||
-+		    ip6_dst_lookup(dev_net(netdev), NULL, &rt_dst_entry, &fl6))
- 			goto neigh;
- 		break;
- 	default:
+diff --git a/arch/x86/kernel/ftrace_64.S b/arch/x86/kernel/ftrace_64.S
+index 8a3cff618692..143fc62bf6f8 100644
+--- a/arch/x86/kernel/ftrace_64.S
++++ b/arch/x86/kernel/ftrace_64.S
+@@ -349,6 +349,9 @@ SYM_CODE_START(return_to_handler)
+ 	UNWIND_HINT_UNDEFINED
+ 	ANNOTATE_NOENDBR
+ 
++	/* Store original rsp for pt_regs.sp value. */
++	movq %rsp, %rdi
++
+ 	/* Restore return_to_handler value that got eaten by previous ret instruction. */
+ 	subq $8, %rsp
+ 	UNWIND_HINT_FUNC
+@@ -359,7 +362,7 @@ SYM_CODE_START(return_to_handler)
+ 	movq %rax, RAX(%rsp)
+ 	movq %rdx, RDX(%rsp)
+ 	movq %rbp, RBP(%rsp)
+-	movq %rsp, RSP(%rsp)
++	movq %rdi, RSP(%rsp)
+ 	movq %rsp, %rdi
+ 
+ 	call ftrace_return_to_handler
 -- 
 2.47.3
 
