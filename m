@@ -1,147 +1,223 @@
-Return-Path: <stable+bounces-254365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254367-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ONJyBZimFWqJXAcAu9opvQ
-	(envelope-from <stable+bounces-254365-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 15:56:40 +0200
+	id eOUCGGeoFWqJXAcAu9opvQ
+	(envelope-from <stable+bounces-254367-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 16:04:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FEB35D6F06
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 15:56:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CED555D7054
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 16:04:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A4E3E30485E7
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 13:50:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 80BE53001BDE
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 13:56:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22A5A3F8ED8;
-	Tue, 26 May 2026 13:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8865A3F9A0B;
+	Tue, 26 May 2026 13:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NqG9xbwi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hpYL4+vd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74DC53DDDA1
-	for <stable@vger.kernel.org>; Tue, 26 May 2026 13:50:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158E33A7593;
+	Tue, 26 May 2026 13:55:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779803415; cv=none; b=aLFPoQ1kOtnK1mi39kXGCNiz2MPYWAWbmww3nKw1QyF5NB1SKx7mDNlYTs7PFW8EO4z2YtmphJYhmbF5rGDAi3K+O2J+QVCRbZZgAhXGslbrSPNdUZpXOKmK9ouwhp1Qc2X6eVkk763JO2jOlGOeDqfrcIzMCzVSNQy4UqEJ/44=
+	t=1779803761; cv=none; b=CvxfbLLH/Y660V6J8fEd40tIOuVu7YfcSfpOTjxeM2E2DxzQ23dWbTfBJTdnuz60zohi0wBbgRt1g347zm2BnNJOBmqFZTgqWDWXGwoINXA/Bx5Jy/egO8FjwuZZHav1TUqrlEDhKo3z6of6H8BJSapJqDZRxNzk/EwEsqKuqQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779803415; c=relaxed/simple;
-	bh=Z+AqW9VjxyfF7vVwwOt3ym9tEOdvlxHgX0JSmUMfkh8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=Y/hwijTn0eiQ5zDwderbxF0hFSXyRvkAAEtWumHPdRdGnj/B0Mi8Z6GVrpuRsn07xUIXDczc4RiVNWE//B0xbA6Oh7xRVu38v2RxzC9qrExBsfDTs9PIMJlSHSS9PZXEZ2qNOcmCEXfnDUjmetRAPM39gDyGdYWPDg8AThF3LLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NqG9xbwi; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-49050bfe053so8410335e9.3
-        for <stable@vger.kernel.org>; Tue, 26 May 2026 06:50:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779803413; x=1780408213; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4kIPLGO6v5O2FFZc0rQHtJRhaRQ7RYpji1fNItyhs0k=;
-        b=NqG9xbwiqlvQeCku1Yld/uiZJooPVIK11wuQpj5znAijAQcWPhYda5tIxnvFkv5jX0
-         Mu46CMWnYAdyEN91/gBuxB6g6rFRQyt+DadUdJcwgzsOdUdRfX2T870xWyVQLj0f1HNI
-         eCYajetJBMSiJn5Zz4d1MBFtNt3cGkE0m3hZUiqYaEup9JLuaTRN7UakKjH6h/OTYwp8
-         tMcd8+2sOVGuhuHuXj1CRYull62579fvTkNgh2aKTQ+7UcrD+QOcsHRvZrdHpbTd/An7
-         wGY81q6EV6sBZzirI37NoZaGbBDYSEX+FcjpYP75S7SLoFwFvlaG/1pXCV+ZegXpnXAg
-         qlBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779803413; x=1780408213;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4kIPLGO6v5O2FFZc0rQHtJRhaRQ7RYpji1fNItyhs0k=;
-        b=kKKcFiY14Hbg7iJHmto6Uj+UFmHTbHiBYnsOubGb5v5ifLI8tIDCVWPid5qFecUpb1
-         mw/aMCvDlJfyWMZ2SdTXeQpdykQjt81VzCJgyArMwmpBqBK5PbhLaI8ODQ9AsCnHQM6t
-         9XQ9PRLJhIYKECFuOTA8A1QVxmxHOVZ+6jvmyu7Lp9kvDkZQTVaF1zeq8b4LZXL43EGi
-         gokdFK27207AGMAHfN4w8qt7EOH1rW/ukeGzCfS+gGMVE/nph86yRVB1d+JJM+wcxN5Z
-         ga+ZyihQWJvXCy6wQJzcS/7GqMvMRWqnWiENLejjjn66hVcW9DTJYgItVrimbLqNTQog
-         Z8YQ==
-X-Gm-Message-State: AOJu0Yx4Y4yRc3pj1pP9vU7qTpKGvhJ0qc7Fc6cig8rF8zOLDvJ3CA+w
-	oFETOW+DfXNtGx/XqG3s3n3rT5ezQKjRugp8dmNm86gmT+AQaeu82C86KynjsA==
-X-Gm-Gg: Acq92OEq+p+DQ2VCPQtL0RO1+TLVx0T3X5Akiq2daaKEA3AaZb4+E0TcRyC5dtFIUgu
-	olLt49l5pOCuTcEL+BkWE/jgXM70+Poikg/6bKqzG7KlInPgQorhyxuRQZkhNCc3BnE6jfn1Tjd
-	bfMyTZPdD7qfeLvIcWlBfdn0W3xLeF8nt3NK6Uz0XPBVH1t8v3i2FTZrAnvkEfXa9lptqBJs1eU
-	y0Tzomm3yq6PcHFiESyoJrMh1NP/Ky+b9cxCtAmeURwJ704plo2ePGLSQDJIuHQH/+1EQZvijHf
-	A7lkIR2Vmlqxt8O7yvKJ6+Jn3ruPi4ka2142/P01cW9koIqocsGjXYQOFJEuiGonhAeMFJjKspK
-	NsV7eDVaGrmj/68GXkI0Nc83tChPYooVhmf0rbTiGe+nMKQaaMe9QgILvswxWEU073V4u3hMffs
-	gppPvhU/cak/dQt5n3XRzeXe1PM+IJNksebw/imCf9gO4/QvWFODdokukrperLwR3xyw1glVTaZ
-	VoTpeCwjNCZxMiDbYYvO/0AQGmmn7LqB2ZqbyyMYJPCEgOvn4B/2ikSZlfhXrDWW8KAkTBFbZY=
-X-Received: by 2002:a05:600c:821a:b0:490:5cd8:d21c with SMTP id 5b1f17b1804b1-4905cd8d437mr206602895e9.14.1779803412535;
-        Tue, 26 May 2026 06:50:12 -0700 (PDT)
-Received: from franzs-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490452765f5sm339056905e9.5.2026.05.26.06.50.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 May 2026 06:50:12 -0700 (PDT)
-Date: Tue, 26 May 2026 15:50:08 +0200
-From: Franz Schnyder <fra.schnyder@gmail.com>
-To: stable@vger.kernel.org
-Cc: Sasha Levin <sashal@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Chuck Lever <chuck.lever@oracle.com>
-Subject: [stable 6.1.y] Will commit 7e96a281fa07 ("perf tools: Fix module
- symbol resolution for non-zero .text sh_addr") be included?
-Message-ID: <ljz4f536p2oyxrtc2tklh7ymdqg2stcijj2cjepaaheqlw5ddq@vgqf24zcaadv>
+	s=arc-20240116; t=1779803761; c=relaxed/simple;
+	bh=vnnWi8dQWB6l6Nohl4NkH7BA9KxtqRwgLLtVy1y56UE=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=ZPxj41/k/cDOtPKhLa22bNWZlg3E/ihW8cBGgHI6QZ1nyg2a9d1USf7ZMgcX3UDoEwj772IyGQL1WJrn0V19sMIoN7JYiQ8jJ7gc6mm5D3OdN1a9ARlhYF6DDR5uMxyqIOuNPOJl4QyqMJyOCzleJNEhKXCePOnDu/+aB7Kdv3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hpYL4+vd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74E101F000E9;
+	Tue, 26 May 2026 13:55:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779803759;
+	bh=JrULAy9Gw7dTgt2CJtfRApgaaTOMPseygZFxD/MyYIc=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=hpYL4+vdLIvxzm4niRZbcwUQmOfWQKSCxGGGerPKb5a0oewhWWBG8CqeRfwdDEXbG
+	 yegqQzLLyw/9J5+v9sqzryZnTCqlOADSCFq7MNoZERdQOGEjLoTJJSkrQnLtRueeVc
+	 FNbvehqYXTpwDR88AlqPDoRirz6HPdGiWLWpT7//N4oPfuRTjvGYV9lf+xP5oK7B0E
+	 dq2Gc4xNO8Jb03sYKC4W7EfKGYOHk29nPvx5GE+zQRLhtDEgKY3syHFCR5uiq64ChO
+	 fKaqkFIxmPbuinhNTdpoCUbFufv5wV+T+yVOBxsEWiiAOEutfGVqz31YBKw2Kugw5S
+	 3Dlr7Gs3flskA==
+Content-Type: multipart/mixed; boundary="===============1624879100367785041=="
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUBJECT_ENDS_QUESTION(1.00)[];
+Message-Id: <2f53799c49f16b688b2780733a6175235b730b0edbe15747309771e5a84130a7@mail.kernel.org>
+In-Reply-To: <20260526131035.1312864-2-dawei.feng@seu.edu.cn>
+References: <20260526131035.1312864-2-dawei.feng@seu.edu.cn>
+Subject: Re: [PATCH 1/2] bpf: cgroup: fix sysctl new value replacement
+From: bot+bpf-ci@kernel.org
+To: dawei.feng@seu.edu.cn,martin.lau@linux.dev
+Cc: ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,kees@kernel.org,joel.granados@kernel.org,bpf@vger.kernel.org,linux-kernel@vger.kernel.org,linux-fsdevel@vger.kernel.org,jianhao.xu@seu.edu.cn,dawei.feng@seu.edu.cn,stable@vger.kernel.org,zilin@seu.edu.cn,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Tue, 26 May 2026 13:55:59 +0000 (UTC)
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	CTYPE_MIXED_BOGUS(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254365-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,iogearbox.net,gmail.com,linux.dev,vger.kernel.org,seu.edu.cn,meta.com];
+	FROM_NEQ_ENVFROM(0.00)[bot@kernel.org,stable@vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-254367-lists,stable=lfdr.de,bpf-ci];
+	MIME_TRACE(0.00)[0:+,1:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fraschnyder@gmail.com,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NO_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[27];
 	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 7FEB35D6F06
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,seu.edu.cn:email]
+X-Rspamd-Queue-Id: CED555D7054
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello,
+--===============1624879100367785041==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Our OE-Kirkstone builds of linux-6.1.y from linux-stable-rc are failing.
-The problem is that the following commit is queued up:
-7e96a281fa07 ("perf tools: Fix module symbol resolution for non-zero .text sh_addr")
+> diff --git a/kernel/bpf/cgroup.c b/kernel/bpf/cgroup.c
+> index 876f6a81a9b6..8715a014c21d 100644
+> --- a/kernel/bpf/cgroup.c
+> +++ b/kernel/bpf/cgroup.c
 
-It calls `dso__rel`, which is not present in 6.1.y.
+[ ... ]
 
-util/symbol-elf.c:1010:21: warning: implicit declaration of function 'dso__rel'; did you mean 'dso__get'? [-Wimplicit-function-declaration]
- 1010 |                 if (dso__rel(dso))
-      |                     ^~~~~~~~
-      |                     dso__get
+> @@ -1878,7 +1878,7 @@ int __cgroup_bpf_run_filter_sysctl(struct ctl_table_header *head,
+>   * to provided by user buffer, so that next BPF program in the chain
+>   * can treat it as a replacement.
+>   *
+> - * This function will return %-EPERM if an attached program is found and
+> - * returned value != 1 during execution. In all other cases 0 is returned.
+> + * This function will return %-EPERM if an attached program is found and
+> + * returned value != 1 during execution. In all other cases 0 is returned.
+>   */
+
+Should the function documentation be updated to reflect the actual return
+value convention?
+
+After commit 4e63acdff864, bpf_prog_run_array_cg() returns 0 on success,
+not 1. The comment still states "returned value != 1 during execution" but
+the code now checks for '!ret' (i.e., ret == 0). The documentation should
+say "returned value != 0" to match the actual behavior.
+
+> @@ -1935,7 +1935,7 @@ int __cgroup_bpf_run_filter_sysctl(struct ctl_table_header *head,
+>
+>  	kfree(ctx.cur_val);
+>
+> -	if (ret == 1 && ctx.new_updated) {
+> +	if (!ret && ctx.new_updated) {
+>  		kfree(*buf);
+>  		*buf = ctx.new_val;
+>  		*pcount = ctx.new_len;
+
+Can this cause memory corruption?
+
+The caller proc_sys_call_handler() allocates the buffer with kvzalloc():
+
+fs/proc/proc_sysctl.c:proc_sys_call_handler() {
+    ...
+    kbuf = kvzalloc(count + 1, GFP_KERNEL);
+    ...
+}
+
+kvzalloc() may fall back to vmalloc() for large allocations, but this
+code uses kfree() instead of kvfree() to free *buf. Using kfree() on
+vmalloc memory corrupts memory.
+
+This is fixed in a later commit 155dfbd42ab8 ("bpf: cgroup: Use kvfree
+instead of kfree in __cgroup_bpf_run_filter_sysctl") which includes a
+KASAN crash report demonstrating the bug.
+
+Should this patch use kvfree() instead of kfree()?
 
 
-I wanted to ask if the commit will be dropped in the future stable
-release, or if the patch that introduces `dso__rel` will be included first.
+Also, Martin KaFai Lau raised a concern about the null terminator handling
+during the May 2024 review of a similar fix.
 
-Kind regards,
+In the discussion at:
+https://lore.kernel.org/bpf/ca8136e0-5d2a-402b-ad03-cc8a218affd4@linux.dev/
 
-Franz
+Martin requested that the patch adjust *pcount to exclude the null
+terminator if present. The concern is that proc_sys_call_handler may reject
+the value with EINVAL if the null terminator is included in the count.
+
+The suggested fix from that discussion was:
+
+    if (!(*buf)[ctx.new_len])
+        *pcount = ctx.new_len - 1;
+    else
+        *pcount = ctx.new_len;
+
+Should this patch include the null terminator handling improvement?
+
+
+> commit f089fd0540601290c72ecfd2ff3f0c817952970a
+> Author: Dawei Feng <dawei.feng@seu.edu.cn>
+>
+>     bpf: cgroup: fix sysctl new value replacement
+>
+>     Commit 4e63acdff864 ("bpf: Introduce bpf_sysctl_{get,set}_new_value
+>     helpers") changed the success return value to 0, but failed to update the
+>     corresponding check in __cgroup_bpf_run_filter_sysctl(). Since
+>     bpf_prog_run_array_cg() now returns 0 on success, the legacy ret == 1
+>     condition is never satisfied. As a result, the modified value is ignored,
+>     and bpf_sysctl_set_new_value() fails to replace the write buffer.
+>
+>     Fix this by checking for a return value of 0 instead, so cgroup/sysctl
+>     programs can correctly replace the pending sysctl buffer.
+>
+>     This bug was discovered during a manual code review. Tested via a
+>     cgroup/sysctl BPF reproducer overriding writes to a target sysctl.
+>     Pre-fix, bpf_sysctl_set_new_value("foo") was silently ignored: the write
+>     returned 8192 and the value remained "600". Post-fix, the BPF replacement
+>     buffer properly propagates: the write returns 3 and the value updates to
+>     "foo".
+>
+>     Fixes: 4e63acdff864 ("bpf: Introduce bpf_sysctl_{get,set}_new_value helpers")
+
+Is the Fixes: tag pointing to the correct commit?
+
+Commit 4e63acdff864 (2019) originally used 'ret == 1' correctly, as
+BPF_PROG_RUN_ARRAY_CG returned 1 on success at that time.
+
+However, commit f10d05966196 ("bpf: Make BPF_PROG_RUN_ARRAY return -err
+instead of allow boolean") from 2022 changed BPF_PROG_RUN_ARRAY_CG to
+return 0 on success instead of 1. That commit updated the final return
+statement from 'return ret == 1 ? 0 : -EPERM;' to 'return ret;', but
+forgot to update the 'if (ret == 1 && ctx.new_updated)' check.
+
+Should the Fixes: tag be:
+
+  Fixes: f10d05966196 ("bpf: Make BPF_PROG_RUN_ARRAY return -err instead of allow boolean")
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/26451027650
+--===============1624879100367785041==--
 
