@@ -1,78 +1,78 @@
-Return-Path: <stable+bounces-254434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254435-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qG1JMjvzFWrYfwcAu9opvQ
-	(envelope-from <stable+bounces-254434-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 21:23:39 +0200
+	id 4OdVBWnzFWqzfwcAu9opvQ
+	(envelope-from <stable+bounces-254435-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 21:24:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AFB35DBF2F
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 21:23:39 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12C485DBF4D
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 21:24:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B8CEB3016B44
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 19:23:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 902393010530
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 19:24:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21BF43AF665;
-	Tue, 26 May 2026 19:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E323C0621;
+	Tue, 26 May 2026 19:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="sdvhjHg8"
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="I5cfoJve"
 X-Original-To: stable@vger.kernel.org
-Received: from pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.162.73.231])
+Received: from pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.35.192.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB49219301;
-	Tue, 26 May 2026 19:23:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.162.73.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009A23B47E9
+	for <stable@vger.kernel.org>; Tue, 26 May 2026 19:24:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.35.192.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779823416; cv=none; b=H+n7Ll34hALOuCDhOSJBa/GEQNtEo78H+yRaIuphPVg3LD+j5KTK5w8RjdP1PCWzU/N3+jDdD42+KvYqCfA3YGMHw5ErjAWs7Bp1RT77+4AX/lu/5Z4aepQfAOLbxF7Rc+8LIMs+fXtwmaSJki7LYbRPQKqsbshu+AsuSVUWpRI=
+	t=1779823459; cv=none; b=QLG25q2CauPeXRmmaK/mmCHLTgTzOosh7Q/1Bn/XEZzDVSlcreh3kP4p+HiKyp6nlKQciOCOuIQOFVoEOCZdG3zWDefH4DXos/o/M8BxJRyj6rQEHtcSQIE1gt9Pz9dTSEssf6iZ8QPc/i/I2bpttajbpxI7H464/UO97cSRMjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779823416; c=relaxed/simple;
-	bh=xSAHuzhnv6e8U1m3dmcLOx7TglmUIAozHqyQTb713eM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=puFKFDySgqaOoMY3v1RZmk6KD3Tj7HOo8rrTTz5WLz4fHQlgxMtiEoW4jenLVzQN3+w2rKcyOfTAf0XpczFGo0FxBSCv4gwEp9kL4d+zypEGqV+lC45GZIxfJoDvwYkXQ2nQefcnzEJRajOh/5xi9N0Xx/3MLYRmVomQiECXOQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=sdvhjHg8; arc=none smtp.client-ip=35.162.73.231
+	s=arc-20240116; t=1779823459; c=relaxed/simple;
+	bh=b7knZEsKgztU7WLv9ZOnwEFzNElW4kOlPx2dOWsnXe0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lN8kMOZQ9gHgX30OQI2aT4YbZIXBvuUZF2uPBAG59sTCXrwpkzsFvdF8tyjnnS/aOWneap4itrTYLkCLTkggM6gRvIWiYO+OR//bz2aN84x9o4Xff9uIq6pyc/lfeu8FrzflbzpqKBzCfj5GWY1+8Bjux1MT88SSnNCLIVr9IKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=I5cfoJve; arc=none smtp.client-ip=52.35.192.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1779823415; x=1811359415;
+  t=1779823458; x=1811359458;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=Sgajywb0c9W4z+XMC1HocV4U0cjHkMGlj+AS3vvfOb4=;
-  b=sdvhjHg8VTJVAg6ZcZG9oCa4ScMMplX/xtx436g8yfAWmN+KHzVZqpjI
-   8ZUHTvROk8sI9MBBafpjHzAcBQCGiVUur20mSmwj1Og/mSZl1qVxvILeV
-   qswAF5wbPd4wL6ux1PhcmnpR+342RlezmcxNiESppDOfOZKvsHoe8VwvI
-   +z5VFFhWxk6qm3jk9vV7xyOyfrmUEsf8gkfiEmdeG9zqbzMvlUJRDsJ+7
-   WVPkO/dirytJkul8GVx2qniAM/s+ep/TCJ+nmeP/3EFwGmfananPQ1Enn
-   IBIm6Xv0F9C6zTb+MmM7GpJ3zNZFCG/AAWKek+UnyLhdx9ydJeWhjfBG9
-   A==;
-X-CSE-ConnectionGUID: krsg8C1SQ8G4tS0prj+bsQ==
-X-CSE-MsgGUID: utt+6dtbQzCWytuJUknqQg==
+  bh=dIFTq2/xrr+CIxR+YfNM4pVNUWYzoSduvpea0XgoZPQ=;
+  b=I5cfoJveOy/KGM0iFXyHon6wdICvFAEmx0118f6fRnGdII2o4ecibJG2
+   lXny7EAkAWsvnp/NENbhun9XJtOsdUZq+eJrAcsO8eu36/77KuQipoP5Z
+   xh8gJzdwxcIRYqTx6iBo969VGyGTdcAfaIAQWcmqDVEfhrC5YdLbn5S+n
+   PEZvTtowPSTtkWrE+ZqADTbNXsm1U8D40/jN9d3hV8T/nsUj2kj8PAvpv
+   caIo3mHj8gAXGslp6+wQ6C1s37RP0gmuM7WRGdA/B6urY98NzYes9MoFE
+   qaVrfxlsCUroqH+ZaahXHxSzEJJ6tN8jWgOP9yD1Hp8Nhidw577wFnOV5
+   w==;
+X-CSE-ConnectionGUID: WRN7OjDnSPa39RVebJZ87A==
+X-CSE-MsgGUID: YajV3FNISHuUQQU1jlPgpw==
 X-IronPort-AV: E=Sophos;i="6.24,170,1774310400"; 
-   d="scan'208";a="20301064"
-Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
-  by internal-pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 19:23:35 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.182:4829]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.28.237:2525] with esmtp (Farcaster)
- id 7977181f-585a-4c4d-8b8e-f1d45d1e5235; Tue, 26 May 2026 19:23:34 +0000 (UTC)
-X-Farcaster-Flow-ID: 7977181f-585a-4c4d-8b8e-f1d45d1e5235
+   d="scan'208";a="20280870"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 19:24:14 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.53:5632]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.62.206:2525] with esmtp (Farcaster)
+ id fcdc6c9a-2802-48a0-bdaf-cab70f4081d8; Tue, 26 May 2026 19:24:14 +0000 (UTC)
+X-Farcaster-Flow-ID: fcdc6c9a-2802-48a0-bdaf-cab70f4081d8
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Tue, 26 May 2026 19:23:34 +0000
+ Tue, 26 May 2026 19:24:13 +0000
 Received: from dev-dsk-gyokhan-1b-83b48b3c.eu-west-1.amazon.com (10.13.234.1)
  by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Tue, 26 May 2026 19:23:32 +0000
+ Tue, 26 May 2026 19:24:11 +0000
 From: Gyokhan Kochmarla <gyokhan@amazon.de>
 To: <stable@vger.kernel.org>, <gregkh@linuxfoundation.org>
-CC: <jolsa@kernel.org>, <rostedt@goodmis.org>, <mhiramat@kernel.org>,
-	<tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>, <x86@kernel.org>,
-	<linux-trace-kernel@vger.kernel.org>, <bpf@vger.kernel.org>, Andrii Nakryiko
-	<andrii@kernel.org>, Gyokhan Kochmarla <gyokhan@amazon.de>
-Subject: [PATCH 6.12] x86/fgraph: Fix return_to_handler regs.rsp value
-Date: Tue, 26 May 2026 19:23:24 +0000
-Message-ID: <20260526192324.79459-1-gyokhan@amazon.de>
+CC: <baolu.lu@linux.intel.com>, <kevin.tian@intel.com>, <dwmw2@infradead.org>,
+	<joro@8bytes.org>, <will@kernel.org>, <robin.murphy@arm.com>,
+	<iommu@lists.linux.dev>, Joerg Roedel <jroedel@suse.de>, Gyokhan Kochmarla
+	<gyokhan@amazon.de>
+Subject: [PATCH 6.12] iommu/vt-d: Draining PRQ in sva unbind path when FPD bit set
+Date: Tue, 26 May 2026 19:24:01 +0000
+Message-ID: <20260526192401.80768-1-gyokhan@amazon.de>
 X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -80,97 +80,122 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ClientProxiedBy: EX19D037UWB001.ant.amazon.com (10.13.138.123) To
+X-ClientProxiedBy: EX19D040UWA003.ant.amazon.com (10.13.139.6) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[amazon.de,quarantine];
 	R_DKIM_ALLOW(-0.20)[amazon.de:s=amazoncorp2];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-254434-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[amazon.de:+];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,amazon.de:email,amazon.de:mid,amazon.de:dkim];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-254435-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email,amazon.de:email,amazon.de:mid,amazon.de:dkim,suse.de:email];
+	TO_DN_SOME(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gyokhan@amazon.de,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[amazon.de:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 6AFB35DBF2F
+X-Rspamd-Queue-Id: 12C485DBF4D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-commit 8bc11700e0d23d4fdb7d8d5a73b2e95de427cabc upstream.
+commit cf08ca81d08a04b3b304e8fb4e052f323a09783d upstream.
 
-The previous change (Fixes commit) messed up the rsp register value,
-which is wrong because it's already adjusted with FRAME_SIZE, we need
-the original rsp value.
+When a device uses a PASID for SVA (Shared Virtual Address), it's possible
+that the PASID entry is marked as non-present and FPD bit set before the
+device flushes all ongoing DMA requests and removes the SVA domain. This
+can occur when an exception happens and the process terminates before the
+device driver stops DMA and calls the iommu driver to unbind the PASID.
 
-This change does not affect fprobe current kernel unwind, the !perf_hw_regs
-path perf_callchain_kernel:
+There's no need to drain the PRQ in the mm release path. Instead, the PRQ
+will be drained in the SVA unbind path. But in such case,
+intel_pasid_tear_down_entry() only checks the presence of the pasid entry
+and returns directly.
 
-        if (perf_hw_regs(regs)) {
-                if (perf_callchain_store(entry, regs->ip))
-                        return;
-                unwind_start(&state, current, regs, NULL);
-        } else {
-                unwind_start(&state, current, NULL, (void *)regs->sp);
-        }
+Add the code to clear the FPD bit and drain the PRQ.
 
-which uses pt_regs.sp as first_frame boundary (FRAME_SIZE shift makes
-no difference, unwind stil stops at the right frame).
-
-This change fixes the other path when we want to unwind directly from
-pt_regs sp/fp/ip state, which is coming in following change.
-
-Fixes: 20a0bc10272f ("x86/fgraph,bpf: Fix stack ORC unwind from kprobe_multi return probe")
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Link: https://lore.kernel.org/bpf/20260126211837.472802-2-jolsa@kernel.org
+Fixes: c43e1ccdebf2 ("iommu/vt-d: Drain PRQs when domain removed from RID")
+Suggested-by: Kevin Tian <kevin.tian@intel.com>
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20241217024240.139615-1-baolu.lu@linux.intel.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Gyokhan Kochmarla <gyokhan@amazon.de>
 ---
- arch/x86/kernel/ftrace_64.S | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/iommu/intel/pasid.c | 22 +++++++++++++++++++++-
+ drivers/iommu/intel/pasid.h |  6 ++++++
+ 2 files changed, 27 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/ftrace_64.S b/arch/x86/kernel/ftrace_64.S
-index 8a3cff618692..143fc62bf6f8 100644
---- a/arch/x86/kernel/ftrace_64.S
-+++ b/arch/x86/kernel/ftrace_64.S
-@@ -349,6 +349,9 @@ SYM_CODE_START(return_to_handler)
- 	UNWIND_HINT_UNDEFINED
- 	ANNOTATE_NOENDBR
+diff --git a/drivers/iommu/intel/pasid.c b/drivers/iommu/intel/pasid.c
+index 3d1d43675bf2..74be6b547fc0 100644
+--- a/drivers/iommu/intel/pasid.c
++++ b/drivers/iommu/intel/pasid.c
+@@ -245,11 +245,31 @@ void intel_pasid_tear_down_entry(struct intel_iommu *iommu, struct device *dev,
  
-+	/* Store original rsp for pt_regs.sp value. */
-+	movq %rsp, %rdi
+ 	spin_lock(&iommu->lock);
+ 	pte = intel_pasid_get_entry(dev, pasid);
+-	if (WARN_ON(!pte) || !pasid_pte_is_present(pte)) {
++	if (WARN_ON(!pte)) {
+ 		spin_unlock(&iommu->lock);
+ 		return;
+ 	}
+ 
++	if (!pasid_pte_is_present(pte)) {
++		if (!pasid_pte_is_fault_disabled(pte)) {
++			WARN_ON(READ_ONCE(pte->val[0]) != 0);
++			spin_unlock(&iommu->lock);
++			return;
++		}
 +
- 	/* Restore return_to_handler value that got eaten by previous ret instruction. */
- 	subq $8, %rsp
- 	UNWIND_HINT_FUNC
-@@ -359,7 +362,7 @@ SYM_CODE_START(return_to_handler)
- 	movq %rax, RAX(%rsp)
- 	movq %rdx, RDX(%rsp)
- 	movq %rbp, RBP(%rsp)
--	movq %rsp, RSP(%rsp)
-+	movq %rdi, RSP(%rsp)
- 	movq %rsp, %rdi
++		/*
++		 * When a PASID is used for SVA by a device, it's possible
++		 * that the pasid entry is non-present with the Fault
++		 * Processing Disabled bit set. Clear the pasid entry and
++		 * drain the PRQ for the PASID before return.
++		 */
++		pasid_clear_entry(pte);
++		spin_unlock(&iommu->lock);
++		intel_iommu_drain_pasid_prq(dev, pasid);
++
++		return;
++	}
++
+ 	did = pasid_get_domain_id(pte);
+ 	pgtt = pasid_pte_get_pgtt(pte);
+ 	pasid_clear_present(pte);
+diff --git a/drivers/iommu/intel/pasid.h b/drivers/iommu/intel/pasid.h
+index 55cad7bfa294..8ffb01163f0e 100644
+--- a/drivers/iommu/intel/pasid.h
++++ b/drivers/iommu/intel/pasid.h
+@@ -80,6 +80,12 @@ static inline bool pasid_pte_is_present(struct pasid_entry *pte)
+ 	return READ_ONCE(pte->val[0]) & PASID_PTE_PRESENT;
+ }
  
- 	call ftrace_return_to_handler
++/* Get FPD(Fault Processing Disable) bit of a PASID table entry */
++static inline bool pasid_pte_is_fault_disabled(struct pasid_entry *pte)
++{
++	return READ_ONCE(pte->val[0]) & PASID_PTE_FPD;
++}
++
+ /* Get PGTT field of a PASID table entry */
+ static inline u16 pasid_pte_get_pgtt(struct pasid_entry *pte)
+ {
 -- 
 2.47.3
 
