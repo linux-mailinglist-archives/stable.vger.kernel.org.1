@@ -1,232 +1,169 @@
-Return-Path: <stable+bounces-254238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254239-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EDl+KS4LFWpPSQcAu9opvQ
-	(envelope-from <stable+bounces-254238-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 04:53:34 +0200
+	id MHstIpwOFWrVSQcAu9opvQ
+	(envelope-from <stable+bounces-254239-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 05:08:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51B005D025F
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 04:53:33 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 611225D03A0
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 05:08:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9941C303B4D9
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 02:52:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BD8DE3009CC8
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 03:08:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADE36332629;
-	Tue, 26 May 2026 02:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 462427083C;
+	Tue, 26 May 2026 03:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=northecho-dev.20251104.gappssmtp.com header.i=@northecho-dev.20251104.gappssmtp.com header.b="TEbOSmrq"
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="uISjatNo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832A33264E6
-	for <stable@vger.kernel.org>; Tue, 26 May 2026 02:52:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A344C3911DD;
+	Tue, 26 May 2026 03:07:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779763932; cv=none; b=EfeOcRnY6B6t9dHH719LDiF6czROuCvOWM+e/XgOGhBFOl6k9B4LMLJ5G3oDVl8pISSLP0sHd5LpO5hnXNVZvlIsP0E1sAd6OTbtziG0499dnJ/z45gDMBBCOWX5bTauPdDc0Ra2IIaKD/1Za7klB0vpzEe3S2YKEXy5kTLm1SU=
+	t=1779764885; cv=none; b=tT3dN3rIWwgIGqH25SSvmK54lRAxRxJOY9xC5YUjp56sU3XqmTa6jp3am5HuX4foQc0Ws8TVnLTRB0aUDZz5bRxS30Mf4MrrYWJTj8M0CgEwIRD4DdHWYepPl4/9VwrHIcPbh6MeHVHcJ8guf9LYusK8MnS75vc2uCU9FC1bUwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779763932; c=relaxed/simple;
-	bh=o9wMTxhYiDKmflOFYsWj2G5+KhuWu2fGjh/QrAEnzwA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K3pLU6wV0Tv3KY5h3eRJKjtl+S8Ed3V2Fpz49VJbDoBRJuh7jDx32B8fgNH5MPkLd5Yjdp7FEZHLTITL8R4ygUYh8VQp/Ei3Zgtm/smGh06WwwDzJidafezT+GW2f7vPEECd21gyXwExxNqJVXl0l0BQwra4DXEZKWAf6pTJPIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=northecho.dev; spf=none smtp.mailfrom=northecho.dev; dkim=pass (2048-bit key) header.d=northecho-dev.20251104.gappssmtp.com header.i=@northecho-dev.20251104.gappssmtp.com header.b=TEbOSmrq; arc=none smtp.client-ip=74.125.224.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=northecho.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=northecho.dev
-Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-651ce87d785so946001d50.2
-        for <stable@vger.kernel.org>; Mon, 25 May 2026 19:52:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=northecho-dev.20251104.gappssmtp.com; s=20251104; t=1779763928; x=1780368728; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=naGseeLsZOt5/A5Mc1MGjXdOC/ihUE1Cs3gNHn6WygY=;
-        b=TEbOSmrqKq3smUDcMdEMyNVgqupAbh3DDq0dAoGy9owBXUAEFgnpDhtzgn5FbS062k
-         Ks+Ha2gHno4vvvrvN1o2Fwle9wjNrpSOasnJ6UVdCeMtV3dNDNqrs3BpYn9oqvpmKaZ3
-         PY3MJ+ItyQ+Z+miQU6l3S3HFbDklKhxRVoh/6CjB/QA0boj4eFh19/k4pPZW7AI877BJ
-         RvCwnXWzkO8FG5ZvKLwk04dxb3LX+CRk7ifKP28TIXv/BuW8G5RNzgB5yRTRoMkhYkoY
-         XquAleCLQ8+Hods1tjYaHw/tALUfDRh1MCb8QwWjlCskWWQKH69foWgSDGtHWCKXwBeT
-         DlbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779763928; x=1780368728;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=naGseeLsZOt5/A5Mc1MGjXdOC/ihUE1Cs3gNHn6WygY=;
-        b=LW4tqR0K09Cen5I6j/bvUbeTaZPtPbJkECh/T8KzEMy7PJ2Y2WCImGACri7Zm07Zy/
-         kg7TlVlk5cOsWgVHMl3Fh2wbmzoNaR9wgR/WWLTWFLP2TT4psRLO/EbyrkuBbf/llPp9
-         CDHvg9lD8CZFJL4VPZ02potDV9UIJimfWsmcfZpWe7YnmurrWFWBZlgIoSRXCBm1+hPx
-         WH6T2ABvqCiCMFXLeJMagM9f+0bSoJvW2W2XLSDhfxO4QhFqRDiE4mndHogZfP6saklI
-         /Hez+YFZha9Qw41q0YJVZwQupaGD8GYXzT63iFZ6sdtSABzIBU0lOCJDNc3RQ10rVIC2
-         +d0g==
-X-Forwarded-Encrypted: i=1; AFNElJ+4Uh34TOIUPQqhBCEGP5Q9SYZEPiP9Enq2lqknN0+M45c5fLcAkzs+1AcYGSU92Jj7tNZtZ4o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYif4+CAiQPRNzxYKss9yVVDhvkmQ11DnPiCjHNwo+PCEMp5eB
-	4zmnRuf5eNgHG7gFv4rairphPsejHRI1D+k8Z83c8kCNTMsCpWatri+c/mW1rDZ7C/FP
-X-Gm-Gg: Acq92OFz0ZVLCm0my6IIAikMRoY3TPhBwOzKr3BAb812i1QPhb5KPp6nZZLyTxI/AzG
-	Qh7xCF+FVfio6/e3ZNZlX57ur2EAr+5/tgHj2I+d2fTIcJ4FVIheJYHQBLASM+SLnJjOXUl2S9m
-	tUOYlWWmzil5FRFvpN1drMvoIdvaGA9AKpeBaYtKLxaNz/pehdqBs2frDhZcMnVvt9VUZnBvTKf
-	QYYIlxao778yEcigBIVCHEEND3xarKFHMa6x0qA9N0bbLxZW3pRxaKjD1fZMG3TnUAL1+cVU9Ey
-	hr51cRX3J8i1oWiwPvFRtxMqK3QjdMaPIy33nDgLibLWe8PS7zkdKQG+oyxy5krfai9TCkFcex3
-	WMnPyNx12TSwiWOzA0UhOEYL+Yk7WJIgBzf2kfuF/UYMvJa5ws8GpSWeY4e2XqWzW0hGLJ7hW5X
-	ntOCLrAHCcxptVGaFScE2jZUjUxcG/MTGswMNMT41e7Iw740O3jS8jPbOnIzomDtbpJ7pbHmT7W
-	oYjqwps9d3Ils8=
-X-Received: by 2002:a05:690c:f:b0:79a:8e00:a5bf with SMTP id 00721157ae682-7d3373a7a95mr124613927b3.1.1779763928408;
-        Mon, 25 May 2026 19:52:08 -0700 (PDT)
-Received: from kelso.tail8e61da.ts.net (99-10-92-174.lightspeed.rlghnc.sbcglobal.net. [99.10.92.174])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7d38c33c935sm54938797b3.36.2026.05.25.19.52.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 May 2026 19:52:07 -0700 (PDT)
-From: Christopher Lusk <clusk@northecho.dev>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: John Fastabend <john.fastabend@gmail.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net v3] net: tls: use sync AEAD for sk_msg BPF sockets
-Date: Mon, 25 May 2026 22:51:54 -0400
-Message-ID: <20260526025154.60607-1-clusk@northecho.dev>
-X-Mailer: git-send-email 2.54.0
+	s=arc-20240116; t=1779764885; c=relaxed/simple;
+	bh=ksDO1gcnq/lVhe9THFdc8JsXrZ7A4pyOjaGctWemHHs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=u89wIV3EGfGs0Reh0HVvuMdVyMrcehihRA0qDmKxGLLavh/43v5oENIS3mDHraMY8jEr6UkzX2Isg+YSx6uehC78+mN0v6rPJ0PQrDqCvNFyQzNCRLz4iw6NLUxfyy+aYJ5gw9rW/VKi279l5dg/NDGemFogEN+1ZHHYVqz27CE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=uISjatNo; arc=none smtp.client-ip=43.163.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1779764869;
+	bh=Hg358ENkRhAGDq3t9ESmdWGtTOyacJe+2JcTPkeT404=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=uISjatNogRRVmtOBCbmw9vZbyLKvmwa8C0Olh0EmHPNyz7v7iD18uYHEkclo15T6K
+	 ERYqK8jPFyfAC1F8SAYnMIB8zESKZvih866Zd146BdqPNbp8mGFZ7Pfdx4UzE+/Byj
+	 y2q8L0BG7gMHY2RiTiop+j9c2XsHJpCU76F25msM=
+Received: from [192.168.1.40] ([183.241.55.175])
+	by newxmesmtplogicsvrszb43-0.qq.com (NewEsmtp) with SMTP
+	id 1EE3C409; Tue, 26 May 2026 11:07:46 +0800
+X-QQ-mid: xmsmtpt1779764866t2kgw90pu
+Message-ID: <tencent_8D358C1F4992EDD688387C30330D18B45608@qq.com>
+X-QQ-XMAILINFO: MvUAcPkRmFBfqIkcmIQdNh/ZDGvbu1DgshddzZNkxpfryWJtsVetBbcH/c+Ul2
+	 MKeghGOMV9bwbSLxCfo2oJM6gUj3bhUD+wK+6RQK3teR9NS8lMdX+Npke0jm02mKvvyGIRCXlgTc
+	 NaM8cKy6A7hj6TZvo0AUBEY2DqDV+r9aq5cTggcf11wj+PQRzjjPHQGHMmvIaP9tAfsddflppP85
+	 HCwN2CjNyvH0ioAfu7TclCaYBV2fpbAUrM8yZhC9ww82rm9pCl0iWbAPlKFHM6TBQsag8fK41JpK
+	 oADOX54JcglDNZXwgGl5pVhD6lh3IndKXo34dFlyIt/3ZcWO6GOXlZ6r9Pe4uAU8NNmdLTAxIc7s
+	 j/mC7o9VWcObqkfwJ1IDOsFqXlffzQuNjQzPuz7TeW8J6/Lyc6+0FRI/2Su7C4ZjVF8Pf9WwjMv4
+	 wLNPRQ+jtvAY/WF3vMl/qx3h6pEk/HUAdEGa+W0FIjCYbDfaXySU9R7sPXRknE+uu7nh+NB23TGC
+	 mvMay9PYBFiEfl3uz4myKfjZpyXtQDFGDf1tTHFLv3JXPjydH+AEEdhT7IMIYefyDPRbfkfGF8UP
+	 W6U03LCYUGCxKe+bHhIxiWNNwuou4NdXKdN+ALhKq0QcJbh0mqbtficQF1fTo65bPrNsDam9tqqp
+	 C/01xhPEmXwvsRXNNp/GQkBxozhG96bEmB6IV17noB/aIgNEEfDeGL9w2Ldmm5HmFcwScL8dsYq3
+	 rYggu9tfASRiqrItHaSX/KS2F4yUSAuQyZf/5Ls48nybkZnbvtIdZP4yonhvReRCmvmM0x1bdeNv
+	 G0FnIlMB99bkHwCiZx8Jnyyobown0Il3quP6i45T404qmYHCcM7cvUfL/+5r63wxwdkVWPYGPw4X
+	 ExKM9Pznm5H48fRIjoebBTBX/ijcVYhLahgM0X2c8//SZsk3I48XCGx1DirBkQu7sHljMb09ietQ
+	 9eNSWpOBVoXmr98kGnRsq4J08LT7Ew1OvU4oB1L3GKlLrdOTKMC5HhqmxBVT+MoOJao3OYfODPvf
+	 IH9wY7o0WN/f6XU6qOJ/QsoRFRXjxvR8khzocKZLdcO8bJy/8IU1XaZOnpENGT8Xv93rl7LdlDm0
+	 WV4C4dx9rcOtv0NWjQTpLQKY+How==
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+X-OQ-MSGID: <3a7d3e16-602e-42d4-b889-6e2d274059ea@foxmail.com>
+Date: Tue, 26 May 2026 11:07:45 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6.y v2 2/3] ksmbd: add durable scavenger timer
+To: Namjae Jeon <linkinjeon@kernel.org>
+Cc: gregkh@linuxfoundation.org, sashal@kernel.org, stable@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stfrench@microsoft.com, d.ornaghi97@gmail.com,
+ knavaneeth786@gmail.com
+References: <tencent_290D1FB4A935031FBD9251D6D238B830AD08@qq.com>
+ <20260525104130.1252-1-alvalan9@foxmail.com>
+ <tencent_88A30183B6BDC6E9A34612CF7A10071E4605@qq.com>
+ <CAKYAXd_=z9THUikoBQnCCMcq2yoA14RdwTWNS+4eQWSiSQMfKA@mail.gmail.com>
+From: Alva Lan <alvalan9@foxmail.com>
+Content-Language: en-US
+In-Reply-To: <CAKYAXd_=z9THUikoBQnCCMcq2yoA14RdwTWNS+4eQWSiSQMfKA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [1.34 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[northecho-dev.20251104.gappssmtp.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[foxmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[foxmail.com:s=s201512];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-254238-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,queasysnail.net,davemloft.net,google.com,redhat.com,kernel.org,iogearbox.net,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[northecho.dev];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254239-lists,stable=lfdr.de];
+	FORGED_MUA_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[clusk@northecho.dev,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[northecho-dev.20251104.gappssmtp.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,northecho.dev:mid,northecho.dev:email]
-X-Rspamd-Queue-Id: 51B005D025F
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[foxmail.com];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alvalan9@foxmail.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,kernel.org,vger.kernel.org,microsoft.com,gmail.com];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[foxmail.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,qq.com:mid,foxmail.com:dkim]
+X-Rspamd-Queue-Id: 611225D03A0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The kTLS TX path can hand an open record to a sk_msg verdict
-program before encryption.  If the verdict applies fewer bytes
-than the open record contains, tls_push_record() splits
-ctx->open_rec into the record being encrypted and a remainder.
-The synchronous path reattaches that remainder before continuing.
 
-With an async AEAD provider, crypto_aead_encrypt() can return
--EINPROGRESS after ctx->open_rec has been unhooked but before the
-split remainder is reattached.  The remainder is no longer
-reachable through ctx->open_rec or ctx->tx_list, silently dropping
-transmitted data and leaking the unreachable tls_rec.  The same
-composition also entangles the user-page zerocopy lifetime rules
-with an async completion path.
+On 5/26/2026 10:22 AM, Namjae Jeon wrote:
+> @@ -817,6 +968,7 @@ int ksmbd_reopen_durable_fd(struct ksmbd_work
+> *work, struct ksmbd_file *fp)
+> }
+>              up_write(&ci->m_lock);
+> +           fp->f_state = FP_NEW;
+>               __open_id(&work->sess->file_table, fp, OPEN_ID_TYPE_VOLATILE_ID);
+> You seem to have missed this change above.
+I remove this line for:
+fp->f_state = FP_NEW was moved the beginning of ksmbd_reopen_durable_fd ()
+in upstream commit 235e32320a47 ("ksmbd: fix use-after-free in 
+__ksmbd_close_fd() via durable scavenger")
+in v7.1. This upstream commit 235e32320a47 have been backported into 
+v6.6 [1] before this patch,
+some code snippets:
+@@ -855,9 +867,23 @@ int ksmbd_reopen_durable_fd(struct ksmbd_work 
+*work, struct ksmbd_file *fp)
+          return -EBADF;
+      }
 
-A sockmap cannot be attached to a socket after an inet ULP is
-installed: sk_psock_init() returns -EINVAL when
-inet_csk_has_ulp() is true.  So the supported ordering for
-sockmap + kTLS TX is sockmap first, TLS_TX setup second.  When
-TLS_TX setup sees an existing sk_psock, allocate the AEAD with
-CRYPTO_ALG_ASYNC masked out and latch the TX zerocopy gate
-(sw_ctx_tx->async_capable) so the buggy composition becomes
-structurally unreachable.  Ordinary kTLS sockets without sk_msg
-BPF attached are unaffected and continue to use async-capable
-providers.
-
-Fixes: d3b18ad31f93 ("tls: add bpf support to sk_msg handling")
-Cc: stable@vger.kernel.org # 4.20+
-Signed-off-by: Christopher Lusk <clusk@northecho.dev>
-Assisted-by: Codex:gpt-5.5
-Assisted-by: Claude:claude-opus-4-7
----
-
-Changes since v2 [1]:
-- Per netdev maintainer guidance [2], replace the Option-C
-  drain-on-error fix with a setup-time surface narrowing in
-  tls_set_sw_offload(): when a sockmap is already attached at
-  TLS_TX setup, request a synchronous AEAD (CRYPTO_ALG_ASYNC in
-  the allocation mask) and set sw_ctx_tx->async_capable = 1.
-  Both moves are needed: latching async_capable alone disables
-  zerocopy but tls_do_encryption() can still return -EINPROGRESS
-  on the copy path; selecting a sync provider removes that return
-  path for sk_msg-attached sockets.
-- Drop the selftest from the series per Jakub's note that the
-  existing sockmap + TLS coverage at
-  tools/testing/selftests/bpf/prog_tests/sockmap_ktls.c exercises
-  this configuration [3].  That suite covers sockmap + kTLS
-  policy paths broadly; the specific async-pcrypt pass-then-drop
-  failure mode from the v2 reproducer was validated for v3 on
-  QEMU/KVM with a KASAN+LOCKDEP-instrumented kernel against net
-  base 2156a29aecff before send.
-- Single-patch series.
-
-Changes since v1:
-- v1's remainder-rooting fix was incomplete; Sashiko AI review
-  surfaced a real UAF in the v2 follow-up that John Fastabend
-  endorsed on the v1 thread [4].  The surface-narrowing approach
-  in v3 makes both failure modes unreachable by avoiding the
-  async + sk_msg composition entirely rather than patching each
-  continuation point.
-
-[1] https://lore.kernel.org/all/20260521025840.976378-1-clusk@northecho.dev/
-[2] https://lore.kernel.org/all/20260525133028.58494274@kernel.org/
-[3] https://lore.kernel.org/all/20260525133048.2dc6d8d3@kernel.org/
-[4] https://lore.kernel.org/all/huduxtn6parzgiaf5cyiyrrvjjvx6jsdedowvrd4nkwmuyeind@j6migjgofh2i/
-
- net/tls/tls_sw.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
-
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 964ebc268..0000000 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -2867,7 +2867,20 @@ int tls_set_sw_offload(struct sock *sk, int tx,
- 	rec_seq = crypto_info_rec_seq(src_crypto_info, cipher_desc);
-
- 	if (!*aead) {
--		*aead = crypto_alloc_aead(cipher_desc->cipher_name, 0, 0);
-+		u32 mask = 0;
+-    fp->conn = work->conn;
++    old_f_state = fp->f_state;
++    fp->f_state = FP_NEW;
++    __open_id(&work->sess->file_table, fp, OPEN_ID_TYPE_VOLATILE_ID);
++    if (!has_file_id(fp->volatile_id)) {
++        fp->f_state = old_f_state;
++        return -EBADF;
++    }
 +
-+		if (tx) {
-+			struct sk_psock *psock;
-+
-+			psock = sk_psock_get(sk);
-+			if (psock) {
-+				mask = CRYPTO_ALG_ASYNC;
-+				sw_ctx_tx->async_capable = 1;
-+				sk_psock_put(sk, psock);
-+			}
-+		}
-+
-+		*aead = crypto_alloc_aead(cipher_desc->cipher_name, 0, mask);
- 		if (IS_ERR(*aead)) {
- 			rc = PTR_ERR(*aead);
- 			*aead = NULL;
---
-2.54.0
++    fp->conn = conn;
+      fp->tcon = work->tcon;
+
+[1] 
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=0000a7780e0e446a28a273572f6ea8f7f582f694
+
+
+>
+>>   int ksmbd_validate_name_reconnect(struct ksmbd_share_config *share,
+>> @@ -934,6 +1085,8 @@ int ksmbd_init_file_cache(void)
+>>          if (!filp_cache)
+>>                  goto out;
+>>
+>> +       init_waitqueue_head(&dh_wq);
+>> +
+>>          return 0;
+>>
+
 
