@@ -1,227 +1,220 @@
-Return-Path: <stable+bounces-254454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254455-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wYnXNAgrFmqdigcAu9opvQ
-	(envelope-from <stable+bounces-254454-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 01:21:44 +0200
+	id aOGDBXkrFmqdigcAu9opvQ
+	(envelope-from <stable+bounces-254455-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 01:23:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 387B25DD7D3
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 01:21:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 717695DD836
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 01:23:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3D637304095F
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 23:21:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7B3F33080C96
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 23:21:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80F983C0628;
-	Tue, 26 May 2026 23:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB2393CE0B1;
+	Tue, 26 May 2026 23:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CA6SU0Dh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZoF8Uarq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E776429E117
-	for <stable@vger.kernel.org>; Tue, 26 May 2026 23:21:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779837699; cv=none; b=gbAa92rgSFhl0sLfzFSLbR72q+VAxYVdvEyZrhyNPaluyKTODt6dmKmYvBcdD/ZF4WhfWXIdo975O93gw4dkclA6+UqZ6PxKtFKgoy7tp+Ml3n9oFX37vAr/ma1pygoTZxK6WREE0kb+ICiZSTx4EoPTlisWI2eV7XL4ivHpC78=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779837699; c=relaxed/simple;
-	bh=GNseIYPxJ3cmW+l193MU1A8d8rdG4X/eR9u+Vb0r/Ug=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y8Wos69VsxdKT+XuGd3WBrJovVxTrlBmDVlZ9INhIDhHfNdKBbacOK05lAZ/VFZlTqSTbFnHaRZwB0graiXngjt+Qfh1OuVd0RGB5QASJ4n8Jw0nLJUi/b+GkeZ8nKn3WkF3oH+uv4iNI7hyYs8d/oAo6CVgNI2PsaLDuNm/qyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CA6SU0Dh; arc=none smtp.client-ip=209.85.160.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156943B0AEF
+	for <stable@vger.kernel.org>; Tue, 26 May 2026 23:21:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779837712; cv=pass; b=Uqm9X290ya71g1Is0/bo6DRuJKKRqz4d0qKJm6jH/l0+j7NXi8LR81v3R04LqChaasbY8DTdF5+ruWalaIj0q8BkjQltk4sVMICa9gfWiXFA/5tPqhT7/9w4K8/rXc0ahIm2Rz4sB1Qywq16g0iPE6q3hXFFV5mEcStmvJptdJw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779837712; c=relaxed/simple;
+	bh=u5AZ6lDvJHN6hkOMWJlEHdIYy+BPs1w8b0bOdZZRyJY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=J8P1loUVUomiiqG9jxUxwmMUebwmX8mlQo+8Wpdy0jft0r43JcylwcnNbckyPyjoJFck8OCFktOuizbYdXtThk41HbgyFc4aVq2TynN5Q1N8nv3tM9JIwgnVvn2FjUsLWDOX4WWGLoZnoITs+NEORCwa+iygIRfRq/nriaBScMg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZoF8Uarq; arc=pass smtp.client-ip=209.85.160.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-516d083c98cso4684971cf.1
-        for <stable@vger.kernel.org>; Tue, 26 May 2026 16:21:37 -0700 (PDT)
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-43bf6230cffso1231952fac.0
+        for <stable@vger.kernel.org>; Tue, 26 May 2026 16:21:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779837710; cv=none;
+        d=google.com; s=arc-20240605;
+        b=cYaO0LUr6ih6AW/DrB2lP/V7bx5QjkMM3auB85bkleXraNVvmt1C3YpfV77TULg5xx
+         3MfetcEyTjjv+0owa1JMExHYFOsoIPfSAMkZRD0DtpAvQCShNCLkTFH+dHSrG3IYKGWb
+         ZP6irx1iXcRs/X+dWEDyZNTU+bpAb/0YCW0Oc8dsOOq1Mu1A+QIhdCKLqpSCrMbJAA5h
+         aUs/T+0KFQbBgTa7Pide9ehP1RshMlcHZEvDnh9b34YdkmOKDgvFO+Ksa0OkjM+uQVDf
+         NNCJql4WSxlHnqnE4lEhXGQWtSMK+oasEYMjJXakZrT/ygDIzIrg6GraCNgIDhNN8k+9
+         +9qw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=HujuVBuKdWWEfICM8n6u8a8X3rF3iweG2fpAlmRVj68=;
+        fh=dXwfanbQM+LTLC38gj54wjFSWF3DTefQd9OmhpsZ5nc=;
+        b=JP792RHv6J9IKhlUA0kTpM2dWeKDdTGkY7v9GlCp2Y0CeHSbNtU5z9+ken4nUoicbF
+         A3kH/xkINj76tuKsDWTtVsKJV7qmjTirM/lm0yqceRc9yAc1giQ22a0YHp9wBA+hAibs
+         UNZUtR4ZSUEIJWafU2yVmKItbqHUodfGAzHLHfgLEbjD03ZJS2UGa6X1VavN9gYzf9Sv
+         PdxHTNchK4vv0bbBxQfWHdDvnBfxMnoUahWi20JNQvyF0Y4WN+eQBV3I6+JUE80xp6ou
+         ixQsm/oNjf7FuZ0PCowkDsTthRIuG6rOBD04v5tc89HSNI5vDajLP0p9l64AlPUKr77u
+         Wc6A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779837697; x=1780442497; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=BiZFVTxQnyNG17gARCnVzZAOXJ6pRd4xFKXb5aZrpTw=;
-        b=CA6SU0DhAMu3GVEm8IlcqZBY1g7hA2LWfQ8g4PhFG0Z+5Cr6HbL3XifQf/ainqcyXN
-         roAVh/Gggrqdw0OUIauVs4TQeEguxhIaGeMobjyZKvOSI10xJf0qXE0Gf6ux6ZD7O1Pl
-         ri83EYOueu6XzaNVjhbWPxcHn6+Rgch6KeUjyQ2zpTKwpZ20HnKtljW4iSEdFSLlN5JR
-         IzQ8w+UReW3SumzxBgNsWKzvPOUwuEqqjFGo83J1opHkj9LoN4pIySHvrhGYH1YDiaSY
-         ffOgOfThi2Zk1jcFtH6h1EZ9SbVSN+XyjMX25wm8xAKWYwK0Q+x532/xbhHPPQRiVewP
-         yRBw==
+        d=gmail.com; s=20251104; t=1779837710; x=1780442510; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=HujuVBuKdWWEfICM8n6u8a8X3rF3iweG2fpAlmRVj68=;
+        b=ZoF8Uarq/TldyaYIzCoGeNZ4a27AC5yVtMW2qA6Tq9NzzWaOekALVchygvW560Li57
+         VEI7YHopZ1NPwR5c4jDdIWBBGBy5szAPuY2g8Sebgwsu6Srwp+6KIZMbFR26UksalAqR
+         /Ar4cOnt3DJDonqFEM5D8vyKYvVSvGsfoInObizwy3IygcHiBMTU9RUkLaauWzZGhZN4
+         sJ8H7IfBEpqPZyeaRUURQi+O8KCm0ESpIrzqou+SbZh7vqjIF77HWQzXdCYKNcE2p5ja
+         XdTYZPCEWLbvOKLLf6BiiK24XjBh+QgJlYovwsMDMFUdvrOkh/ahAXlltSyXVJPE7efq
+         phmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779837697; x=1780442497;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BiZFVTxQnyNG17gARCnVzZAOXJ6pRd4xFKXb5aZrpTw=;
-        b=N/hiS8ASIbVxxAcurEcedpsoHtFkNxwXBJimt3cc+8lVKjgb0Re3+7Wbmw9RjI5ane
-         WOWlvgrtkzHdDPvvG5BdEwYHMwSrTgyB5p7RuB4a8CfWKNOUSBF2sfC+U1K6/a1MifMM
-         vIp63llSskhyRGr/ow/LTwOAcfbIOlUppE10JS1nivmxrJLttbwLpV7UWS5MQm6TfFWm
-         gu8J0BBMnutK4PSp0Xh5QIOktY6+eSU5Jwb50QVMxyQ7D85t1RhlfSgsFDZh2iHxL7ds
-         Qq8GmEpQUpVvOEe8ojV8esJY+AHSbnt4y5Nxh4Efs9eaM4uq7iPIrCl2gnlLyN8Sz4Yr
-         41qg==
-X-Forwarded-Encrypted: i=1; AFNElJ+k6HMCwcOmknVc0JG3QWqWSWx7i60HinOMN74cEIcuT/REELltNK8bbun5nnFfzK4mduztLgA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxha7hl0vVYGOrU7Ve0g5x8C29TB+kyjxAq6yQirWBErnN0XYS5
-	3fMvh+XIKpoun61m7tCZ5nZL20OEGjMWCZvi0hrm0MW2v0F+DEkOyeNb
-X-Gm-Gg: Acq92OHkb+oHFHhsUC1epBXkKGdRDUHiLQjWiZ5o3dx4UtIde/eZZfjfT2RccULGVaD
-	ph083yb9Q94u4u1CE6TeOlpTWPaSLUPmfyx3dtuLVY0igVsuFzMp0fO1YIScKJfGj7JgN/YNkYT
-	n3uIgg/O28QL1Y+v30ovhkb+rPwHEEq8fN0rmjqciRubTvxHxbzvCYU9vFPuGf0Mb/CWgiqBawr
-	vNRiKme1tpZKLWFqJjKT9P5XzYJwwtOyItlVEGq2xcSvS5ydettG+6knVDkIo6t9MpRyht8xso1
-	Mne9Z00jhwFOZkg7TpW8H02ogX95Nfb0hJZFNIA0k0mPaKITzCZuC+svCMKY5SiNpnZPvx1cw1V
-	Ps5+AAm1ghVlWaqJKBV0v6ZUe9Pb8eD7VZSb3oIIu1CavRGCUNszrIVUnLAXGQGuRhBUML+l8NG
-	gAc58Tv3hLb4pM9G8fNRekIWmw2rVg7AVRU+fSfaJxHP/fUYMvqlbAIruyrPsHU5Q+6bTo0ec=
-X-Received: by 2002:a0c:e091:0:b0:8ac:a205:f118 with SMTP id 6a1803df08f44-8cc7b5e585bmr199693176d6.8.1779837696675;
-        Tue, 26 May 2026 16:21:36 -0700 (PDT)
-Received: from luigi.stachecki.net ([96.224.31.104])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8cc8132f780sm154586406d6.49.2026.05.26.16.21.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 May 2026 16:21:35 -0700 (PDT)
-Date: Tue, 26 May 2026 19:21:33 -0400
-From: Tyler Stachecki <stachecki.tyler@gmail.com>
-To: Salvatore Bonaccorso <carnil@debian.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>, Sasha Levin <sashal@kernel.org>,
-	regressions@lists.linux.dev
-Subject: Re: [PATCH 6.12 375/666] perf tool_pmu: Factor tool events into
- their own PMU
-Message-ID: <ahYq/YrKZ+PjCh2W@luigi.stachecki.net>
-References: <20260520162111.222830634@linuxfoundation.org>
- <20260520162119.375577583@linuxfoundation.org>
- <ahMPWN_PZlQLisk4@eldamar.lan>
+        d=1e100.net; s=20251104; t=1779837710; x=1780442510;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HujuVBuKdWWEfICM8n6u8a8X3rF3iweG2fpAlmRVj68=;
+        b=BD2LZ6xaxoTN2Qw8ikEYjWQnb6bUL3IJCNGW6Ng04SsNCwomxdVrMOv0wiUQ2xWZ5w
+         alt+qMEZbgLAEYOKMo1fuls1dG1kjAvBW3YVgPA+6+Y4UoxafKQ3OyCvznUM548OwDGc
+         wUcXMGDu3vk5IPhVYCb6seuWp7ke4DGwD28KCEQFnaY72NyyPe6sI04Y6ObVFx6/ISRn
+         QYwQVsCdZhIOVka38SwuZl/+fLDduUXzwMHD21bPxiZp11oI5uLxPYzMcx8UOvt6niOg
+         ySSFhvBXrGMdCk9AUiW45/D2u245dqLA8sG+JPRqrjsr6kRuBsop0xmsOQ/Evaxawi1l
+         sbpA==
+X-Forwarded-Encrypted: i=1; AFNElJ/durkAK6D9UDYP8eXXZ+5x1a4IvWx3VbMt0f+nD/9O4NiQS6OU2WSUij3itcYeYybix7KxRwk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNz4+VUjTjmfQshI3ZzGZYSW7/W5Tuin96vS0SqjgWIs9z9bRu
+	UmcXfqLKjYBtIDZ0Ml5ghq/rb/QpxquhOyt7Jxx6+ShlglbAOmMh8zWGR/KKuE2jvl6keOvTysA
+	FisYTCXhUy0cat5Lb/vd+KfLphMzIRAdCFB9DwXk=
+X-Gm-Gg: Acq92OEATy6TZJZovzvUk+yKvTY2naKl/c8cqBEaNSUIdetOAelf3wLJnNBGbsoEFtf
+	INa2b15HgHdptzgrRX6aUW/IiUkH2ipqi/b2HQFWbHM8nbwI2XQta2qfVo9TpmifV/BDvM2kU/c
+	ZdsTn2g6fFL4shbtuYpK2v85nDzOI05AuvXrb2fYZT5CMVi00QQcbF5PGusLVt1H48TTdSqx4Lo
+	SsFBat70VNKjhOruUjnVTjjyDLbZylvpJDjQV/Pk+ZJUv7a9JJo/33J6aJYA8F8McnkNJsPhTw5
+	fQO+BzFYI58T4bLoMPL2O/nmmdo=
+X-Received: by 2002:a4a:e903:0:b0:694:9e2f:cfac with SMTP id
+ 006d021491bc7-69d7fcb51b6mr8951696eaf.9.1779837709977; Tue, 26 May 2026
+ 16:21:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ahMPWN_PZlQLisk4@eldamar.lan>
+References: <20260525201116.407338-2-kacper.kokot.44@gmail.com> <202605261807.YY0PWuhX-lkp@intel.com>
+In-Reply-To: <202605261807.YY0PWuhX-lkp@intel.com>
+From: Kacper Kokot <kacper.kokot.44@gmail.com>
+Date: Wed, 27 May 2026 00:21:38 +0100
+X-Gm-Features: AVHnY4IeURuAw-7kug8a-6xqNpmP-8aoIQEcxEzrITr5eMpT52Lzw3oZg7lhaRo
+Message-ID: <CAG-Fur7edB8_4iLnP4QWh+K96bGFBgYyfdoy8H7zvqa8NYdyow@mail.gmail.com>
+Subject: Re: [PATCH] netfilter: TCPMSS: fix dropped packets when MSS option is unaligned
+To: kernel test robot <lkp@intel.com>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
+	oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254454-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254455-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MISSING_XM_UA(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[stacheckityler@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[kacperkokot44@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com]
-X-Rspamd-Queue-Id: 387B25DD7D3
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 717695DD836
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sun, May 24, 2026 at 04:46:48PM +0200, Salvatore Bonaccorso wrote:
-> hi Greg, 
-> On Wed, May 20, 2026 at 06:19:46PM +0200, Greg Kroah-Hartman wrote:
-> > 6.12-stable review patch.  If anyone has any objections, please let me know.
-> > 
-> > ------------------
-> > 
-> > From: Ian Rogers <irogers@google.com>
-> > 
-> > [ Upstream commit 240505b2d0adcdc8fd018117e88dc27b09734735 ]
-> > 
-> > Rather than treat tool events as a special kind of event, create a
-> > tool only PMU where the events/aliases match the existing
-> > duration_time, user_time and system_time events. Remove special
-> > parsing and printing support for the tool events, but add function
-> > calls for when PMU functions are called on a tool_pmu.
-> > 
-> > Move the tool PMU code in evsel into tool_pmu.c to better encapsulate
-> > the tool event behavior in that file.
-> 
-> While building now a complete set of packages for Debian for 6.12.91
-> where perf tools are included as well, I noticed that now the builds
-> fails. In fact in v6.12.91 
-> 
-> $ cd tools
-> $ LC_ALL=C.UTF-8 ARCH=x86 make perf
-> 
-> fails with:
-> 
-> [...]
->   CC      util/stat.o
-> util/tool_pmu.c: In function ‘tool_pmu__config_term’:
-> util/tool_pmu.c:62:49: error: implicit declaration of function ‘parse_events__term_type_str’; did you mean ‘parse_events_term__str’? [-Wimplicit-function-declaration]
->    62 |                                                 parse_events__term_type_str(term->type_term),
->       |                                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~
->       |                                                 parse_events_term__str
-> util/tool_pmu.c:61:79: error: format ‘%s’ expects argument of type ‘char *’, but argument 3 has type ‘int’ [-Werror=format=]
->    61 |                                                 "unexpected tool event term (%s) %s",
->       |                                                                              ~^
->       |                                                                               |
->       |                                                                               char *
->       |                                                                              %d
->    62 |                                                 parse_events__term_type_str(term->type_term),
->       |                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->       |                                                 |
->       |                                                 int
-> cc1: all warnings being treated as errors
->   CC      util/stat-shadow.o
->   LD      util/hisi-ptt-decoder/perf-util-in.o
->   CC      util/stat-display.o
-> make[5]: *** [/home/build/linux-stable-rc/tools/build/Makefile.build:105: util/tool_pmu.o] Error 1
-> make[5]: *** Waiting for unfinished jobs....
->   CC      util/perf_api_probe.o
->   LD      util/perf-regs-arch/perf-util-in.o
-> util/cgroup.c: In function ‘evlist__expand_cgroup’:
-> util/cgroup.c:498:32: error: ‘struct evsel’ has no member named ‘first_wildcard_match’
->   498 |                         if (pos->first_wildcard_match)
->       |                                ^~
-> util/cgroup.c:499:38: error: ‘struct evsel’ has no member named ‘first_wildcard_match’
->   499 |                                 evsel->first_wildcard_match = pos->first_wildcard_match->priv;
->       |                                      ^~
-> util/cgroup.c:499:66: error: ‘struct evsel’ has no member named ‘first_wildcard_match’
->   499 |                                 evsel->first_wildcard_match = pos->first_wildcard_match->priv;
->       |                                                                  ^~
-> make[5]: *** [/home/build/linux-stable-rc/tools/build/Makefile.build:105: util/cgroup.o] Error 1
->   LD      util/arm-spe-decoder/perf-util-in.o
->   LD      ui/browsers/perf-ui-in.o
->   LD      tests/workloads/perf-test-in.o
->   LD      ui/perf-ui-in.o
->   LD      perf-ui-in.o
->   AR      libperf-ui.a
->   LD      tests/perf-test-in.o
->   LD      perf-test-in.o
->   AR      libperf-test.a
->   LD      util/scripting-engines/perf-util-in.o
->   LD      util/intel-pt-decoder/perf-util-in.o
->   LD      perf-in.o
-> make[4]: *** [/home/build/linux-stable-rc/tools/build/Makefile.build:162: util] Error 2
-> make[3]: *** [Makefile.perf:789: perf-util-in.o] Error 2
-> make[3]: *** Waiting for unfinished jobs....
->   CC      pmu-events/pmu-events.o
->   LD      pmu-events/pmu-events-in.o
-> make[2]: *** [Makefile.perf:292: sub-make] Error 2
-> make[1]: *** [Makefile:76: all] Error 2
-> make: *** [Makefile:93: perf] Error 2
-> 
-> Regards,
-> Salvatore
+> AFAICS, these issues are not present in real environments as MSS option
+> is placed at the beginning of the options block making it aligned by
+> default usually.
 
-Second this - moreover, because of the other commits introduced in tools/perf
-as of 6.12.91, it's not possible to revert just this one commit without other
-conflicts.
+I agree, I haven't observed it in any real environment and wouldn't expect to.
+I found it by reading the code and had to craft a SYN to reproduce. That said
+the spec permits unaligned options and the kernel shouldn't silently drop legal
+packets just because nobody sends them today. I can note in the v2 commit
+message that this is a theoretical fix.
 
-Cheers,
-Tyler
+> > I wonder, if we are touching this code, we could use the opportunity
+> > to make it use get_unaligned_be16() instead.
+>
+> gcc and clang convert x[0] << 8 | x[1] (etc) to the appropriate single
+> instruction (and maybe byteswap) on cpu that support misaligned accesses.
+> So there is little to gain from doing it any other way.
+
+Happy to go with whichever you prefer for v2.
+
+> and, of course, the code works fine because 0x1 != 0 is 1.
+
+Ha - accidentally correct. I'll add the parens in v2 tomorrow.
+
+Also the reproducer I sent with v1 was clunky. Here's a better
+one with some results below:
+
+  #!/usr/bin/env python3
+  import argparse
+  from scapy.all import *
+
+  parser = argparse.ArgumentParser()
+  parser.add_argument("target_ip")
+  parser.add_argument("target_port", type=int)
+  args = parser.parse_args()
+
+  def gen_mss_syn_options(nops=0):
+      return nops * [("NOP", None)] + [("MSS", 1460)]
+
+  def syn_check(opts):
+      sport = RandShort()
+      ip = IP(dst=args.target_ip)
+      syn = TCP(sport=sport, dport=args.target_port, flags="S",
+seq=1000, options=opts)
+      synack = sr1(ip/syn, timeout=1, verbose=False)
+      send(ip/TCP(sport=sport, dport=args.target_port, flags="R",
+seq=syn.seq+1),
+           verbose=False)
+      return not not (synack and synack.haslayer(TCP) and
+synack[TCP].flags == 0x12)
+
+  for i in range(7):
+      n = 5
+      ok = sum(syn_check(gen_mss_syn_options(i)) for _ in range(n))
+      print(f"{i} nops + mss, {ok}/{n} probes responded")
+
+Before:
+
+  0 nops + mss, 5/5 probes responded
+  1 nops + mss, 0/5 probes responded
+  2 nops + mss, 5/5 probes responded
+  3 nops + mss, 0/5 probes responded
+  4 nops + mss, 5/5 probes responded
+  5 nops + mss, 0/5 probes responded
+  6 nops + mss, 5/5 probes responded
+
+After:
+
+  0 nops + mss, 5/5 probes responded
+  1 nops + mss, 5/5 probes responded
+  2 nops + mss, 5/5 probes responded
+  3 nops + mss, 5/5 probes responded
+  4 nops + mss, 5/5 probes responded
+  5 nops + mss, 5/5 probes responded
+  6 nops + mss, 5/5 probes responded
 
