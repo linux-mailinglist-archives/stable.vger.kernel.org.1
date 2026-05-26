@@ -1,526 +1,195 @@
-Return-Path: <stable+bounces-254416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254417-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qMSrABHoFWqXegcAu9opvQ
-	(envelope-from <stable+bounces-254416-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 20:36:01 +0200
+	id GI88JlHoFWqXegcAu9opvQ
+	(envelope-from <stable+bounces-254417-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 20:37:05 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BA6D5DB6AE
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 20:36:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14BE55DB6CB
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 20:37:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AF715305D87D
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 18:30:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 56792302261D
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 18:31:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 301C430AAA6;
-	Tue, 26 May 2026 18:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0291421898;
+	Tue, 26 May 2026 18:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YtuJpVga"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JYNa8eZl"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7959040960B;
-	Tue, 26 May 2026 18:30:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779820254; cv=none; b=Y0iFQ4z18hUCLYm+9Y+yAiNlT0jWF5TCcLgUa73uHxfJK6LFy120QNIgfrQBmC+iN5qtX1pq5kgrxk1jTbFZ/7XubMjmkzYceY7zPZnz/qFGWurzTVY4l/g9DALzLsOvkUU84ANCkL0Cu5tLQU6ONHloF/gGkNEFXF/UkYhIkpI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779820254; c=relaxed/simple;
-	bh=/ERmcwIepsFqkT/BF/kT/SRYDPH4+5R/FJ/hGYlVGiw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dCXex7yUK6n9SHI6Vf7k9zsCznI/e0HY/ldAs4yVS/QUUyyPo/6QFKrK9RXQ1/FJ655mndI9lDgBT42cFN3cw0Gy5FeN2ZpiOU6hyJVIapJUJa1fWocIBbkpbhuRTa/4J5yEfynuPV/GQ5Dzmp4zvaP7KEkCDOlhqiWJPxR/soQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YtuJpVga; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B38E81F000E9;
-	Tue, 26 May 2026 18:30:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779820252;
-	bh=80z6UQMwUuOxqzeC8wLOTRdmWHUtibnlUFycndwtq+8=;
-	h=From:To:Cc:Subject:Date;
-	b=YtuJpVgarK/O+W4xkr9Gz63gwNr25JSVAqudaYqzG2eF0QWPPSIK277x5ke5WFfuv
-	 OKIXuoF6WDzk7/JoBE8ut63rnMsWaLVB+nkGaz3Qqoned0RKxZJklEv3W2iwSUEaJL
-	 HuSZxvdb4br+vEuv0y1UF0KalAJYYF79FYKv3wr7lBcBc+Nhc6TktizG/6FQK8KE1E
-	 RaySF8KfftWasGZAZK6bpqetdsl6xu4CtQJvfV4oQ9Le2wJqh2zRoGq02FRQYnTo52
-	 o0OR0WEPlwl/uh4fsDw4wWVsItxuBEBU1yyRj7HQYe2kwPEG0CFHf7uorKnk9T1WYR
-	 c5HEfXmQI+OCw==
-From: Claudiu Beznea <claudiu.beznea@kernel.org>
-To: yoshihiro.shimoda.uh@renesas.com,
-	vkoul@kernel.org,
-	neil.armstrong@linaro.org,
-	geert+renesas@glider.be,
-	magnus.damm@gmail.com,
-	prabhakar.mahadev-lad.rj@bp.renesas.com
-Cc: claudiu.beznea@kernel.org,
-	claudiu.beznea@tuxon.dev,
-	linux-renesas-soc@vger.kernel.org,
-	linux-phy@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	stable@vger.kernel.org,
-	Pavel Machek <pavel@nabladev.com>,
-	Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
-Subject: [PATCH v2] phy: renesas: rcar-gen3-usb2: Avoid long delay in atomic context
-Date: Tue, 26 May 2026 21:30:45 +0300
-Message-ID: <20260526183045.3887660-1-claudiu.beznea@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2904B40B6C3
+	for <stable@vger.kernel.org>; Tue, 26 May 2026 18:31:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779820299; cv=pass; b=c7rUgB7i+bXlsg+SEH6Yl2GTAUOa28e5vYOvzsoeX/FjucWFSPOZIMWJvhy2UJPhaEKMur39eGT7IjEqlpNyVnUiUm0cK0QPjVD4QYgzhJK6nanrqEIUMGRqdyv4bIv7yL4Hznhg3BZY1hD/sG/8TB0WPA4kvIrrqkdjbfW7PgU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779820299; c=relaxed/simple;
+	bh=/5+vAEgH6rFZ7VGwpIrcSyHpEzUK+m8zCzYVaRaOEcc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=R37CRNB1BwastFPlbriaMDrDi0MODmWbxY9THKEhxQWp6ZIYaTmrB5NDa5lftMjsoMJuEbuwCZKQOAA2aVXlSPt7QCLODpEVm2i4ju1QQr+Lyjj2gcdOdWMbWqjXIjjVlwvQOLkJIpV5atI3gA7Rw7AyjiqbYwXFFCivmPWkAJ4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JYNa8eZl; arc=pass smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-671588ab0cfso185a12.1
+        for <stable@vger.kernel.org>; Tue, 26 May 2026 11:31:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779820296; cv=none;
+        d=google.com; s=arc-20240605;
+        b=l0qJAMBMpHkueM1UEfrUuzVN9uounb1Dp4Deb4YVdnyPY8RNzUwModHTxwJfJyEPO8
+         /57qcxBrWyOHVEFpveACJM6XuezYMbKG8Xd8E7IJVxu6ohj3qqeFTlw1VqQ6QZf+9Nu6
+         Eb+sHVxSf0k+fxI4IDe4OffL5QUyoM94gY3Gq1O+SVNVHq8Z0rCIfPCuh06orrfRqVyn
+         4DVtfGNUpEBoltWsxr44B/a/hcJhloFY6aQHE/uFQIDVqB5VEVJeLU0LG3MFXO7GmDvi
+         Va4Mgy6ecT1FwuPviz4FEAinFO5/FY24pylUjkaE/Z7qnlGwOUSI9t//Y3WNHdb14rqA
+         NebA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=J7eX3Wy9gjbwHpl8XY5PP8KTjEFr0hiAHBwfibpJH30=;
+        fh=FeePI1P5Vk25q4xJC0ermpz42zTDn1r30R/f0eNCl/E=;
+        b=iIf82xeizRZik5F0cXFmhTlJvczVFnQB415HgW5USEzDavsvl5HWaaL304BZaGiSyH
+         d+bvsDp9NNg3n+6oWHHi+DS1BM/gRX2GNGnuwxNMK0tsd83B+RbtmxTr6y2mlPB55PYt
+         timEyohIdMgdpPq8OIMnJu1dEb1cDTmB0oLRD1T88q3j8vwGVToJ+ge5mUXVFcYrYLbD
+         6wcYKP477+qS5/4gC9KIUb1Lcqf1UUfT6usZUW6xleDosYdHCeDoxApdQBQSsTbsIdVK
+         VHWcItmd1zvH90QJ+131rlMWmv7v7yjsvgXRCNjrc3/SE49E2Xc0XcVvJotOr3WPtQ3n
+         xZDg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779820296; x=1780425096; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=J7eX3Wy9gjbwHpl8XY5PP8KTjEFr0hiAHBwfibpJH30=;
+        b=JYNa8eZlIsKgeuSgZSJNegqWUB0HqT+gWZlDYW7BVWX0LafSE+UGM3F5OBYR8hyg6I
+         y2e2aIGuN8CNv+WqghM5LaOla73x8YRIwzGR1bU1659AKJP3OX3cHRA4BezeQcFRX5zJ
+         hZSAP8sSKA1JPyENPqJDgZKYf8541GnZtZwBGwGPG1hP3AEmINADUKUOENMzX6YWkHMk
+         Q6Gnt7Kq9ST9bHMOyll+KkCd1vWY/O11/bvi7/uO8ceNKx2RDyQiBRv8T99nCHRSKHQk
+         eApdbKlOlw0+2Y0h4azzc4l6SgsprMcUgwEEHqly7MJy8yTqcSrX7xP/45AA2bOuplYm
+         WlVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779820296; x=1780425096;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=J7eX3Wy9gjbwHpl8XY5PP8KTjEFr0hiAHBwfibpJH30=;
+        b=l9iG4gJ6c9DpXO2LMpP+nhNnCBN9d3k784RzyB4SVVJzRZwDp0JDZq7PBCi/eMm0s6
+         2wbhX07QM3Qhil5ibwYSzj29N4Vhn0cpkKgO5CZhbXpFvk3FxANOecba/UXBERDg7Kx0
+         jJAsUoSQ0xFmx6LHHtRTXoWAQtbvBIOJ7Yj2NXgrQpwTw5bTtJlvMkJqYAEoj16w8PDR
+         mJqsiwj6D1vX60YGEpimu9CoMp0CQIm1RpMJEuHYHIPy/1Kj4iF/LQe24FKHnoDhKL7p
+         goO8Z4pNSOf4VyDgxaPXM3Gb5e260lIDMI/9cieQWX/8yMXxr4EP4A2ftvFKBYPVXRQb
+         4Ttw==
+X-Forwarded-Encrypted: i=1; AFNElJ/6jlgcfUv61lMBma7tmbkHXFvdMEpqHJqhJnCCqLhLUBNNG/qcfowBQnvhuys4rOLPbjG4mYQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxF1dru6uYO8UxBXdWjM4kyPSL8guMl6Wzzs1AhQ/yCJXkFdgCH
+	PHeEH50C9XRYvEtq+tdoyMGFaDrPxI72dQJXdLVIujhHc7mYN2upa1/xGezml7WpplYZ6Hz/pEr
+	cMherUgfXh+vWCMwnxkPXwlh+EBHRsNo4iUedyQKj
+X-Gm-Gg: Acq92OEIEgmdtT1LxYjaO69ltyZYKgn7vR0InF9WbpLi3atgYN1cQl/d5E4ag820uHs
+	VnLiiv0IF2hw/hUQbu+ck0zIx2wv7FDpow231+PI90KfnbG1mU/JgPsQtB0ZXCuMAcTyip2XnJj
+	4NKQdXJz4MBVq4KRn4PM4ZoJJyBsaGC0Qy8Zyw1vgKNuydq8xHPMqCdyIh3GQnqz1L6c5K03S2Y
+	cn3YN8QkWEyuTrg0OozlBO3dOCbgmfxFxCfq4k+iKyNJRJcKDzR+N6oy/4yV6GjH5PyncUo3+aG
+	4Dp1QjbZ+Cn15O3dUT1fsepYDJwTrrIcAC+j9bH68iD5uwM=
+X-Received: by 2002:a05:6402:534b:20b0:672:117e:55d4 with SMTP id
+ 4fb4d7f45d1cf-688fd0681a6mr139240a12.0.1779820296179; Tue, 26 May 2026
+ 11:31:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+References: <20260518-procfs-lockfix-part1-v1-0-5c3d20e0ac33@google.com>
+ <20260518-procfs-lockfix-part1-v1-1-5c3d20e0ac33@google.com>
+ <ahVeT9TTxlJiW2Qu@redhat.com> <CAG48ez0RXFp6nFfOOz0MeQMPknnCPeBj9j1ndR6kL9oE=ZSc=A@mail.gmail.com>
+ <ahXk0lBmeewqINHh@redhat.com>
+In-Reply-To: <ahXk0lBmeewqINHh@redhat.com>
+From: Jann Horn <jannh@google.com>
+Date: Tue, 26 May 2026 20:30:59 +0200
+X-Gm-Features: AVHnY4LuoQlinjRspeV8e6aumcDxAU8ZpBjvLoLqcRI91yjMkt2lsu3If10i5cQ
+Message-ID: <CAG48ez12wbXQsD4e8EYPS=jLQz3H3dDUn_unbLjvaMgkyQdX9w@mail.gmail.com>
+Subject: Re: [PATCH 1/2] proc: protect ptrace_may_access() with
+ exec_update_lock (part 1)
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Arjan van de Ven <arjan@linux.intel.com>, "Eric W. Biederman" <ebiederm@xmission.com>, Jake Edge <jake@lwn.net>, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	stable@vger.kernel.org, Kees Cook <keescook@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FREEMAIL_TO(0.00)[renesas.com,kernel.org,linaro.org,glider.be,gmail.com,bp.renesas.com];
-	TAGGED_FROM(0.00)[bounces-254416-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-254417-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[claudiu.beznea@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.994];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	DKIM_TRACE(0.00)[google.com:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nigauri.org:email,renesas.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nabladev.com:email]
-X-Rspamd-Queue-Id: 5BA6D5DB6AE
+	MISSING_XM_UA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jannh@google.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 14BE55DB6CB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+On Tue, May 26, 2026 at 8:22=E2=80=AFPM Oleg Nesterov <oleg@redhat.com> wro=
+te:
+> On 05/26, Jann Horn wrote:
+> >
+> > On Tue, May 26, 2026 at 10:48=E2=80=AFAM Oleg Nesterov <oleg@redhat.com=
+> wrote:
+> > > On 05/18, Jann Horn wrote:
+> > > >
+> > > > Fix the easy cases where procfs currently calls ptrace_may_access()=
+ without
+> > > > exec_update_lock protection, where the fix is to simply add the ext=
+ra lock
+> > > > or use mm_access():
+> > >
+> > > I thought about this too, but I do not know if it is fine performance=
+ wise...
+> > >
+> > > And what about proc_coredump_filter_write() which doesn't use ptrace_=
+may_access() ?
+> >
+> > Yeah, this series doesn't fix everything,
+>
+> Aah... Of course, I understand. I wasn't clear. Sorry if it looked as
+> "you missed proc_coredump_filter_write" from my side.
+>
+> What I actually tried to ask:
+>
+>         - Do you think it makes sense to fix proc_coredump_filter_write()
+>           as well?
 
-The OTG PHY initialization sequence needs to wait for 20 ms at a specific
-step, as described in commit 72c0339c115b ("phy: renesas:
-rcar-gen3-usb2: follow the hardware manual procedure").
+Yes. Another example I've seen that should probably also be fixed is
+seq_show() in fs/proc/fd.c, the handler for /proc/$pid/fdinfo/$fd,
+that also currently has zero checks at read() time.
 
-Commit 55a387ebb921 ("phy: renesas: rcar-gen3-usb2: Lock around hardware
-registers and driver data") tried to address various problems in the
-rcar-gen3-usb2 driver and converted the mutex protecting HW register
-accesses to a spin lock, leaving, however, a long delay in the critical
-section protected by the spin lock. This may become a problem,
-especially on RT kernels.
+>         - If yes. Do you think we should add another down_read(exec_updat=
+e_lock) +
+>           ptrace_may_access() into proc_coredump_filter_write() ? Or perh=
+aps we
+>           should discuss other approaches (exec_id/seqcount/etc) from the=
+ very
+>           beginning?
 
-To address this, release the spin lock before sleeping for 20 ms as
-required by the HW manual and reacquire it afterwards. To avoid other
-threads entering the critical section and configuring the HW while the
-software is waiting for the OTG initialization to complete, introduce the
-otg_initializing variable alongside the otg_init_done completion. Any
-other thread trying to configure the HW while the OTG PHY initialization
-is in progress waits for the completion instead of immediately returning
-errors to PHY users. The IRQs were also disabled while waiting for the OTG
-PHY initialization to complete, as the interrupt handler may also apply HW
-settings.
-
-Fixes: 55a387ebb921 ("phy: renesas: rcar-gen3-usb2: Lock around hardware registers and driver data")
-Cc: stable@vger.kernel.org
-Reported-by: Pavel Machek <pavel@nabladev.com>
-Closes: https://lore.kernel.org/all/afhkX2Ys2BG1gnqy@duo.ucw.cz
-Reported-by: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
-Closes: https://lore.kernel.org/all/afhkX2Ys2BG1gnqy@duo.ucw.cz
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
----
-
-Changes in v2:
-- dropped the rcar_gen3_phy_wait_otg_init() and used inline the code; with it
-  the comment that was previously in rcar_gen3_phy_wait_otg_init() was added
-  in struct rcar_gen3_chan for above the org_initializing variable
-- dropped READ_ONCE()/WRITE_ONCE() arround struct rcar_gen3_chan::otg_initializing
-- checked for struct rcar_gen3_chan::otg_initializing before checking for
-  rcar_gen3_is_any_otg_rphy_initialized() in all code places
-- added rcar_gen3_phy_usb2_irqs_mask_all() and rcar_gen3_phy_usb2_irqs_unmask()
-  to mask/unmask only the interrupts at the controller level since the line is
-  shared
-- along with it dropped disable_irq_nosync()/enable_irq() from v1 along with
-  struct rcar_gen3_chan::irq
-- increased the completion timeout to 30 ms
-
- drivers/phy/renesas/phy-rcar-gen3-usb2.c | 216 +++++++++++++++++++----
- 1 file changed, 185 insertions(+), 31 deletions(-)
-
-diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-index 9a45d840efeb..734079a07189 100644
---- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-+++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-@@ -138,12 +138,20 @@ struct rcar_gen3_chan {
- 	struct rcar_gen3_phy rphys[NUM_OF_PHYS];
- 	struct regulator *vbus;
- 	struct work_struct work;
-+	struct completion otg_init_done;
- 	spinlock_t lock;	/* protects access to hardware and driver data structure. */
- 	enum usb_dr_mode dr_mode;
- 	bool extcon_host;
- 	bool is_otg_channel;
- 	bool uses_otg_pins;
- 	bool otg_internal_reg;
-+	/*
-+	 * The OTG can be initialized only once and needs to release the spinlock
-+	 * and wait for 20 ms due to hardware constraints. If a thread executes
-+	 * PHY configuration code while the OTG PHY is waiting for the 20 ms, the
-+	 * thread will have to wait for the OTG PHY initialization to complete.
-+	 */
-+	bool otg_initializing;
- };
- 
- struct rcar_gen3_phy_drv_data {
-@@ -392,26 +400,48 @@ static ssize_t role_store(struct device *dev, struct device_attribute *attr,
- 	struct rcar_gen3_chan *ch = dev_get_drvdata(dev);
- 	bool is_b_device;
- 	enum phy_mode cur_mode, new_mode;
-+	unsigned long flags;
-+	int ret = -EIO;
- 
--	guard(spinlock_irqsave)(&ch->lock);
-+	spin_lock_irqsave(&ch->lock, flags);
- 
--	if (!ch->is_otg_channel || !rcar_gen3_is_any_otg_rphy_initialized(ch))
--		return -EIO;
-+	if (!ch->is_otg_channel)
-+		goto unlock;
-+
-+	if (ch->otg_initializing) {
-+		unsigned long timeout = msecs_to_jiffies(30);
-+
-+		spin_unlock_irqrestore(&ch->lock, flags);
-+
-+		ret = wait_for_completion_timeout(&ch->otg_init_done, timeout);
-+		ret = ret ? 0 : -ETIMEDOUT;
-+		if (ret)
-+			return ret;
-+
-+		spin_lock_irqsave(&ch->lock, flags);
-+	}
- 
--	if (sysfs_streq(buf, "host"))
-+	if (!rcar_gen3_is_any_otg_rphy_initialized(ch))
-+		goto unlock;
-+
-+	if (sysfs_streq(buf, "host")) {
- 		new_mode = PHY_MODE_USB_HOST;
--	else if (sysfs_streq(buf, "peripheral"))
-+	} else if (sysfs_streq(buf, "peripheral")) {
- 		new_mode = PHY_MODE_USB_DEVICE;
--	else
--		return -EINVAL;
-+	} else {
-+		ret = -EINVAL;
-+		goto unlock;
-+	}
- 
- 	/* is_b_device: true is B-Device. false is A-Device. */
- 	is_b_device = rcar_gen3_check_id(ch);
- 	cur_mode = rcar_gen3_get_phy_mode(ch);
- 
- 	/* If current and new mode is the same, this returns the error */
--	if (cur_mode == new_mode)
--		return -EINVAL;
-+	if (cur_mode == new_mode) {
-+		ret = -EINVAL;
-+		goto unlock;
-+	}
- 
- 	if (new_mode == PHY_MODE_USB_HOST) { /* And is_host must be false */
- 		if (!is_b_device)	/* A-Peripheral */
-@@ -425,7 +455,10 @@ static ssize_t role_store(struct device *dev, struct device_attribute *attr,
- 			rcar_gen3_init_for_peri(ch);
- 	}
- 
--	return count;
-+unlock:
-+	spin_unlock_irqrestore(&ch->lock, flags);
-+
-+	return ret ?: count;
- }
- 
- static ssize_t role_show(struct device *dev, struct device_attribute *attr,
-@@ -441,14 +474,11 @@ static ssize_t role_show(struct device *dev, struct device_attribute *attr,
- }
- static DEVICE_ATTR_RW(role);
- 
--static void rcar_gen3_init_otg(struct rcar_gen3_chan *ch)
-+static void rcar_gen3_init_otg_phase0(struct rcar_gen3_chan *ch)
- {
- 	void __iomem *usb2_base = ch->base;
- 	u32 val;
- 
--	if (!ch->is_otg_channel || rcar_gen3_is_any_otg_rphy_initialized(ch))
--		return;
--
- 	/* Should not use functions of read-modify-write a register */
- 	val = readl(usb2_base + USB2_LINECTRL1);
- 	val = (val & ~USB2_LINECTRL1_DP_RPD) | USB2_LINECTRL1_DPRPD_EN |
-@@ -471,7 +501,11 @@ static void rcar_gen3_init_otg(struct rcar_gen3_chan *ch)
- 			writel(val | USB2_ADPCTRL_IDPULLUP, usb2_base + USB2_ADPCTRL);
- 		}
- 	}
--	mdelay(20);
-+}
-+
-+static void rcar_gen3_init_otg_phase1(struct rcar_gen3_chan *ch)
-+{
-+	void __iomem *usb2_base = ch->base;
- 
- 	writel(0xffffffff, usb2_base + USB2_OBINTSTA);
- 	writel(ch->phy_data->obint_enable_bits, usb2_base + USB2_OBINTEN);
-@@ -510,6 +544,11 @@ static irqreturn_t rcar_gen3_phy_usb2_irq(int irq, void *_ch)
- 		goto rpm_put;
- 
- 	scoped_guard(spinlock, &ch->lock) {
-+		if (ch->otg_initializing) {
-+			ret = IRQ_NONE;
-+			goto rpm_put;
-+		}
-+
- 		status = readl(usb2_base + USB2_OBINTSTA);
- 		if (status & ch->phy_data->obint_enable_bits) {
- 			dev_vdbg(dev, "%s: %08x\n", __func__, status);
-@@ -528,14 +567,59 @@ static irqreturn_t rcar_gen3_phy_usb2_irq(int irq, void *_ch)
- 	return ret;
- }
- 
-+static void rcar_gen3_phy_usb2_irqs_mask_all(struct rcar_gen3_chan *channel,
-+					     u32 *masked_irqs_bits)
-+{
-+	void __iomem *usb2_base = channel->base;
-+	u32 val, bitmask = 0;
-+
-+	for (unsigned int i = 0; i < NUM_OF_PHYS; i++)
-+		bitmask |= channel->rphys[i].int_enable_bits;
-+
-+	val = readl(usb2_base + USB2_INT_ENABLE);
-+	*masked_irqs_bits = val & bitmask;
-+	val &= ~bitmask;
-+	writel(val, usb2_base + USB2_INT_ENABLE);
-+}
-+
-+static void rcar_gen3_phy_usb2_irqs_unmask(struct rcar_gen3_chan *channel,
-+					   u32 irqs_bits)
-+{
-+	void __iomem *usb2_base = channel->base;
-+	u32 val, bitmask = 0;
-+
-+	for (unsigned int i = 0; i < NUM_OF_PHYS; i++)
-+		bitmask |= channel->rphys[i].int_enable_bits;
-+
-+	val = readl(usb2_base + USB2_INT_ENABLE);
-+	val &= ~bitmask;
-+	val |= irqs_bits;
-+	writel(val, usb2_base + USB2_INT_ENABLE);
-+}
-+
- static int rcar_gen3_phy_usb2_init(struct phy *p)
- {
- 	struct rcar_gen3_phy *rphy = phy_get_drvdata(p);
- 	struct rcar_gen3_chan *channel = rphy->ch;
- 	void __iomem *usb2_base = channel->base;
-+	unsigned long flags;
-+	int ret = 0;
- 	u32 val;
- 
--	guard(spinlock_irqsave)(&channel->lock);
-+	spin_lock_irqsave(&channel->lock, flags);
-+
-+	if (channel->otg_initializing) {
-+		unsigned long timeout = msecs_to_jiffies(30);
-+
-+		spin_unlock_irqrestore(&channel->lock, flags);
-+
-+		ret = wait_for_completion_timeout(&channel->otg_init_done, timeout);
-+		ret = ret ? 0 : -ETIMEDOUT;
-+		if (ret)
-+			return ret;
-+
-+		spin_lock_irqsave(&channel->lock, flags);
-+	}
- 
- 	/* Initialize USB2 part */
- 	val = readl(usb2_base + USB2_INT_ENABLE);
-@@ -548,8 +632,24 @@ static int rcar_gen3_phy_usb2_init(struct phy *p)
- 	}
- 
- 	/* Initialize otg part (only if we initialize a PHY with IRQs). */
--	if (rphy->int_enable_bits)
--		rcar_gen3_init_otg(channel);
-+	if (rphy->int_enable_bits && channel->is_otg_channel &&
-+	    !rcar_gen3_is_any_otg_rphy_initialized(channel)) {
-+		u32 masked_irq_bits = 0;
-+
-+		rcar_gen3_init_otg_phase0(channel);
-+		rcar_gen3_phy_usb2_irqs_mask_all(channel, &masked_irq_bits);
-+		reinit_completion(&channel->otg_init_done);
-+		channel->otg_initializing = true;
-+		spin_unlock_irqrestore(&channel->lock, flags);
-+
-+		fsleep(20000);
-+
-+		spin_lock_irqsave(&channel->lock, flags);
-+		channel->otg_initializing = false;
-+		complete_all(&channel->otg_init_done);
-+		rcar_gen3_phy_usb2_irqs_unmask(channel, masked_irq_bits);
-+		rcar_gen3_init_otg_phase1(channel);
-+	}
- 
- 	if (channel->phy_data->vblvl_ctrl) {
- 		/* SIDDQ mode release */
-@@ -568,7 +668,9 @@ static int rcar_gen3_phy_usb2_init(struct phy *p)
- 
- 	rphy->initialized = true;
- 
--	return 0;
-+	spin_unlock_irqrestore(&channel->lock, flags);
-+
-+	return ret;
- }
- 
- static int rcar_gen3_phy_usb2_exit(struct phy *p)
-@@ -576,9 +678,24 @@ static int rcar_gen3_phy_usb2_exit(struct phy *p)
- 	struct rcar_gen3_phy *rphy = phy_get_drvdata(p);
- 	struct rcar_gen3_chan *channel = rphy->ch;
- 	void __iomem *usb2_base = channel->base;
-+	unsigned long flags;
-+	int ret = 0;
- 	u32 val;
- 
--	guard(spinlock_irqsave)(&channel->lock);
-+	spin_lock_irqsave(&channel->lock, flags);
-+
-+	if (channel->otg_initializing) {
-+		unsigned long timeout = msecs_to_jiffies(30);
-+
-+		spin_unlock_irqrestore(&channel->lock, flags);
-+
-+		ret = wait_for_completion_timeout(&channel->otg_init_done, timeout);
-+		ret = ret ? 0 : -ETIMEDOUT;
-+		if (ret)
-+			return ret;
-+
-+		spin_lock_irqsave(&channel->lock, flags);
-+	}
- 
- 	rphy->initialized = false;
- 
-@@ -588,7 +705,8 @@ static int rcar_gen3_phy_usb2_exit(struct phy *p)
- 		val &= ~USB2_INT_ENABLE_UCOM_INTEN;
- 	writel(val, usb2_base + USB2_INT_ENABLE);
- 
--	return 0;
-+	spin_unlock_irqrestore(&channel->lock, flags);
-+	return ret;
- }
- 
- static int rcar_gen3_phy_usb2_power_on(struct phy *p)
-@@ -596,6 +714,7 @@ static int rcar_gen3_phy_usb2_power_on(struct phy *p)
- 	struct rcar_gen3_phy *rphy = phy_get_drvdata(p);
- 	struct rcar_gen3_chan *channel = rphy->ch;
- 	void __iomem *usb2_base = channel->base;
-+	unsigned long flags;
- 	u32 val;
- 	int ret = 0;
- 
-@@ -605,7 +724,20 @@ static int rcar_gen3_phy_usb2_power_on(struct phy *p)
- 			return ret;
- 	}
- 
--	guard(spinlock_irqsave)(&channel->lock);
-+	spin_lock_irqsave(&channel->lock, flags);
-+
-+	if (channel->otg_initializing) {
-+		unsigned long timeout = msecs_to_jiffies(30);
-+
-+		spin_unlock_irqrestore(&channel->lock, flags);
-+
-+		ret = wait_for_completion_timeout(&channel->otg_init_done, timeout);
-+		ret = ret ? 0 : -ETIMEDOUT;
-+		if (ret)
-+			return ret;
-+
-+		spin_lock_irqsave(&channel->lock, flags);
-+	}
- 
- 	if (!rcar_gen3_are_all_rphys_power_off(channel))
- 		goto out;
-@@ -620,27 +752,48 @@ static int rcar_gen3_phy_usb2_power_on(struct phy *p)
- 	/* The powered flag should be set for any other phys anyway */
- 	rphy->powered = true;
- 
--	return 0;
-+	spin_unlock_irqrestore(&channel->lock, flags);
-+
-+	if (ret && channel->vbus && !channel->otg_internal_reg)
-+		regulator_disable(channel->vbus);
-+
-+	return ret;
- }
- 
- static int rcar_gen3_phy_usb2_power_off(struct phy *p)
- {
- 	struct rcar_gen3_phy *rphy = phy_get_drvdata(p);
- 	struct rcar_gen3_chan *channel = rphy->ch;
-+	unsigned long flags;
- 	int ret = 0;
- 
--	scoped_guard(spinlock_irqsave, &channel->lock) {
--		rphy->powered = false;
-+	spin_lock_irqsave(&channel->lock, flags);
- 
--		if (rcar_gen3_are_all_rphys_power_off(channel)) {
--			u32 val = readl(channel->base + USB2_USBCTR);
-+	if (channel->otg_initializing) {
-+		unsigned long timeout = msecs_to_jiffies(30);
- 
--			val |= USB2_USBCTR_PLL_RST;
--			writel(val, channel->base + USB2_USBCTR);
--		}
-+		spin_unlock_irqrestore(&channel->lock, flags);
-+
-+		ret = wait_for_completion_timeout(&channel->otg_init_done, timeout);
-+		ret = ret ? 0 : -ETIMEDOUT;
-+		if (ret)
-+			return ret;
-+
-+		spin_lock_irqsave(&channel->lock, flags);
- 	}
- 
--	if (channel->vbus && !channel->otg_internal_reg)
-+	rphy->powered = false;
-+
-+	if (rcar_gen3_are_all_rphys_power_off(channel)) {
-+		u32 val = readl(channel->base + USB2_USBCTR);
-+
-+		val |= USB2_USBCTR_PLL_RST;
-+		writel(val, channel->base + USB2_USBCTR);
-+	}
-+
-+	spin_unlock_irqrestore(&channel->lock, flags);
-+
-+	if (!ret && channel->vbus && !channel->otg_internal_reg)
- 		ret = regulator_disable(channel->vbus);
- 
- 	return ret;
-@@ -1007,6 +1160,7 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
- 		return ret;
- 
- 	spin_lock_init(&channel->lock);
-+	init_completion(&channel->otg_init_done);
- 	for (i = 0; i < NUM_OF_PHYS; i++) {
- 		channel->rphys[i].phy = devm_phy_create(dev, NULL,
- 							channel->phy_data->phy_usb2_ops);
--- 
-2.43.0
-
+I had thought that this series would be the easy, uncontroversial
+improvements, and that we could then think about the harder aspect
+with read handlers afterwards. I guess I was wrong about this being
+the uncontroversial part.
 
