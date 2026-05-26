@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-254243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254244-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wPvwILYzFWqPTgcAu9opvQ
-	(envelope-from <stable+bounces-254243-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 07:46:30 +0200
+	id CH3vEgw0FWqPTgcAu9opvQ
+	(envelope-from <stable+bounces-254244-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 07:47:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39EA45D0F03
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 07:46:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B821C5D0F38
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 07:47:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 246D33027307
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 05:46:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BDF7E301453B
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 05:47:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BC733BFAEB;
-	Tue, 26 May 2026 05:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01DEB3955FD;
+	Tue, 26 May 2026 05:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="tlCsLrJH"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="HjVCorL3"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-112.mail.139.com (n169-112.mail.139.com [120.232.169.112])
+Received: from n169-110.mail.139.com (n169-110.mail.139.com [120.232.169.110])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6E33955FD
-	for <stable@vger.kernel.org>; Tue, 26 May 2026 05:46:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E4229A9C3
+	for <stable@vger.kernel.org>; Tue, 26 May 2026 05:47:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.110
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779774366; cv=none; b=fvCzeaibRQkUzn+6I0OmjTQ5I3U4n8dVtblYYdAx5iuScuSSV4uq8NnHrDEONP/FIUsr45dL06GtuyiEFWm+d51Cs7pGVaXLtSZNHD5Ex1sc9DPShGwaKWzV7drmST3ynj8M/3kEggrCpPitUHYPFKi3T0tlD6U07lzCmIlsbPc=
+	t=1779774471; cv=none; b=t8cmfs3v/0YITZO+++ZZ38LME7SPCuIQ85dhCUpmunzu2MWnrXjTpmR1OFrRNi99F9L3qnEJFi6lCeJA5z1feCOHTwvG25hbdymyv2qdTNvQL/xQbliK1hNb8d5KH0mAr8BXyV+8Jg6RAmSdF+aCgpO5l7E24pn+bqgdecORsXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779774366; c=relaxed/simple;
-	bh=LHT1H2JF1c4Umnk7Rhla19JSZMpgZuUVnmrrZubISbU=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version; b=T9FWjsbSLAmBz7G7FfkIXl4n7IVl+QM4RE76RUxzhoEuA8nJ+Y3hmzNG5nNdeM/+9DYBo5xAG+2L+ke+/AWOin3oNuvPCRw+P7d8pT4Bd6l8ER3UUznTIO3gIElWtzTRWBlVv1lr56iGb8UzenK1kY3wngDbQTlJ2+zI+0C+bLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=tlCsLrJH; arc=none smtp.client-ip=120.232.169.112
+	s=arc-20240116; t=1779774471; c=relaxed/simple;
+	bh=O5SCp9N9hk4ObRDeZbl/0o7kipWAeJuq4qrlprmaVwc=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=OcgFDjr9K+Lfnwc4Y65BOo6ht8vqJ5jmct/hEWKkt78jDorV6AgNdwUL05Yyrwef3bOM73q7tp8sGx53x113rD26r8L8bSQGKlPPI7qySSn12/K62MSzNTGm+LQoKh9ZZ4qwS4WIY46mUmoHGpZPFOVXMhJjn+qTML+YCGcvknA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=HjVCorL3; arc=none smtp.client-ip=120.232.169.110
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=139.com; s=dkim; l=0;
 	h=from:subject:message-id:to:mime-version;
 	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=tlCsLrJHif6IaBfWGUbR5RLuJwxnZCQQh4FhSz0dltF8fbSFW08sK0rnTSQqHrfd00Ta90r61Owyh
-	 FlVpPieuK/ViCgVnPfiAZIrw/d0Zsr6T5dHWByUTgSjBpoYB2yMIlxLzsMhx74UJIyqWBpRtriJgar
-	 zb1b8g0h0phv+0mA=
+	b=HjVCorL321pI8URh8lc9sNEsFZpAWXkWxe5aM0OBFQWwpj+/AFDCFmP6uJwGkv+eahGlHd+XgqT+W
+	 6MNCgkXVFznKfTWhuZfRLdsOtmDYjRhHtGPpzvlzAGQhBJFLGwVmFWCS3zZ7zl2eyI1JsEw0aY2bxw
+	 HEsC6WJknIJoJtf8=
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM:                                                                                        
 X-RM-SPAM-FLAG:00000000
 Received:from China-Mobile-Kernel-Team (unknown[106.121.166.134])
-	by rmsmtp-lg-appmail-22-12025 (RichMail) with SMTP id 2ef96a15338df88-9c93a;
-	Tue, 26 May 2026 13:45:51 +0800 (CST)
-X-RM-TRANSID:2ef96a15338df88-9c93a
+	by rmsmtp-lg-appmail-01-12079 (RichMail) with SMTP id 2f2f6a1533feee2-a407d;
+	Tue, 26 May 2026 13:47:45 +0800 (CST)
+X-RM-TRANSID:2f2f6a1533feee2-a407d
 From: Leon Chen <leonchen.oss@139.com>
 To: kuniyu@google.com,
 	kuba@kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH 6.12.y] af_unix: Give up GC if MSG_PEEK intervened.
-Date: Tue, 26 May 2026 13:45:49 +0800
-Message-Id: <20260526054549.3962-1-leonchen.oss@139.com>
+Subject: [PATCH 6.6.y] af_unix: Give up GC if MSG_PEEK intervened.
+Date: Tue, 26 May 2026 13:47:44 +0800
+Message-Id: <20260526054744.4121-1-leonchen.oss@139.com>
 X-Mailer: git-send-email 2.35.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,29 +67,29 @@ X-Spamd-Result: default: False [1.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_DKIM_REJECT(1.00)[139.com:s=dkim];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-254243-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-254244-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DMARC_NA(0.00)[139.com];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCPT_COUNT_THREE(0.00)[3];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[leonchen.oss@139.com,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[139.com:-];
 	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.892];
+	NEURAL_HAM(-0.00)[-0.898];
 	FREEMAIL_FROM(0.00)[139.com];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,139.com:mid,139.com:email]
-X-Rspamd-Queue-Id: 39EA45D0F03
+X-Rspamd-Queue-Id: B821C5D0F38
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -172,7 +172,7 @@ Reported-by: Igor Ushakov <sysroot314@gmail.com>
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 Link: https://patch.msgid.link/20260311054043.1231316-1-kuniyu@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Using include/net/af_unix.h instead of net/unix/af_unix.h on 6.12.y ]
+[ Using include/net/af_unix.h instead of net/unix/af_unix.h on 6.6 ]
 Signed-off-by: Leon Chen <leonchen.oss@139.com>
 ---
  include/net/af_unix.h |  1 +
@@ -181,7 +181,7 @@ Signed-off-by: Leon Chen <leonchen.oss@139.com>
  3 files changed, 54 insertions(+), 28 deletions(-)
 
 diff --git a/include/net/af_unix.h b/include/net/af_unix.h
-index 63129c79b8cb..8cacc5290d8b 100644
+index b6eedf7650da..d2fa6d9f1e97 100644
 --- a/include/net/af_unix.h
 +++ b/include/net/af_unix.h
 @@ -23,6 +23,7 @@ void unix_del_edges(struct scm_fp_list *fpl);
@@ -193,10 +193,10 @@ index 63129c79b8cb..8cacc5290d8b 100644
  void wait_for_unix_gc(struct scm_fp_list *fpl);
  
 diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 77976f36c4aa..9c5a812bd681 100644
+index 87908ae74efb..c621f0090275 100644
 --- a/net/unix/af_unix.c
 +++ b/net/unix/af_unix.c
-@@ -1878,6 +1878,8 @@ static void unix_detach_fds(struct scm_cookie *scm, struct sk_buff *skb)
+@@ -1848,6 +1848,8 @@ static void unix_detach_fds(struct scm_cookie *scm, struct sk_buff *skb)
  static void unix_peek_fds(struct scm_cookie *scm, struct sk_buff *skb)
  {
  	scm->fp = scm_fp_dup(UNIXCB(skb).fp);
