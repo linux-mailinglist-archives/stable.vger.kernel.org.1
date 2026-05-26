@@ -1,211 +1,165 @@
-Return-Path: <stable+bounces-254310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254311-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oGCKBmKBFWoHWQcAu9opvQ
-	(envelope-from <stable+bounces-254310-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 13:17:54 +0200
+	id mI8EOPCAFWoHWQcAu9opvQ
+	(envelope-from <stable+bounces-254311-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 13:16:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7180F5D4C5A
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 13:17:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C4095D4C12
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 13:16:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8A44F305F736
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 11:15:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 256EC302A4C9
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 11:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA1B3DA7EC;
-	Tue, 26 May 2026 11:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9703D3DEAE0;
+	Tue, 26 May 2026 11:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WZZzgA2S"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YIAZi73C"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E27B93B47F7;
-	Tue, 26 May 2026 11:15:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F22993B4E9E;
+	Tue, 26 May 2026 11:15:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779794112; cv=none; b=QnjIjBru1nQsxq5fSj1WYYsdkWMiBJXriiV+ZaiPuuHdKihc8P4FYH/54gLI6xTORrfDjbW32jwJ0xjkzJ98Hb3BfEzlfV4pfOasRYkLXQb5/MySU9It2oYzFajhiCRnWfo+L0zfN9h67HVxctGc3h9WDXMJwA3jfgF6Ri8XwOo=
+	t=1779794150; cv=none; b=HVSj0FQ00UeIXR7/uGAg/5C8n07ET/rZtVJT6xGErewvuxKd3l9wkhNhmmXVgkT6Vjt4syMimXcQAU8sLSBxny6pTHKcafs4J9qeMMDEWRpfu9VLwcTCdTTHeah3EwTrg40iPPC3RtrDQMRROfQjm1jw4mWQNE8RxLzRvbWFwuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779794112; c=relaxed/simple;
-	bh=LH1kk/OjDWW9qCPf90sUt3+xiiFp4lugKAXQrebJ1gY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hFQ50naJHrR2M1mbo8aSZLb7R3oNNvvaezC3bjyeWkrn5oA4etbz1OY99ie+3U4JYjr5DH8N3TRqUzCcbpOdS66Mbql+3OjZQ7K+GDeM4bYjK0ot9kpaqI8z/Ggzu6XavzDsCmF3MKMWm+BVcMakQRq1+XCTqYNnDNimTv16fKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WZZzgA2S; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779794108; x=1811330108;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=LH1kk/OjDWW9qCPf90sUt3+xiiFp4lugKAXQrebJ1gY=;
-  b=WZZzgA2SxVjuHQsqXpGGVTAVk3dhbgs6h95nG7hJIVd9/P67aDNacYI3
-   mBXzXcQK5+WC2UsXzgQW2d4pokeE03uPrbmkLE2aWhZEfyqE3tb4suhHW
-   K71aoTfUmudim0H9y/VCzsriOcQagoDujdSfNRPDQSPbuNv2pJNy9FbGl
-   I4sbpVumQ8cxmYsnSyHZaBn3DIeYT/nwBHmp/S2IF8NRsWtrOzbkG/qTG
-   6qEGDVhPCQoJ0RooF1+bg6kfZbSAL1qgSV5HynUWD4ydGjCwOn3mvrYpb
-   wXcZuxQr1wbsbd7wC0vxPEpUbzHjQac5/VrwFnNxEx2D0xi6Iicjsivk3
-   A==;
-X-CSE-ConnectionGUID: mXkmE1RETN+aAQQ8IBdpvQ==
-X-CSE-MsgGUID: XDUnCYTEQxOWlIOGV8wc8Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11797"; a="80575285"
-X-IronPort-AV: E=Sophos;i="6.24,169,1774335600"; 
-   d="scan'208";a="80575285"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 04:15:07 -0700
-X-CSE-ConnectionGUID: gleDVuQfQOe8JfdHmtbKmA==
-X-CSE-MsgGUID: SSHd7gO4QfOl9Mo7DX8x0w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,169,1774335600"; 
-   d="scan'208";a="242064468"
-Received: from conormcd-mobl2.ger.corp.intel.com (HELO [10.245.244.113]) ([10.245.244.113])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 04:15:04 -0700
-Message-ID: <ce002f59-50ae-451c-8904-0caf50f5eef5@linux.intel.com>
-Date: Tue, 26 May 2026 13:14:55 +0200
+	s=arc-20240116; t=1779794150; c=relaxed/simple;
+	bh=TOJ2MWIEQwnfhCFMAybS6R3OBbku0dwtWu85yE/Y6X4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=civ8+NgPOJkMoAgmRWaYIhDuF/F+Im4H7nI/hTOedG6TEAoETrIxjR26iLKYwKUfOUQUadJbk98AoIVjAc8nIBpnLe/yXnoHsvDDv3BNEHWDsqv0VGh3J2wmL8DCBdzZX3+WhB9rIV7EhcRLHjIMzKJaR02wjV5uXYdRVFqy5Zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YIAZi73C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9AE82C2BCB3;
+	Tue, 26 May 2026 11:15:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779794149;
+	bh=TOJ2MWIEQwnfhCFMAybS6R3OBbku0dwtWu85yE/Y6X4=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=YIAZi73CRSTyhXI87w9pKTwVZs6HnWGC3Ls3vYRY3bhqCQyf1kkolJ+7/GeU2aph6
+	 kOYATrhbXi8gPwUNhVAfMyTi99RdWak7dBt55um+G2DEtbliqfewoGKsD5RLq/+5Fm
+	 eatZDOxmrNYseQQSvH7X1jjBNVPHtxRG9tk5dDuDRErTKrds6tvMkjFRXr/yAp1CTy
+	 uA6got0+ALFSMdJJ04Umt/KlgN3PSwFXxrt7Dn/SW9o/kuxv18yiCN9ByB6pZBakWO
+	 Vrw9SqYjr+gzTzBthzC4UbTdiOk+14lchWlHc40skZj+g1I0BICO06lqud3Ka0KyZb
+	 Xs0KzTCCPgvew==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 80A13CD5BD0;
+	Tue, 26 May 2026 11:15:49 +0000 (UTC)
+From: Joshua Crofts via B4 Relay <devnull+joshua.crofts1.gmail.com@kernel.org>
+Date: Tue, 26 May 2026 13:15:29 +0200
+Subject: [PATCH] iio: light: opt3001: fix missing state reset on timeout
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/client: check whether CRTC is active before waiting
- for vblank
-To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>,
- Icenowy Zheng <zhengxingda@iscas.ac.cn>, Maxime Ripard <mripard@kernel.org>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Sam Ravnborg <sam@ravnborg.org>, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, Icenowy Zheng <uwu@icenowy.me>,
- stable@vger.kernel.org
-References: <20260519092420.1124348-1-zhengxingda@iscas.ac.cn>
- <ee86cb43-e5df-4946-a957-931a73dde752@suse.de> <ahBWayIcQUHuAt4i@intel.com>
- <b4b2e8cb-dd7c-42c2-88b7-0a2ab95a90ee@suse.de> <ahBZ8nIqR4qESLZg@intel.com>
- <5fbcda92-f6b0-4de2-89e5-ea43a6248b05@suse.de> <ahCw9zakihaGHLsN@intel.com>
- <428be9d9-06f7-4bcb-807b-d351101c3c4b@linux.intel.com>
- <ahRA17a7JR2PVOuJ@intel.com>
-Content-Language: en-US
-From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-In-Reply-To: <ahRA17a7JR2PVOuJ@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260526-fix-early-return-v1-1-c70e886329f3@gmail.com>
+X-B4-Tracking: v=1; b=H4sIANCAFWoC/x2MQQqAMAzAviI9W9gqDvEr4kG0akGmdCrK2N8dH
+ gNJIgRW4QBtEUH5liC7z2DLAsZ18AujTJmBDDlTk8NZHuRBtxeVz0s9Ms12qpwj2xjI2aGcnX/
+ Z9Sl9llFvmWIAAAA=
+X-Change-ID: 20260526-fix-early-return-e2f1d3662180
+To: Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, Jiri Valek - 2N <valek@2n.cz>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Jonathan Cameron <jic23@kernel.org>, Sashiko <sashiko-bot@kernel.org>, 
+ stable@vger.kernel.org, Joshua Crofts <joshua.crofts1@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779794147; l=1681;
+ i=joshua.crofts1@gmail.com; s=20260422; h=from:subject:message-id;
+ bh=t1vAsfv7B7LZdWUZQljLoYaL7Vobksl8g4LhkH8Ck5M=;
+ b=2yocHaz4/GslAVgqXwiLfzhUVXdUsmZd3OY3tNGHW2oaS7yNIUt1roT9g9QfPzimU3oczQ1yQ
+ F93sH8jlbP/BAMTTjGjeAdxRFRJGGH/BPF8ahmdXgjbsmIDul1w/9hs
+X-Developer-Key: i=joshua.crofts1@gmail.com; a=ed25519;
+ pk=Xd+UVoRPiiI0K3LHQ2XIcXmO0jvVuFTv9eTx3lgBphI=
+X-Endpoint-Received: by B4 Relay for joshua.crofts1@gmail.com/20260422 with
+ auth_id=746
+X-Original-From: Joshua Crofts <joshua.crofts1@gmail.com>
+Reply-To: joshua.crofts1@gmail.com
+X-Spamd-Result: default: False [1.34 / 15.00];
+	FREEMAIL_REPLYTO_NEQ_FROM(2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254310-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[suse.de,iscas.ac.cn,kernel.org,gmail.com,ffwll.ch,ravnborg.org,lists.freedesktop.org,vger.kernel.org,icenowy.me];
-	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-254311-lists,stable=lfdr.de,joshua.crofts1.gmail.com];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maarten.lankhorst@linux.intel.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	FREEMAIL_REPLYTO(0.00)[gmail.com];
 	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.994];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[11];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 7180F5D4C5A
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	HAS_REPLYTO(0.00)[joshua.crofts1@gmail.com]
+X-Rspamd-Queue-Id: 5C4095D4C12
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hey,
+From: Joshua Crofts <joshua.crofts1@gmail.com>
 
-Den 2026-05-25 kl. 14:30, skrev Ville Syrjälä:
-> On Mon, May 25, 2026 at 10:13:57AM +0200, Maarten Lankhorst wrote:
->> Hey,
->>
->> Den 2026-05-22 kl. 21:39, skrev Ville Syrjälä:
->>> On Fri, May 22, 2026 at 03:43:26PM +0200, Thomas Zimmermann wrote:
->>>> Hi
->>>>
->>>> Am 22.05.26 um 15:28 schrieb Ville Syrjälä:
->>>> [...]
->>>>>>>> But why does your HW use CRTC 1 in the first place.
->>>>>>> Could be eg. the enabled outputs can't be driven with CRTC 0.
->>>>>>>
->>>>>>> I guess what you want to do is pick the first crtc from modesets[]
->>>>>>> which is enabled. Or perhaps even "pick the Nth enabled crtc from
->>>>>>> modesets[] based on the ioctl argument".
->>>>>> The enable-status of each CRTC could change later on, which might lead
->>>>>> to problems.
->>>>> Sound like a locking issue if someone is changing the configuration
->>>>> at the same time we're trying to do the vblank wait here.
->>>>
->>>> I mean that the connected outputs could change at a later point or we 
->>>> could have multiple CRTCs in use. Today, someone in #intel-gfx reported 
->>>> a problem with panning if multiple CRTCs are in use.
->>>>
->>>> Therefore picking a CRTC freely could be a problem. Let's say we 
->>>> configure modes from one CRTC, but later wait/pan/flush with another 
->>>> CRTC. I would not trust this to work correctly.
->>>>
->>>> Hence, my suggestion is to select a primary CRTC during the fbdev 
->>>> client's probe and use it for all later operations until the next probe 
->>>> happens.  All other CRTCs would mirror the primary one.
->>>
->>> Actual mirroring may not be possible due to different modes supported
->>> on each output. The whole multi-output fbdev thing in the drm fb helper
->>> is kind of a hack that's rather hard to make work 100% sensibly.
->>>
->>> For the panning possibly the only sensible thing is to use the max of
->>> hdisplay/vdisplay of all the crtcs as the xres/yres so it's clear
->>> how much things can actually be panned. Oh and tiled displays (assuming
->>> we would actually want the fbdev stuff to tile correctly) make the
->>> situation even more complicated. I think the current support for tiled
->>> displays in the fb helper is semi-busted.´
->>
->> I tested fbdev on a tiled DP-MST monitor.
->> It works better than my kwin's wayland compositor, as it detects both tiles
->> and presents a single image spanning both tiles.
-> 
-> IIRC we've occasionally seen cases where it picks a non-tiled mode
-> on the primary connector, and also still enables the second tile.
-> 
->> Kwin sees both as separate
->> monitors.
->>
->> I still see vertical tearing between both tiles, so it would be nice if
->> intel/display would support atomic updates for both crtc's directly.
->>
->> The code's already there for bigjoiner, just needs to do the same for
->> tile joiner updates when all tiled crtc's are in the atomic update.
-> 
-> We don't have any special code for atomic updates with joiner
-> currently. It just happens to work most of the time.
-> 
-> With joiner the pipes will be in sync/phase, so that helps a bit.
-> But we do also try to make the pipes in sync/phase also for tiled
-> display via the use of the port sync. So if you see a difference
-> in tearing between joiner vs. tiled then that likely means the
-> problem is in userspace (as in it submits separate commits for
-> each tile).
+Currently in the function opt3001_get_processed(), there is a check
+that directly returns -ETIMEDOUT if the conversion IRQ times out,
+completely bypassing the err label, leaving ok_to_ignore_lock
+permanently true, potentially breaking the device's falling threshold
+interrupt detection.
 
-The only thing kernel should do is if crtc 1 and 2 are part of a
-commit and in sync is to perform the same as bigjoiner updates for
-crtc 1 & 2 simultaneously.
+Assign -ETIMEDOUT to the return variable and jump to the error label
+to ensure ok_to_ignore_lock is properly reset.
 
-That shouldn't be too much to ask from the kernel, and not hard to
-implement.
+Fixes: 26d90b559057 ("iio: light: opt3001: Fixed timeout error when 0 lux")
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/patchset/20260525-opt3001-cleanup-v4-0-65b36a174f78%40gmail.com?part=1
+Cc: stable@vger.kernel.org
+Signed-off-by: Joshua Crofts <joshua.crofts1@gmail.com>
+---
+ drivers/iio/light/opt3001.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/iio/light/opt3001.c b/drivers/iio/light/opt3001.c
+index 03c7a87b4a8eef13bbdcf48dcaf969781aa76bd1..0743e16f2a8fa0f07acd19c7dd6b54bec9e5c7b2 100644
+--- a/drivers/iio/light/opt3001.c
++++ b/drivers/iio/light/opt3001.c
+@@ -366,8 +366,10 @@ static int opt3001_get_processed(struct opt3001 *opt, int *val, int *val2)
+ 		ret = wait_event_timeout(opt->result_ready_queue,
+ 				opt->result_ready,
+ 				msecs_to_jiffies(OPT3001_RESULT_READY_LONG));
+-		if (ret == 0)
+-			return -ETIMEDOUT;
++		if (ret == 0) {
++			ret = -ETIMEDOUT;
++			goto err;
++		}
+ 	} else {
+ 		/* Sleep for result ready time */
+ 		timeout = (opt->int_time == OPT3001_INT_TIME_SHORT) ?
 
-> I have occasionally pondered about hiding the tiled display stuff
-> completely from userspace and handling it in the kernel the same
-> was as joiner. But the problem is that we'd also need to cook up
-> a new EDID for the display that combines both tiles, and we'd
-> still need the second connector to be enabled internally (and 
-> hide that fact from userspace). None of that code exists
-> currently and wouldn't be entirely trivial to implement.
-> 
+---
+base-commit: 0e7dbde323808f28c5220295bfc1c5bc6f08c3f4
+change-id: 20260526-fix-early-return-e2f1d3662180
+
+Best regards,
+-- 
+Joshua Crofts <joshua.crofts1@gmail.com>
+
 
 
