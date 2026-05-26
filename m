@@ -1,269 +1,182 @@
-Return-Path: <stable+bounces-254441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254442-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4FmuCFH7FWovggcAu9opvQ
-	(envelope-from <stable+bounces-254441-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 21:58:09 +0200
+	id 0OOHFMz8FWqkggcAu9opvQ
+	(envelope-from <stable+bounces-254442-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 22:04:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60BA75DC2AD
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 21:58:08 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72E0F5DC33D
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 22:04:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0ECFC30374AF
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 19:58:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BC92E3016C68
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 20:04:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2702B3B27D9;
-	Tue, 26 May 2026 19:58:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF1193B27FF;
+	Tue, 26 May 2026 20:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZPybllyt"
+	dkim=pass (1024-bit key) header.d=prevas.dk header.i=@prevas.dk header.b="bPZPckyr"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010003.outbound.protection.outlook.com [52.101.84.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B547F2D9787;
-	Tue, 26 May 2026 19:58:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779825482; cv=none; b=gSky7Ue11rEO1O7oUZomagwOwqdBJlL4lqRNQPoOi77SgvZVf/SWK32Oml+pf4hMoq1YEjxdWen3kjryR4iXGsNnNs79pTqVYBvdqmOoQn4CL+wj2VPacWYm7qfw8NuIsy5uZgK93M68BWZJ4WsenN1XB2643jCGOUjF1a3ZNrw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779825482; c=relaxed/simple;
-	bh=osxI2trcJFudeTUPqpWIbudsHtCfXVAyeRZTKIDY2B8=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=oCCL4vN8Dc5jcGvqgm/4WpOGOsNHNoRZfeeKOVBzqrD4BWU9hDBTRolqTer2o1+pxD2aLV5kDUdRFojaUlRlF7WyR4yzE/O3CS/uAK/XOoq9OKUzHCYv1Ite0low6Woz2XQcDDRqHbsjgNB939VGkLipuKV1bsTfnMvjc7duOw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZPybllyt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DD8E1F000E9;
-	Tue, 26 May 2026 19:58:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779825481;
-	bh=67qyYwcHcM0+oSoipVhMKJQvRP46f8uWoJfiuM+1wxs=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=ZPybllytIcVtMq0YVWs+nNqSs1yEH5hEWOX68gnTHS3vrR9SOB73sWpVLwRHCfuc0
-	 OGDGJAd98M9QYh4d9rQwaPWDNJ1qi0/EsbsNtVrqyIsn6qmN4GMJBsEqHfKsnAQ+Vi
-	 WW010vroH7duEB2AKcLBo9URVhnAcEj+bjMUpu8uyIe7MFnXnkIU0HAdrRhBhlZrPW
-	 2MgnILK7WzdqnP6yI8cHXY5YeJybsdXkcDEYcd0jbNCIYXIiSms3Ez9g6QHEFRqsV5
-	 HJbah+fuQvttAcQASBSDZre1gRMSf+1ZhzIWsI2ESLD+hzv9/Ob/U1L7k2IUek4Wia
-	 MgWa3Mqdv14Hg==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 68D50F4007B;
-	Tue, 26 May 2026 15:58:00 -0400 (EDT)
-Received: from phl-imap-04 ([10.202.2.82])
-  by phl-compute-02.internal (MEProxy); Tue, 26 May 2026 15:58:00 -0400
-X-ME-Sender: <xms:SPsVajwm7K5ELrMnXpZdvYPZpBz5w-tPhWQw-8GClWhu1g11kW-Wqg>
-    <xme:SPsVamEDxcesPNOpwfl2eHiQ8papVe8po7eGRA2wmSmKwN0CHEQQdqiq4jy6Hpv9f
-    BHHz-BEEV4QhTpyoAgeQuLXp2Jw2_yjtWiLhtvp_6NnxH4CGkV4fT0>
-X-ME-Proxy-Cause: dmFkZTFae7avOup8DuVHF9O+YAhnbpFr087icaSm5489iB1uQSNtNiE/l3/+L02sYPuVgA
-    b9+6gZeCy91UbGdeimLHFrDdx70eAuXjRoYjDLUHzclgl0SbU+71QNwZEQeZYF6FSOFDOj
-    bRHZfdVF87yfzKuQQy2zZ2hVFmfXmBR8jWqZqlCUQLu3SRQ4i4WC5hZgkgwTmjCOnl19vf
-    n15yaaVQem15WlJ4B2Rcd79ki3sHiq5o0nqhfXzpFgCMf4o8tf4DRxtfIFDi3mku3wiyPk
-    F/S2rtufvHoFO+eYnFFFrb8/Xq6bNRLdNc6kh81/5RNLTQ3kKWznc6QydmlmWzYxcmaSl5
-    iNOyCsEovAYoYdal6UUcKZ1cWb+CXz27dKlb+bLEfx/BKJUXFNSnW3bhdRK381JC1GlnDz
-    XP9wpbXlD1Fm5cgMlBAH0tdU5C/QePhdE58ZIueD7L0MFQeKkbn1HkohCM1tW0drVPDMbG
-    Y7ZuSjDDd/Vz0WfMMdlnTN0EbX6M9N2B08LAduRALKXc9UQ9YZyWn1W/fS/MYmL4bwAgI6
-    7tsk4Q8lFby6V9MqGobmh1IqwKULScTXFfrGd4I4bClrEu5+r/84c4VX3g298L6YwL5RMI
-    xB5XZts8neMXc32pQogBxGf2pmVomIP25vzG9MRiAxK/7XaaYOVLw4ULPY9w
-X-ME-Proxy: <xmx:SPsVaia06ab-5t8rIoB5fXJvYxPZ0y00H_MCtBOqYG1PjmL6NHwpXg>
-    <xmx:SPsVahNDlc148Is1cwyS7pt37za6RwuvPdxMSb6dPbB7wWkRrtgUYw>
-    <xmx:SPsVaoXapbrqxFs2FpwMI0801xmOfA0kpYoYic7fFs2hAzN69t3MaA>
-    <xmx:SPsVauLFO3btlv5dqWD_w3bwVEozkX0waAgAns-aHtDisqpiAoJpYw>
-    <xmx:SPsVarrjHrpwpJgG5nlF8CobOJ24fHYrqIeAUsZDBts8CesQ0U7rPcuQ>
-Feedback-ID: i20964851:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 45E73B6006E; Tue, 26 May 2026 15:58:00 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE46347BD4
+	for <stable@vger.kernel.org>; Tue, 26 May 2026 20:04:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.3
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779825865; cv=fail; b=rkqvGZmZyeDnZ/h41bwcvQ1DzjAi1FekgOKegdbnkyrQcglqJYOhGHDjIk5hufTXH8cme3hJALJAeDOlPQkMQr2T3pPafMCAvogDc2P4HIXMZn44GY3tq5w/nqiSk6If2nwKIxkRSAczZMy9sheh4Ww+xEScfkLAv+srRl6Qxx4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779825865; c=relaxed/simple;
+	bh=td9y/sD8PNqMPEXvT4ITf8PyLyo19+hvJLIriAAz14A=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=PFOGhdWGKvugIMMg8bILyN7pLHJ0O6YH7q75JuRZV47RB759PihzUdSdJAfPX5BwkiLNlzjxoP7LWs46b6cS0x5u9RNjiq0SEo3OxFjPvoNnzcrHflnYESCZLPeeTKQ1DxxtUJMpNxxUC/mE3mExC69AGSqG/NZ1y1PTg4Pa0Bc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=prevas.dk; spf=pass smtp.mailfrom=prevas.dk; dkim=pass (1024-bit key) header.d=prevas.dk header.i=@prevas.dk header.b=bPZPckyr; arc=fail smtp.client-ip=52.101.84.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=prevas.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prevas.dk
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=k+kHNLDHkZBGKiZ/vQx1TetUwA6LMVmLoPyRi1Dspx1LxQvcZ84KSjndFfj1Miu1CMafhPIbZMkQvvT3Cc5HnDlQDTnxzer8wfnrG1wqKNPCTdo5I3YiXUigmtvPHEbxMkNFdhqfutahphAkbub6sqhk+aXKZOCDENxQkarWfU0aQx5pzReiWw+H362T2ISiyck9BMaxErxDnGGkXH7vqIuqevjLyS+aMOwBJBNNn9WVdB+CZvNG0E6pscqANOX5W/vbPGMWjFyIWqFxRsDr5ceR5nM1bmbw6IuBMiDvLht5vrqJIAYYc9bMl5riwGxue3c+/31sSRIv35jvAwrvcA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=td9y/sD8PNqMPEXvT4ITf8PyLyo19+hvJLIriAAz14A=;
+ b=cWldgdkBvnV7KFf4kwaSLjUgZGok+TlEYHpNC8fr7198nHNnUVrOZVphx13T+2kxEAiywbYcfY3Dj1CApftcuZX0+zizwpjWTCHmEVVgbRT4Ap6ZFny32xMTGT5icuBAiPVAokgRb4ABb8tJG3LD0n80lePSFE/IfZuSSdt4DGrTAFKEKkrI6SEdUuM1TMdtMQ8SoC+LGxXxAW+jGvWX7THFX9QwSS56IwSscAQ3+a/DdQ+k18MgapYecP5M2HXpc3ZDLN8QuQ3DI+ZmIU0yfecudFyaM3f3HdFU19s9W3DfTd8vfdAQNjDW/o35/HQVd/hUCU5GA3jvZ/FCl0VfDg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=prevas.dk; dmarc=pass action=none header.from=prevas.dk;
+ dkim=pass header.d=prevas.dk; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prevas.dk;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=td9y/sD8PNqMPEXvT4ITf8PyLyo19+hvJLIriAAz14A=;
+ b=bPZPckyrrhxepjS2HAn/OC+DWeMfz+aJxQ+Odl7l5kGJxLuLcAfIaeejP3Cwh+yrg1SsGIdv4y06Yjcstxe8TgubbcFRSKCaqlntoiT9/5N5pMPQHiP9qk43Qt/AhsrYaNzpTYfAd/gvmtDFMGRhXaQBDxluLGI+mveYAp/+8Mw=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=prevas.dk;
+Received: from AS5PR10MB8243.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:681::18)
+ by MI3PR10MB9872.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:290:75::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.19; Tue, 26 May
+ 2026 20:04:16 +0000
+Received: from AS5PR10MB8243.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::ebc6:4e0d:5d6b:95d8]) by AS5PR10MB8243.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::ebc6:4e0d:5d6b:95d8%6]) with mapi id 15.21.0071.010; Tue, 26 May 2026
+ 20:04:16 +0000
+From: Rasmus Villemoes <ravi@prevas.dk>
+To: "stable@vger.kernel.org" <stable@vger.kernel.org>
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, Stanimir Varbanov
+ <svarbanov@suse.de>, Florian Fainelli <florian.fainelli@broadcom.com>
+Subject: bcm2712/raspberry pi 5 watchdog node for 6.18.y
+User-Agent: Gnus/5.13 (Gnus v5.13)
+Date: Tue, 26 May 2026 22:04:15 +0200
+Message-ID: <87o6i2ey4g.fsf@prevas.dk>
+Content-Type: text/plain
+X-ClientProxiedBy: CPCP307CA0008.DNKP307.PROD.OUTLOOK.COM (2603:10a6:380::10)
+ To AS5PR10MB8243.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:681::18)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AaF86MUxFLqk
-Date: Tue, 26 May 2026 15:57:31 -0400
-From: "Anna Schumaker" <anna@kernel.org>
-To: "Michael Bommarito" <michael.bommarito@gmail.com>,
- "Trond Myklebust" <trondmy@kernel.org>
-Cc: "Jeff Layton" <jlayton@kernel.org>,
- "Tom Haynes" <Thomas.Haynes@primarydata.com>,
- "Peng Tao" <tao.peng@primarydata.com>, "Kees Cook" <kees@kernel.org>,
- "Mike Snitzer" <snitzer@kernel.org>,
- "Tigran Mkrtchyan" <tigran.mkrtchyan@desy.de>, linux-nfs@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Message-Id: <727ea49a-ba0a-435a-b08c-da1d94abe931@app.fastmail.com>
-In-Reply-To: <20260523014033.2459677-3-michael.bommarito@gmail.com>
-References: <20260523014033.2459677-1-michael.bommarito@gmail.com>
- <20260523014033.2459677-3-michael.bommarito@gmail.com>
-Subject: Re: [PATCH 2/2] NFSv4/flexfile,filelayout: bound multipath DS count in
- GETDEVICEINFO
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.15 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS5PR10MB8243:EE_|MI3PR10MB9872:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9aa90b36-2a43-4a94-165b-08debb61f70e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|52116014|1800799024|366016|11063799006|18002099003|38350700014|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	G6k4cUaRRlLjNsUGKOwYYC4M4bGALMAvP+qgcFtNe+kPJWT/S712KKJaQ9cE29XcF7PP36T82CdnsLyjQGaDDoGbiv+Y8oHqfaMfTC+/AQl5rmFq8VxGgkvMC0629CCvPCm+nTxtY+PIUOKe/hgkQwqxgdX1dGHo08EN10R8g+vNc1XkVz6La5aGA70ec9+S0cyfZWCcj4sFmCFE+PyuJHONjBJe2/7kBGI/JXI+UBA7Hq5WgUa6TjYoFx/9zf/eC8q05NfJOpNL5zG10x1NuPSLrTZkBl9xgpIIQtjdRhAd8JSGVvLw8CGIf0IinOv8aMplopHAxalAy+pVu+nxV0c+Tg6fe7FZMfXcHh7Pc9ApAq4+n4/P5DNDOfCyoOJnvwEZRoi2ulLG2uQpWW+unzLFwAjxB7/5DONFSCkn1ui0nMOIarr+8X1tuNhKr9ycUnIkUIldlYm96mwMztU2PmpaMHvAcSsZVqiM6UcawQyy44VUJ7MptRJLtxnbIbIkPjY76RYKBb2BeNBx4bamklKg/FydzIcUN39LULzXMKTNXylQxQCU3klX7F69BVzSLjSWk8kLdWCYVY9J98G3IkfdMDSOW1b2vl8t9ckFClmFJYtMGKnznG00PfGX8yTmj0Mf1A9h+sCV6p8siy94hilfxXl6U+xC4DahCe0abNSqk4cEoLP/pc7uTiAY5x5eW5pIgaGIBsJ2z3aX7CUt6K+FehaDIrdj337RGk1PT8cpLZHLSC7Hok3/VpYhvcv7
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS5PR10MB8243.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(1800799024)(366016)(11063799006)(18002099003)(38350700014)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?bn0Tmv88q2jw5prHQEUwpaoDnJZo51wvz8BY18yhYC+jPJWouwABnvlenjhl?=
+ =?us-ascii?Q?G1H5mat8mh2nHWPHpZkdxM1zGLRkm85ZX98H75UoNceHH2blwjZ5xH+89ils?=
+ =?us-ascii?Q?eulnQAk52SvnX2GTGMwVTyaPHWgWwTeHC9UeIDaCY61pyl82+knadxBCQ1W/?=
+ =?us-ascii?Q?iCbl7RhE+50JXdYK5CRtsCG4j1NUNtIBm4xVsDNbGifPggwJR91DvaUCRTfS?=
+ =?us-ascii?Q?MHVXbVpNpG2FaqBU6H4ZRrIstj0bpz8BtXmow95DbiwlgK15cXG1git4CS/G?=
+ =?us-ascii?Q?2cn4nHTi4Z+axXTtDAlzEmFLmVfG38tHP7vu6qEk/0QQQatjhKyjMcKVZNEW?=
+ =?us-ascii?Q?v6RbvKVOhs07gPxpyGyLmaXu3tDqAfh7xVGVUd2IAQDO/1a+ecKEFyMt+c8I?=
+ =?us-ascii?Q?Js4JNZi1WniHUin+RQ3F542BRHXUGmbyHBL0rMn+qr0Zsf/4Mpv2512tCbbN?=
+ =?us-ascii?Q?NltRXOz4CDmBbyNAbOgKuulLZQmby8Vll2H+F2abgEjCeGCcvOPCEN1PEskR?=
+ =?us-ascii?Q?L6U/6uFnLKaX6oU76CU/M/7S/AnjtoIwY3spY1qcjxExDlDc80HQaxstxZsX?=
+ =?us-ascii?Q?3auKbqVBuNhUN5mTcuGkKqiOZqY5etB/etkr1RgfLgJUroGqRsCD1P1r9OII?=
+ =?us-ascii?Q?PBkODl2UneBF9RkLMKiT+o+wBm/Iq4c8vI4vqo2krhdlQ4LIgGNAiprRYxVQ?=
+ =?us-ascii?Q?Qm/uCXFc9mWwdOuYyUdNSfoxNoeiIpxPk3mrh2GKPgebG/7IGtCSHgSDXAJn?=
+ =?us-ascii?Q?XiIgbu1DmLhPbK2ZKH2z88eW+pxJHMy+yXrkKgN/qABKnt8A8DJ3gDtj6acn?=
+ =?us-ascii?Q?Xu6F/F5GpPBqQeqVE2JyfG0E9ASvVbD8kyEpZjrjmIFYFQ/XOYkKWX6HRu3f?=
+ =?us-ascii?Q?q+d0GRLDcDjCJYdWNLpOkVmJgE07v604XSmRpmoGI9EvYypvoxEFHvKm0nDh?=
+ =?us-ascii?Q?oSEWkdVnhiS5kzAEppqoLoNMH4k1hTo6tsSiSFdsJ+eYKwfRFgl23/yg2e5r?=
+ =?us-ascii?Q?yWe7UVX58j1Zav8upVvBN6XOWc+B9DhWxEZ6/JlaJ65hSyp3OzkDGfJUN3Nh?=
+ =?us-ascii?Q?lUtUSrInzTQGjzMTV3Y5bvLDCTSfv54VadDnKdUoZjnj1ZGn4H7y3A6258y4?=
+ =?us-ascii?Q?W35sQ2WWQzyti3TLN60LFBUBf7wINa5jl+kTChD/bpMAihvFsRfXmXzmeHhR?=
+ =?us-ascii?Q?yjm8KVNopwUuE8LTUhoyvz7r964r02LDqePxeNG+8iMfuwFEmZKwBuWQPIGa?=
+ =?us-ascii?Q?HQPdElq+tlKQZjxb1FHrIpHgU8V0yFROBUjiKhRl8Ec+ux/pE9N+QBsnSvwB?=
+ =?us-ascii?Q?E2dG968TUTl6VK+MbSjEqBQvfbXbekzDQJuVuf2oW7yii5AU+kXdv/INXV3q?=
+ =?us-ascii?Q?A6+qE2E0K3FnhcRnI5rcCmzVwp7foiJpUAKKtw1q4lT8f42r+/YTmgwUwSq2?=
+ =?us-ascii?Q?Tc8GBG21Gukq13g9E7BjEqE59b8MAX1vXj/7M0mSxinJ4TB+p8js0MnrLSSR?=
+ =?us-ascii?Q?IWSb2sXPuG6pp1simYugwIP5HPeee453p5C8ifDOI5f9L4qU0W7WM1ZJ6L+A?=
+ =?us-ascii?Q?5ogWjPvKq4TgFpivgW55OL0wAdbAU1/QjaFFePy1sL8HCWUc3MJDyzXq6m56?=
+ =?us-ascii?Q?82UCSTQxVIlqhMWHwJw94MCNypoLas1e5lNlsSUzQIl00KnU2pWPVWPxp0rW?=
+ =?us-ascii?Q?F+Fe1vbPqytNi/YRH7qEH2CTKK7EcLDH6E0lbxIALXEqHAgUp4qf1Y4BwaAM?=
+ =?us-ascii?Q?bxFdBMOIE8aAwjfGRPL9KgO1Qe5J7hA=3D?=
+X-OriginatorOrg: prevas.dk
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9aa90b36-2a43-4a94-165b-08debb61f70e
+X-MS-Exchange-CrossTenant-AuthSource: AS5PR10MB8243.EURPRD10.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 May 2026 20:04:16.5784
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: d350cf71-778d-4780-88f5-071a4cb1ed61
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: WFAh79AyIhFwDhs4RKTI6AoXEX8sgFYrEzGvO+uLmE1JATidw5r9ju8uK8hiJeQ9ONnQ/tt0Gpvbl59kbz3G7MTZGoXwZgtsQL1lz9KoIMA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MI3PR10MB9872
+X-Spamd-Result: default: False [0.34 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[prevas.dk,reject];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[prevas.dk:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	XM_UA_NO_VERSION(0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-254441-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[app.fastmail.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
 	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254442-lists,stable=lfdr.de];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	DKIM_TRACE(0.00)[prevas.dk:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[anna@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[ravi@prevas.dk,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
+	RCPT_COUNT_THREE(0.00)[4];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 60BA75DC2AD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 72E0F5DC33D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Michael,
+Hi Greg
 
-On Fri, May 22, 2026, at 9:40 PM, Michael Bommarito wrote:
-> Both the flexfile and the (legacy) file pNFS layout drivers decode a
-> multipath-DS count from a server-supplied GETDEVICEINFO body and then
-> iterate it via nfs4_decode_mp_ds_addr() without any upper bound. The
-> filelayout driver already caps the outer ds_num against
-> NFS4_PNFS_MAX_MULTI_CNT (== 256) but applies no equivalent cap to the
-> inner mp_count; the flexfile driver applies no cap on either.
->
-> In addition, both inner loops ignore a NULL return from
-> nfs4_decode_mp_ds_addr(), so once the on-wire data no longer matches
-> a valid netaddr4 encoding the loop is free to consume the trailing
-> bytes of the device_addr opaque as garbage netid + uaddr pairs. A
-> malicious or compromised pNFS metadata server can therefore drive
-> the inner loop indefinitely (up to 2^32 - 1 iterations) against a
-> fixed-size 56-byte body, with each iteration triggering an
-> allocation / kmemdup_nul cycle inside the decoder.
->
-> Promote NFS4_PNFS_MAX_MULTI_CNT from the filelayout private header to
-> include/linux/nfs4.h so both drivers (and any future pNFS layout
-> driver that decodes a multipath address list) bound the wire-level
-> field consistently. Apply the cap to the inner mp_count in both
-> drivers, matching the existing ds_num check, and bail on the first
-> NULL return so a server that lies about mp_count cannot quietly
-> extend the loop into the trailing layout-body bytes. This is
-> defense-in-depth on top of the companion patch which closes the
-> NULL-deref in nfs4_decode_mp_ds_addr(); either patch alone closes
-> the kernel-panic shape, both together close the latent
-> unbounded-decode class.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 35124a0994fc ("Cleanup XDR parsing for LAYOUTGET, GETDEVICEINFO")
-> Fixes: d67ae825a59d ("pnfs/flexfiles: Add the FlexFile Layout Driver")
-> Assisted-by: Claude:claude-opus-4-7
-> Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-> ---
->  fs/nfs/filelayout/filelayout.h            |  2 +-
->  fs/nfs/filelayout/filelayoutdev.c         |  7 +++++--
->  fs/nfs/flexfilelayout/flexfilelayoutdev.c | 10 ++++++++--
->  include/linux/nfs4.h                      |  3 +++
->  4 files changed, 17 insertions(+), 5 deletions(-)
->
-> With this patch alone the crafted GETDEVICEINFO at multipath_count >= 3
-> is rejected at the bound check; malformed netaddr in the inner loop
-> bails on the first NULL return.  Either this patch or the companion
-> 1/2 closes the panic; both together close the unbounded-decode class.
->
-> Baseline multipath_count = 1 mount + read completes normally.
->
->
-> diff --git a/fs/nfs/filelayout/filelayout.h b/fs/nfs/filelayout/filelayout.h
-> index c7bb5da93307d..03298f2e7cd69 100644
-> --- a/fs/nfs/filelayout/filelayout.h
-> +++ b/fs/nfs/filelayout/filelayout.h
-> @@ -39,7 +39,7 @@
->   * RFC 5661 multipath_list4 structures.
->   */
->  #define NFS4_PNFS_MAX_STRIPE_CNT 4096
-> -#define NFS4_PNFS_MAX_MULTI_CNT  256 /* 256 fit into a u8 stripe_index */
-> +/* NFS4_PNFS_MAX_MULTI_CNT now in <linux/nfs4.h>; shared with flexfile. */
+Please consider adding
 
-I don't think we need the comment saying that the value has moved.
+34194cb38503 ("dt-bindings: soc: bcm: Add bcm2712 compatible")
+37c3a91e9730 ("arm64: dts: broadcom: bcm2712: Add watchdog DT node")
+30ed024fb076 ("mfd: bcm2835-pm: Add support for BCM2712")
 
-> 
->  enum stripetype4 {
->  	STRIPE_SPARSE = 1,
-> diff --git a/fs/nfs/filelayout/filelayoutdev.c 
-> b/fs/nfs/filelayout/filelayoutdev.c
-> index 7226989ee4d53..c58c786dcf011 100644
-> --- a/fs/nfs/filelayout/filelayoutdev.c
-> +++ b/fs/nfs/filelayout/filelayoutdev.c
-> @@ -159,10 +159,13 @@ nfs4_fl_alloc_deviceid_node(struct nfs_server 
-> *server, struct pnfs_device *pdev,
->  			goto out_err_free_deviceid;
-> 
->  		mp_count = be32_to_cpup(p); /* multipath count */
-> +		if (mp_count > NFS4_PNFS_MAX_MULTI_CNT)
-> +			goto out_err_free_deviceid;
->  		for (j = 0; j < mp_count; j++) {
->  			da = nfs4_decode_mp_ds_addr(net, &stream, gfp_flags);
-> -			if (da)
-> -				list_add_tail(&da->da_node, &dsaddrs);
-> +			if (!da)
-> +				break;
-> +			list_add_tail(&da->da_node, &dsaddrs);
->  		}
->  		if (list_empty(&dsaddrs)) {
->  			dprintk("%s: no suitable DS addresses found\n",
-> diff --git a/fs/nfs/flexfilelayout/flexfilelayoutdev.c 
-> b/fs/nfs/flexfilelayout/flexfilelayoutdev.c
-> index c40395ae08142..faed05cbe9f1c 100644
-> --- a/fs/nfs/flexfilelayout/flexfilelayoutdev.c
-> +++ b/fs/nfs/flexfilelayout/flexfilelayoutdev.c
-> @@ -78,12 +78,18 @@ nfs4_ff_alloc_deviceid_node(struct nfs_server 
-> *server, struct pnfs_device *pdev,
->  		goto out_err_drain_dsaddrs;
->  	mp_count = be32_to_cpup(p);
->  	dprintk("%s: multipath ds count %d\n", __func__, mp_count);
-> +	if (mp_count > NFS4_PNFS_MAX_MULTI_CNT) {
-> +		dprintk("%s: multipath count %u greater than supported maximum %d\n",
-> +			__func__, mp_count, NFS4_PNFS_MAX_MULTI_CNT);
-> +		goto out_err_drain_dsaddrs;
-> +	}
-> 
->  	for (i = 0; i < mp_count; i++) {
->  		/* multipath ds */
->  		da = nfs4_decode_mp_ds_addr(net, &stream, gfp_flags);
-> -		if (da)
-> -			list_add_tail(&da->da_node, &dsaddrs);
-> +		if (!da)
-> +			break;
-> +		list_add_tail(&da->da_node, &dsaddrs);
->  	}
->  	if (list_empty(&dsaddrs)) {
->  		dprintk("%s: no suitable DS addresses found\n",
-> diff --git a/include/linux/nfs4.h b/include/linux/nfs4.h
-> index d87be1f25273a..bfc30baa8159a 100644
-> --- a/include/linux/nfs4.h
-> +++ b/include/linux/nfs4.h
-> @@ -767,6 +767,9 @@ enum pnfs_block_extent_state {
->  	PNFS_BLOCK_NONE_DATA		= 3,
->  };
-> 
-> +/* Maximum NFSv4.1 pNFS multipath data-server address count */
-> +#define NFS4_PNFS_MAX_MULTI_CNT		256
+to the 6.18.y stable tree. If the bootloader or the ROM code on the RPi5
+has enabled the watchdog, the kernel must know about that device in
+order that either the kernel or userspace can keep petting it.
 
-In the original location, this had a comment saying where the 256 came
-from. Can you carry that over to here too, please?
+Strictly, the middle patch is sufficient for that (as the driver matches
+on the brcm,bcm2835-pm-wdt compatible), but I suppose at least the DT
+binding patch should go along with it to keep the documentation in sync.
 
 Thanks,
-Anna
-
-> +
->  /* on the wire size of a block layout extent */
->  #define PNFS_BLOCK_EXTENT_SIZE \
->  	(7 * sizeof(__be32) + NFS4_DEVICEID4_SIZE)
-> -- 
-> 2.53.0
+Rasmus
 
