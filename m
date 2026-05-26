@@ -1,69 +1,63 @@
-Return-Path: <stable+bounces-254358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254359-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iOumCPeiFWprWwcAu9opvQ
-	(envelope-from <stable+bounces-254358-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 15:41:11 +0200
+	id QOA6LPCjFWprWwcAu9opvQ
+	(envelope-from <stable+bounces-254359-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 15:45:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D0F05D6B0A
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 15:41:10 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 597195D6C5E
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 15:45:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4C4973081428
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 13:34:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6326C30243B7
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 13:38:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3781C3FB072;
-	Tue, 26 May 2026 13:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E49C3FA5C2;
+	Tue, 26 May 2026 13:38:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="G3HNf0FM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IO0fMXGm"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BBF53FA5EC;
-	Tue, 26 May 2026 13:33:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E75BC2E228D
+	for <stable@vger.kernel.org>; Tue, 26 May 2026 13:38:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779802393; cv=none; b=jYI3B6O7ABDxzaQ8jTDaeZkK2VeDIoJA+87zgHcuYN70LtYaVNuJSRnwgZH4xMbbxN5mkkfC3dBTFPpXn7uLTFM7ZNA1c43LKIXAQchYPJijneGt7qKVMxodp8K/P5o+pAiHah/Wqr35kHOV1vlcFjtsmGql1LCaVEE3QbilZ3k=
+	t=1779802704; cv=none; b=RfAVNil2DWwnQBvbxiYcuLQl/q8cLrRAY5Idoe2eaD2mdh7MCwCxT+hmaPSQwRq1MNRCAtnsbdgsyftfFRcbeqOrrwK+W0achbaXzOQiuZ8JamnNhd4rWVbV/KUFacFomjk0EAJANIUTMxLOEQfGLYMlnbieq4HuxS8ysfEyWfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779802393; c=relaxed/simple;
-	bh=8c455aXFF7HLlHYcNMeNADliusp09afhq5rjFXml4XM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=G9BNA0gikUrqsluLedvoScYhOp5YmE/EZjbl4bthpzS3ednaqkNAjtTPbNEVaq/MML0fp8loZzRerFG0hivUQZo8DYG5cNFU2kodqys9NRCGFJJwiZpyvKWMn4a5+2Z8Hr4moWafS6eI281egyL7KxqIRNtDxPG6VSS8N4oyyh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=G3HNf0FM; arc=none smtp.client-ip=220.197.31.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=1N
-	4mxlQmcxLBqdU9q8trXnA6PzPq3w4ggMHk2XEFBAc=; b=G3HNf0FMpBpjlMusbE
-	L2dD3uUhcARQYiHVYysLKrYXcjPGeYn5hx9AM5TgIifYYyrHzSq3MwRml3HUvLWq
-	dYB8n9WS3hMQvbwWOH65NoAHwKYHqs/Suudj5vTMG5C3Jo5UtUxx1xdYT9qKWak9
-	z5m5z9jEbdsJUIKi1mdZYsv/4=
-Received: from 163.com (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD3v0evoBVqYN9KDg--.14290S7;
-	Tue, 26 May 2026 21:31:45 +0800 (CST)
-From: w15303746062@163.com
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org,
-	sashal@kernel.org
-Cc: tzimmermann@suse.de,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	louis.chauvet@bootlin.com,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Mingyu Wang <25181214217@stu.xidian.edu.cn>
-Subject: [PATCH v2 6.18.y 5/5] drm/vblank: Fix kernel docs for vblank timer
-Date: Tue, 26 May 2026 21:31:23 +0800
-Message-Id: <20260526133123.691465-6-w15303746062@163.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260526133123.691465-1-w15303746062@163.com>
-References: <20260526133123.691465-1-w15303746062@163.com>
+	s=arc-20240116; t=1779802704; c=relaxed/simple;
+	bh=YFlw88qepEzSU4nWdETVI8eZp+lP7t4leSvf9DsyHAQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jVRuLBS5nAB69VuO41Id1crBFRbRrM0ar0TC4YQV6apsRfBKBpzUablTdsSWgm85iUf/qJ1nVgvncrjQXnbplHeWXyF6LhlsDaVBNv13c8/SRdUwqDWazyvHvnez5qsxJOgLhUIWpIw82IQIwRIf/POYZY+uuz8O0FVpccRUm/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IO0fMXGm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5FC11F000E9;
+	Tue, 26 May 2026 13:38:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779802703;
+	bh=Kbt1vq9pUIY2h+SWgk6IQBLzXpBvw4JyRBZ1v5FM+BY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=IO0fMXGmZPbER97LDjrlerK7HqES4V6j84McHbwTFejJM68y72kSmt1FdUgwr9nJF
+	 pA+Ht0EohSRB/nhpZx50LsmBtmGwCZRAg5/lqvGmDT/vF818SQMrfFBjgaut3x3aKL
+	 4TsY4Dx1lOYbCO9b0UM29yrlVfLwHAXwfHOS5d0ZTn4V4DvEXJ1KmOVqe+zTTmDKkX
+	 kSZODCB7N/t6RYVltTVRE4b/Nw3jKKn28zW7TNrGFtOJ1EC/ptbPMZXlU9y4Cay6Kn
+	 b4RMcOi57b62YlVI2vCybeGvb0Hz3JTwCL0DmJfQqVti5OBBTBFbEx10nXaWZN0fF3
+	 RPQQluwv1qcXQ==
+From: Sasha Levin <sashal@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Sasha Levin <sashal@kernel.org>,
+	stable <stable@vger.kernel.org>,
+	Salah Triki <salah.triki@gmail.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vineeth Vijayan <vneethv@linux.ibm.com>,
+	Ben Hutchings <benh@debian.org>
+Subject: Re: [PATCH 5.10] Revert "s390/cio: Fix device lifecycle handling in css_alloc_subchannel()"
+Date: Tue, 26 May 2026 09:38:13 -0400
+Message-ID: <20260526140000.agent5-0001@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <ahVuMv5SLjHVUbkt@decadent.org.uk>
+References: <ahVuMv5SLjHVUbkt@decadent.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,83 +65,51 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3v0evoBVqYN9KDg--.14290S7
-X-Coremail-Antispam: 1Uf129KBjvJXoW7ZrWUKryfuw4rWFykZw17Awb_yoW8Aw48pr
-	srGry3trs5tF90g3WDC3Z7CFyY9a45JFyxuF9rt3y5Zwnayr1ayF1Fyr43uFyUXrnxCa1a
-	qr9xXr13AF1rCFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jFXdbUUUUU=
-X-CM-SenderInfo: jzrvjiatxuliiws6il2tof0z/xtbC4wE4HGoVoMF7xwAA3k
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254358-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[163.com];
+	TO_DN_ALL(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254359-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[suse.de,linux.intel.com,kernel.org,bootlin.com,lists.freedesktop.org,vger.kernel.org,canb.auug.org.au,redhat.com,gmail.com,ffwll.ch,stu.xidian.edu.cn];
-	DKIM_TRACE(0.00)[163.com:+];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,gmail.com,linux.ibm.com,debian.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[w15303746062@163.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[xidian.edu.cn:email,auug.org.au:email,intel.com:email,suse.de:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 9D0F05D6B0A
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 597195D6C5E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+On Tue, May 26, 2026 at 11:56:02AM +0200, Ben Hutchings wrote:
+> The backported commit calls put_device() on the embedded struct
+> device, which is now reached if css_sch_create_locks() fails, before
+> it was initialised.  This effectively reverts upstream commit
+> f65c75b0b9b5 for 5.10.
 
-Fix documentation for drm_crtc_vblank_start_timer(), which referred
-to drm_crtc_vblank_cancel_timer().
+Queued for 5.10, thanks. I also queued matching reverts on 5.15 (of
+b1d4e6fb24167) and 6.1 (of fd295a75d828c), since the same goto-err
+path lands at the err: label before device_initialize() on those
+branches too.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Closes: https://lore.kernel.org/dri-devel/20251106152201.6f248c09@canb.auug.org.au/
-Fixes: 74afeb812850 ("drm/vblank: Add vblank timer")
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Louis Chauvet <louis.chauvet@bootlin.com>
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: dri-devel@lists.freedesktop.org
-Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
-Link: https://patch.msgid.link/20251106073207.11192-1-tzimmermann@suse.de
-(cherry picked from commit 3946d3ba99342f3b9996e621f05e7003d4308171)
-Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
----
- drivers/gpu/drm/drm_vblank.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/drm_vblank.c b/drivers/gpu/drm/drm_vblank.c
-index 61e211fd3c9c..451ec9620226 100644
---- a/drivers/gpu/drm/drm_vblank.c
-+++ b/drivers/gpu/drm/drm_vblank.c
-@@ -2258,7 +2258,7 @@ int drm_crtc_vblank_start_timer(struct drm_crtc *crtc)
- EXPORT_SYMBOL(drm_crtc_vblank_start_timer);
- 
- /**
-- * drm_crtc_vblank_start_timer - Cancels the given CRTC's vblank timer
-+ * drm_crtc_vblank_cancel_timer - Cancels the given CRTC's vblank timer
-  * @crtc: the CRTC
-  *
-  * Drivers should call this function from their CRTC's disable_vblank
 -- 
-2.34.1
-
+Thanks,
+Sasha
 
