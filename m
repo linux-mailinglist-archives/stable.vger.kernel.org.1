@@ -1,206 +1,269 @@
-Return-Path: <stable+bounces-254440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254441-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YG1lBB/5FWpxgQcAu9opvQ
-	(envelope-from <stable+bounces-254440-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 21:48:47 +0200
+	id 4FmuCFH7FWovggcAu9opvQ
+	(envelope-from <stable+bounces-254441-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 21:58:09 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 605DB5DC1E7
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 21:48:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60BA75DC2AD
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 21:58:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C6F143046D58
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 19:48:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0ECFC30374AF
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 19:58:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C5002D9787;
-	Tue, 26 May 2026 19:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2702B3B27D9;
+	Tue, 26 May 2026 19:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b="gSLtwMiD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZPybllyt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A85118C02E
-	for <stable@vger.kernel.org>; Tue, 26 May 2026 19:48:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B547F2D9787;
+	Tue, 26 May 2026 19:58:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779824902; cv=none; b=qIoqbbC6iHuvd6KgSaiatcaHafpTPiGfwnFkvOeB5otMLefiTzUwF2/vveIE0R717Qm2Wc1Z/anGSeSX4bt4f5FFn0/UKZow1/VHrhmKzOc8Nb0ZNAZ6TyRgU1OyX4XwNnvcpvzE2uSG5XCVG1e5vKua+urvntcbN1rS9BtFPmY=
+	t=1779825482; cv=none; b=gSky7Ue11rEO1O7oUZomagwOwqdBJlL4lqRNQPoOi77SgvZVf/SWK32Oml+pf4hMoq1YEjxdWen3kjryR4iXGsNnNs79pTqVYBvdqmOoQn4CL+wj2VPacWYm7qfw8NuIsy5uZgK93M68BWZJ4WsenN1XB2643jCGOUjF1a3ZNrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779824902; c=relaxed/simple;
-	bh=GP/ClzRFrxzRKrwi6HTclnbsgEnaK6VITku0Ery4FvA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QQQQOzeNtG+vQv84GmOIbFZB5Suikhvm3y8sh8tyxRgAx6g52ytaiEMhK6dOowUsAczhQXh2k3skaUKguWwM2DgaM7Fds2VRGQTbhLPNlwP+4tHiTMAohFkUJTrHJtD9TZ4PYCrSX440alUAAj611bcQo7+4SfXpab/JdveMOP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=gSLtwMiD; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0sec.ai
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-490426d72f7so43218465e9.3
-        for <stable@vger.kernel.org>; Tue, 26 May 2026 12:48:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=0sec.ai; s=google; t=1779824899; x=1780429699; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=J/Gh3D868F7R6hzwm/lRWoQqdGX6ghyM671WkjN3eI4=;
-        b=gSLtwMiDbjrxY8iFsAjSkK783JXJtCnUSaYthtVM26Udx/rymgrJMsmG7TXoaCPpzI
-         KdEZmk/duo82xmqD2EHC2fq0pD/gqmXaAH4ot4y2YQ5SyekoPZDSdC9zXv0KFI0gaYT3
-         RFlmgIxGlo4TldQA9h8nr1fjE70ln95A3DyChVu9RUQXggTQhNm5ugToWK6hNutpXbVq
-         SzInbjuR+XJhaFF8QvO4ndX6/6xYQ8o8V4qWXUIZpOjviL4pth7y0EZv5FqhH2jwjgDn
-         T6LUt0G4QG+4b7nv9F8h8qNGXXKizeHh8s1Zg0OHK6ne7TwrePgXwruCb/gksBMXK/Uu
-         XF/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779824899; x=1780429699;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=J/Gh3D868F7R6hzwm/lRWoQqdGX6ghyM671WkjN3eI4=;
-        b=fipILO/TA7sYUgTVHzHqgcew+GLOVuTPROReLtUaJAhmE35W+3OWYo6Owssd95BFf4
-         0mU4tWa3kmSRsrQIp9iI90VMZC8LRjR5u9edQZoKVesFfbZaw0+eDy9NnU+FdzyNhPxO
-         iMdvDBOkQiiFN0DAM3wDAHxGyd6k+Qc41DYbKWoTZQzTFaag+BKllCg29sQdWXWcJuGP
-         64JP99aX/1RWf3Jw/orNiiWgsj6RlnOWPSie5OcmmpJLqFhNRdwplPa/BHAjHf3hp+W3
-         uQ5pycZ2v1DmLlCTmzDgDAzpW2vbuJ9nVD24rYB0qI+i2SuiJ4rfULywr0mdypwZ3rXr
-         JEBA==
-X-Forwarded-Encrypted: i=1; AFNElJ+o6f6IiS0UIsbIvewMvCCD2fk8Z4/DFhWONowhMUdDmXMq3L+AcZvYzH/NORdrXGJY4g6GLe0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw/fTdWfyvjMU9HrInQgHHuCltVDJiWDWpr9WB1/ZETmXCHrVCQ
-	PL4TLim5m1MeOqklDMOrwNkSKdG5CNpL1s9yPkYhpYw7QeLovsMGsH6UiRZW0cHUlZlA
-X-Gm-Gg: Acq92OFrQLRmiAWnw3dqwU3ABpZV2XVIaspQ+4N0huLaxqeKE3EQrGrJpAFyugzKE4G
-	ztDfbmj/zsh6AdZJCFlx3Ds1U0CrqiCQU66/rspfpmac1zqKvUK23ncv6H7ZBdwqhvIs+FSqAty
-	s7dIY97+7wOUT1NuGmrvP+79IFN5nFNkz50XlZ08gkSG6W1yWD04CqC0AGyYokYYT0ThRjZLqZm
-	WWIle4tH5vL7KbRMMx3y6DZlPqhDCPN4/S5xueGI5Gz8IV8YJJx9roKdqYfOTBm2DmCG/5v/0mf
-	oyGEsA17/iahyty2zLmGtC9ckORdawhI2zoSRRBmrFvWJpsksSAGMbGUroeyQfKW7B3au8S01qm
-	ZoF1BzlWclAXVj+JaZ2K+6RFKfXlDPGJmo/8I8LJbf9N6wRuHp9qBjJefK7YmNmBKR87kY82uMD
-	Z5y9RiQ4Z54FbHN6dmfZiLg4rhvy9UGm2mGAyGqeK2xs/L+jQJO9JIUZxiRpXw4R2womMyorNQd
-	uROpAdd6u5xyQEGjxfkVjNBdVFTRtuBVhnFDhKFLYl9VOyPmSNlEG8=
-X-Received: by 2002:a05:600d:6450:20b0:48f:e245:394e with SMTP id 5b1f17b1804b1-490426dd0f7mr233796095e9.27.1779824898555;
-        Tue, 26 May 2026 12:48:18 -0700 (PDT)
-Received: from PeakBook-Mini.tail8e484.ts.net ([178.197.223.24])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4907e683746sm2790745e9.2.2026.05.26.12.48.17
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 26 May 2026 12:48:17 -0700 (PDT)
-From: Doruk Tan Ozturk <doruk@0sec.ai>
-To: marcel@holtmann.org,
-	luiz.dentz@gmail.com
-Cc: linux-bluetooth@vger.kernel.org,
-	security@kernel.org,
-	stable@vger.kernel.org,
-	Doruk Tan Ozturk <doruk@0sec.ai>
-Subject: [PATCH v2] Bluetooth: hci_sync: fix UAF in hci_le_create_cis_sync
-Date: Tue, 26 May 2026 21:48:16 +0200
-Message-ID: <20260526194816.65669-1-doruk@0sec.ai>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1779825482; c=relaxed/simple;
+	bh=osxI2trcJFudeTUPqpWIbudsHtCfXVAyeRZTKIDY2B8=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=oCCL4vN8Dc5jcGvqgm/4WpOGOsNHNoRZfeeKOVBzqrD4BWU9hDBTRolqTer2o1+pxD2aLV5kDUdRFojaUlRlF7WyR4yzE/O3CS/uAK/XOoq9OKUzHCYv1Ite0low6Woz2XQcDDRqHbsjgNB939VGkLipuKV1bsTfnMvjc7duOw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZPybllyt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DD8E1F000E9;
+	Tue, 26 May 2026 19:58:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779825481;
+	bh=67qyYwcHcM0+oSoipVhMKJQvRP46f8uWoJfiuM+1wxs=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=ZPybllytIcVtMq0YVWs+nNqSs1yEH5hEWOX68gnTHS3vrR9SOB73sWpVLwRHCfuc0
+	 OGDGJAd98M9QYh4d9rQwaPWDNJ1qi0/EsbsNtVrqyIsn6qmN4GMJBsEqHfKsnAQ+Vi
+	 WW010vroH7duEB2AKcLBo9URVhnAcEj+bjMUpu8uyIe7MFnXnkIU0HAdrRhBhlZrPW
+	 2MgnILK7WzdqnP6yI8cHXY5YeJybsdXkcDEYcd0jbNCIYXIiSms3Ez9g6QHEFRqsV5
+	 HJbah+fuQvttAcQASBSDZre1gRMSf+1ZhzIWsI2ESLD+hzv9/Ob/U1L7k2IUek4Wia
+	 MgWa3Mqdv14Hg==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 68D50F4007B;
+	Tue, 26 May 2026 15:58:00 -0400 (EDT)
+Received: from phl-imap-04 ([10.202.2.82])
+  by phl-compute-02.internal (MEProxy); Tue, 26 May 2026 15:58:00 -0400
+X-ME-Sender: <xms:SPsVajwm7K5ELrMnXpZdvYPZpBz5w-tPhWQw-8GClWhu1g11kW-Wqg>
+    <xme:SPsVamEDxcesPNOpwfl2eHiQ8papVe8po7eGRA2wmSmKwN0CHEQQdqiq4jy6Hpv9f
+    BHHz-BEEV4QhTpyoAgeQuLXp2Jw2_yjtWiLhtvp_6NnxH4CGkV4fT0>
+X-ME-Proxy-Cause: dmFkZTFae7avOup8DuVHF9O+YAhnbpFr087icaSm5489iB1uQSNtNiE/l3/+L02sYPuVgA
+    b9+6gZeCy91UbGdeimLHFrDdx70eAuXjRoYjDLUHzclgl0SbU+71QNwZEQeZYF6FSOFDOj
+    bRHZfdVF87yfzKuQQy2zZ2hVFmfXmBR8jWqZqlCUQLu3SRQ4i4WC5hZgkgwTmjCOnl19vf
+    n15yaaVQem15WlJ4B2Rcd79ki3sHiq5o0nqhfXzpFgCMf4o8tf4DRxtfIFDi3mku3wiyPk
+    F/S2rtufvHoFO+eYnFFFrb8/Xq6bNRLdNc6kh81/5RNLTQ3kKWznc6QydmlmWzYxcmaSl5
+    iNOyCsEovAYoYdal6UUcKZ1cWb+CXz27dKlb+bLEfx/BKJUXFNSnW3bhdRK381JC1GlnDz
+    XP9wpbXlD1Fm5cgMlBAH0tdU5C/QePhdE58ZIueD7L0MFQeKkbn1HkohCM1tW0drVPDMbG
+    Y7ZuSjDDd/Vz0WfMMdlnTN0EbX6M9N2B08LAduRALKXc9UQ9YZyWn1W/fS/MYmL4bwAgI6
+    7tsk4Q8lFby6V9MqGobmh1IqwKULScTXFfrGd4I4bClrEu5+r/84c4VX3g298L6YwL5RMI
+    xB5XZts8neMXc32pQogBxGf2pmVomIP25vzG9MRiAxK/7XaaYOVLw4ULPY9w
+X-ME-Proxy: <xmx:SPsVaia06ab-5t8rIoB5fXJvYxPZ0y00H_MCtBOqYG1PjmL6NHwpXg>
+    <xmx:SPsVahNDlc148Is1cwyS7pt37za6RwuvPdxMSb6dPbB7wWkRrtgUYw>
+    <xmx:SPsVaoXapbrqxFs2FpwMI0801xmOfA0kpYoYic7fFs2hAzN69t3MaA>
+    <xmx:SPsVauLFO3btlv5dqWD_w3bwVEozkX0waAgAns-aHtDisqpiAoJpYw>
+    <xmx:SPsVarrjHrpwpJgG5nlF8CobOJ24fHYrqIeAUsZDBts8CesQ0U7rPcuQ>
+Feedback-ID: i20964851:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 45E73B6006E; Tue, 26 May 2026 15:58:00 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-ThreadId: AaF86MUxFLqk
+Date: Tue, 26 May 2026 15:57:31 -0400
+From: "Anna Schumaker" <anna@kernel.org>
+To: "Michael Bommarito" <michael.bommarito@gmail.com>,
+ "Trond Myklebust" <trondmy@kernel.org>
+Cc: "Jeff Layton" <jlayton@kernel.org>,
+ "Tom Haynes" <Thomas.Haynes@primarydata.com>,
+ "Peng Tao" <tao.peng@primarydata.com>, "Kees Cook" <kees@kernel.org>,
+ "Mike Snitzer" <snitzer@kernel.org>,
+ "Tigran Mkrtchyan" <tigran.mkrtchyan@desy.de>, linux-nfs@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Message-Id: <727ea49a-ba0a-435a-b08c-da1d94abe931@app.fastmail.com>
+In-Reply-To: <20260523014033.2459677-3-michael.bommarito@gmail.com>
+References: <20260523014033.2459677-1-michael.bommarito@gmail.com>
+ <20260523014033.2459677-3-michael.bommarito@gmail.com>
+Subject: Re: [PATCH 2/2] NFSv4/flexfile,filelayout: bound multipath DS count in
+ GETDEVICEINFO
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.15 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_DKIM_REJECT(1.00)[0sec.ai:s=google];
-	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DMARC_NA(0.00)[0sec.ai];
-	TAGGED_FROM(0.00)[bounces-254440-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[holtmann.org,gmail.com];
+	XM_UA_NO_VERSION(0.01)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-254441-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	NEURAL_SPAM(0.00)[0.334];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[app.fastmail.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[doruk@0sec.ai,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[anna@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[0sec.ai:-];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 605DB5DC1E7
+	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 60BA75DC2AD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-hci_le_create_cis_sync() dereferences conn->conn_timeout after releasing
-both rcu_read_lock() and hci_dev_lock(hdev).  The conn pointer was
-obtained from an RCU-protected iteration over hdev->conn_hash.list and
-is not valid once these locks are dropped.  A concurrent disconnect can
-free the hci_conn between the unlock and the dereference, causing a
-use-after-free read.
+Hi Michael,
 
-The cancellation mechanism in hci_conn_del() cannot prevent this because
-hci_le_create_cis_pending() queues hci_create_cis_sync with data=NULL:
+On Fri, May 22, 2026, at 9:40 PM, Michael Bommarito wrote:
+> Both the flexfile and the (legacy) file pNFS layout drivers decode a
+> multipath-DS count from a server-supplied GETDEVICEINFO body and then
+> iterate it via nfs4_decode_mp_ds_addr() without any upper bound. The
+> filelayout driver already caps the outer ds_num against
+> NFS4_PNFS_MAX_MULTI_CNT (== 256) but applies no equivalent cap to the
+> inner mp_count; the flexfile driver applies no cap on either.
+>
+> In addition, both inner loops ignore a NULL return from
+> nfs4_decode_mp_ds_addr(), so once the on-wire data no longer matches
+> a valid netaddr4 encoding the loop is free to consume the trailing
+> bytes of the device_addr opaque as garbage netid + uaddr pairs. A
+> malicious or compromised pNFS metadata server can therefore drive
+> the inner loop indefinitely (up to 2^32 - 1 iterations) against a
+> fixed-size 56-byte body, with each iteration triggering an
+> allocation / kmemdup_nul cycle inside the decoder.
+>
+> Promote NFS4_PNFS_MAX_MULTI_CNT from the filelayout private header to
+> include/linux/nfs4.h so both drivers (and any future pNFS layout
+> driver that decodes a multipath address list) bound the wire-level
+> field consistently. Apply the cap to the inner mp_count in both
+> drivers, matching the existing ds_num check, and bail on the first
+> NULL return so a server that lies about mp_count cannot quietly
+> extend the loop into the trailing layout-body bytes. This is
+> defense-in-depth on top of the companion patch which closes the
+> NULL-deref in nfs4_decode_mp_ds_addr(); either patch alone closes
+> the kernel-panic shape, both together close the latent
+> unbounded-decode class.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 35124a0994fc ("Cleanup XDR parsing for LAYOUTGET, GETDEVICEINFO")
+> Fixes: d67ae825a59d ("pnfs/flexfiles: Add the FlexFile Layout Driver")
+> Assisted-by: Claude:claude-opus-4-7
+> Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+> ---
+>  fs/nfs/filelayout/filelayout.h            |  2 +-
+>  fs/nfs/filelayout/filelayoutdev.c         |  7 +++++--
+>  fs/nfs/flexfilelayout/flexfilelayoutdev.c | 10 ++++++++--
+>  include/linux/nfs4.h                      |  3 +++
+>  4 files changed, 17 insertions(+), 5 deletions(-)
+>
+> With this patch alone the crafted GETDEVICEINFO at multipath_count >= 3
+> is rejected at the bound check; malformed netaddr in the inner loop
+> bails on the first NULL return.  Either this patch or the companion
+> 1/2 closes the panic; both together close the unbounded-decode class.
+>
+> Baseline multipath_count = 1 mount + read completes normally.
+>
+>
+> diff --git a/fs/nfs/filelayout/filelayout.h b/fs/nfs/filelayout/filelayout.h
+> index c7bb5da93307d..03298f2e7cd69 100644
+> --- a/fs/nfs/filelayout/filelayout.h
+> +++ b/fs/nfs/filelayout/filelayout.h
+> @@ -39,7 +39,7 @@
+>   * RFC 5661 multipath_list4 structures.
+>   */
+>  #define NFS4_PNFS_MAX_STRIPE_CNT 4096
+> -#define NFS4_PNFS_MAX_MULTI_CNT  256 /* 256 fit into a u8 stripe_index */
+> +/* NFS4_PNFS_MAX_MULTI_CNT now in <linux/nfs4.h>; shared with flexfile. */
 
-    hci_cmd_sync_queue(hdev, hci_create_cis_sync, NULL, NULL);
+I don't think we need the comment saying that the value has moved.
 
-While hci_conn_del() dequeues with data=conn:
+> 
+>  enum stripetype4 {
+>  	STRIPE_SPARSE = 1,
+> diff --git a/fs/nfs/filelayout/filelayoutdev.c 
+> b/fs/nfs/filelayout/filelayoutdev.c
+> index 7226989ee4d53..c58c786dcf011 100644
+> --- a/fs/nfs/filelayout/filelayoutdev.c
+> +++ b/fs/nfs/filelayout/filelayoutdev.c
+> @@ -159,10 +159,13 @@ nfs4_fl_alloc_deviceid_node(struct nfs_server 
+> *server, struct pnfs_device *pdev,
+>  			goto out_err_free_deviceid;
+> 
+>  		mp_count = be32_to_cpup(p); /* multipath count */
+> +		if (mp_count > NFS4_PNFS_MAX_MULTI_CNT)
+> +			goto out_err_free_deviceid;
+>  		for (j = 0; j < mp_count; j++) {
+>  			da = nfs4_decode_mp_ds_addr(net, &stream, gfp_flags);
+> -			if (da)
+> -				list_add_tail(&da->da_node, &dsaddrs);
+> +			if (!da)
+> +				break;
+> +			list_add_tail(&da->da_node, &dsaddrs);
+>  		}
+>  		if (list_empty(&dsaddrs)) {
+>  			dprintk("%s: no suitable DS addresses found\n",
+> diff --git a/fs/nfs/flexfilelayout/flexfilelayoutdev.c 
+> b/fs/nfs/flexfilelayout/flexfilelayoutdev.c
+> index c40395ae08142..faed05cbe9f1c 100644
+> --- a/fs/nfs/flexfilelayout/flexfilelayoutdev.c
+> +++ b/fs/nfs/flexfilelayout/flexfilelayoutdev.c
+> @@ -78,12 +78,18 @@ nfs4_ff_alloc_deviceid_node(struct nfs_server 
+> *server, struct pnfs_device *pdev,
+>  		goto out_err_drain_dsaddrs;
+>  	mp_count = be32_to_cpup(p);
+>  	dprintk("%s: multipath ds count %d\n", __func__, mp_count);
+> +	if (mp_count > NFS4_PNFS_MAX_MULTI_CNT) {
+> +		dprintk("%s: multipath count %u greater than supported maximum %d\n",
+> +			__func__, mp_count, NFS4_PNFS_MAX_MULTI_CNT);
+> +		goto out_err_drain_dsaddrs;
+> +	}
+> 
+>  	for (i = 0; i < mp_count; i++) {
+>  		/* multipath ds */
+>  		da = nfs4_decode_mp_ds_addr(net, &stream, gfp_flags);
+> -		if (da)
+> -			list_add_tail(&da->da_node, &dsaddrs);
+> +		if (!da)
+> +			break;
+> +		list_add_tail(&da->da_node, &dsaddrs);
+>  	}
+>  	if (list_empty(&dsaddrs)) {
+>  		dprintk("%s: no suitable DS addresses found\n",
+> diff --git a/include/linux/nfs4.h b/include/linux/nfs4.h
+> index d87be1f25273a..bfc30baa8159a 100644
+> --- a/include/linux/nfs4.h
+> +++ b/include/linux/nfs4.h
+> @@ -767,6 +767,9 @@ enum pnfs_block_extent_state {
+>  	PNFS_BLOCK_NONE_DATA		= 3,
+>  };
+> 
+> +/* Maximum NFSv4.1 pNFS multipath data-server address count */
+> +#define NFS4_PNFS_MAX_MULTI_CNT		256
 
-    hci_cmd_sync_dequeue(hdev, NULL, conn, NULL);
+In the original location, this had a comment saying where the 256 came
+from. Can you carry that over to here too, please?
 
-Since NULL != conn, the lookup in _hci_cmd_sync_lookup_entry() never
-matches, and the pending work item is not cancelled.
+Thanks,
+Anna
 
-Fix this by saving conn->conn_timeout into a local variable while the
-locks are still held, so the stale conn pointer is never dereferenced
-after unlock.
-
-This is the same class of bug as the one fixed by commit
-035c25007c9e ("Bluetooth: hci_sync: Fix UAF in
-le_read_features_complete") which addressed the identical pattern in a
-different function.
-
-Found by 0sec (https://0sec.ai) using automated source analysis.
-
-Fixes: c09b80be6ffc ("Bluetooth: hci_conn: Fix not waiting for HCI_EVT_LE_CIS_ESTABLISHED")
-Cc: stable@vger.kernel.org
-Reported-by: Doruk Tan Ozturk <doruk@0sec.ai>
-Closes: https://lore.kernel.org/linux-bluetooth/20260525162438.96881-1-doruk@0sec.ai/
-Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
----
-v2:
-  - fix commit reference title ("Fix UAF in" not "Fix UAF on")
-  - fix Fixes: tag title to match actual commit
-  - add Closes: tag per checkpatch
-
-Link: https://lore.kernel.org/linux-bluetooth/20260525162438.96881-1-doruk@0sec.ai/
-
- net/bluetooth/hci_sync.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index XXXXXXX..XXXXXXX 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -6700,6 +6700,7 @@ int hci_le_create_cis_sync(struct hci_dev *hdev)
- 	DEFINE_FLEX(struct hci_cp_le_create_cis, cmd, cis, num_cis, 0x1f);
- 	size_t aux_num_cis = 0;
- 	struct hci_conn *conn;
-+	u16 timeout = 0;
- 	u8 cig = BT_ISO_QOS_CIG_UNSET;
-
- 	/* The spec allows only one pending LE Create CIS command at a time. If
-@@ -6773,6 +6774,7 @@ int hci_le_create_cis_sync(struct hci_dev *hdev)
- 		set_bit(HCI_CONN_CREATE_CIS, &conn->flags);
- 		cis->acl_handle = cpu_to_le16(conn->parent->handle);
- 		cis->cis_handle = cpu_to_le16(conn->handle);
-+		timeout = conn->conn_timeout;
- 		aux_num_cis++;
-
- 		if (aux_num_cis >= cmd->num_cis)
-@@ -6791,7 +6793,7 @@ int hci_le_create_cis_sync(struct hci_dev *hdev)
- 	return __hci_cmd_sync_status_sk(hdev, HCI_OP_LE_CREATE_CIS,
- 					struct_size(cmd, cis, cmd->num_cis),
- 					cmd, HCI_EVT_LE_CIS_ESTABLISHED,
--					conn->conn_timeout, NULL);
-+					timeout, NULL);
- }
-
- int hci_le_remove_cig_sync(struct hci_dev *hdev, u8 handle)
---
-2.45.0
+> +
+>  /* on the wire size of a block layout extent */
+>  #define PNFS_BLOCK_EXTENT_SIZE \
+>  	(7 * sizeof(__be32) + NFS4_DEVICEID4_SIZE)
+> -- 
+> 2.53.0
 
