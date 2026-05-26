@@ -1,318 +1,250 @@
-Return-Path: <stable+bounces-254451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254450-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sMrPCnAgFmrLhwcAu9opvQ
-	(envelope-from <stable+bounces-254451-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 00:36:32 +0200
+	id +DnoDbYdFmoPhwcAu9opvQ
+	(envelope-from <stable+bounces-254450-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 00:24:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D424F5DD39C
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 00:36:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E8275DD2F0
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 00:24:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2AC1D303BB8F
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 22:36:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 266943031CEA
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 22:24:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59C8B3C819C;
-	Tue, 26 May 2026 22:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A7443C769B;
+	Tue, 26 May 2026 22:24:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="Wdu74+dj"
+	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="MZq1bC5t"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC7213C585C
-	for <stable@vger.kernel.org>; Tue, 26 May 2026 22:36:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7B33C5856
+	for <stable@vger.kernel.org>; Tue, 26 May 2026 22:24:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779834980; cv=none; b=Jf8HyrR2hp6QRUSzR9FekRPor858uM0zuWP8+WNyS0UV6LjAfV3w9cBwnhkYvNfRfnWtwBw85/nAVh2OCA0zW4AYDhRivTkgLcwUqB5mWS6/NpFN6ncgaKfoAnX6v2NxbT85gKB4BoG39t0nVj5kvvYl3dl/owhw800Zw9eTzu8=
+	t=1779834287; cv=none; b=f+fykPfQSTkOIkIqy2EViQB0HWR0sYz+Jeb8wddMh1G9T3Y5Y2dsj5bGnQgJglD8/RHioWTIRMFRiLP80A7MYO3JvPZJZi6c5EfpPRRdccTlb6fQ9mfGgugRPJPPWkUpQLM5Ap51eqtMb/bYirwy88gr7kCNrRmX7ZOMO6GRW5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779834980; c=relaxed/simple;
-	bh=qQGMf5Oja55h6Cw2oXwBePJIZxpj+DW+ZyPt7nOTD3w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VlqTD1t8cJRpgQvZLOfwDPLxlAk3gFozJrVoOtBZj0s7fBP51p9L5f3gsfn3SdQP1FUgdKuqqlovpYAAbt4MI6YON91ZueF5FNK6IWvXI22ispLaeHp+LA2j2qYIjf8Iup7acTosqEKTXovGhUgEDNRmcCnPKVOLbltjjmrdCxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=Wdu74+dj; arc=none smtp.client-ip=171.64.64.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:Content-Type:Cc:To:
-	Subject:Message-ID:Date:From:In-Reply-To:References:MIME-Version:Sender:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=NJqWELah5fN6kC7HlpvsVp3NB/5DJZ/YkbrusZMNXr8=; t=1779834978; x=1780698978; 
-	b=Wdu74+djM2wqYOJNutjl4obUDn74Gyo5iUXXss9ViM8Jx3f+h2DsiJsyYNgNOubvqCTs77e79sY
-	y4tmF0LpEw7fJ5M6mJ8PviMzwVq248YFGJcZS015ARFaGTB4r1i7jrKlUc7YW2wituIJoo3Pvqc/N
-	gq/wIswbI4b/CMA5Ki+4/Q0n4CuX9PgCBv/V5MJ2Pfu0bNYAmmBUXK2kEhdsobRCG4EwGAHbW8tif
-	XT27BmMyDq2PqmYTFIf3liTDOWjB72MOpu9lOL/PFkazUh59eyjBUc8YPcTrMzobJawpPvvuQ0cO+
-	uweMDdNTwaLiUmprgV7XUeBrKLAn25c6NeUg==;
-Received: from mail-yw1-f176.google.com ([209.85.128.176]:50644)
-	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.94.2)
-	(envelope-from <ouster@cs.stanford.edu>)
-	id 1wS062-00060t-Ce
-	for stable@vger.kernel.org; Tue, 26 May 2026 15:17:59 -0700
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-7c58e6eb2c8so109926707b3.1
-        for <stable@vger.kernel.org>; Tue, 26 May 2026 15:17:58 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+tA6QV+R0+9YqzRzAdWi3QJ0h8Ch2fhQd0m/xkCZhURoiDqoQ9mzleOOhev7Ei79ECHd0KxlM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAnwEdfMkpPaV3v0Zw4ytN8wS88f1TZ22yhjGxn8XIdkSjwHFS
-	iddhfUPfYXRL+vKPl6P7XgXqx9wJ0xZtWl7n8w2fwgIVgyVdjkVJ0k95jXJspN/R+MHPsL/DpJb
-	qQjWsOE4N13WZN29xxn2cS/l1hrf0JD0=
-X-Received: by 2002:a05:690c:b05:b0:799:198d:8c78 with SMTP id
- 00721157ae682-7d337dac2b7mr212869987b3.46.1779833877680; Tue, 26 May 2026
- 15:17:57 -0700 (PDT)
+	s=arc-20240116; t=1779834287; c=relaxed/simple;
+	bh=GxbQ8NIk4mgl61gh8KFDsnH5jMKPJyjLI5wJFoJcLLE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=jzBRTu3H5ftx790VL2J4N2ccZues+enjazCQdlEDG9s1YQvqiaxumaQjr/Hk5Pii0W+8pEC4XHUuta4ixJ23mNqPrJmxrb/jr6qbnHXTpBw9L+NzQaGuCFMJGIBLLXr4xss1exB10haTmAwAXThDDjBt309wZ3i2nSSYhAJHHRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=MZq1bC5t; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c8532ba6c95so1030161a12.0
+        for <stable@vger.kernel.org>; Tue, 26 May 2026 15:24:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1779834285; x=1780439085; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qZg3/Nrp/XSikTx+0njY7ovlfnqPSA3h4CFSyjzLU5Y=;
+        b=MZq1bC5tNXiGp3TbIA/cWPITDW7PrEBMxLE7q4RVQ3mjdRpAVHQtt9zxUgx2OkPsvo
+         XSjeqcPHo3Qwkszs7uUPxfCEuMykpHX0hbfxP82EqAWmQJIYsBEFY4HM5c44LptDLb56
+         23muriERM/yN8y9I5HfCBd8vsiev6txgivViGRntYepgXbIucmSeihpJsN7uEH/rxqHs
+         Wpj3p4eSv8cvx0SFv/T10SteGyGLZVVnquZ59NKfUWuxJisW3b+WLgztZofvWLNy8OZg
+         lwy+RAbU/rYgGGXBECIJ5myD1l68YgTqDJJKU6dxTMYl/pILFMNAqBhxw6TLH5zIx3nB
+         0YlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779834285; x=1780439085;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qZg3/Nrp/XSikTx+0njY7ovlfnqPSA3h4CFSyjzLU5Y=;
+        b=gNr5ItATL4OKZFqb2+o9l1Jbg7fDKtBMwXJMI+SmNDYvRivbkUVw/856pSz4LzjFcw
+         I+4Ejp7ucor4munH1pENpMgmExehoT9L5CI4m7GH4EOjWv1RjQO9wdjYKYEKq4CIiBHm
+         5eRNNc4nsxg39UktQ6tN5oOPVpTJPxM/2QoniYdsYH054UDGJqTJrFG7EbxxUCQlRjpq
+         4m5PLWH1Hxock7ojjhZYEO8uGWlJuTWWFEOk8zF1zaSoTCJXpSrQz/z50b/l/T3avg/p
+         16bxdsODAv4S8O69wSegIeZcjjEL8N8YZ29UnpuQQC31keU5T7eI3xnXNEza8slLhDSp
+         Qc4g==
+X-Forwarded-Encrypted: i=1; AFNElJ8+px8Vh4liagdyMAtnSH6W75t5/VocbjtRQWopx/uIdQ68TI8KIVM9EldDEzKhTivncRjX7V4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLWRBvqxvJj3MeZcPZTchQY1lJoinJf/YMRbKmGc69rPFD4Znm
+	murnWs92fM8PSKsuIXLqePTJHd2GfJsdkHmErSf2FfWg2E6ozmRxMTUqDfr+tyL98Cc=
+X-Gm-Gg: Acq92OEbt8cp65YKPGSlCNZulxyPeJdrjyCXDLQ9xtaaLMmAqogKLBp9FISkpbRT8hQ
+	DvLkj2apxTbnulqQmm/ZJbEEivmpV1wxRdykaMYtDTVho201X2veBTJ7P3QKqQFyACb/WAkWizo
+	ZbPgkXmgUkc7uXgUGWi8IhnteUMZJyMGSCsIMkz5PGj/1Tyyjv8c5nyFXk13IpGFbQFyfuauuiN
+	SNP1CF8tnb04rDF+sNxoOlo0SywXpYybn8pE6AIqR+JiVLYslvi/TcqSWxFDjDoTX3qMADGYTtc
+	63b31MQk383Nnt5s5i8BIvivnjG13MjeRuMsEM9miccrY/koeqfyKGEYY56OpMWgK0V6MTg5zYA
+	F5QvRJJdGdtgeQpAyngzq6UETqAwqD2p+MJ1yg3BCJpp5scRWR/5dPKFd7kJ+9TzWGd9En3/5v2
+	A1QRKiZJg9Zo8OrlYQ075p/xJO
+X-Received: by 2002:a05:6a20:2449:b0:398:b346:b13 with SMTP id adf61e73a8af0-3b328cfe3ffmr19991485637.16.1779834285148;
+        Tue, 26 May 2026 15:24:45 -0700 (PDT)
+Received: from localhost ([2001:569:58a0:da00:a5c8:c4ce:f7c1:40c1])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c852028fe99sm11268978a12.4.2026.05.26.15.24.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 26 May 2026 15:24:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260512181953.1689-1-ouster@cs.stanford.edu> <20260513100732.499e3f49@pumpkin>
- <CAGXJAmzK+56DHnitD1g263mPSgWg9jZyq2z6R+vd8bV_c4ZbuQ@mail.gmail.com>
- <20260513214927.17a8dd45@pumpkin> <CAGXJAmx4LaVv=QJ=SanvF6iayJ8+SiLyUqht+jMxouXPX=54-g@mail.gmail.com>
- <20260514110112.12bdf5ff@pumpkin> <30dc284c-8cc0-4bae-b7b0-99d6d71a66e3@intel.com>
- <e1ce1387-ae6b-4b43-b5d8-a1141c4a4f1c@redhat.com>
-In-Reply-To: <e1ce1387-ae6b-4b43-b5d8-a1141c4a4f1c@redhat.com>
-From: John Ousterhout <ouster@cs.stanford.edu>
-Date: Tue, 26 May 2026 15:17:20 -0700
-X-Gmail-Original-Message-ID: <CAGXJAmwa4OQJV1O+Zn8KYBH9wJEVrqefuJQ6NRjbBTmLqF4vwA@mail.gmail.com>
-X-Gm-Features: AVHnY4InlTCmtsr01wWr_JUtpPbh3ksqqJ8UpLXEL8kdVSMNoGuSjEu4uz-pvUU
-Message-ID: <CAGXJAmwa4OQJV1O+Zn8KYBH9wJEVrqefuJQ6NRjbBTmLqF4vwA@mail.gmail.com>
-Subject: Re: [Intel-wired-lan] [PATCH net v3] ice: fix packet corruption due
- to extraneous page flip
-To: Petr Oros <poros@redhat.com>
-Cc: Jacob Keller <jacob.e.keller@intel.com>, David Laight <david.laight.linux@gmail.com>, 
-	stable@vger.kernel.org, anthony.l.nguyen@intel.com, 
-	intel-wired-lan@lists.osuosl.org, przemyslaw.kitszel@intel.com, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Score: -1.0
-X-Scan-Signature: f381877c06e33db9b8e2eda11595152b
-X-Spamd-Result: default: False [1.14 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 26 May 2026 18:24:44 -0400
+Message-Id: <DISYLID6QGFY.1HTQOMHVLTRWS@etsalapatis.com>
+From: "Emil Tsalapatis" <emil@etsalapatis.com>
+To: "Dawei Feng" <dawei.feng@seu.edu.cn>, <martin.lau@linux.dev>
+Cc: <ast@kernel.org>, <daniel@iogearbox.net>, <andrii@kernel.org>,
+ <eddyz87@gmail.com>, <memxor@gmail.com>, <song@kernel.org>,
+ <yonghong.song@linux.dev>, <jolsa@kernel.org>, <kees@kernel.org>,
+ <joel.granados@kernel.org>, <bpf@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+ <jianhao.xu@seu.edu.cn>, <stable@vger.kernel.org>, "Zilin Guan"
+ <zilin@seu.edu.cn>
+Subject: Re: [PATCH 2/2] bpf: cgroup: Use kvfree instead of kfree in
+ __cgroup_bpf_run_filter_sysctl
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260526131035.1312864-1-dawei.feng@seu.edu.cn>
+ <20260526131035.1312864-3-dawei.feng@seu.edu.cn>
+In-Reply-To: <20260526131035.1312864-3-dawei.feng@seu.edu.cn>
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[cs.stanford.edu:s=cs2308];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[etsalapatis-com.20251104.gappssmtp.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[cs.stanford.edu : SPF not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[intel.com,gmail.com,vger.kernel.org,lists.osuosl.org];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254450-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[cs.stanford.edu:-];
-	TAGGED_FROM(0.00)[bounces-254451-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[etsalapatis.com];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,iogearbox.net,gmail.com,linux.dev,vger.kernel.org,seu.edu.cn];
+	DKIM_TRACE(0.00)[etsalapatis-com.20251104.gappssmtp.com:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[ouster@cs.stanford.edu,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.812];
+	FROM_NEQ_ENVFROM(0.00)[emil@etsalapatis.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-0.987];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,stanford.edu:email]
-X-Rspamd-Queue-Id: D424F5DD39C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[etsalapatis-com.20251104.gappssmtp.com:dkim,seu.edu.cn:email,etsalapatis.com:mid,etsalapatis.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 8E8275DD2F0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, May 26, 2026 at 5:47=E2=80=AFAM Petr Oros <poros@redhat.com> wrote:
+On Tue May 26, 2026 at 9:10 AM EDT, Dawei Feng wrote:
+> proc_sys_call_handler() allocates its temporary sysctl buffer with
+> kvzalloc() and passes it to __cgroup_bpf_run_filter_sysctl(). Since
+> kvzalloc() may fall back to vmalloc() for large allocations, freeing
+> that buffer with kfree() is wrong and can corrupt memory.
 >
+> Use kvfree() to safely handle both kmalloc and kvzalloc()/vmalloc
+> allocations.
 >
-> On 5/14/26 18:43, Jacob Keller wrote:
-> > On 5/14/2026 3:01 AM, David Laight wrote:
-> >> On Wed, 13 May 2026 21:47:11 -0700
-> >> John Ousterhout <ouster@cs.stanford.edu> wrote:
-> >>
-> >>> On Wed, May 13, 2026 at 1:49=E2=80=AFPM David Laight
-> >>> <david.laight.linux@gmail.com> wrote:
-> >>>> On Wed, 13 May 2026 09:28:40 -0700
-> >>>> John Ousterhout <ouster@cs.stanford.edu> wrote:
-> >>>>
-> >>>>> On Wed, May 13, 2026 at 2:07=E2=80=AFAM David Laight
-> >>>>> <david.laight.linux@gmail.com> wrote:
-> >>>>>> On Tue, 12 May 2026 11:19:53 -0700
-> >>>>>> John Ousterhout <ouster@cs.stanford.edu> wrote:
-> >>>>>>
-> >>>>>>> Consider the following sequence of events:
-> >>>>>>> * The bottom half of a buffer page is filled with data from
-> >>>>>>>    packet A. The page has a net reference count (reference count
-> >>>>>>>    - bias) of 1. The page is returned to the NIC, flipped to
-> >>>>>>>    use the top half.
-> >>>>>>> * Before the reference on the page is released, the NIC returns
-> >>>>>>>    the page with no data in it ('size' is zero in ice_clean_rx_ir=
-q).
-> >>>>>>>    In this case the bias does not get decremented. The page still
-> >>>>>>>    has a net reference count of 1, so it gets returned to the NIC=
-.
-> >>>>>>>    However, ice_put_rx_mbuf flipped the page so that the bottom
-> >>>>>>>    half is active.
-> >>>>>>> * If the NIC stores another packet in the page before packet A
-> >>>>>>>    has released its reference, the data in packet A will be
-> >>>>>>>    overwritten with data from the new packet.
-> >>>>>>> * Unfortunately zero-length buffers occur frequently: they seem
-> >>>>>>>    to occur whenever a packet uses every available byte in a
-> >>>>>>>    buffer, ending precisely at the end of the buffer. When this
-> >>>>>>>    happens the NIC seems to generate an extra zero-length
-> >>>>>>>    buffer.
-> >>>>>>> The fix is for ice_put_rx_mbuf not to flip pages that have a
-> >>>>>>> size of 0.
-> >>>>>> How is this different from packet B (in the top half) being
-> >>>>>> freed before packet A (in the bottom half)?
-> >>>>> I'm not sure exactly what you're referring to here. Are you asking
-> >>>>> about a situation where both halves of the page get filled with pac=
-ket
-> >>>>> data and then the second half to be filled is the first to be freed=
-? I
-> >>>>> believe that the ICE driver abandons a page if both halves are ever
-> >>>>> occupied simultaneously; the page will be returned to the system on=
-ce
-> >>>>> both halves have dropped their references. Thus it doesn't matter
-> >>>>> which half is freed first.
-> >>>> That is what I was thinking, seems like the logic is over complicate=
-d.
-> >>>>
-> >>>> If you need to put 4k pages into some kind of iommu rather than 2k b=
-uffers
-> >>>> (to contain 1536 byte ethernet packets) then I'd have thought you'd
-> >>>> initially put both halves into adjacent tx ring entries.
-> >>>> If a rx buffer is discarded (eg a zero length fragment or a CRC erro=
-r,
-> >>>> or even 'copy break' for short packets) then, as an optimisation,
-> >>>> you could reuse the buffer for another receive.
-> >>>> The same could be done if the page is freed by an application.
-> >>>>
-> >>>> However it sounds like it doesn't use the 2nd half until the first
-> >>>> completes - otherwise you'd never 'flip' to make the other half
-> >>>> active.
-> >>>>
-> >>>> Thinks...
-> >>>> By only putting half of each 4k 'page' into the rx ring the code
-> >>>> will usually save (expensive) iommu setup in the (probably) normal
-> >>>> case where the buffers are freed 'reasonably quickly'.
-> >>>> But that really requires a 'free/with_nic/busy' state for each half
-> >>>> rather then trying to guess from a reference count.
-> >>>>
-> >>>> But if the low-level code is recycling the rx buffer (for any reason=
-)
-> >>>> it wants to use the same buffer.
-> >>>>
-> >>>> The ethernet driver I wrote (a long time ago, early 90s) allocated
-> >>>> 64k as 128 512byte buffers and did an aligned word-sized copy of
-> >>>> every receive frame - most frames were in contiguous memory.
-> >>>> The simplicity of it made up for the cost of the copy, especially
-> >>>> since that was an iommu system.
-> >>> I'm not here to defend the logic (and it has been replaced with
-> >>> something that is probably simpler and more efficient); I'm just
-> >>> suggesting a bug fix for the stable releases that still have this
-> >>> logic.
-> > Right. We definitely want a fix for the possible data corruption in
-> > stable. Ideally one as simple as possible.
-> >
-> >> You've forced me to look at all of the function :-)
-> >> I've noticed a few things:
-> >> - If ice_add_xdp_frag() fails (because there are too many fragments)
-> >>    then the rest of the fragments are left in the tx ring (instead
-> >>    of being discarded) - so are likely to be treated as a full packet
-> >>    later on.
-> >> - Frames with status errors (crc, framing etc) are discarded after
-> >>    the skb is built - surely that should happen before the xdp 'progra=
-m'
-> >>    is called.
-> >> - If the remote system send a very very long frame (traditionally the =
-PHY's
-> >>    'jabber detect' didn't always work) you can end up with all of the =
-rx
-> >>    ring being full of a single partial packet.
-> >>
-> >> I think you need to avoid calling ice_add_xdp_frag() when 'size =3D=3D=
- 0'.
-> >> Then in ice_put_rx_mbuf() unconditionally call ice_put_rx_buf() for
-> >> zero length fragments.
-> >> The comment would be 'zero length fragments can always be reused'.
-> >>
-> > That seems correct.
-> >
-> >> The zero length fragments almost certainly exist because the mac hardw=
-are
-> >> advances the the new buffer expecting more data - but only gets the
-> >> 4 byte CRC. So the zero length buffer contains the receive status.
-> >>
-> > That matches my understanding.
-> Hi John,
+> The bug was first flagged by an experimental analysis tool we are
+> developing for kernel memory-management bugs while analyzing
+> v6.13-rc1. The tool is still under development and is not yet publicly
+> available. Manual inspection confirms that the bug is still
+> present in v7.1-rc5.
 >
-> I have been looking at the same area in the pre-page-pool ice code and
-> I want to ask whether you observed memory growth during your Homa runs
-> that exposed the corruption, because in my testing the same bias mismatch
-> also produces a slow page leak that your v3 does not close.
+> Reproduced the bug based on v7.1-rc4 in a QEMU x86_64 guest booted with
+> KASAN and CONFIG_FAILSLAB enabled. The reproducer confines failslab
+> injections to the proc_sys_call_handler() range, uses
+> stacktrace-depth=3D32, and injects fail-nth=3D1 while writing 8191 bytes =
+to
+> /proc/sys/kernel/domainname from a task in the target cgroup. On the
+> patch1-only kernel, fail-nth=3D1 triggered the fault:
 >
-> Short version of the leak path, in the PASS (!CONSUMED) branch:
+>   BUG: unable to handle page fault for address: ffffeb0200024d48
+>   #PF: supervisor read access in kernel mode
+>   #PF: error_code(0x0000) - not-present page
+>   PGD 0 P4D 0
+>   Oops: Oops: 0000  SMP KASAN NOPTI
+>   CPU: 2 UID: 0 PID: 209 Comm: repro_proc_sys_ Not tainted 7.1.0-rc4-0068=
+6-g97625979a5d4  PREEMPT(lazy)
+>   Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01=
+/2014
+>   RIP: 0010:kfree+0x6e/0x510
+>   Code: 80 48 01 ef 0f 82 ae 04 00 00 48 c7 c0 00 00 00 80 48 2b 05 04 1b=
+ 23 04 48 01 c7 48 c1 ef 0c 48 c1 e7 06 48 03 3d e2 1a 23 04 <4c> 8b 57 08 =
+4c 89 d0 83 e0 01 48 83 e8 01 49 09 c2 49 >
+>   RSP: 0018:ffff888108de7ab8 EFLAGS: 00010282
+>   RAX: 0000777f80000000 RBX: ffff88815af398c0 RCX: 0000000000000080
+>   RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffeb0200024d40
+>   RBP: ffffc90000935000 R08: 0000000000000001 R09: 0000000000000001
+>   R10: ffffffff86b4b297 R11: 0000000000000000 R12: ffffffff819b71fd
+>   R13: 0000000000000001 R14: ffff888108de7cc0 R15: 0000000000000000
+>   FS:  00007f8988cc2b80(0000) GS:ffff8881d3256000(0000) knlGS:00000000000=
+00000
+>   CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>   CR2: ffffeb0200024d48 CR3: 0000000101d6b000 CR4: 0000000000350ef0
+>   Call Trace:
+>    <TASK>
+>    ? __cgroup_bpf_run_filter_sysctl+0x626/0xc30
+>    __cgroup_bpf_run_filter_sysctl+0x74d/0xc30
+>    ? __pfx___cgroup_bpf_run_filter_sysctl+0x10/0x10
+>    ? srso_return_thunk+0x5/0x5f
+>    ? __kvmalloc_node_noprof+0x345/0x870
+>    ? proc_sys_call_handler+0x250/0x480
+>    ? srso_return_thunk+0x5/0x5f
+>    proc_sys_call_handler+0x3a2/0x480
+>    ? __pfx_proc_sys_call_handler+0x10/0x10
+>    ? srso_return_thunk+0x5/0x5f
+>    ? selinux_file_permission+0x39f/0x500
+>    ? srso_return_thunk+0x5/0x5f
+>    ? lock_is_held_type+0x9e/0x120
+>    vfs_write+0x98e/0x1000
+>    ? srso_return_thunk+0x5/0x5f
+>    ? kmem_cache_free+0x308/0x550
+>    ? __pfx_vfs_write+0x10/0x10
+>    ? __pfx_do_sys_openat2+0x10/0x10
+>    ksys_write+0xf2/0x1d0
+>    ? __pfx_ksys_write+0x10/0x10
+>    ? srso_return_thunk+0x5/0x5f
+>    ? trace_irq_enable.constprop.0+0x110/0x140
+>    do_syscall_64+0x115/0x690
+>    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>    RIP: 0033:0x7f8988dd8907
+>    Code: 10 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b7 0f 1f 00 f3 0f 1=
+e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8  01 00 00 00 0f 05 <48> 3d 00 f=
+0 ff ff 77 51 c3 48 83 ec 28 48 89 54 24 18 >
+>    RSP: 002b:00007fff4069b878 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+>    RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007f8988dd8907
+>    RDX: 0000000000001fff RSI: 0000564f97ef46b0 RDI: 0000000000000005
+>    RBP: 0000564f97ef46b0 R08: 0000000000000000 R09: 0000564f97ef46b0
+>    R10: 0000000000000004 R11: 0000000000000246 R12: 0000000000000000
+>    R13: 0000000000001fff R14: 0000000000000005 R15: 0000000000000001
+>    </TASK>
+> With this fix applied, rerunning the reproducer with the same
+> fail-nth=3D1 setup yields no corresponding Oops reports.
 >
->    1. ice_get_rx_buf(size=3D0) does pagecnt_bias-- unconditionally
->       (added by commit ef68094cb09e ("ice: Fix kernel panic due to page
->       refcount underflow") as the fix for the matching panic).
->    2. ice_add_xdp_frag() then returns 0 for size=3D=3D0, so that page is
->       never attached to the xdp_buff/SKB. Nobody downstream will ever
->       call put_page() to balance the pagecnt_bias-- from step 1.
->    3. Your v3 in ice_put_rx_mbuf() correctly skips the page flip for
->       size=3D=3D0, which closes the corruption window. But it does not
->       restore pagecnt_bias for that zero size buffer, so the page is
->       handed back to ice_reuse_rx_page() with a permanent deficit of 1.
->    4. On the next reuse of that page with size > 0, pagecnt_bias drops
->       again. ice_can_reuse_rx_page() now sees pgcnt - bias =3D=3D 2 and
->       drains via __page_frag_cache_drain(page, pagecnt_bias). Because
->       pagecnt_bias is one too low, the drain undershoots by 1: page
->       refcount stays at 2 instead of 1.
->    5. The SKB eventually releases its reference (refcount -> 1), but
->       nothing ever brings it to 0. The page is leaked.
->       ice_alloc_rx_bufs() just allocates a fresh page to fill the slot.
+> Fixes: 4508943794ef ("proc: use kvzalloc for our kernel buffer")
+> Cc: stable@vger.kernel.org
 >
-> At the zero size frequency you mentioned (thousands per second), this
-> adds up to roughly MB/s of leaked page cache, which Jaroslav Pulchart
-> originally reported against 6.13.y on NUMA nodes and which motivated
-> the libeth/page_pool conversion in mainline. So in stable trees the
-> leak side of this bug is still live.
->
-> Two questions:
->
->    - Did you monitor RSS / page allocator stats over the duration of
->      your Homa runs? If you did and did not see growth, I would like
->      to understand what is different about your setup, because by my
->      reading of the code the leak should fire whenever both halves of
->      a page end up in SKBs simultaneously and one of them carried a
->      zero size descriptor along the way.
+> Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+> Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
+> ---
 
-I have not monitored the page allocator stats. I'm not sure I know the
-best way to do this; I tried slabtop but it didn't seem to show
-significant growth in memory usage.
+Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
 
->    - If your focus was specifically the corruption, would you be open
->      to extending v3 (or replacing it) with a fix that also restores
->      pagecnt_bias for the size=3D=3D0 case? The minimal extension is one
->      extra branch in ice_put_rx_mbuf:
+>  kernel/bpf/cgroup.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
->          if (verdict !=3D ICE_XDP_CONSUMED && size !=3D 0)
->                  ice_rx_buf_adjust_pg_offset(buf, xdp->frame_sz);
->          else
->                  buf->pagecnt_bias++;
->
->      which restores bias on every path where the page is not actually
->      going out to an SKB. (I have a slightly different variant that
->      tracks has_data in struct ice_rx_buf to also handle the broken
->      positional 'i <=3D xdp_frags' counter in the CONSUMED path, where
->      zero size descriptors in the middle of a frame steal bias++ slots
->      from real fragments. Happy to share it if useful.)
+> diff --git a/kernel/bpf/cgroup.c b/kernel/bpf/cgroup.c
+> index 8715a014c21d..f4eefdacd453 100644
+> --- a/kernel/bpf/cgroup.c
+> +++ b/kernel/bpf/cgroup.c
+> @@ -1936,7 +1936,7 @@ int __cgroup_bpf_run_filter_sysctl(struct ctl_table=
+_header *head,
+>  	kfree(ctx.cur_val);
+> =20
+>  	if (!ret && ctx.new_updated) {
+> -		kfree(*buf);
+> +		kvfree(*buf);
+>  		*buf =3D ctx.new_val;
+>  		*pcount =3D ctx.new_len;
+>  	} else {
 
-My understanding of the ice driver is extremely limited. You may be
-right about the proposed fix, but I don't currently know enough to get
-comfortable with it. I think it might be better to separate your
-change into a different patch, which can be shepherded by people with
-appropriate understanding.
-
--John-
 
