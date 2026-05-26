@@ -1,240 +1,197 @@
-Return-Path: <stable+bounces-254445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254446-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yGI+HiMEFmrNgwcAu9opvQ
-	(envelope-from <stable+bounces-254445-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 22:35:47 +0200
+	id ODBcIuwHFmpNhAcAu9opvQ
+	(envelope-from <stable+bounces-254446-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 22:51:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C0715DC5D6
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 22:35:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01DBA5DC795
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 22:51:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8C4CD300BC8D
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 20:35:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 98818304B104
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 20:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CFE63BF69D;
-	Tue, 26 May 2026 20:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A45B37DEAD;
+	Tue, 26 May 2026 20:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="CS3lFdHY"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PwaHQ6Hg"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f74.google.com (mail-ot1-f74.google.com [209.85.210.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF003BFE24;
-	Tue, 26 May 2026 20:35:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A982036897F
+	for <stable@vger.kernel.org>; Tue, 26 May 2026 20:50:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779827738; cv=none; b=Qnb4ep3JFv260//2zkVT8LV0ly/a6wffvGp7Yc2JQ3n4zqsFY89FOk4hJS6hA+rWOlkL/8i+hN7jkIj29ygLDSjqGPw+48Lo6QNYsR1c1jtbeVXp24MpYKUeMseuldoggHGlqhLGnJw7edwTr5dZODEPBngzsjrrftjcyazS9bQ=
+	t=1779828657; cv=none; b=tFwtGiNX4zsVuhy7yBlq5kgnliAXJXRq0SYmvoMoZBA9V91YePuN9tV/5c9SPhAqUKOprwid5jN4/g6LcPvnCYXNN36MEWODqPXD4V6bEE7FfyN+dDbMENZabDAcnwXxJfrsXldMBzoJ/hVPllsDfMvlNptQeFkjLgszJrc3Ajo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779827738; c=relaxed/simple;
-	bh=zeQfcwiO7GbGf+4UeIbYXdwwQ4GwxpHeV4sjlDCVrtw=;
-	h=Date:To:From:Subject:Message-Id; b=UBOxw+NcxY2o8AafuOJrKH23t9guqB8GKNcSQfFGxqpScY8PHIWC7+P737ePY+bfi7H6TpckJw4kTKAEZRGDrmSoWbeKy9fug/2PY+SwRhWj462Ggu96pZqSYOfOCh/1lTrTsK+4pMrqdCAbOAaGLtFvHtT7M+1/RQBojL1xWy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=CS3lFdHY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBD231F000E9;
-	Tue, 26 May 2026 20:35:32 +0000 (UTC)
+	s=arc-20240116; t=1779828657; c=relaxed/simple;
+	bh=0TYW5BqkkS32o7ET9R9aBrP4LiKehhAcU+bX+Vk+Avs=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=hry/9ucVn91mUxXe2x2OxFQqy0XdexArwULXE5CKSNFF/xML0At4+QLpGwLvHEj5EaGtNgvSgey7snXVjO4Tvq1oYPnCjYsPjKsSe87G9KJ4Nr6BoK+Vmhc0M2u0jGOffJarhcIQrKGaPUPuXcGBPu3Pw+JVu3MXIRGNck2UcYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--avagin.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PwaHQ6Hg; arc=none smtp.client-ip=209.85.210.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--avagin.bounces.google.com
+Received: by mail-ot1-f74.google.com with SMTP id 46e09a7af769-7e3a338673eso23654816a34.0
+        for <stable@vger.kernel.org>; Tue, 26 May 2026 13:50:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1779827733;
-	bh=NI6Cevn4t5LfSit16kYqKoentdpyGeg/mvaYnNzj5b0=;
-	h=Date:To:From:Subject;
-	b=CS3lFdHY4eNzECPJkRRYOcof1R0NlrOw/n0oXgqGfmWcBQQ4HtYxyTz1DEoZNAgH+
-	 3tpbYOol4C1ATBP7ZDdQqss+ilnveb+ZGZpZdbKISM3PsqLFnXIX40b/OxY69GpyLI
-	 M/u/aFrh+8LB6Ta7yguJ7L8Dkn4JBw9XbWnHwdtw=
-Date: Tue, 26 May 2026 13:35:32 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,heming.zhao@suse.com,gechangwei@live.cn,rollkingzzc@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + ocfs2-reject-oversized-group-bitmap-descriptors.patch added to mm-nonmm-unstable branch
-Message-Id: <20260526203532.DBD231F000E9@smtp.kernel.org>
+        d=google.com; s=20251104; t=1779828655; x=1780433455; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=g4JLWLHFZ4VAwkmrRbZrIwjkAWpOIB54DvklYIirz08=;
+        b=PwaHQ6HgLQblx6ZEhpc8ttn2BlpmqMaMPhFbPIG+9FGZePZCBlKRJezbHNUgvuI9Mh
+         80rC8CgMNpdwC7jKmc59PwxWGXe8fftSd5BrL5sJbC8I7Nl/mEm0kGTJ/YbEpeXHLnB1
+         bwlVX55pHQH73y+rRrYwz4hV9cglLTOzkwed/5qELqqq0XLDEvm/S+Qb9GtJjIqL5LFs
+         aLSX4vXDLtXmfRxlVY5xbUuiKJBgVj/g1nnqvMYPbgDrhSCueljr30s7f3SdqKEzn4+d
+         kswZR7tiBubh+C3DGbz6Xx/yVY9wrf63XP+lxCffXfsFc2cFkYnKJvGGcFnamrqjfSM8
+         LM8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779828655; x=1780433455;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=g4JLWLHFZ4VAwkmrRbZrIwjkAWpOIB54DvklYIirz08=;
+        b=ibfEUNvKAlUt200ucVJjqkKcP8ok+G9YYErVPXeXtDsO5VcQrdjEFVtiDfSVK1D0E0
+         nIzit2iO2RMN4nygZYf7sD5Z4EgF+AHZQrWW9/6p7HQaWD0z+c4lZWiTv9ebq4gCOuev
+         1tZ8vbQcO6vyeNkV6J0jD3mDAoPAI/9Vyf+XnuL5GFc9OT8VFTEAqEDlEoqcbVn5WR/o
+         z4i1vbMr2mw89Cj14gowTJMAhrBQvqIJ/41j0IFkjRe5q8RnwpgLJSE68pOAAoYkqRiB
+         E2MH98prPbxobbvJdJYhdTwM8EWlRblfnRNkyzvS6DO8dd8+51k3LY5KByDg0kTtjFc6
+         Wg2A==
+X-Forwarded-Encrypted: i=1; AFNElJ92hCl+x5AnZVgfizM78fzOrAq8sBJtiFK+yn+GAX5RCIcx3I8g2eJp2OQyWIftse/KTmIjZmk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxcLPYBNvRPoRLg4IzYJD/eMGuuvZWXfxbp5NRq1cIwOXqcIJgg
+	oI3+5P+DwUx8h7xVXkReICYUtwWED14zpU13w9zbqx6GKj3fqSrLfzY7bm3tLwBo5+nPt7rCidL
+	igPNILQ==
+X-Received: from ilfl18.prod.google.com ([2002:a92:2812:0:b0:500:25fd:8e65])
+ (user=avagin job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6820:16ac:b0:69d:8cf6:2e5a
+ with SMTP id 006d021491bc7-69d8cf635acmr8341465eaf.23.1779828654411; Tue, 26
+ May 2026 13:50:54 -0700 (PDT)
+Date: Tue, 26 May 2026 20:50:43 +0000
+In-Reply-To: <20260526205047.3339490-1-avagin@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+Mime-Version: 1.0
+References: <20260526205047.3339490-1-avagin@google.com>
+X-Mailer: git-send-email 2.54.0.746.g67dd491aae-goog
+Message-ID: <20260526205047.3339490-2-avagin@google.com>
+Subject: [PATCH 1/5] Revert "x86/fpu: Refine and simplify the magic number
+ check during signal return"
+From: Andrei Vagin <avagin@google.com>
+To: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>
+Cc: linux-kernel@vger.kernel.org, criu@lists.linux.dev, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Andrei Vagin <avagin@google.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	"Chang S. Bae" <chang.seok.bae@intel.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	MID_CONTAINS_FROM(1.00)[];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254445-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-254446-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,huawei.com,fasheh.com,oracle.com,linux.alibaba.com,evilplan.org,suse.com,live.cn,gmail.com,linux-foundation.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_HAS_DN(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email]
-X-Rspamd-Queue-Id: 6C0715DC5D6
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[avagin@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-0.995];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email]
+X-Rspamd-Queue-Id: 01DBA5DC795
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+This reverts commit dc8aa31a7ac2 ("x86/fpu: Refine and simplify the
+magic number check during signal return").
 
-The patch titled
-     Subject: ocfs2: reject oversized group bitmap descriptors
-has been added to the -mm mm-nonmm-unstable branch.  Its filename is
-     ocfs2-reject-oversized-group-bitmap-descriptors.patch
+The reverted commit broke applications that construct signal frames in
+userspace (such as CRIU and gVisor) if the frame's xstate size is
+smaller than the kernel's fpstate->user_size.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/ocfs2-reject-oversized-group-bitmap-descriptors.patch
+Furthermore, this introduces a critical issue for checkpoint/restore
+tools like CRIU. If a process is checkpointed while inside a signal
+handler, its stack contains a signal frame formatted according to the
+source host's xstate capabilities.  If that process is later restored on
+a destination host with larger xstate capabilities (e.g., a newer CPU
+with more features enabled, resulting in a larger fpstate->user_size),
+the kernel will look for FP_XSTATE_MAGIC2 at the destination host's
+larger user_size offset instead of the offset encoded in the frame's
+fx_sw->xstate_size.  This causes the magic2 check to fail, forcing
+sigreturn to silently fall back to "FX-only" mode. Upon return from the
+signal handler, the process's extended state is reset to initial values
+instead of being restored, leading to silent data corruption.
 
-This patch will later appear in the mm-nonmm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+The original commit cited commit d877550eaf2d ("x86/fpu: Stop
+relying on userspace for info to fault in xsave buffer") as
+justification to stop relying on userspace for the magic number check.
+However, these two changes are fundamentally different. The last one
+only changed how much memory the kernel ensures is paged-in before
+running XRSTOR to prevent an infinite loop. It did not change the signal
+frame format or how the layout is validated.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+Reverting this change restores the use of fx_sw->xstate_size for
+locating magic2 and restores the necessary sanity checks, ensuring that
+the signal frame remains self-describing and portable.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Zhang Cen <rollkingzzc@gmail.com>
-Subject: ocfs2: reject oversized group bitmap descriptors
-Date: Sun, 24 May 2026 19:12:48 +0800
-
-ocfs2_validate_gd_parent() only bounds bg_bits against the parent
-allocator's chain geometry.  A malicious descriptor can still claim a
-bg_size/bg_bits pair that exceeds the bitmap bytes that physically fit in
-the group descriptor block, so later bitmap scans and bit updates can run
-past bg_bitmap.
-
-Add a physical-cap check based on ocfs2_group_bitmap_size() for the parent
-allocator type and reject descriptors whose bg_size or bg_bits exceed that
-capacity.  Keep the existing chain geometry check so both the on-disk
-bitmap layout and the allocator metadata must agree before the descriptor
-is used.
-
-Validation reproduced this kernel report:
-KASAN use-after-free in _find_next_bit+0x7f/0xc0
-Read of size 8
-Call trace:
-  dump_stack_lvl+0x66/0xa0 (?:?)
-  print_report+0xd0/0x630 (?:?)
-  _find_next_bit+0x7f/0xc0 (?:?)
-  srso_alias_return_thunk+0x5/0xfbef5 (?:?)
-  __virt_addr_valid+0x188/0x2f0 (?:?)
-  kasan_report+0xe4/0x120 (?:?)
-  ocfs2_find_max_contig_free_bits+0x35/0x70 (fs/ocfs2/suballoc.c:1375)
-  ocfs2_block_group_set_bits+0x472/0x4b0 (fs/ocfs2/suballoc.c:1457)
-  ocfs2_cluster_group_search+0x16b/0x440 (fs/ocfs2/suballoc.c:86)
-  ocfs2_bg_discontig_fix_result+0x1ef/0x230 (fs/ocfs2/suballoc.c:1786)
-  ocfs2_search_chain+0x8f8/0x10a0 (fs/ocfs2/suballoc.c:1886)
-  get_page_from_freelist+0x70e/0x2370 (?:?)
-  lock_release+0xc6/0x290 (?:?)
-  do_raw_spin_unlock+0x9a/0x100 (?:?)
-  kasan_unpoison+0x27/0x60 (?:?)
-  __bfs+0x147/0x240 (?:?)
-  get_page_from_freelist+0x83d/0x2370 (?:?)
-  ocfs2_claim_suballoc_bits+0x38c/0xe70 (fs/ocfs2/suballoc.c:96)
-  sched_domains_numa_masks_clear+0x70/0xd0 (?:?)
-  check_irq_usage+0xe8/0xb70 (?:?)
-  __ocfs2_claim_clusters+0x18d/0x4c0 (fs/ocfs2/suballoc.c:2497)
-  check_path+0x24/0x50 (?:?)
-  rcu_is_watching+0x20/0x50 (?:?)
-  check_prev_add+0xfd/0xd00 (?:?)
-  ocfs2_add_clusters_in_btree+0x17d/0x810 (fs/ocfs2/suballoc.c:?)
-  __folio_batch_add_and_move+0x1f5/0x3d0 (?:?)
-  ocfs2_add_inode_data+0xd9/0x120 (fs/ocfs2/suballoc.c:?)
-  filemap_add_folio+0x105/0x1f0 (?:?)
-  ocfs2_write_begin_nolock+0x29f7/0x2f80 (fs/ocfs2/suballoc.c:3043)
-  ocfs2_read_inode_block+0xb5/0x110 (fs/ocfs2/suballoc.c:?)
-  down_write+0xf5/0x180 (?:?)
-  ocfs2_write_begin+0x180/0x240 (fs/ocfs2/suballoc.c:?)
-  __mark_inode_dirty+0x758/0x9a0 (?:?)
-  inode_to_bdi+0x41/0x90 (?:?)
-  balance_dirty_pages_ratelimited_flags+0xf8/0x1d0 (?:?)
-  generic_perform_write+0x252/0x440 (?:?)
-  mnt_put_write_access_file+0x16/0x70 (?:?)
-  file_update_time_flags+0xe4/0x200 (?:?)
-  ocfs2_file_write_iter+0x80a/0x1320 (fs/ocfs2/suballoc.c:?)
-  lock_acquire+0x184/0x2f0 (?:?)
-  ksys_write+0xd2/0x170 (?:?)
-  apparmor_file_permission+0xf5/0x310 (?:?)
-  read_zero+0x8d/0x140 (?:?)
-  lock_is_held_type+0x8f/0x100 (?:?)
-
-Link: https://lore.kernel.org/20260524111248.1429884-1-rollkingzzc@gmail.com
-Fixes: ccd979bdbce9 ("[PATCH] OCFS2: The Second Oracle Cluster Filesystem")
-Assisted-by: Codex:gpt-5.5
-Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Acked-by: Chang S. Bae <chang.seok.bae@intel.com>
+Fixes: dc8aa31a7ac2 ("x86/fpu: Refine and simplify the magic number check during signal return")
+Signed-off-by: Andrei Vagin <avagin@google.com>
 ---
+ arch/x86/kernel/fpu/signal.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
- fs/ocfs2/suballoc.c |   22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
-
---- a/fs/ocfs2/suballoc.c~ocfs2-reject-oversized-group-bitmap-descriptors
-+++ a/fs/ocfs2/suballoc.c
-@@ -231,8 +231,16 @@ static int ocfs2_validate_gd_parent(stru
- 				    int resize)
+diff --git a/arch/x86/kernel/fpu/signal.c b/arch/x86/kernel/fpu/signal.c
+index c3ec2512f2bb..20b638c507ca 100644
+--- a/arch/x86/kernel/fpu/signal.c
++++ b/arch/x86/kernel/fpu/signal.c
+@@ -27,14 +27,19 @@
+ static inline bool check_xstate_in_sigframe(struct fxregs_state __user *fxbuf,
+ 					    struct _fpx_sw_bytes *fx_sw)
  {
- 	unsigned int max_bits;
-+	unsigned int max_bitmap_bits;
-+	unsigned int max_bitmap_size;
-+	int suballocator;
- 	struct ocfs2_group_desc *gd = (struct ocfs2_group_desc *)bh->b_data;
++	int min_xstate_size = sizeof(struct fxregs_state) +
++			      sizeof(struct xstate_header);
+ 	void __user *fpstate = fxbuf;
+ 	unsigned int magic2;
  
-+	suballocator = le64_to_cpu(di->i_blkno) != OCFS2_SB(sb)->bitmap_blkno;
-+	max_bitmap_size = ocfs2_group_bitmap_size(sb, suballocator,
-+						  OCFS2_SB(sb)->s_feature_incompat);
-+	max_bitmap_bits = max_bitmap_size * 8;
-+
- 	if (di->i_blkno != gd->bg_parent_dinode) {
- 		do_error("Group descriptor #%llu has bad parent pointer (%llu, expected %llu)\n",
- 			 (unsigned long long)bh->b_blocknr,
-@@ -240,6 +248,20 @@ static int ocfs2_validate_gd_parent(stru
- 			 (unsigned long long)le64_to_cpu(di->i_blkno));
- 	}
+ 	if (__copy_from_user(fx_sw, &fxbuf->sw_reserved[0], sizeof(*fx_sw)))
+ 		return false;
  
-+	if (le16_to_cpu(gd->bg_size) > max_bitmap_size) {
-+		do_error("Group descriptor #%llu has bitmap size %u but physical max of %u\n",
-+			 (unsigned long long)bh->b_blocknr,
-+			 le16_to_cpu(gd->bg_size),
-+			 max_bitmap_size);
-+	}
-+
-+	if (le16_to_cpu(gd->bg_bits) > max_bitmap_bits) {
-+		do_error("Group descriptor #%llu has bit count %u but physical max of %u\n",
-+			 (unsigned long long)bh->b_blocknr,
-+			 le16_to_cpu(gd->bg_bits),
-+			 max_bitmap_bits);
-+	}
-+
- 	max_bits = le16_to_cpu(di->id2.i_chain.cl_cpg) * le16_to_cpu(di->id2.i_chain.cl_bpc);
- 	if (le16_to_cpu(gd->bg_bits) > max_bits) {
- 		do_error("Group descriptor #%llu has bit count of %u\n",
-_
-
-Patches currently in -mm which might be from rollkingzzc@gmail.com are
-
-ocfs2-rebase-copied-fsdlm-lvb-pointers-in-locking_state.patch
-ocfs2-reject-oversized-group-bitmap-descriptors.patch
+-	/* Check for the first magic field */
+-	if (fx_sw->magic1 != FP_XSTATE_MAGIC1)
++	/* Check for the first magic field and other error scenarios. */
++	if (fx_sw->magic1 != FP_XSTATE_MAGIC1 ||
++	    fx_sw->xstate_size < min_xstate_size ||
++	    fx_sw->xstate_size > x86_task_fpu(current)->fpstate->user_size ||
++	    fx_sw->xstate_size > fx_sw->extended_size)
+ 		goto setfx;
+ 
+ 	/*
+@@ -43,7 +48,7 @@ static inline bool check_xstate_in_sigframe(struct fxregs_state __user *fxbuf,
+ 	 * fpstate layout with out copying the extended state information
+ 	 * in the memory layout.
+ 	 */
+-	if (__get_user(magic2, (__u32 __user *)(fpstate + x86_task_fpu(current)->fpstate->user_size)))
++	if (__get_user(magic2, (__u32 __user *)(fpstate + fx_sw->xstate_size)))
+ 		return false;
+ 
+ 	if (likely(magic2 == FP_XSTATE_MAGIC2))
+-- 
+2.54.0.746.g67dd491aae-goog
 
 
