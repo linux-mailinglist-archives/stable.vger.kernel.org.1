@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-254339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254340-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sDwyNkeZFWqNWgcAu9opvQ
-	(envelope-from <stable+bounces-254339-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 14:59:51 +0200
+	id iBxOEsuZFWqNWgcAu9opvQ
+	(envelope-from <stable+bounces-254340-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 15:02:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BFC75D5EF7
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 14:59:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A31B75D5F75
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 15:02:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BFB27304C9F8
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 12:54:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 85982303DD56
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 12:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE050238C36;
-	Tue, 26 May 2026 12:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DCA722157B;
+	Tue, 26 May 2026 12:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="EKucJNjP"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="xnnaurTS"
 X-Original-To: stable@vger.kernel.org
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48397223702
-	for <stable@vger.kernel.org>; Tue, 26 May 2026 12:54:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F57C2309B2
+	for <stable@vger.kernel.org>; Tue, 26 May 2026 12:56:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779800057; cv=none; b=BbJ/vqV1vferN6a/b9GRt+jrnBWyMit58igORTuCxWJwnVLsbazWWVd6i8XDShVOsWgYcfZ+EZ2GtHHTNkmHLNITXHXZUmi4nHGikh+LvOnI5JHgwdNXW26hIBq0NHFN9nThU0UtW9ZbJwZRbE0I//D9C4zExjlO13Qdel80bxo=
+	t=1779800188; cv=none; b=fZ08IG+AajjF8JaxDZfrd6HiI7GRfCsMMu7IMyq59uFC7gcbAfcKjXY9rYEuH1neGHdZMgA1gXvIVNjXdKH8+9FOFGazjDnIEV0WSnnX/thutV+kyz+8pBfCKTvqgxQwxAk3yH/1uhfjyakqFq6oa/0chRcilmaeO2OVM4pcvSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779800057; c=relaxed/simple;
-	bh=8NFmtjNVk6yqSf59PQPhoTYEdjcxCUFRSGiq2LjpJPU=;
+	s=arc-20240116; t=1779800188; c=relaxed/simple;
+	bh=JU7eq6I2jPDxDfe2T5IMnm9RAHvvxOtoBUIkCy5w30Q=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SOhF36ATcMaFfzF4SHe8mWWuIBW434VRO/8ba94dZLaG7Ngy0kHpK8SFMvHu8lIqCzYpGYGUiGXpCtxsYBEFnyRWjdJyqTvXMxgWDD2ow2BuaOJSzca6inso6pS/J5fLmQ1w3Ap/30rpSZ1/HswAv1nrK4rPs5F8MfURYgp0kbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=EKucJNjP; arc=none smtp.client-ip=91.218.175.178
+	 MIME-Version:Content-Type; b=DWUPAKbfRELTashrdg1jrG9eyR1JkNhWTxvESKWmiN8ArB4TIwtA6Dg16ve/Q3LO9pL9dd4m1YsGlNH6c4S5/NM2h3xTa+26Dq0t+7Z+FnbkDHTU/CYTjm0Uu9LCK4lJFz6ejmQ0+HOfDlug0nZhSdB22zyvV0hxpCrUcNTDzj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=xnnaurTS; arc=none smtp.client-ip=95.215.58.188
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1779800044;
+	t=1779800185;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8NFmtjNVk6yqSf59PQPhoTYEdjcxCUFRSGiq2LjpJPU=;
-	b=EKucJNjPDOyhy/Ct1wzGkugYgHG38e4JHfUiB89+kwZuDSasTGZUEoc1YDrz5Tlx3cQgBS
-	nbFBvy3MoCeQXc3AEh1D5EiRZA7JxcqK8wuhQb/KM8RElSncECRexNGouS6+eizOvOXxUG
-	BRDHXzkKV0rGmVw5LE4kz+EpbfTed0o=
+	bh=JU7eq6I2jPDxDfe2T5IMnm9RAHvvxOtoBUIkCy5w30Q=;
+	b=xnnaurTSzTJdSa9ximYjZKUGfBzMu7x5E4F8xHgkpgw3dHa/cX/0fuMStpiTt/KQF8aHlp
+	TkFu/1Jsv+559dKjTrbn8MvXHO3OXjtXwJlkGiCVgZFNZGkCMGihP5MYjhCYZquLdsjAFx
+	EOoMl6/aP7XO3g1OCgH+NqURHp+4Oio=
 From: Lance Yang <lance.yang@linux.dev>
 To: yintirui@huawei.com
 Cc: akpm@linux-foundation.org,
@@ -58,18 +58,18 @@ Cc: akpm@linux-foundation.org,
 	dev.jain@arm.com,
 	baohua@kernel.org,
 	lance.yang@linux.dev,
-	djbw@kernel.org,
-	apopple@nvidia.com,
+	vbabka@kernel.org,
+	yang.shi@linux.alibaba.com,
 	wangkefeng.wang@huawei.com,
 	chenjun102@huawei.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/huge_memory: update file PUD counter before folio_put()
-Date: Tue, 26 May 2026 20:53:51 +0800
-Message-Id: <20260526125351.58831-1-lance.yang@linux.dev>
-In-Reply-To: <20260526101355.1984244-1-yintirui@huawei.com>
-References: <20260526101355.1984244-1-yintirui@huawei.com>
+Subject: Re: [PATCH] mm/huge_memory: update file PMD counter before folio_put()
+Date: Tue, 26 May 2026 20:56:08 +0800
+Message-Id: <20260526125608.60396-1-lance.yang@linux.dev>
+In-Reply-To: <20260526101337.1984081-1-yintirui@huawei.com>
+References: <20260526101337.1984081-1-yintirui@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -84,11 +84,11 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
 	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254339-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-254340-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
 	RCVD_TLS_LAST(0.00)[];
@@ -103,22 +103,22 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linux.dev:mid,linux.dev:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,huawei.com:email]
-X-Rspamd-Queue-Id: 4BFC75D5EF7
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,linux.dev:mid,linux.dev:dkim,huawei.com:email]
+X-Rspamd-Queue-Id: A31B75D5F75
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-On Tue, May 26, 2026 at 06:13:55PM +0800, Yin Tirui wrote:
->__split_huge_pud_locked() updates the file/shmem RSS counter after
->dropping the PUD mapping's folio reference. If folio_put() drops the
+On Tue, May 26, 2026 at 06:13:37PM +0800, Yin Tirui wrote:
+>__split_huge_pmd_locked() updates the file/shmem RSS counter after
+>dropping the PMD mapping's folio reference. If folio_put() drops the
 >last reference, mm_counter_file() can later read freed folio state via
 >folio_test_swapbacked().
 >
 >Move the counter update before folio_put().
 >
->Fixes: dbe54153296d ("mm/huge_memory: add vmf_insert_folio_pud()")
+>Fixes: fadae2953072 ("thp: use mm_file_counter to determine update which rss counter")
 >Cc: <stable@vger.kernel.org>
 >Signed-off-by: Yin Tirui <yintirui@huawei.com>
 >---
