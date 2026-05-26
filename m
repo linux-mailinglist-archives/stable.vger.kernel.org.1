@@ -1,223 +1,172 @@
-Return-Path: <stable+bounces-254367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254368-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eOUCGGeoFWqJXAcAu9opvQ
-	(envelope-from <stable+bounces-254367-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 16:04:23 +0200
+	id IJmDMdmoFWqJXAcAu9opvQ
+	(envelope-from <stable+bounces-254368-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 16:06:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CED555D7054
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 16:04:22 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0797E5D70AB
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 16:06:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 80BE53001BDE
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 13:56:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CC42D306194B
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 13:59:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8865A3F9A0B;
-	Tue, 26 May 2026 13:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BE453FAE15;
+	Tue, 26 May 2026 13:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hpYL4+vd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qrMTZ3A8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158E33A7593;
-	Tue, 26 May 2026 13:55:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16FE93B2FE6
+	for <stable@vger.kernel.org>; Tue, 26 May 2026 13:59:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779803761; cv=none; b=CvxfbLLH/Y660V6J8fEd40tIOuVu7YfcSfpOTjxeM2E2DxzQ23dWbTfBJTdnuz60zohi0wBbgRt1g347zm2BnNJOBmqFZTgqWDWXGwoINXA/Bx5Jy/egO8FjwuZZHav1TUqrlEDhKo3z6of6H8BJSapJqDZRxNzk/EwEsqKuqQI=
+	t=1779803979; cv=none; b=dYnb8id7bRA6WWd1j/M2zi5Cabryc3O3woxBLwZHyOgtWbkgv522jBm1XvH/Ke3RXgEvQQCh+iZijtpu2+QAjUIoUYsNlJVvUpd5Wvc3LACPNlbIwrTIsP0gn0aof5Ms8HLaruw6Joi3QBgGzQ/+bSw1gbXd3ilp5mGScPnkKPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779803761; c=relaxed/simple;
-	bh=vnnWi8dQWB6l6Nohl4NkH7BA9KxtqRwgLLtVy1y56UE=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=ZPxj41/k/cDOtPKhLa22bNWZlg3E/ihW8cBGgHI6QZ1nyg2a9d1USf7ZMgcX3UDoEwj772IyGQL1WJrn0V19sMIoN7JYiQ8jJ7gc6mm5D3OdN1a9ARlhYF6DDR5uMxyqIOuNPOJl4QyqMJyOCzleJNEhKXCePOnDu/+aB7Kdv3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hpYL4+vd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74E101F000E9;
-	Tue, 26 May 2026 13:55:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779803759;
-	bh=JrULAy9Gw7dTgt2CJtfRApgaaTOMPseygZFxD/MyYIc=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=hpYL4+vdLIvxzm4niRZbcwUQmOfWQKSCxGGGerPKb5a0oewhWWBG8CqeRfwdDEXbG
-	 yegqQzLLyw/9J5+v9sqzryZnTCqlOADSCFq7MNoZERdQOGEjLoTJJSkrQnLtRueeVc
-	 FNbvehqYXTpwDR88AlqPDoRirz6HPdGiWLWpT7//N4oPfuRTjvGYV9lf+xP5oK7B0E
-	 dq2Gc4xNO8Jb03sYKC4W7EfKGYOHk29nPvx5GE+zQRLhtDEgKY3syHFCR5uiq64ChO
-	 fKaqkFIxmPbuinhNTdpoCUbFufv5wV+T+yVOBxsEWiiAOEutfGVqz31YBKw2Kugw5S
-	 3Dlr7Gs3flskA==
-Content-Type: multipart/mixed; boundary="===============1624879100367785041=="
+	s=arc-20240116; t=1779803979; c=relaxed/simple;
+	bh=oi8CEqX0uFevmntGh4NJtsQPvPMPp25lfU15JLRia6A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=k88XcVmQF1fLv7bDvoRezUh9ARsxNujar3SiC1h+jBwzAy+3cB1DKF26LVId2gBPu9r8wv5jLzU4P0vxuAHfwlvpaeAqjgRnvLWKYNhBsXs5f6Hwt4lGYy4k037fU2+ogx1SPVw1Y1fd+kvHxw13lEm6bZwARkbMH2j5DUTSB0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qrMTZ3A8; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-3660ab73adbso7692055a91.1
+        for <stable@vger.kernel.org>; Tue, 26 May 2026 06:59:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779803976; x=1780408776; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XBdZkb2RwHxx+FNg+ugjHpoi6ESbhLEgzYBxG/HNPgA=;
+        b=qrMTZ3A8evZF+7BV4IPOIP59QEHmnbm0pAtdDJTCbf0LLp6PYMHq1epHgJyaf/Jcrc
+         lm3V+doo+2JNISEwGF4ALhNXKoFzb2T7GOiBsXRoAJV8+s7Hk++zrjv2jw/iP21JvSGr
+         Dy0SlgX7VC9oSgYrfObYpmJ1V4W3Poq6vfePE2L7WuBe+dV51YkXp4aJBL9lcwZ/LcXY
+         LwC5R+S1wf9uneTBjK61FWiFMHyRWM2r1efOsG9RUlP9MidBc4AfDXLCEfRkOW58K/jz
+         u4Jx5pr9iriVcFOBl5Emft9q03ehfsIXEbJP/ZD7TxFHq1ohoXk0/2NVlx4EvrIBiCRG
+         xQ5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779803976; x=1780408776;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XBdZkb2RwHxx+FNg+ugjHpoi6ESbhLEgzYBxG/HNPgA=;
+        b=mzowhTYDX4NKbjpvS31Sgr6uBrgd3XmD4bR5PcSFV5cqPF/iIld3c1qgQyVN08LuXm
+         /Ru5yNr7qFUXXPtOB9V6sySH+197wbtCThxigLhIF0R5GVfgLCycoYRayqFplQqpBSzb
+         bn8pwmbG9x+yv0wDb8c25+WtikT8nWDbo/crwFMjkXPs3ZREiMLoB1Seg0QHE0yjbcFx
+         Uq7SR21ZwN2vqfkMwWGvPq5jgDUNaVsof+SMaPSQu5/TnrdbdVpFqtmIMXcAyyDO/Xk8
+         XbxfpmDOpRT4DLywfr29U+PkHjHQ/D5+RQtNLcTU0dMOPNDtyfUY8a7CCUQSGqnfbTu+
+         s8ig==
+X-Gm-Message-State: AOJu0YzvUAyo5BXzh0nmNowH7+GQy+Xm1+bRrYugi6IJe00qbYmzavWB
+	ssUTiBPpeGNdrUTraQUI46rDy89f83gnz/xTa8RJHGsiCEGZLBwaJPlCUpJ31mcWf0eBnw==
+X-Gm-Gg: Acq92OEqQzj5qX9utabxg8TozzCakcLbo+oZrKaMR2LQYTquiddx5Kh5dKFMTSNvoLh
+	dtn9GKlGAdGQa+KByc9IushTFJyn5VWEiNAk6OCDQUQB2Solc2aUiXF7upBLrHu4K3Khr/uN82U
+	6yK68Stgd08Qn1AZFCYqhAbYbcyzk4NEwT7vRnczpbB6y0MEsQhvfiiMx83YxOXL7ITolEA89mH
+	NssNAXOBD45amCmXBNF9VxAKOF+Fa5j2PXiYQaPHieOYoA9Zs07bb1OVuu4JRiQlkobrKsMpPVq
+	UHTqX2iwoArtDnrUAZIlofAOCrMsF+0Lbf+qbksR4RkTv1swWTkMcNd2Q6P0SC7jP2NVNJFAxMP
+	xX4U2WeXBVh1mcgZrlNgwcN2HmBUokulFc8iU9p8L46ZBCm9iexQ0ObIdaVm+LLIdhENUdkd9qj
+	FthQBWoQb56HN1WCqcpGbA1NLmsDElMOU9Y4g=
+X-Received: by 2002:a17:90b:3eca:b0:368:864:62ad with SMTP id 98e67ed59e1d1-36a473cf321mr19356488a91.3.1779803976361;
+        Tue, 26 May 2026 06:59:36 -0700 (PDT)
+Received: from ubuntu2204.. ([171.213.255.129])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36a723dfa2dsm12684682a91.16.2026.05.26.06.59.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 May 2026 06:59:35 -0700 (PDT)
+From: Liem <liem16213@gmail.com>
+To: stable@vger.kernel.org
+Cc: Paul Moore <paul@paul-moore.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Eric Paris <eparis@parisplace.org>,
+	selinux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
+	Liem <liem16213@gmail.com>
+Subject: [PATCH 5.15.y] selinux: enable genfscon labeling for securityfs
+Date: Tue, 26 May 2026 21:59:21 +0800
+Message-Id: <20260526135921.17453-1-liem16213@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <2f53799c49f16b688b2780733a6175235b730b0edbe15747309771e5a84130a7@mail.kernel.org>
-In-Reply-To: <20260526131035.1312864-2-dawei.feng@seu.edu.cn>
-References: <20260526131035.1312864-2-dawei.feng@seu.edu.cn>
-Subject: Re: [PATCH 1/2] bpf: cgroup: fix sysctl new value replacement
-From: bot+bpf-ci@kernel.org
-To: dawei.feng@seu.edu.cn,martin.lau@linux.dev
-Cc: ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,kees@kernel.org,joel.granados@kernel.org,bpf@vger.kernel.org,linux-kernel@vger.kernel.org,linux-fsdevel@vger.kernel.org,jianhao.xu@seu.edu.cn,dawei.feng@seu.edu.cn,stable@vger.kernel.org,zilin@seu.edu.cn,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Tue, 26 May 2026 13:55:59 +0000 (UTC)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [0.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	CTYPE_MIXED_BOGUS(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,iogearbox.net,gmail.com,linux.dev,vger.kernel.org,seu.edu.cn,meta.com];
-	FROM_NEQ_ENVFROM(0.00)[bot@kernel.org,stable@vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-254367-lists,stable=lfdr.de,bpf-ci];
-	MIME_TRACE(0.00)[0:+,1:+];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[paul-moore.com,gmail.com,parisplace.org,vger.kernel.org,googlemail.com];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FROM_NO_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[27];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254368-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[liem16213@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,seu.edu.cn:email]
-X-Rspamd-Queue-Id: CED555D7054
+	RCPT_COUNT_SEVEN(0.00)[8];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,paul-moore.com:email]
+X-Rspamd-Queue-Id: 0797E5D70AB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
---===============1624879100367785041==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Christian Göttsche <cgzones@googlemail.com>
 
-> diff --git a/kernel/bpf/cgroup.c b/kernel/bpf/cgroup.c
-> index 876f6a81a9b6..8715a014c21d 100644
-> --- a/kernel/bpf/cgroup.c
-> +++ b/kernel/bpf/cgroup.c
+commit 8a764ef1bd43 ("selinux: enable genfscon labeling for securityfs")
 
-[ ... ]
+Add support for genfscon per-file labeling of securityfs files.
+This allows for separate labels and thereby access control for
+different files. For example a genfscon statement
 
-> @@ -1878,7 +1878,7 @@ int __cgroup_bpf_run_filter_sysctl(struct ctl_table_header *head,
->   * to provided by user buffer, so that next BPF program in the chain
->   * can treat it as a replacement.
->   *
-> - * This function will return %-EPERM if an attached program is found and
-> - * returned value != 1 during execution. In all other cases 0 is returned.
-> + * This function will return %-EPERM if an attached program is found and
-> + * returned value != 1 during execution. In all other cases 0 is returned.
->   */
+    genfscon securityfs /integrity/ima/policy \
+	system_u:object_r:ima_policy_t:s0
 
-Should the function documentation be updated to reflect the actual return
-value convention?
+will set a private label to the IMA policy file and thus allow to
+control the ability to set the IMA policy. Setting labels directly
+with setxattr(2), e.g. by chcon(1) or setfiles(8), is still not
+supported.
 
-After commit 4e63acdff864, bpf_prog_run_array_cg() returns 0 on success,
-not 1. The comment still states "returned value != 1 during execution" but
-the code now checks for '!ret' (i.e., ret == 0). The documentation should
-say "returned value != 0" to match the actual behavior.
-
-> @@ -1935,7 +1935,7 @@ int __cgroup_bpf_run_filter_sysctl(struct ctl_table_header *head,
->
->  	kfree(ctx.cur_val);
->
-> -	if (ret == 1 && ctx.new_updated) {
-> +	if (!ret && ctx.new_updated) {
->  		kfree(*buf);
->  		*buf = ctx.new_val;
->  		*pcount = ctx.new_len;
-
-Can this cause memory corruption?
-
-The caller proc_sys_call_handler() allocates the buffer with kvzalloc():
-
-fs/proc/proc_sysctl.c:proc_sys_call_handler() {
-    ...
-    kbuf = kvzalloc(count + 1, GFP_KERNEL);
-    ...
-}
-
-kvzalloc() may fall back to vmalloc() for large allocations, but this
-code uses kfree() instead of kvfree() to free *buf. Using kfree() on
-vmalloc memory corrupts memory.
-
-This is fixed in a later commit 155dfbd42ab8 ("bpf: cgroup: Use kvfree
-instead of kfree in __cgroup_bpf_run_filter_sysctl") which includes a
-KASAN crash report demonstrating the bug.
-
-Should this patch use kvfree() instead of kfree()?
-
-
-Also, Martin KaFai Lau raised a concern about the null terminator handling
-during the May 2024 review of a similar fix.
-
-In the discussion at:
-https://lore.kernel.org/bpf/ca8136e0-5d2a-402b-ad03-cc8a218affd4@linux.dev/
-
-Martin requested that the patch adjust *pcount to exclude the null
-terminator if present. The concern is that proc_sys_call_handler may reject
-the value with EINVAL if the null terminator is included in the count.
-
-The suggested fix from that discussion was:
-
-    if (!(*buf)[ctx.new_len])
-        *pcount = ctx.new_len - 1;
-    else
-        *pcount = ctx.new_len;
-
-Should this patch include the null terminator handling improvement?
-
-
-> commit f089fd0540601290c72ecfd2ff3f0c817952970a
-> Author: Dawei Feng <dawei.feng@seu.edu.cn>
->
->     bpf: cgroup: fix sysctl new value replacement
->
->     Commit 4e63acdff864 ("bpf: Introduce bpf_sysctl_{get,set}_new_value
->     helpers") changed the success return value to 0, but failed to update the
->     corresponding check in __cgroup_bpf_run_filter_sysctl(). Since
->     bpf_prog_run_array_cg() now returns 0 on success, the legacy ret == 1
->     condition is never satisfied. As a result, the modified value is ignored,
->     and bpf_sysctl_set_new_value() fails to replace the write buffer.
->
->     Fix this by checking for a return value of 0 instead, so cgroup/sysctl
->     programs can correctly replace the pending sysctl buffer.
->
->     This bug was discovered during a manual code review. Tested via a
->     cgroup/sysctl BPF reproducer overriding writes to a target sysctl.
->     Pre-fix, bpf_sysctl_set_new_value("foo") was silently ignored: the write
->     returned 8192 and the value remained "600". Post-fix, the BPF replacement
->     buffer properly propagates: the write returns 3 and the value updates to
->     "foo".
->
->     Fixes: 4e63acdff864 ("bpf: Introduce bpf_sysctl_{get,set}_new_value helpers")
-
-Is the Fixes: tag pointing to the correct commit?
-
-Commit 4e63acdff864 (2019) originally used 'ret == 1' correctly, as
-BPF_PROG_RUN_ARRAY_CG returned 1 on success at that time.
-
-However, commit f10d05966196 ("bpf: Make BPF_PROG_RUN_ARRAY return -err
-instead of allow boolean") from 2022 changed BPF_PROG_RUN_ARRAY_CG to
-return 0 on success instead of 1. That commit updated the final return
-statement from 'return ret == 1 ? 0 : -EPERM;' to 'return ret;', but
-forgot to update the 'if (ret == 1 && ctx.new_updated)' check.
-
-Should the Fixes: tag be:
-
-  Fixes: f10d05966196 ("bpf: Make BPF_PROG_RUN_ARRAY return -err instead of allow boolean")
-
-
+Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+[PM: line width fixes in the commit description]
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+(cherry picked from commit 8a764ef1bd43fb2bb4ff3290746e5c820a3a9716)
+Signed-off-by: Liem <liem16213@gmail.com>
 ---
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+ security/selinux/hooks.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/26451027650
---===============1624879100367785041==--
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index 69143a216a3c..1c0f8209f130 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -741,7 +741,8 @@ static int selinux_set_mnt_opts(struct super_block *sb,
+ 	    !strcmp(sb->s_type->name, "tracefs") ||
+ 	    !strcmp(sb->s_type->name, "binder") ||
+ 	    !strcmp(sb->s_type->name, "bpf") ||
+-	    !strcmp(sb->s_type->name, "pstore"))
++	    !strcmp(sb->s_type->name, "pstore") ||
++	    !strcmp(sb->s_type->name, "securityfs"))
+ 		sbsec->flags |= SE_SBGENFS;
+ 
+ 	if (!strcmp(sb->s_type->name, "sysfs") ||
+-- 
+2.34.1
+
 
