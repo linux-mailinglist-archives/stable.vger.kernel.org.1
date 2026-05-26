@@ -1,171 +1,164 @@
-Return-Path: <stable+bounces-254297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254298-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gFDGHVt1FWrCVAcAu9opvQ
-	(envelope-from <stable+bounces-254297-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 12:26:35 +0200
+	id KKdbAk93FWrHVAcAu9opvQ
+	(envelope-from <stable+bounces-254298-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 12:34:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F5405D426C
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 12:26:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1F1F5D43E4
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 12:34:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D27ED300F264
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 10:26:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DCCBB302DF65
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 10:30:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34DFE3DD85A;
-	Tue, 26 May 2026 10:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE883DD841;
+	Tue, 26 May 2026 10:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oIMni9ar"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="AM2Oa65E"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91183DBD46;
-	Tue, 26 May 2026 10:25:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE1AC2C326F;
+	Tue, 26 May 2026 10:30:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779791159; cv=none; b=Sx+T+tWurw0bABM8SWtLIlytht0eEkMg+g/MEQasvM2HFeNppZpjyjeGm6GzDl2E9ulFSir7ikU6lZtROaQUOLF+FJ1rBKCMBMaRqoCW4C0R02gwbJYrtD7kuBqDcIoRXuhOFrZjDfo89R3CeySTCfmtTzJTrwuqqE7Fm5NXzq8=
+	t=1779791419; cv=none; b=oFrRIDOEWU4wOSd19eqXf8172tTyQ8LdSaFibt4bORX3vKSYot1Qeue9Mlik6X5pDOmwk1MQrhQGczDiq8FFQAfBmgLLZN8s4muqNIGfNQzz1kt60tVr/fTKBspAXhtGO0+TZjnTEBMvs97GSEYc+yzfJi58/pdnggvncTKI5h0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779791159; c=relaxed/simple;
-	bh=gmQoQzsMPjGR/xUNYZs6D4VENZ7rn3xPTVp/FXyI4t0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZWjH/Hd9svHbmBNg3Uows1lrGWdYPqpucx4Hf1xCUcwZpAVu/Aic9ybB+7lRYZ3SC244UyypY6n7L8nVbx6g8tBhb8htmqXW4/3IlaNSMmzwF13EShZCxeK9siU6E01cXQZvJRRvkw7cFkQgMTjo5BXNucpDd+X6irHRfyVJpRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oIMni9ar; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1603D1F000E9;
-	Tue, 26 May 2026 10:25:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779791157;
-	bh=t9FK9F0ke4Xrw2vcz0cJ/gpSi8fMZ+REQg2xafa71aQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=oIMni9arI4j1O+RUC0GS8hzWwEwGMcAUb1O9umjBUzW+9W+XgkIK3cbjbLU94CBWF
-	 pteGlsMocMOifalk+AoTzboPWohTKlcqnEL7oqvgKuwEsnLS12h1pg6gRydJYmQR5C
-	 lnJlAt9j5+mjWgi8Re6XyDMron/+MGAQu8NdZHVdt1DwfB1vTm6lEiDGXby8BgIJLk
-	 fIfu1vzPk0lOJgVUSptv5R/Fkr44TrMA/iOMQ65IvStY06NpwwOsF9OlUdEAR8Vwq5
-	 MF3lG/K5sqOZ4/4QF0TzzAMhfY5ShTyKAD0SSzG3ewuPsOevZ0mDNOUsymwiwLsnsF
-	 R+lC2dvAiQ3PQ==
-Message-ID: <a3bfb7a9-9980-4dea-aa14-c5973cf80638@kernel.org>
-Date: Tue, 26 May 2026 13:25:51 +0300
+	s=arc-20240116; t=1779791419; c=relaxed/simple;
+	bh=RTstCOb6AtmXU6bU6trvm2Qqjs6+DgrFN4BlFwsHraU=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FpOZ/898KG51W+4tMQx8EUu7sDzmDa53VnJHTVJ2WAh9OGJXa9hhb06dNwPKZv5gO4urRc/T+ixoJzpn7A7Nh2Q1/cSPLolHIKtOd30xE+5BVl4v6gum6VnlLGkee62Hb9Rl4mKe13Ypyecn8ssChKlIWahtqLXATJnDa9rjJXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=AM2Oa65E; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 0FA38206B0;
+	Tue, 26 May 2026 12:30:16 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 03ipp3RjgGqs; Tue, 26 May 2026 12:30:15 +0200 (CEST)
+Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id 73B6C201D5;
+	Tue, 26 May 2026 12:30:15 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 73B6C201D5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1779791415;
+	bh=1tJOBC6RgUfctiWtdnMwrlRb31wlOuFPGItmL9H+Uqk=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=AM2Oa65Ecs5FkbQt41RUpjAMCRVnS8yhDyZbhC5ZS48J3Gxiiy+osvKGHP7lw6Hrs
+	 ZSaqPitp3FeWZMThvHsDuPCArXwpV0RiGBlfegiT0a37kB23zX0eglH3PNBAhpuztb
+	 7jn1zlIUTJ313Puqa0I9pC4c9G/94n2OTU1nEEfEwEkJYC9hd8hsgO6J5vfdQyZANr
+	 uuZaNLccG4L6AdlRKSvzBdJwydctfelw0AYq1T9jIgRKAMo1IefANpCaxO1uUvuSy8
+	 dNlzhHqv4bBcHFo2KyFhslKgXBkMzLk7SUiRpmttR1AzSqR7DKKKEV0OiHCCIT6WXQ
+	 uzrXW8NFw/sfA==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Tue, 26 May
+ 2026 12:30:14 +0200
+Received: (nullmailer pid 228777 invoked by uid 1000);
+	Tue, 26 May 2026 10:30:13 -0000
+Date: Tue, 26 May 2026 12:30:13 +0200
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: Takao Sato <takaosato1997@gmail.com>
+CC: <netdev@vger.kernel.org>, <w@1wt.eu>, <davem@davemloft.net>,
+	<herbert@gondor.apana.org.au>, <chopps@chopps.org>, <pfalcato@suse.de>,
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH net v4] xfrm: iptfs: preserve shared-frag marker in
+ iptfs_consume_frags()
+Message-ID: <ahV2NRIqdbW-kDDx@secunet.com>
+References: <20260526004035.1023696-1-takaosato1997@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 01/18] dmaengine: sh: rz-dmac: Move interrupt request
- after everything is set up
-To: Biju Das <biju.das.jz@bp.renesas.com>, "vkoul@kernel.org"
- <vkoul@kernel.org>, "Frank.Li@kernel.org" <Frank.Li@kernel.org>,
- "lgirdwood@gmail.com" <lgirdwood@gmail.com>,
- "broonie@kernel.org" <broonie@kernel.org>, "perex@perex.cz"
- <perex@perex.cz>, "tiwai@suse.com" <tiwai@suse.com>,
- Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
- "p.zabel@pengutronix.de" <p.zabel@pengutronix.de>,
- "geert+renesas@glider.be" <geert+renesas@glider.be>,
- Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
- Long Luu <long.luu.ur@renesas.com>
-Cc: "Claudiu.Beznea" <claudiu.beznea@tuxon.dev>,
- "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-sound@vger.kernel.org" <linux-sound@vger.kernel.org>,
- "linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
- Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Frank Li <Frank.Li@nxp.com>, John Madieu <john.madieu.xa@bp.renesas.com>
-References: <20260526084710.3491480-1-claudiu.beznea@kernel.org>
- <20260526084710.3491480-2-claudiu.beznea@kernel.org>
- <TY3PR01MB11346AC919B1D62FADB18FB20860B2@TY3PR01MB11346.jpnprd01.prod.outlook.com>
- <8dcf50ee-94b7-4b27-895d-2448eb772c08@kernel.org>
- <TYCPR01MB1133214647B09C658AC96A4D9860B2@TYCPR01MB11332.jpnprd01.prod.outlook.com>
-Content-Language: en-US
-From: Claudiu Beznea <claudiu.beznea@kernel.org>
-In-Reply-To: <TYCPR01MB1133214647B09C658AC96A4D9860B2@TYCPR01MB11332.jpnprd01.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260526004035.1023696-1-takaosato1997@gmail.com>
+X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
+ (10.32.0.171)
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[secunet.com,none];
+	R_DKIM_ALLOW(-0.20)[secunet.com:s=202301];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-254298-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[secunet.com:mid,secunet.com:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254297-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[bp.renesas.com,kernel.org,gmail.com,perex.cz,suse.com,pengutronix.de,glider.be,renesas.com];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[21];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[secunet.com:+];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[claudiu.beznea@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,bootlin.com:url]
-X-Rspamd-Queue-Id: 7F5405D426C
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[steffen.klassert@secunet.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: A1F1F5D43E4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-
-
-On 5/26/26 12:51, Biju Das wrote:
-> Hi Claudiu,
+On Mon, May 25, 2026 at 09:40:35PM -0300, Takao Sato wrote:
+> iptfs_consume_frags() transfers paged fragments from one socket buffer
+> to another but fails to propagate the SKBFL_SHARED_FRAG flag. This is
+> the same class of bug that was fixed in skb_try_coalesce() for
+> CVE-2026-46300: when fragments backed by read-only page-cache pages are
+> merged, the marker indicating their shared nature must be preserved so
+> that ESP can decide correctly whether in-place encryption is safe.
 > 
->> -----Original Message-----
->> From: Claudiu Beznea <claudiu.beznea@kernel.org>
->> Sent: 26 May 2026 10:46
->> Subject: Re: [PATCH v6 01/18] dmaengine: sh: rz-dmac: Move interrupt request after everything is set
->> up
->>
->>
->>
->> On 5/26/26 11:54, Biju Das wrote:
->>> Hi Claudiu,
->>>
->>>> -----Original Message-----
->>>> From: Claudiu Beznea <claudiu.beznea@kernel.org>
->>>> Sent: 26 May 2026 09:47
->>>> Subject: [PATCH v6 01/18] dmaengine: sh: rz-dmac: Move interrupt
->>>> request after everything is set up
->>>>
->>>> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
->>>>
->>>> Once the interrupt is requested, the interrupt handler may run immediately.
->>>
->>> Do you mean spurious interrupt?
->>>
->>> After DMA driver probe only, consumer device can access the DMA handle
->>> right? or am I missing something here?
->>
->> In theory there could be pending interrupts not yet served (e.g. due to the previous usage of the
->> controller, HW behavior, etc). Those could trigger the execution of the IRQ handler once the interrupt
->> is requested.
+> Apply the same two-line fix used in skb_try_coalesce() to
+> iptfs_consume_frags().
 > 
-> You mean DMA consumers configured by bootloader and linux probing the DMA driver can
-> trigger IRQ?
-DMA used by bootloaders may be a valid scenario, even though may not currently 
-be used in the setups this IP is used.
+> Fixes: b96ba312e21c ("xfrm: iptfs: share page fragments of inner packets")
+> Cc: stable@vger.kernel.org # 6.14+
+> Signed-off-by: Takao Sato <takaosato1997@gmail.com>
+> ---
+> Changes since v3:
+> - Corrected Cc: stable tag from "# 6.8+" to "# 6.14+". IPTFS was
+>   introduced in v6.14, so earlier stable branches do not need this
+>   fix. Pointed out by Pedro Falcato.
+> 
+> Changes since v2:
+> - Removed security impact paragraph from commit message as requested
+>   by Steffen Klassert.
+> 
+>  net/xfrm/xfrm_iptfs.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
+> index 97bc979e5..4db85e158 100644
+> --- a/net/xfrm/xfrm_iptfs.c
+> +++ b/net/xfrm/xfrm_iptfs.c
+> @@ -2168,6 +2168,8 @@ static void iptfs_consume_frags(struct sk_buff *to, struct sk_buff *from)
+> 	memcpy(&toi->frags[toi->nr_frags], fromi->frags,
+> 	       sizeof(fromi->frags[0]) * fromi->nr_frags);
+> 	toi->nr_frags += fromi->nr_frags;
+> +	if (fromi->nr_frags)
+> +		toi->flags |= fromi->flags & SKBFL_SHARED_FRAG;
+> 	fromi->nr_frags = 0;
+> 	from->data_len = 0;
+> 	from->len = 0;
 
-Please check the documentation of request_threaded_irq(): 
-https://elixir.bootlin.com/linux/v7.1-rc4/source/kernel/irq/manage.c#L2089
+Your patch does not apply to the ipsec tree, please
+rebase on top of it.
 
-"* ... From the point this call is made your handler function
-  * may be invoked. Since your handler function must clear any interrupt the
-  * board raises, you must take care both to initialise your hardware and to
-  * set up the interrupt handler in the right order"
-
--- 
-Thank you,
-Claudiu
-
+Thanks!
 
