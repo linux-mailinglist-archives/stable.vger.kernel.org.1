@@ -1,349 +1,158 @@
-Return-Path: <stable+bounces-254244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254245-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CH3vEgw0FWqPTgcAu9opvQ
-	(envelope-from <stable+bounces-254244-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 07:47:56 +0200
+	id UDf/CjM1FWqwTgcAu9opvQ
+	(envelope-from <stable+bounces-254245-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 07:52:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B821C5D0F38
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 07:47:55 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F4355D0F83
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 07:52:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BDF7E301453B
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 05:47:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BED693009E1C
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 05:52:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01DEB3955FD;
-	Tue, 26 May 2026 05:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCBC73BFAEA;
+	Tue, 26 May 2026 05:52:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="HjVCorL3"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="gK5c0TFW";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="fhYrqnUV";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="t3iQt7cF";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="sV/8+d+m"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-110.mail.139.com (n169-110.mail.139.com [120.232.169.110])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E4229A9C3
-	for <stable@vger.kernel.org>; Tue, 26 May 2026 05:47:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.110
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224BE38E5C5
+	for <stable@vger.kernel.org>; Tue, 26 May 2026 05:52:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779774471; cv=none; b=t8cmfs3v/0YITZO+++ZZ38LME7SPCuIQ85dhCUpmunzu2MWnrXjTpmR1OFrRNi99F9L3qnEJFi6lCeJA5z1feCOHTwvG25hbdymyv2qdTNvQL/xQbliK1hNb8d5KH0mAr8BXyV+8Jg6RAmSdF+aCgpO5l7E24pn+bqgdecORsXs=
+	t=1779774751; cv=none; b=Jrf8QO88IsWBDAuTGbHyBIqDXJAdhpv+Cp8tbOqfZBq72P5eS1Lq+1aZQKiGI9Si6+fYYwjqbThj8aqimp2Imd4CJn+CeHBZBnU3ppZufUp5habFAgNJBbSvRY5slXflY2Vwz5DAl2D7C+BcopcJ0bnfYlsySRsGEX4Lao5MXmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779774471; c=relaxed/simple;
-	bh=O5SCp9N9hk4ObRDeZbl/0o7kipWAeJuq4qrlprmaVwc=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version; b=OcgFDjr9K+Lfnwc4Y65BOo6ht8vqJ5jmct/hEWKkt78jDorV6AgNdwUL05Yyrwef3bOM73q7tp8sGx53x113rD26r8L8bSQGKlPPI7qySSn12/K62MSzNTGm+LQoKh9ZZ4qwS4WIY46mUmoHGpZPFOVXMhJjn+qTML+YCGcvknA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=HjVCorL3; arc=none smtp.client-ip=120.232.169.110
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=HjVCorL321pI8URh8lc9sNEsFZpAWXkWxe5aM0OBFQWwpj+/AFDCFmP6uJwGkv+eahGlHd+XgqT+W
-	 6MNCgkXVFznKfTWhuZfRLdsOtmDYjRhHtGPpzvlzAGQhBJFLGwVmFWCS3zZ7zl2eyI1JsEw0aY2bxw
-	 HEsC6WJknIJoJtf8=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from China-Mobile-Kernel-Team (unknown[106.121.166.134])
-	by rmsmtp-lg-appmail-01-12079 (RichMail) with SMTP id 2f2f6a1533feee2-a407d;
-	Tue, 26 May 2026 13:47:45 +0800 (CST)
-X-RM-TRANSID:2f2f6a1533feee2-a407d
-From: Leon Chen <leonchen.oss@139.com>
-To: kuniyu@google.com,
-	kuba@kernel.org,
+	s=arc-20240116; t=1779774751; c=relaxed/simple;
+	bh=bGe4cwPStpYQC0uwq4oxXk1cHSjFCcv6+PKMm2CrIBA=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DbVTkzFN72Up0BUEFAXRgLEeak3g+nWsOgqZoFsBZFES6Jj48EDwRXycMx3Cez72keJ8kRC/hxk6MrNhDq+Wn5doaiB/ivkdKtVDpssX3c9jwrQ6HHJQka2D1GjgYOwoeCFqlKPKmulUCd4iFR09ERZ5/UHjxTNPnVd1G4WPIjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=gK5c0TFW; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=fhYrqnUV; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=t3iQt7cF; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=sV/8+d+m; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 5F2F665380;
+	Tue, 26 May 2026 05:52:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1779774747; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KyDzkxxGaOeOY9M4hGt8o8J1+NOKaE8R3F4Qz0rezkw=;
+	b=gK5c0TFWBBaXDN9MzbGqmxKT/tT7J08YkCroO4mou3YJ5561X/r5q5c2Fw4vMzvmPj9JnH
+	iGjNIiE+rNwEDmgog2n++uVONVwCnUPOMsRNAMF2oEffIS7fwp55cqamZ+XwjKzuM6pif6
+	hq+NjkEHvOxRdhXUcFcBKeKHL5uF6Yg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1779774747;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KyDzkxxGaOeOY9M4hGt8o8J1+NOKaE8R3F4Qz0rezkw=;
+	b=fhYrqnUV5iasDSQmDnGS4rIsvYgu0I1YJGAgeWt5HLQzh/jCAsJBGmbI4EvS08BvMr1cf1
+	e2CNBnUM+hMRTWBw==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1779774746; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KyDzkxxGaOeOY9M4hGt8o8J1+NOKaE8R3F4Qz0rezkw=;
+	b=t3iQt7cF/6UAKExkkSjdoXUQ6WhbOudd8UR56Fn2Jjn0CNVbJRHmif9fq7uZf28hOt4lno
+	XJ9v+V7bSqNKHc5IXOafdn5AlI1bWKyz6uLdT3ozb86TBoyCafGYPnVOpcbv3miM6xHkn/
+	7CLYIGq6K1duL3HSxCuts5aNBzMi9es=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1779774746;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KyDzkxxGaOeOY9M4hGt8o8J1+NOKaE8R3F4Qz0rezkw=;
+	b=sV/8+d+mxB9j4M2BWBfTYcDb25BXM437twDS5mSDxP2ja+OsV9oxcTLfgHJUJK3HNc5hfC
+	uncdFrHhCpC+iPCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2E49F5A052;
+	Tue, 26 May 2026 05:52:26 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ytO7CRo1FWoaJgAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Tue, 26 May 2026 05:52:26 +0000
+Date: Tue, 26 May 2026 07:52:25 +0200
+Message-ID: <87qzmyzpie.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Zhang Heng <zhangheng@kylinos.cn>
+Cc: perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH 6.6.y] af_unix: Give up GC if MSG_PEEK intervened.
-Date: Tue, 26 May 2026 13:47:44 +0800
-Message-Id: <20260526054744.4121-1-leonchen.oss@139.com>
-X-Mailer: git-send-email 2.35.3
+Subject: Re: [PATCH] ALSA: hda/realtek: Fix speaker output on ASUS ROG Strix G615LP
+In-Reply-To: <20260526013611.1954949-1-zhangheng@kylinos.cn>
+References: <20260526013611.1954949-1-zhangheng@kylinos.cn>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [1.04 / 15.00];
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Score: -3.30
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[139.com:s=dkim];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-254244-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[139.com];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[3];
-	FROM_NEQ_ENVFROM(0.00)[leonchen.oss@139.com,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254245-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[139.com:-];
-	TO_DN_NONE(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[suse.de:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.898];
-	FREEMAIL_FROM(0.00)[139.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,139.com:mid,139.com:email]
-X-Rspamd-Queue-Id: B821C5D0F38
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 1F4355D0F83
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+On Tue, 26 May 2026 03:36:11 +0200,
+Zhang Heng wrote:
+> 
+> Add quirk for ALC294 codec on ASUS ROG Strix G615LP
+> (SSID 1043:1214) using ALC287_FIXUP_TXNW2781_I2C_ASUS to
+> fix speaker output.
+> 
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=221173
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
 
-[ Upstream commit e5b31d988a41549037b8d8721a3c3cae893d8670 ]
-
-Igor Ushakov reported that GC purged the receive queue of
-an alive socket due to a race with MSG_PEEK with a nice repro.
-
-This is the exact same issue previously fixed by commit
-cbcf01128d0a ("af_unix: fix garbage collect vs MSG_PEEK").
-
-After GC was replaced with the current algorithm, the cited
-commit removed the locking dance in unix_peek_fds() and
-reintroduced the same issue.
-
-The problem is that MSG_PEEK bumps a file refcount without
-interacting with GC.
-
-Consider an SCC containing sk-A and sk-B, where sk-A is
-close()d but can be recv()ed via sk-B.
-
-The bad thing happens if sk-A is recv()ed with MSG_PEEK from
-sk-B and sk-B is close()d while GC is checking unix_vertex_dead()
-for sk-A and sk-B.
-
-  GC thread                    User thread
-  ---------                    -----------
-  unix_vertex_dead(sk-A)
-  -> true   <------.
-                    \
-                     `------   recv(sk-B, MSG_PEEK)
-              invalidate !!    -> sk-A's file refcount : 1 -> 2
-
-                               close(sk-B)
-                               -> sk-B's file refcount : 2 -> 1
-  unix_vertex_dead(sk-B)
-  -> true
-
-Initially, sk-A's file refcount is 1 by the inflight fd in sk-B
-recvq.  GC thinks sk-A is dead because the file refcount is the
-same as the number of its inflight fds.
-
-However, sk-A's file refcount is bumped silently by MSG_PEEK,
-which invalidates the previous evaluation.
-
-At this moment, sk-B's file refcount is 2; one by the open fd,
-and one by the inflight fd in sk-A.  The subsequent close()
-releases one refcount by the former.
-
-Finally, GC incorrectly concludes that both sk-A and sk-B are dead.
-
-One option is to restore the locking dance in unix_peek_fds(),
-but we can resolve this more elegantly thanks to the new algorithm.
-
-The point is that the issue does not occur without the subsequent
-close() and we actually do not need to synchronise MSG_PEEK with
-the dead SCC detection.
-
-When the issue occurs, close() and GC touch the same file refcount.
-If GC sees the refcount being decremented by close(), it can just
-give up garbage-collecting the SCC.
-
-Therefore, we only need to signal the race during MSG_PEEK with
-a proper memory barrier to make it visible to the GC.
-
-Let's use seqcount_t to notify GC when MSG_PEEK occurs and let
-it defer the SCC to the next run.
-
-This way no locking is needed on the MSG_PEEK side, and we can
-avoid imposing a penalty on every MSG_PEEK unnecessarily.
-
-Note that we can retry within unix_scc_dead() if MSG_PEEK is
-detected, but we do not do so to avoid hung task splat from
-abusive MSG_PEEK calls.
-
-Fixes: 118f457da9ed ("af_unix: Remove lock dance in unix_peek_fds().")
-Reported-by: Igor Ushakov <sysroot314@gmail.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260311054043.1231316-1-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Using include/net/af_unix.h instead of net/unix/af_unix.h on 6.6 ]
-Signed-off-by: Leon Chen <leonchen.oss@139.com>
----
- include/net/af_unix.h |  1 +
- net/unix/af_unix.c    |  2 ++
- net/unix/garbage.c    | 79 ++++++++++++++++++++++++++++---------------
- 3 files changed, 54 insertions(+), 28 deletions(-)
-
-diff --git a/include/net/af_unix.h b/include/net/af_unix.h
-index b6eedf7650da..d2fa6d9f1e97 100644
---- a/include/net/af_unix.h
-+++ b/include/net/af_unix.h
-@@ -23,6 +23,7 @@ void unix_del_edges(struct scm_fp_list *fpl);
- void unix_update_edges(struct unix_sock *receiver);
- int unix_prepare_fpl(struct scm_fp_list *fpl);
- void unix_destroy_fpl(struct scm_fp_list *fpl);
-+void unix_peek_fpl(struct scm_fp_list *fpl);
- void unix_gc(void);
- void wait_for_unix_gc(struct scm_fp_list *fpl);
- 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 87908ae74efb..c621f0090275 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -1848,6 +1848,8 @@ static void unix_detach_fds(struct scm_cookie *scm, struct sk_buff *skb)
- static void unix_peek_fds(struct scm_cookie *scm, struct sk_buff *skb)
- {
- 	scm->fp = scm_fp_dup(UNIXCB(skb).fp);
-+
-+	unix_peek_fpl(scm->fp);
- }
- 
- static void unix_destruct_scm(struct sk_buff *skb)
-diff --git a/net/unix/garbage.c b/net/unix/garbage.c
-index 66fd606c43f4..1cdb54c61619 100644
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -306,6 +306,25 @@ void unix_destroy_fpl(struct scm_fp_list *fpl)
- 	unix_free_vertices(fpl);
- }
- 
-+static bool gc_in_progress;
-+static seqcount_t unix_peek_seq = SEQCNT_ZERO(unix_peek_seq);
-+
-+void unix_peek_fpl(struct scm_fp_list *fpl)
-+{
-+	static DEFINE_SPINLOCK(unix_peek_lock);
-+
-+	if (!fpl || !fpl->count_unix)
-+		return;
-+
-+	if (!READ_ONCE(gc_in_progress))
-+		return;
-+
-+	/* Invalidate the final refcnt check in unix_vertex_dead(). */
-+	spin_lock(&unix_peek_lock);
-+	raw_write_seqcount_barrier(&unix_peek_seq);
-+	spin_unlock(&unix_peek_lock);
-+}
-+
- static bool unix_vertex_dead(struct unix_vertex *vertex)
- {
- 	struct unix_edge *edge;
-@@ -339,6 +358,36 @@ static bool unix_vertex_dead(struct unix_vertex *vertex)
- 	return true;
- }
- 
-+static LIST_HEAD(unix_visited_vertices);
-+static unsigned long unix_vertex_grouped_index = UNIX_VERTEX_INDEX_MARK2;
-+
-+static bool unix_scc_dead(struct list_head *scc, bool fast)
-+{
-+	struct unix_vertex *vertex;
-+	bool scc_dead = true;
-+	unsigned int seq;
-+
-+	seq = read_seqcount_begin(&unix_peek_seq);
-+
-+	list_for_each_entry_reverse(vertex, scc, scc_entry) {
-+		/* Don't restart DFS from this vertex. */
-+		list_move_tail(&vertex->entry, &unix_visited_vertices);
-+
-+		/* Mark vertex as off-stack for __unix_walk_scc(). */
-+		if (!fast)
-+			vertex->index = unix_vertex_grouped_index;
-+
-+		if (scc_dead)
-+			scc_dead = unix_vertex_dead(vertex);
-+	}
-+
-+	/* If MSG_PEEK intervened, defer this SCC to the next round. */
-+	if (read_seqcount_retry(&unix_peek_seq, seq))
-+		return false;
-+
-+	return scc_dead;
-+}
-+
- static void unix_collect_skb(struct list_head *scc, struct sk_buff_head *hitlist)
- {
- 	struct unix_vertex *vertex;
-@@ -392,9 +441,6 @@ static bool unix_scc_cyclic(struct list_head *scc)
- 	return false;
- }
- 
--static LIST_HEAD(unix_visited_vertices);
--static unsigned long unix_vertex_grouped_index = UNIX_VERTEX_INDEX_MARK2;
--
- static void __unix_walk_scc(struct unix_vertex *vertex, unsigned long *last_index,
- 			    struct sk_buff_head *hitlist)
- {
-@@ -460,9 +506,7 @@ static void __unix_walk_scc(struct unix_vertex *vertex, unsigned long *last_inde
- 	}
- 
- 	if (vertex->index == vertex->scc_index) {
--		struct unix_vertex *v;
- 		struct list_head scc;
--		bool scc_dead = true;
- 
- 		/* SCC finalised.
- 		 *
-@@ -471,18 +515,7 @@ static void __unix_walk_scc(struct unix_vertex *vertex, unsigned long *last_inde
- 		 */
- 		__list_cut_position(&scc, &vertex_stack, &vertex->scc_entry);
- 
--		list_for_each_entry_reverse(v, &scc, scc_entry) {
--			/* Don't restart DFS from this vertex in unix_walk_scc(). */
--			list_move_tail(&v->entry, &unix_visited_vertices);
--
--			/* Mark vertex as off-stack. */
--			v->index = unix_vertex_grouped_index;
--
--			if (scc_dead)
--				scc_dead = unix_vertex_dead(v);
--		}
--
--		if (scc_dead) {
-+		if (unix_scc_dead(&scc, false)) {
- 			unix_collect_skb(&scc, hitlist);
- 		} else {
- 			if (unix_vertex_max_scc_index < vertex->scc_index)
-@@ -530,19 +563,11 @@ static void unix_walk_scc_fast(struct sk_buff_head *hitlist)
- 	while (!list_empty(&unix_unvisited_vertices)) {
- 		struct unix_vertex *vertex;
- 		struct list_head scc;
--		bool scc_dead = true;
- 
- 		vertex = list_first_entry(&unix_unvisited_vertices, typeof(*vertex), entry);
- 		list_add(&scc, &vertex->scc_entry);
- 
--		list_for_each_entry_reverse(vertex, &scc, scc_entry) {
--			list_move_tail(&vertex->entry, &unix_visited_vertices);
--
--			if (scc_dead)
--				scc_dead = unix_vertex_dead(vertex);
--		}
--
--		if (scc_dead)
-+		if (unix_scc_dead(&scc, true))
- 			unix_collect_skb(&scc, hitlist);
- 		else if (!unix_graph_maybe_cyclic)
- 			unix_graph_maybe_cyclic = unix_scc_cyclic(&scc);
-@@ -553,8 +578,6 @@ static void unix_walk_scc_fast(struct sk_buff_head *hitlist)
- 	list_replace_init(&unix_visited_vertices, &unix_unvisited_vertices);
- }
- 
--static bool gc_in_progress;
--
- static void __unix_gc(struct work_struct *work)
- {
- 	struct sk_buff_head hitlist;
--- 
-2.35.3
+Applied now.  Thanks.
 
 
+Takashi
 
