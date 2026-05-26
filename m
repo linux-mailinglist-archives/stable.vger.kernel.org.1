@@ -1,159 +1,409 @@
-Return-Path: <stable+bounces-254383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254384-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uIevEErCFWoAagcAu9opvQ
-	(envelope-from <stable+bounces-254383-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 17:54:50 +0200
+	id mJvxJT+/FWrYZgcAu9opvQ
+	(envelope-from <stable+bounces-254384-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 17:41:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B9245D9216
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 17:54:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 635C45D8EF7
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 17:41:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 45A9F30DE763
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 15:27:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F0C7D30A9A82
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 15:28:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF30F347FC4;
-	Tue, 26 May 2026 15:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 718932F3C0A;
+	Tue, 26 May 2026 15:27:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="Jx1lG1Ki"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bFJ9R3Et"
 X-Original-To: stable@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA03830C15B
-	for <stable@vger.kernel.org>; Tue, 26 May 2026 15:26:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D46AC30EF7B
+	for <stable@vger.kernel.org>; Tue, 26 May 2026 15:27:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779809162; cv=none; b=LoBGs0x7bDwryp47kkcdNQ7m4cl8amwS63cdqEbBAvz7z4EZubqh/I2KrE51754NGtd1o5E/Cdpt415onctQJyVoAO4jbZwszplaf9pTgubbFjWztFDQRCG3+jndEL/LTz7eASo1PBG+V1MeL6JsQMx50S9hDB8DpCgKdRxW22M=
+	t=1779809269; cv=none; b=j6xas7qgCnEcDtuIoYseb5Vji1eXe2aAjFAAIQEu/x8B0EjXYjDkM/cNetV9Z69GPcoZlud6z3BrZOcCmO9bNgIEoFKPkVJ9QYBg63+wA9TE2PcHpnJI5v4hoP7aUPATp5XlQg8oaNBicEYGYYgINHyx2gZzqyy1wsmOgQz0fas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779809162; c=relaxed/simple;
-	bh=5Y8oR+KoKskA3FNVYnfA0EbDZ68H3oWIh6hZUHqJx0o=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=N6ZxfSvImRRWRdPTUMJNiecnaoIOxIDw1kD3xa8+F6IxOjxFezWutZEV6Q3SP2wqToQpaLArUaQk/ZpKLYNWQYTHwfP9uqfhJOAVxgn0MNfefZgdPgmMKQ/sVNFvwbTiB7rQPGgd2FXrNQCzndOUuYHuCSuh/cIwVS98pt2Vz9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=Jx1lG1Ki; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=9iS3sJAasiDC8zeOw7PtnPEZBgzSBjSgT17X4V1FFos=; b=Jx1lG1KiWLXQiYXfbTDmysYKjq
-	+agzMmBczRQO0tM9Cfa7FDQkDraVtc1T+VqOx8rj8/v+lgFvTBATFbH4w5i1IapHv1rZ+Yq+Si7rv
-	SeqRzxTBLEhT/+PM5j6T4GHSMCCzp4zJ3+EdLHTsX//sOylOh3qKmV3kMRX8GsGAIa67ymDtEIDUf
-	3oCzV0fl+5F/haKkDKcfxsvPjLvxe5ZOpJf+Xd6Fk4qMgh2wQn0iWpXzeqWOK4hjObYli8mZHgUpx
-	4j0w5j7+x5Fyrszdjcu4mrd03oG75/5IFXt8Ulk+dy6UIoZZqGQckttY+NKxtZDuLtZyLD7gkAl53
-	YIr1UxLA==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <benh@debian.org>)
-	id 1wRtfE-002RUJ-1a;
-	Tue, 26 May 2026 15:25:52 +0000
-Message-ID: <ece62fc01497ee5b8bb7e272a0f6474e89c8e7b2.camel@debian.org>
-Subject: Re: [PATCH 5.10] Revert "s390/cio: Fix device lifecycle handling in
- css_alloc_subchannel()"
-From: Ben Hutchings <benh@debian.org>
-To: Sasha Levin <sashal@kernel.org>, Greg Kroah-Hartman
-	 <gregkh@linuxfoundation.org>
-Cc: stable <stable@vger.kernel.org>, Salah Triki <salah.triki@gmail.com>, 
- Heiko Carstens <hca@linux.ibm.com>, Vineeth Vijayan <vneethv@linux.ibm.com>
-Date: Tue, 26 May 2026 17:25:44 +0200
-In-Reply-To: <20260526140000.agent5-0001@kernel.org>
-References: <ahVuMv5SLjHVUbkt@decadent.org.uk>
-	 <20260526140000.agent5-0001@kernel.org>
-Organization: Debian
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-0coBZp/mt3fhBitbhzYV"
-User-Agent: Evolution 3.56.2-9 
+	s=arc-20240116; t=1779809269; c=relaxed/simple;
+	bh=7phcW4FNdZQTU01VTUjPEkkd5SpU6jvSaBP2ZlygCzI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bR+kAS7D5jkwFpBGKsTTWfh1HeXGJqv41B2AhzbX9n0JXSYhV+4Z+gGwveXc4586gdKqwMCW5FHoOhtw/gYaNjwpBNe5F1zH5TBY6LHaBBX/Xy0csrvklR4gXO6DcfJF6WXVpRWpG/px+qbuZjAkGM8a8EW75NK0ZyfBcqCE908=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bFJ9R3Et; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779809267; x=1811345267;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=7phcW4FNdZQTU01VTUjPEkkd5SpU6jvSaBP2ZlygCzI=;
+  b=bFJ9R3Et3bPZrWd0ZT6Kt2dVKb12fK8gqBUTl5kJbBDSYt9GChUwKBOz
+   4Vrj4AAQCM3rhqoncRuwSMGyIXuwP8G6mAcZdV11HWW4CNVz7NJiTZG/D
+   OSko7lAYgSHltxjFlDX9Tg2w5lvh50EZcl7pGsXy4QhhrMKdrrZDE/vcI
+   0uoXTCIK7HoEG8G5y+HKYvhmCPoXfJp6zJc4Nunii7lVVLhHLlGl4de0R
+   pOuw+lUKbJKC0RmiUexAVDG0/FDrXz9SnNjqT+pXR5lmnsjMWPskOyRdr
+   4QTt9zkTIBoKYoD/i3HOPqV3yQZzkYtOOVbaQQ9DFh2PRq3ISK81/IMX3
+   Q==;
+X-CSE-ConnectionGUID: 3S2kMg1xSWCzM3jlXSnpFQ==
+X-CSE-MsgGUID: E+GO/b0MSgy4lfrU0yn61A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11797"; a="80608159"
+X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
+   d="scan'208";a="80608159"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 08:27:46 -0700
+X-CSE-ConnectionGUID: Gj3xYAFyRcW8PWN62nYUQA==
+X-CSE-MsgGUID: D+3beDmfQZaK4VPSQqSxzw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
+   d="scan'208";a="247031652"
+Received: from ettammin-mobl2.ger.corp.intel.com (HELO [10.245.244.128]) ([10.245.244.128])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 08:27:44 -0700
+Message-ID: <d9c796f7-1dc5-4d0c-b121-69c042a3ae32@intel.com>
+Date: Tue, 26 May 2026 16:27:42 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Debian-User: benh
-X-Spamd-Result: default: False [-2.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/5] drm/xe/guc: Defer user exec queue scheduler start
+ until after page table restore
+To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ intel-xe@lists.freedesktop.org
+Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
+ stable@vger.kernel.org, Matthew Brost <matthew.brost@intel.com>,
+ Francois Dugast <francois.dugast@intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+References: <20260525133051.91636-1-thomas.hellstrom@linux.intel.com>
+ <20260525133051.91636-2-thomas.hellstrom@linux.intel.com>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <20260525133051.91636-2-thomas.hellstrom@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[debian.org,none];
-	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_ALL(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254383-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	HAS_ORG_HEADER(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,linux.ibm.com];
+	DKIM_TRACE(0.00)[intel.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[benh@debian.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[debian.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254384-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 5B9245D9216
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[matthew.auld@intel.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:mid,intel.com:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 635C45D8EF7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On 25/05/2026 14:30, Thomas Hellström wrote:
+> On S3/S4 and d3cold runtime PM resume, exec queue schedulers are
+> restarted before xe_bo_restore_late() has restored userspace VM page
+> table BOs and LRC BOs. If a pending job is submitted in this window,
+> GuC will attempt to load the context using stale or invalid data in
+> VRAM, leading to GuC exceptions.
+> 
+> Defer user exec queue scheduler start until after page tables and LRC
+> BOs are restored, ensuring no job can be submitted before the backing
+> storage is valid. Migrate and kernel VM exec queues are still started
+> immediately as they are required by the restore process itself.
+> 
+> For GT reset, VRAM is not evicted and all BOs remain valid, so user
+> exec queue schedulers are started without deferral.
+> 
+> This covers both LR and non-LR userspace exec queues.
+> 
+> v3:
+> - Skip queues with a running scheduler in xe_guc_submit_start_user_queues()
+>    to avoid a WARN_ON in drm_sched_for_each_pending_job() when a new user
+>    exec queue is created in the window between xe_guc_submit_start() and
+>    xe_guc_submit_start_user_queues(). (Intel CI)
+> 
+> Fixes: 7f387e6012b6 ("drm/xe: add XE_BO_FLAG_PINNED_LATE_RESTORE")
+> Cc: Matthew Auld <matthew.auld@intel.com>
+> Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+> Cc: <stable@vger.kernel.org> # v6.16+
+> Assisted-by: GitHub_Copilot:claude-sonnet-4.6
+> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> ---
+>   drivers/gpu/drm/xe/xe_gt.c         | 16 +++++++++
+>   drivers/gpu/drm/xe/xe_gt.h         |  2 ++
+>   drivers/gpu/drm/xe/xe_guc.c        | 13 ++++++++
+>   drivers/gpu/drm/xe/xe_guc.h        |  1 +
+>   drivers/gpu/drm/xe/xe_guc_submit.c | 52 ++++++++++++++++++++++++++++++
+>   drivers/gpu/drm/xe/xe_guc_submit.h |  1 +
+>   drivers/gpu/drm/xe/xe_pm.c         |  6 ++++
+>   drivers/gpu/drm/xe/xe_uc.c         | 16 +++++++++
+>   drivers/gpu/drm/xe/xe_uc.h         |  1 +
+>   9 files changed, 108 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/xe/xe_gt.c b/drivers/gpu/drm/xe/xe_gt.c
+> index 783eb6d631b5..2c63e4d6a649 100644
+> --- a/drivers/gpu/drm/xe/xe_gt.c
+> +++ b/drivers/gpu/drm/xe/xe_gt.c
+> @@ -955,6 +955,8 @@ static void gt_reset_worker(struct work_struct *w)
+>   	if (err)
+>   		goto err_out;
+>   
+> +	xe_uc_start_user_queues(&gt->uc);
+> +
+>   	xe_force_wake_put(gt_to_fw(gt), fw_ref);
+>   
+>   	/* Pair with get while enqueueing the work in xe_gt_reset_async() */
+> @@ -967,6 +969,7 @@ static void gt_reset_worker(struct work_struct *w)
+>   err_out:
+>   	xe_force_wake_put(gt_to_fw(gt), fw_ref);
+>   	XE_WARN_ON(xe_uc_start(&gt->uc));
+> +	xe_uc_start_user_queues(&gt->uc);
+>   
+>   err_fail:
+>   	xe_gt_err(gt, "reset failed (%pe)\n", ERR_PTR(err));
+> @@ -1050,6 +1053,19 @@ int xe_gt_sanitize_freq(struct xe_gt *gt)
+>   	return ret;
+>   }
+>   
+> +/**
+> + * xe_gt_start_user_queues() - Start user exec queues after page table restore
+> + * @gt: the GT object
+> + *
+> + * Starts the DRM schedulers for all user exec queues on the GT. This must be
+> + * called after xe_bo_restore_late() to ensure that userspace page table BOs
+> + * are valid before any job submission triggers GuC context registration.
+> + */
+> +void xe_gt_start_user_queues(struct xe_gt *gt)
+> +{
+> +	xe_uc_start_user_queues(&gt->uc);
+> +}
+> +
+>   int xe_gt_resume(struct xe_gt *gt)
+>   {
+>   	int err;
+> diff --git a/drivers/gpu/drm/xe/xe_gt.h b/drivers/gpu/drm/xe/xe_gt.h
+> index 4150aa594f05..b6ba05a317f7 100644
+> --- a/drivers/gpu/drm/xe/xe_gt.h
+> +++ b/drivers/gpu/drm/xe/xe_gt.h
+> @@ -170,4 +170,6 @@ static inline bool xe_gt_supports_multi_queue(const struct xe_gt *gt,
+>   	return gt->info.multi_queue_engine_class_mask & BIT(class);
+>   }
+>   
+> +void xe_gt_start_user_queues(struct xe_gt *gt);
+> +
+>   #endif
+> diff --git a/drivers/gpu/drm/xe/xe_guc.c b/drivers/gpu/drm/xe/xe_guc.c
+> index 4023700ff2a9..0359909b8b27 100644
+> --- a/drivers/gpu/drm/xe/xe_guc.c
+> +++ b/drivers/gpu/drm/xe/xe_guc.c
+> @@ -1717,6 +1717,19 @@ int xe_guc_start(struct xe_guc *guc)
+>   	return xe_guc_submit_start(guc);
+>   }
+>   
+> +/**
+> + * xe_guc_start_user_queues() - Start user exec queue schedulers on the GuC
+> + * @guc: the GuC object
+> + *
+> + * Starts the DRM schedulers for all user exec queues managed by this GuC.
+> + * Must be called after xe_bo_restore_late() to ensure page tables are valid
+> + * before any job submission triggers GuC context registration.
+> + */
+> +void xe_guc_start_user_queues(struct xe_guc *guc)
+> +{
+> +	xe_guc_submit_start_user_queues(guc);
+> +}
+> +
+>   /**
+>    * xe_guc_runtime_suspend() - GuC runtime suspend
+>    * @guc: The GuC object
+> diff --git a/drivers/gpu/drm/xe/xe_guc.h b/drivers/gpu/drm/xe/xe_guc.h
+> index 02514914f404..ad2a6521852c 100644
+> --- a/drivers/gpu/drm/xe/xe_guc.h
+> +++ b/drivers/gpu/drm/xe/xe_guc.h
+> @@ -60,6 +60,7 @@ void xe_guc_reset_wait(struct xe_guc *guc);
+>   void xe_guc_stop_prepare(struct xe_guc *guc);
+>   void xe_guc_stop(struct xe_guc *guc);
+>   int xe_guc_start(struct xe_guc *guc);
+> +void xe_guc_start_user_queues(struct xe_guc *guc);
+>   void xe_guc_declare_wedged(struct xe_guc *guc);
+>   bool xe_guc_using_main_gamctrl_queues(struct xe_guc *guc);
+>   
+> diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
+> index 4d32b430bc15..2b8b316c0ca3 100644
+> --- a/drivers/gpu/drm/xe/xe_guc_submit.c
+> +++ b/drivers/gpu/drm/xe/xe_guc_submit.c
+> @@ -2535,6 +2535,16 @@ static void guc_exec_queue_start(struct xe_exec_queue *q)
+>   	xe_sched_submission_resume_tdr(sched);
+>   }
+>   
+> +/*
+> + * Returns true for user exec queues whose page tables may not yet be
+> + * restored when xe_guc_submit_start() is called during GT resume.
+> + * These queues must be started later, after xe_bo_restore_late().
+> + */
+> +static bool exec_queue_needs_late_start(const struct xe_exec_queue *q)
+> +{
+> +	return !(q->flags & (EXEC_QUEUE_FLAG_MIGRATE | EXEC_QUEUE_FLAG_VM));
 
---=-0coBZp/mt3fhBitbhzYV
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Just one question here. Do we want to include FLAG_VM in here? Those 
+would be bind jobs, I think, but I'm not sure if we actually flush those 
+on suspend? For migrate we do an idle wait on every migrate queue, so I 
+would assume when we restart a migrate queue, it should be empty, but 
+not sure if that is true for bind jobs on the bind queue(s)? Bind job 
+will be touching paging structures also, which need to be restored 
+first. Or is this somehow already handled?
 
-On Tue, 2026-05-26 at 09:38 -0400, Sasha Levin wrote:
-> On Tue, May 26, 2026 at 11:56:02AM +0200, Ben Hutchings wrote:
-> > The backported commit calls put_device() on the embedded struct
-> > device, which is now reached if css_sch_create_locks() fails, before
-> > it was initialised.  This effectively reverts upstream commit
-> > f65c75b0b9b5 for 5.10.
->=20
-> Queued for 5.10, thanks. I also queued matching reverts on 5.15 (of
-> b1d4e6fb24167) and 6.1 (of fd295a75d828c), since the same goto-err
-> path lands at the err: label before device_initialize() on those
-> branches too.
+> +}
+> +
+>   int xe_guc_submit_start(struct xe_guc *guc)
+>   {
+>   	struct xe_exec_queue *q;
+> @@ -2549,6 +2559,10 @@ int xe_guc_submit_start(struct xe_guc *guc)
+>   		if (q->guc->id != index)
+>   			continue;
+>   
+> +		/* User queues are deferred until page tables are restored */
+> +		if (exec_queue_needs_late_start(q))
+> +			continue;
+> +
+>   		guc_exec_queue_start(q);
+>   	}
+>   	mutex_unlock(&guc->submission_state.lock);
+> @@ -2558,6 +2572,44 @@ int xe_guc_submit_start(struct xe_guc *guc)
+>   	return 0;
+>   }
+>   
+> +/**
+> + * xe_guc_submit_start_user_queues() - Start user exec queues after late restore
+> + * @guc: the GuC object
+> + *
+> + * Starts the DRM schedulers for all user exec queues (those not flagged as
+> + * migrate or VM queues). Must be called after xe_bo_restore_late() to ensure
+> + * page tables are valid before any job submission is attempted.
+> + */
+> +void xe_guc_submit_start_user_queues(struct xe_guc *guc)
+> +{
+> +	struct xe_exec_queue *q;
+> +	unsigned long index;
+> +
+> +	if (!guc->submission_state.initialized)
+> +		return;
+> +
+> +	mutex_lock(&guc->submission_state.lock);
+> +	xa_for_each(&guc->submission_state.exec_queue_lookup, index, q) {
+> +		/* Prevent redundant attempts to start parallel queues */
+> +		if (q->guc->id != index)
+> +			continue;
+> +
+> +		if (!exec_queue_needs_late_start(q))
+> +			continue;
+> +
+> +		/*
+> +		 * Skip queues whose scheduler is already running: they were
+> +		 * created after xe_guc_submit_start() decremented stopped to 0,
+> +		 * so they need no restart.
+> +		 */
+> +		if (!drm_sched_is_stopped(&q->guc->sched.base))
+> +			continue;
+> +
+> +		guc_exec_queue_start(q);
+> +	}
+> +	mutex_unlock(&guc->submission_state.lock);
+> +}
+> +
+>   static void guc_exec_queue_unpause_prepare(struct xe_guc *guc,
+>   					   struct xe_exec_queue *q)
+>   {
+> diff --git a/drivers/gpu/drm/xe/xe_guc_submit.h b/drivers/gpu/drm/xe/xe_guc_submit.h
+> index b3839a90c142..b210b2f6cd2d 100644
+> --- a/drivers/gpu/drm/xe/xe_guc_submit.h
+> +++ b/drivers/gpu/drm/xe/xe_guc_submit.h
+> @@ -20,6 +20,7 @@ int xe_guc_submit_reset_prepare(struct xe_guc *guc);
+>   void xe_guc_submit_reset_wait(struct xe_guc *guc);
+>   void xe_guc_submit_stop(struct xe_guc *guc);
+>   int xe_guc_submit_start(struct xe_guc *guc);
+> +void xe_guc_submit_start_user_queues(struct xe_guc *guc);
+>   void xe_guc_submit_pause(struct xe_guc *guc);
+>   void xe_guc_submit_pause_abort(struct xe_guc *guc);
+>   void xe_guc_submit_pause_vf(struct xe_guc *guc);
+> diff --git a/drivers/gpu/drm/xe/xe_pm.c b/drivers/gpu/drm/xe/xe_pm.c
+> index d4672eb07476..c203a59d7000 100644
+> --- a/drivers/gpu/drm/xe/xe_pm.c
+> +++ b/drivers/gpu/drm/xe/xe_pm.c
+> @@ -282,6 +282,9 @@ int xe_pm_resume(struct xe_device *xe)
+>   	if (err)
+>   		goto err;
+>   
+> +	for_each_gt(gt, xe, id)
+> +		xe_gt_start_user_queues(gt);
+> +
+>   	xe_pxp_pm_resume(xe->pxp);
+>   
+>   	if (IS_VF_CCS_READY(xe))
+> @@ -696,6 +699,9 @@ int xe_pm_runtime_resume(struct xe_device *xe)
+>   		err = xe_bo_restore_late(xe);
+>   		if (err)
+>   			goto out;
+> +
+> +		for_each_gt(gt, xe, id)
+> +			xe_gt_start_user_queues(gt);
+>   	}
+>   
+>   	xe_pxp_pm_resume(xe->pxp);
+> diff --git a/drivers/gpu/drm/xe/xe_uc.c b/drivers/gpu/drm/xe/xe_uc.c
+> index 75091bde0d50..12606133f5bc 100644
+> --- a/drivers/gpu/drm/xe/xe_uc.c
+> +++ b/drivers/gpu/drm/xe/xe_uc.c
+> @@ -263,6 +263,22 @@ int xe_uc_start(struct xe_uc *uc)
+>   	return xe_guc_start(&uc->guc);
+>   }
+>   
+> +/**
+> + * xe_uc_start_user_queues() - Start user exec queues after late restore
+> + * @uc: the UC object
+> + *
+> + * Starts the DRM schedulers for all user exec queues. Must be called after
+> + * xe_bo_restore_late() to ensure page tables are valid before any job
+> + * submission is attempted. Has no effect if GuC submission is not enabled.
+> + */
+> +void xe_uc_start_user_queues(struct xe_uc *uc)
+> +{
+> +	if (!xe_device_uc_enabled(uc_to_xe(uc)))
+> +		return;
+> +
+> +	xe_guc_start_user_queues(&uc->guc);
+> +}
+> +
+>   static void uc_reset_wait(struct xe_uc *uc)
+>   {
+>   	int ret;
+> diff --git a/drivers/gpu/drm/xe/xe_uc.h b/drivers/gpu/drm/xe/xe_uc.h
+> index 255a54a8f876..2fd056cfa1d0 100644
+> --- a/drivers/gpu/drm/xe/xe_uc.h
+> +++ b/drivers/gpu/drm/xe/xe_uc.h
+> @@ -18,6 +18,7 @@ void xe_uc_runtime_suspend(struct xe_uc *uc);
+>   void xe_uc_stop_prepare(struct xe_uc *uc);
+>   void xe_uc_stop(struct xe_uc *uc);
+>   int xe_uc_start(struct xe_uc *uc);
+> +void xe_uc_start_user_queues(struct xe_uc *uc);
+>   void xe_uc_suspend_prepare(struct xe_uc *uc);
+>   int xe_uc_suspend(struct xe_uc *uc);
+>   int xe_uc_sanitize_reset(struct xe_uc *uc);
 
-Thanks.  I am still working my way through various fixes needed for
-different stable branches.  I agree with reverting for exactly those
-branches too.
-
-Ben.
-
---=20
-Ben Hutchings - Debian developer, member of kernel, installer and LTS
-teams
-
---=-0coBZp/mt3fhBitbhzYV
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmoVu3gACgkQ57/I7JWG
-EQk2dw/+PQTuaJ+CdUCCw3txIxgmXi9AsOcS//HL+VtUfdYYOnRw3ZhOHQFXNC0i
-9f5NvA7ZZxcglhnTPpKNjEqPX+CMnDhFgH+On6A5p37BrMSYdDhJhzD+WA/dwOwx
-JLOmW8M62kSjTrVO2iI+MGUNe4dC5pC1OQdOqnTT/VssuInDYawXuDVeTAsFK3i9
-aQs+Kg4SC4wlnpkoi4a1Fa4siuFO3TqSYeMCjdYu8JVHs379lDlPtglES84EsEkm
-gWROBGNiP2+ohLMaKwhm64Xp9bjhi+zh/Kuxg6fb66lp6gFOH8Wd+yItSQY7qqnV
-tiDXgkYmb2kd3ySKJNe7XXXw0gbuIZ0P06CDEzRGEhsNYwYTnIlF2rDBn7JvMDfD
-XuQrLC3AqBGb19tVMCHpqGHfynk3pXpQY9Eb9KK3NR8L4m6nTtjLpWpDhmCRhgoI
-p9gDbNgdmx+AsQXbMBpdEIuG2cZvEptnDOyXC/Aouhch5sZ61v7QYbHzKZPpYHAO
-5zyMd6+7NGA5cq37cuq98JBOV1G3DZQFA3hStTUk8THx450r9qMGd8WnzuCFSCmL
-MtHOZENTU6kjlFKy3XcLccFAV8fw31z8LDmk4tQpBQgH/5YaUqrcpMPNiRDxz6rx
-I+65X0ROpovpqIgHt1NZtnqAUEU9Yzkmz5HmQG+kw/kJWzPSYmo=
-=LjJw
------END PGP SIGNATURE-----
-
---=-0coBZp/mt3fhBitbhzYV--
 
