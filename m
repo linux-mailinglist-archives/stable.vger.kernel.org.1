@@ -1,156 +1,188 @@
-Return-Path: <stable+bounces-254443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254444-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mL6hINn+FWoqgwcAu9opvQ
-	(envelope-from <stable+bounces-254443-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 22:13:13 +0200
+	id yOrrLmIDFmrNgwcAu9opvQ
+	(envelope-from <stable+bounces-254444-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 22:32:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5B6E5DC3CB
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 22:13:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A5845DC53B
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 22:32:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 67741302EAB9
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 20:13:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AFCAC302A2EE
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 20:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF8E83B7B8C;
-	Tue, 26 May 2026 20:13:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 210243B8409;
+	Tue, 26 May 2026 20:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=alpinelinux.org header.i=@alpinelinux.org header.b="pTAqDshU"
+	dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b="xaVM4TFK"
 X-Original-To: stable@vger.kernel.org
-Received: from gbr-app-1.alpinelinux.org (gbr-app-1.alpinelinux.org [213.219.36.190])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E633B4EA9;
-	Tue, 26 May 2026 20:13:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.219.36.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C666192B75
+	for <stable@vger.kernel.org>; Tue, 26 May 2026 20:32:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779826388; cv=none; b=gGSo9zk4824TJjpMWtQZOuAeeCbLUJpFYODLmNq6UoOscoFw81Nl2vqcoDzvOwJo4dVohqjLT2xIKrIzDVV2MHc3d31PWjW/nlqkHHlovPwkG0k8FUIrElAwA643ZRQ0Wzwqpot1uCTjubE/hLsSxMDlSjlWV2yX1awRcrcvVjo=
+	t=1779827551; cv=none; b=I5fVLdnDG4puf/1uKGaFcEpynizQyewJ7nrM1ebRVXg6yQH6yiw/6nfhf72uyMyfE5IKPi25lpj19da+BVLFfnoYQlqf+XVXnyBmO+b6mYMvqJm7bu0Oyvb+s4emMQwRZXo9PaX+0vBeQyrNYDAHvWRul6w3gfbwMiP+avabZe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779826388; c=relaxed/simple;
-	bh=NviVbvUt58nV72tG6TurQve8qkxy/rpSFbMDiksUri4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=STlGBbBMiu3nA4ALb23p4hL+RIdS2uYHCDSH0DkK5uyRsmElfSiLEGY91FTKGNljKHZ9GDU5akx/3dRrtdmh7KGBgI6cCfHZ6ZXlBVCdtkf8H2MJjHuVEM/vk7PwqJa8z/hx3AOAhtZL67/aI0NCMy5YAZt5cOJlG1yRypcWu2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpinelinux.org; spf=pass smtp.mailfrom=alpinelinux.org; dkim=pass (1024-bit key) header.d=alpinelinux.org header.i=@alpinelinux.org header.b=pTAqDshU; arc=none smtp.client-ip=213.219.36.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpinelinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alpinelinux.org
-Received: from ncopa-desktop.lan (unknown [IPv6:2001:4646:fb05:0:db93:c1a1:833:ba07])
-	(Authenticated sender: ncopa@alpinelinux.org)
-	by gbr-app-1.alpinelinux.org (Postfix) with ESMTPSA id 810AF21FFF4;
-	Tue, 26 May 2026 20:12:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alpinelinux.org;
-	s=smtp; t=1779826379;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=swh19O+gG9bAlgK7bIJI72PKJU8aaCLtdwtHQb5/FiY=;
-	b=pTAqDshUW/2vEb2uT3/FZoTMK0EuBpenGWGVqEIBmj6E3/dr6Ze6CKqopaRX2uBI0jwfRn
-	eeiKc2DETbWc1pHbMDpIn6ED3ji/VZDsSKoj2Gn54CgDvmYgsSVAdGJ6rjZizlRd8yu07N
-	IuHXI7yf0c6g4Z4DrdseAMoEUdDvdF0=
-Date: Tue, 26 May 2026 22:12:54 +0200
-From: Natanael Copa <ncopa@alpinelinux.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
- linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
- vneethv@linux.ibm.com, oberpar@linux.ibm.com, hca@linux.ibm.com,
- gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
- svens@linux.ibm.com
-Subject: Re: [REGRESSION] 6.6.141 s390x build failure in s390/cio due to
- missing driver_override infrastructure
-Message-ID: <20260526221254.183e23ef@ncopa-desktop.lan>
-In-Reply-To: <20260525231000.agent5-0002@kernel.org>
-References: <20260525101635.26090-1-ncopa@alpinelinux.org>
-	<20260525231000.agent5-0002@kernel.org>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-alpine-linux-musl)
+	s=arc-20240116; t=1779827551; c=relaxed/simple;
+	bh=J8QTJB03WvozUL/lm9seJKVTmum3YvberljLi5CeonU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QtcOe5LPbCC2xDlpFsnmTj0xAMdqm8oq/wMFBLtxe5mf/X9Uq2z29D2RqlvEsLQo3sjyjv4Puri9AQ06puNqJGSVfSIUxfuEzkL3FPbN1OrIh2CMPQAn3C9lpgS9vrDPm7lE788J8O05vXAbICGPjZDOXNUNVN4botntlvZsFHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=xaVM4TFK; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0sec.ai
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-43d77f6092eso6299559f8f.2
+        for <stable@vger.kernel.org>; Tue, 26 May 2026 13:32:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=0sec.ai; s=google; t=1779827549; x=1780432349; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=yOE68Mzf5nnVfNMftzrnIa4+AJ1pM+MIvuOSTOhC6JY=;
+        b=xaVM4TFKL6WqoTgUxw6ugDtAPaPmv85BHuXPwkJiLyV07nNxeXK3xOW/L7tOoVKpAZ
+         Fh5IYXgqOyich0LSdQ/l2ggfmrRdf0Z9E6+Bkdf8nQ9Tq2kaVX7A3ceknme7+nLVySaa
+         jYhwcK4b2OsdkYvc9k0LCOmnBPOHnWqHolXdubMKckvW1Mn5SwrxWcyW+cxYl0djre3J
+         ie7J01i26gDu47IlnGQcexZmoQYT8pHwUGXKMf7IJwG8YD7IDYnKjraXG9pkknj0FAaV
+         xBGqa9yzvEzLCKtYwO68+6HPQNT+O0lCP4bJqVdj8o93TDwZyS7nSF1HfE20nryJKlmO
+         Ealw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779827549; x=1780432349;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yOE68Mzf5nnVfNMftzrnIa4+AJ1pM+MIvuOSTOhC6JY=;
+        b=UbAT+tp524LzQ5GMlblk4d6H6dVuW9Hg6A9iclmJg8O8aD2gXMXQXZ1wgvGYsCkuBk
+         m8dQ4odbuSIvIrKfuizwlAy28c4nsfBO/7azThmUJn+9wJI2v1S6oQXqpna2OpBDCT1R
+         rCqnRU4SGOo2sDihTyqUM54CiJy5vOJ4/YcAktUeM4xArFNf24uF9yhA/SfnubDqmNln
+         L0TPIqjAWCyiWiUECKk+Thxp4spmYjtni2o4GXFjCdT8JRqGSouVknu9oDDAzMhphUDA
+         /5uZFjFEi/e3EYgcinJ5kA0eSicXA95yK79K06LJvq1gtr+8qP8mMrIQxROXp35g7FKY
+         y3YA==
+X-Forwarded-Encrypted: i=1; AFNElJ8Qy7UdTCDlTwskPVelHkgF39gXNBnxt1qKSW0tshHCKC1sxlVRroJBvpz7bJ63ZStsNw8k2Ik=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyjH2YcRY4yCKVNLwD/J4G84lhpWur19LRpV0Z8vpr7uXmgfEhX
+	HhQHkGdpplA3hibdg35s2Otz0HbpAny/C9ygL6b6bpEdSAJUroHLIxfqJQ6cR5qdBbn3
+X-Gm-Gg: Acq92OGFQk/kTOHCVOnKnam56XPh4zjSLPAt+YniV8xMvMXlq7MLskwf2S0eENWZKWo
+	8kRvdgmV/Q83tWtgeIdldVXqgVY0ZCe/qoyh6KGkhUwclpBXmS5uf6yWURpZViKVD8it4uh+DQk
+	sxEzrayRbnnq9OxNzLrofOucDA2mQogp1+tOrep4KBW3gegxf8GUJmwZdwWZZ4nuCzFEQkWpNWe
+	eG/QKbDkuwFBwQJeGTLUh+jILOwCF1rMUD3/jVlBQNQSkgKHjWcHRmLNOhrLZohv1ZpNXAfocIL
+	Af9nAszdYgds69Giv7+92w9T/DZ0ybMiFyoWfljJpTY4o1odjTDn2sudyi9SBW96lmq6wlQ8RUl
+	gjtFcN0KcBwUlvhqMf/bA/6QZ3yjgOfWuzWOstidqULyen/hxe+Gz8bKcJzkEId07MQYgBFTEqu
+	uA2nRbb04jEDjIMxASxUY7IPTchwFKPQAM4CJOseHW2dp7APiZtu38yRPF0q3sLv/QqOn7I0/NW
+	3Zw3F5TIMWTTzUy38NSmGKvnxdWlCRAsnNTk++eqxSjyMoCGW9VnZI=
+X-Received: by 2002:a05:6000:41c7:b0:451:66e6:501b with SMTP id ffacd0b85a97d-45eb3324e34mr29057635f8f.0.1779827548645;
+        Tue, 26 May 2026 13:32:28 -0700 (PDT)
+Received: from PeakBook-Mini.tail8e484.ts.net ([178.197.223.24])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45edb557545sm851693f8f.12.2026.05.26.13.32.27
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 26 May 2026 13:32:28 -0700 (PDT)
+From: Doruk Tan Ozturk <doruk@0sec.ai>
+To: oe-linux-nfc@lists.linux.dev
+Cc: security@kernel.org,
+	netdev@vger.kernel.org,
+	stable@vger.kernel.org,
+	Doruk Tan Ozturk <doruk@0sec.ai>
+Subject: [PATCH net v2] nfc: llcp: fix integer underflow and missing bounds checks in TLV parsing
+Date: Tue, 26 May 2026 22:32:26 +0200
+Message-ID: <20260526203226.73345-1-doruk@0sec.ai>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [1.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[alpinelinux.org:s=smtp];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_REJECT(1.00)[0sec.ai:s=google];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[alpinelinux.org];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-254444-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[0sec.ai];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-254443-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ncopa@alpinelinux.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[alpinelinux.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,alpinelinux.org:dkim,ncopa-desktop.lan:mid]
-X-Rspamd-Queue-Id: E5B6E5DC3CB
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[doruk@0sec.ai,stable@vger.kernel.org];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.942];
+	DKIM_TRACE(0.00)[0sec.ai:-];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 1A5845DC53B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, 26 May 2026 07:35:06 -0400
-Sasha Levin <sashal@kernel.org> wrote:
+Multiple out-of-bounds read vulnerabilities exist in the NFC LLCP TLV
+parsers:
 
-> > v6.6.141 fails to build on s390x with
-> >
-> >   drivers/s390/cio/css.c: error: implicit declaration of function
-> >     'device_match_driver_override'
-> >   drivers/s390/cio/css.c: error: 'struct bus_type' has no member named
-> >     'driver_override'
-> >
-> > The s390/cio change (c4295487124f, upstream ac4d8bb6e2e1) was queued
-> > without its driver-core prerequisite cb3d1049f4ea ("driver core:
-> > generalize driver_override in struct device").
-> >
-> > Could you backport cb3d1049f4ea to 6.6.y, or revert c4295487124f?  
-> 
-> Thanks for the report and the analysis.
-> 
-> The driver-core prerequisite (cb3d1049f4ea) is already queued for
-> 6.6.y - The companion bdddb54c533f ("driver core: platform: use generic
-> driver_override infrastructure") is queued too. Once 6.6.142 ships the build
-> error should resolve.
-> 
-> Newer LTS branches (6.12/6.18/7.0) already have the prerequisite as
-> an ancestor, so only 6.6.y was affected.
+1. In nfc_llcp_recv_snl(), when an SDREQ TLV has length == 0,
+   service_name_len = length - 1 underflows to SIZE_MAX (size_t is
+   unsigned). The subsequent strncmp() and nfc_llcp_sock_from_sn()
+   calls then read unbounded kernel heap memory.
 
-FYI. We also needed this for the build to pass:
+2. All LLCP TLV parsing loops (nfc_llcp_recv_snl, nfc_llcp_connect_sn,
+   nfc_llcp_parse_gb_tlv, nfc_llcp_parse_connection_tlv) read tlv[0]
+   and tlv[1] without first verifying that at least 2 bytes remain in
+   the buffer.
 
-diff --git a/drivers/s390/cio/device.c b/drivers/s390/cio/device.c
-index 93307ca75c10..57cbba03beb8 100644
---- a/drivers/s390/cio/device.c
-+++ b/drivers/s390/cio/device.c
-@@ -1322,7 +1322,7 @@ static int purge_fn(struct subchannel *sch, void *data)
- {
-        struct ccw_device *cdev;
- 
--       spin_lock_irq(sch->lock);
-+       spin_lock_irq(&sch->lock);
-        if (sch->st != SUBCHANNEL_TYPE_IO || !sch->schib.pmcw.dnv)
-                goto unlock;
- 
-@@ -1345,7 +1345,7 @@ static int purge_fn(struct subchannel *sch, void *data)
-                      sch->schib.pmcw.dev, cdev ? "" : " (no cdev)");
- 
- unlock:
--       spin_unlock_irq(sch->lock);
-+       spin_unlock_irq(&sch->lock);
-        /* Abort loop in case of pending signal. */
-        if (signal_pending(current))
-                return -EINTR;
+A nearby malicious NFC device can trigger these without authentication --
+LLCP link activation happens automatically after NFC-DEP.
 
+Fix by adding a minimum length check before the subtraction in the
+SDREQ case, and adding bounds validation at the top of each TLV loop
+iteration.
 
--nc
+Found by 0sec (https://0sec.ai) using automated source analysis.
+
+Fixes: 19cfe5843e86 ("NFC: Initial SNL support")
+Cc: stable@vger.kernel.org
+Reported-by: Doruk Tan Ozturk <doruk@0sec.ai>
+Closes: https://lore.kernel.org/netdev/20260525202427.67768-1-doruk@0sec.ai/
+Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
+---
+v2:
+  - mark as net fix
+  - add Fixes: tag and Cc: stable
+  - add Closes: tag
+
+Link: https://lore.kernel.org/netdev/20260525202427.67768-1-doruk@0sec.ai/
+
+ net/nfc/llcp_core.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
+index XXXXXXX..YYYYYYY 100644
+--- a/net/nfc/llcp_core.c
++++ b/net/nfc/llcp_core.c
+@@ -1302,6 +1302,9 @@ static void nfc_llcp_recv_snl(struct nfc_llcp_local *local,
+
+ 	while (offset < tlv_len) {
++		if (offset + 2 > tlv_len)
++			break;
++
+ 		type = tlv[0];
+ 		length = tlv[1];
+
+@@ -1307,6 +1310,9 @@ static void nfc_llcp_recv_snl(struct nfc_llcp_local *local,
+ 		switch (type) {
+ 		case LLCP_TLV_SDREQ:
++			if (length < 1)
++				break;
++
+ 			tid = tlv[2];
+ 			service_name = (char *) &tlv[3];
+ 			service_name_len = length - 1;
+--
+2.45.0
 
