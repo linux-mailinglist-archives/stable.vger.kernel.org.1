@@ -1,165 +1,154 @@
-Return-Path: <stable+bounces-254307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254308-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EHR5ArJ+FWqtWAcAu9opvQ
-	(envelope-from <stable+bounces-254307-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 13:06:26 +0200
+	id YIPRInZ+FWqtWAcAu9opvQ
+	(envelope-from <stable+bounces-254308-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 13:05:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61D0A5D4A59
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 13:06:25 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A5505D4A15
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 13:05:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5CCEE302D5D0
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 11:02:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 07FA0300D91F
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 11:05:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9580C3DD516;
-	Tue, 26 May 2026 11:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B78D3DE45B;
+	Tue, 26 May 2026 11:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="bNM3rJtN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i+2Dh7MF"
 X-Original-To: stable@vger.kernel.org
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.170])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816F339732F;
-	Tue, 26 May 2026 11:02:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61FD2C326F;
+	Tue, 26 May 2026 11:05:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779793339; cv=none; b=i2pGvIjs4xKrzwK51isb6zcJoIx+82rDPG6/vzZLpcfInCn5kLmh+F1NVz0aZi8QyvipT1jiZvr/ZxOk7betCyqNzMu7h2Hj2fRHfvfcSMFXUdw3r7KhOxfbq/kciiQRF1vCNQAPslUsOSjAnGTTn0xsNik1leNzkfQ/EYp04XQ=
+	t=1779793523; cv=none; b=d63xHmhj31i2J+6JCZ9f7Dq/oZZ5F7oRfciQ9I0BZe/z8c5F7X5kJGdJeYNyptT+il+eDR3JgGMIbpqMU4FHpFgW/Uhy5FrhsRzHOkpqY3GM+cJrZdK3jwUsp7JoYojIEOs+uYWFCFnuFZIONcAhLZW8+DrKThzXfd1eNg8JLHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779793339; c=relaxed/simple;
-	bh=X5PmJFYOnMoCHDWkg1xofv0SJcbSHYDhtU0aqiODcPE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tSjv2LvSh9LYgRc3XdN76KAr0NVpFTsAfNiV4xBQJVw30MXdBCp0C4WqZTd6R0NIC89j2zBc2Igxy2V9TNBQOciWTT7j901hufOIZpFznkyYfLBDIsJV6wUhLJdSDPMJM0CYcoRhhCmVYSLXmJnMJRbSDRAEQUu1AspIj9fJmmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=bNM3rJtN; arc=none smtp.client-ip=188.68.63.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-Received: from mors-relay8203.netcup.net (localhost [127.0.0.1])
-	by mors-relay8203.netcup.net (Postfix) with ESMTPS id 4gPqZm4mrQz8gZm;
-	Tue, 26 May 2026 11:02:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1779793328;
-	bh=X5PmJFYOnMoCHDWkg1xofv0SJcbSHYDhtU0aqiODcPE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bNM3rJtNx/NvVUELxIAG2LtHQAmELBpJKTBS6Jk40WHOB/AOg+9szKTbfoNhOyCAt
-	 GmqxyoxaKvpdKuDOY+8fSXhCTtNaCog8SNCBv4xsnNrjsQPv7zA8SVtl4TdAPf0148
-	 ubmH0LmiRzXXTGspOUwXkEwwdkuPWR5LS3boBlwSQZ94bf2A2O8v9UawrsjkpjaX+5
-	 e70EaFIZ0QBIGZVZ8EGIVx0KIpcBKxTjAVZKBzGfFnMGfMVsfSa8n+BRtbM5KF1zuk
-	 y6ln4Uj6bNWya8r28IVYDEsHXI+4fyR0obMb9gusPZEYUEGhPU3m26gc2dD+6wOgh6
-	 jFr8NlAQQ4kag==
-Received: from policy01-mors.netcup.net (unknown [46.38.225.35])
-	by mors-relay8203.netcup.net (Postfix) with ESMTPS id 4gPqZm42RYz8gWh;
-	Tue, 26 May 2026 11:02:08 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at policy01-mors.netcup.net
-X-Spam-Flag: NO
-X-Spam-Score: -2.901
-X-Spam-Level: 
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy01-mors.netcup.net (Postfix) with ESMTPS id 4gPqZk5GgLz8tcX;
-	Tue, 26 May 2026 13:02:06 +0200 (CEST)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 9AEBD61886;
-	Tue, 26 May 2026 13:02:05 +0200 (CEST)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <28aa7450-e4c1-43d8-acc8-16a95df1d1a1@leemhuis.info>
-Date: Tue, 26 May 2026 13:02:04 +0200
+	s=arc-20240116; t=1779793523; c=relaxed/simple;
+	bh=o2irwX7EG6I+YJ0FvIT9HckDmEnpR+ox2VKp9/aKOyk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Od+DmgC6QkYNlW78chZLzLlcTrqlhAgKYRtXMBIlzZ2Z7MN1jArG7nUmeXfntqqf4LH78FIIcPX8b1rUOJxh05uj3MwQ28fQldBV1jC1ED4DMyCr7beR5p0CR/TESPWuhBmiaxJmRx8BLw+bLq5/RSVwk47YYOMw8fea873gpPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i+2Dh7MF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55E4B1F000E9;
+	Tue, 26 May 2026 11:05:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779793522;
+	bh=qk40xgulls2bsEySJ0d4/5IyTPrAc0LfClUBUzlGCjE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=i+2Dh7MFEtK74+pZLmmNLDVqGWGe2BE+kd3pDCqQXGbpTjL7Logl9E6fmQ0ubku+1
+	 nyOjwqL+o0m5Ts5cROkskSsx8BBovl9L8IyPmf5m4cF5bkx26ThEevbfbn5KNW9ygl
+	 yXWTAuQX9CmIwRFZUksstdZwplvejzDeV1LunwDhE+WlkkWABJoU4quxu4Aa6r1l9s
+	 EKOxiCJ0cQvS3yULxl9RIkuNSKc0fB5rcyvNUYLxymB/EWdGPLZ09F6aUnfWem9QML
+	 xeIJ6Kzi3M/GWTMKKHZ0SypcJlgX7NGSp7a2OopiPU5ihCB+0KREcp481g6H5y5p9w
+	 2mUtT7NpMbH4A==
+Date: Tue, 26 May 2026 12:05:15 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Yin Tirui <yintirui@huawei.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <liam@infradead.org>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, Yang Shi <yang.shi@linux.alibaba.com>, 
+	wangkefeng.wang@huawei.com, chenjun102@huawei.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/huge_memory: update file PMD counter before
+ folio_put()
+Message-ID: <ahV8PuP2sg7fV_DR@lucifer>
+References: <20260526101337.1984081-1-yintirui@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Subject:[REGRESSION] fs/qnx6: incorrect pointer arithmetic breaks
- dir scanning completely
-To: Oleg Chaun <olegchaun@gmail.com>, stable@vger.kernel.org
-Cc: regressions@lists.linux.dev, willy@infradead.org, brauner@kernel.org,
- Arpith Kalaginanavoor <arpithk@nvidia.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Linux-fsdevel <linux-fsdevel@vger.kernel.org>
-References: <d02905f7-6ef8-4df0-bb55-dea44fda6ce2@gmail.com>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: <d02905f7-6ef8-4df0-bb55-dea44fda6ce2@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-PPP-Message-ID: <177979332608.596138.12636427513309806755@mxe9fb.netcup.net>
-X-NC-CID: cPbqH/IzxRA6KHLDH+mnHajbvASCnvhBeSWrNM+7XMRObnKunM4=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260526101337.1984081-1-yintirui@huawei.com>
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
-	DKIM_TRACE(0.00)[leemhuis.info:+];
-	TAGGED_FROM(0.00)[bounces-254307-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[leemhuis.info];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-254308-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ljs@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[regressions@leemhuis.info,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 61D0A5D4A59
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,huawei.com:email]
+X-Rspamd-Queue-Id: 0A5505D4A15
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 5/26/26 12:40, Oleg Chaun wrote:
-> 
-> A change to fs/qnx6/dir.c:qnx6_readdir() introduced in commit b2aa615
-> contains an incorrect pointer arithmetic (adding an offset expressed in
-> QNX6_DIR_ENTRY_SIZE units to a plain char * pointer) which breaks QNX6
-> directory reading completely: only few entries are visible, kernel log
-> is spammed with "invalid direntry size" messages.
+On Tue, May 26, 2026 at 06:13:37PM +0800, Yin Tirui wrote:
+> __split_huge_pmd_locked() updates the file/shmem RSS counter after
+> dropping the PMD mapping's folio reference. If folio_put() drops the
+> last reference, mm_counter_file() can later read freed folio state via
+> folio_test_swapbacked().
+>
+> Move the counter update before folio_put().
+>
+> Fixes: fadae2953072 ("thp: use mm_file_counter to determine update which rss counter")
 
-Thx for the report. From a quick look it seems Arpith Kalaginanavoor
-(now CCed) reported this last month and provided a proper patch:
-https://lore.kernel.org/all/20260310102233.391113-1-arpithk@nvidia.com/
+That's an old commit :) I mean I suspect we're probably not actually ever
+dropping the folio ref to 0 here since we never had a report since ~2018.
 
-Al (now CCed, too) suggested a slightly different fix, but it seems
-since then nothing happened.
+The page cache keeping a reference I guess?
 
-Ciao, Thorsten
+But doesn't mean we shouldn't fix this on principal/there being some way
+this could happen.
 
-> The following patch seems to fix the issue:
-> 
-> --- /tmp/temp/linux-6.17/fs/qnx6/dir.c    2025-09-28 23:39:22.000000000
-> +0200
-> +++ ./dir.c    2026-02-13 18:52:56.000000000 +0100
-> @@ -138,8 +138,8 @@
->              ctx->pos = (n + 1) << PAGE_SHIFT;
->              return PTR_ERR(kaddr);
->          }
-> -        de = (struct qnx6_dir_entry *)(kaddr + offset);
-> -        limit = kaddr + last_entry(inode, n);
-> +        de = ((struct qnx6_dir_entry *)kaddr) + offset;
-> +        limit = kaddr + last_entry(inode, n) * QNX6_DIR_ENTRY_SIZE;
->          for (; (char *)de < limit; de++, ctx->pos +=
-> QNX6_DIR_ENTRY_SIZE) {
->              int size = de->de_size;
->              u32 no_inode = fs32_to_cpu(sbi, de->de_inode);
-> 
-> I can test any further changes on real QNX6 fs images if necessary.
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Yin Tirui <yintirui@huawei.com>
 
-#regzbot introduced: b2aa61556fcfa8
-#regzbot title: qnx6: dir scanning broken
-#regzbot dup:
-https://lore.kernel.org/all/20260310102233.391113-1-arpithk@nvidia.com/
+LGTM, so:
+
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+
+> ---
+>  mm/huge_memory.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 0135c29a4372..a5f4a48b7b77 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -3145,7 +3145,9 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+>  			if (!folio_test_referenced(folio) && pmd_young(old_pmd))
+>  				folio_set_referenced(folio);
+>  			folio_remove_rmap_pmd(folio, page, vma);
+> +			add_mm_counter(mm, mm_counter_file(folio), -HPAGE_PMD_NR);
+>  			folio_put(folio);
+> +			return;
+
+Hmm, sucks to duplicate like this, but for purposes of backport and getting
+this resolved fine, we can clean it up later.
+
+>  		}
+>  		add_mm_counter(mm, mm_counter_file(folio), -HPAGE_PMD_NR);
+>  		return;
+> --
+> 2.43.0
+>
+
+Cheers, Lorenzo
 
