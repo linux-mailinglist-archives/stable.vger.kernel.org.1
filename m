@@ -1,199 +1,133 @@
-Return-Path: <stable+bounces-254388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254389-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yKXGAtLFFWo5bAcAu9opvQ
-	(envelope-from <stable+bounces-254388-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 18:09:54 +0200
+	id 8JzMHuTGFWqMbAcAu9opvQ
+	(envelope-from <stable+bounces-254389-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 18:14:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80B6B5D95ED
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 18:09:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 198915D9768
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 18:14:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F09F5300183F
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 16:01:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 166AD3040497
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 16:07:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE3A379ED8;
-	Tue, 26 May 2026 16:01:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=isovalent.com header.i=@isovalent.com header.b="AkDia0fu"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35D073AE1A9;
+	Tue, 26 May 2026 16:07:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB3F3AC0CD
-	for <stable@vger.kernel.org>; Tue, 26 May 2026 16:01:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779811289; cv=pass; b=cBdGxZBhy/6NVwdpdo6U3RWNPEe6McnVnJ27L2FGIqWF/Jqg1U0w+/Q49XHt2SzdSZMn3loHABpSjWABcJH4DGy/nYh9qVwM8rKvW/buR8YKGIVjRWzv95Ls+Si8ItU1kXABZboRtgO9eLIQnt+XW/f9vVchp+YrMFoB/jiuG+E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779811289; c=relaxed/simple;
-	bh=pVzqx11hjh7N1pH2gCRYfQFcHOCbS36d82t/QEbOWBY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FulsR/SP11O97DJsTmSGYlNhZFsatqIyriQ9y9wvLH/DqXgzZWCqVA2TlIEIrxu/gYokZLuKFywYY8EVqNQ96sk0nuvnNrHdhlUXh2fDxv+UJEHxyE4ZhDo3G2aIO0RInj8PXSL2ggdFG2JPU2qPFyfyHaMqKkkOmXap38CacHE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=isovalent.com; spf=pass smtp.mailfrom=isovalent.com; dkim=pass (2048-bit key) header.d=isovalent.com header.i=@isovalent.com header.b=AkDia0fu; arc=pass smtp.client-ip=74.125.82.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=isovalent.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isovalent.com
-Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-1329fc4bf77so9961081c88.1
-        for <stable@vger.kernel.org>; Tue, 26 May 2026 09:01:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779811287; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ht3wkCy1e9QlwfblAzMG/WDtS+ph4SU+Br2SsJZ5o710F1A2Wl+ihkibNM+tUJbQbN
-         9JBHum5CA9XYA/a3N5iDrm3l6TV8bUc+kmwVfIBROw9d7ae4qH63rXWiA9VAriy/vRZh
-         JsbS+Os8ODCb5ThYsqw8230JEqRuusoeq+EPMx+FhBoK1oKBO5XyomvdAuCj6Kmm/iO1
-         7K+Lw2LtftGhliCwPcRxXjsjAStYIIF1QRj9un2ISlY2CfWjPVj+CwpDNWK1Cbojj70/
-         Idb/XvttTBerXOKuC4776nOL/rTusze2WEwOPgJ0kr4jXIOJDAy4EA1dAVRWihYQCsUm
-         ii7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=JuWcfKbEhiOQ+qzwtoWjTZXdsQUx+LDCmslbk+9iAr4=;
-        fh=+3y4sm1UQHapCnyucvfhvBWeLFKZrJWZiHlkvpnMSJA=;
-        b=kS4wROTrHyqcAAMFcbGP+YG3u59qH46O35y69WDx6uFWBdSHuAhjiCuYu2lYUkSyEa
-         IvLmC8Oqc2Hr1ojnnRR6OJEZmTotbv5Om2zdGrm0T2EqJJqA7KqarNl3Ic/NSEd3J/As
-         CVWy2rPBLBntjSZnuPp0ayTLjV76ZvW2Amfv4S1uMWsiE7sfWggg9mrnblkkNhw+CpwE
-         kpODUb6GXz7NV3tKSRKGdB3cheF5X+heXE6jTJ/gnj6uiEyTE3OmByLzxiN4/CYQPJzn
-         q9DKmm5pxxgY3todvGD5/4mjK1MoVvIyp7qMiaJtDbjgHatcBuZw4RU3HH4cvpCd7XXw
-         uVfw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=isovalent.com; s=google; t=1779811287; x=1780416087; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=JuWcfKbEhiOQ+qzwtoWjTZXdsQUx+LDCmslbk+9iAr4=;
-        b=AkDia0fuaRrNk+sjjE3h6BQVQcXhXFAy15t3bzec8494Otf75FZMwy1l4Fk46tWDH9
-         pCiSy9rCQKurWuzZoFwOge0VTfUu0tc2gh2DMrpl6CyHviocZ5l+6Kj0YOBDrdNS7cXx
-         8esdrOG4RG6tl3JIdxXr1PdamvZ9nCM2I6BaqhizCnr50O5JFMAuzEiMOHLPaQT1/gV6
-         oRY7EURd+4qFPv7FxAg3s+pbfUoDqSFM5NaPHCCokcgoU0r1KSLy4s6s/zCzdqrVvEWe
-         0Zc8OcYkx0+N+s+Jv8LMt8k93JWIdQRHCjJnTCQpuIqn8oZ7g0pGOG+35XX0TAzoBgvW
-         J+sw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779811287; x=1780416087;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JuWcfKbEhiOQ+qzwtoWjTZXdsQUx+LDCmslbk+9iAr4=;
-        b=I/bPZrNDrWychhOHOoihHpdnlrcT9g3zn4XCy1LABDrd5/GWFT1XNMgHmtIgbzm8CH
-         Xn//ZdNq4tlcArDabix0jSH6dtwrRoL2RmGP+fvbOlFHXc3O1N0GO9njAOZKDScmjoSx
-         9BoyCtGnGT55w0kVVCg8sVosD3pjcCgJgCgZBzSHzeALwATKtRP8CuKFjXVPRBzP1uma
-         ukBICqm1Z9gWUQe5VRLDKZGzdsfhEYajGop0klkS87Ej3zxsuPbSNxs/fzZcj0V/rLT1
-         TCB78dhVtKttj36ExeBNyVolQSO7yBTuUscHaz6RogD7kSPCt/HEg6iW3z1UY96v/rTa
-         enyw==
-X-Gm-Message-State: AOJu0Yw/IVFPe9jDk/L20l6+L4TlBXvrjombiteZOBhT4v3vR4uuoVkr
-	TXz6B71+EBcnUZYqyAYNRFZMLSb57vbTLBCk+ANsx5CjdoLjcTfBbxhkwrnGub+e+CdRMwOKG7U
-	ISwGSFbc2qTBMrDwVYsya7AefsSrcr89n2Iasz+4Afg==
-X-Gm-Gg: Acq92OFRL85QoMTAOvenLkV50C5JbQVGt8tqaMtY6iT7VU+isQOJOQ6orq5m64FHF1X
-	PSiEcrR/cn3ibfatxhwUF6gjJDbHpxx6Vr7yw1mXX1Sr9vY4oeMijg2D4VDnCe3/3LbC53m4KKY
-	2jxzqJYlUJlzapIbCmZLOdu0UWhJNX/4J06ZOclGVE6CO4EhnA+9w8unVBPVOnRpkWQ6RrD+vnK
-	j1Fkxn3yDNx/m6fBLkn9AQCEN4xGCV9kU0iUpZHL9mwcIVsmeUUpsMwTDf6q4fGP26Uj2PTUlk8
-	1l5gGbiZCZ8s+NhdueM6/syb8DZ/bSfOnN+3p9+lRRkpI5CmW+z+KZXeUJEqwbGbsFawz34TYLM
-	sbw==
-X-Received: by 2002:a05:701b:240f:b0:134:fc38:4e5f with SMTP id
- a92af1059eb24-1365fb534b4mr4742656c88.22.1779811285149; Tue, 26 May 2026
- 09:01:25 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16123AEF53;
+	Tue, 26 May 2026 16:07:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779811641; cv=none; b=op6dkVk+r3+FcS5XxhgQM8C9ihnLk0IVUUyqQKh3hwOnY370+coFawgJbO4jWGoaCsyPpgh0tb5a4a1Yl5AglZpuXOYelaviZKO+Mrlzn0ALrGkhpz5YHEeUi9do0sEslNN3Q/MopaGY2OuW7CgGXAMUguO5LGTfB7uclP4Qb2s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779811641; c=relaxed/simple;
+	bh=N6lJqeX8CDrEKidtY57QoTX7ewnPGVO8jWwgHJQvsv4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mubFKNBosF+ZLmVdfPydlPztp0U1rjSBfG9QJFfG/AUfQ/YUc2cj8FEwUVQ44un9uhbnKA1UU1KT0FKtktnPzc+k5OoTlcNzDa1dyqhcsHrR6S3s0FGgZj3uZ+BzPGhRfQtNWDqaVkiD7dpQkBBa6tFr1ad1RnmeH3R9tXR9yJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
+	by APP-05 (Coremail) with SMTP id zQCowABHk8YvxRVquRJ8EQ--.8084S2;
+	Wed, 27 May 2026 00:07:11 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: Ayush Sawal <ayush.sawal@chelsio.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S . Miller" <davem@davemloft.net>
+Cc: linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] crypto: chelsio: fix inflight counter leak in chcr_aead_op()
+Date: Tue, 26 May 2026 16:06:55 +0000
+Message-Id: <20260526160655.2298525-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260520162134.554764788@linuxfoundation.org> <20260520162148.582539866@linuxfoundation.org>
-In-Reply-To: <20260520162148.582539866@linuxfoundation.org>
-From: Alice Mikityanska <alice@isovalent.com>
-Date: Tue, 26 May 2026 18:01:06 +0200
-X-Gm-Features: AVHnY4IJl_dvx3UZ0ZSVEcvY4jymeZHCGABK9TTIX9K4r8NdaAFfM045Bta1oQg
-Message-ID: <CAD0BsJXt3QurRvFmOGNzh1juYYcQEst=3aYJmHiCCf-4DCZCVw@mail.gmail.com>
-Subject: Re: [PATCH 6.18 648/957] ice: Remove jumbo_remove step from TX path
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Sasha Levin <sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[isovalent.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[isovalent.com:s=google];
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowABHk8YvxRVquRJ8EQ--.8084S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7Gw18Gry5ZF17Kry5GFWUtwb_yoWkZwb_G3
+	47XrZ2q3yUtFW0y3yqy3yxZF9I9asxuF97GrnrKr15ta48Zr43Ww4fArnxJrWUJr48WFn8
+	KwsxZaySyr18ujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbcAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr
+	1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r12
+	6r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
+	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y
+	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
+	W8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
+	IxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjfUr2-eDUUUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwkTA2oVtusgVAAAsI
+X-Spamd-Result: default: False [0.04 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254388-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254389-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[iscas.ac.cn];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[isovalent.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alice@isovalent.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.964];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,mail.gmail.com:mid,isovalent.com:email,isovalent.com:dkim,msgid.link:url,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 80B6B5D95ED
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,iscas.ac.cn:mid,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: 198915D9768
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, 20 May 2026 at 19:44, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> 6.18-stable review patch.  If anyone has any objections, please let me know.
+chcr_aead_op() increments cdev->inflight via atomic_inc() before
+submitting the AEAD operation. If the operation fails after the
+increment (e.g., chcr_start_aead() returns an error), the function
+returns without decrementing cdev->inflight. This leaks a reference
+on the inflight counter, preventing proper teardown sequencing.
 
-Sorry for the late reply, I see it's already applied. This commit
-depends on "net/ipv6: Drop HBH for BIG TCP on TX side" (part of the
-same series [1]). As far as I see, this dependency was not applied to
-stable trees, so removing this step from the drivers is not correct.
-Either this commit should not be backported (reverted), or the entire
-series can be backported, if eligible. This consideration applies to
-all stable trees.
+Add atomic_dec(&cdev->inflight) on the error path to balance the
+counter.
 
-Thanks!
+Fixes: d91a3159e8d9 ("Crypto/chcr: fix gcm-aes and rfc4106-gcm failed tests")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ drivers/crypto/chelsio/chcr_algo.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-[1]: https://lore.kernel.org/netdev/20260205133925.526371-3-alice.kernel@fastmail.im/
+diff --git a/drivers/crypto/chelsio/chcr_algo.c b/drivers/crypto/chelsio/chcr_algo.c
+index eece1ac1085a..14a708defcd4 100644
+--- a/drivers/crypto/chelsio/chcr_algo.c
++++ b/drivers/crypto/chelsio/chcr_algo.c
+@@ -3636,6 +3636,7 @@ static int chcr_aead_op(struct aead_request *req,
+ 	    crypto_ipsec_check_assoclen(req->assoclen) != 0) {
+ 		pr_err("RFC4106: Invalid value of assoclen %d\n",
+ 		       req->assoclen);
++		chcr_dec_wrcount(cdev);
+ 		return -EINVAL;
+ 	}
+ 
+-- 
+2.34.1
 
-> ------------------
->
-> From: Alice Mikityanska <alice@isovalent.com>
->
-> [ Upstream commit 8b76102c5e00d1f090e0c31d17b060c76d8fa859 ]
->
-> Now that the kernel doesn't insert HBH for BIG TCP IPv6 packets, remove
-> unnecessary steps from the ice TX path, that used to check and remove
-> HBH.
->
-> Signed-off-by: Alice Mikityanska <alice@isovalent.com>
-> Acked-by: Paolo Abeni <pabeni@redhat.com>
-> Reviewed-by: Eric Dumazet <edumazet@google.com>
-> Link: https://patch.msgid.link/20260205133925.526371-8-alice.kernel@fastmail.im
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> Stable-dep-of: 1a303baa715e ("ice: fix double-free of tx_buf skb")
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  drivers/net/ethernet/intel/ice/ice_txrx.c | 3 ---
->  1 file changed, 3 deletions(-)
->
-> diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
-> index 73f08d02f9c76..90dbe5266ce78 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_txrx.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
-> @@ -2594,9 +2594,6 @@ ice_xmit_frame_ring(struct sk_buff *skb, struct ice_tx_ring *tx_ring)
->
->         ice_trace(xmit_frame_ring, tx_ring, skb);
->
-> -       if (unlikely(ipv6_hopopt_jumbo_remove(skb)))
-> -               goto out_drop;
-> -
->         count = ice_xmit_desc_count(skb);
->         if (ice_chk_linearize(skb, count)) {
->                 if (__skb_linearize(skb))
-> --
-> 2.53.0
->
->
->
 
