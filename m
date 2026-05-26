@@ -1,160 +1,186 @@
-Return-Path: <stable+bounces-254262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254263-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IGGmCjhKFWq+UAcAu9opvQ
-	(envelope-from <stable+bounces-254262-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 09:22:32 +0200
+	id +M5lN3ZSFWqmUQcAu9opvQ
+	(envelope-from <stable+bounces-254263-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 09:57:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 305525D1AE0
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 09:22:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BC745D223D
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 09:57:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3EDC53004053
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 07:22:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 529DD3025C6D
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 07:57:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1326D3B5319;
-	Tue, 26 May 2026 07:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F223B2FC8;
+	Tue, 26 May 2026 07:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="vVyrEJhy"
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="zbOCiHqo"
 X-Original-To: stable@vger.kernel.org
-Received: from out162-62-57-49.mail.qq.com (out162-62-57-49.mail.qq.com [162.62.57.49])
+Received: from out203-205-221-191.mail.qq.com (out203-205-221-191.mail.qq.com [203.205.221.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3EB1AB6F1;
-	Tue, 26 May 2026 07:22:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D592718B0F;
+	Tue, 26 May 2026 07:57:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779780144; cv=none; b=u5xnjTTAXf7HJQ78XNeTsbFyOfJP6DZHCfLotKbpZlgH8LY2Ey3U1/qGlKnI491UuQfVxaVjf4pthkTWXpUjxyNd0PVOXS3JDkFscKy/t8g9XpbFhTDkElHbAiuYDosSM3RnUbVTK7tE3NJiD6ugVaNpcMxlA5nh2An4wV2bG2E=
+	t=1779782254; cv=none; b=vGqCtjm1C1d8bFeJhMYc5LuohNgzIvNk/PVYnzYrjkhwLIkDW7+dy2f2UOccLvKoQl52SV+sdRq7QBddHkUJQ58IWdImxGhljA5u6eGoPp3fFXEI6AQB5OVc8nmwiLm8O8PiQX0einbtPwnLKCLXOVs6T47oEheKxmvTPS/HWmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779780144; c=relaxed/simple;
-	bh=/4pfUWBNpU5VRKedqPpVBpHMbJhWlxwHXuuVRtTvg2Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XgNMQocYq6nhLpY14Ulkw8nma0VudGjr9j21ad78AVYmVi3Z8VtPUwgfJDdm8jIsMKgzRM/RVZrnvUQkOkd1+YwX5pXVNt4sxAwdI9lq3oX8qhJtAbImtnONmS+FVTejdAR9QYjIcRXcexjbGnUUf+JXcGr610N2qlcOCrL9gs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=vVyrEJhy; arc=none smtp.client-ip=162.62.57.49
+	s=arc-20240116; t=1779782254; c=relaxed/simple;
+	bh=PnqTV9V+fnvoN4F8px5Nd6NNQC+yd1mhucLYOO0MwMM=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version:Content-Type; b=rLs346ik2Z2h7luqOCdyVl1Yz/BYbZg+LUMoDNs5VjtGsIYG+rww+wiK4AhtoW+4WRE9+Dbjwh0O4uXTiMClyFQuvTgh8oNsgwRjvhGX6WJ4uMbbCgsO6sG4hl6P5rUNagIM8QQvx9O2R+x96wqCdbFsheg+1P3BRvkv7IAZQvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=zbOCiHqo; arc=none smtp.client-ip=203.205.221.191
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1779780136;
-	bh=vCqvF5MGUdGL78o1u6AeSWyGcNyS3UnQyyyeBw+A7AM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=vVyrEJhy+2rAB5Zz1qF8uHbe4lUnXEcswipteHIG3vVWd0sOhjj7do1V5458pNgXf
-	 dav8jjWBWBHcqqERiaEov3KwRdYDR5chjk0vgvnlo9KoEfLVXHfxNx92kAfbuSHid8
-	 SdSjc6oQ+ALzwa5QetnD2coDmGk051CuHq7yGfIc=
-Received: from [192.168.1.40] ([183.241.55.175])
-	by newxmesmtplogicsvrszc50-0.qq.com (NewEsmtp) with SMTP
-	id 58D85461; Tue, 26 May 2026 15:22:13 +0800
-X-QQ-mid: xmsmtpt1779780133t02pjz2vw
-Message-ID: <tencent_B3019C5118AE0620DA8B9AF58F67C939EB07@qq.com>
-X-QQ-XMAILINFO: NX3IH4pixvQAVADq1vvHCERuEIceXkQJ4Hnsi0ANjiogGCHB9gi/K1+QqMFmHY
-	 fiz7/AwfNQNPLe1NJSK26VDmXBwXGjdC/q28Jw8TuStxxg5iiI27i0ILWJyn/kOE3VeK0b4N82QK
-	 Der1l2oy1ICJ8wRCsm65PxB3L+JuVBu7hZPuIw42w+UmJAuDuULMGSYtXdRmjUftz5ev6wknRqbd
-	 Pl09MRvRin8Ge741H/+FBghVajEAp/LgsG9q9DfSDKsVCwueMH3d6aZNCVgZWEce+X0dlunBlV8l
-	 FnGCGHcpL75sHZfbq73SFnbUDyItSeF2Uju4HYCJdjSwir4O6un0GCK3JBbk4tmuOaNZZnZgzk2s
-	 QebtD+IkP8+qwsLH85jb8xC72sh19VQ8Ng5Mt+ukrcn8Na9EVE9UnFMk0o48EHPMUVW3GrfsNZGN
-	 9mhHOxt1hq2KW8P6xfuyfJpq1NPugaj1JE6jpSSHpp53SfP5qzlW1rGSShfGtOwFEswe2ayhqL+h
-	 5huAsBXN/6ydHzmxb0pAvBKwQOQFhrhyk4+T3+KyG/8kAqzaebiioj0v8zKVlgp1Vq8zsuyJY5Hp
-	 jG3rvMdMjhrtEnbZ8K9V3Xzjld0rTfGoXT07dNUfc+txRV+uW+rl+gG4MafTJKSz7NFh3cnvC5Na
-	 QI38EtDg471HHb5CEDakETDKaNcAQD8TwoOu0Hwhh8noaSotmYR43LakF2sk9vl+Wxv3Dn670FLk
-	 s5Zy2/s6jr6SDEvhMxu4GXUEGM5+DWEkXJFIFqKLpkoHdSDIZMk2ATrPebc3Gru1OVNUWemAeSes
-	 h66BCbq7XlJB40vy0GwcFHOQD0AcctPrVdury+AabCOsoUj/Ik2iLjn5OMPuexG+pyhna6AI0MPK
-	 qgEm+J3QUMaCbY7mh5g1KdJe0UIy7OHOyDC1JuvREHfPv7sCB99OjmVDI/W9k31bEn/kWoaGL15h
-	 DwcKh2NMryH6kZrB9MToE2F3yQK+ls1/j6MVbcJF6oXaEALNWpm0BEYPL0/PfoFuqQgklNzqSW28
-	 NesriP9gA8ckPfFL0gakNAj+b/B05Uj9hIxOeqrSWV8rDY/YjXlK9hSNCiyOw=
-X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
-X-OQ-MSGID: <0003d2e2-1c8e-4c92-9dc3-1297d5090768@foxmail.com>
-Date: Tue, 26 May 2026 15:22:13 +0800
+	s=s201512; t=1779782249;
+	bh=sqMgRSCFvAis5biVx32P2iNc6U2jdHWfyVRXIcQRFBQ=;
+	h=From:To:Cc:Subject:Date;
+	b=zbOCiHqo+O0kAaJ6TcvdnxmkO0MTWcZ9ryvW4Dl9mLIYGKRMZxoIUuYyb71i52OkZ
+	 qoKmekSmixOgd2WYP7IB2vqszoBOjp4dR0ZMVOp1fPdqwVCjIqVc5n1PpJXRNpmQ1d
+	 kJHT39IPVYhgZFiHiX1OzWgl9YdHwzxwSNKXoNDE=
+Received: from China-team ([47.95.114.252])
+	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
+	id E4D83A4E; Tue, 26 May 2026 15:57:13 +0800
+X-QQ-mid: xmsmtpt1779782233t210ellyy
+Message-ID: <tencent_03EB621C56988886195ADF9AA78F33494007@qq.com>
+X-QQ-XMAILINFO: OUdSXDVXBTEGrF/++qSZr8QspowMmCmp4fqza+JdNUQmfzImkMtARi3RuiQdKX
+	 60bz4ZfmEbpoFoUmES5MH6V1lQrUownLkt72W7eDnIc8dKY0QOQURFwvlMSXA69S4DYtRUcNLpcj
+	 Ktvnil7fnf2In2m4/BUn4jrTkv3AYDlE2CSE/FtDB0vW0575/RIYbQba3PQ/U8tKtWYbAVXp5xwV
+	 KVLn9pB5FW3mUAegMcVzsnwpJEFkVkOT/mVaFiv95SP9APLL8bWROPnqgU+VNqp69zdQzcekPXFo
+	 r0NAuZv0py1KW4I5XChfsaai7nUYNtceiSdgQayhy6PKIvWtvwjAe9ykl+2htuONHolh8rJbKVs3
+	 MjIPeMPA+6+crNO4KmasPqDHILX1Qt7Yw/g23UONfwwL6oYvQEzG6w0jwz/Pi8UI4SMILSC/iyXG
+	 jMBYQdfY7jewuJI1IQ79EBp/Kj+UzuHXv/WHQCiFiYRdVHiOf8LVkhL5TQmDCFrsnkxNmfi4FVf+
+	 jW1P2XjbDlOHLaBtDsJJKcfRNe33eZhiIOIMWDYn45Oja0wOjV8Y5AT+UKMNhqQAAKo/Sy92KdSc
+	 pOTdNaJrHqI4y5VN8g1cBNq5lpnXCGuDpmwrxBsUJvjtjX29yBnd3YDOGh8UWEiKhpwPX99xwL24
+	 VMdJNPE3hHzqhG4nKio8zCdFQvpx9Q5cXDIcOOnpoWgHsEmAVVCzGqEF4M3U/tZLszYTJDTQOuNq
+	 ZdVtbkunVjA9DqY05cfvTyHEEIwjnZ3lOjVXL52Exn1n6QnN2DaupFqJ55ghYl3Zqn+OiDdyE9SN
+	 8XQwKIkgooKIrHJ5UnduAjTTtytbIUdnDWvauEpiO+MoKy8hTt6EMLyO7F8as7v40FRHoXDAYsl2
+	 2pSzhlPma5k51BaXgblCgv/8/U2dmmApH94ZCO1dBbtF4wEIcKgcOYSpZwBrT8ClxpekxqRSYxRx
+	 qC3r8LQjZWf7M8YZINkB/GdJS5IV64l+paov3Nkp0G3okL4aLUr0E0Gl69iXNN4iWgLclRq3dBVO
+	 q7quijC+9wkzMZv7J/inkkwbH5JZth2TisG+m3uKoAMxTfubTQoLUKF1NW+SaG/Xt8gJ0p9Is03c
+	 EjDTSM
+X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
+From: Alva Lan <alvalan9@foxmail.com>
+To: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linkinjeon@kernel.org,
+	stfrench@microsoft.com,
+	d.ornaghi97@gmail.com,
+	knavaneeth786@gmail.com,
+	charsyam@gmail.com,
+	Alva Lan <alvalan9@foxmail.com>
+Subject: [PATCH 6.6.y v3 0/4] ksmbd: validate owner of durable handle on reconnect
+Date: Tue, 26 May 2026 15:57:01 +0800
+X-OQ-MSGID: <20260526075707.50228-1-alvalan9@foxmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6.y v2 0/3] ksmbd: validate owner of durable handle on
- reconnect
-To: Sasha Levin <sashal@kernel.org>, gregkh@linuxfoundation.org,
- stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, linkinjeon@kernel.org,
- stfrench@microsoft.com, d.ornaghi97@gmail.com, knavaneeth786@gmail.com
-References: <tencent_290D1FB4A935031FBD9251D6D238B830AD08@qq.com>
- <20260525152512.agent5-0006@kernel.org>
-From: Alva Lan <alvalan9@foxmail.com>
-Content-Language: en-US
-In-Reply-To: <20260525152512.agent5-0006@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[foxmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[foxmail.com:s=s201512];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254262-lists,stable=lfdr.de];
-	FORGED_MUA_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-254263-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,microsoft.com,gmail.com,foxmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FREEMAIL_FROM(0.00)[foxmail.com];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[alvalan9@foxmail.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,microsoft.com,gmail.com];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
 	DKIM_TRACE(0.00)[foxmail.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,foxmail.com:dkim,qq.com:mid]
-X-Rspamd-Queue-Id: 305525D1AE0
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[foxmail.com:dkim,qq.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 6BC745D223D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+v1->v2: add two prerequisite commits
+v2->v3: add bf736184d063 ("ksmbd: close durable scavenger races against m_fp_list lookups")  
 
-On 5/25/2026 11:33 PM, Sasha Levin wrote:
-> On Mon, May 25, 2026 at 06:38:58PM +0800, Alva Lan wrote:
->> This series backports three upstream commits to the 6.6.y stable branch
->> to address CVE-2026-31717.
->>
->> Upstream commits:
->> - 098c0ac3808c ("ksmbd: avoid reclaiming expired durable opens by the client")
->> - 894947e0736d ("ksmbd: add durable scavenger timer")
->> - 49110a8ce654 ("ksmbd: validate owner of durable handle on reconnect")
-> Two notes before this can be queued:
->
-> 1. The short SHAs in the cover letter for patches 1 and 2 do not resolve
->     in mainline. The correct upstream SHAs are 520da3c488c5 ("ksmbd:
->     avoid reclaiming expired durable opens by the client") and
->     d484d621d40f ("ksmbd: add durable scavenger timer"). Please fix the
->     cover letter on the next spin.
->
-> 2. More importantly, this series adds the durable scavenger
->     (d484d621d40f) without its critical follow-up bf736184d063d ("ksmbd:
->     close durable scavenger races against m_fp_list lookups", Fixes:
->     d484d621d40f). That follow-up closes two KASAN-validated bugs in
->     the scavenger code: an fp->node list-head reuse that corrupts
->     f_ci->m_fp_list via list_add(&fp->node, &scavenger_list), and a
->     refcount race between scavenger qualification under global_ft.lock
->     and m_fp_list walkers that races to a UAF. Please include
->     bf736184d063d in the next revision so we are not knowingly queuing
->     the scavenger with these races still open.
->
-> Also, given the patches are authored by Namjae, an Acked-by from him
-> on the 6.6.y adaptation would be helpful before I pick this up.
+This series backports four upstream commits to the 6.6.y stable branch.
 
-Thanks for your review. I will add bf736184d063 ("ksmbd: close durable 
-scavenger races against m_fp_list lookups")
+The patches fix:
 
-in my v3 backport.
+1. Patch 1 and 2 are prerequisites that add proper durable handle lifecycle
+management (scavenger timer and expiration handling).
+2. Patch 3 fixes a missing validation that allowed any authenticated user to 
+hijack orphaned durable handles by predicting or brute-forcing the persistent
+ID.
+3. Patch 4 fixes race conditions in the durable scavenger thread that could 
+lead to list corruption (fp->node reuse) and use-after-free when concurrent
+m_fp_list walkers interact with handle expiration.
 
---
+Patches:
+  [1/4] ksmbd: avoid reclaiming expired durable opens by the client
+  [2/4] ksmbd: add durable scavenger timer
+  [3/4] ksmbd: validate owner of durable handle on reconnect
+  [4/4] ksmbd: close durable scavenger races against m_fp_list lookups
 
-Alva Lan
+Testing performed:
+  - Boot: x86_64 target
+  - Functional regression (all pass):
+      * mkdir / rmdir (single, nested, recursive)
+      * read / write (small files, 1MB, 10MB)
+      * append, rename (file + directory), delete
+      * chmod, stat, directory listing
+      * concurrent I/O (5 parallel writers)
+      * multi-user access (cross-user read/write)
+  - CVE-specific tests (all pass):
+      * Race 1: fp->node list-head reuse — no CONFIG_DEBUG_LIST reports
+      * Race 2: UAF via refcount race — no KASAN reports under concurrent
+        rename + scavenger expiry
+      * persistent_id recycling — new handles remain valid after old ones
+        expire
+      * open_files_count — no underflow when detached fp closed by
+        unrelated connection
+      * Owner validation — same user reconnects successfully; different
+        user cannot hijack durable handle via DHnC
+  - Server stability: ksmbd remains healthy after all stress tests,
+    dmesg clean (no list corruption, KASAN, UAF, ODEBUG, or WARNING)
+
+DaeMyung Kang (1):
+  ksmbd: close durable scavenger races against m_fp_list lookups
+
+Namjae Jeon (3):
+  ksmbd: avoid reclaiming expired durable opens by the client
+  ksmbd: add durable scavenger timer
+  ksmbd: validate owner of durable handle on reconnect
+
+ fs/smb/server/mgmt/user_session.c |  10 +-
+ fs/smb/server/oplock.c            |   7 +
+ fs/smb/server/oplock.h            |   1 +
+ fs/smb/server/server.c            |   1 +
+ fs/smb/server/server.h            |   1 +
+ fs/smb/server/smb2pdu.c           |   5 +-
+ fs/smb/server/smb2pdu.h           |   2 +
+ fs/smb/server/vfs_cache.c         | 309 ++++++++++++++++++++++++++++--
+ fs/smb/server/vfs_cache.h         |  15 +-
+ 9 files changed, 329 insertions(+), 22 deletions(-)
+
+-- 
+2.43.0
+
 
 
