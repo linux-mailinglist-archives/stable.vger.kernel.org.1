@@ -1,188 +1,240 @@
-Return-Path: <stable+bounces-254444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254445-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yOrrLmIDFmrNgwcAu9opvQ
-	(envelope-from <stable+bounces-254444-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 22:32:34 +0200
+	id yGI+HiMEFmrNgwcAu9opvQ
+	(envelope-from <stable+bounces-254445-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 22:35:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A5845DC53B
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 22:32:33 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C0715DC5D6
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 22:35:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AFCAC302A2EE
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 20:32:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8C4CD300BC8D
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 20:35:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 210243B8409;
-	Tue, 26 May 2026 20:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CFE63BF69D;
+	Tue, 26 May 2026 20:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b="xaVM4TFK"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="CS3lFdHY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C666192B75
-	for <stable@vger.kernel.org>; Tue, 26 May 2026 20:32:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF003BFE24;
+	Tue, 26 May 2026 20:35:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779827551; cv=none; b=I5fVLdnDG4puf/1uKGaFcEpynizQyewJ7nrM1ebRVXg6yQH6yiw/6nfhf72uyMyfE5IKPi25lpj19da+BVLFfnoYQlqf+XVXnyBmO+b6mYMvqJm7bu0Oyvb+s4emMQwRZXo9PaX+0vBeQyrNYDAHvWRul6w3gfbwMiP+avabZe8=
+	t=1779827738; cv=none; b=Qnb4ep3JFv260//2zkVT8LV0ly/a6wffvGp7Yc2JQ3n4zqsFY89FOk4hJS6hA+rWOlkL/8i+hN7jkIj29ygLDSjqGPw+48Lo6QNYsR1c1jtbeVXp24MpYKUeMseuldoggHGlqhLGnJw7edwTr5dZODEPBngzsjrrftjcyazS9bQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779827551; c=relaxed/simple;
-	bh=J8QTJB03WvozUL/lm9seJKVTmum3YvberljLi5CeonU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QtcOe5LPbCC2xDlpFsnmTj0xAMdqm8oq/wMFBLtxe5mf/X9Uq2z29D2RqlvEsLQo3sjyjv4Puri9AQ06puNqJGSVfSIUxfuEzkL3FPbN1OrIh2CMPQAn3C9lpgS9vrDPm7lE788J8O05vXAbICGPjZDOXNUNVN4botntlvZsFHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai; spf=pass smtp.mailfrom=0sec.ai; dkim=temperror (0-bit key) header.d=0sec.ai header.i=@0sec.ai header.b=xaVM4TFK; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0sec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0sec.ai
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-43d77f6092eso6299559f8f.2
-        for <stable@vger.kernel.org>; Tue, 26 May 2026 13:32:30 -0700 (PDT)
+	s=arc-20240116; t=1779827738; c=relaxed/simple;
+	bh=zeQfcwiO7GbGf+4UeIbYXdwwQ4GwxpHeV4sjlDCVrtw=;
+	h=Date:To:From:Subject:Message-Id; b=UBOxw+NcxY2o8AafuOJrKH23t9guqB8GKNcSQfFGxqpScY8PHIWC7+P737ePY+bfi7H6TpckJw4kTKAEZRGDrmSoWbeKy9fug/2PY+SwRhWj462Ggu96pZqSYOfOCh/1lTrTsK+4pMrqdCAbOAaGLtFvHtT7M+1/RQBojL1xWy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=CS3lFdHY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBD231F000E9;
+	Tue, 26 May 2026 20:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=0sec.ai; s=google; t=1779827549; x=1780432349; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=yOE68Mzf5nnVfNMftzrnIa4+AJ1pM+MIvuOSTOhC6JY=;
-        b=xaVM4TFKL6WqoTgUxw6ugDtAPaPmv85BHuXPwkJiLyV07nNxeXK3xOW/L7tOoVKpAZ
-         Fh5IYXgqOyich0LSdQ/l2ggfmrRdf0Z9E6+Bkdf8nQ9Tq2kaVX7A3ceknme7+nLVySaa
-         jYhwcK4b2OsdkYvc9k0LCOmnBPOHnWqHolXdubMKckvW1Mn5SwrxWcyW+cxYl0djre3J
-         ie7J01i26gDu47IlnGQcexZmoQYT8pHwUGXKMf7IJwG8YD7IDYnKjraXG9pkknj0FAaV
-         xBGqa9yzvEzLCKtYwO68+6HPQNT+O0lCP4bJqVdj8o93TDwZyS7nSF1HfE20nryJKlmO
-         Ealw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779827549; x=1780432349;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yOE68Mzf5nnVfNMftzrnIa4+AJ1pM+MIvuOSTOhC6JY=;
-        b=UbAT+tp524LzQ5GMlblk4d6H6dVuW9Hg6A9iclmJg8O8aD2gXMXQXZ1wgvGYsCkuBk
-         m8dQ4odbuSIvIrKfuizwlAy28c4nsfBO/7azThmUJn+9wJI2v1S6oQXqpna2OpBDCT1R
-         rCqnRU4SGOo2sDihTyqUM54CiJy5vOJ4/YcAktUeM4xArFNf24uF9yhA/SfnubDqmNln
-         L0TPIqjAWCyiWiUECKk+Thxp4spmYjtni2o4GXFjCdT8JRqGSouVknu9oDDAzMhphUDA
-         /5uZFjFEi/e3EYgcinJ5kA0eSicXA95yK79K06LJvq1gtr+8qP8mMrIQxROXp35g7FKY
-         y3YA==
-X-Forwarded-Encrypted: i=1; AFNElJ8Qy7UdTCDlTwskPVelHkgF39gXNBnxt1qKSW0tshHCKC1sxlVRroJBvpz7bJ63ZStsNw8k2Ik=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyjH2YcRY4yCKVNLwD/J4G84lhpWur19LRpV0Z8vpr7uXmgfEhX
-	HhQHkGdpplA3hibdg35s2Otz0HbpAny/C9ygL6b6bpEdSAJUroHLIxfqJQ6cR5qdBbn3
-X-Gm-Gg: Acq92OGFQk/kTOHCVOnKnam56XPh4zjSLPAt+YniV8xMvMXlq7MLskwf2S0eENWZKWo
-	8kRvdgmV/Q83tWtgeIdldVXqgVY0ZCe/qoyh6KGkhUwclpBXmS5uf6yWURpZViKVD8it4uh+DQk
-	sxEzrayRbnnq9OxNzLrofOucDA2mQogp1+tOrep4KBW3gegxf8GUJmwZdwWZZ4nuCzFEQkWpNWe
-	eG/QKbDkuwFBwQJeGTLUh+jILOwCF1rMUD3/jVlBQNQSkgKHjWcHRmLNOhrLZohv1ZpNXAfocIL
-	Af9nAszdYgds69Giv7+92w9T/DZ0ybMiFyoWfljJpTY4o1odjTDn2sudyi9SBW96lmq6wlQ8RUl
-	gjtFcN0KcBwUlvhqMf/bA/6QZ3yjgOfWuzWOstidqULyen/hxe+Gz8bKcJzkEId07MQYgBFTEqu
-	uA2nRbb04jEDjIMxASxUY7IPTchwFKPQAM4CJOseHW2dp7APiZtu38yRPF0q3sLv/QqOn7I0/NW
-	3Zw3F5TIMWTTzUy38NSmGKvnxdWlCRAsnNTk++eqxSjyMoCGW9VnZI=
-X-Received: by 2002:a05:6000:41c7:b0:451:66e6:501b with SMTP id ffacd0b85a97d-45eb3324e34mr29057635f8f.0.1779827548645;
-        Tue, 26 May 2026 13:32:28 -0700 (PDT)
-Received: from PeakBook-Mini.tail8e484.ts.net ([178.197.223.24])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45edb557545sm851693f8f.12.2026.05.26.13.32.27
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 26 May 2026 13:32:28 -0700 (PDT)
-From: Doruk Tan Ozturk <doruk@0sec.ai>
-To: oe-linux-nfc@lists.linux.dev
-Cc: security@kernel.org,
-	netdev@vger.kernel.org,
-	stable@vger.kernel.org,
-	Doruk Tan Ozturk <doruk@0sec.ai>
-Subject: [PATCH net v2] nfc: llcp: fix integer underflow and missing bounds checks in TLV parsing
-Date: Tue, 26 May 2026 22:32:26 +0200
-Message-ID: <20260526203226.73345-1-doruk@0sec.ai>
-X-Mailer: git-send-email 2.53.0
+	d=linux-foundation.org; s=korg; t=1779827733;
+	bh=NI6Cevn4t5LfSit16kYqKoentdpyGeg/mvaYnNzj5b0=;
+	h=Date:To:From:Subject;
+	b=CS3lFdHY4eNzECPJkRRYOcof1R0NlrOw/n0oXgqGfmWcBQQ4HtYxyTz1DEoZNAgH+
+	 3tpbYOol4C1ATBP7ZDdQqss+ilnveb+ZGZpZdbKISM3PsqLFnXIX40b/OxY69GpyLI
+	 M/u/aFrh+8LB6Ta7yguJ7L8Dkn4JBw9XbWnHwdtw=
+Date: Tue, 26 May 2026 13:35:32 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,heming.zhao@suse.com,gechangwei@live.cn,rollkingzzc@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + ocfs2-reject-oversized-group-bitmap-descriptors.patch added to mm-nonmm-unstable branch
+Message-Id: <20260526203532.DBD231F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [1.04 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[0sec.ai:s=google];
-	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-254445-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254444-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[0sec.ai];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,huawei.com,fasheh.com,oracle.com,linux.alibaba.com,evilplan.org,suse.com,live.cn,gmail.com,linux-foundation.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[doruk@0sec.ai,stable@vger.kernel.org];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.942];
-	DKIM_TRACE(0.00)[0sec.ai:-];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 1A5845DC53B
+	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email]
+X-Rspamd-Queue-Id: 6C0715DC5D6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Multiple out-of-bounds read vulnerabilities exist in the NFC LLCP TLV
-parsers:
 
-1. In nfc_llcp_recv_snl(), when an SDREQ TLV has length == 0,
-   service_name_len = length - 1 underflows to SIZE_MAX (size_t is
-   unsigned). The subsequent strncmp() and nfc_llcp_sock_from_sn()
-   calls then read unbounded kernel heap memory.
+The patch titled
+     Subject: ocfs2: reject oversized group bitmap descriptors
+has been added to the -mm mm-nonmm-unstable branch.  Its filename is
+     ocfs2-reject-oversized-group-bitmap-descriptors.patch
 
-2. All LLCP TLV parsing loops (nfc_llcp_recv_snl, nfc_llcp_connect_sn,
-   nfc_llcp_parse_gb_tlv, nfc_llcp_parse_connection_tlv) read tlv[0]
-   and tlv[1] without first verifying that at least 2 bytes remain in
-   the buffer.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/ocfs2-reject-oversized-group-bitmap-descriptors.patch
 
-A nearby malicious NFC device can trigger these without authentication --
-LLCP link activation happens automatically after NFC-DEP.
+This patch will later appear in the mm-nonmm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Fix by adding a minimum length check before the subtraction in the
-SDREQ case, and adding bounds validation at the top of each TLV loop
-iteration.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-Found by 0sec (https://0sec.ai) using automated source analysis.
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-Fixes: 19cfe5843e86 ("NFC: Initial SNL support")
-Cc: stable@vger.kernel.org
-Reported-by: Doruk Tan Ozturk <doruk@0sec.ai>
-Closes: https://lore.kernel.org/netdev/20260525202427.67768-1-doruk@0sec.ai/
-Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Zhang Cen <rollkingzzc@gmail.com>
+Subject: ocfs2: reject oversized group bitmap descriptors
+Date: Sun, 24 May 2026 19:12:48 +0800
+
+ocfs2_validate_gd_parent() only bounds bg_bits against the parent
+allocator's chain geometry.  A malicious descriptor can still claim a
+bg_size/bg_bits pair that exceeds the bitmap bytes that physically fit in
+the group descriptor block, so later bitmap scans and bit updates can run
+past bg_bitmap.
+
+Add a physical-cap check based on ocfs2_group_bitmap_size() for the parent
+allocator type and reject descriptors whose bg_size or bg_bits exceed that
+capacity.  Keep the existing chain geometry check so both the on-disk
+bitmap layout and the allocator metadata must agree before the descriptor
+is used.
+
+Validation reproduced this kernel report:
+KASAN use-after-free in _find_next_bit+0x7f/0xc0
+Read of size 8
+Call trace:
+  dump_stack_lvl+0x66/0xa0 (?:?)
+  print_report+0xd0/0x630 (?:?)
+  _find_next_bit+0x7f/0xc0 (?:?)
+  srso_alias_return_thunk+0x5/0xfbef5 (?:?)
+  __virt_addr_valid+0x188/0x2f0 (?:?)
+  kasan_report+0xe4/0x120 (?:?)
+  ocfs2_find_max_contig_free_bits+0x35/0x70 (fs/ocfs2/suballoc.c:1375)
+  ocfs2_block_group_set_bits+0x472/0x4b0 (fs/ocfs2/suballoc.c:1457)
+  ocfs2_cluster_group_search+0x16b/0x440 (fs/ocfs2/suballoc.c:86)
+  ocfs2_bg_discontig_fix_result+0x1ef/0x230 (fs/ocfs2/suballoc.c:1786)
+  ocfs2_search_chain+0x8f8/0x10a0 (fs/ocfs2/suballoc.c:1886)
+  get_page_from_freelist+0x70e/0x2370 (?:?)
+  lock_release+0xc6/0x290 (?:?)
+  do_raw_spin_unlock+0x9a/0x100 (?:?)
+  kasan_unpoison+0x27/0x60 (?:?)
+  __bfs+0x147/0x240 (?:?)
+  get_page_from_freelist+0x83d/0x2370 (?:?)
+  ocfs2_claim_suballoc_bits+0x38c/0xe70 (fs/ocfs2/suballoc.c:96)
+  sched_domains_numa_masks_clear+0x70/0xd0 (?:?)
+  check_irq_usage+0xe8/0xb70 (?:?)
+  __ocfs2_claim_clusters+0x18d/0x4c0 (fs/ocfs2/suballoc.c:2497)
+  check_path+0x24/0x50 (?:?)
+  rcu_is_watching+0x20/0x50 (?:?)
+  check_prev_add+0xfd/0xd00 (?:?)
+  ocfs2_add_clusters_in_btree+0x17d/0x810 (fs/ocfs2/suballoc.c:?)
+  __folio_batch_add_and_move+0x1f5/0x3d0 (?:?)
+  ocfs2_add_inode_data+0xd9/0x120 (fs/ocfs2/suballoc.c:?)
+  filemap_add_folio+0x105/0x1f0 (?:?)
+  ocfs2_write_begin_nolock+0x29f7/0x2f80 (fs/ocfs2/suballoc.c:3043)
+  ocfs2_read_inode_block+0xb5/0x110 (fs/ocfs2/suballoc.c:?)
+  down_write+0xf5/0x180 (?:?)
+  ocfs2_write_begin+0x180/0x240 (fs/ocfs2/suballoc.c:?)
+  __mark_inode_dirty+0x758/0x9a0 (?:?)
+  inode_to_bdi+0x41/0x90 (?:?)
+  balance_dirty_pages_ratelimited_flags+0xf8/0x1d0 (?:?)
+  generic_perform_write+0x252/0x440 (?:?)
+  mnt_put_write_access_file+0x16/0x70 (?:?)
+  file_update_time_flags+0xe4/0x200 (?:?)
+  ocfs2_file_write_iter+0x80a/0x1320 (fs/ocfs2/suballoc.c:?)
+  lock_acquire+0x184/0x2f0 (?:?)
+  ksys_write+0xd2/0x170 (?:?)
+  apparmor_file_permission+0xf5/0x310 (?:?)
+  read_zero+0x8d/0x140 (?:?)
+  lock_is_held_type+0x8f/0x100 (?:?)
+
+Link: https://lore.kernel.org/20260524111248.1429884-1-rollkingzzc@gmail.com
+Fixes: ccd979bdbce9 ("[PATCH] OCFS2: The Second Oracle Cluster Filesystem")
+Assisted-by: Codex:gpt-5.5
+Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
-v2:
-  - mark as net fix
-  - add Fixes: tag and Cc: stable
-  - add Closes: tag
 
-Link: https://lore.kernel.org/netdev/20260525202427.67768-1-doruk@0sec.ai/
+ fs/ocfs2/suballoc.c |   22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
- net/nfc/llcp_core.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
-index XXXXXXX..YYYYYYY 100644
---- a/net/nfc/llcp_core.c
-+++ b/net/nfc/llcp_core.c
-@@ -1302,6 +1302,9 @@ static void nfc_llcp_recv_snl(struct nfc_llcp_local *local,
-
- 	while (offset < tlv_len) {
-+		if (offset + 2 > tlv_len)
-+			break;
+--- a/fs/ocfs2/suballoc.c~ocfs2-reject-oversized-group-bitmap-descriptors
++++ a/fs/ocfs2/suballoc.c
+@@ -231,8 +231,16 @@ static int ocfs2_validate_gd_parent(stru
+ 				    int resize)
+ {
+ 	unsigned int max_bits;
++	unsigned int max_bitmap_bits;
++	unsigned int max_bitmap_size;
++	int suballocator;
+ 	struct ocfs2_group_desc *gd = (struct ocfs2_group_desc *)bh->b_data;
+ 
++	suballocator = le64_to_cpu(di->i_blkno) != OCFS2_SB(sb)->bitmap_blkno;
++	max_bitmap_size = ocfs2_group_bitmap_size(sb, suballocator,
++						  OCFS2_SB(sb)->s_feature_incompat);
++	max_bitmap_bits = max_bitmap_size * 8;
 +
- 		type = tlv[0];
- 		length = tlv[1];
-
-@@ -1307,6 +1310,9 @@ static void nfc_llcp_recv_snl(struct nfc_llcp_local *local,
- 		switch (type) {
- 		case LLCP_TLV_SDREQ:
-+			if (length < 1)
-+				break;
+ 	if (di->i_blkno != gd->bg_parent_dinode) {
+ 		do_error("Group descriptor #%llu has bad parent pointer (%llu, expected %llu)\n",
+ 			 (unsigned long long)bh->b_blocknr,
+@@ -240,6 +248,20 @@ static int ocfs2_validate_gd_parent(stru
+ 			 (unsigned long long)le64_to_cpu(di->i_blkno));
+ 	}
+ 
++	if (le16_to_cpu(gd->bg_size) > max_bitmap_size) {
++		do_error("Group descriptor #%llu has bitmap size %u but physical max of %u\n",
++			 (unsigned long long)bh->b_blocknr,
++			 le16_to_cpu(gd->bg_size),
++			 max_bitmap_size);
++	}
 +
- 			tid = tlv[2];
- 			service_name = (char *) &tlv[3];
- 			service_name_len = length - 1;
---
-2.45.0
++	if (le16_to_cpu(gd->bg_bits) > max_bitmap_bits) {
++		do_error("Group descriptor #%llu has bit count %u but physical max of %u\n",
++			 (unsigned long long)bh->b_blocknr,
++			 le16_to_cpu(gd->bg_bits),
++			 max_bitmap_bits);
++	}
++
+ 	max_bits = le16_to_cpu(di->id2.i_chain.cl_cpg) * le16_to_cpu(di->id2.i_chain.cl_bpc);
+ 	if (le16_to_cpu(gd->bg_bits) > max_bits) {
+ 		do_error("Group descriptor #%llu has bit count of %u\n",
+_
+
+Patches currently in -mm which might be from rollkingzzc@gmail.com are
+
+ocfs2-rebase-copied-fsdlm-lvb-pointers-in-locking_state.patch
+ocfs2-reject-oversized-group-bitmap-descriptors.patch
+
 
