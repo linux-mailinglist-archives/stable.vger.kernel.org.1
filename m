@@ -1,101 +1,99 @@
-Return-Path: <stable+bounces-254381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254382-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJNYM8u7FWrKYQcAu9opvQ
-	(envelope-from <stable+bounces-254381-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 17:27:07 +0200
+	id qFQVKpa9FWrYZgcAu9opvQ
+	(envelope-from <stable+bounces-254382-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 17:34:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D8425D8AFD
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 17:27:07 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E92B5D8D4F
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 17:34:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E1826318D028
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 15:12:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0EE793038A4C
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 15:18:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6238838B14F;
-	Tue, 26 May 2026 15:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7AEE1C6FF5;
+	Tue, 26 May 2026 15:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dkgd6dgM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ag/vMndQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747481DD9AC
-	for <stable@vger.kernel.org>; Tue, 26 May 2026 15:11:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00301ADFE4
+	for <stable@vger.kernel.org>; Tue, 26 May 2026 15:18:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779808273; cv=none; b=b7s2ug0s48vfgFkKGef0usXE4gew+Dyi0BpxK35vp5IMA8Nj6Fa5DyuABJb575ONs3FwjEQJCeArXvAaCBPPjKdiokezKWewVW5Vn4IXxI+G6TOJDHQa02JSHYlGWW5dKPhJtnZ34UCVaFhe4cb1LH8C+ZV1qZXc1arNBL6zKZc=
+	t=1779808705; cv=none; b=c00ui4LPW0Iw1xLdN8dvIyUGeqIIXESBwhjWg8O4LqMlHrYuGArkNYmw27WtBCyNlD+jfjbhFSLLPDqIxkuh+7Y36J6PJo43cBMTbz/L0ZrCAv9foUG2XrHhl0kcegF0ozLv4lbtaiYKW2iAiKQnkoUefNCEwWFvzxPHjCK6ppA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779808273; c=relaxed/simple;
-	bh=SCARi5umW3d5XBaEPSaPKKrqLS7JfeDlQS62zOijtSA=;
+	s=arc-20240116; t=1779808705; c=relaxed/simple;
+	bh=YdMB1LtyLqIriHtc7C7EYyISywkT2D2MpqY0VJfRR9s=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pkOn4ExGUuiQP5XGt6B36IqyZEhcDQ742DQrVXGETjneV94fumIZewcw7+cwWNyb33p00tH5UZ2VFuViPmZ+ZsdGqrf+JuGpnSzeXVrJLV9Mfz4FPcS/r/17VZqqGuPPHbY1cs8TrRHLTomfSLO+kVAy8d2jjxZaB3hBmPbPFS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dkgd6dgM; arc=none smtp.client-ip=209.85.128.42
+	 MIME-Version:Content-Type; b=MgJxqggIeP5FRTVnGXM/dtJd4zgBadZ/Xo2/RcWViO3NrQOSjlR+yx1vVGYvH92Uq+P42c/ddkqwZ5IlvFIksm4nYPXX2ek59UwISbnbPlI5reOFGGm4EmUhLQIOW6SbNIsUmW1NaIfZNF8QjOpD4BDszYQ+fLmh4u3c0D3CngI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ag/vMndQ; arc=none smtp.client-ip=209.85.221.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-49056b9f04aso41018575e9.0
-        for <stable@vger.kernel.org>; Tue, 26 May 2026 08:11:11 -0700 (PDT)
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-43d734223e4so6795196f8f.0
+        for <stable@vger.kernel.org>; Tue, 26 May 2026 08:18:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779808270; x=1780413070; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1779808702; x=1780413502; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=gz+rJovCHkSNlsFtO0WXxPTtCZGcHzWc5CByPRL4GyE=;
-        b=Dkgd6dgM5GMVwV0t5O0FRCR1mVrjPouyCg/X9/eCkXVkadRPSJTyIJ0BuM6xbOv+F5
-         1XpsypJn6A7VLC9+lMiZCwOJ2+S8wcGym0CR5+o1tcqb4QP5SsnnF5yFkSsHI8cqpCYH
-         xXdqdnRf56SwdIpyS+CHd0G0zXpyzcco+kHwSvACxT3QqywH4TBupI/1z7oJbHSEbeem
-         dyX/e5WR93ScGttIrIKmy5aFktSQ8Jm+wqfJPVCQl2noLveSkJ4M9ztNnOsYVNWuPAIA
-         IdbKvl/XrR1z56gXw6AEj8wX88pVchoJhkwJ6PL1iyVaySZMwy6eNOmYVsZxZ0aSMuXU
-         F3ig==
+        bh=yQeWuKcJdaKGP0co6PsxQWNihwyuFZGEvhAS+cv/Pqc=;
+        b=Ag/vMndQ3m9ylA9teCUFtA4BXrRYoTUVYyxvrSW/XFYHWXIcftooR5fBPpaZG/wSuR
+         ztbvP4nvyO99aaBRq6fQ0UjsH2cy9GopL8QakD5+gnUyK6B511QwUXrDsy2E/ilQgjf4
+         z185bWiRtKLq+BUA8N5ncGYXqLoBUG/+8d2ePXIimUR7ojk/eiPe6crtCuIi8rU1lN+U
+         Y1LwRG4OrWLbxTXBUuX6UgByFz6YEpamLm+ajPVyMAyPL23O+UYtE5PEWCb/0nu6ZoLE
+         IDIk0N8p2lKFOkq8rn56KKFIEaqPLBPQOuqV8CX5C029Abd2QGRUdakuWFhSuyf4Iw5L
+         G85Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779808270; x=1780413070;
+        d=1e100.net; s=20251104; t=1779808702; x=1780413502;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=gz+rJovCHkSNlsFtO0WXxPTtCZGcHzWc5CByPRL4GyE=;
-        b=ikR3JFWj5TzHPbvnfpaGWPawaw3JoqX2qH+gYu1JYTJ9mH5JBMG3pXEOZBURl+u3KL
-         rofwxnhZB3jN6PIDqV0LAXYMBBITI1PjG+10ftbPLKr4EDxhYDubNw/4GSNp49gjsUQP
-         AUavMqEcvGb/b72V75935o3r82hKJd7a7lRScdYxAgoodK7W7mHAI2CZ3H1FcAmXOryF
-         N48p4g9mebg4Sn+K7jy8gghIReQRUid7O1S5bhp7+UiWQnfwqKtqJ9Lp+wS1qrlxn9Yp
-         w+ZIkBdjvsdYl7aqDtHYrI4SFLWPlIsCy7X+AARlN5kLnFzQ+Q0PwNOpo9WCW2tfu3OG
-         mZFg==
-X-Forwarded-Encrypted: i=1; AFNElJ8pfdb2OgBzZaqRfEOBosvFl4ikuvvcwhbLAED83FUNhfg+wMqxtCyMv2l8S4YdBzmvxJXEeZQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7eH0/G0NvDywK6cfNwlfPjPv2JUGGL/nDYHxHXGbPK64rdvVG
-	+ALpWZkjXlBytSLnmwFrLoSqUiMSc+E6c/TJmBEtKuSRI+45rmYTmSb1
-X-Gm-Gg: Acq92OEMQklEVwvAMpGFsn9VXvkHG/0oisrt5o2LUa5hU2jUwwpcO2gwPr3u8zHMivk
-	FJUxc9rivAORvUJpTSEUmai9WfN1KkbF+NJmLfyYaPm2cqbwp1kJoBG3J4v40HZfI/wrgKSCvtl
-	zZsciI9p+0JFDkYpCq65la3NKgPn+kUhWHAbluwBOpF3mqdicBay/rsCjTLH7T9DfTkTimJ/Tok
-	YdC3/mF6p6C4Xpyh4kw8WoTscFbESqYmNfkq+I/KoBtYardPUQIpVD1DEizC/pdLEGGCPmC9j0i
-	DCcMbAEx0/28HA08pMuOORSnkBn+rqOFDPx5TOCBCUMBvvGK/W3laXHlymaWtBtNKe7IRwSixTh
-	xL+Fw9qxhlgf8L7EQGeet2r/HUh/faedW1K67QprwNuylecpe3Ja7DXu2NZ4i18l7wLlInjVmqK
-	eoxuBposKOxbhIa+EkZcHIuWBBvSgEg0BC9jkR+acxOXVcRqwbKQlP03EKlV69al+Wlg4B9RXQl
-	4s=
-X-Received: by 2002:a05:600c:1553:b0:490:53b0:9e53 with SMTP id 5b1f17b1804b1-49053b0a086mr252276435e9.1.1779808269542;
-        Tue, 26 May 2026 08:11:09 -0700 (PDT)
+        bh=yQeWuKcJdaKGP0co6PsxQWNihwyuFZGEvhAS+cv/Pqc=;
+        b=prqWYmhK38fG1fENGl/V8/Q9L08mD+XdjYJR6EYKEaXLtpEeOhtS2bSmpzUY7zFyOr
+         r+Ew3FTErbAjegoYrN27SwTkjB5ol2VA3Zw4jr6+7Y2JRP4hary3FwdP3M90IxX5umuB
+         T/0CntNu2AOKPAN/cOMTg9WoMmAbGfPrKWFd+Qrv62a0ncbZnSaNM5+VRA0Hrew5+XkE
+         ECcljf8cPLdxW6j2QAODnudmm2dmLGl7tMf/xrhQIeyxu2lovd58v0NiJYVGiWM8z9/A
+         nYk23RqUCH2TU+vfWMd7UQYmmybMXSBcRJvuWHTBWhGToIChJOnxr84Jsr3zf473OigY
+         7yvw==
+X-Forwarded-Encrypted: i=1; AFNElJ8HhEimj1t0Pp8A+Iam4u/ntCnAkZ26OJZl2zJnGbWZjwE6IOxSnbJMedkSGSDrus5K5lOPhaU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyw2Ga/rO5LJX9SOxbklHtfwQ3+bgRq9bM/WNAIVe9ARl8IEGHx
+	cdCDRJD951BguqmaXuXiGZYsIUbkfw8mlW6mnlR4iOt/aBHaxMd2cU7X
+X-Gm-Gg: Acq92OFUKLGitx3WrabiZAxMCpcOHHtWPQxDtD0h7H++ipdMCkn++lipK8cPCkW/KHm
+	ADhmbBwwGenkABE46qpUl69KkT3kHDPGzH/YKQkb1tuiGSPi5qjmVFuJx8OtC+C7hO9ahsJF/EL
+	nVh+VTXqqrOT5jkN8MI7AkVFYd09/5PFa5lBAw7rfFjPjf4wsVAGPL4R1TMK3vHSLN34YNV2MfH
+	PAogkuf9yZfvulpd/Nxzf8UtZfU/HXv7UL6uEp7JPcEn2Wz1c8kceQQnwpnAorFlzJ9IQY8HngG
+	gA7lQlY/i+aPbNEHfTDGvbXZ/VvoLuJgfsEVAH+8rjyvzBuFBg5XxstkdeJGW/juHuB8jJnKX64
+	h55C2S9ONBltAhcWOkn8A0i3sD4FItpZ7qTxs6SNVu8ReKvtkQTQJLcjcNfpCRwec9CRBbQDQKD
+	7oMHwZyd5gkrYXUdQqaKmlW9U0KV9Q5DcJSFLPKCeXt6gXO5lWeek2O4mDKlLkAWfES03YXMSnX
+	ao=
+X-Received: by 2002:a05:6000:18af:b0:45e:9304:a4c3 with SMTP id ffacd0b85a97d-45eb333aa31mr28185448f8f.19.1779808701891;
+        Tue, 26 May 2026 08:18:21 -0700 (PDT)
 Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490456274ebsm317708235e9.15.2026.05.26.08.11.09
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eb6cd1780sm38974606f8f.16.2026.05.26.08.18.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 May 2026 08:11:09 -0700 (PDT)
-Date: Tue, 26 May 2026 16:11:08 +0100
+        Tue, 26 May 2026 08:18:21 -0700 (PDT)
+Date: Tue, 26 May 2026 16:18:20 +0100
 From: David Laight <david.laight.linux@gmail.com>
-To: Petr Oros <poros@redhat.com>
-Cc: Jacob Keller <jacob.e.keller@intel.com>, John Ousterhout
- <ouster@cs.stanford.edu>, stable@vger.kernel.org,
- anthony.l.nguyen@intel.com, intel-wired-lan@lists.osuosl.org,
- przemyslaw.kitszel@intel.com, netdev@vger.kernel.org
-Subject: Re: [Intel-wired-lan] [PATCH net v3] ice: fix packet corruption due
- to extraneous page flip
-Message-ID: <20260526161108.645c47a1@pumpkin>
-In-Reply-To: <e1ce1387-ae6b-4b43-b5d8-a1141c4a4f1c@redhat.com>
-References: <20260512181953.1689-1-ouster@cs.stanford.edu>
-	<20260513100732.499e3f49@pumpkin>
-	<CAGXJAmzK+56DHnitD1g263mPSgWg9jZyq2z6R+vd8bV_c4ZbuQ@mail.gmail.com>
-	<20260513214927.17a8dd45@pumpkin>
-	<CAGXJAmx4LaVv=QJ=SanvF6iayJ8+SiLyUqht+jMxouXPX=54-g@mail.gmail.com>
-	<20260514110112.12bdf5ff@pumpkin>
-	<30dc284c-8cc0-4bae-b7b0-99d6d71a66e3@intel.com>
-	<e1ce1387-ae6b-4b43-b5d8-a1141c4a4f1c@redhat.com>
+To: kernel test robot <lkp@intel.com>
+Cc: Kacper Kokot <kacper.kokot.44@gmail.com>, Pablo Neira Ayuso
+ <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>, Phil Sutter
+ <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ linux-kernel@vger.kernel.org, oe-kbuild-all@lists.linux.dev,
+ netdev@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] netfilter: TCPMSS: fix dropped packets when MSS option
+ is unaligned
+Message-ID: <20260526161820.63c56e56@pumpkin>
+In-Reply-To: <202605261527.v5NoRvES-lkp@intel.com>
+References: <20260525201116.407338-2-kacper.kokot.44@gmail.com>
+	<202605261527.v5NoRvES-lkp@intel.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -103,265 +101,228 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254381-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254382-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	FREEMAIL_CC(0.00)[gmail.com,netfilter.org,strlen.de,nwl.cc,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org,lists.linux.dev];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[stanford.edu:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 1D8425D8AFD
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,git-scm.com:url,01.org:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 4E92B5D8D4F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, 26 May 2026 14:47:42 +0200
-Petr Oros <poros@redhat.com> wrote:
+On Tue, 26 May 2026 15:50:00 +0200
+kernel test robot <lkp@intel.com> wrote:
 
-> On 5/14/26 18:43, Jacob Keller wrote:
-> > On 5/14/2026 3:01 AM, David Laight wrote: =20
-> >> On Wed, 13 May 2026 21:47:11 -0700
-> >> John Ousterhout <ouster@cs.stanford.edu> wrote:
-> >> =20
-> >>> On Wed, May 13, 2026 at 1:49=E2=80=AFPM David Laight
-> >>> <david.laight.linux@gmail.com> wrote: =20
-> >>>> On Wed, 13 May 2026 09:28:40 -0700
-> >>>> John Ousterhout <ouster@cs.stanford.edu> wrote:
-> >>>>    =20
-> >>>>> On Wed, May 13, 2026 at 2:07=E2=80=AFAM David Laight
-> >>>>> <david.laight.linux@gmail.com> wrote: =20
-> >>>>>> On Tue, 12 May 2026 11:19:53 -0700
-> >>>>>> John Ousterhout <ouster@cs.stanford.edu> wrote:
-> >>>>>>    =20
-> >>>>>>> Consider the following sequence of events:
-> >>>>>>> * The bottom half of a buffer page is filled with data from
-> >>>>>>>    packet A. The page has a net reference count (reference count
-> >>>>>>>    - bias) of 1. The page is returned to the NIC, flipped to
-> >>>>>>>    use the top half.
-> >>>>>>> * Before the reference on the page is released, the NIC returns
-> >>>>>>>    the page with no data in it ('size' is zero in ice_clean_rx_ir=
-q).
-> >>>>>>>    In this case the bias does not get decremented. The page still
-> >>>>>>>    has a net reference count of 1, so it gets returned to the NIC.
-> >>>>>>>    However, ice_put_rx_mbuf flipped the page so that the bottom
-> >>>>>>>    half is active.
-> >>>>>>> * If the NIC stores another packet in the page before packet A
-> >>>>>>>    has released its reference, the data in packet A will be
-> >>>>>>>    overwritten with data from the new packet.
-> >>>>>>> * Unfortunately zero-length buffers occur frequently: they seem
-> >>>>>>>    to occur whenever a packet uses every available byte in a
-> >>>>>>>    buffer, ending precisely at the end of the buffer. When this
-> >>>>>>>    happens the NIC seems to generate an extra zero-length
-> >>>>>>>    buffer.
-> >>>>>>> The fix is for ice_put_rx_mbuf not to flip pages that have a
-> >>>>>>> size of 0. =20
-> >>>>>> How is this different from packet B (in the top half) being
-> >>>>>> freed before packet A (in the bottom half)? =20
-> >>>>> I'm not sure exactly what you're referring to here. Are you asking
-> >>>>> about a situation where both halves of the page get filled with pac=
-ket
-> >>>>> data and then the second half to be filled is the first to be freed=
-? I
-> >>>>> believe that the ICE driver abandons a page if both halves are ever
-> >>>>> occupied simultaneously; the page will be returned to the system on=
-ce
-> >>>>> both halves have dropped their references. Thus it doesn't matter
-> >>>>> which half is freed first. =20
-> >>>> That is what I was thinking, seems like the logic is over complicate=
-d.
-> >>>>
-> >>>> If you need to put 4k pages into some kind of iommu rather than 2k b=
-uffers
-> >>>> (to contain 1536 byte ethernet packets) then I'd have thought you'd
-> >>>> initially put both halves into adjacent tx ring entries.
-> >>>> If a rx buffer is discarded (eg a zero length fragment or a CRC erro=
-r,
-> >>>> or even 'copy break' for short packets) then, as an optimisation,
-> >>>> you could reuse the buffer for another receive.
-> >>>> The same could be done if the page is freed by an application.
-> >>>>
-> >>>> However it sounds like it doesn't use the 2nd half until the first
-> >>>> completes - otherwise you'd never 'flip' to make the other half
-> >>>> active.
-> >>>>
-> >>>> Thinks...
-> >>>> By only putting half of each 4k 'page' into the rx ring the code
-> >>>> will usually save (expensive) iommu setup in the (probably) normal
-> >>>> case where the buffers are freed 'reasonably quickly'.
-> >>>> But that really requires a 'free/with_nic/busy' state for each half
-> >>>> rather then trying to guess from a reference count.
-> >>>>
-> >>>> But if the low-level code is recycling the rx buffer (for any reason)
-> >>>> it wants to use the same buffer.
-> >>>>
-> >>>> The ethernet driver I wrote (a long time ago, early 90s) allocated
-> >>>> 64k as 128 512byte buffers and did an aligned word-sized copy of
-> >>>> every receive frame - most frames were in contiguous memory.
-> >>>> The simplicity of it made up for the cost of the copy, especially
-> >>>> since that was an iommu system. =20
-> >>> I'm not here to defend the logic (and it has been replaced with
-> >>> something that is probably simpler and more efficient); I'm just
-> >>> suggesting a bug fix for the stable releases that still have this
-> >>> logic. =20
-> > Right. We definitely want a fix for the possible data corruption in
-> > stable. Ideally one as simple as possible.
-> > =20
-> >> You've forced me to look at all of the function :-)
-> >> I've noticed a few things:
-> >> - If ice_add_xdp_frag() fails (because there are too many fragments)
-> >>    then the rest of the fragments are left in the tx ring (instead
-> >>    of being discarded) - so are likely to be treated as a full packet
-> >>    later on.
-> >> - Frames with status errors (crc, framing etc) are discarded after
-> >>    the skb is built - surely that should happen before the xdp 'progra=
-m'
-> >>    is called.
-> >> - If the remote system send a very very long frame (traditionally the =
-PHY's
-> >>    'jabber detect' didn't always work) you can end up with all of the =
-rx
-> >>    ring being full of a single partial packet.
-> >>
-> >> I think you need to avoid calling ice_add_xdp_frag() when 'size =3D=3D=
- 0'.
-> >> Then in ice_put_rx_mbuf() unconditionally call ice_put_rx_buf() for
-> >> zero length fragments.
-> >> The comment would be 'zero length fragments can always be reused'.
-> >> =20
-> > That seems correct.
-> > =20
-> >> The zero length fragments almost certainly exist because the mac hardw=
-are
-> >> advances the the new buffer expecting more data - but only gets the
-> >> 4 byte CRC. So the zero length buffer contains the receive status.
-> >> =20
-> > That matches my understanding. =20
-> Hi John,
->=20
-> I have been looking at the same area in the pre-page-pool ice code and
-> I want to ask whether you observed memory growth during your Homa runs
-> that exposed the corruption, because in my testing the same bias mismatch
-> also produces a slow page leak that your v3 does not close.
->=20
-> Short version of the leak path, in the PASS (!CONSUMED) branch:
->=20
->  =C2=A0 1. ice_get_rx_buf(size=3D0) does pagecnt_bias-- unconditionally
->  =C2=A0 =C2=A0 =C2=A0(added by commit ef68094cb09e ("ice: Fix kernel pani=
-c due to page
->  =C2=A0 =C2=A0 =C2=A0refcount underflow") as the fix for the matching pan=
-ic).
->  =C2=A0 2. ice_add_xdp_frag() then returns 0 for size=3D=3D0, so that pag=
-e is
->  =C2=A0 =C2=A0 =C2=A0never attached to the xdp_buff/SKB. Nobody downstrea=
-m will ever
->  =C2=A0 =C2=A0 =C2=A0call put_page() to balance the pagecnt_bias-- from s=
-tep 1.
->  =C2=A0 3. Your v3 in ice_put_rx_mbuf() correctly skips the page flip for
->  =C2=A0 =C2=A0 =C2=A0size=3D=3D0, which closes the corruption window. But=
- it does not
->  =C2=A0 =C2=A0 =C2=A0restore pagecnt_bias for that zero size buffer, so t=
-he page is
->  =C2=A0 =C2=A0 =C2=A0handed back to ice_reuse_rx_page() with a permanent =
-deficit of 1.
->  =C2=A0 4. On the next reuse of that page with size > 0, pagecnt_bias dro=
-ps
->  =C2=A0 =C2=A0 =C2=A0again. ice_can_reuse_rx_page() now sees pgcnt - bias=
- =3D=3D 2 and
->  =C2=A0 =C2=A0 =C2=A0drains via __page_frag_cache_drain(page, pagecnt_bia=
-s). Because
->  =C2=A0 =C2=A0 =C2=A0pagecnt_bias is one too low, the drain undershoots b=
-y 1: page
->  =C2=A0 =C2=A0 =C2=A0refcount stays at 2 instead of 1.
->  =C2=A0 5. The SKB eventually releases its reference (refcount -> 1), but
->  =C2=A0 =C2=A0 =C2=A0nothing ever brings it to 0. The page is leaked.
->  =C2=A0 =C2=A0 =C2=A0ice_alloc_rx_bufs() just allocates a fresh page to f=
-ill the slot.
->=20
-> At the zero size frequency you mentioned (thousands per second), this
-> adds up to roughly MB/s of leaked page cache, which Jaroslav Pulchart
-> originally reported against 6.13.y on NUMA nodes and which motivated
-> the libeth/page_pool conversion in mainline. So in stable trees the
-> leak side of this bug is still live.
->=20
-> Two questions:
->=20
->  =C2=A0 - Did you monitor RSS / page allocator stats over the duration of
->  =C2=A0 =C2=A0 your Homa runs? If you did and did not see growth, I would=
- like
->  =C2=A0 =C2=A0 to understand what is different about your setup, because =
-by my
->  =C2=A0 =C2=A0 reading of the code the leak should fire whenever both hal=
-ves of
->  =C2=A0 =C2=A0 a page end up in SKBs simultaneously and one of them carri=
-ed a
->  =C2=A0 =C2=A0 zero size descriptor along the way.
->=20
->  =C2=A0 - If your focus was specifically the corruption, would you be open
->  =C2=A0 =C2=A0 to extending v3 (or replacing it) with a fix that also res=
-tores
->  =C2=A0 =C2=A0 pagecnt_bias for the size=3D=3D0 case? The minimal extensi=
-on is one
->  =C2=A0 =C2=A0 extra branch in ice_put_rx_mbuf:
->=20
->  =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (verdict !=3D ICE_XDP_CONSUMED && size !=
-=3D 0)
->  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ice_rx_buf_adjus=
-t_pg_offset(buf, xdp->frame_sz);
->  =C2=A0 =C2=A0 =C2=A0 =C2=A0 else
->  =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 buf->pagecnt_bia=
-s++;
->=20
->  =C2=A0 =C2=A0 which restores bias on every path where the page is not ac=
-tually
->  =C2=A0 =C2=A0 going out to an SKB. (I have a slightly different variant =
-that
->  =C2=A0 =C2=A0 tracks has_data in struct ice_rx_buf to also handle the br=
-oken
->  =C2=A0 =C2=A0 positional 'i <=3D xdp_frags' counter in the CONSUMED path=
-, where
->  =C2=A0 =C2=A0 zero size descriptors in the middle of a frame steal bias+=
-+ slots
->  =C2=A0 =C2=A0 from real fragments. Happy to share it if useful.)
+> Hi Kacper,
+> 
+> kernel test robot noticed the following build warnings:
+> 
+> [auto build test WARNING on nf-next/main]
+> [also build test WARNING on netfilter-nf/main linus/master v6.16-rc1 next-20260525]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> 
+> url:    https://github.com/intel-lab-lkp/linux/commits/Kacper-Kokot/netfilter-TCPMSS-fix-dropped-packets-when-MSS-option-is-unaligned/20260526-041308
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf-next.git main
+> patch link:    https://lore.kernel.org/r/20260525201116.407338-2-kacper.kokot.44%40gmail.com
+> patch subject: [PATCH] netfilter: TCPMSS: fix dropped packets when MSS option is unaligned
+> config: x86_64-rhel-9.4-ltp (https://download.01.org/0day-ci/archive/20260526/202605261527.v5NoRvES-lkp@intel.com/config)
+> compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260526/202605261527.v5NoRvES-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202605261527.v5NoRvES-lkp@intel.com/
+> 
+> All warnings (new ones prefixed by >>):
+> 
+>    net/netfilter/xt_TCPMSS.c: In function 'tcpmss_mangle_packet':
+> >> net/netfilter/xt_TCPMSS.c:140:66: warning: suggest parentheses around comparison in operand of '&' [-Wparentheses]  
+>      140 |                         if (((char *)&opt[i + 2] - (char *)tcph) & 0x1 != 0) {
+>          |                                                                  ^
 
-By thought was:
+and, of course, the code works fine because 0x1 != 0 is 1.
 
-I think you need to avoid calling ice_add_xdp_frag() when 'size =3D=3D 0'.
-Then in ice_put_rx_mbuf() unconditionally call ice_put_rx_buf() for
-zero length fragments (regardless of verdict).
-The comment would be 'zero length fragments can always be reused'.
-
-I think that path always reuses the same half of the page without
-going near the 'bias' code paths (which I didn't manage to grok).
-It is the same path that is used for frames with bad CRC (ignoring
-the broken paths when xdp is enabled).
+K (or maybe R) said that with hindsight they should have corrected the
+priority of & and | when they added && and || and just fixed all the
+existing code so it still worked.
 
 -- David
 
->=20
-> Regards,
-> Petr
->=20
->=20
+> 
+> 
+> vim +140 net/netfilter/xt_TCPMSS.c
+> 
+>     69	
+>     70	static int
+>     71	tcpmss_mangle_packet(struct sk_buff *skb,
+>     72			     const struct xt_action_param *par,
+>     73			     unsigned int family,
+>     74			     unsigned int tcphoff,
+>     75			     unsigned int minlen)
+>     76	{
+>     77		const struct xt_tcpmss_info *info = par->targinfo;
+>     78		struct tcphdr *tcph;
+>     79		int len, tcp_hdrlen;
+>     80		unsigned int i;
+>     81		__be16 oldval;
+>     82		u16 newmss;
+>     83		u8 *opt;
+>     84	
+>     85		/* This is a fragment, no TCP header is available */
+>     86		if (par->fragoff != 0)
+>     87			return 0;
+>     88	
+>     89		if (skb_ensure_writable(skb, skb->len))
+>     90			return -1;
+>     91	
+>     92		len = skb->len - tcphoff;
+>     93		if (len < (int)sizeof(struct tcphdr))
+>     94			return -1;
+>     95	
+>     96		tcph = (struct tcphdr *)(skb_network_header(skb) + tcphoff);
+>     97		tcp_hdrlen = tcph->doff * 4;
+>     98	
+>     99		if (len < tcp_hdrlen || tcp_hdrlen < sizeof(struct tcphdr))
+>    100			return -1;
+>    101	
+>    102		if (info->mss == XT_TCPMSS_CLAMP_PMTU) {
+>    103			struct net *net = xt_net(par);
+>    104			unsigned int in_mtu = tcpmss_reverse_mtu(net, skb, family);
+>    105			unsigned int min_mtu = min(dst_mtu(skb_dst(skb)), in_mtu);
+>    106	
+>    107			if (min_mtu <= minlen) {
+>    108				net_err_ratelimited("unknown or invalid path-MTU (%u)\n",
+>    109						    min_mtu);
+>    110				return -1;
+>    111			}
+>    112			newmss = min_mtu - minlen;
+>    113		} else
+>    114			newmss = info->mss;
+>    115	
+>    116		opt = (u_int8_t *)tcph;
+>    117		for (i = sizeof(struct tcphdr); i <= tcp_hdrlen - TCPOLEN_MSS; i += optlen(opt, i)) {
+>    118			if (opt[i] == TCPOPT_MSS && opt[i+1] == TCPOLEN_MSS) {
+>    119				u_int16_t oldmss;
+>    120				u16 csum_oldmss, csum_newmss;
+>    121	
+>    122				oldmss = (opt[i+2] << 8) | opt[i+3];
+>    123	
+>    124				/* Never increase MSS, even when setting it, as
+>    125				 * doing so results in problems for hosts that rely
+>    126				 * on MSS being set correctly.
+>    127				 */
+>    128				if (oldmss <= newmss)
+>    129					return 0;
+>    130	
+>    131				opt[i+2] = (newmss & 0xff00) >> 8;
+>    132				opt[i+3] = newmss & 0x00ff;
+>    133	
+>    134				csum_oldmss = htons(oldmss);
+>    135				csum_newmss = htons(newmss);
+>    136	
+>    137				/* MSS may be unaligned; fix up the incremental checksum
+>    138				 * to avoid an invalid checksum and a dropped packet.
+>    139				 */
+>  > 140				if (((char *)&opt[i + 2] - (char *)tcph) & 0x1 != 0) {  
+>    141					csum_oldmss = swab16(csum_oldmss);
+>    142					csum_newmss = swab16(csum_newmss);
+>    143				}
+>    144	
+>    145				inet_proto_csum_replace2(&tcph->check, skb,
+>    146							 csum_oldmss, csum_newmss,
+>    147							 false);
+>    148				return 0;
+>    149			}
+>    150		}
+>    151	
+>    152		/* There is data after the header so the option can't be added
+>    153		 * without moving it, and doing so may make the SYN packet
+>    154		 * itself too large. Accept the packet unmodified instead.
+>    155		 */
+>    156		if (len > tcp_hdrlen)
+>    157			return 0;
+>    158	
+>    159		/* tcph->doff has 4 bits, do not wrap it to 0 */
+>    160		if (tcp_hdrlen >= 15 * 4)
+>    161			return 0;
+>    162	
+>    163		/*
+>    164		 * MSS Option not found ?! add it..
+>    165		 */
+>    166		if (skb_tailroom(skb) < TCPOLEN_MSS) {
+>    167			if (pskb_expand_head(skb, 0,
+>    168					     TCPOLEN_MSS - skb_tailroom(skb),
+>    169					     GFP_ATOMIC))
+>    170				return -1;
+>    171			tcph = (struct tcphdr *)(skb_network_header(skb) + tcphoff);
+>    172		}
+>    173	
+>    174		skb_put(skb, TCPOLEN_MSS);
+>    175	
+>    176		/*
+>    177		 * IPv4: RFC 1122 states "If an MSS option is not received at
+>    178		 * connection setup, TCP MUST assume a default send MSS of 536".
+>    179		 * IPv6: RFC 2460 states IPv6 has a minimum MTU of 1280 and a minimum
+>    180		 * length IPv6 header of 60, ergo the default MSS value is 1220
+>    181		 * Since no MSS was provided, we must use the default values
+>    182		 */
+>    183		if (xt_family(par) == NFPROTO_IPV4)
+>    184			newmss = min(newmss, (u16)536);
+>    185		else
+>    186			newmss = min(newmss, (u16)1220);
+>    187	
+>    188		opt = (u_int8_t *)tcph + sizeof(struct tcphdr);
+>    189		memmove(opt + TCPOLEN_MSS, opt, len - sizeof(struct tcphdr));
+>    190	
+>    191		inet_proto_csum_replace2(&tcph->check, skb,
+>    192					 htons(len), htons(len + TCPOLEN_MSS), true);
+>    193		opt[0] = TCPOPT_MSS;
+>    194		opt[1] = TCPOLEN_MSS;
+>    195		opt[2] = (newmss & 0xff00) >> 8;
+>    196		opt[3] = newmss & 0x00ff;
+>    197	
+>    198		inet_proto_csum_replace4(&tcph->check, skb, 0, *((__be32 *)opt), false);
+>    199	
+>    200		oldval = ((__be16 *)tcph)[6];
+>    201		tcph->doff += TCPOLEN_MSS/4;
+>    202		inet_proto_csum_replace2(&tcph->check, skb,
+>    203					 oldval, ((__be16 *)tcph)[6], false);
+>    204		return TCPOLEN_MSS;
+>    205	}
+>    206	
+> 
+> --
+> 0-DAY CI Kernel Test Service
+> https://github.com/intel/lkp-tests/wiki
+> 
 
 
