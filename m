@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-254323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254324-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KPBGAH6FFWpUWQcAu9opvQ
-	(envelope-from <stable+bounces-254323-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 13:35:26 +0200
+	id aGIENr+GFWpyWQcAu9opvQ
+	(envelope-from <stable+bounces-254324-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 13:40:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B71085D4F29
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 13:35:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 392BD5D5051
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 13:40:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1D659302AF2B
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 11:35:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 29EAA314505A
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 11:35:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 420D83E1208;
-	Tue, 26 May 2026 11:35:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FC153E0C66;
+	Tue, 26 May 2026 11:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i63HGJA+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U0EfP79w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F103E122D
-	for <stable@vger.kernel.org>; Tue, 26 May 2026 11:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0783E1234;
+	Tue, 26 May 2026 11:35:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779795317; cv=none; b=qr1Blevz68A5M6XmH1QDMAyr3Ws3tsFxHqL9PYmuKipiMN92t8W2ZUo5NkQN3LHAGXbO9xGPVE07WQR3R9FSn+OMCogIdL2YhndDerkjA/VSsLhM/x0uHtNB7X2OLumAYZwTu1K4ApYE6U2hH62LRl2hqPvQ+aI20o/eib0nqTY=
+	t=1779795321; cv=none; b=lOdUx8DX2R5500AVDzbvSH7mcNNPLebXl2LA/LMcLrY8d39hQQdMAJ3WOQTyVHHQSz2g03120iv4k3oyJKdWPBDuuMD/dkqtBtGoHtOfdTaItAt3NxBVLwKfyN4FGuO5ZoQhrwYuq17/7GfQUZN9blW/y+ZOOx9m+AZavm8taP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779795317; c=relaxed/simple;
-	bh=BxdwOR2MarQtDlJ/0bwRTfZMuwhlHSvIAbeAUY3DBVY=;
+	s=arc-20240116; t=1779795321; c=relaxed/simple;
+	bh=BmtTDo/uRFsbwhH2tmV3Bysx52tyvZaR24F4RfDct0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V6bjhdRft2q0BnxlYmbMLAq3MguOFUN+ojFyjYfcxqAuwKe6WUy01crXCxecDuvZNMeGvOqNshWYpB3VWB8DwS4I4tVs0sVO9pq1jrgt7bFXfqCfwC6BoD6cjfJ/2yQupeXL/B6JDmmnwvkSM6lj7kC5arHZOtzLc5LbeYl/wug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i63HGJA+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 292E51F000E9;
-	Tue, 26 May 2026 11:35:15 +0000 (UTC)
+	 MIME-Version; b=KKHnXkySUksY4Uz4P2hMiM9CRhQ9/C3/qN3alrGTjSqJ/AJ0aq/+t65Rjv1zqj3kDwub1tQqd/JJsQrpNL7fpZaIArWw2K6aUVjrv5h67CHX4LLtfidES8LV6sLwWqKb01knr8667P/AVcQfl16fbgQd+2Z1oXvRAkC5LdxlRAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U0EfP79w; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 193151F00ADB;
+	Tue, 26 May 2026 11:35:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779795315;
-	bh=BxdwOR2MarQtDlJ/0bwRTfZMuwhlHSvIAbeAUY3DBVY=;
+	s=k20260515; t=1779795316;
+	bh=SbN+7A6LfrkSN+ioVAez6Eg2ksUMA7eufMMJl+wtgC8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=i63HGJA+BBcUFSgZT7jibErI0QfuwsgZONxhuSEfFwPAMwgrUYSegnw05y0wFkzVF
-	 7/1HZ+uf5yCHnWrINAj76UgOeMAT/4aS3Z47MEKddzEwGpf2PpGa1AO5eWsA7RF29V
-	 AkG0rA3ndHLtaUmCHhhKQw/YCFrRX0QmoQjQ53XrDk+7TSdeuKqMKxEWXw/RpIP5VT
-	 /0bjQ/yjz2RxRlQTpz+Hd6h4fxlfv9aliU6DbLPQRCNbdg9yprX8Gp416EbZ5Xj9TV
-	 I+05Ch+xLnX69+4WwbT5D7B4JVCyatYAtUjZI8ckhxbcI1p87/oCFSslI5I/+Y6oCT
-	 TrYLVZG7LY0gA==
+	b=U0EfP79w6VDJUwypTKnAk6RJoCNZny4LBY+H/5/GwqahfYlbzU5hWseBvcmyjqhDR
+	 H6xN8XUxEsgFa5JSOeWi2zZof/bteRJUWG23gcg/3L01lfoKIU0QqzTvh/UOAENcmz
+	 wEQHKJnc5nXqMm4BadZJ4YRbbQ6Y1UuOFKGW4I6Q7z4jEzTKU7tkTm075vDpdqx+6e
+	 B3iIzuwWBTIYq/p7JDUWMnDBJRjtygs2PSSUAMAEEGTjIqsG0GcFmo5nGtNtaSzR3/
+	 Dhz1htfVWkwiiofZ15FXzl2MWRgIu1ipHTrfZx7993luY5NjSwOscM0IIhcf1zmVuF
+	 vcgtZbWxmgRrQ==
 From: Sasha Levin <sashal@kernel.org>
-To: Borislav Petkov <bp@alien8.de>
+To: Lukas Beckmann <lbckmnn@mailbox.org>
 Cc: Sasha Levin <sashal@kernel.org>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Uros Bizjak <ubizjak@gmail.com>,
-	Jan Ingvoldstad <frettled@gmail.com>,
-	stable@vger.kernel.org
-Subject: Re: Linux 5.15 bug in vdso_read_cpunode() in segment.h introduced in 2025, commit ac9c408ed19d535289ca59200dd6a44a6a2d6036
-Date: Tue, 26 May 2026 07:35:07 -0400
-Message-ID: <20260525231000.agent5-0003@kernel.org>
+	stable@vger.kernel.org,
+	regressions@lists.linux.dev,
+	Mike Galbraith <efault@gmx.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>
+Subject: Re: [PATCH 6.12.y v2 0/5] backport missing dependencies of d66792919d4f
+Date: Tue, 26 May 2026 07:35:08 -0400
+Message-ID: <20260525231000.agent5-0004@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260524193714.GAahNTaoD92atkAUdQ@fat_crate.local>
-References: <CAEffzkxUELNHBzABxVmekE2C_MFuPyfbsvO33MXZy46pNRU7xQ@mail.gmail.com> <CAFULd4Z5vE7v37+4J5MLCttnG=cF0XX+Y_T0p1yeY36dL6i5Kw@mail.gmail.com> <DB2B5B4C-200F-4C0C-B14F-F58E0CF4078F@alien8.de> <F51A475F-F50A-4DE2-A098-871047496301@alien8.de> <2026052230-obtrusive-prowler-86c2@gregkh> <20260524020311.GCahJcXxBMmgUUaWNv@fat_crate.local> <20260524150046.agent5-0001@kernel.org> <20260524193714.GAahNTaoD92atkAUdQ@fat_crate.local>
+In-Reply-To: <20260525211117.630141-1-lbckmnn@mailbox.org>
+References: <https://lore.kernel.org/stable/20260522213120.1205100-1-lbckmnn@mailbox.org/> <20260525211117.630141-1-lbckmnn@mailbox.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,42 +67,50 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-254323-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,linuxfoundation.org,gmail.com,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-254324-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,lists.linux.dev,gmx.de,infradead.org,redhat.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B71085D4F29
+X-Rspamd-Queue-Id: 392BD5D5051
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-> > Should I pull it from 6.1/6.6/6.12 as well, or only the older trees?
+> v2 backports the missing dependency chain for d66792919d4f
+> ("sched/deadline: Use revised wakeup rule for dl_server") in 6.12.y:
 >
-> Well, that patch is not really stable material at all - it is just
-> a cleanup. And 118c40b7b503 ("kbuild: require gcc-8 and binutils-2.30")
-> got added only around 6.15ish so the 6.x ones should be affected too.
+>   1/5 cccb45d7c429 sched/deadline: Less agressive dl_server handling
+>   2/5 4717432dfd99 sched/deadline: Fix dl_server_stopped()
+>   3/5 bb4700adc3ab sched/deadline: Always stop dl-server before changing parameters
+>   4/5 4ae8d9aa9f9d sched/deadline: Fix dl_server getting stuck
+>   5/5 a3a70caf7906 sched/deadline: Fix dl_server behaviour
 
-Reverted from 6.12/6.6/6.1, thanks.
+Queued all 5 for 6.12.y, thanks for the quick respin.
+
+I also pulled ee6e44dfe6e5 ("sched/deadline: Stop dl_server before
+CPU goes offline") on top, since it's a Fixes: of 4ae8d9aa9f9d and
+6.17.y already took it. Without it 4/5 leaves a dangling dl_server
+on CPU hotunplug.
 
 --
 Thanks,
