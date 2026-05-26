@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-254355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254356-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sHa5EIaiFWprWwcAu9opvQ
-	(envelope-from <stable+bounces-254355-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 15:39:18 +0200
+	id KOoVMuuiFWprWwcAu9opvQ
+	(envelope-from <stable+bounces-254356-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 15:40:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D43A65D6A93
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 15:39:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 147785D6AF5
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 15:40:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4CF193068F8D
-	for <lists+stable@lfdr.de>; Tue, 26 May 2026 13:34:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 66EFA31C16AB
+	for <lists+stable@lfdr.de>; Tue, 26 May 2026 13:34:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 945CF3F9F2E;
-	Tue, 26 May 2026 13:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 581403FADEF;
+	Tue, 26 May 2026 13:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="nQKSiyXr"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="dMftMtk1"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25943E0C4F;
-	Tue, 26 May 2026 13:32:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE4C3FA5C6;
+	Tue, 26 May 2026 13:32:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779802373; cv=none; b=s0VqR6KXGa0WlZxxC2YFhfzFtRAN8LtzrLtRvCrj+Kt2kPYHxlhW9rnbd7jhh/yZR2zUupFoGb3rGypphdDRLc0AKeO6XOoABg8iza9Im0hIcESW6ArdrJLorM2Xn2pzeaN2xzt3eHCOEY9oxBOtpGleo14B30s1QWgNWdPPqG8=
+	t=1779802381; cv=none; b=jRPaFSdExb4ji4Ohl6UlclRUqDUCI8thS3gGGtWMwzRWYl9YdoO2v0qiZ+PKT/DQw4TVVXF/LHy1Nc2hT+flEDVHyNBfhdcqdN7H+/osEUdkf3rdsW4ovgo8xqACxeXDEgzL7FgqyGfOez8WXj0PIv+t4qyKY4m2gN6EwqGQreM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779802373; c=relaxed/simple;
-	bh=SV8gANXriicy3xro8WpIf2z6iUM6Kqr4jZKvbVPnjP8=;
+	s=arc-20240116; t=1779802381; c=relaxed/simple;
+	bh=zPKOnI+eCh6TITh5o719WgZc/7yXFTbcBgxOuiILBko=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=k4HWIWAAbnffcLkSYwxPLoLaEsTQ46cB6PCLM5+BNabT35bDb0h0YkOhtKMNB0NL5h/HlwRAky6Hc2HEJDo87u0sBUOm+xuYY6a26FoAjOFIirQ6kSI/rW0HdYGnvsu+SmN/TgB+He/iQgaJvIxr/+8pe67v0NikTfa04EpG4Qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=nQKSiyXr; arc=none smtp.client-ip=220.197.31.2
+	 MIME-Version; b=G4khvOvALc84z2NXqI7MgHMhVLNCI4bQMP6yczm4tTnkyOd3X3F8Q2dfBTnubxSMrqRWaod7yNmMgeAqiV//S2d3h49fTDHV2OL1U9981IElwrLf/xBPov4xuo++um54QGjJDgXsKJE8A+kpDsTaXa88BEdNJ2NU/XXqekcWeUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=dMftMtk1; arc=none smtp.client-ip=220.197.31.3
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=6w
-	dUSydCAldsf7w8+0XqwnOjjPoxBTMdvmgLiBqHNPE=; b=nQKSiyXrZjMuh/O2qe
-	ozGMluuvgNx9hnYA8IP7Hf0iMNZQQRPvHvxvTfsalTXiCZCS35dnk4guSelx9fjI
-	YmwM4Tr7fLsp0//iWMW7d/LUkcX7ceh9arpp/bS0ItQFo+b58WT5c6bXdGGYOH/j
-	oG7z76ivEYD22A7Gg9hzLmk5k=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=4h
+	VCpdYFEFDtvN0xhS/XhmVq2wEshicj2yXlZWbzaZ0=; b=dMftMtk1q9+lOjYvSA
+	Qbvgj9ZjnYYrFoea8Q3EG2FdJGyLecxR33GlJjMQlGPMBf4e456bwNK72PR0nyHH
+	zKmxcUYi7btUw4EYZJ1BQRySDmaO6CBsbYomIVCoyGZLa8xK0CSh8Cj466XU2Tc0
+	agASb2GmofUdmNks7hRVgn5+0=
 Received: from 163.com (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD3v0evoBVqYN9KDg--.14290S4;
-	Tue, 26 May 2026 21:31:39 +0800 (CST)
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD3v0evoBVqYN9KDg--.14290S5;
+	Tue, 26 May 2026 21:31:41 +0800 (CST)
 From: w15303746062@163.com
 To: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org,
@@ -54,11 +54,10 @@ Cc: tzimmermann@suse.de,
 	dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org,
 	Javier Martinez Canillas <javierm@redhat.com>,
-	Michael Kelley <mhklinux@outlook.com>,
 	Mingyu Wang <25181214217@stu.xidian.edu.cn>
-Subject: [PATCH v2 6.18.y 2/5] drm/vblank: Add CRTC helpers for simple use cases
-Date: Tue, 26 May 2026 21:31:20 +0800
-Message-Id: <20260526133123.691465-3-w15303746062@163.com>
+Subject: [PATCH v2 6.18.y 3/5] drm/vkms: Convert to DRM's vblank timer
+Date: Tue, 26 May 2026 21:31:21 +0800
+Message-Id: <20260526133123.691465-4-w15303746062@163.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260526133123.691465-1-w15303746062@163.com>
 References: <20260526133123.691465-1-w15303746062@163.com>
@@ -69,211 +68,209 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3v0evoBVqYN9KDg--.14290S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW3AFyxZr4UWF15ur13JFyrWFg_yoW7tr1kpF
-	srGry5Kr4YqFy5W3sxJws2yw1ag3yFyas7XrykG343Z3Z5KrnxuF18AryxuF13XrnrJ3Wf
-	X342yr15C3WrCa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jIPfdUUUUU=
-X-CM-SenderInfo: jzrvjiatxuliiws6il2tof0z/xtbC5Bs2GmoVoLuDWgAA3u
+X-CM-TRANSID:_____wD3v0evoBVqYN9KDg--.14290S5
+X-Coremail-Antispam: 1Uf129KBjvJXoWxKw1UAw1ktF1DGFWxAFy5Arb_yoWxJF4kpF
+	sFyr97Kr4rtF1UWa4DJF4kCw1F934Fyas7X3y8K3yav3WFkF13J3W8ArW3uFW3XF9rXw4a
+	qF1xtw15Ar109F7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jINtxUUUUU=
+X-CM-SenderInfo: jzrvjiatxuliiws6il2tof0z/xtbC-x03G2oVoL3gcAAA38
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254355-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[163.com];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-254356-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[suse.de,linux.intel.com,kernel.org,bootlin.com,lists.freedesktop.org,vger.kernel.org,redhat.com,outlook.com,stu.xidian.edu.cn];
-	DKIM_TRACE(0.00)[163.com:+];
+	FROM_NO_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[w15303746062@163.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DKIM_TRACE(0.00)[163.com:+];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,suse.de:email,outlook.com:email,xidian.edu.cn:email]
-X-Rspamd-Queue-Id: D43A65D6A93
+	FREEMAIL_FROM(0.00)[163.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[xidian.edu.cn:email,bootlin.com:email,suse.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 147785D6AF5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Thomas Zimmermann <tzimmermann@suse.de>
 
-Implement atomic_flush, atomic_enable and atomic_disable of struct
-drm_crtc_helper_funcs for vblank handling. Driver with no further
-requirements can use these functions instead of adding their own.
-Also simplifies the use of vblank timers.
+Replace vkms' vblank timer with the DRM implementation. The DRM
+code is identical in concept, but differs in implementation.
 
-The code has been adopted from vkms, which added the funtionality
-in commit 3a0709928b17 ("drm/vkms: Add vblank events simulated by
-hrtimers").
-
-v3:
-- mention vkms (Javier)
-v2:
-- fix docs
+Vblank timers are covered in vblank helpers and initializer macros,
+so remove the corresponding hrtimer in struct vkms_output. The
+vblank timer calls vkms' custom timeout code via handle_vblank_timeout
+in struct drm_crtc_helper_funcs.
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Tested-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Tested-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://lore.kernel.org/r/20250916083816.30275-3-tzimmermann@suse.de
-(cherry picked from commit d54dbb5963bdbdf8559903fe2b2343e871adcb30)
+Link: https://lore.kernel.org/r/20250916083816.30275-4-tzimmermann@suse.de
+(cherry picked from commit 02e2681ffe1addde1fc8c35d05657b16bfa79613)
 Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
 ---
- drivers/gpu/drm/drm_vblank_helper.c | 80 +++++++++++++++++++++++++++++
- include/drm/drm_vblank_helper.h     | 23 +++++++++
- 2 files changed, 103 insertions(+)
+ drivers/gpu/drm/vkms/vkms_crtc.c | 83 +++-----------------------------
+ drivers/gpu/drm/vkms/vkms_drv.h  |  2 -
+ 2 files changed, 7 insertions(+), 78 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_vblank_helper.c b/drivers/gpu/drm/drm_vblank_helper.c
-index f94d1e706191..a04a6ba1b0ca 100644
---- a/drivers/gpu/drm/drm_vblank_helper.c
-+++ b/drivers/gpu/drm/drm_vblank_helper.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: MIT
- 
-+#include <drm/drm_atomic.h>
- #include <drm/drm_crtc.h>
+diff --git a/drivers/gpu/drm/vkms/vkms_crtc.c b/drivers/gpu/drm/vkms/vkms_crtc.c
+index e60573e0f3e9..bd79f24686dc 100644
+--- a/drivers/gpu/drm/vkms/vkms_crtc.c
++++ b/drivers/gpu/drm/vkms/vkms_crtc.c
+@@ -7,25 +7,18 @@
  #include <drm/drm_managed.h>
- #include <drm/drm_modeset_helper_vtables.h>
-@@ -17,6 +18,12 @@
-  * Drivers enable support for vblank timers by setting the vblank callbacks
-  * in struct &drm_crtc_funcs to the helpers provided by this library. The
-  * initializer macro DRM_CRTC_VBLANK_TIMER_FUNCS does this conveniently.
-+ * The driver further has to send the VBLANK event from its atomic_flush
-+ * callback and control vblank from the CRTC's atomic_enable and atomic_disable
-+ * callbacks. The callbacks are located in struct &drm_crtc_helper_funcs.
-+ * The vblank helper library provides implementations of these callbacks
-+ * for drivers without further requirements. The initializer macro
-+ * DRM_CRTC_HELPER_VBLANK_FUNCS sets them coveniently.
-  *
-  * Once the driver enables vblank support with drm_vblank_init(), each
-  * CRTC's vblank timer fires according to the programmed display mode. By
-@@ -25,6 +32,79 @@
-  * struct &drm_crtc_helper_funcs.handle_vblank_timeout.
-  */
+ #include <drm/drm_probe_helper.h>
+ #include <drm/drm_vblank.h>
++#include <drm/drm_vblank_helper.h>
  
-+/*
-+ * VBLANK helpers
-+ */
-+
-+/**
-+ * drm_crtc_vblank_atomic_flush -
-+ *	Implements struct &drm_crtc_helper_funcs.atomic_flush
-+ * @crtc: The CRTC
-+ * @state: The atomic state to apply
-+ *
-+ * The helper drm_crtc_vblank_atomic_flush() implements atomic_flush of
-+ * struct drm_crtc_helper_funcs for CRTCs that only need to send out a
-+ * VBLANK event.
-+ *
-+ * See also struct &drm_crtc_helper_funcs.atomic_flush.
-+ */
-+void drm_crtc_vblank_atomic_flush(struct drm_crtc *crtc,
-+				  struct drm_atomic_state *state)
-+{
-+	struct drm_device *dev = crtc->dev;
-+	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state, crtc);
-+	struct drm_pending_vblank_event *event;
-+
-+	spin_lock_irq(&dev->event_lock);
-+
-+	event = crtc_state->event;
-+	crtc_state->event = NULL;
-+
-+	if (event) {
-+		if (drm_crtc_vblank_get(crtc) == 0)
-+			drm_crtc_arm_vblank_event(crtc, event);
-+		else
-+			drm_crtc_send_vblank_event(crtc, event);
-+	}
-+
-+	spin_unlock_irq(&dev->event_lock);
-+}
-+EXPORT_SYMBOL(drm_crtc_vblank_atomic_flush);
-+
-+/**
-+ * drm_crtc_vblank_atomic_enable - Implements struct &drm_crtc_helper_funcs.atomic_enable
-+ * @crtc: The CRTC
-+ * @state: The atomic state
-+ *
-+ * The helper drm_crtc_vblank_atomic_enable() implements atomic_enable
-+ * of struct drm_crtc_helper_funcs for CRTCs the only need to enable VBLANKs.
-+ *
-+ * See also struct &drm_crtc_helper_funcs.atomic_enable.
-+ */
-+void drm_crtc_vblank_atomic_enable(struct drm_crtc *crtc,
-+				   struct drm_atomic_state *state)
-+{
-+	drm_crtc_vblank_on(crtc);
-+}
-+EXPORT_SYMBOL(drm_crtc_vblank_atomic_enable);
-+
-+/**
-+ * drm_crtc_vblank_atomic_disable - Implements struct &drm_crtc_helper_funcs.atomic_disable
-+ * @crtc: The CRTC
-+ * @state: The atomic state
-+ *
-+ * The helper drm_crtc_vblank_atomic_disable() implements atomic_disable
-+ * of struct drm_crtc_helper_funcs for CRTCs the only need to disable VBLANKs.
-+ *
-+ * See also struct &drm_crtc_funcs.atomic_disable.
-+ */
-+void drm_crtc_vblank_atomic_disable(struct drm_crtc *crtc,
-+				    struct drm_atomic_state *state)
-+{
-+	drm_crtc_vblank_off(crtc);
-+}
-+EXPORT_SYMBOL(drm_crtc_vblank_atomic_disable);
-+
- /*
-  * VBLANK timer
-  */
-diff --git a/include/drm/drm_vblank_helper.h b/include/drm/drm_vblank_helper.h
-index 74a971d0cfba..fcd8a9b35846 100644
---- a/include/drm/drm_vblank_helper.h
-+++ b/include/drm/drm_vblank_helper.h
-@@ -6,8 +6,31 @@
- #include <linux/hrtimer_types.h>
- #include <linux/types.h>
+ #include "vkms_drv.h"
  
-+struct drm_atomic_state;
- struct drm_crtc;
+-static enum hrtimer_restart vkms_vblank_simulate(struct hrtimer *timer)
++static bool vkms_crtc_handle_vblank_timeout(struct drm_crtc *crtc)
+ {
+-	struct vkms_output *output = container_of(timer, struct vkms_output,
+-						  vblank_hrtimer);
+-	struct drm_crtc *crtc = &output->crtc;
++	struct vkms_output *output = drm_crtc_to_vkms_output(crtc);
+ 	struct vkms_crtc_state *state;
+-	u64 ret_overrun;
+ 	bool ret, fence_cookie;
  
-+/*
-+ * VBLANK helpers
-+ */
-+
-+void drm_crtc_vblank_atomic_flush(struct drm_crtc *crtc,
-+				  struct drm_atomic_state *state);
-+void drm_crtc_vblank_atomic_enable(struct drm_crtc *crtc,
-+				   struct drm_atomic_state *state);
-+void drm_crtc_vblank_atomic_disable(struct drm_crtc *crtc,
-+				    struct drm_atomic_state *crtc_state);
-+
-+/**
-+ * DRM_CRTC_HELPER_VBLANK_FUNCS - Default implementation for VBLANK helpers
-+ *
-+ * This macro initializes struct &drm_crtc_helper_funcs to default helpers
-+ * for VBLANK handling.
-+ */
-+#define DRM_CRTC_HELPER_VBLANK_FUNCS \
-+	.atomic_flush = drm_crtc_vblank_atomic_flush, \
-+	.atomic_enable = drm_crtc_vblank_atomic_enable, \
-+	.atomic_disable = drm_crtc_vblank_atomic_disable
-+
- /*
-  * VBLANK timer
-  */
+ 	fence_cookie = dma_fence_begin_signalling();
+ 
+-	ret_overrun = hrtimer_forward_now(&output->vblank_hrtimer,
+-					  output->period_ns);
+-	if (ret_overrun != 1)
+-		pr_warn("%s: vblank timer overrun\n", __func__);
+-
+ 	spin_lock(&output->lock);
+ 	ret = drm_crtc_handle_vblank(crtc);
+ 	if (!ret)
+@@ -57,55 +50,6 @@ static enum hrtimer_restart vkms_vblank_simulate(struct hrtimer *timer)
+ 
+ 	dma_fence_end_signalling(fence_cookie);
+ 
+-	return HRTIMER_RESTART;
+-}
+-
+-static int vkms_enable_vblank(struct drm_crtc *crtc)
+-{
+-	struct drm_vblank_crtc *vblank = drm_crtc_vblank_crtc(crtc);
+-	struct vkms_output *out = drm_crtc_to_vkms_output(crtc);
+-
+-	hrtimer_setup(&out->vblank_hrtimer, &vkms_vblank_simulate, CLOCK_MONOTONIC,
+-		      HRTIMER_MODE_REL);
+-	out->period_ns = ktime_set(0, vblank->framedur_ns);
+-	hrtimer_start(&out->vblank_hrtimer, out->period_ns, HRTIMER_MODE_REL);
+-
+-	return 0;
+-}
+-
+-static void vkms_disable_vblank(struct drm_crtc *crtc)
+-{
+-	struct vkms_output *out = drm_crtc_to_vkms_output(crtc);
+-
+-	hrtimer_cancel(&out->vblank_hrtimer);
+-}
+-
+-static bool vkms_get_vblank_timestamp(struct drm_crtc *crtc,
+-				      int *max_error, ktime_t *vblank_time,
+-				      bool in_vblank_irq)
+-{
+-	struct vkms_output *output = drm_crtc_to_vkms_output(crtc);
+-	struct drm_vblank_crtc *vblank = drm_crtc_vblank_crtc(crtc);
+-
+-	if (!READ_ONCE(vblank->enabled)) {
+-		*vblank_time = ktime_get();
+-		return true;
+-	}
+-
+-	*vblank_time = READ_ONCE(output->vblank_hrtimer.node.expires);
+-
+-	if (WARN_ON(*vblank_time == vblank->time))
+-		return true;
+-
+-	/*
+-	 * To prevent races we roll the hrtimer forward before we do any
+-	 * interrupt processing - this is how real hw works (the interrupt is
+-	 * only generated after all the vblank registers are updated) and what
+-	 * the vblank core expects. Therefore we need to always correct the
+-	 * timestampe by one frame.
+-	 */
+-	*vblank_time -= output->period_ns;
+-
+ 	return true;
+ }
+ 
+@@ -159,9 +103,7 @@ static const struct drm_crtc_funcs vkms_crtc_funcs = {
+ 	.reset                  = vkms_atomic_crtc_reset,
+ 	.atomic_duplicate_state = vkms_atomic_crtc_duplicate_state,
+ 	.atomic_destroy_state   = vkms_atomic_crtc_destroy_state,
+-	.enable_vblank		= vkms_enable_vblank,
+-	.disable_vblank		= vkms_disable_vblank,
+-	.get_vblank_timestamp	= vkms_get_vblank_timestamp,
++	DRM_CRTC_VBLANK_TIMER_FUNCS,
+ 	.get_crc_sources	= vkms_get_crc_sources,
+ 	.set_crc_source		= vkms_set_crc_source,
+ 	.verify_crc_source	= vkms_verify_crc_source,
+@@ -213,18 +155,6 @@ static int vkms_crtc_atomic_check(struct drm_crtc *crtc,
+ 	return 0;
+ }
+ 
+-static void vkms_crtc_atomic_enable(struct drm_crtc *crtc,
+-				    struct drm_atomic_state *state)
+-{
+-	drm_crtc_vblank_on(crtc);
+-}
+-
+-static void vkms_crtc_atomic_disable(struct drm_crtc *crtc,
+-				     struct drm_atomic_state *state)
+-{
+-	drm_crtc_vblank_off(crtc);
+-}
+-
+ static void vkms_crtc_atomic_begin(struct drm_crtc *crtc,
+ 				   struct drm_atomic_state *state)
+ 	__acquires(&vkms_output->lock)
+@@ -265,8 +195,9 @@ static const struct drm_crtc_helper_funcs vkms_crtc_helper_funcs = {
+ 	.atomic_check	= vkms_crtc_atomic_check,
+ 	.atomic_begin	= vkms_crtc_atomic_begin,
+ 	.atomic_flush	= vkms_crtc_atomic_flush,
+-	.atomic_enable	= vkms_crtc_atomic_enable,
+-	.atomic_disable	= vkms_crtc_atomic_disable,
++	.atomic_enable	= drm_crtc_vblank_atomic_enable,
++	.atomic_disable	= drm_crtc_vblank_atomic_disable,
++	.handle_vblank_timeout = vkms_crtc_handle_vblank_timeout,
+ };
+ 
+ struct vkms_output *vkms_crtc_init(struct drm_device *dev, struct drm_plane *primary,
+diff --git a/drivers/gpu/drm/vkms/vkms_drv.h b/drivers/gpu/drm/vkms/vkms_drv.h
+index 8013c31efe3b..fb9711e1c6fb 100644
+--- a/drivers/gpu/drm/vkms/vkms_drv.h
++++ b/drivers/gpu/drm/vkms/vkms_drv.h
+@@ -215,8 +215,6 @@ struct vkms_output {
+ 	struct drm_crtc crtc;
+ 	struct drm_writeback_connector wb_connector;
+ 	struct drm_encoder wb_encoder;
+-	struct hrtimer vblank_hrtimer;
+-	ktime_t period_ns;
+ 	struct workqueue_struct *composer_workq;
+ 	spinlock_t lock;
+ 
 -- 
 2.34.1
 
