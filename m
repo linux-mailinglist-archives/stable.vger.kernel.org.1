@@ -1,181 +1,248 @@
-Return-Path: <stable+bounces-254599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254600-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yPHJMGL+FmoJ0QcAu9opvQ
-	(envelope-from <stable+bounces-254599-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 16:23:30 +0200
+	id UFVpN+n+FmoJ0QcAu9opvQ
+	(envelope-from <stable+bounces-254600-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 16:25:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 845ED5E5CFE
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 16:23:30 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CF7B5E5D4A
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 16:25:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9E0933059A41
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 14:20:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E205F30CBE98
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 14:22:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9993933D6D2;
-	Wed, 27 May 2026 14:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3362F3E63BB;
+	Wed, 27 May 2026 14:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="T3NxkvSh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l96sxyZj"
 X-Original-To: stable@vger.kernel.org
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010039.outbound.protection.outlook.com [40.93.198.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5DF133BBB9;
-	Wed, 27 May 2026 14:20:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4046B3451B3
+	for <stable@vger.kernel.org>; Wed, 27 May 2026 14:22:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.50
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779891625; cv=fail; b=I8lsD4pgZLQJpmcdA6c+Efdfk8hNOUXvnJaeL1o6uyrMRAdINF4nGNGTagSS76Z5dTxDbjnvT55ubYIhRtzZALvktnrSPjt6G3phrUGdi8waLT9hFOV5MoBL1VKRDu7djs/CyLWCgZMwMNuKDkbamXavosDfM7DbYGH9hSAt0hQ=
+	t=1779891725; cv=pass; b=F0uQrHeQTNBcPjfzT8wzHyfL3maBfe2ABvd3QgG9I5yk+k2dJ0tzPmOWeUAOItAR/sOLoBKIS+QrpldnPvmxVPctRGp+8TGALuWXDir2X+9A15b16o8X/phd3Uu/nVw+p0ne+xxihqDCkmUxxZiwxU5wmXjLpS/wPs3j2ZVLEZY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779891625; c=relaxed/simple;
-	bh=haJEZW3SRmxAOSuD/HXiWplj8PMbZG7jB4wktP52xYs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=h1U3dAQ0yPZu+m6cdjTqq+iDy+vHH64KfDNvXqygx6HGgPMzot++FYKQvzmOl4OeKn1dI2Qrs4Be7Zmm5Ijh1zoEj9WRIjTRREicJY/YtIrPAaNVUilR8JwRzJVHXoiZE+HT7ujudmTPPtZNDx8aAX0FDZjRVkIGpW74VM1Anio=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=T3NxkvSh; arc=fail smtp.client-ip=40.93.198.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wMQpfA4YTwP+PR8PuzAFZZOCKkZA0QexBu5Vtn+oWucYU7A4yEDdYyAQMaw92aqM4iD8b6KuzoTKNUOefWlhPnqNI5HfHvGcFcv/UJ/gopLCdnLSJGhPSOIl0TA/lvpulYf6cMpu1AuWRJbwZIiENv269Gc/TRu4xEF8qm8SwuxV0UW/TOJ4VFhwQDDLS79seoiQn91i4KwyJ0vXleehkKSqp7d+iGBVCUuerryqOvovs+XKPpq4fciQ4EQn1SYrQcn25Ts26dnno2YmCrG5Bst7SFHbuKcc3N2FV2E7l2UeMwcwnV9eYiH9OuVB4El2GBn//qNHcdk1fEEhqapKsg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KFdzGkDkWo2PeKQMZ+vZa6ht/jv3Q/9fOlr77ITbfyU=;
- b=vUA/DkQGhtAxo8czmGFSJLYA/w0dd3xg6KSGnBvgf/OVT5cPNJ1w3jIu5ROaMR6dH/MxkNes4SuWYxu24xcayGqlOo0x2lkZtQd+D69De+OuuLoDIbsvkO9jYO4wtLkMlTVLd+bfzKuqPw9pdWeXNX9XjcSqcTiM/vg903ihhwJAswrmaw1/+JaHClQsT4oeoawmh+URTOw1wXVExRMj2FiAwpXN9cboCii6xCVU1I9M26F+/HBcFelSAWB0olleZH5CoS1DPbfI8yY3/m+SmbSuZtNgSPlcDCP6b1uBUuwnhsYV87u1KTMAk0T3OSp1qiIprij09Bk78nyGQ22Mlw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=yandex-team.ru smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KFdzGkDkWo2PeKQMZ+vZa6ht/jv3Q/9fOlr77ITbfyU=;
- b=T3NxkvShVQUCXzT46BMj4/agtaUHXcxafuqGOC4+6X9N2OHXgsFn3WVcpTssz8qJ/dv9O6lypwWBmlcl9n17WbPc0p5u+d7nVXu/sligvu3wwFLBkNJGqqwBJz79dZ+6i+2MmM0uQDJcBU4i//HOfru5NVipVmp58csmM3yZP4C/g+v5gPfPXepvqdpG4tghjqi/VnvLhXxm2bIePpEJziRHAFIIfW45IgNskO/+wzZ+4p9SySxTsYdNCjwbbjz2siTbvH9FluJ28icJkyEby/YYvEIqCTk/l5mPJk9DRGV81sMzRABTDizxwUf7z5Iehj8J/tXXUgieoK7xIrrhDQ==
-Received: from SA1PR03CA0019.namprd03.prod.outlook.com (2603:10b6:806:2d3::21)
- by CH3PR12MB7714.namprd12.prod.outlook.com (2603:10b6:610:14e::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.11; Wed, 27 May
- 2026 14:20:18 +0000
-Received: from SN1PEPF00036F3C.namprd05.prod.outlook.com
- (2603:10b6:806:2d3:cafe::ad) by SA1PR03CA0019.outlook.office365.com
- (2603:10b6:806:2d3::21) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.71.13 via Frontend Transport; Wed, 27
- May 2026 14:20:18 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SN1PEPF00036F3C.mail.protection.outlook.com (10.167.248.20) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.71.7 via Frontend Transport; Wed, 27 May 2026 14:20:17 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 27 May
- 2026 07:20:03 -0700
-Received: from [10.221.194.170] (10.126.231.37) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 27 May
- 2026 07:20:00 -0700
-Message-ID: <fe5a2ed1-2fdd-45f8-ae1d-656e5e89a354@nvidia.com>
-Date: Wed, 27 May 2026 17:19:58 +0300
+	s=arc-20240116; t=1779891725; c=relaxed/simple;
+	bh=WcTlXfqRK5RW6BJC/bAhY3JoNVwWC/yTt3liQYXXDDc=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=CuHc9DKhNu92uAj5MgZCETrpXGh2IuBQH+9TqUBsLnHCr7Zh6FsSkhzVzPyNAztll+7c/225OaZIEpoPJUIOHkpnX9uKB0wmj140OcswaeORI0jk2g89ep7g/jyPn7UANzwG8iBuvP0FuyF4CwZNMkWbKRNyDfAJeKjiph11vpI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l96sxyZj; arc=pass smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-bd21ffaca79so2167986366b.0
+        for <stable@vger.kernel.org>; Wed, 27 May 2026 07:22:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779891723; cv=none;
+        d=google.com; s=arc-20240605;
+        b=SzADHh5G3aTySoX87V2+1uPECxg4xov56fbhVMr8WvgWqIXErWVJeTiZZK5UEa8Pdu
+         AKwhGoNk9SuleopYGQNtdSdbe+coAH9dQsgVQcOOT6+lyUfkokJRqs64hhzPFKgvBPiK
+         0Tf3XcN4hGXILGqaEQi3X6F9Dd8/w4Z4dh7+bo9E+J69jMmZ7Jp7CFoTyrZgipOJB0KU
+         WodVwJRcdy2mO+Ns93+7AfbXKG9sHocr+YM6NnbYO7fbHBumG6unXHggc1FDDrKwrFSs
+         ZHTW57TAcomTuHlIyljpS3VN6Kzyxaw5UKUfmXrRXFUyco5YxLOIvfU/f/TXhZ3jYtP5
+         sL3g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=9CzZZCAsqPbmn/gI5Pp7Effwu8mfteaHKh9x+3bqRV8=;
+        fh=xJAbtg6WzK8VIgI1vhUgZbVBXGg2K1Kn7DohJedtoXI=;
+        b=Jhcx4RsG7CUIuQIicjX/AGRDDB6sQC+RYo/DuDnD1PwNQ0CrJJ7yT7bZggv13Kv8yX
+         iDWfroWdG7/+61NaseMYUJ4fqYThy1vYpTN5F7W4GMezJCzBXEhMpAD7ZBNJe3DHClVd
+         3AlGtHHH6EeGQEo2XlmJidGwb3GguJuO8tU1k4TFCKtyktJMX/3xKxb8CvjSplC0TEeJ
+         2VPW0l/aBFBqPPwz+uZf6j98CugzIGFBOsHkHl+PsIPw16iEyehjItZX9nOn2HF0CyMi
+         mgIqC+m1aYT9IgmoejznzUdKTklGdhfB3xjUwThYBz0P+uhf+UH5cu7waylX1Hn/gVaK
+         m1bQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779891722; x=1780496522; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=9CzZZCAsqPbmn/gI5Pp7Effwu8mfteaHKh9x+3bqRV8=;
+        b=l96sxyZjGaHLoMmbiOZGBiynnFdj8dK2t5t9X/nn6HH+SfKew/Cxm0WfXdyvKCmBrk
+         H8EijgZ3qkh8PqfuS+7WOTcUv47sXIvIrG3UcAOOLnLpkZ74w7mvP1ginZhlpyI4t0lV
+         /TN+a2YVmmNKlpntCbpGpTQjd/DZ5+pvVHN0vVelFVHxkm8g74cU39gFDaymsViCbMxm
+         GIJ7INZrxXDPg64a6JjiK0hN7hf9oXk0fcF3yHHV0LcLTXNsDHspX82RNuVDBvZ7EQnM
+         zHlpBGYBzXug2sScK0SgVi98SJS1eyb/3SaSNkHxnVxOkyvpwAKzGkGfuWE4SbhZtUgb
+         d1ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779891722; x=1780496522;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9CzZZCAsqPbmn/gI5Pp7Effwu8mfteaHKh9x+3bqRV8=;
+        b=Fx0tgMD1KHLFOC+IE3hkxdvJA+u9kIhDcij4udy53sjX0YKDun/NND1j65s/RJ++mz
+         JzCgMo0zA3p5ONxC1oNnFfmDNIbgpkEflcN2wcr0OV734cfdtKKV9OgDTJkkVztB0jVm
+         R94s0242KZLWWzRc5vh6VyF/VX6QTPTpFKor6tVmC7esplvCrE+8XALcRgsZxBCrLTR9
+         0s3EmhEopyfwjto+Z0X0h319hBBd3r65DpY08aU9iilbQldB3hO0oUh4pcuKYxpHnEE9
+         8WyfnCbPLAjBrRwA+OhM70xAzHJ7dzlsmONLtzZhgG7wESc/tyUidwfBfdAXnvVAVc1C
+         CBvA==
+X-Gm-Message-State: AOJu0Yz7+upLo3FkmKGRKITaMQbvzx8uqTNIG6cQzi80CeTzfzKJE74H
+	dH/R5yiDFj/57Fm4jND1//xFLfOJ5gPLBSMdUCaK6VojedGww96JlG2cpIgA1ywl7sL1B6UBDTC
+	uV0BLxbS6PLBFgdatOmBTgmI9xSceVwXQXRfN0enp/HIi
+X-Gm-Gg: Acq92OHE6cibAYdGnCMGKl5MwJMgG0jxwIonmx0iJCPPFOh0Cte3uOEHRSs7fyIIYow
+	rbT/PpBthWUtbTYUcePG+RRfj09dCCxc62TdpTErTMbDzLNzHROysB7/d3+mnnGBu3EIZV6xP30
+	nq2JJLxhp3nh96wkJJLGu52NMlaNghEnBC53AtZDesKVsymjJlW9GB8D+SxeIRVxFqL/9yHT3DQ
+	F6/ZXedOv7oitqGwTpqjLalWdB2qmn1kXYL+3HrGEVnbuSaB0yzBZV1But8iELoTKm33ClmYAV8
+	zZKXR8RuAwtBsrMgP0iMGRc9Q2XEfjOdLyte92h80cm5HIRD9a/TH9Sa6DhQs3BTNCf44UvA08m
+	MrEFfhEYdxlD5+iNi7A3PRBrsqjtuUIRhLf5PzjEYYoRBKQ==
+X-Received: by 2002:a17:907:96a2:b0:be3:dfa6:3117 with SMTP id
+ a640c23a62f3a-be3dfa63318mr287280866b.3.1779891722268; Wed, 27 May 2026
+ 07:22:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net/mlx5: Reorder completion before putting command entry
- in cmd_work_handler
-To: Nikolay Kuratov <kniv@yandex-team.ru>, <linux-kernel@vger.kernel.org>
-CC: <netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>, Saeed Mahameed
-	<saeedm@nvidia.com>, Akiva Goldberger <agoldberger@nvidia.com>, Tariq Toukan
-	<tariqt@nvidia.com>, <stable@vger.kernel.org>
-References: <20260526162932.501584-1-kniv@yandex-team.ru>
-Content-Language: en-US
-From: Moshe Shemesh <moshe@nvidia.com>
-In-Reply-To: <20260526162932.501584-1-kniv@yandex-team.ru>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF00036F3C:EE_|CH3PR12MB7714:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0f954574-8a7b-4680-5989-08debbfb13cd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700016|376014|1800799024|11063799006|5023799004|56012099006|6133799003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	dQuCqohIaWm1J7tGF2CfuMdxUCPzl3vbeakgRbyke8rqpAmN/wCivX2mNMp7CgUn25qqKNG1fGozElUTxDRCi2AeJ7Ov9dfrl0RE9xdaEivkFqyjWgYhXvsyckM17PD542+KUektqiaS/9BLIvUxlNo7rvp9mrxSdemRATR4u+ydI+XBA7LNAI2dJOz0gA0tMo68ECLzZ0J2suVGpp34pihmtd9AIofrBmHDrlKgb5wT0W5CCP78VJN36Scux4QYX5G1vRmC63HspDE4SVhptJ7NDnv9rHt6EWiADTcvEgBKZQZXOqOSqWec8oRlwEPFwwGPzhBFvWgxL0W3exMtUzVXONyV8RyUPE05mqwWiTJxkkQJu/VotPUncSAeJNloFJP4COHdiHBikrCTOtMe7uOaP56rkK1tgWe5Gp+T03er2qhF+bOcUcUXJGsirKxbnPgMySpgdpS5FCQzqtC0a19RzbMtRrt7WfAZHKq414xsFTZskqs6hJDyVYqnJcM3/divDQuHyRSgTyFlZ2RKGD3zuzaThy4yHFVnXdrYNW8KrF3ZTh60fze3CG4hJyPDqpEyyRGGEA3bzV++8nB/lmu3tfuvxlAB+ApbW++PGA/++fM8s7YRLuo6ABIB9OHjcFgwiA5aV0Fiypxxq8jEsnykMHkyo3qEB/BWXZYD3lSUs1wnDEbkASuxYfRzjILFWhTl0cwKMD/2w1SldTzG4/QLMPA7ucacqu3mM20rB3A=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(376014)(1800799024)(11063799006)(5023799004)(56012099006)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	A7iUTHjanmhLMd+FyQIvlLRermj8LIy9SMyEqqfHNucFZwTwP7lLvmfWprY7a149zQoZ/Xr22CzXl3yfHuuK72F4AQzIv2zlEO78/a8CAVHQqRoncY5UDmoSr9l0SMVIqjSNYk5UqzE5fP9AAM0s8bR/+emvxNrvthiCFnl9mk/hhrAoChb6PZAKbT0cxLua25rmGcCzPQwCPnSacDGUZSnIYStcxW5Gyr/Khs0rj7LHt++oILW1+6nmKvsU4HjIPPlnipbW1tX3a1LMOpNy9MN6afYhurFyZeA66foupLIz4U34O9bneEEl5g7IENkqtRvhdUkDcZ/p/2ledZJStqVhQt48bKrLv6BhvDQzaSZaZGueScbmym1zcF6TTAM4OaTbWyUIZM4atERH8JZexmkOJDU46gAJVgoSUuHaYHj35CwN7wmFywtg4QX7WBbi
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2026 14:20:17.5109
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0f954574-8a7b-4680-5989-08debbfb13cd
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF00036F3C.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7714
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+From: Mike Karcic <michael.karcic@gmail.com>
+Date: Wed, 27 May 2026 10:21:51 -0400
+X-Gm-Features: AVHnY4JMU58f0tW3VUtvrfWsoB9CpFh_PJZlZqsSlBulZc4gOKinzyQTx0qz0Pw
+Message-ID: <CABfQdu8QYU8ox2LRCc+Q7sBUWFAZtSom7V93wsNhU1N2BJNXXQ@mail.gmail.com>
+Subject: [REGRESSION] Speaker pop/chirp on Meteor Lake ALC287 (17aa:231e) --
+ 6.12.73 to 6.12.85
+To: stable@vger.kernel.org
+Cc: regressions@lists.linux.dev, linux-sound@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, tiwai@suse.de, sean@starlabs.systems
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-254599-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[yandex-team.ru:email,Nvidia.com:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nvidia.com:mid,nvidia.com:email];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[moshe@nvidia.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_FROM(0.00)[bounces-254600-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[michaelkarcic@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[8]
-X-Rspamd-Queue-Id: 845ED5E5CFE
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 7CF7B5E5D4A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Speaker pop/chirp regression on a Lenovo ThinkPad with Meteor Lake and
+Realtek ALC287 (subsystem ID 17aa:231e). The chirp occurs on speaker
+power state transitions when audio starts or stops. It is not present
+on kernel 6.12.73 and is present on 6.12.85. A desktop with ALC897
+(subsystem ID 1f660202) on kernel 6.19.14 is unaffected, so this is
+codec/fixup-specific.
 
+Tested on the same LMDE (Debian 13) installation with multiple kernels
+selectable from GRUB. All userspace, firmware, and configuration are
+identical between tests. Cold boot between kernel switches is required,
+as warm reboot can carry codec register state forward. The kernel is
+not tainted on any tested version.
 
-On 5/26/2026 7:29 PM, Nikolay Kuratov wrote:
-> Assuming callback != NULL && !page_queue, cmd_work_handler takes
-> command entry with refcnt == 1 from mlx5_cmd_invoke.
-> If either semaphore timeout or index allocation error happens,
-> it does final cmd_ent_put(ent). To avoid access to freed memory,
-> notify slotted completion before cmd_ent_put.
-> 
-> This is theoretical issue found by Svace static analyser.
-> 
-> Cc:stable@vger.kernel.org
-> Fixes: 485d65e135712 ("net/mlx5: Add a timeout to acquire the command queue semaphore")
-> Fixes: 0e2909c6bec90 ("net/mlx5: Fix variable not being completed when function returns")
-> Signed-off-by: Nikolay Kuratov<kniv@yandex-team.ru>
-> ---
->   drivers/net/ethernet/mellanox/mlx5/core/cmd.c | 6 ++++--
->   1 file changed, 4 insertions(+), 2 deletions(-)
+Bisection results (Debian package versions):
+  6.12.48  -- no chirp
+  6.12.73  -- no chirp
+  6.12.85  -- chirp present
+  6.12.86  -- chirp present
+  6.12.90  -- chirp present
 
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Also broken: 6.19.14-101.fc44.x86_64 (Fedora/Aurora 44)
 
-Thanks.
+The regression window (6.12.73 to 6.12.85) includes two commits
+targeting speaker pop on the Star Labs StarFighter (ALC233, SSID
+7017:2014) that touch patch_realtek.c:
+
+  1cb3c20688fc ("ALSA: hda/realtek: Fix speaker pop on Star Labs StarFighter")
+  Fixes commit ("ALSA: hda/realtek: Sequence GPIO2 on Star Labs StarFighter")
+
+These are quirk-gated to SSID 7017:2014 and should not run on
+17aa:231e, but they are the most prominent sound changes in the
+regression window. The actual culprit may be a different commit
+in the 6.12.74-6.12.85 range. I was unable to narrow further as
+Debian does not publish intermediate point-release packages.
+
+I can build and test vanilla kernels for a proper bisection if
+guided, and I can test proposed fixes.
+
+Hardware:
+  Lenovo ThinkPad, Meteor Lake
+  Codec: Realtek ALC287
+  Subsystem ID: 17aa:231e
+  PCI: 0000:00:1f.3
+  Machine driver: skl_hda_dsp_generic
+  Codec fixup: "ALC287: picked fixup for PCI SSID 17aa:231e"
+
+Unaffected hardware (same 6.19.14 kernel, no chirp):
+  Desktop, Realtek ALC897, Subsystem ID: 1f660202
+
+Controlled variables (identical across all tested 6.12 kernels):
+  SOF firmware: 2.12.0.1 (firmware-sof-signed 2025.01-1)
+  Topology: intel/sof-ace-tplg/sof-hda-generic-2ch.tplg
+  Topology ABI: 3:29:1 (Kernel ABI: 3:23:1 on all tested)
+  ALSA UCM: alsa-ucm-conf 1.2.14-1
+  PipeWire: 1.4.2, WirePlumber: 0.5.8
+  power_save: 10, hda_model: (null)
+  Desktop: KDE Plasma 6 (Wayland)
+
+Eliminated causes:
+  - Topology files in sof-ipc4-tplg/ and sof-ace-tplg/ are
+    byte-identical (confirmed via binary diff). Path irrelevant.
+  - SOF firmware version (same 2.12.0.1 on all tested kernels).
+  - Topology ABI mismatch (3:29:1 vs 3:23:1 present on working
+    kernel too).
+  - power_save (10 on all kernels).
+  - PipeWire/WirePlumber (identical versions on all kernels).
+  - Desktop environment (KDE on all; a KDE install triggered a
+    kernel update which was the actual cause of the regression
+    appearing).
+
+dmesg (6.12.48, working):
+  sof-audio-pci-intel-mtl 0000:00:1f.3: Firmware paths/files for ipc type 1:
+  sof-audio-pci-intel-mtl 0000:00:1f.3:  Firmware file:
+intel/sof-ipc4/mtl/sof-mtl.ri
+  sof-audio-pci-intel-mtl 0000:00:1f.3:  Firmware lib path:
+intel/sof-ipc4-lib/mtl
+  sof-audio-pci-intel-mtl 0000:00:1f.3:  Topology file:
+intel/sof-ace-tplg/sof-hda-generic-2ch.tplg
+  sof-audio-pci-intel-mtl 0000:00:1f.3: Booted firmware version: 2.12.0.1
+  sof-audio-pci-intel-mtl 0000:00:1f.3: Topology: ABI 3:29:1 Kernel ABI 3:23:1
+  snd_hda_codec_alc269 ehdaudio0D0: ALC287: picked fixup for PCI SSID 17aa:231e
+  snd_hda_codec_alc269 ehdaudio0D0: autoconfig for ALC287: line_outs=1
+(0x17/0x0/0x0/0x0/0x0) type:speaker
+
+dmesg (6.19.14, affected):
+  sof-audio-pci-intel-mtl 0000:00:1f.3: Digital mics found on Skylake+
+platform, using SOF driver
+  sof-audio-pci-intel-mtl 0000:00:1f.3: DSP detected with PCI
+class/subclass/prog-if 0x040380
+  sof-audio-pci-intel-mtl 0000:00:1f.3: hda codecs found, mask 5
+  sof-audio-pci-intel-mtl 0000:00:1f.3: using HDA machine driver
+skl_hda_dsp_generic now
+  sof-audio-pci-intel-mtl 0000:00:1f.3: Firmware paths/files for ipc type 1:
+  sof-audio-pci-intel-mtl 0000:00:1f.3:  Firmware file:
+intel/sof-ipc4/mtl/sof-mtl.ri
+  sof-audio-pci-intel-mtl 0000:00:1f.3:  Firmware lib path:
+intel/sof-ipc4-lib/mtl
+  sof-audio-pci-intel-mtl 0000:00:1f.3:  Topology file:
+intel/sof-ipc4-tplg/sof-hda-generic-2ch.tplg
+  sof-audio-pci-intel-mtl 0000:00:1f.3: Booted firmware version: 2.14.1.1
+  sof-audio-pci-intel-mtl 0000:00:1f.3: Topology: ABI 3:29:1 Kernel ABI 3:23:1
+  snd_hda_codec_alc269 ehdaudio0D0: ALC287: picked fixup for PCI SSID 17aa:231e
+  snd_hda_codec_alc269 ehdaudio0D0: autoconfig for ALC287: line_outs=1
+(0x17/0x0/0x0/0x0/0x0) type:speaker
+
+Note: The kernel is not tainted on any tested version.
+
+-- 
+Mike
 
