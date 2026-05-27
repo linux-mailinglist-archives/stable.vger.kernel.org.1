@@ -1,169 +1,192 @@
-Return-Path: <stable+bounces-254631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254632-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8PKVCeMaF2ov4gcAu9opvQ
-	(envelope-from <stable+bounces-254631-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 18:25:07 +0200
+	id INHNMbwcF2rw5AcAu9opvQ
+	(envelope-from <stable+bounces-254632-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 18:33:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DD015E7B96
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 18:25:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4636A5E7CE5
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 18:32:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 91B65301FC85
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 16:24:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0B1743057D4F
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 16:30:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 786A443636A;
-	Wed, 27 May 2026 16:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 651B3438FE0;
+	Wed, 27 May 2026 16:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.it header.i=@amazon.it header.b="L1fN0UIz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G6JF0cbf"
 X-Original-To: stable@vger.kernel.org
-Received: from pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.245.243.92])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBBFA3815C6;
-	Wed, 27 May 2026 16:24:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.245.243.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12D7426D0E
+	for <stable@vger.kernel.org>; Wed, 27 May 2026 16:30:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779899063; cv=none; b=q+Kv2dH45yBHp6wM+dqCILXuq7oURnVLMgnB5c14iHJHzIXgMHKfC9Oi5tUx2fendBNl41aSeVmrDwAoT8/kjFdUqnQOzDc0DOcau1PK5zPeqMB0k5prpFMr+eu7gyVDL9c3u+OI7iN/MgCb5BPIPM9VbtL7OhZUyd0bIu1GhPY=
+	t=1779899456; cv=none; b=WxGRBHIDMnrBkwy6ngSjiPWVEVVq+fiCo/bSglq4aZUaQjYthesfqGvqqbjvP5WGQWmD7IBVsTN9kRuGFebSpmu/z+FmZY2+N5+N6EsIMR+htull5l7mFvETLWqQBLc6NPgksV4xEGI7MhHDZubsi+Tyb3wP1nKjN7jJghFj4vU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779899063; c=relaxed/simple;
-	bh=DJ3ZaifqYn0VQCKdxHWWZlSnzoqGur/EM85UsJ8ZE+o=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dV6g5pZWlLb83Gh5DI7dQygButyIBnZaLWy/lFgsjQOrqnf5BFxQgE5o6Oih0R3ugEdI3oSFMDH+GdORGvNV/PZBeKf1+Etb9Wfa3iB0AoBB2m81kAuJIYZHlvh6Fmw7nTSyLPraiK8k7q6BPyGFhf/ZQFj0uhm1cPoZIAp3Kxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.it; spf=pass smtp.mailfrom=amazon.it; dkim=pass (2048-bit key) header.d=amazon.it header.i=@amazon.it header.b=L1fN0UIz; arc=none smtp.client-ip=44.245.243.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.it
+	s=arc-20240116; t=1779899456; c=relaxed/simple;
+	bh=fq1RxNL89gaa1wj5IiD/KH3yhOhugHwkF3eND9ymod0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M+3mWUP/lycQVkJ+gudjXRuxqfUMn827f9EvZf7LkbXjYm3XZkdLNlQlvXhNRGI8otfQ1C2qNIRNRht/U+Tr/lSoZ1GPWKZ6VEaysqehC2jPblg9H8fmZKBF2czVHiEwn9vhiWuSZr2VLlKhdAgB9+Zu+n5/x/Hj36kEWKND078=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G6JF0cbf; arc=none smtp.client-ip=209.85.160.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-43b7e186a0cso1595906fac.0
+        for <stable@vger.kernel.org>; Wed, 27 May 2026 09:30:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.it; i=@amazon.it; q=dns/txt; s=amazoncorp2;
-  t=1779899061; x=1811435061;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=DJ3ZaifqYn0VQCKdxHWWZlSnzoqGur/EM85UsJ8ZE+o=;
-  b=L1fN0UIzU1coLW7bEG3kxlegAxXs3C0TCOz4wxmZd2MOoWPLFDW8wmJC
-   eZYnxvTA9iErYS3cqduHmKn/VfDvSUUbKMFFEn9ELr6eJbGfBFRrWhTr6
-   zWmQB38jJRjofNerluWOer5dPGTjJHc8mTDYQDVliMoS0zBiyzrl4Km7k
-   pJdzJiTpFYg61Bz7+kfP6jg7WfEkViFa69yMIKDP8wR9Fev1iHeZkJI2K
-   ns2+ztmdKQ/Lw1Jz7XvNzoBvONwPfY3nwbuRu0ZtWLiVvi/1exdBCObYD
-   lSPpDpkwnLKNOcfL1oY00zGcKOVL9oFmZ4yY7VN8VjIiwWz7JdQZ1v6jx
-   g==;
-X-CSE-ConnectionGUID: t+732PyMRH2YqSw/d+AZ2Q==
-X-CSE-MsgGUID: eMCH7QL8STW+gllK7jzoxw==
-X-IronPort-AV: E=Sophos;i="6.24,171,1774310400"; 
-   d="scan'208";a="20078251"
-Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 16:24:19 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.104:19651]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.6.91:2525] with esmtp (Farcaster)
- id a11e89ab-846e-4a3e-8685-5a080839ce6c; Wed, 27 May 2026 16:24:19 +0000 (UTC)
-X-Farcaster-Flow-ID: a11e89ab-846e-4a3e-8685-5a080839ce6c
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Wed, 27 May 2026 16:24:17 +0000
-Received: from cdd-dev.amazon.com (172.22.139.101) by
- EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Wed, 27 May 2026 16:24:17 +0000
-From: Salvatore Dipietro <dipiets@amazon.it>
-To: <dipiets@amazon.it>
-CC: <abuehaze@amazon.com>, <akpm@linux-foundation.org>, <alisaidi@amazon.com>,
-	<blakgeof@amazon.com>, <brauner@kernel.org>, <dipietro.salvatore@gmail.com>,
-	<djwong@kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-xfs@vger.kernel.org>, <ritesh.list@gmail.com>,
-	<stable@vger.kernel.org>, <vbabka@suse.com>, <willy@infradead.org>
-Subject: Re: [PATCH 1/1] iomap: avoid compaction for costly folio order allocation
-Date: Wed, 27 May 2026 16:24:10 +0000
-Message-ID: <20260527162412.19922-1-dipiets@amazon.it>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260506123326.17293-1-dipiets@amazon.it>
-References: <20260506123326.17293-1-dipiets@amazon.it>
+        d=gmail.com; s=20251104; t=1779899453; x=1780504253; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QvE27vjOj0oBAYN3EfYXrsSdY9/XabQfXIQ55p1R04c=;
+        b=G6JF0cbfLAGNpAknp56cYrx8d0yZ0W6+2ZRrgm2h1fhS1bEDXypNccnMEGEJBMmhAh
+         /dlomDt9uU+14rdzPII/HcD78q54TvbJbxCN/hycNjwcwrzt5jaK19YNvZ6eSH3L9vXE
+         z7pdzkcJ27tf65tyMWHqs/Rwu3XFbHdZ08y+NpxER1To+QbYmrh36vdXJVOkhMfUEadF
+         fslmken6+zNwvMbtkWfBULBVX35BJUDiituT+1wQS6dHIEX34Ny2FMat2emQo9/Etje9
+         vjABI8ymkfG2jyyNNoNfeX2yYoHJOlCeISSWNF2UUCu6ptWcTew15Wg5a5NA8ZiWd8v+
+         HPxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779899453; x=1780504253;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QvE27vjOj0oBAYN3EfYXrsSdY9/XabQfXIQ55p1R04c=;
+        b=XHnf2ZUD+xP3LENL04zOhiledX/urkP3O9CKZD70azF+Q4aVvqT8F6M5SDRrlzjK94
+         jXIcO8udCCg8rMoVBp3HGsu7ewJF3veXOzbFWP1OAq3VG0/y1F9RSkZs+otzVhgLoAL/
+         hr/RV4ngiRpklYPg51mxlzqtDFKPE+Vr6bVGxOYmcYCe2UezwoR5Tfgw+vINS0uLFSdm
+         7nT7zkE0ua54qdJXMK1NryUrXGZbOjbZ2boyQsK24g0grZOiAgW16UrmzNKHuRfza/rb
+         7bQ7B1Sm5lzQhhPn9FNAfrEjFUnhl+8IrAQuzczQ7WukfVRMT8+cbTMFI1/fxu3TK+mn
+         a4Dw==
+X-Forwarded-Encrypted: i=1; AFNElJ9z0FbrHht/RfIl5q88qtynFXNw3ZrdnqBwi5sCxpTxCcpLJe2GjvmMJwMeMzIVDE1UVB66bmQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3t4v+63kcDK/ku3ciWBKWRWLkR3RENEXx3/kAmzersvXuWVIj
+	ULiwEnaLhjOQdkGU3zZ9Q9um1X1oItliuceDeGzvj+CN7lp7syFFpJDr
+X-Gm-Gg: Acq92OEtDs3yo4FPtj871TzRwOF11z8Ahm3Q1ZiN5EYEN/e8W4+F3eSuUWcyzxFaFZs
+	84+epqiACrzd0LveMAJ6ZQbfs9sm2ycxBzW6maaXhswZnEcPGm20vK0c3EJ3oSjJ3PkIX2Ch0ix
+	78CgMb4eegOfDHWh4ueh2TlZIUNEThWaFBQism4BSZCymXBRTstDVvxdlR5pJ1+JFEkmVpbtblD
+	YZLQaRAn+qgiqHjZSRg9XlWDYzg/keN4yK+QtNlZB+oTp4mXYOe3D7FAx0vU559060DG9imYPoc
+	Ihx2LKzzIvw/YX0PZaeagyBcY8CGg+6SRlCguOpzHit+ocZIMjA4CKf3DJ23E896a6D1ZxEf00t
+	EvjzVqVP/yHUKVMRRvpmz9qvRpF2DT+bL0MQnnVBMq/DEMdGsvYasZflen4zsLfq3fCzRkYNsne
+	6UKGTui5Pq9R45svNodLZZSYTcHtedgPQo1qcez1fhXME/9gxvq2T/1FXa0chiYDAbL/Oz2GFAw
+	jaSnSUZe+kDp/SNQuf3EqbfaSxpiMe41ksu4x+LFlI=
+X-Received: by 2002:a05:6820:4c08:b0:69d:521d:a4fc with SMTP id 006d021491bc7-69d7ead810amr12080874eaf.8.1779899453213;
+        Wed, 27 May 2026 09:30:53 -0700 (PDT)
+Received: from server0.tail6e7dd.ts.net (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8cc812e0413sm188819356d6.31.2026.05.27.09.30.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 May 2026 09:30:52 -0700 (PDT)
+From: Michael Bommarito <michael.bommarito@gmail.com>
+To: Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>
+Cc: Jeff Layton <jlayton@kernel.org>,
+	Tom Haynes <Thomas.Haynes@primarydata.com>,
+	Peng Tao <tao.peng@primarydata.com>,
+	Kees Cook <kees@kernel.org>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>,
+	linux-nfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2 0/2] NFSv4/pNFS: fix client kernel panic from malformed GETDEVICEINFO
+Date: Wed, 27 May 2026 12:30:34 -0400
+Message-ID: <20260527163036.1524927-1-michael.bommarito@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ClientProxiedBy: EX19D043UWC002.ant.amazon.com (10.13.139.222) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-X-Spamd-Result: default: False [0.44 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[amazon.it,quarantine];
-	R_DKIM_ALLOW(-0.20)[amazon.it:s=amazoncorp2];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[amazon.com,linux-foundation.org,kernel.org,gmail.com,vger.kernel.org,kvack.org,suse.com,infradead.org];
-	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-254632-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254631-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amazon.it:mid,amazon.it:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dipiets@amazon.it,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[amazon.it:+];
-	TO_DN_NONE(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 8DD015E7B96
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 4636A5E7CE5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-ClRoYW5rcyBSaXRlc2ggYW5kIE1hdHRoZXcgZm9yIHRoZSBjb250aW51ZWQgZmVlZGJhY2sgYW5k
-IGd1aWRhbmNlIG9uIHRoaXMgdGhyZWFkLgpJJ2QgbGlrZSB0byBzdW1tYXJpemUgd2hlcmUgd2Ug
-c3RhbmQgYW5kIGFzayBmb3IgeW91ciBpbnB1dCBvbiB0aGUgYmVzdCBwYXRoIGZvcndhcmQuCgpT
-dW1tYXJ5IG9mIGFwcHJvYWNoZXMgdGVzdGVkOgpXZSd2ZSBub3cgYmVuY2htYXJrZWQgYWxsIHBy
-b3Bvc2VkIHZhcmlhdGlvbnMgKHBnYmVuY2ggc2ltcGxlLXVwZGF0ZSwgMTAyNCBjbGllbnRzLCAK
-OTYtdkNQVSBhcm02NCwgaHVnZV9wYWdlcz1vZmYsIFBSRUVNUFRfTk9ORSBhcHBsaWVkIFsxXSk6
-Cgp8IFBhdGNoICAgICAgICAgICAgICAgICAgICAgICAgICB8IENoYW5nZSBMb2NhdGlvbiAgICAg
-ICB8IEF2ZyBUUFMgICAgfCAlIHZzIEJhc2VsaW5lIHwKfC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tfC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tfC0tLS0tLS0tLS0tOnw6LS0tLS0tLS0t
-LS0tLTp8CnwgQmFzZWxpbmUgKG5vIHBhdGNoKSAgICAgICAgICAgIHwg4oCUICAgICAgICAgICAg
-ICAgICAgICAgfCAxMDEsOTc5Ljc1IHwgICAgICAg4oCUICAgICAgIHwKfCB2MSAob3JpZ2luYWws
-IGlvbWFwIGNhbGxlcikgICAgfCBmcy9pb21hcC9idWZmZXJlZC1pby5jfCAxNDEsMTk0LjIwIHwg
-ICAgKzM4LjQ1JSAgICB8CnwgUml0ZXNoJ3Mgc3VnZ2VzdGlvbiAgICAgICAgICAgIHwgbW0vZmls
-ZW1hcC5jICAgICAgICAgIHwgMTM5LDIwMC42MSB8ICAgICszNi41MCUgICAgfAp8IE1hdHRoZXcn
-cyBzdWdnZXN0aW9uICAgICAgICAgICB8IG1tL2ZpbGVtYXAuYyAgICAgICAgICB8IDE0Myw4NjMu
-ODIgfCAgICArNDEuMDclICAgIHwKfCBrY29tcGFjdGQgYmFja2dyb3VuZCAgICAgICAgICAgfCBt
-bS9wYWdlX2FsbG9jLmMgICAgICAgfCAxMzQsMjc4LjQ3IHwgICAgKzMxLjY3JSAgICB8CgoKQWxs
-IGFwcHJvYWNoZXMgcmVjb3ZlciBzaWduaWZpY2FudCB0aHJvdWdocHV0LiBUaGUga2NvbXBhY3Rk
-IGFwcHJvYWNoIChiYWNrZ3JvdW5kIApjb21wYWN0aW9uIGFuZCByZXR1cm5pbmcgbm9wYWdlIGZv
-ciBjb3N0bHkgb3JkZXJzIHdpdGggX19HRlBfTk9SRVRSWSkgYWxpZ25zIHdpdGggdGhlCmFyY2hp
-dGVjdHVyYWwgZGlyZWN0aW9uIERhdmUgYW5kIENocmlzdG9waCBwcm9wb3NlZCwga2VlcGluZyBj
-b21wYWN0aW9uIG91dCBvZiB0aGUgZGlyZWN0IApyZWNsYWltIHBhdGgsIGFuZCBsaXZlcyBlbnRp
-cmVseSBpbiB0aGUgcGFnZSBhbGxvY2F0b3IuIAoKQmFzZWQgb24gdGhlIGRpc2N1c3Npb24sIEkg
-c2VlIHR3byBwb3NzaWJsZSBkaXJlY3Rpb25zIGFuZCB3b3VsZCBhcHByZWNpYXRlIHlvdXIgZ3Vp
-ZGFuY2U6CgoxLiBQYWdlIGFsbG9jYXRvciBmaXggKG1tL3BhZ2VfYWxsb2MuYyk6IFRoZSBrY29t
-cGFjdGQgYmFja2dyb3VuZCBhcHByb2FjaCBhZGRyZXNzZXMgCk1hdHRoZXcncyBjb25jZXJuIHRo
-YXQgZmlsZW1hcC5jIHNob3VsZG4ndCBrbm93IGFib3V0IFBBR0VfQUxMT0NfQ09TVExZX09SREVS
-LCBhbmQgYWxpZ25zIAp3aXRoIERhdmUncyB2aXNpb24gb2YgcmVtb3ZpbmcgY29tcGFjdGlvbiBm
-cm9tIHRoZSBkaXJlY3QgcmVjbGFpbSBwYXRoLgoKMi4gZmlsZW1hcCBmaXggKG1tL2ZpbGVtYXAu
-Yyk6IEJvdGggUml0ZXNoJ3MgYW5kIE1hdHRoZXcncyBzdWdnZXN0aW9ucyBhcmUgbWluaW1hbCwg
-CmJhY2twb3J0YWJsZSwgYW5kIHByZXNlcnZlIGxpZ2h0d2VpZ2h0IHJlY2xhaW0gZm9yIG5vbi1j
-b3N0bHkgb3JkZXJzLiAKUml0ZXNoJ3MgdmFyaWFudCBkaWZmZXJlbnRpYXRlcyBiZXR3ZWVuIGNv
-c3RseSBhbmQgbm9uLWNvc3RseSBvcmRlcnMsIHdoaWxlIE1hdHRoZXcncyAKaXMgc2ltcGxlciBh
-bmQgcGVyZm9ybXMgYmVzdC4KCldvdWxkIGVpdGhlciBvZiB0aGVzZSBkaXJlY3Rpb25zIGJlIGFj
-Y2VwdGFibGUgZm9yIGEgdjMsIG9yIHdvdWxkIHlvdSBwcmVmZXIgYSBkaWZmZXJlbnQgYXBwcm9h
-Y2g/CgpJJ20gaGFwcHkgdG8gdGVzdCBhbnkgYWRkaXRpb25hbCB2YXJpYXRpb25zIG9yIGRpcmVj
-dGlvbiB0byBtb3ZlIHRoaXMgZm9yd2FyZAoKU2FsdmF0b3JlCgoKWzFdIGh0dHBzOi8vbG9yZS5r
-ZXJuZWwub3JnL2FsbC8yMDI2MDQwMzE5MTk0Mi4yMTQxMC0xLWRpcGlldHNAYW1hem9uLml0L1Qv
-I204YmFlZWFmNDhhYTdhZTUzNDJjOGMyZGI4ZjRlMWMyN2UwM2MxMzY4CgoKCgpBTUFaT04gREVW
-RUxPUE1FTlQgQ0VOVEVSIElUQUxZIFNSTCwgdmlhbGUgTW9udGUgR3JhcHBhIDMvNSwgMjAxMjQg
-TWlsYW5vLCBJdGFsaWEsIFJlZ2lzdHJvIGRlbGxlIEltcHJlc2UgZGkgTWlsYW5vIE1vbnphIEJy
-aWFuemEgTG9kaSBSRUEgbi4gMjUwNDg1OSwgQ2FwaXRhbGUgU29jaWFsZTogMTAuMDAwIEVVUiBp
-LnYuLCBDb2QuIEZpc2MuIGUgUC5JVkEgMTAxMDAwNTA5NjEsIFNvY2lldGEgY29uIFNvY2lvIFVu
-aWNvCgoK
+A malicious or compromised NFSv4.1+ pNFS metadata server can panic any
+pNFS-flexfile client by returning a GETDEVICEINFO body with a
+multipath-DS count of >= 3 and exactly one valid (netid, uaddr) pair.
+The unbounded inner loop in nfs4_ff_alloc_deviceid_node() (and the
+parallel site in nfs4_fl_alloc_deviceid_node() for the legacy file
+layout) keeps iterating after the first netaddr is decoded, consuming
+the trailing version_count / version / minor words of the body as
+opaque netid + uaddr pairs.  Both come out as zero-length strings;
+xdr_stream_decode_string_dup() sets *str = NULL and returns 0; the
+caller in nfs4_decode_mp_ds_addr() only checks "< 0" and immediately
+calls strrchr(NULL, '.').
+
+A QEMU/KASAN reproducer is described in the second patch.  The
+shortest crashing GETDEVICEINFO body is 56 bytes, the panic is 5/5
+deterministic at multipath_count = 10, and it fires before any
+user-level read can complete on the first pNFS file the client
+touches.
+
+Patch 1 closes the NULL dereference itself by changing the two
+xdr_stream_decode_string_dup() return-value checks in
+nfs4_decode_mp_ds_addr() from "< 0" to "<= 0".  Patch 2 promotes
+NFS4_PNFS_MAX_MULTI_CNT to include/linux/nfs4.h so flexfile and the
+legacy file layout can share it, bounds the inner mp_count loop in
+both drivers against that cap, and breaks the loop on the first NULL
+return from nfs4_decode_mp_ds_addr() so a hostile server cannot drive
+the decoder past a single malformed entry.  Either patch alone closes
+the panic; both together close the latent unbounded-decode class.
+
+The unbound on mp_count predates the flexfile driver: the same loop
+exists in the legacy file layout since 35124a0994fc ("Cleanup XDR
+parsing for LAYOUTGET, GETDEVICEINFO", 2011) and was carried into
+flexfile by d67ae825a59d ("pnfs/flexfiles: Add the FlexFile Layout
+Driver", 2014).  The NULL-deref site was introduced by 6b7f3cf96364
+("nfs41: pull decode_ds_addr from file layout to generic pnfs") when
+the netaddr decode was unified.  Stable backporting wanted for all
+three.
+
+Changes in v2:
+- Carry the stripe_index provenance comment from filelayout.h to the
+  new NFS4_PNFS_MAX_MULTI_CNT location in include/linux/nfs4.h, as
+  Anna requested.
+
+Cc: stable@vger.kernel.org
+
+Michael Bommarito (2):
+  NFSv4/pNFS: reject zero-length r_addr in nfs4_decode_mp_ds_addr
+  NFSv4/flexfile,filelayout: bound multipath DS count in GETDEVICEINFO
+
+ fs/nfs/filelayout/filelayout.h            |  2 +-
+ fs/nfs/filelayout/filelayoutdev.c         |  7 +++++--
+ fs/nfs/flexfilelayout/flexfilelayoutdev.c | 10 ++++++++--
+ fs/nfs/pnfs_nfs.c                         |  4 ++--
+ include/linux/nfs4.h                      |  5 +++++
+ 5 files changed, 21 insertions(+), 7 deletions(-)
+
+
+base-commit: 0a0e44d91ce037ac5371b0d8dfbbfc5f693b27c7
+--
+2.53.0
 
 
