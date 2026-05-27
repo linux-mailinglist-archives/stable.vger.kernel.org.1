@@ -1,174 +1,144 @@
-Return-Path: <stable+bounces-254525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254526-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJs/MAG9FmqHqQcAu9opvQ
-	(envelope-from <stable+bounces-254525-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 11:44:33 +0200
+	id uJzBAj2/FmrOqgcAu9opvQ
+	(envelope-from <stable+bounces-254526-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 11:54:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83DB25E1FBC
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 11:44:33 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15B4E5E230F
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 11:54:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 49CF53019127
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 09:43:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2FE6731E82C8
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 09:47:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB5D93ECBFD;
-	Wed, 27 May 2026 09:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20A443EDE44;
+	Wed, 27 May 2026 09:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pbRBo3sk"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="oMGB8Uq9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F17CE3ECBE2
-	for <stable@vger.kernel.org>; Wed, 27 May 2026 09:43:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779875015; cv=pass; b=bFxiLyxBBnK5PAxV2F2zMFwYMtuIkbOQ39IDzajLrQbkDwnfICEQXxGDBXwHN5a7UT2v+1py87GdmDKTKYikuWo/Ja4rnhDTv3KGGhuF96AnZOAC5wvuz8KQmkBT4f9/hxneVpH9LU6JZUYtoF8TDvYxBCtceaXgEdog3i1Jv2U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779875015; c=relaxed/simple;
-	bh=Co6EHUesoW6BWBk60jtMfwAVc9623LbALcIYwj02eos=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FgYFKModxqMvHs4lUY51gnhRq60xZIagK9Y4wDc1oxdJug+iRAIORZOKTlfxQeOdG2Psa2VkC0amFhzJGfYTBAOhfj01cAOy+Gp67vSEPZDMSb3CQTCy7I0/LW51t7R2tLSb/oS9vX1awR1xThhPOQ71XDXU/2lzBsRzI+fVN6M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pbRBo3sk; arc=pass smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-44985f4ab0fso6398163f8f.0
-        for <stable@vger.kernel.org>; Wed, 27 May 2026 02:43:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779875009; cv=none;
-        d=google.com; s=arc-20240605;
-        b=gPRpWvps48fc2ekNAU2IGGwgINRfAL8ZdH+HPz7FM9P6PfNtXezm6DSbYsh+DEk8YA
-         kqXOxoagvElwt9lAD6uhN0Lb1wbfwldhhWdsrqsIJHvOkKeox2te6dbeifUVXFWK8gxV
-         EUeyaPDqgYiCVX866E/5G8AIvRNBaCrQgtrpW5ccqDl0oiCDPCsponr2yPT0835ONzrn
-         Kdgl3X4UV85BSgk/SbL4EbaWjkfsSaYwK+Sv0hR3Qyt92gOsS1nclzvlGQDZ+95l7kyI
-         clXwFyIaaJaZ9rOghApvOMwmwemRv1E5nv2wvBxontRJSIUKu1s/3ay6VllOHI2bzrN+
-         NS+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=Co6EHUesoW6BWBk60jtMfwAVc9623LbALcIYwj02eos=;
-        fh=klo+1ff9NogE/SbHN55IswolLIzjMMjVU/Nm0GyOddk=;
-        b=jWdHLDgKFZWIBrSkaAp49Xp0KQUXc4mulTkNzCjnJIOBn0GmJ65p3RvA+8BK1OGXqW
-         XTQDt1bmBqnbwbDNpA/br+VDG17rFO7StaXf4RVGGwhEOJVgviqt+LjMbK4GxmSQy5po
-         IliiIgyr9RnQ0eNMp+U0X4smCuj3V9RRJTvTZxGIw0h9CnEvSv/bce42lSQH4jejdhGO
-         L9JzknwQuwUDlf/hQMLn41GoVEoc3VqN0fmCbOLXiRkXWeIjko3+ykDSS+qkJ/m/d7Hk
-         nK1ey491r6JSw356k7A2emYFQJPUn15TZWpnoA5uL4WwbHlnyhV4g8GlwKz+r6dTVtWz
-         NB1w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779875009; x=1780479809; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Co6EHUesoW6BWBk60jtMfwAVc9623LbALcIYwj02eos=;
-        b=pbRBo3skRjG30PmujBmapUFdwcbta8xusdv7/j0x3HLrPYqwvR195Bo5cUaKHaWqyu
-         m4vd9uJ3sUI4IJoydPZaCDQDPFagFpXmodO3g2S+iAS2y12Ao2vyplMPKUTDA5WdxScF
-         V/pH7LzmjA5QoJCTeKDJIxeTSgCDjL2xeCXCVqE3dRAeEcMBerR7kGLNHcqcC2NnX4nD
-         H/UGTi8JS7zmM2mEYRFINcG/VV5hxdJ1ACW/u1ayF5N6xtPU/7BtZsQJTbt3NShfwm2r
-         nNe50cVPBoKhSJMzjLs8P8Kg4JS88XxM6tVlG54VeogqRWmTVQ92vvPSqn92hginPWCm
-         dJqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779875009; x=1780479809;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Co6EHUesoW6BWBk60jtMfwAVc9623LbALcIYwj02eos=;
-        b=q1OFdHIN+Iz1XDQsadqtGQg9oYs1cu5kdraNfjiZ1y0E2wNiMSTvKLGVfqTCGBjIDt
-         fP3eCdJZv9/WwEzSc3sYwV6QQvznKeiTKkf7BYmhc8S5xQ/m1nJ0xi7Giqhuo+bsO0VM
-         BUGsmje9KwQ84Z2FdvCDqboxAYG0ON4EbFFgiuPgob9hyPTBBX2ANnRHjrdBZEO5xNlk
-         iGR16ERFcjLSHcyuKzwtCqoibGJ78rVzrHENKNCl4Tl9F2Uvh5Y/D8wUfcZOOOmg3cuS
-         1zrJDzMXRZLhin3jO1TiM4t4V5rFuq3/xqTCRapuLnZSc/jFtkA8uxuuAyB1smfafc6o
-         HpSg==
-X-Forwarded-Encrypted: i=1; AFNElJ8nwHUy78jvYXFjNxo7Kyk0wcIGiHvDOBW77FV1/lSPYT6v/IERc7CtOgoCjqU9/9vXs7+oCMo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFzw8ZWmqEX6VEQIOb63LBTxRWnbR19haErFkwWWRKxhgKPaR+
-	vAcJbbFE3tOY9QJ4a2eMjfo7bkat0+BUnOC2JVdftqDuAoQl4Ksh2VssHHiSFzOy2ISlOF9jfOn
-	pJVzdBXyK3f0mGYYZAYTxkxoQX75SzSA=
-X-Gm-Gg: Acq92OG+qNnrUBd5NhDtO+75qYOIzcWsuJ4ssefiLmBBwwYubmpdJhv31aSLi1d6EfY
-	VmQd5IuWHQWUWLuf3vp2L329pEEsoiB67UZCUTSKsA1DPIn9OvLiYkXjKhckqLLHHZi1l82bi0Q
-	MI9mn+0yvxBS6XYofZT91lvtpKwLCcgVljrrwiR988iZNGivTMTtFC05JzNmNC/E9sKQ0aYR9WQ
-	1T5DiMXWxOQEqdjyDraTZooN7d3v6nI3sTd4JDd1cqFVQFocYwP55c7NbbBba7oq5uEEBwqKy7R
-	ncjvfFuIdmm5jOzJqd0=
-X-Received: by 2002:a05:6000:4a09:b0:43d:762e:76c6 with SMTP id
- ffacd0b85a97d-45eb38a7f6fmr39074764f8f.7.1779875008738; Wed, 27 May 2026
- 02:43:28 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C8B3EBF18
+	for <stable@vger.kernel.org>; Wed, 27 May 2026 09:46:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.59.177.22
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779875188; cv=none; b=B1h2JU7qt0hxP17GvilfTdAQogKgj5gC3bqkHiVNRa9IS71DWT38cyl59bC1IOFM4wwJRaWJFLws3DLirA+lo7kU3Xavu987iq5E70UbG0YLBAxpnfZkRHvYkxrC7yZ9IzV+AMpdnW/EdODd+M5dEwGFmhEA4XI4PjfeZTlItDU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779875188; c=relaxed/simple;
+	bh=Ia0yIbhdqpKtebMPGbigWhsK4eOsrKkpZkvYwRjp0Kc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=goi/8+JZ0aonsrdVO13jJiNoI1Y4sp+gj6/NAI0/0LRapjmAyzLO2ez3h3rcuNbCWE8iD8peJiWk//9CmKgAppytcG43P7Rw01xHFjgu/1+bqkpue628dQAsBiijmk9t6wcTpECecb0gmlyqttunudcvPbkg8ETkKV9F7YR7LW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=oMGB8Uq9; arc=none smtp.client-ip=52.59.177.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1779875150;
+	bh=Ia0yIbhdqpKtebMPGbigWhsK4eOsrKkpZkvYwRjp0Kc=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=oMGB8Uq95bC+V0625xryI4FLeufQ66SbfNC70qlLzCCmZ/dZ9yeb3sYfRq/7B5gcq
+	 2+VbE7tGo0WncBaOyfTaZlvmZ/cJwaaNlrhl2luhcQQq11i3e3XOF2Nf8OsXT6WKhR
+	 mD6BMSTFEp9DAeLmuO52ZQXOkECefq/yGrhu2SHs=
+X-QQ-mid: esmtpgz13t1779875147t35b1c9e9
+X-QQ-Originating-IP: ePvmYdHkFpHo6PoZ1NIT/fGc+g26VcbfqO/F6xSTWGo=
+Received: from localhost.localdomain ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 27 May 2026 17:45:45 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 2997212932578719407
+From: Wentao Guan <guanwentao@uniontech.com>
+To: gregkh@linuxfoundation.org,
+	sashal@kernel.org
+Cc: bird@lzu.edu.cn,
+	kuba@kernel.org,
+	kuniyu@google.com,
+	n05ec@lzu.edu.cn,
+	patches@lists.linux.dev,
+	stable@kernel.org,
+	stable@vger.kernel.org,
+	tomapufckgml@gmail.com,
+	wangjiexun2025@gmail.com,
+	yifanwucs@gmail.com,
+	yuantan098@gmail.com
+Subject: Re: [PATCH 6.6 229/474] af_unix: Reject SIOCATMARK on non-stream sockets
+Date: Wed, 27 May 2026 17:45:44 +0800
+Message-Id: <20260527094544.2344825-1-guanwentao@uniontech.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20260515154719.961677988@linuxfoundation.org>
+References: <20260515154719.961677988@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260527070824.2677331-1-maoyixie.tju@gmail.com> <CAAVpQUBKHhj6h5Rke=N9NyeUOPvVB0RKJSr2=HPkUKgAqQA0Bg@mail.gmail.com>
-In-Reply-To: <CAAVpQUBKHhj6h5Rke=N9NyeUOPvVB0RKJSr2=HPkUKgAqQA0Bg@mail.gmail.com>
-From: Maoyi Xie <maoyixie.tju@gmail.com>
-Date: Wed, 27 May 2026 17:43:16 +0800
-X-Gm-Features: AVHnY4LnyhgAhekb1Oe672L5X-bWeTtJyQT5uTBldYwiDLPpoTVojrMYJ7auvMg
-Message-ID: <CAHPEe=H5SFJN-=EFggXdNreN_A_LE2r_KHrpWU4UxJmq+g-bhg@mail.gmail.com>
-Subject: Re: [PATCH net] rtnetlink: Require CAP_NET_ADMIN in link netns for changelink.
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
-	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>, 
-	David Ahern <dsahern@kernel.org>, Xiao Liang <shaw.leon@gmail.com>, 
-	Nikolaos Gkarlis <nickgarlis@gmail.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: NshvC2+mlzw32QtyezAd0qZh/UxK3VnvVYhQ9cfWC9GCWgeYm/sqZzRU
+	7o2kMLAJcTTnYT/l7NiTz63BE6IwUiNgM/olRei7hrOC/Hwzk/tjmKyPmnQJDKCxUp+oFnl
+	aHC8IyHXHtUl5WDy1nsM4FC/2YmfTuDTNMncoPvqLNyU6v8UmjLjbDqPsa3l/1NUzQWRs12
+	AH9VLYPsebPSL9HNppyR+pt4ZTBuReF2gl75m1cpTXMELqN0upFoME233WeBqqM4hgKHAW1
+	p4MsVO7OrDwzJo7WeWd0pj6O8u0eLe9KaBPBho0SdKP1jNCqNKpvZw0XSiEPjlt/rNwhu/u
+	3gV0lFbj7L2Tm8c4+0JdSH5OLPWrjP0HQWE4Shb85ZtWyMTz0kYIzxziL98fJJQhfBH0/HK
+	6gaXUIms04yxYOWlQAA/OvW/RtbhPNvLu7QhQCKJ56FGHOXWALwhXrw3yV0qBTKbGzyPCPa
+	zUCMdHqovSLPnmGlRATFZPMKRNhKsd2A4HosDToJ2MDeRfykcJzzfHekW/F+/vr3Y1HfqRO
+	AlNFuIMR12g2U1zFNuvy8fks0HpkOs5BSEo4Z8Th8JvAxoDh42vF3XxTMxgc+/Vyx5ISs1L
+	+/EA6/K+vyO9hbKaFe3NfScpg8SgnFGM4vKDDETnVV9MBOROsKbEXSoM+fzsAy11Uvk0Hdf
+	uEqRPz3ggEvNeSU10b+HKjKX3LVuuMYGNrhLd7NIBUa2HDsCud6QlgOsOidHlnLQngsEyB4
+	ThIxBj0rtI9v3z2h0dt75bHnvU85IMVGHBs5DPDMKXz4GUefj4Iwo4WVZL/ZTJeHFFWmwVS
+	LctdJq9PVKYgigbr0uGb3MOO7IgG0OWPJMerlENg/3Y/ueuwY8/nUIDNYN0sKODZH4jd9xv
+	ZgoCexqKu4fXoxORWybVUTd6rAx8do3LWeKQLaMAPOZ8QtdnUTb01BDy7r6vWILWBZrbSyB
+	MPCZ6Evk8rjtVIuWuq6/laMYX55O/QkCa3Yk0LmaxTOUnrdM31HizocAeDvxeTLvdDpNcFl
+	n1Zb9P7ZI8HG0bqVSSAeImb+YnNPxlV2DiLD+vog2iz6mtVQh6
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+X-QQ-RECHKSPAM: 0
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
+	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254525-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[lzu.edu.cn,kernel.org,google.com,lists.linux.dev,vger.kernel.org,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,davemloft.net,redhat.com,google.com,gmail.com,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254526-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maoyixietju@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[uniontech.com:+];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 83DB25E1FBC
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,uniontech.com:mid,uniontech.com:dkim]
+X-Rspamd-Queue-Id: 15B4E5E230F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Kuniyuki,
+Hello Greg and Sasha,
 
-Thanks for looking.
+On patch review, found this patch which backport to 6.6 context seems such
+different than orginal patch, I think this should be revert:
+commit 0d7e7235bc543c6ed7b873e3015db814d8e8c414
+("af_unix: Reject SIOCATMARK on non-stream sockets").
+pls review.
 
-> Do all other callers of ->get_link_net(), dev_get_iflink_dev()
-> and batadv_getlink_net(), require the same capability check ?
+[DIFFERENT]:
+original patch patched in unix_ioctl(),
+this patch in 6.6 patched in unix_stream_read_generic().
 
-No. Those are read paths. get_link_net feeds IFLA_LINK_NETNSID, the
-iflink lookup feeds IFLA_LINK, and batadv_getlink_net resolves a hard
-interface's parent netns. None of them mutates state, so none needs a
-capability check.
-
-But your question points at a real problem in my patch. get_link_net
-is the wrong gate. For the ip tunnels and xfrmi it returns t->net, the
-netns changelink mutates, so the check is right there. For peer types
-like netkit and veth it returns the peer netns instead. netkit has a
-changelink, and its peer usually lives in another netns. My patch
-would then require CAP_NET_ADMIN in the peer netns for a plain change
-to a netkit device, which netkit does not require today.
-
-So the check belongs in the changelink path of the types that mutate
-t->net, against t->net->user_ns. That mirrors the ioctl side in
-8b484efd5cb4. I will send a v2 along those lines.
-
-Thanks,
-Maoyi
+BRs
+Wentao Guan
 
