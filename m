@@ -1,234 +1,290 @@
-Return-Path: <stable+bounces-254654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254655-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +LvRKf5CF2ov/AcAu9opvQ
-	(envelope-from <stable+bounces-254654-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 21:16:14 +0200
+	id yCoYGMFDF2ov/AcAu9opvQ
+	(envelope-from <stable+bounces-254655-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 21:19:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 321A75E96E5
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 21:16:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C94A85E9731
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 21:19:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DA0C7302796F
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 19:16:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5A92B307F0FE
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 19:18:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F78636A366;
-	Wed, 27 May 2026 19:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 597BB36F433;
+	Wed, 27 May 2026 19:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ValWSb2X"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b="EjRuH8fk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+Received: from out-03.smtp.spacemail.com (out-03.smtp.spacemail.com [63.250.43.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB2936680F
-	for <stable@vger.kernel.org>; Wed, 27 May 2026 19:16:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A577634CFA7;
+	Wed, 27 May 2026 19:18:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.250.43.88
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779909366; cv=none; b=p340L/R9ALaB4SuCosn2fm10LWzALsd4FS5wxjw2LmCilJwk1aMrKzpqqzjHsmrK6nTYdw40qif818dQK+3Px9qK2H/LzWf1flk6iE9hs1zITYZG7Ef6kkeckoTh3rEt1v0GI9M1uFco0qQF5aS+PeK4s6n4wbY/lb/0QPYd0hc=
+	t=1779909521; cv=none; b=BrsBLrZOr/jRGHWK5XKUXtNpMLkOb/1g1nvOKC1KGTvDUwzJQG8SzIeedBlw+HCjRRysdcdWUPKpuWqPSbXXxYVjHQXNy3dtfBa58Go26oQ189TrraA7lzyeGj2Xd6FcAebLxD4ug+/8K6FD+UwA77WKiZdgPONAOdsoBr2xNUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779909366; c=relaxed/simple;
-	bh=W3T4QxdLFfHbdc/KmpcaHHy9IfSTsNZ4bf6F6ZMHiTk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=epYHrJ++iVSPfgl2aYUgd5kVILp6xFn0tPwRbKbbQxNFOa4yZG73bYs0hRKw/cqISwiQH7ypcUA7L2/tjBhJOeUzOL7K99NL9qr+2Pt8mAbEnBB3+l+8MnbxySRJr0DigXQtFxRJeRccaTQbykC0i18e+OfuthqeDA7LdrgT4oQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ValWSb2X; arc=none smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c80227b1f6cso4521209a12.1
-        for <stable@vger.kernel.org>; Wed, 27 May 2026 12:16:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779909364; x=1780514164; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=jVdozbgHNmRboTjJqPe1n9RlPVUR0qDZvYcaF2yAV8s=;
-        b=ValWSb2XLrdf3Bw6PhZo9e+CRjbSLnpGiuOU5m4gAa41n1wUh8H8bFDhf+XAJslB2h
-         /448U7HWQ4FjK9XeYxEPgefvubM0bnISKWa4CRNt0kdZhJW9VR8eJ7A4/2z6Zm/BPAGf
-         g6as7/kz4YuAY9lGEGPGfeXwks+Jj/7TSoPLrbW/RwJALfQtBo8XlwucBqaWKcOBQLM1
-         2nYgOZYX6G9y4RbrYBZYfdvtIJGEs8VsQOZL0pzOdXDwcAwwdy3+n3B2fxv6xsZk+2vM
-         EdM5rf0i0mq4LAgb3fqvp63PgK+3fNb1QQoxS1zJs6PpS2hYI52rHrKMfSfmjckYmd9Q
-         b4aA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779909364; x=1780514164;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jVdozbgHNmRboTjJqPe1n9RlPVUR0qDZvYcaF2yAV8s=;
-        b=ABa+ACVp1AtLslpSkpcjBU07oacheABUP41guG2SJXrPkFirangWERIkp27Om82Sst
-         GWq+K47Hp0d3EnYRNOgLQe6yyuUAHF/L+TXmoij1ChrAnmi7V/Ha+B/40ZeWVU6/823N
-         MlMOVSoa9g7e7PiafAzAdzhIzjO3+axZGu12vP4HVPD3Rft6A+DW+JEKdgaQ45ql/gSX
-         fd0xE+XwV3mNT3u0jeSfOZOUyHrDY3c4z0HFgn3WCCB6qWi/rZVopclcfkS5jDT23hV6
-         55adf8Fzo/KphkBkDi6JPmEAclXQaGmwF+gJLtjsNFOLQ8Huums+qRN4fPgErrxU5iyd
-         TDDg==
-X-Forwarded-Encrypted: i=1; AFNElJ/P683ulGrD2yAjR2tQdNkjq4I8a0qi9q4vU5u3wiBCVRE2kZOkv28OCW+DaVPLFA6oLQBosTE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwmyudYMCHodvs3qsjK5wzJlRkrE3AV52tJ4L2DBsmuGBNQ4ZRL
-	DOi5dkgmEswRIDTsYfUvJcjCriKdHBrBGDr5XblLAwOXU0sqc4vJB59iAPo1KSoV
-X-Gm-Gg: Acq92OFW7qNwNCaiANTeISHZ76KBc5l0wOatuzH/46j7E5hn1CxjCkCRsklT6kI2Wyo
-	JZ4JjHKSZjpH5aefxLUbVM62JR0YYByzOrDPlORw0euJERU8zRASL9BSJyZw+kcSRdNxzPmgkGP
-	SJNt8Vsemf5nf91Z0Hq4wsZdHPa/F4pAdC410CQPFOTw5r2WmhxNPzAF6ztdnZ6oMUfLQGl4Bzl
-	vElfYXQSxQiUUhT0NcpN7p8bIvCJBwDoucPT3hxYAacmUiKQpuQtTqKpraEbeYd4pP6IcdzZSPQ
-	QhWLva3zrbqYayGG63HMxC3MAIsu7cBVWUU2SRhldiE5SgEc7fgEBpvtbmMaM6vsxlx//puLYI1
-	Kdpt6mmM02hknpUYt1o5fwwyn+FQNHHlCTMHsuWGFOjf1qaSAv2wkPTH2MAkARRrpOwwAW3GYhI
-	kf5XUyHVd37jDq6yToo3nmzAsIYqwChUxQ
-X-Received: by 2002:a05:6a00:2384:b0:827:4bca:f1a2 with SMTP id d2e1a72fcca58-8415f0f02cbmr22578450b3a.10.1779909364354;
-        Wed, 27 May 2026 12:16:04 -0700 (PDT)
-Received: from john-p8 ([98.97.42.209])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-841d70bb18bsm3595235b3a.34.2026.05.27.12.16.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 12:16:03 -0700 (PDT)
-Date: Wed, 27 May 2026 12:16:02 -0700
-From: John Fastabend <john.fastabend@gmail.com>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: Jakub Kicinski <kuba@kernel.org>, 
-	Christopher Lusk <clusk@northecho.dev>, Sabrina Dubroca <sd@queasysnail.net>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, netdev@vger.kernel.org, 
-	bpf@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net v3] net: tls: use sync AEAD for sk_msg BPF sockets
-Message-ID: <ahdAboFpUAZ8aaWm@john-p8>
-References: <20260526025154.60607-1-clusk@northecho.dev>
- <d92bc603-e345-4dee-9ae9-6ad45e4e6642@linux.dev>
- <20260526161101.691d4cb7@kernel.org>
- <4626d285-57ab-46c9-b75b-d56efe7417fc@linux.dev>
+	s=arc-20240116; t=1779909521; c=relaxed/simple;
+	bh=kvGJAsELGXPJZk9NrIuTIvUOIwiNkTJ+kqt3GBsOj7E=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=diDBvCMn4gyFdIIgCcLqgQSb0JTf5VlHt0ALdnbXWLJOjmzRweXl4xtqQ7P7FddvCl8ZA6vHCmYzzMPa75Oroszug+rfYaxcAAlljoNLx1vb6jo+BSqosvc4tUkS1ABB2QYDE0Y7cXoStzJwaFuXfS5+ZLIUD7wn7uVk8C6ewrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai; spf=pass smtp.mailfrom=rexion.ai; dkim=fail (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b=EjRuH8fk reason="key not found in DNS"; arc=none smtp.client-ip=63.250.43.88
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rexion.ai
+Received: from Kyren (unknown [49.207.213.66])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.spacemail.com (Postfix) with ESMTPSA id 4gQfXz1DXhz2x9B;
+	Wed, 27 May 2026 19:18:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rexion.ai;
+	s=spacemail; t=1779909511;
+	bh=WIUEG4zzn5ErfYY0sg41nrfwYjNTMLRAi91DY7rABh8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=EjRuH8fkN/sKcyDD/1ESBz24ZL4/qv+1gT0ShRF5ooMigtOU3T+TS5bg87K7LWW31
+	 q4wndmGXchDtpI+kDbxzk7sgSc/Ifv7qnwhk3efvuFx4Z4PAikZ8c+wyPF2O6McaLY
+	 vUw970HuKC4/t9V44aaBJ2O8D/w75ciTxru4Otu0XRK84bcZxmR0RzFWdfGFZKOnl1
+	 7m319TvwdbM1y1w2FRTI6mC33sP2482hlnBNiFkZrluh+Iub4AwMxIiE/63FLgtuLR
+	 MwVNt+F9kOrWMRP/lqUtT5ij7NT5dJAjAuksxh9IxmgXTTgwR6yHXr7z+0/z6BrlYo
+	 V6TRvLdqQ/b+w==
+From: Rahul Chandelkar <rc@rexion.ai>
+To: rc@rexion.ai,
+	"James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>
+Cc: linux-scsi@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	io-uring@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yang Xiuwei <yangxiuwei@kylinos.cn>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Caleb Sander Mateos <csander@purestorage.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] scsi: bsg: read io_uring command fields once
+Date: Thu, 28 May 2026 00:47:41 +0530
+Message-ID: <20260527191817.142769-1-rc@rexion.ai>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260527105931.3950913-1-rc@rexion.ai>
+References: <20260527105931.3950913-1-rc@rexion.ai>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <4626d285-57ab-46c9-b75b-d56efe7417fc@linux.dev>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Envelope-From: rc@rexion.ai
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[rexion.ai];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254654-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johnfastabend@gmail.com,stable@vger.kernel.org];
+	R_DKIM_PERMFAIL(0.00)[rexion.ai:s=spacemail];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-254655-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rc@rexion.ai,stable@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-0.928];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[rexion.ai:~];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 321A75E96E5
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[rexion.ai:mid,rexion.ai:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: C94A85E9731
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, May 27, 2026 at 01:09:44PM +0800, Jiayuan Chen wrote:
->
->On 5/27/26 7:11 AM, Jakub Kicinski wrote:
->>On Tue, 26 May 2026 14:44:24 +0800 Jiayuan Chen wrote:
->>>If async_capable is set to 1, the zerocopy path in tls_sw_sendmsg() is
->>>skipped.
->>>Unfortunately ktls with bpf_msg_pop_data() does not work correctly under
->>>this
->>>copy path.
->>>
->>>tls_clone_plaintext_msg() aliases msg_pl onto msg_en's plaintext area
->>>(in-place encryption).
->>>
->>>BPF runs bpf_msg_pop_data(msg, 0, 2). This shifts msg_pl's SG entry
->>>forward by 2 bytes.
->>>The two SGs now point to the same page at different offsets. Physical
->>>memory overlaps but the start of
->>>address differ.
->>Ugh, do you mean that the memcopy path is broken? There are other
->>conditions under which we may fall into it than just !async_capable :(
->>Small send with MSG_MORE is probably the easiest?
->>
->>So we need to fix that one way or the other.
->
->
->Yes, the memcopy path is broken, but only when combined with sockmap's 
->pop helper.
->
->
->msg_pl and msg_en share the underlying page:
->
->                       msg_pl           msg_pl end
->                         ^                     ^
->                  |------|------------------|-------|
->                  | hdr |   plaintext     |  tag  |
->                  |------|------------------|-------|
->                  ^                                      ^
->                  |                                       |
->              msg_en                         msg_en end
->
->Before encryption, sge->offset += prot->prepend_size is applied
->to msg_en so that the encryption's dst and src point to the same
->block of memory.
->
->But once pop has run — i.e. msg_pl's start advances — the encryption's 
->dst and src
->are no longer the same.
->
->crypto_ctr_crypt():
->When dst and src have the same address, crypto saves the encryption 
->result into a
->temporary buffer and then writes it back to dst.
->
->When dst and src have different addresses, the crypto module treats 
->them as two
->
->separate buffers and stops considering in-place mode.
->
->it's complicated to process pop/push + head/mid/tail...
+scsi_bsg_uring_cmd() reads struct bsg_uring_cmd fields directly from the
+shared mmap'd io_uring SQE.  On the inline execution path, io_uring may
+still point at userspace-visible SQE storage, so a concurrent userspace
+thread can change fields between validation and use.
 
-For our use case (not deployed yet, but deployed in non-kTLS case)
-all we do is observe data and possible drop the skb if it has
-malicious HTTP headers for example.
+request_len is checked against the size of scmd->cmnd, then used again for
+scmd->cmd_len and copy_from_user().  If userspace changes request_len after
+the bounds check, the later copy can overflow the 32-byte scmd->cmnd
+buffer.  Transfer fields are also read again by scsi_bsg_map_user_buffer(),
+leaving direction, address and length open to the same race.
 
-All this push/pop/... in the middle of the kTLS stack is painful.
+Use READ_ONCE() to load each bsg_uring_cmd field needed by
+scsi_bsg_uring_cmd() into a local variable, then use those locals for both
+validation and execution.  Pass the stable transfer direction, address and
+length into scsi_bsg_map_user_buffer() so the helper no longer re-derives
+them from the SQE.
 
-One option we start rejecting these helpers? That would resolve most
-the pain I suspect. The original thought was we do have use cases
-now for userspace proxy where we insert headers.
+This fixes the double-fetch without copying the whole io_uring command
+payload.
 
->
->>>I think selecting a sync provider via mask = CRYPTO_ALG_ASYNC is
->>>sufficient to
->>>remove the -EINPROGRESS return path.
->>>
->>>May be time to remove skmsg from ktls? (disable by default first,
->>>re-enable via a new ktls module_param?)
->>Yes, we asked John F off-list to get his attention and I think there's
->>only a vague plan to start using kTLS + sockmap, no current user
->>(sorry if I misread / misremembered).
+Tested with KASAN on QEMU (virtio-scsi, 2 vCPUs).  Without this fix, a
+two-thread race produces:
 
-I'm not against a cleaner solution here.
+  BUG: KASAN: wild-memory-access in scsi_queue_rq+0x4a3/0x58a0
+  Write of size 96 at addr dead000000001000 by task poc/67
+  Call Trace:
+   kasan_report+0xce/0x100
+   __asan_memset+0x23/0x50
+   scsi_queue_rq+0x4a3/0x58a0
+   scsi_bsg_uring_cmd+0x942/0x1570
+   io_uring_cmd+0x2f6/0x950
+   io_issue_sqe+0xe5/0x22d0
 
-Another idea: We just add a simple sockops BPF hook with the sk_buff?
-No updating sg lists, manipulating data packet sizes and so on.
+Link: https://lore.kernel.org/all/20260527105931.3950913-1-rc@rexion.ai/T/#u
+Fixes: 7b6d3255e7f8 ("scsi: bsg: add io_uring passthrough handler")
+Cc: stable@vger.kernel.org
+Signed-off-by: Rahul Chandelkar <rc@rexion.ai>
+---
+Changes in v2:
+- Use READ_ONCE() for individual fields instead of memcpying the command
+  payload.
+- Pass stable transfer parameters to scsi_bsg_map_user_buffer() so it does
+  not re-read the SQE.
+- Do not carry the Reviewed-by tag from v1 because the implementation
+  strategy changed.
 
-That would solve the vast majority of any future use case if we have
-a user that really started running kTLS and wanted the security stack
-to keep working. Even openssl usage of kTLS has really ground to a
-halt after it was initially added as far as I can tell.
+ drivers/scsi/scsi_bsg.c | 54 ++++++++++++++++++++++++++---------------
+ 1 file changed, 35 insertions(+), 19 deletions(-)
 
-Something like this already on the list for recv side of tcp.
-
-  [PATCH v3 bpf-next 10/11] bpf: tcp: Add SOCK_OPS rcvlowat hook
-
->>
->>module params aren't a great API. If we want to deprecate it let's just
->>remove the integration in net-next. You have my vote..
+diff --git a/drivers/scsi/scsi_bsg.c b/drivers/scsi/scsi_bsg.c
+index e80dec53174e..ccbe3d98e4ff 100644
+--- a/drivers/scsi/scsi_bsg.c
++++ b/drivers/scsi/scsi_bsg.c
+@@ -76,12 +76,10 @@ static enum rq_end_io_ret scsi_bsg_uring_cmd_done(struct request *req,
+ 
+ static int scsi_bsg_map_user_buffer(struct request *req,
+ 				    struct io_uring_cmd *ioucmd,
+-				    unsigned int issue_flags, gfp_t gfp_mask)
++				    unsigned int issue_flags, gfp_t gfp_mask,
++				    bool is_write, u64 buf_addr,
++				    unsigned long buf_len)
+ {
+-	const struct bsg_uring_cmd *cmd = io_uring_sqe128_cmd(ioucmd->sqe, struct bsg_uring_cmd);
+-	bool is_write = cmd->dout_xfer_len > 0;
+-	u64 buf_addr = is_write ? cmd->dout_xferp : cmd->din_xferp;
+-	unsigned long buf_len = is_write ? cmd->dout_xfer_len : cmd->din_xfer_len;
+ 	struct iov_iter iter;
+ 	int ret;
+ 
+@@ -104,26 +102,40 @@ static int scsi_bsg_uring_cmd(struct request_queue *q, struct io_uring_cmd *iouc
+ 			       unsigned int issue_flags, bool open_for_write)
+ {
+ 	struct scsi_bsg_uring_cmd_pdu *pdu = scsi_bsg_uring_cmd_pdu(ioucmd);
+-	const struct bsg_uring_cmd *cmd = io_uring_sqe128_cmd(ioucmd->sqe, struct bsg_uring_cmd);
++	const struct bsg_uring_cmd *cmd =
++		io_uring_sqe128_cmd(ioucmd->sqe, struct bsg_uring_cmd);
+ 	struct scsi_cmnd *scmd;
+ 	struct request *req;
+ 	blk_mq_req_flags_t blk_flags = 0;
+ 	gfp_t gfp_mask = GFP_KERNEL;
++	u64 request = READ_ONCE(cmd->request);
++	u32 request_len = READ_ONCE(cmd->request_len);
++	u32 protocol = READ_ONCE(cmd->protocol);
++	u32 subprotocol = READ_ONCE(cmd->subprotocol);
++	u32 max_response_len = READ_ONCE(cmd->max_response_len);
++	u64 response = READ_ONCE(cmd->response);
++	u64 dout_xferp = READ_ONCE(cmd->dout_xferp);
++	u32 dout_xfer_len = READ_ONCE(cmd->dout_xfer_len);
++	u32 dout_iovec_count = READ_ONCE(cmd->dout_iovec_count);
++	u64 din_xferp = READ_ONCE(cmd->din_xferp);
++	u32 din_xfer_len = READ_ONCE(cmd->din_xfer_len);
++	u32 din_iovec_count = READ_ONCE(cmd->din_iovec_count);
++	u32 timeout_ms = READ_ONCE(cmd->timeout_ms);
+ 	int ret;
+ 
+-	if (cmd->protocol != BSG_PROTOCOL_SCSI ||
+-	    cmd->subprotocol != BSG_SUB_PROTOCOL_SCSI_CMD)
++	if (protocol != BSG_PROTOCOL_SCSI ||
++	    subprotocol != BSG_SUB_PROTOCOL_SCSI_CMD)
+ 		return -EINVAL;
+ 
+-	if (!cmd->request || cmd->request_len == 0)
++	if (!request || request_len == 0)
+ 		return -EINVAL;
+ 
+-	if (cmd->dout_xfer_len && cmd->din_xfer_len) {
++	if (dout_xfer_len && din_xfer_len) {
+ 		pr_warn_once("BIDI support in bsg has been removed.\n");
+ 		return -EOPNOTSUPP;
+ 	}
+ 
+-	if (cmd->dout_iovec_count > 0 || cmd->din_iovec_count > 0)
++	if (dout_iovec_count > 0 || din_iovec_count > 0)
+ 		return -EOPNOTSUPP;
+ 
+ 	if (issue_flags & IO_URING_F_NONBLOCK) {
+@@ -131,20 +143,20 @@ static int scsi_bsg_uring_cmd(struct request_queue *q, struct io_uring_cmd *iouc
+ 		gfp_mask = GFP_NOWAIT;
+ 	}
+ 
+-	req = scsi_alloc_request(q, cmd->dout_xfer_len ?
++	req = scsi_alloc_request(q, dout_xfer_len ?
+ 				 REQ_OP_DRV_OUT : REQ_OP_DRV_IN, blk_flags);
+ 	if (IS_ERR(req))
+ 		return PTR_ERR(req);
+ 
+ 	scmd = blk_mq_rq_to_pdu(req);
+-	if (cmd->request_len > sizeof(scmd->cmnd)) {
++	if (request_len > sizeof(scmd->cmnd)) {
+ 		ret = -EINVAL;
+ 		goto out_free_req;
+ 	}
+-	scmd->cmd_len = cmd->request_len;
++	scmd->cmd_len = request_len;
+ 	scmd->allowed = SG_DEFAULT_RETRIES;
+ 
+-	if (copy_from_user(scmd->cmnd, uptr64(cmd->request), cmd->request_len)) {
++	if (copy_from_user(scmd->cmnd, uptr64(request), request_len)) {
+ 		ret = -EFAULT;
+ 		goto out_free_req;
+ 	}
+@@ -154,12 +166,18 @@ static int scsi_bsg_uring_cmd(struct request_queue *q, struct io_uring_cmd *iouc
+ 		goto out_free_req;
+ 	}
+ 
+-	pdu->response_addr = cmd->response;
+-	scmd->sense_len = cmd->max_response_len ?
+-		min(cmd->max_response_len, SCSI_SENSE_BUFFERSIZE) : SCSI_SENSE_BUFFERSIZE;
++	pdu->response_addr = response;
++	scmd->sense_len = max_response_len ?
++		min(max_response_len, SCSI_SENSE_BUFFERSIZE) : SCSI_SENSE_BUFFERSIZE;
+ 
+-	if (cmd->dout_xfer_len || cmd->din_xfer_len) {
+-		ret = scsi_bsg_map_user_buffer(req, ioucmd, issue_flags, gfp_mask);
++	if (dout_xfer_len || din_xfer_len) {
++		bool is_write = dout_xfer_len > 0;
++		u64 buf_addr = is_write ? dout_xferp : din_xferp;
++		unsigned long buf_len = is_write ? dout_xfer_len : din_xfer_len;
++
++		ret = scsi_bsg_map_user_buffer(req, ioucmd, issue_flags,
++					       gfp_mask, is_write, buf_addr,
++					       buf_len);
+ 		if (ret)
+ 			goto out_free_req;
+ 		pdu->bio = req->bio;
+@@ -167,8 +185,8 @@ static int scsi_bsg_uring_cmd(struct request_queue *q, struct io_uring_cmd *iouc
+ 		pdu->bio = NULL;
+ 	}
+ 
+-	req->timeout = cmd->timeout_ms ?
+-		msecs_to_jiffies(cmd->timeout_ms) : BLK_DEFAULT_SG_TIMEOUT;
++	req->timeout = timeout_ms ?
++		msecs_to_jiffies(timeout_ms) : BLK_DEFAULT_SG_TIMEOUT;
+ 
+ 	req->end_io = scsi_bsg_uring_cmd_done;
+ 	req->end_io_data = ioucmd;
+-- 
+2.54.0
 
