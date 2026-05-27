@@ -1,221 +1,177 @@
-Return-Path: <stable+bounces-254484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254485-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +ProGSp8FmpbmwcAu9opvQ
-	(envelope-from <stable+bounces-254484-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 07:07:54 +0200
+	id SPdUEcJ8Fmp9mwcAu9opvQ
+	(envelope-from <stable+bounces-254485-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 07:10:26 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00BBE5DF548
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 07:07:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97DF25DF56D
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 07:10:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CEA2A3034DFB
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 05:07:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 017E63035AB5
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 05:10:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 239AF27BF7C;
-	Wed, 27 May 2026 05:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80D982F5491;
+	Wed, 27 May 2026 05:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="Oxs1ZmK1";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="Oxs1ZmK1"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="jmc3J/D2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B94150997
-	for <stable@vger.kernel.org>; Wed, 27 May 2026 05:07:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F1A27A91D
+	for <stable@vger.kernel.org>; Wed, 27 May 2026 05:10:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779858439; cv=none; b=lNWaB3f72pHnIqWdqWgISoAVD/oFJhXbdCoQ73I/F9bT1MbzEl+MzppWm3gntu/Wg3W8Tk7+56mttiaX0uVF3jr0WiU8GXVvl+a4qWmj68HpLIPhh94ALSniOSIeSQoXHy7qIe3zLFt7kO/3e2mxJqcFyBdecvZ10DHyZiofm9s=
+	t=1779858607; cv=none; b=SJQny1CKjRdCveV3vq51GyQ6RcPnM/AcfEPGClG0hZje0SAUZ7TRUXA+1axQtyfUjEzBPoRdFkl1nSLeW3PE4VaYPuiwvcAHQN6BZqgZFNE8rPpqvyGYHeWIrT37AVPgClwJll5lS5ccxGpCZpsNyEnGo0mcC7aDfrN4OjR9Wz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779858439; c=relaxed/simple;
-	bh=8P799xqu0DoZ4WPsdDu6gUqHDUAhZIi9ZIQ/ONxtyNQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R2Q5TVvBxxgTyp8t6hVKwU1c75OFKxOCNQo+/4zj5mIk7tEbkKSErCFEO+/IXk9IvMhg2ctguYFHnK7z585Yhbqucx1fY2DIeINXmuhg9N57JGAKG+7qb/+6NWQkQVgu0W+iv5vom9HZ7baWfTWz2OEvqH38EYGpfh8R4udeOnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=Oxs1ZmK1; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=Oxs1ZmK1; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 633E166D38;
-	Wed, 27 May 2026 05:07:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1779858431; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
+	s=arc-20240116; t=1779858607; c=relaxed/simple;
+	bh=VyOnXcpGm/inx51RutfGq0M/zxoQoXB4CG3Po2BqFqY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=A90IjSO4AMBPH4Ze2lz8cZWK1TSLueid27sccHx16RwmM7tuh66eo0UmTYs6DEZslEM5B9glTkGI+/2n2i2AqZk9Q2dZteIF0yFpfCmjrkxdajC9hcF2nGmWMhZDNmZOZhZJwO6dWhHLyeiDkqlJnoSSFbNQ8WjXnyItkPxc3R4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=jmc3J/D2; arc=none smtp.client-ip=91.218.175.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <4626d285-57ab-46c9-b75b-d56efe7417fc@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1779858593;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cqTxkhIMns6e4/Efe4/okuVsS4xNtEl7R1V1ajgzomg=;
-	b=Oxs1ZmK1JolTnfWRdGxamFIO+6OE6Cs3PZuiGlDTHUORAn5bOGXzokwCLxPXeHeg3dpnTU
-	3vs6JJlRsWcFlS9I76Ee3vUwxPQ21h5vKxar8///7PUEfjK5aPN7cVrbEpz6oxyDF3U6G7
-	vjf4PThbTrkVdj97dbB4p1UKAv+eD3o=
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=Oxs1ZmK1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1779858431; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cqTxkhIMns6e4/Efe4/okuVsS4xNtEl7R1V1ajgzomg=;
-	b=Oxs1ZmK1JolTnfWRdGxamFIO+6OE6Cs3PZuiGlDTHUORAn5bOGXzokwCLxPXeHeg3dpnTU
-	3vs6JJlRsWcFlS9I76Ee3vUwxPQ21h5vKxar8///7PUEfjK5aPN7cVrbEpz6oxyDF3U6G7
-	vjf4PThbTrkVdj97dbB4p1UKAv+eD3o=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 66CE45A653;
-	Wed, 27 May 2026 05:07:10 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id MIe7Cv57Fmo4AQAAD6G6ig
-	(envelope-from <wqu@suse.com>); Wed, 27 May 2026 05:07:10 +0000
-From: Qu Wenruo <wqu@suse.com>
-To: linux-btrfs@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH 2/2] btrfs: fix incorrect buffered IO fallback for append direct writes
-Date: Wed, 27 May 2026 14:36:45 +0930
-Message-ID: <54b90ef99f59d9a787e121779ad82b2c77d68466.1779846117.git.wqu@suse.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <cover.1779846117.git.wqu@suse.com>
-References: <cover.1779846117.git.wqu@suse.com>
+	bh=BQ0nSkTL5Xw0hG+M09Zs46qBW5dJlnpLwrgeyBbp8zM=;
+	b=jmc3J/D2MKDBzRQyVrJhMcKOg7DcjIo35waGrbNWqqUDD2uvYAnxUNieWRfUx8TCx3bJBA
+	1m832uYzh717Erdn6fTDUoI5kcfSRrxYuSoAaL51KfTOSV7eBydmu+UBixmLOXrrMA0Z3l
+	ulQAyHpkZ1tZijR56f0iGmj2mlRoF84=
+Date: Wed, 27 May 2026 13:09:44 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Subject: Re: [PATCH net v3] net: tls: use sync AEAD for sk_msg BPF sockets
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Christopher Lusk <clusk@northecho.dev>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Sabrina Dubroca <sd@queasysnail.net>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ netdev@vger.kernel.org, bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260526025154.60607-1-clusk@northecho.dev>
+ <d92bc603-e345-4dee-9ae9-6ad45e4e6642@linux.dev>
+ <20260526161101.691d4cb7@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <20260526161101.691d4cb7@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spam-Score: -3.01
+X-Migadu-Flow: FLOW_OUT
 X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[suse.com:+];
-	TAGGED_FROM(0.00)[bounces-254484-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254485-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[northecho.dev,gmail.com,queasysnail.net,davemloft.net,google.com,redhat.com,kernel.org,iogearbox.net,vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wqu@suse.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jiayuan.chen@linux.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.com:email,suse.com:mid,suse.com:dkim]
-X-Rspamd-Queue-Id: 00BBE5DF548
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:mid,linux.dev:dkim]
+X-Rspamd-Queue-Id: 97DF25DF56D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-[BUG]
-With the previous bug of short direct writes fixed, test case
-generic/362 (*) will still fail with the following error with nodatasum
-mount option:
 
- generic/362  0s ... _check_dmesg: something found in dmesg (see /home/adam/xfstests/results//generic/362.dmesg)
- - output mismatch (see /home/adam/xfstests/results//generic/362.out.bad)
-    --- tests/generic/362.out	2024-08-24 15:31:37.200000000 +0930
-    +++ /home/adam/xfstests/results//generic/362.out.bad	2026-05-27 10:13:09.072485767 +0930
-    @@ -1,2 +1,3 @@
-     QA output created by 362
-    +Wrong file size after first write, got 8192 expected 4096
-     Silence is golden
-    ...
+On 5/27/26 7:11 AM, Jakub Kicinski wrote:
+> On Tue, 26 May 2026 14:44:24 +0800 Jiayuan Chen wrote:
+>> If async_capable is set to 1, the zerocopy path in tls_sw_sendmsg() is
+>> skipped.
+>> Unfortunately ktls with bpf_msg_pop_data() does not work correctly under
+>> this
+>> copy path.
+>>
+>> tls_clone_plaintext_msg() aliases msg_pl onto msg_en's plaintext area
+>> (in-place encryption).
+>>
+>> BPF runs bpf_msg_pop_data(msg, 0, 2). This shifts msg_pl's SG entry
+>> forward by 2 bytes.
+>> The two SGs now point to the same page at different offsets. Physical
+>> memory overlaps but the start of
+>> address differ.
+> Ugh, do you mean that the memcopy path is broken? There are other
+> conditions under which we may fall into it than just !async_capable :(
+> Small send with MSG_MORE is probably the easiest?
+>
+> So we need to fix that one way or the other.
 
-*: If the test case has been executed before with default data checksum,
-the failure will not reproduce. Need the following fix to make it
-reliably reproducible:
-https://lore.kernel.org/linux-btrfs/20260526070055.60193-1-wqu@suse.com/
 
-[CAUSE]
-Btrfs disables page fault in during direct IO write, to avoid a specific
-deadlock that is only specific to btrfs.
+Yes, the memcopy path is broken, but only when combined with sockmap's 
+pop helper.
 
-So for the test case generic/362, it will make the direct IO to fail
-with -EFAULT, then we fallback to buffered IO.
 
-However at btrfs_dio_iomap_begin() -> btrfs_get_blocks_direct_write(),
-we have already updated the isize during extent allocation.
-And if we failed the direct IO, the isize is still the updated one.
+msg_pl and msg_en share the underlying page:
 
-So it means the buffered write will respect the IOCB_APPEND flag and
-write the new data at the update isize, resulting the above failure.
+                        msg_pl           msg_pl end
+                          ^                     ^
+                   |------|------------------|-------|
+                   | hdr |   plaintext     |  tag  |
+                   |------|------------------|-------|
+                   ^                                      ^
+                   |                                       |
+               msg_en                         msg_en end
 
-[FIX]
-Introduce btrfs_dio_data::updated_isize and btrfs_dio_data::old_isize,
-so that if btrfs_get_blocks_direct_write() enlarged the inode size, we
-can know the old inode size.
+Before encryption, sge->offset += prot->prepend_size is applied
+to msg_en so that the encryption's dst and src point to the same
+block of memory.
 
-Then if we got a short write, and btrfs_dio_data::updated_isize is set,
-then revert to the old isize, so the buffered fallback can write into
-the correct location.
+But once pop has run — i.e. msg_pl's start advances — the encryption's 
+dst and src
+are no longer the same.
 
-Cc: stable@vger.kernel.org # 6.1+
-Signed-off-by: Qu Wenruo <wqu@suse.com>
----
- fs/btrfs/direct-io.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+crypto_ctr_crypt():
+When dst and src have the same address, crypto saves the encryption 
+result into a
+temporary buffer and then writes it back to dst.
 
-diff --git a/fs/btrfs/direct-io.c b/fs/btrfs/direct-io.c
-index 598480b77002..24163a4bcfb0 100644
---- a/fs/btrfs/direct-io.c
-+++ b/fs/btrfs/direct-io.c
-@@ -15,10 +15,16 @@
- 
- struct btrfs_dio_data {
- 	ssize_t submitted;
-+	/*
-+	 * If we got a short dio write and @updated_isize is set,
-+	 * revert to the old isize.
-+	 */
-+	loff_t old_isize;
- 	struct extent_changeset *data_reserved;
- 	struct btrfs_ordered_extent *ordered;
- 	bool data_space_reserved;
- 	bool nocow_done;
-+	bool updated_isize;
- };
- 
- struct btrfs_dio_private {
-@@ -341,8 +347,11 @@ static int btrfs_get_blocks_direct_write(struct extent_map **map,
- 	 * Need to update the i_size under the extent lock so buffered
- 	 * readers will get the updated i_size when we unlock.
- 	 */
--	if (start + len > i_size_read(inode))
-+	if (start + len > i_size_read(inode)) {
-+		dio_data->old_isize = i_size_read(inode);
-+		dio_data->updated_isize = true;
- 		i_size_write(inode, start + len);
-+	}
- out:
- 	if (ret && space_reserved) {
- 		btrfs_delalloc_release_extents(BTRFS_I(inode), len);
-@@ -634,6 +643,10 @@ static int btrfs_dio_iomap_end(struct inode *inode, loff_t pos, loff_t length,
- 			 */
- 			btrfs_mark_ordered_extent_truncated(ordered, 0);
- 			btrfs_finish_ordered_extent(ordered, pos, length, true);
-+			if (dio_data->updated_isize) {
-+				i_size_write(inode, dio_data->old_isize);
-+				dio_data->updated_isize = false;
-+			}
- 		} else {
- 			btrfs_unlock_dio_extent(&BTRFS_I(inode)->io_tree, pos,
- 						pos + length - 1, NULL);
--- 
-2.54.0
+When dst and src have different addresses, the crypto module treats them 
+as two
 
+separate buffers and stops considering in-place mode.
+
+it's complicated to process pop/push + head/mid/tail...
+
+>> I think selecting a sync provider via mask = CRYPTO_ALG_ASYNC is
+>> sufficient to
+>> remove the -EINPROGRESS return path.
+>>
+>> May be time to remove skmsg from ktls? (disable by default first,
+>> re-enable via a new ktls module_param?)
+> Yes, we asked John F off-list to get his attention and I think there's
+> only a vague plan to start using kTLS + sockmap, no current user
+> (sorry if I misread / misremembered).
+>
+> module params aren't a great API. If we want to deprecate it let's just
+> remove the integration in net-next. You have my vote..
 
