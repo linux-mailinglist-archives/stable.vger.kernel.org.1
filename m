@@ -1,94 +1,85 @@
-Return-Path: <stable+bounces-254482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254483-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iJomKlV6FmpMmwcAu9opvQ
-	(envelope-from <stable+bounces-254482-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 07:00:05 +0200
+	id cNBgGBN8FmpbmwcAu9opvQ
+	(envelope-from <stable+bounces-254483-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 07:07:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 075CA5DF46C
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 07:00:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1E955DF538
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 07:07:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 195B13033D14
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 04:59:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DCCA13038B90
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 05:07:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8589930C17B;
-	Wed, 27 May 2026 04:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFB2C2F8BEE;
+	Wed, 27 May 2026 05:07:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="q9B7p3jv"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="kFigW/Xe";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="qvGW6gqs"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31FC72139C9
-	for <stable@vger.kernel.org>; Wed, 27 May 2026 04:59:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26EE2641CA
+	for <stable@vger.kernel.org>; Wed, 27 May 2026 05:07:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779857993; cv=none; b=oh+vXVb+DGAhTceR/lZQRg8H4OErsfo8SO8udJcXo++NRlSvdFPS8NjQYDM5/MYos4DnjzfagqRXf5TIYVsxgwpmPsdtaOA7xc8fo2Ewm4PWVFPXxVl9GuwOXkBYJSvYAouuztHCIRSjIPUX9w2OWXITeKnKfcJKZw3XPp0mzNw=
+	t=1779858433; cv=none; b=DGyLlM4vDjShX0q4hhQPEHb/xTl5B8MPuMW8DHl92WNY6FHxqhlhssmIwSRCJGbVQicTFDR9H4mtYS+wDj4SH1cOpuT3LD/L1V0hEYezdp4cnxgzKKu0dJx2SUf2O10AuyBHLLq45jb7tqJkmip1d+09khNMV/vxvk7+A1S+IEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779857993; c=relaxed/simple;
-	bh=Kju5otEf6nPTWjgWBYRNUKVfEHVQqt8XckJVxXXlHz4=;
+	s=arc-20240116; t=1779858433; c=relaxed/simple;
+	bh=Xe4vbAnF3TQ2SQqYaQOBnrNU9xy9WAIiCYzOa1CtLd8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BXk8xAqOSjr3x2OS1kGsiwvxi0DIkGsrU/+rIyG11eQkXmy1D8KvG7mQlCn64LFBOSx5uUj0o5iGitoZL0sXJTSE9ZGGp6HHb41FFhfaFmp1DpC0U6mM4X6i9ccBofOVh48DZAY+w2mVmV919X0kPdEXfkmgWJhEUgwh/flWUqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=q9B7p3jv; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-83f674f978fso4383720b3a.3
-        for <stable@vger.kernel.org>; Tue, 26 May 2026 21:59:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779857991; x=1780462791; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YXpYHFY5/4fZ9TlHgcvmSOefEwSix4sKdeWGotgPGHI=;
-        b=q9B7p3jvuAaohsNnOtGdh/RFvgENmwxDN2FFGPfTXGteuBFZDs/YhnI3mVWL1DiMcm
-         mrX7DK0MUrvqdikOUed444t0QCC6fOdASpDerWwiUA/B0lfB0iZSd2+gSxUGE0jQmRly
-         3hVo3Ylwg1AMTMXoGVKChmVIGSMz6dw8HrM6bE4QQ0ZbWgaOnyKVSXSqpCRdgdCXrxC1
-         Sbo0k1pPp75+0VpaC1ekxpe2NTk28tGIX/IQo6FQFe00xfmYPVnBBMwktPOw/PCopii2
-         VB2FXSPP4EJqoXGzrlUMjyJlUOepPtnhjc0FfroiViCQd/d+BU9hxIirIPpLWXR/NFAl
-         rKtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779857991; x=1780462791;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=YXpYHFY5/4fZ9TlHgcvmSOefEwSix4sKdeWGotgPGHI=;
-        b=CbCubiV+pFHNM5nIwPJGUo+J8mMW3XWwCzQyBBcAJOAdZkFgv3VAfr7GxMRw9oIF08
-         jNt930k7NM+vQSXHp+VO24luWWEYLp6gdtd4v5kiqZeZluE7hM7nosEiGL2F/ddmlCax
-         seu67QD1BGw616NinCinyLdzTq9zBlcALwMjpQmQl/xuUMiMkgaADIQ075uTeCy2bD+q
-         5ptJNEQdsnABubnZSQ3kMW8TeR9ziTzCmgSQLAxuYP+hPSmNA+nG45cYkcaprj2kgXTT
-         jvcqNu6mD+mAF6oEzQmCE/EqRrCvDFmmvpzSSA0MxUsh2CDvrg2nfBMh2ux2WzIIJLkH
-         XuKQ==
-X-Gm-Message-State: AOJu0Yx9bYhWAl7G6OTDWRl1Mj4xX2/Nw5Qa6GINuxMn8aTqNoNelY7L
-	ulZV93fCck+wLZRkGLLgor/2egURujX0kXgadskyisW/7dPMpCEU+No9
-X-Gm-Gg: Acq92OGhqvLVyDPQLLhPjvViyPWfEsSEp5ESN4lEVWIUf80ax3Qjlx7iuFaafqTZOJP
-	VkK//hid560WxsUBATaQ2wNeYNnc1oCpt7l+43QBkreeOfqLtfBWntnmLSnimmZERkV2wLuv7gO
-	hTYZEduJHZkuBvq15QRsXyhG+bu0YBH/xFDwxQwMNKIxHpzh0rJ98j6rKDwYboqiUfmjtf1Btde
-	ns4yA4Ycd6vbCTKA/C6adB1T0Ssnpd23gYm3alu0dIkfvngMneipLuuKinA4tYr+W6VfdoinwlI
-	GVBiI85Ax9UXjHrYgNEWwXT9rLc8SA3OLyHaGKsNba5/HHWRe7cC5sjl+WlbebQqG/Lb6Y85iG0
-	z9tUQiKSGwDO+agUQ1snrDh/yKzuUxNRql4mXkUfYl/NAjOsaSeLrjromuc3YbGebdibQ1ZfdQs
-	I7+Y30oxDYqpcx/pVNmtbmL8Wjdl+q9tA2AXTIAb8w6WW8FaNTBjGm30UySoARR+bBpPstlYCOX
-	BT66t4Oe8FqcqoVV7ZNOq8gGvXUvXV8GN/oL027xYxlYIZ0l8yNulUsq+oBRu7VU06DYiZjgkXg
-	XuDBbA59hUT2/3g=
-X-Received: by 2002:a05:6a00:194f:b0:837:acd7:a78 with SMTP id d2e1a72fcca58-8415f329ac5mr19848617b3a.16.1779857991571;
-        Tue, 26 May 2026 21:59:51 -0700 (PDT)
-Received: from codespaces-78f0a7.2t4prynt4dlezbzls5ze3dxsqg.rx.internal.cloudapp.net ([4.240.18.229])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-841d70bb19asm930900b3a.30.2026.05.26.21.59.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 May 2026 21:59:51 -0700 (PDT)
-From: Muhammad Bilal <meatuni001@gmail.com>
-To: linux-bluetooth@vger.kernel.org
-Cc: stable@vger.kernel.org,
-	marcel@holtmann.org,
-	luiz.dentz@gmail.com,
-	Muhammad Bilal <meatuni001@gmail.com>
-Subject: [PATCH 2/2] Bluetooth: ISO: serialize iso_sock_clear_timer with socket lock
-Date: Wed, 27 May 2026 04:59:18 +0000
-Message-ID: <20260527045919.39077-2-meatuni001@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260527045919.39077-1-meatuni001@gmail.com>
-References: <20260527045919.39077-1-meatuni001@gmail.com>
+	 MIME-Version; b=kdHfPBUsHwx9c4QLwxrpcrQ1UcpPD/ZjySJp8dT3VlDVFUL/a9RWfrltQSpO4seP3dQ+3Ag5JNnoNDNB1Sc1QbLK4W4JtlUpXnSez1QruuQo5y7iVpSqEOvxUeMPNId2uWuL77VcVf9n2hCtC1u2+n94A+V7am1e2zZL7o0T4IE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=kFigW/Xe; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=qvGW6gqs; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E8C0766D0E;
+	Wed, 27 May 2026 05:07:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1779858430; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+QpChJEjGUqI6fGAyhi/SABoy0dYNdvVY7zDkFrfHW0=;
+	b=kFigW/Xen0DTcuzmMqnJLT6eQsqUuZ/bxzmb7zrD+1YLoQ3LtAYiiPK8EHEeYwcnw+VHUu
+	T86Q6qbis8qwVunhWC8qht6q+sB3IsUmwSEurj9Ux3qgAfIr44RBP/SRkBMhvrrHL5rKog
+	S/LxkbrnJuSVa4G3qF7lj5DufnfLPQw=
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=qvGW6gqs
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1779858429; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+QpChJEjGUqI6fGAyhi/SABoy0dYNdvVY7zDkFrfHW0=;
+	b=qvGW6gqsMuX+YrRPO1sb/r23r8V3fm6gEhqTVa6Cm63jL4Ieub6kbylJP0ayzBos6P+eJb
+	Lc8F3Kr2PfSkCGykEBIYvq54t0F6UTXzT4ICFKN6YG47VdcSXuwSa4vpeGmO9FPYiIGYyj
+	qZIv8lRcfq1yP+9hCMRiK+YkS9Eu9bs=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EB6AF5A653;
+	Wed, 27 May 2026 05:07:08 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id eAkIK/x7Fmo4AQAAD6G6ig
+	(envelope-from <wqu@suse.com>); Wed, 27 May 2026 05:07:08 +0000
+From: Qu Wenruo <wqu@suse.com>
+To: linux-btrfs@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH 1/2] btrfs: fix false IO failure after falling back to buffered IO
+Date: Wed, 27 May 2026 14:36:44 +0930
+Message-ID: <b3393b113c45ac7bd7b2649576b5667395c22a1b.1779846117.git.wqu@suse.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <cover.1779846117.git.wqu@suse.com>
+References: <cover.1779846117.git.wqu@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -96,90 +87,201 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Score: -3.01
+X-Spam-Level: 
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[vger.kernel.org,holtmann.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-254482-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[suse.com:+];
+	TAGGED_FROM(0.00)[bounces-254483-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[meatuni001@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 075CA5DF46C
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[wqu@suse.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.com:email,suse.com:mid,suse.com:dkim]
+X-Rspamd-Queue-Id: D1E955DF538
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-iso_sock_close() calls iso_sock_clear_timer() before acquiring
-lock_sock(sk).
+[BUG]
+The test case generic/362 will fail with "nodatasum" mount option (*):
 
-iso_sock_clear_timer() reads iso_pi(sk)->conn twice without the
-socket lock held:
+ MOUNT_OPTIONS -- -o nodatasum /dev/mapper/test-scratch1 /mnt/scratch
 
-    if (!iso_pi(sk)->conn)
-        return;
-    cancel_delayed_work(&iso_pi(sk)->conn->timeout_work);
+ generic/362  0s ... - output mismatch (see /home/adam/xfstests/results//generic/362.out.bad)
+    --- tests/generic/362.out	2024-08-24 15:31:37.200000000 +0930
+    +++ /home/adam/xfstests/results//generic/362.out.bad	2026-05-27 10:21:17.574771567 +0930
+    @@ -1,2 +1,3 @@
+     QA output created by 362
+    +First write failed: Input/output error
+     Silence is golden
+    ...
 
-Concurrently, iso_conn_del() executes under lock_sock(sk) and calls
-iso_chan_del(), which sets iso_pi(sk)->conn to NULL and may result in
-the final reference to the connection being dropped:
+*: If the test case has been executed before with default data checksum,
+the failure will not reproduce. Need the following fix to make it
+reliably reproducible:
+https://lore.kernel.org/linux-btrfs/20260526070055.60193-1-wqu@suse.com/
 
-    CPU0                         CPU1
-    ----                         ----
-    iso_sock_clear_timer()
-      if (conn != NULL) ...      lock_sock(sk)
-                                   iso_chan_del()
-                                   iso_pi(sk)->conn = NULL
-      cancel_delayed_work(conn)  /* NULL deref or UAF */
+[CAUSE]
+Btrfs direct write disable page fault of the input buffer, this is to
+avoid a deadlock specific to btrfs.
 
-iso_pi(sk)->conn is not stable across the unlock window, causing a
-NULL pointer dereference or use-after-free.
+So for the test case generic/362, it uses an anonymous page as input
+buffer. And since the page is not yet faulted in, the direct IO will
+fail with -EFAULT, causing us to go through the following call chain:
 
-Serialize iso_sock_clear_timer() with the socket lock by moving it
-inside lock_sock()/release_sock(), matching the pattern used in
-iso_conn_del() and all other call sites.
+ btrfs_direct_write()
+ |- btrfs_dio_write()
+ |  |- btrfs_dio_iomap_end()
+ |     |- btrfs_finish_ordered_extent(uptodate = false);
+ |        |- can_finish_ordered_extent()
+ |           |- btrfs_mark_ordered_extent_error()
+ |              |- mapping_set_error()
+ |                 Now the address space is marked error.
+ |
+ |- iomap_dio_complete()
+ |  The dio bio is empty, nothing submitted.
+ |
+ |- Fallback to buffered
+ |  And the buffered write finished without error
+ |
+ |- filemap_fdatawait_range()
+    |- filemap_check_errors()
+       The previous error is recorded, thus an error is returned
 
-Fixes: ccf74f2390d60a2f9a75ef496d2564abb478f46a ("Bluetooth: Add BTPROTO_ISO socket type")
-Cc: stable@vger.kernel.org
-Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
+However the buffered write is properly submitted and finished, the error
+is from the previous short dio write.
+
+[FIX]
+When a short dio write happened, we shouldn't mark it as an error, but
+treat it like a truncated write.
+
+Extract a helper, btrfs_mark_ordered_extent_truncated(), and utilize
+that helper to mark the direct IO ordered extent as truncated, so it
+won't cause failure for the later buffered fallback.
+
+Cc: stable@vger.kernel.org # 6.1+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
 ---
- net/bluetooth/iso.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/direct-io.c    | 18 +++++++++++++-----
+ fs/btrfs/inode.c        |  6 +-----
+ fs/btrfs/ordered-data.c | 12 ++++++++++++
+ fs/btrfs/ordered-data.h |  2 ++
+ 4 files changed, 28 insertions(+), 10 deletions(-)
 
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index f03b7fa5dccc..876649556d3c 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -864,8 +864,8 @@ static void __iso_sock_close(struct sock *sk)
- /* Must be called on unlocked socket. */
- static void iso_sock_close(struct sock *sk)
+diff --git a/fs/btrfs/direct-io.c b/fs/btrfs/direct-io.c
+index 57167d56dc72..598480b77002 100644
+--- a/fs/btrfs/direct-io.c
++++ b/fs/btrfs/direct-io.c
+@@ -610,6 +610,7 @@ static int btrfs_dio_iomap_end(struct inode *inode, loff_t pos, loff_t length,
  {
--	iso_sock_clear_timer(sk);
- 	lock_sock(sk);
-+	iso_sock_clear_timer(sk);
- 	__iso_sock_close(sk);
- 	release_sock(sk);
- 	iso_sock_kill(sk);
+ 	struct iomap_iter *iter = container_of(iomap, struct iomap_iter, iomap);
+ 	struct btrfs_dio_data *dio_data = iter->private;
++	struct btrfs_ordered_extent *ordered = dio_data->ordered;
+ 	size_t submitted = dio_data->submitted;
+ 	const bool write = !!(flags & IOMAP_WRITE);
+ 	int ret = 0;
+@@ -624,16 +625,23 @@ static int btrfs_dio_iomap_end(struct inode *inode, loff_t pos, loff_t length,
+ 	if (submitted < length) {
+ 		pos += submitted;
+ 		length -= submitted;
+-		if (write)
+-			btrfs_finish_ordered_extent(dio_data->ordered,
+-						    pos, length, false);
+-		else
++		if (write) {
++			/*
++			 * We got a short write, will fallback to buffered IO
++			 * for the whole range.
++			 * Set the truncate length to 0, so that no real file
++			 * extent item will be created.
++			 */
++			btrfs_mark_ordered_extent_truncated(ordered, 0);
++			btrfs_finish_ordered_extent(ordered, pos, length, true);
++		} else {
+ 			btrfs_unlock_dio_extent(&BTRFS_I(inode)->io_tree, pos,
+ 						pos + length - 1, NULL);
++		}
+ 		ret = -ENOTBLK;
+ 	}
+ 	if (write) {
+-		btrfs_put_ordered_extent(dio_data->ordered);
++		btrfs_put_ordered_extent(ordered);
+ 		dio_data->ordered = NULL;
+ 	}
+ 
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 973a89301baa..2c0131452754 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -7590,11 +7590,7 @@ static void btrfs_invalidate_folio(struct folio *folio, size_t offset,
+ 					       EXTENT_LOCKED | EXTENT_DO_ACCOUNTING |
+ 					       EXTENT_DEFRAG, &cached_state);
+ 
+-		spin_lock(&inode->ordered_tree_lock);
+-		set_bit(BTRFS_ORDERED_TRUNCATED, &ordered->flags);
+-		ordered->truncated_len = min(ordered->truncated_len,
+-					     cur - ordered->file_offset);
+-		spin_unlock(&inode->ordered_tree_lock);
++		btrfs_mark_ordered_extent_truncated(ordered, cur - ordered->file_offset);
+ 
+ 		/*
+ 		 * If the ordered extent has finished, we're safe to delete all
+diff --git a/fs/btrfs/ordered-data.c b/fs/btrfs/ordered-data.c
+index f5f77c33cf59..b32d4eabe0ab 100644
+--- a/fs/btrfs/ordered-data.c
++++ b/fs/btrfs/ordered-data.c
+@@ -358,6 +358,18 @@ void btrfs_mark_ordered_extent_error(struct btrfs_ordered_extent *ordered)
+ 		mapping_set_error(ordered->inode->vfs_inode.i_mapping, -EIO);
+ }
+ 
++void btrfs_mark_ordered_extent_truncated(struct btrfs_ordered_extent *ordered,
++					 u64 truncate_len)
++{
++	struct btrfs_inode *inode = ordered->inode;
++
++	ASSERT(truncate_len <= ordered->num_bytes);
++	spin_lock(&inode->ordered_tree_lock);
++	set_bit(BTRFS_ORDERED_TRUNCATED, &ordered->flags);
++	ordered->truncated_len = min(ordered->truncated_len, truncate_len);
++	spin_unlock(&inode->ordered_tree_lock);
++}
++
+ static void finish_ordered_fn(struct btrfs_work *work)
+ {
+ 	struct btrfs_ordered_extent *ordered_extent;
+diff --git a/fs/btrfs/ordered-data.h b/fs/btrfs/ordered-data.h
+index 03e12380a2fd..8d5d5ba1e02f 100644
+--- a/fs/btrfs/ordered-data.h
++++ b/fs/btrfs/ordered-data.h
+@@ -226,6 +226,8 @@ bool btrfs_try_lock_ordered_range(struct btrfs_inode *inode, u64 start, u64 end,
+ struct btrfs_ordered_extent *btrfs_split_ordered_extent(
+ 			struct btrfs_ordered_extent *ordered, u64 len);
+ void btrfs_mark_ordered_extent_error(struct btrfs_ordered_extent *ordered);
++void btrfs_mark_ordered_extent_truncated(struct btrfs_ordered_extent *ordered,
++					 u64 truncate_len);
+ int __init ordered_data_init(void);
+ void __cold ordered_data_exit(void);
+ 
 -- 
-2.53.0
+2.54.0
 
 
