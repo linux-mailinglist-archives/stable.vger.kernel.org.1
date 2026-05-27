@@ -1,192 +1,237 @@
-Return-Path: <stable+bounces-254566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254567-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +LqsCe3eFmphugcAu9opvQ
-	(envelope-from <stable+bounces-254566-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 14:09:17 +0200
+	id AGozOgnfFmo9uQcAu9opvQ
+	(envelope-from <stable+bounces-254567-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 14:09:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24D105E3DBD
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 14:09:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AA385E3DE5
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 14:09:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 90F653033D6D
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 12:07:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CBB0E301C5BA
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 12:07:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F494014B2;
-	Wed, 27 May 2026 12:06:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B95302742;
+	Wed, 27 May 2026 12:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ffRiJDq9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="boQjcn7J"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD902F7F12;
-	Wed, 27 May 2026 12:06:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2816C2E22B5
+	for <stable@vger.kernel.org>; Wed, 27 May 2026 12:06:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779883573; cv=none; b=n7b4Y9bEYm0Huvl7lDuQ7PbWHeplGyOHwSeRGca9REfUcI9DyeKmkSWRczpVjv2ZEIWcMz/7mmonD2Myu+IMY2xAswnHiPBH26Cge0TnhcPgtEWbaIcXwPpYkrrr8QC16b7d2IxGT8PV6RqfFiX/AlT1iNzVsF3nqb0dugaaDAk=
+	t=1779883595; cv=none; b=ng4vtfNXFoP8TUyZKpMu138DHh/uE7g0P8KUTaneUrJ8wnoUZcGshCnvfwSCSssJX4OxfuDWUiVCmlxv4hhl+d3ot+BDiExTs9ykiES8ZFfJ5XtpSbKM5PlGBhwwm0KguxtK5iMHufpLCBTGrYdLrDuO+ngUGteR2WLMmYKbGxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779883573; c=relaxed/simple;
-	bh=aF0h8kQ9uMPETYt1a8ckP41P49YvE8igulEOCImHDsA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d9vnzTFPrsp/fIz7ZHbSv0yCxfZ9eO/lJjJX+KjnqVeJv1FUmZElpYQeL7MUxSYFUdIPLnf8CtLKlJkMgjDNYJRQuXD2pBrBYZ4ehJUr36uMBufc/ep18xaHv9niHMVtZLxMmdI0XCGN08zNo2JR6GvFdG4KRVYU+Op/B36/QUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ffRiJDq9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D9911F00A3D;
-	Wed, 27 May 2026 12:06:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779883572;
-	bh=vBlUsD0hHthgF360A8DY/Gk0Y0irC42OCpMGO8T7fdw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ffRiJDq9USTau7HZ9R44yi6HQVLXKBoFzxkogQnZDXP11cFkbe95QlxAApZXrfD7y
-	 O/Y+G/qjRSh49sl1CwnU1Q+VnoV+DSmAYkBN6OgCyMRP1vrdQqhyLIcY3haPcMCHFD
-	 u2fWN/qBIMs8dKLxCvATgEtSeOZCkqfGhs6gQZbu9c0uIZ/q8VG0XKyj7N9WtERxwM
-	 uFzuixwGiRfzRSs0+rpjvNXC58Yg7LeySctP74WzzI1jG1IxWPU2aKVd/fDFFuiDUw
-	 P50FsjahUGlmVmifdXZQN4lBscDD3nvifreHxT1s0tapOK+ROPcPvBUBCYuL3bVrbV
-	 Ggxv4C4Kro25w==
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id EABFCF40085;
-	Wed, 27 May 2026 08:06:10 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Wed, 27 May 2026 08:06:10 -0400
-X-ME-Sender: <xms:Mt4WaopDBNbE0BZ8mMWc_T9SkBWGzOC5fLAZiz8NxoAzvzl4eGDz7A>
-    <xme:Mt4WapXDY8LBtF_Mu4yDTNAlawJVgQct5d_Z952l5CODxF8FDwCvc3q1hEgLVQWzr
-    F-taWZ54sGC-ftkvWs-0frML3DK_QwSnnuvFPr5AWamqqRQxGTHV3I>
-X-ME-Received: <xmr:Mt4Wal7uD5fRCI8TCLH6QJoKTfw-YdWc0CpxJDSJlNq3WxEREjjNcuivYXL1sA>
-X-ME-Proxy-Cause: dmFkZTGqAdtnwb61wYan5C4OJsoWLkQNYl2+q5bhbZ8696FiUgmZzm685bBBUbynyEgwk9
-    LCDvc8MDP6PRosY/0LosT3Qdb0dk7uwQzgHaQellK3fcQWXXqX07suu6SzIMUDibK4jWkW
-    iOAnXeDPHCbZrTopbRqvNqcS8TJoPKroKLjoTh0vQcgBEa67F2kTYv2fZUhOC9BS3QxCde
-    qrmrfeOswU9Av2XVPIeZlRLWQ/r8fxk5RD4wN5ziq7iwXH+fBtu+wn+B2xVy9yCrzPuhAm
-    W46wVvBf0oF9Jh2+ecSuLnfJtZOU6eoHRXFan8ENohXk0lRn/Dg/NXlu0lNK26nvI9MPnx
-    8gWQGEu+TZWo/OqSOyKq745PLDp4WCL9eoQ9MQFXxiXM9Jwk+Lqg+YnTB5jBafYvdYPVwF
-    MmcYwBysIbqLmXUhUm/gKifsk3D6WXOaTpug9HwGXLTEzdMPjlbnCEPMl9b/lNcYgxW71w
-    njgasKrJlhA2+kgPMjZCJ7xB7qja+uORE6dsQqiR5hoO2j5uaDzxrb1AylfB7WCiL/3TF+
-    +IGUtgTG561UuC0I6LVD22DefHkJiA9zIV/5pFThYNsyBuE+LxMYutYOxTIjsEL/itGYOz
-    cfIJJkWroTCRv33XJv4e0vCFvcc6vUIicjrWTuckm03ED9OYVjIc0z2LgVbA
-X-ME-Proxy: <xmx:Mt4WanCUjp5ZDFoJH0foOjV9iCu7QXtXgDiku0-fMrRUPiisNAWyuw>
-    <xmx:Mt4WapeSltybY3Xl1mjHLm6VfJHpIKlWXY2hTgPdKHZ4xjYjU_q8Kg>
-    <xmx:Mt4Waouw5Qt9nSk0FbWfvjyBDkqK4U6dYz1YCvHuF518rmxPbeX3EQ>
-    <xmx:Mt4WagLmMtrSTUGKdnrBFFX6J-sQi9w7ZeEwaO75mNw8nSoqDsVfUw>
-    <xmx:Mt4WaqZt6XRc1GZgTaOxGif9RXTzVghvEmlJAGbusZpsl3LKpYDxdsDp>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 27 May 2026 08:06:09 -0400 (EDT)
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-To: Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org
-Cc: "H . Peter Anvin" <hpa@zytor.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org,
-	stable@vger.kernel.org,
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [PATCH v3 2/2] x86/tdx: Fix zero-extension for 32-bit port I/O
-Date: Wed, 27 May 2026 13:05:44 +0100
-Message-ID: <20260527120544.2903923-3-kas@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260527120544.2903923-1-kas@kernel.org>
-References: <20260527120544.2903923-1-kas@kernel.org>
+	s=arc-20240116; t=1779883595; c=relaxed/simple;
+	bh=xwkvGRP8dQlARoWRF+Sa7/LCxSW285YuWbnv++nskRs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WVxDQcwqfY+QZFQ771MRryt6ogm7OuTC7+o8lSB0zuLJx/YQW12tXfTPfubxz8RQlNjDkPp0iGbhdOJhnyVA9q2znpdQ5PwXYxEtBjR/HFueOv0rE49JLMzsjndP1bHZ/PGfG/2KNkMCFxhmjrS1ZtvFOQP2awU+B0BhXuzFzAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=boQjcn7J; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-49042aeeb75so67881765e9.1
+        for <stable@vger.kernel.org>; Wed, 27 May 2026 05:06:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779883592; x=1780488392; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=j6sN7PF4/XgSZweTvTw4bskuyexxv8jnFzme5Pn1z5s=;
+        b=boQjcn7JID6+E9l+Eas/zMQhdstfthsyJg92KwUAy/RYEaBRhBavQN12PyOTJ/9wp9
+         oZhN7aJG3BThTGfgzuv2RXyEu1wDddQ2BbrRAyhhHgqtWNbHGLud4Xk0z7w5C2HSQ3DH
+         BsT+xeA1vArT0xhmHj20lmxlMVYcqHysQKY+SIGFBC3g0CJNjCAeKYI4qicpwZzud3PS
+         S0nR/51gjSsLGhqPOspno2vjyd2pq61u+CSIDzs+hcG9wX9OaCX9Zxp6yXwdBqZYWbzU
+         bBjCV0RfT3OLhypA5SgKaEHCHSZzBEEDlv47K4L+GegBlNtzYB66qDuZGrIWHh4eLbfv
+         vLaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779883592; x=1780488392;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=j6sN7PF4/XgSZweTvTw4bskuyexxv8jnFzme5Pn1z5s=;
+        b=gKM+UUXm/vDhnmtYAAKb/9y6tnIVIgSCT0dPdDsEB1TzvO/sCgwxYAQ82E6Ibrg9Yk
+         6i+vey0xbvR2NeMDkjeRcg9cLohcntCYoMwgQnxKtV7p/KL+qW+3IYgwn/AsWqGGYjMB
+         33S4uM0ltwl/xFC/EBgj2TW9gh6Wsx+hcPcFGI+MojjlNjfeAaYiFfvTo7DaMP+PpiZo
+         nhEsZ/J//14d7PeooBKWaNw9NdyXwD2gfk5ME8jMP3QoxbKXpF0/h5dxNz/OMLWMIelU
+         +ARLgeC97dTaGZ6MUDXOsUbC7oG6JtmZmTnNpI0BPqsPYGD6ScpZZsIWFcuaTXIuOuWR
+         2wUw==
+X-Forwarded-Encrypted: i=1; AFNElJ8al2a3AGhDHfRgdbDvaThfLETp/GvO/ZQvMW4rtnOmvtCp4p21H6ncX5hqfNGlKVjn7zkKnHU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0sFcfN+/j1A0BwMPyprZUXkmVv9qJT6xXZStTVVgm5620NRr7
+	3cpRIdgDBuIgxLWB+4o3lUiq+jq4E94bPj72tovyy2bfS6CKIRf5jA11
+X-Gm-Gg: Acq92OHHXiJwg0DmSiC0dqoFGDb15miEHSEK7er20gmhAsVqd/6IWIDEQ9n/1ZRDf1d
+	pN/Arp6I0+9hnzK8ZSlGpGid74Vu5F9SSUd3hVhlmeoptC0gi1NflomV4vaA1GpqxDEdHQqUq7W
+	cbRnpMi8I8m1GOUKQRtVI/iuxBf6LWf+baFI8AEjdG9r0d4rTYPbexT5iollmvtMd9wXbBiTzDw
+	XSsxGj8QEcE72Ovul741Xsin6TePSfBXey95c6K2gRmWt9VQ+B2z4tYSQjUzstsJsucn4ob8CJX
+	6l18xqB9R5zjWM71vrwvIXa1GkM8mYXVMvE/x34Z3Zxk0PoSK4N4hXXJ4VkR+/vGSjyp5BBpwSt
+	hfXoHnWV26xaaz1eQfuWSnTn8cyAP8yVoVE+Oi3CA+rlUKpk8jYkBrRhrApiMeAs30iyXHU90eB
+	nDH98MpVQjCCiTJv1vOECFHxlpPPCLNeR8EJBp0+bRlFPrliCTRshJ6CmbOevGsD5wLDhTwQ==
+X-Received: by 2002:a05:600c:4f91:b0:490:6e12:5418 with SMTP id 5b1f17b1804b1-4906e12552emr162389275e9.23.1779883592073;
+        Wed, 27 May 2026 05:06:32 -0700 (PDT)
+Received: from eldamar.lan (c-82-192-247-196.customer.ggaweb.ch. [82.192.247.196])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490809b7619sm15849285e9.25.2026.05.27.05.06.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 May 2026 05:06:30 -0700 (PDT)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id CD777BE2EE7; Wed, 27 May 2026 14:06:29 +0200 (CEST)
+Date: Wed, 27 May 2026 14:06:29 +0200
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: manizada <manizada@pm.me>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: Please apply 3da1fdf4efbc to stable
+Message-ID: <ahbeRcvu5qN55gaE@eldamar.lan>
+References: <HWDVTGhsU6ON7YOl4ipsBa-4aBO4UMs2EdpPPhEyYoOWmVqbo__aVWaSuEIqescKSIxPJalwVPc2BQax8VsPmuZUXyF14lBaCyyrnu2_40g=@pm.me>
+ <2026052742-discharge-smudge-6453@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+In-Reply-To: <2026052742-discharge-smudge-6453@gregkh>
+X-Spamd-Result: default: False [-1.56 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[debian.org : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[zytor.com,intel.com,linux.intel.com,google.com,gmail.com,vger.kernel.org,lists.linux.dev,kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-254566-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kas@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-254567-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[carnil@debian.org,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 24D105E3DBD
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,pm.me:email]
+X-Rspamd-Queue-Id: 1AA385E3DE5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-According to x86 architecture rules, 32-bit operations zero-extend the
-result to 64 bits. The current implementation of handle_in() only masks
-the lower 32 bits, which preserves the upper 32 bits of RAX when a
-32-bit port IN instruction is emulated.
+Hi Greg,
 
-Update handle_in() to zero out the entire RAX register when the I/O size
-is 4 bytes to ensure correct zero-extension. For smaller sizes (1 or 2
-bytes), continue to preserve the unaffected upper bits.
+Not Asmin here, but saw the following.
 
-Fixes: 03149948832a ("x86/tdx: Port I/O: Add runtime hypercalls")
-Reported-by: Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>
-Link: https://lore.kernel.org/all/CAKw_Dz96rfSQc6Rn+9QBcUFHhmkK+9zu+P=bxowfZwxrATCBRg@mail.gmail.com/
-Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Cc: stable@vger.kernel.org
+On Wed, May 27, 2026 at 10:08:03AM +0200, Greg KH wrote:
+> On Tue, May 26, 2026 at 05:08:43PM +0000, manizada wrote:
+> > Hi stable team,
+> > 
+> > Please apply the following upstream commit to the supported stable trees:
+> > 
+> >   3da1fdf4efbc490041eb4f836bf596201203f8f2
+> >   smb: client: reject userspace cifs.spnego descriptions
+> > 
+> > Reason:
+> >   cifs.spnego descriptions contain authority-bearing fields consumed by
+> >   cifs.upcall. This commit prevents userspace from creating trusted
+> >   cifs.spnego descriptions via request_key(2)/add_key(2).
+> > 
+> > Requested branches:
+> >   Please apply to all currently supported stable/LTS branches where it is
+> >   applicable, including 7.0.y, 6.18.y, 6.12.y, 6.6.y, 6.1.y, 5.15.y, and
+> >   5.10.y.
+> 
+> This does not apply to the 5.15.y or 5.10.y tree, please provide a
+> backported version that can apply there.
+
+There was 38c8a9a52082 ("smb: move client and server files to common
+directory fs/smb") moving the files around (and which got as well
+backported to the 6.1.y series). So the following should do the trick.
+
+Regards,
+Salvatore
+
+From f89a8b4dfcdb7967b2f306b5629f7e5b92f74a26 Mon Sep 17 00:00:00 2001
+From: Asim Viladi Oglu Manizada <manizada@pm.me>
+Date: Sat, 16 May 2026 21:15:39 +0000
+Subject: [PATCH] smb: client: reject userspace cifs.spnego descriptions
+
+commit 3da1fdf4efbc490041eb4f836bf596201203f8f2 upstream.
+
+cifs.spnego key descriptions contain authority-bearing fields such as
+pid, uid, creduid, and upcall_target that cifs.upcall treats as
+kernel-originating inputs. However, userspace can also create keys of
+this type through request_key(2) or add_key(2), allowing those fields to
+be supplied without CIFS origin.
+
+Only accept cifs.spnego descriptions while CIFS is using its private
+spnego_cred to request the key.
+
+Fixes: f1d662a7d5e5 ("[CIFS] Add upcall files for cifs to use spnego/kerberos")
+Assisted-by: avom-custom-harness:gpt-5.5-qwen3.6-mod-mix
+Reviewed-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Asim Viladi Oglu Manizada <manizada@pm.me>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[Salvatore Bonaccorso: Apply changes to fs/cifs/cifs_spnego.c instead of
+fs/smb/client/cifs_spnego.c before 38c8a9a52082 ("smb: move client and server
+files to common directory fs/smb") in v6.4-rc1 and backported to v6.1.36]
+Signed-off-by: Salvatore Bonaccorso <carnil@debian.org>
 ---
- arch/x86/coco/tdx/tdx.c | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ fs/cifs/cifs_spnego.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 65119362f9a2..58feca419326 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -703,8 +703,25 @@ static bool handle_in(struct pt_regs *regs, int size, int port)
- 	 */
- 	success = !__tdx_hypercall(&args);
+diff --git a/fs/cifs/cifs_spnego.c b/fs/cifs/cifs_spnego.c
+index 4f9d08ac9dde..5b7614451033 100644
+--- a/fs/cifs/cifs_spnego.c
++++ b/fs/cifs/cifs_spnego.c
+@@ -20,6 +20,7 @@
+  */
  
--	/* Update part of the register affected by the emulated instruction */
--	regs->ax &= ~mask;
+ #include <linux/list.h>
++#include <linux/cred.h>
+ #include <linux/slab.h>
+ #include <linux/string.h>
+ #include <keys/user-type.h>
+@@ -58,12 +59,27 @@ cifs_spnego_key_destroy(struct key *key)
+ 	kfree(key->payload.data[0]);
+ }
+ 
++static int
++cifs_spnego_key_vet_description(const char *description)
++{
 +	/*
-+	 * IN writes the result into a sub-register of RAX. Only the
-+	 * 32-bit form zero-extends; the smaller forms leave the upper
-+	 * bits untouched:
-+	 *
-+	 *   insn  dest  size  bits written     bits preserved
-+	 *   inb   AL    1     RAX[ 7: 0]       RAX[63: 8]
-+	 *   inw   AX    2     RAX[15: 0]       RAX[63:16]
-+	 *   inl   EAX   4     RAX[63: 0]       (none, zero-extended)
-+	 *
-+	 * 'mask' only covers the low 'size' bytes, which is exactly the
-+	 * range affected for size 1 and 2. For size 4 the write also
-+	 * clears RAX[63:32], so widen the clear-mask.
++	 * cifs.spnego descriptions are authority-bearing inputs to cifs.upcall.
++	 * They are only valid when produced by CIFS while using the private
++	 * spnego_cred installed below.  Do not let userspace create this type
++	 * of key through request_key(2)/add_key(2), since the helper treats
++	 * pid/uid/creduid/upcall_target as kernel-originating fields.
 +	 */
-+	if (size == 4)
-+		regs->ax = 0;
-+	else
-+		regs->ax &= ~mask;
-+
- 	if (success)
- 		regs->ax |= args.r11 & mask;
++	if (current_cred() != spnego_cred)
++		return -EPERM;
++	return 0;
++}
  
+ /*
+  * keytype for CIFS spnego keys
+  */
+ struct key_type cifs_spnego_key_type = {
+ 	.name		= "cifs.spnego",
++	.vet_description = cifs_spnego_key_vet_description,
+ 	.instantiate	= cifs_spnego_key_instantiate,
+ 	.destroy	= cifs_spnego_key_destroy,
+ 	.describe	= user_describe,
 -- 
-2.54.0
-
+2.53.0
 
