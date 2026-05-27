@@ -1,176 +1,167 @@
-Return-Path: <stable+bounces-254625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254626-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +ASNL0sYF2pR4QcAu9opvQ
-	(envelope-from <stable+bounces-254625-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 18:14:03 +0200
+	id 4PbQOakXF2px3wcAu9opvQ
+	(envelope-from <stable+bounces-254626-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 18:11:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B6BB5E78D6
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 18:14:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CF045E7823
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 18:11:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 119E93040AB6
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 16:06:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B633430BAD34
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 16:07:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF2163DFC78;
-	Wed, 27 May 2026 16:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A790A3EF646;
+	Wed, 27 May 2026 16:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b="O1aMiL1o"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="kdLsC7lG";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="3JsilUno";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="kdLsC7lG";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="3JsilUno"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0172DC76F
-	for <stable@vger.kernel.org>; Wed, 27 May 2026 16:06:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33DEF3E3C7A
+	for <stable@vger.kernel.org>; Wed, 27 May 2026 16:07:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779898011; cv=none; b=SYrjWJpT4WntCw0iHCcrx0QOjsEzGnY+b4r4vVK1Fr8+Swc69stbmK62BQg/rOYaolhhqRZCypwM0jC0gAl6u3ZXe0y9apnX23mgQelVPHEuaT3vreSMnVEm2P9D9pmuTSdJsiKH7Joggy276TjdQUyG7AGrROBb4lmz3X/173M=
+	t=1779898050; cv=none; b=LC9zQ0L1nVbJbRnT9PNtAf0lDQWgLq87w7BJCbpooSXL3RqL1m5XxuI0SmXvEBa8aE5zY2e1z+ScD2PPlvSSFxYr1PNRfhcoy2LKx/VfUkWHG34WHjF3puFRMlx25QCmlWjBMFGQmndiWrNAvtec9rGpGIGJ6/YVduKg6Qk7v/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779898011; c=relaxed/simple;
-	bh=fwkxSqx7ty2JQSbgYGjXCJheNp4aXVJfNCMAJtiBUtE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XnoWxVLdMLicCBhbiCyyJQ+hJ0Ie3EmBDwD7cFmhB6D4Q2xOLzouvxRgOlyOFIz5eSLGWTettd/26wOU5Z5SKy9NsmL5FmSvAeuVtn2VIbzQk/CqhbOa18Z8GDxFhGjn9C8jv0syLTAKhv1erujTz8spaAXVvsG94OutI2r8/hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b=O1aMiL1o; arc=none smtp.client-ip=209.85.210.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7df05fc49e5so11699419a34.3
-        for <stable@vger.kernel.org>; Wed, 27 May 2026 09:06:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1779898008; x=1780502808; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DDewevQlsNX9Nf5an4WdPkqFyUO5oYIAKU8piRx5pII=;
-        b=O1aMiL1oIFen2XoIfw6SCJALa8Ot1OyXMqMDB/oU7qEd7xqcpJcmD2Obpa7Xhf18Wb
-         Tv/hwDlI7f60fJZz3LA5WSK4ha8sHBqy0Kfvy69FTonSDHkqHImBe3jY7r5kUGVV69g6
-         DhgWZzngjuvHdU+DNARaOlOBOOyKC+yJ6iCMDZXnpaxkUD82iSBKl0+T6BjDJfWzZiQg
-         6B27azfpAuiutURWisO1EMMtvonRee30OHl5YFyTxvXi+wBdj4rE79r/FP+yG15cxFY8
-         kseLG06/4whit0X1Jj2asavVTSHHe2CqrCILfrcIu8BMz8zsF0kxznceQwGoyP4Yuqbv
-         9JUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779898008; x=1780502808;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DDewevQlsNX9Nf5an4WdPkqFyUO5oYIAKU8piRx5pII=;
-        b=kInl5d9Msl9xRhhWUfv9KlMDkWKTe/sXEVHRGyOqnXPAGP79SrM0KpfSNpBleZbdXV
-         79JK4NbbOnl4P2W/zG/LNTgC0yxhAo7JoR08e7xdyAE7saeDF+wdvWpEOG3wTIsqr+TT
-         c+bI0nqj/T/80HAwQ/MWK7TqEZMoB9LaI6Dw7DQM8IE1EDu/8+mSlMznPoX48t+8+uUW
-         unglJpPPethYHYqe0OyGqxOG5tTJIyprsiAUkP+jtrIaNZvF70opqN6yVSNoBLfMZULK
-         Ol+5cfRuH8mzPHwEIXm6Pz3jTOUPMf6bpwzui4HdnZugCPLk0fvNsXoGsvbZz3pg6Qkc
-         Vr6A==
-X-Forwarded-Encrypted: i=1; AFNElJ9GcC/diCdT24rIG2f43qsTSWf3i+8keuxQdIlQa7GYgtFtYDdyI0hPONSjnFWrJePWlnn29HM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdCMzxuyki/37Yj4t8UpKaKCgv8hZ8TijavirncG8h33JgE0wo
-	7Evcmt5l6AebRdM1RD9isQxwFOs5pVoIRZWAsbGFHtdyigy8vyCk6JBZfgsLen1CVkM=
-X-Gm-Gg: Acq92OH/GXzwG1u+ezBUCX+YCeM7hTLJZcgRXgX/KzSJdp42zt8p6IvqYmemENx1Nmv
-	X1lrViATYZiRXuVbz0pCqA3HhRT80kPrLoCzzczmNyId4L8hMf0rLwyxrwaIuEl9kPpkHjQPNPg
-	L+I/rF9mL+rDT0aZgSNZldi7E5pkDbWsJg4qYA/u7L+dUyb44S+QZlUGq3b6yk5Reov0bRySvDU
-	Ub6lyOTTXf39uFeo3R85CMGJIhmhBaBBQuk2ZibZnrEo7rTFXIDhLFuoukdUmCIuBoUQESbYxwm
-	G9WJp/Ig98ZpxMc355e7HEv4OcfVjDI2+N4rTp3HEZVdv9olyf3A/WZjuJ3cLnMkhvYqYEe3fad
-	QDFVs58CIKbEK7XdwXEdR949HGKPdDb+TM7E75UTCNHrC2Sv+iroSn5VSpHuWwq0Si1dXnYx5UK
-	1Dh5BgvM3I8vG5OFs4mTc7dnukVQYIIJ/rxsch/ljjlKW7Adzuxo1wLF6GvsE/TA3iOFlrw7oVl
-	2e7QT+fE4dSdO1voDE=
-X-Received: by 2002:a05:6830:6682:b0:7dc:dd58:50a1 with SMTP id 46e09a7af769-7e5fee5ef73mr15600883a34.15.1779898007969;
-        Wed, 27 May 2026 09:06:47 -0700 (PDT)
-Received: from [192.168.1.102] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7e606459bf7sm11606383a34.1.2026.05.27.09.06.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 27 May 2026 09:06:45 -0700 (PDT)
-Message-ID: <ee931505-64a2-411d-8607-3db8912b70c4@kernel.dk>
-Date: Wed, 27 May 2026 10:06:44 -0600
+	s=arc-20240116; t=1779898050; c=relaxed/simple;
+	bh=8UaDU8tyq6fJreIIDw7WaUsoLWd4eersEx+DqAjXry0=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HEW36wnvlCzRORkUx5ycg8x49viBO36u9I0i68M/Y0Mwby/RAkFg3052CUY8SVzrgfKNV4HIYB/UbstO4vmX30sM8qKeJIgyMKkEYOJ4w/KBfaH7FAXRENyaJAeAhnBsqoaUVuyFIdHexn8KKIFDkjdjPDLMGPEi5Ub+g1lpy74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=kdLsC7lG; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=3JsilUno; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=kdLsC7lG; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=3JsilUno; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 63FCA6ABA1;
+	Wed, 27 May 2026 16:07:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1779898046; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7CstPdIeDAGKSLVe4RiHjZcwVi7sRkfjmCSJZnv3MS8=;
+	b=kdLsC7lGaahiPCECVRXhd1Ddg5G24B/hhlXynF9KyBq6Xnlhougn9PqFmssm97fvfnJExH
+	dZiwkICfPRl0eBEH9bom1S44IVZ0kDRW0haVnsQuUB/ZU0vAD/KLSkvqiHVcoNUG2Pok9G
+	eYuNRtwG57MMNmCZsx8QLLjPWVsJK6c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1779898046;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7CstPdIeDAGKSLVe4RiHjZcwVi7sRkfjmCSJZnv3MS8=;
+	b=3JsilUnoVF/G8ra+AArOMi+Ef5rip21MIhMZ0z8/FHof4efNIfwkmm3FD+rdMIN1bEMArr
+	C/IuBFWIn7UCLcBA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1779898046; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7CstPdIeDAGKSLVe4RiHjZcwVi7sRkfjmCSJZnv3MS8=;
+	b=kdLsC7lGaahiPCECVRXhd1Ddg5G24B/hhlXynF9KyBq6Xnlhougn9PqFmssm97fvfnJExH
+	dZiwkICfPRl0eBEH9bom1S44IVZ0kDRW0haVnsQuUB/ZU0vAD/KLSkvqiHVcoNUG2Pok9G
+	eYuNRtwG57MMNmCZsx8QLLjPWVsJK6c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1779898046;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7CstPdIeDAGKSLVe4RiHjZcwVi7sRkfjmCSJZnv3MS8=;
+	b=3JsilUnoVF/G8ra+AArOMi+Ef5rip21MIhMZ0z8/FHof4efNIfwkmm3FD+rdMIN1bEMArr
+	C/IuBFWIn7UCLcBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1849A5A902;
+	Wed, 27 May 2026 16:07:26 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id rE3ABL4WF2r4SAAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Wed, 27 May 2026 16:07:26 +0000
+Date: Wed, 27 May 2026 18:07:25 +0200
+Message-ID: <87o6i0vnsy.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Huacai Chen <chenhuacai@loongson.cn>
+Cc: Takashi Iwai <tiwai@suse.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Xuerui Wang <kernel@xen0n.name>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	stable@vger.kernel.org,
+	Baoqi Zhang <zhangbaoqi@loongson.cn>,
+	Haowei Zheng <zhenghaowei@loongson.cn>
+Subject: Re: [PATCH V2] ALSA: hda/hdmi: Use 'AC_PINSENSE_ELDV' to detect pinsense for Loongson
+In-Reply-To: <20260527140841.3407183-1-chenhuacai@loongson.cn>
+References: <20260527140841.3407183-1-chenhuacai@loongson.cn>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] scsi: bsg: copy uring_cmd payload to prevent double-fetch
- from shared SQE
-To: Rahul Chandelkar <rc@rexion.ai>,
- "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
- "Martin K . Petersen" <martin.petersen@oracle.com>,
- FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>
-Cc: linux-scsi@vger.kernel.org, linux-block@vger.kernel.org,
- io-uring@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260527105931.3950913-1-rc@rexion.ai>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <20260527105931.3950913-1-rc@rexion.ai>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Flag: NO
+X-Spam-Score: -3.30
+X-Spam-Level: 
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel-dk.20251104.gappssmtp.com:s=20251104];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel-dk.20251104.gappssmtp.com:+];
-	TAGGED_FROM(0.00)[bounces-254625-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[kernel.dk];
+	URIBL_MULTI_FAIL(0.00)[loongson.cn:server fail,suse.de:server fail,tor.lore.kernel.org:server fail];
 	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	TAGGED_FROM(0.00)[bounces-254626-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,kernel.dk:mid,kernel-dk.20251104.gappssmtp.com:dkim]
-X-Rspamd-Queue-Id: 1B6BB5E78D6
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.de:mid,suse.de:dkim]
+X-Rspamd-Queue-Id: 6CF045E7823
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 5/27/26 4:59 AM, Rahul Chandelkar wrote:
-> scsi_bsg_uring_cmd() and scsi_bsg_map_user_buffer() read bsg_uring_cmd
-> fields directly from the shared mmap'd io_uring submission ring via
-> io_uring_sqe128_cmd().  On the inline execution path, io_uring has not
-> yet copied the SQE to kernel memory, so a concurrent userspace thread
-> can modify fields between reads.
+On Wed, 27 May 2026 16:08:41 +0200,
+Huacai Chen wrote:
 > 
-> cmd->request_len is read for the bounds check, for the cmd_len
-> assignment, and for the copy_from_user length.  A racing thread can
-> change request_len between the bounds check (passes with <= 32) and
-> copy_from_user (uses the enlarged value), overflowing the 32-byte
-> scmd->cmnd[] buffer into subsequent struct scsi_cmnd fields.
+> Due to a hardware defect, for Loongson PCI HDMI devices with a reversion
+> ID of 2, the pin sense status must be determined via the ELD.
 > 
-> scsi_bsg_map_user_buffer() independently re-derives its cmd pointer
-> from the same shared SQE, re-reading dout_xfer_len, din_xfer_len,
-> dout_xferp, and din_xferp, enabling direction confusion and buffer
-> length races.
+> Add a codec flag, eld_jack_detect, to indicate this case, and do special
+> handlings in read_pin_sense().
 > 
-> Copy struct bsg_uring_cmd to a stack-local variable before use in both
-> functions.  The pointer variable 'cmd' is redirected to the local copy
-> so the rest of each function is unchanged.
-> 
-> Tested with KASAN on QEMU (virtio-scsi, 2 vCPUs).  Without this fix,
-> a two-thread race produces:
-> 
->   BUG: KASAN: wild-memory-access in scsi_queue_rq+0x4a3/0x58a0
->   Write of size 96 at addr dead000000001000 by task poc/67
->   Call Trace:
->    kasan_report+0xce/0x100
->    __asan_memset+0x23/0x50
->    scsi_queue_rq+0x4a3/0x58a0
->    scsi_bsg_uring_cmd+0x942/0x1570
->    io_uring_cmd+0x2f6/0x950
->    io_issue_sqe+0xe5/0x22d0
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Baoqi Zhang <zhangbaoqi@loongson.cn>
+> Signed-off-by: Haowei Zheng <zhenghaowei@loongson.cn>
+> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 
-I don't think this is the right way to fix it, ->sqe should've been
-stable upfront if this ends up happening. Can you share your poc with
-me? Your trace has been trimmed down way too much to be useful.
+Applied to for-next branch now.  Thanks.
 
--- 
-Jens Axboe
+
+Takashi
 
