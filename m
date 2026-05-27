@@ -1,208 +1,163 @@
-Return-Path: <stable+bounces-254601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254602-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kA69F7n/FmoJ0QcAu9opvQ
-	(envelope-from <stable+bounces-254601-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 16:29:13 +0200
+	id 4EFSGBcEF2qz0wcAu9opvQ
+	(envelope-from <stable+bounces-254602-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 16:47:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDEA75E5E06
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 16:29:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8FE05E629B
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 16:47:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CDDE93076798
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 14:25:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AFEAC3045DD3
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 14:43:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35E8840F8F4;
-	Wed, 27 May 2026 14:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D772041B366;
+	Wed, 27 May 2026 14:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="e91tYMgM"
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="gXt3IGMt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-10628.protonmail.ch (mail-10628.protonmail.ch [79.135.106.28])
+Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E45DC2580CF;
-	Wed, 27 May 2026 14:25:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE0E3C9895;
+	Wed, 27 May 2026 14:42:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779891939; cv=none; b=dEI6iqE8jFNGPhkcBKwmU6sJgHeYg4uywFk5UnkREwjpSCV5w8Od8LdX7a/lxYhfEJsFKYfioiiqQCY9/uBLVFX0T51S0Rkuy/jpSUiNSUkZ5CJXeyITioIJ9QBlxY3k6E+9lF1XzlULC4m+cx+wq5KAN/Lv95kvNat3kgYovIk=
+	t=1779892982; cv=none; b=aB38Pf79N4xJjijPiKk9+GrESAB/rEfkcEqekhe5wrZ7RUJbgkzd87oD99j4twh5fOf4Kg77KVRZ95uJD7X4vZvzn783drYXXRpZSCdri0HjaFpw4XPZyd+9IrEhBs2AgL5g9VkK2hvBFBgr3wtjtR2smM7fJjzVYiSRQw39odM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779891939; c=relaxed/simple;
-	bh=IlgOu6xrPBhYrYI23sQNAMauo+PA/NjtRQd/dG2lkTs=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=NC2byxSQNm4mtbRIrYpywpdmXM36cZhfjmmK6Dk1KS+hn5OAOeabm32JLVGOkLcfW7K6+3K7TjLjZgx8zY5pS2s+NPBhpXvK7nr3MCbOpmVLVvpWGoc8EYokGBG693HO6SBS/ebfwXvhNtUPNXwPymREGMox80dTY/6wGI64b+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=e91tYMgM; arc=none smtp.client-ip=79.135.106.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1779891926; x=1780151126;
-	bh=GyV73PTYgpNpcT481vcJDYNK3HIZIfi/Inhd+Iv0V6w=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=e91tYMgMaAKxQKH3RZV3KLy7feofz6Hj51cNEe4x3XsctcJpj/S/TDGt2M8ZZ0+sr
-	 LyMzxsbclOChgAGQ0OsT1+PeQLoPhRpHS9BD6dqKR77zFYqeY8W/YtrIexiLGwzaZX
-	 WIOc82nsjojUi/yC5eOS0jADp1190Vjp9Z+dmSdPwuD+ntoF9CvkCIG84WD7skOWVv
-	 iGPiftjIYNVziuLaExAe4ZuAfAoK7gAVtaxYTsIgZyj1PeXY0GFqvYGLI1eYvhlz29
-	 TgjrppCD72xc2wLGLpyyjd9NqniwDeuW+/QVeJ+FwxKXteCEtQSIwvc8R+BUgA/3iK
-	 kN15ZAMsxXnrg==
-Date: Wed, 27 May 2026 14:25:22 +0000
-To: "stable@vger.kernel.org" <stable@vger.kernel.org>
-From: Mike Karcic <mikekarcic@protonmail.com>
-Cc: "regressions@lists.linux.dev" <regressions@lists.linux.dev>, "linux-sound@vger.kernel.org" <linux-sound@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "tiwai@suse.de" <tiwai@suse.de>, "sean@starlabs.systems" <sean@starlabs.systems>
-Subject: [REGRESSION] Speaker pop/chirp on Meteor Lake ALC287 (17aa:231e) -- 6.12.73 to 6.12.85
-Message-ID: <O6pYAi7yf23du9ivLsL0QqrnTmodj2lDTL7Wviv7I_nhjVtvllO7Y5Ban0TeTqrastb1RWhJtlkqrM3quLMWSriai-YjjGy312MTcEhxyWs=@protonmail.com>
-Feedback-ID: 22946815:user:proton
-X-Pm-Message-ID: ac78335ef8d0016c6d3ca9ce8e876c7b91f605c8
+	s=arc-20240116; t=1779892982; c=relaxed/simple;
+	bh=HBl4uHO9ggkkENKCSIs+KBLQnxZVryB8Q5QaWMbpIek=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jltotwlKx7jxAnD1PGwCJD3xwjpwAnX1MH7pehAbA6Ncca77TFekBUddep6a844LjzShFzuEedUmdjk/coP8rDsXpTFhp0hotwi2+0JhAiuCOJXPkkg0VbHucheuVPVUjtVWhh3xN3U8VSBbN5cX9e3yyTxGr35YcV5oiOLIG1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=gXt3IGMt; arc=none smtp.client-ip=101.71.155.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+Received: from DESKTOP-4LEIBBM.localdomain (unknown [223.112.146.162])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 400cc03f3;
+	Wed, 27 May 2026 22:37:37 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+To: axboe@kernel.dk,
+	io-uring@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	gregkh@linuxfoundation.org,
+	jianhao.xu@seu.edu.cn,
+	Runyu Xiao <runyu.xiao@seu.edu.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] io_uring/io-wq: re-check IO_WQ_BIT_EXIT for each linked work item
+Date: Wed, 27 May 2026 22:37:26 +0800
+Message-Id: <20260527143726.1272269-1-runyu.xiao@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9e69de9b2703a1kunmfbe58bea5de0
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDTR4fVh9CGRoaHkJMQ0sZGFYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUhVSkpJVUpPTVVKTUlZV1kWGg8SFR0UWUFZT0tIVUpLSU
+	hOQ0NVSktLVUtZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=gXt3IGMtZ/I2In3dMLGOF/oWueetYTfvEuqz2AjFmUKExgaYslQWqaZ4xN5Vt/SFYAFeYszMimO9cdfYIn2JoJCnFS9rPF0cuYN+DqUOM/9b5wjOTAx3K8My0LndOsumdNYBRVacNUm0bHFOl4nJlnFLdbX0ePZDdFkhRLEeXX8=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=UsxRPjYaQmtiWihHVrdRAhAvQF4W2fWtziaBrLxv9Rk=;
+	h=date:mime-version:subject:message-id:from;
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[protonmail.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[protonmail.com:s=protonmail3];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254601-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_EQ_ADDR_ALL(0.00)[];
-	FREEMAIL_FROM(0.00)[protonmail.com];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254602-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[seu.edu.cn:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mikekarcic@protonmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[protonmail.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,protonmail.com:mid,protonmail.com:dkim]
-X-Rspamd-Queue-Id: EDEA75E5E06
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: B8FE05E629B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Speaker pop/chirp regression on a Lenovo ThinkPad with Meteor Lake and
-Realtek ALC287 (subsystem ID 17aa:231e). The chirp occurs on speaker
-power state transitions when audio starts or stops. It is not present
-on kernel 6.12.73 and is present on 6.12.85. A desktop with ALC897
-(subsystem ID 1f660202) on kernel 6.19.14 is unaffected, so this is
-codec/fixup-specific.
+Commit bdf0bf73006e ("io_uring/io-wq: check IO_WQ_BIT_EXIT inside work
+run loop") fixed the obvious case where io_worker_handle_work() took one
+exit-bit snapshot before draining pending work, but the fix stops one
+level too early.
 
-Tested on the same LMDE (Debian 13) installation with multiple kernels
-selectable from GRUB. All userspace, firmware, and configuration are
-identical between tests. Cold boot between kernel switches is required,
-as warm reboot can carry codec register state forward. The kernel is
-not tainted on any tested version.
+io_worker_handle_work() now re-checks IO_WQ_BIT_EXIT in its outer work
+run loop, yet it still snapshots that bit once before processing a
+whole dependent linked-work chain. If io_wq_exit_start() sets
+IO_WQ_BIT_EXIT after the first linked item has started, the remaining
+linked items can still reuse stale do_kill = false, skip
+IO_WQ_WORK_CANCEL, and continue running after exit has begun.
 
-Bisection results (Debian package versions):
-  6.12.48  -- no chirp
-  6.12.73  -- no chirp
-  6.12.85  -- chirp present
-  6.12.86  -- chirp present
-  6.12.90  -- chirp present
+That means the previous fix did not fully eliminate the exit-latency
+problem; it only narrowed it to linked chains. A long or slow linked
+chain can still keep io-wq exit waiting for work that should already
+have been canceled.
 
-Also broken: 6.19.14-101.fc44.x86_64 (Fedora/Aurora 44)
+The issue was found on Linux v6.18.21 by our static-analysis tool,
+which flagged linked-work loops that snapshot shared exit state
+outside per-item cancel decisions, and was then confirmed by manual
+auditing of io_worker_handle_work(). It was later reproduced with a
+QEMU no-device validation selftest that preserved the same contract:
+a three-node unbound linked chain, an exit actor setting
+IO_WQ_BIT_EXIT after work1, and slow post-exit linked work. With a
+3000 ms delay injected into each post-exit item, the buggy path
+spends about 6066 ms after exit running work2/work3, while the fixed
+path cancels both and finishes in about 2 ms.
 
-The regression window (6.12.73 to 6.12.85) includes two commits
-targeting speaker pop on the Star Labs StarFighter (ALC233, SSID
-7017:2014) that touch patch_realtek.c:
+Re-check test_bit(IO_WQ_BIT_EXIT, &wq->state) for each iteration of the
+dependent-link loop, right before deciding whether to cancel the
+current work item. That closes the remaining stale-snapshot window and
+prevents linked post-exit work from stretching shutdown latency.
 
-  1cb3c20688fc ("ALSA: hda/realtek: Fix speaker pop on Star Labs StarFighte=
-r")
-  Fixes commit ("ALSA: hda/realtek: Sequence GPIO2 on Star Labs StarFighter=
-")
+Build-tested by compiling io_uring/io-wq.o on x86_64 with the local
+.config. No special hardware was required.
 
-These are quirk-gated to SSID 7017:2014 and should not run on
-17aa:231e, but they are the most prominent sound changes in the
-regression window. The actual culprit may be a different commit
-in the 6.12.74-6.12.85 range. I was unable to narrow further as
-Debian does not publish intermediate point-release packages.
+Fixes: bdf0bf73006e ("io_uring/io-wq: check IO_WQ_BIT_EXIT inside work run loop")
+Cc: stable@vger.kernel.org
+Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+---
+ io_uring/io-wq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I can build and test vanilla kernels for a proper bisection if
-guided, and I can test proposed fixes.
-
-Hardware:
-  Lenovo ThinkPad, Meteor Lake
-  Codec: Realtek ALC287
-  Subsystem ID: 17aa:231e
-  PCI: 0000:00:1f.3
-  Machine driver: skl_hda_dsp_generic
-  Codec fixup: "ALC287: picked fixup for PCI SSID 17aa:231e"
-
-Unaffected hardware (same 6.19.14 kernel, no chirp):
-  Desktop, Realtek ALC897, Subsystem ID: 1f660202
-
-Controlled variables (identical across all tested 6.12 kernels):
-  SOF firmware: 2.12.0.1 (firmware-sof-signed 2025.01-1)
-  Topology: intel/sof-ace-tplg/sof-hda-generic-2ch.tplg
-  Topology ABI: 3:29:1 (Kernel ABI: 3:23:1 on all tested)
-  ALSA UCM: alsa-ucm-conf 1.2.14-1
-  PipeWire: 1.4.2, WirePlumber: 0.5.8
-  power_save: 10, hda_model: (null)
-  Desktop: KDE Plasma 6 (Wayland)
-
-Eliminated causes:
-  - Topology files in sof-ipc4-tplg/ and sof-ace-tplg/ are
-    byte-identical (confirmed via binary diff). Path irrelevant.
-  - SOF firmware version (same 2.12.0.1 on all tested kernels).
-  - Topology ABI mismatch (3:29:1 vs 3:23:1 present on working
-    kernel too).
-  - power_save (10 on all kernels).
-  - PipeWire/WirePlumber (identical versions on all kernels).
-  - Desktop environment (KDE on all; a KDE install triggered a
-    kernel update which was the actual cause of the regression
-    appearing).
-
-dmesg (6.12.48, working):
-  sof-audio-pci-intel-mtl 0000:00:1f.3: Firmware paths/files for ipc type 1=
-:
-  sof-audio-pci-intel-mtl 0000:00:1f.3:  Firmware file:     intel/sof-ipc4/=
-mtl/sof-mtl.ri
-  sof-audio-pci-intel-mtl 0000:00:1f.3:  Firmware lib path: intel/sof-ipc4-=
-lib/mtl
-  sof-audio-pci-intel-mtl 0000:00:1f.3:  Topology file:     intel/sof-ace-t=
-plg/sof-hda-generic-2ch.tplg
-  sof-audio-pci-intel-mtl 0000:00:1f.3: Booted firmware version: 2.12.0.1
-  sof-audio-pci-intel-mtl 0000:00:1f.3: Topology: ABI 3:29:1 Kernel ABI 3:2=
-3:1
-  snd_hda_codec_alc269 ehdaudio0D0: ALC287: picked fixup for PCI SSID 17aa:=
-231e
-  snd_hda_codec_alc269 ehdaudio0D0: autoconfig for ALC287: line_outs=3D1 (0=
-x17/0x0/0x0/0x0/0x0) type:speaker
-
-dmesg (6.19.14, affected):
-  sof-audio-pci-intel-mtl 0000:00:1f.3: Digital mics found on Skylake+ plat=
-form, using SOF driver
-  sof-audio-pci-intel-mtl 0000:00:1f.3: DSP detected with PCI class/subclas=
-s/prog-if 0x040380
-  sof-audio-pci-intel-mtl 0000:00:1f.3: hda codecs found, mask 5
-  sof-audio-pci-intel-mtl 0000:00:1f.3: using HDA machine driver skl_hda_ds=
-p_generic now
-  sof-audio-pci-intel-mtl 0000:00:1f.3: Firmware paths/files for ipc type 1=
-:
-  sof-audio-pci-intel-mtl 0000:00:1f.3:  Firmware file:     intel/sof-ipc4/=
-mtl/sof-mtl.ri
-  sof-audio-pci-intel-mtl 0000:00:1f.3:  Firmware lib path: intel/sof-ipc4-=
-lib/mtl
-  sof-audio-pci-intel-mtl 0000:00:1f.3:  Topology file:     intel/sof-ipc4-=
-tplg/sof-hda-generic-2ch.tplg
-  sof-audio-pci-intel-mtl 0000:00:1f.3: Booted firmware version: 2.14.1.1
-  sof-audio-pci-intel-mtl 0000:00:1f.3: Topology: ABI 3:29:1 Kernel ABI 3:2=
-3:1
-  snd_hda_codec_alc269 ehdaudio0D0: ALC287: picked fixup for PCI SSID 17aa:=
-231e
-  snd_hda_codec_alc269 ehdaudio0D0: autoconfig for ALC287: line_outs=3D1 (0=
-x17/0x0/0x0/0x0/0x0) type:speaker
-
-Note: The kernel is not tainted on any tested version.
+diff --git a/io_uring/io-wq.c b/io_uring/io-wq.c
+index 49a9c914b4e9..28d81398ebee 100644
+--- a/io_uring/io-wq.c
++++ b/io_uring/io-wq.c
+@@ -601,7 +601,6 @@ static void io_worker_handle_work(struct io_wq_acct *acct,
+ 	struct io_wq *wq = worker->wq;
+ 
+ 	do {
+-		bool do_kill = test_bit(IO_WQ_BIT_EXIT, &wq->state);
+ 		struct io_wq_work *work;
+ 
+ 		/*
+@@ -637,6 +636,7 @@ static void io_worker_handle_work(struct io_wq_acct *acct,
+ 
+ 		/* handle a whole dependent link */
+ 		do {
++			bool do_kill = test_bit(IO_WQ_BIT_EXIT, &wq->state);
+ 			struct io_wq_work *next_hashed, *linked;
+ 			unsigned int work_flags = atomic_read(&work->flags);
+ 			unsigned int hash = __io_wq_is_hashed(work_flags)
+-- 
+2.34.1
 
