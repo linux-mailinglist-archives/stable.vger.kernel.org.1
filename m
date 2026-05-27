@@ -1,53 +1,60 @@
-Return-Path: <stable+bounces-254602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254610-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4EFSGBcEF2qz0wcAu9opvQ
-	(envelope-from <stable+bounces-254602-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 16:47:51 +0200
+	id QPbGG74GF2qn1gcAu9opvQ
+	(envelope-from <stable+bounces-254610-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 16:59:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8FE05E629B
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 16:47:50 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C4AB5E661F
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 16:59:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AFEAC3045DD3
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 14:43:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 10DC1307D676
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 14:51:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D772041B366;
-	Wed, 27 May 2026 14:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD2B428821;
+	Wed, 27 May 2026 14:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="gXt3IGMt"
+	dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b="NUC5Kp21"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
+Received: from xry111.site (xry111.site [89.208.246.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE0E3C9895;
-	Wed, 27 May 2026 14:42:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB1C4266A4
+	for <stable@vger.kernel.org>; Wed, 27 May 2026 14:51:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.208.246.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779892982; cv=none; b=aB38Pf79N4xJjijPiKk9+GrESAB/rEfkcEqekhe5wrZ7RUJbgkzd87oD99j4twh5fOf4Kg77KVRZ95uJD7X4vZvzn783drYXXRpZSCdri0HjaFpw4XPZyd+9IrEhBs2AgL5g9VkK2hvBFBgr3wtjtR2smM7fJjzVYiSRQw39odM=
+	t=1779893467; cv=none; b=Z5uJ9s6orJMwLL81Nii9zBwUyhyM9nt0h4uIeMngRBqIqteA1MGC++dxPW5bbQcekicOGxhwfhGKuliYJK1fxOVOT1vuyJmUkaV0pUm4Z5m5aQQeYGvRCbg4bGzabr2GEgIgKe+hup7YDV2WbDqbQZipPAquimlgfWAY1lKxzC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779892982; c=relaxed/simple;
-	bh=HBl4uHO9ggkkENKCSIs+KBLQnxZVryB8Q5QaWMbpIek=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jltotwlKx7jxAnD1PGwCJD3xwjpwAnX1MH7pehAbA6Ncca77TFekBUddep6a844LjzShFzuEedUmdjk/coP8rDsXpTFhp0hotwi2+0JhAiuCOJXPkkg0VbHucheuVPVUjtVWhh3xN3U8VSBbN5cX9e3yyTxGr35YcV5oiOLIG1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=gXt3IGMt; arc=none smtp.client-ip=101.71.155.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
-Received: from DESKTOP-4LEIBBM.localdomain (unknown [223.112.146.162])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 400cc03f3;
-	Wed, 27 May 2026 22:37:37 +0800 (GMT+08:00)
-From: Runyu Xiao <runyu.xiao@seu.edu.cn>
-To: axboe@kernel.dk,
-	io-uring@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	gregkh@linuxfoundation.org,
-	jianhao.xu@seu.edu.cn,
-	Runyu Xiao <runyu.xiao@seu.edu.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] io_uring/io-wq: re-check IO_WQ_BIT_EXIT for each linked work item
-Date: Wed, 27 May 2026 22:37:26 +0800
-Message-Id: <20260527143726.1272269-1-runyu.xiao@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1779893467; c=relaxed/simple;
+	bh=XNyPsb+TFiYQDwDp3iTF0vhl3mMW0BkoN5XmTN5npQw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QNXUYsR2uMWHZvpE7oWB0uA+uO4cqQ3AaXzTj8B5TZK3fdUab8S/N6srJVlziHTDaaR8pjOrpO40Qk3ZAzS0EOw0VPLGFIu4S/z2xgr7GUHBdWgUm9UV0150P253mvJtQh//+iUI5d2z4ES5p8pma91h/qdc0L3QzJh/38FFzHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site; spf=pass smtp.mailfrom=xry111.site; dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b=NUC5Kp21; arc=none smtp.client-ip=89.208.246.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xry111.site
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xry111.site;
+	s=default; t=1779893105;
+	bh=R4e4bdB71D+rq0MJ2lvVyJlXVRDcaBHIexttwo3qq34=;
+	h=From:To:Cc:Subject:Date:From;
+	b=NUC5Kp21I/KuQUswq4kDO14XalWMmoxqCreq87QbBYxkBhpHfORVgCCBDETkT/L3q
+	 MlBmFD+RLxhukaymxD5uxg6bDgjIiwTt0L5IzfWNrLm8vrJFM4B3VZR8jMFK1AkPna
+	 KTqsiMI6C1nx45v1h14AXZFH6DnJkw1Y6lDpl/Pk=
+Received: from stargazer (unknown [IPv6:2409:8a4c:e1b:e231:5a6e:b99e:242d:222b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384)
+	(Client did not present a certificate)
+	(Authenticated sender: xry111@xry111.site)
+	by xry111.site (Postfix) with ESMTPSA id BCAEB6597E;
+	Wed, 27 May 2026 10:45:03 -0400 (EDT)
+From: Xi Ruoyao <xry111@xry111.site>
+To: stable@vger.kernel.org
+Cc: amd-gfx@lists.freedesktop.org,
+	Xi Ruoyao <xry111@xry111.site>
+Subject: [PATCH v7.0.y 0/8] drm/amd: Backport FPU Guard Move from DML to DC
+Date: Wed, 27 May 2026 22:44:20 +0800
+Message-ID: <20260527144428.1095001-1-xry111@xry111.site>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,109 +62,106 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9e69de9b2703a1kunmfbe58bea5de0
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDTR4fVh9CGRoaHkJMQ0sZGFYeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUhVSkpJVUpPTVVKTUlZV1kWGg8SFR0UWUFZT0tIVUpLSU
-	hOQ0NVSktLVUtZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=gXt3IGMtZ/I2In3dMLGOF/oWueetYTfvEuqz2AjFmUKExgaYslQWqaZ4xN5Vt/SFYAFeYszMimO9cdfYIn2JoJCnFS9rPF0cuYN+DqUOM/9b5wjOTAx3K8My0LndOsumdNYBRVacNUm0bHFOl4nJlnFLdbX0ePZDdFkhRLEeXX8=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=UsxRPjYaQmtiWihHVrdRAhAvQF4W2fWtziaBrLxv9Rk=;
-	h=date:mime-version:subject:message-id:from;
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
+	DMARC_POLICY_ALLOW(-0.50)[xry111.site,reject];
+	R_DKIM_ALLOW(-0.20)[xry111.site:s=default];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_THREE(0.00)[3];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254610-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254602-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[seu.edu.cn:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[xry111@xry111.site,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[xry111.site:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: B8FE05E629B
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 3C4AB5E661F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Commit bdf0bf73006e ("io_uring/io-wq: check IO_WQ_BIT_EXIT inside work
-run loop") fixed the obvious case where io_worker_handle_work() took one
-exit-bit snapshot before draining pending work, but the fix stops one
-level too early.
+The change from my commit c97a7dccb3ed ("drm/amd/display/dml2: Guard
+dml21_map_dc_state_into_dml_display_cfg with DC_FP_START") was dropped
+in the commit e6a8a000cfe6 ("drm/amd/display: Rename dml2 to dml2_0
+folder") for some reason I don't know, so on 6.19.y and 7.0.y the
+original issue (9070XT fails to work on LoongArch) has regressed.
 
-io_worker_handle_work() now re-checks IO_WQ_BIT_EXIT in its outer work
-run loop, yet it still snapshots that bit once before processing a
-whole dependent linked-work chain. If io_wq_exit_start() sets
-IO_WQ_BIT_EXIT after the first linked item has started, the remaining
-linked items can still reuse stale do_kill = false, skip
-IO_WQ_WORK_CANCEL, and continue running after exit has begun.
+As I've mentioned in my commit message, it was only an incomplete and
+temporary solution.  As the mainline already contains the move of FPU
+guard which should ultimately resolve the issue, it seems better to
+just backport the final fix instead of adding the temporary ad-hoc
+change back.
 
-That means the previous fix did not fully eliminate the exit-latency
-problem; it only narrowed it to linked chains. A long or slow linked
-chain can still keep io-wq exit waiting for work that should already
-have been canceled.
+Tested with 9070XT (where the original issue manifested) and 5500XT.
 
-The issue was found on Linux v6.18.21 by our static-analysis tool,
-which flagged linked-work loops that snapshot shared exit state
-outside per-item cancel decisions, and was then confirmed by manual
-auditing of io_worker_handle_work(). It was later reproduced with a
-QEMU no-device validation selftest that preserved the same contract:
-a three-node unbound linked chain, an exit actor setting
-IO_WQ_BIT_EXIT after work1, and slow post-exit linked work. With a
-3000 ms delay injected into each post-exit item, the buggy path
-spends about 6066 ms after exit running work2/work3, while the fixed
-path cancels both and finishes in about 2 ms.
+Ovidiu Bunea (1):
+  drm/amd/display: Add min clock init for DML21 mode programming
 
-Re-check test_bit(IO_WQ_BIT_EXIT, &wq->state) for each iteration of the
-dependent-link loop, right before deciding whether to cancel the
-current work item. That closes the remaining stale-snapshot window and
-prevents linked post-exit work from stretching shutdown latency.
+Rafal Ostrowski (4):
+  drm/amd/display: Move FPU Guards From DML To DC - Part 1
+  drm/amd/display: Move FPU Guards From DML To DC - Part 2
+  drm/amd/display: Move FPU Guards From DML To DC - Part 3
+  drm/amd/display: Move dml2_destroy to non-FPU compilation unit
 
-Build-tested by compiling io_uring/io-wq.o on x86_64 with the local
-.config. No special hardware was required.
+Srinivasan Shanmugam (1):
+  drm/amd/display: Fix dc_is_fp_enabled name mismatch
 
-Fixes: bdf0bf73006e ("io_uring/io-wq: check IO_WQ_BIT_EXIT inside work run loop")
-Cc: stable@vger.kernel.org
-Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
----
- io_uring/io-wq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Wayne Lin (1):
+  drm/amd/display: Fix fpu guard warning
 
-diff --git a/io_uring/io-wq.c b/io_uring/io-wq.c
-index 49a9c914b4e9..28d81398ebee 100644
---- a/io_uring/io-wq.c
-+++ b/io_uring/io-wq.c
-@@ -601,7 +601,6 @@ static void io_worker_handle_work(struct io_wq_acct *acct,
- 	struct io_wq *wq = worker->wq;
- 
- 	do {
--		bool do_kill = test_bit(IO_WQ_BIT_EXIT, &wq->state);
- 		struct io_wq_work *work;
- 
- 		/*
-@@ -637,6 +636,7 @@ static void io_worker_handle_work(struct io_wq_acct *acct,
- 
- 		/* handle a whole dependent link */
- 		do {
-+			bool do_kill = test_bit(IO_WQ_BIT_EXIT, &wq->state);
- 			struct io_wq_work *next_hashed, *linked;
- 			unsigned int work_flags = atomic_read(&work->flags);
- 			unsigned int hash = __io_wq_is_hashed(work_flags)
+Xi Ruoyao (1):
+  drm/amd/display: Backport dml21 DC_RUN_WITH_PREEMPTION_ENABLED
+    addition from DC 3.2.373
+
+ .../gpu/drm/amd/display/amdgpu_dm/dc_fpu.c    |   25 +-
+ .../gpu/drm/amd/display/amdgpu_dm/dc_fpu.h    |   17 +-
+ .../display/dc/clk_mgr/dcn30/dcn30_clk_mgr.c  |    2 -
+ .../display/dc/clk_mgr/dcn32/dcn32_clk_mgr.c  |    2 -
+ drivers/gpu/drm/amd/display/dc/core/dc.c      |    5 +-
+ .../gpu/drm/amd/display/dc/core/dc_state.c    |   75 +-
+ .../gpu/drm/amd/display/dc/core/dc_stream.c   |   15 +-
+ .../drm/amd/display/dc/dml/dcn20/dcn20_fpu.c  |    2 +-
+ .../drm/amd/display/dc/dml/dcn20/dcn20_fpu.h  |    2 +-
+ .../drm/amd/display/dc/dml/dcn31/dcn31_fpu.c  |    6 +-
+ .../drm/amd/display/dc/dml/dcn31/dcn31_fpu.h  |    6 +-
+ .../gpu/drm/amd/display/dc/dml2_0/Makefile    |   72 +-
+ .../dml2_0/dml21/dml21_translation_helper.c   |   25 +
+ .../dml2_0/dml21/dml21_translation_helper.h   |    1 +
+ .../display/dc/dml2_0/dml21/dml21_wrapper.c   |  391 +--
+ .../display/dc/dml2_0/dml21/dml21_wrapper.h   |   30 -
+ .../dc/dml2_0/dml21/dml21_wrapper_fpu.c       |  379 +++
+ .../dc/dml2_0/dml21/dml21_wrapper_fpu.h       |   60 +
+ .../drm/amd/display/dc/dml2_0/dml2_wrapper.c  |   34 +-
+ .../amd/display/dc/dml2_0/dml2_wrapper_fpu.c  |   19 +-
+ .../amd/display/dc/hwss/dcn401/dcn401_hwseq.c |    4 +-
+ .../dc/resource/dcn21/dcn21_resource.c        |    7 +
+ .../dc/resource/dcn31/dcn31_resource.c        |    7 +
+ .../dc/resource/dcn315/dcn315_resource.c      |    7 +
+ .../dc/resource/dcn316/dcn316_resource.c      |    7 +
+ .../dc/resource/dcn35/dcn35_resource.c        |   10 +-
+ .../dc/resource/dcn35/dcn35_resource.h        |    1 +
+ .../dc/resource/dcn351/dcn351_resource.c      |   10 +-
+ .../dc/resource/dcn36/dcn36_resource.c        |    4 +-
+ .../dc/resource/dcn401/dcn401_resource.c      |   30 +-
+ .../dc/resource/dcn42/dcn42_resource.c        | 2355 +++++++++++++++++
+ 31 files changed, 3076 insertions(+), 534 deletions(-)
+ create mode 100644 drivers/gpu/drm/amd/display/dc/dml2_0/dml21/dml21_wrapper_fpu.c
+ create mode 100644 drivers/gpu/drm/amd/display/dc/dml2_0/dml21/dml21_wrapper_fpu.h
+ create mode 100644 drivers/gpu/drm/amd/display/dc/resource/dcn42/dcn42_resource.c
+
 -- 
-2.34.1
+2.54.0
+
 
