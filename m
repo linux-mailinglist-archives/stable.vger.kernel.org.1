@@ -1,98 +1,56 @@
-Return-Path: <stable+bounces-254592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254596-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kM/oByT6FmqKzwcAu9opvQ
-	(envelope-from <stable+bounces-254592-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 16:05:24 +0200
+	id UHXtLsv8FmoJ0QcAu9opvQ
+	(envelope-from <stable+bounces-254596-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 16:16:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 741885E58D3
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 16:05:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B2385E5BA9
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 16:16:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E65CE3036635
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 13:57:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6AF8D313647E
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 14:09:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1135D413D96;
-	Wed, 27 May 2026 13:57:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kRbl+Os/"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E231331E84B;
+	Wed, 27 May 2026 14:09:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA333DC4CB
-	for <stable@vger.kernel.org>; Wed, 27 May 2026 13:57:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC00A1A6813;
+	Wed, 27 May 2026 14:09:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779890277; cv=none; b=alnDbxIxpYblqxK6sKXt1z5kXGzS7YagsJdQNaok4HJXFxOz/vMPHexk9fM1LCfhEmbs/QV6CfedhaF7D086rWnwEnmOpopC+TNfnGV7TaKdIvPE1ECCCrhVGp6jkX+Guu8HBChJ0EjL64ppqvN2y4Jbmrerq13xzaxRQcN++SY=
+	t=1779890948; cv=none; b=qPEOzxvDLIsj3NUbVyZMqrzgkDATTrvui3BK0H+IB9xmoIGeA/C/fw0K5LVBmPve77IUZ+Yo/DJToPfjyOM54VDJ1GLrQThBKYwgRfCm3w/VmJEpOftI1idcm47VETRxYm5Ahkao+PMOLVxa9N4Ji2zbHbskmpnAufVdBvgoZkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779890277; c=relaxed/simple;
-	bh=eZu08mVs02TntUL7GMXdknTj6wwcyvaBBkvZpAxupeQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JgInCsaHhoMd0AFrBGIcxFQrgW+B2xyIEs2Jq+QZkApmztF3B3BoJWTLuZ85qISWtwaa4tXgZrt2JdacjG1z6fWOyKnvPosAupo15gh7FDAHrTTCzmVZdgWIrUbfyKKu6p++LTx4C/n+lJjLRX63vyxObsheKLOp9vFVJPnzgb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kRbl+Os/; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-449d6c68ed8so7487385f8f.0
-        for <stable@vger.kernel.org>; Wed, 27 May 2026 06:57:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779890273; x=1780495073; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ylxspOikl//hUYOHTbCgkMeRhn08cWcQtF58xpwNlyg=;
-        b=kRbl+Os/RBeRxw8GuAPgMwvooTT2cYkvimcE2CiNAhVYRID4+FsN/KmJ/n0BPPyYZG
-         7mFp3XSaQkjZL2kW9zzRIunJPgPIbeoKUyUKrq98QbgjAuux4AF1aEuSRLA9zbH/VZNc
-         e53CpKo6CicERJpmoF9vojJCZBabseM3uaL7ZbpSnbn/R4vnXjrs/wHDpCq1SdtH7VaL
-         /xjps3af4vjbFagMPDdVf8RUj6wsg5ug8l1D0qrXAXarP/93tgybnN7Q9IPOlxNdvRAl
-         DZg4KdVTPCi31K5FVOswFa6y3mNPp5S5t9XuH2p2AdmlaOV3GArh0y3M2S+ur2YLHl4/
-         yErA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779890273; x=1780495073;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ylxspOikl//hUYOHTbCgkMeRhn08cWcQtF58xpwNlyg=;
-        b=AE4dSYhTonLh4dA5lwv4l/0+TbzMoVUf2od104LRm89JVaoNRW2pmL9coex4ssZ+5I
-         QS7+4BbkM6rlz52mQH1nO0dEASYnSqzIrZBtufq80tR1HPQVyEIVW9tvO0Kjdw+3l7KQ
-         yYwlWjVABi1WoY84FUURfkhcrg9dwAQBM6lhD4qa++vDVF8w/kj5+xHcxNLKyEevsAwS
-         M/ndXbcMOqstCDsVAjr6VpoOSKn7aLVq8t9BCoq86qHVeEKhGCN269IfW4sbe4S7ap1D
-         1E1BVE5qdXHHxhF9Z/c6WtPqAIbtEe1sUJXL7hbJ/6TBEo3RBXGsATu4yXSp0OZ9/M27
-         Zc0g==
-X-Forwarded-Encrypted: i=1; AFNElJ9a6JU11J+YCst3OIrB4EINR8QuxQoCZ87YGyNKBpOF1n2hgpmCaSuPS6fR1P+wXUZkBPZR4bs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YysYTBbSx2j7ypsRjaWWQM7pX0MA+0muRl5l+RvYshU0UokroIk
-	fIQiELcgqonxQErymCqCNLl6LvatdA9xKUh1wg+n9utg/NpsX700hRM=
-X-Gm-Gg: Acq92OFULSESyvxrczP76KkLKQoRKMXWJRw0a/l1uu/T9XvAWENG7xkDkiZOB3uDTnW
-	T8sM80TjRzh0JltflYrobQ/4JEDUBspPr4NtDgz59+Q24afTFpM5NdKomhjt6V2fgvXAFqB3D8u
-	9ZhAjmfj03pRHaO/zpJNaExQOXq3DA3YggZVR53y99vZdAE4G+EYDXC21tPyS9zDjwbHC+Eh66F
-	G+/b6NzBLRgwFMyrPFaPRkEqVVZ9PNt6xRusDFGexyPfp2PrXj32UmpJxu64+j7slkmwTUJxPYd
-	+d+gy+iztVmany9WebwvNXmCHlcGYPI1RszQZjPbYvhBLgMspf5EuGito4HvwVXQOHailkEuAdH
-	pABV4qacNDpCcQ3z6ccCOPrArgYWONpiD8nLV8D2kzKislJWCmxPT/9uTTZj4htMDJGnppEa5XE
-	YRg3Y=
-X-Received: by 2002:a05:6000:144c:b0:43d:77e1:6a69 with SMTP id ffacd0b85a97d-45eb38c2026mr39606398f8f.38.1779890272700;
-        Wed, 27 May 2026 06:57:52 -0700 (PDT)
-Received: from debian.. ([2001:41d0:303:db6b::])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45edb5c2323sm6388642f8f.34.2026.05.27.06.57.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 06:57:51 -0700 (PDT)
-From: Tristan Madani <tristmd@gmail.com>
-To: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>
-Cc: Phil Sutter <phil@nwl.cc>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
+	s=arc-20240116; t=1779890948; c=relaxed/simple;
+	bh=NUSoYXevl5Y1+9NjSRWSOcL2yAY99YsPXwj7xfsSJBA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BCvHlxhYIzbKzMMSVbQG9lmCkUUfoX0X+22TeWiNr9EuIcdCXKrIhHEDO3GW/bEG7NK807v/X6jxFgQht6LtRJ2ndRMkhxhE1jvQeWgXLHSHI+nAUGamAvG8QgjfivfwuVVORahV5ZAgK3BCnhYB2cjMbMNbG8kyoprFndMAKUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.68.59])
+	by gateway (Coremail) with SMTP id _____8DxRen++hZqNssNAA--.33057S3;
+	Wed, 27 May 2026 22:09:02 +0800 (CST)
+Received: from kernelserver (unknown [223.64.68.59])
+	by front1 (Coremail) with SMTP id qMiowJDxRMD4+hZqj9eSAA--.14389S2;
+	Wed, 27 May 2026 22:09:01 +0800 (CST)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Takashi Iwai <tiwai@suse.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Huacai Chen <chenhuacai@kernel.org>
+Cc: linux-sound@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
+	Xuerui Wang <kernel@xen0n.name>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	stable@vger.kernel.org,
-	Tristan Madani <tristan@talencesecurity.com>
-Subject: [PATCH] netfilter: nft_tunnel: fix use-after-free on object destroy
-Date: Wed, 27 May 2026 13:57:50 +0000
-Message-ID: <20260527135751.1031891-1-tristmd@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	Baoqi Zhang <zhangbaoqi@loongson.cn>,
+	Haowei Zheng <zhenghaowei@loongson.cn>
+Subject: [PATCH V2] ALSA: hda/hdmi: Use 'AC_PINSENSE_ELDV' to detect pinsense for Loongson
+Date: Wed, 27 May 2026 22:08:41 +0800
+Message-ID: <20260527140841.3407183-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -100,73 +58,133 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-CM-TRANSID:qMiowJDxRMD4+hZqj9eSAA--.14389S2
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoWxZr17Cw48tr43GrWfZF15Jrc_yoW5Cr1kpF
+	n5urW8KrW3tr4Iyrs5Aryv9F1SkayrK3ZrK34xt34UZrs5KrWrXw1qqrWUXF4akr9IgFyx
+	Zry2gr95Jay3JabCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUU9Yb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
+	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
+	XVWUAwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7V
+	AKI48JMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v2
+	6r1Y6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17
+	CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF
+	0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIx
+	AIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIev
+	Ja73UjIFyTuYvjxU2MKZDUUUU
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-254592-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-254596-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DMARC_NA(0.00)[loongson.cn];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	FROM_NEQ_ENVFROM(0.00)[chenhuacai@loongson.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tristmd@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.967];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[talencesecurity.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 741885E58D3
+	R_DKIM_NA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,loongson.cn:mid,loongson.cn:email]
+X-Rspamd-Queue-Id: 1B2385E5BA9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Tristan Madani <tristan@talencesecurity.com>
+Due to a hardware defect, for Loongson PCI HDMI devices with a reversion
+ID of 2, the pin sense status must be determined via the ELD.
 
-nft_tunnel_obj_destroy() calls metadata_dst_free() which directly
-kfree()s the metadata_dst, ignoring the dst_entry refcount. Packets
-that took a reference via dst_hold() in nft_tunnel_obj_eval() and
-are still queued (e.g. in a netem qdisc) are left with a dangling
-pointer. When these packets are eventually dequeued, dst_release()
-operates on freed memory.
+Add a codec flag, eld_jack_detect, to indicate this case, and do special
+handlings in read_pin_sense().
 
-Replace metadata_dst_free() with dst_release() so the metadata_dst
-is freed only after all references are dropped. The dst subsystem
-already handles metadata_dst cleanup in dst_destroy() when
-DST_METADATA is set.
-
-Fixes: af308b94a2a4 ("netfilter: nf_tables: add tunnel support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
+Signed-off-by: Baoqi Zhang <zhangbaoqi@loongson.cn>
+Signed-off-by: Haowei Zheng <zhenghaowei@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 ---
- net/netfilter/nft_tunnel.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/sound/hda_codec.h    | 1 +
+ sound/hda/codecs/hdmi/hdmi.c | 8 +++++++-
+ sound/hda/common/jack.c      | 6 ++++++
+ 3 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nft_tunnel.c b/net/netfilter/nft_tunnel.c
-index 0b987bc2132ae..68f7cfbbee063 100644
---- a/net/netfilter/nft_tunnel.c
-+++ b/net/netfilter/nft_tunnel.c
-@@ -676,7 +676,7 @@ static void nft_tunnel_obj_destroy(const struct nft_ctx *ctx,
- {
- 	struct nft_tunnel_obj *priv = nft_obj_data(obj);
+diff --git a/include/sound/hda_codec.h b/include/sound/hda_codec.h
+index 24581080e26a..1a1fe7a904c3 100644
+--- a/include/sound/hda_codec.h
++++ b/include/sound/hda_codec.h
+@@ -259,6 +259,7 @@ struct hda_codec {
+ 	unsigned int forced_resume:1; /* forced resume for jack */
+ 	unsigned int no_stream_clean_at_suspend:1; /* do not clean streams at suspend */
+ 	unsigned int ctl_dev_id:1; /* old control element id build behaviour */
++	unsigned int eld_jack_detect:1;	/* Machine jack-detection by ELD */
  
--	metadata_dst_free(priv->md);
-+	dst_release(&priv->md->dst);
+ 	unsigned long power_on_acct;
+ 	unsigned long power_off_acct;
+diff --git a/sound/hda/codecs/hdmi/hdmi.c b/sound/hda/codecs/hdmi/hdmi.c
+index f20d1715da62..423cd9f683c6 100644
+--- a/sound/hda/codecs/hdmi/hdmi.c
++++ b/sound/hda/codecs/hdmi/hdmi.c
+@@ -2285,6 +2285,7 @@ EXPORT_SYMBOL_NS_GPL(snd_hda_hdmi_acomp_init, "SND_HDA_CODEC_HDMI");
+ enum {
+ 	MODEL_GENERIC,
+ 	MODEL_GF,
++	MODEL_LOONGSON,
+ };
+ 
+ static int generichdmi_probe(struct hda_codec *codec,
+@@ -2302,6 +2303,11 @@ static int generichdmi_probe(struct hda_codec *codec,
+ 	if (id->driver_data == MODEL_GF)
+ 		codec->no_sticky_stream = 1;
+ 
++	if (id->driver_data == MODEL_LOONGSON) {
++		if (codec->bus && codec->bus->pci->revision == 0x2)
++			codec->eld_jack_detect = 1; /* Jack-detection by ELD */
++	}
++
+ 	return 0;
  }
  
- static struct nft_object_type nft_tunnel_obj_type;
+@@ -2319,7 +2325,7 @@ static const struct hda_codec_ops generichdmi_codec_ops = {
+ /*
+  */
+ static const struct hda_device_id snd_hda_id_generichdmi[] = {
+-	HDA_CODEC_ID_MODEL(0x00147a47, "Loongson HDMI",		MODEL_GENERIC),
++	HDA_CODEC_ID_MODEL(0x00147a47, "Loongson HDMI",		MODEL_LOONGSON),
+ 	HDA_CODEC_ID_MODEL(0x10951390, "SiI1390 HDMI",		MODEL_GENERIC),
+ 	HDA_CODEC_ID_MODEL(0x10951392, "SiI1392 HDMI",		MODEL_GENERIC),
+ 	HDA_CODEC_ID_MODEL(0x11069f84, "VX11 HDMI/DP",		MODEL_GENERIC),
+diff --git a/sound/hda/common/jack.c b/sound/hda/common/jack.c
+index 98ba1c4d5ba4..e0a5cc38540b 100644
+--- a/sound/hda/common/jack.c
++++ b/sound/hda/common/jack.c
+@@ -58,6 +58,12 @@ static u32 read_pin_sense(struct hda_codec *codec, hda_nid_t nid, int dev_id)
+ 				  AC_VERB_GET_PIN_SENSE, dev_id);
+ 	if (codec->inv_jack_detect)
+ 		val ^= AC_PINSENSE_PRESENCE;
++	if (codec->eld_jack_detect) {
++		if (val & AC_PINSENSE_ELDV)
++			val |= AC_PINSENSE_PRESENCE;
++		else
++			val &= ~AC_PINSENSE_PRESENCE;
++	}
+ 	return val;
+ }
+ 
 -- 
-2.47.3
+2.52.0
 
 
