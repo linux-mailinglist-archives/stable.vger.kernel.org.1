@@ -1,198 +1,111 @@
-Return-Path: <stable+bounces-254683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254684-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KCo8HJ1aF2oPBQgAu9opvQ
-	(envelope-from <stable+bounces-254683-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 22:57:01 +0200
+	id 4LdvAmNeF2qpCggAu9opvQ
+	(envelope-from <stable+bounces-254684-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 23:13:07 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDCCD5EA47A
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 22:57:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 538AD5EA5BF
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 23:13:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 78D953192E2D
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 20:50:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 85CA930547C6
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 21:12:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8D983C2788;
-	Wed, 27 May 2026 20:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 126BD3C5837;
+	Wed, 27 May 2026 21:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iNqSXfM3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HpaWUEad"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f73.google.com (mail-qv1-f73.google.com [209.85.219.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85523B38AF
-	for <stable@vger.kernel.org>; Wed, 27 May 2026 20:50:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68783B9D90;
+	Wed, 27 May 2026 21:12:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779915054; cv=none; b=rFJroxqSYSn57SK5hr0Xfx/McjFTCFYqnFQmhUhGtlkat2i4dx2330m9S3t558yWBKkP1xgXe9SipowTmHSE9G9UYK8pVT0jj8Xl4KkMH+Emn0unXK39jZG25Gvf5CFG1FsjI+drzcVJGZT1mRN4EEw1SjzlgG6iO9AT8Ts9bjk=
+	t=1779916361; cv=none; b=q7Qe2UyUegzKCHSgcZPzs94K7GQxvcyYqLTrVB1Oqsk3I0B664HvUiH/M7TMTZZhsYrjA8v1v44daMQYskpmRQZLAptP8QL01WoJj2aTAgyq/Cs8cLGc0Gu8RBBJewca6rR+GohIirsdKvIr9U84P/5XQ8FqrqViF3QIPJBap5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779915054; c=relaxed/simple;
-	bh=eRR5kbIsSk8uR68Yt/RxW5wJjv4k6qQ3jUkESRdonS4=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=KUlUqHnWU+DZBNn74ToS/ZdP9Nnv/QUejKpElVV8lqhptSwT7UEZwYaU2wFVPeKy7uRu5rfHOrdpn65Y306/lTWcS3LOEdZQCB+HA+2ggqGVxdFwqVSNcHGFyUJ1g5jkvlYI8vtJDNHzscIlcT20LwudjyKIM+IIWHf3RG5Ggng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--xuehaohu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iNqSXfM3; arc=none smtp.client-ip=209.85.219.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--xuehaohu.bounces.google.com
-Received: by mail-qv1-f73.google.com with SMTP id 6a1803df08f44-8aca4660827so237690056d6.3
-        for <stable@vger.kernel.org>; Wed, 27 May 2026 13:50:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779915051; x=1780519851; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=OnsOZAwcaFX6qrXTkZ3llO87kDjoRN0331vlXYrms0w=;
-        b=iNqSXfM37Tmxky1BVl8faF9mFcxHtxZXQT3kYGd1cCpSVzT2qkeqIMHmr5py3Izxhq
-         WL0s0xUJcTywlm7QR46hLKSRfZ4NTKxv7WA1HTMYa0Me67JPJ9v+TI7vJJ/LjOm3Z1CF
-         fK9V6AAMq1eZ1/Q3F48MajYW7RiEg8ZcFDRmbyO4klZqmV34pVngvDkX+QqL2uWMfA9J
-         DMY0ysA406GJtmp2Q7GmMrAp4cLckKXltx/hA1keAtIsqavJ4r3IbW3CErnh5fVVfwZF
-         wDyiQICo+zGFu3rDumZpk8axgHOlK8wgPw5i28I3ujfQZb3kt+adq0WNkOmVW3UlGbpa
-         Kzog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779915051; x=1780519851;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=OnsOZAwcaFX6qrXTkZ3llO87kDjoRN0331vlXYrms0w=;
-        b=Mk4oaspzSeQ+kQDzEa2PI+v++PUgenCuVReTtnMmX4I+hwt6x4eUcjBvrJG9muPBI6
-         BSoGUkOordSimSYMLFd+A030LhsLkHwlv2nbFJRv8bPJXqdl8fWtAB9mVrrmcJZTDZ4c
-         OXxi5LTjU/xmR5zf9jAuvrGf5S/nr3e/8mZqOPwwqGqVehtT2Z4FD0ZSpaUrjie+Qi5R
-         7QSgTw70C/eNkyoB6YYX4ghlz9OAj1rjQZwrQ8QBayPuDcu8fpoNmdfaqjWAsueCPJmw
-         5XHUGNMOZnACYT6K5M3Qcx9XJ7OUxdxhVAzxWlKhMPq7O3VydrpUDyMT9A+Q8OK2wUng
-         Blgg==
-X-Forwarded-Encrypted: i=1; AFNElJ9feMQrT7mMQyF1rzsa9xuRuQvzXKL7S28gRYkAQlg0udgxXfburPheGAQQD/XEVHQYn/tG9l4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZeGEHAuwvYOXap0KrA7Yv7sIxxwS0Vq8CkJWQHFwOE4+WFkRe
-	VmwlWFP3HnIHAhNynUOCfxUwhHW8bWiFYxAyeMRcq5QK5Tz18UCtkgHBKRCflZmFFfz/RWs8mnx
-	xzcWvcKlcAj9O
-X-Received: from qviu6.prod.google.com ([2002:a0c:c486:0:b0:8cc:2486:6603])
- (user=xuehaohu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6214:54ca:b0:8ac:b237:9fb5 with SMTP id 6a1803df08f44-8cc7b5fe0d8mr387104406d6.49.1779915050519;
- Wed, 27 May 2026 13:50:50 -0700 (PDT)
-Date: Wed, 27 May 2026 20:50:47 +0000
+	s=arc-20240116; t=1779916361; c=relaxed/simple;
+	bh=nkKhyte+rjfKosy5ia1dttDPtn5N50seXDtahbT5hso=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MoEBgw9SOacGOtSNUIRHhpqSgFNp6pAhRTNkxkZHSoxJ31IUXSzSWV/u0IdbWBlyrL43vDZb7w9Bbe6YEPYy5Ji2QDtnHtACjzTXI+4Hj9VTPJcu3xgGrnXR9coB0V6GmkzzfzDtLACfWZlM8A9vpChCNYstT/e7hAVmM2aRSgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HpaWUEad; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A039E1F00A3D;
+	Wed, 27 May 2026 21:12:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779916360;
+	bh=dTSLml51aGchSpHiUx1oCupZhroeQlOU6hlvIIGsMA8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=HpaWUEadp1CFnwzij9BhOuSC6V9eaWff9yKV+4fG9yeJujh265wsAgdK9V1eW5FtJ
+	 4N8AFGkrnQ0fl8vn9HMnfv0V5cHn3c5be8bv352++6QQvyRfdOYGDRiCdHE6ZSB1CL
+	 nSOnvxSWly7FL0xNQz/xx3uCs0nSYcESxsqJiPi9sb7XPqdpMKmBzPJXXiK299Uef8
+	 Nj7OHZwDf7s1SJAgECcaagdXZoTSaQM0qGfiXrHZnts3PB+81Spc4ubIo4xP1uzx1J
+	 PupB5KJEHYnPPCceJT6DCulft6VTcvTpG3eNGzTd4OoDZC1439vmj95Wg1VlpLJP4z
+	 RBiegIQhZ9V7g==
+Date: Wed, 27 May 2026 14:12:35 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Paul Moore <paul@paul-moore.com>
+Cc: Ricardo Robaina <rrobaina@redhat.com>, Eric Paris <eparis@redhat.com>,
+	Waiman Long <longman@redhat.com>,
+	Richard Guy Briggs <rgb@redhat.com>, audit@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] audit: Update audit_alloc_mark() and audit_dupe_exe()
+ CONFIG_AUDITSYSCALL=n stubs
+Message-ID: <20260527211235.GA3191279@ax162>
+References: <20260527-audit-update-macro-stubs-v1-1-8cda8dbdae0a@kernel.org>
+ <CAABTaaCZD-6_ar-H8iwOka9WgtuqwEt+=umVuc5xsBHwDcnD-Q@mail.gmail.com>
+ <CAHC9VhQfci2gE-eD67DbjL21s7tF+rPWa9bdu0Kk5cfW+gz2Xg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.54.0.794.g4f17f83d09-goog
-Message-ID: <20260527205048.2168808-1-xuehaohu@google.com>
-Subject: [PATCH v2] dma-buf: Fix silent overflow for phys vec to sgt
-From: David Hu <xuehaohu@google.com>
-To: Sumit Semwal <sumit.semwal@linaro.org>, 
-	"=?UTF-8?q?Christian=20K=C3=B6nig?=" <christian.koenig@amd.com>
-Cc: Kevin Tian <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Alex Williamson <alex@shazbot.org>, linux-media@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
-	linux-kernel@vger.kernel.org, jmoroni@google.com, praan@google.com, 
-	leonro@nvidia.com, David Hu <xuehaohu@google.com>, stable@vger.kernel.org, 
-	iommu@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHC9VhQfci2gE-eD67DbjL21s7tF+rPWa9bdu0Kk5cfW+gz2Xg@mail.gmail.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254683-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	TAGGED_FROM(0.00)[bounces-254684-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xuehaohu@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: BDCCD5EA47A
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 538AD5EA5BF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-In case MMIO size is bigger than 4G and peer2peer DMA goes
-through host bridge, we trigger a code path that assigns the
-total linked IOVA (which is greater than 4G) to mapped_len.
+On Wed, May 27, 2026 at 03:13:06PM -0400, Paul Moore wrote:
+> Do either of you mind if I squash these two patches together in the
+> audit tree?  I would preserve Nathan's sign-off line and add a comment
+> at the end of the commit description about the fix provided by Nathan.
 
-Previously, `mapped_len` was declared as 32-bit `unsigned int`.
-When accumulating `size_t` lengths, this leads to a silent wrap-around.
-This truncation causes truncated lengths to be passed to functions
-like `fill_sg_entry()`.
+Sure, I have no qualms with this being squashed with a sufficient note
+that I only provided a compile fix up.
 
-Fix this by changing `mapped_len` to `size_t` (64-bit). While
-at it, fix similar potential overflow issues in `calc_sg_nents`
-by using `size_t` for `nents` and checking against `UINT_MAX`
-and using `unsigned int` for the loop iterator in `fill_sg_entry`
-to match.
-
-to mapped_len, and leading to a silent overflow
-
-Fixes: 3aa31a8bb11e ("dma-buf: provide phys_vec to scatter-gather mapping routine")
-Cc: stable@vger.kernel.org
-Cc: iommu@lists.linux.dev
-Reviewed-by: Pranjal Shrivastava <praan@google.com>
-Signed-off-by: David Hu <xuehaohu@google.com>
----
-Changes in v2:
- Fixed 'IVOA' -> 'IOVA' typo and expanded commit message (Claude Bot).
- Added Reverse Xmas tree formatting (Pranjal).
- Folded in extra bounds checking for calc_sg_nents() (Pranjal).
- Folded in type consistency fix for fill_sg_entry() (Pranjal).
- Droped unnecessary `nents = 0` initialization (Claude Bot).
-
- drivers/dma-buf/dma-buf-mapping.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/dma-buf/dma-buf-mapping.c b/drivers/dma-buf/dma-buf-mapping.c
-index 794acff2546a..5bc769fc42ea 100644
---- a/drivers/dma-buf/dma-buf-mapping.c
-+++ b/drivers/dma-buf/dma-buf-mapping.c
-@@ -10,7 +10,7 @@ static struct scatterlist *fill_sg_entry(struct scatterlist *sgl, size_t length,
- 					 dma_addr_t addr)
- {
- 	unsigned int len, nents;
--	int i;
-+	unsigned int i;
- 
- 	nents = DIV_ROUND_UP(length, UINT_MAX);
- 	for (i = 0; i < nents; i++) {
-@@ -36,7 +36,7 @@ static unsigned int calc_sg_nents(struct dma_iova_state *state,
- 				  struct phys_vec *phys_vec, size_t nr_ranges,
- 				  size_t size)
- {
--	unsigned int nents = 0;
-+	size_t nents = 0;
- 	size_t i;
- 
- 	if (!state || !dma_use_iova(state)) {
-@@ -51,6 +51,9 @@ static unsigned int calc_sg_nents(struct dma_iova_state *state,
- 		nents = DIV_ROUND_UP(size, UINT_MAX);
- 	}
- 
-+	if (nents > UINT_MAX)
-+		return 0;
-+
- 	return nents;
- }
- 
-@@ -95,9 +98,10 @@ struct sg_table *dma_buf_phys_vec_to_sgt(struct dma_buf_attachment *attach,
- 					 size_t nr_ranges, size_t size,
- 					 enum dma_data_direction dir)
- {
--	unsigned int nents, mapped_len = 0;
- 	struct dma_buf_dma *dma;
- 	struct scatterlist *sgl;
-+	size_t mapped_len = 0;
-+	unsigned int nents;
- 	dma_addr_t addr;
- 	size_t i;
- 	int ret;
 -- 
-2.54.0.794.g4f17f83d09-goog
-
+Cheers,
+Nathan
 
