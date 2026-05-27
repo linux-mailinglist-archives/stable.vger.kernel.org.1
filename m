@@ -1,376 +1,182 @@
-Return-Path: <stable+bounces-254472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254473-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0Hw2E6pjFmpamAcAu9opvQ
-	(envelope-from <stable+bounces-254472-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 05:23:22 +0200
+	id 4NLMEXdkFmpamAcAu9opvQ
+	(envelope-from <stable+bounces-254473-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 05:26:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B62015DEDA2
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 05:23:21 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31AC85DEDFE
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 05:26:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 97422301A43E
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 03:23:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2D226300CF0A
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 03:26:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CAC337B41B;
-	Wed, 27 May 2026 03:23:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A946337C0F7;
+	Wed, 27 May 2026 03:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ePTl9GzF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A4qt36iV"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC4F3750C9;
-	Wed, 27 May 2026 03:23:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F6737B41A
+	for <stable@vger.kernel.org>; Wed, 27 May 2026 03:26:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779852199; cv=none; b=rgTR+IhdjUxPWWrV4nXOIIkdsye8ZbZu9ne5v7ahwuGFS9SkF9lEW6C36BvAAPp50dHc2Ez4Qyt6nKgEFKECRIhWE22ltgWIRHT4aeoQnOUU4Wnsca2Y2zfplBD3yenED10Ha7jRn78JUoiBSV2ObVc7R/GrIAgkj1Ha+2HPTVw=
+	t=1779852401; cv=none; b=VKzX3DSiic60x2IevJFLJ13z6Y0gDAY+c2mrRa359ysEp4mNQFTyURgDlDSV3h/aY3zWG4YPfm3+LfH9DaL40MVpNvoDMEZXbPn2SXvptKVLNKBY/qVDHZrHsD3xKxUKNuFQKlo67lBovcMdJQK7jtLFQ1sWK9hyDENLVItihfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779852199; c=relaxed/simple;
-	bh=ui8Uzw/s9bRtdyCZ6JVK1r8979L0jdP0HuS7a5uM7y8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t33LA4/t/yziGH7wyV+A7xpncsVWURHtiWJtZmXjUfZT+MFw0Gu38VgHqfCDP7ynLx5Osv479134R5eDV+AsSi+wX4ru+RPRBoXFsK0aQRLaEtcaSq2pmlAJHKs35NiZh4pGYxGfwfnvMf2PcVkmrYbfGZXvm0vv36xTLDJkMZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ePTl9GzF; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779852197; x=1811388197;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=ui8Uzw/s9bRtdyCZ6JVK1r8979L0jdP0HuS7a5uM7y8=;
-  b=ePTl9GzFplyM1y0fa/1wO1/m34VndmIOT8nz8hbDV6DGk0QlXshUhWcX
-   K70KuxaCJm2xiDPTXcBJ7kkocNEOCTLhi/1uYWAjBJJNrRsnG6oKNnsTu
-   g9I5EGdDAAOHc9+sog68KlfsAKqs1oQ3G+w/EQ/Bxru6vSMtHAva2d8eT
-   c3czzyKLd5s12VawFzclD7XyKyd4v2WGTMGV7YVaTmsPFU1X2poQtjrS4
-   wy2+js06AgDfCkBy4FTBeh3ZPFdtxRzcHJ1//flWM8CrKD9vSHOdg6VAa
-   767ser2r7w9MHTK3BP/dNv52lV3xcRHkfGYO/HQG5GgzoYJv3WfKBoZiU
-   g==;
-X-CSE-ConnectionGUID: GhBjd+4bSLW4VfIuu3RnpA==
-X-CSE-MsgGUID: CuQLA3E8R+iwmnQCvJnP1g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11798"; a="91366718"
-X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
-   d="scan'208";a="91366718"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 20:23:16 -0700
-X-CSE-ConnectionGUID: ARSBPt7PR6yWuetyI5hfPw==
-X-CSE-MsgGUID: OU6SlVFxTEmsVpNk3w8eog==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
-   d="scan'208";a="247056351"
-Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
-  by orviesa005.jf.intel.com with ESMTP; 26 May 2026 20:23:12 -0700
-Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wS4rM-000000003Kc-2x1C;
-	Wed, 27 May 2026 03:23:08 +0000
-Date: Wed, 27 May 2026 11:22:29 +0800
-From: kernel test robot <lkp@intel.com>
-To: Myeonghun Pak <mhun512@gmail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	dri-devel@lists.freedesktop.org, linux-amlogic@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Myeonghun Pak <mhun512@gmail.com>, stable@vger.kernel.org,
-	Ijae Kim <ae878000@gmail.com>
-Subject: Re: [PATCH] drm/meson: clean up KMS polling on register failure
-Message-ID: <202605271153.rpsbxgdB-lkp@intel.com>
-References: <20260524160657.17802-1-mhun512@gmail.com>
+	s=arc-20240116; t=1779852401; c=relaxed/simple;
+	bh=7NqP8wTnbRIxVIzZFbQP+alLTQXvzELVOk1InVzXOvQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=hu56/traVj1wNhNdwHf7QSzgvHMoEwRr1cUMXhV6tWWmTYLwVbvB2MzrbZVqNE9o9EhuakWi21SYh26aWFVH62VKDwn1v7KFL2OCGCfXV9qRaDbPh0OpqEPkhNmPasWFjVQfl2hLSITrpiQsnKQWpDNc7QyjmoOjlTmzCXPHYTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A4qt36iV; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2bea7176c72so46034525ad.0
+        for <stable@vger.kernel.org>; Tue, 26 May 2026 20:26:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779852399; x=1780457199; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=H63J7/JvszdGRcjeN8wXnJUHZrHDcDH58PcyxoI9MIw=;
+        b=A4qt36iVvMAc/ws918KKQtswgZCew6tKtj08YXiOQLED15c9SiN/uusGM8CTylFeSl
+         g87yM963JeyP4zCslII8wGa1nRNJQA9ZRqEVpfimfSo3FXxRxlHIDFUHjcacTT/o+Toy
+         ldKOC/1y+/6H+1eyQ6u74xVICH4lE6tKCoXe7gzu3MmFTjzJQB8II2Vxx5AXVDqm/pPN
+         VXh1Y5R0yZomLWH14p/JQvm0YCqIVXyM3MBxe2kp1IJJtF1LUUJF0TjAZYKMHVCafxqr
+         F3rXvPHy6ozXbH3afC2tkil2ZH4wq5ECA+mRTkMh4TQBJqBIqq7ozwmASFue0Ygr3M+T
+         AZKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779852399; x=1780457199;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=H63J7/JvszdGRcjeN8wXnJUHZrHDcDH58PcyxoI9MIw=;
+        b=OBlP2/OH8oRXU0VWbVbBvb+HY+DoW+tKmh7mY6lmhjOp2ezucJSYRp48rWx0GTzOis
+         1jigQpfQkpNOHLjD7QMJQUuiNpXMRuQb5BVoCrIEvEFJST1AlTjWKHA7/vuMrRQdTOR5
+         e9HDwi2pib2tFG+0p3OjoU+wuqcWFIBAUk4LDGcBnGyqhmxOGPdV6MrE7iJYt50VHAYw
+         54YMU8MUJM1kKef+WDBy87fss+H2IpRhdqVultPnjVUcef8iVL1nfBzANxlM4vY8uoN+
+         mfzcg9fjvJCXD9UIZ0OGAozoJDWUAS37D9KW9tG4HOsmXUUeP86Sm1UCzVfLz9DG0oGL
+         fxgw==
+X-Forwarded-Encrypted: i=1; AFNElJ/DCfc0zeGcyXAO7kcOBZv5/xowp7ol7Er3bxkE+T+1PqVfNfHYpaN9+G6j6CN9FWYkD9c+gMg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPc/XrotGCmzO9uemNC7ObutaQwcpOF3HXcBs+IC9DidzYXeve
+	nVTa/Ll8qe59CgYIxxfXokWtnN56xen3qKeBE3TYg9qwlE/qkDzA7ezk
+X-Gm-Gg: Acq92OHRlRBC0P6hAdzuSSEA8ty1ztMRbcAFkwQbXv3luxpWg0t+P+o+zLXgEh3ibSu
+	3iCNMj74VVfHqrXMcJpTjFYBJn1g1zUfBzFyo7rhbGUvSoULywHsjHGMftgdmmC6SaFzUXLTTyV
+	pcgoBaqStW+HduH4KXUMPtV8HON6uQJ90sy1ZpQL4JdZykJBFAYvKrhYHlA6pwZp8sBc3dcajnJ
+	M3ozOEeHUEVU9437dNacTpyG40TEce/WB2nVzYtrBlu6PywqP166GXRV8VbRl7zpWqHc6KaeYDz
+	n3e1Jg1FkUVygzbAcva2cM3E7SXpDHeVLbp1iKj83IOHt5IGqq6qOJfrb1gb3URZRB9AgUHx02G
+	EV9N58/c/E7/7+/d5dwhSzYqVsxPfkxik88lBStljk4Xp4hDTc1wjMRmnYyaMKBV7smrWq39ql1
+	rai7xssewOh4vdtFTMMPs0xuMBBmTiC7P/quZboQMVgFA/
+X-Received: by 2002:a17:903:2bcc:b0:2bc:b80f:677e with SMTP id d9443c01a7336-2beb069970bmr226864455ad.25.1779852398945;
+        Tue, 26 May 2026 20:26:38 -0700 (PDT)
+Received: from [127.0.0.1] ([116.80.91.208])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb58dba7bsm133826365ad.66.2026.05.26.20.26.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 May 2026 20:26:38 -0700 (PDT)
+From: Cunlong Li <shenxiaogll@gmail.com>
+Date: Wed, 27 May 2026 11:26:20 +0800
+Subject: [PATCH] zram: fix use-after-free in zram_bvec_write_partial()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260524160657.17802-1-mhun512@gmail.com>
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260527-zram-v1-1-ce1acb2bfaf9@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAFtkFmoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDUyMz3aqixFzdJANDEyPTJPNUs2QzJaDSgqLUtMwKsDHRsbW1ALPvOSp
+ WAAAA
+X-Change-ID: 20260526-zram-b01425b7e6c6
+To: Minchan Kim <minchan@kernel.org>, 
+ Sergey Senozhatsky <senozhatsky@chromium.org>, Jens Axboe <axboe@kernel.dk>, 
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
+ Christoph Hellwig <hch@lst.de>, stable@vger.kernel.org, 
+ Cunlong Li <shenxiaogll@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779852395; l=1573;
+ i=shenxiaogll@gmail.com; s=20260517; h=from:subject:message-id;
+ bh=7NqP8wTnbRIxVIzZFbQP+alLTQXvzELVOk1InVzXOvQ=;
+ b=rMIc9aoiEnh5ChwVz/WDhL34yOkVfP7nSmRV3FVvu4I0exZ1M9lMnRqSVW+ZJNXsgn1H9tPeZ
+ cerOcUqZw+JCmnJWc/vNNzhiTrqiUdUtfEtbzW1nN8rRT966vG6i9zb
+X-Developer-Key: i=shenxiaogll@gmail.com; a=ed25519;
+ pk=SKFifnqPdsvsjuhUiq+Y9vtCdhyZ/LrRcfYn8eRq6AE=
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch,baylibre.com,googlemail.com,lists.freedesktop.org,lists.infradead.org,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	TAGGED_FROM(0.00)[bounces-254472-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-254473-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lst.de,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com,linaro.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[shenxiaogll@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email,intel.com:mid,intel.com:dkim,gitlab.freedesktop.org:url,meson_driver.name:url,01.org:url]
-X-Rspamd-Queue-Id: B62015DEDA2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,lst.de:email]
+X-Rspamd-Queue-Id: 31AC85DEDFE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Myeonghun,
+zram_read_page() picks the sync or async backing device read path
+based on whether the parent bio is NULL.  zram_bvec_write_partial()
+passes its parent bio down, so for ZRAM_WB slots the read is
+dispatched asynchronously and zram_read_page() returns 0 while the
+bio is still in flight.  The caller then runs memcpy_from_bvec(),
+zram_write_page() and __free_page() on the buffer, leaving the
+async read to write into a freed page.
 
-kernel test robot noticed the following build warnings:
+zram_bvec_read_partial() was switched to NULL in commit 4e3c87b9421d
+("zram: fix synchronous reads") for the same reason; the
+write_partial counterpart was missed.
 
-[auto build test WARNING on drm-misc/drm-misc-next]
-[also build test WARNING on linus/master v7.1-rc5 next-20260526]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Fixes: 4e3c87b9421d ("zram: fix synchronous reads")
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Cunlong Li <shenxiaogll@gmail.com>
+---
+ drivers/block/zram/zram_drv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Myeonghun-Pak/drm-meson-clean-up-KMS-polling-on-register-failure/20260525-000807
-base:   https://gitlab.freedesktop.org/drm/misc/kernel.git drm-misc-next
-patch link:    https://lore.kernel.org/r/20260524160657.17802-1-mhun512%40gmail.com
-patch subject: [PATCH] drm/meson: clean up KMS polling on register failure
-config: i386-allmodconfig (https://download.01.org/0day-ci/archive/20260527/202605271153.rpsbxgdB-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260527/202605271153.rpsbxgdB-lkp@intel.com/reproduce)
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index aebc710f0d6a..b23a8bbb687c 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -2333,7 +2333,7 @@ static int zram_bvec_write_partial(struct zram *zram, struct bio_vec *bvec,
+ 	if (!page)
+ 		return -ENOMEM;
+ 
+-	ret = zram_read_page(zram, page, index, bio);
++	ret = zram_read_page(zram, page, index, NULL);
+ 	if (!ret) {
+ 		memcpy_from_bvec(page_address(page) + offset, bvec);
+ 		ret = zram_write_page(zram, page, index);
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202605271153.rpsbxgdB-lkp@intel.com/
+---
+base-commit: e8c2f9fdadee7cbc75134dc463c1e0d856d6e5c7
+change-id: 20260526-zram-b01425b7e6c6
 
-All warnings (new ones prefixed by >>):
+Best regards,
+-- 
+Cunlong Li <shenxiaogll@gmail.com>
 
-   drivers/gpu/drm/meson/meson_drv.c: In function 'meson_drv_bind_master':
->> drivers/gpu/drm/meson/meson_drv.c:363:1: warning: label 'uninstall_irq' defined but not used [-Wunused-label]
-     363 | uninstall_irq:
-         | ^~~~~~~~~~~~~
-
-
-vim +/uninstall_irq +363 drivers/gpu/drm/meson/meson_drv.c
-
-8976eeee8de05f Neil Armstrong        2020-04-28  180  
-8604889f83381c Neil Armstrong        2017-05-29  181  static int meson_drv_bind_master(struct device *dev, bool has_components)
-bbbe775ec5b5da Neil Armstrong        2016-11-10  182  {
-a41e82e6c4575b Neil Armstrong        2017-04-04  183  	struct platform_device *pdev = to_platform_device(dev);
-d1b5e41e13a7e9 Neil Armstrong        2019-10-21  184  	const struct meson_drm_match_data *match;
-bbbe775ec5b5da Neil Armstrong        2016-11-10  185  	struct meson_drm *priv;
-bbbe775ec5b5da Neil Armstrong        2016-11-10  186  	struct drm_device *drm;
-bbbe775ec5b5da Neil Armstrong        2016-11-10  187  	struct resource *res;
-bbbe775ec5b5da Neil Armstrong        2016-11-10  188  	void __iomem *regs;
-8976eeee8de05f Neil Armstrong        2020-04-28  189  	int ret, i;
-bbbe775ec5b5da Neil Armstrong        2016-11-10  190  
-bbbe775ec5b5da Neil Armstrong        2016-11-10  191  	/* Checks if an output connector is available */
-bbbe775ec5b5da Neil Armstrong        2016-11-10  192  	if (!meson_vpu_has_available_connectors(dev)) {
-bbbe775ec5b5da Neil Armstrong        2016-11-10  193  		dev_err(dev, "No output connector available\n");
-bbbe775ec5b5da Neil Armstrong        2016-11-10  194  		return -ENODEV;
-bbbe775ec5b5da Neil Armstrong        2016-11-10  195  	}
-bbbe775ec5b5da Neil Armstrong        2016-11-10  196  
-d1b5e41e13a7e9 Neil Armstrong        2019-10-21  197  	match = of_device_get_match_data(dev);
-d1b5e41e13a7e9 Neil Armstrong        2019-10-21  198  	if (!match)
-d1b5e41e13a7e9 Neil Armstrong        2019-10-21  199  		return -ENODEV;
-d1b5e41e13a7e9 Neil Armstrong        2019-10-21  200  
-bbbe775ec5b5da Neil Armstrong        2016-11-10  201  	drm = drm_dev_alloc(&meson_driver, dev);
-bbbe775ec5b5da Neil Armstrong        2016-11-10  202  	if (IS_ERR(drm))
-bbbe775ec5b5da Neil Armstrong        2016-11-10  203  		return PTR_ERR(drm);
-bbbe775ec5b5da Neil Armstrong        2016-11-10  204  
-bbbe775ec5b5da Neil Armstrong        2016-11-10  205  	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-bbbe775ec5b5da Neil Armstrong        2016-11-10  206  	if (!priv) {
-bbbe775ec5b5da Neil Armstrong        2016-11-10  207  		ret = -ENOMEM;
-bbbe775ec5b5da Neil Armstrong        2016-11-10  208  		goto free_drm;
-bbbe775ec5b5da Neil Armstrong        2016-11-10  209  	}
-bbbe775ec5b5da Neil Armstrong        2016-11-10  210  	drm->dev_private = priv;
-bbbe775ec5b5da Neil Armstrong        2016-11-10  211  	priv->drm = drm;
-bbbe775ec5b5da Neil Armstrong        2016-11-10  212  	priv->dev = dev;
-d1b5e41e13a7e9 Neil Armstrong        2019-10-21  213  	priv->compat = match->compat;
-d1b5e41e13a7e9 Neil Armstrong        2019-10-21  214  	priv->afbcd.ops = match->afbcd_ops;
-528a25d040bc21 Julien Masson         2019-08-22  215  
-d4cb82aa2e4bc0 Cai Huoqing           2021-08-31  216  	regs = devm_platform_ioremap_resource_byname(pdev, "vpu");
-2c18107b9d5897 Christophe JAILLET    2018-03-12  217  	if (IS_ERR(regs)) {
-2c18107b9d5897 Christophe JAILLET    2018-03-12  218  		ret = PTR_ERR(regs);
-2c18107b9d5897 Christophe JAILLET    2018-03-12  219  		goto free_drm;
-2c18107b9d5897 Christophe JAILLET    2018-03-12  220  	}
-bbbe775ec5b5da Neil Armstrong        2016-11-10  221  
-bbbe775ec5b5da Neil Armstrong        2016-11-10  222  	priv->io_base = regs;
-bbbe775ec5b5da Neil Armstrong        2016-11-10  223  
-bbbe775ec5b5da Neil Armstrong        2016-11-10  224  	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "hhi");
-01a9e9493fb3f6 Christophe JAILLET    2018-06-11  225  	if (!res) {
-01a9e9493fb3f6 Christophe JAILLET    2018-06-11  226  		ret = -EINVAL;
-01a9e9493fb3f6 Christophe JAILLET    2018-06-11  227  		goto free_drm;
-01a9e9493fb3f6 Christophe JAILLET    2018-06-11  228  	}
-bbbe775ec5b5da Neil Armstrong        2016-11-10  229  	/* Simply ioremap since it may be a shared register zone */
-bbbe775ec5b5da Neil Armstrong        2016-11-10  230  	regs = devm_ioremap(dev, res->start, resource_size(res));
-2c18107b9d5897 Christophe JAILLET    2018-03-12  231  	if (!regs) {
-2c18107b9d5897 Christophe JAILLET    2018-03-12  232  		ret = -EADDRNOTAVAIL;
-2c18107b9d5897 Christophe JAILLET    2018-03-12  233  		goto free_drm;
-2c18107b9d5897 Christophe JAILLET    2018-03-12  234  	}
-bbbe775ec5b5da Neil Armstrong        2016-11-10  235  
-bbbe775ec5b5da Neil Armstrong        2016-11-10  236  	priv->hhi = devm_regmap_init_mmio(dev, regs,
-bbbe775ec5b5da Neil Armstrong        2016-11-10  237  					  &meson_regmap_config);
-bbbe775ec5b5da Neil Armstrong        2016-11-10  238  	if (IS_ERR(priv->hhi)) {
-bbbe775ec5b5da Neil Armstrong        2016-11-10  239  		dev_err(&pdev->dev, "Couldn't create the HHI regmap\n");
-2c18107b9d5897 Christophe JAILLET    2018-03-12  240  		ret = PTR_ERR(priv->hhi);
-2c18107b9d5897 Christophe JAILLET    2018-03-12  241  		goto free_drm;
-bbbe775ec5b5da Neil Armstrong        2016-11-10  242  	}
-bbbe775ec5b5da Neil Armstrong        2016-11-10  243  
-66cae477c380d1 Maxime Jourdan        2018-11-05  244  	priv->canvas = meson_canvas_get(dev);
-2bf6b5b0e374fc Maxime Jourdan        2019-03-11  245  	if (IS_ERR(priv->canvas)) {
-2bf6b5b0e374fc Maxime Jourdan        2019-03-11  246  		ret = PTR_ERR(priv->canvas);
-2bf6b5b0e374fc Maxime Jourdan        2019-03-11  247  		goto free_drm;
-2bf6b5b0e374fc Maxime Jourdan        2019-03-11  248  	}
-2bf6b5b0e374fc Maxime Jourdan        2019-03-11  249  
-66cae477c380d1 Maxime Jourdan        2018-11-05  250  	ret = meson_canvas_alloc(priv->canvas, &priv->canvas_id_osd1);
-66cae477c380d1 Maxime Jourdan        2018-11-05  251  	if (ret)
-66cae477c380d1 Maxime Jourdan        2018-11-05  252  		goto free_drm;
-f9a2348196d1ab Neil Armstrong        2018-11-06  253  	ret = meson_canvas_alloc(priv->canvas, &priv->canvas_id_vd1_0);
-a695949b2e9bb6 Yao Zi                2024-07-03  254  	if (ret)
-a695949b2e9bb6 Yao Zi                2024-07-03  255  		goto free_canvas_osd1;
-f9a2348196d1ab Neil Armstrong        2018-11-06  256  	ret = meson_canvas_alloc(priv->canvas, &priv->canvas_id_vd1_1);
-a695949b2e9bb6 Yao Zi                2024-07-03  257  	if (ret)
-a695949b2e9bb6 Yao Zi                2024-07-03  258  		goto free_canvas_vd1_0;
-f9a2348196d1ab Neil Armstrong        2018-11-06  259  	ret = meson_canvas_alloc(priv->canvas, &priv->canvas_id_vd1_2);
-a695949b2e9bb6 Yao Zi                2024-07-03  260  	if (ret)
-a695949b2e9bb6 Yao Zi                2024-07-03  261  		goto free_canvas_vd1_1;
-bbbe775ec5b5da Neil Armstrong        2016-11-10  262  
-bbbe775ec5b5da Neil Armstrong        2016-11-10  263  	priv->vsync_irq = platform_get_irq(pdev, 0);
-bbbe775ec5b5da Neil Armstrong        2016-11-10  264  
-e770f6bf18182b Christophe JAILLET    2018-03-12  265  	ret = drm_vblank_init(drm, 1);
-e770f6bf18182b Christophe JAILLET    2018-03-12  266  	if (ret)
-a695949b2e9bb6 Yao Zi                2024-07-03  267  		goto free_canvas_vd1_2;
-e770f6bf18182b Christophe JAILLET    2018-03-12  268  
-8976eeee8de05f Neil Armstrong        2020-04-28  269  	/* Assign limits per soc revision/package */
-8976eeee8de05f Neil Armstrong        2020-04-28  270  	for (i = 0 ; i < ARRAY_SIZE(meson_drm_soc_attrs) ; ++i) {
-8976eeee8de05f Neil Armstrong        2020-04-28  271  		if (soc_device_match(meson_drm_soc_attrs[i].attrs)) {
-8976eeee8de05f Neil Armstrong        2020-04-28  272  			priv->limits = &meson_drm_soc_attrs[i].limits;
-8976eeee8de05f Neil Armstrong        2020-04-28  273  			break;
-8976eeee8de05f Neil Armstrong        2020-04-28  274  		}
-8976eeee8de05f Neil Armstrong        2020-04-28  275  	}
-8976eeee8de05f Neil Armstrong        2020-04-28  276  
-6848c291a54f8c Thomas Zimmermann     2021-04-12  277  	/*
-6848c291a54f8c Thomas Zimmermann     2021-04-12  278  	 * Remove early framebuffers (ie. simplefb). The framebuffer can be
-6848c291a54f8c Thomas Zimmermann     2021-04-12  279  	 * located anywhere in RAM
-6848c291a54f8c Thomas Zimmermann     2021-04-12  280  	 */
-736db96696b623 Thomas Zimmermann     2024-09-30  281  	ret = aperture_remove_all_conflicting_devices(meson_driver.name);
-6848c291a54f8c Thomas Zimmermann     2021-04-12  282  	if (ret)
-a695949b2e9bb6 Yao Zi                2024-07-03  283  		goto free_canvas_vd1_2;
-e3de0aa6c9afdc Maxime Jourdan        2018-12-10  284  
-bd9ff7b521a647 Simona Vetter         2020-03-23  285  	ret = drmm_mode_config_init(drm);
-bd9ff7b521a647 Simona Vetter         2020-03-23  286  	if (ret)
-a695949b2e9bb6 Yao Zi                2024-07-03  287  		goto free_canvas_vd1_2;
-a41e82e6c4575b Neil Armstrong        2017-04-04  288  	drm->mode_config.max_width = 3840;
-a41e82e6c4575b Neil Armstrong        2017-04-04  289  	drm->mode_config.max_height = 2160;
-a41e82e6c4575b Neil Armstrong        2017-04-04  290  	drm->mode_config.funcs = &meson_mode_config_funcs;
-ce0210c1243303 Neil Armstrong        2019-01-14  291  	drm->mode_config.helper_private	= &meson_mode_config_helpers;
-a41e82e6c4575b Neil Armstrong        2017-04-04  292  
-a41e82e6c4575b Neil Armstrong        2017-04-04  293  	/* Hardware Initialization */
-a41e82e6c4575b Neil Armstrong        2017-04-04  294  
-09762525d6eafb Neil Armstrong        2017-12-06  295  	meson_vpu_init(priv);
-a41e82e6c4575b Neil Armstrong        2017-04-04  296  	meson_venc_init(priv);
-a41e82e6c4575b Neil Armstrong        2017-04-04  297  	meson_vpp_init(priv);
-a41e82e6c4575b Neil Armstrong        2017-04-04  298  	meson_viu_init(priv);
-d1b5e41e13a7e9 Neil Armstrong        2019-10-21  299  	if (priv->afbcd.ops) {
-d1b5e41e13a7e9 Neil Armstrong        2019-10-21  300  		ret = priv->afbcd.ops->init(priv);
-d1b5e41e13a7e9 Neil Armstrong        2019-10-21  301  		if (ret)
-a695949b2e9bb6 Yao Zi                2024-07-03  302  			goto free_canvas_vd1_2;
-d1b5e41e13a7e9 Neil Armstrong        2019-10-21  303  	}
-bbbe775ec5b5da Neil Armstrong        2016-11-10  304  
-bbbe775ec5b5da Neil Armstrong        2016-11-10  305  	/* Encoder Initialization */
-bbbe775ec5b5da Neil Armstrong        2016-11-10  306  
-1a9e51bef89af0 Martin Blumenstingl   2024-02-18  307  	ret = meson_encoder_cvbs_probe(priv);
-bbbe775ec5b5da Neil Armstrong        2016-11-10  308  	if (ret)
-fa747d75f65d1b Martin Blumenstingl   2021-12-31  309  		goto exit_afbcd;
-bbbe775ec5b5da Neil Armstrong        2016-11-10  310  
-8604889f83381c Neil Armstrong        2017-05-29  311  	if (has_components) {
-6a044642988b5f Neil Armstrong        2023-05-30  312  		ret = component_bind_all(dev, drm);
-a41e82e6c4575b Neil Armstrong        2017-04-04  313  		if (ret) {
-a41e82e6c4575b Neil Armstrong        2017-04-04  314  			dev_err(drm->dev, "Couldn't bind all components\n");
-6a044642988b5f Neil Armstrong        2023-05-30  315  			/* Do not try to unbind */
-6a044642988b5f Neil Armstrong        2023-05-30  316  			has_components = false;
-fa747d75f65d1b Martin Blumenstingl   2021-12-31  317  			goto exit_afbcd;
-a41e82e6c4575b Neil Armstrong        2017-04-04  318  		}
-8604889f83381c Neil Armstrong        2017-05-29  319  	}
-bbbe775ec5b5da Neil Armstrong        2016-11-10  320  
-1a9e51bef89af0 Martin Blumenstingl   2024-02-18  321  	ret = meson_encoder_hdmi_probe(priv);
-e67f6037ae1be3 Neil Armstrong        2021-10-20  322  	if (ret)
-6a044642988b5f Neil Armstrong        2023-05-30  323  		goto exit_afbcd;
-e67f6037ae1be3 Neil Armstrong        2021-10-20  324  
-42dcf15f901c82 Neil Armstrong        2023-05-30  325  	if (meson_vpu_is_compatible(priv, VPU_COMPATIBLE_G12A)) {
-1a9e51bef89af0 Martin Blumenstingl   2024-02-18  326  		ret = meson_encoder_dsi_probe(priv);
-42dcf15f901c82 Neil Armstrong        2023-05-30  327  		if (ret)
-42dcf15f901c82 Neil Armstrong        2023-05-30  328  			goto exit_afbcd;
-42dcf15f901c82 Neil Armstrong        2023-05-30  329  	}
-42dcf15f901c82 Neil Armstrong        2023-05-30  330  
-bbbe775ec5b5da Neil Armstrong        2016-11-10  331  	ret = meson_plane_create(priv);
-bbbe775ec5b5da Neil Armstrong        2016-11-10  332  	if (ret)
-6a044642988b5f Neil Armstrong        2023-05-30  333  		goto exit_afbcd;
-bbbe775ec5b5da Neil Armstrong        2016-11-10  334  
-f9a2348196d1ab Neil Armstrong        2018-11-06  335  	ret = meson_overlay_create(priv);
-f9a2348196d1ab Neil Armstrong        2018-11-06  336  	if (ret)
-6a044642988b5f Neil Armstrong        2023-05-30  337  		goto exit_afbcd;
-f9a2348196d1ab Neil Armstrong        2018-11-06  338  
-bbbe775ec5b5da Neil Armstrong        2016-11-10  339  	ret = meson_crtc_create(priv);
-bbbe775ec5b5da Neil Armstrong        2016-11-10  340  	if (ret)
-6a044642988b5f Neil Armstrong        2023-05-30  341  		goto exit_afbcd;
-bbbe775ec5b5da Neil Armstrong        2016-11-10  342  
-65a969655cb91f Thomas Zimmermann     2021-07-06  343  	ret = request_irq(priv->vsync_irq, meson_irq, 0, drm->driver->name, drm);
-bbbe775ec5b5da Neil Armstrong        2016-11-10  344  	if (ret)
-6a044642988b5f Neil Armstrong        2023-05-30  345  		goto exit_afbcd;
-bbbe775ec5b5da Neil Armstrong        2016-11-10  346  
-bbbe775ec5b5da Neil Armstrong        2016-11-10  347  	drm_mode_config_reset(drm);
-bbbe775ec5b5da Neil Armstrong        2016-11-10  348  
-bbbe775ec5b5da Neil Armstrong        2016-11-10  349  	drm_kms_helper_poll_init(drm);
-bbbe775ec5b5da Neil Armstrong        2016-11-10  350  
-bbbe775ec5b5da Neil Armstrong        2016-11-10  351  	platform_set_drvdata(pdev, priv);
-bbbe775ec5b5da Neil Armstrong        2016-11-10  352  
-bbbe775ec5b5da Neil Armstrong        2016-11-10  353  	ret = drm_dev_register(drm, 0);
-bbbe775ec5b5da Neil Armstrong        2016-11-10  354  	if (ret)
-e31803f51415af Myeonghun Pak         2026-05-25  355  		goto uninstall_poll;
-bbbe775ec5b5da Neil Armstrong        2016-11-10  356  
-57a03512c49a2e Thomas Zimmermann     2024-09-24  357  	drm_client_setup(drm, NULL);
-efbb9df91e03b3 Noralf Trønnes        2018-09-08  358  
-bbbe775ec5b5da Neil Armstrong        2016-11-10  359  	return 0;
-bbbe775ec5b5da Neil Armstrong        2016-11-10  360  
-e31803f51415af Myeonghun Pak         2026-05-25  361  uninstall_poll:
-e31803f51415af Myeonghun Pak         2026-05-25  362  	drm_kms_helper_poll_fini(drm);
-2d8f92897ad816 Jean-Philippe Brucker 2019-03-22 @363  uninstall_irq:
-65a969655cb91f Thomas Zimmermann     2021-07-06  364  	free_irq(priv->vsync_irq, drm);
-fa747d75f65d1b Martin Blumenstingl   2021-12-31  365  exit_afbcd:
-fa747d75f65d1b Martin Blumenstingl   2021-12-31  366  	if (priv->afbcd.ops)
-fa747d75f65d1b Martin Blumenstingl   2021-12-31  367  		priv->afbcd.ops->exit(priv);
-a695949b2e9bb6 Yao Zi                2024-07-03  368  free_canvas_vd1_2:
-a695949b2e9bb6 Yao Zi                2024-07-03  369  	meson_canvas_free(priv->canvas, priv->canvas_id_vd1_2);
-a695949b2e9bb6 Yao Zi                2024-07-03  370  free_canvas_vd1_1:
-a695949b2e9bb6 Yao Zi                2024-07-03  371  	meson_canvas_free(priv->canvas, priv->canvas_id_vd1_1);
-a695949b2e9bb6 Yao Zi                2024-07-03  372  free_canvas_vd1_0:
-a695949b2e9bb6 Yao Zi                2024-07-03  373  	meson_canvas_free(priv->canvas, priv->canvas_id_vd1_0);
-a695949b2e9bb6 Yao Zi                2024-07-03  374  free_canvas_osd1:
-a695949b2e9bb6 Yao Zi                2024-07-03  375  	meson_canvas_free(priv->canvas, priv->canvas_id_osd1);
-bbbe775ec5b5da Neil Armstrong        2016-11-10  376  free_drm:
-dcacf65139e3de Christophe JAILLET    2018-03-12  377  	drm_dev_put(drm);
-bbbe775ec5b5da Neil Armstrong        2016-11-10  378  
-42dcf15f901c82 Neil Armstrong        2023-05-30  379  	meson_encoder_dsi_remove(priv);
-6a044642988b5f Neil Armstrong        2023-05-30  380  	meson_encoder_hdmi_remove(priv);
-6a044642988b5f Neil Armstrong        2023-05-30  381  	meson_encoder_cvbs_remove(priv);
-6a044642988b5f Neil Armstrong        2023-05-30  382  
-6a044642988b5f Neil Armstrong        2023-05-30  383  	if (has_components)
-6a044642988b5f Neil Armstrong        2023-05-30  384  		component_unbind_all(dev, drm);
-6a044642988b5f Neil Armstrong        2023-05-30  385  
-bbbe775ec5b5da Neil Armstrong        2016-11-10  386  	return ret;
-bbbe775ec5b5da Neil Armstrong        2016-11-10  387  }
-bbbe775ec5b5da Neil Armstrong        2016-11-10  388  
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
