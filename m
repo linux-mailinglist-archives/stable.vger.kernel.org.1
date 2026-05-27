@@ -1,250 +1,234 @@
-Return-Path: <stable+bounces-254653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254654-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8D4KOlxCF2ov/AcAu9opvQ
-	(envelope-from <stable+bounces-254653-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 21:13:32 +0200
+	id +LvRKf5CF2ov/AcAu9opvQ
+	(envelope-from <stable+bounces-254654-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 21:16:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62A9C5E967E
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 21:13:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 321A75E96E5
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 21:16:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D845A302978E
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 19:13:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DA0C7302796F
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 19:16:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C08367298;
-	Wed, 27 May 2026 19:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F78636A366;
+	Wed, 27 May 2026 19:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="fXNGzB3T"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ValWSb2X"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05C1365A03
-	for <stable@vger.kernel.org>; Wed, 27 May 2026 19:13:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779909204; cv=pass; b=RyaW8SpbtBM/s3dLy0kqgpAmjyO3KMFfrX3KBii/7cWoQyR2zcaEk0OGlNSxgVWViiYEDl2rPc/An/+D0XF3sitpeEwBB/e6zqimsCZzw7loex/eIDC+qS0QppsGSDZHA6rKSOLcvniIOq0x9af7+LBkkdH5mMCw7nyoQ3/wq/o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779909204; c=relaxed/simple;
-	bh=arW85NP4G3Vx1E1uaf3yqqPfSSzR3Kno27p4gRd3hlE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oYQ6lwnGFdZIRmJr7ZjpBpz/2YZUj7741VOCUpoysmjz15/QU9MBfoqmQywDvykHhhtT92cICEeq4sFKYl8hbwEz0H7aHXSN5tu45W+kAuSbFUrWfug4F+ekDeXN5iuqrxrQzdKRlMak+uvplnBXmPX/dX5Hg68Hw5x23d0PWsM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=fXNGzB3T; arc=pass smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2b45cb89f7eso81362975ad.0
-        for <stable@vger.kernel.org>; Wed, 27 May 2026 12:13:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779909202; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Yrsx9UyzFqE+jAh7fAlpUKEJPAORblSa+zKsAvchuACI/fIBaagZTVKBwU1/UyoNtt
-         h0jyiOvw+IBg3rID8Id6vKxKUMNLBP74zSpM2atC39Cisu8V73kdxP0bv1eRdE2uS+s6
-         giHHSIRYx6RsMPRGLHL/vhSefYnKbiywclKGH+lw/U02qZ8pVXudLuWP+jtor/9AWgX+
-         BfeqaI72y0CS6cQUTiIpVtbZOkyln3bnhulqTQXVkwEAgtQLAPZ9aiq5u4pY/Nz8zvdn
-         yAWw/HdxN+DTNn+77atbl65M5p53W4Ztx9W73AyI6y+ZdKem6b9O9vuqB8StH+hWr/6K
-         4fww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ZBJOcUZKwlryBrLyHrM1pbqAMloKqVU+cfZbZQFpt1E=;
-        fh=u+YrH3oOJwJ/AGthG8cuXGHnAHWSMAQuHrduzvAKiDc=;
-        b=M+mbQrgMNzcjmx+rE0Q1N90Zs5NNer8NroKsZs5A6ek+UlMlJAGdu4neO8df1U8bJ9
-         F91RqbFfCQwuxn50BPaT38E8vqXuCk2tk5cMZt7iihJMk8Tjb74nF+8W98gV13z6o1cG
-         ibg5wvmbOMZyeL79SU8DqCyVSJbaBoGZH1KbfdInONVmynJmKh4R4IVkvDzsysdTVdBQ
-         lJbSQPdxId5wcnWPRs8hWXogfj25sDQuf+hxXTEGqCZ9NkIrA3cdJuDXU87767q/WxkK
-         Fphkk38iOa/zs5+PxZJaw4rDt4Gxz7rEP52hCJeqKfPBHDC5FFOKqRwCjm5Ubu10drs6
-         nXuQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB2936680F
+	for <stable@vger.kernel.org>; Wed, 27 May 2026 19:16:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779909366; cv=none; b=p340L/R9ALaB4SuCosn2fm10LWzALsd4FS5wxjw2LmCilJwk1aMrKzpqqzjHsmrK6nTYdw40qif818dQK+3Px9qK2H/LzWf1flk6iE9hs1zITYZG7Ef6kkeckoTh3rEt1v0GI9M1uFco0qQF5aS+PeK4s6n4wbY/lb/0QPYd0hc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779909366; c=relaxed/simple;
+	bh=W3T4QxdLFfHbdc/KmpcaHHy9IfSTsNZ4bf6F6ZMHiTk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=epYHrJ++iVSPfgl2aYUgd5kVILp6xFn0tPwRbKbbQxNFOa4yZG73bYs0hRKw/cqISwiQH7ypcUA7L2/tjBhJOeUzOL7K99NL9qr+2Pt8mAbEnBB3+l+8MnbxySRJr0DigXQtFxRJeRccaTQbykC0i18e+OfuthqeDA7LdrgT4oQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ValWSb2X; arc=none smtp.client-ip=209.85.215.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c80227b1f6cso4521209a12.1
+        for <stable@vger.kernel.org>; Wed, 27 May 2026 12:16:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1779909202; x=1780514002; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZBJOcUZKwlryBrLyHrM1pbqAMloKqVU+cfZbZQFpt1E=;
-        b=fXNGzB3TFZyq7edBEWR4FNBxN4Pv/CMd8lAJud0CCOx25HDdq3FdeYPDGAbc0ymlOO
-         CavMLnlvTtnFjI6LdUUHHqETuav4Ky3H8LXzFWQ3UTbczoFKQpDI4jWiVF9270o4OxZb
-         ntr8GKU2YGEuUDZ5EgQyE4SlzXv1rMCGNwLU4biQ4WIGyoop8OKq/3vLR+eZlxXmpfRM
-         oVO/djy0y2D/JjWMcqfY7OMSVzj2G7BRuXbO76ucCTGqAmNfy9zGzce7qm5jTQOB+8R6
-         CrjoBgQ+t93qfDuycAV56GpD1pq8GKnLgdV5wOZz87g6mn0Z6TRzkBjPgddEVaU3ut8Z
-         dQ2Q==
+        d=gmail.com; s=20251104; t=1779909364; x=1780514164; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=jVdozbgHNmRboTjJqPe1n9RlPVUR0qDZvYcaF2yAV8s=;
+        b=ValWSb2XLrdf3Bw6PhZo9e+CRjbSLnpGiuOU5m4gAa41n1wUh8H8bFDhf+XAJslB2h
+         /448U7HWQ4FjK9XeYxEPgefvubM0bnISKWa4CRNt0kdZhJW9VR8eJ7A4/2z6Zm/BPAGf
+         g6as7/kz4YuAY9lGEGPGfeXwks+Jj/7TSoPLrbW/RwJALfQtBo8XlwucBqaWKcOBQLM1
+         2nYgOZYX6G9y4RbrYBZYfdvtIJGEs8VsQOZL0pzOdXDwcAwwdy3+n3B2fxv6xsZk+2vM
+         EdM5rf0i0mq4LAgb3fqvp63PgK+3fNb1QQoxS1zJs6PpS2hYI52rHrKMfSfmjckYmd9Q
+         b4aA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779909202; x=1780514002;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ZBJOcUZKwlryBrLyHrM1pbqAMloKqVU+cfZbZQFpt1E=;
-        b=d5ipIkCa0JjBfvB08BWETVKpRlsLq5pK8j/cKGiVbINQ7hbrMUTPsdeU8vfRzGDLQn
-         g+h283IMTdurb1OPsLkcVw85Jy4AZ/5qkwXxoWyzUrTes6Bk8DMu8iC9c3EjiZoPyG9k
-         Ms7y2UMqIlD7nHRDokX2D4+xV5OdkLcedIYjr0N+UqoyTUTh/Eq7ieF2IV8Gi15XnVJB
-         eexMUAV5eEVHpXNZgRy18M/LqrbbO6BLgkCcH6+vf5nRI6ANoIoAgLCD6fzfJOLd22R2
-         KSj86Ya+zxCC7yT/WCi47s/h35v7WGuSRygy3QiSJhK/O9ddGQZjeEXEdvrvMwoF5kvD
-         4o3g==
-X-Forwarded-Encrypted: i=1; AFNElJ/GvB0hKJF/BLxW2Atljz65zA4z+iBj7eksZxFRHuSYEGHrgwQdGdsTJet0a925foMcL8M+JiM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+4cFu023qZoyHx2i0Db1SKSZ/O3bb0YCxZj8I0/LTrLNgGvOU
-	tdtgG+ZYrZjPbtu4jcAU1S5vSDmw9HZtx8BHL7St13Gc8Ys64QLPEOKho4z5mzm45OBHrOV5oZu
-	EN/h1AEDhFdDysYSwQpqwk6FyDablYwGwa7XjKgLI
-X-Gm-Gg: Acq92OF7bTVKy3yUV8wMXa2mI0E31IMe9LrmOmu0F/7/1W8d63G/r9G6XeyoBvPlwRN
-	ISWRnYpqTkutU5Xn2FeOzYTHh4WFEpj0bPjzlrsaIotpLadkaASRCcWG1DBNj40oh5/O30lF30/
-	d5ZFnO0wN8HdNsTa+4Rg7kE7Oug1gJHvwK8NHvROrceZydeDYfRkS3ebTkCdXd7f6Cv9nccC3mp
-	ailCR91d0zZmhDMEsPm2gYg78UiVB4C1P/zhe0pDHd4hZa+5QLlgKGUqXaLK7NHz2yyuYuDTABG
-	0Tj4DlcH3I4Zhhe4pgBFkMvt0Fuy
-X-Received: by 2002:a17:903:244c:b0:2bd:7ff4:ab0b with SMTP id
- d9443c01a7336-2beb06552bbmr262114595ad.39.1779909202300; Wed, 27 May 2026
- 12:13:22 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779909364; x=1780514164;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jVdozbgHNmRboTjJqPe1n9RlPVUR0qDZvYcaF2yAV8s=;
+        b=ABa+ACVp1AtLslpSkpcjBU07oacheABUP41guG2SJXrPkFirangWERIkp27Om82Sst
+         GWq+K47Hp0d3EnYRNOgLQe6yyuUAHF/L+TXmoij1ChrAnmi7V/Ha+B/40ZeWVU6/823N
+         MlMOVSoa9g7e7PiafAzAdzhIzjO3+axZGu12vP4HVPD3Rft6A+DW+JEKdgaQ45ql/gSX
+         fd0xE+XwV3mNT3u0jeSfOZOUyHrDY3c4z0HFgn3WCCB6qWi/rZVopclcfkS5jDT23hV6
+         55adf8Fzo/KphkBkDi6JPmEAclXQaGmwF+gJLtjsNFOLQ8Huums+qRN4fPgErrxU5iyd
+         TDDg==
+X-Forwarded-Encrypted: i=1; AFNElJ/P683ulGrD2yAjR2tQdNkjq4I8a0qi9q4vU5u3wiBCVRE2kZOkv28OCW+DaVPLFA6oLQBosTE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwmyudYMCHodvs3qsjK5wzJlRkrE3AV52tJ4L2DBsmuGBNQ4ZRL
+	DOi5dkgmEswRIDTsYfUvJcjCriKdHBrBGDr5XblLAwOXU0sqc4vJB59iAPo1KSoV
+X-Gm-Gg: Acq92OFW7qNwNCaiANTeISHZ76KBc5l0wOatuzH/46j7E5hn1CxjCkCRsklT6kI2Wyo
+	JZ4JjHKSZjpH5aefxLUbVM62JR0YYByzOrDPlORw0euJERU8zRASL9BSJyZw+kcSRdNxzPmgkGP
+	SJNt8Vsemf5nf91Z0Hq4wsZdHPa/F4pAdC410CQPFOTw5r2WmhxNPzAF6ztdnZ6oMUfLQGl4Bzl
+	vElfYXQSxQiUUhT0NcpN7p8bIvCJBwDoucPT3hxYAacmUiKQpuQtTqKpraEbeYd4pP6IcdzZSPQ
+	QhWLva3zrbqYayGG63HMxC3MAIsu7cBVWUU2SRhldiE5SgEc7fgEBpvtbmMaM6vsxlx//puLYI1
+	Kdpt6mmM02hknpUYt1o5fwwyn+FQNHHlCTMHsuWGFOjf1qaSAv2wkPTH2MAkARRrpOwwAW3GYhI
+	kf5XUyHVd37jDq6yToo3nmzAsIYqwChUxQ
+X-Received: by 2002:a05:6a00:2384:b0:827:4bca:f1a2 with SMTP id d2e1a72fcca58-8415f0f02cbmr22578450b3a.10.1779909364354;
+        Wed, 27 May 2026 12:16:04 -0700 (PDT)
+Received: from john-p8 ([98.97.42.209])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-841d70bb18bsm3595235b3a.34.2026.05.27.12.16.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 May 2026 12:16:03 -0700 (PDT)
+Date: Wed, 27 May 2026 12:16:02 -0700
+From: John Fastabend <john.fastabend@gmail.com>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: Jakub Kicinski <kuba@kernel.org>, 
+	Christopher Lusk <clusk@northecho.dev>, Sabrina Dubroca <sd@queasysnail.net>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, netdev@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net v3] net: tls: use sync AEAD for sk_msg BPF sockets
+Message-ID: <ahdAboFpUAZ8aaWm@john-p8>
+References: <20260526025154.60607-1-clusk@northecho.dev>
+ <d92bc603-e345-4dee-9ae9-6ad45e4e6642@linux.dev>
+ <20260526161101.691d4cb7@kernel.org>
+ <4626d285-57ab-46c9-b75b-d56efe7417fc@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260527-audit-update-macro-stubs-v1-1-8cda8dbdae0a@kernel.org> <CAABTaaCZD-6_ar-H8iwOka9WgtuqwEt+=umVuc5xsBHwDcnD-Q@mail.gmail.com>
-In-Reply-To: <CAABTaaCZD-6_ar-H8iwOka9WgtuqwEt+=umVuc5xsBHwDcnD-Q@mail.gmail.com>
-From: Paul Moore <paul@paul-moore.com>
-Date: Wed, 27 May 2026 15:13:06 -0400
-X-Gm-Features: AVHnY4JyDaihz5j2KMbjN9c3bYMT5kulIDfNm6wxP3VCcHavB9S0Ini-jhjCGkY
-Message-ID: <CAHC9VhQfci2gE-eD67DbjL21s7tF+rPWa9bdu0Kk5cfW+gz2Xg@mail.gmail.com>
-Subject: Re: [PATCH] audit: Update audit_alloc_mark() and audit_dupe_exe()
- CONFIG_AUDITSYSCALL=n stubs
-To: Nathan Chancellor <nathan@kernel.org>, Ricardo Robaina <rrobaina@redhat.com>
-Cc: Eric Paris <eparis@redhat.com>, Waiman Long <longman@redhat.com>, 
-	Richard Guy Briggs <rgb@redhat.com>, audit@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[paul-moore.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[paul-moore.com:s=google];
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4626d285-57ab-46c9-b75b-d56efe7417fc@linux.dev>
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254653-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254654-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[paul-moore.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[paul@paul-moore.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[johnfastabend@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 62A9C5E967E
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 321A75E96E5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, May 27, 2026 at 2:55=E2=80=AFPM Ricardo Robaina <rrobaina@redhat.co=
-m> wrote:
-> On Wed, May 27, 2026 at 2:52=E2=80=AFPM Nathan Chancellor <nathan@kernel.=
-org> wrote:
-> >
-> > Commit 84470b80b7b0 ("audit: fix recursive locking deadlock in
-> > audit_dupe_exe()") added a ctx parameter to audit_alloc_mark() and
-> > audit_dupe_exe() but did not update the macro stubs used when
-> > CONFIG_AUDITSYSCALL is not enabled, resulting in a build error for this
-> > configuration:
-> >
-> >   kernel/auditfilter.c: In function 'audit_data_to_entry':
-> >   kernel/auditfilter.c:592:85: error: macro 'audit_alloc_mark' passed 4=
- arguments, but takes just 3
-> >     592 |                         audit_mark =3D audit_alloc_mark(&entr=
-y->rule, str, f_val, NULL);
-> >         |                                                              =
-                       ^
-> >   In file included from kernel/auditfilter.c:23:
-> >   kernel/audit.h:327:9: note: macro 'audit_alloc_mark' defined here
-> >     327 | #define audit_alloc_mark(k, p, l) (ERR_PTR(-EINVAL))
-> >         |         ^~~~~~~~~~~~~~~~
-> >   kernel/auditfilter.c:592:38: error: 'audit_alloc_mark' undeclared (fi=
-rst use in this function)
-> >     592 |                         audit_mark =3D audit_alloc_mark(&entr=
-y->rule, str, f_val, NULL);
-> >         |                                      ^~~~~~~~~~~~~~~~
-> >   kernel/auditfilter.c:592:38: note: 'audit_alloc_mark' is a function-l=
-ike macro and might be used incorrectly
-> >   kernel/auditfilter.c:592:38: note: each undeclared identifier is repo=
-rted only once for each function it appears in
-> >   kernel/auditfilter.c: In function 'audit_dupe_rule':
-> >   kernel/auditfilter.c:879:59: error: macro 'audit_dupe_exe' passed 3 a=
-rguments, but takes just 2
-> >     879 |                         err =3D audit_dupe_exe(new, old, ctx)=
-;
-> >         |                                                           ^
-> >   kernel/audit.h:333:9: note: macro 'audit_dupe_exe' defined here
-> >     333 | #define audit_dupe_exe(n, o) (-EINVAL)
-> >         |         ^~~~~~~~~~~~~~
-> >   kernel/auditfilter.c:879:31: error: 'audit_dupe_exe' undeclared (firs=
-t use in this function)
-> >     879 |                         err =3D audit_dupe_exe(new, old, ctx)=
-;
-> >         |                               ^~~~~~~~~~~~~~
-> >   kernel/auditfilter.c:879:31: note: 'audit_dupe_exe' is a function-lik=
-e macro and might be used incorrectly
-> >
-> > Update the macros with the correct number of parameters to resolve the
-> > build error.
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: 84470b80b7b0 ("audit: fix recursive locking deadlock in audit_du=
-pe_exe()")
-> > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> > ---
-> >  kernel/audit.h | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/kernel/audit.h b/kernel/audit.h
-> > index f1a77aef4533..92d5e723d570 100644
-> > --- a/kernel/audit.h
-> > +++ b/kernel/audit.h
-> > @@ -324,13 +324,13 @@ extern struct list_head *audit_killed_trees(void)=
-;
-> >  #define audit_watch_path(w) ""
-> >  #define audit_watch_compare(w, i, d) 0
-> >
-> > -#define audit_alloc_mark(k, p, l) (ERR_PTR(-EINVAL))
-> > +#define audit_alloc_mark(k, p, l, c) (ERR_PTR(-EINVAL))
-> >  #define audit_mark_path(m) ""
-> >  #define audit_remove_mark(m) do { } while (0)
-> >  #define audit_remove_mark_rule(k) do { } while (0)
-> >  #define audit_mark_compare(m, i, d) 0
-> >  #define audit_exe_compare(t, m) (-EINVAL)
-> > -#define audit_dupe_exe(n, o) (-EINVAL)
-> > +#define audit_dupe_exe(n, o, c) (-EINVAL)
-> >
-> >  #define audit_remove_tree_rule(rule) BUG()
-> >  #define audit_add_tree_rule(rule) -EINVAL
-> >
-> > ---
-> > base-commit: 82bc8394b1aa74aedb9827da7730cfa6639716fd
-> > change-id: 20260527-audit-update-macro-stubs-6e4d8e8a826e
-> >
-> > Best regards,
-> > --
-> > Cheers,
-> > Nathan
-> >
+On Wed, May 27, 2026 at 01:09:44PM +0800, Jiayuan Chen wrote:
 >
-> Hi Nathan,
+>On 5/27/26 7:11 AM, Jakub Kicinski wrote:
+>>On Tue, 26 May 2026 14:44:24 +0800 Jiayuan Chen wrote:
+>>>If async_capable is set to 1, the zerocopy path in tls_sw_sendmsg() is
+>>>skipped.
+>>>Unfortunately ktls with bpf_msg_pop_data() does not work correctly under
+>>>this
+>>>copy path.
+>>>
+>>>tls_clone_plaintext_msg() aliases msg_pl onto msg_en's plaintext area
+>>>(in-place encryption).
+>>>
+>>>BPF runs bpf_msg_pop_data(msg, 0, 2). This shifts msg_pl's SG entry
+>>>forward by 2 bytes.
+>>>The two SGs now point to the same page at different offsets. Physical
+>>>memory overlaps but the start of
+>>>address differ.
+>>Ugh, do you mean that the memcopy path is broken? There are other
+>>conditions under which we may fall into it than just !async_capable :(
+>>Small send with MSG_MORE is probably the easiest?
+>>
+>>So we need to fix that one way or the other.
 >
-> Good catch, I did miss that! Looks good to me, thanks for fixing it.
 >
-> Acked-by: Ricardo Robaina <rrobaina@redhat.com>
+>Yes, the memcopy path is broken, but only when combined with sockmap's 
+>pop helper.
+>
+>
+>msg_pl and msg_en share the underlying page:
+>
+>                       msg_pl           msg_pl end
+>                         ^                     ^
+>                  |------|------------------|-------|
+>                  | hdr |   plaintext     |  tag  |
+>                  |------|------------------|-------|
+>                  ^                                      ^
+>                  |                                       |
+>              msg_en                         msg_en end
+>
+>Before encryption, sge->offset += prot->prepend_size is applied
+>to msg_en so that the encryption's dst and src point to the same
+>block of memory.
+>
+>But once pop has run — i.e. msg_pl's start advances — the encryption's 
+>dst and src
+>are no longer the same.
+>
+>crypto_ctr_crypt():
+>When dst and src have the same address, crypto saves the encryption 
+>result into a
+>temporary buffer and then writes it back to dst.
+>
+>When dst and src have different addresses, the crypto module treats 
+>them as two
+>
+>separate buffers and stops considering in-place mode.
+>
+>it's complicated to process pop/push + head/mid/tail...
 
-Thanks Nathan!
+For our use case (not deployed yet, but deployed in non-kTLS case)
+all we do is observe data and possible drop the skb if it has
+malicious HTTP headers for example.
 
-Do either of you mind if I squash these two patches together in the
-audit tree?  I would preserve Nathan's sign-off line and add a comment
-at the end of the commit description about the fix provided by Nathan.
+All this push/pop/... in the middle of the kTLS stack is painful.
 
---=20
-paul-moore.com
+One option we start rejecting these helpers? That would resolve most
+the pain I suspect. The original thought was we do have use cases
+now for userspace proxy where we insert headers.
+
+>
+>>>I think selecting a sync provider via mask = CRYPTO_ALG_ASYNC is
+>>>sufficient to
+>>>remove the -EINPROGRESS return path.
+>>>
+>>>May be time to remove skmsg from ktls? (disable by default first,
+>>>re-enable via a new ktls module_param?)
+>>Yes, we asked John F off-list to get his attention and I think there's
+>>only a vague plan to start using kTLS + sockmap, no current user
+>>(sorry if I misread / misremembered).
+
+I'm not against a cleaner solution here.
+
+Another idea: We just add a simple sockops BPF hook with the sk_buff?
+No updating sg lists, manipulating data packet sizes and so on.
+
+That would solve the vast majority of any future use case if we have
+a user that really started running kTLS and wanted the security stack
+to keep working. Even openssl usage of kTLS has really ground to a
+halt after it was initially added as far as I can tell.
+
+Something like this already on the list for recv side of tcp.
+
+  [PATCH v3 bpf-next 10/11] bpf: tcp: Add SOCK_OPS rcvlowat hook
+
+>>
+>>module params aren't a great API. If we want to deprecate it let's just
+>>remove the integration in net-next. You have my vote..
 
