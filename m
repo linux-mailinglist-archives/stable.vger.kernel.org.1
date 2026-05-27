@@ -1,185 +1,175 @@
-Return-Path: <stable+bounces-254499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254500-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJ0/KXGeFmq1ngcAu9opvQ
-	(envelope-from <stable+bounces-254499-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 09:34:09 +0200
+	id wGKEF7CfFmqBnwcAu9opvQ
+	(envelope-from <stable+bounces-254500-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 09:39:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32F185E081A
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 09:34:09 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F6A75E08C5
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 09:39:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A64AA300B623
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 07:33:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4BEC1300AD9C
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 07:39:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25E2D390CB7;
-	Wed, 27 May 2026 07:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA4323C945B;
+	Wed, 27 May 2026 07:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="asya3E9u"
+	dkim=pass (2048-bit key) header.d=jjverkuil.nl header.i=@jjverkuil.nl header.b="VC5NaRch"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from outbound.soverin.net (outbound.soverin.net [185.233.34.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3383E3C09F1
-	for <stable@vger.kernel.org>; Wed, 27 May 2026 07:33:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053DD221723;
+	Wed, 27 May 2026 07:39:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.233.34.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779867184; cv=none; b=PT27XyC8ezIpCJKw4u+RMkwzh27EcadMsXmGMYCh0YSJ7FhWVqKCeBYf8HmOw7srZtsi2wFXCFI7BHfktaMWlqA37bQV3H3aBuHtt9AaNEj5bb2JlAjFGSI4oeM7cAXooL42IE6UhIFmrp3Zy/B1+sA5/WFtTi6vYTdaSFLj7SI=
+	t=1779867550; cv=none; b=I82A2HF/MYBsxEccBHSJsJwbBuipbae4md9i/J0FOP7EZHwe1JJhG0G9fYxWl/T81MoLBNxKeA+WUjcviE2vOudwVoZ762VvEWIgdeDbOMraKy7x2FYfMU4J+lAKw+ShC5UkyOoSP+cVXobvSnBNz7wSJ3UISRsI6FBSs9/7M7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779867184; c=relaxed/simple;
-	bh=5Tee8Ss7lVikSWcDsjK7FCkoxIfVoi67SVTOwAWY7Gc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tri3Wh99/IngEFcCDv4xyGUYHype5nRDYVqdqfC1EoJYqb29Hu/Ujq7QwjUZ4u98FBQu+pU7/yWWmpJmJ4IoKoH+keHyhn4XZZ5Iws8rsQMIpTaNYy544vC82XnotA+VnbKNF4sFt8N0gvr1Fvvv/9WTm8l7igz9rw3Z/SosxtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=asya3E9u; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4904fd4f6aeso36933065e9.2
-        for <stable@vger.kernel.org>; Wed, 27 May 2026 00:33:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779867181; x=1780471981; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RvVoq60kjeElEbHQ7jSTrbLPRosQJq300xgMTu6D2Ng=;
-        b=asya3E9uIBlKxnX/WogiX7wqViawfz3VsBzW7uq2HQPqgNJH044tBgwQWvy6UPkZAZ
-         tyhsfZEIipnc5JBQSCs66GW9V+/oJQVSxVZoGm9ifIjEnukvhDkfShUO1ARGDL2j9A0w
-         lem5/MO7DgRWT8DqUhyBOY5uQ/73fMt1YjMuUVk1W1TBs1qQ6o1hopuMM5v3cvWk9bvl
-         4A9sNcV4ChLvTrIfTiBX/6/lJeE5C4709PHHbnCSyxaYM7hC5qs5UYLRjfazyGYYOHni
-         emlGe10TXYNo2PxxX4cihUn2jXot7vy9u46r4h98bNsjTdSjWdCwivtsZmM4gAUn9a4a
-         X7fA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779867181; x=1780471981;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RvVoq60kjeElEbHQ7jSTrbLPRosQJq300xgMTu6D2Ng=;
-        b=Jo4Cq+NyYXnwGFzkJtANakIhiS+JJzWDX+lD194czPwPHZgB5bas++hji3DVbdJqOV
-         NDvqXv+pyVrJHpPU5VHCsRqjd1jQd9zW2bM7IpU0sougPrjwBK7iYu0sMGYj6rVKOEwk
-         6leiijtmb8kaayYSanrZsIgS4j4XtgdSdtfDBIRvJQkxzKLOBdgXWLB/orZ+6mZ38GQ7
-         i7X1mzAjaPWyj02J5fdD7EZkz1MLoc3yJqYNz8gc1QRarTvwWZele8nCHmBaejxfxx2w
-         iBLYPjcQdo7Q4Z7MEXfbeXCe2UhqxUE+7skwRv6iMgb33Z0MA2+ow7gIPcQLrS2pZfhV
-         DQ5g==
-X-Forwarded-Encrypted: i=1; AFNElJ+Caf3N2Lt0SMlSb7efzx3e0lkCi/xZU1tlZzcZdYBxbyqoI45IaeqDltlRCFli2Ur8QYObDGM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywj7LaMUuz7lgKQPTaszv37vZiw2YNQuqkxaE2kDc4sA7rJWvfr
-	JnFnvbsAZ+8Cw1d8inpSzN+GPtyYGw4obEUGrEDxj1MA9EityVxR0dCL
-X-Gm-Gg: Acq92OHBeQmSQxrt/zcomrZP0ZIS9idortonlze+V5zIg+3NzdEsqRF0/6bGk/TU0JQ
-	IwuiKVfnSzF1PU3dwqiQ2i7/fMk0NPUIVuE/h0/s+xZVmATvypjUonVUIvctoDBc4sQ2jIb4JJw
-	54dJrO0U5N4I8VccS+QrP7QCeog/c59gSnvsUzxe36TVJWWIoXVVMDMIdrZSC2MXYYNMW6m9Sct
-	LJxtmbDlcCFA9oXDr7j29RRx0e/CQckf5yMhMdgVQzlAPsS/Ld+d8fcCgYIFfvrpA7yAtCH4tnk
-	A9uR0If09uoBVdBAbWjWLu+GkKpfQfBGxbkLoAaUkadDfwUtTx9fCHeP8hI47+WHRCVqk6xc7Mp
-	moNoLBGKn9YS7rFecrtJdf01sjRnwztQ2fH/gHwggdfoVrVuEAAUpe/w+W2vZJuj2GWEIvDSNdL
-	EHNvifbtwYr0OmrhKAaObXHxpw8qm+8+SZCexoXAoYqdxGclLpMc6MpYXxnfKTGNBM
-X-Received: by 2002:a05:600c:3e12:b0:490:40f1:5314 with SMTP id 5b1f17b1804b1-49042482845mr388648385e9.1.1779867181120;
-        Wed, 27 May 2026 00:33:01 -0700 (PDT)
-Received: from [192.168.2.178] (109-252-156-195.dynamic.spd-mgts.ru. [109.252.156.195])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45edb5a2a07sm3619977f8f.19.2026.05.27.00.32.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 27 May 2026 00:33:00 -0700 (PDT)
-Message-ID: <7cc7626a-ba83-46bb-9a52-325d84bcdfb1@gmail.com>
-Date: Wed, 27 May 2026 10:32:58 +0300
+	s=arc-20240116; t=1779867550; c=relaxed/simple;
+	bh=bS4me3VHd0oux3Vn0ftSpX0EIhEiAOzXWyNcuhDwpGc=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=abll7/zRh+etkFXM/5Zya0bTo6b+Mo9HYC3exu+Kw15HXytG13Y1HobhCuB4VMiq5JDRycuaRhpKfa7tuRN7ZpAJ2/JqJlUa7xV1gSuj1BJYEu/r7++6P34jhJ2pocYCRI6K8qi30cK2WM1E8Wubg4Ns4xAWdGiCg8/tRJ6uHPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=jjverkuil.nl; spf=pass smtp.mailfrom=jjverkuil.nl; dkim=pass (2048-bit key) header.d=jjverkuil.nl header.i=@jjverkuil.nl header.b=VC5NaRch; arc=none smtp.client-ip=185.233.34.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=jjverkuil.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jjverkuil.nl
+Received: from smtp.freedom.nl (unknown [10.10.4.107])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by outbound.soverin.net (Postfix) with ESMTPS id 4gQM1r6Gh8z1MdM;
+	Wed, 27 May 2026 07:38:56 +0000 (UTC)
+Received: from smtp.freedom.nl (smtp.freedom.nl [10.10.4.107]) by freedom.nl (Postfix) with ESMTPSA id 4gQM1q5Dwdz4M;
+	Wed, 27 May 2026 07:38:55 +0000 (UTC)
+Authentication-Results: smtp.freedom.nl;
+	dkim=pass (2048-bit key; unprotected) header.d=jjverkuil.nl header.i=@jjverkuil.nl header.a=rsa-sha256 header.s=soverin1 header.b=VC5NaRch;
+	dkim-atps=neutral
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jjverkuil.nl;
+	s=soverin1; t=1779867536;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=m7oBvJJHP9myU8RCuLTP4WJXbyCN3Ps/B/utCRjtg0E=;
+	b=VC5NaRch94XY/G/XilJKJnml9Av/mJXto5QSps/+kmKydvGo+r8CFji6UhuvtLEvFteeZj
+	VSFfdmtj+TQTbnmBq8aBWnAmAq8iaynJ7rJVU+lT4wpjMiPxqRKQAVXxUMqewt9ZJoLpME
+	aP+RniYzhkWff11KBgMCiuQgI3M7jY848dbaaPuGyP5t78HR482k9djrdI46YTZY83c7Pe
+	uHyC6VkHKVtmNU0CN5fnbHt9btSYuiZiLUX/wB8R43Vz6/oPb+DAbUIW0EaK7uRYqxLAeu
+	0qIy1tycT3fDx9C9cujYVeWjhHHMsTga4C7ZoB0SZ9OKMtiVS1bmXr8dkIKeOA==
+X-CM-Envelope: MS4xfLTCSg6FcNICcs4FaBwqXSgyY5Biws8MIu8XEBixWQ99TN6hg/93gCGmKE1/S50nyhZGN0kTnXeGJTvSHDfgleQUuH8vQ8zZiuWo8a5PXqZzIp5x1aXg n/HZy+9MJ/s2PCvn8OFkfnDZTJ6GJlQGUj90cc4umYqaEJXrHhBpPWmzvBEr6z8FWcjLHueZO8IXOZ2R4letovD4cN9LI50fR5FiRtPoFf2jb1Icnk+rFiwi sRX+w9qrujCkNWy+QPHRsdVe1/zr1rjypPTUG/EaizoZb8h8ThVQqSNb5c2SLFH0yQf8f4e2prWpSsclqDAii+H666nz/+s5KTs11tKZeVfqFwrUIHxzCoJ/ A1pCYu/x2l0Kfbp39HcArc81klbfkeUj+OBniJT5D4yC+ydiM7k=
+X-Soverin-Id: 019e685f-4a80-7206-bb05-79e009b2d40a
+Message-ID: <bc33bb80-6e21-4870-82c8-6d4714127a90@jjverkuil.nl>
+Date: Wed, 27 May 2026 09:38:09 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mfd: max77620: Avoid regmap mutex deadlock in power-off
- handler
-To: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>, Mark Brown
- <broonie@kernel.org>, Lee Jones <lee@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260520-max77620_poweroff-v1-1-9186a3bcbe9e@tecnico.ulisboa.pt>
- <c8d16352-63a3-4512-b90c-a79e7e96dd3c@gmail.com>
- <38f5201a-6b52-4f18-bbbe-775171a3f147@tecnico.ulisboa.pt>
- <20260520161900.GM2767592@google.com>
- <3b2b25f9-3ab5-4811-9945-f317b8788484@sirena.org.uk>
- <286ebc23-944a-4374-8128-3511c68cd1bf@gmail.com>
- <6017863a-6587-4b6d-8c10-ade27fbafc2c@tecnico.ulisboa.pt>
+From: Hans Verkuil <hans@jjverkuil.nl>
+Subject: Re: [PATCH] Input: rmi4 - release F54 queue on video registration
+ failure
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ Myeonghun Pak <mhun512@gmail.com>, Hans Verkuil <hverkuil@kernel.org>
+Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Ijae Kim <ae878000@gmail.com>
+References: <20260524182351.27658-1-mhun512@gmail.com>
+ <ahXYreASLGSPuIe_@google.com>
 Content-Language: en-US
-From: Dmitry Osipenko <digetx@gmail.com>
-In-Reply-To: <6017863a-6587-4b6d-8c10-ade27fbafc2c@tecnico.ulisboa.pt>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <ahXYreASLGSPuIe_@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spampanel-Class: ham
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[jjverkuil.nl,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[jjverkuil.nl:s=soverin1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254499-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[jjverkuil.nl:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-254500-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[digetx@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[hans@jjverkuil.nl,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 32F185E081A
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,jjverkuil.nl:mid,jjverkuil.nl:dkim]
+X-Rspamd-Queue-Id: 5F6A75E08C5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-21.05.2026 12:19, Diogo Ivo пишет:
-> 
-> 
-> On 5/20/26 18:44, Dmitry Osipenko wrote:
->> 20.05.2026 19:23, Mark Brown пишет:
->>> On Wed, May 20, 2026 at 05:19:00PM +0100, Lee Jones wrote:
->>>> On Wed, 20 May 2026, Diogo Ivo wrote:
->>>
->>>>> This patch was motivated by the Sashiko review I got in [1]. Its point
->>>>> here is that there is a possibility for a deadlock scenario in which
->>>>> a secondary CPU obtains the mutex for the regmap and then
->>>>> smp_send_stop()
->>>>> is called before this secondary CPU gets a chance to release the
->>>>> mutex,
->>>>> making it so that when the primary CPU tries to acquire it to issue
->>>>> the
->>>>> write it hangs. Is there something that I am misunderstanding here?
->>>>>
->>>
->>>> It's my understanding that using the Regmap wrappers _prevents_ locking
->>>> issues, rather than causes them.
->>>
->>> In the case where the CPU is being powered off during a regmap write
->>> there is a potential issue - as Diogo says if we're in the middle of
->>> holding the lock and we power off the CPU that owns the lock then it
->>> will never be able to release the lock.  I would expect the same issue
->>> to apply to a bus like I2C or SPI though, they'll hold a lock while
->>> they're in the middle of doing bus I/O unless you use some special API.
+On 5/26/26 7:36 PM, Dmitry Torokhov wrote:
+> On Mon, May 25, 2026 at 03:23:45AM +0900, Myeonghun Pak wrote:
+>> rmi_f54_probe() initializes the videobuf2 queue before registering the
+>> video device. If video_register_device() fails, probe only unregisters
+>> the V4L2 device and leaves the initialized queue unwound by neither
+>> remove nor file release paths.
 >>
->> Sounds bad
+>> Release the queue before continuing through the existing probe error
+>> path.
 >>
->> Diogo, check if shutdown works with added nosmp to kernel's cmdline.
+>> This issue was identified during our ongoing static-analysis research while
+>> reviewing kernel code.
+>>
+>> Fixes: 3a762dbd5347 ("[media] Input: synaptics-rmi4 - add support for F54 diagnostics")
+>> Cc: stable@vger.kernel.org
+>> Co-developed-by: Ijae Kim <ae878000@gmail.com>
+>> Signed-off-by: Ijae Kim <ae878000@gmail.com>
+>> Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+>> ---
+>>   drivers/input/rmi4/rmi_f54.c | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/drivers/input/rmi4/rmi_f54.c b/drivers/input/rmi4/rmi_f54.c
+>> index 61909e1a39..fca7b9fec5 100644
+>> --- a/drivers/input/rmi4/rmi_f54.c
+>> +++ b/drivers/input/rmi4/rmi_f54.c
+>> @@ -722,6 +722,7 @@ static int rmi_f54_probe(struct rmi_function *fn)
+>>   	ret = video_register_device(&f54->vdev, VFL_TYPE_TOUCH, -1);
+>>   	if (ret) {
+>>   		dev_err(&fn->dev, "Unable to register video subdevice.");
+>> +		vb2_queue_release(&f54->queue);
+
+vb2_queue_release is not needed here: since the video device was never 
+created, it also never started streaming, and this call is only needed 
+if streaming is in progress.
+
+Looking at other drivers I see that in most cases they shouldn't call
+vb2_queue_release at all. I need to go through the media drivers and
+fix them.
+
+In any case:
+
+Rejected-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+
+Regards,
+
+	Hans
+
+>>   		goto remove_v4l2;
+>>   	}
+>>   
 > 
-> So to be clear shutdown already works with regmap_update_bits() and I
-> have never encountered this deadlock in my testing as the write to power
-> off the PMIC needs to happen at a very specific timing. I imagine adding
-> nosmp will just guarantee that the deadlock can never happen.
+> Hans, could you please Ack or Nak it? It is unclear to me if this
+> cleanup is mandatory and whether it is also needed in rmi_f54_remove().
 > 
->> BTW, you can use i2c_smbus_read_byte_data+i2c_smbus_write_byte_data to
->> keep the old regmap_update_bits behaviour.
+> Thanks.
 > 
-> My question here is more if this is actually needed or we can skip the
-> read. In any case the patch that Lee merged is with regmap_update_bits()
-> so for the time being this is not a problem.
-I'd suggest not to change anything if there is no real problem.
-Otherwise you pleasing ai bot without understanding the problem, maybe
-problem doesn't exist in practice.
 
 
