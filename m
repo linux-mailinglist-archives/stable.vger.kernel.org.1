@@ -1,258 +1,279 @@
-Return-Path: <stable+bounces-254649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254650-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8Kb/Mdo7F2qg9wcAu9opvQ
-	(envelope-from <stable+bounces-254649-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 20:45:46 +0200
+	id WJU3K4U8F2qg9wcAu9opvQ
+	(envelope-from <stable+bounces-254650-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 20:48:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 296435E92F8
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 20:45:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E2755E9344
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 20:48:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 79E61303525C
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 18:43:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 442D83055DF3
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 18:47:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0178944D024;
-	Wed, 27 May 2026 18:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B32C43161A2;
+	Wed, 27 May 2026 18:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zekRCMt6";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="N14xsR6n"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jzCsJ/07"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383E93ED13C;
-	Wed, 27 May 2026 18:43:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9A2314A8E
+	for <stable@vger.kernel.org>; Wed, 27 May 2026 18:47:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779907405; cv=none; b=cgoL+flIC0oAdtP0SehhMGA+47h22zXIVJcn9nvJSfau4Ifmkil3I6vh3QgxCi4+1507EFuEV1HarzpoHJMoSG3OPW/xFNGumR8DynOQn0VzwEgBaDhBQ97bqf/Kp0v83kCABtmoBuiqj7tdl1CgduVelQhcfjaS0gW3FuAhiiA=
+	t=1779907624; cv=none; b=oqAdPS/ffFBUl1B640lely2ZSQ378VXz63fpZkh/znibjveRjdzOjZI6dH9raKy2GqI1KlLp3a/cRDw7VShwnozDikh8PgcMfxR+dzt8r+2vzJVO+uJMRrko4IDyeFIb1yDeM+F11B3JF5hN7e3EZ4X8VMlE7JTAB8JjY3e1nkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779907405; c=relaxed/simple;
-	bh=GWsqIkMxJUskl2ZuDoXcNiMWTnjDCSlTIAx/pcmHgYY=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=QywODlKQfve/dgg1BqfitVEJL4ek5Uy2QOMylDU5y9FxBl4wp+Jud0vZb3Ls6TefiCfeIHtLAGFCU8NwQxlkKsVPUWillGsLhr4tSGRLZDMuwMdT5XUcGdis0VsKJhVj/m46sCU1AbhPkVUw4eW3gF6U0qooAkkOVP/jGqaV1BU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zekRCMt6; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=N14xsR6n; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 27 May 2026 18:43:19 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1779907401;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=prZvr4xUS4O6kqiNvqd+Z/SAJZUCnwdIViPA7pz9SsM=;
-	b=zekRCMt6pqoVR57ML+ophgg7pIgBO2Qvuo1Yx/A6KAvZCO/kyWDXgO1mPrUSekcHFiQzdW
-	fJyyv74HFhmKeurL57iVJbNjI6uNddr3nDQ9lQlY7eLJmU7Uv8MdKZV7Qy4AVtyQUN7gqM
-	kayvIBdEIRCk6TZpg3rT2YwGaQj4bt2Pg1NtRnOJInr0FyGD4GgVMJIb1AkWW79crLC4NK
-	UZfCbZFtb76S0kNGllwKziQDSooFpobVdiGBJoBQkjEZLhdK9gFLVWsuWGh0XLzoTX0uKF
-	EySo6h+yNdWFewIoHShHDS/B9/NirC8aw9S8RhkewOZHqOk3F0Hl5pQlE1+ewQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1779907401;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=prZvr4xUS4O6kqiNvqd+Z/SAJZUCnwdIViPA7pz9SsM=;
-	b=N14xsR6nnfKiWARLAsqnMgdErHSreo+oo2D3yxH/t5IKzf7+vY/dOBNELQmb6nQ8ILZbFl
-	SGHUzxMaWGCFYhAw==
-From: "tip-bot2 for David Hildenbrand (Arm)" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm: Fix freeing of PMD-sized vmemmap pages
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260429-vmemmap-v2-1-8dfcacffd877@kernel.org>
-References: <20260429-vmemmap-v2-1-8dfcacffd877@kernel.org>
+	s=arc-20240116; t=1779907624; c=relaxed/simple;
+	bh=E3gc4ZRJKcVussyClDrp+FgO+UjnTznkNqO4Lm7JwrA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZbEDibm3sltXvtGS8R4y/8JstUrMW6+HME2Mj7wQkg5lRNv03MbEfWZHwPZ7rxAV2nWa+GpMsQAtLZ4HKFmuxBPjc5p8jUQL3POG7CBSVTfQ5MQthQd69qtAReT4JhUaV4258shMPASKkuuxoAgvCa+RWp+zThtgAGtHmZxHP5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jzCsJ/07; arc=none smtp.client-ip=209.85.222.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-9106ea78cd8so1841037885a.3
+        for <stable@vger.kernel.org>; Wed, 27 May 2026 11:47:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779907622; x=1780512422; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DnnO6Up2KIBP1TWTFBhRQUg/zlMghDxRrcKQAM6nb0U=;
+        b=jzCsJ/07XK8rrTte69szxmOcm2btT+/L2W5+oyXFyB0EIdUFzRvNMV59eHcomsjjKJ
+         ZFbGJeOxPSGtsFk5lTf2KIvLNT54Gx4giGGfV94CWIvwbHZQ02NYHHitE9fV2IRyShv8
+         crLAl4hz11CrBH9itcYK/Vk/UtvnO4wiS+5o47Q5Cl2gQNv5qAFpGbNHk4Bwr1Q406Lv
+         4CHKBW7eee7/8iWkerq8lGwXgBQk1FUZgBrSfXb2UiI+y8oK7HcxagapufivtJHvvAGW
+         TEwf0WEFNWoKsv/c5jYmpzWwCU4C3JZGd5zJSaGXNeAEOYlvrGe+cCoiGqvK27wo8XEK
+         s9Xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779907622; x=1780512422;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DnnO6Up2KIBP1TWTFBhRQUg/zlMghDxRrcKQAM6nb0U=;
+        b=mFT0wwdbr21r/2YVHnupXSuQ4m5FZ9FdHHDYqb4IyNzwD2iHKCqzfKDkXrwW7z7moz
+         g4VIDroJka8ZQk+5adkc47lGPXO6RX3eWD4xd1/nRX5A+Uj9oIArXwVhky43aQt9JvOR
+         DSEmZhml3T8k5RYhuvYt9F/nchpgwfzKmA9TX2yCCPrSmX27w+VGAPtNP+1bMjMau8B9
+         GXksgp0e8Mnhj5NrrursGP+kNC56c2/gyWxYtbaf3DAtxQyOgLGbO1938lvkhicFuBVz
+         IRVJyFEdRiyMyToAmaeV61NJQrngkoieDO8G01QjlGaDOQS5iVPO1nKV/J4hdLubDfLL
+         o5fg==
+X-Forwarded-Encrypted: i=1; AFNElJ8zPIODBjNGEbfCTuC6BKXBjQnt0hMXIkAGzDRoVQp1kfZi02Pcow8G6gfCnL+ZpNoggRXrXDQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YykdAu7L4Z561XW8Sv8eLAUdurltK84lHMrWI30T628wk+mTXOJ
+	Ot3Gq5J1iexW93ZRXk642vhpDpP4O69Ib7DlO3JzvOvTYhoE/75iFchtkPHk/H84M0A=
+X-Gm-Gg: Acq92OFaltYClpvyxGKxP5Tgpu9aCmLEVf372+vnFj8uiiy1yzZ8gfVlrZbd3OgSJ7M
+	yW1+d5xltv+QdWMPC5MW12T0LkIhuRYo3XWDKgzAxMR5TMOyWWh+9s3NQseEAUtFXCh7a/HE4KJ
+	3aP33PsPX03H3wqqIjmix1rkJ5+bDy3g+zbS6YvJSEDe9ZmB67yQaLMx/5VGac037fJ5pE5Kqe9
+	1RRv3CBbuiBpfH1Yck5/C6o+XfA4tOXURArAeDqyb2SlmADD/JHEMiABANwGOxOxovNzJuqQjau
+	7WcVVv9SWrt0YNumYd7BNjdSWG9oXa00loOGbam75m22LpbCbgH6QK0XyI4YenggzFj6N01cM5R
+	wxOWK/Sj+YI6FEbU73+Z6fxVOLDEBzTDKprDdwGrJvdOONyve1arVwVmM0/YUVaA1hh8AbczEFd
+	cgKR+2Tee8c4bhmDd+0CvIAOIDtFJg6/ue68RnLdwvsd6twZVs//fJJnmGIBinFt6WWiBROXvFV
+	oSW22JoAuyvynlPZc1bmhQZu+M22723e7e8ei36WOjyTTWcujOpLA==
+X-Received: by 2002:a05:620a:1b83:b0:914:b104:91e with SMTP id af79cd13be357-914b48ea7e8mr3726390385a.18.1779907621780;
+        Wed, 27 May 2026 11:47:01 -0700 (PDT)
+Received: from server0.tail6e7dd.ts.net (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-914f87d1a9bsm548554485a.30.2026.05.27.11.47.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 May 2026 11:47:01 -0700 (PDT)
+From: Michael Bommarito <michael.bommarito@gmail.com>
+To: Peter Huewe <peterhuewe@gmx.de>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>,
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	linux-integrity@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] tpm: tpm2-sessions: wait for async KPP completion in tpm_buf_append_salt
+Date: Wed, 27 May 2026 14:46:55 -0400
+Message-ID: <20260527184655.1919993-1-michael.bommarito@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <177990739970.1039918.11842540756710822689.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@kernel.org> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254649-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-254650-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
+	FREEMAIL_TO(0.00)[gmx.de,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linutronix.de:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,vger.kernel.org:replyto,linux.dev:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux-foundation.org:email]
-X-Rspamd-Queue-Id: 296435E92F8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 4E2755E9344
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The following commit has been merged into the x86/mm branch of tip:
+tpm_buf_append_salt() in drivers/char/tpm/tpm2-sessions.c calls
+crypto_kpp_generate_public_key() and crypto_kpp_compute_shared_secret()
+without installing a completion callback, discards both return values,
+and immediately frees the kpp_request via kpp_request_free(). When the
+resolved ecdh-nist-p256 KPP backend is asynchronous (atmel-ecc, HPRE,
+keembay-ocs), either operation returns -EINPROGRESS and the deferred
+completion worker dereferences the freed request.
 
-Commit-ID:     39406c05f8f150f1685839acd38ffdd69ff92031
-Gitweb:        https://git.kernel.org/tip/39406c05f8f150f1685839acd38ffdd69ff=
-92031
-Author:        David Hildenbrand (Arm) <david@kernel.org>
-AuthorDate:    Wed, 29 Apr 2026 12:49:14 +02:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Wed, 27 May 2026 11:39:38 -07:00
+The path fires automatically from the hwrng_fillfn kernel thread via
+tpm_get_random -> tpm2_get_random -> tpm2_start_auth_session ->
+tpm_buf_append_salt on every entropy poll, without any userland action.
 
-x86/mm: Fix freeing of PMD-sized vmemmap pages
+Install crypto_req_done as the completion callback, wrap both KPP
+operations in crypto_wait_req(), and propagate errors to the caller.
+The wait is a no-op for synchronous backends.
 
-Commit bf9e4e30f353 ("x86/mm: use pagetable_free()"), switched from
-freeing non-boot page tables through __free_pages() to
-pagetable_free().
-
-However, the function is also called to free vmemmap pages.
-
-Given that vmemmap pages are not page tables, already the page_ptdesc(page)
-is wrong. But worse, pagetable_free() calls:
-
-	__free_pages(page, compound_order(page));
-
-Since vmemmap pages are not compound pages (see vmemmap_alloc_block())
--- except for HVO, which doesn't apply here -- only first page of a
-PMD-sized vmemmap page is freed, leaking the other ones.
-
-Fix it by properly decoupling pagetable and vmemmap freeing.
-free_pagetable() no longer has to mess with SECTION_INFO, as only the
-vmemmap is marked like that in register_page_bootmem_memmap().
-
-The indentation in remove_pmd_table() is messed up. Fix that while
-touching it.
-
-Bootmem info handling will soon be fixed up. For now, handle it
-similar to free_pagetable(), just avoiding the ifdef.
-
-[ dhansen: changelog munging. More imperative voice ]
-
-Fixes: bf9e4e30f353 ("x86/mm: use pagetable_free()")
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Tested-by: Lance Yang <lance.yang@linux.dev>
-Link: https://lore.kernel.org/20260429-vmemmap-v2-1-8dfcacffd877@kernel.org
-Link: https://patch.msgid.link/20260429-vmemmap-v2-1-8dfcacffd877@kernel.org
+Fixes: 1085b8276bb4 ("tpm: Add the rest of the session HMAC API")
 Cc: stable@vger.kernel.org
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Assisted-by: Claude:claude-opus-4-7
 ---
- arch/x86/mm/init_64.c | 40 ++++++++++++++++++++++++++--------------
- 1 file changed, 26 insertions(+), 14 deletions(-)
 
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index df2261f..7e20b22 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -1014,7 +1014,7 @@ static void __meminit free_pagetable(struct page *page,=
- int order)
- #ifdef CONFIG_HAVE_BOOTMEM_INFO_NODE
- 		enum bootmem_type type =3D bootmem_type(page);
-=20
--		if (type =3D=3D SECTION_INFO || type =3D=3D MIX_SECTION_INFO) {
-+		if (type =3D=3D MIX_SECTION_INFO) {
- 			while (nr_pages--)
- 				put_page_bootmem(page++);
- 		} else {
-@@ -1028,13 +1028,24 @@ static void __meminit free_pagetable(struct page *pag=
-e, int order)
- 	}
+Impact: on a kernel with an async ECDH KPP provider, any local user
+can reclaim the freed kpp_request slab slot and control the indirect
+call through req->base.complete. A reproducer is available on request.
+Filing publicly per security-bugs.rst guidance.
+
+Notes:
+
+    Validation (QEMU x86_64, swtpm, async ecdh-nist-p256 stub backend):
+    
+    Stock kernel: the freed kpp_request is reclaimed by an unprivileged
+    heap spray; the deferred completion worker jumps to a controlled
+    address (RIP=0x41414141) via the overwritten req->base.complete
+    callback pointer. Reproduces on production-hardened allocator
+    configs (MEMCG, RANDOM_KMALLOC_CACHES, SLAB_FREELIST_HARDENED,
+    SLAB_FREELIST_RANDOM, INIT_ON_FREE).
+    
+    Patched kernel: crypto_wait_req() blocks until the async backend
+    completes; the worker observes a live request with the correct
+    crypto_req_done callback installed; kpp_request_free() runs only
+    after both operations finish. KASAN-clean across 50 entropy polls.
+
+ drivers/char/tpm/tpm2-sessions.c | 36 ++++++++++++++++++++++++--------
+ 1 file changed, 27 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
+index c4da6fde748f4..a23cc3a540c55 100644
+--- a/drivers/char/tpm/tpm2-sessions.c
++++ b/drivers/char/tpm/tpm2-sessions.c
+@@ -489,15 +489,17 @@ static void tpm2_KDFe(u8 z[EC_PT_SZ], const char *str, u8 *pt_u, u8 *pt_v,
+ 	sha256_final(&sctx, out);
  }
-=20
--static void __meminit free_hugepage_table(struct page *page,
-+static void __meminit free_vmemmap_pages(struct page *page, unsigned int ord=
-er,
- 		struct vmem_altmap *altmap)
+ 
+-static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip *chip,
+-				struct tpm2_auth *auth)
++static int tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip *chip,
++			       struct tpm2_auth *auth)
  {
--	if (altmap)
--		vmem_altmap_free(altmap, PMD_SIZE / PAGE_SIZE);
--	else
--		free_pagetable(page, get_order(PMD_SIZE));
-+	unsigned long nr_pages =3D 1u << order;
-+
-+	if (altmap) {
-+		vmem_altmap_free(altmap, nr_pages);
-+	} else if (PageReserved(page)) {
-+		if (IS_ENABLED(CONFIG_HAVE_BOOTMEM_INFO_NODE) &&
-+		    bootmem_type(page) =3D=3D SECTION_INFO) {
-+			while (nr_pages--)
-+				put_page_bootmem(page++);
-+		} else {
-+			free_reserved_pages(page, nr_pages);
-+		}
-+	} else {
-+		__free_pages(page, order);
+ 	struct crypto_kpp *kpp;
+ 	struct kpp_request *req;
++	DECLARE_CRYPTO_WAIT(wait);
+ 	struct scatterlist s[2], d[1];
+ 	struct ecdh p = {0};
+ 	u8 encoded_key[EC_PT_SZ], *x, *y;
+ 	unsigned int buf_len;
++	int rc;
+ 
+ 	/* secret is two sized points */
+ 	tpm_buf_append_u16(buf, (EC_PT_SZ + 2)*2);
+@@ -520,13 +522,14 @@ static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip *chip,
+ 	kpp = crypto_alloc_kpp("ecdh-nist-p256", CRYPTO_ALG_INTERNAL, 0);
+ 	if (IS_ERR(kpp)) {
+ 		dev_err(&chip->dev, "crypto ecdh allocation failed\n");
+-		return;
++		return PTR_ERR(kpp);
+ 	}
+ 
+ 	buf_len = crypto_ecdh_key_len(&p);
+ 	if (sizeof(encoded_key) < buf_len) {
+ 		dev_err(&chip->dev, "salt buffer too small needs %d\n",
+ 			buf_len);
++		rc = -EINVAL;
+ 		goto out;
+ 	}
+ 	crypto_ecdh_encode_key(encoded_key, buf_len, &p);
+@@ -535,11 +538,17 @@ static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip *chip,
+ 
+ 	/* salt is now the public point of this private key */
+ 	req = kpp_request_alloc(kpp, GFP_KERNEL);
+-	if (!req)
++	if (!req) {
++		rc = -ENOMEM;
+ 		goto out;
 +	}
++	kpp_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG,
++				 crypto_req_done, &wait);
+ 	kpp_request_set_input(req, NULL, 0);
+ 	kpp_request_set_output(req, s, EC_PT_SZ*2);
+-	crypto_kpp_generate_public_key(req);
++	rc = crypto_wait_req(crypto_kpp_generate_public_key(req), &wait);
++	if (rc)
++		goto out_free_req;
+ 	/*
+ 	 * we're not done: now we have to compute the shared secret
+ 	 * which is our private key multiplied by the tpm_key public
+@@ -551,8 +560,9 @@ static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip *chip,
+ 	kpp_request_set_input(req, s, EC_PT_SZ*2);
+ 	sg_init_one(d, auth->salt, EC_PT_SZ);
+ 	kpp_request_set_output(req, d, EC_PT_SZ);
+-	crypto_kpp_compute_shared_secret(req);
+-	kpp_request_free(req);
++	rc = crypto_wait_req(crypto_kpp_compute_shared_secret(req), &wait);
++	if (rc)
++		goto out_free_req;
+ 
+ 	/*
+ 	 * pass the shared secret through KDFe for salt. Note salt
+@@ -562,8 +572,11 @@ static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip *chip,
+ 	 */
+ 	tpm2_KDFe(auth->salt, "SECRET", x, chip->null_ec_key_x, auth->salt);
+ 
+- out:
++out_free_req:
++	kpp_request_free(req);
++out:
+ 	crypto_free_kpp(kpp);
++	return rc;
  }
-=20
- static void __meminit free_pte_table(pte_t *pte_start, pmd_t *pmd)
-@@ -1118,7 +1129,8 @@ remove_pte_table(pte_t *pte_start, unsigned long addr, =
-unsigned long end,
- 			return;
-=20
- 		if (!direct)
--			free_pagetable(pte_page(*pte), 0);
-+			/* We never populate base pages from the altmap. */
-+			free_vmemmap_pages(pte_page(*pte), 0, NULL);
-=20
- 		spin_lock(&init_mm.page_table_lock);
- 		pte_clear(&init_mm, addr, pte);
-@@ -1153,19 +1165,19 @@ remove_pmd_table(pmd_t *pmd_start, unsigned long addr=
-, unsigned long end,
- 			if (IS_ALIGNED(addr, PMD_SIZE) &&
- 			    IS_ALIGNED(next, PMD_SIZE)) {
- 				if (!direct)
--					free_hugepage_table(pmd_page(*pmd),
--							    altmap);
-+					free_vmemmap_pages(pmd_page(*pmd),
-+							   PMD_ORDER, altmap);
-=20
- 				spin_lock(&init_mm.page_table_lock);
- 				pmd_clear(pmd);
- 				spin_unlock(&init_mm.page_table_lock);
- 				pages++;
- 			} else if (vmemmap_pmd_is_unused(addr, next)) {
--					free_hugepage_table(pmd_page(*pmd),
--							    altmap);
--					spin_lock(&init_mm.page_table_lock);
--					pmd_clear(pmd);
--					spin_unlock(&init_mm.page_table_lock);
-+				free_vmemmap_pages(pmd_page(*pmd), PMD_ORDER,
-+						   altmap);
-+				spin_lock(&init_mm.page_table_lock);
-+				pmd_clear(pmd);
-+				spin_unlock(&init_mm.page_table_lock);
- 			}
- 			continue;
- 		}
+ 
+ /**
+@@ -1018,7 +1031,12 @@ int tpm2_start_auth_session(struct tpm_chip *chip)
+ 	tpm_buf_append(&buf, auth->our_nonce, sizeof(auth->our_nonce));
+ 
+ 	/* append encrypted salt and squirrel away unencrypted in auth */
+-	tpm_buf_append_salt(&buf, chip, auth);
++	rc = tpm_buf_append_salt(&buf, chip, auth);
++	if (rc) {
++		tpm2_flush_context(chip, null_key);
++		tpm_buf_destroy(&buf);
++		goto out;
++	}
+ 	/* session type (HMAC, audit or policy) */
+ 	tpm_buf_append_u8(&buf, TPM2_SE_HMAC);
+ 
+-- 
+2.53.0
+
+
 
