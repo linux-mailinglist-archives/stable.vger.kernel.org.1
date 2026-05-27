@@ -1,53 +1,69 @@
-Return-Path: <stable+bounces-254536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254537-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2B9+OSzMFmprsQcAu9opvQ
-	(envelope-from <stable+bounces-254536-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 12:49:16 +0200
+	id SLh4LGvQFmowsgcAu9opvQ
+	(envelope-from <stable+bounces-254537-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 13:07:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85D8B5E2F4C
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 12:49:15 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77FC35E315B
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 13:07:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 57910300C0D0
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 10:49:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9FC253024962
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 11:05:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36F8A3B6356;
-	Wed, 27 May 2026 10:49:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87CAE3F4115;
+	Wed, 27 May 2026 11:05:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b="Rx2XAw4e"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from out-13.smtp.spacemail.com (out-13.smtp.spacemail.com [63.250.43.96])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24339248F57;
-	Wed, 27 May 2026 10:49:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B803914FF;
+	Wed, 27 May 2026 11:05:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.250.43.96
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779878954; cv=none; b=ONXYb2e647Hyst6tnAJmhTxjw0T06BEndwAy387c+oV233bALCpy2/sS0OLbk9f1iFKiU56r8gTFnHTyaQfB/WPnY2EBsTQXpftzzqsNVIy43GD6ddRI4hGHGNHAhLri48v57KON0WYUDWNISQcZU/Cglx8LzJsIqri+akwF/Bs=
+	t=1779879905; cv=none; b=AqT1U21bsJ4tJ3nzWtywvqoLr2AVPBbJAbOQu/xJQFnGG6HBuwlURj/uoEvF0uDXUL5hSsSE2CJ2mIiq+OAwWg24eCpdbMAkZ3uI5HSGlPYIGZrbm9DkAwSIN0/9hUtIXOLwIysntL8fiLELAUa6pcMnmENfpAkUmwfqquw4Ggs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779878954; c=relaxed/simple;
-	bh=Vsf8NVZEUsObatARVaoDP+ocHffnuUj8GUmuVXiaEBU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gCzdaEfd7LP+vdOgrbz+sfEEnOOIpKjveXpd8zK/NFaxgal46iY4R+bIiRO9yEcDxuZNI49sM+fdUuv46cxgfY4Jt4N4kdc0daVankKF47Xa9luWQpN4x9QmbvnOAeqMV2ozL/4WhqxRVks6YtbdhAkW38+4pR3MYAmGa5spqF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dfae2b116770.home.arpa (unknown [36.110.52.3])
-	by APP-05 (Coremail) with SMTP id zQCowAAntQggzBZq9QuMEQ--.34S2;
-	Wed, 27 May 2026 18:49:04 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: Sudeep Holla <sudeep.holla@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Cc: Cristian Marussi <cristian.marussi@arm.com>,
-	arm-scmi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
+	s=arc-20240116; t=1779879905; c=relaxed/simple;
+	bh=RFxwCps8BRo0X7Ta0ylRSygPBnYr60aPkBIthbUKDbs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Oy+ECP3p/dGb4t0Nj5cHbMf8tkvAMcKSccsWP+Yh9y0ownMl7YMyHvJDhimdXzHbIc05uXIukX46igCeg53iuOo0WW3zxCSslPFlrgN0115z3Q7oPBJM3c4YtnTQKQIVWa1eyZEvPt3hNyJ6Wp6NxNxXhMlI0TY4QGCuiN3getI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai; spf=pass smtp.mailfrom=rexion.ai; dkim=fail (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b=Rx2XAw4e reason="key not found in DNS"; arc=none smtp.client-ip=63.250.43.96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rexion.ai
+Received: from Kyren (unknown [49.207.213.66])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.spacemail.com (Postfix) with ESMTPSA id 4gQRTS2sMkz8sWq;
+	Wed, 27 May 2026 10:59:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rexion.ai;
+	s=spacemail; t=1779879584;
+	bh=DgDokx5pIAzNQ53sXah/UBDCt3R4wUhOvqyXIza65bI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Rx2XAw4eoq8Z2KPLh2pTGEvqZSYW4KJh8StEC5Wo5cla2t6eNVJDOKBrahImyNtr5
+	 H89keCEG4V2JSzgSBJq7SHrgTnouVGVc9CP0DnRv9t1kGfZXGgtrQE6Xrst+1KgUqV
+	 VYgv9kx+oYMmjP2ab6b+Fm6Q9MQ0ot3DGD9/WJbPDD9jzp0TJehelBPQOc3tbIhUqK
+	 73huw5rtNvtzyQeHEWizESIsEG5oqxN7aY6Wf+4TJ1VzAVQpIStdHLIL622s9JhK2E
+	 p0+rtVzXP9OWzH6x9S2No4F+xw9kRAeDp0EYk+crHk8Lkf2BbodzWYEwYiVz93mTki
+	 hHh5i3fJ2zojQ==
+From: Rahul Chandelkar <rc@rexion.ai>
+To: rc@rexion.ai,
+	"James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>
+Cc: linux-scsi@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	io-uring@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH v2] regulator: scmi: fix of_node refcount leak in scmi_regulator_probe()
-Date: Wed, 27 May 2026 10:48:50 +0000
-Message-Id: <20260527104850.872415-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+Subject: [PATCH] scsi: bsg: copy uring_cmd payload to prevent double-fetch from shared SQE
+Date: Wed, 27 May 2026 16:29:18 +0530
+Message-ID: <20260527105931.3950913-1-rc@rexion.ai>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,88 +71,130 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAAntQggzBZq9QuMEQ--.34S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7GryrZF47Xr18Cw1UAw1UJrb_yoWkKrg_Gr
-	yfW3W7XrZF9r409rs7XFZ0qr9Ikw1qgayIvFs2kFWakw1Yv3WDJa47Xr93A3y8Z3yUtr9r
-	Ww4DCrW8Aw4a9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbcAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s
-	1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0
-	cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8Jw
-	ACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_Jw0_
-	GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxV
-	WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI
-	7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
-	4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI
-	42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUOlkVUUUUU
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCREAA2oWibzwYQACsB
+X-Envelope-From: rc@rexion.ai
 X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
+	DMARC_NA(0.00)[rexion.ai];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254536-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.884];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	R_DKIM_PERMFAIL(0.00)[rexion.ai:s=spacemail];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-254537-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rc@rexion.ai,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-0.983];
+	DKIM_TRACE(0.00)[rexion.ai:~];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 85D8B5E2F4C
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,rexion.ai:mid,rexion.ai:email]
+X-Rspamd-Queue-Id: 77FC35E315B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-scmi_regulator_probe() calls of_find_node_by_name() which takes a
-reference on the returned device node. On the error path where
-process_scmi_regulator_of_node() fails, the function returns without
-calling of_node_put() on the child node, leaking the reference.
+scsi_bsg_uring_cmd() and scsi_bsg_map_user_buffer() read bsg_uring_cmd
+fields directly from the shared mmap'd io_uring submission ring via
+io_uring_sqe128_cmd().  On the inline execution path, io_uring has not
+yet copied the SQE to kernel memory, so a concurrent userspace thread
+can modify fields between reads.
 
-Add of_node_put(np) on the error path to properly release the
-reference.
+cmd->request_len is read for the bounds check, for the cmd_len
+assignment, and for the copy_from_user length.  A racing thread can
+change request_len between the bounds check (passes with <= 32) and
+copy_from_user (uses the enlarged value), overflowing the 32-byte
+scmd->cmnd[] buffer into subsequent struct scsi_cmnd fields.
 
+scsi_bsg_map_user_buffer() independently re-derives its cmd pointer
+from the same shared SQE, re-reading dout_xfer_len, din_xfer_len,
+dout_xferp, and din_xferp, enabling direction confusion and buffer
+length races.
+
+Copy struct bsg_uring_cmd to a stack-local variable before use in both
+functions.  The pointer variable 'cmd' is redirected to the local copy
+so the rest of each function is unchanged.
+
+Tested with KASAN on QEMU (virtio-scsi, 2 vCPUs).  Without this fix,
+a two-thread race produces:
+
+  BUG: KASAN: wild-memory-access in scsi_queue_rq+0x4a3/0x58a0
+  Write of size 96 at addr dead000000001000 by task poc/67
+  Call Trace:
+   kasan_report+0xce/0x100
+   __asan_memset+0x23/0x50
+   scsi_queue_rq+0x4a3/0x58a0
+   scsi_bsg_uring_cmd+0x942/0x1570
+   io_uring_cmd+0x2f6/0x950
+   io_issue_sqe+0xe5/0x22d0
+
+Fixes: 7b6d3255e7f8 ("scsi: bsg: add io_uring passthrough handler")
 Cc: stable@vger.kernel.org
-Fixes: 0fbeae70ee7c ("regulator: add SCMI driver")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-
+Signed-off-by: Rahul Chandelkar <rc@rexion.ai>
 ---
-Change in v2:
-- fix typo in code
----
- drivers/regulator/scmi-regulator.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/scsi/scsi_bsg.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/regulator/scmi-regulator.c b/drivers/regulator/scmi-regulator.c
-index 6d609c42e479..c005e65ba0ec 100644
---- a/drivers/regulator/scmi-regulator.c
-+++ b/drivers/regulator/scmi-regulator.c
-@@ -345,8 +345,10 @@ static int scmi_regulator_probe(struct scmi_device *sdev)
- 	for_each_child_of_node_scoped(np, child) {
- 		ret = process_scmi_regulator_of_node(sdev, ph, child, rinfo);
- 		/* abort on any mem issue */
--		if (ret == -ENOMEM)
-+		if (ret == -ENOMEM) {
-+			of_node_put(np);
- 			return ret;
-+		}
- 	}
- 	of_node_put(np);
- 	/*
+diff --git a/drivers/scsi/scsi_bsg.c b/drivers/scsi/scsi_bsg.c
+index e80dec53174e..244740655eb0 100644
+--- a/drivers/scsi/scsi_bsg.c
++++ b/drivers/scsi/scsi_bsg.c
+@@ -78,13 +78,21 @@ static int scsi_bsg_map_user_buffer(struct request *req,
+ 				    struct io_uring_cmd *ioucmd,
+ 				    unsigned int issue_flags, gfp_t gfp_mask)
+ {
+-	const struct bsg_uring_cmd *cmd = io_uring_sqe128_cmd(ioucmd->sqe, struct bsg_uring_cmd);
+-	bool is_write = cmd->dout_xfer_len > 0;
+-	u64 buf_addr = is_write ? cmd->dout_xferp : cmd->din_xferp;
+-	unsigned long buf_len = is_write ? cmd->dout_xfer_len : cmd->din_xfer_len;
++	struct bsg_uring_cmd local_cmd;
++	const struct bsg_uring_cmd *cmd;
++	bool is_write;
++	u64 buf_addr;
++	unsigned long buf_len;
+ 	struct iov_iter iter;
+ 	int ret;
+ 
++	memcpy(&local_cmd, io_uring_sqe128_cmd(ioucmd->sqe, struct bsg_uring_cmd),
++	       sizeof(local_cmd));
++	cmd = &local_cmd;
++	is_write = cmd->dout_xfer_len > 0;
++	buf_addr = is_write ? cmd->dout_xferp : cmd->din_xferp;
++	buf_len = is_write ? cmd->dout_xfer_len : cmd->din_xfer_len;
++
+ 	if (ioucmd->flags & IORING_URING_CMD_FIXED) {
+ 		ret = io_uring_cmd_import_fixed(buf_addr, buf_len,
+ 						is_write ? WRITE : READ,
+@@ -104,13 +112,18 @@ static int scsi_bsg_uring_cmd(struct request_queue *q, struct io_uring_cmd *iouc
+ 			       unsigned int issue_flags, bool open_for_write)
+ {
+ 	struct scsi_bsg_uring_cmd_pdu *pdu = scsi_bsg_uring_cmd_pdu(ioucmd);
+-	const struct bsg_uring_cmd *cmd = io_uring_sqe128_cmd(ioucmd->sqe, struct bsg_uring_cmd);
++	struct bsg_uring_cmd local_cmd;
++	const struct bsg_uring_cmd *cmd;
+ 	struct scsi_cmnd *scmd;
+ 	struct request *req;
+ 	blk_mq_req_flags_t blk_flags = 0;
+ 	gfp_t gfp_mask = GFP_KERNEL;
+ 	int ret;
+ 
++	memcpy(&local_cmd, io_uring_sqe128_cmd(ioucmd->sqe, struct bsg_uring_cmd),
++	       sizeof(local_cmd));
++	cmd = &local_cmd;
++
+ 	if (cmd->protocol != BSG_PROTOCOL_SCSI ||
+ 	    cmd->subprotocol != BSG_SUB_PROTOCOL_SCSI_CMD)
+ 		return -EINVAL;
 -- 
-2.34.1
+2.54.0
 
 
