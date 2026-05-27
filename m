@@ -1,169 +1,118 @@
-Return-Path: <stable+bounces-254506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254503-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KK0YDUenFmoOoAcAu9opvQ
-	(envelope-from <stable+bounces-254506-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 10:11:51 +0200
+	id oLTUIbqmFmoOoAcAu9opvQ
+	(envelope-from <stable+bounces-254503-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 10:09:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4578A5E0E14
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 10:11:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C4C75E0DC2
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 10:09:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3914C300D6B1
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 08:11:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 87553300E179
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 08:09:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F5893CFF57;
-	Wed, 27 May 2026 08:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2027739A060;
+	Wed, 27 May 2026 08:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="bRBsSZFs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Etv+txQd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C57E3CF69B;
-	Wed, 27 May 2026 08:11:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E3D257849
+	for <stable@vger.kernel.org>; Wed, 27 May 2026 08:09:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779869504; cv=none; b=Eh3DHbLfQSs0PwjRF1HBwtBT+tF6nt9RRA4iqt08G0KCNeM6mrBMI53rRGQcQMAoOQKN5ns8SqMegEKHCcDcA7QSmPJRTNFLm4LpG0Au/Ht4aG0ftP2NNlscO+a/8KH4vz7ff4UD6jD1uJq7C7UYpqkX4XH73zGZo6Bk1AjNsFg=
+	t=1779869365; cv=none; b=Ab2/UgK7eEVLx+giafkPKmA5Zo5B3dlVnmipeRhEdC28MGlUdTAIxPWi4fP+hpos+nTFxzCaMsKU//AGvQAfU0i0H9EnRHydAGcA6ttmOTC0L7HScXIDBUJKq3ssow3rUX9bJkNZKLndwRf5ECg4umg46GhmWtIDnuvuIhSRbIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779869504; c=relaxed/simple;
-	bh=W0kvwb9oYI7nmafkyR4U8Vul+N3DYx3OERr2MYEtH+w=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hd9UI9w6p4quuJj7ufQBGQYWW1N0DtXHlDz9xxNbo0v8Ncc+s6++uUue1Px6uZ0eJQ8Cs1yYnzo/pHyqZaoDFRT9GNsZi2g/BAvQDTORT22+n217VLZ0S9Z+aN5q4O+st0yagWCmrxAepa7KyxSy2i80yAo2Wr8pBV+SLl0TKi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=bRBsSZFs; arc=none smtp.client-ip=101.71.155.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
-Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [221.228.238.82])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 4001c3292;
-	Wed, 27 May 2026 16:06:26 +0800 (GMT+08:00)
-From: Dawei Feng <dawei.feng@seu.edu.cn>
-To: mchehab@kernel.org
-Cc: laurent.pinchart@ideasonboard.com,
-	Frank.Li@nxp.com,
-	martink@posteo.de,
-	rmfrfs@gmail.com,
-	kernel@puri.sm,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	imx@lists.linux.dev,
-	linux-media@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	Dawei Feng <dawei.feng@seu.edu.cn>,
-	stable@vger.kernel.org,
-	Zilin Guan <zilin@seu.edu.cn>
-Subject: [PATCH] media: imx8mq-mipi-csi2: fix memory leak in imx8mq_mipi_csi_probe()
-Date: Wed, 27 May 2026 16:06:24 +0800
-Message-Id: <20260527080624.1717938-1-dawei.feng@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1779869365; c=relaxed/simple;
+	bh=vDD6Z/wF9FJG2OJ1sL+E6z5VJje7be/lzVJ6TlJHZLE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hp//7/hAUWx3zgqI2AL+IF4WG9wd2fI5bmEL3lvfVqh9EIN7Luxh2mx6IxvIQMZPhGu2r5SJco9/f5unsAtaCP9vVu7+pogTTlK9HWbrD5NUEuK0LVQqTAZK4PY9y9Kt8JSd58T6sGC0PzppI95omDe1Y1hDzmw1gpLJ5pCwrvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Etv+txQd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBAA41F000E9;
+	Wed, 27 May 2026 08:09:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1779869364;
+	bh=twKe+XCtClCbDOsar2qTrvVcvoqWOIlYgcPxBevZuhI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Etv+txQdGyYlCxVz1m9x/oDZkS07eSmngMyHicXbqxcxh3lbbUweavukNLY0vIT7H
+	 C6jMXQDFwKb3/XMdcAIOpiAvTc/np2ZfEluY6M/j41vEVbiDAMTEA4x+uvtgc0ryY0
+	 yiOUlylSs3oqtvvYiUs3UX32Kr28j0fkBYZMYg74=
+Date: Wed, 27 May 2026 10:08:03 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: manizada <manizada@pm.me>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: Please apply 3da1fdf4efbc to stable
+Message-ID: <2026052742-discharge-smudge-6453@gregkh>
+References: <HWDVTGhsU6ON7YOl4ipsBa-4aBO4UMs2EdpPPhEyYoOWmVqbo__aVWaSuEIqescKSIxPJalwVPc2BQax8VsPmuZUXyF14lBaCyyrnu2_40g=@pm.me>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9e6878795a03a2kunmfa06458432849
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaQh0dVh5ITEpOHkxLSE4aTFYeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUpVSUlDVUlIQ1VDSVlXWRYaDxIVHRRZQVlPS0hVSktJSE
-	5DQ1VKS0tVS1kG
-DKIM-Signature: a=rsa-sha256;
-	b=bRBsSZFszClz8dqsA7AGBJppPnp7fWke1w0tluA+26XTIxjYs+d8dTxAVzw+3pc6tiUY8xvlmReUh1t7yuNOCNpTVQFLLoQm+mXHwmjC9IVFK2W5sb2Ni7snC/rNg95oVgSQzedjjMoJ9p8VmxogeJQdZVlotcNMHZpdMK9VTeQ=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=u8Wo8LLSY0pPyy+dyeSotUY0OkUOTz16hb7bl4GVtIM=;
-	h=date:mime-version:subject:message-id:from;
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+In-Reply-To: <HWDVTGhsU6ON7YOl4ipsBa-4aBO4UMs2EdpPPhEyYoOWmVqbo__aVWaSuEIqescKSIxPJalwVPc2BQax8VsPmuZUXyF14lBaCyyrnu2_40g=@pm.me>
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
-	R_MISSING_CHARSET(0.50)[];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[ideasonboard.com,nxp.com,posteo.de,gmail.com,puri.sm,pengutronix.de,lists.linux.dev,vger.kernel.org,lists.infradead.org,seu.edu.cn];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-254506-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[17];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254503-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[seu.edu.cn:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.981];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 4578A5E0E14
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 0C4C75E0DC2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-If imx8mq_mipi_csi_init_icc() or imx8mq_mipi_csi_runtime_resume() fails
-after subdev initialization, the function fails to release the
-corresponding resources, leaking the subdev state and media entity.
+On Tue, May 26, 2026 at 05:08:43PM +0000, manizada wrote:
+> Hi stable team,
+> 
+> Please apply the following upstream commit to the supported stable trees:
+> 
+>   3da1fdf4efbc490041eb4f836bf596201203f8f2
+>   smb: client: reject userspace cifs.spnego descriptions
+> 
+> Reason:
+>   cifs.spnego descriptions contain authority-bearing fields consumed by
+>   cifs.upcall. This commit prevents userspace from creating trusted
+>   cifs.spnego descriptions via request_key(2)/add_key(2).
+> 
+> Requested branches:
+>   Please apply to all currently supported stable/LTS branches where it is
+>   applicable, including 7.0.y, 6.18.y, 6.12.y, 6.6.y, 6.1.y, 5.15.y, and
+>   5.10.y.
 
-Fix this by introducing a dedicated subdev cleanup label and routing the
-affected error paths to it. This reordering is safe as the consolidated
-label chain preserves the correct sequence without affecting other
-execution paths.
+This does not apply to the 5.15.y or 5.10.y tree, please provide a
+backported version that can apply there.
 
-The bug was first flagged by an experimental analysis tool we are
-developing for kernel memory-management bugs while analyzing
-v6.13-rc1. The tool is still under development and is not yet publicly
-available. Manual inspection confirms that the bug is still
-present in v7.1-rc5.
+thanks,
 
-An x86_64 allyesconfig build showed no new warnings. As we do not
-have suitable i.MX8MQ MIPI-CSI2 hardware to test with, no runtime
-testing was able to be performed.
-
-Fixes: cd063027c304 ("media: imx: Unstage the imx8mq-mipi-csi2 driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
----
- drivers/media/platform/nxp/imx8mq-mipi-csi2.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-index 04ebed8a0493..e5a062cc0788 100644
---- a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-+++ b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-@@ -1016,7 +1016,7 @@ static int imx8mq_mipi_csi_probe(struct platform_device *pdev)
- 
- 	ret = imx8mq_mipi_csi_init_icc(pdev);
- 	if (ret)
--		goto mutex;
-+		goto subdev;
- 
- 	/* Enable runtime PM. */
- 	pm_runtime_enable(dev);
-@@ -1036,13 +1036,14 @@ static int imx8mq_mipi_csi_probe(struct platform_device *pdev)
- 	pm_runtime_disable(&pdev->dev);
- 	imx8mq_mipi_csi_runtime_suspend(&pdev->dev);
- 
--	media_entity_cleanup(&state->sd.entity);
--	v4l2_subdev_cleanup(&state->sd);
- 	v4l2_async_nf_unregister(&state->notifier);
- 	v4l2_async_nf_cleanup(&state->notifier);
- 	v4l2_async_unregister_subdev(&state->sd);
- icc:
- 	imx8mq_mipi_csi_release_icc(pdev);
-+subdev:
-+	media_entity_cleanup(&state->sd.entity);
-+	v4l2_subdev_cleanup(&state->sd);
- mutex:
- 	mutex_destroy(&state->lock);
- 
--- 
-2.34.1
-
+greg k-h
 
