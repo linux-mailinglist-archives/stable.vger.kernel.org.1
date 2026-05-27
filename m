@@ -1,206 +1,159 @@
-Return-Path: <stable+bounces-254488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254489-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CJuVNQWBFmq7mwcAu9opvQ
-	(envelope-from <stable+bounces-254488-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 07:28:37 +0200
+	id wBCQOpCJFmounQcAu9opvQ
+	(envelope-from <stable+bounces-254489-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 08:05:04 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64EBF5DF709
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 07:28:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AB4B5DFA71
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 08:05:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7A902301725C
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 05:28:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 13ADF3033D3D
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 06:05:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F30C52E975E;
-	Wed, 27 May 2026 05:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37974283FDC;
+	Wed, 27 May 2026 06:05:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gRjFZP+0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S+ifHbzU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A2D260580;
-	Wed, 27 May 2026 05:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED255288D0
+	for <stable@vger.kernel.org>; Wed, 27 May 2026 06:04:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779859713; cv=none; b=E1N57Juf0obdlArS0aMA3KedaoujUxw0hdW7F3l5JK7o4a1Rl/Qao0Rm9a8qyIaGkfzj53AAIAwtLEI+f2z8mC9lkpVQl+/K3b1tOkFr3P9XEMiZ285dJuGZsgtTDY46igWka01PIJzHKI5sYcvdvSV5BmuXbpIcHjou8lz+szI=
+	t=1779861900; cv=none; b=KB+v8vkYHJdKavPMdWtHYFH7lgLlRUqfyCOPcyaaZc2G6shPo1Jv0d1cuMayOYQAESGeMhBeqzzR/hRmhLy8y8Z5ZXHhEfWkZotl0yBPrKz/F2E9XxAGlPPk3eK2OociwPIbFUpjOho/m/A/cKRLyiAeA0HKFbzTjUfmYm8wCL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779859713; c=relaxed/simple;
-	bh=PjTMWRlJeQw5Ke6pFnWaZg7ScFpeTF7S13zW2MGMlDU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RULDpVXB021y3JxhWuFgIzpxBDxa6YWre6ICpS2qBXcW+PSO2S5X8goKU2pAoSAz6AcYnNLzD6pMBv/uGea0yg2UlN8Ql54ad+akRFQ1pBWmiLbHHlPaSxMZ68li5yNxyvdBON8OEDrZJmRyqEsjDOttsmgmTuscOJUnioXtLvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gRjFZP+0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F9A1F000E9;
-	Wed, 27 May 2026 05:28:32 +0000 (UTC)
+	s=arc-20240116; t=1779861900; c=relaxed/simple;
+	bh=44dQ0Q0TXtC8v4rQyhZChD2//RdSKE5Oy1yNpvzYbRM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QOU441U4tm6QH1zRwMw4rx2Gi9CMC2oxwg4y7IVB0l5liRLnLTHZpSgls3wtL7NOXRIiJTJBpe2FiQakPCs0hSklY+GUUnaun5m5DBzv7WN4M5pmOttamf6O1CblnyaefCwqir7ZJfFH0R1vVJspIA+CHKuGFR0jZMzL4apaW5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S+ifHbzU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D111F000E9
+	for <stable@vger.kernel.org>; Wed, 27 May 2026 06:04:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779859712;
-	bh=1oRK91M2AE5vw24zyqUHcYd4TgAAiNpwniq3+hY0AUc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=gRjFZP+09nqM5rcAZ1qURBF2oPz0NkNqLtn+wVac7m8+jYlwyKyFCY/I6UzorE3DW
-	 aYThWYa8P6bD7+t+H95bCesedgi4plK/dDY2xsschmEbYqZxHOWGWbjS/nhYO1vhEB
-	 VY/iaLzL6PyukngrDlsEEJd44tKTjmBL5rShPt4lujQgGLvOfD6W8yn2W1J/LaOze4
-	 pNsunmnFBB5W3DJ/lFOovFL8P4mm0E5slN03ldGgW99a2p+Dt3Xb7X5Z65WUmxRx6/
-	 FvifADD0h0XHkPC/wQO9WFUZyO07RINGSwlVgo+S7n/ShHnaPDY4NL3Yqg9DW5mjtF
-	 ms26YulVIz70A==
-Date: Tue, 26 May 2026 22:28:29 -0700
-From: Namhyung Kim <namhyung@kernel.org>
-To: Tyler Stachecki <stachecki.tyler@gmail.com>
-Cc: Salvatore Bonaccorso <carnil@debian.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	stable@vger.kernel.org, patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>, Sasha Levin <sashal@kernel.org>,
-	regressions@lists.linux.dev
-Subject: Re: [PATCH 6.12 375/666] perf tool_pmu: Factor tool events into
- their own PMU
-Message-ID: <ahaA_cDtjyA7d731@google.com>
-References: <20260520162111.222830634@linuxfoundation.org>
- <20260520162119.375577583@linuxfoundation.org>
- <ahMPWN_PZlQLisk4@eldamar.lan>
- <ahYq/YrKZ+PjCh2W@luigi.stachecki.net>
+	s=k20260515; t=1779861898;
+	bh=vU21y0SHIUC3cwSTRp3cyIqWh6U++lSJj5SFMbybo8s=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=S+ifHbzUmIOr+lzuAsL76dhOFNLokxqTns3dnCJjYZaUJyNrTYZhHW2pMvCK30hBx
+	 AD2Gr6o+9qQeYAK30TgQUY+t009I/8Jj+JUzb5giAiLSUFYviHET/KjG4rk4hy+uhv
+	 QB6kKh9sPbI6Yt99aJnky8tiHG6VydaWHdZA0PFDu0IQuc62yOSEV9sTQR4t2fZnir
+	 iyFZGRgt9KyPoOfOg/c4s+K0YyPBqv5JD5FYehmUUekPj+GYIVkz6AwfrmUrU+qMGN
+	 oYs07bPW9pnPDaMhQv5cWJM7b258L8Z4gmTXltdQfXyLE4khPZdDVlcBeBhvYPUbLd
+	 cgSBNruWdyRjA==
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5a8891f0c51so11400081e87.1
+        for <stable@vger.kernel.org>; Tue, 26 May 2026 23:04:58 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/dTZqOGbFTglm70yXVWiW64k0sVPwcCE20gxqb00c+t7RCX4BKNKG2cyCLA9/w8gLzDK9hiAU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzIXxnZ9JujM/UwGuPWRaEVAGCYMHybfdnuD1+8JF27qBvY+i12
+	ET493UchIP91hYP9PkmOCtAe1fkKhUzMmKcwT5o0gO7NckDfKudqr4jLHtZwyG95k83PCcKqoYg
+	KMmV3H7XmSW2j5GqxGgtKE0qzVbi6wX0=
+X-Received: by 2002:a05:6512:114c:b0:5a8:ee4b:7011 with SMTP id
+ 2adb3069b0e04-5aa323707efmr7257719e87.17.1779861897086; Tue, 26 May 2026
+ 23:04:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ahYq/YrKZ+PjCh2W@luigi.stachecki.net>
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+References: <20260326190346.415226-1-lucid_duck@justthetip.ca>
+In-Reply-To: <20260326190346.415226-1-lucid_duck@justthetip.ca>
+From: Sean Wang <sean.wang@kernel.org>
+Date: Wed, 27 May 2026 01:04:45 -0500
+X-Gmail-Original-Message-ID: <CAGp9Lzo4p6=a1rjpGrNPb8Ttk8R25e0WAgP-D_mNEFfytfW6Tg@mail.gmail.com>
+X-Gm-Features: AVHnY4ITbiyF4hU0cSqL4c0GJRlAxhTxxdLEs7nBxxlGfRFFyanpVtA0JdWqcLE
+Message-ID: <CAGp9Lzo4p6=a1rjpGrNPb8Ttk8R25e0WAgP-D_mNEFfytfW6Tg@mail.gmail.com>
+Subject: Re: [PATCH wireless-next] wifi: mt76: mt7925: add Netgear A8500 USB
+ device ID
+To: Lucid Duck <lucid_duck@justthetip.ca>
+Cc: nbd@nbd.name, lorenzo.bianconi@redhat.com, sean.wang@mediatek.com, 
+	linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org, 
+	morrownr@gmail.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254488-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[namhyung@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[nbd.name,redhat.com,mediatek.com,vger.kernel.org,lists.infradead.org,gmail.com];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254489-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 64EBF5DF709
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 4AB4B5DFA71
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello,
+Hi Devin,
 
-On Tue, May 26, 2026 at 07:21:33PM -0400, Tyler Stachecki wrote:
-> On Sun, May 24, 2026 at 04:46:48PM +0200, Salvatore Bonaccorso wrote:
-> > hi Greg, 
-> > On Wed, May 20, 2026 at 06:19:46PM +0200, Greg Kroah-Hartman wrote:
-> > > 6.12-stable review patch.  If anyone has any objections, please let me know.
-> > > 
-> > > ------------------
-> > > 
-> > > From: Ian Rogers <irogers@google.com>
-> > > 
-> > > [ Upstream commit 240505b2d0adcdc8fd018117e88dc27b09734735 ]
-> > > 
-> > > Rather than treat tool events as a special kind of event, create a
-> > > tool only PMU where the events/aliases match the existing
-> > > duration_time, user_time and system_time events. Remove special
-> > > parsing and printing support for the tool events, but add function
-> > > calls for when PMU functions are called on a tool_pmu.
-> > > 
-> > > Move the tool PMU code in evsel into tool_pmu.c to better encapsulate
-> > > the tool event behavior in that file.
-> > 
-> > While building now a complete set of packages for Debian for 6.12.91
-> > where perf tools are included as well, I noticed that now the builds
-> > fails. In fact in v6.12.91 
-> > 
-> > $ cd tools
-> > $ LC_ALL=C.UTF-8 ARCH=x86 make perf
-> > 
-> > fails with:
-> > 
-> > [...]
-> >   CC      util/stat.o
-> > util/tool_pmu.c: In function ‘tool_pmu__config_term’:
-> > util/tool_pmu.c:62:49: error: implicit declaration of function ‘parse_events__term_type_str’; did you mean ‘parse_events_term__str’? [-Wimplicit-function-declaration]
-> >    62 |                                                 parse_events__term_type_str(term->type_term),
-> >       |                                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-> >       |                                                 parse_events_term__str
-> > util/tool_pmu.c:61:79: error: format ‘%s’ expects argument of type ‘char *’, but argument 3 has type ‘int’ [-Werror=format=]
-> >    61 |                                                 "unexpected tool event term (%s) %s",
-> >       |                                                                              ~^
-> >       |                                                                               |
-> >       |                                                                               char *
-> >       |                                                                              %d
-> >    62 |                                                 parse_events__term_type_str(term->type_term),
-> >       |                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> >       |                                                 |
-> >       |                                                 int
-> > cc1: all warnings being treated as errors
-> >   CC      util/stat-shadow.o
-> >   LD      util/hisi-ptt-decoder/perf-util-in.o
-> >   CC      util/stat-display.o
-> > make[5]: *** [/home/build/linux-stable-rc/tools/build/Makefile.build:105: util/tool_pmu.o] Error 1
-> > make[5]: *** Waiting for unfinished jobs....
-> >   CC      util/perf_api_probe.o
-> >   LD      util/perf-regs-arch/perf-util-in.o
-> > util/cgroup.c: In function ‘evlist__expand_cgroup’:
-> > util/cgroup.c:498:32: error: ‘struct evsel’ has no member named ‘first_wildcard_match’
-> >   498 |                         if (pos->first_wildcard_match)
-> >       |                                ^~
-> > util/cgroup.c:499:38: error: ‘struct evsel’ has no member named ‘first_wildcard_match’
-> >   499 |                                 evsel->first_wildcard_match = pos->first_wildcard_match->priv;
-> >       |                                      ^~
-> > util/cgroup.c:499:66: error: ‘struct evsel’ has no member named ‘first_wildcard_match’
-> >   499 |                                 evsel->first_wildcard_match = pos->first_wildcard_match->priv;
-> >       |                                                                  ^~
-> > make[5]: *** [/home/build/linux-stable-rc/tools/build/Makefile.build:105: util/cgroup.o] Error 1
-> >   LD      util/arm-spe-decoder/perf-util-in.o
-> >   LD      ui/browsers/perf-ui-in.o
-> >   LD      tests/workloads/perf-test-in.o
-> >   LD      ui/perf-ui-in.o
-> >   LD      perf-ui-in.o
-> >   AR      libperf-ui.a
-> >   LD      tests/perf-test-in.o
-> >   LD      perf-test-in.o
-> >   AR      libperf-test.a
-> >   LD      util/scripting-engines/perf-util-in.o
-> >   LD      util/intel-pt-decoder/perf-util-in.o
-> >   LD      perf-in.o
-> > make[4]: *** [/home/build/linux-stable-rc/tools/build/Makefile.build:162: util] Error 2
-> > make[3]: *** [Makefile.perf:789: perf-util-in.o] Error 2
-> > make[3]: *** Waiting for unfinished jobs....
-> >   CC      pmu-events/pmu-events.o
-> >   LD      pmu-events/pmu-events-in.o
-> > make[2]: *** [Makefile.perf:292: sub-make] Error 2
-> > make[1]: *** [Makefile:76: all] Error 2
-> > make: *** [Makefile:93: perf] Error 2
-> > 
-> > Regards,
-> > Salvatore
-> 
-> Second this - moreover, because of the other commits introduced in tools/perf
-> as of 6.12.91, it's not possible to revert just this one commit without other
-> conflicts.
+On Thu, Mar 26, 2026 at 2:07=E2=80=AFPM Lucid Duck <lucid_duck@justthetip.c=
+a> wrote:
+>
+> Add USB device ID for the Netgear A8500 (0846:9050) which uses
+> the mt7925 chipset.
+>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Lucid Duck <lucid_duck@justthetip.ca>
 
-I don't think it's meant to be in the stable tree.  Maybe need to drop
-this and later patches depend on it.
+Sorry for the late reply.
 
-Thanks,
-Namhyung
+I ran checkpatch.pl on the patch and got the following warning:
 
+WARNING: The commit message has 'stable@', perhaps it also needs a 'Fixes:'=
+ tag?
+
+Could you please send a v2 that drops the Cc: stable tag and uses:
+Signed-off-by: Devin Wittmayer <lucid_duck@justthetip.ca>
+
+to keep it consistent with the other patches you sent?
+
+Thanks.
+
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt7925/usb.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/usb.c b/drivers/ne=
+t/wireless/mediatek/mt76/mt7925/usb.c
+> index d9968f038..e44f0cafd 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7925/usb.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/usb.c
+> @@ -12,6 +12,9 @@
+>  static const struct usb_device_id mt7925u_device_table[] =3D {
+>         { USB_DEVICE_AND_INTERFACE_INFO(0x0e8d, 0x7925, 0xff, 0xff, 0xff)=
+,
+>                 .driver_info =3D (kernel_ulong_t)MT7925_FIRMWARE_WM },
+> +       /* Netgear, Inc. A8500 */
+> +       { USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9050, 0xff, 0xff, 0xff)=
+,
+> +               .driver_info =3D (kernel_ulong_t)MT7925_FIRMWARE_WM },
+>         /* Netgear, Inc. A9000 */
+>         { USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9072, 0xff, 0xff, 0xff)=
+,
+>                 .driver_info =3D (kernel_ulong_t)MT7925_FIRMWARE_WM },
+> --
+> 2.53.0
+>
+>
 
