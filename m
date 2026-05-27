@@ -1,53 +1,63 @@
-Return-Path: <stable+bounces-254502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254506-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eMKNKF+lFmoOoAcAu9opvQ
-	(envelope-from <stable+bounces-254502-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 10:03:43 +0200
+	id KK0YDUenFmoOoAcAu9opvQ
+	(envelope-from <stable+bounces-254506-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 10:11:51 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E82A85E0CBD
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 10:03:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4578A5E0E14
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 10:11:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C1E1D3013B62
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 08:03:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3914C300D6B1
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 08:11:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 486063C9EDF;
-	Wed, 27 May 2026 08:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F5893CFF57;
+	Wed, 27 May 2026 08:11:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="bRBsSZFs"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352552773CA;
-	Wed, 27 May 2026 08:03:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C57E3CF69B;
+	Wed, 27 May 2026 08:11:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779869015; cv=none; b=TWEHS8HaCeWskWbPJa83ZCHnYADUJS2Z06+PngxJrVdwt0qKavyMZ3TrVfeGgu8xYH+xfG43ZHYPT0CFAQDWkZeR/CBLn6l3CE4EEAymUVmFGDoxfxrRlnjn1Fhe7SxXGg68bU0mqIpLxmAcRrm05RVpVA0sqBCk4GaMBEHqjbA=
+	t=1779869504; cv=none; b=Eh3DHbLfQSs0PwjRF1HBwtBT+tF6nt9RRA4iqt08G0KCNeM6mrBMI53rRGQcQMAoOQKN5ns8SqMegEKHCcDcA7QSmPJRTNFLm4LpG0Au/Ht4aG0ftP2NNlscO+a/8KH4vz7ff4UD6jD1uJq7C7UYpqkX4XH73zGZo6Bk1AjNsFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779869015; c=relaxed/simple;
-	bh=S6mq/S+uDo8ws+FVAdz/OEhCkMIl/1/PwP8X6TOkemU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=k65Q7wWca3idObezuINkjuz/K4aiUaeX7gyCwUMPz/LSwSh3cDxt/tMaMtMk82GbQY/DG+W6Ci/h31MhFg3Vn28/TLx724fJ0eTB7Pvu3434p+k+daBM2HCGRmOoQxqGO24bmZRnpg+kkXCjAMVJBwP04hOsL/wQuqsu7bhl6E0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
-Received: from localhost.localdomain (unknown [36.112.3.223])
-	by APP-03 (Coremail) with SMTP id rQCowABHaN9JpRZqHlmIEg--.8338S2;
-	Wed, 27 May 2026 16:03:22 +0800 (CST)
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-To: skashyap@marvell.com,
-	jhasan@marvell.com,
-	GR-QLogic-Storage-Upstream@marvell.com,
-	James.Bottomley@HansenPartnership.com,
-	martin.petersen@oracle.com
-Cc: linux-scsi@vger.kernel.org,
+	s=arc-20240116; t=1779869504; c=relaxed/simple;
+	bh=W0kvwb9oYI7nmafkyR4U8Vul+N3DYx3OERr2MYEtH+w=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hd9UI9w6p4quuJj7ufQBGQYWW1N0DtXHlDz9xxNbo0v8Ncc+s6++uUue1Px6uZ0eJQ8Cs1yYnzo/pHyqZaoDFRT9GNsZi2g/BAvQDTORT22+n217VLZ0S9Z+aN5q4O+st0yagWCmrxAepa7KyxSy2i80yAo2Wr8pBV+SLl0TKi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=bRBsSZFs; arc=none smtp.client-ip=101.71.155.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [221.228.238.82])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 4001c3292;
+	Wed, 27 May 2026 16:06:26 +0800 (GMT+08:00)
+From: Dawei Feng <dawei.feng@seu.edu.cn>
+To: mchehab@kernel.org
+Cc: laurent.pinchart@ideasonboard.com,
+	Frank.Li@nxp.com,
+	martink@posteo.de,
+	rmfrfs@gmail.com,
+	kernel@puri.sm,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	imx@lists.linux.dev,
+	linux-media@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] scsi: bnx2fc: unmap DMA mappings when BD count exceeds firmware limit
-Date: Wed, 27 May 2026 16:03:21 +0800
-Message-Id: <20260527080321.2355821-1-lihaoxiang@isrc.iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	jianhao.xu@seu.edu.cn,
+	Dawei Feng <dawei.feng@seu.edu.cn>,
+	stable@vger.kernel.org,
+	Zilin Guan <zilin@seu.edu.cn>
+Subject: [PATCH] media: imx8mq-mipi-csi2: fix memory leak in imx8mq_mipi_csi_probe()
+Date: Wed, 27 May 2026 16:06:24 +0800
+Message-Id: <20260527080624.1717938-1-dawei.feng@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,80 +65,105 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowABHaN9JpRZqHlmIEg--.8338S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7JrWDuF4DuryrZw13CFW7Jwb_yoWDtrXEkw
-	s8tr9Fgryxtr9rKr1v9FZYv34avay7Wryv93WYk34Syw1rXFyDZFWYyrZ8Aw1UWw4xGFn8
-	Jas7ZasFkrn8ujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUb48FF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Jr0_
-	Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr
-	1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r1q
-	6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
-	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y
-	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
-	WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
-	IxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbGQ6JUUUU
-	U==
-X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiDAUAE2oWidl8IgAAso
-X-Spamd-Result: default: False [0.04 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-HM-Tid: 0a9e6878795a03a2kunmfa06458432849
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaQh0dVh5ITEpOHkxLSE4aTFYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUpVSUlDVUlIQ1VDSVlXWRYaDxIVHRRZQVlPS0hVSktJSE
+	5DQ1VKS0tVS1kG
+DKIM-Signature: a=rsa-sha256;
+	b=bRBsSZFszClz8dqsA7AGBJppPnp7fWke1w0tluA+26XTIxjYs+d8dTxAVzw+3pc6tiUY8xvlmReUh1t7yuNOCNpTVQFLLoQm+mXHwmjC9IVFK2W5sb2Ni7snC/rNg95oVgSQzedjjMoJ9p8VmxogeJQdZVlotcNMHZpdMK9VTeQ=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=u8Wo8LLSY0pPyy+dyeSotUY0OkUOTz16hb7bl4GVtIM=;
+	h=date:mime-version:subject:message-id:from;
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254502-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[ideasonboard.com,nxp.com,posteo.de,gmail.com,puri.sm,pengutronix.de,lists.linux.dev,vger.kernel.org,lists.infradead.org,seu.edu.cn];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-254506-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[lihaoxiang@isrc.iscas.ac.cn,stable@vger.kernel.org];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.967];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[seu.edu.cn:+];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[isrc.iscas.ac.cn:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: E82A85E0CBD
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 4578A5E0E14
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-bnx2fc_build_bd_list_from_sg() maps the SCSI SG list before checking
-whether the generated BD count exceeds the firmware limit. If the limit
-check fails, the function returns an error without unmapping the DMA
-mapping.
+If imx8mq_mipi_csi_init_icc() or imx8mq_mipi_csi_runtime_resume() fails
+after subdev initialization, the function fails to release the
+corresponding resources, leaking the subdev state and media entity.
 
-Unmap the SG list before returning the error.
+Fix this by introducing a dedicated subdev cleanup label and routing the
+affected error paths to it. This reordering is safe as the consolidated
+label chain preserves the correct sequence without affecting other
+execution paths.
 
-Fixes: 3c97b569505f ("scsi: bnx2fc: Limit the IO size according to the FW capability")
+The bug was first flagged by an experimental analysis tool we are
+developing for kernel memory-management bugs while analyzing
+v6.13-rc1. The tool is still under development and is not yet publicly
+available. Manual inspection confirms that the bug is still
+present in v7.1-rc5.
+
+An x86_64 allyesconfig build showed no new warnings. As we do not
+have suitable i.MX8MQ MIPI-CSI2 hardware to test with, no runtime
+testing was able to be performed.
+
+Fixes: cd063027c304 ("media: imx: Unstage the imx8mq-mipi-csi2 driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
 ---
- drivers/scsi/bnx2fc/bnx2fc_io.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/platform/nxp/imx8mq-mipi-csi2.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/bnx2fc/bnx2fc_io.c b/drivers/scsi/bnx2fc/bnx2fc_io.c
-index 33057908f147..5429f127c5b8 100644
---- a/drivers/scsi/bnx2fc/bnx2fc_io.c
-+++ b/drivers/scsi/bnx2fc/bnx2fc_io.c
-@@ -1718,6 +1718,7 @@ static int bnx2fc_build_bd_list_from_sg(struct bnx2fc_cmd *io_req)
- 	if (bd_count > BNX2FC_FW_MAX_BDS_PER_CMD) {
- 		pr_err("bd_count = %d exceeded FW supported max BD(255), task_id = 0x%x\n",
- 		       bd_count, io_req->xid);
-+		bnx2fc_unmap_sg_list(io_req);
- 		return -ENOMEM;
- 	}
+diff --git a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
+index 04ebed8a0493..e5a062cc0788 100644
+--- a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
++++ b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
+@@ -1016,7 +1016,7 @@ static int imx8mq_mipi_csi_probe(struct platform_device *pdev)
+ 
+ 	ret = imx8mq_mipi_csi_init_icc(pdev);
+ 	if (ret)
+-		goto mutex;
++		goto subdev;
+ 
+ 	/* Enable runtime PM. */
+ 	pm_runtime_enable(dev);
+@@ -1036,13 +1036,14 @@ static int imx8mq_mipi_csi_probe(struct platform_device *pdev)
+ 	pm_runtime_disable(&pdev->dev);
+ 	imx8mq_mipi_csi_runtime_suspend(&pdev->dev);
+ 
+-	media_entity_cleanup(&state->sd.entity);
+-	v4l2_subdev_cleanup(&state->sd);
+ 	v4l2_async_nf_unregister(&state->notifier);
+ 	v4l2_async_nf_cleanup(&state->notifier);
+ 	v4l2_async_unregister_subdev(&state->sd);
+ icc:
+ 	imx8mq_mipi_csi_release_icc(pdev);
++subdev:
++	media_entity_cleanup(&state->sd.entity);
++	v4l2_subdev_cleanup(&state->sd);
+ mutex:
+ 	mutex_destroy(&state->lock);
  
 -- 
-2.25.1
+2.34.1
 
 
