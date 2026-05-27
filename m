@@ -1,244 +1,180 @@
-Return-Path: <stable+bounces-254658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254659-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iJcFOo1JF2r0/wcAu9opvQ
-	(envelope-from <stable+bounces-254658-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 21:44:13 +0200
+	id kLYjLKVKF2r0/wcAu9opvQ
+	(envelope-from <stable+bounces-254659-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 21:48:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B40C5E99AA
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 21:44:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 126075E9A36
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 21:48:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D383F3035B44
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 19:44:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D88CC30A4026
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 19:47:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3580B38A73C;
-	Wed, 27 May 2026 19:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 217753B19A5;
+	Wed, 27 May 2026 19:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=starlabs-systems.20251104.gappssmtp.com header.i=@starlabs-systems.20251104.gappssmtp.com header.b="JjH+3Pdc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oFrdyPkb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0013A314D18
-	for <stable@vger.kernel.org>; Wed, 27 May 2026 19:44:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779911049; cv=pass; b=iz3mwodUkTRnZpld5BfFJp91UfaP6SVHA+D6UVga7RGysu84nmi8Ve1KbYS4wkg58nAqvWyt1moI4UH3OQOwdXKa4Llniboo2oMX641gVKSykKMUPFByLZbHMFqocGq4fWR8gqPLRcphYX/n2aDKw6TdJyZEQ+BdhMa0JYBkHN8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779911049; c=relaxed/simple;
-	bh=14VuuczbbbJJzvas9wgl1DbntX0aiuRCU3bNBOwDiiE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=V2F407HIRbNzJjqBHpzJ3gD2kzqNBhN8XX2pyRxdRVPHus4xyMKsUHcQ3kFUf5PCVWHraK1iejnyKTSM2uElZklfPBE8Ns1BV1A3Xxyc6lGM8idSGLUKzpXLMYgDKhOghN8ITv+z6rWnfz9dTd6Ady1B7MEuTDXm4/k0wu9h7/8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=starlabs.systems; spf=pass smtp.mailfrom=starlabs.systems; dkim=pass (2048-bit key) header.d=starlabs-systems.20251104.gappssmtp.com header.i=@starlabs-systems.20251104.gappssmtp.com header.b=JjH+3Pdc; arc=pass smtp.client-ip=209.85.128.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=starlabs.systems
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starlabs.systems
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-7bdf83185bbso120006197b3.2
-        for <stable@vger.kernel.org>; Wed, 27 May 2026 12:44:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779911046; cv=none;
-        d=google.com; s=arc-20240605;
-        b=h9CJ2czRBGfSpORFBdlqXF/gOWWkCC9Pb+v4lJhlM9hB5P6CwWmBRIvBE0oM0yvfHM
-         ICXQQB74zK9qC5qCzvJeaiQm/VfBr5t3Pxfxs2/6Cweszl/FPiEoJYVScnIA2qB85Li2
-         CQQ75NEl1PVn6g5qmsjH/jwfOSi0XY2vAuw8Y/sPHxPHp9uyphmgyqIM/bXJ8cwOMa+A
-         8C+z/iybE/buDxStjyjKe2Ek7dLHtfG8/lrRV1Bicjz/5GpY70GomeRQqPMT0Xu+G5To
-         U/Jh3NPdFS18OUzaGmNMF5hPQer9p480e+mz6CWkShKU5RB5CAVcM4NRZKIUCkQe5Vtr
-         oiLw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=FX5Hf9gPxUMFpP1qebZLUIn5OeRCY5lA9+CMYbnXhBs=;
-        fh=qBCU2xij2srw/meVsoSUa7wn3YYV4eGPR7cyw7G7Rtc=;
-        b=K/KFueSm79EoiPNyhJCiUVmaOnRwdsT1MorpLlBxYQ783N9Aj+HjobUc4qmnRTE2/n
-         MW8ecerm1Br5FukZamBtxiEzkhcw0KA3aZc5SqeGIBFTZwlEaszVfF+wHfp/zc2WmeYR
-         9CT4nIn8Qq9TVJl8c704tTmfQvlHMRpd6xlq2Z4Dlxyi6bA/seZ4Wg5+AP2sNBQS3nyJ
-         Rv8xcXNXdOAZvRXPBoHRsjXj9cGZppI5HpBPQPXgHsDfxunCfSMYxR5Y3atunAWlK/bj
-         x7FpMC/Ko8VKmyvE6dA+op859sbRokYLm/73O3goGcB2ZelPplO23SyQcc7dW0RfYqIN
-         cTmQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7133E3B0AE4
+	for <stable@vger.kernel.org>; Wed, 27 May 2026 19:47:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779911229; cv=none; b=XVwERVtwvcAaxA3245dhxy/gzLyMWhRz2BBE2y7IZyNDIfj3uaLELCGClVPBPRrTdvQf+brjN9EcRsI9mZqOyutdZzDJaiwlt+PKbyNbzxyDs3Rj+NlTLSnNYY27OTCkh4CE6H4XXUN3Oi5TcdFnIERETuEETbzk45LEd4AMJGY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779911229; c=relaxed/simple;
+	bh=PYpLRUGkx31RSnORmVUud1jDNUKNdi451B07enxpxEo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZEn4EZg6NvBlg0ngSn+YnVDX5Jf2UutotRgvG5/c0rd7NaCvPOI6bRS4TTy3A0Q4EAoNvSDy7564z8yCGDX6LI84qzWyr54llReClHVFCmys27lYXvfB2SyFdTTPJXrBnlIfgv/rhzCN3V9yTfsvh9GukJVs8afmPZNCpfwyiL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oFrdyPkb; arc=none smtp.client-ip=74.125.82.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-3025d725a05so27002232eec.1
+        for <stable@vger.kernel.org>; Wed, 27 May 2026 12:47:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=starlabs-systems.20251104.gappssmtp.com; s=20251104; t=1779911046; x=1780515846; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=FX5Hf9gPxUMFpP1qebZLUIn5OeRCY5lA9+CMYbnXhBs=;
-        b=JjH+3PdczhqNq+4D6+roi5vz2xZf4XRLw8jxJa4Ntaj5nq2p3HcRjU5dxC6cz2Z9Xo
-         C6wxLaggFNgzfpVa4WuolEKrw1Or0lpwXkO4fRzQI+r7+ka+XwVBakoC+eKoJA5a8cdf
-         GUhbx/CZkmqKXASowWnJn5znSxsmX9fBXKRIrfdNy/X6/99y3zfpdXJNZURe39yHmeUe
-         BXeAFcNProum98blgHKD6AR1EiX1hEXNMWthcOluYKSAOg32k9x/+svhVIX4L08vWbKf
-         rHNKYfQW8+Gb9KjZOZNk8I+CXDb+Ci2o/olbYFG27N9dr1rU8PRxT4HHvrlMnMQS6Vuv
-         9kQA==
+        d=gmail.com; s=20251104; t=1779911227; x=1780516027; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZyFFFX6XR0cRJQPeXMVh4IghXeM3GX8dFIEjzWZo0sI=;
+        b=oFrdyPkbYtnn0tV79P/aPBBVj11Ep8YLVILDYf/Q45/3LwIvVTIpNaHl/LT/xqA41z
+         L0HdW12xjK3ltioru23AGPvjeUoJoRi+ndbM6bC6/uj3mcx/5MJ2pR0MBcAQbJvR/j0C
+         BfeGbTiN0AW2tAsQ4Hbx5vGtmUl5EFmh72626vMYCFLLip742OztGI1mhM9xuYzl50PC
+         XzTyiKrudnvx2VB8RQZnN0Rk6pLlNBqSpyg8iwyUOtHzU2mtnJ2py+5ylMl2Y9IL9LVv
+         4iwrJcrvSV/38hHRnpyE0I5hc8HsIBHCi87UeOuz/QvllFZy6lyF8EUcVSIlQvhMLboo
+         1SRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779911046; x=1780515846;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FX5Hf9gPxUMFpP1qebZLUIn5OeRCY5lA9+CMYbnXhBs=;
-        b=jf6pLjIENAM3lgdNTPqDARwIbMkz6oDu9EM462I+TiM7hNMp+bJgZwmBpdoNmBhJcL
-         lV8vil34Q4XX2oGVFtHCuvnjMxxFq25n0vhv0TPGMRNvSjmb5ygdFcyS0NyrnbK3vXFA
-         M6l6h2REtB6sDVLGaTdXoLqboEVRp/K5MXgYkfbpvAOQ4t3s7JVPHfs2A7BSJXxsgROP
-         Lbo3wsH0BPuO+fIpNnOvSLaTalK/+rCCR0hhMyyKmZRe16R8s/PRXbjGCI1qenjBqie4
-         YBq907/JqVyDqx+t2imjijkJbJphBDwbyLxSuZZzTE4q3B3ZWsYrcVHZB2st4LYCo72T
-         F+Rg==
-X-Gm-Message-State: AOJu0Yz53woJqNX6OpyUNGrzJ7ab0FvN4emUcqHxOzZy1ZmtdfhecVSl
-	SdXj2VAjNZYS358MZiC+a8XYzMZAl3eeZ2dUurSU1fUoGAgYr4SLbSQVUz1ko2y5fguc2bu20y7
-	1tQVAvl5AbCGngTmtFpbpfy4LcPYxHn79sri2lv+Y
-X-Gm-Gg: Acq92OFu5Roce7FqjVf16irxg3JrEZTVUXFygzkEAECoL+k5brtYEFCLhf9NB7C5/rD
-	WfFt7x3Rqm5fHYdnwh8yOEOTYg+uT4sa6oZGL7GgYxLpQZj3V1XX7chxiDvCdKq1K+/s8xT7FdI
-	cXiGW9GH2/kN2pvWDeIp5U+N6ncqMzWP+Ds9Kn/rm/Gz5yQuoxjVwIZlhRBtFijdp+2q7YblVa1
-	YeT/Czk7WGMnJPU6sRxLhzWxnEskE6YOIc770htLPrsgAdVapw1qd9daZjbMaxeoKA04hWNNuYk
-	jixzyMDZBrXVd08uYobYUHc7zvkJQaZWR1dIIWo2vPzLbX6E
-X-Received: by 2002:a05:690c:67c5:b0:7db:f1b4:15e5 with SMTP id
- 00721157ae682-7dbf1b41890mr21136197b3.4.1779911045555; Wed, 27 May 2026
- 12:44:05 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779911227; x=1780516027;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZyFFFX6XR0cRJQPeXMVh4IghXeM3GX8dFIEjzWZo0sI=;
+        b=Ac0LwSdSoHlxnYSQ096VCXxYz7XE530TUy3WYcBfGo/EGovpRzlizA3suLfTopgSVr
+         /41ue/q0cydIWabZWUOnpPyeG0tOp393ZFwBM2qNiA70wX0yjpjpcUX+i9cNocofOb6g
+         KRrFi9Dim12Fk7UbrdQ5YfTBC/pwkHwbuSuNbhFo8YOmmPlp4Tej+onGikeUd29Isguj
+         Cng5hRGLZUJvsyJ69CdIXWIraU1P0ACypf2ZE5yk4q38d1Cva4vWJLZpP3QgHpYoFF1M
+         DoMKYLPZafVJffwI2PhOFOPJeH0+LaoRbiM0v+l8xhR/XD2S8NrEDs0hW0bRzXjsiAUx
+         xstw==
+X-Forwarded-Encrypted: i=1; AFNElJ8nFYzlAWrCvybNq7WClND0U3co4Xd5qNgE+qPgFkOhh3kle+MT/VgiaNfIWXWdaOzXozpFhuI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywg9V5l+3lImn2mUCIhEMwKZNQ6vW2LFpAh2wKySxgfhQ+qUS/d
+	nWRPOaSOJjt8B7htJ/hUqoVxmFfiAi/odCH0j0p70yjIysx0lK4iUD18
+X-Gm-Gg: Acq92OFGJQ83MsAcJW3AC+MN2mC0O7eztkk3vCuiG4qqm05tMZVmeUPMUlRwzD7RNbx
+	9znNmWHgZGcxJepJW0hF4BULVtqR9YKzQqfp4XtegHnO0a2RvF73wiIkF+A4KtjvYkwDvVV10Bw
+	zBR+GFf6dlhIfkAm8cV5nSQDTfLEjRXFiMVTCxA+1qdcCXFBmh9mMg+fSBxs1g892MQkNe9G5xN
+	tCisCdHtEXvpCJGiw1SjuaBCjdophAfefUQanOuBnaGU0YCNz9Qnv5Rewt8SA1iRZhNnQ+Py9nF
+	w9Ds6sBeh65iHIpVtZybbGEebaj91cKkBhCj6QVi2a8TPXVy6HZ1+z5XYmZzeANms+jLvNc4CmW
+	zVmoGoQLpPKUUh9l14zgKeNcb9H3hKSS1Z5U6ysROTt5PmdELc5zjUf3W/7Bm8qokKSGl0M5UL0
+	DOVMsp0MKeVwI5Ydnre8x3ekw8Bb0BxgQtbhFCVuSabIG/w5Jl2eTuoFPrZO3oyKFLp/vccdUAC
+	qk=
+X-Received: by 2002:a05:7300:1481:b0:2e2:3381:2fba with SMTP id 5a478bee46e88-30449037dc6mr12024869eec.3.1779911227370;
+        Wed, 27 May 2026 12:47:07 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2ebe:8:ca8d:7a6a:7fd3:5948])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30458ab1a46sm13602131eec.24.2026.05.27.12.47.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 May 2026 12:47:06 -0700 (PDT)
+Date: Wed, 27 May 2026 12:47:03 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Jinmo Yang <jinmo44.yang@gmail.com>
+Cc: Jason Gerecke <jason.gerecke@wacom.com>, 
+	Ping Cheng <ping.cheng@wacom.com>, Jiri Kosina <jikos@kernel.org>, 
+	Benjamin Tissoires <bentiss@kernel.org>, linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/1] HID: wacom: validate report size before kfifo insert
+Message-ID: <ahdJzWhVFm7mWu-v@google.com>
+References: <20260524135203.1996265-1-jinmo44.yang@gmail.com>
+ <20260524135203.1996265-2-jinmo44.yang@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <O6pYAi7yf23du9ivLsL0QqrnTmodj2lDTL7Wviv7I_nhjVtvllO7Y5Ban0TeTqrastb1RWhJtlkqrM3quLMWSriai-YjjGy312MTcEhxyWs=@protonmail.com>
-In-Reply-To: <O6pYAi7yf23du9ivLsL0QqrnTmodj2lDTL7Wviv7I_nhjVtvllO7Y5Ban0TeTqrastb1RWhJtlkqrM3quLMWSriai-YjjGy312MTcEhxyWs=@protonmail.com>
-From: Sean Rhodes <sean@starlabs.systems>
-Date: Wed, 27 May 2026 20:43:54 +0100
-X-Gm-Features: AVHnY4KcMXIIodDKjDBrd3BWymN4LQ43bArzZMANNcnK7-IF5wv-P0tsligTKF0
-Message-ID: <CABtds-3GOyBr1H=c5aFV1uzfkhO3d1NHMPuon_cWDq0V=pFwUA@mail.gmail.com>
-Subject: Re: [REGRESSION] Speaker pop/chirp on Meteor Lake ALC287 (17aa:231e)
- -- 6.12.73 to 6.12.85
-To: Mike Karcic <mikekarcic@protonmail.com>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>, 
-	"regressions@lists.linux.dev" <regressions@lists.linux.dev>, 
-	"linux-sound@vger.kernel.org" <linux-sound@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "tiwai@suse.de" <tiwai@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-1.56 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	R_DKIM_ALLOW(-0.20)[starlabs-systems.20251104.gappssmtp.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260524135203.1996265-2-jinmo44.yang@gmail.com>
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[starlabs.systems : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[protonmail.com];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254659-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[starlabs-systems.20251104.gappssmtp.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sean@starlabs.systems,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-254658-lists,stable=lfdr.de];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[dmitrytorokhov@gmail.com,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 4B40C5E99AA
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 126075E9A36
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-What about 630fbc6e870e? If so, 46c862f5419e looks relevant.
+On Sun, May 24, 2026 at 10:52:03PM +0900, Jinmo Yang wrote:
+> wacom_wac_queue_insert() passes the report size directly to kfifo_in()
+> without checking whether the report fits in the kfifo buffer.
+> 
+> Since commit 5e013ad20689 ("HID: wacom: Remove static WACOM_PKGLEN_MAX
+> limit"), the kfifo is sized dynamically as min(PAGE_SIZE, 10 * pktlen),
+> which can be as small as 256 bytes. However, reports received via
+> UHID_INPUT2 can be up to UHID_DATA_MAX (4096) bytes. When such an
+> oversized report reaches wacom_wac_queue_insert(), the existing
+> kfifo_avail() loop cannot make room for a record larger than the total
+> buffer, causing kfifo_copy_in() to memcpy up to 3840 bytes past the
+> slab allocation.
 
-On Wed, 27 May 2026 at 15:25, Mike Karcic <mikekarcic@protonmail.com> wrote:
->
-> Speaker pop/chirp regression on a Lenovo ThinkPad with Meteor Lake and
-> Realtek ALC287 (subsystem ID 17aa:231e). The chirp occurs on speaker
-> power state transitions when audio starts or stops. It is not present
-> on kernel 6.12.73 and is present on 6.12.85. A desktop with ALC897
-> (subsystem ID 1f660202) on kernel 6.19.14 is unaffected, so this is
-> codec/fixup-specific.
->
-> Tested on the same LMDE (Debian 13) installation with multiple kernels
-> selectable from GRUB. All userspace, firmware, and configuration are
-> identical between tests. Cold boot between kernel switches is required,
-> as warm reboot can carry codec register state forward. The kernel is
-> not tainted on any tested version.
->
-> Bisection results (Debian package versions):
->   6.12.48  -- no chirp
->   6.12.73  -- no chirp
->   6.12.85  -- chirp present
->   6.12.86  -- chirp present
->   6.12.90  -- chirp present
->
-> Also broken: 6.19.14-101.fc44.x86_64 (Fedora/Aurora 44)
->
-> The regression window (6.12.73 to 6.12.85) includes two commits
-> targeting speaker pop on the Star Labs StarFighter (ALC233, SSID
-> 7017:2014) that touch patch_realtek.c:
->
->   1cb3c20688fc ("ALSA: hda/realtek: Fix speaker pop on Star Labs StarFighter")
->   Fixes commit ("ALSA: hda/realtek: Sequence GPIO2 on Star Labs StarFighter")
->
-> These are quirk-gated to SSID 7017:2014 and should not run on
-> 17aa:231e, but they are the most prominent sound changes in the
-> regression window. The actual culprit may be a different commit
-> in the 6.12.74-6.12.85 range. I was unable to narrow further as
-> Debian does not publish intermediate point-release packages.
->
-> I can build and test vanilla kernels for a proper bisection if
-> guided, and I can test proposed fixes.
->
-> Hardware:
->   Lenovo ThinkPad, Meteor Lake
->   Codec: Realtek ALC287
->   Subsystem ID: 17aa:231e
->   PCI: 0000:00:1f.3
->   Machine driver: skl_hda_dsp_generic
->   Codec fixup: "ALC287: picked fixup for PCI SSID 17aa:231e"
->
-> Unaffected hardware (same 6.19.14 kernel, no chirp):
->   Desktop, Realtek ALC897, Subsystem ID: 1f660202
->
-> Controlled variables (identical across all tested 6.12 kernels):
->   SOF firmware: 2.12.0.1 (firmware-sof-signed 2025.01-1)
->   Topology: intel/sof-ace-tplg/sof-hda-generic-2ch.tplg
->   Topology ABI: 3:29:1 (Kernel ABI: 3:23:1 on all tested)
->   ALSA UCM: alsa-ucm-conf 1.2.14-1
->   PipeWire: 1.4.2, WirePlumber: 0.5.8
->   power_save: 10, hda_model: (null)
->   Desktop: KDE Plasma 6 (Wayland)
->
-> Eliminated causes:
->   - Topology files in sof-ipc4-tplg/ and sof-ace-tplg/ are
->     byte-identical (confirmed via binary diff). Path irrelevant.
->   - SOF firmware version (same 2.12.0.1 on all tested kernels).
->   - Topology ABI mismatch (3:29:1 vs 3:23:1 present on working
->     kernel too).
->   - power_save (10 on all kernels).
->   - PipeWire/WirePlumber (identical versions on all kernels).
->   - Desktop environment (KDE on all; a KDE install triggered a
->     kernel update which was the actual cause of the regression
->     appearing).
->
-> dmesg (6.12.48, working):
->   sof-audio-pci-intel-mtl 0000:00:1f.3: Firmware paths/files for ipc type 1:
->   sof-audio-pci-intel-mtl 0000:00:1f.3:  Firmware file:     intel/sof-ipc4/mtl/sof-mtl.ri
->   sof-audio-pci-intel-mtl 0000:00:1f.3:  Firmware lib path: intel/sof-ipc4-lib/mtl
->   sof-audio-pci-intel-mtl 0000:00:1f.3:  Topology file:     intel/sof-ace-tplg/sof-hda-generic-2ch.tplg
->   sof-audio-pci-intel-mtl 0000:00:1f.3: Booted firmware version: 2.12.0.1
->   sof-audio-pci-intel-mtl 0000:00:1f.3: Topology: ABI 3:29:1 Kernel ABI 3:23:1
->   snd_hda_codec_alc269 ehdaudio0D0: ALC287: picked fixup for PCI SSID 17aa:231e
->   snd_hda_codec_alc269 ehdaudio0D0: autoconfig for ALC287: line_outs=1 (0x17/0x0/0x0/0x0/0x0) type:speaker
->
-> dmesg (6.19.14, affected):
->   sof-audio-pci-intel-mtl 0000:00:1f.3: Digital mics found on Skylake+ platform, using SOF driver
->   sof-audio-pci-intel-mtl 0000:00:1f.3: DSP detected with PCI class/subclass/prog-if 0x040380
->   sof-audio-pci-intel-mtl 0000:00:1f.3: hda codecs found, mask 5
->   sof-audio-pci-intel-mtl 0000:00:1f.3: using HDA machine driver skl_hda_dsp_generic now
->   sof-audio-pci-intel-mtl 0000:00:1f.3: Firmware paths/files for ipc type 1:
->   sof-audio-pci-intel-mtl 0000:00:1f.3:  Firmware file:     intel/sof-ipc4/mtl/sof-mtl.ri
->   sof-audio-pci-intel-mtl 0000:00:1f.3:  Firmware lib path: intel/sof-ipc4-lib/mtl
->   sof-audio-pci-intel-mtl 0000:00:1f.3:  Topology file:     intel/sof-ipc4-tplg/sof-hda-generic-2ch.tplg
->   sof-audio-pci-intel-mtl 0000:00:1f.3: Booted firmware version: 2.14.1.1
->   sof-audio-pci-intel-mtl 0000:00:1f.3: Topology: ABI 3:29:1 Kernel ABI 3:23:1
->   snd_hda_codec_alc269 ehdaudio0D0: ALC287: picked fixup for PCI SSID 17aa:231e
->   snd_hda_codec_alc269 ehdaudio0D0: autoconfig for ALC287: line_outs=1 (0x17/0x0/0x0/0x0/0x0) type:speaker
->
-> Note: The kernel is not tainted on any tested version.
+Does it? Or maybe spins there indefinitely? Also, doesn't
+kfifo_copy_in() return 0 if a record it too big and not copy anything?
+
+> 
+> Add a size check at the top of wacom_wac_queue_insert() to reject
+> reports that exceed the kfifo capacity.
+> 
+> Fixes: 5e013ad20689 ("HID: wacom: Remove static WACOM_PKGLEN_MAX limit")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jinmo Yang <jinmo44.yang@gmail.com>
+> ---
+>  drivers/hid/wacom_sys.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/drivers/hid/wacom_sys.c b/drivers/hid/wacom_sys.c
+> index a32320b..cc82c6f 100644
+> --- a/drivers/hid/wacom_sys.c
+> +++ b/drivers/hid/wacom_sys.c
+> @@ -54,6 +54,12 @@ static void wacom_wac_queue_insert(struct hid_device *hdev,
+>  {
+>  	bool warned = false;
+>  
+> +	if (size > kfifo_size(fifo)) {
+> +		hid_warn(hdev, "%s: report too large (%d > %u) for kfifo\n",
+> +			 __func__, size, kfifo_size(fifo));
+> +		return;
+> +	}
+> +
+>  	while (kfifo_avail(fifo) < size) {
+>  		if (!warned)
+>  			hid_warn(hdev, "%s: kfifo has filled, starting to drop events\n", __func__);
+
+Thanks.
+
+-- 
+Dmitry
 
