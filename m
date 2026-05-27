@@ -1,70 +1,70 @@
-Return-Path: <stable+bounces-254671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254672-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WOT4GuxKF2qaAAgAu9opvQ
-	(envelope-from <stable+bounces-254671-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 21:50:04 +0200
+	id SLR6EDVLF2r0/wcAu9opvQ
+	(envelope-from <stable+bounces-254672-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 21:51:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B8E65E9ABB
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 21:50:04 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C27A55E9B29
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 21:51:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E989E305BB18
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 19:49:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3244E305DB45
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 19:49:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9B553B27EC;
-	Wed, 27 May 2026 19:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5354C3B3BF4;
+	Wed, 27 May 2026 19:49:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PvCqghQM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f+09WYla"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2503B27E1;
-	Wed, 27 May 2026 19:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7F13B38B0;
+	Wed, 27 May 2026 19:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779911368; cv=none; b=DJ6EY1hSGrF6P4OmY9CzpO/bRPYEn5ySOtiRYFQS1tV2cJW61tjdPAF8cN841BGg2XH94l1Trjr9kRi2E+WuOBGBdkTLsxPdmmRWlaZYyh+d5X0LKsngmHtyXgHeLjEacLvjFlMcg0mfmuP4aqMyG5n7cIJaxTBcNvZq006G0rs=
+	t=1779911370; cv=none; b=UVNKvl+IDoxeoo8m8/lp3Jde6A9bjCJsRsOTgZl8zqlVA5me2Rs2HJ2myncii6dW73W7iG2h9alamW2EC3KDkb0/ZNoa2KiX9LemQaV0biiC2bubY3VPU5RPzLIU6QzdfkE8+TOfGO36veU5LL5Dbo+cr5udDDBFb9xaxkUsNW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779911368; c=relaxed/simple;
-	bh=v89s4B1mqSIf7j//EsoDnuERwexrjSyciuIsRlFS/xk=;
+	s=arc-20240116; t=1779911370; c=relaxed/simple;
+	bh=iWRnW7c/D4D42UN4Vjjhqv7xCegANtRBrS8sQcvdO/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=skEI72SaELWSPYCI+NPEh5JjlioDNPXYvRH0XtuiX9aQ7RdwgnsYC1dlmHqvEpujNGtejzH/tLiUpfCR+53zHhbKcb6t9sYxm40uKZqqSiWJo3R//Q+vXeJMYZq2QSWuACixfuyW0sI8Bx3NqMohk71sGi3uCNlwmJbXpHSsGI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PvCqghQM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAFF41F00A3F;
-	Wed, 27 May 2026 19:49:25 +0000 (UTC)
+	 MIME-Version; b=lnCNWNSqtGMIda8ed6syhCR01oJnSlojiTGVkXfALChUd/k1m742LSkKsS4cNL6z7ZVgHAbFndo2BxdIJabyQMZsuleIYK6TxaRjE0PV6fDGTmJ/fRbnL3UtjQksHH+2wc/DZjCO+TMn2tcMDtze3FicHog4QY9YL3kjSfCLuCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f+09WYla; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C681F00A3D;
+	Wed, 27 May 2026 19:49:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779911367;
-	bh=v89s4B1mqSIf7j//EsoDnuERwexrjSyciuIsRlFS/xk=;
+	s=k20260515; t=1779911368;
+	bh=iWRnW7c/D4D42UN4Vjjhqv7xCegANtRBrS8sQcvdO/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PvCqghQMHRVW2hLo8U7oG35uTKb7pGf4HgMYFO4CLfyRpONvk8kegNlXUxt8vxK12
-	 lz8RXyXppTdz4AQrFfntCJ9e0f0RbPKFbZWX2chntIyF4NbNys4Yak3p9FHbagjXKl
-	 K06cPAoGerUTHfN2L54VPAeIiEtVPkIjv11wAtG/neAih4tWf7aIxvb/iaIWtOkXNl
-	 qAYE7nyRULs0oXPdTF6QE6uAJ+6V2Yj/34eA14lJlTGaRxrb21s6oyOE1gPj7PgA5G
-	 aA/9/+5tWiLZwvVHqD+Bg6vr0xWfNZ7coI3xxydnp79Wga7JVj0+Q7n8jw7NGSQbQ2
-	 Cpo+IIcwojNmA==
+	b=f+09WYlaSBgJHHHGdns7T/JDeiqCrnLeqJFdAPLR7FLDs1QmmUvhTAH4JWQbD5Y3f
+	 ZazmNipojH5Nj18z5v00qzw86HapRRz9cJNqJg4XWiaA/TzdJAPjjm3KMyAnZKQ3oy
+	 A+tcYesn6olW0tF6MPxnCJenH5nD6vLu8BCid0kuxrZwZSj7+4BUfpbrfoYZ3PSJ4i
+	 PKRkMhID8IJ+X78iKQUFQP2J82bjM3jZvqi6zrPPTXHTEkVqTH1uPBW3WdRaHrc0w4
+	 u5+mf8YlyHlRPkVsZ9fYHNd5nHu3vOJWe1MIK7NAnt4sjLD1Sm+580IkgEGMvbmMnp
+	 OpXixWGU4M9IA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
 Cc: Sasha Levin <sashal@kernel.org>,
-	jianbol@nvidia.com,
-	saeedm@nvidia.com,
-	leon@kernel.org,
-	tariqt@nvidia.com,
-	pabeni@redhat.com,
-	kuba@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	netdev@vger.kernel.org,
-	Leon Romanovsky <leonro@nvidia.com>,
+	jolsa@kernel.org,
+	rostedt@goodmis.org,
+	mhiramat@kernel.org,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	x86@kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Gyokhan Kochmarla <gyokhan@amazon.de>
-Subject: Re: [PATCH 6.12] net/mlx5e: Use ip6_dst_lookup instead of ipv6_dst_lookup_flow for MAC init
-Date: Wed, 27 May 2026 15:49:03 -0400
-Message-ID: <20260527-agent5-item011-mlx5e-ip6@kernel.org>
+Subject: Re: [PATCH 6.12] x86/fgraph: Fix return_to_handler regs.rsp value
+Date: Wed, 27 May 2026 15:49:04 -0400
+Message-ID: <20260527-agent5-item012-x86fgraph@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260526192214.78312-1-gyokhan@amazon.de>
-References: <20260526192214.78312-1-gyokhan@amazon.de>
+In-Reply-To: <20260526192324.79459-1-gyokhan@amazon.de>
+References: <20260526192324.79459-1-gyokhan@amazon.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,7 +76,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -86,7 +86,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-254671-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-254672-lists,stable=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[14];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -97,13 +97,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 4B8E65E9ABB
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: C27A55E9B29
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-> commit e35d7da8dd9e55b37c3e8ab548f6793af0c2ab49 upstream.
+> commit 8bc11700e0d23d4fdb7d8d5a73b2e95de427cabc upstream.
 
 Queued for 6.12.y, thanks.
 
