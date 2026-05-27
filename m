@@ -1,69 +1,62 @@
-Return-Path: <stable+bounces-254537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254538-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SLh4LGvQFmowsgcAu9opvQ
-	(envelope-from <stable+bounces-254537-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 13:07:23 +0200
+	id 6H4cLHPQFmowsgcAu9opvQ
+	(envelope-from <stable+bounces-254538-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 13:07:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77FC35E315B
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 13:07:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73F005E3169
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 13:07:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9FC253024962
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 11:05:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 36B41301A50E
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 11:07:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87CAE3F4115;
-	Wed, 27 May 2026 11:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 716913EA942;
+	Wed, 27 May 2026 11:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b="Rx2XAw4e"
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="fdcZNoyt"
 X-Original-To: stable@vger.kernel.org
-Received: from out-13.smtp.spacemail.com (out-13.smtp.spacemail.com [63.250.43.96])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B803914FF;
-	Wed, 27 May 2026 11:05:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.250.43.96
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA0F98F7D;
+	Wed, 27 May 2026 11:07:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779879905; cv=none; b=AqT1U21bsJ4tJ3nzWtywvqoLr2AVPBbJAbOQu/xJQFnGG6HBuwlURj/uoEvF0uDXUL5hSsSE2CJ2mIiq+OAwWg24eCpdbMAkZ3uI5HSGlPYIGZrbm9DkAwSIN0/9hUtIXOLwIysntL8fiLELAUa6pcMnmENfpAkUmwfqquw4Ggs=
+	t=1779880044; cv=none; b=GxiGbKxG0ljZ6Z39z3VlJwEWYmJjj3s+IZc3a+y1WIhRo5G3ic2/JK4cq6v6U5sqCV+/avnMwHnTBWfM8459ggG6jdEJDsnKZaBHCA0D2oCJrDnjaUAPEznlzN9k0y8+VvtGqU1qyzxnXkrg0mT+PJizMj7pVPVPhb9YqxK4H2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779879905; c=relaxed/simple;
-	bh=RFxwCps8BRo0X7Ta0ylRSygPBnYr60aPkBIthbUKDbs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Oy+ECP3p/dGb4t0Nj5cHbMf8tkvAMcKSccsWP+Yh9y0ownMl7YMyHvJDhimdXzHbIc05uXIukX46igCeg53iuOo0WW3zxCSslPFlrgN0115z3Q7oPBJM3c4YtnTQKQIVWa1eyZEvPt3hNyJ6Wp6NxNxXhMlI0TY4QGCuiN3getI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai; spf=pass smtp.mailfrom=rexion.ai; dkim=fail (0-bit key) header.d=rexion.ai header.i=@rexion.ai header.b=Rx2XAw4e reason="key not found in DNS"; arc=none smtp.client-ip=63.250.43.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rexion.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rexion.ai
-Received: from Kyren (unknown [49.207.213.66])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.spacemail.com (Postfix) with ESMTPSA id 4gQRTS2sMkz8sWq;
-	Wed, 27 May 2026 10:59:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rexion.ai;
-	s=spacemail; t=1779879584;
-	bh=DgDokx5pIAzNQ53sXah/UBDCt3R4wUhOvqyXIza65bI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Rx2XAw4eoq8Z2KPLh2pTGEvqZSYW4KJh8StEC5Wo5cla2t6eNVJDOKBrahImyNtr5
-	 H89keCEG4V2JSzgSBJq7SHrgTnouVGVc9CP0DnRv9t1kGfZXGgtrQE6Xrst+1KgUqV
-	 VYgv9kx+oYMmjP2ab6b+Fm6Q9MQ0ot3DGD9/WJbPDD9jzp0TJehelBPQOc3tbIhUqK
-	 73huw5rtNvtzyQeHEWizESIsEG5oqxN7aY6Wf+4TJ1VzAVQpIStdHLIL622s9JhK2E
-	 p0+rtVzXP9OWzH6x9S2No4F+xw9kRAeDp0EYk+crHk8Lkf2BbodzWYEwYiVz93mTki
-	 hHh5i3fJ2zojQ==
-From: Rahul Chandelkar <rc@rexion.ai>
-To: rc@rexion.ai,
-	"James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>
-Cc: linux-scsi@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	io-uring@vger.kernel.org,
+	s=arc-20240116; t=1779880044; c=relaxed/simple;
+	bh=tR2h7ZPXwFL6Np/Sen8hisfqQuCHkJ00R/Jk5VxMWmg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nQi8lu2APquUUWCZVUtcDr4YqeHHYfPGNec8ZNN+jaV8jWlNf1fAFe3OaBAr3j/Rtoc17vORZb/fjvNk1/CK9pv/vLhnlIltP8dcfZqe82fHRJZ0dpu0VpAJJynSTa6nrrLobDZNmyFuJjtPxz3U8PcDFduC8wke7PPKRLBD/UA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=fdcZNoyt; arc=none smtp.client-ip=101.71.155.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [221.228.238.82])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 400701e33;
+	Wed, 27 May 2026 19:02:07 +0800 (GMT+08:00)
+From: Dawei Feng <dawei.feng@seu.edu.cn>
+To: anthony.l.nguyen@intel.com
+Cc: przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	jesse.brandeburg@intel.com,
+	sln@onemain.com,
+	intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] scsi: bsg: copy uring_cmd payload to prevent double-fetch from shared SQE
-Date: Wed, 27 May 2026 16:29:18 +0530
-Message-ID: <20260527105931.3950913-1-rc@rexion.ai>
-X-Mailer: git-send-email 2.54.0
+	jianhao.xu@seu.edu.cn,
+	Dawei Feng <dawei.feng@seu.edu.cn>,
+	stable@vger.kernel.org,
+	Zilin Guan <zilin@seu.edu.cn>
+Subject: [PATCH net] i40e: fix netdev leak in i40e_vsi_setup() error paths
+Date: Wed, 27 May 2026 19:02:05 +0800
+Message-Id: <20260527110205.1780595-1-dawei.feng@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,130 +64,98 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Envelope-From: rc@rexion.ai
-X-Spamd-Result: default: False [0.04 / 15.00];
+X-HM-Tid: 0a9e6919500903a2kunmc4d7ecc43a9e3
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCHUNIVk5JQxpOHU9OSElDQlYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUpVSUlDVUlIQ1VDSVlXWRYaDxIVHRRZQVlPS0hVSktJSE
+	5DQ1VKS0tVS1kG
+DKIM-Signature: a=rsa-sha256;
+	b=fdcZNoytiqVTMEEmwEnbmex0Y1AkGfokDoeVK/FAqs8BroYuQVbZIyOOzfT/pJthOVyQUWlIyEEASP8Nmw04wFHf6xUSq7xXW4U962Q3dBcgafEc8V7H2KxzWT+1HIbbJ68BvAt9ys/pEs7Po85jJSNJbEyLPGecLLWlQVQInkc=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=L4JvB8zmfLhyCH5RmecUwJB8gs5HNGzG6nxv4Q9PYZc=;
+	h=date:mime-version:subject:message-id:from;
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[rexion.ai];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	TAGGED_FROM(0.00)[bounces-254538-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_PERMFAIL(0.00)[rexion.ai:s=spacemail];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-254537-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rc@rexion.ai,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	NEURAL_HAM(-0.00)[-0.983];
-	DKIM_TRACE(0.00)[rexion.ai:~];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,rexion.ai:mid,rexion.ai:email]
-X-Rspamd-Queue-Id: 77FC35E315B
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[seu.edu.cn:+];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	NEURAL_HAM(-0.00)[-0.995];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:dkim]
+X-Rspamd-Queue-Id: 73F005E3169
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-scsi_bsg_uring_cmd() and scsi_bsg_map_user_buffer() read bsg_uring_cmd
-fields directly from the shared mmap'd io_uring submission ring via
-io_uring_sqe128_cmd().  On the inline execution path, io_uring has not
-yet copied the SQE to kernel memory, so a concurrent userspace thread
-can modify fields between reads.
+i40e_config_netdev() allocates vsi->netdev for main and VMDQ VSIs. If
+i40e_netif_set_realnum_tx_rx_queues(), i40e_devlink_create_port(), or
+register_netdev() fails, i40e_vsi_setup() goes to err_netdev without
+releasing the netdev. The existing cleanup only frees the netdev after a
+successful register_netdev(), so these error paths leak the allocation.
 
-cmd->request_len is read for the bounds check, for the cmd_len
-assignment, and for the copy_from_user length.  A racing thread can
-change request_len between the bounds check (passes with <= 32) and
-copy_from_user (uses the enlarged value), overflowing the 32-byte
-scmd->cmnd[] buffer into subsequent struct scsi_cmnd fields.
+Reorder the error paths at err_netdev to ensure proper cleanup of the
+allocated device.
 
-scsi_bsg_map_user_buffer() independently re-derives its cmd pointer
-from the same shared SQE, re-reading dout_xfer_len, din_xfer_len,
-dout_xferp, and din_xferp, enabling direction confusion and buffer
-length races.
+The bug was first flagged by an experimental analysis tool we are
+developing for kernel memory-management bugs while analyzing
+v6.13-rc1. The tool is still under development and is not yet publicly
+available. Manual inspection confirms that the bug is still
+present in v7.1-rc5.
 
-Copy struct bsg_uring_cmd to a stack-local variable before use in both
-functions.  The pointer variable 'cmd' is redirected to the local copy
-so the rest of each function is unchanged.
+An x86_64 allyesconfig build showed no new warnings. As we do not have an
+Intel Ethernet Controller XL710 family adapter to test with, no runtime
+testing was able to be performed.
 
-Tested with KASAN on QEMU (virtio-scsi, 2 vCPUs).  Without this fix,
-a two-thread race produces:
-
-  BUG: KASAN: wild-memory-access in scsi_queue_rq+0x4a3/0x58a0
-  Write of size 96 at addr dead000000001000 by task poc/67
-  Call Trace:
-   kasan_report+0xce/0x100
-   __asan_memset+0x23/0x50
-   scsi_queue_rq+0x4a3/0x58a0
-   scsi_bsg_uring_cmd+0x942/0x1570
-   io_uring_cmd+0x2f6/0x950
-   io_issue_sqe+0xe5/0x22d0
-
-Fixes: 7b6d3255e7f8 ("scsi: bsg: add io_uring passthrough handler")
+Fixes: 41c445ff0f48 ("i40e: main driver core")
 Cc: stable@vger.kernel.org
-Signed-off-by: Rahul Chandelkar <rc@rexion.ai>
----
- drivers/scsi/scsi_bsg.c | 23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/scsi/scsi_bsg.c b/drivers/scsi/scsi_bsg.c
-index e80dec53174e..244740655eb0 100644
---- a/drivers/scsi/scsi_bsg.c
-+++ b/drivers/scsi/scsi_bsg.c
-@@ -78,13 +78,21 @@ static int scsi_bsg_map_user_buffer(struct request *req,
- 				    struct io_uring_cmd *ioucmd,
- 				    unsigned int issue_flags, gfp_t gfp_mask)
- {
--	const struct bsg_uring_cmd *cmd = io_uring_sqe128_cmd(ioucmd->sqe, struct bsg_uring_cmd);
--	bool is_write = cmd->dout_xfer_len > 0;
--	u64 buf_addr = is_write ? cmd->dout_xferp : cmd->din_xferp;
--	unsigned long buf_len = is_write ? cmd->dout_xfer_len : cmd->din_xfer_len;
-+	struct bsg_uring_cmd local_cmd;
-+	const struct bsg_uring_cmd *cmd;
-+	bool is_write;
-+	u64 buf_addr;
-+	unsigned long buf_len;
- 	struct iov_iter iter;
- 	int ret;
- 
-+	memcpy(&local_cmd, io_uring_sqe128_cmd(ioucmd->sqe, struct bsg_uring_cmd),
-+	       sizeof(local_cmd));
-+	cmd = &local_cmd;
-+	is_write = cmd->dout_xfer_len > 0;
-+	buf_addr = is_write ? cmd->dout_xferp : cmd->din_xferp;
-+	buf_len = is_write ? cmd->dout_xfer_len : cmd->din_xfer_len;
-+
- 	if (ioucmd->flags & IORING_URING_CMD_FIXED) {
- 		ret = io_uring_cmd_import_fixed(buf_addr, buf_len,
- 						is_write ? WRITE : READ,
-@@ -104,13 +112,18 @@ static int scsi_bsg_uring_cmd(struct request_queue *q, struct io_uring_cmd *iouc
- 			       unsigned int issue_flags, bool open_for_write)
- {
- 	struct scsi_bsg_uring_cmd_pdu *pdu = scsi_bsg_uring_cmd_pdu(ioucmd);
--	const struct bsg_uring_cmd *cmd = io_uring_sqe128_cmd(ioucmd->sqe, struct bsg_uring_cmd);
-+	struct bsg_uring_cmd local_cmd;
-+	const struct bsg_uring_cmd *cmd;
- 	struct scsi_cmnd *scmd;
- 	struct request *req;
- 	blk_mq_req_flags_t blk_flags = 0;
- 	gfp_t gfp_mask = GFP_KERNEL;
- 	int ret;
- 
-+	memcpy(&local_cmd, io_uring_sqe128_cmd(ioucmd->sqe, struct bsg_uring_cmd),
-+	       sizeof(local_cmd));
-+	cmd = &local_cmd;
-+
- 	if (cmd->protocol != BSG_PROTOCOL_SCSI ||
- 	    cmd->subprotocol != BSG_SUB_PROTOCOL_SCSI_CMD)
- 		return -EINVAL;
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
+---
+ drivers/net/ethernet/intel/i40e/i40e_main.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index 6d4f9218dc68..1ced01b0cc09 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -14491,13 +14491,15 @@ struct i40e_vsi *i40e_vsi_setup(struct i40e_pf *pf, u8 type,
+ 	if (vsi->netdev_registered) {
+ 		vsi->netdev_registered = false;
+ 		unregister_netdev(vsi->netdev);
+-		free_netdev(vsi->netdev);
+-		vsi->netdev = NULL;
+ 	}
+ err_dl_port:
+ 	if (vsi->type == I40E_VSI_MAIN)
+ 		i40e_devlink_destroy_port(pf);
+ err_netdev:
++	if (vsi->netdev) {
++		free_netdev(vsi->netdev);
++		vsi->netdev = NULL;
++	}
+ 	i40e_aq_delete_element(&pf->hw, vsi->seid, NULL);
+ err_vsi:
+ 	i40e_vsi_clear(vsi);
 -- 
-2.54.0
+2.34.1
 
 
