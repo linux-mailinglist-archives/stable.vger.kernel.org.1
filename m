@@ -1,53 +1,74 @@
-Return-Path: <stable+bounces-254466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254467-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GLAiH9dUFmpklQcAu9opvQ
-	(envelope-from <stable+bounces-254466-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 04:20:07 +0200
+	id GOYODL9VFmqplQcAu9opvQ
+	(envelope-from <stable+bounces-254467-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 04:23:59 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E03D35DE834
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 04:20:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32EDA5DE856
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 04:23:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D03BF303433F
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 02:20:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B165230300E8
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 02:23:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91EA034DCE0;
-	Wed, 27 May 2026 02:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B93F534F25C;
+	Wed, 27 May 2026 02:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="abVSygFU"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="VQzsoYO7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out162-62-57-64.mail.qq.com (out162-62-57-64.mail.qq.com [162.62.57.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFE62F28EA;
-	Wed, 27 May 2026 02:20:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD3C346AC3;
+	Wed, 27 May 2026 02:23:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779848401; cv=none; b=jIkdrNxzZ4eluHdCSKs0Qo0p5G19xnmCPOyYrdLNulcHgg3wROBXJsT+pgieVkycaiUsLEZJKf+t8f+uLWdyUtmEES1qyBwnFTiGa3j1tZc8bFaUynrNvHuBzULZzKFUYItNM9QNood6waE473PKNPivijMn9ETDxwQdp65qOqw=
+	t=1779848635; cv=none; b=VVRNpSAlnzTTVM26wiMx0Aixrnw+LJNZqfVQFMGVFqSkVbvswk5vOmzbLbDw01mt1ucAp+DX5yB7PkB7Dtb7kKHjuuOkRZfqs7zDi2J6lWxVgF+3zfdg0KylvJGxr23EKj0f3BAklPuK1opFgAv1j7A0Klsp6jADIR0vHtVd46E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779848401; c=relaxed/simple;
-	bh=O3limjRBY5q96DMlVGKM6GbH7ogHGcKk0zCFYiZqHqM=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ckREgpc4YquTG5HzJMTMKRVmh9cNTGXO6ywh2Iet2hOELaowOgBnOGRzgLAsMf2OJpCTgexvVB8W2eVXUv8BHS9cD4RvRmDwDzYc5LqqMx7C5L44GTACyHPLcA+1p4D1LLC/VSK0vcjeiYSrnuyZAtnzM+ZAPQLu1SEYS26bso8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=abVSygFU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E775E1F000E9;
-	Wed, 27 May 2026 02:19:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779848400;
-	bh=MOU/BOrYyullkDI/xmYTF01nrxsq/IqQxkaeGPZJFWY=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=abVSygFU97oqVS6AqAr+4R3/QMORWn1hlRSnc80ZXUcX14efHN++FaGZ8HQ2PySfK
-	 jjx6uuDhSAUxel3nS7eXHz3+8gVZVz7nVymxj8wXuW1+RG2m+nvw52b7Dh6sON62DR
-	 +EGYQQKcE4f9Cj+h9JUm93JW2eF4LsNRBKRTJyS5LMnrT9aDOAa9aDtOrR7KYV9ZHH
-	 RYPYx/fKmmYNVR3wyfTtTsS+eY5+A4ouQY1m1uR2mishH5xKsqd6af5dRjTyxjs2E2
-	 0qS8VH++XlTteKgHu34WsMD/z8m0OAX7fp29UOnq4j4C/ui4kXsdWhIT+0+JbEML79
-	 p3jUluNDOleNw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0DA8380CEED;
-	Wed, 27 May 2026 02:20:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1779848635; c=relaxed/simple;
+	bh=DrCc3UoiDLT5DOG1ABYX25zy5ZWwzI8aTjH3XApC8lg=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=NWeQfiGsFZ1DpMJAeFZf5qa+4S9as88AM8x1s0MgqFIqmbvOj74zDh34mkLEt/3XkPhJr1LJYChN98SwbikoCizBfZPsKKT7/6MgTqgFzCqnyI3SP3Ai9cI+Si0YYhd5lLG3n5UxlU8F5yKpLsVt79Kpzy8+/AKCmpO1UT6IeKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=VQzsoYO7; arc=none smtp.client-ip=162.62.57.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1779848628; bh=VQCNA6/BlPPG6PdcMmXX/pBbFD+2uu5dKEqOPB5RDlg=;
+	h=From:To:Cc:Subject:Date;
+	b=VQzsoYO7emM8GqaCJvWHni11/d21xYta4Y6TVmRK0RAK8G1aBQtTZqFrnlQlsBtwr
+	 7flDvAzEesnt4zKlEafdnQQS5WFX1Kg5i5FOjOiVUFWgwwwhqDiRlTDBHxQKTlNUbd
+	 YYRn3+BIY8/qH+qFZe3dMh++7R1BUvSugE1ewkpk=
+Received: from NTT-kernel-dev ([60.247.85.88])
+	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
+	id 59F0C03B; Wed, 27 May 2026 10:22:31 +0800
+X-QQ-mid: xmsmtpt1779848551t8p8g3ixw
+Message-ID: <tencent_1E7EC9319D484C797CF4F159CAB1C3DB3706@qq.com>
+X-QQ-XMAILINFO: OATpkVjS499uU1pcYb472MMx8Bay9mHHtiJGHvs4zW/Ksa4WhBFfdDYhsyDkM9
+	 x9QKXHya+QkKgs1A7NjQ3hcKCWzNzVRGQmsZs3uyWPUj4yiKvRB8mO/vH+WZ4tyI1lvoD9b1jlq2
+	 ekAVbwDKb3ph3haEJss2LIbat09l67APDa/O5YXAVyB8XXi2javQQe7QaJNaXS4pr8PXjP1QvMjF
+	 LPe6zzVyelSOuKFcGAKSNcb1tx7OVxAfFqVoG/1wAOOWhnhT8UdJ6BUxg13j9eGE+Zpw01wleA0u
+	 G3arOZf4HiF5WSi0A4R7lpHg4jhCfMbgoKZc1riDzsY9rerfZ6HbCpS5xXaklobDSHjeoOfLNK3Z
+	 y3NIOQdAZLk0eKwyX4zH6nEbx86WGBXdKqqkiyRF4phT+bpmN1hc6LNbcBYsRfs6WGbMVn+fyVoe
+	 NMGxqgOkkG9logVEnkla2JYtA8PDaXWmfVM8MidAvaVohp2qd3I9W8n1k/kcvYrXFpYJTMzpgV3P
+	 65TtvEsHGx2B1NpIPk6FCkLbBrIL7K8acFJ4FPQ+guqP6G6+iElAjBEt5IGoyKO3qQu1vv8MHIIu
+	 CY1KxlZfd77aQfTYOBtI7bxF8+MD3Aiyux0sxoagOh+xsvlzHWXK4F/MwaWiyLHYI53Vu7uxB0m+
+	 PdJhYgJyqC9+pWFJ+EQ1+GbxMHtSFeZzVa5Z3G/0coMWstGPm4gyk8NDnUN/U7BSOnhgE4mndfzG
+	 FRRJbCzjLoao6zYlND/zNmySgT7Yl4dSREJ6n3s/miUI+0AqJu7UFOuGu1HTr4cqCEbg5iNvCvTN
+	 t87A6dHI1iyaMbpr3E+RwcqaC+YtJKAmOULz9Hmz1y8uQFt+pD38Vz5OBn0CgnPZkDNGAxsWI6wA
+	 4toDhezZiaUQdWUr4ILetJlAgKszBTPKxtssqz8VnqshEHtzAUj3btWgzyDBQ9N6DUmty8eJowX6
+	 5Mz9zFdabpMBHnuQCxWG6pyQ8vzr5UpXQGmlHf9VK9bgWB+1UdqqIyyv47HSF0t3fv6itT2/TvFg
+	 ZJDwE8pzvJ3DpcR6l6ZkHsPH0iDHnlBXpQ17OgDMRX1cVvV6GVpy159i9NbnE=
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+From: Fang Wang <32840572@qq.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
+Cc: patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 6.12.y] hwmon: (pmbus/core) Protect regulator operations with mutex
+Date: Wed, 27 May 2026 10:22:30 +0800
+X-OQ-MSGID: <20260527022230.3212045-1-32840572@qq.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,78 +76,290 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: thunderx: fix PTP device ref leak in nicvf_probe()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177984840564.4052990.7679584037769578328.git-patchwork-notify@kernel.org>
-Date: Wed, 27 May 2026 02:20:05 +0000
-References: <20260525082611.61817-1-lihaoxiang@isrc.iscas.ac.cn>
-In-Reply-To: <20260525082611.61817-1-lihaoxiang@isrc.iscas.ac.cn>
-To: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Cc: sgoutham@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- richardcochran@gmail.com, pombredanne@nexb.com, aleksey.makarov@cavium.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, stable@vger.kernel.org
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[qq.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[qq.com:s=s201512];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254466-lists,stable=lfdr.de,netdevbpf];
-	FREEMAIL_CC(0.00)[marvell.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,gmail.com,nexb.com,cavium.com,lists.infradead.org,vger.kernel.org];
-	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254467-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[32840572@qq.com,stable@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[qq.com:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_FROM(0.00)[qq.com];
+	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email]
-X-Rspamd-Queue-Id: E03D35DE834
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:email,qq.com:mid,qq.com:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,roeck-us.net:email,juniper.net:email]
+X-Rspamd-Queue-Id: 32EDA5DE856
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello:
+From: Guenter Roeck <linux@roeck-us.net>
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+[ Upstream commit 754bd2b4a084b90b5e7b630e1f423061a9b9b761 ]
 
-On Mon, 25 May 2026 16:26:11 +0800 you wrote:
-> cavium_ptp_get() acquires a reference to the PTP PCI device
-> through pci_get_device(). If any initialization step fails
-> after cavium_ptp_get(), the PTP PCI device reference is leaked.
-> Add a common error path to release the PTP reference before
-> returning from probe failures.
-> 
-> Fixes: 4a8755096466 ("net: thunderx: add timestamping support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-> 
-> [...]
+The regulator operations pmbus_regulator_get_voltage(),
+pmbus_regulator_set_voltage(), and pmbus_regulator_list_voltage()
+access PMBus registers and shared data but were not protected by
+the update_lock mutex. This could lead to race conditions.
 
-Here is the summary with links:
-  - net: thunderx: fix PTP device ref leak in nicvf_probe()
-    https://git.kernel.org/netdev/net-next/c/2bcf59eefb9f
+However, adding mutex protection directly to these functions causes
+a deadlock because pmbus_regulator_notify() (which calls
+regulator_notifier_call_chain()) is often called with the mutex
+already held (e.g., from pmbus_fault_handler()). If a regulator
+callback then calls one of the now-protected voltage functions,
+it will attempt to acquire the same mutex.
 
-You are awesome, thank you!
+Rework pmbus_regulator_notify() to utilize a worker function to
+send notifications outside of the mutex protection. Events are
+stored as atomics in a per-page bitmask and processed by the worker.
+
+Initialize the worker and its associated data during regulator
+registration, and ensure it is cancelled on device removal using
+devm_add_action_or_reset().
+
+While at it, remove the unnecessary include of linux/of.h.
+
+Cc: Sanman Pradhan <psanman@juniper.net>
+Fixes: ddbb4db4ced1b ("hwmon: (pmbus) Add regulator support")
+Reviewed-by: Sanman Pradhan <psanman@juniper.net>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Fang Wang <32840572@qq.com>
+---
+ drivers/hwmon/pmbus/pmbus_core.c | 117 ++++++++++++++++++++++++-------
+ 1 file changed, 91 insertions(+), 26 deletions(-)
+
+diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
+index 41c66ece5177..e37fd206510a 100644
+--- a/drivers/hwmon/pmbus/pmbus_core.c
++++ b/drivers/hwmon/pmbus/pmbus_core.c
+@@ -6,6 +6,7 @@
+  * Copyright (c) 2012 Guenter Roeck
+  */
+ 
++#include <linux/atomic.h>
+ #include <linux/debugfs.h>
+ #include <linux/delay.h>
+ #include <linux/kernel.h>
+@@ -20,8 +21,8 @@
+ #include <linux/pmbus.h>
+ #include <linux/regulator/driver.h>
+ #include <linux/regulator/machine.h>
+-#include <linux/of.h>
+ #include <linux/thermal.h>
++#include <linux/workqueue.h>
+ #include "pmbus.h"
+ 
+ /*
+@@ -102,6 +103,11 @@ struct pmbus_data {
+ 
+ 	struct mutex update_lock;
+ 
++#if IS_ENABLED(CONFIG_REGULATOR)
++	atomic_t regulator_events[PMBUS_PAGES];
++	struct work_struct regulator_notify_work;
++#endif
++
+ 	bool has_status_word;		/* device uses STATUS_WORD register */
+ 	int (*read_status)(struct i2c_client *client, int page);
+ 
+@@ -3181,12 +3187,19 @@ static int pmbus_regulator_get_voltage(struct regulator_dev *rdev)
+ 		.class = PSC_VOLTAGE_OUT,
+ 		.convert = true,
+ 	};
++	int ret;
+ 
++	mutex_lock(&data->update_lock);
+ 	s.data = _pmbus_read_word_data(client, s.page, 0xff, PMBUS_READ_VOUT);
+-	if (s.data < 0)
+-		return s.data;
++	if (s.data < 0) {
++		ret = s.data;
++		goto unlock;
++	}
+ 
+-	return (int)pmbus_reg2data(data, &s) * 1000; /* unit is uV */
++	ret = (int)pmbus_reg2data(data, &s) * 1000; /* unit is uV */
++unlock:
++	mutex_unlock(&data->update_lock);
++	return ret;
+ }
+ 
+ static int pmbus_regulator_set_voltage(struct regulator_dev *rdev, int min_uv,
+@@ -3203,16 +3216,22 @@ static int pmbus_regulator_set_voltage(struct regulator_dev *rdev, int min_uv,
+ 	};
+ 	int val = DIV_ROUND_CLOSEST(min_uv, 1000); /* convert to mV */
+ 	int low, high;
++	int ret;
+ 
+ 	*selector = 0;
+ 
++	mutex_lock(&data->update_lock);
+ 	low = pmbus_regulator_get_low_margin(client, s.page);
+-	if (low < 0)
+-		return low;
++	if (low < 0) {
++		ret = low;
++		goto unlock;
++	}
+ 
+ 	high = pmbus_regulator_get_high_margin(client, s.page);
+-	if (high < 0)
+-		return high;
++	if (high < 0) {
++		ret = high;
++		goto unlock;
++	}
+ 
+ 	/* Make sure we are within margins */
+ 	if (low > val)
+@@ -3222,7 +3241,10 @@ static int pmbus_regulator_set_voltage(struct regulator_dev *rdev, int min_uv,
+ 
+ 	val = pmbus_data2reg(data, &s, val);
+ 
+-	return _pmbus_write_word_data(client, s.page, PMBUS_VOUT_COMMAND, (u16)val);
++	ret = _pmbus_write_word_data(client, s.page, PMBUS_VOUT_COMMAND, (u16)val);
++unlock:
++	mutex_unlock(&data->update_lock);
++	return ret;
+ }
+ 
+ static int pmbus_regulator_list_voltage(struct regulator_dev *rdev,
+@@ -3230,7 +3252,9 @@ static int pmbus_regulator_list_voltage(struct regulator_dev *rdev,
+ {
+ 	struct device *dev = rdev_get_dev(rdev);
+ 	struct i2c_client *client = to_i2c_client(dev->parent);
++	struct pmbus_data *data = i2c_get_clientdata(client);
+ 	int val, low, high;
++	int ret;
+ 
+ 	if (selector >= rdev->desc->n_voltages ||
+ 	    selector < rdev->desc->linear_min_sel)
+@@ -3240,18 +3264,29 @@ static int pmbus_regulator_list_voltage(struct regulator_dev *rdev,
+ 	val = DIV_ROUND_CLOSEST(rdev->desc->min_uV +
+ 				(rdev->desc->uV_step * selector), 1000); /* convert to mV */
+ 
++	mutex_lock(&data->update_lock);
++
+ 	low = pmbus_regulator_get_low_margin(client, rdev_get_id(rdev));
+-	if (low < 0)
+-		return low;
++	if (low < 0) {
++		ret = low;
++		goto unlock;
++	}
+ 
+ 	high = pmbus_regulator_get_high_margin(client, rdev_get_id(rdev));
+-	if (high < 0)
+-		return high;
++	if (high < 0) {
++		ret = high;
++		goto unlock;
++	}
+ 
+-	if (val >= low && val <= high)
+-		return val * 1000; /* unit is uV */
++	if (val >= low && val <= high) {
++		ret = val * 1000; /* unit is uV */
++		goto unlock;
++	}
+ 
+-	return 0;
++	ret = 0;
++unlock:
++	mutex_unlock(&data->update_lock);
++	return ret;
+ }
+ 
+ const struct regulator_ops pmbus_regulator_ops = {
+@@ -3266,12 +3301,42 @@ const struct regulator_ops pmbus_regulator_ops = {
+ };
+ EXPORT_SYMBOL_NS_GPL(pmbus_regulator_ops, PMBUS);
+ 
++static void pmbus_regulator_notify_work_cancel(void *data)
++{
++	struct pmbus_data *pdata = data;
++
++	cancel_work_sync(&pdata->regulator_notify_work);
++}
++
++static void pmbus_regulator_notify_worker(struct work_struct *work)
++{
++	struct pmbus_data *data =
++		container_of(work, struct pmbus_data, regulator_notify_work);
++	int i, j;
++
++	for (i = 0; i < data->info->pages; i++) {
++		int event;
++
++		event = atomic_xchg(&data->regulator_events[i], 0);
++		if (!event)
++			continue;
++
++		for (j = 0; j < data->info->num_regulators; j++) {
++			if (i == rdev_get_id(data->rdevs[j])) {
++				regulator_notifier_call_chain(data->rdevs[j],
++							      event, NULL);
++				break;
++			}
++		}
++	}
++}
++
+ static int pmbus_regulator_register(struct pmbus_data *data)
+ {
+ 	struct device *dev = data->dev;
+ 	const struct pmbus_driver_info *info = data->info;
+ 	const struct pmbus_platform_data *pdata = dev_get_platdata(dev);
+-	int i;
++	int i, ret;
+ 
+ 	data->rdevs = devm_kzalloc(dev, sizeof(struct regulator_dev *) * info->num_regulators,
+ 				   GFP_KERNEL);
+@@ -3295,20 +3360,20 @@ static int pmbus_regulator_register(struct pmbus_data *data)
+ 					     info->reg_desc[i].name);
+ 	}
+ 
++	INIT_WORK(&data->regulator_notify_work, pmbus_regulator_notify_worker);
++
++	ret = devm_add_action_or_reset(dev, pmbus_regulator_notify_work_cancel, data);
++	if (ret)
++		return ret;
++
+ 	return 0;
+ }
+ 
+ static int pmbus_regulator_notify(struct pmbus_data *data, int page, int event)
+ {
+-		int j;
+-
+-		for (j = 0; j < data->info->num_regulators; j++) {
+-			if (page == rdev_get_id(data->rdevs[j])) {
+-				regulator_notifier_call_chain(data->rdevs[j], event, NULL);
+-				break;
+-			}
+-		}
+-		return 0;
++	atomic_or(event, &data->regulator_events[page]);
++	schedule_work(&data->regulator_notify_work);
++	return 0;
+ }
+ #else
+ static int pmbus_regulator_register(struct pmbus_data *data)
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.34.1
 
 
