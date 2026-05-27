@@ -1,125 +1,174 @@
-Return-Path: <stable+bounces-254623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254624-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sOCtFq8XF2px3wcAu9opvQ
-	(envelope-from <stable+bounces-254623-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 18:11:27 +0200
+	id SNwkOUsYF2px3wcAu9opvQ
+	(envelope-from <stable+bounces-254624-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 18:14:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C84DF5E782B
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 18:11:26 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 179CF5E78D5
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 18:14:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7EAC830B5B32
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 16:03:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 860A73006983
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 16:05:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CE0740313F;
-	Wed, 27 May 2026 16:03:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61F3B38237B;
+	Wed, 27 May 2026 16:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="IbvuBZZ/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kh7ICbeq"
 X-Original-To: stable@vger.kernel.org
-Received: from 013.lax.mailroute.net (013.lax.mailroute.net [199.89.1.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9163E7BDF;
-	Wed, 27 May 2026 16:03:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3433803D9;
+	Wed, 27 May 2026 16:05:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779897825; cv=none; b=MTHkz02oChGVr/rQ2bLMCEWAxMnoe4NwoltS6rnt+SUzUuRHhcuPfMgTC2VQnmyvOYXRFS2n985FWCYTOOjYTHoZdCyAPhWWAIZUYhlKkwh4vaBzyqJQ0xVoXdh5vnKu+z846bI+qHLAtn+PtPHWStsTcNz8LRaBYe0Dph43ZUA=
+	t=1779897935; cv=none; b=k6vMpyJGECG5vc/ZKGExDd8tQSAV6F8x9uW0QyDnGp+zDDbuDuhWhAOYEMAAe4DXKoBboKXPImtGzroaHyHNK+I6XgGPQngjTUzkObpRedyfV9VujDarH0C0ktTXxKJ+7p0Uns1jNjyWhnDUvOQ3NsxjWZM6Jr9k5gx/orvbhVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779897825; c=relaxed/simple;
-	bh=pbpcF99gY83mrSQXs+1lbUHoWkniY8Y68mLqAKtNy+c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HURuTlq2VkDOSK2FTy1jEcggBpL2yCO0qL6HCXnEngmuUctinBdGsE1HoKC3ZasvrJzOVp4rnjG1XRhNoiOBPgl2AjAz3OaZUDVL7Pkkzwg8Z03Zz0pYcZOXLJsE4K11ju7ZxiSFOkCNt8qzgL8/Vc5EKlN4RavA6u8fJbPoxhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=IbvuBZZ/; arc=none smtp.client-ip=199.89.1.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 013.lax.mailroute.net (Postfix) with ESMTP id 4gQZDH2xKMzlfpMD;
-	Wed, 27 May 2026 16:03:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1779897819; x=1782489820; bh=vqhvLK2VzyuhCBI9AetGvgdg
-	PFfzku4JN/wmMoUOPhE=; b=IbvuBZZ/9ZJ6+3cBDBxMbgVD4YW0np0oeRBMVRRB
-	Xvighr4KvjxCTvDuGKaX5n9OrTO2jiNTu78uQL5pDrnKEusdKAoeQY/sbUnuKo7J
-	f34TVkHuayFCviYpO3gGXpsR33uyB4cKoIseit2QiLg75UMV0VwSWK8xA7uJqVas
-	KpRbc+EiPBlavZJmXY+l4J4/XBk4nBuVKbI2XrJZGO6x8AYg6pLPzx6YfawCaJtB
-	9RmQgW/0dfbYi9I7ljeMnXoh1jhbGJ/Ltj/sCzRvo2JngE0EqXYvZOoRGkJP9X5+
-	0KbRW+Tc/qHcyhuJBPw2ZenXwv3esqvyUS6fZKQ22lnw6g==
-X-Virus-Scanned: by MailRoute
-Received: from 013.lax.mailroute.net ([127.0.0.1])
- by localhost (013.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id S-FmIe6cFsKU; Wed, 27 May 2026 16:03:39 +0000 (UTC)
-Received: from [100.119.48.131] (unknown [104.135.180.219])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 013.lax.mailroute.net (Postfix) with ESMTPSA id 4gQZD82D8Bzlh2g0;
-	Wed, 27 May 2026 16:03:35 +0000 (UTC)
-Message-ID: <155fb425-b503-44e2-bd11-444b8baeb5bb@acm.org>
-Date: Wed, 27 May 2026 09:03:35 -0700
+	s=arc-20240116; t=1779897935; c=relaxed/simple;
+	bh=7A26relehPP5yXuYTa/eKUcVIk48lZzFsBmv8uoH9YE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HJnULnxApRfrqc1bHC4heA3Z4/zlbkUM0z7+DqlTROLg/D9sU1kk1RUOJVRKHfk+Gqn+4GQmyLi6TO9j49jwMd2htqBQR/WoPIP9uT9s91D6Kfou6nvwQhkeCO80Jv1/GQjHjtPFFupbCNMccwXM5XPvFMOYPg8t5Pb5wcJkt2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kh7ICbeq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11A991F000E9;
+	Wed, 27 May 2026 16:05:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779897933;
+	bh=uOez9Z9nCz/wnIU41bFx3NdD9heAW+QrcuBmq2VO+ho=;
+	h=From:To:Cc:Subject:Date;
+	b=Kh7ICbeq1iqJ+GyGgrsMuu1+7jFKaYieMmgZdQFe7LlpPFX7U+XjUUe80+dJ1Eeig
+	 dU29Z2YXaC0Q0NRxdmYPle7S6BOwHOAht8pOgTK6ttIB/sBnGoEic500J9ev+p3E3y
+	 PaPIEfUZofU6IHqj/kTerqa2yDKWGLn91C40Qvwu7/3+tF8rjHnx2uX27KIz/5pacC
+	 bd80znqH/Dj5Z5vR7Lr5Yeyzgyd1KOg9OOH1JobJPJ18mI+AmY4UbpZ4jBAHnbl2kV
+	 O/3sp++QAsAYSkV9xBZQFEaYqnichpikJQeei1lzphcEnXVPp6CFFvtl7kNUtSDoLH
+	 DCghzCftp/xkw==
+From: Lee Jones <lee@kernel.org>
+To: lee@kernel.org,
+	Ping Cheng <ping.cheng@wacom.com>,
+	Jason Gerecke <jason.gerecke@wacom.com>,
+	Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [RESEND 1/1] HID: wacom: Fix OOB write in wacom_hid_set_device_mode()
+Date: Wed, 27 May 2026 17:05:26 +0100
+Message-ID: <20260527160528.847928-1-lee@kernel.org>
+X-Mailer: git-send-email 2.54.0.746.g67dd491aae-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] scsi: bsg: copy uring_cmd payload to prevent double-fetch
- from shared SQE
-To: Rahul Chandelkar <rc@rexion.ai>,
- "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
- "Martin K . Petersen" <martin.petersen@oracle.com>,
- Jens Axboe <axboe@kernel.dk>, FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>
-Cc: linux-scsi@vger.kernel.org, linux-block@vger.kernel.org,
- io-uring@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260527105931.3950913-1-rc@rexion.ai>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20260527105931.3950913-1-rc@rexion.ai>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[acm.org,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[acm.org:s=mr01];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	URIBL_MULTI_FAIL(0.00)[sea.lore.kernel.org:server fail,acm.org:server fail];
-	TAGGED_FROM(0.00)[bounces-254623-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DKIM_TRACE(0.00)[acm.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254624-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[lee@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bvanassche@acm.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[acm.org:email,acm.org:mid,acm.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: C84DF5E782B
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[wacom.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 179CF5E78D5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 5/27/26 3:59 AM, Rahul Chandelkar wrote:
-> scsi_bsg_uring_cmd() and scsi_bsg_map_user_buffer() read bsg_uring_cmd
-> fields directly from the shared mmap'd io_uring submission ring via
-> io_uring_sqe128_cmd().  On the inline execution path, io_uring has not
-> yet copied the SQE to kernel memory, so a concurrent userspace thread
-> can modify fields between reads.
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+wacom_hid_set_device_mode() currently assumes that the HID_DG_INPUTMODE
+usage is always located in the first field (field[0]) of the feature report.
+However, a device can specify HID_DG_INPUTMODE in a different field.
+
+If HID_DG_INPUTMODE is in a field other than the first one and the first
+field has a report_count smaller than the usage_index of HID_DG_INPUTMODE,
+this leads to an out-of-bounds write to r->field[0]->value.
+
+Fix this by storing the field index of HID_DG_INPUTMODE in 'struct
+hid_data' during feature mapping.  In wacom_hid_set_device_mode(), use
+this stored field index to access the correct field and add bounds
+checks to ensure both the field index and the value index are within
+valid ranges before writing.
+
+Cc: stable@vger.kernel.org
+Fixes: 5ae6e89f7409 ("HID: wacom: implement the finger part of the HID generic handling")
+Tested-by: Ping Cheng <ping.cheng@wacom.com>
+Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
+Signed-off-by: Lee Jones <lee@kernel.org>
+---
+ drivers/hid/wacom_sys.c | 13 ++++++++++---
+ drivers/hid/wacom_wac.h |  1 +
+ 2 files changed, 11 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/hid/wacom_sys.c b/drivers/hid/wacom_sys.c
+index a32320b351e3..2220168bf116 100644
+--- a/drivers/hid/wacom_sys.c
++++ b/drivers/hid/wacom_sys.c
+@@ -356,6 +356,7 @@ static void wacom_feature_mapping(struct hid_device *hdev,
+ 
+ 		hid_data->inputmode = field->report->id;
+ 		hid_data->inputmode_index = usage->usage_index;
++		hid_data->inputmode_field_index = field->index;
+ 		break;
+ 
+ 	case HID_UP_DIGITIZER:
+@@ -571,9 +572,14 @@ static int wacom_hid_set_device_mode(struct hid_device *hdev)
+ 
+ 	re = &(hdev->report_enum[HID_FEATURE_REPORT]);
+ 	r = re->report_id_hash[hid_data->inputmode];
+-	if (r) {
+-		r->field[0]->value[hid_data->inputmode_index] = 2;
+-		hid_hw_request(hdev, r, HID_REQ_SET_REPORT);
++	if (r && hid_data->inputmode_field_index >= 0 &&
++	    hid_data->inputmode_field_index < r->maxfield) {
++		struct hid_field *field = r->field[hid_data->inputmode_field_index];
++
++		if (field && hid_data->inputmode_index < field->report_count) {
++			field->value[hid_data->inputmode_index] = 2;
++			hid_hw_request(hdev, r, HID_REQ_SET_REPORT);
++		}
+ 	}
+ 	return 0;
+ }
+@@ -2846,6 +2852,7 @@ static int wacom_probe(struct hid_device *hdev,
+ 		return -ENODEV;
+ 
+ 	wacom_wac->hid_data.inputmode = -1;
++	wacom_wac->hid_data.inputmode_field_index = -1;
+ 	wacom_wac->mode_report = -1;
+ 
+ 	if (hid_is_usb(hdev)) {
+diff --git a/drivers/hid/wacom_wac.h b/drivers/hid/wacom_wac.h
+index d4f7d8ca1e7e..126bec6e5c0c 100644
+--- a/drivers/hid/wacom_wac.h
++++ b/drivers/hid/wacom_wac.h
+@@ -295,6 +295,7 @@ struct wacom_shared {
+ struct hid_data {
+ 	__s16 inputmode;	/* InputMode HID feature, -1 if non-existent */
+ 	__s16 inputmode_index;	/* InputMode HID feature index in the report */
++	__s16 inputmode_field_index; /* InputMode HID feature field index in the report */
+ 	bool sense_state;
+ 	bool inrange_state;
+ 	bool eraser;
+-- 
+2.54.0.746.g67dd491aae-goog
+
 
