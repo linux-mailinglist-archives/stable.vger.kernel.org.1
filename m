@@ -1,85 +1,66 @@
-Return-Path: <stable+bounces-254622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254623-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AKMWHocXF2px3wcAu9opvQ
-	(envelope-from <stable+bounces-254622-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 18:10:47 +0200
+	id sOCtFq8XF2px3wcAu9opvQ
+	(envelope-from <stable+bounces-254623-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 18:11:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF1CD5E7807
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 18:10:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C84DF5E782B
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 18:11:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 496D6307DFF1
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 16:03:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7EAC830B5B32
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 16:03:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86F13D79E3;
-	Wed, 27 May 2026 16:03:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CE0740313F;
+	Wed, 27 May 2026 16:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b="p3PoEzqv"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="IbvuBZZ/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from 013.lax.mailroute.net (013.lax.mailroute.net [199.89.1.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81DE5382298
-	for <stable@vger.kernel.org>; Wed, 27 May 2026 16:03:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9163E7BDF;
+	Wed, 27 May 2026 16:03:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779897812; cv=none; b=tTGYBeUVGWnQPpnlCilq3Pe/xQpJMdVVrWO9VIG2JHQ8UsdJ7cpZZUuefJAsZ55VBqDMydpuUxKkR/sQ+X8su/Sstd6zLCTQiYY1R4MkijoYKTPFbisrL5xn63d8W3ED8qa25wc+jN4YjuCJWIBTMCx5CcFjvEWZ8rQHxW3XrH4=
+	t=1779897825; cv=none; b=MTHkz02oChGVr/rQ2bLMCEWAxMnoe4NwoltS6rnt+SUzUuRHhcuPfMgTC2VQnmyvOYXRFS2n985FWCYTOOjYTHoZdCyAPhWWAIZUYhlKkwh4vaBzyqJQ0xVoXdh5vnKu+z846bI+qHLAtn+PtPHWStsTcNz8LRaBYe0Dph43ZUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779897812; c=relaxed/simple;
-	bh=jfHYVvAv2KLPbWszFU9UWn6gSBGjDMujZa9kYNQiUyw=;
+	s=arc-20240116; t=1779897825; c=relaxed/simple;
+	bh=pbpcF99gY83mrSQXs+1lbUHoWkniY8Y68mLqAKtNy+c=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oSdTIApOTihn90vYiCTOTZeT6GxEbD/UHKc5cVnogTgCM3oSOi+Jh60wYPjB4iMb5+rU3cZJfMYk2HJTdFXrSCQeCixQxVQiDgrsRfv5DyZX+EtzNkw5iqBPospbmVW6fbXGbFhtrcVyzZDub+dLaQMU9mBzeP98F9s4V0sk3f0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b=p3PoEzqv; arc=none smtp.client-ip=209.85.160.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-439712b3416so4155209fac.2
-        for <stable@vger.kernel.org>; Wed, 27 May 2026 09:03:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1779897809; x=1780502609; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gntijPqsvuiGRryRGaewxCELZ5a6Qr0krHV7SCIDMB4=;
-        b=p3PoEzqvIwCDKqu1d2DE3TstqFbMSY6eCzEUZ4nAjFKTII7VwecNYGybvd8CjXKkC3
-         tsupMB/EID6Aa2HQeld19Q3tlb2tUw8wfiMKcODRX1Y6d6GEKvv4g6tprpxzq/YzwO2B
-         gXeMDo5zxBSGLho53SSlLAn0B2rDXwcFzs+S5K939WEcgO5+DE0T0oJUZO4CSqnf7tA9
-         8BxHBE+WPwFLpQd1aVCL3T89ed8GUP79mY17chmOQWYDx28TS7o2ju0jadAWemuyQJ3z
-         PqJp2cEqb5XVt4hcD13u5AqmxVszUsy8oviQCzXSJbpOSiS1/WwddFRRuBDymuKCC6EI
-         6hOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779897809; x=1780502609;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gntijPqsvuiGRryRGaewxCELZ5a6Qr0krHV7SCIDMB4=;
-        b=A7wBPiDh94xZkFEiDeMA9JapxSsFHR9exYng9TRDBQ1QjcJbwlU1qOD7EUQM7CaNzg
-         26aWP1v2prm6pdsCWdzoKDWdLwiN/6Bf5bpdaF0UkQRkyHlY1r86IteWDV4xXnYfKhJa
-         7wZn0YzN/x3WL+mWF0JOXz7CWdtF7kSga6HakvUwsh4jk1J8I3qxO1II3WZwFtq6jsON
-         /irPduCGQ5d55uNErILNdHmWuX07iZw4gDPR99+NQ21+KTWaHD/yTIk0IL7gg8p8e2/y
-         MIJ21owmcJ3AmWbVj64GC3Hd2upoufTF65xJfMqXbgkkr6jwD/2E+B5dbZOp9ftHepWe
-         0wvw==
-X-Forwarded-Encrypted: i=1; AFNElJ/cJp8b4ksWeS3UeDVErHHr4ruMQtA0/iqK7Xy1vdkYWxTrwI5tWCjlEJHkvFi5fjYqpTEU4B0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLAsDAy3wAuwSKVYLJctO27xKfU7IiBZxizPrARngLvXQciV0i
-	HXGZjZeeCtMqBnGBT465GQYVKgUz5+1Lepqn3yymBflFiWSe1a4KuHGDtvtmxXyo61s=
-X-Gm-Gg: Acq92OFJpJTuajk5QInDei7VwNtgYCpWbmhYpq2maHX6+iR069PWqI39sTXhuwUWLIO
-	w+dNAMUckbCc7rj8A6wV45y+6EaCTbKVrrmcqTxsqKdSkuf5XcfkxiUI/Wu17hZo/uedwLiE++B
-	PvZHKwQKRepwxOfViQckXy///iGsxwPpxXMDZBIEpI1otBt9xzEGqaPKvXZ9EyK1jL49UggIBxy
-	fSIDesBiXvKNAHcn73jJVjOGk6ZF2XGhauJ6w2Mlm+OkrCSEau4Bz/4xoUFQJNLirZ/5ZNmzdiO
-	IsJgwBUceQbuawth1pxr2ygpCQRAF0aK+cPCdQkEv9KtJSVlj0LdCukBGjTfAJJ97xSSgiFKDiR
-	yX23Oth31c84KCziRn6ii9NRbLSo8G8EZOjWztBPW3tcILrsr4xFADKHH/GNSSQAytWvNxMoRaT
-	Rl9+N5HUHPu1dneD0uM+ZSDRUjAp3fgozZXsV9enV2q+/cAXIIh7ex/Mlr6HBCRlsAGhdCL9v8w
-	tYAFBmM6e4zd/G6IlE=
-X-Received: by 2002:a05:6871:4390:b0:43a:f95e:cf14 with SMTP id 586e51a60fabf-43b5aaed6f2mr14617454fac.12.1779897808999;
-        Wed, 27 May 2026 09:03:28 -0700 (PDT)
-Received: from [192.168.1.102] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-43b639f3609sm16097799fac.13.2026.05.27.09.03.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 27 May 2026 09:03:27 -0700 (PDT)
-Message-ID: <919d86f3-1164-4084-9f72-d3ead0522c5e@kernel.dk>
-Date: Wed, 27 May 2026 10:03:26 -0600
+	 In-Reply-To:Content-Type; b=HURuTlq2VkDOSK2FTy1jEcggBpL2yCO0qL6HCXnEngmuUctinBdGsE1HoKC3ZasvrJzOVp4rnjG1XRhNoiOBPgl2AjAz3OaZUDVL7Pkkzwg8Z03Zz0pYcZOXLJsE4K11ju7ZxiSFOkCNt8qzgL8/Vc5EKlN4RavA6u8fJbPoxhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=IbvuBZZ/; arc=none smtp.client-ip=199.89.1.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 013.lax.mailroute.net (Postfix) with ESMTP id 4gQZDH2xKMzlfpMD;
+	Wed, 27 May 2026 16:03:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1779897819; x=1782489820; bh=vqhvLK2VzyuhCBI9AetGvgdg
+	PFfzku4JN/wmMoUOPhE=; b=IbvuBZZ/9ZJ6+3cBDBxMbgVD4YW0np0oeRBMVRRB
+	Xvighr4KvjxCTvDuGKaX5n9OrTO2jiNTu78uQL5pDrnKEusdKAoeQY/sbUnuKo7J
+	f34TVkHuayFCviYpO3gGXpsR33uyB4cKoIseit2QiLg75UMV0VwSWK8xA7uJqVas
+	KpRbc+EiPBlavZJmXY+l4J4/XBk4nBuVKbI2XrJZGO6x8AYg6pLPzx6YfawCaJtB
+	9RmQgW/0dfbYi9I7ljeMnXoh1jhbGJ/Ltj/sCzRvo2JngE0EqXYvZOoRGkJP9X5+
+	0KbRW+Tc/qHcyhuJBPw2ZenXwv3esqvyUS6fZKQ22lnw6g==
+X-Virus-Scanned: by MailRoute
+Received: from 013.lax.mailroute.net ([127.0.0.1])
+ by localhost (013.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id S-FmIe6cFsKU; Wed, 27 May 2026 16:03:39 +0000 (UTC)
+Received: from [100.119.48.131] (unknown [104.135.180.219])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 013.lax.mailroute.net (Postfix) with ESMTPSA id 4gQZD82D8Bzlh2g0;
+	Wed, 27 May 2026 16:03:35 +0000 (UTC)
+Message-ID: <155fb425-b503-44e2-bd11-444b8baeb5bb@acm.org>
+Date: Wed, 27 May 2026 09:03:35 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -87,87 +68,58 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] io_uring/io-wq: re-check IO_WQ_BIT_EXIT for each linked
- work item
-To: Runyu Xiao <runyu.xiao@seu.edu.cn>, io-uring@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org,
- jianhao.xu@seu.edu.cn, stable@vger.kernel.org
-References: <20260527143726.1272269-1-runyu.xiao@seu.edu.cn>
+Subject: Re: [PATCH] scsi: bsg: copy uring_cmd payload to prevent double-fetch
+ from shared SQE
+To: Rahul Chandelkar <rc@rexion.ai>,
+ "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+ "Martin K . Petersen" <martin.petersen@oracle.com>,
+ Jens Axboe <axboe@kernel.dk>, FUJITA Tomonori <fujita.tomonori@lab.ntt.co.jp>
+Cc: linux-scsi@vger.kernel.org, linux-block@vger.kernel.org,
+ io-uring@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260527105931.3950913-1-rc@rexion.ai>
 Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <20260527143726.1272269-1-runyu.xiao@seu.edu.cn>
-Content-Type: text/plain; charset=UTF-8
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20260527105931.3950913-1-rc@rexion.ai>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel-dk.20251104.gappssmtp.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[acm.org,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[acm.org:s=mr01];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254622-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[kernel.dk];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel-dk.20251104.gappssmtp.com:+];
+	URIBL_MULTI_FAIL(0.00)[sea.lore.kernel.org:server fail,acm.org:server fail];
+	TAGGED_FROM(0.00)[bounces-254623-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	DKIM_TRACE(0.00)[acm.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[bvanassche@acm.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,kernel-dk.20251104.gappssmtp.com:dkim]
-X-Rspamd-Queue-Id: CF1CD5E7807
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[acm.org:email,acm.org:mid,acm.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: C84DF5E782B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 5/27/26 8:37 AM, Runyu Xiao wrote:
-> Commit bdf0bf73006e ("io_uring/io-wq: check IO_WQ_BIT_EXIT inside work
-> run loop") fixed the obvious case where io_worker_handle_work() took one
-> exit-bit snapshot before draining pending work, but the fix stops one
-> level too early.
-> 
-> io_worker_handle_work() now re-checks IO_WQ_BIT_EXIT in its outer work
-> run loop, yet it still snapshots that bit once before processing a
-> whole dependent linked-work chain. If io_wq_exit_start() sets
-> IO_WQ_BIT_EXIT after the first linked item has started, the remaining
-> linked items can still reuse stale do_kill = false, skip
-> IO_WQ_WORK_CANCEL, and continue running after exit has begun.
-> 
-> That means the previous fix did not fully eliminate the exit-latency
-> problem; it only narrowed it to linked chains. A long or slow linked
-> chain can still keep io-wq exit waiting for work that should already
-> have been canceled.
-> 
-> The issue was found on Linux v6.18.21 by our static-analysis tool,
-> which flagged linked-work loops that snapshot shared exit state
-> outside per-item cancel decisions, and was then confirmed by manual
-> auditing of io_worker_handle_work(). It was later reproduced with a
-> QEMU no-device validation selftest that preserved the same contract:
-> a three-node unbound linked chain, an exit actor setting
-> IO_WQ_BIT_EXIT after work1, and slow post-exit linked work. With a
-> 3000 ms delay injected into each post-exit item, the buggy path
-> spends about 6066 ms after exit running work2/work3, while the fixed
-> path cancels both and finishes in about 2 ms.
-> 
-> Re-check test_bit(IO_WQ_BIT_EXIT, &wq->state) for each iteration of the
-> dependent-link loop, right before deciding whether to cancel the
-> current work item. That closes the remaining stale-snapshot window and
-> prevents linked post-exit work from stretching shutdown latency.
-
-I think this change makes sense to further cut down on the time, but you
-need to send it in for the _upstream_ kernel, stable only does backports
-of those. Eg if you send this one for current -git and mark it fixing
-the correct upstream commit (not the stable one) and add CC stable, then
-it'll wind up in stable as well.
-
--- 
-Jens Axboe
+On 5/27/26 3:59 AM, Rahul Chandelkar wrote:
+> scsi_bsg_uring_cmd() and scsi_bsg_map_user_buffer() read bsg_uring_cmd
+> fields directly from the shared mmap'd io_uring submission ring via
+> io_uring_sqe128_cmd().  On the inline execution path, io_uring has not
+> yet copied the SQE to kernel memory, so a concurrent userspace thread
+> can modify fields between reads.
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
 
