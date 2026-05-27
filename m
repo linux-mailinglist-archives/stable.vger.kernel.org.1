@@ -1,77 +1,77 @@
-Return-Path: <stable+bounces-254571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254573-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SIvuJLXgFmo9uQcAu9opvQ
-	(envelope-from <stable+bounces-254571-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 14:16:53 +0200
+	id oPhqFR3hFmo9uQcAu9opvQ
+	(envelope-from <stable+bounces-254573-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 14:18:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13E485E401A
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 14:16:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD9415E4090
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 14:18:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AA20B306C854
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 12:09:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5EE91304ED4A
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 12:10:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD2573D1A98;
-	Wed, 27 May 2026 12:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E547A3D1AB2;
+	Wed, 27 May 2026 12:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="y2p1h7Hy"
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="jIeCI3rb"
 X-Original-To: stable@vger.kernel.org
-Received: from out203-205-221-231.mail.qq.com (out203-205-221-231.mail.qq.com [203.205.221.231])
+Received: from out203-205-221-191.mail.qq.com (out203-205-221-191.mail.qq.com [203.205.221.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ED5A3D0C18;
-	Wed, 27 May 2026 12:09:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57B53CF047;
+	Wed, 27 May 2026 12:10:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779883776; cv=none; b=mKmXKpDxuXRCRz1DH0UsP1zPs7a1pYTL9pyG3JpDHc6Q00cO2LLps4cUWNOPOD8KwZu+pBWYRjknJSFutcNmDuLbuL8OiPhlFGZNSWKbOd1nfntqIe/YDAY+pk9VlqmJZ9bWfF/CkAlNS8OcThvaeejh5MBHB8wnXyzRvfdrdak=
+	t=1779883844; cv=none; b=jMXdexjW0S0+RfYgLxchIqpx5Y+X35JYAblH0y0AmLH0XRgC1Xr5y+6vD+A8c4yd8ySNauikotur0dNoZLZ4e6J7ZDUPLVt6LbOWqanf1yfMe0S5yaWeQ4TRQGwXL9coQ8rKj7UQVqV//Q8dpV+7w+fHOvm8M+LZPJyRef/mNkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779883776; c=relaxed/simple;
-	bh=ntejZ8F2g+1h9d0gwDnkRm7MnzDDRK0VZ4p55Q40HXM=;
+	s=arc-20240116; t=1779883844; c=relaxed/simple;
+	bh=DsyrqwH9z1wPy+iyN1XvW8sHgzFQ0mb94h3X51fopYM=;
 	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=e75hqLJrvest97uBfvNpTN+jwBHLoF+7UYVPr6qWqFfGdBcy4VrWgVp7nEWRE+PNCgNee8Ohn+6MjWKqyX0YVLdJevQwW3zzixvrJGGVF9hNLlRS9wheFgyLDyBeWOsU744O69jGyHNExmll0nsNbjhUBFberDF0Cc8m3Rc54cE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=y2p1h7Hy; arc=none smtp.client-ip=203.205.221.231
+	 MIME-Version; b=cV6hkzOE7+pb+9AwwwR0QSRSO+YaWv6Ra45zsucBdeUP5iK5Pnn88JMGOv2tI5/d/gvHn21O1/nOS++fwi2YMAX/15ImQBZxYmSidV6Jnqou4ZPXYHjaZZKFPaFOqUDkWI9UQXTRqx7QnmSnk1Y0fwbke24bWd/7Kpha1nzXKPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=jIeCI3rb; arc=none smtp.client-ip=203.205.221.191
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1779883766;
-	bh=o+fF+CauGdRVwmpcniZzu/zZ4kvK8ZGLidripJ2JjkU=;
+	s=s201512; t=1779883835;
+	bh=SdQzQQXDOvVTvDu89953WL14dsKKHE8EvVQ4hgHnk0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=y2p1h7HypxCI7OvHhVlVC9xstP+AhjSknEqGkiTjO8faFM4A93yt79wkHxT3pi1dU
-	 2ZuMYGt5WKVBgYM4GgO3wo5izIi6shaw6RJi+htP84I/H3QiDtIMtS5O5oZOuJ4JJ7
-	 tGfBJeQCOCh7ksS49PaI34GpAwzuUeYHZQQHzXlk=
+	b=jIeCI3rb0nNYuSKqe6pyOCJTzicFAcGx6h9pVxI1NpP6tLZ7taL16hnlstpC2pS8v
+	 3YMkDODhrUpzn3Dp1RdZaGyri+rGvZPgLMIIVpgcHhxqKYcYsUMEtY45/UPMM5mMc6
+	 5CLDHqEsUqH3JIFckVXc7hwSGx/CxEf8qtoH1ZnQ=
 Received: from localhost.localdomain ([116.128.244.169])
 	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
 	id 2518B808; Wed, 27 May 2026 20:09:17 +0800
-X-QQ-mid: xmsmtpt1779883764t2xh59dkg
-Message-ID: <tencent_4745C5DC2333325C0EDAB1EFC88A136E6809@qq.com>
-X-QQ-XMAILINFO: OT0WjiHamhvjIWyBzf5ztUj8jEL220jTPLNzjz8RE0Loh1GC34xMECigpjORAn
-	 +rFnKXs9OKv/vHN6IKBvXu5eEfwGK8ksVc3b6ZCtW7rFpXprhPoYjoXwX4B5FVTHMSAPOWMhUMwH
-	 lnWDpnXkMZnmmXeD2P7KTwKc2rnzfh41lq3s0SJq+DDTfXpVoDl1wONgL/R4NKwbB8wkxAcZfBG8
-	 6t3tJ71Z7ZKsnT4H+2L9VM43oFJzlXVr/4DtEs9FISWfxAw4CnT9UoidaMbv5SBYxDdiQC6VKbho
-	 qpLqnADVVPZ5chSvxXtvlQXXBN0YJa8cN8jOR4qwXvb1B7AOVYWRhmjIo0Kubu/sX5/U+G1sJ8Hc
-	 I7+fZwN7ip9renk4n95YSwvXxUILL71p3cRcGP00ylevGN9Mm2W6xB8GgCPWo5ZeixxxKyN39HWo
-	 c4lgKabp/1LyHAyQpctXJ11egKE/LaLiSXJjPfCUwLkxweJ59fORsLoIU5H2sDtkW/fTQG/NYPCg
-	 91OLNkunSqoz45POP2SqVNwDbbh41uGq9wSMhCkYJQR9yr0tefSB4CklUvQci9u4OJt5Z/Z/khCx
-	 z/FBzVh0ishQXd1nmlprI8ozYBaovYNUIedSlq4vbeEFcpGd/dV6mK28c+xlaEe0y3iHntjtb9wI
-	 1/vocueAYof7cPkr3Gk5NgjSL9EaDkasdkyC8coEeIK/IqSRBLSj1TL0JYHN+JALqNuXBCAZ3H6O
-	 zmhe2R9i7ZisVbAKrbbvs9ze5e8jVjgZbP0tGxHAz4haWrNO29z3aQLFEyHUDaS5/Q4Xy3eyY8wQ
-	 0o55d+Tl/2nVjNEYnAIzcaD6w4s+ORRNW15GeP2KG/x6X8gLAGPQ93PehYYVgvYJQMeHpJfOwEMQ
-	 xtOc8zTAgJqTOiMnoWy4lRmf7iwAjmhqfD3fjVosqMdxjSH4G4DN9e4AyzmDaD+at6cEef24X5LT
-	 8D2pt9/OE58JlSAQW6Pr2z34980g1ftyc4Qe6R0tMx94m52ge65SvQyY73me29Q0SFQlaA5FAAuY
-	 9vgufVuRvQnVFGJh2arJ0PNq+ILqBNqRdOxqJJdd/ncblQ/7IXXJQKgZ4mRp28/niTjCN4+oGMYQ
-	 nJjK33SUXhafCX2y7g+HylxhP0pw==
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+X-QQ-mid: xmsmtpt1779883766th4pdboyc
+Message-ID: <tencent_964433DCD132125D5EDA79EE068A2D6EFA09@qq.com>
+X-QQ-XMAILINFO: MzFuFcyvqEECV4J1NXDv+jT8AE60QFYYhsT+4rm6MBOncxR8h5yNqWtgngiWTd
+	 frDhs29siCFgz0MQos4WhBKPWOq8VdG1VMKiDtCtgFquP0zm8PcAsgTeTaGBUzV1TI48uQI5Jgo3
+	 cC/cMIdNQ7daCHElve0Uw+YvRHSvkG26bgBA18o3EUJupMFzYBmkmTzG1dhrRd4icNXapOt75rUe
+	 YPaobwQnuCj7dmHeAEf5Pix9q9sD3nhbwXuzbJbVJawg70itGEHbSTj/YEZ0VO4yCV6AKgYK9hbM
+	 ki/mmfs2vtzTrOEevfIHXsipnDYySlSWFd2wRap3LxBYybXfjDoHz9QsZN02KwuokDd7jbIsntFn
+	 Gp95vwXvLuzL4RFQiJoQwhSA5hjQ1rgVrlqJn9tTfiAUiWlvtwqocyK0GoyuLL+qw6bLKb+xc1ja
+	 Rclx+/99vkSBD3uS92Pcnh0QsrOB3eY7VFMCqIz81rCEgoFyUJdo+wk3NM0wCt9wTtLXa+GeI7sJ
+	 skNAm1xc1Q20GL3+Gjhe788ksc2d19lEugGnvcWLZ86kGSj6P3tWFwnP5ZyArpL/Zagr+Khb3ntn
+	 XOYrldNVyEH7SxgZ0rpTAZMrhpURYglPQkfYP3bsUcYXNY4ptLLVWTeAoL7FQ7W33HZHI+WeIxO/
+	 iJzYMnsegr7eFzluARB6V8b5ogzrrHClMXHqxayo3R9VHGLVl6jTVZLS0ctX3eQaba5AJ8X9nCur
+	 CGYdB4lvUyDsVdR9wdXETBk7yXsqg9hZZGfExnNzOzg42psqYVYbz3xdd5SYkM5xdmOQ9nG4id4U
+	 z/jJvC7howpnebSDhsNEVYWRQffJhLIvCOvQKNoqWq3HJIrsu9o5tI8CvHGS+kyNB+7vndIP2dyx
+	 LkowQdeJaLYGqnG7kFpp6PaWbM/tFnSOsqefFP8XP68b5K9BkP5Uy7AaaMbvQ6cMpTEg3DdvRb7P
+	 eyJ8ZsrwCL6DogD2hJC0dDzu0WHfminz35xuBNSA1FsHWaNWIcFXOJYfmgar2yhXijhBGHQn2Dd1
+	 ysoTuNsemTsWo/2vIHDkYDTG+10/0UnrzRA0/VEoWrCh9GI6buEVsv/6rnDIGA322CPa/+TFSLai
+	 ssofszJkpHJ+zH7e+vvCzYweigVUV0p39x2N273bx2Y2x5E2s=
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
 From: Zhao Dongdong <winter91@foxmail.com>
 To: perex@perex.cz,
 	tiwai@suse.com
 Cc: linux-sound@vger.kernel.org,
 	Zhao Dongdong <zhaodongdong@kylinos.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH v3 4/6] ALSA: ymfpci: check snd_ctl_new1() return value
-Date: Wed, 27 May 2026 20:09:12 +0800
-X-OQ-MSGID: <20260527120914.515037-5-winter91@foxmail.com>
+Subject: [PATCH v3 5/6] ALSA: cmipci: check snd_ctl_new1() return value
+Date: Wed, 27 May 2026 20:09:13 +0800
+X-OQ-MSGID: <20260527120914.515037-6-winter91@foxmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260527120914.515037-1-winter91@foxmail.com>
 References: <20260527120914.515037-1-winter91@foxmail.com>
@@ -87,7 +87,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[foxmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[foxmail.com:s=s201512];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -97,25 +97,25 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FREEMAIL_FROM(0.00)[foxmail.com];
-	TAGGED_FROM(0.00)[bounces-254571-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-254573-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[winter91@foxmail.com,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[foxmail.com:+];
 	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 13E485E401A
+X-Rspamd-Queue-Id: AD9415E4090
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Zhao Dongdong <zhaodongdong@kylinos.cn>
 
 snd_ctl_new1() can return NULL when memory allocation fails.
-snd_ymfpci_create_spdif_controls() does not check the return value
-before dereferencing kctl->id.device, which can lead to a NULL pointer
+snd_cmipci_spdif_controls() does not check the return value before
+dereferencing kctl->id.device, which can lead to a NULL pointer
 dereference.
 
 Add NULL checks after snd_ctl_new1() calls and return -ENOMEM if any
@@ -123,39 +123,39 @@ fails.
 
 Assisted-by: Opencode:DeepSeek-V4-Flash
 Cc: stable@vger.kernel.org
-Fixes: c9b83ae4a160 ("ALSA: ymfpci: Fix kctl->id initialization")
+Fixes: f2f312ad88c6 ("ALSA: cmipci: Fix kctl->id initialization")
 Signed-off-by: Zhao Dongdong <zhaodongdong@kylinos.cn>
 ---
- sound/pci/ymfpci/ymfpci_main.c | 6 ++++++
+ sound/pci/cmipci.c | 6 ++++++
  1 file changed, 6 insertions(+)
 
-diff --git a/sound/pci/ymfpci/ymfpci_main.c b/sound/pci/ymfpci/ymfpci_main.c
-index b9a09568afc9..2ccb976e68e0 100644
---- a/sound/pci/ymfpci/ymfpci_main.c
-+++ b/sound/pci/ymfpci/ymfpci_main.c
-@@ -1781,16 +1781,22 @@ int snd_ymfpci_mixer(struct snd_ymfpci *chip, int rear_switch)
- 	if (snd_BUG_ON(!chip->pcm_spdif))
- 		return -ENXIO;
- 	kctl = snd_ctl_new1(&snd_ymfpci_spdif_default, chip);
-+	if (!kctl)
-+		return -ENOMEM;
- 	kctl->id.device = chip->pcm_spdif->device;
- 	err = snd_ctl_add(chip->card, kctl);
- 	if (err < 0)
- 		return err;
- 	kctl = snd_ctl_new1(&snd_ymfpci_spdif_mask, chip);
-+	if (!kctl)
-+		return -ENOMEM;
- 	kctl->id.device = chip->pcm_spdif->device;
- 	err = snd_ctl_add(chip->card, kctl);
- 	if (err < 0)
- 		return err;
- 	kctl = snd_ctl_new1(&snd_ymfpci_spdif_stream, chip);
-+	if (!kctl)
-+		return -ENOMEM;
- 	kctl->id.device = chip->pcm_spdif->device;
- 	err = snd_ctl_add(chip->card, kctl);
- 	if (err < 0)
+diff --git a/sound/pci/cmipci.c b/sound/pci/cmipci.c
+index cd73b6833639..ff4bfbf94b81 100644
+--- a/sound/pci/cmipci.c
++++ b/sound/pci/cmipci.c
+@@ -2637,16 +2637,22 @@ static int snd_cmipci_mixer_new(struct cmipci *cm, int pcm_spdif_device)
+ 		}
+ 		if (cm->can_ac3_hw) {
+ 			kctl = snd_ctl_new1(&snd_cmipci_spdif_default, cm);
++			if (!kctl)
++				return -ENOMEM;
+ 			kctl->id.device = pcm_spdif_device;
+ 			err = snd_ctl_add(card, kctl);
+ 			if (err < 0)
+ 				return err;
+ 			kctl = snd_ctl_new1(&snd_cmipci_spdif_mask, cm);
++			if (!kctl)
++				return -ENOMEM;
+ 			kctl->id.device = pcm_spdif_device;
+ 			err = snd_ctl_add(card, kctl);
+ 			if (err < 0)
+ 				return err;
+ 			kctl = snd_ctl_new1(&snd_cmipci_spdif_stream, cm);
++			if (!kctl)
++				return -ENOMEM;
+ 			kctl->id.device = pcm_spdif_device;
+ 			err = snd_ctl_add(card, kctl);
+ 			if (err < 0)
 -- 
 2.25.1
 
