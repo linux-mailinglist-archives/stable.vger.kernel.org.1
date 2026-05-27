@@ -1,178 +1,112 @@
-Return-Path: <stable+bounces-254459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254460-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wJZdIy1BFmrOjwcAu9opvQ
-	(envelope-from <stable+bounces-254459-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 02:56:13 +0200
+	id aPwmM65CFmrnjwcAu9opvQ
+	(envelope-from <stable+bounces-254460-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 03:02:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F109A5DE157
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 02:56:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36F195DE213
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 03:02:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 78FEC302ED72
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 00:56:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7A9C43027D80
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 01:02:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026D32E22B5;
-	Wed, 27 May 2026 00:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC7DE2D3A69;
+	Wed, 27 May 2026 01:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="u7HTWalx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CyNzGevL"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-112.mail.139.com (n169-112.mail.139.com [120.232.169.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D8829AAF3;
-	Wed, 27 May 2026 00:56:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B202AE8D;
+	Wed, 27 May 2026 01:02:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779843367; cv=none; b=SZh//aiC1+tT5JOSz9EYOVst4KMmDeSnpVNHwTZBdKZaYKk7epexLQlP85E1jXF3HctlsuRQhn9SU9VoC5a08bI0lbUkhSyyVh4nK0CtrNnhhppVgkUzZVhnIEjczju342ZDBIX05xpIbQEodyhXWVeH0crdggMfCFOC9qswqTY=
+	t=1779843755; cv=none; b=mx9OhGD9NZWxlPt7M2MIWO8Jq8C2cOUe87xbTwjwh6DbIVJ5Nn42i8rPlhIevzOKCZQhXc4D9W1QKX+UtPSmp/kddGxpJhTkEIZpfLYS6UJZE5+yHe/taRdf6Ct5KI/cyddRtvoCpGP8eD37xFP/s5L147ODMyiTgH5jxyVEi6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779843367; c=relaxed/simple;
-	bh=YsNiUFhM7ZNl5fxuDEq/DsxQwWAvPPpU0XM+7Vh8HeE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=RLnVjypPWdtGxTDlALsks2BVl0zSzSthrqN3X6Q6jwmtUcq9jzMG8LUA8hsFJTq8bcoUovC5tl/BIIl/LdGYe6hEYTsKLtBVH5wSUq8B9EnRpGPtlNmcU5dsIz2oYWbqtreJ/my4KkOMPokYozwcJyz7NuVnIbO7VC6x7Fzg9Nw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=u7HTWalx; arc=none smtp.client-ip=120.232.169.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=u7HTWalxfLlSLzMvvz4JkBA+4Ys1XNlFCnOUt8vBjwadeh8T2ut+aUn2LbKXhSXWS7ZGIdAI8RtSV
-	 HXWb75UKKb2qu88LMEsS5s7L3Q6GR8xTiqoUG/qjfmJi3HNsZUwASNIZvKoC63pkaIEksuU5G66SUt
-	 i751LEhKDrrzGSEE=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from NTT-kernel-dev (unknown[60.247.85.88])
-	by rmsmtp-lg-appmail-24-12027 (RichMail) with SMTP id 2efb6a1641210f5-000f7;
-	Wed, 27 May 2026 08:56:03 +0800 (CST)
-X-RM-TRANSID:2efb6a1641210f5-000f7
-From: Li hongliang <1468888505@139.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	almaz.alexandrovich@paragon-software.com,
-	ntfs3@lists.linux.dev
-Subject: [PATCH 5.15.y] fs/ntfs3: validate rec->used in journal-replay file record check
-Date: Wed, 27 May 2026 08:56:02 +0800
-Message-Id: <20260527005602.3175920-1-1468888505@139.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1779843755; c=relaxed/simple;
+	bh=Z7A8aH8+gGhTh+ua1E6eHUGTKg/R+gEV89gBLqLZZLo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lU2TRnKXx1LBrOd7ZSz88WxT7V8COeN8empWep1G7G8rO+bAozgSrlfprgBQNpjx8UhgrWIV2E83dA33RSgOpaNoZgI6CuVkPkqzhIhKX+9i0+3I+6AF6ukEOQD9seKkSL8lFN8PS6fCheDAgT1JR5iv/yfZu27O9SJz6RiP3cU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CyNzGevL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C58FF1F000E9;
+	Wed, 27 May 2026 01:02:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779843754;
+	bh=Z7A8aH8+gGhTh+ua1E6eHUGTKg/R+gEV89gBLqLZZLo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=CyNzGevLetjSzKwKqh7PqnYgr1yWTPH61MZmdFMmE0Je4/w2EvR0y29qFr85B/fIR
+	 qxRrxSMZ9Zwe8H61jX4m7MDPAKGAtIZUOUdgDzw9M9x4F3zKrsyc/tkG0/esqm178G
+	 xxfcZM42SieIBNtt9x3OlD6pqZWbh8Y5Cd5RTj9v3WHF6vymofrKAseuESBDEh1RBq
+	 6BDaJdCV6T8R7/n/ZsYc2kkO97+Edrj+Qs39TzZf/1NDSDkJjzCqF/1ssvDMPNy+PF
+	 8f3dVEEYaD/FcMVdKUp2m9rydB41i1PZZb+6exaNJg4KDrqT5S1TPNKw1oI0jawgCQ
+	 w7TCp0T6cirVg==
+Date: Tue, 26 May 2026 18:02:33 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Junrui Luo <moonafterrain@outlook.com>
+Cc: Sunil Goutham <sgoutham@marvell.com>, Linu Cherian
+ <lcherian@marvell.com>, Geetha sowjanya <gakula@marvell.com>, hariprasad
+ <hkelam@marvell.com>, Subbaraya Sundeep <sbhatta@marvell.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Yuhao Jiang
+ <danisjiang@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH net] octeontx2-af: cn10k: restrict LMTLINE sharing to
+ same PF
+Message-ID: <20260526180233.4323832d@kernel.org>
+In-Reply-To: <SYBPR01MB7881F8D11D2930BB84215253AF0D2@SYBPR01MB7881.ausprd01.prod.outlook.com>
+References: <SYBPR01MB7881F8D11D2930BB84215253AF0D2@SYBPR01MB7881.ausprd01.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [1.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[139.com:s=dkim];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254459-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[139.com];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[139.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-254460-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_TO(0.00)[outlook.com];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FREEMAIL_CC(0.00)[marvell.com,lunn.ch,davemloft.net,google.com,redhat.com,vger.kernel.org,gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[139.com:-];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.814];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,paragon-software.com:email,139.com:mid,139.com:email]
-X-Rspamd-Queue-Id: F109A5DE157
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kuba@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 36F195DE213
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+On Sun, 24 May 2026 15:29:29 +0800 Junrui Luo wrote:
+> Reported-by: Yuhao Jiang <danisjiang@gmail.com>
 
-[ Upstream commit 0ca0485e4b2e837ebb6cbd4f2451aba665a03e4b ]
+Really? I thought I saw this reported in Sashiko..
 
-check_file_record() validates rec->total against the record size but
-never validates rec->used.  The do_action() journal-replay handlers read
-rec->used from disk and use it to compute memmove lengths:
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260520154157.1439319-1-michael.bommarito@gmail.com
 
-  DeleteAttribute:    memmove(attr, ..., used - asize - roff)
-  CreateAttribute:    memmove(..., attr, used - roff)
-  change_attr_size:   memmove(..., used - PtrOffset(rec, next))
-
-When rec->used is smaller than the offset of a validated attribute, or
-larger than the record size, these subtractions can underflow allowing
-us to copy huge amounts of memory in to a 4kb buffer, generally
-considered a bad idea overall.
-
-This requires a corrupted filesystem, which isn't a threat model the
-kernel really needs to worry about, but checking for such an obvious
-out-of-bounds value is good to keep things robust, especially on journal
-replay
-
-Fix this up by bounding rec->used correctly.
-
-This is much like commit b2bc7c44ed17 ("fs/ntfs3: Fix slab-out-of-bounds
-read in DeleteIndexEntryRoot") which checked different values in this
-same switch statement.
-
-Cc: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Fixes: b46acd6a6a62 ("fs/ntfs3: Add NTFS journal")
-Cc: stable <stable@kernel.org>
-Assisted-by: gregkh_clanker_t1000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Li hongliang <1468888505@139.com>
----
- fs/ntfs3/fslog.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
-
-diff --git a/fs/ntfs3/fslog.c b/fs/ntfs3/fslog.c
-index d3d006b63b27..9b12d5a7ac8d 100644
---- a/fs/ntfs3/fslog.c
-+++ b/fs/ntfs3/fslog.c
-@@ -2792,13 +2792,14 @@ static inline bool check_file_record(const struct MFT_REC *rec,
- 	u16 fn = le16_to_cpu(rec->rhdr.fix_num);
- 	u16 ao = le16_to_cpu(rec->attr_off);
- 	u32 rs = sbi->record_size;
-+	u32 used = le32_to_cpu(rec->used);
- 
- 	/* Check the file record header for consistency. */
- 	if (rec->rhdr.sign != NTFS_FILE_SIGNATURE ||
- 	    fo > (SECTOR_SIZE - ((rs >> SECTOR_SHIFT) + 1) * sizeof(short)) ||
- 	    (fn - 1) * SECTOR_SIZE != rs || ao < MFTRECORD_FIXUP_OFFSET_1 ||
- 	    ao > sbi->record_size - SIZEOF_RESIDENT || !is_rec_inuse(rec) ||
--	    le32_to_cpu(rec->total) != rs) {
-+	    le32_to_cpu(rec->total) != rs || used > rs || used < ao) {
- 		return false;
- 	}
- 
-@@ -2810,6 +2811,15 @@ static inline bool check_file_record(const struct MFT_REC *rec,
- 		return false;
- 	}
- 
-+	/*
-+	 * The do_action() handlers compute memmove lengths as
-+	 * "rec->used - <offset of validated attr>", which underflows when
-+	 * rec->used is smaller than the attribute walk reached.  At this
-+	 * point attr is the ATTR_END marker; rec->used must cover it.
-+	 */
-+	if (used < PtrOffset(rec, attr) + sizeof(attr->type))
-+		return false;
-+
- 	return true;
- }
- 
--- 
-2.34.1
-
-
+Either way, Marvell folks - please review.
 
