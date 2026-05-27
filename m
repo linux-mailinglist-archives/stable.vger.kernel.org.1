@@ -1,165 +1,173 @@
-Return-Path: <stable+bounces-254553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254554-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qHrrKMvRFmowsgcAu9opvQ
-	(envelope-from <stable+bounces-254553-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 13:13:15 +0200
+	id kPGmGKvUFmq+swcAu9opvQ
+	(envelope-from <stable+bounces-254554-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 13:25:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DA5F5E334B
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 13:13:15 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6445E5E3571
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 13:25:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5078C3022685
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 11:12:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 22370300EC72
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 11:24:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9895A3F2113;
-	Wed, 27 May 2026 11:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA3D53EF673;
+	Wed, 27 May 2026 11:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y68ft7eF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eO9/WxYC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5457F3EA942;
-	Wed, 27 May 2026 11:12:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779880331; cv=none; b=WB1aspvbHG6q0fcLvT1Z8ygrRPUAmFE0XD71oxYZbtrlIWrOO0J8OYOvN+1up47slrO9zBdDxNiJf68nTQigtrMOfgBbygFWjVCujcO7kLEmQlnHF+RwP1Pj1tQkyZXzjsYFV1wDL2E5Q10jU1qDJwQs1+da4mohfOEpuSQcbXs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779880331; c=relaxed/simple;
-	bh=/0Yl9DBWSv2OSjUohiMto+Cg+AKLFW9utAbxd47+i78=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dQg7sQSYLry0Gzb/ASa7RHFqHLvOncueHG1xc/ghDpXsmypsTheVkgrYWiPa8NLDWPkNFumdC1KprRpN4NWhYmEcC8ZcO/8WhcR3ZjaVkU4d/3p09DhAY1hcOdyLz3v1iBAeB1/EUp1nt/Idvv7l8ms6TAvKQw/LcqFST0YOzZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y68ft7eF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D57E1F000E9;
-	Wed, 27 May 2026 11:12:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779880329;
-	bh=GYKx4trkZ+FNFeHudAQLkbpLbOCapm8PqcKEgE/jfFw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Y68ft7eFcOramM7PwfTWO/xzjCEmewk3L0kRh4CFBNU+ZHYWr3h3rnFyAf7cIBp1w
-	 8O22qOXbCc1/X84sDCx6cop2RadQA4k2zCBXYeLSPV6xj8xIcEkCvncHV6oVChf+gj
-	 srVOU8kAwxtE7wV4L8cDHP5rjRTh6wcVFr3UcxCjaG1m3z1VCCX+zxq2R7hzN91ZVc
-	 aCFaw73O42ijzCD+ptc33xTIPakxh+DiMASWwe2/fG1wuTCAnFmHboLIgk4DD3DrN9
-	 0WeDt27EUU2IbJtHCzBBnQHf3WaW8Zsel0JOCMs7PwmhzUtYFNrbm9ODLyiAgnxSRI
-	 Y9LRNgZ7qJC/Q==
-Date: Wed, 27 May 2026 12:11:59 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Joshua Crofts via B4 Relay <devnull+joshua.crofts1.gmail.com@kernel.org>
-Cc: joshua.crofts1@gmail.com, David Lechner <dlechner@baylibre.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Jiri Valek - 2N <valek@2n.cz>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>,
- stable@vger.kernel.org
-Subject: Re: [PATCH] iio: light: opt3001: fix missing state reset on timeout
-Message-ID: <20260527121159.4a4f94bc@jic23-huawei>
-In-Reply-To: <20260526-fix-early-return-v1-1-c70e886329f3@gmail.com>
-References: <20260526-fix-early-return-v1-1-c70e886329f3@gmail.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E6A3DFC7C
+	for <stable@vger.kernel.org>; Wed, 27 May 2026 11:24:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779881090; cv=pass; b=G9zApvI71a8z1vY7ycVFGOcAgb/h8rOecRuUzC/PYdd46VpDFU4BoBa5/4e5ej0yqM60VRWpbLsAlHj96Ix5YKwwtLAIkTWB185N6G2LAAuqnQsoApgVjuWU38B8K7/QokXG8YmQNUDCU0WOToGkQjveh9bxTarHmVu1q1+SEvM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779881090; c=relaxed/simple;
+	bh=6f36UCay5OAn9ZY1CaIQpcW2YbapEdBtYAL/RUTsKHs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fLELE2sn7W5c3+l10RgGq0JMrUHgsZXxm+CiMveqoOSwWpFzAXy48StGjExZPQLYQHDd2h1PUHIsC/xg93BctpwXVmC1xBfO+0HtQqgTisHVpyJXoCsrNjKrT8stf/2W+2r+XjwJNOOT5ogottUo1YFfqj8rHq+7vwli2FMjZkg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eO9/WxYC; arc=pass smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-45ed18d8a1bso1472188f8f.0
+        for <stable@vger.kernel.org>; Wed, 27 May 2026 04:24:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779881087; cv=none;
+        d=google.com; s=arc-20240605;
+        b=XnHrS6KvG8AOPdk2TrU8IYAbb4WUVvQKkrnlouj624pXMjcbh0hF2RDHcE7ObpckUb
+         To0TxH0sx5iVNrs7XO5EeVvEOiAvckzXrQKK6507VrfZLO+IwF3UNNWHijy9Bty/HbxY
+         J/cQ3lNpO3XiMtr5XVcQHSgpvnrKo64Epfidfa2aqJQWDgKs/gzfx7rd/CMqJFzBD9aQ
+         rBoVAstWpDo/1iGeCRaWNYb+V9zk0EejX2Z02rW541Wpel9H8yBKa+/HGXrB4xD7dKti
+         +IelzkJVbwX4myXztFFfYfxuN8mkg+oEnL3/39jO6ZLc52rp5kdInS/P/7Uh3EA2K76m
+         VNpA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=1oSdfPlt8ivfVcrtc+mkmI3RhSITwTlRakTSHCj1tzs=;
+        fh=tOeM9tCzqrrA8ap3fI/l6CuQ6NVzugPuqU2kCdeQKHc=;
+        b=XPfoi8cL7ysTYxRWIoKTzohsCb7uFyEUtnlmgpJLX8hmElXqgLFkHbw2B3BNri7gR+
+         I8mm1jFOxz+1GRblJJqXohD4hJrtkkZ/tXK0igCXyeIlTC6T8GQfNVUb5VCFOQrqfbll
+         sIEzx/ms4QYlHRssExq7ncxsy559pt0M8fOaoRS+Hu0hJQOEOFrZIMNJzovhx+UtFW7U
+         behbG6F2AcntddLhBMqezYP4dPhNz9uH+GyiqdAPo+zIjronTFYznU6LIUxjSIf1FMSh
+         /95M9//VskvsY9a6dSyY77rdc5Yj3FitPh/a0QHMhNE8eFxvezs8k05kDcWsd4RdzMgp
+         8TSQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779881087; x=1780485887; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=1oSdfPlt8ivfVcrtc+mkmI3RhSITwTlRakTSHCj1tzs=;
+        b=eO9/WxYC7s1YBnw51qdqxW9xNhCmHB0qgFhXawJQ5kuoMyF65opaBbA+G//lYwfz5Q
+         2PBuR2c2vG92+eouJ6HVdBagg4ISud5OnKSvmM3YnbqJVPZtgeo0kYgRImXtIYsB0lro
+         Q8Rv299oxUPwY8mSkUmmJm4QOuANtMpOzp2SyMQzbeaRahoutvTZWzk04Y7tqa18QsYc
+         OvcIqtMGLeO7/5z1zz0Kvchd1vVmT/4d6P8DZ6AnWzZaSuX7ejBfISEMaa4880TkaOOT
+         H1DGnIhX0xSOqgOQ8zaVYW51ToF46bg6G23pBhXppGMrVD/tvbgqyM72BvNZIOo5hO4Q
+         SWTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779881087; x=1780485887;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1oSdfPlt8ivfVcrtc+mkmI3RhSITwTlRakTSHCj1tzs=;
+        b=GDeKRCotiy3P1E1acdPJDA6d3I/DnNHzOohlUNb/KXQufYZi4BR5d7xOOK7qhVUbga
+         gZGGC80JsJLVnf1UrYlWePijPIyUxyA8K8dUeYdISGLdx6uiDisOAIQNWVxcSTm1+F1v
+         bcwcK3Wm56NcPL7oUEFMiqZidRrz3ofJtXUP0u+8rpRFJQSgu2/8gdgjSgJ/EYTNaG2x
+         M4aTBMOvnJZ1BGpo2wKse2k69Z5H7CHUYlCvwyMhimmAOD786HUQtImM112+eLN6hOC1
+         jgzLsr311XmOBDn/t+7YJvqSf2zCZDfd0USwadKxa+s8+H/uANfEhsf+1mNDJCmGuqjP
+         9n6Q==
+X-Forwarded-Encrypted: i=1; AFNElJ/ZUolNpqdq3h+y09mwmKDcrJ05dgJIxFnJ0UHOiktVUl2p5LCnQZZ6EA/Ul0gvefRQeuUpgdw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTX9zw9R1pvc1Sdt6U/w3mJ3KSqbAIrsa3AO+ry6XCuCmktxWl
+	IWvQ3gU+r6D3VllUJub8Npl1iurN+4zLpSrPQEbwUP079Vjy+HnoM+RnLkMRocIR1/mEj4y00QH
+	pPbn3HKI8+1LAVcRDtwi6/62RZyjEGrQ=
+X-Gm-Gg: Acq92OE/80Sq9iSEmpWO1VfzPAFI4uSuiyjgIXKsIm8oPeNX0c3GNeysX0RCZoCgGn/
+	p+ig4ZsQwS84gqy5HvmGel1lKgCQRwH9VXdnMTnfQZZEwN0d7/1Km8A8TyFhLUrpkkJBNhK2mDU
+	398wuJEbDa7+ZcQPDSQNcfQvjQ8ZOxW11ubN9uHnWrjxsv72sqq6p2Ykiwqa+a08HjbcdcjfjRe
+	TUj8qiVzTLwwSqJI2b7oy+Q2YSOUx/VKWnr+q6xvTdiyaNc4mXT/5m8hvL7eW091lB0jACQCUFk
+	r1C8hKHTGeqgFAVisQChV9y3ahGt5c/K7kwmy02cVaHtc6X6bYjUxrZtAB0HzewfnqYs2zV/1iP
+	7doAA89QLIrOswUJLVsnwOa2+d8r9m2io7JYDU/Qfwm6h120T5N0EPd7o1QNyYtKW+in+ftwQrq
+	dFuMGl1TfTWZqx16VR
+X-Received: by 2002:a05:6000:468c:b0:45e:df46:ba30 with SMTP id
+ ffacd0b85a97d-45edf46bd4emr466838f8f.34.1779881086531; Wed, 27 May 2026
+ 04:24:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
+References: <20260526-fix-early-return-v1-1-c70e886329f3@gmail.com> <20260527121159.4a4f94bc@jic23-huawei>
+In-Reply-To: <20260527121159.4a4f94bc@jic23-huawei>
+From: Joshua Crofts <joshua.crofts1@gmail.com>
+Date: Wed, 27 May 2026 13:24:34 +0200
+X-Gm-Features: AVHnY4ICcG_SbVWlGG7pp_NTcZD7e61UVwmjUR0z7ffrciGosxMVadE5mVs8LQE
+Message-ID: <CALoEA-zuzkR_9aGzM+NGWVWcN0ngf-1tRbBm1exkASkx+m9eYA@mail.gmail.com>
+Subject: Re: [PATCH] iio: light: opt3001: fix missing state reset on timeout
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Joshua Crofts via B4 Relay <devnull+joshua.crofts1.gmail.com@kernel.org>, 
+	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Jiri Valek - 2N <valek@2n.cz>, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-254553-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,baylibre.com,analog.com,kernel.org,2n.cz,vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254554-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MISSING_XM_UA(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	NEURAL_HAM(-0.00)[-0.997];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jic23@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[joshuacrofts1@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable,joshua.crofts1.gmail.com];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 4DA5F5E334B
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 6445E5E3571
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, 26 May 2026 13:15:29 +0200
-Joshua Crofts via B4 Relay <devnull+joshua.crofts1.gmail.com@kernel.org> wrote:
+On Wed, 27 May 2026 at 13:12, Jonathan Cameron <jic23@kernel.org> wrote:
+> The flow in this function is horrendous.  IF you have time would you mind
+> doing a follow up patch that just breaks it in two. Then have
+> if (opt->use_irq)
+>         opt3001_get_processed_irq();
+> else
+>         opt3001_get_processed_noirq();
+>
+> Maybe there is some code at the end that is worth sharing - you'll have to have
+> a play to see if that is worth doing.
+>
+> (If this was in your other patch set already then I'll blame lack of coffee!)
 
-> From: Joshua Crofts <joshua.crofts1@gmail.com>
-> 
-> Currently in the function opt3001_get_processed(), there is a check
-> that directly returns -ETIMEDOUT if the conversion IRQ times out,
-> completely bypassing the err label, leaving ok_to_ignore_lock
-> permanently true, potentially breaking the device's falling threshold
-> interrupt detection.
-> 
-> Assign -ETIMEDOUT to the return variable and jump to the error label
-> to ensure ok_to_ignore_lock is properly reset.
-> 
-> Fixes: 26d90b559057 ("iio: light: opt3001: Fixed timeout error when 0 lux")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://sashiko.dev/#/patchset/20260525-opt3001-cleanup-v4-0-65b36a174f78%40gmail.com?part=1
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Joshua Crofts <joshua.crofts1@gmail.com>
-The flow in this function is horrendous.  IF you have time would you mind
-doing a follow up patch that just breaks it in two. Then have
-if (opt->use_irq)
-	opt3001_get_processed_irq();
-else
-	opt3001_get_processed_noirq();
+No, didn't touch on this in the original set unfortunately, but I keep
+discovering
+all sorts of strange things in this driver. IMO this warranted a quick
+solo patch
+as it can potentially mess up subsequent reads. I'll probably end up adding
+the breakdown in the other series though.
 
-Maybe there is some code at the end that is worth sharing - you'll have to have
-a play to see if that is worth doing.
+-- 
+Kind regards
 
-(If this was in your other patch set already then I'll blame lack of coffee!)
-
-Applied this to the fixes-togreg branch of iio.git and marked for stable.
-
-Jonathan
-
-
-
-> ---
->  drivers/iio/light/opt3001.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/light/opt3001.c b/drivers/iio/light/opt3001.c
-> index 03c7a87b4a8eef13bbdcf48dcaf969781aa76bd1..0743e16f2a8fa0f07acd19c7dd6b54bec9e5c7b2 100644
-> --- a/drivers/iio/light/opt3001.c
-> +++ b/drivers/iio/light/opt3001.c
-> @@ -366,8 +366,10 @@ static int opt3001_get_processed(struct opt3001 *opt, int *val, int *val2)
->  		ret = wait_event_timeout(opt->result_ready_queue,
->  				opt->result_ready,
->  				msecs_to_jiffies(OPT3001_RESULT_READY_LONG));
-> -		if (ret == 0)
-> -			return -ETIMEDOUT;
-> +		if (ret == 0) {
-> +			ret = -ETIMEDOUT;
-> +			goto err;
-> +		}
->  	} else {
->  		/* Sleep for result ready time */
->  		timeout = (opt->int_time == OPT3001_INT_TIME_SHORT) ?
-> 
-> ---
-> base-commit: 0e7dbde323808f28c5220295bfc1c5bc6f08c3f4
-> change-id: 20260526-fix-early-return-e2f1d3662180
-> 
-> Best regards,
-
+CJD
 
