@@ -1,131 +1,136 @@
-Return-Path: <stable+bounces-254527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254528-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EG/nFmTAFmrOqgcAu9opvQ
-	(envelope-from <stable+bounces-254527-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 11:59:00 +0200
+	id UHHMA77EFmrOqgcAu9opvQ
+	(envelope-from <stable+bounces-254528-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 12:17:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7F5F5E245A
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 11:58:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5454D5E27DD
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 12:17:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B8337300B9D1
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 09:56:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7C3C4300BDA4
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 10:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40E113E3D9F;
-	Wed, 27 May 2026 09:56:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="YPUkpvKb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C935E3E4C9D;
+	Wed, 27 May 2026 10:10:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B958374E63;
-	Wed, 27 May 2026 09:56:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E12A280318;
+	Wed, 27 May 2026 10:10:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779875814; cv=none; b=JdQITtV1+ud17xQNNF/6sntYvs8SkBYGwv9G+FUI+AYK6/XkvdHQSUzD9NFz/NkgerAmzWmFMsOwTPY4JDwmKqE8Tekm2lt3Xqzua0XwPRDbWGR46i2MnMj9T7u5cqF29QiZKdQtj90sXAB+5JYabMrFqfWN+9gKBFmvpY9484I=
+	t=1779876617; cv=none; b=HFr+wn8sFaTuJJw3AB7CXI6ImCUEkZW2UY+Z6kcJbPAg1p6veDePsopqe2rCXpkqxAj2Izsm740qdcUreP56UpKUU6pD/elbp4S9ePZHZsrHmzQ3m5EcaFumazc1Wvo5aRAYdt8rXV1ZRDXL3zswku07Bky/XLin4bN+baDInZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779875814; c=relaxed/simple;
-	bh=B2qDBp5gcRdrhypAUqWX86Ju0guwZqoaYd7e/oacJMc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HiAZftULcpC/WdzDrQDrKmizGS6G4EbIigR+oCc7fuV7sQn1ruM00cQaBPWEU5BBevKcDltgocOGFHofWq9qZcTbwYyL8awvXpd7mORGXjxzUasm3r2o5aQoashVyXe05RdzzYi+pLWYGdZ1jeSSIwqRUrxQhyOvHVo/D8Zivlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=YPUkpvKb; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=VyGjd5UX8/LWF/JNQYyX7JYgjBSF40EndSjLA+shEHQ=;
-	t=1779875811; x=1781085411; b=YPUkpvKboFReScxjL4YR7kqy1UIN6sV+X33GS4z+zrCfZMo
-	+ltpq1wXeP68vtbfquuhKSZ/lzDfFIsJYK678rRGGZC+ya6chyA6BvkLoUylmwYpUnZ4DUEzZF9K/
-	vbRvz10+GV6TZ4yAPDR81RKxrYvtcuIIyeLhYAD3XaCbyN1ZjsV2n7kkmbXSY09CPuOfIgg7VGSad
-	A9yxOYQuaHc2cW+PgyWQlmifrPsbaoLRexLp7LW3P8nMnIJAlMjJMyVg22XaIK7+ifld/YY2jZ0+5
-	myvLsxajc3SPsMsQpTceR/ollGXb0GK8VALP2AiBVrVTTyNgsMmQmrO/2xS/gwxA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1wSB0B-00000005zuI-0kNA;
-	Wed, 27 May 2026 11:56:39 +0200
-Message-ID: <57001abe5cdd0f2a7fc533764f0d9140fe20a3ad.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: ipw2x00: Fix potential NULL crypt->ops
- dereference in libipw_xmit()
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Nikolay Kuratov <kniv@yandex-team.ru>, linux-kernel@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org, Stanislav Yakovlev
- <stas.yakovlev@gmail.com>,  Hong Liu <liu.hong@intel.com>, James Ketrenos
- <jketreno@linux.intel.com>, stable@vger.kernel.org
-Date: Wed, 27 May 2026 11:56:38 +0200
-In-Reply-To: <20260527090833.521511-1-kniv@yandex-team.ru>
-References: <20260527090833.521511-1-kniv@yandex-team.ru>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1779876617; c=relaxed/simple;
+	bh=lFDe5C0ViBHCtU63G+Iu4849aG/k7gBGP5dWgk11pLQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CZxOv2pvJaN3x0J/yxa6I9Ob7FU/xQqFbi5nGkb2xRYnTd5X3ieMWFV3BcnhxjVyCEpEa6FUGaL0PHgPCzBDi3GHp2HF7j40zWvjs4zEyzX+0fMImwXRWRMxZ94m2A+GPV41Oe6b4ARg4CBUhRDdnTnEt2ewydOWRUU7owE1Rj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from dfae2b116770.home.arpa (unknown [36.110.52.3])
+	by APP-05 (Coremail) with SMTP id zQCowAC3Gt7twhZqvXSLEQ--.67S2;
+	Wed, 27 May 2026 18:09:49 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: Ram Vegesna <ram.vegesna@broadcom.com>,
+	"James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>
+Cc: Wentao Liang <vulab@iscas.ac.cn>,
+	Daniel Wagner <dwagner@suse.de>,
+	Kees Cook <kees@kernel.org>,
+	Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>,
+	linux-scsi@vger.kernel.org,
+	target-devel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] scsi: elx: efct: fix IO refcount leak in efct_hw_io_abort()
+Date: Wed, 27 May 2026 10:09:35 +0000
+Message-Id: <20260527100935.868042-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowAC3Gt7twhZqvXSLEQ--.67S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7XrWfCF48ZrWrGFyUXr1kKrg_yoWkAFc_C3
+	WSqrn3u34rKF48Kr1xGrZrZrsIkF4DW340qF4FgFySgF48trWDAr1UurZ3JrW2yw4vyF95
+	Aw18JF4UCw13XjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb38FF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s
+	1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0
+	cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8Jw
+	ACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka
+	0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7
+	v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF
+	1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIx
+	AIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI
+	42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWI
+	evJa73UjIFyTuYvjfU52NtDUUUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRAAA2oWibzwXwAAs8
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254527-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-254528-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[iscas.ac.cn];
 	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,intel.com,linux.intel.com];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.964];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,sipsolutions.net:mid,sipsolutions.net:dkim]
-X-Rspamd-Queue-Id: A7F5F5E245A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:mid,iscas.ac.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 5454D5E27DD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, 2026-05-27 at 12:08 +0300, Nikolay Kuratov wrote:
-> crypt and crypt->ops could be null, so we need to checking null
-> before dereference
->=20
-> Previously the commit
-> e8366bbabe1d ("ipw2x00: Fix potential NULL dereference in libipw_xmit()")
-> partially fixed that same issue in libipw_xmit().
-> This is similar to CVE-2022-49544.
->=20
-> Found by Svace static analysis tool.
+efct_hw_io_abort() calls efct_hw_io_alloc() which initializes the IO
+reference counter to 1. On the error path where the abort operation
+fails after IO allocation, the function returns without calling
+kref_put() to release the IO reference, leaking the refcount.
 
-Might want to fix your tool to look deeper than just pattern-matching
-the surrounding code :) The prior commit was also already wrong.
+Add kref_put() on the error path to properly release the reference.
 
-We already have
+Fixes: 63de51327a64 ("scsi: elx: efct: Hardware I/O and SGL initialization")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ drivers/scsi/elx/efct/efct_hw.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-	host_encrypt =3D ieee->host_encrypt && encrypt && crypt;
+diff --git a/drivers/scsi/elx/efct/efct_hw.c b/drivers/scsi/elx/efct/efct_hw.c
+index 1838032f6486..4ecd6f4165f4 100644
+--- a/drivers/scsi/elx/efct/efct_hw.c
++++ b/drivers/scsi/elx/efct/efct_hw.c
+@@ -1997,6 +1997,7 @@ efct_hw_io_abort(struct efct_hw *hw, struct efct_hw_io *io_to_abort,
+ 	wqcb = efct_hw_reqtag_alloc(hw, efct_hw_wq_process_abort, io_to_abort);
+ 	if (!wqcb) {
+ 		efc_log_err(hw->os, "can't allocate request tag\n");
++		kref_put(&io_to_abort->ref, io_to_abort->release);
+ 		return -ENOSPC;
+ 	}
+ 
+-- 
+2.34.1
 
-so "host_encrypt && crypt" is equivalent to checking just
-"host_encrypt".
-
-And the only way to set the crypt[] array where a non-NULL 'crypt' comes
-from will always have ops, so "crypt && crypt->ops" is equivalent to
-checking just "crypt".
-
-johannes
 
