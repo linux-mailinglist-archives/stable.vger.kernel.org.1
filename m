@@ -1,93 +1,62 @@
-Return-Path: <stable+bounces-254687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254688-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EASdDQdlF2rEDggAu9opvQ
-	(envelope-from <stable+bounces-254687-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 23:41:27 +0200
+	id ANZqGStwF2pDFAgAu9opvQ
+	(envelope-from <stable+bounces-254688-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 00:28:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2DF15EA74E
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 23:41:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07F1A5EAABD
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 00:28:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B0E42305DA9A
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 21:41:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D87A9303102E
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 22:28:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B5183A6B9A;
-	Wed, 27 May 2026 21:41:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0F593B4EA7;
+	Wed, 27 May 2026 22:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ldgqd+AU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mhcHP1tt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B74B539891E
-	for <stable@vger.kernel.org>; Wed, 27 May 2026 21:41:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45690F507;
+	Wed, 27 May 2026 22:28:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779918077; cv=none; b=UB+pjfHPG77YK02J1+sdVwmQJE4isai42kpk3EUXDL77lWXTHAJuuMxxIju85xV3QoL4NxD3FFSRxkyPDpZ5cwmseedfvWyVgPZA86i18beyyTsythUwvLSr6glGZx796AtQ5PdDJ9SygeV5ZG2Hhrvzy3aRr/u/Sywg12zWW+Q=
+	t=1779920932; cv=none; b=V0kEg6o9c9iZdOv6ShkrObzq1NmqKrScLm14CHXScMVbeTEvUbBcj4R6jHO+zl7GNY3kE3AK8XxGBrlkhVFUOt4jgwmSGfB4TsgO+BzZZ4D27T98DCePn0TTezV/dBGyEtqqFU5DOakKZEQ3HTKty19CqfNGbIuNQ1iC+NvVEpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779918077; c=relaxed/simple;
-	bh=H2q+9lVRHkFpT8xh7oZtUq8sMwBtqlHtfDEZCw5om4Y=;
+	s=arc-20240116; t=1779920932; c=relaxed/simple;
+	bh=L8JffQKblOXC4lXmbhrTtEu5hpagAryjHRh6Xbbc99Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jyBcuCm/ISWIJAEW906g4J66v8dNFktXUh7K1In1fqFyc2+5xENX0U/g0ovehL0eSPGUIqDq01T1dHZkWTQUrq2ITR89C4Tjo+dJDPNS9ocB47UG/JPTGpDhulCmOCeKjZDjLhRaQ2qsZ6Vetj6l97Ec34ZGbU1wn+JTcpiWVGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ldgqd+AU; arc=none smtp.client-ip=74.125.82.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-136b46c3540so4865240c88.1
-        for <stable@vger.kernel.org>; Wed, 27 May 2026 14:41:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779918075; x=1780522875; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=XyVWwIzkff7WseZ7Vmlrgtp+ZrMXZZPNibWetKjmvpU=;
-        b=ldgqd+AUgVcfxbvbOLtUqXcvx3judn7jP4+Nv2pbYdeLb3DaNWjq/GcVcnzRhI0Rwk
-         Z7se6IUlDh0MrXTbmlZBh+RcZg6IfhoaaxjvmEXOXFHdU5fAPspTY79wHP/CDGrqiEHI
-         UEkP+8Amc301c989eKdpZFr9MOIesjV/t/T6IXrj/w4YnUzpEmF83i0kJLheSJnLaj+x
-         6TaWmN5RYi8vo9PWcXNB+rovSR0C3Gsh5iyi5EZwP1hpS2qxTvHjgO8odb726WgUQfcD
-         29ZIQphl9MhoxP7b3SlITrSiYSAzyd/iijhtRK0Q8cZJso338VfgBz2Odn1YBPZJpFue
-         8Maw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779918075; x=1780522875;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XyVWwIzkff7WseZ7Vmlrgtp+ZrMXZZPNibWetKjmvpU=;
-        b=sxlP06wimC8cJ5tBezBACc38iePOARNlo1jM21CDDGszEl7ZoxHqecLwkH1e2guodi
-         uUL7EUYmMiPPsiBERtEx9vgBOSIChWoLP15agH1Brl00ay95RxbWqq5XbHIb/pEHzncY
-         3Vran4GrSl7sLhG+O0A+KG+G1Y14bbj2vxDRGKsFJLUT3xi6WJs0n9utpraoyKS4n36y
-         H3hCmCpvVdwLcc6KDbLHzEMProWXk6Arso+ucqMHlcbPYXm5zD3G0o8wNoyX4yst/K7I
-         5ujfKNaWt/hHPh8gIwQdBgoE8W0ZwmCGp7D01BsZDmLpax7wE5LZe9ZtzIWHamiCW34O
-         u/Fg==
-X-Forwarded-Encrypted: i=1; AFNElJ9lj4QZCgaSZI4oR8jcWHhZiicItdoMXNesQkKAGm0Ss0n01WQo+En49E/y/v8l6GMI5lsxWWE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw48cvHQFq4TCqM//dO+vkrIz6M7k4AM5gHBAcGHQVagm2sJAOH
-	GlYe37GuKQBMscl7NxJ66ZpSrAd2f3uWhA4JmC97mBOZfRk5bMuK+yqz
-X-Gm-Gg: Acq92OGxRM4bIL9E8yg1TfaxVWDASZAco1ftdWWlD5ATYQdnAcUhdS5AJFCZUWvJJDo
-	5UrBN1Y0961BDpykOI8eZPB2K1i77oxNaJ89oErFYvR791dLqlfMTm0zMKC8cHtFwW+BRsDp2G1
-	YAd02O7EXEiapeX2E8CFJkd0BvlQVY/wuBF6XeKlHN8udOnlIhlYrnfjVFfqEScCTxqYxSRLThR
-	3RzWhLBIbXQtg9DxM9iq1F03VxREDhsvMSI5B2Mw4/937mx4LslNpfN2mAHLcG0DTGCIfaIOlJL
-	b3WTgX33p9NNXXJ+vpTEPS51iHuIn/cRRHMIw9sUBlRjeUueL6Ajd2HZKOXQFjLtg7Pi8DEbpjw
-	pQEyB52ytM4ocmISxeQlnd1a859KdCdHlMMLLC+WTwBTkt1Zn4i91SSceSHnqY3kqKR7uTjnLQP
-	iEuEy+L7yH9dKcpxDwlH9yLnZkUTyUegA37v55UybE54CNeo8/Xfhy00I/H4VM1JO7MZHbX6AmE
-	8Y=
-X-Received: by 2002:a05:7022:618e:b0:137:5b9d:cf87 with SMTP id a92af1059eb24-1375b9dd5e3mr1725302c88.0.1779918074854;
-        Wed, 27 May 2026 14:41:14 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2ebe:8:ca8d:7a6a:7fd3:5948])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1366aa88c7esm11128204c88.10.2026.05.27.14.41.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 14:41:14 -0700 (PDT)
-Date: Wed, 27 May 2026 14:41:11 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Jinmo Yang <jinmo44.yang@gmail.com>
-Cc: Jason Gerecke <jason.gerecke@wacom.com>, 
-	Ping Cheng <ping.cheng@wacom.com>, Jiri Kosina <jikos@kernel.org>, 
-	Benjamin Tissoires <bentiss@kernel.org>, linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] HID: wacom: validate report size before kfifo insert
-Message-ID: <ahdgcqtACd-PGmzJ@google.com>
-References: <20260524135203.1996265-1-jinmo44.yang@gmail.com>
- <20260524135203.1996265-2-jinmo44.yang@gmail.com>
- <ahdJzWhVFm7mWu-v@google.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=XhSizhQjtaulUUF0wLLJs5G2jU7TAZzvamS+kYwk7DVwaFBp/KHtdSIHlyFq7RoGsHM22qfk0+gDeHE9pyH+7RmamRoAeWy/u/JV6jhSh62XXCqq3xXYc9m5yRY3rCBNphsiJqFMS0MNHy7thQTDzfT6WObkar+97T0Bm4IUtTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mhcHP1tt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADB541F000E9;
+	Wed, 27 May 2026 22:28:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779920930;
+	bh=Jb6Q6hQVUT8zax1SuTEMDyTWykmKTV3TpEatC15S7U0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=mhcHP1ttNk0+ImEAcl8/Hz9O5VkYrXb8YsRikhMJYRlo+2xRml31dnbUPT9zU9ZDl
+	 VyICrXl3LD9GqyQGOGqQ23sqMV4WhxwuSx1IgpCNMlsee6T0nupTA0+cHE6I5qLhU3
+	 mQc6rVIKEfMy9k7JmHR/uRg0x+L7qTaA/CsdIJANBCzPUC34TxmbwMU/qH3onXIKEr
+	 o02XEBzXtjkT07NZfJn3HS8XmyUUCBeDkQ8n/tlG1I4yB0vsFdND1lFBjpTZjDLMeL
+	 k6Sz6ovfKyDZVmcU9mNwSCNUIrj456drgk3Bpn//xwTQeYD9BK25N+ybT21dwL3fQj
+	 aOUNAJatSQ+7g==
+Date: Wed, 27 May 2026 15:28:49 -0700
+From: Wei Liu <wei.liu@kernel.org>
+To: Dexuan Cui <decui@microsoft.com>
+Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+	longli@microsoft.com, linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org, mhklinux@outlook.com,
+	matthew.ruffell@canonical.com, johansen@templeofstupid.com,
+	hargar@linux.microsoft.com, stable@vger.kernel.org,
+	Krister Johansen <kjlx@templeofstupid.com>
+Subject: Re: [PATCH v3] Drivers: hv: vmbus: Improve the logic of reserving
+ fb_mmio on Gen2 VMs
+Message-ID: <20260527222849.GD3518940@liuwe-devbox-debian-v2.local>
+References: <20260507212838.448891-1-decui@microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -96,80 +65,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ahdJzWhVFm7mWu-v@google.com>
+In-Reply-To: <20260507212838.448891-1-decui@microsoft.com>
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254687-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-254688-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[microsoft.com,kernel.org,vger.kernel.org,outlook.com,canonical.com,templeofstupid.com,linux.microsoft.com];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dmitrytorokhov@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[wei.liu@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A2DF15EA74E
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,liuwe-devbox-debian-v2.local:mid,canonical.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 07F1A5EAABD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, May 27, 2026 at 12:47:03PM -0700, Dmitry Torokhov wrote:
-> On Sun, May 24, 2026 at 10:52:03PM +0900, Jinmo Yang wrote:
-> > wacom_wac_queue_insert() passes the report size directly to kfifo_in()
-> > without checking whether the report fits in the kfifo buffer.
-> > 
-> > Since commit 5e013ad20689 ("HID: wacom: Remove static WACOM_PKGLEN_MAX
-> > limit"), the kfifo is sized dynamically as min(PAGE_SIZE, 10 * pktlen),
-> > which can be as small as 256 bytes. However, reports received via
-> > UHID_INPUT2 can be up to UHID_DATA_MAX (4096) bytes. When such an
-> > oversized report reaches wacom_wac_queue_insert(), the existing
-> > kfifo_avail() loop cannot make room for a record larger than the total
-> > buffer, causing kfifo_copy_in() to memcpy up to 3840 bytes past the
-> > slab allocation.
+On Thu, May 07, 2026 at 02:28:38PM -0700, Dexuan Cui wrote:
+> If vmbus_reserve_fb() in the kdump/kexec kernel fails to properly reserve
+> the framebuffer MMIO range (which is below 4GB) due to a Gen2 VM's
+> screen.lfb_base being zero [1], there is an MMIO conflict between the
+> drivers hyperv-drm and pci-hyperv: when the driver pci-hyperv's
+> hv_allocate_config_window() calls vmbus_allocate_mmio() to get an
+> MMIO range, typically it gets a 32-bit MMIO range that overlaps with the
+> framebuffer MMIO range, and later hv_pci_enter_d0() fails with an
+> error message "PCI Pass-through VSP failed D0 Entry with status" since
+> the host thinks that PCI devices must not use MMIO space that the
+> host has assigned to the framebuffer.
 > 
-> Does it? Or maybe spins there indefinitely? Also, doesn't
-> kfifo_copy_in() return 0 if a record it too big and not copy anything?
+> This is especially an issue if pci-hyperv is built-in and hyperv-drm is
+> built as a module. Consequently, the kdump/kexec kernel fails to detect
+> PCI devices via pci-hyperv, and may fail to mount the root file system,
+> which may reside in a NVMe disk. The issue described here has existed
+> for SR-IOV VF NICs since day one of the pci-hyperv driver, and has been
+> worked around on x64 when possible. With the recent introduction of
+> ARM64 VMs that boot from NVMe, there is no workaround, so we need a
+> formal fix.
+> 
+> On Gen2 VMs, if the screen.lfb_base is 0 in the kdump/kexec kernel [1],
+> fall back to the low MMIO base, which should be equal to the framebuffer
+> MMIO base [2] (the statement is true according to my testing on x64
+> Windows Server 2016, and on x64 and ARM64 Windows Server 2025 and on
+> Azure. I checked with the Hyper-V team and they said the statement should
+> continue to be true for Gen2 VMs). In the first kernel, screen.lfb_base
+> is not 0; if the user specifies a very high resolution, it's not enough
+> to only reserve 8MB: let's always reserve half of the space below 4GB,
+> but cap the reservation to 128MB, which is the required framebuffer size
+> of the highest resolution 7680*4320 supported by Hyper-V.
+> 
+> While at it, fix the comparison "end > VTPM_BASE_ADDRESS" by changing
+> the > to >=. Here the 'end' is an inclusive end (typically, it's
+> 0xFFFF_FFFF for the low MMIO range).
+> 
+> Note: vmbus_reserve_fb() now also reserves an MMIO range at the beginning
+> of the low MMIO range on CVMs, which have no framebuffers (the
+> 'screen.lfb_base' in vmbus_reserve_fb() is 0 for CVMs), just in case the
+> host might treat the beginning of the low MMIO range specially [3]. BTW,
+> the OpenHCL kernel is not affected by the change, because that kernel
+> boots with DeviceTree rather than ACPI (so vmbus_reserve_fb() won't run
+> there), and there is no framebuffer device for that kernel.
+> 
+> Note: normally Gen1 VMs don't have the MMIO conflict issue because the
+> framebuffer MMIO range (which is hardcoded to base=4GB-128MB and
+> size=64MB for Gen1 VMs by the host) is always reported via the legacy PCI
+> graphics device's BAR, so the kdump/kexec kernel can reserve the 64MB
+> MMIO range; however, if the VM is configured to use a very high resolution
+> and the required framebuffer size exceeds 64MB (AFAIK, in practice, this
+> isn't a typical configuration by users), the hyperv-drm driver may need to
+> allocate an MMIO range above 4GB and change the framebuffer MMIO location
+> to the allocated MMIO range -- in this case, there can still be issues [4]
+> which can't be easily fixed: any possible affected Gen1 users would have
+> to use a resolution whose framebuffer size is <= 64MB, or switch to Gen2
+> VMs.
+> 
+> [1] https://lore.kernel.org/all/SA1PR21MB692176C1BC53BFC9EAE5CF8EBF51A@SA1PR21MB6921.namprd21.prod.outlook.com/
+> [2] https://lore.kernel.org/all/SA1PR21MB69218F955B62DFF62E3E88D2BF222@SA1PR21MB6921.namprd21.prod.outlook.com/
+> [3] https://lore.kernel.org/all/SN6PR02MB415726B17D5A6027CD1717E8D4342@SN6PR02MB4157.namprd02.prod.outlook.com/
+> [4] https://lore.kernel.org/all/SA1PR21MB69213486F821CA5A2C793C81BF342@SA1PR21MB6921.namprd21.prod.outlook.com/
+> 
+> Fixes: 4daace0d8ce8 ("PCI: hv: Add paravirtual PCI front-end for Microsoft Hyper-V VMs")
+> CC: stable@vger.kernel.org
+> Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+> Tested-by: Krister Johansen <kjlx@templeofstupid.com>
+> Tested-by: Matthew Ruffell <matthew.ruffell@canonical.com>
+> Signed-off-by: Dexuan Cui <decui@microsoft.com>
 
-OK, so the root cause is that kfifo_skip() must not be called on an
-empty fifo. I think you want the code to look something like this:
-
-static void wacom_wac_queue_insert(struct hid_device *hdev,
-				   struct kfifo_rec_ptr_2 *fifo,
-				   u8 *raw_data, int size)
-{
-	bool warned = false;
-
-	while (kfifo_avail(fifo) < size && !kfifo_is_empty(fifo)) {
-		if (!warned)
-			hid_warn(hdev, "%s: kfifo has filled, starting to drop events\n", __func__);
-		warned = true;
-
-		kfifo_skip(fifo);
-	}
-
-	if (!kfifo_in(fifo, raw_data, size))
-		hid_warn_ratelimited(hdev, "%s: report is too large (%d)\n",
-				     __func__, size);
-}
-
-Thanks.
-
--- 
-Dmitry
+Applied. Thanks.
 
