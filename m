@@ -1,86 +1,86 @@
-Return-Path: <stable+bounces-254587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254588-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AOrwEJf2FmrUywcAu9opvQ
-	(envelope-from <stable+bounces-254587-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 15:50:15 +0200
+	id QDTfOIT3FmrUywcAu9opvQ
+	(envelope-from <stable+bounces-254588-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 15:54:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBFAE5E555C
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 15:50:14 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7DF15E55E7
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 15:54:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4045430CD6B1
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 13:42:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 680023028259
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 13:42:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E65A421A02;
-	Wed, 27 May 2026 13:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE96C403158;
+	Wed, 27 May 2026 13:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C9QpYYZj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="so8ndgTR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
+Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94274219E8
-	for <stable@vger.kernel.org>; Wed, 27 May 2026 13:42:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7750B413244
+	for <stable@vger.kernel.org>; Wed, 27 May 2026 13:42:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779889334; cv=none; b=Y4+zp7g6jqGzllzdjQVG7wHH/uheA9hoRFmFCtr6OFHowx9rJRDS9QwKgZVJOuTq5HysVdhYz61c27NHA3syNh9Uxq6DO1jo7nft+79FZYAX9CcvbFNJAz9XoeU/ugB4HBWzKgJRgsOS8OXwiaCBUdbysDiQKgmbVf/WqMWKZJw=
+	t=1779889338; cv=none; b=fXWPQfTEDVs9ehbXCRlp7O+w4s//ZJhNSjevNfowL6GZA/fELj0zrsgUgWbCCQdKoAKGda77smBD8MaeV3sIvw/uAofqCM6Oe6BKQrRbs8imog2fjtLiXsg+DpnRCzpxWtYka3QAMcYXSjo8T8yBwNhnZi0qc2h1hyTxgU7oUe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779889334; c=relaxed/simple;
-	bh=VzV/fPvjI+XqWxKprvzJZVYA2YFkSP4aBOscYa8+RWs=;
+	s=arc-20240116; t=1779889338; c=relaxed/simple;
+	bh=InHqJ2PNAaclYU6DB/4BCMiDFr1sW1hmcux0hzUPPiE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=UrJP3DpgHvsLTFKpCBkBcaJ9wZ5CLxrcMrJK36zytbeei4TvR1tS2XAVcehhlJwdFu0rj55erH0kiRhqhKfj31FcpXS6g4BnuXxQTrcPf/8v7SG6gMdJYaFBtRsjORagYAWjomtNZcK9Hozhth+irWRqnUpe9NSjEm98XNeSz40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C9QpYYZj; arc=none smtp.client-ip=74.125.82.176
+	 In-Reply-To:To:Cc; b=FK2pNAi9oKHliLbp7CdUcJaK9zdWbdQeEkAdgjkN1WkjUYNkRrLYSbk9cRIURV4DGzJJBzhMK7VNDZzUkP1padlFg3/MmCkYJsRhJLOntrQFzBqVHDqSb5U0I5AA6xTrb6zpv6NyWTSmp1/wBkqAp4OkNHvyzCCnRc46ouhRcl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=so8ndgTR; arc=none smtp.client-ip=74.125.82.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-304545f5206so7458065eec.0
-        for <stable@vger.kernel.org>; Wed, 27 May 2026 06:42:12 -0700 (PDT)
+Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-3044857f09aso7329307eec.1
+        for <stable@vger.kernel.org>; Wed, 27 May 2026 06:42:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779889332; x=1780494132; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1779889336; x=1780494136; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=sxLsjsge6FjE23brvA4cB6kvPU6JOYpV69fL9+pATJc=;
-        b=C9QpYYZjvfkcA/JsWh2JWt7RLMRFdl9FTVUzc/ZOE9YwpzgrNglKmH5/HciVQ/9Os/
-         feh3sQSEtfzRtRKJAwdIPJ2+41dAYvk/KSdUArrpmnzZCpkA2/TI10FR3InlaJoD5zpD
-         oi5i/haSKFu9KYkfqw7osHRfh4tw5PYuAtOAoES6ORNmREv8M2FMdRSvhr53ZbHFpjuF
-         nHrMSZL8dUc5TYYe0irSGwcG2LRl+U9zg+/oS2zxVJIL2eSerdW5jrclDrtw0gMVM2k2
-         AQMnGxkvqF9Pyw56NDT9XhZ770DiIfmYLTDL23UIRFSu+OJUG50fVjWd96/GKKDvDIiA
-         kixw==
+        bh=LPQMUeKZPxsEa24h/tMGbugrrlbgcKdXRN5CjzvNfg0=;
+        b=so8ndgTRV6zGfnA3zRCb15rFM7brydNusYaTRlXwOKsnXN9a1GzOgTnJK3A3+v3qen
+         ico02iMeoSh5piHA5MKQ1TBDZc7CO4yZqrSOSNqZptqqy4DPMwI1sNNKQOXmHU7DcCH1
+         ri7vftJwG85+pW0fV3xHZ13f+FThghEr/9ON4mzFCyhXwGX5sZQ2Xtt9/mjAihYdE/X+
+         rLzHCsjfjl9ETDpSCga25x0EMMbEfLbLYDLgBNnyBmJzG7MJcP4ljIN4ZQOYLmTRkGAw
+         kIpjFHNzZUmfQPs6UiUv5RKWI10wJlvi/uKfEUZr5nVSux/5PBMZXKpTzozJgFhRqilj
+         MjjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779889332; x=1780494132;
+        d=1e100.net; s=20251104; t=1779889336; x=1780494136;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=sxLsjsge6FjE23brvA4cB6kvPU6JOYpV69fL9+pATJc=;
-        b=ojEITZStzZPxk7slBH7wJnc4RKZZkvV4H4wJGUnma07czHp/khOP04x/sEGYuk6jvk
-         M3qHvyBvLTfkEAmuXbIPlQYP2HBxspkAqyjGILfbyjRUnUNQnjOBIozcbpaBLZBQBfTH
-         rWGbjag+nWEP1Nb/7mxEjq5fRIEoxj7ouFEsfRoYNLB6cZ/8uQEIxnAq9CcxyGwFam6s
-         8wiYR2vqFrQxTaf6X8RdmA8GIv1/UXc+gdx+k07jeBKS0ZSIcbbxuoRhhdZs70lp8jHx
-         SFV3Ylrus7xK/vfF6PbAeADIqZODibu8aX/dhBsOcvMRCOkjICyVjZum8fGETAO4QUL9
-         cXcw==
-X-Forwarded-Encrypted: i=1; AFNElJ9iL1nA08RajC4fbem9/31OieLU5cCnxTrWdleXj7u6IgAJYVsoSeUZP0qNu9b3E197sgz4ylA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwjEcyVe/zJ9LKPHTcVmlysdQI3BN7l2uTYk5vRHvcN2A3pOYcS
-	PAGY3W25F6CEwyLDlmtyObsCOTuzzTYJMz+0Wy6ntu4twpH1oA/GFIq3
-X-Gm-Gg: Acq92OHhgDqlobn2vN3p6p4f0oncU4vOeZsw4dIayV2x1TFrraNMjc7Ud4k+zibdCYS
-	1P5uHy+S5TEEK1rfDJ+9qBvXH1hc2yT3PnzYOTa+/RfQKdytV4o0T2KRG7F42WHc46PBf1kNElg
-	RckM8uim5LSS6AYxTdJVfpiRZg6u9LT966MMIF3MMpFKh5tShurD764iovjKV8mERkqLA1BQN30
-	VTrzjNeHoZqJZdgIOqT/0KrohjhT1xacQbL3bfe7YervEFdrGfrprK3Nz/Xv8VzjiM7Y1hPo6fQ
-	MRSogpf4Ihzyp17eUhhVQorqHj9DHI0na5B9FepE3So4y9tJpVs7OWdoz8gKB2dSNQJwAuxpAGe
-	QEztUmuR6MuM6S2oTjzr2KuNWUiLzKenMB4hOIa/jML1BOgSRxXqoIPmf9ukc5nD7oKHPKHe1OE
-	B9FqIiL4RGgAKY4H5sOPZn7uBiOcfkQ/4L3OxQz2py3pjXFKDKrfS8DIhUW6dEJGw3CdQgYdsLa
-	y24Zd/x9mwpfHTSDQUoftg=
-X-Received: by 2002:a05:693c:2285:b0:304:3c33:7ad6 with SMTP id 5a478bee46e88-30449001dd5mr10880555eec.11.1779889331603;
-        Wed, 27 May 2026 06:42:11 -0700 (PDT)
+        bh=LPQMUeKZPxsEa24h/tMGbugrrlbgcKdXRN5CjzvNfg0=;
+        b=Nrd4JeSzO8KFIqA9aVfgcgGH253BUq39HAlPX2pMiRzQDJ/P2GnnjpUpEm/MQyFklq
+         LuQmvCI11NAFoU7VPGrXJ+ecnaCOfwEwo7K6+evz4lEk7UvRDfu6jm5/KnLVxeIwLq5x
+         FOIZUDxRvq9tsP/pvNMUr76YKrq+PxnxEagKJOqMAO6MBunwAwKm1VMgNadbTtcwHjZR
+         biVrUKauuBbK/wRkTg5m9MqBa5uLwoUoL6CD1XQY8WhuoB/gHXeRKt6gskFwt5S7RZfc
+         r+vKf/aEiwkScmGVOOcSVcx1u+edYDPoUa+xvK8oX39lJPwHnEIpM4BJpmx9Tthp5kAA
+         JE9g==
+X-Forwarded-Encrypted: i=1; AFNElJ+HATB5Up6UYnlMBXoSU3TavZiu4sjexh15wOTp5HpZTDOjjjdJvMNCny+cR8fydQ24p6eWhkQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyG5TFB+8cl+H5gdO/xiMG+SxDYxl5AUEqJCZV0c0w6j+GHPtmZ
+	1sL1wX8sVSHCXoytmbTeueOlZxmyfr38zvtIJ5mcZf1Pud8H96Qg/m4X
+X-Gm-Gg: Acq92OFBznXJGY8TZAsV56G+SIyR8FGeBpT7QIQGEJqUkiBsyM9iP087w1YSwcg2uVe
+	uq8KXey+oWX4lUpOLKvK73V1rs9ZhDI/8pDdc9lFE1DKJFTpekT3K7LSiVLh7spTlE0MrW6V6py
+	m3D70kgh5V35MTS1oTOGSHih92+dCoiGv3JDEpU/7y69iwdMGSUEq4mjchZv8oc6tq50qTJskzy
+	XvBNjw6naBiVXSE3bC9UJqvWdMjXf/UlKbA/desI2Ofpsi9nouzhNspSL7OeX5ChEQE6oe+imBU
+	mrZQD9XRwsxy+WZUqj8uptje9vY8kh4jUdXhaYDACI/ijMtXHpt66cg08h7+4xKTp/2anpf0s1G
+	C9Xs0LHrcISv0bXOjAUbeTRQWyYZdsBK7XGWS0TPm7HTW4KoKTOgJmHOoZRGwo74QkPyOQP0KZe
+	toEbhenYlR3Xzm8we11w69KNwcTe9qUy3c8gGeY0gP8jhg8wcSD3fj0KimUAx4PbdnqRAuE1MdE
+	HGXpeQEBzkQ
+X-Received: by 2002:a05:7301:a84:b0:303:f2fc:c483 with SMTP id 5a478bee46e88-30448f30872mr10369074eec.1.1779889336443;
+        Wed, 27 May 2026 06:42:16 -0700 (PDT)
 Received: from [192.168.1.18] (177-4-162-74.user3p.v-tal.net.br. [177.4.162.74])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-304ccdaa124sm311702eec.11.2026.05.27.06.42.07
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-304ccdaa124sm311702eec.11.2026.05.27.06.42.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 06:42:11 -0700 (PDT)
+        Wed, 27 May 2026 06:42:16 -0700 (PDT)
 From: =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
-Date: Wed, 27 May 2026 10:41:48 -0300
-Subject: [PATCH 1/2] ASoC: mediatek: mt8183: Release reserved memory on
- cleanup
+Date: Wed, 27 May 2026 10:41:49 -0300
+Subject: [PATCH 2/2] ASoC: mediatek: mt8183: Check runtime resume during
+ probe
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -89,7 +89,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260527-asoc-mt8183-probe-cleanup-v1-1-4f4f5593c8d1@gmail.com>
+Message-Id: <20260527-asoc-mt8183-probe-cleanup-v1-2-4f4f5593c8d1@gmail.com>
 References: <20260527-asoc-mt8183-probe-cleanup-v1-0-4f4f5593c8d1@gmail.com>
 In-Reply-To: <20260527-asoc-mt8183-probe-cleanup-v1-0-4f4f5593c8d1@gmail.com>
 To: Mark Brown <broonie@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
@@ -103,25 +103,25 @@ Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
  =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>, 
  stable@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1586;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1813;
  i=cassiogabrielcontato@gmail.com; h=from:subject:message-id;
- bh=VzV/fPvjI+XqWxKprvzJZVYA2YFkSP4aBOscYa8+RWs=;
- b=owGbwMvMwCV2IdZeKur/u2bG02pJDFliX1YeEzh78zWH703pVZqrvTeuWL526atwxjdhBwS39
- 7CtZm1L7ChlYRDjYpAVU2RZnbTIck/Xg6v1cSs8YOawMoEMYeDiFICJfDNm+Kc1XYkx5/BGR6aP
- S5Jv73u+L4OR4d7Hw36J036ccnm7bNNjhv8JapdZPIUlUs+z7D+Tof32xs24+sMPi1v/nz0x85e
- 09lsWAA==
+ bh=InHqJ2PNAaclYU6DB/4BCMiDFr1sW1hmcux0hzUPPiE=;
+ b=owGbwMvMwCV2IdZeKur/u2bG02pJDFliX1YZNC5ZftYw1+3/caOwl8IefBtEl/fymm+WYIh0t
+ VtzMUaso5SFQYyLQVZMkWV10iLLPV0PrtbHrfCAmcPKBDKEgYtTACaS/oiRYaI35zZxrdy1CmEm
+ DqssLOu3sKvesLk43WZ6wGIT1fwCe4afjEW/dq9n3H5PYsbpJ0KVHS++HFYIfaoRmLz5eE3/+xk
+ 2/AA=
 X-Developer-Key: i=cassiogabrielcontato@gmail.com; a=openpgp;
  fpr=AB62A239BC8AE0D57F5EA848D05D3F1A5AFFEE83
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254587-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-254588-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_TO(0.00)[kernel.org,gmail.com,suse.com,perex.cz,collabora.com,chromium.org,mediatek.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -139,56 +139,59 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: BBFAE5E555C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: E7DF15E55E7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The MT8183 AFE probe can assign reserved memory with
-of_reserved_mem_device_init(), but the assignment is never released on
-driver removal or later probe failures.
+The MT8183 AFE probe uses pm_runtime_get_sync() before reading hardware
+defaults into the regmap cache, but does not check whether runtime resume
+failed. If regmap_reinit_cache() then fails, the temporary runtime PM
+usage count is also not released.
 
-Register a devm cleanup action so the reserved memory assignment is
-released consistently, matching newer Mediatek AFE drivers.
+Use pm_runtime_resume_and_get() so resume failures abort probe without
+leaking a usage count, and release the temporary reference before
+handling the regmap cache result.
 
-Fixes: ec4a10ca4a68 ("ASoC: mediatek: use reserved memory or enable buffer pre-allocation")
+Fixes: a94aec035a12 ("ASoC: mediatek: mt8183: add platform driver")
 Cc: stable@vger.kernel.org
 Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 ---
- sound/soc/mediatek/mt8183/mt8183-afe-pcm.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ sound/soc/mediatek/mt8183/mt8183-afe-pcm.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
 diff --git a/sound/soc/mediatek/mt8183/mt8183-afe-pcm.c b/sound/soc/mediatek/mt8183/mt8183-afe-pcm.c
-index a7fef772760a..49a69728fd72 100644
+index 49a69728fd72..2634699534db 100644
 --- a/sound/soc/mediatek/mt8183/mt8183-afe-pcm.c
 +++ b/sound/soc/mediatek/mt8183/mt8183-afe-pcm.c
-@@ -766,6 +766,11 @@ static const dai_register_cb dai_register_cbs[] = {
- 	mt8183_dai_memif_register,
- };
+@@ -844,17 +844,21 @@ static int mt8183_afe_pcm_dev_probe(struct platform_device *pdev)
  
-+static void mt8183_afe_release_reserved_mem(void *data)
-+{
-+	of_reserved_mem_device_release(data);
-+}
-+
- static int mt8183_afe_pcm_dev_probe(struct platform_device *pdev)
- {
- 	struct mtk_base_afe *afe;
-@@ -794,6 +799,12 @@ static int mt8183_afe_pcm_dev_probe(struct platform_device *pdev)
+ 	/* enable clock for regcache get default value from hw */
+ 	afe_priv->pm_runtime_bypass_reg_ctl = true;
+-	pm_runtime_get_sync(dev);
+-
+-	ret = regmap_reinit_cache(afe->regmap, &mt8183_afe_regmap_config);
++	ret = pm_runtime_resume_and_get(dev);
  	if (ret) {
- 		dev_info(dev, "no reserved memory found, pre-allocating buffers instead\n");
- 		afe->preallocate_buffers = true;
-+	} else {
-+		ret = devm_add_action_or_reset(dev,
-+					       mt8183_afe_release_reserved_mem,
-+					       dev);
-+		if (ret)
-+			return ret;
+-		dev_err(dev, "regmap_reinit_cache fail, ret %d\n", ret);
++		afe_priv->pm_runtime_bypass_reg_ctl = false;
+ 		goto err_pm_disable;
  	}
  
- 	/* initial audio related clock */
++	ret = regmap_reinit_cache(afe->regmap, &mt8183_afe_regmap_config);
+ 	pm_runtime_put_sync(dev);
+ 	afe_priv->pm_runtime_bypass_reg_ctl = false;
+ 
++	if (ret) {
++		dev_err(dev, "regmap_reinit_cache fail, ret %d\n", ret);
++		goto err_pm_disable;
++	}
++
+ 	regcache_cache_only(afe->regmap, true);
+ 	regcache_mark_dirty(afe->regmap);
+ 
 
 -- 
 2.54.0
