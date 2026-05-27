@@ -1,155 +1,162 @@
-Return-Path: <stable+bounces-254509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254510-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8NmJJByqFmofoQcAu9opvQ
-	(envelope-from <stable+bounces-254509-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 10:23:56 +0200
+	id AKweEl6qFmofoQcAu9opvQ
+	(envelope-from <stable+bounces-254510-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 10:25:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93AA25E107E
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 10:23:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC99E5E10BA
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 10:25:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D9A1D300BD50
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 08:23:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 560EC30038D0
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 08:24:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E341C3DB636;
-	Wed, 27 May 2026 08:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46F783DC4CB;
+	Wed, 27 May 2026 08:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="vR3ffAAI"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="MBwCs88Z"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32C7D3DBD4E
-	for <stable@vger.kernel.org>; Wed, 27 May 2026 08:23:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [185.244.194.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B89C13DBD4E;
+	Wed, 27 May 2026 08:24:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.244.194.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779870230; cv=none; b=eRb5CiFLuNSKGC5A+ZDM5IutNmjJ387RB2qmSjiLGCJtMBRcAJFTs8GMMZuTuUeY+ebDm+TklsSy6f34QEqMjP/Nxe/QPfp50lBpczkxLUu0zZ668qPk1qlrmAxAHzzM11ZGEoouGxQ+ZIaLYpLx36xsE2qDck68jMyEGyfmm50=
+	t=1779870295; cv=none; b=i9X8UAAKJc7PTNm93h3Tc35cXr5Cg01FCaA/iy3GCAIcRftxvjVprx3e/LLCMQaQjuAp/EtCnGSD/LczgX38ZeTLa7OKgZ+cYbZPikgj2VFYyOpNVguAWT4tDx689MZDw5pIykz8soV1n5rgIFQhJ/3xfXsFAcWurx00cRY+0L4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779870230; c=relaxed/simple;
-	bh=3hu/YKjn9OtDC0cI7qvIUKCxRZyA3eenzUS1dFC/GRI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fofjLlxOnkzz1/DH3LNYOj9V1EZerIG8XhHJUSka+ys19B90kLUa2X0+qAAgloRfXBMUUb+0tUw2hPCozD4ezWlKhxClRqsE6Gwb1PfAgsBT/FWDr8eM2mwefjdWg7k9zMHTD0uL/0V5CqFUiMiLXHJidZ/bUqJyMat1hhIhqCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=vR3ffAAI; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1CDF12880;
-	Wed, 27 May 2026 01:23:36 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3C7213F7D8;
-	Wed, 27 May 2026 01:23:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779870221; bh=3hu/YKjn9OtDC0cI7qvIUKCxRZyA3eenzUS1dFC/GRI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vR3ffAAIofGswU0aEO1HQv8A28uYu+aJT6U0d2GpJ+/xPQYHHPWyhNF31EC3qag1P
-	 riOb7MLnlcaxqzsjeWfosTnSb7YT0JIBcmglfcugHYJaB95DQ7CXq1VXuMs5mRmDoQ
-	 8IKF2XJBtC479anGlIeXq28E4qe4yhtvoQmwgT00=
-Date: Wed, 27 May 2026 09:23:37 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Xiangyu Chen <xiangyu.chen@windriver.com>
-Cc: will@kernel.org, stable@vger.kernel.org, gregkh@linuxfoundation.org
-Subject: Re: [PATCH 6.12 1/1] arm64: io: correct user memory type in
- ioremap_prot()
-Message-ID: <ahaqCb1gGdUjyCN_@arm.com>
-References: <20260520091337.3799553-1-xiangyu.chen@windriver.com>
- <20260520091337.3799553-2-xiangyu.chen@windriver.com>
- <ag3o-RbDTQWWazwF@arm.com>
- <3f1485f0-905b-4c5a-bd66-fb03aa9ea0cb@windriver.com>
+	s=arc-20240116; t=1779870295; c=relaxed/simple;
+	bh=LhmivWCxmv3D6rHVzIUcmcgTSUS6b48gTMM/vLL1kKE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kzJOKv9FfpvX6ts1d2pnZDBLHacUb4FPhj1XgYXAYn0HUnfWgnVicZKP95Dktuo7y8q2jdk6tvYUycQ2OY5eFQmXrmDsZMv0OJUou+KQk0dwPheWp6lUvPTxIwm5+vsIA1bwS/Za/6Fq+L1q01h54JKHHEfzRfGPsTV/W5hOX5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=MBwCs88Z; arc=none smtp.client-ip=185.244.194.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+Received: from relay01-mors.netcup.net (localhost [127.0.0.1])
+	by relay01-mors.netcup.net (Postfix) with ESMTPS id 4gQN2k2wwBz967v;
+	Wed, 27 May 2026 10:24:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1779870286;
+	bh=LhmivWCxmv3D6rHVzIUcmcgTSUS6b48gTMM/vLL1kKE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=MBwCs88ZbZBxCAS+4ut2KChQcrz4bq+HYywYB7kkmIN4UnnLU2B7Ryz7Q61dRddvN
+	 LVzT2M3r65D4gPi03E1gh1xmZqa0LSNqkTFrh3l+M0sTPW37+lAEykfpiutjSoHy+a
+	 yvnRW7VOb6wGwyVzxL1GXlsyGr/yOaIsiFt4c4JStlLWV2QSCOsEqmYW5z/KMYj6U8
+	 xMUYOy+sY6MTWCwtddp40m4UqMqB7aqGkAJzjAcIFudB2Pr7k3fY6gxvvTAK1yrWfr
+	 bhW8zX9LviJ6eCv0KqetEzUyozuaB0v6Ad0pd/weNZyPNssnPHlU6X2hgTZwmeObJX
+	 Q8omQ6Wejt1ZQ==
+Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
+	by relay01-mors.netcup.net (Postfix) with ESMTPS id 4gQN2k2Dgmz7wc3;
+	Wed, 27 May 2026 10:24:46 +0200 (CEST)
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4gQN2j50kNz8sWT;
+	Wed, 27 May 2026 10:24:45 +0200 (CEST)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id DB36860345;
+	Wed, 27 May 2026 10:24:44 +0200 (CEST)
+Authentication-Results: mxe9fb;
+        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <7ad15680-e3c8-4547-86ec-ba4141a43e32@leemhuis.info>
+Date: Wed, 27 May 2026 10:24:44 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3f1485f0-905b-4c5a-bd66-fb03aa9ea0cb@windriver.com>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] sched/deadline: Hard lockup during CPU offline after
+ commit 14a857056466
+To: "juri.lelli@redhat.com" <juri.lelli@redhat.com>,
+ batcain <batcain@protonmail.com>
+Cc: "peterz@infradead.org" <peterz@infradead.org>,
+ "jstultz@google.com" <jstultz@google.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "regressions@lists.linux.dev" <regressions@lists.linux.dev>
+References: 
+ <r16mBH1ydY4oK0PInLKwpYR2I5qZBsV5J0JsNLrXAh8OR_QC6z6lABKlcvpzgUiBuarTKtVTP977RLI4mqt64Ydtd2O3yfhRuRJkQ1JL8u8=@protonmail.com>
+ <agrDFlsPQxzWa9Xs@jlelli-thinkpadt14gen4.remote.csb>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+Content-Language: de-DE, en-US
+In-Reply-To: <agrDFlsPQxzWa9Xs@jlelli-thinkpadt14gen4.remote.csb>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-PPP-Message-ID: <177987028520.4094728.3848410499576110885@mxe9fb.netcup.net>
+X-NC-CID: NUW2FT8eYdg4IT6lRXnfZZxvpesDtvJzyIKp4VZWxN8TAOICt7Y=
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[arm.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254510-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-254509-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[leemhuis.info];
+	FREEMAIL_TO(0.00)[redhat.com,protonmail.com];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	DKIM_TRACE(0.00)[leemhuis.info:+];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,leemhuis.info:mid,leemhuis.info:dkim];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[catalin.marinas@arm.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[regressions@leemhuis.info,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,arm.com:mid,arm.com:dkim]
-X-Rspamd-Queue-Id: 93AA25E107E
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: BC99E5E10BA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, May 27, 2026 at 11:01:04AM +0800, Xiangyu Chen wrote:
-> On 5/21/26 01:01, Catalin Marinas wrote:
-> > On Wed, May 20, 2026 at 05:13:37PM +0800, Xiangyu Chen wrote:
-> > > generic_access_phys() passes a 'pgprot_t' value determined from the
-> > > user mapping of the target 'pfn' being accessed by the kernel.
-> > > On arm64, this 'pgprot_t' contains all non-address bits from the pte,
-> > > including user permission controls (PTE_USER).
-> > > 
-> > > When a process attempts to read the target memory via cross-process
-> > > subsystems (such as reading /proc/<pid>/mem or via ptrace), the kernel
-> > > re-maps this memory using ioremap_prot(). Since the PTE_USER bit is
-> > > incorrectly preserved in the temporary kernel-space mapping, it triggers
-> > > a level 3 permission fault on systems with PAN (Privileged Access Never)
-> > > enabled, resulting in an immediate kernel panic.
-> > > 
-> > > Upstream already fixed this issue in
-> > > commit: 8f098037139b ("arm64: io: Extract user memory type in ioremap_prot()")
-> > > 
-> > > Directly porting the upstream patch's macro changes inside <asm/io.h>
-> > > creates circular build dependencies due to the architecture-specific
-> > > GENERIC_IOREMAP refactoring introduced in the stable kernel lifecycle.
-> > > 
-> > > To bypass header dependency traps safely, this backport confines the fix
-> > > entirely inside the implementation layer of arch/arm64/mm/ioremap.c:
-> > > 1. It uses pgprot_val() to safely unpack page properties into a pteval_t mask.
-> > > 2. It introduces a targeted safety check (if (prot_val & PTE_USER)) to
-> > >     selectively strip away volatile user permission parameters.
-> > > 3. It maps the memory through pure kernel attributes, leaving standard
-> > >     peripheral device drivers completely unaffected.
-> > > 
-> > > Tested-by: QEMU ARM64 (Cortex-A55, CONFIG_ARM64_PAN=y, /proc/<pid>/mem read)
-> > > Fixes: 893dea9ccd08 ("arm64: Add HAVE_IOREMAP_PROT support")
-> > > Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
-> >
-> > Instead of re-implementing this, could we cherry-pick the prior commit
-> > renaming ioremap_prot() to __ioremap_prot() throughout arm64? It's not a
-> > straightforward cherry-pick since we changed the prot arg from unsigned
-> > long to pgprot_t (across multiple architectures), but with some minor
-> > tweaks we can get the patch below. After this, 8f098037139b should apply
-> > (hopefully unmodified). Please give it a try:
+On 5/18/26 09:43, juri.lelli@redhat.com wrote:
+> On 16/05/26 03:07, batcain wrote:
+>> [1.] One line summary of the problem:sched/deadline: Hard lockup
+>> during CPU offline/migration due to frozen rq_clock loop in
+>> update_dl_revised_wakeup()
+>> [...]
+>> However, under the stop_machine() noirq phase, the runqueue clock is
+>> stale/frozen. Since the clock does not progress across iterations
+>> within the enqueue loop, the mathematical state stalls. Consequently,
+>> dl_entity_overflow() continuously evaluates to true, trapping the
+>> processor core in an infinite loop inside the enqueue path, resulting
+>> in a system-wide hard lockup.
 > 
-> Thanks for your suggestion.
+> I cannot immediately see how this issue can affect dl-server(s), as they
+> cannot migrate and are de-activated on CPUs going offline.
 > 
-> After reviewing the code, it appears we cannot directly backport commit
-> f6bf47ab32e0 ("arm64: io: Rename ioremap_prot() to __ioremap_prot()") to
-> older stable kernels. This is because commit f6bf47ab32e0 depends on commit
-> 86758b504864 ("mm/ioremap: pass pgprot_t to ioremap_prot() instead of
-> unsigned long").
+> [...]
+>> [8.] Environment description (Hardware, distribution, etc.): Hardware:
+>> Confirmed on both AMD Zen 2 (Renoir) and AMD Zen 4 (Phoenix)
+>> platforms. Distribution: Arch Linux (using official
+>> extra/linux-hardened kernel package).
+> 
+> Also cannot reproduce at my end.
+So how to move on here?
 
-My proposed backport of f6bf47ab32e0 took care of using unsigned long
-instead of pgprot_t since the dependencies get too complicated. Could
-you try my backport of f6bf47ab32e0 together with cherry-picking
-8f098037139b. The latter may need some adjustment of pgprot_t as well
-but at least the final form will look fairly similar to upstream.
+Side note: linux-hardened uses hardening patches, which raises the
+question if those are the problem. Batcain did you do the bisection with
+vanilla?
 
--- 
-Catalin
+Another side note: a fix for the patch is the changelog was posted,
+wonder if it might be related (reminder: not my area of expertise, so IO
+might be misleading everyone here by mentioning it):
+
+sched/deadline: Use revised wakeup rule only for running dl_server
+https://lore.kernel.org/lkml/20260522125833.264145-1-gmonaco@redhat.com/
+
+Ciao, Thorsten
 
