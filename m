@@ -1,237 +1,250 @@
-Return-Path: <stable+bounces-254652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254653-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mCO5CIc/F2qg9wcAu9opvQ
-	(envelope-from <stable+bounces-254652-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 21:01:27 +0200
+	id 8D4KOlxCF2ov/AcAu9opvQ
+	(envelope-from <stable+bounces-254653-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 21:13:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40B6A5E954D
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 21:01:26 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62A9C5E967E
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 21:13:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 65DB83050931
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 19:00:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D845A302978E
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 19:13:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DB3A35F615;
-	Wed, 27 May 2026 19:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C08367298;
+	Wed, 27 May 2026 19:13:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="quL1+Thf"
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="fXNGzB3T"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BEAC35F5F3;
-	Wed, 27 May 2026 19:00:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779908455; cv=none; b=rIRTquO5QldgL+ijrgofxL1Jqf3KX2YuD8Cqbt3B8GjXEUzQb9fJLlBb2kVzcfDuZS54fSAwWYczbU+EtVt14fGe7eE9+j7q94L3H1P+n2BV6nOFzeb9IKt4oBcysVVb8V7PYYSj1KvSJg0d+9DX3LhhryvcPP4WdjpxF8SXYlQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779908455; c=relaxed/simple;
-	bh=j5t+2yqBC+PkjMmTq75wj6QrnC5rsBnjwzKeZdLcQes=;
-	h=Date:To:From:Subject:Message-Id; b=Pko02b8kijDT57AZuSIRYC9oglqIxOfnQxmQOR9U1L2jQ1gULMUqDHILgwPoMCZqgI+csGcFSbwjdpKfJzigXzkkGRuUbzb19JVNbPJzvqmOiHHViBhqTJabdAK6dPDlb08pTtRxJ5Lsqw2u7cXf/kbqHy8OK7ylDkK4RQeGHzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=quL1+Thf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 049881F000E9;
-	Wed, 27 May 2026 19:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05C1365A03
+	for <stable@vger.kernel.org>; Wed, 27 May 2026 19:13:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779909204; cv=pass; b=RyaW8SpbtBM/s3dLy0kqgpAmjyO3KMFfrX3KBii/7cWoQyR2zcaEk0OGlNSxgVWViiYEDl2rPc/An/+D0XF3sitpeEwBB/e6zqimsCZzw7loex/eIDC+qS0QppsGSDZHA6rKSOLcvniIOq0x9af7+LBkkdH5mMCw7nyoQ3/wq/o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779909204; c=relaxed/simple;
+	bh=arW85NP4G3Vx1E1uaf3yqqPfSSzR3Kno27p4gRd3hlE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oYQ6lwnGFdZIRmJr7ZjpBpz/2YZUj7741VOCUpoysmjz15/QU9MBfoqmQywDvykHhhtT92cICEeq4sFKYl8hbwEz0H7aHXSN5tu45W+kAuSbFUrWfug4F+ekDeXN5iuqrxrQzdKRlMak+uvplnBXmPX/dX5Hg68Hw5x23d0PWsM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=fXNGzB3T; arc=pass smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2b45cb89f7eso81362975ad.0
+        for <stable@vger.kernel.org>; Wed, 27 May 2026 12:13:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779909202; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Yrsx9UyzFqE+jAh7fAlpUKEJPAORblSa+zKsAvchuACI/fIBaagZTVKBwU1/UyoNtt
+         h0jyiOvw+IBg3rID8Id6vKxKUMNLBP74zSpM2atC39Cisu8V73kdxP0bv1eRdE2uS+s6
+         giHHSIRYx6RsMPRGLHL/vhSefYnKbiywclKGH+lw/U02qZ8pVXudLuWP+jtor/9AWgX+
+         BfeqaI72y0CS6cQUTiIpVtbZOkyln3bnhulqTQXVkwEAgtQLAPZ9aiq5u4pY/Nz8zvdn
+         yAWw/HdxN+DTNn+77atbl65M5p53W4Ztx9W73AyI6y+ZdKem6b9O9vuqB8StH+hWr/6K
+         4fww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ZBJOcUZKwlryBrLyHrM1pbqAMloKqVU+cfZbZQFpt1E=;
+        fh=u+YrH3oOJwJ/AGthG8cuXGHnAHWSMAQuHrduzvAKiDc=;
+        b=M+mbQrgMNzcjmx+rE0Q1N90Zs5NNer8NroKsZs5A6ek+UlMlJAGdu4neO8df1U8bJ9
+         F91RqbFfCQwuxn50BPaT38E8vqXuCk2tk5cMZt7iihJMk8Tjb74nF+8W98gV13z6o1cG
+         ibg5wvmbOMZyeL79SU8DqCyVSJbaBoGZH1KbfdInONVmynJmKh4R4IVkvDzsysdTVdBQ
+         lJbSQPdxId5wcnWPRs8hWXogfj25sDQuf+hxXTEGqCZ9NkIrA3cdJuDXU87767q/WxkK
+         Fphkk38iOa/zs5+PxZJaw4rDt4Gxz7rEP52hCJeqKfPBHDC5FFOKqRwCjm5Ubu10drs6
+         nXuQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1779908453;
-	bh=210twvGXHATlN/UralvLN+ewhYtFVYuFyHAGRwV9XM0=;
-	h=Date:To:From:Subject;
-	b=quL1+ThfMzjznVPN0u9mjcYE6O6tCC3TKnX0XtSM/YHUFQDOGh/9nNQiPYnETnns9
-	 BI3mSN/KPGkcECKhStb5Qwdxz+GIO2uwYl0seWlaEK0B/AH0LYKwl4mwLLzHzgfyW7
-	 Yb9jLj32bznnvANXcdNvH7HPdSBx1L6NNHQENL+M=
-Date: Wed, 27 May 2026 12:00:52 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,rppt@kernel.org,qkrwngud825@gmail.com,peterz@infradead.org,mingo@redhat.com,luto@kernel.org,lance.yang@linux.dev,jgg@ziepe.ca,hpa@zytor.com,dave.hansen@linux.intel.com,bp@alien8.de,baolu.lu@linux.intel.com,david@kernel.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged] x86-mm-fix-freeing-of-pmd-sized-vmemmap-pages.patch removed from -mm tree
-Message-Id: <20260527190053.049881F000E9@smtp.kernel.org>
+        d=paul-moore.com; s=google; t=1779909202; x=1780514002; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZBJOcUZKwlryBrLyHrM1pbqAMloKqVU+cfZbZQFpt1E=;
+        b=fXNGzB3TFZyq7edBEWR4FNBxN4Pv/CMd8lAJud0CCOx25HDdq3FdeYPDGAbc0ymlOO
+         CavMLnlvTtnFjI6LdUUHHqETuav4Ky3H8LXzFWQ3UTbczoFKQpDI4jWiVF9270o4OxZb
+         ntr8GKU2YGEuUDZ5EgQyE4SlzXv1rMCGNwLU4biQ4WIGyoop8OKq/3vLR+eZlxXmpfRM
+         oVO/djy0y2D/JjWMcqfY7OMSVzj2G7BRuXbO76ucCTGqAmNfy9zGzce7qm5jTQOB+8R6
+         CrjoBgQ+t93qfDuycAV56GpD1pq8GKnLgdV5wOZz87g6mn0Z6TRzkBjPgddEVaU3ut8Z
+         dQ2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779909202; x=1780514002;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ZBJOcUZKwlryBrLyHrM1pbqAMloKqVU+cfZbZQFpt1E=;
+        b=d5ipIkCa0JjBfvB08BWETVKpRlsLq5pK8j/cKGiVbINQ7hbrMUTPsdeU8vfRzGDLQn
+         g+h283IMTdurb1OPsLkcVw85Jy4AZ/5qkwXxoWyzUrTes6Bk8DMu8iC9c3EjiZoPyG9k
+         Ms7y2UMqIlD7nHRDokX2D4+xV5OdkLcedIYjr0N+UqoyTUTh/Eq7ieF2IV8Gi15XnVJB
+         eexMUAV5eEVHpXNZgRy18M/LqrbbO6BLgkCcH6+vf5nRI6ANoIoAgLCD6fzfJOLd22R2
+         KSj86Ya+zxCC7yT/WCi47s/h35v7WGuSRygy3QiSJhK/O9ddGQZjeEXEdvrvMwoF5kvD
+         4o3g==
+X-Forwarded-Encrypted: i=1; AFNElJ/GvB0hKJF/BLxW2Atljz65zA4z+iBj7eksZxFRHuSYEGHrgwQdGdsTJet0a925foMcL8M+JiM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+4cFu023qZoyHx2i0Db1SKSZ/O3bb0YCxZj8I0/LTrLNgGvOU
+	tdtgG+ZYrZjPbtu4jcAU1S5vSDmw9HZtx8BHL7St13Gc8Ys64QLPEOKho4z5mzm45OBHrOV5oZu
+	EN/h1AEDhFdDysYSwQpqwk6FyDablYwGwa7XjKgLI
+X-Gm-Gg: Acq92OF7bTVKy3yUV8wMXa2mI0E31IMe9LrmOmu0F/7/1W8d63G/r9G6XeyoBvPlwRN
+	ISWRnYpqTkutU5Xn2FeOzYTHh4WFEpj0bPjzlrsaIotpLadkaASRCcWG1DBNj40oh5/O30lF30/
+	d5ZFnO0wN8HdNsTa+4Rg7kE7Oug1gJHvwK8NHvROrceZydeDYfRkS3ebTkCdXd7f6Cv9nccC3mp
+	ailCR91d0zZmhDMEsPm2gYg78UiVB4C1P/zhe0pDHd4hZa+5QLlgKGUqXaLK7NHz2yyuYuDTABG
+	0Tj4DlcH3I4Zhhe4pgBFkMvt0Fuy
+X-Received: by 2002:a17:903:244c:b0:2bd:7ff4:ab0b with SMTP id
+ d9443c01a7336-2beb06552bbmr262114595ad.39.1779909202300; Wed, 27 May 2026
+ 12:13:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+MIME-Version: 1.0
+References: <20260527-audit-update-macro-stubs-v1-1-8cda8dbdae0a@kernel.org> <CAABTaaCZD-6_ar-H8iwOka9WgtuqwEt+=umVuc5xsBHwDcnD-Q@mail.gmail.com>
+In-Reply-To: <CAABTaaCZD-6_ar-H8iwOka9WgtuqwEt+=umVuc5xsBHwDcnD-Q@mail.gmail.com>
+From: Paul Moore <paul@paul-moore.com>
+Date: Wed, 27 May 2026 15:13:06 -0400
+X-Gm-Features: AVHnY4JyDaihz5j2KMbjN9c3bYMT5kulIDfNm6wxP3VCcHavB9S0Ini-jhjCGkY
+Message-ID: <CAHC9VhQfci2gE-eD67DbjL21s7tF+rPWa9bdu0Kk5cfW+gz2Xg@mail.gmail.com>
+Subject: Re: [PATCH] audit: Update audit_alloc_mark() and audit_dupe_exe()
+ CONFIG_AUDITSYSCALL=n stubs
+To: Nathan Chancellor <nathan@kernel.org>, Ricardo Robaina <rrobaina@redhat.com>
+Cc: Eric Paris <eparis@redhat.com>, Waiman Long <longman@redhat.com>, 
+	Richard Guy Briggs <rgb@redhat.com>, audit@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[paul-moore.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[paul-moore.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-254652-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[linux-foundation.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[vger.kernel.org,kernel.org,gmail.com,infradead.org,redhat.com,linux.dev,ziepe.ca,zytor.com,linux.intel.com,alien8.de,linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-254653-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[paul-moore.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[paul@paul-moore.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[smtp.kernel.org:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 40B6A5E954D
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 62A9C5E967E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Wed, May 27, 2026 at 2:55=E2=80=AFPM Ricardo Robaina <rrobaina@redhat.co=
+m> wrote:
+> On Wed, May 27, 2026 at 2:52=E2=80=AFPM Nathan Chancellor <nathan@kernel.=
+org> wrote:
+> >
+> > Commit 84470b80b7b0 ("audit: fix recursive locking deadlock in
+> > audit_dupe_exe()") added a ctx parameter to audit_alloc_mark() and
+> > audit_dupe_exe() but did not update the macro stubs used when
+> > CONFIG_AUDITSYSCALL is not enabled, resulting in a build error for this
+> > configuration:
+> >
+> >   kernel/auditfilter.c: In function 'audit_data_to_entry':
+> >   kernel/auditfilter.c:592:85: error: macro 'audit_alloc_mark' passed 4=
+ arguments, but takes just 3
+> >     592 |                         audit_mark =3D audit_alloc_mark(&entr=
+y->rule, str, f_val, NULL);
+> >         |                                                              =
+                       ^
+> >   In file included from kernel/auditfilter.c:23:
+> >   kernel/audit.h:327:9: note: macro 'audit_alloc_mark' defined here
+> >     327 | #define audit_alloc_mark(k, p, l) (ERR_PTR(-EINVAL))
+> >         |         ^~~~~~~~~~~~~~~~
+> >   kernel/auditfilter.c:592:38: error: 'audit_alloc_mark' undeclared (fi=
+rst use in this function)
+> >     592 |                         audit_mark =3D audit_alloc_mark(&entr=
+y->rule, str, f_val, NULL);
+> >         |                                      ^~~~~~~~~~~~~~~~
+> >   kernel/auditfilter.c:592:38: note: 'audit_alloc_mark' is a function-l=
+ike macro and might be used incorrectly
+> >   kernel/auditfilter.c:592:38: note: each undeclared identifier is repo=
+rted only once for each function it appears in
+> >   kernel/auditfilter.c: In function 'audit_dupe_rule':
+> >   kernel/auditfilter.c:879:59: error: macro 'audit_dupe_exe' passed 3 a=
+rguments, but takes just 2
+> >     879 |                         err =3D audit_dupe_exe(new, old, ctx)=
+;
+> >         |                                                           ^
+> >   kernel/audit.h:333:9: note: macro 'audit_dupe_exe' defined here
+> >     333 | #define audit_dupe_exe(n, o) (-EINVAL)
+> >         |         ^~~~~~~~~~~~~~
+> >   kernel/auditfilter.c:879:31: error: 'audit_dupe_exe' undeclared (firs=
+t use in this function)
+> >     879 |                         err =3D audit_dupe_exe(new, old, ctx)=
+;
+> >         |                               ^~~~~~~~~~~~~~
+> >   kernel/auditfilter.c:879:31: note: 'audit_dupe_exe' is a function-lik=
+e macro and might be used incorrectly
+> >
+> > Update the macros with the correct number of parameters to resolve the
+> > build error.
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: 84470b80b7b0 ("audit: fix recursive locking deadlock in audit_du=
+pe_exe()")
+> > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> > ---
+> >  kernel/audit.h | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/kernel/audit.h b/kernel/audit.h
+> > index f1a77aef4533..92d5e723d570 100644
+> > --- a/kernel/audit.h
+> > +++ b/kernel/audit.h
+> > @@ -324,13 +324,13 @@ extern struct list_head *audit_killed_trees(void)=
+;
+> >  #define audit_watch_path(w) ""
+> >  #define audit_watch_compare(w, i, d) 0
+> >
+> > -#define audit_alloc_mark(k, p, l) (ERR_PTR(-EINVAL))
+> > +#define audit_alloc_mark(k, p, l, c) (ERR_PTR(-EINVAL))
+> >  #define audit_mark_path(m) ""
+> >  #define audit_remove_mark(m) do { } while (0)
+> >  #define audit_remove_mark_rule(k) do { } while (0)
+> >  #define audit_mark_compare(m, i, d) 0
+> >  #define audit_exe_compare(t, m) (-EINVAL)
+> > -#define audit_dupe_exe(n, o) (-EINVAL)
+> > +#define audit_dupe_exe(n, o, c) (-EINVAL)
+> >
+> >  #define audit_remove_tree_rule(rule) BUG()
+> >  #define audit_add_tree_rule(rule) -EINVAL
+> >
+> > ---
+> > base-commit: 82bc8394b1aa74aedb9827da7730cfa6639716fd
+> > change-id: 20260527-audit-update-macro-stubs-6e4d8e8a826e
+> >
+> > Best regards,
+> > --
+> > Cheers,
+> > Nathan
+> >
+>
+> Hi Nathan,
+>
+> Good catch, I did miss that! Looks good to me, thanks for fixing it.
+>
+> Acked-by: Ricardo Robaina <rrobaina@redhat.com>
 
-The quilt patch titled
-     Subject: x86/mm: fix freeing of PMD-sized vmemmap pages
-has been removed from the -mm tree.  Its filename was
-     x86-mm-fix-freeing-of-pmd-sized-vmemmap-pages.patch
+Thanks Nathan!
 
-This patch was dropped because it was merged into mainline or a subsystem tree
+Do either of you mind if I squash these two patches together in the
+audit tree?  I would preserve Nathan's sign-off line and add a comment
+at the end of the commit description about the fix provided by Nathan.
 
-------------------------------------------------------
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Subject: x86/mm: fix freeing of PMD-sized vmemmap pages
-Date: Wed, 29 Apr 2026 12:49:14 +0200
-
-In commit bf9e4e30f353 ("x86/mm: use pagetable_free()"), we switched from
-freeing non-boot page tables through __free_pages() to pagetable_free().
-
-However, the function is also called to free vmemmap pages.
-
-Given that vmemmap pages are not page tables, already the
-page_ptdesc(page) is wrong.  But worse, pagetable_free() calls
-
-	__free_pages(page, compound_order(page));
-
-As vmemmap pages are not compound pages (see vmemmap_alloc_block()) --
-except for HVO, which doesn't apply here -- we will only free the first
-page when freeing a PMD-sized vmemmap page, leaking the other ones.
-
-Fix it by properly decoupling pagetable and vmemmap freeing. 
-free_pagetable() no longer has to mess with SECTION_INFO, as only the
-vmemmap is marked like that in register_page_bootmem_memmap().
-
-The indentation in remove_pmd_table() is messed up, let's fix that while
-touching it.
-
-Note that we'll try to get rid of that bootmem info handling soon.  For
-now, we'll handle it similar to free_pagetable(), just avoiding the ifdef.
-
-Link: https://lore.kernel.org/20260429-vmemmap-v2-1-8dfcacffd877@kernel.org
-Fixes: bf9e4e30f353 ("x86/mm: use pagetable_free()")
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-Tested-by: Lance Yang <lance.yang@linux.dev>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Baolu Lu <baolu.lu@linux.intel.com>
-Cc: "Borislav Petkov (AMD)" <bp@alien8.de>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Juhyung Park <qkrwngud825@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- arch/x86/mm/init_64.c |   40 ++++++++++++++++++++++++++--------------
- 1 file changed, 26 insertions(+), 14 deletions(-)
-
---- a/arch/x86/mm/init_64.c~x86-mm-fix-freeing-of-pmd-sized-vmemmap-pages
-+++ a/arch/x86/mm/init_64.c
-@@ -1014,7 +1014,7 @@ static void __meminit free_pagetable(str
- #ifdef CONFIG_HAVE_BOOTMEM_INFO_NODE
- 		enum bootmem_type type = bootmem_type(page);
- 
--		if (type == SECTION_INFO || type == MIX_SECTION_INFO) {
-+		if (type == MIX_SECTION_INFO) {
- 			while (nr_pages--)
- 				put_page_bootmem(page++);
- 		} else {
-@@ -1028,13 +1028,24 @@ static void __meminit free_pagetable(str
- 	}
- }
- 
--static void __meminit free_hugepage_table(struct page *page,
-+static void __meminit free_vmemmap_pages(struct page *page, unsigned int order,
- 		struct vmem_altmap *altmap)
- {
--	if (altmap)
--		vmem_altmap_free(altmap, PMD_SIZE / PAGE_SIZE);
--	else
--		free_pagetable(page, get_order(PMD_SIZE));
-+	unsigned long nr_pages = 1u << order;
-+
-+	if (altmap) {
-+		vmem_altmap_free(altmap, nr_pages);
-+	} else if (PageReserved(page)) {
-+		if (IS_ENABLED(CONFIG_HAVE_BOOTMEM_INFO_NODE) &&
-+		    bootmem_type(page) == SECTION_INFO) {
-+			while (nr_pages--)
-+				put_page_bootmem(page++);
-+		} else {
-+			free_reserved_pages(page, nr_pages);
-+		}
-+	} else {
-+		__free_pages(page, order);
-+	}
- }
- 
- static void __meminit free_pte_table(pte_t *pte_start, pmd_t *pmd)
-@@ -1118,7 +1129,8 @@ remove_pte_table(pte_t *pte_start, unsig
- 			return;
- 
- 		if (!direct)
--			free_pagetable(pte_page(*pte), 0);
-+			/* We never populate base pages from the altmap. */
-+			free_vmemmap_pages(pte_page(*pte), 0, NULL);
- 
- 		spin_lock(&init_mm.page_table_lock);
- 		pte_clear(&init_mm, addr, pte);
-@@ -1153,19 +1165,19 @@ remove_pmd_table(pmd_t *pmd_start, unsig
- 			if (IS_ALIGNED(addr, PMD_SIZE) &&
- 			    IS_ALIGNED(next, PMD_SIZE)) {
- 				if (!direct)
--					free_hugepage_table(pmd_page(*pmd),
--							    altmap);
-+					free_vmemmap_pages(pmd_page(*pmd),
-+							   PMD_ORDER, altmap);
- 
- 				spin_lock(&init_mm.page_table_lock);
- 				pmd_clear(pmd);
- 				spin_unlock(&init_mm.page_table_lock);
- 				pages++;
- 			} else if (vmemmap_pmd_is_unused(addr, next)) {
--					free_hugepage_table(pmd_page(*pmd),
--							    altmap);
--					spin_lock(&init_mm.page_table_lock);
--					pmd_clear(pmd);
--					spin_unlock(&init_mm.page_table_lock);
-+				free_vmemmap_pages(pmd_page(*pmd), PMD_ORDER,
-+						   altmap);
-+				spin_lock(&init_mm.page_table_lock);
-+				pmd_clear(pmd);
-+				spin_unlock(&init_mm.page_table_lock);
- 			}
- 			continue;
- 		}
-_
-
-Patches currently in -mm which might be from david@kernel.org are
-
-sh-use-folio_mapped-instead-of-page_mapped-in-sh4_flush_cache_page.patch
-bpf-arena-use-page_ref_count-instead-of-page_mapped-in-arena_free_pages.patch
-mm-remove-page_mapped.patch
-sparc-mm-remove-register_page_bootmem_info.patch
-mm-bootmem_info-drop-initialization-of-page-lru.patch
-mm-bootmem_info-stop-using-pg_private.patch
-mm-bootmem_info-remove-call-to-kmemleak_free_part_phys.patch
-mm-bootmem_info-stop-marking-the-pgdat-as-node_info.patch
-mm-bootmem_info-stop-marking-mem_section_usage-as-mix_section_info.patch
-s390-mm-use-free_reserved_page-in-vmem_free_pages.patch
-powerpc-mm-remove-config_have_bootmem_info_node.patch
-
+--=20
+paul-moore.com
 
