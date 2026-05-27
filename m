@@ -1,66 +1,86 @@
-Return-Path: <stable+bounces-254628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254629-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OKGCHDIYF2px3wcAu9opvQ
-	(envelope-from <stable+bounces-254628-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 18:13:38 +0200
+	id 8HgaEwUZF2pR4QcAu9opvQ
+	(envelope-from <stable+bounces-254629-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 18:17:09 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFBFA5E78B8
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 18:13:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C96B5E79A8
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 18:17:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 52E4C301AA90
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 16:10:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 71331301A2A9
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 16:17:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A97AC382368;
-	Wed, 27 May 2026 16:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EFA83D8104;
+	Wed, 27 May 2026 16:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MPuOzV3i"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="B+cTT3I9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A5A93DD534;
-	Wed, 27 May 2026 16:10:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F905382F01;
+	Wed, 27 May 2026 16:17:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779898253; cv=none; b=g779ouzAYSb6yqJoN6ovH732mvlenR9nNIp2azj7fAMWh82Terh/yLCmn7Pszs0ty/7vUeTY4S2+ZAe2tyFQyV5qMxYb3MQRzkPDWj4HZawGDBrgMtutZ77MSBKTsQ/MCLsv68x202po6FkiHabevYc0SKNhaudf+tagswJpCJM=
+	t=1779898624; cv=none; b=qWr1BpO/PYtib9eVcD+C2KPZ+ttCNHHYUP9ozh/uUtyClotaZw6hycnTYCXW27DP/UAFIHhva5iJ2q3CvSuK6re6VXIWB3dek0cOGhVIeiEXJPEfa/cHrdAsF8q4FOwMhyeL1M/SXKup5wnQyaYgjlTxSMUxY8ldZsDrxiSc3Qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779898253; c=relaxed/simple;
-	bh=CX3exghaEU7oijl4Qm+XajRGZGjWFznqdUxi59T5X4w=;
+	s=arc-20240116; t=1779898624; c=relaxed/simple;
+	bh=mZT0P/zwaX51RtEUsi0fOiyR3kTC/n5FTEuynXi8sSo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FdO1wWMOGK+ExmSvjFSoX+wzZCA3N8vT88MIg3NWtMKndQXu9pzDQIzn9cC4P8FSUuifDB02O5eQVcmePSuCKOFIS89rXbot0EqjrFZA/cA1tBaKlLdV8AFFIoxjNpIel3FIM2nYGmo/GXOp3iMvnUSFubmmR1Lv0RcEsENI820=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MPuOzV3i; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96D101F000E9;
-	Wed, 27 May 2026 16:10:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779898251;
-	bh=CX3exghaEU7oijl4Qm+XajRGZGjWFznqdUxi59T5X4w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MPuOzV3ikmn3ser1vdTu0I7pRDht3seabVH7Hg/9v9USEHiof8yUdQnShFjScSoTb
-	 wdlaE+ErrX6xUpzLPhl9U+fXdVTfi0yRbZeC00fJS2ccPaDv0gMC5+6XhPblJ5PeS6
-	 i+7lP7lyQ8xf17fO5n6Fk+MPMcTxWkgkfthrAyTYwzQja+or0O0RVqC2yaVkuPPHQS
-	 3ScbA9+3q0nykiU5eDEWY+WnpI9zPngSRPNxobjR/zDfX+lBOmEpm4Xj/opPKsuM4s
-	 sW5CviajEZlNQ2CHFGIvSbiwSzQdY5KFZ3qlNiC5BnbBRNa8LgJpKZGSN/u1OBCmAl
-	 r7dqJXWThO+wg==
-Date: Wed, 27 May 2026 17:10:43 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Yin Tirui <yintirui@huawei.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <liam@infradead.org>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Yang Shi <yang.shi@linux.alibaba.com>, 
-	wangkefeng.wang@huawei.com, chenjun102@huawei.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/huge_memory: update file PMD counter before
- folio_put()
-Message-ID: <ahcXZQCA0TsC1Qjc@lucifer>
-References: <20260526101337.1984081-1-yintirui@huawei.com>
- <ahV8PuP2sg7fV_DR@lucifer>
- <58434ba7-78c8-44a5-8262-98fcaf131e6e@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ADAxtmBEvZT4pZQaAh6jCnYVQtRvh8nivU/aRXN+D8RkfJycbHSfKrw8fWtuwtfyo17C3wpZPtRAx1IQvychRV85awyGiam5HxF2PdYGSkMAoKl36cUMvHYE4TjWyqrin5ANVeg6Ua6dLpKwfqpNb4uIxCm2p1OoDoSI+usiWAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=B+cTT3I9; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64RC0gSF272240;
+	Wed, 27 May 2026 16:16:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=b9F+AmgWvYDlJzmEdke60GpHwUtQVz
+	Dqf0WjOaCEDh0=; b=B+cTT3I9cHjb6BNxLlOprt9Z+T973dcNKzaK5AOiECzjIr
+	manQXwCv1j2GW2sL7WZcIRv6Yi0lt6gjtNZ9OknuAzzuGNrhWDRxD1jxysFQ8Why
+	GnKDcwVLGWwsgWUG0NMtT53WZ1cu0I8tDkQ/WtxS/ZWugiMOKPX8dldJmEQxssL/
+	Omax6bdFYMejZpIbYYz85HChlDfA7PZ9bEEuf2qFCD8oQGrhM2guaTyLQ9xXP0PE
+	weiUsw0wp9EbxiajT34+3BZc67bDMhlmPrg77aUDLLSUXkLN461O8+gVGaWZb5kE
+	IPwT3M+ImY08HMtRuBqPgcU88hfB2jbfxMJ6JU1g==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4eb4nq91d4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 27 May 2026 16:16:46 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64RG96gu002888;
+	Wed, 27 May 2026 16:16:45 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4edjrb3tt0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 27 May 2026 16:16:45 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64RGGfTI47907136
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 27 May 2026 16:16:42 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DDDE020043;
+	Wed, 27 May 2026 16:16:41 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 09AF520040;
+	Wed, 27 May 2026 16:16:40 +0000 (GMT)
+Received: from Gautams-MacBook-Pro.local (unknown [9.43.117.77])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 27 May 2026 16:16:39 +0000 (GMT)
+Date: Wed, 27 May 2026 21:46:33 +0530
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au,
+        chleroy@kernel.org, atrajeev@linux.ibm.com,
+        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] KVM: PPC: Kconfig: Enable CONFIG_VPA_PMU with KVM
+Message-ID: <ahcY4S7shzG_kDt6@Gautams-MacBook-Pro.local>
+References: <20260518044150.34632-1-gautam@linux.ibm.com>
+ <agu2UAi6lWclxFYh@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,86 +89,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <58434ba7-78c8-44a5-8262-98fcaf131e6e@kernel.org>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+In-Reply-To: <agu2UAi6lWclxFYh@google.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: Xu6BugMKoIkhkjlN9TsXGZnUcHw_o0Aa
+X-Proofpoint-ORIG-GUID: b4h-zIYe_oohMh7MgSS0yqDDW51hSHfT
+X-Authority-Analysis: v=2.4 cv=QIJYgALL c=1 sm=1 tr=0 ts=6a1718ee cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=kj9zAlcOel0A:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=kH-xMUQrV69S-q4FAwAA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI3MDE2MiBTYWx0ZWRfX2QhgFulZW/6g
+ Hy7Sug3x7czsigDCKgOh/cCVjtkTjghZP+Dz/ef744228AR1+LwgPyGw7dsgss2fBD1Cz6AqKgO
+ A/Qr25KvlfSitOv9ndVQacMFGfWA1PvBqNCad0OdoVIH9VWr/oklw1B2uHcIshV5B3iXJG6IyET
+ TtR/Y55rm5e8ypHl0w8i+rG7TfF4TX85HEcXVQ6Ny4ZbtAMt9QHzs3eKNbP4M1XjGf9UUbwxX56
+ 6bg7UyZymYshjdD4/UMye7nw6k/kplm5t6jZAC0ZstDFYkfSzWhDFkbvVeo5uS988VdjTz6wU7a
+ OdPHAoNvhY7kZZ9eJ9GTCiK/9+cA2tend9bHw3itshzDh9zPsMzycuKi7nlTfdq2jnsPUPioof2
+ UqUgEkoM+sk1yzN6JSn11CHdCn4lx6ZScHfjfxHwggMX2olJIEV6KStSYurHyDP0q6MGsfeWKlJ
+ EDpY9n0DTI+AIVsGxyA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-05-27_02,2026-05-26_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 priorityscore=1501 impostorscore=0 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 adultscore=0 spamscore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605130000
+ definitions=main-2605270162
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo];
+	FREEMAIL_CC(0.00)[linux.ibm.com,gmail.com,ellerman.id.au,kernel.org,lists.ozlabs.org,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254628-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[18];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	TAGGED_FROM(0.00)[bounces-254629-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gautam@linux.ibm.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ljs@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,huawei.com:email]
-X-Rspamd-Queue-Id: DFBFA5E78B8
+	RCVD_COUNT_SEVEN(0.00)[11]
+X-Rspamd-Queue-Id: 0C96B5E79A8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, May 26, 2026 at 02:25:35PM +0200, David Hildenbrand (Arm) wrote:
-> On 5/26/26 13:05, Lorenzo Stoakes wrote:
-> > On Tue, May 26, 2026 at 06:13:37PM +0800, Yin Tirui wrote:
-> >> __split_huge_pmd_locked() updates the file/shmem RSS counter after
-> >> dropping the PMD mapping's folio reference. If folio_put() drops the
-> >> last reference, mm_counter_file() can later read freed folio state via
-> >> folio_test_swapbacked().
-> >>
-> >> Move the counter update before folio_put().
-> >>
-> >> Fixes: fadae2953072 ("thp: use mm_file_counter to determine update which rss counter")
-> >
-> > That's an old commit :) I mean I suspect we're probably not actually ever
-> > dropping the folio ref to 0 here since we never had a report since ~2018.
-> >
-> > The page cache keeping a reference I guess?
->
-> I assume we could be racing with truncation.
->
-> Truncation would have to trigger unmap itself before we do the
-> folio_remove_rmap_pmd().
->
-> While the race could happen in theory I think, I do assume this would be rather
-> hard to trigger.
+On Mon, May 18, 2026 at 06:01:04PM -0700, Sean Christopherson wrote:
+> On Mon, May 18, 2026, Gautam Menghani wrote:
+> > Enable CONFIG_VPA_PMU with KVM to enable its usage. Currently, the
+> > vpa-pmu driver cannot be used since it is not enabled in distro configs.
+> 
+> That seems like a problem to take up with distros, no?
 
-Yeah, I mean unless we missed it somehow it seems like any such race if it
-exists is very tiny.
+Rather than enabling individually for different distros, wouldn't it be
+better if it is enabled with KVM automatically? I can rephrase the
+commit log to emphasize that this config option is only relevant for
+KVM (similar to CONFIG_KVM_BOOK3S_HV_PMU).
 
-But obviously we really do need to fix this! :)
 
->
-> >
-> > But doesn't mean we shouldn't fix this on principal/there being some way
-> > this could happen.
-> >
-> >> Cc: <stable@vger.kernel.org>
-> >> Signed-off-by: Yin Tirui <yintirui@huawei.com>
-> >
-> > LGTM, so:
-> >
-> > Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
->
-> Acked-by: David Hildenbrand (arm) <david@kernel.org>
->
-> --
-> Cheers,
->
-> David
-
-Cheers, Lorenzo
+Thanks,
+Gautam
 
