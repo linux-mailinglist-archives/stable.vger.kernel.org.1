@@ -1,136 +1,138 @@
-Return-Path: <stable+bounces-254528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254529-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UHHMA77EFmrOqgcAu9opvQ
-	(envelope-from <stable+bounces-254528-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 12:17:34 +0200
+	id 4PWxGD/GFmpVrwcAu9opvQ
+	(envelope-from <stable+bounces-254529-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 12:23:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5454D5E27DD
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 12:17:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADED55E2968
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 12:23:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7C3C4300BDA4
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 10:10:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 21D77304EA2E
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 10:15:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C935E3E4C9D;
-	Wed, 27 May 2026 10:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F54B3EFD36;
+	Wed, 27 May 2026 10:15:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="oSq834UG"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E12A280318;
-	Wed, 27 May 2026 10:10:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D301F3EFFA8;
+	Wed, 27 May 2026 10:15:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779876617; cv=none; b=HFr+wn8sFaTuJJw3AB7CXI6ImCUEkZW2UY+Z6kcJbPAg1p6veDePsopqe2rCXpkqxAj2Izsm740qdcUreP56UpKUU6pD/elbp4S9ePZHZsrHmzQ3m5EcaFumazc1Wvo5aRAYdt8rXV1ZRDXL3zswku07Bky/XLin4bN+baDInZ8=
+	t=1779876936; cv=none; b=cbr75pRzxjrCQl40rZL6HlH700hWBYnDCvfGscBb0RnWT9syDm/s2Q4X6dWOsZTPp2t47xhFV+Z8BPaizONGqEgZHqIpFFjvvcxzf7GuTjsg+XceSbu7rAKKiPGSI/6b0KGML8/O6uXxsmki+wMXyYnogIv2B/D5rF6VA8G3gsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779876617; c=relaxed/simple;
-	bh=lFDe5C0ViBHCtU63G+Iu4849aG/k7gBGP5dWgk11pLQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CZxOv2pvJaN3x0J/yxa6I9Ob7FU/xQqFbi5nGkb2xRYnTd5X3ieMWFV3BcnhxjVyCEpEa6FUGaL0PHgPCzBDi3GHp2HF7j40zWvjs4zEyzX+0fMImwXRWRMxZ94m2A+GPV41Oe6b4ARg4CBUhRDdnTnEt2ewydOWRUU7owE1Rj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dfae2b116770.home.arpa (unknown [36.110.52.3])
-	by APP-05 (Coremail) with SMTP id zQCowAC3Gt7twhZqvXSLEQ--.67S2;
-	Wed, 27 May 2026 18:09:49 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: Ram Vegesna <ram.vegesna@broadcom.com>,
-	"James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>
-Cc: Wentao Liang <vulab@iscas.ac.cn>,
-	Daniel Wagner <dwagner@suse.de>,
-	Kees Cook <kees@kernel.org>,
-	Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>,
-	linux-scsi@vger.kernel.org,
-	target-devel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] scsi: elx: efct: fix IO refcount leak in efct_hw_io_abort()
-Date: Wed, 27 May 2026 10:09:35 +0000
-Message-Id: <20260527100935.868042-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1779876936; c=relaxed/simple;
+	bh=11Ch8SRuV30IKc6WYj2PYORtmdlKFlKYIOyzxzCdY/g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MQoF4c8Ec0ia3ZYts6kmUNaTsRzTc0AOaFVSaFGObw8MRZYMbY0jhndBGzNkWeZEsoCktsD40Ya65JQTEqTUIzzuCJzPX5RdsO+DKOIO+G+DldfuJH1Tek/gYb3r+BOsoTzTI8AGFcsPNRt2ohV0KL+80bzgiQoWIjBPaH/MoLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=oSq834UG; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A4003169C;
+	Wed, 27 May 2026 03:15:23 -0700 (PDT)
+Received: from [10.164.19.7] (unknown [10.164.19.7])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A9F853F7D8;
+	Wed, 27 May 2026 03:15:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1779876928; bh=11Ch8SRuV30IKc6WYj2PYORtmdlKFlKYIOyzxzCdY/g=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=oSq834UGuKiM2+78TjUMC/7CFpOQSaVkGtkwnwVw6wEh77IDpZniTH2Ll34ktWbVi
+	 i10lybDeLgZpwDurSiUporQyyJRmE9NGZNsnDtMONWqT6Jn2VBTCk6pwvwlHwCFci1
+	 PT0wbisNKGnc6MQ25CZJXU4GE2Nuq6evM+eubKdo=
+Message-ID: <4ac24b2c-7fbe-44bd-9efc-c1add7785453@arm.com>
+Date: Wed, 27 May 2026 15:45:19 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAC3Gt7twhZqvXSLEQ--.67S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7XrWfCF48ZrWrGFyUXr1kKrg_yoWkAFc_C3
-	WSqrn3u34rKF48Kr1xGrZrZrsIkF4DW340qF4FgFySgF48trWDAr1UurZ3JrW2yw4vyF95
-	Aw18JF4UCw13XjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUb38FF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s
-	1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0
-	cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8Jw
-	ACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka
-	0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7
-	v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF
-	1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIx
-	AIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI
-	42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWI
-	evJa73UjIFyTuYvjfU52NtDUUUU
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRAAA2oWibzwXwAAs8
-X-Spamd-Result: default: False [0.04 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/huge_memory: update file PMD counter before
+ folio_put()
+To: Yin Tirui <yintirui@huawei.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Yang Shi <yang.shi@linux.alibaba.com>, wangkefeng.wang@huawei.com,
+ chenjun102@huawei.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260526101337.1984081-1-yintirui@huawei.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20260526101337.1984081-1-yintirui@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254528-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	TAGGED_FROM(0.00)[bounces-254529-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[arm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.964];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dev.jain@arm.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:mid,iscas.ac.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 5454D5E27DD
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,arm.com:mid,arm.com:dkim,huawei.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: ADED55E2968
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-efct_hw_io_abort() calls efct_hw_io_alloc() which initializes the IO
-reference counter to 1. On the error path where the abort operation
-fails after IO allocation, the function returns without calling
-kref_put() to release the IO reference, leaking the refcount.
 
-Add kref_put() on the error path to properly release the reference.
 
-Fixes: 63de51327a64 ("scsi: elx: efct: Hardware I/O and SGL initialization")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- drivers/scsi/elx/efct/efct_hw.c | 1 +
- 1 file changed, 1 insertion(+)
+On 26/05/26 3:43 pm, Yin Tirui wrote:
+> __split_huge_pmd_locked() updates the file/shmem RSS counter after
+> dropping the PMD mapping's folio reference. If folio_put() drops the
+> last reference, mm_counter_file() can later read freed folio state via
+> folio_test_swapbacked().
+> 
+> Move the counter update before folio_put().
+> 
+> Fixes: fadae2953072 ("thp: use mm_file_counter to determine update which rss counter")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Yin Tirui <yintirui@huawei.com>
+> ---
 
-diff --git a/drivers/scsi/elx/efct/efct_hw.c b/drivers/scsi/elx/efct/efct_hw.c
-index 1838032f6486..4ecd6f4165f4 100644
---- a/drivers/scsi/elx/efct/efct_hw.c
-+++ b/drivers/scsi/elx/efct/efct_hw.c
-@@ -1997,6 +1997,7 @@ efct_hw_io_abort(struct efct_hw *hw, struct efct_hw_io *io_to_abort,
- 	wqcb = efct_hw_reqtag_alloc(hw, efct_hw_wq_process_abort, io_to_abort);
- 	if (!wqcb) {
- 		efc_log_err(hw->os, "can't allocate request tag\n");
-+		kref_put(&io_to_abort->ref, io_to_abort->release);
- 		return -ENOSPC;
- 	}
- 
--- 
-2.34.1
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+
+>  mm/huge_memory.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 0135c29a4372..a5f4a48b7b77 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -3145,7 +3145,9 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+>  			if (!folio_test_referenced(folio) && pmd_young(old_pmd))
+>  				folio_set_referenced(folio);
+>  			folio_remove_rmap_pmd(folio, page, vma);
+> +			add_mm_counter(mm, mm_counter_file(folio), -HPAGE_PMD_NR);
+>  			folio_put(folio);
+> +			return;
+>  		}
+>  		add_mm_counter(mm, mm_counter_file(folio), -HPAGE_PMD_NR);
+>  		return;
 
 
