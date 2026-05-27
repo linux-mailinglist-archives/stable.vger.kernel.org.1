@@ -1,279 +1,259 @@
-Return-Path: <stable+bounces-254650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254651-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WJU3K4U8F2qg9wcAu9opvQ
-	(envelope-from <stable+bounces-254650-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 20:48:37 +0200
+	id 4GEQMBw+F2qg9wcAu9opvQ
+	(envelope-from <stable+bounces-254651-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 20:55:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E2755E9344
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 20:48:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A9785E942B
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 20:55:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 442D83055DF3
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 18:47:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 029763010C0D
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 18:55:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B32C43161A2;
-	Wed, 27 May 2026 18:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AEB03264F2;
+	Wed, 27 May 2026 18:55:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jzCsJ/07"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YK9vzTKG";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="LE+QzrIB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9A2314A8E
-	for <stable@vger.kernel.org>; Wed, 27 May 2026 18:47:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779907624; cv=none; b=oqAdPS/ffFBUl1B640lely2ZSQ378VXz63fpZkh/znibjveRjdzOjZI6dH9raKy2GqI1KlLp3a/cRDw7VShwnozDikh8PgcMfxR+dzt8r+2vzJVO+uJMRrko4IDyeFIb1yDeM+F11B3JF5hN7e3EZ4X8VMlE7JTAB8JjY3e1nkI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779907624; c=relaxed/simple;
-	bh=E3gc4ZRJKcVussyClDrp+FgO+UjnTznkNqO4Lm7JwrA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZbEDibm3sltXvtGS8R4y/8JstUrMW6+HME2Mj7wQkg5lRNv03MbEfWZHwPZ7rxAV2nWa+GpMsQAtLZ4HKFmuxBPjc5p8jUQL3POG7CBSVTfQ5MQthQd69qtAReT4JhUaV4258shMPASKkuuxoAgvCa+RWp+zThtgAGtHmZxHP5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jzCsJ/07; arc=none smtp.client-ip=209.85.222.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-9106ea78cd8so1841037885a.3
-        for <stable@vger.kernel.org>; Wed, 27 May 2026 11:47:02 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9353242DF
+	for <stable@vger.kernel.org>; Wed, 27 May 2026 18:55:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779908114; cv=pass; b=om2tK4QsyLt8aC41fIBPptAzykRvAQC7se51UWvrTDHw7dRkecnp5DMiuhtLAGDv/aHiugoEz10y/LApk2eAKIKMBvUvkfrTkzF6YozrJq6F41sh719o3Az2oqT7IKpmtEMMf8cUSpvOAnv949SeUuRLCs8cGkAMY0EIF/JhOPQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779908114; c=relaxed/simple;
+	bh=IEvaCbrp90Uf04KX7dpNjuPekj4S8vjDGVIGWaoyKRM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jjUGqs/74+4lTZyqZ1It+/+53Y7pGo1EPFFzE4DfhrrHIBan74xrHrcGg2VgwJ7HlStg87Fq8PYBbCg0SKnFjnddITQxrR+euiY/xVwnN1nHUhOIpITPbxlhCZPoijyO04EZIRvhV2RPwRqBN5CY6EP5yZUtV3y4zwIYml1iFf8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YK9vzTKG; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=LE+QzrIB; arc=pass smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779908112;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MLY0TfC/baJTb3mL9UQxHNeKvpo2w8hu1Cn5RYQK7KM=;
+	b=YK9vzTKG+Wf+q46f5Vz6fLccNqlOm4P4shKXDrk2CvEviV013Q3KzOYDU5s0UYod8yV2BU
+	jiQn9t2vuH4TKrl6kravV+ahxQn/lNS86BqM9tfKfBdKKsyhjfTNklRS8Rc41/vHkVz81V
+	aujhXMw3O/MR/SlCIuUFTNOchH4sVwE=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-690-tcXWLatAM-6s8VpkZ7xsHg-1; Wed, 27 May 2026 14:55:09 -0400
+X-MC-Unique: tcXWLatAM-6s8VpkZ7xsHg-1
+X-Mimecast-MFC-AGG-ID: tcXWLatAM-6s8VpkZ7xsHg_1779908108
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-bd41a598d55so23116766b.1
+        for <stable@vger.kernel.org>; Wed, 27 May 2026 11:55:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779908108; cv=none;
+        d=google.com; s=arc-20240605;
+        b=FQMIkH834WSV/IS9OmmVco+KZx9N0FQ/y2pCbtsKvvhplKbeKZAazKH8+LvjUXLRou
+         L1giOiagAgMMz2WECLqxDrr9tkZXI15fRdbgSQD3Q/tiPo1BHLaghfA2aAaiFAZelIeD
+         /57FwbMINSpvmsiDwyubn7NhoEkQa8e8T7a1vdhfqJpIFnVTRdwI1sM7cRT0DLE3q0ii
+         jz6Y7flzEtLjJAQHLf7o8HD8yuiLxlWQMn1pzX3Y0jUQCKeHDVZYr+8eqBmm6uDlB2Cy
+         pFwRL/LZ4gzfzkTI0uzUYiJr7PN4JBLPdEZng6Ifcaut537dzPsM6RAlTqLqwPqK4NQU
+         PBkQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=MLY0TfC/baJTb3mL9UQxHNeKvpo2w8hu1Cn5RYQK7KM=;
+        fh=Eo9+D8j/GDQ+yOxcMxBJn7CKtG3eMtENUOVWGm0LhvU=;
+        b=DI9lJOt+DMQd/ncOzlEK90W9jYKu5GOA/c85LCUdiUGHoR5nkg0qIg+0xnepl5MO1q
+         FwtAhqoGU7EVdS4qNcjmQpbJ5Ij+v4jQpQrabiWFXKHJM2vml9Ck95EFctafUdQbsa0U
+         BFNh5+GFVVfkvIhIjtt0kbfwrU1wtX1KhdnF8CCAdV1HMyS4oLUpq3MPhsgHtJBqg2Ii
+         n0MeYlLjNo6ZE9mdPte2oF7euYyCH2qko6FNT63bJnKaAjoicBLdUfgV1cXW7pTobK/u
+         XcdtYa+2F6jsbnNCWB1uM2czByjpL8Dilyl1P9oNU9yBOSFRRSEGTnJDTn+VW6kkGdu4
+         1r6g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779907622; x=1780512422; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=DnnO6Up2KIBP1TWTFBhRQUg/zlMghDxRrcKQAM6nb0U=;
-        b=jzCsJ/07XK8rrTte69szxmOcm2btT+/L2W5+oyXFyB0EIdUFzRvNMV59eHcomsjjKJ
-         ZFbGJeOxPSGtsFk5lTf2KIvLNT54Gx4giGGfV94CWIvwbHZQ02NYHHitE9fV2IRyShv8
-         crLAl4hz11CrBH9itcYK/Vk/UtvnO4wiS+5o47Q5Cl2gQNv5qAFpGbNHk4Bwr1Q406Lv
-         4CHKBW7eee7/8iWkerq8lGwXgBQk1FUZgBrSfXb2UiI+y8oK7HcxagapufivtJHvvAGW
-         TEwf0WEFNWoKsv/c5jYmpzWwCU4C3JZGd5zJSaGXNeAEOYlvrGe+cCoiGqvK27wo8XEK
-         s9Xg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779907622; x=1780512422;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=redhat.com; s=google; t=1779908108; x=1780512908; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DnnO6Up2KIBP1TWTFBhRQUg/zlMghDxRrcKQAM6nb0U=;
-        b=mFT0wwdbr21r/2YVHnupXSuQ4m5FZ9FdHHDYqb4IyNzwD2iHKCqzfKDkXrwW7z7moz
-         g4VIDroJka8ZQk+5adkc47lGPXO6RX3eWD4xd1/nRX5A+Uj9oIArXwVhky43aQt9JvOR
-         DSEmZhml3T8k5RYhuvYt9F/nchpgwfzKmA9TX2yCCPrSmX27w+VGAPtNP+1bMjMau8B9
-         GXksgp0e8Mnhj5NrrursGP+kNC56c2/gyWxYtbaf3DAtxQyOgLGbO1938lvkhicFuBVz
-         IRVJyFEdRiyMyToAmaeV61NJQrngkoieDO8G01QjlGaDOQS5iVPO1nKV/J4hdLubDfLL
-         o5fg==
-X-Forwarded-Encrypted: i=1; AFNElJ8zPIODBjNGEbfCTuC6BKXBjQnt0hMXIkAGzDRoVQp1kfZi02Pcow8G6gfCnL+ZpNoggRXrXDQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YykdAu7L4Z561XW8Sv8eLAUdurltK84lHMrWI30T628wk+mTXOJ
-	Ot3Gq5J1iexW93ZRXk642vhpDpP4O69Ib7DlO3JzvOvTYhoE/75iFchtkPHk/H84M0A=
-X-Gm-Gg: Acq92OFaltYClpvyxGKxP5Tgpu9aCmLEVf372+vnFj8uiiy1yzZ8gfVlrZbd3OgSJ7M
-	yW1+d5xltv+QdWMPC5MW12T0LkIhuRYo3XWDKgzAxMR5TMOyWWh+9s3NQseEAUtFXCh7a/HE4KJ
-	3aP33PsPX03H3wqqIjmix1rkJ5+bDy3g+zbS6YvJSEDe9ZmB67yQaLMx/5VGac037fJ5pE5Kqe9
-	1RRv3CBbuiBpfH1Yck5/C6o+XfA4tOXURArAeDqyb2SlmADD/JHEMiABANwGOxOxovNzJuqQjau
-	7WcVVv9SWrt0YNumYd7BNjdSWG9oXa00loOGbam75m22LpbCbgH6QK0XyI4YenggzFj6N01cM5R
-	wxOWK/Sj+YI6FEbU73+Z6fxVOLDEBzTDKprDdwGrJvdOONyve1arVwVmM0/YUVaA1hh8AbczEFd
-	cgKR+2Tee8c4bhmDd+0CvIAOIDtFJg6/ue68RnLdwvsd6twZVs//fJJnmGIBinFt6WWiBROXvFV
-	oSW22JoAuyvynlPZc1bmhQZu+M22723e7e8ei36WOjyTTWcujOpLA==
-X-Received: by 2002:a05:620a:1b83:b0:914:b104:91e with SMTP id af79cd13be357-914b48ea7e8mr3726390385a.18.1779907621780;
-        Wed, 27 May 2026 11:47:01 -0700 (PDT)
-Received: from server0.tail6e7dd.ts.net (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-914f87d1a9bsm548554485a.30.2026.05.27.11.47.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 11:47:01 -0700 (PDT)
-From: Michael Bommarito <michael.bommarito@gmail.com>
-To: Peter Huewe <peterhuewe@gmx.de>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	linux-integrity@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] tpm: tpm2-sessions: wait for async KPP completion in tpm_buf_append_salt
-Date: Wed, 27 May 2026 14:46:55 -0400
-Message-ID: <20260527184655.1919993-1-michael.bommarito@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        bh=MLY0TfC/baJTb3mL9UQxHNeKvpo2w8hu1Cn5RYQK7KM=;
+        b=LE+QzrIBBK4T+irObQN5rRCfqd/Cvh/Pm+ER6LasvhpY9J7JZl6yn7bO+uruOf+s61
+         BB1Yntt33WGMRTTnRQdK/b4aQ4GNIbm+UBE1gcm6mzAmPDBo8ZlMl+bjDAZifEjRjtaD
+         uyBw57B2kwyu/nVIGPy+aCA1edEkKOyYKOSujP5WDAoMb9pOOKqcDmG2OGe0M/B73PY7
+         Y21KMWIv1eNheEIcDvWGSgpGonvisUP/eQ/HERzJItre6BISaLEPJrG5bInJxUdGvjL8
+         JQcKL4unOr9vVhGs9a2q1VL3hI1S3p7VIXhu2JXS8BRsE4XQuoSoa9nY6SCWXJr6hr2f
+         jmAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779908108; x=1780512908;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=MLY0TfC/baJTb3mL9UQxHNeKvpo2w8hu1Cn5RYQK7KM=;
+        b=ey2f3Ez+dDIIxCLVWPdw7CNuKS2GqDp6YcELJPgcVrkwxTz1dHSY1a3aHsDWgWgMsh
+         uRW9EBjlqeB9jMWr9Up44Tu+rJ/38A2Q3y2NNHLiQffZKVmNGzaVtO+QrF1zG6YR4So+
+         6tIAkmB+O59M4aOPZ+RqUMo8AcaNAs2/Ai4jWGqGmo5aXMGzbrKeogseKdlS462nVMSr
+         LRMskBaMYtJugasEHZiFu1ThSnNipeu3SfsMGyq/sNftXC+cpTgKmiFRrg1CAVIdhixf
+         MZW/GQpSpl5u1SJINI9LM5BnxwL9MKjtbGcIyJLkPU3e+QKIn5o817Ho9N86Xjgg17Dc
+         Gnkw==
+X-Forwarded-Encrypted: i=1; AFNElJ/1zgKmaeHq2U17wFubUTcQ/Pueb2pXqDcqi1IWDf+u9hh7MVQqwkvJi9yVyyNRFwE3ELi4wCQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNjlTFGeRrm3YczXrQ4/TbRIwuZtnEIdFFbn8NOhoh7RQ7DuRc
+	CF27PN0VgurU8mti1GpbS/UqglXZLhuA5FPH/HdWtGXSB0kjBAffFtvgy0L8Ew2+C/fDT1Oykut
+	XwaReXVhR/BbOZvHBo0GPQm+idTW+vN28e0a9KC+NuoesiOOumKszuKiaYwD9zX0EjG20tKYwE8
+	PUrdpUTgO9UC64VTeij9xRcFH8dzLBSA4qnVul458nQE2CNQ==
+X-Gm-Gg: Acq92OFFJrADctufu10+xW9GShOV5mcbs99s5JUsMY4is2WQPtIG+s4zgq2CiyIpnb5
+	8Q3GhDS/Rsq5wdhOBdVClZIt9iqewKeAJnFjuxiqqXAhG867c/hdV82PrbWlmXl9ze4+Z6c44Ha
+	1E6y0CpJJSJ3J9JBrRABJTrVmgbZMebegKe/VOHlJxvZX2X7jLs3DY9CEZVYTr46cLLCHq4+kkg
+	ZvIgTrRGOifNBDxoKqSYZmYmxcLDldR5DXmsNEKuxQAcZt61hcG0nWUlcp0uiQH0LxXJfS5h1qD
+	OMQaljVL4RTFgkTVjWGx5zjzhRflfViYmT8=
+X-Received: by 2002:a17:907:8691:b0:bd4:8286:466d with SMTP id a640c23a62f3a-bdbffc5fe5cmr1482315966b.12.1779908108443;
+        Wed, 27 May 2026 11:55:08 -0700 (PDT)
+X-Received: by 2002:a17:907:8691:b0:bd4:8286:466d with SMTP id
+ a640c23a62f3a-bdbffc5fe5cmr1482314066b.12.1779908107896; Wed, 27 May 2026
+ 11:55:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <20260527-audit-update-macro-stubs-v1-1-8cda8dbdae0a@kernel.org>
+In-Reply-To: <20260527-audit-update-macro-stubs-v1-1-8cda8dbdae0a@kernel.org>
+From: Ricardo Robaina <rrobaina@redhat.com>
+Date: Wed, 27 May 2026 15:54:56 -0300
+X-Gm-Features: AVHnY4IicZ2HhE2_4kzqvnb7fp4tMV1lwHhRqpfVbTWpEPC95OYW7fSY74-mqTE
+Message-ID: <CAABTaaCZD-6_ar-H8iwOka9WgtuqwEt+=umVuc5xsBHwDcnD-Q@mail.gmail.com>
+Subject: Re: [PATCH] audit: Update audit_alloc_mark() and audit_dupe_exe()
+ CONFIG_AUDITSYSCALL=n stubs
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Paul Moore <paul@paul-moore.com>, Eric Paris <eparis@redhat.com>, 
+	Waiman Long <longman@redhat.com>, Richard Guy Briggs <rgb@redhat.com>, audit@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-254650-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmx.de,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254651-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[rrobaina@redhat.com,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
 	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 4E2755E9344
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 6A9785E942B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-tpm_buf_append_salt() in drivers/char/tpm/tpm2-sessions.c calls
-crypto_kpp_generate_public_key() and crypto_kpp_compute_shared_secret()
-without installing a completion callback, discards both return values,
-and immediately frees the kpp_request via kpp_request_free(). When the
-resolved ecdh-nist-p256 KPP backend is asynchronous (atmel-ecc, HPRE,
-keembay-ocs), either operation returns -EINPROGRESS and the deferred
-completion worker dereferences the freed request.
+On Wed, May 27, 2026 at 2:52=E2=80=AFPM Nathan Chancellor <nathan@kernel.or=
+g> wrote:
+>
+> Commit 84470b80b7b0 ("audit: fix recursive locking deadlock in
+> audit_dupe_exe()") added a ctx parameter to audit_alloc_mark() and
+> audit_dupe_exe() but did not update the macro stubs used when
+> CONFIG_AUDITSYSCALL is not enabled, resulting in a build error for this
+> configuration:
+>
+>   kernel/auditfilter.c: In function 'audit_data_to_entry':
+>   kernel/auditfilter.c:592:85: error: macro 'audit_alloc_mark' passed 4 a=
+rguments, but takes just 3
+>     592 |                         audit_mark =3D audit_alloc_mark(&entry-=
+>rule, str, f_val, NULL);
+>         |                                                                =
+                     ^
+>   In file included from kernel/auditfilter.c:23:
+>   kernel/audit.h:327:9: note: macro 'audit_alloc_mark' defined here
+>     327 | #define audit_alloc_mark(k, p, l) (ERR_PTR(-EINVAL))
+>         |         ^~~~~~~~~~~~~~~~
+>   kernel/auditfilter.c:592:38: error: 'audit_alloc_mark' undeclared (firs=
+t use in this function)
+>     592 |                         audit_mark =3D audit_alloc_mark(&entry-=
+>rule, str, f_val, NULL);
+>         |                                      ^~~~~~~~~~~~~~~~
+>   kernel/auditfilter.c:592:38: note: 'audit_alloc_mark' is a function-lik=
+e macro and might be used incorrectly
+>   kernel/auditfilter.c:592:38: note: each undeclared identifier is report=
+ed only once for each function it appears in
+>   kernel/auditfilter.c: In function 'audit_dupe_rule':
+>   kernel/auditfilter.c:879:59: error: macro 'audit_dupe_exe' passed 3 arg=
+uments, but takes just 2
+>     879 |                         err =3D audit_dupe_exe(new, old, ctx);
+>         |                                                           ^
+>   kernel/audit.h:333:9: note: macro 'audit_dupe_exe' defined here
+>     333 | #define audit_dupe_exe(n, o) (-EINVAL)
+>         |         ^~~~~~~~~~~~~~
+>   kernel/auditfilter.c:879:31: error: 'audit_dupe_exe' undeclared (first =
+use in this function)
+>     879 |                         err =3D audit_dupe_exe(new, old, ctx);
+>         |                               ^~~~~~~~~~~~~~
+>   kernel/auditfilter.c:879:31: note: 'audit_dupe_exe' is a function-like =
+macro and might be used incorrectly
+>
+> Update the macros with the correct number of parameters to resolve the
+> build error.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 84470b80b7b0 ("audit: fix recursive locking deadlock in audit_dupe=
+_exe()")
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> ---
+>  kernel/audit.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/kernel/audit.h b/kernel/audit.h
+> index f1a77aef4533..92d5e723d570 100644
+> --- a/kernel/audit.h
+> +++ b/kernel/audit.h
+> @@ -324,13 +324,13 @@ extern struct list_head *audit_killed_trees(void);
+>  #define audit_watch_path(w) ""
+>  #define audit_watch_compare(w, i, d) 0
+>
+> -#define audit_alloc_mark(k, p, l) (ERR_PTR(-EINVAL))
+> +#define audit_alloc_mark(k, p, l, c) (ERR_PTR(-EINVAL))
+>  #define audit_mark_path(m) ""
+>  #define audit_remove_mark(m) do { } while (0)
+>  #define audit_remove_mark_rule(k) do { } while (0)
+>  #define audit_mark_compare(m, i, d) 0
+>  #define audit_exe_compare(t, m) (-EINVAL)
+> -#define audit_dupe_exe(n, o) (-EINVAL)
+> +#define audit_dupe_exe(n, o, c) (-EINVAL)
+>
+>  #define audit_remove_tree_rule(rule) BUG()
+>  #define audit_add_tree_rule(rule) -EINVAL
+>
+> ---
+> base-commit: 82bc8394b1aa74aedb9827da7730cfa6639716fd
+> change-id: 20260527-audit-update-macro-stubs-6e4d8e8a826e
+>
+> Best regards,
+> --
+> Cheers,
+> Nathan
+>
 
-The path fires automatically from the hwrng_fillfn kernel thread via
-tpm_get_random -> tpm2_get_random -> tpm2_start_auth_session ->
-tpm_buf_append_salt on every entropy poll, without any userland action.
+Hi Nathan,
 
-Install crypto_req_done as the completion callback, wrap both KPP
-operations in crypto_wait_req(), and propagate errors to the caller.
-The wait is a no-op for synchronous backends.
+Good catch, I did miss that! Looks good to me, thanks for fixing it.
 
-Fixes: 1085b8276bb4 ("tpm: Add the rest of the session HMAC API")
-Cc: stable@vger.kernel.org
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Assisted-by: Claude:claude-opus-4-7
----
+Acked-by: Ricardo Robaina <rrobaina@redhat.com>
 
-Impact: on a kernel with an async ECDH KPP provider, any local user
-can reclaim the freed kpp_request slab slot and control the indirect
-call through req->base.complete. A reproducer is available on request.
-Filing publicly per security-bugs.rst guidance.
-
-Notes:
-
-    Validation (QEMU x86_64, swtpm, async ecdh-nist-p256 stub backend):
-    
-    Stock kernel: the freed kpp_request is reclaimed by an unprivileged
-    heap spray; the deferred completion worker jumps to a controlled
-    address (RIP=0x41414141) via the overwritten req->base.complete
-    callback pointer. Reproduces on production-hardened allocator
-    configs (MEMCG, RANDOM_KMALLOC_CACHES, SLAB_FREELIST_HARDENED,
-    SLAB_FREELIST_RANDOM, INIT_ON_FREE).
-    
-    Patched kernel: crypto_wait_req() blocks until the async backend
-    completes; the worker observes a live request with the correct
-    crypto_req_done callback installed; kpp_request_free() runs only
-    after both operations finish. KASAN-clean across 50 entropy polls.
-
- drivers/char/tpm/tpm2-sessions.c | 36 ++++++++++++++++++++++++--------
- 1 file changed, 27 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
-index c4da6fde748f4..a23cc3a540c55 100644
---- a/drivers/char/tpm/tpm2-sessions.c
-+++ b/drivers/char/tpm/tpm2-sessions.c
-@@ -489,15 +489,17 @@ static void tpm2_KDFe(u8 z[EC_PT_SZ], const char *str, u8 *pt_u, u8 *pt_v,
- 	sha256_final(&sctx, out);
- }
- 
--static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip *chip,
--				struct tpm2_auth *auth)
-+static int tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip *chip,
-+			       struct tpm2_auth *auth)
- {
- 	struct crypto_kpp *kpp;
- 	struct kpp_request *req;
-+	DECLARE_CRYPTO_WAIT(wait);
- 	struct scatterlist s[2], d[1];
- 	struct ecdh p = {0};
- 	u8 encoded_key[EC_PT_SZ], *x, *y;
- 	unsigned int buf_len;
-+	int rc;
- 
- 	/* secret is two sized points */
- 	tpm_buf_append_u16(buf, (EC_PT_SZ + 2)*2);
-@@ -520,13 +522,14 @@ static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip *chip,
- 	kpp = crypto_alloc_kpp("ecdh-nist-p256", CRYPTO_ALG_INTERNAL, 0);
- 	if (IS_ERR(kpp)) {
- 		dev_err(&chip->dev, "crypto ecdh allocation failed\n");
--		return;
-+		return PTR_ERR(kpp);
- 	}
- 
- 	buf_len = crypto_ecdh_key_len(&p);
- 	if (sizeof(encoded_key) < buf_len) {
- 		dev_err(&chip->dev, "salt buffer too small needs %d\n",
- 			buf_len);
-+		rc = -EINVAL;
- 		goto out;
- 	}
- 	crypto_ecdh_encode_key(encoded_key, buf_len, &p);
-@@ -535,11 +538,17 @@ static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip *chip,
- 
- 	/* salt is now the public point of this private key */
- 	req = kpp_request_alloc(kpp, GFP_KERNEL);
--	if (!req)
-+	if (!req) {
-+		rc = -ENOMEM;
- 		goto out;
-+	}
-+	kpp_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG,
-+				 crypto_req_done, &wait);
- 	kpp_request_set_input(req, NULL, 0);
- 	kpp_request_set_output(req, s, EC_PT_SZ*2);
--	crypto_kpp_generate_public_key(req);
-+	rc = crypto_wait_req(crypto_kpp_generate_public_key(req), &wait);
-+	if (rc)
-+		goto out_free_req;
- 	/*
- 	 * we're not done: now we have to compute the shared secret
- 	 * which is our private key multiplied by the tpm_key public
-@@ -551,8 +560,9 @@ static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip *chip,
- 	kpp_request_set_input(req, s, EC_PT_SZ*2);
- 	sg_init_one(d, auth->salt, EC_PT_SZ);
- 	kpp_request_set_output(req, d, EC_PT_SZ);
--	crypto_kpp_compute_shared_secret(req);
--	kpp_request_free(req);
-+	rc = crypto_wait_req(crypto_kpp_compute_shared_secret(req), &wait);
-+	if (rc)
-+		goto out_free_req;
- 
- 	/*
- 	 * pass the shared secret through KDFe for salt. Note salt
-@@ -562,8 +572,11 @@ static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip *chip,
- 	 */
- 	tpm2_KDFe(auth->salt, "SECRET", x, chip->null_ec_key_x, auth->salt);
- 
-- out:
-+out_free_req:
-+	kpp_request_free(req);
-+out:
- 	crypto_free_kpp(kpp);
-+	return rc;
- }
- 
- /**
-@@ -1018,7 +1031,12 @@ int tpm2_start_auth_session(struct tpm_chip *chip)
- 	tpm_buf_append(&buf, auth->our_nonce, sizeof(auth->our_nonce));
- 
- 	/* append encrypted salt and squirrel away unencrypted in auth */
--	tpm_buf_append_salt(&buf, chip, auth);
-+	rc = tpm_buf_append_salt(&buf, chip, auth);
-+	if (rc) {
-+		tpm2_flush_context(chip, null_key);
-+		tpm_buf_destroy(&buf);
-+		goto out;
-+	}
- 	/* session type (HMAC, audit or policy) */
- 	tpm_buf_append_u8(&buf, TPM2_SE_HMAC);
- 
--- 
-2.53.0
-
+-Ricardo
 
 
