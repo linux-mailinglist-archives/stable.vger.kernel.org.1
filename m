@@ -1,204 +1,142 @@
-Return-Path: <stable+bounces-254535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254536-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QNRxOIzLFmr7sAcAu9opvQ
-	(envelope-from <stable+bounces-254535-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 12:46:36 +0200
+	id 2B9+OSzMFmprsQcAu9opvQ
+	(envelope-from <stable+bounces-254536-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 12:49:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7007E5E2EE0
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 12:46:36 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85D8B5E2F4C
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 12:49:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4EA463009B13
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 10:45:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 57910300C0D0
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 10:49:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D81433F20EB;
-	Wed, 27 May 2026 10:45:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="cW6Xjxgt"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36F8A3B6356;
+	Wed, 27 May 2026 10:49:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0CA3F167C
-	for <stable@vger.kernel.org>; Wed, 27 May 2026 10:45:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24339248F57;
+	Wed, 27 May 2026 10:49:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779878743; cv=none; b=EkE0TsorRUsyCfO3dm8GSgulLbNxoQzZPLd1bkosTIx8JbGIpHhoI2ZtSXRnZbY3WCWUZk3NsY3veoSM2ixWvl0DKkdiu/lbb9kzbtjlBdaoMO1S8pHv9UUml5C1hTZME1Qw26qZe+eX+zyXZCV6EqSJrNb/2ymdOGbMgnB4PHY=
+	t=1779878954; cv=none; b=ONXYb2e647Hyst6tnAJmhTxjw0T06BEndwAy387c+oV233bALCpy2/sS0OLbk9f1iFKiU56r8gTFnHTyaQfB/WPnY2EBsTQXpftzzqsNVIy43GD6ddRI4hGHGNHAhLri48v57KON0WYUDWNISQcZU/Cglx8LzJsIqri+akwF/Bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779878743; c=relaxed/simple;
-	bh=OjgVdxfIapTmIVZ4E6ItV4aTR3p9FAnYA9UXpwXjjJM=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
-	 In-Reply-To:Content-Type; b=qJyZwVCL5nY4YV6JG2GeU8l8twoWY5BQah0fRG8KA7pfsTUqeMqs4CSbbE+XENPHlBiM8A7KLFxiMDxhTUcyh086XlpmxOjWkrzJKgaXOvuH/x951pbGP7uo3MXA+M0tYxObhjABDLF+rkoZZ6uDgeYrbve+Hf2a5IAxqXbCqLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=cW6Xjxgt; arc=none smtp.client-ip=113.46.200.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=FavTVuWYb8sCNd5Y1V9N2YKOs48UrbTxHozMjLISuwo=;
-	b=cW6Xjxgtxgrs1Ej+gekXkr9t+GB79SFgVC7EtfumYSan6OkmiqGG8wkrSJc9F6uUoLoT0ps/e
-	YzjdBIS580HZEU4rYb9KdJyAQEVyXm2x/bt6f3Rq0BbcMnP86XhmSYaOm1xG8iGHqCz4F33Yf+2
-	BpI4kxJd4GG5hLO1TPmjoco=
-Received: from mail.maildlp.com (unknown [172.19.163.127])
-	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4gQR0D6dyjzKm4D;
-	Wed, 27 May 2026 18:37:48 +0800 (CST)
-Received: from kwepemj500018.china.huawei.com (unknown [7.202.194.48])
-	by mail.maildlp.com (Postfix) with ESMTPS id 179A3402AB;
-	Wed, 27 May 2026 18:45:37 +0800 (CST)
-Received: from [10.174.178.79] (10.174.178.79) by
- kwepemj500018.china.huawei.com (7.202.194.48) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 27 May 2026 18:45:36 +0800
-Message-ID: <8f4eda80-bae9-4a68-b983-0acd53d2569f@huawei.com>
-Date: Wed, 27 May 2026 18:45:34 +0800
+	s=arc-20240116; t=1779878954; c=relaxed/simple;
+	bh=Vsf8NVZEUsObatARVaoDP+ocHffnuUj8GUmuVXiaEBU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gCzdaEfd7LP+vdOgrbz+sfEEnOOIpKjveXpd8zK/NFaxgal46iY4R+bIiRO9yEcDxuZNI49sM+fdUuv46cxgfY4Jt4N4kdc0daVankKF47Xa9luWQpN4x9QmbvnOAeqMV2ozL/4WhqxRVks6YtbdhAkW38+4pR3MYAmGa5spqF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from dfae2b116770.home.arpa (unknown [36.110.52.3])
+	by APP-05 (Coremail) with SMTP id zQCowAAntQggzBZq9QuMEQ--.34S2;
+	Wed, 27 May 2026 18:49:04 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: Sudeep Holla <sudeep.holla@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Cc: Cristian Marussi <cristian.marussi@arm.com>,
+	arm-scmi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] regulator: scmi: fix of_node refcount leak in scmi_regulator_probe()
+Date: Wed, 27 May 2026 10:48:50 +0000
+Message-Id: <20260527104850.872415-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 28/70] mptcp: fix soft lockup in mptcp_recvmsg()
-From: Li Xiasong <lixiasong1@huawei.com>
-To: Jiping Ma <jiping.ma2@windriver.com>
-CC: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-	"kuba@kernel.org" <kuba@kernel.org>, "matttbe@kernel.org"
-	<matttbe@kernel.org>, "patches@lists.linux.dev" <patches@lists.linux.dev>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, "weiyongjun (A)"
-	<weiyongjun1@huawei.com>, yuehaibing <yuehaibing@huawei.com>, zhangchangzhong
-	<zhangchangzhong@huawei.com>
-References: <52ea906c-0953-4d2c-98ee-b873ecc6a075@huawei.com>
- <20260527030537.1305489-1-jiping.ma2@windriver.com>
- <b01d1b99-b988-456b-8e6c-ac3868fdb03b@huawei.com>
-In-Reply-To: <b01d1b99-b988-456b-8e6c-ac3868fdb03b@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemj500018.china.huawei.com (7.202.194.48)
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowAAntQggzBZq9QuMEQ--.34S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7GryrZF47Xr18Cw1UAw1UJrb_yoWkKrg_Gr
+	yfW3W7XrZF9r409rs7XFZ0qr9Ikw1qgayIvFs2kFWakw1Yv3WDJa47Xr93A3y8Z3yUtr9r
+	Ww4DCrW8Aw4a9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbcAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s
+	1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0
+	cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8Jw
+	ACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_Jw0_
+	GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxV
+	WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI
+	7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
+	4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI
+	42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUOlkVUUUUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCREAA2oWibzwYQACsB
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254535-lists,stable=lfdr.de];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
+	DMARC_NA(0.00)[iscas.ac.cn];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[huawei.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-254536-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.884];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lixiasong1@huawei.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,ubuntu:email,huawei.com:mid,huawei.com:dkim]
-X-Rspamd-Queue-Id: 7007E5E2EE0
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 85D8B5E2F4C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi,
+scmi_regulator_probe() calls of_find_node_by_name() which takes a
+reference on the returned device node. On the error path where
+process_scmi_regulator_of_node() fails, the function returns without
+calling of_node_put() on the child node, leaking the reference.
 
-One clarification to my previous email:
+Add of_node_put(np) on the error path to properly release the
+reference.
 
-The `v6.18.32` kernel used in my test was built with commit
-`58b58b9ba89c` ("mptcp: fix soft lockup in mptcp_recvmsg()") reverted.
-So the reproduction result I reported for `v6.18.32` is based on a
-kernel without that patch.
+Cc: stable@vger.kernel.org
+Fixes: 0fbeae70ee7c ("regulator: add SCMI driver")
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 
-Regards,
-Li Xiasong
+---
+Change in v2:
+- fix typo in code
+---
+ drivers/regulator/scmi-regulator.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-On 5/27/2026 6:22 PM, Li Xiasong wrote:
-> Hi, Jiping
-> 
-> On 5/27/2026 11:05 AM, Jiping Ma wrote:
->> Hi, Xiasong
->>
->> Could you share how to reproduce the issue?
->> I used the following code to reproduce it, and do the test in v6.18.32. but the test results are the same with and without the fix(I revert the commit 58b58b9ba89c43914eea90c18928e51852d10c24).
->> The client task will be waked up after 10 minutes.  There is not soft lockup.
->>
-> 
-> Thanks for sharing the reproducer.
-> 
-> Your test program itself looks fine to me, and I can reproduce the issue
-> with the reproducer you provided in my test environment.[0]
-> 
-> I think the reproduction result depends on the kernel preemption model.
-> The issue is easier to trigger with a non-preemptible kernel
-> (e.g. `PREEMPT_NONE`). On other preemption configurations, it may be
-> harder to reproduce, but the program can still be observed consuming
-> nearly 100% system CPU. So the same test can show different behavior
-> under different `CONFIG_PREEMPT*` settings.
-> 
-> Also, if you want to reproduce this on `6.6.y` or `6.12.y`, based on
-> the previous analysis, have the sender transmit two packets with an
-> interval between them.
-> 
-> Hope this helps.
-> 
-> [0] Relevant dmesg log:
-> Linux ubuntu 6.18.32+ #15 SMP PREEMPT_DYNAMIC Wed May 27 15:25:52 CST 2026 x86_64 x86_64 x86_64 GNU/Linux
-> root@ubuntu:~# [  960.743413] watchdog: BUG: soft lockup - CPU#5 stuck for 261s! [client:1260]
-> [  960.743433] Modules linked in:
-> [  960.743463] CPU: 5 UID: 0 PID: 1260 Comm: client Not tainted 6.18.32+ #15 PREEMPT(none)
-> [  960.743469] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-> [  960.743474] RIP: 0010:_raw_spin_lock_bh+0x1b/0x60
-> [  960.743518] Code: 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 65 81 05 d0 a2 a1 01 01 02 00 00 31 c0 ba 01 00 00 00 f0 0f b1 17 <75> 1b 31 c0 31 d2 31 c9 31 f6 31 ff 45 31 c0 45 31 c9 45 31 d2 45
-> [  960.743521] RSP: 0018:ffffc9000259fb08 EFLAGS: 00000246
-> [  960.743524] RAX: 0000000000000000 RBX: ffff888106efc480 RCX: 0000000000000000
-> [  960.743529] RDX: 0000000000000001 RSI: 0000000000000000 RDI: ffff888106efc5c0
-> [  960.743531] RBP: ffffc9000259fb68 R08: 0000000000000000 R09: 0000000000000000
-> [  960.743533] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
-> [  960.743535] R13: ffff888106efc5c0 R14: ffff888106efc528 R15: 0000000000000000
-> [  960.743537] FS:  000079482a7b7740(0000) GS:ffff8881b70e7000(0000) knlGS:0000000000000000
-> [  960.743540] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [  960.743542] CR2: 00005a8d794c3008 CR3: 00000001033ea000 CR4: 00000000000006f0
-> [  960.743547] Call Trace:
-> [  960.743550]  <TASK>
-> [  960.743552]  ? sk_wait_data+0xc2/0x1a0
-> [  960.743564]  ? __pfx_woken_wake_function+0x10/0x10
-> [  960.743571]  mptcp_recvmsg+0x623/0x9a0
-> [  960.743578]  ? __wake_up+0x45/0x70
-> [  960.743582]  inet_recvmsg+0x124/0x130
-> [  960.743588]  ? apparmor_socket_recvmsg+0x25/0x40
-> [  960.743595]  ? security_socket_recvmsg+0x1a9/0x1d0
-> [  960.743602]  sock_recvmsg+0xb7/0xc0
-> [  960.743608]  __sys_recvfrom+0xd2/0x170
-> [  960.743612]  ? ksys_write+0x69/0xf0
-> [  960.743618]  ? __x64_sys_write+0x19/0x30
-> [  960.743622]  ? x64_sys_call+0x18fc/0x2760
-> [  960.743628]  ? do_syscall_64+0xb8/0x1300
-> [  960.743635]  ? do_syscall_64+0xb8/0x1300
-> [  960.743640]  __x64_sys_recvfrom+0x24/0x40
-> [  960.743642]  x64_sys_call+0x2694/0x2760
-> [  960.743646]  do_syscall_64+0x80/0x1300
-> [  960.743650]  ? count_memcg_events+0xed/0x1e0
-> [  960.743655]  ? handle_mm_fault+0x210/0x2f0
-> [  960.743661]  ? do_user_addr_fault+0x300/0x8d0
-> [  960.743666]  ? irqentry_exit_to_user_mode+0x2e/0x330
-> [  960.743670]  ? irqentry_exit+0x43/0x50
-> [  960.743672]  ? exc_page_fault+0x93/0x1b0
-> [  960.743675]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> [  960.743678] RIP: 0033:0x79482a49eba6
-> [  960.743691] Code: 00 00 48 8b 15 53 12 17 00 64 89 02 48 c7 c2 ff ff ff ff 48 8b 5d f8 c9 48 89 d0 c3 0f 1f 84 00 00 00 00 00 48 8b 45 10 0f 05 <48> 63 d0 3d 00 f0 ff ff 77 10 48 8b 5d f8 48 89 d0 c9 c3 0f 1f 80
-> [  960.743693] RSP: 002b:00007ffd26c7bdc0 EFLAGS: 00000202 ORIG_RAX: 000000000000002d
-> [  960.743696] RAX: ffffffffffffffda RBX: 000079482a7b7740 RCX: 000079482a49eba6
-> [  960.743698] RDX: 0000000000000400 RSI: 00007ffd26c7be20 RDI: 0000000000000003
-> [  960.743699] RBP: 00007ffd26c7bdd0 R08: 0000000000000000 R09: 0000000000000000
-> [  960.743701] R10: 0000000000000102 R11: 0000000000000202 R12: 0000000000000001
-> [  960.743702] R13: 0000000000000000 R14: 00005a8d75ae6d78 R15: 000079482a806000
-> [  960.743707]  </TASK>
+diff --git a/drivers/regulator/scmi-regulator.c b/drivers/regulator/scmi-regulator.c
+index 6d609c42e479..c005e65ba0ec 100644
+--- a/drivers/regulator/scmi-regulator.c
++++ b/drivers/regulator/scmi-regulator.c
+@@ -345,8 +345,10 @@ static int scmi_regulator_probe(struct scmi_device *sdev)
+ 	for_each_child_of_node_scoped(np, child) {
+ 		ret = process_scmi_regulator_of_node(sdev, ph, child, rinfo);
+ 		/* abort on any mem issue */
+-		if (ret == -ENOMEM)
++		if (ret == -ENOMEM) {
++			of_node_put(np);
+ 			return ret;
++		}
+ 	}
+ 	of_node_put(np);
+ 	/*
+-- 
+2.34.1
 
 
