@@ -1,273 +1,299 @@
-Return-Path: <stable+bounces-254532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254533-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KPdqINHGFmpVrwcAu9opvQ
-	(envelope-from <stable+bounces-254532-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 12:26:25 +0200
+	id kN8sGBHHFmpVrwcAu9opvQ
+	(envelope-from <stable+bounces-254533-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 12:27:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA1E15E2AAA
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 12:26:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C84255E2B09
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 12:27:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 018D6301CCDD
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 10:19:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 48212302A2EC
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 10:22:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8AB73E00BC;
-	Wed, 27 May 2026 10:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EEC43E8C72;
+	Wed, 27 May 2026 10:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UsL+FLfp"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="YoQbClp+"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7FD258CCC
-	for <stable@vger.kernel.org>; Wed, 27 May 2026 10:19:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FD73C279B
+	for <stable@vger.kernel.org>; Wed, 27 May 2026 10:22:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779877191; cv=none; b=JglwrXPjU64uesgbKeVsx5E5nvPK1meiJLy0ZUK74/uOb1ZbXBodOsC+OlEdtdNqalLtiHRjbFyCFK/F2mJyhtf3kHxZVNBQ/HGcApDFWbpINwg1Sw0veaMLs5/L6Lkn3oGm1kUCjdKV1OurAEoRjfrxAYOxeJbhIgo6HjKVsKM=
+	t=1779877361; cv=none; b=HsED1GtbnHpz+Scgkyq5QW8n0N1M8B8EbQJbFDH0IJbVgKZBJMZeeN0fI1XgGSOtGFheOwXFrmm+aXDKL/TjVpBbvSJC5caoLGAXtZ1HbhvHmoxRIhXDQAbacGr3RjeW0mz4knUDmiCzOb7STmruKBwnf0lAzyRlwJBxTr4Jt0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779877191; c=relaxed/simple;
-	bh=gd1kvtHZGVxbDdgW4YLi15vxD2T5Pn1slgwuoKPuaFk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=n3XCbMaM8lHDXZKli4neyvuy7Rqad365PS8B5zx0cj1IeNot5ibJagXVxHlTE1WAP3w1UKr0Yhf3SetdAo2qO48S0PtqWC4p48IG6Bhe5Vur5GKyn5oHmQqsQX7X3PaW5cq3b1/DBn/gifoK7sTq5WFZSes7uApMpuPItvi8KHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UsL+FLfp; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779877190; x=1811413190;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=gd1kvtHZGVxbDdgW4YLi15vxD2T5Pn1slgwuoKPuaFk=;
-  b=UsL+FLfpt9CVU5PxDscyCxMmmhKgsl1F9ZbN8yBZ74ebVjdnB0wlgXr8
-   iP55IKkJS6b8ABE6OggpPbrXRQZFkpRDeacPH3hBP9ZkVTUaETTvt7IMG
-   2sPvxRT67JPnko3blxQ1FuK4PN6w3/Qumxej3rPixOZX53fkJ7vkgRljU
-   rgeAFDvT56q3HXFaf5zQSv0NBd+KvzjgkUujq7IGcbg94mIyBdKcUlEHM
-   hIzEoSl1t5VWAw4c9E443oDMfMehqXMxAutoTWuq03z1ZVY1WVNPN7/z6
-   ncM/iViznQsSD5L3UiirfF4U5f7K2BrnlABxyLquWviI37ooPp4+Shfw4
-   Q==;
-X-CSE-ConnectionGUID: GQZ0Z5C8SZ65m40YCvgRFg==
-X-CSE-MsgGUID: k+WRxbJpRkyGRpQ5iPlpgA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11798"; a="80552447"
-X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; 
-   d="scan'208";a="80552447"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 03:19:49 -0700
-X-CSE-ConnectionGUID: P/kSbRE0TmeLP/FasYzuyw==
-X-CSE-MsgGUID: UCM0UYJZRiuEe9MCbJIWXg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; 
-   d="scan'208";a="244016637"
-Received: from klitkey1-mobl1.ger.corp.intel.com (HELO [10.245.245.17]) ([10.245.245.17])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 03:19:47 -0700
-Message-ID: <b3a30dfcf5eb035aca3e7e836b985155c419d9fe.camel@linux.intel.com>
-Subject: Re: [PATCH v3 2/5] drm/xe/guc: Don't ban LR VM exec queues on PM
- suspend
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: Matthew Auld <matthew.auld@intel.com>, intel-xe@lists.freedesktop.org
-Cc: Matthew Brost <matthew.brost@intel.com>, Tomasz Lis
- <tomasz.lis@intel.com>,  Rodrigo Vivi <rodrigo.vivi@intel.com>,
- stable@vger.kernel.org, Francois Dugast <francois.dugast@intel.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Date: Wed, 27 May 2026 12:19:45 +0200
-In-Reply-To: <f0df867c-d4f4-4a9f-b2f0-58d05e5f8926@intel.com>
-References: <20260525133051.91636-1-thomas.hellstrom@linux.intel.com>
-	 <20260525133051.91636-3-thomas.hellstrom@linux.intel.com>
-	 <f0df867c-d4f4-4a9f-b2f0-58d05e5f8926@intel.com>
-Organization: Intel Sweden AB, Registration Number: 556189-6027
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1779877361; c=relaxed/simple;
+	bh=A5ZrJZ5msskZeUdDlpwvS0kq8fwkoOk/WUFKvffPvyo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=U/F0ytGYkrEmvKmARyJ/ctAfckuhd03GUOVf5KjIKOrul9sdSSYi2dM5wcX9Jcf5oAucLeu0KOUV6+BUuVJ2EHriLRbvpyKh9MWXjiKKgCar5SS05hLtox8MnbdlKx8pFXkhSYxjjYi1kqfIzYOGHp+UjAA/8MOfKxWtKbA9kW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=YoQbClp+; arc=none smtp.client-ip=113.46.200.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=RoFyGJlT+p2bOIwf7TkEntk74YXgjg1mDiLO8sRWJvA=;
+	b=YoQbClp+DzFaiN8UzN8hTTtDQuOoF0oTbBhl+Z8SpgLN5+oVkQjPxtqDJogwstLo/rqXZxdgm
+	YqhSjUbbpOxI8jWAeXR9zIgwOpC4kY0/faXHXIaqhSbwrpOyfZFnYswIfhvheXFWuSYAKuBWV5a
+	PMePzLq6O7asUwICgyVz6L8=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4gQQV44ZfyzpStd;
+	Wed, 27 May 2026 18:15:08 +0800 (CST)
+Received: from kwepemj500018.china.huawei.com (unknown [7.202.194.48])
+	by mail.maildlp.com (Postfix) with ESMTPS id C5E6A2025F;
+	Wed, 27 May 2026 18:22:34 +0800 (CST)
+Received: from [10.174.178.79] (10.174.178.79) by
+ kwepemj500018.china.huawei.com (7.202.194.48) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 27 May 2026 18:22:34 +0800
+Message-ID: <b01d1b99-b988-456b-8e6c-ac3868fdb03b@huawei.com>
+Date: Wed, 27 May 2026 18:22:31 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 28/70] mptcp: fix soft lockup in mptcp_recvmsg()
+To: Jiping Ma <jiping.ma2@windriver.com>
+CC: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+	"kuba@kernel.org" <kuba@kernel.org>, "matttbe@kernel.org"
+	<matttbe@kernel.org>, "patches@lists.linux.dev" <patches@lists.linux.dev>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, "weiyongjun (A)"
+	<weiyongjun1@huawei.com>, yuehaibing <yuehaibing@huawei.com>, zhangchangzhong
+	<zhangchangzhong@huawei.com>
+References: <52ea906c-0953-4d2c-98ee-b873ecc6a075@huawei.com>
+ <20260527030537.1305489-1-jiping.ma2@windriver.com>
+From: Li Xiasong <lixiasong1@huawei.com>
+In-Reply-To: <20260527030537.1305489-1-jiping.ma2@windriver.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemj500018.china.huawei.com (7.202.194.48)
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254532-lists,stable=lfdr.de];
-	HAS_ORG_HEADER(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254533-lists,stable=lfdr.de];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
+	DKIM_TRACE(0.00)[huawei.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thomas.hellstrom@linux.intel.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[lixiasong1@huawei.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.intel.com:mid]
-X-Rspamd-Queue-Id: DA1E15E2AAA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,huawei.com:mid,huawei.com:dkim,ubuntu:email]
+X-Rspamd-Queue-Id: C84255E2B09
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, 2026-05-26 at 16:38 +0100, Matthew Auld wrote:
-> On 25/05/2026 14:30, Thomas Hellstr=C3=B6m wrote:
-> > When xe_guc_submit_stop() is called during an S3/S4 suspend or GT
-> > reset, guc_exec_queue_stop() bans any user exec queue that has a
-> > job
-> > which has started but not yet completed.=C2=A0 For normal (non-LR) exec
-> > queues this is the correct behaviour: a started-but-incomplete job
-> > at
-> > reset time may indicate a hung workload.
->=20
-> Is it not too harsh to ban the user job for that? Say you are a well=20
-> behaved 3D workload, and forced suspend is triggered by the user, if
-> you=20
-> are very unlucky you can get banned, if you hit the queue_stop flow
-> with=20
-> a WIP job?
+Hi, Jiping
 
-Actually (and this has bearing also on patch 1, I think) suspend /
-resume must not sit in the critical path of any dma-fence job. Meaning
-we explicitly have to wait for all outstanding dma-fences before
-suspending, and add that if that's not already done.
+On 5/27/2026 11:05 AM, Jiping Ma wrote:
+> Hi, Xiasong
+> 
+> Could you share how to reproduce the issue?
+> I used the following code to reproduce it, and do the test in v6.18.32. but the test results are the same with and without the fix(I revert the commit 58b58b9ba89c43914eea90c18928e51852d10c24).
+> The client task will be waked up after 10 minutes.  There is not soft lockup.
+> 
 
-/Thomas
+Thanks for sharing the reproducer.
 
+Your test program itself looks fine to me, and I can reproduce the issue
+with the reproducer you provided in my test environment.[0]
 
->=20
-> >=20
-> > For exec queues attached to Long Running (LR) VMs the same
-> > condition
-> > is always true during normal operation: LR jobs are designed to run
-> > indefinitely and are never "completed" in the DRM scheduler sense =E2=
-=80=94
-> > they are preempted and resumed via the preempt-fence mechanism.
-> > Banning such an exec queue on PM suspend permanently prevents the
-> > job
-> > from restarting after resume, causing the userspace compute
-> > workload to
-> > fail silently.
-> >=20
-> > Fix this by not banning LR VM exec queues when a system suspend or
-> > hibernation is in progress, while preserving the ban for GT reset
-> > where
-> > a started-but-incomplete job is a legitimate indicator of a hang.
-> >=20
-> > Fixes: f6375fb3aa94 ("drm/xe: Track LR jobs in DRM scheduler
-> > pending list")
-> > Cc: Matthew Brost <matthew.brost@intel.com>
-> > Cc: Tomasz Lis <tomasz.lis@intel.com>
-> > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> > Cc: <stable@vger.kernel.org> # v6.19+
-> > Signed-off-by: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
-> > Assisted-by: GitHub_Copilot:claude-sonnet-4.6
-> > ---
-> > =C2=A0 drivers/gpu/drm/xe/xe_device_types.h |=C2=A0 8 ++++++++
-> > =C2=A0 drivers/gpu/drm/xe/xe_guc_submit.c=C2=A0=C2=A0 | 10 +++++++++-
-> > =C2=A0 drivers/gpu/drm/xe/xe_pm.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 5 ++++-
-> > =C2=A0 3 files changed, 21 insertions(+), 2 deletions(-)
-> >=20
-> > diff --git a/drivers/gpu/drm/xe/xe_device_types.h
-> > b/drivers/gpu/drm/xe/xe_device_types.h
-> > index 32dd2ffbc796..9dbf7b3a0c49 100644
-> > --- a/drivers/gpu/drm/xe/xe_device_types.h
-> > +++ b/drivers/gpu/drm/xe/xe_device_types.h
-> > @@ -433,6 +433,14 @@ struct xe_device {
-> > =C2=A0=C2=A0	struct notifier_block pm_notifier;
-> > =C2=A0=C2=A0	/** @pm_block: Completion to block validating tasks on
-> > suspend / hibernate prepare */
-> > =C2=A0=C2=A0	struct completion pm_block;
-> > +	/**
-> > +	 * @pm_suspend_in_progress: True while the device is going
-> > through
-> > +	 * system suspend or hibernation (set at xe_pm_suspend()
-> > entry, cleared
-> > +	 * at xe_pm_resume() entry or on suspend error). Used to
-> > suppress exec
-> > +	 * queue bans that should only apply during GT reset, not
-> > PM suspend.
-> > +	 * Serialised by the PM suspend sequence; no lock
-> > required.
-> > +	 */
-> > +	bool pm_suspend_in_progress;
-> > =C2=A0=C2=A0	/** @rebind_resume_list: List of wq items to kick on
-> > resume. */
-> > =C2=A0=C2=A0	struct list_head rebind_resume_list;
-> > =C2=A0=C2=A0	/** @rebind_resume_lock: Lock to protect the
-> > rebind_resume_list */
-> > diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c
-> > b/drivers/gpu/drm/xe/xe_guc_submit.c
-> > index 2b8b316c0ca3..f1a6f13011b5 100644
-> > --- a/drivers/gpu/drm/xe/xe_guc_submit.c
-> > +++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-> > @@ -2268,8 +2268,16 @@ static void guc_exec_queue_stop(struct
-> > xe_guc *guc, struct xe_exec_queue *q)
-> > =C2=A0=C2=A0	 * Ban any engine (aside from kernel and engines used for
-> > VM ops) with a
-> > =C2=A0=C2=A0	 * started but not complete job or if a job has gone
-> > through a GT reset
-> > =C2=A0=C2=A0	 * more than twice.
-> > +	 *
-> > +	 * LR VM exec queues are excluded from this ban during PM
-> > suspend: their
-> > +	 * jobs are intentionally long-running and are preempted
-> > and resumed via
-> > +	 * the preempt-fence mechanism. Banning them on PM suspend
-> > would
-> > +	 * permanently prevent the job from restarting after
-> > resume.
-> > +	 * On GT reset however we do want to ban them, as that may
-> > indicate a
-> > +	 * genuinely hung workload.
-> > =C2=A0=C2=A0	 */
-> > -	if (!(q->flags & (EXEC_QUEUE_FLAG_KERNEL |
-> > EXEC_QUEUE_FLAG_VM))) {
-> > +	if (!(q->flags & (EXEC_QUEUE_FLAG_KERNEL |
-> > EXEC_QUEUE_FLAG_VM)) &&
-> > +	=C2=A0=C2=A0=C2=A0 !(q->vm && xe_vm_in_lr_mode(q->vm) && guc_to_xe(gu=
-c)-
-> > >pm_suspend_in_progress)) {
-> > =C2=A0=C2=A0		struct xe_sched_job *job =3D
-> > xe_sched_first_pending_job(sched);
-> > =C2=A0=C2=A0		bool ban =3D false;
-> > =C2=A0=20
-> > diff --git a/drivers/gpu/drm/xe/xe_pm.c
-> > b/drivers/gpu/drm/xe/xe_pm.c
-> > index c203a59d7000..76d211986822 100644
-> > --- a/drivers/gpu/drm/xe/xe_pm.c
-> > +++ b/drivers/gpu/drm/xe/xe_pm.c
-> > @@ -176,6 +176,7 @@ int xe_pm_suspend(struct xe_device *xe)
-> > =C2=A0=C2=A0	int err;
-> > =C2=A0=20
-> > =C2=A0=C2=A0	drm_dbg(&xe->drm, "Suspending device\n");
-> > +	xe->pm_suspend_in_progress =3D true;
-> > =C2=A0=C2=A0	xe_pm_block_begin_signalling();
-> > =C2=A0=C2=A0	trace_xe_pm_suspend(xe, __builtin_return_address(0));
-> > =C2=A0=20
-> > @@ -217,6 +218,7 @@ int xe_pm_suspend(struct xe_device *xe)
-> > =C2=A0=C2=A0	xe_pxp_pm_resume(xe->pxp);
-> > =C2=A0 err:
-> > =C2=A0=C2=A0	drm_dbg(&xe->drm, "Device suspend failed %d\n", err);
-> > +	xe->pm_suspend_in_progress =3D false;
-> > =C2=A0=C2=A0	xe_pm_block_end_signalling();
-> > =C2=A0=C2=A0	return err;
-> > =C2=A0 }
-> > @@ -234,8 +236,9 @@ int xe_pm_resume(struct xe_device *xe)
-> > =C2=A0=C2=A0	u8 id;
-> > =C2=A0=C2=A0	int err;
-> > =C2=A0=20
-> > -	xe_pm_block_begin_signalling();
-> > +	xe->pm_suspend_in_progress =3D false;
-> > =C2=A0=C2=A0	drm_dbg(&xe->drm, "Resuming device\n");
-> > +	xe_pm_block_begin_signalling();
-> > =C2=A0=C2=A0	trace_xe_pm_resume(xe, __builtin_return_address(0));
-> > =C2=A0=20
-> > =C2=A0=C2=A0	for_each_gt(gt, xe, id)
+I think the reproduction result depends on the kernel preemption model.
+The issue is easier to trigger with a non-preemptible kernel
+(e.g. `PREEMPT_NONE`). On other preemption configurations, it may be
+harder to reproduce, but the program can still be observed consuming
+nearly 100% system CPU. So the same test can show different behavior
+under different `CONFIG_PREEMPT*` settings.
+
+Also, if you want to reproduce this on `6.6.y` or `6.12.y`, based on
+the previous analysis, have the sender transmit two packets with an
+interval between them.
+
+Hope this helps.
+
+[0] Relevant dmesg log:
+Linux ubuntu 6.18.32+ #15 SMP PREEMPT_DYNAMIC Wed May 27 15:25:52 CST 2026 x86_64 x86_64 x86_64 GNU/Linux
+root@ubuntu:~# [  960.743413] watchdog: BUG: soft lockup - CPU#5 stuck for 261s! [client:1260]
+[  960.743433] Modules linked in:
+[  960.743463] CPU: 5 UID: 0 PID: 1260 Comm: client Not tainted 6.18.32+ #15 PREEMPT(none)
+[  960.743469] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+[  960.743474] RIP: 0010:_raw_spin_lock_bh+0x1b/0x60
+[  960.743518] Code: 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 65 81 05 d0 a2 a1 01 01 02 00 00 31 c0 ba 01 00 00 00 f0 0f b1 17 <75> 1b 31 c0 31 d2 31 c9 31 f6 31 ff 45 31 c0 45 31 c9 45 31 d2 45
+[  960.743521] RSP: 0018:ffffc9000259fb08 EFLAGS: 00000246
+[  960.743524] RAX: 0000000000000000 RBX: ffff888106efc480 RCX: 0000000000000000
+[  960.743529] RDX: 0000000000000001 RSI: 0000000000000000 RDI: ffff888106efc5c0
+[  960.743531] RBP: ffffc9000259fb68 R08: 0000000000000000 R09: 0000000000000000
+[  960.743533] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
+[  960.743535] R13: ffff888106efc5c0 R14: ffff888106efc528 R15: 0000000000000000
+[  960.743537] FS:  000079482a7b7740(0000) GS:ffff8881b70e7000(0000) knlGS:0000000000000000
+[  960.743540] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  960.743542] CR2: 00005a8d794c3008 CR3: 00000001033ea000 CR4: 00000000000006f0
+[  960.743547] Call Trace:
+[  960.743550]  <TASK>
+[  960.743552]  ? sk_wait_data+0xc2/0x1a0
+[  960.743564]  ? __pfx_woken_wake_function+0x10/0x10
+[  960.743571]  mptcp_recvmsg+0x623/0x9a0
+[  960.743578]  ? __wake_up+0x45/0x70
+[  960.743582]  inet_recvmsg+0x124/0x130
+[  960.743588]  ? apparmor_socket_recvmsg+0x25/0x40
+[  960.743595]  ? security_socket_recvmsg+0x1a9/0x1d0
+[  960.743602]  sock_recvmsg+0xb7/0xc0
+[  960.743608]  __sys_recvfrom+0xd2/0x170
+[  960.743612]  ? ksys_write+0x69/0xf0
+[  960.743618]  ? __x64_sys_write+0x19/0x30
+[  960.743622]  ? x64_sys_call+0x18fc/0x2760
+[  960.743628]  ? do_syscall_64+0xb8/0x1300
+[  960.743635]  ? do_syscall_64+0xb8/0x1300
+[  960.743640]  __x64_sys_recvfrom+0x24/0x40
+[  960.743642]  x64_sys_call+0x2694/0x2760
+[  960.743646]  do_syscall_64+0x80/0x1300
+[  960.743650]  ? count_memcg_events+0xed/0x1e0
+[  960.743655]  ? handle_mm_fault+0x210/0x2f0
+[  960.743661]  ? do_user_addr_fault+0x300/0x8d0
+[  960.743666]  ? irqentry_exit_to_user_mode+0x2e/0x330
+[  960.743670]  ? irqentry_exit+0x43/0x50
+[  960.743672]  ? exc_page_fault+0x93/0x1b0
+[  960.743675]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[  960.743678] RIP: 0033:0x79482a49eba6
+[  960.743691] Code: 00 00 48 8b 15 53 12 17 00 64 89 02 48 c7 c2 ff ff ff ff 48 8b 5d f8 c9 48 89 d0 c3 0f 1f 84 00 00 00 00 00 48 8b 45 10 0f 05 <48> 63 d0 3d 00 f0 ff ff 77 10 48 8b 5d f8 48 89 d0 c9 c3 0f 1f 80
+[  960.743693] RSP: 002b:00007ffd26c7bdc0 EFLAGS: 00000202 ORIG_RAX: 000000000000002d
+[  960.743696] RAX: ffffffffffffffda RBX: 000079482a7b7740 RCX: 000079482a49eba6
+[  960.743698] RDX: 0000000000000400 RSI: 00007ffd26c7be20 RDI: 0000000000000003
+[  960.743699] RBP: 00007ffd26c7bdd0 R08: 0000000000000000 R09: 0000000000000000
+[  960.743701] R10: 0000000000000102 R11: 0000000000000202 R12: 0000000000000001
+[  960.743702] R13: 0000000000000000 R14: 00005a8d75ae6d78 R15: 000079482a806000
+[  960.743707]  </TASK>
+
+> client.c
+> 
+> #include <stdio.h>
+> #include <string.h>
+> #include <unistd.h>
+> #include <sys/socket.h>
+> #include <netinet/in.h>
+> 
+> #define IPPROTO_MPTCP 262
+> #define PORT 9999
+> 
+> int main(void) {
+>     int fd;
+>     struct sockaddr_in addr = {
+>         .sin_family = AF_INET,
+>         .sin_port = htons(PORT),
+>         .sin_addr.s_addr = htonl(INADDR_LOOPBACK),
+>     };
+> 
+>     fd = socket(AF_INET, SOCK_STREAM, IPPROTO_MPTCP);
+>     if (fd < 0) {
+>         perror("socket");
+>         return 1;
+>     }
+> 
+>     if (connect(fd, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
+>         perror("connect");
+>         return 1;
+>     }
+> 
+>     printf("Connected. Calling recv(MSG_PEEK | MSG_WAITALL)...\n");
+>     printf("On vulnerable 6.6 kernel, this will soft lockup a CPU.\n");
+>     printf("Monitor with: dmesg -w\n\n");
+> 
+>     /*
+>      * BUG TRIGGER: MSG_PEEK | MSG_WAITALL
+>      *
+>      * - MSG_PEEK: don't remove skb from receive queue
+>      * - MSG_WAITALL: wait until buffer is full (1024 bytes)
+>      * - Server only sent 512 bytes
+>      *
+>      * Result on vulnerable kernel:
+>      *   sk_wait_data() sees data (512 bytes still in queue due to PEEK)
+>      *   → returns immediately → mptcp_recvmsg loops → never waits
+>      *   → infinite loop → soft lockup
+>      *
+>      * Fix: pass 'last' skb to sk_wait_data() so it knows
+>      *       no NEW data arrived and actually sleeps.
+>      */
+>     char buf[1024];
+>     int ret = recv(fd, buf, sizeof(buf), MSG_PEEK | MSG_WAITALL);
+> 
+>     /* On patched kernel, this eventually returns or times out */
+>     printf("recv returned %d (kernel is patched or not vulnerable)\n", ret);
+> 
+>     close(fd);
+>     return 0;
+> }
+> 
+> server.c
+> 
+> #include <stdio.h>
+> #include <string.h>
+> #include <unistd.h>
+> #include <sys/socket.h>
+> #include <netinet/in.h>
+> 
+> #define IPPROTO_MPTCP 262
+> #define PORT 9999
+> 
+> int main(void) {
+>     int sfd, cfd;
+>     struct sockaddr_in addr = {
+>         .sin_family = AF_INET,
+>         .sin_port = htons(PORT),
+>         .sin_addr.s_addr = htonl(INADDR_LOOPBACK),
+>     };
+> 
+>     sfd = socket(AF_INET, SOCK_STREAM, IPPROTO_MPTCP);
+>     if (sfd < 0) {
+>         perror("socket (try IPPROTO_TCP if MPTCP unavailable)");
+>         return 1;
+>     }
+> 
+>     int opt = 1;
+>     setsockopt(sfd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+>     bind(sfd, (struct sockaddr *)&addr, sizeof(addr));
+>     listen(sfd, 1);
+> 
+>     printf("Server listening on port %d...\n", PORT);
+>     cfd = accept(sfd, NULL, NULL);
+>     printf("Client connected.\n");
+> 
+>     /* Send data so client has something to peek */
+>     char buf[512];
+>     memset(buf, 'A', sizeof(buf));
+>     write(cfd, buf, sizeof(buf));
+>     printf("Sent %zu bytes. Keeping connection open...\n", sizeof(buf));
+> 
+>     /* Keep alive */
+>     sleep(600);
+>     close(cfd);
+>     close(sfd);
+>     return 0;
+> }
+> 
+> Thanks,
+> Jiping
+> 
 
