@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-254576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254577-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GEyvLRriFmpIvAcAu9opvQ
-	(envelope-from <stable+bounces-254576-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 14:22:50 +0200
+	id uIUnBCzhFmo9uQcAu9opvQ
+	(envelope-from <stable+bounces-254577-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 14:18:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5557F5E41D1
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 14:22:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAB565E40A8
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 14:18:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EEDDF30BC7C3
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 12:12:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EDC2D30C535B
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 12:12:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9483E51CB;
-	Wed, 27 May 2026 12:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC953D646C;
+	Wed, 27 May 2026 12:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f53mB16b"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TOWBMXYr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F155C3D47D2;
-	Wed, 27 May 2026 12:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3B33D0916;
+	Wed, 27 May 2026 12:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779883919; cv=none; b=UDFbm4IYposHkTqEb1fnp0IQ+/eYNZok72bSF3DECYB7E6n2+g0tji8aOq1CvakRnS1r/s8QzZBLTVg2P341fAY85nUyNcJJJGeIFIhaa7QdGgExWdenXpqND31cxfuP27UJYdbI1kJjb825MJLdkJZuGs8/BqWyN+f+ByaCLdM=
+	t=1779883924; cv=none; b=hS0++RUQBMnRit2TiMhgXew9Qu6AXA7gWiOP/NziQA7P+KoVlkysh+aw8L1iDq0ECM5i4dHMrtPTE0ohn9bgTaXBOE1MIMI5IdzO0OsaDQSzkUeSiFiriaD8TIqpD8CK3y2a5QPaYbNnWVV3YA9I5YaJRl8pzH6vOT+lqxLOFac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779883919; c=relaxed/simple;
-	bh=DSfJEhyFz5JcQxPtsjcDZYUREpXS5tvUrTCCUgK9eHc=;
+	s=arc-20240116; t=1779883924; c=relaxed/simple;
+	bh=vsTntsTjWJE4HuMZwz55v9CiJmNGj8blvpyMNjyg0ac=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=FqNwubvWl9U3lUEffuITvZ0tAczCa9T0x6WqNIFGH7Rfej1w+02stn1HNXG3569OsOjxUe1eix74l/XQJKPpGJ0z/rl2MSdsX87nbhrl64iwikAoYZcDBMRTwMTQG7lnuaUsKFfTbFZV3WkmNZTRLU7aQ4qQXrx/1aDAHC0IB2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f53mB16b; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 026CF1F00A3A;
-	Wed, 27 May 2026 12:11:52 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=PxJzOLqD7hcVOnpxGZz4qDwvnKlCncwLV6REJc/U4+cQ4fP/wosISCgEYfs3s115Osz4cXXh7/JZYqd1hYc80rOzN57vDThcRQoWBO1/sR4m8VId77f9i5oZLmxo2UooZKmgsoN6NUAV2Se44Fm//1K+gt/wbYCp62MQlkEmMLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TOWBMXYr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8409E1F000E9;
+	Wed, 27 May 2026 12:11:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779883917;
-	bh=zRzHK/ANAnp6BfLWf0jTTE7Q5eI2n1f1hLM1/8Hho94=;
+	s=k20260515; t=1779883923;
+	bh=AYVtaiqiIIDwyxFkeevLwHzRNA/ebS1U0PQqYPct23I=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=f53mB16bC8YEMtmHesBH2XKHorf7penVlBi4suDkvZsQtQ7fA5bANCicXjVjAaCAe
-	 SvOIqd0kPL+0iu3XDqoSEtMCMG0s/p+fXqETfuh6fyb0p/h2MGAyQgPCU5Zz3s/mOG
-	 IWoosGknYxV6kCfy9QoM/tx/KWht0wNEJ2dSOmsq1+7WlBcjoVZGumZ9YgBaWyezcb
-	 /vGoi5gw2FHSa0dEQZYDUoRKIIeBFtptBQI6Q0nt9QVFalzpoMdUHdBbWJhCB8Ld4O
-	 VOvzvm9OxzBYZEkrUBYZ3w7u/Qp0gIYKxfNCeY3cDKlrQJIVnCPT77VGI0vUgwwyTG
-	 YzruRramKAN9g==
+	b=TOWBMXYrcfMHoaIgNw61uoZ1po+MFhmKiHArv6erxu0yNh0YHx96XscYwfB5MuVzv
+	 bK8x0jYbbt733kh1X6IyukqviaMYlDSOQx7tftJYTjYm8Ut3057BifPkPZzVsvPxqE
+	 sRv4FUfhTpfMlEMqh0a7SwJlCoMKRy96Epph3nErX/ocjOiXrrlbDm/EhrSk+hhUuv
+	 DsmW7h9WWXphDd24LPmvBmGuyZPWn5ynYY4jG7uBIyhO4unMs+30DRyxl57h9fAM3x
+	 L+CkKDr7hP3LLykcubazRVJCC7SDkWJwnomO5eDoG5Ae6Gcn1EoATSLW/9hqVtM1pX
+	 HTCh6zysfJWTA==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Wed, 27 May 2026 22:11:35 +1000
-Subject: [PATCH net 2/3] selftests: mptcp: simult_flows: adapt limits
+Date: Wed, 27 May 2026 22:11:36 +1000
+Subject: [PATCH net 3/3] selftests: mptcp: sockopt: set EXIT trap earlier
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260527-net-mptcp-sft-bufferbloat-exit-v1-2-9afc4e742090@kernel.org>
+Message-Id: <20260527-net-mptcp-sft-bufferbloat-exit-v1-3-9afc4e742090@kernel.org>
 References: <20260527-net-mptcp-sft-bufferbloat-exit-v1-0-9afc4e742090@kernel.org>
 In-Reply-To: <20260527-net-mptcp-sft-bufferbloat-exit-v1-0-9afc4e742090@kernel.org>
 To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
@@ -65,121 +65,85 @@ To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
  Florian Westphal <fw@strlen.de>
 Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
  linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org, 
+ Geliang Tang <geliang@kernel.org>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3041; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=DSfJEhyFz5JcQxPtsjcDZYUREpXS5tvUrTCCUgK9eHc=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBqFt99CVOu713yiMuaL+6BxJaQSz9sF+uCy+fbs
- 4082TzsbnOJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCahbffQAKCRD2t4JPQmmg
- czU1EACXtTMh0YELnfDHNS4oZEmKA7k2FCnXZenDMpMjDvnk7c39KLrZz+kMRNBrqvol+Ru/J8X
- wMH6wYKBuobpxrBjdk39WaRxl/9KpYI/V8M3a11Lg33CM/7l8oXzzhdGZkayMUm/Ia5itHHGnRo
- btVDXUkQ3bC2tYtXXEf1cfOpdxRyogu/EKT3XmCMynt7G77nPyOtF0pf7UncxcIBD+0qbqMjIpj
- Q4LDefysLaMY76qKQWSKxgKTV8RPZYz6NJA4F7aEeBUtzTieJin0wenBE9ZTLy0Pveuuppfkl23
- FXAjJTuNWsjFkhWV0IqADmN5vkU5OL4q4V5LZ8Lkh2ykjPT7aG2/Qadxvbly7K9ooFiTUU3GW4w
- NMV/1GVh3RHBD+fLYWvAzoO4qB2hKut4mGgFCurSldfF411xHv+4toypwz9LsQ1GQZTf6FLARva
- 46KvhIoLhGI07nNpL/3WaksXKQh6Vipux7RPuRqbR0wU3VGkyufZUHIYPi/SO4QPOa2yPKXPWv1
- 9FQXCriiRw4/fszc/TmG0l8PCXi/JPkAhzLPOrf2eMlhqzn8J/zW9wcu9Ig4NeYYPyGzkfHEq8I
- B973XXdlGkJ9WFLJnb82kFhFKuEFxWKvV9kH95R7sGglZC43hwDIxdTwgqvbU+6xhZoUGweYg/c
- 7TKoFLrvjCfDQ2w==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1136; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=MK44442Y4GoOT8uW9O86ZnxBnXXBd/Ke3NWWnIJImtc=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBqFt99E/qu5U1ifj1gprAjbginxvFREUDz3f3hK
+ 78XyL3AhOqJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCahbffQAKCRD2t4JPQmmg
+ czKtEADEFBgMs6FTGTPNpqwoO7jrUilBjcXIcShBesy30XjmfeZb+CbXr523TguNfXPiwfn2tr1
+ nxrnUzWvV6PRCu4Ck0yOuJqYuTjo5YJjVXT1zelud76GTyhWXTigyxzCR/+MGczrP58Zm69os1v
+ Cur4zl/JHoicVTwsKFO5mCobRilG5V9YV65guS2+bWH9NSNzM4THeCUicTB2so1ygkuHB5IxJ5h
+ TWfUpGuN175V3rtNO25NBzmz6eYxKRrbaLetLfzUWEXZCF/r6jNqez8cfPCKR8O0T5MirWrDnvW
+ MsoQarIil5HoxeC/FQe3rFn+8U756wccGDevkNmMuaskFX8T41KrLZkDP2jlNahM3frB8CrV3Wo
+ srblLyu+nWpYQvvc1Kt5vS0ZhMTx8Ua47q74WpcWcsgPeWZ6bqAlJWip2nPTFf0lCFGRL8gXwTD
+ +XUiT6iz207wSP48w/s2BRkzjn3bD2t2s4TL4j8wUyZ9kx6/rB+ZYU/6UNdzUgru8HDstlV66iA
+ grmeggt4etcOaQHbe3lGzWs7gGIBGjiEO3HNisYkNt5pBdOPRHz2lO5U+tgxm8WxPTMlBEY9b0A
+ dMFt6ccG8TUsfujXegmfWhcGkeJptr+hy9jLUgujqI/NMytUwJ6Pi0yiuhq6qd9uWSybwn4wqdZ
+ E+tgo2CiTqypcFQ==
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
  fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-254577-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254576-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 5557F5E41D1
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: AAB565E40A8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Avoid using a fixed limit, no matter the setup. This was causing too
-high bufferbloat in some situations, e.g. with a low bandwidth and very
-low delay because the default limit was too high for this case.
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-Instead, use more appropriated limits. Note that unbalanced bandwidth
-modes seem to require slightly higher limits to cope with the different
-bursts.
+Set the EXIT trap for cleanup immediately after creating temporary file
+variables, before init and make_file, to ensure cleanup runs on any
+failure or interruption during the early setup phase.
 
-Fixes: 8c09412e584d ("selftests: mptcp: more stable simult_flows tests")
+Fixes: dc65fe82fb07 ("selftests: mptcp: add packet mark test case")
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/simult_flows.sh | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_sockopt.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/mptcp/simult_flows.sh b/tools/testing/selftests/net/mptcp/simult_flows.sh
-index 345cf200c653..7b9aabe10170 100755
---- a/tools/testing/selftests/net/mptcp/simult_flows.sh
-+++ b/tools/testing/selftests/net/mptcp/simult_flows.sh
-@@ -223,9 +223,11 @@ run_test()
- 	local rate2=$2
- 	local delay1=$3
- 	local delay2=$4
-+	local limit1=$5
-+	local limit2=$6
- 	local lret
- 	local dev
--	shift 4
-+	shift 6
- 	local msg=$*
- 
- 	[ $delay1 -gt 0 ] && delay1="delay ${delay1}ms" || delay1=""
-@@ -240,10 +242,10 @@ run_test()
- 
- 	# keep the queued pkts number low, or the RTT estimator will see
- 	# increasing latency over time.
--	tc -n $ns1 qdisc add dev ns1eth1 root netem rate ${rate1}mbit $delay1 limit 50
--	tc -n $ns1 qdisc add dev ns1eth2 root netem rate ${rate2}mbit $delay2 limit 50
--	tc -n $ns2 qdisc add dev ns2eth1 root netem rate ${rate1}mbit $delay1 limit 50
--	tc -n $ns2 qdisc add dev ns2eth2 root netem rate ${rate2}mbit $delay2 limit 50
-+	tc -n $ns1 qdisc add dev ns1eth1 root netem rate ${rate1}mbit $delay1 limit ${limit1}
-+	tc -n $ns1 qdisc add dev ns1eth2 root netem rate ${rate2}mbit $delay2 limit ${limit2}
-+	tc -n $ns2 qdisc add dev ns2eth1 root netem rate ${rate1}mbit $delay1 limit ${limit1}
-+	tc -n $ns2 qdisc add dev ns2eth2 root netem rate ${rate2}mbit $delay2 limit ${limit2}
- 
- 	# time is measured in ms, account for transfer size, aggregated link speed
- 	# and header overhead (10%)
-@@ -301,13 +303,13 @@ done
- 
- setup
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh b/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh
+index ab8bce06b262..e850a87429b6 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh
+@@ -355,10 +355,10 @@ sin=$(mktemp)
+ sout=$(mktemp)
+ cin=$(mktemp)
+ cout=$(mktemp)
++trap cleanup EXIT
+ init
+ make_file "$cin" "client" 1
+ make_file "$sin" "server" 1
+-trap cleanup EXIT
  mptcp_lib_subtests_last_ts_reset
--run_test 10 10 0 0 "balanced bwidth"
--run_test 10 10 1 25 "balanced bwidth with unbalanced delay"
-+run_test 10 10 0 0  20 20 "balanced bwidth"
-+run_test 10 10 1 25 20 50 "balanced bwidth with unbalanced delay"
  
- # we still need some additional infrastructure to pass the following test-cases
--MPTCP_LIB_SUBTEST_FLAKY=1 run_test 10 3 0 0 "unbalanced bwidth"
--run_test 10 3 1 25 "unbalanced bwidth with unbalanced delay"
--run_test 10 3 25 1 "unbalanced bwidth with opposed, unbalanced delay"
-+MPTCP_LIB_SUBTEST_FLAKY=1 run_test 10 3 0 0  30 20 "unbalanced bwidth"
-+run_test 10 3 1 25 40 30 "unbalanced bwidth with unbalanced delay"
-+run_test 10 3 25 1 50 30 "unbalanced bwidth with opposed, unbalanced delay"
- 
- mptcp_lib_result_print_all_tap
- exit $ret
+ run_tests $ns1 $ns2 10.0.1.1
 
 -- 
 2.53.0
