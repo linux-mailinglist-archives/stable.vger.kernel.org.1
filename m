@@ -1,152 +1,222 @@
-Return-Path: <stable+bounces-254579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254580-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8G7TLAjkFmpIvAcAu9opvQ
-	(envelope-from <stable+bounces-254579-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 14:31:04 +0200
+	id uLgzCwflFmpIvAcAu9opvQ
+	(envelope-from <stable+bounces-254580-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 14:35:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67E625E4359
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 14:31:04 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 962185E43F2
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 14:35:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3E8D2310903C
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 12:25:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 42BDF30080B6
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 12:31:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 571413F786A;
-	Wed, 27 May 2026 12:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B929F3FFADB;
+	Wed, 27 May 2026 12:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=northecho-dev.20251104.gappssmtp.com header.i=@northecho-dev.20251104.gappssmtp.com header.b="RqnP3vL/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L5WLwQUD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C58703F5BDE
-	for <stable@vger.kernel.org>; Wed, 27 May 2026 12:25:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57A3E3EDAD3;
+	Wed, 27 May 2026 12:31:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779884710; cv=none; b=gn3IgVPNZnv4qznBBACeyLhi39K1fDep9fMOTfCvQc3AgAWUHMixypZ7tPu7Kiq+700HNsW484mEmd487zYfCB6I96HoMjGF73FkVQ/fUTcnx+w6nO/x2YqOhrST7v2G3zDpOBJdnGEmwC23WsYXHhXItaqKbmh4FulRTH8IulY=
+	t=1779885079; cv=none; b=mzPiKgGOOa3P3/kdnv1SWAsBNDt0H4esoT++tYPmymuW/ct7HPASMK2D5e6thlRtPjkkuEoMFNQpYAAkEU+wcRdISAyTSKr7khmiWCp6wNkIZGIzmDe9/71UaesSEguI1+KHSrR1XMvUXUJx1pEcRQxLicDh51RqDJpfLXixJ7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779884710; c=relaxed/simple;
-	bh=mjwGIZ2kZHJmgR3R62XVlxDdBSkKuWbIdCvpQcxxNzk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lKATEGYSExb2ziBQvbP7/CVbO3RkqAPozZR0/nQJpZovy75sHdGjlPB3c5YLIDYFmi0S5JHQ56CDsE02CaaOa8M9ElTziZqXRGBrwnAiTqGenziUSXaMn/PCK36jyzGqKQiyjLOCD7K4sCibG5TLnq2uMhYrJb1yr+CJudvnuEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=northecho.dev; spf=none smtp.mailfrom=northecho.dev; dkim=pass (2048-bit key) header.d=northecho-dev.20251104.gappssmtp.com header.i=@northecho-dev.20251104.gappssmtp.com header.b=RqnP3vL/; arc=none smtp.client-ip=209.85.210.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=northecho.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=northecho.dev
-Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-7e615769c67so992354a34.3
-        for <stable@vger.kernel.org>; Wed, 27 May 2026 05:25:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=northecho-dev.20251104.gappssmtp.com; s=20251104; t=1779884708; x=1780489508; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OOs/E8rK/exLB/8Zk3Pk8ZyyhyccLxwjQ0Syjke79QM=;
-        b=RqnP3vL/pYGXLZQpnic5o7jfnMb0U7HkWjm2FQW1jsO01TdtGYcKMy4ZHpcsZb1Ycy
-         jiKy35rI5r2hgx+gAtTC8b3a38Qdaf/JFq1Uof2Yg9qsBjgGVqsouKpZbYNqznCDsc1J
-         jWIrb309XqqfCmy6zcGemXybFEfAdPoiFoKb7D+VsLSKIZ+I1iDwTBKQogpX3pPU88BL
-         Q77sjKCU0oyq4/FXhYplL1k1Qihnnp1VOsBw0ayiIj3imdsDCMlXWVnw/ZDhwL+J1/2l
-         fragFjpF3oxlQYeqPOtB3/jflGJ2qxqQiF4XLSDyAAo+r6KKBVxCtsWnnCt2WJbCGfwl
-         h0pA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779884708; x=1780489508;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=OOs/E8rK/exLB/8Zk3Pk8ZyyhyccLxwjQ0Syjke79QM=;
-        b=cj1rTIbSNeSxmbCzN1NfCVqokhgazQx6FVxURWV22Dy1d3sD15hYcfcsZvSqa5DORV
-         /u/rpFxCj3GJd3jT4EwNfEiMAM24kZ5ozIAWrwMo47yIQAW/gwuwR7nNwPRUF7DwcSXC
-         5tTlObC2b+dmAfvAtFZDN0Vg14Xs4aeaszUW4XbLGLy1uUWRRJraE6M/PwJsEEIRlGqx
-         7At7HxCnX/sLrqBuwHTgAK6PoCXgZe09qGtlFrH0XwmG4G6LM4PJ4ni5u+qhx7E2BnzZ
-         P796CksLd9OAO3A05RmKTRmxTDgytxhBxA5PTj2pWgEUN7U51aqWoHBmeU2O3a+FDr5L
-         DNUw==
-X-Forwarded-Encrypted: i=1; AFNElJ89tSSg+4Aq89j2PyXziOaL1iT1J8ACvLCHTeoQzNuexIjhlkjxfkLPxbZ/vYeFC3HsVxqPfbU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3vP4GxBrq5pL5sNay9ehOoQVrcPDZbRYkP83T+F9PeTEhSAVa
-	eQwHS9xWkLH97QdyJEri5m+iMuBZRW311aDv9ktbmyag5ZiImDvlgwTFC/TAL+tc+0ve
-X-Gm-Gg: Acq92OEd/whsvGvPjLRcCmrSd/KzL2cyqdvKPut6uMxCU5lRFwqzIrcID2PAECL+c2A
-	7Ddzp4YJyQWKYEcHYDeV3mLqHxXPKZFI8UNzXk5HmEquvuPjqkJk3Av/LQGuTvyIqbhw5qlEtPi
-	floXxdvnnsLxDkYcMWpLExrAdR4GSt8pEJhvPq7nXdRcBG94OpdicuShzg+fxe58jYi3E5IQdrM
-	rwS0UX1Ok6JJoFIdArHJFZelM2in53EIb8nK3ZLiZ5gE/DE2HKTWIqFwV6+gzYT6m3UKdx9nOMU
-	6bTSpxRvtVU1uY3yYZEJmMwtxNuedBkesOlaT6/3TqEZuvzt2tMt7ScYGecQcIMtu4o/2aeqnYX
-	J5zKlPIvf1cNV13QBK4x0xsHWQvVD//FvVGAHNZ2dIVE+VBKBc9zFTZCxyAhGbLHojKkkefk90o
-	19ubgraPTgGePs+3BBY1gO/YdZS9u/aoH9MvkRnwT+Mibhwisarc/y4jBxVRD2MORl4YH00xi5p
-	0lLwSEbRfOtdGc=
-X-Received: by 2002:a05:6808:1523:b0:479:f928:44dd with SMTP id 5614622812f47-48549ecff8amr7221156b6e.1.1779884707715;
-        Wed, 27 May 2026 05:25:07 -0700 (PDT)
-Received: from kelso.tail8e61da.ts.net (99-10-92-174.lightspeed.rlghnc.sbcglobal.net. [99.10.92.174])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-485b5f0661bsm1475842b6e.13.2026.05.27.05.25.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 05:25:06 -0700 (PDT)
-From: Christopher Lusk <clusk@northecho.dev>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v3] net: tls: use sync AEAD for sk_msg BPF sockets
-Date: Wed, 27 May 2026 08:24:54 -0400
-Message-ID: <20260527122454.66639-1-clusk@northecho.dev>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260526161101.691d4cb7@kernel.org>
-References: <20260526025154.60607-1-clusk@northecho.dev> <d92bc603-e345-4dee-9ae9-6ad45e4e6642@linux.dev> <20260526161101.691d4cb7@kernel.org>
+	s=arc-20240116; t=1779885079; c=relaxed/simple;
+	bh=9nBU4FPn54w6P/rytsi0a46TUYIybqZtGkHVk9CfJsE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Vl4YZfi2RnUDxSWktc5TCCKFsqLNPBzAqkyxeHfBkQEXRkqhfop6IMzmAU5WdgaR/xXn/riT894S++dh2M5GnOWXzdLnZSaL29Tk3AXkmCr9qAJys0+kpZ9fM53N18GXef4OqW2NdkHoG0dPMbXJYcFSMYQmEX/FadGTsOZmY9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L5WLwQUD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C12D1F000E9;
+	Wed, 27 May 2026 12:31:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779885078;
+	bh=LkTWtOa3FgrmPDUEN+Fn/k8hZETPMbie7Nlo8leDO3Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=L5WLwQUDHmZNjItR67tLSqM5Q3qYtp0cJDOBVp2I4aHjZqKVQDHkst+w2jkiyzZM1
+	 aa47Vd3kcAila2CatWeiY3nJ7Tq8eX5Zv3AeN0+tmxBepzhEgV+DBY5lYJtOROLjox
+	 VmlvDELTs0KogeAZixP7WCW4Y2q1SUdb8gk/XmXJv+j2Rkfq5I5TjXwXPE/i6Tq1G7
+	 z05YwcU88n8d09oacDcGR60X+wbDNwxoHGGhBgx+JDpn5OUgK70PPVIrTJ+TFHRqGn
+	 SuDLLvejX8uFH6adEk5FpCKlKV1yIwk/AJbPrVJBWssh5VcHSUUceYqkVHWuc/Wcb8
+	 s1nVwa7qlqVIA==
+Date: Wed, 27 May 2026 14:31:12 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Jann Horn <jannh@google.com>
+Cc: "Eric W. Biederman" <ebiederm@xmission.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+	Arjan van de Ven <arjan@linux.intel.com>, Jake Edge <jake@lwn.net>, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org, Kees Cook <keescook@chromium.org>, 
+	Oleg Nesterov <oleg@redhat.com>
+Subject: Re: [PATCH 0/2] proc: protect ptrace_may_access() with
+ exec_update_lock
+Message-ID: <20260527-auslosung-checken-gebacken-e3973bd13112@brauner>
+References: <20260518-procfs-lockfix-part1-v1-0-5c3d20e0ac33@google.com>
+ <87ik8b2rh8.fsf@email.froward.int.ebiederm.org>
+ <CAG48ez2pmuoTCZh_AVKDDLeQEYmm=gLMgThnqFhRMFfZvABpdw@mail.gmail.com>
+ <20260527-kuchen-fassbar-hauer-4b6fc31e3395@brauner>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [1.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+In-Reply-To: <20260527-kuchen-fassbar-hauer-4b6fc31e3395@brauner>
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[northecho-dev.20251104.gappssmtp.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	TAGGED_FROM(0.00)[bounces-254579-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linux.dev,gmail.com,queasysnail.net,davemloft.net,google.com,redhat.com,kernel.org,iogearbox.net,vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[northecho.dev];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[clusk@northecho.dev,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[northecho-dev.20251104.gappssmtp.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254580-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.988];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[brauner@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[northecho-dev.20251104.gappssmtp.com:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 67E625E4359
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,xmission.com:email]
+X-Rspamd-Queue-Id: 962185E43F2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, 26 May 2026 16:11:01 -0700 Jakub Kicinski wrote:
-> module params aren't a great API. If we want to deprecate it let's just
-> remove the integration in net-next. You have my vote..
+On Wed, May 27, 2026 at 02:01:51PM +0200, Christian Brauner wrote:
+> On Tue, May 26, 2026 at 08:22:38PM +0200, Jann Horn wrote:
+> > On Mon, May 25, 2026 at 9:56 PM Eric W. Biederman <ebiederm@xmission.com> wrote:
+> > > I have added a couple more people who might be interested.
+> > >
+> > > Kees Cook because as you have structured this it is an exec problem.
+> > >
+> > > Oleg Nesterov as he is knowledgable about ptrace.
+> > >
+> > > Jann Horn <jannh@google.com> writes:
+> > >
+> > > > My understanding is that procfs is effectively maintained by the VFS
+> > > > maintainers (though scripts/get_maintainer.pl claims that there are
+> > > > no maintainers for procfs because the VFS entry only claims files
+> > > > directly in fs/, and the procfs entry has no maintainers listed on
+> > > > it).
+> > > >
+> > > > In procfs, most uses of ptrace_may_access() should use
+> > > > exec_update_lock to avoid TOCTOU issues with concurrent privileged
+> > > > execve() (like setuid binary execution).
+> > > >
+> > > > This series doesn't fix all the remaining issues in procfs, but it fixes
+> > > > the easy cases for now; I will probably follow up with fixes for the
+> > > > gnarlier cases later unless someone else wants to do that.
+> > > >
+> > > > I have checked that procfs files still work with these changes and that
+> > > > CONFIG_PROVE_LOCKING=y doesn't generate any warnings.
+> > > >
+> > > > (checkpatch complains about missing argument names in
+> > > > proc_op::proc_get_link, but that was already the case before my
+> > > > patch.)
+> > >
+> > >
+> > > I think I finally have my context paged back in so I can intelligently
+> > > say something about this series.
+> > >
+> > > The scenario you are worried about is when exec gains privileges,
+> > > and we read through proc and authenticate with the old credentials
+> > > instead of the new credentials.
+> > >
+> > > Question 1.
+> > >
+> > > Assuming the executable is world readable (which they generally are)
+> > > is there anything that becomes accessible in that race that was
+> > > not already accessible?
+> > 
+> > I believe so - the gnarliest example I am thinking of is:
+> > Memfds are always mode 0777 or 0666 (see __shmem_file_setup, which
+> > sets S_IRWXUGO), so their access control is purely based on being able
+> > to pathwalk to the memfd's inode. If you can race
+> > open(/proc/$pid/fd/$n) with the process $pid going through setuid
+> > execution and calling memfd_create(), you should be able to get
+> > read+write access to the memfd created by the setuid binary that was
+> > supposed to be private.
+> > 
+> > (But I have not tested that and don't know if there are actually any
+> > setuid binaries that happen to use memfds.)
+> > 
+> > > Question 2.
+> > >
+> > > How does this race compare to racing with setresuid?
+> > > Do we need to fix the setresuid case as well?
+> > 
+> > Which setresuid case? setresuid clears the dumpable flag and has a
+> > memory barrier that is supposed to make that properly ordered against
+> > ptrace_may_access(); so setresuid() should normally not cause a task
+> > to become traceable, though that could maybe happen in weird
+> > scenarios.
+> > 
+> > I think another case we should probably care about is what happens if
+> > a process which is only protected against ptrace by being non-dumpable
+> > goes through execve() - it shouldn't be possible to access resources
+> > associated with the pre-execve state while checking against the
+> > post-execve dumpability. It might be important for this that the
+> > do_close_on_exec() logic currently happens after committing the
+> > dumpable state in exec_mmap()...
+> > 
+> > > Question 3.
+> > > Do we care about the case when a privileged process calls a setuid
+> > > process and drops privileges?
+> > 
+> > I don't understand the question. Hmm - do you mean a case where a
+> > process with ruid=1000, euid=0, suid=1000 does execve() on a setuid
+> > 1000 binary? I think we probably don't specifically care about that...
+> > 
+> > I think another scenario that we ideally might want to care about is
+> > what happens if a process which runs with a normal user's UIDs, but is
+> > non-dumpable, goes through execve() of a normal binary while another
+> > process tries to inspect its FDs or address space layout - it probably
+> > shouldn't be possible to get information about the pre-execve MM and
+> > O_CLOEXEC file descriptors.
+> > 
+> > > Question 4.
+> > > Is it possible to use a seq_lock instead of reader writer semaphore?
+> > > Or is that only for non-sleeping readers?
+> > 
+> > Linux seqcounts are 32-bit, which means they are always kind of dodgy,
+> > but they are particularly dodgy if a reader can be forced to sleep for
+> > an extended amount of time. I don't see a reason why we couldn't, in
+> > general, use a 64-bit sequence count for readers that may need to
+> > sleep while reading.
+> 
+> I have a patch series for this that I started working after merging your
+> series for precisely this reason: performance. It's a few days old now.
+> I've tried various approaches and I started with a simple 32-bit counter
+> as the POC. See appended (untested) patches.
 
-Happy to draft the net-next removal series if that's useful.  Let
-me know the scope you'd like (sk_msg verdict path in tls_sw.c +
-the sockmap-attach side + selftest cleanup; or a wider sweep),
-and whether the stable trees should get a narrower fix as a
-separate backport for the 4.20+ tail.
+In a bunch of cases we know that the critical section the callers cares
+about just is very small: creds + mm. So in that case it is easy to
+switch the credential computation into a prepare stage and a commit
+stage and then the targeted critical section just becomes:
+task->signal->seq_mm++ + task->cred = new_cred + task->mm = mm +
+task->active_mm = mm + task->signal->seq_mm--. And then the reader
+doesn't need to sleep at all and can just spin on the seqcount for the
+small window they need.
 
-Christopher
+I wasn't convinced it was valuable to use a fine-grained/multi-seqcount
+approach though.
 
