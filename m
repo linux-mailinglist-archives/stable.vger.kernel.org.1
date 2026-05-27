@@ -1,70 +1,69 @@
-Return-Path: <stable+bounces-254543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254544-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6LitLgjRFmowsgcAu9opvQ
-	(envelope-from <stable+bounces-254543-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 13:10:00 +0200
+	id mH7+NSrRFmowsgcAu9opvQ
+	(envelope-from <stable+bounces-254544-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 13:10:34 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CEA75E320F
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 13:10:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 540475E323C
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 13:10:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BAF683069C01
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 11:08:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5C7AD3076A73
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 11:08:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB8273F4DD0;
-	Wed, 27 May 2026 11:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969463F23A2;
+	Wed, 27 May 2026 11:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="tEbf/UHL"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="O7x1pt+A"
 X-Original-To: stable@vger.kernel.org
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C9C23F4111;
-	Wed, 27 May 2026 11:07:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E470F3F4111;
+	Wed, 27 May 2026 11:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779880062; cv=none; b=Nv/4sKrNdXfBpqxl0TPFnphZfbDjtbUizYuaUT54iySaXFVjVi9zj7eAWLDxUm5bAZQiLOZDfsrlDz3ygEkWj5xkO7A1JC0IfsRLGOLjwZmbk/dcBTatsMeqNELodC+h+6rnyoXZFgaUV6MKkwRdWB0XU5ffZu3juuQ4YpAoNao=
+	t=1779880067; cv=none; b=MXUmwnGpvRqiUkJA+zt0K1Ni2ifGE4lttFiY5nfcvnnCFtYj8Nfw8dAaoc/yY5GKvUoOTWHgAsoK6GG1Tc49HRzwG4Xx93mYVcqhMhlAsHZod5CZjHF8VJz4s+wPFygrh/wCY5EsKIut8Wclz+nOi4W8WyqTOLg1X2+llG0O5SA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779880062; c=relaxed/simple;
-	bh=nN9+zsfRheHiwR0iNWCgcstHm1IznAMW4+4pvqexfH0=;
+	s=arc-20240116; t=1779880067; c=relaxed/simple;
+	bh=4p1nOK1AL01zVsZFng11HLuCgzoGQIn2GfQDSRycJVc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=svPEjRqScADleS4m+pCucoqCKSOoTNGgitJG3kZqiHWZsuH3E3keWmC+4fQcrDsoz3AJhybBDvCjPNdDPv1lFvCRCQJg5HlCMbQ6zb2LkvjI5F8V9v+t24T/+vYmpD5zwco6aw08wQ8GVCULtx4LGu0Qae/cRu9HdVYUvy+LeSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=tEbf/UHL; arc=none smtp.client-ip=68.232.153.233
+	 In-Reply-To:To:CC; b=Ks3PBIanbAseBK51mWyFs126roobdS/t9QV7kFhSAYF5jA31yckApGaDVJ3xyIMYdcm9F+PKPF72QpNfSZn/RXbr2vIGLKxnH5+DVBoQkEnR5Y4CtESLeIgWPOC8R0fZFr5rogAFwksyb39TEKDjwaCEaIjvDJfwX99eXw3gDos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=O7x1pt+A; arc=none smtp.client-ip=68.232.153.233
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1779880061; x=1811416061;
+  t=1779880066; x=1811416066;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=nN9+zsfRheHiwR0iNWCgcstHm1IznAMW4+4pvqexfH0=;
-  b=tEbf/UHLGu+cbddBrs3HdAtTPGStfCF3BldA78haL9nJwNi8Tt1IR1aZ
-   Tr0A64FHLxhAL2YmTAkFYmQnePJafbSg/8Ws8dFwJa523NDppfffwuJoP
-   OrO81JmgdFUf0YJ6AAjUWAR8Y4Lum9D1skNmxPdyzGr9rDh36fdjiIhHU
-   mOGHu9JcmLiYaP+x3bAupWqG/CoBZLQUmBKKlGJBQWpiyNzrZwSPqfC54
-   QlGDF31xVbHP0mnJ352iFiFw5MWUDD6Ai+v0E+bW0ryGdowsNdxQlI79w
-   /+QOhWNFloFr0akZG5efutmdPTFGtVnAM9w22NkMiJz2zz/yhABExtM3r
-   w==;
-X-CSE-ConnectionGUID: 3z9xbcEeTsOTnYxEXs0bdg==
-X-CSE-MsgGUID: R9ZdlWdFQ8y1OwvuWZyL5w==
+  bh=4p1nOK1AL01zVsZFng11HLuCgzoGQIn2GfQDSRycJVc=;
+  b=O7x1pt+AGUAI7NGU+EDgrfyNapPCS6dvnJ7v3bdbEQBrVbvPKzDjbTVd
+   cnYxQA9/D0GuOl07H+8jSZsm62GWeO4rHh5GKYBqTyX36/egOvXrwAxfK
+   H7QlNjEU/r5iXNHyxxTP8oj71pWdus8yloLdMQC5U8M3qnLi95qZscqXN
+   SBDZr6Cn1Xw2WOupnY0LLhj2Cg0sh7zvGDRh6tbXIaB+2E88uVNf8CkaC
+   p7+XvIvcJvC/IHssETNfAu3RVhNqi8wzcy10P4vtGyAM01T6qK8QxsCIF
+   fFJNMxi/UJ5hL3QQYkF2Ugs4qzM5JUtZGWjsRhXcH1TZOVB5C6hn0W/09
+   g==;
+X-CSE-ConnectionGUID: O0EhRf+aT1q32V+UXNzCkg==
+X-CSE-MsgGUID: m1eQuSuiRlGAVYJwcBKfVg==
 X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; 
-   d="scan'208";a="66995036"
+   d="scan'208";a="58112117"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 27 May 2026 04:07:40 -0700
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 27 May 2026 04:07:45 -0700
 Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
  chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Wed, 27 May 2026 04:07:40 -0700
+ 15.1.2507.58; Wed, 27 May 2026 04:07:44 -0700
 Received: from [127.0.0.1] (10.10.85.11) by chn-vm-ex02.mchp-main.com
  (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Wed, 27 May 2026 04:07:36 -0700
+ Transport; Wed, 27 May 2026 04:07:40 -0700
 From: Balakrishnan Sambath <balakrishnan.s@microchip.com>
-Date: Wed, 27 May 2026 16:37:20 +0530
-Subject: [PATCH v5 04/12] media: microchip-isc: fix PM runtime leak in AWB
- work handler
+Date: Wed, 27 May 2026 16:37:21 +0530
+Subject: [PATCH v5 05/12] media: microchip-isc: add driver documentation
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,7 +72,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20260527-microchip-isc-fixes-v5-4-b0ec1bb954be@microchip.com>
+Message-ID: <20260527-microchip-isc-fixes-v5-5-b0ec1bb954be@microchip.com>
 References: <20260527-microchip-isc-fixes-v5-0-b0ec1bb954be@microchip.com>
 In-Reply-To: <20260527-microchip-isc-fixes-v5-0-b0ec1bb954be@microchip.com>
 To: Eugen Hristev <ehristev@kernel.org>, Mauro Carvalho Chehab
@@ -95,7 +94,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-254543-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-254544-lists,stable=lfdr.de];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[microchip.com:+];
@@ -111,42 +110,119 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,microchip.com:email,microchip.com:mid,microchip.com:dkim]
-X-Rspamd-Queue-Id: 4CEA75E320F
+X-Rspamd-Queue-Id: 540475E323C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Early return when streaming stops skips pm_runtime_put_sync(),
-leaking the reference and preventing runtime suspend.
+Document the driver topology, supported formats, controls, the AWB
+algorithm, the gamma table layout, and the Microchip-specific custom
+controls exposed via atmel-isc-media.h.
 
-Fixes: 91b4e487b0c6 ("media: microchip: add ISC driver as Microchip ISC")
-Cc: stable@vger.kernel.org
 Signed-off-by: Balakrishnan Sambath <balakrishnan.s@microchip.com>
-Reviewed-by: Eugen Hristev <ehristev@kernel.org>
 ---
- drivers/media/platform/microchip/microchip-isc-base.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../userspace-api/media/drivers/index.rst          |  1 +
+ .../userspace-api/media/drivers/microchip-isc.rst  | 68 ++++++++++++++++++++++
+ MAINTAINERS                                        |  1 +
+ 3 files changed, 70 insertions(+)
 
-diff --git a/drivers/media/platform/microchip/microchip-isc-base.c b/drivers/media/platform/microchip/microchip-isc-base.c
-index b19c5a63b4bd..f61a5d5a3e04 100644
---- a/drivers/media/platform/microchip/microchip-isc-base.c
-+++ b/drivers/media/platform/microchip/microchip-isc-base.c
-@@ -1429,7 +1429,7 @@ static void isc_awb_work(struct work_struct *w)
- 	/* streaming is not active anymore */
- 	if (isc->stop) {
- 		mutex_unlock(&isc->awb_mutex);
--		return;
-+		goto out_pm_put;
- 	}
- 
- 	isc_update_profile(isc);
-@@ -1440,6 +1440,7 @@ static void isc_awb_work(struct work_struct *w)
- 	if (ctrls->awb)
- 		regmap_write(regmap, ISC_CTRLEN, ISC_CTRL_HISREQ);
- 
-+out_pm_put:
- 	pm_runtime_put_sync(isc->dev);
- }
- 
+diff --git a/Documentation/userspace-api/media/drivers/index.rst b/Documentation/userspace-api/media/drivers/index.rst
+index 02967c9b18d6..65ef6ba3523e 100644
+--- a/Documentation/userspace-api/media/drivers/index.rst
++++ b/Documentation/userspace-api/media/drivers/index.rst
+@@ -34,6 +34,7 @@ For more details see the file COPYING in the source distribution of Linux.
+ 	imx-uapi
+ 	mali-c55
+ 	max2175
++	microchip-isc
+ 	npcm-video
+ 	omap3isp-uapi
+ 	thp7312
+diff --git a/Documentation/userspace-api/media/drivers/microchip-isc.rst b/Documentation/userspace-api/media/drivers/microchip-isc.rst
+new file mode 100644
+index 000000000000..7272ccec0169
+--- /dev/null
++++ b/Documentation/userspace-api/media/drivers/microchip-isc.rst
+@@ -0,0 +1,68 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++Microchip ISC/XISC Driver
++=========================
++
++The Image Sensor Controller (ISC) on SAMA5D2 and eXtended ISC (XISC) on
++SAMA7G5/SAM9X7 provide camera capture with hardware image processing.
++
++Supported Hardware
++------------------
++
++==========  ==========  ==============  ================  ===============
++SoC         Controller  Max Resolution  Interface         Hue/Saturation
++==========  ==========  ==============  ================  ===============
++SAMA5D2     ISC         2592x1944       12-bit parallel   No
++SAMA7G5     XISC        3264x2464       12-bit + CSI-2    Yes
++SAM9X7      XISC        2560x1920       12-bit + CSI-2    Yes
++==========  ==========  ==============  ================  ===============
++
++SAM9X7 shares the XISC pipeline with SAMA7G5 but has a smaller internal
++line buffer, limiting horizontal resolution to 2560 pixels.
++
++Controls
++--------
++
++Standard V4L2 controls:
++
++* ``V4L2_CID_BRIGHTNESS``: -1024..1023, default 0
++* ``V4L2_CID_CONTRAST``: -2048..2047, default 256 (1.0x)
++* ``V4L2_CID_GAMMA``: 0..2 selects a preset curve. Indices differ
++  per SoC: SAMA7G5/SAM9X7 use 0=1/2.4, 1=1/2.2 (default), 2=1/1.8;
++  SAMA5D2 uses 0=1/1.8, 1=1/2.0, 2=1/2.2 (default).
++* ``V4L2_CID_AUTO_WHITE_BALANCE``: Enable kernel Grey World AWB
++* ``V4L2_CID_DO_WHITE_BALANCE``: Trigger one-shot AWB
++
++SAMA7G5/SAM9X7 add:
++
++* ``V4L2_CID_HUE``: -180..180 degrees
++* ``V4L2_CID_SATURATION``: 0..127, default 16 (Q4 fixed-point, 16 = 1.0x)
++
++Custom controls (defined in ``atmel-isc-media.h``):
++
++* ``ISC_CID_R_GAIN``, ``ISC_CID_B_GAIN``, ``ISC_CID_GR_GAIN``,
++  ``ISC_CID_GB_GAIN``: WB gains, 0..8191, Q2.9 (512 = 1.0x)
++* ``ISC_CID_R_OFFSET``, ``ISC_CID_B_OFFSET``, ``ISC_CID_GR_OFFSET``,
++  ``ISC_CID_GB_OFFSET``: WB offsets, -4096..4095
++
++Pipeline
++--------
++
++Pipeline modules: DPC -> WB -> CFA -> CC -> GAM -> CBHS/CBC -> CSC -> SUB
++
++* DPC: Defective Pixel Correction (XISC only), black level subtraction
++  to sensor bit depth, green disparity correction
++* WB: White Balance gains/offsets
++* CFA: Color Filter Array interpolation (demosaic)
++* CC: Color Correction matrix
++* GAM: Gamma correction (preset)
++* CBHS: Contrast/Brightness/Hue/Saturation (XISC only)
++* CBC: Contrast/Brightness (ISC only)
++* CSC: Color Space Conversion (RGB to YCbCr)
++* SUB: Chroma subsampling (4:2:2, 4:2:0)
++
++Pipeline usage depends on input and output formats:
++
++* Raw Bayer input, RGB output: DPC, WB, CFA, CC, GAM
++* Raw Bayer input, YUV output: Full pipeline including CSC, CBHS/CBC, SUB
++* Non-RAW input (YUV/RGB sensor): Pipeline bypassed
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e08767323763..d4aa7e86e2bd 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -17057,6 +17057,7 @@ L:	linux-media@vger.kernel.org
+ S:	Supported
+ F:	Documentation/devicetree/bindings/media/atmel,isc.yaml
+ F:	Documentation/devicetree/bindings/media/microchip,xisc.yaml
++F:	Documentation/userspace-api/media/drivers/microchip-isc.rst
+ F:	drivers/media/platform/microchip/microchip-isc*
+ F:	drivers/media/platform/microchip/microchip-sama*-isc*
+ F:	drivers/staging/media/deprecated/atmel/atmel-isc*
 
 -- 
 2.34.1
