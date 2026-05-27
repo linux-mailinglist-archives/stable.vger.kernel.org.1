@@ -1,159 +1,181 @@
-Return-Path: <stable+bounces-254489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254492-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wBCQOpCJFmounQcAu9opvQ
-	(envelope-from <stable+bounces-254489-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 08:05:04 +0200
+	id AFGsKnyQFmrqnQcAu9opvQ
+	(envelope-from <stable+bounces-254492-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 08:34:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AB4B5DFA71
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 08:05:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9414C5DFE55
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 08:34:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 13ADF3033D3D
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 06:05:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D640730FE983
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 06:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37974283FDC;
-	Wed, 27 May 2026 06:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E9A4367B7F;
+	Wed, 27 May 2026 06:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S+ifHbzU"
+	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="l4nHIwon"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp134-24.sina.com.cn (smtp134-24.sina.com.cn [180.149.134.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED255288D0
-	for <stable@vger.kernel.org>; Wed, 27 May 2026 06:04:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72956346795
+	for <stable@vger.kernel.org>; Wed, 27 May 2026 06:25:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.149.134.24
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779861900; cv=none; b=KB+v8vkYHJdKavPMdWtHYFH7lgLlRUqfyCOPcyaaZc2G6shPo1Jv0d1cuMayOYQAESGeMhBeqzzR/hRmhLy8y8Z5ZXHhEfWkZotl0yBPrKz/F2E9XxAGlPPk3eK2OociwPIbFUpjOho/m/A/cKRLyiAeA0HKFbzTjUfmYm8wCL8=
+	t=1779863118; cv=none; b=upffIzHApaAPXb8EOyPl2NqL1vdRJqYeQI75c9XhL5uc4stQfHRBjb1Vta1FfytT9Go3Lc3ncmNzRedrtBOE/6Jokfb6i/2WvimWNdkEuPxFTexjghkQcw0vgiI5V861+QTlgfTjsh7BHiU58bbrDQ77uxyS/r2ifnnybf8301U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779861900; c=relaxed/simple;
-	bh=44dQ0Q0TXtC8v4rQyhZChD2//RdSKE5Oy1yNpvzYbRM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QOU441U4tm6QH1zRwMw4rx2Gi9CMC2oxwg4y7IVB0l5liRLnLTHZpSgls3wtL7NOXRIiJTJBpe2FiQakPCs0hSklY+GUUnaun5m5DBzv7WN4M5pmOttamf6O1CblnyaefCwqir7ZJfFH0R1vVJspIA+CHKuGFR0jZMzL4apaW5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S+ifHbzU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D111F000E9
-	for <stable@vger.kernel.org>; Wed, 27 May 2026 06:04:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779861898;
-	bh=vU21y0SHIUC3cwSTRp3cyIqWh6U++lSJj5SFMbybo8s=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=S+ifHbzUmIOr+lzuAsL76dhOFNLokxqTns3dnCJjYZaUJyNrTYZhHW2pMvCK30hBx
-	 AD2Gr6o+9qQeYAK30TgQUY+t009I/8Jj+JUzb5giAiLSUFYviHET/KjG4rk4hy+uhv
-	 QB6kKh9sPbI6Yt99aJnky8tiHG6VydaWHdZA0PFDu0IQuc62yOSEV9sTQR4t2fZnir
-	 iyFZGRgt9KyPoOfOg/c4s+K0YyPBqv5JD5FYehmUUekPj+GYIVkz6AwfrmUrU+qMGN
-	 oYs07bPW9pnPDaMhQv5cWJM7b258L8Z4gmTXltdQfXyLE4khPZdDVlcBeBhvYPUbLd
-	 cgSBNruWdyRjA==
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5a8891f0c51so11400081e87.1
-        for <stable@vger.kernel.org>; Tue, 26 May 2026 23:04:58 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/dTZqOGbFTglm70yXVWiW64k0sVPwcCE20gxqb00c+t7RCX4BKNKG2cyCLA9/w8gLzDK9hiAU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIXxnZ9JujM/UwGuPWRaEVAGCYMHybfdnuD1+8JF27qBvY+i12
-	ET493UchIP91hYP9PkmOCtAe1fkKhUzMmKcwT5o0gO7NckDfKudqr4jLHtZwyG95k83PCcKqoYg
-	KMmV3H7XmSW2j5GqxGgtKE0qzVbi6wX0=
-X-Received: by 2002:a05:6512:114c:b0:5a8:ee4b:7011 with SMTP id
- 2adb3069b0e04-5aa323707efmr7257719e87.17.1779861897086; Tue, 26 May 2026
- 23:04:57 -0700 (PDT)
+	s=arc-20240116; t=1779863118; c=relaxed/simple;
+	bh=v3FvirLMTzIowH+sk9YeMlRZ6Xk1NGaiUV8kiiXj6ck=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YL9lbVecMhmyPrNYC0DZVNMafdjTEsPWdO7BlrbAnqf2QrAZr0o4ogmVljwu9EotAqe/fDDnlC0ZgR0cCpNoe5zYgLsBTeWqprJYu24KV1HH+NwjhbyGK0jTpwD96l2HUnlA4u36uLp/ML4r0UUVAoCBlj4PlntmbJEEgsdsd1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=l4nHIwon; arc=none smtp.client-ip=180.149.134.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1779863108;
+	bh=12PR9PWOizZM4zDXqd1Sv3pdVkgOOhc9DR371nViGmU=;
+	h=From:Subject:Date:Message-Id;
+	b=l4nHIwon9S/n2VG8yxchX5+jrPjeBUFuUvtfjYuM00RVBi9mvZYJmBDWfyzYdqzHo
+	 9EfRqgjrv3atu5UV8aeGqbJT1Qs4OB3T/zdGhRqEt0ExZM3ede3nFRQHAqprOM9AXV
+	 SCrd1DWzt4b7go6s9zcpky45Fvs4R5UDzB8LkGLk=
+X-SMAIL-HELO: NTT-kernel-dev
+Received: from unknown (HELO NTT-kernel-dev)([60.247.85.88])
+	by sina.cn (10.185.250.21) with ESMTP
+	id 6A168CF6000035DD; Wed, 27 May 2026 14:19:39 +0800 (CST)
+X-Sender: jianqkang@sina.cn
+X-Auth-ID: jianqkang@sina.cn
+Authentication-Results: sina.cn;
+	 spf=none smtp.mailfrom=jianqkang@sina.cn;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=jianqkang@sina.cn
+X-SMAIL-MID: 6041043408497
+X-SMAIL-UIID: 90C1CF8D460341559EDBB1606F92CBDC-20260527-141939-1
+From: Jianqiang kang <jianqkang@sina.cn>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	adrian.hunter@intel.com
+Cc: patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	alexandre.belloni@bootlin.com,
+	Frank.Li@nxp.com,
+	sashal@kernel.org,
+	billy_tsai@aspeedtech.com,
+	npitre@baylibre.com,
+	boris.brezillon@collabora.com,
+	linux-i3c@lists.infradead.org
+Subject: [PATCH 6.12.y] i3c: mipi-i3c-hci: Correct RING_CTRL_ABORT handling in DMA dequeue
+Date: Wed, 27 May 2026 14:19:33 +0800
+Message-Id: <20260527061933.3612126-1-jianqkang@sina.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260326190346.415226-1-lucid_duck@justthetip.ca>
-In-Reply-To: <20260326190346.415226-1-lucid_duck@justthetip.ca>
-From: Sean Wang <sean.wang@kernel.org>
-Date: Wed, 27 May 2026 01:04:45 -0500
-X-Gmail-Original-Message-ID: <CAGp9Lzo4p6=a1rjpGrNPb8Ttk8R25e0WAgP-D_mNEFfytfW6Tg@mail.gmail.com>
-X-Gm-Features: AVHnY4ITbiyF4hU0cSqL4c0GJRlAxhTxxdLEs7nBxxlGfRFFyanpVtA0JdWqcLE
-Message-ID: <CAGp9Lzo4p6=a1rjpGrNPb8Ttk8R25e0WAgP-D_mNEFfytfW6Tg@mail.gmail.com>
-Subject: Re: [PATCH wireless-next] wifi: mt76: mt7925: add Netgear A8500 USB
- device ID
-To: Lucid Duck <lucid_duck@justthetip.ca>
-Cc: nbd@nbd.name, lorenzo.bianconi@redhat.com, sean.wang@mediatek.com, 
-	linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	morrownr@gmail.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[sina.cn,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[sina.cn:s=201208];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FREEMAIL_CC(0.00)[nbd.name,redhat.com,mediatek.com,vger.kernel.org,lists.infradead.org,gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-254492-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254489-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[jianqkang@sina.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[sina.cn:+];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 4AB4B5DFA71
+	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_FROM(0.00)[sina.cn];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,msgid.link:url,intel.com:email,sina.cn:email,sina.cn:mid,sina.cn:dkim,nxp.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 9414C5DFE55
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Devin,
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-On Thu, Mar 26, 2026 at 2:07=E2=80=AFPM Lucid Duck <lucid_duck@justthetip.c=
-a> wrote:
->
-> Add USB device ID for the Netgear A8500 (0846:9050) which uses
-> the mt7925 chipset.
->
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Lucid Duck <lucid_duck@justthetip.ca>
+[ Upstream commit b795e68bf3073d67bebbb5a44d93f49efc5b8cc7 ]
 
-Sorry for the late reply.
+The logic used to abort the DMA ring contains several flaws:
 
-I ran checkpatch.pl on the patch and got the following warning:
+ 1. The driver unconditionally issues a ring abort even when the ring has
+    already stopped.
+ 2. The completion used to wait for abort completion is never
+    re-initialized, resulting in incorrect wait behavior.
+ 3. The abort sequence unintentionally clears RING_CTRL_ENABLE, which
+    resets hardware ring pointers and disrupts the controller state.
+ 4. If the ring is already stopped, the abort operation should be
+    considered successful without attempting further action.
 
-WARNING: The commit message has 'stable@', perhaps it also needs a 'Fixes:'=
- tag?
+Fix the abort handling by checking whether the ring is running before
+issuing an abort, re-initializing the completion when needed, ensuring that
+RING_CTRL_ENABLE remains asserted during abort, and treating an already
+stopped ring as a successful condition.
 
-Could you please send a v2 that drops the Cc: stable tag and uses:
-Signed-off-by: Devin Wittmayer <lucid_duck@justthetip.ca>
+Fixes: 9ad9a52cce282 ("i3c/master: introduce the mipi-i3c-hci driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20260306072451.11131-9-adrian.hunter@intel.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
+---
+ drivers/i3c/master/mipi-i3c-hci/dma.c | 27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
-to keep it consistent with the other patches you sent?
+diff --git a/drivers/i3c/master/mipi-i3c-hci/dma.c b/drivers/i3c/master/mipi-i3c-hci/dma.c
+index b9496e8c4784..44461f13b54c 100644
+--- a/drivers/i3c/master/mipi-i3c-hci/dma.c
++++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
+@@ -457,16 +457,23 @@ static bool hci_dma_dequeue_xfer(struct i3c_hci *hci,
+ 	struct hci_rh_data *rh = &rings->headers[xfer_list[0].ring_number];
+ 	unsigned int i;
+ 	bool did_unqueue = false;
+-
+-	/* stop the ring */
+-	rh_reg_write(RING_CONTROL, RING_CTRL_ABORT);
+-	if (wait_for_completion_timeout(&rh->op_done, HZ) == 0) {
+-		/*
+-		 * We're deep in it if ever this condition is ever met.
+-		 * Hardware might still be writing to memory, etc.
+-		 */
+-		dev_crit(&hci->master.dev, "unable to abort the ring\n");
+-		WARN_ON(1);
++	u32 ring_status;
++
++	ring_status = rh_reg_read(RING_STATUS);
++	if (ring_status & RING_STATUS_RUNNING) {
++		/* stop the ring */
++		reinit_completion(&rh->op_done);
++		rh_reg_write(RING_CONTROL, RING_CTRL_ENABLE | RING_CTRL_ABORT);
++		wait_for_completion_timeout(&rh->op_done, HZ);
++		ring_status = rh_reg_read(RING_STATUS);
++		if (ring_status & RING_STATUS_RUNNING) {
++			/*
++			 * We're deep in it if ever this condition is ever met.
++			 * Hardware might still be writing to memory, etc.
++			 */
++			dev_crit(&hci->master.dev, "unable to abort the ring\n");
++			WARN_ON(1);
++		}
+ 	}
+ 
+ 	for (i = 0; i < n; i++) {
+-- 
+2.34.1
 
-Thanks.
-
-> ---
->  drivers/net/wireless/mediatek/mt76/mt7925/usb.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/usb.c b/drivers/ne=
-t/wireless/mediatek/mt76/mt7925/usb.c
-> index d9968f038..e44f0cafd 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7925/usb.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/usb.c
-> @@ -12,6 +12,9 @@
->  static const struct usb_device_id mt7925u_device_table[] =3D {
->         { USB_DEVICE_AND_INTERFACE_INFO(0x0e8d, 0x7925, 0xff, 0xff, 0xff)=
-,
->                 .driver_info =3D (kernel_ulong_t)MT7925_FIRMWARE_WM },
-> +       /* Netgear, Inc. A8500 */
-> +       { USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9050, 0xff, 0xff, 0xff)=
-,
-> +               .driver_info =3D (kernel_ulong_t)MT7925_FIRMWARE_WM },
->         /* Netgear, Inc. A9000 */
->         { USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9072, 0xff, 0xff, 0xff)=
-,
->                 .driver_info =3D (kernel_ulong_t)MT7925_FIRMWARE_WM },
-> --
-> 2.53.0
->
->
 
