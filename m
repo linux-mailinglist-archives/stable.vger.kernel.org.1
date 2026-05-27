@@ -1,82 +1,82 @@
-Return-Path: <stable+bounces-254663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254662-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2OPVLINLF2r0/wcAu9opvQ
-	(envelope-from <stable+bounces-254663-lists+stable=lfdr.de@vger.kernel.org>)
+	id 2NKtBoNLF2r7AAgAu9opvQ
+	(envelope-from <stable+bounces-254662-lists+stable=lfdr.de@vger.kernel.org>)
 	for <lists+stable@lfdr.de>; Wed, 27 May 2026 21:52:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C2305E9BB3
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 21:52:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 862D15E9BAC
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 21:52:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D7D39311B253
+	by sea.lore.kernel.org (Postfix) with ESMTP id CE986311A294
 	for <lists+stable@lfdr.de>; Wed, 27 May 2026 19:48:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C54A13B19B4;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8FE03B1EE4;
 	Wed, 27 May 2026 19:48:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eVFU/fEQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kwjNyyNm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D373B0AF8
-	for <stable@vger.kernel.org>; Wed, 27 May 2026 19:48:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9353B19B6
+	for <stable@vger.kernel.org>; Wed, 27 May 2026 19:48:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779911302; cv=none; b=Zi/xlkjhTt9YueCdHuVtCXjCYFS0xMWAahdG7wV/ZPWeIqHg4hCjYVB+qsGgq9RR3H7+dPTE0zqyQyt1onGsucHfMISIs8sMNRs9YuK2zwuo8iCOXYyeyCLFy6kcdmAUKxHqR/rpX2IcNhCR6+AFopLgixUJnukcewxBW4lKDh0=
+	t=1779911302; cv=none; b=F+nOi2Z830t43OQf+mockRQCjGFR+E4c6NCeeFFd80nd0u+bB3odyB6fcrRVPMuOJ9SBGFW3jRS3yQrjfDSuvutkm0/8sTaam6Xlm8QWO5rDheKPEiOhg7WXXpdv/7vreh87dp0o4B5bRIMJpntJbVZJ9Y45VS+5oK1TjtkY6bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779911302; c=relaxed/simple;
-	bh=I53hd6CWTc3R94gXD+1qGG83yFt3BgYNnue52JOpibA=;
+	bh=uNozSP0l8kkWDkzSOJfeL5dVpUS6xiLbgNu4M8nx/E0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K9IpkcxqFbgtEa9aTz70zLnMmQS2mmkO4o0nalY1ztv/cPU9rQpK3W0zHmRJqB0qPfA6g64irRUvKN6SQuuUs0aS4/2SbF6f3OfTwmhGPtguVqosrS29N2ii/4JPfjZ2TrU1uHVC+kE7N9tO/V/uG79mjrE4HydZnnPDSWpgE3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eVFU/fEQ; arc=none smtp.client-ip=209.85.222.181
+	 MIME-Version; b=gCmnlXG/AJEZFeOZIR/FlQxnn5Y/17bmoulgsQWoJpEp5PHSg/WcKuMgTS1UtfC51AzPbqDnX003eO9ImN4CiyUI1eSKUTcYh+jDcSfqm24w8zs5xL8HXlR572tN+2Pg59Cbvg39bCFObAC7gA2Dy738XKrLQTDNXW7Pzx0Zhmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kwjNyyNm; arc=none smtp.client-ip=209.85.222.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-911449d9d03so1360711485a.1
-        for <stable@vger.kernel.org>; Wed, 27 May 2026 12:48:19 -0700 (PDT)
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-914db83362aso399983785a.1
+        for <stable@vger.kernel.org>; Wed, 27 May 2026 12:48:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779911299; x=1780516099; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1779911300; x=1780516100; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PvwC2v7tf0bP6Dcjl3lKTCXZwlNlpqu4CB+86cy9Tlo=;
-        b=eVFU/fEQPAp0ZdXRZjGxp829SgOYsKhhyBzp3VQBI8jySwgmIR1tA9zRrGRYKKdfOn
-         YGCxwfyj+fwsw4R1JUNuFz4uYo05WlITufcQfx77Wo6EiGtwqup36/r41J46/rDAcriO
-         OyjRpaWSHnQ7HradsvDffiMbWHhGbrWfuNXXP39Rtg+TwL5Fv8Wt70W3qrEa+61OeUnB
-         N1NHYeNg+6GmfvGn3icrc3lHaDWdSeAwxmWXRr9B78NDdqLKcaBXn7/Gu7YS8a/pN2A9
-         nLiZ4UgjOuS9wPqEx+jHfWLHu/Ow1HSdKLrUraWp3nNu/cu4+jPmnq3s8mnXSk/mBloQ
-         EAPQ==
+        bh=DzZhwVxQtOTxpPSV3ALvJKs3yCJTXAKgHjmBscK7oNc=;
+        b=kwjNyyNm7NSJr05BtTghuEWIGyCXiQzkQBYeLthAMBu+sRjxORQgxPG0MWWdbdmSyM
+         9gLVUN74jD0QG33osD9ilHrJOlNc1mBtblJpDJI7ZDqcnV3wjlecuQBYFAELqO0nC/qI
+         bo7X2GZ+af8+uFp183LVXcnMWK/Q4TahtdCznOLMYNIAFvq7zedjSf8rgtSf51Badyfd
+         8tO/qO/zUDVZEtQvy6BgZGFRr4xrvfkppEYr0RVwxyKnC7hNA3U60ah2ebNeXKoAXCKx
+         Y3vhVWR3DNWrB3L5dR6nmWszMqX4d7KMj1aLq0xdxkGJCMKLAaWWhB1fNOGyF2achZKO
+         xyzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779911299; x=1780516099;
+        d=1e100.net; s=20251104; t=1779911300; x=1780516100;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=PvwC2v7tf0bP6Dcjl3lKTCXZwlNlpqu4CB+86cy9Tlo=;
-        b=cHV46DT00qSyDf/Oe71gpE4Fpm7pomEzwWr5bClzMkAE0miRdvsP4CnzeHpTwTuZ3h
-         ycuGJVErXbEGqkJy6PjJWSNwBE3fJkBy4s5yfQ2WcXwRoJ41GrDEo9lXpA/kiUqxkBKx
-         wvpd+SNdrvIuibCss3CIMORxACs+R6hJJ+YlwppCEDtdTIKQJ2gaX7jw7DS9kqFOxZGP
-         7/RgSU/LIEnVzr3gLBZ4Cso9hXDVgOPcwEWzvNzMNcvhaABPOYPQmEpmpmnKYS0JnL9V
-         rl0Wr2Cjgl5/ny9tmoR03kh6ybV+f7kfOWlizZGxpzxOOjawrqPbFwbVEYHd2UX+OHHc
-         YASA==
-X-Forwarded-Encrypted: i=1; AFNElJ/5Q7yU3casDS5+Y3h70kgf1LzP7TSotVaL70SGou+uajFq9F7LNrlynyMVjPgWJGZ9Kye2ngw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTTPtLm6wcRs84hJcAxuCmOTnhh4Y+qMp8lOEvBMWfqefpkmEJ
-	v1+fg6pebOIo7tZ02UyEtLVzz9oJ1lUOe8td37ni4gUppURWw07asHDmvfADepZfVWA=
-X-Gm-Gg: Acq92OF6Q5D9U3W9kzTYb2nrOLFu3jPxffaUCvvfmbjYMwUysEo5/3jBYHTfpvNA1x7
-	kbFBEXgWiocYHkOfUiIPG+K6kQKs9dawVG5rb5K6+tIdrbcbNZkb1ukw6as+fhI9RaAYiiDE9bq
-	YCRCIqAcjVAqZKcy2XiuB8mCPH2vBApAk4lu58lpBnAB9oXERrmrO9xq8M4fi4JqpXtaw08QebP
-	vw6n4wqx5iVbF8sBkhYjJF42o05avXC6WqBrpSQTACD7NTXhQ54Xj2iTs6mQVA+pwKqhskcm1C2
-	VH41BvBjRwsASHchaTZ9UtzNQQBJ8BvpuE3HvGzV2Gtwx2W8yiCHQbIGk1hcHNI7dSiuwn4Q4tW
-	1F4a+O8r249sRwRoS6cX1VJDUNa6KrB0FVYZ0Fa6Fvh5gDfJStwRowxWjoiXD/zTzO1EYbSX4Kj
-	eZ6y4mYMrD2+lCAaBk9lphqlzTSmeYZBHhRtW8TnKq3BdLqkdw5ghTVbQAOBCerP76qQNmrJyNu
-	LzOk1iai+K6Ru+vxqXbssF36md9HHiNbGXuPxLvdMbybpC5h0PlaQ==
-X-Received: by 2002:a05:620a:2b45:b0:914:da39:eadb with SMTP id af79cd13be357-914da39ee49mr2225042385a.12.1779911298765;
-        Wed, 27 May 2026 12:48:18 -0700 (PDT)
+        bh=DzZhwVxQtOTxpPSV3ALvJKs3yCJTXAKgHjmBscK7oNc=;
+        b=Rl6s5vJcAI0ItMWpgdUrNLJLyWo8f0Ub/2G+tsqM6vRgr/kyM0YH9/d3eD8o8mbS7k
+         82z4u867OXJLqQ3vHr4emPCvr9+B54YvhYdpPPt0MnrxJg8zmwy5skwXIGjhxumG5ooS
+         KX7AkiacaQzE3qSgZOVwFxSI3gblrDQB1jytjljhz/KVLcfItd/TuendPIgfWo7mSXxf
+         aUOh8oPhKRBiXw4kuyWOOr6D6Wsn+3SFtOpzfC7ouYgOZzz+L2eyhhDZfdOUy+VSoFoy
+         kX2hXJ2d8DLEa6RxAqHb4xx7m0lLFGpUngcyDDstfGEtzD366fe0/y+IUyGiHH/A0AMQ
+         NuhQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/dAYQlUuy32oZPhlnN7HaDSHEn/hOa77uX3f3SzmWD1VzYVQj20HWbDH7Js2mmu3YIyeoLGoM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxfrmh+aO4O9b1YI4Xd/Tvke9ilOgoUpH7LyNO6gFcat/BPszui
+	CkoGmyWSSbwHv5OrthHBPWq1Saw1KZCT6UymIf0M/kzJs4gW49qwma2+
+X-Gm-Gg: Acq92OGHM3ez+2bFw/hpWSPhvqU20tuwL8a/3trinG00e+t7K50yL2l/ZYK/drKKvnd
+	WOxmW8G3r5Zi08ygAudSdN4faj1///oZlny2FeRHIl00FKP9EiuXp2OcqgREvEHREch7TmBu5l7
+	VbsBAZ0YPOe+nlOqrQrUR6w6gXCH85Pc79ImLccgq7t5hkGVJodSC98WzaYXfTwPzwLBQt6hbAu
+	SnXecWYgtnXV4doYKuHkGVF/EsdALy4q3AUDGxvPK1QxBQAWfP1+uSsSQPFqmalv6AF2oLnO/ZZ
+	n+1sWLS6wQ6w0Mg0aGBymY0bGlFpxz1+xfUstaQDYzDFjBjeAz57TjUZwI4bAkA9eka8+/JzVJb
+	aXB8UL2n6btt6ZDep21GTAaAEhO4ZBzGYJs6VTwgOk6bLZOCtC735oI0Va1hgbki2ysUGipfVeZ
+	bCKLATy+3BxVzgzJJllq/hrrh6zgSZB3lc8mZuf/b0tHY1m/VgQ20OXYQaBRTtQPjibxIYQJ5DM
+	RPNwYkOecHmYGryXxRNXXqTd5tkTh0r2dG0FmW3FlEsXuJ7sjYwf1D+duHO5R4i
+X-Received: by 2002:a05:620a:462c:b0:910:f8b4:8614 with SMTP id af79cd13be357-914b51668bdmr3081086285a.31.1779911300034;
+        Wed, 27 May 2026 12:48:20 -0700 (PDT)
 Received: from server0.tail6e7dd.ts.net (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-914f87017a0sm564942385a.15.2026.05.27.12.48.17
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-914f87017a0sm564942385a.15.2026.05.27.12.48.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 12:48:18 -0700 (PDT)
+        Wed, 27 May 2026 12:48:19 -0700 (PDT)
 From: Michael Bommarito <michael.bommarito@gmail.com>
 To: Detlev Casanova <detlev.casanova@collabora.com>,
 	Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
@@ -89,9 +89,9 @@ Cc: Hans Verkuil <hverkuil@kernel.org>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH v2 2/3] media: v4l2-ctrls: validate HEVC EXT SPS RPS counts
-Date: Wed, 27 May 2026 15:47:36 -0400
-Message-ID: <20260527194737.1999409-3-michael.bommarito@gmail.com>
+Subject: [PATCH v2 3/3] media: rkvdec: hevc: guard INTER_REF_PIC_SET_PRED index underflow
+Date: Wed, 27 May 2026 15:47:37 -0400
+Message-ID: <20260527194737.1999409-4-michael.bommarito@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260527194737.1999409-1-michael.bommarito@gmail.com>
 References: <20260513181922.2075438-1-michael.bommarito@gmail.com>
@@ -107,12 +107,12 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_FROM(0.00)[bounces-254663-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-254662-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -124,25 +124,27 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 4C2305E9BB3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,collabora.com:email]
+X-Rspamd-Queue-Id: 862D15E9BAC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The HEVC SPS control carries the short-term and long-term RPS counts
-that decoder drivers use to walk the matching EXT SPS dynamic arrays.
-Reject SPS values that exceed the HEVC limits of 64 short-term sets and
-32 long-term references so drivers cannot later index beyond those
-controls.
+st_ref_pic_set_prediction() computes the reference RPS index as
+st_rps_idx - (delta_idx_minus1 + 1) per HEVC spec equation 7-59.
+Both operands are u8, so when delta_idx_minus1 + 1 exceeds the
+current index the subtraction wraps and the subsequent array access
+at calculated_rps_st_sets[ref_rps_idx] reads far out of bounds.
 
-Also reject EXT SPS ST RPS entries whose negative or positive picture
-counts exceed the 16-entry arrays, or whose combined delta-POC count
-exceeds the HEVC DPB maximum.
+A userspace V4L2 client that can open the RKVDEC m2m decoder can
+submit an EXT_SPS_ST_RPS control with INTER_REF_PIC_SET_PRED set
+and delta_idx_minus1 crafted to trigger the underflow.
+
+Reject the entry early when the reference index would underflow.
 
 Fixes: c9a59dc2acc7 ("media: rkvdec: Add HEVC support for the VDPU381 variant")
 Cc: stable@vger.kernel.org
@@ -150,56 +152,23 @@ Suggested-by: Detlev Casanova <detlev.casanova@collabora.com>
 Assisted-by: Claude:claude-opus-4-7
 Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
 ---
- drivers/media/v4l2-core/v4l2-ctrls-core.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/media/platform/rockchip/rkvdec/rkvdec-hevc-common.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/media/v4l2-core/v4l2-ctrls-core.c b/drivers/media/v4l2-core/v4l2-ctrls-core.c
-index 6b375720e395c..a1d773e5de20c 100644
---- a/drivers/media/v4l2-core/v4l2-ctrls-core.c
-+++ b/drivers/media/v4l2-core/v4l2-ctrls-core.c
-@@ -16,6 +16,9 @@
+diff --git a/drivers/media/platform/rockchip/rkvdec/rkvdec-hevc-common.c b/drivers/media/platform/rockchip/rkvdec/rkvdec-hevc-common.c
+index 3119f3bc9f98b..898d1ce74f38a 100644
+--- a/drivers/media/platform/rockchip/rkvdec/rkvdec-hevc-common.c
++++ b/drivers/media/platform/rockchip/rkvdec/rkvdec-hevc-common.c
+@@ -268,6 +268,9 @@ static void st_ref_pic_set_prediction(struct rkvdec_hevc_run *run, int idx,
+ 	int i, j;
+ 	int dPoc;
  
- static const union v4l2_ctrl_ptr ptr_null;
- 
-+#define V4L2_HEVC_MAX_SHORT_TERM_REF_PIC_SETS	64
-+#define V4L2_HEVC_MAX_LONG_TERM_REF_PICS_SPS	32
++	if ((unsigned int)rps_data->delta_idx_minus1 + 1 > idx)
++		return;
 +
- static void fill_event(struct v4l2_event *ev, struct v4l2_ctrl *ctrl,
- 		       u32 changes)
- {
-@@ -1213,6 +1216,10 @@ static int std_validate_compound(const struct v4l2_ctrl *ctrl, u32 idx,
- 	case V4L2_CTRL_TYPE_HEVC_SPS:
- 		p_hevc_sps = p;
- 
-+		if (p_hevc_sps->num_short_term_ref_pic_sets >
-+		    V4L2_HEVC_MAX_SHORT_TERM_REF_PIC_SETS)
-+			return -EINVAL;
-+
- 		if (!(p_hevc_sps->flags & V4L2_HEVC_SPS_FLAG_PCM_ENABLED)) {
- 			p_hevc_sps->pcm_sample_bit_depth_luma_minus1 = 0;
- 			p_hevc_sps->pcm_sample_bit_depth_chroma_minus1 = 0;
-@@ -1223,6 +1230,9 @@ static int std_validate_compound(const struct v4l2_ctrl *ctrl, u32 idx,
- 		if (!(p_hevc_sps->flags &
- 		      V4L2_HEVC_SPS_FLAG_LONG_TERM_REF_PICS_PRESENT))
- 			p_hevc_sps->num_long_term_ref_pics_sps = 0;
-+		else if (p_hevc_sps->num_long_term_ref_pics_sps >
-+			 V4L2_HEVC_MAX_LONG_TERM_REF_PICS_SPS)
-+			return -EINVAL;
- 		break;
- 
- 	case V4L2_CTRL_TYPE_HEVC_PPS:
-@@ -1267,6 +1277,11 @@ static int std_validate_compound(const struct v4l2_ctrl *ctrl, u32 idx,
- 
- 		if (p_hevc_st_rps->flags & ~V4L2_HEVC_EXT_SPS_ST_RPS_FLAG_INTER_REF_PIC_SET_PRED)
- 			return -EINVAL;
-+		if (p_hevc_st_rps->num_negative_pics > 16 ||
-+		    p_hevc_st_rps->num_positive_pics > 16 ||
-+		    p_hevc_st_rps->num_negative_pics +
-+		    p_hevc_st_rps->num_positive_pics > 16)
-+			return -EINVAL;
- 		break;
- 
- 	case V4L2_CTRL_TYPE_HEVC_EXT_SPS_LT_RPS:
+ 	ref_rps_idx = st_rps_idx - (rps_data->delta_idx_minus1 + 1); /* 7-59 */
+ 	delta_rps = (1 - 2 * rps_data->delta_rps_sign) *
+ 		   (rps_data->abs_delta_rps_minus1 + 1); /* 7-60 */
 -- 
 2.53.0
 
