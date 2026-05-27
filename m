@@ -1,175 +1,213 @@
-Return-Path: <stable+bounces-254500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254501-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wGKEF7CfFmqBnwcAu9opvQ
-	(envelope-from <stable+bounces-254500-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 09:39:28 +0200
+	id QIRFCs2kFmoOoAcAu9opvQ
+	(envelope-from <stable+bounces-254501-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 10:01:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F6A75E08C5
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 09:39:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77F355E0C61
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 10:01:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4BEC1300AD9C
-	for <lists+stable@lfdr.de>; Wed, 27 May 2026 07:39:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5139D306518A
+	for <lists+stable@lfdr.de>; Wed, 27 May 2026 07:59:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA4323C945B;
-	Wed, 27 May 2026 07:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9714D3CE4A7;
+	Wed, 27 May 2026 07:59:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jjverkuil.nl header.i=@jjverkuil.nl header.b="VC5NaRch"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LawSnM1f"
 X-Original-To: stable@vger.kernel.org
-Received: from outbound.soverin.net (outbound.soverin.net [185.233.34.18])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053DD221723;
-	Wed, 27 May 2026 07:39:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.233.34.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4BE83CE0B8
+	for <stable@vger.kernel.org>; Wed, 27 May 2026 07:59:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779867550; cv=none; b=I82A2HF/MYBsxEccBHSJsJwbBuipbae4md9i/J0FOP7EZHwe1JJhG0G9fYxWl/T81MoLBNxKeA+WUjcviE2vOudwVoZ762VvEWIgdeDbOMraKy7x2FYfMU4J+lAKw+ShC5UkyOoSP+cVXobvSnBNz7wSJ3UISRsI6FBSs9/7M7U=
+	t=1779868774; cv=none; b=e1CMiiXO0CQWbBkcGhojnekMD6vX98qRoc3t8JZJmlvCPUKutgRtw1L351qpge4cqgpOSnC7t8XrgXOVDW/0irPTR8A7UINXxcMIloQgYENmDxHVtda9cTP9wG9ss7ZXIqCZIdLSaecrAjKw83OxTK1dbqjDZOMZhgC9PmhdDcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779867550; c=relaxed/simple;
-	bh=bS4me3VHd0oux3Vn0ftSpX0EIhEiAOzXWyNcuhDwpGc=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=abll7/zRh+etkFXM/5Zya0bTo6b+Mo9HYC3exu+Kw15HXytG13Y1HobhCuB4VMiq5JDRycuaRhpKfa7tuRN7ZpAJ2/JqJlUa7xV1gSuj1BJYEu/r7++6P34jhJ2pocYCRI6K8qi30cK2WM1E8Wubg4Ns4xAWdGiCg8/tRJ6uHPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=jjverkuil.nl; spf=pass smtp.mailfrom=jjverkuil.nl; dkim=pass (2048-bit key) header.d=jjverkuil.nl header.i=@jjverkuil.nl header.b=VC5NaRch; arc=none smtp.client-ip=185.233.34.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=jjverkuil.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jjverkuil.nl
-Received: from smtp.freedom.nl (unknown [10.10.4.107])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by outbound.soverin.net (Postfix) with ESMTPS id 4gQM1r6Gh8z1MdM;
-	Wed, 27 May 2026 07:38:56 +0000 (UTC)
-Received: from smtp.freedom.nl (smtp.freedom.nl [10.10.4.107]) by freedom.nl (Postfix) with ESMTPSA id 4gQM1q5Dwdz4M;
-	Wed, 27 May 2026 07:38:55 +0000 (UTC)
-Authentication-Results: smtp.freedom.nl;
-	dkim=pass (2048-bit key; unprotected) header.d=jjverkuil.nl header.i=@jjverkuil.nl header.a=rsa-sha256 header.s=soverin1 header.b=VC5NaRch;
-	dkim-atps=neutral
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jjverkuil.nl;
-	s=soverin1; t=1779867536;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=m7oBvJJHP9myU8RCuLTP4WJXbyCN3Ps/B/utCRjtg0E=;
-	b=VC5NaRch94XY/G/XilJKJnml9Av/mJXto5QSps/+kmKydvGo+r8CFji6UhuvtLEvFteeZj
-	VSFfdmtj+TQTbnmBq8aBWnAmAq8iaynJ7rJVU+lT4wpjMiPxqRKQAVXxUMqewt9ZJoLpME
-	aP+RniYzhkWff11KBgMCiuQgI3M7jY848dbaaPuGyP5t78HR482k9djrdI46YTZY83c7Pe
-	uHyC6VkHKVtmNU0CN5fnbHt9btSYuiZiLUX/wB8R43Vz6/oPb+DAbUIW0EaK7uRYqxLAeu
-	0qIy1tycT3fDx9C9cujYVeWjhHHMsTga4C7ZoB0SZ9OKMtiVS1bmXr8dkIKeOA==
-X-CM-Envelope: MS4xfLTCSg6FcNICcs4FaBwqXSgyY5Biws8MIu8XEBixWQ99TN6hg/93gCGmKE1/S50nyhZGN0kTnXeGJTvSHDfgleQUuH8vQ8zZiuWo8a5PXqZzIp5x1aXg n/HZy+9MJ/s2PCvn8OFkfnDZTJ6GJlQGUj90cc4umYqaEJXrHhBpPWmzvBEr6z8FWcjLHueZO8IXOZ2R4letovD4cN9LI50fR5FiRtPoFf2jb1Icnk+rFiwi sRX+w9qrujCkNWy+QPHRsdVe1/zr1rjypPTUG/EaizoZb8h8ThVQqSNb5c2SLFH0yQf8f4e2prWpSsclqDAii+H666nz/+s5KTs11tKZeVfqFwrUIHxzCoJ/ A1pCYu/x2l0Kfbp39HcArc81klbfkeUj+OBniJT5D4yC+ydiM7k=
-X-Soverin-Id: 019e685f-4a80-7206-bb05-79e009b2d40a
-Message-ID: <bc33bb80-6e21-4870-82c8-6d4714127a90@jjverkuil.nl>
-Date: Wed, 27 May 2026 09:38:09 +0200
+	s=arc-20240116; t=1779868774; c=relaxed/simple;
+	bh=oJWJrp+hfd9LJvMDqawW72LsBMSm3eITaNs27jH29x0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Xa8a13CNfRyC8sDKPQFaIoxJglADATPWdrGmLozKfBoVbUI9UAxLG43prKSchdGmqfBkF08bPHYQOLoLR3jl5RJw3w2S0R+GUYNQPQnxcC8D7439PmHZ3gJopAjOE9edErCWNx9MervGD5IJTbFqjvZilkA9QSLtdy5KF9YDJWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LawSnM1f; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3697c35eab7so6946601a91.0
+        for <stable@vger.kernel.org>; Wed, 27 May 2026 00:59:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779868771; x=1780473571; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XASDqBX1HWl6sXU3qoflGCtvXLQG0oc8mDyz90ZpDuo=;
+        b=LawSnM1f4MR2FClxmaMPApL+y134am5xo+3k0mA7hDkCSzlQJu6rX6cpC2MVYIXvND
+         Ks0poI/nDvYKYVajwxaFlXbZLMQcMbIF8tVA4A+QBWJ7XSibzGhd2aUn54/cnbe6jSS3
+         1hYHa+5/lV9CEKxP8hZX+dSpLNxqAEAJ5eTo08DXQj1rDfrvFUzAreGvEXEzbGYQu+74
+         eEyTlARUu5dyd5+sytnMdfqOt2W5Zmrm8JzPSxdI/acUCvt+2SCd4U5QgSIxjO2zYsQD
+         6rBVx12/hqDXN5SotOGomOHTNBsFAJPwlvehrOJJDYY0bleelW+t8xwHNHW83EMSZ9pP
+         XcYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779868771; x=1780473571;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=XASDqBX1HWl6sXU3qoflGCtvXLQG0oc8mDyz90ZpDuo=;
+        b=KCmkSX4+iheo/JiV2coCvCAH5vcZ9/vWjoOwzxCsCwgGZlsMFzYJw8/oMatcNNMDsh
+         EUiFUA4sMP9PUAAF5k/+hukT7Fqn7d19+ZSPBHvED9g4batM7Lphjj9fwpPUkqh5Qo2A
+         zA3nlX73CilNYpzW2d+uDvX7ObEpM7wGYPh5vQv6evBjVFvbQVjSl0aBHlx8XjAiWZUv
+         EwEuHg71d45CyVUu/29eHp9aBqPTZLQdE0OF+cNjGGlusPSn54bQUhEpr8j5yVgg8JsK
+         5zj2qXCMWnaw2FjS2BePgWLdcWZRo7Q7Hlx0mShL/TvqVxRtE7mBUw+X98cqbDhQJ7Kb
+         DS1g==
+X-Forwarded-Encrypted: i=1; AFNElJ+PFzAHwvJXU3Xkg3xm/q8Us4MnjUYUpD/lVV3sj50m+XJjbZV3nPx4PAUUjnyC2vp+NGd7iE8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTQ89qVD/HUupxJBSjEUEBT2FXCPJJCLAAyFMQQCrR9TYn6QDC
+	x+SuX+wsZKGDNGLLdTr0xrWiLUM5AL6UBZJfTTAjbAJ89MNbKzm1anm4
+X-Gm-Gg: Acq92OHoRZswiVDLlHQSzEEFvmds+QBsr/lnUUvuSl2+2eCq1hfRcp8euPki7GJomq2
+	XjX2AnuxcICwlWvxz3BITR+WhwAsVfvNpVQA2E3IKjboGfZ99eI9X7ndaPlxohAc3ezPzAXY4kF
+	2tU0fhsjf0tHVjH4SBdCLQ/QWlvHNqQYpbUkhmo7eYXwPdSxFOQPFOyFbhh/Gfn2TFrj6LnVrPx
+	kh0bHFXR0FMs6ovq168JBEMJ06pn5cQWHND6LGQBZpzwupZJV+6zC1TLCmP6hGjWH33yYEMSwt+
+	7TpIthWtPF6DFb6jARH5lq5Yg6AtEbzSbXGzIVw698M1nBsyax4EjUS+oM+9hatDNyEem6NfYW5
+	HfD33Xr07nW5gtQSFiSd8wXzMcMFaZnKWsrvRUjUvBK8Qjm+59Q0WCmN0TwZs64gyFOOCUzYXhn
+	/tKFnJUsmLbk48s4NAqjnzuMZLZMnIXdnlOeUShpvuSafiB31m
+X-Received: by 2002:a17:903:2b0e:b0:2bd:a403:4ab8 with SMTP id d9443c01a7336-2beb06319ffmr244207735ad.25.1779868770897;
+        Wed, 27 May 2026 00:59:30 -0700 (PDT)
+Received: from csl-conti-dell7858.ntu.edu.sg ([155.69.195.57])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb5695f54sm149937405ad.10.2026.05.27.00.59.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 May 2026 00:59:30 -0700 (PDT)
+From: Maoyi Xie <maoyixie.tju@gmail.com>
+To: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: Fernando Fernandez Mancera <fmancera@suse.de>,
+	Jan Vaclav <jvaclav@redhat.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Taehee Yoo <ap420073@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Maoyi Xie <maoyixie.tju@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] hsr: broadcast netlink notifications in the device's net namespace
+Date: Wed, 27 May 2026 15:59:24 +0800
+Message-Id: <20260527075924.2707856-1-maoyixie.tju@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <CAHPEe=GO=2qqWZPwBB4rrXc3mkD0dznp2K78nCsKwF=c-QwxEw@mail.gmail.com>
+References: <CAHPEe=GO=2qqWZPwBB4rrXc3mkD0dznp2K78nCsKwF=c-QwxEw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Hans Verkuil <hans@jjverkuil.nl>
-Subject: Re: [PATCH] Input: rmi4 - release F54 queue on video registration
- failure
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
- Myeonghun Pak <mhun512@gmail.com>, Hans Verkuil <hverkuil@kernel.org>
-Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Ijae Kim <ae878000@gmail.com>
-References: <20260524182351.27658-1-mhun512@gmail.com>
- <ahXYreASLGSPuIe_@google.com>
-Content-Language: en-US
-In-Reply-To: <ahXYreASLGSPuIe_@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spampanel-Class: ham
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[jjverkuil.nl,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[jjverkuil.nl:s=soverin1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FREEMAIL_CC(0.00)[suse.de,redhat.com,lunn.ch,gmail.com,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[jjverkuil.nl:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-254500-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254501-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hans@jjverkuil.nl,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[maoyixietju@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,jjverkuil.nl:mid,jjverkuil.nl:dkim]
-X-Rspamd-Queue-Id: 5F6A75E08C5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 77F355E0C61
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 5/26/26 7:36 PM, Dmitry Torokhov wrote:
-> On Mon, May 25, 2026 at 03:23:45AM +0900, Myeonghun Pak wrote:
->> rmi_f54_probe() initializes the videobuf2 queue before registering the
->> video device. If video_register_device() fails, probe only unregisters
->> the V4L2 device and leaves the initialized queue unwound by neither
->> remove nor file release paths.
->>
->> Release the queue before continuing through the existing probe error
->> path.
->>
->> This issue was identified during our ongoing static-analysis research while
->> reviewing kernel code.
->>
->> Fixes: 3a762dbd5347 ("[media] Input: synaptics-rmi4 - add support for F54 diagnostics")
->> Cc: stable@vger.kernel.org
->> Co-developed-by: Ijae Kim <ae878000@gmail.com>
->> Signed-off-by: Ijae Kim <ae878000@gmail.com>
->> Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
->> ---
->>   drivers/input/rmi4/rmi_f54.c | 1 +
->>   1 file changed, 1 insertion(+)
->>
->> diff --git a/drivers/input/rmi4/rmi_f54.c b/drivers/input/rmi4/rmi_f54.c
->> index 61909e1a39..fca7b9fec5 100644
->> --- a/drivers/input/rmi4/rmi_f54.c
->> +++ b/drivers/input/rmi4/rmi_f54.c
->> @@ -722,6 +722,7 @@ static int rmi_f54_probe(struct rmi_function *fn)
->>   	ret = video_register_device(&f54->vdev, VFL_TYPE_TOUCH, -1);
->>   	if (ret) {
->>   		dev_err(&fn->dev, "Unable to register video subdevice.");
->> +		vb2_queue_release(&f54->queue);
+The HSR generic netlink family sets .netnsok = true. HSR devices can
+live in network namespaces other than init_net.
 
-vb2_queue_release is not needed here: since the video device was never 
-created, it also never started streaming, and this call is only needed 
-if streaming is in progress.
+Two async notifiers broadcast events with genlmsg_multicast(). They
+are hsr_nl_ringerror() and hsr_nl_nodedown(). That helper delivers
+only on the default genl socket in init_net. So the events always land
+in init_net. The network namespace of the device does not matter.
 
-Looking at other drivers I see that in most cases they shouldn't call
-vb2_queue_release at all. I need to go through the media drivers and
-fix them.
+This has two effects. A listener in the device's own namespace never
+sees its own ring error and node down events. A privileged listener in
+init_net receives events from HSR devices in other namespaces. The
+payload carries the peer node MAC (HSR_A_NODE_ADDR) and the slave port
+ifindex (HSR_A_IFINDEX). It leaks information across network
+namespaces.
 
-In any case:
+Switch both callers to genlmsg_multicast_netns(). Other families with
+.netnsok = true already do this. Examples are gtp, ovpn, team,
+batman-adv, netdev-genl, ethtool and handshake.
 
-Rejected-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+hsr_nl_ringerror() already has the slave port. It uses
+dev_net(port->dev). hsr_nl_nodedown() takes the namespace from the
+master port via hsr_port_get_hsr().
 
-Regards,
+Fixes: 09e91dbea0aa ("hsr: set .netnsok flag")
+Cc: stable@vger.kernel.org
+Signed-off-by: Maoyi Xie <maoyixie.tju@gmail.com>
+---
+This is the fix for the problem I reported on netdev on 2026-05-18 [1].
+That thread had no reply, so I am sending the patch and adding the HSR
+maintainers to Cc. The proof of concept and the test numbers are in
+that message.
 
-	Hans
+[1] https://lore.kernel.org/netdev/CAHPEe=GO=2qqWZPwBB4rrXc3mkD0dznp2K78nCsKwF=c-QwxEw@mail.gmail.com/
 
->>   		goto remove_v4l2;
->>   	}
->>   
-> 
-> Hans, could you please Ack or Nak it? It is unclear to me if this
-> cleanup is mandatory and whether it is also needed in rmi_f54_remove().
-> 
-> Thanks.
-> 
+ net/hsr/hsr_netlink.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/net/hsr/hsr_netlink.c b/net/hsr/hsr_netlink.c
+index db0b0af7a692..067ceaf7304b 100644
+--- a/net/hsr/hsr_netlink.c
++++ b/net/hsr/hsr_netlink.c
+@@ -247,7 +247,8 @@ void hsr_nl_ringerror(struct hsr_priv *hsr, unsigned char addr[ETH_ALEN],
+ 		goto nla_put_failure;
+ 
+ 	genlmsg_end(skb, msg_head);
+-	genlmsg_multicast(&hsr_genl_family, skb, 0, 0, GFP_ATOMIC);
++	genlmsg_multicast_netns(&hsr_genl_family, dev_net(port->dev),
++				skb, 0, 0, GFP_ATOMIC);
+ 
+ 	return;
+ 
+@@ -283,8 +284,17 @@ void hsr_nl_nodedown(struct hsr_priv *hsr, unsigned char addr[ETH_ALEN])
+ 	if (res < 0)
+ 		goto nla_put_failure;
+ 
++	rcu_read_lock();
++	master = hsr_port_get_hsr(hsr, HSR_PT_MASTER);
++	if (!master) {
++		rcu_read_unlock();
++		goto nla_put_failure;
++	}
++
+ 	genlmsg_end(skb, msg_head);
+-	genlmsg_multicast(&hsr_genl_family, skb, 0, 0, GFP_ATOMIC);
++	genlmsg_multicast_netns(&hsr_genl_family, dev_net(master->dev),
++				skb, 0, 0, GFP_ATOMIC);
++	rcu_read_unlock();
+ 
+ 	return;
+ 
+-- 
+2.34.1
 
 
