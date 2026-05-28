@@ -1,204 +1,241 @@
-Return-Path: <stable+bounces-255092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255093-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uNijLzCVGGoMlQgAu9opvQ
-	(envelope-from <stable+bounces-255092-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:19:12 +0200
+	id iFJ7CaKYGGqklQgAu9opvQ
+	(envelope-from <stable+bounces-255093-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:33:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 679935F6FA8
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:19:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F2885F72B8
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 21:33:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C85D73005982
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:17:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2BDD33011594
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:28:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1941408019;
-	Thu, 28 May 2026 19:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E618F32695F;
+	Thu, 28 May 2026 19:28:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WBK5gB3g"
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="R1RriWIs"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f202.google.com (mail-qt1-f202.google.com [209.85.160.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E133FC5D1
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 19:17:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09F93016E1
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 19:28:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779995823; cv=none; b=c513JwNZPXoSN948f87j49vLw0ckOc1Yv4LWbWnoPki47ITxMlzlS3iHKq+L5bTGncuGtoIEAtwxdkFDrPcjDMPWHCyVwuYVkAPbYtJAF/gjg/yHrztlVeQhlSLTLz/QpB8jeD/hv+uyZJy9OTiu6QVFkrrKOMOXxwsbMrOm5B8=
+	t=1779996502; cv=none; b=MKIygBSzgiRiawxFJb+iCMxMR8dXPQ0598m7edE421EBUz/wX6n+UsfY4aI9KafnfVOY3jUmOZDZhslQ7Q2VC4kxLfIQdICSnFlc59tOjV1h2D+lkpRB1USXK4OMlKRUT9aOP0RAUvO0K/GzvMCFNbFeZA41TPf09drnBm8wJrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779995823; c=relaxed/simple;
-	bh=7nsiCepyNb7uhyn7v++Qgh6kBtGu5mTdr2I4JeUzJwg=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=JOBEOzeG2BchtIGIIHHtUY4KdLYPzqxj2rQiFWwOiusF8oy1wgXlFIEKpkVI/oG5X11w8zCxmhpL3OQhMRUl4u/hWGGexS7jijmfx/CqouUX+RN1OWHCzojpli9MLibsHEUSb4iPMIdVJ8FBLjfkG8e941P0Z4hXFXOl6GdSOXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--xuehaohu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WBK5gB3g; arc=none smtp.client-ip=209.85.160.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--xuehaohu.bounces.google.com
-Received: by mail-qt1-f202.google.com with SMTP id d75a77b69052e-514551d5f2aso62248981cf.2
-        for <stable@vger.kernel.org>; Thu, 28 May 2026 12:17:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779995821; x=1780600621; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ruTGaXcXn18lBWCvQSOsc+J+nN/WfLLq3tF9jPQMx3w=;
-        b=WBK5gB3gz0knR7r1QSCw2Hgqe4P+flmyYn+HX4a6wgABeJudGCp9uiKxyM2G6QVCJH
-         OWK91reZahY3emKrdytKrTEl2mImWVBoLoqfbE4FNkNZsCkofLk8F+FjUPga8PgsPSMq
-         hcTtAlTCzVgPEBU8wynmFWad7DRL4ei5NYMpUk0uYMNN/2klnittp4erQaQ4iRJwyrSF
-         Is5b+0ZfN1A7Yj8ETSjEMbGLN/9XW24dJOgbUOxk0t0jYJqjczWRS1p9XvGkHQQ6GoBE
-         rIvujSOt8964PhapkcSA65LXa7HrGWmJ1j1z7/XMoqsspDEx+mUNjURsp0AzcPRyCNtO
-         BCPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779995821; x=1780600621;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ruTGaXcXn18lBWCvQSOsc+J+nN/WfLLq3tF9jPQMx3w=;
-        b=GySD7CWKODNuKojBvnyc5D4cohZYIo7j81H7T/2qs0uRElJiOeZ7645RmwhrOdZ7t6
-         oT7Np2HT6js5aSM7PgcSYqnflNi0AzIwZ/IFu5cVr4QlIiyAz3EGTnfxWvd3qvcXCjyz
-         3hgYHbSkGLWE4iJrYhYqJY+ATCJk0a1Z3+bPI9CJq4uRxA2rJ3AdhAEgdCKPaOjHxp8o
-         ROmBKV7qegxVgHAxiLWDIFxY26CqWItVfP1ps92kuMmNLUd9ZzUMdMs5MacVuEugzZlK
-         QogWC6UhnB3K82G1hlv6/9SHDNFEoiYvEi9b2v9Ivq65KZZlhEqrgptk58KWLSKWAjK0
-         S52g==
-X-Forwarded-Encrypted: i=1; AFNElJ8TEdz541cVYsdNuic/PEJeFJSt6oB+NdcfsKJmFEL74d7gDq1r/pHzEla28WolNir1XrCszLw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz376VtO+U5FRop26gpRhEF1LpJFd4/AndZaufeXBkad4llqqIw
-	xGGpNVnVRb9UypXF+mqvfCEyA6Y40U+PFxMUEt4FWlt7SzYqeXeYTkelgJoP/Wwuxy+uibThr6k
-	2t/VJaz7d33p+
-X-Received: from qtlo20.prod.google.com ([2002:ac8:4294:0:b0:50f:d8f5:705f])
- (user=xuehaohu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:4c8c:b0:516:e8aa:271 with SMTP id d75a77b69052e-5172cb95a12mr2327291cf.26.1779995821046;
- Thu, 28 May 2026 12:17:01 -0700 (PDT)
-Date: Thu, 28 May 2026 19:16:58 +0000
+	s=arc-20240116; t=1779996502; c=relaxed/simple;
+	bh=NNMdWznbK8KHuAorecbu3FhH3S5PB+MBmCQTXZKEeCs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=EYVOVfR2U4R7wgkutCCCQgjsK96UX4Egv2eg08XrrlfDoVcPpLUkgp4dOuW65GHRNJs6hBVd+NsulTstXGUhKxHV/SkAD0Y9XafdvvS7bmsnVaE2VmV31sUH9y/2pYU3rxld8auiOesDDmp/zK/ag3FnzYhXKn9trbVNQD7Pspk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=R1RriWIs; arc=none smtp.client-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+Received: by dvalin.narfation.org (Postfix) id BA49020074;
+	Thu, 28 May 2026 19:28:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1779996491;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Lz+xG/xLoaoO9k2fJl2fjaikJFRFsDTP8tGocWX33lI=;
+	b=R1RriWIs8L/y1/xsQ+UfBdMvqHCRZIYQoAt8PEn20ZlXyfwuLOL4GXUs8l+lSe/yhqXMrs
+	GxGQLIF8hciCKddtoWZAhPErFryoohfACCNh91j4ezsXtozIAxZnNlnj3JuuNtd07v4VEs
+	e9DSWVJpGARKyxIdoLeBq9xjzUzCfOs=
+From: Sven Eckelmann <sven@narfation.org>
+To: stable@vger.kernel.org
+Cc: Sven Eckelmann <sven@narfation.org>,
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>
+Subject: [PATCH 6.12.y] batman-adv: v: stop OGMv2 on disabled interface
+Date: Thu, 28 May 2026 21:27:33 +0200
+Message-ID: <20260528192733.76065-1-sven@narfation.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <2026052857-spiral-repent-3bad@gregkh>
+References: <2026052857-spiral-repent-3bad@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.54.0.929.g9b7fa37559-goog
-Message-ID: <20260528191658.2506362-1-xuehaohu@google.com>
-Subject: [PATCH v4] dma-buf: Fix silent overflow for phys vec to sgt
-From: David Hu <xuehaohu@google.com>
-To: Sumit Semwal <sumit.semwal@linaro.org>, 
-	"=?UTF-8?q?Christian=20K=C3=B6nig?=" <christian.koenig@amd.com>
-Cc: Nicolin Chen <nicolinc@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
-	Kevin Tian <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Alex Williamson <alex@shazbot.org>, linux-media@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
-	linux-kernel@vger.kernel.org, jmoroni@google.com, praan@google.com, 
-	David Hu <xuehaohu@google.com>, stable@vger.kernel.org, iommu@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
+	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255092-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[narfation.org,kernel.org,gmail.com,lzu.edu.cn];
+	TAGGED_FROM(0.00)[bounces-255093-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xuehaohu@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_TWELVE(0.00)[17];
+	FROM_NEQ_ENVFROM(0.00)[sven@narfation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[narfation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 679935F6FA8
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 6F2885F72B8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-In case MMIO size is bigger than 4G and peer2peer DMA goes
-through host bridge, we trigger a code path that assigns the
-total linked IOVA (which is greater than 4G) to mapped_len.
+commit f8ce8b8331a1bc44ad4905886a482214d428b253 upstream.
 
-Previously, `mapped_len` was declared as 32-bit `unsigned int`.
-When accumulating `size_t` lengths, this leads to a silent wrap-around.
-This truncation causes truncated lengths to be passed to functions
-like `fill_sg_entry()`.
+When a batadv_hard_iface is disabled, its mesh_iface pointer is set to
+NULL. However, batadv_v_ogm_send_meshif() may still dispatch OGMs via
+batadv_v_ogm_queue_on_if() for interfaces that have since lost their
+mesh_iface association. This results in a NULL pointer dereference when
+batadv_v_ogm_queue_on_if() unconditionally calls netdev_priv() on the
+now NULL hard_iface->mesh_iface to retrieve the batadv_priv.
 
-Fix this by changing `mapped_len` to `size_t` (64-bit). While
-at it, fix similar potential overflow issues in `calc_sg_nents`
-by using `size_t` for `nents` and checking against `UINT_MAX`
-and using `unsigned int` for the loop iterator in `fill_sg_entry`
-to match.
+It is necessary to ensure that the batadv_v_ogm_queue_on_if() checks that
+it is using the same mesh_iface for which batadv_v_ogm_send_meshif() was
+called.
 
-Fixes: 3aa31a8bb11e ("dma-buf: provide phys_vec to scatter-gather mapping routine")
-Cc: stable@vger.kernel.org
-Cc: iommu@lists.linux.dev
-Reviewed-by: Pranjal Shrivastava <praan@google.com>
-Signed-off-by: David Hu <xuehaohu@google.com>
+Cc: stable@kernel.org
+Fixes: 0da0035942d4 ("batman-adv: OGMv2 - add basic infrastructure")
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Reviewed-by: Yuan Tan <yuantan098@gmail.com>
+[ switch to old "mesh_iface" name "soft_iface" ]
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 ---
-Changes in v4:
- - Added WARN_ON_ONCE() to the nents overflow check to prevent silent
-   failures (Claude Bot).
+ net/batman-adv/bat_v_ogm.c | 33 +++++++++++++++++++++------------
+ 1 file changed, 21 insertions(+), 12 deletions(-)
 
-Changes in v3:
- - Removed leftover sentence fragment from the commit message.
- - Kept `nents = 0` initialization (previously stated as removed in the
-   v2 changelog) as it is strictly required for the `+=` accumulation
-   loop in `calc_sg_nents()`.
-
-Changes in v2:
- - Fixed 'IVOA' -> 'IOVA' typo and expanded commit message (Claude Bot).
- - Added Reverse Xmas tree formatting (Pranjal).
- - Folded in extra bounds checking for calc_sg_nents() (Pranjal).
- - Folded in type consistency fix for fill_sg_entry() (Pranjal).
-
- drivers/dma-buf/dma-buf-mapping.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/dma-buf/dma-buf-mapping.c b/drivers/dma-buf/dma-buf-mapping.c
-index 794acff2546a..1aabc0ee70bb 100644
---- a/drivers/dma-buf/dma-buf-mapping.c
-+++ b/drivers/dma-buf/dma-buf-mapping.c
-@@ -10,7 +10,7 @@ static struct scatterlist *fill_sg_entry(struct scatterlist *sgl, size_t length,
- 					 dma_addr_t addr)
- {
- 	unsigned int len, nents;
--	int i;
-+	unsigned int i;
+diff --git a/net/batman-adv/bat_v_ogm.c b/net/batman-adv/bat_v_ogm.c
+index 8f89ffe6020c..310248a5812c 100644
+--- a/net/batman-adv/bat_v_ogm.c
++++ b/net/batman-adv/bat_v_ogm.c
+@@ -115,14 +115,14 @@ static void batadv_v_ogm_start_timer(struct batadv_priv *bat_priv)
  
- 	nents = DIV_ROUND_UP(length, UINT_MAX);
- 	for (i = 0; i < nents; i++) {
-@@ -36,7 +36,7 @@ static unsigned int calc_sg_nents(struct dma_iova_state *state,
- 				  struct phys_vec *phys_vec, size_t nr_ranges,
- 				  size_t size)
+ /**
+  * batadv_v_ogm_send_to_if() - send a batman ogm using a given interface
++ * @bat_priv: the bat priv with all the mesh interface information
+  * @skb: the OGM to send
+  * @hard_iface: the interface to use to send the OGM
+  */
+-static void batadv_v_ogm_send_to_if(struct sk_buff *skb,
++static void batadv_v_ogm_send_to_if(struct batadv_priv *bat_priv,
++				    struct sk_buff *skb,
+ 				    struct batadv_hard_iface *hard_iface)
  {
--	unsigned int nents = 0;
-+	size_t nents = 0;
- 	size_t i;
+-	struct batadv_priv *bat_priv = netdev_priv(hard_iface->soft_iface);
+-
+ 	if (hard_iface->if_status != BATADV_IF_ACTIVE) {
+ 		kfree_skb(skb);
+ 		return;
+@@ -189,6 +189,7 @@ static void batadv_v_ogm_aggr_list_free(struct batadv_hard_iface *hard_iface)
  
- 	if (!state || !dma_use_iova(state)) {
-@@ -51,6 +51,9 @@ static unsigned int calc_sg_nents(struct dma_iova_state *state,
- 		nents = DIV_ROUND_UP(size, UINT_MAX);
+ /**
+  * batadv_v_ogm_aggr_send() - flush & send aggregation queue
++ * @bat_priv: the bat priv with all the mesh interface information
+  * @hard_iface: the interface with the aggregation queue to flush
+  *
+  * Aggregates all OGMv2 packets currently in the aggregation queue into a
+@@ -198,7 +199,8 @@ static void batadv_v_ogm_aggr_list_free(struct batadv_hard_iface *hard_iface)
+  *
+  * Caller needs to hold the hard_iface->bat_v.aggr_list.lock.
+  */
+-static void batadv_v_ogm_aggr_send(struct batadv_hard_iface *hard_iface)
++static void batadv_v_ogm_aggr_send(struct batadv_priv *bat_priv,
++				   struct batadv_hard_iface *hard_iface)
+ {
+ 	unsigned int aggr_len = hard_iface->bat_v.aggr_len;
+ 	struct sk_buff *skb_aggr;
+@@ -228,27 +230,32 @@ static void batadv_v_ogm_aggr_send(struct batadv_hard_iface *hard_iface)
+ 		consume_skb(skb);
  	}
  
-+	if (WARN_ON_ONCE(nents > UINT_MAX))
-+		return 0;
-+
- 	return nents;
+-	batadv_v_ogm_send_to_if(skb_aggr, hard_iface);
++	batadv_v_ogm_send_to_if(bat_priv, skb_aggr, hard_iface);
  }
  
-@@ -95,9 +98,10 @@ struct sg_table *dma_buf_phys_vec_to_sgt(struct dma_buf_attachment *attach,
- 					 size_t nr_ranges, size_t size,
- 					 enum dma_data_direction dir)
+ /**
+  * batadv_v_ogm_queue_on_if() - queue a batman ogm on a given interface
++ * @bat_priv: the bat priv with all the mesh interface information
+  * @skb: the OGM to queue
+  * @hard_iface: the interface to queue the OGM on
+  */
+-static void batadv_v_ogm_queue_on_if(struct sk_buff *skb,
++static void batadv_v_ogm_queue_on_if(struct batadv_priv *bat_priv,
++				     struct sk_buff *skb,
+ 				     struct batadv_hard_iface *hard_iface)
  {
--	unsigned int nents, mapped_len = 0;
- 	struct dma_buf_dma *dma;
- 	struct scatterlist *sgl;
-+	size_t mapped_len = 0;
-+	unsigned int nents;
- 	dma_addr_t addr;
- 	size_t i;
- 	int ret;
+-	struct batadv_priv *bat_priv = netdev_priv(hard_iface->soft_iface);
++	if (hard_iface->soft_iface != bat_priv->soft_iface) {
++		kfree_skb(skb);
++		return;
++	}
+ 
+ 	if (!atomic_read(&bat_priv->aggregated_ogms)) {
+-		batadv_v_ogm_send_to_if(skb, hard_iface);
++		batadv_v_ogm_send_to_if(bat_priv, skb, hard_iface);
+ 		return;
+ 	}
+ 
+ 	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
+ 	if (!batadv_v_ogm_queue_left(skb, hard_iface))
+-		batadv_v_ogm_aggr_send(hard_iface);
++		batadv_v_ogm_aggr_send(bat_priv, hard_iface);
+ 
+ 	hard_iface->bat_v.aggr_len += batadv_v_ogm_len(skb);
+ 	__skb_queue_tail(&hard_iface->bat_v.aggr_list, skb);
+@@ -347,7 +354,7 @@ static void batadv_v_ogm_send_softif(struct batadv_priv *bat_priv)
+ 			break;
+ 		}
+ 
+-		batadv_v_ogm_queue_on_if(skb_tmp, hard_iface);
++		batadv_v_ogm_queue_on_if(bat_priv, skb_tmp, hard_iface);
+ 		batadv_hardif_put(hard_iface);
+ 	}
+ 	rcu_read_unlock();
+@@ -387,12 +394,14 @@ void batadv_v_ogm_aggr_work(struct work_struct *work)
+ {
+ 	struct batadv_hard_iface_bat_v *batv;
+ 	struct batadv_hard_iface *hard_iface;
++	struct batadv_priv *bat_priv;
+ 
+ 	batv = container_of(work, struct batadv_hard_iface_bat_v, aggr_wq.work);
+ 	hard_iface = container_of(batv, struct batadv_hard_iface, bat_v);
++	bat_priv = netdev_priv(hard_iface->soft_iface);
+ 
+ 	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
+-	batadv_v_ogm_aggr_send(hard_iface);
++	batadv_v_ogm_aggr_send(bat_priv, hard_iface);
+ 	spin_unlock_bh(&hard_iface->bat_v.aggr_list.lock);
+ 
+ 	batadv_v_ogm_start_queue_timer(hard_iface);
+@@ -582,7 +591,7 @@ static void batadv_v_ogm_forward(struct batadv_priv *bat_priv,
+ 		   if_outgoing->net_dev->name, ntohl(ogm_forward->throughput),
+ 		   ogm_forward->ttl, if_incoming->net_dev->name);
+ 
+-	batadv_v_ogm_queue_on_if(skb, if_outgoing);
++	batadv_v_ogm_queue_on_if(bat_priv, skb, if_outgoing);
+ 
+ out:
+ 	batadv_orig_ifinfo_put(orig_ifinfo);
 -- 
-2.54.0.929.g9b7fa37559-goog
+2.47.3
 
 
