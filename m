@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-255846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256090-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0JEjILumGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255846-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:34:03 +0200
+	id 2P9BNr+pGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256090-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A5AA5F8FAB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:34:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40E235F98B1
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 58D1D304DA03
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:27:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1F77931EB75D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:38:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 241AF254B1F;
-	Thu, 28 May 2026 20:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DCD03264DF;
+	Thu, 28 May 2026 20:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MrIzvadj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qU2s+TE3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033C1DDC5;
-	Thu, 28 May 2026 20:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4A92139C9;
+	Thu, 28 May 2026 20:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000043; cv=none; b=g0QasbsyYNzqq2qvBkFgE1WDVOPeeR0JN2LCdntoQYDGn8uTU2JTiWohqJ6XvS0tpIGX8r99LSSE/TG55vai3oYhJ/Be8dutpq2oB3BPx8IZ3VaDp/uVJfrKZBQXFMb7z0zWQlfPQkCZeVY86Uh1CC4Fas6IjvJb6zHAM4TYAHI=
+	t=1780000727; cv=none; b=KWNwMRxy/Frb0OlPu5u+ZQMfFvH0/YqmMFhruo+JQtzVRw+1mT2hVb2PNn7hXfL9vrc48MgHgJeiXM36wSNU1gEWEr75OogC1c8lKnqnaxKZFQcn96V/8UxyT9NhItvEbwB1mYg/cJPdtAZqz0WKr2aj0V6RmL/E6GjgQSq/2Fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000043; c=relaxed/simple;
-	bh=7/jr0e3ahOqLrq7T6JbriBJSZm/CPUcx4FdAWZChlI4=;
+	s=arc-20240116; t=1780000727; c=relaxed/simple;
+	bh=ZmmX903zFTmLs+kKYrynWh7bfcTw0BSA6QNI600Rcvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CF+JvMhDriqCIxGQclBWM04WEealF3djzZ0XzUvhiRHTngiVCCXEd/ZjNdw6BuzVYwDI9npzCD6zQCRIRa8QWJ54l0E9mnMZrbzVxlmEX8wM3EPVmCxq+6s5q3mjP4yf/I1Tr+7IiYH6qxBfGT9VDS5/YoJk6cfqrvMTfyYaTJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MrIzvadj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60D5E1F000E9;
-	Thu, 28 May 2026 20:27:22 +0000 (UTC)
+	 MIME-Version; b=u75oyDD6LrRd4s3UNu4rrMOv5mPukyKnIaw/MQDKusN8aoalaiPbAG67FAuXKDUQ5msQrh2Wd5Ib0nRqq4JFFrbR7VntsCMQfZ9VazINLjxh1XkEFE8r33c2rE/0xjjGWnqMQMimY64FiYXgULXzW72uCxfECgFqHy3VI8ghPVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qU2s+TE3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38FD61F000E9;
+	Thu, 28 May 2026 20:38:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000042;
-	bh=gYAlu23n8Fx8mtmLMY5wgagv8Du/+SIOdhbLTcStgQw=;
+	s=korg; t=1780000725;
+	bh=fSazEKKquhYJac3KPiXiXXbjDddtx6lUbPGkfPNSMH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MrIzvadjRd6VzeK9MtHrEfbG7/rTu3HUXAq/OtMvQ42vbW4lnOVEJ5kX3Tz9ivEoK
-	 O7HFhS/MVe7DTS1lvA5eE/g5Ee7rtp69yz1xwXlYRmVxJp5ScXe2NZRjl0W9nT7MCm
-	 U3S0keauW2ByVz2kDJYBwEchuWqkVzMR7W4AXf0o=
+	b=qU2s+TE3Mr0Xa/NFj8XtJkkaSjPXz8nJbimQmUyOso0b0w13SlMkp8NOq8DWmLEmz
+	 LyBa/YEkC/nv/c0ouTX9x6D6po62GEqU0ko+Ic06vODvob7o78chJLBGEqKSkJErP6
+	 vP0EHF7h2O42ikLcBl+tcffvCR/wXmzxo+0nSyyg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	Sven Schuchmann <schuchmann@schleissheimer.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 283/377] net: phy: DP83TC811: add reading of abilities
+Subject: [PATCH 6.12 147/272] firmware: arm_ffa: Skip free_pages on RX buffer alloc failure
 Date: Thu, 28 May 2026 21:48:41 +0200
-Message-ID: <20260528194646.549462372@linuxfoundation.org>
+Message-ID: <20260528194633.487793174@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,70 +67,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	URIBL_MULTI_FAIL(0.00)[msgid.link:server fail,tor.lore.kernel.org:server fail,linuxfoundation.org:server fail,schleissheimer.de:server fail,lunn.ch:server fail];
-	TAGGED_FROM(0.00)[bounces-255846-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-256090-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 1A5AA5F8FAB
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 40E235F98B1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Schuchmann <schuchmann@schleissheimer.de>
+From: Sudeep Holla <sudeep.holla@kernel.org>
 
-[ Upstream commit c78bdba7b9666020c0832150a4fc4c0aebc7c6ac ]
+[ Upstream commit 09527e2c534911619d7e098729711100290bc3e1 ]
 
-At this time the driver is not listing any speeds
-it supports. This should be ETHTOOL_LINK_MODE_100baseT1_Full_BIT
-for DP83TC811. Add the missing call for phylib to read the abilities.
+If the RX buffer allocation fails in ffa_init(), the error path jumps to
+free_pages even though no buffer has been allocated yet. Route that case
+directly to free_drv_info so the cleanup path is only used after at
+least one RX/TX buffer allocation has succeeded.
 
-Fixes: b753a9faaf9a ("net: phy: DP83TC811: Introduce support for the DP83TC811 phy")
-Suggested-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Sven Schuchmann <schuchmann@schleissheimer.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20260512071949.6218-1-schuchmann@schleissheimer.de
-[pabeni@redhat.com: dropped revision history]
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 3bbfe9871005 ("firmware: arm_ffa: Add initial Arm FFA driver support")
+Link: https://patch.msgid.link/20260428-ffa_fixes-v2-2-8595ae450034@kernel.org
+Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/dp83tc811.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/firmware/arm_ffa/driver.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/dp83tc811.c b/drivers/net/phy/dp83tc811.c
-index e480c2a074505..252fb12b3e68e 100644
---- a/drivers/net/phy/dp83tc811.c
-+++ b/drivers/net/phy/dp83tc811.c
-@@ -393,6 +393,7 @@ static struct phy_driver dp83811_driver[] = {
- 		.config_init = dp83811_config_init,
- 		.config_aneg = dp83811_config_aneg,
- 		.soft_reset = dp83811_phy_reset,
-+		.get_features = genphy_c45_pma_read_ext_abilities,
- 		.get_wol = dp83811_get_wol,
- 		.set_wol = dp83811_set_wol,
- 		.config_intr = dp83811_config_intr,
+diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
+index 15e71a53956e2..61d4a4b7d97b6 100644
+--- a/drivers/firmware/arm_ffa/driver.c
++++ b/drivers/firmware/arm_ffa/driver.c
+@@ -1793,7 +1793,7 @@ static int __init ffa_init(void)
+ 	drv_info->rx_buffer = alloc_pages_exact(rxtx_bufsz, GFP_KERNEL);
+ 	if (!drv_info->rx_buffer) {
+ 		ret = -ENOMEM;
+-		goto free_pages;
++		goto free_drv_info;
+ 	}
+ 
+ 	drv_info->tx_buffer = alloc_pages_exact(rxtx_bufsz, GFP_KERNEL);
 -- 
 2.53.0
 
