@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-256046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255802-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8GQpGNGoGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256046-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:42:57 +0200
+	id UOPhJiqmGGoQlwgAu9opvQ
+	(envelope-from <stable+bounces-255802-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BFF25F9634
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:42:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B10555F8DF1
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:31:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8691030B5BDA
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:37:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4114C31337BB
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:25:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FB3A359A6C;
-	Thu, 28 May 2026 20:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 595AD3002A0;
+	Thu, 28 May 2026 20:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k/hbO8wk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SSxr7wSC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B80C2EF652;
-	Thu, 28 May 2026 20:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3F433F390;
+	Thu, 28 May 2026 20:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000603; cv=none; b=cz3hChLoplpnhV1YO1gsHhq6YpPxftVWi9jM3Lhp6hslnypOO8mT+XUFsAnbLy+/6x3Ln8o1/SbnASPDN+IHMWGhXPe6sh/x8c6TdepFcHNDHQcvM3MzwztbAFtteYjfPaKGfg96kkiGAy7NBFSKr3OYRvkrqY22JUusTkEeXIA=
+	t=1779999925; cv=none; b=SvKjYPr6X1Nq4ILOEta+ehKzUTCCgh8O1+pcVmmtXXZpSyAhgOYAfqFKOoweOO73+Z7Ix9zZLae+pEd2UUcdbFukBWIBmtLmgP7pC04ecPXFU51ejRpm0K9jnnibhNFGr5MFtk7BVsSrJ1j+CT6u8bePzkXqzU0iJiIPEBEuLi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000603; c=relaxed/simple;
-	bh=AZFDTOPMfJKyNwjXIOQTZt5dHEh1w4/doVe3Z+nLmRo=;
+	s=arc-20240116; t=1779999925; c=relaxed/simple;
+	bh=nhuPdLDLIFUVxRrkuMKsxiTKovfXwqoL8ZY0xbT2ijY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YV4c7CxoTaZQNaPtBmN1YcTPU0dzyqwggHJ3G2yQ3sEETpe3C6S7eesDT5zn2M1O/DgC6n99ksD9mEVYwQ479N8Jk6q8D2RTyiq4ZuFoBCcpQ4BsFqb4ZRn+hzFluuUF/Tly8mDpmgpKcQb2NYhoB37dePOkPq+DxCRsug77PKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k/hbO8wk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A54A1F000E9;
-	Thu, 28 May 2026 20:36:41 +0000 (UTC)
+	 MIME-Version; b=nU80FnjQtlb8RcyR91tMseIZH3q/t2YWzGW8RNo/C9YsUAZ8LFn16CRD83YzZlgzGEUsqodrCZaLsZZPNiIZEAzOaOy/aSeHRo68Q4qoOZWjEFkphoOeFrlJ3g8WnL1CA87QC9dw1aufeXaxdFslmaFKONCLYdJZFAPrYueag7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SSxr7wSC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 760AF1F00A3A;
+	Thu, 28 May 2026 20:25:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000602;
-	bh=WOsanqMRA6Bvv8G3OvMWDjU+TyfYl1xbghK3Fp+ZB2k=;
+	s=korg; t=1779999923;
+	bh=EfjyWdwFYCJGbfOYtHDpz2GBLw25ylVDQfrbL2Tc7F4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=k/hbO8wkyFBzAFQcfcu5vxoTsbC4d/irCMn5vNvjWnukH8rIvpBQowFhCCCTWd78v
-	 kgg2avSXrq00GnbmDUYcsbc9SNelumHadl9oZfU3OzexMu6agWW8NMpVEiWMTSx+HP
-	 kwzJoopa14pQ9NJXvVgvL6cqhCHOEdRq9NtQTA+0=
+	b=SSxr7wSCpgq0zLGg/8oywxkmUy/WdtUc7lHGHp7Xr39FV114rAKB1NE84CMTo6mD8
+	 wkKvBHqdkrUriCw5GlCcABDiR8lnuzHMSCXjogpcqYuXUL8apne1YsuKuFmxbXTOSf
+	 ga/Fogoxx3pXcKzMeHURb4PhZeC341OApdUEsyQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Osama Abdelkader <osama.abdelkader@gmail.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>
-Subject: [PATCH 6.12 104/272] drm/bridge: chipone-icn6211: use devm_drm_bridge_add in i2c probe
+	David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 240/377] netfs: Fix potential deadlock in write-through mode
 Date: Thu, 28 May 2026 21:47:58 +0200
-Message-ID: <20260528194632.290698452@linuxfoundation.org>
+Message-ID: <20260528194645.337738904@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +67,155 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256046-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255802-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,bootlin.com:email]
-X-Rspamd-Queue-Id: 1BFF25F9634
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,manguebit.org:email,sashiko.dev:url,msgid.link:url,linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: B10555F8DF1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Osama Abdelkader <osama.abdelkader@gmail.com>
+From: David Howells <dhowells@redhat.com>
 
-commit 73d01051e8040c0b1de7fd26b3b8d0c2ffa6895c upstream.
+[ Upstream commit b6a4ae1634b3ad2aaa05222e53d36da532852faf ]
 
-Use devm_drm_bridge_add() so the bridge is released if probe
-fails after registration, and drop drm_bridge_remove() in chipone_i2c_probe.
+Fix netfs_advance_writethrough() to always unlock the supplied folio and to
+mark it dirty if it isn't yet written to the end.  Unfortunately, it can't
+be marked for writeback until the folio is done with as that may cause a
+deadlock against mmapped reads and writes.
 
-Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
-Fixes: 8dde6f7452a1 ("drm: bridge: icn6211: Add I2C configuration support")
-Cc: stable@vger.kernel.org
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Link: https://patch.msgid.link/20260430194944.78119-1-osama.abdelkader@gmail.com
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Even though it has been marked dirty, premature writeback can't occur as
+the caller is holding both inode->i_rwsem (which will prevent concurrent
+truncation, fallocation, DIO and other writes) and ictx->wb_lock (which
+will cause flushing to wait and writeback to skip or wait).
+
+Note that this may be easier to deal with once the queuing of folios is
+split from the generation of subrequests.
+
+Fixes: 288ace2f57c9 ("netfs: New writeback implementation")
+Closes: https://sashiko.dev/#/patchset/20260427154639.180684-1-dhowells%40redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://patch.msgid.link/20260512123404.719402-15-dhowells@redhat.com
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/chipone-icn6211.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/netfs/write_issue.c | 39 +++++++++++++++++++++++++--------------
+ 1 file changed, 25 insertions(+), 14 deletions(-)
 
---- a/drivers/gpu/drm/bridge/chipone-icn6211.c
-+++ b/drivers/gpu/drm/bridge/chipone-icn6211.c
-@@ -757,7 +757,9 @@ static int chipone_i2c_probe(struct i2c_
- 	dev_set_drvdata(dev, icn);
- 	i2c_set_clientdata(client, icn);
+diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
+index 2db688f941251..9bf05099155dc 100644
+--- a/fs/netfs/write_issue.c
++++ b/fs/netfs/write_issue.c
+@@ -413,12 +413,7 @@ static int netfs_write_folio(struct netfs_io_request *wreq,
+ 	if (streamw)
+ 		netfs_issue_write(wreq, cache);
  
--	drm_bridge_add(&icn->bridge);
-+	ret = devm_drm_bridge_add(dev, &icn->bridge);
-+	if (ret)
-+		return ret;
+-	/* Flip the page to the writeback state and unlock.  If we're called
+-	 * from write-through, then the page has already been put into the wb
+-	 * state.
+-	 */
+-	if (wreq->origin == NETFS_WRITEBACK)
+-		folio_start_writeback(folio);
++	folio_start_writeback(folio);
+ 	folio_unlock(folio);
  
- 	return chipone_dsi_host_attach(icn);
+ 	if (fgroup == NETFS_FOLIO_COPY_TO_CACHE) {
+@@ -646,29 +641,41 @@ int netfs_advance_writethrough(struct netfs_io_request *wreq, struct writeback_c
+ 			       struct folio *folio, size_t copied, bool to_page_end,
+ 			       struct folio **writethrough_cache)
+ {
++	int ret;
++
+ 	_enter("R=%x ic=%zu ws=%u cp=%zu tp=%u",
+ 	       wreq->debug_id, wreq->buffer.iter.count, wreq->wsize, copied, to_page_end);
+ 
+-	if (!*writethrough_cache) {
+-		if (folio_test_dirty(folio))
+-			/* Sigh.  mmap. */
+-			folio_clear_dirty_for_io(folio);
++	/* The folio is locked. */
+ 
++	if (*writethrough_cache != folio) {
++		if (*writethrough_cache) {
++			/* Did the folio get moved? */
++			folio_put(*writethrough_cache);
++			*writethrough_cache = NULL;
++		}
+ 		/* We can make multiple writes to the folio... */
+-		folio_start_writeback(folio);
+ 		if (wreq->len == 0)
+ 			trace_netfs_folio(folio, netfs_folio_trace_wthru);
+ 		else
+ 			trace_netfs_folio(folio, netfs_folio_trace_wthru_plus);
+ 		*writethrough_cache = folio;
++		folio_get(folio);
+ 	}
+ 
+ 	wreq->len += copied;
+-	if (!to_page_end)
++
++	if (!to_page_end) {
++		folio_mark_dirty(folio);
++		folio_unlock(folio);
+ 		return 0;
++	}
+ 
++	ret = netfs_write_folio(wreq, wbc, folio);
++	folio_put(*writethrough_cache);
+ 	*writethrough_cache = NULL;
+-	return netfs_write_folio(wreq, wbc, folio);
++	wreq->submitted = wreq->len;
++	return ret;
  }
+ 
+ /*
+@@ -682,8 +689,12 @@ ssize_t netfs_end_writethrough(struct netfs_io_request *wreq, struct writeback_c
+ 
+ 	_enter("R=%x", wreq->debug_id);
+ 
+-	if (writethrough_cache)
++	if (writethrough_cache) {
++		folio_lock(writethrough_cache);
+ 		netfs_write_folio(wreq, wbc, writethrough_cache);
++		folio_put(writethrough_cache);
++		wreq->submitted = wreq->len;
++	}
+ 
+ 	netfs_end_issue_write(wreq);
+ 
+-- 
+2.53.0
+
 
 
 
