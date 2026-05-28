@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-255730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255976-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WMajKYekGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255730-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:39 +0200
+	id QOLPISCoGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255976-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:40:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0C195F899B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 307415F9443
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:40:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8ED32302224B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:22:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AC22F3141947
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:33:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB6AB301472;
-	Thu, 28 May 2026 20:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5026433C51D;
+	Thu, 28 May 2026 20:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wVe6Bg8k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1OS1FgGb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861262E7379;
-	Thu, 28 May 2026 20:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F1F5313550;
+	Thu, 28 May 2026 20:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999723; cv=none; b=mffnyYguOlNAehGtjOV6QG1RuxYp8XTiNRie71aePvKZTzhGM35Jn3BZFd1mV88cWigdrjbJlfIfPKwQQwcQayOplcNkU/a79NoNNRFAT8hBKDep+F3ZcIu38mDmEXCRaldsxrYfmlreJNaY8js53ZJyTVSzVk+NUtyxb4i4dFo=
+	t=1780000406; cv=none; b=ulHbTTfeEiMMwe4meeidE8B0FCaxJvP3sh0ws+tX2ZxS05Rl0pDd99cnJLAy3yVm8cLZ3S406xzcYulr0G1HDvdaX9I3qoUOAOihofh06Q3JYNauXlXDsRCw240T4h25nVOEfGbqN3PA051rl92zRTRDEra6BaqtMhNiDgikpFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999723; c=relaxed/simple;
-	bh=n7DCaI6tQTiQKLUk5rtt/9hpW+TRgkmPOfzwthKDMLA=;
+	s=arc-20240116; t=1780000406; c=relaxed/simple;
+	bh=/tqN73Tnnh1qDJgpZuHFaoUXQ/xXUQknQQ/cEwrHaPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GArsbcZyFHpPN7uI3/Eudy/FLBnzf0LNefoMireFZfnmyxrmof0S6kiUFYoFgxocglpS5o1b5TKiExYA8vxu4olZ3bL5TLbp/ChBSP/49BidU3RHYVM23eEq4T5AHGoPicRPLLMa52nJUZbI9w0s7o5zlsoJLBQcKC6knshT6CQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wVe6Bg8k; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E475A1F000E9;
-	Thu, 28 May 2026 20:22:01 +0000 (UTC)
+	 MIME-Version; b=IzhM+svOPCEXrTjrJhYin+2HqI4d7zFmStiaYcMOxE9GZ5ds+9l7i6IGvILew1r6AIHFZc9KT14+FDcJBDBsMVywSn9sd9eah0osZxeM5iSYBWyd5U6UzK6GjPX4v5BKpRDaOEk/SBd1qMO2TxnlOWsQW/4KtL/YY9Y1CCpM+C4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1OS1FgGb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85F3A1F000E9;
+	Thu, 28 May 2026 20:33:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999722;
-	bh=DsQT/SlOWG/cseJJA6a/xYsKHjRvMa/sHsbm8iufG/Y=;
+	s=korg; t=1780000405;
+	bh=bsraBccOPdMDw1/hniJBOfa+ssvnLrfkpD/ymRnZPZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wVe6Bg8kik5Bcug8sIcShzKljYkaCw1PCK1svAyunVD2lnfnQElhd7hwe+4NtcaVB
-	 aO0fs37fuUPd87plD9OatvSaHfnE91MIxtI51HMKnhnr1ckr8krp7W+nRUmUjVWmNR
-	 bhYcWdpQ2ASkG6JxpuM829fkRZZsxtmtywEmWccc=
+	b=1OS1FgGbuXyTXwJlL87hVSmGEgZU2UAe7OLT9KzxFLslRh4A8s9Ehul3YJiQYsSef
+	 7OrXWtyUvy+XpAW/yEfJ/kW0dq+BFlTTJBttGGwWy8PHQ069XHFDnUNEPH/t19SZ4s
+	 fy3hxxnLptPeNeQd6SXicTqvpevnoG6fpV7Q+xFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.18 169/377] hwmon: (pmbus/adm1266) reject short block-read responses in the GPIO accessors
+	Jianbo Liu <jianbol@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Gyokhan Kochmarla <gyokhan@amazon.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 033/272] net/mlx5e: Trigger neighbor resolution for unresolved destinations
 Date: Thu, 28 May 2026 21:46:47 +0200
-Message-ID: <20260528194643.323493177@linuxfoundation.org>
+Message-ID: <20260528194630.316238023@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,103 +71,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255976-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255730-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,nexthop.ai:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,roeck-us.net:email]
-X-Rspamd-Queue-Id: F0C195F899B
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nvidia.com:email,msgid.link:url,amazon.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 307415F9443
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-commit a7232f68c43ca62f545049b7f5fbfc75137b843b upstream.
+commit 9ab89bde13e5251e1d0507e1cc426edcdfe19142 upstream.
 
-adm1266_gpio_get() and adm1266_gpio_get_multiple() both compose the
-pin-status word as
+When initializing the MAC addresses for an outbound IPsec packet offload
+rule in mlx5e_ipsec_init_macs, the call to dst_neigh_lookup is used to
+find the next-hop neighbor (typically the gateway in tunnel mode).
+This call might create a new neighbor entry if one doesn't already
+exist. This newly created entry starts in the INCOMPLETE state, as the
+kernel hasn't yet sent an ARP or NDISC probe to resolve the MAC
+address. In this case, neigh_ha_snapshot will correctly return an
+all-zero MAC address.
 
-	pins_status = read_buf[0] + (read_buf[1] << 8);
+IPsec packet offload requires the actual next-hop MAC address to
+program the rule correctly. If the neighbor state is INCOMPLETE when
+the rule is created, the hardware rule is programmed with an all-zero
+destination MAC address. Packets sent using this rule will be
+subsequently dropped by the receiving network infrastructure or host.
 
-right after i2c_smbus_read_block_data(), guarding only against an
-error return.  A well-behaved device returns 2 bytes for
-GPIO_STATUS/PDIO_STATUS, but the helper happily reports a 0- or
-1-byte response too.  If the device returns 0 bytes, both read_buf
-slots are uninitialized stack memory; if it returns 1 byte, read_buf[1]
-is.
+This patch adds a check specifically for the outbound offload path. If
+neigh_ha_snapshot returns an all-zero MAC address, it proactively
+calls neigh_event_send(n, NULL). This ensures the kernel immediately
+sends the initial ARP or NDISC probe if one isn't already pending,
+accelerating the resolution process. This helps prevent the hardware
+rule from being programmed with an invalid MAC address and avoids
+packet drops due to unresolved neighbors.
 
-The composed value then flows through set_bit() into the caller's
-*bits in adm1266_gpio_get_multiple(), or into the return value of
-adm1266_gpio_get(), and ends up in userspace via gpiolib (sysfs and
-the char-dev ioctls).  That leaks a few bits of kernel stack per
-request on any device whose firmware glitch, bus error, or hostile
-slave produces a short block-read response.
-
-Add the missing length check to both call sites and surface a short
-response as -EIO.
-
-Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-3-e425e4f88139@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 71670f766b8f ("net/mlx5e: Support routed networks during IPsec MACs initialization")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1765284977-1363052-8-git-send-email-tariqt@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Gyokhan Kochmarla <gyokhan@amazon.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -176,6 +176,8 @@ static int adm1266_gpio_get(struct gpio_
- 	ret = i2c_smbus_read_block_data(data->client, pmbus_cmd, read_buf);
- 	if (ret < 0)
- 		return ret;
-+	if (ret < 2)
-+		return -EIO;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
+index 486f05112f5a6..e2915d3143e6b 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
+@@ -365,6 +365,9 @@ static void mlx5e_ipsec_init_macs(struct mlx5e_ipsec_sa_entry *sa_entry,
  
- 	pins_status = read_buf[0] + (read_buf[1] << 8);
- 	if (offset < ADM1266_GPIO_NR)
-@@ -196,6 +198,8 @@ static int adm1266_gpio_get_multiple(str
- 	ret = i2c_smbus_read_block_data(data->client, ADM1266_GPIO_STATUS, read_buf);
- 	if (ret < 0)
- 		return ret;
-+	if (ret < 2)
-+		return -EIO;
- 
- 	status = read_buf[0] + (read_buf[1] << 8);
- 
-@@ -208,6 +212,8 @@ static int adm1266_gpio_get_multiple(str
- 	ret = i2c_smbus_read_block_data(data->client, ADM1266_PDIO_STATUS, read_buf);
- 	if (ret < 0)
- 		return ret;
-+	if (ret < 2)
-+		return -EIO;
- 
- 	status = read_buf[0] + (read_buf[1] << 8);
- 
+ 	neigh_ha_snapshot(addr, n, netdev);
+ 	ether_addr_copy(dst, addr);
++	if (attrs->dir == XFRM_DEV_OFFLOAD_OUT &&
++	    is_zero_ether_addr(addr))
++		neigh_event_send(n, NULL);
+ 	dst_release(rt_dst_entry);
+ 	neigh_release(n);
+ 	return;
+-- 
+2.53.0
+
 
 
 
