@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-255225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255579-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +HMxHLCfGGpAlggAu9opvQ
-	(envelope-from <stable+bounces-255225-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:04:00 +0200
+	id GH7cMkekGGoQlwgAu9opvQ
+	(envelope-from <stable+bounces-255579-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:23:35 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC6825F7BF0
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:03:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DD835F888E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:23:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7FD30315638B
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:58:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 14E6F3121739
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:15:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A5B833F5B4;
-	Thu, 28 May 2026 19:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 365AC3546FF;
+	Thu, 28 May 2026 20:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8zeFEZw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kHIQzRjS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7DF348C45;
-	Thu, 28 May 2026 19:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21597340293;
+	Thu, 28 May 2026 20:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998312; cv=none; b=mujUu52vh7t2YYUVgpNcCEYkWjs/nBVZcRyquNio34DDzyDppuBtTR59WJrA6GbW2gdhoYB7DxUZPpKuY46H3rMblwQ2IUkDLFLBhTL9du71d6aDtZdeksrcnTFJ8AcBiEcosV3suaklu4kewi0IyDbyiQKtJqczEg8j6Nbnpaw=
+	t=1779999309; cv=none; b=ZgoZCg57LUhnfEZbzD4jdkOAMI1uJl1ocNRYU8/F7xL/k/+xk5bMZf+IELtWBNIBrCAcHAYuIKLO/hW+PbiSsB8pXY9ANKa9MFyptzTeVY0hqIbCOFjd4l0Aaqy4BfvX5seJK2dgBgNpY9OrC7ISgnJ+SkeCJdzXH8tSbUjoCvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998312; c=relaxed/simple;
-	bh=pmUKQ/J5WGw2YOvwhG9akNR/YqUzIFvHje7pwERnw8g=;
+	s=arc-20240116; t=1779999309; c=relaxed/simple;
+	bh=BJVuWEkbab3PiQaYUkcjp3JFRSFipj76wseNPvIaCRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GH6h1nsSEjF0zRIBnOUOfBsSy6hWu40k4UjCezIhrbIk7Q8HnYuLtBdiR0vo8Yr1aMGuzCKSxyKXPGrSXagCcsh7xRHMWDvJ7wQdHgnJiaCTyZvWibjA8wPQ1ESBhk/KRM6tmbL92RktELda1XtqK5LsIsc4KnEsndN5V0O/hYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8zeFEZw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBC5E1F000E9;
-	Thu, 28 May 2026 19:58:29 +0000 (UTC)
+	 MIME-Version; b=MQ1NxuIFA+uIYQ4jzfl7XKsMS0J5OUG+AVev8JLVStqn1Xo8HHMTu0aYSdlwJ1tHVHnGG1VXknxTI+jpNmXPsFgtjM8Q7UQAUL4H/iraMzhWlEO7TxhukC0QENaCqegw8OM+mN2lwWX8d66c1Z0WDs38vhLxK/xZUd9LHziD6YU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kHIQzRjS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EC901F000E9;
+	Thu, 28 May 2026 20:15:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998310;
-	bh=oN6m6TBfyxgXeu+bWprnViahLUrsEW0BK35ExmbeUpk=;
+	s=korg; t=1779999308;
+	bh=vV6HXoiyDkAv2DYYoQnvgn3ff9npPaTB1theWV1mlXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=d8zeFEZwEdiapZWztOi8WW4oeDGyu1mLUmZxSuyMaS9c6i8tcRLSIIXRtuKvpWY4p
-	 1QVAUF2O0N5DcWaBqIZA+5hQm1KdZE5YZn2aeOGe7uAos3fGaJX/0bH5SWKrLX0r/S
-	 QR6fOoWiJP5QNFahTHFLX2UHc5YO759Ff4wu2aac=
+	b=kHIQzRjSc9TmLjDdabYDyMytjravlNZBrrv8YCulBpgLE6nPoD5oLKVVpW2YB1rCT
+	 QSBdcn5dlPKb19V/UjrzNpIwwtUQsuHfnQI5H7zlKQyqJbAsJh8zQmDu/9hgVpVP22
+	 6ogDiOVeJxf6lHFNKCtR90Ebq3MmFmeMLYXUe93Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vidya Srinivas <vidya.srinivas@intel.com>,
-	Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
-	Uma Shankar <uma.shankar@intel.com>,
-	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH 7.0 129/461] drm/i915/display: Copy color pipeline from plane in the primary joiner pipe
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 020/377] Revert "ice: Remove jumbo_remove step from TX path"
 Date: Thu, 28 May 2026 21:44:18 +0200
-Message-ID: <20260528194650.722145700@linuxfoundation.org>
+Message-ID: <20260528194638.972865358@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,72 +71,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255225-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255579-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,ursulin.net:email]
-X-Rspamd-Queue-Id: CC6825F7BF0
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 6DD835F888E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+This reverts commit 55500245ec0420df96b2a89444aabf0cff2c60bc.
 
-commit 86ed2d96db1965e9008e919b1936145ae66540e3 upstream.
-
-When copying plane color state in a joiner configuration, use the plane in
-the primary joiner pipe since it carries the pipeline number selected by
-the user-space.
-
-This assumes that all pipes in the joiner are symmetric in their plane
-color capabilities.
-
-Cc: stable@vger.kernel.org # v6.19+
-Fixes: a78f1b6baf4d ("drm/i915/color: Add framework to program CSC")
-Tested-by: Vidya Srinivas <vidya.srinivas@intel.com>
-Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-Reviewed-by: Uma Shankar <uma.shankar@intel.com>
-Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Link: https://patch.msgid.link/20260511053213.3122314-2-chaitanya.kumar.borah@intel.com
-(cherry picked from commit e8308fb5e05ca08ddfb8b46f6d947a6e3fd80cd7)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_plane.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_txrx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_plane.c b/drivers/gpu/drm/i915/display/intel_plane.c
-index 5390ceb21ca4..82f445c83158 100644
---- a/drivers/gpu/drm/i915/display/intel_plane.c
-+++ b/drivers/gpu/drm/i915/display/intel_plane.c
-@@ -373,7 +373,7 @@ intel_plane_color_copy_uapi_to_hw_state(struct intel_plane_state *plane_state,
- 	bool changed = false;
- 	int i = 0;
+diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
+index 90dbe5266ce78..73f08d02f9c76 100644
+--- a/drivers/net/ethernet/intel/ice/ice_txrx.c
++++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
+@@ -2594,6 +2594,9 @@ ice_xmit_frame_ring(struct sk_buff *skb, struct ice_tx_ring *tx_ring)
  
--	iter_colorop = plane_state->uapi.color_pipeline;
-+	iter_colorop = from_plane_state->uapi.color_pipeline;
+ 	ice_trace(xmit_frame_ring, tx_ring, skb);
  
- 	while (iter_colorop) {
- 		for_each_new_colorop_in_state(state, colorop, new_colorop_state, i) {
++	if (unlikely(ipv6_hopopt_jumbo_remove(skb)))
++		goto out_drop;
++
+ 	count = ice_xmit_desc_count(skb);
+ 	if (ice_chk_linearize(skb, count)) {
+ 		if (__skb_linearize(skb))
 -- 
-2.54.0
+2.53.0
 
 
 
