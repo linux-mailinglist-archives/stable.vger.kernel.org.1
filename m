@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-255489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256054-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EIj4DxKjGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255489-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:26 +0200
+	id gOM6EZyqGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256054-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A440D5F8590
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:25 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BD435F9AAD
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:50:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 325FD30FE166
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:10:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8FB4E306132F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:37:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C953633CE8A;
-	Thu, 28 May 2026 20:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A350134D397;
+	Thu, 28 May 2026 20:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XQaa6pS6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MyYPP8l4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C27C335566;
-	Thu, 28 May 2026 20:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DFBF33CE8A;
+	Thu, 28 May 2026 20:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999055; cv=none; b=OTmk4Ud6Dsyol8WFl/rVO2Cs6UM/G7MMmKds5CFPgjfky8ntPu0lDbN7I4mM4MRWJ2wWwZBRtKdKFVTPPlHifBG63h0z5MAkNm+JJsnaBf23CJtgVErgwaMA67uTfIwtOrQ1L5Feve+fGqgQGT15RxSI1QbIAWXjdLnTW+/46nY=
+	t=1780000626; cv=none; b=qx+4wz5ZJlxT/DXhcXO4JSs19WQJsM5/WL2vFst0xtJa7pa3T54Slf7cGjKfhWpqZAOAQQwc6JshgXZohwlwcPuhtWLTkj4PyUF+2UgFnL9fIaXn9h79AlzpRQ/1x/My3kZN1/NEvSAZmgmxtAu+98aMyLHMLetQs1MZV3BzBeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999055; c=relaxed/simple;
-	bh=DRg1ZkHaGelnZe109SN1jVpvi66ZnMCaExur0HpBOFc=;
+	s=arc-20240116; t=1780000626; c=relaxed/simple;
+	bh=zdHRx0Y65XFJhXdTGaatb28nfDeOKBUbk55D8YIbvBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fGgmpykuU5y4T7Xnz+nTeXVQPXYSCvlMocvXdtpoo1DBbviapm99kamtcqne6xeaaD+FNrAGDrVr5vZE/2D6R1PrUME3DlKqBfEJThjxbh1jSEpIiTkodInVC3ZJy6zI597HZ5G6fktucxlVl5wI6bZrwMRybpj2Jv3YP3mL6ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XQaa6pS6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCC3D1F000E9;
-	Thu, 28 May 2026 20:10:53 +0000 (UTC)
+	 MIME-Version; b=eUIgQs2bDrv6h+P/XIaVpcNjBAlnInZTyR+nhSbbMhG4AxHJpTwl20ruAFs7Dbspqr0qj7L78o9GCOH61Fq9ASVzB/R03L7bm0s1faI5Yu84S6AMoA1uVocxOZdMrPqN1neHwtvzwaPiPjZ3jEy4xI1//1HVU6uS6MltlgoKSnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MyYPP8l4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC58C1F000E9;
+	Thu, 28 May 2026 20:37:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999054;
-	bh=5+DwonjwOyCfRO8nPCRof31Uo5ta/FpvLoSZWB2cdHY=;
+	s=korg; t=1780000625;
+	bh=bQ2AbuXOPJVXXFX64Yv4X9mYmDRTBggGjKmXJYYHSRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XQaa6pS6p8auQ/+9garKRJuqbLlwJrTvS/bRccq7gtLf9JirJfyIgBdRqhCD5u9yn
-	 rBRYRH4KJln59upJ6OBugT4olNl9B+pAZwiXTbQ6KoMGfOAuYjG7Eo3IPwuUyOkTfv
-	 6H9tzOYeJrbdZM91kdppX5lRFNw0zd5Sbzl1tFZI=
+	b=MyYPP8l4WHMMWhfVhH7SepDXXRx9hXcRnU/WGFBNEsGgJGsFZYIWqkNVBC6IrEqn8
+	 G9BC8Mx22/aUhfv9xqmkB5hsEfigLGi8dl9rMTJt9yDC8VCUwy1ZDhU5s004fiw3fH
+	 bj3xCF6oOiTnasL6AYMQpsA2VtC5dZ2jelItCzg0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 356/461] wifi: iwlwifi: mld: dont dereference a pointer before NULL checking it
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Bernard Metzler <bernard.metzler@linux.dev>,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH 6.12 111/272] RDMA/siw: Reject MPA FPDU length underflow before signed receive math
 Date: Thu, 28 May 2026 21:48:05 +0200
-Message-ID: <20260528194657.726310057@linuxfoundation.org>
+Message-ID: <20260528194632.487706262@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +64,139 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255489-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-256054-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,nvidia.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: A440D5F8590
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,msgid.link:url,nvidia.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 4BD435F9AAD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit d733ed481fd20a8e7bfe5119c4e77761ba3f87ee ]
+commit 0ce1bc9e46ecabe84772bb561e373c0d9876d6f2 upstream.
 
-In iwl_mld_remove_link, the link->fw_id is saved at the beginning of the
-function so we have it after we freed the link.
+A malicious connected siw peer can send an iWARP FPDU whose MPA length
+field (c_hdr->mpa_len, 16 bit big-endian, peer-controlled) is smaller
+than the fixed DDP/RDMAP header for the announced opcode. Soft-iWARP
+parses the full header in siw_get_hdr() based on iwarp_pktinfo[opcode]
+.hdr_len, but never compares mpa_len against that header length.
 
-But the link pointer can be NULL, and is not checked when the fw_id is
-stored.
+siw_tcp_rx_data() then derives
 
-Fix it by simply freeing the link at the end of the function.
+    srx->fpdu_part_rem = be16_to_cpu(mpa_len) - fpdu_part_rcvd
+                         + MPA_HDR_SIZE;
 
-fFixes: 0e66a39f4f0e ("wifi: iwlwifi: fix potential use after free in iwl_mld_remove_link()")
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://patch.msgid.link/20260515151351.371f40fc6711.I6a82cfe9655564e9c5731af91c36493b26b1208e@changeid
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+where fpdu_part_rcvd equals iwarp_pktinfo[opcode].hdr_len at this
+point. For a tagged WRITE (hdr_len 16, MPA_HDR_SIZE 2) the smallest
+on-wire mpa_len of 0 yields fpdu_part_rem = -14, and any mpa_len below
+hdr_len - MPA_HDR_SIZE underflows to a negative int.
+
+The signed value then flows into siw_proc_write()/siw_proc_rresp() as
+
+    bytes = min(srx->fpdu_part_rem, srx->skb_new);
+
+is handed to siw_check_mem() as an int len (whose interval check
+addr + len > mem->va + mem->len is satisfied for a valid base when
+len is negative), and reaches siw_rx_data() -> siw_rx_kva() /
+siw_rx_umem() -> skb_copy_bits() as a signed copy length. The header
+copy branch in skb_copy_bits() promotes that to size_t, producing a
+multi-gigabyte read.
+
+KASAN under a KUnit harness that drives the real kernel TCP receive
+path -- a loopback AF_INET socketpair, the malformed FPDU written via
+kernel_sendmsg, sk_data_ready firing in softirq, tcp_read_sock
+dispatching to siw_tcp_rx_data -- reports:
+
+    BUG: KASAN: use-after-free in skb_copy_bits+0x284/0x480
+    Read of size 4294967295 at addr ffff888...
+    Call Trace:
+     skb_copy_bits
+     siw_rx_kva
+     siw_rx_data
+     siw_check_mem
+     siw_proc_write
+     siw_tcp_rx_data
+     __tcp_read_sock
+     siw_qp_llp_data_ready
+     tcp_data_ready
+     tcp_data_queue
+
+Add the missing invariant at the earliest point where the peer header
+is fully assembled. iwarp_pktinfo[*].hdr_len - MPA_HDR_SIZE is exactly
+the value the siw transmitter uses as the minimum mpa_len for each
+opcode (drivers/infiniband/sw/siw/siw_qp.c:33), so this matches the
+protocol contract. Out-of-range FPDUs terminate the connection with
+TERM_ERROR_LAYER_LLP / LLP_ETYPE_MPA / LLP_ECODE_FPDU_START -- which
+is RFC 5044 Section 8 error code 3 ("Marker and ULPDU Length fields
+do not agree on the start of an FPDU"), the correct framing-error
+class for this inconsistency.
+
+Fixes: 8b6a361b8c48 ("rdma/siw: receive path")
+Link: https://patch.msgid.link/r/20260513175325.2042630-2-michael.bommarito@gmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Assisted-by: Claude:claude-opus-4-7
+Acked-by: Bernard Metzler <bernard.metzler@linux.dev>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/link.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/infiniband/sw/siw/siw_qp_rx.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/link.c b/drivers/net/wireless/intel/iwlwifi/mld/link.c
-index b5430e8a73d66..7496528e85874 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/link.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/link.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2024-2025 Intel Corporation
-+ * Copyright (C) 2024-2026 Intel Corporation
-  */
+--- a/drivers/infiniband/sw/siw/siw_qp_rx.c
++++ b/drivers/infiniband/sw/siw/siw_qp_rx.c
+@@ -1082,6 +1082,21 @@ static int siw_get_hdr(struct siw_rx_str
+ 	}
  
- #include "constants.h"
-@@ -504,7 +504,6 @@ void iwl_mld_remove_link(struct iwl_mld *mld,
- 	struct iwl_mld_vif *mld_vif = iwl_mld_vif_from_mac80211(bss_conf->vif);
- 	struct iwl_mld_link *link = iwl_mld_link_from_mac80211(bss_conf);
- 	bool is_deflink = link == &mld_vif->deflink;
--	u8 fw_id = link->fw_id;
- 
- 	if (WARN_ON(!link || link->active))
- 		return;
-@@ -512,15 +511,15 @@ void iwl_mld_remove_link(struct iwl_mld *mld,
- 	iwl_mld_rm_link_from_fw(mld, bss_conf);
- 	/* Continue cleanup on failure */
- 
--	if (!is_deflink)
--		kfree_rcu(link, rcu_head);
--
- 	RCU_INIT_POINTER(mld_vif->link[bss_conf->link_id], NULL);
- 
--	if (WARN_ON(fw_id >= mld->fw->ucode_capa.num_links))
-+	if (WARN_ON(link->fw_id >= mld->fw->ucode_capa.num_links))
- 		return;
- 
--	RCU_INIT_POINTER(mld->fw_id_to_bss_conf[fw_id], NULL);
-+	RCU_INIT_POINTER(mld->fw_id_to_bss_conf[link->fw_id], NULL);
+ 	/*
++	 * Peer-controlled mpa_len must not underflow srx->fpdu_part_rem
++	 * in siw_tcp_rx_data(); a negative value flows as a signed copy
++	 * length into siw_check_mem() and skb_copy_bits().
++	 */
++	if (unlikely(be16_to_cpu(c_hdr->mpa_len) + MPA_HDR_SIZE <
++		     iwarp_pktinfo[opcode].hdr_len)) {
++		pr_warn_ratelimited("siw: short mpa_len %u for opcode %u (hdr_len %u)\n",
++				    be16_to_cpu(c_hdr->mpa_len), opcode,
++				    iwarp_pktinfo[opcode].hdr_len);
++		siw_init_terminate(rx_qp(srx), TERM_ERROR_LAYER_LLP,
++				   LLP_ETYPE_MPA, LLP_ECODE_FPDU_START, 0);
++		return -EINVAL;
++	}
 +
-+	if (!is_deflink)
-+		kfree_rcu(link, rcu_head);
- }
- 
- void iwl_mld_handle_missed_beacon_notif(struct iwl_mld *mld,
--- 
-2.53.0
-
++	/*
+ 	 * DDP/RDMAP header receive completed. Check if the current
+ 	 * DDP segment starts a new RDMAP message or continues a previously
+ 	 * started RDMAP message.
 
 
 
