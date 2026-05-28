@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-255646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255321-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id INfeLqCjGGrJlggAu9opvQ
-	(envelope-from <stable+bounces-255646-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:20:48 +0200
+	id +C0ANOmgGGqblggAu9opvQ
+	(envelope-from <stable+bounces-255321-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:09:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E9F15F86F1
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:20:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3108A5F7EA7
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:09:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 53F053057083
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:18:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C01B5313ADA2
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:03:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF41282F17;
-	Thu, 28 May 2026 20:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526503164B7;
+	Thu, 28 May 2026 20:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vVMjbUCn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="azdJxDy7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B2F3016E0;
-	Thu, 28 May 2026 20:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25ADE27A476;
+	Thu, 28 May 2026 20:02:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999496; cv=none; b=Pb2jponT2oDJ8p08ZHkextiAP6MYv/lthA0DFJM5KPgOVy1HSdC13YFML7WLL02Snkj43gbAvnnF4RLUtjNJ4jAlLuLVTdyOEPz3CsZNNtBHVNlz+HAfkZHXpdsLwIogwjWA4c2tmr0iV9I0Jcl9qX/LdDyX9C0OUWViyXwT/eo=
+	t=1779998581; cv=none; b=q2lW+Vyv30EGDPq+2DHTc+92C7ffGqP8fXykItoaqqPT+dNwvGzXyzjxa4myVEzdLz69uTMe7X3h/hMzChca45998VVvPW/eTA+6R8l7Llk7Av2nv6SSCexrxIwJoYJsIT18TD06DTeqmy5/3bCERmwiq0Qws6rU4j/U6GcsP+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999496; c=relaxed/simple;
-	bh=c+IjFtWZhyGNAVdNQXeN6bkMz2RvrnTZn7t7CCEdBiQ=;
+	s=arc-20240116; t=1779998581; c=relaxed/simple;
+	bh=kAF3Tqf35yL7rEZ0fkSamaWOliL2ubbAid24VOM2kfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ODXWvzYrEF4C9n23WpJgxeMMDbBvgjH8auI72+ABI3iKoi893rIlds7aPS3h0hjqg8FZeFZJx55aYKJqKv1j42ZpKWZIBQYl8V1F7XlEDYhLZx08+JS+RpCyWrnxQG0jo1+JOFFR5f397lwNyeAHkrRDM7a46/N4j0Yctl1t2FU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVMjbUCn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F37091F000E9;
-	Thu, 28 May 2026 20:18:13 +0000 (UTC)
+	 MIME-Version; b=o6za3mKLrL6V3JTb1vc3KdxfNZsZBUwgJR0Jtxjp0QUkWPPedHdrDpryjmeas60f5i5HOd95HWjwtoqFyDQs6DjDhxOlyZQd0eg7fTrc598CxMFzu3Rco71TaHC1xY4D7Xhnn1anela1PYDWRUSaZ9U6razQM/QAPUBQB/8JdWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=azdJxDy7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EE9E1F000E9;
+	Thu, 28 May 2026 20:02:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999494;
-	bh=7Z0re0WzfsHyntmPfnMr60GFeF/LRfBa8yo1NjeBUmM=;
+	s=korg; t=1779998579;
+	bh=WQCDDQ0Vhg63E26tUtxoxHOTzQC0UXXyuUxP0ZJcigs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vVMjbUCn5M8cqMysxJFCAUyevOJEpNHFfRm8W/XPO72LbzXFnWmhEEK0l+PSs9cl2
-	 ZRKabEAAyxE4Jxdn/cT9GxQ96xoLp8W6OFEZBAiUC5VNaImQjiOHD2uvNFMMolEtoz
-	 JVOIAujP5SVe9eTU/Z8iMAxh1V4yZ8XMnZ3aM/+w=
+	b=azdJxDy7Wle6wIGlyjUofJu78rrYHKD+X1AhK5dmGhHEyjBwwfwWYUHnfqYZSXkCC
+	 MKmFTFMOyjVE6D5qSlcxTqlPzrP5l30E9jbnB5R/wq1lQzdG6Ab6DkqCV4T4d9z3QZ
+	 6RhIqv2QI6dpNS+iAqGzxbY0ZoIvdaTH51k6bIpA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Farnung <kfarnung@gmail.com>,
-	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: [PATCH 6.18 088/377] wifi: ath11k: clear shared SRNG pointer state on restart
+	Sudeep Holla <sudeep.holla@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 197/461] firmware: arm_ffa: Bound PARTITION_INFO_GET_REGS copies
 Date: Thu, 28 May 2026 21:45:26 +0200
-Message-ID: <20260528194640.914702294@linuxfoundation.org>
+Message-ID: <20260528194652.787635375@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
-References: <20260528194638.371537336@linuxfoundation.org>
+In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
+References: <20260528194646.819809818@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,93 +67,132 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com];
-	TAGGED_FROM(0.00)[bounces-255646-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-255321-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email]
-X-Rspamd-Queue-Id: 0E9F15F86F1
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 3108A5F7EA7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyle Farnung <kfarnung@gmail.com>
+From: Sudeep Holla <sudeep.holla@kernel.org>
 
-commit f51e4b3b5574ad8cb5b16b11f8a1452147ece87a upstream.
+[ Upstream commit 3974ea1938406f9bfa7c1f48d4e43533f447bb08 ]
 
-LMAC rings reuse the shared rdp/wrp pointer buffers without going
-through the normal SRNG hw-init path that zeros non-LMAC ring
-pointers. After restart, ath11k_hal_srng_clear() can therefore hand
-stale hp/tp state from the previous firmware instance back to the new
-one.
+The register-based PARTITION_INFO_GET path trusted the firmware-provided
+indices when copying partition descriptors into the caller buffer.
+Reject inconsistent counts or index progressions so the copy loop cannot
+write past the allocated array.
 
-Clear the shared pointer buffers while keeping the allocations in
-place so restart still avoids reallocating SRNG DMA memory, but starts
-with fresh ring-pointer state.
-
-Fixes: 32be3ca4cf78b ("wifi: ath11k: HAL SRNG: don't deinitialize and re-initialize again")
-Cc: stable@vger.kernel.org
-Closes: https://lore.kernel.org/all/CAOPSVF04q6uvVdq8GTRLHBrVMdpt9=o9wVcFMc6f-yhmSBcZqQ@mail.gmail.com/
-Signed-off-by: Kyle Farnung <kfarnung@gmail.com>
-Reviewed-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260513-kfarnung-ath11k-srng-clear-pointer-state-v1-1-bc700dd8b333@gmail.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ba85c644ac8d ("firmware: arm_ffa: Add support for FFA_PARTITION_INFO_GET_REGS")
+Link: https://patch.msgid.link/20260428-ffa_fixes-v2-6-8595ae450034@kernel.org
+(fixed cur_idx when exactly one descriptor in the first fragment)
+Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/hal.c |   14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/firmware/arm_ffa/driver.c | 29 +++++++++++++++++++++++------
+ 1 file changed, 23 insertions(+), 6 deletions(-)
 
---- a/drivers/net/wireless/ath/ath11k/hal.c
-+++ b/drivers/net/wireless/ath/ath11k/hal.c
-@@ -1388,14 +1388,22 @@ EXPORT_SYMBOL(ath11k_hal_srng_deinit);
- 
- void ath11k_hal_srng_clear(struct ath11k_base *ab)
+diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
+index 07c0de772e7d1..e15fda86b6bce 100644
+--- a/drivers/firmware/arm_ffa/driver.c
++++ b/drivers/firmware/arm_ffa/driver.c
+@@ -323,6 +323,12 @@ __ffa_partition_info_get(u32 uuid0, u32 uuid1, u32 uuid2, u32 uuid3,
+ #define PART_INFO_ID_MASK	GENMASK(15, 0)
+ #define PART_INFO_EXEC_CXT_MASK	GENMASK(31, 16)
+ #define PART_INFO_PROPS_MASK	GENMASK(63, 32)
++#define FFA_PART_INFO_GET_REGS_FIRST_REG	3
++#define FFA_PART_INFO_GET_REGS_REGS_PER_DESC	3
++#define FFA_PART_INFO_GET_REGS_MAX_DESC \
++	(((sizeof(ffa_value_t) / sizeof_field(ffa_value_t, a0)) - \
++	  FFA_PART_INFO_GET_REGS_FIRST_REG) / \
++	 FFA_PART_INFO_GET_REGS_REGS_PER_DESC)
+ #define PART_INFO_ID(x)		((u16)(FIELD_GET(PART_INFO_ID_MASK, (x))))
+ #define PART_INFO_EXEC_CXT(x)	((u16)(FIELD_GET(PART_INFO_EXEC_CXT_MASK, (x))))
+ #define PART_INFO_PROPERTIES(x)	((u32)(FIELD_GET(PART_INFO_PROPS_MASK, (x))))
+@@ -330,15 +336,13 @@ static int
+ __ffa_partition_info_get_regs(u32 uuid0, u32 uuid1, u32 uuid2, u32 uuid3,
+ 			      struct ffa_partition_info *buffer, int num_parts)
  {
--	/* No need to memset rdp and wrp memory since each individual
--	 * segment would get cleared in ath11k_hal_srng_src_hw_init()
--	 * and ath11k_hal_srng_dst_hw_init().
-+	/*
-+	 * Preserve the shared pointer buffers, but clear the previous
-+	 * firmware instance's hp/tp state before handing them back to FW.
-+	 * LMAC rings reuse this shared memory without going through the
-+	 * normal SRNG hw-init path that zeros non-LMAC ring pointers.
- 	 */
- 	memset(ab->hal.srng_list, 0,
- 	       sizeof(ab->hal.srng_list));
- 	memset(ab->hal.shadow_reg_addr, 0,
- 	       sizeof(ab->hal.shadow_reg_addr));
-+	if (ab->hal.rdp.vaddr)
-+		memset(ab->hal.rdp.vaddr, 0,
-+		       sizeof(*ab->hal.rdp.vaddr) * HAL_SRNG_RING_ID_MAX);
-+	if (ab->hal.wrp.vaddr)
-+		memset(ab->hal.wrp.vaddr, 0,
-+		       sizeof(*ab->hal.wrp.vaddr) * HAL_SRNG_NUM_LMAC_RINGS);
- 	ab->hal.avail_blk_resource = 0;
- 	ab->hal.current_blk_index = 0;
- 	ab->hal.num_shadow_reg_configured = 0;
+-	u16 buf_sz, start_idx, cur_idx, count = 0, prev_idx = 0, tag = 0;
++	u16 buf_sz, start_idx = 0, cur_idx, count = 0, tag = 0;
+ 	struct ffa_partition_info *buf = buffer;
+ 	ffa_value_t partition_info;
+ 
+ 	do {
+ 		__le64 *regs;
+-		int idx;
+-
+-		start_idx = prev_idx ? prev_idx + 1 : 0;
++		int idx, nr_desc, buf_idx;
+ 
+ 		invoke_ffa_fn((ffa_value_t){
+ 			      .a0 = FFA_PARTITION_INFO_GET_REGS,
+@@ -354,15 +358,28 @@ __ffa_partition_info_get_regs(u32 uuid0, u32 uuid1, u32 uuid2, u32 uuid3,
+ 			count = PARTITION_COUNT(partition_info.a2);
+ 		if (!buffer || !num_parts) /* count only */
+ 			return count;
++		if (count > num_parts)
++			return -EINVAL;
+ 
+ 		cur_idx = CURRENT_INDEX(partition_info.a2);
++		if (cur_idx < start_idx || cur_idx >= count)
++			return -EINVAL;
++
++		nr_desc = cur_idx - start_idx + 1;
++		if (nr_desc > FFA_PART_INFO_GET_REGS_MAX_DESC)
++			return -EINVAL;
++
++		buf_idx = buf - buffer;
++		if (buf_idx + nr_desc > num_parts)
++			return -EINVAL;
++
+ 		tag = UUID_INFO_TAG(partition_info.a2);
+ 		buf_sz = PARTITION_INFO_SZ(partition_info.a2);
+ 		if (buf_sz > sizeof(*buffer))
+ 			buf_sz = sizeof(*buffer);
+ 
+ 		regs = (void *)&partition_info.a3;
+-		for (idx = 0; idx < cur_idx - start_idx + 1; idx++, buf++) {
++		for (idx = 0; idx < nr_desc; idx++, buf++) {
+ 			union {
+ 				uuid_t uuid;
+ 				u64 regs[2];
+@@ -380,7 +397,7 @@ __ffa_partition_info_get_regs(u32 uuid0, u32 uuid1, u32 uuid2, u32 uuid3,
+ 			uuid_copy(&buf->uuid, &uuid_regs.uuid);
+ 			regs += 3;
+ 		}
+-		prev_idx = cur_idx;
++		start_idx = cur_idx + 1;
+ 
+ 	} while (cur_idx < (count - 1));
+ 
+-- 
+2.53.0
+
 
 
 
