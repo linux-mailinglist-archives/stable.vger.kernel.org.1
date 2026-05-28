@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-255438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256012-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mJZfOm+iGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255438-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:43 +0200
+	id iLSCE5eoGGpolwgAu9opvQ
+	(envelope-from <stable+bounces-256012-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:41:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A0D55F8312
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:15:43 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37F5F5F958F
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:41:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9E166309BB71
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:08:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 66C3230BB5DB
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:35:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEE0332ABC0;
-	Thu, 28 May 2026 20:08:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B693633D4FB;
+	Thu, 28 May 2026 20:35:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g/0shDrQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rVe9TM6b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49131A3157;
-	Thu, 28 May 2026 20:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 610AD2E92BA;
+	Thu, 28 May 2026 20:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998910; cv=none; b=WXEfO9hW1XmpdPr5UxJ3UhG9CkGn+HsYWEwHutluDgI0d1lqqQWkx/gtalMq5shScslZ5loBCYnGrNrF/epObP9Pd//QpuFd7X0EGBQPscAZ0usx9vHh19YzfFsoDwZJwaWr5VCOCBsmAw+GddMgOWz7h0cg+pxDhQlX7z17uQI=
+	t=1780000508; cv=none; b=fDFGgOHyJt0hcsXP2FiuX3qXe5333MncyO7ly190VomskAKEKqC5bStWY390SBTOyqGLwnzQJB7Iqt+6nKY2vGsyTHIzwymEgZyNmyrFTzCtVzdO+IJX4epF4BKRNCT4z/H9zj6aYWw7wZS8NdEefIwIsU2NP7COS2rG3FUDwbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998910; c=relaxed/simple;
-	bh=mGx5gXnBCU4tp3PpsosvV99QPOE/RiLDMKhzUBk45PE=;
+	s=arc-20240116; t=1780000508; c=relaxed/simple;
+	bh=CqZ8YwnjNdhbEZOqiiuP8Rg4kp1raVcu6LFuamlFwwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H7qRysHkW2XxHFek4hb+G9PUmHp3zfjh0eiRMFHr2j0NxFQgptlnk9Vi8dyPA5JJaUFFIjnWjL4LD5GgoUIwZCmRzX48FZ1vpSA5L3+dBdQH/SZtwhZ4bKis0N6Q48cqRGv2b1AEX/YOTcv53Qo4d2q/NqIQkSILSWetE5UL0f0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g/0shDrQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256C61F000E9;
-	Thu, 28 May 2026 20:08:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OkhMkOI6dqcbeX+2la5TKDenHT2OdTXINw+HInnY2sJoH2tiEHN0/fLNW8UW/6xolt0atIco4U+CvXzHBaMIQVPPUM3o5iehClbSaRrNjQjQC9qfGbLbBkD5Lg36i+agxVXk/HoJZH5cf/fT2/vctgCmxxN4D5U3WWUlgCXWyDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rVe9TM6b; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEEF91F000E9;
+	Thu, 28 May 2026 20:35:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998909;
-	bh=R/3KIoefdGKY8vtSDkJvrNzZRLkjHxxmt/C2TB8N0Lo=;
+	s=korg; t=1780000507;
+	bh=/O2AMIHvWhLm2hZ1UOOVXLyMogjge8f2oQ49Q772DFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=g/0shDrQ3hnzfeSW+12KJYXrSiyCHvu/aqwdUu9lFrBNwd1AMxvI9aBMsCn2dNbMu
-	 3UroTO9FAc7wL8W295kT8lQPOBOFU6Jk16ojGWHMXsy7M1+JNlyt9uTBZuo1mD16Ut
-	 Fk2VUeePD36NoO0RJXL8CfZCLyq/awPxIdIyaIUE=
+	b=rVe9TM6ba9bZG+P/VtZY70UBohPJ3l73/N7Mfu0AC3Mw+GBy3ERheHVYoA+uPPXXu
+	 63JUvus9TjtXiIZsnE/pZ/Tl70A2l/82CER67bXDOxgzjfKMhgxZcJhbZXIAvnHYWp
+	 UD71PyTBY75wQD5yjNYz14fd6Vuumu7jGWl5K+Zs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Paul Walmsley <pjw@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 314/461] riscv: Docs: fix unmatched quote warning
+	Zijing Yin <yzjaurora@gmail.com>,
+	=?UTF-8?q?R=C3=A9mi=20Denis-Courmont?= <remi@remlab.net>,
+	syzbot+9f4a135646b66c509935@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 069/272] phonet/pep: disable BH around forwarded sk_receive_skb()
 Date: Thu, 28 May 2026 21:47:23 +0200
-Message-ID: <20260528194656.385797582@linuxfoundation.org>
+Message-ID: <20260528194631.308969600@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +65,141 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,remlab.net,syzkaller.appspotmail.com,google.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-256012-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255438-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,9f4a135646b66c509935];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,infradead.org:email,msgid.link:url]
-X-Rspamd-Queue-Id: 8A0D55F8312
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,remlab.net:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 37F5F5F958F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Zijing Yin <yzjaurora@gmail.com>
 
-[ Upstream commit 50da1c9ccb70fc5250c37ac474b54ee072732ea3 ]
+commit dbc81608e3a653dea6cf403f20cae35468b8ab9c upstream.
 
-'make htmldocs' complains about ``prctrl` -- so add a second '`' to
-avoid the warning.
+The networking receive path is usually run from softirq context, but
+protocols that take the socket lock may have packets stored in the
+backlog and processed later from process context. In that case
+release_sock() -> __release_sock() drops the slock with spin_unlock_bh()
+and then calls sk->sk_backlog_rcv() with bottom halves enabled.
 
-Documentation/arch/riscv/zicfilp.rst:79: WARNING: Inline literal start-string without end-string. [docutils]
+Typical sk_backlog_rcv handlers process the socket whose backlog is
+being drained, so the BH state at entry is irrelevant for the slocks
+they touch. pep_do_rcv() is different: when the inbound skb targets an
+existing PEP pipe, it forwards the skb to a different *child* socket
+via sk_receive_skb(). That helper takes the child slock with
+bh_lock_sock_nested(), which is just spin_lock_nested() and assumes BH
+is already off. The same child slock therefore ends up acquired with
+BH on (process path) and with BH off (softirq path):
 
-Fixes: 08ee1559052b ("prctl: cfi: change the branch landing pad prctl()s to be more descriptive")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Link: https://patch.msgid.link/20260406232304.1892528-1-rdunlap@infradead.org
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  process context                   softirq context
+  ---------------                   ---------------
+  release_sock(listener)            __netif_receive_skb()
+   __release_sock()                  phonet_rcv()
+    spin_unlock_bh()                  __sk_receive_skb(listener)
+    [BH now ENABLED]                  [BH already disabled]
+    sk_backlog_rcv:                   sk_backlog_rcv:
+     pep_do_rcv()                      pep_do_rcv()
+      sk_receive_skb(child)             sk_receive_skb(child)
+       bh_lock_sock_nested(child)        bh_lock_sock_nested(child)
+       => SOFTIRQ-ON-W                   => IN-SOFTIRQ-W
+
+Lockdep flags this as inconsistent lock state, and it can become a real
+self-deadlock if a softirq on the same CPU tries to receive to the same
+child socket while its slock is held in the BH-enabled path:
+
+  WARNING: inconsistent lock state
+  inconsistent {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage.
+   (slock-AF_PHONET/1){+.?.}-{3:3}, at: __sk_receive_skb+0x1cf/0x900
+    __sk_receive_skb              net/core/sock.c:563
+    sk_receive_skb                include/net/sock.h:2022 [inline]
+    pep_do_rcv                    net/phonet/pep.c:675
+    sk_backlog_rcv                include/net/sock.h:1190
+    __release_sock                net/core/sock.c:3216
+    release_sock                  net/core/sock.c:3815
+    pep_sock_accept               net/phonet/pep.c:879
+
+Wrap the forwarded sk_receive_skb() in local_bh_disable() /
+local_bh_enable() so the child slock is always acquired with BH off.
+local_bh_disable() nests safely on the softirq path.
+
+Discovered via in-house syzkaller fuzzing; the same root cause also
+on the linux-6.1.y syzbot dashboard as extid 44f0626dd6284f02663c.
+Reproduced under KASAN + LOCKDEP + PROVE_LOCKING, reproducer:
+https://pastebin.com/A3t8xzCR
+
+Fixes: 9641458d3ec4 ("Phonet: Pipe End Point for Phonet Pipes protocol")
+Link: https://syzkaller.appspot.com/bug?extid=44f0626dd6284f02663c
+Cc: stable@vger.kernel.org
+Signed-off-by: Zijing Yin <yzjaurora@gmail.com>
+Acked-by: Rémi Denis-Courmont <remi@remlab.net>
+Reported-by: syzbot+9f4a135646b66c509935@syzkaller.appspotmail.com
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260519172635.86304-1-yzjaurora@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/arch/riscv/zicfilp.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/phonet/pep.c |   19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/arch/riscv/zicfilp.rst b/Documentation/arch/riscv/zicfilp.rst
-index ab7d8e62ddaff..12b35969d17ad 100644
---- a/Documentation/arch/riscv/zicfilp.rst
-+++ b/Documentation/arch/riscv/zicfilp.rst
-@@ -78,7 +78,7 @@ the program.
+--- a/net/phonet/pep.c
++++ b/net/phonet/pep.c
+@@ -671,8 +671,23 @@ static int pep_do_rcv(struct sock *sk, s
  
- Per-task indirect branch tracking state can be monitored and
- controlled via the :c:macro:`PR_GET_CFI` and :c:macro:`PR_SET_CFI`
--``prctl()` arguments (respectively), by supplying
-+``prctl()`` arguments (respectively), by supplying
- :c:macro:`PR_CFI_BRANCH_LANDING_PADS` as the second argument.  These
- are architecture-agnostic, and will return -EINVAL if the underlying
- functionality is not supported.
--- 
-2.53.0
-
+ 	/* Look for an existing pipe handle */
+ 	sknode = pep_find_pipe(&pn->hlist, &dst, pipe_handle);
+-	if (sknode)
+-		return sk_receive_skb(sknode, skb, 1);
++	if (sknode) {
++		int rc;
++
++		/* pep_do_rcv() runs from two contexts: from softirq via
++		 * phonet_rcv() -> __sk_receive_skb() with BH disabled,
++		 * and from process context via
++		 * release_sock() -> __release_sock(), which drops
++		 * the listener slock with spin_unlock_bh() before draining
++		 * the backlog.  The child pipe slock is taken below via
++		 * bh_lock_sock_nested(), which does not itself disable BH, so
++		 * disable BH here to keep both acquire contexts consistent.
++		 */
++		local_bh_disable();
++		rc = sk_receive_skb(sknode, skb, 1);
++		local_bh_enable();
++		return rc;
++	}
+ 
+ 	switch (hdr->message_id) {
+ 	case PNS_PEP_CONNECT_REQ:
 
 
 
