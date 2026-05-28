@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-255682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255683-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qLqUEtmlGGrClggAu9opvQ
-	(envelope-from <stable+bounces-255682-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:17 +0200
+	id iJJ6OGWkGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255683-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 962615F8D57
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60AA85F8908
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:24:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 878E73192E22
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:19:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EC2CD300B87E
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:20:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B6D92F9D85;
-	Thu, 28 May 2026 20:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0528A282F17;
+	Thu, 28 May 2026 20:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zPGOo64F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q3eqmF6t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9632580D7;
-	Thu, 28 May 2026 20:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59F72580D7;
+	Thu, 28 May 2026 20:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999598; cv=none; b=npTjm0BupOfAtrrGUPUrC2JXPOKX4Qzvg5yCRQviZRYntLgsmcRD+FI+Mr3+b+Wygxp4QWPRyy/AzqBdCDgqZCrW9n5WoD3IgYb6W8HrHZQreGSGyN0joGifyZXYh8HR0NmiN8VaJe/n9VVs0bv32oF19WBbS8f8/vKcLI66pZU=
+	t=1779999600; cv=none; b=oIWexteI0BT/oOfo47nPvORWLHoc8MVndQLyFkFu5jjyuQb8IKsiZ97NwnCRpcPYNEDmVG1Py0sdGFD944TsPcgKqv8Rl65bSjyymihvfsHvn/0tH8bQdPAnKg2cL67zOALLjo1U0uw6we/lbvwTg0u6Jl36WV2u01ZigIneWYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999598; c=relaxed/simple;
-	bh=OtPvXg4jrgmxaiZ/BnQ98iJRwUdY4oayOwnXSdCpQv0=;
+	s=arc-20240116; t=1779999600; c=relaxed/simple;
+	bh=i8jh+IUh9ZiDej5zyOgnapVb3d85lPi7oKjTJSTTgLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QSvE1tLlalUAKyy4sMJvGJrV2qxQbTYR8iJ4u+CVfkzKzPO4wdkvtjpte80yHyvTK32HQgoOIcWuhXV6Pq9y2RSNgwLJHbPdpppeqyZDDjd91DTgMb01Hgb/aI3EsrPE7RMvq+6m1K6D5W5aPDQPBx4NYIFG8rX6Ez/iSsvstQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zPGOo64F; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DA8C1F000E9;
-	Thu, 28 May 2026 20:19:56 +0000 (UTC)
+	 MIME-Version; b=nPhmmwrAJjJOb3e8hZoAsb0SDqQoVrm8VgA4O3gYEQZOYstwW4gSwba8cTgbCuFvwG9ktX+b/7m0bzSvJZuqBKTYQ/MYhsBLSDkCDS6B6eFKsUDhK8eoIhAfm101Shz2OHzQKSjT09JWlVwXLzEc6mmQqnNvhelfWDDExRihCwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q3eqmF6t; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F5561F000E9;
+	Thu, 28 May 2026 20:19:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999597;
-	bh=DbdtBs3jP0BPLH/Kic1Gdin5KCSkUdWfqZYdJ3qXb54=;
+	s=korg; t=1779999599;
+	bh=lb8OSN5VgcWh6eYpT7MQqDoACFlhFl/w9HhtZK+HXdU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zPGOo64Flcvc8ElAqSsPkwhwfCp9J4vw1S79iqncFsHvQ5ZWOkxUJMk46GlRG9vNx
-	 4CASgC20ctp9GDqHVK1hhUjOc1UpEaZCTUte/Bvc+8pQK83KuLVx7O8xhZhB8AuJCt
-	 hRcOFHk4aEJIsuelSBz1BT08WMdXKc059uPxg6Fs=
+	b=Q3eqmF6tz8Vl95RliWUl9m9DP6Y36w4wdjr4tfS2Q1zgx9zkDYct8I6D68ilN9mob
+	 47bApG51WffAoQXu+OGOr/wqWX1cNTPYXMuv2z5hQkdYoR3/TVRkqIywIKbHg67ZOJ
+	 VWvqCYKNUXybRDpzPHJ5zfvUZnM2PhnI30eYtsLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Guo Ren <guoren@kernel.org>,
 	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.18 124/377] LoongArch: kprobes: Use larch_insn_text_copy() to patch instructions
-Date: Thu, 28 May 2026 21:46:02 +0200
-Message-ID: <20260528194641.935235732@linuxfoundation.org>
+Subject: [PATCH 6.18 125/377] LoongArch: Remove unused code to avoid build warning
+Date: Thu, 28 May 2026 21:46:03 +0200
+Message-ID: <20260528194641.967285758@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
 References: <20260528194638.371537336@linuxfoundation.org>
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-255682-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255683-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,9 +88,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,loongson.cn:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 962615F8D57
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,loongson.cn:email]
+X-Rspamd-Queue-Id: 60AA85F8908
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,72 +98,41 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit e3ef9a28f558d1cbf0b42d6dcd16c60da557562b upstream.
+commit 0ccc9d47cf020994097ff51827cebd04aa2b0bf4 upstream.
 
-On SMP systems, kprobe handlers would occasionally fail to execute on
-certain CPU cores. The issue is hard to reproduce and typically occurs
-randomly under high system load.
+After commit feee6b2989165631b1 ("mm/memory_hotplug: shrink zones when
+offlining memory"), __remove_pages() doesn't need the "zone" parameter
+so the "page" variable is also unused. Remove the unused code to avoid
+such build warning:
 
-The root cause is a software-side instruction hazard. According to the
-LoongArch Reference Manual, while the cache coherency is maintained by
-hardware, software must explicitly use the "IBAR" instruction to ensure
-the instruction fetch unit (IFU) observes the effects of recent stores.
+arch/loongarch/mm/init.c: In function 'arch_remove_memory':
+arch/loongarch/mm/init.c:134:22: warning: variable 'page' set but not used [-Wunused-but-set-variable=]
+  134 |         struct page *page = pfn_to_page(start_pfn);
 
-The current arch_arm_kprobe() and arch_disarm_kprobe() only execute the
-"IBAR" barrier (via flush_insn_slot -> local_flush_icache_range) on the
-local CPU. This leaves a vulnerable window where remote CPU cores may
-continue executing stale instructions from their pipelines or prefetch
-buffers, as they have not executed an "IBAR" since the code modification.
-
-Switch to larch_insn_text_copy() to fix this:
-1. Synchronization: It uses stop_machine_cpuslocked() to synchronize all
-   online CPUs, ensuring no CPU is executing the target code area during
-   modification.
-2. Visibility: By passing cpu_online_mask to stop_machine_cpuslocked(),
-   the callback text_copy_cb() is executed on all online cores. Each CPU
-   core invokes local_flush_icache_range() to execute "IBAR", clearing
-   instruction hazards system-wide and ensuring the "break" instruction
-   is visible to the fetch units of all cores.
-3. Robustness: It properly manages memory write permissions (ROX/RW) for
-   the kernel text segment during patching, ensuring compatibility with
-   CONFIG_STRICT_KERNEL_RWX.
-
-Cc: <stable@vger.kernel.org>  # 6.18+
-Fixes: 6d4cc40fb5f5 ("LoongArch: Add kprobes support")
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Guo Ren <guoren@kernel.org>
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/kprobes.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ arch/loongarch/mm/init.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/arch/loongarch/kernel/kprobes.c
-+++ b/arch/loongarch/kernel/kprobes.c
-@@ -60,16 +60,18 @@ NOKPROBE_SYMBOL(arch_prepare_kprobe);
- /* Install breakpoint in text */
- void arch_arm_kprobe(struct kprobe *p)
+--- a/arch/loongarch/mm/init.c
++++ b/arch/loongarch/mm/init.c
+@@ -97,11 +97,7 @@ void arch_remove_memory(u64 start, u64 s
  {
--	*p->addr = KPROBE_BP_INSN;
--	flush_insn_slot(p);
-+	u32 insn = KPROBE_BP_INSN;
-+
-+	larch_insn_text_copy(p->addr, &insn, LOONGARCH_INSN_SIZE);
- }
- NOKPROBE_SYMBOL(arch_arm_kprobe);
+ 	unsigned long start_pfn = start >> PAGE_SHIFT;
+ 	unsigned long nr_pages = size >> PAGE_SHIFT;
+-	struct page *page = pfn_to_page(start_pfn);
  
- /* Remove breakpoint from text */
- void arch_disarm_kprobe(struct kprobe *p)
- {
--	*p->addr = p->opcode;
--	flush_insn_slot(p);
-+	u32 insn = p->opcode;
-+
-+	larch_insn_text_copy(p->addr, &insn, LOONGARCH_INSN_SIZE);
+-	/* With altmap the first mapped page is offset from @start */
+-	if (altmap)
+-		page += vmem_altmap_offset(altmap);
+ 	__remove_pages(start_pfn, nr_pages, altmap);
  }
- NOKPROBE_SYMBOL(arch_disarm_kprobe);
- 
+ #endif
 
 
 
