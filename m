@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-255372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255689-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GF6DH3WhGGqnlggAu9opvQ
-	(envelope-from <stable+bounces-255372-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:33 +0200
+	id OFmHMu6lGGrClggAu9opvQ
+	(envelope-from <stable+bounces-255689-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F28195F806D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28BDF5F8D97
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:30:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C727D310CB5C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:05:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8D0AB319D7B5
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:20:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73AE632ABC0;
-	Thu, 28 May 2026 20:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ABB82D9787;
+	Thu, 28 May 2026 20:20:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="silzhlsa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o34SEp1w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A874335566;
-	Thu, 28 May 2026 20:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31872F8E83;
+	Thu, 28 May 2026 20:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998725; cv=none; b=REnFpR2vjyE+x4S5zo97wBdJgmp9wkrYAI2JIDNtza4MKZmyNSHx2ABwt1mrRNkQPTI1kSdOh1HOjdEPQfxUvO7o9X7W/oUzmc+/6PIdtUCqscr79vhAkHVkQ4+WvT2U3+g+I60Eh9HajugDSvlOvERd17rTqxR8B0MUuirOuVQ=
+	t=1779999614; cv=none; b=bd4QxIFInSQEDP4uTpxYRANR9kRgU4lsSgFe8S2HTZ5qV5wj2VxO8qv8QA57Ekieh22IaXdR+ppQJ6UDFwNd7p4RCU0zZ6TcToGZBwmV1+zO2yQxZlS9UpHn3x3inGuF4TV+n5n0Lo+eh72ZXnMC2Uv6od/z4iKK6pCwzeTWcZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998725; c=relaxed/simple;
-	bh=NFIJUBc4eedlMiYIl5e1/mezRUrYjkHts4dMkVPPF5Q=;
+	s=arc-20240116; t=1779999614; c=relaxed/simple;
+	bh=PiLPx5CJWSRegHN6PhBguQ/wRfUWVv6k4l41JkgZjL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sDdWreug9t5y1715i8KC9piiOlQ7hRpIn03bR2SipbtFVFRM7R9fomKwgcj1rCFg/L5PU00ZtGX8zgGzrfEryjC+5gBi8RtCk63uAa2dJZyVXekDGMsYlCkUF8xe/PXs5xAVAViQxAqWwBm08ieoUbSpF8c5l0P+Xo5LWUVFdVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=silzhlsa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F041F000E9;
-	Thu, 28 May 2026 20:05:23 +0000 (UTC)
+	 MIME-Version; b=CmdAIWDhHdcAndc1Wkkh3YYypiGPh2tbAck0RCjtGlKcSK63oAlkVMQI1bXE5VejDABkFfI7MWI3UOUsUSJplLqPJLR7pynswmCENDeU/n6II8FU65qR1PIoCfTJTC7QKoGh9m7A+sX5l+yRe5LfT35bEOjsPptHM7a5VwNWPgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o34SEp1w; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DF821F000E9;
+	Thu, 28 May 2026 20:20:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998723;
-	bh=rZKzpfzk1lA0Zf7xDLM/LrUZqWUewGUjzjDrk7gNllY=;
+	s=korg; t=1779999613;
+	bh=HPWxo1CKfBLKK1lBQuyeSW02ekc4xRsQRupey3dJJVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=silzhlsaegpB49KCH34KCvfEwogHKNjTaXP+QL2aCbw7k0TXwOgGGHqhlS9aWhmsQ
-	 WIZQ2b2KGscogozLrcDbtCM0poUNsW/qOFPJVVl0HTbhwCsGPDVUszMV+cki6AqLIO
-	 4A+rtd6c1jG+gBDYlDOwutrqVOd8/FVCaZfSdOp4=
+	b=o34SEp1wgJLkPcoLnflEG+Kc7shvVpvQz1c6mash+/mvWzXF2GmVgjdMHHopN0LKc
+	 LRzUwqz2W1c5IdWVGTI9P7nlPzNiJSyE42fLbj7Xy/JPJ5uEMro1kfa4Fvwn0PINDd
+	 HlhoMw5OLqaHocUfpa1y4Ns4o5hqS0zdWA/BUVA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Lei <tom.leiming@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 239/461] ublk: reject max_sectors smaller than PAGE_SECTORS in parameter validation
+	syzbot+72bd3dd3a5d5f39a0271@syzkaller.appspotmail.com,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Subject: [PATCH 6.18 130/377] drm/virtio: use uninterruptible resv lock for plane updates
 Date: Thu, 28 May 2026 21:46:08 +0200
-Message-ID: <20260528194654.062260909@linuxfoundation.org>
+Message-ID: <20260528194642.126043451@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,84 +69,178 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255372-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255689-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,collabora.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,72bd3dd3a5d5f39a0271];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: F28195F806D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,syzkaller.appspot.com:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,appspotmail.com:email,collabora.com:email]
+X-Rspamd-Queue-Id: 28BDF5F8D97
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <tom.leiming@gmail.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit 1860c2f85922917d8a46f16a6f4bd2298ffa0fb5 ]
+commit 9af1b6e175c82daf4b423da339a722d8e67a735a upstream.
 
-blk_validate_limits() requires max_hw_sectors >= PAGE_SECTORS and fires
-a WARN_ON_ONCE if this invariant is violated. ublk_validate_params()
-only checked the upper bound of max_sectors against max_io_buf_bytes,
-allowing userspace to pass small values (including zero) that trigger
-the warning when blk_mq_alloc_disk() is called from
-ublk_ctrl_start_dev().
+virtio_gpu_cursor_plane_update() and virtio_gpu_resource_flush() lock
+the framebuffer BO's dma_resv via virtio_gpu_array_lock_resv() and
+ignore its return value. The function can fail with -EINTR from
+dma_resv_lock_interruptible() (signal during lock wait) or with
+-ENOMEM from dma_resv_reserve_fences() (fence slot allocation),
+leaving the resv lock not held. The queue path then walks the object
+array and calls dma_resv_add_fence(), which requires the lock held;
+with lockdep enabled this trips dma_resv_assert_held():
 
-Before 494ea040bcb5, ublk used blk_queue_max_hw_sectors() which silently
-clamped small values up to PAGE_SECTORS. The conversion to passing
-queue_limits directly to blk_mq_alloc_disk() lost that clamping and now
-hits blk_validate_limits()'s WARN_ON_ONCE instead.
+  WARNING: drivers/dma-buf/dma-resv.c:296 at dma_resv_add_fence+0x71e/0x840
+  Call Trace:
+   virtio_gpu_array_add_fence
+   virtio_gpu_queue_ctrl_sgs
+   virtio_gpu_queue_fenced_ctrl_buffer
+   virtio_gpu_cursor_plane_update
+   drm_atomic_helper_commit_planes
+   drm_atomic_helper_commit_tail
+   commit_tail
+   drm_atomic_helper_commit
+   drm_atomic_commit
+   drm_atomic_helper_update_plane
+   __setplane_atomic
+   drm_mode_cursor_universal
+   drm_mode_cursor_common
+   drm_mode_cursor_ioctl
+   drm_ioctl
+   __x64_sys_ioctl
 
-Validate that max_sectors is at least PAGE_SECTORS in
-ublk_validate_params() so invalid values are rejected early with
--EINVAL instead of reaching the block layer.
+Beyond the WARN, mutating the dma_resv fence list without the lock
+races with concurrent readers/writers and can corrupt the list.
 
-Fixes: 494ea040bcb5 ("ublk: pass queue_limits to blk_mq_alloc_disk")
-Signed-off-by: Ming Lei <tom.leiming@gmail.com>
-Link: https://patch.msgid.link/20260510144843.769031-1-tom.leiming@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Both call sites run inside the .atomic_update plane callback, which
+DRM atomic helpers do not allow to fail (by the time it runs, the
+commit has been signed off to userspace and there is no clean
+rollback path). Moving the lock acquisition to .prepare_fb was
+rejected because the broader lock scope deadlocks against other BO
+locking paths in the same atomic commit.
+
+Introduce virtio_gpu_lock_one_resv_uninterruptible() that uses
+dma_resv_lock() instead of dma_resv_lock_interruptible(). This
+eliminates the -EINTR failure mode -- the realistic syzbot trigger
+-- without extending the lock hold across the commit. The helper
+locks a single BO and rejects nents > 1 with -EINVAL; both fix
+sites lock exactly one BO.
+
+Use it from virtio_gpu_cursor_plane_update() and
+virtio_gpu_resource_flush(); check the return value to handle the
+remaining -ENOMEM case from dma_resv_reserve_fences() by freeing
+the objs and skipping the plane update for that frame. The
+framebuffer BOs touched here are not shared with other contexts
+and lock contention is expected to be brief, so the loss of
+signal-interruptibility is acceptable.
+
+Other callers of virtio_gpu_array_lock_resv() (the ioctl paths)
+continue to use the interruptible variant.
+
+The bug was reported by syzbot, triggered via fault injection
+(fail_nth) on the DRM_IOCTL_MODE_CURSOR path, which forces the
+-ENOMEM branch in dma_resv_reserve_fences().
+
+Reported-by: syzbot+72bd3dd3a5d5f39a0271@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=72bd3dd3a5d5f39a0271
+Fixes: 5cfd31c5b3a3 ("drm/virtio: fix virtio_gpu_cursor_plane_update().")
+Cc: stable@vger.kernel.org
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Link: https://patch.msgid.link/20260519082247.34470-1-kartikey406@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/ublk_drv.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/virtio/virtgpu_drv.h   |    1 +
+ drivers/gpu/drm/virtio/virtgpu_gem.c   |   17 +++++++++++++++++
+ drivers/gpu/drm/virtio/virtgpu_plane.c |   10 ++++++++--
+ 3 files changed, 26 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
-index 0bdb804fca839..e5f4942d99113 100644
---- a/drivers/block/ublk_drv.c
-+++ b/drivers/block/ublk_drv.c
-@@ -868,6 +868,9 @@ static int ublk_validate_params(const struct ublk_device *ub)
- 		if (p->max_sectors > (ub->dev_info.max_io_buf_bytes >> 9))
- 			return -EINVAL;
+--- a/drivers/gpu/drm/virtio/virtgpu_drv.h
++++ b/drivers/gpu/drm/virtio/virtgpu_drv.h
+@@ -317,6 +317,7 @@ virtio_gpu_array_from_handles(struct drm
+ void virtio_gpu_array_add_obj(struct virtio_gpu_object_array *objs,
+ 			      struct drm_gem_object *obj);
+ int virtio_gpu_array_lock_resv(struct virtio_gpu_object_array *objs);
++int virtio_gpu_lock_one_resv_uninterruptible(struct virtio_gpu_object_array *objs);
+ void virtio_gpu_array_unlock_resv(struct virtio_gpu_object_array *objs);
+ void virtio_gpu_array_add_fence(struct virtio_gpu_object_array *objs,
+ 				struct dma_fence *fence);
+--- a/drivers/gpu/drm/virtio/virtgpu_gem.c
++++ b/drivers/gpu/drm/virtio/virtgpu_gem.c
+@@ -238,6 +238,23 @@ int virtio_gpu_array_lock_resv(struct vi
+ 	return ret;
+ }
  
-+		if (p->max_sectors < PAGE_SECTORS)
-+			return -EINVAL;
++int virtio_gpu_lock_one_resv_uninterruptible(struct virtio_gpu_object_array *objs)
++{
++	int ret;
 +
- 		if (ublk_dev_is_zoned(ub) && !p->chunk_sectors)
- 			return -EINVAL;
- 	} else
--- 
-2.53.0
-
++	if (objs->nents != 1)
++		return -EINVAL;
++
++	dma_resv_lock(objs->objs[0]->resv, NULL);
++
++	ret = dma_resv_reserve_fences(objs->objs[0]->resv, 1);
++	if (ret) {
++		virtio_gpu_array_unlock_resv(objs);
++		return ret;
++	}
++	return 0;
++}
++
+ void virtio_gpu_array_unlock_resv(struct virtio_gpu_object_array *objs)
+ {
+ 	if (objs->nents == 1) {
+--- a/drivers/gpu/drm/virtio/virtgpu_plane.c
++++ b/drivers/gpu/drm/virtio/virtgpu_plane.c
+@@ -214,7 +214,10 @@ static void virtio_gpu_resource_flush(st
+ 		if (!objs)
+ 			return;
+ 		virtio_gpu_array_add_obj(objs, vgfb->base.obj[0]);
+-		virtio_gpu_array_lock_resv(objs);
++		if (virtio_gpu_lock_one_resv_uninterruptible(objs)) {
++			virtio_gpu_array_put_free(objs);
++			return;
++		}
+ 		virtio_gpu_cmd_resource_flush(vgdev, bo->hw_res_handle, x, y,
+ 					      width, height, objs,
+ 					      vgplane_st->fence);
+@@ -458,7 +461,10 @@ static void virtio_gpu_cursor_plane_upda
+ 		if (!objs)
+ 			return;
+ 		virtio_gpu_array_add_obj(objs, vgfb->base.obj[0]);
+-		virtio_gpu_array_lock_resv(objs);
++		if (virtio_gpu_lock_one_resv_uninterruptible(objs)) {
++			virtio_gpu_array_put_free(objs);
++			return;
++		}
+ 		virtio_gpu_cmd_transfer_to_host_2d
+ 			(vgdev, 0,
+ 			 plane->state->crtc_w,
 
 
 
