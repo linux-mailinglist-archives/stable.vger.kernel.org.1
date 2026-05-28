@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-256366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256161-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KCvHK1ysGGpolwgAu9opvQ
-	(envelope-from <stable+bounces-256366-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:58:04 +0200
+	id UMXDF1iqGGoomAgAu9opvQ
+	(envelope-from <stable+bounces-256161-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:49:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54D165F9EE6
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:58:04 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D6B35F99E5
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:49:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 172983034EF2
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:51:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0459730EE910
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:42:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2980F330B32;
-	Thu, 28 May 2026 20:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B77833B6FC;
+	Thu, 28 May 2026 20:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sJxulFXZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wMe+rKJs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C7F2F1FEF;
-	Thu, 28 May 2026 20:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B263346BE;
+	Thu, 28 May 2026 20:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001500; cv=none; b=jnV/GzJq0POZp+k2Y3XZblfr6s09Vemi4pTmy1C53LqRCSN+bD6ZFzDYHje18XaWiZMgRdbx6iaf3KC/IB6thQIdCvJFf4Zw1oNHt/2C3+FrxlMKV1FWzqHlB6kZJsK3/uIvGQkP4ucx1pr673Ibmfy3YcQHNI6TjxXmnS0fm1w=
+	t=1780000926; cv=none; b=b7jZyc7+he+FKImSUYNmDsYlGbLJIpzDWFijCQgv38R58MyuXSKTPrVAakw/ZrfwEAt8BkvKQTxPFS3pZ515MJUZXyASBgjrxN4X5ZS00J5rab6yVWpeE0V7SC3H+NNTnB2vrGEP5jr4ggtMVZWiJaV6u+ifUfLpwBOhb0jhcgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001500; c=relaxed/simple;
-	bh=nLPKCbNOztfoVlr+lragvOcEw2e0m5iBs8DU/MgIkL8=;
+	s=arc-20240116; t=1780000926; c=relaxed/simple;
+	bh=ByUuLRwmMKhewJzrDD1+hfWWIiKhYVs2Eb/AyCRKBwM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gMS4XsGjZb7yMcxRsAkSASVpUa5K8IGYOqBDTJhxqieLXLZ8hCVixgzBjC35B2T5Ny+PJhSytPncQKALpyei7V+UwtJgPIcm/48aGxF3THx0q1j50h/fK4FvScPNEYUFO9kAGj66kmXTyBhvnHnI2CdBYdBNl8dBIzYyOjmz290=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sJxulFXZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F365B1F000E9;
-	Thu, 28 May 2026 20:51:37 +0000 (UTC)
+	 MIME-Version; b=h9YxVmePkvTRUYQiSuqCcZ6sB4Jm05uaC3qRMq50XcmvIlfnbC8NgWSX8eGJVwG+Ut87mysDpxrpjpOQPHi3E/9C2OH5HlfrNHFybxnc4WTBFgfDNjkAb5LK+pt0F9cQ17YLtJUifRw6en9vn1VYiXLC1aM4/wtg5T+M0KD2BAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wMe+rKJs; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 397D51F000E9;
+	Thu, 28 May 2026 20:42:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001498;
-	bh=zYyqFWdVEVZRrL3qvLMeSZ1h7UpD6MZ3R5mBLXiCIY4=;
+	s=korg; t=1780000925;
+	bh=Xh7/dXbGSg/dFIUeTCw3MgEUWUm4EOiaaAFhXxGsRJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sJxulFXZdHHCwMMHbQz7cW6bJiFTtpiqme4c6QhR/0vIhiKZJu0wBVLUdDmlhTWxl
-	 9rRqAlWrgxtHXoTyHDidM5JfYxnpmUM60/kljqVGPRGmI1uZ8HEAvYLiwCbp4/Ifyr
-	 dP0yswMPx8zdBHvhUGYWVHvD478gCZ0aaSMIMGC0=
+	b=wMe+rKJsPb0JEqn8HeURkwA7pegcnti7wuOPUTiWQE50lB/Z6dkFH72WZXFiB8nWV
+	 vK0FRjtksgRLya2Sf0KpQNVSvFsIhK0vZRJ/ttnmlxGqwNkODYluWrHTg8iPkUdUOi
+	 hMq3eVU1EYusayLsQjsIk3tYJyo3jlzSBKOxPs84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Florian Westphal <fw@strlen.de>
-Subject: [PATCH 6.6 113/186] netfilter: Exclude LEGACY TABLES on PREEMPT_RT.
+	Weiming Shi <bestswngs@gmail.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Dust Li <dust.li@linux.alibaba.com>,
+	Sidraya Jayagond <sidraya@linux.ibm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 219/272] net/smc: avoid NULL deref of conn->lnk in smc_msg_event tracepoint
 Date: Thu, 28 May 2026 21:49:53 +0200
-Message-ID: <20260528194931.993505304@linuxfoundation.org>
+Message-ID: <20260528194635.336825848@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
+References: <20260528194629.379955525@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,364 +71,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,linux.alibaba.com,linux.ibm.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-256161-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256366-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:email,strlen.de:email,netfilter.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 54D165F9EE6
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 0D6B35F99E5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Xiang Mei <xmei5@asu.edu>
 
-[ Upstream commit 9fce66583f06c212e95e4b76dd61d8432ffa56b6 ]
+[ Upstream commit 7bf563badd37cb796df5477d2b78bb64148a1268 ]
 
-The seqcount xt_recseq is used to synchronize the replacement of
-xt_table::private in xt_replace_table() against all readers such as
-ipt_do_table()
+The smc_msg_event tracepoint class, shared by smc_tx_sendmsg and
+smc_rx_recvmsg, unconditionally dereferences smc->conn.lnk:
 
-To ensure that there is only one writer, the writing side disables
-bottom halves. The sequence counter can be acquired recursively. Only the
-first invocation modifies the sequence counter (signaling that a writer
-is in progress) while the following (recursive) writer does not modify
-the counter.
-The lack of a proper locking mechanism for the sequence counter can lead
-to live lock on PREEMPT_RT if the high prior reader preempts the
-writer. Additionally if the per-CPU lock on PREEMPT_RT is removed from
-local_bh_disable() then there is no synchronisation for the per-CPU
-sequence counter.
+	__string(name, smc->conn.lnk->ibname)
 
-The affected code is "just" the legacy netfilter code which is replaced
-by "netfilter tables". That code can be disabled without sacrificing
-functionality because everything is provided by the newer
-implementation. This will only requires the usage of the "-nft" tools
-instead of the "-legacy" ones.
-The long term plan is to remove the legacy code so lets accelerate the
-progress.
+conn->lnk is only set for SMC-R; for SMC-D it is NULL. Other code on
+these paths already handles this (e.g. !conn->lnk in
+SMC_STAT_RMB_TX_SIZE_SMALL()). With the tracepoint enabled, the first
+sendmsg()/recvmsg() on an SMC-D socket crashes:
 
-Relax dependencies on iptables legacy, replace select with depends on,
-this should cause no harm to existing kernel configs and users can still
-toggle IP{6}_NF_IPTABLES_LEGACY in any case.
-Make EBTABLES_LEGACY, IPTABLES_LEGACY and ARPTABLES depend on
-NETFILTER_XTABLES_LEGACY. Hide xt_recseq and its users,
-xt_register_table() and xt_percpu_counter_alloc() behind
-NETFILTER_XTABLES_LEGACY. Let NETFILTER_XTABLES_LEGACY depend on
-!PREEMPT_RT.
+  Oops: general protection fault, probably for non-canonical address
+  KASAN: null-ptr-deref in range [...]
+  RIP: 0010:strlen+0x1e/0xa0
+  Call Trace:
+   trace_event_raw_event_smc_msg_event (net/smc/smc_tracepoint.h:44)
+   smc_rx_recvmsg (net/smc/smc_rx.c:515)
+   smc_recvmsg (net/smc/af_smc.c:2859)
+   __sys_recvfrom (net/socket.c:2315)
+   __x64_sys_recvfrom (net/socket.c:2326)
+   do_syscall_64
 
-This will break selftest expecing the legacy options enabled and will be
-addressed in a following patch.
+The faulting address 0x3e0 is offsetof(struct smc_link, ibname),
+confirming the NULL ->lnk deref. Enabling the tracepoint requires
+root, but the trigger itself is unprivileged: socket(AF_SMC, ...) has
+no capability check, and SMC-D negotiation needs no admin step on
+s390 or on x86 with the loopback ISM device loaded.
 
-Co-developed-by: Florian Westphal <fw@strlen.de>
-Co-developed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: b4597d5fd7d2 ("netfilter: x_tables: add and use xtables_unregister_table_exit")
+Log an empty device name for SMC-D instead of dereferencing NULL.
+
+Fixes: aff3083f10bf ("net/smc: Introduce tracepoints for tx and rx msg")
+Reported-by: Weiming Shi <bestswngs@gmail.com>
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+Reviewed-by: Sidraya Jayagond <sidraya@linux.ibm.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/netfilter/Kconfig | 10 +++++-----
- net/ipv4/netfilter/Kconfig   | 24 ++++++++++++------------
- net/ipv6/netfilter/Kconfig   | 19 +++++++++----------
- net/netfilter/Kconfig        | 10 ++++++++++
- net/netfilter/x_tables.c     | 16 +++++++++++-----
- 5 files changed, 47 insertions(+), 32 deletions(-)
+ net/smc/smc_tracepoint.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bridge/netfilter/Kconfig b/net/bridge/netfilter/Kconfig
-index f16bbbbb94817..60f28e4fb5c0a 100644
---- a/net/bridge/netfilter/Kconfig
-+++ b/net/bridge/netfilter/Kconfig
-@@ -42,8 +42,8 @@ config NF_CONNTRACK_BRIDGE
- # old sockopt interface and eval loop
- config BRIDGE_NF_EBTABLES_LEGACY
- 	tristate "Legacy EBTABLES support"
--	depends on BRIDGE && NETFILTER_XTABLES
--	default n
-+	depends on BRIDGE && NETFILTER_XTABLES_LEGACY
-+	default	n
- 	help
- 	 Legacy ebtables packet/frame classifier.
- 	 This is not needed if you are using ebtables over nftables
-@@ -65,7 +65,7 @@ if BRIDGE_NF_EBTABLES
- #
- config BRIDGE_EBT_BROUTE
- 	tristate "ebt: broute table support"
--	select BRIDGE_NF_EBTABLES_LEGACY
-+	depends on BRIDGE_NF_EBTABLES_LEGACY
- 	help
- 	  The ebtables broute table is used to define rules that decide between
- 	  bridging and routing frames, giving Linux the functionality of a
-@@ -76,7 +76,7 @@ config BRIDGE_EBT_BROUTE
+diff --git a/net/smc/smc_tracepoint.h b/net/smc/smc_tracepoint.h
+index a9a6e3c1113aa..53da84f57fd6f 100644
+--- a/net/smc/smc_tracepoint.h
++++ b/net/smc/smc_tracepoint.h
+@@ -51,7 +51,7 @@ DECLARE_EVENT_CLASS(smc_msg_event,
+ 				     __field(const void *, smc)
+ 				     __field(u64, net_cookie)
+ 				     __field(size_t, len)
+-				     __string(name, smc->conn.lnk->ibname)
++				     __string(name, smc->conn.lnk ? smc->conn.lnk->ibname : "")
+ 		    ),
  
- config BRIDGE_EBT_T_FILTER
- 	tristate "ebt: filter table support"
--	select BRIDGE_NF_EBTABLES_LEGACY
-+	depends on BRIDGE_NF_EBTABLES_LEGACY
- 	help
- 	  The ebtables filter table is used to define frame filtering rules at
- 	  local input, forwarding and local output. See the man page for
-@@ -86,7 +86,7 @@ config BRIDGE_EBT_T_FILTER
- 
- config BRIDGE_EBT_T_NAT
- 	tristate "ebt: nat table support"
--	select BRIDGE_NF_EBTABLES_LEGACY
-+	depends on BRIDGE_NF_EBTABLES_LEGACY
- 	help
- 	  The ebtables nat table is used to define rules that alter the MAC
- 	  source address (MAC SNAT) or the MAC destination address (MAC DNAT).
-diff --git a/net/ipv4/netfilter/Kconfig b/net/ipv4/netfilter/Kconfig
-index ef8009281da5c..2c438b140e88f 100644
---- a/net/ipv4/netfilter/Kconfig
-+++ b/net/ipv4/netfilter/Kconfig
-@@ -13,8 +13,8 @@ config NF_DEFRAG_IPV4
- # old sockopt interface and eval loop
- config IP_NF_IPTABLES_LEGACY
- 	tristate "Legacy IP tables support"
--	default	n
--	select NETFILTER_XTABLES
-+	depends on NETFILTER_XTABLES_LEGACY
-+	default	m if NETFILTER_XTABLES_LEGACY
- 	help
- 	  iptables is a legacy packet classifier.
- 	  This is not needed if you are using iptables over nftables
-@@ -182,8 +182,8 @@ config IP_NF_MATCH_TTL
- # `filter', generic and specific targets
- config IP_NF_FILTER
- 	tristate "Packet filtering"
--	default m if NETFILTER_ADVANCED=n
--	select IP_NF_IPTABLES_LEGACY
-+	default m if NETFILTER_ADVANCED=n || IP_NF_IPTABLES_LEGACY
-+	depends on IP_NF_IPTABLES_LEGACY
- 	help
- 	  Packet filtering defines a table `filter', which has a series of
- 	  rules for simple packet filtering at local input, forwarding and
-@@ -220,10 +220,10 @@ config IP_NF_TARGET_SYNPROXY
- config IP_NF_NAT
- 	tristate "iptables NAT support"
- 	depends on NF_CONNTRACK
-+	depends on IP_NF_IPTABLES_LEGACY
- 	default m if NETFILTER_ADVANCED=n
- 	select NF_NAT
- 	select NETFILTER_XT_NAT
--	select IP_NF_IPTABLES_LEGACY
- 	help
- 	  This enables the `nat' table in iptables. This allows masquerading,
- 	  port forwarding and other forms of full Network Address Port
-@@ -263,8 +263,8 @@ endif # IP_NF_NAT
- # mangle + specific targets
- config IP_NF_MANGLE
- 	tristate "Packet mangling"
--	default m if NETFILTER_ADVANCED=n
--	select IP_NF_IPTABLES_LEGACY
-+	default m if NETFILTER_ADVANCED=n || IP_NF_IPTABLES_LEGACY
-+	depends on IP_NF_IPTABLES_LEGACY
- 	help
- 	  This option adds a `mangle' table to iptables: see the man page for
- 	  iptables(8).  This table is used for various packet alterations
-@@ -299,7 +299,7 @@ config IP_NF_TARGET_TTL
- # raw + specific targets
- config IP_NF_RAW
- 	tristate  'raw table support (required for NOTRACK/TRACE)'
--	select IP_NF_IPTABLES_LEGACY
-+	depends on IP_NF_IPTABLES_LEGACY
- 	help
- 	  This option adds a `raw' table to iptables. This table is the very
- 	  first in the netfilter framework and hooks in at the PREROUTING
-@@ -313,7 +313,7 @@ config IP_NF_SECURITY
- 	tristate "Security table"
- 	depends on SECURITY
- 	depends on NETFILTER_ADVANCED
--	select IP_NF_IPTABLES_LEGACY
-+	depends on IP_NF_IPTABLES_LEGACY
- 	help
- 	  This option adds a `security' table to iptables, for use
- 	  with Mandatory Access Control (MAC) policy.
-@@ -325,8 +325,8 @@ endif # IP_NF_IPTABLES
- # ARP tables
- config IP_NF_ARPTABLES
- 	tristate "Legacy ARPTABLES support"
--	depends on NETFILTER_XTABLES
--	default n
-+	depends on NETFILTER_XTABLES_LEGACY
-+	default	n
- 	help
- 	  arptables is a legacy packet classifier.
- 	  This is not needed if you are using arptables over nftables
-@@ -342,7 +342,7 @@ config IP_NF_ARPFILTER
- 	tristate "arptables-legacy packet filtering support"
- 	select IP_NF_ARPTABLES
- 	select NETFILTER_FAMILY_ARP
--	depends on NETFILTER_XTABLES
-+	depends on NETFILTER_XTABLES_LEGACY
- 	help
- 	  ARP packet filtering defines a table `filter', which has a series of
- 	  rules for simple ARP packet filtering at local input and
-diff --git a/net/ipv6/netfilter/Kconfig b/net/ipv6/netfilter/Kconfig
-index e087a8e97ba78..276860f65baae 100644
---- a/net/ipv6/netfilter/Kconfig
-+++ b/net/ipv6/netfilter/Kconfig
-@@ -9,9 +9,8 @@ menu "IPv6: Netfilter Configuration"
- # old sockopt interface and eval loop
- config IP6_NF_IPTABLES_LEGACY
- 	tristate "Legacy IP6 tables support"
--	depends on INET && IPV6
--	select NETFILTER_XTABLES
--	default n
-+	depends on INET && IPV6 && NETFILTER_XTABLES_LEGACY
-+	default	m if NETFILTER_XTABLES_LEGACY
- 	help
- 	  ip6tables is a legacy packet classifier.
- 	  This is not needed if you are using iptables over nftables
-@@ -196,8 +195,8 @@ config IP6_NF_TARGET_HL
- 
- config IP6_NF_FILTER
- 	tristate "Packet filtering"
--	default m if NETFILTER_ADVANCED=n
--	select IP6_NF_IPTABLES_LEGACY
-+	default m if NETFILTER_ADVANCED=n || IP6_NF_IPTABLES_LEGACY
-+	depends on IP6_NF_IPTABLES_LEGACY
- 	tristate
- 	help
- 	  Packet filtering defines a table `filter', which has a series of
-@@ -233,8 +232,8 @@ config IP6_NF_TARGET_SYNPROXY
- 
- config IP6_NF_MANGLE
- 	tristate "Packet mangling"
--	default m if NETFILTER_ADVANCED=n
--	select IP6_NF_IPTABLES_LEGACY
-+	default m if NETFILTER_ADVANCED=n || IP6_NF_IPTABLES_LEGACY
-+	depends on IP6_NF_IPTABLES_LEGACY
- 	help
- 	  This option adds a `mangle' table to iptables: see the man page for
- 	  iptables(8).  This table is used for various packet alterations
-@@ -244,7 +243,7 @@ config IP6_NF_MANGLE
- 
- config IP6_NF_RAW
- 	tristate  'raw table support (required for TRACE)'
--	select IP6_NF_IPTABLES_LEGACY
-+	depends on IP6_NF_IPTABLES_LEGACY
- 	help
- 	  This option adds a `raw' table to ip6tables. This table is the very
- 	  first in the netfilter framework and hooks in at the PREROUTING
-@@ -258,7 +257,7 @@ config IP6_NF_SECURITY
- 	tristate "Security table"
- 	depends on SECURITY
- 	depends on NETFILTER_ADVANCED
--	select IP6_NF_IPTABLES_LEGACY
-+	depends on IP6_NF_IPTABLES_LEGACY
- 	help
- 	  This option adds a `security' table to iptables, for use
- 	  with Mandatory Access Control (MAC) policy.
-@@ -269,8 +268,8 @@ config IP6_NF_NAT
- 	tristate "ip6tables NAT support"
- 	depends on NF_CONNTRACK
- 	depends on NETFILTER_ADVANCED
-+	depends on IP6_NF_IPTABLES_LEGACY
- 	select NF_NAT
--	select IP6_NF_IPTABLES_LEGACY
- 	select NETFILTER_XT_NAT
- 	help
- 	  This enables the `nat' table in ip6tables. This allows masquerading,
-diff --git a/net/netfilter/Kconfig b/net/netfilter/Kconfig
-index df2dc21304efb..0d1d997abe191 100644
---- a/net/netfilter/Kconfig
-+++ b/net/netfilter/Kconfig
-@@ -762,6 +762,16 @@ config NETFILTER_XTABLES_COMPAT
- 
- 	   If unsure, say N.
- 
-+config NETFILTER_XTABLES_LEGACY
-+	bool "Netfilter legacy tables support"
-+	depends on !PREEMPT_RT
-+	help
-+	  Say Y here if you still require support for legacy tables. This is
-+	  required by the legacy tools (iptables-legacy) and is not needed if
-+	  you use iptables over nftables (iptables-nft).
-+	  Legacy support is not limited to IP, it also includes EBTABLES and
-+	  ARPTABLES.
-+
- comment "Xtables combined modules"
- 
- config NETFILTER_XT_MARK
-diff --git a/net/netfilter/x_tables.c b/net/netfilter/x_tables.c
-index c1ab85fb8c46d..98384bb17bbe3 100644
---- a/net/netfilter/x_tables.c
-+++ b/net/netfilter/x_tables.c
-@@ -1339,12 +1339,13 @@ void xt_compat_unlock(u_int8_t af)
- EXPORT_SYMBOL_GPL(xt_compat_unlock);
- #endif
- 
--DEFINE_PER_CPU(seqcount_t, xt_recseq);
--EXPORT_PER_CPU_SYMBOL_GPL(xt_recseq);
--
- struct static_key xt_tee_enabled __read_mostly;
- EXPORT_SYMBOL_GPL(xt_tee_enabled);
- 
-+#ifdef CONFIG_NETFILTER_XTABLES_LEGACY
-+DEFINE_PER_CPU(seqcount_t, xt_recseq);
-+EXPORT_PER_CPU_SYMBOL_GPL(xt_recseq);
-+
- static int xt_jumpstack_alloc(struct xt_table_info *i)
- {
- 	unsigned int size;
-@@ -1536,6 +1537,7 @@ void *xt_unregister_table(struct xt_table *table)
- 	return private;
- }
- EXPORT_SYMBOL_GPL(xt_unregister_table);
-+#endif
- 
- #ifdef CONFIG_PROC_FS
- static void *xt_table_seq_start(struct seq_file *seq, loff_t *pos)
-@@ -1919,6 +1921,7 @@ void xt_proto_fini(struct net *net, u_int8_t af)
- }
- EXPORT_SYMBOL_GPL(xt_proto_fini);
- 
-+#ifdef CONFIG_NETFILTER_XTABLES_LEGACY
- /**
-  * xt_percpu_counter_alloc - allocate x_tables rule counter
-  *
-@@ -1973,6 +1976,7 @@ void xt_percpu_counter_free(struct xt_counters *counters)
- 		free_percpu((void __percpu *)pcnt);
- }
- EXPORT_SYMBOL_GPL(xt_percpu_counter_free);
-+#endif
- 
- static int __net_init xt_net_init(struct net *net)
- {
-@@ -2005,8 +2009,10 @@ static int __init xt_init(void)
- 	unsigned int i;
- 	int rv;
- 
--	for_each_possible_cpu(i) {
--		seqcount_init(&per_cpu(xt_recseq, i));
-+	if (IS_ENABLED(CONFIG_NETFILTER_XTABLES_LEGACY)) {
-+		for_each_possible_cpu(i) {
-+			seqcount_init(&per_cpu(xt_recseq, i));
-+		}
- 	}
- 
- 	xt = kcalloc(NFPROTO_NUMPROTO, sizeof(struct xt_af), GFP_KERNEL);
+ 		    TP_fast_assign(
 -- 
 2.53.0
 
