@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-256062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-256228-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8MDFM6SpGGrclwgAu9opvQ
-	(envelope-from <stable+bounces-256062-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:28 +0200
+	id uLqeBwOrGGoomAgAu9opvQ
+	(envelope-from <stable+bounces-256228-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:52:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50B8D5F9844
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:46:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DE0F5F9BE2
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:52:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 28E4030488DB
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:37:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3BA223104ADF
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:45:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF0252EF652;
-	Thu, 28 May 2026 20:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C171317142;
+	Thu, 28 May 2026 20:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0x2VqT1n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wnpDQsuv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54BD197A7D;
-	Thu, 28 May 2026 20:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015A1330307;
+	Thu, 28 May 2026 20:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780000648; cv=none; b=GC3gSQ9ks2UZOSFUr4pS3FMS5iwZuqJYy7Js+aIYlz3PCMBYlJOdfXIS40WWxqoWZTs+Dmmj8JKCyJWm8+3Le9gEUPteoJ71tTYla4iNnsLEY8hGbTJi0T77zYkmY8ssTnlI4FuVknSqG8Sj2NevSTUM+pZ9gSmNUJJFxGMVpDY=
+	t=1780001116; cv=none; b=VLjZFECf7MkV+YN9RzdJXMierLxVu+FfDMjK8VW9e4TQdQP5H/L9OGvtIVEkc1qyqSzXLpfqfZ5XdkOC+5W7Z2LOt+iGHaPWPOyzpqrIcN6sDtwDCj/cvivMwh5IwWCmkVTHfsUQOH5fMIt2yZXDLNzWWMPwk6fQSOvltisD2xY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780000648; c=relaxed/simple;
-	bh=CKnHlWJ7lnubyQpUyU96jn/dHRt0Po07uCm2y1K3KFA=;
+	s=arc-20240116; t=1780001116; c=relaxed/simple;
+	bh=FWaJL5YqeVTn/tYv/mZ9yAyp12z8myAarwLAE/0ITGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uW9GPkXuGIT2nDZvnTZObC3rp7xzwmUsBaWxGcd92Yd2BvjL4uzRiOm6UWiG7MrG0KWHS94izxFk33BcDt4Ekv9iu3pyZlSfUbKzpQq9KdW3KdncPIAT6ozv3SIyGMWOeoy253xq+6KU8GOHvl6duZWU1VdrI4675Pgx+DRP7wM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0x2VqT1n; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F0771F000E9;
-	Thu, 28 May 2026 20:37:27 +0000 (UTC)
+	 MIME-Version; b=S69mRpZStKAbocXmHXiJ7AjZI2RIhwpNcKfHOUVUza2UpvEdu1MpCyNc7G/80STWdLdqn4ohXjM5RweP7M7klyBIY4QLL/78rCuTk6vQhpv77SaUqKFpXcs9o+fG0RS2tKBrWGmlZhIwaJ2zD+bayrIGoCV4ciSGvoUCCJ9G6ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wnpDQsuv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2828F1F000E9;
+	Thu, 28 May 2026 20:45:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780000647;
-	bh=xkOJPPrLObyWvUzx7NIsekP0fV5kxwMiApeSOKirb64=;
+	s=korg; t=1780001114;
+	bh=+UPVa5T1j/x0ChSYUoQt4gI/59n7d7/azGL8hhZBoC0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0x2VqT1nTDGrWs5ircwIdtMitUD1BuQbRjUKlEzFwCPT/Mo9o1glxtqVeND8+xUfb
-	 Yt+aaBUBBTYuU2b+X8epYhgqr8NAjnzVpIR+bJJdsQcq6u/J5DIr5yfBqc/4gdC1oC
-	 6Z+UXxMD9gKogjB3Op5kr0HlDHpQR89gd13rZjjY=
+	b=wnpDQsuvwVLvJYCqDj/fLtuhPbVnUkQcX8JVpPY5LsU/evgFUNrr2/MP4rRCFQKQT
+	 XttRoeAGkiXvbLn9Cqr1AwzEqJkJiR//w69nMAvNvgo2iA6PNWV0GgRYrDSaq2u84a
+	 cFeagGbt9f27//U2WeB8xWFbSOOMsbCiH4xCEts4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Ivan Lipski <ivan.lipski@amd.com>,
-	Dan Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 118/272] drm/amd/display: Fix integer overflow in bios_get_image()
-Date: Thu, 28 May 2026 21:48:12 +0200
-Message-ID: <20260528194632.684723570@linuxfoundation.org>
+	Davide Ornaghi <d.ornaghi97@gmail.com>,
+	Navaneeth K <knavaneeth786@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Alva Lan <alvalan9@foxmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 013/186] ksmbd: validate owner of durable handle on reconnect
+Date: Thu, 28 May 2026 21:48:13 +0200
+Message-ID: <20260528194929.312292759@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194629.379955525@linuxfoundation.org>
-References: <20260528194629.379955525@linuxfoundation.org>
+In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
+References: <20260528194928.941004471@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,92 +67,378 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-256062-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-256228-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com,foxmail.com];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amd.com:email]
-X-Rspamd-Queue-Id: 50B8D5F9844
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[foxmail.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 8DE0F5F9BE2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harry Wentland <harry.wentland@amd.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit cd86529ec61474a38c3837fb7823790a7c3f8cce upstream.
+[ Upstream commit 49110a8ce654bbe56bef7c5e44cce31f4b102b8a ]
 
-[Why&How]
-The bounds check in bios_get_image() computes 'offset + size' using
-unsigned 32-bit arithmetic before comparing against bios_size. If a
-VBIOS image contains a near-UINT32_MAX offset the addition wraps to a
-small value, the comparison passes, and the function returns a wild
-pointer past the VBIOS mapping.
+Currently, ksmbd does not verify if the user attempting to reconnect
+to a durable handle is the same user who originally opened the file.
+This allows any authenticated user to hijack an orphaned durable handle
+by predicting or brute-forcing the persistent ID.
 
-Additionally, the comparison uses '<' (strict), which incorrectly
-rejects the valid exact-fit case where offset + size == bios_size.
+According to MS-SMB2, the server MUST verify that the SecurityContext
+of the reconnect request matches the SecurityContext associated with
+the existing open.
+Add a durable_owner structure to ksmbd_file to store the original opener's
+UID, GID, and account name. and catpure the owner information when a file
+handle becomes orphaned. and implementing ksmbd_vfs_compare_durable_owner()
+to validate the identity of the requester during SMB2_CREATE (DHnC).
 
-Fix both issues by restructuring the check to avoid the addition
-entirely: first reject if offset alone exceeds bios_size, then check
-size against the remaining space (bios_size - offset). This eliminates
-the overflow and correctly permits exact-fit accesses.
-
-Assisted-by: GitHub Copilot:claude-opus-4.6
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
-Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit d40fb392af659c4a02b560319f226842f6ec1a95)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
+Reported-by: Davide Ornaghi <d.ornaghi97@gmail.com>
+Reported-by: Navaneeth K <knavaneeth786@gmail.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ Minor context conflict resolved. ]
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/bios/bios_parser_helper.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ fs/smb/server/mgmt/user_session.c |  8 +--
+ fs/smb/server/oplock.c            |  7 +++
+ fs/smb/server/oplock.h            |  1 +
+ fs/smb/server/smb2pdu.c           |  3 +-
+ fs/smb/server/vfs_cache.c         | 87 +++++++++++++++++++++++++++----
+ fs/smb/server/vfs_cache.h         | 12 ++++-
+ 6 files changed, 103 insertions(+), 15 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser_helper.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser_helper.c
-@@ -37,10 +37,13 @@ uint8_t *bios_get_image(struct dc_bios *
- 	uint32_t offset,
- 	uint32_t size)
+diff --git a/fs/smb/server/mgmt/user_session.c b/fs/smb/server/mgmt/user_session.c
+index b4a1bd037b9ee..d9768f88aabc0 100644
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -159,11 +159,10 @@ void ksmbd_session_destroy(struct ksmbd_session *sess)
+ 	if (!sess)
+ 		return;
+ 
++	ksmbd_tree_conn_session_logoff(sess);
++	ksmbd_destroy_file_table(sess);
+ 	if (sess->user)
+ 		ksmbd_free_user(sess->user);
+-
+-	ksmbd_tree_conn_session_logoff(sess);
+-	ksmbd_destroy_file_table(&sess->file_table);
+ 	ksmbd_launch_ksmbd_durable_scavenger();
+ 	ksmbd_session_rpc_clear_list(sess);
+ 	free_channel_list(sess);
+@@ -397,7 +396,8 @@ void destroy_previous_session(struct ksmbd_conn *conn,
+ 		ksmbd_all_conn_set_status(id, KSMBD_SESS_NEED_SETUP);
+ 		goto out;
+ 	}
+-	ksmbd_destroy_file_table(&prev_sess->file_table);
++
++	ksmbd_destroy_file_table(prev_sess);
+ 	prev_sess->state = SMB2_SESSION_EXPIRED;
+ 	ksmbd_all_conn_set_status(id, KSMBD_SESS_NEED_SETUP);
+ 	ksmbd_launch_ksmbd_durable_scavenger();
+diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
+index c49a75ff5fbb4..8487fca425bdb 100644
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -1841,6 +1841,7 @@ int smb2_check_durable_oplock(struct ksmbd_conn *conn,
+ 			      struct ksmbd_share_config *share,
+ 			      struct ksmbd_file *fp,
+ 			      struct lease_ctx_info *lctx,
++			      struct ksmbd_user *user,
+ 			      char *name)
  {
--	if (bp->bios && offset + size < bp->bios_size)
--		return bp->bios + offset;
--	else
-+	if (!bp->bios)
- 		return NULL;
+ 	struct oplock_info *opinfo = opinfo_get(fp);
+@@ -1849,6 +1850,12 @@ int smb2_check_durable_oplock(struct ksmbd_conn *conn,
+ 	if (!opinfo)
+ 		return 0;
+ 
++	if (ksmbd_vfs_compare_durable_owner(fp, user) == false) {
++		ksmbd_debug(SMB, "Durable handle reconnect failed: owner mismatch\n");
++		ret = -EBADF;
++		goto out;
++	}
 +
-+	if (offset > bp->bios_size || size > bp->bios_size - offset)
-+		return NULL;
+ 	if (opinfo->is_lease == false) {
+ 		if (lctx) {
+ 			pr_err("create context include lease\n");
+diff --git a/fs/smb/server/oplock.h b/fs/smb/server/oplock.h
+index f8da0bba766ba..e6c4fbe5cf4e0 100644
+--- a/fs/smb/server/oplock.h
++++ b/fs/smb/server/oplock.h
+@@ -133,5 +133,6 @@ int smb2_check_durable_oplock(struct ksmbd_conn *conn,
+ 			      struct ksmbd_share_config *share,
+ 			      struct ksmbd_file *fp,
+ 			      struct lease_ctx_info *lctx,
++			      struct ksmbd_user *user,
+ 			      char *name);
+ #endif /* __KSMBD_OPLOCK_H */
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 66163a464c563..04d4a784deaf9 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -2994,7 +2994,8 @@ int smb2_open(struct ksmbd_work *work)
+ 		}
+ 
+ 		if (dh_info.reconnected == true) {
+-			rc = smb2_check_durable_oplock(conn, share, dh_info.fp, lc, name);
++			rc = smb2_check_durable_oplock(conn, share, dh_info.fp,
++					lc, sess->user, name);
+ 			if (rc) {
+ 				ksmbd_put_durable_fd(dh_info.fp);
+ 				goto err_out2;
+diff --git a/fs/smb/server/vfs_cache.c b/fs/smb/server/vfs_cache.c
+index 913c2a8d2b0ee..544387c9a6f4b 100644
+--- a/fs/smb/server/vfs_cache.c
++++ b/fs/smb/server/vfs_cache.c
+@@ -18,6 +18,7 @@
+ #include "connection.h"
+ #include "mgmt/tree_connect.h"
+ #include "mgmt/user_session.h"
++#include "mgmt/user_config.h"
+ #include "smb_common.h"
+ #include "server.h"
+ 
+@@ -383,6 +384,8 @@ static void __ksmbd_close_fd(struct ksmbd_file_table *ft, struct ksmbd_file *fp)
+ 
+ 	if (ksmbd_stream_fd(fp))
+ 		kfree(fp->stream.name);
++	kfree(fp->owner.name);
 +
-+	return bp->bios + offset;
+ 	kmem_cache_free(filp_cache, fp);
  }
  
- #include "reg_helper.h"
+@@ -694,11 +697,13 @@ void ksmbd_update_fstate(struct ksmbd_file_table *ft, struct ksmbd_file *fp,
+ }
+ 
+ static int
+-__close_file_table_ids(struct ksmbd_file_table *ft,
++__close_file_table_ids(struct ksmbd_session *sess,
+ 		       struct ksmbd_tree_connect *tcon,
+ 		       bool (*skip)(struct ksmbd_tree_connect *tcon,
+-				    struct ksmbd_file *fp))
++				    struct ksmbd_file *fp,
++				    struct ksmbd_user *user))
+ {
++	struct ksmbd_file_table *ft = &sess->file_table;
+ 	struct ksmbd_file *fp;
+ 	unsigned int id = 0;
+ 	int num = 0;
+@@ -711,7 +716,7 @@ __close_file_table_ids(struct ksmbd_file_table *ft,
+ 			break;
+ 		}
+ 
+-		if (skip(tcon, fp) ||
++		if (skip(tcon, fp, sess->user) ||
+ 		    !atomic_dec_and_test(&fp->refcount)) {
+ 			id++;
+ 			write_unlock(&ft->lock);
+@@ -763,7 +768,8 @@ static inline bool is_reconnectable(struct ksmbd_file *fp)
+ }
+ 
+ static bool tree_conn_fd_check(struct ksmbd_tree_connect *tcon,
+-			       struct ksmbd_file *fp)
++			       struct ksmbd_file *fp,
++			       struct ksmbd_user *user)
+ {
+ 	return fp->tcon != tcon;
+ }
+@@ -904,8 +910,62 @@ void ksmbd_stop_durable_scavenger(void)
+ 	kthread_stop(server_conf.dh_task);
+ }
+ 
++/*
++ * ksmbd_vfs_copy_durable_owner - Copy owner info for durable reconnect
++ * @fp: ksmbd file pointer to store owner info
++ * @user: user pointer to copy from
++ *
++ * This function binds the current user's identity to the file handle
++ * to satisfy MS-SMB2 Step 8 (SecurityContext matching) during reconnect.
++ *
++ * Return: 0 on success, or negative error code on failure
++ */
++static int ksmbd_vfs_copy_durable_owner(struct ksmbd_file *fp,
++		struct ksmbd_user *user)
++{
++	if (!user)
++		return -EINVAL;
++
++	/* Duplicate the user name to ensure identity persistence */
++	fp->owner.name = kstrdup(user->name, GFP_KERNEL);
++	if (!fp->owner.name)
++		return -ENOMEM;
++
++	fp->owner.uid = user->uid;
++	fp->owner.gid = user->gid;
++
++	return 0;
++}
++
++/**
++ * ksmbd_vfs_compare_durable_owner - Verify if the requester is original owner
++ * @fp: existing ksmbd file pointer
++ * @user: user pointer of the reconnect requester
++ *
++ * Compares the UID, GID, and name of the current requester against the
++ * original owner stored in the file handle.
++ *
++ * Return: true if the user matches, false otherwise
++ */
++bool ksmbd_vfs_compare_durable_owner(struct ksmbd_file *fp,
++		struct ksmbd_user *user)
++{
++	if (!user || !fp->owner.name)
++		return false;
++
++	/* Check if the UID and GID match first (fast path) */
++	if (fp->owner.uid != user->uid || fp->owner.gid != user->gid)
++		return false;
++
++	/* Validate the account name to ensure the same SecurityContext */
++	if (strcmp(fp->owner.name, user->name))
++		return false;
++
++	return true;
++}
++
+ static bool session_fd_check(struct ksmbd_tree_connect *tcon,
+-			     struct ksmbd_file *fp)
++			     struct ksmbd_file *fp, struct ksmbd_user *user)
+ {
+ 	struct ksmbd_inode *ci;
+ 	struct oplock_info *op;
+@@ -915,6 +975,9 @@ static bool session_fd_check(struct ksmbd_tree_connect *tcon,
+ 	if (!is_reconnectable(fp))
+ 		return false;
+ 
++	if (ksmbd_vfs_copy_durable_owner(fp, user))
++		return false;
++
+ 	conn = fp->conn;
+ 	ci = fp->f_ci;
+ 	down_write(&ci->m_lock);
+@@ -946,7 +1009,7 @@ static bool session_fd_check(struct ksmbd_tree_connect *tcon,
+ 
+ void ksmbd_close_tree_conn_fds(struct ksmbd_work *work)
+ {
+-	int num = __close_file_table_ids(&work->sess->file_table,
++	int num = __close_file_table_ids(work->sess,
+ 					 work->tcon,
+ 					 tree_conn_fd_check);
+ 
+@@ -955,7 +1018,7 @@ void ksmbd_close_tree_conn_fds(struct ksmbd_work *work)
+ 
+ void ksmbd_close_session_fds(struct ksmbd_work *work)
+ {
+-	int num = __close_file_table_ids(&work->sess->file_table,
++	int num = __close_file_table_ids(work->sess,
+ 					 work->tcon,
+ 					 session_fd_check);
+ 
+@@ -1052,6 +1115,10 @@ int ksmbd_reopen_durable_fd(struct ksmbd_work *work, struct ksmbd_file *fp)
+ 	}
+ 	up_write(&ci->m_lock);
+ 
++	fp->owner.uid = fp->owner.gid = 0;
++	kfree(fp->owner.name);
++	fp->owner.name = NULL;
++
+ 	return 0;
+ }
+ 
+@@ -1066,12 +1133,14 @@ int ksmbd_init_file_table(struct ksmbd_file_table *ft)
+ 	return 0;
+ }
+ 
+-void ksmbd_destroy_file_table(struct ksmbd_file_table *ft)
++void ksmbd_destroy_file_table(struct ksmbd_session *sess)
+ {
++	struct ksmbd_file_table *ft = &sess->file_table;
++
+ 	if (!ft->idr)
+ 		return;
+ 
+-	__close_file_table_ids(ft, NULL, session_fd_check);
++	__close_file_table_ids(sess, NULL, session_fd_check);
+ 	idr_destroy(ft->idr);
+ 	kfree(ft->idr);
+ 	ft->idr = NULL;
+diff --git a/fs/smb/server/vfs_cache.h b/fs/smb/server/vfs_cache.h
+index b0f6d0f94cb8d..79d85cf4e13b3 100644
+--- a/fs/smb/server/vfs_cache.h
++++ b/fs/smb/server/vfs_cache.h
+@@ -67,6 +67,13 @@ enum {
+ 	FP_CLOSED
+ };
+ 
++/* Owner information for durable handle reconnect */
++struct durable_owner {
++	unsigned int uid;
++	unsigned int gid;
++	char *name;
++};
++
+ struct ksmbd_file {
+ 	struct file			*filp;
+ 	u64				persistent_id;
+@@ -111,6 +118,7 @@ struct ksmbd_file {
+ 	bool				is_durable;
+ 	bool				is_persistent;
+ 	bool				is_resilient;
++	struct durable_owner		owner;
+ };
+ 
+ static inline void set_ctx_actor(struct dir_context *ctx,
+@@ -137,7 +145,7 @@ static inline bool ksmbd_stream_fd(struct ksmbd_file *fp)
+ }
+ 
+ int ksmbd_init_file_table(struct ksmbd_file_table *ft);
+-void ksmbd_destroy_file_table(struct ksmbd_file_table *ft);
++void ksmbd_destroy_file_table(struct ksmbd_session *sess);
+ int ksmbd_close_fd(struct ksmbd_work *work, u64 id);
+ struct ksmbd_file *ksmbd_lookup_fd_fast(struct ksmbd_work *work, u64 id);
+ struct ksmbd_file *ksmbd_lookup_foreign_fd(struct ksmbd_work *work, u64 id);
+@@ -163,6 +171,8 @@ void ksmbd_free_global_file_table(void);
+ void ksmbd_set_fd_limit(unsigned long limit);
+ void ksmbd_update_fstate(struct ksmbd_file_table *ft, struct ksmbd_file *fp,
+ 			 unsigned int state);
++bool ksmbd_vfs_compare_durable_owner(struct ksmbd_file *fp,
++		struct ksmbd_user *user);
+ 
+ /*
+  * INODE hash
+-- 
+2.53.0
+
 
 
 
