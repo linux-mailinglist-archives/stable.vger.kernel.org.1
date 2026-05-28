@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-255470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255829-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yGorGmmhGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255470-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:21 +0200
+	id wKzGA1imGGoQlwgAu9opvQ
+	(envelope-from <stable+bounces-255829-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:32:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 159745F8040
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:20 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5EA85F8E8D
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:32:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5A93E303127E
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:10:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 51475302AD31
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:26:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C084333CE8A;
-	Thu, 28 May 2026 20:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0691B2D9787;
+	Thu, 28 May 2026 20:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZwEKQap8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Gt2sMSj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91CF03164B7;
-	Thu, 28 May 2026 20:10:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD6A2E7379;
+	Thu, 28 May 2026 20:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779999002; cv=none; b=NuKVkZu+ss4ajzSUmSWH0SGdzkEd0kLQ4/rENPIYZU5Ll/Zdr8+rcs6IROER1kzuAxaR/o2PZaLd5NuHLHJF9Qxt/hLFB0J3CbxivLscD01NGHFD4cNwMFKmwtKG+OdAmGI24Vp9yLAC5fshNI05/tlJCb5etour68udUiHKZsI=
+	t=1779999996; cv=none; b=BKG60l+W0kwZZwx0Px+RfaOpJMWa3/dVcGRBavLaoo88VJOdrAxkxZMVwD+ID+SEVIrjvvGdg7oB1P4PnzEwjz8DXXG09O4JA2yYMkHvFcgsPs2sExId48jaJHDg1cTl8x07BIFSJkMT/UXb9/Q7SEfoX+bCLcBXZfgQuLi2jvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779999002; c=relaxed/simple;
-	bh=aw8qREzzyXu8Al3+WPDt5eoCfID1voB7n00w7LUS5R0=;
+	s=arc-20240116; t=1779999996; c=relaxed/simple;
+	bh=FrJCsQptvNbmFKNMiWixRVf4cx/9JEE4SioHKNAt+Lc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZhKD3USxD5YvYwbIKT8wrkavrF5alqQUe3TkaDJWI4y2SQy8jm9Xw6JWzP562/l5JVacvcFLkfdUdAP7/zRS3PH3zHxxIgd2j7RwOz6Tz5PipJXO3hF9fqcra869U7LvGd7jfDvzN9RblYUxvWI2kSQA2doB1d/Z/C01hZFO41A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZwEKQap8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A161F00A3A;
-	Thu, 28 May 2026 20:10:00 +0000 (UTC)
+	 MIME-Version; b=O9Pb+O+TTCjShBJPRkr3Hyi4CT+Eb5mYykzhqUJPK9iINLglHRujJ92+bpISAyWb/8CNTCxNJzqDxIanMByH4Aa6vlrtLcqPsj4Ys/pIK40Nd/6YbVXclO9PUj0rfNya4fYslTEOnwc09RgX8a/NnoO137pI66AgWT/XuHqGW2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Gt2sMSj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D4C1F000E9;
+	Thu, 28 May 2026 20:26:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779999001;
-	bh=sYmNrDqr+KohwhrRW4lfpzYSn/QPKinM4iVqlVWSY2Q=;
+	s=korg; t=1779999995;
+	bh=F1kTXidGY0MMXIA7mOsCrbdTiCPTXwtNjFrszB0Tkaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZwEKQap8Ai8wLmKIyDnABbJSql+SYwJiv0vAHiHLzdRsbXfzGdBtTOYCuHRErSw3r
-	 Y5S//hYPdR1iBp7xG2eR3Kffba9qP5Kn0TDO9DLfSVrgUK9USdpkXXkMbwVYVdUa47
-	 prTMjgoEXbW/K2cqtPySrCcCNvYWKOegIX/K+zRM=
+	b=2Gt2sMSj4UxhUZcgxlHvT+SnLu1bMoZbIflShIoXTNTzThEQkzEZtwFNqtxmiuztj
+	 A2i52UBY+cJeJcu3qIXmI4EVyyEhEGHXkT/W81mrs7sQjQt0Eq1xmWVh22wJ2X+SNZ
+	 ffJRdU31nL5RZ74GakjgKijIGYv8gSJHDDNupTpA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 373/461] io_uring: propagate array_index_nospec opcode into req->opcode
+Subject: [PATCH 6.18 264/377] net: shaper: reject QUEUE scope handle with missing id
 Date: Thu, 28 May 2026 21:48:22 +0200
-Message-ID: <20260528194658.243825254@linuxfoundation.org>
+Message-ID: <20260528194646.011099342@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +64,88 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-255470-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-255829-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 159745F8040
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: C5EA85F8E8D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit cf18e36455603d65d4745de83e2d1743c54ada47 ]
+[ Upstream commit ce372e869f9f492f3d5aa9a0ae75ed52c61d2d6f ]
 
-Commit 1e988c3fe126 ("io_uring: prevent opcode speculation") added
-array_index_nospec() to io_init_req(), but applied it only to a local
-opcode variable. req->opcode is initialized from sqe->opcode before the
-bounds check and remains the raw value.
+net_shaper_parse_handle() does not enforce that the user provides
+the handle ID. For NODE the ID defaults to UNSPEC for all other
+cases it defaults to 0.
 
-Keep req->opcode as the canonical opcode in io_init_req(): reject
-out-of-range values architecturally, then write the array_index_nospec()
-result back to req->opcode before any table lookup. This keeps downstream
-users of req->opcode from observing the raw user byte on a mispredicted
-path.
+For NETDEV 0 is the only option. For QUEUE defaulting to 0 makes
+less intuitive sense. Specifically because the behavior should
+(IMHO) be the same for all cases where there may be more than
+one ID (QUEUE and NODE).
 
-No functional change: array_index_nospec() is a no-op for opcodes in
-[0, IORING_OP_LAST), and out-of-range opcodes are still rejected at the
-bounds check above the assignment.
+We should either document this as intentional or reject.
+I picked the latter with no strong conviction.
 
-Fixes: 1e988c3fe126 ("io_uring: prevent opcode speculation")
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://patch.msgid.link/20260517213010.696135-1-michael.bommarito@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 4b623f9f0f59 ("net-shapers: implement NL get operation")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/20260510192904.3987113-11-kuba@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ net/shaper/shaper.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index 97260bca67e7b..cc4011d843377 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -1719,10 +1719,9 @@ static int io_init_req(struct io_ring_ctx *ctx, struct io_kiocb *req,
- 	const struct io_issue_def *def;
- 	unsigned int sqe_flags;
- 	int personality;
--	u8 opcode;
+diff --git a/net/shaper/shaper.c b/net/shaper/shaper.c
+index d65008b819dc9..23d535f157294 100644
+--- a/net/shaper/shaper.c
++++ b/net/shaper/shaper.c
+@@ -477,10 +477,15 @@ static int net_shaper_parse_handle(const struct nlattr *attr,
+ 	 * shaper (any other value).
+ 	 */
+ 	id_attr = tb[NET_SHAPER_A_HANDLE_ID];
+-	if (id_attr)
++	if (id_attr) {
+ 		id = nla_get_u32(id_attr);
+-	else if (handle->scope == NET_SHAPER_SCOPE_NODE)
++	} else if (handle->scope == NET_SHAPER_SCOPE_NODE) {
+ 		id = NET_SHAPER_ID_UNSPEC;
++	} else if (handle->scope == NET_SHAPER_SCOPE_QUEUE) {
++		NL_SET_ERR_ATTR_MISS(info->extack, attr,
++				     NET_SHAPER_A_HANDLE_ID);
++		return -EINVAL;
++	}
  
- 	req->ctx = ctx;
--	req->opcode = opcode = READ_ONCE(sqe->opcode);
-+	req->opcode = READ_ONCE(sqe->opcode);
- 	/* same numerical values with corresponding REQ_F_*, safe to copy */
- 	sqe_flags = READ_ONCE(sqe->flags);
- 	req->flags = (__force io_req_flags_t) sqe_flags;
-@@ -1732,13 +1731,13 @@ static int io_init_req(struct io_ring_ctx *ctx, struct io_kiocb *req,
- 	req->cancel_seq_set = false;
- 	req->async_data = NULL;
- 
--	if (unlikely(opcode >= IORING_OP_LAST)) {
-+	if (unlikely(req->opcode >= IORING_OP_LAST)) {
- 		req->opcode = 0;
- 		return io_init_fail_req(req, -EINVAL);
- 	}
--	opcode = array_index_nospec(opcode, IORING_OP_LAST);
-+	req->opcode = array_index_nospec(req->opcode, IORING_OP_LAST);
- 
--	def = &io_issue_defs[opcode];
-+	def = &io_issue_defs[req->opcode];
- 	if (def->is_128 && !(ctx->flags & IORING_SETUP_SQE128)) {
- 		/*
- 		 * A 128b op on a non-128b SQ requires mixed SQE support as
+ 	if (id && handle->scope == NET_SHAPER_SCOPE_NETDEV) {
+ 		NL_SET_ERR_MSG_ATTR(info->extack, id_attr,
 -- 
 2.53.0
 
