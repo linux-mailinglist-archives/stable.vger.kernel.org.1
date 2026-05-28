@@ -1,68 +1,64 @@
-Return-Path: <stable+bounces-255045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255046-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SF3YItpgGGpEjggAu9opvQ
-	(envelope-from <stable+bounces-255045-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 17:35:54 +0200
+	id 2PNLCwNeGGrVjQgAu9opvQ
+	(envelope-from <stable+bounces-255046-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 17:23:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92C1E5F47ED
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 17:35:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83AAC5F4552
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 17:23:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6CB20300FB28
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 15:20:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 26322302D084
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 15:23:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB2AE3B9604;
-	Thu, 28 May 2026 15:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDC672E7366;
+	Thu, 28 May 2026 15:23:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="sT0eQDld"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="M+WKW6l3"
 X-Original-To: stable@vger.kernel.org
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB21A3BB680
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 15:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C3B2E7361
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 15:23:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779981419; cv=none; b=GPamwHHFTj+T/5/opNKI75IB8MlmtytzuKKLhjBo6Qlp2Rh6/lMk9JolwbRBHUNFemaYC+8rE7KmnTPjfodublOZ66FM3XvorFYMFMLO/+h+Gua3yEy8Tx/Wmf1A+pEUS1OaOHV+p5TXiyDuAckOsH0sa6ZIzADL5bv3zDK9GLc=
+	t=1779981818; cv=none; b=ibSGSTwto/HFk+13CE3llsDzxxktYyPzUqZtYYIxvA8JU2dJzepWGaM8jJ3uvMeWHtdBqZgYtF1ZLe3jPjrn7ikBS9cuLoNJN4i8DhoQ+ZPZd50/y1HB5hvQxn2vd2i/I321/iheV8s7r/Ve/G+lrbmWW/P0rZoKkbOH0CW51FE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779981419; c=relaxed/simple;
-	bh=Y+ZrqF4jlghxv1kEmhsiZNO2fIh3Sh3bEwrxBwTlA1o=;
+	s=arc-20240116; t=1779981818; c=relaxed/simple;
+	bh=Fa3TyobCQCrF9VuxbFcQP/K+/+7U4Nk2SYlEa/2byZ0=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=qrB4DhYyk62YnIoZtAnZrUkZrx6K/Sbt23tbFeZSEOYZxajXsWeU+VdTWGthfj0yJU7W8E5GqY25yvVVwllNV25tFXp+P8dVvxBenVT1ec2Z5wov5IUIEaq4h7bev5Q399CE2v+AxwVsl75E7UFouHDpoRdn9Vi0JML3Eo8lM58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=sT0eQDld; arc=none smtp.client-ip=82.195.75.108
+	 Content-Disposition; b=XdYax+SXAZ/KecfdzAiDZgwe6YH1MdjPasGUOLvW3hHVkqPLXrSsEuRD7OQaxMR7h4iVRr4jTGDbD4pBIxS5+ZQzr3K9TEuEUO+B+YYYp0fNAuHyeMFibwuyeGb5DH1RQmLotSVSqgoPv8ku/9DKJ5HGF0vj0eGuKeMZtHdOkRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=M+WKW6l3; arc=none smtp.client-ip=82.195.75.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:References;
-	bh=2MMDARkYOJ8pxTFH9YiHgIZYqti2X+NzKlhdsQuLVHY=; b=sT0eQDld8eSTQhvCyjaO//+Qbo
-	k9UkDbhk/GUvxXx4Z9ZnvuigIsIl1gFY8tKcpBmWqpCML6rdBFo98aMjGIJwFoyktYaMUgOqZc4AL
-	k87DfCeFCGOVknEojOhI8gS3UpL1lv1YQW9EzjmjwPweSYvaEotqXBK8Nb4n2Hh2E/gDP5CDJVqnf
-	ZUz7L3PwiyIcw/TUjSR3TvybPFfhkJpkijhfmxog8BDf9qJeYMkNvJDkZB8OKRG41ZDjJZOpBHbIq
-	wkIIo1pRkIJqPoHT5bhjTlP/ygtauQkefroTPIXs2s1oZXAdpW3tE4rEP7VoW+K10eT5Z2PTAPfz3
-	evBZjKTw==;
+	s=smtpauto.stravinsky; h=X-Debian-User:Content-Type:MIME-Version:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=2k4n36Lv4CAmfYLvshPK1LSXNYr6k1IJtWvKgCfv0Fk=; b=M+WKW6l3T+H0CZB48PbVnCdQn5
+	Uc2PuzzWCQo3L8AJH+cpBRoHDxEr6dluBGn0z3ZWlxt2X1M1ZHR7pQEMYoZ1I5nrlvemv6/xHV7XS
+	Jk8WmxfQy2/wPSvySFwfjwyZB1OJS1jFTnWj7Ua+pK/ec623o0ZC/nTI4xEPCwtrqw6lsnx9H9+W4
+	s7sjymnkgzJuhQgVxPp/PWQuDtwAVIGaKoUiFYkY58kCewS4cRRmY8eImrileMQUaaDNfWJFH2Tpr
+	O0bmhZr8z+LfYaTXVHdS78X73IvQo2AB/RXO9PWLNJpk+PSvioAGnsmRGWLD2w4odentimbjw8Qs7
+	cwfFydCQ==;
 Received: from authenticated-user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <benh@debian.org>)
-	id 1wScTb-0048cB-2T;
-	Thu, 28 May 2026 15:16:51 +0000
-Date: Thu, 28 May 2026 17:16:49 +0200
+	id 1wSca5-0048vc-2B;
+	Thu, 28 May 2026 15:23:34 +0000
+Date: Thu, 28 May 2026 17:23:31 +0200
 From: Ben Hutchings <benh@debian.org>
 To: Sasha Levin <sashal@kernel.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: John Johansen <john.johansen@canonical.com>,
-	Qualys Security Advisory <qsa@qualys.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Georgia Garcia <georgia.garcia@canonical.com>,
-	Cengiz Can <cengiz.can@canonical.com>,
-	Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>,
+Cc: Borislav Petkov <bp@alien8.de>, Nikolay Borisov <nik.borisov@suse.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 6.1] apparmor: validate default DFA states are in bounds
-Message-ID: <ahhcYci93VUlA_f2@decadent.org.uk>
+Subject: [PATCH 5.10-6.1] x86/CPU/AMD: Move the Zen3 BTC_NO detection to the
+ Zen3 init function
+Message-ID: <ahhd83m8AruYGvOc@decadent.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,146 +66,120 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="K8NO7Okks4caA+gb"
+	protocol="application/pgp-signature"; boundary="fb+HVBjZn+kboUfl"
 Content-Disposition: inline
-In-Reply-To: <0d3747dc57d7bfa3c53efcf4d133021ead5bef9d.camel@decadent.org.uk>
 X-Debian-User: benh
 X-Spamd-Result: default: False [-4.26 / 15.00];
 	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[debian.org,none];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-255045-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-255046-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[debian.org:+];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[debian.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[benh@debian.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[decadent.org.uk:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 92C1E5F47ED
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.com:email,decadent.org.uk:mid]
+X-Rspamd-Queue-Id: 83AAC5F4552
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
---K8NO7Okks4caA+gb
+--fb+HVBjZn+kboUfl
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Some backports of commit 9063d7e2615f ("apparmor: validate DFA start
-states are in bounds in unpack_pdb") limited the bounds checks on DFA
-start states to the case where the start state was explicit in the
-policy.  However, the default DFA start state (DFA_START =3D 1) could
-also be out-of-bounds.
+=46rom: Borislav Petkov (AMD) <bp@alien8.de>
 
-Move these checks out of the else-branches so that they are applied
-regardless of how the start state was initialised.
+commit affc66cb96f865b3763a8e18add52e133d864f04 upstream.
 
-Fixes: 5443c027ec16 ("apparmor: validate DFA start states are in bounds in =
-unpack_pdb")
+No functional changes.
+
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Link: http://lore.kernel.org/r/20231120104152.13740-4-bp@alien8.de
+Stable-dep-of: 7c81ad8e8bc2 ("x86/CPU/AMD: Rename init_amd_zn() to init_amd=
+_zen_common()")
+[bwh: Adjusted to apply after backports of the above commit which actually
+ depended on this]
 Signed-off-by: Ben Hutchings <benh@debian.org>
 ---
- security/apparmor/policy_unpack.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ arch/x86/kernel/cpu/amd.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/security/apparmor/policy_unpack.c b/security/apparmor/policy_u=
-npack.c
-index f0c5560e74cb..636fa078f00e 100644
---- a/security/apparmor/policy_unpack.c
-+++ b/security/apparmor/policy_unpack.c
-@@ -829,6 +829,8 @@ static struct aa_profile *unpack_profile(struct aa_ext =
-*e, char **ns_name)
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index df6dbeeca556..a61606a614bd 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -1087,14 +1087,6 @@ static void init_amd_zen1(struct cpuinfo_x86 *c)
+ 		/* Erratum 1076: CPB feature bit not being set in CPUID. */
+ 		if (!cpu_has(c, X86_FEATURE_CPB))
+ 			set_cpu_cap(c, X86_FEATURE_CPB);
+-
+-		/*
+-		 * Zen3 (Fam19 model < 0x10) parts are not susceptible to
+-		 * Branch Type Confusion, but predate the allocation of the
+-		 * BTC_NO bit.
+-		 */
+-		if (c->x86 =3D=3D 0x19 && !cpu_has(c, X86_FEATURE_BTC_NO))
+-			set_cpu_cap(c, X86_FEATURE_BTC_NO);
  	}
 =20
- 	if (aa_unpack_nameX(e, AA_STRUCT, "policydb")) {
-+		size_t state_count;
+ 	pr_notice_once("AMD Zen1 FPDSS bug detected, enabling mitigation.\n");
+@@ -1154,6 +1146,16 @@ static void init_amd_zen2(struct cpuinfo_x86 *c)
+ static void init_amd_zen3(struct cpuinfo_x86 *c)
+ {
+ 	init_amd_zen_common();
 +
- 		/* generic policy dfa - optional and may be NULL */
- 		info =3D "failed to unpack policydb";
- 		profile->policy.dfa =3D unpack_dfa(e);
-@@ -843,13 +845,12 @@ static struct aa_profile *unpack_profile(struct aa_ex=
-t *e, char **ns_name)
- 		if (!aa_unpack_u32(e, &profile->policy.start[0], "start")) {
- 			/* default start state */
- 			profile->policy.start[0] =3D DFA_START;
--		} else {
--			size_t state_count =3D profile->policy.dfa->tables[YYTD_ID_BASE]->td_lo=
-len;
-+		}
++	if (!cpu_has(c, X86_FEATURE_HYPERVISOR)) {
++		/*
++		 * Zen3 (Fam19 model < 0x10) parts are not susceptible to
++		 * Branch Type Confusion, but predate the allocation of the
++		 * BTC_NO bit.
++		 */
++		if (!cpu_has(c, X86_FEATURE_BTC_NO))
++			set_cpu_cap(c, X86_FEATURE_BTC_NO);
++	}
+ }
 =20
--			if (profile->policy.start[0] >=3D state_count) {
--				info =3D "invalid dfa start state";
--				goto fail;
--			}
-+		state_count =3D profile->policy.dfa->tables[YYTD_ID_BASE]->td_lolen;
-+		if (profile->policy.start[0] >=3D state_count) {
-+			info =3D "invalid dfa start state";
-+			goto fail;
- 		}
-=20
- 		/* setup class index */
-@@ -872,16 +873,18 @@ static struct aa_profile *unpack_profile(struct aa_ex=
-t *e, char **ns_name)
- 		info =3D "failed to unpack profile file rules";
- 		goto fail;
- 	} else if (profile->file.dfa) {
-+		size_t state_count;
-+
- 		if (!aa_unpack_u32(e, &profile->file.start, "dfa_start")) {
- 			/* default start state */
- 			profile->file.start =3D DFA_START;
--		} else {
--			size_t state_count =3D profile->file.dfa->tables[YYTD_ID_BASE]->td_lole=
-n;
-+		}
-=20
--			if (profile->file.start >=3D state_count) {
--				info =3D "invalid dfa start state";
--				goto fail;
--			}
-+		state_count =3D profile->file.dfa->tables[YYTD_ID_BASE]->td_lolen;
-+
-+		if (profile->file.start >=3D state_count) {
-+			info =3D "invalid dfa start state";
-+			goto fail;
- 		}
- 	} else if (profile->policy.dfa &&
- 		   profile->policy.start[AA_CLASS_FILE]) {
+ static void init_amd_zen4(struct cpuinfo_x86 *c)
 
---K8NO7Okks4caA+gb
+--fb+HVBjZn+kboUfl
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmoYXGEACgkQ57/I7JWG
-EQk9ixAAzjINcwFk2ETd2d2DeXk9gRqodk9RbMGVgHlup3LUu1R9rhblQiDENdou
-ZjKwOXgzcGhwzI1iNtvbN7aQ1k7QqGfsWX0wJk67p+0ko6mtAIDEzcFzxldaVJ5z
-KC3OxYrwae/0e9Q2Ha6sD3XTVKPkuk0R6b/k+WJCupCB2H1ob/X9nBEhp8A45Tro
-lckHSi0XVmXbRsim/LpcfxfpA3Xy7ZpaU/TlpBPP1AOxPI+gBSqhYNyseU3ExE9+
-yVdYvHfiD+25KSmOFgbfU21EoJjzvVdlNaeMnuwCV4kjTfERoCNK7xMKahxWDT3C
-tbGJRG0KhEk4DerDkn+hBrB1z7MqDy4duVWZS/7Gg3oR3FDXCgCvuMbyw2VdLaWl
-+DEY4SYSIDNNK4VT4+OkLfPQl6lvIm7VFHnYQCKB+lROQ7lwHLAH5CHZv+gctipS
-ruU2ffvWhsG4UsDOkeaxSXfsHGUmbPfhGJZtvZPkVKpise3f0GtlCcJY4dfQAru6
-iFyUEWGqjZ8Ffdeqqwkk9jWIsIz/YRCSZhvYfyJkIYIebxYysApn+y5v7r+okFJw
-/Ifmf6Yd/XHfm3uNWcWsAm/QqZxkKaV640wADgwM6JgxMfKsyR5uqrPVAR106tm0
-tcSjQiZRmwNqRbBo8g9wpiALguW/KLAShTlDH+ymKH/ek9gjUTM=
-=U9ek
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmoYXe8ACgkQ57/I7JWG
+EQknIg//ZdLoWXMSWRguOhhTqW1JPx1iHoKWI+TV7cUdWL2cGh7rYX2//HLaUhiW
+xiObgcT9kNZ9VPIOUW8RJOT0L3aBTzd7M2OTR73CeUKVEGh1qBRP/TyUHWoq0bZX
+vVD0b4YwQCOE6KsHnq85ZY6HhBD7v+Z8khn4UZINJtxYo3uLKduYoYJ7UP65yk8p
+PlGz4ZK/z5OlJNAmszrLN/6acwP7PMU3TObiKsDZoHtmf8h5TTath0+cPZjOH6vm
+pfnjOv/9LtwJIcv0XaZ23tyol3aY0irtfn+fAvXNuAtJl9NJ5dkhsN8A8qZpQNjo
+3fze4iKBH76/eHZb6QpY5hgzkN59xgD9olwYJVc23Az5YDWw58iRLRRnSZKTsOQ7
+/J1I0I8cfxZtrttLSBF74hr1YzdAcEYBesq1sEsQ9dypwZzoVdyAouIazuEFWJSc
+qVJm8I4hlNiRoYp1mhsnVcHhp1i7Z6vN/VygEr2V66ZYk/qxe3Zqm2fHTNZR6Nw4
+SwnKAQj8S7Lx4QjH8jtiT2k6Ke6O/yN8+d+mDCew8DUjTSGHB//ksk8JENzNfLjR
+B7JxlHgGTHa0c55Sr8NdvuCI0dP717jV3ynvxqiQ0OoWhyjNTlg3gehlCYOz+t8x
+sUq1mqpgcKuvDv3N1ChDF0ABRTMvt0Nu5c5dXFPX0pYBK4hWJYI=
+=W/jr
 -----END PGP SIGNATURE-----
 
---K8NO7Okks4caA+gb--
+--fb+HVBjZn+kboUfl--
 
