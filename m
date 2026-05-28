@@ -1,184 +1,244 @@
-Return-Path: <stable+bounces-254965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-254966-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4E8bBXQvGGpwfggAu9opvQ
-	(envelope-from <stable+bounces-254965-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 14:05:08 +0200
+	id kDF5EJUvGGpwfggAu9opvQ
+	(envelope-from <stable+bounces-254966-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 14:05:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 864E55F1D3C
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 14:05:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97D0C5F1D52
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 14:05:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D22AA315E930
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 11:58:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9A62E303455B
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 12:00:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B8C3E0C47;
-	Thu, 28 May 2026 11:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 469AC3E7161;
+	Thu, 28 May 2026 12:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E0Ba1YaU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hW47772w"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C851E3D25CB
-	for <stable@vger.kernel.org>; Thu, 28 May 2026 11:58:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DEC23E3DA5
+	for <stable@vger.kernel.org>; Thu, 28 May 2026 12:00:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779969510; cv=none; b=ID/cbdDjMRV3MW155jPF8uToAoAL+KOnr1hMwFOcPri72yk9JnfEX0bFwaVNy7icAzSm43/7GlwxUaPu8qa43nUsx3k+N5RjY4GXacfC90M+4EAgICfOlVibJ1lRE57csD0w7wBw12O301jnagJrIoKGqOFC2pqREot5RBvMZYc=
+	t=1779969606; cv=none; b=luDk0W3vYrQyiR7WDrtW89MnN47gSYcrzLtUOaARKaM2lX7C6qE7rJ8d0YmOOhvnR85sA3fq/+3TpFIuii4m8HpeSzsBN/ENbBoevjrUskg2ixA7cdzNdUC3Vl8uw7gW2XsTHHP2Wa1R4v11sR8rTwvOrJv3tvUjCe4Hu6SRgHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779969510; c=relaxed/simple;
-	bh=Kc5p3+SiBhTASnC77V8x8STIXRO1MzdeDF1ZwkKDh88=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=j4/tBDqsLmbYFi0/MosfbCJDC6Tdkj/Fdq4vC1qJ8/NkCNKacO4OScE1nNw6T125rIeanWlOcHhnZlDu4mvEfr1QWR4eMiVSWt91zCQvAbNSvw+LnJANpyF10FjEK91A937FwQjFPBbt8UptF5OzvHQU4LyRo0zcQQB4G14fhr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E0Ba1YaU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD2111F00A3A;
-	Thu, 28 May 2026 11:58:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779969509;
-	bh=QUn7PCIzpfXm2LhrYwqfoU6u42G9ZRvy2pKZvuq0Aw8=;
-	h=Subject:To:Cc:From:Date;
-	b=E0Ba1YaUYJSJx1egS+D/EcLKt0V5lOQVogH59l59b5Tx+AuscKaqu/jJJO5u3b2Qb
-	 akokJYhc4TOJRUJa5BaWjKZVY73W4+XZ6/Hi+jyPPgRK13EFt+DRsmU249wvrtSG9o
-	 PEooh7fBswvKcjT6p1gkBHcmgZwX5JsimgbUDt+w=
-Subject: FAILED: patch "[PATCH] batman-adv: tt: prevent TVLV entry number overflow" failed to apply to 5.15-stable tree
-To: sven@narfation.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 28 May 2026 13:57:20 +0200
-Message-ID: <2026052820-frail-ripeness-2191@gregkh>
+	s=arc-20240116; t=1779969606; c=relaxed/simple;
+	bh=htFmoUdtvWDyUgG8uCJCoUFye9ZJ8o4lYS0AS9twxvo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DOaoAiA5LneY9gnjCzQYVzMYeo/tYpyUSPKXkoJsT6j2qMKVLUK+9J7LolCHBtIrX4B/tjaImmAufqKofjSpDB+bKhlTOpxgumNLZh8VEjXFqDkplbdmEZ9KTF3/lnWWT6TGUJT6115RTTs3DU1yMfvBzx+WQIq067iMugm7/h4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hW47772w; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-83538fcdda8so1025848b3a.3
+        for <stable@vger.kernel.org>; Thu, 28 May 2026 05:00:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779969603; x=1780574403; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=D5vl3C5jPSAv3GytCPh8lvvkDSsugrJeALohk3VsT+s=;
+        b=hW47772wN8AK3PT1uNAy3S4iNleMu5A21P/RFK7zghBX6kUFIG1b/s9SlIbIftLO7F
+         5exn4l1THxUnlfM8FrdRVonHSbcw/mXeEuDzp+0SwDp4p4H8KgLm1SrRpLx5vtdwqjsn
+         2pAPmTLTBlIc0kDOSJxxlgL47wYUFfnPVdigqWdOBnOHSBhN3kYrXI3QzkbpS/1FdhFt
+         bbkhQJ6R8dPyTpcQCIPYkZ1XFtLvu0qIR8caR3+z/14w7awqvbTthTTnBxeLSO+yC6Dk
+         GhVrri2/duLBZYFdViU3XHbA7yIMsaOgdHvfRWif0U1nRZE2gx3BamFeiCv+5OdMi7pu
+         16VQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779969603; x=1780574403;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=D5vl3C5jPSAv3GytCPh8lvvkDSsugrJeALohk3VsT+s=;
+        b=GvnE+0YciHG3/Ojb1k5DYEfEvjtJDANWWlBeT1rAZhsY/2hZz90IDe99X8YImWHB2Z
+         hsv4g+xsBM6niFNDBQL7fZ2rgDDl7Z99gpa9Zi+hkM28j5NmxP4EAWDxnvnio11Aabt+
+         +h9IbcGnyygpUUUtLMyG+s+y0MIDcJ2P026OSVDSQmBtWAuaGGpGUXxgGi1oWIePcKBk
+         ehF1K4oIBCGNDOz+HMMDDImPhP1lSQ7W/5PxyPACBcOtemRa83Xw62UV7bjo2UDjwYpQ
+         j1rCDyToMGItYlw1FEhZ4EnjEzQ06NUNK/xOvIDHPL+uZsxh31S7+5BvOLp6XkFAIOce
+         YWuA==
+X-Forwarded-Encrypted: i=1; AFNElJ9IwDwKgXiTN4Mi3vGv89PzWOe8b7zlfZFg0vbgTNN0IrZBozxQhPOI0aXEWHaCu4Sf9Q/pfBo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVLBPtbPGVz0dcNeX0QnNDGaKNngDS87hfkbVavG9Ctv6DIfw4
+	X7Sdhkc+XVCvrH5KUdl4Tp6IyOAyEdYCm1BCSztj9HsKyxEiL8m2+dSu
+X-Gm-Gg: Acq92OEsOKEOQ5k2RXOvz8cJ/NWvTJRDXxczuqGFc7UsFE6+1WQotAjLsT3zzEz7bBt
+	/NTfMi6CbWjHR5V2DaYNmNyIjoG3lFBPKq4uGe0pzrBIn23IIx3RFYhW+wxAHCrRFz5M9zyl8nf
+	atlgt7sR956IZ8ZnRrSZteSIDiO0IM54UebhIe8q3NMlt2TICoMwDLifoy9OHzurmO+o2KN8Wc2
+	NM5yXvy2YHuxaJD7oQHUC7wYCGFhzoX6DhewuGgTfGRMivqb0L+Z82iiLL2BXRnY6UHk0K5Q3wT
+	E1PSeCL57RxXpMmM95uINnd4WIyZiR7OC3Lc04zkxZNqWR72a8FVl4wOy4jvyJ3TfebXnWQhwxQ
+	kmESLn9l+NfxLEpE+s1PoE5eoMTzSaxoccVQlGe+5WlrHo/jhbn+0/CXo8iZ/Gjk3PuF5bF8kI+
+	kmJJCKGBqj6Dcx93mqj/Z5l7IXqfE4
+X-Received: by 2002:a05:6a21:4d8c:b0:3b0:77d6:4b9c with SMTP id adf61e73a8af0-3b3f0fe79d0mr1672819637.6.1779969603200;
+        Thu, 28 May 2026 05:00:03 -0700 (PDT)
+Received: from kali ([2402:e280:3d7c:a2:536a:b505:93f5:9d5d])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-841d6ed19c2sm4678126b3a.25.2026.05.28.04.59.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 May 2026 05:00:02 -0700 (PDT)
+From: Pavitra Jha <jhapavitra98@gmail.com>
+To: idryomov@gmail.com
+Cc: amarkuze@redhat.com,
+	slava@dubeyko.com,
+	ceph-devel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Pavitra Jha <jhapavitra98@gmail.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Subject: [PATCH v3] ceph: fix OOB read in decode_watchers() via missing bounds check
+Date: Thu, 28 May 2026 07:59:16 -0400
+Message-ID: <20260528115916.796696-1-jhapavitra98@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <fb2206a9cc8519e54d269b6e5aa772edddfe6fec.camel@ibm.com>
+References: <fb2206a9cc8519e54d269b6e5aa772edddfe6fec.camel@ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-254965-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,linuxfoundation.org:dkim,narfation.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
-X-Rspamd-Queue-Id: 864E55F1D3C
+	FREEMAIL_CC(0.00)[redhat.com,dubeyko.com,vger.kernel.org,gmail.com,ibm.com];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-254966-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jhapavitra98@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: 97D0C5F1D52
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+ceph_start_decoding() validates that struct_len bytes remain in the
+buffer after the encoding header, but accepts struct_len=0 as valid:
+ceph_decode_need(p, end, 0, bad) always passes. When a malicious or
+compromised OSD sends an obj_list_watch_response_t reply with
+struct_len=0, ceph_start_decoding() returns success with p == end,
+leaving zero bytes guaranteed for subsequent reads.
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+The immediately following ceph_decode_32(p) in decode_watchers() has
+no preceding bounds check. With p == end this is a 4-byte read past
+the validated buffer boundary. The garbage value is then passed
+directly to kzalloc_objs() as the watcher count.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+The sibling function decode_watcher() already uses the safe variants
+(ceph_decode_copy_safe, ceph_decode_64_safe, ceph_decode_skip_32)
+after its own ceph_start_decoding() call. decode_watchers() is the
+only site that uses the bare variant, confirming an oversight.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x 99d9958fa10fb684b2a8e2c48a8d704122721420
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026052820-frail-ripeness-2191@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+Fix by replacing ceph_decode_32(p) with ceph_decode_32_safe(p, end,
+*num_watchers, bad), consistent with the established pattern.
 
-Possible dependencies:
+KASAN report (kernel 7.0.0-rc7, QEMU/x86_64, KASLR disabled):
 
+  [   72.047085] ceph_oob_poc: buf=ffff8880085936c8 end=ffff8880085936ce
+  [   72.048685] ceph_oob_poc: ceph_start_decoding OK: struct_v=1
+  struct_len=0 p==end: 1
+  [   72.049477] ceph_oob_poc: triggering OOB read past slab boundary...
+  [   72.050699] ==================================================
+  [   72.051427] BUG: KASAN: slab-out-of-bounds in
+  ceph_oob_init+0x128/0xff0 [ceph_oob_poc]
+  [   72.051427] Read of size 4 at addr ffff8880085936ce by task insmod/61
+  [   72.051427] CPU: 0 UID: 0 PID: 61 Comm: insmod Tainted: G O
+  [   72.051427]  7.0.0-rc7-g9c2abf69da83-dirty #14 PREEMPT(lazy)
+  [   72.051427] Call Trace:
+  [   72.051427]  dump_stack_lvl+0x4d/0x70
+  [   72.051427]  print_report+0x170/0x4f3
+  [   72.051427]  kasan_report+0xda/0x110
+  [   72.051427]  kasan_check_range+0x125/0x200
+  [   72.051427]  ceph_oob_init+0x128/0xff0 [ceph_oob_poc]
+  [   72.051427]  do_one_initcall+0x9a/0x310
+  [   72.051427]  do_init_module+0x186/0x410
+  [   72.051427]  load_module+0x2ba7/0x2e50
+  [   72.051427]  init_module_from_file+0x15c/0x180
+  [   72.051427]  idempotent_init_module+0x19f/0x430
+  [   72.051427]  __x64_sys_finit_module+0x78/0xc0
+  [   72.051427]  do_syscall_64+0xe2/0x570
+  [   72.051427]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+  [   72.051427] The buggy address belongs to the object at ffff8880085936c8
+  [   72.051427]  which belongs to the cache kmalloc-8 of size 8
+  [   72.051427] The buggy address is located 0 bytes to the right of
+  [   72.051427]  allocated 6-byte region [ffff8880085936c8, ffff8880085936ce)
+  [   72.051427] Memory state around the buggy address:
+  [   72.051427] >ffff888008593680: fc fc fc fc fc fc fc fc fc 06 fc fc fc fc fc fc
+  [   72.051427]                                               ^
+  [   72.051427] ==================================================
+  [   72.129720] ceph_oob_poc: num_watchers=3435973836 (OOB garbage)
 
+0xCCCCCCCC (3435973836) is KASAN redzone poison, confirming the read
+landed in the slab redzone immediately past the 6-byte allocation.
 
-thanks,
+Attacker model: a malicious or compromised OSD in a multi-tenant Ceph
+deployment (e.g. cloud) can trigger this against any kernel client
+that calls CEPH_OSD_OP_LIST_WATCHERS, without any further privileges
+beyond OSD session establishment.
 
-greg k-h
+Fixes: a4ed38d7a180 ("libceph: support for CEPH_OSD_OP_LIST_WATCHERS")
+Cc: stable@vger.kernel.org
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Pavitra Jha <jhapavitra98@gmail.com>
+---
+v3: Rename error label e_inval -> bad per Slava Dubeyko's review.
+v2: Correct commit message. v1 overstated the impact:
+  - "unbounded alloc": retracted. kzalloc_objs() uses size_mul()
+    internally which returns SIZE_MAX on overflow, causing kmalloc
+    to return NULL. The large garbage value from the OOB read will
+    simply fail allocation with -ENOMEM.
+  - "decode_watcher() writing attacker-controlled data into it":
+    retracted. ceph_start_decoding() calls ceph_decode_need() for
+    its 6-byte header, which catches p==end and returns -ERANGE
+    before any copy occurs. Verified with a follow-up KASAN harness.
+  The fix itself is unchanged.
+---
+ net/ceph/osd_client.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
------------------- original commit in Linus's tree ------------------
-
-From 99d9958fa10fb684b2a8e2c48a8d704122721420 Mon Sep 17 00:00:00 2001
-From: Sven Eckelmann <sven@narfation.org>
-Date: Sat, 2 May 2026 21:25:19 +0200
-Subject: [PATCH] batman-adv: tt: prevent TVLV entry number overflow
-
-The helpers to prepare the buffers for the local and global TT based
-replies are trying to sum up all TT entries which can be found for each
-VLAN. In theory, this sum can be too big for an u16 and therefore overflow.
-A too small buffer would then be allocated for the TVLV.
-
-The too small buffer will be handled gracefully by
-batadv_tt_tvlv_generate() and is not causing a buffer overflow - just a
-truncated reply. But this overflow shouldn't have happened in the first and
-the too small buffer should never have been allocated when an overflow was
-detected.
-
-Cc: stable@kernel.org
-Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-
-diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index 2259b241e0b5..9f6e67771ffa 100644
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -804,11 +804,18 @@ batadv_tt_prepare_tvlv_global_data(struct batadv_orig_node *orig_node,
- 	u16 total_entries = 0;
- 	u8 *tt_change_ptr;
- 	int vlan_entries;
-+	u16 sum_entries;
+diff --git a/net/ceph/osd_client.c b/net/ceph/osd_client.c
+index a67093cf4..9058de08e 100644
+--- a/net/ceph/osd_client.c
++++ b/net/ceph/osd_client.c
+@@ -5030,7 +5030,7 @@ static int decode_watchers(void **p, void *end,
+ 	if (ret)
+ 		return ret;
  
- 	spin_lock_bh(&orig_node->vlan_list_lock);
- 	hlist_for_each_entry(vlan, &orig_node->vlan_list, list) {
- 		vlan_entries = atomic_read(&vlan->tt.num_entries);
--		total_entries += vlan_entries;
-+
-+		if (check_add_overflow(vlan_entries, total_entries, &sum_entries)) {
-+			*tt_len = 0;
-+			goto out;
-+		}
-+
-+		total_entries = sum_entries;
- 		num_vlan++;
- 	}
+-	ceph_decode_32_safe(p, end, *num_watchers, e_inval);
++	ceph_decode_32_safe(p, end, *num_watchers, bad);
+ 	*watchers = kzalloc_objs(**watchers, *num_watchers, GFP_NOIO);
+ 	if (!*watchers)
+ 		return -ENOMEM;
+@@ -5045,7 +5045,7 @@ static int decode_watchers(void **p, void *end,
  
-@@ -893,15 +900,22 @@ batadv_tt_prepare_tvlv_local_data(struct batadv_priv *bat_priv,
- 	struct batadv_meshif_vlan *vlan;
- 	size_t change_offset;
- 	u16 num_vlan = 0;
--	u16 vlan_entries = 0;
- 	u16 total_entries = 0;
- 	u16 tvlv_len;
- 	u8 *tt_change_ptr;
-+	int vlan_entries;
-+	u16 sum_entries;
+ 	return 0;
  
- 	spin_lock_bh(&bat_priv->meshif_vlan_list_lock);
- 	hlist_for_each_entry(vlan, &bat_priv->meshif_vlan_list, list) {
- 		vlan_entries = atomic_read(&vlan->tt.num_entries);
--		total_entries += vlan_entries;
-+
-+		if (check_add_overflow(vlan_entries, total_entries, &sum_entries)) {
-+			tvlv_len = 0;
-+			goto out;
-+		}
-+
-+		total_entries = sum_entries;
- 		num_vlan++;
- 	}
+-e_inval:
++bad:
+ 	return -EINVAL;
+ }
  
+-- 
+2.53.0
 
 
