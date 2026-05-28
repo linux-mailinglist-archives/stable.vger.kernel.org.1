@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-256334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255924-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QMoULNCsGGpymAgAu9opvQ
-	(envelope-from <stable+bounces-256334-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:00:00 +0200
+	id gGz2MKOnGGp+lwgAu9opvQ
+	(envelope-from <stable+bounces-255924-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5402D5FA06D
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 23:00:00 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 436B35F9296
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:37:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 07CCF320BCC1
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:50:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 298943121EEB
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:31:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17741318B96;
-	Thu, 28 May 2026 20:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABB9533439A;
+	Thu, 28 May 2026 20:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yP2FlPdN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rdV5EFOx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9957C2F260C;
-	Thu, 28 May 2026 20:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54074223328;
+	Thu, 28 May 2026 20:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780001410; cv=none; b=A4VJFac0I9joUxikEJQD41tusO8uysWyKvo/KpHDvEOzQlWl38/n3UNTm+oorvzF5E/wFKjANKYAn77DRr5EsF5xC8WilAmR96DDd4lmQslDkB03WcdHqc+dFUcNZ2WjZH2M/eL93vn470QJ4uI1d6rfYj6VDhSS5gViBhAcWWw=
+	t=1780000261; cv=none; b=pZToTA6tnHTXUFxoeug8iGaBeyTqFlgqukMJVTTFHWflH/VGjV7i5VPo+DSJBaUnYeGgynQJ3925NQfT2kVLHjjiJIq8s1xOOOsJfwTACEFnjQSEXhJUuMJZjjTdcLB2y8dZWoP8OJ+HtTuiBYOhn2OYddOKZnVuu6/WBH8g+X4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780001410; c=relaxed/simple;
-	bh=T4JG8L2thWyXyWScwk5xAM4wc3qZkbsTy5p0IO1j19g=;
+	s=arc-20240116; t=1780000261; c=relaxed/simple;
+	bh=2IftqMaVtYCePBvYW0RB2s0yy2I9RCQaR8uaOHGcZI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q9706FeUSIuZg/986vYi16ZzdFoKFo0Gjk1q0K+EuoxDFG39CdOaMW9gVTdJUooTd0JB7zl3MWhrKrg9hR6A8/4aBsWi3VMFwKI22LZyEyjh3Sy1LE2kLkuMph/pXyiO8WzTIor5BKGYKL4+3vX2+g5Wv2XAtbyyxh1nErNwlyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yP2FlPdN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD11B1F000E9;
-	Thu, 28 May 2026 20:50:08 +0000 (UTC)
+	 MIME-Version; b=D5Jm3lHbt4mRHKunxtij/RnmMookkOTbZuwiRIvaiq0vh3tMl1nbvhIYSM/QUYI6xnjZznOK5tiUuX2oOTWF5RrsLC+TTxHNbxazMcBmWEgJdNxpJaXrxR/sHSvWPx/RqBH/rMGA9/k1nA+5Mry+moqUlxYQY5kgzTB2HLL5hUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rdV5EFOx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D5B11F000E9;
+	Thu, 28 May 2026 20:30:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780001409;
-	bh=fCLAtwWCTuI0UhZdHPOcOl+KTcTAlrU30UhY7avebMY=;
+	s=korg; t=1780000260;
+	bh=0Q6qcQ6zABfUkxglVqDPfzrPoDA5h/+6/XzROa6assQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yP2FlPdNKhBB8Y4SaerLYkaJFQHm5aKrUclNitb5XKHz7jGf1YarmI8wmlCZeLTz2
-	 z8UY8WyDmBizuF8avD7nn/7nE3DriOj9o80zgSe3RsI0jdOA2dTNVuLN/5H1vfoDxZ
-	 EGdVlTWoTpu306GK0s1uEJ0Rmdu1TNWyVYVh0Dvw=
+	b=rdV5EFOxjItRY5EKPts92ZADbxZJVXKcA7400SkWo3WfOOkYhVv08492oaG5uI5wP
+	 eJZ+2yBxxvDUuIgPsJmxn6WZto2SMIcurA6LSKJSZMtqKy5dlEQw1OwyKvK0IbZCMZ
+	 c2Mqutpxer/QWi/HFcc8WH3rYCXVXvsRwvF9QEV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Chris Mason <clm@meta.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 118/186] netfilter: x_tables: close dangling table module init race
+Subject: [PATCH 6.18 360/377] tcp: fix stale per-CPU tcp_tw_isn leak enabling ISN prediction
 Date: Thu, 28 May 2026 21:49:58 +0200
-Message-ID: <20260528194932.128812598@linuxfoundation.org>
+Message-ID: <20260528194648.855155086@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194928.941004471@linuxfoundation.org>
-References: <20260528194928.941004471@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,434 +70,227 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-255924-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-256334-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,strlen.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 5402D5FA06D
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vmlinux.new:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,meta.com:email]
+X-Rspamd-Queue-Id: 436B35F9296
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 16bc4b6686b2c112c10e67d6b493adc3607256d3 ]
+[ Upstream commit 1bbf0ced1d9db73ac7893c2187f3459288603e0d ]
 
-Similar to the previous ebtables patch:
-template add exposes the table to userspace, we must do this last to
-rnsure the pernet ops are set up (contain the destructors).
+Blamed commit moved the TIME_WAIT-derived ISN from the skb control
+block to a per-CPU variable, assuming the value would always be consumed
+by tcp_conn_request() for the same packet that wrote it. That assumption
+is violated by multiple drop paths between the producer
+(__this_cpu_write(tcp_tw_isn, isn) in tcp_v{4,6}_rcv()) and the consumer
+(tcp_conn_request()):
 
-Fixes: fdacd57c79b7 ("netfilter: x_tables: never register tables by default")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+ - min_ttl / min_hopcount check
+ - xfrm policy check
+ - tcp_inbound_hash() MD5/AO mismatch
+ - tcp_filter() eBPF/SO_ATTACH_FILTER drop
+ - th->syn && th->fin discard in tcp_rcv_state_process() TCP_LISTEN
+ - psp_sk_rx_policy_check() in tcp_v{4,6}_do_rcv()
+ - tcp_checksum_complete() in tcp_v{4,6}_do_rcv()
+ - tcp_v{4,6}_cookie_check() returning NULL
+
+When a packet is dropped on any of these paths, tcp_tw_isn is left set.
+
+The next SYN processed on the same CPU then consumes the non zero value in
+tcp_conn_request(), receiving a potentially predictable ISN.
+
+This patch moves back tcp_tw_isn to skb->cb[], getting rid of the per-cpu
+variable.
+
+Note that tcp_v{4,6}_fill_cb() do not set it.
+
+Very litle impact on overall code size/complexity:
+
+$ scripts/bloat-o-meter -t vmlinux.old vmlinux.new
+add/remove: 0/0 grow/shrink: 2/1 up/down: 8/-15 (-7)
+Function                                     old     new   delta
+tcp_v6_rcv                                  3038    3042      +4
+tcp_v4_rcv                                  3035    3039      +4
+tcp_conn_request                            2938    2923     -15
+Total: Before=24436060, After=24436053, chg -0.00%
+
+Fixes: 41eecbd712b7 ("tcp: replace TCP_SKB_CB(skb)->tcp_tw_isn with a per-cpu field")
+Reported-by: Chris Mason <clm@meta.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260519084611.2485277-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/netfilter/arptable_filter.c   | 23 ++++++++++++-----------
- net/ipv4/netfilter/iptable_filter.c    | 23 ++++++++++++-----------
- net/ipv4/netfilter/iptable_mangle.c    | 25 +++++++++++++------------
- net/ipv4/netfilter/iptable_raw.c       | 22 +++++++++++-----------
- net/ipv4/netfilter/iptable_security.c  | 23 ++++++++++++-----------
- net/ipv6/netfilter/ip6table_filter.c   | 22 +++++++++++-----------
- net/ipv6/netfilter/ip6table_mangle.c   | 23 ++++++++++++-----------
- net/ipv6/netfilter/ip6table_raw.c      | 20 ++++++++++----------
- net/ipv6/netfilter/ip6table_security.c | 23 ++++++++++++-----------
- 9 files changed, 105 insertions(+), 99 deletions(-)
+ include/net/tcp.h    |  7 ++++---
+ net/ipv4/tcp.c       |  3 ---
+ net/ipv4/tcp_input.c | 15 ++++++---------
+ net/ipv4/tcp_ipv4.c  |  3 ++-
+ net/ipv6/tcp_ipv6.c  |  3 ++-
+ 5 files changed, 14 insertions(+), 17 deletions(-)
 
-diff --git a/net/ipv4/netfilter/arptable_filter.c b/net/ipv4/netfilter/arptable_filter.c
-index 382345567a600..370b635e3523b 100644
---- a/net/ipv4/netfilter/arptable_filter.c
-+++ b/net/ipv4/netfilter/arptable_filter.c
-@@ -58,25 +58,26 @@ static struct pernet_operations arptable_filter_net_ops = {
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index cf507b989bff1..f460d2c391deb 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -65,8 +65,6 @@ static inline void tcp_orphan_count_dec(void)
+ 	this_cpu_dec(tcp_orphan_count);
+ }
  
- static int __init arptable_filter_init(void)
+-DECLARE_PER_CPU(u32, tcp_tw_isn);
+-
+ void tcp_time_wait(struct sock *sk, int state, int timeo);
+ 
+ #define MAX_TCP_HEADER	L1_CACHE_ALIGN(128 + MAX_HEADER)
+@@ -1028,10 +1026,13 @@ struct tcp_skb_cb {
+ 	__u32		seq;		/* Starting sequence number	*/
+ 	__u32		end_seq;	/* SEQ + FIN + SYN + datalen	*/
+ 	union {
+-		/* Note :
++		/* Notes :
++		 *	tcp_tw_isn is used in input path only
++		 *	(isn chosen by tcp_timewait_state_process())
+ 		 * 	  tcp_gso_segs/size are used in write queue only,
+ 		 *	  cf tcp_skb_pcount()/tcp_skb_mss()
+ 		 */
++		u32		tcp_tw_isn;
+ 		struct {
+ 			u16	tcp_gso_segs;
+ 			u16	tcp_gso_size;
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 2de4748269ca9..6fc00b38695ba 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -300,9 +300,6 @@ enum {
+ DEFINE_PER_CPU(unsigned int, tcp_orphan_count);
+ EXPORT_PER_CPU_SYMBOL_GPL(tcp_orphan_count);
+ 
+-DEFINE_PER_CPU(u32, tcp_tw_isn);
+-EXPORT_PER_CPU_SYMBOL_GPL(tcp_tw_isn);
+-
+ long sysctl_tcp_mem[3] __read_mostly;
+ EXPORT_IPV6_MOD(sysctl_tcp_mem);
+ 
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index b5cf32a56c04a..c650398e91998 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -7387,6 +7387,7 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
+ 		     struct sock *sk, struct sk_buff *skb)
  {
--	int ret = xt_register_template(&packet_filter,
--				       arptable_filter_table_init);
--
--	if (ret < 0)
--		return ret;
-+	int ret;
+ 	struct tcp_fastopen_cookie foc = { .len = -1 };
++	u32 isn = TCP_SKB_CB(skb)->tcp_tw_isn;
+ 	struct tcp_options_received tmp_opt;
+ 	const struct tcp_sock *tp = tcp_sk(sk);
+ 	struct net *net = sock_net(sk);
+@@ -7397,20 +7398,16 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
+ 	struct dst_entry *dst;
+ 	struct flowi fl;
+ 	u8 syncookies;
+-	u32 isn;
  
- 	arpfilter_ops = xt_hook_ops_alloc(&packet_filter, arpt_do_table);
--	if (IS_ERR(arpfilter_ops)) {
--		xt_unregister_template(&packet_filter);
-+	if (IS_ERR(arpfilter_ops))
- 		return PTR_ERR(arpfilter_ops);
--	}
+ #ifdef CONFIG_TCP_AO
+ 	const struct tcp_ao_hdr *aoh;
+ #endif
  
- 	ret = register_pernet_subsys(&arptable_filter_net_ops);
-+	if (ret < 0)
-+		goto err_free;
-+
-+	ret = xt_register_template(&packet_filter,
-+				   arptable_filter_table_init);
- 	if (ret < 0) {
--		xt_unregister_template(&packet_filter);
--		kfree(arpfilter_ops);
--		return ret;
-+		unregister_pernet_subsys(&arptable_filter_net_ops);
-+		goto err_free;
+-	isn = __this_cpu_read(tcp_tw_isn);
+-	if (isn) {
+-		/* TW buckets are converted to open requests without
+-		 * limitations, they conserve resources and peer is
+-		 * evidently real one.
+-		 */
+-		__this_cpu_write(tcp_tw_isn, 0);
+-	} else {
++	/* If isn is non-zero, this SYN originally matched a TIME_WAIT socket.
++	 * TW sockets are converted to open requests without limitations,
++	 * we skip the queue limits and syncookie checks in the block below.
++	 */
++	if (!isn) {
+ 		syncookies = READ_ONCE(net->ipv4.sysctl_tcp_syncookies);
+ 
+ 		if (syncookies == 2 || inet_csk_reqsk_queue_is_full(sk)) {
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index 702fdff58f7a3..36206fc6aed2d 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -2333,6 +2333,7 @@ int tcp_v4_rcv(struct sk_buff *skb)
+ 		}
  	}
  
-+	return 0;
-+err_free:
-+	kfree(arpfilter_ops);
- 	return ret;
- }
++	isn = 0;
+ process:
+ 	if (static_branch_unlikely(&ip4_min_ttl)) {
+ 		/* min_ttl can be changed concurrently from do_ip_setsockopt() */
+@@ -2361,6 +2362,7 @@ int tcp_v4_rcv(struct sk_buff *skb)
+ 	th = (const struct tcphdr *)skb->data;
+ 	iph = ip_hdr(skb);
+ 	tcp_v4_fill_cb(skb, iph, th);
++	TCP_SKB_CB(skb)->tcp_tw_isn = isn;
  
-diff --git a/net/ipv4/netfilter/iptable_filter.c b/net/ipv4/netfilter/iptable_filter.c
-index fb85745793ba5..409e96c72164b 100644
---- a/net/ipv4/netfilter/iptable_filter.c
-+++ b/net/ipv4/netfilter/iptable_filter.c
-@@ -77,26 +77,27 @@ static struct pernet_operations iptable_filter_net_ops = {
+ 	skb->dev = NULL;
  
- static int __init iptable_filter_init(void)
- {
--	int ret = xt_register_template(&packet_filter,
--				       iptable_filter_table_init);
--
--	if (ret < 0)
--		return ret;
-+	int ret;
+@@ -2446,7 +2448,6 @@ int tcp_v4_rcv(struct sk_buff *skb)
+ 			sk = sk2;
+ 			tcp_v4_restore_cb(skb);
+ 			refcounted = false;
+-			__this_cpu_write(tcp_tw_isn, isn);
+ 			goto process;
+ 		}
  
- 	filter_ops = xt_hook_ops_alloc(&packet_filter, ipt_do_table);
--	if (IS_ERR(filter_ops)) {
--		xt_unregister_template(&packet_filter);
-+	if (IS_ERR(filter_ops))
- 		return PTR_ERR(filter_ops);
--	}
- 
- 	ret = register_pernet_subsys(&iptable_filter_net_ops);
-+	if (ret < 0)
-+		goto err_free;
-+
-+	ret = xt_register_template(&packet_filter,
-+				   iptable_filter_table_init);
- 	if (ret < 0) {
--		xt_unregister_template(&packet_filter);
--		kfree(filter_ops);
--		return ret;
-+		unregister_pernet_subsys(&iptable_filter_net_ops);
-+		goto err_free;
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index 7f20db11e8ce9..59b5900dd42bd 100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -1863,6 +1863,7 @@ INDIRECT_CALLABLE_SCOPE int tcp_v6_rcv(struct sk_buff *skb)
+ 		}
  	}
  
- 	return 0;
-+err_free:
-+	kfree(filter_ops);
-+	return ret;
- }
++	isn = 0;
+ process:
+ 	if (static_branch_unlikely(&ip6_min_hopcount)) {
+ 		/* min_hopcount can be changed concurrently from do_ipv6_setsockopt() */
+@@ -1891,6 +1892,7 @@ INDIRECT_CALLABLE_SCOPE int tcp_v6_rcv(struct sk_buff *skb)
+ 	th = (const struct tcphdr *)skb->data;
+ 	hdr = ipv6_hdr(skb);
+ 	tcp_v6_fill_cb(skb, hdr, th);
++	TCP_SKB_CB(skb)->tcp_tw_isn = isn;
  
- static void __exit iptable_filter_fini(void)
-diff --git a/net/ipv4/netfilter/iptable_mangle.c b/net/ipv4/netfilter/iptable_mangle.c
-index 6259bcf178bba..b8618bdf5fdc4 100644
---- a/net/ipv4/netfilter/iptable_mangle.c
-+++ b/net/ipv4/netfilter/iptable_mangle.c
-@@ -110,25 +110,26 @@ static struct pernet_operations iptable_mangle_net_ops = {
+ 	skb->dev = NULL;
  
- static int __init iptable_mangle_init(void)
- {
--	int ret = xt_register_template(&packet_mangler,
--				       iptable_mangle_table_init);
--	if (ret < 0)
--		return ret;
-+	int ret;
- 
- 	mangle_ops = xt_hook_ops_alloc(&packet_mangler, iptable_mangle_hook);
--	if (IS_ERR(mangle_ops)) {
--		xt_unregister_template(&packet_mangler);
--		ret = PTR_ERR(mangle_ops);
--		return ret;
--	}
-+	if (IS_ERR(mangle_ops))
-+		return PTR_ERR(mangle_ops);
- 
- 	ret = register_pernet_subsys(&iptable_mangle_net_ops);
-+	if (ret < 0)
-+		goto err_free;
-+
-+	ret = xt_register_template(&packet_mangler,
-+				   iptable_mangle_table_init);
- 	if (ret < 0) {
--		xt_unregister_template(&packet_mangler);
--		kfree(mangle_ops);
--		return ret;
-+		unregister_pernet_subsys(&iptable_mangle_net_ops);
-+		goto err_free;
- 	}
- 
-+	return 0;
-+err_free:
-+	kfree(mangle_ops);
- 	return ret;
- }
- 
-diff --git a/net/ipv4/netfilter/iptable_raw.c b/net/ipv4/netfilter/iptable_raw.c
-index c7b91b2042dc6..94ad7fad3a1f3 100644
---- a/net/ipv4/netfilter/iptable_raw.c
-+++ b/net/ipv4/netfilter/iptable_raw.c
-@@ -77,24 +77,24 @@ static int __init iptable_raw_init(void)
- 		pr_info("Enabling raw table before defrag\n");
- 	}
- 
--	ret = xt_register_template(table,
--				   iptable_raw_table_init);
--	if (ret < 0)
--		return ret;
--
- 	rawtable_ops = xt_hook_ops_alloc(table, ipt_do_table);
--	if (IS_ERR(rawtable_ops)) {
--		xt_unregister_template(table);
-+	if (IS_ERR(rawtable_ops))
- 		return PTR_ERR(rawtable_ops);
--	}
- 
- 	ret = register_pernet_subsys(&iptable_raw_net_ops);
-+	if (ret < 0)
-+		goto err_free;
-+
-+	ret = xt_register_template(table,
-+				   iptable_raw_table_init);
- 	if (ret < 0) {
--		xt_unregister_template(table);
--		kfree(rawtable_ops);
--		return ret;
-+		unregister_pernet_subsys(&iptable_raw_net_ops);
-+		goto err_free;
- 	}
- 
-+	return 0;
-+err_free:
-+	kfree(rawtable_ops);
- 	return ret;
- }
- 
-diff --git a/net/ipv4/netfilter/iptable_security.c b/net/ipv4/netfilter/iptable_security.c
-index 81175c20ccbe8..491894511c544 100644
---- a/net/ipv4/netfilter/iptable_security.c
-+++ b/net/ipv4/netfilter/iptable_security.c
-@@ -65,25 +65,26 @@ static struct pernet_operations iptable_security_net_ops = {
- 
- static int __init iptable_security_init(void)
- {
--	int ret = xt_register_template(&security_table,
--				       iptable_security_table_init);
--
--	if (ret < 0)
--		return ret;
-+	int ret;
- 
- 	sectbl_ops = xt_hook_ops_alloc(&security_table, ipt_do_table);
--	if (IS_ERR(sectbl_ops)) {
--		xt_unregister_template(&security_table);
-+	if (IS_ERR(sectbl_ops))
- 		return PTR_ERR(sectbl_ops);
--	}
- 
- 	ret = register_pernet_subsys(&iptable_security_net_ops);
-+	if (ret < 0)
-+		goto err_free;
-+
-+	ret = xt_register_template(&security_table,
-+				   iptable_security_table_init);
- 	if (ret < 0) {
--		xt_unregister_template(&security_table);
--		kfree(sectbl_ops);
--		return ret;
-+		unregister_pernet_subsys(&iptable_security_net_ops);
-+		goto err_free;
- 	}
- 
-+	return 0;
-+err_free:
-+	kfree(sectbl_ops);
- 	return ret;
- }
- 
-diff --git a/net/ipv6/netfilter/ip6table_filter.c b/net/ipv6/netfilter/ip6table_filter.c
-index 982900920e730..f444071346859 100644
---- a/net/ipv6/netfilter/ip6table_filter.c
-+++ b/net/ipv6/netfilter/ip6table_filter.c
-@@ -76,25 +76,25 @@ static struct pernet_operations ip6table_filter_net_ops = {
- 
- static int __init ip6table_filter_init(void)
- {
--	int ret = xt_register_template(&packet_filter,
--					ip6table_filter_table_init);
--
--	if (ret < 0)
--		return ret;
-+	int ret;
- 
- 	filter_ops = xt_hook_ops_alloc(&packet_filter, ip6t_do_table);
--	if (IS_ERR(filter_ops)) {
--		xt_unregister_template(&packet_filter);
-+	if (IS_ERR(filter_ops))
- 		return PTR_ERR(filter_ops);
--	}
- 
- 	ret = register_pernet_subsys(&ip6table_filter_net_ops);
-+	if (ret < 0)
-+		goto err_free;
-+
-+	ret = xt_register_template(&packet_filter, ip6table_filter_table_init);
- 	if (ret < 0) {
--		xt_unregister_template(&packet_filter);
--		kfree(filter_ops);
--		return ret;
-+		unregister_pernet_subsys(&ip6table_filter_net_ops);
-+		goto err_free;
- 	}
- 
-+	return 0;
-+err_free:
-+	kfree(filter_ops);
- 	return ret;
- }
- 
-diff --git a/net/ipv6/netfilter/ip6table_mangle.c b/net/ipv6/netfilter/ip6table_mangle.c
-index 475361aa81310..dbc64e4428403 100644
---- a/net/ipv6/netfilter/ip6table_mangle.c
-+++ b/net/ipv6/netfilter/ip6table_mangle.c
-@@ -103,25 +103,26 @@ static struct pernet_operations ip6table_mangle_net_ops = {
- 
- static int __init ip6table_mangle_init(void)
- {
--	int ret = xt_register_template(&packet_mangler,
--				       ip6table_mangle_table_init);
--
--	if (ret < 0)
--		return ret;
-+	int ret;
- 
- 	mangle_ops = xt_hook_ops_alloc(&packet_mangler, ip6table_mangle_hook);
--	if (IS_ERR(mangle_ops)) {
--		xt_unregister_template(&packet_mangler);
-+	if (IS_ERR(mangle_ops))
- 		return PTR_ERR(mangle_ops);
--	}
- 
- 	ret = register_pernet_subsys(&ip6table_mangle_net_ops);
-+	if (ret < 0)
-+		goto err_free;
-+
-+	ret = xt_register_template(&packet_mangler,
-+				   ip6table_mangle_table_init);
- 	if (ret < 0) {
--		xt_unregister_template(&packet_mangler);
--		kfree(mangle_ops);
--		return ret;
-+		unregister_pernet_subsys(&ip6table_mangle_net_ops);
-+		goto err_free;
- 	}
- 
-+	return 0;
-+err_free:
-+	kfree(mangle_ops);
- 	return ret;
- }
- 
-diff --git a/net/ipv6/netfilter/ip6table_raw.c b/net/ipv6/netfilter/ip6table_raw.c
-index a99879f173b4a..1eadf553c746e 100644
---- a/net/ipv6/netfilter/ip6table_raw.c
-+++ b/net/ipv6/netfilter/ip6table_raw.c
-@@ -75,24 +75,24 @@ static int __init ip6table_raw_init(void)
- 		pr_info("Enabling raw table before defrag\n");
- 	}
- 
--	ret = xt_register_template(table, ip6table_raw_table_init);
--	if (ret < 0)
--		return ret;
--
- 	/* Register hooks */
- 	rawtable_ops = xt_hook_ops_alloc(table, ip6t_do_table);
--	if (IS_ERR(rawtable_ops)) {
--		xt_unregister_template(table);
-+	if (IS_ERR(rawtable_ops))
- 		return PTR_ERR(rawtable_ops);
--	}
- 
- 	ret = register_pernet_subsys(&ip6table_raw_net_ops);
-+	if (ret < 0)
-+		goto err_free;
-+
-+	ret = xt_register_template(table, ip6table_raw_table_init);
- 	if (ret < 0) {
--		kfree(rawtable_ops);
--		xt_unregister_template(table);
--		return ret;
-+		unregister_pernet_subsys(&ip6table_raw_net_ops);
-+		goto err_free;
- 	}
- 
-+	return 0;
-+err_free:
-+	kfree(rawtable_ops);
- 	return ret;
- }
- 
-diff --git a/net/ipv6/netfilter/ip6table_security.c b/net/ipv6/netfilter/ip6table_security.c
-index c44834d93fc79..4bd5d97b8ab65 100644
---- a/net/ipv6/netfilter/ip6table_security.c
-+++ b/net/ipv6/netfilter/ip6table_security.c
-@@ -64,25 +64,26 @@ static struct pernet_operations ip6table_security_net_ops = {
- 
- static int __init ip6table_security_init(void)
- {
--	int ret = xt_register_template(&security_table,
--				       ip6table_security_table_init);
--
--	if (ret < 0)
--		return ret;
-+	int ret;
- 
- 	sectbl_ops = xt_hook_ops_alloc(&security_table, ip6t_do_table);
--	if (IS_ERR(sectbl_ops)) {
--		xt_unregister_template(&security_table);
-+	if (IS_ERR(sectbl_ops))
- 		return PTR_ERR(sectbl_ops);
--	}
- 
- 	ret = register_pernet_subsys(&ip6table_security_net_ops);
-+	if (ret < 0)
-+		goto err_free;
-+
-+	ret = xt_register_template(&security_table,
-+				   ip6table_security_table_init);
- 	if (ret < 0) {
--		kfree(sectbl_ops);
--		xt_unregister_template(&security_table);
--		return ret;
-+		unregister_pernet_subsys(&ip6table_security_net_ops);
-+		goto err_free;
- 	}
- 
-+	return 0;
-+err_free:
-+	kfree(sectbl_ops);
- 	return ret;
- }
+@@ -1978,7 +1980,6 @@ INDIRECT_CALLABLE_SCOPE int tcp_v6_rcv(struct sk_buff *skb)
+ 			sk = sk2;
+ 			tcp_v6_restore_cb(skb);
+ 			refcounted = false;
+-			__this_cpu_write(tcp_tw_isn, isn);
+ 			goto process;
+ 		}
  
 -- 
 2.53.0
