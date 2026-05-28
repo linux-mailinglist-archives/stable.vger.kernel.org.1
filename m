@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-255360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255370-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YEIbFfagGGqblggAu9opvQ
-	(envelope-from <stable+bounces-255360-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:09:26 +0200
+	id SJe4A2ehGGqnlggAu9opvQ
+	(envelope-from <stable+bounces-255370-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC1545F7ECD
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:09:25 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9C7B5F8039
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:11:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BA45930DCC9A
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:05:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5FE693014682
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:05:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF237352019;
-	Thu, 28 May 2026 20:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C69D2410D0E;
+	Thu, 28 May 2026 20:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dmKlfwlf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vrwhu9VW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D84130E82E;
-	Thu, 28 May 2026 20:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B2F32ABC0;
+	Thu, 28 May 2026 20:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998691; cv=none; b=DjtwM2+Ov3nTLutW7d7XzZwnEusOPPdbnXhs7TPho5xZtjKdUQ06LWV7bvt31MWvzY9MGeBX/tN/Ag0OwxpCDp4pnBbhtBhWN9Ccq1h2gjN8rM7huPHXzz7dYSSvtlGhG4trIhcN1zVN3OjNhqDVELMkz1gQoRt1YAvjWwhvXzI=
+	t=1779998719; cv=none; b=VrwkT/suZ+6+bE4Izf7bbV0tFYEw71rAoODUkdNPmE/tyTf9jQvmQFDRrRgo4LEkCI6uwrXfQCN4Q3nNOfDRVwG/0xFu16sw9sGZ3q/s9gQ98vJXMnpsMhKWnFcRjtRRcL25VS/WRENTZH/qLTgC+YB7sbib39IdRhsdeFlRr+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998691; c=relaxed/simple;
-	bh=kLNHvW/pqK5y0KtO8eytU2SlnJNU+HCpFIcEyBm3H/A=;
+	s=arc-20240116; t=1779998719; c=relaxed/simple;
+	bh=w0Qavf5/UP9HiCs/EWYZNftAzRZGjRHihLZIcu5/ewg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q1X6i93FcxThAoQ1GZR8XPkYqFZ+CAuPmFtx0eq1oCNFmr4gZNzg8w7ayOUqsgK7sr1mxiWmgtEdfR+Vw6K8EwKEQpnNbGAND+F0HsnDf8vItz8Adr/V4vDwI8Dd7J/EDf1CK6kmMwEHSRgsPcXmlqux+Q3Ync/LJO5wfICz/l4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dmKlfwlf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC7221F000E9;
-	Thu, 28 May 2026 20:04:49 +0000 (UTC)
+	 MIME-Version; b=lt75hC/fD5pknOa/RArnBUBVKd+UdWZ1yVesZHcIUmGVtg5xOAJQ81UfjF2CmiPUFg4CBo0BEFtD2l1PsDdoslDViGT3g5nBRok35+6FhIR5c/t2155HKnHo9nJh0XA0g3ZPwt2O1cxLHkuyHHHjvcgFPk1BtgkFfmaBG81wHbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vrwhu9VW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C64C51F000E9;
+	Thu, 28 May 2026 20:05:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998690;
-	bh=kQnrJ+K9hmuMxd2LWd7akFTxVPTWxfOt0ueQBDi+/jA=;
+	s=korg; t=1779998718;
+	bh=5SVNtNRCbmSTQkzQQDnbWxlTHGQCIrKkzdtUd0TEo+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dmKlfwlfkrmSLwTXzWfZ1vaHcs+WVPvR79KRj0KuThaBKC8BL6w01HDC6pMU2s94h
-	 BT+1HtY7d4tuAp69w/NebHQtnFAdTHoRMTC97gArCmbFUymaWcjB2BfGGa1dFmFpW3
-	 dhK5CBQVyxhkhUit7mCDzCFC32Vcjxyb5bvQDX9M=
+	b=vrwhu9VWlckhxH66PKlxX+ZQFcmDCOT2AMMdRywZZ6L1QbqQZVF7kowhu0iq1KH3R
+	 CfCWSlGWS+mEliTQsl0i+TIZbrlhbXjO+Hn6iPKHm58zzy6ZrGj54i2ZC46FQM5jY6
+	 tfScbNNC6whZZf6yPeUeprap/sM/Mqe31Ct9xJcY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hongling Zeng <zenghongling@kylinos.cn>,
-	Jori Koolstra <jkoolstra@xs4all.nl>,
-	Christian Brauner <brauner@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Rosen Penev <rosenp@gmail.com>,
+	Thomas Gleixner <tglx@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 236/461] fs: Fix return in jfs_mkdir and orangefs_mkdir
-Date: Thu, 28 May 2026 21:46:05 +0200
-Message-ID: <20260528194653.973597955@linuxfoundation.org>
+Subject: [PATCH 7.0 237/461] irqchip/ath79-cpu: Remove unused function
+Date: Thu, 28 May 2026 21:46:06 +0200
+Message-ID: <20260528194654.003504902@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
 References: <20260528194646.819809818@linuxfoundation.org>
@@ -69,21 +69,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kylinos.cn,xs4all.nl,kernel.org];
-	TAGGED_FROM(0.00)[bounces-255360-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-255370-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -92,8 +92,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,kylinos.cn:email,xs4all.nl:email]
-X-Rspamd-Queue-Id: BC1545F7ECD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+X-Rspamd-Queue-Id: B9C7B5F8039
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,53 +101,44 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Hongling Zeng <zenghongling@kylinos.cn>
+From: Rosen Penev <rosenp@gmail.com>
 
-[ Upstream commit a7cf1da7ac016490d6a1106f2aa6b602d34e9a12 ]
+[ Upstream commit 0fa10fb77069fb67aa51384868ef3702b7791465 ]
 
-Return NULL instead of passing to ERR_PTR while err is zero
-Fixes these smatch warnings:
-  - fs/jfs/namei.c:311 jfs_mkdir() warn: passing zero to 'ERR_PTR'
-  - fs/orangefs/namei.c:369 orangefs_mkdir() warn: passing zero
-    to 'ERR_PTR'
+ath79_cpu_irq_init() was part of the legacy pre-OF code that got removed a
+while back.
 
-Fixes: 88d5baf69082 ("Change inode_operations.mkdir to return struct dentry *")
-Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
-Link: https://patch.msgid.link/20260501071058.1243245-1-zenghongling@kylinos.cn
-Reviewed-by: Jori Koolstra <jkoolstra@xs4all.nl>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Remove it to get rid of a missing prototype warning, reported by the kernel test
+robot.
+
+[ tglx: Fix the subject prefix. Sigh ... ]
+
+Fixes: 51fa4f8912c0 ("MIPS: ath79: drop legacy IRQ code")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Link: https://patch.msgid.link/20260506085522.1210143-1-rosenp@gmail.com
+Closes: https://lore.kernel.org/oe-kbuild-all/202412011509.kGQkDr1y-lkp@intel.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/namei.c      | 2 +-
- fs/orangefs/namei.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-ath79-cpu.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/fs/jfs/namei.c b/fs/jfs/namei.c
-index 60c4a0e0fca5e..442d626792622 100644
---- a/fs/jfs/namei.c
-+++ b/fs/jfs/namei.c
-@@ -309,7 +309,7 @@ static struct dentry *jfs_mkdir(struct mnt_idmap *idmap, struct inode *dip,
-       out1:
- 
- 	jfs_info("jfs_mkdir: rc:%d", rc);
--	return ERR_PTR(rc);
-+	return rc ? ERR_PTR(rc) : NULL;
+diff --git a/drivers/irqchip/irq-ath79-cpu.c b/drivers/irqchip/irq-ath79-cpu.c
+index 923e4bba37767..9b7273a7f8ced 100644
+--- a/drivers/irqchip/irq-ath79-cpu.c
++++ b/drivers/irqchip/irq-ath79-cpu.c
+@@ -85,10 +85,3 @@ static int __init ar79_cpu_intc_of_init(
  }
- 
- /*
-diff --git a/fs/orangefs/namei.c b/fs/orangefs/namei.c
-index bec5475de094d..75e65e72c2d64 100644
---- a/fs/orangefs/namei.c
-+++ b/fs/orangefs/namei.c
-@@ -362,7 +362,7 @@ static struct dentry *orangefs_mkdir(struct mnt_idmap *idmap, struct inode *dir,
- 	__orangefs_setattr(dir, &iattr);
- out:
- 	op_release(new_op);
--	return ERR_PTR(ret);
-+	return ret ? ERR_PTR(ret) : NULL;
- }
- 
- static int orangefs_rename(struct mnt_idmap *idmap,
+ IRQCHIP_DECLARE(ar79_cpu_intc, "qca,ar7100-cpu-intc",
+ 		ar79_cpu_intc_of_init);
+-
+-void __init ath79_cpu_irq_init(unsigned irq_wb_chan2, unsigned irq_wb_chan3)
+-{
+-	irq_wb_chan[2] = irq_wb_chan2;
+-	irq_wb_chan[3] = irq_wb_chan3;
+-	mips_cpu_irq_init();
+-}
 -- 
 2.53.0
 
