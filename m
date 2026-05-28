@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-255251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-255603-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AIpGL8+eGGpAlggAu9opvQ
-	(envelope-from <stable+bounces-255251-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:00:15 +0200
+	id EEfFARajGGrJlggAu9opvQ
+	(envelope-from <stable+bounces-255603-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4588B5F7A3E
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:00:15 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 096B85F8597
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 22:18:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0689B30387A0
-	for <lists+stable@lfdr.de>; Thu, 28 May 2026 19:59:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 57780303ABF2
+	for <lists+stable@lfdr.de>; Thu, 28 May 2026 20:16:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E73338936;
-	Thu, 28 May 2026 19:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 623472E03EA;
+	Thu, 28 May 2026 20:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="apFqFqRU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xt+slnS8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB5E26B973;
-	Thu, 28 May 2026 19:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C532D1303;
+	Thu, 28 May 2026 20:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779998384; cv=none; b=VOUCShGHqF6TBmZSY7TQT+ifg3GI0umeU0lM7M7e/oHZHgX4iOZ1hCU6gNCIw4S72jTmYXjUEhiVGQFFLLVGiUI7uCzM2VYVYO8gd3un46GWU86nhllf0H7PZ91LCwV8W4/Ithk00VKJjKfor4Mk9Lg+/6/3k3kkZEYqAO51Nqo=
+	t=1779999376; cv=none; b=THumIxij8298pwv/XrXmCWC4ZNigBTRGh9/uvWzTyKyFfe5p38qh5BD3o+qcRkgnNkpVFl/v8WLVwebipHq9rYxbra4R43b9wdYIflGd9qQlfjQfrciPeYxoo71RXUsY8Lgg3FYt4sNO5vp/wgD7/XZBDMpu3NQMPEhJSIIXe/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779998384; c=relaxed/simple;
-	bh=eAEGnfgWpfYSJC+jB/Gh8Uyl8aWhI2yXkrWiqeXZ2Aw=;
+	s=arc-20240116; t=1779999376; c=relaxed/simple;
+	bh=4OxH9xH5ffpM62y2CaJpO9hGMlb06BZAdYzmkHtYVnA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nQoF6mjboBzwcRobnu56jH4i04MX/jfd6sBV1QgJKGBp20jXLg4zXwa/4ho2R+tl+ziHZKHNuAAiBCGQHGKgVlpVea2n+5NXqF+LD24s0Jq2PrZZC6VO2mvT/sT1TsRaqQZ7iPb6hienM9A4hfTKv1Ua0sT3f6IUSugOxkQ+o1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=apFqFqRU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DA821F000E9;
-	Thu, 28 May 2026 19:59:42 +0000 (UTC)
+	 MIME-Version; b=dgyUI5kVZpBA9l0bWzBBjzZ0jK5LUtg3NjvroAxHXp+mcJif7WpPOJqEeco+pqNQcL0Co7ZVav4hfI24eTJ1RVja21xqejX2KVLQmhPZXnETvj2eiFi6m9c//CmjDYS9bEwtZae86QUK6C9+Eu2H8J3TC5Dw85/oOfNZf1bTvls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xt+slnS8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ECFF1F000E9;
+	Thu, 28 May 2026 20:16:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1779998383;
-	bh=tdTJHfK6BInjm38k8OKj11cEfQWfivB2f+p8mxzGUFo=;
+	s=korg; t=1779999375;
+	bh=UWCsyZ2KAJr2iN88RoO9Bj8/7MpGVhsjuGiEBcbCSCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=apFqFqRU92n9adiMU1t+o2aDJGse6ifaIu7VxTu1WRbDo9H80YIFXNPCR0ZRiKMfL
-	 og27brlg6aroG0jH01UPJicuVuwluVIZH0u5MxGSN8NVc//QaWqbx56NdKNTwKyr67
-	 zHBpIL0BEQns9v5ewGegoiEuKYn+tqNffRs9xjfg=
+	b=xt+slnS8ntf1dJZfhfg8wjwTy1BCZTEUcehh2Fp3iS4rKPrmWZOctO6R+hpggSGBe
+	 /1+kcnNjkWdh9adom8KG4D6iTEQSRKOQRAIRZYXsctVeVrAT5MwUtuXDyzW4ed5PQY
+	 h5RbDes1EMWJXz5RyRyOmTjkIIx8Rhi5uP1PfVo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
+	Justin Iurman <justin.iurman@gmail.com>,
 	Ido Schimmel <idosch@nvidia.com>,
-	syzbot+9fdcc9f05a98a540b816@syzkaller.appspotmail.com,
-	Sven Eckelmann <sven@narfation.org>
-Subject: [PATCH 7.0 153/461] batman-adv: bla: avoid NULL-ptr deref for claim via dropped interface
-Date: Thu, 28 May 2026 21:44:42 +0200
-Message-ID: <20260528194651.468030098@linuxfoundation.org>
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 045/377] ipv6: ioam: refresh hdr pointer before ioam6_event()
+Date: Thu, 28 May 2026 21:44:43 +0200
+Message-ID: <20260528194639.679276719@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260528194646.819809818@linuxfoundation.org>
-References: <20260528194646.819809818@linuxfoundation.org>
+In-Reply-To: <20260528194638.371537336@linuxfoundation.org>
+References: <20260528194638.371537336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,81 +67,97 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-255251-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,9fdcc9f05a98a540b816];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nvidia.com:email,appspotmail.com:email,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: 4588B5F7A3E
+	TAGGED_FROM(0.00)[bounces-255603-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 096B85F8597
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Justin Iurman <justin.iurman@gmail.com>
 
-commit f80d3d98d2ff78d9e2fe5d68b1f45948c4f7bd24 upstream.
+commit e46e6bc97fb1f339730ff1ba74267fbf48e7a422 upstream.
 
-Without rtnl_lock held, a hardif might be retrieved as primary interface of
-a meshif, but then (while operating on this interface) getting decoupled
-from the mesh interface. In this case, the meshif still exists but the
-pointer from the primary hardif to the meshif is set to NULL.
+Reported by Sashiko:
 
-The mesh_iface must be checked first to be non-NULL before continuing to
-send an ARP request using meshif.
+In ipv6_hop_ioam(), the hdr pointer is initialized to point into the
+skb's linear data buffer. Later, the code calls skb_ensure_writable(),
+which might reallocate the buffer:
 
-Cc: stable@kernel.org
-Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
-Reported-by: Ido Schimmel <idosch@nvidia.com>
-Reported-by: syzbot+9fdcc9f05a98a540b816@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9fdcc9f05a98a540b816
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+	if (skb_ensure_writable(skb, optoff + 2 + hdr->opt_len))
+		goto drop;
+
+	/* Trace pointer may have changed */
+	trace = (struct ioam6_trace_hdr *)(skb_network_header(skb)
+					   + optoff + sizeof(*hdr));
+
+	ioam6_fill_trace_data(skb, ns, trace, true);
+
+	ioam6_event(IOAM6_EVENT_TRACE, dev_net(skb->dev),
+		    GFP_ATOMIC, (void *)trace, hdr->opt_len - 2);
+
+If the skb is cloned or lacks sufficient linear headroom,
+skb_ensure_writable() will invoke pskb_expand_head(), which reallocates
+the skb's data buffer and frees the old one, invalidating pointers to
+it. While the code recalculates the trace pointer immediately after the
+call to skb_ensure_writable(), it fails to recalculate the hdr pointer.
+
+This patch fixes the above by recalculating the hdr pointer before
+passing hdr->opt_len to ioam6_event(), so that we avoid any UaF.
+
+Fixes: f655c78d6225 ("net: exthdrs: ioam6: send trace event")
+Cc: stable@vger.kernel.org
+Signed-off-by: Justin Iurman <justin.iurman@gmail.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260520124242.32320-1-justin.iurman@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/bridge_loop_avoidance.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/ipv6/exthdrs.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/net/batman-adv/bridge_loop_avoidance.c
-+++ b/net/batman-adv/bridge_loop_avoidance.c
-@@ -356,12 +356,14 @@ static void batadv_bla_send_claim(struct
- 	       sizeof(local_claim_dest));
- 	local_claim_dest.type = claimtype;
+--- a/net/ipv6/exthdrs.c
++++ b/net/ipv6/exthdrs.c
+@@ -955,9 +955,9 @@ static bool ipv6_hop_ioam(struct sk_buff
+ 		if (skb_ensure_writable(skb, optoff + 2 + hdr->opt_len))
+ 			goto drop;
  
--	mesh_iface = primary_if->mesh_iface;
-+	mesh_iface = READ_ONCE(primary_if->mesh_iface);
-+	if (!mesh_iface)
-+		goto out;
+-		/* Trace pointer may have changed */
+-		trace = (struct ioam6_trace_hdr *)(skb_network_header(skb)
+-						   + optoff + sizeof(*hdr));
++		/* Trace and hdr pointers may have changed */
++		hdr = (struct ioam6_hdr *)(skb_network_header(skb) + optoff);
++		trace = (struct ioam6_trace_hdr *)((u8 *)hdr + sizeof(*hdr));
  
- 	skb = arp_create(ARPOP_REPLY, ETH_P_ARP,
- 			 /* IP DST: 0.0.0.0 */
- 			 zeroip,
--			 primary_if->mesh_iface,
-+			 mesh_iface,
- 			 /* IP SRC: 0.0.0.0 */
- 			 zeroip,
- 			 /* Ethernet DST: Broadcast */
+ 		ioam6_fill_trace_data(skb, ns, trace, true);
+ 
 
 
 
